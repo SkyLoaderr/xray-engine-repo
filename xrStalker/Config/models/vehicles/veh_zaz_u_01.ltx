@@ -28,10 +28,10 @@ engine_power      		= 30.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 2500        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 2000.       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.001 ;0.01
-power_decrement_factor	= 0.01 ;0.02
-rpm_increment_factor	= 0.02 ;0.01
-rpm_decrement_factor	= 0.02 ;0.01
+power_increment_factor	= 0.001
+power_decrement_factor	= 0.01
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.02
 
 ; additional engine parameters
 
@@ -57,19 +57,12 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.73, 750,1000	
-N1                 		= 3.73, 750,2650
-N2                 		= 2.29, 2200,2850
-N3                 		= 1.39, 2200,2850
-N4                 		= 0.96, 2200,2850
+R                  		= 3.73, 2100,2850	
+N1                 		= 3.73, 2100,2850
+N2                 		= 2.29, 2100,2850
+N3                 		= 1.39, 2100,2850
+N4                 		= 0.96, 2100,2850
 
-;
-;R                  		= 4.02, 4000,6000
-;N1                 		= 6.38, 4000,6000
-;N2                 		= 3.29, 4000,6000
-;N3                 		= 2.04, 4000,6000
-;N4                 		= 1.25, 4000,6000
-;
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
 
@@ -167,21 +160,8 @@ front_right_wheel     	= 0.00001
 
 default       			= 1, -1, 0.1
 
-;root                    = 1, -1, 0.0
-;front_bamper            = 1, -1, 0.0
-;kabina                  = 1, -1, 0.0
-;left_door               = 1, -1, 0.0
-;front_door              = 1, -1, 0.0
-;back_door               = 1, -1, 0.0
-;front_axle              = 1, -1, 0.0
-;back_axle               = 1, -1, 0.0
-;back_left_wheel         = 1, -1, 0.0
-;back_right_wheel        = 1, -1, 0.0
-;front_left_wheel        = 1, -1, 0.0
-;front_right_wheel       = 1, -1, 0.0
-
 [immunities]
-burn_immunity         	= 0.1             ;коэффициенты иммунитета
+burn_immunity         	= 0.5       ;коэффициенты иммунитета
 strike_immunity       	= 0.01
 shock_immunity        	= 0.01
 wound_immunity        	= 0.01
@@ -204,7 +184,7 @@ frag_hit				= 45
 frag_hit_impulse		= 250
 hit_type_blast			= explosion
 hit_type_frag			= fire_wound
-up_throw_factor			= 1.4
+up_throw_factor			= 0.5
 wm_size             	= 0.1
 explode_particles		= explosions\expl_car
 light_color				= 0.6,0.5,0.3
@@ -214,7 +194,7 @@ light_time 				= 1.0
 ;трассы от осколков
 tracer_head_speed		= 76
 tracer_max_length   	= 3
-explode_duration    	= 50			;подолжительность взрыва (с)
+explode_duration    	= 50		;подолжительность взрыва (с)
 
 ;звуки
 snd_explode 			= weapons\heli_explosion
