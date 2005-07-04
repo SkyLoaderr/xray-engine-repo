@@ -458,15 +458,18 @@ function setGulagEnemy(name, victim)
 		abort("setGulagEnemy: victim == nil")
 	end
 	if xr_gulag.fraction[name] ~= nil then
-		local h = hit()
-		h.power = 0
-		h.direction = self.object:direction()
-		h.bone = "bip01_spine"
-		h.draftsman = victim
-		h.impulse = 0
-		h.type = hit.wound
+--		local h = hit()
+--		h.power = 0
+--		h.bone = "bip01_spine"
+--		h.draftsman = victim
+--		h.impulse = 0
+--		h.type = hit.wound
+--		for k,v in xr_gulag.fraction[name].Object do
+--			h.direction = v:direction()
+--			v:hit(h)								
+--		end
 		for k,v in xr_gulag.fraction[name].Object do
-			v:hit(h)								
+			v:set_relation(game_object.enemy, victim)
 		end
 	end
 end

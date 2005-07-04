@@ -513,10 +513,17 @@ function bar_territory_logic(actor, npc)
 	if dialogs.actor_in_dolg(actor,npc) then
 		if db.actor:has_info("bar_dolg_territory_kill") then
 			news_manager.send_tip(actor, "bar_territory_dolg_kill", nil, "dolg", nil, 507)
+			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_arena", db.actor)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_3_hit") then
 			news_manager.send_tip(actor, "bar_territory_dolg_3_hit", nil, "dolg", nil, 507)
+			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_2_hit") then
@@ -530,10 +537,17 @@ function bar_territory_logic(actor, npc)
 	else
 		if db.actor:has_info("bar_dolg_territory_kill") then
 			news_manager.send_tip(actor, "bar_territory_nodolg_kill", nil, "dolg", nil, 507)
+			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_arena", db.actor)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_2_hit") then
 			news_manager.send_tip(actor, "bar_territory_nodolg_2_hit", nil, "dolg", nil, 507)
+			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_1_hit") then
