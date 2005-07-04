@@ -150,7 +150,8 @@ end
 -- проверка (по story_id) того, что нашим врагом есть хотя бы кото-то один из списка
 function check_fighting(actor, npc, p)
 	for i, v in pairs(p) do
-		if type(v) == 'number' and db.storage[npc:id()].enemy:story_id() == v then
+	    enemy = db.storage[npc:id()].enemy
+		if enemy and type(v) == 'number' and enemy:story_id() == v then
 			printf("_bp: check_fighting(%d) = true", v)
 			return true
 		end
