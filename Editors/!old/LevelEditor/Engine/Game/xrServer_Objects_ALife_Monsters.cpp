@@ -469,6 +469,13 @@ CSE_ALifeTrader::~CSE_ALifeTrader			()
 	delete_data					(m_tpOrderedArtefacts);
 }
 
+#ifdef DEBUG
+bool CSE_ALifeTrader::match_configuration	() const
+{
+	return						(!strstr(Core.Params,"-designer"));
+}
+#endif
+
 CSE_Abstract *CSE_ALifeTrader::init			()
 {
 	inherited1::init			();
@@ -976,6 +983,13 @@ CSE_ALifeCreatureAbstract::~CSE_ALifeCreatureAbstract()
 {
 }
 
+#ifdef DEBUG
+bool CSE_ALifeCreatureAbstract::match_configuration	() const
+{
+	return						(!strstr(Core.Params,"-designer"));
+}
+#endif
+
 u32	CSE_ALifeCreatureAbstract::ef_creature_type	() const
 {
 	return						(m_ef_creature_type);
@@ -1264,6 +1278,13 @@ CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCre
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
 {
 }
+
+#ifdef DEBUG
+bool CSE_ALifeCreatureActor::match_configuration	() const
+{
+	return						(true);
+}
+#endif
 
 CSE_Abstract *CSE_ALifeCreatureActor::init			()
 {

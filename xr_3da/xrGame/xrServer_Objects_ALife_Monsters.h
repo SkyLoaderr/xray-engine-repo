@@ -108,6 +108,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
 #endif
+#ifdef DEBUG
+	virtual bool					match_configuration		() const;
+#endif
 	virtual CSE_Abstract			*cast_abstract			() {return this;};
 	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
 	virtual CSE_ALifeTrader			*cast_trader			() {return this;};
@@ -231,6 +234,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 #ifdef XRGAME_EXPORTS
 	virtual void					on_spawn				();
 #endif
+#ifdef DEBUG
+	virtual bool					match_configuration		() const;
+#endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureAbstract)
 #define script_type_list save_type_list(CSE_ALifeCreatureAbstract)
@@ -312,6 +318,9 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	virtual bool					natural_detector		() const {return false;}
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();
+#endif
+#ifdef DEBUG
+	virtual bool					match_configuration		() const;
 #endif
 	virtual CSE_Abstract			*cast_abstract			() {return this;};
 	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
