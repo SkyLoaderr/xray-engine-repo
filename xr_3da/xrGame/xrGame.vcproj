@@ -9293,12 +9293,60 @@
 					</File>
 					<File
 						RelativePath=".\tri-colliderknoopc\dTriBox.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\tri-colliderknoopc\dTriBox.h">
 					</File>
 					<File
 						RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
@@ -9311,18 +9359,90 @@
 					</File>
 					<File
 						RelativePath=".\tri-colliderknoopc\dTriCylinder.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\tri-colliderknoopc\dTriCylinder.h">
 					</File>
 					<File
 						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="tri-colliderKNoOPC\dTriList.h">
 					</File>
 					<File
 						RelativePath=".\tri-colliderknoopc\dTriSphere.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\tri-colliderknoopc\dTriSphere.h">
@@ -9339,6 +9459,30 @@
 					Filter="">
 					<File
 						RelativePath="dCylinder\dCylinder.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								DisableSpecificWarnings="4002;4390"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="dCylinder\dCylinder.h">

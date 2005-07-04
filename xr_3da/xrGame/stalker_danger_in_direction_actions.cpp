@@ -199,6 +199,8 @@ void CStalkerActionDangerInDirectionSearch::execute							()
 {
 	inherited::execute		();
 
+	VERIFY					(object().agent_manager().member().member(&object()).cover());
+
 	object().agent_manager().location().add		(
 		xr_new<CDangerCoverLocation>(
 			object().agent_manager().member().member(&object()).cover(),
