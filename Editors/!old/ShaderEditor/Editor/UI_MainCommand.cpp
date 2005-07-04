@@ -570,17 +570,17 @@ void TUI::RegisterCommands()
 {
 	REGISTER_CMD_S		(COMMAND_INITIALIZE,			CommandInitialize);
 	REGISTER_CMD_S		(COMMAND_DESTROY,        		CommandDestroy);
-	REGISTER_CMD_SE		(COMMAND_EXIT,               	"Exit",					CommandExit);
+	REGISTER_CMD_SE		(COMMAND_EXIT,               	"Exit",					CommandExit,		true);
 	REGISTER_CMD_S		(COMMAND_QUIT,           		CommandQuit);
-	REGISTER_CMD_SE		(COMMAND_EDITOR_PREF,    		"Editor Preference",	CommandEditorPrefs);
-	REGISTER_SUB_CMD_SE	(COMMAND_CHANGE_ACTION,  		"Change Action",      	CommandChangeAction);
+	REGISTER_CMD_SE		(COMMAND_EDITOR_PREF,    		"Editor Preference",	CommandEditorPrefs, false);
+	REGISTER_SUB_CMD_SE	(COMMAND_CHANGE_ACTION,  		"Change Action",      	CommandChangeAction,false);
     	APPEND_SUB_CMD	("Select",						etaSelect,	0);
     	APPEND_SUB_CMD	("Add",							etaAdd,		0);
     	APPEND_SUB_CMD	("Move",						etaMove,	0);
     	APPEND_SUB_CMD	("Rotate",						etaRotate,	0);
     	APPEND_SUB_CMD	("Scale",						etaScale,	0);
     REGISTER_SUB_CMD_END;
-	REGISTER_SUB_CMD_SE	(COMMAND_CHANGE_AXIS,    		"Change Axis",			CommandChangeAxis);
+	REGISTER_SUB_CMD_SE	(COMMAND_CHANGE_AXIS,    		"Change Axis",			CommandChangeAxis,	false);
         APPEND_SUB_CMD	("X",					        etAxisX,	0);
         APPEND_SUB_CMD	("Y",					        etAxisY,	0);
         APPEND_SUB_CMD	("Z",					        etAxisZ,	0);
@@ -602,15 +602,15 @@ void TUI::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
 	REGISTER_CMD_S	    (COMMAND_ZOOM_EXTENTS,       	CommandZoomExtents);
-    REGISTER_CMD_SE	    (COMMAND_TOGGLE_RENDER_WIRE,	"Toggle Wireframe",		CommandToggleRenderWire);
+    REGISTER_CMD_SE	    (COMMAND_TOGGLE_RENDER_WIRE,	"Toggle Wireframe",		CommandToggleRenderWire,			false);
     REGISTER_CMD_C	    (COMMAND_RENDER_FOCUS,       	this,TUI::CommandRenderFocus);
-	REGISTER_CMD_CE	    (COMMAND_BREAK_LAST_OPERATION,	"Break Last Operation",	this,TUI::CommandBreakLastOperation);
-    REGISTER_CMD_SE	    (COMMAND_TOGGLE_SAFE_RECT,   	"Toggle Safe Rect",		CommandToggleSafeRect);
+	REGISTER_CMD_CE	    (COMMAND_BREAK_LAST_OPERATION,	"Break Last Operation",	this,TUI::CommandBreakLastOperation,false);
+    REGISTER_CMD_SE	    (COMMAND_TOGGLE_SAFE_RECT,   	"Toggle Safe Rect",		CommandToggleSafeRect,false);
 	REGISTER_CMD_C	    (COMMAND_RENDER_RESIZE,      	this,TUI::CommandRenderResize);
-    REGISTER_CMD_SE	    (COMMAND_TOGGLE_GRID,        	"Toggle Grid",			CommandToggleGrid);
+    REGISTER_CMD_SE	    (COMMAND_TOGGLE_GRID,        	"Toggle Grid",			CommandToggleGrid,false);
 	REGISTER_CMD_S	    (COMMAND_UPDATE_GRID,        	CommandUpdateGrid);
     REGISTER_CMD_S	    (COMMAND_GRID_NUMBER_OF_SLOTS,	CommandGridNumberOfSlots);
-    REGISTER_SUB_CMD_SE (COMMAND_GRID_SLOT_SIZE,     	"Change Grid Size",		CommandGridSlotSize);
+    REGISTER_SUB_CMD_SE (COMMAND_GRID_SLOT_SIZE,     	"Change Grid Size",		CommandGridSlotSize,false);
     	APPEND_SUB_CMD	("Decrease",					0,0);
     	APPEND_SUB_CMD	("Increase",					1,0);
     REGISTER_SUB_CMD_END;
@@ -619,7 +619,7 @@ void TUI::RegisterCommands()
     REGISTER_CMD_S	    (COMMAND_EDIT_COMMAND_LIST, 	CommandEditCommandList);
     REGISTER_CMD_S	    (COMMAND_EXECUTE_COMMAND_LIST, 	CommandExecuteCommandList);
     REGISTER_CMD_S	    (COMMAND_LOG_COMMANDS, 			CommandLogCommands);
-    REGISTER_SUB_CMD_SE (COMMAND_RUN_MACRO,     		"Run Macro",			CommandRunMacro);
+    REGISTER_SUB_CMD_SE (COMMAND_RUN_MACRO,     		"Run Macro",			CommandRunMacro,false);
     	APPEND_SUB_CMD	("Slot #1",						xr_string(""),0);
     	APPEND_SUB_CMD	("Slot #2",						xr_string(""),0);
     	APPEND_SUB_CMD	("Slot #3",						xr_string(""),0);
@@ -639,34 +639,33 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
     if (ApplyGlobalShortCut(Key,Shift))	return true;
 
+    if (Key==VK_ESCAPE){		ExecCommand	(COMMAND_CHANGE_ACTION, etaSelect); return true;}
+
     xr_shortcut SC; 
     SC.key						= Key;
     SC.ext.assign				(Shift.Contains(ssShift)?xr_shortcut::flShift:0|
     							 Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0|
                                  Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0);
-    if (ExecCommand(SC))		return true;
-    
-	bool bExec = false;
-
-    if (Key==VK_ESCAPE) 		COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
-    return bExec;
+    return 						ExecCommand(SC);
 }
 //---------------------------------------------------------------------------
 
 bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
 	VERIFY(m_bReady);
-	bool bExec = false;
-    if (Shift.Contains(ssCtrl)){
-        if (Key=='S'){
-            if (Shift.Contains(ssAlt))  COMMAND0(COMMAND_SAVEAS)
-            else                        COMMAND0(COMMAND_SAVE)
-        }
-        else if (Key=='O')   			COMMAND0(COMMAND_LOAD)
-        else if (Key=='N')   			COMMAND0(COMMAND_CLEAR)
-    }
-    if (Key==VK_OEM_3)					COMMAND0(COMMAND_RENDER_FOCUS)
-    return bExec;
+
+    if (Key==VK_OEM_3){			ExecCommand	(COMMAND_RENDER_FOCUS); return true;}
+
+    xr_shortcut SC; 
+    SC.key						= Key;
+    SC.ext.assign				(Shift.Contains(ssShift)?xr_shortcut::flShift:0|
+    							 Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0|
+                                 Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0);
+	SESubCommand* SUB 			= FindCommandByShortcut(SC);
+
+    if (!SUB||!SUB->parent->global_shortcut) 			return false;
+
+    return						ExecCommand(SUB->parent->idx,SUB->p0,SUB->p1);
 }
 //---------------------------------------------------------------------------
 
