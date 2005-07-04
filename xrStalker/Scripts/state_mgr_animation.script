@@ -850,14 +850,19 @@ function animation:update()
 	   self.mgr.emerg.animation == true then
 		
 		--если мы уже
-		if self.states.target_state ~= state_lib.states[self.mgr.target_state].animation 
-		then
-			self.npc:clear_animations()
-			self:set_state(nil)
-			self.states.current_state = nil
-		end	
-		
+--		if self.states.target_state ~= state_lib.states[self.mgr.target_state].animation 
+--		then
+--			self.npc:clear_animations()
+--			self:set_state(nil)
+--			self.states.current_state = nil
+--		end			
+--		self.mgr.emerg.animation = nil
+
+		self.npc:clear_animations()
+		self:set_state(nil)
+		self.states.current_state = nil
 		self.mgr.emerg.animation = nil
+
 		return
 	end
 

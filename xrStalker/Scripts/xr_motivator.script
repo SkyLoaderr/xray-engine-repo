@@ -179,7 +179,7 @@ function motivator_binder:update(delta)
 		self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
 		
 		
-		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
+		self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
 
     if device ():time_global () - self.last_update > 1000 then

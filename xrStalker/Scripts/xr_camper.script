@@ -39,6 +39,10 @@ function evaluator_close_combat:evaluate()
 
 --printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
 
+--	if self.object:best_danger():type() == danger_object.grenade then
+--		return false
+--	end
+
 	if self.close_combat == false then
 		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
 	end
@@ -244,6 +248,8 @@ function action_patrol:execute()
 		end
 		return
 	end
+
+	if self:process_danger() then return end
 	
 	-- если нет ни врага ни денжера.	
 	if self.a.sniper == true then
@@ -262,7 +268,6 @@ function action_patrol:execute()
 			end
 			-- проверка на завершение сканирования.
 			if self.scantime ~= nil and time_global() - self.scantime >= self.a.scantime_free then
-				--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
 				self.move_mgr:continue()
 			end
 		else
@@ -274,6 +279,26 @@ function action_patrol:execute()
 		self.move_mgr:update()
 	end		
 		
+end
+function action_patrol:process_danger()
+	best_danger = self.object:best_danger()
+	if best_danger == nil then
+		return false
+	end
+
+	if time_global() - best_danger:time() >= self.a.idle then
+		return false
+	end
+	
+	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
+	printf("[camper] danger_distance_sqr [%s]", tostring(danger_distance_sqr))			
+	printf("[camper] danger_name [%s]", tostring(best_danger:object():name()))
+	position = {look_position = best_danger:position()}
+	if self.a.suggested_state.campering then
+		state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position, {animation = true})
+	else
+		state_mgr.set_state(self.object, "hide", nil, nil, position, {animation = true})
+	end	
 end
 function action_patrol:scan(flag)
 	if self.a.scan_table[flag] == nil then

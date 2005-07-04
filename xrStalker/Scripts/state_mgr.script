@@ -813,10 +813,10 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	
 
 	if emerg ~= nil then
-		if  self.animation:target_state() ~= state_lib.states[state_name].animation then
+--		if  self.animation:target_state() ~= state_lib.states[state_name].animation then
 			self.emerg.animation = emerg.animation
 			self.emerg.animation_nout = emerg.animation_nout
-		end
+--		end
 	end
 
 	self.synsound = synsound

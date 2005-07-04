@@ -13,16 +13,36 @@ function evaluator_danger:__init(name, storage) super (nil, name)
 end
 function evaluator_danger:evaluate()
 	-- проверка на активную схему
-	if db.storage[self.object:id()].active_scheme == nil and
-	   not xr_wounded.is_wounded(self.object) and
-	   not xr_wounded.is_heavy_wounded_by_id(self.object:id()) and
-	   not xr_meet.is_meet(self.object)
-	then
-		return false
+	active_scheme = db.storage[self.object:id()].active_scheme
+	if active_scheme == nil then
+		if xr_wounded.is_wounded(self.object) then
+			return true
+		end
+		if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
+			return true
+		end
+		if xr_meet.is_meet(self.object)	then
+			return true
+		end
+		--printf("DANGER [%s] [FALSE] alive", self.object:name())
+		return false		
 	end
 
-	-- проверка на денжер.
 	best_danger = self.object:best_danger()
+	db.storage[self.object:id()].enemy = best_danger
+	
+	-- отсеиваем по настройке combat_ignore/danger
+	local overrides = xr_logic.generic_scheme_overrides(self.object)
+	if overrides and
+	   overrides.combat_ignore and
+	   active_scheme ~= nil and
+	   xr_logic.pick_section_from_condlist(db.actor, self.object, overrides.combat_ignore.condlist ) ~= nil
+	then
+		return true
+	end
+
+
+	-- проверка на денжер.
 	if best_danger == nil then
 		return true
 	end
@@ -40,21 +60,33 @@ function evaluator_danger:evaluate()
 	if time_global() - best_danger:time() >= 5000 then
 		return true
 	end
---	printf("danger_time [%s]", tostring(best_danger:time()))
 
 	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
 	if danger_distance_sqr > 100 then
 		return true
 	end
---	printf("danger_distance_sqr [%s]", tostring(danger_distance_sqr))
-			
+--	printf("danger_distance_sqr [%s]", tostring(danger_distance_sqr))			
 --	printf("danger_name [%s]", tostring(best_danger:object():name()))
-	if best_danger:type() == danger_object.grenade then
---		printf("danger_type [GRENADE]")
+	
+	if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
+		return true
+	end
+	
+	if active_scheme == "camper" then
+		if best_danger:type() == danger_object.grenade then
+			self.danger_time = time_global()
+			--printf("DANGER [%s] [FALSE] camper", self.object:name())
+			return false
+		else
+			return true	
+		end
+	else
 		self.danger_time = time_global()
+		--printf("DANGER [%s] [FALSE] other", self.object:name())
 		return false
 	end
-	return true
+	--printf("DANGER [%s] [FALSE] default", self.object:name())
+	return false
 end
 
 
