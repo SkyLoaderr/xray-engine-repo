@@ -1362,7 +1362,7 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemDrop(inventory_item);
-	if (OnClient()) return;
+//	if (OnClient()) return;
 
 	CArtefact* artefact = smart_cast<CArtefact*>(inventory_item);
 	if(artefact && artefact->m_eItemPlace == eItemPlaceBelt)

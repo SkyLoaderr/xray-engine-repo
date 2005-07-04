@@ -14,6 +14,9 @@ bool	CUIAHuntFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 
 	char Text[1024];
 	pItem->FieldsVector[0]->SetText(PS->name);
+	
+	pItem->FieldsVector[1]->SetText("");
+
 	if (PS->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
 		pItem->FieldsVector[1]->SetText("DEAD");
 	else
@@ -23,9 +26,7 @@ bool	CUIAHuntFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 		{
 			if (pGameAHunt->artefactBearerID == PS->GameID)
 				pItem->FieldsVector[1]->SetText("@");
-		}
-		else
-			pItem->FieldsVector[1]->SetText("");
+		}			
 	}
 	sprintf(Text, "%d", PS->kills); pItem->FieldsVector[2]->SetText(Text);
 	sprintf(Text, "%d", PS->deaths); pItem->FieldsVector[3]->SetText(Text);
