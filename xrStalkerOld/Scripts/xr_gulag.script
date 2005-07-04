@@ -552,6 +552,10 @@ function checkMonster(npc_community, gulag_type)
 		return true
 	end
 
+	if gulag_dark_valley.checkMonster(npc_community, gulag_type) then
+		return true
+	end
+
 	if gulag_garbage.checkMonster(npc_community, gulag_type) then
 		return true
     end
