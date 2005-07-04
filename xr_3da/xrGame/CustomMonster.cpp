@@ -796,38 +796,14 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 }
 
 #ifdef DEBUG
-void CCustomMonster::OnHUDDraw(CCustomHUD* /**hud/**/)
+void CCustomMonster::OnHUDDraw(CCustomHUD *hud)
 {
-	HUD().Font().pFontSmall->SetColor	(D3DCOLOR_XRGB(255,0,0));
-	HUD().Font().pFontSmall->OutSet	(0,200);
-	HUD().Font().pFontSmall->OutNext	("NET_Q_size: %d",NET.size());
-	
-	/*
-	const float			fy = -1;
-	const float			fx = 0.5f;
-	pApp->pFont->OutSet	(-1,fy+0*fx);
-	pApp->pFont->Color	(D3DCOLOR_XRGB(0,0xff,0));
-	pApp->pFont->OutNext("LOOK");
-	DumpStream			(&q_look);
-
-	pApp->pFont->OutSet	(-1,fy+1*fx);
-	pApp->pFont->Color	(D3DCOLOR_XRGB(0,0xff,0));
-	pApp->pFont->OutNext("MOVE");
-	DumpStream			(&q_move);
-	
-	pApp->pFont->OutSet	(-1,fy+2*fx);
-	pApp->pFont->Color	(D3DCOLOR_XRGB(0,0xff,0));
-	pApp->pFont->OutNext("ACTION");
-	DumpStream			(&q_action);
-	*/
 }
 #endif
-
 
 void CCustomMonster::Exec_Action(float /**dt/**/)
 {
 }
-
 
 void CCustomMonster::renderable_Render()
 {

@@ -155,7 +155,7 @@ void CControllerAnimation::select_torso_animation()
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	if (!ctrl_data) return;
 
-	CController *controller  = smart_cast<CController *>(m_object);
+//	CController *controller  = smart_cast<CController *>(m_object);
 
 	switch (Random.randI(4)) {
 		case 1: ctrl_data->torso.motion	= m_torso[eTorsoDanger];	break;
