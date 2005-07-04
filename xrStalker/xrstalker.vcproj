@@ -1572,6 +1572,9 @@
 					Name="vehicles"
 					Filter="">
 					<File
+						RelativePath=".\veh_btr_script_u_01.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\models\vehicles\veh_btr_u_01.ltx">
 					</File>
 					<File
