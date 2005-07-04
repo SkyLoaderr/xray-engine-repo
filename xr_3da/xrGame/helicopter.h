@@ -152,7 +152,7 @@ public:
 	float							m_min_mgun_dist, m_max_mgun_dist;
 	u32								m_time_between_rocket_attack;
 	bool							m_syncronize_rocket;
-
+	float							m_barrel_dir_tolerance;
 	HUD_SOUND						m_sndShot;
 	HUD_SOUND						m_sndShotRocket;
 
@@ -310,7 +310,7 @@ public:
 	float					GetMaxVelocity					();
 	void					SetMaxVelocity					(float v);
 	Fvector					GetCurrVelocityVec				();
-
+	void					SetBarrelDirTolerance			(float val){m_barrel_dir_tolerance = val;};
 	void					SetEnemy						(CScriptGameObject* e);
 	void					SetEnemy						(Fvector* pos);
 	void					UnSetEnemy						();

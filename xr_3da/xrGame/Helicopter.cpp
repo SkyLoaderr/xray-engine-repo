@@ -125,7 +125,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_max_mgun_dist						= pSettings->r_float(section,"max_mgun_attack_dist");
 	m_time_between_rocket_attack		= pSettings->r_u32(section,"time_between_rocket_attack");
 	m_syncronize_rocket					= !!pSettings->r_bool(section,"syncronize_rocket");
-	
+	m_barrel_dir_tolerance				= pSettings->r_float(section,"barrel_dir_tolerance");
 
 //lighting & sounds
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
@@ -466,13 +466,15 @@ void CHelicopter::save(NET_Packet &output_packet)
 	m_body.save		(output_packet);
 	m_enemy.save	(output_packet);
 	output_packet.w_vec3(XFORM().c);
+	output_packet.w_float(m_barrel_dir_tolerance);
 }
 
 void CHelicopter::load(IReader &input_packet)
 {
-	m_movement.load	(input_packet);
-	m_body.load		(input_packet);
-	m_enemy.load	(input_packet);
-	input_packet.r_fvector3(XFORM().c);
-	UseFireTrail	(m_enemy.bUseFireTrail);//force reloar disp params
+	m_movement.load				(input_packet);
+	m_body.load					(input_packet);
+	m_enemy.load				(input_packet);
+	input_packet.r_fvector3		(XFORM().c);
+	m_barrel_dir_tolerance		= input_packet.r_float();
+	UseFireTrail				(m_enemy.bUseFireTrail);//force reloar disp params
 }

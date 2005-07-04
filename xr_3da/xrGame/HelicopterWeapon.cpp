@@ -218,6 +218,14 @@ void CHelicopter::UpdateMGunDir()
 		clamp			(m_tgt_y_rot,-m_lim_y_rot.y,-m_lim_y_rot.x);
 		if (!fsimilar(sv_y,m_tgt_y_rot,EPS_L)) m_allow_fire=FALSE;
 	}
+	
+	Fvector d1,d2;
+	d1.set(m_cur_x_rot,m_cur_y_rot,0).normalize_safe();
+	d2.set(m_tgt_x_rot,m_tgt_y_rot,0).normalize_safe();
+	
+	if ( rad2deg(acos(d1.dotproduct(d2))) > m_barrel_dir_tolerance )
+		m_allow_fire=FALSE;
+
 }
 
 void CHelicopter::startRocket(u16 idx)
