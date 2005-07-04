@@ -1558,9 +1558,6 @@
 			<Filter
 				Name="models"
 				Filter="">
-				<File
-					RelativePath=".\Config\models\niva_engine.ltx">
-				</File>
 				<Filter
 					Name="objects"
 					Filter="">
@@ -1572,7 +1569,10 @@
 					Name="vehicles"
 					Filter="">
 					<File
-						RelativePath=".\veh_btr_script_u_01.ltx">
+						RelativePath=".\Config\models\vehicles\niva_engine.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\vehicles\veh_btr_script_u_01.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\models\vehicles\veh_btr_u_01.ltx">
