@@ -1,21 +1,35 @@
 [logic]
-active = zoneguard1
+active = walker
+
+[meet]
+meet_state 	   = 30| {+val_rob_buying} threat, wait@ {+val_rob_buying} val_rob_guard_jeer, weather
+meet_state_wpn = 30| threat@threat_back 
+;victim        = 30| actor
+;victim_wpn    = 30| actor
+;use           = true
+use_wpn	       = true
+zone           = val_rob_warn_zone| threat@ {+val_rob_buying} val_rob_guard_jeer, threat_back | val_rob_kill_zone| true@talk_abuse
+
+[walker]
+path_walk = val_rob_guard2_walk
+path_look = val_rob_guard2_look
+meet      = meet
 
 [zoneguard1]
-path_walk = val_rob_guard2_walk
-path_look = val_rob_guard2_look
-zone_warn = val_rob_warn_zone
+path_walk  = val_rob_guard2_walk
+path_look  = val_rob_guard2_look
+zone_warn  = val_rob_warn_zone
 zone_guard = val_rob_kill_zone
-no_move = true
-snd_greet = weather
-team = val_rob
-on_info = {+val_rob_buying} zoneguard2
+no_move    = true
+snd_greet  = weather
+team       = val_rob
+on_info    = {+val_rob_buying} zoneguard2
 
 [zoneguard2]
-path_walk = val_rob_guard2_walk
-path_look = val_rob_guard2_look
-zone_warn = val_rob_warn_zone
+path_walk  = val_rob_guard2_walk
+path_look  = val_rob_guard2_look
+zone_warn  = val_rob_warn_zone
 zone_guard = val_rob_kill_zone
-no_move = true
-snd_greet = val_rob_guard_jeer
-team = val_rob
+no_move    = true
+snd_greet  = val_rob_guard_jeer
+team       = val_rob
