@@ -47,3 +47,5 @@ bool CStateMonsterLookToPointAbstract::check_completion()
 	return false;
 }
 
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateMonsterLookToPointAbstract
