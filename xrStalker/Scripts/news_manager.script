@@ -6,6 +6,11 @@ news = {
 	escape_stalker_helped			= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_end_1]]),
 	tutorial_trader_look_vagon		= sound_object([[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_1]]),
 	gar_dolg_warning				= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]),
+
+	tips_agr_krot_sos				= sound_object([[characters_voice\human_01\scenario\agroprom\krot_help_pda_1]]),
+	tips_agr_krot_sos1				= sound_object([[characters_voice\human_01\scenario\agroprom\krot_help_pda_2]]),
+	tips_agr_krot_sos2				= sound_object([[characters_voice\human_01\scenario\agroprom\krot_help_pda_2]]),
+
 	bar_ecolog_crush_heli_down		= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_1]]),
 	bar_freedom_attack_attract_actor= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_2]]),
 	bar_freedom_spam_1				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\wolfhound_pda_6]]),
@@ -21,9 +26,11 @@ news = {
 	bar_ecolog_spam_3				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_5]]),
 	bar_ecolog_spam_4				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]]),
 	bar_ecolog_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]]),
+
 	tips_gar_hellcar_alarm			= sound_object([[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]),
 	gar_dolg_blokpost_warning		= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]),
 	gar_dolg_monster_rush			= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
+
 	val_monolith_trader_pda1		= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
 	val_monolith_trader_pda2		= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]])
 }

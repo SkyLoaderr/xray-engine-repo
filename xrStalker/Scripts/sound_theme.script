@@ -163,6 +163,7 @@ function load_sound(obj)
 
 	-- speech
     theme[obj:id()]["speech"]						= load_sound_from_ltx(obj, "speech")
+    theme[obj:id()]["speech1"]						= load_sound_from_ltx(obj, "speech1")
     
 	-- угрозы
 	theme[obj:id()]["threat_weap"]					= load_sound_from_ltx(obj, "threat_weap")
