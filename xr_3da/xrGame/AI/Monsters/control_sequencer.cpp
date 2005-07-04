@@ -2,6 +2,11 @@
 #include "control_sequencer.h"
 #include "control_manager.h"
 
+void CAnimationSequencer::reset_data()
+{
+	m_data.motions.clear();
+}
+
 void CAnimationSequencer::on_capture() 
 { 
 	m_man->capture_pure	(this);

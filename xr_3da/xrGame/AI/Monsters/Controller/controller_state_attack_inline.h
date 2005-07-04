@@ -4,6 +4,7 @@
 #include "../states/state_look_point.h"
 #include "controller_state_attack_hide.h"
 #include "controller_state_attack_moveout.h"
+#include "../states/state_test_look_actor.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -20,6 +21,7 @@ CStateControllerAttackAbstract::CStateControllerAttack(_Object *obj, state_ptr s
 	add_state	(eStateFaceEnemy,			xr_new<CStateMonsterLookToPoint<_Object> >(obj));
 	add_state	(eStateTakeCover,			xr_new<CStateControlHide<_Object> >(obj));
 	add_state	(eStateMoveOutFromCover,	xr_new<CStateControlMoveOut<_Object> >(obj));
+	add_state	(eStateCustom,				xr_new<CStateTest1<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -30,43 +32,51 @@ CStateControllerAttackAbstract::~CStateControllerAttack()
 TEMPLATE_SPECIALIZATION
 void CStateControllerAttackAbstract::reselect_state()
 {
-	if (get_state(eStateMelee)->check_start_conditions()) {
-		select_state(eStateMelee);
-		return;
-	}
+	//if (get_state(eStateMelee)->check_start_conditions()) {
+	//	select_state(eStateMelee);
+	//	return;
+	//}
 
-	if (get_state(eStateControlAttack)->check_start_conditions()) {
-		select_state(eStateControlAttack);
-		return;
-	}
+	//if (get_state(eStateControlAttack)->check_start_conditions()) {
+	//	select_state(eStateControlAttack);
+	//	return;
+	//}
+	//
+	//if (prev_substate == eStateFaceEnemy) {
+	//	if (get_state(eStateControlAttack)->check_start_conditions()) {
+	//		select_state(eStateControlAttack);
+	//		return;
+	//	}
+	//}
+
+	//if (prev_substate == eStateMoveOutFromCover) {
+	//	if (get_state(eStateFaceEnemy)->check_start_conditions()) {
+	//		select_state(eStateFaceEnemy);
+	//		return;
+	//	}
+	//}
+	//
+	//if (prev_substate == eStateTakeCover) {
+	//	if (get_state(eStateMoveOutFromCover)->check_start_conditions()) {
+	//		select_state(eStateMoveOutFromCover);
+	//		return;
+	//	}
+	//}
+
+	//if (get_state(eStateTakeCover)->check_start_conditions()) {
+	//	select_state(eStateTakeCover);
+	//	return;
+	//}
+	//
+	//select_state(eStateRun);
+
 	
-	if (prev_substate == eStateFaceEnemy) {
-		if (get_state(eStateControlAttack)->check_start_conditions()) {
-			select_state(eStateControlAttack);
-			return;
-		}
-	}
-
-	if (prev_substate == eStateMoveOutFromCover) {
-		if (get_state(eStateFaceEnemy)->check_start_conditions()) {
-			select_state(eStateFaceEnemy);
-			return;
-		}
-	}
-	
-	if (prev_substate == eStateTakeCover) {
-		if (get_state(eStateMoveOutFromCover)->check_start_conditions()) {
-			select_state(eStateMoveOutFromCover);
-			return;
-		}
-	}
-
 	if (get_state(eStateTakeCover)->check_start_conditions()) {
 		select_state(eStateTakeCover);
 		return;
 	}
-	
-	select_state(eStateRun);
+
+	select_state(eStateCustom);
 }
 
 TEMPLATE_SPECIALIZATION

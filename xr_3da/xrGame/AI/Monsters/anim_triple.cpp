@@ -9,6 +9,11 @@ char *dbg_states[] = {
 	"eStateNone"
 };
 
+void CAnimationTriple::reset_data()
+{
+	m_data.capture_type	= 0;
+}
+
 void CAnimationTriple::on_capture()
 {
 	m_current_state		= eStateNone;
@@ -16,7 +21,6 @@ void CAnimationTriple::on_capture()
 	m_man->capture		(this, ControlCom::eControlAnimation);
 	m_man->subscribe	(this, ControlCom::eventAnimationEnd);	
 
-	m_data.capture_type			= 0;
 }
 
 void CAnimationTriple::on_release()

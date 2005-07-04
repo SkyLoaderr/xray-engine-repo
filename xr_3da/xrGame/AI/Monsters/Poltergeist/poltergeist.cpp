@@ -9,6 +9,9 @@
 #include "../monster_velocity_space.h"
 #include "../../../level.h"
 #include "../../../level_debug.h"
+#include "../control_animation_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
 
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f

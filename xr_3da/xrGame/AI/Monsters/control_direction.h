@@ -10,8 +10,6 @@ struct SControlDirectionData : public ControlCom::IComData {
 	} heading, pitch;
 };
 
-
-
 struct SRotationEventData : public ControlCom::IEventData {
 
 	enum RotType {
@@ -40,6 +38,7 @@ public:
 
 	virtual void	reinit				();
 	virtual void	update_frame		();
+	virtual	void	reset_data			();
 	
 	// services
 			bool	is_face_target		(const Fvector &position,	float eps_angle);

@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "controller.h"
 #include "controller_state_manager.h"
+
+#include "controller_animation.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
+
 #include "../controlled_entity.h"
 
 #include "../states/monster_state_rest.h"
@@ -42,7 +48,7 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 	);
 
 
-	add_state(eStateCustom, xr_new<CStateMonsterTestState<CController> >(obj));
+	add_state(eStateCustom, xr_new<CStateControlHide<CController> >(obj));
 }
 
 CStateManagerController::~CStateManagerController()
@@ -60,18 +66,9 @@ void CStateManagerController::execute()
 
 	if (enemy) {
 		switch (object->EnemyMan.get_danger_type()) {
-				case eStrong:	state_id = eStatePanic; break;
-				case eWeak:		state_id = eStateAttack; break;
+			case eStrong:	state_id = eStatePanic; break;
+			case eWeak:		state_id = eStateAttack; break;
 		}
-		
-		//if (state_id == eStateAttack) {
-		//	if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_TIME_ENEMY_HIDDEN < Device.dwTimeGlobal) {
-		//		if (prev_substate == eStateFindEnemy) state_id = eStateFindEnemy;
-		//		else {
-		//			if (object->EnemyMan.get_enemy_position().distance_to(object->Position()) < FIND_ENEMY_MAX_DISTANCE) state_id = eStateFindEnemy;
-		//		}
-		//	}
-		//}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
@@ -83,7 +80,7 @@ void CStateManagerController::execute()
 		else			state_id = eStateRest;
 	}
 	
-	//state_id = eStateCustom;
+	state_id = eStateAttack;
 
 	if (enemy) object->set_controlled_task(eTaskAttack);
 	else object->set_controlled_task(eTaskFollow);

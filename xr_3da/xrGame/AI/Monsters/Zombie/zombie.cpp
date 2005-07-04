@@ -6,6 +6,9 @@
 #include "../../../entitycondition.h"
 #include "../monster_velocity_space.h"
 
+#include "../control_animation_base.h"
+#include "../control_movement_base.h"
+
 CZombie::CZombie()
 {
 	StateMan = xr_new<CStateManagerZombie>(this);

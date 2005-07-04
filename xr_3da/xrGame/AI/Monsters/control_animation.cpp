@@ -7,11 +7,15 @@ void CControlAnimation::reinit()
 {
 	inherited::reinit			();
 
-	m_data.global.init			();
-	m_data.legs.init			();
-	m_data.torso.init			();
-
 	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_object->Visual());
+}
+
+void CControlAnimation::reset_data()
+{
+	m_data.global.init	();		
+	m_data.legs.init	();		
+	m_data.torso.init	();
+	m_data.speed		= -1.f;
 }
 
 void CControlAnimation::update_frame() 
@@ -67,22 +71,15 @@ void CControlAnimation::on_torso_animation_end()
 
 void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 {
-	VERIFY					(part.motion.valid());
-
-	part.blend = 0;
-	for (u16 i=0; i<MAX_PARTS; ++i) {
-		CBlend		*blend = 0;
-		if (!part.blend)
-			blend	= m_skeleton_animated->LL_PlayCycle(i,part.motion, TRUE, callback, this);
-		else
-			m_skeleton_animated->LL_PlayCycle(i,part.motion,TRUE,0,0);
-
-		if (blend && !part.blend)
-			part.blend	= blend;
-	}
+	VERIFY				(part.motion.valid());
 	
-	part.time_started		= Device.dwTimeGlobal;
-	part.actual				= true;
+	u16 bone_or_part	= m_skeleton_animated->LL_GetMotionDef(part.motion)->bone_or_part;
+	if (bone_or_part == u16(-1)) bone_or_part = m_skeleton_animated->LL_PartID("default");
+	
+	part.blend			= m_skeleton_animated->LL_PlayCycle(bone_or_part,part.motion, TRUE, callback, this);
 
-	m_man->notify			(ControlCom::eventAnimationStart, 0);
+	part.time_started	= Device.dwTimeGlobal;
+	part.actual			= true;
+
+	m_man->notify		(ControlCom::eventAnimationStart, 0);
 }

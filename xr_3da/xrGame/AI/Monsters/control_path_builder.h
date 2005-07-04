@@ -43,6 +43,7 @@ public:
 
 	virtual void	load					(LPCSTR section);
 	virtual void	reinit					();
+	virtual void	reset_data				();
 	virtual void	update_schedule			();
 
 	virtual	void	on_travel_point_change	(const u32 &previous_travel_point_index);

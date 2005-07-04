@@ -12,6 +12,7 @@
 #include "../../../cover_manager.h"
 #include "../../../cover_point.h"
 #include "../../../ai_space.h"
+#include "../control_direction_base.h"
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)

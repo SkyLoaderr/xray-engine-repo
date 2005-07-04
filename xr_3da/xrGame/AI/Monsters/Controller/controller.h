@@ -5,6 +5,9 @@
 #include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
 #include "../ai_monster_bones.h"
+#include "controller_covers.h"
+
+class CControllerAnimation;
 
 class CController : public CBaseMonster, 
 					public CPsyAuraController {
@@ -25,6 +28,13 @@ class CController : public CBaseMonster,
 	bool				active_control_fx;
 	
 	bool				int_need_deactivate;		// internal var
+
+	LPCSTR				particle_fire;
+
+	CControllerAnimation	*m_custom_anim_base;
+
+public:	
+	CControllerAnimation	&custom_anim()	{return (*m_custom_anim_base);}
 
 public:
 	xr_vector<CEntity*> m_controlled_objects;
@@ -49,8 +59,9 @@ public:
 
 	virtual void	InitThink			();
 
-	virtual bool	ability_can_jump	() {return true;}
-			
+	virtual void	create_base_controls	();	
+	
+
 			void	Jump				();
 
 	//-------------------------------------------------------------------
@@ -84,6 +95,15 @@ public:
 	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const;
 	MonsterSpace::SBoneRotation m_head_orient;
 	void					update_head_orientation	();
+
+
+	void					draw_fire_particles();
+
+	
+	CControllerCoverEvaluator	*m_ce_best;
+	void						test_covers();
+
+
 
 public:
 	virtual bool	use_center_to_aim			() const {return true;}

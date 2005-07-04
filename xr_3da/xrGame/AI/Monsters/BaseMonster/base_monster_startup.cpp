@@ -7,7 +7,6 @@
 #include "../../../phmovementcontrol.h"
 #include "../ai_monster_squad_manager.h"
 #include "../../../../skeletonanimated.h"
-#include "../critical_action_info.h"
 #include "../../../detail_path_manager.h"
 #include "../../../level_navigation_graph.h"
 #include "../corpse_cover.h"
@@ -78,7 +77,6 @@ void CBaseMonster::reinit()
 	CorpseMan.reinit					();
 
 	StateMan->reinit					();
-	CriticalActionInfo->reinit			();
 	
 	Morale.reinit						();
 
@@ -90,7 +88,6 @@ void CBaseMonster::reinit()
 	m_bRunTurnRight					= false;
 
 	state_invisible					= false;
-	m_default_bone_part				= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
 
 	m_force_real_speed				= false;
 	m_script_processing_active		= false;

@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "snork.h"
 #include "snork_state_manager.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
+
 #include "../../../level.h"
 #include "../../../level_debug.h"
 #include "../states/monster_state_rest.h"
@@ -12,7 +18,6 @@
 #include "../states/monster_state_hitted.h"
 #include "../states/state_look_point.h"
 #include "../states/state_test_look_actor.h"
-#include "../critical_action_info.h"
 #include "../../../entitycondition.h"
 
 CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)

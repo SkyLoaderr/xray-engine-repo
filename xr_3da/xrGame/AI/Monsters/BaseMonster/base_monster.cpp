@@ -17,7 +17,6 @@
 #include "../../../group_hierarchy_holder.h"
 #include "../../../phdestroyable.h"
 #include "../../../../skeletoncustom.h"
-#include "../critical_action_info.h"
 #include "../../../detail_path_manager.h"
 #include "../../../hudmanager.h"
 #include "../../../memory_manager.h"
@@ -29,6 +28,10 @@
 #include "../../../ui/UIMainIngameWnd.h"
 #include "../state_manager.h"
 #include "../controlled_entity.h"
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -53,27 +56,12 @@ CBaseMonster::CBaseMonster()
 
 	StateMan						= 0;
 
-	CriticalActionInfo				= xr_new<CCriticalActionInfo>();
-
 	MeleeChecker.init_external		(this);
 	Morale.init_external			(this);
 
 	m_controlled					= 0;
 
-	m_anim_base						= xr_new<CControlAnimationBase>		();
-	m_move_base						= xr_new<CControlMovementBase>		();
-	m_path_base						= xr_new<CControlPathBuilderBase>	();
-	m_dir_base						= xr_new<CControlDirectionBase>		();
-
-	control().add					(m_anim_base, ControlCom::eControlAnimationBase);
-	control().add					(m_move_base, ControlCom::eControlMovementBase);
-	control().add					(m_path_base, ControlCom::eControlPathBase);
-	control().add					(m_dir_base,  ControlCom::eControlDirBase);
-
-	control().set_base_controller	(m_anim_base, ControlCom::eControlAnimation);
-	control().set_base_controller	(m_move_base, ControlCom::eControlMovement);
-	control().set_base_controller	(m_dir_base,  ControlCom::eControlDir);
-
+	
 	control().add					(&m_com_manager,  ControlCom::eControlCustom);
 	
 	m_com_manager.add_ability		(ControlCom::eControlSequencer);
@@ -88,8 +76,6 @@ CBaseMonster::~CBaseMonster()
 	xr_delete(m_enemy_cover_evaluator);
 	xr_delete(m_cover_evaluator_close_point);
 	
-	xr_delete(CriticalActionInfo);
-
 	xr_delete(m_control_manager);
 
 	xr_delete(m_anim_base);
@@ -106,12 +92,6 @@ void CBaseMonster::UpdateCL()
 		
 		// Проверка состояния анимации (атака)
 		AA_CheckHit							();
-
-		// Обновить линейную скорости движения
-		//movement().update_velocity			();
-
-		// Обновить направление объекта, его угловые скорости движения
-		//dir().update_frame					();
 
 		CStepManager::update				();
 	}
@@ -355,6 +335,17 @@ CMovementManager *CBaseMonster::create_movement_manager	()
 
 DLL_Pure *CBaseMonster::_construct	()
 {
+	create_base_controls			();
+
+	control().add					(m_anim_base, ControlCom::eControlAnimationBase);
+	control().add					(m_move_base, ControlCom::eControlMovementBase);
+	control().add					(m_path_base, ControlCom::eControlPathBase);
+	control().add					(m_dir_base,  ControlCom::eControlDirBase);
+
+	control().set_base_controller	(m_anim_base, ControlCom::eControlAnimation);
+	control().set_base_controller	(m_move_base, ControlCom::eControlMovement);
+	control().set_base_controller	(m_dir_base,  ControlCom::eControlDir);
+	
 	inherited::_construct		();
 	CStepManager::_construct	();
 	return						(this);
@@ -380,3 +371,17 @@ void CBaseMonster::net_Relcase(CObject *O)
 	}
 }
 	
+void CBaseMonster::create_base_controls()
+{
+	m_anim_base		= xr_new<CControlAnimationBase>		();
+	m_move_base		= xr_new<CControlMovementBase>		();
+	m_path_base		= xr_new<CControlPathBuilderBase>	();
+	m_dir_base		= xr_new<CControlDirectionBase>		();
+}
+
+void CBaseMonster::set_action(EAction action)
+{
+	anim().m_tAction		= action;
+}
+
+

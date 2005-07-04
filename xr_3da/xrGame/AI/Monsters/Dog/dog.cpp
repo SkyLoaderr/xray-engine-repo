@@ -4,6 +4,9 @@
 #include "../../../../skeletonanimated.h"
 #include "../../../level.h"
 #include "../monster_velocity_space.h"
+#include "../control_animation_base.h"
+#include "../control_movement_base.h"
+
 
 
 CAI_Dog::CAI_Dog()

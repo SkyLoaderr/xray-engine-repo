@@ -3,6 +3,9 @@
 #include "cat_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../monster_velocity_space.h"
+#include "../control_animation_base.h"
+#include "../control_movement_base.h"
+
 
 CCat::CCat()
 {

@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "cat.h"
 #include "cat_state_manager.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
+
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -11,7 +17,6 @@
 #include "cat_state_attack_rat.h"
 #include "../../../clsid_game.h"
 #include "../states/state_test_look_actor.h"
-#include "../critical_action_info.h"
 #include "../../../entitycondition.h"
 
 CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
@@ -82,7 +87,6 @@ void CStateManagerCat::execute()
 	//	}
 	//}
 
-	if (object->CriticalActionInfo->is_fsm_locked()) return;
 	
 	//if (state_id == eStateAttack_AttackRat) {
 	//	// check angle

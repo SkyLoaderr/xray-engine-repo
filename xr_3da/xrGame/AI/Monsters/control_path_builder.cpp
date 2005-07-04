@@ -8,6 +8,7 @@
 #include "../../detail_path_manager.h"
 #include "../../ai_object_location.h"
 #include "../../ai_space.h"
+#include "../../movement_manager_space.h"
 
 CControlPathBuilder::CControlPathBuilder(CCustomMonster *monster) : CMovementManager(monster)
 {
@@ -28,24 +29,28 @@ void CControlPathBuilder::reinit()
 	// todo: remove call twice [CustomMonster reinit && control_manager reinit]
 	inherited::reinit			();
 	inherited_com::reinit		();
-
-	// init data
-	m_data.use_dest_orientation	= false;
-	m_data.dest_orientation.set	(0.f,0.f,0.f);
-
-	m_data.try_min_time			= true;
-
-	m_data.target_position.set	(0.f,0.f,0.f);
-	m_data.target_node			= u32(-1);
-
-	m_data.enable				= false;
-	m_data.extrapolate			= false;
-
-	m_data.velocity_mask		= u32(-1);
-	m_data.desirable_mask		= u32(-1);
-
-	m_data.path_type			= MovementManager::ePathTypeLevelPath;
 }
+
+void CControlPathBuilder::reset_data() 
+{
+	// init data
+	m_data.use_dest_orientation		= false;
+	m_data.dest_orientation.set		(0.f,0.f,0.f);
+
+	m_data.try_min_time				= true;
+
+	m_data.target_position.set		(0.f,0.f,0.f);
+	m_data.target_node				= u32(-1);
+
+	m_data.enable					= false;
+	m_data.extrapolate				= false;
+
+	m_data.velocity_mask			= u32(-1);
+	m_data.desirable_mask			= u32(-1);
+
+	m_data.path_type				= MovementManager::ePathTypeLevelPath;
+}
+
 
 void CControlPathBuilder::update_schedule() 
 {
@@ -73,12 +78,6 @@ void CControlPathBuilder::update_schedule()
 		detail().set_use_dest_orientation	(m_data.use_dest_orientation);
 		if (m_data.use_dest_orientation)	detail().set_dest_direction	(m_data.dest_orientation);
 
-		// set target
-		detail().set_dest_position			(m_data.target_position);
-		
-		if (m_data.target_node != u32(-1))
-			set_level_dest_vertex			(m_data.target_node);
-
 		detail().set_try_min_time			(m_data.try_min_time);
 
 		extrapolate_path					(m_data.extrapolate);
@@ -89,13 +88,20 @@ void CControlPathBuilder::update_schedule()
 		set_path_type						(m_data.path_type);
 		if (m_data.path_type == MovementManager::ePathTypeGamePath)			
 			game_selector().set_selection_type	(eSelectionTypeRandomBranching);
+		else {	
+			// set target
+			detail().set_dest_position			(m_data.target_position);
+			
+			if (m_data.target_node != u32(-1))
+				set_level_dest_vertex			(m_data.target_node);
 
-		// set selector
-		if (m_data.target_node == u32(-1)) {
-			level_selector().set_evaluator		(m_selector_approach);
-			level_selector().set_query_interval	(0);
-			init_selector						(m_selector_approach, m_data.target_position);
-			use_selector_path					(true);
+			// set selector
+			if (m_data.target_node == u32(-1)) {
+				level_selector().set_evaluator		(m_selector_approach);
+				level_selector().set_query_interval	(0);
+				init_selector						(m_selector_approach, m_data.target_position);
+				use_selector_path					(true);
+			}
 		}
 	}
 

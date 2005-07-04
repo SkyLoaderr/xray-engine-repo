@@ -3,6 +3,8 @@
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
 #include "monster_velocity_space.h"
+#include "control_direction_base.h"
+#include "control_animation_base.h"
 
 #define ROTATION_JUMP_DELAY		5000
 #define CHECK_YAW				120 * PI / 180

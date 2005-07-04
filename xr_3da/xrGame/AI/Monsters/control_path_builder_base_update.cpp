@@ -1,6 +1,6 @@
 #include "stdafx.h"
+#include "control_path_builder_base.h"
 #include "BaseMonster/base_monster.h"
-#include "critical_action_info.h"
 #include "../../detail_path_manager.h"
 #include "../../level_location_selector.h"
 #include "../../level_path_manager.h"

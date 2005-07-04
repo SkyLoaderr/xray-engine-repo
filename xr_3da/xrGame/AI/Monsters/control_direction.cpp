@@ -14,12 +14,17 @@ void CControlDirection::reinit()
 
 	m_heading.init				();
 	m_heading.current_angle		= m_man->path_builder().m_body.current.yaw;
-	m_data.heading.target_angle	= m_man->path_builder().m_body.target.yaw;
 
 	m_pitch.init				();	
 	m_pitch.current_angle		= m_man->path_builder().m_body.current.pitch;
+}
+
+void CControlDirection::reset_data()
+{
+	m_data.heading.target_angle	= m_man->path_builder().m_body.target.yaw;
 	m_data.pitch.target_angle	= m_man->path_builder().m_body.target.pitch;
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Update 

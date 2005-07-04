@@ -40,7 +40,7 @@ public:
 	// Triple Animation
 	void		ta_activate				(const SAnimationTripleData &data);
 	void		ta_pointbreak			();
-	void		ta_fill_data			(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep);
+	void		ta_fill_data			(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep, u32 capture_type = ControlCom::eCaptureDir | ControlCom::eCapturePath | ControlCom::eCaptureMovement);
 	bool		ta_is_active			();
 	void		ta_deactivate			();
 	

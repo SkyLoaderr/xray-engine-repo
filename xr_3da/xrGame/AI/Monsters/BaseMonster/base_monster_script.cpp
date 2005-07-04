@@ -13,6 +13,9 @@
 #include "../../../level.h"
 #include "../../../level_debug.h"
 
+#include "../control_animation_base.h"
+#include "../control_path_builder_base.h"
+
 using namespace MonsterSpace;
 
 //////////////////////////////////////////////////////////////////////////

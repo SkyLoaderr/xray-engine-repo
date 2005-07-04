@@ -1,6 +1,4 @@
 #pragma once
-
-#include "../critical_action_info.h"
 #include "../monster_velocity_space.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
@@ -14,7 +12,6 @@ void CStateMonsterAttackRunAttackAbstract::initialize()
 {
 	inherited::initialize			();
 	
-	object->CriticalActionInfo->set	(CAF_LockPath);
 	object->m_time_last_attack_success		= 0;
 }
 
@@ -30,14 +27,12 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAttackAbstract::finalize()
 {
 	inherited::finalize					();
-	object->CriticalActionInfo->clear	(CAF_LockPath);
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAttackAbstract::critical_finalize()
 {
 	inherited::critical_finalize		();
-	object->CriticalActionInfo->clear	(CAF_LockPath);
 }
 
 TEMPLATE_SPECIALIZATION

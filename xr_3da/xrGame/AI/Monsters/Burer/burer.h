@@ -80,6 +80,7 @@ public:
 
 	bool	m_shield_active;
 	LPCSTR	particle_fire_shield;
+
 public:
 					CBurer				();
 	virtual			~CBurer				();	

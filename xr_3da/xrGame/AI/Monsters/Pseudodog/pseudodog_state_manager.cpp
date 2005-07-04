@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "pseudodog.h"
 #include "pseudodog_state_manager.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
+
 #include "../../../actor.h"
 #include "../../stalker/ai_stalker.h"
 #include "../states/monster_state_rest.h"

@@ -6,7 +6,7 @@
 #include "../states/state_look_point.h"
 #include "burer_state_attack_run_around.h"
 
-#define GRAVI_PERCENT		50
+#define GRAVI_PERCENT		80
 #define TELE_PERCENT		50
 #define RUN_AROUND_PERCENT	20
 

@@ -48,12 +48,13 @@ private:
 // Controlled with data
 class CControl_ComControlled {
 public:
-	virtual	void					reinit		() {m_locked = false; m_capturer = 0;}
-
+	virtual	void					reinit		() {m_locked = false; m_capturer = 0; reset_data();}
+	virtual void					reset_data	(){}
+	
 	virtual	ControlCom::IComData	*data		()	{return 0;}
 	
 	// init/deinit current work
-	virtual void					on_capture	() {}
+	virtual void					on_capture	() {reset_data();}
 	virtual void					on_release	() {}
 	
 			bool					is_locked	() {return m_locked;}

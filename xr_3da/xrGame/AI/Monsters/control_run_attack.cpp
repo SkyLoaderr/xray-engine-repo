@@ -2,6 +2,8 @@
 #include "control_run_attack.h"
 #include "BaseMonster/base_monster.h"
 #include "monster_velocity_space.h"
+#include "control_animation_base.h"
+#include "control_direction_base.h"
 
 void CControlRunAttack::reinit()
 {

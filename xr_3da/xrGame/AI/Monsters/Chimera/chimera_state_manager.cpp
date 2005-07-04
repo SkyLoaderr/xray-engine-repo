@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "chimera.h"
 #include "chimera_state_manager.h"
+
+#include "../control_animation_base.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
+
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -10,10 +16,6 @@
 #include "../states/monster_state_hitted.h"
 #include "chimera_state_threaten.h"
 #include "../states/state_test_state.h"
-
-#include "../critical_action_info.h"
-
-
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {

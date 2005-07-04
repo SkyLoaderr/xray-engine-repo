@@ -21,22 +21,22 @@
 #include "../ai_monster_utils.h"
 
 #include "../control_manager_custom.h"
+#include "../ai_monster_shared_data.h"
 
 class CCharacterPhysicsSupport;
 class CMonsterCorpseCoverEvaluator;
 class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorCloseToEnemy;
 class CMonsterEventManager;
-class CCriticalActionInfo;
 class CJumping;
 class CControlledEntityBase;
 class CMovementManager;
 class IStateManagerBase;
 
-#include "../control_animation_base.h"
-#include "../control_direction_base.h"
-#include "../control_movement_base.h"
-#include "../control_path_builder_base.h"
+class CControlAnimationBase;
+class CControlMovementBase;
+class CControlPathBuilderBase;
+class CControlDirectionBase;
 
 class CBaseMonster : public CCustomMonster, public CStepManager
 {
@@ -198,10 +198,6 @@ protected:
 	CControlPathBuilder			*m_movement_manager;
 protected:
 	virtual CMovementManager	*create_movement_manager();
-//public:
-	//IC		CControlPathBuilder	&movement				() const;
-
-
 
 // members
 public:
@@ -264,9 +260,6 @@ public:
 
 	// -----------------------------------------------------------------------------
 
-	CCriticalActionInfo		*CriticalActionInfo;
-
-	// -----------------------------------------------------------------------------
 	
 	CControlledEntityBase	*m_controlled;	
 
@@ -280,9 +273,7 @@ public:
 	
 	bool					state_invisible;
 
-	u16						m_default_bone_part;
-
-IC	void					set_action			(EAction action);
+	void					set_action			(EAction action);
 	void					set_state_sound		(u32 type, bool once = false);
 IC	void					fall_asleep			(){m_bSleep = true;}
 IC	void					wake_up				(){m_bSleep = false;}
@@ -296,24 +287,32 @@ private:
 	bool					m_first_update_initialized;
 	bool					ignore_collision_hit;	
 	
-
 	// -----------------------------------------------------------------------------
-public:
-	CControl_Manager		*m_control_manager;
-	CControl_Manager		&control() {return (*m_control_manager);}
 
-	CControlAnimationBase	*m_anim_base;
-	CControlMovementBase	*m_move_base;
-	CControlPathBuilderBase	*m_path_base;
-	CControlDirectionBase	*m_dir_base;
+
+public:
+	CControl_Manager		&control() {return (*m_control_manager);}
 	
 	CControlAnimationBase	&anim	(){return (*m_anim_base);}
 	CControlMovementBase	&move	(){return (*m_move_base);}
 	CControlPathBuilderBase	&path	(){return (*m_path_base);}
 	CControlDirectionBase	&dir	(){return (*m_dir_base);}
+	
+	CControlManagerCustom	&com_man() {return m_com_manager;}
+
+protected:
+	CControl_Manager		*m_control_manager;
+	
+	CControlAnimationBase	*m_anim_base;
+	CControlMovementBase	*m_move_base;
+	CControlPathBuilderBase	*m_path_base;
+	CControlDirectionBase	*m_dir_base;
 
 	CControlManagerCustom	m_com_manager;
-	CControlManagerCustom	&com_man() {return m_com_manager;}
+
+	virtual void			create_base_controls	();
+
+public:	
 
 // DEBUG stuff
 #ifdef DEBUG

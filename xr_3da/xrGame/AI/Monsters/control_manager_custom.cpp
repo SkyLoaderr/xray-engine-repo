@@ -100,7 +100,7 @@ void CControlManagerCustom::update_schedule()
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CControlManagerCustom::ta_fill_data(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep)
+void CControlManagerCustom::ta_fill_data(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep, u32 capture_type)
 {
 	// Load triple animations
 	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
@@ -109,6 +109,7 @@ void CControlManagerCustom::ta_fill_data(SAnimationTripleData &data, LPCSTR s1, 
 	data.pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(data.pool[2]);
 	data.execute_once	= execute_once;
 	data.skip_prepare	= skip_prep;
+	data.capture_type	= capture_type;
 }
 
 
@@ -127,7 +128,7 @@ void CControlManagerCustom::ta_activate(const SAnimationTripleData &data)
 	ctrl_data->pool[2]		= data.pool[2];
 	ctrl_data->skip_prepare	= data.skip_prepare;
 	ctrl_data->execute_once	= data.execute_once;
-	ctrl_data->capture_type	= ControlCom::eCaptureDir | ControlCom::eCapturePath | ControlCom::eCaptureMovement;
+	ctrl_data->capture_type	= data.capture_type;
 
 	m_man->activate			(ControlCom::eControlTripleAnimation);
 }
@@ -183,6 +184,7 @@ void CControlManagerCustom::seq_run(MotionID motion)
 	SAnimationSequencerData		*ctrl_data = (SAnimationSequencerData*)m_man->data(this, ControlCom::eControlSequencer); 
 	if (!ctrl_data) return;
 
+	ctrl_data->motions.clear	();
 	ctrl_data->motions.push_back(motion);
 
 	m_man->activate(ControlCom::eControlSequencer);

@@ -15,19 +15,28 @@
 #include "../monster_velocity_space.h"
 #include "../../../level_debug.h"
 #include "../../../game_object_space.h"
+#include "../../../detail_path_manager.h"
+#include "../../../ai_space.h"
+#include "../../../cover_point.h"
+#include "../../../cover_manager.h"
+
+#include "controller_animation.h"
+#include "../control_direction_base.h"
+#include "../control_movement_base.h"
+#include "../control_path_builder_base.h"
 
 
 CController::CController()
 {
 	StateMan = xr_new<CStateManagerController>(this);
-
 	CPsyAuraController::init_external(this);
-	
 	time_control_hit_started = 0;
 }
+
 CController::~CController()
 {
 	xr_delete(StateMan);
+	xr_delete(m_ce_best);
 }
 
 void CController::Load(LPCSTR section)
@@ -92,16 +101,16 @@ void CController::Load(LPCSTR section)
 		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
 		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
 		anim().AddAnim(eAnimStandDamaged,	"stand_idle_dmg_",		-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &velocity_none,		PS_SIT);
-		anim().AddAnim(eAnimEat,				"sit_eat_",				-1, &velocity_none,		PS_SIT);
-		anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND);
-		anim().AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND);
-		anim().AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
+		anim().AddAnim(eAnimSitIdle,		"sit_idle_",			-1, &velocity_none,		PS_SIT);
+		anim().AddAnim(eAnimEat,			"sit_eat_",				-1, &velocity_none,		PS_SIT);
+		anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND);
+		anim().AddAnim(eAnimWalkDamaged,	"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND);
+		anim().AddAnim(eAnimRun,			"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
 		anim().AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, &velocity_run_dmg,	PS_STAND);
 		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
 		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
-		anim().AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
+		anim().AddAnim(eAnimDie,			"stand_die_",			-1, &velocity_none,		PS_STAND);
 		anim().AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &velocity_none,		PS_STAND);	
 		anim().AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &velocity_none,		PS_SIT);
 		anim().AddAnim(eAnimSleep,			"sit_sleep_",			-1, &velocity_none,		PS_SIT);
@@ -110,18 +119,18 @@ void CController::Load(LPCSTR section)
 		anim().LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 		anim().LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
 		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		anim().LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+		anim().LinkAction(ACT_WALK_BKWD,	eAnimWalkFwd);
 		anim().LinkAction(ACT_RUN,			eAnimRun);
 		anim().LinkAction(ACT_EAT,			eAnimEat);
-		anim().LinkAction(ACT_SLEEP,			eAnimSleep);
+		anim().LinkAction(ACT_SLEEP,		eAnimSleep);
 		anim().LinkAction(ACT_REST,			eAnimSitIdle);
 		anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
 		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
-		anim().LinkAction(ACT_STEAL,			eAnimSteal);
+		anim().LinkAction(ACT_STEAL,		eAnimSteal);
 		anim().LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
 		anim().AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,	false);
-		anim().AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,	false);
+		anim().AddTransition(PS_SIT,	PS_STAND,	eAnimSitStandUp,	false);
 
 		anim().AA_Load(pSettings->r_string(section, "attack_params"));
 
@@ -131,6 +140,9 @@ void CController::Load(LPCSTR section)
 #ifdef DEBUG	
 	anim().accel_chain_test		();
 #endif
+
+
+	m_ce_best = xr_new<CControllerCoverEvaluator>(&control().path_builder().restrictions());
 
 }
 
@@ -143,7 +155,6 @@ BOOL CController::net_Spawn(CSE_Abstract *DC)
 		CPsyAuraController::deactivate();
 		CPsyAuraController::set_auto_activate(false);
 	}
-
 	
 	assign_bones();
 	
@@ -185,7 +196,6 @@ void CController::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
 		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
-
 } 
 
 void CController::InitThink()
@@ -265,7 +275,7 @@ void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	CPsyAuraController::frame_update();
+	//CPsyAuraController::frame_update();
 
 	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
 		processing_deactivate();
@@ -314,6 +324,10 @@ void CController::shedule_Update(u32 dt)
 	look_direction(dir,PI_MUL_2);
 
 	update_head_orientation();
+
+	
+	test_covers();
+	
 }
 
 void CController::Jump()
@@ -449,6 +463,62 @@ void CController::update_head_orientation()
 }
 
 
+void CController::draw_fire_particles()
+{
+	// ---------------------------------------------------------------------
+	// draw particle
+	CParticlesObject* ps = xr_new<CParticlesObject>("weapons\\generic_weapon07",TRUE);
+
+	// вычислить позицию и направленность партикла
+	Fvector dir;
+	dir.sub(Level().CurrentEntity()->Position(), Position());
+	dir.normalize();
+
+	Fvector center;
+	Center(center);
+
+	Fmatrix pos; 
+	pos.identity();
+	pos.k.set(dir);
+	Fvector::generate_orthonormal_basis_normalized(pos.k,pos.j,pos.i);
+	// установить позицию
+	pos.translate_over(center);
+
+	ps->UpdateParent(pos, zero_vel);
+	ps->Play();
+}
+
+
+void CController::test_covers()
+{
+	//////////////////////////////////////////////////////////////////////////
+	// update covers
+	//////////////////////////////////////////////////////////////////////////
+	
+	//DBG().level_info(this).clear();
+	//m_ce_best->setup	(Level().CurrentEntity()->Position(),10.f,30.f);
+	//CCoverPoint			*point = ai().cover_manager().best_cover(Position(),30.f,*m_ce_best,CControllerCoverPredicate());
+	//if (point) {
+	//	Fvector cur_pos = point->position();
+	//	float	r = 0.5f;
+	//	for (u32 i = 0; i< 5; i++) {
+	//		DBG().level_info(this).add_item(cur_pos, r, D3DCOLOR_XRGB(0,0,255));
+	//		DBG().level_info(this).add_item(cur_pos, r+0.05f, D3DCOLOR_XRGB(0,0,255));
+	//		cur_pos.mad(Fvector().set(0.f,1.f,0.f), r * 2);
+	//	}
+	//} 
+}
+
+void CController::create_base_controls()
+{
+	m_custom_anim_base	= xr_new<CControllerAnimation>		(); 
+	
+	m_anim_base			= m_custom_anim_base;
+	m_move_base			= xr_new<CControlMovementBase>		();
+	m_path_base			= xr_new<CControlPathBuilderBase>	();
+	m_dir_base			= xr_new<CControlDirectionBase>		();
+}
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CController::show_debug_info()
 {
@@ -487,4 +557,5 @@ CBaseMonster::SDebugInfo CController::show_debug_info()
 	return CBaseMonster::SDebugInfo();
 }
 #endif
+
 

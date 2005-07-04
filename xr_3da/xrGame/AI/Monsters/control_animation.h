@@ -37,6 +37,7 @@ class CControlAnimation : public CControl_ComPure<SControlAnimationData> {
 public:
 	virtual void	reinit					();
 	virtual void	update_frame			();
+	virtual	void	reset_data				();
 
 			void	on_global_animation_end	();	
 			void	on_torso_animation_end	();

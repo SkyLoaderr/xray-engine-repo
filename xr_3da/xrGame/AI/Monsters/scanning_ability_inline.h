@@ -1,7 +1,5 @@
 #pragma once
-
 #include "ai_monster_effector.h"
-//#include "../../actor.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -85,6 +83,7 @@ void CScanningAbilityAbstract::schedule_update()
 				::Sound->play_at_pos(sound_scan, 0, scan_obj->Position());
 				
 				// постпроцесс
+				// TODO: make this postprocess with static check (only one for all scanners)
 				Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_effector_info, m_effector_time, m_effector_time_attack, m_effector_time_release));
 			}
 			on_scanning();
@@ -113,15 +112,6 @@ void CScanningAbilityAbstract::frame_update(u32 dt)
 TEMPLATE_SPECIALIZATION
 float CScanningAbilityAbstract::get_velocity(CObject *obj)
 {
-	//if (obj->ps_Size() < 2) return (0.f);
-
-	//CObject::SavedPosition	pos0 = obj->ps_Element(obj->ps_Size() - 2);
-	//CObject::SavedPosition	pos1 = obj->ps_Element(obj->ps_Size() - 1);
-
-	//return	(pos1.vPosition.distance_to(pos0.vPosition) /
- //            (float(pos1.dwTime)/1000.f - float(pos0.dwTime)/1000.f));
-
-
 	CActor *actor = smart_cast<CActor *>(obj);
 	return (actor->movement_control()->GetVelocityActual()); 
 }

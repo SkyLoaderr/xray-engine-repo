@@ -3,13 +3,12 @@
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 #include "../../../profiler.h"
-#include "../critical_action_info.h"
 #include "../state_manager.h"
 #include "../../../PhysicsShell.h"
 #include "../../../detail_path_manager.h"
 #include "../monster_velocity_space.h"
 #include "../../../level.h"
-
+#include "../control_animation_base.h"
 
 void CBaseMonster::Think()
 {
@@ -41,8 +40,6 @@ void CBaseMonster::Think()
 
 void CBaseMonster::update_fsm()
 {
-	if (CriticalActionInfo->is_fsm_locked()) return;
-
 	StateMan->update				();
 	
 	// завершить обработку установленных в FSM параметров

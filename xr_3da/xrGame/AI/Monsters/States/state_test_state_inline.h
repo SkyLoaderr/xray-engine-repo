@@ -30,7 +30,7 @@ void CStateMonsterTestStateAbstract::setup_substates()
 		SStateDataMoveToPointEx data;
 
 		Fvector dest_pos = Level().CurrentEntity()->Position();
-		dest_pos = random_position(dest_pos, 10.f);
+		dest_pos = random_position(dest_pos, 20.f);
 
 		if (!object->control().path_builder().restrictions().accessible(dest_pos)) {
 			data.vertex		= object->control().path_builder().restrictions().accessible_nearest(dest_pos, data.point);
@@ -40,7 +40,7 @@ void CStateMonsterTestStateAbstract::setup_substates()
 		}
 
 		data.action.action		= ACT_RUN;
-		data.action.time_out	= 5000;
+		data.action.time_out	= 20000;
 		data.accelerated		= true;
 		data.braking			= false;
 		data.accel_type 		= eAT_Calm;

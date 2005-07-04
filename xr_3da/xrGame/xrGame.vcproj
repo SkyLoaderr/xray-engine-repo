@@ -2869,16 +2869,6 @@
 							Filter="">
 						</Filter>
 						<Filter
-							Name="Critical Action Info"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\critical_action_info.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\critical_action_info.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="Melee Checker"
 							Filter="">
 							<File
@@ -3604,6 +3594,12 @@
 							RelativePath=".\ai\Monsters\Controller\controller.h">
 						</File>
 						<File
+							RelativePath=".\ai\Monsters\Controller\controller_covers.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_covers.h">
+						</File>
+						<File
 							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.cpp">
 						</File>
 						<File
@@ -3663,6 +3659,24 @@
 							<File
 								RelativePath=".\ai\Monsters\Controller\controller_script.cpp">
 							</File>
+						</Filter>
+						<Filter
+							Name="Base Controllers"
+							Filter="">
+							<Filter
+								Name="Animation"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_animation.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_animation.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Direction"
+								Filter="">
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter

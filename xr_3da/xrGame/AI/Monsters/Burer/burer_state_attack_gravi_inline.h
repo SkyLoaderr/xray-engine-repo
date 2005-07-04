@@ -100,7 +100,7 @@ bool CStateBurerAttackGraviAbstract::check_start_conditions()
 
 	if (object->EnemyMan.get_enemy_time_last_seen() != Device.dwTimeGlobal) return false; 
 
-	if (!object->control().direction().is_face_target(object->EnemyMan.get_enemy(), deg(30))) return false;
+	if (!object->control().direction().is_face_target(object->EnemyMan.get_enemy(), deg(45))) return false;
 
 	// всё ок, можно начать грави атаку
 	return true;

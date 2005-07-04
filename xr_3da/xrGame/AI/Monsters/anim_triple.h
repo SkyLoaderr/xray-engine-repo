@@ -10,6 +10,12 @@ enum EStateAnimTriple {
 	eStateNone
 };
 
+#define TA_SKIP_PREPARE			true
+#define TA_DONT_SKIP_PREPARE	false
+#define TA_EXECUTE_ONCE			true
+#define TA_EXECUTE_LOOPED		false
+
+
 struct STripleAnimEventData : public ControlCom::IEventData {
 	u32		m_current_state;
 	IC		STripleAnimEventData(u32 state) : m_current_state(state) {}
@@ -26,6 +32,7 @@ class CAnimationTriple : public CControl_ComCustom<SAnimationTripleData>{
 	EStateAnimTriple		m_current_state;
 	EStateAnimTriple		m_previous_state;
 public:
+	virtual void	reset_data				();
 	virtual	void	on_capture				();
 	virtual void	on_release				();
 	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*);

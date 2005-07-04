@@ -14,7 +14,7 @@ class CScanningAbility {
 	ref_sound	sound_scan;
 
 	// internal members
-	enum {
+	enum EScanState {
 		eStateDisabled,
 		eStateNotActive,
 		eStateScanning
@@ -53,6 +53,5 @@ public:
 #endif
 
 };
-
 
 #include "scanning_ability_inline.h"

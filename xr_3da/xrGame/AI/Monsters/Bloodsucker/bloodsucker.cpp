@@ -15,6 +15,10 @@
 #include "../../../gamepersistent.h"
 #include "../../../game_object_space.h"
 
+#include "../control_animation_base.h"
+#include "../control_movement_base.h"
+
+
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	StateMan			= xr_new<CStateManagerBloodsucker>	(this);
