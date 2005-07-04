@@ -13,6 +13,18 @@ function load_job(sj, gname, type, squad, groups)
 		return load_job_lager_bandits(sj, gname, type, squad, groups)
 	elseif type == "val_monolith_base" then
 		return load_job_monolith_base(sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest1" then
+		return load_job_dogs_nest1(sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest2" then
+		return load_job_dogs_nest2(sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest1" then
+		return load_job_fleshes_nest1(sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest2" then
+		return load_job_fleshes_nest2(sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest1" then
+		return load_job_boars_nest1(sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest2" then
+		return load_job_boars_nest2(sj, gname, type, squad, groups)
 	end
 	
 	return
@@ -1149,11 +1161,119 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 end
 
+function load_job_dogs_nest1(sj, gname, type, squad, groups)
+	t = { section = "logic@val_dogs_nest1", 
+		idle = 0,
+		prior = 5, state = {0}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_dogs_nest1_small_restr"
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_dogs_nest1", 
+		idle = 0,
+		prior = 5, state = {1}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_dogs_nest1_big_restr"
+	}
+    table.insert(sj, t)
+end
+
+function load_job_dogs_nest2(sj, gname, type, squad, groups)
+	t = { section = "logic@val_dogs_nest2", 
+		idle = 0,
+		prior = 5, state = {0}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_dogs_nest2_small_restr"
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_dogs_nest2", 
+		idle = 0,
+		prior = 5, state = {1}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_dogs_nest1_big_restr"
+	}
+    table.insert(sj, t)
+end
+
+function load_job_fleshes_nest1(sj, gname, type, squad, groups)
+	t = { section = "logic@val_fleshes_nest1", 
+		idle = 0,
+		prior = 5, state = {0}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_fleshes_nest1_small_restr"
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_fleshes_nest1", 
+		idle = 0,
+		prior = 5, state = {1}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_fleshes_nest1_big_restr"
+	}
+    table.insert(sj, t)
+end
+
+function load_job_fleshes_nest2(sj, gname, type, squad, groups)
+	t = { section = "logic@val_fleshes_nest2", 
+		idle = 0,
+		prior = 5, state = {0}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_fleshes_nest2_small_restr"
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_fleshes_nest2", 
+		idle = 0,
+		prior = 5, state = {1}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_fleshes_nest1_big_restr"
+	}
+    table.insert(sj, t)
+end
+
+function load_job_boars_nest1(sj, gname, type, squad, groups)
+	t = { section = "logic@val_boars_nest1", 
+		idle = 0,
+		prior = 5, state = {0}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_boars_nest1_small_restr"
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_boars_nest1", 
+		idle = 0,
+		prior = 5, state = {1}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_boars_nest1_big_restr"
+	}
+    table.insert(sj, t)
+end
+
+function load_job_boars_nest2(sj, gname, type, squad, groups)
+	t = { section = "logic@val_boars_nest2", 
+		idle = 0,
+		prior = 5, state = {0}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_boars_nest2_small_restr"
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_boars_nest2", 
+		idle = 0,
+		prior = 5, state = {1}, squad = squad, group = groups[0],
+		in_rest = "", out_rest = "val_boars_nest1_big_restr"
+	}
+    table.insert(sj, t)
+end
+
 function load_states(gname, type)
 	if type == "val_lager_bandits" then
 		return check_state_lager_bandits(gulag)
 	elseif type == "val_monolith_base" then
 		return check_state_monolith_base(gulag)
+	elseif type == "val_dogs_nest1" then  
+	    return check_state_dogs_nest1(gulag)
+	elseif type == "val_dogs_nest2" then  
+	    return check_state_dogs_nest2(gulag)
+	elseif type == "val_fleshes_nest1" then  
+	    return check_state_fleshes_nest1(gulag)
+	elseif type == "val_fleshes_nest2" then  
+	    return check_state_fleshes_nest2(gulag)
+	elseif type == "val_boars_nest1" then  
+	    return check_state_boars_nest1(gulag)
+	elseif type == "val_boars_nest2" then  
+	    return check_state_boars_nest2(gulag)
 	end
 
 	return nil
@@ -1193,6 +1313,96 @@ function check_state_monolith_base(gulag)
 	end
 end
 
+function check_state_dogs_nest1(gulag)
+	return function(gulag)
+		local t = db.zone_by_name["val_dogs_nest1_restr_big"] -- имя большого рестр.
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
+function check_state_dogs_nest2(gulag)
+	return function(gulag)
+		local t = db.zone_by_name["val_dogs_nest2_restr_big"] -- имя большого рестр.
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
+function check_state_fleshes_nest1(gulag)
+	return function(gulag)
+		local t = db.zone_by_name["val_fleshes_nest1_restr_big"] -- имя большого рестр.
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
+function check_state_fleshes_nest2(gulag)
+	return function(gulag)
+		local t = db.zone_by_name["val_fleshes_nest2_restr_big"] -- имя большого рестр.
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
+function check_state_boars_nest1(gulag)
+	return function(gulag)
+		local t = db.zone_by_name["val_boars_nest1_restr_big"] -- имя большого рестр.
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
+function check_state_boars_nest2(gulag)
+	return function(gulag)
+		local t = db.zone_by_name["val_boars_nest2_restr_big"] -- имя большого рестр.
+		if t and db.actor then
+			if t:inside(db.actor:position()) then
+				return 1
+			else
+				return 0
+			end
+		else
+			return gulag.state
+		end
+	end
+end
+
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "val_lager_bandits" then
 		return npc_community == "bandit"
@@ -1205,3 +1415,30 @@ function checkStalker(npc_community, gulag_type)
 	return false
 end
 
+function checkMonster(npc_community, gulag_type)
+    if gulag_type == "val_dogs_nest1" then
+	    return npc_community == "dog"
+    end
+
+    if gulag_type == "val_dogs_nest2" then
+	    return npc_community == "dog"
+    end
+
+    if gulag_type == "val_fleshes_nest1" then
+	    return npc_community == "flesh"
+    end
+
+    if gulag_type == "val_fleshes_nest2" then
+	    return npc_community == "flesh"
+    end
+
+    if gulag_type == "val_boars_nest1" then
+	    return npc_community == "boar"
+    end
+
+    if gulag_type == "val_boars_nest2" then
+	    return npc_community == "boar"
+    end
+
+    return false
+end
