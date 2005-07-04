@@ -453,6 +453,24 @@ function getGulagPopulation(name)
 	return 0
 end
 
+function setGulagEnemy(name, victim)
+	if not victim then
+		abort("setGulagEnemy: victim == nil")
+	end
+	if xr_gulag.fraction[name] ~= nil then
+		local h = hit()
+		h.power = 0
+		h.direction = self.object:direction()
+		h.bone = "bip01_spine"
+		h.draftsman = victim
+		h.impulse = 0
+		h.type = hit.wound
+		for k,v in xr_gulag.fraction[name].Object do
+			v:hit(h)								
+		end
+	end
+end
+
 function setGulagRelation(gulag_name, relation, object)
     if xr_gulag.fraction[gulag_name] == nil then return end
     xr_gulag.fraction[gulag_name]:set_relation (relation, object)
