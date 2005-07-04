@@ -410,7 +410,32 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	m_elevator_state.PhTune(step);
 	b_air_contact_state=!is_contact;
 	bool b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2;
-	if(!b_death_pos)dVectorSet(m_death_position,dGeomGetPosition(m_wheel));
+
+	dxGeomUserData	*ud=dGeomGetUserData(m_wheel);
+	if((ud->pushing_neg||ud->pushing_b_neg)&&!b_death_pos)
+	{
+		b_death_pos=true;
+		Msg("death pos %f2.2,%f2.2,%f2.2",ud->last_pos[0],ud->last_pos[1],ud->last_pos[2]);
+		Fvector pos;pos.set(cast_fv(dBodyGetPosition(m_body)));
+		Fvector d;d.set(cast_fv(dBodyGetLinearVel(m_body)));d.mul(fixed_step);
+		pos.sub(d);
+		if(!ud->pushing_b_neg)
+		{
+			//Fvector movement;movement.sub(cast_fv(dGeomGetPosition(m_wheel)),cast_fv(ud->last_pos));
+
+			dVectorSet(m_death_position,cast_fp(pos));
+		}
+		else
+		{
+			dVectorSet(m_death_position,cast_fp(pos));
+		}
+	}
+	
+	if(b_death_pos&&!(ud->pushing_neg||ud->pushing_b_neg))
+	{
+													b_death_pos=false;
+	}
+
 	CPHContactBodyEffector* contact_effector=
 		(CPHContactBodyEffector*) dBodyGetData(m_body);
 	if(contact_effector)contact_effector->Apply();
@@ -792,7 +817,7 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 	m_safe_position[0]=pos.x;
 	m_safe_position[1]=pos.y+m_radius;
 	m_safe_position[2]=pos.z;
-	b_death_pos=true;
+	b_death_pos=false;
 
 	dGeomGetUserData(m_wheel)->pushing_b_neg=false;
 	dGeomGetUserData(m_hat)->pushing_b_neg=false;
@@ -1187,17 +1212,6 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	++m_contact_count;
 
 	if(bo1){
-		///////////////////////////////////
-		if(g1==m_wheel){
-			dVectorSet(m_death_position,dGeomGetPosition(g1));
-			m_death_position[1]+=c->geom.depth;
-			if(dGeomGetUserData(g1)->pushing_neg)
-				m_death_position[1]=dGeomGetUserData(g1)->neg_tri.pos;
-			if(dGeomGetUserData(g1)->pushing_b_neg)
-				m_death_position[1]=dGeomGetUserData(g1)->b_neg_tri.pos;
-			b_death_pos=true;
-		}
-		/////////////////////////////////////////////////////////////
 		if(normal[1]>m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
 			dVectorSet(m_ground_contact_normal,normal);
@@ -1212,16 +1226,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		}
 	}
 	else{
-		if(g2==m_wheel){
-			dVectorSet(m_death_position,dGeomGetPosition(g2));
-			m_death_position[1]+=c->geom.depth;
-			if(dGeomGetUserData(g2)->pushing_neg)
-				m_death_position[1]=dGeomGetUserData(g2)->neg_tri.pos;
 
-			if(dGeomGetUserData(g2)->pushing_b_neg)
-				m_death_position[1]=dGeomGetUserData(g2)->b_neg_tri.pos;
-			b_death_pos=true;
-		}
 		if(normal[1]<-m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
 			dVectorSetInvert(m_ground_contact_normal,normal);
@@ -1342,9 +1347,17 @@ float CPHSimpleCharacter::FootRadius()
 }
 void CPHSimpleCharacter::DeathPosition(Fvector& deathPos)
 { 
-	if(!b_exist) return;
-	deathPos.set(m_death_position);
-	deathPos.y=m_death_position[1]-m_radius;
+	if(!b_exist)return;
+
+	if(b_death_pos)
+	{
+		deathPos.set(m_death_position);
+		deathPos.y=m_death_position[1]-m_radius;
+	}
+	else
+	{
+		deathPos.set(cast_fv(dBodyGetPosition(m_body)));
+	}
 }
 void	CPHSimpleCharacter::	AddControlVel						(const Fvector& vel)
 {
