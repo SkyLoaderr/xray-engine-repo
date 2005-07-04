@@ -155,7 +155,7 @@ function load_job( sj, gname, type, squad, groups )
 			table.insert(sj, t)
 		end
 		-- ночные отдыхающие
-		for i = 1, 8 do
+		for i = 1, 10 do
 			t = { section = "logic@agr_nii_sleeper"..i,
 				idle = 0,
 				prior = 0, state = {1,2},
