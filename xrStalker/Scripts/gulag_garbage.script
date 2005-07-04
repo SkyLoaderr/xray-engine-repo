@@ -1104,24 +1104,12 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
---		t = { section = "logic@gar_seryi_bandits_camper30",
---			idle = 0,
---			prior = 5, state = {0},
---			in_rest = "", out_rest = "gar_seryi_factory"
---		}
---		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_camper40",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = "gar_seryi_factory"
 		}
 		table.insert(sj, t)
---		t = { section = "logic@gar_seryi_bandits_camper50",
---			idle = 0,
---			prior = 5, state = {0},
---			in_rest = "", out_rest = "gar_seryi_factory"
---		}
---		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_camper60",
 			idle = 0,
 			prior = 5, state = {0,1},
@@ -1159,12 +1147,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "gar_seryi_factory"
 		}
 		table.insert(sj, t)
---		t = { section = "logic@gar_seryi_bandits_camper61",
---			idle = 0,
---			prior = 5, state = {1},
---			in_rest = "", out_rest = "gar_seryi_factory"
---		}
---		table.insert(sj, t)
+
 		
 		t = { section = "logic@gar_seryi_bandits_walker1",
 			idle = 0,

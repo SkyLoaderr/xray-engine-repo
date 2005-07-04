@@ -19,7 +19,7 @@
 	<info_portion id="gar_seryi_counter_fire"></info_portion>
 	<info_portion id="gar_begin_assault"></info_portion>
 	<info_portion id="gar_seryi_silence"></info_portion>
-
+	
 	<!-- атака сталкеров и бандитов -->
 	<info_portion id="gar_bandit_leader_dead"></info_portion>
 	<info_portion id="gar_alarm"></info_portion>
