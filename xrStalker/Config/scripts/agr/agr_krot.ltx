@@ -8,7 +8,17 @@ meet = meet
 path_walk = agr_krot_hold_fake_walk
 path_look = agr_krot_hold_fake_look
 combat_ignore_cond = always
+meet = meet@hold
 on_info = {+agr_krot_skirmish_start} walker@combat
+
+[meet@hold]
+meet_state     = 5 | hide_na@speech1
+meet_state_wpn = 5 | hide_na@speech1
+victim = actor
+victim_wpn = actor
+use = true
+use_wpn = true
+meet_dialog = agr_krot_help
 
 [walker@combat]
 path_walk = agr_krot_hold_walk
@@ -53,6 +63,7 @@ victim = 30 | actor
 victim_wpn = 30 | actor
 use = true
 use_wpn = false
+meet_dialog = agr_factory_krot_start
 
 
 [death]
