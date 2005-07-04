@@ -4,6 +4,8 @@
 		<objective>
 			<text>bar_resque_scientific_information</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_ecolog_crush_location</map_location_type>
+			<object_story_id>bar_ecolog_professor</object_story_id>
 		</objective>
 	</game_task>
 
@@ -12,9 +14,10 @@
 		<objective>
 			<text>bar_kill_professor_info</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_ecolog_crush_location</map_location_type>
+			<object_story_id>bar_ecolog_professor</object_story_id>			
 		</objective>
 	</game_task>
-
 
 	<game_task id="bar_hunter_rifle">
 		<title>bar_hunter_rifle</title>
@@ -25,12 +28,37 @@
 		<objective>
 			<text>bar_hunter_find_rifle</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_hunter_toz_location</map_location_type>
+			<object_story_id>bar_hunter_toz</object_story_id>			
 		</objective>
 		<objective>
 			<text>bar_hunter_return_rifle</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_hunter_location</map_location_type>
+			<object_story_id>bar_hunter</object_story_id>			
 		</objective>
 	</game_task>
+
+	<game_task id="bar_crazy_veterans_quest">
+		<title>bar_crazy_veterans_quest</title>
+		<objective>
+			<text>bar_kill_veterans</text>
+			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_kill_crazy_veterans</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_crazy_veterans_location</map_location_type>
+			<object_story_id>bar_crazy_veterans_leader</object_story_id>			
+		</objective>
+		<objective>
+			<text>bar_bring_pda_lucky</text>
+			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_barman_location</map_location_type>
+			<object_story_id>bar_Barman</object_story_id>			
+		</objective>
+	</game_task>
+
 
 	<game_task id="bar_dolg_test_quest">
 		<title>bar_dolg_test_quest</title>
@@ -128,23 +156,6 @@
 		<objective>
 			<text>bar_dolg_svoboda_leader_kill_return</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
-
-	
-	<game_task id="bar_crazy_veterans_quest">
-		<title>bar_crazy_veterans_quest</title>
-		<objective>
-			<text>bar_kill_veterans</text>
-			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>bar_kill_crazy_veterans</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>bar_bring_pda_lucky</text>
-			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 	

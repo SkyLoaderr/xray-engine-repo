@@ -117,37 +117,20 @@ function process_info_portion(info_id)
 	elseif info_id == "bar_kill_svoboda_leader_done" then
 		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
 		return true	
-	elseif info_id == "bar_bar_hunter_quest_start" then
-		level_tasks.add_location(502, "bar_hunter_toz_location")
-		return true
-	elseif info_id == "bar_bar_hunter_quest_find_rifle" then
-		level_tasks.remove_location_safe(502, "bar_hunter_toz_location")	
-		level_tasks.add_location(504, "bar_hunter_location")
-		return true
-	elseif info_id == "bar_bar_hunter_quest_finish" then
-		level_tasks.remove_location_safe(504, "bar_hunter_location")
-		return true
 
-	elseif info_id == "bar_resque_research_start" then
-		level_tasks.add_location(503, "bar_ecolog_crush_location")
-		return true		
 	elseif info_id == "bar_resque_research_done" then
-		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		level_tasks.set_task_state(task.completed, "bar_resque_information", 0)
 		return true
 	elseif info_id == "bar_resque_research_fail" then
-		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		level_tasks.set_task_state(task.fail, "bar_resque_information", 0)
 		return true
 	elseif info_id == "bar_resque_research_dead" then
 		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		return true
 	elseif info_id == "bar_kill_professor_start" then
-		level_tasks.add_location(503, "bar_ecolog_crush_location")
 		level_tasks.add_location(509, "bar_freedom_volkodav_location")
 		return true		
 	elseif info_id == "bar_kill_professor_done" then
-		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		level_tasks.set_task_state(task.completed, "bar_kill_professor", 0)
 		return true
 	elseif info_id == "bar_kill_professor_reward" then
@@ -155,7 +138,6 @@ function process_info_portion(info_id)
 		return true
 	elseif info_id == "bar_kill_professor_fail" then
 		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
-		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
 		level_tasks.set_task_state(task.fail, "bar_kill_professor", 0)
 		return true
 	elseif info_id == "bar_freedom_attack_ecolog" then
@@ -192,16 +174,6 @@ function process_info_portion(info_id)
 		level_tasks.remove_location(501, "bar_dolg_arhive_document_location")
 		level_tasks.add_location(507, "bar_dolg_voronin_location")
 		return true	
-	elseif info_id == "bar_kill_veteran_start" then
-		level_tasks.add_location(511, "bar_crazy_veterans_location")
-		return true	
-	elseif info_id == "bar_kill_veteran_killed" then
-		level_tasks.remove_location_safe(511, "bar_crazy_veterans_location")
-		level_tasks.add_location(500, "bar_barman_location")
-		return true
-	elseif info_id == "bar_kill_veteran_done" then
-		level_tasks.remove_location(500, "bar_barman_location")
-		return true
 	elseif info_id == "bar_darklab_document_start" then
 		level_tasks.add_location(512, "bar_darklab_documents_location")
 		return true	
