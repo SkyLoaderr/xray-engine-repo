@@ -231,7 +231,6 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, CSurface* s, u32 colo
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
         for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
             RBVector& rb_vec = p_it->second;
-            u32 vBase;
             for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
                 Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
         }
@@ -257,7 +256,6 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, CSurface* s, u32 color)
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
         for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
             RBVector& rb_vec = p_it->second;
-            u32 vBase;
             for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
                 Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
         }
@@ -275,7 +273,7 @@ struct svertRender
 	Fvector		N;
 	Fvector2 	uv;
 };
-void CEditableMesh::RenderSkeleton(const Fmatrix& parent, CSurface* S)
+void CEditableMesh::RenderSkeleton(const Fmatrix&, CSurface* S)
 {
     if (!m_LoadState.is(CEditableMesh::LS_SVERTICES)) GenerateSVertices();
 

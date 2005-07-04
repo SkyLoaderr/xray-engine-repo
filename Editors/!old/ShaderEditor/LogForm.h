@@ -9,6 +9,8 @@
 
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
+#include "MxMenus.hpp"
+#include <Menus.hpp>
 
 class ECORE_API TfrmLog : public TForm
 {
@@ -21,6 +23,12 @@ __published:	// IDE-managed Components
 	TExtBtn *ebClose;
 	TFormStorage *fsStorage;
 	TExtBtn *ebFlush;
+	TMxPopupMenu *MxPopupMenu1;
+	TMenuItem *imCopy;
+	TMenuItem *imSelectAll;
+	TMenuItem *ClearAll1;
+	TMenuItem *ClearSelected1;
+	TMenuItem *N1;
 	void __fastcall ebClearClick(TObject *Sender);
 	void __fastcall lbLogDrawItem(TWinControl *Control, int Index,
           TRect &Rect, TOwnerDrawState State);
@@ -30,6 +38,11 @@ __published:	// IDE-managed Components
 	void __fastcall ebCloseClick(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ebFlushClick(TObject *Sender);
+	void __fastcall lbLogKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+	void __fastcall imCopyClick(TObject *Sender);
+	void __fastcall imSelectAllClick(TObject *Sender);
+	void __fastcall lbLogKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
 	static TfrmLog *form;
 public:		// User declarations

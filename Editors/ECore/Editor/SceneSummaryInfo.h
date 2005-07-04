@@ -20,7 +20,7 @@ private:
     	shared_str 			file_name;
         shared_str			detail_name;
         STextureParams  	info;
-    	ESummaryTextureType type;
+    	ESummaryTextureType type;                
         bool				bReady;
         struct SObjInfo{
         	int 			ref_count;

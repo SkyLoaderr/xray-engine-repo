@@ -185,7 +185,7 @@ public:
 
     virtual LPCSTR		GetInfo				()=0;
     
-    virtual void		ZoomObject			(bool bSelOnly)=0;
+    virtual void		ZoomObject			(BOOL bSelOnly)=0;
 
     virtual bool		Load				(LPCSTR path, LPCSTR name)=0;
     virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false)=0;
@@ -210,7 +210,7 @@ public:
 	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0)=0;
 
     virtual void		ShowProperties		()=0;
-    virtual void		UpdateProperties	(bool bForced=false)=0;
+    virtual void		UpdateProperties	(BOOL bForced=FALSE)=0;
     virtual void		RefreshProperties	()=0;
 
     const AnsiString&	GetEditFileName		()	{ return m_LastFileName; }

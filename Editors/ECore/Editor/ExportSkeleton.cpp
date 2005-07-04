@@ -20,7 +20,7 @@
 #include "SkeletonAnimated.h"
 #include "nvMeshMender.h"
 
-u32 CSkeletonCollectorPacked::VPack(SSkelVert& V)
+u16 CSkeletonCollectorPacked::VPack(SSkelVert& V)
 {
     u32 P 	= 0xffffffff;
 
@@ -67,7 +67,8 @@ u32 CSkeletonCollectorPacked::VPack(SSkelVert& V)
         if ((iyE!=iy)&&(izE!=iz))				m_VM[ix][iyE][izE].push_back(P);
         if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	m_VM[ixE][iyE][izE].push_back(P);
     }
-    return P;
+    VERIFY	(P<u16(-1));
+    return 	(u16)P;
 }
 
 CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &_bb, int apx_vertices, int apx_faces)
@@ -315,9 +316,9 @@ void CExportSkeleton::SSplit::CalculateTB()
     u32 o_idx		= 0;
     for (face_it=m_Faces.begin(); face_it!=m_Faces.end(); face_it++){
         SSkelFace	&iF = *face_it;
-        iF.v[0]		= o_indices[o_idx++];
-        iF.v[1]		= o_indices[o_idx++];
-        iF.v[2]		= o_indices[o_idx++];
+        iF.v[0]		= (u16)o_indices[o_idx++];
+        iF.v[1]		= (u16)o_indices[o_idx++];
+        iF.v[2]		= (u16)o_indices[o_idx++];
     }
     m_Verts.clear	(); m_Verts.resize(v_cnt);
     for (u32 v_idx=0; v_idx!=v_cnt; v_idx++){
@@ -328,8 +329,8 @@ void CExportSkeleton::SSplit::CalculateTB()
         iV.B.set	(o_binormal[v_idx*3+0],	o_binormal[v_idx*3+1],	o_binormal[v_idx*3+2]);
         iV.UV.set	(o_tc[v_idx*3+0],		o_tc[v_idx*3+1]);
         iV.w		= o_w_b0_b1[v_idx*3+0];
-        iV.B0		= iFloor(o_w_b0_b1[v_idx*3+1]+EPS_L);
-        iV.B1		= iFloor(o_w_b0_b1[v_idx*3+2]+EPS_L);
+        iV.B0		= (u16)iFloor(o_w_b0_b1[v_idx*3+1]+EPS_L);
+        iV.B1		= (u16)iFloor(o_w_b0_b1[v_idx*3+2]+EPS_L);
     }
 
     // Optimize texture coordinates
@@ -438,7 +439,6 @@ void ComputeOBB_RAPID	(Fobb &B, FvectorVec& V, u32 t_cnt)
 {
 	VERIFY	(t_cnt==(V.size()/3));
     if ((t_cnt<1)||(V.size()<3)) { B.invalidate(); return; }
-    Fobb 				BOX;
     RAPIDMinBox			(B,V.begin(),V.size());
 
     // Normalize rotation matrix (???? ???????? ContOrientedBox - ?????? ????? ???????)
@@ -789,10 +789,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 CKeyQR&	Kr 	= items[bone_id]._keysQR[frm-motion->FrameStart()];
                 Fvector&Kt 	= items[bone_id]._keysT [frm-motion->FrameStart()];
                 // Quantize quaternion
-                int	_x 		= int(q.x*KEY_Quant); clamp(_x,-32767,32767); Kr.x =  _x;
-                int	_y 		= int(q.y*KEY_Quant); clamp(_y,-32767,32767); Kr.y =  _y;
-                int	_z 		= int(q.z*KEY_Quant); clamp(_z,-32767,32767); Kr.z =  _z;
-                int	_w 		= int(q.w*KEY_Quant); clamp(_w,-32767,32767); Kr.w =  _w;
+                int	_x 		= int(q.x*KEY_Quant); clamp(_x,-32767,32767); Kr.x =  (s16)_x;
+                int	_y 		= int(q.y*KEY_Quant); clamp(_y,-32767,32767); Kr.y =  (s16)_y;
+                int	_z 		= int(q.z*KEY_Quant); clamp(_z,-32767,32767); Kr.z =  (s16)_z;
+                int	_w 		= int(q.w*KEY_Quant); clamp(_w,-32767,32767); Kr.w =  (s16)_w;
                 Kt.set		(mat.c);//B->_Offset());
             }
         }
@@ -831,13 +831,13 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 if ((R.x!=r.x)||(R.y!=r.y)||(R.z!=r.z)||(R.w!=r.w))	r_present = TRUE;
                 
                 CKeyQT&	Kt 	= BM._keysQT[t_idx];
-                int	_x 		= int(127.f*(t.x-Ct.x)/St.x); clamp(_x,-128,127); Kt.x =  _x;
-                int	_y 		= int(127.f*(t.y-Ct.y)/St.y); clamp(_y,-128,127); Kt.y =  _y;
-                int	_z 		= int(127.f*(t.z-Ct.z)/St.z); clamp(_z,-128,127); Kt.z =  _z;
+                int	_x 		= int(127.f*(t.x-Ct.x)/St.x); clamp(_x,-128,127); Kt.x =  (s16)_x;
+                int	_y 		= int(127.f*(t.y-Ct.y)/St.y); clamp(_y,-128,127); Kt.y =  (s16)_y;
+                int	_z 		= int(127.f*(t.z-Ct.z)/St.z); clamp(_z,-128,127); Kt.z =  (s16)_z;
             }
             St.div	(127.f);
             // save
-            F.w_u8	((t_present?flTKeyPresent:0)|(r_present?0:flRKeyAbsent));
+            F.w_u8	(u8((t_present?flTKeyPresent:0)|(r_present?0:flRKeyAbsent)));
             if (r_present){	
                 F.w_u32	(crc32(BM._keysQR,dwLen*sizeof(CKeyQR)));
                 F.w		(BM._keysQR,dwLen*sizeof(CKeyQR));
@@ -892,10 +892,10 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
         BPVec& bp_lst 	= m_Source->BoneParts();
         if (bp_lst.size()){
             if (m_Source->VerifyBoneParts()){
-                F.w_u16(bp_lst.size());
+                F.w_u16((u16)bp_lst.size());
                 for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
                     F.w_stringZ	(LowerCase(bp_it->alias.c_str()).c_str());
-                    F.w_u16		(bp_it->bones.size());
+                    F.w_u16		((u16)bp_it->bones.size());
                     for (int i=0; i<int(bp_it->bones.size()); i++){
                         F.w_stringZ	(bp_it->bones[i].c_str());
                         int idx 	= m_Source->FindBoneByNameIdx(bp_it->bones[i].c_str()); VERIFY(idx>=0);
@@ -909,13 +909,13 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
         }else{
             F.w_u16(1);
             F.w_stringZ("default");
-            F.w_u16(m_Source->BoneCount());
+            F.w_u16((u16)m_Source->BoneCount());
             for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
         }
 	    pb->Inc		();
         // motion defs
         SMotionVec& sm_lst	= m_Source->SMotions();
-        F.w_u16(sm_lst.size());
+        F.w_u16((u16)sm_lst.size());
         for (SMotionIt motion_it=m_Source->FirstSMotion(); motion_it!=m_Source->LastSMotion(); motion_it++){
             CSMotion* motion = *motion_it;
             // verify
@@ -931,7 +931,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
                 F.w_stringZ	(motion->Name());
                 F.w_u32		(motion->m_Flags.get());
                 F.w_u16		(motion->m_BoneOrPart);
-                F.w_u16		(motion_it-sm_lst.begin());
+                F.w_u16		(u16(motion_it-sm_lst.begin()));
                 F.w_float	(motion->fSpeed);
                 F.w_float	(motion->fPower);
                 F.w_float	(motion->fAccrue);
@@ -961,5 +961,6 @@ bool CExportSkeleton::Export(IWriter& F)
     return true;
 };
 //----------------------------------------------------
+
 
 

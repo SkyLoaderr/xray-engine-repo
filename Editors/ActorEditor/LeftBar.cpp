@@ -39,9 +39,9 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 
 void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
-	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
-    AnsiString fn = MI->Caption;               
-    ExecCommand(COMMAND_LOAD,(u32)fn.c_str());
+	TMenuItem* MI 	= dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
+    xr_string fn 	= AnsiString(MI->Caption).c_str();
+    ExecCommand(COMMAND_LOAD,fn);
 }
 //---------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ void TfraLeftBar::OnTimer()
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::UpdateBar(){
-    int i, j;
+    int i;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
         TComponent* temp = fraLeftBar->Components[i];
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
@@ -377,14 +377,6 @@ void TfraLeftBar::SetReadOnly(BOOL val)
     ebOptimizeMotions->Enabled	= !val;
     ebExportBatch->Enabled		= !val;
 	ebExport->Enabled			= !val;
-    ebExecuteCommands->Enabled	= !val;
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TfraLeftBar::ebExecuteCommandsClick(TObject *Sender)
-{
-	ExecCommand(COMMAND_EXECUTE_COMMAND_LIST);
 }
 //---------------------------------------------------------------------------
 
@@ -393,4 +385,6 @@ void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 	ExecCommand(COMMAND_QUIT);	
 }
 //---------------------------------------------------------------------------
+
+
 

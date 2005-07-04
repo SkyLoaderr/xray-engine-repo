@@ -29,33 +29,25 @@ CActorMain::~CActorMain()
 //---------------------------------------------------------------------------
 // actor commands
 //---------------------------------------------------------------------------
-void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
 {
-    AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
-    if(!p1){
-        LPCSTR new_val;
+    xr_string temp_fn	= p1.IsString()?xr_string(p1):xr_string(""); 
+    if(!p1.IsString()){
+        LPCSTR 			new_val;
         AnsiString last_nm = ChangeFileExt(m_LastFileName,"");
-        if (!TfrmChoseItem::SelectItem(smObject,new_val,1,last_nm.c_str())){ 
-        	res	= FALSE;
-        	return;
-        }
-        temp_fn = AnsiString(new_val)+".object";
+        if (!TfrmChoseItem::SelectItem(smObject,new_val,1,last_nm.c_str()))
+        	return  	FALSE;
+        temp_fn 		= xr_string(new_val)+".object";
     }
-    if( !temp_fn.IsEmpty() ){
-        if (!IfModified()){
-            res	= FALSE;
-            return;
-        }
-        BOOL bReadOnly = !FS.can_modify_file(_objects_,temp_fn.c_str());
-        
-        if ((false==bReadOnly) && (0!=temp_fn.AnsiCompareIC(m_LastFileName)) && EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
-            res	= FALSE;
-            return;
-        }
-        if ((false==bReadOnly) && (0==temp_fn.AnsiCompareIC(m_LastFileName))&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
-            EFS.UnlockFile		(_objects_,temp_fn.c_str());
-        }
+    if( temp_fn.size() ){
+		xr_strlwr				(temp_fn);
+        if (!IfModified())		return FALSE;
+
         ExecCommand				(COMMAND_CLEAR);
+        
+        BOOL bReadOnly 			= !FS.can_modify_file(_objects_,temp_fn.c_str());
+        
+        if (EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)) return FALSE;
 
         m_Flags.set				(flReadOnlyMode,bReadOnly);
         if (bReadOnly){
@@ -72,11 +64,10 @@ void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
         CTimer T;
         T.Start();     
         if (!Load(_objects_,temp_fn.c_str())){
-            res	= FALSE;
-            return;
+            return FALSE;
         }
-        m_LastFileName = temp_fn;
-        ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+        m_LastFileName 			= temp_fn.c_str();
+        ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
         EPrefs.AppendRecentFile(m_LastFileName.c_str());
         ExecCommand	(COMMAND_UPDATE_CAPTION);
         ExecCommand	(COMMAND_UPDATE_PROPERTIES);
@@ -85,24 +76,27 @@ void CActorTools::CommandLoad(u32 p1, u32 p2, u32& res)
         UndoClear();
         UndoSave();
     }
+    return TRUE;
 }
-void CActorTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandSaveBackup(CCommandVar p1, CCommandVar p2)
 {
 	xr_string fn = xr_string(Core.UserName)+"_backup.object";
     FS.update_path(fn,"$objects$",fn.c_str());
-    ExecCommand(COMMAND_SAVEAS,(int)fn.c_str());
+    ExecCommand(COMMAND_SAVEAS,fn);
+    return TRUE;
 }
-void CActorTools::CommandSaveAs(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandSaveAs(CCommandVar p1, CCommandVar p2)
 {
-    xr_string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
-    res 				= FALSE;
-    if(p1||EFS.GetSaveName(_objects_,temp_fn)){
+    xr_string temp_fn	= p1.IsString()?xr_string(p1):xr_string(""); 
+    CCommandVar res 	= FALSE;
+    if(p1.IsString()||EFS.GetSaveName(_objects_,temp_fn)){
+		xr_strlwr		(temp_fn);
         if (p1||(0==temp_fn.find(FS.get_path(_objects_)->m_Path))){
             if (!p1){ 
                 temp_fn = xr_string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
                 xr_strlwr(temp_fn);
             }
-            res=ExecCommand			(COMMAND_SAVE, (u32)temp_fn.c_str());
+            res = ExecCommand		(COMMAND_SAVE, temp_fn);
             // unlock
             EFS.UnlockFile			(_objects_,m_LastFileName.c_str());
             m_LastFileName			= temp_fn.c_str();
@@ -110,20 +104,19 @@ void CActorTools::CommandSaveAs(u32 p1, u32 p2, u32& res)
             EFS.LockFile			(_objects_,m_LastFileName.c_str());
             EPrefs.AppendRecentFile	(m_LastFileName.c_str());
         }else{
-            ELog.DlgMsg				(mtError,"Invalid file path.");
+            ELog.Msg				(mtError,"Invalid file path.");
         }
     }
+    return res;
 }     
-void CActorTools::CommandSave(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
 {
-    AnsiString temp_fn;
-    if (p1)	temp_fn = (char*)p1;
-    else	temp_fn = m_LastFileName;
-    EFS.UnlockFile(_objects_,temp_fn.c_str());
+    xr_string		temp_fn			= p1.IsString()?(xr_string)p1:xr_string(m_LastFileName.c_str());
+    EFS.UnlockFile	(_objects_,temp_fn.c_str());
     CTimer T;
     T.Start();
     if (Tools->Save(_objects_,temp_fn.c_str())){
-        ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+        ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
         ExecCommand(COMMAND_UPDATE_CAPTION);
         EPrefs.AppendRecentFile(temp_fn.c_str());
         xr_string mfn;
@@ -131,30 +124,27 @@ void CActorTools::CommandSave(u32 p1, u32 p2, u32& res)
 //.            EFS.MarkFile(mfn.c_str(),false);
         EFS.BackupFile(_objects_,temp_fn.c_str());
     }else{
-        res	= FALSE;
+        return  	FALSE;
     }
-    EFS.LockFile(_objects_,temp_fn.c_str());
+    EFS.LockFile	(_objects_,temp_fn.c_str());
+    return 			TRUE;
 }
-void CActorTools::CommandImport(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandImport(CCommandVar p1, CCommandVar p2)
 {
-    xr_string temp_fn;
-    if(EFS.GetOpenName(_import_,temp_fn)){
+    xr_string		temp_fn			= p1.IsString()?xr_string(p1):xr_string("");
+    if(p1.IsString()||EFS.GetOpenName(_import_,temp_fn)){
         if (0==temp_fn.find(FS.get_path(_import_)->m_Path)){
             temp_fn = xr_string(temp_fn.c_str()+strlen(FS.get_path(_import_)->m_Path));
             xr_strlwr(temp_fn);
-            if (!Tools->IfModified()){
-                res=FALSE;
-                return;
-            }
+            if (!Tools->IfModified())
+                return	FALSE;
             ExecCommand( COMMAND_CLEAR );
             CTimer T;
             T.Start();
-            if (!ATools->Import(_import_,temp_fn.c_str())){
-                res=FALSE;
-                return;
-            }
+            if (!ATools->Import(_import_,temp_fn.c_str()))
+                return	FALSE;
             m_LastFileName = temp_fn.c_str();
-            ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+            ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
             if (ExecCommand( COMMAND_SAVEAS )){
                 xr_string mfn;
                 FS.update_path(mfn,_import_,temp_fn.c_str());
@@ -163,148 +153,173 @@ void CActorTools::CommandImport(u32 p1, u32 p2, u32& res)
             }else{
                 ExecCommand( COMMAND_CLEAR );
             }
+            return TRUE;
         }else{
-            ELog.DlgMsg	(mtError,"Invalid file path. ");
+            ELog.Msg	(mtError,"Invalid file path. ");
         }
     }
+    return FALSE;
 }
-void CActorTools::CommandExportDM(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandExportDM(CCommandVar p1, CCommandVar p2)
 {
-    xr_string fn;
-    if (EFS.GetSaveName("$game_dm$",fn)){
-        if (ExportDM(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-        else        		    	ELog.DlgMsg(mtError,"Export failed.");
+	CCommandVar res 				= FALSE;
+    xr_string fn=p1.IsString()?xr_string(p1):xr_string("");
+    if (p1.IsString()||EFS.GetSaveName("$game_dm$",fn)){
+        if (0!=(res=ExportDM(fn.c_str())))	ELog.Msg(mtInformation,"Export complete.");
+        else        		    			ELog.Msg(mtError,"Export failed.");
     }
+    return res;
 }
-void CActorTools::CommandExportOBJ(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandExportOBJ(CCommandVar p1, CCommandVar p2)
 {
-    xr_string fn;
-    if (EFS.GetSaveName("$import$",fn,0,5)){
-    	
-        if (ExportOBJ(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-        else        		    	ELog.DlgMsg(mtError,"Export failed.");
+	CCommandVar res 				= FALSE;
+    xr_string fn=p1.IsString()?xr_string(p1):xr_string("");
+    if (p1.IsString()||EFS.GetSaveName("$import$",fn,0,5)){
+        if (0!=(res=ExportOBJ(fn.c_str())))	ELog.Msg(mtInformation,"Export complete.");
+        else        		    			ELog.Msg(mtError,"Export failed.");
     }
+    return res;
 }
-void CActorTools::CommandExportOGF(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandExportOGF(CCommandVar p1, CCommandVar p2)
 {
-    xr_string fn;
-    if (EFS.GetSaveName("$game_meshes$",fn,0,0)){
-        if (ATools->ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-        else		        		    	ELog.DlgMsg(mtError,"Export failed.");
+	CCommandVar res 				= FALSE;
+    xr_string fn=p1.IsString()?xr_string(p1):xr_string("");
+    if (p1.IsString()||EFS.GetSaveName("$game_meshes$",fn,0,0)){
+        if (0!=(res=ATools->ExportOGF(fn.c_str())))	ELog.Msg(mtInformation,"Export complete.");
+        else		        		    			ELog.Msg(mtError,"Export failed.");
     }
+    return res;
 }
-void CActorTools::CommandExportOMF(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandExportOMF(CCommandVar p1, CCommandVar p2)
 {
-    xr_string fn;
-    if (EFS.GetSaveName("$game_meshes$",fn,0,1)){
-        if (ExportOMF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-        else        		    	ELog.DlgMsg(mtError,"Export failed.");
+	CCommandVar res 				= FALSE;
+    xr_string fn=p1.IsString()?xr_string(p1):xr_string("");
+    if (p1.IsString()||EFS.GetSaveName("$game_meshes$",fn,0,1)){
+        if (0!=(res=ExportOMF(fn.c_str())))	ELog.Msg(mtInformation,"Export complete.");
+        else        		    			ELog.Msg(mtError,"Export failed.");
     }
+    return res;
 }
-void CActorTools::CommandExportCPP(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandExportCPP(CCommandVar p1, CCommandVar p2)
 {
-    xr_string fn;
-    if (EFS.GetSaveName(_import_,fn,0,7)){
-        if (ExportCPP(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-        else        		    	ELog.DlgMsg(mtError,"Export failed.");
+	CCommandVar res 				= FALSE;
+    xr_string fn=p1.IsString()?xr_string(p1):xr_string("");
+    if (p1.IsString()||EFS.GetSaveName(_import_,fn,0,7)){
+        if (0!=(res=ExportCPP(fn.c_str())))	ELog.Msg(mtInformation,"Export complete.");
+        else        		    			ELog.Msg(mtError,"Export failed.");
     }
+    return res;
 }
-void CActorTools::CommandClear(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandClear(CCommandVar p1, CCommandVar p2)
 {
-    if (!IfModified()){ 
-    	res = FALSE;
-    	return;
-    }
+    if (!IfModified())	return FALSE;
     // unlock
-    EFS.UnlockFile(_objects_,m_LastFileName.c_str());
-    m_LastFileName="";
+    EFS.UnlockFile	(_objects_,m_LastFileName.c_str());
+    m_LastFileName	= "";
     Device.m_Camera.Reset();
-    Clear		();
-    ExecCommand	(COMMAND_UPDATE_CAPTION);
-    ExecCommand	(COMMAND_UPDATE_PROPERTIES);
-    UndoClear	();
+    Clear			();
+    ExecCommand		(COMMAND_UPDATE_CAPTION);
+    ExecCommand		(COMMAND_UPDATE_PROPERTIES);
+    UndoClear		();
+    return TRUE;
 }
-void CActorTools::CommandUndo(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandUndo(CCommandVar p1, CCommandVar p2)
 {
-    if(!Undo())	ELog.DlgMsg( mtInformation, "Undo buffer empty" );
-    else		ExecCommand(COMMAND_CHANGE_ACTION, etaSelect);
+    if(!Undo())	ELog.Msg( mtInformation, "Undo buffer empty" );
+    else		return ExecCommand(COMMAND_CHANGE_ACTION, etaSelect);
+    return FALSE;
 }
-void CActorTools::CommandRedo(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandRedo(CCommandVar p1, CCommandVar p2)
 {
-    if(!Redo())	ELog.DlgMsg( mtInformation, "Redo buffer empty" );
-    else		ExecCommand(COMMAND_CHANGE_ACTION, etaSelect);
+    if(!Redo())	ELog.Msg( mtInformation, "Redo buffer empty" );
+    else		return ExecCommand(COMMAND_CHANGE_ACTION, etaSelect);
+    return FALSE;
 }
-void CActorTools::CommandOptimizeMotions(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandOptimizeMotions(CCommandVar p1, CCommandVar p2)
 {
     OptimizeMotions();
+    return TRUE;
 }
-void CActorTools::CommandMakeThumbnail(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandMakeThumbnail(CCommandVar p1, CCommandVar p2)
 {
 	MakeThumbnail();
+    return TRUE;
 }
-void CActorTools::CommandBatchConvert(u32 p1, u32 p2, u32& res)
+CCommandVar CActorTools::CommandBatchConvert(CCommandVar p1, CCommandVar p2)
 {
+	CCommandVar res 				= FALSE;
     xr_string fn;
     if (EFS.GetOpenName("$import$",fn,false,0,6)){
-        if (BatchConvert(fn.c_str()))	ELog.DlgMsg(mtInformation,"Convert complete.");
-        else		        		    ELog.DlgMsg(mtError,"Convert failed.");
+        if (0!=(res=BatchConvert(fn.c_str())))	ELog.Msg(mtInformation,"Convert complete.");
+        else		        		    		ELog.Msg(mtError,"Convert failed.");
     }
+    return res;
 }
 
 //---------------------------------------------------------------------------
 // Common command
 //---------------------------------------------------------------------------
-void CommandShowClipMaker(u32 p1, u32 p2, u32& res)
+CCommandVar CommandShowClipMaker(CCommandVar p1, CCommandVar p2)
 {
     ATools->ShowClipMaker();
+    return TRUE;
 }
-void CommandMakePreview(u32 p1, u32 p2, u32& res)
+CCommandVar CommandMakePreview(CCommandVar p1, CCommandVar p2)
 {
     ATools->MakePreview();
+    return TRUE;
 }
-void CommandPreviewObjPref(u32 p1, u32 p2, u32& res)
+CCommandVar CommandPreviewObjPref(CCommandVar p1, CCommandVar p2)
 {
     ATools->SetPreviewObjectPrefs();
+    return TRUE;
 }
-void CommandSelectPreviewObj(u32 p1, u32 p2, u32& res)
+CCommandVar CommandSelectPreviewObj(CCommandVar p1, CCommandVar p2)
 {
     ATools->SelectPreviewObject(p1);
+    return TRUE;
 }
-void CommandLoadFirstRecent(u32 p1, u32 p2, u32& res)
+CCommandVar CommandLoadFirstRecent(CCommandVar p1, CCommandVar p2)
 {
-    if (EPrefs.FirstRecentFile()){
-        res = ExecCommand(COMMAND_LOAD,(int)EPrefs.FirstRecentFile());
-    }
+    if (EPrefs.FirstRecentFile())
+        return ExecCommand(COMMAND_LOAD,xr_string(EPrefs.FirstRecentFile()));
+    return FALSE;
 }
-void CommandFileMenu(u32 p1, u32 p2, u32& res)
+CCommandVar CommandFileMenu(CCommandVar p1, CCommandVar p2)
 {
     FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
+    return TRUE;
 }
-void CommandRefreshUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandRefreshUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->RefreshBar	();
     fraLeftBar->RefreshBar	();
     fraBottomBar->RefreshBar();
+    return TRUE;
 }
-void CommandRestoreUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandRestoreUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->fsStorage->RestoreFormPlacement();
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
+    return TRUE;
 }
-void CommandSaveUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandSaveUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->fsStorage->SaveFormPlacement();
     fraLeftBar->fsStorage->SaveFormPlacement();
     fraBottomBar->fsStorage->SaveFormPlacement();
+    return TRUE;
 }
-void CommandUpdateToolBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandUpdateToolBar(CCommandVar p1, CCommandVar p2)
 {
     fraLeftBar->UpdateBar();
+    return TRUE;
 }
-void CommandUpdateCaption(u32 p1, u32 p2, u32& res)
+CCommandVar CommandUpdateCaption(CCommandVar p1, CCommandVar p2)
 {
     frmMain->UpdateCaption();
+    return TRUE;
 }
 
 void CActorMain::RegisterCommands()

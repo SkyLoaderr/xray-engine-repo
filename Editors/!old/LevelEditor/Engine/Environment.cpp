@@ -226,7 +226,7 @@ void CEnvDescriptor::unload	()
 	clouds_r_textures.push_back	(zero);
 	clouds_r_textures.push_back	(zero);
 }
-void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
+void CEnvDescriptor::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
 {
 	float	_power			=	1.f/(m_power+1);	// the environment itself
 	float	fi				=	1-f;

@@ -10,6 +10,7 @@
 #include "SkeletonAnimated.h"
 #include "ClipEditor.h"
 #include "UI_ToolsCustom.h"
+#include "UI_MainCommand.h"
 // refs
 class TProperties;
 class CEditableObject;
@@ -205,7 +206,7 @@ public:
 
     virtual LPCSTR		GetInfo				();
     
-    virtual void		ZoomObject			(bool bSelOnly);
+    virtual void		ZoomObject			(BOOL bSelOnly);
 
     virtual bool		Load				(LPCSTR path, LPCSTR name);
     virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
@@ -226,7 +227,7 @@ public:
 	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
     virtual void		ShowProperties		(){;}
-    virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
+    virtual void		UpdateProperties	(BOOL bForced=FALSE){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     virtual void		RefreshProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);
@@ -279,22 +280,22 @@ public:
     bool				BatchConvert		(LPCSTR fn);
 
     // commands
-	void 				CommandClear		(u32 p1, u32 p2, u32& res);
-	void 				CommandLoad			(u32 p1, u32 p2, u32& res);
-    void                CommandSaveBackup	(u32 p1, u32 p2, u32& res);
-    void                CommandSaveAs		(u32 p1, u32 p2, u32& res);
-    void                CommandSave			(u32 p1, u32 p2, u32& res);
-    void                CommandImport		(u32 p1, u32 p2, u32& res);
-    void                CommandExportDM		(u32 p1, u32 p2, u32& res);
-    void                CommandExportOBJ	(u32 p1, u32 p2, u32& res);
-    void                CommandExportOGF	(u32 p1, u32 p2, u32& res);
-    void               	CommandExportOMF	(u32 p1, u32 p2, u32& res);
-    void 				CommandExportCPP	(u32 p1, u32 p2, u32& res);
-	void 				CommandUndo			(u32 p1, u32 p2, u32& res);
-	void 				CommandRedo			(u32 p1, u32 p2, u32& res);
-	void 				CommandOptimizeMotions(u32 p1, u32 p2, u32& res);
-    void 				CommandMakeThumbnail(u32 p1, u32 p2, u32& res);
-    void 				CommandBatchConvert	(u32 p1, u32 p2, u32& res);
+	CCommandVar			CommandClear		(CCommandVar p1, CCommandVar p2);
+	CCommandVar 		CommandLoad			(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandSaveBackup	(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandSaveAs		(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandSave			(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandImport		(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandExportDM		(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandExportOBJ	(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandExportOGF	(CCommandVar p1, CCommandVar p2);
+    CCommandVar         CommandExportOMF	(CCommandVar p1, CCommandVar p2);
+    CCommandVar 		CommandExportCPP	(CCommandVar p1, CCommandVar p2);
+	CCommandVar 		CommandUndo			(CCommandVar p1, CCommandVar p2);
+	CCommandVar 		CommandRedo			(CCommandVar p1, CCommandVar p2);
+	CCommandVar 		CommandOptimizeMotions(CCommandVar p1, CCommandVar p2);
+    CCommandVar 		CommandMakeThumbnail(CCommandVar p1, CCommandVar p2);
+    CCommandVar			CommandBatchConvert	(CCommandVar p1, CCommandVar p2);
 };
 
 extern CActorTools*&	ATools;

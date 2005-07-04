@@ -53,7 +53,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture)
 	}else{
 		if (ini->section_exist("char widths")){
 			fHeight					= ini->r_float("char widths","height");
-			const int cpl			= 16;
+			int cpl					= 16;
 			for (int i=0; i<256; i++){
 				sprintf				(buf,"%d",i);
 				float w				= ini->r_float("char widths",buf);

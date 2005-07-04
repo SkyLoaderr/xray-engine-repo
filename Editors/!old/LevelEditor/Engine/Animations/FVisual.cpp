@@ -154,7 +154,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	else	geom.create		(vFormat,pVertices,pIndices);
 }
 
-void Fvisual::Render		(float LOD)
+void Fvisual::Render		(float )
 {
 #if RENDER==R_R2
 	if (m_fast && RImplementation.phase==CRender::PHASE_SMAP)

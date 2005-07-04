@@ -75,11 +75,11 @@ public:
 	shared_str		name;		// vertex uv map name
     u8				dim;
     EVMType			type;
-	BOOL			polymap;
+	u8				polymap;
 	IntVec			vindices;
 	IntVec			pindices;
 public:
-	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, BOOL pm=false)
+	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, bool pm=false)
     {
 		type		= t;
 		polymap		= pm;

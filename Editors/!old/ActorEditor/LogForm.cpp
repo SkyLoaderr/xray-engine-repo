@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
+#pragma link "MxMenus"
 #pragma resource "*.dfm"
 TfrmLog *TfrmLog::form=0;
 //---------------------------------------------------------------------------
@@ -106,7 +107,6 @@ void __fastcall TfrmLog::ebClearSelectedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmLog::ebCloseClick(TObject *Sender)
 {
 	Close();
@@ -125,4 +125,41 @@ void __fastcall TfrmLog::ebFlushClick(TObject *Sender)
 	FlushLog();	
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmLog::lbLogKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+	if (Shift.Contains(ssCtrl)&&(Key=='C')){
+    	imCopyClick		(Sender);
+    }else if (Shift.Contains(ssCtrl)&&(Key=='A')){
+    	imSelectAllClick(Sender);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmLog::imCopyClick(TObject *Sender)
+{
+    TClipboard* clp	= Clipboard();
+    clp->Clear		();
+    xr_string		tmp;
+    for (int i = 0; i < lbLog->Items->Count; i++)
+        if (lbLog->Selected[i]){
+            tmp		= tmp+lbLog->Items->Strings[i].c_str()+"\r\n";
+        }
+    clp->SetTextBuf	((LPSTR)tmp.c_str());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmLog::imSelectAllClick(TObject *Sender)
+{
+	lbLog->SelectAll();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmLog::lbLogKeyPress(TObject *Sender, char &Key)
+{
+	Key = 0;	
+}
+//---------------------------------------------------------------------------
+
 

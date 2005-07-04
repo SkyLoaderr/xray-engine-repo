@@ -454,7 +454,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 147
       Width = 298
-      Height = 200
+      Height = 37
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -484,7 +484,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 15
         Width = 296
-        Height = 184
+        Height = 21
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -681,13 +681,6 @@ object fraLeftBar: TfraLeftBar
       end
     end
     object N12: TMenuItem
-      Caption = '-'
-    end
-    object ebExecuteCommands: TMenuItem
-      Caption = 'Execute Commands...'
-      OnClick = ebExecuteCommandsClick
-    end
-    object N13: TMenuItem
       Caption = '-'
     end
     object Quit1: TMenuItem

@@ -73,7 +73,7 @@ protected:
     U32Vec			m_VM[clpSMX+1][clpSMY+1][clpSMZ+1];
     Fvector			m_VMeps;
 
-    u32				VPack(SSkelVert& V);
+    u16				VPack(SSkelVert& V);
 public:
     u32 			invalid_faces;
 public:

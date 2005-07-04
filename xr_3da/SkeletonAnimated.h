@@ -171,7 +171,7 @@ public:
     u32							LL_CycleCount	(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].cycle()->size(); return cnt;}
     u32							LL_FXCount		(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].fx()->size(); return cnt;}
 	accel_map*					LL_Motions		(u32 slot){return m_Motions[slot].motion_map();}
-	u16							LL_MotionsSlotCount(){return m_Motions.size();}
+	u16							LL_MotionsSlotCount(){return (u16)m_Motions.size();}
 	MotionID					ID_Motion		(LPCSTR  N, u16 slot);
 #endif
 	CMotionDef*					LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motion_def(id.idx);}

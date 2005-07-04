@@ -342,7 +342,7 @@ void __fastcall TClipMaker::ClipMouseMove(TObject *Sender,
     	    sel_clip->length += dx;
             if (sel_clip->length<0.01f) sel_clip->length=0.01f;
     		g_X_prev 	= sel_clip->PRight();
-            UI->ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,true,true,true)));
+            UI->ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,true,true,true).c_str()));
         }
         UpdateClips		();
     }
@@ -493,7 +493,7 @@ void TClipMaker::RealUpdateProperties()
         V->OnChangeEvent.bind	(this,&TClipMaker::OnNameChange);
 	    V=PHelper().CreateFloat	(p_items,"Current Clip\\Length",&sel_clip->length,	0.f,10000.f,0.1f,2);
         V->OnChangeEvent.bind	(this,&TClipMaker::OnClipLengthChange);
-        for (u32 k=0; k<4; k++){
+        for (u16 k=0; k<4; k++){
             AnsiString mname	= sel_clip->CycleName(k);	
             u16 slot			= sel_clip->CycleSlot(k);	
             CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str(),slot);
@@ -730,7 +730,7 @@ void __fastcall TClipMaker::BPOnPaint(TObject *Sender)
     }else if ((bp->Tag>=0)&&(bp->Tag<(int)O->BoneParts().size())){
         AnsiString mn_prev		= "";
         for (UIClipIt it=clips.begin(); it!=clips.end(); it++){
-            AnsiString mn		= (*it)->CycleName(bp->Tag);	
+            AnsiString mn		= (*it)->CycleName(u16(bp->Tag));
             TRect R 			= TRect((*it)->PLeft(), 1, (*it)->PRight()-1, 15);
             if (!mn.IsEmpty()){
                 canvas->Brush->Color= (*it==sel_clip)?(drag_obj==bp->Tag?BP_ACTIVE_DRAG_COLOR:BP_ACTIVE_COLOR):BP_INACTIVE_COLOR;
@@ -886,7 +886,7 @@ void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
     if (ATools->IsEngineMode()){
         for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
             float len = 0.f;
-            for (u32 k=0; k<4; k++){
+            for (u16 k=0; k<4; k++){
                 AnsiString mname	= (*c_it)->CycleName(k);	
                 u16 slot			= (*c_it)->CycleSlot(k);	
 				CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);

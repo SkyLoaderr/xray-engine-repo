@@ -128,7 +128,7 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 							C->destination		=	RC_dest_sampler;
 							C->type				=	RC_sampler;
 							R_constant_load& L	=	C->samp;
-							L.index				=	r_index	+ ( (destination&1)? 0 : D3DVERTEXTEXTURESAMPLER0 );
+							L.index				=	u16(r_index	+ ( (destination&1)? 0 : D3DVERTEXTEXTURESAMPLER0 ));
 							L.cls				=	RC_sampler	;
 							table.push_back		(C);
 						} else {

@@ -30,7 +30,7 @@ void IRender_Visual::Release		()
 
 CStatTimer						tscreate;
 
-void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
+void IRender_Visual::Load		(const char* N, IReader *data, u32 )
 {
 #ifdef DEBUG
 	dbg_name	= N;

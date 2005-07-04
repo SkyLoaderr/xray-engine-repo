@@ -80,15 +80,15 @@ void EDetail::OnDeviceDestroy()
 	shader.destroy();
 }
 
-int EDetail::_AddVert(const Fvector& p, float u, float v)
+u16 EDetail::_AddVert(const Fvector& p, float u, float v)
 {
 	EVertexIn V(p,u,v);
-    for (u32 k=0; k<number_vertices; k++)
+    for (u16 k=0; k<(u16)number_vertices; k++)
     	if (V.similar((EVertexIn&)vertices[k])) return k;
     number_vertices++;
     vertices = (fvfVertexIn*)xr_realloc(vertices,number_vertices*sizeof(fvfVertexIn));
     vertices[number_vertices-1] = V;
-    return number_vertices-1;
+    return u16(number_vertices-1);
 }
 
 IC BOOL isDegenerated(u16 v[3])

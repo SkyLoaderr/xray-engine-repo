@@ -52,7 +52,7 @@ void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, 
     	CSkeletonAnimated* SA	= dynamic_cast<CSkeletonAnimated*>(m_pVisual);
 		if (SA){
             for (int k=SA->m_Motions.size()-1; k>=0; --k){
-            	xr_string slot_pref	= ATools->BuildMotionPref(k,pref);
+            	xr_string slot_pref	= ATools->BuildMotionPref((u16)k,pref);
 			    LHelper().CreateItem(items, slot_pref.c_str(),  modeID, ListItem::flSorted);
 	            // cycles
                 accel_map::const_iterator I,E;
@@ -60,14 +60,14 @@ void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, 
                 E = SA->m_Motions[k].cycle()->end();              
                 for ( ; I != E; ++I){
                 	shared_str tmp = PrepareKey(slot_pref.c_str(),*(*I).first);
-                    LHelper().CreateItem(items, tmp.c_str(), modeID, 0, *(void**)&MotionID(k,I->second));
+                    LHelper().CreateItem(items, tmp.c_str(), modeID, 0, *(void**)&MotionID((u16)k,I->second));
             	}
                 // fxs
                 I = SA->m_Motions[k].fx()->begin(); 
                 E = SA->m_Motions[k].fx()->end(); 
                 for ( ; I != E; ++I){
                 	shared_str tmp = PrepareKey(slot_pref.c_str(),*(*I).first);
-                    LHelper().CreateItem(items, tmp.c_str(), modeID, 0, *(void**)&MotionID(k,I->second));
+                    LHelper().CreateItem(items, tmp.c_str(), modeID, 0, *(void**)&MotionID((u16)k,I->second));
                 }
             }
         }
@@ -77,7 +77,7 @@ void CActorTools::EngineModel::PlayCycle(LPCSTR name, int part, u16 slot)
 {
     MotionID D = PSkeletonAnimated(m_pVisual)->ID_Motion(name,slot);
     if (D.valid())
-        PSkeletonAnimated(m_pVisual)->LL_PlayCycle(part,D,TRUE,0,0);
+        PSkeletonAnimated(m_pVisual)->LL_PlayCycle((u16)part,D,TRUE,0,0);
 }
 
 void CActorTools::EngineModel::PlayFX(LPCSTR name, float power, u16 slot)
@@ -163,7 +163,7 @@ void CActorTools::EngineModel::PlayMotion(LPCSTR name, u16 slot)
                 for (int k=0; k<MAX_PARTS; k++){
                     if (!m_BPPlayItems[k].name.IsEmpty()){
                         MotionID D 		= SA->ID_Motion(m_BPPlayItems[k].name.c_str(),m_BPPlayItems[k].slot);
-                        if (D.valid()) 	SA->LL_PlayCycle(k,D,false,0,0);
+                        if (D.valid()) 	SA->LL_PlayCycle((u16)k,D,false,0,0);
                     }
                 }        
                 m_pBlend = SA->PlayFX(motion_ID,1.f);
@@ -186,7 +186,7 @@ void CActorTools::EngineModel::PlayMotion(LPCSTR name, u16 slot)
                         MotionID D 	= SA->ID_Motion(m_BPPlayItems[k].name.c_str(),m_BPPlayItems[k].slot);
                         CBlend* B	= 0;
                         if (D.valid()){ 
-                            B = SA->LL_PlayCycle(k,D,false,0,0);
+                            B = SA->LL_PlayCycle((u16)k,D,false,0,0);
                             if (idx==k) m_pBlend = B;
                         }
                     }
@@ -227,7 +227,7 @@ void CActorTools::EngineModel::PlayMotion(LPCSTR name, u16 slot)
 }
 void CActorTools::EngineModel::RestoreParams(TFormStorage* s)
 {          
-    for (int k=0; k<MAX_PARTS; k++){
+    for (u16 k=0; k<MAX_PARTS; k++){
     	m_BPPlayItems[k].name	= s->ReadString("bp_cache_name_"+AnsiString(k),"");
     	m_BPPlayItems[k].slot	= s->ReadInteger("bp_cache_slot_"+AnsiString(k),0);
     }
@@ -379,5 +379,6 @@ bool CActorTools::RenameMotion(LPCSTR old_name, LPCSTR new_name)
     M->SetName(new_name);
     return true;
 }
+
 
 

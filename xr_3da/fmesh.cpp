@@ -59,7 +59,7 @@ void ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, 
 		for (u32 i=0; i<cnt; i++) TransferMask[tmPos++]=i;
 		tmPosSrc = tmPos;
 	} else {
-		VERIFY2(0,"Can't convert between different vertex positions");
+		THROW2	("Can't convert between different vertex positions");
 	}
 
 	// ---------------------- "Reserved" property
@@ -85,7 +85,7 @@ void ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, 
 	}
 	if ((dwTypeDest&D3DFVF_NORMAL) && !(dwTypeSrc&D3DFVF_NORMAL))
 	{	// DEST & !SRC
-		VERIFY2(0,"Source format doesn't have NORMAL but destination HAS");
+		THROW2("Source format doesn't have NORMAL but destination HAS");
 	}
 	if (!(dwTypeDest&D3DFVF_NORMAL) && (dwTypeSrc&D3DFVF_NORMAL))
 	{	// !DEST & SRC
@@ -132,7 +132,7 @@ void ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, 
 		}
 	} else {
 		if (dwTSrc==0) {
-			R_ASSERT2(0,"Source vertex format doesn't has texture coords at all");
+			THROW2("Source vertex format doesn't has texture coords at all");
 		}
 		// Copy real TC
 		u32 dwStage0TC = tmPosSrc;

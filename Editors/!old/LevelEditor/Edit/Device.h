@@ -175,7 +175,6 @@ enum {
     rsDrawSafeRect		= (1ul<<27ul),
     rsMuteSounds		= (1ul<<28ul),
     rsEnvironment		= (1ul<<29ul),
-    rsCommandsLog		= (1ul<<30ul),
 };
 
 #define DEFAULT_CLEARCOLOR 0x00555555

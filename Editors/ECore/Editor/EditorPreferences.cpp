@@ -74,7 +74,7 @@ void __stdcall CEditorPreferences::OnClose	()
 //---------------------------------------------------------------------------
 
 
-void CheckValidate(ShortcutValue* val, const xr_shortcut& new_val, bool& result)
+void CheckValidate(ShortcutValue*, const xr_shortcut& new_val, bool& result)
 {
 	result 					= true; 
     ECommandVec& cmds		= GetEditorCommands();
@@ -90,7 +90,7 @@ void CheckValidate(ShortcutValue* val, const xr_shortcut& new_val, bool& result)
     }
 }
 
-void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModif, bool& bSafe)
+void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModif, bool&)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
@@ -167,9 +167,9 @@ void CEditorPreferences::Edit()
         	VERIFY(!CMD->sub_commands.empty());
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
             	SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
-                string128 nm; 		sprintf(nm,"%s%s%s",CMD->Desc(),xr_strlen(SUB_CMD->Desc())?"\\":"",SUB_CMD->Desc());
+                string128 nm; 		sprintf(nm,"%s%s%s",CMD->Desc(),!SUB_CMD->desc.empty()?"\\":"",SUB_CMD->desc.c_str());
                 ShortcutValue* V 	= PHelper().CreateShortcut(props,PrepareKey("Keyboard\\Shortcuts",nm), &SUB_CMD->shortcut);
-                V->OnValidateResultEvent.bind(&CheckValidate);
+                V->OnValidateResultEvent.bind(CheckValidate);
             }
         }
     }

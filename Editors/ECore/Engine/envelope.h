@@ -79,7 +79,7 @@ struct st_Key{
     {
         value		= F.r_float();
         time		= F.r_float();
-        shape		= (u8)F.r_u32()&0xff;
+        shape		= u8((u8)F.r_u32()&0xff);
         tension		= F.r_float();
         continuity	= F.r_float();
         bias		= F.r_float();

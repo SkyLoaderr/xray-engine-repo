@@ -193,7 +193,7 @@ void CBone::BoneRotate(const Fvector& _axis, float angle)
 
 void CBone::ClampByLimits()
 {
-    Fmatrix mBind,mBindI,mLocal,mRotate,mLocalBP;
+    Fmatrix mBind,mBindI,mLocal,mLocalBP;
     mBind.setXYZi		(rest_rotate);
     mBindI.invert		(mBind);
 
@@ -213,16 +213,16 @@ bool CBone::ExportOGF(IWriter& F)
 {
 	// check valid
 	if (!shape.Valid()){
-        ELog.Msg(mtError,"Bone '%s' has invalid shape.",Name());
+        ELog.Msg(mtError,"Bone '%s' has invalid shape.",*Name());
     	return false;
     }
     SGameMtl* M			= GMLib.GetMaterial(game_mtl.c_str());
     if (!M){
-        ELog.Msg(mtError,"Bone '%s' has invalid game material.",Name());
+        ELog.Msg(mtError,"Bone '%s' has invalid game material.",*Name());
     	return false;
     }
     if (!M->Flags.is(SGameMtl::flDynamic)){
-        ELog.Msg(mtError,"Bone '%s' has non-dynamic game material.",Name());
+        ELog.Msg(mtError,"Bone '%s' has non-dynamic game material.",*Name());
     	return false;
     }
 

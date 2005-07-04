@@ -96,12 +96,16 @@ object frmLog: TfrmLog
       Width = 392
       Height = 175
       Style = lbOwnerDrawFixed
+      AutoComplete = False
       Align = alClient
       Color = 15263976
       ItemHeight = 13
       MultiSelect = True
+      PopupMenu = MxPopupMenu1
       TabOrder = 0
       OnDrawItem = lbLogDrawItem
+      OnKeyDown = lbLogKeyDown
+      OnKeyPress = lbLogKeyPress
     end
   end
   object fsStorage: TFormStorage
@@ -110,5 +114,31 @@ object frmLog: TfrmLog
     StoredValues = <>
     Left = 8
     Top = 8
+  end
+  object MxPopupMenu1: TMxPopupMenu
+    MarginEndColor = clBlack
+    Left = 40
+    Top = 8
+    object imCopy: TMenuItem
+      Caption = '&Copy'
+      ShortCut = 16451
+      OnClick = imCopyClick
+    end
+    object imSelectAll: TMenuItem
+      Caption = 'Select &All'
+      ShortCut = 16449
+      OnClick = imSelectAllClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object ClearAll1: TMenuItem
+      Caption = 'Clear All'
+      OnClick = ebClearClick
+    end
+    object ClearSelected1: TMenuItem
+      Caption = 'Clear Selected'
+      OnClick = ebClearSelectedClick
+    end
   end
 end

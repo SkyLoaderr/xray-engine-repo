@@ -27,12 +27,12 @@ static Fvector boxvert[boxvertcount];
 const u32 identboxcolor = D3DCOLOR_RGBA(255,255,255,0);
 static const int identboxwirecount = 24;
 static Fvector identboxwire[identboxwirecount] = {
-	-0.5f, -0.5f, -0.5f,	-0.5f, +0.5f, -0.5f,    	-0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,
-    +0.5f, +0.5f, -0.5f,	+0.5f, -0.5f, -0.5f,		+0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,
-    -0.5f, +0.5f, +0.5f,	+0.5f, +0.5f, +0.5f,		+0.5f, +0.5f, +0.5f,	+0.5f, -0.5f, +0.5f,
-    +0.5f, -0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,    	-0.5f, -0.5f, +0.5f,	-0.5f, +0.5f, +0.5f,
-    -0.5f, +0.5f, -0.5f,	-0.5f, +0.5f, +0.5f,		+0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, +0.5f,
-    +0.5f, -0.5f, -0.5f,	+0.5f, -0.5f, +0.5f,		-0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, +0.5f
+	{-0.5f, -0.5f, -0.5f},	{-0.5f, +0.5f, -0.5f},    	{-0.5f, +0.5f, -0.5f},	{+0.5f, +0.5f, -0.5f},
+    {+0.5f, +0.5f, -0.5f},	{+0.5f, -0.5f, -0.5f},		{+0.5f, -0.5f, -0.5f},	{-0.5f, -0.5f, -0.5f},
+    {-0.5f, +0.5f, +0.5f},	{+0.5f, +0.5f, +0.5f},		{+0.5f, +0.5f, +0.5f},	{+0.5f, -0.5f, +0.5f},
+    {+0.5f, -0.5f, +0.5f},	{-0.5f, -0.5f, +0.5f},    	{-0.5f, -0.5f, +0.5f},	{-0.5f, +0.5f, +0.5f},
+    {-0.5f, +0.5f, -0.5f},	{-0.5f, +0.5f, +0.5f},		{+0.5f, +0.5f, -0.5f},	{+0.5f, +0.5f, +0.5f},
+    {+0.5f, -0.5f, -0.5f},	{+0.5f, -0.5f, +0.5f},		{-0.5f, -0.5f, -0.5f},	{-0.5f, -0.5f, +0.5f}
 };
 
 /*
@@ -460,7 +460,7 @@ void CDrawUtilities::DrawLineSphere(const Fvector& p, float radius, u32 c, bool 
 {
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	u32			vBase, iBase;
+	u32			vBase;
     int i;
 	FVF::L*	pv;
     // seg 0
@@ -489,7 +489,7 @@ void CDrawUtilities::DrawLineSphere(const Fvector& p, float radius, u32 c, bool 
 void CDrawUtilities::dbgDrawPlacement(const Fvector& p, int sz, u32 clr, LPCSTR caption, u32 clr_font)
 {
 	VERIFY( Device.bReady );
-    Fvector c,r,n,d;
+    Fvector c;
 	float w	= p.x*Device.mFullTransform._14 + p.y*Device.mFullTransform._24 + p.z*Device.mFullTransform._34 + Device.mFullTransform._44;
     if (w<0) return; // culling
 
@@ -560,7 +560,7 @@ void CDrawUtilities::DrawSelectionBox(const Fvector& C, const Fvector& S, u32* c
 
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	u32			vBase,iBase;
+	u32			vBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(boxvertcount,vs_L->vb_stride,vBase);
     for (int i=0; i<boxvertcount; i++,pv++){
 	    pv->p.mul(boxvert[i],S);
@@ -1048,7 +1048,7 @@ void CDrawUtilities::DrawGrid()
 {
 	VERIFY( Device.bReady );
 	_VertexStream*	Stream	= &RCache.Vertex;
-    u32 vBase,iBase;
+    u32 vBase;
 	// fill VB
 	FVF::L*	pv	= (FVF::L*)Stream->Lock(m_GridPoints.size(),vs_L->vb_stride,vBase);
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);

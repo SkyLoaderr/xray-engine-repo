@@ -267,7 +267,7 @@ bool CEditableObject::Load(IReader& F)
 				if (mesh->LoadMesh(*M))
 					m_Meshes.push_back(mesh);
 				else{
-					ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh '%s'!", mesh->m_Name );
+					ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh '%s'!", *mesh->m_Name );
 					xr_delete(mesh);
 					bRes = false;
 				}

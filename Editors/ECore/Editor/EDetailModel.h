@@ -67,7 +67,7 @@ class ECORE_API EDetail: public CDetail{
     AnsiString			m_sRefs;
 	CEditableObject*	m_pRefs;
 
-	int 				_AddVert		(const Fvector& p, float u, float v);
+	u16 				_AddVert		(const Fvector& p, float u, float v);
 public:
 //    bool				m_bMarkDel;
 public:

@@ -139,7 +139,7 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	friend class				CBoneData;
 	friend class				CSkeletonX;
 public:
-	typedef xr_vector<std::pair<shared_str,u32> >	accel;
+	typedef xr_vector<std::pair<shared_str,u16> >	accel;
 protected:
 	SkeletonWMVec				wallmarks;
 	u32							wm_frame;
@@ -193,7 +193,7 @@ public:
 	ICF CBoneInstance&			LL_GetBoneInstance	(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return bone_instances[bone_id];	}
 	CBoneData&					LL_GetData			(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return *((*bones)[bone_id]);	}
 	u16							LL_BoneCount		()					{	return u16(bones->size());										}
-	u16							LL_VisibleBoneCount	()					{	u64 F=visimask.flags&((u64(1)<<u64(LL_BoneCount()))-1); return u16(btwCount1(F)); }
+	u16							LL_VisibleBoneCount	()					{	u64 F=visimask.flags&((u64(1)<<u64(LL_BoneCount()))-1); return (u16)btwCount1(F); }
 	ICF Fmatrix&				LL_GetTransform		(u16 bone_id)		{	return LL_GetBoneInstance(bone_id).mTransform;					}
 	ICF Fmatrix&				LL_GetTransform_R	(u16 bone_id)		{	return LL_GetBoneInstance(bone_id).mRenderTransform;			}	// rendering only
 	Fobb&						LL_GetBox			(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	return (*bones)[bone_id]->obb;	}

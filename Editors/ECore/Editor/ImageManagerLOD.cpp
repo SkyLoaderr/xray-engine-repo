@@ -401,7 +401,7 @@ tT+=TT1.Stop();
                     res_transp					= res_transp*(1.f-pt_it->w)+avg_transp*pt_it->w;
                 }
 tH+=TT.Stop();
-				u8 h 				= iFloor	(res_transp*255.f);
+				u8 h 				= (u8)iFloor	(res_transp*255.f);
 				tgt_h				= color_rgba(h,h,h,color_get_A(tgt_c));
             }
         }

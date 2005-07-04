@@ -64,7 +64,7 @@ public:
     U32Vec			m_VM[clpOGFMX+1][clpOGFMY+1][clpOGFMZ+1];
     Fvector			m_VMeps;
 
-    u32				VPack			(SOGFVert& V);
+    u16				VPack			(SOGFVert& V);
 	void			ComputeBounding	();
 public:
     CObjectOGFCollectorPacked		(const Fbox &bb, int apx_vertices, int apx_faces);
@@ -90,10 +90,10 @@ public:
             return true;
         }
         SOGFFace F;
-        u32 v;
-        v	= VPack(v0); if (0xffffffff==v) return false; F.v[0] = v;
-        v	= VPack(v1); if (0xffffffff==v) return false; F.v[1] = v;
-        v	= VPack(v2); if (0xffffffff==v) return false; F.v[2] = v;
+        u16 v;
+        v	= VPack(v0); if (0xffff==v) return false; F.v[0] = v;
+        v	= VPack(v1); if (0xffff==v) return false; F.v[1] = v;
+        v	= VPack(v2); if (0xffff==v) return false; F.v[2] = v;
         
         if (check(F)) 	m_Faces.push_back(F);
         else{	

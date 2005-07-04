@@ -52,7 +52,7 @@ void	IBlender::Save(IWriter& fs )
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
-void	IBlender::Load(	IReader& fs, u16 version )
+void	IBlender::Load(	IReader& fs, u16  )
 {
 	// Read desc and doesn't change version
 	u16	V		= description.version;

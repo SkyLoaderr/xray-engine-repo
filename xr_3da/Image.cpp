@@ -241,8 +241,8 @@ bool CImage::LoadTGA(LPCSTR name)
         for( int x=0; x<hdr.width; ){
             if( hdr.imgtype == 10 ){
                 BYTE PacketInfo; TGA().r(&PacketInfo,1);
-                u16 PacketType = 0x80 & PacketInfo;
-                u16 PixelCount = ( 0x007f & PacketInfo ) + 1;
+                u16 PacketType = u16(0x80 & PacketInfo);
+                u16 PixelCount = u16(( 0x007f & PacketInfo ) + 1);
                 if( PacketType ){
                     pixel = 0xffffffff;
                     if(hdr.pixsize==32) TGA().r(&pixel,4);

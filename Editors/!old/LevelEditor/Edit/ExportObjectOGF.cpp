@@ -37,7 +37,7 @@ CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_ver
 }
 //----------------------------------------------------
 
-u32 CObjectOGFCollectorPacked::VPack(SOGFVert& V)
+u16 CObjectOGFCollectorPacked::VPack(SOGFVert& V)
 {
     u32 P 	= 0xffffffff;
 
@@ -85,7 +85,8 @@ u32 CObjectOGFCollectorPacked::VPack(SOGFVert& V)
         if ((iyE!=iy)&&(izE!=iz))				m_VM[ix][iyE][izE].push_back(P);
         if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	m_VM[ixE][iyE][izE].push_back(P);
     }
-    return P;
+    VERIFY(P<u16(-1));
+    return (u16)P;
 }
 //----------------------------------------------------
 void CObjectOGFCollectorPacked::ComputeBounding()
@@ -375,9 +376,9 @@ void CObjectOGFCollectorPacked::CalculateTB()
     u32 o_idx		= 0;
     for (face_it=m_Faces.begin(); face_it!=m_Faces.end(); face_it++){
         SOGFFace	&iF = *face_it;
-        iF.v[0]		= o_indices[o_idx++];
-        iF.v[1]		= o_indices[o_idx++];
-        iF.v[2]		= o_indices[o_idx++];
+        iF.v[0]		= (u16)o_indices[o_idx++];
+        iF.v[1]		= (u16)o_indices[o_idx++];
+        iF.v[2]		= (u16)o_indices[o_idx++];
     }
     m_Verts.clear	(); m_Verts.resize(v_cnt);
     for (u32 v_idx=0; v_idx!=v_cnt; v_idx++){
@@ -479,7 +480,7 @@ bool CExportObjectOGF::Prepare()
                 split		= m_Splits.back();
             }
             int 	elapsed_faces 	= surf->m_Flags.is(CSurface::sf2Sided)?face_lst.size()*2:face_lst.size();
-            const 	u8 	mark_mask	= surf->m_Flags.is(CSurface::sf2Sided)?0x03:0x01;
+            const 	u8 	mark_mask	= surf->m_Flags.is(CSurface::sf2Sided)?u8(0x03):u8(0x01);
             
             do{
                 if (elapsed_faces>0) split->AppendPart(elapsed_faces>0xffff?0xffff:elapsed_faces,elapsed_faces>0xffff?0xffff:elapsed_faces);

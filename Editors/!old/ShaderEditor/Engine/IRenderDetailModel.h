@@ -25,7 +25,7 @@ public:
 
 	ref_shader	shader;
 	fvfVertexIn	*vertices;
-	u32			number_vertices;
+	u32			number_vertices;     
 	u16			*indices;
 	u32			number_indices;
 public:

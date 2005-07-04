@@ -225,7 +225,7 @@ void	CResourceManager::_DeleteVS			(const SVS* vs)
 		m_vs.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find compiled vertex-shader '%s'",vs->cName);
+	Msg	("! ERROR: Failed to find compiled vertex-shader '%s'",*vs->cName);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -308,7 +308,7 @@ void	CResourceManager::_DeletePS			(const SPS* ps)
 		m_ps.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find compiled pixel-shader '%s'",ps->cName);
+	Msg	("! ERROR: Failed to find compiled pixel-shader '%s'",*ps->cName);
 }
 
 R_constant_table*	CResourceManager::_CreateConstantTable	(R_constant_table& C)
@@ -354,7 +354,7 @@ void	CResourceManager::_DeleteRT		(const CRT* RT)
 		m_rtargets.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find render-target '%s'",RT->cName);
+	Msg	("! ERROR: Failed to find render-target '%s'",*RT->cName);
 }
 //--------------------------------------------------------------------------------------------------------------
 CRTC*	CResourceManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
@@ -383,7 +383,7 @@ void	CResourceManager::_DeleteRTC		(const CRTC* RT)
 		m_rtargets_c.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find render-target '%s'",RT->cName);
+	Msg	("! ERROR: Failed to find render-target '%s'",*RT->cName);
 }
 //--------------------------------------------------------------------------------------------------------------
 void	CResourceManager::DBG_VerifyGeoms	()
@@ -475,7 +475,7 @@ void	CResourceManager::_DeleteTexture		(const CTexture* T)
 		m_textures.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find texture surface '%s'",T->cName);
+	Msg	("! ERROR: Failed to find texture surface '%s'",*T->cName);
 }
 
 #ifdef DEBUG
@@ -520,7 +520,7 @@ void	CResourceManager::_DeleteMatrix		(const CMatrix* M)
 		m_matrices.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find xform-def '%s'",M->cName);
+	Msg	("! ERROR: Failed to find xform-def '%s'",*M->cName);
 }
 void	CResourceManager::ED_UpdateMatrix		(LPCSTR Name, CMatrix* data)
 {
@@ -554,7 +554,7 @@ void	CResourceManager::_DeleteConstant		(const CConstant* C)
 		m_constants.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find R1-constant-def '%s'",C->cName);
+	Msg	("! ERROR: Failed to find R1-constant-def '%s'",*C->cName);
 }
 
 void	CResourceManager::ED_UpdateConstant	(LPCSTR Name, CConstant* data)

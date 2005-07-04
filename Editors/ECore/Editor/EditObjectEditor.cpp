@@ -22,16 +22,16 @@ const float offs_x 	= 1.f/tex_w;
 const float offs_y 	= 1.f/tex_h;
 
 static Fvector LOD_pos[4]={
-	-1.0f+offs_x, 1.0f-offs_y, 0.0f,
-	 1.0f-offs_x, 1.0f-offs_y, 0.0f,
-	 1.0f-offs_x,-1.0f+offs_y, 0.0f,
-	-1.0f+offs_x,-1.0f+offs_y, 0.0f
+	{-1.0f+offs_x, 1.0f-offs_y, 0.0f},
+	{ 1.0f-offs_x, 1.0f-offs_y, 0.0f},
+	{ 1.0f-offs_x,-1.0f+offs_y, 0.0f},
+	{-1.0f+offs_x,-1.0f+offs_y, 0.0f}
 };
 static FVF::LIT LOD[4]={
-	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
-	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 1
-	 1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 2
-	-1.0f,-1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 3
+	{{-1.0f, 1.0f, 0.0f},  0xFFFFFFFF, {0.0f,0.0f}}, // F 0
+	{{ 1.0f, 1.0f, 0.0f},  0xFFFFFFFF, {0.0f,0.0f}}, // F 1
+	{{ 1.0f,-1.0f, 0.0f},  0xFFFFFFFF, {0.0f,0.0f}}, // F 2
+	{{-1.0f,-1.0f, 0.0f},  0xFFFFFFFF, {0.0f,0.0f}}, // F 3
 };
 
 bool CEditableObject::Reload()
@@ -169,7 +169,7 @@ void CEditableObject::RenderSingle(const Fmatrix& parent)
     }
 }
 
-void CEditableObject::RenderAnimation(const Fmatrix& parent){
+void CEditableObject::RenderAnimation(const Fmatrix&){
 }
 
 void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, CSurface* surf, u32 color)
@@ -377,7 +377,7 @@ bool CEditableObject::PrepareOMF(IWriter& F)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CEditableObject::OnChangeTransform(PropValue* sender)
+void __fastcall CEditableObject::OnChangeTransform(PropValue*)
 {
 	UI->RedrawScene();
 }

@@ -160,7 +160,7 @@ void CEnvelope::Load_2(IReader& F)
     }
 }
 
-void CEnvelope::SaveA(IWriter& F){
+void CEnvelope::SaveA(IWriter&){
 }
 
 void CEnvelope::LoadA(IReader& F){
@@ -202,8 +202,6 @@ void CEnvelope::LoadA(IReader& F){
     }
 }
 
-static u32 mem_sz = 0;
-
 void CEnvelope::Optimize()
 {	
 	KeyIt it 		= keys.begin();
@@ -225,4 +223,5 @@ void CEnvelope::Optimize()
         keys				= new_keys;
     }
 }
+
 

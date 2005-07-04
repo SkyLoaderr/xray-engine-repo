@@ -31,7 +31,7 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
+void __fastcall TfrmImageLib::FormCreate(TObject*)
 {
 	m_ItemProps 				= TProperties::CreateForm	("",paProperties,alClient);
     m_ItemList					= TItemList::CreateForm		("Items",paItems,alClient);
@@ -41,7 +41,7 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::FormDestroy(TObject *Sender)
+void __fastcall TfrmImageLib::FormDestroy(TObject *)
 {
     TProperties::DestroyForm(m_ItemProps);
     TItemList::DestroyForm	(m_ItemList);
@@ -147,14 +147,14 @@ bool __fastcall TfrmImageLib::HideLib()
     return true;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmImageLib::FormShow(TObject *Sender)
+void __fastcall TfrmImageLib::FormShow(TObject *)
 {
     InitItemsList		();
 	// check window position
 	UI->CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
+void __fastcall TfrmImageLib::FormClose(TObject *, TCloseAction &Action)
 {
 	if (!form) 		return;
     form->Enabled 	= false;
@@ -169,7 +169,6 @@ void TfrmImageLib::InitItemsList()
     
 	ListItemsVec items;
 
-    ListItem* V;
     // fill
 	FS_QueryPairIt it = texture_map.begin();
 	FS_QueryPairIt _E = texture_map.end();
@@ -178,7 +177,7 @@ void TfrmImageLib::InitItemsList()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
+void __fastcall TfrmImageLib::FormKeyDown(TObject*, WORD &Key,
       TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
@@ -193,7 +192,7 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmImageLib::ebOkClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebOkClick(TObject*)
 {
 	if (bFormLocked) return;
 
@@ -202,7 +201,7 @@ void __fastcall TfrmImageLib::ebOkClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebCancelClick(TObject *)
 {
 	if (bFormLocked){
 		ExecCommand(COMMAND_BREAK_LAST_OPERATION);
@@ -224,21 +223,21 @@ void __fastcall TfrmImageLib::RegisterModifiedTHM()
     }
 }
 
-void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *Sender)
+void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *)
 {                     
 	m_ItemProps->RestoreParams(fsStorage);
     m_ItemList->LoadParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *Sender)
+void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *)
 {
 	m_ItemProps->SaveParams(fsStorage);
     m_ItemList->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Are you sure to export association?")==mrNo) return;
 
@@ -257,7 +256,6 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 
 	LockForm				();
 
-    string256 fn;
     FS_QueryPairIt it		= texture_map.begin();
     FS_QueryPairIt _E		= texture_map.end();
 	SPBItem* pb = UI->ProgressStart(texture_map.size(),"Export association");
@@ -279,7 +277,7 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *)
 {
     FS.lock_rescan();
 	m_ItemList->RemoveSelItems(0);
@@ -294,12 +292,12 @@ void TfrmImageLib::DestroyUsedTHM()
     m_THM_Used.clear();
 }
 
-void TfrmImageLib::OnTypeChange(PropValue* prop)
+void TfrmImageLib::OnTypeChange(PropValue* )
 {
 	UpdateProperties();
 }
 
-void TfrmImageLib::OnCubeMapBtnClick(PropValue* value, bool& bModif, bool& bSafe)
+void TfrmImageLib::OnCubeMapBtnClick(PropValue* value, bool& bModif, bool& )
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
@@ -357,7 +355,7 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::paImagePaint(TObject *Sender)
+void __fastcall TfrmImageLib::paImagePaint(TObject *)
 {
 	if (m_THM_Current.size()==1) m_THM_Current.back()->Draw(paImage);
 }

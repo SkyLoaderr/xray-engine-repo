@@ -279,7 +279,7 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Iv
 
 void CUI_Camera::ZoomExtents(const Fbox& bb)
 {
-	Fvector C,D,P;
+	Fvector C,D;
     float R,H1,H2;
     bb.getsphere(C,R);
 	D.mul(m_CamMat.k,-1);

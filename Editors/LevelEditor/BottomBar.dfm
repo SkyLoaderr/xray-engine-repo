@@ -100,9 +100,9 @@ object fraBottomBar: TfraBottomBar
       end
     end
     object paStatusBar: TPanel
-      Left = 176
+      Left = 219
       Top = 1
-      Width = 322
+      Width = 344
       Height = 15
       Align = alClient
       BevelOuter = bvNone
@@ -123,7 +123,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 48
         Top = 0
-        Width = 274
+        Width = 296
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -137,7 +137,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 1
         object cgProgress: TCGauge
-          Left = 145
+          Left = 167
           Top = 2
           Width = 127
           Height = 11
@@ -157,7 +157,7 @@ object fraBottomBar: TfraBottomBar
     object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 175
+      Width = 218
       Height = 15
       Align = alLeft
       BevelOuter = bvNone
@@ -166,10 +166,11 @@ object fraBottomBar: TfraBottomBar
       object ebOptions: TExtBtn
         Left = 0
         Top = 0
-        Width = 73
+        Width = 58
         Height = 15
         Align = alNone
         BevelShow = False
+        CloseWidth = 12
         CloseTransparent = True
         Caption = 'Options'
         Font.Charset = DEFAULT_CHARSET
@@ -183,7 +184,7 @@ object fraBottomBar: TfraBottomBar
         OnMouseDown = ebOptionsMouseDown
       end
       object ebLog: TExtBtn
-        Left = 73
+        Left = 116
         Top = 0
         Width = 34
         Height = 15
@@ -203,7 +204,7 @@ object fraBottomBar: TfraBottomBar
         OnClick = ebLogClick
       end
       object ebStat: TExtBtn
-        Left = 107
+        Left = 150
         Top = 0
         Width = 34
         Height = 15
@@ -223,7 +224,7 @@ object fraBottomBar: TfraBottomBar
         OnClick = ebStatClick
       end
       object ebStop: TExtBtn
-        Left = 141
+        Left = 184
         Top = 0
         Width = 34
         Height = 15
@@ -240,6 +241,26 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         FlatAlwaysEdge = True
         OnClick = ebStopClick
+      end
+      object ebMacro: TExtBtn
+        Left = 58
+        Top = 0
+        Width = 58
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        CloseWidth = 12
+        CloseTransparent = True
+        Caption = 'Macro'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        FlatAlwaysEdge = True
+        OnMouseDown = ebMacroMouseDown
       end
     end
   end
@@ -438,11 +459,6 @@ object fraBottomBar: TfraBottomBar
       Caption = '-'
       GroupIndex = 4
     end
-    object miLogCommands: TMenuItem
-      Caption = 'Log Commands'
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
     object miMuteSounds: TMenuItem
       Caption = 'Mute Sounds'
       GroupIndex = 4
@@ -459,5 +475,23 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem
     end
+  end
+  object pmMacro: TMxPopupMenu
+    Alignment = paCenter
+    AutoHotkeys = maManual
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    OnPopup = pmOptionsPopup
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 5
+    Top = 56
   end
 end

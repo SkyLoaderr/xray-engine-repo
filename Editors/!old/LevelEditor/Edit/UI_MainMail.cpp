@@ -61,7 +61,7 @@ void TUI::OnReceiveMail(LPCSTR msg)
 		_GetItem(msg,0,p[0],' ',"",false);
         if (cnt>1) _GetItems(msg,1,cnt,p[1],' ');
         if (p[0]=="exit"){
-        	ELog.DlgMsg(mtInformation,"'%s EDITOR': Critical update!",AnsiString(UI->EditorName()).UpperCase());
+        	ELog.DlgMsg(mtInformation,"'%s EDITOR': Critical update!",AnsiString(UI->EditorName()).UpperCase().c_str());
             while (1){
             	if (ExecCommand(COMMAND_EXIT)){
 	                ExecCommand(COMMAND_QUIT);
@@ -69,13 +69,13 @@ void TUI::OnReceiveMail(LPCSTR msg)
                 }
             }
         }else if (p[0]=="quit"){
-        	ELog.Msg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(UI->EditorName()).UpperCase());
+        	ELog.Msg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(UI->EditorName()).UpperCase().c_str());
         	ExecCommand(COMMAND_SAVE_BACKUP);
         	ExecCommand(COMMAND_QUIT);
         }else if (p[0]=="info"){
-        	if (cnt>1) ELog.DlgMsg(mtInformation,"'%s EDITOR': %s",AnsiString(UI->EditorName()).UpperCase(),p[1].c_str());
+        	if (cnt>1) ELog.DlgMsg(mtInformation,"'%s EDITOR': %s",AnsiString(UI->EditorName()).UpperCase().c_str(),p[1].c_str());
         }else if (p[0]=="error"){
-        	if (cnt>1) ELog.DlgMsg(mtError,"'%s EDITOR': %s",AnsiString(UI->EditorName()).UpperCase(),p[1].c_str());
+        	if (cnt>1) ELog.DlgMsg(mtError,"'%s EDITOR': %s",AnsiString(UI->EditorName()).UpperCase().c_str(),p[1].c_str());
         }
     }
 }

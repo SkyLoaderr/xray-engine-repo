@@ -277,7 +277,7 @@ void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 				for (u32 idx=0; idx<iCount; idx++){
 					vertBoned1W& v	= vertices[V->vBase+indices[idx]];
 					CBoneData& BD	= Parent->LL_GetData((u16)v.matrix);
-					BD.AppendFace	(ChildIDX,(u16)idx/3);
+					BD.AppendFace	(ChildIDX,(u16)(idx/3));
 				}
 			}else{
 				VERIFY			(*Vertices2W);
@@ -285,9 +285,9 @@ void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 				for (u32 idx=0; idx<iCount; idx++){
 					vertBoned2W& v	= vertices[V->vBase+indices[idx]];
 					CBoneData& BD0	= Parent->LL_GetData((u16)v.matrix0);
-					BD0.AppendFace	(ChildIDX,(u16)idx/3);
+					BD0.AppendFace	(ChildIDX,(u16)(idx/3));
 					CBoneData& BD1	= Parent->LL_GetData((u16)v.matrix1);
-					BD1.AppendFace	(ChildIDX,(u16)idx/3);
+					BD1.AppendFace	(ChildIDX,(u16)(idx/3));
 				}
 			}
 		}
@@ -300,7 +300,7 @@ void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 			for (u32 idx=0; idx<iCount; idx++){
 				vertHW_1W& v	= vertices[indices[idx]];
 				CBoneData& BD	= Parent->LL_GetData(v.get_bone());
-				BD.AppendFace	(ChildIDX,(u16)idx/3);
+				BD.AppendFace	(ChildIDX,(u16)(idx/3));
 			}
 			V->pVertices->Unlock();
 		}
@@ -311,9 +311,9 @@ void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 		for (u32 idx=0; idx<iCount; idx++){
 			vertHW_2W& v	= vertices[indices[idx]];
 			CBoneData& BD0	= Parent->LL_GetData(v.get_bone(0));
-			BD0.AppendFace	(ChildIDX,(u16)idx/3);
+			BD0.AppendFace	(ChildIDX,(u16)(idx/3));
 			CBoneData& BD1	= Parent->LL_GetData(v.get_bone(1));
-			BD1.AppendFace	(ChildIDX,(u16)idx/3);
+			BD1.AppendFace	(ChildIDX,(u16)(idx/3));
 		}
 		R_CHK				(V->pVertices->Unlock());
 						}break;

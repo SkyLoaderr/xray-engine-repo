@@ -49,7 +49,7 @@ bool CEditableObject::LoadBoneData(IReader& F)
             if (n_it!=m_Bones.end()){
                 B->CopyData	(*n_it);
             }else{
-	            ELog.Msg	(mtError,"Can't find bone: '%s'.",(*b_it)->Name());
+	            ELog.Msg	(mtError,"Can't find bone: '%s'.",*(*b_it)->Name());
             	bRes		= false; 
                 break;
             }
@@ -117,7 +117,6 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             Fmatrix& M 		= (*b_it)->_LTransform();
             Fvector p1		= M.c;
             u32 c_joint		= (*b_it)->flags.is(CBone::flSelected)?color_bone_sel_color:color_bone_norm_color;
-            Fvector p2,d; 	d.set	(0,0,1);
             if (EPrefs.object_flags.is(epoDrawJoints))
 	            DU.DrawJoint	(p1,joint_size,c_joint);
             // center of mass
@@ -132,11 +131,13 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
                     DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_norm_cm);
                 }
             }
+/*
             if (0){
 	            M.transform_dir	(d);
     	        p2.mad			(p1,d,(*b_it)->_Length());
         	    DU.DrawLine		(p1,p2,c_joint);
             }
+*/
 	     	if ((*b_it)->Parent()){
 		        Device.SetShader(Device.m_SelectionShader);
 				Fvector& p2 = (*b_it)->Parent()->_LTransform().c;
@@ -277,7 +278,7 @@ void ComputeCylinder(Fcylinder& C, Fobb& B, FvectorVec& V)
     // pow(area,(3/2))/volume
     // 2*Pi*R*H+2*Pi*R*R
 	
-	Fvector axis;
+//	Fvector axis;
     float max_hI   	= flt_min;
     float min_hI   	= flt_max;
     float max_rI   	= flt_min;

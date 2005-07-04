@@ -44,7 +44,7 @@ void ELibrary::OnDestroy()
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++){
     	if (0!=O->second->m_RefCount){
-        	ELog.DlgMsg(mtError,"Object '%s' still referenced.",O->first);
+        	ELog.DlgMsg(mtError,"Object '%s' still referenced.",O->first.c_str());
 	    	R_ASSERT(0==O->second->m_RefCount);
         }
     	xr_delete(O->second);
@@ -122,7 +122,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
     if (F){
         if (m_EditObject->Load(fn.c_str()))	return m_EditObject;
     }else{
-		ELog.Msg(mtError,"Can't find file '%s'",fn);
+		ELog.Msg(mtError,"Can't find file '%s'",fn.c_str());
     }
     xr_delete(m_EditObject);
 	return 0;
@@ -253,7 +253,7 @@ void ELibrary::UnloadEditObject(LPCSTR full_name)
     EditObjPairIt it 	= m_EditObjects.find(full_name);
     if (it!=m_EditObjects.end()){
     	if (0!=it->second->m_RefCount){
-        	ELog.DlgMsg(mtError,"Object '%s' still referenced.",it->first);
+        	ELog.DlgMsg(mtError,"Object '%s' still referenced.",it->first.c_str());
             THROW;
         }
     	m_EditObjects.erase(it);

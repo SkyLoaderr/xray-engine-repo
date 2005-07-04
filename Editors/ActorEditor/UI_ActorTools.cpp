@@ -199,7 +199,7 @@ void CActorTools::Modified()
 
 bool CActorTools::IfModified(){
     if (IsModified()){
-        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",GetEditFileName());
+        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",GetEditFileName().c_str());
         switch(mr){
         case mrYes: if (!ExecCommand(COMMAND_SAVE)) return false; else{m_bObjectModified = false;}break;
         case mrNo: m_bObjectModified = false; break;
@@ -303,7 +303,7 @@ void CActorTools::OnFrame()
         RealUpdateProperties();
 }
 
-void CActorTools::ZoomObject(bool bSelOnly)
+void CActorTools::ZoomObject(BOOL bSelOnly)
 {
 	VERIFY(m_bReady);
     if (m_pEditObject)
@@ -829,7 +829,7 @@ u16 CActorTools::ExtractMotionSlot(LPCSTR full_name, LPCSTR prefix)
 	if (0!=slot_nm){
     	string16 tmp;
         strncpy					(tmp,slot_nm+xr_strlen("\\Slot "),1); tmp[1]=0;
-        slot					= atoi(tmp)-1;
+        slot					= u16(atoi(tmp)-1);
     }
     return slot;
 }

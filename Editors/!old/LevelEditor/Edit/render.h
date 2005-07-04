@@ -39,7 +39,7 @@ class	ECORE_API CRender: public IRender_interface{
     Fmatrix					current_matrix;
 public:
 	// options
-	u32						m_skinning;
+	s32						m_skinning;
 
 	// Data
 	CFrustum				ViewBase;

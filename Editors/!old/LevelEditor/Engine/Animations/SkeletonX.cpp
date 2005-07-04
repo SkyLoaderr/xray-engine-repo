@@ -85,7 +85,7 @@ struct	vertHW_1W
 	}
 	u16 get_bone()
 	{
-		return	(u16)color_get_A(_N_I)/3;
+		return	u16((u16)color_get_A(_N_I)/3);
 	}
 	void get_pos(Fvector& p)
 	{
@@ -134,7 +134,7 @@ struct	vertHW_2W
 	}
 	u16 get_bone(u16 w)
 	{
-		return	(u16)_tc_i[w+2]/3;
+		return	u16((u16)_tc_i[w+2]/3);
 	}
 	void get_pos(Fvector& p)
 	{
@@ -257,8 +257,8 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	// Load vertices
 	R_ASSERT	(data->find_chunk(OGF_VERTICES));
 			
-	u32			hw_bones	= (HW.Caps.geometry.dwRegisters-22)/3;
-	u32			sw_bones	= 0;
+	u16			hw_bones	= u16((HW.Caps.geometry.dwRegisters-22)/3);
+	u16			sw_bones	= 0;
 #ifdef _EDITOR
 	hw_bones	= 0;
 #endif
@@ -340,7 +340,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 
 BOOL	CSkeletonX::has_visible_bones		()
 {
-	if (RM_SINGLE==RenderMode)	return Parent->LL_GetBoneVisible(RMS_boneid)	;
+	if (RM_SINGLE==RenderMode)	return Parent->LL_GetBoneVisible((u16)RMS_boneid)	;
 
 	for (u32 it=0; it<BonesUsed.size(); it++)
 		if (Parent->LL_GetBoneVisible(BonesUsed[it]))	return TRUE	;
@@ -468,3 +468,6 @@ void CSkeletonX::_FillVerticesSoft2W(const Fmatrix& view, CSkeletonWallmark& wm,
 		}
 	}
 }
+
+
+

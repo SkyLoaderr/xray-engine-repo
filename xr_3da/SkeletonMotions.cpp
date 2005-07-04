@@ -54,7 +54,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 #endif
 				if (bRes)		rm_bones[m_idx] = u16(*b_it);
 			}
-			part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
+			part_bone_cnt		= u16(part_bone_cnt + (u16)PART.bones.size());
 		}
 
 #ifdef _EDITOR
@@ -228,7 +228,7 @@ void CMotionDef::Load(IReader* MP, u32 fl)
 	accrue		= Quantize(MP->r_float());
 	falloff		= Quantize(MP->r_float());
 	flags		= (u16)fl;
-	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
+	if (!(flags&esmFX) && (falloff>=accrue)) falloff = u16(accrue-1);
 }
 bool CMotionDef::StopAtEnd()
 {

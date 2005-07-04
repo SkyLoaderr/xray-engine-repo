@@ -58,27 +58,47 @@ enum{
 	COMMAND_UNDO,
 	COMMAND_REDO,
 
+    COMMAND_EDIT_COMMAND_LIST,
     COMMAND_EXECUTE_COMMAND_LIST,
-    COMMAND_TOGGLE_COMMANDS_LOG,
+    COMMAND_LOG_COMMANDS,
+    COMMAND_RUN_MACRO,				// p1 - file name
+    COMMAND_ASSIGN_MACRO,			// p1 - slot, p2 - file_name
 
     COMMAND_MAIN_LAST
 };
 //------------------------------------------------------------------------------
 
-typedef fastdelegate::FastDelegate3<u32,u32,u32&> TECommandEvent;
+class CCommandVar{
+    enum EType{
+        tpStr,
+        tpInt
+    };
+    u32				i;
+    xr_string		s;
+    EType			type;
+public:
+       		     	CCommandVar		():i(0),type(tpInt)			{}
+       		     	CCommandVar		(xr_string str)	:type(tpStr){s=str;}
+            		CCommandVar		(u32 val)		:type(tpInt){i=val;}
+	IC operator 	u32 			()							{VERIFY(type==tpInt);return i;}
+	IC operator 	xr_string 		()							{VERIFY(type==tpStr);return s;}
+    IC bool			IsString		()							{return type==tpStr;}
+    IC bool			IsInteger		()							{return type==tpInt;}
+//	IC operator 	LPCSTR 			()							{VERIFY(type==tpStr);return s.c_str();}
+};
+
+typedef fastdelegate::FastDelegate2<CCommandVar,CCommandVar,CCommandVar> TECommandEvent;
 
 class SECommand;
 
 struct ECORE_API SESubCommand{
-    SECommand* 	parent;
-    LPSTR		desc;
-    u32			p0;
-    u32			p1;
-    xr_shortcut	shortcut;
+    SECommand* 		parent;
+    xr_string		desc;
+    CCommandVar 	p0;
+    CCommandVar 	p1;
+    xr_shortcut		shortcut;
 public:
-                SESubCommand	(LPCSTR d, SECommand* p, u32 _p0, u32 _p1){desc=xr_strdup(d);parent=p;p0=_p0;p1=_p1;}
-                ~SESubCommand	(){xr_free(desc);}
-    IC LPCSTR	Desc			(){return desc&&desc[0]?desc:"";}
+                	SESubCommand	(LPCSTR d, SECommand* p, CCommandVar _p0, CCommandVar _p1){desc=d;parent=p;p0=_p0;p1=_p1;}
 };
 DEFINE_VECTOR	(SESubCommand*,ESubCommandVec,ESubCommandVecIt);
 struct ECORE_API SECommand{
@@ -98,19 +118,20 @@ public:
 					~SECommand		(){xr_free(name);xr_free(desc);}
     IC LPCSTR		Name			(){return name&&name[0]?name:"";}
 	IC LPCSTR		Desc			(){return desc&&desc[0]?desc:"";}
-    void			AppendSubCommand(LPCSTR desc, u32 p0, u32 p1){sub_commands.push_back(xr_new<SESubCommand>(desc,this,p0,p1));}
+    void			AppendSubCommand(LPCSTR desc, CCommandVar p0, CCommandVar p1){sub_commands.push_back(xr_new<SESubCommand>(desc,this,p0,p1));}
 };
 DEFINE_VECTOR(SECommand*,ECommandVec,ECommandVecIt);
 
-ECORE_API u32 			    ExecCommand				(u32 cmd, u32 p1=0, u32 p2=0);
-ECORE_API u32 			    ExecCommand				(const xr_shortcut& val);
+ECORE_API CCommandVar	    ExecCommand				(u32 cmd, CCommandVar p1=0, CCommandVar p2=0);
+ECORE_API CCommandVar	    ExecCommand				(const xr_shortcut& val);
 ECORE_API void			    RegisterCommand 		(u32 cmd, SECommand* cmd_impl);
-ECORE_API void			    RegisterSubCommand 		(SECommand* cmd_impl, LPCSTR desc, u32 p0, u32 p1);
+ECORE_API void			    RegisterSubCommand 		(SECommand* cmd_impl, LPCSTR desc, CCommandVar p0, CCommandVar p1);
 ECORE_API void			    EnableReceiveCommands	();
 ECORE_API ECommandVec&      GetEditorCommands		();
 ECORE_API SESubCommand* 	FindCommandByShortcut	(const xr_shortcut& val);
 ECORE_API BOOL				LoadShortcuts			(CInifile* ini);
 ECORE_API BOOL				SaveShortcuts			(CInifile* ini);
+ECORE_API BOOL				AllowLogCommands		();
 
 #define BIND_CMD_EVENT_S(a) 						fastdelegate::bind<TECommandEvent>(a)
 #define BIND_CMD_EVENT_C(a,b)						fastdelegate::bind<TECommandEvent>(a,&b)

@@ -53,7 +53,7 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 
 	Device.SetHandle		(Handle,D3DWindow->Handle);
     EnableReceiveCommands	();
-    if (!ExecCommand(COMMAND_INITIALIZE,(int)D3DWindow,(int)paRender)){ 
+    if (!ExecCommand(COMMAND_INITIALIZE,(u32)D3DWindow,(u32)paRender)){ 
     	FlushLog			();
     	TerminateProcess(GetCurrentProcess(),-1);
     }
@@ -251,6 +251,7 @@ void __fastcall TfrmMain::paRenderResize(TObject *Sender)
 	ExecCommand(COMMAND_RENDER_RESIZE);
 }
 //---------------------------------------------------------------------------
+
 
 
 

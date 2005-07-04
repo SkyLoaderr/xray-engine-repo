@@ -161,7 +161,6 @@ void TfrmSoundLib::InitItemsList()
 
 	ListItemsVec items;
 
-    ListItem* V;
     // fill items
 	FS_QueryPairIt it = sound_map.begin();
 	FS_QueryPairIt _E = sound_map.end();

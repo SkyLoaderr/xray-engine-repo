@@ -17,7 +17,7 @@ public:
 	}
 };
 
-void	CResourceManager::OnDeviceDestroy(BOOL bKeepTextures)
+void	CResourceManager::OnDeviceDestroy(BOOL )
 {
 	if (Device.bReady)	return;
 	xr_delete			(m_description);

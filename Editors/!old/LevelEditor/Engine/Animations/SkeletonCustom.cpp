@@ -266,7 +266,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 
 	// after load process
 	{
-		for (u16 child_idx=0; child_idx<children.size(); child_idx++)
+		for (u16 child_idx=0; child_idx<(u16)children.size(); child_idx++)
 			LL_GetChild(child_idx)->AfterLoad	(this,child_idx);
 	}
 
@@ -399,12 +399,12 @@ void CKinematics::LL_SetBonesVisible(u64 mask)
 void CKinematics::Visibility_Update	()
 {
 	// check visible
-	for (u32 _it=0; _it<children.size(); _it++)				{
-		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children[_it]); VERIFY (_c)	;
+	for (u32 c_it=0; c_it<children.size(); c_it++)				{
+		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children[c_it]); VERIFY (_c)	;
 		if				(!_c->has_visible_bones())	{
 			// move into invisible list
-			children_invisible.push_back	(children[_it]);	
-			swap(children[_it],children.back());
+			children_invisible.push_back	(children[c_it]);	
+			swap(children[c_it],children.back());
 			children.pop_back				();
 		}
 	}

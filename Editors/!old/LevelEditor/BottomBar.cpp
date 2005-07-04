@@ -31,7 +31,6 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
     if (mi){
         mi->Checked = !mi->Checked;
         if (mi==miDrawGrid)     			ExecCommand(COMMAND_TOGGLE_GRID);
-        else if (mi==miLogCommands) 		ExecCommand(COMMAND_TOGGLE_COMMANDS_LOG);
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
         else if (mi==miMuteSounds)			psDeviceFlags.set(rsMuteSounds,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
@@ -165,7 +164,6 @@ void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
     miFog->Checked					= psDeviceFlags.is(rsFog);
     miDrawGrid->Checked				= psDeviceFlags.is(rsDrawGrid);
     miDrawSafeRect->Checked			= psDeviceFlags.is(rsDrawSafeRect);
-    miLogCommands->Checked			= psDeviceFlags.is(rsCommandsLog);
 }
 //---------------------------------------------------------------------------
 
@@ -235,6 +233,86 @@ void TfraBottomBar::RedrawBar()
 	        cgProgress->Progress	= 0;
         }
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraBottomBar::MacroAssignClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_ASSIGN_MACRO,((TMenuItem*)Sender)->Tag,0);
+}
+//---------------------------------------------------------------------------
+void __fastcall TfraBottomBar::MacroClearClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_ASSIGN_MACRO,((TMenuItem*)Sender)->Tag,xr_string(""));
+}
+//---------------------------------------------------------------------------
+void __fastcall TfraBottomBar::MacroExecuteClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_RUN_MACRO,((TMenuItem*)Sender)->Tag,0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraBottomBar::MacroLogCommandsClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_LOG_COMMANDS,((TMenuItem*)Sender)->Checked,0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraBottomBar::MacroEditCommandListClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_EDIT_COMMAND_LIST);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraBottomBar::ebMacroMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	SECommand* CMD 	= GetEditorCommands()[COMMAND_RUN_MACRO]; VERIFY(CMD);
+    // fill macroses
+	pmMacro->Items->Clear();
+    TMenuItem* mi;
+    for (u32 k=0; k<CMD->sub_commands.size(); ++k){
+        SESubCommand* SUB   = CMD->sub_commands[k];
+        BOOL bValid		= !xr_string(SUB->p0).empty();
+        mi				= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption		= AnsiString().sprintf("%d: %s",k+1,bValid?xr_string(SUB->p0).c_str():"<empty>");
+        TMenuItem* e	= xr_new<TMenuItem>((TComponent*)0);
+        e->Caption 		= "Execute";
+        e->OnClick		= MacroExecuteClick;
+        e->Enabled		= bValid;
+        e->Tag			= k;
+        e->ShortCut		= SUB->shortcut.hotkey;
+        TMenuItem* a	= xr_new<TMenuItem>((TComponent*)0);
+        a->Caption 		= "Assign";
+        a->OnClick		= MacroAssignClick;
+        a->Tag			= k;
+        TMenuItem* c	= xr_new<TMenuItem>((TComponent*)0);
+        c->Caption 		= "Clear";
+        c->OnClick		= MacroClearClick;
+        c->Tag			= k;
+		mi->Add			(e);		
+		mi->Add			(a);		
+		mi->Add			(c);		
+        pmMacro->Items->Add(mi);
+    }
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption		= "-";
+    pmMacro->Items->Add(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption		= "Edit Command List...";
+    mi->OnClick		= MacroEditCommandListClick;
+    pmMacro->Items->Add(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption		= "Log Commands";
+    mi->AutoCheck	= true;
+    mi->Checked		= AllowLogCommands();
+    mi->OnClick		= MacroLogCommandsClick;
+    pmMacro->Items->Add(mi);
+	// popup menu    
+    POINT pt;
+    GetCursorPos	(&pt);
+    pmMacro->Popup	(pt.x,pt.y);
+    TExtBtn* btn 	= dynamic_cast<TExtBtn*>(Sender); VERIFY(btn); btn->MouseManualUp();
 }
 //---------------------------------------------------------------------------
 

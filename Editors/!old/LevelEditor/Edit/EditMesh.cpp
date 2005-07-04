@@ -207,7 +207,7 @@ void CEditableMesh::GenerateSVertices()
                 if (VM.type==vmtWeight){
                     wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name.c_str()),VM.getW(vmpt_it->index)));
                     if (wb.back().bone<=-1){
-                        ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
+                        ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",*VM.name);
                         m_SVertices.clear();
                         Debug.fatal("Editor crashed.");
                         return;
@@ -224,15 +224,15 @@ void CEditableMesh::GenerateSVertices()
                 	Debug.fatal("Vertex has't any weights attached.");
                 break;
                 case 1:{
-                    SV.bone0 	= wb[0].bone;
+                    SV.bone0 	= (u16)wb[0].bone;
                     SV.bone1 	= BI_NONE;
                     SV.w	   	= 0.f;
                     SV.offs		= P;
                     SV.norm		= N;
                 }break;
                 case 2:{
-                    SV.bone0 	= wb[0].bone;
-                    SV.bone1 	= wb[1].bone;
+                    SV.bone0 	= (u16)wb[0].bone;
+                    SV.bone1 	= (u16)wb[1].bone;
                     SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
                     SV.offs		= P;
                     SV.norm		= N;
@@ -254,7 +254,7 @@ CSurface*	CEditableMesh::GetSurfaceByFaceID(u32 fid)
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         IntIt f_it = std::lower_bound(face_lst.begin(),face_lst.end(),fid);
-        if ((f_it!=face_lst.end())&&(*f_it==fid)) return sp_it->first;
+        if ((f_it!=face_lst.end())&&(*f_it==(int)fid)) return sp_it->first;
 //.		if (std::find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
 	}
     return 0;
@@ -315,7 +315,7 @@ float CEditableMesh::CalculateSurfacePixelArea	(CSurface* surf, bool bMatch2Side
     float area				= 0;
     IntVec& 	pol_lst = sp_it->second;
     for (int k=0; k<int(pol_lst.size()); k++){
-        st_Face& F		= m_Faces[pol_lst[k]];
+//		st_Face& F		= m_Faces[pol_lst[k]];
         Fvector 		c,e01,e02;
         const Fvector2* tc[3];
         GetFaceTC		(pol_lst[k],tc);

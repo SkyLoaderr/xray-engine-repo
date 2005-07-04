@@ -43,7 +43,7 @@ void CEditableMesh::SaveMesh(IWriter& F){
     F.w				(&*m_Points.begin(), m_Points.size()*sizeof(Fvector));
     for (AdjIt a_it=m_Adjs.begin(); a_it!=m_Adjs.end(); a_it++){
     	int sz 		= a_it->size(); VERIFY(sz<=255);
-		F.w_u8		(sz);
+		F.w_u8		((u8)sz);
         F.w			(&*a_it->begin(), sizeof(int)*sz);
     }
 	F.close_chunk     ();
@@ -64,13 +64,13 @@ void CEditableMesh::SaveMesh(IWriter& F){
 	F.w_u32			(m_VMRefs.size());
     for (VMRefsIt r_it=m_VMRefs.begin(); r_it!=m_VMRefs.end(); r_it++){
     	int sz 		= r_it->size(); VERIFY(sz<=255);
-		F.w_u8		(sz);
+		F.w_u8		((u8)sz);
         F.w			(r_it->begin(), sizeof(st_VMapPt)*sz);
     }
 	F.close_chunk	();
 
 	F.open_chunk	(EMESH_CHUNK_SFACE);
-	F.w_u16			(m_SurfFaces.size()); 	/* surface polygon count*/
+	F.w_u16			((u16)m_SurfFaces.size()); 	/* surface polygon count*/
 	for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
     	F.w_stringZ	(plp_it->first->_Name()); 	/* surface name*/
     	IntVec& 	pol_lst = plp_it->second;
@@ -84,7 +84,7 @@ void CEditableMesh::SaveMesh(IWriter& F){
     for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
         F.w_stringZ	((*vm_it)->name);
         F.w_u8		((*vm_it)->dim);
-		F.w_u8		((*vm_it)->polymap);
+		F.w_u8		((u8)(*vm_it)->polymap);
         F.w_u8		((*vm_it)->type);
         F.w_u32		((*vm_it)->size());
         F.w			((*vm_it)->getVMdata(), (*vm_it)->VMdatasize());

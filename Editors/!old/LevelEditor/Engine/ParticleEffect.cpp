@@ -9,7 +9,7 @@ using namespace PS;
 const u32	PS::uDT_STEP 	= 33;
 const float	PS::fDT_STEP 	= float(uDT_STEP)/1000.f;
 
-void PS::OnEffectParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
+void PS::OnEffectParticleBirth(void* owner, u32 , PAPI::Particle& m, u32 )
 {
 	CParticleEffect* PE = static_cast<CParticleEffect*>(owner); VERIFY(PE);
     CPEDef* PED			= PE->GetDefinition(); 
@@ -20,7 +20,7 @@ void PS::OnEffectParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 id
             m.flags.set(Particle::ANIMATE_CCW,TRUE);
     }
 }
-void PS::OnEffectParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
+void PS::OnEffectParticleDead(void* , u32 , PAPI::Particle& , u32 )
 {
 //	CPEDef* PE = static_cast<CPEDef*>(owner);
 }
@@ -174,7 +174,7 @@ u32 CParticleEffect::ParticlesCount()
 //------------------------------------------------------------------------------
 // Render
 //------------------------------------------------------------------------------
-void CParticleEffect::Copy(IRender_Visual* pFrom)
+void CParticleEffect::Copy(IRender_Visual* )
 {
 	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }
@@ -246,7 +246,7 @@ IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, const Fvector& dir, const
 	pv->set		(c.x+pos.x,c.y+pos.y,c.z+pos.z, clr, rb.x,rb.y);	pv++;
 	pv->set		(b.x+pos.x,b.y+pos.y,b.z+pos.z,	clr, rb.x,lt.y);	pv++;
 }
-void CParticleEffect::Render(float LOD)
+void CParticleEffect::Render(float )
 {
 	u32			dwOffset,dwCount;
 	// Get a pointer to the particles in gp memory

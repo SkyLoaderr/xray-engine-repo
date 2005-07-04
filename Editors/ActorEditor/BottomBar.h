@@ -69,7 +69,8 @@ __published:	// IDE-managed Components
 	TMenuItem *miWeather;
 	TMenuItem *miWeatherNone;
 	TMenuItem *N6;
-	TMenuItem *miLogCommands;
+	TExtBtn *ebMacro;
+	TMxPopupMenu *pmMacro;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);
@@ -80,7 +81,14 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall pmOptionsPopup(TObject *Sender);
 	void __fastcall miWeatherClick(TObject *Sender);
+	void __fastcall ebMacroMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 private:	// User declarations
+	void __fastcall MacroAssignClick(TObject *Sender);
+	void __fastcall MacroClearClick(TObject *Sender);
+	void __fastcall MacroExecuteClick(TObject *Sender);
+	void __fastcall MacroLogCommandsClick(TObject *Sender);
+	void __fastcall MacroEditCommandListClick(TObject *Sender);
 public:		// User declarations
     __fastcall TfraBottomBar(TComponent* Owner);
     void RefreshBar(){;}

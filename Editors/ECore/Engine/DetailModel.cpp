@@ -38,7 +38,7 @@ void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest,
 		LPDWORD	dit		= LPDWORD(iDest);
 		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
 		if		(number_indices&1)	
-			iDest[number_indices-1]=indices[number_indices-1]+u16(iOffset);
+			iDest[number_indices-1]=u16(indices[number_indices-1]+u16(iOffset));
 	}
 }
 
@@ -67,7 +67,7 @@ void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest,
 		LPDWORD	dit		= LPDWORD(iDest);
 		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
 		if		(number_indices&1)	
-			iDest[number_indices-1]=indices[number_indices-1]+u16(iOffset);
+			iDest[number_indices-1]=u16(indices[number_indices-1]+u16(iOffset));
 	}
 }
 
@@ -87,7 +87,7 @@ void CDetail::Load		(IReader* S)
 	number_indices	= S->r_u32	();
 	R_ASSERT		(0==(number_indices%3));
 	
-	// Vertices
+	// Vertices                             
 	u32				size_vertices		= number_vertices*sizeof(fvfVertexIn); 
 	vertices		= (CDetail::fvfVertexIn *)	xr_malloc	(size_vertices);
 	S->r			(vertices,size_vertices);
@@ -100,7 +100,7 @@ void CDetail::Load		(IReader* S)
 	// Validate indices
 #ifdef DEBUG
 	for (u32 idx = 0; idx<number_indices; idx++)
-		R_ASSERT	(indices[idx]<number_vertices);
+		R_ASSERT	(indices[idx]<(u16)number_vertices);
 #endif
 
 	// Calc BB & SphereRadius
