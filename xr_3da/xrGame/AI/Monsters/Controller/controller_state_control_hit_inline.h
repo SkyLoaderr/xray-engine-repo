@@ -122,3 +122,5 @@ void CStateControllerControlHitAbstract::execute_hit_fire()
 	if (object->EnemyMan.see_enemy_now()) object->control_hit();
 }
 
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateControllerControlHitAbstract
