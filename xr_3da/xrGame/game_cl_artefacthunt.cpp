@@ -320,6 +320,9 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 
 	inherited::shedule_Update		(dt);
 
+	if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+		HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
+
 	switch (phase)
 	{
 	case GAME_PHASE_INPROGRESS:
@@ -388,6 +391,12 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 									teams[(lt==1)?1:0].score, 
 									artefactsNum);
 					m_game_ui->SetScoreCaption(S);
+
+					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+					{
+						sprintf(S, "%d", artefactsNum);
+						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
+					}
 				};
 	/*
 			if ( (artefactBearerID==0))// && (artefactID!=0) )
@@ -413,8 +422,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 					};
 				};
 			*/
-			};
-			
+			};			
 		}break;
 	case GAME_PHASE_TEAM1_ELIMINATED:
 		{

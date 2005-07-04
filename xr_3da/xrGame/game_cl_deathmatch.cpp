@@ -328,6 +328,9 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		m_game_ui->SetFragsAndPlaceCaption("");
 	};
 
+	if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+		HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
+
 	switch (Phase())
 	{
 	case GAME_PHASE_INPROGRESS:
@@ -448,6 +451,14 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				};
 				*/
 				//-----------------------------------------------------
+				if (fraglimit)
+				{
+					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+					{
+						string64 S; sprintf(S, "%d", fraglimit);
+						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("S");
+					}
+				}
 			};
 		}break;
 	case GAME_PHASE_PENDING:

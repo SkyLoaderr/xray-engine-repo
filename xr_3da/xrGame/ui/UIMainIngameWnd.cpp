@@ -181,7 +181,7 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 4, &UIPdaOnline);
 	if (GameID() != GAME_SINGLE)
 	{
-		UIPdaOnline.Show(false);
+//		UIPdaOnline.Show(false);
 	}
 
 	// Для информационных сообщений
@@ -276,6 +276,27 @@ void CUIMainIngameWnd::Init()
 	{
 		AttachChild(&UIMoneyIndicator);
 		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
+
+		if (GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
+		{
+			AttachChild(&UITeam1Sign);
+			AttachChild(&UITeam2Sign);
+			xml_init.InitStatic(uiXml, "t1_static", 0, &UITeam1Sign);
+			xml_init.InitStatic(uiXml, "t2_static", 0, &UITeam2Sign);
+
+			AttachChild(&UITeam1Score);
+			AttachChild(&UITeam2Score);
+			xml_init.InitStatic(uiXml, "t1_score", 0, &UITeam1Score);
+			xml_init.InitStatic(uiXml, "t2_score", 0, &UITeam2Score);
+
+			UITeam1Score.SetText("0");
+			UITeam2Score.SetText("0");
+
+			UITeam1Sign.Show(false);
+			UITeam2Sign.Show(false);
+			UITeam1Score.Show(false);
+			UITeam2Score.Show(false);
+		}
 	}
 
 	// Flashing icons initialize

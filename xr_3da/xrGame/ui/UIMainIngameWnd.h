@@ -135,6 +135,8 @@ protected:
 
 	// Для мультиплеера выводим денежки
 	CUIMultiTextStatic	UIMoneyIndicator;
+	CUIStatic			UITeam1Sign, UITeam1Score;
+	CUIStatic			UITeam2Sign, UITeam2Score;
 	
 	//список текстур, задаваемых извне, которые будут отрисованы
 	//на текущем кадре
@@ -144,6 +146,7 @@ public:
 	void ChangeTotalMoneyIndicator(shared_str newMoneyString);
 	// Показать (с анимацией) помледнте заработанные/отняные денежки
 	void DisplayMoneyChange(shared_str deltaMoney);
+	CUIStatic*	GetPDAOnline	() { return &UIPdaOnline; };
 protected:
 
 	// Надписи armor & health
