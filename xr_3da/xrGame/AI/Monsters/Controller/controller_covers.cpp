@@ -43,15 +43,18 @@ void CControllerCoverEvaluator::initialize(const Fvector &start_position)
 {
 	inherited::initialize	(start_position);
 	m_current_distance		= m_start_position.distance_to(m_enemy_position);
-
+#ifdef DEBUG
 	DBG().level_info(this).clear();
+#endif
 }
 
 
 void CControllerCoverEvaluator::evaluate(CCoverPoint *cover_point, float weight)
 {
+#ifdef DEBUG
 	DBG().level_info(this).add_item(cover_point->position(), D3DCOLOR_XRGB(0,255,0));
-	
+#endif
+
 	if (fis_zero(weight))
 		return;
 

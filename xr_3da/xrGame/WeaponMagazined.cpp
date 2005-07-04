@@ -295,7 +295,15 @@ void CWeaponMagazined::ReloadMagazine()
 	else
 		m_ammoType = 0;
 
-	VERIFY((u32)iAmmoElapsed == m_magazine.size());
+//	VERIFY((u32)iAmmoElapsed == m_magazine.size());
+	if((u32)iAmmoElapsed != m_magazine.size()){
+		Msg("iAmmoElapsed = %d, m_magazine.size() = %d", iAmmoElapsed, m_magazine.size() );	
+		Msg("weapon=%s",*cNameSect());
+		if(H_Parent()){
+			Msg("owner=%s",*H_Parent()->cNameSect());
+		}
+		VERIFY((u32)iAmmoElapsed == m_magazine.size());
+	}
 
 	//нет патронов для перезарядки
 	if(!m_pAmmo && !unlimited_ammo() ) return;

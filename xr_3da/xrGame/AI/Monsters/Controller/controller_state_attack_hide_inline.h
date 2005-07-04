@@ -73,15 +73,19 @@ bool CStateControllerHideAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 void CStateControllerHideAbstract::select_target_point()
 {
+#ifdef DEBUG	
 	DBG().level_info(this).clear();
-	
+#endif
+
 	object->m_ce_best->setup	(Level().CurrentEntity()->Position(),10.f,30.f);
 	CCoverPoint					*point = ai().cover_manager().best_cover(object->Position(),30.f,*object->m_ce_best,CControllerCoverPredicate());
 	VERIFY(point);
 
+
 	target.node					= point->level_vertex_id();
 	target.position				= point->position();
 
+#ifdef DEBUG
 	Fvector cur_pos = point->position();
 	float	r = 0.5f;
 	for (u32 i = 0; i< 5; i++) {
@@ -89,6 +93,7 @@ void CStateControllerHideAbstract::select_target_point()
 		DBG().level_info(this).add_item(cur_pos, r+0.05f, D3DCOLOR_XRGB(0,0,255));
 		cur_pos.mad(Fvector().set(0.f,1.f,0.f), r * 2);
 	}
+#endif
 
 }
 
