@@ -29,7 +29,7 @@ function evaluator_danger:evaluate()
 	end
 
 	best_danger = self.object:best_danger()
-	db.storage[self.object:id()].enemy = best_danger
+	db.storage[self.object:id()].enemy = best_danger:object()
 	
 	-- отсеиваем по настройке combat_ignore/danger
 	local overrides = xr_logic.generic_scheme_overrides(self.object)
