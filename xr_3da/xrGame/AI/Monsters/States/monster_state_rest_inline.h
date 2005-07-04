@@ -112,3 +112,5 @@ void CStateMonsterRestAbstract::execute()
 	prev_substate = current_substate;
 }
 
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateMonsterRestAbstract
