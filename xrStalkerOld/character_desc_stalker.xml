@@ -187,6 +187,7 @@
 		<actor_dialog>agr_krot_ask_about_gunslinger</actor_dialog>
 		<actor_dialog>agr_krot_general_info</actor_dialog>
 		<actor_dialog>agr_krot_gunslinger_secret</actor_dialog>
+		<actor_dialog>agr_krot_about_gunslinger_cache</actor_dialog>
 		<actor_dialog>agr_krot_tunnel</actor_dialog>
 	</specific_character>
 
