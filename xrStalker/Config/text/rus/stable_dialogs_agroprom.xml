@@ -87,6 +87,9 @@
     <string id="agr_krot_gunslinger_secret_10">
         <text>За твою помощь, я расскажу тебе, Серый тебя не обманул, вот флешка с инфой где находится тайник Стрелка.</text>
     </string>
+    <string id="agr_krot_help_10">
+        <text>Помоги!</text>
+    </string>
     <string id="agr_krot_tunnel_0">
         <text>Что это за дыра в земле?</text>
     </string>
