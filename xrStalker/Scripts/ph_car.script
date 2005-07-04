@@ -76,6 +76,7 @@ function action_car:__init(obj, storage)
 	self.object = obj
 	self.st = storage
 	self.car = self.object:get_car()
+	self.car:dbg_create_plots()
 	if self.car:HasWeapon() then
 	  printf("car <fire>: car has weapon.")
 	  self.car:Action(CCar.eWpnActivate,1)
