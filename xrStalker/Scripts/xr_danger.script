@@ -29,6 +29,11 @@ function evaluator_danger:evaluate()
 	end
 
 	best_danger = self.object:best_danger()
+	-- проверка на денжер.
+	if best_danger == nil then
+		return true
+	end
+
 	db.storage[self.object:id()].enemy = best_danger:object()
 	
 	-- отсеиваем по настройке combat_ignore/danger
@@ -42,10 +47,6 @@ function evaluator_danger:evaluate()
 	end
 
 
-	-- проверка на денжер.
-	if best_danger == nil then
-		return true
-	end
 
 	if self.object:best_enemy() then
 		return true
