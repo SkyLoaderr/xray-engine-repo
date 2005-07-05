@@ -64,13 +64,15 @@ function options_dialog:InitControls()
 	self.dlg_video_adv:InitControls(55,40, xml, self)
 	self.dlg_video_adv:Show(false)
 	self.dialog:AttachChild(self.dlg_video_adv)
-	
-	-- SET DEFAULT VALUES FOR CONTROLS	
+end
+
+function options_dialog:UpdateControls()
 	local opt = COptionsManager()
 	opt:SetCurrentValues("mm_opt_video")
 	opt:SetCurrentValues("mm_opt_sound")
 	opt:SetCurrentValues("mm_opt_controls")
 end
+
 
 function options_dialog:InitCallBacks()
 	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,	self)

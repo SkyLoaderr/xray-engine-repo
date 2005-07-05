@@ -157,7 +157,7 @@ function main_menu:OnButton_new_hard_game()
 	console:execute("start server(all/single/alife/new) client(localhost)")
 --	console:execute("start server(andy_test/single) client(localhost)")
 --	console:execure("start server(fog_net/dethmatch) client(localhost")
-	get_console():execute("main_menu off")
+--	get_console():execute("main_menu off")
 
 end
 
@@ -176,10 +176,10 @@ function main_menu:OnButton_save_clicked()
 end
 
 function main_menu:OnButton_findsrv()
-	if self.mp_dlg == nil then
-		self.mp_dlg = ui_mp_main.mp_main() --ui_multiplayer_find.multiplayer_find_dialog()
-	end
-	self:GetHolder():start_stop_menu(self.mp_dlg, true)
+--	if self.mp_dlg == nil then
+--		self.mp_dlg = ui_mp_main.mp_main() --ui_multiplayer_find.multiplayer_find_dialog()
+--	end
+--	self:GetHolder():start_stop_menu(self.mp_dlg, true)
 end
 
 function main_menu:OnButton_createsrv()
@@ -207,12 +207,15 @@ function main_menu:OnButton_options_clicked()
 	if self.opt_dlg == nil then
 		self.opt_dlg = ui_mm_opt_main.options_dialog()
 	end
+	self.opt_dlg:UpdateControls()
 	self:GetHolder():start_stop_menu(self.opt_dlg, true)
 end
 
 function main_menu:OnButton_load_clicked()
-	local dlg = ui_load_dialog.load_dialog()
-	self:GetHolder():start_stop_menu(dlg, true)
+	if self.load_dlg == nil then
+		self.load_dlg = ui_load_dialog.load_dialog()
+	end
+	self:GetHolder():start_stop_menu(self.load_dlg, true)
 end
 
 function main_menu:OnButton_multiplayer_clicked()
@@ -221,7 +224,8 @@ function main_menu:OnButton_multiplayer_clicked()
 	if self.mp_dlg == nil then
 		self.mp_dlg = ui_mp_main.mp_main() --ui_multiplayer_find.multiplayer_find_dialog()
 	end
-	self:GetHolder():start_stop_menu(self.mp_dlg, true)
+	self.mp_dlg:UpdateControls()
+	self:GetHolder():start_stop_menu(self.mp_dlg, true)	
 end
 
 function main_menu:OnButton_quit_clicked()	
