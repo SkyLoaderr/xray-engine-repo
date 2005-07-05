@@ -87,5 +87,6 @@ void CUITrackBar::UpdatePos(){
 	float free_space = window_width - slider_width;
 	Fvector2 pos = m_pSlider->GetWndPos();
     pos.x = (m_val - m_min)*free_space/(m_max - m_min);
-	m_pSlider->SetWndPos(pos);	
+	m_pSlider->SetWndPos(pos);
+	SaveValue();
 }
