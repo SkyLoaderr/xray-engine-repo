@@ -20,6 +20,13 @@
 #include "actor.h"
 #include "huditem.h"
 #include "ui/UIDialogWnd.h"
+#include "clsid_game.h"
+
+#ifdef DEBUG
+#	include "../../xr_input.h"
+	extern void try_change_current_entity();
+	extern void restore_actor();
+#endif
 
 bool g_bDisableAllInput = false;
 extern	float	g_fTimeFactor;
@@ -166,6 +173,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 				CObject *tpObject = CurrentEntity();
 				CObject *__I = Objects.o_get_by_iterator(i);
 				CObject **I = &__I;
+				
 				SetEntity(*I);
 				if (tpObject != *I)
 				{
@@ -195,6 +203,15 @@ void CLevel::IR_OnKeyboardPress	(int key)
 			}
 		}
 		return;
+	}
+	case MOUSE_1: {
+		if (pInput->iGetAsyncKeyState(DIK_LALT)) {
+			if (CurrentEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
+				try_change_current_entity	();
+			else
+				restore_actor				();
+		}
+		break;
 	}
 	/**/
 #endif
