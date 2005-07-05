@@ -6687,31 +6687,6 @@
 								RelativePath=".\game_news.h">
 							</File>
 						</Filter>
-						<Filter
-							Name="map"
-							Filter="">
-							<File
-								RelativePath=".\map_location.cpp">
-							</File>
-							<File
-								RelativePath=".\map_location.h">
-							</File>
-							<File
-								RelativePath=".\map_location_defs.h">
-							</File>
-							<File
-								RelativePath=".\map_manager.cpp">
-							</File>
-							<File
-								RelativePath=".\map_manager.h">
-							</File>
-							<File
-								RelativePath=".\map_spot.cpp">
-							</File>
-							<File
-								RelativePath=".\map_spot.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="inventory"
@@ -8026,6 +8001,31 @@
 								RelativePath=".\AmebaZone.h">
 							</File>
 						</Filter>
+					</Filter>
+					<Filter
+						Name="map"
+						Filter="">
+						<File
+							RelativePath=".\map_location.cpp">
+						</File>
+						<File
+							RelativePath=".\map_location.h">
+						</File>
+						<File
+							RelativePath=".\map_location_defs.h">
+						</File>
+						<File
+							RelativePath=".\map_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\map_manager.h">
+						</File>
+						<File
+							RelativePath=".\map_spot.cpp">
+						</File>
+						<File
+							RelativePath=".\map_spot.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
