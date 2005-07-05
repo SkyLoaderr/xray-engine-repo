@@ -164,8 +164,8 @@ protected:
 //.	bool						LoadMotions				(LPCSTR N, IReader *data);
 public:
 #ifdef DEBUG
-	LPCSTR						LL_MotionDefName_dbg	(u16	ID);
-	LPCSTR						LL_MotionDefName_dbg	(LPVOID ptr);
+	LPCSTR						LL_MotionDefName_dbg	(MotionID	ID);
+//	LPCSTR						LL_MotionDefName_dbg	(LPVOID		ptr);
 #endif
 #ifdef _EDITOR
     u32							LL_CycleCount	(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].cycle()->size(); return cnt;}

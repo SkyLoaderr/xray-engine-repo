@@ -54,18 +54,16 @@ void	CBoneDataAnimated::Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle)
 }
 
 #ifdef DEBUG
-LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(u16	ID)
+LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(MotionID ID)
 {
-/*
-//.
-	accel_map::iterator _I, _E=motions.motion_map()->end();
-	for (_I	= motions.motion_map()->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
-*/
+	shared_motions& s_mots	= m_Motions[ID.slot];
+	accel_map::iterator _I, _E=s_mots.motion_map()->end();
+	for (_I	= s_mots.motion_map()->begin(); _I!=_E; ++_I)	if (_I->second==ID.idx) return *_I->first;
 	return 0;
 }
+/*
 LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 {
-/*
 //.
 	// cycles
 	mdef::const_iterator I,E;
@@ -76,9 +74,9 @@ LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 	I = motions.fx()->begin(); 
 	E = motions.fx()->end(); 
 	for ( ; I != E; ++I) if (&(*I).second == ptr) return *(*I).first;
-*/
 	return 0;
 }
+*/
 #endif
 
 //////////////////////////////////////////////////////////////////////
