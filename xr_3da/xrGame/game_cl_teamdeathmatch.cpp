@@ -277,9 +277,6 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 				{
 					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 					{
-						string256 S = "";
-						if (fraglimit) sprintf(S, "%d", fraglimit);
-						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
 						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
 					}
 				};

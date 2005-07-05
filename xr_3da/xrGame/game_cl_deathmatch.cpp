@@ -456,7 +456,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 					{
 						string64 S; sprintf(S, "%d", fraglimit);
-						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("S");
+						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
 					}
 				}
 			};
