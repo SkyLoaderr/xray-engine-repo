@@ -430,6 +430,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			xr_free(Levels[i].name	);
 		}
 	} else if (E==eStart) {
+		Console->Execute("main_menu off");
 		Console->Hide();
 		LPSTR		op_server		= LPSTR	(P1);
 		LPSTR		op_client		= LPSTR	(P2);
@@ -451,6 +452,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		} else {
 			Msg				("! Failed to start client. Check the connection or level existance.");
 			DEL_INSTANCE	(g_pGameLevel);
+			Console->Execute("main_menu on");
 		}
 	} else if (E==eDisconnect) {
 		if (g_pGameLevel) {
