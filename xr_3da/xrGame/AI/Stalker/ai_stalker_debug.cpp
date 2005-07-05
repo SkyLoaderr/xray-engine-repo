@@ -193,6 +193,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("controls");
 	// animations
 	HUD().Font().pFontSmall->OutNext	("%sanimations",indent);
+
 	HUD().Font().pFontSmall->OutNext	("%s%shead        : [%s][%f]",indent,indent,
 		animation_name(this,animation().head().animation()),
 		animation().head().blend() ? animation().head().blend()->timeCurrent : 0.f
@@ -276,6 +277,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			sight_type					= "cover look over";
 			break;
 		}
+		default : NODEFAULT;
 	}
 
 	HUD().Font().pFontSmall->OutNext	("%s%stype            : %s",indent,indent,sight_type);
@@ -297,7 +299,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			break;
 		}
 		case SightManager::eSightTypeObject : {
-			HUD().Font().pFontSmall->OutNext	("%s%sobject         : [%s][%f][%f][%f]",indent,indent,*sight().current_action().object().cName(),VPUSH(sight().current_action().object().Position()));
+			HUD().Font().pFontSmall->OutNext	("%s%sobject         : %s",indent,indent,*sight().current_action().object().cName());
+			HUD().Font().pFontSmall->OutNext	("%s%sposition       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().object().Position()));
 			break;
 		}
 		case SightManager::eSightTypeCover : {
@@ -316,11 +319,67 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			sight_type					= "cover look over";
 			break;
 		}
+		default : NODEFAULT;
 	}
 
 	// movement
 	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("%smovement",indent);
+
+	LPCSTR								mental_state = "invalid";
+	switch (movement().mental_state()) {
+		case MonsterSpace::eMentalStateFree : {
+			mental_state				= "free";
+			break;
+		}
+		case MonsterSpace::eMentalStateDanger : {
+			mental_state				= "danger";
+			break;
+		}
+		case MonsterSpace::eMentalStatePanic : {
+			mental_state				= "panic";
+			break;
+		}
+		default : NODEFAULT;
+	}
+	HUD().Font().pFontSmall->OutNext	("%s%smental state    : %s",indent,indent,mental_state);
+
+	LPCSTR								body_state = "invalid";
+	switch (movement().body_state()) {
+		case MonsterSpace::eBodyStateStand : {
+			mental_state				= "stand";
+			break;
+		}
+		case MonsterSpace::eBodyStateCrouch : {
+			mental_state				= "crouch";
+			break;
+		}
+		case MonsterSpace::eBodyStateStandDamaged : {
+			mental_state				= "stand damaged";
+			break;
+		}
+		default : NODEFAULT;
+	}
+	HUD().Font().pFontSmall->OutNext	("%s%sbody state      : %s",indent,indent,body_state);
+
+	LPCSTR								movement_type = "invalid";
+	switch (movement().movement_type()) {
+		case MonsterSpace::eMovementTypeStand : {
+			mental_state				= "stand";
+			break;
+		}
+		case MonsterSpace::eMovementTypeWalk : {
+			mental_state				= "walk";
+			break;
+		}
+		case MonsterSpace::eMovementTypeRun : {
+			mental_state				= "run";
+			break;
+		}
+		default : NODEFAULT;
+	}
+	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s",indent,indent,movement_type);
+
 	LPCSTR						path_type = "invalid";
 	switch (movement().path_type()) {
 		case MovementManager::ePathTypeGamePath : {
