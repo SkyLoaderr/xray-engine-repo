@@ -338,41 +338,18 @@ public:
 };
 
 //-----------------------------------------------------------------------
+float	ps_gamma=1.f,ps_brightness=1.f,ps_contrast=1.f;
 class CCC_Gamma : public CCC_Float
 {
-	float	gamma;
 public:
-	CCC_Gamma(LPCSTR N) : CCC_Float(N, &gamma, 0, 2), gamma(1) {};
-	virtual void Execute(LPCSTR args)
-	{
-		CCC_Float::Execute	(args);
-		Device.Gamma.Gamma	(gamma);
-		Device.Gamma.Update	();
-	}
-};
-//-----------------------------------------------------------------------
-class CCC_Brightness : public CCC_Float
-{
-	float	value;
-public:
-	CCC_Brightness(LPCSTR N) : CCC_Float(N, &value, 0, 2), value(1) {};
+	CCC_Gamma	(LPCSTR N, float* V) : CCC_Float(N,V,0.2f,2.2f)	{}
+
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute		(args);
-		Device.Gamma.Brightness	(value);
-		Device.Gamma.Update		();
-	}
-};
-//-----------------------------------------------------------------------
-class CCC_Contrast  : public CCC_Float
-{
-	float	value;
-public:
-	CCC_Contrast(LPCSTR N) : CCC_Float(N, &value, 0, 2), value(1) {};
-	virtual void Execute(LPCSTR args)
-	{
-		CCC_Float::Execute		(args);
-		Device.Gamma.Contrast	(value);
+		Device.Gamma.Gamma		(ps_gamma);
+		Device.Gamma.Brightness	(ps_brightness);
+		Device.Gamma.Contrast	(ps_contrast);
 		Device.Gamma.Update		();
 	}
 };
@@ -445,9 +422,9 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_occ_draw",			&psDeviceFlags,		rsOcclusionDraw);
 	CMD3(CCC_Mask,		"rs_occ_stats",			&psDeviceFlags,		rsOcclusionStats);
 
-	CMD1(CCC_Gamma,		"rs_c_gamma"			);
-	CMD1(CCC_Gamma,		"rs_c_brightness"		);
-	CMD1(CCC_Gamma,		"rs_c_contrast"			);
+	CMD2(CCC_Gamma,		"rs_c_gamma"			,&ps_gamma			);
+	CMD2(CCC_Gamma,		"rs_c_brightness"		,&ps_brightness		);
+	CMD2(CCC_Gamma,		"rs_c_contrast"			,&ps_contrast		);
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
