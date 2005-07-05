@@ -105,11 +105,20 @@ function mob_camp:select_current_home_point(first_call)
 		-- fill table of free points
 		local free_points	= {}
 		
+		if (db.camp_storage[self.st.home_point] == nil) then
+			db.camp_storage[self.st.home_point] = {}
+		end
+		
+		
 		for i = 1, self.home_path:count() do
 			if	(db.camp_storage[self.st.home_point][i] == nil) or 
 				(db.camp_storage[self.st.home_point][i] == false) then
 				table.insert(free_points, i)
 			end
+		end
+
+		if (table.getn(free_points) < 1) then
+			_G.abort("Mob_Camp : too many campers for home path")
 		end
 
 		local free_points_index = math.random(1, table.getn(free_points))
@@ -304,7 +313,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	-- check if there is look point (must be!)
 	if (not storage.look_point) or (not patrol(storage.look_point)) then
-		abort("object '%s': unable to find look_point '%s' on the map",
+		abort("Mob_Camp : object '%s': unable to find look_point '%s' on the map",
 					npc:name(), storage.look_point)
 	end
 	
