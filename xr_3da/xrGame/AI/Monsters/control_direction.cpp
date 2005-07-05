@@ -50,9 +50,8 @@ void CControlDirection::update_frame()
 	// heading speed correction
 	if (!fis_zero(m_man->movement().velocity_current()) && !fis_zero(m_man->movement().velocity_target()))
 		m_heading.current_speed	= m_data.heading.target_speed * m_man->movement().velocity_current() / (m_man->movement().velocity_target() + EPS_L);
-
-	// update heading
-	velocity_lerp				(m_heading.current_speed, m_data.heading.target_speed, m_heading.current_acc, Device.fTimeDelta);
+	else 
+		velocity_lerp			(m_heading.current_speed, m_data.heading.target_speed, m_heading.current_acc, Device.fTimeDelta);
 
 	m_heading.current_angle		= angle_normalize(m_heading.current_angle);
 	m_data.heading.target_angle	= angle_normalize(m_data.heading.target_angle);

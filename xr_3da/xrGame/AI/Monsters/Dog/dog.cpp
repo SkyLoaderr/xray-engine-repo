@@ -1,18 +1,15 @@
 #include "stdafx.h"
 #include "dog.h"
 #include "dog_state_manager.h"
-#include "../../../../skeletonanimated.h"
-#include "../../../level.h"
 #include "../monster_velocity_space.h"
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
 
-
 CAI_Dog::CAI_Dog()
 {
 	StateMan = xr_new<CStateManagerDog>(this);
-
+	
 	CControlled::init_external	(this);
 }
 
@@ -21,27 +18,13 @@ CAI_Dog::~CAI_Dog()
 	xr_delete(StateMan);
 }
 
-void CAI_Dog::reinit()
-{
-	inherited::reinit();
-
-	Bones.Reset();
-	strike_in_jump					= false;
-}
-
-
 void CAI_Dog::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 	
-
-	// todo: PUT visual from load OFF
-	//SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-	//CJumping::AddState(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, velocity_run.velocity.angular_real);
-
-	anim().AddReplacedAnim(&m_bDamaged,		eAnimRun,		eAnimRunDamaged);
-	anim().AddReplacedAnim(&m_bDamaged,		eAnimWalkFwd,	eAnimWalkDamaged);
-	anim().AddReplacedAnim(&m_bRunTurnLeft,	eAnimRun,		eAnimRunTurnLeft);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimRun,		eAnimRunDamaged);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimWalkFwd,	eAnimWalkDamaged);
+	anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
 	anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
 
 	anim().accel_load			(section);
@@ -128,8 +111,6 @@ void CAI_Dog::Load(LPCSTR section)
 
 }
 
-
-
 void CAI_Dog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
@@ -140,60 +121,3 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		anim().SetCurAnim(eAnimThreaten);
 	}
 }
-
-void CAI_Dog::OnSoundPlay()
-{
-	
-}
-
-void CAI_Dog::UpdateCL()
-{
-	inherited::UpdateCL();
-
-	//// Rotation Jump
-	//if (is_state(StateMan->get_state_type(), eStateAttack)) {
-	//	if (rot_jump.check_start_conditions()) rot_jump.execute();
-	//}
-	
-	//if (is_state(StateMan->get_state_type(), eStateAttack)) {
-	//	if (control().check_start_conditions(ControlCom::eControlRotationJump)) {
-	//		control().activate(ControlCom::eControlRotationJump);
-	//		//control().activate(ControlCom::eControlRotationJump);
-	//	}
-	//}
-
-}
-
-//#define TURN_HEAD_ANGLE PI_DIV_4
-//
-//void CAI_Dog::BonesInMotion() 
-//{
-//	EMotionAnim anim = anim().GetCurAnim();
-//	bool b_enable_motions = false;
-//
-//	switch (anim) {
-//	case eAnimSitIdle:
-//	case eAnimWalkFwd:
-//		b_enable_motions = true;
-//		break;
-//	}
-//	
-//
-//	if (!Bones.IsActive() && b_enable_motions) {
-//		float	x,y,z;
-//		u8		side_to_look = 0; // 0 - front, 1 - left, 2 - right
-//		
-//		u8 selector = u8(Random.randI(100)); 
-//		if (selector < 20)		side_to_look = 1;
-//		else if (selector < 40)	side_to_look = 2;
-//		
-//		if (side_to_look == 1)	{	x = -TURN_HEAD_ANGLE;	y = TURN_HEAD_ANGLE;	z = TURN_HEAD_ANGLE;} 
-//		else if (side_to_look == 2)	{	x = TURN_HEAD_ANGLE; 	y = TURN_HEAD_ANGLE;	z = -TURN_HEAD_ANGLE;}
-//		else {x = 0.f; y = 0.f; z = 0.f;}
-//
-//		Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_X, x, PI_DIV_2, 3000);
-//		Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Y, y, PI_DIV_2, 3000);
-//		Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Z, z, PI_DIV_2, 3000);
-//	}
-//}
-

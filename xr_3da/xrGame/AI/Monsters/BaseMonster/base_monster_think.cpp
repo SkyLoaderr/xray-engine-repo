@@ -57,47 +57,23 @@ void CBaseMonster::update_fsm()
 
 void CBaseMonster::post_fsm_update()
 {
-	// обработать ROTATION JUMP, RUN_LOOK_ENEMY and so on
-
-	//if (state_id == eStateAttack) {
-	//	object->look_at_enemy = true;
-	//	// calc new target delta
-	//	float yaw, pitch;
-	//	Fvector().sub(object->EnemyMan.get_enemy()->Position(), object->Position()).getHP(yaw,pitch);
-	//	yaw *= -1;
-	//	yaw = angle_normalize(yaw);
-
-	//	if (from_right(yaw,object->control().path_builder().m_body.current.yaw)) {
-	//		object->_target_delta = angle_difference(yaw,object->control().path_builder().m_body.current.yaw);
-	//	} else object->_target_delta = -angle_difference(yaw,object->control().path_builder().m_body.current.yaw);
-
-	//	clamp(object->_target_delta, -PI_DIV_4, PI_DIV_4);
-	//}
-
 	EMonsterState state = StateMan->get_state_type();
 
 	// Look at enemy while running
 	m_bRunTurnLeft = m_bRunTurnRight = false;
 	
-	if (is_state(state, eStateAttack)) {
-		
-		float	dir_yaw = Fvector().sub(EnemyMan.get_enemy_position(), Position()).getH();
-		dir_yaw	= angle_normalize(-dir_yaw);
+	if (is_state(state, eStateAttack) && control().path_builder().is_moving_on_path()) {
 
-		float yaw_current, yaw_target;
-		control().direction().get_heading(yaw_current, yaw_target);
+		float	dir_yaw = control().path_builder().detail().direction().getH();
+		float	yaw_target = Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getH();
 
-		float angle_diff	= angle_difference(yaw_current, dir_yaw);
+		float angle_diff	= angle_difference(yaw_target, dir_yaw);
 
 		if ((angle_diff > PI_DIV_3) && (angle_diff < 5 * PI_DIV_6)) {
-			if (from_right(-dir_yaw, yaw_current))	m_bRunTurnRight = true;
+			if (from_right(dir_yaw, yaw_target))	m_bRunTurnRight = true;
 			else									m_bRunTurnLeft	= true;
 		}
 	}
-
-	// Rotation Jump
-//	if (is_state(state, eStateAttack) && ability_rotation_jump()) check_rotation_jump();
-
 }
 
 void CBaseMonster::squad_notify()

@@ -76,7 +76,16 @@ void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 	u16 bone_or_part	= m_skeleton_animated->LL_GetMotionDef(part.motion)->bone_or_part;
 	if (bone_or_part == u16(-1)) bone_or_part = m_skeleton_animated->LL_PartID("default");
 	
+	// initialize synchronization of prev and current animation
+	float pos		= -1.f;
+	if (part.blend && !part.blend->stop_at_end) 
+		pos			= fmod(part.blend->timeCurrent,part.blend->timeTotal)/part.blend->timeTotal;
+
 	part.blend			= m_skeleton_animated->LL_PlayCycle(bone_or_part,part.motion, TRUE, callback, this);
+	
+	// synchronize prev and current animations
+	if ((pos > 0) && part.blend && !part.blend->stop_at_end) 
+		part.blend->timeCurrent = part.blend->timeTotal*pos;
 
 	part.time_started	= Device.dwTimeGlobal;
 	part.actual			= true;
