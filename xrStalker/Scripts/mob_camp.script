@@ -118,11 +118,13 @@ function mob_camp:select_current_home_point(first_call)
 		end
 
 		if (table.getn(free_points) < 1) then
-			_G.abort("Mob_Camp : too many campers for home path")
+			if first_call == true then
+				_G.abort("Mob_Camp : too many campers for home path")
+			end
+		else 
+			local free_points_index = math.random(1, table.getn(free_points))
+			self.cur_point_index	= free_points[free_points_index]-1
 		end
-
-		local free_points_index = math.random(1, table.getn(free_points))
-		self.cur_point_index	= free_points[free_points_index]-1
 		
 		if not first_call then
 			if prev_point_index ~= self.cur_point_index then
