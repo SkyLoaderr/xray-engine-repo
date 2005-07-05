@@ -80,17 +80,8 @@ void CControlPathBuilderBase::check_failure()
 
 void CControlPathBuilderBase::travel_point_changed()
 {
-	//if (IsMovingOnPath()) {
-	//	u32 cur_point_velocity_index = detail().path()[detail().curr_travel_point_index()].velocity;		
-	//	if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(m_velocity_linear.current) && !m_velocity_reset) {
-	//		stop_linear			();
-	//		m_velocity_reset	= true;
-	//	}
-	//	if (cur_point_velocity_index != eVelocityParameterStand) m_velocity_reset = false;
-	//}
-
 	if (m_man->path_builder().detail().curr_travel_point_index() >= m_man->path_builder().detail().path().size() - 1) {
-		if (m_target_selected.position.similar(m_target_set.position)) m_failed	= true;
+		if (!m_target_found.position.similar(m_target_set.position)) m_failed	= true;
 	}
 }
 
