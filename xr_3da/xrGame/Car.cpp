@@ -1544,13 +1544,6 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 void CCar::ResetScriptData(void	*P)
 {
 	CScriptEntity::ResetScriptData(P);
-	if (PPhysicsShell())
-	{
-		CScriptEntityAction	l_tpEntityAction;
-		l_tpEntityAction.m_tMovementAction.SetInputKeys(CScriptMovementAction::eInputKeyEngineOff);
-		bfAssignMovement(&l_tpEntityAction);
-	}
-	m_max_rpm		= m_fSaveMaxRPM;
 }
 
 void CCar::PhDataUpdate(dReal step)
