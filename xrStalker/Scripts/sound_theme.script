@@ -40,6 +40,11 @@ ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\mega
 	                      }
 ph_snd_themes["siren"] =  { "ambient\\siren2" }
 ph_snd_themes["bomb"] = {"detectors\\bomb_timer"}
+ph_snd_themes["radio_music"] = {"characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_1",
+	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_2",
+	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_3",
+	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_4"
+	                        }
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
