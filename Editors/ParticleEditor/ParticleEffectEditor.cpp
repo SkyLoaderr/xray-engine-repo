@@ -44,8 +44,8 @@ void PS::CPEDef::Copy(const CPEDef& src)
     m_fCollideSqrCutoff			= src.m_fCollideSqrCutoff; 
 
     m_EActionList.resize(src.m_EActionList.size());
-    for (int k=0; k<src.m_EActionList.size(); k++){
-        PAPI::PDomainEnum type 	= src.m_EActionList[k]->type;
+    for (u32 k=0; k<src.m_EActionList.size(); k++){
+        PAPI::PActionEnum type 	= src.m_EActionList[k]->type;
         m_EActionList[k]		= pCreateEAction(type);
         *m_EActionList[k]		= *src.m_EActionList[k];
     }
@@ -85,7 +85,7 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
 	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,fastdelegate::bind<TOnChooseFillItems>(this,&PS::CPEDef::FillActionList))&&nm){
             for(int i=0; actions_token[i].name; i++){
                 if (0==strcmp(actions_token[i].name,nm)){
-                    EParticleAction* A = pCreateEAction(actions_token[i].id);
+                    EParticleAction* A = pCreateEAction((PAPI::PActionEnum)actions_token[i].id);
                     AnsiString pref	= AnsiString(*A->actionName).LowerCase();
                     A->actionName	= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&PS::CPEDef::FindActionByName),true,true).LowerCase().c_str();
                     m_EActionList.push_back(A);
@@ -153,7 +153,7 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
         }
     break;
     case 1:		    // down
-    	if (idx<(m_EActionList.size()-1)){
+    	if (idx<(int(m_EActionList.size())-1)){
         	EParticleAction* E	= m_EActionList[idx+1];
             m_EActionList[idx+1]= m_EActionList[idx];
             m_EActionList[idx]	= E;

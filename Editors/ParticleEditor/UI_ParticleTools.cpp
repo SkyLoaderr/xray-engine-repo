@@ -247,7 +247,7 @@ void CParticleTools::OnFrame()
 //	stat_graph->AppendItem(Random.randF(),0xFFFFFFFF);
 }
 
-void CParticleTools::ZoomObject(bool bSelOnly)
+void CParticleTools::ZoomObject(BOOL bSelOnly)
 {
 	VERIFY(m_bReady);
     if (!bSelOnly&&m_EditObject){

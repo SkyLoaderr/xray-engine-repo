@@ -52,7 +52,7 @@ void TfraLeftBar::OnTimer()
 
 void TfraLeftBar::UpdateBar()
 {
-    int i, j;
+    int i;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
         TComponent* temp = fraLeftBar->Components[i];
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
@@ -89,7 +89,8 @@ void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_RELOAD );
+//.	
+	ExecCommand( COMMAND_LOAD );
 }
 //---------------------------------------------------------------------------
 

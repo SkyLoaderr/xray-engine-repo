@@ -8,6 +8,7 @@
 #include "pure.h"
 #include "PropertiesList.h"
 #include "ui_toolscustom.h"
+#include "ui_maincommand.h"
 
 // refs
 class CEditableObject;
@@ -93,7 +94,7 @@ public:
 
     virtual LPCSTR		GetInfo				();
     
-    virtual void		ZoomObject			(bool bSelOnly);
+    virtual void		ZoomObject			(BOOL bSelOnly);
 
     virtual bool		Load				(LPCSTR path, LPCSTR name);
     virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
@@ -114,7 +115,7 @@ public:
 	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
     virtual void		ShowProperties		(){;}
-    virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
+    virtual void		UpdateProperties	(BOOL bForced=FALSE){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     virtual void		RefreshProperties	(){;}
 
     void				PlayCurrent			(int idx=-1);
@@ -147,15 +148,15 @@ public:
     bool 				Validate			(bool bMsg);
     
     // commands
-    void 				CommandSelectPreviewObj	(u32 p1, u32 p2, u32& res);
-	void 				CommandEditPreviewProps	(u32 p1, u32 p2, u32& res);
-	void 				CommandSave				(u32 p1, u32 p2, u32& res);
-	void 				CommandSaveBackup		(u32 p1, u32 p2, u32& res);
-	void 				CommandReload			(u32 p1, u32 p2, u32& res);
-    void 				CommandValidate			(u32 p1, u32 p2, u32& res);
-	void 				CommandClear			(u32 p1, u32 p2, u32& res);
-	void 				CommandPlayCurrent		(u32 p1, u32 p2, u32& res);
-	void 				CommandStopCurrent		(u32 p1, u32 p2, u32& res);
+    CCommandVar			CommandSelectPreviewObj	(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandEditPreviewProps	(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandSave				(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandSaveBackup		(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandReload			(CCommandVar p1, CCommandVar p2);
+    CCommandVar			CommandValidate			(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandClear			(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandPlayCurrent		(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandStopCurrent		(CCommandVar p1, CCommandVar p2);
 };
 #define SYSTEM_PREFIX 	"Systems"
 #define EFFECT_PREFIX 	"Effects"

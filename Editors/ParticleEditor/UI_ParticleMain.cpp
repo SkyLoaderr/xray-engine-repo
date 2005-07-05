@@ -27,90 +27,104 @@ CParticleMain::~CParticleMain()
 }
 //---------------------------------------------------------------------------
 
-void CParticleTools::CommandSelectPreviewObj(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandSelectPreviewObj(CCommandVar p1, CCommandVar p2)
 {
     SelectPreviewObject(p1);
+    return TRUE;
 }
-void CParticleTools::CommandEditPreviewProps(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandEditPreviewProps(CCommandVar p1, CCommandVar p2)
 {
     EditPreviewPrefs();
+    return TRUE;
 }
-void CParticleTools::CommandSave(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandSave(CCommandVar p1, CCommandVar p2)
 {
     Save(0,0);
     ExecCommand(COMMAND_UPDATE_CAPTION);
+    return TRUE;
 }
-void CParticleTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandSaveBackup(CCommandVar p1, CCommandVar p2)
 {
     ExecCommand(COMMAND_SAVE);
+    return TRUE;
 }
-void CParticleTools::CommandReload(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandReload(CCommandVar p1, CCommandVar p2)
 {
-    if (!IfModified()){ 
-    	res = FALSE;
-    	return;
-    }
-    Reload();
+    if (!IfModified()) 	return FALSE;
+    Reload				();
     ExecCommand(COMMAND_UPDATE_CAPTION);
+    return TRUE;
 }
-void CParticleTools::CommandValidate(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandValidate(CCommandVar p1, CCommandVar p2)
 {
 	Validate(true);
+    return TRUE;
 }
-void CParticleTools::CommandClear(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandClear(CCommandVar p1, CCommandVar p2)
 {
     Device.m_Camera.Reset();
     ResetPreviewObject();
     ExecCommand(COMMAND_UPDATE_CAPTION);
+    return TRUE;
 }
-void CParticleTools::CommandPlayCurrent(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandPlayCurrent(CCommandVar p1, CCommandVar p2)
 {
     PlayCurrent();
+    return TRUE;
 }
-void CParticleTools::CommandStopCurrent(u32 p1, u32 p2, u32& res)
+CCommandVar CParticleTools::CommandStopCurrent(CCommandVar p1, CCommandVar p2)
 {
     StopCurrent(p1);
+    return TRUE;
 }
-void CommandRefreshUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandRefreshUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->RefreshBar	();
     fraLeftBar->RefreshBar	();
     fraBottomBar->RefreshBar();
+    return TRUE;
 }
-void CommandRestoreUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandRestoreUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->fsStorage->RestoreFormPlacement();
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
+    return TRUE;
 }
-void CommandSaveUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandSaveUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->fsStorage->SaveFormPlacement();
     fraLeftBar->fsStorage->SaveFormPlacement();
     fraBottomBar->fsStorage->SaveFormPlacement();
+    return TRUE;
 }
-void CommandUpdateToolBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandUpdateToolBar(CCommandVar p1, CCommandVar p2)
 {
     fraLeftBar->UpdateBar();
+    return TRUE;
 }
-void CommandUpdateCaption(u32 p1, u32 p2, u32& res)
+CCommandVar CommandUpdateCaption(CCommandVar p1, CCommandVar p2)
 {
     frmMain->UpdateCaption();
+    return TRUE;
 }
 
 void CParticleMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools       
-	REGISTER_CMD_C	(COMMAND_SELECT_PREVIEW_OBJ,PTools,CParticleTools::CommandSelectPreviewObj);
-	REGISTER_CMD_C	(COMMAND_EDIT_PREVIEW_PROPS,PTools,CParticleTools::CommandEditPreviewProps);
-	REGISTER_CMD_C	(COMMAND_SAVE,            	PTools,CParticleTools::CommandSave);
+	REGISTER_CMD_CE	(COMMAND_SELECT_PREVIEW_OBJ,"Select Preview Object",PTools,CParticleTools::CommandSelectPreviewObj, true);
+	REGISTER_CMD_CE	(COMMAND_EDIT_PREVIEW_PROPS,"Select Preview Props",	PTools,CParticleTools::CommandEditPreviewProps, true);
+	REGISTER_CMD_CE	(COMMAND_SAVE,            	"File\\Save",			PTools,CParticleTools::CommandSave, true);
 	REGISTER_CMD_C	(COMMAND_SAVE_BACKUP,       PTools,CParticleTools::CommandSaveBackup);
-	REGISTER_CMD_C	(COMMAND_RELOAD,            PTools,CParticleTools::CommandReload);
+	REGISTER_CMD_CE	(COMMAND_LOAD,            	"File\\Reload",			PTools,CParticleTools::CommandReload, true);
 	REGISTER_CMD_C	(COMMAND_VALIDATE,          PTools,CParticleTools::CommandValidate);
-	REGISTER_CMD_C	(COMMAND_CLEAR,             PTools,CParticleTools::CommandClear);
-	REGISTER_CMD_C	(COMMAND_PLAY_CURRENT,      PTools,CParticleTools::CommandPlayCurrent);
-	REGISTER_CMD_C	(COMMAND_STOP_CURRENT,      PTools,CParticleTools::CommandStopCurrent);
+	REGISTER_CMD_CE	(COMMAND_CLEAR,             "File\\Clear",			PTools,CParticleTools::CommandClear, true);
+	REGISTER_CMD_CE	(COMMAND_PLAY_CURRENT,      "Particles\\Play",		PTools,CParticleTools::CommandPlayCurrent, true);
+    REGISTER_SUB_CMD_CE (COMMAND_STOP_CURRENT,	"Particles",			PTools,CParticleTools::CommandStopCurrent, true);
+    	APPEND_SUB_CMD	("Stop Immediate",		0,0);
+    	APPEND_SUB_CMD	("Stop Deffered", 		1,0);
+    REGISTER_SUB_CMD_END;
 	REGISTER_CMD_S	(COMMAND_REFRESH_UI_BAR,    CommandRefreshUIBar);
 	REGISTER_CMD_S	(COMMAND_RESTORE_UI_BAR,    CommandRestoreUIBar);
 	REGISTER_CMD_S	(COMMAND_SAVE_UI_BAR,     	CommandSaveUIBar);
@@ -125,22 +139,13 @@ char* CParticleMain::GetCaption()
 
 bool __fastcall CParticleMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyShortCut(Key,Shift)) return true;
-	bool bExec = false;
-    return bExec;
+    return inherited::ApplyShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 
 bool __fastcall CParticleMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
-	bool bExec = false;
-    if (Shift.Empty()){
-        if (Key==VK_F5)    	COMMAND0(COMMAND_PLAY_CURRENT)
-        else if (Key==VK_F6)COMMAND1(COMMAND_STOP_CURRENT,FALSE)
-        else if (Key==VK_F7)COMMAND1(COMMAND_STOP_CURRENT,TRUE)
-    }
-    return bExec;
+    return inherited::ApplyGlobalShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 

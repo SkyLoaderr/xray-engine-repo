@@ -98,7 +98,7 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 	PHelper().CreateCaption	(items,PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))).c_str());
 	PHelper().CreateCaption	(items,PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))).c_str());
     ButtonValue* B;
-	B=PHelper().CreateButton	(items,PrepareKey(pref,"Control"),"Play(F5),Stop(F6),Stop...(F7)",ButtonValue::flFirstOnly);
+	B=PHelper().CreateButton	(items,PrepareKey(pref,"Control"),"Play,Stop,Stop...",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent.bind		(this,&PS::CPGDef::OnControlClick);
     B=PHelper().CreateButton	(items,PrepareKey(pref,"Edit"),"Append Effect",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent.bind		(this,&PS::CPGDef::OnEffectsEditClick);
