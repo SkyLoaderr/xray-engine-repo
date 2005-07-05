@@ -69,7 +69,8 @@ function mob_camp:reset_scheme()
 	self.time_point_changed = time_global()
 	
 	self.prev_enemy			= false
-	
+
+	-- register in storage	
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -235,6 +236,7 @@ function mob_camp:execute_state()
 end
 
 function mob_camp:finalize()
+	
 end
 
 ----------------------------------------------------------------------------------------------------
