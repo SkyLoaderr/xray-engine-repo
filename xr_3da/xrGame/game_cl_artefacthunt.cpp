@@ -11,6 +11,8 @@
 #include "PHDestroyable.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UISkinSelector.h"
+#include "ui/UIPdaWnd.h"
 #include "xr_level_controller.h"
 #include "Artifact.h"
 

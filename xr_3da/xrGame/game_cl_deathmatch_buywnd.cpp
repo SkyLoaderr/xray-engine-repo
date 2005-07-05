@@ -5,6 +5,7 @@
 #include "actor.h"
 #include "inventory.h"
 #include "xrServer_Objects_ALife_Items.h"
+#include "weapon.h"
 
 static	u16 SlotsToCheck [] = {
 		APPARATUS_SLOT	,		// 4

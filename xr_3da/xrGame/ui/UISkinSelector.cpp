@@ -5,6 +5,7 @@
 #include "StdAfx.h"
 #include <dinput.h>
 #include "UISkinSelector.h"
+#include "../level.h"
 #include"../hudmanager.h"
 
 #include "../game_cl_deathmatch.h"

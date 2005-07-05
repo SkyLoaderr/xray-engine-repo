@@ -12,6 +12,8 @@
 #include "Actor.h"
 #include "game_cl_base.h"
 #include "xr_level_controller.h"
+#include "hudItem.h"
+#include "weapon.h"
 
 #define DELAYED_ROUND_TIME	7000
 

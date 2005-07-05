@@ -2,7 +2,7 @@
 #include "UIAHuntFragList.h"
 #include "hudmanager.h"
 #include "game_cl_artefacthunt.h"
-
+#include "../level.h"
 //--------------------------------------------------------------------
 bool	CUIAHuntFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 {

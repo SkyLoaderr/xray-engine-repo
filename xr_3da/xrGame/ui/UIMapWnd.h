@@ -172,7 +172,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 
 	CUIFrameWindow				m_UIMainFrame;
 	CUIScrollBar				m_UIMainScrollV,	m_UIMainScrollH;
-	CUIStatic					m_UILevelFrame;
+	CUIWindow					m_UILevelFrame;
 
 	CUIFrameLineWnd				UIMainMapHeader;
 	void						OnScrollV				();
@@ -190,9 +190,6 @@ public:
 
 	virtual void				OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual void				SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
-
-	void						InitGlobalMapObjectives	();
-	void						InitLocalMapObjectives	();
 
 	void						SetActivePoint			(const Fvector &vNewPoint);
 	void						SetActiveMap			(shared_str level_name);

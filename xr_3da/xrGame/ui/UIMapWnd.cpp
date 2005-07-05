@@ -550,7 +550,7 @@ void CUIMapWnd::Init()
 {
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
-	R_ASSERT3(xml_result, "xml file not found", "global_map.xml");
+	R_ASSERT3(xml_result, "xml file not found", "pda_map.xml");
 
 	// load map background
 	CUIXmlInit xml_init;
@@ -561,7 +561,7 @@ void CUIMapWnd::Init()
 	AttachChild(&m_UIMainFrame);
 	xml_init.InitFrameWindow(uiXml, "main_wnd:main_map_frame", 0, &m_UIMainFrame);
 
-	xml_init.InitStatic(uiXml, "main_wnd:main_map_frame:level_frame", 0, &m_UILevelFrame);
+	xml_init.InitWindow(uiXml, "main_wnd:main_map_frame:level_frame", 0, &m_UILevelFrame);
 	m_UIMainFrame.AttachChild(&m_UILevelFrame);
 
 	Frect r = m_UILevelFrame.GetWndRect();
@@ -632,8 +632,6 @@ void CUIMapWnd::Show(bool status)
 	if (status)
 	{
 		m_GlobalMap->Show(true);
-		InitGlobalMapObjectives			();
-		InitLocalMapObjectives			();
 		if(m_activeLevelMap==NULL)
 			SetActiveMap				(Level().name());
 		SetActivePoint				( Level().CurrentEntity()->Position() );
@@ -674,11 +672,6 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	m_activeLevelMap->SetClipRect( m_UILevelFrame.GetAbsoluteRect() );
 }
 
-void CUIMapWnd::InitGlobalMapObjectives	()
-{}
-
-void CUIMapWnd::InitLocalMapObjectives	()
-{}
 
 void CUIMapWnd::Draw()
 {

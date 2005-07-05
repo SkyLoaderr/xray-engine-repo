@@ -6,6 +6,7 @@
 #include "UIDMStatisticWnd.h"
 #include "ui\UIBuyWeaponWnd.h"
 #include "ui\UISkinSelector.h"
+#include "ui\UIInventoryWnd.h"
 #include "HUDManager.h"
 #include "level.h"
 #include "game_cl_base.h"

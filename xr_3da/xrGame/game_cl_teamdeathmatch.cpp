@@ -9,6 +9,8 @@
 #include "map_manager.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UISkinSelector.h"
+#include "ui/UIPDAWnd.h"
 
 #define	TEAM0_MENU		"teamdeathmatch_team0"
 #define	TEAM1_MENU		"teamdeathmatch_team1"

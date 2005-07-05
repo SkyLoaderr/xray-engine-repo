@@ -9,7 +9,10 @@
 #include "clsid_game.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UIBuyWeaponWnd.h"
+#include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
+#include "ui/UIInventoryWnd.h"
 #include "dinput.h"
 #include "gamepersistent.h"
 
