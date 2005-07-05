@@ -867,7 +867,6 @@ void CSHEngineTools::UpdateObjectShader()
 void CSHEngineTools::OnShowHint(AStringVec& ss)
 {
 	if (m_PreviewObject){
-	    Fvector p;
         float dist=UI->ZFar();
         SRayPickInfo pinf;
     	if (m_PreviewObject->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf)){

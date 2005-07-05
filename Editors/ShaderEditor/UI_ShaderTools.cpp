@@ -130,7 +130,7 @@ void CShaderTools::OnFrame()
 	Current()->OnFrame();
 }
 
-void CShaderTools::ZoomObject(bool bOnlySel)
+void CShaderTools::ZoomObject(BOOL bOnlySel)
 {
 	Current()->ZoomObject(bOnlySel);
 }

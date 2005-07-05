@@ -4,6 +4,7 @@
 
 #include "SHToolsInterface.h"
 #include "UI_ToolsCustom.h"
+#include "ui_maincommand.h"
 
 // refs
 class CEditableObject;
@@ -55,7 +56,7 @@ public:
 
     virtual LPCSTR		GetInfo				();
     
-    virtual void		ZoomObject			(bool bSelOnly);
+    virtual void		ZoomObject			(BOOL bSelOnly);
 
     virtual bool		Load				(LPCSTR path, LPCSTR name);
     virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
@@ -76,7 +77,7 @@ public:
 	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
     virtual void		ShowProperties		();
-    virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
+    virtual void		UpdateProperties	(BOOL bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     virtual void		RefreshProperties	(){;}
     virtual void		UpdateList			(bool bForced=false){m_Flags.set(flRefreshList,TRUE); if (bForced) RealUpdateList();}
 
@@ -90,12 +91,12 @@ public:
     ISHTools*			FindTools			(TElTabSheet* sheet);
 
     // commands
-    void 				CommandSave			(u32 p1, u32 p2, u32& res);
-    void 				CommandSaveBackup	(u32 p1, u32 p2, u32& res);
-    void 				CommandReload		(u32 p1, u32 p2, u32& res);
-    void 				CommandClear		(u32 p1, u32 p2, u32& res);
+    CCommandVar 		CommandSave			(CCommandVar p1, CCommandVar p2);
+    CCommandVar 		CommandSaveBackup	(CCommandVar p1, CCommandVar p2);
+    CCommandVar 		CommandReload		(CCommandVar p1, CCommandVar p2);
+    CCommandVar 		CommandClear		(CCommandVar p1, CCommandVar p2);
 
-    void 				CommandUpdateList	(u32 p1, u32 p2, u32& res);
+    CCommandVar 		CommandUpdateList	(CCommandVar p1, CCommandVar p2);
 };
 extern CShaderTools*&	STools;
 //---------------------------------------------------------------------------

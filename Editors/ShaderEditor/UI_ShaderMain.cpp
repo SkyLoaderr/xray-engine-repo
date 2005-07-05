@@ -26,66 +26,75 @@ CShaderMain::~CShaderMain()
 }
 //---------------------------------------------------------------------------
 
-void CShaderTools::CommandSave(u32 p1, u32 p2, u32& res)
+CCommandVar CShaderTools::CommandSave(CCommandVar p1, CCommandVar p2)
 {
     Save			(0,0);
     ExecCommand		(COMMAND_UPDATE_CAPTION);
+    return TRUE;
 }
-void CShaderTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
+CCommandVar CShaderTools::CommandSaveBackup(CCommandVar p1, CCommandVar p2)
 {
     ExecCommand		(COMMAND_SAVE);
+    return TRUE;
 }
-void CShaderTools::CommandReload(u32 p1, u32 p2, u32& res)
+CCommandVar CShaderTools::CommandReload(CCommandVar p1, CCommandVar p2)
 {
     Reload			();
     ExecCommand		(COMMAND_UPDATE_CAPTION);
+    return TRUE;
 }
-void CShaderTools::CommandClear(u32 p1, u32 p2, u32& res)
+CCommandVar CShaderTools::CommandClear(CCommandVar p1, CCommandVar p2)
 {
     Device.m_Camera.Reset();
     ExecCommand		(COMMAND_UPDATE_CAPTION);
+    return TRUE;
 }
-void CShaderTools::CommandUpdateList(u32 p1, u32 p2, u32& res)
+CCommandVar CShaderTools::CommandUpdateList(CCommandVar p1, CCommandVar p2)
 {
 	UpdateList		();
+    return TRUE;
 }
-void CommandRefreshUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandRefreshUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->RefreshBar	();
     fraLeftBar->RefreshBar	();
     fraBottomBar->RefreshBar();
+    return TRUE;
 }
-void CommandRestoreUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandRestoreUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->fsStorage->RestoreFormPlacement();
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
+    return TRUE;
 }
-void CommandSaveUIBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandSaveUIBar(CCommandVar p1, CCommandVar p2)
 {
     fraTopBar->fsStorage->SaveFormPlacement();
     fraLeftBar->fsStorage->SaveFormPlacement();
     fraBottomBar->fsStorage->SaveFormPlacement();
+    return TRUE;
 }
-void CommandUpdateToolBar(u32 p1, u32 p2, u32& res)
+CCommandVar CommandUpdateToolBar(CCommandVar p1, CCommandVar p2)
 {
     fraLeftBar->UpdateBar();
+    return TRUE;
 }
-void CommandUpdateCaption(u32 p1, u32 p2, u32& res)
+CCommandVar CommandUpdateCaption(CCommandVar p1, CCommandVar p2)
 {
     frmMain->UpdateCaption();
+    return TRUE;
 }
-
 
 void CShaderMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools
-	REGISTER_CMD_C	(COMMAND_SAVE,           	STools,CShaderTools::CommandSave);
+	REGISTER_CMD_CE	(COMMAND_SAVE,           	"File\\Save", 	STools,CShaderTools::CommandSave,true);
 	REGISTER_CMD_C	(COMMAND_SAVE_BACKUP,	 	STools,CShaderTools::CommandSaveBackup);
-	REGISTER_CMD_C	(COMMAND_RELOAD,		 	STools,CShaderTools::CommandReload);
-	REGISTER_CMD_C	(COMMAND_CLEAR,			 	STools,CShaderTools::CommandClear);
-    REGISTER_CMD_C	(COMMAND_UPDATE_LIST,	 	STools,CShaderTools::CommandUpdateList);
+	REGISTER_CMD_CE	(COMMAND_LOAD,			 	"File\\Reload",	STools,CShaderTools::CommandReload,true);
+	REGISTER_CMD_CE	(COMMAND_CLEAR,			 	"File\\Clear", 	STools,CShaderTools::CommandClear,true);
+    REGISTER_CMD_CE	(COMMAND_UPDATE_LIST,	 	"Update List",	STools,CShaderTools::CommandUpdateList,true);
     REGISTER_CMD_S	(COMMAND_REFRESH_UI_BAR, 	CommandRefreshUIBar);
     REGISTER_CMD_S	(COMMAND_RESTORE_UI_BAR,  	CommandRestoreUIBar);
     REGISTER_CMD_S	(COMMAND_SAVE_UI_BAR,     	CommandSaveUIBar);
@@ -100,17 +109,13 @@ char* CShaderMain::GetCaption()
 
 bool __fastcall CShaderMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyShortCut(Key,Shift)) return true;
-	bool bExec = false;
-    return bExec;
+    return inherited::ApplyShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 
 bool __fastcall CShaderMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
-	bool bExec = false;
-    return bExec;
+    return inherited::ApplyGlobalShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 
