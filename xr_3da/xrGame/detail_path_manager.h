@@ -67,8 +67,10 @@ public:
 private:
 	CRestrictedObject							*m_restricted_object;
 
+public:
+	typedef xr_map<u32,STravelParams>	VELOCITIES;
 protected:
-	xr_map<u32,STravelParams>					m_movement_params;
+	VELOCITIES									m_movement_params;
 	u32											m_current_travel_point;
 
 private:
@@ -170,6 +172,7 @@ public:
 	IC		const bool							use_dest_orientation	() const;
 	IC		const u32							time_path_built			() const;
 	IC		const STravelParams					&velocity				(const u32 &velocity_id) const;
+	IC		const VELOCITIES					&velocities				() const;
 	IC		void								add_velocity			(const u32 &velocity_id, const STravelParams &params);
 	IC		void								set_start_position		(const Fvector &start_position);
 	IC		void								set_start_direction		(const Fvector &start_direction);

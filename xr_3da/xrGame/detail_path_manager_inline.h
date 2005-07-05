@@ -226,3 +226,8 @@ IC	float CDetailPathManager::extrapolate_length		() const
 {
 	return					(m_extrapolate_length);
 }
+
+IC	const CDetailPathManager::VELOCITIES &CDetailPathManager::velocities	() const
+{
+	return					(m_movement_params);
+}

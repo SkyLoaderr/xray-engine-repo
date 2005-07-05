@@ -35,9 +35,6 @@ protected:
 
 protected:
 	IC	_vertex_id_type	intermediate_vertex_id		() const;
-	IC			u32		intermediate_index			() const;
-
-	IC	const PATH		&path						() const;
 
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	const _VertexEvaluator	*evaluator			() const;
@@ -58,6 +55,10 @@ public:
 	IC			bool	failed						() const;
 	IC	virtual	void	select_intermediate_vertex	();
 	IC	CRestrictedObject &object					() const;
+	
+public:
+	IC	const PATH		&path						() const;
+	IC			u32		intermediate_index			() const;
 
 	friend class CMovementManager;
 };
