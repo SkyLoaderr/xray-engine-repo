@@ -289,16 +289,24 @@ function action_patrol:process_danger()
 	if time_global() - best_danger:time() >= self.a.idle then
 		return false
 	end
+
+	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())
 	
-	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
-	printf("[camper] danger_distance_sqr [%s]", tostring(danger_distance_sqr))			
-	printf("[camper] danger_name [%s]", tostring(best_danger:object():name()))
+	if not self:on_place() and
+	   danger_distance_sqr > self.a.danger_radius
+	then
+		return false
+	end
+	
+	printf("CAMPER [%s] danger_distance_sqr [%s]", self.object:name(), tostring(danger_distance_sqr))			
+	printf("CAMPER [%s] danger_name [%s]", self.object:name(), tostring(best_danger:object():name()))
 	position = {look_position = best_danger:position()}
 	if self.a.suggested_state.campering then
 		state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position, {animation = true})
 	else
 		state_mgr.set_state(self.object, "hide", nil, nil, position, {animation = true})
 	end	
+	return true
 end
 function action_patrol:scan(flag)
 	if self.a.scan_table[flag] == nil then
@@ -449,6 +457,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
 	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
+	st.danger_radius = utils.cfg_get_number(ini, section, "danger_radius", npc, false)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving1 = st.suggested_state.moving
@@ -464,6 +473,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	if st.radius == nil then
 		st.radius = 20
+	end
+	if st.danger_radius == nil then
+		st.danger_radius = 5
 	end
 	if st.scantime_free == nil then
 		st.scantime_free = 60000

@@ -5,7 +5,7 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 local speeks = {} -- говорит ли кто либо в лагере, чтобы вместе не болтали
-
+kamps = {}
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
@@ -53,14 +53,6 @@ function evaluator_on_position:evaluate()
 		end
 	end
 	return tt
-end
---' Необходимо ли нам идти вокруг лагеря
-class "evaluator_need_patrol" (property_evaluator)
-function evaluator_need_patrol:__init(name, storage) super (nil, name)
-	self.a = storage
-end
-function evaluator_need_patrol:evaluate()
-	return self.a.action == 1
 end
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
@@ -154,51 +146,6 @@ function action_go_position:finalize ()
 	action_base.finalize (self)
 end
 
---' Обходит лагерь по одному из патрульных путей.
-class "action_go_patrol" (action_base)
-function action_go_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
-	self.a = storage
-	self.move_mgr = move_mgr.move_mgr(self.a.npc)
-end
-function action_go_patrol:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	self.begin = false
-	state_mgr.set_state(self.object, "patrol")	
-end
-function action_go_patrol:reset_scheme()
-	self.move_mgr:initialize()
-	local tt = math.random(table.getn(self.a.patrol_path))	
-	self.move_mgr:reset(self.a.patrol_path[tt], 
-					utils.path_parse_waypoints(self.a.patrol_path[tt]),
-					self.a.path_look[tt],
-					utils.path_parse_waypoints(self.a.path_look[tt]),
-					nil,nil,{obj=self,func=self.end_path})
-end
-function action_go_patrol:execute()
-	action_base.execute (self)
-	
-	if self.begin == false then
-		self.begin = true
-		self:reset_scheme()
-	end
-			
-	self.move_mgr:update()
-end
-function action_go_patrol:end_path(mode, number)
-	self.a.timer.act1.begin = time_global()/1000
-	self.a.action = 0
-	return false
-end
-function action_go_patrol:finalize()
-	self.move_mgr:finalize()
-	action_base.finalize (self)
-end
-
 --' Просто сидит и втыкает
 class "action_wait" (action_base)
 function action_wait:__init (npc_name,action_name,storage) super (nil,action_name)
@@ -227,31 +174,6 @@ function action_wait:execute()
 		local actions = {}
 		local i = 1
 		--' Тут выбор действий
-		if table.getn(self.a.patrol_path) > 0 and self.a.last_action ~= 1 then
-			--' проверка, что на патрульных путях никого нетути
-			local free = true
-			for key,value in db.storage do 
-				if value.kamp ~= nil and
-				   value.kamp.center_point == self.a.center_point and
-				   value.kamp.action == 1 and
-				   key ~= self.object:id() 
-				then
-					free = false
-				end
-				--' Проверка, что последнее время никто не ходил в обход 
-				if value.kamp ~= nil and
-				   value.kamp.center_point == self.a.center_point and
-				   value.kamp.timer.act1.begin ~= nil and
-				   (time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time 
-				then
-					free = false
-				end
-			end		
-		        if free then
-				actions[i] = 1
-				i = i + 1
-			end             	
-		end	
 		actions[i] = 5
 		local rr = math.random(table.getn(actions))
 		self.a.action = actions[rr]
@@ -276,6 +198,22 @@ function action_wait:finalize()
 	action_base.finalize (self)
 end
 
+
+class "CKampManager"
+function CKampManager:__init(patrol)
+	self.patrol = patrol
+	self.vectors = {{1,		0,		0},
+					{1,		0, 		1},
+					{0, 	0,		1},
+					{-1, 	0,		1},
+					{-1, 	0, 		0},
+					{-1, 	0,		-1},
+					{0, 	0,		-1},
+					{1, 	0,		-1} }
+
+
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 --Kamp binder
 ----------------------------------------------------------------------------------------------------------------------
@@ -288,7 +226,6 @@ function add_to_binder(object, ini, scheme, section, storage)
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
-	properties["need_patrol"]	= xr_evaluators_id.stohe_kamp_base + 3
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1    
 	properties["danger"]		= xr_evaluators_id.danger
 
@@ -299,26 +236,14 @@ function add_to_binder(object, ini, scheme, section, storage)
 	-- Evaluators                                                                            
 	manager:add_evaluator (properties["kamp_end"], 		this.evaluator_kamp_end		("kamp_end", db.storage[object:id()].kamp, "kamp_end"))
 	manager:add_evaluator (properties["on_position"],	this.evaluator_on_position	("kamp_on_position", db.storage[object:id()].kamp, "kamp_on_position"))
-	manager:add_evaluator (properties["need_patrol"],	this.evaluator_need_patrol	("kamp_need_patrol", db.storage[object:id()].kamp, "kamp_need_patrol"))
 
 	-- Actions
-	local action = this.action_go_patrol (object:name(),"action_go_patrol", db.storage[object:id()].kamp)
-	action:add_precondition		(world_property(stalker_ids.property_alive, true))
-	action:add_precondition		(world_property(properties["danger"],		true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	xr_motivator.addCommonPrecondition(action)
-	action:add_precondition		(world_property(properties["need_patrol"],	true))
-	action:add_effect 		(world_property(properties["kamp_end"], 	true))
-	action:add_effect		(world_property(stalker_ids.property_danger,false))
-	manager:add_action (operators["go_patrol"], action)
-	
-	action = this.action_wait (object:name(),"action_kamp_wait", db.storage[object:id()].kamp)
+	local action = this.action_wait (object:name(),"action_kamp_wait", db.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(properties["danger"],		true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	xr_motivator.addCommonPrecondition(action)
 	action:add_precondition		(world_property(properties["on_position"], 	true))
-	action:add_precondition		(world_property(properties["need_patrol"],	false))
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
 	action:add_effect		(world_property(stalker_ids.property_danger,false))
 	manager:add_action (operators["wait"], action)
@@ -347,31 +272,12 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.max_rad = 2
 	st.action = 0
     st.last_action = 0
-    st.patrol_path = {}
-    st.path_look = {}
     st.pos_id = -1
     st.timer = { act1 = {begin = nil, time = 120},
 				act4 = {begin = nil, time = 60}}
-					
+
 	st.center_point = utils.cfg_get_string(ini, section, "center_point", npc, true,  gulag_name)
-	
-	local i = 1
-	local s		
-	while true do
-		s = utils.cfg_get_string(ini, section, "patrol_path_"..i, npc, false,  gulag_name)
-		if not s then
-			break
-		end
-		st.patrol_path[i] = s
-		i = i + 1
+	if kamps[st.center_point] == nil then
+		kamps[st.center_point] = CKampManager(st.center_point)
 	end
-	i = 1
-	while true do
-		s = utils.cfg_get_string(ini, section, "path_look_"..i, npc, false,  gulag_name)
-		if not s then
-			break
-		end
-		st.path_look[i] = s
-		i = i + 1
-	end	
 end
