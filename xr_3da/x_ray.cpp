@@ -460,6 +460,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			g_pGameLevel->net_Stop	();
 			DEL_INSTANCE			(g_pGameLevel);
 			Console->Show			();
+			Console->Execute("main_menu on");
 		}
 		R_ASSERT			(0!=g_pGamePersistent);
 		g_pGamePersistent->Disconnect();
