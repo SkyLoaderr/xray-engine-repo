@@ -274,18 +274,17 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	case OGF_VERTEXFORMAT_FVF_1L: // 1-Link
 		{
 			size				= dwVertCount*sizeof(vertBoned1W);
-#ifdef _EDITOR
-			// software
-			crc					= crc32	(data->pointer(),size);
-			Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
-#else
 			vertBoned1W* VO = (vertBoned1W*)data->pointer();
 			for (it=0; it<dwVertCount; it++)	{
 				u32		mid = VO[it].matrix;
 				if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
 				if		(mid>sw_bones)	sw_bones = mid;
 			}
-            
+#ifdef _EDITOR
+			// software
+			crc					= crc32	(data->pointer(),size);
+			Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
+#else
 			if	(1==bids.size())	{
 				// HW- single bone
 				RenderMode						= RM_SINGLE;
