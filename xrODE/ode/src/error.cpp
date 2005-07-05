@@ -121,7 +121,7 @@ extern "C" void dMessage (int num, const char *msg, ...)
 
 #include "windows.h"
 
-#ifdef _DEBUG
+#ifdef _DEBUG_
 extern "C" void dError (int num, const char *msg, ...)
 {
   va_list ap;
