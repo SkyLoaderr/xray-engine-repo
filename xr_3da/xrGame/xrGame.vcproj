@@ -4323,6 +4323,9 @@
 								RelativePath=".\ai_stalker_alife.cpp">
 							</File>
 							<File
+								RelativePath=".\ai\stalker\ai_stalker_debug.cpp">
+							</File>
+							<File
 								RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
 							</File>
 							<File

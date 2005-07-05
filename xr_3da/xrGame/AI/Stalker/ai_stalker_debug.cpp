@@ -7,8 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
+#ifdef DEBUG
 #include "ai_stalker.h"
 #include "../../hudmanager.h"
+#include "../../memory_manager.h"
 #include "../../visual_memory_manager.h"
 #include "../../sound_memory_manager.h"
 #include "../../hit_memory_manager.h"
@@ -20,48 +23,58 @@
 #include "../../script_game_object.h"
 #include "../../stalker_animation_manager.h"
 #include "../../weapon.h"
+#include "../../sound_player.h"
+#include "../../inventory.h"
+#include "../../object_handler_planner.h"
+#include "../../stalker_movement_manager.h"
+#include "../../movement_manager_space.h"
+#include "../../patrol_path_manager.h"
+#include "../../level_path_manager.h"
+#include "../../game_path_manager.h"
+#include "../../detail_path_manager.h"
+#include "../../sight_manager.h"
 
-#ifdef DEBUG
-void draw_planner						(const CScriptActionPlanner &brain, LPCSTR indent, LPCSTR planner_id)
+template <typename planner_type>
+void draw_planner						(const planner_type &brain, LPCSTR start_indent, LPCSTR indent, LPCSTR planner_id)
 {
-	CScriptActionPlanner				&_brain = const_cast<CScriptActionPlanner&>(brain);
+	planner_type				&_brain = const_cast<planner_type&>(brain);
 	if (brain.solution().empty())
 		return;
 
 	CScriptActionPlannerAction			*planner = smart_cast<CScriptActionPlannerAction*>(&_brain.action(brain.solution().front()));
 	if (planner)
-		draw_planner					(*planner,indent,_brain.action2string(brain.solution().front()));
+		draw_planner					(*planner,start_indent,indent,_brain.action2string(brain.solution().front()));
 
-	HUD().Font().pFontSmall->OutNext	("%s ",indent);
-	HUD().Font().pFontSmall->OutNext	("%splanner %s",indent,planner_id);
-	HUD().Font().pFontSmall->OutNext	("%s%sevaluators  : %d",indent,indent,brain.evaluators().size());
-	HUD().Font().pFontSmall->OutNext	("%s%soperators   : %d",indent,indent,brain.operators().size());
-	HUD().Font().pFontSmall->OutNext	("%s%sselected    : %s",indent,indent,_brain.action2string(brain.solution().front()));
+	HUD().Font().pFontSmall->OutNext	("%s ",start_indent);
+	HUD().Font().pFontSmall->OutNext	("%splanner %s",start_indent,planner_id);
+	HUD().Font().pFontSmall->OutNext	("%s%sevaluators  : %d",start_indent,indent,brain.evaluators().size());
+	HUD().Font().pFontSmall->OutNext	("%s%soperators   : %d",start_indent,indent,brain.operators().size());
+	HUD().Font().pFontSmall->OutNext	("%s%sselected    : %s",start_indent,indent,_brain.action2string(brain.solution().front()));
 	// solution
-	HUD().Font().pFontSmall->OutNext	("%s%ssolution",indent,indent);
+	HUD().Font().pFontSmall->OutNext	("%s%ssolution",start_indent,indent);
 	for (int i=0; i<(int)brain.solution().size(); ++i)
-		HUD().Font().pFontSmall->OutNext("%s%s%s%s",indent,indent,indent,_brain.action2string(brain.solution()[i]));
+		HUD().Font().pFontSmall->OutNext("%s%s%s%s",start_indent,indent,indent,_brain.action2string(brain.solution()[i]));
 	// current
-	HUD().Font().pFontSmall->OutNext	("%s%scurrent world state",indent,indent);
-	CMotivationActionManagerStalker::EVALUATOR_MAP::const_iterator	I = brain.evaluators().begin();
-	CMotivationActionManagerStalker::EVALUATOR_MAP::const_iterator	E = brain.evaluators().end();
+	HUD().Font().pFontSmall->OutNext	("%s%scurrent world state",start_indent,indent);
+	planner_type::EVALUATOR_MAP::const_iterator	I = brain.evaluators().begin();
+	planner_type::EVALUATOR_MAP::const_iterator	E = brain.evaluators().end();
 	for ( ; I != E; ++I) {
-		xr_vector<CMotivationActionManagerStalker::COperatorCondition>::const_iterator J = std::lower_bound(brain.current_state().conditions().begin(),brain.current_state().conditions().end(),CMotivationActionManagerStalker::CWorldProperty((*I).first,false));
+		xr_vector<planner_type::COperatorCondition>::const_iterator J = std::lower_bound(brain.current_state().conditions().begin(),brain.current_state().conditions().end(),planner_type::CWorldProperty((*I).first,false));
 		char				temp = '?';
 		if ((J != brain.current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 			temp			= (*J).value() ? '+' : '-';
-			HUD().Font().pFontSmall->OutNext	("%s%s%s    %5c : [%d][%s]",indent,indent,indent,temp,(*I).first,_brain.property2string((*I).first));
+			HUD().Font().pFontSmall->OutNext	("%s%s%s    %5c : [%d][%s]",start_indent,indent,indent,temp,(*I).first,_brain.property2string((*I).first));
 		}
 	}
 	// goal
-	HUD().Font().pFontSmall->OutNext	("%s%starget world state",indent,indent);
+	HUD().Font().pFontSmall->OutNext	("%s%starget world state",start_indent,indent);
 	I = brain.evaluators().begin();
 	for ( ; I != E; ++I) {
-		xr_vector<CMotivationActionManagerStalker::COperatorCondition>::const_iterator J = std::lower_bound(brain.target_state().conditions().begin(),brain.target_state().conditions().end(),CMotivationActionManagerStalker::CWorldProperty((*I).first,false));
+		xr_vector<planner_type::COperatorCondition>::const_iterator J = std::lower_bound(brain.target_state().conditions().begin(),brain.target_state().conditions().end(),planner_type::CWorldProperty((*I).first,false));
 		char				temp = '?';
 		if ((J != brain.target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 			temp			= (*J).value() ? '+' : '-';
-			HUD().Font().pFontSmall->OutNext	("%s%s%s    %5c : [%d][%s]",indent,indent,indent,temp,(*I).first,_brain.property2string((*I).first));
+			HUD().Font().pFontSmall->OutNext	("%s%s%s    %5c : [%d][%s]",start_indent,indent,indent,temp,(*I).first,_brain.property2string((*I).first));
 		}
 	}
 }
@@ -76,6 +89,14 @@ LPCSTR animation_name(CAI_Stalker *self, const MotionID &animation)
 	VERIFY				(motion);
 	LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(motion);
 	return				(name);
+}
+
+void draw_restrictions(const shared_str &restrictions, LPCSTR start_indent, LPCSTR indent, LPCSTR header)
+{
+	HUD().Font().pFontSmall->OutNext	("%s%s%s",start_indent,indent,header);
+	string256	temp;
+	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
+		HUD().Font().pFontSmall->OutNext("%s%s%s",start_indent,indent,indent,_GetItem(*restrictions,i,temp));
 }
 
 void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
@@ -165,7 +186,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,brain.graph().vertices().size());
 	HUD().Font().pFontSmall->OutNext	("%s%selected_id  : %d",indent,indent,brain.selected_id());
 	// actions
-	draw_planner						(brain,indent,"root");
+	draw_planner						(this->brain(),indent,indent,"root");
 	
 	HUD().Font().pFontSmall->OutSet		(640,210);
 	// brain
@@ -196,6 +217,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	);
 
 	// sounds
+	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("%ssounds",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%scollections : %d",indent,indent,sound().objects().size());
 	
@@ -214,7 +236,158 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			HUD().Font().pFontSmall->OutNext("%s%s%sactive    : %s",indent,indent,indent,(*I).m_sound->handle ? (*I).m_sound->handle->file_name() : "no source");
 	}
 
+	// sight
+	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutNext	("%ssight",indent);
+
+	LPCSTR								sight_type = "invalid";
+	switch (sight().current_action().sight_type()) {
+		case SightManager::eSightTypeCurrentDirection : {
+			sight_type					= "current direction";
+			break;
+		}
+		case SightManager::eSightTypePathDirection : {
+			sight_type					= "path direction";
+			break;
+		}
+		case SightManager::eSightTypeDirection : {
+			sight_type					= "direction";
+			break;
+		}
+		case SightManager::eSightTypePosition : {
+			sight_type					= "position";
+			break;
+		}
+		case SightManager::eSightTypeObject : {
+			sight_type					= "object";
+			break;
+		}
+		case SightManager::eSightTypeCover : {
+			sight_type					= "cover";
+			break;
+		}
+		case SightManager::eSightTypeSearch : {
+			sight_type					= "search";
+			break;
+		}
+		case SightManager::eSightTypeLookOver : {
+			sight_type					= "look over";
+			break;
+		}
+		case SightManager::eSightTypeCoverLookOver : {
+			sight_type					= "cover look over";
+			break;
+		}
+	}
+
+	HUD().Font().pFontSmall->OutNext	("%s%stype            : %s",indent,indent,sight_type);
+	HUD().Font().pFontSmall->OutNext	("%s%suse torso       : %s",indent,indent,sight().current_action().use_torso_look() ? "+" : "-");
+	
+	switch (sight().current_action().sight_type()) {
+		case SightManager::eSightTypeCurrentDirection : {
+			break;
+		}
+		case SightManager::eSightTypePathDirection : {
+			break;
+		}
+		case SightManager::eSightTypeDirection : {
+			HUD().Font().pFontSmall->OutNext	("%s%sdirection       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
+			break;
+		}
+		case SightManager::eSightTypePosition : {
+			HUD().Font().pFontSmall->OutNext	("%s%sposition       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
+			break;
+		}
+		case SightManager::eSightTypeObject : {
+			HUD().Font().pFontSmall->OutNext	("%s%sobject         : [%s][%f][%f][%f]",indent,indent,*sight().current_action().object().cName(),VPUSH(sight().current_action().object().Position()));
+			break;
+		}
+		case SightManager::eSightTypeCover : {
+			sight_type					= "cover";
+			break;
+		}
+		case SightManager::eSightTypeSearch : {
+			sight_type					= "search";
+			break;
+		}
+		case SightManager::eSightTypeLookOver : {
+			sight_type					= "look over";
+			break;
+		}
+		case SightManager::eSightTypeCoverLookOver : {
+			sight_type					= "cover look over";
+			break;
+		}
+	}
+
+	// movement
+	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutNext	("%smovement",indent);
+	LPCSTR						path_type = "invalid";
+	switch (movement().path_type()) {
+		case MovementManager::ePathTypeGamePath : {
+			path_type			= "game path";
+			break;
+		}
+		case MovementManager::ePathTypeLevelPath : {
+			path_type			= "level path";
+			break;
+		}
+		case MovementManager::ePathTypePatrolPath : {
+			path_type			= "patrol path";
+			break;
+		}
+		case MovementManager::ePathTypeNoPath : {
+			path_type			= "no path";
+			break;
+		}
+		default : NODEFAULT;
+	}
+	HUD().Font().pFontSmall->OutNext	("%s%spath type       : %s",indent,indent,path_type);
+	
+	if (movement().path_type() == MovementManager::ePathTypePatrolPath) {
+		HUD().Font().pFontSmall->OutNext("%s%spatrol");
+		HUD().Font().pFontSmall->OutNext("%s%s%spath          : %s",indent,indent,indent,*movement().patrol().path_name());
+		HUD().Font().pFontSmall->OutNext("%s%s%scompleted     : %s",indent,indent,indent,movement().patrol().completed() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%s%scurrent point : %d",indent,indent,indent,movement().patrol().get_current_point_index());
+		HUD().Font().pFontSmall->OutNext("%s%s%sextrapolate   : %s",indent,indent,indent,movement().patrol().extrapolate_path() ? "+" : "-");
+	}
+
+	if (movement().path_type() == MovementManager::ePathTypeGamePath) {
+		HUD().Font().pFontSmall->OutNext("%s%sgame",indent,indent);
+		HUD().Font().pFontSmall->OutNext("%s%s%scompleted     : %s",indent,indent,indent,movement().game_path().completed() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%s%spath size     : %d",indent,indent,indent,movement().game_path().path().size());
+		HUD().Font().pFontSmall->OutNext("%s%s%scurrent point : %d",indent,indent,indent,movement().game_path().intermediate_index());
+	}
+	
+	HUD().Font().pFontSmall->OutNext	("%s%slevel",indent,indent);
+	HUD().Font().pFontSmall->OutNext	("%s%s%spath size     : %d",indent,indent,indent,movement().level_path().path().size());
+	HUD().Font().pFontSmall->OutNext	("%s%s%sstart vertex  : %d",indent,indent,indent,movement().level_path().path().empty() ? -1 : movement().level_path().path().front());
+	HUD().Font().pFontSmall->OutNext	("%s%s%sdest vertex   : %d",indent,indent,indent,movement().level_path().path().empty() ? -1 : movement().level_path().path().back());
+
+	HUD().Font().pFontSmall->OutNext	("%s%sdetail",indent,indent);
+	HUD().Font().pFontSmall->OutNext	("%s%s%svelocities    : %d",indent,indent,indent,movement().detail().velocities().size());
+	HUD().Font().pFontSmall->OutNext	("%s%s%sextrapolate   : %f",indent,indent,indent,movement().detail().extrapolate_length());
+	HUD().Font().pFontSmall->OutNext	("%s%s%spath size     : %d",indent,indent,indent,movement().detail().path().size());
+	HUD().Font().pFontSmall->OutNext	("%s%s%sstart point   : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().front().position));
+	HUD().Font().pFontSmall->OutNext	("%s%s%sdest point    : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().back().position));
+
+	string256							temp;
+	if	(
+			movement().restrictions().out_restrictions().size() ||
+			movement().restrictions().in_restrictions().size() ||
+			movement().restrictions().base_out_restrictions().size() ||
+			movement().restrictions().base_in_restrictions().size()
+		) {
+		HUD().Font().pFontSmall->OutNext	("%s%srestrictions",indent,indent);
+		strconcat							(temp,indent,indent,indent);
+		draw_restrictions					(movement().restrictions().out_restrictions(),temp,indent,"out");
+		draw_restrictions					(movement().restrictions().in_restrictions(),temp,indent,"in");
+		draw_restrictions					(movement().restrictions().base_out_restrictions(),temp,indent,"base out");
+		draw_restrictions					(movement().restrictions().base_in_restrictions(),temp,indent,"base in");
+	}
 	// objects
+	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("%sobjects",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects             : %d",indent,indent,inventory().m_all.size());
 	HUD().Font().pFontSmall->OutNext	("%s%sbest weapon         : %s",indent,indent,best_weapon() ? *best_weapon()->object().cName() : "");
@@ -231,5 +404,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			HUD().Font().pFontSmall->OutNext("%s%s%sunstrapped     : %s",indent,indent,indent,weapon_unstrapped(weapon) ? "+" : "-");
 		}
 	}
+	const CObjectHandlerPlanner	&objects = planner();
+	strconcat					(temp,indent,indent);
+	draw_planner				(objects,temp,indent,"root");
 }
 #endif

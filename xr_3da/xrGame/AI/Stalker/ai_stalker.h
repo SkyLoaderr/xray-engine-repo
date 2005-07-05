@@ -185,8 +185,8 @@ public:
 	virtual	void						PHHit								(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual BOOL						feel_vision_isRelevant				(CObject* who);
 	virtual float						Radius								() const;
-	virtual void						OnHUDDraw							(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
 #ifdef DEBUG
+	virtual void						OnHUDDraw							(CCustomHUD* hud);
 	virtual void						OnRender							();
 #endif
 
@@ -261,9 +261,9 @@ public:
 			bool						not_enough_ammo			();
 			bool						can_buy_ammo			();
 
-			bool						can_kill_entity			(const Fvector &position, const Fvector &direction, bool enemy) const;
-			bool						can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy) const;
-			bool						can_kill_entity			(bool enemy);
+			bool						can_kill_entity			(const Fvector &position, const Fvector &direction, bool enemy, float distance) const;
+			bool						can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance) const;
+			bool						can_kill_entity			(bool enemy, float distance = 50.f);
 			bool						can_kill_member			();
 			bool						can_kill_enemy			();
 			
@@ -382,8 +382,6 @@ public:
 			void						react_on_grenades				();
 			void						react_on_member_death			();
 
-
-public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CAI_Stalker)
