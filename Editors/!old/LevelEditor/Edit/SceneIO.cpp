@@ -101,6 +101,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
 	VERIFY(map_name);
 
+    CTimer T; 		T.Start();
     xr_string full_name;
     if (initial)	FS.update_path	(full_name,initial,map_name);
     else			full_name		= map_name;
@@ -124,10 +125,13 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
     SceneToolsMapPairIt _I = m_SceneTools.begin();
     SceneToolsMapPairIt _E = m_SceneTools.end();
+    CMemoryWriter 	w_cache;
     for (; _I!=_E; _I++)
         if (_I->second&&_I->second->IsNeedSave()){
         	F->open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
-         	_I->second->Save(*F);
+         	_I->second->Save(w_cache);
+			F->w			(w_cache.pointer(),w_cache.size());
+			w_cache.clear	();
         	F->close_chunk	();
         }
         
@@ -149,6 +153,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     FS.w_close		(F);
 	if (!bUndo) EFS.LockFile		(0,full_name.c_str(),false);
     if (!bUndo) m_RTFlags.set		(flRT_Unsaved,FALSE);
+    if (!bUndo) Msg("Saving time: %3.2f sec",T.Stop());
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -233,6 +238,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
     
 	ELog.Msg( mtInformation, "EScene: loading '%s'", map_name);
     if (FS.exist(full_name.c_str())){
+        CTimer T; T.Start();
         IReader* F 	= FS.r_open(full_name.c_str());
         // Version
         R_ASSERT	(F->r_chunk(CHUNK_VERSION, &version));
@@ -308,7 +314,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
                 AIM->close();
             }
 		}        
-        ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
+        Msg("EScene: %d objects loaded, %3.2f sec", ObjCount(), T.Stop() );
 
     	UI->UpdateScene(true); 
 
@@ -342,19 +348,24 @@ void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname 
     F->w_u32	   	(CURRENT_FILE_VERSION);
     F->close_chunk	();
 
+    CMemoryWriter 	w_cache;
     if (OBJCLASS_DUMMY==classfilter){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
             if (_I->second&&_I->second->IsNeedSave()){
                 F->open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
-                _I->second->SaveSelection(*F);
+                _I->second->SaveSelection(w_cache);
+                F->w			(w_cache.pointer(),w_cache.size());
+                w_cache.clear	();
                 F->close_chunk	();
             }
     }else{
     	ESceneCustomMTools* mt = GetMTools(classfilter); VERIFY(mt);
         F->open_chunk	(CHUNK_TOOLS_OFFSET+classfilter);
-        mt->SaveSelection(*F);
+        mt->SaveSelection(w_cache);
+        F->w			(w_cache.pointer(),w_cache.size());
+        w_cache.clear	();
         F->close_chunk	();
     }
         
