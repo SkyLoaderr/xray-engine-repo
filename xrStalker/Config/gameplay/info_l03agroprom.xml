@@ -98,7 +98,9 @@
 
     <info_portion id="agr_nii_alarm">
     </info_portion>
-
+    
+    <info_portion id="agr_nii_helicopter_atack">
+    </info_portion>
 
 
 </game_information_portions>
