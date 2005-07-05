@@ -196,6 +196,9 @@ copy x:\xrCore.dll u:\updater
 				RelativePath=".\NotifyTaskPropDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\NotifyTaskPropDlg.h">
+			</File>
+			<File
 				RelativePath=".\Resource.h">
 			</File>
 			<File
@@ -273,9 +276,6 @@ copy x:\xrCore.dll u:\updater
 				RelativePath=".\res\xrUpdateDoc.ico">
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\NotifyTaskPropDlg.h">
-		</File>
 	</Files>
 	<Globals>
 		<Global
