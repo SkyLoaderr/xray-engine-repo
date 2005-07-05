@@ -45,6 +45,12 @@ ph_snd_themes["radio_music"] = {"characters_voice\\human_01\\scenario\\bar\\radi
 	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_3",
 	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_1"
 	                        }
+ph_snd_themes["dolg_megafon_1_hit"] = {"characters_voice\\human_01\\scenario\\bar\\dolg_megafon\\duty_gunfire_mega_1"
+	                        }
+ph_snd_themes["dolg_megafon_2_hit"] = {"characters_voice\\human_01\\scenario\\bar\\dolg_megafon\\duty_gunfire_mega_2"
+	                        }
+ph_snd_themes["dolg_megafon_kill"] = {"characters_voice\\human_01\\scenario\\bar\\dolg_megafon\\duty_gunfire_mega_3"
+	                        }
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
