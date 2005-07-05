@@ -127,9 +127,7 @@ function generic_physics_binder:use_callback(obj, who)
 end
 
 function generic_physics_binder:hit_callback(obj, amount, local_direction, who, bone_index)
-	--printf("_bp: motivator_binder:hit_callback: obj='%s'", obj:name())
-	-- FIXME: коллбеки неплохо было бы регистрировать в общем storage, а не посхемно...
-	-- просто всегда ставить их при включении схемы и снимать при отключении.
+	--printf("_bp: generic_physics_binder:hit_callback: obj='%s'", obj:name())
 	if self.st.active_section then
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", obj, amount, local_direction, who, bone_index)
 	end
