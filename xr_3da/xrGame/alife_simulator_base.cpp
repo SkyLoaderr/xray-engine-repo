@@ -25,6 +25,8 @@
 #include "xrserver.h"
 #include "level_navigation_graph.h"
 
+#include "relation_registry.h"
+#include "alife_registry_wrappers.h"
 using namespace ALife;
 
 CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
@@ -267,6 +269,8 @@ void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, boo
 	else
 		if (object->ID_Parent == 0xffff)
 			graph().level().remove	(object);
+
+	RELATION_REGISTRY().ClearRelations(object->ID);
 }
 
 void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)

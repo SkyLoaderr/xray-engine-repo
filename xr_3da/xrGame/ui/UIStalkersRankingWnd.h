@@ -6,20 +6,17 @@
 //  Подокно дневника ПДА - рейтинг сталкеров всей игры
 //=============================================================================
 
-#ifndef UI_STALKERS_RANKING_WND_H_
-#define UI_STALKERS_RANKING_WND_H_
-
 #pragma once
 
 //////////////////////////////////////////////////////////////////////////
+#include "UIWindow.h"
 
-#include "UIFrameWindow.h"
-#include "UIFrameLineWnd.h"
-#include "UIAnimatedStatic.h"
-#include "UICharacterInfo.h"
-#include "UIListWnd.h"
-
-//////////////////////////////////////////////////////////////////////////
+class CUIFrameWindow;
+class CUIFrameLineWnd;
+class CUIAnimatedStatic;
+class CUIStatic;
+class CUICharacterInfo;
+class CUIListWnd;
 
 class CUIStalkersRankingWnd: public CUIWindow
 {
@@ -34,19 +31,17 @@ public:
 	
 protected:
 	// Фреймы дикоративного оформления
-	CUIFrameWindow		UIInfoFrame;
-	CUIFrameWindow		UICharIconFrame;
-	CUIFrameLineWnd		UIInfoHeader;
-	CUIFrameLineWnd		UICharIconHeader;
-	CUIAnimatedStatic	UIAnimatedIcon;
-	CUIStatic			UIArticleHeader;
+	CUIFrameWindow*		UIInfoFrame;
+	CUIFrameWindow*		UICharIconFrame;
+	CUIFrameLineWnd*	UIInfoHeader;
+	CUIFrameLineWnd*	UICharIconHeader;
+	CUIAnimatedStatic*	UIAnimatedIcon;
+	CUIStatic*			UIArticleHeader;
 
 	// информация о персонаже
-	CUIWindow			UICharacterWindow;
-	CUICharacterInfo	UICharacterInfo;
-	CUIFrameWindow		UIMask;
+	CUIWindow*			UICharacterWindow;
+	CUICharacterInfo*	UICharacterInfo;
+	CUIFrameWindow*		UIMask;
 	// Список сталкеров
-	CUIListWnd			UIStalkersList;
+	CUIListWnd*			UIStalkersList;
 };
-
-#endif

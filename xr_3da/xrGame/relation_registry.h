@@ -53,7 +53,7 @@ public:
 	CHARACTER_GOODWILL	 GetCommunityGoodwill		(CHARACTER_COMMUNITY_INDEX from_community, u16 to_character) const ;
 	void				 SetCommunityGoodwill		(CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL goodwill);
 	void				 ChangeCommunityGoodwill	(CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL delta_goodwill);
-
+	
 	void				 ClearRelations				(u16 person_id);
 
 private:

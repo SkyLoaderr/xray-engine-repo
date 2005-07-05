@@ -126,6 +126,8 @@ void RELATION_REGISTRY::ClearRelations	(u16 person_id)
 	}
 }
 
+
+
 //////////////////////////////////////////////////////////////////////////
 CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 from, u16 to) const 
 {
