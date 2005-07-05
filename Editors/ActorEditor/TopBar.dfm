@@ -1,8 +1,8 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 692
+  Height = 20
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   Align = alClient
@@ -21,7 +21,7 @@ object fraTopBar: TfraTopBar
     Left = 0
     Top = 0
     Width = 51
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -175,7 +175,7 @@ object fraTopBar: TfraTopBar
     Left = 51
     Top = 0
     Width = 127
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -548,7 +548,7 @@ object fraTopBar: TfraTopBar
     Left = 282
     Top = 0
     Width = 227
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1232,7 +1232,7 @@ object fraTopBar: TfraTopBar
     Left = 178
     Top = 0
     Width = 104
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1533,7 +1533,7 @@ object fraTopBar: TfraTopBar
     Left = 550
     Top = 0
     Width = 179
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1771,7 +1771,7 @@ object fraTopBar: TfraTopBar
     Left = 509
     Top = 0
     Width = 41
-    Height = 277
+    Height = 20
     Align = alLeft
     BevelOuter = bvNone
     Color = 10528425
@@ -1783,7 +1783,7 @@ object fraTopBar: TfraTopBar
       Top = 0
       Width = 20
       Height = 20
-      Hint = 'Zoom Extents'
+      Hint = 'Zoom Extent'
       Align = alNone
       HotTrack = True
       CloseButton = False
