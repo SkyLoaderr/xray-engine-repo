@@ -234,6 +234,9 @@ function mob_camp:execute_state()
 
 end
 
+function mob_camp:finalize()
+end
+
 ----------------------------------------------------------------------------------------------------
 -- ADD_TO_BINDER
 ----------------------------------------------------------------------------------------------------
@@ -249,6 +252,15 @@ end
 ----------------------------------------------------------------------------------------------------
 -- SET_SCHEME
 ----------------------------------------------------------------------------------------------------
+--function parse_squad(s)
+--	local tab = {}
+--    if s then
+--		for name in string.gfind(s, "[%w_]+" ) do
+--			table.insert(tab, tostring(name))
+--		end
+--	end
+--	return tab
+--end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local storage				= xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
@@ -273,5 +285,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		abort("object '%s': unable to find look_point '%s' on the map",
 					npc:name(), storage.look_point)
 	end
+	
+--	local squad_string	= utils.cfg_get_string(ini, section, "squad", npc, false, gulag_name)
+--	storage.squad		= parse_squad(squad_string)
+--	level.object()
+	
 end
 
