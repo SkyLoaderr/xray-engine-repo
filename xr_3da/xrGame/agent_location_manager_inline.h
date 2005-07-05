@@ -47,3 +47,8 @@ IC	CAgentLocationManager::CDangerLocationPtr CAgentLocationManager::location	(co
 	return						(0);
 }
 
+const CAgentLocationManager::LOCATIONS &CAgentLocationManager::locations	() const
+{
+	return						(m_danger_locations);
+}
+

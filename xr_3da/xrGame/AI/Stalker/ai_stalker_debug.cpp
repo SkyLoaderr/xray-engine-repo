@@ -33,6 +33,15 @@
 #include "../../game_path_manager.h"
 #include "../../detail_path_manager.h"
 #include "../../sight_manager.h"
+#include "../../ai_object_location.h"
+#include "../../entitycondition.h"
+#include "../ai_monsters_misc.h"
+#include "../../agent_manager.h"
+#include "../../agent_member_manager.h"
+#include "../../agent_enemy_manager.h"
+#include "../../agent_corpse_manager.h"
+#include "../../agent_location_manager.h"
+#include "../../cover_point.h"
 
 template <typename planner_type>
 void draw_planner						(const planner_type &brain, LPCSTR start_indent, LPCSTR indent, LPCSTR planner_id)
@@ -108,14 +117,16 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (!actor)
 		return;
 
+	float								up_indent = 40.f;
 	LPCSTR								indent = "  ";
 
 	HUD().Font().pFontSmall->SetColor	(D3DCOLOR_XRGB(0,255,0));
-	HUD().Font().pFontSmall->OutSet		(0,210);
-	HUD().Font().pFontSmall->OutNext	("STALKER : %s",*cName());
-	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutSet		(0,up_indent);
 	// memory
 	HUD().Font().pFontSmall->OutNext	("memory");
+	HUD().Font().pFontSmall->OutNext	("%sname          : %s",indent,*cName());
+	HUD().Font().pFontSmall->OutNext	("%sid            : %d",indent,ID());
+	HUD().Font().pFontSmall->OutNext	("%shealth        : %f",indent,conditions().health());
 	// visual
 	HUD().Font().pFontSmall->OutNext	("%svisual",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().visual().objects().size());
@@ -154,6 +165,59 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (memory().enemy().selected()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,*memory().enemy().selected()->cName());
+		float								interval = (1.f - panic_threshold())*.25f, left = -1.f, right = -1.f;
+		LPCSTR								description = "invalid";
+		u32									result = dwfChooseAction(
+			2000,
+			1.f - interval,
+			1.f - 2*interval,
+			1.f - 3*interval,
+			panic_threshold(),
+			g_Team(),
+			g_Squad(),
+			g_Group(),
+			0,
+			1,
+			2,
+			3,
+			4,
+			this,
+			300.f
+		);
+		switch (result) {
+			case 0 : {
+				description					= "attack";
+				left						= 1.f;
+				right						= 1.f - 1.f*interval;
+				break;
+			}
+			case 1 : {
+				description					= "careful attack";
+				left						= 1.f - 1.f*interval;
+				right						= 1.f - 2.f*interval;
+				break;
+			}
+			case 2 : {
+				description					= "defend";
+				left						= 1.f - 2.f*interval;
+				right						= 1.f - 3.f*interval;
+				break;
+			}
+			case 3 : {
+				description					= "retreat";
+				left						= 1.f - 3*interval;
+				right						= panic_threshold();
+				break;
+			}
+			case 4 : {
+				description					= "panic";
+				left						= panic_threshold();
+				right						= 0.f;
+				break;
+			}
+			default : NODEFAULT;
+		}
+		HUD().Font().pFontSmall->OutNext	("%s%s%svictory   : [%f%%,%f%%] -> %s",indent,indent,indent,right,left,description);
 	}
 	// danger
 	HUD().Font().pFontSmall->OutNext	("%sdanger",indent);
@@ -172,10 +236,27 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject   : %s",indent,indent,indent,*memory().item().selected()->cName());
 	}
 
-	HUD().Font().pFontSmall->OutSet		(300,210);
+	// agent manager
+	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutNext	("agent manager");
+	HUD().Font().pFontSmall->OutNext	("%smembers           : %d",indent,agent_manager().member().members().size());
+	HUD().Font().pFontSmall->OutNext	("%senemies           : %d",indent,agent_manager().enemy().enemies().size());
+	HUD().Font().pFontSmall->OutNext	("%scorpses           : %d",indent,agent_manager().corpse().corpses().size());
+	HUD().Font().pFontSmall->OutNext	("%sdanger locations  : %d",indent,agent_manager().location().locations().size());
+	HUD().Font().pFontSmall->OutNext	("%smembers in combat : %d",indent,agent_manager().member().combat_members().size());
+	HUD().Font().pFontSmall->OutNext	("%sI am in combat    : %s",indent,agent_manager().member().registered_in_combat(this) ? "+" : "-");
+
+	if (agent_manager().member().member(this).cover())
+		HUD().Font().pFontSmall->OutNext("%scover         : [%f][%f][%f]",indent,VPUSH(agent_manager().member().member(this).cover()->position()));
+
+	if (agent_manager().member().member(this).member_death_reaction().m_processing)
+		HUD().Font().pFontSmall->OutNext("%react on death : %s",indent,*agent_manager().member().member(this).member_death_reaction().m_member->cName());
+
+	if (agent_manager().member().member(this).grenade_reaction().m_processing)
+		HUD().Font().pFontSmall->OutNext("%react on grenade : %s",indent,agent_manager().member().member(this).grenade_reaction().m_game_object ? *agent_manager().member().member(this).grenade_reaction().m_game_object->cName() : "unknown");
+
+	HUD().Font().pFontSmall->OutSet		(320,up_indent);
 	// brain
-	HUD().Font().pFontSmall->OutNext	(" ");
-	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("brain");
 	// motivations
 	HUD().Font().pFontSmall->OutNext	("%smotivations",indent);
@@ -186,10 +267,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// actions
 	draw_planner						(this->brain(),indent,indent,"root");
 	
-	HUD().Font().pFontSmall->OutSet		(640,210);
+	HUD().Font().pFontSmall->OutSet		(640,up_indent);
 	// brain
-	HUD().Font().pFontSmall->OutNext	(" ");
-	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("controls");
 	// animations
 	HUD().Font().pFontSmall->OutNext	("%sanimations",indent);
@@ -295,12 +374,12 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			break;
 		}
 		case SightManager::eSightTypePosition : {
-			HUD().Font().pFontSmall->OutNext	("%s%sposition       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
+			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
 			break;
 		}
 		case SightManager::eSightTypeObject : {
-			HUD().Font().pFontSmall->OutNext	("%s%sobject         : %s",indent,indent,*sight().current_action().object().cName());
-			HUD().Font().pFontSmall->OutNext	("%s%sposition       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().object().Position()));
+			HUD().Font().pFontSmall->OutNext	("%s%sobject          : %s",indent,indent,*sight().current_action().object().cName());
+			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().object().Position()));
 			break;
 		}
 		case SightManager::eSightTypeCover : {
@@ -401,6 +480,13 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		default : NODEFAULT;
 	}
 	HUD().Font().pFontSmall->OutNext	("%s%spath type       : %s",indent,indent,path_type);
+	HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(Position()));
+	HUD().Font().pFontSmall->OutNext	("%s%slevel vertex id : %d",indent,indent,ai_location().level_vertex_id());
+	HUD().Font().pFontSmall->OutNext	("%s%sgame vertex id  : %d",indent,indent,ai_location().game_vertex_id());
+	HUD().Font().pFontSmall->OutNext	("%s%shead current    : [%f][%f]",indent,indent,movement().head_orientation().current.yaw,movement().head_orientation().current.pitch);
+	HUD().Font().pFontSmall->OutNext	("%s%shead target     : [%f][%f]",indent,indent,movement().head_orientation().target.yaw,movement().head_orientation().target.pitch);
+	HUD().Font().pFontSmall->OutNext	("%s%sbody current    : [%f][%f]",indent,indent,movement().body_orientation().current.yaw,movement().body_orientation().current.pitch);
+	HUD().Font().pFontSmall->OutNext	("%s%sbody target     : [%f][%f]",indent,indent,movement().body_orientation().target.yaw,movement().body_orientation().target.pitch);
 	
 	if (movement().path_type() == MovementManager::ePathTypePatrolPath) {
 		HUD().Font().pFontSmall->OutNext("%s%spatrol");
