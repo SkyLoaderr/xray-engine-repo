@@ -47,6 +47,90 @@
 
 CActor *g_debug_actor = 0;
 
+
+void try_change_current_entity()
+{
+	CActor								*actor = smart_cast<CActor*>(Level().CurrentEntity());
+	VERIFY								(actor);
+	g_debug_actor						= actor;
+
+	CFrustum							frustum;
+	frustum.CreateFromMatrix			(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+
+	BOOL								Enabled = Level().CurrentEntity()->getEnabled();
+	Level().CurrentEntity()->setEnabled	(FALSE);
+	
+	typedef xr_vector<ISpatial*>		OBJECTS;
+	OBJECTS								ISpatialResult;
+	g_SpatialSpace->q_frustum			(ISpatialResult, 0, STYPE_COLLIDEABLE, frustum);
+	
+	Level().CurrentEntity()->setEnabled	(Enabled);
+
+	float								maxlen = 1000.0f;
+	CAI_Stalker*						nearest_agent = 0;
+
+	OBJECTS::const_iterator				I = ISpatialResult.begin();
+	OBJECTS::const_iterator				E = ISpatialResult.end();
+	for ( ; I != E; ++I) {
+		CAI_Stalker						*current = smart_cast<CAI_Stalker*>(*I);
+		if (!current)
+			continue;
+		Fvector							A, B, tmp; 
+		current->Center					(A);
+
+		tmp.sub							(A, actor->cam_Active()->vPosition);
+		B.mad							(
+			actor->cam_Active()->vPosition,
+			actor->cam_Active()->vDirection,
+			tmp.dotproduct(
+				actor->cam_Active()->vDirection
+			)
+		);
+		float len = B.distance_to_sqr(A);
+		if (len > 1) continue;
+
+		if (maxlen>len && !current->getDestroy())
+		{
+			maxlen = len;
+			nearest_agent = current;
+		};
+	}
+
+	if (!nearest_agent)
+		return;
+
+	Level().SetEntity		(nearest_agent);
+	actor->inventory().Items_SetCurrentEntityHud(false);
+	
+	Engine.Sheduler.Unregister	(actor);
+	Engine.Sheduler.Register	(actor);
+	
+	Engine.Sheduler.Unregister	(nearest_agent);
+	Engine.Sheduler.Register	(nearest_agent, TRUE);
+}
+
+void restore_actor()
+{
+	VERIFY		(g_debug_actor);
+	VERIFY		(Level().CurrentEntity()->CLS_ID != CLSID_OBJECT_ACTOR);
+
+	Engine.Sheduler.Unregister	(Level().CurrentEntity());
+	Engine.Sheduler.Register	(Level().CurrentEntity());
+
+	Level().SetEntity			(g_debug_actor);
+
+	Engine.Sheduler.Unregister	(g_debug_actor);
+	Engine.Sheduler.Register	(g_debug_actor, TRUE);
+
+	g_debug_actor->inventory().Items_SetCurrentEntityHud(true);
+
+	CHudItem* pHudItem = smart_cast<CHudItem*>(g_debug_actor->inventory().ActiveItem());
+	if (pHudItem) 
+	{
+		pHudItem->OnStateSwitch(pHudItem->State());
+	}
+}
+
 template <typename planner_type>
 void draw_planner						(const planner_type &brain, LPCSTR start_indent, LPCSTR indent, LPCSTR planner_id)
 {
@@ -556,88 +640,4 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	strconcat					(temp,indent,indent);
 	draw_planner				(objects,temp,indent,"root");
 }
-
-void try_change_current_entity()
-{
-	CActor								*actor = smart_cast<CActor*>(Level().CurrentEntity());
-	VERIFY								(actor);
-	g_debug_actor						= actor;
-
-	CFrustum							frustum;
-	frustum.CreateFromMatrix			(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-
-	BOOL								Enabled = Level().CurrentEntity()->getEnabled();
-	Level().CurrentEntity()->setEnabled	(FALSE);
-	
-	typedef xr_vector<ISpatial*>		OBJECTS;
-	OBJECTS								ISpatialResult;
-	g_SpatialSpace->q_frustum			(ISpatialResult, 0, STYPE_COLLIDEABLE, frustum);
-	
-	Level().CurrentEntity()->setEnabled	(Enabled);
-
-	float								maxlen = 1000.0f;
-	CAI_Stalker*						nearest_agent = 0;
-
-	OBJECTS::const_iterator				I = ISpatialResult.begin();
-	OBJECTS::const_iterator				E = ISpatialResult.end();
-	for ( ; I != E; ++I) {
-		CAI_Stalker						*current = smart_cast<CAI_Stalker*>(*I);
-		if (!current)
-			continue;
-		Fvector							A, B, tmp; 
-		current->Center					(A);
-
-		tmp.sub							(A, actor->cam_Active()->vPosition);
-		B.mad							(
-			actor->cam_Active()->vPosition,
-			actor->cam_Active()->vDirection,
-			tmp.dotproduct(
-				actor->cam_Active()->vDirection
-			)
-		);
-		float len = B.distance_to_sqr(A);
-		if (len > 1) continue;
-
-		if (maxlen>len && !current->getDestroy())
-		{
-			maxlen = len;
-			nearest_agent = current;
-		};
-	}
-
-	if (!nearest_agent)
-		return;
-
-	Level().SetEntity		(nearest_agent);
-	actor->inventory().Items_SetCurrentEntityHud(false);
-	
-	Engine.Sheduler.Unregister	(actor);
-	Engine.Sheduler.Register	(actor);
-	
-	Engine.Sheduler.Unregister	(nearest_agent);
-	Engine.Sheduler.Register	(nearest_agent, TRUE);
-}
-
-void restore_actor()
-{
-	VERIFY		(g_debug_actor);
-	VERIFY		(Level().CurrentEntity()->CLS_ID != CLSID_OBJECT_ACTOR);
-
-	Engine.Sheduler.Unregister	(Level().CurrentEntity());
-	Engine.Sheduler.Register	(Level().CurrentEntity());
-
-	Level().SetEntity			(g_debug_actor);
-
-	Engine.Sheduler.Unregister	(g_debug_actor);
-	Engine.Sheduler.Register	(g_debug_actor, TRUE);
-
-	g_debug_actor->inventory().Items_SetCurrentEntityHud(true);
-
-	CHudItem* pHudItem = smart_cast<CHudItem*>(g_debug_actor->inventory().ActiveItem());
-	if (pHudItem) 
-	{
-		pHudItem->OnStateSwitch(pHudItem->State());
-	}
-}
-
 #endif
