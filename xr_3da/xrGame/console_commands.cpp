@@ -1131,6 +1131,11 @@ public:
 		char	LevelName[256];	LevelName[0]=0;
 		char	GameType[256];	GameType[0]=0;
 		sscanf	(args,"%s %s", LevelName, GameType);
+		//  [7/5/2005]
+		if (!xr_strcmp(GameType, "dm")) sprintf(GameType, "deathmatch");
+		if (!xr_strcmp(GameType, "tdm")) sprintf(GameType, "teamdeathmatch");
+		if (!xr_strcmp(GameType, "ah")) sprintf(GameType, "artefacthunt");
+		//  [7/5/2005]
 
 		NET_Packet P;
 		P.w_begin(M_CHANGE_LEVEL_GAME);
