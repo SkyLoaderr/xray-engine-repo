@@ -601,7 +601,7 @@ void TUI::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_SHOW_PROPERTIES,    	CommandShowProperties);
 	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
-    REGISTER_SUB_CMD_SE (COMMAND_ZOOM_EXTENTS,     		"Scene\\Zoom",			CommandZoomExtents,false);
+    REGISTER_SUB_CMD_SE (COMMAND_ZOOM_EXTENTS,     		"Zoom",					CommandZoomExtents,false);
     	APPEND_SUB_CMD	("Extents",						0,0);
     	APPEND_SUB_CMD	("Selected",					1,0);
     REGISTER_SUB_CMD_END;
