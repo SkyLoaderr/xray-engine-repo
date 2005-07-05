@@ -52,7 +52,7 @@ CUIListWnd::~CUIListWnd()
 
 void CUIListWnd::Init(float x, float y, float width, float height)
 {
-	Init(x, y, width, height, DEFAULT_ITEM_HEIGHT);
+	Init(x, y, width, height, m_iItemHeight);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -409,9 +409,11 @@ void CUIListWnd::Draw()
 			if (pListItem2->GetGroupID() == -1) continue;
 			if (pListItem2->GetIndex() == m_iSelectedItem) 
 			{
+				UI()->PushScissor(rect);
 				m_StaticActiveBackground.SetPos(rect.left, rect.top + 
 					(pListItem2->GetIndex() - m_iFirstShownIndex)*GetItemHeight());
 				m_StaticActiveBackground.Render();
+				UI()->PopScissor();
 			}
 		}
 	}

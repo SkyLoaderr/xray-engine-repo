@@ -37,12 +37,14 @@ CUIListItemPair::CUIListItemPair(){
 	m_staticFileName.SetTextAlign(CGameFont::alLeft);
 	m_staticFileName.Init(0,0,0,0);
 	m_staticFileName.SetElipsis(CUIStatic::eepNone, 1);
+	m_staticFileName.SetAutoDelete(false);
 
 	// date/time field
 	m_staticDateTime.SetFont(UI()->Font()->pFontMedium);
 	m_staticDateTime.SetTextColor(color_argb(255, 255, 255, 255));
 	m_staticDateTime.SetTextAlign(CGameFont::alLeft);
 	m_staticDateTime.Init(0,0,0,0);
+	m_staticDateTime.SetAutoDelete(false);
 }
 
 //-----------------------

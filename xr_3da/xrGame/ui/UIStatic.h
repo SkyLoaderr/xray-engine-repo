@@ -35,6 +35,7 @@ public:
 
 	// IUISimpleWindow
 	virtual void	Init					(float x, float y, float width, float height);
+	virtual void	SetWndRect				(float x, float y, float width, float height);
 	virtual void	Draw					();
 	virtual void	Update					();
 

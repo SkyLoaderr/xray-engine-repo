@@ -28,6 +28,7 @@ end
 
 function base_dialog:InitControls(caption)
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA 
+	self:SetAutoDelete(true)
 	self.indent = 18	
 	self.button_indent = -1 
 	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
@@ -61,7 +62,7 @@ function base_dialog:InitControls(caption)
 	self.btn.texture_center = "ui\\ui_btn_triple_center"
 	self.btn.texture_right  = "ui\\ui_btn_triple_right"
 	
-	self.texture_list_frame = "ui\\ui_frame_01"
+	self.texture_list_frame = "ui_frame_01"
 	--------------------------------------------------
 	-- special button aling
 	
@@ -157,7 +158,8 @@ function base_dialog:InitControls(caption)
 	self.main_frame:AttachChild(self.txt_caption)		
 	
 	-- Message Box --
-	self.message_box = CUIMessageBox()
+--[[
+self.message_box = CUIMessageBox()
 	self.message_box:SetAutoDelete(true)
 	self.message_box:SetWindowName("message_box")
 	self.message_box:SetFont(GetFontLetterica25())
@@ -170,6 +172,7 @@ function base_dialog:InitControls(caption)
 	self:Register(self.message_box)
 	self.main_frame:AttachChild(self.message_box)
 	self.message_box:AutoCenter()
+	]]
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	
 end

@@ -162,10 +162,10 @@ function main_menu:OnButton_new_hard_game()
 end
 
 function main_menu:OnButton_load_spawn()
-	if self.load_dlg == nil then
-		self.load_dlg = ui_spawn_dialog.spawn_dialog()
+	if self.spawn_dlg == nil then
+		self.spawn_dlg = ui_spawn_dialog.spawn_dialog()
 	end
-	self:GetHolder():start_stop_menu(dlg, true)
+	self:GetHolder():start_stop_menu(self.spawn_dlg, true)
 end
 
 function main_menu:OnButton_save_clicked()
@@ -204,8 +204,10 @@ function main_menu:OnButton_new_game_clicked()
 end
 
 function main_menu:OnButton_options_clicked()
-	local dlg = ui_options_dialog.options_dialog()
-	self:GetHolder():start_stop_menu(dlg, true)
+	if self.opt_dlg == nil then
+		self.opt_dlg = ui_mm_opt_main.options_dialog()
+	end
+	self:GetHolder():start_stop_menu(self.opt_dlg, true)
 end
 
 function main_menu:OnButton_load_clicked()

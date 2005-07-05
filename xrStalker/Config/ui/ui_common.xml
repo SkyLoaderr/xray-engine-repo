@@ -152,4 +152,5 @@
     <texture id="ui_button_arrow_down_t" x="899" y="107" width="44" height="29" />
     <texture id="ui_button_arrow_down_d" x="811" y="107" width="44" height="29" />
     <texture id="ui_menu_options_dlg" x="164" y="232" width="566" height="461" />
+    <texture id="ui_options_tv" x="157" y="693" width="476" height="179" />
 </ui_texture>

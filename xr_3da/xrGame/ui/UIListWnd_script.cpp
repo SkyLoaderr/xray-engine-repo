@@ -59,6 +59,7 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("GetVertFlip",				&CUIListWnd::GetVertFlip)
 		.def("SetFocusedItem",			&CUIListWnd::SetFocusedItem)
 		.def("GetFocusedItem",			&CUIListWnd::GetFocusedItem)
+		.def("ShowSelectedItem",		&CUIListWnd::ShowSelectedItem)
 
 		.def("GetSelectedItem",			&CUIListWnd::GetSelectedItem)
 		.def("ResetFocusCapture",		&CUIListWnd::ResetFocusCapture)

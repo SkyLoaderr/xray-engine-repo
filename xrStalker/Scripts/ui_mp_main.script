@@ -97,13 +97,12 @@ function mp_main:InitControls()
 	local xml = CScriptXmlInit()
 	xml:ParseFile("ui_mm_mp.xml")
 	
+	xml:InitLabel("cap_multiplayer",self.bk)
+	
 	-- Player Name	
 	local st = xml:InitStatic("static_player_name",self.bk)
+	self.player_name = xml:InitEditBox("edit_player_name", self.bk)
 
-	st = xml:InitEditBox("edit_player_name", self.bk)
-	st:SetText("Player_name")
-	self.player_name = st
-	
 	-- CD Key
 	st = CUIStatic()
 	st:SetAutoDelete(true)

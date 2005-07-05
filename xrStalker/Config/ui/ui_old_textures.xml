@@ -94,4 +94,5 @@
     <texture id="ui_frame_rb" x="128" y="192" width="128" height="128" />
     <texture id="ui_pda_frame_sub_rt" x="160" y="96" width="32" height="32" />
     <texture id="ui_pda_frame_sub_lt" x="96" y="96" width="32" height="32" />
+    <texture id="ui_keyboardsetup" x="310" y="257" width="453" height="199" />
 </ui_texture>

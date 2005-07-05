@@ -73,9 +73,10 @@ function save_dialog:InitControls()
 	
 	-- EDIT box --
 	local frame_edit = CUIFrameLineWnd()  
-    frame_edit:SetAutoDelete(true)
-    frame_edit:Init("ui\\ui_string_06", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height, true)
-    self.main_frame:AttachChild(frame_edit)
+	frame_edit:SetAutoDelete(true)
+	frame_edit:Init("ui_string_06", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height, true)
+	self.main_frame:AttachChild(frame_edit)
+	
 	
 	local edit_filename = CUIEditBox()
 	edit_filename:SetAutoDelete(true)
@@ -91,15 +92,19 @@ function save_dialog:InitControls()
     txt_list:Init(self.texture_list_frame, list_rect_f.x, list_rect_f.y, list_rect_f.width, list_rect_f.height)    
     self.main_frame:AttachChild(txt_list) 
 
+
+
     local list_wnd = CUIListWndEx()
     list_wnd:SetAutoDelete(true)
     list_wnd:SetWindowName("list_window")
-    list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
-    list_wnd:SetItemHeight(25)
-    list_wnd:EnableScrollBar(true)
+	list_wnd:ShowSelectedItem(true)
+	list_wnd:SetItemHeight(20)
+    list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)    
+    list_wnd:EnableScrollBar(true)	
 	self:Register(list_wnd)
     self.main_frame:AttachChild(list_wnd)
-
+	
+	
 	-- SAVE button
     local btn   = CUI3tButton()
 	btn:SetAutoDelete(true) 
@@ -236,6 +241,7 @@ end
 
 function save_dialog:AddItemToList(file_name, date_time)	
 	local new_item = CUIListItemPair()
+	new_item:SetAutoDelete(true)
 	
 	new_item:SetTextFileName(file_name)
 	new_item:SetTextDateTime(date_time)

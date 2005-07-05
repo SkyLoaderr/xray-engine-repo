@@ -311,6 +311,8 @@ void  CUIEditBox::Draw()
 		//нарисовать курсор
 		Frect rect = GetAbsoluteRect();
 		float outX, outY;
+		Frect scr_rect;
+		scr_rect.set(0,0,1024,768);
 
 #pragma todo("Satan->Satan: seems i must to optimize this bullshit")
 		xr_string tmp_str = m_lines.GetText();
@@ -322,7 +324,7 @@ void  CUIEditBox::Draw()
 		m_pAnimation->Update();
 		GetFont()->SetColor(subst_alpha(m_cursorColor, color_get_A(m_pAnimation->GetColor())));
 		//GetFont()->SetColor(m_cursorColor);
-		UI()->OutText(GetFont(), rect, (float)rect.left+outX, 
+		UI()->OutText(GetFont(), scr_rect, (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 		GetFont()->OnRender();
 	}	

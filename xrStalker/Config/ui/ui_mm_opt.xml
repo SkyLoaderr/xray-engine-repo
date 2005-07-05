@@ -8,6 +8,17 @@
 		<dialog x="233" y="157" width="548" height="461">
 			<texture>ui_menu_options_dlg</texture>
 		</dialog>
+		<cap_options x="45" y="3" width="378" height="33">
+			<text font="graffiti22" r="215" g="195" b="170">OPTIONS</text>
+		</cap_options>
+		<btn_accept x="219" y="426" width="157" height="48">
+			<text font="normal" align="c">Accept</text>
+			<texture>ui_button_main02</texture>
+		</btn_accept>
+		<btn_cancel x="375" y="426" width="157" height="48">
+			<text font="normal" align="c">Cancel</text>
+			<texture>ui_button_main03</texture>
+		</btn_cancel>
 		<tab x="55" y="48" width="461" height="26">
 			<button x="0" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
@@ -71,15 +82,181 @@
 			<options_item entry="rs_c_gamma" group="mm_opt_video"/>
 		</track_gamma>
 		<track_contrast x="194" y="95" width="261" height="21">
-			<options_item entry="rs_c_constrast" group="mm_opt_video"/>
+			<options_item entry="rs_c_contrast" group="mm_opt_video"/>
 		</track_contrast>
 		<track_brightness x="194" y="120" width="261" height="21">
 			<options_item entry="rs_c_brightness" group="mm_opt_video"/>
 		</track_brightness>
+		<btn_advanced x="342" y="290" width="111" height="29">
+			<text align="c" font="letterica16" r="188" g="153" b="123">Advanced</text>	
+			<texture>ui_button_ordinary</texture>			
+		</btn_advanced>
 	</tab_video>
+	<tab_sound>
+		<cap_speakersetup x="20" y="20" width="143" height="21">
+			<text>Speakers Setup</text>
+		</cap_speakersetup>
+		<cap_musicvolume x="20" y="45" width="143" height="21">
+			<text>Music Volume</text>
+		</cap_musicvolume>
+		<cap_sfxvolume x="20" y="70" width="143" height="21">
+			<text>SFX Volume</text>
+		</cap_sfxvolume>
+		<cap_voicevolume x="20" y="95" width="143" height="21">
+			<text>Voice Volume</text>
+		</cap_voicevolume>
+		<cap_soundqhality x="20" y="120" width="143" height="21">
+			<text>Sound Quality</text>
+		</cap_soundqhality>
+		
+		<check_reverse x="20" y="155" width="143" height="21">
+			<text>Reverse Speakers</text>
+		</check_reverse>
+		<check_eax x="20" y="180" width="143" height="21">
+			<options_item entry="snd_efx" group="mm_opt_sound"/>
+			<text>EAX</text>
+		</check_eax>
+		
+		<list_speakersetup x="194" y="20" width="261" height="21">			
+		</list_speakersetup>
+		<track_musicvolume x="194" y="45" width="261" height="21">
+			<options_item entry="snd_volume_music" group="mm_opt_sound"/>
+		</track_musicvolume>		
+		<track_sfx x="194" y="70" width="261" height="21">
+			<options_item entry="snd_volume_eff" group="mm_opt_sound"/>
+		</track_sfx>
+		<track_voice x="194" y="95" width="261" height="21">
+		</track_voice>
+		<list_soundquality x="194" y="120" width="261" height="21">
+			<options_item entry="snd_freq" group="mm_opt_sound"/>
+		</list_soundquality>		
+	</tab_sound>
+	<tab_gameplay>
+		<cap_crosshair x="20" y="20" width="143" height="21">
+			<text>Crosshair</text>
+		</cap_crosshair>
+		<track_crosshair x="194" y="20" width="261" height="21">			
+		</track_crosshair>
+		
+		<check_tips x="20" y="55" width="143" height="21">
+			<text>Tips</text>
+		</check_tips>
+		<check_blood x="20" y="80" width="143" height="21">
+			<text>Blood</text>
+		</check_blood>
+		<pic_crosshair x="-7" y="117" width="470" height="179">
+			<texture>ui_options_tv</texture>
+		</pic_crosshair>
+	</tab_gameplay>
+	<tab_controls>
+		<cap_mousesens x="20" y="20" width="143" height="21">
+			<text>Mouse Sensitivity</text>
+		</cap_mousesens>
+		<cap_keyboardsetup x="6" y="95" width="456" height="23">
+			<texture>ui_brokenline</texture>
+			<text font="letterica16" r="215" g="195" b="170" x="10">Keyboard setup</text>
+		</cap_keyboardsetup>
+	
+		<track_mousesens x="194" y="20" width="261" height="21">
+			<options_item entry="mouse_sens" group="mm_opt_controls"/>
+		</track_mousesens>
+		<check_mouseinvert x="20" y="55" width="143" height="21">
+			<options_item entry="mouse_invert" group="mm_opt_controls"/>
+			<text>Invert mouse</text>
+		</check_mouseinvert>
+		<stub x="10" y="120" width="453" height="199">
+			<texture>ui_keyboardsetup</texture>
+		</stub>
+	</tab_controls>
+	<video_adv>
+		<cap_antialiasing x="20" y="20" width="143" height="21">
+			<text>Antialiasing</text>
+		</cap_antialiasing>
+		<cap_texturequality x="20" y="45" width="143" height="21">
+			<text>Texture Quality</text>
+		</cap_texturequality>
+		<cap_lightingquality x="20" y="70" width="143" height="21">
+			<text>Lighting Quality</text>
+		</cap_lightingquality>
+		<cap_shadowsquality x="20" y="95" width="143" height="21">
+			<text>Shadows Quality</text>
+		</cap_shadowsquality>
+		<cap_texturefilter x="20" y="120" width="143" height="21">
+			<text>Texture Filter</text>
+		</cap_texturefilter>
+		<cap_anisotropicfilter x="20" y="145" width="143" height="21">
+			<text>Anisotropic Filter</text>
+		</cap_anisotropicfilter>
+		<cap_depthofview x="20" y="170" width="143" height="21">
+			<text>View Distance</text>
+		</cap_depthofview>
+		<cap_grassdensity x="20" y="195" width="143" height="21">
+			<text>Grass Density</text>
+		</cap_grassdensity>
+		<cap_grassradius x="20" y="220" width="143" height="21">
+			<text>Grass Radius</text>
+		</cap_grassradius>
+		<cap_dinlight x="20" y="245" width="180" height="21">
+			<text>Dinamic Light Source(DX8)</text>
+		</cap_dinlight>
+		
+		<check_bump x="20" y="270" width="180" height="21">
+			<text>Bump Maping</text>
+		</check_bump>
+		
+		<cap_phisicqhality x="20" y="295" width="180" height="21">
+			<text>Phisic Quality</text>
+		</cap_phisicqhality>
+		<cap_corpsetime x="20" y="320" width="180" height="21">
+			<text>Corpse Time Stay</text>
+		</cap_corpsetime>
+		
+		<check_particles x="20" y="345" width="180" height="21">
+			<text>Particles</text>
+		</check_particles>
+		<cap_particlesamount x="20" y="370" width="180" height="21">
+			<text>Particles Amount</text>
+		</cap_particlesamount>
+		
+		<list_antialiasing x="20" y="20" width="143" height="21">
+			<text>Antialiasing</text>
+		</list_antialiasing>
+		<track_texturequality x="20" y="45" width="143" height="21">
+			<text>Texture Quality</text>
+		</track_texturequality>
+		<track_lightingquality x="20" y="70" width="143" height="21">
+			<text>Lighting Quality</text>
+		</track_lightingquality>
+		<track_shadowsquality x="20" y="95" width="143" height="21">
+			<text>Shadows Quality</text>
+		</track_shadowsquality>
+		<track_texturefilter x="20" y="120" width="143" height="21">
+			<text>Texture Filter</text>
+		</track_texturefilter>
+		<track_anisotropicfilter x="20" y="145" width="143" height="21">
+			<text>Anisotropic Filter</text>
+		</track_anisotropicfilter>
+		<track_depthofview x="20" y="170" width="143" height="21">
+			<text>View Distance</text>
+		</track_depthofview>
+		<track_grassdensity x="20" y="195" width="143" height="21">
+			<text>Grass Density</text>
+		</track_grassdensity>
+		<track_grassradius x="20" y="220" width="143" height="21">
+			<text>Grass Radius</text>
+		</track_grassradius>
+		<track_dinlight x="20" y="245" width="180" height="21">
+			<text>Dinamic Light Source(DX8)</text>
+		</track_dinlight>
+	</video_adv>
 	
 	<frame x="0" y="0" width="470" height="330">
 		<texture>ui_tablist_textbox</texture>		
 	</frame>
-
+	<frame_gameplay x="0" y="0" width="470" height="121">
+		<texture>ui_tablist_textbox</texture>		
+	</frame_gameplay>
+	<frame_videoadv x="0" y="0" width="470" height="450">
+		<texture>ui_tablist_textbox</texture>		
+	</frame_videoadv>
 </window>

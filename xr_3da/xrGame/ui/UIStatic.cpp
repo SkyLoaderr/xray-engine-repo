@@ -66,6 +66,11 @@ void CUIStatic::Init(LPCSTR tex_name, float x, float y, float width, float heigh
 	InitTexture(tex_name);
 }
 
+void CUIStatic::SetWndRect(float x, float y, float width, float height){
+	CUIWindow::SetWndRect(x,y,width,height);
+	m_lines.SetWndRect(x,y,width,height);
+}
+
 void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height)
 {
 	Init(x, y, width, height);

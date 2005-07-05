@@ -209,6 +209,7 @@ CUIMapList* CScriptXmlInit::InitMapList(LPCSTR path, CUIWindow* parent){
 CUITrackBar* CScriptXmlInit::InitTrackBar(LPCSTR path, CUIWindow* parent){
 	CUITrackBar* pWnd = xr_new<CUITrackBar>();
 	CUIXmlInit::InitWindow(m_xml, path, 0, pWnd);
+	CUIXmlInit::InitOptionsItem(m_xml, path, 0, pWnd);
 	pWnd->SetAutoDelete(true);
 	parent->AttachChild(pWnd);
 	return pWnd;	
