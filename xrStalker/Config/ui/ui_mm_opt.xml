@@ -12,11 +12,11 @@
 			<text font="graffiti22" r="215" g="195" b="170">OPTIONS</text>
 		</cap_options>
 		<btn_accept x="219" y="426" width="157" height="48">
-			<text font="normal" align="c">Accept</text>
+			<text font="normal" align="c">Apply</text>
 			<texture>ui_button_main02</texture>
 		</btn_accept>
 		<btn_cancel x="375" y="426" width="157" height="48">
-			<text font="normal" align="c">Cancel</text>
+			<text font="normal" align="c">Back</text>
 			<texture>ui_button_main03</texture>
 		</btn_cancel>
 		<tab x="55" y="48" width="461" height="26">
