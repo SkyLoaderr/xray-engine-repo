@@ -183,13 +183,13 @@ void __fastcall TfraLeftBar::ebLoadClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE, xr_string(LTools->m_LastFileName.c_str()) );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSaveAsClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_SAVEAS );
+	ExecCommand( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
@@ -620,12 +620,6 @@ void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ExecuteCommand1Click(TObject *Sender)
-{
-	ExecCommand(COMMAND_EXECUTE_COMMAND_LIST);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 {
 	ExecCommand(COMMAND_QUIT);
@@ -687,9 +681,9 @@ void __fastcall TfraLeftBar::SynchronizeSounds1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
-	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
-    AnsiString fn = MI->Caption;
-    ExecCommand(COMMAND_LOAD,(u32)fn.c_str());
+	TMenuItem* MI 	= dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
+    xr_string fn 	= AnsiString(MI->Caption).c_str();
+    ExecCommand		(COMMAND_LOAD,fn);
 }
 //---------------------------------------------------------------------------
 

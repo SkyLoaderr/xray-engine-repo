@@ -306,8 +306,42 @@ void CActorTools::OnFrame()
 void CActorTools::ZoomObject(BOOL bSelOnly)
 {
 	VERIFY(m_bReady);
-    if (m_pEditObject)
-        Device.m_Camera.ZoomExtents(m_pEditObject->GetBox());
+    if (m_pEditObject){
+    	Fbox BB;
+        switch(m_EditMode){
+        case emBone:{
+            BoneVec lst;
+            if (m_pEditObject->GetSelectedBones(lst)){
+            	BB.invalidate();
+                for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
+                    Fvector 	C = {0,0,0};
+                    float		r = 0.5f;
+                    switch ((*b_it)->shape.type){
+                    case SBoneShape::stBox:
+                        r		= _max(_max((*b_it)->shape.box.m_halfsize.x,(*b_it)->shape.box.m_halfsize.y),(*b_it)->shape.box.m_halfsize.z);		
+                        C		= (*b_it)->shape.box.m_translate;
+                    break;
+                    case SBoneShape::stSphere:
+                    	r		= (*b_it)->shape.sphere.R;
+                        C		= (*b_it)->shape.sphere.P;
+                    break;
+                    case SBoneShape::stCylinder:
+                    	r		= _max((*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius);
+                        C		= (*b_it)->shape.cylinder.m_center;
+                    break;
+                    }
+                    (*b_it)->_LTransform().transform_tiny	(C);
+                    m_AVTransform.transform_tiny			(C);
+                    Fbox bb; 	bb.set(C,C); bb.grow(r);
+                    BB.merge	(bb);
+                }
+            }
+        }break;
+        default:
+        	BB		= m_pEditObject->GetBox();
+        }
+        Device.m_Camera.ZoomExtents(BB);
+    }
 }
 
 void CActorTools::PrepareLighting()

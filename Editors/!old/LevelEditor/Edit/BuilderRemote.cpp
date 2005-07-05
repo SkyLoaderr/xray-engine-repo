@@ -85,8 +85,8 @@ public:
 	        for (iz=0; iz<bb_sz; iz++){
             	total_svert			+= svertex(ix,iz);
             	total_muvert		+= muvertex(ix,iz);
-                u8 v_s 				= iFloor(float(svertex(ix,iz))/float(max_svert)*255.f+0.5f);
-                u8 v_mu 			= iFloor(float(muvertex(ix,iz))/float(max_muvert)*255.f+0.5f);
+                u8 v_s 				= (u8)iFloor(float(svertex(ix,iz))/float(max_svert)*255.f+0.5f);
+                u8 v_mu 			= (u8)iFloor(float(muvertex(ix,iz))/float(max_muvert)*255.f+0.5f);
                 data[iz*bb_sx+ix] 	= color_rgba(v_s,v_mu,0,0);
             }
         }
@@ -343,7 +343,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
             R_ASSERT(face_it<face_cnt);
             b_face& first_face 		= faces[face_it++];
         	{
-                first_face.dwMaterial 		= m_id;
+                first_face.dwMaterial 		= (u16)m_id;
                 first_face.dwMaterialGame 	= gm_id; 
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
@@ -445,7 +445,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
         model_idx		= l_mu_models.size();
 	    l_mu_models.push_back(b_mu_model());
 		b_mu_model&	M	= l_mu_models.back();
-        M.lod_id		= lod_id;
+        M.lod_id		= (u16)lod_id;
         int vert_it=0, face_it=0;
         M.face_cnt		= obj->GetFaceCount();
         M.vert_cnt		= obj->GetVertexCount();
@@ -464,7 +464,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
     R.model_index		= model_idx;
     R.transform			= obj->_Transform();
     R.flags.zero		();
-	R.sector			= sect_num;
+	R.sector			= (u16)sect_num;
 
     // scene stats
     b_mu_model& M		= l_mu_models[model_idx];
@@ -637,9 +637,9 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     
     L.controller_ID	= BuildLightControl(e->GetLControlName()); //BuildLightControl(LCONTROL_STATIC); 
 
-	svector<WORD,16>* lpSectors;
+	svector<u16,16>* lpSectors;
     if (e->m_Flags.is(ELight::flAffectDynamic)){
-		svector<WORD,16> sectors;
+		svector<u16,16> sectors;
         lpSectors		= &sectors;
         Fvector& pos 	= e->PPosition;
         float& range 	= e->m_Range;
@@ -652,7 +652,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
                 CSector* _S=(CSector*)(*_F);
                 EVisible vis=_S->Intersect(pos,range);
                 if ((vis==fvPartialInside)||(vis==fvFully))
-                    sectors.push_back(_S->sector_num);
+                    sectors.push_back((u16)_S->sector_num);
             }
             // test partial outside
             _F = Scene->FirstObj(OBJCLASS_SECTOR);
@@ -661,11 +661,11 @@ BOOL SceneBuilder::BuildLight(CLight* e)
                 CSector* _S=(CSector*)(*_F);
                 EVisible vis=_S->Intersect(pos,range);
                 if (vis==fvPartialOutside)
-                    sectors.push_back(_S->sector_num);
+                    sectors.push_back((u16)_S->sector_num);
             }
             if (sectors.empty()) return FALSE;
         }else{
-            sectors.push_back(m_iDefaultSectorNum);
+            sectors.push_back((u16)m_iDefaultSectorNum);
         }
     }
 
@@ -690,9 +690,9 @@ BOOL SceneBuilder::BuildGlow(CGlow* e)
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     int mtl_idx;
     VERIFY			(e->m_ShaderName.size());
-	mtl.surfidx		= BuildTexture		(*e->m_TexName);		
-    mtl.shader      = BuildShader		(*e->m_ShaderName);
-    mtl.sector		= CalculateSector	(e->PPosition,e->m_fRadius);
+	mtl.surfidx		= (u16)BuildTexture		(*e->m_TexName);		
+    mtl.shader      = (u16)BuildShader		(*e->m_ShaderName);
+    mtl.sector		= (u16)CalculateSector	(e->PPosition,e->m_fRadius);
     mtl.shader_xrlc	= -1;
     if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return FALSE;
 
@@ -715,8 +715,8 @@ BOOL SceneBuilder::BuildGlow(CGlow* e)
 // Portal build functions
 //------------------------------------------------------------------------------
 void SceneBuilder::BuildPortal(b_portal* b, CPortal* e){
-	b->sector_front	= e->m_SectorFront->sector_num;
-	b->sector_back	= e->m_SectorBack->sector_num;
+	b->sector_front	= (u16)e->m_SectorFront->sector_num;
+	b->sector_back	= (u16)e->m_SectorBack->sector_num;
     b->vertices.resize(e->m_SimplifyVertices.size());
     CopyMemory(b->vertices.begin(),e->m_SimplifyVertices.begin(),e->m_SimplifyVertices.size()*sizeof(Fvector));
 }
@@ -827,10 +827,10 @@ int SceneBuilder::BuildMaterial(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name
     VERIFY(sector_num>=0);
     int mtl_idx;
 	VERIFY			(tx_cnt==1);
-    mtl.shader      = BuildShader		(esh_name);
-    mtl.shader_xrlc	= BuildShaderXRLC	(csh_name);
-    mtl.sector		= sector_num;
-	mtl.surfidx		= BuildTexture		(tx_name);
+    mtl.shader      = (u16)BuildShader		(esh_name);
+    mtl.shader_xrlc	= (u16)BuildShaderXRLC	(csh_name);
+    mtl.sector		= (u16)sector_num;
+	mtl.surfidx		= (u16)BuildTexture		(tx_name);
     if ((u16(-1)==mtl.shader)||(u16(-1)==mtl.shader_xrlc)||(u16(-1)==mtl.surfidx)) return -1;
 
     mtl_idx 		= FindInMaterials(&mtl);

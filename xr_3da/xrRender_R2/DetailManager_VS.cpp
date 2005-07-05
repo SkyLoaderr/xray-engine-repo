@@ -102,7 +102,7 @@ void CDetailManager::hw_Load	()
 			{
 				for (u32 i=0; i<u32(D.number_indices); i++)
 					*pI++	=	u16(u16(D.indices[i]) + u16(offset));
-				offset		=	offset+u16(D.number_vertices);
+				offset		=	u16(offset+u16(D.number_vertices));
 			}
 		}
 		R_CHK			(hw_IB->Unlock());

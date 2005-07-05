@@ -195,6 +195,31 @@ void  CActorTools::OnMotionRefsChange(PropValue* sender)
 	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 
+void  CActorTools::OnBoxAxisClick(PropValue* sender, bool& bModif, bool& bSafe)
+{
+	CBone* BONE 			= (CBone*)sender->tag;
+	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: BONE->shape.box.m_rotate.k.set(1,0,0); break;
+    case 1: BONE->shape.box.m_rotate.k.set(0,1,0); break;
+    case 2: BONE->shape.box.m_rotate.k.set(0,0,1); break;
+    }
+    Fvector::generate_orthonormal_basis_normalized(BONE->shape.box.m_rotate.k,BONE->shape.box.m_rotate.j,BONE->shape.box.m_rotate.i);
+	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
+}
+
+void  CActorTools::OnCylinderAxisClick(PropValue* sender, bool& bModif, bool& bSafe)
+{
+	CBone* BONE 			= (CBone*)sender->tag;
+	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: BONE->shape.cylinder.m_direction.set(1,0,0); break;
+    case 1: BONE->shape.cylinder.m_direction.set(0,1,0); break;
+    case 2: BONE->shape.cylinder.m_direction.set(0,0,1); break;
+    }
+	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
+}
+
 void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender)
 {
 	R_ASSERT(m_pEditObject);
@@ -396,6 +421,9 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         switch (BONE->shape.type){
         case SBoneShape::stBox:
 	        PHelper().CreateVector	(items, PrepareKey(pref,"Bone\\Shape\\Box\\Center"),		&BONE->shape.box.m_translate, -10000.f, 10000.f);
+	        B=PHelper().CreateButton(items, PrepareKey(pref,"Bone\\Shape\\Box\\Align Axis"),	"X,Y,Z",0);
+            B->OnBtnClickEvent.bind	(this,&CActorTools::OnBoxAxisClick);
+            B->tag 					= (int)BONE;
 	        PHelper().CreateVector	(items, PrepareKey(pref,"Bone\\Shape\\Box\\Half Size"),  	&BONE->shape.box.m_halfsize, 0.f, 1000.f);
         break;
         case SBoneShape::stSphere:
@@ -404,7 +432,9 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         break;
         case SBoneShape::stCylinder:
 	        PHelper().CreateVector	(items, PrepareKey(pref,"Bone\\Shape\\Cylinder\\Center"),	&BONE->shape.cylinder.m_center, -10000.f, 10000.f);
-	        PHelper().CreateVector	(items, PrepareKey(pref,"Bone\\Shape\\Cylinder\\Direction"),&BONE->shape.cylinder.m_direction, 0.f, 10000.f);
+	        B=PHelper().CreateButton(items, PrepareKey(pref,"Bone\\Shape\\Cylinder\\Align Axis"),"X,Y,Z",0);
+            B->OnBtnClickEvent.bind	(this,&CActorTools::OnCylinderAxisClick);
+            B->tag 					= (int)BONE;
 	        PHelper().CreateFloat  	(items, PrepareKey(pref,"Bone\\Shape\\Cylinder\\Height"),	&BONE->shape.cylinder.m_height, 0.f, 1000.f);
 	        PHelper().CreateFloat  	(items, PrepareKey(pref,"Bone\\Shape\\Cylinder\\Radius"),	&BONE->shape.cylinder.m_radius, 0.f, 1000.f);
         break;

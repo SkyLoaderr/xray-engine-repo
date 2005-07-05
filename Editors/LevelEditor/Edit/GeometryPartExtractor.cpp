@@ -201,7 +201,7 @@ bool SBPart::Export	(IWriter& F)
         SSplit& split=m_Splits[mtl_idx];
         SSkelVert v[3];
         for (int k=0; k<3; k++)
-            v[k].set	(face->o[k],face->n[k],face->uv[k],1.f,face->bone_id,face->bone_id);
+            v[k].set	(face->o[k],face->n[k],face->uv[k],1.f,(u16)face->bone_id,(u16)face->bone_id);
         split.add_face		(v[0], v[1], v[2]);
 
         if (face->surf->m_Flags.is(CSurface::sf2Sided)){

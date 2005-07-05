@@ -92,7 +92,7 @@ int ConvertV2L(int side)
     }else return side;
 }
                         
-static const int fl[5]	=	{SAINode::flN1,SAINode::flN2,SAINode::flN3,SAINode::flN4,
+static const u8 fl[5]	=	{SAINode::flN1,SAINode::flN2,SAINode::flN3,SAINode::flN4,
     					 	 SAINode::flN1|SAINode::flN2|SAINode::flN3|SAINode::flN4,
 //    					 	 SAINode::flN1|SAINode::flN2,SAINode::flN2|SAINode::flN3,
 //    					 	 SAINode::flN3|SAINode::flN4,SAINode::flN4|SAINode::flN1

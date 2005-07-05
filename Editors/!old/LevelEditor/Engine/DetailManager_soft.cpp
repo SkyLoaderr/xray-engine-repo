@@ -108,7 +108,7 @@ void CDetailManager::soft_Render	()
 						LPDWORD	dit		= LPDWORD(iDest);
 						for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
 						if		(Object.number_indices&1)
-							iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+u16(iOffset);
+							iDest[Object.number_indices-1]=(u16)(Object.indices[Object.number_indices-1]+u16(iOffset));
 					}
 
 					// Increment counters

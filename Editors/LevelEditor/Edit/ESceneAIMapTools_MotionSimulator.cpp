@@ -445,7 +445,7 @@ Fvector msimulator_CollideWithWorld(SCollisionData& cl, Fvector position, Fvecto
 		
 		// now we recursively call the function with the _new position and velocity 
 		cl.vLastSafePosition.set(position);
-		return msimulator_CollideWithWorld(cl, newSourcePoint, newVelocityVector,cnt+1); 
+		return msimulator_CollideWithWorld(cl, newSourcePoint, newVelocityVector,u16(cnt+1));
 	}
 }
 

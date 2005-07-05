@@ -1788,13 +1788,6 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Open Recent'
       Enabled = False
     end
-    object N7: TMenuItem
-      Caption = '-'
-    end
-    object ExecuteCommand1: TMenuItem
-      Caption = 'Execute Commands...'
-      OnClick = ExecuteCommand1Click
-    end
     object N24: TMenuItem
       Caption = '-'
     end

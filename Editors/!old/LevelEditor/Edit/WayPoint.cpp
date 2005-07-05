@@ -506,26 +506,26 @@ void CWayObject::Save(IWriter& F)
 
     int l_cnt		= 0;
 	F.open_chunk	(WAYOBJECT_CHUNK_POINTS);
-    F.w_u16			(m_WayPoints.size());
+    F.w_u16			((u16)m_WayPoints.size());
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
     	CWayPoint* W = *it;
 		F.w_fvector3(W->m_vPosition);
         F.w_u32		(W->m_Flags.get());
-        F.w_u16		(W->m_bSelected);
+        F.w_u16		((u16)W->m_bSelected);
         F.w_stringZ	(*W->m_Name?*W->m_Name:"");
         l_cnt		+= W->m_Links.size();
     }
 	F.close_chunk	();
 
 	F.open_chunk	(WAYOBJECT_CHUNK_LINKS);
-    F.w_u16			(l_cnt);
+    F.w_u16			((u16)l_cnt);
 	for (it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
     	CWayPoint* W= *it;
     	int from	= it-m_WayPoints.begin();
         for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
         	WPIt to	= std::find(m_WayPoints.begin(),m_WayPoints.end(),(*l_it)->way_point); R_ASSERT(to!=m_WayPoints.end());
-	    	F.w_u16	(from);
-	    	F.w_u16	(to-m_WayPoints.begin());
+	    	F.w_u16	((u16)from);
+	    	F.w_u16	((u16)(to-m_WayPoints.begin()));
             F.w_float((*l_it)->probability);
         }
     }
@@ -549,7 +549,7 @@ bool CWayObject::ExportGame(SExportStreams& F){
 
         int l_cnt		= 0;
         F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_POINTS);
-        F.patrolpath.stream.w_u16		(m_WayPoints.size());
+        F.patrolpath.stream.w_u16		((u16)m_WayPoints.size());
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W = *it;
             F.patrolpath.stream.w_fvector3	(W->m_vPosition);
@@ -560,14 +560,14 @@ bool CWayObject::ExportGame(SExportStreams& F){
         F.patrolpath.stream.close_chunk	();
 
         F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_LINKS);
-        F.patrolpath.stream.w_u16		(l_cnt);
+        F.patrolpath.stream.w_u16		((u16)l_cnt);
         for (it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W= *it;
             int from	= it-m_WayPoints.begin();
             for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
                 WPIt to= std::find(m_WayPoints.begin(),m_WayPoints.end(),(*l_it)->way_point); R_ASSERT(to!=m_WayPoints.end());
-                F.patrolpath.stream.w_u16	(from);
-                F.patrolpath.stream.w_u16	(to-m_WayPoints.begin());
+                F.patrolpath.stream.w_u16	((u16)from);
+                F.patrolpath.stream.w_u16	((u16)(to-m_WayPoints.begin()));
 	            F.patrolpath.stream.w_float	((*l_it)->probability);
             }
         }

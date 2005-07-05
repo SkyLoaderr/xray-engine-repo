@@ -124,6 +124,9 @@ class CActorTools: public CToolsCustom
 	void __stdcall  	OnChangeTransform		(PropValue* sender);
 	void __stdcall  	OnMotionNameChange		(PropValue* sender);
 
+	void  __stdcall  	OnBoxAxisClick			(PropValue* sender, bool& bModif, bool& bSafe);
+	void  __stdcall  	OnCylinderAxisClick		(PropValue* sender, bool& bModif, bool& bSafe);
+    
 	void __stdcall  	OnMotionEditClick		(PropValue* sender, bool& bModif, bool& bSafe);
 	void __stdcall  	OnMotionControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
 

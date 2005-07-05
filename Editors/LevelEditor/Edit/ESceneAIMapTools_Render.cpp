@@ -15,25 +15,25 @@ typedef Fvector2 t_node_tc[4];
 static const float dtc = 0.25f;
 static t_node_tc node_tc[16]=
 {
-	{0.f+0*dtc,0.25f+0*dtc,	0.25f+0*dtc,0.25f+0*dtc,	0.25f+0*dtc,0.f+0*dtc,	0.f+0*dtc,0.f+0*dtc},
-	{0.f+1*dtc,0.25f+0*dtc,	0.25f+1*dtc,0.25f+0*dtc,	0.25f+1*dtc,0.f+0*dtc,	0.f+1*dtc,0.f+0*dtc},
-	{0.f+2*dtc,0.25f+0*dtc,	0.25f+2*dtc,0.25f+0*dtc,	0.25f+2*dtc,0.f+0*dtc,	0.f+2*dtc,0.f+0*dtc},
-	{0.f+3*dtc,0.25f+0*dtc,	0.25f+3*dtc,0.25f+0*dtc,	0.25f+3*dtc,0.f+0*dtc,	0.f+3*dtc,0.f+0*dtc},
+	{{0.f+0*dtc,0.25f+0*dtc},	{0.25f+0*dtc,0.25f+0*dtc},	{0.25f+0*dtc,0.f+0*dtc},	{0.f+0*dtc,0.f+0*dtc}},
+	{{0.f+1*dtc,0.25f+0*dtc},	{0.25f+1*dtc,0.25f+0*dtc},	{0.25f+1*dtc,0.f+0*dtc},	{0.f+1*dtc,0.f+0*dtc}},
+	{{0.f+2*dtc,0.25f+0*dtc},	{0.25f+2*dtc,0.25f+0*dtc},	{0.25f+2*dtc,0.f+0*dtc},	{0.f+2*dtc,0.f+0*dtc}},
+	{{0.f+3*dtc,0.25f+0*dtc},	{0.25f+3*dtc,0.25f+0*dtc},	{0.25f+3*dtc,0.f+0*dtc},	{0.f+3*dtc,0.f+0*dtc}},
 
-	{0.f+0*dtc,0.25f+1*dtc,	0.25f+0*dtc,0.25f+1*dtc,	0.25f+0*dtc,0.f+1*dtc,	0.f+0*dtc,0.f+1*dtc},
-	{0.f+1*dtc,0.25f+1*dtc,	0.25f+1*dtc,0.25f+1*dtc,	0.25f+1*dtc,0.f+1*dtc,	0.f+1*dtc,0.f+1*dtc},
-	{0.f+2*dtc,0.25f+1*dtc,	0.25f+2*dtc,0.25f+1*dtc,	0.25f+2*dtc,0.f+1*dtc,	0.f+2*dtc,0.f+1*dtc},
-	{0.f+3*dtc,0.25f+1*dtc,	0.25f+3*dtc,0.25f+1*dtc,	0.25f+3*dtc,0.f+1*dtc,	0.f+3*dtc,0.f+1*dtc},
+	{{0.f+0*dtc,0.25f+1*dtc},	{0.25f+0*dtc,0.25f+1*dtc},	{0.25f+0*dtc,0.f+1*dtc},	{0.f+0*dtc,0.f+1*dtc}},
+	{{0.f+1*dtc,0.25f+1*dtc},	{0.25f+1*dtc,0.25f+1*dtc},	{0.25f+1*dtc,0.f+1*dtc},	{0.f+1*dtc,0.f+1*dtc}},
+	{{0.f+2*dtc,0.25f+1*dtc},	{0.25f+2*dtc,0.25f+1*dtc},	{0.25f+2*dtc,0.f+1*dtc},	{0.f+2*dtc,0.f+1*dtc}},
+	{{0.f+3*dtc,0.25f+1*dtc},	{0.25f+3*dtc,0.25f+1*dtc},	{0.25f+3*dtc,0.f+1*dtc},	{0.f+3*dtc,0.f+1*dtc}},
 
-	{0.f+0*dtc,0.25f+2*dtc,	0.25f+0*dtc,0.25f+2*dtc,	0.25f+0*dtc,0.f+2*dtc,	0.f+0*dtc,0.f+2*dtc},
-	{0.f+1*dtc,0.25f+2*dtc,	0.25f+1*dtc,0.25f+2*dtc,	0.25f+1*dtc,0.f+2*dtc,	0.f+1*dtc,0.f+2*dtc},
-	{0.f+2*dtc,0.25f+2*dtc,	0.25f+2*dtc,0.25f+2*dtc,	0.25f+2*dtc,0.f+2*dtc,	0.f+2*dtc,0.f+2*dtc},
-	{0.f+3*dtc,0.25f+2*dtc,	0.25f+3*dtc,0.25f+2*dtc,	0.25f+3*dtc,0.f+2*dtc,	0.f+3*dtc,0.f+2*dtc},
+	{{0.f+0*dtc,0.25f+2*dtc},	{0.25f+0*dtc,0.25f+2*dtc},	{0.25f+0*dtc,0.f+2*dtc},	{0.f+0*dtc,0.f+2*dtc}},
+	{{0.f+1*dtc,0.25f+2*dtc},	{0.25f+1*dtc,0.25f+2*dtc},	{0.25f+1*dtc,0.f+2*dtc},	{0.f+1*dtc,0.f+2*dtc}},
+	{{0.f+2*dtc,0.25f+2*dtc},	{0.25f+2*dtc,0.25f+2*dtc},	{0.25f+2*dtc,0.f+2*dtc},	{0.f+2*dtc,0.f+2*dtc}},
+	{{0.f+3*dtc,0.25f+2*dtc},	{0.25f+3*dtc,0.25f+2*dtc},	{0.25f+3*dtc,0.f+2*dtc},	{0.f+3*dtc,0.f+2*dtc}},
 
-	{0.f+0*dtc,0.25f+3*dtc,	0.25f+0*dtc,0.25f+3*dtc,	0.25f+0*dtc,0.f+3*dtc,	0.f+0*dtc,0.f+3*dtc},
-	{0.f+1*dtc,0.25f+3*dtc,	0.25f+1*dtc,0.25f+3*dtc,	0.25f+1*dtc,0.f+3*dtc,	0.f+1*dtc,0.f+3*dtc},
-	{0.f+2*dtc,0.25f+3*dtc,	0.25f+2*dtc,0.25f+3*dtc,	0.25f+2*dtc,0.f+3*dtc,	0.f+2*dtc,0.f+3*dtc},
-	{0.f+3*dtc,0.25f+3*dtc,	0.25f+3*dtc,0.25f+3*dtc,	0.25f+3*dtc,0.f+3*dtc,	0.f+3*dtc,0.f+3*dtc},
+	{{0.f+0*dtc,0.25f+3*dtc},	{0.25f+0*dtc,0.25f+3*dtc},	{0.25f+0*dtc,0.f+3*dtc},	{0.f+0*dtc,0.f+3*dtc}},
+	{{0.f+1*dtc,0.25f+3*dtc},	{0.25f+1*dtc,0.25f+3*dtc},	{0.25f+1*dtc,0.f+3*dtc},	{0.f+1*dtc,0.f+3*dtc}},
+	{{0.f+2*dtc,0.25f+3*dtc},	{0.25f+2*dtc,0.25f+3*dtc},	{0.25f+2*dtc,0.f+3*dtc},	{0.f+2*dtc,0.f+3*dtc}},
+	{{0.f+3*dtc,0.25f+3*dtc},	{0.25f+3*dtc,0.25f+3*dtc},	{0.25f+3*dtc,0.f+3*dtc},	{0.f+3*dtc,0.f+3*dtc}},
 };
 
 void ESceneAIMapTools::OnDeviceCreate()

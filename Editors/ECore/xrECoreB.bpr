@@ -65,7 +65,7 @@
       Intermediate\LogForm.obj Intermediate\render.obj 
       Intermediate\SoundEditor.obj Intermediate\SoundManager.obj 
       Intermediate\TLSPRITE.obj Intermediate\UI_Camera.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\UI_Main.obj 
+      Intermediate\UI_MainCommand.obj Intermediate\ui_main.obj 
       Intermediate\stdafx.obj Intermediate\UI_ToolsCustom.obj 
       Intermediate\ImageManagerDO.obj Intermediate\ParticleEffectDef.obj 
       Intermediate\ai_sounds.obj Intermediate\GeometryCollector.obj 
@@ -113,14 +113,14 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Visuals -IWildMagic 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -DXRCDB_EXPORTS 
+      -IEngine\Visuals -IWildMagic 
       -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; -IEditor 
       -IEngine -IEngine\Blenders -I$(BCB)\include -I$(BCB)\include\vcl 
       -IR:\SDK\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps 
-      -IR:\SDK\ogg\vorbis\include -IR:\SDK\ogg\ogg\include -src_suffix cpp 
-      -D_EDITOR -D_ECOREB -D_DEBUG -DXRCDB_EXPORTS -boa"/>
+      -IR:\SDK\ogg\vorbis\include -IR:\SDK\ogg\ogg\include -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -262,7 +262,7 @@
       <FILE FILENAME="Editor\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ui_main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.dfm" FORMNAME="" UNITNAME="ImageEditor.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LogForm.dfm" FORMNAME="" UNITNAME="LogForm.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ShaderFunction.dfm" FORMNAME="" UNITNAME="ShaderFunction.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>

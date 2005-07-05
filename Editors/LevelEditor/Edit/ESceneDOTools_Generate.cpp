@@ -270,7 +270,7 @@ u8 EDetailManager::GetRandomObject(u32 color_index)
 	int k = DetailRandom.randI(0,CI->second.size());
     DetailIt it = std::find(objects.begin(),objects.end(),CI->second[k]);
     VERIFY(it!=objects.end());
-	return (it-objects.begin());
+	return u8(it-objects.begin());
 }
 
 u8 EDetailManager::GetObject(ColorIndexPairIt& CI, u8 id)
@@ -278,7 +278,7 @@ u8 EDetailManager::GetObject(ColorIndexPairIt& CI, u8 id)
 	VERIFY(CI!=m_ColorIndices.end());
     DetailIt it = std::find(objects.begin(),objects.end(),(CDetail*)CI->second[id]);
     VERIFY(it!=objects.end());
-	return (it-objects.begin());
+	return u8(it-objects.begin());
 }
 
 bool CompareWeightFunc(SIndexDist& d0, SIndexDist& d1){
@@ -372,7 +372,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
      	// objects
 		ColorIndexPairIt CI=m_ColorIndices.find(best[k].index); R_ASSERT(CI!=m_ColorIndices.end());
         U8Vec elem; elem.resize(CI->second.size());
-        for (U8It b_it=elem.begin(); b_it!=elem.end(); b_it++) *b_it=b_it-elem.begin();
+        for (U8It b_it=elem.begin(); b_it!=elem.end(); b_it++) *b_it=u8(b_it-elem.begin());
 //        best_rand A(DetailRandom);
         std::random_shuffle(elem.begin(),elem.end());//,A);
         for (b_it=elem.begin(); b_it!=elem.end(); b_it++){
@@ -380,7 +380,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
             slot->w_id	(k, GetObject(CI,*b_it));
             for (u32 j=0; j<k; j++)
                 if (slot->r_id(j)==slot->r_id(k)){
-                	bNotFound=false;
+                	bNotFound	= false;
                     break;
                 }
             if (bNotFound) break;
@@ -390,10 +390,10 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
         // density
         float f = ((EDetail*)objects[slot->r_id(k)])->m_fDensityFactor;
 
-        slot->palette[k].a0 	= iFloor(best[k].dens[0]*f*15.f+.5f);
-        slot->palette[k].a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
-        slot->palette[k].a2 	= iFloor(best[k].dens[2]*f*15.f+.5f);
-        slot->palette[k].a3 	= iFloor(best[k].dens[3]*f*15.f+.5f);
+        slot->palette[k].a0 	= (u16)iFloor(best[k].dens[0]*f*15.f+.5f);
+        slot->palette[k].a1 	= (u16)iFloor(best[k].dens[1]*f*15.f+.5f);
+        slot->palette[k].a2 	= (u16)iFloor(best[k].dens[2]*f*15.f+.5f);
+        slot->palette[k].a3 	= (u16)iFloor(best[k].dens[3]*f*15.f+.5f);
     }
 
     // определим ID незаполненных слотов как пустышки

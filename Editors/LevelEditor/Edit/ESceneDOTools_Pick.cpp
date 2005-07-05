@@ -44,7 +44,7 @@ int EDetailManager::RaySelect(int flag, float& dist, const Fvector& start, const
             if (flag==-1)	
                 m_Selected[sz*dtH.size_x+sx] = !m_Selected[sz*dtH.size_x+sx];
             else
-                m_Selected[sz*dtH.size_x+sx] = flag;
+                m_Selected[sz*dtH.size_x+sx] = (u8)flag;
             count++;
 	    	UI->RedrawScene();
         }
@@ -76,7 +76,7 @@ int EDetailManager::FrustumSelect(int flag, const CFrustum& frustum)
             	if (flag==-1)	
                 	m_Selected[z*dtH.size_x+x] = !m_Selected[z*dtH.size_x+x];
                 else
-                	m_Selected[z*dtH.size_x+x] = flag;
+                	m_Selected[z*dtH.size_x+x] = (u8)flag;
                 
             	count++;
             }

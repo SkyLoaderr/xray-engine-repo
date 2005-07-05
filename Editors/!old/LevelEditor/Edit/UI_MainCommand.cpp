@@ -601,7 +601,10 @@ void TUI::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_SHOW_PROPERTIES,    	CommandShowProperties);
 	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
-	REGISTER_CMD_S	    (COMMAND_ZOOM_EXTENTS,       	CommandZoomExtents);
+    REGISTER_SUB_CMD_SE (COMMAND_ZOOM_EXTENTS,     		"Scene\\Zoom",			CommandZoomExtents,false);
+    	APPEND_SUB_CMD	("Extents",						0,0);
+    	APPEND_SUB_CMD	("Selected",					1,0);
+    REGISTER_SUB_CMD_END;
     REGISTER_CMD_SE	    (COMMAND_TOGGLE_RENDER_WIRE,	"Toggle Wireframe",		CommandToggleRenderWire,			false);
     REGISTER_CMD_C	    (COMMAND_RENDER_FOCUS,       	this,TUI::CommandRenderFocus);
 	REGISTER_CMD_CE	    (COMMAND_BREAK_LAST_OPERATION,	"Break Last Operation",	this,TUI::CommandBreakLastOperation,false);

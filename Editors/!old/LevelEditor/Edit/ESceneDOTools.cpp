@@ -228,13 +228,13 @@ void EDetailManager::SaveColorIndices(IWriter& F)
     F.close_chunk		();
     // color index map
 	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
-    F.w_u8				(m_ColorIndices.size());
+    F.w_u8				((u8)m_ColorIndices.size());
     ColorIndexPairIt S 	= m_ColorIndices.begin();
     ColorIndexPairIt E 	= m_ColorIndices.end();
     ColorIndexPairIt i_it= S;
 	for(; i_it!=E; i_it++){
 		F.w_u32		(i_it->first);
-        F.w_u8			(i_it->second.size());
+        F.w_u8			((u8)i_it->second.size());
 	    for (DOIt d_it=i_it->second.begin(); d_it!=i_it->second.end(); d_it++)
         	F.w_stringZ	((*d_it)->GetName());
     }
@@ -436,7 +436,7 @@ bool EDetailManager::Export(LPCSTR path)
     u32 new_idx			= 0;
     for (DetailIt d_it=objects.begin(); d_it!=objects.end(); d_it++,remap_object_it++)
     	if ((*remap_object_it==1)&&(textures_set.find(((EDetail*)(*d_it))->GetTextureName())!=textures_set.end()))
-	    	*remap_object_it	= new_idx++;
+	    	*remap_object_it	= (u8)new_idx++;
 
     AnsiString 			do_tex_name = ChangeFileExt(fn,"_details");
     int res				= ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),STextureParams::tfADXT1,256,1024,256,1024,offsets,scales,rotated,remap);

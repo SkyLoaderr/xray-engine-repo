@@ -229,7 +229,7 @@ void CActorTools::EngineModel::RestoreParams(TFormStorage* s)
 {          
     for (u16 k=0; k<MAX_PARTS; k++){
     	m_BPPlayItems[k].name	= s->ReadString("bp_cache_name_"+AnsiString(k),"");
-    	m_BPPlayItems[k].slot	= s->ReadInteger("bp_cache_slot_"+AnsiString(k),0);
+    	m_BPPlayItems[k].slot	= (u16)s->ReadInteger("bp_cache_slot_"+AnsiString(k),0);
     }
 }
 

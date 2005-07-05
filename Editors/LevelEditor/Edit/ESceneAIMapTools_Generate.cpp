@@ -689,7 +689,7 @@ void ESceneAIMapTools::RemoveLinks()
 }
 
 static const int opposite[4]={2,3,0,1};
-static const int fl[4]		={SAINode::flN1,SAINode::flN2,SAINode::flN3,SAINode::flN4};
+static const u8 fl[4]		={SAINode::flN1,SAINode::flN2,SAINode::flN3,SAINode::flN4};
 void ESceneAIMapTools::InvertLinks()
 {
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)

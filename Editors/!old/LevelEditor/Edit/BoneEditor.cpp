@@ -48,9 +48,9 @@ void CBone::ShapeScale(const Fvector& _amount)
 	switch (shape.type){
     case SBoneShape::stBox:{
         Fvector amount=_amount;
-        Fmatrix _IT;_IT.invert(_LTransform());
-        _IT.transform_dir(amount,_amount);
-        if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
+//		Fmatrix _IT;_IT.invert(_LTransform());
+//		_IT.transform_dir(amount,_amount);
+//		if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
     	shape.box.m_halfsize.add(amount);		
         if (shape.box.m_halfsize.x<EPS) shape.box.m_halfsize.x=EPS;
         if (shape.box.m_halfsize.y<EPS) shape.box.m_halfsize.y=EPS;

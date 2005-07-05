@@ -551,7 +551,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                 save_nm = xr_string(FS.get_path(_objects_)->m_Path)+folder.c_str()+EFS.ChangeFileExt(nm,".object");
 
                 if (FS.exist(save_nm.c_str()))
-			        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already exist. Owerwrite it?",nm)){
+			        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already exist. Owerwrite it?",nm.c_str())){
                     	xr_delete(O);
                     	break;
                     }

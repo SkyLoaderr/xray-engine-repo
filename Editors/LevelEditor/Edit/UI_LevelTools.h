@@ -8,6 +8,7 @@ class TfrmObjectList;
 
 #include "SceneClassList.h"
 #include "UI_ToolsCustom.h"
+#include "UI_mainCommand.h"
 
 //---------------------------------------------------------------------------
 #define estDefault 0
@@ -76,7 +77,7 @@ public:
 
     virtual LPCSTR		GetInfo				();
     
-    virtual void		ZoomObject			(bool bSelOnly);
+    virtual void		ZoomObject			(BOOL bSelOnly);
 
     virtual bool		Load				(LPCSTR path, LPCSTR name){return true;}
     virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false){return true;}
@@ -101,7 +102,7 @@ public:
 	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
     virtual void		ShowProperties		();
-    virtual void		UpdateProperties(bool bForced){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE); if (bForced) OnFrame();}
+    virtual void		UpdateProperties	(BOOL bForced){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE); if (bForced) OnFrame();}
     virtual void		RefreshProperties	();
 
     // specified functions
@@ -118,8 +119,8 @@ public:
     void				ShowObjectList		();
 
     // commands
-    void 				CommandChangeTarget		(u32 p1, u32 p2, u32& res);
-	void 				CommandShowObjectList	(u32 p1, u32 p2, u32& res);
+    CCommandVar			CommandChangeTarget		(CCommandVar p1, CCommandVar p2);
+	CCommandVar			CommandShowObjectList	(CCommandVar p1, CCommandVar p2);
 };
 extern CLevelTools*&	LTools;
 

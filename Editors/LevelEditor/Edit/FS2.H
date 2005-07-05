@@ -95,7 +95,7 @@ public:
 
 		int pos  = tell();
 		seek		(subchunk_pos.top());
-		w_u16		(pos-subchunk_pos.top()-2);
+		w_u16		(u16(pos-subchunk_pos.top()-2));
 		seek		(pos);
 		subchunk_pos.pop();
 	}
@@ -158,7 +158,7 @@ class ENGINE_API CLWMemoryStream: public CMemoryStream{
 			if ( i >= nbloks ) break;
 			d /= 2;
 		}
-		ord[ 0 ] = 128 + index * d;
+		ord[ 0 ] = u8(128 + index * d);
 		ord[ 1 ] = 0;
 	}
 
@@ -181,7 +181,7 @@ public:
         	idx|=0xff000000;
             w_u32(idx);
         }else
-        	w_u16(idx);
+        	w_u16((u16)idx);
     }
 
 	IC void		w_face3			(int i0, int i1, int i2)
@@ -190,7 +190,7 @@ public:
 	IC void		begin_vmap		(BOOL polymap, u32 type, int dim, LPCSTR name){
 		open_chunk(polymap?ID_VMAD:ID_VMAP);
 		w_u32	(type);
-		w_u16	(dim);
+		w_u16	((u16)dim);
 		R_ASSERT2(name&&name[0],"Empty vmap name!");
 		w_stringZ(name);
 	}
@@ -213,7 +213,7 @@ public:
  				w_float(1.f);w_float(1.f);w_float(1.f); w_u16(0);
 			close_subchunk();
 			open_subchunk(ID_SIDE);
-				w_u16(b2Sided?3:1);
+				w_u16(u16(b2Sided?3:1));
 			close_subchunk();
 			open_subchunk(ID_BLOK);
 				open_subchunk(ID_IMAP);

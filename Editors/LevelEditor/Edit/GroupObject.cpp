@@ -464,7 +464,7 @@ bool CGroupObject::UpdateReference()
         UpdateTransform	(true);
         FS.r_close		(R);
     }else{
-        ELog.DlgMsg		(mtError,"Can't open group file: '%s'.",fn);
+        ELog.DlgMsg		(mtError,"Can't open group file: '%s'.",fn.c_str());
     }
     return bres;
 }

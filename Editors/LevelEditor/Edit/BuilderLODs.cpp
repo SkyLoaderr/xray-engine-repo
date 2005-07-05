@@ -50,9 +50,9 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
     xr_string lod_name = E->GetLODTextureName();
 
     b_material 		mtl;
-    mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);
-    mtl.shader      = BuildShader		(E->GetLODShaderName());
-    mtl.sector		= sector_num;
+    mtl.surfidx		= (u16)BuildTexture		(LEVEL_LODS_TEX_NAME);
+    mtl.shader      = (u16)BuildShader		(E->GetLODShaderName());
+    mtl.sector		= (u16)sector_num;
     mtl.shader_xrlc	= -1;
     if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return -2;
 

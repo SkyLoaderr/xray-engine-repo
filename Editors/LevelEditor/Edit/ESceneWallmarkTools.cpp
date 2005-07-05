@@ -764,7 +764,7 @@ bool ESceneWallmarkTools::ExportStatic(SceneBuilder* B)
 	            	dst_v.set 		(src.p);
 		            dst_f.v[k] 		= B->l_vert_it;
                     dst_f.t[k].set	(src.t);
-                    dst_f.dwMaterial= m_id;
+                    dst_f.dwMaterial= (u16)m_id;
                 }
             }
         }

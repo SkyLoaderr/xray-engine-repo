@@ -181,13 +181,14 @@ bool CPortal::Update(bool bLoadMode){
         Fvector SF_dir, SB_dir;
         Fvector InvNorm;
         InvNorm.invert(m_Normal);
+        float dist;
         for (int k=0; k<100; k++){
 	        SF_dir.random_dir(m_Normal,PI_DIV_4);
 	        SB_dir.random_dir(InvNorm,PI_DIV_4);
-	        if (m_SectorFront->RayPick(1000,m_Center,SF_dir)) 	A[m_SectorFront] += 1;
-	        if (m_SectorBack->RayPick(1000,m_Center,SB_dir))	A[m_SectorBack] += 1;
-	        if (m_SectorFront->RayPick(1000,m_Center,SB_dir)) 	B[m_SectorFront] += 1;
-	        if (m_SectorBack->RayPick(1000,m_Center,SF_dir))	B[m_SectorBack] += 1;
+	        dist=1000; if (m_SectorFront->RayPick(dist,m_Center,SF_dir)) 	A[m_SectorFront]	+= 1;
+	        dist=1000; if (m_SectorBack->RayPick(dist,m_Center,SB_dir))		A[m_SectorBack] 	+= 1;
+	        dist=1000; if (m_SectorFront->RayPick(dist,m_Center,SB_dir)) 	B[m_SectorFront] 	+= 1;
+	        dist=1000; if (m_SectorBack->RayPick(dist,m_Center,SF_dir))		B[m_SectorBack] 	+= 1;
         }
         int a = A[m_SectorFront]+A[m_SectorBack];
         int b = B[m_SectorFront]+B[m_SectorBack];
@@ -468,7 +469,7 @@ void CPortal::Save(IWriter& F){
     }
 
 	F.open_chunk	(PORTAL_CHUNK_VERTICES);
-    F.w_u16			(m_Vertices.size());
+    F.w_u16			((u16)m_Vertices.size());
     F.w				(m_Vertices.begin(),m_Vertices.size()*sizeof(Fvector));
 	F.close_chunk	();
 }

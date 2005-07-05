@@ -283,7 +283,7 @@ bool CLevelTools::IfModified()
 }
 //---------------------------------------------------------------------------
 
-void CLevelTools::ZoomObject(bool bSelectedOnly)
+void CLevelTools::ZoomObject(BOOL bSelectedOnly)
 {
     if( !Scene->locked() ){
         Scene->ZoomExtents(CurrentClassID(),bSelectedOnly);
@@ -332,7 +332,7 @@ void __fastcall CLevelTools::OnFrame()
             // если нужно изменить target выполняем после того как мышь освободится
             if(m_Flags.is(flChangeTarget)) 		RealSetTarget(iNeedTarget,iNeedSubTarget,false);
             // если нужно изменить action выполняем после того как мышь освободится
-            if(m_Flags.is(flChangeAction)) 		RealSetAction(iNeedAction);
+            if(m_Flags.is(flChangeAction)) 		RealSetAction(ETAction(iNeedAction));
         }
         if (m_Flags.is(flUpdateProperties)) 	RealUpdateProperties();
         if (m_Flags.is(flUpdateObjectList)) 	RealUpdateObjectList();
