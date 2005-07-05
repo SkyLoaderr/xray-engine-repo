@@ -134,26 +134,33 @@ CCommandVar CommandSaveBackup(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-    	if (!p1.IsString()||xr_string(p1).empty()){
-        	xr_string temp_fn	= LTools->m_LastFileName.c_str();
-        	if (EFS.GetSaveName	( _maps_, temp_fn ))
-            	return 			ExecCommand(COMMAND_SAVE,temp_fn);
+        if (p2==1){
+            xr_string temp_fn	= LTools->m_LastFileName.c_str();
+            if (EFS.GetSaveName	( _maps_, temp_fn ))
+                return 				ExecCommand(COMMAND_SAVE,temp_fn,0);
         }else{
-	        xr_string temp_fn	= p1; xr_strlwr(temp_fn);
-            if (0==temp_fn.find(FS.get_path(_maps_)->m_Path))
-                temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
+            if (p1.IsInteger())
+            	return 				ExecCommand(COMMAND_SAVE,xr_string(LTools->m_LastFileName.c_str()),0);
+            xr_string temp_fn		= xr_string(p1);
+            if (temp_fn.empty()){
+                return 				ExecCommand(COMMAND_SAVE,temp_fn,1);
+            }else{
+                xr_strlwr			(temp_fn);
+                if (0==temp_fn.find(FS.get_path(_maps_)->m_Path))
+                    temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
                 
-            UI->SetStatus	("Level saving...");
-            Scene->Save		(_maps_, temp_fn.c_str(), false);
-            UI->ResetStatus	();
-            // unlock
-            EFS.UnlockFile	(_maps_,Tools->m_LastFileName.c_str());
-            // set new name
-            Tools->m_LastFileName 	= temp_fn.c_str();
-            EFS.LockFile	(_maps_,Tools->m_LastFileName.c_str());
-            ExecCommand		(COMMAND_UPDATE_CAPTION);
-            EPrefs.AppendRecentFile(temp_fn.c_str());
-            return 			TRUE;
+                UI->SetStatus	("Level saving...");
+                Scene->Save		(_maps_, temp_fn.c_str(), false);
+                UI->ResetStatus	();
+                // unlock
+                EFS.UnlockFile	(_maps_,Tools->m_LastFileName.c_str());
+                // set new name
+                Tools->m_LastFileName 	= temp_fn.c_str();
+                EFS.LockFile	(_maps_,Tools->m_LastFileName.c_str());
+                ExecCommand		(COMMAND_UPDATE_CAPTION);
+                EPrefs.AppendRecentFile(temp_fn.c_str());
+                return 			TRUE;
+            }
         }
     } else {
         ELog.DlgMsg			( mtError, "Scene sharing violation" );
@@ -734,11 +741,14 @@ void CLevelMain::RegisterCommands()
 	// common
 	REGISTER_CMD_S	    (COMMAND_LIBRARY_EDITOR,           	CommandLibraryEditor);
 	REGISTER_CMD_S	    (COMMAND_LANIM_EDITOR,            	CommandLAnimEditor);
-	REGISTER_CMD_SE	    (COMMAND_FILE_MENU,              	"File Menu",					CommandFileMenu, true);
-	REGISTER_CMD_SE	    (COMMAND_LOAD,              		"File\\Load Level", 			CommandLoad, true);
-	REGISTER_CMD_SE	    (COMMAND_SAVE,              		"File\\Save Level", 			CommandSave, true);
+	REGISTER_CMD_SE	    (COMMAND_FILE_MENU,              	"File Menu",					CommandFileMenu, 		true);
+	REGISTER_CMD_SE	    (COMMAND_LOAD,              		"File\\Load Level", 			CommandLoad, 			true);
+    REGISTER_SUB_CMD_SE (COMMAND_SAVE, 						"File",							CommandSave,			true);
+    	APPEND_SUB_CMD	("Save",							0,								0);
+    	APPEND_SUB_CMD	("Save As",							0,								1);
+    REGISTER_SUB_CMD_END;
 	REGISTER_CMD_S	    (COMMAND_SAVE_BACKUP,              	CommandSaveBackup);
-	REGISTER_CMD_SE	    (COMMAND_CLEAR,              		"File\\Clear Scene", 			CommandClear, true);
+	REGISTER_CMD_SE	    (COMMAND_CLEAR,              		"File\\Clear Scene", 			CommandClear,			true);
 	REGISTER_CMD_SE	    (COMMAND_LOAD_FIRSTRECENT,          "File\\Load First Recent",		CommandLoadFirstRecent, true);
 	REGISTER_CMD_S	    (COMMAND_CLEAR_DEBUG_DRAW, 		    CommandClearDebugDraw);
 	REGISTER_CMD_S	    (COMMAND_IMPORT_COMPILER_ERROR,     CommandImportCompilerError);

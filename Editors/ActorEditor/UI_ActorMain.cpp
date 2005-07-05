@@ -87,31 +87,37 @@ CCommandVar CActorTools::CommandSaveBackup(CCommandVar p1, CCommandVar p2)
 }
 CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
 {
-    if (!p1.IsString()||xr_string(p1).empty()){
+	if (p2==1){
         xr_string temp_fn	= ATools->m_LastFileName.c_str();
         if (EFS.GetSaveName	( _objects_, temp_fn ))
-            return 			ExecCommand(COMMAND_SAVE,temp_fn);
+            return 			ExecCommand(COMMAND_SAVE,temp_fn,0);
     }else{
-        xr_string temp_fn	= p1; xr_strlwr(temp_fn);
-        if (0==temp_fn.find(FS.get_path(_objects_)->m_Path))
-            temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
-
-        EFS.UnlockFile		(_objects_,temp_fn.c_str());
-        CTimer T;
-        T.Start();
-        CCommandVar			res;
-        if (Tools->Save(_objects_,temp_fn.c_str())){
-            ELog.Msg		(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
-            EFS.BackupFile	(_objects_,temp_fn.c_str());
-	        m_LastFileName	= temp_fn.c_str();
-            EPrefs.AppendRecentFile	(m_LastFileName.c_str());
-            ExecCommand		(COMMAND_UPDATE_CAPTION);
-            res				= TRUE;
+        if (p1.IsInteger())
+            return 				ExecCommand(COMMAND_SAVE,xr_string(ATools->m_LastFileName.c_str()),0);
+        xr_string temp_fn		= xr_string(p1);
+        if (temp_fn.empty()){
+			return 				ExecCommand(COMMAND_SAVE,temp_fn,1);
         }else{
-            res				= FALSE;
+            xr_strlwr			(temp_fn);
+            if (0==temp_fn.find(FS.get_path(_objects_)->m_Path))
+                temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
+            EFS.UnlockFile		(_objects_,temp_fn.c_str());
+            CTimer T;
+            T.Start();
+            CCommandVar			res;
+            if (Tools->Save(_objects_,temp_fn.c_str())){
+                ELog.Msg		(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
+                EFS.BackupFile	(_objects_,temp_fn.c_str());
+                m_LastFileName	= temp_fn.c_str();
+                EPrefs.AppendRecentFile	(m_LastFileName.c_str());
+                ExecCommand		(COMMAND_UPDATE_CAPTION);
+                res				= TRUE;
+            }else{
+                res				= FALSE;
+            }
+            EFS.LockFile		(_objects_,temp_fn.c_str());
+            return 				res;
         }
-        EFS.LockFile		(_objects_,temp_fn.c_str());
-	    return 				res;
     }
     return 					FALSE;
 }     
@@ -328,10 +334,13 @@ void CActorMain::RegisterCommands()
 	inherited::RegisterCommands();
     // tools
 	REGISTER_CMD_CE	(COMMAND_CLEAR,             "File\\Clear Scene", 			ATools,CActorTools::CommandClear,			true);
-    REGISTER_CMD_CE	(COMMAND_LOAD,              "File\\Load Object", 			ATools,CActorTools::CommandLoad,			true);
+    REGISTER_CMD_CE	(COMMAND_LOAD,              "File\\Load", 					ATools,CActorTools::CommandLoad,			true);
     REGISTER_CMD_C	(COMMAND_SAVE_BACKUP,       ATools,							CActorTools::CommandSaveBackup);
-	REGISTER_CMD_CE	(COMMAND_SAVE,              "File\\Save Object", 			ATools,CActorTools::CommandSave,			true);
-    REGISTER_CMD_CE	(COMMAND_IMPORT,            "File\\Import Object",			ATools,CActorTools::CommandImport,			true);
+    REGISTER_SUB_CMD_CE (COMMAND_SAVE, 			"File",							ATools,CActorTools::CommandSave,			true);
+    	APPEND_SUB_CMD	("Save",				0,								0);
+    	APPEND_SUB_CMD	("Save As",				0,								1);
+    REGISTER_SUB_CMD_END;
+    REGISTER_CMD_CE	(COMMAND_IMPORT,            "File\\Import",					ATools,CActorTools::CommandImport,			true);
     REGISTER_CMD_CE	(COMMAND_EXPORT_DM,         "File\\Export DM",				ATools,CActorTools::CommandExportDM,		true);
     REGISTER_CMD_CE	(COMMAND_EXPORT_OBJ,		"File\\Export OBJ",				ATools,CActorTools::CommandExportOBJ,		true);
     REGISTER_CMD_CE	(COMMAND_EXPORT_OGF,        "File\\Export OGF",				ATools,CActorTools::CommandExportOGF,		true);
@@ -369,15 +378,7 @@ char* CActorMain::GetCaption()
 
 bool __fastcall CActorMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyShortCut(Key,Shift)) return true;
-	bool bExec = false;
-    if (Shift.Empty()){
-    	if (Key=='B') 					{ ATools->SelectListItem(BONES_PREFIX,0,true,false,true);	bExec=true;}
-        else if (Key=='M') 				{ ATools->SelectListItem(MOTIONS_PREFIX,0,true,false,true); bExec=true;}
-        else if (Key=='O') 				{ ATools->SelectListItem(OBJECT_PREFIX,0,true,false,true); 	bExec=true;}
-        else if (Key=='F') 				{ ATools->SelectListItem(SURFACES_PREFIX,0,true,false,true);bExec=true;}
-    }
-    return bExec;
+    return inherited::ApplyShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 

@@ -189,7 +189,7 @@ void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebSaveAsClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE, 0, 1 );
 }
 //---------------------------------------------------------------------------
 

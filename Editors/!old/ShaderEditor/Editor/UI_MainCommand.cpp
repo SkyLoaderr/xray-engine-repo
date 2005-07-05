@@ -602,7 +602,7 @@ void TUI::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
     REGISTER_SUB_CMD_SE (COMMAND_ZOOM_EXTENTS,     		"Zoom",					CommandZoomExtents,false);
-    	APPEND_SUB_CMD	("Extents",						0,0);
+    	APPEND_SUB_CMD	("Extent",						0,0);
     	APPEND_SUB_CMD	("Selected",					1,0);
     REGISTER_SUB_CMD_END;
     REGISTER_CMD_SE	    (COMMAND_TOGGLE_RENDER_WIRE,	"Toggle Wireframe",		CommandToggleRenderWire,			false);
@@ -646,9 +646,9 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
     xr_shortcut SC; 
     SC.key						= Key;
-    SC.ext.assign				(Shift.Contains(ssShift)?xr_shortcut::flShift:0|
-    							 Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0|
-                                 Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0);
+    SC.ext.assign				((Shift.Contains(ssShift)?xr_shortcut::flShift:0)|
+    							 (Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0)|
+                                 (Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0));
 	SESubCommand* SUB 			= FindCommandByShortcut(SC);
 
     if (!SUB||SUB->parent->global_shortcut) 			return false;
@@ -665,9 +665,9 @@ bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 
     xr_shortcut SC; 
     SC.key						= Key;
-    SC.ext.assign				(Shift.Contains(ssShift)?xr_shortcut::flShift:0|
-    							 Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0|
-                                 Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0);
+    SC.ext.assign				((Shift.Contains(ssShift)?xr_shortcut::flShift:0)|
+    							 (Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0)|
+                                 (Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0));
 	SESubCommand* SUB 			= FindCommandByShortcut(SC);
 
     if (!SUB||!SUB->parent->global_shortcut) 			return false;

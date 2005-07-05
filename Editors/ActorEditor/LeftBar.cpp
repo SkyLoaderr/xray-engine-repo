@@ -232,13 +232,13 @@ void __fastcall TfraLeftBar::Clear1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::Save2Click(TObject *Sender)
 {
-	ExecCommand( COMMAND_SAVE, xr_string(ATools->m_LastFileName.c_str()) );
+	ExecCommand( COMMAND_SAVE, xr_string(ATools->m_LastFileName.c_str()), 0 );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSaveAsClick(TObject *Sender)
 {
-	ExecCommand( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE, 0, 1);
 }
 //---------------------------------------------------------------------------
 
