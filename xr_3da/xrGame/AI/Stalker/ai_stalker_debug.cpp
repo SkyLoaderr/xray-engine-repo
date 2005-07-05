@@ -47,7 +47,6 @@
 
 CActor *g_debug_actor = 0;
 
-
 void try_change_current_entity()
 {
 	CActor								*actor = smart_cast<CActor*>(Level().CurrentEntity());
