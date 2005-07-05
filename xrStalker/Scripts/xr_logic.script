@@ -588,6 +588,10 @@ function switch_to_section(npc, st, section)
 	if active_section == section then
 		return false
 	end
+	
+	-- call scheme::finalize()
+	issue_event(obj, st, "finalize")
+	
 	db.storage[npc:id()].active_section = nil
 	db.storage[npc:id()].active_scheme = nil
 	activate_by_section(npc, st.ini, section, false)
