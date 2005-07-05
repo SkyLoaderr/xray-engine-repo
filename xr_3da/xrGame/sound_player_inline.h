@@ -52,3 +52,8 @@ IC	ref_sound *CSoundPlayer::add			(ESoundTypes type, LPCSTR name, CSound_UserDat
 	temp->g_userdata	= data;
 	return				(temp);
 }
+
+IC	const CSoundPlayer::SOUND_COLLECTIONS &CSoundPlayer::objects	() const
+{
+	return				(m_sounds);
+}

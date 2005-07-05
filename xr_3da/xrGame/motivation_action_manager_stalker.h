@@ -30,6 +30,7 @@ protected:
 			void			add_actions							();
 			void			add_motivations						();
 #ifdef LOG_ACTION
+public:
 	virtual LPCSTR			action2string						(const _action_id_type &action_id);
 	virtual LPCSTR			property2string						(const _condition_type &property_id);
 #endif

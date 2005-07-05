@@ -94,9 +94,11 @@ public:
 		}
 	};
 
+public:
+	typedef xr_map<u32,CSoundCollection>		SOUND_COLLECTIONS;
 
 private:
-	xr_map<u32,CSoundCollection>				m_sounds;
+	SOUND_COLLECTIONS							m_sounds;
 	xr_vector<CSoundSingle>						m_playing_sounds;
 	u32											m_sound_mask;
 	CObject										*m_object;
@@ -124,6 +126,7 @@ public:
 	IC		const xr_vector<CSoundSingle> &playing_sounds() const;
 	IC		u32			active_sound_count			(bool only_playing = false) const;
 			bool		need_bone_data				() const;
+	IC		const SOUND_COLLECTIONS &objects		() const;
 };
 
 #include "sound_player_inline.h"
