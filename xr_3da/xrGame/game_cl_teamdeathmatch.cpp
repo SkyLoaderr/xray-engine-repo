@@ -8,6 +8,7 @@
 #include "clsid_game.h"
 #include "map_manager.h"
 #include "actor.h"
+#include "ui/UIMainIngameWnd.h"
 
 #define	TEAM0_MENU		"teamdeathmatch_team0"
 #define	TEAM1_MENU		"teamdeathmatch_team1"
@@ -266,6 +267,23 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 	case GAME_PHASE_TEAM2_SCORES:
 		{
 			m_game_ui->SetRoundResultCaption("Team Blue WINS!");
+		}break;
+	case GAME_PHASE_INPROGRESS:
+		{
+			if (local_player)
+			{			
+				s16 lt = local_player->team;
+				if (lt>=0)
+				{
+					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+					{
+						string256 S = "";
+						if (fraglimit) sprintf(S, "%d", fraglimit);
+						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
+						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
+					}
+				};
+			};
 		}break;
 	default:
 		{
