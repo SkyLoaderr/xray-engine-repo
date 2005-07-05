@@ -347,15 +347,15 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	LPCSTR								body_state = "invalid";
 	switch (movement().body_state()) {
 		case MonsterSpace::eBodyStateStand : {
-			mental_state				= "stand";
+			body_state					= "stand";
 			break;
 		}
 		case MonsterSpace::eBodyStateCrouch : {
-			mental_state				= "crouch";
+			body_state					= "crouch";
 			break;
 		}
 		case MonsterSpace::eBodyStateStandDamaged : {
-			mental_state				= "stand damaged";
+			body_state					= "stand damaged";
 			break;
 		}
 		default : NODEFAULT;
@@ -365,15 +365,15 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	LPCSTR								movement_type = "invalid";
 	switch (movement().movement_type()) {
 		case MonsterSpace::eMovementTypeStand : {
-			mental_state				= "stand";
+			movement_type				= "stand";
 			break;
 		}
 		case MonsterSpace::eMovementTypeWalk : {
-			mental_state				= "walk";
+			movement_type				= "walk";
 			break;
 		}
 		case MonsterSpace::eMovementTypeRun : {
-			mental_state				= "run";
+			movement_type				= "run";
 			break;
 		}
 		default : NODEFAULT;
