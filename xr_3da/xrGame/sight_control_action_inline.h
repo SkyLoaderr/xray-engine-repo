@@ -39,3 +39,9 @@ IC	const Fvector &CSightControlAction::vector3d	() const
 {
 	return				(m_vector3d);
 }
+
+IC	const CGameObject &CSightControlAction::object	() const
+{
+	VERIFY				(m_object_to_look);
+	return				(*m_object_to_look);
+}
