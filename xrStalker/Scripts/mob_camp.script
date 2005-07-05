@@ -64,13 +64,13 @@ function mob_camp:reset_scheme()
 	self.state_prev			= self.state_current
 	
 	-- select cur point
-	self.cur_point_index	= math.random(0, self.look_path:count() - 1)
+	self.cur_point_index	= 0
+	self:select_current_home_point(true)
 	
 	self.time_point_changed = time_global()
 	
 	self.prev_enemy			= false
-
-	-- register in storage	
+	
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ function mob_camp:update(delta)
 
 	-- update point changer
 	if (self.time_point_changed + self.st.time_change_point < time_global()) then
-		self.cur_point_index	= math.random(0, self.look_path:count() - 1)
+		self:select_current_home_point(false)
 		self.time_point_changed = time_global()
 	end
 	
@@ -98,9 +98,37 @@ end
 ----------------------------------------------------------------------------------------------------
 -- SERVICE FUNCTIONS
 ----------------------------------------------------------------------------------------------------
+function mob_camp:select_current_home_point(first_call)
+	local prev_point_index = self.cur_point_index
+	
+	if self.home_path then
+		-- fill table of free points
+		local free_points	= {}
+		
+		for i = 1, self.home_path:count() do
+			if	(db.camp_storage[self.st.home_point][i] == nil) or 
+				(db.camp_storage[self.st.home_point][i] == false) then
+				table.insert(free_points, i)
+			end
+		end
+
+		local free_points_index = math.random(1, table.getn(free_points))
+		self.cur_point_index	= free_points[free_points_index]-1
+		
+		if not first_call then
+			if prev_point_index ~= self.cur_point_index then
+				db.camp_storage[self.st.home_point][prev_point_index+1] = false
+			end
+		end
+		db.camp_storage[self.st.home_point][self.cur_point_index+1]	= true
+	else 
+		self.cur_point_index	= math.random(0, self.look_path:count() - 1)
+	end
+end
+
+---------------------------------------------------------------------------------
 function mob_camp:select_state()
 	self.state_prev = self.state_current
-	
 	
 	local home_position = self.camp_position
 	local home_node		= self.camp_node
@@ -236,7 +264,9 @@ function mob_camp:execute_state()
 end
 
 function mob_camp:finalize()
-	
+	if self.home_path then
+		db.camp_storage[self.st.home_point][self.cur_point_index+1] = false
+	end
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -254,16 +284,6 @@ end
 ----------------------------------------------------------------------------------------------------
 -- SET_SCHEME
 ----------------------------------------------------------------------------------------------------
---function parse_squad(s)
---	local tab = {}
---    if s then
---		for name in string.gfind(s, "[%w_]+" ) do
---			table.insert(tab, tostring(name))
---		end
---	end
---	return tab
---end
-
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local storage				= xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 
@@ -287,10 +307,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		abort("object '%s': unable to find look_point '%s' on the map",
 					npc:name(), storage.look_point)
 	end
-	
---	local squad_string	= utils.cfg_get_string(ini, section, "squad", npc, false, gulag_name)
---	storage.squad		= parse_squad(squad_string)
---	level.object()
 	
 end
 
