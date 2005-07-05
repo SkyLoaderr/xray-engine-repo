@@ -87,7 +87,7 @@ LPCSTR animation_name(CAI_Stalker *self, const MotionID &animation)
 	VERIFY				(skeleton_animated);
 	CMotionDef			*motion = skeleton_animated->LL_GetMotionDef(animation);
 	VERIFY				(motion);
-	LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(motion);
+	LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(animation);
 	return				(name);
 }
 
