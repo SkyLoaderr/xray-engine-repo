@@ -193,10 +193,10 @@ function save_dialog:OnButton_ok_clicked()
 	
 	// check for empty name
 	if string.len(self.new_save) == 0 then
-		message_box:SetStyle(CUIMessageBox.STYLE_OK)		
-		message_box:SetText("The file name is empty. Please enter valid name!")
-		main_frame:Enable(false)
-		message_box:Show()
+--		message_box:SetStyle(CUIMessageBox.STYLE_OK)		
+--		message_box:SetText("The file name is empty. Please enter valid name!")
+--		main_frame:Enable(false)
+--		message_box:Show()
 		return
 	end
 	

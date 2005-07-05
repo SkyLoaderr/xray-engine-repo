@@ -97,7 +97,7 @@ function main_main_tab:InitControls(x, y, handler)
 	handler:Register(btn)
 	self:AttachChild(btn)	
 	
---	btn:Enable(level.present())
+	btn:Enable(level.present())
 	
 		
 	--------->> MULTIPLAYER
