@@ -415,7 +415,9 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	if((ud->pushing_neg||ud->pushing_b_neg)&&!b_death_pos)
 	{
 		b_death_pos=true;
-		Msg("death pos %f2.2,%f2.2,%f2.2",ud->last_pos[0],ud->last_pos[1],ud->last_pos[2]);
+//#ifdef DEBUG
+//		Msg("death pos %f2.2,%f2.2,%f2.2",ud->last_pos[0],ud->last_pos[1],ud->last_pos[2]);
+//#endif
 		Fvector pos;pos.set(cast_fv(dBodyGetPosition(m_body)));
 		Fvector d;d.set(cast_fv(dBodyGetLinearVel(m_body)));d.mul(fixed_step);
 		pos.sub(d);
