@@ -11,6 +11,7 @@
 IC	CScriptEntityAction::CScriptEntityAction						()
 {
 	m_user_data					= 0;
+	m_started					= false;
 }
 
 IC	CScriptEntityAction::CScriptEntityAction						(const CScriptEntityAction *entity_action)
@@ -116,6 +117,11 @@ IC	bool CScriptEntityAction::CheckIfTimeOver					()
 
 IC	bool CScriptEntityAction::CheckIfActionCompleted			()
 {
+	bool				started = m_started;
+	m_started			= true;
+	if (!started)
+		return			(false);
+
 	u32					l_dwFlags = m_tActionCondition.m_dwFlags;
 	if ((CScriptActionCondition::MOVEMENT_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfMovementCompleted	())
 		l_dwFlags		^= CScriptActionCondition::MOVEMENT_FLAG;
@@ -150,6 +156,7 @@ IC	bool CScriptEntityAction::CheckIfActionCompleted			()
 
 IC	void CScriptEntityAction::initialize						()
 {
+	m_started						= false;
 	m_tMovementAction.initialize	();
 	m_tWatchAction.initialize		();
 	m_tAnimationAction.initialize	();

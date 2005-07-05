@@ -29,11 +29,12 @@ public:
 	CScriptActionCondition	m_tActionCondition;
 	CScriptMonsterAction	m_tMonsterAction;
 	void					*m_user_data;
+	bool					m_started;
 
 public:
-	IC				CScriptEntityAction						();
-	IC				CScriptEntityAction						(const CScriptEntityAction *entity_action);
-	virtual			~CScriptEntityAction						();
+	IC				CScriptEntityAction					();
+	IC				CScriptEntityAction					(const CScriptEntityAction *entity_action);
+	virtual			~CScriptEntityAction				();
 	template<typename T>
 	IC		void	SetAction							(const T &t, T &tt);
 	IC		void	SetAction							(CScriptMovementAction &tMovementAction);
@@ -63,7 +64,7 @@ public:
 	IC		const CScriptAnimationAction	&anim		();
 	IC		const CScriptParticleAction		&particle	();
 	IC		const CScriptObjectAction		&object		();
-	IC		const CScriptActionCondition			&cond		();
+	IC		const CScriptActionCondition	&cond		();
 	IC		void							*data		();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
