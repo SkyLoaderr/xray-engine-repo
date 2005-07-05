@@ -406,7 +406,8 @@ void CInventoryOwner::SetCommunity	(CHARACTER_COMMUNITY_INDEX new_community)
 	if(!trader) return;
 
 	CharacterInfo().m_CurrentCommunity.set(new_community);
-	EA->id_Team = CharacterInfo().m_CurrentCommunity.team();
+//	EA->id_Team = CharacterInfo().m_CurrentCommunity.team();
+	EA->ChangeTeam(CharacterInfo().m_CurrentCommunity.team(), EA->g_Squad(), EA->g_Group());
 	trader->m_community_index  = new_community;
 }
 
