@@ -283,7 +283,6 @@ public:
 	CCommandVar			CommandClear		(CCommandVar p1, CCommandVar p2);
 	CCommandVar 		CommandLoad			(CCommandVar p1, CCommandVar p2);
     CCommandVar         CommandSaveBackup	(CCommandVar p1, CCommandVar p2);
-    CCommandVar         CommandSaveAs		(CCommandVar p1, CCommandVar p2);
     CCommandVar         CommandSave			(CCommandVar p1, CCommandVar p2);
     CCommandVar         CommandImport		(CCommandVar p1, CCommandVar p2);
     CCommandVar         CommandExportDM		(CCommandVar p1, CCommandVar p2);

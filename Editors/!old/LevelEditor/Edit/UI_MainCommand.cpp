@@ -646,6 +646,10 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
     SC.ext.assign				(Shift.Contains(ssShift)?xr_shortcut::flShift:0|
     							 Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0|
                                  Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0);
+	SESubCommand* SUB 			= FindCommandByShortcut(SC);
+
+    if (!SUB||SUB->parent->global_shortcut) 			return false;
+
     return 						ExecCommand(SC);
 }
 //---------------------------------------------------------------------------
