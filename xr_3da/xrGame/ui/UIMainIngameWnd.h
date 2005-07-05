@@ -147,6 +147,7 @@ public:
 	// Показать (с анимацией) помледнте заработанные/отняные денежки
 	void DisplayMoneyChange(shared_str deltaMoney);
 	CUIStatic*	GetPDAOnline	() { return &UIPdaOnline; };
+	void	UpdateTeamsScore	(int t1, int t2);
 protected:
 
 	// Надписи armor & health

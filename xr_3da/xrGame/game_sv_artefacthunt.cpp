@@ -623,8 +623,16 @@ void	game_sv_ArtefactHunt::Update			()
 		}break;
 	}
 }
+
+#ifdef DEBUG
+BOOL	g_SV_Force_Artefact_Spawn = FALSE;
+#endif
+
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
+#ifdef DEBUG
+	if (g_SV_Force_Artefact_Spawn) return true;
+#endif
 ///	return true;
 	// Check if all players ready
 	u32		cnt		= get_players_count	();

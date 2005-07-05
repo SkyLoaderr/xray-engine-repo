@@ -289,13 +289,13 @@ void CUIMainIngameWnd::Init()
 			xml_init.InitStatic(uiXml, "t1_score", 0, &UITeam1Score);
 			xml_init.InitStatic(uiXml, "t2_score", 0, &UITeam2Score);
 
-			UITeam1Score.SetText("0");
-			UITeam2Score.SetText("0");
+			UITeam1Score.SetText("10");
+			UITeam2Score.SetText("10");
 
-			UITeam1Sign.Show(false);
-			UITeam2Sign.Show(false);
-			UITeam1Score.Show(false);
-			UITeam2Score.Show(false);
+//			UITeam1Sign.Show(false);
+//			UITeam2Sign.Show(false);
+//			UITeam1Score.Show(false);
+//			UITeam2Score.Show(false);
 		}
 	}
 
@@ -1578,3 +1578,32 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 	UIPickUpItemIcon.SetColor(color_rgba(255,255,255,192));
 	UIPickUpItemIcon.Show(true);
 };
+
+//  [7/4/2005]
+void	CUIMainIngameWnd::UpdateTeamsScore	(int t1, int t2)
+{
+	Frect	xT1Rect, xT2Rect;
+	xT1Rect = UITeam1Score.GetAbsoluteRect();
+	xT2Rect = UITeam2Score.GetAbsoluteRect();
+
+	string16 tmp; 
+	sprintf(tmp, "%d", t1);		UITeam1Score.SetText(tmp);
+	sprintf(tmp, "%d", t2);		UITeam2Score.SetText(tmp);
+
+	if ((xT1Rect.y1 < xT2Rect.y1 && t1<t2) || (xT1Rect.y1>xT2Rect.y1 && t1>t2))
+	{
+		int x=0;
+		x=x;
+
+		UITeam1Score.SetWndPos(xT1Rect.x1, xT2Rect.y1);
+		UITeam2Score.SetWndPos(xT2Rect.x1, xT1Rect.y1);
+
+		xT1Rect = UITeam1Sign.GetAbsoluteRect();
+		xT2Rect = UITeam2Sign.GetAbsoluteRect();
+
+		UITeam1Sign.SetWndPos(xT1Rect.x1, xT2Rect.y1);
+		UITeam2Sign.SetWndPos(xT2Rect.x1, xT1Rect.y1);
+
+	};
+}
+//  [7/4/2005]

@@ -386,16 +386,17 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				s16 lt = local_player->team;
 				if (lt>=0)
 				{
-					sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
-									teams[lt-1].score, 
-									teams[(lt==1)?1:0].score, 
-									artefactsNum);
-					m_game_ui->SetScoreCaption(S);
+//					sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
+//									teams[lt-1].score, 
+//									teams[(lt==1)?1:0].score, 
+//									artefactsNum);
+//					m_game_ui->SetScoreCaption(S);
 
 					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 					{
 						sprintf(S, "%d", artefactsNum);
 						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
+						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
 					}
 				};
 	/*

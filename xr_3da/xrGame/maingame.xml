@@ -99,15 +99,17 @@
 	</money_mt_static>
 	
 	<!-- TEAM 1 SCORE -->
-	<t1_score x="960" y="120" width="132" height="32" font="graffiti32" r="0" g="255" b="0" a="255">		
+	<t1_score x="948" y="80" width="32" height="32" >		
+		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"></text>
 	</t1_score>
-	<t1_static x="980" y="120" width="32" height="32" stretch = "1">
+	<t1_static x="980" y="80" width="32" height="32" stretch = "1">
 		<texture>ui\ui_greenteam</texture>
 	</t1_static>
 	<!-- TEAM 2 SIGN -->
-	<t2_score x="960" y="150" width="132" height="32" font="graffiti32" r="0" g="0" b="255" a="255">		
+	<t2_score x="948" y="110" width="32" height="32">
+		<text font="graffiti32" r="0" g="255" b="255" a="255" align="r"></text>
 	</t2_score>
-	<t2_static x="980" y="150" width="32" height="32" stretch = "1">
+	<t2_static x="980" y="110" width="32" height="32" stretch = "1">
 		<texture>ui\ui_blueteam</texture>
 	</t2_static>
 	

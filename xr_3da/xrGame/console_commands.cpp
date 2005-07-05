@@ -76,6 +76,9 @@ extern	BOOL	g_bShowPlayerNames		;
 extern	BOOL	g_bCollectStatisticData ;
 extern	BOOL	g_bStatisticSaveAuto	;
 extern	BOOL	g_SV_Disable_Auth_Check	;
+#ifdef DEBUG
+	extern	BOOL	g_SV_Force_Artefact_Spawn;
+#endif
 
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
@@ -2059,5 +2062,7 @@ void CCC_RegisterCommands()
 	extern	INT	g_Dump_Update_Read;
 	CMD4(CCC_Integer,	"net_dbg_dump_update_write",	&g_Dump_Update_Write, 0, 1);
 	CMD4(CCC_Integer,	"net_dbg_dump_update_read",	&g_Dump_Update_Read, 0, 1);
+
+	CMD4(CCC_Integer,	"sv_artefact_spawn_force",		&g_SV_Force_Artefact_Spawn, 0, 1);
 #endif
 }
