@@ -546,7 +546,7 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 end
 
 function action_gate:use_callback(obj, who)
-    printf("_bp: action_gate:use_callback()")
+    printf("gate <use>: action_gate:use_callback()")
 	if self:try_switch() then
 		return
 	end
