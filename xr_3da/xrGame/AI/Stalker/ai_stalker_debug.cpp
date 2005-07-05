@@ -514,6 +514,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%s%spath size     : %d",indent,indent,indent,movement().detail().path().size());
 	HUD().Font().pFontSmall->OutNext	("%s%s%sstart point   : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().front().position));
 	HUD().Font().pFontSmall->OutNext	("%s%s%sdest point    : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().back().position));
+	HUD().Font().pFontSmall->OutNext	("%s%s%scurrent point : %d",indent,indent,indent,movement().detail().curr_travel_point_index());
 
 	string256							temp;
 	if	(
