@@ -72,7 +72,7 @@ function evaluator_danger:evaluate()
 	end
 
 	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
-	if danger_distance_sqr > 100 then
+	if danger_distance_sqr > self.a.ignore_distance*self.a.ignore_distance then
 		printf("DANGER [%s]->[%s] [TRUE] extra dist [%s]", self.object:name(), best_danger:object():name(), danger_distance_sqr)
 		return true
 	end
@@ -121,4 +121,21 @@ function add_to_binder(object, ini, scheme, section, storage)
 end
 function set_danger(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+end
+
+function reset_danger(npc, scheme, st, section)
+	local danger_section
+	if scheme ~= nil and scheme ~= "nil" then
+		danger_section = utils.cfg_get_string(st.ini, section, "danger", npc, false, "")
+	end
+	
+	printf("DANGER SECTION [%s]", utils.to_str(danger_section))
+	local st = db.object[npc:id()].danger
+	if danger_section then
+		st.ignore_distance = utils.cfg_get_number(st.ini, danger_section, "ignore_distance", npc, false)
+	end
+	
+	if st.ignore_distance == nil then
+		st.ignore_distance = 10
+	end
 end
