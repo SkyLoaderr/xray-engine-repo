@@ -157,14 +157,14 @@ end
 function actor_set_dolg(actor, npc)
 	printf("ACTOR NOW IN [DOLG] COMMUNITY")
 	if db.actor then
-		db.actor:set_character_community("actor_dolg")
+		db.actor:set_character_community("actor_dolg", 0, 0)
 	end
 	return true
 end
 function actor_clear_community(actor, npc)
 	printf("ACTOR NOW IN [NEUTRAL] COMMUNITY")
 	if db.actor then
-		db.actor:set_character_community("actor")
+		db.actor:set_character_community("actor", 0, 0)
 	end
 	return true
 end
