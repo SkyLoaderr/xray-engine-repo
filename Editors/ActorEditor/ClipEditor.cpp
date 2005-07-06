@@ -498,7 +498,7 @@ void TClipMaker::RealUpdateProperties()
             u16 slot			= sel_clip->CycleSlot(k);	
             CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str(),slot);
             CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
-            SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
+            SBonePart* BP		= (k<(u16)m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
             shared_str tmp;
             if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength()/MD->Speed(),MD->bone_or_part?"stop at end":"looped");
             if (BP)				PHelper().CreateCaption	(p_items,PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);

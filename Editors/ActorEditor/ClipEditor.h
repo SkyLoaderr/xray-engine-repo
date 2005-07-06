@@ -17,6 +17,9 @@
 #include "multi_edit.hpp"
 #include "PropertiesList.h"
 #include "motion.h"
+
+// refs
+class CEditableObject;
 //---------------------------------------------------------------------------
 class TClipMaker: public TForm,
 	public pureFrame
