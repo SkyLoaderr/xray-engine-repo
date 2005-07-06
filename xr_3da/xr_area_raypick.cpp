@@ -140,29 +140,29 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 //--------------------------------------------------------------------------------
 // RayQuery
 //--------------------------------------------------------------------------------
-BOOL CObjectSpace::RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb)
+BOOL CObjectSpace::RayQuery		(collide::rq_results& dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb)
 {
 	Lock.Enter		();
-	BOOL	_res	= _RayQuery	(R,CB,user_data,tb);
+	BOOL	_res	= _RayQuery	(dest,R,CB,user_data,tb);
 	Lock.Leave		();
 	return	_res;
 }
-BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb)
+BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb)
 {
 	// initialize query
-	r_results.r_clear	();
-	r_temp.r_clear		();
+	r_dest.r_clear			();
+	r_temp.r_clear			();
 
 	Flags32		sd_test;	sd_test.assign	(R.tgt);
 	rq_target	next_test	= R.tgt;
 
 	rq_result	s_res;
-	ray_defs	s_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
-	ray_defs	d_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
-	rq_target	s_mask	= rqtStatic;
-	rq_target	d_mask	= rq_target(((R.tgt&rqtObject)?rqtObject:rqtNone)|
-									((R.tgt&rqtObstacle)?rqtObstacle:rqtNone)|
-									((R.tgt&rqtShape)?rqtShape:rqtNone));
+	ray_defs	s_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
+	ray_defs	d_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
+	rq_target	s_mask	=	rqtStatic;
+	rq_target	d_mask	=	rq_target(	((R.tgt&rqtObject)	?rqtObject:rqtNone		)|
+										((R.tgt&rqtObstacle)?rqtObstacle:rqtNone	)|
+										((R.tgt&rqtShape)	?rqtShape:rqtNone)		);
 	u32			d_flags =	STYPE_COLLIDEABLE|((R.tgt&rqtObstacle)?STYPE_OBSTACLE:0)|((R.tgt&rqtShape)?STYPE_SHAPE:0);
 
 	s_res.set				(0,s_rd.range,-1);
@@ -211,37 +211,37 @@ BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* C
 			// all test return result
 			if	(s_res.range<r_temp.r_begin()->range){
 				// static nearer
-				BOOL need_calc	= CB?CB(s_res,user_data):TRUE;
-				next_test		= need_calc?s_mask:rqtNone; 
-				r_results.append_result	(s_res);
+				BOOL need_calc			= CB?CB(s_res,user_data):TRUE;
+				next_test				= need_calc?s_mask:rqtNone; 
+				r_dest.append_result	(s_res);
 			}else{
 				// dynamic nearer
-				BOOL need_calc	= CB?CB(*r_temp.r_begin(),user_data):TRUE;
-				next_test		= need_calc?d_mask:rqtNone;	
-				r_results.append_result	(*r_temp.r_begin());
+				BOOL need_calc			= CB?CB(*r_temp.r_begin(),user_data):TRUE;
+				next_test				= need_calc?d_mask:rqtNone;	
+				r_dest.append_result	(*r_temp.r_begin());
 			}
-		}else if (s_res.valid()){
+		}else if (s_res.valid())	{
 			// only static return result
-			BOOL need_calc		= CB?CB(s_res,user_data):TRUE;
-			next_test			= need_calc?s_mask:rqtNone;
-			r_results.append_result		(s_res);
-		}else if (r_temp.r_count()){
+			BOOL need_calc				= CB?CB(s_res,user_data):TRUE;
+			next_test					= need_calc?s_mask:rqtNone;
+			r_dest.append_result		(s_res);
+		}else if (r_temp.r_count())	{
 			// only dynamic return result
-			BOOL need_calc		= CB?CB(*r_temp.r_begin(),user_data):TRUE;
-			next_test			= need_calc?d_mask:rqtNone;
-			r_results.append_result		(*r_temp.r_begin());
+			BOOL need_calc				= CB?CB(*r_temp.r_begin(),user_data):TRUE;
+			next_test					= need_calc?d_mask:rqtNone;
+			r_dest.append_result		(*r_temp.r_begin());
 		}else{
 			// nothing selected
 			next_test			= rqtNone;
 		}
 		if ((R.flags&CDB::OPT_ONLYFIRST)||(R.flags&CDB::OPT_ONLYNEAREST)) break;
-	}while(next_test!=rqtNone);
-	return r_results.r_count();
+	} while (next_test!=rqtNone)		;
+	return r_dest.r_count()	;
 }
 
-BOOL CObjectSpace::RayQuery(ICollisionForm* target, const collide::ray_defs& R)
+BOOL CObjectSpace::RayQuery	(collide::rq_results& r_dest, ICollisionForm* target, const collide::ray_defs& R)
 {
-	VERIFY(target);
-	r_results.r_clear();
-	return target->_RayQuery(R,r_results);
+	VERIFY					(target);
+	r_dest.r_clear			();
+	return target->_RayQuery(R,r_dest);
 }

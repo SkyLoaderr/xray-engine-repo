@@ -96,7 +96,7 @@ public:
 	virtual			~ICollisionForm	( );
 
 	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R) = 0;
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags)	= 0;
+	//virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags)	= 0;
 
 	IC CObject*		Owner			( )	const				{ return owner;			}
 	const Fbox&		getBBox			( )	const				{ return bv_box;		}
@@ -113,7 +113,7 @@ public:
 					CCF_Polygonal	( CObject* _owner );
 
 	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	//virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
 	CDB::TRI*		GetTris			() { return model.get_tris();	}
@@ -148,7 +148,7 @@ public:
 						CCF_Skeleton	( CObject* _owner );
 
 	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	//virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
 };
 
@@ -168,7 +168,7 @@ public:
 					CCF_Rigid		( CObject* _owner );
 
 	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	//virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
 };
 
@@ -180,7 +180,7 @@ public:
 					CCF_EventBox	( CObject* _owner );
 
 	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	//virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
 };
@@ -206,7 +206,7 @@ public:
 					CCF_Shape		( CObject* _owner );
 
 	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	//virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);
 	void			add_box			( Fmatrix& B	);

@@ -103,16 +103,18 @@ ICF void calc_point(Fvector& pt, float radius, float depth, float alpha)
 	pt.z	= depth;
 }
 
-ICF BOOL test_point(const Fmatrix& xform, const Fmatrix33& mat, const Fvector& ext, float radius, float angle)
+ICF BOOL test_point(xrXRC& xrc, const Fmatrix& xform, const Fmatrix33& mat, const Fvector& ext, float radius, float angle)
 {
 	Fvector				pt;
 	calc_point			(pt,radius,VIEWPORT_NEAR/2,angle);
 	xform.transform_tiny(pt);
-	u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
-	for (u32 i_t=0; i_t<tri_count; i_t++){
-		clQueryTri&	O	= g_pGameLevel->ObjectSpace.q_result.tris[i_t];
-		if (GMLib.GetMaterialByIdx(O.T->material)->Flags.is(SGameMtl::flPassable)) continue;
-		if (CDB::TestBBoxTri(mat,pt,ext,O.p,FALSE))
+
+	CDB::RESULT* it	=xrc.r_begin();
+	CDB::RESULT* end=xrc.r_end	();
+	for (; it!=end; it++)	{
+		CDB::RESULT&	O	= *it;
+		if (GMLib.GetMaterialByIdx(O.material)->Flags.is(SGameMtl::flPassable)) continue;
+		if (CDB::TestBBoxTri(mat,pt,ext,O.verts,FALSE))
 			return		TRUE;
 	}
 	return FALSE;
@@ -172,18 +174,27 @@ void CActor::cam_Update(float dt, float fFOV)
 			box.modify			(src_pt);
 			box.modify			(tgt_pt);
 			box.grow			(c);
-			g_pGameLevel->ObjectSpace.BoxQuery(box,xform,clGET_TRIS|clQUERY_STATIC);
-			u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
-			if (tri_count){
+
+			// query
+			Fvector				bc,bd		;
+			Fbox				xf			; 
+			xf.xform			(box,xform)	;
+			xf.get_CD			(bc,bd)		;
+
+			xrXRC				xrc			;
+			xrc.box_options		(0)			;
+			xrc.box_query		(Level().ObjectSpace.GetStaticModel(), bc, bd)		;
+			u32 tri_count		= xrc.r_count();
+			if (tri_count)		{
 				float da		= 0.f;
 				BOOL bIntersect	= FALSE;
 				Fvector	ext		= {w,h,VIEWPORT_NEAR/2};
-				if (test_point(xform,mat,ext,radius,alpha)){
+				if (test_point(xrc,xform,mat,ext,radius,alpha)){
 					da			= PI/1000.f;
 					if (!fis_zero(r_torso.roll))
 						da		*= r_torso.roll/_abs(r_torso.roll);
 					for (float angle=0.f; _abs(angle)<_abs(alpha); angle+=da)
-						if (test_point(xform,mat,ext,radius,angle)){ bIntersect=TRUE; break; } 
+						if (test_point(xrc,xform,mat,ext,radius,angle)) { bIntersect=TRUE; break; } 
 						valid_angle	= bIntersect?angle:alpha;
 				} 
 			}

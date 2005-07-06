@@ -244,8 +244,9 @@ EActorSleep CActorCondition::CanSleepHere()
 		return easEnemies;
 */
 	object().setEnabled(false);
-	Level().ObjectSpace.GetNearest	(pos, ENEMIES_RADIUS); 
-	xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
+	xr_vector<CObject*> NearestList;	// = Level().ObjectSpace.q_nearest; 
+	Level().ObjectSpace.GetNearest	(NearestList, pos, ENEMIES_RADIUS); 
+	//xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
 	object().setEnabled(true);
 
 	for(xr_vector<CObject*>::iterator it = NearestList.begin();

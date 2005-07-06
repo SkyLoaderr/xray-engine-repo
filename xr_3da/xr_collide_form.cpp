@@ -86,7 +86,7 @@ BOOL CCF_Polygonal::_RayQuery( const collide::ray_defs& Q, collide::rq_results& 
 	}
 	return bHIT;
 }
-
+/*
 void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
 	if ((flags&clQUERY_TOPLEVEL) || (((flags&clGET_TRIS)==0) && (flags&clGET_BOXES)))
@@ -124,6 +124,7 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		}
 	}
 }
+*/
 
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -248,6 +249,7 @@ BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R
 	return bHIT;
 }
 
+/*
 void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
 	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
@@ -269,6 +271,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		}
 	}
 }
+*/
 
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -367,6 +370,7 @@ BOOL CCF_Rigid::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
 	return bHIT;
 }
 
+/*
 void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
 	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
@@ -388,6 +392,8 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		}
 	}
 }
+*/
+
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -438,8 +444,11 @@ BOOL CCF_EventBox::Contact(CObject* O)
 }
 BOOL CCF_EventBox::_RayQuery(const collide::ray_defs& Q, collide::rq_results& R)
 {	return FALSE; }
+/*
 void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
+*/
+
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -499,9 +508,10 @@ BOOL CCF_Shape::_RayQuery(const collide::ray_defs& Q, collide::rq_results& R)
 	}
 	return bHIT;
 }
+/*
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
-
+*/
 void CCF_Shape::add_sphere	(Fsphere& S )
 {
 	shapes.push_back(shape_def());

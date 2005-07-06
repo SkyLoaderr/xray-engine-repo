@@ -512,8 +512,9 @@ void CStalkerMovementManager::update(u32 time_delta)
 		{
 			const float						distance_to_check = 2.f;
 			const float						distance_to_check_sqr = _sqr(distance_to_check);
-			Level().ObjectSpace.GetNearest	(object().Position(), distance_to_check); 
-			OBJECTS							&objects = Level().ObjectSpace.q_nearest;
+			OBJECTS							objects		;
+			Level().ObjectSpace.GetNearest	(objects,object().Position(), distance_to_check); 
+			//OBJECTS						&objects = Level().ObjectSpace.q_nearest;
 			OBJECTS::const_iterator			I = objects.begin();
 			OBJECTS::const_iterator			E = objects.end();
 			for ( ; I != E; ++I) {

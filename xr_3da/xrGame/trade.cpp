@@ -70,13 +70,15 @@ bool CTrade::CanTrade()
 {
 	CEntity *pEntity;
 
-	Level().ObjectSpace.GetNearest(pThis.base->Position(),2.f);
-	if (!Level().ObjectSpace.q_nearest.empty()) 
+	xr_vector<CObject*>		q_nearest;			// = Level().ObjectSpace.q_nearest; 
+
+	Level().ObjectSpace.GetNearest	(q_nearest,pThis.base->Position(),2.f);
+	if (!q_nearest.empty()) 
 	{
-		for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; ++i) 
+		for (u32 i=0, n = q_nearest.size(); i<n; ++i) 
 		{
 			// Может ли объект торговать
-			pEntity = smart_cast<CEntity *>(Level().ObjectSpace.q_nearest[i]);
+			pEntity = smart_cast<CEntity *>(q_nearest[i]);
 			if (pEntity && !pEntity->g_Alive()) return false;
 			if (SetPartner(pEntity)) break;
 		}

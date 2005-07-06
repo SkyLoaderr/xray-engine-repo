@@ -301,8 +301,9 @@ void CLensFlare::OnFrame(int id)
 			TP.vis			= 0.f;
 		}else{
 			// cache outdated. real query.
-			if (g_pGameLevel->ObjectSpace.RayQuery(RD,material_callback,&TP))
-				m_ray_cache.result = FALSE;
+			collide::rq_results		r_dest;
+			if (g_pGameLevel->ObjectSpace.RayQuery	(r_dest,RD,material_callback,&TP))
+				m_ray_cache.result = FALSE			;
 		}
 	}
 	blend_lerp(fBlend,TP.vis,BLEND_DEC_SPEED,Device.fTimeDelta);

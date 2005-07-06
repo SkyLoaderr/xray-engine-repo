@@ -97,7 +97,7 @@ namespace collide
 	protected:
 		rqVec		results;
 	public:
-		rq_results	(){results.reserve(8);}
+		rq_results	()	{	results.reserve(8);	}
 		IC BOOL		append_result	(CObject* _who, float _range, int _element, BOOL bNearest)
 		{
 			if (bNearest&&!results.empty()){
@@ -115,15 +115,15 @@ namespace collide
 			rq.range	=_range;
 			rq.element	=_element;
 			rq.O		=_who;
-			return TRUE;
+			return TRUE	;
 		}
 		IC void		append_result	(rq_result& res)
 		{
 			results.push_back(res);
 		}
-		IC int		r_count			()	{return results.size();}
-		IC rq_result*r_begin		()	{return &*results.begin();}
-		IC void		r_clear			()	{results.clear();}
+		IC int			r_count			()	{ return results.size();	}
+		IC rq_result*	r_begin			()	{ return &*results.begin();	}
+		IC void			r_clear			()	{ results.clear_not_free();	}
 	};
 	typedef  BOOL __stdcall rq_callback 	(rq_result& result, LPVOID user_data);
 	typedef  BOOL __stdcall test_callback 	(CObject* object, LPVOID user_data);

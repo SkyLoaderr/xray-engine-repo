@@ -81,25 +81,26 @@ namespace Feel {
 
 	void	Vision::feel_vision_query	(Fmatrix& mFull, Fvector& P)
 	{
-		CFrustum								Frustum;
+		CFrustum								Frustum		;
 		Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 
 		// Traverse object database
+		xr_vector<ISpatial*>					r_spatial	;
 		g_SpatialSpace->q_frustum
 			(
-			g_pGameLevel->ObjectSpace.r_spatial,
+			r_spatial,
 			0,
 			STYPE_VISIBLEFORAI,
 			Frustum
 			);
 
 		// Determine visibility for dynamic part of scene
-		seen.clear								();
-		for (u32 o_it=0; o_it<g_pGameLevel->ObjectSpace.r_spatial.size(); o_it++)
+		seen.clear_and_reserve					()	;
+		for (u32 o_it=0; o_it<r_spatial.size(); o_it++)
 		{
-			ISpatial*	spatial								= g_pGameLevel->ObjectSpace.r_spatial[o_it];
+			ISpatial*	spatial								= r_spatial					[o_it];
 			CObject*	object								= spatial->dcast_CObject	();
-			if (object && feel_vision_isRelevant(object))	seen.push_back(object);
+			if (object && feel_vision_isRelevant(object))	seen.push_back				(object);
 		}
 		if (seen.size()>1) 
 		{
@@ -146,7 +147,8 @@ namespace Feel {
 		query				= seen;
 		o_trace				(P,dt,vis_threshold);
 	}
-	void Vision::o_trace(Fvector& P, float dt, float vis_threshold){
+	void Vision::o_trace	(Fvector& P, float dt, float vis_threshold)	{
+		collide::rq_results	RQR	;
 		xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 		for (; I!=E; I++){
 			if (0==I->O->CFORM())	{ I->fuzzy = -1; continue; }
@@ -192,16 +194,16 @@ namespace Feel {
 //					Log("cache 0");
 				}else{
 					float _u,_v,_range;
-					if (CDB::TestRayTri(P,D,I->Cache.verts,_u,_v,_range,false)&&(_range>0 && _range<f)){
+					if (CDB::TestRayTri(P,D,I->Cache.verts,_u,_v,_range,false)&&(_range>0 && _range<f))	{
 						feel_params.vis		= 0.f;
 //						Log("cache 1");
 					}else{
 						// cache outdated. real query.
-						if (g_pGameLevel->ObjectSpace.RayQuery(RD,feel_vision_callback,&feel_params)){
-							I->Cache_vis	= feel_params.vis;
-							I->Cache.set	(P,D,f,TRUE);
+						if (g_pGameLevel->ObjectSpace.RayQuery	(RQR, RD, feel_vision_callback, &feel_params))	{
+							I->Cache_vis	= feel_params.vis	;
+							I->Cache.set	(P,D,f,TRUE	)		;
 						}else{
-							I->Cache.set	(P,D,f,FALSE);
+							I->Cache.set	(P,D,f,FALSE)		;
 						}
 //						Log("query");
 					}

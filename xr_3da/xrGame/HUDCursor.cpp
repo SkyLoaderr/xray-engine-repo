@@ -124,7 +124,8 @@ void CHUDCursor::CursorOnFrame ()
 		RQ.element		= -1;
 		Level().CurrentEntity()->setEnabled(false);
 		collide::ray_defs RD(p1, dir, RQ.range, 0, collide::rqtBoth);
-		if(Level().ObjectSpace.RayQuery(RD, pick_trace_callback, &RQ))
+		collide::rq_results	RQR;
+		if(Level().ObjectSpace.RayQuery(RQR,RD, pick_trace_callback, &RQ))
 			clamp		(RQ.range,NEAR_LIM,RQ.range);
 		Level().CurrentEntity()->setEnabled(true);
 	}
