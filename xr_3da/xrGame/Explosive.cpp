@@ -172,7 +172,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CGameObject* pEx
 		l_dir.mul(1.f/range);
 		collide::ray_defs	RD		(expl_centre,l_dir,range,CDB::OPT_CULL,collide::rqtBoth);
 		SExpQParams			ep		(expl_centre,l_dir);
-		g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&ep);
+		g_pGameLevel->ObjectSpace.RayQuery(storage,RD,grenade_hit_callback,&ep);
 		shoot_factor=ep.shoot_factor;
 		pExpObject->setEnabled	(TRUE);
 	}
