@@ -10,5 +10,5 @@ u32			psCurrentBPP		= 32;
 // release version always has "mt_*" enabled
 Flags32		psDeviceFlags		= {rsFullscreen|rsNoVSync|rsDetails|mtPhysics|mtSound|mtNetwork};
 
-// textures
+// textures 
 int			psTextureLOD		= 0;
