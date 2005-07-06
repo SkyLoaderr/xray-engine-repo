@@ -98,9 +98,10 @@ BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
 			BOOL item_en		= item->getEnabled();
 			item->setEnabled	(FALSE);
 			Level().CurrentEntity()->setEnabled(FALSE);
-			collide::ray_defs RD(from, dir, range, 0, collide::rqtBoth);
-			Level().ObjectSpace.RayQuery(RD, info_trace_callback, &bOverlaped);
-			Level().CurrentEntity()->setEnabled(TRUE);
+			collide::ray_defs	RD	(from, dir, range, 0, collide::rqtBoth);
+			collide::rq_results	RQR	;
+			Level().ObjectSpace.RayQuery		(RQR,RD, info_trace_callback, &bOverlaped);
+			Level().CurrentEntity()->setEnabled	(TRUE);
 			item->setEnabled	(item_en);
 		}
 	}
