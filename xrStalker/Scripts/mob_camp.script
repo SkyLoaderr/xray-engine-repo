@@ -191,7 +191,7 @@ function mob_camp:select_state()
 	
 	-- Отпускать в alife монстров, которых обстреляли
 	local h = self.object:get_monster_hit_info()
-	if (enemy == nil) and (h.who) and (h.time ~= 0) then
+	if (enemy == nil) and (h.who) and (h.time ~= 0) and (IsMonster(h.who) or IsStalker(h.who))then
 		local dist = self.object:position():distance_to(home_position)
 		if (dist < self.st.home_min_radius) then 
 			self.state_current = STATE_ALIFE
