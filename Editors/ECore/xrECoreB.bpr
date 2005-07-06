@@ -69,25 +69,24 @@
       Intermediate\stdafx.obj Intermediate\UI_ToolsCustom.obj 
       Intermediate\ImageManagerDO.obj Intermediate\ParticleEffectDef.obj 
       Intermediate\ai_sounds.obj Intermediate\GeometryCollector.obj 
-      Intermediate\SceneCustom.obj Intermediate\ResourceManager_Reset.obj 
-      Intermediate\ParticleEffectActions.obj Intermediate\CustomObjectLE.obj 
-      Intermediate\nv_algebra.obj Intermediate\NVMeshMender.obj 
-      Intermediate\EThumbnailTexture.obj Intermediate\ETextureParams.obj 
-      Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
-      Intermediate\EThumbnailSound.obj Intermediate\Blender_Particle.obj 
-      Intermediate\du_sphere_part.obj Intermediate\FProgressive.obj 
-      Intermediate\WmlContMinBox3.obj Intermediate\WmlBox3.obj 
-      Intermediate\WmlMinimizeN.obj Intermediate\WmlMinimize1.obj 
-      Intermediate\WmlMath.obj Intermediate\WmlVector3.obj 
-      Intermediate\WmlMatrix3.obj Intermediate\WmlSystem.obj 
-      Intermediate\WmlWinSystem.obj Intermediate\WmlContBox3.obj 
-      Intermediate\WmlQuaternion.obj Intermediate\WmlApprGaussPointsFit3.obj 
-      Intermediate\WmlEigen.obj Intermediate\RAPIDMinBox.obj 
-      Intermediate\SkeletonMotions.obj Intermediate\tntQAVI.obj 
-      Intermediate\ImageManagerLOD.obj Intermediate\xrHemisphere.obj 
-      Intermediate\DeviceScreenshot.obj Intermediate\FSkinned.obj 
-      Intermediate\xrCDB_Collector.obj Intermediate\perlin.obj 
-      Intermediate\guid_generator.obj"/>
+      Intermediate\ResourceManager_Reset.obj 
+      Intermediate\ParticleEffectActions.obj Intermediate\nv_algebra.obj 
+      Intermediate\NVMeshMender.obj Intermediate\EThumbnailTexture.obj 
+      Intermediate\ETextureParams.obj Intermediate\EThumbnail.obj 
+      Intermediate\EThumbnailObject.obj Intermediate\EThumbnailSound.obj 
+      Intermediate\Blender_Particle.obj Intermediate\du_sphere_part.obj 
+      Intermediate\FProgressive.obj Intermediate\WmlContMinBox3.obj 
+      Intermediate\WmlBox3.obj Intermediate\WmlMinimizeN.obj 
+      Intermediate\WmlMinimize1.obj Intermediate\WmlMath.obj 
+      Intermediate\WmlVector3.obj Intermediate\WmlMatrix3.obj 
+      Intermediate\WmlSystem.obj Intermediate\WmlWinSystem.obj 
+      Intermediate\WmlContBox3.obj Intermediate\WmlQuaternion.obj 
+      Intermediate\WmlApprGaussPointsFit3.obj Intermediate\WmlEigen.obj 
+      Intermediate\RAPIDMinBox.obj Intermediate\SkeletonMotions.obj 
+      Intermediate\tntQAVI.obj Intermediate\ImageManagerLOD.obj 
+      Intermediate\xrHemisphere.obj Intermediate\DeviceScreenshot.obj 
+      Intermediate\FSkinned.obj Intermediate\xrCDB_Collector.obj 
+      Intermediate\perlin.obj Intermediate\guid_generator.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -276,10 +275,8 @@
       <FILE FILENAME="Engine\ai_sounds.cpp" FORMNAME="" UNITNAME="ai_sounds" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\GeometryCollector.cpp" FORMNAME="" UNITNAME="GeometryCollector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneCustom.h" FORMNAME="" UNITNAME="SceneCustom.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\SceneCustom.cpp" FORMNAME="" UNITNAME="SceneCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ResourceManager_Reset.cpp" FORMNAME="" UNITNAME="ResourceManager_Reset" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ParticleEffectActions.cpp" FORMNAME="" UNITNAME="ParticleEffectActions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\NVMeshMender.h" FORMNAME="" UNITNAME="NVMeshMender.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\nv_algebra.cpp" FORMNAME="" UNITNAME="nv_algebra.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\nv_algebra.h" FORMNAME="" UNITNAME="nv_algebra.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -410,7 +407,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

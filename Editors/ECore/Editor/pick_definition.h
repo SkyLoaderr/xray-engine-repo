@@ -2,8 +2,8 @@
 // file: SceneClassList.h
 //----------------------------------------------------
 
-#ifndef SceneClassListH
-#define SceneClassListH
+#ifndef pick_definitionH
+#define pick_definitionH
 //----------------------------------------------------
 
 class CEditableObject;
@@ -143,6 +143,6 @@ class CCustomObject;
 	DEFINE_VECTOR(SBoxPickInfo,SBoxPickInfoVec,SBoxPickInfoIt);
 #endif
 //----------------------------------------------------
-#endif /*_INCDEF_SceneClassList_H_*/
+#endif // pick_definitionH
 
 

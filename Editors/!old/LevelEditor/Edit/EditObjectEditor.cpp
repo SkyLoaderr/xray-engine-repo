@@ -13,6 +13,7 @@
 #include "PropertiesListHelper.h"
 #include "ResourceManager.h"
 #include "ImageManager.h"
+#include "SceneSummaryInfo.h"
 
 const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;

@@ -5,6 +5,7 @@
 #include "folderlib.h"
 #include "etextureparams.h"
 #include "EThumbnail.h"
+class CEditableObject;
 
 struct SSimpleImage{
 	shared_str	name;

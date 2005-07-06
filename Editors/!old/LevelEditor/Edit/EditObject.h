@@ -22,6 +22,7 @@ class	CMayaTranslator;
 struct	st_ObjectDB;
 struct	SXRShaderData;
 struct  ogf_desc;
+struct 	SSceneSummary;
 
 #ifndef _EDITOR
 	class PropValue;
