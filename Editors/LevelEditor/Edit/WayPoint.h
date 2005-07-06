@@ -6,6 +6,7 @@
 #define WayPointH
 
 #include "LevelGameDef.h"
+#include "CustomObject.h"
 
 class CFrustum;
 class CWayPoint;
@@ -93,7 +94,7 @@ public:
     virtual bool 	FrustumPick		(const CFrustum& frustum);
   	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
-    virtual bool	ExportGame		(SExportStreams& data);
+    virtual bool	ExportGame		(SExportStreams* data);
 
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 

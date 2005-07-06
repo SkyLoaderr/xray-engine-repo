@@ -11,6 +11,7 @@
 #include "UI_LevelTools.h"
 #include "folderlib.h"
 #include "ui_levelmain.h"
+#include "CustomObject.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -158,7 +159,7 @@ void TfraLeftBar::MaximizeAllFrames()
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::ChangeTarget(EObjClass tgt)
+void TfraLeftBar::ChangeTarget(ObjClassID tgt)
 {
     for (int i=0; i<paTarget->ControlCount; i++){
     	TExtBtn* B = dynamic_cast<TExtBtn *>(paTarget->Controls[i]);
@@ -699,12 +700,35 @@ void TfraLeftBar::RefreshBar()
         miRecentFiles->Insert(idx++,MI);
     }
     miRecentFiles->Enabled = miRecentFiles->Count;
+    // refresh target
+	ebTargetGroup->NormalColor		= OBJCLASS_GROUP;       
+    ebTargetObject->NormalColor     = OBJCLASS_SCENEOBJECT;	
+    ebTargetLight->NormalColor      = OBJCLASS_LIGHT;       
+    ebTargetShape->NormalColor		= OBJCLASS_SHAPE;       
+    ebTargetSoundSrc->NormalColor   = OBJCLASS_SOUND_SRC;   
+    ebTargetSoundEnv->NormalColor   = OBJCLASS_SOUND_ENV;   
+    ebTargetGlow->NormalColor       = OBJCLASS_GLOW;        
+    ebTargetSpawnPoint->NormalColor = OBJCLASS_SPAWNPOINT;  
+    ebTargetWay->NormalColor  		= OBJCLASS_WAY;         
+    ebTargetSector->NormalColor 	= OBJCLASS_SECTOR;      
+    ebTargetPortal->NormalColor		= OBJCLASS_PORTAL;      
+    ebTargetPS->NormalColor			= OBJCLASS_PS;          
+    ebTargetDO->NormalColor			= OBJCLASS_DO;          
+    ebTargetAIMap->NormalColor		= OBJCLASS_AIMAP;
+    ebTargetWallmarks->NormalColor	= OBJCLASS_WM;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ClearDebugDraw1Click(TObject *Sender)
 {
 	ExecCommand(COMMAND_CLEAR_DEBUG_DRAW);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfraLeftBar::ebTargetObjectExtBtnClick(TObject *Sender)
+{
+	//.	
 }
 //---------------------------------------------------------------------------
 

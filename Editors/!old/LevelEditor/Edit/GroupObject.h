@@ -4,6 +4,7 @@
 #ifndef GroupObjectH
 #define GroupObjectH
 
+#include "CustomObject.h"
 //----------------------------------------------------
 class CGroupObject: public CCustomObject{
 	ObjectList      m_Objects;
@@ -58,7 +59,7 @@ public:
 
 	virtual bool 	Load			(IReader& F);
 	virtual void 	Save			(IWriter& F);
-    virtual bool	ExportGame		(SExportStreams& data);
+    virtual bool	ExportGame		(SExportStreams* data);
 
     // device dependent routine
 	virtual void 	OnDeviceCreate 	();

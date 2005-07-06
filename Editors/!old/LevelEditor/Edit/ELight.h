@@ -6,6 +6,7 @@
 #define ELightH
 
 #include "ELight_def.h"
+#include "CustomObject.h"
 // refs
 class CLAItem;
 

@@ -86,7 +86,7 @@ TElTreeItem* TfrmObjectList::FindObjectByType(int type, void *obj)
     return 0;
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmObjectList::AddFolder(EObjClass type)
+TElTreeItem* TfrmObjectList::AddFolder(ObjClassID type)
 {
     AnsiString name;
     name.sprintf("%ss",Scene->GetMTools(type)->ClassDesc());
@@ -160,7 +160,7 @@ void TfrmObjectList::UpdateSelection()
 	if (tvItems->Items->Count){
         bLockUpdate = true;
 
-        Scene->SelectObjects( false, (EObjClass)cur_cls );
+        Scene->SelectObjects( false, (ObjClassID)cur_cls );
         for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
             if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
         UI->RedrawScene();

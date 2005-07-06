@@ -270,7 +270,37 @@ bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	inherited::GetSummaryInfo	(inf);
 	CEditableObject* E 	= GetReference(); R_ASSERT(E);
-    E->GetSummaryInfo	(inf);
+	if (IsStatic()||IsMUStatic()){
+        for(SurfaceIt 	s_it=E->m_Surfaces.begin(); s_it!=E->m_Surfaces.end(); s_it++){
+			float area			= 0.f;
+			float pixel_area	= 0.f;
+            for(EditMeshIt m = E->Meshes().begin();m!=E->Meshes().end();m++){
+            	area			+= (*m)->CalculateSurfaceArea(*s_it,true);
+                pixel_area		+= (*m)->CalculateSurfacePixelArea(*s_it,true);
+            }
+            inf->AppendTexture(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str(),SSceneSummary::sttBase,area,pixel_area,E->m_LibName.c_str());
+        }
+        if (m_Flags.is(CEditableObject::eoUsingLOD)){
+            inf->AppendTexture(E->GetLODTextureName().c_str(),SSceneSummary::sttLOD,0,0,"$LOD$");
+            inf->lod_objects.insert	(E->m_LibName.c_str());
+            inf->object_lod_ref_cnt++;
+        }
+        if (m_Flags.is(CEditableObject::eoMultipleUsage)){
+            inf->mu_objects.insert(E->m_LibName.c_str());
+            inf->object_mu_ref_cnt++;
+        }
+
+        inf->face_cnt		+= E->GetFaceCount	();
+        inf->vert_cnt		+= E->GetVertexCount();
+    }
+	if (m_Flags.is(CEditableObject::eoHOM)){
+    	inf->hom_face_cnt	+= E->GetFaceCount	();
+    	inf->hom_vert_cnt	+= E->GetVertexCount();
+    }
+    if (m_Flags.is(CEditableObject::eoSoundOccluder)){
+    	inf->snd_occ_face_cnt += E->GetFaceCount();
+    	inf->snd_occ_vert_cnt += E->GetVertexCount();
+    }
     inf->AppendObject	(E->GetName());
 	return true;
 }

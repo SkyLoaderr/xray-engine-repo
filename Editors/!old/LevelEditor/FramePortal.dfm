@@ -1,6 +1,6 @@
 object fraPortal: TfraPortal
-  Left = 1518
-  Top = 9
+  Left = 103
+  Top = 58
   Width = 225
   Height = 277
   VertScrollBar.ButtonSize = 11
@@ -45,9 +45,8 @@ object fraPortal: TfraPortal
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -72,10 +71,9 @@ object fraPortal: TfraPortal
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Invert Orientation'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -91,10 +89,9 @@ object fraPortal: TfraPortal
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Compute All Portals'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -110,10 +107,9 @@ object fraPortal: TfraPortal
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Compute Sel. Portals'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

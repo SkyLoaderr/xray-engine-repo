@@ -8,6 +8,7 @@
 #include "scene.h"
 #include "ui_main.h"
 #include "ui_leveltools.h"
+#include "CustomObject.h"
 
 // file: SceneChunks.h
 #define CURRENT_FILE_VERSION    	0x00000005
@@ -15,19 +16,22 @@
 #define CURRENT_LEVELOP_BP_VERSION 	0x00000009
 #define CURRENT_ENV_VERSION	 		0x00000007
 
-#define CHUNK_VERSION       0x9df3
-#define CHUNK_OBJECT        0x7702
-#define CHUNK_OBJECT_CLASS  0x7703
-#define CHUNK_DETAILPATCHES 0x7707
-#define CHUNK_OBJECT_LIST	0x7708
-#define CHUNK_CAMERA        0x7709
-#define CHUNK_SNAPOBJECTS   0x7710
-#define CHUNK_LEVELOP       0x7711
-#define CHUNK_OBJECT_COUNT  0x7712
-#define CHUNK_DETAILOBJECTS 0x7713
-#define CHUNK_AIMAP			0x7715
+#define CHUNK_VERSION       	0x9df3
+//#define CHUNK_OBJECT        	0x7702	// obsolete
+#define CHUNK_OBJECT_CLASS  	0x7703
+//#define CHUNK_DETAILPATCHES 	0x7707	// obsolete
+#define CHUNK_OBJECT_LIST		0x7708
+#define CHUNK_CAMERA        	0x7709
+#define CHUNK_SNAPOBJECTS   	0x7710
+#define CHUNK_LEVELOP       	0x7711
+#define CHUNK_OBJECT_COUNT  	0x7712
+//#define CHUNK_DETAILOBJECTS 	0x7713  // obsolete
+//#define CHUNK_AIMAP			0x7715	// obsolete
+#define CHUNK_LEVEL_TAG			0x7777
 
-#define CHUNK_TOOLS_OFFSET	0x8000
+#define CHUNK_TOOLS_GUID		0x7000
+#define CHUNK_TOOLS_ENABLED		0x7999
+#define CHUNK_TOOLS_DATA		0x8000
 
 // level options
 #define CHUNK_LO_VERSION		0x7801
@@ -94,6 +98,7 @@ void st_LevelOptions::Read(IReader& F)
     	m_BuildParams.Init();
     }
 }
+
 //------------------------------------------------------------------------------------------------
 // Scene
 //------------------------------------------------------------------------------------------------
@@ -106,8 +111,15 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     if (initial)	FS.update_path	(full_name,initial,map_name);
     else			full_name		= map_name;
     
-	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
-    if (!bUndo) EFS.MarkFile		(full_name.c_str(),true);
+    xr_string level_name;
+    xr_string part_prefix;
+    
+	if (!bUndo){ 
+    	EFS.UnlockFile	(0,full_name.c_str(),false);
+    	EFS.MarkFile	(full_name.c_str(),true);
+	    level_name    	= EFS.ExtractFileName(full_name.c_str());
+    	part_prefix		= EFS.ExtractFilePath(full_name.c_str())+level_name+"\\"+level_name+".";
+    }
 
     IWriter* F		= FS.w_open		(full_name.c_str()); R_ASSERT(F);
 
@@ -119,6 +131,20 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 	m_LevelOp.Save	(*F);
 	F->close_chunk	();
 
+    F->open_chunk	(CHUNK_TOOLS_GUID);
+    F->w			(&m_GUID,sizeof(m_GUID));
+    F->close_chunk	();
+
+    m_ModifName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
+    m_ModifTime		= time(NULL);
+
+    F->open_chunk	(CHUNK_LEVEL_TAG);
+	F->w_stringZ	(m_OwnerName);
+	F->w_stringZ	(m_ModifName);
+	F->w			(&m_CreateTime,sizeof(m_CreateTime));
+	F->w			(&m_ModifTime,sizeof(m_ModifTime));
+    F->close_chunk	();
+    
     F->open_chunk	(CHUNK_OBJECT_COUNT);
     F->w_u32		(ObjCount());
 	F->close_chunk	();
@@ -128,11 +154,37 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     CMemoryWriter 	w_cache;
     for (; _I!=_E; _I++)
         if (_I->second&&_I->second->IsNeedSave()){
-        	F->open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
          	_I->second->Save(w_cache);
-			F->w			(w_cache.pointer(),w_cache.size());
+            if (bUndo){
+	        	F->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
+				F->w			(w_cache.pointer(),w_cache.size());
+	        	F->close_chunk	();
+            }else{
+	        	F->open_chunk	(CHUNK_TOOLS_ENABLED+_I->first);
+				F->w_u32		(_I->second->m_bEnabled);
+	        	F->close_chunk	();
+                if (_I->second->m_bEnabled){
+                    xr_string		part_name = part_prefix+_I->second->ClassName();
+
+                    EFS.UnlockFile	(0,part_name.c_str(),false);
+                    EFS.MarkFile	(part_name.c_str(),true);
+
+                    IWriter* FF		= FS.w_open	(part_name.c_str());
+
+                    FF->open_chunk	(CHUNK_TOOLS_GUID);
+                    FF->w			(&m_GUID,sizeof(m_GUID));
+                    FF->close_chunk	();
+
+                    FF->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
+                    FF->w			(w_cache.pointer(),w_cache.size());
+                    FF->close_chunk	();
+
+                    FS.w_close		(FF);
+
+                    EFS.LockFile	(0,part_name.c_str(),false);
+                }
+            }
 			w_cache.clear	();
-        	F->close_chunk	();
         }
         
     if (!bUndo){
@@ -143,17 +195,19 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     }
 
 	// snap list
-    F->open_chunk	(CHUNK_SNAPOBJECTS);
+    F->open_chunk		(CHUNK_SNAPOBJECTS);
     F->w_u32			(m_ESO_SnapObjects.size());
     for(ObjectIt _F=m_ESO_SnapObjects.begin();_F!=m_ESO_SnapObjects.end();_F++)
         F->w_stringZ	((*_F)->Name);
-    F->close_chunk	();
+    F->close_chunk		();
 
     // save data
-    FS.w_close		(F);
-	if (!bUndo) EFS.LockFile		(0,full_name.c_str(),false);
-    if (!bUndo) m_RTFlags.set		(flRT_Unsaved,FALSE);
-    if (!bUndo) Msg("Saving time: %3.2f sec",T.Stop());
+    FS.w_close			(F);
+	if (!bUndo){ 
+    	EFS.LockFile	(0,full_name.c_str(),false);
+    	m_RTFlags.set	(flRT_Unsaved,FALSE);
+    	Msg				("Saving time: %3.2f sec",T.Stop());
+    }
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -183,9 +237,9 @@ void EScene::SaveObjects( ObjectList& lst, u32 chunk_id, IWriter& F )
 
 bool EScene::ReadObject(IReader& F, CCustomObject*& O)
 {
-    EObjClass clsid=OBJCLASS_DUMMY;
+    ObjClassID clsid=OBJCLASS_DUMMY;
     R_ASSERT(F.find_chunk(CHUNK_OBJECT_CLASS));
-    clsid = EObjClass(F.r_u32());
+    clsid = ObjClassID(F.r_u32());
 	O = GetOTools(clsid)->CreateObject(0,0);
 
     IReader* S = F.open_chunk(CHUNK_OBJECT_BODY);
@@ -249,13 +303,21 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
             return false;
         }
 
+        xr_string 	level_name;
+        xr_string 	part_prefix;
+    
+        if (!bUndo){ 
+            level_name    	= EFS.ExtractFileName(full_name.c_str());
+            part_prefix		= EFS.ExtractFilePath(full_name.c_str())+level_name+"\\"+level_name+".";
+        }
+        
         // Lev. ops.
         IReader* LOP = F->open_chunk(CHUNK_LEVELOP);
         if (LOP){
 	        m_LevelOp.Read	(*LOP);
         	LOP->close		();
         }else{
-			ELog.DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );
+			ELog.DlgMsg		(mtError, "Skipping old version of level options.\nCheck level options after loading.");
 	    }
 
         //
@@ -267,22 +329,59 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 			Device.m_Camera.SetStyle(Device.m_Camera.GetStyle());
         }
 
-        DWORD obj_cnt 	= 0;
+	    if (F->find_chunk(CHUNK_TOOLS_GUID)){
+		    F->r			(&m_GUID,sizeof(m_GUID));
+        }
+        
+        if (F->find_chunk(CHUNK_LEVEL_TAG)){
+            F->r_stringZ	(m_OwnerName);
+            F->r_stringZ	(m_ModifName);
+            F->r			(&m_CreateTime,sizeof(m_CreateTime));
+            F->r			(&m_ModifTime,sizeof(m_ModifTime));
+        }else{
+            m_OwnerName		= "";
+            m_ModifName		= "";
+            m_CreateTime	= 0;
+            m_ModifTime		= 0;
+        }
+    
+        DWORD obj_cnt 		= 0;
         if (F->find_chunk(CHUNK_OBJECT_COUNT))
-        	obj_cnt = F->r_u32();
+        	obj_cnt 		= F->r_u32();
 
-        SPBItem* pb = UI->ProgressStart(obj_cnt,"Loading objects...");
-        ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject,pb);
-        UI->ProgressEnd(pb);
+        SPBItem* pb 		= UI->ProgressStart(obj_cnt,"Loading objects...");
+        ReadObjects			(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject,pb);
+        UI->ProgressEnd		(pb);
 
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
             if (_I->second){
-			    IReader* chunk 		= F->open_chunk(CHUNK_TOOLS_OFFSET+_I->first);
+			    IReader* chunk 		= F->open_chunk(CHUNK_TOOLS_DATA+_I->first);
             	if (chunk){
 	                _I->second->Load(*chunk);
     	            chunk->close	();
+                }else{
+				    if (F->find_chunk(CHUNK_TOOLS_ENABLED+_I->first)){
+	                    _I->second->m_bEnabled	= F->r_u32();
+                        if (_I->second->m_bEnabled){
+                            xr_string		part_name = part_prefix+_I->second->ClassName();
+                            IReader* R		= FS.r_open	(part_name.c_str());
+                            if (R){
+                                R_ASSERT	(R->find_chunk	(CHUNK_TOOLS_GUID));
+                                xrGUID		guid;
+                                R->r		(&guid,sizeof(guid));
+                                if (guid!=m_GUID){
+                                    ELog.DlgMsg	(mtError,"Skipping invalid version of level part: '%s.%s'",level_name.c_str(),_I->second->ClassName());
+                                }else{
+                                    IReader* chunk 	= R->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
+                                    _I->second->Load(*chunk);
+                                    chunk->close();
+                                }
+                                FS.r_close	(R);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -300,7 +399,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
             }
             UpdateSnapList();
         }
-
+/*
         { // old version
             IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
             if (DO){
@@ -313,7 +412,8 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
                 GetMTools(OBJCLASS_AIMAP)->Load(*AIM);
                 AIM->close();
             }
-		}        
+		}      
+*/          
         Msg("EScene: %d objects loaded, %3.2f sec", ObjCount(), T.Stop() );
 
     	UI->UpdateScene(true); 
@@ -334,7 +434,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 //---------------------------------------------------------------------------------------
 //copy/paste utils
 //---------------------------------------------------------------------------------------
-void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname )
+void EScene::SaveSelection( ObjClassID classfilter, LPCSTR initial, LPCSTR fname )
 {
 	VERIFY( fname );
 
@@ -354,7 +454,7 @@ void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname 
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
             if (_I->second&&_I->second->IsNeedSave()){
-                F->open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
+                F->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
                 _I->second->SaveSelection(w_cache);
                 F->w			(w_cache.pointer(),w_cache.size());
                 w_cache.clear	();
@@ -362,7 +462,7 @@ void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname 
             }
     }else{
     	ESceneCustomMTools* mt = GetMTools(classfilter); VERIFY(mt);
-        F->open_chunk	(CHUNK_TOOLS_OFFSET+classfilter);
+        F->open_chunk	(CHUNK_TOOLS_DATA+classfilter);
         mt->SaveSelection(w_cache);
         F->w			(w_cache.pointer(),w_cache.size());
         w_cache.clear	();
@@ -422,13 +522,13 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
             if (_I->second){
-			    IReader* chunk 		= F->open_chunk(CHUNK_TOOLS_OFFSET+_I->first);
+			    IReader* chunk 		= F->open_chunk(CHUNK_TOOLS_DATA+_I->first);
             	if (chunk){
 	                _I->second->LoadSelection(*chunk);
     	            chunk->close	();
                 }
             }
-
+/*
         { // old version
             IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
             if (DO){
@@ -444,7 +544,7 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
                 AIM->close();
             }
         }
-
+*/
         // Synchronize
 		SynchronizeObjects();
 		FS.r_close(F);
@@ -460,7 +560,7 @@ struct SceneClipData {
 };
 #pragma pack(pop)
 
-void EScene::CopySelection( EObjClass classfilter )
+void EScene::CopySelection( ObjClassID classfilter )
 {
 	HGLOBAL hmem = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, sizeof(SceneClipData) );
 	SceneClipData *sceneclipdata = (SceneClipData *)GlobalLock(hmem);
@@ -502,7 +602,7 @@ void EScene::PasteSelection()
 	}
 }
 
-void EScene::CutSelection( EObjClass classfilter )
+void EScene::CutSelection( ObjClassID classfilter )
 {
 	CopySelection( classfilter );
 	RemoveSelection( classfilter );

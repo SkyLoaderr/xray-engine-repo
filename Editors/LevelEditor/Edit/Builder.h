@@ -7,6 +7,7 @@
 
 #include "communicate.h"
 #include "EditMesh.h"
+#include "ESceneClassList.h"
 //----------------------------------------------------
 
 // refs

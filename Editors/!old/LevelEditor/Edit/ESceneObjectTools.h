@@ -20,8 +20,8 @@ protected:
     	flAppendRandomRotation			= (1<<31),
     };
     Flags32				m_Flags;
-	bool 				ExportBreakableObjects	(SExportStreams& F);
-	bool 				ExportClimableObjects	(SExportStreams& F);
+	bool 				ExportBreakableObjects	(SExportStreams* F);
+	bool 				ExportClimableObjects	(SExportStreams* F);
 
 	TProperties* 		m_Props;
     void 				OnChangeAppendRandomFlags(PropValue* prop);
@@ -63,7 +63,7 @@ public:
     BOOL				IsAppendRandomScaleProportional(){return m_Flags.is(flAppendRandomScaleProportional);}
 
     // tools
-    virtual bool		ExportGame         		(SExportStreams& F);
+    virtual bool		ExportGame         		(SExportStreams* F);
     virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt);
 
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);

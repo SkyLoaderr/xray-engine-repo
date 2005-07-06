@@ -133,7 +133,7 @@ bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
 //------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
 {
-	EObjClass cls = LTools->CurrentClassID();
+	ObjClassID cls = LTools->CurrentClassID();
 
 	if (CheckSnapList(Shift)) return false;
     if (Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
@@ -168,7 +168,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
 //------------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift)
 {
-	EObjClass cls = LTools->CurrentClassID();
+	ObjClassID cls = LTools->CurrentClassID();
 
     if(Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene->SelectionCount(true,cls)==0) return false;
@@ -253,7 +253,7 @@ bool __fastcall TUI_CustomControl::MovingEnd(TShiftState _Shift)
 //------------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
 {
-	EObjClass cls = LTools->CurrentClassID();
+	ObjClassID cls = LTools->CurrentClassID();
 
     if(Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene->SelectionCount(true,cls)==0) return false;
@@ -294,7 +294,7 @@ bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
 //------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 {
-	EObjClass cls = LTools->CurrentClassID();
+	ObjClassID cls = LTools->CurrentClassID();
     if(Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene->SelectionCount(true,cls)==0) return false;
 	return true;

@@ -70,7 +70,7 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
     return bResult;
 }
 
-bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
+bool ESceneObjectTools::ExportBreakableObjects(SExportStreams* F)
 {
 	bool bResult = true;
     CGeomPartExtractor* extractor=0;
@@ -131,9 +131,9 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                     NET_Packet					Packet;
                     m_Data->Spawn_Write			(Packet,TRUE);
 
-                    F.spawn.stream.open_chunk	(F.spawn.chunk++);
-                    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-                    F.spawn.stream.close_chunk	();
+                    F->spawn.stream.open_chunk	(F->spawn.chunk++);
+                    F->spawn.stream.w			(Packet.B.data,Packet.B.count);
+                    F->spawn.stream.close_chunk	();
                     destroy_entity				(m_Data);
                 }
             }else{
@@ -168,7 +168,7 @@ IC BOOL OrientToNorm(Fvector& local_norm, Fmatrix33& form, Fvector& hs)
     return TRUE;
 }
 
-bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
+bool ESceneObjectTools::ExportClimableObjects(SExportStreams* F)
 {
 	bool bResult = true;
     CGeomPartExtractor* extractor=0;
@@ -249,9 +249,9 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                         NET_Packet					Packet;
                         m_Data->Spawn_Write			(Packet,TRUE);
 
-                        F.spawn.stream.open_chunk	(F.spawn.chunk++);
-                        F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-                        F.spawn.stream.close_chunk	();
+                        F->spawn.stream.open_chunk	(F->spawn.chunk++);
+                        F->spawn.stream.w			(Packet.B.data,Packet.B.count);
+                        F->spawn.stream.close_chunk	();
 
                         Tools->m_DebugDraw.AppendOBB(P->m_OBB);
                         M.transform_dir				(local_normal);

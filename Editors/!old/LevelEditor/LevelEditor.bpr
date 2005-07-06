@@ -75,7 +75,8 @@
       intermediate\ESceneWallmarkControls.obj 
       intermediate\xrServer_Objects_Abstract.obj 
       intermediate\GeometryPartExtractor.obj intermediate\BuilderLODs.obj 
-      intermediate\ESceneGroupControls.obj"/>
+      intermediate\ESceneGroupControls.obj intermediate\CustomObjectLE.obj 
+      intermediate\CustomObject.obj intermediate\CustomObjectAnimation.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -274,6 +275,11 @@
       <FILE FILENAME="Engine\client_id.h" FORMNAME="" UNITNAME="client_id.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\BuilderLODs.cpp" FORMNAME="" UNITNAME="BuilderLODs" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneGroupControls.cpp" FORMNAME="" UNITNAME="ESceneGroupControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\CustomObject.h" FORMNAME="" UNITNAME="CustomObject.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\pick_definition.h" FORMNAME="" UNITNAME="pick_definition.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

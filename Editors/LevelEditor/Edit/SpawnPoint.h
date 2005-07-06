@@ -7,6 +7,7 @@
 
 #include "LevelGameDef.h"
 #include "xrServer_Objects_abstract.h"
+#include "CustomObject.h"
 
 // refs
 class CSE_Visual;
@@ -62,7 +63,7 @@ public:
 
         void		Save	(IWriter&);
         bool		Load	(IReader&);
-		bool 		ExportGame(SExportStreams& F, CSpawnPoint* owner);
+		bool 		ExportGame(SExportStreams* F, CSpawnPoint* owner);
 
 		void		FillProp(LPCSTR pref, PropItemVec& values);
 
@@ -123,7 +124,7 @@ public:
 
   	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
-    virtual bool	ExportGame		(SExportStreams& data);
+    virtual bool	ExportGame		(SExportStreams* data);
 
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& values);
 

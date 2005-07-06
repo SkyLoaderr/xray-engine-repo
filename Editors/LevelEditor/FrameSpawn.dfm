@@ -1,6 +1,6 @@
 object fraSpawn: TfraSpawn
-  Left = 1928
-  Top = 7
+  Left = 339
+  Top = 314
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -85,9 +85,8 @@ object fraSpawn: TfraSpawn
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -113,11 +112,10 @@ object fraSpawn: TfraSpawn
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 1
       Caption = 'Attach Object...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -133,10 +131,9 @@ object fraSpawn: TfraSpawn
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Detach Object'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -168,10 +165,9 @@ object fraSpawn: TfraSpawn
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '+'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -186,10 +182,9 @@ object fraSpawn: TfraSpawn
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '-'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -214,9 +209,8 @@ object fraSpawn: TfraSpawn
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -240,10 +234,9 @@ object fraSpawn: TfraSpawn
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '=%'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -277,10 +270,9 @@ object fraSpawn: TfraSpawn
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '+%'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

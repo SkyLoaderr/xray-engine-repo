@@ -2,6 +2,8 @@
 #ifndef Custom2DProjectorH
 #define Custom2DProjectorH
 
+#include "ESceneClassList.h"
+
 class CCustom2DProjector{
 protected:
     ref_shader		shader_blended;

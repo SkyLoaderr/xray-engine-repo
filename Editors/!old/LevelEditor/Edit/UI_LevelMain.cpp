@@ -48,7 +48,7 @@ CLevelMain::~CLevelMain()
 //------------------------------------------------------------------------------
 CCommandVar CLevelTools::CommandChangeTarget(CCommandVar p1, CCommandVar p2)
 {
-    SetTarget	((EObjClass)(u32)p1,p2);
+    SetTarget	(p1,p2);
     return 		ExecCommand	(COMMAND_UPDATE_PROPERTIES);
 }
 CCommandVar CLevelTools::CommandShowObjectList(CCommandVar p1, CCommandVar p2)
@@ -672,7 +672,7 @@ CCommandVar CommandMoveCameraTo(CCommandVar p1, CCommandVar p2)
 }
 CCommandVar CommandShowContextMenu(CCommandVar p1, CCommandVar p2)
 {
-    LUI->ShowContextMenu		(EObjClass((u32)p1));
+    LUI->ShowContextMenu		(p1);
     return 						TRUE;
 }
 //------        
@@ -988,7 +988,7 @@ void CLevelMain::ShowContextMenu(int cls)
     POINT pt;
     GetCursorPos(&pt);
     fraLeftBar->miProperties->Enabled = false;
-    if (Scene->SelectionCount( true, (EObjClass)cls )) fraLeftBar->miProperties->Enabled = true;
+    if (Scene->SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
     RedrawScene(true);
     fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
     fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);

@@ -1,6 +1,6 @@
 object fraGroup: TfraGroup
-  Left = -597
-  Top = 381
+  Left = 280
+  Top = 377
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -41,9 +41,8 @@ object fraGroup: TfraGroup
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -69,10 +68,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Ungroup'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -89,10 +87,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Group'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -109,10 +106,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Save...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -129,10 +125,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Open'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -149,10 +144,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Close'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -189,10 +183,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Select...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -250,10 +243,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Center To Group'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -270,10 +262,9 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Align To Object...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -311,10 +302,9 @@ object fraGroup: TfraGroup
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '+'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -329,10 +319,9 @@ object fraGroup: TfraGroup
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '-'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -357,9 +346,8 @@ object fraGroup: TfraGroup
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -383,10 +371,9 @@ object fraGroup: TfraGroup
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '=%'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -414,10 +401,9 @@ object fraGroup: TfraGroup
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '+%'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

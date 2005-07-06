@@ -4,6 +4,7 @@
 #define EShapeH
 
 #include "ShapeData.h"
+#include "CustomObject.h"
 //---------------------------------------------------------------------------
 class CEditShape: public CCustomObject, CShapeData{
 	typedef CCustomObject inherited;

@@ -5,8 +5,9 @@
 #include "ui_main.h"
 #include "PropertiesListHelper.h"
 #include "scene.h"
+#include "CustomObject.h"
 
-ESceneCustomOTools::ESceneCustomOTools(EObjClass cls):ESceneCustomMTools(cls)
+ESceneCustomOTools::ESceneCustomOTools(ObjClassID cls):ESceneCustomMTools(cls)
 {
 }
 //----------------------------------------------------

@@ -60,9 +60,8 @@ object fraLeftBar: TfraLeftBar
         Width = 11
         Height = 11
         Align = alNone
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -88,11 +87,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
-        CloseWidth = 24
         Caption = 'File'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -121,10 +118,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Scene'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -152,10 +148,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Object List'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -173,10 +168,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Preferences'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -194,10 +188,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Light Anim Editor'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -215,10 +208,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Images'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -246,10 +238,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Sounds'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -277,10 +268,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Objects'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -308,10 +298,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Compile'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -356,9 +345,8 @@ object fraLeftBar: TfraLeftBar
         Width = 11
         Height = 11
         Align = alNone
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -384,11 +372,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
-        CloseWidth = 24
         Caption = 'Edit'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -417,10 +403,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Selection'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -448,10 +433,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Locking'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -479,11 +463,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
-        CloseWidth = 24
         Caption = 'Visibility'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -512,10 +494,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Properties'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -528,7 +509,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 251
       Width = 218
-      Height = 168
+      Height = 139
       Align = alTop
       Color = 10528425
       TabOrder = 2
@@ -543,12 +524,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
-        Down = True
         Caption = 'Object'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -568,11 +549,11 @@ object fraLeftBar: TfraLeftBar
           C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
           00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
           FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
+          FF0000009999999999999999999999995A699C999999C4C4C4FF00FFC4C4C499
           9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
           999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
+          999999995A699C999999999999999999C4C4C4FF00FFFF00FF0000009999995A
+          699C999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
           999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
           99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
           9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
@@ -589,10 +570,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetLight: TExtBtn
@@ -606,11 +589,13 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
+        Down = True
         Caption = 'Light'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -630,11 +615,11 @@ object fraLeftBar: TfraLeftBar
           C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
           00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
           FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
+          FF0000009999999999999999999999995A699C999999C4C4C4FF00FFC4C4C499
           9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
           999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
+          999999995A699C999999999999999999C4C4C4FF00FFFF00FF0000009999995A
+          699C999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
           999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
           99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
           9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
@@ -651,10 +636,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetSoundSrc: TExtBtn
@@ -668,11 +655,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Sound Source'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -713,10 +701,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetSoundEnv: TExtBtn
@@ -730,11 +720,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Sound Env'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -775,10 +766,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetGlow: TExtBtn
@@ -792,11 +785,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Glow'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -837,10 +831,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetSpawnPoint: TExtBtn
@@ -854,11 +850,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Spawn Element'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -899,10 +896,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetWay: TExtBtn
@@ -916,11 +915,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Way Points'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -961,15 +961,17 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetSector: TExtBtn
-        Left = 2
-        Top = 136
+        Left = 110
+        Top = 16
         Width = 107
         Height = 15
         Align = alNone
@@ -978,11 +980,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Sector'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1023,15 +1026,17 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetPortal: TExtBtn
-        Left = 2
-        Top = 151
+        Left = 110
+        Top = 31
         Width = 107
         Height = 15
         Align = alNone
@@ -1040,11 +1045,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Portal'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1085,10 +1091,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object lbEditMode: TLabel
@@ -1109,9 +1117,8 @@ object fraLeftBar: TfraLeftBar
         Width = 11
         Height = 11
         Align = alNone
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1129,7 +1136,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetGroup: TExtBtn
         Left = 110
-        Top = 16
+        Top = 46
         Width = 107
         Height = 15
         Align = alNone
@@ -1138,11 +1145,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Group'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1183,15 +1191,17 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetPS: TExtBtn
         Left = 110
-        Top = 31
+        Top = 61
         Width = 107
         Height = 15
         Align = alNone
@@ -1200,11 +1210,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Static Particles'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1245,10 +1256,12 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetShape: TExtBtn
@@ -1262,11 +1275,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
         Caption = 'Shape'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1307,137 +1321,15 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
       object ebTargetDO: TExtBtn
-        Left = 110
-        Top = 46
-        Width = 107
-        Height = 15
-        Align = alNone
-        AllowAllUp = True
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        BtnColor = 10528425
-        CloseButton = False
-        GroupIndex = 1
-        Caption = 'Detail Objects'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Glyph.Data = {
-          6E040000424D6E04000000000000360000002800000028000000090000000100
-          18000000000038040000120B0000120B00000000000000000000FF00FF000000
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
-          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
-          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-          999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
-          00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-          00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
-          FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
-          9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
-          999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
-          999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
-          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-          999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
-          99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-          00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
-          FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
-          FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
-          9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
-          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
-          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
-          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-        Margin = 3
-        NumGlyphs = 4
-        ParentFont = False
-        Spacing = 3
-        OnClick = TargetClick
-      end
-      object ebTargetAIMap: TExtBtn
-        Left = 110
-        Top = 61
-        Width = 107
-        Height = 15
-        Align = alNone
-        AllowAllUp = True
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        BtnColor = 10528425
-        CloseButton = False
-        GroupIndex = 1
-        Caption = 'AI Map'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Glyph.Data = {
-          6E040000424D6E04000000000000360000002800000028000000090000000100
-          18000000000038040000120B0000120B00000000000000000000FF00FF000000
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
-          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
-          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-          999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
-          00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-          00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
-          FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
-          9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
-          999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
-          999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
-          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-          999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
-          99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-          00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
-          FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
-          FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
-          9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
-          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
-          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
-          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-        Margin = 3
-        NumGlyphs = 4
-        ParentFont = False
-        Spacing = 3
-        OnClick = TargetClick
-      end
-      object ebTargetWallmarks: TExtBtn
         Left = 110
         Top = 76
         Width = 107
@@ -1448,11 +1340,12 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
+        ExtWidth = 12
+        ExtTransparent = True
         GroupIndex = 1
-        Caption = 'Wallmarks'
+        Caption = 'Detail Objects'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1493,16 +1386,148 @@ object fraLeftBar: TfraLeftBar
           FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
           C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
         Margin = 3
         NumGlyphs = 4
         ParentFont = False
         Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
+        OnClick = TargetClick
+      end
+      object ebTargetAIMap: TExtBtn
+        Left = 110
+        Top = 91
+        Width = 107
+        Height = 15
+        Align = alNone
+        AllowAllUp = True
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        ExtWidth = 12
+        ExtTransparent = True
+        GroupIndex = 1
+        Caption = 'AI Map'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          6E040000424D6E04000000000000360000002800000028000000090000000100
+          18000000000038040000120B0000120B00000000000000000000FF00FF000000
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
+          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
+          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
+          999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
+          00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
+          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
+          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
+          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
+          00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
+          FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
+          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
+          9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
+          999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
+          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
+          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
+          999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
+          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
+          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
+          999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
+          99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
+          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
+          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
+          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
+          00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
+          FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
+          FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
+          9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
+        Margin = 3
+        NumGlyphs = 4
+        ParentFont = False
+        Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
+        OnClick = TargetClick
+      end
+      object ebTargetWallmarks: TExtBtn
+        Left = 110
+        Top = 106
+        Width = 107
+        Height = 15
+        Align = alNone
+        AllowAllUp = True
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        ExtWidth = 12
+        ExtTransparent = True
+        GroupIndex = 1
+        Caption = 'Wallmarks'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          6E040000424D6E04000000000000360000002800000028000000090000000100
+          18000000000038040000120B0000120B00000000000000000000FF00FF000000
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
+          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
+          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
+          999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
+          00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
+          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
+          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
+          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
+          00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
+          FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
+          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
+          9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
+          999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
+          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
+          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
+          999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
+          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
+          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
+          999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
+          99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
+          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
+          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
+          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
+          00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
+          FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
+          FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
+          9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
+        Kind = knMinimize
+        Margin = 3
+        NumGlyphs = 4
+        ParentFont = False
+        Spacing = 3
+        OnExtBtnClick = ebTargetObjectExtBtnClick
         OnClick = TargetClick
       end
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 419
+      Top = 390
       Width = 218
       Height = 124
       Align = alTop
@@ -1534,9 +1559,8 @@ object fraLeftBar: TfraLeftBar
         Width = 11
         Height = 11
         Align = alNone
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1563,11 +1587,10 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         GroupIndex = 1
         Caption = 'Enable/Show Snap List'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1585,10 +1608,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Commands'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1623,11 +1645,10 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
-        CloseButton = False
         GroupIndex = 2
         Caption = 'Mode'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1662,9 +1683,8 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -1720,7 +1740,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'LeftBar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 19
+    Version = 20
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'

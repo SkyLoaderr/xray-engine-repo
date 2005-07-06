@@ -1,6 +1,6 @@
 object fraLight: TfraLight
-  Left = 616
-  Top = 429
+  Left = 521
+  Top = 407
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -33,10 +33,9 @@ object fraLight: TfraLight
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Enable Sel'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -61,9 +60,8 @@ object fraLight: TfraLight
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -89,10 +87,9 @@ object fraLight: TfraLight
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Disable Sel'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -109,10 +106,9 @@ object fraLight: TfraLight
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Enable All'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -129,10 +125,9 @@ object fraLight: TfraLight
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Disable All'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

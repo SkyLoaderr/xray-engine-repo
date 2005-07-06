@@ -9,11 +9,12 @@
 #include "Scene.h"
 #include "LevelGameDef.h"
 #include "SoundManager_LE.h"
+#include "CustomObject.h"
 
 BOOL SceneBuilder::BuildGame()
 {
 	SExportStreams 		F;
-    if (!Scene->ExportGame(F))				return FALSE;
+    if (!Scene->ExportGame(&F))				return FALSE;
 
     BOOL bRes 			= TRUE;
     // save spawn

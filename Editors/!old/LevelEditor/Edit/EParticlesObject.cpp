@@ -195,9 +195,9 @@ void EParticlesObject::OnDeviceDestroy()
 {
 }
 
-bool EParticlesObject::ExportGame(SExportStreams& F)
+bool EParticlesObject::ExportGame(SExportStreams* F)
 {
-	SExportStreamItem& I	= F.pe_static;
+	SExportStreamItem& I	= F->pe_static;
 	I.stream.open_chunk		(I.chunk++);
     I.stream.w_stringZ		(m_RefName);
     I.stream.w				(&_Transform(),sizeof(Fmatrix));

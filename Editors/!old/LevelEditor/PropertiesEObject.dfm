@@ -1,6 +1,6 @@
 object frmPropertiesEObject: TfrmPropertiesEObject
-  Left = 557
-  Top = 405
+  Left = 388
+  Top = 383
   Width = 467
   Height = 363
   BiDiMode = bdRightToLeft
@@ -195,10 +195,15 @@ object frmPropertiesEObject: TfrmPropertiesEObject
           Align = alNone
           BevelShow = False
           BtnColor = 10528425
-          CloseButton = False
           GroupIndex = 1
           Caption = 'Texture'
           Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
           FlatAlwaysEdge = True
         end
         object ebSortByName: TExtBtn
@@ -209,11 +214,16 @@ object frmPropertiesEObject: TfrmPropertiesEObject
           Align = alNone
           BevelShow = False
           BtnColor = 10528425
-          CloseButton = False
           GroupIndex = 1
           Down = True
           Caption = 'Name'
           Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
           FlatAlwaysEdge = True
         end
         object ebDropper: TExtBtn
@@ -225,9 +235,13 @@ object frmPropertiesEObject: TfrmPropertiesEObject
           AllowAllUp = True
           BevelShow = False
           BtnColor = 10528425
-          CloseButton = False
           GroupIndex = 2
           Caption = 'Dropper'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Glyph.Data = {
             3E020000424D3E0200000000000036000000280000000D0000000D0000000100
             18000000000008020000120B0000120B00000000000000000000A0A6A9A0A6A9
@@ -249,6 +263,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
             A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
             A900}
           Margin = 2
+          ParentFont = False
           FlatAlwaysEdge = True
         end
         object ebSortByShader: TExtBtn
@@ -259,10 +274,15 @@ object frmPropertiesEObject: TfrmPropertiesEObject
           Align = alNone
           BevelShow = False
           BtnColor = 10528425
-          CloseButton = False
           GroupIndex = 1
           Caption = 'Shader'
           Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
           FlatAlwaysEdge = True
         end
         object Label1: TLabel

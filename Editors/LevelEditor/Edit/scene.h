@@ -9,9 +9,10 @@
 #include "pure.h"
 #include "ElTree.hpp"
 
-#include "SceneCustom.h"
 #include "ESceneCustomMTools.h"
 #include "ESceneCustomOTools.h"
+#include "xrLevel.h"
+#include "pick_defs.h"
 //refs
 struct FSChunkDef;
 class PropValue;
@@ -47,7 +48,7 @@ struct st_LevelOptions{
 	void 		InitDefaultText	();
 };
 
-class EScene: public ISceneCustom
+class EScene
 //	,public pureDeviceCreate,
 //	public pureDeviceDestroy
 {
@@ -61,6 +62,14 @@ protected:
 	bool m_Valid;
 	int m_Locked;
 
+    // version control 
+    xrGUID			m_GUID;
+    shared_str		m_OwnerName;
+    shared_str		m_ModifName;
+    time_t			m_CreateTime;
+    time_t			m_ModifTime;
+
+    // 
 	int m_LastAvailObject;
 
     SceneToolsMap   m_SceneTools;
@@ -71,7 +80,6 @@ protected:
 	TProperties* m_SummaryInfo;
 
     ObjectList		m_ESO_SnapObjects; // временно здесь а вообще нужно перенести в ESceneTools
-public:
 protected:
     bool 			OnLoadAppendObject			(CCustomObject* O);
     bool 			OnLoadSelectionAppendObject(CCustomObject* O);
@@ -80,7 +88,7 @@ protected:
 	void			CreateSceneTools			();
 	void			DestroySceneTools			();
 
-    void 			FindObjectByNameCB			(LPCSTR new_name, bool& res){res=!!FindObjectByName(new_name,0);}
+    void 			FindObjectByNameCB			(LPCSTR new_name, bool& res){res=!!FindObjectByName(new_name,(CCustomObject*)0);}
 public:
 	enum{
     	flRT_Unsaved 	= (1<<0),
@@ -96,11 +104,11 @@ public:
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
-	bool			ExportGame			(SExportStreams& F);
+	bool			ExportGame			(SExportStreams* F);
 	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);
-	void 			SaveSelection		(EObjClass classfilter, LPCSTR initial, LPCSTR fname);
+	void 			SaveSelection		(ObjClassID classfilter, LPCSTR initial, LPCSTR fname);
 	void 			Unload				();
 	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);
@@ -114,15 +122,15 @@ public:
 	IC void 		unlock				()          	{ m_Locked--; }
 	IC void 		waitlock			()        		{ while( locked() ) Sleep(0); }
 
-	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ return m_SceneTools[cat]; }
-	IC ESceneCustomOTools* GetOTools	(EObjClass cat)	{ return dynamic_cast<ESceneCustomOTools*>(GetMTools(cat)); }
+	IC ESceneCustomMTools* GetMTools	(ObjClassID cat)	{ return m_SceneTools[cat]; }
+	IC ESceneCustomOTools* GetOTools	(ObjClassID cat)	{ return dynamic_cast<ESceneCustomOTools*>(GetMTools(cat)); }
 	IC SceneToolsMapPairIt FirstTools	()				{ return m_SceneTools.begin(); }
 	IC SceneToolsMapPairIt LastTools	()				{ return m_SceneTools.end(); }
 
-	IC ObjectList&	ListObj    			(EObjClass cat)	{ VERIFY(GetOTools(cat)); return GetOTools(cat)->GetObjects(); }
-	IC ObjectIt 	FirstObj      		(EObjClass cat)	{ VERIFY(GetOTools(cat)); return ListObj(cat).begin(); }
-	IC ObjectIt 	LastObj       		(EObjClass cat)	{ VERIFY(GetOTools(cat)); return ListObj(cat).end(); }
-	IC int 			ObjCount           	(EObjClass cat)	{ return ListObj(cat).size(); }
+	IC ObjectList&	ListObj    			(ObjClassID cat)	{ VERIFY(GetOTools(cat)); return GetOTools(cat)->GetObjects(); }
+	IC ObjectIt 	FirstObj      		(ObjClassID cat)	{ VERIFY(GetOTools(cat)); return ListObj(cat).begin(); }
+	IC ObjectIt 	LastObj       		(ObjClassID cat)	{ VERIFY(GetOTools(cat)); return ListObj(cat).end(); }
+	IC int 			ObjCount           	(ObjClassID cat)	{ return ListObj(cat).size(); }
 	int 			ObjCount 			();
 
 	void 			RenderSky			(const Fmatrix& camera);
@@ -131,7 +139,7 @@ public:
 
 	virtual void 	AppendObject		(CCustomObject* object, bool bExecUndo=true);
 	virtual bool 	RemoveObject		(CCustomObject* object, bool bExecUndo=true);
-    bool 			ContainsObject		(CCustomObject* object, EObjClass classfilter);
+    bool 			ContainsObject		(CCustomObject* object, ObjClassID classfilter);
 
     // Snap List Part
 	bool 			FindObjectInSnapList(CCustomObject* O);
@@ -146,34 +154,34 @@ public:
     void 			UpdateSnapList 	   	();
 	virtual ObjectList* 	GetSnapList			(bool bIgnoreUse);
 
-	virtual CCustomObject*	RayPickObject 		(float dist, const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list);
+	virtual CCustomObject*	RayPickObject 		(float dist, const Fvector& start, const Fvector& dir, ObjClassID classfilter, SRayPickInfo* pinf, ObjectList* from_list);
 	int 			BoxPickObjects		(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* from_list);
     int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
     int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
     int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, CDB::MODEL* model);
     int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, CDB::MODEL* model);
 
-	int 			RaySelect           (int flag, EObjClass classfilter=OBJCLASS_DUMMY); // flag=0,1,-1 (-1 invert)
-	int 			FrustumSelect       (int flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	void			SelectObjects       (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	int 			LockObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
-	void 			ShowObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
-	void			InvertSelection     (EObjClass classfilter);
-	int 			SelectionCount      (bool testflag, EObjClass classfilter);
-	void			RemoveSelection     (EObjClass classfilter);
-	void 			CutSelection        (EObjClass classfilter);
-	void			CopySelection       (EObjClass classfilter);
+	int 			RaySelect           (int flag, ObjClassID classfilter=OBJCLASS_DUMMY); // flag=0,1,-1 (-1 invert)
+	int 			FrustumSelect       (int flag, ObjClassID classfilter=OBJCLASS_DUMMY);
+	void			SelectObjects       (bool flag, ObjClassID classfilter=OBJCLASS_DUMMY);
+	int 			LockObjects         (bool flag, ObjClassID classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	void 			ShowObjects         (bool flag, ObjClassID classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	void			InvertSelection     (ObjClassID classfilter);
+	int 			SelectionCount      (bool testflag, ObjClassID classfilter);
+	void			RemoveSelection     (ObjClassID classfilter);
+	void 			CutSelection        (ObjClassID classfilter);
+	void			CopySelection       (ObjClassID classfilter);
 	void			PasteSelection      ();
 
 	void 			SelectLightsForObject(CCustomObject* obj);
 
-    void 			ZoomExtents			(EObjClass cls, BOOL bSelectedOnly);
+    void 			ZoomExtents			(ObjClassID cls, BOOL bSelectedOnly);
 
-	int 			FrustumPick			(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
-	int 			SpherePick			(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
+	int 			FrustumPick			(const CFrustum& frustum, ObjClassID classfilter, ObjectList& ol);
+	int 			SpherePick			(const Fvector& center, float radius, ObjClassID classfilter, ObjectList& ol);
 
-	virtual void			GenObjectName		(EObjClass cls_id, char *buffer, const char* prefix=NULL);
-	virtual CCustomObject* 	FindObjectByName	(LPCSTR name, EObjClass classfilter);
+	virtual void			GenObjectName		(ObjClassID cls_id, char *buffer, const char* prefix=NULL);
+	virtual CCustomObject* 	FindObjectByName	(LPCSTR name, ObjClassID classfilter);
     virtual CCustomObject* 	FindObjectByName	(LPCSTR name, CCustomObject* pass_object);
     bool 			FindDuplicateName   ();
 
@@ -182,13 +190,13 @@ public:
 	bool 			Undo				();
 	bool 			Redo				();
 
-    bool 			GetBox				(Fbox& box, EObjClass classfilter);
+    bool 			GetBox				(Fbox& box, ObjClassID classfilter);
     bool 			GetBox				(Fbox& box, ObjectList& lst);
 
 public:
-	int  			GetQueryObjects		(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
+	int  			GetQueryObjects		(ObjectList& objset, ObjClassID classfilter, int iSel=1, int iVis=1, int iLock=0);
     template <class Predicate>
-    int  GetQueryObjects_if			(ObjectList& dest, EObjClass classfilter, Predicate cmp){
+    int  GetQueryObjects_if			(ObjectList& dest, ObjClassID classfilter, Predicate cmp){
         for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
             ObjectList& lst = it->second;
             if ((classfilter==OBJCLASS_DUMMY)||(classfilter==it->first)){
@@ -234,7 +242,7 @@ public:
 };
 
 //----------------------------------------------------
-extern EScene*& Scene;
+extern EScene* Scene;
 //----------------------------------------------------
 
 #endif /*_INCDEF_Scene_H_*/

@@ -6,7 +6,7 @@ class ESceneCustomMTools;
 class TProperties;
 class TfrmObjectList;
 
-#include "SceneClassList.h"
+#include "ESceneClassList.h"
 #include "UI_ToolsCustom.h"
 #include "UI_mainCommand.h"
 
@@ -19,7 +19,7 @@ class CLevelTools: public CToolsCustom{
 
     TPanel*         paParent;
     int             sub_target;
-    EObjClass		target;
+    ObjClassID		target;
 
     Flags32			m_Flags;
 
@@ -31,7 +31,7 @@ class CLevelTools: public CToolsCustom{
     };
 
     int					iNeedAction;
-    EObjClass			iNeedTarget;
+    ObjClassID			iNeedTarget;
     int					iNeedSubTarget;
 
     ESceneCustomMTools*	pCurTools;
@@ -41,7 +41,7 @@ class CLevelTools: public CToolsCustom{
     void __fastcall 	SetTargetAction		();
 
     void __fastcall 	RealSetAction   	(ETAction act);
-    void __fastcall 	RealSetTarget   	(EObjClass tgt,int sub_tgt, bool bForced);//=false);
+    void __fastcall 	RealSetTarget   	(ObjClassID tgt,int sub_tgt, bool bForced);//=false);
 
     TProperties* 		m_Props;
     void __stdcall  	OnPropsModified		();
@@ -56,10 +56,10 @@ public:
                     	CLevelTools			();
     virtual         	~CLevelTools		();
 
-    IC EObjClass		GetTarget   		(){return target;}
+    IC ObjClassID		GetTarget   		(){return target;}
     IC int          	GetSubTarget   		(){return sub_target;}
     virtual void		SetAction			(ETAction act);
-    void 			 	SetTarget			(EObjClass tgt, int sub_tgt);
+    void 			 	SetTarget			(ObjClassID tgt, int sub_tgt);
 
     virtual void		SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     virtual void		GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
@@ -114,7 +114,7 @@ public:
 
     void __fastcall 	OnObjectsUpdate		();
 
-    EObjClass 			CurrentClassID		();
+    ObjClassID 			CurrentClassID		();
 
     void				ShowObjectList		();
 

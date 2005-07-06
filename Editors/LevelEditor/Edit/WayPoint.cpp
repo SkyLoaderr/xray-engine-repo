@@ -536,44 +536,45 @@ void CWayObject::Save(IWriter& F)
     F.close_chunk	();
 }
 
-bool CWayObject::ExportGame(SExportStreams& F){
-	F.patrolpath.stream.open_chunk		(F.patrolpath.chunk++);
+bool CWayObject::ExportGame(SExportStreams* F)
+{
+	F->patrolpath.stream.open_chunk		(F->patrolpath.chunk++);
 	{
-        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_VERSION);
-        F.patrolpath.stream.w_u16		(WAYOBJECT_VERSION);
-        F.patrolpath.stream.close_chunk	();
+        F->patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_VERSION);
+        F->patrolpath.stream.w_u16		(WAYOBJECT_VERSION);
+        F->patrolpath.stream.close_chunk	();
 
-        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_NAME);
-        F.patrolpath.stream.w_stringZ	(Name);
-        F.patrolpath.stream.close_chunk	();
+        F->patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_NAME);
+        F->patrolpath.stream.w_stringZ	(Name);
+        F->patrolpath.stream.close_chunk	();
 
         int l_cnt		= 0;
-        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_POINTS);
-        F.patrolpath.stream.w_u16		((u16)m_WayPoints.size());
+        F->patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_POINTS);
+        F->patrolpath.stream.w_u16		((u16)m_WayPoints.size());
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W = *it;
-            F.patrolpath.stream.w_fvector3	(W->m_vPosition);
-            F.patrolpath.stream.w_u32		(W->m_Flags.get());
-	        F.patrolpath.stream.w_stringZ	(*W->m_Name?*W->m_Name:"");
+            F->patrolpath.stream.w_fvector3	(W->m_vPosition);
+            F->patrolpath.stream.w_u32		(W->m_Flags.get());
+	        F->patrolpath.stream.w_stringZ	(*W->m_Name?*W->m_Name:"");
             l_cnt		+= W->m_Links.size();
         }
-        F.patrolpath.stream.close_chunk	();
+        F->patrolpath.stream.close_chunk	();
 
-        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_LINKS);
-        F.patrolpath.stream.w_u16		((u16)l_cnt);
+        F->patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_LINKS);
+        F->patrolpath.stream.w_u16		((u16)l_cnt);
         for (it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W= *it;
             int from	= it-m_WayPoints.begin();
             for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
                 WPIt to= std::find(m_WayPoints.begin(),m_WayPoints.end(),(*l_it)->way_point); R_ASSERT(to!=m_WayPoints.end());
-                F.patrolpath.stream.w_u16	((u16)from);
-                F.patrolpath.stream.w_u16	((u16)(to-m_WayPoints.begin()));
-	            F.patrolpath.stream.w_float	((*l_it)->probability);
+                F->patrolpath.stream.w_u16	((u16)from);
+                F->patrolpath.stream.w_u16	((u16)(to-m_WayPoints.begin()));
+	            F->patrolpath.stream.w_float	((*l_it)->probability);
             }
         }
-        F.patrolpath.stream.close_chunk	();
+        F->patrolpath.stream.close_chunk	();
     }
-    F.patrolpath.stream.close_chunk		();
+    F->patrolpath.stream.close_chunk		();
     return true;
 }
 //----------------------------------------------------

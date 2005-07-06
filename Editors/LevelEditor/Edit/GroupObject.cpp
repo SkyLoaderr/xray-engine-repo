@@ -412,7 +412,7 @@ void CGroupObject::Save(IWriter& F)
 }
 //----------------------------------------------------
 
-bool CGroupObject::ExportGame(SExportStreams& data)
+bool CGroupObject::ExportGame(SExportStreams* data)
 {
 	bool bres=true;
 	if (!IsOpened()){
@@ -508,7 +508,7 @@ void CGroupObject::OnSceneUpdate()
 	inherited::OnSceneUpdate();
     if (IsOpened()&&(0!=m_PObjects)){
     	for (SStringVecIt it=m_PObjects->begin(); it!=m_PObjects->end(); it++){
-        	CCustomObject* obj	= Scene->FindObjectByName(it->c_str(),0); VERIFY2(obj,"Can't find open group object.");
+        	CCustomObject* obj	= Scene->FindObjectByName(it->c_str(),(CCustomObject*)0); VERIFY2(obj,"Can't find open group object.");
 		    m_Objects.push_back	(obj);
         }
         xr_delete	(m_PObjects);

@@ -1,6 +1,6 @@
 object fraWayPoint: TfraWayPoint
-  Left = 1003
-  Top = 559
+  Left = 381
+  Top = 270
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -41,7 +41,11 @@ object fraWayPoint: TfraWayPoint
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       Glyph.Data = {
         DE000000424DDE00000000000000360000002800000007000000070000000100
         180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -51,6 +55,7 @@ object fraWayPoint: TfraWayPoint
         000000000000000000000000FFFFFF0000000000000000000000000000000000
         00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
         0000}
+      ParentFont = False
       OnClick = PanelMinClick
     end
     object ebModeWay: TExtBtn
@@ -62,12 +67,11 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 2
       Down = True
       Caption = 'Way Mode'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -124,11 +128,10 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 2
       Caption = 'Point Mode'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -202,7 +205,11 @@ object fraWayPoint: TfraWayPoint
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       Glyph.Data = {
         DE000000424DDE00000000000000360000002800000007000000070000000100
         180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -212,6 +219,7 @@ object fraWayPoint: TfraWayPoint
         000000000000000000000000FFFFFF0000000000000000000000000000000000
         00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
         0000}
+      ParentFont = False
       OnClick = PanelMinClick
     end
     object ebInvertLink: TExtBtn
@@ -223,10 +231,9 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Invert Link'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -243,10 +250,9 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Make 1-Link'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -263,10 +269,9 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Remove Link'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -283,10 +288,9 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Make 2-Link'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -304,12 +308,11 @@ object fraWayPoint: TfraWayPoint
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 1
       Down = True
       Caption = 'Auto Link'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

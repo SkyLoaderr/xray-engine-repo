@@ -9,7 +9,7 @@
 #include "cl_intersect.h"
 
 #ifdef _EDITOR
-#	include "SceneClassList.h"
+#	include "ESceneClassList.h"
 #	include "Scene.h"
 #	include "SceneObject.h"
 #	include "igame_persistent.h"

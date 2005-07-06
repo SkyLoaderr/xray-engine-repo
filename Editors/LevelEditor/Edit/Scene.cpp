@@ -13,12 +13,13 @@
 #include "SoundManager.h"
 #include "EParticlesObject.h"
 #include "ui_leveltools.h"
+#include "guid_generator.h"
 
 #include "ESceneAIMapTools.h"
 #include "ESceneDOTools.h"
 #include "ESceneLightTools.h"
 //----------------------------------------------------
-EScene*& Scene=(EScene*)IScene;
+EScene* Scene;
 //----------------------------------------------------
 st_LevelOptions::st_LevelOptions()
 {
@@ -51,7 +52,7 @@ EScene::EScene()
 	m_Locked = 0;
 
     for (int i=0; i<OBJCLASS_COUNT; i++)
-        m_SceneTools.insert(mk_pair((EObjClass)i,(ESceneCustomMTools*)NULL));
+        m_SceneTools.insert(mk_pair((ObjClassID)i,(ESceneCustomMTools*)NULL));
 
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
@@ -160,10 +161,16 @@ void EScene::Clear()
     Tools->ClearDebugDraw	();
 
     m_RTFlags.set			(flRT_Unsaved|flRT_Modified,FALSE);
+
+    m_GUID					= generate_guid();
+    m_OwnerName				= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
+    m_ModifName				= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
+    m_CreateTime			= time(NULL);
+    m_ModifTime				= time(NULL);
 }
 //----------------------------------------------------
 
-bool EScene::GetBox(Fbox& box, EObjClass classfilter)
+bool EScene::GetBox(Fbox& box, ObjClassID classfilter)
 {
 	return GetBox(box,ListObj(classfilter));
 }
@@ -256,7 +263,7 @@ void EScene::OnShowHint(AStringVec& dest)
 }
 //------------------------------------------------------------------------------
 
-bool EScene::ExportGame(SExportStreams& F)
+bool EScene::ExportGame(SExportStreams* F)
 {
 	bool bres = true;
     SceneToolsMapPairIt t_it 	= m_SceneTools.begin();

@@ -3,6 +3,8 @@
 #define ESound_SourceH
 //---------------------------------------------------------------------------
 
+#include "CustomObject.h"
+
 class ESoundSource: public CCustomObject
 {
 	typedef CCustomObject inherited;
@@ -64,7 +66,7 @@ public:
 	virtual void 	Scale			(Fvector& amount){;}
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& values);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
-    virtual bool	ExportGame		(SExportStreams& data);
+    virtual bool	ExportGame		(SExportStreams* data);
 };
 
 #endif

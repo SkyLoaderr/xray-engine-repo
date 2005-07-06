@@ -171,7 +171,7 @@ bool CSpawnPoint::SSpawnData::Load(IReader& F)
 
     return Valid();
 }
-bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
+bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams* F, CSpawnPoint* owner)
 {
 	// set params
     m_Data->set_name_replace	(owner->Name);
@@ -196,9 +196,9 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     NET_Packet					Packet;
     m_Data->Spawn_Write			(Packet,TRUE);
 
-    F.spawn.stream.open_chunk	(F.spawn.chunk++);
-    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-    F.spawn.stream.close_chunk	();
+    F->spawn.stream.open_chunk	(F->spawn.chunk++);
+    F->spawn.stream.w			(Packet.B.data,Packet.B.count);
+    F->spawn.stream.close_chunk	();
 
     return true;
 }
@@ -670,7 +670,7 @@ Fvector3 u32_3f(u32 clr)
     return	tmp;
 }
 
-bool CSpawnPoint::ExportGame(SExportStreams& F)
+bool CSpawnPoint::ExportGame(SExportStreams* F)
 {
 	// spawn
 	if (m_SpawnData.Valid()){
@@ -684,27 +684,27 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
         // game
         switch (m_Type){
         case ptRPoint:
-	        F.rpoint.stream.open_chunk	(F.rpoint.chunk++);
-            F.rpoint.stream.w_fvector3	(PPosition);
-            F.rpoint.stream.w_fvector3	(PRotation);
-            F.rpoint.stream.w_u8		(m_RP_TeamID);
-            F.rpoint.stream.w_u8		(m_RP_Type);
-            F.rpoint.stream.w_u8		(m_RP_GameType);
-            F.rpoint.stream.w_u8		(0);
-			F.rpoint.stream.close_chunk	();
+	        F->rpoint.stream.open_chunk	(F->rpoint.chunk++);
+            F->rpoint.stream.w_fvector3	(PPosition);
+            F->rpoint.stream.w_fvector3	(PRotation);
+            F->rpoint.stream.w_u8		(m_RP_TeamID);
+            F->rpoint.stream.w_u8		(m_RP_Type);
+            F->rpoint.stream.w_u8		(m_RP_GameType);
+            F->rpoint.stream.w_u8		(0);
+			F->rpoint.stream.close_chunk	();
         break;
         case ptEnvMod:
         	Fcolor tmp;
-	        F.envmodif.stream.open_chunk(F.envmodif.chunk++);
-            F.envmodif.stream.w_fvector3(PPosition);
-            F.envmodif.stream.w_float	(m_EM_Radius);
-            F.envmodif.stream.w_float	(m_EM_Power);
-            F.envmodif.stream.w_float	(m_EM_ViewDist);
-            F.envmodif.stream.w_fvector3(u32_3f(m_EM_FogColor));
-            F.envmodif.stream.w_float	(m_EM_FogDensity);
-            F.envmodif.stream.w_fvector3(u32_3f(m_EM_AmbientColor));
-            F.envmodif.stream.w_fvector3(u32_3f(m_EM_LMapColor));
-			F.envmodif.stream.close_chunk();
+	        F->envmodif.stream.open_chunk(F->envmodif.chunk++);
+            F->envmodif.stream.w_fvector3(PPosition);
+            F->envmodif.stream.w_float	(m_EM_Radius);
+            F->envmodif.stream.w_float	(m_EM_Power);
+            F->envmodif.stream.w_float	(m_EM_ViewDist);
+            F->envmodif.stream.w_fvector3(u32_3f(m_EM_FogColor));
+            F->envmodif.stream.w_float	(m_EM_FogDensity);
+            F->envmodif.stream.w_fvector3(u32_3f(m_EM_AmbientColor));
+            F->envmodif.stream.w_fvector3(u32_3f(m_EM_LMapColor));
+			F->envmodif.stream.close_chunk();
         break;
         default: THROW;
         }

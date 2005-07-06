@@ -1,6 +1,6 @@
 object fraShape: TfraShape
-  Left = 1555
-  Top = 396
+  Left = 292
+  Top = 384
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -42,9 +42,8 @@ object fraShape: TfraShape
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -69,12 +68,11 @@ object fraShape: TfraShape
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 1
       Down = True
       Caption = 'Sphere'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -89,11 +87,10 @@ object fraShape: TfraShape
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 1
       Caption = 'Box'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -126,9 +123,8 @@ object fraShape: TfraShape
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -154,11 +150,10 @@ object fraShape: TfraShape
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       GroupIndex = 1
       Caption = 'Attach Shape...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -174,10 +169,9 @@ object fraShape: TfraShape
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Detach All'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

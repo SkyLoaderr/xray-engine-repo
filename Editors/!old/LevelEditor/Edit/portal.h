@@ -1,6 +1,7 @@
 #ifndef PortalH
 #define PortalH
 
+#include "CustomObject.h"
 // refs
 class CSector;
 

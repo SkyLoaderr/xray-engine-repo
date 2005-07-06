@@ -36,7 +36,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Undo (Ctrl+Z)'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -107,7 +106,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Redo (Ctrl+Y)'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -190,7 +188,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Move'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -262,7 +259,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Rotate'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -334,7 +330,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Uniform Scale'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -406,7 +401,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Select'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -479,7 +473,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Add'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -564,7 +557,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 7
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -638,7 +630,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 6
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -712,7 +703,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -786,7 +776,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 3
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -857,7 +846,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 4
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -935,7 +923,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 2
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -1008,7 +995,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 5
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -1086,7 +1072,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 8
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -1163,7 +1148,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       AllowAllUp = True
       HotTrack = True
-      ExtButton = False
       GroupIndex = 9
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -1247,7 +1231,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Restrict to X'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -1319,7 +1302,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Restrict to Y'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -1391,7 +1373,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Restrict to Z'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -1463,7 +1444,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Restrict to ZX'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       GroupIndex = 1
       Down = True
       Font.Charset = DEFAULT_CHARSET
@@ -1549,7 +1529,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'F'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1571,7 +1550,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'L'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1593,7 +1571,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'T'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1615,7 +1592,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'B'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1637,7 +1613,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'R'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1659,7 +1634,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'B'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1681,7 +1655,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       GroupIndex = 1
       Down = True
       Caption = 'P'
@@ -1706,7 +1679,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       GroupIndex = 1
       Caption = 'A'
       Font.Charset = DEFAULT_CHARSET
@@ -1730,7 +1702,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       GroupIndex = 1
       Caption = 'F'
       Font.Charset = DEFAULT_CHARSET
@@ -1753,7 +1724,6 @@ object fraTopBar: TfraTopBar
       Align = alNone
       HotTrack = True
       HotColor = 15790320
-      ExtButton = False
       Caption = 'X'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1786,7 +1756,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Zoom Extent'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -1857,7 +1826,6 @@ object fraTopBar: TfraTopBar
       Hint = 'Zoom Extents Selected'
       Align = alNone
       HotTrack = True
-      ExtButton = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

@@ -1,6 +1,6 @@
 object fraPS: TfraPS
-  Left = 1518
-  Top = 61
+  Left = 344
+  Top = 335
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -41,10 +41,9 @@ object fraPS: TfraPS
       Height = 15
       Align = alNone
       BtnColor = 10528425
-      CloseButton = False
       Caption = '+'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
@@ -59,10 +58,9 @@ object fraPS: TfraPS
       Height = 15
       Align = alNone
       BtnColor = 10528425
-      CloseButton = False
       Caption = '-'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
@@ -88,9 +86,8 @@ object fraPS: TfraPS
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -113,9 +110,8 @@ object fraPS: TfraPS
       Height = 15
       Align = alNone
       BtnColor = 10528425
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -146,9 +142,8 @@ object fraPS: TfraPS
       Height = 15
       Align = alNone
       BtnColor = 10528425
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

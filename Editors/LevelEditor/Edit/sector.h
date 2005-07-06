@@ -2,6 +2,7 @@
 #define SectorH
 
 #include "portalutils.h"
+#include "CustomObject.h"
 enum EVisible{
 	fvNone,
     fvPartialInside,

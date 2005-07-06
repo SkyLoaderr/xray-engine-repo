@@ -1,6 +1,6 @@
 object fraObject: TfraObject
-  Left = 331
-  Top = 409
+  Left = 300
+  Top = 321
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -35,7 +35,6 @@ object fraObject: TfraObject
     Align = alNone
     BevelShow = False
     HotTrack = True
-    CloseButton = False
     Caption = '+'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -53,7 +52,6 @@ object fraObject: TfraObject
     Align = alNone
     BevelShow = False
     HotTrack = True
-    CloseButton = False
     Caption = '-'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -71,7 +69,6 @@ object fraObject: TfraObject
     Align = alNone
     BevelShow = False
     HotTrack = True
-    CloseButton = False
     Caption = '=%'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -108,7 +105,6 @@ object fraObject: TfraObject
     Align = alNone
     BevelShow = False
     HotTrack = True
-    CloseButton = False
     Caption = '+%'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -156,10 +152,9 @@ object fraObject: TfraObject
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '+'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -174,10 +169,9 @@ object fraObject: TfraObject
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '-'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -202,9 +196,8 @@ object fraObject: TfraObject
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -228,10 +221,9 @@ object fraObject: TfraObject
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '=%'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -259,10 +251,9 @@ object fraObject: TfraObject
       Align = alNone
       BevelShow = False
       HotTrack = True
-      CloseButton = False
       Caption = '+%'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -311,10 +302,9 @@ object fraObject: TfraObject
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Multiple Append'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -340,9 +330,8 @@ object fraObject: TfraObject
       Width = 11
       Height = 11
       Align = alNone
-      CloseButton = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -376,11 +365,10 @@ object fraObject: TfraObject
       HotTrack = True
       HotColor = 15790320
       BtnColor = 10528425
-      CloseButton = False
       GroupIndex = 1
       Caption = 'Random Append'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -436,10 +424,9 @@ object fraObject: TfraObject
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      CloseButton = False
       Caption = 'Random Props...'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -505,10 +492,9 @@ object fraObject: TfraObject
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
-        CloseButton = False
         Caption = 'Select ...'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -524,10 +510,9 @@ object fraObject: TfraObject
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
-        CloseButton = False
         Caption = 'Refresh List'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []

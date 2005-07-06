@@ -3,6 +3,8 @@
 
 #include "ESceneCustomMTools.h"
 
+struct SRayPickInfo;
+
 class ESceneCustomOTools: public ESceneCustomMTools
 {
 	typedef ESceneCustomMTools inherited;
@@ -12,7 +14,7 @@ protected:
 	bool 				OnLoadSelectionAppendObject(CCustomObject* obj);
 	bool 				OnLoadAppendObject		(CCustomObject* obj);
 public:
-						ESceneCustomOTools		(EObjClass cls);
+						ESceneCustomOTools		(ObjClassID cls);
 	virtual				~ESceneCustomOTools		();
                                                
     // snap 
@@ -51,7 +53,7 @@ public:
     virtual void		SaveSelection      		(IWriter&);
 
     virtual bool		Export          		(LPCSTR path);
-    virtual bool		ExportGame         		(SExportStreams& F);
+    virtual bool		ExportGame         		(SExportStreams* F);
     virtual bool		ExportStatic			(SceneBuilder* B);
 
     // properties

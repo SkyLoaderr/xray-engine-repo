@@ -7,7 +7,7 @@
 #include "ETools.h"
 //------------------------------------------------------------------------------
 
-int EScene::FrustumPick( const CFrustum& frustum, EObjClass classfilter, ObjectList& ol )
+int EScene::FrustumPick( const CFrustum& frustum, ObjClassID classfilter, ObjectList& ol )
 {
 	int count = 0;
 
@@ -27,7 +27,7 @@ int EScene::FrustumPick( const CFrustum& frustum, EObjClass classfilter, ObjectL
 }
 //------------------------------------------------------------------------------
 
-int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol )
+int EScene::SpherePick( const Fvector& center, float radius, ObjClassID classfilter, ObjectList& ol )
 {
 	int count = 0;
 
@@ -94,7 +94,7 @@ int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, CDB::MODEL* mode
 }
 //------------------------------------------------------------------------------
 
-CCustomObject *EScene::RayPickObject(float nearest_dist, const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list)
+CCustomObject *EScene::RayPickObject(float nearest_dist, const Fvector& start, const Fvector& direction, ObjClassID classfilter, SRayPickInfo* pinf, ObjectList* from_list)
 {
 	if(!valid()) return 0;
 
@@ -121,7 +121,7 @@ CCustomObject *EScene::RayPickObject(float nearest_dist, const Fvector& start, c
 }
 //------------------------------------------------------------------------------
 
-int EScene::GetQueryObjects(ObjectList& lst, EObjClass classfilter, int iSel, int iVis, int iLock)
+int EScene::GetQueryObjects(ObjectList& lst, ObjClassID classfilter, int iSel, int iVis, int iLock)
 {
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
@@ -138,7 +138,7 @@ int EScene::GetQueryObjects(ObjectList& lst, EObjClass classfilter, int iSel, in
 }
 //------------------------------------------------------------------------------
 
-int EScene::RaySelect(int flag, EObjClass classfilter)
+int EScene::RaySelect(int flag, ObjClassID classfilter)
 {
 	if( !valid() ) return 0;
 

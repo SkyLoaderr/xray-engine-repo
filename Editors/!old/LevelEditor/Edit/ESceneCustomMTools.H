@@ -1,22 +1,26 @@
 #ifndef ESceneCustomMToolsH
 #define ESceneCustomMToolsH
 
+#include "ESceneClassList.h"
 // refs
 struct SSceneSummary;
 class TUI_CustomControl;
 class ESceneCustomMTools;
 class SceneBuilder;
+struct SExportStreams;
 
 DEFINE_VECTOR(TUI_CustomControl*,ControlsVec,ControlsIt);
 
 class ESceneCustomMTools
 {
-	EObjClass 			FClassID;
+	ObjClassID 			FClassID;
 protected:
 	// controls
     ControlsVec 		m_Controls;
     int             	action;
     int					sub_target;
+public:
+    BOOL				m_bEnabled;
 public:
     TUI_CustomControl* 	pCurControl;
     TForm*				pFrame;
@@ -37,13 +41,13 @@ public:
     virtual void    	OnDeactivate			();
     virtual void    	OnObjectsUpdate			(){;}
 public:
-    PropertyGP			(FClassID,FClassID) 	EObjClass ClassID;
+    PropertyGP			(FClassID,FClassID) 	ObjClassID ClassID;
 	// definition
     virtual LPCSTR		ClassName				()=0;
     virtual LPCSTR		ClassDesc				()=0;
     virtual int			RenderPriority			()=0;
 public:
-						ESceneCustomMTools		(EObjClass cls);
+						ESceneCustomMTools		(ObjClassID cls);
 	virtual				~ESceneCustomMTools		();
 
     virtual void		OnCreate				();
@@ -90,7 +94,7 @@ public:
     virtual void		SaveSelection      		(IWriter&)=0;
 
     virtual bool		Export          		(LPCSTR path){return true;}
-    virtual bool		ExportGame         		(SExportStreams& F){return true;}
+    virtual bool		ExportGame         		(SExportStreams* F){return true;}
 
     virtual bool		ExportStatic			(SceneBuilder* B){return true;}
     virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt){}
@@ -104,6 +108,6 @@ public:
     virtual void		GetBBox 				(Fbox& bb, bool bSelOnly)=0;
 };
 
-DEFINE_MAP(EObjClass,ESceneCustomMTools*,SceneToolsMap,SceneToolsMapPairIt);
+DEFINE_MAP(ObjClassID,ESceneCustomMTools*,SceneToolsMap,SceneToolsMapPairIt);
 #endif //ESceneCustomMToolsH
  

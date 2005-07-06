@@ -359,9 +359,9 @@ void ESoundSource::SetSourceWAV(LPCSTR fname)
     ResetSource		();
 }
 
-bool ESoundSource::ExportGame(SExportStreams& F)
+bool ESoundSource::ExportGame(SExportStreams* F)
 {
-	SExportStreamItem& I	= F.sound_static;
+	SExportStreamItem& I	= F->sound_static;
 	I.stream.open_chunk		(I.chunk++);
 	I.stream.open_chunk		(0);
     I.stream.w_stringZ		(m_WAVName);

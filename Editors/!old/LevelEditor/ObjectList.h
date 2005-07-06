@@ -15,7 +15,9 @@
 #include "ElXPThemedControl.hpp"
 #include "ExtBtn.hpp"
 #include <ImgList.hpp>
+
 #include "mxPlacemnt.hpp"
+#include "ESceneClassList.h"
 
 //---------------------------------------------------------------------------
 class TfrmObjectList : public TForm
@@ -51,7 +53,7 @@ private:	// User declarations
     void __fastcall InitListBox();
     TElTreeItem* FindObjectByType(int type, void *obj);
     TElTreeItem* FindFolderByType(int type);
-    TElTreeItem* AddFolder(EObjClass type);
+    TElTreeItem* AddFolder(ObjClassID type);
     TElTreeItem* AddObject(TElTreeItem* node, LPCSTR name, void* obj);
     void UpdateState();
     void UpdateSelection();

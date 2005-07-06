@@ -4,6 +4,8 @@
 #ifndef EParticlesObjectH
 #define EParticlesObjectH
 
+#include "CustomObject.h"
+
 class EParticlesObject: public CCustomObject
 {
 	typedef CCustomObject inherited;
@@ -31,7 +33,7 @@ public:
 
   	virtual bool 		Load				(IReader&);
 	virtual void 		Save				(IWriter&);
-    virtual bool		ExportGame			(SExportStreams& data);
+    virtual bool		ExportGame			(SExportStreams* data);
 	virtual bool    	GetBox      		(Fbox& box);
 	virtual void 		OnFrame				();
 

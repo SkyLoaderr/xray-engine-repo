@@ -149,7 +149,7 @@ void __fastcall CLevelTools::SetAction(ETAction act)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,int sub_tgt,bool bForced)
+void __fastcall CLevelTools::RealSetTarget   (ObjClassID tgt,int sub_tgt,bool bForced)
 {
     if(bForced||(target!=tgt)||(sub_target!=sub_tgt)){
         target 					= tgt;
@@ -179,7 +179,7 @@ void __fastcall CLevelTools::ResetSubTarget()
 	pCurTools->ResetSubTarget();
 }
 //---------------------------------------------------------------------------
-void __fastcall CLevelTools::SetTarget(EObjClass tgt, int sub_tgt)
+void __fastcall CLevelTools::SetTarget(ObjClassID tgt, int sub_tgt)
 {
 	// если мышь захвачена - изменим target после того как она освободится
 	if (UI->IsMouseCaptured()||UI->IsMouseInUse()||!false){
@@ -191,7 +191,7 @@ void __fastcall CLevelTools::SetTarget(EObjClass tgt, int sub_tgt)
 }
 //---------------------------------------------------------------------------
 
-EObjClass CLevelTools::CurrentClassID()
+ObjClassID CLevelTools::CurrentClassID()
 {
 	return GetTarget();
 }
@@ -235,7 +235,7 @@ void CLevelTools::RealUpdateProperties()
 	if (m_Props->Visible){
 		if (m_Props->IsModified()) Scene->UndoSave();
         ObjectList lst;
-        EObjClass cls_id			= CurrentClassID();
+        ObjClassID cls_id			= CurrentClassID();
         PropItemVec items;
         if (OBJCLASS_DUMMY==cls_id){
             SceneToolsMapPairIt _I 	= Scene->FirstTools();

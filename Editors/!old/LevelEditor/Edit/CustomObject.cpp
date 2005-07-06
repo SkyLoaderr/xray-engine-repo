@@ -22,7 +22,7 @@
 
 CCustomObject::CCustomObject(LPVOID data, LPCSTR name)
 {
-    ClassID 	= OBJCLASS_NONE;
+    ClassID 	= OBJCLASS_DUMMY;
     ParentTools	= 0;
     if (name) 	FName = name;
     m_CO_Flags.assign(flVisible);

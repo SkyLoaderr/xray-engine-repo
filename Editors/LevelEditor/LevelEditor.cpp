@@ -55,7 +55,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         Tools					= xr_new<CLevelTools>();
         UI						= xr_new<CLevelMain>();
         UI->RegisterCommands	();
-		IScene					= xr_new<EScene>();
+		Scene					= xr_new<EScene>();
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
@@ -69,7 +69,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         TfrmLog::DestroyLog		();
 
 		UI->ClearCommands		();
-        xr_delete				(IScene);
+        xr_delete				(Scene);
         xr_delete				(Tools);
         xr_delete				(UI);
 

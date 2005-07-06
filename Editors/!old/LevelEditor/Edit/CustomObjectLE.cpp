@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "scenecustom.h"
-//#include "sceneobject.h"
+#include "CustomObject.h"
 #include "ui_main.h"
-//#include "ui_leveltools.h"
 #include "ui_toolscustom.h"
 #include "PropertiesListHelper.h"
 #include "editorpreferences.h"
+#include "scene.h"
 
 //------------------------------------------------------------------------------
 // static part
@@ -24,7 +23,7 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     s2.mad(s1,up,EPrefs.snap_moveto);
 
     pinf.inf.range=EPrefs.snap_moveto;
-    if (IScene->RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, IScene->GetSnapList(false))||IScene->RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, IScene->GetSnapList(false))){
+    if (Scene->RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene->GetSnapList(false))||Scene->RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene->GetSnapList(false))){
             pos.set(pinf.pt);
             if (Tools->GetSettings(etfNormalAlign)){
                 Fvector verts[3];
@@ -63,9 +62,9 @@ void CCustomObject::OnDetach()
 {
     m_pOwnerObject 		= 0;
     string64 			new_name;
-    IScene->GenObjectName(ClassID,new_name,Name);
+    Scene->GenObjectName(ClassID,new_name,Name);
     Name 				= new_name;
-    IScene->AppendObject(this,false);
+    Scene->AppendObject(this,false);
     Select				(true);
 }
 
@@ -74,7 +73,7 @@ void CCustomObject::OnAttach(CCustomObject* owner)
 	R_ASSERT(owner);
     R_ASSERT2(!m_pOwnerObject,"Object already has owner!");
     m_pOwnerObject 		= owner;
-    IScene->RemoveObject(this,false);
+    Scene->RemoveObject(this,false);
     Select				(false);
 }
 
@@ -178,7 +177,7 @@ bool CCustomObject::OnObjectNameAfterEdit(PropValue* sender, shared_str& edit_va
 {
 	RTextValue* V = dynamic_cast<RTextValue*>(sender); VERIFY(V);
     edit_val 	= (AnsiString(edit_val.c_str()).LowerCase()).c_str();
-	return !IScene->FindObjectByName(edit_val.c_str(),0);
+	return !Scene->FindObjectByName(edit_val.c_str(),(CCustomObject*)0);
 }
 
 void CCustomObject::OnNumChangePosition(PropValue* sender)

@@ -5,7 +5,7 @@
 #include "ui_levelmain.h"
 //------------------------------------------------------------------------------
 
-void EScene::SelectObjects( bool flag, EObjClass classfilter )
+void EScene::SelectObjects( bool flag, ObjClassID classfilter )
 {
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
@@ -21,7 +21,7 @@ void EScene::SelectObjects( bool flag, EObjClass classfilter )
 }
 //------------------------------------------------------------------------------
 
-int EScene::FrustumSelect( int flag, EObjClass classfilter )
+int EScene::FrustumSelect( int flag, ObjClassID classfilter )
 {
 	CFrustum frustum;
 	int count = 0;
@@ -42,7 +42,7 @@ int EScene::FrustumSelect( int flag, EObjClass classfilter )
 }
 //------------------------------------------------------------------------------
 
-void EScene::InvertSelection( EObjClass classfilter )
+void EScene::InvertSelection( ObjClassID classfilter )
 {
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
@@ -57,7 +57,7 @@ void EScene::InvertSelection( EObjClass classfilter )
 }
 //------------------------------------------------------------------------------
 
-void EScene::RemoveSelection( EObjClass classfilter )
+void EScene::RemoveSelection( ObjClassID classfilter )
 {
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
@@ -72,7 +72,7 @@ void EScene::RemoveSelection( EObjClass classfilter )
 }
 //------------------------------------------------------------------------------
 
-int EScene::SelectionCount(bool testflag, EObjClass classfilter)
+int EScene::SelectionCount(bool testflag, ObjClassID classfilter)
 {
 	int count = 0;
 
@@ -90,7 +90,7 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter)
 }
 //------------------------------------------------------------------------------
 
-bool EScene::ContainsObject( CCustomObject* object, EObjClass classfilter )
+bool EScene::ContainsObject( CCustomObject* object, ObjClassID classfilter ) 
 {
 	VERIFY( object );
 	VERIFY( m_Valid );
@@ -114,7 +114,7 @@ int EScene::ObjCount()
 }
 //------------------------------------------------------------------------------
 
-int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag )
+int EScene::LockObjects( bool flag, ObjClassID classfilter, bool bAllowSelectionFlag, bool bSelFlag )
 {
 	int count = 0;
     if (classfilter==OBJCLASS_DUMMY){
@@ -134,7 +134,7 @@ int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 }
 //------------------------------------------------------------------------------
 
-void EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag )
+void EScene::ShowObjects( bool flag, ObjClassID classfilter, bool bAllowSelectionFlag, bool bSelFlag )
 {
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
@@ -158,7 +158,7 @@ void EScene::SynchronizeObjects()
 }
 //------------------------------------------------------------------------------
 
-void EScene::ZoomExtents( EObjClass cls, BOOL bSel )
+void EScene::ZoomExtents( ObjClassID cls, BOOL bSel )
 {
 	Fbox BB;	BB.invalidate();
     if (cls==OBJCLASS_DUMMY){

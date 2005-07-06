@@ -10,7 +10,7 @@
  
 ObjectList* EScene::GetSnapList(bool bIgnoreUse)
 {
-    EObjClass cls 			= LTools->CurrentClassID();
+	ObjClassID cls 			= LTools->CurrentClassID();
     ESceneCustomMTools* mt 	= m_SceneTools[cls]; 
     if (0==mt)				return 0;
     ObjectList* snap_list	= mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects;
@@ -146,7 +146,7 @@ void EScene::ClearSnapList(bool bCurrentOnly)
     }else{
     	m_ESO_SnapObjects.clear();
         for (int i=0; i<OBJCLASS_COUNT; i++){
-	        ESceneCustomMTools* mt 		= m_SceneTools[EObjClass(i)];
+	        ESceneCustomMTools* mt 		= m_SceneTools[ObjClassID(i)];
             if (mt&&mt->GetSnapList())	mt->GetSnapList()->clear();
         }
         UpdateSnapList();
@@ -169,7 +169,7 @@ void EScene::SelectSnapList()
 void EScene::UpdateSnapList()
 {
 	if (NULL==LTools) return;
-    EObjClass cls = LTools->CurrentClassID();
+    ObjClassID cls = LTools->CurrentClassID();
     switch (cls){
     case OBJCLASS_DUMMY:	break;
     default:

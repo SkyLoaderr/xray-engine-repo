@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "ui_main.h"
 #include "builder.h"
+#include "CustomObject.h"
 
 // chunks
 //----------------------------------------------------
@@ -96,7 +97,7 @@ bool ESceneCustomOTools::Export(LPCSTR path)
 }
 //----------------------------------------------------
  
-bool ESceneCustomOTools::ExportGame(SExportStreams& F)
+bool ESceneCustomOTools::ExportGame(SExportStreams* F)
 {
 	bool bres=true;
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++)

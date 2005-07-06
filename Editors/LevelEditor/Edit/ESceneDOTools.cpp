@@ -518,17 +518,18 @@ void EDetailManager::OnBaseTextureChange(PropValue* prop)
     ELog.DlgMsg				(mtInformation,"Texture changed. Reinitialize objects.");
 }
 
-void EDetailManager::FillProp(LPCSTR pref, PropItemVec& values)
+void EDetailManager::FillProp(LPCSTR pref, PropItemVec& items)
 {
+	inherited::FillProp(pref, items);
 	PropValue* P;
-    P=PHelper().CreateFloat	(values, PrepareKey(pref,"Objects per square"),				&ps_r__Detail_density);
+    P=PHelper().CreateFloat	(items, PrepareKey(pref,"Objects per square"),				&ps_r__Detail_density);
     P->OnChangeEvent.bind	(this,&EDetailManager::OnDensityChange);
-    P=PHelper().CreateChoose(values, PrepareKey(pref,"Base Texture"),					&m_Base.name, smTexture);
+    P=PHelper().CreateChoose(items, PrepareKey(pref,"Base Texture"),					&m_Base.name, smTexture);
     P->OnChangeEvent.bind	(this,&EDetailManager::OnBaseTextureChange);
-    PHelper().CreateFlag32	(values, PrepareKey(pref,"Common\\Draw objects"),			&m_Flags,	flObjectsDraw);
-    PHelper().CreateFlag32	(values, PrepareKey(pref,"Common\\Draw base texture"),		&m_Flags,	flBaseTextureDraw);
-    PHelper().CreateFlag32	(values, PrepareKey(pref,"Common\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
-    PHelper().CreateFlag32	(values, PrepareKey(pref,"Common\\Draw slot boxes"),			&m_Flags,	flSlotBoxesDraw);
+    PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Draw objects"),			&m_Flags,	flObjectsDraw);
+    PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Draw base texture"),		&m_Flags,	flBaseTextureDraw);
+    PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
+    PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Draw slot boxes"),			&m_Flags,	flSlotBoxesDraw);
 }
 
 bool EDetailManager::GetSummaryInfo(SSceneSummary* inf)
