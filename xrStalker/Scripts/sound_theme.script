@@ -236,6 +236,7 @@ function load_sound(obj)
 	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
 	theme[obj:id()]["bar_dolg_base_guard_no_talk"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
 	theme[obj:id()]["bar_bar_osvedomitel_hello"]	= load_sound_from_ltx(obj, "bar_bar_osvedomitel_hello")
+	theme[obj:id()]["bar_bar_barmen_hello"]	= load_sound_from_ltx(obj, "bar_bar_barmen_hello")
 
     -- Military sounds
     theme[obj:id()]["mil_max_thanx"]                  = load_sound_from_ltx(obj, "mil_max_thanx")
