@@ -373,7 +373,7 @@ end
 --	новой схемы.
 --]]
 function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
-	--printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
+	printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
 	local st = db.storage[npc:id()]
 
 	if not st.stype then
@@ -384,7 +384,8 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		xr_meet.reset_meet(npc, scheme, st, section)
 		xr_wounded.reset_wounded(npc, scheme, st, section)
-		stalker_generic.reset_threshold(npc, scheme, st, section)
+		xr_danger.reset_danger(npc, scheme, st, section)
+		stalker_generic.reset_threshold(npc, scheme, st, section)		
 		stalker_generic.reset_show_spot(npc, scheme, st, section)
 		
 	elseif st.stype == modules.stype_mobile then
