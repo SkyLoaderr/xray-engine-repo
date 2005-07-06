@@ -6,6 +6,7 @@ function snd_source:__init (obj, storage)
 	self.object = obj
 	self.st	= storage
 	self.destructed = false
+	self.first_sound = true
 end
 
 function snd_source:reset_scheme()
@@ -74,6 +75,9 @@ function snd_source:update(delta)
 	end
 	
     if self.sound_list[self.current_sound]:playing () == false then
+       if self.first_sound == false then
+          self.st.signals["sound_end"] = true
+       end   
        self.current_sound = self.current_sound + 1
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
@@ -83,6 +87,7 @@ function snd_source:update(delta)
        else 
           self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), 0, sound_object.looped)
        end   
+       self.first_sound = false
        printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        played_sound = self.sound_list[self.current_sound]
     end
