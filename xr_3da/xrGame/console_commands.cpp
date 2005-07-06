@@ -1817,6 +1817,7 @@ void CCC_RegisterCommands()
 	g_OptConCom.Init();
 
 	// game
+	psActorFlags.set(AF_ALWAYSRUN, true);
 	CMD3(CCC_Mask,				"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 	CMD3(CCC_Mask,				"g_god",				&psActorFlags,	AF_GODMODE	);
 	CMD1(CCC_Spawn,				"g_spawn"				);
