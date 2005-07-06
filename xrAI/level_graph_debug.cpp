@@ -33,31 +33,31 @@ u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distan
 void CLevelGraph::render()
 {
 	if (bDebug && psAI_Flags.test(aiDebug)) {
-		on_render1		();
+		on_render1			();
 	}
 
-	on_render2			();
+	on_render2				();
 
-	draw_travel_line();
+	draw_travel_line		();
 
 	if (!psHUD_Flags.test(HUD_DRAW))
 		return;
 
 	if (psAI_Flags.test(aiCover)) {
-		on_render3	();
+		on_render3			();
 	}
 
 	if (psAI_Flags.test(aiBrain)) {
 		if (ai().get_level_graph()) {
-			on_render4	();
+			on_render4		();
 		}
 	}
 
 	if (psAI_Flags.test(aiMotion)) {
-		on_render5		();
+		on_render5			();
 	}
 
-	on_render6			();
+	on_render6				();
 
 #ifdef DEBUG
 #ifndef AI_COMPILER

@@ -249,8 +249,11 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
+//	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,can_kill_member() ? "+" : "-");
+//	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,can_kill_enemy() ? "+" : "-");
 	if (memory().enemy().selected()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
+		HUD().Font().pFontSmall->OutNext	("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(memory().enemy().selected()) ? "+" : "-");
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,*memory().enemy().selected()->cName());
 		float								interval = (1.f - panic_threshold())*.25f, left = -1.f, right = -1.f;
 		LPCSTR								description = "invalid";
@@ -342,7 +345,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (agent_manager().member().member(this).grenade_reaction().m_processing)
 		HUD().Font().pFontSmall->OutNext("%react on grenade : %s",indent,agent_manager().member().member(this).grenade_reaction().m_game_object ? *agent_manager().member().member(this).grenade_reaction().m_game_object->cName() : "unknown");
 
-	HUD().Font().pFontSmall->OutSet		(320,up_indent);
+	HUD().Font().pFontSmall->OutSet		(330,up_indent);
 	// brain
 	HUD().Font().pFontSmall->OutNext	("brain");
 	// motivations
@@ -638,5 +641,113 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	const CObjectHandlerPlanner	&objects = planner();
 	strconcat					(temp,indent,indent);
 	draw_planner				(objects,temp,indent,"root");
+}
+
+void CAI_Stalker::OnRender			()
+{
+	inherited::OnRender		();
+
+	if (IsMyCamera()) {
+		if (!memory().enemy().selected() || !memory().visual().visible_now(memory().enemy().selected()))
+			return;
+		Fvector					position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
+		RCache.dbg_DrawAABB		(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+		return;
+	}
+
+	{
+		Fvector					c0 = Position(),c1,t0 = Position(),t1;
+		c0.y					+= 2.f;
+		c1.setHP				(-movement().m_body.current.yaw,-movement().m_body.current.pitch);
+		c1.add					(c0);
+		RCache.dbg_DrawLINE		(Fidentity,c0,c1,D3DCOLOR_XRGB(0,255,0));
+		
+		t0.y					+= 2.f;
+		t1.setHP				(-movement().m_body.target.yaw,-movement().m_body.target.pitch);
+		t1.add					(t0);
+		RCache.dbg_DrawLINE		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
+	}
+
+	if (memory().danger().selected() && ai().level_graph().valid_vertex_position(memory().danger().selected()->position())) {
+		Fvector						position = memory().danger().selected()->position();
+		u32							level_vertex_id = ai().level_graph().vertex_id(position);
+		float						half_size = ai().level_graph().header().cell_size()*.5f;
+		position.y					+= 1.f;
+		RCache.dbg_DrawAABB	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+
+		if (ai().level_graph().valid_vertex_id(level_vertex_id)) {
+			LevelGraph::CVertex			*v = ai().level_graph().vertex(level_vertex_id);
+			Fvector						direction;
+			float						best_value = -1.f;
+
+			for (u32 i=0, j = 0; i<36; ++i) {
+				float				value = ai().level_graph().cover_in_direction(float(10*i)/180.f*PI,v);
+				direction.setHP		(float(10*i)/180.f*PI,0);
+				direction.normalize	();
+				direction.mul		(value*half_size);
+				direction.add		(position);
+				direction.y			= position.y;
+				RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+				value				= ai().level_graph().compute_square(float(10*i)/180.f*PI,PI/2.f,v);
+				if (value > best_value) {
+					best_value		= value;
+					j				= i;
+				}
+			}
+
+			direction.set		(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x,position.y,position.z + half_size*float(v->cover(1))/15.f);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x + half_size*float(v->cover(2))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set		(position.x,position.y,position.z - half_size*float(v->cover(3))/15.f);
+			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			float				value = ai().level_graph().cover_in_direction(float(10*j)/180.f*PI,v);
+			direction.setHP		(float(10*j)/180.f*PI,0);
+			direction.normalize	();
+			direction.mul		(value*half_size);
+			direction.add		(position);
+			direction.y			= position.y;
+			RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,0));
+		}
+	}
+
+	if (!psAI_Flags.is(aiVision))
+		return;
+
+	if (!smart_cast<CGameObject*>(Level().CurrentEntity()))
+		return;
+
+	Fvector						shift;
+	shift.set					(0.f,2.5f,0.f);
+
+	Fmatrix						res;
+	res.mul						(Device.mFullTransform,XFORM());
+
+	Fvector4					v_res;
+
+	res.transform				(v_res,shift);
+
+	if (v_res.z < 0 || v_res.w < 0)
+		return;
+
+	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f)
+		return;
+
+	float						x = (1.f + v_res.x)/2.f * (Device.dwWidth);
+	float						y = (1.f - v_res.y)/2.f * (Device.dwHeight);
+
+	CNotYetVisibleObject		*object = memory().visual().not_yet_visible_object(smart_cast<CGameObject*>(Level().CurrentEntity()));
+	string64					out_text;
+	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
+
+	HUD().Font().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,0,0));
+	HUD().Font().pFontMedium->OutSet	(x,y);
+	HUD().Font().pFontMedium->OutNext	(out_text);
 }
 #endif

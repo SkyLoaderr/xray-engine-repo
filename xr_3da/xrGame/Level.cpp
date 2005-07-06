@@ -58,6 +58,10 @@
 
 #include "level_sounds.h"
 
+#ifdef DEBUG
+#	include "ai/stalker/ai_stalker.h"
+#endif
+
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
 u32			lvInterpSteps = 0;
@@ -433,6 +437,11 @@ void CLevel::OnRender()
 #ifdef DEBUG
 	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();
+
+	CAI_Stalker				*stalker = smart_cast<CAI_Stalker*>(Level().CurrentEntity());
+	if (stalker)
+		stalker->OnRender	();
+
 
 	if (bDebug)	{
 		for (u32 I=0; I < Level().Objects.o_count(); I++) {

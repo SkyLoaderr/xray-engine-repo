@@ -210,6 +210,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 				try_change_current_entity	();
 			else
 				restore_actor				();
+			return;
 		}
 		break;
 	}
