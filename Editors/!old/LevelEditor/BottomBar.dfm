@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 548
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -11,14 +11,14 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 548
+    Width = 443
     Height = 17
     Align = alTop
     BevelOuter = bvLowered
     ParentColor = True
     TabOrder = 0
     object paInfo: TPanel
-      Left = 200
+      Left = 95
       Top = 1
       Width = 347
       Height = 15
@@ -170,6 +170,7 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
+        ExtButton = True
         ExtTransparent = True
         Caption = 'Options'
         Font.Charset = DEFAULT_CHARSET
@@ -189,7 +190,6 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        ExtButton = False
         Caption = 'Log'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -209,7 +209,6 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        ExtButton = False
         Caption = 'Stat'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -229,7 +228,6 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        ExtButton = False
         Caption = 'Break'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -248,6 +246,7 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
+        ExtButton = True
         ExtTransparent = True
         Caption = 'Macro'
         Font.Charset = DEFAULT_CHARSET
