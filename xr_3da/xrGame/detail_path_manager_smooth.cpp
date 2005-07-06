@@ -12,6 +12,11 @@
 #include "profiler.h"
 #include "level_navigation_graph.h"
 
+#ifdef DEBUG
+#	include "custommonster.h"
+	extern bool show_restrictions(CRestrictedObject *object);
+#endif
+
 template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 {
@@ -823,7 +828,7 @@ void CDetailPathManager::build_smooth_path		(
 		start_pos.y						= ai().level_graph().vertex_plane_y(start.vertex_id,start_pos.x,start_pos.z);
 		bool							alvi = m_restricted_object->accessible(start.vertex_id);
 		bool							asp = m_restricted_object->accessible(start_pos);
-		VERIFY							((alvi && asp) || (!asp && !alvi));
+		VERIFY3							((alvi && asp) || (!asp && !alvi) || show_restrictions(m_restricted_object),"Invalid restrictions (see log for details) for object ",*m_restricted_object->object().cName());
 		m_restricted_object->add_border	(start.vertex_id,dest.vertex_id);
 	}
 
