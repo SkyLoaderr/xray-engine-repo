@@ -330,36 +330,37 @@ IC BOOL __stdcall ray_query_callback	(collide::rq_result& result, LPVOID params)
 	return				(false);
 }
 
-bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, bool enemy, float distance) const
+bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage) const
 {
 	collide::ray_defs				ray_defs(position,direction,distance,0,collide::rqtBoth);
 	ray_query_param					params(this,memory().visual().transparency_threshold(),enemy);
-	Level().ObjectSpace.RayQuery	(ray_defs,ray_query_callback,&params);
+	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params);
 	return							(params.m_result);
 }
 
 bool CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance) const
 {
-	if (can_kill_entity(position,direction,enemy,distance))
+	collide::rq_results		rq_storage	;
+	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
 		return				(true);
 
 	float					yaw, pitch, safety_fire_angle = PI_DIV_8;
 	direction.getHP			(yaw,pitch);
 
 	direction.setHP			(yaw - safety_fire_angle,pitch);
-	if (can_kill_entity(position,direction,enemy,distance))
+	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
 		return				(true);
 
 	direction.setHP			(yaw + safety_fire_angle,pitch);
-	if (can_kill_entity(position,direction,enemy,distance))
+	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
 		return				(true);
 
 	direction.setHP			(yaw,pitch - safety_fire_angle);
-	if (can_kill_entity(position,direction,enemy,distance))
+	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
 		return				(true);
 
 	direction.setHP			(yaw,pitch + safety_fire_angle);
-	if (can_kill_entity(position,direction,enemy,distance))
+	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
 		return				(true);
 
 	return					(false);

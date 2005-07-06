@@ -176,11 +176,13 @@ void CBulletManager::AddBullet(const Fvector& position,
 
 void CBulletManager::Update()
 {
-	m_Lock.Enter		();
-	u32 delta_time		= Device.dwTimeDelta + m_dwTimeRemainder;
-	u32 step_num		= delta_time/m_dwStepTime;
-	m_dwTimeRemainder	= delta_time%m_dwStepTime;
+	m_Lock.Enter		()	;
+	u32 delta_time		=	Device.dwTimeDelta + m_dwTimeRemainder;
+	u32 step_num		=	delta_time/m_dwStepTime;
+	m_dwTimeRemainder	=	delta_time%m_dwStepTime;
 	
+	collide::rq_results		rq_storage	;
+	xr_vector<ISpatial*>	rq_spatial	;
 
 	for(int k=m_Bullets.size()-1; k>=0; k--){
 		SBullet& bullet = m_Bullets[k];
@@ -197,7 +199,7 @@ void CBulletManager::Update()
 
 		// calculate bullet
 		for(u32 i=0; i<cur_step_num; i++){
-			if(!CalcBullet(&bullet, m_dwStepTime)){
+			if(!CalcBullet(rq_storage,rq_spatial,&bullet, m_dwStepTime)){
 				if (bullet.m_bSendHit && GameID() != GAME_SINGLE)
 					Game().m_WeaponUsageStatistic.OnBullet_Remove(&bullet);
 				m_Bullets[k] = m_Bullets.back();
@@ -209,34 +211,33 @@ void CBulletManager::Update()
 	m_Lock.Leave		();
 }
 
-bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
+bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISpatial*>& rq_spatial, SBullet* bullet, u32 delta_time)
 {
-	VERIFY				(bullet);
+	VERIFY					(bullet);
 
-	float delta_time_sec = float(delta_time)/1000.f;
-	float range = bullet->speed*delta_time_sec;
+	float delta_time_sec	= float(delta_time)/1000.f;
+	float range				= bullet->speed*delta_time_sec;
 	
-	float max_range = bullet->max_dist - bullet->fly_dist;
+	float max_range					= bullet->max_dist - bullet->fly_dist;
 	if(range>max_range) 
 		range = max_range;
 
 	//запомнить текущую скорость пули, т.к. в
 	//RayQuery() она может поменяться из-за рикошетов
 	//и столкновений с объектами
-	Fvector cur_dir = bullet->dir;
+	Fvector cur_dir					= bullet->dir;
 	
 	bullet->flags.set				(SBullet::RICOCHET_FLAG,0);
 	collide::ray_defs RD			(bullet->pos, bullet->dir, range, 0, collide::rqtBoth);
 	BOOL result						= FALSE;
-	result							= Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet, test_callback);
-	if (result) range				= (Level().ObjectSpace.r_results.r_begin()+Level().ObjectSpace.r_results.r_count()-1)->range;
-	range = _max(EPS_L,range);
+	result							= Level().ObjectSpace.RayQuery(rq_storage, RD, firetrace_callback, bullet, test_callback);
+	if (result) range				= (rq_storage.r_begin()+rq_storage.r_count()-1)->range;
+	range		= _max				(EPS_L,range);
 	// whine test
-	xr_vector<ISpatial*>& r_spatial = g_pGameLevel->ObjectSpace.r_spatial;
-	g_SpatialSpace->q_ray			(r_spatial,0,STYPE_COLLIDEABLE,bullet->pos,bullet->dir,range);
+	g_SpatialSpace->q_ray			(rq_spatial,0,STYPE_COLLIDEABLE,bullet->pos,bullet->dir,range);
 	// Determine visibility for dynamic part of scene
-	for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
-		CEntity*	entity			= smart_cast<CEntity*>(r_spatial[o_it]->dcast_CObject());
+	for (u32 o_it=0; o_it<rq_spatial.size(); o_it++){
+		CEntity*	entity			= smart_cast<CEntity*>(rq_spatial[o_it]->dcast_CObject());
 		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
 			ICollisionForm*	cform	= entity->collidable.model;
 			ECollisionFormType tp	= cform->Type();
@@ -253,7 +254,6 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 			}
 		}
 	}
-
 
 	if(!bullet->flags.test(SBullet::RICOCHET_FLAG))
 	{
