@@ -210,12 +210,14 @@ void CCar::SWheelDrive::Init()
 void CCar::SWheelDrive::Drive()
 {
 	float cur_speed=pwheel->car->RefWheelMaxSpeed()/gear_factor;
-	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
 	pwheel->ApplyDriveAxisVel(pos_fvd*cur_speed);
-	//pwheel->ApplyDriveAxisTorque(pwheel->car->RefWheelCurTorque()/gear_factor);
+	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
+	pwheel->ApplyDriveAxisTorque(pwheel->car->RefWheelCurTorque()/gear_factor);
 }
 void CCar::SWheelDrive::UpdatePower()
 {
+	float cur_speed=pwheel->car->RefWheelMaxSpeed()/gear_factor;
+	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
 	pwheel->ApplyDriveAxisTorque(pwheel->car->RefWheelCurTorque()/gear_factor);
 }
 void CCar::SWheelDrive::Neutral()
