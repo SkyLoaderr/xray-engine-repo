@@ -51,6 +51,7 @@ namespace ControlCom {
 		eventTravelPointChange,
 		eventPathBuilt,
 		eventJumpEnd,
+		eventRotationJumpEnd
 	};
 
 	enum ECaptureType {

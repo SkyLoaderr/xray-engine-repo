@@ -11,6 +11,8 @@ CAI_Dog::CAI_Dog()
 	StateMan = xr_new<CStateManagerDog>(this);
 	
 	CControlled::init_external	(this);
+
+	com_man().add_ability(ControlCom::eControlRotationJump);
 }
 
 CAI_Dog::~CAI_Dog()

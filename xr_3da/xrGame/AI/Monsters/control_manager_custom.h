@@ -55,5 +55,6 @@ private:
 
 	void		check_attack_jump		();
 	void		check_jump_over_physics	();
+	void		check_rotation_jump		();
 };
 

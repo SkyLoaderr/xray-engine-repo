@@ -6,7 +6,7 @@
 #include "control_direction_base.h"
 #include "control_animation_base.h"
 
-#define ROTATION_JUMP_DELAY		5000
+#define ROTATION_JUMP_DELAY		6000
 #define CHECK_YAW				120 * PI / 180
 
 void CControlRotationJump::reinit()
@@ -47,10 +47,11 @@ void CControlRotationJump::activate()
 	m_time_last_rotation_jump				= Device.dwTimeGlobal;
 }
 
-void CControlRotationJump::deactivate()
+void CControlRotationJump::on_release()
 {
 	m_man->release_pure	(this);
 	m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);
+	m_man->unsubscribe	(this, ControlCom::eventAnimationStart);
 }
 
 bool CControlRotationJump::check_start_conditions()
@@ -72,18 +73,20 @@ void CControlRotationJump::on_event(ControlCom::EEventType type, ControlCom::IEv
 {
 	switch (type) {
 	case ControlCom::eventAnimationEnd:
-		m_man->deactivate	(ControlCom::eControlRotationJump);
+		m_man->notify				(ControlCom::eventRotationJumpEnd, 0);
 		break;
 	case ControlCom::eventAnimationStart: // handle blend params
 		{
 			// set angular speed
 			SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
 			VERIFY									(ctrl_data_dir);	
-			VERIFY									(m_man->animation().current_blend());
+			
+			CBlend									*blend = m_man->animation().current_blend();
+			VERIFY									(blend);
 
 			float cur_yaw, target_yaw;
 			m_man->direction().get_heading			(cur_yaw, target_yaw);
-			ctrl_data_dir->heading.target_speed		= angle_difference(cur_yaw,target_yaw)/ m_man->animation().current_blend()->timeTotal;
+			ctrl_data_dir->heading.target_speed		= angle_difference(cur_yaw,target_yaw)/ (blend->timeTotal / blend->speed);
 			break;
 		}
 	}

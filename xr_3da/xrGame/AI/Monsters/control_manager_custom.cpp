@@ -54,9 +54,10 @@ void CControlManagerCustom::add_ability(ControlCom::EContolType type)
 void CControlManagerCustom::on_start_control(ControlCom::EContolType type)
 {
 	switch (type) {
-	case ControlCom::eControlSequencer:			m_man->subscribe	(this, ControlCom::eventSequenceEnd);	break;
-	case ControlCom::eControlTripleAnimation:	m_man->subscribe	(this, ControlCom::eventTAChange);		break;
-	case ControlCom::eControlJump:				m_man->subscribe	(this, ControlCom::eventJumpEnd);		break;
+	case ControlCom::eControlSequencer:			m_man->subscribe	(this, ControlCom::eventSequenceEnd);		break;
+	case ControlCom::eControlTripleAnimation:	m_man->subscribe	(this, ControlCom::eventTAChange);			break;
+	case ControlCom::eControlJump:				m_man->subscribe	(this, ControlCom::eventJumpEnd);			break;
+	case ControlCom::eControlRotationJump:		m_man->subscribe	(this, ControlCom::eventRotationJumpEnd);	break;
 	}
 }
 
@@ -66,6 +67,7 @@ void CControlManagerCustom::on_stop_control	(ControlCom::EContolType type)
 	case ControlCom::eControlSequencer:			m_man->unsubscribe	(this, ControlCom::eventSequenceEnd);	break;
 	case ControlCom::eControlTripleAnimation:	m_man->unsubscribe	(this, ControlCom::eventTAChange);		break;
 	case ControlCom::eControlJump:				m_man->unsubscribe	(this, ControlCom::eventJumpEnd);		break;
+	case ControlCom::eControlRotationJump:		m_man->unsubscribe	(this, ControlCom::eventRotationJumpEnd);	break;
 	}
 }
 
@@ -81,7 +83,8 @@ void CControlManagerCustom::on_event(ControlCom::EEventType type, ControlCom::IE
 
 			break;
 		}
-	case ControlCom::eventJumpEnd:		m_man->release(this, ControlCom::eControlJump); break;
+	case ControlCom::eventJumpEnd:			m_man->release(this, ControlCom::eControlJump); break;
+	case ControlCom::eventRotationJumpEnd:	m_man->release(this, ControlCom::eControlRotationJump); break;
 	}
 }
 
@@ -97,6 +100,7 @@ void CControlManagerCustom::update_schedule()
 		check_attack_jump		();
 		check_jump_over_physics	();
 	}
+	if (m_rotation_jump) check_rotation_jump();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -346,4 +350,12 @@ void CControlManagerCustom::check_jump_over_physics()
 
 		prev_pos = travel_point.position;
 	}
+}
+
+void CControlManagerCustom::check_rotation_jump()
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlRotationJump)) return;	
+	
+	m_man->capture		(this, ControlCom::eControlRotationJump);
+	m_man->activate		(ControlCom::eControlRotationJump);
 }
