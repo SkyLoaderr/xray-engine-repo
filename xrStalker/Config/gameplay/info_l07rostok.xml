@@ -153,6 +153,13 @@
     <info_portion id="bar_dolg_territory_3_hit"></info_portion>
     <info_portion id="bar_dolg_territory_kill"></info_portion>
     
+    <info_portion id="bar_territory_nodolg_1_hit"></info_portion>
+    <info_portion id="bar_territory_nodolg_2_hit"></info_portion>
+    <info_portion id="bar_territory_nodolg_kill"></info_portion>
+    <info_portion id="bar_dolg_territory_1_hit_notify"></info_portion>
+    <info_portion id="bar_dolg_territory_2_hit_notify"></info_portion>
+    <info_portion id="bar_dolg_territory_kill_notify"></info_portion>
+    
 	<!-- ECOLOG FLASH QUEST -->
 	<info_portion id="bar_ecolog_crush_heli_start"></info_portion>
 	<info_portion id="bar_ecolog_crush_heli_down"></info_portion>
