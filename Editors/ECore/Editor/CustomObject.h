@@ -36,8 +36,10 @@ struct SExportStreams{
 	SExportStreamItem	envmodif;
 };
 
+typedef u32	ObjClassID;
+
 class ECORE_API CCustomObject {
-	EObjClass 		FClassID;
+	ObjClassID		FClassID;
     ESceneCustomOTools* FParentTools;
 
 	SAnimParams*	m_MotionParams;
@@ -82,7 +84,6 @@ public:
 	Fmatrix 		FITransform;
 
     CCustomObject*	m_pOwnerObject;
-	bool __stdcall  OnObjectNameAfterEdit	(PropValue* sender, shared_str& edit_val);
     void __stdcall 	OnTransformChange		(PropValue* value); 
 	void __stdcall  OnMotionableChange		(PropValue* sender);
     void __stdcall 	OnMotionCommandsClick	(PropValue* value, bool& bModif, bool& bSafe);
@@ -103,10 +104,6 @@ protected:
 	virtual void 	SetRotation		(const Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale		(const Fvector& scale)	{ FScale.set(scale);	UpdateTransform();}
 
-    void __stdcall 	OnNumChangePosition	(PropValue* sender);
-    void __stdcall 	OnNumChangeRotation	(PropValue* sender);
-    void __stdcall 	OnNumChangeScale	(PropValue* sender);
-
     virtual void	DeleteThis		(){m_RT_Flags.set(flRT_NeedSelfDelete,TRUE);}
 public:
 					CCustomObject	(LPVOID data, LPCSTR name);
@@ -122,7 +119,7 @@ public:
 
 	// editor integration
     virtual bool	Validate		(){return true;}
-	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
+	virtual void	FillProp		(LPCSTR pref, PropItemVec& items)=0;
 	void			AnimationFillProp(LPCSTR pref, PropItemVec& items);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 
@@ -157,24 +154,22 @@ public:
     // animation methods
     
     // grouping methods
-    void			OnDetach		();
-    void            OnAttach		(CCustomObject* owner);
     CCustomObject* 	GetOwner		(){return m_pOwnerObject;}
     virtual bool	CanAttach		()=0;
 
     virtual bool	OnChooseQuery	(LPCSTR specific){return true;}
     
     // change position/orientation methods
+	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up)=0;
+	virtual void 	Move			(Fvector& amount)=0;
     virtual void 	NumSetPosition	(const Fvector& pos)	{ SetPosition(pos); }
 	virtual void 	NumSetRotation	(const Fvector& rot)	{ SetRotation(rot);	}
     virtual void 	NumSetScale		(const Fvector& scale)	{ SetScale(scale);	}
-	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
-	virtual void 	Move			(Fvector& amount);
-	virtual void 	RotateParent	(Fvector& axis, float angle );
-	virtual void 	RotateLocal		(Fvector& axis, float angle );
-	virtual void 	RotatePivot		(const Fmatrix& prev_inv, const Fmatrix& current);
-	virtual void 	Scale			(Fvector& amount);
-	virtual void 	ScalePivot		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount);
+	virtual void 	RotateParent	(Fvector& axis, float angle )=0;
+	virtual void 	RotateLocal		(Fvector& axis, float angle )=0;
+	virtual void 	RotatePivot		(const Fmatrix& prev_inv, const Fmatrix& current)=0;
+	virtual void 	Scale			(Fvector& amount)=0;
+	virtual void 	ScalePivot		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount)=0;
 
 	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
@@ -190,7 +185,7 @@ public:
 	virtual void 	OnDeviceDestroy	(){;}
 
 	virtual void 	OnSynchronize	();
-    virtual void    OnShowHint      (AStringVec& dest);
+    virtual void    OnShowHint      (AStringVec& dest)=0;
 
     IC const Fmatrix& _ITransform			(){return FITransform;}
     IC const Fmatrix& _Transform			(){return FTransform;}
@@ -203,17 +198,19 @@ public:
     PropertyGP(GetScale,SetScale)			Fvector PScale;
 
     PropertyGP(FParentTools,FParentTools)	ESceneCustomOTools* ParentTools;
-    PropertyGP(FClassID,FClassID)			EObjClass ClassID;
+    PropertyGP(FClassID,FClassID)			u32 		ClassID;
     PropertyGP(GetName,SetName) 			LPCSTR  	Name;
 public:
 	static void		SnapMove		(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, const Fvector& amount);
 	static void		NormalAlign		(Fvector& rot, const Fvector& up);
 };
 
-typedef xr_list<CCustomObject*> 		ObjectList;
-typedef ObjectList::iterator 			ObjectIt;
-typedef xr_map<EObjClass,ObjectList> 	ObjectMap;
-typedef ObjectMap::iterator 			ObjectPairIt;
+typedef xr_list<CCustomObject*> 	ObjectList;
+typedef ObjectList::iterator 		ObjectIt;
+typedef xr_map<u32,ObjectList> 		ObjectMap;
+typedef ObjectMap::iterator 		ObjectPairIt;
+
+const ObjClassID OBJCLASS_NONE 		= ObjClassID(-1);
 
 //----------------------------------------------------
 #endif /* _INCDEF_CustomObject_H_ */
