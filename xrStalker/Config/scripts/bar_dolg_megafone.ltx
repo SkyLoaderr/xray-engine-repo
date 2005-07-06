@@ -8,12 +8,12 @@ on_info = {+bar_territory_nodolg_1_hit -bar_dolg_territory_1_hit_notify} ph_soun
 [ph_sound@1_hit]
 snd = dolg_megafon_1_hit
 on_timer = 30000|ph_sound@idle %+bar_dolg_territory_1_hit_notify%
-
+on_info = {+bar_territory_nodolg_2_hit -bar_dolg_territory_2_hit_notify} ph_sound@2_hit, {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill
 
 [ph_sound@2_hit]
 snd = dolg_megafon_2_hit
 on_timer = 30000|ph_sound@idle %+bar_dolg_territory_2_hit_notify +bar_dolg_territory_1_hit_notify%
-
+on_info = {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill
 
 [ph_sound@kill]
 snd = dolg_megafon_kill
