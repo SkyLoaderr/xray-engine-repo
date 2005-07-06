@@ -21,10 +21,10 @@ on_info = {=hitted_by(407:408)} %+val_escort_combat%
 ;--------------------------------------------------------------------------
 [meet@def]
 meet_dialog = val_escort_nap1_dialog
-meet_state = 15|hello@talk_hello|10|wait@|5|wait_na@
+meet_state = 15|hello@talk_hello|10|guard
 meet_state_wpn = 10|threat@threat_weap
-victim = 30|actor
-victim_vpn = 20|actor
+victim = 15|actor
+victim_wpn = 15|actor
 use = true
 
 ;--------------------------------------------------------------------------
@@ -63,12 +63,12 @@ on_info2 = {+val_escort_nap1_go_rescue} camper@ambush_go %+val_escort_start%
 [camper@ambush_go]
 path_walk = val_escort_nap1_rescue_walk
 path_look = val_escort_nap1_rescue_look
-radius = 2
+radius = 1
 def_state_moving = rush
 no_retreat = true
 on_signal = ambush_start | remark@phrase2 ;camper@wait_for_actor
 on_info = {+val_escort_combat} remark@fight
-combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
+combat_ignore_cond = always ;{=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
 ; ∆дем, чтоб актер подошел поближе
