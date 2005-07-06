@@ -158,24 +158,23 @@ ICF static BOOL grenade_hit_callback(collide::rq_result& result, LPVOID params)
 	return				(ep.shoot_factor>0.01f);
 }
 
-float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
+float CExplosive::ExplosionEffect(collide::rq_results& storage, CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {
-
-	Fvector l_pos; 
-	pExpObject->Center(l_pos);
-	Fvector l_dir; 
-	l_dir.sub(l_pos, expl_centre); 
-	float range=l_dir.magnitude();
+	Fvector l_pos				; 
+	pExpObject->Center			(l_pos);
+	Fvector l_dir				;
+	l_dir.sub					(l_pos, expl_centre); 
+	float range=l_dir.magnitude	();
 	float shoot_factor=1.f;
 	if(range>EPS_L)
 	{
-		pExpObject->setEnabled(FALSE);
+		pExpObject->setEnabled	(FALSE);
 		l_dir.mul(1.f/range);
-		collide::ray_defs RD		(expl_centre,l_dir,range,CDB::OPT_CULL,collide::rqtBoth);
-		SExpQParams	ep(expl_centre,l_dir);
+		collide::ray_defs	RD		(expl_centre,l_dir,range,CDB::OPT_CULL,collide::rqtBoth);
+		SExpQParams			ep		(expl_centre,l_dir);
 		g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&ep);
 		shoot_factor=ep.shoot_factor;
-		pExpObject->setEnabled(TRUE);
+		pExpObject->setEnabled	(TRUE);
 	}
 	//if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, collide::rqtBoth, RQ)) return 0;
 	//осколок не попал или попал, но не по нам
@@ -290,7 +289,7 @@ void CExplosive::Explode()
 	xr_vector<ISpatial*>	ISpatialResult;
 	g_SpatialSpace->q_sphere(ISpatialResult,0,STYPE_COLLIDEABLE,pos,m_fBlastRadius);
 	
-	m_blasted_objects.clear();
+	m_blasted_objects.clear	();
 	for (u32 o_it=0; o_it<ISpatialResult.size(); o_it++)
 	{
 		ISpatial*		spatial	= ISpatialResult[o_it];
@@ -299,23 +298,21 @@ void CExplosive::Explode()
 		CGameObject *pGameObject = static_cast<CGameObject*>(spatial->dcast_CObject());
 		if(pGameObject && cast_game_object()->ID() != pGameObject->ID()) 
 			m_blasted_objects.push_back(pGameObject);
-
 	}
 	//---------------------------------------------------------------------
 //	m_blasted.clear();	
 //	feel_touch_update(pos, m_fBlastRadius);
 
-	xr_list<s16>		l_elements;
-	xr_list<Fvector>	l_bs_positions;
+	xr_list<s16>			l_elements		;
+	xr_list<Fvector>		l_bs_positions	;
+	collide::rq_results		rq_storage		;
 	
 	while(m_blasted_objects.size()) 
 	{
 		CGameObject *l_pGO = m_blasted_objects.back();
 		
-		if(l_pGO->Visual()) 
-			l_pGO->Center(l_goPos); 
-		else 
-			l_goPos.set(l_pGO->Position());
+		if(l_pGO->Visual())		l_pGO->Center	(l_goPos); 
+		else					l_goPos.set		(l_pGO->Position());
 
 		l_dir.sub(l_goPos, pos); 
 		l_dst = l_dir.magnitude(); 
@@ -360,7 +357,7 @@ void CExplosive::Explode()
 
 		if(l_impuls > .001f) 
 		{
-			float l_effect=ExplosionEffect(l_pGO, pos, m_fBlastRadius, l_elements, l_bs_positions);
+			float l_effect=ExplosionEffect(rq_storage,l_pGO, pos, m_fBlastRadius, l_elements, l_bs_positions);
 			l_impuls *= l_effect;
 			l_hit*=l_effect;
 		}

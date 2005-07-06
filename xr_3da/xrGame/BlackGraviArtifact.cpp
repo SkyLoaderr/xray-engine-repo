@@ -148,8 +148,10 @@ void CBlackGraviArtefact::GraviStrike()
 	xr_list<s16>		elements_list;
 	xr_list<Fvector>	bone_position_list;
 
-	Fvector object_pos; 
-	Fvector strike_dir;
+	Fvector object_pos					; 
+	Fvector strike_dir					;
+
+	collide::rq_results		rq_storage	;
 
 	for(GAME_OBJECT_LIST_it it = m_GameObjectList.begin(); 
 						    m_GameObjectList.end() != it;
@@ -171,16 +173,13 @@ void CBlackGraviArtefact::GraviStrike()
 		if(impulse > .001f) 
 		{
 			setEnabled(false);
-			impulse *= CExplosive::ExplosionEffect(pGameObject, Position(), m_fRadius, 
-											  elements_list, 
-											  bone_position_list);
+			impulse *= CExplosive::ExplosionEffect	(rq_storage,pGameObject, Position(), m_fRadius, elements_list, bone_position_list);
 			setEnabled(true);
 		}
 
-		float hit_power;
+		float hit_power		;
 		CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(pGameObject);
-		if(pGameObject->m_pPhysicsShell) 
-			hit_power = 0;
+		if(pGameObject->m_pPhysicsShell)	hit_power = 0;
 		else if(pEntityAlive && pEntityAlive->g_Alive() && 
 				pEntityAlive->m_PhysicMovementControl->CharacterExist())
 			hit_power = 0;

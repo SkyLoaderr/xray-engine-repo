@@ -33,9 +33,9 @@ public:
 //	virtual void 				feel_touch_new(CObject* O);
 
 	virtual void 				Explode();
-	virtual void 				ExplodeParams(const Fvector& pos, const Fvector& dir);
+	virtual void 				ExplodeParams	(const Fvector& pos, const Fvector& dir);
 
-	static float 				ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
+	static float 				ExplosionEffect	(collide::rq_results& storage, CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
 
 
 	virtual void 				OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
