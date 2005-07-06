@@ -141,9 +141,9 @@ function mp_main:InitControls()
 	
 	btn = xml:Init3tButton("btn_cancel", self)
 	self:Register(btn, "btn_cancel")
-	
-	
-	-- SET DEFAULT VALUES FOR CONTROLS	
+end
+
+function mp_main:UpdateControls()
 	local opt = COptionsManager()
 	opt:SetCurrentValues("mm_mp_client")
 	opt:SetCurrentValues("mm_mp_server")
