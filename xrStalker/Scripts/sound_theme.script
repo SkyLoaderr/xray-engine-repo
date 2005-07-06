@@ -152,7 +152,7 @@ function load_sound(obj)
 	theme[obj:id()]["state"] = { exec = state_class, types = {}}
 	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle")
 
-	theme[obj:id()]["sleep"] = load_sound_from_ltx(obj, "state_idle", 10, 15, 75)
+	theme[obj:id()]["sleep"]						= load_sound_from_ltx(obj, "state_sleep", 10, 15, 75)
 
 	-- просьба о помощи
 	theme[obj:id()]["help"]							= load_sound_from_ltx(obj, "help")
