@@ -218,7 +218,11 @@ function act_state_mgr_end:execute()
 			self.st.look_object == nil
 		then
 --			printf("FIRE!!!")
-			self.object:set_item(object.fire1, self.object:best_weapon())
+			if t == "sniper_fire" then
+				self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
+			else
+				self.object:set_item(object.fire1, self.object:best_weapon())
+			end
 			return
 		else
 			if self.st.target_state == "psy_shoot" then
