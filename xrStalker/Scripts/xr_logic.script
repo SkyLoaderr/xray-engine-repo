@@ -459,8 +459,8 @@ function issue_event(npc, st, event_fn, ...)
 	--printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
 	if not st.actions then
 		local global_st = db.storage[npc:id()]
-		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", global_st.active_scheme, global_st.active_section)
+--		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
+--			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
 	end
 	local activation_count = 0
