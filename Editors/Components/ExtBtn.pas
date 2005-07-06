@@ -15,7 +15,7 @@ type
   private
     FGroupIndex: Integer;
     FGlyph: Pointer;
-    FAddGlyph: Pointer;
+    FExtGlyph: Pointer;
     FDown: Boolean;
     FDragging: Boolean;
     FAllowAllUp: Boolean;
@@ -23,18 +23,19 @@ type
     FSpacing: Integer;
     FTransparent: Boolean;
     FMargin: Integer;
+    FExtMargin: Integer;
     FFlat: Boolean;
     FMouseInControl: Boolean;
-    FCloseButton : boolean;
-    FCloseWidth : integer;
-    FCloseTransparent : boolean;
-    FOnAddBtnClick : TNotifyEvent;
+    FExtButton : boolean;
+    FExtWidth : integer;
+    FExtTransparent : boolean;
+    FOnExtBtnClick : TNotifyEvent;
     FKind: TKind;
     FBevelShow: Boolean;
     FThinBorder: Boolean;
     FHotTrack: Boolean;
+    FNormalColor: TColor;
     FHotColor: TColor;
-    FSaveColor: TColor;
     FDownColor: TColor;
     FBtnColor: TColor;
     FNeedManualMouseUp: Boolean;
@@ -54,12 +55,14 @@ type
     procedure SetTransparent(Value: Boolean);
     procedure SetThinBorder(Value: Boolean);
     procedure SetMargin(Value: Integer);
-    procedure SetCloseButton(Value: Boolean);
+    procedure SetExtMargin(Value: Integer);
+    procedure SetExtButton(Value: Boolean);
     procedure SetBevelShow(Value: Boolean);
-    procedure SetCloseWidth(Value: integer);
-    procedure SetCloseTransparent(Value: Boolean);
+    procedure SetExtWidth(Value: integer);
+    procedure SetExtTransparent(Value: Boolean);
     procedure SetKind(Value: TKind);
 	procedure SetBtnColor(Value: TColor);
+	procedure SetNormalColor(Value: TColor);
 	procedure SetDownColor(Value: TColor);
     procedure WMLButtonDblClk(var Message: TWMLButtonDown); message WM_LBUTTONDBLCLK;
     procedure CMEnabledChanged(var Message: TMessage); message CM_ENABLEDCHANGED;
@@ -72,7 +75,7 @@ type
     procedure CMMouseLeave(var Message: TMessage); message CM_MOUSELEAVE;
   protected
     FState: TButtonState;
-    FCloseState: TButtonState;
+    FExtState: TButtonState;
     procedure ActionChange(Sender: TObject; CheckDefaults: Boolean); override;
     function GetPalette: HPALETTE; override;
     procedure Loaded; override;
@@ -98,11 +101,12 @@ type
     property BevelShow: boolean read FBevelShow write SetBevelShow default true;
     property HotTrack: boolean read FHotTrack write SetHotTrack default false;
     property HotColor: TColor read FHotColor write FHotColor default clBlue;
+    property NormalColor: TColor read FNormalColor write SetNormalColor default clBlack;
     property BtnColor: TColor read FBtnColor write SetBtnColor default clBtnFace;
     property DownColor: TColor read FDownColor write SetDownColor default clBtnHighlight;
-    property CloseButton: boolean read FCloseButton write SetCloseButton default true;
-    property CloseWidth: integer read FCloseWidth write SetCloseWidth default 14;
-    property CloseTransparent: boolean read FCloseTransparent write SetCloseTransparent default false;
+    property ExtButton: boolean read FExtButton write SetExtButton default true;
+    property ExtWidth: integer read FExtWidth write SetExtWidth default 14;
+    property ExtTransparent: boolean read FExtTransparent write SetExtTransparent default false;
     property GroupIndex: Integer read FGroupIndex write SetGroupIndex default 0;
     property Down: Boolean read FDown write SetDown default False;
     property Caption;
@@ -113,6 +117,7 @@ type
     property Kind: TKind read FKind write SetKind default knClose;
     property Layout: TButtonLayout read FLayout write SetLayout default blGlyphLeft;
     property Margin: Integer read FMargin write SetMargin default -1;
+    property ExtMargin: Integer read FExtMargin write SetExtMargin default -1;
     property NumGlyphs: TNumGlyphs read GetNumGlyphs write SetNumGlyphs default 1;
     property ParentFont;
     property ParentShowHint;
@@ -123,7 +128,7 @@ type
     property Transparent: Boolean read FTransparent write SetTransparent default True;
     property FlatAlwaysEdge: Boolean read FThinBorder write SetThinBorder default False;
     property Visible;
-    property OnAddBtnClick : TNotifyEvent read FOnAddBtnClick write FOnAddBtnClick;
+    property OnExtBtnClick : TNotifyEvent read FOnExtBtnClick write FOnExtBtnClick;
     property OnClick;
     property OnDblClick;
     property OnMouseDown;
@@ -529,6 +534,7 @@ begin
   with Canvas do
   begin
     Brush.Style := bsClear;
+//.	Font.Color  := FSaveColor;
     if State = bsDisabled then
     begin
       OffsetRect(TextBounds, 1, 1);
@@ -684,34 +690,35 @@ constructor TExtBtn.Create(AOwner: TComponent);
 begin
   FGlyph := TButtonGlyph.Create;
   TButtonGlyph(FGlyph).OnChange := GlyphChanged;
-  FAddGlyph := TButtonGlyph.Create;
-  TButtonGlyph(FAddGlyph).Glyph.LoadFromResourceName(HInstance, 'CLOSE');
+  FExtGlyph := TButtonGlyph.Create;
+  TButtonGlyph(FExtGlyph).Glyph.LoadFromResourceName(HInstance, 'CLOSE');
   inherited Create(AOwner);
   SetBounds(0, 0, 100, 22);
   ControlStyle := [csSetCaption, csCaptureMouse, csDoubleClicks];
   ParentFont := True;
   FSpacing := 4;
   FMargin := -1;
+  FExtMargin := -1;
   FLayout := blGlyphLeft;
   FFlat := true;
   FTransparent := true;
-  FCloseWidth := 14;
-  FCloseButton := true;
+  FExtWidth := 14;
+  FExtButton := false;
   FBevelShow := true;
   FHotTrack := false;
   FThinBorder := false;
   Align := alNone;
   Inc(ButtonCount);
 
-  FHotColor := clBlue;
-  FSaveColor := Font.Color;
+  FHotColor 	:= clBlue;
+  FNormalColor 	:= clBlack;
   FNeedManualMouseUp := false;
   FDownColor := clBtnHighlight;
   FBtnColor := clBtnFace;
   Color := clBtnFace;
 
   TButtonGlyph(FGlyph).FBtnColor := FBtnColor;
-  TButtonGlyph(FAddGlyph).FBtnColor := FBtnColor;
+  TButtonGlyph(FExtGlyph).FBtnColor := FBtnColor;
   Invalidate;
 end;
 
@@ -720,7 +727,7 @@ begin
   Dec(ButtonCount);
   inherited Destroy;
   TButtonGlyph(FGlyph).Free;
-  TButtonGlyph(FAddGlyph).Free;
+  TButtonGlyph(FExtGlyph).Free;
 end;
 
 procedure TExtBtn.Paint;
@@ -742,8 +749,8 @@ begin
       		FState := bsUp;
     Canvas.Font := Self.Font;
 
-  	if(FCloseButton)then	PaintRect := Rect(0, 0, Width-FCloseWidth, Height)
-	else					PaintRect := Rect(0, 0, Width, Height);
+  	if(FExtButton)then	PaintRect := Rect(0, 0, Width-FExtWidth, Height)
+	else   				PaintRect := Rect(0, 0, Width, Height);
 
 	if not FFlat then begin
     	DrawFlags := DFCS_BUTTONPUSH or DFCS_ADJUSTRECT;
@@ -786,30 +793,30 @@ begin
 //      FSpacing, bsDown, Transparent, DrawTextBiDiModeFlags(0))
 //  else
   	if (FMouseInControl and FHotTrack) then Font.Color := FHotColor
-  	else									Font.Color := FSaveColor;
+  	else									Font.Color := FNormalColor;
 
   	TButtonGlyph(FGlyph).Draw(Canvas, PaintRect, Offset, Caption, FLayout, FMargin, FSpacing, FState, Transparent, DrawTextBiDiModeFlags(0));
 
-	if(FCloseButton and ((FState in [bsDown, bsExclusive]) or FMouseInControl or (csDesigning in ComponentState) or not FFlat or (FThinBorder and FFlat)))then begin
-		PaintRect := Rect(Width-FCloseWidth, 0, Width, Height);
+	if(FExtButton and ((FState in [bsDown, bsExclusive]) or FMouseInControl or (csDesigning in ComponentState) or not FFlat or (FThinBorder and FFlat)))then begin
+		PaintRect := Rect(Width-FExtWidth, 0, Width, Height);
     	if not FFlat then begin
       		DrawFlags := DFCS_BUTTONPUSH or DFCS_ADJUSTRECT;
-      		if FCloseState in [bsDown, bsExclusive] then
+      		if FExtState in [bsDown, bsExclusive] then
         		DrawFlags := DrawFlags or DFCS_PUSHED;
       		DrawFrameControl(Canvas.Handle, PaintRect, DFC_BUTTON, DrawFlags);
     	end else begin
-      		if (((FCloseState in [bsDown, bsExclusive]) or (FMouseInControl and (FCloseState <> bsDisabled)) or
+      		if (((FExtState in [bsDown, bsExclusive]) or (FMouseInControl and (FExtState <> bsDisabled)) or
         		(csDesigning in ComponentState)) and (FBevelShow or (FHotTrack and (FState in [bsExclusive, bsDown]))) or FThinBorder)  then
-        		DrawEdge(Canvas.Handle, PaintRect, DownStyles[FCloseState in [bsDown, bsExclusive]],
-          	FillStyles[CloseTransparent] or BF_RECT)
-      	else if not CloseTransparent then begin
+        		DrawEdge(Canvas.Handle, PaintRect, DownStyles[FExtState in [bsDown, bsExclusive]],
+          	FillStyles[ExtTransparent] or BF_RECT)
+      	else if not ExtTransparent then begin
 			Canvas.Brush.Color := FBtnColor;
         	Canvas.FillRect(PaintRect);
       	end;
       	InflateRect(PaintRect, -1, -1);
     end;
-    if FCloseState in [bsDown, bsExclusive] then begin
-      	if (FCloseState = bsExclusive) and (not FFlat or not FMouseInControl) then begin
+    if FExtState in [bsDown, bsExclusive] then begin
+      	if (FExtState = bsExclusive) and (not FFlat or not FMouseInControl) then begin
         	Canvas.Brush.Bitmap := AllocPatternBitmap(FBtnColor, clBtnHighlight);
         	Canvas.FillRect(PaintRect);
       	end;
@@ -818,12 +825,12 @@ begin
     end else begin
       	Offset.X := 0;
       	Offset.Y := 0;
-	  	if (not FCloseTransparent) then  begin
+	  	if (not FExtTransparent) then  begin
 		    Canvas.Brush.Color := FBtnColor;
 			Canvas.FillRect(PaintRect);
 	    end;
     end;
-    TButtonGlyph(FAddGlyph).Draw(Canvas, PaintRect, Offset, '', FLayout, FMargin, 0, FCloseState, CloseTransparent, DrawTextBiDiModeFlags(0));
+    TButtonGlyph(FExtGlyph).Draw(Canvas, PaintRect, Offset, '', FLayout, FExtMargin, 0, FExtState, ExtTransparent, DrawTextBiDiModeFlags(0));
   end;
 end;
 
@@ -868,7 +875,7 @@ begin
   else
     State := bsDisabled;
   TButtonGlyph(FGlyph).CreateButtonGlyph(State);
-  TButtonGlyph(FAddGlyph).CreateButtonGlyph(State);
+  TButtonGlyph(FExtGlyph).CreateButtonGlyph(State);
 end;
 
 procedure TExtBtn.MouseDown(Button: TMouseButton; Shift: TShiftState;
@@ -882,9 +889,9 @@ begin
   end;
   if (Button = mbLeft) and Enabled then
   begin
-    if FCloseButton and (X > (ClientWidth - FCloseWidth))then
+    if FExtButton and (X > (ClientWidth - FExtWidth))then
     begin
-      FCloseState := bsDown;
+      FExtState := bsDown;
       Invalidate;
     end
     else
@@ -927,43 +934,43 @@ procedure TExtBtn.MouseUp(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 var
   DoClick: Boolean;
-  DoCloseClick: Boolean;
+  DoExtClick: Boolean;
 begin
   inherited MouseUp(Button, Shift, X, Y);
-  if (FCloseState in [bsDown]) then
+  if (FExtState in [bsDown]) then
   begin
-    fCloseState := bsUp;
+    fExtState := bsUp;
     Invalidate;
   end;
   if FDragging then
   begin
     FDragging := False;
-    if FCloseButton then
+    if FExtButton then
     begin
-      DoClick := (X >= 0) and (X < (ClientWidth - FCloseWidth)) and (Y >= 0) and (Y <= ClientHeight);
-      DoCloseClick := (X > (ClientWidth - FCloseWidth)) and (X<ClientWidth) and (Y >= 0) and (Y <= ClientHeight);
+      DoClick := (X >= 0) and (X < (ClientWidth - FExtWidth)) and (Y >= 0) and (Y <= ClientHeight);
+      DoExtClick := (X > (ClientWidth - FExtWidth)) and (X<ClientWidth) and (Y >= 0) and (Y <= ClientHeight);
     end
     else
     begin
       DoClick := (X >= 0) and (X < ClientWidth) and (Y >= 0) and (Y <= ClientHeight);
-      DoCloseClick := false;
+      DoExtClick := false;
     end;
 
     if FGroupIndex = 0 then
     begin
       { Redraw face in-case mouse is captured }
       FState := bsUp;
-      FCloseState := bsUp;
+      FExtState := bsUp;
       FMouseInControl := False;
-      if (DoClick or DoCloseClick) and not (FState in [bsExclusive, bsDown]) then
+      if (DoClick or DoExtClick) and not (FState in [bsExclusive, bsDown]) then
         Invalidate;
     end
     else
-      if DoClick or DoCloseClick then
+      if DoClick or DoExtClick then
       begin
         if DoClick then SetDown(not FDown)
         else
-          if (DoCloseClick and not FDown) then SetDown(not FDown);
+          if (DoExtClick and not FDown) then SetDown(not FDown);
         if FDown then Repaint;
       end
       else
@@ -972,9 +979,9 @@ begin
         Repaint;
       end;
     if DoClick then Click;
-    if DoCloseClick then
+    if DoExtClick then
     begin
-      if Assigned(FOnAddBtnClick) then FOnAddBtnClick(Self);
+      if Assigned(FOnExtBtnClick) then FOnExtBtnClick(Self);
     end;
 
     UpdateTracking;
@@ -1095,6 +1102,15 @@ begin
   if (Value <> FMargin) and (Value >= -1) then
   begin
     FMargin := Value;
+    Invalidate;
+  end;
+end;
+
+procedure TExtBtn.SetExtMargin(Value: Integer);
+begin
+  if (Value <> FExtMargin) and (Value >= -1) then
+  begin
+    FExtMargin := Value;
     Invalidate;
   end;
 end;
@@ -1243,20 +1259,20 @@ begin
     end;
 end;
 
-procedure TExtBtn.SetCloseWidth(Value: Integer);
+procedure TExtBtn.SetExtWidth(Value: Integer);
 begin
-  if (Value <> FCloseWidth) and (Value >= -1) and (Value <= width div 2) then
+  if (Value <> FExtWidth) and (Value >= -1) and (Value <= width div 2) then
   begin
-    FCloseWidth := Value;
+    FExtWidth := Value;
     Invalidate;
   end;
 end;
 
-procedure TExtBtn.SetCloseButton(Value: Boolean);
+procedure TExtBtn.SetExtButton(Value: Boolean);
 begin
-  if Value <> FCloseButton then
+  if Value <> FExtButton then
   begin
-    FCloseButton := Value;
+    FExtButton := Value;
     Invalidate;
   end;
 end;
@@ -1276,7 +1292,17 @@ begin
   begin
     FBtnColor := Value;
 	TButtonGlyph(FGlyph).FBtnColor 		:= FBtnColor;
-	TButtonGlyph(FAddGlyph).FBtnColor 	:= FBtnColor;
+	TButtonGlyph(FExtGlyph).FBtnColor 	:= FBtnColor;
+    Invalidate;
+  end;
+end;
+
+procedure TExtBtn.SetNormalColor(Value: TColor);
+begin
+  if Value <> FNormalColor then
+  begin
+    FNormalColor 						:= Value;
+    Font.Color							:= FNormalColor;
     Invalidate;
   end;
 end;
@@ -1299,11 +1325,11 @@ begin
   end;
 end;
 
-procedure TExtBtn.SetCloseTransparent(Value: Boolean);
+procedure TExtBtn.SetExtTransparent(Value: Boolean);
 begin
-  if Value <> FCloseTransparent then
+  if Value <> FExtTransparent then
   begin
-    FCloseTransparent := Value;
+    FExtTransparent := Value;
     Invalidate;
   end;
 end;
@@ -1321,17 +1347,17 @@ procedure TExtBtn.SetKind(Value: TKind);
 begin
   if Value <> FKind then
   begin
-//    TButtonGlyph(FAddGlyph).Glyph.ReleaseHandle;
-    TButtonGlyph(FAddGlyph).Free;
-    FAddGlyph := TButtonGlyph.Create;
+//    TButtonGlyph(FExtGlyph).Glyph.ReleaseHandle;
+    TButtonGlyph(FExtGlyph).Free;
+    FExtGlyph := TButtonGlyph.Create;
     FKind := Value;
     case FKind of
-      knClose: TButtonGlyph(FAddGlyph).Glyph.LoadFromResourceName(HInstance, 'CLOSE');
-      knMinimize: TButtonGlyph(FAddGlyph).Glyph.LoadFromResourceName(HInstance, 'MINIMIZED');
-//      knNone: TButtonGlyph(FAddGlyph).Glyph.LoadFromResourceName(HInstance, 'MINIMIZED');
+      knClose: TButtonGlyph(FExtGlyph).Glyph.LoadFromResourceName(HInstance, 'CLOSE');
+      knMinimize: TButtonGlyph(FExtGlyph).Glyph.LoadFromResourceName(HInstance, 'MINIMIZED');
+//      knNone: TButtonGlyph(FExtGlyph).Glyph.LoadFromResourceName(HInstance, 'MINIMIZED');
     end;
 	TButtonGlyph(FGlyph).FBtnColor 		:= FBtnColor;
-	TButtonGlyph(FAddGlyph).FBtnColor 	:= FBtnColor;
+	TButtonGlyph(FExtGlyph).FBtnColor 	:= FBtnColor;
     Invalidate;
   end;
 end;
