@@ -130,7 +130,7 @@ function reset_danger(npc, scheme, st, section)
 	end
 	
 	printf("DANGER SECTION [%s]", utils.to_str(danger_section))
-	local st = db.object[npc:id()].danger
+	local st = db.storage[npc:id()].danger
 	if danger_section then
 		st.ignore_distance = utils.cfg_get_number(st.ini, danger_section, "ignore_distance", npc, false)
 	end
