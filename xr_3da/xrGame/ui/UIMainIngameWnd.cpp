@@ -509,7 +509,6 @@ void CUIMainIngameWnd::Update()
 	if (m_pMPLogWnd)
 		m_pMPLogWnd->Update();
 
-	if(!m_bShowHudInfo) return;
 
 	static string256 text_str;
 
@@ -521,6 +520,8 @@ void CUIMainIngameWnd::Update()
 		CUIWindow::Update();
 		return;
 	}
+
+	if(!m_bShowHudInfo) return;
 
 	if (GameID() == GAME_SINGLE)
 	{
