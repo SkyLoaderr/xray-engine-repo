@@ -285,7 +285,7 @@ function action_car:at_target_walkpoint()
 	printf("car <move>: dist = %f, target = %f, diff = %f", dist, self.target_dist, diff)
 	if self.target_dist ~= -1 and not arrived then
 	    if diff > 0 then
-	        if diff > 0.005 then
+	        if diff > 0.5 then
 	            arrived = true
 	            printf("car <move>: at target pt by diff(%f).", diff)
 	        end
