@@ -50,7 +50,7 @@ public:
 	void		jump					(const SControlJumpData &ta);
 	void		load_jump_data			(LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask);
 	
-	bool		jump					(CObject *obj);
+	bool		script_jump				(CObject *obj);
 private:
 
 	void		check_attack_jump		();

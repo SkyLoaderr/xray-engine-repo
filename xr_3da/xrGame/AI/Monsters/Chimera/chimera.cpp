@@ -262,7 +262,7 @@ void CChimera::UpdateCL()
 
 bool CChimera::jump(CObject *enemy)
 {
-	if (com_man().jump (enemy)) {
+	if (com_man().script_jump (enemy)) {
 		sound().play			(MonsterSpace::eMonsterSoundAttack);
 		return true;
 	}

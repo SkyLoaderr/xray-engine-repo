@@ -197,6 +197,8 @@ void CControlManagerCustom::jump(CObject *obj, const SControlJumpData &ta)
 	if (!m_man->check_start_conditions(ControlCom::eControlJump)) 
 		return;
 
+	if (m_object->GetScriptControl()) return;
+
 	m_man->capture		(this, ControlCom::eControlJump);
 
 	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
@@ -231,6 +233,8 @@ void CControlManagerCustom::jump(const SControlJumpData &ta)
 	if (!m_man->check_start_conditions(ControlCom::eControlJump)) 
 		return;
 
+	if (m_object->GetScriptControl()) return;
+
 	m_man->capture		(this, ControlCom::eControlJump);
 
 	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
@@ -248,7 +252,7 @@ void CControlManagerCustom::jump(const SControlJumpData &ta)
 	m_man->activate		(ControlCom::eControlJump);
 }
 
-bool CControlManagerCustom::jump(CObject *obj)
+bool CControlManagerCustom::script_jump(CObject *obj)
 {
 	if (!m_man->check_start_conditions(ControlCom::eControlJump)) return false;
 	if (!m_jump->can_jump(obj)) return false;
@@ -270,7 +274,8 @@ bool CControlManagerCustom::jump(CObject *obj)
 // Services
 void CControlManagerCustom::check_attack_jump()
 {
-	if (!m_object->EnemyMan.get_enemy()) return;
+	if (!m_object->EnemyMan.get_enemy())	return;
+	if (m_object->GetScriptControl())		return;
 
 	CEntityAlive *target = const_cast<CEntityAlive*>(m_object->EnemyMan.get_enemy());
 	if (!m_jump->can_jump(target)) return;
@@ -291,6 +296,7 @@ void CControlManagerCustom::check_jump_over_physics()
 {
 	if (!m_man->path_builder().is_moving_on_path()) return;
 	if (!m_man->check_start_conditions(ControlCom::eControlJump)) return;
+	if (m_object->GetScriptControl()) return;
 
 	Fvector prev_pos	= m_object->Position();
 	float	dist_sum	= 0.f;

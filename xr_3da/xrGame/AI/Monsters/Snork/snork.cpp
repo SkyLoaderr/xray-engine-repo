@@ -225,7 +225,7 @@ void CSnork::HitEntityInJump(const CEntity *pEntity)
 
 bool CSnork::jump(CObject *enemy)
 {
-	if (com_man().jump (enemy)) {
+	if (com_man().script_jump (enemy)) {
 		sound().play			(MonsterSpace::eMonsterSoundAttack);
 		return true;
 	}
