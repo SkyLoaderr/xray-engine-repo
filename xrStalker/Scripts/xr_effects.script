@@ -536,6 +536,7 @@ function bar_territory_logic(actor, npc)
 		end
 	else
 		if db.actor:has_info("bar_dolg_territory_kill") then
+			db.actor:give_info_portion("bar_territory_nodolg_kill")
 			news_manager.send_tip(actor, "bar_territory_nodolg_kill", nil, "dolg", nil, 507)
 			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
@@ -544,6 +545,7 @@ function bar_territory_logic(actor, npc)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_2_hit") then
+			db.actor:give_info_portion("bar_territory_nodolg_2_hit")
 			news_manager.send_tip(actor, "bar_territory_nodolg_2_hit", nil, "dolg", nil, 507)
 			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
@@ -551,6 +553,7 @@ function bar_territory_logic(actor, npc)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_1_hit") then
+			db.actor:give_info_portion("bar_territory_nodolg_1_hit")
 			news_manager.send_tip(actor, "bar_territory_nodolg_1_hit", nil, "dolg", nil, 507)
 			return
 		end	

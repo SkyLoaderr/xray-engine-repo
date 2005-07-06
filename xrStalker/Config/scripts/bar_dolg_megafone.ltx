@@ -1,51 +1,20 @@
 [logic]
-active = sr_idle@start_freedom
+active = ph_sound@idle
+ 
+[ph_sound@idle]
+snd = music
+on_info = {+bar_territory_nodolg_1_hit -bar_dolg_territory_1_hit_notify} ph_sound@1_hit, {+bar_territory_nodolg_2_hit -bar_dolg_territory_2_hit_notify} ph_sound@2_hit, {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill
+ 
+[ph_sound@1_hit]
+snd = dolg_megafon_1_hit
+on_timer = 30000|ph_sound@idle %+bar_dolg_territory_1_hit_notify%
 
-[sr_idle@start_freedom]
-on_info = %=bar_check_heli_scene%
-on_timer = 8000| sr_idle@start_ecolog %=bar_freedom_spam_1%
 
-[sr_idle@start_ecolog]
-on_info = %=bar_check_heli_scene%
-on_timer = 7000| sr_idle@idle %=bar_ecolog_spam_1%
+[ph_sound@2_hit]
+snd = dolg_megafon_2_hit
+on_timer = 30000|ph_sound@idle %+bar_dolg_territory_2_hit_notify +bar_dolg_territory_1_hit_notify%
 
-[sr_idle@idle]
-on_info = %=bar_check_heli_scene%
-on_timer = 5000| {-bar_ecolog_crush_heli_start} sr_idle@post_heli %+bar_ecolog_crush_heli_start =bar_crush_heli_start%
 
-[sr_idle@post_heli]
-on_info = %=bar_check_heli_scene%
-on_info2 = {+bar_ecolog_crush_heli_down} sr_idle@attract_ecolog %=bar_crush_heli_down%
-
-[sr_idle@attract_ecolog]
-on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@attract_freedom %=bar_ecolog_crush_attract_actor%
-
-[sr_idle@attract_freedom]
-on_timer = 10000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_2 %=bar_freedom_attack_attract_actor%
-                                                                                                                                                                                                   	
-[sr_idle@freedom_2]
-on_info = %=bar_check_heli_scene%
-on_timer = 10000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@ecolog_2 %=bar_freedom_spam_2%
-
-[sr_idle@ecolog_2]
-on_info = %=bar_check_heli_scene%
-on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_3 %=bar_ecolog_spam_2%
-
-[sr_idle@freedom_3]
-on_info = %=bar_check_heli_scene%
-on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@ecolog_3 %=bar_freedom_spam_3%
-
-[sr_idle@ecolog_3]
-on_info = %=bar_check_heli_scene%
-on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_4 %=bar_ecolog_spam_3%
-
-[sr_idle@freedom_4]
-on_info = %=bar_check_heli_scene%
-on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@ecolog_4 %=bar_freedom_spam_4%
-
-[sr_idle@ecolog_4]
-on_info = %=bar_check_heli_scene%
-on_timer = 16000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@checker %=bar_ecolog_spam_4%
-
-[sr_idle@checker]
-on_info = %=bar_check_heli_scene%
+[ph_sound@kill]
+snd = dolg_megafon_kill
+on_timer = 30000|ph_sound@idle %+bar_dolg_territory_kill_notify +bar_dolg_territory_1_hit_notify +bar_dolg_territory_2_hit_notify%
