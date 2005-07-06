@@ -196,6 +196,7 @@ void CLightProjector::calculate	()
 		v_C.set					(R.C);
 		v_C.y					+=	P_cam_dist;
 		v_N.set					(0,0,1);
+		VERIFY					(_valid(R.C) && _valid(R.C) && _valid(v_N));
 		mView.build_camera		(v_C,R.C,v_N);
 		RCache.set_xform_view	(mView);
 
