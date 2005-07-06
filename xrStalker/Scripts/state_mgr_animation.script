@@ -497,8 +497,8 @@ function animation:__init(npc, mgr)
 		harmonica_wait	= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 80 },
-						into	= { [0]	= {"sit_2_harmonica_0_0", {a="guitar_a"}, "sit_2_harmonica_0_1"}},
-						out		= { [0]	= {"harmonica_0_sit_2_0", {d="guitar_a"}, "harmonica_0_sit_2_1"} },
+						into	= { [0]	= {"sit_2_harmonica_0_0", {a="harmonica_a"}, "sit_2_harmonica_0_1"}},
+						out		= { [0]	= {"harmonica_0_sit_2_0", {d="harmonica_a"}, "harmonica_0_sit_2_1"} },
 						idle	= { [0]	= "harmonica_1" },
 						rnd		= { [0]	= {	"harmonica_2",
 											"harmonica_3" } }},
@@ -723,6 +723,7 @@ function animation:__init(npc, mgr)
 						vodka_a		= {mode = "detach", done = true},
 						kolbasa_a	= {mode = "detach", done = true},
 						guitar_a	= {mode = "detach", done = true},
+						harmonica_a	= {mode = "detach", done = true},
 						binocular_a	= {mode = "detach", done = true}}
 	}
 	
