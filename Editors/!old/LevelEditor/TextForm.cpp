@@ -163,7 +163,7 @@ void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 
 void __fastcall TfrmText::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
-	if (!OnCloseClick.empty()) OnCloseClick(CanClose);
+	if (!OnCloseClick.empty()) CanClose = OnCloseClick();
 }
 //---------------------------------------------------------------------------
 

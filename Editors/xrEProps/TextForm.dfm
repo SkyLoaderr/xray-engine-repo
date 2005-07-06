@@ -1,6 +1,6 @@
 object frmText: TfrmText
-  Left = -669
-  Top = 527
+  Left = -643
+  Top = 485
   Width = 443
   Height = 283
   Caption = 'Text'
@@ -41,8 +41,13 @@ object frmText: TfrmText
       Height = 18
       Align = alNone
       BevelShow = False
-      CloseButton = False
       Caption = 'Ok'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebOkClick
     end
@@ -53,8 +58,13 @@ object frmText: TfrmText
       Height = 18
       Align = alNone
       BevelShow = False
-      CloseButton = False
       Caption = 'Cancel'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebCancelClick
     end
@@ -65,8 +75,13 @@ object frmText: TfrmText
       Height = 18
       Align = alNone
       BevelShow = False
-      CloseButton = False
       Caption = '&Apply'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebApplyClick
     end
@@ -77,8 +92,13 @@ object frmText: TfrmText
       Height = 18
       Align = alNone
       BevelShow = False
-      CloseButton = False
       Caption = '&Load'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebLoadClick
     end
@@ -89,8 +109,13 @@ object frmText: TfrmText
       Height = 18
       Align = alNone
       BevelShow = False
-      CloseButton = False
       Caption = '&Save'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebSaveClick
     end
@@ -101,8 +126,13 @@ object frmText: TfrmText
       Height = 18
       Align = alNone
       BevelShow = False
-      CloseButton = False
       Caption = '&Clear'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebClearClick
     end

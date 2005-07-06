@@ -22,7 +22,7 @@
 class CCustomObject;
 
 typedef fastdelegate::FastDelegate1<LPCSTR,bool>							TOnApplyClick;
-typedef fastdelegate::FastDelegate1<bool&> 									TOnCloseClick;
+typedef fastdelegate::FastDelegate0<bool> 									TOnCloseClick;
 typedef fastdelegate::FastDelegate3<const AnsiString&, AnsiString&, bool&> 	TOnCodeInsight;
 
 class XR_EPROPS_API TfrmText : public TForm
