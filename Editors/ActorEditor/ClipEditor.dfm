@@ -1,6 +1,6 @@
 object ClipMaker: TClipMaker
-  Left = 488
-  Top = 355
+  Left = 232
+  Top = 363
   Width = 500
   Height = 299
   HorzScrollBar.Style = ssFlat
@@ -522,9 +522,8 @@ object ClipMaker: TClipMaker
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -594,9 +593,8 @@ object ClipMaker: TClipMaker
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -636,9 +634,8 @@ object ClipMaker: TClipMaker
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -676,9 +673,8 @@ object ClipMaker: TClipMaker
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -723,9 +719,8 @@ object ClipMaker: TClipMaker
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -762,9 +757,8 @@ object ClipMaker: TClipMaker
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -839,10 +833,9 @@ object ClipMaker: TClipMaker
           HotTrack = True
           HotColor = 15790320
           BtnColor = 10528425
-          CloseButton = False
           Caption = 'Insert'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -861,10 +854,9 @@ object ClipMaker: TClipMaker
           HotTrack = True
           HotColor = 15790320
           BtnColor = 10528425
-          CloseButton = False
           Caption = 'Append'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -883,10 +875,9 @@ object ClipMaker: TClipMaker
           HotTrack = True
           HotColor = 15790320
           BtnColor = 10528425
-          CloseButton = False
           Caption = 'Load'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -905,10 +896,9 @@ object ClipMaker: TClipMaker
           HotTrack = True
           HotColor = 15790320
           BtnColor = 10528425
-          CloseButton = False
           Caption = 'Save'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -927,10 +917,9 @@ object ClipMaker: TClipMaker
           HotTrack = True
           HotColor = 15790320
           BtnColor = 10528425
-          CloseButton = False
           Caption = 'Sync'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -949,10 +938,9 @@ object ClipMaker: TClipMaker
           HotTrack = True
           HotColor = 15790320
           BtnColor = 10528425
-          CloseButton = False
           Caption = 'Clear'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []

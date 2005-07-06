@@ -53,8 +53,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Ok'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ebSaveClick
   end
@@ -65,8 +70,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Cancel'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ebCancelClick
   end
@@ -77,8 +87,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Reset To Default'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ExtBtn1Click
   end
@@ -131,8 +146,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Clear'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ebClearClick
   end
@@ -144,8 +164,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Clear'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ebClearClick
   end
@@ -157,8 +182,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Clear'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ebClearClick
   end
@@ -170,8 +200,13 @@ object frmBonePart: TfrmBonePart
     Height = 17
     Align = alNone
     BevelShow = False
-    CloseButton = False
     Caption = 'Clear'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     FlatAlwaysEdge = True
     OnClick = ebClearClick
   end

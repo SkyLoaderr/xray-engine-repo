@@ -57,7 +57,6 @@ object frmMain: TfrmMain
         Width = 11
         Height = 11
         Align = alNone
-        ExtButton = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -81,7 +80,6 @@ object frmMain: TfrmMain
         Width = 11
         Height = 11
         Align = alNone
-        ExtButton = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -103,7 +101,6 @@ object frmMain: TfrmMain
         Width = 11
         Height = 11
         Align = alNone
-        ExtButton = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
