@@ -155,12 +155,14 @@ function actor_not_in_dolg(actor, npc)
 	return not actor_in_dolg(actor, npc)
 end
 function actor_set_dolg(actor, npc)
+	printf("ACTOR NOW IN [DOLG] COMMUNITY")
 	if db.actor then
 		db.actor:set_character_community("actor_dolg")
 	end
 	return true
 end
 function actor_clear_community(actor, npc)
+	printf("ACTOR NOW IN [NEUTRAL] COMMUNITY")
 	if db.actor then
 		db.actor:set_character_community("actor")
 	end
