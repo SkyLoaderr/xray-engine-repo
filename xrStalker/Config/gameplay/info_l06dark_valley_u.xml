@@ -51,5 +51,12 @@
 	<article>dar_document5</article>
 </info_portion>
 
+<!-- Вспомогательные инфопоршены -->
+<info_portion id="x18_tushkano1"></info_portion>
+<info_portion id="x18_tushkano2"></info_portion>
+<info_portion id="x18_tushkano3"></info_portion>
+<info_portion id="x18_tushkano4"></info_portion>
+<info_portion id="x18_tushkano5"></info_portion>
+
 
 </game_information_portions>
