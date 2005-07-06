@@ -13,9 +13,9 @@ on_info = %+val_escort_captive_dead%
 ;--------------------------------------------------------------------------
 [meet@def]
 meet_dialog = val_escort_captive_dialog
-meet_state = 3|wait_na@
+meet_state = 3|wait
 victim = 30|actor
-victim_vpn = 20|actor
+victim_wpn = 20|actor
 use = true
 
 ;--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ combat_ignore_cond = always
 [remark@wait]
 no_move = true
 no_rotate = true
-anim = caution
+anim = hide
 ;on_info = {=val_escort_combat_end} walker@leave
 on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@talk
 on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
