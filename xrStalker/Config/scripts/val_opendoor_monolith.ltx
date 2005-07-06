@@ -1,5 +1,5 @@
 [logic]
-active = camper@start
+active = remark@spawn
 ;on_combat = combat
 ;on_death = death
 on_hit = hit
@@ -21,11 +21,19 @@ on_info2 = {=hitted_by(412)} nil %=hit_npc(412:bip01_head:400:2700)%
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@def]
-meet_state = 5|wait_na@
+meet_state = 5|guard
 meet_state_wpn = 10|threat@threat_weap
 victim = 10|actor
-victim_vpn = 10|actor
+victim_wpn = 10|actor
 use = true
+
+;--------------------------------------------------------------------------
+; схемы
+;--------------------------------------------------------------------------
+[remark@spawn]
+no_move = true
+on_info = {+val_opendoor_start} camper@start
+combat_ignore_cond = always
 
 [camper@start]
 path_walk = val_opendoor_monolith_walk
@@ -65,7 +73,7 @@ def_state_campering_fire = threat_fire
 radius = 0
 no_retreat = true
 ;meet = meet@def
-on_info = {+val_opendoor_plr_detected} nil
+on_info = {+val_opendoor_plr_detected} nil, {=is_dead_one(412)} nil
 combat_ignore_cond = always
 wounded = wounded
 
