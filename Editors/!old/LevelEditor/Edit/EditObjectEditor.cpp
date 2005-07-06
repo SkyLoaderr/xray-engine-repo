@@ -13,7 +13,6 @@
 #include "PropertiesListHelper.h"
 #include "ResourceManager.h"
 #include "ImageManager.h"
-#include "SceneSummaryInfo.h"
 
 const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;
@@ -83,41 +82,6 @@ bool CEditableObject::BoxPick(CCustomObject* obj, const Fbox& box, const Fmatrix
             picked = true;
         }
 	return picked;
-}
-bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
-{
-	if (IsStatic()||IsMUStatic()){
-        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-			float area			= 0.f;
-			float pixel_area	= 0.f;
-            for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++){
-            	area			+= (*m)->CalculateSurfaceArea(*s_it,true);
-                pixel_area		+= (*m)->CalculateSurfacePixelArea(*s_it,true);
-            }
-            inf->AppendTexture(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str(),SSceneSummary::sttBase,area,pixel_area,m_LibName.c_str());
-        }
-        if (m_Flags.is(eoUsingLOD)){
-            inf->AppendTexture(GetLODTextureName().c_str(),SSceneSummary::sttLOD,0,0,"$LOD$");
-            inf->lod_objects.insert	(m_LibName.c_str());
-            inf->object_lod_ref_cnt++;
-        }
-        if (m_Flags.is(eoMultipleUsage)){
-            inf->mu_objects.insert(m_LibName.c_str());
-            inf->object_mu_ref_cnt++;
-        }
-
-        inf->face_cnt		+= GetFaceCount	();
-        inf->vert_cnt		+= GetVertexCount();
-    }
-	if (m_Flags.is(eoHOM)){
-    	inf->hom_face_cnt	+= GetFaceCount	();
-    	inf->hom_vert_cnt	+= GetVertexCount();
-    }
-    if (m_Flags.is(eoSoundOccluder)){
-    	inf->snd_occ_face_cnt += GetFaceCount();
-    	inf->snd_occ_vert_cnt += GetVertexCount();
-    }
-	return true;
 }
 #endif
 

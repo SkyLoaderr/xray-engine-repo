@@ -3,11 +3,11 @@
 
 #include "Bone.h"
 #include "Motion.h"
-#include "SceneClassList.h"
 #ifdef _EDITOR
-	#include "PropertiesListTypes.h"
+#	include "PropertiesListTypes.h"
 //	#include "PropertiesListHelper.h"
-	#include "GameMtlLib.h"
+#	include "GameMtlLib.h"
+#	include "pick_defs.h"
 #endif
 //----------------------------------------------------
 struct 	SRayPickInfo;
@@ -22,11 +22,10 @@ class	CMayaTranslator;
 struct	st_ObjectDB;
 struct	SXRShaderData;
 struct  ogf_desc;
-struct 	SSceneSummary;
+class	CCustomObject;
 
 #ifndef _EDITOR
 	class PropValue;
-	class SSceneSummary;
 	#define ref_shader LPVOID
 #endif
 
@@ -324,7 +323,6 @@ public:
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
     int 			GetSurfFaceCount		(LPCSTR surf_name);
-	bool 			GetSummaryInfo			(SSceneSummary* inf);
 
     // render methods
 	void 			Render					(const Fmatrix& parent, int priority, bool strictB2F);

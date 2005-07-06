@@ -6,13 +6,16 @@
 
 //----------------------------------------------------
 // refs
-class CSurface;
-struct SRayPickInfo;
+class 	CSurface;
+struct 	SRayPickInfo;
 //struct CFrustum;
-struct FSChunkDef;
-class CExporter;
+struct 	FSChunkDef;
+class 	CExporter;
+class	CCustomObject;
 
-#include "sceneclasslist.h"
+#ifdef _EDITOR
+#	include "pick_defs.h"
+#endif
 
 #pragma pack( push,1 )
 enum EVMType{

@@ -9,6 +9,7 @@
 #include "EditObject.h"
 #include "cl_collector.h"
 #include "ui_main.h"
+#include "pick_defs.h"
 
 /*
 void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, U32Vec& fl){

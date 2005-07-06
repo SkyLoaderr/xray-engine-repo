@@ -2,8 +2,8 @@
 // file: SceneClassList.h
 //----------------------------------------------------
 
-#ifndef pick_definitionH
-#define pick_definitionH
+#ifndef pick_defsH
+#define pick_defsH
 //----------------------------------------------------
 
 class CEditableObject;
