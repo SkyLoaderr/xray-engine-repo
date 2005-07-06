@@ -81,6 +81,7 @@ function snd_source:update(delta)
        self.current_sound = self.current_sound + 1
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
+          self.st.signals["theme_end"] = true
        end
        if self.st.looped == false then
           self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position ())
