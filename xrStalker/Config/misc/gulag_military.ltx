@@ -104,16 +104,31 @@ path_look = zoneguard_look_warn2
 
 ;------------------------------------- Телохранитель 1 --------------------------
 [logic@mil_freedom_bodyguard1]
-active = zoneguard1@mil_freedom_bodyguard1
+active = walker1@mil_freedom_bodyguard1
 on_combat = combat@mil_freedom_max
 
-[zoneguard1@mil_freedom_bodyguard1]
+[walker1@mil_freedom_bodyguard1]
 path_walk = zoneguard_walk_kill2
 path_look = zoneguard_look_kill2
-zone_warn = leader_kill_zone
-no_move = true
-on_actor_in_zone = mil_freedom_leader_kill_zone | {=actor_has_weapon} camper2@mil_freedom_bodyguard1 %=actor_enemy%
-team = freedom_bodyguards1
+meet = meet@mil_freedom_bodyguard1
+on_info = {+mil_bodyguard_kill} camper2@mil_freedom_bodyguard1
+
+[meet@mil_freedom_bodyguard1]
+meet_state = 7 | threat_fire
+meet_state_wpn = 7|threat_fire %=killactor%
+victim = 7|actor
+victim_wpn = 7|actor
+use	= false
+use_wpn = false
+
+
+;[zoneguard1@mil_freedom_bodyguard1]
+;path_walk = zoneguard_walk_kill2
+;path_look = zoneguard_look_kill2
+;zone_warn = leader_kill_zone
+;no_move = true
+;on_actor_in_zone = mil_freedom_leader_kill_zone | {=actor_has_weapon} camper2@mil_freedom_bodyguard1 %=actor_enemy%
+;team = freedom_bodyguards1
 
 [camper2@mil_freedom_bodyguard1]
 radius = 1
@@ -127,16 +142,30 @@ def_state_campering_fire = threat_fire
 
 ;------------------------------------- Телохранитель 2 --------------------------
 [logic@mil_freedom_bodyguard2]
-active = zoneguard1@mil_freedom_bodyguard2
+active = walker1@mil_freedom_bodyguard2
 on_combat = combat@mil_freedom_max
 
-[zoneguard1@mil_freedom_bodyguard2]
+[walker1@mil_freedom_bodyguard2]
 path_walk = zoneguard_walk_kill1
 path_look = zoneguard_look_kill1
-zone_warn = leader_kill_zone
-no_move = true
-on_actor_in_zone = mil_freedom_leader_kill_zone | {=actor_has_weapon} camper2@mil_freedom_bodyguard2 %=actor_enemy%
-team = freedom_bodyguards2
+meet = meet@mil_freedom_bodyguard1
+on_info = {+mil_bodyguard_kill} camper2@mil_freedom_bodyguard2
+
+;[meet@mil_freedom_bodyguard1]
+;meet_state = 7 | threat_fire
+;meet_state_wpn = 7|threat_fire %=killactor%
+;victim 			= 7|actor
+;victim_wpn 		= 7|actor
+;use			= false
+;use_wpn		= false
+
+;[zoneguard1@mil_freedom_bodyguard2]
+;path_walk = zoneguard_walk_kill1
+;path_look = zoneguard_look_kill1
+;zone_warn = leader_kill_zone
+;no_move = true
+;on_actor_in_zone = mil_freedom_leader_kill_zone | {=actor_has_weapon} camper2@mil_freedom_bodyguard2 %=actor_enemy%
+;team = freedom_bodyguards2
 
 [camper2@mil_freedom_bodyguard2]
 radius = 1
@@ -335,50 +364,66 @@ center_point = camp_center1
 
 ;----------------------------------- Охранник на входе -----------------------
 [logic@mil_freedom_stalker8]
-active = zoneguard@mil_freedom_stalker8
+active = walker1@mil_freedom_stalker8
 on_combat = combat@mil_freedom_max
 actor_dialogs = dialogs@mil_freedom_stalker8
 
 [dialogs@mil_freedom_stalker8]
 id = mil_zoneguard_common1,mil_zoneguard_common2
 
-[zoneguard@mil_freedom_stalker8]
+[walker1@mil_freedom_stalker8]
 path_walk = path_walk12
 path_look = path_look12
-zone_warn  = zone6
-zone_guard = kill_enter_zone
-snd_greet = mil_freedom_zoneguard
-team = freedom_guards
-no_move = true
-meet = on_meet1@mil_freedom_stalker8
-on_info = {+mil_zoneguard_talk} zoneguard2@mil_freedom_stalker8
+meet = meet@mil_freedom_stalker8
 
-[zoneguard2@mil_freedom_stalker8]
-path_walk = path_walk12
-path_look = path_look12
-zone_warn  = zone6
-snd_greet = talk_hello
-team = freedom_guards
-no_move = true
-meet = on_meet2@mil_freedom_stalker8
-
-[on_meet1@mil_freedom_stalker8]
-meet_state = 5|ward@mil_freedom_zoneguard
-meet_state_wpn = 10|backoff@threat_weap
-victim = 20|nil|10|actor
-victim_wpn = 20|nil|10|actor
-use = true
-use_wpn = false
-meet_dialog = mil_zoneguard_dialog
-
-[on_meet2@mil_freedom_stalker8]
-meet_state = 5|ward@talk_hello
-meet_state_wpn = 5|ward@talk_hello
-victim = 20|nil|10|actor
-victim_wpn = 20|nil|10|actor
-use = true
+[meet@mil_freedom_stalker8]
+meet_state = 10|{+mil_zoneguard_talk}wait, threat@ {+mil_zoneguard_talk} talk_hello, threat_back
+meet_state_wpn = 10|{+mil_zoneguard_talk} wait, threat@ {+mil_zoneguard_talk} talk_hello, threat_back 
+victim = 10|actor
+victim_wpn = 10|actor
+use	= true
 use_wpn = true
+zone = mil_freedom_zone6|{-mil_zoneguard_talk} true
 meet_dialog = mil_zoneguard_dialog
+
+
+;[zoneguard@mil_freedom_stalker8]
+;path_walk = path_walk12
+;path_look = path_look12
+;zone_warn  = zone6
+;zone_guard = kill_enter_zone
+;snd_greet = mil_freedom_zoneguard
+;team = freedom_guards
+;no_move = true
+;meet = on_meet1@mil_freedom_stalker8
+;on_info = {+mil_zoneguard_talk} zoneguard2@mil_freedom_stalker8
+
+;[zoneguard2@mil_freedom_stalker8]
+;path_walk = path_walk12
+;path_look = path_look12
+;zone_warn  = zone6
+;snd_greet = talk_hello
+;team = freedom_guards
+;no_move = true
+;meet = on_meet2@mil_freedom_stalker8
+
+;[on_meet1@mil_freedom_stalker8]
+;meet_state = 5|ward@mil_freedom_zoneguard
+;meet_state_wpn = 10|backoff@threat_weap
+;victim = 20|nil|10|actor
+;victim_wpn = 20|nil|10|actor
+;use = true
+;use_wpn = false
+;meet_dialog = mil_zoneguard_dialog
+
+;[on_meet2@mil_freedom_stalker8]
+;meet_state = 5|ward@talk_hello
+;meet_state_wpn = 5|ward@talk_hello
+;victim = 20|nil|10|actor
+;victim_wpn = 20|nil|10|actor
+;use = true
+;use_wpn = true
+;meet_dialog = mil_zoneguard_dialog
 
 
 ;----------------------------------- Мужик на входе 1 -----------------------
