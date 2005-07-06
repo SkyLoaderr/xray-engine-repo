@@ -73,7 +73,7 @@ void CControlRotationJump::on_event(ControlCom::EEventType type, ControlCom::IEv
 	switch (type) {
 	case ControlCom::eventAnimationEnd:
 		m_man->deactivate	(ControlCom::eControlRotationJump);
-		break
+		break;
 	case ControlCom::eventAnimationStart: // handle blend params
 		{
 			// set angular speed
