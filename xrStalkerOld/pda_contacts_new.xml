@@ -58,7 +58,7 @@
 		<texture>ui\ui_pda_vertical_line_l_l</texture>
 	</left_auto_static>
 	<!-- RIGHT LADDER -->
-	<left_auto_static x="416" y="82" width="4" height="388">
+	<left_auto_static x="269" y="82" width="4" height="388">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</left_auto_static>
 	<!-- UPPER HORISONTAL LINE -->
@@ -73,7 +73,7 @@
 		<texture>ui\ui_pda_vertical_line_r_l</texture>
 	</right_auto_static>
 	<!-- RIGHT LADDER -->
-	<right_auto_static x="269" y="52" width="4" height="420">
+	<right_auto_static x="416" y="52" width="4" height="420">
 		<texture>ui\ui_pda_vertical_line_r_r</texture>
 	</right_auto_static>
    	<!-- UPPER EVENTS HORISONTAL LINE -->
