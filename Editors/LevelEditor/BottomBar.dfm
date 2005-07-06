@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 443
+  Width = 548
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -11,14 +11,14 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 548
     Height = 17
     Align = alTop
     BevelOuter = bvLowered
     ParentColor = True
     TabOrder = 0
     object paInfo: TPanel
-      Left = 95
+      Left = 200
       Top = 1
       Width = 347
       Height = 15
@@ -102,7 +102,7 @@ object fraBottomBar: TfraBottomBar
     object paStatusBar: TPanel
       Left = 219
       Top = 1
-      Width = 344
+      Width = 1
       Height = 15
       Align = alClient
       BevelOuter = bvNone
@@ -123,7 +123,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 48
         Top = 0
-        Width = 296
+        Width = 4
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -137,7 +137,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 1
         object cgProgress: TCGauge
-          Left = 167
+          Left = -125
           Top = 2
           Width = 127
           Height = 11
@@ -170,11 +170,10 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        CloseWidth = 12
-        CloseTransparent = True
+        ExtTransparent = True
         Caption = 'Options'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -190,10 +189,10 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        CloseButton = False
+        ExtButton = False
         Caption = 'Log'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -210,10 +209,10 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        CloseButton = False
+        ExtButton = False
         Caption = 'Stat'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -230,10 +229,10 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        CloseButton = False
+        ExtButton = False
         Caption = 'Break'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -249,11 +248,10 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        CloseWidth = 12
-        CloseTransparent = True
+        ExtTransparent = True
         Caption = 'Macro'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
