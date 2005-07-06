@@ -1,0 +1,51 @@
+[logic]
+active = sr_idle@start_freedom
+
+[sr_idle@start_freedom]
+on_info = %=bar_check_heli_scene%
+on_timer = 8000| sr_idle@start_ecolog %=bar_freedom_spam_1%
+
+[sr_idle@start_ecolog]
+on_info = %=bar_check_heli_scene%
+on_timer = 7000| sr_idle@idle %=bar_ecolog_spam_1%
+
+[sr_idle@idle]
+on_info = %=bar_check_heli_scene%
+on_timer = 5000| {-bar_ecolog_crush_heli_start} sr_idle@post_heli %+bar_ecolog_crush_heli_start =bar_crush_heli_start%
+
+[sr_idle@post_heli]
+on_info = %=bar_check_heli_scene%
+on_info2 = {+bar_ecolog_crush_heli_down} sr_idle@attract_ecolog %=bar_crush_heli_down%
+
+[sr_idle@attract_ecolog]
+on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@attract_freedom %=bar_ecolog_crush_attract_actor%
+
+[sr_idle@attract_freedom]
+on_timer = 10000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_2 %=bar_freedom_attack_attract_actor%
+                                                                                                                                                                                                   	
+[sr_idle@freedom_2]
+on_info = %=bar_check_heli_scene%
+on_timer = 10000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@ecolog_2 %=bar_freedom_spam_2%
+
+[sr_idle@ecolog_2]
+on_info = %=bar_check_heli_scene%
+on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_3 %=bar_ecolog_spam_2%
+
+[sr_idle@freedom_3]
+on_info = %=bar_check_heli_scene%
+on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@ecolog_3 %=bar_freedom_spam_3%
+
+[sr_idle@ecolog_3]
+on_info = %=bar_check_heli_scene%
+on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@freedom_4 %=bar_ecolog_spam_3%
+
+[sr_idle@freedom_4]
+on_info = %=bar_check_heli_scene%
+on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@ecolog_4 %=bar_freedom_spam_4%
+
+[sr_idle@ecolog_4]
+on_info = %=bar_check_heli_scene%
+on_timer = 16000| {+bar_freedom_attack_ecolog} sr_idle@checker, sr_idle@checker %=bar_ecolog_spam_4%
+
+[sr_idle@checker]
+on_info = %=bar_check_heli_scene%
