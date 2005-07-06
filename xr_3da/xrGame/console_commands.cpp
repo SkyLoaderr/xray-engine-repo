@@ -1891,6 +1891,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_anim",			&psAI_Flags,	aiAnimation);
 	CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
 	CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
+	CMD3(CCC_Mask,				"ai_dbg_stalker",		&psAI_Flags,	aiStalker);
 	CMD3(CCC_Mask,				"ai_stats",				&psAI_Flags,	aiStats);
 	CMD3(CCC_Mask,				"ai_dbg_destroy",		&psAI_Flags,	aiDestroy);
 	CMD3(CCC_Mask,				"ai_dbg_serialize",		&psAI_Flags,	aiSerialize);

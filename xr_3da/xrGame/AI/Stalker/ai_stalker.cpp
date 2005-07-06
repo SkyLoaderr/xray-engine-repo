@@ -61,6 +61,9 @@ using namespace StalkerSpace;
 
 extern int g_AI_inactive_time;
 
+bool	g_stalker_can_kill_enemy	= false;
+bool	g_stalker_can_kill_member	= false;
+
 CAI_Stalker::CAI_Stalker			()
 {
 	m_sound_user_data_visitor		= 0;
@@ -506,8 +509,11 @@ void CAI_Stalker::UpdateCL()
 	}
 
 #ifdef DEBUG
-	if (this->ID() == Level().CurrentViewEntity()->ID())
+	if (this->ID() == Level().CurrentViewEntity()->ID()) {
+		g_stalker_can_kill_enemy	= can_kill_enemy();
+		g_stalker_can_kill_member	= can_kill_member();
 		Exec_Visibility				();
+	}
 #endif
 }
 

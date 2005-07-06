@@ -30,4 +30,5 @@
 #	define aiInfoPortion	(1<<17)
 #	define aiGOAPScript		(1<<18)
 #	define aiGOAPObject		(1<<19)
+#	define aiStalker		(1<<20)
 #endif

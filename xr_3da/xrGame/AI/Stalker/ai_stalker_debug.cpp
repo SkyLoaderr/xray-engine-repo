@@ -47,6 +47,9 @@
 
 CActor *g_debug_actor = 0;
 
+extern bool	g_stalker_can_kill_enemy;
+extern bool	g_stalker_can_kill_member;
+
 void try_change_current_entity()
 {
 	CActor								*actor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -200,6 +203,9 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (!g_Alive())
 		return;
 
+	if (!psAI_Flags.test(aiStalker))
+		return;
+
 	CActor								*actor = smart_cast<CActor*>(Level().Objects.net_Find(0));
 	if (!actor)
 		return;
@@ -251,6 +257,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
 //	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,can_kill_member() ? "+" : "-");
 //	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,can_kill_enemy() ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,g_stalker_can_kill_member ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,g_stalker_can_kill_enemy ? "+" : "-");
 	if (memory().enemy().selected()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(memory().enemy().selected()) ? "+" : "-");
