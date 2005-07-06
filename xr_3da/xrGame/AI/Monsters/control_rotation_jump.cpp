@@ -20,6 +20,7 @@ void CControlRotationJump::activate()
 {
 	m_man->capture_pure	(this);
 	m_man->subscribe	(this, ControlCom::eventAnimationEnd);
+	m_man->subscribe	(this, ControlCom::eventAnimationStart);
 
 	// to know the position we will be we need to build path
 	Fvector target_position = m_object->EnemyMan.get_enemy()->Position();
@@ -38,11 +39,9 @@ void CControlRotationJump::activate()
 	m_man->path_stop						(this);
 	m_man->move_stop						(this);
 
-
 	// set angular speed in exclusive force mode
 	SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
 	VERIFY									(ctrl_data_dir);	
-	ctrl_data_dir->heading.target_speed		= 3.f;
 	ctrl_data_dir->heading.target_angle		= m_object->dir().heading().target;
 
 	m_time_last_rotation_jump				= Device.dwTimeGlobal;
@@ -71,5 +70,21 @@ bool CControlRotationJump::check_start_conditions()
 
 void CControlRotationJump::on_event(ControlCom::EEventType type, ControlCom::IEventData *dat)
 {
-	m_man->deactivate	(ControlCom::eControlRotationJump);
+	switch (type) {
+	case ControlCom::eventAnimationEnd:
+		m_man->deactivate	(ControlCom::eControlRotationJump);
+		break
+	case ControlCom::eventAnimationStart: // handle blend params
+		{
+			// set angular speed
+			SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
+			VERIFY									(ctrl_data_dir);	
+			VERIFY									(m_man->animation().current_blend());
+
+			float cur_yaw, target_yaw;
+			m_man->direction().get_heading			(cur_yaw, target_yaw);
+			ctrl_data_dir->heading.target_speed		= angle_difference(cur_yaw,target_yaw)/ m_man->animation().current_blend()->timeTotal;
+			break;
+		}
+	}
 }
