@@ -16,24 +16,37 @@
 #include "../control_animation_base.h"
 #include "../control_path_builder_base.h"
 
+#include "../../../patrol_path_manager.h"
+#include "../../../patrol_path_manager_space.h"
+
+
 using namespace MonsterSpace;
 
 //////////////////////////////////////////////////////////////////////////
 bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 {
-	if (!inherited::bfAssignMovement(tpEntityAction))
-		return		(false);
-
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	if (l_tMovementAction.completed()) return false;
+	
+	// check if completed
+	if (l_tMovementAction.m_bCompleted)	return(false);
+
+	// check if alive
+	CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(this);
+	if (entity_alive && !entity_alive->g_Alive()) {
+		l_tMovementAction.m_bCompleted = true;
+		return				(false);
+	}
 
 	if (control().path_builder().detail().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
 		if ((l_tMovementAction.m_fDistToEnd > 0) && control().path_builder().is_path_end(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
+			
+		}
+		if (control().path_builder().actual_all() && control().path_builder().path_completed()) {
+			l_tMovementAction.m_bCompleted = true;
 			return false;
 		}
 	}
-
 
 	// translate script.action into anim().action
 	switch (l_tMovementAction.m_tMoveAction) {
@@ -53,6 +66,17 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 			path().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
 			break;
 													  }
+		case CScriptMovementAction::eGoalTypePatrolPath : 
+			control().path_builder().set_path_type				(MovementManager::ePathTypePatrolPath);
+			control().path_builder().patrol().set_path			(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
+			control().path_builder().patrol().set_start_type	(l_tMovementAction.m_tPatrolPathStart);
+			control().path_builder().patrol().set_route_type	(l_tMovementAction.m_tPatrolPathStop);
+			control().path_builder().patrol().set_random		(l_tMovementAction.m_bRandom);
+			if (l_tMovementAction.m_previous_patrol_point != u32(-1)) {
+				control().path_builder().patrol().set_previous_point(l_tMovementAction.m_previous_patrol_point);
+			}
+			break;
+
 		case CScriptMovementAction::eGoalTypePathPosition :
 		case CScriptMovementAction::eGoalTypeNoPathPosition :
 			path().set_target_point	(l_tMovementAction.m_tDestinationPosition);
@@ -61,7 +85,8 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 			path().set_target_point	(l_tMovementAction.m_tDestinationPosition, l_tMovementAction.m_tNodeID);
 			break;
 	}
-	return			(true);		
+	
+	return	(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////

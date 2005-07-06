@@ -123,7 +123,12 @@ bool CControlPathBuilderBase::target_point_need_update()
 	m_wait_path_end	= false;
 
 	// если путь ещё не построен - выход
-	if (!m_man->path_builder().detail().actual() && (m_man->path_builder().detail().time_path_built() < m_last_time_target_set)) return false;
+	if (!m_man->path_builder().detail().actual() && (m_man->path_builder().detail().time_path_built() < m_last_time_target_set)) {
+		bool b_actual = m_man->path_builder().detail().actual();
+		u32 time = m_man->path_builder().detail().time_path_built();	
+
+		return false;
+	}
 	return true;
 }
 
