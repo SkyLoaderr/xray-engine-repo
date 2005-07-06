@@ -75,7 +75,8 @@ function action_meet_wait:execute ()
 		h.draftsman = db.actor
 		h.impulse = 0
 		h.type = hit.wound
-		self.object:hit(h)		
+		self.object:hit(h)
+		self.object:set_relation(game_object.enemy, db.actor)		
 	else
 		-- является ли текущий звук синхронным для текущего стейта
 		for k,v in self.a.syndata do
