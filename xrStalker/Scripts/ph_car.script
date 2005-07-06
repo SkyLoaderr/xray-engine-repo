@@ -8,16 +8,17 @@
 
 --[[
 C++ class CCar : CGameObject,holder {
-    const  = 2262;
-    const  = 2263;
-    const  = 2266;
-    const  = 2264;
-    const  = 2265;
-    const  = 2267;
+    const eWpnActivate = 3;
+    const eWpnAutoFire = 5;
+    const eWpnFire = 4;
+    const eWpnDesiredDir = 1;
+    const eWpnDesiredPos = 2;
+    const eWpnToDefaultDir = 6;
     
     CCar ();
     
     function _construct();
+    function GetfHealth() const;
     function CurrentVel();
     function getVisible() const;
     function net_Spawn(cse_abstract*);
@@ -28,6 +29,7 @@ C++ class CCar : CGameObject,holder {
     function IsObjectVisible(game_object*);
     function net_Import(net_packet&);
     function HasWeapon();
+    function SetfHealth(number);
     function engaged();
     function FireDirDiff();
     function CanHit();
@@ -73,6 +75,7 @@ local state_firetarget_enemy = 3
 class "action_car"
 
 function action_car:__init(obj, storage)
+    printf("car <state>: init.")
 	self.object = obj
 	self.st = storage
 	self.car = self.object:get_car()
@@ -87,7 +90,7 @@ function action_car:__init(obj, storage)
 end
 
 function action_car:reset_scheme(loading)
---	printf("_pc: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
+    printf("car <state>: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 
 	self.object:set_nonscript_usable(self.st.nonscript_usable)
 
@@ -109,7 +112,7 @@ function action_car:reset_scheme(loading)
 		self.fire = false
 	end
 
-	xr_logic.mob_capture(self.object, true)
+	--xr_logic.mob_capture(self.object, true)
 	self.st.signals = {}
 
 	self.fc_upd_num = 0 -- fastcall updates num
@@ -128,7 +131,7 @@ function action_car:reset_scheme(loading)
 		    abort("object '%s': unable to find path_walk '%s' on the map", self.object:name(), self.st.path_walk)
 	    end
 
-        --self:start_car()
+        self:start_car()
 	    self.path_walk_count = self.path_walk:count()
 
 	    if not self.path_walk_info then
@@ -313,7 +316,7 @@ end
 function action_car:go_to_walkpoint(pt)
 	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
 	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
-	--printf("_pc: action_car:go_to_walkpoint(%s)", utils.to_str(pt))
+	--printf("car <move>: action_car:go_to_walkpoint(%s)", utils.to_str(pt))
 	if pt == nil or pt < 0 then
 	    self:stop_car()
 		self.state_moving = state_moving_stop
@@ -321,17 +324,17 @@ function action_car:go_to_walkpoint(pt)
 	end
 
     local diff_angle = angle_xz(self.object, self.path_walk:point(pt))
-    --printf("_pc: diff_angle = %f, katet = %f", diff_angle, get_katet(self.object, self.path_walk:point(pt)))
+    --printf("car <move>: diff_angle = %f, katet = %f", diff_angle, get_katet(self.object, self.path_walk:point(pt)))
 	--if utils.no_need_to_rotate_xz(self.object, self.path_walk:point(pt)) then
 	if diff_angle < 0.3 then
 		printf("car <move>: no_need_to_rotate. speed = %f, time = %f", self.speed, self.fc_upd_avg)
 		if self.state_moving ~= state_moving_fwd then
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
-				move(move.on + move.fwd, self.speed), --
+				move(move.fwd, self.speed), --move.on + 
 				object("right_light", object.deactivate),
 				object("left_light", object.deactivate),
-				cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
+				cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 			self.state_moving = state_moving_fwd
 		end
 	else
@@ -344,20 +347,20 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_left then 
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.on + move.fwd + move.left, self.speed), --
+					move(move.fwd + move.left,self.speed), --move.on + 
 					object("right_light", object.deactivate),
 					object("left_light", object.activate),
-					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
+					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 				self.state_moving = state_moving_rot_left
 			end
 		else
 			if self.state_moving ~= state_moving_rot_right then
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.on + move.fwd + move.right, self.speed), --
+					move(move.fwd + move.right, self.speed), --move.on + 
 					object("right_light", object.activate),
 					object("left_light", object.deactivate),
-					cond(cond.time_end, self.fc_upd_avg)) --time_infinite))
+					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 				self.state_moving = state_moving_rot_right
 			end
 		end
@@ -367,14 +370,14 @@ end
 function action_car:start_car()
     printf("car <move>: car started.")
 	xr_logic.mob_capture(self.object, true)
-	action(self.object, move(move.on + move.fwd, 10), cond(cond.time_end, 100)) --cond(cond.move_end))
+	action(self.object, move(move.on + move.fwd, 100), cond(cond.time_end, 5000))
 	--self.speed = 0
 end
 
 function action_car:stop_car()
     printf("car <move>: car stopping.")
 	xr_logic.mob_capture(self.object, true)
-	action(self.object, move(move.off + move.handbrake, 0), cond(cond.time_end, 10)) --cond(cond.move_end))
+	action(self.object, move(move.off + move.handbrake, 0), cond(cond.time_end, 3000)) --cond(cond.move_end))
 	self.speed = 0
 end
 
@@ -609,7 +612,7 @@ function action_car:fire_arrival_callback(cur_index)
 	    return
     end
 
-	--printf("_pc: action_car: fire_arrival_callback(%s)", utils.to_str(cur_index))
+	--printf("car <fire>: action_car: fire_arrival_callback(%s)", utils.to_str(cur_index))
     if cur_index > 0 then
         local idx = self.fire_pt_arr[cur_index]
 
@@ -689,7 +692,6 @@ end
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
 --+++++++++++++++++++-- COMMON SECTION --+++++++++++++++++++--
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
-
 function action_car:set_signal(sig)
 	local stor = db.storage[self.object:id()]
 	stor[stor.active_scheme].signals[sig] = true
@@ -729,13 +731,25 @@ end
 
 -- Вернуть true, если апдейты больше не нужны
 function action_car:fast_update()
-    --printf("_pc: action_car:update(): state=%d", self.state_moving)
+    --printf("car <state>: action_car:update(): state=%d", self.state_moving)
 
 	--if not self.object:action() then
 	--	printf("_pc: CAR EXPLODE")
 	--	self.object:explode(0)
 	--	self.object:Explode()
 	--end
+	
+	if self.car:GetfHealth() <= 0 then
+	    printf("car <state>: killed.")
+	    self.state_moving = state_moving_end
+	    self:stop_car()
+	    self.state_cannon = state_none
+	    self.state_firetarget = state_none
+	    self.state_shooting = state_none
+	    self:set_shooting(self.state_shooting)
+	    xr_logic.mob_release(self.object)
+	    return true
+	end
 	
 	local time = time_global()
 
@@ -747,7 +761,7 @@ function action_car:fast_update()
 	        self.fc_upd_num = n + 1
 	    end
 	    self.fc_last_upd_tm = time
-	    --printf("_pc: average update = %f, time(%f)", self.fc_upd_avg, time)
+	    --printf("car <state>: average update = %f, time(%f)", self.fc_upd_avg, time)
 	end
 
 	if self.state_moving == state_moving_end and self.state_cannon == state_cannon_stop then
@@ -761,7 +775,7 @@ function action_car:fast_update()
 
 	if self.state_moving ~= state_moving_end and self.state_moving ~= state_moving_stop and 
 	   time >= self.last_pos_time + self.min_car_explode_time then
-	   --printf("car <state>: moving(%s) cannon(%s)", utils.to_str(self.state_moving), utils.to_str(self.state_cannon))
+	    printf("car <state>: moving(%s)", utils.to_str(self.state_moving))
 		if not self.last_pos then
 			self.last_pos = self.object:position()
 			self.last_pos_time = time_global()
@@ -769,7 +783,7 @@ function action_car:fast_update()
 			local cur_pos = self.object:position()
 			local diff = self.last_pos:distance_to(cur_pos)
 			if diff < self.min_delta_per_sec then
-                printf("car <move>: got stuck - stop.")
+                printf("car <move>: got stuck (%f < %f) - stop.", diff, self.min_delta_per_sec)
                 self:stop_car()
 				--self:car_explode()
 				self.state_moving = state_moving_end
