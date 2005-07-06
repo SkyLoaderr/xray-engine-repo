@@ -5,10 +5,9 @@
 //	Author		: Dmitriy Iassenev
 //	Description : GUID generator
 ////////////////////////////////////////////////////////////////////////////
-
-#pragma once
-
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "guid_generator.h"
 
 #ifdef WINVER

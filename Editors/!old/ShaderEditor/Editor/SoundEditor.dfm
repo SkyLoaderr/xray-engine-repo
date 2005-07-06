@@ -60,8 +60,13 @@ object frmSoundLib: TfrmSoundLib
         Height = 17
         Align = alTop
         BevelShow = False
-        CloseButton = False
         Caption = 'Ok'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
         FlatAlwaysEdge = True
         OnClick = ebOkClick
       end
@@ -72,8 +77,13 @@ object frmSoundLib: TfrmSoundLib
         Height = 17
         Align = alTop
         BevelShow = False
-        CloseButton = False
         Caption = 'Cancel'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
         FlatAlwaysEdge = True
         OnClick = ebCancelClick
       end

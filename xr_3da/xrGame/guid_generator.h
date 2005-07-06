@@ -6,8 +6,12 @@
 //	Description : GUID generator
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef guid_generatorH
+#define guid_generatorH
 #pragma once
 
 #include "xrLevel.h"
 
-extern xrGUID generate_guid();
+ENGINE_API extern xrGUID generate_guid();
+
+#endif //guid_generatorH
