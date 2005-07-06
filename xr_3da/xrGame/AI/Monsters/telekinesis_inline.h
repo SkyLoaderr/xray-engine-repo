@@ -30,8 +30,9 @@ void CTelekinesis<_Object>::Activate()
 	active = true;
 
 	// получить список объектов
-	Level().ObjectSpace.GetNearest		(control_object->Position(),10.f); 
-	xr_vector<CObject*> &tpNearest		= Level().ObjectSpace.q_nearest; 
+	xr_vector<CObject*> tpNearest		;
+	Level().ObjectSpace.GetNearest		(tpNearest,control_object->Position(),10.f); 
+	//xr_vector<CObject*> &tpNearest		= Level().ObjectSpace.q_nearest; 
 
 	// все объекты внести в список 
 	for (u32 i = 0; i < tpNearest.size(); i++) {

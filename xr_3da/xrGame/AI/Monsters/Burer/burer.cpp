@@ -242,8 +242,9 @@ void CBurer::UpdateGraviObject()
 	ps->Play();
 	
 	// hit objects
-	Level().ObjectSpace.GetNearest(m_gravi_object.cur_pos, m_gravi_radius); 
-	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
+	xr_vector<CObject*> tpObjects	;
+	Level().ObjectSpace.GetNearest	(tpObjects,m_gravi_object.cur_pos, m_gravi_radius); 
+	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
@@ -256,12 +257,11 @@ void CBurer::UpdateGraviObject()
 	}
 
 	// играть звук
-
 	Fvector snd_pos = m_gravi_object.cur_pos;
 	snd_pos.y += 0.5f;
-	if (sound_gravi_wave.feedback) {
-		sound_gravi_wave.set_position(snd_pos);
-	} else ::Sound->play_at_pos(sound_gravi_wave,0,snd_pos);
+	if (sound_gravi_wave.feedback)		{
+		sound_gravi_wave.set_position	(snd_pos);
+	} else ::Sound->play_at_pos			(sound_gravi_wave,0,snd_pos);
 }
 
 void CBurer::UpdateCL()

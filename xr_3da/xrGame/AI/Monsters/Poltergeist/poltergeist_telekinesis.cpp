@@ -8,10 +8,11 @@
 
 void CPoltergeist::ProcessTelekinesis(const CObject *target)
 {
-	if (CTelekinesis::is_active()) return;
+	if (CTelekinesis::is_active())	return;
 
-	Level().ObjectSpace.GetNearest(target->Position(), TELE_RADIUS); 
-	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
+	xr_vector<CObject*> tpObjects	;
+	Level().ObjectSpace.GetNearest	(tpObjects,target->Position(), TELE_RADIUS); 
+	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	if (tpObjects.empty()) return;
 

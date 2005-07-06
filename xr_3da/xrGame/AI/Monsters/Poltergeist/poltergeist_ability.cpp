@@ -9,14 +9,14 @@
 #define TRACE_DISTANCE			10.f
 #define TRACE_ATTEMPT_COUNT		3
 
-void CPoltergeist::PhysicalImpulse(const Fvector &position)
+void CPoltergeist::PhysicalImpulse	(const Fvector &position)
 {
-	Level().ObjectSpace.GetNearest(position, IMPULSE_RADIUS); 
-	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
-
-	if (tpObjects.empty()) return;
+	xr_vector<CObject*> tpObjects	;
+	Level().ObjectSpace.GetNearest	(tpObjects,position, IMPULSE_RADIUS); 
+	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
+	if (tpObjects.empty())			return;
 	
-	u32 index = Random.randI(tpObjects.size());
+	u32 index = Random.randI		(tpObjects.size());
 	
 	CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[index]);
 	if (!obj || !obj->m_pPhysicsShell) return;

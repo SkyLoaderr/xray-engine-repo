@@ -374,10 +374,10 @@ void CAI_Rat::vfChooseNextGraphPoint()
 bool CAI_Rat::can_stand_here	()
 {
 	setEnabled							(false);
-	Level().ObjectSpace.GetNearest		(Position(),Radius()); 
+	xr_vector<CObject*>					tpNearestList							; 
+	Level().ObjectSpace.GetNearest		(tpNearestList, Position(),Radius())	; 
 	setEnabled							(true);
-	
-	xr_vector<CObject*>					&tpNearestList = Level().ObjectSpace.q_nearest; 
+	//xr_vector<CObject*>				&tpNearestList = Level().ObjectSpace.q_nearest; 
 	if (tpNearestList.empty())
 		return							(true);
 

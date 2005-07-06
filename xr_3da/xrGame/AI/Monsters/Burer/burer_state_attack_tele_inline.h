@@ -144,13 +144,14 @@ bool CStateBurerAttackTeleAbstract::check_completion()
 //////////////////////////////////////////////////////////////////////////
 
 TEMPLATE_SPECIALIZATION
-void CStateBurerAttackTeleAbstract::FindObjects()
+void CStateBurerAttackTeleAbstract::FindObjects	()
 {
-	tele_objects.clear();
+	u32	res_size					= tele_objects.size		();
+	tele_objects.clear_and_reserve	();
 
 	// получить список объектов вокруг врага
-	Level().ObjectSpace.GetNearest	(object->EnemyMan.get_enemy()->Position(), object->m_tele_find_radius);
-	xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
+	xr_vector<CObject*> tpObjects	;	tpObjects.reserve	(res_size);
+	Level().ObjectSpace.GetNearest	(tpObjects,object->EnemyMan.get_enemy()->Position(), object->m_tele_find_radius);
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
@@ -161,8 +162,8 @@ void CStateBurerAttackTeleAbstract::FindObjects()
 
 	
 	// получить список объектов вокруг монстра
-	Level().ObjectSpace.GetNearest	(object->Position(), object->m_tele_find_radius);
-	tpObjects = Level().ObjectSpace.q_nearest;
+	Level().ObjectSpace.GetNearest	(tpObjects,object->Position(), object->m_tele_find_radius);
+	//tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
@@ -180,8 +181,8 @@ void CStateBurerAttackTeleAbstract::FindObjects()
 
 	Fvector pos;
 	pos.mad(object->Position(), dir, dist / 2.f);
-	Level().ObjectSpace.GetNearest(pos, object->m_tele_find_radius); 
-	tpObjects = Level().ObjectSpace.q_nearest;
+	Level().ObjectSpace.GetNearest(tpObjects,pos, object->m_tele_find_radius); 
+	//tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);

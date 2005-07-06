@@ -106,6 +106,7 @@ template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocat
 
 	void	clear_and_free()								{ __super::clear();		}
 	void	clear_not_free()								{ erase(begin(),end());	}
+	void	clear_and_reserve()								{ if ( capacity() <= (size()+size()/4) ) clear_not_free(); else { u32 old=size(); clear_and_free(); reserve(old); } }
 
 #ifdef M_DONTDEFERCLEAR_EXT
 	void	clear()											{ clear_and_free	();	} 
