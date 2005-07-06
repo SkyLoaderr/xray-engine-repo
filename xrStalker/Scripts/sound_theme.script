@@ -150,10 +150,7 @@ function load_sound(obj)
 
 	-- состояния тела
 	theme[obj:id()]["state"] = { exec = state_class, types = {}}
-	theme[obj:id()]["state"].types["health"]		= load_sound_from_ltx(obj, "state_health")
-	theme[obj:id()]["state"].types["fatique"]		= load_sound_from_ltx(obj, "state_fatique")
-	theme[obj:id()]["state"].types["starvation"]	= load_sound_from_ltx(obj, "state_starvation")
-	theme[obj:id()]["state"].types["idle"]			= load_sound_from_ltx(obj, "state_idle")
+	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle")
 
 	theme[obj:id()]["sleep"] = load_sound_from_ltx(obj, "state_idle", 10, 15, 75)
 
