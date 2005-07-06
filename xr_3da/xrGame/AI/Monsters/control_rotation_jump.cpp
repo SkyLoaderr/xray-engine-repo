@@ -6,14 +6,15 @@
 #include "control_direction_base.h"
 #include "control_animation_base.h"
 
-#define ROTATION_JUMP_DELAY		6000
+#define ROTATION_JUMP_DELAY_MIN		5000
+#define ROTATION_JUMP_DELAY_MAX		8000
 #define CHECK_YAW				120 * PI / 180
 
 void CControlRotationJump::reinit()
 {
 	CControl_ComCustom<>::reinit();
 
-	m_time_last_rotation_jump = 0;
+	m_time_next_rotation_jump = 0;
 }
 
 void CControlRotationJump::activate()
@@ -44,7 +45,7 @@ void CControlRotationJump::activate()
 	VERIFY									(ctrl_data_dir);	
 	ctrl_data_dir->heading.target_angle		= m_object->dir().heading().target;
 
-	m_time_last_rotation_jump				= Device.dwTimeGlobal;
+	
 }
 
 void CControlRotationJump::on_release()
@@ -52,6 +53,8 @@ void CControlRotationJump::on_release()
 	m_man->release_pure	(this);
 	m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);
 	m_man->unsubscribe	(this, ControlCom::eventAnimationStart);
+
+	m_time_next_rotation_jump = Device.dwTimeGlobal + Random.randI(ROTATION_JUMP_DELAY_MIN,ROTATION_JUMP_DELAY_MAX);
 }
 
 bool CControlRotationJump::check_start_conditions()
@@ -59,8 +62,8 @@ bool CControlRotationJump::check_start_conditions()
 	if (is_active())				return false;	
 	if (m_man->is_captured_pure())	return false;
 	
-	if (!m_object->EnemyMan.get_enemy())		return false;
-	if (m_time_last_rotation_jump + ROTATION_JUMP_DELAY > Device.dwTimeGlobal)	return false;
+	if (!m_object->EnemyMan.get_enemy())					return false;
+	if (m_time_next_rotation_jump > Device.dwTimeGlobal)	return false;
 
 	Fvector									enemy_position;
 	enemy_position.set						(m_object->EnemyMan.get_enemy()->Position());
