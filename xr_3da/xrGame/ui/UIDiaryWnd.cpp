@@ -203,7 +203,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				break;
-			case idContracts:
+/*			case idContracts:
 				VERIFY(m_pLeftHorisontalLine);
 				r = m_pLeftHorisontalLine->GetWndRect();
 				m_pLeftHorisontalLine->SetWndPos(r.left, r.top + contractsOffset);
@@ -212,7 +212,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				InventoryUtilities::SendInfoToActor("ui_pda_contracts");
 				break;
-
+*/
 			case idNews:
 				
 				m_pActiveSubdialog = &UINewsWnd;
