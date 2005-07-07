@@ -9,9 +9,9 @@
 #include "xrpool.h"
 #include "detailformat.h"
 #include "detailmodel.h"
-#include "ESceneClassList.h"
 
 #ifdef _EDITOR
+	#include	"ESceneClassList.h"
 	const int	dm_max_decompress	= 14;
 #else
 	const int	dm_max_decompress	= 7;
