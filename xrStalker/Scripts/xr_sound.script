@@ -118,7 +118,7 @@ function update(npc)
 	if  group_table == nil then
 		return
 	end
-	printf("busy[%s]", tostring(group_table.busy))
+--	printf("busy[%s]", tostring(group_table.busy))
 	
 	if group_table.busy == true then
 		if group_table.last_npc ~= npc_id then
