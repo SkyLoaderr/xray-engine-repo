@@ -23,7 +23,7 @@
 #include "clsid_game.h"
 
 #ifdef DEBUG
-#	include "../../xr_input.h"
+#	include "../xr_input.h"
 	extern void try_change_current_entity();
 	extern void restore_actor();
 #endif
