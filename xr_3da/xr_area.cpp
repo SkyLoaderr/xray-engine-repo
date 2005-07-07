@@ -16,7 +16,7 @@ void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
 	clamp					(range,0.1f,500.f);
 
 	const CSound_params*	p	= S->feedback->get_params();
-	VERIFY					(p);
+	VERIFY					(p && _valid(range) );
 
 	// Query objects
 	xr_vector<ISpatial*>	snd_ER	;	snd_ER.reserve	(8+iCeil(range/10.f));
@@ -33,9 +33,12 @@ void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
 		// Energy and signal
 		float dist			= p->position.distance_to((*it)->spatial.center);
 		if (dist>p->max_ai_distance) continue;
+		VERIFY				(_valid(dist) && _valid(p->max_ai_distance) && _valid(p->volume) );
 		float Power			= (1.f-dist/p->max_ai_distance)*p->volume;
+		VERIFY				(_valid(Power));
 		if (Power>EPS_S)	{
 			float occ		= Sound->get_occlusion_to((*it)->spatial.center,p->position);
+			VERIFY			(_valid(occ))	;
 			Power			*= occ;
 			if (Power>EPS_S)	{
 				_esound_delegate	D	=	{ L, S, Power };
