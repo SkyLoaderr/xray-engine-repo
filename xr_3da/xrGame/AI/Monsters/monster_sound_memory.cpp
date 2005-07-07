@@ -51,6 +51,7 @@ void CMonsterSoundMemory::HearSound(const SoundElem &s)
 {
 	if (NONE_DANGEROUS_SOUND	== s.type) return;
 	if (DOOR_OPENING			<= s.type) return;
+	if ((s.type == MONSTER_WALKING) && !s.who) return;
 
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
