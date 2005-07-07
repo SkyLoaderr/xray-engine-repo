@@ -194,6 +194,12 @@ function see_actor(actor, npc)
 	return npc:see(actor)
 end
 
+-- видит ли геликоптер актера
+function heli_see_actor(actor,obj)
+	return  obj:get_helicopter():isVisible(actor)
+end
+
+
 function actor_enemy(actor, npc)
 	local t = db.storage[npc:id()].death
 	return npc:relation(actor) == game_object.enemy or (t ~= nil and t.killer == actor:id())
