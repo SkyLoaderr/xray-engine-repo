@@ -187,6 +187,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N24;
 	TMenuItem *N25;
 	TMenuItem *ClearDebugDraw1;
+	TMxPopupMenu *pmExtTarget;
+	TMenuItem *Enable1;
+	TMenuItem *Disable1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -277,7 +280,9 @@ __published:	// IDE-managed Components
 	void __fastcall miHightlightTextureClick(TObject *Sender);
 	void __fastcall MakeSoundOccluder1Click(TObject *Sender);
 	void __fastcall ClearDebugDraw1Click(TObject *Sender);
-	void __fastcall ebTargetObjectExtBtnClick(TObject *Sender);
+	void __fastcall TargetEnableClick(TObject *Sender);
+	void __fastcall ebTargetObjectMouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
 private:	// User declarations
     void RedrawBar();
 	void __fastcall miRecentFilesClick(TObject *Sender);

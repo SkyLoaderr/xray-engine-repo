@@ -12,6 +12,7 @@
 #include "folderlib.h"
 #include "ui_levelmain.h"
 #include "CustomObject.h"
+#include "ESceneCustomMTools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -24,21 +25,24 @@ TfraLeftBar *fraLeftBar;
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
-	ebTargetGroup->Tag		= OBJCLASS_GROUP;       
-    ebTargetObject->Tag     = OBJCLASS_SCENEOBJECT;	
-    ebTargetLight->Tag      = OBJCLASS_LIGHT;       
-    ebTargetShape->Tag		= OBJCLASS_SHAPE;       
-    ebTargetSoundSrc->Tag   = OBJCLASS_SOUND_SRC;   
-    ebTargetSoundEnv->Tag   = OBJCLASS_SOUND_ENV;   
-    ebTargetGlow->Tag       = OBJCLASS_GLOW;        
-    ebTargetSpawnPoint->Tag = OBJCLASS_SPAWNPOINT;  
-    ebTargetWay->Tag  		= OBJCLASS_WAY;         
-    ebTargetSector->Tag 	= OBJCLASS_SECTOR;      
-    ebTargetPortal->Tag		= OBJCLASS_PORTAL;      
-    ebTargetPS->Tag			= OBJCLASS_PS;          
-    ebTargetDO->Tag			= OBJCLASS_DO;          
-    ebTargetAIMap->Tag		= OBJCLASS_AIMAP;
-    ebTargetWallmarks->Tag	= OBJCLASS_WM;
+	m_TargetButtons.resize	(OBJCLASS_COUNT);
+    m_TargetButtons[OBJCLASS_GROUP     	]		= ebTargetGroup;
+    m_TargetButtons[OBJCLASS_SCENEOBJECT]		= ebTargetObject;
+    m_TargetButtons[OBJCLASS_LIGHT      ]		= ebTargetLight;
+    m_TargetButtons[OBJCLASS_SHAPE      ]		= ebTargetShape;
+    m_TargetButtons[OBJCLASS_SOUND_SRC  ]		= ebTargetSoundSrc;
+    m_TargetButtons[OBJCLASS_SOUND_ENV  ]		= ebTargetSoundEnv;
+    m_TargetButtons[OBJCLASS_GLOW       ]		= ebTargetGlow;
+    m_TargetButtons[OBJCLASS_SPAWNPOINT ]		= ebTargetSpawnPoint;
+    m_TargetButtons[OBJCLASS_WAY        ]		= ebTargetWay;
+    m_TargetButtons[OBJCLASS_SECTOR     ]		= ebTargetSector;
+    m_TargetButtons[OBJCLASS_PORTAL     ]		= ebTargetPortal;
+    m_TargetButtons[OBJCLASS_PS         ]		= ebTargetPS;
+    m_TargetButtons[OBJCLASS_DO         ]		= ebTargetDO;
+    m_TargetButtons[OBJCLASS_AIMAP      ]		= ebTargetAIMap;
+    m_TargetButtons[OBJCLASS_WM         ]		= ebTargetWallmarks;
+    for (ObjClassID k=OBJCLASS_FIRST_CLASS; k<OBJCLASS_COUNT; k++)
+    	m_TargetButtons[k]->Tag					= k;
 
     DEFINE_INI				(fsStorage);
 }
@@ -338,12 +342,39 @@ void __fastcall TfraLeftBar::ebEditLibClick(TObject *Sender)
 void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
-    ExecCommand(COMMAND_CHANGE_TARGET, btn->Down?btn->Tag:OBJCLASS_DUMMY);
+    if (Scene->GetMTools(btn->Tag)->m_bEnabled){
+	    ExecCommand(COMMAND_CHANGE_TARGET, btn->Down?btn->Tag:OBJCLASS_DUMMY);
+    }else{
+    	if (LTools->GetTarget()!=OBJCLASS_DUMMY){
+        	btn->Down									= false;
+        	m_TargetButtons[LTools->GetTarget()]->Down 	= true;
+        }
+    }
     // turn off snap mode
-    ebSnapListMode->Down = false;
+    ebSnapListMode->Down 	= false;
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebTargetObjectMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
+    if (btn->Width-X<btn->ExtWidth){
+        if (Scene->GetMTools(btn->Tag)->AllowEnabling()){
+        	pmExtTarget->Tag 	= btn->Tag;
+            FHelper.ShowPPMenu	(pmExtTarget,dynamic_cast<TExtBtn*>(Sender));
+        }
+    }
+    TargetClick(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::TargetEnableClick(TObject *Sender)
+{
+	TMenuItem* MI 	= dynamic_cast<TMenuItem*>(Sender); VERIFY(MI);
+    ExecCommand(COMMAND_ENABLE_TARGET,pmExtTarget->Tag,MI->Tag);
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::PanelMimimizeClickClick(TObject *Sender)
 {
@@ -701,21 +732,8 @@ void TfraLeftBar::RefreshBar()
     }
     miRecentFiles->Enabled = miRecentFiles->Count;
     // refresh target
-	ebTargetGroup->NormalColor		= OBJCLASS_GROUP;       
-    ebTargetObject->NormalColor     = OBJCLASS_SCENEOBJECT;	
-    ebTargetLight->NormalColor      = OBJCLASS_LIGHT;       
-    ebTargetShape->NormalColor		= OBJCLASS_SHAPE;       
-    ebTargetSoundSrc->NormalColor   = OBJCLASS_SOUND_SRC;   
-    ebTargetSoundEnv->NormalColor   = OBJCLASS_SOUND_ENV;   
-    ebTargetGlow->NormalColor       = OBJCLASS_GLOW;        
-    ebTargetSpawnPoint->NormalColor = OBJCLASS_SPAWNPOINT;  
-    ebTargetWay->NormalColor  		= OBJCLASS_WAY;         
-    ebTargetSector->NormalColor 	= OBJCLASS_SECTOR;      
-    ebTargetPortal->NormalColor		= OBJCLASS_PORTAL;      
-    ebTargetPS->NormalColor			= OBJCLASS_PS;          
-    ebTargetDO->NormalColor			= OBJCLASS_DO;          
-    ebTargetAIMap->NormalColor		= OBJCLASS_AIMAP;
-    ebTargetWallmarks->NormalColor	= OBJCLASS_WM;
+    for (ObjClassID k=OBJCLASS_FIRST_CLASS; k<OBJCLASS_COUNT; k++)
+    	m_TargetButtons[k]->NormalColor	= Scene->GetMTools(k)->m_bEnabled?clBlack:clGray;
 }
 //---------------------------------------------------------------------------
 
@@ -726,9 +744,9 @@ void __fastcall TfraLeftBar::ClearDebugDraw1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfraLeftBar::ebTargetObjectExtBtnClick(TObject *Sender)
-{
-	//.	
-}
-//---------------------------------------------------------------------------
+
+
+
+
+
 
