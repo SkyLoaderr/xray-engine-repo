@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 511
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 511
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 307
+      Top = 73
       Width = 298
       Height = 3
       Cursor = crVSplit
@@ -68,9 +68,8 @@ object fraLeftBar: TfraLeftBar
         Width = 11
         Height = 11
         Align = alNone
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -95,10 +94,9 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
-        CloseButton = False
         Caption = 'Preview Object'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -125,10 +123,9 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
-        CloseButton = False
         Caption = 'Preferences'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -146,10 +143,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Images'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -177,10 +173,9 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         BtnColor = 10528425
-        CloseButton = False
         Caption = 'Sounds'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -257,7 +252,6 @@ object fraLeftBar: TfraLeftBar
             BevelShow = False
             HotTrack = True
             HotColor = 15790320
-            CloseButton = False
             Caption = 'Remove'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -278,7 +272,6 @@ object fraLeftBar: TfraLeftBar
             BevelShow = False
             HotTrack = True
             HotColor = 15790320
-            CloseButton = False
             Caption = 'Clone'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -299,8 +292,6 @@ object fraLeftBar: TfraLeftBar
             BevelShow = False
             HotTrack = True
             HotColor = 15790320
-            CloseButton = False
-            CloseWidth = 24
             Caption = 'File'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -331,8 +322,6 @@ object fraLeftBar: TfraLeftBar
             BevelShow = False
             HotTrack = True
             HotColor = 15790320
-            CloseButton = False
-            CloseWidth = 24
             Caption = 'Create'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -369,7 +358,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 310
+      Top = 76
       Width = 298
       Height = 200
       Align = alBottom
@@ -395,9 +384,8 @@ object fraLeftBar: TfraLeftBar
         Width = 11
         Height = 11
         Align = alNone
-        CloseButton = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
