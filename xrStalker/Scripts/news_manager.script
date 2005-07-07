@@ -36,8 +36,9 @@ news = {
 	gar_dolg_blokpost_warning		= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]),
 	gar_dolg_monster_rush			= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
 
-	val_monolith_trader_pda1		= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
-	val_monolith_trader_pda2		= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]])
+	val_monolith_trader_pda1		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog1]]),
+	val_monolith_trader_pda2		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog2]]),
+	val_monolith_trader_pda3		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog3]])
 }
 
 pda_news = sound_object([[device\pda\pda_news]])

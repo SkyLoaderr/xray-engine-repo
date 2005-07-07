@@ -41,10 +41,19 @@ def_state_campering = threat
 def_state_campering_fire = threat_fire
 radius = 0
 ;meet = meet@def
-on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} nil ;walker@gulag
-;on_signal = fight | camper@fight
-;combat_ignore_cond = always
-combat_ignore_cond = {!check_fighting(410)} ;{=fighting_actor -val_opendoor_plr_detected}
+;on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} nil ;walker@gulag
+on_signal = fight | remark@fight
+;combat_ignore_cond = {!check_fighting(410)} ;{=fighting_actor -val_opendoor_plr_detected}
+combat_ignore_cond = {=check_fighting(410)}
+
+[remark@fight]
+no_move = true
+no_rotate = true
+anim = threat
+snd = speech
+on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} nil
+;on_signal = sound_end | remark@fight
+combat_ignore_cond = {!check_fighting(410)}
 
 [remark@talk]
 snd = speech
