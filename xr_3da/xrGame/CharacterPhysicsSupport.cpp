@@ -288,7 +288,7 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell->mXFORM.set(mXFORM);
 	pShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
-	//pShell->SmoothElementsInertia(0.3f);
+	pShell->SmoothElementsInertia(0.3f);
 	pShell->set_JointResistance(0.f);
 	pShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;
@@ -402,18 +402,15 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 {
 	//R_ASSERT2(m_eState!=esDead,"Cant change visual for dead body");
 	if(!m_physics_skeleton&&!m_pPhysicsShell) return;
-	BOOL b = m_physics_skeleton->bActive;
-	xr_delete(m_physics_skeleton);
+	if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
+	xr_delete(m_physics_skeleton) ;
 	CreateSkeleton(m_physics_skeleton);
 	if(m_pPhysicsShell)
 	{
 		xr_delete(m_pPhysicsShell);
 		ActivateShell(NULL);
 	}
-	if(b)
-		m_EntityAlife.processing_deactivate();
-#pragma todo("Andy to Slipch : find more elegant way to fix problem with Props.bActiveCounter accumulation while changing visual")
-
+	
 }
 
 bool CCharacterPhysicsSupport::CanRemoveObject()
