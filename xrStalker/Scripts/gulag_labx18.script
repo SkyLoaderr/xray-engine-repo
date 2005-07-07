@@ -51,7 +51,7 @@ end
 function load_states(gname, type)
 	if type == "dar_com_center_poltergeist" then        
 		return function(gulag)
-			local t = db.zone_by_name["dar_poltergeist_tusniak"]
+			local t = db.zone_by_name["dar_poltergeist_territory"]
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
