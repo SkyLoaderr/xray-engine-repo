@@ -441,7 +441,6 @@ int ESceneAIMapTools::SelectionCount(bool testflag)
 
 void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {                               
-	inherited::FillProp(pref, items);
     PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Draw Nodes"),		&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
     PHelper().CreateFloat 	(items, PrepareKey(pref,"Common\\Visible Radius"),	&m_VisRadius, 	10, 250);
     PHelper().CreateU32	 	(items, PrepareKey(pref,"Params\\Brush Size"),		&m_BrushSize, 	1, 100);

@@ -81,6 +81,8 @@ public:
 						ESceneWallmarkTools    	();
 	virtual        	 	~ESceneWallmarkTools 	();
 
+	virtual	bool		AllowEnabling    		(){return true;}
+
     virtual void		OnObjectRemove			(CCustomObject* O){}
     virtual	void		UpdateSnapList			(){}
 	virtual ObjectList*	GetSnapList				(){return 0;}

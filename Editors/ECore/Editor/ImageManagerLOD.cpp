@@ -64,7 +64,7 @@ void CImageManager::CreateLODTexture(const Fbox& bb, U32Vec& tgt_data, u32 tgt_w
     u32 old_dwShadeMode			= Device.dwShadeMode;
     // set render params
 
-    u32 cc						= 	EPrefs.scene_clear_color;
+    u32 cc						= 	EPrefs->scene_clear_color;
     EPrefs.scene_clear_color 	= 	0x0000000;
     psDeviceFlags.zero			();
 	psDeviceFlags.set			(rsFilterLinear,TRUE);
@@ -184,8 +184,8 @@ void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
     u32 old_dwShadeMode			= Device.dwShadeMode;
     // set render params
 
-    u32 cc						= 	EPrefs.scene_clear_color;
-    EPrefs.scene_clear_color 	= 	0x0000000;
+    u32 cc						= 	EPrefs->scene_clear_color;
+    EPrefs->scene_clear_color 	= 	0x0000000;
     psDeviceFlags.zero			();
 	psDeviceFlags.set			(rsFilterLinear,TRUE);
 	Device.dwFillMode			= D3DFILL_SOLID;
@@ -236,7 +236,7 @@ void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
 	Device.dwFillMode			= old_dwFillMode;
     Device.dwShadeMode			= old_dwShadeMode;
     psDeviceFlags 				= old_flag;
-    EPrefs.scene_clear_color 	= cc;
+    EPrefs->scene_clear_color 	= cc;
 
     RCache.set_xform_view		(save_view);
     RCache.set_xform_project	(save_projection);

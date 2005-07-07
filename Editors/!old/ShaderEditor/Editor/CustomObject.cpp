@@ -183,7 +183,7 @@ void CCustomObject::OnFrame()
 void CCustomObject::Render(int priority, bool strictB2F)
 {
 	if ((1==priority)&&(false==strictB2F)){
-        if (EPrefs.object_flags.is(epoDrawPivot)&&Selected()){
+        if (EPrefs->object_flags.is(epoDrawPivot)&&Selected()){
             Device.SetShader(Device.m_WireShader);
             DU.DrawObjectAxis(FTransformRP,0.1f,Selected());
         }

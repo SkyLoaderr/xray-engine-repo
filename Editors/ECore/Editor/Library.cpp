@@ -151,7 +151,7 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 	if (object){
 	    object->m_RefCount--;
     	R_ASSERT(object->m_RefCount>=0);
-		if ((object->m_RefCount==0)&&EPrefs.object_flags.is(epoDiscardInstance))
+		if ((object->m_RefCount==0)&&EPrefs->object_flags.is(epoDiscardInstance))
 			if (!object->IsModified()) UnloadEditObject(object->GetName());
         object=0;
 	}

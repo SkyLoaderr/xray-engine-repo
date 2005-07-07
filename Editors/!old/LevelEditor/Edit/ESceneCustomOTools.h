@@ -17,6 +17,8 @@ public:
 						ESceneCustomOTools		(ObjClassID cls);
 	virtual				~ESceneCustomOTools		();
                                                
+	virtual	bool		AllowEnabling    		(){return false;}
+
     // snap 
 	virtual ObjectList* GetSnapList				();
     virtual void		UpdateSnapList			();

@@ -30,7 +30,6 @@
 #define CHUNK_LEVEL_TAG			0x7777
 
 #define CHUNK_TOOLS_GUID		0x7000
-#define CHUNK_TOOLS_ENABLED		0x7999
 #define CHUNK_TOOLS_DATA		0x8000
 
 // level options
@@ -102,6 +101,35 @@ void st_LevelOptions::Read(IReader& F)
 //------------------------------------------------------------------------------------------------
 // Scene
 //------------------------------------------------------------------------------------------------
+BOOL EScene::LoadLevelPart(ESceneCustomMTools* M, LPCSTR full_name)
+{
+    IReader* R		= FS.r_open	(full_name);
+    if (R){
+        R_ASSERT	(R->find_chunk	(CHUNK_TOOLS_GUID));
+        xrGUID		guid;
+        R->r		(&guid,sizeof(guid));
+        if (guid!=m_GUID){
+            ELog.DlgMsg	(mtError,"Skipping invalid version of level part: '%s\\%s.part'",EFS.ExtractFileName(full_name).c_str(),M->ClassName());
+        }else{
+            IReader* chunk 	= R->open_chunk	(CHUNK_TOOLS_DATA+M->ClassID);
+            M->Load			(*chunk);
+            chunk->close	();
+        }
+        FS.r_close	(R);
+	    return 		TRUE;
+    }
+    return 			FALSE;
+}
+BOOL EScene::LoadLevelPart(LPCSTR initial, LPCSTR map_name, ObjClassID cls)
+{
+	ESceneCustomMTools* M			= GetMTools(cls);
+    xr_string 		full_name;
+    if (initial)	FS.update_path	(full_name,initial,map_name);
+    else			full_name		= map_name;
+    xr_string fn					= EFS.ExtractFilePath(full_name.c_str())+EFS.ExtractFileName(full_name.c_str())+"\\"+M->ClassName()+".part";
+    return			LoadLevelPart	(M,fn.c_str());
+}
+
 void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
 	VERIFY(map_name);
@@ -111,14 +139,12 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     if (initial)	FS.update_path	(full_name,initial,map_name);
     else			full_name		= map_name;
     
-    xr_string level_name;
     xr_string part_prefix;
     
 	if (!bUndo){ 
     	EFS.UnlockFile	(0,full_name.c_str(),false);
     	EFS.MarkFile	(full_name.c_str(),true);
-	    level_name    	= EFS.ExtractFileName(full_name.c_str());
-    	part_prefix		= EFS.ExtractFilePath(full_name.c_str())+level_name+"\\"+level_name+".";
+    	part_prefix		= EFS.ExtractFilePath(full_name.c_str())+EFS.ExtractFileName(full_name.c_str())+"\\";
     }
 
     IWriter* F		= FS.w_open		(full_name.c_str()); R_ASSERT(F);
@@ -154,20 +180,19 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     CMemoryWriter 	w_cache;
     for (; _I!=_E; _I++)
         if (_I->second&&_I->second->IsNeedSave()){
-         	_I->second->Save(w_cache);
-            if (bUndo){
+            if (bUndo && _I->second->m_bEnabled){
+	         	_I->second->Save(w_cache);
 	        	F->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
 				F->w			(w_cache.pointer(),w_cache.size());
 	        	F->close_chunk	();
             }else{
-	        	F->open_chunk	(CHUNK_TOOLS_ENABLED+_I->first);
-				F->w_u32		(_I->second->m_bEnabled);
-	        	F->close_chunk	();
                 if (_I->second->m_bEnabled){
-                    xr_string		part_name = part_prefix+_I->second->ClassName();
+                    xr_string		part_name = part_prefix+_I->second->ClassName()+".part";
 
-                    EFS.UnlockFile	(0,part_name.c_str(),false);
-                    EFS.MarkFile	(part_name.c_str(),true);
+		         	_I->second->Save(w_cache);
+
+//.					EFS.UnlockFile	(0,part_name.c_str(),false);
+					EFS.MarkFile	(part_name.c_str(),true);
 
                     IWriter* FF		= FS.w_open	(part_name.c_str());
 
@@ -181,7 +206,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
                     FS.w_close		(FF);
 
-                    EFS.LockFile	(0,part_name.c_str(),false);
+//.					EFS.LockFile	(0,part_name.c_str(),false);
                 }
             }
 			w_cache.clear	();
@@ -303,13 +328,9 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
             return false;
         }
 
-        xr_string 	level_name;
         xr_string 	part_prefix;
-    
-        if (!bUndo){ 
-            level_name    	= EFS.ExtractFileName(full_name.c_str());
-            part_prefix		= EFS.ExtractFilePath(full_name.c_str())+level_name+"\\"+level_name+".";
-        }
+        if (!bUndo)
+            part_prefix		= EFS.ExtractFilePath(full_name.c_str())+EFS.ExtractFileName(full_name.c_str())+"\\";
         
         // Lev. ops.
         IReader* LOP = F->open_chunk(CHUNK_LEVELOP);
@@ -362,25 +383,9 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 	                _I->second->Load(*chunk);
     	            chunk->close	();
                 }else{
-				    if (F->find_chunk(CHUNK_TOOLS_ENABLED+_I->first)){
-	                    _I->second->m_bEnabled	= F->r_u32();
-                        if (_I->second->m_bEnabled){
-                            xr_string		part_name = part_prefix+_I->second->ClassName();
-                            IReader* R		= FS.r_open	(part_name.c_str());
-                            if (R){
-                                R_ASSERT	(R->find_chunk	(CHUNK_TOOLS_GUID));
-                                xrGUID		guid;
-                                R->r		(&guid,sizeof(guid));
-                                if (guid!=m_GUID){
-                                    ELog.DlgMsg	(mtError,"Skipping invalid version of level part: '%s.%s'",level_name.c_str(),_I->second->ClassName());
-                                }else{
-                                    IReader* chunk 	= R->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
-                                    _I->second->Load(*chunk);
-                                    chunk->close();
-                                }
-                                FS.r_close	(R);
-                            }
-                        }
+                    if (_I->second->m_bEnabled && (_I->first!=OBJCLASS_DUMMY)){
+                        xr_string 		part_name = part_prefix+_I->second->ClassName()+".part";
+                        LoadLevelPart	(_I->second,part_name.c_str());
                     }
                 }
             }

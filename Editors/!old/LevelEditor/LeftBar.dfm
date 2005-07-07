@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 529
+  Height = 536
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -577,7 +577,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetLight: TExtBtn
         Left = 2
@@ -642,7 +641,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetSoundSrc: TExtBtn
         Left = 2
@@ -707,7 +705,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetSoundEnv: TExtBtn
         Left = 2
@@ -772,7 +769,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetGlow: TExtBtn
         Left = 2
@@ -837,7 +833,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetSpawnPoint: TExtBtn
         Left = 2
@@ -902,7 +897,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetWay: TExtBtn
         Left = 2
@@ -967,7 +961,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetSector: TExtBtn
         Left = 110
@@ -1032,7 +1025,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetPortal: TExtBtn
         Left = 110
@@ -1097,7 +1089,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object lbEditMode: TLabel
         Left = 1
@@ -1197,7 +1188,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetPS: TExtBtn
         Left = 110
@@ -1262,7 +1252,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetShape: TExtBtn
         Left = 2
@@ -1327,7 +1316,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetDO: TExtBtn
         Left = 110
@@ -1392,7 +1380,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetAIMap: TExtBtn
         Left = 110
@@ -1457,7 +1444,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
       object ebTargetWallmarks: TExtBtn
         Left = 110
@@ -1522,7 +1508,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnClick = TargetClick
-        OnMouseDown = ebTargetObjectMouseDown
       end
     end
     object paSnapList: TPanel
@@ -2345,31 +2330,6 @@ object fraLeftBar: TfraLeftBar
     object UpdateEnvironmentGeometry1: TMenuItem
       Caption = 'Refresh Environment Geometry'
       OnClick = UpdateEnvironmentGeometry1Click
-    end
-  end
-  object pmExtTarget: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    TrackButton = tbLeftButton
-    MarginStartColor = 10921638
-    MarginEndColor = 2763306
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 189
-    Top = 265
-    object Enable1: TMenuItem
-      Tag = 1
-      Caption = 'Enable'
-      OnClick = TargetEnableClick
-    end
-    object Disable1: TMenuItem
-      Caption = 'Disable'
-      OnClick = TargetEnableClick
     end
   end
 end

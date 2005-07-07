@@ -31,6 +31,9 @@ protected:
 public:
 						ESceneSpawnTools		();
 	virtual				~ESceneSpawnTools		();
+
+	virtual	bool		AllowEnabling    		(){return true;}
+
 	// definition
     IC LPCSTR			ClassName				(){return "spawn";}
     IC LPCSTR			ClassDesc				(){return "Spawn";}

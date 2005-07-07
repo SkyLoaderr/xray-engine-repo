@@ -25,7 +25,7 @@ USEFORM("FrameSector.cpp", fraSector);
 USEFORM("FrameShape.cpp", fraShape);
 USEFORM("FrameSpawn.cpp", fraSpawn);
 USEFORM("FrameWayPoint.cpp", fraWayPoint);
-USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
+USEFORM("leftbar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("ObjectList.cpp", frmObjectList);
 USEFORM("previewimage.cpp", frmPreviewImage);
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);

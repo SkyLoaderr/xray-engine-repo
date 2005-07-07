@@ -24,7 +24,7 @@
 #include "builder.h"
 #include "SoundManager_LE.h"
 #include "NumericVector.h"
-#include "EditorPreferences.h"
+#include "LevelPreferences.h"
 #include "ChoseForm.h"
 
 #ifdef _LEVEL_EDITOR
@@ -36,20 +36,29 @@ CLevelMain*&	LUI=(CLevelMain*)UI;
 CLevelMain::CLevelMain()
 {
     m_Cursor        = xr_new<C3DCursor>();
+    EPrefs			= xr_new<CLevelPreferences>();
 }
 
 CLevelMain::~CLevelMain()
 {
-    xr_delete(m_Cursor);
+    xr_delete		(EPrefs);
+    xr_delete		(m_Cursor);
 }
+
+
 
 //------------------------------------------------------------------------------
 // Tools commands
 //------------------------------------------------------------------------------
 CCommandVar CLevelTools::CommandChangeTarget(CCommandVar p1, CCommandVar p2)
 {
-    SetTarget	(p1,p2);
-    return 		ExecCommand	(COMMAND_UPDATE_PROPERTIES);
+	if (Scene->GetMTools(p1)->m_bEnabled){
+	    SetTarget	(p1,p2);
+	    ExecCommand	(COMMAND_UPDATE_PROPERTIES);
+        return 		TRUE;
+    }else{
+    	return 		FALSE;
+    }
 }
 CCommandVar CLevelTools::CommandShowObjectList(CCommandVar p1, CCommandVar p2)
 {
@@ -79,6 +88,20 @@ CCommandVar CommandFileMenu(CCommandVar p1, CCommandVar p2)
 {
     FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
     return TRUE;
+}
+CCommandVar CLevelTools::CommandEnableTarget(CCommandVar p1, CCommandVar p2)
+{
+	ESceneCustomMTools* M 	= Scene->GetMTools(p1);
+    BOOL res				= M->Enable(p2);
+    ExecCommand				(COMMAND_REFRESH_UI_BAR);
+    return res;
+}
+CCommandVar CommandLoadLevelPart(CCommandVar p1, CCommandVar p2)
+{
+    xr_string temp_fn	= LTools->m_LastFileName.c_str();
+    if (!temp_fn.empty())
+        return 			temp_fn.size()?Scene->LoadLevelPart(_maps_,temp_fn.c_str(),p1):FALSE;
+    return				FALSE;
 }
 CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
 {
@@ -110,7 +133,7 @@ CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
                 ExecCommand			(COMMAND_CHANGE_ACTION,etaSelect);
                 // lock
                 EFS.LockFile		(_maps_,temp_fn.c_str());
-                EPrefs.AppendRecentFile(temp_fn.c_str());
+                EPrefs->AppendRecentFile(temp_fn.c_str());
             }else{
                 ELog.DlgMsg	( mtError, "Can't load map '%s'", temp_fn.c_str() );
             }
@@ -158,7 +181,7 @@ CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
                 Tools->m_LastFileName 	= temp_fn.c_str();
                 EFS.LockFile	(_maps_,Tools->m_LastFileName.c_str());
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
-                EPrefs.AppendRecentFile(temp_fn.c_str());
+                EPrefs->AppendRecentFile(temp_fn.c_str());
                 return 			TRUE;
             }
         }
@@ -195,8 +218,8 @@ CCommandVar CommandClear(CCommandVar p1, CCommandVar p2)
 }
 CCommandVar CommandLoadFirstRecent(CCommandVar p1, CCommandVar p2)
 {
-    if (EPrefs.FirstRecentFile())
-        return 					ExecCommand(COMMAND_LOAD,xr_string(EPrefs.FirstRecentFile()));
+    if (EPrefs->FirstRecentFile())
+        return 					ExecCommand(COMMAND_LOAD,xr_string(EPrefs->FirstRecentFile()));
     return 						FALSE;
 }
 
@@ -717,7 +740,7 @@ CCommandVar CommandCreateSoundLib(CCommandVar p1, CCommandVar p2)
 void CLevelMain::RegisterCommands()
 {
 	inherited::RegisterCommands	();
-    // tools                                                                                            
+    // tools             
 	REGISTER_SUB_CMD_CE	(COMMAND_CHANGE_TARGET,             "Change Target", 		LTools,CLevelTools::CommandChangeTarget, true);
 		APPEND_SUB_CMD	("Object", 							OBJCLASS_SCENEOBJECT,	0);
 		APPEND_SUB_CMD	("Light", 							OBJCLASS_LIGHT, 		0);
@@ -736,12 +759,14 @@ void CLevelMain::RegisterCommands()
 		APPEND_SUB_CMD	("AI Map", 			                OBJCLASS_AIMAP, 		0);
 		APPEND_SUB_CMD	("Static Wallmark",                 OBJCLASS_WM, 			0);
     REGISTER_SUB_CMD_END;    
+	REGISTER_CMD_C	    (COMMAND_ENABLE_TARGET,           	LTools,CLevelTools::CommandEnableTarget);
 
 	REGISTER_CMD_CE	    (COMMAND_SHOW_OBJECTLIST,           "Scene\\Show Object List",		LTools,CLevelTools::CommandShowObjectList, false);
 	// common
 	REGISTER_CMD_S	    (COMMAND_LIBRARY_EDITOR,           	CommandLibraryEditor);
 	REGISTER_CMD_S	    (COMMAND_LANIM_EDITOR,            	CommandLAnimEditor);
-	REGISTER_CMD_SE	    (COMMAND_FILE_MENU,              	"File Menu",					CommandFileMenu, 		true);
+	REGISTER_CMD_SE	    (COMMAND_FILE_MENU,              	"File\\Menu",					CommandFileMenu, 		true);
+    REGISTER_CMD_S		(COMMAND_LOAD_LEVEL_PART,			CommandLoadLevelPart);
 	REGISTER_CMD_SE	    (COMMAND_LOAD,              		"File\\Load Level", 			CommandLoad, 			true);
     REGISTER_SUB_CMD_SE (COMMAND_SAVE, 						"File",							CommandSave,			true);
     	APPEND_SUB_CMD	("Save",							0,								0);
@@ -810,34 +835,7 @@ char* CLevelMain::GetCaption()
 
 bool __fastcall CLevelMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyShortCut(Key,Shift)) return true;
-
-	bool bExec = false;
-
-    if (Shift.Contains(ssCtrl)){
-        if (Shift.Contains(ssShift)){
-            if (Key==VK_F5)    			COMMAND0(COMMAND_MAKE_GAME)
-        }else{
-            if (Key==VK_F5)    			COMMAND0(COMMAND_BUILD)                		
-            else if (Key==VK_F7)   		COMMAND0(COMMAND_OPTIONS)                      
-            else if (Key=='A')    		COMMAND0(COMMAND_SELECT_ALL)                   
-            else if (Key=='T')    		COMMAND0(COMMAND_MOVE_CAMERA_TO)                   
-            else if (Key=='I')    		COMMAND0(COMMAND_INVERT_SELECTION_ALL)         
-            else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
-        }
-    }else{
-        if (Shift.Contains(ssAlt)){
-        	if (Key=='F')   			COMMAND0(COMMAND_FILE_MENU)                    
-        }else{
-            // simple press
-            if (Key==VK_DELETE)			COMMAND0(COMMAND_DELETE_SELECTION)             
-            else if (Key==VK_RETURN)	COMMAND0(COMMAND_SHOW_PROPERTIES)              
-            else if (Key==VK_OEM_MINUS)	COMMAND1(COMMAND_HIDE_SEL, FALSE)              
-            else if (Key==VK_OEM_PLUS)	COMMAND1(COMMAND_HIDE_UNSEL, FALSE)            
-            else if (Key==VK_OEM_5)		COMMAND1(COMMAND_HIDE_ALL, TRUE)               
-        }
-    }
-    return bExec;
+    return inherited::ApplyShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 
@@ -946,14 +944,14 @@ bool CLevelMain::SelectionFrustum(CFrustum& frustum)
     SRayPickInfo pinf;
     for (int i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
-        if (EPrefs.bp_lim_depth){
+        if (EPrefs->bp_lim_depth){
 			pinf.inf.range = Device.m_Camera._Zfar(); // max pick range
             if (Scene->RayPickObject(pinf.inf.range, st, d, OBJCLASS_SCENEOBJECT, &pinf, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }
     if (depth<Device.m_Camera._Znear()) depth = Device.m_Camera._Zfar();
-    else depth += EPrefs.bp_depth_tolerance;
+    else depth += EPrefs->bp_depth_tolerance;
 
     for (i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
@@ -1046,7 +1044,7 @@ void CLevelMain::OutGridSize()
 {
 	VERIFY(fraBottomBar);
     AnsiString s;
-    s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
+    s.sprintf("Grid: %1.1f",EPrefs->grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------

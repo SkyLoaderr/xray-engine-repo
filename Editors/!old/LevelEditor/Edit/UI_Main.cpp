@@ -15,22 +15,23 @@
 #include "SoundEditor.h"
 #include "ChoseForm.h"
 
-TUI* 	UI		= 0;
+TUI* 	UI			= 0;
 
 TUI::TUI()
 {
-    m_bAppActive = false;
-	m_bReady = false;
-    m_D3DWindow = 0;
-    m_D3DPanel	= 0;
-    bNeedAbort   = false;
+	UI				= this;
+    m_bAppActive 	= false;
+	m_bReady 		= false;
+    m_D3DWindow 	= 0;
+    m_D3DPanel		= 0;
+    bNeedAbort   	= false;
 
 	m_CurrentRStart.set(0,0,0);
 	m_CurrentRNorm.set(0,0,0);
 
-	m_Flags.assign(flResize);
+	m_Flags.assign	(flResize);
 
-	m_Pivot.set( 0, 0, 0 );
+	m_Pivot.set		( 0, 0, 0 );
 
 	m_MouseCaptured = false;
     m_MouseMultiClickCaptured = false;
@@ -265,7 +266,7 @@ void TUI::ShowHint(const AnsiString& s)
 void TUI::ShowObjectHint()
 {
 	VERIFY(m_bReady);
-    if (!EPrefs.object_flags.is(epoShowHint)){
+    if (!EPrefs->object_flags.is(epoShowHint)){
 //    	if (m_bHintShowing) HideHint();
     	return;
     }

@@ -304,7 +304,7 @@ BOOL CRenderDevice::Begin	()
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|D3DCLEAR_TARGET|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
-		EPrefs.scene_clear_color,1,0
+		EPrefs->scene_clear_color,1,0
 		));
 	RCache.OnFrameBegin		();
 	g_bRendering = 	TRUE;

@@ -39,7 +39,7 @@ typedef EStateList::iterator EStateIt;
 
 class ECORE_API TUI: public IInputReceiver{
 protected:
-    friend class CEditorPreferences;
+    friend class CCustomPreferences;
     friend class CRenderDevice;
     TD3DWindow* m_D3DWindow;
     TPanel*		m_D3DPanel;

@@ -20,9 +20,9 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     up.invert(dn);
     Fvector s2,s1=pos;
     s1.add(amount);
-    s2.mad(s1,up,EPrefs.snap_moveto);
+    s2.mad(s1,up,EPrefs->snap_moveto);
 
-    pinf.inf.range=EPrefs.snap_moveto;
+    pinf.inf.range=EPrefs->snap_moveto;
     if (Scene->RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene->GetSnapList(false))||Scene->RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene->GetSnapList(false))){
             pos.set(pinf.pt);
             if (Tools->GetSettings(etfNormalAlign)){

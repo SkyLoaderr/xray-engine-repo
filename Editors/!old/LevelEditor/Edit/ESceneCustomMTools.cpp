@@ -2,6 +2,9 @@
 #pragma hdrstop
 
 #include "ESceneCustomMTools.h"
+#include "ui_main.h"
+#include "ui_levelmain.h"
+#include "scene.h"
 
 ESceneCustomMTools::ESceneCustomMTools(ObjClassID cls)
 {
@@ -29,10 +32,23 @@ void ESceneCustomMTools::OnDestroy()
     RemoveControls		();
 }
 
-void ESceneCustomMTools::FillProp(LPCSTR pref, PropItemVec& items)
+BOOL ESceneCustomMTools::Enable(BOOL val)
 {
-    PropValue* V		= PHelper().CreateBOOL	(items, "Common\\Enabled",		&m_bEnabled);
-//    P->OnChangeEvent.bind	(this,&EDetailManager::OnDensityChange);
-//COMMAND_REFRESH_UI_BAR
+    m_bEnabled			= val;
+	if (val){
+    	BOOL bRes 		= ExecCommand(COMMAND_LOAD_LEVEL_PART,ClassID);
+        ExecCommand		(COMMAND_REFRESH_UI_BAR);
+        return			bRes;
+    }else{
+        if (!Scene->IfModified()){
+        	m_bEnabled	= TRUE;
+            return		FALSE;
+        }else{
+			Clear		();
+		    ExecCommand	(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT);
+			ExecCommand	(COMMAND_REFRESH_UI_BAR);
+            return		TRUE;
+        }
+    }
 }
 

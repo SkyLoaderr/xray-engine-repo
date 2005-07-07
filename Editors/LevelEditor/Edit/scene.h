@@ -103,6 +103,9 @@ public:
 	bool 			ReadObjects			(IReader& F, u32 chunk_id, TAppendObject on_append, SPBItem* pb);
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
+
+    BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR full_name);
+    BOOL			LoadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls);
 public:
 	bool			ExportGame			(SExportStreams* F);
 	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);

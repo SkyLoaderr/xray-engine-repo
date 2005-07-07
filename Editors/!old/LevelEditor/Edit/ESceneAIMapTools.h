@@ -135,6 +135,8 @@ public:
 						ESceneAIMapTools 	   	();
 	virtual        	 	~ESceneAIMapTools 		();
 
+	virtual	bool		AllowEnabling    		(){return true;}
+
     virtual void		OnObjectRemove			(CCustomObject* O);
     virtual	void		UpdateSnapList			(){m_Flags.set(flUpdateSnapList,TRUE);}
 	virtual ObjectList*	GetSnapList				(){return &m_SnapObjects;}

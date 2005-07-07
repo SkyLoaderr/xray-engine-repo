@@ -45,7 +45,7 @@ enum ETFlags{
 
 class ECORE_API CToolsCustom//: public pureDeviceCreate, public pureDeviceDestroy
 {
-	friend class CEditorPreferences;
+	friend class CCustomPreferences;
 protected:
     bool				m_bReady;
 

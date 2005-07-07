@@ -239,7 +239,7 @@ CCommandVar CommandInitialize(CCommandVar p1, CCommandVar p2)
     Engine.Initialize	();
     // make interface
     //----------------
-    EPrefs.OnCreate		();
+    EPrefs->OnCreate		();
     if (UI->OnCreate((TD3DWindow*)(u32)p1,(TPanel*)(u32)p2)){
         ExecCommand		(COMMAND_CREATE_SOUND_LIB);	R_ASSERT(SndLib);
         SndLib->OnCreate();
@@ -247,6 +247,7 @@ CCommandVar CommandInitialize(CCommandVar p1, CCommandVar p2)
         Lib.OnCreate	();
         g_pGamePersistent= xr_new<IGame_Persistent>();
         if (Tools->OnCreate()){
+        	EPrefs->Load();
             Device.seqAppStart.Process(rp_AppStart);
             ExecCommand	(COMMAND_RESTORE_UI_BAR);
             ExecCommand	(COMMAND_REFRESH_UI_BAR);
@@ -265,7 +266,7 @@ CCommandVar CommandInitialize(CCommandVar p1, CCommandVar p2)
 CCommandVar 	CommandDestroy(CCommandVar p1, CCommandVar p2)
 {
     ExecCommand			(COMMAND_SAVE_UI_BAR);
-    EPrefs.OnDestroy	();
+    EPrefs->OnDestroy	();
     ExecCommand			(COMMAND_CLEAR);
     Device.seqAppEnd.Process(rp_AppEnd);
     xr_delete			(g_pGamePersistent);
@@ -285,7 +286,7 @@ CCommandVar 	CommandQuit(CCommandVar p1, CCommandVar p2)
 }             
 CCommandVar 	CommandEditorPrefs(CCommandVar p1, CCommandVar p2)
 {
-    EPrefs.Edit			();
+    EPrefs->Edit		();
     return				TRUE;
 }             
 CCommandVar 	CommandChangeAction(CCommandVar p1, CCommandVar p2)
@@ -407,15 +408,15 @@ CCommandVar 	CommandToggleGrid(CCommandVar p1, CCommandVar p2)
 }
 CCommandVar 	CommandUpdateGrid(CCommandVar p1, CCommandVar p2)
 {
-    DU.UpdateGrid		(EPrefs.grid_cell_count,EPrefs.grid_cell_size);
+    DU.UpdateGrid		(EPrefs->grid_cell_count,EPrefs->grid_cell_size);
     UI->OutGridSize		();
     UI->RedrawScene		();
     return				TRUE;
 }
 CCommandVar 	CommandGridNumberOfSlots(CCommandVar p1, CCommandVar p2)
 {
-    if (p1)				EPrefs.grid_cell_count += 2;
-    else				EPrefs.grid_cell_count -= 2;
+    if (p1)				EPrefs->grid_cell_count += 2;
+    else				EPrefs->grid_cell_count -= 2;
     ExecCommand			(COMMAND_UPDATE_GRID);
     UI->RedrawScene		();
     return				TRUE;
@@ -423,13 +424,13 @@ CCommandVar 	CommandGridNumberOfSlots(CCommandVar p1, CCommandVar p2)
 CCommandVar 	CommandGridSlotSize(CCommandVar p1, CCommandVar p2)
 {
     float step = 1.f;
-    float val = EPrefs.grid_cell_size;
+    float val = EPrefs->grid_cell_size;
     if (p1){
         if (val<1) step/=10.f;
-        EPrefs.grid_cell_size += step;
+        EPrefs->grid_cell_size += step;
     }else{
         if (fsimilar(val,1.f)||(val<1)) step/=10.f;
-        EPrefs.grid_cell_size -= step;
+        EPrefs->grid_cell_size -= step;
     }
     ExecCommand			(COMMAND_UPDATE_GRID);
     UI->RedrawScene		();
@@ -598,7 +599,7 @@ void TUI::RegisterCommands()
     REGISTER_CMD_S	    (COMMAND_EVICT_OBJECTS,      	CommandEvictObjects);
     REGISTER_CMD_S	    (COMMAND_EVICT_TEXTURES,     	CommandEvictTextures);
     REGISTER_CMD_S	    (COMMAND_CHECK_MODIFIED,     	CommandCheckModified);
-	REGISTER_CMD_S	    (COMMAND_SHOW_PROPERTIES,    	CommandShowProperties);
+	REGISTER_CMD_SE	    (COMMAND_SHOW_PROPERTIES,    	"Show Properties",		CommandShowProperties, false);
 	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
     REGISTER_SUB_CMD_SE (COMMAND_ZOOM_EXTENTS,     		"Zoom",					CommandZoomExtents,false);

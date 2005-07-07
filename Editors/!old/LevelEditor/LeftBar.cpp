@@ -342,37 +342,9 @@ void __fastcall TfraLeftBar::ebEditLibClick(TObject *Sender)
 void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
-    if (Scene->GetMTools(btn->Tag)->m_bEnabled){
-	    ExecCommand(COMMAND_CHANGE_TARGET, btn->Down?btn->Tag:OBJCLASS_DUMMY);
-    }else{
-    	if (LTools->GetTarget()!=OBJCLASS_DUMMY){
-        	btn->Down									= false;
-        	m_TargetButtons[LTools->GetTarget()]->Down 	= true;
-        }
-    }
+    ExecCommand(COMMAND_CHANGE_TARGET, btn->Down?btn->Tag:OBJCLASS_DUMMY);
     // turn off snap mode
     ebSnapListMode->Down 	= false;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebTargetObjectMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
-    if (btn->Width-X<btn->ExtWidth){
-        if (Scene->GetMTools(btn->Tag)->AllowEnabling()){
-        	pmExtTarget->Tag 	= btn->Tag;
-            FHelper.ShowPPMenu	(pmExtTarget,dynamic_cast<TExtBtn*>(Sender));
-        }
-    }
-    TargetClick(Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::TargetEnableClick(TObject *Sender)
-{
-	TMenuItem* MI 	= dynamic_cast<TMenuItem*>(Sender); VERIFY(MI);
-    ExecCommand(COMMAND_ENABLE_TARGET,pmExtTarget->Tag,MI->Tag);
 }
 //---------------------------------------------------------------------------
 
@@ -723,7 +695,7 @@ void TfraLeftBar::RefreshBar()
 {
 	miRecentFiles->Clear();
     u32 idx 			= 0;
-	for (AStringIt it=EPrefs.scene_recent_list.begin(); it!=EPrefs.scene_recent_list.end(); it++){
+	for (AStringIt it=EPrefs->scene_recent_list.begin(); it!=EPrefs->scene_recent_list.end(); it++){
         TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
         MI->Caption 	= *it;
         MI->OnClick 	= miRecentFilesClick;
@@ -733,7 +705,7 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
     // refresh target
     for (ObjClassID k=OBJCLASS_FIRST_CLASS; k<OBJCLASS_COUNT; k++)
-    	m_TargetButtons[k]->NormalColor	= Scene->GetMTools(k)->m_bEnabled?clBlack:clGray;
+    	m_TargetButtons[k]->Enabled	= Scene->GetMTools(k)->m_bEnabled;
 }
 //---------------------------------------------------------------------------
 

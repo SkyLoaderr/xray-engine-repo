@@ -6,10 +6,10 @@
 #include "ui_main.h"
 #include "ui_toolscustom.h"
 //---------------------------------------------------------------------------
-CEditorPreferences EPrefs;
+CCustomPreferences* EPrefs=0;
 //---------------------------------------------------------------------------
 
-CEditorPreferences::CEditorPreferences()
+CCustomPreferences::CCustomPreferences()
 {
 	// view
     view_np				= 0.1f;
@@ -47,7 +47,11 @@ CEditorPreferences::CEditorPreferences()
 }
 //---------------------------------------------------------------------------
 
-void CEditorPreferences::ApplyValues()
+CCustomPreferences::~CCustomPreferences()
+{
+}
+
+void CCustomPreferences::ApplyValues()
 {
 	Tools->m_MoveSnap		= snap_move;
 	Tools->m_MoveSnapTo		= snap_moveto;
@@ -67,7 +71,7 @@ void CEditorPreferences::ApplyValues()
 }
 //---------------------------------------------------------------------------
 
-void __stdcall CEditorPreferences::OnClose	()
+void __stdcall CCustomPreferences::OnClose	()
 {
 	ApplyValues	();	
 }
@@ -90,7 +94,7 @@ void CheckValidate(ShortcutValue*, const xr_shortcut& new_val, bool& result)
     }
 }
 
-void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModif, bool&)
+void CCustomPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModif, bool&)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
@@ -114,11 +118,8 @@ void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModi
 	}
 }
 
-void CEditorPreferences::Edit()
+void CCustomPreferences::FillProp(PropItemVec& props)
 {
-    // fill prop
-	PropItemVec props;
-
     PHelper().CreateFlag32	(props,"Objects\\Library\\Discard Instance",	&object_flags, 	epoDiscardInstance);
     PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
     PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
@@ -159,7 +160,7 @@ void CEditorPreferences::Edit()
     PHelper().CreateColor	(props,"Viewport\\Clear Color",		           	&scene_clear_color	);
     
     ButtonValue* B = PHelper().CreateButton	(props,"Keyboard\\Common\\File","Load,Save", 0);
-    B->OnBtnClickEvent.bind	(this,&CEditorPreferences::OnKeyboardCommonFileClick);
+    B->OnBtnClickEvent.bind	(this,&CCustomPreferences::OnKeyboardCommonFileClick);
     ECommandVec& cmds		= GetEditorCommands();
     for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
     	SECommand*& CMD		= cmds[cmd_idx];
@@ -173,6 +174,14 @@ void CEditorPreferences::Edit()
             }
         }
     }
+}
+
+void CCustomPreferences::Edit()
+{
+    // fill prop
+	PropItemVec props;
+
+    FillProp						(props);
 
 	m_ItemProps->AssignItems		(props);
     m_ItemProps->ShowPropertiesModal();
@@ -182,12 +191,8 @@ void CEditorPreferences::Edit()
 }
 //---------------------------------------------------------------------------
 
-void CEditorPreferences::Load()
+void CCustomPreferences::Load(CInifile* I)
 {
-	xr_string	fn;
-	INI_NAME	(fn);
-    CInifile* 	I = xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
-
     psDeviceFlags.flags		= R_U32_SAFE	("editor_prefs","device_flags",	psDeviceFlags.flags);
     psSoundFlags.flags		= R_U32_SAFE	("editor_prefs","sound_flags",	psSoundFlags.flags)
 
@@ -236,17 +241,10 @@ void CEditorPreferences::Load()
     LoadShortcuts		(I);
 
     UI->LoadSettings	(I);
-    
-    xr_delete			(I);
-
-    ApplyValues			();
 }
-void CEditorPreferences::Save()
-{
-	xr_string fn;
-	INI_NAME	(fn);
-    CInifile* 	I = xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
 
+void CCustomPreferences::Save(CInifile* I)
+{
     I->w_u32	("editor_prefs","device_flags",		psDeviceFlags.flags	);
     I->w_u32	("editor_prefs","sound_flags",		psSoundFlags.flags	);
 
@@ -294,25 +292,27 @@ void CEditorPreferences::Save()
     // load shortcuts
     SaveShortcuts		(I);
     UI->SaveSettings	(I);
-
-	xr_delete	(I);
 }
 
-void CEditorPreferences::OnCreate()
+void CCustomPreferences::Load()
 {
-	Load				();
-	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullSort); //TProperties::plFullExpand TProperties::plFullSort TProperties::plNoClearStore|TProperties::plFolderStore|
+	xr_string			fn;
+	INI_NAME			(fn);
+    CInifile* I			= xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
+    Load				(I);
+    xr_delete			(I);
+    ApplyValues			();
 }
-//---------------------------------------------------------------------------
-
-void CEditorPreferences::OnDestroy()
+void CCustomPreferences::Save()
 {
-    TProperties::DestroyForm(m_ItemProps);
-    Save				();
+	xr_string 			fn;
+	INI_NAME			(fn);
+    CInifile* I 		= xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
+	Save				(I);
+	xr_delete			(I);
 }
-//---------------------------------------------------------------------------
 
-void CEditorPreferences::AppendRecentFile(LPCSTR name)
+void CCustomPreferences::AppendRecentFile(LPCSTR name)
 {
     for (AStringIt it=scene_recent_list.begin(); it!=scene_recent_list.end(); it++){
     	if (*it==name){
@@ -321,10 +321,24 @@ void CEditorPreferences::AppendRecentFile(LPCSTR name)
         }
     }
 	scene_recent_list.insert(scene_recent_list.begin(),name);
-	while (scene_recent_list.size()>=EPrefs.scene_recent_count) 
+	while (scene_recent_list.size()>=EPrefs->scene_recent_count) 
     	scene_recent_list.pop_back();
 
     ExecCommand				(COMMAND_REFRESH_UI_BAR);
+}
+//---------------------------------------------------------------------------
+
+void CCustomPreferences::OnCreate()
+{
+	Load				();
+	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CCustomPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullSort); //TProperties::plFullExpand TProperties::plFullSort TProperties::plNoClearStore|TProperties::plFolderStore|
+}
+//---------------------------------------------------------------------------
+
+void CCustomPreferences::OnDestroy()
+{
+    TProperties::DestroyForm(m_ItemProps);
+    Save				();
 }
 //---------------------------------------------------------------------------
 

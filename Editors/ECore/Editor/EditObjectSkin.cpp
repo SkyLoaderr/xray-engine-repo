@@ -117,7 +117,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             Fmatrix& M 		= (*b_it)->_LTransform();
             Fvector p1		= M.c;
             u32 c_joint		= (*b_it)->flags.is(CBone::flSelected)?color_bone_sel_color:color_bone_norm_color;
-            if (EPrefs.object_flags.is(epoDrawJoints))
+            if (EPrefs->object_flags.is(epoDrawJoints))
 	            DU.DrawJoint	(p1,joint_size,c_joint);
             // center of mass
             if ((*b_it)->shape.type!=SBoneShape::stNone){
@@ -143,17 +143,17 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
 				Fvector& p2 = (*b_it)->Parent()->_LTransform().c;
         	    DU.DrawLine	(p1,p2,color_bone_link_color);
 			}
-			if (EPrefs.object_flags.is(epoDrawBoneAxis)){ 
+			if (EPrefs->object_flags.is(epoDrawBoneAxis)){ 
             	Fmatrix mat; mat.mul(parent,M);
 	          	DU.DrawObjectAxis(mat,0.03f,(*b_it)->flags.is(CBone::flSelected));
             }
-			if (EPrefs.object_flags.is(epoDrawBoneNames)){ 
+			if (EPrefs->object_flags.is(epoDrawBoneNames)){ 
             	parent.transform_tiny(p1);
             	u32 c = (*b_it)->flags.is(CBone::flSelected)?0xFFFFFFFF:0xFF000000;
             	u32 s = (*b_it)->flags.is(CBone::flSelected)?0xFF000000:0xFF909090;
             	DU.DrawText(p1,(*b_it)->Name().c_str(),c,s);
             }
-			if (EPrefs.object_flags.is(epoDrawBoneShapes)){ 
+			if (EPrefs->object_flags.is(epoDrawBoneShapes)){ 
 		        Device.SetShader(Device.m_SelectionShader);
                 Fmatrix mat	= M;
                 mat.mulA	(parent);

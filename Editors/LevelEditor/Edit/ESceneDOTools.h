@@ -94,6 +94,8 @@ public:
 						EDetailManager			();
     virtual 			~EDetailManager			();
 
+	virtual	bool		AllowEnabling    		(){return true;}
+
     // snap 
 	virtual ObjectList* GetSnapList				(){return &m_SnapObjects;}
     virtual void		UpdateSnapList			(){};

@@ -53,6 +53,8 @@ public:
     virtual void		OnCreate				();
     virtual void		OnDestroy				();
     
+	virtual	bool		AllowEnabling    		()=0;
+    BOOL				Enable					(BOOL val);
     // snap 
 	virtual ObjectList* GetSnapList				()=0;
     virtual void		UpdateSnapList			()=0;

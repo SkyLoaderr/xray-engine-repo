@@ -520,7 +520,6 @@ void EDetailManager::OnBaseTextureChange(PropValue* prop)
 
 void EDetailManager::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp(pref, items);
 	PropValue* P;
     P=PHelper().CreateFloat	(items, PrepareKey(pref,"Objects per square"),				&ps_r__Detail_density);
     P->OnChangeEvent.bind	(this,&EDetailManager::OnDensityChange);
