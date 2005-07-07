@@ -34,6 +34,7 @@ void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
 		float dist			= p->position.distance_to((*it)->spatial.center);
 		if (dist>p->max_ai_distance) continue;
 		VERIFY				(_valid(dist) && _valid(p->max_ai_distance) && _valid(p->volume) );
+		VERIFY				(!fis_zero(p->max_ai_distance));
 		float Power			= (1.f-dist/p->max_ai_distance)*p->volume;
 		VERIFY				(_valid(Power));
 		if (Power>EPS_S)	{
