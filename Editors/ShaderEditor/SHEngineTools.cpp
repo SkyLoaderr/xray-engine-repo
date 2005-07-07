@@ -9,7 +9,6 @@
 #include "LeftBar.h"
 #include "xr_trims.h"
 #include "folderlib.h"
-#include "SceneObject.h"
 #include "EditMesh.h"
 #include "Library.h"
 #include "ChoseForm.h"

@@ -10,6 +10,8 @@
 #include "leftbar.h"
 #include "ItemList.h"
 #include <eax.h>
+#include "SoundRender_Source.h"
+#include "D3DUtils.h"
 
 //------------------------------------------------------------------------------
 xr_token eax_environment[]		= {
@@ -45,7 +47,6 @@ xr_token eax_environment[]		= {
 CSHSoundEnvTools::CSHSoundEnvTools(ISHInit& init):ISHTools(init)
 {
     m_Env	 			= 0;
-    m_PreviewSnd		= 0;
 }
 
 CSHSoundEnvTools::~CSHSoundEnvTools()
@@ -53,14 +54,43 @@ CSHSoundEnvTools::~CSHSoundEnvTools()
 }
 //---------------------------------------------------------------------------
 
+void CSHSoundEnvTools::OnChangeWAV	(PropValue* prop)
+{
+	BOOL bPlay 		= !!m_PreviewSnd.feedback;
+	m_PreviewSnd.destroy();
+	if (m_SoundName.size()){
+    	m_PreviewSnd.create				(1,*m_SoundName);
+        CSoundRender_Source* src= (CSoundRender_Source*)m_PreviewSnd.handle;
+        m_Params.min_distance	= src->m_fMinDist;
+        m_Params.max_distance	= src->m_fMaxDist;
+    }
+	if (bPlay) 		m_PreviewSnd.play	(0,sm_Looped);
+}
+
+void CSHSoundEnvTools::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: m_PreviewSnd.play	(0,sm_Looped);	break;
+    case 1: m_PreviewSnd.stop	();				break;
+	}
+    bModif = false;
+}
+
 void CSHSoundEnvTools::OnActivate()
 {
 	if (!psSoundFlags.is(ssHardware|ssEAX)){
     	Log("#!HARDWARE or FX flags are not set. Preview is disabled.");
     }else{
-        m_PreviewSnd->Play	();
+        m_PreviewSnd.play			(0,sm_Looped);
         PropItemVec items;
-        m_PreviewSnd->FillProp	("Sound",items);
+
+        PropValue* V;
+        V							= PHelper().CreateChoose	(items,"Source\\WAVE name",	&m_SoundName,	smSoundSource);
+        V->OnChangeEvent.bind		(this,&CSHSoundEnvTools::OnChangeWAV);
+        ButtonValue* B				= PHelper().CreateButton	(items,"Source\\Controls", "Play,Stop",0);
+        B->OnBtnClickEvent.bind		(this,&CSHSoundEnvTools::OnControlClick);
+        
         Ext.m_PreviewProps->AssignItems(items);
         Ext.m_PreviewProps->ShowProperties();
     }
@@ -75,8 +105,7 @@ void CSHSoundEnvTools::OnActivate()
 
 void CSHSoundEnvTools::OnDeactivate()
 {
-	m_PreviewSnd->Stop();
-	m_PreviewSnd->OnFrame();
+	m_PreviewSnd.stop			();
     inherited::OnDeactivate		();
 }
 //---------------------------------------------------------------------------
@@ -84,20 +113,27 @@ void CSHSoundEnvTools::OnDeactivate()
 void CSHSoundEnvTools::OnFrame()
 {
 	inherited::OnFrame();
-	m_PreviewSnd->OnFrame();
 }
 //---------------------------------------------------------------------------
 
+#define SOUND_SEL0_COLOR 	0x00A0A0F0
+#define SOUND_SEL1_COLOR 	0x00FFFFFF
+
 void CSHSoundEnvTools::OnRender()
 {
-	m_PreviewSnd->Render(1,false);
+	if (m_PreviewSnd.handle){	
+	 	RCache.set_xform_world	(Fidentity);
+	 	Device.SetShader	(Device.m_WireShader);
+        u32 clr0			= SOUND_SEL0_COLOR;
+        u32 clr1			= SOUND_SEL1_COLOR;
+        DU.DrawLineSphere	(Fvector().set(0,0,0), m_Params.max_distance, clr1, true);
+        DU.DrawLineSphere	(Fvector().set(0,0,0), m_Params.min_distance, clr0, false);
+    }
 }
 //---------------------------------------------------------------------------
 
 bool CSHSoundEnvTools::OnCreate()
 {
-	m_PreviewSnd 					= xr_new<ESoundSource>((LPVOID)NULL, "Test");
-    m_PreviewSnd->Select			(TRUE);
     Load							();
     return true;
 }
@@ -106,7 +142,6 @@ void CSHSoundEnvTools::OnDestroy()
 {
 	m_Library.Unload	();
     m_bModified 		= FALSE;
-    xr_delete			(m_PreviewSnd);
 }
 //---------------------------------------------------------------------------
 

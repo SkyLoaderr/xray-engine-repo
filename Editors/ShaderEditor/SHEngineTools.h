@@ -12,6 +12,7 @@ DEFINE_MAP_PRED(LPSTR,IBlender*,BlenderMap,BlenderPairIt,str_pred);
 
 // refs
 class CSHEngineTools;
+class CEditableObject;
 
 class CParseBlender{
 public:

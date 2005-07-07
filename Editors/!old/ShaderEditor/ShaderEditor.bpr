@@ -8,12 +8,10 @@
       Intermediate\BottomBar.obj Intermediate\GameMtlLib_Editor.obj 
       Intermediate\LeftBar.obj Intermediate\main.obj Intermediate\Splash.obj 
       Intermediate\stdafx.obj Intermediate\TopBar.obj 
-      Intermediate\UI_ShaderMain.obj Intermediate\ESound_Source.obj 
-      Intermediate\SHToolsInterface.obj Intermediate\SHCompilerTools.obj 
-      Intermediate\SHCompilerToolsProperties.obj 
-      Intermediate\SHGameMtlPairTools.obj Intermediate\SHGameMtlTools.obj 
-      Intermediate\SHSoundEnvTools.obj Intermediate\SceneObject.obj 
-      Intermediate\CustomObjectMisc.obj Intermediate\SceneObjectIO.obj 
+      Intermediate\UI_ShaderMain.obj Intermediate\SHToolsInterface.obj 
+      Intermediate\SHCompilerTools.obj 
+      Intermediate\SHCompilerToolsProperties.obj Intermediate\SHGameMtlPairTools.obj 
+      Intermediate\SHGameMtlTools.obj Intermediate\SHSoundEnvTools.obj 
       Intermediate\SHEngineTools.obj Intermediate\SHEngineToolsProperties.obj"/>
     <RESFILES value="resource.res ShaderEditor.res"/>
     <IDLFILES value=""/>
@@ -36,8 +34,8 @@
     <MAINSOURCE value="ShaderEditor.cpp"/>
     <INCLUDEPATH value="&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot;;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;R:\SDK\eax20\Include;..\xrEProps"/>
     <LIBPATH value="C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor"/>
-    <WARNINGS value="-w8092 -w8091 -w8090 -w8089 -w8087 -wprc -wuse -wucp -wstv -wstu -wsig 
-      -wpin -w-par -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
+    <WARNINGS value="-w8092 -w8090 -w8089 -w8087 -wprc -wucp -wstv -wstu -wsig -wpin -w-par 
+      -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
@@ -74,16 +72,12 @@
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_ShaderMain.cpp" FORMNAME="" UNITNAME="UI_ShaderMain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHToolsInterface.cpp" FORMNAME="" UNITNAME="SHToolsInterface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHCompilerTools.cpp" FORMNAME="" UNITNAME="SHCompilerTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHCompilerToolsProperties.cpp" FORMNAME="" UNITNAME="SHCompilerToolsProperties.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHGameMtlPairTools.cpp" FORMNAME="" UNITNAME="SHGameMtlPairTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHGameMtlTools.cpp" FORMNAME="" UNITNAME="SHGameMtlTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHSoundEnvTools.cpp" FORMNAME="" UNITNAME="SHSoundEnvTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="CustomObjectMisc.cpp" FORMNAME="" UNITNAME="CustomObjectMisc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHEngineTools.cpp" FORMNAME="" UNITNAME="SHEngineTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHEngineToolsProperties.cpp" FORMNAME="" UNITNAME="SHEngineToolsProperties.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -99,7 +93,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=113
+Build=114
 Debug=1
 PreRelease=0
 Special=0
@@ -111,7 +105,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.113
+FileVersion=1.0.2.114
 InternalName=
 LegalCopyright=
 LegalTrademarks=

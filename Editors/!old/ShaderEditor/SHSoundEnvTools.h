@@ -4,7 +4,6 @@
 
 #include "SHToolsInterface.h"
 #include "soundrender_environment.h"
-#include "ESound_Source.h"
 
 // refs
 class PropValue;
@@ -17,7 +16,13 @@ class CSHSoundEnvTools: public ISHTools
 
     SoundEnvironment_LIB		m_Library;
 
-    ESoundSource*				m_PreviewSnd;
+    shared_str					m_SoundName;
+    CSound_params				m_Params;
+    ref_sound					m_PreviewSnd;
+	void __stdcall  			OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  			OnChangeWAV			(PropValue* prop);
+
+
     void __stdcall  			OnRevResetClick		(PropValue* sender, bool& bModif, bool& bSafe);
 	void __stdcall  			OnEnvSizeChange		(PropValue* sender);
 	void __stdcall  			OnEnvChange			(PropValue* sender);

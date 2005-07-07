@@ -12,7 +12,6 @@ USEFORM("main.cpp", frmMain);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
-
 struct SInit{
 	SInit()
     {
