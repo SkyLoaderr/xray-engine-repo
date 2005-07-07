@@ -3,6 +3,9 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
+function printf()
+end
+
 --' Эвалуатор, который синхронизирует менеджер.
 --' Мы уже в безраличном состоянии idle или нет
 class "evaluator_state_mgr_idle" (property_evaluator)
@@ -424,6 +427,7 @@ function state_manager:__init(npc)
 	self.operators["animstate_2wounded"]	= 65
 	self.operators["animstate_2idle"]		= 66
 	self.operators["animstate_2sleep"]		= 67
+	self.operators["animstate_clear_anim"]	= 68
 	
 	self.operators["animation_start"]		= 71
 	self.operators["animation_stop"]		= 72
@@ -434,7 +438,7 @@ function state_manager:__init(npc)
 	local action = state_mgr_weapon.act_state_mgr_weapon_unstrapp("state_mgr_weapon_unstrapp", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_unstrapped"],	true))
-	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	--action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_unstrapped_now"],true))
@@ -443,7 +447,7 @@ function state_manager:__init(npc)
 	action = state_mgr_weapon.act_state_mgr_weapon_strapp("state_mgr_weapon_strapp", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_strapped"],		true))
-	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	--action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_strapped_now"],	true))
@@ -452,7 +456,7 @@ function state_manager:__init(npc)
 	action = state_mgr_weapon.act_state_mgr_weapon_none("state_mgr_weapon_none", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_none"],			true))
-	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	--action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_none_now"],		true))
@@ -461,7 +465,7 @@ function state_manager:__init(npc)
 	action = state_mgr_weapon.act_state_mgr_weapon_drop("state_mgr_weapon_drop", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_drop"],			true))
-	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	--action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_none_now"],		true))
@@ -470,7 +474,7 @@ function state_manager:__init(npc)
 	action = state_mgr_weapon.act_state_mgr_weapon_fire("state_mgr_weapon_fire", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["weapon_fire"],			true))
-	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	--action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_unstrapped_now"],true))
@@ -591,13 +595,14 @@ function state_manager:__init(npc)
 
 	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_direction_clear_anim", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["direction"],			false))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_effect 			(world_property(self.properties["animation_none_now"],	true))
 	self.planner:add_action(self.operators["direction_clear_anim"], action)
 
 	action = state_mgr_animstate.act_state_mgr_animstate_2idle("state_mgr_direction_stand_up", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
-	--action:add_precondition		(world_property(self.properties["weapon_strapped_now"],	true))
+	action:add_precondition		(world_property(self.properties["direction"],			false))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_effect 			(world_property(self.properties["animstate_idle_now"],	true))
 	self.planner:add_action(self.operators["direction_stand_up"], action)
@@ -683,6 +688,12 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["animstate_sleep_now"],	true))
 	self.planner:add_action(self.operators["animstate_2sleep"], action)
 
+	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_animstate_clear_anim", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["animstate"],			false))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
+	action:add_effect 			(world_property(self.properties["animation_none_now"],	true))
+	self.planner:add_action(self.operators["animstate_clear_anim"], action)
 
 
 	action = state_mgr_animation.act_state_mgr_animation_start("state_mgr_animation_start", self)
