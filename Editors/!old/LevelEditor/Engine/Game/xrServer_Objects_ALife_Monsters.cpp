@@ -197,8 +197,9 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 #else
 			m_SpecificCharacter = NULL;
 #endif
-		}else
-			tNetPacket.r_stringZ	(m_SpecificCharacter);
+		}else if (m_wVersion>=98){
+			tNetPacket.r_stringZ(m_SpecificCharacter);
+		}
 
 		if (m_wVersion > 77)
 			m_trader_flags.assign(tNetPacket.r_u32());
