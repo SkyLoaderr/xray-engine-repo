@@ -36,14 +36,9 @@ def_state_standing = barman_wait_danger
 def_state_moving1 = barman_walk_danger
 def_state_moving2 = barman_walk_danger
 def_state_moving3 = barman_walk_danger
-on_info = {+bar_barman_need_hole} walker@room2hole
-meet = meet
-
-[meet]
-use = true
-use_wpn = true
 meet_talk_enabled = true
 meet_state = barman_wait_danger
+on_info = {+bar_barman_need_hole} walker@room2hole
 
 [walker@room2hole]
 path_walk = bar_barman_room2hole_walk
