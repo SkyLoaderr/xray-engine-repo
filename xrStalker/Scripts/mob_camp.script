@@ -274,7 +274,7 @@ function mob_camp:execute_state()
 
 end
 
-function mob_camp:finalize()
+function mob_camp:deactivate()
 	if self.home_path then
 		db.camp_storage[self.st.home_point][self.cur_point_index+1] = false
 	end

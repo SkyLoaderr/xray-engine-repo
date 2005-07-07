@@ -591,7 +591,7 @@ function switch_to_section(npc, st, section)
 	end
 	
 	-- call scheme::finalize()
-	issue_event(obj, st, "finalize")
+	issue_event(obj, st, "deactivate")
 	
 	db.storage[npc:id()].active_section = nil
 	db.storage[npc:id()].active_scheme = nil
