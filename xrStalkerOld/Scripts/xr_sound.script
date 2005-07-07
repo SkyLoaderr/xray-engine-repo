@@ -133,6 +133,10 @@ function update(npc)
 	   group_table.last_npc == npc_id then
 		return
 	end
+
+	if table.getn(db.sound[npc_id].snd) == 0 then
+		return
+	end
 	
 	if group_table.begin == nil or
 	   time_global() - group_table.begin >= group_table.idle
