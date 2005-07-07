@@ -545,11 +545,13 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
+	if gulag_garbage.checkStalker(npc_community, gulag_type) then
+		return true
+	end
 	if gulag_dark_valley.checkStalker(npc_community, gulag_type) then
 		return true
 	end
-
-	if gulag_garbage.checkStalker(npc_community, gulag_type) then
+	if gulag_labx18.checkStalker(npc_community, gulag_type) then
 		return true
 	end
 
@@ -573,13 +575,15 @@ function checkMonster(npc_community, gulag_type)
 		return true
 	end
 
-	if gulag_dark_valley.checkMonster(npc_community, gulag_type) then
-		return true
-	end
-
 	if gulag_garbage.checkMonster(npc_community, gulag_type) then
 		return true
     end
+	if gulag_dark_valley.checkMonster(npc_community, gulag_type) then
+		return true
+	end
+	if gulag_labx18.checkMonster(npc_community, gulag_type) then
+		return true
+	end
 
 	if gulag_bar.checkMonster(npc_community, gulag_type) then
 		return true
