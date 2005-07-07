@@ -471,6 +471,7 @@ function loadJob(sj, gname, type, squad, groups)
 
 	gulag_garbage.load_job    (sj, gname, type, squad, groups)
 	gulag_dark_valley.load_job(sj, gname, type, squad, groups)
+	gulag_labx18.load_job     (sj, gname, type, squad, groups)
 	gulag_bar.load_job        (sj, gname, type, squad, groups)
 	gulag_military.load_job   (sj, gname, type, squad, groups)
 	gulag_military.load_tubes_job (sj, gname, type, squad, groups)
@@ -587,6 +588,11 @@ function loadStates(gname, type)
 	end
 
 	f = gulag_dark_valley.load_states(gname, type)
+	if f then
+		return f
+	end
+
+	f = gulag_labx18.load_states(gname, type)
 	if f then
 		return f
 	end
