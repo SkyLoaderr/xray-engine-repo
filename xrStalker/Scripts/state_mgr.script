@@ -402,6 +402,7 @@ function state_manager:__init(npc)
 	self.operators["weapon_none"]			= 13
 	self.operators["weapon_fire"]			= 14
 	self.operators["weapon_drop"]			= 15
+	self.operators["weapon_clear_anim"]		= 16
 	
 	self.operators["movement"]				= 21
 	self.operators["movement_walk"]			= 22
@@ -479,6 +480,13 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_unstrapped_now"],true))
 	self.planner:add_action(self.operators["weapon_fire"], action)
+
+	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_weapon_clear_anim", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["weapon"],				false))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
+	action:add_effect 			(world_property(self.properties["animation_none_now"],	true))
+	self.planner:add_action(self.operators["weapon_clear_anim"], action)
 
 
 	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk")
