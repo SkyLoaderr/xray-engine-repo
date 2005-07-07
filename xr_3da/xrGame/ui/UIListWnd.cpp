@@ -6,6 +6,7 @@
 #include ".\uilistwnd.h"
 #include "UIInteractiveListItem.h"
 #include "uiscrollbar.h"
+#include "../MainUI.h"
 
 //////////////////////////////////////////////////////////////////////////
 
