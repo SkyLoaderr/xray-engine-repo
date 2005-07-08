@@ -128,7 +128,7 @@ end
 function send_task(actor, type)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
---	pda_task:play(db.actor, 0, sound_object.s2d)
+	pda_task:play(db.actor, 0, sound_object.s2d)
 	if type == "new" then
 		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,50, 0)
 	elseif type == "update" then
