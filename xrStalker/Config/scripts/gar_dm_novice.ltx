@@ -26,6 +26,7 @@ on_info = {+gar_dm_newbie_no_money} remark@no_money %-gar_dm_newbie_no_money%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 on_info3 = {+gar_dm_end} nil %=gar_dm_bandits_fight%
 reactions = ignore
+danger = danger_condition
 
 [remark@no_money]
 no_move = true
@@ -39,6 +40,7 @@ on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} rema
 on_info3 = {+gar_dm_end} nil %=gar_dm_bandits_fight%
 on_actor_dist_le_nvis = 12 | remark1
 reactions = ignore
+danger = danger_condition
 
 [remark1]
 anim = hello
@@ -50,6 +52,7 @@ on_signal = sound_end | remark2 %+gar_dm_novice_asked_for_help%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 on_info3 = {+gar_dm_end} nil %=gar_dm_bandits_fight%
 reactions = ignore
+danger = danger_condition
 
 [remark2]
 no_move = true
@@ -61,6 +64,7 @@ on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} rema
 on_info3 = {+gar_dm_end} nil %=gar_dm_bandits_fight%
 on_timer = 15000 | nil %=gar_dm_bandits_fight%
 reactions = ignore
+danger = danger_condition
 
 [remark3]
 no_move = false
@@ -72,6 +76,7 @@ arrival_timeout = 1500
 on_signal = move_end | remark@after_fight %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 reactions = ignore
+danger = danger_condition
 
 [remark@after_fight]
 ;no_move = true
@@ -83,6 +88,7 @@ arrival_timeout = 20000
 snd_timeout = 20000
 reactions = ignore
 on_signal = action_end | walker2 %=actor_friend%
+danger = danger_condition
 
 [walker2]
 path_walk = gar_dm_novice_walk
@@ -96,3 +102,6 @@ victim = 3|actor
 victim_wpn = 3|actor
 use = true
 use_wpn = true
+
+[danger_condition]
+ignore_distance = 30
