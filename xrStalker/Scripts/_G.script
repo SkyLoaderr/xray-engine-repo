@@ -1095,4 +1095,3 @@ function abort(fmt, ...)
 end
    
 --profiler.setup_hook	()
-prefetch("xr_effects")
