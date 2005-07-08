@@ -1094,7 +1094,6 @@ function abort(fmt, ...)
 	string.format("%s") -- crash the script
 end
 
-news_manager.a = nil
 --prefetch(news_manager)   
 prefetch(xr_effects)   
 --profiler.setup_hook	()
