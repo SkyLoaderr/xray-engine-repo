@@ -199,7 +199,9 @@ function load_sound(obj)
 	theme[obj:id()]["trade_yes"]					= load_sound_from_ltx(obj, "trade_yes")
 	theme[obj:id()]["trade_no"]						= load_sound_from_ltx(obj, "trade_no")
 
-	
+	-- игра на губной гармошке	
+	theme[obj:id()]["harmonica"]					= load_sound_from_ltx(obj, "harmonica")
+
 	-- УНИКАЛЬНЫЕ ТЕМЫ
 	-- Garbage DramMoment
 	theme[obj:id()]["gar_dm_bandit_backoff1"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff1", 5, 8, 100)
