@@ -123,6 +123,8 @@ function main_menu:InitControls()
 	self.multi_tab = ui_main_multi_tab.main_multi_tab()
 	self.multi_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_frame:AttachChild(self.multi_tab)
+	
+	self.mp_dlg = ui_mp_main.mp_main()
 end
 
 
@@ -155,10 +157,6 @@ end
 function main_menu:OnButton_new_hard_game()
 	local console = get_console()
 	console:execute("start server(all/single/alife/new) client(localhost)")
---	console:execute("start server(andy_test/single) client(localhost)")
---	console:execure("start server(fog_net/dethmatch) client(localhost")
---	get_console():execute("main_menu off")
-
 end
 
 function main_menu:OnButton_load_spawn()
@@ -219,10 +217,8 @@ function main_menu:OnButton_load_clicked()
 end
 
 function main_menu:OnButton_multiplayer_clicked()
-	--self:HideAllTabs()
-	--self.multi_tab:Show(true)
 	if self.mp_dlg == nil then
-		self.mp_dlg = ui_mp_main.mp_main() --ui_multiplayer_find.multiplayer_find_dialog()
+		self.mp_dlg = ui_mp_main.mp_main()
 	end
 	self.mp_dlg:UpdateControls()
 	self:GetHolder():start_stop_menu(self.mp_dlg, true)	
