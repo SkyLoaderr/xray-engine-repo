@@ -452,12 +452,18 @@ void CLevel::OnRender()
 			CClimableObject		*climable		  = smart_cast<CClimableObject*>	(_O);
 			if(climable)
 				climable->OnRender();
+			CTeamBaseZone	*team_base_zone = smart_cast<CTeamBaseZone*>(_O);
+			if (team_base_zone)
+				team_base_zone->OnRender();
 			if (GameID() != GAME_SINGLE)
 			{
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(_O);
 				if (pIItem) pIItem->OnRender();
 			}
 		}
+		//  [7/5/2005]
+		if (Server && Server->game) Server->game->OnRender();
+		//  [7/5/2005]
 		ObjectSpace.dbgRender	();
 
 		//---------------------------------------------------------------------

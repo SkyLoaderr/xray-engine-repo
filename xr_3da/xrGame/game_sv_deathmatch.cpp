@@ -1789,3 +1789,12 @@ void game_sv_Deathmatch::OnPlayerFire (ClientID id_who, NET_Packet &P)
 		signal_Syncronize();
 	};
 };
+
+//  [7/5/2005]
+#ifdef DEBUG
+void game_sv_Deathmatch::OnRender				()
+{
+	inherited::OnRender();
+};
+#endif
+//  [7/5/2005]
