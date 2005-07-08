@@ -17,6 +17,10 @@ function proceed()
 			level_tasks.set_task_state(task.completed, "agr_meet_krot_band", 0)
 		end
 	end
+	
+	if actor:object("agr_military_documents") then
+		actor:give_info_portion("agroprom_military_case_have")
+	end
 
 	if actor:has_info("agroprom_military_case") and
 	   actor:dont_has_info("agroprom_military_case_have") and
