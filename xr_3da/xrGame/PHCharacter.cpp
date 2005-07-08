@@ -24,6 +24,7 @@ m_mean_y		  =0.f;
 m_restriction_type=rtNone;
 b_actor_movable=true;
 p_lastMaterialIDX=&lastMaterialIDX;
+lastMaterialIDX=u16(-1);
 }
 
 CPHCharacter::~CPHCharacter(void)

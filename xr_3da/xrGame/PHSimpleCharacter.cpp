@@ -110,8 +110,8 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 
 	if(b_exist) return;
 
-	b_air_contact_state=false;
-
+	b_air_contact_state	=	false	;
+	lastMaterialIDX		=	u16(-1)	;
 	////////////////////////////////////////////////////////
 
 	m_radius=_min(sizes[0],sizes[2])/2.f;

@@ -139,12 +139,14 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 		}
 
 	}
-	const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
-	if(last_material->Flags.test(SGameMtl::flInjurious))
+	if(m_character->LastMaterialIDX()!=u16(-1))
 	{
-		gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
+		const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
+		if(last_material->Flags.test(SGameMtl::flInjurious))
+		{
+			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
+		}
 	}
-
 	CheckEnvironment(vPosition);
 	bSleep=false;
 }
@@ -281,10 +283,13 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
 	}
-	const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
-	if(last_material->Flags.test(SGameMtl::flInjurious))
+	if(m_character->LastMaterialIDX()!=u16(-1))
 	{
-		gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
+		const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
+		if(last_material->Flags.test(SGameMtl::flInjurious))
+		{
+			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
+		}
 	}
 	CheckEnvironment(vPosition);
 	bSleep=false;
