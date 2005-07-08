@@ -109,7 +109,7 @@ function mp_main:InitControls()
 	st:Init(l_st_cdkey.x, l_st_cdkey.y, l_st_cdkey.width, l_st_cdkey.height)
 	st:SetFont(self.font_cap)
 	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
-	st:SetLines("CD Key")	
+	st:SetText("CD Key")	
 	st:SetStretchTexture(true)	
 	self.bk:AttachChild(st)
 	
