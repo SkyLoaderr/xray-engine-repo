@@ -35,6 +35,9 @@ news = {
 	tips_gar_hellcar_alarm			= sound_object([[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]),
 	gar_dolg_blokpost_warning		= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]),
 	gar_dolg_monster_rush			= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
+	gar_direction_fire				= sound_object([[characters_voice\human_01\scenario\garbage\junkyard_combat_ambush]]),
+	gar_hellcar_victory				= sound_object([[characters_voice\human_01\scenario\garbage\junkyard_combat_end]]),
+
 
 	val_monolith_trader_pda1		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog1]]),
 	val_monolith_trader_pda2		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog2]]),
