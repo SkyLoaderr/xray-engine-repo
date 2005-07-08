@@ -36,6 +36,8 @@ public:
 	BOOL							sv_force_sync;
 	float							rpoints_MinDist [TEAM_COUNT];
 	xr_vector<RPoint>				rpoints	[TEAM_COUNT];
+	DEF_VECTOR(RPRef, RPoint*);
+	RPRef							rpointsBlocked;
 	
 	// Вектор имен скинов комманды
 	DEF_DEQUE(MAP_ROTATION_LIST,	xr_string);
@@ -81,8 +83,10 @@ public:
 	virtual							~game_sv_GameState		();
 	// Main accessors
 	virtual		game_PlayerState*	get_eid					(u16 id);
+	virtual		void*				get_client				(u16 id); //if exist
 	virtual		game_PlayerState*	get_it					(u32 it);
-	virtual		game_PlayerState*	get_id					(ClientID id);							
+	virtual		game_PlayerState*	get_id					(ClientID id);
+	
 	virtual		LPCSTR				get_name_it				(u32 it);
 	virtual		LPCSTR				get_name_id				(ClientID id);								
 				LPCSTR				get_player_name_id		(ClientID id);								
@@ -97,6 +101,12 @@ public:
 	virtual		void				assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who);
 	virtual		bool				IsPointFreezed			(RPoint* rp);
 	virtual		void				SetPointFreezed			(RPoint* rp);
+
+	//  [7/5/2005]
+#ifdef DEBUG
+	virtual		void				OnRender				();
+#endif
+	//  [7/5/2005]
 	
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 				CSE_Abstract*		spawn_begin				(LPCSTR N);
@@ -115,7 +125,6 @@ public:
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		void				OnDestroyObject			(u16 eid_who)							{};			
-
 
 //	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)				{};
 

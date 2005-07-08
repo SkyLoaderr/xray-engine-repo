@@ -71,8 +71,10 @@ public:
 
 	virtual		void				OnTimelimitExceed		();
 
+	virtual		void				assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who);
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);	
-
+	virtual		void				CheckRPUnblock			();
+	virtual		void				SetRP					(CSE_Abstract* E, RPoint* pRP);
 
 	virtual		void				LoadTeams				();
 
@@ -108,4 +110,11 @@ public:
 	virtual		void				CheckForTeamElimination		();
 	virtual		void				CheckForTeamWin				();
 	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
+
+	//  [7/5/2005]
+#ifdef DEBUG
+	virtual		void				OnRender				();
+#endif
+	//  [7/5/2005]
+
 };

@@ -11,7 +11,7 @@
 #include "game_sv_event_queue.h"
 #include "../XR_IOConsole.h"
 
-//#define		MAPROT_LIST				"maprot_list.ltx"
+//#define		MAPROT_LIST				"maprot_list.ltx"	
 string_path		MAPROT_LIST		= "";
 BOOL	net_sv_control_hit	= TRUE		;
 BOOL	g_bCollectStatisticData = FALSE;
@@ -89,6 +89,24 @@ game_PlayerState*	game_sv_GameState::get_eid (u16 id) //if exist
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		if (ps->HasOldID(id)) return ps;
+	};
+	//-------------------------------------------------
+	return NULL;
+}
+
+void* game_sv_GameState::get_client (u16 id) //if exist
+{
+	CSE_Abstract* entity = get_entity_from_eid(id);
+	if (entity && entity->owner->ps->GameID == id)
+		return entity->owner;
+	//-------------------------------------------------
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData*	C	= (xrClientData*)m_server->client_Get		(it);
+		if (!C || !C->ps) continue;
+//		game_PlayerState*	ps	=	get_it	(it);
+		if (C->ps->HasOldID(id)) return C;
 	};
 	//-------------------------------------------------
 	return NULL;
@@ -258,6 +276,7 @@ void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/, LPSTR, u16 
 	signal_Syncronize	();
 }
 
+static float							rpoints_Dist [TEAM_COUNT] = {1000.f, 1000.f, 1000.f, 1000.f};
 void game_sv_GameState::Create					(shared_str &options)
 {
 	string256	fn_game;	
@@ -302,9 +321,12 @@ void game_sv_GameState::Create					(shared_str &options)
 						for (int i=0; i<int(rpoints[team].size())-1; i++)
 						{
 							RPoint rp = rpoints[team][i];
-							float dist = R.P.distance_to_xz_sqr(rp.P)/4;
+							float dist = R.P.distance_to_xz(rp.P)/2;
 							if (dist<rpoints_MinDist[team])
 								rpoints_MinDist[team] = dist;
+							dist = R.P.distance_to(rp.P)/2;
+							if (dist<rpoints_Dist[team])
+								rpoints_Dist[team] = dist;
 						};
 					}break;
 				};
@@ -692,6 +714,16 @@ void game_sv_GameState::OnRoundStart			()
 { 
 	m_bMapNeedRotation = false;
 	m_bFastRestart = false;
+
+	for (int t=0; t<TEAM_COUNT; t++)
+	{
+		for (u32 i=0; i<rpoints[t].size(); i++)
+		{
+			RPoint rp = rpoints[t][i];
+			rp.Blocked = false;
+		}
+	};
+	rpointsBlocked.clear();
 }// старт раунда
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)						
@@ -727,3 +759,87 @@ shared_str game_sv_GameState::level_name		(const shared_str &server_options) con
 	return				(_GetItem(*server_options,0,l_name,'/'));
 }
 
+//  [7/5/2005]
+#ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
+
+void		game_sv_GameState::OnRender				()
+{
+	Fmatrix T; T.identity();
+	Fvector V0, V1;
+	u32 TeamColors[TEAM_COUNT] = {D3DCOLOR_XRGB(255, 0, 0), D3DCOLOR_XRGB(0, 255, 0), D3DCOLOR_XRGB(0, 0, 255), D3DCOLOR_XRGB(255, 255, 0)};
+	u32 TeamColorsDist[TEAM_COUNT] = {color_argb(128, 255, 0, 0), color_argb(128, 0, 255, 0), color_argb(128, 0, 0, 255), color_argb(128, 255, 255, 0)};
+
+	if (dbg_net_Draw_Flags.test(1<<9))
+	{
+		for (int t=0; t<TEAM_COUNT; t++)
+		{
+			for (u32 i=0; i<rpoints[t].size(); i++)
+			{
+				RPoint rp = rpoints[t][i];
+				V1 = V0 = rp.P;
+				V1.y +=1.0f;
+
+				T.identity();
+				RCache.dbg_DrawLINE(Fidentity, V0, V1, TeamColors[t]);
+
+				bool Blocked = false;
+				for (u32 p_it=0; p_it<get_players_count(); ++p_it)
+				{
+					game_PlayerState* PS		=	get_it			(p_it);
+					if (!PS) continue;
+					if (PS->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+					CObject* pPlayer = Level().Objects.net_Find(PS->GameID);
+					if (!pPlayer) continue;
+
+					if (rp.P.distance_to(pPlayer->Position())<=0.4f)
+					{
+						Blocked = true;
+						break;
+					}
+				};
+				if (rp.Blocked) continue;
+
+				float r = .3f;
+				T.identity();
+				T.scale(r, r, r);
+				T.translate_add(rp.P);
+				RCache.dbg_DrawEllipse(T, TeamColors[t]);
+/*
+				r = rpoints_MinDist[t];
+				T.identity();
+				T.scale(r, r, r);
+				T.translate_add(rp.P);
+				RCache.dbg_DrawEllipse(T, TeamColorsDist[t]);
+
+				r = rpoints_Dist[t];
+				T.identity();
+				T.scale(r, r, r);
+				T.translate_add(rp.P);
+				RCache.dbg_DrawEllipse(T, TeamColorsDist[t]);
+*/
+			}
+		}
+	};
+
+	if (dbg_net_Draw_Flags.test(1<<0))
+	{
+		for (u32 p_it=0; p_it<get_players_count(); ++p_it)
+		{
+			game_PlayerState* PS		=	get_it			(p_it);
+			if (!PS) continue;
+			if (PS->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+			CObject* pPlayer = Level().Objects.net_Find(PS->GameID);
+			if (!pPlayer) continue;
+
+			float r = .4f;
+			T.identity();
+			T.scale(r, r, r);
+			T.translate_add(pPlayer->Position());
+			RCache.dbg_DrawEllipse(T, TeamColors[PS->team]);
+		};
+
+	}
+};
+#endif
+//  [7/5/2005]

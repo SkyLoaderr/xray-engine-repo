@@ -14,9 +14,14 @@ struct		RPoint
 	Fvector	P;
 	Fvector A;
 	u32		TimeToUnfreeze;
-	RPoint(){P.set(.0f,0.f,.0f);A.set(.0f,0.f,.0f); TimeToUnfreeze = 0;}
+	bool	Blocked;
+	u32		BlockedByID;
+	u32		BlockTime;
+	RPoint(){P.set(.0f,0.f,.0f);A.set(.0f,0.f,.0f); TimeToUnfreeze = 0; Blocked = false;}
+	bool	operator ==		(const u32& ID)	const			{ return (Blocked && BlockedByID == ID);		}
 	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
+
 add_to_type_list(RPoint)
 #undef script_type_list
 #define script_type_list save_type_list(RPoint)

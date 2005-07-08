@@ -162,6 +162,123 @@ void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 	inherited::OnPlayerReady(id);
 }
 
+void	game_sv_ArtefactHunt::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
+{
+	CSE_Spectator		*pSpectator = smart_cast<CSE_Spectator*>(E);
+	if (pSpectator)
+	{
+		inherited::assign_RP(E, ps_who);
+		return;
+	};
+
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
+	if (!pA)
+	{
+		inherited::assign_RP(E, ps_who);
+		return;
+	};
+	//-----------------------------------------------------------------------------
+	u32		Team		= RP_2_Use(E);
+	VERIFY				(rpoints[Team].size());
+	
+	xr_vector<RPoint>&	rps	= rpoints[Team];
+	xr_vector<u32>	rpID; rpID.clear();
+	xr_vector<u32>	rpIDEnemy; rpID.clear();
+	xr_vector<u32>	EnemyIt; EnemyIt.clear();
+	for (u32 p=0; p<rps.size(); p++)
+	{
+		RPoint rp = rps[p];
+		
+		bool Blocked = false;
+		for (u32 p_it=0; p_it<get_players_count(); ++p_it)
+		{
+			game_PlayerState* PS		=	get_it			(p_it);
+			if (!PS) continue;
+			if (PS->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+//			if (u32(PS->team) != Team) continue;
+			CObject* pPlayer = Level().Objects.net_Find(PS->GameID);
+			if (!pPlayer) continue;
+
+			if (rp.P.distance_to(pPlayer->Position())<=0.4f)
+			{
+				Blocked = true;
+				if(ps_who->team != PS->team && !teams.empty())
+				{
+					rpIDEnemy.push_back(p);
+					EnemyIt.push_back(p_it);
+				}
+				break;
+			}
+		};
+
+		if (Blocked || rp.Blocked) 
+		{
+			continue;
+		};
+		rpID.push_back(p);
+	}
+	
+	if (rpID.empty() && !rpIDEnemy.empty())
+	{
+		u32 PointID = ::Random.randI(rpIDEnemy.size());;
+		RPoint&	r	= rps[rpIDEnemy[PointID]];
+		SetRP(E, &r);
+		//---------------------------------------------------------------------
+		game_PlayerState* PSE		=	get_it			(EnemyIt[PointID]);
+		R_ASSERT2(PSE, "Where is Enemy!!!");
+		CGameObject* pPlayer = smart_cast<CGameObject*>(Level().Objects.net_Find(PSE->GameID));
+		R_ASSERT2(pPlayer, "Where is Enemy Object!!!");
+
+		NET_Packet		P;
+		pPlayer->u_EventGen		(P,GE_GAME_EVENT,pPlayer->ID()	);
+		P.w_u16(GAME_EVENT_PLAYER_KILL);
+		P.w_u16			(u16(pPlayer->ID())	);
+		pPlayer->u_EventSend		(P);
+	}
+	else
+	{		
+		R_ASSERT2(rpID.size()>0, "No free Respawn Points!");
+		u32 PointID = ::Random.randI(rpID.size());
+		RPoint&	r = rps[rpID[PointID]];
+		SetRP(E, &r);		
+		//-------------------------------------------------------------------
+	}
+
+};
+
+void	game_sv_ArtefactHunt::SetRP					(CSE_Abstract* E, RPoint* pRP)
+{
+	E->o_Position.set	(pRP->P);
+	E->o_Angle.set		(pRP->A);
+
+	pRP->Blocked = true;
+	pRP->BlockedByID = E->ID;
+	pRP->BlockTime = Level().timeServer();
+	rpointsBlocked.push_back(pRP);
+}
+
+void	game_sv_ArtefactHunt::CheckRPUnblock			()
+{
+	if (rpointsBlocked.empty()) return;
+	for (u32 b=0; b<rpointsBlocked.size(); )
+	{
+		RPoint* pRP = rpointsBlocked[b];
+		if (!pRP->Blocked || pRP->BlockTime+1000 < Level().timeServer())
+		{
+			pRP->Blocked = false;
+			rpointsBlocked.erase(rpointsBlocked.begin()+b);
+			continue;
+		};
+		CObject* pPlayer = Level().Objects.net_Find(pRP->BlockedByID);
+		if (!pPlayer || pRP->P.distance_to(pPlayer->Position())<=0.4f)
+		{
+			pRP->Blocked = false;
+			continue;
+		};
+		b++;
+	}
+};
+
 u32		game_sv_ArtefactHunt::RP_2_Use				(CSE_Abstract* E)
 {
 	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
@@ -600,6 +717,7 @@ void	game_sv_ArtefactHunt::Update			()
 		} break;			
 	case GAME_PHASE_INPROGRESS:
 		{
+			CheckRPUnblock();
 			//---------------------------------------------------
 			if (m_iReinforcementTime > 0)
 			{
@@ -684,48 +802,7 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 	m_LastRespawnPointID = rpID[ID];
 	r	= rp[m_LastRespawnPointID];
 	rpID.erase(rpID.begin()+ID);
-/*
-	xr_vector <u32>					pEnemies;
 
-	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; ++it)	
-	{
-		// init
-		game_PlayerState*	ps	=	get_it	(it);
-		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
-		//pEnemies.push_back(it);
-	};
-
-	if (pEnemies.empty())
-	{
-		r	= rp[::Random.randI((int)rp.size())];
-	}
-	else
-	{
-		pRPDist.clear();
-
-		u32 NumRP = rp.size();
-		Fvector DistVect;
-		for (it=0; it < NumRP; it++)
-		{
-			RPoint&				r	= rp[it];
-			pRPDist.push_back(RPointData(it, 1000000.0f));
-
-			for (u32 p=0; p<pEnemies.size(); p++)
-			{
-				xrClientData* xrCData	=	Level().Server->ID_to_client(get_it_2_id(pEnemies[p]));
-				if (!xrCData || !xrCData->owner) continue;
-
-				CSE_Abstract* pOwner = xrCData->owner;
-				DistVect.sub(pOwner->o_Position, r.P);
-				float Dist = DistVect.square_magnitude();
-				if (pRPDist[it].MinEnemyDist > Dist) pRPDist[it].MinEnemyDist = Dist;
-			};
-		};
-		std::sort(pRPDist.begin(), pRPDist.end());
-		r	= rp[(pRPDist.back()).PointID];
-	}
-*/
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
 };
@@ -1036,3 +1113,36 @@ void game_sv_ArtefactHunt::ConsoleCommands_Clear	()
 	CMD_CLEAR("sv_artefact_stay_time");
 	CMD_CLEAR("sv_reinforcement_time");
 };
+
+	//  [7/5/2005]
+#ifdef DEBUG
+
+extern	Flags32	dbg_net_Draw_Flags;
+
+void game_sv_ArtefactHunt::OnRender				()
+{
+
+	if (dbg_net_Draw_Flags.test(1<<9))
+	{
+		Fmatrix T; T.identity();
+		Fvector V0, V1;
+		for (u32 i=0; i<Artefact_rpoints.size(); i++)
+		{
+			RPoint rp = Artefact_rpoints[i];
+			V1 = V0 = rp.P;
+			V1.y +=1.0f;
+
+			T.identity();
+			RCache.dbg_DrawLINE(Fidentity, V0, V1, D3DCOLOR_XRGB(0, 255, 255));
+
+			float r = .4f;
+			T.identity();
+			T.scale(r, r/2, r);
+			T.translate_add(rp.P);
+			RCache.dbg_DrawEllipse(T, D3DCOLOR_XRGB(0, 255, 255));
+		}
+	};
+	inherited::OnRender();
+}
+#endif
+	//  [7/5/2005]
