@@ -29,6 +29,7 @@ private:
 	CLAItem*				m_lanim;
 	float					m_lainm_start_time;
 public:
+	using CUISimpleWindow::SetWndRect;
 
 					CUIStatic				();
 	virtual			~CUIStatic				();
