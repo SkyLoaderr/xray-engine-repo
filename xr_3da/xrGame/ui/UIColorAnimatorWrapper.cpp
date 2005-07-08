@@ -154,13 +154,13 @@ void CUIColorAnimatorWrapper::Reverese(bool value)
 
 	if (!Done())
 	{
-		animationTime = iFloor(colorAnimation->iFrameCount / colorAnimation->fFPS - animationTime);
+		animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS - animationTime;
 	}
 }
 
 void CUIColorAnimatorWrapper::GoToEnd(){
 	prevGlobalTime	= Device.TimerAsyncMM()/1000.0f;
 	this->currFrame = colorAnimation->iFrameCount;
-	animationTime = iFloor(colorAnimation->iFrameCount / colorAnimation->fFPS);
+	animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS;
 	this->isDone = false;
 }

@@ -50,9 +50,9 @@ private:
 	// Собственно анимация
 	CLAItem				*colorAnimation;
 	// Предыдущее запоменное значение глобального времени игры
-	u32				prevGlobalTime;
+	float				prevGlobalTime;
 	// Время прошедшее с начала анимации
-	u32				animationTime;
+	float				animationTime;
 	// Циклическое бесконечное проигрывание
 	bool				isCyclic;
 	// Цвет который мы можем изменять переданный нам извне
