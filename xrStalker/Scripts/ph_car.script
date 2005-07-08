@@ -46,6 +46,7 @@ local def_min_delta_per_sec = 0.2
 local def_min_car_explode_time = 1000
 local def_moving_speed = 10
 --local def_arriving_factor = 0.4
+local def_arriving_dist = 1.0
 local def_min_fire_time = 0
 local def_update_time = 1.6
 
@@ -78,15 +79,6 @@ function action_car:__init(obj, storage)
     printf("car <state>: init.")
 	self.object = obj
 	self.st = storage
-	self.car = self.object:get_car()
-	if self.car:HasWeapon() then
-	  printf("car <fire>: car has weapon.")
-	  self.car:Action(CCar.eWpnActivate,1)
-	  self.hasWeapon = true
-	else
-	    printf("car <fire>: car hasn't weapon.")
-	    self.hasWeapon = false
-	end
 end
 
 function action_car:reset_scheme(loading)
@@ -96,6 +88,16 @@ function action_car:reset_scheme(loading)
 
 	if self.st.invulnerable then
 	    self.def_health = self.object.health
+	end
+
+	self.car = self.object:get_car()
+	if self.car:HasWeapon() then
+	  printf("car <fire>: car has weapon.")
+	  self.car:Action(CCar.eWpnActivate,1)
+	  self.hasWeapon = true
+	else
+	    printf("car <fire>: car hasn't weapon.")
+	    self.hasWeapon = false
 	end
 
 	if loading then
@@ -162,6 +164,20 @@ function action_car:reset_scheme(loading)
 	self.state_firetarget = state_none
 	self.state_cannon = state_none
 	self.state_shooting = state_none
+	
+	if self.st.headlights == "on" then
+	    printf("car <state>: headlights on")
+		action(self.object,
+			object("right_light", object.activate),
+			object("left_light", object.activate),
+			cond(cond.time_end, time_infinite))
+	else
+	    printf("car <state>: headlights off")
+		action(self.object,
+			object("right_light", object.deactivate),
+			object("left_light", object.deactivate),
+			cond(cond.time_end, time_infinite))
+	end
 	
 	self.target_fire_pt = nil
 	self.target_fire_pt_idx = 0
@@ -285,7 +301,7 @@ function action_car:at_target_walkpoint()
 	printf("car <move>: dist = %f, target = %f, diff = %f", dist, self.target_dist, diff)
 	if self.target_dist ~= -1 and not arrived then
 	    if diff > 0 then
-	        if diff > 0.5 then
+	        if diff > def_arriving_dist then
 	            arrived = true
 	            printf("car <move>: at target pt by diff(%f).", diff)
 	        end
@@ -332,8 +348,8 @@ function action_car:go_to_walkpoint(pt)
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
 				move(move.fwd, self.speed), --move.on + 
-				object("right_light", object.deactivate),
-				object("left_light", object.deactivate),
+				--object("right_light", object.deactivate),
+				--object("left_light", object.deactivate),
 				cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 			self.state_moving = state_moving_fwd
 		end
@@ -347,9 +363,9 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_left then 
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.fwd + move.left,self.speed), --move.on + 
-					object("right_light", object.deactivate),
-					object("left_light", object.activate),
+					move(move.fwd + move.left, self.speed), --move.on + 
+					--object("right_light", object.deactivate),
+					--object("left_light", object.activate),
 					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 				self.state_moving = state_moving_rot_left
 			end
@@ -358,8 +374,8 @@ function action_car:go_to_walkpoint(pt)
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
 					move(move.fwd + move.right, self.speed), --move.on + 
-					object("right_light", object.activate),
-					object("left_light", object.deactivate),
+					--object("right_light", object.activate),
+					--object("left_light", object.deactivate),
 					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 				self.state_moving = state_moving_rot_right
 			end
@@ -708,7 +724,11 @@ end
 function get_katet(npc, target_pos)
 	local p = utils.vector_copy_by_val(target_pos):sub(npc:position())
 	local q = npc:direction()
-	return (p.x * q.y - p.y * q.x) / math.sqrt(q.x * q.x + q.y * q.y)
+	local k = p.x * q.x + p.y * q.y
+	if k ~= 0 then
+	    return target_pos:distance_to(npc:position()) * (p.x * q.y - p.y * q.x) / k
+	end
+	return -1
 end
 
 function action_car:fastcall()
@@ -910,6 +930,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.fire_target = utils.cfg_get_string(ini, section, "target", npc, false, gulag_name, "points")
 	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
 	st.invulnerable = utils.cfg_get_bool(ini, section, "invulnerable", npc, false, false)
+	st.headlights = utils.cfg_get_string(ini, section, "headlights", npc, false, gulag_name, "off")
 
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще не загружены.
 	st.path_fire_info = nil
