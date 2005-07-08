@@ -796,8 +796,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_pLastHittingWeapon = NULL;
 	m_s16LastHittedElement = -1;
 
-	Level().MapManager().initialize(ID());
-
 	if (GameID() == GAME_SINGLE)
 		Level().MapManager().AddMapLocation("actor_location",ID());
 

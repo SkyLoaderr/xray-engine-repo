@@ -79,6 +79,7 @@ void CMapLocationRegistry::save(IWriter &stream)
 CMapManager::CMapManager()
 {
 	m_locations = xr_new<CMapLocationWrapper>();
+	m_locations->registry().init(1);
 }
 
 CMapManager::~CMapManager()
@@ -88,6 +89,7 @@ CMapManager::~CMapManager()
 
 void CMapManager::initialize(u16 id)
 {
+	VERIFY(0);
 	m_locations->registry().init(id);// actor's id
 }
 CMapLocation* CMapManager::AddMapLocation(const shared_str& spot_type, u16 id)
