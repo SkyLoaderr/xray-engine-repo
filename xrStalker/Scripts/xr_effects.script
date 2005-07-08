@@ -3,23 +3,35 @@
 -- ----------------------------------------------------------------------------------------------------
 
 -- Дать сталкеру небольшой пинок. Например чтоб скинуть его с возвышения.
--- параметры: actor, npc, p[direction,bone,power,impulse]
+-- параметры: actor, npc, p[direction,bone,power,impulse,reverse=false]
 -- direction - если строка, то считается, что это имя пути и в сторону
 -- первой точки производится толчек. Если же это число, то оно
 -- рассматривается как story_id персонажа от которого должен поступить хит.
 -- bone - строка. Имя кости, по которой наносится удар.
 -- power - сила удара
 -- impulse - импульс
+-- reverse (true/false) - изменение направления удара. по умолчанию false
 function hit_npc(actor, npc, p)
 	local h = hit()
+	local rev = p[5] and p[5] == 'true'
 	h.draftsman = npc
 	h.type = hit.wound
 	if type(p[1]) == 'number' then
 		local hitter = level_object_by_sid(p[1])
 		if not hitter then return end
-		h.direction = utils.vector_copy_by_val(npc:position()):sub(hitter:position())
+	    if rev then
+	        h.draftsman = hitter
+		    h.direction = utils.vector_copy_by_val(hitter:position()):sub(npc:position())
+	    else
+		    h.direction = utils.vector_copy_by_val(npc:position()):sub(hitter:position())
+	    end
 	else
-		h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
+	    if rev then
+	        h.draftsman = nil
+		    h.direction = utils.vector_copy_by_val(npc:position()):sub(patrol(p[1]):point(0))
+	    else
+		    h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
+	    end
 	end
 	h.bone = p[2]
 	h.power = p[3]
