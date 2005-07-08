@@ -1093,5 +1093,6 @@ function abort(fmt, ...)
 	error_log("ERROR: " .. reason)
 	string.format("%s") -- crash the script
 end
-   
+
+prefetch(xr_effects)   
 --profiler.setup_hook	()
