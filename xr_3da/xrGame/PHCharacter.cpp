@@ -23,6 +23,7 @@ m_safe_velocity[2]=0.f;
 m_mean_y		  =0.f;	
 m_restriction_type=rtNone;
 b_actor_movable=true;
+p_lastMaterialIDX=&lastMaterialIDX;
 }
 
 CPHCharacter::~CPHCharacter(void)

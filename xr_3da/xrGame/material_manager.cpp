@@ -46,7 +46,7 @@ void CMaterialManager::reinit		()
 	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(m_object);
 	if (entity_alive ) {
 		if(entity_alive->m_PhysicMovementControl->CharacterExist())
-			entity_alive->m_PhysicMovementControl->SetPLastMaterial	(&m_last_material_idx);
+			entity_alive->m_PhysicMovementControl->SetPLastMaterialIDX	(&m_last_material_idx);
 		entity_alive->m_PhysicMovementControl->SetMaterial		(m_my_material_idx);
 	}
 }

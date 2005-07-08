@@ -124,12 +124,12 @@ public:
 	float				gcontact_Power;			// Насколько сильно ударились
 	float				gcontact_HealthLost;	// Скоко здоровья потеряли
 
-	void				AllocateCharacterObject(CharacterType type);
-	void				DeleteCharacterObject();
-
-	void				CreateCharacter();		
-	void				DestroyCharacter();
-	void				Load					(LPCSTR section);
+public:
+	void				AllocateCharacterObject			(CharacterType type)									;
+	void				DeleteCharacterObject			()														;
+	void				CreateCharacter					()														;		
+	void				DestroyCharacter				()														;
+	void				Load							(LPCSTR section)										;
 #ifdef DEBUG
 	void				dbg_Draw(){
 		if(m_character)
@@ -137,14 +137,8 @@ public:
 	};
 #endif
 
-	//void				SetFriction(float air, float wall, float ground)
-	//{
-	//	fAirFriction	= air;
-	//	fWallFriction	= wall;
-	//	fGroundFriction	= ground;
-	//}
-	void SetPLastMaterial(u16* p){m_character->SetPLastMaterial(p);}
-	//float				GetCurrentFriction()		{ return fFriction; }
+	void				SetPLastMaterialIDX	(u16* p){m_character->SetPLastMaterialIDX(p);}
+
 	dBodyID				GetBody				( )		{if(m_character) return m_character->get_body(); else return NULL;}
 	const Fvector&		GetVelocity			( )		{ return vVelocity;	}
 	void				GetCharacterVelocity(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}

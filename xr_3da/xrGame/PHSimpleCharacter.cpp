@@ -20,7 +20,7 @@
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
-static u16 lastMaterial;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,6 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	m_acceleration.set(0,0,0);
 	b_external_impulse=false;
 	m_phys_ref_object=NULL;
-	p_lastMaterial=&lastMaterial;
 	b_on_object=false;
 	m_friction_factor=1.f;
 	dVectorSetZero(m_control_force);
@@ -1166,7 +1165,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	dReal dumping_rate=def_dumping_rate;
 	bool object=(dGeomGetBody(g1)&&dGeomGetBody(g2));
 	b_on_object=b_on_object||object;
-	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
+	*p_lastMaterialIDX=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 
 	if(g1==m_hat_transform||g2==m_hat_transform)
 	{

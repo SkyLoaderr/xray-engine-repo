@@ -10,6 +10,7 @@
 #include "PHCapture.h"
 #include "ai_space.h"
 #include "detail_path_manager.h"
+#include "GameMtlLib.h"
 //#include "Level.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
@@ -51,6 +52,7 @@ CPHMovementControl::CPHMovementControl(void)
 	fActualVelocity		= 0;
 	m_fGroundDelayFactor= 1.f;
 	gcontact_HealthLost = 0;
+
 	fContactSpeed		= 0.f;
 	fAirControlParam	= 0.f;
 	m_character=NULL;
@@ -135,7 +137,14 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 				gcontact_HealthLost = 
 				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
+
 	}
+	const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
+	if(last_material->Flags.test(SGameMtl::flInjurious))
+	{
+		gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
+	}
+
 	CheckEnvironment(vPosition);
 	bSleep=false;
 }
@@ -259,9 +268,9 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	//////////////////////////////////////////////////////
 	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
+
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
-
 	{
 		fContactSpeed=m_character->CollisionDamageInfo()->ContactVelocity();
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
@@ -271,6 +280,11 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 			gcontact_HealthLost = 
 				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
+	}
+	const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
+	if(last_material->Flags.test(SGameMtl::flInjurious))
+	{
+		gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
 	}
 	CheckEnvironment(vPosition);
 	bSleep=false;
