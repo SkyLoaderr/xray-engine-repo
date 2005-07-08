@@ -26,6 +26,7 @@ CUILines::CUILines()
 	m_wndPos.x = 0;
 	m_wndPos.y = 0;
 	uFlags.set(flNeedReparse, false);
+	m_pFont = UI()->Font()->pFontLetterica16Russian;
 }
 
 CUILines::~CUILines(){
@@ -38,7 +39,7 @@ void CUILines::Init(float x, float y, float width, float heigt){
 
 void CUILines::SetText(const char* text){
 	if (!m_pFont)
-		SetFont(UI()->Font()->pFontLetterica16Russian);
+        m_pFont = UI()->Font()->pFontLetterica16Russian;
 
 	if (text && xr_strlen(text) > 0)
 	{

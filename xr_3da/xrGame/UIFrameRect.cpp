@@ -28,8 +28,6 @@ void CUIFrameRect::InitTexture(const char* texture){
 	string_path		fn,buf;
 	strcpy			(buf,texture); if (strext(buf)) *strext(buf)=0;
 
-	uFlags.set	(flSingleTex,TRUE);
-
 	if (FS.exist(fn,"$game_textures$",buf,".ini")){
 		Fvector4	v;
 		//uFlags.set	(flSingleTex,TRUE);
@@ -44,15 +42,15 @@ void CUIFrameRect::InitTexture(const char* texture){
 		frame[fmRT].CreateShader(texture,sh);
 		frame[fmRB].CreateShader(texture,sh);
 		frame[fmLB].CreateShader(texture,sh);
-		v			= ini->r_fvector4("frame","back");	frame[fmBK].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmBK].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","l");		frame[fmL].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmL].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","r");		frame[fmR].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmR].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","t");		frame[fmT].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmT].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","b");		frame[fmB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmB].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","lt");	frame[fmLT].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmLT].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","rt");	frame[fmRT].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmRT].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","rb");	frame[fmRB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmRB].SetRect	(0,0,v.z,v.w);
-		v			= ini->r_fvector4("frame","lb");	frame[fmLB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmLB].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","back");	frame[fmBK].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmBK].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","l");		frame[fmL].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmL].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","r");		frame[fmR].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmR].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","t");		frame[fmT].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmT].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","b");		frame[fmB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmB].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","lt");		frame[fmLT].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmLT].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","rt");		frame[fmRT].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmRT].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","rb");		frame[fmRB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmRB].SetRect	(0,0,v.z,v.w);
+		v = ini->r_fvector4("frame","lb");		frame[fmLB].SetOriginalRect	(v.x,v.y,v.z,v.w);	frame[fmLB].SetRect	(0,0,v.z,v.w);
 		CInifile::Destroy(ini);
 	}
 	else
@@ -79,54 +77,15 @@ void CUIFrameRect::UpdateSize()
 
 	Fvector2 _bk, _lt,_lb,_rb,_rt, _l,_r,_t,_b;
 
-	if (uFlags.is(flSingleTex)){
-		_bk.set		(frame[fmBK].GetOriginalRect().width(),	frame[fmBK].GetOriginalRect().height());
-		_lt.set		(frame[fmLT].GetOriginalRect().width(), frame[fmLT].GetOriginalRect().height());
-		_lb.set		(frame[fmLB].GetOriginalRect().width(), frame[fmLB].GetOriginalRect().height());
-		_rb.set		(frame[fmRB].GetOriginalRect().width(), frame[fmRB].GetOriginalRect().height());
-		_rt.set		(frame[fmRT].GetOriginalRect().width(), frame[fmRT].GetOriginalRect().height());
-		_l.set		(frame[fmL].GetOriginalRect().width(),	frame[fmL].GetOriginalRect().height());
-		_r.set		(frame[fmR].GetOriginalRect().width(),	frame[fmR].GetOriginalRect().height());
-		_t.set		(frame[fmT].GetOriginalRect().width(),	frame[fmT].GetOriginalRect().height());
-		_b.set		(frame[fmB].GetOriginalRect().width(),	frame[fmB].GetOriginalRect().height());
-	}else{
-		CTexture*	T;
-		RCache.set_Shader	(frame[fmLT].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_lt.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader	(frame[fmRT].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_rt.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader	(frame[fmLB].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_lb.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader	(frame[fmRB].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_rb.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader	(frame[fmBK].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_bk.set				(float(T->get_Width()),float(T->get_Height()));
-		
-		RCache.set_Shader	(frame[fmT].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_t.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader	(frame[fmB].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_b.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader(frame[fmL].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_l.set				(float(T->get_Width()),float(T->get_Height()));
-
-		RCache.set_Shader	(frame[fmR].GetShader());
-		T					= RCache.get_ActiveTexture(0);
-		_r.set				(float(T->get_Width()),float(T->get_Height()));
-	}
+	_bk.set		(frame[fmBK].GetOriginalRect().width(),	frame[fmBK].GetOriginalRect().height());
+	_lt.set		(frame[fmLT].GetOriginalRect().width(), frame[fmLT].GetOriginalRect().height());
+	_lb.set		(frame[fmLB].GetOriginalRect().width(), frame[fmLB].GetOriginalRect().height());
+	_rb.set		(frame[fmRB].GetOriginalRect().width(), frame[fmRB].GetOriginalRect().height());
+	_rt.set		(frame[fmRT].GetOriginalRect().width(), frame[fmRT].GetOriginalRect().height());
+	_l.set		(frame[fmL].GetOriginalRect().width(),	frame[fmL].GetOriginalRect().height());
+	_r.set		(frame[fmR].GetOriginalRect().width(),	frame[fmR].GetOriginalRect().height());
+	_t.set		(frame[fmT].GetOriginalRect().width(),	frame[fmT].GetOriginalRect().height());
+	_b.set		(frame[fmB].GetOriginalRect().width(),	frame[fmB].GetOriginalRect().height());
 
 	frame[fmLT].SetPos	(m_wndPos.x,				m_wndPos.y);	
 	frame[fmRT].SetPos	(m_wndPos.x+m_wndSize.x-_rt.x,	m_wndPos.y);	
