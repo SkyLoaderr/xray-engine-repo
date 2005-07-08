@@ -306,8 +306,11 @@ BOOL CClimableObject::UsedAI_Locations()
 	return FALSE;
 }
 #ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
 void CClimableObject ::OnRender()
 {
+	if (!dbg_net_Draw_Flags.test(1<<10)) return;
+
 	Fmatrix form;m_box.xform_get(form);
 	//form.mulA(XFORM());
 	RCache.dbg_DrawOBB(XFORM(),m_box.m_halfsize,D3DCOLOR_XRGB(0,0,255));
