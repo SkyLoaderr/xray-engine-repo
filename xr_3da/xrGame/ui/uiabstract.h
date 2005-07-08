@@ -10,11 +10,11 @@ public:
 	virtual ~IUIFontControl()											 {};
 
 	virtual void			SetTextColor(u32 color)						= 0;
-	virtual u32				GetTextColor()						const	= 0;
+	virtual u32				GetTextColor()								= 0;
 	virtual void			SetFont(CGameFont* pFont)					= 0;
-	virtual CGameFont*		GetFont()							const	= 0;
+	virtual CGameFont*		GetFont()									= 0;
 	virtual void			SetTextAlignment(ETextAlignment alignment)	= 0;
-	virtual ETextAlignment	GetTextAlignment()					const	= 0;
+	virtual ETextAlignment	GetTextAlignment()							= 0;
 };
 
 typedef enum {
@@ -27,7 +27,7 @@ class IUITextControl : public IUIFontControl{
 public:
 	virtual ~IUITextControl()											 {};
 	virtual void SetText(const char* text)								= 0;
-	virtual const char* GetText()								const	= 0;
+	virtual const char* GetText()										= 0;
 };
 
 
@@ -132,7 +132,7 @@ public:
 																						m_wndPos.set(x,y); 
 																						m_wndSize.set(width,height); }
 	virtual void			SetWndRect(const Frect& rect)				{SetWndRect(rect.lt.x, rect.lt.y, rect.width(), rect.height());}
-	virtual Frect GetWndRect()									const
+	virtual Frect			GetWndRect()						const
 	{
 		switch (m_alignment){
 			case waNone:

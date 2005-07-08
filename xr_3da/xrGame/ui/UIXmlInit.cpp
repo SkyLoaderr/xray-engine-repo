@@ -196,27 +196,15 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	{
         pWnd->SetTextColor(color);		
 		pWnd->SetFont(pTmpFont);
-
-		pWnd->m_lines.SetTextColor(color);
-		pWnd->m_lines.SetFont(pTmpFont);
 	}
 	// Load font alignment
 	shared_str al = xml_doc.ReadAttrib(*text_path, index, "align", "");
 	if (0 == xr_strcmp(al, "c"))
-	{
 		pWnd->SetTextAlign(CGameFont::alCenter);
-		pWnd->m_lines.SetTextAlignment(CGameFont::alCenter);
-	}
 	else if (0 == xr_strcmp(al, "r"))
-	{
 		pWnd->SetTextAlign(CGameFont::alRight);
-		pWnd->m_lines.SetTextAlignment(CGameFont::alRight);
-	}
 	else if (0 == xr_strcmp(al, "l"))
-	{
 		pWnd->SetTextAlign(CGameFont::alLeft);
-		pWnd->m_lines.SetTextAlignment(CGameFont::alLeft);
-	}
 
 	// Text coordinates
 	float text_x = xml_doc.ReadAttribFlt(*text_path, index, "x", -1);
@@ -227,17 +215,8 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	pWnd->SetTextY(text_y);
 
 	CStringTable st;
-	pWnd->m_lines.SetWndRect(pWnd->GetWndRect());
-	pWnd->SetText(*st(*text));
-
-//moved to InitStatic	
-//	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
-//	pWnd->EnableHeading( (flag)?true:false);
-
-// moved to InitStatic
-//	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
-//	if( xr_strlen(str_flag) )
-//		pWnd->SetLightAnim(str_flag);
+	if (*text)
+        pWnd->SetText(*st(*text));
 
 	return true;
 }

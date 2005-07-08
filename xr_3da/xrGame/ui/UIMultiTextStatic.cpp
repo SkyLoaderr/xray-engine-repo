@@ -89,7 +89,7 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 
 	str = buf.c_str();
 
-	if (maxWidth > 0 && elipsisPos != CUIStatic::eepNone)
+	/*if (maxWidth > 0 && elipsisPos != CUIStatic::eepNone)
 	{
 		STRING s;
 		CUIStatic::SetText(*str, s);
@@ -103,7 +103,7 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 		CUIStatic::Elipsis(s, r, elipsisPos, effect.GetFont());
 
 		str = &s.front();
-	}
+	}*/
 }
 
 

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "UIButton.h"
 #include "../HUDManager.h"
+#include "UILines.h"
 
 #define PUSH_OFFSET_RIGHT 1
 #define PUSH_OFFSET_DOWN  1
@@ -44,8 +45,9 @@ CUIButton:: CUIButton()
 	m_iShadowOffsetX			= 0.0f;
 	m_iShadowOffsetY			= 0.0f;
 
-	m_lines.SetTextAlignment(CGameFont::alCenter);
-	m_lines.SetVTextAlignment(valCenter);
+    //m_pLines = xr_new<CUILines>();
+	SetTextAlignment(CGameFont::alCenter); // this will create class instance for m_pLines
+	SetVTextAlignment(valCenter);
 }
 
  CUIButton::~ CUIButton()
@@ -209,27 +211,27 @@ void CUIButton::DrawHighlightedText(){
 //	Irect r = GetSelfClipRect();
 //	CGameFont * F = GetFont();
 //	F->SetColor(m_HighlightColor);
-	u32 def_col = m_lines.GetTextColor();
-	m_lines.SetTextColor(m_HighlightColor);
+	u32 def_col = m_pLines->GetTextColor();
+	m_pLines->SetTextColor(m_HighlightColor);
 
-	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   + 0 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   - 0 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
-	m_lines.Draw(	rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+	m_pLines->Draw(	rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
 
-	m_lines.SetTextColor(def_col);
+	m_pLines->SetTextColor(def_col);
 
 	//UI()->OutText(F, r, 
 	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
@@ -280,41 +282,12 @@ void CUIButton::DrawText(){
 		down_offset = m_iPushOffsetY;
 	}
 
-	//Irect rect = GetAbsoluteRect();
-	//CGameFont * F = GetFont();
-
-	//if (F)
-	//{
-	//	UpdateTextAlign();
-	//	F->SetAligment(GetTextAlign());
-
-	if(IsHighlightText() && xr_strlen(m_lines.GetText())>0 && m_bEnableTextHighlighting)
+	if(IsHighlightText() && xr_strlen(m_pLines->GetText())>0 && m_bEnableTextHighlighting)
 	{
 		DrawHighlightedText();
 	}
 
-	//	F->SetColor(m_dwFontColor);
-
-	//	if (!m_bNewRenderMethod)
-	//	{
-	//		if(m_str && xr_strlen(m_str)>0)
-	//			UI()->OutText(GetFont(), GetSelfClipRect(), 
-	//			(float)rect.left + right_offset  +  m_iTextOffsetX, 
-	//			(float)rect.top + down_offset  + m_iTextOffsetY,
-	//			m_str);
-	//		GetFont()->OnRender();
-	//	}
-	//	else
-	//	{
-	//		rect.left	+=	right_offset;
-	//		rect.top	+=	down_offset;
-
-	//		inherited::DrawString(rect);
-	//	}
-	//}
-
-    Frect r = GetAbsoluteRect();
-	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
+	CUIStatic::DrawText();
 }
 
 

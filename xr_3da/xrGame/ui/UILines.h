@@ -21,24 +21,26 @@ public:
 
 	// IUITextControl methods
 	virtual void			SetText(const char* text);
-	virtual const char*		GetText()							const;
+	virtual const char*		GetText();
 			void			AddChar(const char ch);
 			void			AddChar(const char ch, int pos);
 			void			DelChar(int i);
 	virtual void			SetTextColor(u32 color)						{m_dwTextColor = color; uFlags.set(flNeedReparse, true);}
-	virtual u32				GetTextColor()						const	{return m_dwTextColor;}
+	virtual u32				GetTextColor()								{return m_dwTextColor;}
+	u32&					GetTextColorRef()							{return m_dwTextColor;}
 	virtual void			SetFont(CGameFont* pFont)					{m_pFont = pFont; uFlags.set(flNeedReparse, true);}
-	virtual CGameFont*		GetFont()							const	{return m_pFont;}
+	virtual CGameFont*		GetFont()									{return m_pFont;}
 	virtual void			SetTextAlignment(ETextAlignment al)			{m_eTextAlign = al;}
-	virtual ETextAlignment	GetTextAlignment()					const	{return m_eTextAlign;}
+	virtual ETextAlignment	GetTextAlignment()							{return m_eTextAlign;}
 			void			SetVTextAlignment(EVTextAlignment al)		{m_eVTextAlign = al;}
-			EVTextAlignment GetVTextAlignment()					const	{return m_eVTextAlign;}
+			EVTextAlignment GetVTextAlignment()							{return m_eVTextAlign;}
 
     // IUISimpleWindow methods
 	virtual void			Init(float x, float y, float width, float height);
 	virtual void			Draw();
 	virtual void			Draw(float x, float y);
 	virtual void			Update();
+IC			void			SetWndSize_inline(const Fvector2& wnd_size);
 
 
     // CDeviceResetNotifier methods
@@ -79,11 +81,7 @@ protected:
 		flNeedReparse = (1<<0)
 	};
 	Flags32			uFlags;
-
- //   // IUISimpleWindow
-	//bool			m_bShowMe;
-	//Ivector2		m_wndPos;
-	//Ivector2		m_wndSize;
-public:
+private:
+	float			m_oldWidth;
 
 };

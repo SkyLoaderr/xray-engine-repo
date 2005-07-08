@@ -7,20 +7,20 @@
 
 #pragma once
 
-#include "uilines.h"
+
 #include "uiwindow.h"
 #include "uistring.h"
 #include "../uistaticitem.h"
 #include "../script_export_space.h"
-#include "../../gamefont.h"
 
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
 class CUIFrameWindow;
 class CLAItem;
 class CUIXml;
+class CUILines;
 
-class CUIStatic : public CUIWindow, public CUISingleTextureOwner  
+class CUIStatic : public CUIWindow, public CUISingleTextureOwner, public IUITextControl  
 {
 	friend class CUIXmlInit;
 	friend class CUI3tButton;
@@ -34,23 +34,39 @@ public:
 					CUIStatic				();
 	virtual			~CUIStatic				();
 
-	// IUISimpleWindow
+	// IUISimpleWindow--------------------------------------------------------------------------------------
 	virtual void	Init					(float x, float y, float width, float height);
-	virtual void	SetWndRect				(float x, float y, float width, float height);
 	virtual void	Draw					();
 	virtual void	Update					();
+	// CUIWindow
+			
 
-	// IUISingleTextureOwner
-	virtual void		CreateShader(const char* tex, const char* sh = "hud\\default");
-	virtual ref_shader& GetShader();
-	virtual void		SetTextureColor(u32 color);
-	virtual u32			GetTextureColor() const;
-	virtual void		SetOriginalRect(const Frect& r)							{m_UIStaticItem.SetOriginalRect(r);}
-	virtual void		SetOriginalRectEx(const Frect& r)						{m_UIStaticItem.SetOriginalRectEx(r);}
+	// IUISingleTextureOwner--------------------------------------------------------------------------------
+	virtual void		CreateShader				(const char* tex, const char* sh = "hud\\default");
+	virtual ref_shader& GetShader					();
+	virtual void		SetTextureColor				(u32 color);
+	virtual u32			GetTextureColor				() const;
+	virtual void		SetOriginalRect				(const Frect& r)			{m_UIStaticItem.SetOriginalRect(r);}
+	virtual void		SetOriginalRectEx			(const Frect& r)			{m_UIStaticItem.SetOriginalRectEx(r);}
 	//
-			void		SetOriginalRect(float x, float y, float width, float height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);}
-			void		SetHeadingPivot(const Fvector2& p){m_UIStaticItem.SetHeadingPivot(p);}
+			void		SetVTextAlignment(EVTextAlignment al);
+	virtual void		SetColor					(u32 color)					{ m_UIStaticItem.SetColor(color);		}
+	u32					GetColor					() const					{ return m_UIStaticItem.GetColor();		}
+	u32&				GetColorRef					()							{ return m_UIStaticItem.GetColorRef();	}
+	virtual void		InitTexture					(LPCSTR tex_name);
+	virtual void		InitTextureEx				(LPCSTR tex_name, LPCSTR sh_name="hud\\default");
+	CUIStaticItem*		GetStaticItem				()							{return &m_UIStaticItem;}
+			void		SetOriginalRect				(float x, float y, float width, float height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);}
+			void		SetHeadingPivot				(const Fvector2& p)			{m_UIStaticItem.SetHeadingPivot(p);}
+			void		SetMask						(CUIFrameWindow *pMask);
+	virtual void		SetTextureOffset			(float x, float y)			{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
+			Fvector2	GetTextureOffeset			() const					{ Fvector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
+			void		TextureOn					()							{ m_bTextureEnable = true; }
+			void		TextureOff					()							{ m_bTextureEnable = false; }
+			void		TextureAvailable			(bool value)				{ m_bAvailableTexture = value; }
 
+
+	// own
 	void			SetLightAnim			(LPCSTR lanim);
 	virtual void	Init					(LPCSTR tex_name, float x, float y, float width, float height);	
 			void	InitEx					(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height);
@@ -58,33 +74,28 @@ public:
 	virtual void	DrawTexture				();
 	virtual void	DrawText				();
 
+
 	virtual void	OnFocusReceive			();
 	virtual void	OnFocusLost				();
 
+	//IUITextControl
+	virtual void			SetText					(LPCSTR str);
+	virtual LPCSTR			GetText					();		//get text
+	virtual void			SetTextColor			(u32 color);
+	virtual u32				GetTextColor			();		//const
+	virtual void			SetFont					(CGameFont* pFont);
+	virtual CGameFont*		GetFont					();
+	virtual void			SetTextAlignment		(ETextAlignment alignment);
+	virtual ETextAlignment	GetTextAlignment		();
 
-	static void		SetText					(LPCSTR str, STRING &arr);
-	virtual void	SetText					(LPCSTR str);
-	virtual void	SetLines				(LPCSTR str);
-	LPCSTR			GetText					()								{return m_lines.GetText();}
-
-	virtual void SetTextAlign				(CGameFont::EAligment align)	{m_eTextAlign = align; m_lines.SetTextAlignment(align);}
-	CGameFont::EAligment GetTextAlign		()								{return m_eTextAlign;}
-
-	void		SetTextAlign_script			(u32 align)						{ m_eTextAlign = (CGameFont::EAligment)align;	}
-	u32			GetTextAlign_script			()								{ return static_cast<u32>(m_eTextAlign);		}
-
-	virtual void SetColor					(u32 color)						{ m_UIStaticItem.SetColor(color);		}
-	u32			GetColor					() const						{ return m_UIStaticItem.GetColor();		}
-	// Получения цвета по референсу используется для анимации
-	u32&		GetColorRef					()								{ return m_UIStaticItem.GetColorRef();	}
-    
-	//
-	virtual void	InitTexture(LPCSTR tex_name);
-//	virtual void
-//	virtual void	InitSharedTexture(LPCSTR xml_file, LPCSTR texture);
-//	virtual void	InitSharedTexture(LPCSTR xml_file, LPCSTR texture, bool owner = false);
-	virtual void	InitTextureEx(LPCSTR tex_name, LPCSTR sh_name="hud\\default");
-	CUIStaticItem*	GetStaticItem			()								{return &m_UIStaticItem;}
+	// text additional
+	void		SetTextAlign_script			(u32 align);
+	u32			GetTextAlign_script			();
+	void		SetTextColor_script			(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
+	u32&		GetTextColorRef				();
+#pragma todo("Satan->Satan : delete next two functions")
+	virtual void			SetTextAlign		(CGameFont::EAligment align);
+	CGameFont::EAligment	GetTextAlign		();
 
 	virtual void ClipperOn					();
 	virtual void ClipperOff					();
@@ -106,11 +117,8 @@ public:
 			float GetTextX					()						{return m_iTextOffsetX;}
 			float GetTextY					()						{return m_iTextOffsetY;}
 
-	virtual void SetTextColor				(u32 color)				{ m_dwFontColor = color; m_lines.SetTextColor(color);} 
-			void SetTextColor_script	(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
-			u32  GetTextColor				() const				{ return m_dwFontColor; }
-			u32  &GetTextColorRef			()						{ return m_dwFontColor; }
-	virtual void SetFont					(CGameFont* pFont);
+
+
 
 	void		SetStretchTexture			(bool stretch_texture)	{m_bStretchTexture = stretch_texture;}
 	bool		GetStretchTexture			()						{return m_bStretchTexture;}
@@ -119,16 +127,10 @@ public:
 	Frect		GetSelfClipRect				();
 	Frect		GetClipperRect				();
 
-	// Работа с маской
-	void SetMask							(CUIFrameWindow *pMask);
-	// Cмещение текстуры кнопки
-	virtual void SetTextureOffset			(float x, float y)		{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
-	Fvector2	GetTextureOffeset			() const				{ Fvector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
 	static void PreprocessText				(STRING &str, float width, CGameFont *pFont);
-	// Функция вывода текста
-	void DrawString							(const Frect &rect);
+//	void DrawString							(const Frect &rect);
 	// Когда текст надписи не влазит в статик, то, иногда, нам необходимо показать троеточие и обрезать
 	// надпись. Вот для этого и предназначена эта функция
 	enum EElipsisPosition
@@ -141,14 +143,10 @@ public:
 
 	void SetElipsis							(EElipsisPosition pos, int indent);
 
-	// Включть/выключить текстуру
-	void TextureOn							()						{ m_bTextureEnable = true; }
-	void TextureOff							()						{ m_bTextureEnable = false; }
-	void TextureAvailable					(bool value)			{ m_bAvailableTexture = value; }
+
 
 	// performs text length limit :)
 	void PerformTextLengthLimit				(int limit = -1);
-	// deletes last character in text field
 	void DeleteLastCharacter				();
 	
 	void	SetHeading						(float f)				{m_fHeading = f;};
@@ -166,10 +164,11 @@ public:
 	} E4States;
 
 	void SetTextColor(u32 color, E4States state);
-	CUILines	m_lines;
+
+	CUILines*				m_pLines;
 protected:
 	//цвет текста
-	u32 m_dwFontColor;
+//	u32 m_dwFontColor;
 	// this array of color will be useful in CUI3tButton class
 	// but we really need to declare it directly there because it must be initialized in CUIXmlInit::InitStatic
 	u32  m_dwTextColor[4];
@@ -190,36 +189,15 @@ protected:
 	/////////////////////////////////////
 	//форматированный вывод текста
 	/////////////////////////////////////
-	void WordOut(const Frect &rect);
-	void AddLetter(char letter);
-	u32 ReadColor(int pos, int& r, int& g, int& b);
+//	void WordOut(const Frect &rect);
+//	void AddLetter(char letter);
+//	u32 ReadColor(int pos, int& r, int& g, int& b);
 	
-	//положение пишущей каретки
-	int curretX;
-	int curretY;
-	//выводимый текст
-	int outX;
-	int outY;
-
-	//смещение текста,  в зависимости от выбранного
-	//метода центровки
 	float m_iTextOffsetX;
 	float m_iTextOffsetY;
 
-	//буфер в который записывается уже отформатированная строка
-	xr_vector<char> buf_str;
-	u32 str_len;
-
-	bool new_word;
-	int word_length;
-	
-	int space_width;
-	int word_width;
-
 	bool			m_bHeading;
 	float			m_fHeading;
-
-	CGameFont::EAligment m_eTextAlign;
 
     // Для вывода текстуры с обрезанием по маске используем CUIFrameWindow
 	CUIFrameWindow	*m_pMask;

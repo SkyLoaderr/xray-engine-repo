@@ -5,15 +5,18 @@
 
 #include "stdafx.h"
 #include ".\uiradiobutton.h"
+#include "UILines.h"
 
 
 void CUIRadioButton::Init(float x, float y, float width, float height){
-	m_lines.SetTextAlignment(CGameFont::alLeft);
+	if (!m_pLines)
+		m_pLines = xr_new<CUILines>();
+	m_pLines->SetTextAlignment(CGameFont::alLeft);
     CUI3tButton::InitTexture("ui_radio");
 	Frect r = m_background.GetE()->GetStaticItem()->GetRect(); 
 	CUI3tButton::SetTextX(r.width());
     CUI3tButton::Init(x,y, width, r.height());
-	m_lines.Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
+	m_pLines->Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
 }
 
 void CUIRadioButton::InitTexture(LPCSTR tex_name){

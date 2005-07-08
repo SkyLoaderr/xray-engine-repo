@@ -59,7 +59,6 @@ void CUIOptConCom::Init(){
 	m_iNetFreezeTime = 5;
 	CMD4(CCC_Integer,	"net_respawn_freezetime",		&m_iNetFreezeTime,		0, 100);
 	CMD4(CCC_Integer,	"net_respawn_damageblock",		&m_iNetDamageBlock,		0, 100);
-	m_iNetFragLimit = 20;
 	CMD4(CCC_Integer,	"net_srv_fraglimit",			&m_iNetFragLimit,		0, 100);
 	CMD4(CCC_Integer,	"net_srv_timelimit",			&m_iNetTimeLimit,		0, 100);
 	CMD4(CCC_Integer,	"net_srv_artefactstay",			&m_iNetArtefactStay,	0, 100);

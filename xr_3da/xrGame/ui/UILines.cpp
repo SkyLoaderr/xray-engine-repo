@@ -40,13 +40,16 @@ void CUILines::SetText(const char* text){
 	if (!m_pFont)
 		SetFont(UI()->Font()->pFontLetterica16Russian);
 
-	if (text)
+	if (text && xr_strlen(text) > 0)
 	{
         m_text = text;
 		uFlags.set(flNeedReparse, true);
 	}
 	else
+	{
+		m_text = "";
 		Reset();
+	}
 }
 
 void CUILines::AddChar(const char ch){
@@ -64,7 +67,7 @@ void CUILines::DelChar(int i){
 	uFlags.set(flNeedReparse, true);
 }
 
-const char* CUILines::GetText() const{
+const char* CUILines::GetText(){
 	return m_text.c_str();
 }
 
@@ -100,7 +103,15 @@ void CUILines::Draw(float x, float y){
 	if (m_text.empty())
 		return;
 
-	if (uFlags.is(flNeedReparse)) 
+	static float my_width = 0;
+
+	if (m_oldWidth != m_wndSize.x)
+	{
+		uFlags.set(flNeedReparse, true);
+		m_oldWidth = m_wndSize.x;
+	}
+
+	if (uFlags.is(flNeedReparse))
 		ParseText();
 
 	R_ASSERT(m_pFont);
@@ -274,4 +285,8 @@ void CUILines::CutFirstColoredTextEntry(xr_string& entry, u32& color, xr_string&
 		entry.replace(begin, end - begin + 1, "");
 		text.replace(0, begin2, "");
 	}
+}
+
+void CUILines::SetWndSize_inline(const Fvector2& wnd_size){
+	m_wndSize = wnd_size;
 }

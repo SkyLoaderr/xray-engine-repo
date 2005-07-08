@@ -8,6 +8,7 @@
 #include "alife_registry_wrappers.h"
 #include "ui/UIMapWnd.h"
 #include "game_base_space.h"
+#include "MainUI.h"
 
 #define FOG_CELL_SZ	(50.0f)
 

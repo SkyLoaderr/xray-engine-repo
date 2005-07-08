@@ -5,10 +5,11 @@
 #include "stdafx.h"
 #include ".\uicheckbutton.h"
 #include "../HUDManager.h"
+#include "UILines.h"
 
 CUICheckButton::CUICheckButton(void)
 {	
-	m_lines.SetTextAlignment(CGameFont::alLeft);
+	SetTextAlignment(CGameFont::alLeft);
 }
 
 CUICheckButton::~CUICheckButton(void)
@@ -28,7 +29,7 @@ void CUICheckButton::SaveValue(){
 void CUICheckButton::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 	InitTexture();
-	m_lines.Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
+	m_pLines->Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
 }
 
 void CUICheckButton::InitTexture(){

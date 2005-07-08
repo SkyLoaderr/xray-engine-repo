@@ -13,7 +13,7 @@ void CUIStatic::script_register(lua_State *L)
 
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
-		.def("SetLines",			&CUIStatic::SetLines)
+//		.def("SetLines",			&CUIStatic::SetLines)
 		.def("GetText",				&CUIStatic::GetText)
 
 		.def("SetTextX",				&CUIStatic::SetTextX)

@@ -19,6 +19,7 @@
 #include "../InventoryOwner.h"
 #include "../Level.h"
 #include "../pda.h"
+#include "../MainUI.h"
 
 //////////////////////////////////////////////////////////////////////////
 

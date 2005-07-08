@@ -10,26 +10,23 @@
 #include "uiframewindow.h"
 #include "../HUDManager.h"
 #include "../../LightAnimLibrary.h"
+#include "uilines.h"
 
 const char * const	clDefault	= "default";
+#define CREATE_LINES if (!m_pLines) {m_pLines = xr_new<CUILines>(); m_pLines->SetTextAlignment(CGameFont::alLeft);}
 
 CUIStatic:: CUIStatic()
 {
 	//m_str					= NULL;
 	m_bAvailableTexture		= false;
 	m_bTextureEnable		= true;
-
 	m_bClipper				= false;
 	m_bStretchTexture		= false;
-
-	SetTextAlign			(CGameFont::alLeft);
 
 	m_iTextOffsetX			= 0.0f;
 	m_iTextOffsetY			= 0.0f;
 	m_iTexOffsetY			= 0.0f;
 	m_iTexOffsetX			= 0.0f;
-
-	m_dwFontColor			= 0xFFFFFFFF;
 
 	m_pMask					= NULL;
 	m_ElipsisPos			= eepNone;
@@ -45,11 +42,12 @@ CUIStatic:: CUIStatic()
 	m_fHeading				= 0.0f;
 	m_lanim					= NULL;	
 	m_lainm_start_time		= -1.0f;
+	m_pLines				= NULL;
 }
 
 CUIStatic::~ CUIStatic()
 {
-
+	xr_delete(m_pLines);
 }
 
 void CUIStatic::SetLightAnim(LPCSTR lanim)
@@ -66,20 +64,14 @@ void CUIStatic::Init(LPCSTR tex_name, float x, float y, float width, float heigh
 	InitTexture(tex_name);
 }
 
-void CUIStatic::SetWndRect(float x, float y, float width, float height){
-	CUIWindow::SetWndRect(x,y,width,height);
-	m_lines.SetWndRect(x,y,width,height);
-}
-
 void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height)
 {
 	Init(x, y, width, height);
-	InitTextureEx(tex_name, sh_name);
+	InitTextureEx(tex_name, sh_name);	
 }
 
 void CUIStatic::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
-	m_lines.Init(x,y,width,height);
 }
 
 void CUIStatic::InitTexture(LPCSTR texture){
@@ -109,10 +101,6 @@ void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 	m_bAvailableTexture = true;
 }
 
-
-
-
-
 void  CUIStatic::Draw()
 {
 	if(m_bClipper){
@@ -136,14 +124,13 @@ void  CUIStatic::Draw()
 
 
 void CUIStatic::DrawText(){
-	//if (GetFont()){
-	//	GetFont()->SetAligment(GetTextAlign());
-	//	GetFont()->SetColor(m_dwFontColor);
-	//	Irect r = GetAbsoluteRect();
-	//	DrawString(r);
-	//}
-	Frect r = GetAbsoluteRect();
-	m_lines.Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
+	
+	if (m_pLines)
+	{
+		m_pLines->SetWndSize(m_wndSize);
+		Frect r = GetAbsoluteRect();
+        m_pLines->Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
+	}
 }
 
 void CUIStatic::DrawTexture(){
@@ -168,8 +155,6 @@ void CUIStatic::DrawTexture(){
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::Update()
 {
 	inherited::Update();
@@ -183,163 +168,27 @@ void CUIStatic::Update()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUIStatic::WordOut(const Frect &rect)
-{
-	//вывести слово
-
-	CGameFont *pFont = GetFont();
-	R_ASSERT(pFont);
-
-	if(new_word)
-	{
-		buf_str[word_length] = 0;
-		word_width = (int)GetFont()->SizeOf(&buf_str.front());
-
-		if(curretX+word_width<GetWidth())
-		{
-			outX = curretX;
-			outY = curretY;
-			curretX += word_width;
-		}
-		else
-		{
-			//перейти на новую строку
-			curretX =  word_width;
-   			curretY += (int)pFont->CurrentHeight();
-
-			outX = 0;
-			outY = curretY;
-		}
-		
-		UI()->OutText(pFont, GetSelfClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
-					  static_cast<float>(rect.top + outY + m_iTextOffsetY),  &buf_str.front());
-		word_length = 0;
-		new_word = false;
-	}
-}
-
 void CUIStatic::SetFont(CGameFont* pFont){
 	CUIWindow::SetFont(pFont);
-	m_lines.SetFont(pFont);
+	CREATE_LINES;
+	m_pLines->SetFont(pFont);
 }
 
-void CUIStatic::AddLetter(char letter)
-{
-	m_lines.AddChar(letter);
-
-	//if(!new_word)
-	//{
-	//	new_word = true;
-	//	word_length = 1;
-	//}
-	//else
-	//	++word_length;
-
-	//buf_str[word_length-1] = letter;
+CGameFont* CUIStatic::GetFont(){
+	CREATE_LINES;
+	return m_pLines->GetFont();
 }
 
-//прочитать цвет r,g,b
-u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
-{
-	return 0;
-	//char buf[12];
-	//u32 symbols_to_copy;
-	//u32 str_offset = 0;
-
-	//// Try default color first
-	//if (strstr(static_cast<char*>(m_str + pos), clDefault)== m_str + pos)
-	//{
-	//	u32 cl = GetTextColor();
-	//	r = (cl >> 16) & 0xff;
-	//	g = (cl >> 8) & 0xff;
-	//	b = cl & 0xff;
-	//	return xr_strlen(clDefault);
-
-	//}
-
-	//// Try predefined colors
-	//for (CUIXmlInit::ColorDefs::const_iterator it = CUIXmlInit::GetColorDefs()->begin(); it != CUIXmlInit::GetColorDefs()->end(); ++it)
-	//{
-	//	if (strstr(static_cast<char*>(m_str + pos), *it->first) == m_str + pos)
-	//	{
-	//		r = (it->second >> 16) & 0xff;
-	//		g = (it->second >> 8) & 0xff;
-	//		b = it->second  & 0xff;
-
-	//		return xr_strlen(*it->first);
-	//	}
-	//}
-
-	//if(xr_strlen(m_str)-pos>11)
-	//	symbols_to_copy = 11;
-	//else
-	//	symbols_to_copy = (u32)xr_strlen(m_str)-pos;
-
-	//
-	//for(u32 i=0; i<symbols_to_copy; ++i)
-	//{
-	//	buf[i] = m_str[i+pos];
-	//}
-	// buf[11]=0;
-
-	//
-	//r = g = b = 0;
-	//
-	//char seps[]   = ",";
-	//char *token = NULL;
-
- //   token = strtok(buf, seps );
-
-	//if(NULL != token)
-	//{
-	//	r = atoi(token);
-	//	str_offset += (u32)xr_strlen(token);
-	//	++str_offset;
-	//}
-	//else
-	//	return 0;
- //   
-	//token = strtok( NULL, seps );
-
-	//if(NULL != token)
-	//{
-	//	g = atoi(token);
-	//	str_offset += (u32)xr_strlen(token);
-	//	++str_offset;
-	//}
-	//else
-	//	return 0;
-
-	//token = strtok( NULL, seps );
-
-	//if(NULL != token)
-	//{
-	//	b = atoi(token);
-	//	if(b>99)
-	//		str_offset += 3;
-	//	else if(b>9)
-	//		str_offset += 2;
-	//	else
-	//		str_offset += 1;
-	//}
-	//else
-	//	return 0;
-
-
-	//return str_offset;
-}
+//void CUIStatic::AddLetter(char letter)
+//{
+//	CREATE_LINES;
+//	m_pLines->AddChar(letter);
+//}
 
 void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect)
 {
 	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
 }
-
-//////////////////////////////////////////////////////////////////////////
-//offset_x и offset_y - для смещения самой текстуры 
-//относительно окна CUIStatic (используется для центрирования текстур)
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect,
 							   CUIStaticItem& UIStaticItem)
@@ -439,41 +288,43 @@ void  CUIStatic::SetShader(const ref_shader& sh)
 	m_bAvailableTexture = true;
 }
 
-void CUIStatic::SetText(LPCSTR str, STRING &arr) 
-{
-#pragma todo("Satan->Satan : useless function")
-	arr.clear();
-
-	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
-		arr.push_back(str[i]);
-	arr.push_back(0);
+LPCSTR CUIStatic::GetText(){
+	static const char empty = 0;
+	if (m_pLines)
+		return m_pLines->GetText();
+	else
+		return &empty;
 }
 
-void CUIStatic::SetLines(LPCSTR str){
-	m_lines.SetWndRect(GetAbsoluteRect());
-	m_lines.SetText(str);	
+void CUIStatic::SetTextColor(u32 color){
+	CREATE_LINES;
+	m_pLines->SetTextColor(color);
 }
+
+u32 CUIStatic::GetTextColor(){
+	CREATE_LINES;
+	return m_pLines->GetTextColor();
+}
+
+u32& CUIStatic::GetTextColorRef(){
+	return m_pLines->GetTextColorRef();
+}
+
+//void CUIStatic::SetLines(LPCSTR str){
+//	if (!m_pLines)
+//		m_pLines = xr_new<CUILines>();
+//	m_pLines->SetWndRect(GetAbsoluteRect());
+//	m_pLines->SetText(str);	
+//}
 
 void CUIStatic::SetText(LPCSTR str)
 {
-	m_lines.SetText(str);
-	//if(str == NULL) 
-	//{
-	//	m_str = NULL;
-	//	return;
-	//}
-
-	//CUIStatic::SetText(str, m_sEdit);
-
-	//m_str = &m_sEdit.front();
-
-	//buf_str.clear();
-	//str_len = m_sEdit.size();
-	//buf_str.resize(str_len+1);
-
-	//Irect r = GetAbsoluteRect();
-	//r.left += GetTextX() + m_iElipsisIndent;
-	//Elipsis(r, m_ElipsisPos);
+	if (str && xr_strlen(str) > 0)
+	{
+		CREATE_LINES;
+		m_pLines->SetText(str);
+	}
+	
 }
 
 void CUIStatic::SetTextColor(u32 color, E4States state){
@@ -518,9 +369,41 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 	}
 }
 
+CGameFont::EAligment CUIStatic::GetTextAlign(){
+	return m_pLines->GetTextAlignment();
+}
+
+CGameFont::EAligment CUIStatic::GetTextAlignment(){
+	return m_pLines->GetTextAlignment();
+}
+
+void CUIStatic::SetTextAlign(CGameFont::EAligment align){
+	CREATE_LINES;
+	m_pLines->SetTextAlignment(align);
+}
+
+void CUIStatic::SetTextAlignment(CGameFont::EAligment align){
+	CREATE_LINES;
+	m_pLines->SetTextAlignment(align);
+}
+
+void CUIStatic::SetVTextAlignment(EVTextAlignment al){
+	CREATE_LINES;
+	m_pLines->SetVTextAlignment(al);
+}
+
+void CUIStatic::SetTextAlign_script(u32 align){
+	m_pLines->SetTextAlignment((CGameFont::EAligment)align);
+}
+
+u32 CUIStatic::GetTextAlign_script(){
+	return static_cast<u32>(m_pLines->GetTextAlignment());
+}
+
 void CUIStatic::PreprocessText(STRING &str, float width, CGameFont *pFont)
 {
 #pragma todo("Satan->Satan : bad function")
+	R_ASSERT(false);
 	// Codde guards
 	R_ASSERT(pFont);
 	if (str.empty()) return;
@@ -615,106 +498,6 @@ void CUIStatic::PreprocessText(STRING &str, float width, CGameFont *pFont)
     processedStr.swap(str);
 }
 
-void CUIStatic::DrawString(const Frect &rect)
-{
-	// Вывод текста
-#pragma todo("Satan->Satan : must be unreachable")
-
-	//if(m_str == NULL) return;
-
-	//if(!GetFont() || !m_str || !m_str[0]) return;	
-
-	////положение пишущей каретки
-	//curretX = 0;
-	//curretY = 0;
-	////выводимый текст
-	//outX = 0;
-	//outY = 0;
-
-	//new_word = false;
-	//word_length = 0;
-
-	//space_width = (int)GetFont()->SizeOf(' ');
-	//GetFont()->SetAligment(m_eTextAlign);
-
-	//for(u32 i = 0; i<str_len+1; ++i)
-	//{
-	//	char cur_char;
-
-	//	if(i<str_len)
-	//		cur_char = m_str[i];
-	//	else
-	//		//завершить весь вывод пробелом
-	//		cur_char = ' ';
-
-	//	switch(cur_char)
-	//	{
-	//	case ' ':
-	//		WordOut(rect);
-
-	//		//"нарисовать" пробел
-	//		if(curretX+space_width >= GetWidth())
-	//		{
-	//			curretY += (int)GetFont()->CurrentHeight();
-	//			curretX = space_width;
-	//		}
-	//		else
-	//		{
-	//			curretX += space_width;
-	//		}
-	//		break;
-	//	case '\\':
-	//		if(i+1<str_len)
-	//		{
-	//			//переход на новую строку
-	//			if(m_str[i+1]== 'n')
-	//			{
-	//				WordOut(rect);
-
-	//				//перевести курсор на новую строку
-	//				curretY += (int)GetFont()->CurrentHeight();
-	//				curretX = 0;
-	//			}
-	//			//вывести символ '\'
-	//			else if(m_str[i+1]== '\\')
-	//			{
-	//				AddLetter('\\');
-	//			}
-	//		}
-	//		++i;
-	//		break;
-	//	case '%':
-	//		if(i+1<str_len)
-	//		{
-	//			if(m_str[i+1]== 'c')
-	//			{
-	//				// First of all try to applying predefined colors
-
-	//				int r,g,b;
-	//				u32 offset = ReadColor(i+2, r,g,b);
-
-	//				//++i;
-	//				i+= offset;
-
-	//				u32 color = RGB_ALPHA(GetTextColor() >> 24,r,g,b);
-	//				GetFont()->SetColor(color);
-	//			}
-	//			//вывести символ '%'
-	//			else if(m_str[i+1]== '%')
-	//			{
-	//				AddLetter('%');				
-	//			}
-	//		}
-	//		++i;
-	//		break;
-	//	default:
-	//		AddLetter(m_str[i]);
-	//	}
-	//}
-	//GetFont()->OnRender();
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::Elipsis(const Frect &rect, EElipsisPosition elipsisPos)
 {

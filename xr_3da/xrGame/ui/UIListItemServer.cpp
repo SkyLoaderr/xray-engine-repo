@@ -23,23 +23,23 @@ void CUIListItemServer::Init(LIST_SRV_ITEM& params, float x, float y, float widt
 	offset += params.size.icon;
 
 	m_server.Init(offset, 0, params.size.server, height);
-	m_server.m_lines.SetText(*params.info.server);
+	m_server.SetText(*params.info.server);
 	offset += params.size.server;
 
 	m_map.Init(offset, 0, params.size.map, height);
-	m_map.m_lines.SetText(*params.info.map);
+	m_map.SetText(*params.info.map);
 	offset += params.size.map;
 
 	m_game.Init(offset, 0, params.size.game, height);
-	m_game.m_lines.SetText(*params.info.game);
+	m_game.SetText(*params.info.game);
 	offset += params.size.game;
 
 	m_players.Init(offset, 0, params.size.game, height);
-	m_players.m_lines.SetText(*params.info.players);
+	m_players.SetText(*params.info.players);
 	offset += params.size.players;
 
 	m_ping.Init(offset, 0, params.size.game, height);
-	m_ping.m_lines.SetText(*params.info.ping);
+	m_ping.SetText(*params.info.ping);
 
 	m_srv_info = params;
 }
