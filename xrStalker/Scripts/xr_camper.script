@@ -33,15 +33,15 @@ function evaluator_close_combat:evaluate()
 		return true
 	end
 
-	local best_enemy = self.object:best_enemy()
-	if best_enemy == nil then return false end
-
---printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
-
-	-- Если script_danger == false, то нужно вернуть true
 	if self.mgr == nil then
 		self.mgr = self.object:motivation_action_manager()
 	end
+	if not self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
+		return false
+	end
+
+--printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
+	-- Если script_danger == false, то нужно вернуть true
 	if not self.mgr:evaluator(xr_evaluators_id.danger):evaluate() then
 		return true
 	end
