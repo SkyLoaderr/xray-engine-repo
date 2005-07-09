@@ -330,6 +330,7 @@ center_point = kamp_point
 
 [logic@gar_hellcar_group_rest4]
 active = remark@hellcar_way_final
+on_death = death@hellcar
 
 [remark@hellcar_way_final]
 on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
@@ -342,7 +343,10 @@ meet = meet@after_battle
 on_use = use
 
 [use]
-on_info = gar_hellcar_dialog_end
+on_info = %+gar_hellcar_dialog_end%
+
+[death@hellcar]
+on_info = %+gar_hellcar_dialog_end%
 
 
 [meet@hellcar_group_in_battle]
@@ -359,18 +363,16 @@ Use_wpn		= false
 active = camper@gar_hellcar_group_camper1
 on_hit = hit
 on_death = death
-combat_ignore = combat_ignore@hellcar1
+combat_ignore = combat_ignore@hellcar
 
 [camper@gar_hellcar_group_camper1]
 path_walk = camper1_walk
 path_look = camper1_look
 radius = 7
 combat_ignore_cond = {-gar_open_fire}
-;meet = meet@hellcar_group_in_battle
 
 
-
-[combat_ignore@hellcar1]
+[combat_ignore@hellcar]
 
 [hit]
 on_info = %+gar_open_fire%
@@ -383,7 +385,7 @@ on_info = %+gar_open_fire%
 active = camper@gar_hellcar_group_camper2
 on_hit = hit
 on_death = death
-combat_ignore = combat_ignore@hellcar2
+combat_ignore = combat_ignore@hellcar
 
 [camper@gar_hellcar_group_camper2]
 path_walk = camper2_walk
@@ -391,14 +393,12 @@ path_look = camper2_look
 radius = 7
 combat_ignore_cond = {-gar_open_fire}
 
-[combat_ignore@hellcar2]
-
 
 [logic@gar_hellcar_group_camper3]
 active = camper@gar_hellcar_group_camper3
 on_hit = hit
 on_death = death
-combat_ignore = combat_ignore@hellcar3
+combat_ignore = combat_ignore@hellcar
 
 [camper@gar_hellcar_group_camper3]
 path_walk = camper3_walk
@@ -407,15 +407,11 @@ radius = 7
 combat_ignore_cond = {-gar_open_fire}
 
 
-
-[combat_ignore@hellcar3]
-
-
 [logic@gar_hellcar_group_camper4]
 active = camper@gar_hellcar_group_camper4
 on_hit = hit
 on_death = death
-combat_ignore = combat_ignore@hellcar4
+combat_ignore = combat_ignore@hellcar
 
 [camper@gar_hellcar_group_camper4]
 path_walk = camper4_walk
@@ -425,14 +421,13 @@ combat_ignore_cond = {-gar_open_fire}
 on_signal = direction | remark@gar_hellcar_group_camper4 %=gar_direction_fire%
 danger = danger_condition@hellcar
 
+
 [danger_condition@hellcar]
 ignore_distance = 1
 
 [remark@gar_hellcar_group_camper4]
 anim = idle
 
-
-[combat_ignore@hellcar4]
 
 ;-------------------------------------------------------------------------------------
 ;-- GARBAGE DOLG
