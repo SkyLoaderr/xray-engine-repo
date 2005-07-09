@@ -3,21 +3,27 @@
     <dialog id="pri_followers_start_dlg">
         <phrase_list>
             <phrase id="1">
-                <text>pri_followers_start_dlg_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
-            <phrase id="12">
-                <text>pri_followers_start_dlg_12</text>
-            </phrase>
-            <phrase id="0">
                 <text></text>
                 <dont_has_info>pri_followers_start</dont_has_info>
-                <next>1</next>
+                <next>11</next>
             </phrase>
             <phrase id="11">
                 <text>pri_followers_start_dlg_11</text>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+            <phrase id="111">
+                <text>pri_followers_start_dlg_111</text>
+                <action>dialogs.break_dialog</action>
                 <give_info>pri_followers_start</give_info>
+            </phrase>
+            <phrase id="112">
+                <text>pri_followers_start_dlg_112</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>

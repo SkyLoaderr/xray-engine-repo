@@ -685,6 +685,13 @@
 							RelativePath=".\Config\text\rus\string_table_tasks_radar.xml">
 						</File>
 					</Filter>
+					<Filter
+						Name="l11_pripyat"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_pripyat.xml">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="eng"
@@ -1524,6 +1531,15 @@
 					Filter="">
 					<File
 						RelativePath=".\Config\scripts\pri_followers_leader.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\pri_followers_stalker1.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\pri_followers_stalker2.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\pri_followers_stalker3.ltx">
 					</File>
 				</Filter>
 			</Filter>
