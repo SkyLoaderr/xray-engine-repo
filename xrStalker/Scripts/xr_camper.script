@@ -38,9 +38,13 @@ function evaluator_close_combat:evaluate()
 
 --printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
 
---	if self.object:best_danger():type() == danger_object.grenade then
---		return false
---	end
+	-- Если script_danger == false, то нужно вернуть true
+	if self.mgr == nil then
+		self.mgr = self.object:motivation_action_manager()
+	end
+	if not self.mgr:evaluator(xr_evaluators_id.danger):evaluate() then
+		return true
+	end
 
 	if self.close_combat == false then
 		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius

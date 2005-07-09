@@ -62,7 +62,7 @@ function evaluator_danger:evaluate()
 		return true
 	end
 	
-	-- инерция возврата
+	-- инерция возврата. Только не для кемпера.
 	if self.danger_time and
 	   time_global() - self.danger_time < 10000 then
 	   printf("DANGER [%s]->[%s] [FALSE] inertion time", self.object:name(), best_danger:object():name())
