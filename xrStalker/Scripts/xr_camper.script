@@ -338,7 +338,7 @@ function action_patrol:scan(flag)
 		self.look_point = vector():set(self.look_position.x + self.a.cur_look_point * (self.dest_position.x - self.look_position.x)/self.a.scandelta,
 									   self.look_position.y + self.a.cur_look_point * (self.dest_position.y - self.look_position.y)/self.a.scandelta,
 									   self.look_position.z + self.a.cur_look_point * (self.dest_position.z - self.look_position.z)/self.a.scandelta)
-		state_mgr.set_state(self.object, "hide_na", nil, nil, {look_position = self.look_point}, nil, nil, 0.2)
+		state_mgr.set_state(self.object, "hide_na", nil, nil, {look_position = self.look_point}, nil, nil, {yaw_delta = 0.2})
 
 		if self.a.cur_look_point >= self.a.scandelta then
 			self.a.cur_look_point = nil

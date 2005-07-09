@@ -45,8 +45,7 @@ function evaluator_state_mgr_idle_alife:evaluate()
 		return true
 	end
 	-- апдейт менеджера анимаций
-	self.st.animstate:update()	
-	self.st.animation:update()
+	-- раньше он был тут, сейчас он вынесен из эвалуатора
 
 --	printf("SECTION %s", utils.to_str(db.storage[self.st.npc:id()].active_section))
 	mgr = self.object:motivation_action_manager()
@@ -778,9 +777,10 @@ function state_manager:__init(npc)
 	self.emerg = {}
 	self.synsound = nil
 	self.yaw_delta = nil
+	self.subanim = 0
 	self.need_reweapon = false
 end
-function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound, yaw_delta)
+function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound, extrakeys)
 	printf("Set State called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
 		abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
@@ -817,12 +817,18 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		self.no_rotate = true
 	end
 	-- меняем угол точности.
-	if yaw_delta ~= nil then
-		self.yaw_delta = yaw_delta
+	if extrakeys and extrakeys.yaw_delta ~= nil then
+		self.yaw_delta = extrakeys.yaw_delta
 	else
 		self.yaw_delta = 5
 	end
-
+	-- меняем глубину рекурсивности анимации.
+	if extrakeys and extrakeys.subanim ~= nil then
+		self.subanim = extrakeys.subanim
+	else
+		self.subanim = 0
+	end
+	
 	if self.target_state ~= state_name then
 		self.target_state = state_name
 --		printf("SETING_REWEAPON")
@@ -864,6 +870,8 @@ function state_manager:get_state()
 end
 function state_manager:update()
 	--printf("Update called")
+	self.animstate:update()	
+	self.animation:update()	
 	self.planner:update()
 	--self.planner:show("")
 end
@@ -872,9 +880,9 @@ end
 
 
 
-function set_state(npc, state_name, callback, timeout, target, emerg, synsound, yaw_delta)
+function set_state(npc, state_name, callback, timeout, target, emerg, synsound, extrakeys)
 	if db.storage[npc:id()].state_mgr then
-		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg, synsound, yaw_delta)
+		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg, synsound, extrakeys)
 	end
 end
 function get_state(npc)

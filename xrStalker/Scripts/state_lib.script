@@ -287,33 +287,19 @@ states = {
 				animation = "eat_kolbasa"
 			},
 
-	guitar_wait	= {	weapon = "strapped",
+	guitar	= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "sit_knee",
-				animation = "guitar_wait"
+				animation = "guitar"
 			},
-	guitar_play	= {	weapon = "strapped",
-				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
-				animstate = "sit_knee",
-				animation = "guitar_play"
-			},
-	harmonica_wait	= {	weapon = "strapped",
+	harmonica	= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "sit_ass",
-				animation = "harmonica_wait"
-			},
-	harmonica_play	= {	weapon = "strapped",
-				movement = move.stand,
-				mental = anim.free,
-				bodystate = move.standing,
-				animstate = "sit_ass",
-				animation = "harmonica_play"
+				animation = "harmonica"
 			},
 
 	hello = {	weapon = "unstrapped",

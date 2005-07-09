@@ -479,37 +479,38 @@ function animation:__init(npc, mgr)
 						rnd		= { [0]	= {	"item_1_attack_0",
 											"item_1_idle_0" } }},
 
-		guitar_wait	= {	prop	= { maxidle = 3,
+		guitar	= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 80 },
 						into	= { [0]	= {"sit_1_guitar_0_0", {a="guitar_a"}, "sit_1_guitar_0_1"}},
 						out		= { [0]	= {"guitar_0_sit_1_0", {d="guitar_a"}, "guitar_0_sit_1_1"} },
 						idle	= { [0]	= "guitar_3" },
 						rnd		= { [0]	= {	"guitar_1",
-											"guitar_2" } }},
-		guitar_play	= {	prop	= { maxidle = 3,
-									sumidle = 3,
-									rnd = 0 },
-						into	= nil,
-						out		= nil,
-						idle	= { [0]	= "guitar_0" },
-						rnd		= nil },
-		harmonica_wait	= {	prop	= { maxidle = 3,
+											"guitar_2" } },
+						subanim = { [1] = {	prop = { maxidle = 3,
+													 sumidle = 3,
+													 rnd = 0 },
+											into_music = "guitar", 
+											into	= nil,
+											out		= nil,
+											idle	= { [0]	= "guitar_0" },											
+											rnd		= nil }}},
+		harmonica	= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 80 },
-						into	= { [0]	= {"sit_2_harmonica_0_0", {a="harmonica_a"}, "sit_2_harmonica_0_1"}},
-						out		= { [0]	= {"harmonica_0_sit_2_0", {d="harmonica_a"}, "harmonica_0_sit_2_1"} },
+						into	= { [0]	= {"sit_2_harmonica_1_0", {a="harmonica_a"}, "sit_2_harmonica_1_1"}},
+						out		= { [0]	= {"harmonica_1_sit_2_0", {d="harmonica_a"}, "harmonica_1_sit_2_1"} },
 						idle	= { [0]	= "harmonica_1" },
 						rnd		= { [0]	= {	"harmonica_2",
-											"harmonica_3" } }},
-		harmonica_play	= {	prop	= { maxidle = 3,
-									sumidle = 3,
-									rnd = 0 },
-						into	= nil,
-						out		= nil,
-						idle	= { [0]	= "harmonica_0" },
-						rnd		= nil },
-
+											"harmonica_3" } },
+						subanim = { [1] = {	prop = { maxidle = 3,
+													 sumidle = 3,
+													 rnd = 0 },
+											into_music = "harmonica", 
+											into	= nil,
+											out		= nil,
+											idle	= { [0]	= "harmonica_0" },											
+											rnd		= nil }}},
 
 		choosing	= {	prop	= { maxidle = 8,
 									sumidle = 10,
@@ -718,6 +719,7 @@ function animation:__init(npc, mgr)
 		target_state = nil,
 		begin = nil,
 		idle = nil,
+		anim_level = 0,
 		attach_items = {hand_radio	= {mode = "detach", done = true},
 						bread_a		= {mode = "detach", done = true},
 						vodka_a		= {mode = "detach", done = true},
@@ -736,30 +738,68 @@ function animation:__init(npc, mgr)
 end
 --' установка нового состояния
 function animation:set_state(id, reset)
-	printf("set new animation %s", utils.to_str(id))
+	printf("set new animation [%s], current_state [%s]", tostring(id), tostring(self.states.target_state))
 	local nn = 0
 	local wpn_slot = self:weapon_slot()
 	--' выход из старого состояния
 	self.npc:clear_animations()	
-	if self.animations[self.states.current_state] ~= nil and
-	   self.mgr.emerg.animation_nout ~= true
-	then
-		if self.animations[self.states.current_state].out ~= nil then
-			anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].out)
-			if anima then
-				if type(anima) == "table" then
-					for k,v in anima do
-						if type(v) == "table" then
-							self:set_anim_callback(v)
-						else
-							self.npc:add_animation(v, true)
+	if self.animations[self.states.target_state] ~= nil then
+		if self.mgr.emerg.animation_nout == true or
+		   self.mgr.emerg.animation == true
+		then
+			-- обнулить озвучку
+			stop_play_sound(self.npc)
+			-- экстренный выход, необходимо дропнуть приатаченные предметы
+			if self.animations[self.states.target_state].out ~= nil then
+				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
+				if anima then
+					if type(anima) == "table" then
+						for k,v in anima do
+							if type(v) == "table" and v.d ~= nil then
+								local obj = self.npc:object(v.d)
+								if obj then
+									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
+									obj:enable_attachable_item(false)
+--									printf("droped [%s] for [%s]", obj:name(), self.npc:name())
+--									self.npc:set_item(object.drop, obj)
+								end
+								self.states.attach_items[v.d].mode = "detach"
+								self.states.attach_items[v.d].done = true
+							end
 						end
 					end
-				else
-					self.npc:add_animation(anima, true)
+				end	
+			end		
+		else
+			-- выход из поданимаций	
+			if self.mgr.subanim > 0 then
+				for key = self.mgr.subanim, 0 do
+					local a = self.animations[self.states.target_state].subanim[key]
+					if a and a.out then
+						anima = self:anim_for_slot(wpn_slot,a.out)
+						if anima then
+							self.npc:add_animation(anima, true)
+						end
+					end
 				end
-				nn = nn +1
 			end			
+			if self.animations[self.states.target_state].out ~= nil then
+				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
+				if anima then
+					if type(anima) == "table" then
+						for k,v in anima do
+							if type(v) == "table" then
+								self:set_anim_callback(v)
+							else
+								self.npc:add_animation(v, true)
+							end
+						end
+					else
+						self.npc:add_animation(anima, true)
+					end
+					nn = nn +1
+				end			
+			end
 		end
 	end
 	--' вход в новое состояние	
@@ -804,6 +844,7 @@ function animation:set_state(id, reset)
 	self.states.current_state = "new"
 	self.states.target_state = id
 	self.states.begin = nil
+	self.states.anim_level = 0
 end
 --' апдейт
 function animation:update()
@@ -820,11 +861,6 @@ function animation:update()
 			self.sound_played = false
 		end
 	end	
-	
-	if self.states.current_state == nil then
-		self:callback_process()
-		return
-	end
 
 	-- АТТАЧ ДЕТАЧ ОБЪЕКТОВ
 	for k,v in self.states.attach_items do
@@ -835,10 +871,10 @@ function animation:update()
 			if t then
 --				printf("item [%s] exist", tostring(k))
 				if v.mode == "attach" then
-					printf("item [%s] attached", tostring(k))
+					printf("item [%s] attached for [%s]", tostring(k), self.npc:name())
 					t:enable_attachable_item(true)
 				elseif v.mode == "detach" then
-					printf("item [%s] detached", tostring(k))
+					printf("item [%s] detached for [%s]", tostring(k), self.npc:name())
 					t:enable_attachable_item(false)
 				end
 			end
@@ -846,6 +882,11 @@ function animation:update()
 		end
 	end
 	
+	if self.states.current_state == nil then
+		self:callback_process()
+		return
+	end
+
 	-- обрубить анимации и экстренно начать сразу
 	if self.mgr.emerg ~= nil and  
 	   self.mgr.emerg.animation == true then
@@ -908,27 +949,86 @@ function animation:update()
 	end
 	
 	-- Отыгрыш рандомных анимашек, если они есть
-	if 	self.states.current_state == self.states.target_state then		
+	if 	self.states.current_state == self.states.target_state then
 		--' проверка на экстренный ресет схемы	
 		if self:callback_process() == true then
 			return
 		end
-	
+		local wpn_slot = self:weapon_slot()
+		-- Проверка на уровень рекурсивности.
+		-- если нужный уровень рекурсии достигнут - играть рандомные и зацикленные айдлы из него.
+		-- если нет - отыграть весь набор входных анимаций до него.
+		if self.states.anim_level < self.mgr.subanim then
+			self.npc:clear_animations()
+			for key = self.states.anim_level+1, self.mgr.subanim do
+				local a = self.animations[self.states.current_state].subanim[key]
+				if a and a.into then
+					anima = self:anim_for_slot(wpn_slot,a.into)
+					if anima then
+						self.npc:add_animation(anima, true)
+					end
+				end
+				--' устанавливаем музыку
+				if a.into_music then
+					xr_sound.set_sound_play(self.npc, a.into_music)
+				end				
+			end
+			self.states.anim_level = self.mgr.subanim
+			-- добавляем айдл текущего уровня
+			anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].subanim[self.states.anim_level].idle)
+			if anima then
+				self.npc:add_animation(anima, true)
+			end		
+			self.states.current_state = "wait"			
+			return
+		end
+		-- если текущий уровень рекурсии выше, чем необходимый - отыграть набор выходных анимаций из него.
+		if self.states.anim_level > self.mgr.subanim then
+			self.npc:clear_animations()
+			for key = self.states.anim_level, self.mgr.subanim+1 do
+				local a = self.animations[self.states.current_state].subanim[key]
+				if a and a.out then
+					anima = self:anim_for_slot(wpn_slot,a.out)
+					if anima then
+						self.npc:add_animation(anima, true)
+					end
+				end
+			end
+			self.states.anim_level = self.mgr.subanim
+			-- добавляем айдл текущего уровня
+			local anima
+			if self.states.anim_level == 0 then
+				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].idle)
+			else
+				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].subanim[self.states.anim_level].idle)
+			end
+			if anima then
+				self.npc:add_animation(anima, true)
+			end		
+			self.states.current_state = "wait"
+			return
+		end
 		--' Определяем нужно ли добавлять анимацию или ждать
-		if	self.animations[self.states.current_state] ~= nil and
-			self.animations[self.states.current_state].rnd ~= nil
-		then			
-			if self.states.begin == nil then
-				self:play_rnd(self.states.current_state, 100)
-			elseif time_global() - self.states.begin > self.states.idle then
-				self:play_rnd(self.states.current_state, self.animations[self.states.current_state].prop.rnd)
+		if	self.animations[self.states.current_state] ~= nil then
+			local state			
+			if self.states.anim_level == 0 then
+				state = self.animations[self.states.current_state]
+			else
+				state = self.animations[self.states.current_state].subanim[self.states.anim_level]
+			end
+			if state.rnd ~= nil then
+				if self.states.begin == nil then				
+					self:play_rnd(state, true)
+				elseif time_global() - self.states.begin > self.states.idle then
+					self:play_rnd(state)
+				end
 			end
 		end		
 	
 	end
 end
 -- Отыгрыш рандомной анимации
-function animation:play_rnd(state, rnd)
+function animation:play_rnd(state, must_play)
 	--printf("try to add rnd animation [%s] for [%s]", utils.to_str(state), utils.to_str(rnd))
 	-- нельзя добавлять рандом во время лока схемы.
 	if not (self.mgr.planner:evaluator(self.mgr.properties["animation"]):evaluate() and
@@ -947,11 +1047,11 @@ function animation:play_rnd(state, rnd)
 	
 	--' Определение промежутков времени между анимациями	
 	self.states.begin = time_global()
-	self.states.idle = (math.random(self.animations[state].prop.maxidle) + 
-									self.animations[state].prop.sumidle) * 1000
-	if math.random(100) < rnd then	
+	self.states.idle = (math.random(state.prop.maxidle) + 
+									state.prop.sumidle) * 1000
+	if math.random(100) < state.prop.rnd or must_play then	
 		local wpn_slot = self:weapon_slot()
-		local anima = self:anim_for_slot(wpn_slot,self.animations[state].rnd)
+		local anima = self:anim_for_slot(wpn_slot,state.rnd)
 		if anima == nil then			
 			return
 		end
@@ -971,7 +1071,6 @@ function animation:play_rnd(state, rnd)
 			r = 1
 		end		
 		self.npc:clear_animations()
-		printf("rnd animations added for [%s]", utils.to_str(state))
 		if anima[r] ~= nil then
 			self.npc:add_animation(anima[r], true)
 			-- добавить рандомный звук
@@ -979,13 +1078,9 @@ function animation:play_rnd(state, rnd)
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
 				self.sound_played = true		   
 			end
-		else
-			printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
-						table.getn(anima),
-						state, wpn_slot )
 		end
-		if self.animations[state].idle ~= nil then
-			anima = self:anim_for_slot(wpn_slot,self.animations[state].idle)
+		if state.idle ~= nil then
+			anima = self:anim_for_slot(wpn_slot,state.idle)
 			if anima then
 				self.npc:add_animation(anima, true)
 			end
@@ -1034,6 +1129,7 @@ function animation:callback_process()
 end
 --' настройка колбека на особые действия
 function animation:set_anim_callback(a)
+	print_table(a)
 	self.clb_settings.cnt = self.npc:animation_count()
 	self.clb_settings.a = a.a
 	self.clb_settings.d = a.d
@@ -1052,16 +1148,19 @@ function animation:anim_callback()
 			self.states.attach_items[self.clb_settings.a].mode = "attach"
 			self.states.attach_items[self.clb_settings.a].done = false
 		end
+		self.clb_settings.a = nil
 		if self.clb_settings.d ~= nil and
 		   self.states.attach_items[self.clb_settings.d] ~= nil 
 		then
-			printf("item [%s] detach", utils.to_str(self.clb_settings.a))	
+			printf("item [%s] detach", utils.to_str(self.clb_settings.d))	
 			self.states.attach_items[self.clb_settings.d].mode = "detach"
 			self.states.attach_items[self.clb_settings.d].done = false
 		end
+		self.clb_settings.d = nil
 		if self.clb_settings.s ~= nil then
 			xr_sound.set_sound_play(self.npc, self.clb_settings.s)
 		end
+		self.clb_settings.s = nil
 		if self.clb_settings.sh ~= nil then
 			-- наносим хит себе.
 			local h = hit()
@@ -1073,6 +1172,7 @@ function animation:anim_callback()
 			h.type = hit.wound
 			self.npc:hit(h)
 		end
+		self.clb_settings.sh = nil
 	end
 	return true 
 end
@@ -1104,11 +1204,3 @@ function animation:anim_for_slot(slot, t)
 		return t[0]
 	end			
 end
-
-
-
-
-
-
-
-
