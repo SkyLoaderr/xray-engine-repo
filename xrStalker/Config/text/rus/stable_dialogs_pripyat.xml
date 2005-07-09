@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="pri_followers_start_dlg_1">
+    <string id="pri_followers_start_dlg_11">
         <text>Пошли с нами?</text>
     </string>
-    <string id="pri_followers_start_dlg_11">
+    <string id="pri_followers_start_dlg_111">
         <text>Ок. Идем.</text>
     </string>
-    <string id="pri_followers_start_dlg_12">
-        <text>Идите без меня.</text>
+    <string id="pri_followers_start_dlg_112">
+        <text>Сорри. Без меня.</text>
     </string>
 </string_table>
