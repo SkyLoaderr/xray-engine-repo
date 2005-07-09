@@ -15,25 +15,16 @@ victim_wpn = 1|actor
 use = false
 use_wpn = false
 
-[meet@main]
-meet_dialog = pri_followers_start_dlg
-meet_state = 15|wait
-meet_state_wpn = 15|threat@threat_weap
-victim = 30|actor
-victim_wpn = 20|actor
-use = true
-use_wpn = false
-
 ;--------------------------------------------------------------------------
 [kamp@start]
 center_point = pri_start_kamp_point
-meet = meet@main
+meet = meet@def
 on_info = {+pri_followers_start} camper@begin_mission
 combat_ignore_cond = always
 
 [camper@begin_mission]
-path_walk = pri_followers_leader_walk
-path_look = pri_followers_leader_look
+path_walk = pri_followers_stalker2_walk
+path_look = pri_followers_stalker2_look
 def_state_moving = rush
 def_state_campering = hide
 radius = 3

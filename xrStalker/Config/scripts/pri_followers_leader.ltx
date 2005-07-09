@@ -1,10 +1,6 @@
 [logic]
-active = walker1
-on_death = death
+active = kamp@start
 combat_ignore = combat_ignore
-
-[death]
-on_info = %+val_escort_captive_dead%
 
 [combat_ignore]
 
@@ -12,42 +8,34 @@ on_info = %+val_escort_captive_dead%
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@def]
-meet_dialog = val_escort_captive_dialog
-meet_state = 3|wait
-meet_state_wpn = 3|wait
+meet_state = 1|wait
+;meet_state_wpn = 15|threat@threat_weap
+victim = 1|actor
+victim_wpn = 1|actor
+use = false
+use_wpn = false
+
+[meet@main]
+meet_dialog = pri_followers_start_dlg
+meet_state = 15|wait
+meet_state_wpn = 15|threat@threat_weap
 victim = 30|actor
 victim_wpn = 20|actor
 use = true
-use_wpn = true
+use_wpn = false
 
 ;--------------------------------------------------------------------------
-[walker1]
-path_walk = val_escort_captive_walk
-path_look = val_escort_captive_look
-on_signal = fight | %+val_escort_combat -val_escort_wait%
-on_info = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait, {+val_escort_guard3_combat} remark@wait
-on_info2 = {+val_escort_guard1_dead +val_escort_guard2_dead} walker@leave %+val_escort_captive_can_leave%
+[kamp@start]
+center_point = pri_start_kamp_point
+meet = meet@main
+on_info = {+pri_followers_start} camper@begin_mission
 combat_ignore_cond = always
 
-;--------------------------------------------------------------------------
-[remark@wait]
-no_move = true
-no_rotate = true
-anim = hide
-;on_info = {=val_escort_combat_end} walker@leave
-on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@talk
-on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
-combat_ignore_cond = always
-
-;--------------------------------------------------------------------------
-[remark@talk]
+[camper@begin_mission]
+path_walk = pri_followers_leader_walk
+path_look = pri_followers_leader_look
+def_state_moving = rush
+def_state_campering = hide
+radius = 3
+no_retreat = true
 meet = meet@def
-on_timer = 60000 | walker@leave
-
-;--------------------------------------------------------------------------
-[walker@leave]
-path_walk = val_escort_captive_leave_walk
-path_look = val_escort_captive_leave_look
-meet = meet@def
-;combat_ignore_cond = always
-on_signal = arrived | nil %+val_escort_captive_offline%
