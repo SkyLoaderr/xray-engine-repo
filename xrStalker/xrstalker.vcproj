@@ -289,6 +289,9 @@
 						RelativePath=".\config\gameplay\dialogs_military.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\dialogs_pripyat.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs_radar.xml">
 					</File>
 					<File
