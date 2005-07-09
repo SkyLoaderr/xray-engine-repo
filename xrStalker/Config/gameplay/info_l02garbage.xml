@@ -32,6 +32,8 @@
 	<info_portion id="gar_start_graveyard"></info_portion>
 	<info_portion id="gar_no_mapspot"></info_portion>
 	<info_portion id="gar_animation_radio"></info_portion>
+	<info_portion id="gar_after_battle"></info_portion>
+	<info_portion id="gar_hellcar_dialog_end"></info_portion>
 	
 	
 	<!-- Застава Долга -->

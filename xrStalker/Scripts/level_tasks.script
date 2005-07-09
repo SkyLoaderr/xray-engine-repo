@@ -274,6 +274,13 @@ function process_info_portion(info_id)
 	
 	elseif info_id == "gar_no_mapspot" then
 		remove_location(107, "gar_hellcar_location")
+	
+	elseif info_id == "gar_after_battle" then
+		add_location(107, "gar_hellcar_location")	
+		
+	elseif info_id == "gar_hellcar_dialog_end" then
+		remove_location(107, "gar_hellcar_location")	
+		
 
 	elseif info_id == "gar_free_pass" then
 		remove_location(108, "gar_dolg_blockpost_location")

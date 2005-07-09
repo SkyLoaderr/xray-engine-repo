@@ -1237,7 +1237,7 @@ function load_states(gname, type)
 			local actor = db.actor
 			if actor ~= nil then
 				if actor:has_info("gar_alarm") then
-					if actor:has_info("gar_bandit_leader_dead") then
+					if xr_gulag.getGulagPopulation("gar_bandit_agr") < 6 then
 						return 1
 					else
 						return 2
