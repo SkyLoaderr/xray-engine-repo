@@ -267,13 +267,13 @@ function process_info_portion(info_id)
 		remove_location(106, "gar_bandits_leader_location")
 
 	elseif info_id == "gar_start_graveyard" then
-		add_location(107, "gar_graveyard_car_location")
+		add_location(107, "gar_hellcar_location")
 
 	elseif info_id == "gar_alarm" then
-		remove_location(107, "gar_graveyard_car_location")
+		remove_location(107, "gar_hellcar_location")
 	
 	elseif info_id == "gar_no_mapspot" then
-		remove_location(107, "gar_graveyard_car_location")
+		remove_location(107, "gar_hellcar_location")
 
 	elseif info_id == "gar_free_pass" then
 		remove_location(108, "gar_dolg_blockpost_location")
