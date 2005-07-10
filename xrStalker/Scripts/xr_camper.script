@@ -47,7 +47,9 @@ function evaluator_close_combat:evaluate()
 	end
 
 	if self.close_combat == false then
-		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
+		if self.object:best_enemy() ~= nil then
+			self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
+		end
 	end
 
 	if self.close_combat == true then
