@@ -1318,7 +1318,7 @@ function load_states(gname, type)
 				
 				if xr_gulag.getGulagPopulation("gar_hellcar_group") == 0 then
 						return 2
-					elseif actor:has_info("gar_bandits_raid") then
+					elseif actor:has_info("gar_bandits_raid") and actor:dont_has_info("gar_counter_fire") then
 						return 1
 					else
 						return 0
