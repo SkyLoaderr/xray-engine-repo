@@ -3,8 +3,8 @@
 --'	автор: Диденко Руслан (Stohe)
 --'	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
---function printf()
---end
+function printf()
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -15,19 +15,19 @@ function evaluator_danger:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_danger:evaluate()
+	if self.mgr == nil then
+		self.mgr = self.object:motivation_action_manager()
+	end
+
 	-- проверка на активную схему
 	active_scheme = db.storage[self.object:id()].active_scheme
 	printf("DANGER [%s] active scheme [%s]", self.object:name(), tostring(active_scheme))
 	if active_scheme == nil then
-		if xr_wounded.is_wounded(self.object) then
+		if self.mgr:evaluator(xr_evaluators_id.sidor_wounded_base):evaluate() then
 			printf("DANGER [%s] [TRUE] alive wounded", self.object:name())
 			return true
 		end
-		if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
-			printf("DANGER [%s] [TRUE] alive heavy wounded", self.object:name())
-			return true
-		end
-		if xr_meet.is_meet(self.object)	then
+		if self.mgr:evaluator(xr_evaluators_id.stohe_meet_base + 1):evaluate() then
 			printf("DANGER [%s] [TRUE] alive meet", self.object:name())
 			return true
 		end

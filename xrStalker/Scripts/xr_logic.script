@@ -1305,9 +1305,11 @@ function initialize_obj(obj, st, loaded, actor, stype)
 		xr_logic.activate_by_section(obj, ini, sect, false)
 	else
 		local ini_filename = st.loaded_ini_filename
-		local ini = utils.get_customdata_or_ini_file(obj, ini_filename)
-		ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
-		xr_logic.activate_by_section(obj, ini, st.loaded_active_section, true)
+		if ini_filename then
+			local ini = utils.get_customdata_or_ini_file(obj, ini_filename)
+			ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
+			xr_logic.activate_by_section(obj, ini, st.loaded_active_section, true)
+		end
 		--if st.active_scheme then
 		--	issue_event(obj, db.storage[obj:id()][st.active_scheme], "load")
 		--end

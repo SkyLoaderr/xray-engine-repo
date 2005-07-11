@@ -283,7 +283,7 @@ function add_to_binder (object, ini, scheme, section, st)
     local operators     = {}
     local properties    = {}
     
-    properties["wounded"]		=   xr_evaluators_id.sidor_wounded_base + 0
+    properties["wounded"]		=   xr_evaluators_id.sidor_wounded_base
     properties["can_fight"]     =   xr_evaluators_id.sidor_wounded_base + 1
 	properties["danger"]		= xr_evaluators_id.danger
     
@@ -301,6 +301,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_effect (world_property(properties["wounded"],        false))
     action:add_effect (world_property(stalker_ids.property_enemy,	false))
     action:add_effect (world_property(stalker_ids.property_danger,	false))
+    action:add_effect (world_property(properties["can_fight"],		true))
    	manager:add_action      (operators["wounded"], action)
    
     action = manager:action (xr_actions_id.alife)
