@@ -6,6 +6,22 @@ locked = true
 closed = true
 snd_open_start = trader_door_locked
 on_info = {+dar_codelock2_unlock} ph_door@unlocked
+on_info2 = {+x18_door2} ph_door@horror_knock %-x18_door2%
+
+[ph_door@horror_knock]
+locked = false
+closed = true
+snd_open_start = trader_door_locked
+on_info = %=hit_npc(x18_point_knock:door:100000:100000)%
+on_timer = 500|{~80} ph_door@horror_knock, ph_door@horror_silence
+on_info2 = {+x18_door2_knock_stop} ph_door@locked
+
+[ph_door@horror_silence]
+locked = false
+closed = true
+snd_open_start = trader_door_locked
+on_timer = 1000| ph_door@horror_knock
+on_info = {+x18_door2_knock_stop} ph_door@locked
 
 [ph_door@unlocked]
 locked = false
