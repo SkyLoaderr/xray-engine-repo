@@ -234,7 +234,7 @@ meet = meet
 
 [remark@hellcar_way_radio]
 anim = guard_rac
-on_timer = 30000| walker3@hellcar_way
+on_timer = 36000| walker3@hellcar_way
 
 [walker3@hellcar_way]
 path_walk = hellcar_walk
@@ -368,7 +368,7 @@ combat_ignore = combat_ignore@hellcar
 [camper@gar_hellcar_group_camper1]
 path_walk = camper1_walk
 path_look = camper1_look
-radius = 7
+radius = 20
 combat_ignore_cond = {-gar_open_fire}
 
 
@@ -390,7 +390,7 @@ combat_ignore = combat_ignore@hellcar
 [camper@gar_hellcar_group_camper2]
 path_walk = camper2_walk
 path_look = camper2_look
-radius = 7
+radius = 20
 combat_ignore_cond = {-gar_open_fire}
 
 
@@ -403,7 +403,7 @@ combat_ignore = combat_ignore@hellcar
 [camper@gar_hellcar_group_camper3]
 path_walk = camper3_walk
 path_look = camper3_look
-radius = 7
+radius = 20
 combat_ignore_cond = {-gar_open_fire}
 
 
@@ -416,21 +416,20 @@ combat_ignore = combat_ignore@hellcar
 [camper@gar_hellcar_group_camper4]
 path_walk = camper4_walk
 path_look = camper4_look
-radius = 7
+radius = 20
 combat_ignore_cond = {-gar_open_fire}
-;on_signal = direction | remark@gar_hellcar_group_camper4 %=gar_direction_fire%
 on_signal = direction | camper@gar_hellcar_group_camper42 %=gar_direction_fire%
 danger = danger_condition@hellcar
 
 [camper@gar_hellcar_group_camper42]
 path_walk = camper4_walk
 path_look = camper4_look
-radius = 7
+radius = 20
 combat_ignore_cond = {-gar_open_fire}
 danger = danger_condition@hellcar
 
 [danger_condition@hellcar]
-ignore_distance = 1
+ignore_distance = 20
 
 ;[remark@gar_hellcar_group_camper4]
 ;anim = idle
