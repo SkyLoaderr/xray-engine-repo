@@ -91,4 +91,7 @@ void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 	part.actual			= true;
 
 	m_man->notify		(ControlCom::eventAnimationStart, 0);
+
+	if ((part.motion != m_data.torso.motion) && part.blend)
+		m_object->CStepManager::on_animation_start(part.motion, part.blend);
 }
