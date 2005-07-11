@@ -188,9 +188,9 @@ void CRenderDevice::Run			()
 				Statistic.RenderTOTAL_Real.Begin		();
 				if (bActive)							{
 					if (Begin())				{
-						seqRender.Process					(rp_Render);
-						Statistic.Show						();
-						End									();
+						seqRender.Process						(rp_Render);
+						if (psDeviceFlags.test(rsStatistic))	Statistic.Show	();
+						End										();
 					}
 				}
 				Statistic.RenderTOTAL_Real.End			();
