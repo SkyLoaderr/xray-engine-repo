@@ -196,4 +196,5 @@ public:
 	CUICustomMap*				ActiveLevelMap			() {return m_activeLevelMap;};
 
 	void						SetStatusInfo			(LPCSTR status_text);
+	shared_str					cName					() {return "no_name";}
 };
