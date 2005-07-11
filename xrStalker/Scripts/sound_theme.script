@@ -187,7 +187,8 @@ function load_sound(obj)
 	theme[obj:id()]["reac_crps_friend"]				= load_sound_from_ltx(obj, "reac_crps_friend")
 	theme[obj:id()]["reac_nothing"]					= load_sound_from_ltx(obj, "reac_nothing")
 	
-	theme[obj:id()]["reac_music"]					= load_sound_from_ltx(obj, "reac_music", 2, 3, 100)
+	theme[obj:id()]["reac_music"]					= load_sound_from_ltx(obj, "reac_music", 1, 2, 100)
+	theme[obj:id()]["reac_joke"]					= load_sound_from_ltx(obj, "reac_joke", 1, 2, 100)
 
 	-- болтовня
 	theme[obj:id()]["talk_hello"]					= load_sound_from_ltx(obj, "talk_hello")
@@ -205,6 +206,8 @@ function load_sound(obj)
 	theme[obj:id()]["harmonica"]					= load_sound_from_ltx(obj, "harmonica")
 	-- игра на гитаре
 	theme[obj:id()]["guitar"]						= load_sound_from_ltx(obj, "guitar")
+	-- шутки, прибаутки
+	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
 
 	-- УНИКАЛЬНЫЕ ТЕМЫ
 	-- Garbage DramMoment

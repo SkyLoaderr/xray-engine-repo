@@ -205,7 +205,8 @@ function CKampManager:proceedRole(v)
 	-- возврать лагер€ в состо€ние "idle"
 	if v.current and 
 	   (v.current.name == "harmonica_post" or
-	    v.current.name == "guitar_post")
+	    v.current.name == "guitar_post" or
+	    v.current.name == "joke_post")
 	then
 		self.kamp_state = "idle"
 	end
@@ -262,40 +263,44 @@ function CKampManager:updateNpc(npc)
 	-- idle, 
 	-- pre_harmonica, harmonica, post_harmonica
 	-- pre_guitar, guitar, post_guitar
+	-- pre_joke, joke, post_joke
 	-- pre_story, story, post_story
 	-- –оли:
 	npc_id = npc:id()
 	self.npc[npc_id].roles = {}
 	-- сидеть бездельничать
-	table.insert(self.npc[npc_id].roles, {name = "stand_wait",	min=30, max=70, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
-	table.insert(self.npc[npc_id].roles, {name = "sit",			min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
-	table.insert(self.npc[npc_id].roles, {name = "sit_ass",		min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
-	table.insert(self.npc[npc_id].roles, {name = "sit_knee",	min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
+	table.insert(self.npc[npc_id].roles, {name = "stand_wait",	min=30, max=70, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+	table.insert(self.npc[npc_id].roles, {name = "sit",			min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+	table.insert(self.npc[npc_id].roles, {name = "sit_ass",		min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+	table.insert(self.npc[npc_id].roles, {name = "sit_knee",	min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
 	-- есть колбасу
 	if npc:object("kolbasa_a") then
-		table.insert(self.npc[npc_id].roles, {name = "eat_kolbasa",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
+		table.insert(self.npc[npc_id].roles, {name = "eat_kolbasa",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
 	end
 	-- пить водку
 	if npc:object("vodka_a") then
-		table.insert(self.npc[npc_id].roles, {name = "eat_vodka",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
+		table.insert(self.npc[npc_id].roles, {name = "eat_vodka",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
 	end
 	-- есть хлеб
 	if npc:object("bread_a") then
-		table.insert(self.npc[npc_id].roles, {name = "eat_bread",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar"}})
+		table.insert(self.npc[npc_id].roles, {name = "eat_bread",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
 	end
 	-- играть на гармошке
 	if npc:object("harmonica_a") then
 		table.insert(self.npc[npc_id].roles, {name = "harmonica_wait",	min=10, max=20, allowed = {"idle"}, next = "harmonica_play"})
 		table.insert(self.npc[npc_id].roles, {name = "harmonica_play",	min=10, max=20, nosound = true, next = "harmonica_post"})
-		table.insert(self.npc[npc_id].roles, {name = "harmonica_post",	min=10, max=15})
+		table.insert(self.npc[npc_id].roles, {name = "harmonica_post",	min=5, max=6})
 	end
 	-- играть на гитаре
 	if npc:object("guitar_a") then
 		table.insert(self.npc[npc_id].roles, {name = "guitar_wait",	min=10, max=20, allowed = {"idle"}, next = "guitar_play"})
 		table.insert(self.npc[npc_id].roles, {name = "guitar_play",	min=10, max=20, nosound = true, next = "guitar_post"})
-		table.insert(self.npc[npc_id].roles, {name = "guitar_post",	min=10, max=15})
+		table.insert(self.npc[npc_id].roles, {name = "guitar_post",	min=5, max=6})
 	end	
 	-- рассказать анекдот
+	table.insert(self.npc[npc_id].roles, {name = "joke_wait",	min=10, max=20, allowed = {"idle"}, next = "joke_play"})
+	table.insert(self.npc[npc_id].roles, {name = "joke_play",	min=10, max=20, nosound = true, next = "joke_post"})
+	table.insert(self.npc[npc_id].roles, {name = "joke_post",	min=5, max=6})
 	-- рассказать историю
 
 
@@ -317,6 +322,14 @@ function CKampManager:updateNpc(npc)
 	elseif self.kamp_state == "post_guitar" then
 		if role ~= "guitar_post" then
 			sound = "reac_music"
+		end
+	elseif self.kamp_state == "joke" then
+		if role == "joke_play" then
+			sound = "joke"
+		end
+	elseif self.kamp_state == "post_joke" then
+		if role ~= "joke_post" then
+			sound = "reac_joke"
 		end
 	end
 	
@@ -371,6 +384,20 @@ function CKampManager:updateNpc(npc)
 		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "post_guitar"
 		return "guitar", ""
+	end
+	if role == "joke_wait" then
+		-- тут звук надо подать как синхронный с анимацией
+		self.kamp_state = "pre_joke"
+		return "wait", ""
+	end
+	if role == "joke_play" then
+		self.kamp_state = "joke"
+		return "wait", sound
+	end
+	if role == "joke_post" then
+		-- тут звук надо подать как синхронный с анимацией
+		self.kamp_state = "post_joke"
+		return "wait", ""
 	end
 	
 	
