@@ -371,15 +371,6 @@ LPCSTR	CInventoryOwner::Name () const
 
 
 
-//для детекторов
-void CInventoryOwner::FoundZone	(CCustomZone*)
-{
-}
-void CInventoryOwner::LostZone	(CCustomZone*)
-{
-}
-
-
 void CInventoryOwner::NewPdaContact		(CInventoryOwner* pInvOwner)
 {
 }
