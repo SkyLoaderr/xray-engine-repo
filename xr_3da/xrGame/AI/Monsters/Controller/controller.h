@@ -104,6 +104,17 @@ public:
 	void						test_covers();
 
 
+public:
+	enum EMentalState {
+		eStateIdle,
+		eStateDanger
+	} m_mental_state;
+
+	Fvector					m_look_point;
+
+	void					set_look_point	(const Fvector &look_point) {m_look_point = look_point;}
+	void					set_mental_state(EMentalState state){m_mental_state = state;}
+
 
 public:
 	virtual bool	use_center_to_aim			() const {return true;}

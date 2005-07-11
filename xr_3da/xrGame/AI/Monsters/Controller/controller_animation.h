@@ -4,9 +4,13 @@
 #include "../ai_monster_defs.h"
 #include "../../../../SkeletonAnimated.h"
 
+class CController;
+
 class CControllerAnimation : public CControlAnimationBase {
 	typedef CControlAnimationBase inherited;
 
+	CController	*m_controller;
+	
 	enum ELegsActionType {
 		eLegsStand	= u32(0),
 		eLegsRun,
@@ -35,7 +39,6 @@ class CControllerAnimation : public CControlAnimationBase {
 		eTorsoPanic
 	};
 
-	bool				m_use_separate;
 	ELegsActionType		m_current_legs_action;
 	ELegsActionType		m_current_torso_action;
 
@@ -54,10 +57,6 @@ class CControllerAnimation : public CControlAnimationBase {
 	DEFINE_MAP			(EAction, PATH_ROTATIONS_VEC, PATH_ROTATIONS_MAP, PATH_ROTATIONS_MAP_IT);
 	PATH_ROTATIONS_MAP	m_path_rotations;
 
-	EAction				m_cur_action;
-
-	Fvector				m_look_point;
-	
 
 public:	
 	virtual void		reinit				();
@@ -71,15 +70,11 @@ public:
 			void		add_path_rotation	(EAction action, float angle, ELegsActionType type);
 			
 			
-			void		set_motion			(EAction action, ETorsoActionType torso);
-
 			void		select_velocity		();
 			void		set_direction		();
-
 
 			void		select_torso_animation	();
 			void		select_legs_animation	();
 
 			SPathRotations	get_path_rotation	(float cur_yaw);
-
 };

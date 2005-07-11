@@ -29,11 +29,7 @@ void CControlPathBuilder::reinit()
 	// todo: remove call twice [CustomMonster reinit && control_manager reinit]
 	inherited::reinit			();
 	inherited_com::reinit		();
-}
 
-void CControlPathBuilder::reset_data() 
-{
-	// init data
 	m_data.use_dest_orientation		= false;
 	m_data.dest_orientation.set		(0.f,0.f,0.f);
 
@@ -50,7 +46,6 @@ void CControlPathBuilder::reset_data()
 
 	m_data.path_type				= MovementManager::ePathTypeLevelPath;
 }
-
 
 void CControlPathBuilder::update_schedule() 
 {

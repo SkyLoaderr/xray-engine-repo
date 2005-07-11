@@ -6,8 +6,9 @@ struct SControlDirectionData : public ControlCom::IComData {
 	struct {
 		float	target_angle;
 		float	target_speed;
-		float	target_acc;
 	} heading, pitch;
+
+	bool		linear_dependency;
 };
 
 struct SRotationEventData : public ControlCom::IEventData {
@@ -38,7 +39,6 @@ public:
 
 	virtual void	reinit				();
 	virtual void	update_frame		();
-	virtual	void	reset_data			();
 	
 	// services
 			bool	is_face_target		(const Fvector &position,	float eps_angle);

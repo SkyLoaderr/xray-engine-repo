@@ -71,5 +71,4 @@ void CControlDirectionBase::update_frame()
 
 	ctrl_data->heading.target_angle	= m_heading.target;
 	ctrl_data->heading.target_speed = m_heading.speed_target;
-	ctrl_data->heading.target_acc	= flt_max;
 }

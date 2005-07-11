@@ -250,6 +250,8 @@ void CController::reinit()
 
 	m_bones.Reset();
 	m_head_orient = control().path_builder().body_orientation();
+	m_look_point.set(0.f,0.f,0.f);
+	m_mental_state = eStateIdle;
 }
 
 void CController::control_hit()
@@ -314,20 +316,14 @@ void CController::shedule_Update(u32 dt)
 
 	UpdateControlled();
 
+	if (m_mental_state == eStateDanger) {
+		look_direction(Fvector().sub(m_look_point, Position()),PI_MUL_2);
+	}
 	
-	
-	
-	Fvector	dir;
-	dir.set	(Level().CurrentEntity()->Position());
-	dir.sub	(Position());
-
-	look_direction(dir,PI_MUL_2);
-
 	update_head_orientation();
-
 	
+	// DEBUG
 	test_covers();
-	
 }
 
 void CController::Jump()

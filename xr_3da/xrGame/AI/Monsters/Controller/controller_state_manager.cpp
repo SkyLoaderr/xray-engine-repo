@@ -80,7 +80,10 @@ void CStateManagerController::execute()
 		else			state_id = eStateRest;
 	}
 	
-	state_id = eStateAttack;
+	if (state_id == eStateAttack) 
+		object->set_mental_state(CController::eStateDanger);
+	else 
+		object->set_mental_state(CController::eStateIdle);
 
 	if (enemy) object->set_controlled_task(eTaskAttack);
 	else object->set_controlled_task(eTaskFollow);

@@ -17,14 +17,11 @@ void CControlDirection::reinit()
 
 	m_pitch.init				();	
 	m_pitch.current_angle		= m_man->path_builder().m_body.current.pitch;
-}
 
-void CControlDirection::reset_data()
-{
 	m_data.heading.target_angle	= m_man->path_builder().m_body.target.yaw;
 	m_data.pitch.target_angle	= m_man->path_builder().m_body.target.pitch;
+	m_data.linear_dependency	= true;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 // Update 
@@ -48,7 +45,7 @@ void CControlDirection::update_frame()
 
 	// поправка угловой скорости в соответствии с текущей и таргетовой линейной скоростями
 	// heading speed correction
-	if (!fis_zero(m_man->movement().velocity_current()) && !fis_zero(m_man->movement().velocity_target()))
+	if (!fis_zero(m_man->movement().velocity_current()) && !fis_zero(m_man->movement().velocity_target()) && m_data.linear_dependency)
 		m_heading.current_speed	= m_data.heading.target_speed * m_man->movement().velocity_current() / (m_man->movement().velocity_target() + EPS_L);
 	else 
 		velocity_lerp			(m_heading.current_speed, m_data.heading.target_speed, m_heading.current_acc, Device.fTimeDelta);

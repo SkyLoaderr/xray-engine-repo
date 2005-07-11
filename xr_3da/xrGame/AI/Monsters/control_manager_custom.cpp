@@ -139,7 +139,7 @@ void CControlManagerCustom::ta_activate(const SAnimationTripleData &data)
 
 void CControlManagerCustom::ta_pointbreak()
 {
-	m_triple_anim->pointbreak();
+	if (ta_is_active()) m_triple_anim->pointbreak();
 }
 
 bool CControlManagerCustom::ta_is_active()
@@ -309,9 +309,8 @@ void CControlManagerCustom::check_jump_over_physics()
 		const DetailPathManager::STravelPathPoint &travel_point = m_man->path_builder().detail().path()[i];
 
 		// получить список объектов вокруг врага
-		xr_vector<CObject*> tpObjects	;
-		Level().ObjectSpace.GetNearest	(tpObjects,travel_point.position, m_object->Radius());
-		//xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
+		Level().ObjectSpace.GetNearest	(travel_point.position, m_object->Radius());
+		xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
 
 		for (u32 k=0;k<tpObjects.size();k++) {
 			CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[k]);

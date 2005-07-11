@@ -132,7 +132,14 @@ void CControlAnimationBase::SelectVelocities()
 	if (b_moving) {
 		Fvector temp_vec;
 		m_object->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+		static float prev_speed = 0.f;
 		float  real_speed = temp_vec.magnitude();
+		
+		if (fis_zero(real_speed) && (prev_speed > 0)) {
+			int a = 10;
+		}
+		prev_speed = real_speed;
+		
 
 		EMotionAnim new_anim;
 		float		a_speed;
