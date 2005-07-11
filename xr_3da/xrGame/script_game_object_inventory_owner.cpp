@@ -237,7 +237,7 @@ void CScriptGameObject::ForEachInventoryItems(const luabind::functor<void> &func
 }
 
 
-void CScriptGameObject::DropItem(CScriptGameObject* pItem, Fvector pos)
+void CScriptGameObject::DropItem(CScriptGameObject* pItem)
 {
 	CInventoryOwner* owner = smart_cast<CInventoryOwner*>(&object());
 	CInventoryItem* item = smart_cast<CInventoryItem*>(&pItem->object());
@@ -250,12 +250,11 @@ void CScriptGameObject::DropItem(CScriptGameObject* pItem, Fvector pos)
 	CGameObject::u_EventGen			(P,GE_OWNERSHIP_REJECT, object().ID());
 	P.w_u16							(pItem->object().ID());
 	CGameObject::u_EventSend		(P);
-
-	NET_Packet						PP;
-	CGameObject::u_EventGen			(PP,GE_CHANGE_POS, pItem->object().ID());
-	PP.w_vec3						(pos);
-	CGameObject::u_EventSend		(PP);
-
+//
+//	NET_Packet						PP;
+//	CGameObject::u_EventGen			(PP,GE_CHANGE_POS, pItem->object().ID());
+//	PP.w_vec3						(pos);
+//	CGameObject::u_EventSend		(PP);
 }
 
 //передаче вещи из своего инвентаря в инвентарь партнера
