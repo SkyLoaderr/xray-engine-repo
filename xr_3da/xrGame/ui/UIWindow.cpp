@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "UIWindow.h"
+#include "../MainUI.h"
 
 //#define LOG_ALL_WNDS
 #ifdef LOG_ALL_WNDS
@@ -111,6 +112,17 @@ void CUIWindow::Draw(float x, float y){
 
 void CUIWindow::Update()
 {
+	bool cursor_on_window;
+
+	cursor_on_window = GetAbsoluteRect().in(GetUICursor()->GetPos());
+
+	// RECEIVE and LOST focus
+	if(m_bCursorOverWindow != cursor_on_window)
+		if(cursor_on_window)
+			OnFocusReceive();			
+		else
+			OnFocusLost();			
+	m_bCursorOverWindow = cursor_on_window;	
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsShown())
@@ -191,17 +203,17 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	cursor_pos.y = y;
 
 
-	bool cursor_on_window;
+	//bool cursor_on_window;
 
-	cursor_on_window = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
-	
-	// RECEIVE and LOST focus
-	if(m_bCursorOverWindow != cursor_on_window)
-		if(cursor_on_window)
-            OnFocusReceive();			
-		else
-			OnFocusLost();			
-	m_bCursorOverWindow = cursor_on_window;
+	//cursor_on_window = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
+	//
+	//// RECEIVE and LOST focus
+	//if(m_bCursorOverWindow != cursor_on_window)
+	//	if(cursor_on_window)
+ //           OnFocusReceive();			
+	//	else
+	//		OnFocusLost();			
+	//m_bCursorOverWindow = cursor_on_window;
 
 	// DOUBLE CLICK GENERATION
 	if( ( WINDOW_LBUTTON_DOWN == mouse_action ) && m_bDoubleClickEnabled )
