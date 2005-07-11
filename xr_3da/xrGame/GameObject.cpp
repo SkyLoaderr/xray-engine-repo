@@ -550,11 +550,6 @@ CObject::SavedPosition CGameObject::ps_Element(u32 ID) const
 	return SP;
 }
 
-void CGameObject::UpdateCL	()
-{
-	inherited::UpdateCL	();
-}
-
 void CGameObject::u_EventGen(NET_Packet& P, u32 type, u32 dest)
 {
 	P.w_begin	(M_EVENT);

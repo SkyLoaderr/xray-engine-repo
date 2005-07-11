@@ -116,7 +116,6 @@ public:
 													s16 element,Fvector p_in_object_space, 
 													float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound){};
 	virtual void			SetHitInfo				(CObject* who, CObject* weapon, s16 element)	{};
-	virtual void			UpdateCL			();
 
 
 	//игровое имя объекта
