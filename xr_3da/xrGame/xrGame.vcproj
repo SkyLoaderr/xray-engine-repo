@@ -9878,6 +9878,15 @@
 					<File
 						RelativePath=".\ui\UIMapWnd.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIMapWndActions.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMapWndActions.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMapWndActionsSpace.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="TalkWnd"
