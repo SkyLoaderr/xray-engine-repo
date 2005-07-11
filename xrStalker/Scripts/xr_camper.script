@@ -46,13 +46,15 @@ function evaluator_close_combat:evaluate()
 		return true
 	end
 
-	if self.close_combat == false then
-		if self.object:best_enemy() ~= nil then
-			self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
-		end
+	if self.object:best_enemy() == nil then
+		return self.close_combat
 	end
 
-	if self.close_combat == true then
+	if self.close_combat == false then
+		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
+	end
+
+	if self.close_combat == true then		
 		local a = self.object:memory_time(self.object:best_enemy())
 		if a then
 --			printf("%s - %s ? %s", time_global(), a, 20000)
