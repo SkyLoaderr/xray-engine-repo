@@ -37,6 +37,7 @@
 #include "ui/UIDebugFonts.h" 
 #include "hudmanager.h"
 #endif
+#include "MainUI.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -1670,7 +1671,7 @@ struct CCC_JumpToLevel : public IConsole_Command {
 	}
 };
 #include "GamePersistent.h"
-#include "MainUI.h"
+
 
 class CCC_MainMenu : public IConsole_Command {
 public:
