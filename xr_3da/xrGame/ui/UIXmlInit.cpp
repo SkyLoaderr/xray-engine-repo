@@ -854,23 +854,10 @@ bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISi
 	pWnd->SetTextureColor(color_rgba(r, g, b, a));
 
 	if (rect.width() != 0 && rect.height() != 0)
-	{
 		pWnd->SetOriginalRect(rect);
-//			GetUIStaticItem().SetOriginalRect(x, y, width, height);
-//		pWnd->ClipperOn();
-	}
 
 	return true;
 }
-
-//bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUIStatic *pWnd)
-//{
-//	string256 buf;
-//	InitTexture(xml_doc, path, index, (IUIMultiTextureOwner*)pWnd);
-//
-//	
-//	return true;
-//}
 
 bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, CUIStatic* pWnd){
 	R_ASSERT2(false,"don't call this function");
@@ -1159,46 +1146,3 @@ u32 CUIXmlInit::GetARGB(CUIXml& xml_doc, const char* path, int index){
 
 	return color_argb(a, r, g, b);
 }
-
-
-
-
-//void CUIXmlInit::SetTexture(const xr_string& texture_name, CUIStatic* pWnd){
-//	if (IsSh(texture_name))
-//	{
-//		shared_textures_it	sht_it;
-//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
-//		{
-//			regions_it reg_it = (*sht_it).second.find(texture_name);
-//			if (reg_it != (*sht_it).second.end())
-//			{				
-//				pWnd->InitTextureEx((*sht_it).first.c_str()); // texture file name
-//				pWnd->SetOriginalRect((*reg_it).second);    // region on texture
-//				pWnd->SetWidth((*reg_it).second.width());
-//				pWnd->SetHeight((*reg_it).second.height());
-//				return;
-//			}
-//		}
-//	}
-//	pWnd->InitTexture(texture_name.c_str());
-//}
-//
-//void CUIXmlInit::SetTexture(const xr_string& texture_name, CUIStaticItem* si){
-//	if (IsSh(texture_name))
-//	{
-//		shared_textures_it	sht_it;
-//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
-//		{
-//			regions_it reg_it = (*sht_it).second.find(texture_name);
-//			if (reg_it != (*sht_it).second.end())
-//			{
-//				si->CreateShader((*sht_it).first.c_str(), "hud\\default");
-//				Irect r = (*reg_it).second;
-//				si->SetOriginalRect(r.x1, r.x2 - r.x1, r.y1, r.y2 - r.y1);
-//				return;
-//			}
-//		}
-//	}
-//
-//	si->CreateShader(texture_name.c_str(), "hud\\default");
-//}
