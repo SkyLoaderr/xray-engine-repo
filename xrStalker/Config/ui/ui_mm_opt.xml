@@ -24,25 +24,21 @@
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">Video</text>
-				<sound_t>weapons\generic_close</sound_t>					
 			</button>
 			<button x="116" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">Sound</text>
-				<sound_t>weapons\generic_close</sound_t>
 			</button>
 			<button x="232" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">GamePlay</text>
-				<sound_t>weapons\generic_close</sound_t>
 			</button>
 			<button x="348" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
 				<text f6ont="normal" align="c">Controls</text>
-				<sound_t>weapons\generic_close</sound_t>
 			</button>
 		</tab>
 	</main_dialog>

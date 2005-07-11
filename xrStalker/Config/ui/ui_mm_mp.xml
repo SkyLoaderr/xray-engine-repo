@@ -18,24 +18,18 @@
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_client</text>
-			<sound_h>weapons\gen_empty</sound_h>
-			<sound_t>weapons\generic_close</sound_t>					
 		</button>
 		<button x="116" y="0" width="116" height="26">
 			<shared_texture>ui_common.xml</shared_texture>
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_server</text>
-			<sound_h>weapons\gen_empty</sound_h>
-			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="232" y="0" width="116" height="26">
 			<shared_texture>ui_common.xml</shared_texture>
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_options</text>
-			<sound_h>weapons\gen_empty</sound_h>
-			<sound_t>weapons\generic_close</sound_t>
 		</button>
 	</tab>
 	

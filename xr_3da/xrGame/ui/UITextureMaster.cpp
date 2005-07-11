@@ -72,12 +72,13 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextu
 }
 
 void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
+//	static int full_time = 0;
 //	CTimer T;
 //	T.Start();
-//	Msg("----InitTexture-begin");
 	xr_string tx = texture_name;
 	InitTexture(tx, tc);
-//	Msg("----InitTexture[%d]",T.GetElapsed_ms());
+//	full_time +=T.GetElapsed_ms();
+//	Msg("----InitTexture[%d]__full_time[%d]",T.GetElapsed_ms(), full_time);
 }
 
 float CUITextureMaster::GetTextureHeight(const char* texture_name){

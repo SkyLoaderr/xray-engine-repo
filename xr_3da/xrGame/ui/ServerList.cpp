@@ -8,6 +8,8 @@
 
 
 CServerList::CServerList(){
+	m_GSBrowser.Init();
+
 	m_list.ShowSelectedItem();
 	AttachChild(&m_frame);
 	for (int i = 0; i<6; i++)
@@ -24,8 +26,6 @@ CServerList::~CServerList()
 
 void CServerList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
-
-	m_GSBrowser.Init();
 }
 
 void CServerList::SetFilters(SServerFilters& sf){
