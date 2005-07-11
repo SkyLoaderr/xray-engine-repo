@@ -388,7 +388,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	VERIFY(pIItem);
 	
 #ifdef _DEBUG
-	if (GameID() == GAME_SINGLE)
+	if (GameID() == GAME_SINGLE && bDebug)
 		Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		

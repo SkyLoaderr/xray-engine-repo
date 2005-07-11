@@ -50,12 +50,7 @@ CInfoPortion::CInfoPortion()
 CInfoPortion::~CInfoPortion ()
 {
 }
-/*
-void CInfoPortion::Load	(INFO_STR_ID info_str_id)
-{
-	Load	(id_to_index::IdToIndex(info_str_id));
-}
-*/
+
 void CInfoPortion::Load	(INFO_ID info_id)
 {
 	m_InfoId = info_id;
@@ -65,10 +60,6 @@ void CInfoPortion::Load	(INFO_ID info_id)
 
 void CInfoPortion::load_shared	(LPCSTR)
 {
-//	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_InfoIndex);
-#ifdef DEBUG
-	g_pStringContainer->verify();
-#endif
 	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_InfoId);
 
 	CUIXml uiXml;
