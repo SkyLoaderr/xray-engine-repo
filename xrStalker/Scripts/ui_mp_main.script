@@ -112,9 +112,6 @@ function mp_main:InitControls()
 	st:SetText("CD Key")	
 	st:SetStretchTexture(true)	
 	self.bk:AttachChild(st)
-	
-	self.tab = xml:InitTab("tab",self.bk)
-	self:Register(self.tab, "tab")
 		
 	self.dlg_join = ui_mm_mp_join.mp_join()
 	self.dlg_join:InitControls(121,224, xml, self)
@@ -141,6 +138,9 @@ function mp_main:InitControls()
 	
 	btn = xml:Init3tButton("btn_cancel", self)
 	self:Register(btn, "btn_cancel")
+	
+	self.tab = xml:InitTab("tab",self.bk)
+	self:Register(self.tab, "tab")
 end
 
 function mp_main:UpdateControls()
