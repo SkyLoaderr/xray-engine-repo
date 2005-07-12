@@ -378,7 +378,7 @@ IC BOOL __stdcall ray_query_callback	(collide::rq_result& result, LPVOID params)
 	return				(false);
 }
 
-bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage) const
+bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage)
 {
 	collide::ray_defs				ray_defs(position,direction,distance,0,collide::rqtBoth);
 	ray_query_param					params(this,memory().visual().transparency_threshold(),enemy);

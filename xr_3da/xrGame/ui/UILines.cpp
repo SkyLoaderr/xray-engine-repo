@@ -151,7 +151,7 @@ void CUILines::Draw(float x, float y){
 
 		if (uFlags.is(flPasswordMode))
 		{
-			int sz = m_text.size();
+			int sz = (int)m_text.size();
 			for (int i = 0; i < sz; i++)
 				passText[i] = '*';
 			passText[sz] = 0;

@@ -136,7 +136,7 @@ void CControlAnimationBase::SelectVelocities()
 		float  real_speed = temp_vec.magnitude();
 		
 		if (fis_zero(real_speed) && (prev_speed > 0)) {
-			int a = 10;
+//			int a = 10;
 		}
 		prev_speed = real_speed;
 		
