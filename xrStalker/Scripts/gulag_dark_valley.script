@@ -1263,7 +1263,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_patrol_fight1",
+	t = { section = "logic@val_war_soldiers_fight1",
 		idle = 0,
 		prior = 4, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1281,7 +1281,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 	
-	t = { section = "logic@val_war_soldiers_patrol_fight2",
+	t = { section = "logic@val_war_soldiers_fight2",
 		idle = 0,
 		prior = 4, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1299,7 +1299,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_patrol_fight3",
+	t = { section = "logic@val_war_soldiers_fight3",
 		idle = 0,
 		prior = 4, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1317,7 +1317,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_patrol_fight4",
+	t = { section = "logic@val_war_soldiers_fight4",
 		idle = 0,
 		prior = 4, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1335,7 +1335,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_patrol_fight5",
+	t = { section = "logic@val_war_soldiers_fight5",
 		idle = 0,
 		prior = 4, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1353,7 +1353,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_patrol_fight6",
+	t = { section = "logic@val_war_soldiers_fight6",
 		idle = 0,
 		prior = 4, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1374,7 +1374,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp1_fight1",
+	t = { section = "logic@val_war_soldiers_fight7",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1392,7 +1392,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp1_fight2",
+	t = { section = "logic@val_war_soldiers_fight8",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1410,7 +1410,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp1_fight3",
+	t = { section = "logic@val_war_soldiers_fight9",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1428,7 +1428,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp1_fight4",
+	t = { section = "logic@val_war_soldiers_fight10",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1449,7 +1449,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp2_fight1",
+	t = { section = "logic@val_war_soldiers_fight11",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1467,7 +1467,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp2_fight2",
+	t = { section = "logic@val_war_soldiers_fight12",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1485,7 +1485,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp2_fight3",
+	t = { section = "logic@val_war_soldiers_fight13",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1503,7 +1503,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp2_fight4",
+	t = { section = "logic@val_war_soldiers_fight14",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1524,7 +1524,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp3_fight1",
+	t = { section = "logic@val_war_soldiers_fight15",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1542,7 +1542,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp3_fight2",
+	t = { section = "logic@val_war_soldiers_fight16",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1560,7 +1560,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp3_fight3",
+	t = { section = "logic@val_war_soldiers_fight17",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1578,7 +1578,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp3_fight4",
+	t = { section = "logic@val_war_soldiers_fight18",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1599,7 +1599,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp4_fight1",
+	t = { section = "logic@val_war_soldiers_fight19",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1617,7 +1617,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp4_fight2",
+	t = { section = "logic@val_war_soldiers_fight20",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1635,7 +1635,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp4_fight3",
+	t = { section = "logic@val_war_soldiers_fight21",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1653,7 +1653,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp4_fight4",
+	t = { section = "logic@val_war_soldiers_fight22",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1671,7 +1671,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp4_fight5",
+	t = { section = "logic@val_war_soldiers_fight23",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1692,7 +1692,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp5_fight1",
+	t = { section = "logic@val_war_soldiers_fight24",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1710,7 +1710,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp5_fight2",
+	t = { section = "logic@val_war_soldiers_fight25",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1728,7 +1728,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp5_fight3",
+	t = { section = "logic@val_war_soldiers_fight26",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -1746,7 +1746,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_war_soldiers_kamp5_fight4",
+	t = { section = "logic@val_war_soldiers_fight27",
 		idle = 0,
 		prior = 1, state = { state_fight },
 		squad = squad, group = groups[1],
@@ -2019,7 +2019,7 @@ function checkStalker(npc_community, gulag_type)
 	end    
 
 	if gulag_type == "val_war_soldiers" then
-	    return npc_community == "soldier"
+	    return npc_community == "military"
 	end    
 
 	return false
