@@ -35,7 +35,7 @@ function hit_npc(actor, npc, p)
 		    h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
 	    end
 	end
-	h.bone = p[2]
+	h.bone = "door" --p[2]
 	h.power = p[3]
 	h.impulse = p[4]
 	printf("_bp: hit(%s, %s,%d,%d)", npc:name(), p[2], h.power, h.impulse)
