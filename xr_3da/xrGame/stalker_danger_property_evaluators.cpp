@@ -166,7 +166,7 @@ _value_type CStalkerPropertyEvaluatorDangerUnknownCoverActual::evaluate	()
 			break;
 		}
 
-		if (last_cover && (point->position().distance_to_sqr(last_cover->position()) <= 1.f)) {
+		if (last_cover && point &&(point->position().distance_to_sqr(last_cover->position()) <= 1.f)) {
 			point						= last_cover;
 			result						= true;
 			break;
