@@ -105,13 +105,13 @@ function action_car:reset_scheme(loading)
 		self.loop = xr_logic.pstor_retrieve(self.object, "loop")
 		self.min_delta_per_sec = xr_logic.pstor_retrieve(self.object, "min_delta_per_sec")
 		self.min_car_explode_time = xr_logic.pstor_retrieve(self.object, "min_car_explode_time")
-		self.fire = xr_logic.pstor_retrieve(self.object, "fire")
+		self.state_moving = xr_logic.pstor_retrieve(self.object, "state_moving")
 	else
 		self.speed = def_moving_speed
 		self.loop = false
 		self.min_delta_per_sec = def_min_delta_per_sec
 		self.min_car_explode_time = def_min_car_explode_time
-		self.fire = false
+		self.state_moving = state_none
 	end
 
 	--xr_logic.mob_capture(self.object, true)
@@ -124,8 +124,9 @@ function action_car:reset_scheme(loading)
 	self.last_pos = nil
 	self.last_pos_time = 0
 
-	self.state_moving = state_none
+	--self.state_moving = state_none
 
+    self.target_walk_pt = -1
 	-- path_walk
 	if self.st.path_walk then
 	    self.path_walk = patrol(self.st.path_walk)
@@ -161,10 +162,6 @@ function action_car:reset_scheme(loading)
 	    self.state_moving = state_moving_stop
 	end
 	
-	self.state_firetarget = state_none
-	self.state_cannon = state_none
-	self.state_shooting = state_none
-	
 	if self.st.headlights == "on" then
 	    printf("car <state>: headlights on")
 		action(self.object,
@@ -179,10 +176,19 @@ function action_car:reset_scheme(loading)
 			cond(cond.time_end, time_infinite))
 	end
 	
+	self.state_firetarget = state_none
+	self.state_cannon = state_none
+	self.state_shooting = state_none
+	
 	self.target_fire_pt = nil
 	self.target_fire_pt_idx = 0
 
 	if self.hasWeapon then
+	    --if loading then
+		--    self.state_cannon = xr_logic.pstor_retrieve(self.object, "state_cannon")
+		--    self.state_shooting = xr_logic.pstor_retrieve(self.object, "state_shooting")
+	    --end
+
 	    --printf("car <fire>: target = %s", self.st.fire_target)
 	    if self.st.fire_target == "points" then
 	        self.state_firetarget = state_firetarget_points
@@ -249,8 +255,8 @@ function action_car:save()
 	xr_logic.pstor_store(self.object, "loop", self.loop)
 	xr_logic.pstor_store(self.object, "min_delta_per_sec", self.min_delta_per_sec)
 	xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
-	xr_logic.pstor_store(self.object, "fire", self.fire)
-	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt)
+	xr_logic.pstor_store(self.object, "state_moving", self.state_moving)
+	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt) -- or false)
 end
 
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
