@@ -88,6 +88,7 @@ public:
 	IGame_Persistent				();
 	virtual ~IGame_Persistent		();
 
+	virtual u32						GameType			() {return 0;};
 	virtual void					Statistics			(CGameFont* F)
 #ifndef _EDITOR
      = 0;

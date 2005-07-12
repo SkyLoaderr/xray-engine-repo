@@ -205,6 +205,8 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		return;
 	}
 	case MOUSE_1: {
+		if (GameID() != GAME_SINGLE)
+			break;
 		if (pInput->iGetAsyncKeyState(DIK_LALT)) {
 			if (CurrentEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
 				try_change_current_entity	();

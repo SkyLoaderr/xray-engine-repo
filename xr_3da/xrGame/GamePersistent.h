@@ -17,6 +17,8 @@ class CGamePersistent:
 	u32					ambient_effect_stop_time;
 
 	void				WeathersUpdate			();
+
+	u32					m_eGameType;
 public:
 	IReader*			pDemoFile;
 	u32					uTime2Change;
@@ -41,6 +43,7 @@ public:
 	virtual void		RegisterModel			(IRender_Visual* V);
 	virtual	float		MtlTransparent			(u32 mtl_idx);
 	virtual	void		Statistics				(CGameFont* F);
+	virtual	u32			GameType				() {return m_eGameType;}
 };
 
 IC CGamePersistent&		GamePersistent()		{ return *((CGamePersistent*) g_pGamePersistent);			}
