@@ -12,8 +12,8 @@
 -- impulse - импульс
 -- reverse (true/false) - изменение направления удара. по умолчанию false
 function hit_npc(actor, npc, p)
-    printf("_bp: TEST HIT")
-    print_table(p)
+    --printf("_bp: TEST HIT")
+    --print_table(p)
 	local h = hit()
 	local rev = p[5] and p[5] == 'true'
 	h.draftsman = npc
@@ -35,10 +35,10 @@ function hit_npc(actor, npc, p)
 		    h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
 	    end
 	end
-	h:bone("door")
+	h:bone(p[2])
 	h.power = p[3]
 	h.impulse = p[4]
-	printf("_bp: hit(%s, %s,%d,%d)", npc:name(), p[2], h.power, h.impulse)
+	--printf("_bp: hit(%s, %s,%d,%d)", npc:name(), p[2], h.power, h.impulse)
 	npc:hit(h)
 end
 
