@@ -54,4 +54,12 @@ void CAgentMemoryManager::update_memory_masks		(const squad_mask_type &mask)
 	update_memory_masks		(mask,visibles());
 	update_memory_masks		(mask,sounds());
 	update_memory_masks		(mask,hits());
+
+	VISIBLES::iterator		I = visibles().begin();
+	VISIBLES::iterator		E = visibles().end();
+	for ( ; I != E; ++I) {
+		squad_mask_type		m = (*I).m_visible.get();
+		update_memory_mask	(mask,m);
+		(*I).m_visible.assign(m);
+	}
 }

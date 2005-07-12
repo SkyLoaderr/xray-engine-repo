@@ -17,3 +17,8 @@ IC	bool CDangerLocation::operator==	(const CObject *object) const
 {
 	return		(false);
 }
+
+IC	const CDangerLocation::flags &CDangerLocation::mask	() const
+{
+	return		(m_mask);
+}

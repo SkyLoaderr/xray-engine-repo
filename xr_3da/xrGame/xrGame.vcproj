@@ -4876,6 +4876,16 @@
 									RelativePath=".\path_manager_level_straight_line_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="precise"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_precise.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_precise_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="path_manager_params"
@@ -7094,7 +7104,7 @@
 									<File
 										RelativePath="WeaponVal.h">
 									</File>
-								</Filter>
+								</Filter>
 								<Filter
 									Name="Weapon USP45"
 									Filter="">

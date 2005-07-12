@@ -47,9 +47,6 @@
 
 CActor *g_debug_actor = 0;
 
-extern bool	g_stalker_can_kill_enemy;
-extern bool	g_stalker_can_kill_member;
-
 void try_change_current_entity()
 {
 	CActor								*actor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -193,7 +190,7 @@ void draw_restrictions(const shared_str &restrictions, LPCSTR start_indent, LPCS
 	HUD().Font().pFontSmall->OutNext	("%s%s%s",start_indent,indent,header);
 	string256	temp;
 	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
-		HUD().Font().pFontSmall->OutNext("%s%s%s",start_indent,indent,indent,_GetItem(*restrictions,i,temp));
+		HUD().Font().pFontSmall->OutNext("%s%s%s%s",start_indent,indent,indent,_GetItem(*restrictions,i,temp));
 }
 
 void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
@@ -255,13 +252,21 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
-//	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,can_kill_member() ? "+" : "-");
-//	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,can_kill_enemy() ? "+" : "-");
-	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,g_stalker_can_kill_member ? "+" : "-");
-	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,g_stalker_can_kill_enemy ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,indent,can_kill_member() ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,indent,can_kill_enemy() ? "+" : "-");
 	if (memory().enemy().selected()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
-		HUD().Font().pFontSmall->OutNext	("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(memory().enemy().selected()) ? "+" : "-");
+		
+		float								fuzzy = 0.f;
+		xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+		for (; I!=E; I++)
+			if (I->O->ID() == memory().enemy().selected()->ID()) {
+				fuzzy						= I->fuzzy;
+				break;
+			}
+
+		VERIFY								(!memory().visual().visible_now(memory().enemy().selected()) || (fuzzy > 0.f));
+		HUD().Font().pFontSmall->OutNext	("%s%s%svisible   : %s %f",indent,indent,indent,memory().visual().visible_now(memory().enemy().selected()) ? "+" : "-",fuzzy);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,*memory().enemy().selected()->cName());
 		float								interval = (1.f - panic_threshold())*.25f, left = -1.f, right = -1.f;
 		LPCSTR								description = "invalid";
@@ -326,13 +331,6 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		if (memory().danger().selected()->dependent_object())
 			HUD().Font().pFontSmall->OutNext("%s%s%sdependent : %s",indent,indent,indent,*memory().danger().selected()->dependent_object()->cName());
 	}
-	// item
-	HUD().Font().pFontSmall->OutNext	("%sdanger",indent);
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().danger().objects().size());
-	if (memory().item().selected()) {
-		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
-		HUD().Font().pFontSmall->OutNext	("%s%s%sobject   : %s",indent,indent,indent,*memory().item().selected()->cName());
-	}
 
 	// agent manager
 	HUD().Font().pFontSmall->OutNext	(" ");
@@ -391,113 +389,6 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		animation_name(this,animation().script().animation()),
 		animation().script().blend() ? animation().script().blend()->timeCurrent : 0.f
 	);
-
-	// sounds
-	HUD().Font().pFontSmall->OutNext	(" ");
-	HUD().Font().pFontSmall->OutNext	("%ssounds",indent);
-	HUD().Font().pFontSmall->OutNext	("%s%scollections : %d",indent,indent,sound().objects().size());
-	
-	{
-		u32			object_count = 0;
-		CSoundPlayer::SOUND_COLLECTIONS::const_iterator	I = sound().objects().begin();
-		CSoundPlayer::SOUND_COLLECTIONS::const_iterator	E = sound().objects().end();
-		for ( ; I != E; ++I)
-			object_count	+= (*I).second.m_sounds.size();
-		HUD().Font().pFontSmall->OutNext("%s%sobjects     : %d",indent,indent,object_count);
-	}
-	{
-		xr_vector<CSoundPlayer::CSoundSingle>::const_iterator	I = sound().playing_sounds().begin();
-		xr_vector<CSoundPlayer::CSoundSingle>::const_iterator	E = sound().playing_sounds().end();
-		for ( ; I != E; ++I)
-			HUD().Font().pFontSmall->OutNext("%s%s%sactive    : %s",indent,indent,indent,(*I).m_sound->handle ? (*I).m_sound->handle->file_name() : "no source");
-	}
-
-	// sight
-	HUD().Font().pFontSmall->OutNext	(" ");
-	HUD().Font().pFontSmall->OutNext	("%ssight",indent);
-
-	LPCSTR								sight_type = "invalid";
-	switch (sight().current_action().sight_type()) {
-		case SightManager::eSightTypeCurrentDirection : {
-			sight_type					= "current direction";
-			break;
-		}
-		case SightManager::eSightTypePathDirection : {
-			sight_type					= "path direction";
-			break;
-		}
-		case SightManager::eSightTypeDirection : {
-			sight_type					= "direction";
-			break;
-		}
-		case SightManager::eSightTypePosition : {
-			sight_type					= "position";
-			break;
-		}
-		case SightManager::eSightTypeObject : {
-			sight_type					= "object";
-			break;
-		}
-		case SightManager::eSightTypeCover : {
-			sight_type					= "cover";
-			break;
-		}
-		case SightManager::eSightTypeSearch : {
-			sight_type					= "search";
-			break;
-		}
-		case SightManager::eSightTypeLookOver : {
-			sight_type					= "look over";
-			break;
-		}
-		case SightManager::eSightTypeCoverLookOver : {
-			sight_type					= "cover look over";
-			break;
-		}
-		default : NODEFAULT;
-	}
-
-	HUD().Font().pFontSmall->OutNext	("%s%stype            : %s",indent,indent,sight_type);
-	HUD().Font().pFontSmall->OutNext	("%s%suse torso       : %s",indent,indent,sight().current_action().use_torso_look() ? "+" : "-");
-	
-	switch (sight().current_action().sight_type()) {
-		case SightManager::eSightTypeCurrentDirection : {
-			break;
-		}
-		case SightManager::eSightTypePathDirection : {
-			break;
-		}
-		case SightManager::eSightTypeDirection : {
-			HUD().Font().pFontSmall->OutNext	("%s%sdirection       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
-			break;
-		}
-		case SightManager::eSightTypePosition : {
-			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
-			break;
-		}
-		case SightManager::eSightTypeObject : {
-			HUD().Font().pFontSmall->OutNext	("%s%sobject          : %s",indent,indent,*sight().current_action().object().cName());
-			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().object().Position()));
-			break;
-		}
-		case SightManager::eSightTypeCover : {
-			sight_type					= "cover";
-			break;
-		}
-		case SightManager::eSightTypeSearch : {
-			sight_type					= "search";
-			break;
-		}
-		case SightManager::eSightTypeLookOver : {
-			sight_type					= "look over";
-			break;
-		}
-		case SightManager::eSightTypeCoverLookOver : {
-			sight_type					= "cover look over";
-			break;
-		}
-		default : NODEFAULT;
-	}
 
 	// movement
 	HUD().Font().pFontSmall->OutNext	(" ");
@@ -610,9 +501,16 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%s%svelocities    : %d",indent,indent,indent,movement().detail().velocities().size());
 	HUD().Font().pFontSmall->OutNext	("%s%s%sextrapolate   : %f",indent,indent,indent,movement().detail().extrapolate_length());
 	HUD().Font().pFontSmall->OutNext	("%s%s%spath size     : %d",indent,indent,indent,movement().detail().path().size());
-	HUD().Font().pFontSmall->OutNext	("%s%s%sstart point   : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().front().position));
-	HUD().Font().pFontSmall->OutNext	("%s%s%sdest point    : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().back().position));
-	HUD().Font().pFontSmall->OutNext	("%s%s%scurrent point : %d",indent,indent,indent,movement().detail().curr_travel_point_index());
+	if (!movement().detail().path().empty()) {
+		HUD().Font().pFontSmall->OutNext	("%s%s%scurrent point : %d",indent,indent,indent,movement().detail().curr_travel_point_index());
+		HUD().Font().pFontSmall->OutNext	("%s%s%sstart point   : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().front().position));
+		HUD().Font().pFontSmall->OutNext	("%s%s%sdest point    : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().back().position));
+	}
+
+	if (movement().detail().use_dest_orientation())
+		HUD().Font().pFontSmall->OutNext("%s%s%sorientation   : + [%f][%f][%f]",indent,indent,indent,VPUSH(movement().detail().dest_direction()));
+	else
+		HUD().Font().pFontSmall->OutNext("%s%s%sorientation   : -",indent,indent,indent);
 
 	string256							temp;
 	if	(
@@ -628,6 +526,114 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		draw_restrictions					(movement().restrictions().base_out_restrictions(),temp,indent,"base out");
 		draw_restrictions					(movement().restrictions().base_in_restrictions(),temp,indent,"base in");
 	}
+
+	// sounds
+	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutNext	("%ssounds",indent);
+	HUD().Font().pFontSmall->OutNext	("%s%scollections : %d",indent,indent,sound().objects().size());
+	
+	{
+		u32			object_count = 0;
+		CSoundPlayer::SOUND_COLLECTIONS::const_iterator	I = sound().objects().begin();
+		CSoundPlayer::SOUND_COLLECTIONS::const_iterator	E = sound().objects().end();
+		for ( ; I != E; ++I)
+			object_count	+= (*I).second.m_sounds.size();
+		HUD().Font().pFontSmall->OutNext("%s%sobjects     : %d",indent,indent,object_count);
+	}
+	{
+		xr_vector<CSoundPlayer::CSoundSingle>::const_iterator	I = sound().playing_sounds().begin();
+		xr_vector<CSoundPlayer::CSoundSingle>::const_iterator	E = sound().playing_sounds().end();
+		for ( ; I != E; ++I)
+			HUD().Font().pFontSmall->OutNext("%s%s%sactive    : %s",indent,indent,indent,(*I).m_sound->handle ? (*I).m_sound->handle->file_name() : "no source");
+	}
+
+	// sight
+	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutNext	("%ssight",indent);
+
+	LPCSTR								sight_type = "invalid";
+	switch (sight().current_action().sight_type()) {
+		case SightManager::eSightTypeCurrentDirection : {
+			sight_type					= "current direction";
+			break;
+		}
+		case SightManager::eSightTypePathDirection : {
+			sight_type					= "path direction";
+			break;
+		}
+		case SightManager::eSightTypeDirection : {
+			sight_type					= "direction";
+			break;
+		}
+		case SightManager::eSightTypePosition : {
+			sight_type					= "position";
+			break;
+		}
+		case SightManager::eSightTypeObject : {
+			sight_type					= "object";
+			break;
+		}
+		case SightManager::eSightTypeCover : {
+			sight_type					= "cover";
+			break;
+		}
+		case SightManager::eSightTypeSearch : {
+			sight_type					= "search";
+			break;
+		}
+		case SightManager::eSightTypeLookOver : {
+			sight_type					= "look over";
+			break;
+		}
+		case SightManager::eSightTypeCoverLookOver : {
+			sight_type					= "cover look over";
+			break;
+		}
+		default : NODEFAULT;
+	}
+
+	HUD().Font().pFontSmall->OutNext	("%s%stype            : %s",indent,indent,sight_type);
+	HUD().Font().pFontSmall->OutNext	("%s%suse torso       : %s",indent,indent,sight().current_action().use_torso_look() ? "+" : "-");
+	
+	switch (sight().current_action().sight_type()) {
+		case SightManager::eSightTypeCurrentDirection : {
+			break;
+		}
+		case SightManager::eSightTypePathDirection : {
+			break;
+		}
+		case SightManager::eSightTypeDirection : {
+			HUD().Font().pFontSmall->OutNext	("%s%sdirection       : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
+			break;
+		}
+		case SightManager::eSightTypePosition : {
+			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().vector3d()));
+			break;
+		}
+		case SightManager::eSightTypeObject : {
+			HUD().Font().pFontSmall->OutNext	("%s%sobject          : %s",indent,indent,*sight().current_action().object().cName());
+			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().object().Position()));
+			break;
+		}
+		case SightManager::eSightTypeCover : {
+			sight_type					= "cover";
+			break;
+		}
+		case SightManager::eSightTypeSearch : {
+			sight_type					= "search";
+			break;
+		}
+		case SightManager::eSightTypeLookOver : {
+			sight_type					= "look over";
+			break;
+		}
+		case SightManager::eSightTypeCoverLookOver : {
+			sight_type					= "cover look over";
+			break;
+		}
+		default : NODEFAULT;
+	}
+
 	// objects
 	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("%sobjects",indent);
@@ -653,15 +659,34 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 
 void CAI_Stalker::OnRender			()
 {
-	inherited::OnRender		();
+	Fvector					position, direction, temp;
+	g_fireParams			(0,position,direction);
+	temp					= direction;
+	temp.mul				(1.f);
+	temp.add				(position);
+	RCache.dbg_DrawLINE		(Fidentity,position,temp,D3DCOLOR_XRGB(0*255,255,0*255));
 
 	if (IsMyCamera()) {
+		if (!g_Alive())
+			return;
+
 		if (!memory().enemy().selected() || !memory().visual().visible_now(memory().enemy().selected()))
 			return;
+
+#if 0
+		xr_vector<CObject*>		objects;
+		feel_vision_get			(objects);
+		if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
+			Fvector				position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
+			RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+		}
+#endif
 		Fvector					position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
 		RCache.dbg_DrawAABB		(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
 		return;
 	}
+
+	inherited::OnRender		();
 
 	{
 		Fvector					c0 = Position(),c1,t0 = Position(),t1;

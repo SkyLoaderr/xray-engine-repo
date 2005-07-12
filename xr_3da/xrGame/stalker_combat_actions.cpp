@@ -28,12 +28,23 @@
 #include "sound_player.h"
 #include "motivation_action_manager_stalker.h"
 #include "agent_member_manager.h"
+#include "agent_location_manager.h"
+#include "danger_cover_location.h"
 #include "ai/stalker/ai_stalker_space.h"
+
+#define DISABLE_COVER_BEFORE_DETOUR
+
+const float TEMP_DANGER_DISTANCE = 5.f;
+const u32	TEMP_DANGER_INTERVAL = 120000;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
 
 typedef CStalkerActionBase::_edge_value_type _edge_value_type;
+
+#ifdef _DEBUG
+#	define SILENT_COMBAT
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionCombatBase
@@ -224,7 +235,9 @@ void CStalkerActionRetreatFromEnemy::execute		()
 		}
 	}
 
-	object().sound().play	(object().memory().enemy().selected()->human_being() ? eStalkerSoundPanicHuman : eStalkerSoundPanicMonster,0,0,10000);
+#ifndef SILENT_COMBAT
+	object().sound().play					(object().memory().enemy().selected()->human_being() ? eStalkerSoundPanicHuman : eStalkerSoundPanicMonster,0,0,10000);
+#endif
 }
 
 _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -289,10 +302,14 @@ void CStalkerActionGetReadyToKill::execute		()
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 		object().movement().set_movement_type		(eMovementTypeRun);
-		if (object().movement().path_completed() && object().Position().distance_to(point->position()) < 1.f)
+		if (object().movement().path_completed() || object().Position().distance_to(point->position()) < 1.f) {
+			object().movement().set_body_state		(eBodyStateCrouch);
 			object().brain().affect_cover			(true);
-		else
+		}
+		else {
+			object().movement().set_body_state		(eBodyStateStand);
 			object().brain().affect_cover			(false);
+		}
 	}
 	else {
 		object().brain().affect_cover				(true);
@@ -331,8 +348,10 @@ void CStalkerActionKillEnemy::initialize		()
 	m_storage->set_property						(eWorldPropertyLookedOut,false);
 	m_storage->set_property						(eWorldPropertyPositionHolded,false);
 	m_storage->set_property						(eWorldPropertyEnemyDetoured,false);
+#ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being())
 		object().sound().play					(eStalkerSoundAttack,0,0,6000,4000);
+#endif
 	object().brain().affect_cover		(true);
 }
 
@@ -395,12 +414,14 @@ void CStalkerActionTakeCover::initialize		()
 	m_storage->set_property						(eWorldPropertyPositionHolded,false);
 	m_storage->set_property						(eWorldPropertyEnemyDetoured,false);
 
+#ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being()) {
 		if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
 			object().sound().play				(eStalkerSoundBackup,0,0,6000,4000);
 		else
 			object().sound().play				(eStalkerSoundAttack,0,0,6000,4000);
 	}
+#endif
 }
 
 void CStalkerActionTakeCover::finalize		()
@@ -480,11 +501,13 @@ void CStalkerActionLookOut::initialize		()
 IC	float current_cover					(CAI_Stalker *object)
 {
 	Fvector								position, direction;
-	object->g_fireParams				(0,position,direction);
+//	object->g_fireParams				(0,position,direction);
 
-	object->Center						(position);
-	position.x							= object->Position().x;
-	position.z							= object->Position().z;
+//	object->Center						(position);
+//	position.x							= object->Position().x;
+//	position.z							= object->Position().z;
+	position							= object->eye_matrix.c;
+	direction							= object->eye_matrix.k;
 	collide::rq_result					ray_query_result;
 	BOOL								result = Level().ObjectSpace.RayPick(
 		position,
@@ -563,8 +586,10 @@ void CStalkerActionHoldPosition::initialize		()
 	object().movement().set_body_state			(eBodyStateCrouch);
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
+#ifndef SILENT_COMBAT
 	if (object().agent_manager().member().group_behaviour())
 		object().sound().play					(eStalkerSoundDetour,5000);
+#endif
 	set_inertia_time							(5000 + ::Random32.random(5000));
 	object().brain().affect_cover				(true);
 }
@@ -615,6 +640,20 @@ void CStalkerActionDetourEnemy::initialize		()
 	object().movement().set_movement_type		(eMovementTypeRun);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
+
+#ifdef DISABLE_COVER_BEFORE_DETOUR
+	if (/**(Random.randF(1.f) < .8f) && /**/object().agent_manager().member().member(m_object).cover())	
+		object().agent_manager().location().add	(
+			xr_new<CDangerCoverLocation>(
+				object().agent_manager().member().member(m_object).cover(),
+				Device.dwTimeGlobal,
+				TEMP_DANGER_INTERVAL,
+				TEMP_DANGER_DISTANCE,
+				object().agent_manager().member().mask(&object())
+			)
+		);
+#endif
+
 	object().agent_manager().member().member(m_object).cover(0);
 }
 
@@ -627,8 +666,10 @@ void CStalkerActionDetourEnemy::execute			()
 {
 	inherited::execute					();
 
+#ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being() && object().agent_manager().member().group_behaviour())
 		object().sound().play					(eStalkerSoundDetour,5000);
+#endif
 	
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 
@@ -692,7 +733,10 @@ void CStalkerActionSearchEnemy::execute			()
 {
 	inherited::execute					();
 	
+#ifndef SILENT_COMBAT
 	object().sound().play				(eStalkerSoundSearch,10000);
+#endif
+
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 
 	if (!mem_object.m_object)

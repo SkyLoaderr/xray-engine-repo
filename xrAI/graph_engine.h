@@ -44,7 +44,7 @@
 using namespace GraphEngineSpace;
 
 class CGraphEngine {
-protected:
+public:
 //	typedef CDataStorageSingleLinkedList<false>				CPriorityQueue;
 //	typedef CDataStorageSingleLinkedList<true>				CPriorityQueue;
 //	typedef CDataStorageDoubleLinkedList<false>				CPriorityQueue;
@@ -129,6 +129,20 @@ public:
 				const _index_type		&dest_node, 
 				xr_vector<_index_type>	*node_path,
 				_Parameters				&parameters
+			);
+
+	template <
+		typename _Graph,
+		typename _Parameters,
+		typename _PathManager
+	>
+	IC		bool	search					(
+				const _Graph			&graph, 
+				const _index_type		&start_node, 
+				const _index_type		&dest_node, 
+				xr_vector<_index_type>	*node_path,
+				const _Parameters		&parameters,
+				_PathManager			&path_manager
 			);
 
 	template <

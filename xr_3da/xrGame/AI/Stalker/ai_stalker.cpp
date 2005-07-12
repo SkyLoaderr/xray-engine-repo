@@ -55,14 +55,12 @@
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
 #	include "../../alife_object_registry.h"
+#	include "../../visual_memory_manager.h"
 #endif
 
 using namespace StalkerSpace;
 
 extern int g_AI_inactive_time;
-
-bool	g_stalker_can_kill_enemy	= false;
-bool	g_stalker_can_kill_member	= false;
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -507,14 +505,6 @@ void CAI_Stalker::UpdateCL()
 
 		CStepManager::update		();
 	}
-
-#ifdef DEBUG
-	if (this->ID() == Level().CurrentViewEntity()->ID()) {
-		g_stalker_can_kill_enemy	= can_kill_enemy();
-		g_stalker_can_kill_member	= can_kill_member();
-		Exec_Visibility				();
-	}
-#endif
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -552,6 +542,10 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 
 	if (g_Alive()) {
 //		bool			check = !!memory().enemy().selected();
+#if 0//def DEBUG
+		memory().visual().check_visibles();
+#endif
+		Exec_Visibility					();
 		memory().update					(dt);
 //		if (memory().enemy().selected() && !check)
 //			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
@@ -581,7 +575,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			VERIFY				(_valid(Position()));
 //			Exec_Look				(dt);
 			VERIFY				(_valid(Position()));
-			Exec_Visibility			();
 
 			//////////////////////////////////////
 			Fvector C; float R;

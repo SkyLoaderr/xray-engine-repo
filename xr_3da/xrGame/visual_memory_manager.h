@@ -75,6 +75,7 @@ public:
 
 public:
 	IC		void	set_squad_objects		(xr_vector<CVisibleObject> *squad_objects);
+			CVisibleObject *visible_object	(const CGameObject *game_object);
 			bool	visible_now				(const CGameObject *game_object) const;
 			void	enable					(const CObject *object, bool enable);
 
@@ -91,6 +92,12 @@ public:
 	IC		const RAW_VISIBLES		&raw_objects				() const;
 	IC		const NOT_YET_VISIBLES	&not_yet_visible_objects	() const;
 	IC		const CVisionParameters &current_state				() const;
+	IC		squad_mask_type			mask						() const;
+
+public:
+#ifdef DEBUG
+			void					check_visibles				() const;
+#endif
 };
 
 #include "visual_memory_manager_inline.h"

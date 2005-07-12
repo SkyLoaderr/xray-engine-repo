@@ -31,14 +31,17 @@ CAgentManagerActionBase::CAgentManagerActionBase	(CAgentManager *object, LPCSTR 
 
 void CAgentManagerActionBase::initialize			()
 {
+	inherited::initialize			();
 }
 
 void CAgentManagerActionBase::finalize				()
 {
+	inherited::finalize				();
 }
 
 void CAgentManagerActionBase::execute				()
 {
+	inherited::execute				();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,15 +55,18 @@ CAgentManagerActionNoOrders::CAgentManagerActionNoOrders	(CAgentManager *object,
 
 void CAgentManagerActionNoOrders::initialize		()
 {
+	inherited::initialize			();
 }
 
 void CAgentManagerActionNoOrders::finalize			()
 {
-	m_object->corpse().clear();
+	inherited::finalize				();
+	m_object->corpse().clear		();
 }
 
 void CAgentManagerActionNoOrders::execute			()
 {
+	inherited::execute				();
 //	CGraphEngine::CWorldState	goal;
 //	goal.add_condition			(CGraphEngine::CWorldProperty(StalkerDecisionSpace::eWorldPropertyEnemy,true));
 	CAgentMemberManager::iterator		I = m_object->member().members().begin();
@@ -96,14 +102,18 @@ CAgentManagerActionGatherItems::CAgentManagerActionGatherItems	(CAgentManager *o
 
 void CAgentManagerActionGatherItems::initialize		()
 {
+	inherited::initialize			();
 }
 
 void CAgentManagerActionGatherItems::finalize			()
 {
+	inherited::finalize				();
 }
 
 void CAgentManagerActionGatherItems::execute			()
 {
+	inherited::execute				();
+
 	CAgentMemberManager::iterator		I = m_object->member().members().begin();
 	CAgentMemberManager::iterator		E = m_object->member().members().end();
 	for ( ; I != E; ++I)
@@ -121,16 +131,21 @@ CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *objec
 
 void CAgentManagerActionKillEnemy::initialize		()
 {
+	inherited::initialize			();
 	m_level_time					= Device.dwTimeGlobal + 10000;
 	m_object->location().clear		();
 }
 
 void CAgentManagerActionKillEnemy::finalize			()
 {
+	inherited::finalize				();
+	m_object->enemy().distribute_enemies		();
 }
 
 void CAgentManagerActionKillEnemy::execute			()
 {
+	inherited::execute				();
+
 	m_object->enemy().distribute_enemies		();
 	m_object->explosive().react_on_explosives	();
 	m_object->corpse().react_on_member_death	();
@@ -167,16 +182,20 @@ CAgentManagerActionReactOnDanger::CAgentManagerActionReactOnDanger	(CAgentManage
 
 void CAgentManagerActionReactOnDanger::initialize		()
 {
+	inherited::initialize			();
 	m_level_time					= Device.dwTimeGlobal + 10000;
 	m_object->location().clear		();
 }
 
 void CAgentManagerActionReactOnDanger::finalize			()
 {
+	inherited::finalize				();
 }
 
 void CAgentManagerActionReactOnDanger::execute			()
 {
+	inherited::execute				();
+
 	m_object->explosive().react_on_explosives	();
 	m_object->corpse().react_on_member_death	();
 

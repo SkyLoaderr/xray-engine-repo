@@ -124,13 +124,17 @@ void CAgentLocationManager::remove_old_danger_covers	()
 	m_danger_locations.erase	(I,m_danger_locations.end());
 }
 
-float CAgentLocationManager::danger		(CCoverPoint *cover) const
+float CAgentLocationManager::danger		(CCoverPoint *cover, CAI_Stalker *member) const
 {
 	float						result = 1;
+	squad_mask_type				mask = object().member().mask(member);
 	LOCATIONS::const_iterator	I = m_danger_locations.begin();
 	LOCATIONS::const_iterator	E = m_danger_locations.end();
 	for ( ; I != E; ++I) {
 		if (Device.dwTimeGlobal > (*I)->m_level_time + (*I)->m_interval)
+			continue;
+
+		if (!(*I)->mask().test(mask))
 			continue;
 
 		float		distance = 1.f + (*I)->position().distance_to(cover->position());

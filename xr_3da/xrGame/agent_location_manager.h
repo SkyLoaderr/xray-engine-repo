@@ -38,7 +38,7 @@ public:
 	IC		void				clear					();
 			void				update					();
 			void				add						(CDangerLocationPtr location);
-			float				danger					(CCoverPoint *cover) const;
+			float				danger					(CCoverPoint *cover, CAI_Stalker *member) const;
 			bool				suitable				(CAI_Stalker *object, CCoverPoint *location, bool use_enemy_info) const;
 			void				make_suitable			(CAI_Stalker *object, CCoverPoint *location) const;
 			void				remove_links			(CObject *object);

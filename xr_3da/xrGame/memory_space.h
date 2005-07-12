@@ -131,17 +131,28 @@ namespace MemorySpace {
 
 	struct CVisibleObject : CMemoryObject<CGameObject> {
 		typedef CMemoryObject<CGameObject> inherited;
-		bool						m_visible;
+		_flags<squad_mask_type>		m_visible;
 
-		bool	visible				() const 
+	public:
+		IC			CVisibleObject	()
 		{
-			return					(m_visible);
+			m_visible.zero			();
+		}
+
+		IC	bool	visible			(const squad_mask_type &mask) const 
+		{
+			return					(!!m_visible.test(mask));
+		}
+
+		IC	void	visible			(const squad_mask_type &mask, bool value)
+		{
+			m_visible.set			(mask,value ? TRUE : FALSE);
 		}
 
 		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const squad_mask_type &mask)
 		{
 			inherited::fill			(game_object,self,mask);
-			m_visible				= true;
+			m_visible.set			(mask,TRUE);
 		}
 	};
 

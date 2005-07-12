@@ -99,6 +99,40 @@ IC	bool CGraphEngine::search			(
 	return						(successfull);
 }
 
+template <
+	typename _Graph,
+	typename _Parameters,
+	typename _PathManager
+>
+IC	bool CGraphEngine::search			(
+		const _Graph			&graph, 
+		const _index_type		&start_node, 
+		const _index_type		&dest_node, 
+		xr_vector<_index_type>	*node_path,
+		const _Parameters		&parameters,
+		_PathManager			&path_manager
+	)
+{
+#ifndef AI_COMPILER
+	Device.Statistic.AI_Path.Begin();
+#endif
+	path_manager.setup			(
+		&graph,
+		&m_algorithm->data_storage(),
+		node_path,
+		start_node,
+		dest_node,
+		parameters
+	);
+	
+	bool						successfull = m_algorithm->find(path_manager);
+
+#ifndef AI_COMPILER
+	Device.Statistic.AI_Path.End();
+#endif
+	return						(successfull);
+}
+
 //template <
 //	typename _condition_type,
 //	typename _value_type,

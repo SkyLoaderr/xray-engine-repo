@@ -125,7 +125,8 @@ void CEnemyManager::update					()
 	m_ready_to_save				= true;
 	m_visible_now				= false;
 
-	inherited::update			();
+	if (!selected() || !m_object->memory().visual().visible_now(selected()) || !selected()->g_Alive())
+		inherited::update		();
 
 	if (selected()) {
 		m_last_enemy_time		= Device.dwTimeGlobal;

@@ -416,6 +416,10 @@ void CLevel::OnFrame	()
 	m_level_sound_manager->Update		();
 }
 
+#if 0//def _DEBUG
+void test_precise_path	();
+#endif
+
 void CLevel::OnRender()
 {
 	inherited::OnRender	();
@@ -437,6 +441,10 @@ void CLevel::OnRender()
 #ifdef DEBUG
 	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();
+
+#if 0//def _DEBUG
+	test_precise_path		();
+#endif
 
 	CAI_Stalker				*stalker = smart_cast<CAI_Stalker*>(Level().CurrentEntity());
 	if (stalker)
@@ -754,3 +762,43 @@ u32	GameID()
 {
 	return Game().Type();
 }
+
+#if 0//def _DEBUG
+#include "path_manager_level_precise.h"
+#include "graph_engine.h"
+#include "graph_engine_space.h"
+
+void test_precise_path	()
+{
+	xr_vector<u32>	path;
+
+	CLevelPathManagerPrecise<
+		CGraphEngine::CAlgorithm::CDataStorage,
+		GraphEngineSpace::_dist_type,
+		GraphEngineSpace::_index_type,
+		GraphEngineSpace::_iteration_type
+	>				path_manager;
+
+	bool			failed = !ai().graph_engine().search(
+		ai().level_graph(),
+		0,
+		ai().level_graph().header().vertex_count() - 1,
+		&path,
+		GraphEngineSpace::CBaseParameters(),
+		path_manager
+	);
+	if (failed)
+		return;
+	
+	xr_vector<u32>::const_iterator	I = path.begin();
+	xr_vector<u32>::const_iterator	E = path.end();
+	for ( ; I != E; ++I)
+		RCache.dbg_DrawAABB(
+			Fvector(ai().level_graph().vertex_position(*I)).add(Fvector().set(0.f,0.05f,0.f)),
+			.05f,
+			.05f,
+			.05f,
+			0xff00ff00
+		);
+}
+#endif

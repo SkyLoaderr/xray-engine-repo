@@ -167,12 +167,13 @@ CMemoryInfo CMemoryManager::memory(const CObject *object) const
 	u32								level_time = 0;
 	const CGameObject				*game_object = smart_cast<const CGameObject*>(object);
 	VERIFY							(game_object);
+	squad_mask_type					mask = m_stalker ? m_stalker->agent_manager().member().mask(m_stalker) : squad_mask_type(-1);
 
 	{
 		xr_vector<CVisibleObject>::const_iterator	I = std::find(visual().objects().begin(),visual().objects().end(),object_id(object));
 		if (visual().objects().end() != I) {
 			(CMemoryObject<CGameObject>&)result	= (CMemoryObject<CGameObject>&)(*I);
-			result.m_visible					= (*I).m_visible;
+			result.visible						((*I).visible(mask));
 			result.m_visual_info				= true;
 			level_time							= (*I).m_level_time;
 			VERIFY								(result.m_object);

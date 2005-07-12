@@ -21,6 +21,10 @@
 #include "ai_space.h"
 #include "profiler.h"
 
+#ifdef DEBUG
+#	include "memory_manager.h"
+#endif
+
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const
 	{
@@ -122,7 +126,7 @@ IC	u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *objec
 bool CVisualMemoryManager::visible_now	(const CGameObject *game_object) const
 {
 	VISIBLES::const_iterator		I = std::find(objects().begin(),objects().end(),object_id(game_object));
-	return							((objects().end() != I) && (*I).visible());
+	return							((objects().end() != I) && (*I).visible(mask()));
 }
 
 void CVisualMemoryManager::enable		(const CObject *object, bool enable)
@@ -292,7 +296,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 	if (m_objects->end() == J) {
 		CVisibleObject			visible_object;
 
-		visible_object.fill		(game_object,self,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
+		visible_object.fill		(game_object,self,mask());
 #ifdef USE_FIRST_GAME_TIME
 		visible_object.m_first_game_time	= Level().GetGameTime();
 #endif
@@ -309,7 +313,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 			m_objects->push_back	(visible_object);
 	}
 	else
-		(*J).fill				(game_object,self,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
+		(*J).fill				(game_object,self,mask());
 }
 
 void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_object)
@@ -334,6 +338,7 @@ void CVisualMemoryManager::update				(float time_delta)
 	if (!enabled())
 		return;
 
+	squad_mask_type						mask = this->mask();
 	VERIFY								(m_objects);
 	m_visible_objects.clear				();
 	m_object->feel_vision_get			(m_visible_objects);
@@ -342,7 +347,7 @@ void CVisualMemoryManager::update				(float time_delta)
 		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
 		xr_vector<CVisibleObject>::iterator	E = m_objects->end();
 		for ( ; I != E; ++I)
-			(*I).m_visible				= false;
+			(*I).visible				(mask,false);
 	}
 
 	{
@@ -378,8 +383,37 @@ void CVisualMemoryManager::update				(float time_delta)
 		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
 		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
 	}
+#if 0//def DEBUG
+	if (m_stalker) {
+		CAgentMemberManager::MEMBER_STORAGE::const_iterator	I = m_stalker->agent_manager().member().members().begin();
+		CAgentMemberManager::MEMBER_STORAGE::const_iterator	E = m_stalker->agent_manager().member().members().end();
+		for ( ; I != E; ++I)
+			(*I)->object().memory().visual().check_visibles();
+	}
+#endif
 	STOP_PROFILE
 }
+
+#ifdef DEBUG
+void CVisualMemoryManager::check_visibles	() const
+{
+	squad_mask_type						mask = this->mask();
+	xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
+	xr_vector<CVisibleObject>::iterator	E = m_objects->end();
+	for ( ; I != E; ++I) {
+		if (!(*I).visible(mask))
+			continue;
+		
+		xr_vector<Feel::Vision::feel_visible_Item>::iterator	i = m_object->feel_visible.begin();
+		xr_vector<Feel::Vision::feel_visible_Item>::iterator	e = m_object->feel_visible.end();
+		for (; i!=e; ++i)
+			if (i->O->ID() == (*I).m_object->ID()) {
+				VERIFY						(i->fuzzy > 0.f);
+				break;
+			}
+	}
+}
+#endif
 
 bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fov) const
 {
@@ -450,4 +484,19 @@ void CVisualMemoryManager::remove_links	(CObject *object)
 		if (I != m_not_yet_visible_objects.end())
 			m_not_yet_visible_objects.erase	(I);
 	}
+}
+
+CVisibleObject *CVisualMemoryManager::visible_object	(const CGameObject *game_object)
+{
+	VISIBLES::iterator			I = std::find_if(m_objects->begin(),m_objects->end(),CVisibleObjectPredicateEx(game_object));
+	if (I == m_objects->end())
+		return					(0);
+	return						(&*I);
+}
+
+IC	squad_mask_type CVisualMemoryManager::mask			() const
+{
+	if (!m_stalker)
+		return					(squad_mask_type(-1));
+	return						(m_stalker->agent_manager().member().mask(m_stalker));
 }

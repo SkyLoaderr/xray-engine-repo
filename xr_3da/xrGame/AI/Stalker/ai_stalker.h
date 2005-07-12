@@ -261,8 +261,8 @@ public:
 			bool						not_enough_ammo			();
 			bool						can_buy_ammo			();
 
-			bool						can_kill_entity			(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage) const;
-			bool						can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance) const;
+			bool						can_kill_entity			(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage);
+			bool						can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance);
 			bool						can_kill_entity			(bool enemy, float distance = 50.f);
 			bool						can_kill_member			();
 			bool						can_kill_enemy			();

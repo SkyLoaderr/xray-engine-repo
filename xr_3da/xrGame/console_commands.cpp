@@ -32,10 +32,11 @@
 #include "date_time.h"
 #include "mt_config.h"
 #include "ui/UIOptConCom.h"
+
 #ifdef DEBUG
-#include "PHDebug.h"
-#include "ui/UIDebugFonts.h" 
-#include "hudmanager.h"
+#	include "PHDebug.h"
+#	include "ui/UIDebugFonts.h" 
+#	include "hudmanager.h"
 #endif
 #include "MainUI.h"
 
