@@ -54,7 +54,7 @@
 <!-- Вспомогательные инфопоршены -->
 <info_portion id="x18_door2"></info_portion>
 <info_portion id="x18_door2_knock_stop"></info_portion>
-<info_portion id="x18_tushkano3"></info_portion>
+<info_portion id="dar_open_door1"></info_portion>
 <info_portion id="x18_tushkano4"></info_portion>
 <info_portion id="x18_tushkano5"></info_portion>
 
