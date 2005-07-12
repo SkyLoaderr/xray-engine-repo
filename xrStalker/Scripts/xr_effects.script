@@ -38,7 +38,7 @@ function hit_npc(actor, npc, p)
 	h.bone = p[2]
 	h.power = p[3]
 	h.impulse = p[4]
-	printf("_bp: hit(%s, %s,%d,%d)", npc:name(), utils.to_str(p[2]), h.power, h.impulse)
+	printf("_bp: hit(%s, %s,%d,%d)", npc:name(), p[2], h.power, h.impulse)
 	npc:hit(h)
 end
 
