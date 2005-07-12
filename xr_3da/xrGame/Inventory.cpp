@@ -719,6 +719,8 @@ void CInventory::Update()
 		while(list.end() != it)
 		{
 			PIItem pIItem = *it;
+			R_ASSERT(pIItem);
+			R_ASSERT(pIItem->object());
 			if(pIItem->m_drop)
 			{
 				pIItem->m_drop = false;
