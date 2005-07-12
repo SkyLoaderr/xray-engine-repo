@@ -39,7 +39,7 @@ void CControlAnimationBase::SelectAnimation()
 	EAction							action = m_tAction;
 	if (m_object->control().path_builder().is_moving_on_path()) action = GetActionFromPath();
 
-	cur_anim_info().motion			= get_sd()->m_tMotions[action].anim;
+	cur_anim_info().motion			= m_tMotions[action].anim;
 
 	m_object->CheckSpecParams		(spec_params);	
 	if (prev_motion	!= cur_anim_info().motion) 
@@ -103,8 +103,8 @@ void CControlAnimationBase::SelectVelocities()
 		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.real_angular_velocity);
 	}
 
-	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-	VERIFY(get_sd()->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim_info().motion);
+	VERIFY(m_tAnims.end() != item_it);
 
 	// получить скорости движения по анимации
 	anim_vel.set(item_it->second.velocity.velocity.linear, item_it->second.velocity.velocity.angular_real);
@@ -155,8 +155,8 @@ void CControlAnimationBase::SelectVelocities()
 	set_animation_speed	();
 
 	// установка угловой скорости
-	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-	VERIFY(get_sd()->m_tAnims.end() != item_it);
+	item_it = m_tAnims.find(cur_anim_info().motion);
+	VERIFY(m_tAnims.end() != item_it);
 
 	m_object->dir().set_heading_speed(item_it->second.velocity.velocity.angular_real);
 

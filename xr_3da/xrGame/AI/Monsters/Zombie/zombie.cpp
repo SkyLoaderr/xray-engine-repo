@@ -31,44 +31,37 @@ void CZombie::Load(LPCSTR section)
 	fake_death_count		= 1 + u8(Random.randI(pSettings->r_u8(section,"FakeDeathCount")));
 	health_death_threshold	= pSettings->r_float(section,"StartFakeDeathHealthThreshold");
 
-	if (anim().start_load_shared(CLS_ID)) {
-		
-		SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
-		SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
-		SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
-		SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-		//SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
-		//SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
-		//SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
-		//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
+	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
+	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
+	SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+	SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+	//SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+	//SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+	//SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
+	//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
 
-		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		anim().AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		anim().AddAnim(eAnimDie,				"stand_die_",			0, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimDie,				"stand_die_",			0, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
-		anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-		anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-		anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		anim().LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-		anim().LinkAction(ACT_RUN,			eAnimRun);
-		anim().LinkAction(ACT_EAT,			eAnimStandIdle);
-		anim().LinkAction(ACT_SLEEP,			eAnimStandIdle);
-		anim().LinkAction(ACT_REST,			eAnimStandIdle);
-		anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
-		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
-		anim().LinkAction(ACT_STEAL,			eAnimWalkFwd);
-		anim().LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
-
-		anim().AA_Load(pSettings->r_string(section, "attack_params"));
-
-		anim().finish_load_shared();
-	}
+	anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+	anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
+	anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
+	anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	anim().LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+	anim().LinkAction(ACT_RUN,			eAnimRun);
+	anim().LinkAction(ACT_EAT,			eAnimStandIdle);
+	anim().LinkAction(ACT_SLEEP,			eAnimStandIdle);
+	anim().LinkAction(ACT_REST,			eAnimStandIdle);
+	anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
+	anim().LinkAction(ACT_ATTACK,		eAnimAttack);
+	anim().LinkAction(ACT_STEAL,			eAnimWalkFwd);
+	anim().LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
 #ifdef DEBUG	
 	anim().accel_chain_test		();

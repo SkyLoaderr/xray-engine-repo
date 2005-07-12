@@ -39,6 +39,7 @@ namespace ControlCom {
 		eventAnimationEnd,
 		eventLegsAnimationEnd,
 		eventTorsoAnimationEnd,
+		eventAnimationSignal,
 		eventSoundStart,
 		eventSoundEnd,
 		eventParticlesStart,

@@ -8,6 +8,8 @@ void CControlAnimation::reinit()
 	inherited::reinit			();
 
 	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_object->Visual());
+
+	m_anim_events.clear			();
 }
 
 void CControlAnimation::reset_data()
@@ -20,7 +22,11 @@ void CControlAnimation::reset_data()
 
 void CControlAnimation::update_frame() 
 {
-	play();	
+	play			();	
+
+	check_events	(m_data.global);
+	check_events	(m_data.torso);
+	check_events	(m_data.legs);
 }
 
 static void __stdcall global_animation_end_callback(CBlend* B)
@@ -94,4 +100,44 @@ void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 
 	if ((part.motion != m_data.torso.motion) && part.blend)
 		m_object->CStepManager::on_animation_start(part.motion, part.blend);
+
+
+	ANIMATION_EVENT_MAP_IT it = m_anim_events.find(part.motion);
+	if (it != m_anim_events.end()) {
+		for (ANIMATION_EVENT_VEC_IT event_it = it->second.begin(); event_it != it->second.end(); ++event_it) {
+			event_it->handled = false;
+		}
+	}
+}
+
+
+void CControlAnimation::add_anim_event(MotionID motion, float time_perc, u32 id)
+{
+	SAnimationEvent event;
+	event.time_perc = time_perc;
+	event.event_id	= id;
+
+	m_anim_events[motion].push_back(event);
+}
+
+void CControlAnimation::check_events(SAnimationPart &part)
+{
+	if (part.motion.valid() && part.actual && part.blend) {
+		ANIMATION_EVENT_MAP_IT it = m_anim_events.find(part.motion);
+		if (it != m_anim_events.end()) {
+
+			float cur_perc = float(Device.dwTimeGlobal - part.time_started) / ((part.blend->timeTotal / part.blend->speed) * 1000);
+
+			for (ANIMATION_EVENT_VEC_IT event_it = it->second.begin(); event_it != it->second.end(); ++event_it) {
+				SAnimationEvent &event = *event_it;
+				if (!event.handled && (event.time_perc < cur_perc))  {
+					event.handled	= true;
+						
+					// gen event
+					SAnimationSignalEventData	anim_event(part.motion, event.time_perc, event.event_id);
+					m_man->notify				(ControlCom::eventAnimationSignal, &anim_event);
+				}
+			}
+		}
+	}
 }

@@ -348,7 +348,7 @@ struct SAAParam {
 	float		dist;
 };
 
-DEFINE_MAP(shared_str,	SAAParam, AA_MAP, AA_MAP_IT);
+DEFINE_MAP(MotionID,	SAAParam, AA_MAP, AA_MAP_IT);
 
 struct SCurrentAnimationInfo {
 	shared_str		name;

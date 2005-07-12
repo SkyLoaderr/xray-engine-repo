@@ -62,7 +62,7 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 		for (IT = IT_B; IT != IT_E; IT++) {
 
 
-			ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(*IT);
+			ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(*IT);
 			SVelocityParam		*param	= &item_it->second.velocity;
 			float				from	= param->velocity.linear * param->min_factor;
 			float				to		= param->velocity.linear * param->max_factor;
@@ -98,12 +98,12 @@ bool CControlAnimationBase::accel_chain_test()
 
 		VERIFY2(I->size() >= 2, error_msg);
 
-		ANIM_ITEM_MAP_IT	anim_from	= get_sd()->m_tAnims.find(*(I->begin()));
+		ANIM_ITEM_MAP_IT	anim_from	= m_tAnims.find(*(I->begin()));
 		ANIM_ITEM_MAP_IT	anim_to;
 
 		// Пройти по текущему вектору
 		for (SEQ_VECTOR_IT IT = I->begin() + 1; IT != I->end(); IT++) {
-			anim_to = get_sd()->m_tAnims.find(*IT);
+			anim_to = m_tAnims.find(*IT);
 
 			float from	=	anim_from->second.velocity.velocity.linear * anim_from->second.velocity.max_factor;
 			float to	=	anim_to->second.velocity.velocity.linear * anim_to->second.velocity.min_factor;

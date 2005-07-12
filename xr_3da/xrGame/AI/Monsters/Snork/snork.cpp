@@ -31,51 +31,44 @@ void CSnork::Load(LPCSTR section)
 	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 
-	if (anim().start_load_shared(CLS_ID)) {
+	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
+	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
+	SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+	SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+	SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+	SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+	SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
+	//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
-		SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
-		SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
-		SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
-		SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-		SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
-		SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
-		SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
-		//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
-
-		anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimWalkDamaged,	"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND);
-		anim().AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&velocity_run_dmg,	PS_STAND);
-		anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1,	&velocity_walk,		PS_STAND);
-		anim().AddAnim(eAnimRun,			"stand_run_",			-1,	&velocity_run,		PS_STAND);
-		anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
-		anim().AddAnim(eAnimDie,			"stand_die_",			0,  &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
-		anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND);
-		anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimWalkDamaged,	"stand_walk_damaged_",	-1,	&velocity_walk_dmg,	PS_STAND);
+	anim().AddAnim(eAnimRunDamaged,		"stand_run_damaged_",	-1,	&velocity_run_dmg,	PS_STAND);
+	anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
+	anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
+	anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1,	&velocity_walk,		PS_STAND);
+	anim().AddAnim(eAnimRun,			"stand_run_",			-1,	&velocity_run,		PS_STAND);
+	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
+	anim().AddAnim(eAnimDie,			"stand_die_",			0,  &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
+	anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND);
+	anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
 
 
-		anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-		anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-		anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-		anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		anim().LinkAction(ACT_WALK_BKWD,	eAnimWalkFwd);
-		anim().LinkAction(ACT_RUN,			eAnimRun);
-		anim().LinkAction(ACT_EAT,			eAnimEat);
-		anim().LinkAction(ACT_SLEEP,		eAnimStandIdle);
-		anim().LinkAction(ACT_REST,			eAnimStandIdle);
-		anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
-		anim().LinkAction(ACT_ATTACK,		eAnimAttack);
-		anim().LinkAction(ACT_STEAL,		eAnimSteal);
-		anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
-
-		anim().AA_Load(pSettings->r_string(section, "attack_params"));
-		
-		anim().finish_load_shared();
-	}
+	anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+	anim().LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
+	anim().LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
+	anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	anim().LinkAction(ACT_WALK_BKWD,	eAnimWalkFwd);
+	anim().LinkAction(ACT_RUN,			eAnimRun);
+	anim().LinkAction(ACT_EAT,			eAnimEat);
+	anim().LinkAction(ACT_SLEEP,		eAnimStandIdle);
+	anim().LinkAction(ACT_REST,			eAnimStandIdle);
+	anim().LinkAction(ACT_DRAG,			eAnimStandIdle);
+	anim().LinkAction(ACT_ATTACK,		eAnimAttack);
+	anim().LinkAction(ACT_STEAL,		eAnimSteal);
+	anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 
 #ifdef DEBUG	
 	anim().accel_chain_test		();
@@ -218,9 +211,9 @@ void CSnork::CheckSpecParams(u32 spec_params)
 
 void CSnork::HitEntityInJump(const CEntity *pEntity)
 {
-	SAAParam params;
-	anim().AA_GetParams	(params, "stand_attack_2_1");
-	HitEntity				(pEntity, params.hit_power, params.impulse, params.impulse_dir);
+	
+	SAAParam &params	= anim().AA_GetParams("stand_attack_2_1");
+	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
 bool CSnork::jump(CObject *enemy)

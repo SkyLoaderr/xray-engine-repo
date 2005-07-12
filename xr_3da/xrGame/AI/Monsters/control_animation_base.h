@@ -1,8 +1,7 @@
 #pragma once
 
-#include "ai_monster_shared_data.h"
-#include "../../../SkeletonAnimated.h"
 #include "control_combase.h"
+#include "ai_monster_defs.h"
 
 struct SEventVelocityBounce : public ControlCom::IEventData {
 	float	m_ratio;
@@ -12,8 +11,7 @@ struct SEventVelocityBounce : public ControlCom::IEventData {
 
 
 //////////////////////////////////////////////////////////////////////////
-class CControlAnimationBase :	public CSharedClass<_motion_shared, CLASS_ID>, 
-								public CControl_ComBase {
+class CControlAnimationBase : public CControl_ComBase {
 		typedef CControl_ComBase inherited;
 protected:
 
@@ -24,13 +22,11 @@ protected:
 
 		// исправления сосояния 'бега на месте'
 		TTime					time_start_stand;
-		EAction					prev_action;
 
 		// работа с анимациями атаки
 		TTime					aa_time_last_attack;	// время последнего нанесения хита
 
 		// -------------------------------------------------------------------------
-
 		u32						spec_params;			// дополнительные параметры
 
 		TTime					fx_time_last_play;
@@ -54,6 +50,19 @@ protected:
 
 		EMotionAnim					spec_anim; 
 
+		ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
+		MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
+		TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
+		ATTACK_ANIM				aa_all;				// список атак
+
+		t_fx_index				default_fx_indexes;
+		FX_MAP_STRING			fx_map_string;
+		FX_MAP_U16				fx_map_u16;
+		bool					map_converted;
+
+		AA_MAP					aa_map;
+
+
 protected:
 
 	ANIM_TO_MOTION_MAP			m_anim_motion_map;
@@ -72,7 +81,6 @@ public:
 	virtual void		on_start_control(ControlCom::EContolType type);
 	virtual void		on_stop_control	(ControlCom::EContolType type);
 	virtual void		update_frame	();
-
 
 			void		ScheduledInit	();
 
@@ -105,10 +113,9 @@ public:
 	EMotionAnim	GetCurAnim				() {return  cur_anim_info().motion;} 
 
 	// работа с анимациями атак
-	void		AA_Load					(LPCSTR section);
-	bool		AA_TimeTest				(SAAParam &params);
-	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
-	void		AA_GetParams			(SAAParam &params, LPCSTR anim_name);
+	void		AA_reload				(LPCSTR section);
+	SAAParam	&AA_GetParams			(LPCSTR anim_name);
+	SAAParam	&AA_GetParams			(MotionID motion);
 
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);
@@ -125,22 +132,16 @@ protected:
 
 	// дополнительные функции
 	EPState		GetState				(EMotionAnim a);
-
 	void		CheckReplacedAnim		();
 
 	CMotionDef	*get_motion_def			(ANIM_ITEM_MAP_IT &it, u32 index);
 
 public:
-
-	float		GetCurAnimTime			();
 	float		GetAnimSpeed			(EMotionAnim anim);
-
 	bool		IsStandCurAnim			();
-
 	void		ValidateAnimation		();
-
+	
 	//////////////////////////////////////////////////////////////////////////
-
 protected:
 	void		update					();
 
@@ -203,5 +204,7 @@ public:
 
 	void					select_animation	();
 	void					set_animation_speed	();
+
+	void					check_hit			(MotionID motion);
 };
 
