@@ -302,7 +302,7 @@ states = {
 				animation = "harmonica"
 			},
 
-	hello = {	weapon = "unstrapped",
+	hello = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
