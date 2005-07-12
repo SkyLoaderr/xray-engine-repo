@@ -169,7 +169,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pLeftHorisontalLine->SetWndPos(r.left, r.top - contractsOffset);
 			}
 
-			Frect r;
+//			Frect r;
 
 			EDiaryIDs id;
 			if (false/*m_pActorDiaryRoot->Find(pTVItem)*/)

@@ -34,6 +34,7 @@
 #include "../../object_handler_planner.h"
 #include "../../object_handler_space.h"
 #include "../../visual_memory_manager.h"
+#include "../../weapon.h"
 #include "ai_stalker_space.h"
 
 using namespace StalkerSpace;
@@ -76,12 +77,59 @@ float CAI_Stalker::GetWeaponAccuracy	() const
 
 void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
-	if (g_Alive()) {
-		D.setHP			(-movement().m_head.current.yaw,movement().m_head.current.pitch);
-		Center			(P);
-		P.mad			(D,.5f);
-		P.y				+= movement().body_state() == eBodyStateStand ? .75f : .15f;
+	if (!inventory().ActiveItem())
+		return;
+
+	CWeapon				*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
+	if (!weapon) {
+		P				= eye_matrix.c;
+		D				= eye_matrix.k;
+		return;
 	}
+
+	if (!g_Alive()) {
+		P				= weapon->get_LastFP();
+		D				= weapon->get_LastFD();
+		return;
+	}
+
+	switch (movement().body_state()) {
+		case eBodyStateStandDamaged : {
+//			P			= weapon->get_LastFP();
+//			D			= weapon->get_LastFD();
+			D.setHP		(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
+			Center		(P);
+			P.mad		(D,.5f);
+			P.y			+= .50f;
+			return;
+		}
+		case eBodyStateStand : {
+			if (movement().movement_type() == eMovementTypeStand) {
+				P		= eye_matrix.c;
+				D		= eye_matrix.k;
+			}
+			else {
+				D.setHP	(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
+				Center	(P);
+				P.mad	(D,.5f);
+				P.y		+= .50f;
+//				P		= weapon->get_LastFP();
+//				D		= weapon->get_LastFD();
+			}
+			return;
+		}
+		case eBodyStateCrouch : {
+			P			= eye_matrix.c;
+			D			= eye_matrix.k;
+			return;
+		}
+		default			: NODEFAULT;
+	}
+
+#ifdef DEBUG
+	P					= weapon->get_LastFP();
+	D					= weapon->get_LastFD();
+#endif
 }
 
 void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
@@ -334,11 +382,14 @@ bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &dire
 {
 	collide::ray_defs				ray_defs(position,direction,distance,0,collide::rqtBoth);
 	ray_query_param					params(this,memory().visual().transparency_threshold(),enemy);
+	BOOL							enabled = getEnabled();
+	setEnabled						(FALSE);
 	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params);
+	setEnabled						(enabled);
 	return							(params.m_result);
 }
 
-bool CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance) const
+bool CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance)
 {
 	collide::rq_results		rq_storage	;
 	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
