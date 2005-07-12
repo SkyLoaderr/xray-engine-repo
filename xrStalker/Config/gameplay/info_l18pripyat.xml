@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
     <info_portion id="pri_followers_start"></info_portion>
-    <info_portion id="pri_wave1_start_start"></info_portion>
+    <info_portion id="pri_wave1_start"></info_portion>
 </game_information_portions>
