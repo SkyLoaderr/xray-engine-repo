@@ -787,18 +787,75 @@ void test_precise_path	()
 		GraphEngineSpace::CBaseParameters(),
 		path_manager
 	);
+
 	if (failed)
 		return;
 	
-	xr_vector<u32>::const_iterator	I = path.begin();
-	xr_vector<u32>::const_iterator	E = path.end();
-	for ( ; I != E; ++I)
+	if (path.empty())
+		return;
+	
+	xr_vector<Fvector>		point_path;
+
+	{
+		xr_vector<u32>::const_iterator	I = path.begin(), J;
+		xr_vector<u32>::const_iterator	E = path.end();
+		for ( ; I != E; ) {
+			Fvector			current = ai().level_graph().vertex_position(*I);
+			for (J = I + 1; J != E; ++J) {
+				if (ai().level_graph().check_vertex_in_direction(*I,current,*J))
+					continue;
+				break;
+			}
+			
+			if (J == E) {
+				point_path.push_back(ai().level_graph().vertex_position(path.back()));
+				break;
+			}
+
+			point_path.push_back(ai().level_graph().vertex_position(*I));
+			I				= J-1;
+		}
+	}
+
+#if 0
+	{
+		xr_vector<u32>::const_iterator	I = path.begin();
+		xr_vector<u32>::const_iterator	E = path.end();
+		for ( ; I != E; ++I)
+			RCache.dbg_DrawAABB(
+				Fvector(ai().level_graph().vertex_position(*I)).add(Fvector().set(0.f,0.05f,0.f)),
+				.05f,
+				.05f,
+				.05f,
+				0xff00ff00
+			);
+	}
+#endif
+	{
+		Fvector							t1, t2;
+		xr_vector<Fvector>::iterator	I = point_path.begin(), J = I;
+		xr_vector<Fvector>::iterator	E = point_path.end();
+		for (++I; I != E; ++I, ++J) {
+			RCache.dbg_DrawAABB(
+				Fvector(*J).add(Fvector().set(0.f,0.25f,0.f)),
+				.25f,
+				.25f,
+				.25f,
+				0xff0000ff
+			);
+
+			t1 = Fvector(*J).add(Fvector().set(0.f,0.25f,0.f));
+			t2 = Fvector(*I).add(Fvector().set(0.f,0.25f,0.f));
+			RCache.dbg_DrawLINE(Fidentity,t1,t2,0xff00ff00);
+		}
+
 		RCache.dbg_DrawAABB(
-			Fvector(ai().level_graph().vertex_position(*I)).add(Fvector().set(0.f,0.05f,0.f)),
-			.05f,
-			.05f,
-			.05f,
-			0xff00ff00
+			Fvector(point_path.back()).add(Fvector().set(0.f,0.25f,0.f)),
+			.25f,
+			.25f,
+			.25f,
+			0xff0000ff
 		);
+	}
 }
 #endif
