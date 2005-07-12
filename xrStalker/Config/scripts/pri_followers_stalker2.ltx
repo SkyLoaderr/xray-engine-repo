@@ -25,8 +25,10 @@ combat_ignore_cond = always
 [camper@begin_mission]
 path_walk = pri_followers_stalker2_walk
 path_look = pri_followers_stalker2_look
+team = followers
 def_state_moving = rush
 def_state_campering = hide
 radius = 3
 no_retreat = true
 meet = meet@def
+on_signal = arrived | {-pri_wave1_start_start} %+pri_wave1_start_start%
