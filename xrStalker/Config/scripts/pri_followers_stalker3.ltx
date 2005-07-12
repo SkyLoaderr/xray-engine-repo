@@ -19,16 +19,29 @@ use_wpn = false
 [kamp@start]
 center_point = pri_start_kamp_point
 meet = meet@def
-on_info = {+pri_followers_start} camper@begin_mission
+on_info = {+pri_followers_start} camper@wave1
 combat_ignore_cond = always
 
-[camper@begin_mission]
-path_walk = pri_followers_stalker3_walk
-path_look = pri_followers_stalker3_look
+[camper@wave1]
+path_walk = pri_followers_stalker3_walk1
+path_look = pri_followers_stalker3_look1
 team = followers
 def_state_moving = rush
 def_state_campering = hide
 radius = 3
 no_retreat = true
 meet = meet@def
-on_signal = arrived | {-pri_wave1_start_start} %+pri_wave1_start_start%
+on_signal = arrived | {-pri_wave1_start_start} %+pri_wave1_start%
+on_signal2 = change | camper@wave2
+
+[camper@wave2]
+path_walk = pri_followers_stalker3_walk2
+path_look = pri_followers_stalker3_look2
+team = followers
+def_state_moving = rush
+def_state_campering = hide
+radius = 3
+no_retreat = true
+meet = meet@def
+;on_signal = arrived | {-pri_wave1_start_start} %+pri_wave1_start%
+;on_signal2 = change | camper@wave2
