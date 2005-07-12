@@ -62,6 +62,8 @@
 #	include "ai/stalker/ai_stalker.h"
 #endif
 
+//#define DEBUG_PRECISE_PATH
+
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
 u32			lvInterpSteps = 0;
@@ -416,7 +418,7 @@ void CLevel::OnFrame	()
 	m_level_sound_manager->Update		();
 }
 
-#if 0//def _DEBUG
+#ifdef DEBUG_PRECISE_PATH
 void test_precise_path	();
 #endif
 
@@ -442,7 +444,7 @@ void CLevel::OnRender()
 	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();
 
-#if 0//def _DEBUG
+#ifdef DEBUG_PRECISE_PATH
 	test_precise_path		();
 #endif
 
@@ -763,7 +765,7 @@ u32	GameID()
 	return Game().Type();
 }
 
-#if 0//def _DEBUG
+#ifdef DEBUG_PRECISE_PATH
 #include "path_manager_level_precise.h"
 #include "graph_engine.h"
 #include "graph_engine_space.h"
@@ -784,8 +786,9 @@ void test_precise_path	()
 		0,
 		ai().level_graph().header().vertex_count() - 1,
 		&path,
-		GraphEngineSpace::CBaseParameters(),
-		path_manager
+		GraphEngineSpace::CBaseParameters()
+//		,
+//		path_manager
 	);
 
 	if (failed)
@@ -817,7 +820,7 @@ void test_precise_path	()
 		}
 	}
 
-#if 0
+#if 1
 	{
 		xr_vector<u32>::const_iterator	I = path.begin();
 		xr_vector<u32>::const_iterator	E = path.end();

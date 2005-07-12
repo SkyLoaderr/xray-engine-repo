@@ -47,8 +47,15 @@ protected:
 
 protected:
 	_Graph::CVertex		*best_node;
-	Fvector				m_dest_position;
-	Fvector				m_current_position;
+	float				m_distance_xz;
+	float				m_sqr_distance_xz;
+	float				m_square_size_y;
+	int					x1;
+	int					y1;
+	int					z1;
+	int					x3;
+	int					y3;
+	int					z3;
 
 public:
 	virtual				~CLevelPathManagerPrecise	();

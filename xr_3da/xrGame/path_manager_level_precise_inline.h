@@ -52,19 +52,30 @@ TEMPLATE_SPECIALIZATION
 IC	void CLevelPathManager::init			()
 {
 	VERIFY					(graph);
-	m_dest_position			= graph->vertex_position(goal_node_index);
+
+	m_distance_xz			= graph->header().cell_size();
+	m_sqr_distance_xz		= _sqr(graph->header().cell_size());
+	m_square_size_y			= _sqr((float)(graph->header().factor_y()/32767.0));
+	
+	const _Graph::CVertex	&tNode1	= *graph->vertex(start_node_index);
+	graph->unpack_xz		(tNode1,x1,z1);
+	y1						= tNode1.position().y();
+	
+	const _Graph::CVertex	&tNode2	= *graph->vertex(goal_node_index);
+	graph->unpack_xz		(tNode2,x3,z3);
+	y3						= tNode2.position().y();
 }
 
 TEMPLATE_SPECIALIZATION
 IC	_dist_type CLevelPathManager::evaluate	(const _index_type &node_index1, const _index_type &node_index2, const _Graph::const_iterator &/**i/**/)
 {
-	return					(1.f);//m_current_position.distance_to_xz(graph->vertex_position(node_index2)));
+	return					(1.f);//m_distance_xz);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	_dist_type CLevelPathManager::estimate	(const _index_type &node_index) const
 {
-	return					(m_current_position.distance_to_xz(m_dest_position));
+	return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x1) + _sqr(z3 - z1))/**/ + m_square_size_y*(float)_sqr(y3 - y1)/**/)));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -74,7 +85,8 @@ IC	bool CLevelPathManager::is_goal_reached	(const _index_type &node_index)
 		return				(true);
 	
 	best_node				= graph->vertex(node_index);
-	m_current_position		= graph->vertex_position(node_index);
+	graph->unpack_xz		(best_node,x1,z1);
+	y1						= best_node->position().y();
 
 	return					(false);
 }
