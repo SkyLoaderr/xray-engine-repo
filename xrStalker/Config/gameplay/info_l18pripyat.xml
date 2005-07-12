@@ -3,4 +3,8 @@
     <info_portion id="pri_followers_start"></info_portion>
     <info_portion id="pri_wave1_start"></info_portion>
     <info_portion id="pri_wave1_hide"></info_portion>
+    <info_portion id="pri_wave1_monolith1_dead"></info_portion>
+    <info_portion id="pri_wave1_monolith2_dead"></info_portion>
+    <info_portion id="pri_wave1_monolith3_dead"></info_portion>
+    <info_portion id="pri_wave1_monolith4_dead"></info_portion>
 </game_information_portions>
