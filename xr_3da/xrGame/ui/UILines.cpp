@@ -12,6 +12,7 @@
 #include "../HUDmanager.h"
 #include "UIXmlInit.h"
 #include "uilinestd.h"
+#include "../MainUI.h"
 
 
 CUILines::CUILines()
@@ -25,12 +26,30 @@ CUILines::CUILines()
 	m_bShowMe = true;
 	m_wndPos.x = 0;
 	m_wndPos.y = 0;
-	uFlags.set(flNeedReparse, false);
+	uFlags.set(flNeedReparse,	false);
+	uFlags.set(flComplexMode,	true);
+	uFlags.set(flPasswordMode,	false);
 	m_pFont = UI()->Font()->pFontLetterica16Russian;
 }
 
 CUILines::~CUILines(){
 
+}
+
+void CUILines::SetTextComplexMode(bool mode){
+	uFlags.set(flComplexMode, mode);
+	if (mode)
+		uFlags.set(flPasswordMode, false);
+}
+
+bool CUILines::GetTextComplexMode(){
+	return uFlags.is(flComplexMode) ? true : false;
+}
+
+void CUILines::SetPasswordMode(bool mode){
+	uFlags.set(flPasswordMode, mode);
+	if (mode)
+		uFlags.set(flComplexMode, false);
 }
 
 void CUILines::Init(float x, float y, float width, float heigt){	
@@ -101,38 +120,76 @@ float CUILines::GetVisibleHeight() const{
 }
 
 void CUILines::Draw(float x, float y){
+	static string256 passText;
+
 	if (m_text.empty())
 		return;
 
-	static float my_width = 0;
-
-	if (m_oldWidth != m_wndSize.x)
-	{
-		uFlags.set(flNeedReparse, true);
-		m_oldWidth = m_wndSize.x;
-	}
-
-	if (uFlags.is(flNeedReparse))
-		ParseText();
-
 	R_ASSERT(m_pFont);
-
 	m_pFont->SetColor(m_dwTextColor);
-	m_pFont->SetAligment(m_eTextAlign);
 
-	Fvector2 pos;
-	// get vertical indent
-	pos.y= y + GetVIndentByAlign();
-	float height	= m_pFont->CurrentHeightRel();
-	u32 size		= m_lines.size();
-
-	float interval = m_interval*m_pFont->CurrentHeightRel();
-
-	for (int i=0; i<(int)size; i++)
+	if (!uFlags.is(flComplexMode))
 	{
- 		pos.x = x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
-		m_lines[i].Draw(m_pFont, pos.x, pos.y);
-		pos.y+= height + interval;
+		Fvector2 text_pos;
+		text_pos.set(0,0);
+
+		text_pos.x = x + GetIndentByAlign(m_pFont->SizeOfRel(m_text.c_str()));
+		switch(m_eVTextAlign) {
+		case valTop: 
+			text_pos.y = y + 0; break;
+		case valCenter:
+			text_pos.y = y + (m_wndSize.y - m_pFont->CurrentHeightRel())/2; break;
+		case valBotton:
+			text_pos.y = y + m_wndSize.y - m_pFont->CurrentHeightRel(); break;
+		default:
+			NODEFAULT;
+		}
+
+		Frect r;
+		r.x1=0.0f; r.x2=UI_BASE_WIDTH;
+		r.y1=0.0f; r.y2=UI_BASE_HEIGHT;
+
+		if (uFlags.is(flPasswordMode))
+		{
+			int sz = m_text.size();
+			for (int i = 0; i < sz; i++)
+				passText[i] = '*';
+			passText[sz] = 0;
+			UI()->OutText(m_pFont, r, text_pos.x, text_pos.y, "%s", passText);
+		}
+		else
+            UI()->OutText(m_pFont, r, text_pos.x, text_pos.y, "%s", m_text.c_str());
+	}
+	else
+	{
+		static float my_width = 0;
+
+		if (m_oldWidth != m_wndSize.x)
+		{
+			uFlags.set(flNeedReparse, true);
+			m_oldWidth = m_wndSize.x;
+		}
+
+		if (uFlags.is(flNeedReparse))
+			ParseText();
+
+		//	m_pFont->SetAligment(m_eTextAlign);
+
+		Fvector2 pos;
+		// get vertical indent
+		pos.y= y + GetVIndentByAlign();
+		float height	= m_pFont->CurrentHeightRel();
+		u32 size		= m_lines.size();
+
+		float interval = m_interval*m_pFont->CurrentHeightRel();
+
+		for (int i=0; i<(int)size; i++)
+		{
+			pos.x = x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
+			m_lines[i].Draw(m_pFont, pos.x, pos.y);
+			pos.y+= height + interval;
+		}
+
 	}
 
 	m_pFont->OnRender();

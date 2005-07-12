@@ -152,7 +152,7 @@
 			<options_item entry="net_srv_name" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
-		<edit_password x="150" y="65" width="275" height="21">
+		<edit_password x="150" y="65" width="275" height="21" password="1">		
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>
 		

@@ -15,6 +15,7 @@
 class CUILines : public IUITextControl,
 				 public CUISimpleWindow,
 				 public CDeviceResetNotifier {
+	 friend class CUIEditBox;
 public:
 	CUILines();
 	virtual ~CUILines();
@@ -34,6 +35,11 @@ public:
 	virtual ETextAlignment	GetTextAlignment()							{return m_eTextAlign;}
 			void			SetVTextAlignment(EVTextAlignment al)		{m_eVTextAlign = al;}
 			EVTextAlignment GetVTextAlignment()							{return m_eVTextAlign;}
+
+	// additional methos
+			void			SetTextComplexMode(bool mode = true);
+			bool			GetTextComplexMode();
+			void			SetPasswordMode(bool mode = true);
 
     // IUISimpleWindow methods
 	virtual void			Init(float x, float y, float width, float height);
@@ -78,7 +84,9 @@ protected:
 	CGameFont*		m_pFont;
 
 	enum {
-		flNeedReparse = (1<<0)
+		flNeedReparse = (1<<0),
+		flComplexMode = (1<<1),
+		flPasswordMode = (1<<2)
 	};
 	Flags32			uFlags;
 private:

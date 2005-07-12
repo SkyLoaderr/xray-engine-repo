@@ -680,6 +680,8 @@ bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEd
 		if (xml_doc.ReadAttribInt(path,index,"float",0))
 			pWnd->SetFloatNumbers(true);
 	}
+	if (xml_doc.ReadAttribInt(path, index, "password",0))
+		pWnd->SetPasswordMode();
 
 	return true;
 }

@@ -36,6 +36,7 @@ public:
 	virtual void	Enable			(bool status);
 			void	SetNumbersOnly	(bool status);
 			void	SetFloatNumbers	(bool status);
+			void	SetPasswordMode	(bool mode = true);
 protected:
 
 	bool KeyPressed(int dik);

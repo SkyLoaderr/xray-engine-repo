@@ -46,11 +46,16 @@ CUIEditBox::CUIEditBox(void)
 	m_cursorColor = 0xAAFFFF00;
 //	m_pAnimation->SetColorToModify(&m_cursorColor);
 	m_pAnimation->Cyclic(true);
+	m_lines.SetTextComplexMode(false);
 }
 
 CUIEditBox::~CUIEditBox(void)
 {
 }	
+
+void CUIEditBox::SetPasswordMode(bool mode){
+	m_lines.SetPasswordMode(mode);
+}
 
 void CUIEditBox::SetCurrentValue(){
 	SetText(GetOptStringValue());
@@ -308,24 +313,28 @@ void  CUIEditBox::Draw()
 
 	if(m_bInputFocus)
 	{	
-		//нарисовать курсор
 		Frect rect = GetAbsoluteRect();
 		float outX, outY;
 		Frect scr_rect;
 		scr_rect.set(0,0,1024,768);
 
-#pragma todo("Satan->Satan: seems i must to optimize this bullshit")
-		xr_string tmp_str = m_lines.GetText();
-		tmp_str.assign(tmp_str.begin(), tmp_str.begin()+m_iCursorPos);
-
-		outX = GetFont()->SizeOf(tmp_str.c_str());
-		outY = (GetHeight() - GetFont()->CurrentHeightRel())/2;
-
+		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
+		if (m_lines.uFlags.is(CUILines::flPasswordMode))
+		{
+			outX = m_lines.m_pFont->SizeOfRel("*")*m_iCursorPos;
+		}
+		else
+		{
+			xr_string tmp_str;
+			tmp_str.assign(m_lines.m_text.begin(), m_lines.m_text.begin()+m_iCursorPos);
+			outX = m_lines.m_pFont->SizeOfRel(tmp_str.c_str());
+		}
 		m_pAnimation->Update();
-		GetFont()->SetColor(subst_alpha(m_cursorColor, color_get_A(m_pAnimation->GetColor())));
-		//GetFont()->SetColor(m_cursorColor);
-		UI()->OutText(GetFont(), scr_rect, (float)rect.left+outX, 
-					   (float)rect.top+outY,  "|");
+		m_lines.m_pFont->SetColor(subst_alpha(m_cursorColor, color_get_A(m_pAnimation->GetColor())));
+
+		UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
+			rect.top+outY,  "|");
+
 		GetFont()->OnRender();
 	}	
 }
