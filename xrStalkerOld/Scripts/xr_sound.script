@@ -23,7 +23,6 @@ function get_sound(path, tt, npc)
 			tt.min_snd = path.min_snd
 			tt.max_snd = path.max_snd
 			tt.rnd_snd = path.rnd_snd
-			
 		end
 	else
 		get_sound(path.types[path.exec(path.types, npc, target)], tt)
@@ -173,7 +172,10 @@ function play_sound(npc, themes, timeout)
 		if snd.min_snd == nil then return end
 		local npc_id = npc:id()
 		local group_table = xr_sound.group_idle[get_key(npc)]
-		group_table.idle = math.random(snd.min_snd, snd.max_snd)*1000			
+		group_table.idle = math.random(snd.min_snd, snd.max_snd)*1000
+		if group_table.last_snd	== nil then
+			group_table.last_snd = {}
+		end
 		-- необходимо ли нам играть into или rnd звуки
 		if snd.into_max ~= nil and
 			snd.into_max > 0 and
@@ -197,9 +199,12 @@ function play_sound(npc, themes, timeout)
 			if snd.rnd_max == 1 then
 				s = 0
 			else
-				if db.sound[npc_id].last_snd[snd.rnd_id] ~= nil then
+				-- ≈сли прошлый раз проигрывалс€ такой же набор тем
+				-- то учитывать последний звук дл€ группы.
+--				if db.sound[npc_id].last_snd[snd.rnd_id] ~= nil then
+				if group_table.last_snd[snd.rnd_id] ~= nil then
 					s = math.random(0, snd.rnd_max-2)
-					if s >= db.sound[npc_id].last_snd[snd.rnd_id] then s = s + 1 end
+					if s >= group_table.last_snd[snd.rnd_id] then s = s + 1 end
 				else
 					s = math.random(0, snd.rnd_max-1)					
 				end	
@@ -210,7 +215,8 @@ function play_sound(npc, themes, timeout)
 			end							
 			printf("*SND* play rnd [%s]", s)
 			npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, s)
-			db.sound[npc_id].last_snd[snd.rnd_id] = s
+			--db.sound[npc_id].last_snd[snd.rnd_id] = s
+			group_table.last_snd[snd.rnd_id] = s
 		end		
 	end			
 end
