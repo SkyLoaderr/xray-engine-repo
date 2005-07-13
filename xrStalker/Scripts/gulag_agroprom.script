@@ -8,16 +8,7 @@ function load_job( sj, gname, type, squad, groups )
 	------------------ НИИ Агропром. База военных ------------------------------------------
 	-- состояния: 0-день, 1-ночь, 2-пересменка, 3-тревога
 	if type == "agr_nii" then
-		-- снайпер на вышке
-		t = { section = "logic@agr_nii_tower_sniper",
-			idle = 0,
-			prior = 10, state = {0,1,2,3},
-			predicate = function(obj)
-			            	return obj:name() == "agr_nii_tower_sniper"
-			            end,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
+
 		-- командир
 		t = { section = "logic@agr_nii_day_commander",
 			idle = 0,

@@ -1,13 +1,6 @@
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. База военных на НИИ Агропром
 ;-------------------------------------------------------------------------------------------------
-;-------------------- снайпер на вышке --------------------
-[logic@agr_nii_tower_sniper]
-active = camper@agr_nii_tower_sniper
-
-[camper@agr_nii_tower_sniper]
-path_walk = tower_sniper_walk
-path_look = tower_sniper_look
 
 ;---------------------- командир ---------------------
 [logic@agr_nii_day_commander]
@@ -34,7 +27,7 @@ path_look = alarm_commander_look
 
 ;------------------ пост на северных воротах -----------------------
 [logic@agr_nii_north_gate_walker1]
-active = {-agr_nii_alarm} walker1@agr_nii_north_gate, camper@agr_nii_north_gate_alarm
+active = {-agr_nii_alarm} walker1@agr_nii_north_gate, camper1@agr_nii_north_gate_alarm
 
 [walker1@agr_nii_north_gate]
 path_walk = north_gate_walk1
