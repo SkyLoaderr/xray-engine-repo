@@ -11,8 +11,8 @@
 
 #define CStateBloodsuckerVampireAbstract CStateBloodsuckerVampire<_Object>
 
-#define RUN_AWAY_DISTANCE			50.f
-#define TIME_VAMPIRE_STATE_DELAY	50000
+#define RUN_AWAY_DISTANCE			5.f //50.f
+#define TIME_VAMPIRE_STATE_DELAY	5000 // 50000
 
 TEMPLATE_SPECIALIZATION
 CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inherited(obj)

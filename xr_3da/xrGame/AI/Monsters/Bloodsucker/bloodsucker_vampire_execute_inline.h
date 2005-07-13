@@ -22,15 +22,7 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
 
 	object->CControlledActor::take_control	();
 
-	CKinematics *pK = smart_cast<CKinematics*>(object->Visual());
-	Fmatrix bone_transform;
-	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
-
-	Fmatrix global_transform;
-	global_transform.set(object->XFORM());
-	global_transform.mulB(bone_transform);
-
-	object->CControlledActor::look_point	(2.0f, global_transform.c);
+	look_head				();
 
 	m_action				= eActionPrepare;
 	time_vampire_started	= 0;
@@ -50,17 +42,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 		m_effector_activated			= true;
 	}
 	
-	
-	CKinematics *pK = smart_cast<CKinematics*>(object->Visual());
-	Fmatrix bone_transform;
-	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
-
-	Fmatrix global_transform;
-	global_transform.set(object->XFORM());
-	global_transform.mulB(bone_transform);
-
-	if (object->CControlledActor::is_controlled())
-		object->CControlledActor::update_look_point(global_transform.c);
+	look_head							();
 
 	switch (m_action) {
 		case eActionPrepare:
@@ -158,6 +140,19 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 
 //////////////////////////////////////////////////////////////////////////
 
+TEMPLATE_SPECIALIZATION
+void CStateBloodsuckerVampireExecuteAbstract::look_head()
+{
+	CKinematics *pK = smart_cast<CKinematics*>(object->Visual());
+	Fmatrix bone_transform;
+	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
+
+	Fmatrix global_transform;
+	global_transform.set(object->XFORM());
+	global_transform.mulB(bone_transform);
+
+	object->CControlledActor::look_point	(global_transform.c);
+}
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateBloodsuckerVampireExecuteAbstract

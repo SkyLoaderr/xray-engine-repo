@@ -31,6 +31,8 @@ private:
 			void		execute_vampire_prepare			();
 			void		execute_vampire_continue		();
 			void		execute_vampire_hit				();
+
+			void		look_head						();
 };
 
 #include "bloodsucker_vampire_execute_inline.h"
