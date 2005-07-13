@@ -51,7 +51,16 @@ void CLevel::ClientReceive()
 				if (OnServer()) break;
 				//-------------------------------------------
 				IClientStatistic pStat = Level().GetStatistic();
-				u32 dTime = Level().timeServer() - P->timeReceive + pStat.getPing();
+				u32 dTime = 0;
+				
+				if ((Level().timeServer() + pStat.getPing()) < P->timeReceive)
+				{
+					Msg("! TimeServer[%d] < TimeReceive[%d]", Level().timeServer(), P->timeReceive);
+					dTime = pStat.getPing();
+				}
+				else
+					dTime = Level().timeServer() - P->timeReceive + pStat.getPing();
+
 				u32 NumSteps = ph_world->CalcNumSteps(dTime);
 				SetNumCrSteps(NumSteps);
 			}break;
@@ -68,7 +77,14 @@ void CLevel::ClientReceive()
 				if (pObjects4CrPr.empty() && pActors4CrPr.empty())
 					break;
 
-				u32 dTime = Level().timeServer() - P->timeReceive + Ping;
+				u32 dTime = 0;
+				if ((Level().timeServer() + Ping) < P->timeReceive)
+				{
+					Msg("! TimeServer[%d] < TimeReceive[%d]", Level().timeServer(), P->timeReceive);
+					dTime = Ping;
+				}
+				else					
+					dTime = Level().timeServer() - P->timeReceive + Ping;
 				u32 NumSteps = ph_world->CalcNumSteps(dTime);
 				SetNumCrSteps(NumSteps);
 
