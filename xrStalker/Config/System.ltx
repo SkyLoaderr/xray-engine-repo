@@ -180,15 +180,15 @@ GroupControlSection	= spawn_group
 $spawn 				= "physics\object"
 $prefetch 			= 8
 class				= O_PHYSIC
-remove_time			= 120; after this time  unbreaked removable bone will be removed
+remove_time			= 60; after this time  unbreaked removable bone will be removed
 script_binding      = bind_physic_object.init
 
 [physic_destroyable_object]
 GroupControlSection	= spawn_group
 $spawn 				= "physics\destroyable_object"
-$prefetch 			= 8
+;$prefetch 			= 8
 class				= P_DSTRBL
-remove_time			= 12; after this time  unbreaked removable bone will be removed
+remove_time			= 60; after this time  unbreaked removable bone will be removed
 script_binding      = bind_physic_object.init
 
 [search_light]
