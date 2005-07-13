@@ -1,0 +1,1215 @@
+;-------------------------------------------------------------------------------------------------
+;-- Darkvalley Bandits camp
+;-------------------------------------------------------------------------------------------------
+
+[logic@val_lager_bandits_leader_normal]
+active = walker1@val_lager_bandits_leader_normal
+combat_ignore = combat_ignore@val_lager_bandits_leader_normal
+
+[walker1@val_lager_bandits_leader_normal]
+path_walk = leader_walk
+path_look = leader_look
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_leader_alarm]
+active = walker1@val_lager_bandits_leader_alarm
+combat_ignore = combat_ignore@val_lager_bandits_leader_alarm
+
+[walker1@val_lager_bandits_leader_alarm]
+path_walk = leader_alarm_walk
+path_look = leader_alarm_look
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_bodyguard_normal1]
+active = walker1@val_lager_bandits_bodyguard_normal1
+combat_ignore = combat_ignore@val_lager_bandits_bodyguard_normal1
+
+[walker1@val_lager_bandits_bodyguard_normal1]
+path_walk = bodyguard_walk1
+path_look = bodyguard_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_bodyguard_alarm1]
+active = walker1@val_lager_bandits_bodyguard_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_bodyguard_alarm1
+
+[walker1@val_lager_bandits_bodyguard_alarm1]
+path_walk = bodyguard_alarm_walk1
+path_look = bodyguard_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_bodyguard_normal2]
+active = walker1@val_lager_bandits_bodyguard_normal2
+combat_ignore = combat_ignore@val_lager_bandits_bodyguard_normal2
+
+[walker1@val_lager_bandits_bodyguard_normal2]
+path_walk = bodyguard_walk2
+path_look = bodyguard_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_bodyguard_alarm2]
+active = walker1@val_lager_bandits_bodyguard_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_bodyguard_alarm2
+
+[walker1@val_lager_bandits_bodyguard_alarm2]
+path_walk = bodyguard_alarm_walk2
+path_look = bodyguard_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_bodyguard_normal3]
+active = walker1@val_lager_bandits_bodyguard_normal3
+combat_ignore = combat_ignore@val_lager_bandits_bodyguard_normal3
+
+[walker1@val_lager_bandits_bodyguard_normal3]
+path_walk = bodyguard_walk3
+path_look = bodyguard_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_bodyguard_alarm3]
+active = walker1@val_lager_bandits_bodyguard_alarm3
+combat_ignore = combat_ignore@val_lager_bandits_bodyguard_alarm3
+
+[walker1@val_lager_bandits_bodyguard_alarm3]
+path_walk = bodyguard_alarm_walk3
+path_look = bodyguard_alarm_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_guard_normal1]
+active = walker1@val_lager_bandits_guard_normal1
+combat_ignore = combat_ignore@val_lager_bandits_guard_normal1
+
+[walker1@val_lager_bandits_guard_normal1]
+path_walk = guard_walk1
+path_look = guard_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_guard_alarm1]
+active = walker1@val_lager_bandits_guard_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_guard_alarm1
+
+[walker1@val_lager_bandits_guard_alarm1]
+path_walk = guard_alarm_walk1
+path_look = guard_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_guard_normal2]
+active = walker1@val_lager_bandits_guard_normal2
+combat_ignore = combat_ignore@val_lager_bandits_guard_normal2
+
+[walker1@val_lager_bandits_guard_normal2]
+path_walk = guard_walk2
+path_look = guard_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_guard_alarm2]
+active = walker1@val_lager_bandits_guard_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_guard_alarm2
+
+[walker1@val_lager_bandits_guard_alarm2]
+path_walk = guard_alarm_walk2
+path_look = guard_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_patrol_normal1]
+active = walker1@val_lager_bandits_patrol_normal1
+combat_ignore = combat_ignore@val_lager_bandits_patrol_normal1
+
+[walker1@val_lager_bandits_patrol_normal1]
+path_walk = patrol_walk1
+path_look = patrol_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_patrol_alarm1]
+active = walker1@val_lager_bandits_patrol_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_patrol_alarm1
+
+[walker1@val_lager_bandits_patrol_alarm1]
+path_walk = patrol_alarm_walk1
+path_look = patrol_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_patrol_normal2]
+active = walker1@val_lager_bandits_patrol_normal2
+combat_ignore = combat_ignore@val_lager_bandits_patrol_normal2
+
+[walker1@val_lager_bandits_patrol_normal2]
+path_walk = patrol_walk2
+path_look = patrol_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_patrol_alarm2]
+active = walker1@val_lager_bandits_patrol_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_patrol_alarm2
+
+[walker1@val_lager_bandits_patrol_alarm2]
+path_walk = patrol_alarm_walk2
+path_look = patrol_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_patrol_normal3]
+active = walker1@val_lager_bandits_patrol_normal3
+combat_ignore = combat_ignore@val_lager_bandits_patrol_normal3
+
+[walker1@val_lager_bandits_patrol_normal3]
+path_walk = patrol_walk3
+path_look = patrol_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_patrol_alarm3]
+active = walker1@val_lager_bandits_patrol_alarm3
+combat_ignore = combat_ignore@val_lager_bandits_patrol_alarm3
+
+[walker1@val_lager_bandits_patrol_alarm3]
+path_walk = patrol_alarm_walk3
+path_look = patrol_alarm_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_patrol_normal4]
+active = walker1@val_lager_bandits_patrol_normal4
+combat_ignore = combat_ignore@val_lager_bandits_patrol_normal4
+
+[walker1@val_lager_bandits_patrol_normal4]
+path_walk = patrol_walk4
+path_look = patrol_look4
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_patrol_alarm4]
+active = walker1@val_lager_bandits_patrol_alarm4
+combat_ignore = combat_ignore@val_lager_bandits_patrol_alarm4
+
+[walker1@val_lager_bandits_patrol_alarm4]
+path_walk = patrol_alarm_walk4
+path_look = patrol_alarm_look4
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_sniper_normal1]
+active = camper1@val_lager_bandits_sniper_normal1
+combat_ignore = combat_ignore@val_lager_bandits_sniper_normal1
+
+[camper1@val_lager_bandits_sniper_normal1]
+path_walk = sniper_walk1
+path_look = sniper_look1
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_sniper_alarm1]
+active = camper1@val_lager_bandits_sniper_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_sniper_alarm1
+
+[camper1@val_lager_bandits_sniper_alarm1]
+path_walk = sniper_alarm_walk1
+path_look = sniper_alarm_look1
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_sniper_normal2]
+active = camper1@val_lager_bandits_sniper_normal2
+combat_ignore = combat_ignore@val_lager_bandits_sniper_normal2
+
+[camper1@val_lager_bandits_sniper_normal2]
+path_walk = sniper_walk2
+path_look = sniper_look2
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_sniper_alarm2]
+active = camper1@val_lager_bandits_sniper_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_sniper_alarm2
+
+[camper1@val_lager_bandits_sniper_alarm2]
+path_walk = sniper_alarm_walk2
+path_look = sniper_alarm_look2
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = threat
+def_state_campering_fire = threat_fire
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp1_normal1]
+active = kamp1@val_lager_bandits_kamp1_normal1
+combat_ignore = combat_ignore@val_lager_bandits_kamp1_normal1
+
+[kamp1@val_lager_bandits_kamp1_normal1]
+center_point = kamp1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp1_alarm1]
+active = walker1@val_lager_bandits_kamp1_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_kamp1_alarm1
+
+[walker1@val_lager_bandits_kamp1_alarm1]
+path_walk = kamp1_alarm_walk1
+path_look = kamp1_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp1_normal2]
+active = kamp1@val_lager_bandits_kamp1_normal2
+combat_ignore = combat_ignore@val_lager_bandits_kamp1_normal2
+
+[kamp1@val_lager_bandits_kamp1_normal2]
+center_point = kamp1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp1_alarm2]
+active = walker1@val_lager_bandits_kamp1_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_kamp1_alarm2
+
+[walker1@val_lager_bandits_kamp1_alarm2]
+path_walk = kamp1_alarm_walk2
+path_look = kamp1_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp1_normal3]
+active = kamp1@val_lager_bandits_kamp1_normal3
+combat_ignore = combat_ignore@val_lager_bandits_kamp1_normal3
+
+[kamp1@val_lager_bandits_kamp1_normal3]
+center_point = kamp1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp1_alarm3]
+active = walker1@val_lager_bandits_kamp1_alarm3
+combat_ignore = combat_ignore@val_lager_bandits_kamp1_alarm3
+
+[walker1@val_lager_bandits_kamp1_alarm3]
+path_walk = kamp1_alarm_walk3
+path_look = kamp1_alarm_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp2_normal1]
+active = kamp1@val_lager_bandits_kamp2_normal1
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_normal1
+
+[kamp1@val_lager_bandits_kamp2_normal1]
+center_point = kamp2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp2_alarm1]
+active = walker1@val_lager_bandits_kamp2_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_alarm1
+
+[walker1@val_lager_bandits_kamp2_alarm1]
+path_walk = kamp2_alarm_walk1
+path_look = kamp2_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp2_normal2]
+active = kamp1@val_lager_bandits_kamp2_normal2
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_normal2
+
+[kamp1@val_lager_bandits_kamp2_normal2]
+center_point = kamp2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp2_alarm2]
+active = walker1@val_lager_bandits_kamp2_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_alarm2
+
+[walker1@val_lager_bandits_kamp2_alarm2]
+path_walk = kamp2_alarm_walk2
+path_look = kamp2_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp3_normal1]
+active = kamp1@val_lager_bandits_kamp3_normal1
+combat_ignore = combat_ignore@val_lager_bandits_kamp3_normal1
+
+[kamp1@val_lager_bandits_kamp3_normal1]
+center_point = kamp3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp3_alarm1]
+active = walker1@val_lager_bandits_kamp3_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_kamp3_alarm1
+
+[walker1@val_lager_bandits_kamp3_alarm1]
+path_walk = kamp3_alarm_walk1
+path_look = kamp3_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp3_normal2]
+active = kamp1@val_lager_bandits_kamp3_normal2
+combat_ignore = combat_ignore@val_lager_bandits_kamp3_normal2
+
+[kamp1@val_lager_bandits_kamp3_normal2]
+center_point = kamp3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp3_alarm2]
+active = walker1@val_lager_bandits_kamp3_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_kamp3_alarm2
+
+[walker1@val_lager_bandits_kamp3_alarm2]
+path_walk = kamp3_alarm_walk2
+path_look = kamp3_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_sleeper_normal1]
+active = sleeper1@val_lager_bandits_sleeper_normal1
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_normal1
+
+[sleeper1@val_lager_bandits_sleeper_normal1]
+path_main = sleeper1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_sleeper_alarm1]
+active = walker1@val_lager_bandits_sleeper_alarm1
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_alarm1
+
+[walker1@val_lager_bandits_sleeper_alarm1]
+path_walk = sleeper_alarm_walk1
+path_look = sleeper_alarm_look1
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_sleeper_normal2]
+active = sleeper1@val_lager_bandits_sleeper_normal2
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_normal2
+
+[sleeper1@val_lager_bandits_sleeper_normal2]
+path_main = sleeper2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_sleeper_alarm2]
+active = walker1@val_lager_bandits_sleeper_alarm2
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_alarm2
+
+[walker1@val_lager_bandits_sleeper_alarm2]
+path_walk = sleeper_alarm_walk2
+path_look = sleeper_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_sleeper_normal3]
+active = sleeper1@val_lager_bandits_sleeper_normal3
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_normal3
+
+[sleeper1@val_lager_bandits_sleeper_normal3]
+path_main = sleeper3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_sleeper_alarm3]
+active = walker1@val_lager_bandits_sleeper_alarm3
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_alarm3
+
+[walker1@val_lager_bandits_sleeper_alarm3]
+path_walk = sleeper_alarm_walk3
+path_look = sleeper_alarm_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_sleeper_normal4]
+active = sleeper1@val_lager_bandits_sleeper_normal4
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_normal4
+
+[sleeper1@val_lager_bandits_sleeper_normal4]
+path_main = sleeper4
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_sleeper_alarm4]
+active = walker1@val_lager_bandits_sleeper_alarm4
+combat_ignore = combat_ignore@val_lager_bandits_sleeper_alarm4
+
+[walker1@val_lager_bandits_sleeper_alarm4]
+path_walk = sleeper_alarm_walk4
+path_look = sleeper_alarm_look4
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+
+;-------------------------------------------------------------------------------------------------
+;-- Darkvalley Monolith base
+;-------------------------------------------------------------------------------------------------
+
+;--- PATROL --------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_patrol_normal1]
+active = walker1@val_monolith_base_patrol_normal1
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal1
+
+[walker1@val_monolith_base_patrol_normal1]
+path_walk = in_patrol_walk1
+path_look = in_patrol_look1
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_patrol_normal2]
+active = walker1@val_monolith_base_patrol_normal2
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal2
+
+[walker1@val_monolith_base_patrol_normal2]
+path_walk = in_patrol_walk2
+path_look = in_patrol_look2
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_patrol_normal3]
+active = walker1@val_monolith_base_patrol_normal3
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal3
+
+[walker1@val_monolith_base_patrol_normal3]
+path_walk = in_patrol_walk3
+path_look = in_patrol_look3
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_patrol_normal4]
+active = walker1@val_monolith_base_patrol_normal4
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal4
+
+[walker1@val_monolith_base_patrol_normal4]
+path_walk = in_patrol_walk4
+path_look = in_patrol_look4
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_patrol_normal5]
+active = walker1@val_monolith_base_patrol_normal5
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal5
+
+[walker1@val_monolith_base_patrol_normal5]
+path_walk = in_patrol_walk5
+path_look = in_patrol_look5
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_patrol_normal6]
+active = walker1@val_monolith_base_patrol_normal6
+;combat_ignore = combat_ignore@val_monolith_base_patrol_normal6
+
+[walker1@val_monolith_base_patrol_normal6]
+path_walk = in_patrol_walk6
+path_look = in_patrol_look6
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP1 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp1_normal1]
+active = kamp1@val_monolith_base_kamp1_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal1
+
+[kamp1@val_monolith_base_kamp1_normal1]
+center_point = in_kamp1
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp1_normal2]
+active = kamp1@val_monolith_base_kamp1_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal2
+
+[kamp1@val_monolith_base_kamp1_normal2]
+center_point = in_kamp1
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp1_normal3]
+active = kamp1@val_monolith_base_kamp1_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal3
+
+[kamp1@val_monolith_base_kamp1_normal3]
+center_point = in_kamp1
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp1_normal4]
+active = kamp1@val_monolith_base_kamp1_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp1_normal4
+
+[kamp1@val_monolith_base_kamp1_normal4]
+center_point = in_kamp1
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP2 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp2_normal1]
+active = kamp2@val_monolith_base_kamp2_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal1
+
+[kamp2@val_monolith_base_kamp2_normal1]
+center_point = in_kamp2
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp2_normal2]
+active = kamp2@val_monolith_base_kamp2_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal2
+
+[kamp2@val_monolith_base_kamp2_normal2]
+center_point = in_kamp2
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp2_normal3]
+active = kamp2@val_monolith_base_kamp2_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal3
+
+[kamp2@val_monolith_base_kamp2_normal3]
+center_point = in_kamp2
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp2_normal4]
+active = kamp2@val_monolith_base_kamp2_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp2_normal4
+
+[kamp2@val_monolith_base_kamp2_normal4]
+center_point = in_kamp2
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP3 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp3_normal1]
+active = kamp3@val_monolith_base_kamp3_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal1
+
+[kamp3@val_monolith_base_kamp3_normal1]
+center_point = in_kamp3
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp3_normal2]
+active = kamp3@val_monolith_base_kamp3_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal2
+
+[kamp3@val_monolith_base_kamp3_normal2]
+center_point = in_kamp3
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp3_normal3]
+active = kamp3@val_monolith_base_kamp3_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal3
+
+[kamp3@val_monolith_base_kamp3_normal3]
+center_point = in_kamp3
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp3_normal4]
+active = kamp3@val_monolith_base_kamp3_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp3_normal4
+
+[kamp3@val_monolith_base_kamp3_normal4]
+center_point = in_kamp3
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP4 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp4_normal1]
+active = kamp4@val_monolith_base_kamp4_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal1
+
+[kamp4@val_monolith_base_kamp4_normal1]
+center_point = in_kamp4
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal2]
+active = kamp4@val_monolith_base_kamp4_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal2
+
+[kamp4@val_monolith_base_kamp4_normal2]
+center_point = in_kamp4
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal3]
+active = kamp4@val_monolith_base_kamp4_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal3
+
+[kamp4@val_monolith_base_kamp4_normal3]
+center_point = in_kamp4
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal4]
+active = kamp4@val_monolith_base_kamp4_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal4
+
+[kamp4@val_monolith_base_kamp4_normal4]
+center_point = in_kamp4
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp4_normal5]
+active = kamp4@val_monolith_base_kamp4_normal5
+;combat_ignore = combat_ignore@val_monolith_base_kamp4_normal5
+
+[kamp4@val_monolith_base_kamp4_normal5]
+center_point = in_kamp4
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;--- KAMP5 ---------------------------------------------------------------------------------------
+
+[logic@val_monolith_base_kamp5_normal1]
+active = kamp5@val_monolith_base_kamp5_normal1
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal1
+
+[kamp5@val_monolith_base_kamp5_normal1]
+center_point = in_kamp5
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp5_normal2]
+active = kamp5@val_monolith_base_kamp5_normal2
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal2
+
+[kamp5@val_monolith_base_kamp5_normal2]
+center_point = in_kamp5
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp5_normal3]
+active = kamp5@val_monolith_base_kamp5_normal3
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal3
+
+[kamp5@val_monolith_base_kamp5_normal3]
+center_point = in_kamp5
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;---
+
+[logic@val_monolith_base_kamp5_normal4]
+active = kamp5@val_monolith_base_kamp5_normal4
+;combat_ignore = combat_ignore@val_monolith_base_kamp5_normal4
+
+[kamp5@val_monolith_base_kamp5_normal4]
+center_point = in_kamp5
+def_state_moving = rush
+;combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
+
+;-------------------------------------------------------------------------------------------------
+;-- Darkvalley Soldiers base
+;-------------------------------------------------------------------------------------------------
+
+;--- PATROL --------------------------------------------------------------------------------------
+
+[logic@val_war_soldiers_patrol_normal1]
+active = walker1@val_war_soldiers_patrol_normal1
+combat_ignore = combat_ignore
+
+[walker1@val_war_soldiers_patrol_normal1]
+path_walk = in_patrol_walk1
+path_look = in_patrol_look1
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_patrol_normal2]
+active = walker1@val_war_soldiers_patrol_normal2
+combat_ignore = combat_ignore
+
+[walker1@val_war_soldiers_patrol_normal2]
+path_walk = in_patrol_walk2
+path_look = in_patrol_look2
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_patrol_normal3]
+active = walker1@val_war_soldiers_patrol_normal3
+combat_ignore = combat_ignore
+
+[walker1@val_war_soldiers_patrol_normal3]
+path_walk = in_patrol_walk3
+path_look = in_patrol_look3
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_patrol_normal4]
+active = walker1@val_war_soldiers_patrol_normal4
+combat_ignore = combat_ignore
+
+[walker1@val_war_soldiers_patrol_normal4]
+path_walk = in_patrol_walk4
+path_look = in_patrol_look4
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_patrol_normal5]
+active = walker1@val_war_soldiers_patrol_normal5
+combat_ignore = combat_ignore
+
+[walker1@val_war_soldiers_patrol_normal5]
+path_walk = in_patrol_walk5
+path_look = in_patrol_look5
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_patrol_normal6]
+active = walker1@val_war_soldiers_patrol_normal6
+combat_ignore = combat_ignore
+
+[walker1@val_war_soldiers_patrol_normal6]
+path_walk = in_patrol_walk6
+path_look = in_patrol_look6
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- KAMP1 ---------------------------------------------------------------------------------------
+
+[logic@val_war_soldiers_kamp1_normal1]
+active = kamp1@val_war_soldiers_kamp1_normal1
+combat_ignore = combat_ignore
+
+[kamp1@val_war_soldiers_kamp1_normal1]
+center_point = in_kamp1
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp1_normal2]
+active = kamp1@val_war_soldiers_kamp1_normal2
+combat_ignore = combat_ignore
+
+[kamp1@val_war_soldiers_kamp1_normal2]
+center_point = in_kamp1
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp1_normal3]
+active = kamp1@val_war_soldiers_kamp1_normal3
+combat_ignore = combat_ignore
+
+[kamp1@val_war_soldiers_kamp1_normal3]
+center_point = in_kamp1
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp1_normal4]
+active = kamp1@val_war_soldiers_kamp1_normal4
+combat_ignore = combat_ignore
+
+[kamp1@val_war_soldiers_kamp1_normal4]
+center_point = in_kamp1
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- KAMP2 ---------------------------------------------------------------------------------------
+
+[logic@val_war_soldiers_kamp2_normal1]
+active = kamp2@val_war_soldiers_kamp2_normal1
+combat_ignore = combat_ignore
+
+[kamp2@val_war_soldiers_kamp2_normal1]
+center_point = in_kamp2
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp2_normal2]
+active = kamp2@val_war_soldiers_kamp2_normal2
+combat_ignore = combat_ignore
+
+[kamp2@val_war_soldiers_kamp2_normal2]
+center_point = in_kamp2
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp2_normal3]
+active = kamp2@val_war_soldiers_kamp2_normal3
+combat_ignore = combat_ignore
+
+[kamp2@val_war_soldiers_kamp2_normal3]
+center_point = in_kamp2
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp2_normal4]
+active = kamp2@val_war_soldiers_kamp2_normal4
+combat_ignore = combat_ignore
+
+[kamp2@val_war_soldiers_kamp2_normal4]
+center_point = in_kamp2
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- KAMP3 ---------------------------------------------------------------------------------------
+
+[logic@val_war_soldiers_kamp3_normal1]
+active = kamp3@val_war_soldiers_kamp3_normal1
+combat_ignore = combat_ignore
+
+[kamp3@val_war_soldiers_kamp3_normal1]
+center_point = in_kamp3
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp3_normal2]
+active = kamp3@val_war_soldiers_kamp3_normal2
+combat_ignore = combat_ignore
+
+[kamp3@val_war_soldiers_kamp3_normal2]
+center_point = in_kamp3
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp3_normal3]
+active = kamp3@val_war_soldiers_kamp3_normal3
+combat_ignore = combat_ignore
+
+[kamp3@val_war_soldiers_kamp3_normal3]
+center_point = in_kamp3
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp3_normal4]
+active = kamp3@val_war_soldiers_kamp3_normal4
+combat_ignore = combat_ignore
+
+[kamp3@val_war_soldiers_kamp3_normal4]
+center_point = in_kamp3
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- KAMP4 ---------------------------------------------------------------------------------------
+
+[logic@val_war_soldiers_kamp4_normal1]
+active = kamp4@val_war_soldiers_kamp4_normal1
+combat_ignore = combat_ignore
+
+[kamp4@val_war_soldiers_kamp4_normal1]
+center_point = in_kamp4
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp4_normal2]
+active = kamp4@val_war_soldiers_kamp4_normal2
+combat_ignore = combat_ignore
+
+[kamp4@val_war_soldiers_kamp4_normal2]
+center_point = in_kamp4
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp4_normal3]
+active = kamp4@val_war_soldiers_kamp4_normal3
+combat_ignore = combat_ignore
+
+[kamp4@val_war_soldiers_kamp4_normal3]
+center_point = in_kamp4
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp4_normal4]
+active = kamp4@val_war_soldiers_kamp4_normal4
+combat_ignore = combat_ignore
+
+[kamp4@val_war_soldiers_kamp4_normal4]
+center_point = in_kamp4
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp4_normal5]
+active = kamp4@val_war_soldiers_kamp4_normal5
+combat_ignore = combat_ignore
+
+[kamp4@val_war_soldiers_kamp4_normal5]
+center_point = in_kamp4
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- KAMP5 ---------------------------------------------------------------------------------------
+
+[logic@val_war_soldiers_kamp5_normal1]
+active = kamp5@val_war_soldiers_kamp5_normal1
+combat_ignore = combat_ignore
+
+[kamp5@val_war_soldiers_kamp5_normal1]
+center_point = in_kamp5
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp5_normal2]
+active = kamp5@val_war_soldiers_kamp5_normal2
+combat_ignore = combat_ignore
+
+[kamp5@val_war_soldiers_kamp5_normal2]
+center_point = in_kamp5
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp5_normal3]
+active = kamp5@val_war_soldiers_kamp5_normal3
+combat_ignore = combat_ignore
+
+[kamp5@val_war_soldiers_kamp5_normal3]
+center_point = in_kamp5
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;---
+
+[logic@val_war_soldiers_kamp5_normal4]
+active = kamp5@val_war_soldiers_kamp5_normal4
+combat_ignore = combat_ignore
+
+[kamp5@val_war_soldiers_kamp5_normal4]
+center_point = in_kamp5
+def_state_moving = rush
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- fight state for all ---------------------------------------------------
+
+[logic@val_war_soldiers_fight1]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight2]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight3]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight4]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight5]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight6]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight7]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight8]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight9]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight10]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight11]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight12]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight13]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight14]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight15]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight16]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight17]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight18]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight19]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight20]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight21]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight22]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight23]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight24]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight25]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight26]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[logic@val_war_soldiers_fight27]
+active = remark@val_war_soldiers_fight
+combat_ignore = combat_ignore
+
+[remark@val_war_soldiers_fight]
+no_move = true
+combat_ignore_cond = {=check_fighting(410)}
+
+;--- Monsters --------------------------------------------------------------------------------------
+
+[logic@val_dogs_nest1]
+active = nil
+
+[logic@val_dogs_nest2]
+active = nil
+
+[logic@val_fleshes_nest1]
+active = nil
+
+[logic@val_fleshes_nest2]
+active = nil
+
+[logic@val_boars_nest1]
+active = nil
+
+[logic@val_boars_nest2]
+active = nil
