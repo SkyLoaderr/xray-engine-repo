@@ -67,7 +67,7 @@
 		CPHWorld*	ph_world						= 0;
 		float		g_cl_lvInterp					= 0;
 		u32			lvInterpSteps					= 0;
-extern	BOOL		g_bDebugDumpPhysicsStep			= 0;
+extern	BOOL		g_bDebugDumpPhysicsStep			;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
