@@ -319,12 +319,16 @@ u32& CUIStatic::GetTextColorRef(){
 
 void CUIStatic::SetText(LPCSTR str)
 {
-	if (str && xr_strlen(str) > 0)
-	{
-		CREATE_LINES;
-		m_pLines->SetText(str);
-	}
+	if (!str) return;
 	
+	CREATE_LINES;
+	m_pLines->SetText(str);
+
+//	if (str && xr_strlen(str) > 0)
+//	{
+//		CREATE_LINES;
+//		m_pLines->SetText(str);
+//	}	
 }
 
 void CUIStatic::SetTextColor(u32 color, E4States state){
