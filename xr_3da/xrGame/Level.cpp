@@ -64,10 +64,10 @@
 
 //#define DEBUG_PRECISE_PATH
 
-CPHWorld*	ph_world = 0;
-float		g_cl_lvInterp = 0;
-u32			lvInterpSteps = 0;
-
+		CPHWorld*	ph_world						= 0;
+		float		g_cl_lvInterp					= 0;
+		u32			lvInterpSteps					= 0;
+extern	BOOL		g_bDebugDumpPhysicsStep			= 0;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -546,7 +546,7 @@ void CLevel::make_NetCorrectionPrediction	()
 	m_bIn_CrPr		= true;
 	u64 NumPhSteps = ph_world->m_steps_num;
 	ph_world->m_steps_num -= m_dwNumSteps;
-	
+	if(g_bDebugDumpPhysicsStep&&m_dwNumSteps>20)Msg("!!!TOO MANY PHYSICS STEPS FOR CORRECTION PREDICTION = %d !!!",m_dwNumSteps);
 //////////////////////////////////////////////////////////////////////////////////
 	ph_world->Freeze();
 
