@@ -82,6 +82,12 @@ function load_job( sj, gname, type, squad, groups )
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@agr_nii_floor1_day_walker2",
+			idle = 0,
+			prior = 3, state = {0,1,3},
+			in_rest = "", out_rest = ""
+		}
+        table.insert(sj, t)
 		-- 2-й этаж основного здания
 		t = { section = "logic@agr_nii_floor2_day_walker1",
 			idle = 0,
@@ -127,6 +133,24 @@ function load_job( sj, gname, type, squad, groups )
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@agr_nii_day_patrol_walker3",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_day_patrol_walker4",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_day_patrol_walker5",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 		-- патрули в тревоге
 		for i = 1, 5 do
 			t = { section = "logic@agr_nii_alarm_patrol_walker"..i,
@@ -137,7 +161,7 @@ function load_job( sj, gname, type, squad, groups )
 			table.insert(sj, t)
 		end
 		-- дневные отдыхающие
-		for i = 1, 3 do
+		for i = 1, 2 do
 			t = { section = "logic@agr_nii_rest_walker"..i,
 				idle = 0,
 				prior = 0, state = {0},

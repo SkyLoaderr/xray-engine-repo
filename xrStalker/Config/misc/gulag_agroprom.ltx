@@ -111,6 +111,13 @@ active = camper1@agr_nii_floor1_alarm
 path_walk = floor1_alarm_walk1
 path_look = floor1_alarm_look1
 
+[logic@agr_nii_floor1_day_walker1]
+active = walker1@agr_nii_floor1_day
+
+[walker2@agr_nii_floor1_day]
+path_walk = floor1_day_walk2
+path_look = floor1_day_look2
+
 ;------------------ 2-й этаж основного здания -----------------------
 [logic@agr_nii_floor2_day_walker1]
 active = walker1@agr_nii_floor2_day
@@ -187,6 +194,27 @@ active = walker2@agr_nii_day_patrol
 path_walk = day_patrol_walk2
 path_look = day_patrol_look2
 
+[logic@agr_nii_day_patrol_walker3]
+active = walker3@agr_nii_day_patrol
+
+[walker3@agr_nii_day_patrol]
+path_walk = day_patrol_walk3
+path_look = day_patrol_look3
+
+[logic@agr_nii_day_patrol_walker4]
+active = walker4@agr_nii_day_patrol
+
+[walker4@agr_nii_day_patrol]
+path_walk = day_patrol_walk4
+path_look = day_patrol_look4
+
+[logic@agr_nii_day_patrol_walker5]
+active = walker5@agr_nii_day_patrol
+
+[walker5@agr_nii_day_patrol]
+path_walk = day_patrol_walk5
+path_look = day_patrol_look5
+
 ;------------------ патрули в тревоге -----------------------
 [logic@agr_nii_alarm_patrol_walker1]
 active = walker1@agr_nii_alarm_patrol
@@ -243,13 +271,6 @@ active = walker2@agr_nii_rest
 path_walk = rest_walk2
 path_look = rest_look
 
-
-[logic@agr_nii_rest_walker3]
-active = walker3@agr_nii_rest
-
-[walker3@agr_nii_rest]
-path_walk = rest_walk3
-path_look = rest_look
 
 ;------------------ ночные отдыхающие -----------------------
 [logic@agr_nii_sleeper1]
