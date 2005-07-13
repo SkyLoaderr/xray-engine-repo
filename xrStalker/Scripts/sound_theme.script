@@ -202,9 +202,11 @@ function load_sound(obj)
 	theme[obj:id()]["trade_yes"]					= load_sound_from_ltx(obj, "trade_yes")
 	theme[obj:id()]["trade_no"]						= load_sound_from_ltx(obj, "trade_no")
 
-	-- игра на губной гармошке	
+	-- игра на губной гармошке
+	theme[obj:id()]["intro_harmonica"]				= load_sound_from_ltx(obj, "intro_harmonica")
 	theme[obj:id()]["harmonica"]					= load_sound_from_ltx(obj, "harmonica")
 	-- игра на гитаре
+	theme[obj:id()]["intro_guitar"]					= load_sound_from_ltx(obj, "intro_guitar")
 	theme[obj:id()]["guitar"]						= load_sound_from_ltx(obj, "guitar")
 	-- шутки, прибаутки
 	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")

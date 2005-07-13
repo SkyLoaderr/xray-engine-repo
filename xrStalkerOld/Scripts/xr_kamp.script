@@ -355,6 +355,10 @@ function CKampManager:updateNpc(npc)
 	end
 	if role == "harmonica_wait" then
 		self.kamp_state = "pre_harmonica"
+		if self.npc[npc_id].new == true then
+			xr_sound.set_sound_play(npc, "intro_harmonica", math.random(2000,3000))
+			self.npc[npc_id].new = false
+		end
 		return "harmonica", ""
 	end
 	if role == "harmonica_play" then
@@ -368,6 +372,10 @@ function CKampManager:updateNpc(npc)
 	end
 	if role == "guitar_wait" then
 		self.kamp_state = "pre_guitar"
+		if self.npc[npc_id].new == true then
+			xr_sound.set_sound_play(npc, "intro_guitar", math.random(2000,3000))
+			self.npc[npc_id].new = false
+		end
 		return "guitar", ""
 	end
 	if role == "guitar_play" then
