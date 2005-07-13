@@ -53,6 +53,16 @@ def_state_campering = hide
 radius = 0
 no_retreat = true
 meet = meet@def
+on_info = {+pri_wave1_side_start} camper@wave1_hide3
+
+[camper@wave1_hide3]
+path_walk = pri_wave1_followers_stalker2_hide_walk2
+path_look = pri_wave1_followers_stalker2_hide_look2
+def_state_moving = assault
+def_state_campering = hide
+radius = 0
+no_retreat = true
+meet = meet@def
 
 [camper@wave2]
 path_walk = pri_followers_stalker2_walk2
