@@ -358,6 +358,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.snd_timeout = utils.cfg_get_number     (ini, section,   "snd_timeout",     npc, false,     4000)
 	st.arrival_timeout = utils.cfg_get_number (ini, section,   "arrival_timeout", npc, false,     5000)
 	st.anim = utils.cfg_get_string            (ini, section,   "anim",            npc, false, "")
+	if st.anim == "" or st.anim == "idle" then
+		abort("object '%s': xr_remark.set_scheme: anim field cannot be [nil] or [idle]", npc:name())
+	end
+	
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
 	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
 	if st.target ~= actor then
