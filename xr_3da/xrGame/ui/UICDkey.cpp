@@ -3,7 +3,6 @@
 #include "UICDkey.h"
 #include "UIColorAnimatorWrapper.h"
 
-#define CHECK_CDKEY			1
 #define	REGISTRY_CDKEY_STR	"Software\\S.T.A.L.K.E.R\\CDKey"
 
 CUICDkey::CUICDkey(){
