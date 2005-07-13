@@ -671,6 +671,10 @@ void				CLevel::SetNumCrSteps		( u32 NumSteps )
 	m_bNeed_CrPr = true;
 	if (m_dwNumSteps > NumSteps) return;
 	m_dwNumSteps = NumSteps;
+	if (m_dwNumSteps > 1000000)
+	{
+		VERIFY(0);
+	}
 };
 
 
