@@ -52,9 +52,10 @@ void CUIOptConCom::Init(){
 	CMD4(CCC_Integer,	"net_con_spectator",			&m_iNetConSpectator,	1, 32);
 	m_iFriendlyFire = 100;
 	CMD4(CCC_Integer,	"net_srv_friendlyfire",			&m_iFriendlyFire,		1, 200);
-	m_iArtefactsNum = 12;
+	m_iArtefactsNum = 10;
 	CMD4(CCC_Integer,	"net_srv_artefactsnum",			&m_iArtefactsNum,		1, 32);
 	CMD4(CCC_Integer,	"net_force_respawn",			&m_iNetForceRespawn,	0, 100);
+	m_iNetReinforcement = 10;
 	CMD4(CCC_Integer,	"net_reinforcement",			&m_iNetReinforcement,	0, 100);
 	m_iNetFreezeTime = 5;
 	CMD4(CCC_Integer,	"net_respawn_freezetime",		&m_iNetFreezeTime,		0, 100);
@@ -62,6 +63,7 @@ void CUIOptConCom::Init(){
 	CMD4(CCC_Integer,	"net_srv_fraglimit",			&m_iNetFragLimit,		0, 100);
 	CMD4(CCC_Integer,	"net_srv_timelimit",			&m_iNetTimeLimit,		0, 100);
 	CMD4(CCC_Integer,	"net_srv_artefactstay",			&m_iNetArtefactStay,	0, 100);
+	m_iNetArtefactDelay = 30;
 	CMD4(CCC_Integer,	"net_srv_artefactdelay",		&m_iNetArtefactDelay,	0, 100);
 	m_iNetAnomalyTime = 5;
 	CMD4(CCC_Integer,	"net_srv_anomalytime",			&m_iNetAnomalyTime,		0, 100);
