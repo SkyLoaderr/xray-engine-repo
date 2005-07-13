@@ -2,10 +2,33 @@
 
 #include "game_cl_base.h"
 #include "script_export_space.h"
+#include "game_cl_mp_snd_messages.h"
+#include "Sound.h"
 
 class CUIChatWnd;
 class CUIChatLog;
 class CUIGameLog;
+
+struct SND_Message{
+	ref_sound	pSound;
+	u32			priority;
+	u32			SoundID;
+	u32			LastStarted;
+	bool operator == (u32 ID){return SoundID == ID;}
+	void Load(u32 ID, u32 prior, LPCSTR name)
+	{
+		SoundID = ID;
+		priority = prior;
+		pSound.create(TRUE, name);
+		LastStarted = 0;
+	}
+	~SND_Message()
+	{
+		SoundID = 0;
+		priority = 0;
+		pSound.destroy();
+	}
+};
 
 struct cl_TeamStruct
 {
@@ -27,6 +50,12 @@ class game_cl_mp :public game_cl_GameState
 protected:
 
 	CL_TEAM_DATA_LIST				TeamList;
+
+	DEF_VECTOR(SNDMESSAGES, SND_Message);
+	SNDMESSAGES						m_pSndMessages;
+	bool							m_bJustRestarted;
+	DEF_VECTOR(SNDMESSAGESINPLAY, SND_Message*);
+	SNDMESSAGESINPLAY				m_pSndMessagesInPlay;
 
 //	CUIChatWnd*						pChatWnd;
 //	CUIChatLog*						pChatLog;
@@ -55,11 +84,16 @@ protected:
 
 	virtual bool			NeedToSendReady_Actor			(int key, game_PlayerState* ps);
 	virtual bool			NeedToSendReady_Spectator		(int key, game_PlayerState* ps);
-	
+
+	virtual	void			LoadSndMessage			(LPCSTR caSection, LPCSTR caLine, u32 ID);
+	virtual		void				LoadSndMessages				();
+	virtual		void				PlaySndMessage			(u32 ID);	
+	virtual		void				UpdateSndMessages		();
 
 public:
 									game_cl_mp();
 	virtual							~game_cl_mp();
+
 
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 	virtual		void				CommonMessageOut		(LPCSTR msg);

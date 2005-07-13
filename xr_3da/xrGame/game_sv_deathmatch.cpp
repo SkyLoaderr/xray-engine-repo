@@ -33,6 +33,9 @@ game_sv_Deathmatch::game_sv_Deathmatch()
 	m_dwSM_LastSwitchTime = 0;
 
 	m_bDamageBlockIndicators = false;
+
+	m_level_graph			= 0;
+	m_graph_engine			= 0;
 };
 
 game_sv_Deathmatch::~game_sv_Deathmatch()
@@ -58,6 +61,10 @@ game_sv_Deathmatch::~game_sv_Deathmatch()
 	m_AnomalySetID.clear();
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	CMD_CLEAR("sv_dmgblockindicator");
+
+	xr_delete				(m_graph_engine);
+	xr_delete				(m_level_graph);
+	
 };
 
 void	game_sv_Deathmatch::Create					(shared_str& options)
@@ -76,6 +83,10 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 
 	m_AnomalySetsList.clear();
 	m_AnomalySetID.clear();	
+	//  [7/11/2005]
+//	m_level_graph			= xr_new<CLevelNavigationGraph>();
+//	m_graph_engine			= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
+	//  [7/11/2005]
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -1792,9 +1803,48 @@ void game_sv_Deathmatch::OnPlayerFire (ClientID id_who, NET_Packet &P)
 
 //  [7/5/2005]
 #ifdef DEBUG
+xr_vector<u32> xPath;
 void game_sv_Deathmatch::OnRender				()
 {
 	inherited::OnRender();
+	/*
+	for (int i0 = 0; i0<int(rpoints[0].size())-1; i0++)
+	{
+		Fvector v0 = rpoints[0][i0].P;
+		for (int i1=i0+1; i1<int(rpoints[0].size()); i1++)
+		{
+			Fvector v1 = rpoints[0][i1].P;
+			bool			failed = !m_graph_engine->search(*m_level_graph,m_level_graph->vertex(u32(-1),v0),m_level_graph->vertex(u32(-1),v1),&xPath,GraphEngineSpace::CBaseParameters());
+			if (failed) continue;
+
+			xr_vector<u32>::const_iterator I = xPath.begin();
+			xr_vector<u32>::const_iterator E = xPath.end();
+			for ( ; I != E; ++I) {
+				RCache.dbg_DrawAABB(
+					Fvector().set(
+					m_level_graph->vertex_position(*I)
+					).add(
+					Fvector().set(0.f,.025f,0.f)
+					),
+					.05f,
+					.05f,
+					.05f,
+					0xff00ff00
+					);
+				if (I!=E-1)
+				{
+					Fvector p0 = m_level_graph->vertex_position(*I);
+					Fvector p1 = m_level_graph->vertex_position(*(I+1));
+					RCache.dbg_DrawLINE(Fidentity, 
+						p0,
+						p1,
+						0xff00ff00);
+				}
+
+			}
+		}
+	}
+	*/
 };
 #endif
 //  [7/5/2005]

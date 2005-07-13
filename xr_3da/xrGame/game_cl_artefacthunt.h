@@ -10,7 +10,7 @@ class game_cl_ArtefactHunt :public game_cl_TeamDeathmatch
 	shared_str							m_Eff_Af_Disappear;
 	typedef game_cl_TeamDeathmatch inherited;
 protected:
-	ref_sound							pMessageSounds[8];
+//	ref_sound							pMessageSounds[8];
 
 protected:
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
@@ -24,7 +24,7 @@ protected:
 	virtual			void				UpdateMapLocations		();
 
 	virtual			bool				NeedToSendReady_Spectator		(int key, game_PlayerState* ps);
-
+	virtual			void				LoadSndMessages				();
 public:
 	u8									artefactsNum;//ah
 	u16									artefactBearerID;//ah,ZoneMap

@@ -16,6 +16,8 @@
 #include "dinput.h"
 #include "gamepersistent.h"
 
+#include "game_cl_deathmatch_snd_messages.h"
+
 #define	TEAM0_MENU		"deathmatch_team0"
 
 game_cl_Deathmatch::game_cl_Deathmatch()
@@ -44,6 +46,8 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	pPdaMenu = NULL;
 
 	Actor_Spawn_Effect = "";
+
+	LoadSndMessages();
 }
 
 void game_cl_Deathmatch::Init ()
@@ -114,7 +118,12 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	{
 	case GAME_PHASE_PLAYER_SCORES:
 		{
+			bool NeedSndMessage = xr_strlen(WinnerName) == 0;
 			P.r_stringZ(WinnerName);
+			if (NeedSndMessage && !xr_strcmp(WinnerName, local_player->getName()))
+			{
+				PlaySndMessage(ID_YOU_WON);
+			}
 		}break;
 	}
 }
@@ -318,6 +327,7 @@ string16 places[] = {
 
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
+	inherited::shedule_Update(dt);
 	//fake	
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
 	if(m_game_ui)
@@ -490,8 +500,6 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 	if (pInventoryMenu && pInventoryMenu->IsShown() && !CanCallInventoryMenu())
 		StartStopMenu(pInventoryMenu,true);
 	//-----------------------------------------
-
-	inherited::shedule_Update(dt);
 }
 
 bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
@@ -714,5 +722,32 @@ void				game_cl_Deathmatch::OnSpawn					(CObject* pObj)
 	{
 		if (xr_strlen(Actor_Spawn_Effect))
 			PlayParticleEffect(Actor_Spawn_Effect.c_str(), pObj->Position());
+	};
+}
+
+void				game_cl_Deathmatch::LoadSndMessages				()
+{
+	LoadSndMessage("dm_snd_messages", "you_won", ID_YOU_WON);
+};
+
+void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
+{
+	inherited::OnSwitchPhase(old_phase, new_phase);
+	switch (new_phase)
+	{
+	case GAME_PHASE_INPROGRESS:
+		{
+			WinnerName[0] = 0;
+		}break;
+	case GAME_PHASE_PLAYER_SCORES:
+		{
+			if (!xr_strcmp(WinnerName, local_player->getName()))
+			{
+				PlaySndMessage(ID_YOU_WON);
+			}
+		}break;
+	default:
+		{			
+		}break;
 	};
 }

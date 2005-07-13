@@ -8420,6 +8420,9 @@
 							<File
 								RelativePath=".\game_cl_artefacthunt.h">
 							</File>
+							<File
+								RelativePath=".\game_cl_artefacthunt_snd_msg.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="deathmatch"
@@ -8433,6 +8436,9 @@
 							<File
 								RelativePath=".\game_cl_deathmatch_buywnd.cpp">
 							</File>
+							<File
+								RelativePath=".\game_cl_deathmatch_snd_messages.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="team_deathmatch"
@@ -8442,6 +8448,9 @@
 							</File>
 							<File
 								RelativePath=".\game_cl_teamdeathmatch.h">
+							</File>
+							<File
+								RelativePath=".\game_cl_teamdeathmatch_snd_messages.h">
 							</File>
 						</Filter>
 						<Filter
@@ -8484,6 +8493,12 @@
 							</File>
 							<File
 								RelativePath=".\game_cl_mp.h">
+							</File>
+							<File
+								RelativePath=".\game_cl_mp_snd_messages.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_mp_snd_messages.h">
 							</File>
 						</Filter>
 						<Filter

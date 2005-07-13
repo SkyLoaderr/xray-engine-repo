@@ -24,9 +24,16 @@
 #define KILLEVENT_GRID_WIDTH	64
 #define KILLEVENT_GRID_HEIGHT	64
 
+#include "game_cl_mp_snd_messages.h"
+
 game_cl_mp::game_cl_mp()
 {
 	m_bVotingActive = false;
+	
+	m_pSndMessages.clear();
+	LoadSndMessages();
+	m_bJustRestarted = true;
+	m_pSndMessagesInPlay.clear();
 };
 
 game_cl_mp::~game_cl_mp()
@@ -52,6 +59,9 @@ game_cl_mp::~game_cl_mp()
 
 	if (m_BloodLossIconsShader)
 		m_BloodLossIconsShader.destroy();
+	
+	m_pSndMessagesInPlay.clear_and_free();
+	m_pSndMessages.clear_and_free();
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
@@ -321,9 +331,28 @@ void game_cl_mp::CommonMessageOut		(LPCSTR msg)
 //////////////////////////////////////////////////////////////////////////
 void game_cl_mp::shedule_Update(u32 dt)
 {
+	UpdateSndMessages();
+
 	inherited::shedule_Update(dt);
 	//-----------------------------------------
-	UpdateMapLocations();
+	switch (Phase())
+	{
+	case GAME_PHASE_PENDING:
+		{
+			if (m_bJustRestarted)
+			{
+				if (Level().CurrentViewEntity())
+				{
+					PlaySndMessage(ID_READY);
+					m_bJustRestarted = false;
+				};
+			}
+		}break;
+	default:
+		{
+		}break;
+	}
+	UpdateMapLocations();	
 }
 
 void game_cl_mp::SendStartVoteMessage	(LPCSTR args)
@@ -406,6 +435,10 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 				HUD().GetUI()->ShowIndicators();
 			};
 		}break;
+	case GAME_PHASE_PENDING:
+		{
+			m_bJustRestarted = true;
+		};
 	default:
 		{
 			if (HUD().GetUI())
@@ -559,6 +592,11 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			{
 			case 0:		// not special
 				{
+					if (pOKiller && pOKiller==Level().CurrentViewEntity())
+					{
+						if (pWeapon && pWeapon->CLS_ID == CLSID_OBJECT_W_KNIFE)
+							PlaySndMessage(ID_BUTCHER);
+					};
 				}break;
 			case 1:		// Head Shot
 				{
@@ -571,6 +609,9 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_ext_info.m_rect.y1 = 202;
 					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 26;
 					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
+
+					if (pOKiller && pOKiller==Level().CurrentViewEntity())
+						PlaySndMessage(ID_HEADSHOT);
 				}break;
 			case 2:		// BackStab
 				{
@@ -584,7 +625,9 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y1 = 202;
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 30;
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
-					
+
+					if (pOKiller && pOKiller==Level().CurrentViewEntity())
+						PlaySndMessage(ID_ASSASSIN);					
 				}break;
 			}
 			std::strcat(Text, SpecialKillText);
@@ -678,3 +721,11 @@ void	game_cl_mp::OnPlayerChangeName		(NET_Packet& P)
 		pObj->cName_set(NewName);
 
 }
+
+void	game_cl_mp::LoadSndMessages				()
+{
+	LoadSndMessage("mp_snd_messages", "headshot", ID_HEADSHOT);
+	LoadSndMessage("mp_snd_messages", "butcher", ID_BUTCHER);
+	LoadSndMessage("mp_snd_messages", "assassin", ID_ASSASSIN);
+	LoadSndMessage("mp_snd_messages", "ready", ID_READY);
+};

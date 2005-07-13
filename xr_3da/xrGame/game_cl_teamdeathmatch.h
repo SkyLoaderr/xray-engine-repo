@@ -13,6 +13,8 @@ protected:
 
 	virtual			void				shedule_Update			(u32 dt);
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
+
+	virtual		void				LoadSndMessages				();
 public :
 										game_cl_TeamDeathmatch	();
 	virtual								~game_cl_TeamDeathmatch	();
@@ -61,6 +63,7 @@ protected:
 	virtual		bool				IsEnemy					(game_PlayerState* ps);
 
 	virtual void			UpdateMapLocations		();
+	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 };
 
 IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)

@@ -30,6 +30,7 @@ bool	CUIDMPlayerList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 	pItem->FieldsVector[0]->SetText(P->name);
 	pItem->FieldsVector[1]->SetText("");
 	sprintf(Text, "%d", P->kills); pItem->FieldsVector[2]->SetText(Text);
+	pItem->FieldsVector[3]->SetText("");
 	if (P->testFlag(GAME_PLAYER_FLAG_READY) )
 		pItem->FieldsVector[3]->SetText("READY");
 	else

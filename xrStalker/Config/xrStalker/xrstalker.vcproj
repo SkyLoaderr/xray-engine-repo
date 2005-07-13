@@ -513,6 +513,22 @@
 						RelativePath=".\Config\mp\weapons_mp\weapons_mp.ltx">
 					</File>
 				</Filter>
+				<Filter
+					Name="SoundMessages"
+					Filter="">
+					<File
+						RelativePath=".\Config\mp\SoundMessages\ahunt_snd_messages.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\mp\SoundMessages\dm_snd_messages.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\mp\SoundMessages\mp_snd_messages.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\mp\SoundMessages\tdm_snd_messages.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="text"

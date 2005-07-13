@@ -3,6 +3,10 @@
 #include "game_sv_mp.h"
 #include "inventory_space.h"
 #include "client_id.h"
+#include "level_navigation_graph.h"
+#include "graph_engine.h"
+
+class	CLevelNavigationGraph;
 
 class	game_sv_Deathmatch			: public game_sv_mp
 {
@@ -66,6 +70,10 @@ protected:
 	void							SM_SwitchOnNextActivePlayer			();
 	void							SM_SwitchOnPlayer		(CObject* pNewObject);//(game_PlayerState* ps);
 
+	//  [7/11/2005]
+	CLevelNavigationGraph			*m_level_graph;
+	CGraphEngine						*m_graph_engine;
+	//  [7/11/2005]
 protected:
 
 

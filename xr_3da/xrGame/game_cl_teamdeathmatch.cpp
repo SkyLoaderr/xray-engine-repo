@@ -16,6 +16,8 @@
 #define	TEAM1_MENU		"teamdeathmatch_team1"
 #define	TEAM2_MENU		"teamdeathmatch_team2"
 
+#include "game_cl_teamdeathmatch_snd_messages.h"
+
 game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 {
 	pUITeamSelectWnd	= xr_new<CUISpawnWnd>	();
@@ -33,6 +35,8 @@ game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 
 	m_bShowPlayersNames = false;
 	m_bFriendlyIndicators = false;
+
+	LoadSndMessages();
 }
 void game_cl_TeamDeathmatch::Init ()
 {
@@ -60,8 +64,31 @@ game_cl_TeamDeathmatch::~game_cl_TeamDeathmatch()
 
 void				game_cl_TeamDeathmatch::net_import_state		(NET_Packet& P)
 {
+	bool teamsEqual = (!teams.empty())?(teams[0].score == teams[1].score) : false;
 	inherited::net_import_state	(P);
 	m_bFriendlyIndicators = !!P.r_u8();
+	if (!teams.empty())
+	{	
+		if (teamsEqual)
+		{
+			if (teams[0].score != teams[1].score)
+			{
+				if (Level().CurrentViewEntity())
+				{
+					if (teams[0].score > teams[1].score)
+						PlaySndMessage(ID_TEAM1_LEAD);
+					else
+						PlaySndMessage(ID_TEAM2_LEAD);
+				}
+			}
+		}
+		else
+		{
+			if (teams[0].score == teams[1].score)
+				if (Level().CurrentViewEntity())
+					PlaySndMessage(ID_TEAMS_EQUAL);
+		}
+	};
 }
 void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
@@ -254,12 +281,14 @@ char*	game_cl_TeamDeathmatch::getTeamSection(int Team)
 
 void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 {
+	inherited::shedule_Update(dt);
+
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameTDM*>( HUD().GetUI()->UIGame() );
 	//---------------------------------------------------------
 	if (pUITeamSelectWnd && pUITeamSelectWnd->IsShown() && !CanCallTeamSelectMenu())
 		StartStopMenu(pUITeamSelectWnd,true);
 	//---------------------------------------------------------
-	inherited::shedule_Update(dt);
+	
 	switch (phase)
 	{
 	case GAME_PHASE_TEAM1_SCORES:
@@ -434,3 +463,34 @@ void game_cl_TeamDeathmatch::UpdateMapLocations		()
 		}
 	};
 };
+
+void				game_cl_TeamDeathmatch::LoadSndMessages				()
+{
+//	LoadSndMessage("dm_snd_messages", "you_won", ID_YOU_WON);
+	LoadSndMessage("tdm_snd_messages", "team1_win", ID_TEAM1_WIN);
+	LoadSndMessage("tdm_snd_messages", "team2_win", ID_TEAM2_WIN);
+	LoadSndMessage("tdm_snd_messages", "teams_equal", ID_TEAMS_EQUAL);
+	LoadSndMessage("tdm_snd_messages", "team1_lead", ID_TEAM1_LEAD);
+	LoadSndMessage("tdm_snd_messages", "team2_lead", ID_TEAM2_LEAD);
+};
+
+void				game_cl_TeamDeathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
+{
+	inherited::OnSwitchPhase(old_phase, new_phase);
+	switch (new_phase)
+	{
+	case GAME_PHASE_TEAM1_SCORES:
+		{
+			if (Level().CurrentViewEntity())
+				PlaySndMessage(ID_TEAM1_WIN);
+		}break;
+	case GAME_PHASE_TEAM2_SCORES:
+		{
+			if (Level().CurrentViewEntity())
+				PlaySndMessage(ID_TEAM2_WIN);
+		}break;
+	default:
+		{			
+		}break;
+	};
+}
