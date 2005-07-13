@@ -66,6 +66,7 @@ public:
 	CServerList*		InitServerList(LPCSTR path, CUIWindow* parent);
 	CUIMapList*			InitMapList(LPCSTR path, CUIWindow* parent);
 	CUITrackBar*		InitTrackBar(LPCSTR path, CUIWindow* parent);
+	CUIEditBox*			InitCDkey(LPCSTR path, CUIWindow* parent);
 
 protected:
 	CUIXml	m_xml;

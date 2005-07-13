@@ -43,7 +43,7 @@ protected:
 	bool KeyReleased(int dik);
 	
 	void AddLetter(char c);
-	void AddChar(char c);
+	virtual void AddChar(char c);
 
 	bool m_bInputFocus;
 	bool m_bShift;

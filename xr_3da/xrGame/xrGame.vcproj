@@ -7104,7 +7104,7 @@
 									<File
 										RelativePath="WeaponVal.h">
 									</File>
-								</Filter>
+								</Filter>
 								<Filter
 									Name="Weapon USP45"
 									Filter="">
@@ -10836,6 +10836,16 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIMapList.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="CDkey"
+					Filter="">
+					<File
+						RelativePath=".\ui\UICDkey.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICDkey.h">
 					</File>
 				</Filter>
 			</Filter>

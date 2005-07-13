@@ -11,6 +11,9 @@
 		<options_item entry="net_palyer_name" group="mm_mp_client"/>
 		<text font="letterica18" r="215" g="195" b="170"></text>
 	</edit_player_name>
+	<edit_cd_key x="617" y="143" width="236" height="24">		
+		<text font="letterica18" r="215" g="195" b="170"></text>
+	</edit_cd_key>
 		
 	<tab x="130" y="195" width="1014" height="26">
 		<!-- BUTTONS -->
