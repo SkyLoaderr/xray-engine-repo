@@ -23,6 +23,8 @@ local sound_types = {
 		"ambient\\random\\rnd_3dmbridge",
 		"ambient\\random\\rnd_ak47_1",
 		"ambient\\random\\rnd_ak47_2",
+		"ambient\\gunfire_1",
+		"ambient\\gunfire_2",
 		"ambient\\random\\rnd_crow",
 		"ambient\\random\\rnd_disgusting",
 		"ambient\\random\\rnd_distantmortar3",
