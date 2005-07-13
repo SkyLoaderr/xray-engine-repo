@@ -19,9 +19,16 @@ use_wpn = false
 [kamp@start]
 center_point = pri_start_kamp_point
 meet = meet@def
-on_info = {+pri_followers_start} camper@wave1
+on_info = {+pri_followers_start} walker@wave1 ;camper@wave1
 combat_ignore_cond = always
 
+[walker@wave1]
+path_walk = pri_followers_stalker2_walk1
+path_look = pri_followers_stalker2_look1
+team = followers
+on_info = {+pri_wave1_monolith1_dead +pri_wave1_monolith2_dead +pri_wave1_monolith3_dead +pri_wave1_monolith4_dead} walker@wave2
+
+;--- OLD VERSION ---------------------------------------------------------
 [camper@wave1]
 path_walk = pri_followers_stalker2_walk1
 path_look = pri_followers_stalker2_look1
