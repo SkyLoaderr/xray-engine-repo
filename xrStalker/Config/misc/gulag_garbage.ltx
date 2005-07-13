@@ -247,7 +247,7 @@ meet = meet
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
 on_signal = sound_end |walker1@hellcar_way %+gar_alarm%
-anim = idle
+anim = wait
 
 [meet]
 meet_state = 30|hello@talk_hello| 10|ward@wait
@@ -281,7 +281,7 @@ on_signal = alarm | remark@gar_hellcar_group_return_observer %+gar_direction%
 meet = meet@1
 
 [remark@gar_hellcar_group_return_observer]
-anim = idle
+anim = wait
 
 [meet@1]
 Meet_state 		= 3| wait@wait
@@ -337,6 +337,7 @@ on_death = death@hellcar
 [remark@hellcar_way_final]
 on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
 on_info = %+gar_after_battle%
+anim = idle
 
 [walker2@hellcar_way]
 path_walk = hellcar_walk
@@ -432,9 +433,6 @@ danger = danger_condition@hellcar
 
 [danger_condition@hellcar]
 ignore_distance = 20
-
-;[remark@gar_hellcar_group_camper4]
-;anim = idle
 
 
 ;-------------------------------------------------------------------------------------
