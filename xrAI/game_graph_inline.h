@@ -209,7 +209,9 @@ IC	float GameGraph::CEdge::distance() const
 
 IC	void CGameGraph::begin_spawn(u32 vertex_id, const_spawn_iterator &start, const_spawn_iterator &end) const
 {
-	end = (start = (const_spawn_iterator)((u8*)m_nodes + vertex(vertex_id)->death_point_offset()) + vertex(vertex_id)->death_point_count());
+	const CVertex	*object = vertex(vertex_id);
+	start			= (const_spawn_iterator)((u8*)m_nodes + object->death_point_offset());
+	end				= start + object->death_point_count();
 }
 
 IC	void CGameGraph::set_invalid_vertex(_GRAPH_ID &vertex_id) const
