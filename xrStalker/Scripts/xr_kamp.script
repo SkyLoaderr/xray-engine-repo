@@ -168,21 +168,23 @@ function CKampManager:selectPosition(npc_id)
 	--print_table(self.position)
 end
 function CKampManager:getDestVertex(npc_id)
-	printf("get dest Vertex called")
+	printf("get dest Vertex called [%s]", npc_id)
 	if self.npc[npc_id].position == nil then
-		printf("get dest Vertex: nil")
+		printf("get dest Vertex: nil [%s]", npc_id)
 		return nil
 	end
 	
 	local position = self.position[self.npc[npc_id].position]
 	
 	if position.vertex ~= nil then
+		printf("vertex already selected [%s]", npc_id)
 		return position.vertex
 	end
 
 	-- высчитываем вертех по направлению
    	local pp = level.vertex_in_direction(self.center, self.position[self.npc[npc_id].position].dir, 2)
    	pp = level.vertex_in_direction(pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
+	printf("vertex selected [%s]", npc_id)   	
 	return pp		
 end
 function CKampManager:proceedRole(v)
