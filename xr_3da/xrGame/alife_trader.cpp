@@ -178,9 +178,9 @@ bool CSE_ALifeTraderAbstract::check_inventory_consistency	()
 		return					(false);
 
 #ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] [%s] inventory is consistent [%f][%d]",base()->name_replace(),mass,volume);
-	}
+//	if (psAI_Flags.test(aiALife)) {
+//		Msg						("[LSS] [%s] inventory is consistent [%f][%d]",base()->name_replace(),mass,volume);
+//	}
 #endif
 
 	return						(true);
