@@ -744,8 +744,10 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 	movement().m_body.current.yaw		= movement().m_body.target.yaw		= -E->o_torso.yaw;
 	movement().m_body.current.pitch		= movement().m_body.target.pitch	= 0;
 	SetfHealth							(E->fHealth);
-	if (!g_Alive())
+	if (!g_Alive()) {
 		set_death_time			();
+//		Msg						("%6d : Object [%d][%s][%s] is spawned DEAD",Device.dwTimeGlobal,ID(),*cName(),*cNameSect());
+	}
 
 	if (ai().get_level_graph() && UsedAI_Locations() && (e->ID_Parent == 0xffff)) {
 		if (ai().game_graph().valid_vertex_id(E->m_tGraphID))

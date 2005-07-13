@@ -208,15 +208,16 @@ bool CALifeCombatManager::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSch
 	if (psAI_Flags.test(aiALife)) {
 		GameGraph::_GRAPH_ID			l_tGraphID = l_tpALifeMonsterAbstract1 ? l_tpALifeMonsterAbstract1->m_tGraphID : l_tpALifeMonsterAbstract2->m_tGraphID;
 		print_time						("\n[LSS]",time_manager().game_time());
-		Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d])",
+		Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d], [%f][%f][%f])",
 			tpALifeSchedulable1->base()->name_replace(),
 			tpALifeSchedulable2->base()->name_replace(),
 			l_tGraphID,
-			ai().game_graph().header().levels().find(ai().game_graph().vertex(l_tGraphID)->level_id())->second.name(),
+			*ai().game_graph().header().levels().find(ai().game_graph().vertex(l_tGraphID)->level_id())->second.name(),
 			ai().game_graph().vertex(l_tGraphID)->vertex_type()[0],
 			ai().game_graph().vertex(l_tGraphID)->vertex_type()[1],
 			ai().game_graph().vertex(l_tGraphID)->vertex_type()[2],
-			ai().game_graph().vertex(l_tGraphID)->vertex_type()[3]
+			ai().game_graph().vertex(l_tGraphID)->vertex_type()[3],
+			VPUSH(ai().game_graph().vertex(l_tGraphID)->level_point())
 		);
 	}
 #endif

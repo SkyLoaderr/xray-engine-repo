@@ -347,13 +347,17 @@ void CALifeSimulatorBase::assign_death_position(CSE_ALifeCreatureAbstract *tpALi
 		}
 	}
 
+//	if (tGraphID == 1524) {
+//		Msg									("generating death position");
+//	}
 	CGameGraph::const_spawn_iterator		i, e;
 	ai().game_graph().begin_spawn			(tGraphID,i,e);
+	VERIFY									(e == i + ai().game_graph().vertex(tGraphID)->death_point_count());
 	i										+= (e != i) ? random().random(s32(e - i)) : 0;
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg									("[LSS] Generated death position %s[%f][%f][%f] -> [%f][%f][%f]",tpALifeCreatureAbstract->name_replace(),VPUSH(tpALifeCreatureAbstract->o_Position),VPUSH((*i).level_point()));
+		Msg									("[LSS] Generated death position %s[%f][%f][%f] -> [%f][%f][%f] : [%d]",tpALifeCreatureAbstract->name_replace(),VPUSH(tpALifeCreatureAbstract->o_Position),VPUSH((*i).level_point()),(*i).level_vertex_id());
 	}
 #endif
 	tpALifeCreatureAbstract->o_Position		= (*i).level_point();
