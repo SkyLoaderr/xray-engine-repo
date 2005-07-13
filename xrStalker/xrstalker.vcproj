@@ -375,6 +375,9 @@
 						RelativePath=".\Config\gameplay\info_l10radar.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\info_l11pripyat.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\info_l11yantar.xml">
 					</File>
 					<File
@@ -838,10 +841,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
