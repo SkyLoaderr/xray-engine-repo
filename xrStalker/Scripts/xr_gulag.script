@@ -149,6 +149,25 @@ function fract:availJob(job)
 		return false
 	end
 end
+-- Текущая работа доступна, если не истекло ее время и занята зависимая
+function fract:availCurrent(job)
+	if job.timeout == nil or
+	   job.begin == nil or game.time() - job.begin < job.timeout then
+		local jd = job.dependent
+
+		if jd then
+	   		for i, v in self.Job do
+	   			if v.section == jd then
+	   				return v.object ~= nil
+	   			end
+	   		end
+		end
+
+		return true
+	else
+		return false
+	end
+end
 
 function fract:updateJob()
 	-- если актёра нету, то никакие работы не могут быть назначены
@@ -166,7 +185,9 @@ function fract:updateJob()
 	for k,v in self.Object do
 		jobN = self.ObjectJob[k]
 		if jobN then
-			if not self:availState(self.Job[jobN].state, self.state) then
+			if not self:availState(self.Job[jobN].state, self.state) or
+			   not self:availCurrent(self.Job[jobN])
+			then
 				self:freeNpc( k )
 			end
 		end

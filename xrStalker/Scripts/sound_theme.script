@@ -207,6 +207,7 @@ function load_sound(obj)
 	-- игра на гитаре
 	theme[obj:id()]["guitar"]						= load_sound_from_ltx(obj, "guitar")
 	-- шутки, прибаутки
+	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")
 	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
 
 	-- УНИКАЛЬНЫЕ ТЕМЫ

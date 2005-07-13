@@ -77,6 +77,8 @@ function action_wait:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
+	
+	xr_sound.set_sound_play(self.object, "talk_hello")
 end
 function action_wait:activate_scheme()
 end
@@ -146,7 +148,7 @@ function CKampManager:__init(path)
 			table.insert(self.position, {vertex = self.patrol:level_vertex_id(k)})
 		end		
 	end
-	print_table(self.position)
+	--print_table(self.position)
 end
 function CKampManager:selectPosition(npc_id)
 	-- создаем список доступных позиций
@@ -162,8 +164,8 @@ function CKampManager:selectPosition(npc_id)
 		self.position[free[rr]].used = npc_id
 		self.npc[npc_id].position = free[rr]
 	end
-	print_table(self.npc)
-	print_table(self.position)
+	--print_table(self.npc)
+	--print_table(self.position)
 end
 function CKampManager:getDestVertex(npc_id)
 	printf("get dest Vertex called")
@@ -182,19 +184,6 @@ function CKampManager:getDestVertex(npc_id)
    	local pp = level.vertex_in_direction(self.center, self.position[self.npc[npc_id].position].dir, 2)
    	pp = level.vertex_in_direction(pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
 	return pp		
-end
-function CKampManager:updateKamp()
-	-- анализируем кто что умеет, и на основе этого выбираем одно из состояний лагеря.
-
-	-- в зависимости от состояния лагеря раздаем персонажам те или иные задачи. Тут же учитывается
-	-- и инерция переключения.
-	
-	for k,v in self.npc do
-		if v.begin == nil or
-		   time_global() - v.begin >= v.idle then
-			self:proceedRole(v)
-		end
-	end
 end
 function CKampManager:proceedRole(v)
 	-- тема требует, чтобы не было звуков, необходимо ждать конца звука
@@ -217,7 +206,8 @@ function CKampManager:proceedRole(v)
 			if w.name == v.current.next then
 				v.current = w
 				v.begin = time_global()
-				v.idle = math.random(w.min,w.max)*1000	
+				v.idle = math.random(w.min,w.max)*1000
+				v.new = true
 				return			
 			end
 		end
@@ -244,7 +234,8 @@ function CKampManager:proceedRole(v)
 	local role = math.random(1,num_roles)
 	v.current = allowed[role]
 	v.begin = time_global()
-	v.idle = math.random(v.current.min,v.current.max)*1000	
+	v.idle = math.random(v.current.min,v.current.max)*1000
+	v.new = true
 	return
 
 
@@ -298,7 +289,7 @@ function CKampManager:updateNpc(npc)
 		table.insert(self.npc[npc_id].roles, {name = "guitar_post",	min=5, max=6})
 	end	
 	-- рассказать анекдот
-	table.insert(self.npc[npc_id].roles, {name = "joke_wait",	min=10, max=20, allowed = {"idle"}, next = "joke_play"})
+	table.insert(self.npc[npc_id].roles, {name = "joke_wait",	min=5, max=6, allowed = {"idle"}, next = "joke_play"})
 	table.insert(self.npc[npc_id].roles, {name = "joke_play",	min=10, max=20, nosound = true, next = "joke_post"})
 	table.insert(self.npc[npc_id].roles, {name = "joke_post",	min=5, max=6})
 	-- рассказать историю
@@ -307,7 +298,14 @@ function CKampManager:updateNpc(npc)
 	-- запоминаем проигрываемые персонажем звуки.
 	self.npc[npc_id].speak = npc:active_sound_count()
 	
-	self:updateKamp()
+	-- производим выбор работ.
+	local v = self.npc[npc_id]
+	if v.begin == nil or
+	   time_global() - v.begin >= v.idle then
+		self:proceedRole(v)
+	end
+
+
 
 	--И какую же роль нам доверили:	
 	local role = self.npc[npc_id].current.name
@@ -356,7 +354,6 @@ function CKampManager:updateNpc(npc)
 		return "eat_kolbasa", sound
 	end
 	if role == "harmonica_wait" then
-		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "pre_harmonica"
 		return "harmonica", ""
 	end
@@ -366,12 +363,10 @@ function CKampManager:updateNpc(npc)
 		return "harmonica", "", 1
 	end
 	if role == "harmonica_post" then
-		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "post_harmonica"
 		return "harmonica", ""
 	end
 	if role == "guitar_wait" then
-		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "pre_guitar"
 		return "guitar", ""
 	end
@@ -381,13 +376,15 @@ function CKampManager:updateNpc(npc)
 		return "guitar", "", 1
 	end
 	if role == "guitar_post" then
-		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "post_guitar"
 		return "guitar", ""
 	end
 	if role == "joke_wait" then
-		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "pre_joke"
+		if self.npc[npc_id].new == true then
+			xr_sound.set_sound_play(npc, "intro_joke", math.random(2000,3000))
+			self.npc[npc_id].new = false
+		end
 		return "wait", ""
 	end
 	if role == "joke_play" then
@@ -395,7 +392,6 @@ function CKampManager:updateNpc(npc)
 		return "wait", sound
 	end
 	if role == "joke_post" then
-		-- тут звук надо подать как синхронный с анимацией
 		self.kamp_state = "post_joke"
 		return "wait", ""
 	end

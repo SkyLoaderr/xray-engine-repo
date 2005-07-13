@@ -95,7 +95,7 @@ function set_sound(npc, sound, now)
 	end
 end
 
-function set_sound_play(npc, sound)
+function set_sound_play(npc, sound, timeout)
 	printf("*SND* play SND to [%s]", utils.to_str(sound))
 	local npc_id = npc:id()
 	if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
@@ -103,7 +103,7 @@ function set_sound_play(npc, sound)
 		db.sound[npc_id].last_snd = {}
 	end
 	stop_play_sound(npc)
-	this.play_sound(npc, parse_names(sound))
+	this.play_sound(npc, parse_names(sound), timeout)
 end
 
 function update(npc)
@@ -149,7 +149,7 @@ function update(npc)
 end
 
 
-function play_sound(npc, themes)
+function play_sound(npc, themes, timeout)
 	-- нужно составить список тем
 	local snd_table = {}
 	local t = 0		
@@ -204,9 +204,12 @@ function play_sound(npc, themes)
 					s = math.random(0, snd.rnd_max-1)					
 				end	
 			end			
-							
+
+			if timeout == nil then
+				timeout = 0
+			end							
 			printf("*SND* play rnd [%s]", s)
-			npc:play_sound(snd.rnd_id, 1, 0, 1, 0, s)
+			npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, s)
 			db.sound[npc_id].last_snd[snd.rnd_id] = s
 		end		
 	end			

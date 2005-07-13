@@ -1,6 +1,165 @@
 local t = {}
 
 function load_job(sj, gname, type, squad, groups)
+	-- Посетители Долга
+	if type == "bar_visitors" then
+		t = { section = "logic@bar_visitors_kamp1",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp1",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp1",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp1",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp1",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp1",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+		t = { section = "logic@bar_visitors_kamp2",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp2",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp2",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp2",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp2",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp2",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+		t = { section = "logic@bar_visitors_kamp3",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[3],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp3",
+			idle = 0,
+			prior = 9, state = {1,2,3}, squad = squad, group = groups[3],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp3",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[3],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp3",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[3],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp3",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2,3}, squad = squad, group = groups[3],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+		t = { section = "logic@bar_visitors_kamp4",
+			idle = 0,
+			prior = 6, state = {1,3}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp4",
+			idle = 0,
+			prior = 6, state = {1,3}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_kamp4",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 6, state = {1,3}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+		t = { section = "logic@bar_visitors_walker",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 7, state = {1,3}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_walker",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 7, state = {1,3}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_walker",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 7, state = {1,3}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_walker",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 7, state = {1,3}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_walker",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 7, state = {1,3}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+	
+	end
+	
 	-- Гулаг ламеров Долга внутри базы Долга
 	if type == "bar_dolg_general" then
 		t = { section = "logic1@bar_dolg_general_guard_left",
@@ -407,187 +566,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)		
-	end
-	
-	
-	-- Зрители на арене.
-	if type == "bar_arena" then
-		t = { section = "logic@bar_arena_leader", 
-			idle = 0,
-			prior = 8, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_follower_1", 
-			idle = 0,
-			prior = 7, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			dependent = "logic@bar_arena_leader",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_follower_2", 
-			idle = 0,
-			prior = 7, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			dependent = "logic@bar_arena_leader",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_walker_1", 
-			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_walker_2", 
-			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_walker_3", 
-			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_walker_4", 
-			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_walker_5", 
-			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		
-		t = { section = "logic@bar_arena_fun_1", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_2", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_3", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_4", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_5", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_6", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_7", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_fun_8", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_night_1", 
-			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_night_2", 
-			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_night_3", 
-			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_night_4", 
-			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_night_5", 
-			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_arena_dolg_night_1", 
-			idle = 0,
-			prior = 7, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-				t = { section = "logic@bar_arena_dolg_night_2", 
-			idle = 0,
-			prior = 7, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-				t = { section = "logic@bar_arena_dolg_night_3", 
-			idle = 0,
-			prior = 7, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:character_community() == "dolg"
-			            end
-		}
-		table.insert(sj, t)
-	end
-	
+	end		
 	
 	-- Засада боевиков Наемников на стройке
 	if type == "bar_svoboda_ambush" then
@@ -798,7 +777,6 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	-- ROSTOK PSEUDODOGS ANGAR
-
 	if type == "rostok_flesh_angar" then
 		t = { section = "logic@rostok_flesh_angar", 
 			idle = 0,
@@ -889,7 +867,6 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	-- ROSTOK PSEUDODOGS STROYKA
-
 	if type == "rostok_stroyka_dogs" then
 		t = { section = "logic@rostok_stroyka_dogs", 
 			idle = 0,
@@ -956,7 +933,6 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	-- ROSTOK DOG ON EXIT
-
 	if type == "rostok_dogs_on_exit" then
 		t = { section = "logic@rostok_dogs_on_exit", 
 			idle = 0,
@@ -1595,6 +1571,12 @@ function load_job(sj, gname, type, squad, groups)
 end
 
 function load_states(gname, type)
+	if type == "bar_visitors" then
+		return function(gulag)
+			return 1
+		end
+	end
+	
 	if type == "bar_dolg_general" then
 		return function (gulag)
 				for k,v in gulag.Object do
@@ -1642,19 +1624,6 @@ function load_states(gname, type)
 	if type == "bar_dolg_bunker" then        
 		return function (gulag)
 				return 0
-		end
-	end
-	
-	if type == "bar_arena" then
-		return function (gulag)
-			if db.actor:has_info("bar_arena_start") then
-				return 1
-			end
-			if level.get_time_hours() >= 6 and level.get_time_hours() <= 22 then
-				return 0  -- день
-			else
-				return 2  -- ночь
-			end
 		end
 	end
 	
@@ -1819,10 +1788,9 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "bar_ecolog_crush" then
 		return npc_community == "ecolog"
 	end
-	if gulag_type == "bar_arena" then
+	if gulag_type == "bar_visitors" then
 		return true
 	end
-
 	if gulag_type == "bar_arena_monstr" then
 		return true
 	end
