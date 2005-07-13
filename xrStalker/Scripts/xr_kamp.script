@@ -48,7 +48,7 @@ function action_go_position:execute ()
 	action_base.execute (self)
 
 	if self.a.pos_vertex == nil then
-		abort("KAMP NODE IS EMPTY. npc=%s center_point=%s", self.object:name(), self.a.center_point)
+		self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id())
 	end
 		
 	if self.object:accessible(self.a.pos_vertex) then
@@ -170,14 +170,14 @@ end
 function CKampManager:getDestVertex(npc_id)
 	printf("get dest Vertex called [%s]", npc_id)
 	if self.npc[npc_id].position == nil then
-		printf("get dest Vertex: nil [%s]", npc_id)
+		abort("get dest Vertex: nil [%s]", npc_id)
 		return nil
 	end
 	
 	local position = self.position[self.npc[npc_id].position]
 	
 	if position.vertex ~= nil then
-		printf("vertex already selected [%s]", npc_id)
+		printf("vertex preselected [%s]", npc_id)
 		return position.vertex
 	end
 
@@ -292,7 +292,7 @@ function CKampManager:updateNpc(npc)
 	end	
 	-- рассказать анекдот
 	table.insert(self.npc[npc_id].roles, {name = "joke_wait",	min=5, max=6, allowed = {"idle"}, next = "joke_play"})
-	table.insert(self.npc[npc_id].roles, {name = "joke_play",	min=10, max=20, nosound = true, next = "joke_post"})
+	table.insert(self.npc[npc_id].roles, {name = "joke_play",	min=10, max=11, nosound = true, next = "joke_post"})
 	table.insert(self.npc[npc_id].roles, {name = "joke_post",	min=5, max=6})
 	-- рассказать историю
 
@@ -399,7 +399,18 @@ function CKampManager:updateNpc(npc)
 	end
 	if role == "joke_play" then
 		self.kamp_state = "joke"
-		return "sit_knee", sound
+		if self.npc[npc_id].new == true then
+			xr_sound.set_sound_play(npc, "joke", math.random(2000,3000))
+			self.npc[npc_id].new = false
+		end
+		local t = math.mod(npc_id, 3)
+		if t == 0 then
+			return "sit", ""
+		elseif t == 1 then
+			return "sit_ass", ""
+		else
+			return "sit_knee", ""
+		end
 	end
 	if role == "joke_post" then
 		self.kamp_state = "post_joke"

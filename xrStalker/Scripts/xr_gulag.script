@@ -249,11 +249,8 @@ function fract:print()
 		printf("section: %s, prior %d", v.section, v.prior)
 		if v.object ~= nil then
 			printf("    ObjID: %d", v.object:id())
-			printf("    Actor: %s", self.Object[v.object:id()]:name())
+			printf("    Actor: %s, [%s][%s][%s]", self.Object[v.object:id()]:name(), self.Object[v.object:id()]:team(), self.Object[v.object:id()]:squad(), self.Object[v.object:id()]:group())
 			printf("    current section: %s", db.storage[v.object:id()].active_section or "<<<nil>>>")
-			if v.actor_dialogs ~= nil then
-				printf("    Actor dialogs: %s", v.actor_dialogs)
-			end
 		end
 	end
 end
