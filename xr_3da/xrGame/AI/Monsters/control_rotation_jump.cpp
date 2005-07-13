@@ -169,6 +169,11 @@ void CControlRotationJump::build_line_second()
 	SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
 	VERIFY									(ctrl_data_dir);	
 
+	if (!m_object->EnemyMan.get_enemy()) {
+		m_man->notify				(ControlCom::eventRotationJumpEnd, 0);
+		return;
+	}
+	
 	Fvector					dir_to_enemy;
 	dir_to_enemy.sub		(m_object->EnemyMan.get_enemy()->Position(), m_object->Position());
 	dir_to_enemy.normalize	();
