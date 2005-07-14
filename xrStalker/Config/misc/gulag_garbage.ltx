@@ -223,7 +223,7 @@ on_signal = start | %+gar_counter_fire%
 active = nil
 
 ;-------------------------------------------------------------------------------------------------
-;-- GARBAGE STALKERS
+;-- GARBAGE STALKERS (Hellcar group)
 ;-------------------------------------------------------------------------------------------------
 [logic@gar_hellcar_group_hellcar]
 active = walker1@hellcar_way
@@ -231,7 +231,13 @@ active = walker1@hellcar_way
 [walker1@hellcar_way]
 path_walk = hellcar_walk
 path_look = hellcar_look
-on_info = {+gar_animation_radio} remark@hellcar_way_radio
+on_info = {+gar_animation_radio} walker3@hellcar_way
+;remark@hellcar_way_radio
+meet = meet
+
+[walker11@hellcar_way]
+path_walk = hellcar_walk
+path_look = hellcar_look
 meet = meet
 
 [remark@hellcar_way_radio]
@@ -246,7 +252,7 @@ meet = meet
 
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
-on_signal = sound_end |walker1@hellcar_way %+gar_alarm%
+on_signal = sound_end |walker11@hellcar_way %+gar_alarm%
 anim = wait
 
 [meet]
@@ -337,7 +343,7 @@ on_death = death@hellcar
 [remark@hellcar_way_final]
 on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
 on_info = %+gar_after_battle%
-anim = idle
+anim = wait
 
 [walker2@hellcar_way]
 path_walk = hellcar_walk

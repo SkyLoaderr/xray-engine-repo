@@ -44,7 +44,6 @@ danger = danger_condition
 anim = hello
 snd = gar_dm_newbie_help_me
 no_rotate = true
-no_danger = true
 on_signal = sound_end | remark2 %+gar_dm_novice_asked_for_help%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 on_info3 = {+gar_dm_end} nil %=gar_dm_bandits_fight%
@@ -54,7 +53,6 @@ danger = danger_condition
 [remark2]
 no_move = true
 anim = wait
-no_danger = true
 on_actor_dist_le_nvis = 7 | remark3 %=gar_dm_bandits_fight%
 on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
@@ -65,7 +63,6 @@ danger = danger_condition
 
 [remark3]
 no_move = false
-no_danger = true
 anim = wait
 snd = help
 arrival_timeout = 1500
@@ -76,11 +73,10 @@ danger = danger_condition
 
 [remark@after_fight]
 anim = hello
-no_danger = true
 snd = gar_dm_newbie_thank_you
-arrival_timeout = 20000
-snd_timeout = 20000
-reactions = ignore
+;arrival_timeout = 10000
+;snd_timeout = 10000
+;reactions = ignore
 on_signal = action_end | walker2 %=actor_friend%
 danger = danger_condition
 meet = meet
