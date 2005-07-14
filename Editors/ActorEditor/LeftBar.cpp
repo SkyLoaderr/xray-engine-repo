@@ -352,7 +352,7 @@ void TfraLeftBar::RefreshBar()
 {
 	miRecentFiles->Clear();
     u32 idx 			= 0;
-	for (AStringIt it=EPrefs.scene_recent_list.begin(); it!=EPrefs.scene_recent_list.end(); it++){
+	for (AStringIt it=EPrefs->scene_recent_list.begin(); it!=EPrefs->scene_recent_list.end(); it++){
         TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
         MI->Caption 	= *it;
         MI->OnClick 	= miRecentFilesClick;

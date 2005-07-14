@@ -18,7 +18,7 @@ void CActorTools::UndoClear()
 void CActorTools::UndoSave()
 {
     UI->RedrawScene();
-    if (0==EPrefs.scene_undo_level) return;
+    if (0==EPrefs->scene_undo_level) return;
 
 	UndoItem item;
 	GetTempFileName( FS.get_path(_temp_)->m_Path, "undo", 0, item.m_FileName );
@@ -30,7 +30,7 @@ void CActorTools::UndoSave()
 		unlink( m_RedoStack.back().m_FileName );
 		m_RedoStack.pop_back(); }
 
-	if( m_UndoStack.size() > EPrefs.scene_undo_level){
+	if( m_UndoStack.size() > EPrefs->scene_undo_level){
 		unlink( m_UndoStack.front().m_FileName );
 		m_UndoStack.pop_front(); }
 }
@@ -42,7 +42,7 @@ bool CActorTools::Undo()
 		m_RedoStack.push_back( m_UndoStack.back() );
 		m_UndoStack.pop_back();
 
-		if( m_RedoStack.size() > EPrefs.scene_undo_level){
+		if( m_RedoStack.size() > EPrefs->scene_undo_level){
 			unlink( m_RedoStack.front().m_FileName );
 			m_RedoStack.pop_front();
         }
@@ -68,7 +68,7 @@ bool CActorTools::Redo()
 		m_UndoStack.push_back( m_RedoStack.back() );
 		m_RedoStack.pop_back();
 
-		if( m_UndoStack.size() > EPrefs.scene_undo_level ){
+		if( m_UndoStack.size() > EPrefs->scene_undo_level ){
 			unlink( m_UndoStack.front().m_FileName );
 			m_UndoStack.pop_front(); 
         }

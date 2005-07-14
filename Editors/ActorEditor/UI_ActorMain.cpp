@@ -18,11 +18,13 @@ CActorMain*&	AUI=(CActorMain*)UI;
 
 CActorMain::CActorMain()
 {               
+    EPrefs			= xr_new<CCustomPreferences>();
 }
 //---------------------------------------------------------------------------
 
 CActorMain::~CActorMain()
 {
+    xr_delete		(EPrefs);
 }
 //---------------------------------------------------------------------------
 
@@ -46,17 +48,19 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
         ExecCommand				(COMMAND_CLEAR);
         
         BOOL bReadOnly 			= !FS.can_modify_file(_objects_,temp_fn.c_str());
-        
-        if (EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)) return FALSE;
-
         m_Flags.set				(flReadOnlyMode,bReadOnly);
-        if (bReadOnly){
-        	if (EFS.GetLockOwner(_objects_,temp_fn.c_str()).size()){
-				Log				("#!Object opened in readonly mode. Locked by user:",EFS.GetLockOwner(_objects_,temp_fn.c_str()).c_str());
-            }else{
-				Log				("#!You don't have permisions to modify object:",temp_fn.c_str());
-            }
+        
+        if (bReadOnly || EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true))
+            Msg					("#!Object '%s' opened in readonly mode.",temp_fn.c_str());
+
+/*        
+        shared_str locker;
+        if ((false==bReadOnly) && EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true,&locker)){
+            Log					("#!Object opened in readonly mode. Locked by user:",locker.c_str());
+        }else if (bReadOnly){
+            Log					("#!You don't have permisions to modify object:",temp_fn.c_str());
         }
+*/        
         // set enable ...
 		m_Props->SetReadOnly	(bReadOnly);
         fraLeftBar->SetReadOnly	(bReadOnly);
@@ -68,7 +72,7 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
         }
         m_LastFileName 			= temp_fn.c_str();
         ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
-        EPrefs.AppendRecentFile(m_LastFileName.c_str());
+        EPrefs->AppendRecentFile(m_LastFileName.c_str());
         ExecCommand	(COMMAND_UPDATE_CAPTION);
         ExecCommand	(COMMAND_UPDATE_PROPERTIES);
         // lock
@@ -109,7 +113,7 @@ CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
                 ELog.Msg		(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
                 EFS.BackupFile	(_objects_,temp_fn.c_str());
                 m_LastFileName	= temp_fn.c_str();
-                EPrefs.AppendRecentFile	(m_LastFileName.c_str());
+                EPrefs->AppendRecentFile	(m_LastFileName.c_str());
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
                 res				= TRUE;
             }else{
@@ -137,7 +141,7 @@ CCommandVar CActorTools::CommandImport(CCommandVar p1, CCommandVar p2)
                 return	FALSE;
             m_LastFileName = temp_fn.c_str();
             ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
-            if (ExecCommand( COMMAND_SAVE )){
+            if (ExecCommand( COMMAND_SAVE,temp_fn,1 )){
                 xr_string mfn;
                 FS.update_path(mfn,_import_,temp_fn.c_str());
                 EFS.MarkFile(mfn.c_str(),true);
@@ -273,8 +277,8 @@ CCommandVar CommandSelectPreviewObj(CCommandVar p1, CCommandVar p2)
 }
 CCommandVar CommandLoadFirstRecent(CCommandVar p1, CCommandVar p2)
 {
-    if (EPrefs.FirstRecentFile())
-        return ExecCommand(COMMAND_LOAD,xr_string(EPrefs.FirstRecentFile()));
+    if (EPrefs->FirstRecentFile())
+        return ExecCommand(COMMAND_LOAD,xr_string(EPrefs->FirstRecentFile()));
     return FALSE;
 }
 CCommandVar CommandFileMenu(CCommandVar p1, CCommandVar p2)
@@ -446,7 +450,7 @@ void CActorMain::OutGridSize()
 {
 	VERIFY(fraBottomBar);
     AnsiString s;
-    s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
+    s.sprintf("Grid: %1.1f",EPrefs->grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------
