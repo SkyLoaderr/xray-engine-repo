@@ -3,7 +3,7 @@
 #include "game_cl_base.h"
 #include "script_export_space.h"
 #include "game_cl_mp_snd_messages.h"
-#include "Sound.h"
+#include "../Sound.h"
 
 class CUIChatWnd;
 class CUIChatLog;
