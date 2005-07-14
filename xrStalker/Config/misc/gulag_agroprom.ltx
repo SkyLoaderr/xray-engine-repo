@@ -33,72 +33,67 @@ active = {-agr_nii_alarm} walker1@agr_nii_north_gate, camper1@agr_nii_north_gate
 [walker1@agr_nii_north_gate]
 path_walk = north_gate_walk1
 path_look = north_gate_look1
-on_info   = {+agr_nii_alarm} camper1@agr_nii_north_gate_alarm
+on_info   = {+agr_nii_alarm} walker1@agr_nii_north_gate_alarm
 
-[camper1@agr_nii_north_gate_alarm]
+[walker1@agr_nii_north_gate_alarm]
 path_walk = north_gate_alarm_walk1
 path_look = north_gate_alarm_look1
-radius = 10
 on_info   = {-agr_nii_alarm} walker1@agr_nii_north_gate
 
 
 [logic@agr_nii_north_gate_walker2]
-active = {-agr_nii_alarm} walker2@agr_nii_north_gate, camper2@agr_nii_north_gate_alarm
+active = {-agr_nii_alarm} walker2@agr_nii_north_gate, walker2@agr_nii_north_gate_alarm
 
 [walker2@agr_nii_north_gate]
 path_walk = north_gate_walk2
 path_look = north_gate_look2
-on_info   = {+agr_nii_alarm} camper2@agr_nii_north_gate_alarm
+on_info   = {+agr_nii_alarm} walker2@agr_nii_north_gate_alarm
 
-[camper2@agr_nii_north_gate_alarm]
+[walker2@agr_nii_north_gate_alarm]
 path_walk = north_gate_alarm_walk2
 path_look = north_gate_alarm_look2
-radius = 10
 on_info   = {-agr_nii_alarm} walker2@agr_nii_north_gate
 
 
 [logic@agr_nii_north_gate_walker3]
-active = {-agr_nii_alarm} walker3@agr_nii_north_gate, camper3@agr_nii_north_gate_alarm
+active = {-agr_nii_alarm} walker3@agr_nii_north_gate, walker3@agr_nii_north_gate_alarm
 
 [walker3@agr_nii_north_gate]
 path_walk = north_gate_walk3
 path_look = north_gate_look3
-on_info   = {+agr_nii_alarm} camper3@agr_nii_north_gate_alarm
+on_info   = {+agr_nii_alarm} walker3@agr_nii_north_gate_alarm
 
-[camper3@agr_nii_north_gate_alarm]
+[walker3@agr_nii_north_gate_alarm]
 path_walk = north_gate_alarm_walk3
 path_look = north_gate_alarm_look3
-radius = 10
 on_info   = {-agr_nii_alarm} walker3@agr_nii_north_gate
 
 ;------------------ пост на восточных воротах -----------------------
 [logic@agr_nii_east_gate_walker1]
-active = {-agr_nii_alarm} walker1@agr_nii_east_gate, camper1@agr_nii_east_gate_alarm
+active = {-agr_nii_alarm} walker1@agr_nii_east_gate, walker1@agr_nii_east_gate_alarm
 
 [walker1@agr_nii_east_gate]
 path_walk = east_gate_walk1
 path_look = east_gate_look1
-on_info   = {+agr_nii_alarm} camper1@agr_nii_east_gate_alarm
+on_info   = {+agr_nii_alarm} walker1@agr_nii_east_gate_alarm
 
-[camper1@agr_nii_east_gate_alarm]
+[walker1@agr_nii_east_gate_alarm]
 path_walk = east_gate_alarm_walk1
 path_look = east_gate_alarm_look1
-radius = 10
 on_info   = {-agr_nii_alarm} walker1@agr_nii_east_gate
 
 
 [logic@agr_nii_east_gate_walker2]
-active = {-agr_nii_alarm} walker2@agr_nii_east_gate, camper2@agr_nii_east_gate_alarm
+active = {-agr_nii_alarm} walker2@agr_nii_east_gate, walker2@agr_nii_east_gate_alarm
 
 [walker2@agr_nii_east_gate]
 path_walk = east_gate_walk2
 path_look = east_gate_look2
-on_info   = {+agr_nii_alarm} camper2@agr_nii_east_gate_alarm
+on_info   = {+agr_nii_alarm} walker2@agr_nii_east_gate_alarm
 
-[camper2@agr_nii_east_gate_alarm]
+[walker2@agr_nii_east_gate_alarm]
 path_walk = east_gate_alarm_walk2
 path_look = east_gate_alarm_look2
-radius = 10
 on_info   = {-agr_nii_alarm} walker2@agr_nii_east_gate
 
 ;------------------ 1-й этаж основного здания -----------------------
@@ -111,12 +106,12 @@ path_look = floor1_day_look1
 
 
 [logic@agr_nii_floor1_alarm_walker1]
-active = camper1@agr_nii_floor1_alarm
+active = walker1@agr_nii_floor1_alarm
 
-[camper1@agr_nii_floor1_alarm]
+[walker1@agr_nii_floor1_alarm]
 path_walk = floor1_alarm_walk1
 path_look = floor1_alarm_look1
-radius = 3
+
 
 [logic@agr_nii_floor1_day_walker2]
 active = walker2@agr_nii_floor1_day
@@ -124,6 +119,7 @@ active = walker2@agr_nii_floor1_day
 [walker2@agr_nii_floor1_day]
 path_walk = floor1_day_walk2
 path_look = floor1_day_look2
+
 
 [logic@agr_nii_floor1_alarm_walker2]
 active = camper2@agr_nii_floor1_alarm
@@ -143,12 +139,12 @@ path_look = floor2_day_look1
 
 
 [logic@agr_nii_floor2_alarm_walker1]
-active = camper1@agr_nii_floor2_alarm
+active = walker1@agr_nii_floor2_alarm
 
-[camper1@agr_nii_floor2_alarm]
+[walker1@agr_nii_floor2_alarm]
 path_walk = floor2_alarm_walk1
 path_look = floor2_alarm_look1
-radius = 10
+
 
 [logic@agr_nii_floor2_day_walker2]
 active = walker2@agr_nii_floor2_day
