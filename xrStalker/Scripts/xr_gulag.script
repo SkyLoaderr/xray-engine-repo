@@ -585,6 +585,10 @@ function checkStalker(npc_community, gulag_type)
 		return true
 	end
 
+	if gulag_pripyat.checkStalker(npc_community, gulag_type) then
+		return true
+	end
+
 	return false
 end
 
@@ -612,6 +616,10 @@ function checkMonster(npc_community, gulag_type)
     end
 
    	if gulag_agroprom.checkMonster(npc_community, gulag_type) then
+		return true
+    end
+
+   	if gulag_pripyat.checkMonster(npc_community, gulag_type) then
 		return true
     end
 
