@@ -47,6 +47,9 @@
 		<button x="415" y="10" width="55" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Ranking</text>
 		</button>
+		<button x="475" y="10" width="50" height="20" push_off_x="0" push_off_y="0">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">test</text>
+		</button>
 	</tab>
 
 </window>
