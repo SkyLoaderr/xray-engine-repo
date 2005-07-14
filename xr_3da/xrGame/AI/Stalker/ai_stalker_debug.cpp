@@ -359,7 +359,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 
 	const CMotivationActionManagerStalker &brain = this->brain();
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,brain.graph().vertices().size());
-	HUD().Font().pFontSmall->OutNext	("%s%selected_id  : %d",indent,indent,brain.selected_id());
+	HUD().Font().pFontSmall->OutNext	("%s%sselected_id : %d",indent,indent,brain.selected_id());
 	// actions
 	draw_planner						(this->brain(),indent,indent,"root");
 	
@@ -478,7 +478,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sbody target     : [%f][%f]",indent,indent,movement().body_orientation().target.yaw,movement().body_orientation().target.pitch);
 	
 	if (movement().path_type() == MovementManager::ePathTypePatrolPath) {
-		HUD().Font().pFontSmall->OutNext("%s%spatrol");
+		HUD().Font().pFontSmall->OutNext("%s%spatrol",indent,indent);
 		HUD().Font().pFontSmall->OutNext("%s%s%spath          : %s",indent,indent,indent,*movement().patrol().path_name());
 		HUD().Font().pFontSmall->OutNext("%s%s%scompleted     : %s",indent,indent,indent,movement().patrol().completed() ? "+" : "-");
 		HUD().Font().pFontSmall->OutNext("%s%s%scurrent point : %d",indent,indent,indent,movement().patrol().get_current_point_index());
