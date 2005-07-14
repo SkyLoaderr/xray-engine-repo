@@ -348,7 +348,7 @@ void PH_DBG_Clear()
 
 void PH_DBG_Render()
 {
-	
+	if(ph_dbg_draw_mask.test(phDbgDrawZDisable))CHK_DX(HW.pDevice->SetRenderState(D3DRS_ZENABLE,0));
 	HUD().Font().pFontSmall->OutSet	(550,250);
 
 	if(ph_dbg_draw_mask.test(phDbgDrawEnabledAABBS))
@@ -404,6 +404,7 @@ void PH_DBG_Render()
 //	HUD().Font().pFontSmall->OutNext("---------------------");
 #endif
 
+	if(ph_dbg_draw_mask.test(phDbgDrawZDisable))CHK_DX(HW.pDevice->SetRenderState(D3DRS_ZENABLE,1));
 }
 
 void DBG_DrawStatBeforeFrameStep()

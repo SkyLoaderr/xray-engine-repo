@@ -125,6 +125,36 @@ void CCar::DbgUbdateCl()
 			HUD().Font().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque())								;
 			HUD().Font().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque())								;
 			HUD().Font().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel)													;
+			if(b_clutch)
+			{
+				HUD().Font().pFontSmall->SetColor		(D3DCOLOR_XRGB(0,255,0))														;
+				HUD().Font().pFontSmall->OutNext		("CLUTCH")																		;
+				HUD().Font().pFontSmall->SetColor		(color_rgba(0xff,0xff,0xff,0xff))												;
+			}
+			if(b_engine_on)
+			{
+				HUD().Font().pFontSmall->SetColor		(D3DCOLOR_XRGB(0,255,0))														;
+				HUD().Font().pFontSmall->OutNext		("ENGINE ON")																		;
+				HUD().Font().pFontSmall->SetColor		(color_rgba(0xff,0xff,0xff,0xff))												;
+			}
+			if(b_stalling)
+			{
+				HUD().Font().pFontSmall->SetColor		(D3DCOLOR_XRGB(255,0,0))														;
+				HUD().Font().pFontSmall->OutNext		("STALLING")																		;
+				HUD().Font().pFontSmall->SetColor		(color_rgba(0xff,0xff,0xff,0xff))												;
+			}
+			if(b_starting)
+			{
+				HUD().Font().pFontSmall->SetColor		(D3DCOLOR_XRGB(255,0,0))														;
+				HUD().Font().pFontSmall->OutNext		("STARTER")																		;
+				HUD().Font().pFontSmall->SetColor		(color_rgba(0xff,0xff,0xff,0xff))												;
+			}
+			if(b_breaks)
+			{
+				HUD().Font().pFontSmall->SetColor		(D3DCOLOR_XRGB(255,0,0))														;
+				HUD().Font().pFontSmall->OutNext		("BREAKS")																		;
+				HUD().Font().pFontSmall->SetColor		(color_rgba(0xff,0xff,0xff,0xff))												;
+			}
 			//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
 			//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 		}

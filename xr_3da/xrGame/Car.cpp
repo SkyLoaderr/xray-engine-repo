@@ -925,8 +925,7 @@ void CCar::UpdatePower()
 {
 	m_current_rpm=EngineDriveSpeed();
 	m_current_engine_power=EnginePower();
-
-	if(b_auto_switch_transmission) 
+	if(b_auto_switch_transmission&&!b_transmission_switching) 
 	{
 		VERIFY2(CurrentTransmission()<m_gear_ratious.size(),"wrong transmission");
 		if(m_current_rpm<m_gear_ratious[CurrentTransmission()][1]) TransmissionDown();
@@ -938,7 +937,7 @@ void CCar::UpdatePower()
 	e=m_driving_wheels.end();
 	for(;i!=e;++i)
 		i->UpdatePower();
-
+	
 	if(brp)
 		HandBreak();
 }
@@ -1158,6 +1157,7 @@ void CCar::Transmission(size_t num)
 			m_current_transmission_num	=num						;
 			m_current_gear_ratio		=m_gear_ratious[num][0]		;
 			b_transmission_switching	=true						;
+			Drive						()							;
 		}
 	}
 #ifdef DEBUG
@@ -1171,7 +1171,7 @@ void CCar::CircleSwitchTransmission()
 	transmission=transmission%m_gear_ratious.size();
 	0==transmission ? transmission++ : transmission;
 	Transmission(transmission);
-	Drive();
+	
 }
 
 void CCar::TransmissionUp()
@@ -1181,7 +1181,7 @@ void CCar::TransmissionUp()
 	size_t max_transmition_num=m_gear_ratious.size()-1;
 	transmission>max_transmition_num ? transmission=max_transmition_num :transmission;
 	Transmission(transmission);
-	Drive();
+
 }
 
 void CCar::TransmissionDown()
@@ -1190,7 +1190,7 @@ void CCar::TransmissionDown()
 	size_t transmission=CurrentTransmission()-1;
 	transmission<1 ? transmission=1 : transmission;
 	Transmission(transmission);
-	Drive();
+
 }
 void CCar::InitParabola()
 {
@@ -1400,24 +1400,15 @@ float CCar::Parabola(float rpm)
 float CCar::EnginePower()
 {
 
-	float value;
-	if(b_transmission_switching)
+	float value;value = Parabola(m_current_rpm);
+	if(b_starting)
 	{
-		value=0.f;
-	}else{
 		if(m_current_rpm<m_min_rpm)
 		{
-			if(b_starting) value= Parabola(m_min_rpm);
-
+			value= Parabola(m_min_rpm);
 		}
-		else
-		{
-			if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) 
-															b_starting=false;
-		}
-		value = Parabola(m_current_rpm);
+		else if(Device.dwTimeGlobal-m_dwStartTime>1000) b_starting=false;
 	}
-
 	if(value>m_current_engine_power)
 		return value * m_power_increment_factor+m_current_engine_power*(1.f-m_power_increment_factor);
 	else
@@ -1443,7 +1434,10 @@ float CCar::EngineDriveSpeed()
 	if(b_transmission_switching)
 	{
 		calc_rpm=m_max_rpm;
-		if(m_current_rpm>m_power_rpm) b_transmission_switching=false;
+		if(m_current_rpm>m_power_rpm) 
+		{
+			b_transmission_switching=false;
+		}
 	}else
 	{
 		calc_rpm=EngineRpmFromWheels();
@@ -1555,15 +1549,17 @@ void CCar::PhDataUpdate(dReal step)
 		if(m_repairing)Revert();
 		LimitWheels();
 		UpdateFuel(step);
+
+		if(bkp)
+		{
+			UpdateBack();
+		}
 		//if(fwp)
 		{	
 			UpdatePower();
 			if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
 		}
-		if(bkp)
-		{
-			UpdateBack();
-		}
+	
 //////////////////////////////////////////////////////////
 	for (int k=0; k<(int)m_doors_update.size(); ++k){
 		SDoor* D = m_doors_update[k];
@@ -1769,4 +1765,19 @@ u16 CCar::Initiator()
 		return Owner()->ID();
 	}
 	else return CExplosive::Initiator();
+}
+
+float	CCar::RefWheelMaxSpeed()
+{
+	return m_max_rpm/m_current_gear_ratio;
+}
+
+float	CCar:: EngineCurTorque()
+{
+	return m_current_engine_power/m_current_rpm;
+}
+float	CCar:: RefWheelCurTorque()
+{
+	if(b_transmission_switching) return 0.f;
+	return EngineCurTorque()*((m_current_gear_ratio<0.f) ? -m_current_gear_ratio : m_current_gear_ratio);
 }

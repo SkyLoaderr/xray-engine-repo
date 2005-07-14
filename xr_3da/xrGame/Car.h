@@ -404,78 +404,69 @@ private:
 	void				InitParabola();
 	float	_stdcall	Parabola(float rpm);
 	//float GetSteerAngle();
-	void				 LimitWheels	()	;
-	void				 Drive			()	;
-	void				 Starter		()	;
-	void				 StartEngine	()	;
-	void				 StopEngine		()	;
-	void				 Stall			()	;
-	void				 Clutch			()	;
-	void				 Unclutch		()	;
-	void				 SwitchEngine	()	;
-	void				 NeutralDrive	()	;
-	void				 UpdatePower	()	;
-	void				 ReleasePedals	()	;
-	void				 ResetKeys		()	;
+	void				 LimitWheels						()	;
+	void				 Drive								()	;
+	void				 Starter							()	;
+	void				 StartEngine						()	;
+	void				 StopEngine							()	;
+	void				 Stall								()	;
+	void				 Clutch								()	;
+	void				 Unclutch							()	;
+	void				 SwitchEngine						()	;
+	void				 NeutralDrive						()	;
+	void				 UpdatePower						()	;
+	void				 ReleasePedals						()	;
+	void				 ResetKeys							()	;
 
-	////////////////////////////////////////////////////////////////////////
-	float RefWheelMaxSpeed()
-	{
-		return m_max_rpm/m_current_gear_ratio;
-	}
-	float EngineCurTorque()
-	{
-		return m_current_engine_power/m_current_rpm;
-	}
-	float RefWheelCurTorque()
-	{
-		return EngineCurTorque()*((m_current_gear_ratio<0.f) ? -m_current_gear_ratio : m_current_gear_ratio);
-	}
-	float	 EnginePower				();
-	float	 EngineDriveSpeed			();
-	float	 DriveWheelsMeanAngleRate	();
-IC	float	 EngineRpmFromWheels		(){return dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);}
+	////////////////////////////////////////////////////////////////////////////
+	float				RefWheelMaxSpeed					()	;
+	float				EngineCurTorque						()	;
+	float				RefWheelCurTorque					()	;
+	float	 			EnginePower							()	;
+	float	 			EngineDriveSpeed					()	;
+	float	 			DriveWheelsMeanAngleRate			()	;
+IC	float	 			EngineRpmFromWheels					(){return dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);}
 	/////////////////////////////////////////////////////////////////////////	
-	void	SteerRight					();
-	void	SteerLeft					();
-	void	SteerIdle					();
-	void	Transmission				(size_t num);
-	void	CircleSwitchTransmission	();
-	void	TransmissionUp				();
-	void	TransmissionDown			();
-IC	size_t	CurrentTransmission		(){return m_current_transmission_num;}
-	void	PressRight					();
-	void	PressLeft					();
-	void	PressForward				();
-	void	PressBack					();
-	void	PressBreaks					();
+	void				SteerRight							();
+	void				SteerLeft							();
+	void				SteerIdle							();
+	void				Transmission						(size_t num);
+	void				CircleSwitchTransmission			();
+	void				TransmissionUp						();
+	void				TransmissionDown					();
+IC	size_t				CurrentTransmission					(){return m_current_transmission_num;}
+	void				PressRight							();
+	void				PressLeft							();
+	void				PressForward						();
+	void				PressBack							();
+	void				PressBreaks							();
 
-	void	ReleaseRight				();
-	void	ReleaseLeft					();
-	void	ReleaseForward				();
-	void	ReleaseBack					();
-	void	ReleaseBreaks				();
-	void	Revert						();
+	void				ReleaseRight						();
+	void				ReleaseLeft							();
+	void				ReleaseForward						();
+	void				ReleaseBack							();
+	void				ReleaseBreaks						();
+	void				Revert								();
 
-	void StartBreaking					();
-	void StopBreaking					();
-	void UpdateBack						();
+	void StartBreaking							();
+	void StopBreaking							();
+	void UpdateBack								();
 
-	void HandBreak						();
-	void ReleaseHandBreak				();
-	void DriveForward					();
-	void DriveBack						();
-	void ParseDefinitions				();
-	void CreateSkeleton					();//creates m_pPhysicsShell
-	void Init							();
+	void HandBreak								();
+	void ReleaseHandBreak						();
+	void DriveForward							();
+	void DriveBack								();
+	void ParseDefinitions						();
+	void CreateSkeleton							();//creates m_pPhysicsShell
+	void Init									();
 
-	void PlayExhausts					();
-	void StopExhausts					();
-	void UpdateExhausts					();
-	void ClearExhausts					();
-	void UpdateFuel						(float time_delta);
-	float AddFuel						(float ammount); //ammount - fuel to load, ret - fuel loaded
-	void CarExplode						();
+	void PlayExhausts							();
+	void StopExhausts							();
+	void UpdateExhausts							();
+	void ClearExhausts							();
+	void UpdateFuel								(float time_delta);
+	float AddFuel								(float ammount); //ammount - fuel to load, ret - fuel loaded
+	void CarExplode								();
 	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);

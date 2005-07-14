@@ -51,7 +51,8 @@ enum
 	phDbgDrawCarPlots			=		1<<18,
 	phDbgLadder					=		1<<19,
 	phDbgDrawExplosions			=		1<<20,
-	phDbgDrawCarAllTrnsm		=		1<<21
+	phDbgDrawCarAllTrnsm		=		1<<21,
+	phDbgDrawZDisable			=		1<<22
 };
 struct SPHObjDBGDraw
 {
