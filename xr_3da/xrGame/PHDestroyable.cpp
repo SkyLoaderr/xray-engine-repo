@@ -292,12 +292,18 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 
 	if(own_shell->IsGroupObject())
 		new_shell->RegisterToCLGroup(own_shell->CollideBits());
-	if(new_ini)
+	CPHSkeleton* ps=dn->PPhysicsShellHolder()->PHSkeleton();
+	if(ps)
 	{
-		CPHSkeleton* ps=dn->PPhysicsShellHolder()->PHSkeleton();
-		if(ps&&new_ini->section_exist("autoremove"))
+	
+		if(own_ini&&own_ini->section_exist("autoremove_parts"))
 		{
-			ps->SetAutoRemove(READ_IF_EXISTS(new_ini,r_u32,"autoremove","time",ps->DefaultExitenceTime()));
+			ps->SetAutoRemove(1000*(READ_IF_EXISTS(own_ini,r_u32,"autoremove_parts","time",ps->DefaultExitenceTime())));
+		}
+
+		if(new_ini&&new_ini->section_exist("autoremove"))
+		{
+			ps->SetAutoRemove(1000*(READ_IF_EXISTS(new_ini,r_u32,"autoremove","time",ps->DefaultExitenceTime())));
 		}
 	}
 }
