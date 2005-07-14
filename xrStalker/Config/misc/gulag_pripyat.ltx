@@ -1,9 +1,141 @@
+;--------------------------------------------------------------------------
+; стандартный диалог
+;--------------------------------------------------------------------------
+[meet@def]
+meet_state = 1|wait
+;meet_state_wpn = 15|threat@threat_weap
+victim = 1|actor
+victim_wpn = 1|actor
+use = false
+use_wpn = false
+
+;--------------------------------------------------------------------------
+; диалог лидера
+;--------------------------------------------------------------------------
+[meet@leader]
+meet_dialog = pri_followers_start_dlg
+meet_state = 10|hello@talk_hello|5|guard@wait
+meet_state_wpn = 15|threat@threat_weap
+victim = 30|actor
+victim_wpn = 20|actor
+use = true
+use_wpn = false
+
 ;-------------------------------------------------------------------------------------------------
 ;-- Followers
 ;-------------------------------------------------------------------------------------------------
 
-[logic@pri_followers_leader_normal]
-active = nil
+;--- leader: kamp --------------------------------------------------------------------------------
+[logic@pri_followers_leader_kamp]
+active = kamp@pri_followers_leader_kamp
+combat_ignore = combat_ignore
+
+[kamp@pri_followers_leader_kamp]
+center_point = kamp_point
+meet = meet@leader
+combat_ignore_cond = always
+
+;--- leader: wave1
+[logic@pri_followers_leader_wave1]
+active = walker@pri_followers_leader_wave1
+
+[walker@pri_followers_leader_wave1]
+path_walk = wave1_leader_walk1
+path_look = wave1_leader_look1
+team = followers
+on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+
+;--- leader: wave2
+[logic@pri_followers_leader_wave2]
+active = walker@pri_followers_leader_wave2
+
+[walker@pri_followers_leader_wave2]
+path_walk = wave2_leader_walk1
+path_look = wave2_leader_look1
+
+;--- nap1: kamp ------------------------------------------------------------------------------------
+[logic@pri_followers_nap1_kamp]
+active = kamp@pri_followers_nap1_kamp
+combat_ignore = combat_ignore
+
+[kamp@pri_followers_nap1_kamp]
+center_point = kamp_point
+meet = meet@def
+combat_ignore_cond = always
+
+;--- nap1: wave1
+[logic@pri_followers_nap1_wave1]
+active = walker@pri_followers_nap1_wave1
+
+[walker@pri_followers_nap1_wave1]
+path_walk = wave1_stalker1_walk1
+path_look = wave1_stalker1_look1
+team = followers
+on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+
+;--- nap1: wave2
+[logic@pri_followers_nap1_wave2]
+active = walker@pri_followers_nap1_wave2
+
+[walker@pri_followers_nap1_wave2]
+path_walk = wave2_stalker1_walk1
+path_look = wave2_stalker1_look1
+
+;--- nap2: kamp ------------------------------------------------------------------------------------
+[logic@pri_followers_nap2_kamp]
+active = kamp@pri_followers_nap2_kamp
+combat_ignore = combat_ignore
+
+[kamp@pri_followers_nap2_kamp]
+center_point = kamp_point
+meet = meet@def
+combat_ignore_cond = always
+
+;--- nap2: wave1
+[logic@pri_followers_nap2_wave1]
+active = walker@pri_followers_nap2_wave1
+
+[walker@pri_followers_nap2_wave1]
+path_walk = wave1_stalker2_walk1
+path_look = wave1_stalker2_look1
+team = followers
+on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+
+;--- nap2: wave2
+[logic@pri_followers_nap2_wave2]
+active = walker@pri_followers_nap2_wave2
+
+[walker@pri_followers_nap2_wave2]
+path_walk = wave2_stalker2_walk1
+path_look = wave2_stalker2_look1
+
+;--- nap3: kamp ------------------------------------------------------------------------------------
+[logic@pri_followers_nap3_kamp]
+active = kamp@pri_followers_nap3_kamp
+combat_ignore = combat_ignore
+
+[kamp@pri_followers_nap3_kamp]
+center_point = kamp_point
+meet = meet@def
+combat_ignore_cond = always
+
+;--- nap3: wave1
+[logic@pri_followers_nap3_wave1]
+active = walker@pri_followers_nap3_wave1
+
+[walker@pri_followers_nap3_wave1]
+path_walk = wave1_stalker3_walk1
+path_look = wave1_stalker3_look1
+team = followers
+on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+
+;--- nap3: wave2
+[logic@pri_followers_nap3_wave2]
+active = walker@pri_followers_nap3_wave2
+
+[walker@pri_followers_nap3_wave2]
+path_walk = wave2_stalker3_walk1
+path_look = wave2_stalker3_look1
 
 ;--- Monsters --------------------------------------------------------------------------------------
 

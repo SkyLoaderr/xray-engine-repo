@@ -1,13 +1,10 @@
------------------------------------------------------------------------
--- —ÓÒÚÓˇÌËˇ ·‡Á˚ ·‡Ì‰ËÚÓ‚
---    0 - ÌÓÏ‡Î¸ÌÓÂ ÒÓÒÚÓˇÌËÂ
---    2 - ÚÂ‚Ó„‡
------------------------------------------------------------------------
 
-local state_normal = 0
-local state_alarm = 1
-local state_alarm_actor_inside = 2
-local state_fight = 1
+local state_kamp = 0
+local state_wave1 = 1
+local state_wave2 = 2
+local state_wave3 = 3
+local state_wave4 = 4
+local state_wave5 = 5
 
 function load_job(sj, gname, type, squad, groups)
 	if type == "pri_followers" then
@@ -19,38 +16,168 @@ function load_job(sj, gname, type, squad, groups)
 	return
 end
 
-function lb_predicate1(obj) 
-	return obj:profile_name() == "bandit_borov"
+function f_predicate1(obj) 
+	return obj:profile_name() == "veteran"
 end
 
-function lb_predicate2(obj) 
-	return obj:profile_name() == "bandit_veteran"
-end
-
-function lb_predicate3(obj) 
-	return obj:profile_name() == "bandit_general"
+function f_predicate2(obj) 
+    local t = obj:best_weapon() 
+	return obj:profile_name() == "stalker_veteran" and t and t:animation_slot() == "4"
 end
 
 function load_job_followers(sj, gname, type, squad, groups)
 	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 7 - ¡Œ–Œ¬
+	-- À»ƒ≈– - œ–»Œ–»“≈“ 3
 	-----------------------------------------------------------------------
-	t = { section = "logic@pri_followers_leader_normal",
+	--- state: kamp
+	t = { section = "logic@pri_followers_leader_kamp",
 		idle = 0,
-		prior = 7, state = { state_normal },
+		prior = 3, state = { state_kamp },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_borov_restrictor",
+		in_rest = "", out_rest = "",
 		predicate = lb_predicate1
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_borov"
-		            --end
+	}
+	table.insert(sj, t)
+	--- state: wave1
+	t = { section = "logic@pri_followers_leader_wave1",
+		idle = 0,
+		prior = 3, state = { state_wave1 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave2
+	t = { section = "logic@pri_followers_leader_wave2",
+		idle = 0,
+		prior = 3, state = { state_wave2 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	-----------------------------------------------------------------------
+	-- Õ¿œ¿–Õ» 1 - œ–»Œ–»“≈“ 1
+	-----------------------------------------------------------------------
+	--- state: kamp
+	t = { section = "logic@pri_followers_nap1_kamp",
+		idle = 0,
+		prior = 1, state = { state_kamp },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave1
+	t = { section = "logic@pri_followers_nap1_wave1",
+		idle = 0,
+		prior = 1, state = { state_wave1 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave2
+	t = { section = "logic@pri_followers_nap1_wave2",
+		idle = 0,
+		prior = 1, state = { state_wave2 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave3 - √–¿Õ¿“ŒÃ≈“◊»  - œ–»Œ–»“≈“ 2
+--[[
+	t = { section = "logic@pri_followers_nap1_wave3",
+		idle = 0,
+		prior = 2, state = { state_wave3 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave3_out_restr",
+		predicate = lb_predicate2
+	}
+	table.insert(sj, t)
+--]]
+	-----------------------------------------------------------------------
+	-- Õ¿œ¿–Õ» 2 - œ–»Œ–»“≈“ 1
+	-----------------------------------------------------------------------
+	--- state: kamp
+	t = { section = "logic@pri_followers_nap2_kamp",
+		idle = 0,
+		prior = 1, state = { state_kamp },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave1
+	t = { section = "logic@pri_followers_nap2_wave1",
+		idle = 0,
+		prior = 1, state = { state_wave1 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave2
+	t = { section = "logic@pri_followers_nap2_wave2",
+		idle = 0,
+		prior = 1, state = { state_wave2 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	-----------------------------------------------------------------------
+	-- Õ¿œ¿–Õ» 3 - œ–»Œ–»“≈“ 1
+	-----------------------------------------------------------------------
+	--- state: kamp
+	t = { section = "logic@pri_followers_nap3_kamp",
+		idle = 0,
+		prior = 1, state = { state_kamp },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave1
+	t = { section = "logic@pri_followers_nap3_wave1",
+		idle = 0,
+		prior = 1, state = { state_wave1 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
+		predicate = lb_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave2
+	t = { section = "logic@pri_followers_nap3_wave2",
+		idle = 0,
+		prior = 1, state = { state_wave2 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
+		predicate = lb_predicate1
 	}
 	table.insert(sj, t)
 end
 
 function load_states(gname, type)
 	if type == "pri_followers" then
-		return check_state_followers()
+	    printf("LOAD_STATES: pri_followers")
+		return function(gulag)
+		    local state = gulag.state
+		    local actor = db.actor
+		    if state == state_kamp and actor:has_info("pri_followers_start") then
+		        return state_wave1
+		    end
+		    if state == state_wave1 and
+		       actor:has_info("pri_wave1_monolith1_dead") and
+		       actor:has_info("pri_wave1_monolith2_dead") and
+		       actor:has_info("pri_wave1_monolith3_dead") and
+		       actor:has_info("pri_wave1_monolith4_dead")
+		    then
+		        return state_wave2
+		    end
+	        return state
+	    end
 	--elseif type == "val_monolith_base" then
 	--	return check_state_monolith_base(gulag)
 	end
@@ -58,15 +185,9 @@ function load_states(gname, type)
 	return nil
 end
 
-function check_state_followers()
-	return function(gulag)
-	    return 0
-	end
-end
-
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "pri_followers" then
-		return npc_community == "novice"
+		return npc_community == "stalker"
 	end
 	
 	return false
