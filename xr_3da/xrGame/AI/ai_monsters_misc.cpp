@@ -128,11 +128,11 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 
 					if (Group.agent_manager().member().registered_in_combat(member))
 						Members.push_back	(Group.members()[k]);
+					else
+						if (member->ID() == tpEntity->ID())
+							Members.push_back	(Group.members()[k]);
 				}
 		}
-
-	if (stalker && !Group.agent_manager().member().registered_in_combat(stalker))
-		Members.push_back	(stalker);
 
 	ai().ef_storage().non_alife().member_item() = 0;
 	ai().ef_storage().non_alife().enemy_item() = 0;
