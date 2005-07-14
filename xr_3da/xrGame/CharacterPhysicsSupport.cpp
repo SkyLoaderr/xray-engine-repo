@@ -343,7 +343,8 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
 	velocity.mul(1.3f);
 	Fvector dp;
-	if(!m_PhysicMovementControl.CharacterExist())dp.set(m_EntityAlife.Position());
+	if(!m_PhysicMovementControl.CharacterExist())
+									dp.set(m_EntityAlife.Position());
 	m_PhysicMovementControl.GetDeathPosition(dp);
 	Fvector shift;shift.sub(dp,m_EntityAlife.Position());
 	Fvector activation_pos;m_EntityAlife.Center(activation_pos);

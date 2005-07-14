@@ -21,7 +21,7 @@ const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
 
-
+const u64				after_creation_collision_hit_block_steps_number			=100;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
@@ -109,9 +109,10 @@ void CPHSimpleCharacter::SetBox(const dVector3 &sizes)
 void CPHSimpleCharacter::Create(dVector3 sizes){
 
 	if(b_exist) return;
-
+	
 	b_air_contact_state	=	false	;
 	lastMaterialIDX		=	u16(-1)	;
+	m_creation_step		=	ph_world->m_steps_num;
 	////////////////////////////////////////////////////////
 
 	m_radius=_min(sizes[0],sizes[2])/2.f;

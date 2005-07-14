@@ -25,8 +25,8 @@ class CPHCharacter :
 {
 public:
 
-bool b_exist;
-
+bool					b_exist						;
+u64						m_creation_step				;
 protected:
 
 ////////////////////////// dynamic
@@ -69,6 +69,7 @@ public:
 	virtual void		UnFreezeContent						();
 	virtual	dBodyID		get_body							()															{return m_body;}
 	virtual	dSpaceID	dSpace								()															=0;		
+
 	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				
 	virtual	void		Enable								()															;											//!!
@@ -78,8 +79,6 @@ public:
 			bool		ActorMovable						()															{return b_actor_movable;}
 			void		SetActorMovable						(bool v)													{b_actor_movable=v;}
 virtual		const ICollisionDamageInfo	*CollisionDamageInfo()const														=0;
-
-
 void					SetPLastMaterialIDX					(u16* p)													{p_lastMaterialIDX=p;}													
 const	u16				&LastMaterialIDX					()															{return *p_lastMaterialIDX;}
 virtual void			SetElevator							(CClimableObject* climable)									{};

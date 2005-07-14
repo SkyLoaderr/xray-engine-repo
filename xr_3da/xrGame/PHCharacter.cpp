@@ -12,19 +12,18 @@ CPHCharacter::CPHCharacter(void):
   CPHDisablingTranslational()
 {
 
-m_params.acceleration=0.001f;
-m_params.velocity=0.0001f;
-m_body=NULL;
-
-
-m_safe_velocity[0]=0.f;
-m_safe_velocity[1]=0.f;
-m_safe_velocity[2]=0.f;
-m_mean_y		  =0.f;	
-m_restriction_type=rtNone;
-b_actor_movable=true;
-p_lastMaterialIDX=&lastMaterialIDX;
-lastMaterialIDX=u16(-1);
+m_params.acceleration			=0.001f					;
+m_params.velocity				=0.0001f				;
+m_body							=NULL					;
+m_safe_velocity[0]				=0.f					;
+m_safe_velocity[1]				=0.f					;	
+m_safe_velocity[2]				=0.f					;
+m_mean_y		  				=0.f					;	
+m_restriction_type				=rtNone					;
+b_actor_movable					=true					;
+p_lastMaterialIDX				=&lastMaterialIDX		;
+lastMaterialIDX					=u16(-1)				;
+m_creation_step					=u64(-1)				;
 }
 
 CPHCharacter::~CPHCharacter(void)

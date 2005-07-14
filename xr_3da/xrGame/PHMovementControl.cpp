@@ -11,7 +11,7 @@
 #include "ai_space.h"
 #include "detail_path_manager.h"
 #include "GameMtlLib.h"
-//#include "Level.h"
+#include "Level.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
@@ -21,7 +21,7 @@
 #define def_Y_SIZE_2	0.8f
 #define def_Z_SIZE_2	0.35f
 
-
+const u64 after_creation_collision_hit_block_steps_number=100;
 
 CPHMovementControl::CPHMovementControl(void)
 {
@@ -147,6 +147,8 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
 		}
 	}
+	if(ph_world->m_steps_num-m_character->m_creation_step<after_creation_collision_hit_block_steps_number)
+				gcontact_HealthLost=0;
 	CheckEnvironment(vPosition);
 	bSleep=false;
 }
@@ -291,6 +293,8 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
 		}
 	}
+	if(ph_world->m_steps_num-m_character->m_creation_step<after_creation_collision_hit_block_steps_number)
+							gcontact_HealthLost=0;
 	CheckEnvironment(vPosition);
 	bSleep=false;
 	b_exect_position=false;
