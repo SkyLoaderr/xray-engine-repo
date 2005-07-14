@@ -43,6 +43,11 @@ public:
 
     xr_string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
     xr_string	ChangeFileExt	(const xr_string& src, LPCSTR ext);
+
+    xr_string	ExtractFileName		(LPCSTR src);
+    xr_string	ExtractFilePath		(LPCSTR src);
+    xr_string	ExtractFileExt		(LPCSTR src);
+    xr_string	ExcludeBasePath		(LPCSTR full_path, LPCSTR excl_path);
 };
 extern XRCORE_API	EFS_Utils*	xr_EFS;
 #define EFS (*xr_EFS)

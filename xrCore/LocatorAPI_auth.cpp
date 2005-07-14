@@ -37,7 +37,7 @@ void	CLocatorAPI::auth_runtime		(void*	params)
 	m_auth_code				= 0;
 	for (files_it it = files.begin(); it!=files.end(); ++it)
 	{
-		file&	f		=	*it;
+		const file&	f	=	*it;
 
 		// test for skip
 		BOOL	bSkip	=	FALSE;

@@ -240,7 +240,7 @@ IC u32	IReader::advance_term_string()
 	while (!eof()) {
         Pos++;
         sz++;
-		if (is_term(src[Pos])) {
+		if (!eof()&&is_term(src[Pos])) {
         	while(!eof()&&is_term(src[Pos])) Pos++;
 			break;
 		}

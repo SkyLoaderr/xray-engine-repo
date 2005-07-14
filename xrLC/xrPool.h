@@ -50,5 +50,12 @@ public:
 		list			= P;
 		P				= NULL;
 	}
+    void				clear			()
+    {
+    	list			= 0;
+		for (u32 b=0; b<blocks.size(); b++)
+			xr_free	(blocks[b]);
+        blocks.clear	();
+    }
 };
 #endif
