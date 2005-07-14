@@ -219,6 +219,7 @@
 		<actor_dialog>gar_hellcar_dialog_quest</actor_dialog>
 		<actor_dialog>gar_hellcar_dialog_thanks</actor_dialog>
 		<actor_dialog>gar_hellcar_bandits_damaged</actor_dialog>
+		<actor_dialog>gar_hellcar_in_battle</actor_dialog>		
 	</specific_character>
 
 	<specific_character id="rad_jaw" team_default = "1">
