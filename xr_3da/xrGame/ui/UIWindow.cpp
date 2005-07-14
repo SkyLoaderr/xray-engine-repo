@@ -114,7 +114,8 @@ void CUIWindow::Update()
 {
 	bool cursor_on_window;
 
-	cursor_on_window = !!GetAbsoluteRect().in(GetUICursor()->GetPos());
+	Fvector2			temp = GetUICursor()->GetPos();
+	cursor_on_window	= !!GetAbsoluteRect().in(temp);
 
 	// RECEIVE and LOST focus
 	if(m_bCursorOverWindow != cursor_on_window)
