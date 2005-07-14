@@ -265,7 +265,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 				break;
 			}
 
-		VERIFY								(!memory().visual().visible_now(memory().enemy().selected()) || (fuzzy > 0.f));
+		if (!g_mt_config.test(mtAiVision))
+			VERIFY							(!memory().visual().visible_now(memory().enemy().selected()) || (fuzzy > 0.f));
 		HUD().Font().pFontSmall->OutNext	("%s%s%svisible   : %s %f",indent,indent,indent,memory().visual().visible_now(memory().enemy().selected()) ? "+" : "-",fuzzy);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,*memory().enemy().selected()->cName());
 		float								interval = (1.f - panic_threshold())*.25f, left = -1.f, right = -1.f;
@@ -673,14 +674,16 @@ void CAI_Stalker::OnRender			()
 		if (!memory().enemy().selected() || !memory().visual().visible_now(memory().enemy().selected()))
 			return;
 
-#if 0
-		xr_vector<CObject*>		objects;
-		feel_vision_get			(objects);
-		if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
-			Fvector				position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
-			RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+		if (g_mt_config.test(mtAiVision)) {
+			xr_vector<CObject*>		objects;
+			feel_vision_get			(objects);
+			if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
+				Fvector				position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
+				RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+				return;
+			}
 		}
-#endif
+
 		Fvector					position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
 		RCache.dbg_DrawAABB		(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
 		return;
