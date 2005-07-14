@@ -451,8 +451,6 @@ BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 
 void CCustomMonster::eye_pp_s0			( )
 {
-	++eye_pp_stage;
-
 	// Eye matrix
 	CKinematics* V							= smart_cast<CKinematics*>(Visual());
 	V->CalculateBones						();
@@ -497,8 +495,6 @@ void CCustomMonster::update_range_fov	(float &new_range, float &new_fov, float s
 
 void CCustomMonster::eye_pp_s1			()
 {
-	++eye_pp_stage;
-
 	float									new_range = eye_range, new_fov = eye_fov;
 	if (g_Alive()) {
 		update_range_fov					(new_range, new_fov, human_being() ? memory().visual().current_state().m_max_view_distance*eye_range : eye_range, eye_fov);
@@ -516,8 +512,6 @@ void CCustomMonster::eye_pp_s1			()
 
 void CCustomMonster::eye_pp_s2				( )
 {
-	++eye_pp_stage;
-
 	// Tracing
 	Device.Statistic.AI_Vis_RayTests.Begin	();
 	u32 dwTime			= Level().timeServer();
@@ -558,12 +552,14 @@ void CCustomMonster::Exec_Visibility	( )
 	if (!g_Alive())					return;
 
 	Device.Statistic.AI_Vis.Begin	();
-	switch (eye_pp_stage%3)	
+	switch (eye_pp_stage%2)	
 	{
-	case 0:	eye_pp_s0();			break;
-	case 1:	eye_pp_s1();			break;
-	case 2:	eye_pp_s2();			break;
+	case 0:	
+			eye_pp_s0();			
+			eye_pp_s1();			break;
+	case 1:	eye_pp_s2();			break;
 	}
+	++eye_pp_stage					;
 	Device.Statistic.AI_Vis.End		();
 }
 
