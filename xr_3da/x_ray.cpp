@@ -50,7 +50,7 @@ static		HWND			logoWindow		= NULL;
 			void			doBenchmark		();
 ENGINE_API	bool			g_bBenchmark	= false;
 
-ENGINE_API	string_path		g_sLaunchOnExit;
+ENGINE_API	string512		g_sLaunchOnExit;
 // -------------------------------------------
 // startup point
 void InitEngine		()
