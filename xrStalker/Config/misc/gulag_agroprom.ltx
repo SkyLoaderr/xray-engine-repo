@@ -22,6 +22,7 @@ path_main = night_commander_sleep
 active = camper@agr_nii_alarm_commander
 
 [camper@agr_nii_alarm_commander]
+radius = 8
 path_walk = alarm_commander_walk
 path_look = alarm_commander_look
 
@@ -37,6 +38,7 @@ on_info   = {+agr_nii_alarm} camper1@agr_nii_north_gate_alarm
 [camper1@agr_nii_north_gate_alarm]
 path_walk = north_gate_alarm_walk1
 path_look = north_gate_alarm_look1
+radius = 10
 on_info   = {-agr_nii_alarm} walker1@agr_nii_north_gate
 
 
@@ -51,6 +53,7 @@ on_info   = {+agr_nii_alarm} camper2@agr_nii_north_gate_alarm
 [camper2@agr_nii_north_gate_alarm]
 path_walk = north_gate_alarm_walk2
 path_look = north_gate_alarm_look2
+radius = 10
 on_info   = {-agr_nii_alarm} walker2@agr_nii_north_gate
 
 
@@ -65,6 +68,7 @@ on_info   = {+agr_nii_alarm} camper3@agr_nii_north_gate_alarm
 [camper3@agr_nii_north_gate_alarm]
 path_walk = north_gate_alarm_walk3
 path_look = north_gate_alarm_look3
+radius = 10
 on_info   = {-agr_nii_alarm} walker3@agr_nii_north_gate
 
 ;------------------ пост на восточных воротах -----------------------
@@ -79,6 +83,7 @@ on_info   = {+agr_nii_alarm} camper1@agr_nii_east_gate_alarm
 [camper1@agr_nii_east_gate_alarm]
 path_walk = east_gate_alarm_walk1
 path_look = east_gate_alarm_look1
+radius = 10
 on_info   = {-agr_nii_alarm} walker1@agr_nii_east_gate
 
 
@@ -93,6 +98,7 @@ on_info   = {+agr_nii_alarm} camper2@agr_nii_east_gate_alarm
 [camper2@agr_nii_east_gate_alarm]
 path_walk = east_gate_alarm_walk2
 path_look = east_gate_alarm_look2
+radius = 10
 on_info   = {-agr_nii_alarm} walker2@agr_nii_east_gate
 
 ;------------------ 1-й этаж основного здания -----------------------
@@ -110,6 +116,7 @@ active = camper1@agr_nii_floor1_alarm
 [camper1@agr_nii_floor1_alarm]
 path_walk = floor1_alarm_walk1
 path_look = floor1_alarm_look1
+radius = 3
 
 [logic@agr_nii_floor1_day_walker2]
 active = walker2@agr_nii_floor1_day
@@ -117,6 +124,14 @@ active = walker2@agr_nii_floor1_day
 [walker2@agr_nii_floor1_day]
 path_walk = floor1_day_walk2
 path_look = floor1_day_look2
+
+[logic@agr_nii_floor1_alarm_walker2]
+active = camper2@agr_nii_floor1_alarm
+
+[camper2@agr_nii_floor1_alarm]
+path_walk = floor1_alarm_walk1
+path_look = floor1_alarm_look1
+radius = 3
 
 ;------------------ 2-й этаж основного здания -----------------------
 [logic@agr_nii_floor2_day_walker1]
@@ -133,6 +148,15 @@ active = camper1@agr_nii_floor2_alarm
 [camper1@agr_nii_floor2_alarm]
 path_walk = floor2_alarm_walk1
 path_look = floor2_alarm_look1
+radius = 10
+
+[logic@agr_nii_floor2_day_walker2]
+active = walker2@agr_nii_floor2_day
+
+[walker2@agr_nii_floor2_day]
+path_walk = floor2_day_walk2
+path_look = floor2_day_look2
+
 
 
 ;------------------ 3-й этаж основного здания -----------------------
@@ -147,6 +171,7 @@ on_info   = {+agr_nii_alarm} camper1@agr_nii_floor3_alarm
 [camper1@agr_nii_floor3_alarm]
 path_walk = floor3_alarm_walk1
 path_look = floor3_alarm_look1
+radius = 10
 on_info   = {-agr_nii_alarm} walker1@agr_nii_floor3
 
 
@@ -161,6 +186,7 @@ on_info   = {+agr_nii_alarm} camper2@agr_nii_floor3_alarm
 [camper2@agr_nii_floor3_alarm]
 path_walk = floor3_alarm_walk2
 path_look = floor3_alarm_look2
+radius = 10
 on_info   = {-agr_nii_alarm} walker2@agr_nii_floor3
 
 
@@ -175,6 +201,7 @@ on_info   = {+agr_nii_alarm} camper3@agr_nii_floor3_alarm
 [camper3@agr_nii_floor3_alarm]
 path_walk = agr_nii_sniper_roof_walk1
 path_look = agr_nii_sniper_roof_look1
+radius = 10
 on_info   = {-agr_nii_alarm} walker3@agr_nii_floor3
 
 
@@ -341,6 +368,12 @@ active = sleeper10@agr_nii
 
 [sleeper10@agr_nii]
 path_main = sleep10
+
+[logic@agr_nii_sleeper11]
+active = sleeper11@agr_nii
+
+[sleeper11@agr_nii]
+path_main = sleep11
 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. Солдаты на фабрике 
