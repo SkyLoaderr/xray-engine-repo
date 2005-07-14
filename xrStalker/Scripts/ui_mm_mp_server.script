@@ -35,8 +35,8 @@ function mp_server:InitControls(x, y, xml, handler)
 	xml:InitStatic("tab_server:cap_game_mode",		self)
 	xml:InitStatic("tab_server:cap_max_players",	self)
 	-- CHECK BOXES
-	local btn = xml:InitCheck("tab_server:check_dedicated", self);
-	btn:Enable(false)
+	handler.check_dedicated = xml:InitCheck("tab_server:check_dedicated", self);
+
 	-- EDIT BOXES
 	handler.edit_server_name = xml:InitEditBox("tab_server:edit_server_name", self)
 	handler.edit_password = xml:InitEditBox("tab_server:edit_password", self)
