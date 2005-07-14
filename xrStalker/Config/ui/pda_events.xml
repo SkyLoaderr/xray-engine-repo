@@ -18,7 +18,7 @@
 																	frame_height	= "32"
 																	cyclic			= "1"
 																	autoplay		= "1">
-					<texture>ui\ui_pda_anims_03</texture>
+					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
 			</left_frame_header>
 			
