@@ -109,5 +109,32 @@ anim_throw_idle		= attack_0_idle
 anim_throw_act		= attack_0_act	
 anim_throw_end		= attack_0_end
 
-[grenade_dg-05]:grenade_f1
+[grenade_gd-05]:grenade_f1
 $spawn 				= "weapons\grenades\gd-05"
+visual				= weapons\grenade\wpn_gd_05.ogf
+inv_name			= Grenade GD-05
+inv_name_short		= GD-05
+description			= enc_weapons1_grenade-f1
+inv_grid_x			= 19
+inv_grid_y			= 3
+hud					= grenade_gd-05_hud
+[grenade_f1_hud]
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = grenade_0
+
+orientation         = 0,0,0
+position            = 0,0,0.1
+
+visual              = weapons\grenade\wpn_gd_05_hud.ogf
+
+throw_point				 = 0.0,0.4,0.3
+throw_dir				 = 0,0,1
+
+anim_show			= draw
+anim_hide			= holster_0
+anim_idle			= idle_0
+anim_playing		= idle_01
+anim_throw_begin	= attack_0_begin
+anim_throw_idle		= attack_0_idle
+anim_throw_act		= attack_0_act	
+anim_throw_end		= attack_0_end
