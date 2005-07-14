@@ -322,7 +322,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			}
 			default : NODEFAULT;
 		}
-		HUD().Font().pFontSmall->OutNext	("%s%s%svictory   : [%f%%,%f%%] -> %s",indent,indent,indent,right,left,description);
+		HUD().Font().pFontSmall->OutNext	("%s%s%svictory   : [%5.2f%%,%5.2f%%] -> %s",indent,indent,indent,100.f*right,100.f*left,description);
 	}
 	// danger
 	HUD().Font().pFontSmall->OutNext	("%sdanger",indent);
@@ -675,7 +675,7 @@ void CAI_Stalker::OnRender			()
 		if (!memory().enemy().selected() || !memory().visual().visible_now(memory().enemy().selected()))
 			return;
 
-		if (g_mt_config.test(mtAiVision)) {
+//		if (g_mt_config.test(mtAiVision)) {
 			xr_vector<CObject*>		objects;
 			feel_vision_get			(objects);
 			if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
@@ -683,10 +683,10 @@ void CAI_Stalker::OnRender			()
 				RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
 				return;
 			}
-		}
+//		}
 
-		Fvector					position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
-		RCache.dbg_DrawAABB		(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+//		Fvector					position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
+//		RCache.dbg_DrawAABB		(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
 		return;
 	}
 

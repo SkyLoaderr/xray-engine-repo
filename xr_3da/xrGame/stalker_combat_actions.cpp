@@ -211,10 +211,10 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	object().movement().set_mental_state			(eMentalStatePanic);
 
 	object().m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,false,false));
+	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
 	if (!point) {
 		object().m_ce_far->setup		(mem_object.m_object_params.m_position,0.f,300.f);
-		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,false,false));
+		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
 	}
 
 	if (point) {
