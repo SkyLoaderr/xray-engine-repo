@@ -167,7 +167,7 @@ void	CEventAPI::OnFrame	()
 	msRead		();
 #endif
 	CS.Enter	();
-	if (Events_Deferred.empty())	return;
+	if (Events_Deferred.empty())	{ CS.Leave(); return; }
 	for (u32 I=0; I<Events_Deferred.size(); I++)
 	{
 		Deferred&	DEF = Events_Deferred[I];
