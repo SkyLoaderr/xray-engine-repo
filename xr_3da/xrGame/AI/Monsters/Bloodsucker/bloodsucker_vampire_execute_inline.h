@@ -38,7 +38,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 	if (!object->CControlledActor::is_turning() && !m_effector_activated) {
 		float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
 
-		object->ActivateVampireEffector	(_abs(dist - 0.6f));
+		object->ActivateVampireEffector	(_abs(dist - 1.0f));
 		m_effector_activated			= true;
 	}
 	
