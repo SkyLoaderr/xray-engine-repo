@@ -299,7 +299,8 @@ void CUIWindow::OnMouseScroll(float iDirection){
 }
 
 void CUIWindow::OnDbClick(){
-	;
+	if (GetMessageTarget())
+		GetMessageTarget()->SendMessage(this, WINDOW_LBUTTON_DB_CLICK);
 }
 
 void CUIWindow::OnMouseDown(bool left_button){

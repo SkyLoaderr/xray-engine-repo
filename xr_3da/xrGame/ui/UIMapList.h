@@ -28,6 +28,7 @@ public:
 	CUIMapList();
 	~CUIMapList();
 	virtual void	Init(float x, float y, float width, float height);
+	virtual void	Update();
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData  = NULL);
 			void	InitFromXml(CUIXml& xml_doc, const char* path);	
 
@@ -72,4 +73,6 @@ private:
 	xr_map<xr_string,int> m_mapWeather;
 	xr_string	m_command;
 	xr_string	m_srv_params;
+
+	int			m_item2del;
 };

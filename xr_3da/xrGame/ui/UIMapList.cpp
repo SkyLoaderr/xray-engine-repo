@@ -21,6 +21,8 @@ static LPSTR	g_GameTypeName	[]		= {
 };
 
 CUIMapList::CUIMapList(){
+	m_item2del = -1;
+
 	m_pList1 = xr_new<CUIListWnd>();
 	m_pList2 = xr_new<CUIListWnd>();
 	m_pFrame1 = xr_new<CUIFrameWindow>();
@@ -80,6 +82,15 @@ void CUIMapList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData ){
 		else if (m_pModeSelector == pWnd)
 			OnModeChange();
 	}
+	else if (WINDOW_LBUTTON_DB_CLICK == msg)
+	{
+		if (m_pList1 ==pWnd)
+			OnBtnRightClick();
+		else if (m_pList2 ==pWnd)
+			OnBtnLeftClick();
+	}
+
+		
 }
 
 xr_token g_GameModes[ ];
@@ -296,10 +307,19 @@ void CUIMapList::UpdateMapList(GAME_TYPE GameType){
 }
 
 void CUIMapList::OnBtnLeftClick(){
-	int isel = m_pList2->GetSelectedItem();
+	m_item2del = m_pList2->GetSelectedItem();
+//	int isel = m_pList2->GetSelectedItem();
+//	if (-1 != isel)
+//		m_pList2->RemoveItem(isel);
+}
 
-	if (-1 != isel)
-		m_pList2->RemoveItem(isel);
+void CUIMapList::Update(){
+	CUIWindow::Update();
+	if (-1 != m_item2del)
+	{
+		m_pList2->RemoveItem(m_item2del);
+		m_item2del = -1;
+	}
 }
 
 void CUIMapList::OnBtnRightClick(){

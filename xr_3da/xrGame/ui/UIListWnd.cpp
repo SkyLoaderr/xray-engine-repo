@@ -372,6 +372,10 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
 	}
+
+	if (WINDOW_LBUTTON_DB_CLICK == msg && IsChild(pWnd))
+		GetMessageTarget()->SendMessage(this, WINDOW_LBUTTON_DB_CLICK);
+
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
@@ -487,7 +491,7 @@ void CUIListWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 	case WINDOW_LBUTTON_DB_CLICK:
-		mouse_action = WINDOW_LBUTTON_DOWN;
+//		mouse_action = WINDOW_LBUTTON_DOWN;
 		break;
 	case WINDOW_MOUSE_WHEEL_DOWN:
 			m_ScrollBar->TryScrollInc();
