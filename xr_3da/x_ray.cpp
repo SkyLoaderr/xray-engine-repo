@@ -20,7 +20,7 @@
 #include "ispatial.h"
 #include "CopyProtection.h"
 #include "Text_Console.h"
-
+#include <process.h>
 //---------------------------------------------------------------------
 BOOL	g_bIntroFinished			= FALSE;
 extern	void	Intro				( void* fn );
@@ -46,10 +46,11 @@ struct _SoundProcessor	: public pureFrame
 ENGINE_API	CApplication*	pApp			= NULL;
 static		HWND			logoWindow		= NULL;
 
-int				doLauncher					();
-void			doBenchmark					();
+			int				doLauncher		();
+			void			doBenchmark		();
 ENGINE_API	bool			g_bBenchmark	= false;
 
+ENGINE_API	string_path		g_sLaunchOnExit;
 // -------------------------------------------
 // startup point
 void InitEngine		()
@@ -325,7 +326,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		Sleep					(100);
 	}
 	*/
-
+	g_sLaunchOnExit[0]			= NULL;
 	// Core
 	Core._initialize		("xray",NULL);
 	
@@ -372,6 +373,20 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	CheckPrivilegySlowdown		( );
 	Startup	 					( );
 	Core._destroy				( );
+
+//	strcpy(g_sLaunchOnExit,"-i -noprefetch -ltx user_andy.ltx -start server(andy_test/single) client(localhost)");
+	char *N = g_sLaunchOnExit;
+	char* _args[3];
+	// check for need to execute something external
+	if (xr_strlen(N)) 
+	{
+		_args[0] = "x:\\xr_3da.exe";
+		_args[1] = N;
+		_args[2] = NULL;
+
+		_spawnv(_P_NOWAIT, _args[0], _args);
+	}
+
 	return						0;
 }
 
@@ -460,7 +475,9 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			g_pGameLevel->net_Stop	();
 			DEL_INSTANCE			(g_pGameLevel);
 			Console->Show			();
-			Console->Execute("main_menu on");
+			
+			if(FALSE == Engine.Event.Peek("KERNEL:quit"))
+				Console->Execute("main_menu on");
 		}
 		R_ASSERT			(0!=g_pGamePersistent);
 		g_pGamePersistent->Disconnect();

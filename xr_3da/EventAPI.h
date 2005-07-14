@@ -38,4 +38,5 @@ public:
 
 	void	OnFrame			();
 	void	Dump			();
+	BOOL	Peek			(LPCSTR EName);
 };

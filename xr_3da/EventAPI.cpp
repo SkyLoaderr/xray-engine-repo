@@ -177,3 +177,20 @@ void	CEventAPI::OnFrame	()
 	Events_Deferred.clear();
 	CS.Leave	();
 }
+
+BOOL CEventAPI::Peek(LPCSTR EName)
+{
+	CS.Enter	();
+	if (Events_Deferred.empty())	{ CS.Leave(); return FALSE; }
+	for (u32 I=0; I<Events_Deferred.size(); I++)
+	{
+		Deferred&	DEF = Events_Deferred[I];
+		if(stricmp(DEF.E->GetFull(),EName)==0){
+			CS.Leave(); 
+			return TRUE;
+		}
+
+	}
+	CS.Leave	();
+	return FALSE;
+}
