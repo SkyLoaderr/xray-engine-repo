@@ -3,8 +3,8 @@
 --'	автор: Диденко Руслан (Stohe)
 --'	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-function printf()
-end
+--function printf()
+--end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -259,7 +259,16 @@ function action_patrol:execute()
 		return
 	end
 
-	if self:process_danger() then return end
+	local danger = self:process_danger()
+	if danger then 
+		self.danger = true
+		return
+	end
+	
+	if self.danger == true then
+		self.danger = false
+		self.move_mgr:continue()
+	end
 	
 	-- если нет ни врага ни денжера.	
 	if self.a.sniper == true then
@@ -311,10 +320,14 @@ function action_patrol:process_danger()
 	printf("CAMPER [%s] danger_distance_sqr [%s]", self.object:name(), tostring(danger_distance_sqr))			
 	printf("CAMPER [%s] danger_name [%s]", self.object:name(), tostring(best_danger:object():name()))
 	position = {look_position = best_danger:position()}
+	local emerg = nil
+	if self.danger ~= true then
+		emerg = {animation = true}
+	end
 	if self.a.suggested_state.campering then
-		state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position, {animation = true})
+		state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position, emerg)
 	else
-		state_mgr.set_state(self.object, "hide", nil, nil, position, {animation = true})
+		state_mgr.set_state(self.object, "hide", nil, nil, position, emerg)
 	end	
 	return true
 end
