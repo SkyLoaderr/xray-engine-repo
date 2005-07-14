@@ -323,6 +323,7 @@ function action_patrol:process_danger()
 	local emerg = nil
 	if self.danger ~= true then
 		emerg = {animation = true}
+		self.object:play_sound(stalker_ids.sound_alarm, 1, 0, 1, 0)
 	end
 	if self.a.suggested_state.campering then
 		state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position, emerg)
