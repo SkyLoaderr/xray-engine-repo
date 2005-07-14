@@ -102,6 +102,7 @@ function mp_main:InitControls()
 	-- Player Name	
 	local st = xml:InitStatic("static_player_name",self.bk)
 	self.player_name = xml:InitEditBox("edit_player_name", self.bk)
+	
 
 	-- CD Key
 	st = CUIStatic()
@@ -112,6 +113,8 @@ function mp_main:InitControls()
 	st:SetText("CD Key")	
 	st:SetStretchTexture(true)	
 	self.bk:AttachChild(st)
+	
+	xml:InitCDkey("edit_cd_key", self.bk)
 		
 	self.dlg_join = ui_mm_mp_join.mp_join()
 	self.dlg_join:InitControls(121,224, xml, self)
