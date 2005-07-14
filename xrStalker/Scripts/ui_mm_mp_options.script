@@ -69,7 +69,7 @@ function mp_options:InitControls(x, y, xml, handler)
 	handler.edit_anomaly_time			= xml:InitSpinNum("tab_options:edit_anomaly_time",			self.bk)
 	
 	handler.edit_rate_of_change			= xml:InitEditBox("tab_options:edit_rate_of_change",		self.bk)
-	handler.edit_rate_of_change:SetText("1.0")
+	handler.edit_rate_of_change:SetText("0.0")
 end
 
 function mp_options:SetGameMode(mode, handler)
