@@ -477,6 +477,7 @@ function loadJob(sj, gname, type, squad, groups)
 	gulag_military.load_tubes_job (sj, gname, type, squad, groups)
 	gulag_radar.load_job      (sj, gname, type, squad, groups)
 	gulag_agroprom.load_job   (sj, gname, type, squad, groups)
+	gulag_pripyat.load_job    (sj, gname, type, squad, groups)
 end
 
 function loadStates(gname, type)
@@ -613,6 +614,11 @@ function loadStates(gname, type)
 	end
 
 	f = gulag_agroprom.load_states(gname, type)
+	if f then
+		return f
+	end
+
+	f = gulag_pripyat.load_states(gname, type)
 	if f then
 		return f
 	end
