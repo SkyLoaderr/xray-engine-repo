@@ -259,8 +259,13 @@ void CCustomMonster::shedule_Update	( u32 DT )
 
 	float dt			= float(DT)/1000.f;
 	// *** general stuff
-	if (g_Alive())
-		memory().update			(dt);
+	if (g_Alive()) {
+		if (g_mt_config.test(mtAiVision))
+			Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
+		else
+			Exec_Visibility					();
+		memory().update						(dt);
+	}
 	inherited::shedule_Update	(DT);
 
 	// Queue setup
@@ -290,10 +295,6 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		if (temp > 0) {
 			Exec_Action				(dt);
 			VERIFY					(_valid(Position()));
-			if (g_mt_config.test(mtAiVision))
-				Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
-			else
-				Exec_Visibility		();
 			//Exec_Visibility		();
 			VERIFY					(_valid(Position()));
 			//////////////////////////////////////

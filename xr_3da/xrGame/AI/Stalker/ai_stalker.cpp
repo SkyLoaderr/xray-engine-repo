@@ -545,7 +545,10 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 #if 0//def DEBUG
 		memory().visual().check_visibles();
 #endif
-		Exec_Visibility					();
+		if (g_mt_config.test(mtAiVision))
+			Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
+		else
+			Exec_Visibility				();
 		memory().update					(dt);
 //		if (memory().enemy().selected() && !check)
 //			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
