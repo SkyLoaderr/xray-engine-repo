@@ -289,17 +289,21 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		float							temp = conditions().health();
 		if (temp > 0) {
 			Exec_Action				(dt);
-			VERIFY				(_valid(Position()));
-			Exec_Visibility			();
-			VERIFY				(_valid(Position()));
+			VERIFY					(_valid(Position()));
+			if (g_mt_config.test(mtAiVision))
+				Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
+			else
+				Exec_Visibility		();
+			//Exec_Visibility		();
+			VERIFY					(_valid(Position()));
 			//////////////////////////////////////
-			Fvector C; float R;
+			//Fvector C; float R;
 			//////////////////////////////////////
 			// Ñ Îëåñÿ - ÏÈÂÎ!!!! (Äèìå :-))))
 			// m_PhysicMovementControl->GetBoundingSphere	(C,R);
 			//////////////////////////////////////
-			Center(C);
-			R = Radius();
+			//Center(C);
+			//R = Radius();
 			//////////////////////////////////////
 			/// #pragma todo("Oles to all AI guys: perf/logical problem: Only few objects needs 'feel_touch' why to call update for everybody?")
 			///			feel_touch_update		(C,R);
@@ -519,12 +523,13 @@ void CCustomMonster::eye_pp_s2				( )
 	u32 dwTime			= Level().timeServer();
 	u32 dwDT			= dwTime-eye_pp_timestamp;
 	eye_pp_timestamp	= dwTime;
-	Msg("FEEL_VISION_UPDATE: Name = [%s] tresh[%f]", *cName(),memory().visual().transparency_threshold());
+	//. Msg("FEEL_VISION_UPDATE: Name = [%s] tresh[%f]", *cName(),memory().visual().transparency_threshold());
 	feel_vision_update						(this,eye_matrix.c,float(dwDT)/1000.f,memory().visual().transparency_threshold());
 
 	//////////////////////////////////////////////////////////////////////////
 	// DEBUG
 	//////////////////////////////////////////////////////////////////////////
+#ifdef _DEBUG
 	{
 		xr_vector<CObject*>					m_visible_objects;
 		feel_vision_get						(m_visible_objects);
@@ -540,6 +545,7 @@ void CCustomMonster::eye_pp_s2				( )
 			}
 		}
 	}
+#endif
 	//////////////////////////////////////////////////////////////////////////
 
 
@@ -549,6 +555,7 @@ void CCustomMonster::eye_pp_s2				( )
 void CCustomMonster::Exec_Visibility	( )
 {
 	if (0==Sector())				return;
+	if (!g_Alive())					return;
 
 	Device.Statistic.AI_Vis.Begin	();
 	switch (eye_pp_stage%3)	
@@ -860,6 +867,12 @@ void CCustomMonster::net_Destroy()
 		fastdelegate::FastDelegate0<>(
 			this,
 			&CCustomMonster::update_sound_player
+		)
+	);
+	Device.remove_from_seq_parallel	(
+		fastdelegate::FastDelegate0<>(
+			this,
+			&CCustomMonster::Exec_Visibility
 		)
 	);
 }

@@ -86,7 +86,7 @@ extern	BOOL	g_bDebugDumpPhysicsStep	;
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
-		Flags32	g_mt_config				= {mtLevelPath | mtDetailPath | mtObjectHandler | mtSoundPlayer};
+		Flags32	g_mt_config				= {mtLevelPath | mtDetailPath | mtObjectHandler | mtSoundPlayer | mtAiVision};
 #ifdef DEBUG
 		Flags32	dbg_net_Draw_Flags		= {0};
 #endif
@@ -1875,6 +1875,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_DemoPlay,			"demo_play"				);
 
 	// ai
+	CMD3(CCC_Mask,				"mt_ai_vision",			&g_mt_config,	mtAiVision);
 	CMD3(CCC_Mask,				"mt_level_path",		&g_mt_config,	mtLevelPath);
 	CMD3(CCC_Mask,				"mt_detail_path",		&g_mt_config,	mtDetailPath);
 	CMD3(CCC_Mask,				"mt_object_handler",	&g_mt_config,	mtObjectHandler);

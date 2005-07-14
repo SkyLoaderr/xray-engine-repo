@@ -14,3 +14,4 @@ extern Flags32 g_mt_config;
 #define mtDetailPath		(1<<1)
 #define mtObjectHandler		(1<<2)
 #define mtSoundPlayer		(1<<3)
+#define mtAiVision			(1<<3)
