@@ -36,7 +36,7 @@ void	game_cl_mp::PlaySndMessage			(u32 ID)
 	for (u32 i=0; i<m_pSndMessagesInPlay.size(); i++)
 	{
 		SND_Message* pSndMsgIP = m_pSndMessagesInPlay[i];
-		if (pSndMsgIP->pSound.feedback)			
+		if (!pSndMsgIP->pSound.feedback) continue;
 		if (pSndMsgIP->priority>SndMsg.priority) return;
 		if (pSndMsgIP->priority<SndMsg.priority) 
 		{
@@ -45,14 +45,23 @@ void	game_cl_mp::PlaySndMessage			(u32 ID)
 		}
 		if (pSndMsgIP->priority == SndMsg.priority)
 		{
-			u32 Delay = pSndMsgIP->LastStarted + pSndMsgIP->pSound.handle->length_ms() - Level().timeServer();
+			if (Level().timeServer_Async()>pSndMsgIP->LastStarted + pSndMsgIP->pSound.handle->length_ms()) continue;
+
+			u32 Delay = pSndMsgIP->LastStarted + pSndMsgIP->pSound.handle->length_ms() - Level().timeServer_Async();
 			if (Delay > MaxDelay)
+			{
 				MaxDelay = Delay;
+			};
 		}
 	}
 
-	SndMsg.LastStarted = Level().timeServer()+MaxDelay;	
+	if (MaxDelay>0) 
+	{
+		Msg("- SndMsgDelay - %d", MaxDelay);
+	};
+	
 	SndMsg.pSound.play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, float(MaxDelay)/1000.0f);
+	SndMsg.LastStarted = Level().timeServer_Async()+MaxDelay;
 	m_pSndMessagesInPlay.push_back(&SndMsg);
 }
 

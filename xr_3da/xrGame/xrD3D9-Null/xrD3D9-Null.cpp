@@ -39,7 +39,8 @@ CxrD3D9Null::CxrD3D9Null()
 
  IDirect3D9 * WINAPI Direct3DCreate9(UINT SDKVersion)
 {
-	if (SDKVersion != D3D_SDK_VERSION)
+	UINT cSDKVersion = D3D_SDK_VERSION;
+	if (SDKVersion != cSDKVersion)
 	{
 		return NULL;
 	}
