@@ -16,6 +16,11 @@
 	
 		<left_frame x="0" y="0" width="300" height="480" a="90">
 			<texture>ui_pda_frame_sub</texture>
+			
+			<left_frame_header x="8" y="17" width="284" height="21">
+				<texture>ui_string_03</texture>
+			</left_frame_header>
+			
 		</left_frame>
 	
 		<right_frame x="300" y="0" width="461" height="480" a="90">
