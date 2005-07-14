@@ -65,9 +65,32 @@ CProjectFile* CProject::GetProjectFile(CString strPathName)
 
 	return NULL;
 }
+typedef	char	string512	[512];
+void _OpenFileDialog()
+{
+	string512 szFileName={0};
+	char szFilter[] = "AAA (*.txt)\0*.txt\0BBB (*.*)\0*.*\0";
+	OPENFILENAME	ofn;
+
+	memset(&ofn,0,sizeof(OPENFILENAME));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = GetForegroundWindow();
+	ofn.lpstrFilter = szFilter;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = 512;
+	ofn.lpstrTitle = "SSS";
+	ofn.lpstrDefExt = "sqf";
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+	bool bRes = GetOpenFileName(&ofn);
+
+}
 
 void CProject::AddFiles()
 {
+//	_OpenFileDialog();
+
 	CFileDialog fd(TRUE, NULL, NULL, OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST|OFN_ALLOWMULTISELECT, 
 		"Script files (*.script)|*.script|All files (*.*)|*.*||", g_mainFrame);
 
