@@ -398,6 +398,7 @@ void CKinematics::LL_SetBonesVisible(u64 mask)
 
 void CKinematics::Visibility_Update	()
 {
+	Update_Visibility	= FALSE		;
 	// check visible
 	for (u32 c_it=0; c_it<children.size(); c_it++)				{
 		CSkeletonX*		_c	=	dynamic_cast<CSkeletonX*>	(children[c_it]); VERIFY (_c)	;

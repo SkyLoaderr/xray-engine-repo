@@ -74,4 +74,7 @@ void	IRender_Visual::Copy(IRender_Visual *pFrom)
 #ifdef _EDITOR
 	PCOPY(desc);
 #endif
+#ifdef DEBUG
+	PCOPY(dbg_name);
+#endif
 }

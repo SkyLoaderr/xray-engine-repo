@@ -506,7 +506,7 @@ void CCustomMonster::eye_pp_s1			()
 	Device.Statistic.AI_Vis_Query.End		();
 }
 
-void CCustomMonster::eye_pp_s2			( )
+void CCustomMonster::eye_pp_s2				( )
 {
 	++eye_pp_stage;
 

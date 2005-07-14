@@ -21,13 +21,13 @@ namespace Feel
 		xr_vector<CObject*>			query;
 		xr_vector<CObject*>			diff;
 
-		void						o_new	(CObject* E);
-		void						o_delete(CObject* E);
-		void						o_trace	(Fvector& P, float dt, float vis_threshold);
+		void						o_new		(CObject* E);
+		void						o_delete	(CObject* E);
+		void						o_trace		(Fvector& P, float dt, float vis_threshold);
 	public:
-								Vision			();
-		virtual					~Vision			();
-		struct feel_visible_Item 
+									Vision		();
+		virtual					~	Vision		();
+		struct	 feel_visible_Item 
 		{
 			float				fuzzy;		// note range: (-1[no]..1[yes])
 			CObject*			O;

@@ -344,11 +344,30 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 
 BOOL	CSkeletonX::has_visible_bones		()
 {
-	if (RM_SINGLE==RenderMode)	return Parent->LL_GetBoneVisible((u16)RMS_boneid)	;
+	//IRender_Visual*	me	= dynamic_cast<IRender_Visual*>	(this);
+	//Msg	("~ has_visible_bones: mode[%d] - count[%d], name=%s",RenderMode,BonesUsed.size(),me->dbg_name.c_str());	//.
+	if	(RM_SINGLE==RenderMode)	{
+	//	Msg	("* has_visible_bones: bone-list: |%d:%s",RMS_boneid,Parent->LL_BoneName_dbg(RMS_boneid));
+		return Parent->LL_GetBoneVisible((u16)RMS_boneid)	;
+	}
+
+	/*
+	string4096	all="",single="";
+	for (u32 it=0; it<BonesUsed.size(); it++)
+	{
+		sprintf		(single,"|%d:%s",BonesUsed[it],Parent->LL_BoneName_dbg(BonesUsed[it]));
+		strcat		(all,single);
+	}
+	Msg	("* has_visible_bones: bone-list: %s",all);
+	*/
 
 	for (u32 it=0; it<BonesUsed.size(); it++)
-		if (Parent->LL_GetBoneVisible(BonesUsed[it]))	return TRUE	;
-	return FALSE;
+		if (Parent->LL_GetBoneVisible(BonesUsed[it]))	{
+			// Msg		("* has_visible_bones: visible: %d",	BonesUsed[it]);
+			return	TRUE	;
+		}
+	// Msg		("* has_visible_bones: non-visible");
+	return	FALSE;
 }
 
 //-----------------------------------------------------------------------------------------------------
