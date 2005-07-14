@@ -413,6 +413,13 @@
         <text>enc_weapons1_grenade-rgd5</text>
     </article>
 
+    <!-------------------------------- grenade-gd05 ----------------------------->
+
+    <article id="weapons1_grenade-gd05" name="grenade-gd05" group="Weapons1">
+        <ltx>grenade_gd-05</ltx>
+        <text>enc_weapons1_grenade-gd05</text>
+    </article>
+
 
 
 

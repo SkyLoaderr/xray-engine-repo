@@ -348,4 +348,10 @@
     <string id="enc_weapons1_grenade-rgd5">
         <text>Наступательная ручная граната. Радиус поражения осколками – 25 метров.</text>
     </string>
+    <string id="grenade-gd05">
+        <text>ГД-05</text>
+    </string>
+    <string id="enc_weapons1_grenade-gd05">
+        <text>Дымовая граната.</text>
+    </string>
 </string_table>
