@@ -189,7 +189,8 @@ void CRenderDevice::Run			()
 				if (bActive)							{
 					if (Begin())				{
 						seqRender.Process						(rp_Render);
-						if (psDeviceFlags.test(rsStatistic))	Statistic.Show	();
+						if (psDeviceFlags.test(rsStatistic) || Statistic.errors.size())	
+							Statistic.Show						();
 						End										();
 					}
 				}

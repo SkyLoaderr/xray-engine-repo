@@ -13,7 +13,7 @@
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
-float CBulletManager::m_fMinBulletSpeed = 3.f;
+float CBulletManager::m_fMinBulletSpeed = 2.f;
 
 
 SBullet::SBullet()
@@ -236,15 +236,15 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 	// whine test
 	g_SpatialSpace->q_ray			(rq_spatial,0,STYPE_COLLIDEABLE,bullet->pos,bullet->dir,range);
 	// Determine visibility for dynamic part of scene
-	for (u32 o_it=0; o_it<rq_spatial.size(); o_it++){
+	for (u32 o_it=0; o_it<rq_spatial.size(); o_it++)	{
 		CEntity*	entity			= smart_cast<CEntity*>(rq_spatial[o_it]->dcast_CObject());
 		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
 			ICollisionForm*	cform	= entity->collidable.model;
 			ECollisionFormType tp	= cform->Type();
 			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||smart_cast<CActor*>(entity))){
 				Fsphere S			= cform->getSphere();
-				entity->XFORM().transform_tiny(S.P);
-				float dist			= range;
+				entity->XFORM().transform_tiny	(S.P)	;
+				float dist			= range				;
 				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
 					Fvector			pt;
 					pt.mad			(bullet->pos, bullet->dir, dist);
@@ -277,7 +277,6 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 			 (bullet->pos.z>=level_box.z1) && 
 			 (bullet->pos.z<=level_box.z2))	)
 			 return false;
-
 
 		//изменить скорость и направление ее полета
 		//с учетом гравитации
@@ -329,10 +328,10 @@ void CBulletManager::Render	()
 
 	if(m_Bullets.empty()) return;
 
-	m_Lock.Enter		();
+	m_Lock.Enter		()		;
 
-	u32	vOffset = 0;
-	u32 bullet_num = m_Bullets.size();
+	u32	vOffset			=	0	;
+	u32 bullet_num		=	m_Bullets.size();
 
 	
 
@@ -390,7 +389,7 @@ void CBulletManager::Render	()
 
 		Fvector center;
 		center.mad(bullet->pos, dist,  -length*bullet->render_offset);
-		tracers.Render(verts, center, dist, length, width);
+		tracers.Render			(verts, center, dist, length, width);
 	}
 
 	u32 vCount					= (u32)(verts-start);

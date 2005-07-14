@@ -10,7 +10,7 @@
 
 #include "HW.h"
 
-ENGINE_API CHW		HW;
+ENGINE_API CHW			HW;
 
 #ifdef DEBUG
 IDirect3DStateBlock9*	dwDebugSB = 0;
@@ -35,12 +35,14 @@ void CHW::Reset		(HWND hwnd)
 	else					DevPP.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
 #endif
 
+	_SHOW_REF				("* RESET: before: DeviceREF:",HW.pDevice);
 	while	(TRUE)	{
 		HRESULT _hr							= HW.pDevice->Reset	(&DevPP);
 		if (SUCCEEDED(_hr))					break;
 		Msg		("! ERROR: [%dx%d]: %s",DevPP.BackBufferWidth,DevPP.BackBufferHeight,Debug.error2string(_hr));
 		Sleep	(100);
 	}
+	_SHOW_REF				("* RESET: after : DeviceREF:",HW.pDevice);
 
 	R_CHK				(pDevice->GetRenderTarget			(0,&pBaseRT));
 	R_CHK				(pDevice->GetDepthStencilSurface	(&pBaseZB));
@@ -252,7 +254,7 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
     else					P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
 
     // Create the device
-	u32 GPU = selectGPU();
+	u32 GPU		= selectGPU();
     R_CHK(HW.pD3D->CreateDevice(DevAdapter,
 								DevT,
                                 m_hWnd,
@@ -260,6 +262,7 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 								&P,
                                 &pDevice ));
 
+	_SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
 	switch (GPU)
 	{
 	case D3DCREATE_SOFTWARE_VERTEXPROCESSING:
