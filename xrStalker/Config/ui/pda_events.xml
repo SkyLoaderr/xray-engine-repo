@@ -13,7 +13,7 @@
 			
 		</left_frame>
 	
-		<right_frame x="300" y="0" width="461" height="480" a="90">
+		<right_frame x="310" y="0" width="451" height="480" a="90">
 			<texture>ui_pda_frame_sub</texture>
 		</right_frame>
 	
