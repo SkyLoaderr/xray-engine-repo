@@ -7,9 +7,12 @@
 #include "UI3tButton.h"
 #include "UISpinText.h"
 #include "UIXmlInit.h"
+#include "../../xr_ioconsole.h"
 
 #define	MAP_LIST	"map_list.ltx"
 #define	MAP_ROTATION_LIST	"maprot_list.ltx"
+
+extern ENGINE_API string512  g_sLaunchOnExit;
 
 static LPSTR	g_GameTypeName	[]		= {
 	"UNKNOWN"					,
@@ -61,7 +64,15 @@ CUIMapList::CUIMapList(){
 }
 
 CUIMapList::~CUIMapList(){
+	
+}
 
+void CUIMapList::StartDedicatedServer(){
+	strcpy(g_sLaunchOnExit,"xr_3da.exe -dedicated -");
+	strcat(g_sLaunchOnExit,GetCommandLine(""));
+	Msg("%s","-- Going to quit before starting dedicated server");
+	Msg("%s",g_sLaunchOnExit);
+	Console->Execute("quit");
 }
 
 void CUIMapList::Init(float x, float y, float width, float height){

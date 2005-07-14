@@ -40,6 +40,7 @@ public:
 			void	SaveMapList();
 	const char*		GetCommandLine(LPCSTR player_name);
 		GAME_TYPE	GetCurGameType();
+			void	StartDedicatedServer();
 private:
 	const char*		GetCLGameModeName(); // CL - command line
 			void	UpdateMapList(GAME_TYPE GameType);						
