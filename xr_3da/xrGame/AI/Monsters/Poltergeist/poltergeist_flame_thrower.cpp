@@ -42,9 +42,16 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 	CParticlesObject *ps = xr_new<CParticlesObject>(m_flame_particles,TRUE);
 	
 	// вычислить позицию и направленность партикла
-	Fvector p_center;
-	element->target_object->Center(p_center);
-	element->target_dir.sub(p_center, element->position);
+	CKinematics *pK = smart_cast<CKinematics*>(const_cast<CObject*>(target_object)->Visual());
+	Fmatrix bone_transform;
+	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
+
+	Fmatrix global_transform;
+	global_transform.set(target_object->XFORM());
+	global_transform.mulB(bone_transform);
+
+	Fvector target_point = global_transform.c;
+	element->target_dir.sub(target_point, element->position);
 	element->target_dir.normalize();
 
 	Fmatrix pos; 
