@@ -237,5 +237,8 @@
 
 	<!-- Отметки на карте мест -->
 	<info_portion id="mil_barier_locator"></info_portion>
+
+	<!-- Телохранители мочат игрока -->
+	<info_portion id="mil_bodyguard_kill"></info_portion>
 	
 </game_information_portions>
