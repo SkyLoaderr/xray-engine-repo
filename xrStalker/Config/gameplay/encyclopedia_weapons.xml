@@ -322,6 +322,13 @@
         <text>enc_weapons1_wpn-groza</text>
     </article>
 
+    <!-------------------------------- wpn-abakan ----------------------------->
+
+    <article id="weapons1_wpn-abakan" name="wpn-abakan" group="Weapons1">
+        <ltx>wpn_abakan</ltx>
+        <text>enc_weapons1_wpn-abakan</text>
+    </article>
+
     <!-------------------------------- wpn-lr300 ----------------------------->
 
     <article id="weapons1_wpn-lr300" name="wpn-lr300" group="Weapons1">
