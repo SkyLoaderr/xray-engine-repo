@@ -183,6 +183,9 @@
     <string id="gar_hellcar_dialog_thanks_15">
         <text>Спасибо, мне от тебя ничего не надо.</text>
     </string>
+    <string id="gar_hellcar_in_battle_0">
+        <text>Хорошо.</text>
+    </string>
     <string id="gar_hellcar_start_11">
         <text>Приветствую тебя, сталкер. Есть одно дело.</text>
     </string>
@@ -197,9 +200,6 @@
     </string>
     <string id="gar_hellcar_start_41">
         <text>Дело еще не сделано, болтать будем потом.</text>
-    </string>
-    <string id="gar_hellcar_start_411">
-        <text>Хорошо.</text>
     </string>
     <string id="gar_hellcar_start_51">
         <text>Привет.</text>
