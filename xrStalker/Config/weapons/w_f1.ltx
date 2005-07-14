@@ -119,30 +119,30 @@ inv_grid_x			= 19
 inv_grid_y			= 3
 hud					= grenade_gd-05_hud
 
-blast				= 175;150
-blast_r				= 10;8
-blast_impulse		= 350
+blast				= 0;150
+blast_r				= 0;8
+blast_impulse		= 0
 ;delete
-blast_impulse_factor = 1
+blast_impulse_factor = 0
 
-frags				= 20;12
-frags_r				= 25
-frag_hit			= 80;50
-frag_hit_impulse	= 250
+frags				= 0;12
+frags_r				= 0
+frag_hit			= 0;50
+frag_hit_impulse	= 0
 
 hit_type_blast		= explosion
 hit_type_frag		= fire_wound
 
-up_throw_factor		= 1.5
+up_throw_factor		= 0
 ;-----------------------------------------------------------------------------------
 
 
 explode_particles		 = explosions\explosion_01d
 
 
-light_color		         = 1.9,1.4,0.5
-light_range		         = 15.0
-light_time 		         = 0.85
+light_color		         = 0.9,0.6,0.5
+light_range		         = 2.0
+light_time 		         = 2.85
 
 ;трассы от осколков
 tracer_head_speed	     = 50
@@ -150,7 +150,7 @@ tracer_max_length		= 3
 
 explode_duration		 = 3		;подолжительность взрыва (с)
 
-
+snd_explode = weapons\t_rgd5_explosion
 
 [grenade_gd-05_hud]
 fire_point          = 0.05, 0.0, 0.1
