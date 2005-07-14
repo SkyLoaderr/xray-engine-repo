@@ -35,12 +35,13 @@ public:
 			bool					shape						() const;
 			bool					default_restrictor			() const;
 			bool					on_border					(const Fvector &position) const;
+			bool					out_of_border				(const Fvector &position);
 
 	template <typename T>
-	IC		bool					accessible_neighbours	(T &restriction, u32 level_vertex_id, bool out_restriction);
+	IC		bool					accessible_neighbours		(T &restriction, u32 level_vertex_id, bool out_restriction);
 
 	template <typename T>
-	IC		u32						accessible_nearest		(T &restriction, const Fvector &position, Fvector &result, bool out_restriction);
+	IC		u32						accessible_nearest			(T &restriction, const Fvector &position, Fvector &result, bool out_restriction);
 };
 
 #include "space_restriction_bridge_inline.h"

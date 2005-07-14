@@ -56,17 +56,15 @@ bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
 			return					(true);
 	}
 
-#pragma todo("Dima to Dima : optimize this place in case of slowdown by adding containment routines for sphere and OBB with sphere")
-//	float							shift_radius = ai().level_graph().header().cell_size()*_sqrt(2.f);
 	return							(
+		ai().level_graph().valid_vertex_position(position)
+		&&
 		(
 			m_out_space_restriction ? 
 			(
 				m_out_space_restriction->inside(position,radius) && 
-				(
-//					m_out_space_restriction->inside(position,radius + shift_radius) || 
-					!m_out_space_restriction->on_border(position)
-				)
+				!m_out_space_restriction->on_border(position) &&
+				!m_out_space_restriction->out_of_border(position)
 			) :
 			true
 		)
@@ -75,10 +73,7 @@ bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
 			m_in_space_restriction ? 
 			(
 				!m_in_space_restriction->inside(position,radius) && 
-				(
-//					!m_in_space_restriction->inside(position,radius + shift_radius) || 
-					!m_in_space_restriction->on_border(position)
-				)
+				!m_in_space_restriction->on_border(position)
 			) :
 			true
 		)
@@ -280,19 +275,6 @@ u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &re
 	if (m_out_space_restriction)
 		return						(m_out_space_restriction->accessible_nearest(this,position,result,true));
 
-//	u32								vertex_result = u32(-1);
-//	FREE_IN_RESTRICTIONS::const_iterator	I = m_free_in_restrictions.begin();
-//	FREE_IN_RESTRICTIONS::const_iterator	E = m_free_in_restrictions.end();
-//	for ( ; I != E; ++I)
-//		if ((*I).m_restriction->inside(position) || (*I).m_restriction->on_border(position)) {
-//			vertex_result			= (*I).m_restriction->accessible_nearest(position,result,false);
-//			break;
-//		}
-
-//	VERIFY							(ai().level_graph().valid_vertex_id(vertex_result));
-//	result							= ai().level_graph().vertex_position(vertex_result);
-//	VERIFY							(accessible(result,EPS_L));
-//	return							(vertex_result);
 	VERIFY							(m_in_space_restriction);
 	return							(m_in_space_restriction->accessible_nearest(m_in_space_restriction,position,result,false));
 }
@@ -302,7 +284,7 @@ bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr 
 	if (bridge->inside(start_position))
 		return						(false);
 
-	return true;
+	return							(true);
 
 	//if (bridge->inside(start_position))
 	//	return						(false);

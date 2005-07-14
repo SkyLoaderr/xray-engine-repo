@@ -98,8 +98,7 @@ bool CSpaceRestrictionBridge::on_border					(const Fvector &position) const
 {
 	START_PROFILE("AI/Restricted Object/Bridge/On Border");
 	
-	if (!ai().level_graph().valid_vertex_position(position))
-		return				(false);
+	VERIFY					(ai().level_graph().valid_vertex_position(position));
 
 	CLevelGraph::CPosition	pos = ai().level_graph().vertex_position(position);
 
@@ -123,6 +122,23 @@ bool CSpaceRestrictionBridge::on_border					(const Fvector &position) const
 	}	
 
 	return				(false);
+
+	STOP_PROFILE;
+}
+
+bool CSpaceRestrictionBridge::out_of_border				(const Fvector &position)
+{
+	START_PROFILE("AI/Restricted Object/Bridge/Out Of Border");
+
+	VERIFY					(ai().level_graph().valid_vertex_position(position));
+
+	u32						level_vertex_id = ai().level_graph().vertex_id(position);
+	if (!ai().level_graph().valid_vertex_id(level_vertex_id))
+		return				(true);
+
+	Fvector					temp = position;
+	temp.y					= ai().level_graph().vertex_plane_y(level_vertex_id,position.x,position.z);
+	return					(!inside(temp,EPS_L));
 
 	STOP_PROFILE;
 }
