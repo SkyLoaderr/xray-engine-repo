@@ -37,6 +37,10 @@
 #include "mt_config.h"
 #include "PHMovementControl.h"
 
+#include "ai/monsters/snork/snork.h"
+#include "ai/monsters/burer/burer.h"
+
+
 extern int g_AI_inactive_time;
 
 #ifdef DEBUG
@@ -515,7 +519,30 @@ void CCustomMonster::eye_pp_s2				( )
 	u32 dwTime			= Level().timeServer();
 	u32 dwDT			= dwTime-eye_pp_timestamp;
 	eye_pp_timestamp	= dwTime;
+	Msg("FEEL_VISION_UPDATE: Name = [%s] tresh[%f]", *cName(),memory().visual().transparency_threshold());
 	feel_vision_update						(this,eye_matrix.c,float(dwDT)/1000.f,memory().visual().transparency_threshold());
+
+	//////////////////////////////////////////////////////////////////////////
+	// DEBUG
+	//////////////////////////////////////////////////////////////////////////
+	{
+		xr_vector<CObject*>					m_visible_objects;
+		feel_vision_get						(m_visible_objects);
+		
+		CSnork *snork = smart_cast<CSnork *>(this);
+
+		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
+		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
+		for ( ; I != E; ++I) {
+			CBurer *burer = smart_cast<CBurer *>(*I);
+			if (snork && burer) {
+				int x_a = 0;
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////
+
+
 	Device.Statistic.AI_Vis_RayTests.End	();
 }
 
