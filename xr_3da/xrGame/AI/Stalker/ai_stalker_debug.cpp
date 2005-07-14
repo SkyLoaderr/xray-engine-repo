@@ -44,6 +44,7 @@
 #include "../../cover_point.h"
 #include "../../../camerabase.h"
 #include "../../clsid_game.h"
+#include "../../mt_config.h"
 
 CActor *g_debug_actor = 0;
 

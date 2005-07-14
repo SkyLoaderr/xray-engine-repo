@@ -573,7 +573,8 @@ void CCustomMonster::OnRender()
 			for (u32 I=1; I<path.size(); ++I) {
 				const DetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
 				const DetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
-				RCache.dbg_DrawLINE			(Fidentity,P1,P2,color0);
+				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
+					RCache.dbg_DrawLINE			(Fidentity,P1,P2,color0);
 				if ((path.size() - 1) == I) // песледний box?
 					RCache.dbg_DrawAABB			(P1,radius0,radius0,radius0,color1);
 				else 
@@ -592,7 +593,8 @@ void CCustomMonster::OnRender()
 				P2.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
 				P2.y		+= 0.1f;
 
-				RCache.dbg_DrawLINE			(Fidentity,P1,P2,color1);
+				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
+					RCache.dbg_DrawLINE		(Fidentity,P1,P2,color1);
 				RCache.dbg_DrawAABB			(P1,radius1,radius1,radius1,color3);
 			}
 		}
