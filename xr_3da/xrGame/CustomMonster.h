@@ -118,7 +118,7 @@ public:
 	// stream executors
 	virtual void		Exec_Action				( float dt );
 	virtual void		Exec_Look				( float dt );
-	void				Exec_Visibility			( );
+	void	__stdcall	Exec_Visibility			( );
 	void				eye_pp_s0				( );
 	void				eye_pp_s1				( );
 	void				eye_pp_s2				( );
