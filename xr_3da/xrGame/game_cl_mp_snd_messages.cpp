@@ -54,11 +54,12 @@ void	game_cl_mp::PlaySndMessage			(u32 ID)
 			};
 		}
 	}
-
+#ifdef DEBUG
 	if (MaxDelay>0) 
 	{
 		Msg("- SndMsgDelay - %d", MaxDelay);
 	};
+#endif
 	
 	SndMsg.pSound.play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, float(MaxDelay)/1000.0f);
 	SndMsg.LastStarted = Level().timeServer_Async()+MaxDelay;
