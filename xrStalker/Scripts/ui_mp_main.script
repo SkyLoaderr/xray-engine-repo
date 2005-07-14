@@ -231,10 +231,13 @@ function mp_main:OnBtn_Create()
 	--opt:SaveValues("mm_mp_server")
 	self.map_list:SaveMapList()
 	self:GatherServerData()
---	self.map_list:SetServerParams(self.srv_cmdstr)	
-	local command = self.map_list:GetCommandLine(self.player_name:GetText())
-	console:execute("main_menu off")
-	console:execute(command)
+	if self.check_dedicated:GetCheck() then
+		self.map_list:StartDedicatedServer()
+	else
+		local command = self.map_list:GetCommandLine(self.player_name:GetText())
+		console:execute("main_menu off")
+		console:execute(command)
+	end
 end
 
 function mp_main:GatherServerData()
