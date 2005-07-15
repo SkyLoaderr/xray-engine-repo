@@ -17,6 +17,17 @@ on_info = {=hitted_by(407:408)} %+val_escort_combat%
 [combat_ignore]
 
 ;--------------------------------------------------------------------------
+; встреча отключена
+;--------------------------------------------------------------------------
+[meet@ignore]
+meet_state = 1|guard@wait
+;meet_state_wpn = 15|threat@threat_weap
+victim = 15|actor
+victim_wpn = 15|actor
+use = false
+use_wpn = false
+
+;--------------------------------------------------------------------------
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@def]
@@ -82,7 +93,7 @@ radius = 1
 def_state_moving = rush
 def_state_campering = hide
 no_retreat = true
-meet = meet@def
+meet = meet@ignore
 on_signal = ambush_start | remark@phrase2 ;camper@wait_for_actor
 on_info = {+val_escort_combat} remark@fight
 combat_ignore_cond = always ;{=check_fighting(407:408) -val_escort_combat}
@@ -97,7 +108,7 @@ radius = 2
 def_state_moving = rush
 def_state_campering = hide
 no_retreat = true
-meet = meet@def
+meet = meet@ignore
 on_info = {+val_escort_combat} remark@fight
 on_actor_dist_le_nvis = 3 | remark@phrase2
 combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
@@ -110,7 +121,7 @@ no_move = true
 no_rotate = true
 anim = hide
 snd = speech
-meet = meet@def
+meet = meet@ignore
 on_timer = 40000 | remark@phrase3
 on_info = {+val_escort_captive_dead} walker@fake_task
 combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
@@ -123,7 +134,7 @@ no_move = true
 no_rotate = true
 anim = hide
 snd = speech
-meet = meet@def
+meet = meet@ignore
 on_signal = sound_end | camper@ambush_wait
 on_info = {+val_escort_captive_dead} remark@fake_wait
 combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
@@ -138,7 +149,7 @@ radius = 3
 def_state_moving = sneak
 def_state_campering = hide
 no_retreat = true
-meet = meet@def
+meet = meet@ignore
 on_signal = escort_start | %+val_escort_start%
 on_info = {+val_escort_nap1_phrase3} remark@phrase3, {+val_escort_combat} remark@fight
 combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
