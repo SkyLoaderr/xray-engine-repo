@@ -86,7 +86,7 @@ function action_remark_activity:activate_sound()
 	if self.snd_scheduled or not self.st.snd then
 		return
 	end
-	printf("_bp: %s: action_remark_activity:activate_sound(): activating sound", self.object:name())
+	printf("_bp: %s: action_remark_activity:activate_sound(): activating sound [%s]", self.object:name(), self.st.snd)
 
 	self.snd_start_time = time_global()
 	self.snd_scheduled = true				
