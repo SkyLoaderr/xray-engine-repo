@@ -59,6 +59,7 @@ anim = guard
 snd = speech
 meet = meet@def
 on_signal = sound_end | walker@talk
+on_actor_dist_le = 2 | walker@talk
 on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
 
 ;--------------------------------------------------------------------------
