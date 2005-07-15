@@ -55,7 +55,9 @@ void CLevel::ClientReceive()
 				
 				if ((Level().timeServer() + pStat.getPing()) < P->timeReceive)
 				{
+#ifdef DEBUG
 					Msg("! TimeServer[%d] < TimeReceive[%d]", Level().timeServer(), P->timeReceive);
+#endif
 					dTime = pStat.getPing();
 				}
 				else
@@ -80,7 +82,9 @@ void CLevel::ClientReceive()
 				u32 dTime = 0;
 				if ((Level().timeServer() + Ping) < P->timeReceive)
 				{
+#ifdef DEBUG
 					Msg("! TimeServer[%d] < TimeReceive[%d]", Level().timeServer(), P->timeReceive);
+#endif
 					dTime = Ping;
 				}
 				else					
