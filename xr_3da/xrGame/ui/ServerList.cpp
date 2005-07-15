@@ -207,3 +207,7 @@ void	CServerList::RefreshList()
 		AddServerToList(&NewServerInfo);
 	}
 };
+
+void CServerList::RefreshQuick(){
+	Msg("-- Quick Refresh of Server List");
+}

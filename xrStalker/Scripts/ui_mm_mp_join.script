@@ -70,7 +70,7 @@ function mp_join:InitControls(x, y, xml, handler)
 	
 	btn = xml:Init3tButton("tab_client:btn_quick_refresh", self.bk)
 	handler:Register(btn,"btn_quick_refresh")
-	btn:Enable(false)
+	
 	
 	btn = xml:Init3tButton("tab_client:btn_server_info", self.bk)
 	handler:Register(btn, "btn_server_info")

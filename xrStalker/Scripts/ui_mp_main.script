@@ -171,6 +171,8 @@ function mp_main:InitCallBacks()
 	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,	self)	
 	-- ui_mm_mp_join
 	self:AddCallback("btn_refresh",			ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
+	self:AddCallback("btn_quick_refresh",	ui_events.BUTTON_CLICKED,	self.OnBtn_RefreshQuick,self)
+	
 end
 
 function mp_main:OnGameModeChange()
@@ -219,6 +221,10 @@ function mp_main:OnBtn_Refresh()
 		self.server_list:RefreshList(true)
 	end
 	self:OnFilterChange()
+end
+
+function mp_main:OnBtn_RefreshQuick()
+	self.server_list:RefreshQuick()
 end
 
 function mp_main:OnBtn_Calncel()

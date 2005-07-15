@@ -37,6 +37,7 @@ public:
 			void SetPlayerName(const char* name);
 
 	virtual void	RefreshGameSpyList	(bool Local);
+			void	RefreshQuick();
 
 
 protected:

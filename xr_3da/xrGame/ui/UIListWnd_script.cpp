@@ -81,10 +81,12 @@ void CUIListWnd::script_register(lua_State *L)
 
 		class_<CServerList, CUIWindow>("CServerList")
 		.def(							constructor<>())
-		.def("RefreshList",				&CServerList::RefreshGameSpyList)
 		.def("ConnectToSelected",		&CServerList::ConnectToSelected)
 		.def("SetFilters",				&CServerList::SetFilters)
-		.def("SetPlayerName",			&CServerList::SetPlayerName),
+		.def("SetPlayerName",			&CServerList::SetPlayerName)
+		.def("RefreshList",				&CServerList::RefreshGameSpyList)
+		.def("RefreshQuick",			&CServerList::RefreshQuick),
+		
 
 		class_<CUIMapList, CUIWindow>("CUIMapList")
 		.def(							constructor<>())
