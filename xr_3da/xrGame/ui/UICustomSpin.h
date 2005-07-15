@@ -18,7 +18,7 @@ class CUILines;
 class CUICustomSpin : public CUIWindow, public CUIOptionsItem {
 public:
 	CUICustomSpin();
-	~CUICustomSpin();
+	virtual ~CUICustomSpin();
 
 	// CUIWindow
 	virtual void	Init(float x, float y, float width, float height);

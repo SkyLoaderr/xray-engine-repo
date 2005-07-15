@@ -23,7 +23,7 @@ CUICustomSpin::CUICustomSpin(){
 
     m_pFrameLine->SetAutoDelete(true);
 	m_pBtnUp->SetAutoDelete(true);
-	m_pBtnUp->SetAutoDelete(true);
+	m_pBtnDown->SetAutoDelete(true);
 
 	AttachChild(m_pFrameLine);
 	AttachChild(m_pBtnUp);
@@ -34,6 +34,9 @@ CUICustomSpin::CUICustomSpin(){
 
 CUICustomSpin::~CUICustomSpin(){
 	xr_delete(m_pLines);
+//	xr_delete(m_pFrameLine);
+//	xr_delete(m_pBtnUp);
+//	xr_delete(m_pBtnDown);
 }
 
 void CUICustomSpin::Init(float x, float y, float width, float height){
