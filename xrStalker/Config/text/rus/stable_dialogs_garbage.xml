@@ -72,6 +72,12 @@
     <string id="gar_dram_novice_level_2">
         <text>Интересная информация, спасибо, учту.</text>
     </string>
+    <string id="gar_dram_novice_level_3">
+        <text>Да,  еще такой момент. Справа, где  болота, есть тайник. Увидишь металлическую кострукцию, которая нависает прямо над одной из луж. Так вот, прямо под ней есть заначка. Я ее спрятал в свое время, но ты мне жизнь спас и я думаю, что тебе она нужнее. Так что пользуйся на здоровье.</text>
+    </string>
+    <string id="gar_dram_novice_level_4">
+        <text>Спасибо, старик. Я этого не забуду.</text>
+    </string>
     <string id="gar_dramm_novice_start_0">
         <text>Спасибо, друг мой, ты мне очень помог.</text>
     </string>
@@ -230,6 +236,9 @@
     </string>
     <string id="gar_seriy_start_33">
         <text>Привет, чувак, тут только что такая веселуха была, что мама дорогая.</text>
+    </string>
+    <string id="gar_seriy_start_44">
+        <text>Прямой дорооги тебе, сталкер, мимо аномалий через артефакты. </text>
     </string>
     <string id="gar_stalker_about_level_0">
         <text>Можешь рассказать о здешних местах?</text>
