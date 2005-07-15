@@ -32,7 +32,8 @@ public:
 			void InitHeader();
 			void InitSeparator();
 			void AddServerToList	(ServerInfo* pServerInfo);
-			void UpdateServerInList	(ServerInfo* pServerInfo);
+			void UpdateServerInList	(ServerInfo* pServerInfo, int index);
+			void UpdateServerInList	(ServerInfo* pServerInfo, CUIListItemServer* pItem);
 			void ConnectToSelected();
 			void SetFilters(SServerFilters& sf);
 			void SetPlayerName(const char* name);
@@ -43,6 +44,7 @@ public:
 
 protected:
 			bool IsValidItem(ServerInfo& item);
+			void SrvInfo2LstSrvInfo(const ServerInfo* pSrvInfo);
 
 	LIST_SRV_ITEM	m_itemInfo;
 	SServerFilters	m_sf;

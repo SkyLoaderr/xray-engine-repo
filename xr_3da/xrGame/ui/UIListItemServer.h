@@ -47,7 +47,9 @@ public:
 
 	// own
 	virtual void Init(LIST_SRV_ITEM& params, float x, float y, float width, float height);
+			void SetParams(LIST_SRV_ITEM& params);
 			void CreateConsoleCommand(xr_string& command, LPCSTR player_name);
+			int  Get_gs_index() {return m_srv_info.info.Index;}
 			LIST_SRV_ITEM* GetInfo() {return &m_srv_info;};
 	
 

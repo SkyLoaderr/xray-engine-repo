@@ -74,33 +74,6 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 		m_separator[i].SetHeight(m_wndSize.y);
 	}
 	InitHeader();
-
-////////////////////////////////////////////////////////////////////////
-	/*
-	CUIListItemServer* item = xr_new<CUIListItemServer>();
-	float w = m_list.GetItemWidth();
-	float h = m_list.GetItemHeight();
-
-	m_itemInfo.info.server	= "rainbow";
-	m_itemInfo.info.map		= "testers_mp_bath";
-	m_itemInfo.info.game	= "artefacthunt";
-	m_itemInfo.info.players	= "10\32";
-	m_itemInfo.info.ping	= "36646";
-
-	item = xr_new<CUIListItemServer>();
-	item->Init(m_itemInfo, 0, 0, w, h);
-	m_list.AddItem<CUIListItemServer>(item);
-
-	m_itemInfo.info.server	= "prof";
-	m_itemInfo.info.map		= "testers_mp_factory";
-	m_itemInfo.info.game	= "team deathmatch";
-	m_itemInfo.info.players	= "10\32";
-	m_itemInfo.info.ping	= "666";
-
-	item = xr_new<CUIListItemServer>();
-	item->Init(m_itemInfo, 0, 0, w, h);
-	m_list.AddItem<CUIListItemServer>(item);
-	*/
 }
 
 void CServerList::ConnectToSelected(){
@@ -124,8 +97,6 @@ void CServerList::InitHeader(){
 	float y = m_header[0].GetHeight();
 
 	CStringTable st;
-
-//	pWnd->SetText(*st(*text));
 
 	m_header[0].SetWidth(m_itemInfo.size.icon);
 	m_header[0].SetText(*st("icon"));
@@ -154,18 +125,13 @@ void CServerList::InitHeader(){
 	m_header[5].SetWidth(m_itemInfo.size.ping);
 	m_header[5].SetWndPos(pos);
 	m_header[5].SetText(*st("ping"));
-//	m_separator[5].SetWndPos(pos.x,y);
 }
 
 void	CServerList::RefreshGameSpyList	(bool Local){
 	if (Local)
-	{
 		Msg("Refresh Local List");
-	}
 	else
-	{
 		Msg("Refresh MasterServer List");
-	}
 	
 	m_GSBrowser.RefreshList_Full(Local);
 	RefreshList();
@@ -180,27 +146,45 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 	float w = m_list.GetItemWidth();
 	float h = m_list.GetItemHeight();
 
-	m_itemInfo.info.server	= pServerInfo->m_ServerName;
-	xr_string address = pServerInfo->m_HostName;
-	char port[8];
-	address+= "/port=";	
-	address+= itoa(pServerInfo->m_Port, port, 10);
-	m_itemInfo.info.address = address.c_str();
-	m_itemInfo.info.map		= pServerInfo->m_SessionName;
-	m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
-	m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
-	m_itemInfo.info.ping.sprintf("%d", pServerInfo->m_Ping);
-	m_itemInfo.info.icons.pass	= pServerInfo->m_bPassword;
-	m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
-	m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
-	m_itemInfo.info.Index	= pServerInfo->Index;
-
+	//m_itemInfo.info.server	= pServerInfo->m_ServerName;
+	//xr_string address = pServerInfo->m_HostName;
+	//char port[8];
+	//address+= "/port=";	
+	//address+= itoa(pServerInfo->m_Port, port, 10);
+	//m_itemInfo.info.address = address.c_str();
+	//m_itemInfo.info.map		= pServerInfo->m_SessionName;
+	//m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
+	//m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
+	//m_itemInfo.info.ping.sprintf("%d", pServerInfo->m_Ping);
+	//m_itemInfo.info.icons.pass	= pServerInfo->m_bPassword;
+	//m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
+	//m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
+	//m_itemInfo.info.Index	= pServerInfo->Index;
+	SrvInfo2LstSrvInfo(pServerInfo);
 	item->Init(m_itemInfo, 0, 0, w, h);
 	m_list.AddItem<CUIListItemServer>(item);
 };
 
-void	CServerList::UpdateServerInList(ServerInfo* pServerInfo)
-{
+void	CServerList::UpdateServerInList(ServerInfo* pServerInfo, int index){
+	int sz = m_list.GetItemsCount();
+
+	for (int i = 0; i< sz; i++)
+	{
+		CUIListItemServer* pItem = static_cast<CUIListItemServer*>(m_list.GetItem(i));
+		if (pItem->Get_gs_index() == index)
+		{
+			UpdateServerInList(pServerInfo, pItem);
+			return;
+		}
+	}
+
+    R_ASSERT2(false, "CServerList::UpdateServerInList - invalid index");
+
+};
+
+void	CServerList::UpdateServerInList(ServerInfo* pServerInfo, CUIListItemServer* pItem){
+	SrvInfo2LstSrvInfo(pServerInfo);
+	pItem->SetParams(m_itemInfo);
 };
 
 void	CServerList::RefreshList()
@@ -224,5 +208,22 @@ void CServerList::RefreshQuick(){
 
 	ServerInfo NewServerInfo;
 	m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, pItem->GetInfo()->info.Index);
-	UpdateServerInList(&NewServerInfo);
+	UpdateServerInList(&NewServerInfo, pItem);
+}
+
+void CServerList::SrvInfo2LstSrvInfo(const ServerInfo* pServerInfo){
+	m_itemInfo.info.server	= pServerInfo->m_ServerName;
+	xr_string address = pServerInfo->m_HostName;
+	char port[8];
+	address+= "/port=";	
+	address+= itoa(pServerInfo->m_Port, port, 10);
+	m_itemInfo.info.address = address.c_str();
+	m_itemInfo.info.map		= pServerInfo->m_SessionName;
+	m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
+	m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
+	m_itemInfo.info.ping.sprintf("%d", pServerInfo->m_Ping);
+	m_itemInfo.info.icons.pass	= pServerInfo->m_bPassword;
+	m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
+	m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
+	m_itemInfo.info.Index	= pServerInfo->Index;   
 }
