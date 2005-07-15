@@ -1,12 +1,12 @@
 [logic]
 active = camper@wait
-on_combat = combat
+;on_combat = combat
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
 
-[combat]
-on_info = {=see_actor} camper@kill_wait %+val_sacrifice_plr_detected% ;{=see_actor} 
+;[combat]
+;on_info = {=see_actor -val_sacrifice_victim_dead} camper@kill_wait %+val_sacrifice_plr_detected% ;{=see_actor} 
 
 [death]
 on_info = %+val_sacrifice_guard2_dead%
