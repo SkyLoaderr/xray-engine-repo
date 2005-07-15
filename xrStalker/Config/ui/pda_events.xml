@@ -21,7 +21,8 @@
 					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
 			</left_frame_header>
-			
+			<list x="0" y="45" width="300" height="435" item_height="60">
+			</list>
 		</left_frame>
 	
 		<right_frame x="316" y="0" width="445" height="480">
