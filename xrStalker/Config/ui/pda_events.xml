@@ -29,7 +29,7 @@
 			<map_wnd>
 
 				<main_wnd x="0" y="0" width="445" height="480">
-					<map_header_frame_line x="8" y="17" width="745" height="21">
+					<map_header_frame_line x="8" y="17" width="445" height="21">
 						<title x="10" y="1" width="435" height="18">
 							<text font="letterica16" r="255" g="255" b="255"></text>
 						</title>
