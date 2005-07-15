@@ -127,6 +127,7 @@ BOOL OpenFileDialog()
         case FNERR_SUBCLASSFAILURE: 	Log("Too many file selected."); break;
         }
     }
+	return bRes;
 }
 
 
