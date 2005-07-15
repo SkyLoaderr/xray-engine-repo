@@ -66,6 +66,8 @@ void	CGameSpy_Browser::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_SBServerGetFloatValue);
 	GAMESPY_LOAD_FN(xrGS_SBServerGetBoolValue);
 	GAMESPY_LOAD_FN(xrGS_SBServerGetPing);
+
+	GAMESPY_LOAD_FN(xrGS_ServerBrowserAuxUpdateServer);
 }
 
 bool	CGameSpy_Browser::Init()
@@ -193,3 +195,9 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	pServerInfo->m_Port		= (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(HOSTPORT_KEY), 0);
 };
 
+void			CGameSpy_Browser::RefreshQuick(int Index)
+{
+	void* pServer = xrGS_ServerBrowserGetServer(m_pGSBrowser, Index);
+	if (!pServer) return;
+	xrGS_ServerBrowserAuxUpdateServer(m_pGSBrowser, pServer, SBFalse, SBFalse);
+};

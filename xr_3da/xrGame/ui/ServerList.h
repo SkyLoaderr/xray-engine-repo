@@ -32,6 +32,7 @@ public:
 			void InitHeader();
 			void InitSeparator();
 			void AddServerToList	(ServerInfo* pServerInfo);
+			void UpdateServerInList	(ServerInfo* pServerInfo);
 			void ConnectToSelected();
 			void SetFilters(SServerFilters& sf);
 			void SetPlayerName(const char* name);

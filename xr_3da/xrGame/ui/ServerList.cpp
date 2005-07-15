@@ -193,9 +193,14 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 	m_itemInfo.info.icons.pass	= pServerInfo->m_bPassword;
 	m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
 	m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
+	m_itemInfo.info.Index	= pServerInfo->Index;
 
 	item->Init(m_itemInfo, 0, 0, w, h);
 	m_list.AddItem<CUIListItemServer>(item);
+};
+
+void	CServerList::UpdateServerInList(ServerInfo* pServerInfo)
+{
 };
 
 void	CServerList::RefreshList()
@@ -212,5 +217,12 @@ void	CServerList::RefreshList()
 };
 
 void CServerList::RefreshQuick(){
+	int SvId = m_list.GetSelectedItem();
+	CUIListItemServer* pItem = (CUIListItemServer*)m_list.GetItem(SvId);
+	m_GSBrowser.RefreshQuick(pItem->GetInfo()->info.Index);
 	Msg("-- Quick Refresh of Server List");
+
+	ServerInfo NewServerInfo;
+	m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, pItem->GetInfo()->info.Index);
+	UpdateServerInList(&NewServerInfo);
 }

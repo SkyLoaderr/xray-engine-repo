@@ -25,4 +25,6 @@ extern "C"
 	EXPORT_FN_DECL(double, SBServerGetFloatValue, (SBServer server, const gsi_char *key, double fdefault));
 	EXPORT_FN_DECL(SBBool, SBServerGetBoolValue, (SBServer server, const gsi_char *key, SBBool bdefault));
 	EXPORT_FN_DECL(int, SBServerGetPing, (SBServer server));
+
+	EXPORT_FN_DECL(SBError, ServerBrowserAuxUpdateServer, (ServerBrowser sb, SBServer server, SBBool async, SBBool fullUpdate));
 }

@@ -87,3 +87,8 @@ XRGAMESPY_API int xrGS_SBServerGetPing(SBServer server)
 {
 	return SBServerGetPing(server);
 };
+
+XRGAMESPY_API SBError xrGS_ServerBrowserAuxUpdateServer(ServerBrowser sb, SBServer server, SBBool async, SBBool fullUpdate)
+{
+	return ServerBrowserAuxUpdateServer(sb, server, async, fullUpdate);
+}

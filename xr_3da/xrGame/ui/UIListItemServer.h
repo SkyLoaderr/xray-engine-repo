@@ -26,6 +26,7 @@ struct LIST_SRV_INFO{
 	shared_str players;
 	shared_str ping;
 	SRV_ICONS  icons;
+	int			Index;
 };
 
 struct LIST_SRV_ITEM {
@@ -47,6 +48,7 @@ public:
 	// own
 	virtual void Init(LIST_SRV_ITEM& params, float x, float y, float width, float height);
 			void CreateConsoleCommand(xr_string& command, LPCSTR player_name);
+			LIST_SRV_ITEM* GetInfo() {return &m_srv_info;};
 	
 
 protected:

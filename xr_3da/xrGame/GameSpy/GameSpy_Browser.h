@@ -51,6 +51,7 @@ public:
 
 	bool			Init();
 	void			RefreshList_Full(bool Local);
+	void			RefreshQuick(int Index);
 	
 	void CallBack_OnUpdateCompleted		();
 
@@ -77,6 +78,8 @@ private:
 	GAMESPY_FN_VAR_DECL(double, SBServerGetFloatValue, (void * server, const char *key, double fdefault));
 	GAMESPY_FN_VAR_DECL(SBBool, SBServerGetBoolValue, (void * server, const char *key, SBBool bdefault));
 	GAMESPY_FN_VAR_DECL(int, SBServerGetPing, (void * server));
+
+	GAMESPY_FN_VAR_DECL(SBError, ServerBrowserAuxUpdateServer, (void* sb, void* server, SBBool async, SBBool fullUpdate));
 };
 
 
