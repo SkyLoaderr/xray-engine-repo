@@ -74,6 +74,7 @@ public:
 
 	virtual void			UpdateCamera			();
 
+	virtual bool			check_start_conditions	(ControlCom::EControlType);
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();

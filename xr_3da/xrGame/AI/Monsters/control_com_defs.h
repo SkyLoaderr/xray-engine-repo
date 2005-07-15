@@ -1,7 +1,7 @@
 #pragma once
 
 namespace ControlCom {
-	enum EContolType {
+	enum EControlType {
 		// 1st level
 		eControlMovement	= u32(0),	// linear velocity
 		eControlPath,					// path builder
@@ -52,7 +52,8 @@ namespace ControlCom {
 		eventTravelPointChange,
 		eventPathBuilt,
 		eventJumpEnd,
-		eventRotationJumpEnd
+		eventRotationJumpEnd,
+		eventRunAttackEnd
 	};
 
 	enum ECaptureType {

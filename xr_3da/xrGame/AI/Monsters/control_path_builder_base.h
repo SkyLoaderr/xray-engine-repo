@@ -75,8 +75,8 @@ public:
 	virtual void		reinit				();
 	virtual void		update_frame		();
 	virtual void		on_event			(ControlCom::EEventType, ControlCom::IEventData*);	
-	virtual void		on_start_control	(ControlCom::EContolType type);
-	virtual void		on_stop_control		(ControlCom::EContolType type);
+	virtual void		on_start_control	(ControlCom::EControlType type);
+	virtual void		on_stop_control		(ControlCom::EControlType type);
 
 	// -------------------------------------------------------------------
 

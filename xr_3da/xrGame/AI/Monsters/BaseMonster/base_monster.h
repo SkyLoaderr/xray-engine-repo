@@ -300,6 +300,8 @@ public:
 	
 	CControlManagerCustom	&com_man() {return m_com_manager;}
 
+	virtual bool			check_start_conditions	(ControlCom::EControlType){return true;}
+
 protected:
 	CControl_Manager		*m_control_manager;
 	

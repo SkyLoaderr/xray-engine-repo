@@ -121,7 +121,7 @@ void CControl_Manager::update_schedule()
 	m_active_elems.erase(it_remove, m_active_elems.end());
 }
 
-ControlCom::EContolType CControl_Manager::com_type(CControl_Com *com)
+ControlCom::EControlType CControl_Manager::com_type(CControl_Com *com)
 {
 	for (CONTROLLERS_MAP_IT it = m_control_elems.begin(); it != m_control_elems.end(); ++it) 
 		if (it->second == com) return it->first;
@@ -161,7 +161,7 @@ void CControl_Manager::unsubscribe(CControl_Com *com, ControlCom::EEventType typ
 	}
 }
 
-ControlCom::IComData *CControl_Manager::data(CControl_Com *who, ControlCom::EContolType type)
+ControlCom::IComData *CControl_Manager::data(CControl_Com *who, ControlCom::EControlType type)
 {
 	CControl_Com *target = m_control_elems[type];
 
@@ -175,12 +175,12 @@ ControlCom::IComData *CControl_Manager::data(CControl_Com *who, ControlCom::ECon
 }
 
 // TODO: check construction of SControl_Element and check init in add-function
-void CControl_Manager::add(CControl_Com *com, ControlCom::EContolType type)
+void CControl_Manager::add(CControl_Com *com, ControlCom::EControlType type)
 {
 	m_control_elems[type] = com;
 	com->init_external(this, m_object);
 }
-void CControl_Manager::set_base_controller(CControl_Com *com, ControlCom::EContolType type)
+void CControl_Manager::set_base_controller(CControl_Com *com, ControlCom::EControlType type)
 {
 	m_base_elems[type]	= com;
 }
@@ -205,7 +205,7 @@ bool CControl_Manager::is_locked(CControl_Com *com)
 }
 
 // capture
-void CControl_Manager::capture(CControl_Com *com, ControlCom::EContolType type)  // who, type
+void CControl_Manager::capture(CControl_Com *com, ControlCom::EControlType type)  // who, type
 {
 	CControl_Com *target = m_control_elems[type];
 	
@@ -229,7 +229,7 @@ void CControl_Manager::capture(CControl_Com *com, ControlCom::EContolType type) 
 	com->cing()->on_start_control	(type);
 }
 
-void CControl_Manager::release(CControl_Com *com, ControlCom::EContolType type)  // who, type
+void CControl_Manager::release(CControl_Com *com, ControlCom::EControlType type)  // who, type
 {
 	CControl_Com *target = m_control_elems[type];
 	CControl_Com *capturer = target->ced()->capturer();
@@ -271,18 +271,18 @@ void CControl_Manager::release_pure(CControl_Com *com)
 }
 
 
-void CControl_Manager::activate(ControlCom::EContolType type)
+void CControl_Manager::activate(ControlCom::EControlType type)
 {
 	m_control_elems[type]->set_active	();
 	check_active_com					(m_control_elems[type], eAdd);
 }
-void CControl_Manager::deactivate(ControlCom::EContolType type)
+void CControl_Manager::deactivate(ControlCom::EControlType type)
 {
 	m_control_elems[type]->set_active	(false);
 	check_active_com					(m_control_elems[type], eRemove);
 }
 
-bool CControl_Manager::is_captured(ControlCom::EContolType type)
+bool CControl_Manager::is_captured(ControlCom::EControlType type)
 {
 	CControl_Com *capturer = m_control_elems[type]->ced()->capturer();
 	if (!capturer || is_base(capturer)) return false;
@@ -299,7 +299,7 @@ bool CControl_Manager::is_captured_pure()
 }
 
 
-void CControl_Manager::lock(CControl_Com *com, ControlCom::EContolType type)
+void CControl_Manager::lock(CControl_Com *com, ControlCom::EControlType type)
 {
 	VERIFY	(is_pure(m_control_elems[type]));
 	VERIFY	(m_control_elems[type]->ced()->capturer() == com);
@@ -310,7 +310,7 @@ void CControl_Manager::lock(CControl_Com *com, ControlCom::EContolType type)
 	check_active_com(m_control_elems[type], eRemove);
 }
 
-void CControl_Manager::unlock(CControl_Com *com, ControlCom::EContolType type)
+void CControl_Manager::unlock(CControl_Com *com, ControlCom::EControlType type)
 {
 	VERIFY	(is_pure(m_control_elems[type]));
 	VERIFY	(m_control_elems[type]->ced()->capturer() == com);
@@ -343,7 +343,7 @@ void CControl_Manager::dir_stop(CControl_Com *com)
 	ctrl_dir->heading.target_speed	= 0;
 }
 
-bool CControl_Manager::check_start_conditions(ControlCom::EContolType type)
+bool CControl_Manager::check_start_conditions(ControlCom::EControlType type)
 {
 	return m_control_elems[type]->check_start_conditions();
 }
@@ -370,7 +370,7 @@ void CControl_Manager::check_active_com(CControl_Com *com, bool b_add)
 }
 
 
-void CControl_Manager::dump(CControl_Com *com, LPCSTR action, ControlCom::EContolType type)
+void CControl_Manager::dump(CControl_Com *com, LPCSTR action, ControlCom::EControlType type)
 {
 	Msg("---------------------------------------------------------------------------");
 	Msg("-- [%s] %s [%s]",dbg_control_name_table[com_type(com)], action, dbg_control_name_table[type]);

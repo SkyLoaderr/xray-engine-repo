@@ -69,7 +69,7 @@ void CControlAnimationBase::reinit()
 	AA_reload					(pSettings->r_string(*(m_object->cNameSect()), "attack_params"));
 }
 
-void CControlAnimationBase::on_start_control(ControlCom::EContolType type)
+void CControlAnimationBase::on_start_control(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlAnimation: 
@@ -79,7 +79,7 @@ void CControlAnimationBase::on_start_control(ControlCom::EContolType type)
 	}
 }
 
-void CControlAnimationBase::on_stop_control	(ControlCom::EContolType type)
+void CControlAnimationBase::on_stop_control	(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlAnimation: m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);	break;

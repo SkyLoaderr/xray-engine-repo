@@ -73,8 +73,8 @@ public:
 	virtual	void	reinit					() {}
 
 	// initialize/finalize controlling com
-	virtual void	on_start_control		(ControlCom::EContolType type) {}
-	virtual void	on_stop_control			(ControlCom::EContolType type) {}
+	virtual void	on_start_control		(ControlCom::EControlType type) {}
+	virtual void	on_stop_control			(ControlCom::EControlType type) {}
 
 	// event handling
 	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*)	{}

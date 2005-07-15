@@ -3,6 +3,7 @@
 #include "BaseMonster/base_monster.h"
 #include "control_sequencer.h"
 #include "control_rotation_jump.h"
+#include "control_run_attack.h"
 #include "../../PhysicsShell.h"
 #include "../../detail_path_manager.h"
 #include "../../level.h"
@@ -14,6 +15,7 @@ CControlManagerCustom::CControlManagerCustom()
 	m_triple_anim	= 0;
 	m_rotation_jump	= 0;
 	m_jump			= 0;
+	m_run_attack	= 0;
 }
 
 CControlManagerCustom::~CControlManagerCustom()
@@ -22,9 +24,10 @@ CControlManagerCustom::~CControlManagerCustom()
 	xr_delete	(m_triple_anim);
 	xr_delete	(m_rotation_jump);
 	xr_delete	(m_jump);
+	xr_delete	(m_run_attack);
 }	
 
-void CControlManagerCustom::add_ability(ControlCom::EContolType type)
+void CControlManagerCustom::add_ability(ControlCom::EControlType type)
 {
 	if (type == ControlCom::eControlSequencer) {
 
@@ -46,28 +49,33 @@ void CControlManagerCustom::add_ability(ControlCom::EContolType type)
 		m_jump			= xr_new<CControlJump>();
 		m_man->add		(m_jump, ControlCom::eControlJump);
 
+	} else if (type == ControlCom::eControlRunAttack) {
+		m_run_attack	= xr_new<CControlRunAttack>();
+		m_man->add		(m_run_attack, ControlCom::eControlRunAttack);
 	}	
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CControlManagerCustom::on_start_control(ControlCom::EContolType type)
+void CControlManagerCustom::on_start_control(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlSequencer:			m_man->subscribe	(this, ControlCom::eventSequenceEnd);		break;
 	case ControlCom::eControlTripleAnimation:	m_man->subscribe	(this, ControlCom::eventTAChange);			break;
 	case ControlCom::eControlJump:				m_man->subscribe	(this, ControlCom::eventJumpEnd);			break;
 	case ControlCom::eControlRotationJump:		m_man->subscribe	(this, ControlCom::eventRotationJumpEnd);	break;
+	case ControlCom::eControlRunAttack:			m_man->subscribe	(this, ControlCom::eventRunAttackEnd);		break;
 	}
 }
 
-void CControlManagerCustom::on_stop_control	(ControlCom::EContolType type)
+void CControlManagerCustom::on_stop_control	(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlSequencer:			m_man->unsubscribe	(this, ControlCom::eventSequenceEnd);	break;
 	case ControlCom::eControlTripleAnimation:	m_man->unsubscribe	(this, ControlCom::eventTAChange);		break;
 	case ControlCom::eControlJump:				m_man->unsubscribe	(this, ControlCom::eventJumpEnd);		break;
-	case ControlCom::eControlRotationJump:		m_man->unsubscribe	(this, ControlCom::eventRotationJumpEnd);	break;
+	case ControlCom::eControlRotationJump:		m_man->unsubscribe	(this, ControlCom::eventRotationJumpEnd);break;
+	case ControlCom::eControlRunAttack:			m_man->unsubscribe	(this, ControlCom::eventRunAttackEnd);	break;
 	}
 }
 
@@ -85,6 +93,7 @@ void CControlManagerCustom::on_event(ControlCom::EEventType type, ControlCom::IE
 		}
 	case ControlCom::eventJumpEnd:			m_man->release(this, ControlCom::eControlJump); break;
 	case ControlCom::eventRotationJumpEnd:	m_man->release(this, ControlCom::eControlRotationJump); break;
+	case ControlCom::eventRunAttackEnd:		m_man->release(this, ControlCom::eControlRunAttack); break;
 	}
 }
 
@@ -100,7 +109,8 @@ void CControlManagerCustom::update_schedule()
 		check_attack_jump		();
 		check_jump_over_physics	();
 	}
-	if (m_rotation_jump) check_rotation_jump();
+	if (m_rotation_jump)	check_rotation_jump	();
+	if (m_run_attack)		check_run_attack	();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -280,6 +290,7 @@ void CControlManagerCustom::check_attack_jump()
 {
 	if (!m_object->EnemyMan.get_enemy())	return;
 	if (m_object->GetScriptControl())		return;
+	if (!m_object->check_start_conditions(ControlCom::eControlJump)) return;
 
 	CEntityAlive *target = const_cast<CEntityAlive*>(m_object->EnemyMan.get_enemy());
 	if (!m_jump->can_jump(target)) return;
@@ -300,6 +311,7 @@ void CControlManagerCustom::check_jump_over_physics()
 {
 	if (!m_man->path_builder().is_moving_on_path()) return;
 	if (!m_man->check_start_conditions(ControlCom::eControlJump)) return;
+	if (!m_object->check_start_conditions(ControlCom::eControlJump)) return;
 	if (m_object->GetScriptControl()) return;
 
 	Fvector prev_pos	= m_object->Position();
@@ -355,7 +367,17 @@ void CControlManagerCustom::check_jump_over_physics()
 void CControlManagerCustom::check_rotation_jump()
 {
 	if (!m_man->check_start_conditions(ControlCom::eControlRotationJump)) return;	
-	
+	if (!m_object->check_start_conditions(ControlCom::eControlRotationJump)) return;
+
 	m_man->capture		(this, ControlCom::eControlRotationJump);
 	m_man->activate		(ControlCom::eControlRotationJump);
+}
+
+void CControlManagerCustom::check_run_attack()
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlRunAttack)) return;	
+	if (!m_object->check_start_conditions(ControlCom::eControlRunAttack)) return;
+
+	m_man->capture		(this, ControlCom::eControlRunAttack);
+	m_man->activate		(ControlCom::eControlRunAttack);
 }

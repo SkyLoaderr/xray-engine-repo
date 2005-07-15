@@ -18,7 +18,7 @@ void CControllerAnimation::reinit()
 	//m_current_torso_action	= eTorsoIdle;
 }
 
-void CControllerAnimation::on_start_control(ControlCom::EContolType type)
+void CControllerAnimation::on_start_control(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlAnimation: 
@@ -37,7 +37,7 @@ void CControllerAnimation::on_start_control(ControlCom::EContolType type)
 	}
 }
 
-void CControllerAnimation::on_stop_control	(ControlCom::EContolType type)
+void CControllerAnimation::on_stop_control	(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlAnimation: 

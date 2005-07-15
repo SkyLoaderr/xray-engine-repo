@@ -5,8 +5,10 @@
 #include "control_jump.h"
 
 
+
 class CAnimationSequencer;
 class CControlRotationJump;
+class CControlRunAttack;
 
 
 
@@ -16,18 +18,19 @@ class CControlManagerCustom : public CControl_ComBase {
 
 	CControlRotationJump	*m_rotation_jump;
 	CControlJump			*m_jump;
+	CControlRunAttack		*m_run_attack;
 
 public:
 					CControlManagerCustom	();
 					~CControlManagerCustom	();
 
 	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*);
-	virtual void	on_start_control		(ControlCom::EContolType type);
-	virtual void	on_stop_control			(ControlCom::EContolType type);
+	virtual void	on_start_control		(ControlCom::EControlType type);
+	virtual void	on_stop_control			(ControlCom::EControlType type);
 	virtual void	update_frame			();
 	virtual void	update_schedule			();
 
-			void	add_ability				(ControlCom::EContolType);
+			void	add_ability				(ControlCom::EControlType);
 
 	//-------------------------------------------------------------------------------
 	// Sequencer
@@ -56,5 +59,6 @@ private:
 	void		check_attack_jump		();
 	void		check_jump_over_physics	();
 	void		check_rotation_jump		();
+	void		check_run_attack		();
 };
 

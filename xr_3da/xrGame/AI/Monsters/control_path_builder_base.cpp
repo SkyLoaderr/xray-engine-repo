@@ -60,7 +60,7 @@ void CControlPathBuilderBase::on_event(ControlCom::EEventType type, ControlCom::
 	}
 }
 
-void CControlPathBuilderBase::on_start_control(ControlCom::EContolType type)
+void CControlPathBuilderBase::on_start_control(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlPath:	m_man->subscribe	(this, ControlCom::eventPathBuilt);	
@@ -69,7 +69,7 @@ void CControlPathBuilderBase::on_start_control(ControlCom::EContolType type)
 	}
 }
 
-void CControlPathBuilderBase::on_stop_control(ControlCom::EContolType type)
+void CControlPathBuilderBase::on_stop_control(ControlCom::EControlType type)
 {
 	switch (type) {
 	case ControlCom::eControlPath:	m_man->unsubscribe	(this, ControlCom::eventPathBuilt);	

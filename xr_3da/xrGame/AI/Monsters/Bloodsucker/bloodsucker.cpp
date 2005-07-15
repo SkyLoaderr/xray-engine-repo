@@ -26,6 +26,9 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	invisible_vel.set	(0.1f, 0.1f);
 
 	m_alien_control.init_external							(this);
+
+
+	com_man().add_ability(ControlCom::eControlRunAttack);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -134,6 +137,8 @@ void CAI_Bloodsucker::reinit()
 	com_man().ta_fill_data(anim_triple_vampire, "vampire_0", "vampire_1", "vampire_2", TA_EXECUTE_LOOPED, TA_DONT_SKIP_PREPARE, ControlCom::eCapturePath | ControlCom::eCaptureMovement);
 	
 	m_alien_control.reinit();
+	
+	state_invisible = CInvisibility::is_active();
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -369,7 +374,13 @@ void CAI_Bloodsucker::UpdateCamera()
 	m_alien_control.update_camera();
 }
 
+bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
+{
+	if (type == ControlCom::eControlRunAttack)
+		return (!state_invisible);
 
+	return true;
+}
 
 
 #ifdef DEBUG
