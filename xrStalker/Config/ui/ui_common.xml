@@ -153,4 +153,26 @@
     <texture id="ui_button_arrow_down_d" x="811" y="107" width="44" height="29" />
     <texture id="ui_menu_options_dlg" x="164" y="232" width="566" height="461" />
     <texture id="ui_options_tv" x="157" y="693" width="476" height="179" />
+    <texture id="ui_options_rust_02" x="157" y="872" width="180" height="63" />
+    <texture id="ui_options_rust_01" x="164" y="737" width="102" height="41" />
+    <texture id="ui_options_rust_03" x="165" y="786" width="80" height="44" />
+    <texture id="ui_options_rust_04" x="157" y="931" width="231" height="93" />
+    <texture id="ui_options_rust_05" x="336" y="864" width="157" height="67" />
+    <texture id="ui_options_rust_06" x="730" y="136" width="287" height="116" />
+    <texture id="ui_options_controls_frame_lb" x="302" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_b" x="316" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_rb" x="330" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_l" x="345" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_back" x="359" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_r" x="373" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_lt" x="388" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_t" x="402" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_frame_rt" x="416" y="215" width="14" height="14" />
+    <texture id="ui_options_controls_line" x="302" y="213" width="36" height="1" />
+    <texture id="ui_icon_dedicated" x="151" y="349" width="13" height="13" />
+    <texture id="ui_icon_password" x="151" y="363" width="13" height="13" />
+    <texture id="ui_icon_punkbuster" x="151" y="335" width="13" height="13" />
+    <texture id="ui_options_string_b" x="431" y="213" width="14" height="16" />
+    <texture id="ui_options_string_back" x="445" y="213" width="32" height="16" />
+    <texture id="ui_options_string_e" x="477" y="213" width="14" height="16" />
 </ui_texture>
