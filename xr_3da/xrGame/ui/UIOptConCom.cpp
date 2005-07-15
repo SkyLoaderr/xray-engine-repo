@@ -23,15 +23,15 @@ void CUIOptConCom::Init(){
 	CMD3(CCC_String,	"net_palyer_name",				m_playerName,	64);
 
 	// client
-	m_uNetFilters.assign(0xffffffff);
-	CMD3(CCC_Mask,	"net_connection_lan",				&m_uNetFilters,		flNetConnectionLan);
-	CMD3(CCC_Mask,	"net_filter_empty",					&m_uNetFilters,		flNetFilterEmpty);
-	CMD3(CCC_Mask,	"net_filter_full",					&m_uNetFilters,		flNetFilterFull);
-	CMD3(CCC_Mask,	"net_filter_with_password",			&m_uNetFilters,		flNetFilterWithPassword);
-	CMD3(CCC_Mask,	"net_filter_without_password",		&m_uNetFilters,		flNetFilterWithoutPassword);
-	CMD3(CCC_Mask,	"net_filter_without_friendlyfire",	&m_uNetFilters,		flNetFilterWithoutFriendlyFire);
-	CMD3(CCC_Mask,	"net_filter_without_punkbusier",	&m_uNetFilters,		flNetFilterWithoutPunkbusier);
-	CMD3(CCC_Mask,	"net_filter_listenservers",			&m_uNetFilters,		flNetFilterListenServers);
+//	m_uNetFilters.assign(0xffffffff);
+//	CMD3(CCC_Mask,	"net_connection_lan",				&m_uNetFilters,		flNetConnectionLan);
+//	CMD3(CCC_Mask,	"net_filter_empty",					&m_uNetFilters,		flNetFilterEmpty);
+//	CMD3(CCC_Mask,	"net_filter_full",					&m_uNetFilters,		flNetFilterFull);
+//	CMD3(CCC_Mask,	"net_filter_with_password",			&m_uNetFilters,		flNetFilterWithPassword);
+//	CMD3(CCC_Mask,	"net_filter_without_password",		&m_uNetFilters,		flNetFilterWithoutPassword);
+//	CMD3(CCC_Mask,	"net_filter_without_friendlyfire",	&m_uNetFilters,		flNetFilterWithoutFriendlyFire);
+//	CMD3(CCC_Mask,	"net_filter_without_punkbusier",	&m_uNetFilters,		flNetFilterWithoutPunkbusier);
+//	CMD3(CCC_Mask,	"net_filter_listenservers",			&m_uNetFilters,		flNetFilterListenServers);
 
 	// server
 	m_iMaxPlayers = 32;
@@ -66,7 +66,7 @@ void CUIOptConCom::Init(){
 	m_iNetArtefactDelay = 30;
 	CMD4(CCC_Integer,	"net_srv_artefactdelay",		&m_iNetArtefactDelay,	0, 100);
 	m_iNetAnomalyTime = 5;
-	CMD4(CCC_Integer,	"net_srv_anomalytime",			&m_iNetAnomalyTime,		0, 100);
+	CMD4(CCC_Integer,	"net_srv_anomalytime",			&m_iNetAnomalyTime,		1, 100);
 	m_iNetWeatherRate = 1;
 	CMD4(CCC_Integer,	"net_weather_rateofchange",		&m_iNetWeatherRate,		0, 100);
 	CMD4(CCC_Integer,	"net_respawn_cur",				&m_iNetRespawnCur,		0, 2);

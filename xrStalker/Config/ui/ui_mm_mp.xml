@@ -55,7 +55,9 @@
 			</separator>
 			<filter>
 				<text font="letterica16" r="215" g="195" b="170"/>
-			</filter>		
+			</filter>
+			<cap_server_properties x="0" y="0" width="1" height="30">
+			</cap_server_properties>		
 		</server_list>	
 	
 		<cap_network_connection x="6" y="12" width="500" height="23">
