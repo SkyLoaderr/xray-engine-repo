@@ -55,6 +55,9 @@
 	<info_portion id="gar_wounded_help"></info_portion>
 	<info_portion id="gar_wounded_fight"></info_portion>
 	
+	<!-- Атака псевдособак -->
+	<info_portion id="gar_dog_attack"></info_portion>
+	
 		
   <!-- Драм-момент -->
   <info_portion id="gar_dm_novice_asked_for_help"></info_portion>
