@@ -22,7 +22,7 @@ path_move    = val_stairs_heli_move
 path_look    = val_stairs_heli_look
 combat_enemy = nil
 on_info2     = {=heli_health_le(25) ~25} heli_move@die1, {=heli_health_le(25) ~50} heli_move@die2, {=heli_health_le(25) ~75} heli_move@die3, {=heli_health_le(25)} heli_move@die4
-on_signal    = arrived | heli_move@patrol1
+on_signal    = arrived | heli_move@patrol1 %+val_stairs_heli_arrived%
 
 [heli_move@patrol1]
 path_move         = val_monolith_heli_move

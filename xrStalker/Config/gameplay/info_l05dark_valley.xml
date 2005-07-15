@@ -93,6 +93,7 @@
 
 <!-- Лестница -->
 <info_portion id="val_stairs_start"></info_portion>
+<info_portion id="val_stairs_heli_arrived"></info_portion>
 
 <!-- Ворота -->
 <info_portion id="val_gate_start"></info_portion>
