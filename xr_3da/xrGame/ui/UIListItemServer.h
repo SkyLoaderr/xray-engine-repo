@@ -12,6 +12,12 @@ struct LIST_SRV_SIZES {
 	float ping;
 };
 
+struct SRV_ICONS{
+	bool pass;
+	bool dedicated;
+	bool punkbuster;
+};
+
 struct LIST_SRV_INFO{
 	shared_str server;
 	shared_str address;
@@ -19,6 +25,7 @@ struct LIST_SRV_INFO{
 	shared_str game;
 	shared_str players;
 	shared_str ping;
+	SRV_ICONS  icons;
 };
 
 struct LIST_SRV_ITEM {
@@ -49,7 +56,10 @@ protected:
 
 	LIST_SRV_ITEM m_srv_info;
 
-	CUIStatic m_icon;
+	CUIWindow m_icon;
+	CUIStatic m_iconPass;
+	CUIStatic m_iconDedicated;
+	CUIStatic m_iconPunkBuster;
 	CUIStatic m_server;
 	CUIStatic m_map;
 	CUIStatic m_game;

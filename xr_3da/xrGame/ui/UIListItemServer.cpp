@@ -1,9 +1,13 @@
 #include "StdAfx.h"
 
 #include "UIListItemServer.h"
+#include "UITextureMaster.h"
 
 CUIListItemServer::CUIListItemServer(){
 	AttachChild(&m_icon);
+	m_icon.AttachChild(&m_iconPass);
+	m_icon.AttachChild(&m_iconDedicated);
+	m_icon.AttachChild(&m_iconPunkBuster);
 	AttachChild(&m_server);
 	AttachChild(&m_map);
 	AttachChild(&m_game);
@@ -41,6 +45,24 @@ void CUIListItemServer::Init(LIST_SRV_ITEM& params, float x, float y, float widt
 	m_ping.Init(offset, 0, params.size.game, height);
 	m_ping.SetText(*params.info.ping);
 
+	float icon_size = CUITextureMaster::GetTextureHeight("ui_icon_password");
+	if (params.info.icons.pass)
+	{
+		m_iconPass.Init(0,0,icon_size,icon_size);
+		m_iconPass.InitTexture("ui_icon_password");
+	}
+	if (params.info.icons.dedicated)
+	{
+		m_iconDedicated.Init(icon_size,0,icon_size,icon_size);
+		m_iconDedicated.InitTexture("ui_icon_dedicated");
+	}
+	
+	if (params.info.icons.punkbuster)
+	{
+		m_iconPunkBuster.Init(icon_size*2,0,icon_size,icon_size);
+		m_iconPunkBuster.InitTexture("ui_icon_punkbuster");
+	}
+
 	m_srv_info = params;
 }
 
@@ -51,7 +73,7 @@ void CUIListItemServer::Draw(){
 
 
 void CUIListItemServer::SetTextColor(u32 color){
-	m_icon.SetTextColor(color);
+	//m_icon.SetTextColor(color);
 	m_server.SetTextColor(color);
 	m_map.SetTextColor(color);
 	m_game.SetTextColor(color);

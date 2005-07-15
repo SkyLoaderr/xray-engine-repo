@@ -190,6 +190,9 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 	m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
 	m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
 	m_itemInfo.info.ping.sprintf("%d", pServerInfo->m_Ping);
+	m_itemInfo.info.icons.pass	= pServerInfo->m_bPassword;
+	m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
+	m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
 
 	item->Init(m_itemInfo, 0, 0, w, h);
 	m_list.AddItem<CUIListItemServer>(item);
