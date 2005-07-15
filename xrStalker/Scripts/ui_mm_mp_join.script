@@ -39,31 +39,38 @@ function mp_join:InitControls(x, y, xml, handler)
 	local btn = xml:InitCheck("tab_client:check_empty", self.bk)
 	handler:Register(btn, "check_empty")
 	handler.filters.btn_check_empty = btn
+	btn:SetCheck(true)
 
 	btn = xml:InitCheck("tab_client:check_full", self.bk)
 	handler:Register(btn, "check_full")
 	handler.filters.btn_check_full = btn
+	btn:SetCheck(true)
 	
 	btn = xml:InitCheck("tab_client:check_with_pass", self.bk)
 	handler:Register(btn, "check_with_pass")
 	handler.filters.btn_check_with_pass = btn
+	btn:SetCheck(true)
 	
 	btn = xml:InitCheck("tab_client:check_without_pass", self.bk)
 	handler:Register(btn, "check_without_pass")
 	handler.filters.btn_check_without_pass = btn
+	btn:SetCheck(true)
 	
 	btn = xml:InitCheck("tab_client:check_without_ff", self.bk)
 	handler:Register(btn, "check_without_ff")
 	handler.filters.btn_check_without_ff = btn
+	btn:SetCheck(true)
 
 	btn = xml:InitCheck("tab_client:check_without_pb", self.bk)
 	btn:Enable(false)
 	handler:Register(btn, "check_without_pb")
 	handler.filters.btn_check_without_pb = btn
+	btn:SetCheck(true)
 	
 	btn = xml:InitCheck("tab_client:check_listen_servers", self.bk)
 	handler:Register(btn, "check_listen_servers")
 	handler.filters.btn_check_listen_servers = btn
+	btn:SetCheck(true)
 	
 	btn = xml:Init3tButton("tab_client:btn_refresh", self.bk)
 	handler:Register(btn, "btn_refresh")
