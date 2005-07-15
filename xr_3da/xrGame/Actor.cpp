@@ -1476,7 +1476,7 @@ float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 	{
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
 		if(artefact && artefact->m_bActorPropertiesEnabled)
-			hit_power *= artefact->m_ArtefactHitImmunities.AffectHit(hit_power, hit_type);
+			hit_power = artefact->m_ArtefactHitImmunities.AffectHit(hit_power, hit_type);
 	}
 
 	return hit_power;
