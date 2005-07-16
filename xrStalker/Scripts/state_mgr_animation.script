@@ -177,8 +177,19 @@ function animation:set_state(id, reset)
 		if self.mgr.emerg.animation_nout == true or
 		   self.mgr.emerg.animation == true
 		then
-			-- обнулить озвучку
-			stop_play_sound(self.npc)
+			-- обнулить озвучку (только если он задан в анимации)
+			if self.npc:active_sound_count() > 0 then
+				if self.mgr.subanim > 0 then
+					for key = self.mgr.subanim, 0 do
+						local a = self.animations[self.states.target_state].subanim[key]
+						if a and a.into_music then
+							stop_play_sound(self.npc)
+							break
+						end
+					end
+				end
+			end
+						
 			-- экстренный выход, необходимо дропнуть приатаченные предметы
 			if self.animations[self.states.target_state].out ~= nil then
 				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
