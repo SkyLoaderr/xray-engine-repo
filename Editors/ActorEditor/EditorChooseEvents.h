@@ -37,11 +37,11 @@ void __stdcall  CloseSoundSource()
 }
 void __stdcall  FillSoundSource(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (SndLib->GetSounds(lst)){
-	    FS_QueryPairIt  it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt  it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 //---------------------------------------------------------------------------
@@ -57,11 +57,11 @@ void __stdcall  FillSoundEnv(ChooseItemVec& items, void* param)
 //---------------------------------------------------------------------------
 void __stdcall  FillObject(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (Lib.GetObjects(lst)){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt	it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 void __stdcall  SelectObject(SChooseItem* item, PropItemVec& info_items)
@@ -79,11 +79,11 @@ void __stdcall  DrawObjectTHM(LPCSTR name, HDC hdc, const Irect& r)
 //---------------------------------------------------------------------------
 void __stdcall  FillGroup(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (FS.file_list(lst,_groups_,FS_ListFiles|FS_ClampExt,".group")){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt	it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 void __stdcall  SelectGroup(SChooseItem* item, PropItemVec& info_items)
@@ -105,11 +105,11 @@ void __stdcall  DrawGroupTHM(LPCSTR name, HDC hdc, const Irect& r)
 //---------------------------------------------------------------------------
 void __stdcall  FillVisual(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".ogf")){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt	it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 void __stdcall  SelectVisual(SChooseItem* item, PropItemVec& info_items)
@@ -133,11 +133,11 @@ void __stdcall  SelectVisual(SChooseItem* item, PropItemVec& info_items)
 //---------------------------------------------------------------------------
 void __stdcall  FillGameObjectMots(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".omf")){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt	it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 void __stdcall  SelectGameObjectMots(SChooseItem* item, PropItemVec& info_items)
@@ -146,11 +146,11 @@ void __stdcall  SelectGameObjectMots(SChooseItem* item, PropItemVec& info_items)
 //---------------------------------------------------------------------------
 void __stdcall  FillGameAnim(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (FS.file_list(lst,"$game_anims$",FS_ListFiles,".anm,*.anms")){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt	it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 //---------------------------------------------------------------------------
@@ -199,11 +199,11 @@ void __stdcall  FillParticles(ChooseItemVec& items, void* param)
 //---------------------------------------------------------------------------
 void __stdcall  FillTexture(ChooseItemVec& items, void* param)
 {
-    FS_QueryMap	lst;
+    FS_FileSet	lst;
     if (ImageLib.GetTextures(lst)){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+	    FS_FileSetIt	it			= lst.begin();
+    	FS_FileSetIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
     }
 }
 void __stdcall  SelectTexture(SChooseItem* item, PropItemVec& info_items)

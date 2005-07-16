@@ -118,14 +118,14 @@ void CActorTools::PreviewModel::Update()
 #include "EThumbnail.h"
 void _SynchronizeTextures()
 {   
-	FS_QueryMap M_THUM;
+	FS_FileSet M_THUM;
     FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
 
-    FS_QueryPairIt it	= M_THUM.begin();
-	FS_QueryPairIt _E 	= M_THUM.end();
+    FS_FileSetIt it		= M_THUM.begin();
+	FS_FileSetIt _E 	= M_THUM.end();
 	for (; it!=_E; it++){
 		ETextureThumbnail* THM=0;
-        THM = xr_new<ETextureThumbnail>(it->first.c_str());
+        THM = xr_new<ETextureThumbnail>(it->name.c_str());
         STextureParams& fmt = THM->_Format();
         if (fmt.material==STextureParams::tmOrenNayar_Blin){
         	fmt.material=STextureParams::tmBlin_Phong;
@@ -814,8 +814,11 @@ void CActorTools::MakeThumbnail()
         AnsiString tex_name,obj_name;
         tex_name = ChangeFileExt(obj->GetName(),".thm");
         obj_name = ChangeFileExt(obj->GetName(),".object");
-        const CLocatorAPI::file* F = FS.exist(_objects_,obj_name.c_str()); VERIFY(F);
-        if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,F->modif)){
+        FS_File 	F;
+        xr_string	fname;
+        FS.update_path(fname,_objects_,obj_name.c_str());
+        R_ASSERT	(FS.file_find(fname.c_str(),&F));
+        if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,F.time_write)){
             ELog.Msg(mtInformation,"Thumbnail successfully created.");
         }else{
             ELog.Msg(mtError,"Making thumbnail failed.");
