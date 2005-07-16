@@ -1444,22 +1444,6 @@ function load_states(gname, type)
 		end
 	end
 	
---	if type == "bar_roaming_dogs" then        
---		return function(gulag)
---			local t = db.zone_by_name["bar_roaming_dogs_territory"]
---			if t and db.actor then
---				if t:inside(db.actor:position()) then
---					return 1
---				end			
---			end
---			return 0
---		end
---	end
-	
-	
-	
-	
-	
 	if type == "gar_dolg_blokpost" then
 		return function(gulag)
 			if gulag.state ~= 1 then
