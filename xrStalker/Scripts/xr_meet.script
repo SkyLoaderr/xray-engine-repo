@@ -16,10 +16,10 @@ function evaluator_contact:evaluate()
 	if self.a.meet_set ~= true then return false end
 	
 	if db.actor and self.object:see(db.actor) then
+		self.a.meet_manager:update()
 		if xr_wounded.is_wounded(self.object) then
 			return false
 		end
-		self.a.meet_manager:update()
 		if self.mgr == nil then
 			self.mgr = self.object:motivation_action_manager()
 		end
