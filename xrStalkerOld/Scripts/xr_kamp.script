@@ -168,7 +168,7 @@ function CKampManager:selectPosition(npc_id)
 	--print_table(self.position)
 end
 function CKampManager:getDestVertex(npc_id)
-	printf("get dest Vertex called [%s]", npc_id)
+	--printf("get dest Vertex called [%s]", npc_id)
 	if self.npc[npc_id].position == nil then
 		abort("get dest Vertex: nil [%s]", npc_id)
 		return nil
@@ -177,14 +177,14 @@ function CKampManager:getDestVertex(npc_id)
 	local position = self.position[self.npc[npc_id].position]
 	
 	if position.vertex ~= nil then
-		printf("vertex preselected [%s]", npc_id)
+		--printf("vertex preselected [%s]", npc_id)
 		return position.vertex
 	end
 
 	-- высчитываем вертех по направлению
    	local pp = level.vertex_in_direction(self.center, self.position[self.npc[npc_id].position].dir, 2)
    	pp = level.vertex_in_direction(pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
-	printf("vertex selected [%s]", npc_id)   	
+	--printf("vertex selected [%s]", npc_id)   	
 	return pp		
 end
 function CKampManager:proceedRole(v)
@@ -202,6 +202,28 @@ function CKampManager:proceedRole(v)
 		self.kamp_state = "idle"
 	end
 
+	-- Возврат лагеря в состояние "idle" в случае истории
+	if v.current and 
+	   v.current.name == "story_post"
+	then
+		-- Здесь нужно все вернуть на story_play
+		if self.story_last < self.story_max -1 then
+			self.kamp_state = "story"
+			for q,w in v.roles do
+				if w.name == v.current.ifnotend then
+					v.current = w
+					v.begin = time_global()
+					v.idle = math.random(w.min,w.max)*1000
+					v.new = true
+					return			
+				end
+			end
+			return
+		else
+			self.kamp_state = "idle"
+		end
+	end
+	
 	-- Если у роли есть next, то выбираем ее.
 	if v.current and v.current.next then
 		for q,w in v.roles do
@@ -262,21 +284,21 @@ function CKampManager:updateNpc(npc)
 	npc_id = npc:id()
 	self.npc[npc_id].roles = {}
 	-- сидеть бездельничать
-	table.insert(self.npc[npc_id].roles, {name = "stand_wait",	min=30, max=70, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
-	table.insert(self.npc[npc_id].roles, {name = "sit",			min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
-	table.insert(self.npc[npc_id].roles, {name = "sit_ass",		min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
-	table.insert(self.npc[npc_id].roles, {name = "sit_knee",	min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+	table.insert(self.npc[npc_id].roles, {name = "stand_wait",	min=30, max=70, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
+	table.insert(self.npc[npc_id].roles, {name = "sit",			min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
+	table.insert(self.npc[npc_id].roles, {name = "sit_ass",		min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
+	table.insert(self.npc[npc_id].roles, {name = "sit_knee",	min=60, max=120, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
 	-- есть колбасу
 	if npc:object("kolbasa_a") then
-		table.insert(self.npc[npc_id].roles, {name = "eat_kolbasa",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+		table.insert(self.npc[npc_id].roles, {name = "eat_kolbasa",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
 	end
 	-- пить водку
 	if npc:object("vodka_a") then
-		table.insert(self.npc[npc_id].roles, {name = "eat_vodka",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+		table.insert(self.npc[npc_id].roles, {name = "eat_vodka",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
 	end
 	-- есть хлеб
 	if npc:object("bread_a") then
-		table.insert(self.npc[npc_id].roles, {name = "eat_bread",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke"}})
+		table.insert(self.npc[npc_id].roles, {name = "eat_bread",		min=20, max=40, allowed = {"idle","pre_harmonica","harmonica","post_harmonica","pre_guitar","guitar","post_guitar","pre_joke","joke","post_joke","pre_story","story","post_story"}})
 	end
 	-- играть на гармошке
 	if npc:object("harmonica_a") then
@@ -294,8 +316,11 @@ function CKampManager:updateNpc(npc)
 	table.insert(self.npc[npc_id].roles, {name = "joke_wait",	min=5, max=6, allowed = {"idle"}, next = "joke_play"})
 	table.insert(self.npc[npc_id].roles, {name = "joke_play",	min=10, max=11, nosound = true, next = "joke_post"})
 	table.insert(self.npc[npc_id].roles, {name = "joke_post",	min=5, max=6})
-	-- рассказать историю
 
+	-- рассказать историю
+	table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story={"story_01"}})
+	table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+	table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_01", ifnotend = "story_play"})
 
 	-- запоминаем проигрываемые персонажем звуки.
 	self.npc[npc_id].speak = npc:active_sound_count()
@@ -330,6 +355,20 @@ function CKampManager:updateNpc(npc)
 	elseif self.kamp_state == "post_joke" then
 		if role ~= "joke_post" then
 			sound = "reac_joke"
+		end
+	elseif self.kamp_state == "post_story" then
+		if role ~= "story_post" then
+			local dep = sound_theme.theme[npc:id()]["story_01"].depence[self.story_last]
+			if dep then
+				if dep.type == "all" then
+					if self.npc[npc_id].need_reac == true then
+						xr_sound.set_sound_play(npc, dep.theme)
+						self.npc[npc_id].need_reac = false
+					end
+				else
+					sound = dep.theme
+				end
+			end
 		end
 	end
 	
@@ -395,7 +434,7 @@ function CKampManager:updateNpc(npc)
 			xr_sound.set_sound_play(npc, "intro_joke", math.random(2000,3000))
 			self.npc[npc_id].new = false
 		end
-		return "sit_knee", ""
+		return self:getState(npc_id), ""
 	end
 	if role == "joke_play" then
 		self.kamp_state = "joke"
@@ -403,22 +442,56 @@ function CKampManager:updateNpc(npc)
 			xr_sound.set_sound_play(npc, "joke", math.random(2000,3000))
 			self.npc[npc_id].new = false
 		end
-		local t = math.mod(npc_id, 3)
-		if t == 0 then
-			return "sit", ""
-		elseif t == 1 then
-			return "sit_ass", ""
-		else
-			return "sit_knee", ""
-		end
+		return self:getState(npc_id), ""
 	end
 	if role == "joke_post" then
 		self.kamp_state = "post_joke"
-		return "sit_knee", ""
+		return self:getState(npc_id), ""
+	end
+	-- Сказки	
+	if role == "story_wait" then
+		self.kamp_state = "pre_story"
+		if self.npc[npc_id].new == true then
+			xr_sound.set_sound_play(npc, "story_01")
+			self.npc[npc_id].new = false			
+		end
+		return self:getState(npc_id), ""
+	end
+	if role == "story_play" then
+		self.kamp_state = "story"
+		if self.npc[npc_id].new == true then
+			xr_sound.set_sound_play(npc, "story_01")
+			self.npc[npc_id].new = false
+			self.story_last, self.story_max = xr_sound.get_last_IDS(npc, "story_01")
+		end
+		return self:getState(npc_id), ""
+	end
+	if role == "story_post" then
+		self.kamp_state = "post_story"
+		if self.npc[npc_id].new == true then
+			self.npc[npc_id].new = false
+			for k,v in self.npc do
+				v.need_reac = true
+			end
+			local dep = sound_theme.theme[npc:id()]["story_01"].depence[self.story_last]
+			if dep and dep.min and dep.max then
+				self.npc[npc_id].idle = math.random(dep.min, dep.max)*1000
+			end
+		end
+		return self:getState(npc_id), sound
 	end
 	
-	
 	abort("KAMP No role selected")
+end
+function CKampManager:getState(npc_id)
+	local t = math.mod(npc_id, 3)
+	if t == 0 then
+		return "sit"
+	elseif t == 1 then
+		return "sit_ass"
+	else
+		return "sit_knee"
+	end
 end
 function CKampManager:addNpc(npc)
 	self.npc[npc:id()] = {name = npc:name(), position = nil, roles = {}, current = nil, speak = 0}

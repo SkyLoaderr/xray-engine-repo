@@ -212,6 +212,18 @@ function load_sound(obj)
 	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")
 	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
 
+	-- »ÒÚÓËË
+	theme[obj:id()]["story_01"]						= load_sound_from_ltx(obj, "story_01")
+	theme[obj:id()]["story_01"].depence = {	[2] = {theme = "story_reac_wonder", min = 1, max = 1},
+											[3] = {theme = "story_reac_continue", min = 2, max = 3},
+											[5] = {theme = "story_reac_laught", type = "all"}}
+
+
+	theme[obj:id()]["story_reac_wonder"]			= load_sound_from_ltx(obj, "story_reac_wonder", 1, 1, 100)
+	theme[obj:id()]["story_reac_continue"]			= load_sound_from_ltx(obj, "story_reac_continue", 1, 1, 100)
+	theme[obj:id()]["story_reac_laught"]			= load_sound_from_ltx(obj, "story_reac_laught", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelieve"]		= load_sound_from_ltx(obj, "story_reac_disbelieve", 1, 1, 100)
+
 	-- ”Õ» ¿À‹Õ€≈ “≈Ã€
 	-- Garbage DramMoment
 	theme[obj:id()]["gar_dm_bandit_backoff1"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff1", 5, 8, 100)

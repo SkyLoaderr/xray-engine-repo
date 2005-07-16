@@ -221,6 +221,17 @@ function play_sound(npc, themes, timeout)
 	end			
 end
 
+function get_last_IDS(npc, theme)
+	local last_table = db.sound[npc:id()].last_snd
+	local snd_table = {}
+	if sound_theme.theme[npc:id()][theme] ~= nil then
+		get_sound(sound_theme.theme[npc:id()][theme], snd_table, npc)
+	end	
+	printf("LAST INTO ID for [%s] = [%s], max [%s]", theme, last_table[snd_table.into_id], snd_table.into_max)
+	return last_table[snd_table.into_id], snd_table.into_max
+end
+
+
 function load_sound(npc)
 	sound_theme.load_sound(npc)
 end
