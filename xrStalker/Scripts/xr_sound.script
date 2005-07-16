@@ -89,7 +89,6 @@ function set_sound(npc, sound, now)
 		end
 		if now == true then
 			stop_play_sound(npc)
-			-- если айдл в group_idle установлен текущем НПС, то необходимо его обнулить.
 		end
 	end
 end
