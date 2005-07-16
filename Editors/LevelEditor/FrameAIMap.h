@@ -49,6 +49,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn5;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ExtBtn6;
+	TExtBtn *ebGenerateSelected;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebGenerateMapClick(TObject *Sender);
@@ -58,6 +59,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSmoothNodesClick(TObject *Sender);
 	void __fastcall ebSelLinkClick(TObject *Sender);
 	void __fastcall ExtBtn6Click(TObject *Sender);
+	void __fastcall ebGenerateSelectedClick(TObject *Sender);
 private:	// User declarations
 	ESceneAIMapTools* tools;               
 public:		// User declarations

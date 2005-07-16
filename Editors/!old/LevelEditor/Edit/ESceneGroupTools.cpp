@@ -28,15 +28,21 @@ void ESceneGroupTools::UngroupObjects(bool bUndo)
 {
     ObjectList lst 	= m_Objects;
     if (!lst.empty()){
+    	bool bModif	= false;
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
         	if ((*it)->Selected()){
             	CGroupObject* obj 	= dynamic_cast<CGroupObject*>(*it); VERIFY(obj);
-                Scene->RemoveObject	(obj,false);
-                obj->UngroupObjects	();
-                xr_delete			(obj);
+                if (obj->CanUngroup(true)){
+                    Scene->RemoveObject	(obj,false);
+                    obj->UngroupObjects	();
+                    xr_delete			(obj);
+                    bModif				= true;
+                }else{
+                	ELog.DlgMsg			(mtError,"Can't ungroup object: '%s'.",obj->Name);
+                }
             }
         }
-	    if (bUndo) Scene->UndoSave();
+	    if (bUndo&&bModif) Scene->UndoSave();
     }
 }
 //----------------------------------------------------
@@ -64,11 +70,19 @@ void ESceneGroupTools::OpenGroups(bool bUndo)
 {
     ObjectList lst 	= m_Objects;
     if (!lst.empty()){
+    	bool bModif	= false;
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-        	if ((*it)->Selected())
-                ((CGroupObject*)(*it))->OpenGroup();
+        	if ((*it)->Selected()){
+            	CGroupObject* obj 	= dynamic_cast<CGroupObject*>(*it); VERIFY(obj);
+                if (obj->CanUngroup(true)){
+                    obj->OpenGroup	();
+                    bModif			= true;
+                }else{
+                    ELog.DlgMsg		(mtError,"Can't open group: '%s'.",obj->Name);    
+                }
+            }
         }
-	    if (bUndo) Scene->UndoSave();
+	    if (bUndo&&bModif) Scene->UndoSave();
     }
 }
 //----------------------------------------------------

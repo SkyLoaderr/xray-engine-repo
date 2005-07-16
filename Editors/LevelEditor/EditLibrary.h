@@ -81,7 +81,7 @@ private:	// User declarations
     EObjectThumbnail* 		m_Thm;
 	static TfrmEditLibrary*	form;
     CSceneObject* 			m_pEditObject;
-    static FS_QueryMap		modif_map;
+    static FS_FileSet		modif_map;
     static bool 			bFinalExit;
     static bool 			bExitResult;
     TfrmPropertiesEObject*  m_Props;

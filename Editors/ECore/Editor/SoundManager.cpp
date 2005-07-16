@@ -20,7 +20,7 @@ xr_string CSoundManager::UpdateFileName(xr_string& fn)
 //------------------------------------------------------------------------------
 // возвращает список всех звуков
 //------------------------------------------------------------------------------
-int CSoundManager::GetSounds(FS_QueryMap& files, BOOL bFolders)
+int CSoundManager::GetSounds(FS_FileSet& files, BOOL bFolders)
 {
     return FS.file_list(files,_sounds_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,".wav");
 }
@@ -95,14 +95,13 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
 		return TRUE;
     }else if (TYPE_OBJECT==type){
         xr_string src_name;
-        FS.update_path			(src_name,_sounds_,fname);
-        src_name				= EFS.ChangeFileExt(src_name,".wav");
-        if (FS.exist(src_name.c_str())){
+        src_name				= EFS.ChangeFileExt(fname,".wav");
+        if (FS.exist(_sounds_,src_name.c_str())){
             xr_string thm_name = EFS.ChangeFileExt(fname,".thm");
             xr_string game_name= EFS.ChangeFileExt(fname,".ogg");
             // source
-            EFS.BackupFile		(_sounds_,fname);
-            FS.file_delete		(src_name.c_str());
+            EFS.BackupFile		(_sounds_,src_name.c_str());
+            FS.file_delete		(_sounds_,src_name.c_str());
             EFS.WriteAccessLog	(src_name.c_str(),"Remove");
             // thumbnail
             EFS.BackupFile		(_sounds_,thm_name.c_str());
@@ -119,7 +118,7 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
 //------------------------------------------------------------------------------
 // возвращает список новых звуков
 //------------------------------------------------------------------------------
-int CSoundManager::GetLocalNewSounds(FS_QueryMap& files)
+int CSoundManager::GetLocalNewSounds(FS_FileSet& files)
 {
     return FS.file_list	(files,_import_,FS_ListFiles|FS_RootOnly|FS_ClampExt,".wav");
 }
@@ -129,15 +128,15 @@ int CSoundManager::GetLocalNewSounds(FS_QueryMap& files)
 // files - список файлов для копирование
 //------------------------------------------------------------------------------
 /*
-void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
+void CSoundManager::SafeCopyLocalToServer(FS_FileSet& files)
 {
     xr_string p_import,p_sounds;
     xr_string src_name,dest_name;
     FS.update_path	  	(p_import,_import_,"");
     FS.update_path	  	(p_sounds,_sounds_,"");
 
-    FS_QueryPairIt it	= files.begin();
-	FS_QueryPairIt _E 	= files.end();
+    FS_FileSetIt it	= files.begin();
+	FS_FileSetIt _E 	= files.end();
 	for (; it!=_E; it++){
         // copy thm
 		xr_string fn 	= EFS.ChangeFileExt(it->first,".thm");
@@ -202,11 +201,11 @@ void CSoundManager::MakeGameSound(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR 
 // source_list - содержит список текстур с расширениями
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
-void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_list, AStringVec* sync_list, FS_QueryMap* modif_map)
+void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForceGame, FS_FileSet* source_list, AStringVec* sync_list, FS_FileSet* modif_map)
 {        
-	FS_QueryMap M_BASE;
-	FS_QueryMap M_THUM;
-    FS_QueryMap M_GAME;
+	FS_FileSet M_BASE;
+	FS_FileSet M_THUM;
+    FS_FileSet M_GAME;
 
     if (source_list) M_BASE = *source_list;
     else FS.file_list(M_BASE,_sounds_,FS_ListFiles|FS_ClampExt,".wav");
@@ -217,25 +216,25 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     bool bProgress = M_BASE.size()>1;
 
     // lock rescanning
-    FS.lock_rescan	();
+//..    FS.lock_rescan	();
     
     int m_age					= time(NULL);
     
     SPBItem* pb = 0;
     if (bProgress) pb = UI->ProgressStart(M_BASE.size(),"Synchronize sounds...");
-    FS_QueryPairIt it=M_BASE.begin();
-	FS_QueryPairIt _E = M_BASE.end();
+    FS_FileSetIt it=M_BASE.begin();
+	FS_FileSetIt _E = M_BASE.end();
 	for (; it!=_E; it++){
 	    BOOL bUpdated = FALSE;
-        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        xr_string 			fn;
+        xr_string base_name		= EFS.ChangeFileExt(it->name,""); xr_strlwr(base_name);
+        xr_string 				fn;
         FS.update_path			(fn,_sounds_,EFS.ChangeFileExt(base_name,".wav").c_str());
     	if (!FS.exist(fn.c_str())) continue;
 
-		FS_QueryPairIt th 		= M_THUM.find(base_name);
-    	bool bThm 				= ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
-  		FS_QueryPairIt gm 		= M_GAME.find(base_name);
-    	bool bGame				= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
+		FS_FileSetIt th 		= M_THUM.find(base_name);
+    	bool bThm 				= ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->time_write!=it->time_write)));
+  		FS_FileSetIt gm 		= M_GAME.find(base_name);
+    	bool bGame				= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->time_write!=it->time_write)));
 
 		ESoundThumbnail* THM	= 0;
 
@@ -246,13 +245,13 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         }
     	// check thumbnail
     	if (sync_thm&&bThm){
-        	THM 				= xr_new<ESoundThumbnail>(it->first.c_str());
+        	THM 				= xr_new<ESoundThumbnail>(it->name.c_str());
             THM->Save			(m_age);
             bUpdated 			= TRUE;
         }
         // check game sounds
     	if (bForceGame||(sync_game&&bGame)){
-        	if (!THM) THM 			= xr_new<ESoundThumbnail>(it->first.c_str()); 
+        	if (!THM) THM 			= xr_new<ESoundThumbnail>(it->name.c_str()); 
             R_ASSERT(THM);
             xr_string src_name	= base_name+".wav";
             FS.update_path			(src_name,_sounds_,src_name.c_str());
@@ -280,42 +279,42 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     }
     if (bProgress) UI->ProgressEnd(pb);
     // lock rescanning
-    FS.unlock_rescan	();
+//..    FS.unlock_rescan	();
 }
 
 void CSoundManager::CleanupSounds()
 {
-	FS_QueryMap 	M_BASE;
-	FS_QueryMap 	M_THUM;
-    FS_QueryMap 	M_GAME;
-    FS_QueryMap 	M_GAME_DEL;
-    FS_QueryMap 	M_THM_DEL;
+	FS_FileSet 	M_BASE;
+	FS_FileSet 	M_THUM;
+    FS_FileSet 	M_GAME;
+    FS_FileSet 	M_GAME_DEL;
+    FS_FileSet 	M_THM_DEL;
 
     FS.file_list	(M_BASE,_sounds_,		FS_ListFiles|FS_ClampExt,".wav");
     FS.file_list	(M_THUM,_sounds_,		FS_ListFiles|FS_ClampExt,".thm");
     FS.file_list	(M_GAME,_game_sounds_,	FS_ListFiles|FS_ClampExt,".ogg");
 
     // lock rescanning
-    FS.lock_rescan	();
+//..    FS.lock_rescan	();
     
-    FS_QueryPairIt it;
-	FS_QueryPairIt _E;
+    FS_FileSetIt it;
+	FS_FileSetIt _E;
     // check source exist
     it	= M_GAME.begin();
 	_E 	= M_GAME.end();
 	for (; it!=_E; it++){
-        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-		FS_QueryPairIt bs 		= M_BASE.find(base_name);
+        xr_string base_name	= EFS.ChangeFileExt(it->name,""); xr_strlwr(base_name);
+		FS_FileSetIt bs 		= M_BASE.find(base_name);
     	if (bs==M_BASE.end())
-        	M_GAME_DEL.insert	(mk_pair(it->first,it->second));
+        	M_GAME_DEL.insert	(*it);
     }
     it	= M_THUM.begin();
 	_E 	= M_THUM.end();
 	for (; it!=_E; it++){
-        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-		FS_QueryPairIt bs 		= M_BASE.find(base_name);
+        xr_string base_name	= EFS.ChangeFileExt(it->name,""); xr_strlwr(base_name);
+		FS_FileSetIt bs 		= M_BASE.find(base_name);
     	if (bs==M_BASE.end())
-        	M_THM_DEL.insert	(mk_pair(it->first,it->second));
+        	M_THM_DEL.insert	(*it);
     }
 
     SPBItem* pb = UI->ProgressStart(M_GAME_DEL.size()+M_THM_DEL.size(),"Cleanup sounds...");
@@ -323,7 +322,7 @@ void CSoundManager::CleanupSounds()
     it	= M_GAME_DEL.begin();
 	_E 	= M_GAME_DEL.end();
 	for (; it!=_E; it++){
-        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string base_name	= EFS.ChangeFileExt(it->name,""); xr_strlwr(base_name);
         xr_string 			fn;
         FS.update_path			(fn,_game_sounds_,EFS.ChangeFileExt(base_name,".ogg").c_str());
         EFS.MarkFile			(fn.c_str(),true);
@@ -333,7 +332,7 @@ void CSoundManager::CleanupSounds()
     it	= M_THM_DEL.begin();
 	_E 	= M_THM_DEL.end();
 	for (; it!=_E; it++){
-        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string base_name	= EFS.ChangeFileExt(it->name,""); xr_strlwr(base_name);
         xr_string 			fn;
         FS.update_path			(fn,_sounds_,EFS.ChangeFileExt(base_name,".thm").c_str());
         EFS.MarkFile			(fn.c_str(),true);
@@ -341,22 +340,22 @@ void CSoundManager::CleanupSounds()
     }
     UI->ProgressEnd				(pb);
     // unlock rescanning
-    FS.unlock_rescan			();
+//..    FS.unlock_rescan			();
 }
 
 /*
-void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
+void CSoundManager::ChangeFileAgeTo(FS_FileSet* tgt_map, int age)
 {
 	VERIFY(tgt_map);
-	FS_QueryMap* 	M_BASE 		= tgt_map;
+	FS_FileSet* 	M_BASE 		= tgt_map;
     
     // lock rescanning
     FS.lock_rescan	();
     // change
 	SPBItem* pb=0;
     if (M_BASE->size()>1) pb	= UI->ProgressStart(M_BASE->size(),"Change sounds age...");
-    FS_QueryPairIt it			= M_BASE->begin();
-	FS_QueryPairIt _E 			= M_BASE->end();
+    FS_FileSetIt it			= M_BASE->begin();
+	FS_FileSetIt _E 			= M_BASE->end();
 	for (; it!=_E; it++){
         xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
         xr_string	wav_fn,thm_fn,ogg_fn;

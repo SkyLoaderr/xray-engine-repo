@@ -82,8 +82,8 @@ private:	// User declarations
 	void __fastcall 	RegisterModifiedTHM	();
     
     void 				OnModified			();
-    static FS_QueryMap	texture_map;
-    static FS_QueryMap	modif_map;
+    static FS_FileSet	texture_map;
+    static FS_FileSet	modif_map;
     bool 				bImportMode;
     bool 				bReadonlyMode;
     void __fastcall 	UpdateLib			();

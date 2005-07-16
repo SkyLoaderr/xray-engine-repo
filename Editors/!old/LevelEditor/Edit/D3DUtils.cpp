@@ -119,10 +119,10 @@ void CDrawUtilities::OnDeviceCreate()
     m_WireBox.CreateFromData		(D3DPT_LINELIST,	DU_BOX_NUMLINES,		D3DFVF_XYZ,du_box_vertices,			DU_BOX_NUMVERTEX,			du_box_lines,			DU_BOX_NUMLINES*2);
 	m_WireCone.CreateFromData		(D3DPT_LINELIST,	DU_CONE_NUMLINES,		D3DFVF_XYZ,du_cone_vertices,		DU_CONE_NUMVERTEX,			du_cone_lines,			DU_CONE_NUMLINES*2);
 	m_WireSphere.CreateFromData		(D3DPT_LINELIST,	DU_SPHERE_NUMLINES,		D3DFVF_XYZ,du_sphere_verticesl,		DU_SPHERE_NUMVERTEXL,		du_sphere_lines,		DU_SPHERE_NUMLINES*2);
-	m_WireSpherePart.CreateFromData	(D3DPT_LINELIST,	DU_SPHERE_PART_NUMLINES,D3DFVF_XYZ,du_sphere_part_vertices,	DU_SPHERE_PART_NUMVERTEX,	du_sphere_part_lines,	DU_SPHERE_PART_NUMLINES*3);
+	m_WireSpherePart.CreateFromData	(D3DPT_LINELIST,	DU_SPHERE_PART_NUMLINES,D3DFVF_XYZ,du_sphere_part_vertices,	DU_SPHERE_PART_NUMVERTEX,	du_sphere_part_lines,	DU_SPHERE_PART_NUMLINES*2);
     m_WireCylinder.CreateFromData	(D3DPT_LINELIST,	DU_CYLINDER_NUMLINES,	D3DFVF_XYZ,du_cylinder_vertices,	DU_CYLINDER_NUMVERTEX,		du_cylinder_lines,		DU_CYLINDER_NUMLINES*2);
 
-	for(int i=0;i<LINE_DIVISION;i++){
+	for(int i=0;i<LINE_DIVISION;i++){                                
 		float angle = M_PI * 2.f * (i / (float)LINE_DIVISION);
         float _sa=_sin(angle), _ca=_cos(angle);
 		circledef1[i].x = _ca;

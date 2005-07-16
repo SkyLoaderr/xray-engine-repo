@@ -52,6 +52,7 @@ class EScene
 //	,public pureDeviceCreate,
 //	public pureDeviceDestroy
 {
+    CMemoryWriter 	m_SaveCache;
 public:
 	typedef	FixedMAP<float,CCustomObject*>	mapObject_D;
 	typedef mapObject_D::TNode	 	    	mapObject_Node;
@@ -65,9 +66,7 @@ protected:
     // version control 
     xrGUID			m_GUID;
     shared_str		m_OwnerName;
-    shared_str		m_ModifName;
     time_t			m_CreateTime;
-    time_t			m_ModifTime;
 
     // 
 	int m_LastAvailObject;
@@ -104,16 +103,28 @@ public:
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 
+    xr_string		LevelPartName		(LPCSTR full_name, ObjClassID cls);
+    xr_string		LevelPartName		(LPCSTR initial, LPCSTR map_name, ObjClassID cls);
+    xr_string		LevelPartPath		(LPCSTR full_name);
+    xr_string		LevelPartPath		(LPCSTR initial, LPCSTR map_name);
+    
     BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR full_name);
-    BOOL			LoadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls);
+    BOOL			LoadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bLock);
+    BOOL		 	UnloadLevelPart		(ESceneCustomMTools* M, LPCSTR full_name);
+    BOOL			UnloadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bUnlock);
+                                              
+    void			LockLevel			(LPCSTR initial, LPCSTR map_name);
+    void			UnlockLevel			(LPCSTR initial, LPCSTR map_name);
 public:
 	bool			ExportGame			(SExportStreams* F);
 	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);
 	void 			SaveSelection		(ObjClassID classfilter, LPCSTR initial, LPCSTR fname);
-	void 			Unload				();
-	void 			Clear				();
+    void			BackupLevel			(LPCSTR initial, LPCSTR map_name);
+	void 			Unload				(BOOL bEditableToolsOnly);
+	void 			Clear				(BOOL bEditableToolsOnly);    
+    void			Reset				();
 	void 			LoadCompilerError	(LPCSTR fn);
     void			SaveCompilerError	(LPCSTR fn);
     void			HighlightTexture	(LPCSTR t_name, bool allow_ratio, u32 t_width, u32 t_height, bool leave_previous);
@@ -242,6 +253,8 @@ public:
 
     xr_string		LevelPath		();
     shared_str 		LevelPrefix		(){return m_LevelOp.m_LevelPrefix; }
+
+	void 			FillProp		(LPCSTR pref, PropItemVec& items, ObjClassID cls_id);
 };
 
 //----------------------------------------------------

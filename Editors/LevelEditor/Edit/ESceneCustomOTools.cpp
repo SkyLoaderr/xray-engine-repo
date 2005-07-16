@@ -30,7 +30,7 @@ ObjectList*	ESceneCustomOTools::GetSnapList()
 
 BOOL ESceneCustomOTools::_AppendObject(CCustomObject* object)
 {
-	m_Objects.push_back(object);
+    m_Objects.push_back(object);
     object->ParentTools = this;
     return TRUE;
 }
@@ -45,6 +45,7 @@ BOOL ESceneCustomOTools::_RemoveObject(CCustomObject* object)
 
 void ESceneCustomOTools::Clear(bool bInternal)
 {
+	inherited::Clear	();
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	xr_delete(*it);
     m_Objects.clear();

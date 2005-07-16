@@ -443,7 +443,7 @@ int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
     return oldcount-m_Nodes.size();
 }
 
-void ESceneAIMapTools::BuildNodes()
+void ESceneAIMapTools::BuildNodes(bool bFromSelectedOnly)
 {
 	// begin
 	m_Nodes.reserve	(1024*1024);
@@ -461,6 +461,7 @@ void ESceneAIMapTools::BuildNodes()
     // General cycle
     for (int k=0; k<(int)m_Nodes.size(); k++){
         SAINode* N 			= m_Nodes[k];
+    	if (bFromSelectedOnly && !N->flags.is(SAINode::flSelected)) continue;
         // left 
         if (0==N->n1){
             Pos.set			(N->Pos);
@@ -485,6 +486,14 @@ void ESceneAIMapTools::BuildNodes()
             Pos.z			-=	m_Params.fPatchSize;
             N->n4			=	BuildNode(N->Pos,Pos,false);
         }
+    	if (bFromSelectedOnly){
+	        // select neighbour nodes
+            if (N->n1) N->n1->flags.set(SAINode::flSelected,TRUE);
+            if (N->n2) N->n2->flags.set(SAINode::flSelected,TRUE);
+            if (N->n3) N->n3->flags.set(SAINode::flSelected,TRUE);
+            if (N->n4) N->n4->flags.set(SAINode::flSelected,TRUE);
+        }
+        
         if (k%512==0) {
             float	p1	= float(k)/float(m_Nodes.size());
             float	p2	= float(m_Nodes.size())/estimated_nodes;
@@ -554,7 +563,7 @@ void ESceneAIMapTools::UpdateLinks(SAINode* N, bool bIC)
     }
 }
 
-bool ESceneAIMapTools::GenerateMap()
+bool ESceneAIMapTools::GenerateMap(bool bFromSelectedOnly)
 {
 	bool bRes = false;
 	if (!GetSnapList()->empty()){
@@ -563,8 +572,6 @@ bool ESceneAIMapTools::GenerateMap()
 			ELog.DlgMsg(mtError,"Append at least one node.");
             return false;
         }
-        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Continue generate nodes?"))
-        	return false;
 
         // prepare collision model
         u32 avg_face_cnt = 0;
@@ -620,7 +627,7 @@ bool ESceneAIMapTools::GenerateMap()
         Scene->lock			();
 CTimer tm;
 tm.Start();
-        BuildNodes			();
+        BuildNodes			(bFromSelectedOnly);
 tm.Stop();
         Scene->unlock		();
 //.        Log("-test time: ",	g_tm.GetElapsed_sec());

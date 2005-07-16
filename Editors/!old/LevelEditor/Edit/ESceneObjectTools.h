@@ -35,6 +35,8 @@ public:
 public:
 						ESceneObjectTools		();
 
+	virtual	bool		AllowEnabling    		(){return false;}
+
     virtual bool		Validate				();
 
 	virtual void		OnFrame					();

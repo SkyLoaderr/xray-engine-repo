@@ -186,7 +186,7 @@ void __fastcall TfraObject::ExtBtn4Click(TObject *Sender)
 {
     if (TfrmChoseItem::SelectItem(smObject,m_Current,1,m_Current)){
     	m_Items->SelectItem	(m_Current,true,false,true);
-        RefreshList			();
+//..		RefreshList			();
     }
 }
 //---------------------------------------------------------------------------
@@ -200,14 +200,13 @@ void __fastcall TfraObject::paCurrentObjectResize(TObject *Sender)
 void TfraObject::RefreshList()
 {
     ListItemsVec items;
-    FS_QueryMap lst;
+    FS_FileSet lst;
     if (Lib.GetObjects(lst)){
-	    FS_QueryPairIt	it	= lst.begin();            
-    	FS_QueryPairIt	_E	= lst.end();
+	    FS_FileSetIt	it	= lst.begin();            
+    	FS_FileSetIt	_E	= lst.end();
 	    for (; it!=_E; it++){
             xr_string fn;
-            FS.update_path	(fn,_objects_,ChangeFileExt(it->first.c_str(),".thm").c_str());
-	    	ListItem* I=LHelper().CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
+	    	ListItem* I=LHelper().CreateItem(items,it->name.c_str(),0,ListItem::flDrawThumbnail,0);
             if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail.bind(this,&TfraObject::OnDrawObjectThumbnail);
         }
     }
@@ -220,7 +219,7 @@ void __fastcall TfraObject::FormShow(TObject *Sender)
     m_Items->LoadSelection	(fsStorage);
     m_Items->LoadParams		(fsStorage);
 
-    RefreshList				();
+//..RefreshList				();
 
     ebRandomAppendMode->Down= ParentTools->IsAppendRandomActive();
 }
@@ -237,6 +236,8 @@ void __fastcall TfraObject::FormCreate(TObject *Sender)
 {
     m_Items 				= TItemList::CreateForm("Objects", paItems, alClient, 0);
     m_Items->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&TfraObject::OnItemFocused));
+	// fill list
+    RefreshList				();
 }
 //---------------------------------------------------------------------------
 

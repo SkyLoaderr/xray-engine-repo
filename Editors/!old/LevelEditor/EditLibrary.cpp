@@ -41,7 +41,7 @@
 #pragma resource "*.dfm"
 
 TfrmEditLibrary* TfrmEditLibrary::form=0;
-FS_QueryMap TfrmEditLibrary::modif_map;
+FS_FileSet TfrmEditLibrary::modif_map;
 bool TfrmEditLibrary::bFinalExit = false;
 bool TfrmEditLibrary::bExitResult= true;
 
@@ -141,10 +141,10 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
     if (!bFinalExit&&ebSave->Enabled){
 	    bFinalExit = false;
         UI->SetStatus("Objects reloading...");
-        FS_QueryPairIt it=modif_map.begin();
-		FS_QueryPairIt _E=modif_map.end();
+        FS_FileSetIt it=modif_map.begin();
+		FS_FileSetIt _E=modif_map.end();
         for (;it!=_E;it++)
-        	Lib.ReloadObject(it->first.c_str());
+        	Lib.ReloadObject(it->name.c_str());
         UI->ResetStatus();
     }
 	Scene->unlock();
@@ -196,7 +196,7 @@ void TfrmEditLibrary::OnModified()
     form->ebSave->Enabled = true;
     CEditableObject* E=form->m_pEditObject->GetReference();
     if (E){
-    	modif_map.insert(mk_pair(E->GetName(),FS_QueryItem(0,0,0)));
+    	modif_map.insert(FS_File(E->GetName()));
     	E->Modified();
 		form->m_pEditObject->UpdateTransform();
     }
@@ -268,12 +268,12 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 void TfrmEditLibrary::InitObjects()
 {
 	ListItemsVec items;
-    FS_QueryMap lst;
+    FS_FileSet lst;
     Lib.GetObjects(lst);
-    FS_QueryPairIt it=lst.begin();
-    FS_QueryPairIt _E=lst.end();
+    FS_FileSetIt it=lst.begin();
+    FS_FileSetIt _E=lst.end();
     for(; it!=_E; it++)
-    	LHelper().CreateItem(items,it->first.c_str(),0,0,0);
+    	LHelper().CreateItem(items,it->name.c_str(),0,0,0);
     m_Items->AssignItems(items,false,true);
 }
 //---------------------------------------------------------------------------

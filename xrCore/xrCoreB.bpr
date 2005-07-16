@@ -12,14 +12,14 @@
       Intermediate\_compressed_normal.obj Intermediate\xrMemory_align.obj 
       Intermediate\LzHuf.obj Intermediate\log.obj Intermediate\FS.obj 
       Intermediate\xr_trims.obj Intermediate\Xr_ini.obj Intermediate\clsid.obj 
-      Intermediate\LocatorAPI.obj Intermediate\FileSystem_borland.obj 
-      Intermediate\FileSystem.obj Intermediate\xrMemory_subst_msvc.obj 
-      Intermediate\xrMemory_POOL.obj Intermediate\xrMemory_subst_borland.obj 
-      Intermediate\rt_lzo.obj Intermediate\rt_compressor.obj 
-      Intermediate\FTimer.obj Intermediate\xrstring.obj 
-      Intermediate\xrsharedmem.obj Intermediate\_std_extensions.obj 
-      Intermediate\crc32.obj Intermediate\LocatorAPI_Notifications.obj 
-      Intermediate\xrSyncronize.obj Intermediate\LocatorAPI_auth.obj"/>
+      Intermediate\FileSystem_borland.obj Intermediate\FileSystem.obj 
+      Intermediate\xrMemory_subst_msvc.obj Intermediate\xrMemory_POOL.obj 
+      Intermediate\xrMemory_subst_borland.obj Intermediate\rt_lzo.obj 
+      Intermediate\rt_compressor.obj Intermediate\FTimer.obj 
+      Intermediate\xrstring.obj Intermediate\xrsharedmem.obj 
+      Intermediate\_std_extensions.obj Intermediate\crc32.obj 
+      Intermediate\xrSyncronize.obj Intermediate\ELocatorAPI.obj 
+      Intermediate\LocatorAPI_defs.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -46,12 +46,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG 
+      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; 
       -I$(BCB)\include -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -I..\Tools\Etools -src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS 
-      -D_DEBUG -boa"/>
+      -I..\Tools\Etools -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -88,7 +88,6 @@
       <FILE FILENAME="xr_trims.cpp" FORMNAME="" UNITNAME="xr_trims.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Xr_ini.cpp" FORMNAME="" UNITNAME="Xr_ini.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LocatorAPI.cpp" FORMNAME="" UNITNAME="LocatorAPI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FileSystem_borland.cpp" FORMNAME="" UNITNAME="FileSystem_borland.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_subst_msvc.cpp" FORMNAME="" UNITNAME="xrMemory_subst_msvc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -132,7 +131,6 @@
       <FILE FILENAME="FS.h" FORMNAME="" UNITNAME="FS.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FS_internal.h" FORMNAME="" UNITNAME="FS_internal.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FTimer.h" FORMNAME="" UNITNAME="FTimer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LocatorAPI.h" FORMNAME="" UNITNAME="LocatorAPI.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="log.h" FORMNAME="" UNITNAME="log.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lzhuf.h" FORMNAME="" UNITNAME="lzhuf.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.h" FORMNAME="" UNITNAME="resource.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -159,10 +157,11 @@
       <FILE FILENAME="_std_extensions.cpp" FORMNAME="" UNITNAME="_std_extensions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="crc32.cpp" FORMNAME="" UNITNAME="crc32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="fastdelegate.h" FORMNAME="" UNITNAME="fastdelegate.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LocatorAPI_Notifications.cpp" FORMNAME="" UNITNAME="LocatorAPI_Notifications" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrSyncronize.cpp" FORMNAME="" UNITNAME="xrSyncronize" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="D3DX_Wrapper.h" FORMNAME="" UNITNAME="D3DX_Wrapper.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LocatorAPI_auth.cpp" FORMNAME="" UNITNAME="LocatorAPI_auth" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ELocatorAPI.cpp" FORMNAME="" UNITNAME="ELocatorAPI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LocatorAPI_defs.h" FORMNAME="" UNITNAME="LocatorAPI_defs.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LocatorAPI_defs.cpp" FORMNAME="" UNITNAME="LocatorAPI_defs" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

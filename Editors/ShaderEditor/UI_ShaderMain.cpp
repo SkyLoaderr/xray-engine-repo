@@ -18,11 +18,13 @@ CShaderMain*&	PUI=(CShaderMain*)UI;
 
 CShaderMain::CShaderMain()
 {
+    EPrefs			= xr_new<CCustomPreferences>();
 }
 //---------------------------------------------------------------------------
 
 CShaderMain::~CShaderMain()
 {
+    xr_delete		(EPrefs);
 }
 //---------------------------------------------------------------------------
 
@@ -172,7 +174,7 @@ void CShaderMain::OutGridSize()
 {
 	VERIFY(fraBottomBar);
     AnsiString s;
-    s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
+    s.sprintf("Grid: %1.1f",EPrefs->grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------

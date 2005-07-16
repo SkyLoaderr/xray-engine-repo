@@ -63,10 +63,10 @@ void EScene::RemoveSelection( ObjClassID classfilter )
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
-            if (_I->second)	_I->second->RemoveSelection();
+            if (_I->second&&_I->second->IsEditable())	_I->second->RemoveSelection();
     }else{
-        ESceneCustomMTools* mt = GetMTools(classfilter);
-        if (mt) 			mt->RemoveSelection();
+        ESceneCustomMTools* 		mt = GetMTools(classfilter);
+        if (mt&&mt->IsEditable()) 	mt->RemoveSelection();
     }
     UI->UpdateScene	(true);
 }
@@ -123,11 +123,11 @@ int EScene::LockObjects( bool flag, ObjClassID classfilter, bool bAllowSelection
         for (; _I!=_E; _I++)
             if (_I->second){
 		        ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
-                if (mt)		count+=mt->LockObjects(flag, bAllowSelectionFlag, bSelFlag);
+                if (mt)				count+=mt->LockObjects(flag, bAllowSelectionFlag, bSelFlag);
             }
     }else{
-        ESceneCustomOTools* mt = GetOTools(classfilter);
-        if (mt) 			count+=mt->LockObjects(flag, bAllowSelectionFlag, bSelFlag);
+        ESceneCustomOTools* mt 		= GetOTools(classfilter);
+        if (mt) 					count+=mt->LockObjects(flag, bAllowSelectionFlag, bSelFlag);
     }
     UI->RedrawScene();
 	return count;

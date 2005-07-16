@@ -18,8 +18,8 @@
 #pragma link "MXCtrls"
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
-FS_QueryMap	TfrmImageLib::texture_map;
-FS_QueryMap	TfrmImageLib::modif_map;
+FS_FileSet	TfrmImageLib::texture_map;
+FS_FileSet	TfrmImageLib::modif_map;
 bool TfrmImageLib::bFormLocked=false;
 Flags32 TfrmImageLib::m_Flags={0};
 //---------------------------------------------------------------------------
@@ -83,9 +83,10 @@ ETextureThumbnail* TfrmImageLib::FindUsedTHM(LPCSTR name)
 
 void TfrmImageLib::SaveUsedTHM()
 {
-	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
-    	if (modif_map.find((*t_it)->SrcName())!=modif_map.end()) 
+	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++){ 
+    	if (modif_map.find(FS_File((*t_it)->SrcName()))!=modif_map.end()) 
         	(*t_it)->Save(0,bImportMode?_import_:0);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -111,15 +112,17 @@ void __fastcall TfrmImageLib::UpdateLib()
         LockForm();
         ImageLib.SafeCopyLocalToServer(texture_map);
 		// rename with folder
-		FS_QueryMap	files=texture_map;
+		FS_FileSet	files=texture_map;
         texture_map.clear();
         xr_string fn;
-        FS_QueryPairIt it=files.begin();
-        FS_QueryPairIt _E=files.end();
+        FS_FileSetIt it=files.begin();
+        FS_FileSetIt _E=files.end();
         for (;it!=_E; it++){
-        	fn = EFS.ChangeFileExt(it->first.c_str(),"");
+        	fn = EFS.ChangeFileExt(it->name.c_str(),"");
         	ImageLib.UpdateFileName(fn);
-            texture_map.insert(mk_pair(fn.c_str(),FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
+            FS_File		F(*it);
+            F.name		= fn;
+            texture_map.insert(F);
         }
         // sync
 		ImageLib.SynchronizeTextures(true,true,true,&texture_map,&modif);
@@ -170,9 +173,9 @@ void TfrmImageLib::InitItemsList()
 	ListItemsVec items;
 
     // fill
-	FS_QueryPairIt it = texture_map.begin();
-	FS_QueryPairIt _E = texture_map.end();
-    for (; it!=_E; it++) LHelper().CreateItem(items,it->first.c_str(),0);
+	FS_FileSetIt it = texture_map.begin();
+	FS_FileSetIt _E = texture_map.end();
+    for (; it!=_E; it++) LHelper().CreateItem(items,it->name.c_str(),0);
     m_ItemList->AssignItems(items,false,true);
 }
 
@@ -216,8 +219,7 @@ void __fastcall TfrmImageLib::RegisterModifiedTHM()
 {
 	if (m_ItemProps->IsModified()||bImportMode){
 	    for (THMIt t_it=m_THM_Current.begin(); t_it!=m_THM_Current.end(); t_it++){
-            xr_string fn = (*t_it)->SrcName();
-            FS_QueryPairIt it=texture_map.find(fn); R_ASSERT(it!=texture_map.end());
+            FS_FileSetIt it	= texture_map.find(FS_File((*t_it)->SrcName())); R_ASSERT(it!=texture_map.end()); 
             modif_map.insert(*it);
         }
     }
@@ -256,14 +258,14 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *)
 
 	LockForm				();
 
-    FS_QueryPairIt it		= texture_map.begin();
-    FS_QueryPairIt _E		= texture_map.end();
+    FS_FileSetIt it		= texture_map.begin();
+    FS_FileSetIt _E		= texture_map.end();
 	SPBItem* pb = UI->ProgressStart(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
-        ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->first.c_str());
-	    pb->Inc				(it->first.c_str());
-        AnsiString base_name= ChangeFileExt(it->first.c_str(),"");
+        ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->name.c_str());
+	    pb->Inc				(it->name.c_str());
+        AnsiString base_name= ChangeFileExt(it->name.c_str(),"");
         ImageLib.WriteAssociation	(ini,base_name.c_str(),m_Thm->_Format());
         xr_delete			(m_Thm);
 		if (UI->NeedAbort()){ bRes=false; break; }
@@ -279,9 +281,9 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *)
 
 void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *)
 {
-    FS.lock_rescan();
+//..    FS.lock_rescan();
 	m_ItemList->RemoveSelItems(0);
-    FS.unlock_rescan();
+//..    FS.unlock_rescan();
 }
 //---------------------------------------------------------------------------
 

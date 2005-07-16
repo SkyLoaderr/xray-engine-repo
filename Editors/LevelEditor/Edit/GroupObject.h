@@ -24,6 +24,7 @@ public:
 					CGroupObject	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);
 	virtual 		~CGroupObject	();
+    bool			CanUngroup		(bool bMsg);
     void			GroupObjects	(ObjectList& lst);
     void			UngroupObjects	();
     void			OpenGroup		();

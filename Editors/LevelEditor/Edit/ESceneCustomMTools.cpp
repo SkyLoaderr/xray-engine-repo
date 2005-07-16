@@ -6,6 +6,8 @@
 #include "ui_levelmain.h"
 #include "scene.h"
 
+#define CHUNK_TOOLS_TAG	0x7777
+
 ESceneCustomMTools::ESceneCustomMTools(ObjClassID cls)
 {
     ClassID				= cls;
@@ -14,11 +16,25 @@ ESceneCustomMTools::ESceneCustomMTools(ObjClassID cls)
     pCurControl 		= 0;
     pFrame				= 0;
     action				= -1;
-    m_bEnabled			= TRUE;
+    m_EditFlags.assign	(flEnable);
+    m_ModifName			= "";
+    m_ModifTime			= 0;
 }
 
 ESceneCustomMTools::~ESceneCustomMTools()
 {
+}
+
+void ESceneCustomMTools::Clear(bool bSpecific)
+{
+    m_ModifName			= "";
+    m_ModifTime			= 0;
+}
+
+void ESceneCustomMTools::Reset()
+{
+	Clear				();
+    m_EditFlags.set		(flReadonly,FALSE);
 }
  
 void ESceneCustomMTools::OnCreate()
@@ -32,23 +48,26 @@ void ESceneCustomMTools::OnDestroy()
     RemoveControls		();
 }
 
-BOOL ESceneCustomMTools::Enable(BOOL val)
+bool ESceneCustomMTools::Load(IReader& F)
 {
-    m_bEnabled			= val;
-	if (val){
-    	BOOL bRes 		= ExecCommand(COMMAND_LOAD_LEVEL_PART,ClassID);
-        ExecCommand		(COMMAND_REFRESH_UI_BAR);
-        return			bRes;
+	if (F.find_chunk(CHUNK_TOOLS_TAG)){
+	    F.r_stringZ	(m_ModifName);
+    	F.r			(&m_ModifTime,sizeof(m_ModifTime));
     }else{
-        if (!Scene->IfModified()){
-        	m_bEnabled	= TRUE;
-            return		FALSE;
-        }else{
-			Clear		();
-		    ExecCommand	(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT);
-			ExecCommand	(COMMAND_REFRESH_UI_BAR);
-            return		TRUE;
-        }
+	    m_ModifName	= "";
+    	m_ModifTime	= 0;
     }
+    return true;
+}
+
+void ESceneCustomMTools::Save(IWriter& F)
+{
+    xr_string mn	= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
+    time_t mt		= time(NULL);
+    
+	F.open_chunk	(CHUNK_TOOLS_TAG);
+	F.w_stringZ		(mn);
+	F.w				(&mt,sizeof(mt));
+    F.close_chunk	();
 }
 

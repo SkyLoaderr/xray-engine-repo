@@ -114,7 +114,7 @@ public:
                     	desc		= xr_strdup(d);
                         if (!multi)	AppendSubCommand("",0,0);
                     }
-					~SECommand		(){xr_free(name);xr_free(desc);}
+					~SECommand		(){xr_free(name);xr_free(desc); for (ESubCommandVecIt it=sub_commands.begin(); it!=sub_commands.end(); it++) xr_delete(*it);}
     IC LPCSTR		Name			(){return name&&name[0]?name:"";}
 	IC LPCSTR		Desc			(){return desc&&desc[0]?desc:"";}
     void			AppendSubCommand(LPCSTR desc, CCommandVar p0, CCommandVar p1){sub_commands.push_back(xr_new<SESubCommand>(desc,this,p0,p1));}

@@ -90,54 +90,11 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
 	return dest;
 }
 
-BOOL OpenFileDialog()
-{
-	string512 szFileName={0};
-	char szFilter[] = "AAA (*.txt)\0*.txt\0BBB (*.*)\0*.*\0";
-	OPENFILENAME	ofn;
-
-	memset(&ofn,0,sizeof(OPENFILENAME));
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = GetForegroundWindow();
-	ofn.lpstrFilter = szFilter;
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFile = szFileName;
-	ofn.nMaxFile = 512;
-	ofn.lpstrTitle = "SSS";
-	ofn.lpstrDefExt = "sqf";
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-
-	bool bRes = GetOpenFileName(&ofn);
-    if (!bRes){
-        u32 err = CommDlgExtendedError();
-        switch(err){
-        case FNERR_BUFFERTOOSMALL: 	Log("Too many file selected."); break;
-        case CDERR_FINDRESFAILURE: 	Log("Too many file selected."); break;
-        case CDERR_NOHINSTANCE: 	Log("Too many file selected."); break;
-        case CDERR_INITIALIZATION	: 	Log("Too many file selected."); break;
-        case CDERR_NOHOOK: 	Log("Too many file selected."); break;
-        case CDERR_LOCKRESFAILURE	: 	Log("Too many file selected."); break;
-        case CDERR_NOTEMPLATE: 	Log("Too many file selected."); break;
-        case CDERR_LOADRESFAILURE	: 	Log("Too many file selected."); break;
-        case CDERR_STRUCTSIZE: 	Log("Too many file selected."); break;
-        case CDERR_LOADSTRFAILURE	: 	Log("Too many file selected."); break;
-        case CDERR_MEMALLOCFAILURE	: 	Log("Too many file selected."); break;
-        case FNERR_INVALIDFILENAME: 	Log("Too many file selected."); break;
-        case CDERR_MEMLOCKFAILURE	: 	Log("Too many file selected."); break;
-        case FNERR_SUBCLASSFAILURE: 	Log("Too many file selected."); break;
-        }
-    }
-	return bRes;
-}
-
-
 //------------------------------------------------------------------------------
 // start_flt_ext = -1-all 0..n-indices
 //------------------------------------------------------------------------------
 bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext )
 {
-	OpenFileDialog ();
-    
 	VERIFY(buffer&&(sz_buf>0));
 	FS_Path& P			= *FS.get_path(initial);
 	string1024 flt;
@@ -145,16 +102,15 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
 
 	OPENFILENAME ofn;
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
-    if (xr_strlen(buffer)){ buffer[0]=0;/*P._update(buffer,buffer); if (strext(buffer)) *strext(buffer)=0; */}
+    if (xr_strlen(buffer)){ P._update(buffer,buffer); if (strext(buffer)) *strext(buffer)=0; }
     ofn.lStructSize		= sizeof(OPENFILENAME);
 	ofn.hwndOwner 		= GetForegroundWindow();
-	ofn.lpstrDefExt 	= NULL;//P.m_DefExt;
+	ofn.lpstrDefExt 	= P.m_DefExt;
 	ofn.lpstrFile 		= buffer;
 	ofn.nMaxFile 		= sz_buf;
 	ofn.lpstrFilter 	= flt;
 	ofn.nFilterIndex 	= start_flt_ext+2;
     ofn.lpstrTitle      = "Open a File";
-
     string512 path; strcpy(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags =
@@ -163,6 +119,8 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
 		OFN_HIDEREADONLY|
 		OFN_FILEMUSTEXIST|
 		OFN_NOCHANGEDIR|(bMulti?OFN_ALLOWMULTISELECT|OFN_EXPLORER:0);
+    ofn.FlagsEx			= OFN_EX_NOPLACESBAR;
+    
 	bool bRes = !!GetOpenFileName( &ofn );
     if (!bRes){
 	    u32 err = CommDlgExtendedError();
@@ -177,7 +135,6 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
             string64  	dir;
             string4096 	fns;
             strcpy(dir, buffer);
-
             strcpy		(fns,dir);
             strcat		(fns,"\\");
             strcat		(fns,_GetItem(buffer,1,buf,0x0));
@@ -204,7 +161,7 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
     if (xr_strlen(buffer)){ P._update(buffer,buffer); if (strext(buffer)) *strext(buffer)=0; }
 	ofn.hwndOwner 		= GetForegroundWindow();
-	ofn.lpstrDefExt 	= NULL;//P.m_DefExt;
+	ofn.lpstrDefExt 	= P.m_DefExt;
 	ofn.lpstrFile 		= buffer;
 	ofn.lpstrFilter 	= flt;
 	ofn.lStructSize 	= sizeof(ofn);
@@ -214,6 +171,7 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
     string512 path; strcpy(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags 			= OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR;
+    ofn.FlagsEx			= OFN_EX_NOPLACESBAR;
 
 	bool bRes = !!GetSaveFileName( &ofn );
     if (!bRes){

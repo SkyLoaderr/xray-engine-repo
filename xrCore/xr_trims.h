@@ -34,9 +34,10 @@ XRCORE_API LPSTR 	    __stdcall	_ReplaceItems 			( LPCSTR src, int idx_start, in
 XRCORE_API void 	    __stdcall	_SequenceToList			( LPSTRVec& lst, LPCSTR in, char separator=',' );
 XRCORE_API void 		__stdcall	_SequenceToList			( RStringVec& lst, LPCSTR in, char separator=',' );
 
-XRCORE_API xr_string& __stdcall	_Trim					( xr_string& src );
-XRCORE_API xr_string& __stdcall	_TrimLeft				( xr_string& src );
-XRCORE_API xr_string& __stdcall	_TrimRight				( xr_string& src );
+XRCORE_API xr_string& 	__stdcall	_Trim					( xr_string& src );
+XRCORE_API xr_string& 	__stdcall	_TrimLeft				( xr_string& src );
+XRCORE_API xr_string&	__stdcall	_TrimRight				( xr_string& src );
+XRCORE_API xr_string&   __stdcall	_ChangeSymbol			( xr_string& name, char src, char dest );
 XRCORE_API LPCSTR		__stdcall 	_CopyVal 				( LPCSTR src, xr_string& dst, char separator=',' );
 XRCORE_API LPCSTR		__stdcall	_GetItem				( LPCSTR src, int, xr_string& p, char separator=',', LPCSTR ="", bool trim=true );
 XRCORE_API xr_string	__stdcall	_ListToSequence			( const SStringVec& lst );

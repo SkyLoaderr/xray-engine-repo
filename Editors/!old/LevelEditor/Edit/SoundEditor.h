@@ -82,7 +82,7 @@ private:	// User declarations
     void 				LockForm			(){ bFormLocked = true;		form->paProperties->Enabled = false; 	form->paItems->Enabled = false; }
     void 				UnlockForm			(){ bFormLocked = false;	form->paProperties->Enabled = true; 	form->paItems->Enabled = true; 	}
 
-    static FS_QueryMap	modif_map;
+    static FS_FileSet	modif_map;
 	ref_sound			m_Snd;
     void				PlaySound			(LPCSTR name, u32& size, u32& time);
 	void __stdcall  	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);

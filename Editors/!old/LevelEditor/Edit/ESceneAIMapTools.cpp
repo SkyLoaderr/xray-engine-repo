@@ -8,6 +8,7 @@
 #include "ui_leveltools.h"
 #include "ESceneAIMapControls.h"
 #include "PropertiesListHelper.h"
+#include "xrPool.h"
 
 // chunks
 #define AIMAP_VERSION  				0x0002
@@ -20,6 +21,23 @@
 #define AIMAP_CHUNK_SNAP_OBJECTS	0x0007
 #define AIMAP_CHUNK_INTERNAL_DATA	0x0008
 //----------------------------------------------------
+
+poolSS<SAINode,1024> g_ainode_pool;
+
+void* SAINode::operator new(std::size_t size)
+{
+	return g_ainode_pool.create();
+}
+
+void* SAINode::operator new(std::size_t size, SAINode* src)
+{
+    return 			src;
+}
+
+void SAINode::operator delete(void* ptr)
+{
+	g_ainode_pool.destroy((SAINode*)ptr);
+}
 
 void SAINode::PointLF(Fvector& D, float patch_size)
 {
@@ -113,15 +131,17 @@ ESceneAIMapTools::~ESceneAIMapTools()
 
 void ESceneAIMapTools::Clear(bool bOnlyNodes)
 {
+	inherited::Clear	();
 	hash_Clear			();
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
     	xr_delete		(*it);
-	m_Nodes.clear		();
+	m_Nodes.clear_and_free();
 	if (!bOnlyNodes){
 	    m_SnapObjects.clear	();
         m_AIBBox.invalidate	();
         ExecCommand		(COMMAND_REFRESH_SNAP_OBJECTS);
     }
+    g_ainode_pool.clear	();   
 }
 //----------------------------------------------------
 
@@ -192,6 +212,8 @@ void ESceneAIMapTools::DenumerateNodes()
 
 bool ESceneAIMapTools::Load(IReader& F)
 {
+	inherited::Load	(F);
+
 	u16 version = 0;
 
     R_ASSERT(F.r_chunk(AIMAP_CHUNK_VERSION,&version));
@@ -255,6 +277,8 @@ void ESceneAIMapTools::OnSynchronize()
 
 void ESceneAIMapTools::Save(IWriter& F)
 {
+	inherited::Save	(F);
+
 	F.open_chunk	(AIMAP_CHUNK_VERSION);
 	F.w_u16			(AIMAP_VERSION);
 	F.close_chunk	();
@@ -334,19 +358,6 @@ int ESceneAIMapTools::AddNode(const Fvector& pos, bool bIgnoreConstraints, bool 
     }
 }
 
-void ESceneAIMapTools::RemoveNode(AINodeIt it)
-{
-	R_ASSERT(it!=m_Nodes.end());
-	SAINode* node = *it;
-    // unregister node from hash
-	AINodeVec* V = HashMap(node->Pos); R_ASSERT2(V,"AINode position out of bounds.");
-	for (AINodeIt I=V->begin(); I!=V->end(); I++)
-    	if (node==*I) {V->erase(I); break;}
-    // delete node & erase from list
-    xr_delete		(*it);
-    m_Nodes.erase	(it);
-}
-
 struct invalid_node_pred : public std::unary_function<SAINode*, bool>
 {
 	int link;
@@ -376,9 +387,19 @@ void ESceneAIMapTools::SelectObjects(bool flag)
     UpdateHLSelected	();
     UI->RedrawScene		();
 }
-struct sel_node_pred : public std::unary_function<SAINode*, bool>
+struct delete_sel_node_pred : public std::unary_function<SAINode*, bool>
 {
-	bool operator()(const SAINode*& x){ return x->flags.is(SAINode::flSelected); }
+	bool operator()(SAINode*& x)
+    { 
+    	// breaking links
+        for (int k=0; k<4; k++) 
+            if (x->n[k]&&x->n[k]->flags.is(SAINode::flSelected))
+                x->n[k]=0;
+		// free memory                
+    	bool res	= x->flags.is(SAINode::flSelected); 
+        if (res) 	xr_delete(x); 
+        return 		res; 
+    }
 };
 void ESceneAIMapTools::RemoveSelection()
 {
@@ -387,19 +408,11 @@ void ESceneAIMapTools::RemoveSelection()
     	if (m_Nodes.size()==(u32)SelectionCount(true)){
         	Clear	(true);
         }else{
-        	SPBItem* pb = UI->ProgressStart(4,"Removing nodes...");
+        	SPBItem* pb = UI->ProgressStart(3,"Removing nodes...");
         	// remove link to sel nodes
-	        pb->Inc("breaking links");
-	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
-            	for (int k=0; k<4; k++) 
-                	if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected))
-                    	(*it)->n[k]=0;
-            }
 	        pb->Inc("erasing nodes");
             // remove sel nodes
-           	AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), sel_node_pred());
-	        for (AINodeIt r_it=m_Nodes.begin(); r_it!=m_Nodes.end(); r_it++) 
-            	if ((*r_it)->flags.is(SAINode::flSelected)) xr_delete(*r_it);
+           	AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), delete_sel_node_pred());
             m_Nodes.erase		(result,m_Nodes.end());
 	        pb->Inc("updating hash");
             hash_Clear		   	();

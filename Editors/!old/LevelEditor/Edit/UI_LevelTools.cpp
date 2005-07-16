@@ -16,7 +16,7 @@
 #include "Builder.h"
 
 #define DETACH_FRAME(a) 	if (a){ (a)->Hide(); 	(a)->Parent = NULL; }
-#define ATTACH_FRAME(a,b) 	if (a){ (a)->Parent=(b);(a)->Show(); 		}
+#define ATTACH_FRAME(a,b)	if (a){ (a)->Parent=(b);(a)->Show(); 		}
 
 CLevelTools*&	LTools=(CLevelTools*)Tools;
 
@@ -78,7 +78,11 @@ void CLevelTools::Reset()
 
 bool __fastcall CLevelTools::MouseStart(TShiftState Shift)
 {
-    if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->Start(Shift);
+    if(pCurTools&&pCurTools->pCurControl){
+    	if ((pCurTools->pCurControl->Action()!=etaSelect)&&
+	    	(!pCurTools->IsEditable()||(pCurTools->ClassID==OBJCLASS_DUMMY))) return false;
+        return pCurTools->pCurControl->Start(Shift);
+    }
     return false;
 }
 //---------------------------------------------------------------------------
@@ -164,7 +168,7 @@ void __fastcall CLevelTools::RealSetTarget   (ObjClassID tgt,int sub_tgt,bool bF
         pCurTools->OnActivate	();
         
         pCurTools->SetAction	(GetAction());
-        ATTACH_FRAME(pCurTools->pFrame, paParent);
+        if (pCurTools->IsEditable()) ATTACH_FRAME(pCurTools->pFrame, paParent); 
     }
     UI->RedrawScene();
     fraLeftBar->ChangeTarget(tgt);
@@ -235,19 +239,9 @@ void CLevelTools::RealUpdateProperties()
 	if (m_Props->Visible){
 		if (m_Props->IsModified()) Scene->UndoSave();
         ObjectList lst;
-        ObjClassID cls_id			= CurrentClassID();
         PropItemVec items;
-        if (OBJCLASS_DUMMY==cls_id){
-            SceneToolsMapPairIt _I 	= Scene->FirstTools();
-            SceneToolsMapPairIt _E	= Scene->LastTools();
-            for (; _I!=_E; _I++)
-                if (_I->second&&(_I->first!=OBJCLASS_DUMMY))	
-                	_I->second->FillProp(_I->second->ClassDesc(),items);
-        }else{
-            ESceneCustomMTools* mt	= Scene->GetMTools(cls_id);
-            if (mt) mt->FillProp	(mt->ClassDesc(),items);
-        }
-
+        // scene common props
+        Scene->FillProp				("",items,CurrentClassID());
 		m_Props->AssignItems		(items);
     }
 	m_Flags.set(flUpdateProperties,FALSE);

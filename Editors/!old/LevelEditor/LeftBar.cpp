@@ -167,7 +167,7 @@ void TfraLeftBar::ChangeTarget(ObjClassID tgt)
 {
     for (int i=0; i<paTarget->ControlCount; i++){
     	TExtBtn* B = dynamic_cast<TExtBtn *>(paTarget->Controls[i]);
-        if (B&&B->Tag==tgt)	B->Down = true;
+        if (B&&ObjClassID(B->Tag)==tgt)	B->Down = true;
     }
     UI->RedrawScene	();
     UpdateBar		();
@@ -704,8 +704,11 @@ void TfraLeftBar::RefreshBar()
     }
     miRecentFiles->Enabled = miRecentFiles->Count;
     // refresh target
-    for (ObjClassID k=OBJCLASS_FIRST_CLASS; k<OBJCLASS_COUNT; k++)
-    	m_TargetButtons[k]->Enabled	= Scene->GetMTools(k)->m_bEnabled;
+    for (ObjClassID k=OBJCLASS_FIRST_CLASS; k<OBJCLASS_COUNT; k++){
+    	m_TargetButtons[k]->Enabled		= Scene->GetMTools(k)->IsEnabled();
+    	m_TargetButtons[k]->NormalColor	= Scene->GetMTools(k)->IsEditable()?clBlack:clGray; 
+    	m_TargetButtons[k]->Font->Style	= Scene->GetMTools(k)->IsForceReadonly()?TFontStyles()<<fsStrikeOut:TFontStyles();
+    }
 }
 //---------------------------------------------------------------------------
 

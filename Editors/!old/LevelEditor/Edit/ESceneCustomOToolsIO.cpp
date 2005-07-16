@@ -64,6 +64,8 @@ void ESceneCustomOTools::SaveSelection(IWriter& F)
 
 bool ESceneCustomOTools::Load(IReader& F)
 {
+	inherited::Load	(F);
+
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
@@ -77,6 +79,8 @@ bool ESceneCustomOTools::Load(IReader& F)
 
 void ESceneCustomOTools::Save(IWriter& F)
 {
+	inherited::Save	(F);
+
     int count		= m_Objects.size();
 	F.w_chunk		(CHUNK_OBJECT_COUNT,&count,sizeof(count));
 

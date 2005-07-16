@@ -29,7 +29,7 @@ public:
 
 	void 				OnCreate			();
 	void 				OnDestroy			();
-	void 				Save				(FS_QueryMap* modif_map=0);
+	void 				Save				(FS_FileSet* modif_map=0);
 
     void 				ReloadObjects		();
     void 				CleanLibrary		();
@@ -38,7 +38,7 @@ public:
     CEditableObject*	CreateEditObject	(LPCSTR name);
     void				RemoveEditObject	(CEditableObject*& object);
 
-    int					GetObjects			(FS_QueryMap& files);
+    int					GetObjects			(FS_FileSet& files);
     int					ObjectCount			(){return m_EditObjects.size();}
 
     void				EvictObjects		();

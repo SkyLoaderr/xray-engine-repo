@@ -136,6 +136,7 @@ int ESceneWallmarkTools::SelectionCount(bool testflag)
 
 void ESceneWallmarkTools::Clear(bool bOnlyNodes)
 {
+	inherited::Clear	();
 	{
 		for (WMSVecIt p_it=marks.begin(); p_it!=marks.end(); p_it++){
 			for (WMVecIt m_it=(*p_it)->items.begin(); m_it!=(*p_it)->items.end(); m_it++)
@@ -242,6 +243,8 @@ void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)
 
 bool ESceneWallmarkTools::Load(IReader& F)
 {
+	inherited::Load	(F);
+
 	u16 version = 0;
 
     R_ASSERT(F.r_chunk(WM_CHUNK_VERSION,&version));
@@ -332,6 +335,8 @@ bool ESceneWallmarkTools::Load(IReader& F)
 
 void ESceneWallmarkTools::Save(IWriter& F)
 {
+	inherited::Save	(F);
+
 	F.open_chunk	(WM_CHUNK_VERSION);
     F.w_u16			(WM_VERSION);
 	F.close_chunk	();

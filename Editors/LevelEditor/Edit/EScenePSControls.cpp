@@ -32,7 +32,7 @@ bool __fastcall TUI_ControlPSAdd::AfterAppendCallback(TShiftState Shift, CCustom
 
 bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift)
 {
-	DefaultAddObject	(Shift,0,AfterAppendCallback);
+    DefaultAddObject(Shift,0,AfterAppendCallback);
     return false;
 }
 

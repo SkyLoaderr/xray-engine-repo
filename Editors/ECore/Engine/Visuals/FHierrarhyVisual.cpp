@@ -29,6 +29,12 @@ FHierrarhyVisual::~FHierrarhyVisual()
 	children.clear();
 }
 
+void FHierrarhyVisual::Release()
+{
+    for (u32 i=0; i<children.size(); i++)	
+        children[i]->Release();
+}
+
 void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	IRender_Visual::Load(N,data,dwFlags);

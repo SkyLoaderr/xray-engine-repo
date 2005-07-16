@@ -6,63 +6,7 @@
 #define LocatorAPIH
 #pragma once
 
-// refs 
-class	CFS_PathNotificator;
-
-enum FS_List
-{
-	FS_ListFiles	=(1<<0),
-	FS_ListFolders	=(1<<1),
-	FS_ClampExt		=(1<<2),
-	FS_RootOnly		=(1<<3),
-	FS_forcedword	=u32(-1)
-};
-
-class XRCORE_API FS_Path
-{
-public:
-	enum{
-    	flRecurse	= (1<<0),
-    	flNotif		= (1<<1),
-    	flNeedRescan= (1<<2),
-    };
-public:
-	LPSTR		m_Path;
-	LPSTR		m_Root;
-	LPSTR		m_Add;
-	LPSTR		m_DefExt;
-	LPSTR		m_FilterCaption;
-    Flags32		m_Flags;
-public:
-				FS_Path		(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt=0, LPCSTR _FilterString=0, u32 flags=0);
-				~FS_Path	();
-	LPCSTR		_update		(LPSTR dest, LPCSTR src) const;
-	void		_update		(xr_string& dest, LPCSTR src) const;
-	void		_set		(LPSTR add);
-
-    void __stdcall rescan_path_cb	();
-};
-
-// query
-struct FS_QueryItem
-{
-	enum{
-    	flSubDir=(1<<0),
-    	flVFS	=(1<<1)
-    };
-	u32			size;
-    u32			modif;
-    Flags32		flags;
-    			FS_QueryItem	():size(0),modif(0){flags.zero();}
-    			FS_QueryItem	(u32 sz, u32 mf, u32 fl=0){set(sz,mf,fl);}
-    void 		set				(u32 sz, u32 mf, u32 fl=0)
-    {
-    	size	= sz;
-        modif	= mf;
-        flags.assign(fl);
-    }
-};
-DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
+#include "LocatorAPI_defs.h"
 
 class XRCORE_API CLocatorAPI  
 {

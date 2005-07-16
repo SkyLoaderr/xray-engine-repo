@@ -39,7 +39,13 @@ void __fastcall TfraAIMap::ExpandClick(TObject *Sender)
 
 void __fastcall TfraAIMap::ebGenerateMapClick(TObject *Sender)
 {
-	tools->GenerateMap();
+	tools->GenerateMap(false);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraAIMap::ebGenerateSelectedClick(TObject *Sender)
+{
+	tools->GenerateMap(true);
 }
 //---------------------------------------------------------------------------
 
@@ -117,6 +123,7 @@ void __fastcall TfraAIMap::ebSelLinkClick(TObject *Sender)
     Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
+
 
 
 

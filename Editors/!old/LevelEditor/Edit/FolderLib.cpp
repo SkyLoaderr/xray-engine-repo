@@ -292,7 +292,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject* Source, int X, int Y, TOn
     AnsiString cur_fld_name=base_name;
     TElTreeItem* cur_folder=tgt_folder;
 
-    FS.lock_rescan();
+//..FS.lock_rescan();
     for (ELVecIt it=drag_items.begin(); it!=drag_items.end(); it++){
         TElTreeItem* item 	= *it;
         int drg_level		= item->Level;
@@ -346,7 +346,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject* Source, int X, int Y, TOn
             (*it)->Delete	();
         }
     }
-    FS.unlock_rescan();
+//..FS.unlock_rescan();
 
     tv->IsUpdating = false;
  }

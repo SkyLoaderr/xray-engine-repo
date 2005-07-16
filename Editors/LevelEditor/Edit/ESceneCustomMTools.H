@@ -20,8 +20,21 @@ protected:
     int             	action;
     int					sub_target;
 public:
-    BOOL				m_bEnabled;
+	enum{
+    	flEnable		= (1<<0),
+    	flReadonly		= (1<<1),
+    	flForceReadonly	= (1<<2),
+    };
+    Flags32				m_EditFlags;
+    BOOL				IsEnabled				(){return m_EditFlags.is(flEnable);}
+    BOOL				IsEditable				(){return !m_EditFlags.is_any(flReadonly|flForceReadonly);}
+    BOOL				IsReadonly				(){return m_EditFlags.is(flReadonly);}
+    BOOL				IsForceReadonly			(){return m_EditFlags.is(flForceReadonly);}
 public:
+	// modifiers
+    shared_str			m_ModifName;
+    time_t				m_ModifTime;
+	// frame & Controls
     TUI_CustomControl* 	pCurControl;
     TForm*				pFrame;
 protected:
@@ -54,7 +67,6 @@ public:
     virtual void		OnDestroy				();
     
 	virtual	bool		AllowEnabling    		()=0;
-    BOOL				Enable					(BOOL val);
     // snap 
 	virtual ObjectList* GetSnapList				()=0;
     virtual void		UpdateSnapList			()=0;
@@ -70,6 +82,7 @@ public:
 	virtual void 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true)=0;
 
     virtual void		Clear					(bool bSpecific=false)=0;       
+    virtual void		Reset					();
 
     // validation
     virtual bool		Valid					()=0;

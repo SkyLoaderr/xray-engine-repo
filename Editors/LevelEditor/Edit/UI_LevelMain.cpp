@@ -52,7 +52,7 @@ CLevelMain::~CLevelMain()
 //------------------------------------------------------------------------------
 CCommandVar CLevelTools::CommandChangeTarget(CCommandVar p1, CCommandVar p2)
 {
-	if (Scene->GetMTools(p1)->m_bEnabled){
+	if (Scene->GetMTools(p1)->IsEnabled()){
 	    SetTarget	(p1,p2);
 	    ExecCommand	(COMMAND_UPDATE_PROPERTIES);
         return 		TRUE;
@@ -91,16 +91,57 @@ CCommandVar CommandFileMenu(CCommandVar p1, CCommandVar p2)
 }
 CCommandVar CLevelTools::CommandEnableTarget(CCommandVar p1, CCommandVar p2)
 {
-	ESceneCustomMTools* M 	= Scene->GetMTools(p1);
-    BOOL res				= M->Enable(p2);
+	ESceneCustomMTools* M 	= Scene->GetMTools(p1); VERIFY(M);
+    BOOL res				= FALSE; 
+	if (p2){
+    	res 				= ExecCommand(COMMAND_LOAD_LEVEL_PART,M->ClassID,TRUE);
+    }else{
+        if (!Scene->IfModified()){
+		    M->m_EditFlags.set(ESceneCustomMTools::flEnable,TRUE);
+            res				= FALSE;
+        }else{
+	    	res				= ExecCommand(COMMAND_UNLOAD_LEVEL_PART,M->ClassID,TRUE);
+        }
+		if (res)        	ExecCommand(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT);
+    }
     ExecCommand				(COMMAND_REFRESH_UI_BAR);
+    return res;
+}
+CCommandVar CLevelTools::CommandReadonlyTarget(CCommandVar p1, CCommandVar p2)
+{
+	ESceneCustomMTools* M 	= Scene->GetMTools(p1); VERIFY(M);
+    BOOL res				= TRUE; 
+	if (p2){
+        if (!Scene->IfModified()){    
+		    M->m_EditFlags.set(ESceneCustomMTools::flForceReadonly,FALSE);
+            res				= FALSE;
+        }else{
+            xr_string pn	= Scene->LevelPartName(_maps_,LTools->m_LastFileName.c_str(),M->ClassID);
+         	EFS.UnlockFile	(0,pn.c_str(),false);
+        }
+    }else{
+        xr_string pn		= Scene->LevelPartName(_maps_,LTools->m_LastFileName.c_str(),M->ClassID);
+    	if (!EFS.CheckLocking(0,pn.c_str(),false,false))
+         	EFS.LockFile	(0,pn.c_str(),false);
+    }
+    if (res){
+    	Reset				();
+	    ExecCommand			(COMMAND_REFRESH_UI_BAR);
+    }
     return res;
 }
 CCommandVar CommandLoadLevelPart(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= LTools->m_LastFileName.c_str();
     if (!temp_fn.empty())
-        return 			temp_fn.size()?Scene->LoadLevelPart(_maps_,temp_fn.c_str(),p1):FALSE;
+        return			Scene->LoadLevelPart(_maps_,temp_fn.c_str(),p1,p2);
+    return				FALSE;
+}
+CCommandVar CommandUnloadLevelPart(CCommandVar p1, CCommandVar p2)
+{
+    xr_string temp_fn	= LTools->m_LastFileName.c_str();
+    if (!temp_fn.empty())
+        return			Scene->UnloadLevelPart(_maps_,temp_fn.c_str(),p1,p2);
     return				FALSE;
 }
 CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
@@ -120,8 +161,6 @@ CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
             UI->SetStatus			("Level loading...");
             ExecCommand				(COMMAND_CLEAR);
 
-	        if (EFS.CheckLocking(_maps_,temp_fn.c_str(),false,true)) return FALSE;
-            
             if (Scene->Load	(_maps_, temp_fn.c_str(), false)){
                 LTools->m_LastFileName	= temp_fn.c_str();
                 UI->ResetStatus		();
@@ -131,15 +170,13 @@ CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
 				ExecCommand			(COMMAND_CLEAN_LIBRARY);
                 ExecCommand			(COMMAND_UPDATE_CAPTION);
                 ExecCommand			(COMMAND_CHANGE_ACTION,etaSelect);
-                // lock
-                EFS.LockFile		(_maps_,temp_fn.c_str());
                 EPrefs->AppendRecentFile(temp_fn.c_str());
             }else{
                 ELog.DlgMsg	( mtError, "Can't load map '%s'", temp_fn.c_str() );
             }
             // update props
             ExecCommand			(COMMAND_UPDATE_PROPERTIES);
-            UI->RedrawScene		();
+            UI->RedrawScene		();             
         }
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -175,11 +212,10 @@ CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
                 UI->SetStatus	("Level saving...");
                 Scene->Save		(_maps_, temp_fn.c_str(), false);
                 UI->ResetStatus	();
-                // unlock
-                EFS.UnlockFile	(_maps_,Tools->m_LastFileName.c_str());
                 // set new name
+                Scene->UnlockLevel		(_maps_,Tools->m_LastFileName.c_str());
                 Tools->m_LastFileName 	= temp_fn.c_str();
-                EFS.LockFile	(_maps_,Tools->m_LastFileName.c_str());
+                Scene->LockLevel		(_maps_,Tools->m_LastFileName.c_str());
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
                 EPrefs->AppendRecentFile(temp_fn.c_str());
                 return 			TRUE;
@@ -196,12 +232,12 @@ CCommandVar CommandClear(CCommandVar p1, CCommandVar p2)
         if (!Scene->IfModified()) return TRUE;
         // backup map
         if (!Tools->m_LastFileName.IsEmpty()&&Scene->IsModified()){
-            EFS.BackupFile(_maps_,Tools->m_LastFileName.c_str());
+        	Scene->BackupLevel	(_maps_,Tools->m_LastFileName.c_str());
         }
         // unlock
-        EFS.UnlockFile			(_maps_,Tools->m_LastFileName.c_str());
+        Scene->UnlockLevel		(_maps_,Tools->m_LastFileName.c_str());
         Device.m_Camera.Reset	();
-        Scene->Unload			();
+        Scene->Reset			();
         Scene->m_LevelOp.Reset	();
         Tools->m_LastFileName 	= "";
         Scene->UndoClear		();
@@ -760,6 +796,7 @@ void CLevelMain::RegisterCommands()
 		APPEND_SUB_CMD	("Static Wallmark",                 OBJCLASS_WM, 			0);
     REGISTER_SUB_CMD_END;    
 	REGISTER_CMD_C	    (COMMAND_ENABLE_TARGET,           	LTools,CLevelTools::CommandEnableTarget);
+	REGISTER_CMD_C	    (COMMAND_READONLY_TARGET,          	LTools,CLevelTools::CommandReadonlyTarget);
 
 	REGISTER_CMD_CE	    (COMMAND_SHOW_OBJECTLIST,           "Scene\\Show Object List",		LTools,CLevelTools::CommandShowObjectList, false);
 	// common
@@ -767,6 +804,7 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_LANIM_EDITOR,            	CommandLAnimEditor);
 	REGISTER_CMD_SE	    (COMMAND_FILE_MENU,              	"File\\Menu",					CommandFileMenu, 		true);
     REGISTER_CMD_S		(COMMAND_LOAD_LEVEL_PART,			CommandLoadLevelPart);
+    REGISTER_CMD_S		(COMMAND_UNLOAD_LEVEL_PART,			CommandUnloadLevelPart);
 	REGISTER_CMD_SE	    (COMMAND_LOAD,              		"File\\Load Level", 			CommandLoad, 			true);
     REGISTER_SUB_CMD_SE (COMMAND_SAVE, 						"File",							CommandSave,			true);
     	APPEND_SUB_CMD	("Save",							0,								0);
@@ -818,7 +856,7 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_REFRESH_SNAP_OBJECTS,      CommandRefreshSnapObjects);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_SOUND_ENVS,        CommandRefreshSoundEnvs);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_SOUND_ENV_GEOMETRY,CommandRefreshSoundEnvGeometry);
-	REGISTER_CMD_S	    (COMMAND_MOVE_CAMERA_TO,            CommandMoveCameraTo);
+	REGISTER_CMD_SE	    (COMMAND_MOVE_CAMERA_TO,            "Scene\\Move Camera To",	  	CommandMoveCameraTo,false);
 	REGISTER_CMD_S	    (COMMAND_SHOWCONTEXTMENU,           CommandShowContextMenu);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_UI_BAR,            CommandRefreshUIBar);
 	REGISTER_CMD_S	    (COMMAND_RESTORE_UI_BAR,            CommandRestoreUIBar);
@@ -841,22 +879,7 @@ bool __fastcall CLevelMain::ApplyShortCut(WORD Key, TShiftState Shift)
 
 bool __fastcall CLevelMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
-    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
-	bool bExec = false;
-    if (Shift.Contains(ssCtrl)){
-        if (Shift.Contains(ssShift)){
-            if (Key=='S')				COMMAND0(COMMAND_SAVE_SELECTION)
-	        else if (Key=='O')   		COMMAND0(COMMAND_LOAD_SELECTION)
-        }else{
-            if (Key=='V')    			COMMAND0(COMMAND_PASTE)
-            else if (Key=='C')    		COMMAND0(COMMAND_COPY)
-            else if (Key=='X')    		COMMAND0(COMMAND_CUT)
-            else if (Key=='Z')    		COMMAND0(COMMAND_UNDO)
-            else if (Key=='Y')    		COMMAND0(COMMAND_REDO)
-            else if (Key=='R')			COMMAND0(COMMAND_LOAD_FIRSTRECENT)
-        }
-    }
-    return bExec;
+    return inherited::ApplyGlobalShortCut(Key,Shift);
 }
 //---------------------------------------------------------------------------
 

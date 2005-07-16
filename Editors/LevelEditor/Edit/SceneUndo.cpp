@@ -67,7 +67,7 @@ bool EScene::Undo()
         }
 
 		if( !m_UndoStack.empty() ){
-			Unload();
+			Unload(TRUE);
          	Load( 0, m_UndoStack.back().m_FileName, true );
         }
 
@@ -82,7 +82,7 @@ bool EScene::Undo()
 bool EScene::Redo()
 {
 	if( !m_RedoStack.empty() ){
-        Unload();
+        Unload(TRUE);
 		Load( 0,m_RedoStack.back().m_FileName, true );
 
 		m_UndoStack.push_back( m_RedoStack.back() );

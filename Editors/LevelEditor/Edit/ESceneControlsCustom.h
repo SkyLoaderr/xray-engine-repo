@@ -68,6 +68,8 @@ public:
     virtual bool 	KeyPress			(WORD Key, TShiftState Shift){return false;}
     virtual void 	OnEnter				(){;}
     virtual void 	OnExit				(){;}
+
+    int 			Action				(){return action;}
 };
 //---------------------------------------------------------------------------
 #endif

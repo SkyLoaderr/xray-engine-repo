@@ -157,6 +157,13 @@ LPSTR _ChangeSymbol ( LPSTR name, char src, char dest )
 	return						name;
 }
 
+xr_string& _ChangeSymbol	( xr_string& name, char src, char dest )
+{
+	for (xr_string::iterator it=name.begin(); it!=name.end(); it++) 
+    	if (*it==src) *it=xr_string::value_type(dest);
+    return  name;
+}
+
 #ifdef M_BORLAND
 AnsiString& _ReplaceItem 	( LPCSTR src, int index, LPCSTR new_item, AnsiString& dst, char separator )
 {

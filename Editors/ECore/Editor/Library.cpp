@@ -118,8 +118,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
     CEditableObject* m_EditObject = xr_new<CEditableObject>(name);
     xr_string fn;
     FS.update_path(fn,_objects_,EFS.ChangeFileExt(name,".object").c_str());
-    const CLocatorAPI::file* F = FS.exist(fn.c_str());
-    if (F){
+    if (FS.exist(fn.c_str())){
         if (m_EditObject->Load(fn.c_str()))	return m_EditObject;
     }else{
 		ELog.Msg(mtError,"Can't find file '%s'",fn.c_str());
@@ -158,14 +157,14 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 }
 //---------------------------------------------------------------------------
 
-void ELibrary::Save(FS_QueryMap* modif_map)
+void ELibrary::Save(FS_FileSet* modif_map)
 {
 	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
     if (modif_map){
         for(; O!=E; O++)
-        	if (modif_map->end()!=modif_map->find(O->second->GetName())){
+        	if (modif_map->end()!=modif_map->find(FS_File(O->second->GetName()))){
                 xr_string 		nm;
                 FS.update_path	(nm,_objects_,O->second->GetName());
                 nm			  	= EFS.ChangeFileExt(nm,".object");
@@ -185,7 +184,7 @@ void ELibrary::Save(FS_QueryMap* modif_map)
 }
 //---------------------------------------------------------------------------
 
-int ELibrary::GetObjects(FS_QueryMap& files)
+int ELibrary::GetObjects(FS_FileSet& files)
 {
     return FS.file_list(files,_objects_,FS_ListFiles|FS_ClampExt,".object");
 }
@@ -195,14 +194,14 @@ void ELibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)
 {
 	if (TYPE_FOLDER==type){
     	FS.dir_delete			(_objects_,_fname,FALSE);
-        res = true;
+        res 					= true;
 		return;
     }else if (TYPE_OBJECT==type){
         xr_string src_name;
-        xr_string fname		= EFS.ChangeFileExt(_fname,".object");
+        xr_string fname			= EFS.ChangeFileExt(_fname,".object");
         FS.update_path			(src_name,_objects_,fname.c_str());
         if (FS.exist(src_name.c_str())){
-            xr_string thm_name= EFS.ChangeFileExt(fname,".thm");
+            xr_string thm_name	= EFS.ChangeFileExt(fname,".thm");
             // source
             EFS.BackupFile		(_objects_,fname.c_str());
             FS.file_delete		(src_name.c_str());

@@ -35,25 +35,4 @@ public:
     void __stdcall rescan_path_cb	();
 };
 
-// query
-struct FS_QueryItem
-{
-	enum{
-    	flSubDir=(1<<0),
-    	flVFS	=(1<<1)
-    };
-	u32			size;
-    u32			modif;
-    Flags32		flags;
-    			FS_QueryItem	():size(0),modif(0){flags.zero();}
-    			FS_QueryItem	(u32 sz, u32 mf, u32 fl=0){set(sz,mf,fl);}
-    void 		set				(u32 sz, u32 mf, u32 fl=0)
-    {
-    	size	= sz;
-        modif	= mf;
-        flags.assign(fl);
-    }
-};
-DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
-
 #endif //LocatorAPI_defsH

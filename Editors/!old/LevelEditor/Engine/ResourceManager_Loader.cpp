@@ -70,36 +70,36 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 	// scripting
 	LS_Load					();
 #endif
+	IReader*	fs			= 0;
 	// Load constants
-	{
-		IReader*	fs		= F->open_chunk	(0);
-		while (fs && !fs->eof())	{
+ 	fs	 		  			= F->open_chunk	(0);
+	if (fs){
+		while (!fs->eof())	{
 			fs->r_stringZ	(name,sizeof(name));
 			CConstant*	C	= _CreateConstant	(name);
 			C->Load			(fs);
 		}
-		fs->close();
+		fs->close			();
 	}
 
 	// Load matrices
-	{
-		IReader*	fs		= F->open_chunk(1);
-		while (fs&&!fs->eof())	{
+    fs						= F->open_chunk(1);
+	if (fs){
+		while (!fs->eof())	{
 			fs->r_stringZ	(name,sizeof(name));
 			CMatrix*	M	= _CreateMatrix	(name);
 			M->Load			(fs);
 		}
-		fs->close();
+		fs->close			();
 	}
 
 	// Load blenders
-	{
-		IReader*	fs		= F->open_chunk	(2);
+    fs						= F->open_chunk	(2);
+	if (fs){
 		IReader*	chunk	= NULL;
 		int			chunk_id= 0;
 
-		while ((chunk=fs->open_chunk(chunk_id))!=NULL)
-		{
+		while ((chunk=fs->open_chunk(chunk_id))!=NULL){
 			CBlender_DESC	desc;
 			chunk->r		(&desc,sizeof(desc));
 			IBlender*		B = IBlender::Create(desc.CLS);

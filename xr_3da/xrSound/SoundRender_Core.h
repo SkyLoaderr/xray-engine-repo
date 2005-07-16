@@ -53,8 +53,8 @@ protected:
 	virtual void						i_eax_set				(const GUID* guid, u32 prop, void* val, u32 sz)=0;
 	virtual void						i_eax_get				(const GUID* guid, u32 prop, void* val, u32 sz)=0;
 public:
-	CSoundRender_Core					();
-	~CSoundRender_Core					();
+										CSoundRender_Core		();
+	virtual								~CSoundRender_Core		();
 
 	// General
 	virtual void  						_initialize				( u64 window )=0;

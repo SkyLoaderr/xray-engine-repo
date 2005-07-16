@@ -20,7 +20,7 @@
 #pragma resource "*.dfm"
 
 TfrmSoundLib* TfrmSoundLib::form = 0;
-FS_QueryMap	TfrmSoundLib::modif_map;
+FS_FileSet	TfrmSoundLib::modif_map;
 Flags32 TfrmSoundLib::m_Flags={0};
 //---------------------------------------------------------------------------
 __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
@@ -35,7 +35,7 @@ void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
     m_ItemProps->SetModifiedEvent			(fastdelegate::bind<TOnModifiedEvent>(this,&TfrmSoundLib::OnModified));
-    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect);
+    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect|TItemList::ilEditMenu|TItemList::ilDragAllowed);
     m_ItemList->SetOnItemsFocusedEvent		(fastdelegate::bind<TOnILItemsFocused>(this,&TfrmSoundLib::OnItemsFocused));
     TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
     TOnItemRename on_rename; on_rename.bind	(this,&TfrmSoundLib::RenameSound);
@@ -110,16 +110,18 @@ bool __fastcall TfrmSoundLib::HideLib()
 
 void TfrmSoundLib::AppendModif(LPCSTR nm)
 {
-    FS_QueryItem 	dest;
-    bool bFind		= FS.file_find(dest,_sounds_,ChangeFileExt(nm,".wav").c_str(),true); R_ASSERT(bFind);
-    modif_map.insert(mk_pair(nm,dest));
+    FS_File 		dest;
+    xr_string		fname;
+    FS.update_path	(fname,_sounds_,ChangeFileExt(nm,".wav").c_str());
+	BOOL bFind		= FS.file_find(fname.c_str(),&dest); R_ASSERT(bFind);
+    modif_map.insert(dest);
 }
 //---------------------------------------------------------------------------
 
 void TfrmSoundLib::RemoveSound(LPCSTR fname, EItemType type, bool& res)
 {
 	// delete it from modif map
-    FS_QueryPairIt it=modif_map.find(fname); 
+    FS_FileSetIt it=modif_map.find(FS_File(fname));
     if (it!=modif_map.end()) modif_map.erase(it);
 	// remove sound source
 	res = SndLib->RemoveSound(fname,type);
@@ -131,7 +133,7 @@ void TfrmSoundLib::RenameSound(LPCSTR p0, LPCSTR p1, EItemType type)
     // rename sound source
 	SndLib->RenameSound(p0,p1,type);
 	// delete old from map
-    FS_QueryPairIt old_it=modif_map.find(p0); 
+    FS_FileSetIt old_it=modif_map.find(FS_File(p0)); 
     if (old_it!=modif_map.end()){
     	modif_map.erase	(old_it);
         AppendModif		(p1);
@@ -156,16 +158,16 @@ void __fastcall TfrmSoundLib::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 void TfrmSoundLib::InitItemsList()
 {
-    FS_QueryMap		sound_map;
+    FS_FileSet		sound_map;
     SndLib->GetSounds(sound_map,TRUE);
 
 	ListItemsVec items;
 
     // fill items
-	FS_QueryPairIt it = sound_map.begin();
-	FS_QueryPairIt _E = sound_map.end();
+	FS_FileSetIt it = sound_map.begin();
+	FS_FileSetIt _E = sound_map.end();
     for (; it!=_E; it++)
-        LHelper().CreateItem(items,it->first.c_str(),0);
+        LHelper().CreateItem(items,it->name.c_str(),0);
 
     m_ItemList->AssignItems(items,false,true);
 }
@@ -217,11 +219,11 @@ ESoundThumbnail* TfrmSoundLib::FindUsedTHM(LPCSTR name)
 
 void TfrmSoundLib::SaveUsedTHM()
 {
-	FS.lock_rescan	();
+//..	FS.lock_rescan	();
     int m_age 		= time(NULL);
 	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
 		(*t_it)->Save(m_age,0);
-	FS.unlock_rescan();
+//..	FS.unlock_rescan();
 }
 //---------------------------------------------------------------------------
 
@@ -410,12 +412,14 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 
 void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
 {
-    const CLocatorAPI::file* file	= FS.exist(_game_sounds_,ChangeFileExt(name,".ogg").c_str());
-    if (file){
+	xr_string fname;
+    FS.update_path			(fname,_game_sounds_,ChangeFileExt(name,".ogg").c_str());
+    FS_File F;
+    if (FS.file_find(fname.c_str(),&F)){
         m_Snd.create		(TRUE,name);
         m_Snd.play			(0,sm_2D);
         CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
-        size				= file->size_real;
+        size				= F.size;
         time				= src->dwTimeTotal;
     	if (!bAutoPlay)		m_Snd.stop();
     }

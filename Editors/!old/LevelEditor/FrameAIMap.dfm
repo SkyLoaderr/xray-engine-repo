@@ -1,6 +1,6 @@
 object fraAIMap: TfraAIMap
-  Left = 481
-  Top = 440
+  Left = -959
+  Top = 520
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -19,7 +19,7 @@ object fraAIMap: TfraAIMap
     Left = 0
     Top = 0
     Width = 217
-    Height = 65
+    Height = 50
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -30,7 +30,7 @@ object fraAIMap: TfraAIMap
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Commands'
+      Caption = 'AI Map Commands'
       Color = clGray
       ParentColor = False
       OnClick = ExpandClick
@@ -61,13 +61,13 @@ object fraAIMap: TfraAIMap
     object ebGenerateMap: TExtBtn
       Left = 1
       Top = 16
-      Width = 215
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      Caption = 'Generate AI Map'
+      Caption = 'Generate Full'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -78,9 +78,9 @@ object fraAIMap: TfraAIMap
       OnClick = ebGenerateMapClick
     end
     object ebSmoothNodes: TExtBtn
-      Left = 1
-      Top = 31
-      Width = 215
+      Left = 109
+      Top = 16
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
@@ -97,9 +97,9 @@ object fraAIMap: TfraAIMap
       OnClick = ebSmoothNodesClick
     end
     object ExtBtn6: TExtBtn
-      Left = 1
-      Top = 46
-      Width = 215
+      Left = 109
+      Top = 32
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
@@ -115,10 +115,29 @@ object fraAIMap: TfraAIMap
       ParentFont = False
       OnClick = ExtBtn6Click
     end
+    object ebGenerateSelected: TExtBtn
+      Left = 1
+      Top = 32
+      Width = 107
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Generate Selected'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebGenerateSelectedClick
+    end
   end
   object paLink: TPanel
     Left = 0
-    Top = 65
+    Top = 50
     Width = 217
     Height = 117
     Align = alTop
@@ -131,7 +150,7 @@ object fraAIMap: TfraAIMap
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Nodes'
+      Caption = 'AI Map Nodes'
       Color = clGray
       ParentColor = False
       OnClick = ExpandClick
@@ -499,7 +518,7 @@ object fraAIMap: TfraAIMap
   object fsStorage: TFormStorage
     IniSection = 'FrameAIMap'
     Options = []
-    Version = 13
+    Version = 14
     StoredProps.Strings = (
       'paObjectList.Tag'
       'paObjectList.Height'

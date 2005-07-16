@@ -60,6 +60,7 @@ EDetailManager::~EDetailManager(){
 
 void EDetailManager::ClearColorIndices()
 {
+	inherited::Clear	();
     RemoveDOs			();
     m_ColorIndices.clear();
 }
@@ -283,6 +284,8 @@ bool EDetailManager::LoadColorIndices(IReader& F)
 
 bool EDetailManager::Load(IReader& F)
 {
+	inherited::Load	(F);
+
     string256 buf;
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
 	u32 version			= F.r_u32();
@@ -356,6 +359,8 @@ bool EDetailManager::LoadSelection(IReader& F)
 
 void EDetailManager::Save(IWriter& F)
 {
+	inherited::Save	(F);
+
 	// version
 	F.open_chunk		(DETMGR_CHUNK_VERSION);
     F.w_u32				(DETMGR_VERSION);

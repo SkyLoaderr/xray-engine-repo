@@ -51,20 +51,24 @@ void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg, u32 backup_l
 		xr_string			dst_name,dst_path,del_name;
 		FS_Path* P 			= FS.get_path(initial);
 		string64			t_stemp;
-        dst_name			= xr_string(P->m_Add)+fname+"."+Core.UserName+"_"+timestamp(t_stemp);
+        dst_name			= xr_string(P->m_Add)+fname;
+        _ChangeSymbol		(dst_name,'.','~');
+        dst_name			= dst_name+"."+Core.UserName+"_"+timestamp(t_stemp);
 		FS.update_path		(dst_name,"$server_backup$",dst_name.c_str());
-        FS.update_path		(dst_path,"$server_backup$",P->m_Add);
+        dst_path			= EFS.ExtractFilePath(dst_name.c_str());
 
         // удалить лишние бэкап файлы
-        FS_QueryMap lst;
-        xr_string mask	= EFS.ChangeFileExt(fname,".*"); xr_strlwr(mask);
-		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=int(backup_level)){
+        FS_FileSet lst;
+        xr_string mask		= EFS.ChangeFileExt(EFS.ExtractFileName(dst_name.c_str()),".*"); xr_strlwr(mask);
+		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles|FS_RootOnly, mask.c_str())>=int(backup_level)){
         	do{
-            	FS_QueryPairIt  min_it  = lst.begin();
-                FS_QueryPairIt  it		= lst.begin();
-                FS_QueryPairIt	_E		= lst.end();
-                for (; it!=_E; it++) if (it->second.modif<min_it->second.modif) min_it = it;
-                del_name				= dst_path+min_it->first;
+            	FS_FileSetIt  min_it  = lst.begin();
+                FS_FileSetIt  it		= lst.begin();
+                FS_FileSetIt	_E		= lst.end();
+                for (; it!=_E; it++) 
+                	if (it->time_write<min_it->time_write) 
+                    	min_it = it;
+                del_name				= dst_path+min_it->name;
                 FS.file_delete			(del_name.c_str());
                 lst.erase	(min_it);
             }while(lst.size()>=backup_level);

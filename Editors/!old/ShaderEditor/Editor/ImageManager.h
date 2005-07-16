@@ -29,15 +29,15 @@ public:
 	// texture routines
     void __stdcall 	RemoveTexture	(LPCSTR fname, EItemType type, bool& res);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
-    void		CheckCompliance		(FS_QueryMap& files, FS_QueryMap& compl);
-    int			GetTextures			(FS_QueryMap& files, BOOL bFolder=FALSE);
+    void		CheckCompliance		(FS_FileSet& files, FS_FileSet& compl);
+    int			GetTextures			(FS_FileSet& files, BOOL bFolder=FALSE);
 //	int			GetServerModifiedTextures(CLocatorAPI::files_query& files);
-	int 		GetLocalNewTextures	(FS_QueryMap& files);
-	void		SafeCopyLocalToServer(FS_QueryMap& files);
+	int 		GetLocalNewTextures	(FS_FileSet& files);
+	void		SafeCopyLocalToServer(FS_FileSet& files);
 
-	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_map, AStringVec* sync_list_without_extention, FS_QueryMap* modif_map=0, bool bForceBaseAge=false);
+	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FS_FileSet* source_map, AStringVec* sync_list_without_extention, FS_FileSet* modif_map=0, bool bForceBaseAge=false);
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
-//	void		ChangeFileAgeTo		(FS_QueryMap* source_map, int age);
+//	void		ChangeFileAgeTo		(FS_FileSet* source_map, int age);
 	// make/update routines
     bool		MakeGameTexture		(LPCSTR game_name, u32* data, const STextureParams& tp);
     void		CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);

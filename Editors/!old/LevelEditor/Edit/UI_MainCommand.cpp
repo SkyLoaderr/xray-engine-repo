@@ -76,8 +76,9 @@ SESubCommand* FindSubCommandByName(SECommand* CMD, LPCSTR nm)
 void ParseParam(xr_string sp, CCommandVar& res)
 {
     if (!sp.empty()){
-    	u32 rs,ip;
-        rs				= sscanf(sp.c_str(),"%d",&ip); 
+    	u32 rs=0,ip=0;
+        if (0==strstr(sp.c_str(),"\""))
+        	rs			= sscanf(sp.c_str(),"%d",&ip); 
         if (1!=rs){
             _GetItem(sp.c_str(),1,sp,'\"');
             if (!sp.empty()) res = sp;

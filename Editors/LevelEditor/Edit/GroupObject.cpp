@@ -7,6 +7,7 @@
 
 #include "GroupObject.h"
 #include "Scene.h"
+#include "ESceneCustomMTools.h"
 #include "d3dutils.h"
 #include "PropertiesListHelper.h"
 //----------------------------------------------------
@@ -519,6 +520,16 @@ void CGroupObject::OnSceneUpdate()
     }
 }
 //----------------------------------------------------
+bool CGroupObject::CanUngroup(bool bMsg)
+{
+	bool res	= true;
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	if (!Scene->GetMTools((*it)->ClassID)->IsEditable()){ 
+        	if (bMsg) Msg("!.Can't detach object '%s'. Target '%s' in readonly mode.",(*it)->Name,Scene->GetMTools((*it)->ClassID)->ClassDesc());
+        	res = false;
+        }
+    return res;
+}
 
 void CGroupObject::GroupObjects(ObjectList& lst)
 {

@@ -86,7 +86,7 @@ void EScene::OnCreate()
 void EScene::OnDestroy()
 {
 	TProperties::DestroyForm(m_SummaryInfo);
-    Unload					();
+    Unload					(FALSE);
     UndoClear				();
 //.	Device.seqDevCreate.Remove(this);
 //.	Device.seqDevDestroy.Remove(this);
@@ -105,8 +105,8 @@ void EScene::AppendObject( CCustomObject* object, bool bUndo )
     mt->_AppendObject	(object);
     UI->UpdateScene		();
     if (bUndo){	
-	    object->Select	(true);
-    	UndoSave();
+        object->Select	(true);
+        UndoSave();
     }
 }
 
@@ -116,7 +116,7 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
 	VERIFY				(m_Valid);
 
     ESceneCustomOTools* mt 	= GetOTools(object->ClassID);
-    if (mt){
+    if (mt&&mt->IsEditable()){
     	mt->_RemoveObject(object);
         // signal everyone "I'm deleting"
 //        if (object->ClassID==OBJCLASS_SCENEOBJECT)
@@ -148,7 +148,26 @@ void EScene::OnFrame( float dT )
         if (t_it->second)		t_it->second->OnFrame();
 }
 
-void EScene::Clear()
+void EScene::Reset()
+{
+	// unload scene
+    Unload				(FALSE);
+    // reset tools
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second&&t_it->first!=OBJCLASS_DUMMY)
+            t_it->second->Reset	();
+}
+
+void EScene::Unload		(BOOL bEditableOnly)
+{
+	m_LastAvailObject 	= 0;
+	Clear				(bEditableOnly);
+	if (m_SummaryInfo) 	m_SummaryInfo->HideProperties();
+}
+
+void EScene::Clear(BOOL bEditableToolsOnly)
 {
 	// clear snap
     ClearSnapList			(false);
@@ -156,7 +175,11 @@ void EScene::Clear()
     SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
     SceneToolsMapPairIt t_end 	= m_SceneTools.end();
     for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->Clear();
+        if (t_it->second&&t_it->first!=OBJCLASS_DUMMY){ 
+        	if (!bEditableToolsOnly||(bEditableToolsOnly&&t_it->second->IsEditable())){
+	        	t_it->second->Clear();
+            }
+        }
         
     Tools->ClearDebugDraw	();
 
@@ -164,9 +187,9 @@ void EScene::Clear()
 
     m_GUID					= generate_guid();
     m_OwnerName				= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
-    m_ModifName				= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
     m_CreateTime			= time(NULL);
-    m_ModifTime				= time(NULL);
+
+    m_SaveCache.free		();
 }
 //----------------------------------------------------
 
@@ -217,18 +240,11 @@ bool EScene::IfModified()
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
         case mrYes: if (!ExecCommand(COMMAND_SAVE)) return false; break;
-        case mrNo: m_RTFlags.set(flRT_Unsaved,FALSE); break;
+//		case mrNo: m_RTFlags.set(flRT_Unsaved,FALSE); break;
         case mrCancel: return false;
         }
     }
     return true;
-}
-
-void EScene::Unload()
-{
-	m_LastAvailObject = 0;
-	Clear();
-	if (m_SummaryInfo) m_SummaryInfo->HideProperties();
 }
 
 void EScene::OnObjectsUpdate()
@@ -402,5 +418,32 @@ void EScene::HighlightTexture(LPCSTR t_name, bool allow_ratio, u32 t_width, u32 
     for (; t_it!=t_end; t_it++)
         if (t_it->second)		t_it->second->HighlightTexture(t_name,allow_ratio,t_width,t_height,!leave_previous);
     UI->RedrawScene				();
+}
+
+void EScene::FillProp(LPCSTR pref, PropItemVec& items, ObjClassID cls_id)
+{
+	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Name"),				LTools->m_LastFileName.c_str());
+	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Created by"),		m_OwnerName.size()?m_OwnerName.c_str():"unknown");
+	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Created at"),		(m_CreateTime!=0)?Trim(AnsiString(ctime(&m_CreateTime))).c_str():"unknown");
+    // tools options
+    if (OBJCLASS_DUMMY==cls_id){
+        SceneToolsMapPairIt _I 			= FirstTools();
+        SceneToolsMapPairIt _E			= LastTools();
+        for (; _I!=_E; _I++){
+	        ESceneCustomMTools* mt		= _I->second;
+            if ((_I->first!=OBJCLASS_DUMMY)&&mt&&mt->IsEditable()){
+                PHelper().CreateCaption	(items,PrepareKey(mt->ClassDesc(),"Last modified by"),	mt->m_ModifName.size()?mt->m_ModifName.c_str():"unknown");
+                PHelper().CreateCaption	(items,PrepareKey(mt->ClassDesc(),"Last modified at"),	(mt->m_ModifTime!=0)?Trim(AnsiString(ctime(&mt->m_ModifTime))).c_str():"unknown");
+                _I->second->FillProp	(mt->ClassDesc(),items);
+            }
+        }
+    }else{
+        ESceneCustomMTools* mt			= GetMTools	(cls_id);
+        if (mt&&mt->IsEditable()){
+            PHelper().CreateCaption		(items,PrepareKey(mt->ClassDesc(),"Last modified by"),	mt->m_ModifName.size()?mt->m_ModifName.c_str():"unknown");
+            PHelper().CreateCaption		(items,PrepareKey(mt->ClassDesc(),"Last modified at"),	(mt->m_ModifTime!=0)?Trim(AnsiString(ctime(&mt->m_ModifTime))).c_str():"unknown");
+         	mt->FillProp				(mt->ClassDesc(),items);
+        }
+    }
 }
 

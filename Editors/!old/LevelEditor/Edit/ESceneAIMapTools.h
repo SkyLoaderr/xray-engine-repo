@@ -10,6 +10,7 @@
 
 // refs
 class ESceneAIMapTools;
+struct SAINode;
 
 const DWORD InvalidNode		= (1<<24)-1;
 
@@ -55,6 +56,10 @@ struct SAINode					// definition of "patch" or "node"
 
     void   		Load	(IReader&, ESceneAIMapTools*);
     void   		Save	(IWriter&, ESceneAIMapTools*);
+
+	void*		operator 	new		(std::size_t size);
+	void*		operator 	new		(std::size_t size, SAINode*);
+	void 		operator 	delete	(void*);
 };
 #pragma pack(pop)
 
@@ -89,10 +94,9 @@ protected:
 	SAINode* 			FindNeighbor			(SAINode* N, int side, bool bIgnoreConstraints);
 	void 				MotionSimulate			(Fvector& result, Fvector& start, Fvector& end, float _radius, float _height);
 
-    void				RemoveNode				(AINodeIt N);
 	SAINode* 			BuildNode				(Fvector& vFrom, Fvector& vAt, bool bIgnoreConstraints, bool bSuperIgnoreConstraints=false);
 	int	 				BuildNodes				(const Fvector& pos, int sz, bool bIgnoreConstraints);
-	void 				BuildNodes				();
+	void 				BuildNodes				(bool bFromSelectedOnly);
 	BOOL 				CreateNode				(Fvector& vAt, SAINode& N, bool bIgnoreConstraints);
 	BOOL 				CanTravel				(Fvector _from, Fvector _at);
 
@@ -181,7 +185,7 @@ public:
 	virtual void		OnSynchronize			();
 
     // utils
-    bool				GenerateMap				();
+    bool				GenerateMap				(bool bFromSelectedOnly);
 	virtual bool 		GetSummaryInfo			(SSceneSummary* inf){return false;}
     virtual void		GetBBox 				(Fbox& bb, bool bSelOnly);
 
