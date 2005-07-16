@@ -638,8 +638,9 @@ function try_switch_to_another_section(npc, st, actor)
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_signal" or c.name == "on_signal2" then
-			printf("_bp: on_signal (c.v1 = %s)", c.v1)
+			--printf("_bp: on_signal (c.v1 = %s)", c.v1)
 			if st.signals and st.signals[c.v1] then
+			    printf("_bp: on_signal (c.v1 = %s) signalled", c.v1)
 				--printf("_bp: signalled")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
