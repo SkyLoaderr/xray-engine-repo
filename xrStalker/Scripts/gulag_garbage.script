@@ -229,6 +229,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
+				
 		
 		t = { section = "logic@gar_bandit_agr_restrictor_raid",
 			idle = 0,

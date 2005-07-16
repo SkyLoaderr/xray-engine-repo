@@ -106,6 +106,7 @@ path_walk = raid_walk2
 path_look = raid_look2
 combat_ignore_cond = {-gar_counter_fire}
 on_signal = start2 | %+gar_open_fire%
+default_state_moving1 = assault
 
 
 [combat_ignore@bandit]
@@ -215,9 +216,8 @@ active = walker1@hellcar_way
 [walker1@hellcar_way]
 path_walk = hellcar_walk
 path_look = hellcar_look
-on_info = {+gar_animation_radio} remark@hellcar_way_radio
-;walker3@hellcar_way
-;
+on_info = {+gar_animation_radio} walker3@hellcar_way
+;remark@hellcar_way_radio
 meet = meet
 
 [walker11@hellcar_way]
