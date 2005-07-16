@@ -2,127 +2,49 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#ifndef LocatorAPIH
-#define LocatorAPIH
+#ifndef ELocatorAPIH
+#define ELocatorAPIH
 #pragma once
 
-// refs 
-class	CFS_PathNotificator;
+#include "LocatorAPI_defs.h"
 
-enum FS_List
-{
-	FS_ListFiles	=(1<<0),
-	FS_ListFolders	=(1<<1),
-	FS_ClampExt		=(1<<2),
-	FS_RootOnly		=(1<<3),
-	FS_forcedword	=u32(-1)
+// refs
+namespace std{
+	struct _finddata_t;
 };
 
-class XRCORE_API FS_Path
-{
+struct FS_File{
+    unsigned 				attrib;
+    _TIME_T  				time_create;   	// -1 for FAT file systems
+    _TIME_T  				time_access;   	// -1 for FAT file systems
+    _TIME_T  				time_write;
+    long     				size;
+    xr_string				name;			// low-case name
 public:
-	enum{
-    	flRecurse	= (1<<0),
-    	flNotif		= (1<<1),
-    	flNeedRescan= (1<<2),
-    };
-public:
-	LPSTR		m_Path;
-	LPSTR		m_Root;
-	LPSTR		m_Add;
-	LPSTR		m_DefExt;
-	LPSTR		m_FilterCaption;
-    Flags32		m_Flags;
-public:
-				FS_Path		(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt=0, LPCSTR _FilterString=0, u32 flags=0);
-				~FS_Path	();
-	LPCSTR		_update		(LPSTR dest, LPCSTR src) const;
-	void		_update		(xr_string& dest, LPCSTR src) const;
-	void		_set		(LPSTR add);
-
-    void __stdcall rescan_path_cb	();
+                            FS_File		(xr_string nm){name=nm;xr_strlwr(name);}
+                            FS_File		(){}
+                            FS_File		(const std::_finddata_t& f){set(f);}
+                            FS_File		(xr_string nm, const std::_finddata_t& f){set(nm,f);}
+    void					set			(xr_string nm, const std::_finddata_t& f);
+    void					set			(const std::_finddata_t& f);
+	bool 					operator<	(const FS_File& _X) const	{return xr_strcmp(name.c_str(),_X.name.c_str())<0; }
 };
-
-// query
-struct FS_QueryItem
-{
-	enum{
-    	flSubDir=(1<<0),
-    	flVFS	=(1<<1)
-    };
-	u32			size;
-    u32			modif;
-    Flags32		flags;
-    			FS_QueryItem	():size(0),modif(0){flags.zero();}
-    			FS_QueryItem	(u32 sz, u32 mf, u32 fl=0){set(sz,mf,fl);}
-    void 		set				(u32 sz, u32 mf, u32 fl=0)
-    {
-    	size	= sz;
-        modif	= mf;
-        flags.assign(fl);
-    }
-};
-DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
+DEFINE_SET					(FS_File,FS_FileSet,FS_FileSetIt);
 
 class XRCORE_API CLocatorAPI  
 {
 	friend class FS_Path;
 public:
-	struct	file
-	{
-		LPCSTR					name;			// low-case name
-		u32						vfs;			// 0xffffffff - standart file
-		u32						ptr;			// pointer inside vfs
-		u32						size_real;		// 
-		u32						size_compressed;// if (size_real==size_compressed) - uncompressed
-        u32						modif;			// for editor
-	};
 private:
-	struct	file_pred: public 	std::binary_function<file&, file&, bool> 
-	{	
-		IC bool operator()	(const file& x, const file& y) const
-		{	return xr_strcmp(x.name,y.name)<0;	}
-	};
-	struct	archive
-	{
-		shared_str				path;
-		void					*hSrcFile, *hSrcMap;
-		u32						size;
-	};
 	DEFINE_MAP_PRED				(LPCSTR,FS_Path*,PathMap,PathPairIt,pred_str);
 	PathMap						pathes;
-
-	DEFINE_SET_PRED				(file,files_set,files_it,file_pred);
-    DEFINE_VECTOR				(archive,archives_vec,archives_it);
-
-    CFS_PathNotificator*		FThread;
-    int							m_iLockRescan	;
-    void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
-    void						check_pathes	();
-
-	files_set					files			;
-    archives_vec				archives		;
-	BOOL						bNoRecurse		;
-
-	xrCriticalSection			m_auth_lock		;
-	u64							m_auth_code		;
-
-	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
-	void						ProcessArchive	(LPCSTR path);
-	void						ProcessOne		(LPCSTR path, void* F);
-	bool						Recurse			(LPCSTR path);
-
-    void						SetEventNotification	();
-    void						ClearEventNotification	();
-
-	files_it					file_find_it	(LPCSTR n);
 public:
 	enum{
 		flNeedRescan			= (1<<0),
-		flBuildCopy				= (1<<1),
+		flBuildCopy				= (1<<1),                                
 		flReady					= (1<<2),
 		flEBuildCopy			= (1<<3),
-		flEventNotificator      = (1<<4),
+//.		flEventNotificator      = (1<<4),
 		flTargetFolderOnly		= (1<<5),
 		flCacheFiles			= (1<<6),
 		flScanAppRoot			= (1<<7),
@@ -144,17 +66,17 @@ public:
 	IC IWriter*					w_open			(LPCSTR N){return w_open(0,N);}
 	void						w_close			(IWriter* &S);
 
-	const file*					exist			(LPCSTR N);
-	const file*					exist			(LPCSTR path, LPCSTR name);
-	const file*					exist			(LPSTR fn, LPCSTR path, LPCSTR name);
-	const file*					exist			(LPSTR fn, LPCSTR path, LPCSTR name, LPCSTR ext);
+	BOOL						exist			(LPCSTR N);
+	BOOL						exist			(LPCSTR path, LPCSTR name);
+	BOOL						exist			(LPSTR fn, LPCSTR path, LPCSTR name);
+	BOOL						exist			(LPSTR fn, LPCSTR path, LPCSTR name, LPCSTR ext);
 
     BOOL 						can_write_to_folder	(LPCSTR path); 
     BOOL 						can_write_to_alias	(LPCSTR path); 
     BOOL						can_modify_file	(LPCSTR fname);
     BOOL						can_modify_file	(LPCSTR path, LPCSTR name);
 
-    BOOL 						dir_delete			(LPCSTR path,LPCSTR nm,BOOL remove_files);
+    BOOL 						dir_delete			(LPCSTR initial, LPCSTR N,BOOL remove_files);
     BOOL 						dir_delete			(LPCSTR full_path,BOOL remove_files){return dir_delete(0,full_path,remove_files);}
     void 						file_delete			(LPCSTR path,LPCSTR nm);
     void 						file_delete			(LPCSTR full_path){file_delete(0,full_path);}
@@ -165,33 +87,19 @@ public:
     u32  						get_file_age		(LPCSTR nm);
     void 						set_file_age		(LPCSTR nm, u32 age);
 
-	xr_vector<LPSTR>*			file_list_open		(LPCSTR initial, LPCSTR folder,	u32 flags=FS_ListFiles);
-	xr_vector<LPSTR>*			file_list_open		(LPCSTR path,					u32 flags=FS_ListFiles);
-	void						file_list_close		(xr_vector<LPSTR>* &lst);
-                                                     
-    bool						path_exist			(LPCSTR path);
+    BOOL						path_exist			(LPCSTR path);
     FS_Path*					get_path			(LPCSTR path);
     FS_Path*					append_path			(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive);
     LPCSTR						update_path			(LPSTR dest, LPCSTR initial, LPCSTR src);
 
-	int							file_list			(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
-	bool						file_find			(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext);
+	BOOL						file_find			(LPCSTR full_name, FS_File* f=0);
+
+	int							file_list			(FS_FileSet& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
     void						update_path			(xr_string& dest, LPCSTR initial, LPCSTR src);
-
-	// 
-	void						register_archieve	(LPCSTR path);
-	void						auth_generate		(xr_vector<xr_string>&	ignore, xr_vector<xr_string>&	important);
-	u64							auth_get			();
-	void						auth_runtime		(void*);
-
-	// editor functions
-	void						rescan_pathes		();
-	void						lock_rescan			();
-	void						unlock_rescan		();
 };
 
 extern XRCORE_API	CLocatorAPI*					xr_FS;
 #define FS (*xr_FS)
 
-#endif // LocatorAPIH
+#endif // ELocatorAPIH
 
