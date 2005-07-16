@@ -1375,12 +1375,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
 				end
-			else
-				return gulag.state
 			end
+			return 0
 		end
 	end
 	
@@ -1417,12 +1414,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
-				end
-			else
-				return gulag.state
+				end			
 			end
+			return 0
 		end
 	end
 	
@@ -1432,12 +1426,9 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
 				end
-			else
-				return gulag.state
 			end
+			return 0
 		end
 	end
 	
@@ -1447,14 +1438,27 @@ function load_states(gname, type)
 			if t and db.actor then
 				if t:inside(db.actor:position()) then
 					return 1
-				else
-					return 0
 				end
-			else
-				return gulag.state
 			end
+			return 0
 		end
 	end
+	
+--	if type == "bar_roaming_dogs" then        
+--		return function(gulag)
+--			local t = db.zone_by_name["bar_roaming_dogs_territory"]
+--			if t and db.actor then
+--				if t:inside(db.actor:position()) then
+--					return 1
+--				end			
+--			end
+--			return 0
+--		end
+--	end
+	
+	
+	
+	
 	
 	if type == "gar_dolg_blokpost" then
 		return function(gulag)
