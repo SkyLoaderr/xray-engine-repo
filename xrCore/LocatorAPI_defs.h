@@ -35,9 +35,15 @@ public:
     void __stdcall rescan_path_cb	();
 };
 
-
-// refs
-struct _finddata_t;
+#ifdef _EDITOR
+namespace std{
+	struct 				_finddata_t;
+};
+#	define _FINDDATA_T	std::_finddata_t
+#else
+	struct 				_finddata_t;
+#	define _FINDDATA_T	_finddata_t
+#endif
 
 struct FS_File{
 	enum{
@@ -50,9 +56,10 @@ struct FS_File{
 	xr_string	name;			// low-case name
 	void		set			(xr_string nm, long sz, time_t modif,unsigned attr);
 public:
+				FS_File		(){}
 				FS_File		(xr_string nm);
-				FS_File		(const _finddata_t& f);
-				FS_File		(xr_string nm, const _finddata_t& f);
+				FS_File		(const _FINDDATA_T& f);
+				FS_File		(xr_string nm, const _FINDDATA_T& f);
 				FS_File		(xr_string nm, long sz, time_t modif,unsigned attr);
 	bool 		operator<	(const FS_File& _X) const	{return xr_strcmp(name.c_str(),_X.name.c_str())<0; }
 };

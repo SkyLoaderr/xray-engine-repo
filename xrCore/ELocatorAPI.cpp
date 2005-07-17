@@ -22,21 +22,6 @@ CLocatorAPI*	xr_FS	= NULL;
 #define FSLTX	"fsgame.ltx"
 #endif
 
-void FS_File::set(xr_string nm, const std::_finddata_t& f)
-{
-    attrib		= f.attrib;
-    time_create	= f.time_create;
-    time_access	= f.time_access;
-    time_write	= f.time_write;
-    size		= f.size;
-    name		= nm; 			xr_strlwr(name);
-}
-
-void FS_File::set(const std::_finddata_t& f)
-{
-	set			(f.name,f);
-}
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -54,7 +39,7 @@ CLocatorAPI::~CLocatorAPI()
 {
 }
 
-void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
+void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_fname)
 {
 	if (m_Flags.is(flReady))return;
 
@@ -69,7 +54,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 	if (m_Flags.is(flTargetFolderOnly)){
 		append_path		("$target_folder$",target_folder,0,TRUE);
 	}else{
-		IReader* F		= r_open(FSLTX); 
+		IReader* F		= r_open((fs_fname&&fs_fname[0])?fs_fname:FSLTX); 
 		if (!F&&m_Flags.is(flScanAppRoot))
 			F			= r_open("$app_root$",FSLTX); 
 		R_ASSERT3		(F,"Can't open file:", FSLTX);
@@ -129,7 +114,7 @@ BOOL CLocatorAPI::file_find(LPCSTR full_name, FS_File& f)
     _finddata_t		sFile;
 	// find all files    
 	if (-1!=(hFile=_findfirst((LPSTR)full_name, &sFile))){
-    	f.set		(sFile);
+    	f			= FS_File(sFile);
         _findclose	(hFile);
         return		TRUE;
     }else{
@@ -268,12 +253,7 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
 
     // build mask
 	SStringVec 		masks;
-	if (mask&&mask[0]){
-		int cnt		= _GetItemCount(mask);
-		string64	buf;
-		for (int k=0; k<cnt; k++)
-            masks.push_back(_GetItem(mask,k,buf));
-	}
+	_SequenceToList	(masks,mask);
 
     file_list_cb_data data;
     data.base_len	= fpath.size();

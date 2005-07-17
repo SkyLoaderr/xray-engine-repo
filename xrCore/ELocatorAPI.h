@@ -8,29 +8,6 @@
 
 #include "LocatorAPI_defs.h"
 
-// refs
-namespace std{
-	struct _finddata_t;
-};
-
-struct FS_File{
-    unsigned 				attrib;
-    _TIME_T  				time_create;   	// -1 for FAT file systems
-    _TIME_T  				time_access;   	// -1 for FAT file systems
-    _TIME_T  				time_write;
-    long     				size;
-    xr_string				name;			// low-case name
-public:
-                            FS_File		(xr_string nm){name=nm;xr_strlwr(name);}
-                            FS_File		(){}
-                            FS_File		(const std::_finddata_t& f){set(f);}
-                            FS_File		(xr_string nm, const std::_finddata_t& f){set(nm,f);}
-    void					set			(xr_string nm, const std::_finddata_t& f);
-    void					set			(const std::_finddata_t& f);
-	bool 					operator<	(const FS_File& _X) const	{return xr_strcmp(name.c_str(),_X.name.c_str())<0; }
-};
-DEFINE_SET					(FS_File,FS_FileSet,FS_FileSetIt);
-
 class XRCORE_API CLocatorAPI  
 {
 	friend class FS_Path;
@@ -55,7 +32,7 @@ public:
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
-	void						_initialize		(u32 flags, LPCSTR target_folder=0);
+	void						_initialize		(u32 flags, LPCSTR target_folder=0, LPCSTR fs_fname=0);
 	void						_destroy		();
 
 	IReader*					r_open			(LPCSTR initial, LPCSTR N);
