@@ -169,7 +169,7 @@ function load_dialog:OnListItemClicked()
 	local item_text = item:GetText()
 	
 	local f = getFS();
-	local flist = f:file_list_open_ex("$game_saves$",FS.FS_ListFiles, item_text .. ".dds")
+	local flist = f:file_list_open_ex("$game_saves$",FS.FS_ListFiles, item_text .. "*.dds")
 	local f_cnt = flist:Size()
 	
 	if f_cnt > 0 then

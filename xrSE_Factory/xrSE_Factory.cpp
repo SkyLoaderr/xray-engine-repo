@@ -61,7 +61,7 @@ BOOL APIENTRY DllMain		(HANDLE module_handle, DWORD call_reason, LPVOID reserved
 {
 	switch (call_reason) {
 		case DLL_PROCESS_ATTACH: {
- 			Core._initialize			("xrSE_Factory",NULL);
+ 			Core._initialize			("xrSE_Factory",NULL,TRUE,"fsfactory.ltx");
 			string_path					SYSTEM_LTX;
 			FS.update_path				(SYSTEM_LTX,"$game_config$","system.ltx");
 			pSettings					= xr_new<CInifile>(SYSTEM_LTX);
