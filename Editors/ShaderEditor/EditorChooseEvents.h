@@ -80,7 +80,7 @@ void __stdcall  DrawObjectTHM(LPCSTR name, HDC hdc, const Irect& r)
 void __stdcall  FillGroup(ChooseItemVec& items, void* param)
 {
     FS_FileSet lst;
-    if (FS.file_list(lst,_groups_,FS_ListFiles|FS_ClampExt,".group")){
+    if (FS.file_list(lst,_groups_,FS_ListFiles|FS_ClampExt,"*.group")){
 	    FS_FileSetIt	it			= lst.begin();
     	FS_FileSetIt	_E			= lst.end();
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
@@ -106,7 +106,7 @@ void __stdcall  DrawGroupTHM(LPCSTR name, HDC hdc, const Irect& r)
 void __stdcall  FillVisual(ChooseItemVec& items, void* param)
 {
     FS_FileSet lst;
-    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".ogf")){
+    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,"*.ogf")){
 	    FS_FileSetIt	it			= lst.begin();
     	FS_FileSetIt	_E			= lst.end();
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
@@ -134,7 +134,7 @@ void __stdcall  SelectVisual(SChooseItem* item, PropItemVec& info_items)
 void __stdcall  FillGameObjectMots(ChooseItemVec& items, void* param)
 {
     FS_FileSet lst;
-    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".omf")){
+    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,"*.omf")){
 	    FS_FileSetIt	it			= lst.begin();
     	FS_FileSetIt	_E			= lst.end();
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));
@@ -147,7 +147,7 @@ void __stdcall  SelectGameObjectMots(SChooseItem* item, PropItemVec& info_items)
 void __stdcall  FillGameAnim(ChooseItemVec& items, void* param)
 {
     FS_FileSet lst;
-    if (FS.file_list(lst,"$game_anims$",FS_ListFiles,".anm,*.anms")){
+    if (FS.file_list(lst,"$game_anims$",FS_ListFiles,"*.anm,*.anms")){
 	    FS_FileSetIt	it			= lst.begin();
     	FS_FileSetIt	_E			= lst.end();
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->name.c_str(),""));

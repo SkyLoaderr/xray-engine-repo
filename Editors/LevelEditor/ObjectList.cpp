@@ -239,9 +239,13 @@ extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 void __fastcall TfrmObjectList::tvItemsKeyPress(TObject *Sender,
       char &Key)
 {
-	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    FHelper.RestoreSelection(tvItems,node,false);
+	if (Key==VK_RETURN){
+		ExecCommand	(COMMAND_SHOW_PROPERTIES);
+    }else{
+		TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
+    	if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
+	    FHelper.RestoreSelection(tvItems,node,false);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -258,4 +262,9 @@ void __fastcall TfrmObjectList::tvItemsAfterSelectionChange(
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmObjectList::tvItemsDblClick(TObject *Sender)
+{
+	ExecCommand	(COMMAND_SHOW_PROPERTIES);
+}
+//---------------------------------------------------------------------------
 

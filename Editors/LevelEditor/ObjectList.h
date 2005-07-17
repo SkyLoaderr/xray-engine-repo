@@ -27,12 +27,12 @@ __published:	// IDE-managed Components
 	TRadioGroup *rgSO;
 	TExtBtn *ebShowSel;
 	TExtBtn *ebHideSel;
-	TElTree *tvItems;
 	TFormStorage *fsStorage;
 	TPanel *Panel2;
 	TExtBtn *sbRefreshList;
 	TExtBtn *sbClose;
 	TExtBtn *ebShowProperties;
+	TElTree *tvItems;
     void __fastcall sbCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall ebHideSelClick(TObject *Sender);
@@ -47,6 +47,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall tvItemsAfterSelectionChange(TObject *Sender);
 	void __fastcall ebShowPropertiesClick(TObject *Sender);
+	void __fastcall tvItemsDblClick(TObject *Sender);
 private:	// User declarations
     int obj_count;
     int cur_cls;
