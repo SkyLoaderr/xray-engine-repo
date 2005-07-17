@@ -22,16 +22,6 @@ CLocatorAPI*	xr_FS	= NULL;
 #define FSLTX	"fsgame.ltx"
 #endif
 
-BOOL is_dir(LPCSTR name, unsigned attrib)
-{
-	if (attrib&_A_SUBDIR){
-	    if (0==xr_strcmp(name,"."))	return FALSE;
-    	if (0==xr_strcmp(name,".."))return FALSE;
-        return 	TRUE;
-    }
-    return 		FALSE;
-}
-
 void FS_File::set(xr_string nm, const std::_finddata_t& f)
 {
     attrib		= f.attrib;
@@ -133,13 +123,13 @@ void CLocatorAPI::_destroy		()
 	pathes.clear	();
 }
 
-BOOL CLocatorAPI::file_find(LPCSTR full_name, FS_File* f)
+BOOL CLocatorAPI::file_find(LPCSTR full_name, FS_File& f)
 {
     intptr_t		hFile;
     _finddata_t		sFile;
 	// find all files    
 	if (-1!=(hFile=_findfirst((LPSTR)full_name, &sFile))){
-    	if (f)		f->set(sFile);
+    	f.set		(sFile);
         _findclose	(hFile);
         return		TRUE;
     }else{
@@ -149,7 +139,7 @@ BOOL CLocatorAPI::file_find(LPCSTR full_name, FS_File* f)
 
 BOOL CLocatorAPI::exist			(const char* fn)
 {
-	return file_find(fn);
+	return ::GetFileAttributes(fn) != u32(-1);
 }
 
 BOOL CLocatorAPI::exist			(const char* path, const char* name)
@@ -173,15 +163,20 @@ BOOL CLocatorAPI::exist			(char* fn, const char* path, const char* name, const c
 	return exist	(fn);
 }
 
-struct fl_mask{
-	bool 		b_cmp_nm;
-    bool		b_cmp_ext;
-	xr_string 	nm;
-    xr_string 	ext;
-    			fl_mask		():b_cmp_nm(false),b_cmp_ext(false){};
-};
-DEFINE_VECTOR	(fl_mask,FLMaskVec,FLMaskVecIt);
 
+bool PatternMatch(LPCSTR s, LPCSTR mask)
+{
+	LPCSTR cp=0;
+	LPCSTR mp=0;
+  	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
+  	for (;;) {
+        if (!*s) { while (*mask=='*') mask++; return !*mask; }
+        if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }
+        if (*mask==*s||*mask=='?') { mask++, s++; continue; }
+        mask=mp; s=cp++;
+	}
+}
+  
 typedef void	(__stdcall * TOnFind)	(_finddata_t&, void*);
 void Recurse	(LPCSTR, bool, TOnFind, void*);
 void ProcessOne	(LPCSTR path, _finddata_t& F, bool root_only, TOnFind on_find_cb, void* data)
@@ -212,27 +207,24 @@ void Recurse(LPCSTR path, bool root_only, TOnFind on_find_cb, void* data)
 	xr_string		fpath	= path;
 	fpath			+= "*.*";
 
-    // begind search
+    // begin search
     _finddata_t		sFile;
     intptr_t		hFile;
 
 	// find all files    
 	if (-1==(hFile=_findfirst((LPSTR)fpath.c_str(), &sFile)))
     	return;
-        
     do{
     	ProcessOne	(path,sFile, root_only, on_find_cb, data);
     }while(_findnext(hFile,&sFile)==0);
 	_findclose		( hFile );
-
 }
 
 struct file_list_cb_data
 {
 	u32 		base_len;
     u32 		flags;
-    bool		b_mask;
-    FLMaskVec* 	masks;
+    SStringVec* masks;
     FS_FileSet* dest;
 };
 
@@ -247,19 +239,10 @@ void file_list_cb(_finddata_t& entry, void* data)
         LPCSTR entry_begin 		= entry.name+D->base_len;
         if ((D->flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	return;	// folder in folder
         // check extension
-        if (D->b_mask){
-            xr_string 		nm;
-            _GetItem			(entry_begin,0,nm,'.');
-            LPCSTR ext			= strext(entry_begin);
+        if (D->masks){
             bool bOK			= false;
-            for (FLMaskVecIt it=D->masks->begin(); it!=D->masks->end(); it++){
-                bool bNM		= true;
-                bool bEXT		= true;
-                if (it->b_cmp_nm)	if (nm!=it->nm) 	   		bNM =false;
-                if (it->b_cmp_ext)	if (!ext||(ext!=it->ext))	bEXT=false;
-                bOK				= bNM&&bEXT;
-                if (bOK)		break;
-            }
+            for (SStringVecIt it=D->masks->begin(); it!=D->masks->end(); it++)
+                if (PatternMatch(entry_begin,it->c_str())){bOK=true; break;}
             if (!bOK)			return;
         }
         xr_string fn			= entry_begin;
@@ -284,35 +267,23 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
     else					fpath=path;
 
     // build mask
-    BOOL b_mask 	= FALSE;
-	FLMaskVec 		masks;
-	if (mask){
+	SStringVec 		masks;
+	if (mask&&mask[0]){
 		int cnt		= _GetItemCount(mask);
 		string64	buf;
-		for (int k=0; k<cnt; k++){
-        	_GetItem(mask,k,buf);
-            fl_mask item;
-        	// name
-			string64 nm;
-        	_GetItem(buf,0,nm,'.'); 
-			if (nm&&nm[0]&&(nm[0]!='*'))	{	item.nm=nm; item.b_cmp_nm=true;		}
-			// extension
-            LPCSTR ext	= strext(buf);
-			if (ext&&ext[0]&&(ext[1]!='*'))	{	item.ext=ext; item.b_cmp_ext=true; 	}
-            masks.push_back(item);
-        }
-        b_mask		= !masks.empty();
+		for (int k=0; k<cnt; k++)
+            masks.push_back(_GetItem(mask,k,buf));
 	}
 
     file_list_cb_data data;
     data.base_len	= fpath.size();
     data.flags		= flags;
-    data.b_mask		= b_mask;
-    data.masks		= &masks;
+    data.masks		= masks.empty()?0:&masks;
     data.dest		= &dest;
-    
-    Recurse			(fpath.c_str(),flags&FS_RootOnly,file_list_cb,&data);
 
+CTimer TTT; TTT.Start();
+    Recurse			(fpath.c_str(),flags&FS_RootOnly,file_list_cb,&data);
+Log("Recurse",TTT.Stop());
 	return dest.size();
 }
 
@@ -328,7 +299,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 
 	// Search entry
     FS_File			desc;
-    if (!file_find(fname,&desc)) return NULL;
+    if (!file_find(fname,desc)) return NULL;
 
 	dwOpenCounter	++;
 
@@ -482,7 +453,7 @@ void CLocatorAPI::file_copy(LPCSTR src, LPCSTR dest)
 
 void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 {
-	if (bOwerwrite&&file_find(dest)) unlink(dest);
+	if (bOwerwrite&&exist(dest)) unlink(dest);
     // physically rename file
     VerifyPath			(dest);
     rename				(src,dest);
@@ -491,7 +462,7 @@ void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 int	CLocatorAPI::file_length(LPCSTR src)
 {
 	FS_File F;
-    return (file_find(src,&F))?F.size:-1;
+    return (file_find(src,F))?F.size:-1;
 }
 
 BOOL CLocatorAPI::path_exist(LPCSTR path)
@@ -529,7 +500,7 @@ void CLocatorAPI::update_path(xr_string& dest, LPCSTR initial, LPCSTR src)
 u32 CLocatorAPI::get_file_age(LPCSTR nm)
 {
 	FS_File F;
-    return (file_find(nm,&F))?F.time_write:-1;
+    return (file_find(nm,F))?F.time_write:-1;
 }
 
 void CLocatorAPI::set_file_age(LPCSTR nm, u32 age)

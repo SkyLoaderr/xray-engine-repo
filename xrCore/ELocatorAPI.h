@@ -92,7 +92,7 @@ public:
     FS_Path*					append_path			(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive);
     LPCSTR						update_path			(LPSTR dest, LPCSTR initial, LPCSTR src);
 
-	BOOL						file_find			(LPCSTR full_name, FS_File* f=0);
+	BOOL						file_find			(LPCSTR full_name, FS_File& f);
 
 	int							file_list			(FS_FileSet& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
     void						update_path			(xr_string& dest, LPCSTR initial, LPCSTR src);
