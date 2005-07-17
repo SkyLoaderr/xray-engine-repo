@@ -391,7 +391,7 @@ bool CSHEngineTools::Save()
     FS.update_path				(fn,_game_data_,"shaders.xr");
 
     // backup file
-    EFS.BackupFile				(_game_data_,fn.c_str());
+    EFS.BackupFile				(_game_data_,fn.c_str(),50);
 
     // collapse reference
 	CollapseReferences();

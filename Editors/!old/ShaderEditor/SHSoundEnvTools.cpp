@@ -200,7 +200,7 @@ bool CSHSoundEnvTools::Save()
 	xr_string fn;
     FS.update_path				(fn,_game_data_,SNDENV_FILENAME);  
     // backup file
-    EFS.BackupFile				(_game_data_,SNDENV_FILENAME);
+    EFS.BackupFile				(_game_data_,SNDENV_FILENAME,50);
 
     // save new file
     EFS.UnlockFile				(0,fn.c_str(),false);
