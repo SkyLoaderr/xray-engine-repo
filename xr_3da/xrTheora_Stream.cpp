@@ -13,10 +13,15 @@
 #endif
 */
 
-#pragma comment(lib,	"x:\\ogg.lib")
-#pragma comment(lib,	"x:\\theora.lib") 
+#ifdef _EDITOR
+#	pragma comment(lib,	"x:\\oggB.lib")
+#	pragma comment(lib,	"x:\\theoraB.lib") 
+#else
+#	pragma comment(lib,	"x:\\ogg.lib")
+#	pragma comment(lib,	"x:\\theora.lib") 
+#endif
 
-CTheoraStream::CTheoraStream()
+CTheoraStream::CTheoraStream()                        
 {
 	// clear self
 	source				= 0;

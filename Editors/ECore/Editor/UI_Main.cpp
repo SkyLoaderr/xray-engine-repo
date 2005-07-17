@@ -442,12 +442,12 @@ void TUI::Idle()
     pInput->OnFrame();
     Sleep(1);
     if (ELog.in_use) return;
-    // test quit
-    if (m_Flags.is(flNeedQuit))	RealQuit();
 
     OnFrame			();
-
     if (m_Flags.is(flRedraw))	RealRedrawScene();
+
+    // test quit
+    if (m_Flags.is(flNeedQuit))	RealQuit();
 }
 //---------------------------------------------------------------------------
 void ResetActionToSelect()

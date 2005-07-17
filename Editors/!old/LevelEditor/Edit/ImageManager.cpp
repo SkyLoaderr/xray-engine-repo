@@ -531,7 +531,7 @@ void CImageManager::CheckCompliance(FS_FileSet& files, FS_FileSet& compl)
         FS.update_path			(fname,_textures_,it->name.c_str());
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->name.c_str());
-        FS_File 				F(*it); F.time_create = val;
+        FS_File 				F(*it); F.attrib = val;
         compl.insert			(F);
 	    pb->Inc					();
 		if (UI->NeedAbort()) break;
