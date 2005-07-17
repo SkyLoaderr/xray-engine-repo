@@ -79,17 +79,17 @@ public:
 
 FS_file_list_ex::FS_file_list_ex(LPCSTR path, u32 flags, LPCSTR mask)
 {
-		FS_QueryMap			file_map;
-		FS.file_list(file_map,path,flags,mask);
-	
-		for(FS_QueryPairIt it=file_map.begin();it!=file_map.end();++it){
-			m_file_items.push_back(FS_item());
-			FS_item& itm = m_file_items.back();
-			ZeroMemory(itm.name,sizeof(itm.name));
-			strcat(itm.name,it->first.c_str());
-			itm.modif = it->second.modif;
-			itm.size = it->second.size;
-		}
+	FS_FileSet		files;
+	FS.file_list(files,path,flags,mask);
+
+	for(FS_FileSetIt it=files.begin();it!=files.end();++it){
+		m_file_items.push_back	(FS_item());
+		FS_item& itm			= m_file_items.back();
+		ZeroMemory				(itm.name,sizeof(itm.name));
+		strcat					(itm.name,it->name.c_str());
+		itm.modif				= it->time_write;
+		itm.size				= it->size;
+	}
 }
 
 void FS_file_list_ex::Sort(u32 flags)
