@@ -45,7 +45,7 @@ namespace std{
 #	define _FINDDATA_T	_finddata_t
 #endif
 
-struct FS_File{
+struct XRCORE_API FS_File{
 	enum{
 		flSubDir= (1<<0),
 		flVFS	= (1<<1),
