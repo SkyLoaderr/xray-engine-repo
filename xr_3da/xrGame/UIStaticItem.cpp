@@ -32,7 +32,7 @@ void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 //	CTimer T;
 //	T.Start();
 //	Msg("----hShader.create-begin");
-	hShader.create	(sh,tex);
+	hShader.create(sh,tex);
 //	Msg("----hShader.create[%d]",T.GetElapsed_ms());
 
 #ifdef DEBUG
@@ -59,6 +59,8 @@ void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, float left, float top, u32 align
 	CreateShader	(tex,sh);
 	SetPos			(left,top);
 	SetAlign		(align);
+
+
 }
 //--------------------------------------------------------------------
 

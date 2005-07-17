@@ -251,10 +251,11 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 		string_path		buf;
 		IReader* F		= 0;
 		Recurse			("");
-		F				= r_open((fs_name&&fs_name[0])?fs_name:FSLTX); 
+		LPCSTR fs_ltx	= (fs_name&&fs_name[0])?fs_name:FSLTX;
+		F				= r_open(fs_ltx); 
 		if (!F&&m_Flags.is(flScanAppRoot))
-			F			= r_open("$app_root$",FSLTX); 
-		R_ASSERT3		(F,"Can't open file:", FSLTX);
+			F			= r_open("$app_root$",fs_ltx); 
+		R_ASSERT3		(F,"Can't open file:", fs_ltx);
 		// append all pathes    
 		string_path		id, temp, root, add, def, capt;
 		LPCSTR			lp_add, lp_def, lp_capt;

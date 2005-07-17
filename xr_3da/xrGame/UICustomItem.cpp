@@ -35,6 +35,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color,
 		iOriginalRect.set(0,0,ts.x,ts.y);
 		uFlags |= flValidOriginalRect;
 	}
+
+//.	VERIFY			(uFlags&flValidRect);
+//.	VERIFY			(uFlags&flValidOriginalRect);
+
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
 	//координаты на экране в пикселях
@@ -84,12 +88,16 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, fl
 	Fvector2		hp;
 	ts.set			(float(T->get_Width()),float(T->get_Height()));
 	hp.set			(0.5f/ts.x,0.5f/ts.y);
+/*	
 	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
 	if (!(uFlags&flValidOriginalRect)){
-		iOriginalRect.set(0,0,ts.x,ts.y);
+		iOriginalRect.set(0,0,-ts.x,ts.y);
 		uFlags		|= flValidOriginalRect;
 	}
+*/
+	VERIFY			(uFlags&flValidRect);
+	VERIFY			(uFlags&flValidOriginalRect);
 
 	Fvector2		pivot,offset,SZ;
 	SZ.set			(UI()->GetScaleX()*iVisRect.x2,UI()->GetScaleY()*iVisRect.y2);
