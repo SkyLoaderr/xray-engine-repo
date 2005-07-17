@@ -113,7 +113,7 @@ void TfrmSoundLib::AppendModif(LPCSTR nm)
     FS_File 		dest;
     xr_string		fname;
     FS.update_path	(fname,_sounds_,ChangeFileExt(nm,".wav").c_str());
-	BOOL bFind		= FS.file_find(fname.c_str(),&dest); R_ASSERT(bFind);
+	BOOL bFind		= FS.file_find(fname.c_str(),dest); R_ASSERT(bFind);
     modif_map.insert(dest);
 }
 //---------------------------------------------------------------------------
@@ -415,7 +415,7 @@ void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
 	xr_string fname;
     FS.update_path			(fname,_game_sounds_,ChangeFileExt(name,".ogg").c_str());
     FS_File F;
-    if (FS.file_find(fname.c_str(),&F)){
+    if (FS.file_find(fname.c_str(),F)){
         m_Snd.create		(TRUE,name);
         m_Snd.play			(0,sm_2D);
         CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;

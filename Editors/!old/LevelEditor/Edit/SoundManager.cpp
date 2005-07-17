@@ -22,7 +22,7 @@ xr_string CSoundManager::UpdateFileName(xr_string& fn)
 //------------------------------------------------------------------------------
 int CSoundManager::GetSounds(FS_FileSet& files, BOOL bFolders)
 {
-    return FS.file_list(files,_sounds_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,".wav");
+    return FS.file_list(files,_sounds_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,"*.wav");
 }
 
 int	CSoundManager::GetSoundEnvs(AStringVec& items)
@@ -120,7 +120,7 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
 //------------------------------------------------------------------------------
 int CSoundManager::GetLocalNewSounds(FS_FileSet& files)
 {
-    return FS.file_list	(files,_import_,FS_ListFiles|FS_RootOnly|FS_ClampExt,".wav");
+    return FS.file_list	(files,_import_,FS_ListFiles|FS_RootOnly|FS_ClampExt,"*.wav");
 }
 
 //------------------------------------------------------------------------------
@@ -208,10 +208,10 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     FS_FileSet M_GAME;
 
     if (source_list) M_BASE = *source_list;
-    else FS.file_list(M_BASE,_sounds_,FS_ListFiles|FS_ClampExt,".wav");
+    else FS.file_list(M_BASE,_sounds_,FS_ListFiles|FS_ClampExt,"*.wav");
     if (M_BASE.empty()) return;
-    if (sync_thm) 	FS.file_list(M_THUM,_sounds_,FS_ListFiles|FS_ClampExt,".thm");
-    if (sync_game) 	FS.file_list(M_GAME,_game_sounds_,FS_ListFiles|FS_ClampExt,".ogg");
+    if (sync_thm) 	FS.file_list(M_THUM,_sounds_,FS_ListFiles|FS_ClampExt,"*.thm");
+    if (sync_game) 	FS.file_list(M_GAME,_game_sounds_,FS_ListFiles|FS_ClampExt,"*.ogg");
 
     bool bProgress = M_BASE.size()>1;
 
@@ -290,9 +290,9 @@ void CSoundManager::CleanupSounds()
     FS_FileSet 	M_GAME_DEL;
     FS_FileSet 	M_THM_DEL;
 
-    FS.file_list	(M_BASE,_sounds_,		FS_ListFiles|FS_ClampExt,".wav");
-    FS.file_list	(M_THUM,_sounds_,		FS_ListFiles|FS_ClampExt,".thm");
-    FS.file_list	(M_GAME,_game_sounds_,	FS_ListFiles|FS_ClampExt,".ogg");
+    FS.file_list	(M_BASE,_sounds_,		FS_ListFiles|FS_ClampExt,"*.wav");
+    FS.file_list	(M_THUM,_sounds_,		FS_ListFiles|FS_ClampExt,"*.thm");
+    FS.file_list	(M_GAME,_game_sounds_,	FS_ListFiles|FS_ClampExt,"*.ogg");
 
     // lock rescanning
 //..    FS.lock_rescan	();

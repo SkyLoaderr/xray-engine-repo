@@ -119,7 +119,7 @@ void CActorTools::PreviewModel::Update()
 void _SynchronizeTextures()
 {   
 	FS_FileSet M_THUM;
-    FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
+    FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,"*.thm");
 
     FS_FileSetIt it		= M_THUM.begin();
 	FS_FileSetIt _E 	= M_THUM.end();
@@ -817,7 +817,7 @@ void CActorTools::MakeThumbnail()
         FS_File 	F;
         xr_string	fname;
         FS.update_path(fname,_objects_,obj_name.c_str());
-        R_ASSERT	(FS.file_find(fname.c_str(),&F));
+        R_ASSERT	(FS.file_find(fname.c_str(),F));
         if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,F.time_write)){
             ELog.Msg(mtInformation,"Thumbnail successfully created.");
         }else{

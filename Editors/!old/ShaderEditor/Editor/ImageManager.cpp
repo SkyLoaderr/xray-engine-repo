@@ -276,10 +276,10 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FS_FileSet M_GAME;
 
     if (source_list) M_BASE = *source_list;
-    else FS.file_list(M_BASE,_textures_,FS_ListFiles|FS_ClampExt,".tga");
+    else FS.file_list(M_BASE,_textures_,FS_ListFiles|FS_ClampExt,"*.tga");
     if (M_BASE.empty()) return;
-    if (sync_thm) 	FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
-    if (sync_game) 	FS.file_list(M_GAME,_game_textures_,FS_ListFiles|FS_ClampExt,".dds");
+    if (sync_thm) 	FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,"*.thm");
+    if (sync_game) 	FS.file_list(M_GAME,_game_textures_,FS_ListFiles|FS_ClampExt,"*.dds");
 
     bool bProgress 	= M_BASE.size()>1;
     
@@ -453,14 +453,14 @@ void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
 //------------------------------------------------------------------------------
 int CImageManager::GetTextures(FS_FileSet& files, BOOL bFolders)
 {                	
-    return FS.file_list(files,_textures_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,".tga"); 
+    return FS.file_list(files,_textures_,(bFolders?FS_ListFolders:0)|FS_ListFiles|FS_ClampExt,"*.tga"); 
 }
 //------------------------------------------------------------------------------
 // возвращает список текстур, которые нужно обновить
 //------------------------------------------------------------------------------
 int CImageManager::GetLocalNewTextures(FS_FileSet& files)
 {
-    return FS.file_list(files,_import_,FS_ListFiles|FS_RootOnly,".tga,.bmp");
+    return FS.file_list(files,_import_,FS_ListFiles|FS_RootOnly,"*.tga,*.bmp");
 }
 //------------------------------------------------------------------------------
 // проверяет соответствие размера текстур

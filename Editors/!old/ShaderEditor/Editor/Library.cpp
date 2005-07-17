@@ -186,7 +186,7 @@ void ELibrary::Save(FS_FileSet* modif_map)
 
 int ELibrary::GetObjects(FS_FileSet& files)
 {
-    return FS.file_list(files,_objects_,FS_ListFiles|FS_ClampExt,".object");
+    return FS.file_list(files,_objects_,FS_ListFiles|FS_ClampExt,"*.object");
 }
 //---------------------------------------------------------------------------
 
