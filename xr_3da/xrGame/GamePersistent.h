@@ -11,6 +11,7 @@ class CGamePersistent:
 	public IGame_Persistent, 
 	public IEventReceiver
 {
+	// ambient particles
 	CParticlesObject*	ambient_particles; 
 	u32					ambient_sound_next_time;
 	u32					ambient_effect_next_time;

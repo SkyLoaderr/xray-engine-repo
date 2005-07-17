@@ -139,6 +139,12 @@ public:
 	xr_deque<CSE_Abstract*>		game_spawn_queue;
 	xrServer*					Server;
 
+private:
+	// preload sounds registry
+	DEFINE_MAP					(shared_str,ref_sound,SoundRegistryMap,SoundRegistryMapIt);
+	SoundRegistryMap			sound_registry;
+public:
+	void						PrefetchSound (LPCSTR name);
 public:
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;

@@ -181,6 +181,12 @@ LPCSTR get_name()
 	return		(*Level().name());
 }
 
+void prefetch_sound	(LPCSTR name)
+{
+	Level().PrefetchSound(name);
+}
+
+
 CClientSpawnManager	&get_client_spawn_manager()
 {
 	return		(Level().client_spawn_manager());
@@ -349,6 +355,7 @@ void CLevel::script_register(lua_State *L)
 		def("patrol_path_exists",				patrol_path_exists),
 		def("vertex_position",					vertex_position),
 		def("name",								get_name),
+		def("prefetch_sound",					prefetch_sound),
 
 		def("client_spawn_manager",				get_client_spawn_manager),
 /*
