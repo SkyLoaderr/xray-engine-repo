@@ -35,4 +35,27 @@ public:
     void __stdcall rescan_path_cb	();
 };
 
+
+// refs
+struct _finddata_t;
+
+struct FS_File{
+	enum{
+		flSubDir= (1<<0),
+		flVFS	= (1<<1),
+	};
+	unsigned 	attrib;
+	time_t	  	time_write;
+	long     	size;
+	xr_string	name;			// low-case name
+	void		set			(xr_string nm, long sz, time_t modif,unsigned attr);
+public:
+				FS_File		(xr_string nm);
+				FS_File		(const _finddata_t& f);
+				FS_File		(xr_string nm, const _finddata_t& f);
+				FS_File		(xr_string nm, long sz, time_t modif,unsigned attr);
+	bool 		operator<	(const FS_File& _X) const	{return xr_strcmp(name.c_str(),_X.name.c_str())<0; }
+};
+DEFINE_SET		(FS_File,FS_FileSet,FS_FileSetIt);
+
 #endif //LocatorAPI_defsH

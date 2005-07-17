@@ -39,7 +39,7 @@ namespace CPU
 	extern	void			Detect	();
 };
 static u32	init_counter	= 0;
-void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
+void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, LPCSTR fs_fname)
 {
 	strcpy					(ApplicationName,_ApplicationName);
 	if (0==init_counter){	
@@ -81,7 +81,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 #ifdef	_EDITOR // for EDITORS - no cache
 		flags 				&=~ CLocatorAPI::flCacheFiles;
 #endif
-		FS._initialize		(flags);
+		FS._initialize		(flags,0,fs_fname);
 		EFS._initialize		();
 	}
 	SetLogCB				(cb);

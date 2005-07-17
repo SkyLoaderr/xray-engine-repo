@@ -2,6 +2,28 @@
 #pragma hdrstop
 
 #include "LocatorAPI_defs.h"
+#pragma warning(disable:4995)
+#include <io.h>
+#include <direct.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+#pragma warning(default:4995)
+
+//////////////////////////////////////////////////////////////////////
+// FS_File
+//////////////////////////////////////////////////////////////////////
+FS_File::FS_File(xr_string nm, long sz, time_t modif,unsigned attr)	{set(nm,sz,modif,attr);}
+FS_File::FS_File(xr_string nm)										{set(nm,0,0,0);}
+FS_File::FS_File(const _finddata_t& f)								{set(f.name,f.size,f.time_write,(f.attrib&_A_SUBDIR)?flSubDir:0);}
+FS_File::FS_File(xr_string nm, const _finddata_t& f)				{set(nm,f.size,f.time_write,(f.attrib&_A_SUBDIR)?flSubDir:0);}
+
+void FS_File::set(xr_string nm, long sz, time_t modif,unsigned attr)
+{
+	name		= nm;		xr_strlwr	(name);
+	size		= sz;
+	time_write	= modif;
+	attrib		= attr;
+}
 
 //////////////////////////////////////////////////////////////////////
 // FS_Path

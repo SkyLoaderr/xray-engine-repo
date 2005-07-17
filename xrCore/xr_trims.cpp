@@ -334,6 +334,18 @@ void _SequenceToList(RStringVec& lst, LPCSTR in, char separator)
 	}
 }
 
+void _SequenceToList(SStringVec& lst, LPCSTR in, char separator)
+{
+	lst.clear	();
+	int t_cnt	= _GetItemCount(in,separator);
+	xr_string	T;
+	for (int i=0; i<t_cnt; i++){
+		_GetItem(in,i,T,separator,0);
+		_Trim	(T);
+		if (T.size()) lst.push_back(T.c_str());
+	}
+}
+
 xr_string	_ListToSequence(const SStringVec& lst)
 {
 	static xr_string	out;

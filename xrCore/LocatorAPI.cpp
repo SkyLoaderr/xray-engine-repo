@@ -27,13 +27,12 @@ CLocatorAPI*	xr_FS	= NULL;
 //////////////////////////////////////////////////////////////////////
 CLocatorAPI::CLocatorAPI()
 {
-	FThread				= 0;
     m_Flags.zero		();
 	// get page size
 	SYSTEM_INFO			sys_inf;
 	GetSystemInfo		(&sys_inf);
 	dwAllocGranularity	= sys_inf.dwAllocationGranularity;
-    m_iLockRescan		= 0;
+    m_iLockRescan		= 0; 
 	dwOpenCounter		= 0;
 }
 
@@ -230,7 +229,7 @@ bool CLocatorAPI::Recurse		(const char* path)
     return true;
 }
 
-void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
+void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 {
 	if (m_Flags.is(flReady))return;
 
@@ -252,7 +251,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 		string_path		buf;
 		IReader* F		= 0;
 		Recurse			("");
-		F				= r_open(FSLTX); 
+		F				= r_open((fs_name&&fs_name[0])?fs_name:FSLTX); 
 		if (!F&&m_Flags.is(flScanAppRoot))
 			F			= r_open("$app_root$",FSLTX); 
 		R_ASSERT3		(F,"Can't open file:", FSLTX);
@@ -304,13 +303,6 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 	u32	M2		= Memory.mem_usage();
 	Msg				("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 
-#ifdef __BORLANDC__
-	m_Flags.set		(flEventNotificator,TRUE);
-#endif
-	if (m_Flags.is(flEventNotificator)){
-	    // set event handlers
-	    SetEventNotification();
-    }
 	m_Flags.set		(flReady,TRUE);
 
 	CreateLog		(0!=strstr(Core.Params,"-nolog"));
@@ -319,11 +311,6 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 void CLocatorAPI::_destroy		()
 {
 	CloseLog		();
-
-	if (m_Flags.is(flEventNotificator)){
-        // clear event handlers
-        ClearEventNotification		();
-    }
 
 	for				(files_it I=files.begin(); I!=files.end(); I++)
 	{
@@ -437,16 +424,20 @@ void	CLocatorAPI::file_list_close	(xr_vector<char*>* &lst)
 	}
 }
 
-struct fl_mask{
-	bool 	b_cmp_nm;
-    bool	b_cmp_ext;
-	shared_str nm;
-    shared_str ext;
-    fl_mask():b_cmp_nm(false),b_cmp_ext(false){};
-};
+bool PatternMatch(LPCSTR s, LPCSTR mask)
+{
+	LPCSTR cp=0;
+	LPCSTR mp=0;
+	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
+	for (;;) {
+		if (!*s) { while (*mask=='*') mask++; return !*mask; }
+		if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }
+		if (*mask==*s||*mask=='?') { mask++, s++; continue; }
+		mask=mp; s=cp++;
+	}
+}
 
-DEFINE_VECTOR(fl_mask,FLMaskVec,FLMaskVecIt);
-int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mask)
+int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask)
 {
 	R_ASSERT		(path);
 	VERIFY			(flags);
@@ -463,28 +454,11 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 	if (I==files.end())	return 0;
 
     BOOL b_mask 	= FALSE;
-	FLMaskVec 		masks;
-	if (mask){
-		int cnt		= _GetItemCount(mask);
-		string64	buf;
-		for (int k=0; k<cnt; k++){
-        	_GetItem(mask,k,buf);
-            fl_mask item;
-        	// name
-			string64 nm;
-        	_GetItem(buf,0,nm,'.'); 
-			if (nm&&nm[0]&&(nm[0]!='*'))	{	item.nm=nm; item.b_cmp_nm=true;		}
-			// extension
-            LPCSTR ext	= strext(buf);
-			if (ext&&ext[0]&&(ext[1]!='*'))	{	item.ext=ext; item.b_cmp_ext=true; 	}
-            masks.push_back(item);
-        }
-        b_mask		= !masks.empty();
-	}
+	SStringVec 		masks;
+	_SequenceToList	(masks,mask);
 
 	size_t base_len	= N.size();
-	for (++I; I!=files.end(); I++)
-	{
+	for (++I; I!=files.end(); I++){
 		const file& entry = *I;
 		if (0!=strncmp(entry.name,N.c_str(),base_len))	break;	// end of list
 		LPCSTR end_symbol = entry.name+xr_strlen(entry.name)-1;
@@ -495,59 +469,27 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			// check extension
 			if (b_mask){
-                xr_string 		nm;
-                _GetItem			(entry_begin,0,nm,'.');
-				LPCSTR ext			= strext(entry_begin);
-                bool bOK			= false;
-                for (FLMaskVecIt it=masks.begin(); it!=masks.end(); it++){
-                	bool bNM		= true;
-                    bool bEXT		= true;
-                    if (it->b_cmp_nm)	if (nm!=*it->nm) 					bNM =false;
-                    if (it->b_cmp_ext)	if (!ext||(0!=xr_strcmp(ext,*it->ext)))bEXT=false;
-                    bOK				= bNM&&bEXT;
-                    if (bOK)		break;
-                }
-                if (!bOK)			continue;
+				bool bOK			= false;
+				for (SStringVecIt it=masks.begin(); it!=masks.end(); it++)
+					if (PatternMatch(entry_begin,it->c_str())){bOK=true; break;}
+				if (!bOK)			continue;
 			}
 			xr_string fn			= entry_begin;
 			// insert file entry
 			if (flags&FS_ClampExt)fn= EFS.ChangeFileExt(fn,"");
-			u32 fl = (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
-			dest.insert(mk_pair(fn.c_str(),FS_QueryItem(entry.size_real,entry.modif,fl)));
+			u32 fl = (entry.vfs!=0xffffffff?FS_File::flVFS:0);
+			dest.insert(FS_File(fn,entry.size_real,entry.modif,fl));
 		} else {
 			// folder
 			if ((flags&FS_ListFolders) == 0)	continue;
 			LPCSTR entry_begin 		= entry.name+base_len;
 
 			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
-			u32 fl = FS_QueryItem::flSubDir|(entry.vfs?FS_QueryItem::flVFS:0);
-			dest.insert(mk_pair(entry_begin,FS_QueryItem(entry.size_real,entry.modif,fl)));
+			u32 fl = FS_File::flSubDir|(entry.vfs?FS_File::flVFS:0);
+			dest.insert(FS_File(entry_begin,entry.size_real,entry.modif,fl));
 		}
 	}
 	return dest.size();
-}
-
-bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext)
-{
-	R_ASSERT			(path);
-	// проверить нужно ли пересканировать пути
-    check_pathes		();
-
-	xr_string			N;
-	if (path_exist(path))	update_path(N,path,name);
-    else						N=xr_string(path)+name;
-
-	file				desc;
-	desc.name			= N.c_str();
-	files_it	I 		= files.find(desc);
-	if (I==files.end())	return false;
-
-	size_t base_len		= N.size();
-    const file& entry 	= *I;
-    xr_string fn		= (clamp_ext)?EFS.ChangeFileExt(entry.name+base_len,""):xr_string(entry.name+base_len);
-    u32 fl 				= (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
-    dest.set			(entry.size_real,entry.modif,fl);
-    return true;
 }
 
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
@@ -965,6 +907,18 @@ void  CLocatorAPI::rescan_pathes()
 			P->m_Flags.set(FS_Path::flNeedRescan,FALSE);
         }
     }
+}
+
+void CLocatorAPI::lock_rescan()
+{
+	m_iLockRescan++;
+}
+
+void CLocatorAPI::unlock_rescan()
+{
+	m_iLockRescan--;  VERIFY(m_iLockRescan>=0);
+	if ((0==m_iLockRescan)&&m_Flags.is(flNeedRescan)) 
+		rescan_pathes();
 }
 
 void CLocatorAPI::check_pathes()

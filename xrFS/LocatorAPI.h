@@ -39,8 +39,7 @@ private:
 	DEFINE_SET_PRED				(file,files_set,files_it,file_pred);
     DEFINE_VECTOR				(archive,archives_vec,archives_it);
 
-    CFS_PathNotificator*		FThread;
-    int							m_iLockRescan	;
+    int							m_iLockRescan	; 
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
     void						check_pathes	();
 
@@ -55,9 +54,6 @@ private:
 	void						ProcessArchive	(LPCSTR path);
 	void						ProcessOne		(LPCSTR path, void* F);
 	bool						Recurse			(LPCSTR path);
-
-    void						SetEventNotification	();
-    void						ClearEventNotification	();
 
 	files_it					file_find_it	(LPCSTR n);
 public:
@@ -77,7 +73,7 @@ public:
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
-	void						_initialize		(u32 flags, LPCSTR target_folder=0);
+	void						_initialize		(u32 flags, LPCSTR target_folder=0, LPCSTR fs_name=0);
 	void						_destroy		();
 
 	IReader*					r_open			(LPCSTR initial, LPCSTR N);
@@ -118,8 +114,7 @@ public:
     FS_Path*					append_path			(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive);
     LPCSTR						update_path			(LPSTR dest, LPCSTR initial, LPCSTR src);
 
-	int							file_list			(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
-	bool						file_find			(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext);
+	int							file_list			(FS_FileSet& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
     void						update_path			(xr_string& dest, LPCSTR initial, LPCSTR src);
 
 	// 

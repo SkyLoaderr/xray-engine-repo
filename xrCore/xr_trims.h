@@ -33,6 +33,7 @@ XRCORE_API LPSTR 	    __stdcall	_ReplaceItem 			( LPCSTR src, int index, LPCSTR 
 XRCORE_API LPSTR 	    __stdcall	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator );
 XRCORE_API void 	    __stdcall	_SequenceToList			( LPSTRVec& lst, LPCSTR in, char separator=',' );
 XRCORE_API void 		__stdcall	_SequenceToList			( RStringVec& lst, LPCSTR in, char separator=',' );
+XRCORE_API void 		__stdcall	_SequenceToList			( SStringVec& lst, LPCSTR in, char separator=',' );
 
 XRCORE_API xr_string& 	__stdcall	_Trim					( xr_string& src );
 XRCORE_API xr_string& 	__stdcall	_TrimLeft				( xr_string& src );

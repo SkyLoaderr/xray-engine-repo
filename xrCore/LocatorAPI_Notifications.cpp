@@ -111,15 +111,3 @@ void CLocatorAPI::ClearEventNotification()
 	DeleteCriticalSection		(&CS);
 }
 
-void CLocatorAPI::lock_rescan()
-{
-	m_iLockRescan++;
-}
-
-void CLocatorAPI::unlock_rescan()
-{
-	m_iLockRescan--;  VERIFY(m_iLockRescan>=0);
-	if ((0==m_iLockRescan)&&m_Flags.is(flNeedRescan)) 
-    	rescan_pathes();
-}
-
