@@ -42,6 +42,36 @@ function evaluator_danger:evaluate()
 		return true
 	end
 
+	-- Проверка, не находится ли данжер в списке запрещенных.
+	local bd_type = best_danger:type()	
+	if bd_type == danger_object.grenade then
+		if self.a.ignore_types["grenade"] == true then
+			printf("DANGER [%s] [TRUE] ignore grenade", self.object:name())
+			return true			
+		end
+	elseif bd_type == danger_object.entity_corpse then
+		if self.a.ignore_types["corpse"] == true then
+			printf("DANGER [%s] [TRUE] ignore corpse", self.object:name())
+			return true			
+		end
+	elseif bd_type == danger_object.entity_attacked then
+		if self.a.ignore_types["hit"] == true then
+			printf("DANGER [%s] [TRUE] ignore hit", self.object:name())
+			return true			
+		end	
+	elseif bd_type == danger_object.enemy_sound or
+	       bd_type == danger_object.attack_sound then
+		if self.a.ignore_types["sound"] == true then
+			printf("DANGER [%s] [TRUE] ignore sound", self.object:name())
+			return true			
+		end	
+	end
+    
+	
+
+
+
+
 	db.storage[self.object:id()].enemy = best_danger:object()
 	
 	-- отсеиваем по настройке combat_ignore/danger
@@ -133,10 +163,14 @@ function reset_danger(npc, scheme, st, section)
 	end
 	
 	printf("DANGER SECTION [%s]", utils.to_str(danger_section))
+	st.danger.ignore_types = {}
 	if danger_section then
 		st.danger.ignore_distance = utils.cfg_get_number(st.ini, danger_section, "ignore_distance", npc, false)
+		local t = parse_names(utils.cfg_get_string(st.ini, danger_section, "ignore_types", npc, false, ""))
+		for k,v in t do
+			st.danger.ignore_types[v] = true
+		end
 	end
-	
 	if st.danger.ignore_distance == nil then
 		st.danger.ignore_distance = 10
 	end
