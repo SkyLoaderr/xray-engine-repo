@@ -43,6 +43,103 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	
+	if type == "dar_burer_ring" then
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 10, state = {0},
+			in_rest = "", out_rest = "dar_burer_ring1",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "dar_burer_ring2",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "dar_burer_ring4",
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 10, state = {1},
+			in_rest = "", out_rest = "dar_burer_ring1",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = "dar_burer_ring2",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = "dar_burer_ring4",
+		}
+		table.insert(sj, t)
+	
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 10, state = {2},
+			in_rest = "", out_rest = "dar_burer_ring2",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "dar_burer_ring1",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {2},
+			in_rest = "", out_rest = "dar_burer_ring3",
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 10, state = {3},
+			in_rest = "", out_rest = "dar_burer_ring3",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {3},
+			in_rest = "", out_rest = "dar_burer_ring2",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {3},
+			in_rest = "", out_rest = "dar_burer_ring4",
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 10, state = {4},
+			in_rest = "", out_rest = "dar_burer_ring4",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {4},
+			in_rest = "", out_rest = "dar_burer_ring1",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@dar_burer_ring",
+			idle = 0,
+			prior = 5, state = {4},
+			in_rest = "", out_rest = "dar_burer_ring3",
+		}
+		table.insert(sj, t)
+		end
 end
 
 
@@ -63,6 +160,43 @@ function load_states(gname, type)
 			end
 		end
 	end
+	
+	if type == "dar_burer_ring" then        
+		return function(gulag)
+			local t1 = db.zone_by_name["dar_burer_ring_1"]
+			local t2 = db.zone_by_name["dar_burer_ring_2"]
+			local t3 = db.zone_by_name["dar_burer_ring_3"]
+			local t4 = db.zone_by_name["dar_burer_ring_4"]
+			if db.actor == nil then
+				return gulag.state
+			end		
+			if t1 == nil then
+				return gulag.state
+			end		
+			if t2 == nil then
+				return gulag.state
+			end		
+			if t3 == nil then
+				return gulag.state
+			end		
+			if t4 == nil then
+				return gulag.state
+			end		
+						
+			if t1:inside(db.actor:position()) then
+				return 3
+			elseif t2:inside(db.actor:position()) then
+				return 4
+			elseif t3:inside(db.actor:position()) then
+				return 1
+			elseif t4:inside(db.actor:position()) then
+				return 2
+			else
+				return gulag.state
+			end
+		end
+	end
+	
 end
 
 function checkStalker(npc_community, gulag_type)
@@ -72,6 +206,10 @@ end
 function checkMonster(npc_community, gulag_type)
 		if gulag_type == "dar_com_center_poltergeist" then
 			return npc_community == "poltergeist"
+		end
+		
+		if gulag_type == "dar_burer_ring" then
+			return npc_community == "burer"
 		end
 	return false
 end
