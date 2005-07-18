@@ -23,7 +23,7 @@
 	</materials_button>
 
 	<task_root_item>
-		<image x="0" y="0" width="60" height="60">
+		<image x="2" y="2" width="40" height="40">
 		</image>
 		
 		<caption x="70" y="5" width="165" height="18">
