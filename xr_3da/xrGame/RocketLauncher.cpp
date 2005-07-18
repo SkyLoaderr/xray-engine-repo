@@ -118,6 +118,7 @@ void CRocketLauncher::LaunchRocket(const Fmatrix& xform,
 	m_pRocket->SetLaunchParams(xform, vel, angular_vel);
 	m_pRocket->H_SetParent(NULL);
 */
+	VERIFY2(_valid(xform),"CRocketLauncher::LaunchRocket. Invalid xform argument!");
 	getCurrentRocket()->SetLaunchParams(xform, vel, angular_vel);
 //	Msg("---------Launched rocket [%d] frame [%d]",getCurrentRocket()->ID(), Device.dwFrame);
 //	getCurrentRocket()->H_SetParent(NULL);

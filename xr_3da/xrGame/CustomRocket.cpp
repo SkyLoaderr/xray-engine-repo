@@ -83,6 +83,7 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 									 const Fvector& vel,
 									 const Fvector& angular_vel)
 {
+	VERIFY2(_valid(xform),"SetLaunchParams. Invalid xform argument!");
 	m_LaunchXForm = xform;
 	m_vLaunchVelocity = vel;
 	m_vLaunchAngularVelocity = angular_vel;

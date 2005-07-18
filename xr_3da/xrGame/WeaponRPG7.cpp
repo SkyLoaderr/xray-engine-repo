@@ -118,6 +118,7 @@ void CWeaponRPG7::switch2_Fire	()
 		//		Fvector angular_vel;
 		//		angular_vel.set(d);
 		//		angular_vel.mul(1400.f);
+		VERIFY2(_valid(launch_matrix),"CWeaponRPG7::switch2_Fire. Invalid launch_matrix!");
 		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
 
 		CExplosiveRocket* pGrenade = smart_cast<CExplosiveRocket*>(getCurrentRocket());
