@@ -19,9 +19,9 @@ public:
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
 
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+//	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Init(float x, float y, float width, float height);
-	virtual void OnMouseDown(bool left_button = true);
+//	virtual void OnMouseDown(bool left_button = true);
 	virtual void SetTextX(float x) {/*do nothing*/}
 //	virtual void SetLines(LPCSTR str);
 

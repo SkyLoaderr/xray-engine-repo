@@ -31,14 +31,39 @@ CUI3tButton::CUI3tButton(){
 	AttachChild(&m_hint);
 
 	m_bEnableTextHighlighting = false;
+	m_bCheckMode = false;
 }
 
 CUI3tButton::~CUI3tButton(){
 
 }
- void CUI3tButton::OnClick(){
+
+void CUI3tButton::OnClick(){
     CUIButton::OnClick();
     PlaySoundT();
+}
+
+void CUI3tButton::OnMouse(float x, float y, EUIMessages mouse_action){
+	if (m_bCheckMode)
+		CUIWindow::OnMouse(x,y,mouse_action);
+	else
+		CUIButton::OnMouse(x,y,mouse_action);
+}
+
+void CUI3tButton::OnMouseDown(bool left_button /* = true */){
+	if (m_bCheckMode)
+	{
+		if (left_button)
+		{
+			if (m_eButtonState == BUTTON_NORMAL)
+				m_eButtonState = BUTTON_PUSHED;
+			else
+				m_eButtonState = BUTTON_NORMAL;
+		}
+		GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
+	}
+	else
+		CUIButton::OnMouseDown(left_button);
 }
 
 void CUI3tButton::OnFocusReceive(){

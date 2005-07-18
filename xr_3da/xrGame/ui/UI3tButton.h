@@ -37,6 +37,10 @@ public:
 
 	virtual void OnClick();
 	virtual void OnFocusReceive();
+
+	// check button
+	bool GetCheck() {return m_eButtonState == BUTTON_PUSHED;}
+	void SetCheck(bool ch) {m_eButtonState = ch ? BUTTON_PUSHED : BUTTON_NORMAL;}
 	
 	// behavior
 	virtual void DrawTexture();
@@ -44,16 +48,23 @@ public:
 	
 	//virtual void Enable(bool bEnable);	
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
+	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual void OnMouseDown(bool left_button = true);
+			void SetCheckMode(bool mode) {m_bCheckMode = mode;}
 
 
 	CUIStatic		m_hint;
 	CUI_IB_Static	m_background;
+protected:
+	bool			m_bCheckMode;
 private:	
 			void PlaySoundH();
 			void PlaySoundT();
 
 	ref_sound		m_sound_h;
 	ref_sound		m_sound_t;	
+
+
 
     // text color
 //	bool m_bUseTextColorD;
