@@ -1767,6 +1767,66 @@ struct CCC_StartTimeEnvironment: public IConsole_Command {
 	}
 };
 #ifdef DEBUG
+class CCC_RadioGroupMask2;
+class CCC_RadioMask :public CCC_Mask
+{
+	CCC_RadioGroupMask2		*group;
+public:
+	CCC_RadioMask(LPCSTR N, Flags32* V, u32 M):
+	  CCC_Mask(N,V,M)
+	 {
+		group=NULL;
+	 }
+		void	SetGroup	(CCC_RadioGroupMask2		*G)
+	{
+		group=G													;
+	}
+virtual	void	Execute		(LPCSTR args)						;
+	
+IC		void	Set			(BOOL V)
+	  {
+		  value->set(mask,V)									;
+	  }
+
+};
+
+class CCC_RadioGroupMask2 
+{
+	CCC_RadioMask *mask0;
+	CCC_RadioMask *mask1;
+public:
+	CCC_RadioGroupMask2(CCC_RadioMask *m0,CCC_RadioMask *m1)
+	  {
+		mask0=m0;mask1=m1;
+		mask0->SetGroup(this);
+		mask1->SetGroup(this);
+	  }
+	void	Execute	(CCC_RadioMask& m,LPCSTR args)
+	{
+		BOOL value=m.GetValue();
+		if(value)
+		{
+			mask0->Set(!value);mask1->Set(!value);
+		}
+		m.Set(value);
+	}
+};
+
+
+void	CCC_RadioMask::Execute	(LPCSTR args)
+{
+	CCC_Mask::Execute(args);
+	VERIFY2(group,"CCC_RadioMask: group not set");
+	group->Execute(*this,args);
+}
+
+#define CMD_RADIOGROUPMASK2(p1,p2,p3,p4,p5,p6)		\
+{\
+static CCC_RadioMask x##CCC_RadioMask1(p1,p2,p3);		Console->AddCommand(&x##CCC_RadioMask1);\
+static CCC_RadioMask x##CCC_RadioMask2(p4,p5,p6);		Console->AddCommand(&x##CCC_RadioMask2);\
+static CCC_RadioGroupMask2 x##CCC_RadioGroupMask2(&x##CCC_RadioMask1,&x##CCC_RadioMask2);\
+}
+
 struct CCC_DbgBullets : public CCC_Integer {
 	CCC_DbgBullets(LPCSTR N, int* V, int _min=0, int _max=999) : CCC_Integer(N,V,_min,_max) {};
 
@@ -2014,7 +2074,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"dbg_draw_ph_explosions"		,&ph_dbg_draw_mask,	phDbgDrawExplosions);
 	CMD3(CCC_Mask,		"dbg_draw_car_plots_all_trans"	,&ph_dbg_draw_mask,	phDbgDrawCarAllTrnsm);
 	CMD3(CCC_Mask,		"dbg_draw_ph_zbuffer_disable"	,&ph_dbg_draw_mask,	phDbgDrawZDisable);
-
+	CMD_RADIOGROUPMASK2("dbg_ph_ai_always_phmove",&ph_dbg_draw_mask,phDbgAlwaysUseAiPhMove,"dbg_ph_ai_never_phmove",&ph_dbg_draw_mask,phDbgNeverUseAiPhMove);
 	CMD4(CCC_DbgBullets,"dbg_draw_bullet_hit",			&g_bDrawBulletHit,	0, 1)	;
 #endif
 

@@ -8,7 +8,10 @@
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 
 #include "phaicharacter.h"
-
+#ifdef DEBUG
+#include "../StatGraph.h"
+#include "PHDebug.h"
+#endif
 
 bool CPHAICharacter::TryPosition(Fvector pos){
 	if(!b_exist) return false;
@@ -86,6 +89,9 @@ void CPHAICharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * materia
 	inherited::InitContact(c,do_collide,material_1,material_2);
 	if(is_control||b_lose_control||b_jumping)
 								c->surface.mu = 0.00f;
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove))do_collide=false;
+#endif
 }
 #ifdef DEBUG
 void	CPHAICharacter::OnRender()	

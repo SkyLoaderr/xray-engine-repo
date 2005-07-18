@@ -14,6 +14,13 @@
 #include "custommonster.h"
 #include "IColisiondamageInfo.h"
 #include "profiler.h"
+#ifdef DEBUG
+#		include "PHDebug.h"
+#		define	DBG_PH_MOVE_CONDITIONS(c)				c
+
+#else
+#		define	DBG_PH_MOVE_CONDITIONS(c)					
+#endif
 
 #define DISTANCE_PHISICS_ENABLE_CHARACTERS 2.f
 
@@ -70,6 +77,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			Fvector velocity={0.f,0.f,0.f};
 			movement_control->SetVelocity		(velocity);
 		}
+		DBG_PH_MOVE_CONDITIONS( if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)){movement_control->SetPosition(dest_position);movement_control->DisableCharacter();})
 		if(movement_control->IsCharacterEnabled()) {
 			movement_control->Calculate(detail().path(),0.f,detail().m_current_travel_point,precision);
 			movement_control->GetPosition(dest_position);
@@ -163,15 +171,16 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if(!movement_control->JumpState())
 				movement_control->SetVelocity		(velocity);
 
-	if ((tpNearestList.empty())) {  // нет физ. объектов
+	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
 		
-		if(!movement_control->TryPosition(dest_position)) {
+		if(DBG_PH_MOVE_CONDITIONS(!ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&) !movement_control->TryPosition(dest_position)) {
 			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);
 			movement_control->GetPosition	(dest_position);
 			// проверка на хит
 			apply_collision_hit(movement_control);
 
 		} else {
+			DBG_PH_MOVE_CONDITIONS( if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)){movement_control->SetPosition(dest_position);movement_control->DisableCharacter();})
 			movement_control->b_exect_position	=	true;
 			//Fvector velocity					=	mdir;
 			//velocity.mul						(desirable_speed);//*1.25f

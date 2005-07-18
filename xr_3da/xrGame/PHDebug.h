@@ -52,7 +52,9 @@ enum
 	phDbgLadder					=		1<<19,
 	phDbgDrawExplosions			=		1<<20,
 	phDbgDrawCarAllTrnsm		=		1<<21,
-	phDbgDrawZDisable			=		1<<22
+	phDbgDrawZDisable			=		1<<22,
+	phDbgAlwaysUseAiPhMove		=		1<<23,
+	phDbgNeverUseAiPhMove		=		1<<24
 };
 struct SPHObjDBGDraw
 {
