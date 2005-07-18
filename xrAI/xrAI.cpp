@@ -169,6 +169,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
+	Core._initialize		("xrai",0);
+
 	HMODULE					hFactory;
 	LPCSTR					g_name	= "xrSE_Factory.dll";
 	Log						("Loading DLL:",g_name);
@@ -176,16 +178,14 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	if (0==hFactory)		R_CHK			(GetLastError());
 	R_ASSERT2				(hFactory,"Factory DLL raised exception during loading or there is no game DLL at all");
 
-	create_entity			= (Factory_Create*)		GetProcAddress(hFactory,"create_entity");		R_ASSERT(create_entity);
-	destroy_entity			= (Factory_Destroy*)	GetProcAddress(hFactory,"destroy_entity"	);	R_ASSERT(destroy_entity);
-
-	Core._initialize		("xrai",0);
+	create_entity			= (Factory_Create*)		GetProcAddress(hFactory,"_create_entity@4");		R_ASSERT(create_entity);
+	destroy_entity			= (Factory_Destroy*)	GetProcAddress(hFactory,"_destroy_entity@4");	R_ASSERT(destroy_entity);
 
 	Startup					(lpCmdLine);
 
-	Core._destroy			();
-
 	FreeLibrary				(hFactory);
+
+	Core._destroy			();
 
 	return					(0);
 }

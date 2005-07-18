@@ -1,8 +1,8 @@
 #pragma once
 
 extern "C" {
-	typedef __declspec(dllimport)  ISE_Abstract*	__cdecl Factory_Create	(LPCSTR section);
-	typedef __declspec(dllimport)  void				__cdecl Factory_Destroy	(ISE_Abstract *&);
+	typedef __declspec(dllimport)  ISE_Abstract*	__stdcall Factory_Create	(LPCSTR section);
+	typedef __declspec(dllimport)  void				__stdcall Factory_Destroy	(ISE_Abstract *&);
 };
 
 extern Factory_Create	*create_entity;
