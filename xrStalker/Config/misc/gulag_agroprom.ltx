@@ -539,12 +539,18 @@ path_walk = skirmish_walk8
 
 
 ;--------------------------- идут добивать в дом -------------------------
+
+[danger_condition@agr_factory_assault]
+ignore_distance = 10
+
+
 [logic@agr_factory_assault_bld_walker1]
 active = walker1@agr_factory_assault_bld
 
 [walker1@agr_factory_assault_bld]
 path_walk = bld_walk1
 ;path_look = bld_look1
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker2]
@@ -553,6 +559,7 @@ active = walker2@agr_factory_assault_bld
 [walker2@agr_factory_assault_bld]
 path_walk = bld_walk2
 ;path_look = bld_look2
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker3]
@@ -561,6 +568,7 @@ active = walker3@agr_factory_assault_bld
 [walker3@agr_factory_assault_bld]
 path_walk = bld_walk3
 ;path_look = bld_look3
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker4]
@@ -569,6 +577,7 @@ active = walker4@agr_factory_assault_bld
 [walker4@agr_factory_assault_bld]
 path_walk = bld_walk4
 ;path_look = bld_look4
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker5]
@@ -577,6 +586,7 @@ active = walker5@agr_factory_assault_bld
 [walker5@agr_factory_assault_bld]
 path_walk = bld_walk5
 ;path_look = bld_look5
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker6]
@@ -585,6 +595,7 @@ active = walker6@agr_factory_assault_bld
 [walker6@agr_factory_assault_bld]
 path_walk = bld_walk6
 ;path_look = bld_look6
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker7]
@@ -593,6 +604,7 @@ active = walker7@agr_factory_assault_bld
 [walker7@agr_factory_assault_bld]
 path_walk = bld_walk7
 ;path_look = bld_look7
+danger = danger_condition@agr_factory_assault
 
 
 [logic@agr_factory_assault_bld_walker8]
@@ -601,6 +613,7 @@ active = walker8@agr_factory_assault_bld
 [walker8@agr_factory_assault_bld]
 path_walk = bld_walk8
 ;path_look = bld_look8
+danger = danger_condition@agr_factory_assault
 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM. Группа Крота
@@ -719,6 +732,10 @@ path_look = look6
 
 ;---------------- помогают Кроту -----------------
 
+[danger_condition@agr_factory_defence]
+ignore_distance = 0
+
+
 [logic@agr_factory_defence_krot_walker1]
 active = walker1@agr_factory_defence_krot
 actor_dialogs = actor_dialogs@agr_factory_defence
@@ -727,6 +744,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk1
 ;path_look = krot_look1
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker2]
@@ -737,6 +755,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk2
 ;path_look = krot_look2
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker3]
@@ -747,6 +766,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk3
 ;path_look = krot_look3
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker4]
@@ -757,6 +777,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk4
 ;path_look = krot_look4
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker5]
@@ -767,6 +788,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk5
 ;path_look = krot_look5
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_krot_walker6]
@@ -777,8 +799,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk6
 ;path_look = krot_look6
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 ;---------------- Бегут к колодцу и стоят там -----------------
+
+[actor_dialogs@agr_factory_defence]
+id = agr_factory_stalker_about
+
 
 [logic@agr_factory_defence_to_well_walker1]
 active = walker1@agr_factory_defence_to_well
@@ -787,11 +814,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 [walker1@agr_factory_defence_to_well]
 path_walk = to_well_walk1
 on_signal = well | walker1@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
 
 [walker1@agr_factory_defence_well]
 path_walk = well_walk1
 path_look = well_look1
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker2]
@@ -801,11 +830,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 [walker2@agr_factory_defence_to_well]
 path_walk = to_well_walk2
 on_signal = well | walker2@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
 
 [walker2@agr_factory_defence_well]
 path_walk = well_walk2
 path_look = well_look2
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker3]
@@ -815,11 +846,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 [walker3@agr_factory_defence_to_well]
 path_walk = to_well_walk3
 on_signal = well | walker3@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
 
 [walker3@agr_factory_defence_well]
 path_walk = well_walk3
 path_look = well_look3
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker4]
@@ -829,11 +862,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 [walker4@agr_factory_defence_to_well]
 path_walk = to_well_walk4
 on_signal = well | walker4@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
 
 [walker4@agr_factory_defence_well]
 path_walk = well_walk4
 path_look = well_look4
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker5]
@@ -843,11 +878,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 [walker5@agr_factory_defence_to_well]
 path_walk = to_well_walk5
 on_signal = well | walker5@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
 
 [walker5@agr_factory_defence_well]
 path_walk = well_walk5
 path_look = well_look5
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [logic@agr_factory_defence_to_well_walker6]
@@ -857,11 +894,13 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 [walker6@agr_factory_defence_to_well]
 path_walk = to_well_walk6
 on_signal = well | walker6@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
 
 [walker6@agr_factory_defence_well]
 path_walk = well_walk6
 path_look = well_look6
 meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
 
 
 [meet@agr_factory_defence]
@@ -871,10 +910,6 @@ victim = 5 | actor
 victim_wpn = 5 | actor
 use = true
 use_wpn = true
-
-
-[actor_dialogs@agr_factory_defence]
-id = agr_factory_stalker_about
 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM Удерживающие Крота солдаты
