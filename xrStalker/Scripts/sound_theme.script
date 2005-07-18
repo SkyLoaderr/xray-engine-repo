@@ -256,6 +256,9 @@ function load_sound(obj)
 	theme[obj:id()]["val_rob_leader_call"]			= load_sound_from_ltx(obj, "val_rob_leader_call")
 	theme[obj:id()]["val_rob_guard_jeer"]			= load_sound_from_ltx(obj, "val_rob_guard_jeer")
 
+	-- Agroprom
+	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")
+
 	-- Bar Rostok Duty Guards
 	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
 	theme[obj:id()]["bar_dolg_base_guard_no_talk"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
