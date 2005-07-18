@@ -54,13 +54,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "dar_burer_ring2",
+			in_rest = "", out_rest = "dar_burer_ring1",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "dar_burer_ring4",
+			in_rest = "", out_rest = "dar_burer_ring1",
 		}
 		table.insert(sj, t)
 		
@@ -73,13 +73,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "dar_burer_ring2",
+			in_rest = "", out_rest = "dar_burer_ring1",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "dar_burer_ring4",
+			in_rest = "", out_rest = "dar_burer_ring1",
 		}
 		table.insert(sj, t)
 	
@@ -92,13 +92,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "dar_burer_ring1",
+			in_rest = "", out_rest = "dar_burer_ring2",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "dar_burer_ring3",
+			in_rest = "", out_rest = "dar_burer_ring2",
 		}
 		table.insert(sj, t)
 		
@@ -111,13 +111,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {3},
-			in_rest = "", out_rest = "dar_burer_ring2",
+			in_rest = "", out_rest = "dar_burer_ring3",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {3},
-			in_rest = "", out_rest = "dar_burer_ring4",
+			in_rest = "", out_rest = "dar_burer_ring3",
 		}
 		table.insert(sj, t)
 		
@@ -130,13 +130,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {4},
-			in_rest = "", out_rest = "dar_burer_ring1",
+			in_rest = "", out_rest = "dar_burer_ring4",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_burer_ring",
 			idle = 0,
 			prior = 5, state = {4},
-			in_rest = "", out_rest = "dar_burer_ring3",
+			in_rest = "", out_rest = "dar_burer_ring4",
 		}
 		table.insert(sj, t)
 		end
