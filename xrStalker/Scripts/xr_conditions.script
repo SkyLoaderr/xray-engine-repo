@@ -325,6 +325,21 @@ function gar_bandits_seryi_die()
 	end
 end
 
+function gar_bandits_seryi_not_die()
+	if db.actor then
+		if xr_gulag.getGulagPopulation("gar_seryi_bandits") > 0 and db.actor:has_info("gar_seryi_open_fire") then
+			return true			
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
+
+
+
+
 
 ------------------------------------------------------------------------------------
 -- Special functions for Dark Valley
