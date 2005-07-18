@@ -35,6 +35,5 @@ function main()
 
 		-- связка с агропромом
 		db.actor:give_info_portion("agroprom_military_case")
-		db.actor:give_info_portion("agr_krot_band")		
 	end
 end
