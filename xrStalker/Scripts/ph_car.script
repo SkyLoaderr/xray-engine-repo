@@ -47,6 +47,7 @@ local def_min_car_explode_time = 1000
 local def_moving_speed = 10
 --local def_arriving_factor = 0.4
 local def_arriving_dist = 1.0
+local def_not_rotating_angle = 0.4
 local def_min_fire_time = 0
 local def_update_time = 1.6
 
@@ -150,6 +151,9 @@ function action_car:reset_scheme(loading)
 
 	    if loading then
 		    self.target_walk_pt = xr_logic.pstor_retrieve(self.object, "target_walk_pt")
+		    if self.target_walk_pt == false then
+		        self.target_walk_pt = self:get_nearest_walkpoint()
+		    end
 	    else
 		    self.target_walk_pt = self:get_nearest_walkpoint()
 	    end
@@ -256,7 +260,7 @@ function action_car:save()
 	xr_logic.pstor_store(self.object, "min_delta_per_sec", self.min_delta_per_sec)
 	xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
 	xr_logic.pstor_store(self.object, "state_moving", self.state_moving)
-	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt) -- or false)
+	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt or false)
 end
 
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
@@ -279,6 +283,8 @@ end
 
 function action_car:at_target_walkpoint()
     --printf("car <move>: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
+    if self.target_walk_pt == -1 then return end
+
     local curVel = self.car:CurrentVel():magnitude()
 	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
 
@@ -346,14 +352,21 @@ function action_car:go_to_walkpoint(pt)
 	end
 
     local diff_angle = angle_xz(self.object, self.path_walk:point(pt))
+    local accel = move.none
+    local curVel = self.car:CurrentVel():magnitude()
+    if curVel < self.speed then
+        accel = move.fwd
+    elseif curVel > self.speed * 1.15 then
+        accel = move.back
+    end
     --printf("car <move>: diff_angle = %f, katet = %f", diff_angle, get_katet(self.object, self.path_walk:point(pt)))
 	--if utils.no_need_to_rotate_xz(self.object, self.path_walk:point(pt)) then
-	if diff_angle < 0.3 then
+	if diff_angle < def_not_rotating_angle then
 		printf("car <move>: no_need_to_rotate. speed = %f, time = %f", self.speed, self.fc_upd_avg)
-		if self.state_moving ~= state_moving_fwd then
+		if self.state_moving ~= state_moving_fwd and accel ~= move.none then
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
-				move(move.fwd, self.speed), --move.on + 
+				move(accel, self.speed), --move.on + 
 				--object("right_light", object.deactivate),
 				--object("left_light", object.deactivate),
 				cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
@@ -369,7 +382,7 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_left then 
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.fwd + move.left, self.speed), --move.on + 
+					move(accel + move.left, self.speed), --move.on + 
 					--object("right_light", object.deactivate),
 					--object("left_light", object.activate),
 					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
@@ -379,7 +392,7 @@ function action_car:go_to_walkpoint(pt)
 			if self.state_moving ~= state_moving_rot_right then
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.fwd + move.right, self.speed), --move.on + 
+					move(accel + move.right, self.speed), --move.on + 
 					--object("right_light", object.activate),
 					--object("left_light", object.deactivate),
 					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
