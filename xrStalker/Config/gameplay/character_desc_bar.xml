@@ -35,6 +35,12 @@
 		<class>bar_psih</class>
 		<community>stalker</community>
 		
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp \n
+		</supplies>
+				
 		<rank>30</rank>
 		<reputation>30</reputation>
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
