@@ -165,8 +165,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
-	Core._initialize		("xrai",0);
 	Startup					(lpCmdLine);
-	Core._destroy			();
 	return					(0);
 }
