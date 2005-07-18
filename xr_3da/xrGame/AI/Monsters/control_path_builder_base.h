@@ -92,6 +92,7 @@ public:
 	IC	void	extrapolate_path		(bool val) {m_extrapolate = val;}
 	IC	void	set_level_path_type		() {m_path_type = MovementManager::ePathTypeLevelPath;}
 	IC	void	set_game_path_type		() {m_path_type = MovementManager::ePathTypeGamePath;}
+	IC	void	set_patrol_path_type	() {m_path_type = MovementManager::ePathTypePatrolPath;}
 	IC	void	set_velocity_mask		(u32 mask) {m_velocity_mask = mask;}
 	IC	void	set_desirable_mask		(u32 mask) {m_desirable_mask = mask;}
 

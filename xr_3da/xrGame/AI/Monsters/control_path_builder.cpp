@@ -83,7 +83,7 @@ void CControlPathBuilder::update_schedule()
 		set_path_type						(m_data.path_type);
 		if (m_data.path_type == MovementManager::ePathTypeGamePath)			
 			game_selector().set_selection_type	(eSelectionTypeRandomBranching);
-		else {	
+		else if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
 			// set target
 			detail().set_dest_position			(m_data.target_position);
 			
