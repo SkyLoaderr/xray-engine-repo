@@ -14,7 +14,7 @@
 <!-- user-defined spot -->
 	<user>
 		<level_map spot="user_level_spot" pointer="user_pointer"></level_map>
-		<mini_map spot="user_mini_spot" pointer="user_pointer"></level_map>
+		<mini_map spot="user_mini_spot" pointer="user_pointer"></mini_map>
 	</user>
 	
 	<user_level_spot x="0" y="0" width="32" height="32" alignment="c">
