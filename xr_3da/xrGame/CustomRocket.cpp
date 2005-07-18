@@ -96,7 +96,7 @@ void CCustomRocket::activate_physic_shell	()
 
 	if( m_pPhysicsShell->bActive )
 		return;
-
+	VERIFY2(_valid(m_LaunchXForm),"CCustomRocket::activate_physic_shell. Invalid m_LaunchXForm!");
 	m_pPhysicsShell->Activate(m_LaunchXForm, m_vLaunchVelocity, m_vLaunchAngularVelocity);
 	m_pPhysicsShell->Update	();
 
