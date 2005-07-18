@@ -20,6 +20,7 @@ class CDangerManager  {
 public:
 	typedef xr_vector<CDangerObject>		OBJECTS;
 	typedef OBJECTS							DANGERS;
+	typedef xr_vector<const CGameObject*>	IGNORED;
 
 public:
 	typedef MemorySpace::CVisibleObject		CVisibleObject;
@@ -28,6 +29,7 @@ public:
 
 private:
 	DANGERS				m_objects;
+	IGNORED				m_ignored;
 	const CDangerObject	*m_selected;
 	u32					m_time_line;
 
@@ -53,6 +55,7 @@ public:
 			void		add					(const CSoundObject &object);
 			void		add					(const CHitObject &object);
 			void		add					(const CDangerObject &object);
+			void		ignore				(const CGameObject *object);
 
 public:
 	IC		u32			time_line			() const;

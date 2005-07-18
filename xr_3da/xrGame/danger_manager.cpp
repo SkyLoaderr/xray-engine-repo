@@ -11,6 +11,8 @@
 #include "custommonster.h"
 #include "memory_space.h"
 #include "profiler.h"
+#include "memory_manager.h"
+#include "enemy_manager.h"
 
 struct CDangerPredicate {
 	const CObject	*m_object;
@@ -47,16 +49,25 @@ struct CFindPredicate {
 };
 
 struct CRemoveByTimePredicate {
-	u32			m_time_line;
+	u32						m_time_line;
+	const CDangerManager	*m_manager;
 
-	IC			CRemoveByTimePredicate	(u32 time_line)
+	IC			CRemoveByTimePredicate	(u32 time_line, const CDangerManager *manager)
 	{
 		m_time_line			= time_line;
+		VERIFY				(manager);
+		m_manager			= manager;
 	}
 
 	IC	bool	operator()				(const CDangerObject &object) const
 	{
-		return				(object.time() < m_time_line);
+		if (object.time() < m_time_line)
+			return			(true);
+
+		if (!object.object())
+			return			(false);
+
+		return				(!m_manager->useful(object));
 	}
 };
 
@@ -71,6 +82,7 @@ void CDangerManager::Load			(LPCSTR section)
 void CDangerManager::reinit			()
 {
 	m_objects.clear			();
+	m_ignored.clear			();
 	m_time_line				= 0;
 	m_selected				= 0;
 }
@@ -84,7 +96,7 @@ void CDangerManager::update			()
 	START_PROFILE("AI/Memory Manager/dangers/update")
 
 	{
-		OBJECTS::iterator	I = remove_if(m_objects.begin(),m_objects.end(),CRemoveByTimePredicate(time_line()));
+		OBJECTS::iterator	I = remove_if(m_objects.begin(),m_objects.end(),CRemoveByTimePredicate(time_line(),this));
 		m_objects.erase		(I,m_objects.end());
 	}
 
@@ -116,7 +128,16 @@ void CDangerManager::remove_links	(const CObject *object)
 
 bool CDangerManager::useful			(const CDangerObject &object) const
 {
-	return					(object.time() >= time_line());
+	if (object.object() && !object.dependent_object()) {
+		IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object.object());
+		if (I != m_ignored.end())
+			return				(false);
+	}
+
+	if (object.time() >= time_line())
+		return				(true);
+
+	return					(false);
 }
 
 bool CDangerManager::is_useful		(const CDangerObject &object) const
@@ -230,6 +251,9 @@ void CDangerManager::add			(const CHitObject &object)
 
 void CDangerManager::add			(const CDangerObject &object)
 {
+	if (m_object->memory().enemy().selected() && object.object())// && !object.object()->g_Alive())
+		ignore				(object.object());
+
 	if (!is_useful(object))
 		return;
 
@@ -240,4 +264,14 @@ void CDangerManager::add			(const CDangerObject &object)
 	}
 
 	m_objects.push_back		(object);
+}
+
+void CDangerManager::ignore			(const CGameObject *object)
+{
+	VERIFY					(object);
+	IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object);
+	if (I != m_ignored.end())
+		return;
+
+	m_ignored.push_back		(object);
 }
