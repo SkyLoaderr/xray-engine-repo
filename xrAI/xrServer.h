@@ -72,6 +72,10 @@ public:
 	{
 		return				(m_tID_Generator.tfGetID(ID));
 	}
+	IC void					FreeID					(u16 ID, u32 time)
+	{
+		return				(m_tID_Generator.vfFreeID(ID, time));
+	}
 
 	void					Perform_connect_spawn	(CSE_Abstract* E, xrClientData* to, NET_Packet& P);
 	void					Perform_transfer		(CSE_Abstract* what, CSE_Abstract* from, CSE_Abstract* to);
