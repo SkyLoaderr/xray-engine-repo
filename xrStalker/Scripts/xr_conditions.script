@@ -509,3 +509,12 @@ function cit_fighting_hunt_killer(actor, npc)
 		nam == "cit_hunt_killer3" or
 		nam == "cit_hunt_killer4"
 end    
+-------------------------------------------------------------------------------------
+-- Special for Agroprom
+-------------------------------------------------------------------------------------
+
+function agr_boars_nest_dead(actor, npc)		-- название функции
+		local g = xr_gulag.fraction["agr_boar_nest"]  -- имя гулага
+		return (not g) or (g:get_population() == 0)
+end
+

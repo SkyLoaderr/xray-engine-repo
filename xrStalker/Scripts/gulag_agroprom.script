@@ -412,7 +412,7 @@ function load_job( sj, gname, type, squad, groups )
 
 	-- Кабаны -----------------------
 	if type == "agr_boar_nest_type" then
-			local boar_num = 4
+            local boar_num = 6
 		for i=1, boar_num do
 			t = { section = "logic@agr_boar_nest_in", 
 				idle = 0,

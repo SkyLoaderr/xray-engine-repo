@@ -103,6 +103,10 @@
     
     <info_portion id="agr_nii_helicopter_atack">
     </info_portion>
+    
+    <info_portion id="agr_start_boar_hunt">
+    </info_portion>
 
-
+    <info_portion id="agr_start_wild_hunt">
+    </info_portion>
 </game_information_portions>
