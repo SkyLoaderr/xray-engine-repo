@@ -22,5 +22,39 @@
 		<text font="letterica16" r="225" g="225" b="250">Press</text>
 	</materials_button>
 
+	<task_root_item>
+		<image x="0" y="0" width="60" height="60">
+		</image>
+		
+		<caption x="70" y="5" width="165" height="18">
+			<text x="0" y="0" font="letterica18"></text>
+		</caption>
+		
+		<description x="70" y="23" width="165" height="16">
+			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
+		</description>
+		
+		<location_btn x="235" y="5" width="16" height="16">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">loc</text>
+		</location_btn>
+		
+		<switch_description_btn x="250" y="5" width="16" height="16">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">sw</text>
+		</switch_description_btn>
+	</task_root_item>
+
+	<task_sub_item>
+		<state_image x="30" y="0" width="16" height="16">
+		</state_image>
+
+		<description x="50" y="16" width="165" height="16">
+			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
+		</description>
+
+		<show_pointer_btn x="235" y="5" width="16" height="16">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">ptr</text>
+		</show_pointer_btn>
+
+	</task_sub_item>
 </window>
 
