@@ -43,7 +43,11 @@ function evaluator_close_combat:evaluate()
 		return false
 	end
 
---printf("NAME:[%s] [%s] for [%s]", self.object:name(), self.a.radius, distance_between(self.object, self.object:best_enemy()))
+	-- если мы не можем воевать вообще - вернуть false
+	if not self.mgr:evaluator(xr_evaluators_id.sidor_wounded_base + 1):evaluate() then
+		return false
+	end
+
 	-- Если script_danger == false, то нужно вернуть true
 	if not self.mgr:evaluator(xr_evaluators_id.danger):evaluate() then
 		return true
