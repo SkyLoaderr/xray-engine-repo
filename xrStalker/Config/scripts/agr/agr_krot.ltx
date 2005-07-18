@@ -1,15 +1,15 @@
 [logic]
-active = walker@hold
+active = camper@hold
 combat_ignore = combat_ignore
 on_death = death
 meet = meet
 
-[walker@hold]
+[camper@hold]
 path_walk = agr_krot_hold_fake_walk
 path_look = agr_krot_hold_fake_look
 combat_ignore_cond = always
 meet = meet@hold
-on_info = {+agr_krot_skirmish_start} walker@combat
+on_info = {+agr_krot_skirmish_start} camper@combat
 
 [meet@hold]
 meet_state     = 5 | hide_na@speech1
@@ -20,10 +20,10 @@ use = true
 use_wpn = true
 meet_dialog = agr_krot_help
 
-[walker@combat]
+[camper@combat]
 path_walk = agr_krot_hold_walk
 path_look = agr_krot_hold_look
-radius    = 5
+radius    = 3
 on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_after_hold
 
 [walker@wait_after_hold]
@@ -42,12 +42,16 @@ victim_wpn = 30 | actor
 snd = speech
 on_signal = sound_end | %+agr_krot_go_to_well% walker@go_to_well
 no_danger = true
-anim = idle
+anim = salut
 
 [walker@go_to_well]
 path_walk = agr_krot_to_well_walk
 def_state_moving1 = rush
 on_signal = well | walker@well
+danger = danger_condition
+
+[danger_condition]
+ignore_distance = 0
 
 [walker@well]
 path_walk = agr_krot_well_walk
