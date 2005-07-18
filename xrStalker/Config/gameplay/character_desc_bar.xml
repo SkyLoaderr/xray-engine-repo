@@ -26,7 +26,7 @@
 		<actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog>
 	</specific_character>
 
-	<specific_character id="bar_psih" no_random = "1">
+	<specific_character id="bar_psih" team_default = "1">
 		<name>аџсющ</name>
 		<icon x="18" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
