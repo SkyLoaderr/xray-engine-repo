@@ -11,8 +11,25 @@
 
 
 
+<!-- user-defined spot -->
+	<user>
+		<level_map spot="user_level_spot" pointer="user_pointer"></level_map>
+		<mini_map spot="user_mini_spot" pointer="user_pointer"></level_map>
+	</user>
+	
+	<user_level_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="0" y="160" width="32" height="32"> ui\ui_icons_map</texture>
+	</user_level_spot>
+	
+	<user_mini_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="0" y="160" width="32" height="32"> ui\ui_icons_map</texture>
+	</user_mini_spot>
 
-
+	<user_pointer>
+		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128"> ui\ui_map_arrow_02</texture>
+	</user_pointer>
+<!-- end of user-defined spot -->
+	
 <!-- location definitions -->
 	<actor_location hint="actor">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
