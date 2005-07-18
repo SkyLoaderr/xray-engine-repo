@@ -12,7 +12,7 @@
 #include "xrAI.h"
 #include "xrGraph.h"
 #include "xrServer_Objects_ALife_All.h"
-#include "xrSE_Factory_import_export.h"
+#include "factory_api.h"
 #include "xrCrossTable.h"
 #include "level_graph.h"
 #include "net_utils.h"

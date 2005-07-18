@@ -13,7 +13,7 @@
 #include "net_utils.h"
 
 #ifdef AI_COMPILER
-#	include "xrSE_Factory_import_export.h"
+#	include "factory_api.h"
 #endif
 
 struct ISE_Abstract;

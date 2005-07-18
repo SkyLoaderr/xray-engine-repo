@@ -13,7 +13,7 @@
 #include "graph_engine.h"
 #include "xrmessages.h"
 #include "xrServer_Objects_ALife_All.h"
-#include "xrSE_Factory_import_export.h"
+#include "factory_api.h"
 #include "clsid_game.h"
 #include "game_base_space.h"
 #include "game_spawn_constructor.h"

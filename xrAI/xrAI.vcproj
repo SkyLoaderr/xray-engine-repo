@@ -275,6 +275,9 @@
 				RelativePath=".\defines.h">
 			</File>
 			<File
+				RelativePath=".\factory_api.h">
+			</File>
+			<File
 				RelativePath=".\FastDelegate.h">
 			</File>
 			<File
@@ -312,9 +315,6 @@
 			</File>
 			<File
 				RelativePath="xrAI.h">
-			</File>
-			<File
-				RelativePath=".\xrSE_Factory_import_export.h">
 			</File>
 			<File
 				RelativePath=".\xrShaderTypes.h">

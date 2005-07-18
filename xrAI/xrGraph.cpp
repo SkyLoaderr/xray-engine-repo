@@ -18,7 +18,7 @@
 #include "xrGraph.h"
 #include "xrSort.h"
 #include "xrServer_Objects_ALife_All.h"
-#include "xrSE_Factory_import_export.h"
+#include "factory_api.h"
 #include "xrCrossTable.h"
 #include "guid_generator.h"
 

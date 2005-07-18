@@ -22,7 +22,6 @@
 #pragma comment(lib,"x:/xrcdb.LIB")
 #pragma comment(lib,"x:/MagicFM.LIB")
 #pragma comment(lib,"x:/xrCore.LIB")
-#pragma comment(lib,"x:/xrSE_Factory.LIB")
 
 extern void	xrCompiler			(LPCSTR name, bool draft_mode);
 extern void logThread			(void *dummy);
@@ -160,11 +159,33 @@ void Startup(LPSTR     lpCmdLine)
 	Sleep				(500);
 }
 
+#include "factory_api.h"
+
+Factory_Create	*create_entity	= 0;
+Factory_Destroy	*destroy_entity	= 0;
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
+	HMODULE					hFactory;
+	LPCSTR					g_name	= "xrSE_Factory.dll";
+	Log						("Loading DLL:",g_name);
+	hFactory				= LoadLibrary	(g_name);
+	if (0==hFactory)		R_CHK			(GetLastError());
+	R_ASSERT2				(hFactory,"Factory DLL raised exception during loading or there is no game DLL at all");
+
+	create_entity			= (Factory_Create*)		GetProcAddress(hFactory,"create_entity");		R_ASSERT(create_entity);
+	destroy_entity			= (Factory_Destroy*)	GetProcAddress(hFactory,"destroy_entity"	);	R_ASSERT(destroy_entity);
+
+	Core._initialize		("xrai",0);
+
 	Startup					(lpCmdLine);
+
+	Core._destroy			();
+
+	FreeLibrary				(hFactory);
+
 	return					(0);
 }
