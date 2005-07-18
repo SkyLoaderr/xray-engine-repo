@@ -1,0 +1,22 @@
+[logic]
+active = heli_move@idle
+
+
+[heli_move@idle]
+path_move = agr_nii_way_suspend
+;combat_ignore_cond = always
+on_info = {+agr_start_boar_hunt} heli_move@hunt
+on_info2 = {+agr_nii_helicopter_atack} heli_move@patrol
+
+[heli_move@patrol]
+combat_use_rocket = false
+combat_use_mgun = true
+path_move = agr_nii_heli_patrol
+;on_signal = path_end | heli_move@idle  %-agr_nii_helicopter_atack%
+on_actor_in_zone = agr_nii_heli_zone | %=heli_set_enemy_actor%
+
+[heli_move@hunt]
+path_move=agr_heli_hunt_boars
+path_look=agr_boar_nest_way
+combat_use_rocket = false
+on_info = {=agr_boars_nest_dead} heli_move@idle %-agr_start_boar_hunt%
