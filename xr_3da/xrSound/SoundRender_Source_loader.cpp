@@ -90,6 +90,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	}else{
 		Log				("! Missing ogg-comment, file: ",pName);
 	}
+	R_ASSERT3((m_fMaxAIDist>0.1f)&&(m_fMaxDist>0.1f),"Invalid max distance.",pName);
 }
 
 void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
