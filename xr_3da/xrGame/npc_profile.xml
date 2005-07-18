@@ -347,6 +347,9 @@
 		<class>bar_stalker_freeman</class>
 	</character>
 	
+	<character id="bar_psih">
+		<class>bar_psih</class>
+	</character>
 
 	<!-- X18 -->
 	<character id="dar_stalker_explorer">

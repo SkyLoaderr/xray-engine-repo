@@ -14,7 +14,6 @@
 		<rank>70</rank>
 		<reputation>50</reputation>
 		<visual>actors\barman\barman</visual>
-		<!-- <visual>actors\hero\stalker_novice</visual> -->
 					
 		<start_dialog>bar_bar_barmen_start</start_dialog>
 		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
@@ -24,10 +23,24 @@
 		<actor_dialog>bar_bar_barman_veterans_finish</actor_dialog>
 		<actor_dialog>bar_bar_barman_killer_ambush</actor_dialog>
 		<actor_dialog>bar_bar_barmen_jobs_room_darklabdoc_done</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs_room_decoding_done</actor_dialog>
 		<actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog>
 	</specific_character>
 
+	<specific_character id="bar_psih" no_random = "1">
+		<name>Рябой</name>
+		<icon x="18" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Неизвестно.</bio>
+
+		<class>bar_psih</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>30</reputation>
+		<visual>actors\stalker_zombi\stalker_zombie4</visual>
+		
+		<start_dialog>bar_bar_psih_start</start_dialog>
+	</specific_character>
 
 	<specific_character id="stalker_bar_guard" team_default = "1">
 		<name>Гарик</name>
