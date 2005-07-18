@@ -166,7 +166,7 @@ function reset_danger(npc, scheme, st, section)
 	st.danger.ignore_types = {}
 	if danger_section then
 		st.danger.ignore_distance = utils.cfg_get_number(st.ini, danger_section, "ignore_distance", npc, false)
-		local t = parse_names(utils.cfg_get_string(st.ini, danger_section, "ignore_types", npc, false, ""))
+		local t = parse_names(utils.cfg_get_string(st.ini, danger_section, "ignore_types", npc, false, "", ""))
 		for k,v in t do
 			st.danger.ignore_types[v] = true
 		end
