@@ -26,6 +26,8 @@
 			wpn_spas12 \n
 			ammo_12x70_buck \n
 			device_torch \n
+			
+<!--			#include "gameplays\character_items.xml" -->
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
