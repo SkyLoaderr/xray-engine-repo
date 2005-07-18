@@ -31,12 +31,12 @@ IPropHelper &PHelper()
 }
 
 extern "C" {
-	FACTORY_API	ISE_Abstract* __cdecl create_entity	(LPCSTR section)
+	FACTORY_API	ISE_Abstract* __stdcall create_entity	(LPCSTR section)
 	{
 		return					(F_entity_Create(section));
 	}
 
-	FACTORY_API	void		__cdecl destroy_entity	(ISE_Abstract *&abstract)
+	FACTORY_API	void		__stdcall destroy_entity	(ISE_Abstract *&abstract)
 	{
 		CSE_Abstract			*object = smart_cast<CSE_Abstract*>(abstract);
 		F_entity_Destroy		(object);
