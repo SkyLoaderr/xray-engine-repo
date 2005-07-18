@@ -112,18 +112,22 @@ void CUIWindow::Draw(float x, float y){
 
 void CUIWindow::Update()
 {
-	bool cursor_on_window;
+	if (GetUICursor()->IsVisible())
+	{
+		bool cursor_on_window;
 
-	Fvector2			temp = GetUICursor()->GetPos();
-	cursor_on_window	= !!GetAbsoluteRect().in(temp);
+		Fvector2			temp = GetUICursor()->GetPos();
+		cursor_on_window	= !!GetAbsoluteRect().in(temp);
 
-	// RECEIVE and LOST focus
-	if(m_bCursorOverWindow != cursor_on_window)
-		if(cursor_on_window)
-			OnFocusReceive();			
-		else
-			OnFocusLost();			
-	m_bCursorOverWindow = cursor_on_window;	
+		// RECEIVE and LOST focus
+		if(m_bCursorOverWindow != cursor_on_window)
+			if(cursor_on_window)
+				OnFocusReceive();			
+			else
+				OnFocusLost();			
+		m_bCursorOverWindow = cursor_on_window;	
+	}
+	
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsShown())
