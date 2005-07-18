@@ -1,1 +1,58 @@
---
+
+
+-----------------------------------------------------------------------------------------------------
+class "action_particle"
+------------------------
+function action_particle:__init (obj, storage)
+	self.object = obj
+	self.st = storage
+	self.st.single_point = true
+	self.st.current_point = 0
+end
+------------------------
+function action_particle:reset_scheme()
+    printf ("SR_PARTICLE : RESET_SCHEME START")
+	self.single_point = self.st.path:count () == 1
+	local params = particle_params (self.st.path:point (self.st.current_point))
+	self.st.psystem = particle (self.st.particle_name, params);
+    printf ("SR_PARTICLE : RESET_SCHEME END")
+end
+------------------------
+function action_particle:update (delta)
+end
+------------------------
+function action_particle:on_enter (obj)
+end
+------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------
+function add_to_binder (npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+	local new_action = action_particle (npc, storage)
+	xr_logic.subscribe_action_for_events (npc, storage, new_action)
+	
+end
+-----------------------------------------------------------------------------------------------------
+function set_scheme (obj, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind (obj, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, obj)
+	
+	local str = utils.cfg_get_string (ini, section, "path", obj, true, "", nil)
+	if str == nil or str == "" then
+	   abort ("sr_particle - invalid path name !!!")
+	end    
+    st.path = patrol (str)
+    printf ("SR_PARTICLE : PATH - %s", str)
+    
+    str = utils.cfg_get_string (ini, section, "name", obj, true, "", nil)
+    if str == nil or str == "" then
+       abort ("sr_particle - invalid particle name")
+    end   
+    st.particle_name = str
+    printf ("SR_PARTICLE : NAME - %s", st.particle_name)
+    
+    st.collision_detection = utils.cfg_get_bool (ini, section, "col_det", obj, false)
+    st.move_speed = utils.cfg_get_number (ini, section, "move_speed", obj, false, 0)
+end
