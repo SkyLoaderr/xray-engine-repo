@@ -31,7 +31,7 @@ use_wpn = false
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@def]
-meet_state = 25|hello@talk_hello|5|guard@wait
+meet_state = 30|hello@talk_hello|5|guard@wait
 meet_state_wpn = 15|threat@threat_weap
 victim = 15|actor
 victim_wpn = 15|actor
@@ -58,7 +58,7 @@ path_walk = val_escort_nap1_walk
 path_look = val_escort_nap1_look
 meet = meet@def
 on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
-on_actor_dist_le = 20 | remark@phrase1
+on_actor_dist_le = 10 | remark@phrase1
 
 ;--------------------------------------------------------------------------
 ; фраза: Друг, подходи, есть дело.

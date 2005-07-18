@@ -26,7 +26,7 @@ use = true
 ; игнорирование игрока
 ;--------------------------------------------------------------------------
 [meet@ignore]
-meet_state = 0|wait_na@
+meet_state = 0|wait
 meet_state_wpn = 3|threat@threat_weap
 victim = 1|actor
 victim_wpn = 3|actor
@@ -40,6 +40,7 @@ meet = meet@def
 on_actor_dist_le = 30 | remark@call
 
 [remark@call]
+anim = wait
 snd = val_rob_leader_call
 on_signal = sound_end | walker1
 
