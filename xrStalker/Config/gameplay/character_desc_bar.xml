@@ -2,7 +2,7 @@
 
 <xml>
 
-	<specific_character id="rostok_barman" no_random = "1" team_default = "1">
+	<specific_character id="rostok_barman" no_random = "1">
 		<name>ֻמצלאם</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="1" y="4"></map_icon>
@@ -26,7 +26,7 @@
 		<actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog>
 	</specific_character>
 
-	<specific_character id="bar_psih" no_random = "1" team_default = "1">
+	<specific_character id="bar_psih" no_random = "1">
 		<name>׀ÿבמי</name>
 		<icon x="18" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -35,16 +35,16 @@
 		<class>Bar_psih</class>
 		<community>stalker</community>
 		
+		<rank>30</rank>
+		<reputation>30</reputation>
+		<visual>actors\stalker_zombi\stalker_zombie4</visual>
+
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp \n
 		</supplies>
-				
-		<rank>30</rank>
-		<reputation>30</reputation>
-		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		
+					
 		<start_dialog>bar_bar_psih_start</start_dialog>
 	</specific_character>
 
