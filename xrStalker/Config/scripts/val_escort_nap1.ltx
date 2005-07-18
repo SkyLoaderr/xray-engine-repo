@@ -20,10 +20,10 @@ on_info = {=hitted_by(407:408)} %+val_escort_combat%
 ; встреча отключена
 ;--------------------------------------------------------------------------
 [meet@ignore]
-meet_state = 1|guard@wait
-;meet_state_wpn = 15|threat@threat_weap
-victim = 15|actor
-victim_wpn = 15|actor
+meet_state = 1|wait@wait
+meet_state_wpn = 1|guard@wait
+victim = 1|actor
+victim_wpn = 1|actor
 use = false
 use_wpn = false
 
@@ -58,7 +58,7 @@ path_walk = val_escort_nap1_walk
 path_look = val_escort_nap1_look
 meet = meet@def
 on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
-on_actor_dist_le = 10 | remark@phrase1
+on_actor_dist_le = 20 | remark@phrase1
 
 ;--------------------------------------------------------------------------
 ; фраза: Друг, подходи, есть дело.
@@ -66,11 +66,9 @@ on_actor_dist_le = 10 | remark@phrase1
 [remark@phrase1]
 no_move = true
 no_rotate = true
-anim = guard
+anim = hello
 snd = speech
-meet = meet@def
 on_signal = sound_end | walker@talk
-on_actor_dist_le = 2 | walker@talk
 on_info = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
 
 ;--------------------------------------------------------------------------
@@ -121,7 +119,6 @@ no_move = true
 no_rotate = true
 anim = hide
 snd = speech
-meet = meet@ignore
 on_timer = 40000 | remark@phrase3
 on_info = {+val_escort_captive_dead} walker@fake_task
 combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
@@ -134,7 +131,7 @@ no_move = true
 no_rotate = true
 anim = hide
 snd = speech
-meet = meet@ignore
+;meet = meet@ignore
 on_signal = sound_end | camper@ambush_wait
 on_info = {+val_escort_captive_dead} remark@fake_wait
 combat_ignore_cond = {=check_fighting(407:408) -val_escort_combat}
