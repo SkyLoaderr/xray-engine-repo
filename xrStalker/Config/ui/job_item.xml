@@ -34,12 +34,12 @@
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
 		
-		<location_btn x="235" y="5" width="16" height="16">
-			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">loc</text>
+		<location_btn x="235" y="5" width="32" height="23">
+			<texture>ui_checker</texture>
 		</location_btn>
 		
-		<switch_description_btn x="250" y="5" width="16" height="16">
-			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">sw</text>
+		<switch_description_btn x="270" y="5" width="32" height="23">
+			<texture>ui_checker</texture>
 		</switch_description_btn>
 	</task_root_item>
 
