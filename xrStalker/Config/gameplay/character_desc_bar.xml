@@ -2,7 +2,7 @@
 
 <xml>
 
-	<specific_character id="rostok_barman" no_random = "1">
+	<specific_character id="rostok_barman" no_random = "1" team_default = "1">
 		<name>Лоцман</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="1" y="4"></map_icon>
@@ -26,13 +26,13 @@
 		<actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog>
 	</specific_character>
 
-	<specific_character id="bar_psih" no_random = "1">
+	<specific_character id="bar_psih" no_random = "1" team_default = "1">
 		<name>Рябой</name>
 		<icon x="18" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Неизвестно.</bio>
 
-		<class>bar_psih</class>
+		<class>Bar_psih</class>
 		<community>stalker</community>
 		
 		<supplies>
