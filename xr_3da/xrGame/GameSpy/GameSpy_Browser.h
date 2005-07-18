@@ -3,6 +3,12 @@
 #include "GameSpy_FuncDefs.h"
 #include "GameSpy_QR2.h"
 
+struct PlayerInfo {
+	string128	Name;
+	int			Frags;
+	int			Deaths;
+	int			Team;
+};
 struct ServerInfo{
 //	SBServer pSBServer;
 	string128	m_Address;
@@ -17,7 +23,9 @@ struct ServerInfo{
 	bool					m_bFFire;
 	bool					m_bPassword;
 	s16						m_Ping;
-	s16						m_Port;
+	s16						m_Port, m_HPort;
+
+	xr_vector<PlayerInfo>	m_aPlayers;
 
 	int						Index;
 
@@ -57,6 +65,8 @@ public:
 
 	int				GetServersCount();
 	void			GetServerInfoByIndex(ServerInfo* pServerInfo, int idx);
+
+	void			OnUpdateFailed		(void* server);
 private:
 	//------------------------------- GameSpy_ServerBrowser -----------------------
 	GAMESPY_FN_VAR_DECL(void*, ServerBrowserNew, (const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, fnSBCallback callback, void *instance));
@@ -80,6 +90,19 @@ private:
 	GAMESPY_FN_VAR_DECL(int, SBServerGetPing, (void * server));
 
 	GAMESPY_FN_VAR_DECL(SBError, ServerBrowserAuxUpdateServer, (void* sb, void* server, SBBool async, SBBool fullUpdate));
+	GAMESPY_FN_VAR_DECL(SBError, ServerBrowserAuxUpdateIP, (void* sb, const char *ip, unsigned short port, SBBool viaMaster, SBBool async, SBBool fullUpdate));
+
+	GAMESPY_FN_VAR_DECL(const char *, SBServerGetPlayerStringValue, (void* server, int playernum, const char *key, const char *sdefault));
+	GAMESPY_FN_VAR_DECL(int, SBServerGetPlayerIntValue, (void* server, int playernum, const char *key, int idefault));
+	GAMESPY_FN_VAR_DECL(double, SBServerGetPlayerFloatValue, (void* server, int playernum, const char *key, double fdefault));
+
+	GAMESPY_FN_VAR_DECL(const char *, SBServerGetTeamStringValue, (void* server, int teamnum, const char *key, const char *sdefault));
+	GAMESPY_FN_VAR_DECL(int, SBServerGetTeamIntValue, (void* server, int teamnum, const char *key, int idefault));
+	GAMESPY_FN_VAR_DECL(double, SBServerGetTeamFloatValue, (void* server, int teamnum, const char *key, double fdefault));
+
+	GAMESPY_FN_VAR_DECL(void, ServerBrowserRemoveIP, (void* sb, const char *ip, unsigned short port));
+	GAMESPY_FN_VAR_DECL(void, ServerBrowserRemoveServer, (void* sb, void* server));
+
 };
 
 

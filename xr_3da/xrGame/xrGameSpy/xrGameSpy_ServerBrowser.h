@@ -27,4 +27,16 @@ extern "C"
 	EXPORT_FN_DECL(int, SBServerGetPing, (SBServer server));
 
 	EXPORT_FN_DECL(SBError, ServerBrowserAuxUpdateServer, (ServerBrowser sb, SBServer server, SBBool async, SBBool fullUpdate));
+	EXPORT_FN_DECL(SBError, ServerBrowserAuxUpdateIP, (ServerBrowser sb, const gsi_char *ip, unsigned short port, SBBool viaMaster, SBBool async, SBBool fullUpdate));
+	
+	EXPORT_FN_DECL(const gsi_char *, SBServerGetPlayerStringValue, (SBServer server, int playernum, const gsi_char *key, const gsi_char *sdefault));
+	EXPORT_FN_DECL(int, SBServerGetPlayerIntValue, (SBServer server, int playernum, const gsi_char *key, int idefault));
+	EXPORT_FN_DECL(double, SBServerGetPlayerFloatValue, (SBServer server, int playernum, const gsi_char *key, double fdefault));
+
+	EXPORT_FN_DECL(const gsi_char *, SBServerGetTeamStringValue, (SBServer server, int teamnum, const gsi_char *key, const gsi_char *sdefault));
+	EXPORT_FN_DECL(int, SBServerGetTeamIntValue, (SBServer server, int teamnum, const gsi_char *key, int idefault));
+	EXPORT_FN_DECL(double, SBServerGetTeamFloatValue, (SBServer server, int teamnum, const gsi_char *key, double fdefault));
+
+	EXPORT_FN_DECL(void, ServerBrowserRemoveIP, (ServerBrowser sb, const gsi_char *ip, unsigned short port));
+	EXPORT_FN_DECL(void, ServerBrowserRemoveServer, (ServerBrowser sb, SBServer server));
 }

@@ -68,6 +68,19 @@ void	CGameSpy_Browser::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_SBServerGetPing);
 
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserAuxUpdateServer);
+	GAMESPY_LOAD_FN(xrGS_ServerBrowserAuxUpdateIP);
+	
+	GAMESPY_LOAD_FN(xrGS_SBServerGetPlayerStringValue);
+	GAMESPY_LOAD_FN(xrGS_SBServerGetPlayerIntValue);
+	GAMESPY_LOAD_FN(xrGS_SBServerGetPlayerFloatValue);
+
+	GAMESPY_LOAD_FN(xrGS_SBServerGetTeamStringValue);
+	GAMESPY_LOAD_FN(xrGS_SBServerGetTeamIntValue);
+	GAMESPY_LOAD_FN(xrGS_SBServerGetTeamFloatValue);
+
+	GAMESPY_LOAD_FN(xrGS_ServerBrowserRemoveIP);
+	GAMESPY_LOAD_FN(xrGS_ServerBrowserRemoveServer);
+
 }
 
 bool	CGameSpy_Browser::Init()
@@ -119,7 +132,8 @@ void			CGameSpy_Browser::RefreshList_Full(bool Local)
 
 void __cdecl SBCallback(void* sb, SBCallbackReason reason, void* server, void *instance)
 {
-//	CGameSpy_Browser* pGSBrowser = (CGameSpy_Browser*) instance;
+	CGameSpy_Browser* pGSBrowser = (CGameSpy_Browser*) instance;
+	if (!pGSBrowser) return;
 	switch (reason)
 	{
 	case sbc_serveradded : //a server was added to the list, may just have an IP & port at this point
@@ -133,6 +147,7 @@ void __cdecl SBCallback(void* sb, SBCallbackReason reason, void* server, void *i
 	case sbc_serverupdatefailed : //an attempt to retrieve information about this server, either directly or from the master, failed
 		{
 			Msg("sbc_serverupdatefailed");
+			pGSBrowser->OnUpdateFailed(server);
 		}break;
 	case sbc_serverdeleted : //a server was removed from the list
 		{
@@ -175,6 +190,14 @@ void CGameSpy_Browser::GetServerInfoByIndex(ServerInfo* pServerInfo, int idx)
 	void* pServer = xrGS_ServerBrowserGetServer(m_pGSBrowser, idx);
 	ReadServerInfo(pServerInfo, pServer);
 	pServerInfo->Index = idx;
+	//-------------------------
+	if (pServerInfo->m_ServerNumPlayers)
+	{
+		PlayerInfo* pPI = &(pServerInfo->m_aPlayers[0]);
+		int x=0;
+		x=x;
+	}
+	//-------------------------
 }
 
 void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
@@ -187,17 +210,38 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	sprintf(pServerInfo->m_SessionName, "%s", xrGS_SBServerGetStringValue(pServer, m_QR2.xrGS_RegisteredKey(MAPNAME_KEY), "Unknown"));
 	sprintf(pServerInfo->m_ServerGameType, "%s", xrGS_SBServerGetStringValue(pServer, m_QR2.xrGS_RegisteredKey(GAMETYPE_KEY), "UNKNOWN"));
 	pServerInfo->m_bPassword	= xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(PASSWORD_KEY), SBFalse) == SBTrue;
-	pServerInfo->m_Ping = (s16)xrGS_SBServerGetPing(pServer);
+	pServerInfo->m_Ping = (s16)(xrGS_SBServerGetPing(pServer) & 0xffff);
 	pServerInfo->m_ServerNumPlayers = (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(NUMPLAYERS_KEY), 0);
 	pServerInfo->m_ServerMaxPlayers = (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(MAXPLAYERS_KEY), 32);
 	pServerInfo->m_bDedicated	= (xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(DEDICATED_KEY), SBFalse)) == SBTrue;
 	pServerInfo->m_bFFire		= xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(FFIRE_KEY), SBFalse) == SBTrue;
 	pServerInfo->m_Port		= (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(HOSTPORT_KEY), 0);
+	pServerInfo->m_HPort	= (s16)xrGS_SBServerGetPublicQueryPort(pServer);
+
+	pServerInfo->m_aPlayers.clear();
+	for (int i=0; i<pServerInfo->m_ServerNumPlayers; i++)
+	{
+		PlayerInfo PI;
+		sprintf(PI.Name, "%s", xrGS_SBServerGetPlayerStringValue(pServer, i, "player", "Unknown"));
+		PI.Frags = atoi(xrGS_SBServerGetPlayerStringValue(pServer, i, "score", "0"));
+		PI.Deaths = atoi(xrGS_SBServerGetPlayerStringValue(pServer, i, "deaths", "0"));
+		PI.Team = atoi(xrGS_SBServerGetPlayerStringValue(pServer, i, "team", "0"));
+
+		pServerInfo->m_aPlayers.push_back(PI);
+	};
 };
 
 void			CGameSpy_Browser::RefreshQuick(int Index)
 {
 	void* pServer = xrGS_ServerBrowserGetServer(m_pGSBrowser, Index);
 	if (!pServer) return;
-	xrGS_ServerBrowserAuxUpdateServer(m_pGSBrowser, pServer, SBFalse, SBFalse);
+	ServerInfo xServerInfo;
+	ReadServerInfo(&xServerInfo, pServer);
+	xrGS_ServerBrowserAuxUpdateServer(m_pGSBrowser, pServer, SBFalse, SBTrue);
+//	xrGS_ServerBrowserAuxUpdateIP(m_pGSBrowser, xServerInfo.m_HostName, xServerInfo.m_Port, SBFalse, SBFalse, SBTrue);
 };
+
+void			CGameSpy_Browser::OnUpdateFailed		(void* server)
+{
+	xrGS_ServerBrowserRemoveServer(m_pGSBrowser, server);
+}

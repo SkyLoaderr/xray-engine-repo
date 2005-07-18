@@ -92,3 +92,43 @@ XRGAMESPY_API SBError xrGS_ServerBrowserAuxUpdateServer(ServerBrowser sb, SBServ
 {
 	return ServerBrowserAuxUpdateServer(sb, server, async, fullUpdate);
 }
+
+XRGAMESPY_API SBError xrGS_ServerBrowserAuxUpdateIP(ServerBrowser sb, const gsi_char *ip, unsigned short port, SBBool viaMaster, SBBool async, SBBool fullUpdate)
+{
+	return ServerBrowserAuxUpdateIP(sb, ip, port, viaMaster, async, fullUpdate);
+}
+
+XRGAMESPY_API const gsi_char * xrGS_SBServerGetPlayerStringValue(SBServer server, int playernum, const gsi_char *key, const gsi_char *sdefault)
+{
+	return SBServerGetPlayerStringValue(server, playernum, key, sdefault);
+}
+XRGAMESPY_API int xrGS_SBServerGetPlayerIntValue(SBServer server, int playernum, const gsi_char *key, int idefault)
+{
+	return SBServerGetPlayerIntValue(server, playernum, key, idefault);
+}
+XRGAMESPY_API double xrGS_SBServerGetPlayerFloatValue(SBServer server, int playernum, const gsi_char *key, double fdefault)
+{
+	return SBServerGetPlayerFloatValue(server, playernum, key, fdefault);
+}
+
+XRGAMESPY_API const gsi_char *xrGS_SBServerGetTeamStringValue(SBServer server, int teamnum, const gsi_char *key, const gsi_char *sdefault)
+{
+	return SBServerGetTeamStringValue(server, teamnum, key, sdefault);
+}
+XRGAMESPY_API int xrGS_SBServerGetTeamIntValue(SBServer server, int teamnum, const gsi_char *key, int idefault)
+{
+	return SBServerGetTeamIntValue(server, teamnum, key, idefault);
+}
+XRGAMESPY_API double xrGS_SBServerGetTeamFloatValue(SBServer server, int teamnum, const gsi_char *key, double fdefault)
+{
+	return SBServerGetTeamFloatValue(server, teamnum, key, fdefault);
+}
+
+XRGAMESPY_API void xrGS_ServerBrowserRemoveIP(ServerBrowser sb, const gsi_char *ip, unsigned short port)
+{
+	ServerBrowserRemoveIP(sb, ip, port);
+}
+XRGAMESPY_API void xrGS_ServerBrowserRemoveServer(ServerBrowser sb, SBServer server)
+{
+	ServerBrowserRemoveServer(sb, server);
+}

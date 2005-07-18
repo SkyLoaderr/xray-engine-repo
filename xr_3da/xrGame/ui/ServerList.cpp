@@ -204,13 +204,16 @@ void CServerList::RefreshQuick(){
 	int SvId = m_list.GetSelectedItem();
 	if (-1 == SvId)
 		return;
-	CUIListItemServer* pItem = (CUIListItemServer*)m_list.GetItem(SvId);
-	m_GSBrowser.RefreshQuick(pItem->GetInfo()->info.Index);
 	Msg("-- Quick Refresh of Server List");
 
-	ServerInfo NewServerInfo;
-	m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, pItem->GetInfo()->info.Index);
-	UpdateServerInList(&NewServerInfo, pItem);
+	CUIListItemServer* pItem = (CUIListItemServer*)m_list.GetItem(SvId);
+	m_GSBrowser.RefreshQuick(pItem->GetInfo()->info.Index);
+
+
+	RefreshList();
+//	ServerInfo NewServerInfo;
+//	m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, pItem->GetInfo()->info.Index);
+//	UpdateServerInList(&NewServerInfo, pItem);
 }
 
 void CServerList::SrvInfo2LstSrvInfo(const ServerInfo* pServerInfo){

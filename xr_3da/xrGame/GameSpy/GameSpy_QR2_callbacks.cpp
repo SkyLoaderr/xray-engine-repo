@@ -59,6 +59,42 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 
 void __cdecl callback_playerkey(int keyid, int index, void* outbuf, void *userdata)
 {
+	xrGameSpyServer* pServer = (xrGameSpyServer*) userdata;
+	if (!pServer) return;
+	if (index >= pServer->client_Count()) return;
+	CGameSpy_QR2* pQR2 = pServer->QR2();
+	if (!pQR2) return;
+
+	xrGameSpyClientData* pCD = NULL;
+	
+	if (pServer->m_bDedicated)
+	{
+		if (index+1 >= pServer->client_Count()) return;
+		pCD = (xrGameSpyClientData*)pServer->client_Get(index+1);
+	}
+	else
+		pCD = (xrGameSpyClientData*)pServer->client_Get(index);
+	if (!pCD || !pCD->ps) return;
+
+	switch (keyid)
+	{
+	case PLAYER__KEY:
+		{
+			pQR2->BufferAdd(outbuf, pCD->ps->getName());
+		}break;
+	case SCORE__KEY:
+		{
+			pQR2->BufferAdd_Int(outbuf, pCD->ps->kills);
+		}break;
+	case DEATHS__KEY:
+		{
+			pQR2->BufferAdd_Int(outbuf, pCD->ps->deaths);
+		}break;
+	case TEAM__KEY:
+		{
+			pQR2->BufferAdd_Int(outbuf, pCD->ps->team);
+		}break;
+	}
 };
 
 void __cdecl callback_teamkey(int keyid, int index, void* outbuf, void *userdata)
@@ -89,11 +125,12 @@ void __cdecl callback_keylist(qr2_key_type keytype, void* keybuffer, void *userd
 		pQR2->KeyBufferAdd(keybuffer, FFIRE_KEY);
 		break;
 	case key_player:
-		//		pQR2->KeyBufferAdd(keybuffer, PLAYER__KEY);
-		//		pQR2->KeyBufferAdd(keybuffer, SCORE__KEY);
-		//		pQR2->KeyBufferAdd(keybuffer, DEATHS__KEY);
+		pQR2->KeyBufferAdd(keybuffer, PLAYER__KEY);
+		pQR2->KeyBufferAdd(keybuffer, SCORE__KEY);
+		pQR2->KeyBufferAdd(keybuffer, DEATHS__KEY);
+		pQR2->KeyBufferAdd(keybuffer, TEAM__KEY);
 		//		pQR2->KeyBufferAdd(keybuffer, PING__KEY);
-		//		pQR2->KeyBufferAdd(keybuffer, TEAM__KEY);
+		
 		break;
 	case key_team:
 		//		pQR2->KeyBufferAdd(keybuffer, TEAM_T_KEY);
