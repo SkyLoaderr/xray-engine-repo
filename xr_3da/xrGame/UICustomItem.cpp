@@ -92,7 +92,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, fl
 	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
 	if (!(uFlags&flValidOriginalRect)){
-		iOriginalRect.set(0,0,-ts.x,ts.y);
+		iOriginalRect.set(0,0,ts.x,ts.y);
 		uFlags		|= flValidOriginalRect;
 	}
 /*	
