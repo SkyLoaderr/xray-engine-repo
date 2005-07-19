@@ -7,7 +7,7 @@
 
 [weathers]
 map				= sect_map
-default    		= sect_all_no_vert ;sect_aaa ;sect_dx; sect_all_no_vert
+default    		=sect_stancia; sect_all_no_vert ;sect_aaa ;sect_dx; sect_all_no_vert
 test			= sect_test
 ;sarkofag       = sect_sarkofag
 ;vibros         = sect_vibros
@@ -111,6 +111,60 @@ sun_color		=	0.000, 0.000, 0.000
 sun_dir			=	-40.0, 60.0
 
 
+[sect_stancia]
+00:00:00		=	stancia_01
+12:00:00		=	stancia_01
+
+[stancia_01]
+flares			=
+sky_texture		=	sky\sky_13_cube
+sky_rotation	=	0
+sky_color		=	0.50,	0.50,	0.50
+clouds_texture	=	oblaka
+clouds_color	=	0.204, 0.200, 0.204, 0.5, 1.7
+gust_factor		=	0.2
+far_plane		=	750
+fog_color		=	0.204, 0.200, 0.204
+fog_density		=	0.95
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	on
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.03,   0.03,  	0.03
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.50,	0.50,	0.50, 1
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-25.0, 292
+env_ambient		=	ambient_env_rain
+
+
+[stancia_02]
+flares			=
+sky_texture		=	sky\sky_13_cube
+sky_rotation	=	0
+sky_color		=	0.50,	0.50,	0.50
+clouds_texture	=	oblaka
+clouds_color	=	0.333, 0.341, 0.431, 0.0, 1.7
+gust_factor		=	0.2
+far_plane		=	750
+fog_color		=	0.204, 0.200, 0.204
+fog_density		=	0.95
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	on
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.03,   0.03,  	0.03
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.50,	0.50,	0.50, 1
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-25.0, 292
+env_ambient		=	ambient_env_rain
 
 
 
