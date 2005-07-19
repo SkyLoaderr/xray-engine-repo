@@ -109,7 +109,7 @@ public:
 									ref_sound	()							{ }
 									~ref_sound	()							{ destroy(); }
 
-	ref_sound&						operator=		(const ref_sound& src)	{ clone(src); return this;}
+	const ref_sound&				operator=		(const ref_sound& src)	{ clone(src); return this;}
 
 	IC CSound_source*				handle			(){VERIFY(_p); return _p->handle;}
 	IC CSound_interface*			feedback		(){VERIFY(_p); return _p->feedback;}
