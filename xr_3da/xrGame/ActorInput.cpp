@@ -261,10 +261,12 @@ void CActor::IR_OnKeyboardHold(int cmd)
 		return;
 	}
 
+	float LookFactor = GetLookFactor();
 	switch(cmd)
 	{
 	case kUP:
 	case kDOWN: 
+		cam_Active()->Move(cmd); break;
 	case kCAM_ZOOM_IN: 
 	case kCAM_ZOOM_OUT: 
 		cam_Active()->Move(cmd); break;
@@ -285,19 +287,10 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 		return;
 	}
 
-	if (!IsControlled()) m_controlled_mouse_scale_factor = 1.0f;
-	//  [7/19/2005]
-	PIItem pItem = (inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-		inventory().ItemFromSlot(inventory().GetActiveSlot()) : NULL);
-	if (pItem)
-	{
-		m_controlled_mouse_scale_factor *= pItem->GetControlInertionFactor();
-	}
-	//  [7/19/2005]
-	VERIFY(!fis_zero(m_controlled_mouse_scale_factor));
+	float LookFactor = GetLookFactor();
 
 	CCameraBase* C	= cameras	[cam_active];
-	float scale		= (C->f_fov/DEFAULT_FOV)*psMouseSens * psMouseSensScale/50.f  / m_controlled_mouse_scale_factor;
+	float scale		= (C->f_fov/DEFAULT_FOV)*psMouseSens * psMouseSensScale/50.f  / LookFactor;
 	if (dx){
 		float d = float(dx)*scale;
 		cam_Active()->Move((d<0)?kLEFT:kRIGHT, _abs(d));
@@ -490,3 +483,18 @@ void	CActor::OnPrevWeaponSlot()
 		}
 	}
 };
+
+float	CActor::GetLookFactor()
+{
+	if (!IsControlled()) m_controlled_mouse_scale_factor = 1.0f;
+	//  [7/19/2005]
+	PIItem pItem = (inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().ItemFromSlot(inventory().GetActiveSlot()) : NULL);
+	if (pItem)
+	{
+		m_controlled_mouse_scale_factor *= pItem->GetControlInertionFactor();
+	}
+	//  [7/19/2005]
+	VERIFY(!fis_zero(m_controlled_mouse_scale_factor));
+	return m_controlled_mouse_scale_factor;
+}
