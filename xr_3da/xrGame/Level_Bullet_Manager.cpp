@@ -136,11 +136,11 @@ void CBulletManager::PlayExplodePS		(const Fmatrix& xf)
 	}
 }
 
-void CBulletManager::PlayWhineSound(CObject* object, const Fvector& pos)
+void CBulletManager::PlayWhineSound(SBullet* bullet, CObject* object, const Fvector& pos)
 {
 	if (!m_WhineSounds.empty()){
-		ref_sound& snd			= m_WhineSounds[Random.randI(0, m_WhineSounds.size())];
-		snd.play_at_pos_unlimited(object,pos);
+		bullet->m_whine_snd		= m_WhineSounds[Random.randI(0, m_WhineSounds.size())];
+		bullet->m_whine_snd.play_at_pos(object,pos);
 	}
 }
 
@@ -249,7 +249,7 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 					Fvector			pt;
 					pt.mad			(bullet->pos, bullet->dir, dist);
 					CObject* initiator	= Level().Objects.net_Find	(bullet->parent_id);
-					Level().BulletManager().PlayWhineSound			(initiator,pt);
+					Level().BulletManager().PlayWhineSound			(bullet,initiator,pt);
 				}
 			}
 		}

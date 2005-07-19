@@ -90,7 +90,7 @@ private:
 };
 
 
-void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, Fvector& vNormal, bool ShowMark)
+void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, Fvector& vNormal, bool ShowMark)
 {
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
 	Fvector particle_dir;
@@ -162,8 +162,9 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 	//проиграть звук
 	if(pSound && ShowMark)
 	{
-		CObject* O = Level().Objects.net_Find(bullet->parent_id );
-		pSound->play_at_pos_unlimited(O, vEnd, false);
+		CObject* O			= Level().Objects.net_Find(bullet->parent_id );
+		bullet->m_mtl_snd	= *pSound;
+		bullet->m_mtl_snd.play_at_pos(O, vEnd, 0);
 	}
 
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?

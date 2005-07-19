@@ -1,6 +1,8 @@
 #ifndef PH_WORLD_H
 #define PH_WORLD_H
 
+// refs
+struct SGameMtlPair;
 
 class CPHMesh {
 	dGeomID Geom;
@@ -10,6 +12,7 @@ public:
 	void Destroy();
 };
 
+#define PHWORLD_SOUND_CACHE_SIZE 8
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -34,6 +37,10 @@ class CPHWorld	: public pureFrame
 	PH_OBJECT_STORAGE			m_recently_disabled_objects									;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
 	dGeomID						m_motion_ray;
+protected:
+	ref_sound					m_sound_cache[PHWORLD_SOUND_CACHE_SIZE];
+public:
+	void						play_collide_sound(SGameMtlPair* mtl_pair, const Fvector& pos, float volume);
 public:
 	xr_vector<ISpatial*>		r_spatial;
 public:
@@ -44,7 +51,7 @@ public:
 	u16							disable_count												;
 	
 								CPHWorld						()							;
-	virtual						~CPHWorld						()				{}			;
+	virtual						~CPHWorld						(){}						;
 
 //IC	dSpaceID					GetSpace						()			{return Space;}	;
 

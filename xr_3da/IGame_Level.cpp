@@ -30,11 +30,6 @@ IGame_Level::~IGame_Level	()
 	// Render-level unload
 	Render->level_Unload		();
 
-	// Unload sounds
-	for (u32 i=0; i<Sounds.size(); i++)
-		Sound->destroy	(Sounds[i]);
-	Sounds.clear();
-
 	// Unregister
 	Device.seqRender.Remove		(this);
 	Device.seqFrame.Remove		(this);

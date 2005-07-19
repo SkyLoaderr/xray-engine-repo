@@ -60,6 +60,8 @@ struct SBullet
 	ALife::EHitType hit_type;
 	//---------------------------------
 	u32				m_dwID;
+	ref_sound		m_whine_snd;
+	ref_sound		m_mtl_snd;
 	bool			operator	==		(u32 ID){return	ID == m_dwID;}
 public:
 					SBullet				();
@@ -128,7 +130,7 @@ protected:
 	float 					m_fMinViewDist;
 	float 					m_fMaxViewDist;
 protected:
-	void					PlayWhineSound		(CObject* object, const Fvector& pos);
+	void					PlayWhineSound		(SBullet* bullet, CObject* object, const Fvector& pos);
 	void					PlayExplodePS		(const Fmatrix& xf);
 	//функция обработки хитов объектов
 	static BOOL __stdcall	test_callback		(CObject* object, LPVOID params);
@@ -143,7 +145,7 @@ protected:
 	std::pair<float, float> ObjectHit			(SBullet* bullet, const Fvector& end_point, 
 												collide::rq_result& R, u16 target_material, const Fvector& hit_normal);
 	//отметка на пораженном объекте
-	void					FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
+	void					FireShotmark		(SBullet* bullet, const Fvector& vDir, 
 												const Fvector &vEnd, collide::rq_result& R,  u16 target_material,
 												Fvector& vNormal, bool ShowMark = true);
 	//просчет полета пули за некоторый промежуток времени

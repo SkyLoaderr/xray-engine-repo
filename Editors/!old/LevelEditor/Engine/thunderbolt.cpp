@@ -155,7 +155,7 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
 	    next_lightning_time = Device.fTimeGlobal+lt+EPS_L;
     }else{
 	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.3f,period*0.3f);
-		current->snd.play_at_pos_unlimited(0,pos,FALSE,dist/300.f);
+		current->snd.play_at_pos(0,pos,FALSE,dist/300.f);
 		current->snd.set_range	(dist/2,dist*2.f);
     }
 	current_direction.invert	();	// for env-sun

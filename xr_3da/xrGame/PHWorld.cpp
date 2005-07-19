@@ -6,11 +6,12 @@
 #include "Level.h"
 #include "ExtendedGeom.h"
 #include "draymotions.h"
-#ifdef    DEBUG
-#include "../StatGraph.h"
-#include "PHDebug.h"
-#endif
 #include "PHCollideValidator.h"
+#include "gamemtllib.h"
+#ifdef    DEBUG
+#	include "../StatGraph.h"
+#	include "PHDebug.h"
+#endif
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -125,6 +126,18 @@ void CPHWorld::Destroy(){
 	dRayMotionsClassUser=-1;
 	Device.seqFrameMT.Remove	(this);
 	Device.seqFrame.Remove		(this);
+}
+
+void CPHWorld::play_collide_sound(SGameMtlPair* mtl_pair, const Fvector& pos, float volume)
+{
+	for (u32 k=0; k<PHWORLD_SOUND_CACHE_SIZE; ++k){
+		if (0==m_sound_cache[k]._feedback()){
+			m_sound_cache[k].clone			(SELECT_RANDOM1(mtl_pair->CollideSounds));
+			m_sound_cache[k].play_at_pos	(0,pos,0);
+			m_sound_cache[k].set_volume		(volume);
+			break;
+		}
+	}
 }
 
 void CPHWorld::OnFrame()

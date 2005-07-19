@@ -4,35 +4,34 @@
 
 #include "GameMtlLib.h"
 
-void DestroySounds(SoundSVec4& lst)
+void DestroySounds(SoundVec& lst)
 {
-	for (SoundS4It it=lst.begin(); lst.end() != it; ++it)	
+	for (SoundIt it=lst.begin(); lst.end() != it; ++it)	
 		it->destroy();
 }
 
-void DestroyMarks(ShaderSVec4& lst)
+void DestroyMarks(ShaderVec& lst)
 {
-	for (ShaderS4It it=lst.begin(); lst.end() != it; ++it)
+	for (ShaderIt it=lst.begin(); lst.end() != it; ++it)
 		it->destroy();
 }
 
-void DestroyPSs(PSSVec4& lst)
+void DestroyPSs(PSVec& lst)
 {
-//	for (ShaderS4It it=lst.begin(); lst.end() != it; ++it)
+//	for (PSIt it=lst.begin(); lst.end() != it; ++it)
 //		Device.Resources->Delete(*it);
 }
 
-void CreateSounds(SoundSVec4& lst, LPCSTR buf)
+void CreateSounds(SoundVec& lst, LPCSTR buf)
 {
 	string128 tmp;
-	int cnt=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
-	for (int k=0; k<cnt; ++k){
-		lst.push_back		(ref_sound());
-		lst.back().create	(TRUE,	_GetItem(buf,k,tmp));
-	}
+	int cnt			=	_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
+	lst.resize		(cnt);
+	for (int k=0; k<cnt; ++k)
+		lst[k].create	(TRUE,	_GetItem(buf,k,tmp));
 }
 
-void CreateMarks(ShaderSVec4& lst, LPCSTR buf)
+void CreateMarks(ShaderVec& lst, LPCSTR buf)
 {
 	string256	tmp;
 	int cnt		=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
@@ -44,7 +43,7 @@ void CreateMarks(ShaderSVec4& lst, LPCSTR buf)
 	}
 }
 
-void CreatePSs(PSSVec4& lst, LPCSTR buf)
+void CreatePSs(PSVec& lst, LPCSTR buf)
 {
 	string256 tmp;
 	int cnt=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);

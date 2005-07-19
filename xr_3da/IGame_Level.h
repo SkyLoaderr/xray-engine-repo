@@ -23,14 +23,13 @@ protected:
 	// Network interface
 	CObject*					pCurrentEntity;
 	CObject*					pCurrentViewEntity;
-
+   
 	// Static sounds
-	xr_vector<ref_sound>		Sounds;
 	xr_vector<ref_sound>		Sounds_Random;
 	u32							Sounds_Random_dwNextTime;
 	BOOL						Sounds_Random_Enabled;
 public:
-	CObjectList					Objects;
+	CObjectList					Objects; 
 	CCameraManager				Cameras;
 	CObjectSpace				ObjectSpace;
 
@@ -40,9 +39,9 @@ public:
 	CCustomHUD*					pHUD;
 public:	// deferred sound events
 	struct	_esound_delegate	{
-		Feel::Sound*	dest	;
-		ref_sound*		source	;
-		float			power	;
+		Feel::Sound*			dest	;
+		ref_sound_data_ptr		source	;
+		float					power	;
 	};
 	xr_vector<_esound_delegate>	snd_Events;
 public:
@@ -72,7 +71,7 @@ public:
 	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O;	}
 	void						SetViewEntity			( CObject* O  )							{ pCurrentViewEntity=O;					}
 	
-	void						SoundEvent_Register		( ref_sound* S, float range );
+	void						SoundEvent_Register		( ref_sound_data_ptr S, float range );
 	void						SoundEvent_Dispatch		( );
 
 	// Loader interface

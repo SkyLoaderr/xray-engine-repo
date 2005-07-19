@@ -52,13 +52,13 @@
 #endif
 
 #ifdef GM_NON_GAME
-	#define SoundSVec4 		shared_str
-	#define PSSVec4 		shared_str
-	#define ShaderSVec4 	shared_str
+	#define SoundVec	shared_str
+	#define PSVec 		shared_str
+	#define ShaderVec 	shared_str
 #else
-	DEFINE_SVECTOR(ref_sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
-	DEFINE_SVECTOR(shared_str,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
-	DEFINE_SVECTOR(ref_shader,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
+	DEFINE_VECTOR(ref_sound,SoundVec,SoundIt);
+	DEFINE_VECTOR(shared_str,PSVec,PSIt);
+	DEFINE_VECTOR(ref_shader,ShaderVec,ShaderIt);
 #endif
 
 struct ECORE_API SGameMtl
@@ -154,11 +154,11 @@ public:
     };
     Flags32				OwnProps;
 //	properties
-    SoundSVec4			BreakingSounds;
-    SoundSVec4			StepSounds;
-    SoundSVec4			CollideSounds;
-    PSSVec4				CollideParticles;
-    ShaderSVec4			CollideMarks;
+    SoundVec			BreakingSounds;
+    SoundVec			StepSounds;
+    SoundVec			CollideSounds;
+    PSVec				CollideParticles;
+    ShaderVec			CollideMarks;
 #ifdef _EDITOR
     PropValue*			propBreakingSounds;
     PropValue*			propStepSounds;

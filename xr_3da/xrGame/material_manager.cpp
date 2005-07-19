@@ -70,7 +70,7 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	// ref_sound step
 	if (!standing) {
 		if (m_time_to_step < 0) {
-			SoundSVec4& snd_array = mtl_pair->StepSounds;
+			SoundVec& snd_array = mtl_pair->StepSounds;
 			
 			if(m_run_mode && mtl_pair->BreakingSounds.size() >0)
 				snd_array = mtl_pair->BreakingSounds;
@@ -90,7 +90,7 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 
 
 	for(int i=0; i<4; i++)
-		if (m_step_sound[i].feedback)		{
+		if (m_step_sound[i]._feedback())		{
 			m_step_sound[i].set_position	(position    );
 			m_step_sound[i].set_volume		(1.f * volume);
 		}
