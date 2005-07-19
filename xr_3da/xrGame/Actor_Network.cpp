@@ -1820,7 +1820,7 @@ bool				CActor::InventoryAllowSprint			()
 	{
 		return false;
 	};
-	PIItem pOutfitItem = inventory().ItemFormSlot(OUTFIT_SLOT);
+	PIItem pOutfitItem = inventory().ItemFromSlot(OUTFIT_SLOT);
 	if (pOutfitItem && !pOutfitItem->IsSprintAllowed())
 	{
 		return false;

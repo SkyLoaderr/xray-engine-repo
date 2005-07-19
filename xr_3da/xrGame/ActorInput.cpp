@@ -286,6 +286,14 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 	}
 
 	if (!IsControlled()) m_controlled_mouse_scale_factor = 1.0f;
+	//  [7/19/2005]
+	PIItem pItem = (inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().ItemFromSlot(inventory().GetActiveSlot()) : NULL);
+	if (pItem)
+	{
+		m_controlled_mouse_scale_factor *= pItem->GetControlInertionFactor();
+	}
+	//  [7/19/2005]
 	VERIFY(!fis_zero(m_controlled_mouse_scale_factor));
 
 	CCameraBase* C	= cameras	[cam_active];
@@ -453,7 +461,7 @@ void	CActor::OnNextWeaponSlot()
 	if (CurSlot >= NumSlotsToCheck) return;
 	for (u32 i=CurSlot+1; i<NumSlotsToCheck; i++)
 	{
-		if (inventory().ItemFormSlot(SlotsToCheck[i]))
+		if (inventory().ItemFromSlot(SlotsToCheck[i]))
 		{
 			IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
 			return;
@@ -475,7 +483,7 @@ void	CActor::OnPrevWeaponSlot()
 	if (CurSlot >= NumSlotsToCheck) return;
 	for (s32 i=s32(CurSlot-1); i>=0; i--)
 	{
-		if (inventory().ItemFormSlot(SlotsToCheck[i]))
+		if (inventory().ItemFromSlot(SlotsToCheck[i]))
 		{
 			IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
 			return;

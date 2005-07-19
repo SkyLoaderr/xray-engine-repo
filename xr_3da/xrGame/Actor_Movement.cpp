@@ -455,7 +455,7 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 	}
 
 	CWeapon *pWeapon = smart_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
+		inventory().ItemFromSlot(inventory().GetActiveSlot())/*inventory().m_slots[inventory().GetActiveSlot()].m_pIItem*/ : NULL);
 
 	if(pWeapon){
 		Fvector			dangle;
@@ -494,7 +494,7 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 	r_torso.roll	= NET_Last.o_torso.roll;
 
 	CWeapon *pWeapon = smart_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
+		inventory().ItemFromSlot(inventory().GetActiveSlot())/*inventory().m_slots[inventory().GetActiveSlot()].m_pIItem*/ : NULL);
 
 	if(pWeapon) 
 	{
