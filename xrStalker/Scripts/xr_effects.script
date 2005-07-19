@@ -636,7 +636,26 @@ function mil_scull_news (actor, npc)
        db.actor:has_info ("mil_sniper_dead") then
        news_manager.send_tip (actor, "mil_scull_info", nil, "dolg")
        db.actor:give_info_portion ("mil_scull_sniper_info_get")
+       
+       local sniper = level_object_by_sid (730)
+       if sniper and sniper:alive () == true then        
+          level_tasks.add_location (730, "mil_sniper_location")
+       end   
+       
+       sniper = level_object_by_sid (731)
+       if sniper and sniper:alive () == true then        
+          level_tasks.add_location (731, "mil_sniper_location")
+       end   
+       
+       sniper = level_object_by_sid (732)
+       if sniper and sniper:alive () == true then        
+          level_tasks.add_location (732, "mil_sniper_location")
+       end   
     end       
+end
+
+function mil_sniper_dead (actor, npc)
+    level_tasks.remove_location (npc:story_id (), "mil_sniper_location")
 end
 
 function mil_actor_enemy_set (actor, npc)
