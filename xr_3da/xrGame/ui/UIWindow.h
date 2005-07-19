@@ -62,6 +62,7 @@ public:
 	virtual void OnMouseUp(bool left_button = true);
 	virtual void OnFocusReceive();
 	virtual void OnFocusLost();
+			bool HasChildMouseHandler();
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
@@ -179,7 +180,7 @@ protected:
 
 	// Если курсор над окном
 	bool					m_bCursorOverWindow;
-
+	bool					m_bClickable;
 	IC void					SafeRemoveChild(CUIWindow* child){
 								WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child);
 								if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);

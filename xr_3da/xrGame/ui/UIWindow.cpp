@@ -45,7 +45,7 @@ CUIWindow::CUIWindow()
 	Enable					(true);
 	EnableDoubleClick		(true);
 	m_bCursorOverWindow		= false;
-
+	m_bClickable			= false;
 #ifdef LOG_ALL_WNDS
 	ListWndCount++;
 	dbg_list_wnds.push_back(DBGList());
@@ -293,6 +293,22 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	}
 
 
+}
+
+bool CUIWindow::HasChildMouseHandler(){
+	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+
+	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
+	{
+		if ((*it)->m_bClickable)
+		{
+			Frect wndRect = (*it)->GetWndRect();
+			if (wndRect.in(cursor_pos) )
+				return true;
+		}
+	}
+
+	return false;
 }
 
 void CUIWindow::OnMouseMove(){

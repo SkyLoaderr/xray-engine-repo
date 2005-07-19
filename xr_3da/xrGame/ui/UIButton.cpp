@@ -48,6 +48,8 @@ CUIButton:: CUIButton()
     //m_pLines = xr_new<CUILines>();
 	SetTextAlignment(CGameFont::alCenter); // this will create class instance for m_pLines
 	SetVTextAlignment(valCenter);
+	m_bClickable				= true;
+
 }
 
  CUIButton::~ CUIButton()
@@ -87,7 +89,14 @@ void  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 	m_bButtonClicked = false;
 
 	inherited::OnMouse(x, y, mouse_action);
-    
+
+	if ( (	WINDOW_LBUTTON_DOWN==mouse_action	||
+			WINDOW_LBUTTON_UP==mouse_action		||
+			WINDOW_RBUTTON_DOWN==mouse_action	||
+			WINDOW_RBUTTON_UP==mouse_action)	&& 
+			HasChildMouseHandler())
+		return;
+
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 		GetParent()->SetCapture(this, m_bCursorOverWindow);
 
