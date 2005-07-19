@@ -78,19 +78,6 @@ public:
 };
 typedef resptr_core<CSound_UserData,resptr_base<CSound_UserData> >	CSound_UserDataPtr;
 
-
-class ref_sound_data	: public xr_resource		{
-public:
-	CSound_source*					handle;			//!< Pointer to wave-source interface
-	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
-	int								g_type;			//!< Sound type, usually for AI
-	CObject*						g_object;		//!< Game object that emitts ref_sound
-	CSound_UserDataPtr				g_userdata;
-public:
-									ref_sound_data	()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; g_userdata=0;}
-	virtual							~ref_sound_data	();
-};
-typedef resptr_core<ref_sound_data,resptr_base<ref_sound_data> >	ref_sound_data_ptr;
 /*! \class ref_sound
 \brief Sound source + control
 
@@ -100,22 +87,22 @@ specific sub-systems
 */
 struct	ref_sound
 {
-	ref_sound_data_ptr				_p;
+private:
+									ref_sound		(const ref_sound&){R_ASSERT(0);}
 public:
+	CSound_source*					handle;			//!< Pointer to wave-source interface
+	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
+	int								g_type;			//!< Sound type, usually for AI
+	CObject*						g_object;		//!< Game object that emitts ref_sound
+	CSound_UserDataPtr				g_userdata;
+
     //! A constructor
     /*!
 		\sa ~ref_sound()
 	*/
-									ref_sound	()							{ }
-									~ref_sound	()							{ destroy(); }
-
-	ref_sound&						operator=		(const ref_sound& src)	{ clone(src); return *this;}
-
-	IC CSound_source*				_handle			(){return _p?_p->handle:0;}
-	IC CSound_interface*			_feedback		(){return _p?_p->feedback:0;}
-	IC CObject*						_g_object		(){VERIFY(_p); return _p->g_object;}
-	IC int							_g_type			(){VERIFY(_p); return _p->g_type;}
-	IC CSound_UserDataPtr			_g_userdata		(){VERIFY(_p); return _p->g_userdata;}
+	ref_sound()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; g_userdata=0;}
+	~ref_sound()						{ destroy(); }
+	ref_sound&						operator=		(const ref_sound& src){clone(src);return *this;}
 
 	//! Loader/initializer
 	/*!
@@ -229,7 +216,7 @@ public:
 };
 
 /// definition (Sound Callback)
-typedef		void __stdcall sound_event						(ref_sound_data_ptr S, float range);
+typedef		void __stdcall sound_event						(ref_sound* S, float range);
 
 /// definition (Sound Manager Interface)
 class XRSOUND_API	CSound_manager_interface
@@ -279,27 +266,28 @@ IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound-
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
 IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);					}
 IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);				}
-IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(_p->feedback);_p->feedback->set_position(pos);						}
-IC void	ref_sound::set_frequency				( float freq)											{	if (_p->feedback)	_p->feedback->set_frequency(freq);						}
-IC void	ref_sound::set_range					( float min, float max )								{	if (_p->feedback)	_p->feedback->set_range(min,max);						}
-IC void	ref_sound::set_volume					( float vol )											{	if (_p->feedback)	_p->feedback->set_volume(vol);							}
-IC void	ref_sound::set_priority					( float p )												{	if (_p->feedback)	_p->feedback->set_priority(p);							}
-IC void	ref_sound::stop							( )														{	if (_p->feedback)	_p->feedback->stop(FALSE);								}
-IC void	ref_sound::stop_deffered				( )														{	if (_p->feedback)	_p->feedback->stop(TRUE);								}
-IC const CSound_params*	ref_sound::get_params	( )														{	if (_p->feedback)	return _p->feedback->get_params(); else return NULL;	}
+IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(feedback);feedback->set_position(pos);						}
+IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
+IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
+IC void	ref_sound::set_volume					( float vol )											{	if (feedback)	feedback->set_volume(vol);							}
+IC void	ref_sound::set_priority					( float p )												{	if (feedback)	feedback->set_priority(p);							}
+IC void	ref_sound::stop							( )														{	if (feedback)	feedback->stop(FALSE);								}
+IC void	ref_sound::stop_deffered				( )														{	if (feedback)	feedback->stop(TRUE);								}
+IC const CSound_params*	ref_sound::get_params	( )														{	if (feedback)	return feedback->get_params(); else return NULL;	}
 IC void	ref_sound::set_params					( CSound_params* p )									
 {	
-	if (_p->feedback){
-    	_p->feedback->set_position	(p->position);
-    	_p->feedback->set_frequency	(p->freq);
-        _p->feedback->set_range   	(p->min_distance,p->max_distance);
-        _p->feedback->set_volume   	(p->volume);
+	if (feedback){
+    	feedback->set_position	(p->position);
+    	feedback->set_frequency	(p->freq);
+        feedback->set_range   	(p->min_distance,p->max_distance);
+        feedback->set_volume   	(p->volume);
     }
 }
 IC void	ref_sound::clone						( const ref_sound& from, int type )		
 {
-	_p				= from._p;
-	_p->feedback	= 0;
-	_p->g_object	= 0;
+	feedback	= 0;
+	g_object	= 0;
+	handle		= from.handle;
+	g_type		= (type==st_SourceType)?handle->game_type():type;
 }
 #endif

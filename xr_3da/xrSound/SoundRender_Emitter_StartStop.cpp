@@ -8,8 +8,9 @@
 void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
 {
 	starting_delay			= delay;
-	source					= (CSoundRender_Source*)_owner->handle;
-	owner					= _owner;
+
+	source					= (CSoundRender_Source*)owner->handle;
+	owner					= _owner;				VERIFY(owner);
 	p_source.position.set	(0,0,0);
 	p_source.min_distance	= source->m_fMinDist;	// DS3D_DEFAULTMINDISTANCE;
 	p_source.max_distance	= source->m_fMaxDist;	// 300.f;
@@ -32,6 +33,8 @@ void CSoundRender_Emitter::i_stop()
 	if (owner)	
 	{
 		Event_ReleaseOwner		();
+		VERIFY(this==owner->feedback);
+		dbg_ID=0xDDCCBBAA;
 		owner->feedback			= NULL;
 		owner					= NULL;
 	}

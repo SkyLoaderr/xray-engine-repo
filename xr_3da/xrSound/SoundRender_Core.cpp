@@ -253,13 +253,6 @@ void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float de
 	else			i_play	(&S,flags&sm_Looped,delay);
 	if (flags&sm_2D)		S.feedback->switch_to_2D();
 }
-void	CSoundRender_Core::play_unlimited		( ref_sound& S, CObject* O, u32 flags, float delay)
-{
-	if (!bPresent || 0==S.handle)	return;
-	verify_refsound					(S);
-	i_play					(&S,flags&sm_Looped,delay);
-	if (flags&sm_2D)		S.feedback->switch_to_2D();
-}
 void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
 {
 	if (!bPresent || 0==S.handle)	return;
@@ -272,14 +265,6 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 	else				i_play				(&S,flags&sm_Looped,delay);
 	S.feedback->set_position				(pos);
 	if (flags&sm_2D)			S.feedback->switch_to_2D();
-}
-void	CSoundRender_Core::play_at_pos_unlimited	( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
-{
-	if (!bPresent || 0==S.handle)	return;
-	verify_refsound					(S);
-	i_play							(&S,flags&sm_Looped,delay);
-	S.feedback->set_position		(pos);
-	if (flags&sm_2D)				S.feedback->switch_to_2D();
 }
 void	CSoundRender_Core::destroy	(ref_sound& S )
 {

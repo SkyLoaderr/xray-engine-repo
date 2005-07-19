@@ -11,6 +11,9 @@ void CSoundRender_Emitter::update	(float dt)
 {
 	u32	dwTime			= SoundRender->Timer.GetElapsed_ms();
 
+	VERIFY2(owner,"owner");
+	VERIFY2(owner->feedback,"owner");
+
 	switch (state)	
 	{
 	case stStopped:
@@ -109,11 +112,19 @@ void CSoundRender_Emitter::update	(float dt)
 	// if deffered stop active and volume==0 -> physically stop sound
 	if (bStopping&&fis_zero(fade_volume)) i_stop();
 
+	VERIFY2(owner,"owner");
+	VERIFY2(owner->feedback,"owner");
+
 	// footer
 	bMoved				= FALSE;
 	if (state != stStopped){
 		if (dwTime	>=	dwTimeToPropagade)		Event_Propagade();
-	} else if (owner)	{ owner->feedback = 0; owner	= 0; }
+	} else if (owner)	{ 
+		VERIFY(this==owner->feedback);
+		dbg_ID=0xAABBCCDD;
+		owner->feedback = 0; 
+		owner			= 0; 
+	}
 }
 
 IC void	volume_lerp		(float& c, float t, float s, float dt)
