@@ -144,14 +144,13 @@
 <!--test -->
 
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
-		<texture x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture>
-		<texture_above x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture_above>
-		<texture_below x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture_below>
+		<texture x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture>
+		<texture_above x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture_above>
+		<texture_below x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture_below>
 	</heli_mini_spot>
 <!--test -->
 	
-<!---->	<enemy_mini_spot width="3" height="3" alignment="c" light_anim="ui_minimap_enemy"> <!---->
-<!--	<enemy_mini_spot width="3" height="3" alignment="c"> 	<!---->
+	<enemy_mini_spot width="3" height="3" alignment="c" light_anim="ui_minimap_enemy">
 		<texture r="255" g="0" b="0">ui\hud_map_point</texture>
 	</enemy_mini_spot>
 	
@@ -199,34 +198,34 @@
 	</mp_af_neutral_mini_spot>
 	
 	<mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
-		<texture x="0" y="0" width="256" height="256"> ui\ui_mp_minimap_hit_sector</texture>
+		<texture x="0" y="0" width="256" height="256">ui\ui_mp_minimap_hit_sector</texture>
 	</mp_hit_sector_mini_spot>
 
 	
 <!-- pointers definitions -->
 	<actor_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
 	</actor_pointer>
 	
 	<!-- multiplayer -->
 	<mp_team_base_1_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="0"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="0">ui\ui_map_arrow_02</texture>
 	</mp_team_base_1_pointer>
 	
 	<mp_team_base_2_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="255"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="255">ui\ui_map_arrow_02</texture>
 	</mp_team_base_2_pointer>	
 	
 	<mp_af_neutral_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c" light_anim="ui_mp_minimap_af_neutral"> 
-		<texture x="8" y="7" width="15" height="17" r="255" g="255" b="255"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="255" g="255" b="255">ui\ui_map_arrow_02</texture>
 	</mp_af_neutral_mini_pointer>	
 	
 	<mp_af_enemy_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c" light_anim="ui_mp_minimap_af_enemy"> 
-		<texture x="8" y="7" width="15" height="17" r="255" g="0" b="0"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="255" g="0" b="0">ui\ui_map_arrow_02</texture>
 	</mp_af_enemy_mini_pointer>	
 	
 	<mp_af_friend_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
-		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="0"> ui\ui_map_arrow_02</texture>
+		<texture x="8" y="7" width="15" height="17" r="0" g="255" b="0">ui\ui_map_arrow_02</texture>
 	</mp_af_friend_mini_pointer>	
 
 </map_spots>
