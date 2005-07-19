@@ -109,10 +109,13 @@ public:
 									ref_sound	()							{ }
 									~ref_sound	()							{ destroy(); }
 
-	const ref_sound&				operator=		(const ref_sound& src)	{ clone(src); return this;}
+	ref_sound&						operator=		(const ref_sound& src)	{ clone(src); return *this;}
 
-	IC CSound_source*				handle			(){VERIFY(_p); return _p->handle;}
-	IC CSound_interface*			feedback		(){VERIFY(_p); return _p->feedback;}
+	IC CSound_source*				_handle			(){VERIFY(_p); return _p->handle;}
+	IC CSound_interface*			_feedback		(){VERIFY(_p); return _p->feedback;}
+	IC CObject*						_g_object		(){VERIFY(_p); return _p->g_object;}
+	IC int							_g_type			(){VERIFY(_p); return _p->g_type;}
+	IC CSound_UserDataPtr			_g_userdata		(){VERIFY(_p); return _p->g_userdata;}
 
 	//! Loader/initializer
 	/*!
