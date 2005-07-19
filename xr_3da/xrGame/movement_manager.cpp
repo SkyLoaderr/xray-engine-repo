@@ -199,6 +199,11 @@ void CMovementManager::update_path				()
 					level_path().set_dest_vertex	(restrictions().accessible_nearest(ai().level_graph().vertex_position(level_path().dest_vertex_id()),temp));
 					detail().set_dest_position		(temp);
 				}
+				else {
+					if (!restrictions().accessible(detail().dest_position())) {
+						detail().set_dest_position	(ai().level_graph().vertex_position(level_path().dest_vertex_id()));
+					}
+				}
 				break;
 			}
 			case ePathTypePatrolPath : {
