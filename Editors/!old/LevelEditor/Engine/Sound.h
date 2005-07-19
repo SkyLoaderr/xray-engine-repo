@@ -88,7 +88,6 @@ specific sub-systems
 struct	ref_sound
 {
 private:
-	ref_sound&						operator=		(const ref_sound&){R_ASSERT(0);}
 									ref_sound		(const ref_sound&){R_ASSERT(0);}
 public:
 	CSound_source*					handle;			//!< Pointer to wave-source interface
@@ -96,13 +95,15 @@ public:
 	int								g_type;			//!< Sound type, usually for AI
 	CObject*						g_object;		//!< Game object that emitts ref_sound
 	CSound_UserDataPtr				g_userdata;
-
+public:
     //! A constructor
     /*!
 		\sa ~ref_sound()
 	*/
-	ref_sound()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; g_userdata=0;}
-	~ref_sound()						{ destroy(); }
+	ref_sound()						{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; g_userdata=0;}
+	~ref_sound()					{ destroy(); }
+
+	ref_sound&						operator=		(const ref_sound& src){clone(src);}
 
 	//! Loader/initializer
 	/*!
