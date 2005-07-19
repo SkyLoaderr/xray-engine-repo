@@ -308,13 +308,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default2" team_default = "1">
@@ -343,13 +339,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default3" team_default = "1">
@@ -380,13 +372,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default4" team_default = "1">
@@ -415,13 +403,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default5" team_default = "1">
@@ -450,13 +434,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default6" team_default = "1">
@@ -487,13 +467,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default9" team_default = "1">
@@ -522,13 +498,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default10" team_default = "1">
@@ -557,13 +529,9 @@
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
 		<actor_dialog>companion_hire_dialog</actor_dialog>
 		<actor_dialog>companion_management_dialog</actor_dialog>
 		<actor_dialog>companion_release_dialog</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER GENERAL---------------------->
