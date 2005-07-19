@@ -7,7 +7,7 @@
 
 void EDetailManager::CreateControls()
 {
-	inherited::CreateDefaultControls(estDefault);
+	//inherited::CreateDefaultControls(estDefault);
 	// frame
     pFrame 			= xr_new<TfraDetailObject>((TComponent*)0,this);
 }
@@ -19,4 +19,4 @@ void EDetailManager::RemoveControls()
 }
 //----------------------------------------------------
 
- 
+                     

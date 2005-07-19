@@ -278,13 +278,13 @@ object frmObjectList: TfrmObjectList
       8080808080808080808080808080808080808080808080808080}
     QuickEditMode = True
     ScrollbarOpposite = False
-    ShowCheckboxes = True
     ShowHint = False
     ShowImages = False
     ShowLeafButton = False
     ShowLines = False
-    SortType = stCustom
+    SortSection = -1
     StoragePath = '\Tree'
+    SortUseCase = False
     StripedOddColor = clGray
     StripedEvenColor = 8158332
     StripedItems = True

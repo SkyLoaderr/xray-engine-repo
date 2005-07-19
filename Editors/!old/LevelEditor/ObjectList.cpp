@@ -90,7 +90,7 @@ TElTreeItem* TfrmObjectList::AddFolder(ObjClassID type)
 {
     AnsiString name;
     name.sprintf("%ss",Scene->GetMTools(type)->ClassDesc());
-    TElTreeItem* node = tvItems->Items->AddObject(0,name,(void*)type);
+    TElTreeItem* node = tvItems->Items->AddObject(0,AnsiString(name).LowerCase().c_str(),(void*)type);
     node->ParentStyle = false;
     node->Bold = true;
     return node;
@@ -98,7 +98,7 @@ TElTreeItem* TfrmObjectList::AddFolder(ObjClassID type)
 
 TElTreeItem* TfrmObjectList::AddObject(TElTreeItem* node, LPCSTR name, void* obj)
 {
-    return tvItems->Items->AddChildObject(node, name, obj);
+    return tvItems->Items->AddChildObject(node, AnsiString(name).LowerCase().c_str(), obj);
 }
 
 void __fastcall TfrmObjectList::InitListBox()
@@ -127,11 +127,11 @@ void __fastcall TfrmObjectList::InitListBox()
             }
         }
     }
-    tvItems->Sort(true);
-    tvItems->IsUpdating = false;
+    tvItems->Sort			(true);
+    tvItems->IsUpdating 	= false;
 
     UpdateState();
-    tvItems->FullExpand();
+    tvItems->FullExpand		();      
     obj_count 	= Scene->ObjCount();
 }
 
@@ -153,7 +153,7 @@ void TfrmObjectList::UpdateState()
     }
 
     tvItems->IsUpdating = false;
-}
+}                                                
 
 void TfrmObjectList::UpdateSelection()
 {

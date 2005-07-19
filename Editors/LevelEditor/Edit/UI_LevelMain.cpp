@@ -722,13 +722,6 @@ CCommandVar CommandRefreshSoundEnvGeometry(CCommandVar p1, CCommandVar p2)
     LSndLib->RefreshEnvGeometry();
     return 						TRUE;
 }
-CCommandVar CommandMoveCameraTo(CCommandVar p1, CCommandVar p2)
-{
-    Fvector pos					= Device.m_Camera.GetPosition();
-    if (NumericVectorRun		("Move to",&pos,3))
-        Device.m_Camera.Set		(Device.m_Camera.GetHPB(),pos);
-    return 						TRUE;
-}
 CCommandVar CommandShowContextMenu(CCommandVar p1, CCommandVar p2)
 {
     LUI->ShowContextMenu		(p1);
@@ -856,7 +849,6 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_REFRESH_SNAP_OBJECTS,      CommandRefreshSnapObjects);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_SOUND_ENVS,        CommandRefreshSoundEnvs);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_SOUND_ENV_GEOMETRY,CommandRefreshSoundEnvGeometry);
-	REGISTER_CMD_SE	    (COMMAND_MOVE_CAMERA_TO,            "Scene\\Move Camera To",	  	CommandMoveCameraTo,false);
 	REGISTER_CMD_S	    (COMMAND_SHOWCONTEXTMENU,           CommandShowContextMenu);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_UI_BAR,            CommandRefreshUIBar);
 	REGISTER_CMD_S	    (COMMAND_RESTORE_UI_BAR,            CommandRestoreUIBar);

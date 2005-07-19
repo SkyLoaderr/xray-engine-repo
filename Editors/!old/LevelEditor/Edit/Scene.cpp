@@ -240,7 +240,10 @@ bool EScene::IfModified()
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
         case mrYes: if (!ExecCommand(COMMAND_SAVE)) return false; break;
-//		case mrNo: m_RTFlags.set(flRT_Unsaved,FALSE); break;
+		case mrNo:{ 
+        	m_RTFlags.set(flRT_Unsaved,FALSE); 
+            ExecCommand	(COMMAND_UPDATE_CAPTION);
+        }break;
         case mrCancel: return false;
         }
     }
