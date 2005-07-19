@@ -18,13 +18,16 @@ on_info2 = {=killed_by(404)} %=hit_npc(404:bip01_spine1:100:2000)%, {=killed_by(
 no_move = true
 no_rotate = true
 anim = wait_na
+on_info = {+val_sacrifice_plr_detected} remark@free, {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} walker@leave %+val_sacrifice_victim_free%
 combat_ignore_cond = always
-;combat_ignore_keep_when_attacked = true
-on_info = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} remark@free %+val_sacrifice_victim_free%
 
 [remark@free]
-on_timer = 60000 | walker@leave
-;on_signal = escaped | %+val_sacrifice_victim_free%
+no_move = true
+no_rotate = true
+anim = hide
+on_timer = 60000 | walker@leave %+val_sacrifice_victim_free%
+on_info = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} walker@leave %+val_sacrifice_victim_free%
+combat_ignore_cond = always
 
 [walker@leave]
 path_walk = val_sacrifice_victim_leave_walk
