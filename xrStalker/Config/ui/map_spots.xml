@@ -25,9 +25,10 @@
 		<texture x="0" y="160" width="32" height="32"> ui\ui_icons_map</texture>
 	</user_mini_spot>
 
-	<user_pointer>
-		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128"> ui\ui_map_arrow_02</texture>
+	<user_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
+		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
 	</user_pointer>
+	
 <!-- end of user-defined spot -->
 	
 <!-- location definitions -->
