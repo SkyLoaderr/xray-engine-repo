@@ -454,9 +454,9 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
 	files_it	I 	= files.find(desc);
 	if (I==files.end())	return 0;
 
-    BOOL b_mask 	= FALSE;
 	SStringVec 		masks;
 	_SequenceToList	(masks,mask);
+    BOOL b_mask 	= !masks.empty();
 
 	size_t base_len	= N.size();
 	for (++I; I!=files.end(); I++){
