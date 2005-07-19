@@ -99,6 +99,11 @@ function action_wait:finalize()
 	action_base.finalize (self)
 end
 function action_wait:deactivate()
+	printf("KAMP DEACTIVATE CALLED")
+	kamps[self.a.center_point]:removeNpc(self.object)
+end
+function action_wait:death_callback()
+	printf("KAMP DEACTIVATE CALLED")
 	kamps[self.a.center_point]:removeNpc(self.object)
 end
 
