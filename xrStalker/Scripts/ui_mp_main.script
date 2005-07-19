@@ -172,7 +172,13 @@ function mp_main:InitCallBacks()
 	-- ui_mm_mp_join
 	self:AddCallback("btn_refresh",			ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
 	self:AddCallback("btn_quick_refresh",	ui_events.BUTTON_CLICKED,	self.OnBtn_RefreshQuick,self)
+	self:AddCallback("btn_server_info",		ui_events.BUTTON_CLICKED,	self.OnBtn_SrvInfo,self)
 	
+	
+end
+
+function mp_main:OnBtn_SrvInfo()
+	self.server_list:ShowServerInfo()
 end
 
 function mp_main:OnGameModeChange()
