@@ -55,7 +55,7 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 	vPosition.set	(point);
 }
 
-void CCameraFirstEye::Move( int cmd, float val )
+void CCameraFirstEye::Move( int cmd, float val, float factor )
 {
 	if (bClampPitch)
 	{
@@ -65,10 +65,10 @@ void CCameraFirstEye::Move( int cmd, float val )
 			pitch -= PI_MUL_2;
 	};
 	switch (cmd){
-	case kDOWN:		pitch	-= val?val:(rot_speed.y*Device.fTimeDelta);	break;
-	case kUP:		pitch	+= val?val:(rot_speed.y*Device.fTimeDelta);	break;
-	case kLEFT:		yaw		-= val?val:(rot_speed.x*Device.fTimeDelta);	break;
-	case kRIGHT:	yaw		+= val?val:(rot_speed.x*Device.fTimeDelta);	break;
+	case kDOWN:		pitch	-= val?val:(rot_speed.y*Device.fTimeDelta/factor);	break;
+	case kUP:		pitch	+= val?val:(rot_speed.y*Device.fTimeDelta/factor);	break;
+	case kLEFT:		yaw		-= val?val:(rot_speed.x*Device.fTimeDelta/factor);	break;
+	case kRIGHT:	yaw		+= val?val:(rot_speed.x*Device.fTimeDelta/factor);	break;
 	}
 	if (bClampYaw)		clamp(yaw,lim_yaw[0],lim_yaw[1]);
 	if (bClampPitch)	clamp(pitch,lim_pitch[0],lim_pitch[1]);

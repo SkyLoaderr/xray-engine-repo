@@ -45,7 +45,7 @@ public:
 	void			SetParent		( CObject* p )								{parent=p;}
 	virtual	void	OnActivate		( CCameraBase* old_cam )					{;}
 	virtual	void	OnDeactivate	( )											{;}
-	virtual void	Move			( int cmd, float val=0 )					{;}
+	virtual void	Move			( int cmd, float val=0, float factor=1.0f)	{;}
 	virtual void	Update			( Fvector& point, Fvector& noise_angle )	{;}
 	virtual void	Get				( Fvector& P, Fvector& D, Fvector& N )		{P.set(vPosition);D.set(vDirection);N.set(vNormal);}
 	virtual void	Set				( const Fvector& P, const Fvector& D, const Fvector& N ){vPosition.set(P);vDirection.set(D);vNormal.set(N);}
