@@ -88,7 +88,7 @@ public:
 	CSound_UserDataPtr				g_userdata;
 public:
 									ref_sound_data	()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; g_userdata=0;}
-	virtual							~ref_sound_data	()							{}
+	virtual							~ref_sound_data	();
 };
 typedef resptr_core<ref_sound_data,resptr_base<ref_sound_data> >	ref_sound_data_ptr;
 /*! \class ref_sound
