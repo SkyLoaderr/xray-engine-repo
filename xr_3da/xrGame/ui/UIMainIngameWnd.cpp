@@ -540,7 +540,7 @@ void CUIMainIngameWnd::Update()
 	};
 
 	// Armor indicator stuff
-	PIItem	pItem = m_pActor->inventory().ItemFormSlot(OUTFIT_SLOT);
+	PIItem	pItem = m_pActor->inventory().ItemFromSlot(OUTFIT_SLOT);
 	if (pItem)
 	{
 		UIArmorBar.Show(true);
@@ -557,7 +557,7 @@ void CUIMainIngameWnd::Update()
 
 	if(m_pActor->inventory().GetActiveSlot() < m_pActor->inventory().m_slots.size()) 
 	{
-		PIItem item =  m_pActor->inventory().m_slots[m_pActor->inventory().GetActiveSlot()].m_pIItem;
+		PIItem item =  m_pActor->inventory().ItemFromSlot(m_pActor->inventory().GetActiveSlot());
 		CWeapon* pWeapon = smart_cast<CWeapon*>(item); 
 		CMissile* pMissile = smart_cast<CMissile*>(item); 
 		CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(pWeapon);

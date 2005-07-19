@@ -344,7 +344,7 @@ bool CUIInventoryWnd::ToSlot()
 	if (OUTFIT_SLOT == item_slot) UndressOutfit();
 
 	// Убираем текущую вещь в слоте, если это не одежда, и текущая вещь и вешь в слоте не одно и то же
-	bool bGrenadeSlotAllow =	(GRENADE_SLOT==item_slot && (GetInventory()->ItemFormSlot(GRENADE_SLOT)==NULL) ) ||
+	bool bGrenadeSlotAllow =	(GRENADE_SLOT==item_slot && (GetInventory()->ItemFromSlot(GRENADE_SLOT)==NULL) ) ||
 								(GRENADE_SLOT!=item_slot);
 	if (OUTFIT_SLOT!=item_slot	&& 
 		bGrenadeSlotAllow		&&
