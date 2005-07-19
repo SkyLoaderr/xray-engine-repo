@@ -87,6 +87,10 @@ specific sub-systems
 */
 struct	ref_sound
 {
+private:
+	ref_sound&						operator=		(const ref_sound&){R_ASSERT(0);}
+									ref_sound		(const ref_sound&){R_ASSERT(0);}
+public:
 	CSound_source*					handle;			//!< Pointer to wave-source interface
 	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
 	int								g_type;			//!< Sound type, usually for AI
