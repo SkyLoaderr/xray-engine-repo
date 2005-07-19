@@ -215,15 +215,18 @@
 	<info_portion id="bar_darklab_document_gain"></info_portion>
 	<info_portion id="bar_darklab_document_done"></info_portion>
     
-		 <!-- DECODING DOCUMENTS -->
-    <info_portion id="bar_decoding_start">
+		 <!-- X16 DOCUMENTS -->
+    <info_portion id="bar_x16_documents_start">
 		<action>level_tasks.notify_new_task</action>
-		<task>bar_decoding_documents</task>
+		<task>bar_x16_documents</task>
     </info_portion>
-	<info_portion id="yan_decoding_give"></info_portion>
-	<info_portion id="yan_decoding_gain"></info_portion>
-    <info_portion id="bar_decoding_done"></info_portion>
-    
+	<info_portion id="yan_x16_documents_gain"></info_portion>
+    <info_portion id="bar_x16_documents_done"></info_portion>
+
+		 <!-- PSIHOPAT -->
+	<info_portion id="bar_psih_come"></info_portion>
+	<info_portion id="bar_psih_done"></info_portion>
+	    
 		<!-- DEACTIVATE RADAR -->
     <info_portion id="bar_deactivate_radar_start">
 		<action>level_tasks.notify_new_task</action>

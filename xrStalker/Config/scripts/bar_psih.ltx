@@ -1,55 +1,6 @@
 [logic]
-active = walker@room2hole
+active = walker@start
 
-
-[walker@at_hole]
-path_walk = bar_barman_hole_walk
-path_look = bar_barman_hole_look
-def_state_standing = barman_wait_free
-def_state_moving1 = barman_walk_free
-def_state_moving2 = barman_walk_free
-def_state_moving3 = barman_walk_free
-on_info = {+bar_barman_need_room} walker@hole2room
-meet = meet@at_hole
-
-[meet@at_hole]
-use = true
-use_wpn = true
-meet_talk_enabled = true
-meet_state = barman_talk_free
-
-
-[walker@hole2room]
-path_walk = bar_barman_hole2room_walk
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-on_signal = arrived | %+bar_barman_stay_room%
-on_info = {+bar_barman_stay_room} walker@at_room
-
-
-[walker@at_room]
-path_walk = bar_barman_room_walk
-path_look = bar_barman_room_look
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-meet = meet@at_room
-on_info = {+bar_barman_need_hole} walker@room2hole
-
-[meet@at_room]
-use = true
-use_wpn = true
-meet_talk_enabled = true
-meet_state = barman_talk_danger
-
-[walker@room2hole]
-path_walk = bar_barman_room2hole_walk
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-on_signal = arrived | %+bar_barman_stay_hole%
-on_info = {+bar_barman_stay_hole} walker@at_hole
+[walker@start]
+path_walk = bar_bar_psih_walk
+path_look = bar_bar_psih_look

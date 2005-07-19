@@ -563,6 +563,9 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
+	if gulag_escape.checkStalker(npc_community, gulag_type) then
+		return true
+	end
 	if gulag_garbage.checkStalker(npc_community, gulag_type) then
 		return true
 	end
@@ -597,6 +600,9 @@ function checkMonster(npc_community, gulag_type)
 		return true
 	end
 
+	if gulag_escape.checkMonster(npc_community, gulag_type) then
+		return true
+    end
 	if gulag_garbage.checkMonster(npc_community, gulag_type) then
 		return true
     end

@@ -27,6 +27,8 @@ news = {
 	bar_ecolog_spam_4				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]]),
 	bar_ecolog_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]]),
 
+	bar_psih_come					= sound_object([[characters_voice\human_01\scenario\bar\barman\barman_pda_psycho]]),
+
 	bar_territory_dolg_1_hit		= sound_object([[characters_voice\human_01\scenario\bar\pda\voronin_gunfire_pda_1]]),
 	bar_territory_dolg_2_hit		= sound_object([[characters_voice\human_01\scenario\bar\pda\voronin_gunfire_pda_2]]),
 	bar_territory_dolg_3_hit		= sound_object([[characters_voice\human_01\scenario\bar\pda\voronin_gunfire_pda_3]]),
@@ -56,6 +58,7 @@ tips_icons = {
 	arena    = { 350, 150 },
 	stalker  = { 100, 150 },
 	krot     = { 200,  50 },
+	barman   = { 400,  50 }
 }
 
 function send_news(actor, news_id, timeout, showtime)

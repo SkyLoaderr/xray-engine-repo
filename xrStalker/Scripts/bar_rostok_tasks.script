@@ -91,12 +91,12 @@ function proceed()
 	end 
 
 
-	if	actor:has_info("bar_decoding_start") and 
- 		actor:dont_has_info("yan_decoding_gain") and
-		actor:object("bar_decoding_documents") ~= nil 
+	if	actor:has_info("bar_x16_documents_start") and 
+ 		actor:dont_has_info("yan_x16_documents_gain") and
+		actor:object("lab_x16_documents") ~= nil 
 	then		
-		actor:give_info_portion("yan_decoding_gain")
-		level_tasks.set_task_state(task.completed, "bar_decoding_documents", 1)
+		actor:give_info_portion("yan_x16_documents_gain")
+		level_tasks.set_task_state(task.completed, "bar_x16_documents", 2)
 	end 
 
 end
@@ -174,27 +174,6 @@ function process_info_portion(info_id)
 		level_tasks.remove_location(501, "bar_dolg_arhive_document_location")
 		level_tasks.add_location(507, "bar_dolg_voronin_location")
 		return true	
-	elseif info_id == "bar_darklab_document_start" then
-		level_tasks.add_location(512, "bar_darklab_documents_location")
-		return true	
-	elseif info_id == "bar_darklab_document_gain" then
-		level_tasks.remove_location(512, "bar_darklab_documents_location")
-		level_tasks.add_location(500, "bar_barman_location")
-		return true
-	elseif info_id == "bar_darklab_document_done" then
-		level_tasks.remove_location(500, "bar_barman_location")
-		return true
-	
-	elseif info_id == "bar_decoding_start" then
-		level_tasks.add_location(513, "bar_decoding_documents_location")
-		return true	
-	elseif info_id == "yan_decoding_gain" then
-		level_tasks.remove_location(513, "bar_decoding_documents_location")
-		level_tasks.add_location(500, "bar_barman_location")
-		return true
-	elseif info_id == "bar_decoding_done" then
-		level_tasks.remove_location(500, "bar_barman_location")
-		return true
 
 	elseif info_id == "bar_bar_drunk_dolg_quest_start" then
 		level_tasks.add_location(508, "bar_killer_sniper_location")

@@ -128,18 +128,23 @@
 </string>
 
 
-	<string id="decoding_secret_documents">
-	<text>Расшифровать документы из  секретной лаборатории</text>
+<string id="x16_documents">
+	<text>Найти документы из лаборатории X16</text>
 </string>
-	<string id="secret_documents_to_yantar">
-	<text>Найти ученых, которые расшифруют документы</text>
+<string id="x16_yantar">
+	<text>Необходимо найти лабораторию X16 и достать в ней документы, 
+	касающиеся выжигателя мозгов.</text>
 </string>
-	<string id="find_researchers">
-	<text>Передать ученым документы для расшифровки</text>
+<string id="find_x16_location">
+	<text>Узнать у ученных местонахождение лаборатории X16</text>
 </string>
-	<string id="bring_decoding_documents">
-	<text>Принести расшифрованные документы бармену</text>
+<string id="find_x16_documents">
+	<text>Найти документы в лаборатории X16</text>
 </string>
+<string id="bring_x16_documents">
+	<text>Принести бармену</text>
+</string>
+
 	
 	<string id="deactivate_radar">
 	<text>Отключить радар</text>

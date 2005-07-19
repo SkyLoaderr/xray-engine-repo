@@ -575,6 +575,9 @@ function bar_territory_logic(actor, npc)
 	end
 end
 
+function bar_psih_come(actor, npc)
+	news_manager.send_tip(actor, "bar_psih_come", nil, "barman")
+end
 
 
 

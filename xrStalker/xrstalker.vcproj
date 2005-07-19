@@ -1397,6 +1397,9 @@
 						RelativePath=".\Config\scripts\bar_entry_zone.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\bar_psih.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bar_territory_zone.ltx">
 					</File>
 					<File
@@ -2252,6 +2255,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_dark_valley.script">
+						</File>
+						<File
+							RelativePath=".\scripts\gulag_escape.script">
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_garbage.script">

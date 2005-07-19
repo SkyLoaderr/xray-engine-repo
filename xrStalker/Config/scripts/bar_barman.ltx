@@ -10,13 +10,16 @@ def_state_moving1 = barman_walk_free
 def_state_moving2 = barman_walk_free
 def_state_moving3 = barman_walk_free
 on_info = {+bar_barman_need_room} walker@hole2room
-meet = meet
+on_info2 = {+yan_x16_documents_gain -bar_psih_come} %+bar_psih_come =bar_psih_come%
+meet = meet@at_hole
 
-[meet]
+[meet@at_hole]
+;meet_state = 3|barman_talk_free
+;meet_state_wpn = 3|barman_talk_free
+;victim = 3|actor
+;victim_wpn = 3|actor
 use = true
 use_wpn = true
-meet_talk_enabled = true
-meet_state = barman_talk_free
 
 
 [walker@hole2room]
@@ -36,9 +39,36 @@ def_state_standing = barman_wait_danger
 def_state_moving1 = barman_walk_danger
 def_state_moving2 = barman_walk_danger
 def_state_moving3 = barman_walk_danger
-meet_talk_enabled = true
-meet_state = barman_wait_danger
+meet = meet@at_room
 on_info = {+bar_barman_need_hole} walker@room2hole
+on_info2 = {+bar_psih_come -bar_psih_done} walker@room_psih
+
+[meet@at_room]
+;meet_state = 3|barman_wait_danger
+;meet_state_wpn = 3|barman_wait_danger
+;victim = 3|actor
+;victim_wpn = 3|actor
+use = true
+use_wpn = true
+
+[walker@room_psih]
+path_walk = bar_barman_room_walk_psih
+path_look = bar_barman_room_look_psih
+def_state_standing = barman_wait_danger
+def_state_moving1 = barman_walk_danger
+def_state_moving2 = barman_walk_danger
+def_state_moving3 = barman_walk_danger
+meet = meet@room_psih
+on_info = {+bar_barman_need_hole} walker@room2hole
+
+[meet@room_psih]
+;meet_state = 15|barman_wait_danger
+;meet_state_wpn = 15|barman_wait_danger
+;victim = 15|nil
+;victim_wpn = 15|nil
+use = true
+use_wpn = true
+
 
 [walker@room2hole]
 path_walk = bar_barman_room2hole_walk
