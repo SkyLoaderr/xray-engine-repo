@@ -196,6 +196,9 @@ protected:
 	//  [6/14/2005]
 	bool	m_bAllowSprint;
 	//  [6/14/2005]
+	//  [7/19/2005]
+	float	m_fControlInertionFactor;
+	//  [7/19/2005]
 	////////// network //////////////////////////////////////////////////
 public:
 	virtual void	make_Interpolation	();
@@ -217,6 +220,7 @@ public:
 	//  [6/14/2005]
 	virtual	bool	IsSprintAllowed		() const {return m_bAllowSprint;} ;
 	//  [6/14/2005]
+	virtual	float	GetControlInertionFactor	() const {return m_fControlInertionFactor;};
 
 protected:
 	virtual void	UpdateXForm	();

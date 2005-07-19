@@ -77,7 +77,7 @@ public:
 	// Возвращает указатель на объект в активном слоте
 	PIItem ActiveItem() const;
 	// Возвращает указатель на объект в слоте указаным номером
-	PIItem ItemFormSlot(u32 slot) const;
+	PIItem ItemFromSlot(u32 slot) const;
 
 	// true если известная команда, иначе false
 	bool Action(s32 cmd, u32 flags);

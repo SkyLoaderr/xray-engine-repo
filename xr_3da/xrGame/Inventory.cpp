@@ -572,7 +572,7 @@ PIItem CInventory::ActiveItem()const
 	return m_iActiveSlot < m_slots.size() ? m_slots[m_iActiveSlot].m_pIItem : NULL;
 }
 
-PIItem CInventory::ItemFormSlot(u32 slot) const
+PIItem CInventory::ItemFromSlot(u32 slot) const
 {
 	VERIFY(NO_ACTIVE_SLOT != slot);
 	return m_slots[slot].m_pIItem;

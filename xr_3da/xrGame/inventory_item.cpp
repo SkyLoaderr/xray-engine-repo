@@ -133,6 +133,12 @@ void CInventoryItem::Load(LPCSTR section)
 	else
 		m_bAllowSprint = true;
 	//  [6/14/2005]
+	//  [7/19/2005]
+	if (pSettings->line_exist(section, "control_inertion_factor"))
+		m_fControlInertionFactor = pSettings->r_float(section, "control_inertion_factor");
+	else
+		m_fControlInertionFactor = 1.0f;
+ 	//  [7/19/2005]
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)
