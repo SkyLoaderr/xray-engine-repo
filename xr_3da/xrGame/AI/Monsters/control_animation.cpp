@@ -3,6 +3,9 @@
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
 
+//temp
+#include "control_animation_base.h"
+
 void CControlAnimation::reinit()
 {
 	inherited::reinit			();
@@ -88,6 +91,13 @@ void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 		pos			= fmod(part.blend->timeCurrent,part.blend->timeTotal)/part.blend->timeTotal;
 
 	part.blend			= m_skeleton_animated->LL_PlayCycle(bone_or_part,part.motion, TRUE, callback, this);
+	
+	
+///////////////////////////////////////////////////////////////////////////////
+//#ifdef _DEBUG	
+//	Msg("Monster[%s] Time[%u] Anim[%s]",*(m_object->cName()), Device.dwTimeGlobal,*(m_object->anim().GetAnimTranslation(part.motion)));
+//#endif
+///////////////////////////////////////////////////////////////////////////////
 	
 	// synchronize prev and current animations
 	if ((pos > 0) && part.blend && !part.blend->stop_at_end) 

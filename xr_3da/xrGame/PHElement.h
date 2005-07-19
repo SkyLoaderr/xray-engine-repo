@@ -175,7 +175,8 @@ public:																																				//
 	virtual void						set_AngularVel					(const Fvector& velocity);														//called anywhere ph state influent
 	virtual void						setForce						(const Fvector& force);															//
 	virtual void						setTorque						(const Fvector& torque);														//
-	virtual void						set_ApplyByGravity				(bool flag)			   ;														//
+	virtual void						set_ApplyByGravity				(bool flag)			;															//
+	virtual bool						get_ApplyByGravity				()					;															//
 ///////////////////////////////////////////////////Net////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void						get_State						(		SPHNetState&	state);													//

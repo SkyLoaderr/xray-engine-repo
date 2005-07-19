@@ -185,13 +185,6 @@ public:
 			bool			GetCoverFromPoint				(const Fvector &pos, Fvector &position, u32 &vertex_id, float min_dist, float max_dist, float radius);
 			bool			GetCoverCloseToPoint			(const Fvector &dest_pos, float min_dist, float max_dist, float deviation, float radius ,Fvector &position, u32 &vertex_id);
 
-			
-			bool			IsVisibleObject					(const CGameObject *object);
-			void			on_kill_enemy					(const CEntity *obj);
-			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
-	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
-			void			PsyHit							(const CGameObject *object, float value);
-
 
 	// Movement Manager
 protected:
@@ -211,27 +204,11 @@ public:
 	void						settings_overrides		();
 
 	SMonsterSettings			&db						() {return *(*m_current_settings);}
-	
 	// --------------------------------------------------------------------------------------
 
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	
-	// --------------------------------------------------------------------------------------
-	// State flags
-	bool						m_bDamaged;
-	bool						m_bAngry;
-	bool						m_bGrowling;
-	bool						m_bAggressive;
-	bool						m_bSleep;
-	bool						m_bRunTurnLeft;
-	bool						m_bRunTurnRight;
-
-
-	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
-
-	//---------------------------------------------------------------------------------------
-
-
+	
 	CMonsterCorpseCoverEvaluator	*m_corpse_cover_evaluator;
 	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;
 	CCoverEvaluatorCloseToEnemy		*m_cover_evaluator_close_point;
@@ -260,12 +237,44 @@ public:
 
 	// -----------------------------------------------------------------------------
 
-	
 	CControlledEntityBase	*m_controlled;	
 
 	// -----------------------------------------------------------------------------
+	enum EMonsterType {
+		eMonsterTypeUniversal	= u32(0),
+		eMonsterTypeIndoor,
+		eMonsterTypeOutdoor,
+	} m_monster_type;
+
+	
+	//////////////////////////////////////////////////////////////////////////
+	// -----------------------------------------------------------------------------
 	// Special Services (refactoring needed)
 		
+	bool			IsVisibleObject					(const CGameObject *object);
+	void			on_kill_enemy					(const CEntity *obj);
+	void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
+	virtual	void	HitEntityInJump					(const CEntity *pEntity) {}
+	void			PsyHit							(const CGameObject *object, float value);
+
+	// --------------------------------------------------------------------------------------
+	// Kill From Here
+	// --------------------------------------------------------------------------------------
+	// State flags
+	bool						m_bDamaged;
+	bool						m_bAngry;
+	bool						m_bGrowling;
+	bool						m_bAggressive;
+	bool						m_bSleep;
+	bool						m_bRunTurnLeft;
+	bool						m_bRunTurnRight;
+
+
+	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
+
+	//---------------------------------------------------------------------------------------
+	
+	
 	u32						get_attack_rebuild_time	();
 
 	IC	virtual	EAction		CustomVelocityIndex2Action	(u32 velocity_index) {return ACT_STAND_IDLE;}
@@ -288,6 +297,7 @@ private:
 	bool					ignore_collision_hit;	
 	
 	// -----------------------------------------------------------------------------
+	//////////////////////////////////////////////////////////////////////////
 
 
 public:
@@ -316,6 +326,7 @@ protected:
 
 public:	
 
+//////////////////////////////////////////////////////////////////////////
 // DEBUG stuff
 #ifdef DEBUG
 public:
@@ -336,6 +347,10 @@ public:
 	virtual	SDebugInfo		show_debug_info		();
 
 	void					debug_fsm			();
+#endif
+
+#ifdef _DEBUG
+	virtual void			debug_on_key		(int key) {}
 #endif
 };
 

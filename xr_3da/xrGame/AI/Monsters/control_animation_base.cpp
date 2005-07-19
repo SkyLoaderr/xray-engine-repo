@@ -43,6 +43,7 @@ void CControlAnimationBase::reinit()
 	aa_time_last_attack		= 0;
 
 	// обновить количество анимаций
+	m_anim_motion_map.clear	();
 	UpdateAnimCount			();
 
 	// инициализация информации о текущей анимации
@@ -57,8 +58,6 @@ void CControlAnimationBase::reinit()
 	prev_motion					= cur_anim_info().motion; 
 
 	m_prev_character_velocity	= 0.01f;
-
-	m_anim_motion_map.clear		();
 
 	spec_anim					= eAnimUndefined;
 
@@ -355,6 +354,8 @@ void CControlAnimationBase::ValidateAnimation()
 ///////////////////////////////////////////////////////////////////////////////////////
 void CControlAnimationBase::UpdateAnimCount()
 {
+	CSkeletonAnimated *skel = smart_cast<CSkeletonAnimated*>(m_object->Visual());
+
 	for (ANIM_ITEM_MAP_IT it = m_tAnims.begin(); it != m_tAnims.end(); it++)	{
 
 		// проверить, были ли уже загружены данные
@@ -364,7 +365,14 @@ void CControlAnimationBase::UpdateAnimCount()
 		u8 count = 0;
 
 		for (int i=0; ; ++i) {
-			if (smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe(strconcat(s_temp, *it->second.target_name,itoa(i,s,10))))  count++;
+			strconcat	(s_temp, *it->second.target_name,itoa(i,s,10));
+			LPCSTR		name	= s_temp;
+			MotionID	id		= skel->ID_Cycle_Safe(name);
+
+			if (id.valid())  {
+				count++;
+				AddAnimTranslation(id,name);
+			}
 			else break;
 		}
 

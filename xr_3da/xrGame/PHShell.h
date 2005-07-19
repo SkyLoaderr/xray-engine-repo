@@ -133,6 +133,7 @@ public:
 	virtual		void				TransformPosition				(const Fmatrix &form);
 	virtual		void				SetGlTransformDynamic			(const Fmatrix &form);
 	virtual		void				set_ApplyByGravity				(bool flag);
+	virtual		bool				get_ApplyByGravity				();
 	virtual		void				SetMaterial						(u16 m);
 	virtual		void				SetMaterial						(LPCSTR m);
 	virtual		ELEMENT_STORAGE		&Elements						(){return elements;}

@@ -62,6 +62,15 @@ void CBaseMonster::reload	(LPCSTR section)
 	sound().add(pSettings->r_string(section,"sound_growling"),			16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
 
 	control().reload					(section);
+
+	// load monster type
+	m_monster_type = eMonsterTypeUniversal;
+	if (pSettings->line_exist(section,"monster_type")) {
+		if (xr_strcmp(pSettings->r_string(section,"monster_type"), "indoor") == 0)
+			m_monster_type = eMonsterTypeIndoor;
+		else if (xr_strcmp(pSettings->r_string(section,"monster_type"), "outdoor") == 0)
+			m_monster_type = eMonsterTypeOutdoor;
+	}
 }
 
 void CBaseMonster::reinit()

@@ -1380,6 +1380,11 @@ void CPHElement::set_ApplyByGravity(bool flag)
 	if(!bActive||m_flags.test(flFixed)) return;
 	dBodySetGravityMode(m_body,flag);
 }
+bool CPHElement::get_ApplyByGravity()
+{
+	return (!!dBodyGetGravityMode(m_body));
+}
+
 void	CPHElement::Fix()
 {
 	m_flags.set(flFixed,TRUE);

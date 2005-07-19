@@ -5,6 +5,9 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
+#ifdef _DEBUG
+#	include <dinput.h>
+#endif
 
 CAI_Dog::CAI_Dog()
 {
@@ -116,3 +119,25 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		anim().SetCurAnim(eAnimThreaten);
 	}
 }
+
+#ifdef _DEBUG
+void CAI_Dog::debug_on_key(int key)
+{
+	CSkeletonAnimated *skel = smart_cast<CSkeletonAnimated *>(Visual());
+
+	switch (key){
+	case DIK_1:
+		// strafe left
+		com_man().seq_run(skel->ID_Cycle_Safe("stand_turn_ls_0"));
+		break;
+	case DIK_2:
+		// strafe right
+		com_man().seq_run(skel->ID_Cycle_Safe("stand_turn_ls_0"));
+		break;
+	case DIK_3:
+		// threaten
+		com_man().seq_run(skel->ID_Cycle_Safe("stand_threaten_0"));
+		break;
+	}
+}
+#endif

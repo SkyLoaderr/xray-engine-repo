@@ -16,11 +16,15 @@
 #include "WeaponHUD.h"
 #include "xrServer.h"
 #include "autosave_manager.h"
-#include "ai/monsters/bloodsucker/bloodsucker.h"
+
 #include "actor.h"
 #include "huditem.h"
 #include "ui/UIDialogWnd.h"
 #include "clsid_game.h"
+
+#ifdef _DEBUG
+#	include "ai/monsters/BaseMonster/base_monster.h"
+#endif
 
 #ifdef DEBUG
 #	include "../xr_input.h"
@@ -310,48 +314,12 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}
 
 
-	//#ifdef _DEBUG
-	//
-	//	CObject *obj = Level().CurrentEntity();
-	//	if (obj) {
-	//		CActor *actor = smart_cast<CActor *>(obj);
-	//
-	//		switch (key) {
-	//		case DIK_1:
-	//			// Hit
-	//			NET_Packet		P;
-	//			actor->u_EventGen(P,GE_HIT, actor->ID());
-	//			P.w_u16			(actor->ID());
-	//			P.w_u16			(actor->ID());
-	//			P.w_dir			(Fvector().set(0.f,1.f,0.f));
-	//			P.w_float		(10.f);
-	//			P.w_s16			(BI_NONE);
-	//			P.w_vec3		(Fvector().set(0.f,0.f,0.f));
-	//			P.w_float		(0.f);
-	//			P.w_u16			(u16(ALife::eHitTypeTelepatic));
-	//			actor->u_EventSend(P);
-	//			break;
-	//			////	case DIK_2:
-	//			////		//monster->SetUpperState(false);
-	//			////		break;
-	//			////	case DIK_5:
-	//			////		monster->try_to_jump();
-	//			////		break;
-	//		}
-	//	}
-	//
-	//#endif
-
 	#ifdef _DEBUG
-		CObject *obj = Level().Objects.FindObjectByName("m1");
+		CObject *obj = Level().Objects.FindObjectByName("monster");
 		if (obj) {
-			CAI_Bloodsucker *monster = smart_cast<CAI_Bloodsucker *>(obj);
-			if (monster) {
-				switch (key) {
-				case DIK_1:	monster->m_alien_control.activate();	break;
-				case DIK_2:	monster->m_alien_control.deactivate();	break;
-				}
-			}
+			CBaseMonster *monster = smart_cast<CBaseMonster *>(obj);
+			if (monster) 
+				monster->debug_on_key(key);
 		}
 	#endif
 }

@@ -1239,6 +1239,16 @@ void CPHShell::set_ApplyByGravity(bool flag)
 		(*i)->set_ApplyByGravity(flag);
 }
 
+bool CPHShell::get_ApplyByGravity()
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+		return ((*i)->get_ApplyByGravity());
+
+	return false;
+}
+
 void CPHShell::applyGravityAccel(const Fvector& accel)
 {
 	if(!bActive)return;

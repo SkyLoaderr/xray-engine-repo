@@ -144,6 +144,26 @@ bool CStateBurerAttackTeleAbstract::check_completion()
 //////////////////////////////////////////////////////////////////////////
 
 TEMPLATE_SPECIALIZATION
+void CStateBurerAttackTeleAbstract::FindFreeObjects(xr_vector<CObject*> &tpObjects, const Fvector &pos)
+{
+	Level().ObjectSpace.GetNearest	(tpObjects, pos, object->m_tele_find_radius);
+
+	for (u32 i=0;i<tpObjects.size();i++) {
+		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		if (!obj || 
+			!obj->PPhysicsShell() || 
+			!obj->PPhysicsShell()->bActive || 
+			(obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || 
+			(obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || 
+			(obj == object) || 
+			object->CTelekinesis::is_active_object(obj) || 
+			!obj->m_pPhysicsShell->get_ApplyByGravity()) continue;
+
+		tele_objects.push_back(obj);
+	}
+}
+
+TEMPLATE_SPECIALIZATION
 void CStateBurerAttackTeleAbstract::FindObjects	()
 {
 	u32	res_size					= tele_objects.size		();
@@ -151,27 +171,10 @@ void CStateBurerAttackTeleAbstract::FindObjects	()
 
 	// получить список объектов вокруг врага
 	xr_vector<CObject*> tpObjects	;	tpObjects.reserve	(res_size);
-	Level().ObjectSpace.GetNearest	(tpObjects,object->EnemyMan.get_enemy()->Position(), object->m_tele_find_radius);
+	FindFreeObjects(tpObjects, object->EnemyMan.get_enemy()->Position());
 
-	for (u32 i=0;i<tpObjects.size();i++) {
-		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
-		if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || (obj == object) || object->CTelekinesis::is_active_object(obj)) continue;
-
-		tele_objects.push_back(obj);
-	}
-
-	
 	// получить список объектов вокруг монстра
-	Level().ObjectSpace.GetNearest	(tpObjects,object->Position(), object->m_tele_find_radius);
-	//tpObjects = Level().ObjectSpace.q_nearest;
-
-	for (u32 i=0;i<tpObjects.size();i++) {
-		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
-		if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || (obj == object) || object->CTelekinesis::is_active_object(obj)) continue;
-
-		tele_objects.push_back(obj);
-	}
-
+	FindFreeObjects(tpObjects, object->Position());
 
 	// получить список объектов между монстром и врагом
 	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
@@ -181,15 +184,8 @@ void CStateBurerAttackTeleAbstract::FindObjects	()
 
 	Fvector pos;
 	pos.mad(object->Position(), dir, dist / 2.f);
-	Level().ObjectSpace.GetNearest(tpObjects,pos, object->m_tele_find_radius); 
-	//tpObjects = Level().ObjectSpace.q_nearest;
-
-	for (u32 i=0;i<tpObjects.size();i++) {
-		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
-		if (!obj || !obj->m_pPhysicsShell || !obj->m_pPhysicsShell->bActive || (obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || (obj == object) || object->CTelekinesis::is_active_object(obj)) continue;
-
-		tele_objects.push_back(obj);
-	}
+	FindFreeObjects(tpObjects, pos);	
+	
 
 	// оставить уникальные объекты
 	xr_vector<CPhysicsShellHolder*>::iterator I = unique(tele_objects.begin(),tele_objects.end());

@@ -24,6 +24,10 @@ void CControlRotationJump::reinit()
 	m_anim_stop_rs = smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe("3");
 	m_anim_run_rs	= smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe("4");
 
+	m_object->anim().AddAnimTranslation(m_anim_stop_ls,	"1");
+	m_object->anim().AddAnimTranslation(m_anim_run_ls,	"2");
+	m_object->anim().AddAnimTranslation(m_anim_stop_rs,	"3");
+	m_object->anim().AddAnimTranslation(m_anim_run_rs,	"4");
 }
 
 
