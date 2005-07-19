@@ -23,10 +23,10 @@
 	</materials_button>
 
 	<task_root_item>
-		<image x="8" y="2" width="40" height="40">
+		<image x="8" y="2" width="32" height="32">
 		</image>
 		
-		<caption x="70" y="5" width="165" height="18">
+		<caption x="70" y="2" width="165" height="18">
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
 		
@@ -34,11 +34,11 @@
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
 		
-		<location_btn x="225" y="5" width="32" height="23">
+		<location_btn x="225" y="3" width="32" height="23">
 			<texture>ui_checker</texture>
 		</location_btn>
 		
-		<switch_description_btn x="260" y="5" width="32" height="23">
+		<switch_description_btn x="260" y="3" width="32" height="23">
 			<texture>ui_checker</texture>
 		</switch_description_btn>
 	</task_root_item>
@@ -51,7 +51,7 @@
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
 
-		<show_pointer_btn x="260" y="16" width="32" height="23">
+		<show_pointer_btn x="260" y="4" width="32" height="23">
 			<texture>ui_checker</texture>
 		</show_pointer_btn>
 
