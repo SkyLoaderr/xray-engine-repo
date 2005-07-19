@@ -152,6 +152,7 @@ function CKampManager:__init(path)
 end
 function CKampManager:selectPosition(npc_id)
 	-- создаем список доступных позиций
+	printf("KAMP. [%s] called select position", npc_id)
 	local free = {}
 	for k,v in self.position do
 		if v.used == nil then
@@ -160,12 +161,15 @@ function CKampManager:selectPosition(npc_id)
 	end
 	--' затем из доступных позиций выбрать рандомно одну.
 	if table.getn(free) > 0 then
+		printf("KAMP [%s] free node > 0", npc_id)
 		local rr = math.random(table.getn(free))
 		self.position[free[rr]].used = npc_id
 		self.npc[npc_id].position = free[rr]
 	end
-	--print_table(self.npc)
-	--print_table(self.position)
+	printf("KAMP [%s] npc table", npc_id)
+	print_table(self.npc)
+	printf("KAMP [%s] position table", npc_id)
+	print_table(self.position)
 end
 function CKampManager:getDestVertex(npc_id)
 	--printf("get dest Vertex called [%s]", npc_id)
@@ -494,10 +498,12 @@ function CKampManager:getState(npc_id)
 	end
 end
 function CKampManager:addNpc(npc)
+	printf("KAMP [%s] add npc", npc:name())
 	self.npc[npc:id()] = {name = npc:name(), position = nil, roles = {}, current = nil, speak = 0}
 	self:selectPosition(npc:id())
 end
 function CKampManager:removeNpc(npc)
+	printf("KAMP [%s] remove npc", npc:name())
 	self.position[self.npc[npc:id()].position].used = nil
 	self.npc[npc:id()] = nil
 end
