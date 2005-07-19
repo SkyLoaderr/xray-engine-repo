@@ -9,15 +9,23 @@
 
 CServerList::CServerList(){
 	m_GSBrowser.Init();
+	for (int i = 0; i<3; i++)
+	{
+		m_list[i].ShowSelectedItem();
+		AttachChild(&m_frame[i]);
+		AttachChild(&m_list[i]);		
+	}
 
-	m_list.ShowSelectedItem();
-	AttachChild(&m_frame);
 	for (int i = 0; i<6; i++)
 		AttachChild(&m_header[i]);
+	for (int i = 0; i<2; i++)
+		AttachChild(&m_header2[i]);
 	for (int i = 0; i<5; i++)
 		AttachChild(&m_separator[i]);
 
-	AttachChild(&m_list);
+
+	AttachChild(&m_edit_gs_filter);
+	m_bShowServerInfo = false;
 }
 
 CServerList::~CServerList()
@@ -26,6 +34,32 @@ CServerList::~CServerList()
 
 void CServerList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
+}
+
+void CServerList::ShowServerInfo(){
+	m_bShowServerInfo = !m_bShowServerInfo;
+	UpdateSizes();
+}
+
+void CServerList::UpdateSizes(){
+	m_list[LST_SRV_PROP].Show(m_bShowServerInfo);
+	m_list[LST_PLAYERS].Show(m_bShowServerInfo);
+	m_frame[LST_SRV_PROP].Show(m_bShowServerInfo);
+	m_frame[LST_PLAYERS].Show(m_bShowServerInfo);
+
+	for (int i = 0; i<5; i++)
+	{
+		m_header2[i].Show(m_bShowServerInfo);
+	}
+
+	m_list[LST_SERVER].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);
+	m_frame[LST_SERVER].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);
+	Fvector2 pos = m_edit_gs_filter.GetWndPos();
+	pos.y = m_bShowServerInfo?m_fEditPos[1]:m_fEditPos[0];
+	m_edit_gs_filter.SetWndPos(pos);
+
+	for (int i = 0; i< 5; i++)
+		m_separator[i].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);	
 }
 
 void CServerList::SetFilters(SServerFilters& sf){
@@ -52,11 +86,22 @@ bool CServerList::IsValidItem(ServerInfo& item){
 }
 
 void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
-	CUIXmlInit::InitWindow(xml_doc, path, 0, this);
+	CUIXmlInit::InitWindow		(xml_doc, path, 0, this);
 	string256 buf;
-	CUIXmlInit::InitListWnd(xml_doc, strconcat(buf,path,":list"), 0, &m_list);
-	CUIXmlInit::InitFrameWindow(xml_doc, strconcat(buf,path,":frame"), 0, &m_frame);
-	CUIXmlInit::InitFont(xml_doc, strconcat(buf,path,":list_item:text"), 0, m_itemInfo.color, m_itemInfo.font);
+	CUIXmlInit::InitListWnd		(xml_doc, strconcat(buf,path,":list"),							0, &m_list[LST_SERVER]);
+	m_fListH[0] =				m_list[LST_SERVER].GetHeight();
+	m_fListH[1] =				xml_doc.ReadAttribFlt(buf,0,"height2");
+	CUIXmlInit::InitListWnd		(xml_doc, strconcat(buf,path,":list_server_properties"),		0, &m_list[LST_SRV_PROP]);
+	CUIXmlInit::InitListWnd		(xml_doc, strconcat(buf,path,":list_players_list"),				0, &m_list[LST_PLAYERS]);
+	CUIXmlInit::InitFrameWindow	(xml_doc, strconcat(buf,path,":frame"),							0, &m_frame[LST_SERVER]);
+	CUIXmlInit::InitFrameWindow	(xml_doc, strconcat(buf,path,":list_server_properties:frame"),	0, &m_frame[LST_SRV_PROP]);
+	CUIXmlInit::InitFrameWindow	(xml_doc, strconcat(buf,path,":list_players_list:frame"),		0, &m_frame[LST_PLAYERS]);
+	CUIXmlInit::InitFont		(xml_doc, strconcat(buf,path,":list_item:text"),				0, m_itemInfo.color, m_itemInfo.font);
+	CUIXmlInit::InitEditBox		(xml_doc, strconcat(buf,path,":edit_gs_filter"),				0, &m_edit_gs_filter);
+	m_fEditPos[0] =				m_edit_gs_filter.GetWndPos().y;
+	m_fEditPos[1] =				xml_doc.ReadAttribFlt(buf,0,"y2");
+	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":cap_server_properties"),			0, &m_header2[0]);
+	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":cap_players_list"),				0, &m_header2[1]);
 	
 	m_itemInfo.size.icon	= xml_doc.ReadAttribFlt( strconcat(buf, path, ":sizes"), 0, "icon");
 	m_itemInfo.size.server	= xml_doc.ReadAttribFlt( buf, 0, "server");
@@ -71,16 +116,17 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	for (int i = 0; i<5; i++)
 	{
 		CUIXmlInit::InitFrameLine(xml_doc, strconcat(buf,path,":separator"), 0, &m_separator[i]);
-		m_separator[i].SetHeight(m_wndSize.y);
+		m_separator[i].SetHeight(m_list[LST_SERVER].GetHeight());
 	}
 	InitHeader();
+	UpdateSizes();
 }
 
 void CServerList::ConnectToSelected(){
-	int sel = m_list.GetSelectedItem();
+	int sel = m_list[LST_SERVER].GetSelectedItem();
 	if (-1 == sel)
 		return;
-	CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list.GetItem(sel));
+	CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list[LST_SERVER].GetItem(sel));
 
 	xr_string command;
 
@@ -143,34 +189,19 @@ void CServerList::AddServerToList	(ServerInfo* pServerInfo)
 	if (!IsValidItem(*pServerInfo)) return;
 
 	CUIListItemServer* item = xr_new<CUIListItemServer>();
-	float w = m_list.GetItemWidth();
-	float h = m_list.GetItemHeight();
-
-	//m_itemInfo.info.server	= pServerInfo->m_ServerName;
-	//xr_string address = pServerInfo->m_HostName;
-	//char port[8];
-	//address+= "/port=";	
-	//address+= itoa(pServerInfo->m_Port, port, 10);
-	//m_itemInfo.info.address = address.c_str();
-	//m_itemInfo.info.map		= pServerInfo->m_SessionName;
-	//m_itemInfo.info.game	= pServerInfo->m_ServerGameType;
-	//m_itemInfo.info.players.sprintf("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
-	//m_itemInfo.info.ping.sprintf("%d", pServerInfo->m_Ping);
-	//m_itemInfo.info.icons.pass	= pServerInfo->m_bPassword;
-	//m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
-	//m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
-	//m_itemInfo.info.Index	= pServerInfo->Index;
+	float w = m_list[LST_SERVER].GetItemWidth();
+	float h = m_list[LST_SERVER].GetItemHeight();
 	SrvInfo2LstSrvInfo(pServerInfo);
 	item->Init(m_itemInfo, 0, 0, w, h);
-	m_list.AddItem<CUIListItemServer>(item);
+	m_list[LST_SERVER].AddItem<CUIListItemServer>(item);
 };
 
 void	CServerList::UpdateServerInList(ServerInfo* pServerInfo, int index){
-	int sz = m_list.GetItemsCount();
+	int sz = m_list[LST_SERVER].GetItemsCount();
 
 	for (int i = 0; i< sz; i++)
 	{
-		CUIListItemServer* pItem = static_cast<CUIListItemServer*>(m_list.GetItem(i));
+		CUIListItemServer* pItem = static_cast<CUIListItemServer*>(m_list[LST_SERVER].GetItem(i));
 		if (pItem->Get_gs_index() == index)
 		{
 			UpdateServerInList(pServerInfo, pItem);
@@ -189,7 +220,7 @@ void	CServerList::UpdateServerInList(ServerInfo* pServerInfo, CUIListItemServer*
 
 void	CServerList::RefreshList()
 {
-	m_list.RemoveAll();
+	m_list[LST_SERVER].RemoveAll();
 	//-------------------------------
 	int NumServersFound = m_GSBrowser.GetServersCount();
 	for (int i=0; i<NumServersFound; i++)
@@ -201,12 +232,10 @@ void	CServerList::RefreshList()
 };
 
 void CServerList::RefreshQuick(){
-	int SvId = m_list.GetSelectedItem();
+	int SvId = m_list[LST_SERVER].GetSelectedItem();
 	if (-1 == SvId)
 		return;
-	Msg("-- Quick Refresh of Server List");
-
-	CUIListItemServer* pItem = (CUIListItemServer*)m_list.GetItem(SvId);
+	CUIListItemServer* pItem = (CUIListItemServer*)m_list[LST_SERVER].GetItem(SvId);
 	m_GSBrowser.RefreshQuick(pItem->GetInfo()->info.Index);
 
 

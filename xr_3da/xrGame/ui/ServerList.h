@@ -4,12 +4,19 @@
 #include "UIListWnd.h"
 #include "UIListItemServer.h"
 #include "UIFrameWindow.h"
-#include "UILabel.h"
+#include "UIEditBox.h"
+//#include "UILabel.h"
+
 
 #include "../GameSpy/GameSpy_Browser.h"
 
 class CUIXml;
 class CGameSpy_Browser;
+
+#define LST_SERVER		0 
+#define LST_SRV_PROP	1
+#define LST_PLAYERS		2
+#define DIF_HEIGHT		180
 
 class SServerFilters{
 public:
@@ -40,19 +47,26 @@ public:
 
 	virtual void	RefreshGameSpyList	(bool Local);
 			void	RefreshQuick();
+			void	ShowServerInfo();
 
 
 protected:
 			bool IsValidItem(ServerInfo& item);
 			void SrvInfo2LstSrvInfo(const ServerInfo* pSrvInfo);
+			void UpdateSizes();
 
 	LIST_SRV_ITEM	m_itemInfo;
 	SServerFilters	m_sf;
-	CUIListWnd		m_list;
-	CUIFrameWindow	m_frame;
+	CUIListWnd		m_list[3];
+	CUIFrameWindow	m_frame[3];
 	CUILabel		m_header[6];
+	CUILabel		m_header2[5];
 	CUIFrameLineWnd	m_separator[5];
+	CUIEditBox		m_edit_gs_filter;
 	xr_string		m_playerName;
+	bool			m_bShowServerInfo;
+	float			m_fListH[2];
+	float			m_fEditPos[2];
 
 	CGameSpy_Browser	m_GSBrowser;	
 
