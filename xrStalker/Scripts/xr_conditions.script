@@ -495,7 +495,6 @@ end
 -- Special functions for Military
 ------------------------------------------------------------------------------------
 function mil_actor_enemy (actor, npc)
-    printf ("TEST IS ACTOR ENEMY")
     local npc = level_object_by_sid (707)
     if npc == nil or npc:alive () == false then
        npc = level_object_by_sid (702) 
@@ -507,7 +506,6 @@ function mil_actor_enemy (actor, npc)
           end
         end         
     end
-    printf ("TEST IS ACTOR ENEMY PASSED")
     return npc:relation (actor) == game_object.enemy
 end    
 
