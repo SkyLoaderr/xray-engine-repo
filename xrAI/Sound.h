@@ -111,7 +111,7 @@ public:
 
 	ref_sound&						operator=		(const ref_sound& src)	{ clone(src); return *this;}
 
-	IC CSound_source*				_handle			(){VERIFY(_p); return _p->handle;}
+	IC CSound_source*				_handle			(){return _p?_p->handle:0;}
 	IC CSound_interface*			_feedback		(){VERIFY(_p); return _p->feedback;}
 	IC CObject*						_g_object		(){VERIFY(_p); return _p->g_object;}
 	IC int							_g_type			(){VERIFY(_p); return _p->g_type;}
