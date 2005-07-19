@@ -38,11 +38,13 @@
 	
 	<tab_client>	
 		<server_list x="8" y="99" width="539" height="310">
-			<sizes icon="46" server="167" map="124" game="102" players="46" ping="35"/>
-			<frame x="0" y="20" width="520" height="280">
+		<!--server_list x="8" y="99" width="539" height="140" height2="310"-->
+			<sizes icon="46" server="167" map="124" game="100" players="46" ping="35"/>
+			<!--frame x="0" y="20" width="520" height="280"-->
+			<frame x="0" y="20" width="519" height="290">
 				<texture>ui_droplist_listbox</texture>
 			</frame>
-			<list x="0" y="20" width="530" height="280" item_height="18"/>
+			<list x="0" y="20" width="530" height="250" height2="140" item_height="18"/>
 			<list_item>
 				<text font="letterica16" r="255" g="255" b="255"/>
 			</list_item>
@@ -56,8 +58,31 @@
 			<filter>
 				<text font="letterica16" r="215" g="195" b="170"/>
 			</filter>
-			<cap_server_properties x="0" y="0" width="1" height="30">
+			<edit_gs_filter x="46" y2="163" y="273" width="476" height="21">
+				<texture>ui_linetextSmall_e</texture>
+			</edit_gs_filter>
+			<cap_server_properties x="0" y="191" width="194" height="17">
+				<text font="letterica16" r="215" g="195" b="170" x="2">Server Properties</text>
+				<texture>ui_table_button_e</texture>
 			</cap_server_properties>		
+			<cap_players_list x="220" y="191" width="194" height="17">
+				<text font="letterica16" r="215" g="195" b="170" x="2">Players List</text>
+				<texture>ui_table_button_e</texture>
+			</cap_players_list>
+			<list_server_properties x="0" y="210" width="194" height="96" item_height="18">
+				<texture>ui_droplist_listbox</texture>
+				<text font="letterica16" r="255" g="255" b="255"/>
+				<frame x="0" y="210" width="174" height="96">
+					<texture>ui_droplist_listbox</texture>
+				</frame>
+			</list_server_properties>
+			<list_players_list x="219" y="210" width="321" height="96" item_height="18">
+				<texture>ui_droplist_listbox</texture>
+				<text font="letterica16" r="255" g="255" b="255"/>
+				<frame x="219" y="210" width="301" height="96">
+					<texture>ui_droplist_listbox</texture>
+				</frame>
+			</list_players_list>
 		</server_list>	
 	
 		<cap_network_connection x="6" y="12" width="500" height="23">
