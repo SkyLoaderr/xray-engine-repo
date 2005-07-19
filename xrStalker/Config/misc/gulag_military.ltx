@@ -1332,9 +1332,63 @@ path_look = camp_look07
 def_state_moving = run
 radius = 2
 threshold@mil_fbarier
+
+;Пути для отхода мужиков на базу. Там они должны переключиться в гулаг базы.
 ;--
+[logic@mil_fblockpost_help1]
+active = walker@mil_fblockpost_help1
 
+[walker@mil_fblockpost_help1]
+path_walk = help_walk1
+on_signal = final | nil
 
+;--
+[logic@mil_fblockpost_help2]
+active = walker@mil_fblockpost_help2
+
+[walker@mil_fblockpost_help2]
+path_walk = help_walk2
+on_signal = final | nil
+
+;--
+[logic@mil_fblockpost_help3]
+active = walker@mil_fblockpost_help3
+
+[walker@mil_fblockpost_help3]
+path_walk = help_walk3
+on_signal = final | nil
+
+;--
+[logic@mil_fblockpost_help4]
+active = walker@mil_fblockpost_help4
+
+[walker@mil_fblockpost_help4]
+path_walk = help_walk4
+on_signal = final | nil
+
+;--
+[logic@mil_fblockpost_help5]
+active = walker@mil_fblockpost_help5
+
+[walker@mil_fblockpost_help5]
+path_walk = help_walk5
+on_signal = final | nil
+
+;--
+[logic@mil_fblockpost_help6]
+active = walker@mil_fblockpost_help6
+
+[walker@mil_fblockpost_help6]
+path_walk = help_walk6
+on_signal = final | nil
+
+;--
+[logic@mil_fblockpost_help7]
+active = walker@mil_fblockpost_help7
+
+[walker@mil_fblockpost_help7]
+path_walk = help_walk7
+on_signal = final | nil
 
 ;-------------------------------------------------------------------------------------------------
 ;-- Блокпост нейтралов у выхода на Радар
@@ -1352,20 +1406,20 @@ active = walker1@mil_fneutral_commander
 ;actor_dialogs = dialogs@mil_fneutral_commander
 meet = on_meet@mil_freedom_max
 
-[on_meet@mil_fneutral_commander]
-distance = 5
+;[on_meet@mil_fneutral_commander1]
+;distance = 5
 
 [walker1@mil_fneutral_commander]
 path_walk = commander_walk
 path_look = commander_look
-meet = on_meet@@mil_fneutral_commander
+meet = on_meet@mil_fneutral_commander
 on_info = {+mil_neutral_commander_talk} walker2@mil_fneutral_commander 
 
 [walker2@mil_fneutral_commander]
 path_walk = commander_walk
 path_look = commander_look
 
-[on_meet@@mil_fneutral_commander]
+[on_meet@mil_fneutral_commander]
 meet_state = 10|ward
 meet_state_wpn = 10|ward
 victim = 10|actor

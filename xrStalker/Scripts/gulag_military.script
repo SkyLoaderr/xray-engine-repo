@@ -658,7 +658,7 @@ function load_states (gname, type)
     elseif type == "mil_tubes" then
        return this.check_tubes_state -- (gulag)
     elseif type == "mil_fblockpost" then
-       return this.check_blockpost_state
+       return this.check_fblockpost_state
     elseif type == "mil_fneutral" then  
        return this.check_blockpost_state
     end    
@@ -914,7 +914,80 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
+	-- Пути для отхода мужиков на базу. Там они должны переключиться в гулаг базы.
+	-- мужик 1
+	t = {section = "logic@mil_fblockpost_help1",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+
+	-- мужик 2
+	t = {section = "logic@mil_fblockpost_help2",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- мужик 3
+	t = {section = "logic@mil_fblockpost_help3",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- мужик 4
+	t = {section = "logic@mil_fblockpost_help4",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- мужик 5
+	t = {section = "logic@mil_fblockpost_help5",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- мужик 6
+	t = {section = "logic@mil_fblockpost_help6",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
+	-- мужик 7
+	t = {section = "logic@mil_fblockpost_help7",
+		idle = 0,
+		prior = 10, state = {3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = ""
+		}
+	table.insert(sj, t)		
 end
+
+
+
+function check_fblockpost_state (gulag)
+    if db.actor:has_info ("mil_headquarter_attack") then
+       return 3
+    end    
+    if db.actor:has_info ("mil_fblockpost_alarm") then
+       return 2 
+    elseif utils.is_day () == true then
+         return 0
+    end          
+    return 1
+end
+
 
 function check_blockpost_state (gulag)
     if db.actor:has_info ("mil_fblockpost_alarm") then

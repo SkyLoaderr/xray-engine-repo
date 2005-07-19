@@ -490,7 +490,26 @@ function is_controller_dead (actor, npc)
     if c == nil then return false end
     return not c:alive ()
 end    
-    
+
+------------------------------------------------------------------------------------
+-- Special functions for Military
+------------------------------------------------------------------------------------
+function mil_actor_enemy (actor, npc)
+    printf ("TEST IS ACTOR ENEMY")
+    local npc = level_object_by_sid (707)
+    if npc == nil or npc:alive () == false then
+       npc = level_object_by_sid (702) 
+       if npc == nil or npc:alive () == false then
+          npc = level_object_by_sid (728)
+          if npc == nil then 
+             printf ("NOT LEAVED NPC !!!")
+             return
+          end
+        end         
+    end
+    printf ("TEST IS ACTOR ENEMY PASSED")
+    return npc:relation (actor) == game_object.enemy
+end    
 
 ------------------------------------------------------------------------------------
 -- Special functions for Deadcity

@@ -24,6 +24,9 @@ end
 function action_particle:on_enter (obj)
 end
 ------------------------
+function action_particle:deactivate ()
+    printf ("PARTICLES END")
+end
 
 
 
