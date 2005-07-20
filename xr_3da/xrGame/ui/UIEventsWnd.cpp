@@ -87,7 +87,7 @@ void CUIEventsWnd::Init				()
 void CUIEventsWnd::Update			()
 {
 	if(m_flags.test((1<<0)) ){
-		Reload();
+		ReloadList(false);
 		m_flags.set((1<<0),FALSE );
 	}
 	inherited::Update		();
