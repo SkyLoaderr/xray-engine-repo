@@ -106,6 +106,8 @@
 																	autoplay		= "1">
 					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
+			</left_frame_header>
+			
 			<work_area x="8" y="44" width="300" height="480">
 				<news_wnd>
 					<list  x="0" y="0" width="300" height="480">
