@@ -169,7 +169,7 @@ void CStepManager::update()
 
 	// позиционировать играемые звуки
 	for (i=0; i<m_legs_count; i++) {
-		if (m_step_info.activity[i].handled && m_step_info.activity[i].sound.feedback) {
+		if (m_step_info.activity[i].handled && m_step_info.activity[i].sound._feedback()) {
 			Fvector sound_pos = m_object->Position();
 			sound_pos.y += 0.5;
 			m_step_info.activity[i].sound.set_position	(sound_pos);

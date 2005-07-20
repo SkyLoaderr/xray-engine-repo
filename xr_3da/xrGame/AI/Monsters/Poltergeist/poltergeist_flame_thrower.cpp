@@ -70,7 +70,7 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 struct remove_predicate {
 	bool	operator() (CPoltergeist::SFlameElement *element)	{
 		
-		if ((element->time_started == 0) && !element->sound.feedback) {
+		if ((element->time_started == 0) && !element->sound._feedback()) {
 			xr_delete(element);
 			return true;
 		}
@@ -179,7 +179,7 @@ void CPoltergeist::RemoveFlames()
 
 	// Пройти по всем объектам и проверить на хит врага
 	for ( ;I != E; ++I) {
-		if ((*I)->sound.feedback) (*I)->sound.stop();
+		if ((*I)->sound._feedback()) (*I)->sound.stop();
 		xr_delete((*I));
 	}
 	

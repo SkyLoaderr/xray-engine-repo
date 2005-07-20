@@ -56,10 +56,10 @@ void CSoundPlayer::unload			()
 		if ((*I).second.m_sounds.empty())
 			continue;
 
-		if (!(*I).second.m_sounds.front()->g_userdata)
+		if (!(*I).second.m_sounds.front()->_g_userdata())
 			continue;
 		
-		(*I).second.m_sounds.front()->g_userdata->invalidate();
+		(*I).second.m_sounds.front()->_g_userdata()->invalidate();
 	}
 }
 
@@ -154,8 +154,8 @@ void CSoundPlayer::update_playing_sounds()
 	xr_vector<CSoundSingle>::iterator	I = m_playing_sounds.begin();
 	xr_vector<CSoundSingle>::iterator	E = m_playing_sounds.end();
 	for ( ; I != E; ++I) {
-		if ((*I).m_sound->feedback)
-			(*I).m_sound->feedback->set_position(compute_sound_point(*I));
+		if ((*I).m_sound->_feedback())
+			(*I).m_sound->_feedback()->set_position(compute_sound_point(*I));
 		else
 			if (!(*I).started() && (Device.dwTimeGlobal >= (*I).m_start_time))
 				(*I).play_at_pos		(m_object,compute_sound_point(*I));
@@ -167,7 +167,7 @@ bool CSoundPlayer::need_bone_data	() const
 	xr_vector<CSoundSingle>::const_iterator	I = m_playing_sounds.begin();
 	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
 	for ( ; I != E; ++I) {
-		if ((*I).m_sound->feedback)
+		if ((*I).m_sound->_feedback())
 			return					(true);
 		else
 			if (!(*I).started() && (Device.dwTimeGlobal >= (*I).m_start_time))
@@ -195,7 +195,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
 	sound_single.m_bone_id		= smart_cast<CKinematics*>(m_object->Visual())->LL_BoneID(sound.m_bone_name);
 	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? sound.random(sound.m_sounds.size()) : id];
-	VERIFY						(sound_single.m_sound->handle);
+	VERIFY						(sound_single.m_sound->_handle());
 	VERIFY						(max_start_time >= min_start_time);
 	VERIFY						(max_stop_time >= min_stop_time);
 	u32							random_time = 0;
@@ -209,7 +209,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	if (max_stop_time)
 		random_time				= (max_stop_time > min_stop_time) ? random(max_stop_time - min_stop_time) + min_stop_time : max_stop_time;
 
-	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + random_time;
+	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->_handle()->length_ms() + random_time;
 	m_playing_sounds.push_back	(sound_single);
 	
 	if (Device.dwTimeGlobal >= m_playing_sounds.back().m_start_time)

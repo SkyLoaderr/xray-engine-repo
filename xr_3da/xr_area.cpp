@@ -10,7 +10,7 @@
 
 using namespace	collide;
 
-void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
+void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 {
 	if (S->g_object && S->g_object->getDestroy())	return	;
 	clamp					(range,0.1f,500.f);
@@ -72,7 +72,7 @@ void	IGame_Level::SoundEvent_Dispatch	( )
 	}
 }
 
-void __stdcall _sound_event		(ref_sound* S, float range)
+void __stdcall _sound_event		(ref_sound_data_ptr S, float range)
 {
 	if ( g_pGameLevel && S && S->feedback )	g_pGameLevel->SoundEvent_Register	(S,range);
 }

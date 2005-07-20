@@ -433,7 +433,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 				if(!m_sndShockEffector)
 					m_sndShockEffector = xr_new<SndShockEffector>();
 
-				m_sndShockEffector->Start( S.handle->length_ms() );
+				m_sndShockEffector->Start( S._handle()->length_ms() );
 			}
 			else
 				bPlaySound = false;

@@ -546,7 +546,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		xr_vector<CSoundPlayer::CSoundSingle>::const_iterator	I = sound().playing_sounds().begin();
 		xr_vector<CSoundPlayer::CSoundSingle>::const_iterator	E = sound().playing_sounds().end();
 		for ( ; I != E; ++I)
-			HUD().Font().pFontSmall->OutNext("%s%s%sactive    : %s",indent,indent,indent,(*I).m_sound->handle ? (*I).m_sound->handle->file_name() : "no source");
+			HUD().Font().pFontSmall->OutNext("%s%s%sactive    : %s",indent,indent,indent,(*I).m_sound->_handle() ? (*I).m_sound->_handle()->file_name() : "no source");
 	}
 
 	// sight

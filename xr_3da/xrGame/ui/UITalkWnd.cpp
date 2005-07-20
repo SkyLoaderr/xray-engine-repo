@@ -409,6 +409,6 @@ void CUITalkWnd::PlaySnd(LPCSTR text)
 
 void CUITalkWnd::StopSnd()
 {
-	if(m_sound.feedback)
+	if(m_sound._feedback())
 		m_sound.stop();
 }

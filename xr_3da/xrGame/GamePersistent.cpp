@@ -175,7 +175,7 @@ void CGamePersistent::WeathersUpdate()
 				if (eff){
 					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),FALSE);
 					ambient_particles->play_at_pos	(Device.vCameraPosition);
-					if (eff->sound.handle)			eff->sound.play_at_pos(0,Fvector().set(0,0,0),sm_2D);
+					if (eff->sound._handle())			eff->sound.play_at_pos(0,Fvector().set(0,0,0),sm_2D);
 				}
 			}
 		}

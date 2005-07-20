@@ -47,7 +47,7 @@ CSoundRender_Emitter::~CSoundRender_Emitter(void)
 //////////////////////////////////////////////////////////////////////
 void CSoundRender_Emitter::Event_ReleaseOwner()
 {
-	if	(0==owner_data)			return;
+	if	(!(owner_data))			return;
 
 	for (u32 it=0; it<SoundRender->s_events.size(); it++){
 		if (owner_data == SoundRender->s_events[it].first){
@@ -59,7 +59,7 @@ void CSoundRender_Emitter::Event_ReleaseOwner()
 void CSoundRender_Emitter::Event_Propagade	()
 {
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
-	if (0==owner_data)			return;
+	if (!(owner_data))			return;
 	if (0==owner_data->g_type)	return;
 	if (0==SoundRender->Handler)return;
 
@@ -75,7 +75,6 @@ void CSoundRender_Emitter::Event_Propagade	()
 void CSoundRender_Emitter::switch_to_2D()
 {
  	b2D 						= TRUE;	
-//.	set_position				(SoundRender->listener_position()); 
 	set_priority				(100.f);
 }
 

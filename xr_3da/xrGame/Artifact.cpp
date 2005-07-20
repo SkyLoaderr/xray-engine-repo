@@ -366,7 +366,7 @@ void SArtefactActivation::ChangeEffects()
 {
 	SStateDef& state_def = m_activation_states[(int)m_cur_activation_state];
 	
-	if(m_snd.feedback)
+	if(m_snd._feedback())
 		m_snd.stop();
 	
 	if(state_def.m_snd.size()){
@@ -397,7 +397,7 @@ void SArtefactActivation::ChangeEffects()
 
 void SArtefactActivation::UpdateEffects()
 {
-	if(m_snd.feedback)
+	if(m_snd._feedback())
 		m_snd.set_position( m_af->Position() );
 	
 	m_light->set_position(m_af->Position());

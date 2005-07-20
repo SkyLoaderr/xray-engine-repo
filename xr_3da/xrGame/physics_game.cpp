@@ -10,6 +10,7 @@
 #include "PhysicsShellHolder.h"
 #include "PHCommander.h"
 #include "MathUtils.h"
+#include "PHWorld.h"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 static const float PARTICLE_EFFECT_DIST=70.f;
@@ -120,12 +121,8 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 					{
 						if(!mtl_pair->CollideSounds.empty())
 						{
-							ref_sound& sound= SELECT_RANDOM1(mtl_pair->CollideSounds);
 							float volume=collide_volume_min+vel_cret*(collide_volume_max-collide_volume_min)/(_sqrt(mass_limit)*default_l_limit-Pars.vel_cret_sound);
-							::Sound->play_at_pos_unlimited(
-								sound,0,*((Fvector*)c->pos)
-								);
-							sound.set_volume(volume);
+							ph_world->play_collide_sound(mtl_pair, *((Fvector*)c->pos), volume);
 						}
 					}
 				}

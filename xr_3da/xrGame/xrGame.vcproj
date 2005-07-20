@@ -1731,6 +1731,9 @@
 						RelativePath=".\alife_simulator_base.h">
 					</File>
 					<File
+						RelativePath=".\alife_simulator_base2.cpp">
+					</File>
+					<File
 						RelativePath=".\alife_simulator_base_inline.h">
 					</File>
 					<Filter

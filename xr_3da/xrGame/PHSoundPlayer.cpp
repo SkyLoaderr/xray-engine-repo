@@ -17,7 +17,7 @@ CPHSoundPlayer::~CPHSoundPlayer()
 void CPHSoundPlayer::Play(SGameMtlPair* mtl_pair,const Fvector& pos)
 {
 
-	if(!m_sound.feedback)
+	if(!m_sound._feedback())
 	{
 		Fvector vel;m_object->PHGetLinearVell(vel);
 		if(vel.square_magnitude()>0.01f)

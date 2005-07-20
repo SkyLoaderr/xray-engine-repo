@@ -80,12 +80,12 @@ void CUI3tButton::InitSoundT(LPCSTR sound_file){
 }
 
 void CUI3tButton::PlaySoundT(){
-	if (m_sound_t.handle)
+	if (m_sound_t._handle())
         m_sound_t.play(NULL, sm_2D);
 }
 
 void CUI3tButton::PlaySoundH(){
-	if (m_sound_h.handle)
+	if (m_sound_h._handle())
 		m_sound_h.play(NULL, sm_2D);
 }
 

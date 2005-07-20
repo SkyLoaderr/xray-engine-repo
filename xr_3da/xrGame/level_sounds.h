@@ -32,7 +32,7 @@ struct	SMusicTrack
 	float			m_Volume;
 public:
 	void			Load			(LPCSTR fn, LPCSTR params);
-	BOOL			IsPlaying		(){return m_SourceLeft.feedback || m_SourceRight.feedback;}
+	BOOL			IsPlaying		(){return m_SourceLeft._feedback() || m_SourceRight._feedback();}
 	void			Play			();
 	void			Stop			();
 	void			SetVolume		(float volume);

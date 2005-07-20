@@ -51,7 +51,7 @@ void CCar::SCarSound::Update()
 	float		scale							= 0.2f+pcar->m_current_rpm/pcar->m_torque_rpm; clamp(scale,0.2f,2.0f);
 
 #pragma todo("Dima to Kostya : С тебя - пиво (Черниговское белое 0.5л)!")
-	if (snd_engine.feedback)
+	if (snd_engine._feedback())
 	{
 		Fvector pos;
 		pcar->XFORM().transform_tiny(pos,relative_pos);
@@ -131,7 +131,7 @@ void CCar::SCarSound::TransmissionSwitch()
 {
 	Fvector pos;
 	pcar->XFORM().transform_tiny(pos,relative_pos);
-	if(snd_transmission.handle)
+	if(snd_transmission._handle())
 	{
 		snd_transmission.play_at_pos(pcar,pos);
 	}

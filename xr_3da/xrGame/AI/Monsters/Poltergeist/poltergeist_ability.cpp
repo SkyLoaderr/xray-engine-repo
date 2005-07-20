@@ -32,7 +32,7 @@ void CPoltergeist::PhysicalImpulse	(const Fvector &position)
 
 void CPoltergeist::StrangeSounds(const Fvector &position)
 {
-	if (m_strange_sound.feedback) return;
+	if (m_strange_sound._feedback()) return;
 	
 	for (u32 i = 0; i < TRACE_ATTEMPT_COUNT; i++) {
 		Fvector dir;

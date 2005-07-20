@@ -107,7 +107,7 @@ void HUD_SOUND::StopSound	(HUD_SOUND& hud_snd)
 {
 	xr_vector<SSnd>::iterator it = hud_snd.sounds.begin();
 	for(;it!=hud_snd.sounds.end();++it){
-		VERIFY2					((*it).snd.handle,"Trying to stop non-existant or destroyed sound");
+		VERIFY2					((*it).snd._handle(),"Trying to stop non-existant or destroyed sound");
 		(*it).snd.stop		();
 	}
 	hud_snd.m_activeSnd		= NULL;

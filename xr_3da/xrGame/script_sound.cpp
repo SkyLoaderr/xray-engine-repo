@@ -26,13 +26,13 @@ CScriptSound::CScriptSound				(LPCSTR caSoundName, ESoundTypes sound_type)
 
 CScriptSound::~CScriptSound		()
 {
-	THROW3					(!m_sound.feedback,"playing sound is not completed, but is destroying",m_sound.handle ? m_sound.handle->file_name() : "unknown");
+	THROW3					(!m_sound._feedback(),"playing sound is not completed, but is destroying",m_sound._handle() ? m_sound._handle()->file_name() : "unknown");
 	m_sound.destroy			();
 }
 
 const Fvector &CScriptSound::GetPosition() const
 {
-	VERIFY				(m_sound.handle);
+	VERIFY				(m_sound._handle());
 	const CSound_params	*l_tpSoundParams = m_sound.get_params();
 	if (l_tpSoundParams)
 		return			(l_tpSoundParams->position);
@@ -44,30 +44,14 @@ const Fvector &CScriptSound::GetPosition() const
 
 void CScriptSound::Play			(CScriptGameObject *object, float delay, int flags)
 {
-	VERIFY				(m_sound.handle);
-//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",Device.dwTimeGlobal,m_sound.handle->file_name(),delay,flags);
+	VERIFY				(m_sound._handle());
+//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",Device.dwTimeGlobal,m_sound._handle()->file_name(),delay,flags);
 	m_sound.play		(&object->object(),flags,delay);
-}
-
-void CScriptSound::PlayUnlimited	(CScriptGameObject *object, float delay, int flags)
-{
-	VERIFY				(m_sound.handle);
-//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound.handle->file_name(),delay,flags);
-	VERIFY				((flags & sm_Looped) != sm_Looped);
-	m_sound.play_unlimited(&object->object(),flags,delay);
 }
 
 void CScriptSound::PlayAtPos		(CScriptGameObject *object, const Fvector &position, float delay, int flags)
 {
-	VERIFY				(m_sound.handle);
-//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound.handle->file_name(),delay,flags);
+	VERIFY				(m_sound._handle());
+//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound._handle()->file_name(),delay,flags);
 	m_sound.play_at_pos(&object->object(), position,flags,delay);
-}
-
-void CScriptSound::PlayAtPosUnlimited(CScriptGameObject *object, const Fvector &position, float delay, int flags)
-{
-	VERIFY				(m_sound.handle);
-	VERIFY				((flags & sm_Looped) != sm_Looped);
-//	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound.handle->file_name(),delay,flags);
-	m_sound.play_at_pos_unlimited(&object->object(), position,flags,delay);
 }

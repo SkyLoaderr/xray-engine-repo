@@ -87,7 +87,7 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 void CDestroyablePhysicsObject::Destroy()
 {
 	CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
-	if(m_destroy_sound.handle)
+	if(m_destroy_sound._handle())
 	{
 		m_destroy_sound.play_at_pos(this,Position());
 	}
@@ -133,7 +133,7 @@ void CDestroyablePhysicsObject::shedule_Update(u32 dt)
 
 bool CDestroyablePhysicsObject::CanRemoveObject()
 {
-	return !CParticlesPlayer::IsPlaying()&& !m_destroy_sound.feedback;//&& sound!
+	return !CParticlesPlayer::IsPlaying()&& !m_destroy_sound._feedback();//&& sound!
 }
 DLL_Pure	*CDestroyablePhysicsObject::_construct()
 {

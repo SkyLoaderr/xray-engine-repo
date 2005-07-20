@@ -34,7 +34,7 @@ public:
 			xr_vector<ref_sound*>::iterator		E = m_sounds.end();
 			for ( ; I != E; ++I) {
 				VERIFY							(*I);
-				if ((*I)->feedback)
+				if ((*I)->_feedback())
 					(*I)->stop					();
 				xr_delete						(*I);
 			}
@@ -56,7 +56,7 @@ public:
 				void	destroy					()
 		{
 			VERIFY								(m_sound);
-			if (m_sound->feedback)
+			if (m_sound->_feedback())
 				m_sound->stop					();
 		}
 
@@ -85,7 +85,7 @@ public:
 			bool		result = 
 				(sound.m_synchro_mask & m_sound_mask) || 
 				(
-					!sound.m_sound->feedback && 
+					!sound.m_sound->_feedback() && 
 					(sound.m_stop_time <= Device.dwTimeGlobal)
 				);
 			if (result)
