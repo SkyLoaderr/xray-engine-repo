@@ -94,8 +94,8 @@ void CUIJobItem::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if (this == pWnd && BUTTON_CLICKED == msg)
 	{
-		bool b = m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
-		m_GameTask->HighlightSpotOnMap(m_TaskObjectiveIdx, !b);
+//.		bool b = m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
+//.		m_GameTask->HighlightSpotOnMap(m_TaskObjectiveIdx, !b);
 	}
 
 	if (&UIAdditionalMaterials == pWnd && BUTTON_CLICKED == msg)
@@ -133,6 +133,7 @@ ARTICLE_ID CUIJobItem::GetAdditionalMaterialID	() const
 
 void CUIJobItem::Update()
 {
+/*
 	u32 clr;
 	if(m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx))
 		clr = 0xff00ff00;
@@ -141,6 +142,6 @@ void CUIJobItem::Update()
 
 	UICaption.SetTextColor				(clr);
 	UIDescription.SetTextColor			(clr);
-
+*/
 	inherited::Update		();
 }
