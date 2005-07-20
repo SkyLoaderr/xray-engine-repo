@@ -297,6 +297,12 @@ Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
 	float prediction_dist = jump_time * velocity;
 
+	//Fvector dir;
+	//dir.set(m_object->movement_control()->GetVelocity());
+	//dir.normalize_safe();
+
+	//GetCharacterVelocity
+
 	Fvector prediction_pos;
 	prediction_pos.mad(pos, obj->Direction(), prediction_dist);
 

@@ -8,7 +8,9 @@
 #include "../../../sound_player.h"
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
+#include "../../../level_debug.h"
 
+#include "../../../PHMovementControl.h"
 
 CSnork::CSnork() 
 {
@@ -93,11 +95,25 @@ void CSnork::UpdateCL()
 	inherited::UpdateCL	();
 
 	//////////////////////////////////////////////////////////////////////////
-	CObject *obj = Level().CurrentEntity();
-	if (!obj) return;
+	//CObject *obj = Level().CurrentEntity();
+	//if (!obj) return;
 	
 	//find_geometry	();
 	//////////////////////////////////////////////////////////////////////////
+
+
+	CObject *actor = Level().CurrentEntity();
+	CEntityAlive *obj = smart_cast<CEntityAlive *>(actor);
+
+	Fvector V1,V2;
+	obj->movement_control()->GetCharacterVelocity(V1);
+	V2.set(obj->movement_control()->GetVelocity());
+	
+	string128 st;
+	sprintf(st,"V1=[%f,%f,%f] V2=[%f,%f,%f]",VPUSH(V1),VPUSH(V2));
+
+	DBG().text(this).clear();
+	DBG().text(this).add_item("", 200, 100, D3DCOLOR_XRGB(255,0,255));
 }
 
 #define TRACE_RANGE 30.f
