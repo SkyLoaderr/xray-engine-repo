@@ -243,18 +243,12 @@ function load_sound(obj)
 	theme[obj:id()]["gar_hellcar_victory"]			= load_sound_from_ltx(obj, "gar_hellcar_victory")
 	
 	-- DarkValley
-	theme[obj:id()]["val_ambush_come_here"]			= load_sound_from_ltx(obj, "val_ambush_come_here")
-	theme[obj:id()]["val_prisoner_captive_help_me"]	= load_sound_from_ltx(obj, "val_prisoner_captive_help_me")
+	theme[obj:id()]["val_prisoner_captive_help_me"]	  = load_sound_from_ltx(obj, "val_prisoner_captive_help_me")
 	theme[obj:id()]["val_prisoner_captive_come_here"] = load_sound_from_ltx(obj, "val_prisoner_captive_come_here")
-	theme[obj:id()]["val_suicide_before_death"]		= load_sound_from_ltx(obj, "val_suicide_before_death")
-	theme[obj:id()]["val_sacrifice_help_1"]			= load_sound_from_ltx(obj, "val_sacrifice_help_1")
-	theme[obj:id()]["val_sacrifice_help_2"]			= load_sound_from_ltx(obj, "val_sacrifice_help_2")
-	theme[obj:id()]["val_sacrifice_help_3"]			= load_sound_from_ltx(obj, "val_sacrifice_help_3")
-	theme[obj:id()]["val_sacrifice_threat_1"]		= load_sound_from_ltx(obj, "val_sacrifice_threat_1")
-	theme[obj:id()]["val_sacrifice_threat_2"]		= load_sound_from_ltx(obj, "val_sacrifice_threat_2")
-	theme[obj:id()]["val_sacrifice_bs_eat"]			= load_sound_from_ltx(obj, "val_sacrifice_bs_eat")
-	theme[obj:id()]["val_rob_leader_call"]			= load_sound_from_ltx(obj, "val_rob_leader_call")
-	theme[obj:id()]["val_rob_guard_jeer"]			= load_sound_from_ltx(obj, "val_rob_guard_jeer")
+	theme[obj:id()]["val_rob_leader_call"]			  = load_sound_from_ltx(obj, "val_rob_leader_call")
+	theme[obj:id()]["val_rob_guard_jeer"]			  = load_sound_from_ltx(obj, "val_rob_guard_jeer")
+	theme[obj:id()]["val_gate_soldiers"]			  = load_sound_from_ltx(obj, "val_gate_soldiers")
+	theme[obj:id()]["val_chase_soldiers"]			  = load_sound_from_ltx(obj, "val_chase_soldiers")
 
 	-- Agroprom
 	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")
