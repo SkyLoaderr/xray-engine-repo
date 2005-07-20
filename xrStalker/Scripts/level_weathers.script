@@ -5,13 +5,13 @@ function WeatherManager:__init()
 	self.weather_idx		= 1;
 	self.level_name			= "";
 	self.current_day 		= 0;
-	printf					("WeatherManager:WeatherManager()");
+--	printf					("WeatherManager:WeatherManager()");
 end
 
 g_WeatherManager 			= WeatherManager();
 
 function WeatherManager:__finalize()
-	printf					("WeatherManager:~WeatherManager()");
+--	printf					("WeatherManager:~WeatherManager()");
 end
 
 function WeatherManager:construct()
@@ -49,7 +49,7 @@ function WeatherManager:set_weather(idx,forced)
 	self.weather_idx 		= idx;
 	local weather_name		= self.weather_list[self.weather_idx];
 	level.set_weather		(weather_name,forced);
-	printf					("WEATHER: %s (%s)",weather_name,level.get_weather());
+	printf					("WEATHER: '%s' (%s)",weather_name,level.get_weather());
 end
 
 function WeatherManager:select_weather()
@@ -79,6 +79,6 @@ function main()
 		end
 	else
 		level.set_weather	("default",true);
-		printf				("!EMPTY WEATHERS - default selected");
+		printf				("WEATHER: 'default'");
 	end
 end
