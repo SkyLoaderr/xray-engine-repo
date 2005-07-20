@@ -22,6 +22,8 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
+			stalker_outfit \n
+			medkit \n
 		</supplies>
 					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
