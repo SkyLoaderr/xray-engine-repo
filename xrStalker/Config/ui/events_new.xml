@@ -89,5 +89,32 @@
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</right_auto_static>
 
-	<mindow>
+	<main_wnd x="76" y="62" width="761" height="480"> 
+		<left_frame x="0" y="0" width="300" height="480" a="90">
+			<texture>ui_pda_frame_sub</texture>
+
+			<left_frame_header x="8" y="16" width="284" height="27">
+				<texture>ui_string_02</texture>
+				
+				<anim_static x="250" y="-3" width="32" height="32"
+																	frames			= "16"
+																	duration		= "1000"
+																	columns			= "8"
+																	frame_width		= "32"
+																	frame_height	= "32"
+																	cyclic			= "1"
+																	autoplay		= "1">
+					<texture>ui\ui_pda_anims_01</texture>
+				</anim_static>
+			<work_area x="8" y="44" width="300" height="480">
+				<news_wnd>
+					<list  x="0" y="0" width="300" height="480">
+					</list>
+				<news_wnd>
+			</work_area>
+		</left_frame>
+	
+	
+	</main_wnd>
+</window>
 
