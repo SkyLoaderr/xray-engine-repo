@@ -39,6 +39,8 @@
 const float TEMP_DANGER_DISTANCE = 5.f;
 const u32	TEMP_DANGER_INTERVAL = 120000;
 const float PRECISE_DISTANCE	 = 2.5f;
+const float FLOOR_DISTANCE		 = 2.f;
+const float NEAR_DISTANCE		 = 2.5f;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -89,6 +91,23 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 			queue_size					= 5;
 			queue_interval				= 250;
 		}
+}
+
+bool CStalkerActionCombatBase::fire_make_sense		() const
+{
+	if (!object().memory().enemy().selected())
+		return							(false);
+
+	if ((object().pick_distance() + PRECISE_DISTANCE) < object().Position().distance_to(object().memory().enemy().selected()->Position()))
+		return							(false);
+
+	if (_abs(object().Position().y - object().memory().enemy().selected()->Position().y) > FLOOR_DISTANCE)
+		return							(false);
+
+	if (object().pick_distance() < NEAR_DISTANCE)
+		return							(false);
+
+	return								(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -474,7 +493,7 @@ void CStalkerActionTakeCover::execute		()
 //.	Add fire here
 //	if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().can_kill_enemy())
 //	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
-	if ((object().pick_distance() + PRECISE_DISTANCE) >= object().Position().distance_to(object().memory().enemy().selected()->Position())) {
+	if (fire_make_sense()) {
 		u32									queue_interval, queue_size;
 		float								distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
 		select_queue_params					(distance,queue_interval, queue_size);
@@ -633,7 +652,7 @@ void CStalkerActionHoldPosition::execute		()
 		m_storage->set_property			(eWorldPropertyInCover,false);
 	}
 
-	if (object().agent_manager().member().cover_detouring() && ((object().pick_distance() + PRECISE_DISTANCE) >= object().Position().distance_to(object().memory().enemy().selected()->Position()))) {
+	if (object().agent_manager().member().cover_detouring() && fire_make_sense()) {
 		u32									queue_interval, queue_size;
 		float								distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
 		select_queue_params					(distance,queue_interval, queue_size);

@@ -25,6 +25,7 @@ public:
 	virtual void		initialize					();
 	virtual void		finalize					();
 			void		select_queue_params			(const float &distance, u32 &queue_interval, u32 &queue_size) const;
+			bool		fire_make_sense				() const;
 };
 
 //////////////////////////////////////////////////////////////////////////
