@@ -34,7 +34,6 @@ void CSoundRender_Emitter::i_stop()
 	if (owner_data){
 		Event_ReleaseOwner		();
 		VERIFY(this==owner_data->feedback);
-		dbg_ID=0xDDCCBBAA;
 		owner_data->feedback	= NULL;
 		owner_data				= NULL;
 	}

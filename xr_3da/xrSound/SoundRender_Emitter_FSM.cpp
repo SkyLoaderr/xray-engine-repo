@@ -121,7 +121,6 @@ void CSoundRender_Emitter::update	(float dt)
 		if (dwTime	>=	dwTimeToPropagade)		Event_Propagade();
 	} else if (owner_data)	{ 
 		VERIFY(this==owner_data->feedback);
-		dbg_ID				= 0xAABBCCDD;
 		owner_data->feedback= 0; 
 		owner_data			= 0; 
 	}
