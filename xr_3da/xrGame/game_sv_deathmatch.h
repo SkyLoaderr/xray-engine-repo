@@ -178,7 +178,8 @@ public:
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 	virtual		void				check_InvinciblePlayers	();	
 	virtual		void				check_ForceRespawn		();
-
+	virtual		BOOL				IsDamageBlockIndEnabled	() {return m_bDamageBlockIndicators; };
+	
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_Deathmatch)

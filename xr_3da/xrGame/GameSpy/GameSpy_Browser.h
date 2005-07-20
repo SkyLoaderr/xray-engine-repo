@@ -3,12 +3,19 @@
 #include "GameSpy_FuncDefs.h"
 #include "GameSpy_QR2.h"
 
+struct GameInfo	{
+	shared_str	InfoName;
+	shared_str	InfoData;
+	GameInfo(LPCSTR Name, LPCSTR Data) { InfoName._set(Name); InfoData._set(Data); };
+};
+
 struct PlayerInfo {
 	string128	Name;
 	int			Frags;
 	int			Deaths;
 	int			Team;
 };
+
 struct ServerInfo{
 //	SBServer pSBServer;
 	string128	m_Address;
@@ -21,10 +28,12 @@ struct ServerInfo{
 	s16						m_ServerMaxPlayers;
 	bool					m_bDedicated;
 	bool					m_bFFire;
+	s16						m_s16FFire;
 	bool					m_bPassword;
 	s16						m_Ping;
 	s16						m_Port, m_HPort;
 
+	xr_vector<GameInfo>		m_aInfos;
 	xr_vector<PlayerInfo>	m_aPlayers;
 
 	int						Index;

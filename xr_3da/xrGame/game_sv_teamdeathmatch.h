@@ -46,8 +46,9 @@ public:
 
 	virtual		void				LoadTeams				();
 
-	virtual		char*				GetAnomalySetBaseName	() {return "teamdeathmatch_game_anomaly_sets";};
+	virtual		char*				GetAnomalySetBaseName	()	{return "teamdeathmatch_game_anomaly_sets";};
 	virtual		BOOL				isFriendlyFireEnabled	()	{return (m_fFriendlyFireModifier > 0.1f);};
+	virtual		float				GetFriendlyFire			()	{ return (m_fFriendlyFireModifier > 0.1f) ? m_fFriendlyFireModifier : 0.0f;};
 	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();

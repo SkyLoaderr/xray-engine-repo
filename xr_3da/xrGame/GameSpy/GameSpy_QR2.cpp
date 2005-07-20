@@ -65,6 +65,8 @@ void	CGameSpy_QR2::RegisterAdditionalKeys	()
 {
 	xrGS_qr2_register_key(DEDICATED_KEY,   ("dedicated")  );
 	xrGS_qr2_register_key(FFIRE_KEY,   ("friendlyfire")  );
+	xrGS_qr2_register_key(FFIREAMOUNT_KEY,   ("friendlyfireamount")  );
+	xrGS_qr2_register_key(DAMAGEBLOCKIND_KEY,   ("dmgblockind")  );
 };
 
 bool	CGameSpy_QR2::Init		(int Public, void* instance)

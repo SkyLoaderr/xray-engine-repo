@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #ifdef __cplusplus
 extern "C" {

@@ -3,7 +3,6 @@
 #include <objbase.h>
 #include <windows.h>
 
-#include "stdafx.h"
 #include "d3d9.h"
 
 /*

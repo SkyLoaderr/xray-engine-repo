@@ -36,3 +36,5 @@
 
 #define	DEDICATED_KEY			100
 #define	FFIRE_KEY				101
+#define	FFIREAMOUNT_KEY			102
+#define DAMAGEBLOCKIND_KEY		103

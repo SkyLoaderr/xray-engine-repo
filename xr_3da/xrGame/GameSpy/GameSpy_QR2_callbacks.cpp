@@ -1,13 +1,21 @@
 #include "StdAfx.h"
+
 #include "../xrGameSpyServer.h"
 #include "GameSpy_Keys.h"
+
+#include "../game_sv_artefacthunt.h"
 //--------------------------- QR2 callbacks ---------------------------------------
 void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 {
 	if (!userdata) return;
 	xrGameSpyServer* pServer = (xrGameSpyServer*) userdata;
+	if (!pServer) return;
 	CGameSpy_QR2* pQR2 = pServer->QR2();
 	if (!pQR2) return;
+
+	game_sv_Deathmatch* gmDM = smart_cast<game_sv_Deathmatch*>(pServer->game);
+	game_sv_TeamDeathmatch* gmTDM = smart_cast<game_sv_TeamDeathmatch*>(pServer->game);
+//	game_sv_ArtefactHunt* gmAhunt = smart_cast<game_sv_ArtefactHunt*>(pServer->game);
 
 	switch (keyid)
 	{
@@ -46,9 +54,29 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 		}break;
 	case FFIRE_KEY:
 		{
-			if (pServer->game && pServer->game->CanHaveFriendlyFire())
+			if (gmTDM && gmTDM->CanHaveFriendlyFire())
 			{			
 				pQR2->BufferAdd_Int(outbuf, pServer->game->isFriendlyFireEnabled());
+				break;
+			}
+			pQR2->BufferAdd_Int(outbuf, 0);
+		}break;
+	case FFIREAMOUNT_KEY:
+		{
+			if (gmTDM && gmTDM->CanHaveFriendlyFire())
+			{				
+				pQR2->BufferAdd_Int(outbuf, int(gmTDM->GetFriendlyFire()*100.0f));
+				break;
+			}
+			pQR2->BufferAdd_Int(outbuf, 0);
+		}break;
+	case DAMAGEBLOCKIND_KEY:
+		{
+			if (gmDM)
+			{			
+				//pQR2->BufferAdd_Int(outbuf, pServer->game->isFriendlyFireEnabled());
+				
+				pQR2->BufferAdd_Int(outbuf, gmDM->IsDamageBlockIndEnabled());
 				break;
 			}
 			pQR2->BufferAdd_Int(outbuf, 0);
@@ -61,7 +89,7 @@ void __cdecl callback_playerkey(int keyid, int index, void* outbuf, void *userda
 {
 	xrGameSpyServer* pServer = (xrGameSpyServer*) userdata;
 	if (!pServer) return;
-	if (index >= pServer->client_Count()) return;
+	if (u32(index) >= pServer->client_Count()) return;
 	CGameSpy_QR2* pQR2 = pServer->QR2();
 	if (!pQR2) return;
 
@@ -69,7 +97,7 @@ void __cdecl callback_playerkey(int keyid, int index, void* outbuf, void *userda
 	
 	if (pServer->m_bDedicated)
 	{
-		if (index+1 >= pServer->client_Count()) return;
+		if (u32(index+1) >= pServer->client_Count()) return;
 		pCD = (xrGameSpyClientData*)pServer->client_Get(index+1);
 	}
 	else
@@ -121,8 +149,11 @@ void __cdecl callback_keylist(qr2_key_type keytype, void* keybuffer, void *userd
 		pQR2->KeyBufferAdd(keybuffer, PASSWORD_KEY);
 
 		pQR2->KeyBufferAdd(keybuffer, HOSTPORT_KEY);
+
 		pQR2->KeyBufferAdd(keybuffer, DEDICATED_KEY);
 		pQR2->KeyBufferAdd(keybuffer, FFIRE_KEY);
+		pQR2->KeyBufferAdd(keybuffer, FFIREAMOUNT_KEY);
+		pQR2->KeyBufferAdd(keybuffer, DAMAGEBLOCKIND_KEY);
 		break;
 	case key_player:
 		pQR2->KeyBufferAdd(keybuffer, PLAYER__KEY);

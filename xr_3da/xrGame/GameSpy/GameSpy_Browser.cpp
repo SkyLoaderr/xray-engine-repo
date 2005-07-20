@@ -190,14 +190,6 @@ void CGameSpy_Browser::GetServerInfoByIndex(ServerInfo* pServerInfo, int idx)
 	void* pServer = xrGS_ServerBrowserGetServer(m_pGSBrowser, idx);
 	ReadServerInfo(pServerInfo, pServer);
 	pServerInfo->Index = idx;
-	//-------------------------
-	if (pServerInfo->m_ServerNumPlayers)
-	{
-		PlayerInfo* pPI = &(pServerInfo->m_aPlayers[0]);
-		int x=0;
-		x=x;
-	}
-	//-------------------------
 }
 
 void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
@@ -215,9 +207,21 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	pServerInfo->m_ServerMaxPlayers = (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(MAXPLAYERS_KEY), 32);
 	pServerInfo->m_bDedicated	= (xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(DEDICATED_KEY), SBFalse)) == SBTrue;
 	pServerInfo->m_bFFire		= xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(FFIRE_KEY), SBFalse) == SBTrue;
+	pServerInfo->m_s16FFire		= xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(FFIREAMOUNT_KEY), 0);
 	pServerInfo->m_Port		= (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(HOSTPORT_KEY), 0);
 	pServerInfo->m_HPort	= (s16)xrGS_SBServerGetPublicQueryPort(pServer);
 
+	//--------- Read Game Infos ---------------------------//
+	pServerInfo->m_aInfos.clear();
+	BOOL DmgBlockInd = (xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(DAMAGEBLOCKIND_KEY), SBFalse)) == SBTrue;
+	pServerInfo->m_aInfos.push_back(GameInfo("Invincibility Indicators", DmgBlockInd ? "Yes" : "No"));
+	if (pServerInfo->m_bFFire)
+	{
+		GameInfo GI("Friendly Fire", "");
+		GI.InfoData.sprintf("%d%%", pServerInfo->m_s16FFire);
+		pServerInfo->m_aInfos.push_back(GI);
+	}
+	//--------- Read Players Info -------------------------//
 	pServerInfo->m_aPlayers.clear();
 	for (int i=0; i<pServerInfo->m_ServerNumPlayers; i++)
 	{
