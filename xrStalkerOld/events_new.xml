@@ -89,7 +89,7 @@
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</right_auto_static>
 
-<!--
+
 	<main_wnd x="76" y="62" width="761" height="480"> 
 		<left_frame x="0" y="0" width="300" height="480" a="90">
 			<texture>ui_pda_frame_sub</texture>
@@ -113,12 +113,12 @@
 				<news_wnd>
 					<list  x="0" y="0" width="300" height="480">
 					</list>
-				<news_wnd>
+				</news_wnd>
 			</work_area>
 		</left_frame>
 	
 	
 	</main_wnd>
--->	
+	
 </window>
 
