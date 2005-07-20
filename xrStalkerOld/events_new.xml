@@ -94,10 +94,10 @@
 		<left_frame x="0" y="0" width="761" height="480" a="90">
 			<texture>ui_pda_frame_sub</texture>
 
-			<left_frame_header x="8" y="16" width="750" height="27">
+			<left_frame_header x="8" y="16" width="745" height="27">
 				<texture>ui_string_02</texture>
 				
-				<anim_static x="720" y="-3" width="32" height="32"
+				<anim_static x="710" y="-3" width="32" height="32"
 																	frames			= "16"
 																	duration		= "1000"
 																	columns			= "8"
