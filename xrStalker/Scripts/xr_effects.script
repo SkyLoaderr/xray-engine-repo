@@ -707,16 +707,21 @@ function mil_bomb_explode (actor, npc)
     
     actor:give_info_portion ("mil_freedom_under_attack")
     
-    local lukash = level_object_by_sid (707)
     local skull = level_object_by_sid (708)
-    if lukash == nil or skull == nil then return end
+    if skull == nil then return end
+    
+    local target = level_object_by_sid (702)
+    if target == nil then
+       target = level_object_by_sid (707)
+    end   
+    if target == nil then return end
     
     h.power = 1;
     h.direction = vector():set( 1, 0, 0 );
     h.impulse = 1;
     h.draftsman = skull;
     h.type = hit.strike;
-    lukash:hit (h);
+    target:hit (h);
     
 --    source:explode (0)
 
