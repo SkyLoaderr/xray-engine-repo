@@ -1241,12 +1241,11 @@ void CPHShell::set_ApplyByGravity(bool flag)
 
 bool CPHShell::get_ApplyByGravity()
 {
-	ELEMENT_I i,e;
-	i=elements.begin(); e=elements.end();
-	for( ;i!=e;++i)
-		return ((*i)->get_ApplyByGravity());
+	if (elements.empty())
+		return	(false);
 
-	return false;
+	VERIFY		(elements.front());
+	return		(elements.front()->get_ApplyByGravity());
 }
 
 void CPHShell::applyGravityAccel(const Fvector& accel)

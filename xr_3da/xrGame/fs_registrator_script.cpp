@@ -87,7 +87,7 @@ FS_file_list_ex::FS_file_list_ex(LPCSTR path, u32 flags, LPCSTR mask)
 		FS_item& itm			= m_file_items.back();
 		ZeroMemory				(itm.name,sizeof(itm.name));
 		strcat					(itm.name,it->name.c_str());
-		itm.modif				= it->time_write;
+		itm.modif				= (u32)it->time_write;
 		itm.size				= it->size;
 	}
 }
