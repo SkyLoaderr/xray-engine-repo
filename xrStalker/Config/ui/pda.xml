@@ -36,7 +36,7 @@
 							<t r="127" g="127" b="127"/>				
 							<h r="231" g="153" b="22"/>
 		</button>
-		<button x="45" y="10" width="15" height="20" push_off_x="0" push_off_y="0">
+		<button x="65" y="10" width="15" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Map</text>
 							<e r="181" g="170" b="148"/>
 							<d r="181" g="170" b="148"/>
