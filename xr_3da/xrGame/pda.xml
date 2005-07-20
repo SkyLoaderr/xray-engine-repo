@@ -29,7 +29,7 @@
 	<!-- TAB CONTROL -->
 	<tab x="95" y="542" width="550" height="30">
 		<!-- BUTTONS -->
-		<button x="0" y="10" width="30" height="20" push_off_x="0" push_off_y="0">
+		<button x="0" y="10" width="40" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Quests</text>
 							<e r="181" g="170" b="148"/>
 							<d r="181" g="170" b="148"/>
