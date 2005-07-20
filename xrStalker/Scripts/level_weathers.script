@@ -5,13 +5,13 @@ function WeatherManager:__init()
 	self.weather_idx		= 1;
 	self.level_name			= "";
 	self.current_day 		= 0;
---	printf					("WeatherManager:WeatherManager()");
+	printf					("WeatherManager:WeatherManager()");
 end
 
 g_WeatherManager 			= WeatherManager();
 
 function WeatherManager:__finalize()
---	printf					("WeatherManager:~WeatherManager()");
+	printf					("WeatherManager:~WeatherManager()");
 end
 
 function WeatherManager:construct()
