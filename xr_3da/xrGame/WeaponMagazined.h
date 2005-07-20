@@ -64,7 +64,7 @@ protected:
 	virtual void	switch2_Hidden	();
 	virtual void	switch2_Showing	();
 	
-	virtual void	OnShot			();
+	virtual void	OnShot			();	
 	
 	virtual void	OnEmptyClick	();
 
@@ -126,6 +126,11 @@ protected:
 	int				m_iQueueSize;
 	//количество реально выстрел€ных патронов
 	int				m_iShotNum;
+	//  [7/20/2005]
+	//после какого патрона, при непрерывной стрельбе, начинаетс€ отдача (сделано из-зи јбакана)
+	int				m_iShootEffectorStart;
+	Fvector			m_vStartPos, m_vStartDir;
+	//  [7/20/2005]
 	//флаг того, что мы остановились после того как выстрел€ли
 	//ровно столько патронов, сколько было задано в m_iQueueSize
 	bool			m_bStopedAfterQueueFired;

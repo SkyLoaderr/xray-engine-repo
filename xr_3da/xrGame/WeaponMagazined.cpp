@@ -105,8 +105,12 @@ void CWeaponMagazined::Load	(LPCSTR section)
 			m_sSilencerSmokeParticles = pSettings->r_string(section, "silencer_smoke_particles");
 		HUD_SOUND::LoadSound(section,"snd_silncer_shot", sndSilencerShot, TRUE, m_eSoundShot);
 	}
-
-
+	//  [7/20/2005]
+	if (pSettings->line_exist(section, "dispersion_start"))
+		m_iShootEffectorStart = pSettings->r_u8(section, "dispersion_start");
+	else
+		m_iShootEffectorStart = 0;
+	//  [7/20/2005]
 }
 
 void CWeaponMagazined::FireStart		()
@@ -459,11 +463,14 @@ void CWeaponMagazined::state_Fire	(float dt)
 	p1.set(get_LastFP());
 	d.set(get_LastFD());
 
-	if(H_Parent()) 
-		smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
-	else 
-		return;
-	
+	if (!H_Parent()) return;
+	smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
+	if (m_iShotNum == 0)
+	{
+		m_vStartPos = p1;
+		m_vStartDir = d;
+	};
+		
 	VERIFY(!m_magazine.empty());
 	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot))
 	{
@@ -471,12 +478,16 @@ void CWeaponMagazined::state_Fire	(float dt)
 
 		VERIFY(fTimeToFire>0.f);
 		fTime			+=	fTimeToFire;
-
+		
 		++m_iShotNum;
 		OnShot			();
-		FireTrace		(p1,d);
+		
+		if (m_iShotNum>m_iShootEffectorStart)
+			FireTrace		(p1,d);
+		else
+			FireTrace		(m_vStartPos, m_vStartDir);
 	}
-
+	
 	if(m_iShotNum == m_iQueueSize)
 		m_bStopedAfterQueueFired = true;
 
@@ -521,7 +532,7 @@ void CWeaponMagazined::OnShot		()
 	// Sound
 	PlaySound			(*m_pSndShotCurrent,get_LastFP());
 
-	// Camera
+	// Camera	
 	AddShotEffector		();
 
 	// Animation
@@ -927,3 +938,4 @@ void CWeaponMagazined::onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd)
 	if( (cmd == ACTOR_DEFS::mcSprint)&&(STATE==eIdle)  )
 		PlayAnimIdle						();
 }
+
