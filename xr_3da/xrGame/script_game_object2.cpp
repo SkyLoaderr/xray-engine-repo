@@ -229,9 +229,6 @@ const CDangerObject *CScriptGameObject::GetBestDanger()
 	if (!monster->memory().danger().selected())
 		return				(0);
 
-	if (!monster->memory().danger().selected()->object())
-		return				(0);
-
 	return					(monster->memory().danger().selected());
 }
 
