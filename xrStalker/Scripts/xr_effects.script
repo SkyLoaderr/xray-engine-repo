@@ -805,6 +805,11 @@ function mil_emeny_nearest (actor, npc)
     end    
 end
 
+function mil_lukash_dead (actor, npc)
+    if actor:has_info ("mil_sniper_get_job") then
+       level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
+    end   
+end
 
 -- GARBAGE
 
