@@ -44,7 +44,7 @@ radius = 0
 ;on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} nil ;walker@gulag
 on_signal = fight | remark@fight
 ;combat_ignore_cond = {!check_fighting(410)} ;{=fighting_actor -val_opendoor_plr_detected}
-combat_ignore_cond = {=check_fighting(410)}
+combat_ignore_cond = {=check_fighting(410)}, {=fighting_actor -val_opendoor_plr_detected}
 
 [remark@fight]
 no_move = true
@@ -53,7 +53,7 @@ anim = threat
 snd = speech
 on_info = {=is_dead_one(410)} remark@talk, {+val_opendoor_plr_detected} nil
 ;on_signal = sound_end | remark@fight
-combat_ignore_cond = {!check_fighting(410)}
+combat_ignore_cond = {!check_fighting(410)}, {=fighting_actor -val_opendoor_plr_detected}
 
 [remark@talk]
 snd = speech
