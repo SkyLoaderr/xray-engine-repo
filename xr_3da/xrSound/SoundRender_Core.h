@@ -10,6 +10,9 @@
 class CSoundRender_Core					: public CSound_manager_interface
 {
 protected:
+	virtual void						_create_data			( ref_sound_data& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType); 
+	virtual void						_destroy_data			( ref_sound_data& S);
+protected:
     BOOL								bListenerMoved;
 
 	CSoundRender_Environment			e_current;

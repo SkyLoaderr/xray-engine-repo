@@ -86,7 +86,7 @@ public:
 	CObject*						g_object;		//!< Game object that emitts ref_sound
 	CSound_UserDataPtr				g_userdata;
 public:
-									ref_sound_data	(LPCSTR fName, BOOL _3D, int type);
+									ref_sound_data	(BOOL _3D, LPCSTR fName, int type);
 	virtual							~ref_sound_data	();
 };
 typedef resptr_core<ref_sound_data,resptr_base<ref_sound_data> >	ref_sound_data_ptr;
@@ -233,6 +233,11 @@ class XRSOUND_API	CSound_manager_interface
 {
 	virtual void	  				_initialize				( u64 window )																			= 0;
 	virtual void					_clear					( )																						= 0;
+
+protected:
+	friend class 					ref_sound_data;
+	virtual void					_create_data			( ref_sound_data& S, BOOL _3D,	LPCSTR fName, int	type=st_SourceType)					= 0;
+	virtual void					_destroy_data			( ref_sound_data& S)																	= 0;
 public:
 	//@{
 	/// General
@@ -272,6 +277,9 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
+ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);			}
+ref_sound_data::~ref_sound_data					()														{	::Sound->_destroy_data			(*this);							}
+
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
 IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);					}
