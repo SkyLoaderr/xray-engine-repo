@@ -124,7 +124,7 @@ function main_menu:InitControls()
 	self.multi_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_frame:AttachChild(self.multi_tab)
 	
-	self.mp_dlg = ui_mp_main.mp_main()
+--	self.mp_dlg = ui_mp_main.mp_main()
 end
 
 
