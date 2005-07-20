@@ -3,8 +3,9 @@
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
 
-//temp
-#include "control_animation_base.h"
+//#ifdef _DEBUG
+//#include "control_animation_base.h"
+//#endif
 
 void CControlAnimation::reinit()
 {
@@ -13,6 +14,11 @@ void CControlAnimation::reinit()
 	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
 	m_anim_events.clear			();
+
+	m_global_animation_end		= false;
+	m_legs_animation_end		= false;
+	m_torso_animation_end		= false;
+
 }
 
 void CControlAnimation::reset_data()
@@ -25,6 +31,8 @@ void CControlAnimation::reset_data()
 
 void CControlAnimation::update_frame() 
 {
+	check_callbacks	();
+	
 	play			();	
 
 	check_events	(m_data.global);
@@ -35,17 +43,17 @@ void CControlAnimation::update_frame()
 static void __stdcall global_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
-	controller->on_global_animation_end();
+	controller->m_global_animation_end = true;
 }
 static void __stdcall legs_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
-	controller->on_legs_animation_end();
+	controller->m_legs_animation_end = true;
 }
 static void __stdcall torso_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
-	controller->on_torso_animation_end();
+	controller->m_torso_animation_end = true;
 }
 
 void CControlAnimation::play() 
@@ -61,21 +69,6 @@ void CControlAnimation::play()
 	if (m_data.global.blend && (m_data.speed > 0)) {
 		m_data.global.blend->speed	= m_data.speed;		// TODO: make factor
 	}
-}
-
-void CControlAnimation::on_global_animation_end() 
-{
-	m_man->notify		(ControlCom::eventAnimationEnd, 0);
-}
-
-void CControlAnimation::on_legs_animation_end() 
-{
-	m_man->notify		(ControlCom::eventLegsAnimationEnd, 0);
-}
-
-void CControlAnimation::on_torso_animation_end() 
-{
-	m_man->notify		(ControlCom::eventTorsoAnimationEnd, 0);
 }
 
 void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
@@ -150,4 +143,24 @@ void CControlAnimation::check_events(SAnimationPart &part)
 			}
 		}
 	}
+}
+
+void CControlAnimation::check_callbacks()
+{
+	if (m_global_animation_end) {
+		m_man->notify			(ControlCom::eventAnimationEnd, 0);
+		m_global_animation_end	= false;
+	}
+	
+	if (m_legs_animation_end) {
+		m_man->notify			(ControlCom::eventLegsAnimationEnd, 0);
+		m_legs_animation_end	= false;
+	}
+	
+	if (m_torso_animation_end) {
+		m_man->notify			(ControlCom::eventTorsoAnimationEnd, 0);
+		m_torso_animation_end	= false;
+	}
+
+
 }
