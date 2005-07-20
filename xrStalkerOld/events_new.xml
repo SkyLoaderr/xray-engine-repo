@@ -109,10 +109,12 @@
 				</anim_static>
 			</left_frame_header>
 			
-			<work_area x="8" y="44" width="750" height="480">
+			<work_area x="8" y="44" width="745" height="480">
 				<news_wnd>
-					<list  x="0" y="0" width="750" height="480">
+					<list x="0" y="0" width="745" height="480" item_height="15">
+						<font font="letterica18" r="225" g="225" b="250"></font>
 					</list>
+					
 				</news_wnd>
 			</work_area>
 		</left_frame>
