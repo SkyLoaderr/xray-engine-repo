@@ -476,7 +476,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			DEL_INSTANCE			(g_pGameLevel);
 			Console->Show			();
 			
-			if(FALSE == Engine.Event.Peek("KERNEL:quit"))
+			if( (FALSE == Engine.Event.Peek("KERNEL:quit")) &&(FALSE == Engine.Event.Peek("KERNEL:start")) )
 				Console->Execute("main_menu on");
 		}
 		R_ASSERT			(0!=g_pGamePersistent);
