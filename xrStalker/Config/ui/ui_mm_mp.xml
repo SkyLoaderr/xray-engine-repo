@@ -69,6 +69,14 @@
 				<text font="letterica16" r="215" g="195" b="170" x="2">Players List</text>
 				<texture>ui_table_button_e</texture>
 			</cap_players_list>
+			<cap_frags x="414" y="191" width="54" height="17">
+				<text font="letterica16" r="215" g="195" b="170" x="2">Frags</text>
+				<texture>ui_table_button_e</texture>
+			</cap_frags>
+			<cap_death x="468" y="191" width="54" height="17">
+				<text font="letterica16" r="215" g="195" b="170" x="2">Deaths</text>
+				<texture>ui_table_button_e</texture>
+			</cap_death>
 			<list_server_properties x="0" y="210" width="194" height="96" item_height="18">
 				<texture>ui_droplist_listbox</texture>
 				<text font="letterica16" r="255" g="255" b="255"/>

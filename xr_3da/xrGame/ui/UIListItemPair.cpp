@@ -155,5 +155,5 @@ LPCSTR CUIListItemPair::GetTextDateTime(){
 }
 
 LPCSTR CUIListItemPair::GetText(){
-	return this->m_staticDateTime.GetText();	
+	return this->m_staticFileName.GetText();	
 }

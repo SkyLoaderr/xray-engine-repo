@@ -10856,6 +10856,12 @@
 						RelativePath=".\ui\ServerList_GameSpy_func.cpp">
 					</File>
 					<File
+						RelativePath=".\ui\UIListItemAdv.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIListItemAdv.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIListItemServer.cpp">
 					</File>
 					<File

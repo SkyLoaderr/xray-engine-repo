@@ -5,27 +5,39 @@
 #include "../string_table.h"
 #include "../../xr_ioconsole.h"
 #include "UIEditBox.h"
+#include "UIColorAnimatorWrapper.h"
+#include "UIListItemAdv.h"
 
 
 CServerList::CServerList(){
 	m_GSBrowser.Init();
-	for (int i = 0; i<3; i++)
-	{
-		m_list[i].ShowSelectedItem();
-		AttachChild(&m_frame[i]);
-		AttachChild(&m_list[i]);		
-	}
+//	m_list[LST_SERVER].ShowSelectedItem();
+//	AttachChild(&m_list[LST_SERVER]);
 
+	
 	for (int i = 0; i<6; i++)
 		AttachChild(&m_header[i]);
-	for (int i = 0; i<2; i++)
+	for (int i = 0; i<4; i++)
 		AttachChild(&m_header2[i]);
 	for (int i = 0; i<5; i++)
 		AttachChild(&m_separator[i]);
 
 
+    m_pAnimation = xr_new<CUIColorAnimatorWrapper>("ui_mm_mp_srvinfo");
+	m_pAnimation->Cyclic(false);
+
 	AttachChild(&m_edit_gs_filter);
+
+
+	for (int i = 0; i<3; i++)
+	{
+		m_list[i].ShowSelectedItem();
+		AttachChild(&m_frame[i]);
+		AttachChild(&m_list[i]);
+	}
+
 	m_bShowServerInfo = false;
+	m_bAnimation = false;
 }
 
 CServerList::~CServerList()
@@ -36,9 +48,88 @@ void CServerList::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 }
 
+void CServerList::Update(){
+	if (m_bAnimation)
+	{
+		m_pAnimation->Update();
+
+		m_frame[LST_SRV_PROP].SetColor(subst_alpha(0xffffffff, color_get_A(m_pAnimation->GetColor())));
+		m_frame[LST_PLAYERS].SetColor(subst_alpha(0xffffffff, color_get_A(m_pAnimation->GetColor())));
+
+		for (int i = 0; i<4; i++)
+		{
+			m_header2[i].SetColor(subst_alpha(0xffffffff, color_get_A(m_pAnimation->GetColor())));
+			m_header2[i].SetTextColor(subst_alpha(m_header2[i].GetTextColor(), color_get_A(m_pAnimation->GetColor())));
+		}
+
+		if (m_pAnimation->Done())
+		{
+			m_bAnimation = false;
+			if (m_bShowServerInfo)
+				AfterAppear();
+			else
+				AfterDisappear();
+		}
+	}
+}
+
+void CServerList::BeforeAppear(){
+    UpdateSizes();
+}
+void CServerList::AfterAppear(){
+	FillUpDetailedServerInfo();
+
+}
+void CServerList::BeforeDisapear(){
+	ClearDetailedServerInfo();
+}
+void CServerList::AfterDisappear(){
+	UpdateSizes();
+}
+
+void CServerList::FillUpDetailedServerInfo(){
+	int si = m_list[LST_SERVER].GetSelectedItem();
+		
+    if (-1 != si)
+	{
+		CUIListItemServer* pItem = (CUIListItemServer*)m_list[LST_SERVER].GetItem(si);
+		R_ASSERT(pItem);
+
+		ServerInfo srvInfo;
+		m_GSBrowser.GetServerInfoByIndex(&srvInfo, pItem->GetInfo()->info.Index);
+
+		xr_vector<PlayerInfo>::iterator it;
+		for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
+		{
+			PlayerInfo pf = *it;
+			CUIListItemAdv* pItemAdv = xr_new<CUIListItemAdv>();
+
+			char buf[16];
+
+            pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
+			pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
+			pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
+			m_list[LST_PLAYERS].AddItem(pItemAdv);
+		}
+	}
+	else
+		ClearDetailedServerInfo();
+}
+
+void CServerList::ClearDetailedServerInfo(){
+	m_list[LST_SRV_PROP].RemoveAll();
+	m_list[LST_PLAYERS].RemoveAll();
+}
+
 void CServerList::ShowServerInfo(){
 	m_bShowServerInfo = !m_bShowServerInfo;
-	UpdateSizes();
+	m_bAnimation = true;
+	m_pAnimation->Reverese(!m_bShowServerInfo);
+	m_pAnimation->Reset();
+	if (m_bShowServerInfo)
+		BeforeAppear();
+	else
+		BeforeDisapear();
 }
 
 void CServerList::UpdateSizes(){
@@ -48,9 +139,7 @@ void CServerList::UpdateSizes(){
 	m_frame[LST_PLAYERS].Show(m_bShowServerInfo);
 
 	for (int i = 0; i<5; i++)
-	{
 		m_header2[i].Show(m_bShowServerInfo);
-	}
 
 	m_list[LST_SERVER].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);
 	m_frame[LST_SERVER].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);
@@ -102,6 +191,8 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	m_fEditPos[1] =				xml_doc.ReadAttribFlt(buf,0,"y2");
 	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":cap_server_properties"),			0, &m_header2[0]);
 	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":cap_players_list"),				0, &m_header2[1]);
+	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":cap_frags"),						0, &m_header2[2]);
+	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":cap_death"),						0, &m_header2[3]);
 	
 	m_itemInfo.size.icon	= xml_doc.ReadAttribFlt( strconcat(buf, path, ":sizes"), 0, "icon");
 	m_itemInfo.size.server	= xml_doc.ReadAttribFlt( buf, 0, "server");
