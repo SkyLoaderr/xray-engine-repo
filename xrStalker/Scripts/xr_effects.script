@@ -323,46 +323,47 @@ end
 
 function military_dolg_dead (actor, npc)
     -- если нет актера, то вылетаем с грохотом и треском
-    if db.actor == nil then return end
+    if actor == nil then return end
     -- если данные не существуют, то создадим
-    if db.storage[db.actor:id ()] == nil then
-       db.storage[db.actor:id ()] = {}
+    local id = actor:id ()
+    if db.storage[id] == nil then
+       db.storage[id] = {}
     end    
     
-    if db.storage[db.actor:id ()].mil_dolg_killed == nil then
-       db.storage[db.actor:id ()].mil_dolg_killed = 0
-       db.storage[db.actor:id ()].mil_dolg_killed_by_actor = false
+    if db.storage[id].mil_dolg_killed == nil then
+       db.storage[id].mil_dolg_killed = 0
+       db.storage[id].mil_dolg_killed_by_actor = false
     end    
     -- проапдейтим количество мертвых долговцев
-    db.storage[db.actor:id ()].mil_dolg_killed = db.storage[db.actor:id ()].mil_dolg_killed + 1
+    db.storage[id].mil_dolg_killed = db.storage[id].mil_dolg_killed + 1
 
     --printf ("!!! DOLG STALKER IS DEAD, KILLED %d STALKERS !!!", db.storage[db.actor:id ()].mil_dolg["killed"])
 
     -- взведем флажок, что мужика замочили мы (нужно для Свободы) 
     local st = db.storage[npc:id ()]
     if st.death.killer == -1 then return end
-    if actor:id () == st.death.killer then 
-       db.storage[db.actor:id ()].mil_dolg_killed_by_actor = true
+    if id == st.death.killer then 
+       db.storage[id].mil_dolg_killed_by_actor = true
     end
     
     -- если все умерли и была задача мочить снайпера, но сообщать не кому, то
     -- ставим задачу, как не выполненую
-    if db.storage[db.actor:id ()].mil_dolg_killed == 8 then
+    if db.storage[id].mil_dolg_killed == 8 then
        if db.actor:has_info ("mil_sniper_get_job") and db.actor:dont_has_info ("mil_sniper_job_complete") then 
           level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
-          db.actor:disable_info_portion ("mil_sniper_get_job")
+          actor:disable_info_portion ("mil_sniper_get_job")
        end
        --printf ("!!! DOLG IS DEAD !!!")
-       db.actor:give_info_portion ("mil_dolg_dead")
-       if db.actor:has_info ("mil_leader_quest1_start") then
+       actor:give_info_portion ("mil_dolg_dead")
+       if actor:has_info ("mil_leader_quest1_start") then
           level_tasks.set_task_state (task.completed, "mil_lukash_job", 2)
-          db.actor:give_info_portion ("mil_leader_quest1_complete")
-          if db.actor:dont_has_info ("mil_freedom_attack") then
+          actor:give_info_portion ("mil_leader_quest1_complete")
+          if actor:dont_has_info ("mil_freedom_attack") then
              level_tasks.set_task_state (task.fail, "mil_lukash_job", 1)
              level_tasks.remove_location (702, "mil_max_location")
           end   
        else
-          db.actor:give_info_portion ("mil_max_dolg_killed")  
+          actor:give_info_portion ("mil_max_dolg_killed")  
        end        
     end   
     
@@ -583,13 +584,13 @@ end
 
 
 function military_max_dead (actor, npc)
-    if db.actor:has_info ("mil_max_job") then
+    if actor:has_info ("mil_max_job") then
        level_tasks.set_task_state (task.fail, "mil_mad_job", 0)
        level_tasks.set_task_state (task.fail, "mil_mad_job", 2)
        level_tasks.remove_location (707, "mil_lukash_location")
     end   
     
-    if db.actor:has_info ("mil_lukash_get_job") then
+    if actor:has_info ("mil_lukash_get_job") then
        level_tasks.set_task_state (task.fail, "mil_lukash_job", 0)
        level_tasks.set_task_state (task.fail, "mil_lukash_job", 1)
        level_tasks.set_task_state (task.fail, "mil_lukash_job", 2)
@@ -597,7 +598,7 @@ function military_max_dead (actor, npc)
        level_tasks.remove_location (708, "mil_dolg_location")
     end
     
-    if db.actor:has_info ("mil_max_lukash_call") then
+    if actor:has_info ("mil_max_lukash_call") then
        level_tasks.remove_location (707, "mil_lukash_location")
     end    
     
@@ -605,7 +606,7 @@ function military_max_dead (actor, npc)
 end
 
 function military_lukash_dead (actor, npc)
-    if db.actor:has_info ("mil_lukash_get_job") then
+    if actor:has_info ("mil_lukash_get_job") then
        level_tasks.set_task_state (task.fail, "mil_lukash_job", 0)
        level_tasks.set_task_state (task.fail, "mil_lukash_job", 3)
        level_tasks.remove_location (707, "mil_lukash_location")
@@ -614,9 +615,9 @@ function military_lukash_dead (actor, npc)
 end
 
 function mil_courier_death (actor, npc)
-    db.actor:give_info_portion ("mil_courier_dead")
-    if db.actor:has_info ("mil_leader_quest2_start") then
-       if db.actor:dont_has_info ("mil_courier_visited") then
+    actor:give_info_portion ("mil_courier_dead")
+    if actor:has_info ("mil_leader_quest2_start") then
+       if actor:dont_has_info ("mil_courier_visited") then
           level_tasks.set_task_state (task.fail, "mil_courier_job", 1)
        end   
        level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
@@ -631,11 +632,11 @@ function mil_courier_quest_fail (actor, npc)
 end
 
 function mil_scull_news (actor, npc)
-    if db.actor:has_info ("mil_scull_sniper_info_get") then return end
-    if db.actor:has_info ("mil_sniper_get_job") and 
-       db.actor:has_info ("mil_sniper_dead") then
+    if actor:has_info ("mil_scull_sniper_info_get") then return end
+    if actor:has_info ("mil_sniper_get_job") and 
+       actor:has_info ("mil_sniper_dead") then
        news_manager.send_tip (actor, "mil_scull_info", nil, "dolg")
-       db.actor:give_info_portion ("mil_scull_sniper_info_get")
+       actor:give_info_portion ("mil_scull_sniper_info_get")
        
        local sniper = level_object_by_sid (730)
        if sniper and sniper:alive () == true then        
@@ -704,7 +705,7 @@ function mil_bomb_explode (actor, npc)
     h.type = hit.chemical_burn;
     source:hit (h);
     
-    db.actor:give_info_portion ("mil_freedom_under_attack")
+    actor:give_info_portion ("mil_freedom_under_attack")
     
     local lukash = level_object_by_sid (707)
     local skull = level_object_by_sid (708)
@@ -818,17 +819,17 @@ function mil_cap_mapspot (actor, npc)
        return 
     end    
     
-    if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
-       db.actor:give_info_portion ("mil_fblockpost_spot") 
-       db.actor:give_info_portion ("mil_fblockpost_spot_set")
+    if actor:dont_has_info ("mil_fblockpost_spot_set") then
+       actor:give_info_portion ("mil_fblockpost_spot") 
+       actor:give_info_portion ("mil_fblockpost_spot_set")
        level_tasks.add_location (724, "mil_fblockpost_location")
     end
 end
 
 function mil_cap_mapspot_remove (stalker1, stalker2)
-    if db.actor:has_info ("mil_fblockpost_spot") then
+    if actor:has_info ("mil_fblockpost_spot") then
        level_tasks.remove_location_safe (724, "mil_fblockpost_location")
-       db.actor:disable_info_portion ("mil_fblockpost_spot_remove")
+       actor:disable_info_portion ("mil_fblockpost_spot_remove")
     end      
 end
 
