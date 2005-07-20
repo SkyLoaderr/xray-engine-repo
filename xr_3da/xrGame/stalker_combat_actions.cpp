@@ -936,22 +936,26 @@ void CStalkerActionHideFromGrenade::execute					()
 		object().movement().set_body_state			(eBodyStateCrouch);
 	}
 
-	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
-
-	if (!mem_object.m_object) {// || (!m_object->memory().visual().visible_now(object().memory().enemy().selected()) && !object().movement().path_completed())) {
+	if (!object().memory().enemy().selected())
 		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection,true,true));
-	}
 	else {
-		if (!m_object->memory().visual().visible_now(object().memory().enemy().selected())) {
-			object().sight().setup				(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
-			object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+		CMemoryInfo						mem_object = object().memory().memory(object().memory().enemy().selected());
+
+		if (!mem_object.m_object) {// || (!m_object->memory().visual().visible_now(object().memory().enemy().selected()) && !object().movement().path_completed())) {
+			object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection,true,true));
 		}
 		else {
-			object().sight().setup				(CSightAction(object().memory().enemy().selected(),true,true));
-			object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon());
+			if (!m_object->memory().visual().visible_now(object().memory().enemy().selected())) {
+				object().sight().setup				(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+				object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+			}
+			else {
+				object().sight().setup				(CSightAction(object().memory().enemy().selected(),true,true));
+				object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon());
+			}
 		}
 	}
-
+	
 	if (object().movement().path_completed())
 		object().movement().set_body_state			(eBodyStateCrouch);
 
