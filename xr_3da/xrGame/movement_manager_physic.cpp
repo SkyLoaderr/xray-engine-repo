@@ -72,11 +72,11 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		m_speed			= 0.f;
 
 		// Физика устанавливает позицию в соответствии с нулевой скоростью 
-		if(!movement_control->JumpState())
-		{
-			Fvector velocity={0.f,0.f,0.f};
-			movement_control->SetVelocity		(velocity);
-		}
+		//if(!movement_control->JumpState())
+		//{
+		//	Fvector velocity={0.f,0.f,0.f};
+		//	movement_control->SetVelocity		(velocity);
+		//}
 		DBG_PH_MOVE_CONDITIONS( if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)){movement_control->SetPosition(dest_position);movement_control->DisableCharacter();})
 		if(movement_control->IsCharacterEnabled()) {
 			movement_control->Calculate(detail().path(),0.f,detail().m_current_travel_point,precision);
@@ -171,7 +171,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if(!movement_control->JumpState())
 				movement_control->SetVelocity		(velocity);
 
-	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
+	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
 		
 		if(DBG_PH_MOVE_CONDITIONS(!ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&) !movement_control->TryPosition(dest_position)) {
 			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);

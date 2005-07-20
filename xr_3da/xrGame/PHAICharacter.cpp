@@ -15,7 +15,7 @@
 
 bool CPHAICharacter::TryPosition(Fvector pos){
 	if(!b_exist) return false;
-	if(b_on_object||JumpState()) return false;
+	if(b_was_on_object||b_on_object||JumpState()) return false;
 	SetPosition(pos);
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdatePositions();
@@ -88,7 +88,7 @@ void CPHAICharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * materia
 {
 	inherited::InitContact(c,do_collide,material_1,material_2);
 	if(is_control||b_lose_control||b_jumping)
-								c->surface.mu = 0.00f;
+												c->surface.mu = 0.00f;
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove))do_collide=false;
 #endif

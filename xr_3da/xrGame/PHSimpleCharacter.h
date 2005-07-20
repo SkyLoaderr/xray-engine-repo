@@ -75,34 +75,47 @@ protected:
 	Fvector  m_jump_accel;
 
 	//movement state
-	bool is_contact;
-	bool was_contact;
-	bool is_control;
-	bool b_depart;
-	bool b_meet;
-	bool b_meet_control;
-	bool b_on_ground;
-	bool b_lose_control;
-	bool b_lose_ground;
-	bool b_depart_control;
-	bool b_jump;
-	bool b_clamb_jump;
-	bool b_side_contact;
-	bool b_any_contacts;
-	bool b_air_contact_state;
-	bool b_valide_ground_contact;
-	bool b_valide_wall_contact;
-	bool b_saved_contact_velocity;
-	bool b_jumping;
+	bool is_contact					;
+	bool was_contact				;
+	bool b_depart					;
+	bool b_meet						;
+	bool b_side_contact				;
+	bool b_was_side_contact			;
+	bool b_any_contacts				;
+	bool b_air_contact_state		;
 
-	bool was_control;
-	bool b_stop_control;
-	bool b_on_object;
-	bool b_was_on_object;
+	bool b_valide_ground_contact	;
+	bool b_valide_wall_contact		;
+	bool b_on_object				;
+	bool b_was_on_object			;
+	bool b_on_ground				;
+	bool b_lose_ground				;
+
+	u32  m_contact_count			;
+
+	bool is_control					;
+	bool b_meet_control				;
+	bool b_lose_control				;
+	bool was_control				;
+	bool b_stop_control				;
+	bool b_depart_control			;
+
+
+
+	bool b_jump						;
+	bool b_jumping					;
+
+	bool b_clamb_jump				;
+
+
+
+
+
+
 	bool b_external_impulse;
 	bool b_death_pos;
 
-	u32  m_contact_count;
+
 
 	dReal m_friction_factor;
 

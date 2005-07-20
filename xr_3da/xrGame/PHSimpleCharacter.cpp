@@ -55,6 +55,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	b_lose_ground=true;
 	b_jump=false;
 	b_side_contact=false;
+	b_was_side_contact=false;
 	b_clamb_jump=false;
 	b_any_contacts=false;
 	b_valide_ground_contact=false;
@@ -359,21 +360,22 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		return;
 	}
 	///////////////////////
-	b_external_impulse=false;
-	was_contact=is_contact;
-	was_control=is_control;
-	is_contact=false;
-	b_side_contact=false;
-	b_any_contacts=false;
-	b_valide_ground_contact=false;
-	b_valide_wall_contact=false;
+	b_external_impulse			=	false			;
+	was_contact					=	is_contact		;
+	was_control					=	is_control		;
+	b_was_side_contact			=	b_side_contact	;
+	is_contact					=	false			;
+	b_side_contact				=	false			;
+	b_any_contacts				=	false			;
+	b_valide_ground_contact		=	false			;
+	b_valide_wall_contact		=	false			;
 
 
-	b_was_on_object=b_on_object;
-	b_on_object=false;
-	b_death_pos=false;
-	m_contact_count=0;
-	m_friction_factor=0.f;
+	b_was_on_object				=	b_on_object		;
+	b_on_object					=	false			;
+	b_death_pos					=	false			;
+	m_contact_count				=	0				;
+	m_friction_factor			=	0.f				;
 
 	dMatrix3 R;
 	dRSetIdentity (R);
@@ -599,7 +601,7 @@ const float CHWON_AABB_FB_FACTOR =1.f;
 
 void CPHSimpleCharacter::ValidateWalkOn()
 {
-	if(b_on_object)
+	if(b_on_object||b_was_on_object)
 	{
 		ValidateWalkOnObject();
 	}
@@ -1267,7 +1269,9 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 void CPHSimpleCharacter::FootProcess(dContact* c,bool &do_collide ,bool bo)
 {
-	if(m_elevator_state.ClimbingState() ||!is_control||!b_clamb_jump||b_side_contact)		return;
+
+	if(m_elevator_state.ClimbingState() ||!is_control||!b_clamb_jump||b_was_side_contact||b_side_contact||b_jumping||b_jump)		
+																											return;
 			
 ///////////////////////////////////////////////////////////////////////////////////
 			dReal*		normal				=c->geom.normal						;
