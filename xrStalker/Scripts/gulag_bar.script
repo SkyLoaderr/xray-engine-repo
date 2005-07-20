@@ -343,7 +343,40 @@ function load_job(sj, gname, type, squad, groups)
 		
 	end
 
+    -- Гулаг сталкеров на заставе 1
 
+    if type == "bar_dolg_zastava1" then 
+        t = { section = "logic@bar_dolg_zastava1_cammander_1",
+        idle = 0,
+        prior = 9, state = {0},
+		predicate = function(obj)
+			           	return obj:name() == "bar_zastava_commander_1"
+			        end,     
+        in_rest = "", out_rest = "bar_zastava_restrictor"   
+        }
+		table.insert(sj, t)	
+        for i = 1,3 do
+            t = { section = "logic@bar_dolg_zastava1_walker"..i,
+                    idle = 0,
+                    prior = 9, state = {0},
+                    in_rest = "", out_rest = "bar_zastava_restrictor"   
+                }
+		    table.insert(sj, t)
+        end
+    end
+
+    -- Гулаг сталкеров на заставе 2
+
+    if type == "bar_dolg_zastava2" then 
+        for i = 1,3 do
+            t = { section = "logic@bar_dolg_zastava2_walker"..i,
+                    idle = 0,
+                    prior = 9, state = {0},
+                    in_rest = "", out_rest = "bar_zastava_restrictor_2"   
+                }
+		    table.insert(sj, t)
+        end
+    end
 
 	-- Гулаг нехороших сталкеров ветеранов на Дикой территории
 	if type == "bar_evil_veterans" then
@@ -1576,7 +1609,18 @@ function load_states(gname, type)
 			return 1
 		end
 	end
-	
+
+    if type == "bar_dolg_zastava1" then
+		return function(gulag)
+			return 0
+		end
+    end
+
+    if type == "bar_dolg_zastava2" then
+		return function(gulag)
+			return 0
+		end
+    end
 	if type == "bar_dolg_general" then
 		return function (gulag)
 				for k,v in gulag.Object do
@@ -1774,6 +1818,9 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "dolg"
 	end
 	if gulag_type == "bar_dolg_bunker" then
+		return npc_community == "dolg"
+	end
+	if gulag_type == "bar_dolg_zastava1" then
 		return npc_community == "dolg"
 	end
 	if gulag_type == "bar_evil_veterans" then

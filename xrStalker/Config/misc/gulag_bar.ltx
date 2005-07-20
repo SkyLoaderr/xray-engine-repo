@@ -283,6 +283,80 @@ active = sleeper1@bar_dolg_bunker
 path_main = sleeper_1
 
 
+; «‡ÒÚ‡‚‡ 1
+
+[logic@bar_dolg_zastava1_cammander_1]
+active = walker1@bar_dolg_zastava1_cammander_1
+
+[walker1@bar_dolg_zastava1_cammander_1]
+path_walk = commander_1_walk
+path_look = commander_1_look
+
+[logic@bar_dolg_zastava1_walker1]
+active = walker1@bar_dolg_zastava1_walker1
+
+[walker1@bar_dolg_zastava1_walker1]
+path_walk = guard_1_walk
+path_look = guard_1_look
+meet = meet@bar_dolg_zastava1
+
+[logic@bar_dolg_zastava1_walker2]
+active = walker2@bar_dolg_zastava1_walker2
+
+[walker2@bar_dolg_zastava1_walker2]
+path_walk = guard_2_walk
+path_look = guard_2_look
+meet = meet@bar_dolg_zastava1
+
+[logic@bar_dolg_zastava1_walker3]
+active = walker3@bar_dolg_zastava1_walker3
+
+[walker3@bar_dolg_zastava1_walker3]
+path_walk = guard_3_walk
+;path_look = guard_3_look
+meet = meet@bar_dolg_zastava1
+
+[meet@bar_dolg_zastava1]
+meet_state 		= 50| guard@talk_hello
+meet_state_wpn 	= 50| guard@talk_hello| 20| guard@threat_weap
+use = true
+use_wpn = true
+meet_dialog = bar_dolg_zastava
+
+; «‡ÒÚ‡‚‡ 2
+
+[logic@bar_dolg_zastava2_walker1]
+active = walker1@bar_dolg_zastava1_walker1
+
+[walker1@bar_dolg_zastava2_walker1]
+path_walk = square_1_place_4_walk
+path_look = square_1_place_1_look
+meet = meet@bar_dolg_zastava2
+
+[logic@bar_dolg_zastava2_walker2]
+active = walker2@bar_dolg_zastava2_walker2
+
+[walker2@bar_dolg_zastava2_walker2]
+path_walk = square_1_place_6_walk
+path_look = square_1_place_6_look
+meet = meet@bar_dolg_zastava2
+
+[logic@bar_dolg_zastava2_walker3]
+active = walker3@bar_dolg_zastava2_walker3
+
+[walker3@bar_dolg_zastava2_walker3]
+path_walk = square_1_place_2_walk
+path_look = square_1_place_1_look
+meet = meet@bar_dolg_zastava1
+
+[meet@bar_dolg_zastava2]
+meet_state 		= 50| guard@talk_hello
+meet_state_wpn 	= 50| guard@talk_hello| 20| guard@threat_weap
+use = true
+use_wpn = true
+meet_dialog = bar_dolg_zastava
+
+
 ; Õ≈’Œ–Œÿ»≈ —“¿À ≈–€ ¬≈“≈–¿Õ€
 
 [logic@bar_evil_veterans_walker1]
