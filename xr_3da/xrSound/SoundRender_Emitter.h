@@ -34,7 +34,7 @@ public:
 
 	CSoundRender_Target*		target;
 	CSoundRender_Source*		source;
-	ref_sound*					owner;
+	ref_sound_data_ptr			owner_data;
 
 	float						priority_scale;
 	float						smooth_volume;

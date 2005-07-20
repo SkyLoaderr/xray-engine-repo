@@ -18,7 +18,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 #endif
 	target				= NULL;
 	source				= NULL;
-	owner				= NULL;
+	owner_data			= NULL;
 	smooth_volume		= 1.f;
 	occluder_volume		= 1.f;
 	fade_volume			= 1.f;
@@ -47,10 +47,10 @@ CSoundRender_Emitter::~CSoundRender_Emitter(void)
 //////////////////////////////////////////////////////////////////////
 void CSoundRender_Emitter::Event_ReleaseOwner()
 {
-	if	(0==owner)		return;
+	if	(0==owner_data)			return;
 
 	for (u32 it=0; it<SoundRender->s_events.size(); it++){
-		if (owner == SoundRender->s_events[it].first){
+		if (owner_data == SoundRender->s_events[it].first){
 			SoundRender->s_events.erase(SoundRender->s_events.begin()+it);
 			it	--;
 		}
@@ -59,8 +59,8 @@ void CSoundRender_Emitter::Event_ReleaseOwner()
 void CSoundRender_Emitter::Event_Propagade	()
 {
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
-	if (0==owner)				return;
-	if (0==owner->g_type)		return;
+	if (0==owner_data)			return;
+	if (0==owner_data->g_type)	return;
 	if (0==SoundRender->Handler)return;
 
 	// Calculate range
@@ -69,7 +69,7 @@ void CSoundRender_Emitter::Event_Propagade	()
 	if (range<0.1f)				return;
 
 	// Inform objects
-	SoundRender->s_events.push_back	(mk_pair(owner,range));
+	SoundRender->s_events.push_back	(mk_pair(owner_data,range));
 }
 
 void CSoundRender_Emitter::switch_to_2D()

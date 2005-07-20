@@ -232,42 +232,39 @@ void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, i
 	if (!bPresent)					return;
 	verify_refsound					(S);
 
-	string256	fn;
-	strcpy		(fn,fName);
-	char*		E = strext(fn);
-	if (E)		*E = 0;
-	S.handle	= i_create_source				(fn,_3D);
-	S.g_type	= (type==st_SourceType)?S.handle->game_type():type;
+    S._p		= xr_new<ref_sound_data>(fName,_3D,type);
 }
 
 void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float delay)
 {
-	if (!bPresent || 0==S.handle)	return;
+	if (!bPresent || 0==S._handle())return;
 	verify_refsound					(S);
 
-	S.g_object		= O;
-	if (S.feedback)	{
-		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
+	S._p->g_object		= O;
+	if (S._feedback())	{
+		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S._feedback();
 		E->rewind	();
 	}	
 	else			i_play	(&S,flags&sm_Looped,delay);
-	if (flags&sm_2D)		S.feedback->switch_to_2D();
+	if (flags&sm_2D)		S._feedback()->switch_to_2D();
 }
 void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
 {
-	if (!bPresent || 0==S.handle)	return;
+	if (!bPresent || 0==S._handle())return;
 	verify_refsound					(S);
-	S.g_object		= O;
-	if (S.feedback)	{
-		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
-		E->rewind	();
+	S._p->g_object		= O;
+	if (S._feedback())	{
+		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S._feedback();
+		E->rewind		();
 	}	
 	else				i_play				(&S,flags&sm_Looped,delay);
-	S.feedback->set_position				(pos);
-	if (flags&sm_2D)			S.feedback->switch_to_2D();
+	S._feedback()->set_position				(pos);
+	if (flags&sm_2D)	S._feedback()->switch_to_2D();
 }
 void	CSoundRender_Core::destroy	(ref_sound& S )
 {
+	S._p				= 0;
+/*
 	if (!bPresent || 0==S.handle)	{
 		S.handle	= 0;
 		S.feedback	= 0;
@@ -281,6 +278,29 @@ void	CSoundRender_Core::destroy	(ref_sound& S )
 	R_ASSERT			(0==S.feedback);
 	i_destroy_source	((CSoundRender_Source*)S.handle);
 	S.handle			= NULL;
+*/    
+}
+
+ref_sound_data::ref_sound_data(LPCSTR fName, BOOL _3D, int type)
+{
+	string_path			fn;
+	strcpy				(fn,fName);
+    if (strext(fn))		*strext(fn)	= 0;
+	handle				= (CSound_source*)SoundRender->i_create_source(fn,_3D);
+	g_type				= (type==st_SourceType)?handle->game_type():type;
+	feedback			= 0; 
+    g_object			= 0; 
+    g_userdata			= 0;
+}
+ref_sound_data::~ref_sound_data()
+{
+	if (feedback){
+		CSoundRender_Emitter* E		= (CSoundRender_Emitter*)feedback;
+		E->stop						(FALSE);
+	}
+	R_ASSERT						(0==feedback);
+	SoundRender->i_destroy_source	((CSoundRender_Source*)handle);
+	handle							= NULL;
 }
 
 CSoundRender_Environment*	CSoundRender_Core::get_environment			( const Fvector& P )
