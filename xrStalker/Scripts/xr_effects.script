@@ -818,7 +818,7 @@ function mil_cap_mapspot (actor, npc)
     end    
     
     if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
-       db.actor:give_info_portion (""mil_fblockpost_spot") 
+       db.actor:give_info_portion ("mil_fblockpost_spot") 
        db.actor:give_info_portion ("mil_fblockpost_spot_set")
        level_tasks.add_location (724, "mil_fblockpost_location")
     end
