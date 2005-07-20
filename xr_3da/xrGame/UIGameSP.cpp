@@ -8,17 +8,33 @@
 #include "xr_level_controller.h"
 #include "actorcondition.h"
 #include "../xr_ioconsole.h"
+#include "object_broker.h"
+
+#include "ui/UIInventoryWnd.h"
+#include "ui/UITradeWnd.h"
+#include "ui/UIPdaWnd.h"
+#include "ui/UITalkWnd.h"
+#include "ui/UICarBodyWnd.h"
 
 CUIGameSP::CUIGameSP()
 {
 	m_game			= NULL;
-//	m_pUserMenu		= NULL;
-//	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"artefacthunt_team1", (char*)"artefacthunt_base_cost");
+
+	InventoryMenu	= xr_new<CUIInventoryWnd>	();
+	TradeMenu		= xr_new<CUITradeWnd>		();
+	PdaMenu			= xr_new<CUIPdaWnd>			();
+	TalkMenu		= xr_new<CUITalkWnd>		();
+	UICarBodyMenu	= xr_new<CUICarBodyWnd>		();
+
 }
 
 CUIGameSP::~CUIGameSP() 
 {
-//	xr_delete(pUIBuyWeaponWnd);
+	delete_data(InventoryMenu);
+	delete_data(TradeMenu);	
+	delete_data(PdaMenu);	
+	delete_data(TalkMenu);
+	delete_data(UICarBodyMenu);
 }
 
 void CUIGameSP::SetClGame (game_cl_GameState* g)
@@ -38,29 +54,29 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	switch (key_binding[dik])
 	{
 	case kINVENTORY: 
-		if( !MainInputReceiver() || MainInputReceiver()==&InventoryMenu){
-			m_game->StartStopMenu(&InventoryMenu,true);
+		if( !MainInputReceiver() || MainInputReceiver()==InventoryMenu){
+			m_game->StartStopMenu(InventoryMenu,true);
 			return true;
 		}break;
 
 	case kACTIVE_JOBS:
-		if( !MainInputReceiver() || MainInputReceiver()==&PdaMenu){
-			PdaMenu.SetActiveSubdialog(epsActiveJobs);
-			m_game->StartStopMenu(&PdaMenu,true);
+		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
+			PdaMenu->SetActiveSubdialog(epsActiveJobs);
+			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
 
 	case kMAP:
-		if( !MainInputReceiver() || MainInputReceiver()==&PdaMenu){
-			PdaMenu.SetActiveSubdialog(epsMap);
-			m_game->StartStopMenu(&PdaMenu,true);
+		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
+			PdaMenu->SetActiveSubdialog(epsMap);
+			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
 
 	case kCONTACTS:
-		if( !MainInputReceiver() || MainInputReceiver()==&PdaMenu){
-			PdaMenu.SetActiveSubdialog(epsContacts);
-			m_game->StartStopMenu(&PdaMenu,true);
+		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
+			PdaMenu->SetActiveSubdialog(epsContacts);
+			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
 
@@ -101,12 +117,19 @@ bool CUIGameSP::IR_OnKeyboardRelease(int dik)
 
 void CUIGameSP::StartTalk()
 {
-	m_game->StartStopMenu(&TalkMenu,true);
+	m_game->StartStopMenu(TalkMenu,true);
 }
+
 void CUIGameSP::StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 							 CInventory* pOthersInv, CGameObject* pOthersObject)
 {
-	UICarBodyMenu.InitCarBody(pOurInv,  pOurObject,
+	UICarBodyMenu->InitCarBody(pOurInv,  pOurObject,
 		                      pOthersInv, pOthersObject);
-	m_game->StartStopMenu(&UICarBodyMenu,true);
+	m_game->StartStopMenu(UICarBodyMenu,true);
 }
+
+void CUIGameSP::ReInitInventoryWnd		() 
+{ 
+	if (InventoryMenu->IsShown()) 
+		InventoryMenu->InitInventory(); 
+};

@@ -19,6 +19,7 @@
 #include "../game_cl_base.h"
 #include "../string_table.h"
 #include "../xr_level_controller.h"
+#include "UIXmlInit.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

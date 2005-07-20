@@ -19,7 +19,7 @@ class CUIEncyclopediaWnd;
 class CUIDiaryWnd;
 class CUIActorInfoWnd;
 class CUIStalkersRankingWnd;
-
+class CUIEventsWnd;
 //////////////////////////////////////////////////////////////////////////
 
 extern const char * const PDA_XML;
@@ -69,6 +69,7 @@ public:
 	CUIDiaryWnd*			UIDiaryWnd;
 	CUIActorInfoWnd*		UIActorInfo;
 	CUIStalkersRankingWnd*	UIStalkersRanking;
+	CUIEventsWnd*			UIEventsWnd;
 public:
 							CUIPdaWnd			();
 	virtual					~CUIPdaWnd			();

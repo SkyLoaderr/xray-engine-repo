@@ -25,6 +25,7 @@
 #include "../InventoryOwner.h"
 #include "../character_info.h"
 
+#include "UICharacterInfo.h"
 using namespace InventoryUtilities;
 
 //////////////////////////////////////////////////////////////////////////

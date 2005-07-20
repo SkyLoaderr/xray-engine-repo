@@ -31,11 +31,15 @@
 #include "map_manager.h"
 
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UIPdaWnd.h"
+#include "ui/UIDiaryWnd.h"
+#include "ui/UITalkWnd.h"
 #include "game_object_space.h"
 #include "script_callback_ex.h"
 #include "encyclopedia_article.h"
 #include "GameTaskManager.h"
 #include "GameTaskdefs.h"
+#include "infoportion.h"
 
 class RemoveByIDPred
 {
@@ -95,7 +99,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
-			pGameSP->PdaMenu.OnNewArticleAdded();
+			pGameSP->PdaMenu->OnNewArticleAdded();
 	}
 }
 
@@ -110,52 +114,6 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 	{
 		GameTaskManager().GiveGameTaskToActor(*it);
 	}
-/*
-	GAME_TASK_VECTOR& task_vector = game_task_registry->registry().objects();
-
-	std::size_t old_size = task_vector.size();
-
-	for(TASK_ID_VECTOR::const_iterator it = info_portion->GameTasks().begin();
-		it != info_portion->GameTasks().end(); it++)
-	{
-		for(GAME_TASK_VECTOR::const_iterator it1 = task_vector.begin();
-			it1 != task_vector.end(); it1++)
-		{
-			if(*it == (*it1).task_id)
-				break;
-		}
-
-		if(it1 == task_vector.end()){
-			task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
-		
-			CGameTask task;
-			task.Init(task_vector.back());
-			SGameTaskObjective	*obj = NULL;
-			for (u32 i = 0; i < task.ObjectivesNum(); ++i){
-				obj = &task.data()->m_Objectives[i];
-				if(obj->object_id!=u16(-1) && obj->map_location.size())
-					Level().MapManager().AddMapLocation(obj->map_location, obj->object_id);
-			}
-		}
-	}
-
-	//установить флажок необходимости прочтения тасков в PDA
-	if(old_size != task_vector.size())
-		if(HUD().GetUI())
-			HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
-
-	if( HUD().GetUI() ){
-		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP) 
-		{
-			if(pGameSP->PdaMenu.UIDiaryWnd->IsShown() &&
-				pGameSP->PdaMenu.UIDiaryWnd->UIJobsWnd.IsShown())
-			{
-				pGameSP->PdaMenu.UIDiaryWnd->UIJobsWnd.ReloadJobs();
-			}
-		}
-	}
-*/
 }
 
 
@@ -186,14 +144,14 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
 		{
-			if(pGameSP->PdaMenu.UIDiaryWnd->IsShown() &&
-				pGameSP->PdaMenu.UIDiaryWnd->UINewsWnd.IsShown())
+			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
+				pGameSP->PdaMenu->UIDiaryWnd->UINewsWnd.IsShown())
 			{
-				pGameSP->PdaMenu.UIDiaryWnd->UINewsWnd.AddNews();
-				pGameSP->PdaMenu.UIDiaryWnd->MarkNewsAsRead(true);
+				pGameSP->PdaMenu->UIDiaryWnd->UINewsWnd.AddNews();
+				pGameSP->PdaMenu->UIDiaryWnd->MarkNewsAsRead(true);
 			}
 			else
-				pGameSP->PdaMenu.UIDiaryWnd->MarkNewsAsRead(false);
+				pGameSP->PdaMenu->UIDiaryWnd->MarkNewsAsRead(false);
 		}
 	}
 }
@@ -219,9 +177,9 @@ bool CActor::OnReceiveInfo(INFO_ID info_id) const
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return false;
 
-	if(pGameSP->TalkMenu.IsShown())
+	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu.NeedUpdateQuestions();
+		pGameSP->TalkMenu->NeedUpdateQuestions();
 	}
 
 
@@ -250,9 +208,9 @@ void CActor::OnDisableInfo(INFO_ID info_id) const
 	}
 */
 
-	if(pGameSP->TalkMenu.IsShown())
+	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu.NeedUpdateQuestions();
+		pGameSP->TalkMenu->NeedUpdateQuestions();
 	}
 //	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
 //	{
@@ -293,9 +251,9 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
-	if(pGameSP->TalkMenu.IsShown())
+	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu.NeedUpdateQuestions();
+		pGameSP->TalkMenu->NeedUpdateQuestions();
 	}
 //	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
 //	{

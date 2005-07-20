@@ -5,6 +5,7 @@
 
 
 #include "stdafx.h"
+#include "UICarBodyWnd.h"
 #include "UITradeWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -27,6 +28,7 @@
 #include "UIInventoryUtilities.h"
 #include "../level.h"
 #include "../profiler.h"
+#include "UIWpnDragDropItem.h"
 //////////////////////////////////////////////////////////////////////////
 
 using namespace InventoryUtilities;

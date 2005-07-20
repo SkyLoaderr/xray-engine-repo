@@ -17,6 +17,7 @@
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
 #include "holder_custom.h"
+#include "ui/uiinventoryWnd.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -71,9 +72,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				//добавить отсоединенный аддон в инвентарь
 				if(pGameSP/* && (pScope || pSilencer || pGrenadeLauncher)*/)
 				{
-					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu)
+					if(pGameSP->MainInputReceiver() == pGameSP->InventoryMenu)
 					{
-						pGameSP->InventoryMenu.AddItemToBag(smart_cast<CInventoryItem*>(O));
+						pGameSP->InventoryMenu->AddItemToBag(smart_cast<CInventoryItem*>(O));
 					}
 				}
 				

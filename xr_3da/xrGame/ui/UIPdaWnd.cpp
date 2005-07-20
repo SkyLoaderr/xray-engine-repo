@@ -26,7 +26,7 @@
 #include "UIEncyclopediaWnd.h"
 #include "UIStalkersRankingWnd.h"
 #include "UIActorInfo.h"
-
+#include "UIEventsWnd.h"
 //////////////////////////////////////////////////////////////////////////
 
 const char * const PDA_XML					= "pda.xml";
@@ -89,7 +89,7 @@ void CUIPdaWnd::Init()
 	// Oкно карты
 	UIMapWnd = xr_new<CUIMapWnd>(); UIMapWnd->SetAutoDelete(true);
 	UIMainPdaFrame->AttachChild(UIMapWnd);
-	UIMapWnd->Init();
+	UIMapWnd->Init("pda_map.xml","map_wnd");
 
 	// Oкно новостей
 	UIDiaryWnd = xr_new<CUIDiaryWnd>(); UIDiaryWnd->SetAutoDelete(true);
@@ -113,6 +113,11 @@ void CUIPdaWnd::Init()
 	UIMainPdaFrame->AttachChild(UIStalkersRanking);
 	UIStalkersRanking->Init();
 	UIStalkersRanking->Show(false);
+
+	UIEventsWnd		= xr_new<CUIEventsWnd>(); UIEventsWnd->SetAutoDelete(true);
+	UIEventsWnd->Init();
+	UIMainPdaFrame->AttachChild(UIEventsWnd);
+	UIEventsWnd->Show(false);
 
 	m_pActiveDialog = UIDiaryWnd;
 
@@ -177,8 +182,11 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveDialog = smart_cast<CUIWindow*>(UIStalkersRanking);
 				InventoryUtilities::SendInfoToActor("ui_pda_ranking");
 				break;
+			case 6:
+				m_pActiveDialog = smart_cast<CUIWindow*>(UIEventsWnd);
+				break;
 			default:
-				NODEFAULT;
+				Msg("not registered button identifier [%d]",UITabControl->GetActiveIndex());
 			}
 			m_pActiveDialog->Reset();
 			m_pActiveDialog->Show(true);

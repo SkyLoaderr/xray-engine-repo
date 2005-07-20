@@ -1,16 +1,13 @@
 #pragma once
 #include "uigamecustom.h"
 
-#include "ui/UIInventoryWnd.h"
-#include "ui/UITradeWnd.h"
-#include "ui/UIPdaWnd.h"
-#include "ui/UIDiaryWnd.h"
-#include "ui/UITalkWnd.h"
-#include "ui/UICarBodyWnd.h"
 
-//#include "ui/UIBuyWeaponWnd.h"
-//#include "ui/UISpawnWnd.h"
-//#include "ui/UIStatsWnd.h"
+class CUIInventoryWnd;
+class CUITradeWnd;			
+class CUIPdaWnd;			
+class CUITalkWnd;			
+class CUICarBodyWnd;
+class CInventory;
 
 class game_cl_Single;
 
@@ -30,17 +27,12 @@ public:
 	void				StartTalk				();
 	void				StartCarBody			(CInventory* pOurInv,    CGameObject* pOurObject,
 												 CInventory* pOthersInv, CGameObject* pOthersObject);
-	virtual void		ReInitInventoryWnd		() { if (InventoryMenu.IsShown()) InventoryMenu.InitInventory(); };
+	virtual void		ReInitInventoryWnd		();
 
-	CUIInventoryWnd		InventoryMenu;
-	CUITradeWnd			TradeMenu;
-	CUIPdaWnd			PdaMenu;
-//	CUIDiaryWnd			DiaryMenu;
-	CUITalkWnd			TalkMenu;
-	CUICarBodyWnd		UICarBodyMenu;
+	CUIInventoryWnd*	InventoryMenu;
+	CUITradeWnd*		TradeMenu;
+	CUIPdaWnd*			PdaMenu;
+	CUITalkWnd*			TalkMenu;
+	CUICarBodyWnd*		UICarBodyMenu;
 	
-	//!!! temporary
-//	CUIBuyWeaponWnd*	pUIBuyWeaponWnd;
-//	CUISpawnWnd			UISpawnWnd;
-//	CUIStatsWnd			UIStatsWnd;
 };

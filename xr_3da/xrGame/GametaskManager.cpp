@@ -10,6 +10,9 @@
 #include "ui/UIMainInGameWnd.h"
 #include "ui/UIMainInGameWnd.h"
 #include "UIGameSP.h"
+#include "ui/UIPDAWnd.h"
+#include "ui/UIDiaryWnd.h"
+#include "ui/UIEventsWnd.h"
 
 struct FindTaskByID{
 	TASK_ID	id;
@@ -48,9 +51,9 @@ CGameTask* CGameTaskManager::HasGameTask(const TASK_ID& id)
 	return 0;
 }
 
-void CGameTaskManager::GiveGameTaskToActor(const TASK_ID& id)
+CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting)
 {
-	if(HasGameTask(id)) return;
+	if(bCheckExisting && HasGameTask(id)) return NULL;
 
 	GameTasks().push_back			(SGameTaskKey(id) );
 
@@ -63,10 +66,10 @@ void CGameTaskManager::GiveGameTaskToActor(const TASK_ID& id)
 		obj = &t->m_Objectives[i];
 		if(obj->object_id!=u16(-1) && obj->map_location.size()){
 		CMapLocation* ml =	Level().MapManager().AddMapLocation(obj->map_location, obj->object_id);
-		t->m_Objectives[i].flags.set(eTaskFlagMapPointer, ml->PointerEnabled());
+		ml->DisablePointer			();
 		}
 	}
-
+	
 
 
 	//установить флажок необходимости прочтения тасков в PDA
@@ -76,28 +79,39 @@ void CGameTaskManager::GiveGameTaskToActor(const TASK_ID& id)
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
 		{
-			if(pGameSP->PdaMenu.UIDiaryWnd->IsShown() &&
-				pGameSP->PdaMenu.UIDiaryWnd->UIJobsWnd.IsShown())
-			{
-				pGameSP->PdaMenu.UIDiaryWnd->UIJobsWnd.ReloadJobs();
-			}
+			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
+				pGameSP->PdaMenu->UIDiaryWnd->UIJobsWnd.IsShown())
+				pGameSP->PdaMenu->UIDiaryWnd->UIJobsWnd.ReloadJobs();
+
+			if(pGameSP->PdaMenu->UIEventsWnd->IsShown())
+				pGameSP->PdaMenu->UIEventsWnd->Reload();
 		}
 	}
+	return t;
 }
 
-void CGameTaskManager::HighlightOnMap(CGameTask* t, int objective_id, bool bHighlight)
+void CGameTaskManager::ShowSpotOnMap			(CGameTask* t, int objective_id, bool bShow)
 {
 }
+
+void CGameTaskManager::ShowSpotPointerOnMap		(CGameTask* t, int objective_id, bool bShow)
+{
+}
+
 
 void SGameTaskKey::save(IWriter &stream)
 {
 	save_data(task_id,					stream);
 	save_data(game_task->m_ReceiveTime,	stream);
 	save_data(game_task->m_FinishTime,	stream);
+	save_data(game_task->m_Title,		stream);
 
 	for(u32 i=0; i<game_task->m_Objectives.size(); ++i){
+		save_data(game_task->m_Objectives[i].description,	stream);
+		save_data(game_task->m_Objectives[i].map_location,	stream);
+		save_data(game_task->m_Objectives[i].object_id,		stream);
 		save_data(game_task->m_Objectives[i].task_state,	stream);
-		save_data(game_task->m_Objectives[i].flags,			stream);
+//		save_data(game_task->m_Objectives[i].flags,			stream);
 	}
 }
 
@@ -107,10 +121,14 @@ void SGameTaskKey::load(IReader &stream)
 	game_task = xr_new<CGameTask>			(task_id);
 	load_data(game_task->m_ReceiveTime,		stream);
 	load_data(game_task->m_FinishTime,		stream);
+	load_data(game_task->m_Title,			stream);
 
 	for(u32 i=0; i<game_task->m_Objectives.size(); ++i){
+		load_data(game_task->m_Objectives[i].description,	stream);
+		load_data(game_task->m_Objectives[i].map_location,	stream);
+		load_data(game_task->m_Objectives[i].object_id,		stream);
 		load_data(game_task->m_Objectives[i].task_state,	stream);
-		load_data(game_task->m_Objectives[i].flags,			stream);
+//		load_data(game_task->m_Objectives[i].flags,			stream);
 	}
 }
 

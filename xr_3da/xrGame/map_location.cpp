@@ -28,7 +28,8 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 
 	LoadSpot				(type, false);
 	m_refCount				= 1;
-	EnablePointer			();
+	DisablePointer			();
+	EnableSpot				();
 }
 
 CMapLocation::~CMapLocation()
@@ -123,6 +124,8 @@ void CMapLocation::LoadSpot(LPCSTR type, bool bReload)
 			VERIFY( !(bReload&&m_minimap_spot_pointer) );
 		}
 	};
+	if(NULL==m_minimap_spot && NULL==m_level_spot)
+		DisableSpot	();
 }
 
 Fvector2 CMapLocation::Position()
@@ -236,17 +239,19 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 	if( map->MapName()==LevelName() ){
 		CSE_ALifeDynamicObject* obj = NULL;
 		
-		if(ai().get_alife()){
+		if(ai().get_alife() && !IsUserDefined()){
 			obj = ai().alife().objects().object(m_objectID);
 			VERIFY(obj);
 		}
 		
 		if(	m_flags.test(eHideInOffline) && 
-			ai().get_alife() &&
+			ai().get_alife() && !IsUserDefined() &&
 			!obj->m_bOnline )
 			return;
 
-		if(ai().get_alife() && FALSE == obj->m_flags.test(CSE_ALifeObject::flVisibleForMap))
+		if(	!IsUserDefined() && 
+			ai().get_alife() && 
+			FALSE == obj->m_flags.test(CSE_ALifeObject::flVisibleForMap))
 			return;
 
 		//update spot position
@@ -296,7 +301,8 @@ void CMapLocation::UpdateMiniMap(CUICustomMap* map)
 {
 	CMapSpot* sp = m_minimap_spot;
 	if(!sp) return;
-	UpdateSpot(map, sp);
+	if(SpotEnabled())
+		UpdateSpot(map, sp);
 
 }
 
@@ -304,7 +310,8 @@ void CMapLocation::UpdateLevelMap(CUICustomMap* map)
 {
 	CMapSpot* sp = m_level_spot;
 	if(!sp) return;
-	UpdateSpot(map, sp);
+	if(SpotEnabled())
+		UpdateSpot(map, sp);
 }
 
 u16	CMapLocation::AddRef() 
@@ -388,5 +395,61 @@ bool CRelationMapLocation::Update()
 		m_curr_spot_name = sname;
 	}
 	return true;
+}
+
+
+CUserDefinedMapLocation::CUserDefinedMapLocation		(LPCSTR type, u16 object_id)
+:inherited(type, object_id)
+{
+	m_flags.set			( eSerailizable, TRUE);
+	m_flags.set			( eUserDefined, TRUE);
+}
+
+CUserDefinedMapLocation::~CUserDefinedMapLocation		()
+{
+}
+
+void CUserDefinedMapLocation::InitExternal(const shared_str& level_name, const Fvector& pos)
+{
+	m_level_name		= level_name;
+	m_position_global	= pos;
+	m_position			= pos;
+}
+
+bool CUserDefinedMapLocation::Update					()
+{
+	return true;
+}
+
+shared_str CUserDefinedMapLocation::LevelName()
+{
+	return m_level_name;
+}
+
+Fvector2 CUserDefinedMapLocation::Position				()
+{
+	return Fvector2().set(m_position.x, m_position.z);
+}
+
+Fvector2 CUserDefinedMapLocation::Direction				()
+{
+	return Fvector2().set(0.0f,0.0f);
+}
+
+void CUserDefinedMapLocation::save				(IWriter &stream)
+{
+	inherited::save		(stream);
+
+	stream.w_stringZ	(m_level_name);
+	stream.w_fvector3	(m_position);
+}
+
+void CUserDefinedMapLocation::load				(IReader &stream)
+{
+	inherited::load		(stream);
+
+	stream.r_stringZ	(m_level_name);
+	stream.r_fvector3	(m_position);
+	m_position_global	= m_position;
 }
 

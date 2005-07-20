@@ -18,9 +18,11 @@ enum ELocationFlags
 	eTTL				= (1<<2),
 	ePosToActor			= (1<<3),
 	ePointerEnabled		= (1<<4),
+	eSpotEnabled		= (1<<5),
+	eUserDefined		= (1<<6),
 };
 
-private:
+protected:
 	flags32					m_flags;
 	shared_str				m_hint;
 	CMapSpot*				m_level_spot;
@@ -48,20 +50,25 @@ public:
 	virtual void			destroy							();
 	virtual		LPCSTR		GetHint							()					{return *m_hint;};
 	void					SetHint							(LPCSTR hint)		{m_hint = hint;};
-	bool					PointerEnabled					()					{return !!m_flags.test(ePointerEnabled);};
+	bool					PointerEnabled					()					{return SpotEnabled() && !!m_flags.test(ePointerEnabled);};
 	void					EnablePointer					()					{m_flags.set(ePointerEnabled,TRUE);};
 	void					DisablePointer					()					{m_flags.set(ePointerEnabled,FALSE);};
 
+	bool					SpotEnabled						()					{return !!m_flags.test(eSpotEnabled);};
+	void					EnableSpot						()					{m_flags.set(eSpotEnabled,TRUE);};
+	void					DisableSpot						()					{m_flags.set(eSpotEnabled,FALSE);};
+	bool					IsUserDefined					() const			{return !!m_flags.test(eUserDefined);}
 	void					UpdateMiniMap					(CUICustomMap* map);
 	void					UpdateLevelMap					(CUICustomMap* map);
 
-	Fvector2				Position						();
-	Fvector2				Direction						();
-	shared_str				LevelName						();
+	virtual Fvector2		Position						();
+	virtual Fvector2		Direction						();
+	virtual shared_str		LevelName						();
 	u16						RefCount						() {return m_refCount;}
 	void					SetRefCount						(u16 c)		{m_refCount=c;}
 	u16						AddRef							();// {++m_refCount; return m_refCount;}
 	u16						Release							() {--m_refCount; return m_refCount;}
+	u16						ObjectID						() {return m_objectID;}
 	virtual		bool		Update							(); //returns actual
 	Fvector					GetLastPosition					() {return m_position_global;};
 	bool					Serializable					() const {return !!m_flags.test(eSerailizable);}
@@ -81,4 +88,21 @@ public:
 							CRelationMapLocation			(const shared_str& type, u16 object_id, u16 pInvOwnerActorID, u16 pInvOwnerEntityID);
 	virtual					~CRelationMapLocation			();
 	virtual bool			Update							(); //returns actual
+};
+
+class CUserDefinedMapLocation :public CMapLocation
+{
+	typedef CMapLocation inherited;
+	shared_str				m_level_name;
+	Fvector					m_position;
+public:
+							CUserDefinedMapLocation			(LPCSTR type, u16 object_id);
+	virtual					~CUserDefinedMapLocation		();
+	virtual bool			Update							(); //returns actual
+	virtual Fvector2		Position						();
+	virtual Fvector2		Direction						();
+	virtual shared_str		LevelName						();
+			void			InitExternal					(const shared_str& level_name, const Fvector& pos);
+	virtual void			save							(IWriter &stream);
+	virtual void			load							(IReader &stream);
 };

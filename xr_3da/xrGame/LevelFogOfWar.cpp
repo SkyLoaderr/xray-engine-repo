@@ -166,6 +166,8 @@ void CLevelFogOfWar::Draw	()
 
 	Frect	tgt;
 	Frect	clip_rect				= m->GetClipperRect();
+	BOOL	intersected =			clip_rect.intersection(clip_rect,m->GetAbsoluteRect());
+	VERIFY							(intersected);
 	Fvector2	map_abs_pos			= m->GetAbsolutePos();
 
 	Frect	vis_rect;

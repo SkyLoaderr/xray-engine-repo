@@ -28,7 +28,9 @@
 #include "actorcondition.h"
 #include "level_navigation_graph.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UItalkWnd.h"
 #include "inventory.h"
+#include "infoportion.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -653,9 +655,9 @@ void  CScriptGameObject::SwitchToTrade		()
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
-	if(pGameSP->TalkMenu.IsShown())
+	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu.SwitchToTrade();
+		pGameSP->TalkMenu->SwitchToTrade();
 	}
 }
 void  CScriptGameObject::SwitchToTalk		()
@@ -666,9 +668,9 @@ void  CScriptGameObject::SwitchToTalk		()
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
-	if(pGameSP->TradeMenu.IsShown())
+	if(pGameSP->TradeMenu->IsShown())
 	{
-		pGameSP->TradeMenu.SwitchToTalk();
+		pGameSP->TradeMenu->SwitchToTalk();
 	}
 }
 

@@ -21,7 +21,7 @@
 
 const char * const	NEWS_XML			= "news.xml";
 
-#define NEWS_TO_SHOW 15
+#define NEWS_TO_SHOW 50
 
 //////////////////////////////////////////////////////////////////////////
 

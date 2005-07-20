@@ -10067,6 +10067,22 @@
 						RelativePath=".\ui\UIOptConCom.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="EventsWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIEventsWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIEventsWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITaskItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITaskItem.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"

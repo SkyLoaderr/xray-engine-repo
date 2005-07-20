@@ -38,6 +38,7 @@ public:
 			//возвращает длину в пикселях надписи
 			int GetSignWidht();
 
+	virtual void	MarkSelected				(bool b){};
 	// переопределяем критерий подсвечивания текста
 	virtual bool IsHighlightText();
 	virtual void SetHighlightText(bool Highlight)		{ m_bHighlightText = Highlight; }

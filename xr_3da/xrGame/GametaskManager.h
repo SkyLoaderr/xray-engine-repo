@@ -17,7 +17,8 @@ public:
 	void					initialize						(u16 id);
 	GameTasks&				GameTasks						();
 	CGameTask*				HasGameTask						(const TASK_ID& id);
-	void					GiveGameTaskToActor				(const TASK_ID& id);
+	CGameTask*				GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting=true);
 
-	void					HighlightOnMap					(CGameTask* t, int objective_id, bool bHighlight);
+	void					ShowSpotOnMap					(CGameTask* t, int objective_id, bool bShow);
+	void					ShowSpotPointerOnMap			(CGameTask* t, int objective_id, bool bShow);
 };

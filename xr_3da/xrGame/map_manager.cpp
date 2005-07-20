@@ -6,6 +6,7 @@
 #include "relation_registry.h"
 #include "GameObject.h"
 #include "map_location.h"
+#include "xrServer.h"
 
 struct FindLocationBySpotID{
 	shared_str	spot_id;
@@ -27,24 +28,25 @@ struct FindLocationByID{
 void SLocationKey::save(IWriter &stream)
 {
 	stream.w		(&object_id,sizeof(object_id));
-	stream.w_stringZ(spot_type);
 
+	stream.w_stringZ(spot_type);
+	stream.w_u8		(location->IsUserDefined()?1:0);
 	location->save	(stream);
 }
 	
 void SLocationKey::load(IReader &stream)
 {
 	stream.r		(&object_id,sizeof(object_id));
-//	u16 c =			stream.r_u16();
-//	xr_string		hint;
-//	stream.r_stringZ(hint);
+
 	stream.r_stringZ(spot_type);
+	u8	bUserDefined = stream.r_u8	();
+	if(bUserDefined){
+		Level().Server->PerformIDgen(object_id);
+		location  = xr_new<CUserDefinedMapLocation>(*spot_type, object_id);
+	}else
+		location  = xr_new<CMapLocation>(*spot_type, object_id);
 
-	location  = xr_new<CMapLocation>(*spot_type, object_id);
 	location->load	(stream);
-
-//	location->SetHint(hint.c_str());
-//	location->SetRefCount(c);
 }
 
 void SLocationKey::destroy()
@@ -129,6 +131,17 @@ CMapLocation* CMapManager::AddRelationLocation(CInventoryOwner* pInvOwner)
 	return (*it).location;
 }
 
+CMapLocation* CMapManager::AddUserLocation(const shared_str& spot_type, const shared_str& level_name, Fvector position)
+{
+	u16 _id	= Level().Server->PerformIDgen(0xffff);
+	CUserDefinedMapLocation* l = xr_new<CUserDefinedMapLocation>(*spot_type, _id);
+	l->InitExternal	(level_name, position);
+	Locations().push_back( SLocationKey(spot_type, _id) );
+	Locations().back().location = l;
+	return l;
+}
+
+
 void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
 {
 	FindLocationBySpotID key(spot_type, id);
@@ -148,6 +161,10 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	FindLocationByID key(id);
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	while( it!= Locations().end() ){
+		
+		if( (*it).location->IsUserDefined() )
+			Level().Server->FreeID(id,Device.TimerAsync());
+
 		delete_data				(*it);
 		Locations().erase		(it);
 
@@ -184,6 +201,13 @@ void CMapManager::Update()
 		xr_delete(Locations().back().location);
 		Locations().pop_back();
 	}
+}
+
+void CMapManager::DisableAllPointers			()
+{
+	Locations_it it = Locations().begin();
+	for(; it!=Locations().end();++it)
+		(*it).location->DisablePointer	();
 }
 
 Locations&	CMapManager::Locations	() 

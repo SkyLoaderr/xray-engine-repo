@@ -164,7 +164,8 @@ void CUIStatic::Update()
 		if(m_lainm_start_time<0.0f) m_lainm_start_time = Device.fTimeGlobal; 
 		int frame;
 		u32 clr					= m_lanim->CalculateRGB(Device.fTimeGlobal-m_lainm_start_time,frame);
-		SetColor(clr);
+		SetColor				(clr);
+		SetTextColor			(clr);
 	}
 }
 

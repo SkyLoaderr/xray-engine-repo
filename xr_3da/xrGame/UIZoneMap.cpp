@@ -54,7 +54,13 @@ void CUIZoneMap::Init()
 	m_activeMap->Init(Level().name(),gameLtx,"hud\\default");
 	m_clipFrame.AttachChild(m_activeMap);
 	m_activeMap->SetClipRect( m_clipFrame.GetAbsoluteRect() );
-	m_activeMap->SetZoomFactor( float(m_clipFrame.GetWndRect().width())/100.0f );
+	
+	Fvector2	wnd_size;
+	float zoom_factor = float(m_clipFrame.GetWndRect().width())/100.0f;
+	wnd_size.x	= m_activeMap->BoundRect().width()*zoom_factor;
+	wnd_size.y	= m_activeMap->BoundRect().height()*zoom_factor;
+	m_activeMap->SetWndSize(wnd_size);
+//	m_activeMap->SetZoomFactor( float(m_clipFrame.GetWndRect().width())/100.0f );
 	m_activeMap->EnableHeading(true);  
 	xml_init.InitStatic(uiXml, "minimap:compass", 0, &m_compass);
 	m_compass.EnableHeading(true);
