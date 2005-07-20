@@ -351,6 +351,7 @@ function init_wounded(npc, ini, section, st, scheme)
 			st.hp_cover			= xr_meet.parse_data(npc, "10|false")
 			st.hp_fight			= xr_meet.parse_data(npc, "10|false")
 			st.syndata			= xr_meet.parse_syn_data(npc, "")
+			st.help_dialog		= nil
 		else
 			st.hp_state			= xr_meet.parse_data(npc, "30|help_me@help|10|wounded_heavy@help_heavy")
 			st.hp_state_see		= xr_meet.parse_data(npc, "30|wounded@help_see|10|wounded_heavy@help_heavy")
@@ -359,6 +360,7 @@ function init_wounded(npc, ini, section, st, scheme)
 			st.hp_cover			= xr_meet.parse_data(npc, "30|true|10|false")
 			st.hp_fight			= xr_meet.parse_data(npc, "30|true|10|false")
 			st.syndata			= xr_meet.parse_syn_data(npc, "wounded@help")
+			st.help_dialog		= "actor_help_wounded"
 		end
 	else
 		st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, ""))
@@ -368,6 +370,7 @@ function init_wounded(npc, ini, section, st, scheme)
 		st.hp_cover		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_cover", npc, false, ""))
 		st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, ""))
 		st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, ""))	
+		st.help_dialog	= utils.cfg_get_string(ini, section, "help_dialog", npc, false, "", "actor_help_wounded")
 	end
 	-- флажок, что функция хотя бы раз вызывалась
 	st.wounded_set = true

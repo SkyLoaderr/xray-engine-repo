@@ -73,7 +73,7 @@
         </phrase_list>
     </dialog>
     <dialog id="actor_help_wounded" priority="10">
-        <precondition>dialogs.dialog_not_disable</precondition>
+        <precondition>dialogs.allow_wounded_dialog</precondition>
         <precondition>dialogs.is_opp_wounded</precondition>
         <phrase_list>
             <phrase id="141">

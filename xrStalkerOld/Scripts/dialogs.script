@@ -30,7 +30,7 @@ function is_opp_wounded(first_speaker, second_speaker, dialog_id)
 		return false
 	end
 
-	return	xr_wounded.is_wounded(second_speaker, 0.2)
+	return	xr_wounded.is_wounded(second_speaker)
 end
 function is_not_wounded(first_speaker, second_speaker)
 	return not this.is_wounded(first_speaker, second_speaker)
@@ -109,6 +109,16 @@ function dialog_not_disable(object, victim, id)
 		end
 	end
 	return true
+end
+
+function allow_wounded_dialog(object, victim, id)
+	if db.storage[victim:id()].wounded == nil then
+		return false
+	end	
+	if db.storage[victim:id()].wounded.help_dialog == id then
+		return true
+	end
+	return false	
 end
 
 
