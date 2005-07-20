@@ -107,7 +107,7 @@
 																	autoplay		= "1">
 					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
-				<title_static x="20" y="4" width="" height="16">
+				<title_static x="20" y="4" width="100" height="16">
 					<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 				</title_static>
 			</left_frame_header>
