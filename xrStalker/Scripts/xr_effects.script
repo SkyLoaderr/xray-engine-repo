@@ -811,6 +811,19 @@ function mil_lukash_dead (actor, npc)
     end   
 end
 
+function mil_cap_mapspot (actor, npc)
+    local cap = level_object_by_sid (724)
+    if cap == nil or cap:alive () == false then
+       return 
+    end    
+    
+    if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
+       db.actor:give_info_portion (""mil_fblockpost_spot") 
+       db.actor:give_info_portion ("mil_fblockpost_spot_set")
+       level_tasks.add_location (724, "mil_fblockpost_location")
+    end
+end
+
 -- GARBAGE
 
 function gar_send_dolg_warning()
