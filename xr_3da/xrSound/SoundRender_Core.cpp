@@ -264,22 +264,7 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 void	CSoundRender_Core::destroy	(ref_sound& S )
 {
 	S._p				= 0;
-/*
-	if (!bPresent || 0==S.handle)	{
-		S.handle	= 0;
-		S.feedback	= 0;
-		return;
-	}
-	verify_refsound					(S);
-	if (S.feedback){
-		CSoundRender_Emitter* E		= (CSoundRender_Emitter*)S.feedback;
-		E->stop						(FALSE);
-	}
-	R_ASSERT			(0==S.feedback);
-	i_destroy_source	((CSoundRender_Source*)S.handle);
-	S.handle			= NULL;
-*/    
-}
+}                                                    
 
 void CSoundRender_Core::_create_data( ref_sound_data& S, BOOL _3D, LPCSTR fName, int type)
 {
