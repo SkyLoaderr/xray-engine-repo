@@ -423,7 +423,7 @@ void ConsoleBindCmds::save(IWriter* F)
 		if(idx!=-1){
 			ZeroMemory(keyname,sizeof(keyname));
 			strcat(keyname,keynames[idx].name);
-			F->w_printf("bind_console %s %s\n", it->second.cmd, keyname);
+			F->w_printf("bind_console %s %s\n", *it->second.cmd, keyname);
 		}
 	}
 }
