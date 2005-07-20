@@ -41,6 +41,13 @@ protected:
 	float				m_cover_yaw;
 
 protected:
+	Fvector				m_holder_start_position;
+	Fvector				m_object_start_position;
+	u32					m_state_fire_object; // 0 : standard object navigation, 1 : vis_point navigation
+	xr_vector<CObject*>	objects;
+
+
+protected:
 			bool		target_reached				();
 			void		execute_current_direction	();
 			void		execute_path_direction		();
@@ -51,14 +58,16 @@ protected:
 			void		execute_search				();
 			void		initialize_cover_look_over	();
 			void		execute_cover_look_over		();
+			void		initialize_fire_object		();
+			void		execute_fire_object			();
 
 public:
 	IC					CSightAction				();
 	IC					CSightAction				(const ESightType &sight_type, bool	torso_look = false, bool path = false);
 	IC					CSightAction				(const ESightType &sight_type, const Fvector &vector3d, bool torso_look = false);
 	IC					CSightAction				(const ESightType &sight_type, const Fvector *vector3d);
-	IC					CSightAction				(const CGameObject *object_to_look, bool torso_look = false);
-	IC					CSightAction				(const CGameObject *object_to_look, bool torso_look, LPCSTR bone_name);
+	IC					CSightAction				(const CGameObject *object_to_look, bool torso_look = false, bool fire_object = false);
+	IC					CSightAction				(const CGameObject *object_to_look, bool torso_look, LPCSTR bone_name, bool fire_object = false);
 	IC					CSightAction				(const CMemoryInfo *memory_object, bool	torso_look = false);
 			void		initialize					();
 			void		execute						();

@@ -39,7 +39,7 @@
 
 using namespace StalkerSpace;
 
-const float DANGER_DISTANCE = 5.f;
+const float DANGER_DISTANCE = 10.f;
 const u32	DANGER_INTERVAL = 120000;
 
 float CAI_Stalker::GetWeaponAccuracy	() const
@@ -346,93 +346,111 @@ public:
 	CAI_Stalker				*m_holder;
 	float					m_power;
 	float					m_power_threshold;
-	bool					m_enemy;
-	bool					m_result;
+	bool					m_can_kill_enemy;
+	bool					m_can_kill_member;
+	float					m_pick_distance;
 
 public:
-	IC				ray_query_param		(const CAI_Stalker *holder, float power_threshold, bool enemy)
+	IC				ray_query_param		(const CAI_Stalker *holder, float power_threshold, float distance)
 	{
 		m_holder			= const_cast<CAI_Stalker*>(holder);
 		m_power_threshold	= power_threshold;
 		m_power				= 1.f;
-		m_enemy				= enemy;
-		m_result			= false;
+		m_can_kill_enemy	= false;
+		m_can_kill_member	= false;
+		m_pick_distance		= distance;
 	}
 };
 
 IC BOOL __stdcall ray_query_callback	(collide::rq_result& result, LPVOID params)
 {
-	ray_query_param		*param = (ray_query_param*)params;
-	float				power = param->m_holder->feel_vision_mtl_transp(result.O,result.element);
-	param->m_power		*= power;
-	if (!result.O)
-		return			(param->m_power > param->m_power_threshold);
+	ray_query_param						*param = (ray_query_param*)params;
+	float								power = param->m_holder->feel_vision_mtl_transp(result.O,result.element);
+	param->m_power						*= power;
+	if (!result.O) {
+		if (param->m_power > param->m_power_threshold)
+			return						(true);
+		param->m_pick_distance			= result.range;
+		return							(false);
+	}
 
-	CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(result.O);
-	if (!entity_alive || (entity_alive->ID() == param->m_holder->ID()))
-		return			(param->m_power > param->m_power_threshold);
+	CEntityAlive						*entity_alive = smart_cast<CEntityAlive*>(result.O);
+	if (!entity_alive) {
+		if (param->m_power > param->m_power_threshold)
+			return						(true);
+		param->m_pick_distance			= result.range;
+		return							(false);
+	}
 
-	if (param->m_holder->is_relation_enemy(entity_alive) == param->m_enemy)
-		param->m_result	= true;
+	if (param->m_holder->is_relation_enemy(entity_alive))
+		param->m_can_kill_enemy			= true;
+	else
+		if (!param->m_holder->is_relation_enemy(entity_alive))
+			param->m_can_kill_member	= true;
 
-	return				(false);
+	param->m_pick_distance				= result.range;
+	return								(false);
 }
 
-bool CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage)
+void CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, float distance, collide::rq_results& rq_storage)
 {
 	collide::ray_defs				ray_defs(position,direction,distance,0,collide::rqtBoth);
-	ray_query_param					params(this,memory().visual().transparency_threshold(),enemy);
+	ray_query_param					params(this,memory().visual().transparency_threshold(),distance);
 	BOOL							enabled = getEnabled();
 	setEnabled						(FALSE);
 	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params);
 	setEnabled						(enabled);
-	return							(params.m_result);
+	m_can_kill_enemy				= m_can_kill_enemy  || params.m_can_kill_enemy;
+	m_can_kill_member				= m_can_kill_member || params.m_can_kill_member;
+	m_pick_distance					= _max(m_pick_distance,params.m_pick_distance);
 }
 
-bool CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance)
+void CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, float distance)
 {
 	collide::rq_results		rq_storage	;
-	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
-		return				(true);
+	can_kill_entity			(position,direction,distance,rq_storage);
+	if (m_can_kill_member && m_can_kill_enemy)
+		return;
 
-	float					yaw, pitch, safety_fire_angle = PI_DIV_8;
+	float					yaw, pitch, safety_fire_angle = PI_DIV_8*.5f;
 	direction.getHP			(yaw,pitch);
 
 	direction.setHP			(yaw - safety_fire_angle,pitch);
-	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
-		return				(true);
+	can_kill_entity			(position,direction,distance,rq_storage);
+	if (m_can_kill_member && m_can_kill_enemy)
+		return;
 
 	direction.setHP			(yaw + safety_fire_angle,pitch);
-	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
-		return				(true);
+	can_kill_entity			(position,direction,distance,rq_storage);
+	if (m_can_kill_member && m_can_kill_enemy)
+		return;
 
 	direction.setHP			(yaw,pitch - safety_fire_angle);
-	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
-		return				(true);
+	can_kill_entity			(position,direction,distance,rq_storage);
+	if (m_can_kill_member && m_can_kill_enemy)
+		return;
 
 	direction.setHP			(yaw,pitch + safety_fire_angle);
-	if (can_kill_entity(position,direction,enemy,distance,rq_storage))
-		return				(true);
-
-	return					(false);
+	can_kill_entity			(position,direction,distance,rq_storage);
 }
 
-bool CAI_Stalker::can_kill_entity		(bool enemy, float distance)
+void CAI_Stalker::update_can_kill_info	()
 {
+	if (m_pick_frame_id == Device.dwFrame)
+		return;
+
+	m_pick_frame_id			= Device.dwFrame;
+	m_can_kill_member		= false;
+	m_can_kill_enemy		= false;
+
 	Fvector					position, direction;
 	g_fireParams			(0,position,direction);
+	
+	float					distance = 50.f;
+	if (memory().enemy().selected())
+		distance			= _max(distance,memory().enemy().selected()->Position().distance_to(Position()) + 1.f);
 
-	return					(can_kill_entity_from(position,direction,enemy,distance));
-}
-
-bool CAI_Stalker::can_kill_member		()
-{
-	return					(can_kill_entity(false));
-}
-
-bool CAI_Stalker::can_kill_enemy		()
-{
-	return					(!memory().enemy().selected() ? can_kill_entity(true) : can_kill_entity(true,_max(50.f,memory().enemy().selected()->Position().distance_to(Position()) + 1.f)));
+	can_kill_entity_from	(position,direction,distance);
 }
 
 bool CAI_Stalker::undetected_anomaly	()

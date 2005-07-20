@@ -113,3 +113,15 @@ public:
 	virtual _value_type	evaluate										();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorGrenadeToExplode
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorGrenadeToExplode : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+						CStalkerPropertyEvaluatorGrenadeToExplode	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate									();
+};

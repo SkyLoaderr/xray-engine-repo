@@ -21,6 +21,9 @@ void CSightAction::initialize					()
 	
 	if (SightManager::eSightTypeCoverLookOver == m_sight_type)
 		initialize_cover_look_over	();
+
+	if (SightManager::eSightTypeFireObject == m_sight_type)
+		initialize_fire_object		();
 }
 
 void CSightAction::execute						()
@@ -58,6 +61,10 @@ void CSightAction::execute						()
 			execute_cover_look_over	();
 			break;
 		}
+		case SightManager::eSightTypeFireObject : {
+			execute_fire_object		();
+			break;
+		}
 		default	: NODEFAULT;
 	}
 }
@@ -70,7 +77,7 @@ void CSightAction::remove_links					(CObject *object)
 	if (m_object_to_look->ID() != object->ID())
 		return;
 	
-	execute				();
+//	execute				();
 	
 	m_object_to_look	= 0;
 
@@ -212,4 +219,46 @@ float CSightAction::head_speed					() const
 {
 	VERIFY	(SightManager::eSightTypeCoverLookOver == m_sight_type);
 	return	(PI_DIV_8*.5f);
+}
+
+void CSightAction::initialize_fire_object		()
+{
+	m_holder_start_position	= m_object->Position();
+	m_object_start_position	= m_object_to_look->Position();
+	m_state_fire_object		= 0;
+}
+
+void CSightAction::execute_fire_object			()
+{
+	switch (m_state_fire_object) {
+		case 0 : {
+			execute_object	();
+
+			if (target_reached()) {
+				if (!m_object->can_kill_enemy() || m_object->can_kill_member())
+					m_state_fire_object	= 1;
+			}
+			break;
+		}
+		case 1 : {
+			if (!m_holder_start_position.similar(m_object->Position(),.5f)) {
+				m_state_fire_object	= 0;
+				break;
+			}
+
+			if (!m_object_start_position.similar(m_object_to_look->Position(),.5f)) {
+				m_state_fire_object	= 0;
+				break;
+			}
+
+			m_object->feel_vision_get	(objects);
+			if (std::find(objects.begin(),objects.end(),m_object_to_look) != objects.end()) {
+				m_vector3d			= m_object->feel_vision_get_vispoint(const_cast<CGameObject*>(m_object_to_look));
+				execute_position	();
+				break;
+			}
+			break;
+		}
+		default : NODEFAULT;
+	}
 }

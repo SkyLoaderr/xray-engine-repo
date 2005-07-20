@@ -330,7 +330,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (memory().danger().selected() && memory().danger().selected()->object()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sinitiator : %s",indent,indent,indent,*memory().danger().selected()->object()->cName());
-		if (memory().danger().selected()->dependent_object())
+		if (memory().danger().selected()->dependent_object() && !!memory().danger().selected()->dependent_object()->cName())
 			HUD().Font().pFontSmall->OutNext("%s%s%sdependent : %s",indent,indent,indent,*memory().danger().selected()->dependent_object()->cName());
 	}
 
@@ -343,6 +343,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%sdanger locations  : %d",indent,agent_manager().location().locations().size());
 	HUD().Font().pFontSmall->OutNext	("%smembers in combat : %d",indent,agent_manager().member().combat_members().size());
 	HUD().Font().pFontSmall->OutNext	("%sI am in combat    : %s",indent,agent_manager().member().registered_in_combat(this) ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%smembers in detour : %d",indent,agent_manager().member().in_detour());
+	HUD().Font().pFontSmall->OutNext	("%sI am in detour    : %s",indent,agent_manager().member().member(this).detour() ? "+" : "-");
 
 	if (agent_manager().member().member(this).cover())
 		HUD().Font().pFontSmall->OutNext("%scover         : [%f][%f][%f]",indent,VPUSH(agent_manager().member().member(this).cover()->position()));
@@ -591,6 +593,10 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			sight_type					= "cover look over";
 			break;
 		}
+		case SightManager::eSightTypeFireObject : {
+			sight_type					= "fire object";
+			break;
+		}
 		default : NODEFAULT;
 	}
 
@@ -631,6 +637,12 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		}
 		case SightManager::eSightTypeCoverLookOver : {
 			sight_type					= "cover look over";
+			break;
+		}
+		case SightManager::eSightTypeFireObject : {
+			HUD().Font().pFontSmall->OutNext	("%s%sobject          : %s",indent,indent,*sight().current_action().object().cName());
+			HUD().Font().pFontSmall->OutNext	("%s%sposition        : [%f][%f][%f]",indent,indent,VPUSH(sight().current_action().object().Position()));
+			HUD().Font().pFontSmall->OutNext	("%s%svisible point   : %s",indent,indent,false ? "-" : "+");
 			break;
 		}
 		default : NODEFAULT;

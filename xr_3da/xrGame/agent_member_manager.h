@@ -31,27 +31,31 @@ private:
 
 
 protected:
-	IC		CAgentManager			&object				() const;
+	IC		CAgentManager			&object					() const;
 
 public:
-	IC								CAgentMemberManager	(CAgentManager *object);
-	virtual							~CAgentMemberManager();
-			void					update				();
-			void					add					(CEntity *member);
-			void					remove				(CEntity *member);
-	IC		CMemberOrder			&member				(const CAI_Stalker *object);
-	IC		const MEMBER_STORAGE	&members			() const;
-	IC		MEMBER_STORAGE			&members			();
-	IC		CSetupAction			&action				(CAI_Stalker *object);
-	IC		squad_mask_type			mask				(const CAI_Stalker *object) const;
-	IC		bool					group_behaviour		() const;
-	IC		iterator				member				(squad_mask_type mask);
-			void					remove_links		(CObject *object);
-			void					register_in_combat	(const CAI_Stalker *object);
-			void					unregister_in_combat(const CAI_Stalker *object);
-			bool					registered_in_combat(const CAI_Stalker *object) const;
-	IC		const squad_mask_type	&combat_mask		() const;
-			MEMBER_STORAGE			&combat_members		();
+	IC								CAgentMemberManager		(CAgentManager *object);
+	virtual							~CAgentMemberManager	();
+			void					update					();
+			void					add						(CEntity *member);
+			void					remove					(CEntity *member);
+	IC		CMemberOrder			&member					(const CAI_Stalker *object);
+	IC		const MEMBER_STORAGE	&members				() const;
+	IC		MEMBER_STORAGE			&members				();
+	IC		CSetupAction			&action					(CAI_Stalker *object);
+	IC		squad_mask_type			mask					(const CAI_Stalker *object) const;
+	IC		bool					group_behaviour			() const;
+	IC		iterator				member					(squad_mask_type mask);
+			void					remove_links			(CObject *object);
+			void					register_in_combat		(const CAI_Stalker *object);
+			void					unregister_in_combat	(const CAI_Stalker *object);
+			bool					registered_in_combat	(const CAI_Stalker *object) const;
+	IC		const squad_mask_type	&combat_mask			() const;
+			MEMBER_STORAGE			&combat_members			();
+			u32						in_detour				() const;
+			bool					can_detour				() const;
+			bool					cover_detouring			() const;
+			bool					can_cry_noninfo_phrase	() const;
 };
 
 #include "agent_member_manager_inline.h"

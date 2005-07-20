@@ -13,6 +13,7 @@
 #include "agent_manager.h"
 #include "agent_memory_manager.h"
 #include "explosive.h"
+#include "sound_player.h"
 
 CAgentMemberManager::~CAgentMemberManager		()
 {
@@ -122,4 +123,42 @@ CAgentMemberManager::MEMBER_STORAGE &CAgentMemberManager::combat_members	()
 	}
 
 	return								(m_combat_members);
+}
+
+u32 CAgentMemberManager::in_detour		() const
+{
+	u32									in_detour = 0;
+	MEMBER_STORAGE::const_iterator		I = members().begin();
+	MEMBER_STORAGE::const_iterator		E = members().end();
+	for ( ; I != E; ++I)
+		if ((*I)->detour())
+			++in_detour;
+
+	return								(in_detour);
+}
+
+bool CAgentMemberManager::can_detour	() const
+{
+	u32									in_detour_count = in_detour();
+	return								(!in_detour_count || (in_detour_count < (members().size()/3)));
+}
+
+bool CAgentMemberManager::cover_detouring		() const
+{
+	MEMBER_STORAGE::const_iterator		I = members().begin();
+	MEMBER_STORAGE::const_iterator		E = members().end();
+	for ( ; I != E; ++I)
+		if ((*I)->detour())
+			return						(true);
+	return								(false);
+}
+
+bool CAgentMemberManager::can_cry_noninfo_phrase() const
+{
+	MEMBER_STORAGE::const_iterator		I = members().begin();
+	MEMBER_STORAGE::const_iterator		E = members().end();
+	for ( ; I != E; ++I)
+		if ((*I)->object().sound().active_sound_count())
+			return						(false);
+	return								(true);
 }

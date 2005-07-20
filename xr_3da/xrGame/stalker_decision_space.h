@@ -152,6 +152,7 @@ namespace StalkerDecisionSpace {
 
 // global
 		eWorldOperatorPostCombatWait,
+		eWorldOperatorHideFromGrenade,
 		eWorldOperatorSquadAction,
 		eWorldOperatorDeathPlanner,
 		eWorldOperatorALifePlanner,

@@ -19,8 +19,8 @@
 #include "visual_memory_manager.h"
 #include "danger_object_location.h"
 
-const float GRENADE_RADIUS	= 5.f;
-const u32 AFTER_GRENADE_DESTROYED_INTERVAL = 20000;
+const float GRENADE_RADIUS	= 10.f;
+const u32 AFTER_GRENADE_DESTROYED_INTERVAL = 1000;
 
 struct CRemoveExplosivesPredicate {
 	IC	bool operator()		(CDangerExplosive &explosive) const

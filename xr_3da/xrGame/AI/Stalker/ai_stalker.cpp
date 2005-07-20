@@ -127,6 +127,11 @@ void CAI_Stalker::reinit			()
 	m_last_alife_motivations_update	= 0;
 
 	body_action						(eBodyActionNone);
+
+	m_can_kill_enemy				= false;
+	m_can_kill_member				= false;
+	m_pick_distance					= 0.f;
+	m_pick_frame_id					= 0;
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)
@@ -147,6 +152,7 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	sound().add						(pSettings->r_string(section,"sound_detour"),					100, SOUND_TYPE_MONSTER_TALKING,	5, u32(eStalkerSoundMaskDetour),				eStalkerSoundDetour,				head_bone_name, xr_new<CStalkerSoundData>(this));
 	sound().add						(pSettings->r_string(section,"sound_search"),					100, SOUND_TYPE_MONSTER_TALKING,	5, u32(eStalkerSoundMaskSearch),				eStalkerSoundSearch,				head_bone_name, xr_new<CStalkerSoundData>(this));
 	sound().add						(pSettings->r_string(section,"sound_humming"),					100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskHumming),				eStalkerSoundHumming,				head_bone_name, 0);
+	sound().add						(pSettings->r_string(section,"sound_need_backup"),				100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskNeedBackup),			eStalkerSoundNeedBackup,			head_bone_name, xr_new<CStalkerSoundData>(this));
 }
 
 void CAI_Stalker::reload			(LPCSTR section)

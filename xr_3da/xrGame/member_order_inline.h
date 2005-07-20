@@ -17,6 +17,7 @@ IC	CMemberOrder::CMemberOrder					(CAI_Stalker *object) :
 	VERIFY					(m_object);
 	m_enemies.reserve		(16);
 	m_cover					= 0;
+	m_detour				= false;
 }
 
 IC	bool CMemberOrder::initialized				() const
@@ -125,4 +126,14 @@ IC	CMemberOrder::CMemberDeathReaction &CMemberOrder::member_death_reaction	()
 IC	CMemberOrder::CGrenadeReaction &CMemberOrder::grenade_reaction			()
 {
 	return			(m_grenade_reaction);
+}
+
+IC	bool CMemberOrder::detour					() const
+{
+	return			(m_detour);
+}
+
+IC	void CMemberOrder::detour					(const bool &value)
+{
+	m_detour		= value;
 }

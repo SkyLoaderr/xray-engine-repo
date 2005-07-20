@@ -151,6 +151,12 @@ CInventoryItem *CObjectHandler::best_weapon() const
 void CObjectHandler::update		()
 {
 	START_PROFILE("AI/Object Handler/update")
+//	if (planner().initialized())
+//		if (planner().current_action_state_id() == ObjectHandlerSpace::eWorldPropertyAimingReady1) {
+//			if (planner().object().best_weapon())
+//				if (planner().object().can_kill_enemy())
+//					planner().set_goal	(MonsterSpace::eObjectActionFire1,&planner().object().best_weapon()->object());
+//	}
 	planner().update		();
 	STOP_PROFILE
 }

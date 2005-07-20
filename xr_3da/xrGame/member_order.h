@@ -75,6 +75,7 @@ protected:
 	u32							m_selected_enemy;
 	CMemberDeathReaction		m_member_death_reaction;
 	CGrenadeReaction			m_grenade_reaction;
+	bool						m_detour;
 
 public:
 	IC							CMemberOrder			(CAI_Stalker *object);
@@ -98,6 +99,8 @@ public:
 	IC		void				probability				(float probability);
 	IC		void				processed				(bool processed);
 	IC		void				selected_enemy			(u32 selected_enemy);
+	IC		bool				detour					() const;
+	IC		void				detour					(const bool &value);
 };
 
 #include "member_order_inline.h"

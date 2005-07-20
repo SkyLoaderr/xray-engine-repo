@@ -207,3 +207,23 @@ _value_type CStalkerPropertyEvaluatorDangerGrenadeExploded::evaluate	()
 
 	return				(!m_object->memory().danger().selected()->dependent_object());
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorGrenadeToExplode
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorGrenadeToExplode::CStalkerPropertyEvaluatorGrenadeToExplode	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited			(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorGrenadeToExplode::evaluate	()
+{
+	if (!m_object->memory().danger().selected())
+		return			(false);
+
+	if (CDangerObject::eDangerTypeGrenade != m_object->memory().danger().selected()->type())
+		return			(false);
+
+	return				(!!m_object->memory().danger().selected()->dependent_object());
+}

@@ -24,6 +24,7 @@ public:
 						CStalkerActionCombatBase	(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		finalize					();
+			void		select_queue_params			(const float &distance, u32 &queue_interval, u32 &queue_size) const;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -209,6 +210,21 @@ protected:
 
 public:
 						CStalkerActionPostCombatWait(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionHideFromGrenade
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionHideFromGrenade : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+public:
+						CStalkerActionHideFromGrenade(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();

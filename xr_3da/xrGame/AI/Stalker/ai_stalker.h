@@ -261,11 +261,21 @@ public:
 			bool						not_enough_ammo			();
 			bool						can_buy_ammo			();
 
-			bool						can_kill_entity			(const Fvector &position, const Fvector &direction, bool enemy, float distance, collide::rq_results& rq_storage);
-			bool						can_kill_entity_from	(const Fvector &position, Fvector direction, bool enemy, float distance);
-			bool						can_kill_entity			(bool enemy, float distance = 50.f);
-			bool						can_kill_member			();
-			bool						can_kill_enemy			();
+private:
+	bool	m_can_kill_member;
+	bool	m_can_kill_enemy;
+	float	m_pick_distance;
+	u32		m_pick_frame_id;
+
+private:
+			void						can_kill_entity			(const Fvector &position, const Fvector &direction, float distance, collide::rq_results& rq_storage);
+			void						can_kill_entity_from	(const Fvector &position, Fvector direction, float distance);
+			void						update_can_kill_info	();
+
+public:
+	IC		bool						can_kill_member			();
+	IC		bool						can_kill_enemy			();
+	IC		float						pick_distance			();
 			
 	virtual LPCSTR						Name					() const;
 	virtual BOOL						feel_touch_on_contact	(CObject* O);

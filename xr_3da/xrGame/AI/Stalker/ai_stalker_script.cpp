@@ -162,6 +162,9 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("sound_panic_human",							StalkerSpace::eStalkerSoundPanicHuman),
 				luabind::value("sound_panic_monster",						StalkerSpace::eStalkerSoundPanicMonster),
 				luabind::value("sound_tolls",								StalkerSpace::eStalkerSoundTolls),
+				luabind::value("sound_grenade_alarm",						StalkerSpace::eStalkerSoundGrenadeAlarm),
+				luabind::value("sound_friendly_grenade_alarm",				StalkerSpace::eStalkerSoundFriendlyGrenadeAlarm),
+				luabind::value("sound_need_backup",							StalkerSpace::eStalkerSoundNeedBackup),
 				luabind::value("sound_script",								StalkerSpace::eStalkerSoundScript)
 			],
 		

@@ -118,11 +118,26 @@ void CDangerManager::update			()
 
 void CDangerManager::remove_links	(const CObject *object)
 {
-	OBJECTS::iterator		I = std::find_if(m_objects.begin(),m_objects.end(),CDangerPredicate(object));
-	if (I != m_objects.end()) {
-		m_objects.erase		(I,m_objects.end());
-		if (m_selected && m_selected->object() && (m_selected->object()->ID() == object->ID()))
-			m_selected		= 0;
+	if (m_selected && m_selected->object() && (m_selected->object()->ID() == object->ID()))
+		m_selected			= 0;
+
+	{
+		OBJECTS::iterator	I = std::find_if(m_objects.begin(),m_objects.end(),CDangerPredicate(object));
+		if (I != m_objects.end())
+			m_objects.erase	(I);
+	}
+
+	OBJECTS::iterator		I = m_objects.begin();
+	OBJECTS::iterator		E = m_objects.end();
+	for ( ; I != E; ++I) {
+		if (!(*I).dependent_object())
+			continue;
+
+		if ((*I).dependent_object()->ID() != object->ID())
+			continue;
+
+		(*I).clear_dependent_object();
+		break;
 	}
 }
 
