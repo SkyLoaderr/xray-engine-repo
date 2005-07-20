@@ -46,17 +46,7 @@ actor_dialogs = actor_dialogs
 [walker@bar_dolg_general_guard_left]
 path_walk = guard_left_walk
 path_look = guard_left_look
-def_state_campering = threat
-def_state_campering_fire = threat_fire
-radius = 5
 meet = meet@bar_dolg_general_guard
-
-[meet@bar_dolg_general_guard]
-meet_dialog = bar_dolg_base_guard_start
-use = true
-use_wpn = true
-zones = bar_dolg_general_warn_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_guard_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_kill_zone|{-bar_dolg_base_pass}true
-
 
 [logic2@bar_dolg_general_guard_right]
 active = walker@bar_dolg_general_guard_right
@@ -65,11 +55,7 @@ actor_dialogs = actor_dialogs
 [walker@bar_dolg_general_guard_right]
 path_walk = guard_right_walk
 path_look = guard_right_look
-def_state_campering = threat
-def_state_campering_fire = threat_fire
-radius = 5
 meet = meet@bar_dolg_general_guard
-
 
 [logic3@bar_dolg_general_guard_center]
 active = walker@bar_dolg_general_guard_center
@@ -78,11 +64,20 @@ actor_dialogs = actor_dialogs
 [walker@bar_dolg_general_guard_center]
 path_walk = guard_center_walk
 path_look = guard_center_look
-def_state_campering = threat
-def_state_campering_fire = threat_fire
-radius = 5
 meet = meet@bar_dolg_general_guard
 
+
+[meet@bar_dolg_general_guard]
+meet_dialog = bar_dolg_base_guard_start
+use = true
+use_wpn = true
+; прописать фразу  «Стой! Тебе на территорию нельзя!»
+meet_state 		= 15|{-bar_dolg_base_pass}threat@threat_stop,{+bar_dolg_base_pass}guard@talk_hello
+
+
+; zones = bar_dolg_general_warn_zone|threat@threat_stop
+;{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop
+;|bar_dolg_general_guard_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_kill_zone|{-bar_dolg_base_pass}true
 
 [logic4@bar_dolg_general_kamp]
 active = kamp1@bar_dolg_general_kamp
@@ -175,14 +170,15 @@ actor_dialogs = actor_dialogs
 [walker@bar_dolg_veterans_guard_bunker]
 path_walk = guard_bunker_1_walk
 path_look = guard_bunker_1_look
-radius = 5
 meet = meet@bar_dolg_veterans_guard_bunker
 
 [meet@bar_dolg_veterans_guard_bunker]
 meet_dialog = bar_dolg_guard_bunker_start 
 use = true
 use_wpn = true
-zones = bar_dolg_veterans_bunker_warn_zone|{+bar_dolg_community_leader}guard,threat@{+bar_dolg_community_leader}state,threat_stop|bar_dolg_veterans_bunker_kill_zone|{-bar_dolg_community_leader}true
+;zones = bar_dolg_veterans_bunker_warn_zone|{+bar_dolg_community_leader}guard,threat@{+bar_dolg_community_leader}state,threat_stop|bar_dolg_veterans_bunker_kill_zone|{-bar_dolg_community_leader}true
+; прописать фразу   «Стой! В бункер тебе нельзя!» 
+meet_state 		= 7|{-bar_dolg_community_leader}threat@threat_stop,{+bar_dolg_community_leader}guard@talk_hello
 
 
 
@@ -256,8 +252,8 @@ active = walker2@bar_dolg_bunker
 [walker2@bar_dolg_bunker]
 path_walk = guard_2_walk
 path_look = guard_2_look
-meet_state = ward
-meet_enabled = true
+meet = meet@bar_dolg_bunker
+
 
 [logic3@bar_dolg_bunker]
 active = walker3@bar_dolg_bunker
@@ -265,8 +261,7 @@ active = walker3@bar_dolg_bunker
 [walker3@bar_dolg_bunker]
 path_walk = rest_2_walk
 path_look = rest_2_look
-meet_state = ward
-meet_enabled = true
+
 
 [logic4@bar_dolg_bunker]
 active = walker4@bar_dolg_bunker
@@ -281,6 +276,13 @@ active = sleeper1@bar_dolg_bunker
 
 [sleeper1@bar_dolg_bunker]
 path_main = sleeper_1
+
+[meet@bar_dolg_bunker]
+meet_state 		= 5| guard@talk_hello
+meet_state_wpn 	= 7| guard@threat_weap
+use = true
+use_wpn = true
+
 
 
 ; Застава 1

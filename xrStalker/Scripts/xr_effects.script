@@ -580,7 +580,12 @@ function bar_psih_come(actor, npc)
 	news_manager.send_tip(actor, "bar_psih_come", nil, "barman")
 end
 
-
+function bar_actor_is_enemy(actor, npc)
+			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_visitors", db.actor)
+end
 
 
 function military_max_dead (actor, npc)
