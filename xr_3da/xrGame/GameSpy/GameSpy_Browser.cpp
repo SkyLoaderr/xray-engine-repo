@@ -207,7 +207,7 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	pServerInfo->m_ServerMaxPlayers = (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(MAXPLAYERS_KEY), 32);
 	pServerInfo->m_bDedicated	= (xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(DEDICATED_KEY), SBFalse)) == SBTrue;
 	pServerInfo->m_bFFire		= xrGS_SBServerGetBoolValue(pServer, m_QR2.xrGS_RegisteredKey(FFIRE_KEY), SBFalse) == SBTrue;
-	pServerInfo->m_s16FFire		= xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(FFIREAMOUNT_KEY), 0);
+	pServerInfo->m_s16FFire		= (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(FFIREAMOUNT_KEY), 0);
 	pServerInfo->m_Port		= (s16)xrGS_SBServerGetIntValue(pServer, m_QR2.xrGS_RegisteredKey(HOSTPORT_KEY), 0);
 	pServerInfo->m_HPort	= (s16)xrGS_SBServerGetPublicQueryPort(pServer);
 
