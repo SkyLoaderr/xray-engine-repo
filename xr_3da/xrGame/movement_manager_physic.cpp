@@ -171,7 +171,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if(!movement_control->JumpState())
 				movement_control->SetVelocity		(velocity);
 
-	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
+	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
 		
 		if(DBG_PH_MOVE_CONDITIONS(!ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&) !movement_control->TryPosition(dest_position)) {
 			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);
