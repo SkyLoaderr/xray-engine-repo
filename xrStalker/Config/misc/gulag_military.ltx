@@ -8,11 +8,11 @@
 [logic@mil_freedom_lukash]
 active = walker1@mil_freedom_lukash
 actor_dialogs = dialogs@mil_freedom_lukash
-on_death = on_death@mil_freedom_lukash
 on_combat = combat@mil_freedom_max
+on_death = on_death@mil_freedom_lukash
 
 [on_death@mil_freedom_lukash]
-on_info = %+mil_lukash_dead%
+on_info = %+mil_lukash_dead =mil_lukash_dead%
 
 [walker1@mil_freedom_lukash]
 path_walk = leader_walk
@@ -574,7 +574,7 @@ active = camper1@mil_freedom_lukash_combat1
 on_death = on_death@mil_freedom_lukash_combat1
 
 [on_death@mil_freedom_lukash_combat1]
-on_info = %+mil_lukash_dead%
+on_info = %+mil_lukash_dead =mil_lukash_dead%
 
 [camper1@mil_freedom_lukash_combat1]
 path_walk = defense_walk1

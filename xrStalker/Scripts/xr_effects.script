@@ -808,6 +808,7 @@ end
 function mil_lukash_dead (actor, npc)
     if actor:has_info ("mil_sniper_get_job") then
        level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
+       level_tasks.remove_location (707, "mil_lukash_location")
     end   
 end
 
@@ -823,6 +824,14 @@ function mil_cap_mapspot (actor, npc)
        level_tasks.add_location (724, "mil_fblockpost_location")
     end
 end
+
+function mil_cap_mapspot_remove (stalker1, stalker2)
+    if db.actor:has_info ("mil_fblockpost_spot") then
+       level_tasks.remove_location_safe (724, "mil_fblockpost_location")
+       db.actor:disable_info_portion ("mil_fblockpost_spot_remove")
+    end      
+end
+
 
 -- GARBAGE
 

@@ -1,6 +1,19 @@
-    <string id="mil_quest_kill_sniper">
-	<text>Убить снайпера на вышке.</text>
+<string id="mil_dolg_assault_freedom">
+	<text>Помочь отряду Долга в устранении Лукаша</text>
 </string>
+
+<string id="mil_quest_kill_sniper">
+	<text>Убить снайпера на вышке</text>
+</string>
+
+<string id="mil_dolg_assault_support">
+	<text>Помочь отряду Долга в прорыве на базу</text>
+</string>
+
+<string id="mil_dolg_assault_headquarter">
+	<text>Убить Лукаша</text>
+</string>
+
     <string id="mil_quest_report_dolg">
 	<text>Сообщить о выполнении группе Долга.</text>
 </string>

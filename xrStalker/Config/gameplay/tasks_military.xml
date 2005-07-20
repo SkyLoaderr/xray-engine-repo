@@ -1,14 +1,24 @@
 
 	<game_task id="mil_kill_sniper">
-		<title>mil_quest_kill_sniper</title>
+		<title>mil_dolg_assault_freedom</title>
 		<objective>
-			<text>mil_quest_kill_sniper</text>
+			<text>mil_dolg_assault_freedom</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>mil_quest_kill_sniper</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
+		<objective>
+			<text>mil_dolg_assault_support</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_dolg_assault_headquarter</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		
+		
 	</game_task>
 	
 	<game_task id="mil_mad_job">
