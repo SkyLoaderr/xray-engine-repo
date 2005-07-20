@@ -593,6 +593,7 @@ function add_npc( self, obj )
 	-- если в гулаге есть свободные места и он подходит гулагу, то добавить
 	n = self.gulag:get_population()
 	if n < self.gparams.capacity then
+	    --printf("[smart_terrain %s] there is a space for the new npc %d < %d", self:name(), n, self.gparams.capacity)
 		sim  = alife()
 		o_id = self:obj_id( obj )
 		o    = sim:object( o_id )
