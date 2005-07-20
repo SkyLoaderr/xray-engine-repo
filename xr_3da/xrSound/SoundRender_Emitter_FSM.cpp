@@ -11,8 +11,8 @@ void CSoundRender_Emitter::update	(float dt)
 {
 	u32	dwTime			= SoundRender->Timer.GetElapsed_ms();
 
-	VERIFY2(owner_data,"owner");
-	VERIFY2(owner_data->feedback,"owner");
+	VERIFY2(!!(owner_data) || (!(owner_data)&&(state==stStopped)),"owner");
+	VERIFY2(owner_data?(int)owner_data->feedback:1,"owner");
 
 	switch (state)	
 	{
@@ -112,8 +112,8 @@ void CSoundRender_Emitter::update	(float dt)
 	// if deffered stop active and volume==0 -> physically stop sound
 	if (bStopping&&fis_zero(fade_volume)) i_stop();
 
-	VERIFY2(owner_data,"owner");
-	VERIFY2(owner_data->feedback,"owner");
+	VERIFY2(!!(owner_data) || (!(owner_data)&&(state==stStopped)),"owner");
+	VERIFY2(owner_data?(int)owner_data->feedback:1,"owner");
 
 	// footer
 	bMoved				= FALSE;

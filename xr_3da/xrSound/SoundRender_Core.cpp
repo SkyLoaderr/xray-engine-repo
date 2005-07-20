@@ -263,6 +263,10 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 }
 void	CSoundRender_Core::destroy	(ref_sound& S )
 {
+	if (S._feedback()){                   
+		CSoundRender_Emitter* E		= (CSoundRender_Emitter*)S._feedback();
+		E->stop						(FALSE);
+	}
 	S._p				= 0;
 }                                                    
 
