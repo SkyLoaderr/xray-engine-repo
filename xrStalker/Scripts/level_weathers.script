@@ -79,5 +79,6 @@ function main()
 		end
 	else
 		level.set_weather	("default",true);
+		printf				("!EMPTY WEATHERS - default selected");
 	end
 end
