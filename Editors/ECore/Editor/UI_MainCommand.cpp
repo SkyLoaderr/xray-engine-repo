@@ -18,6 +18,7 @@
 #include "SoundManager.h"
 #include "ResourceManager.h"
 #include "igame_persistent.h"
+#include "NumericVector.h"
 
 #include "TextForm.h"
 
@@ -447,6 +448,13 @@ CCommandVar 	CommandMuteSound(CCommandVar p1, CCommandVar p2)
     SndLib->MuteSounds	(p1);
     return				TRUE;
 }
+CCommandVar CommandMoveCameraTo(CCommandVar p1, CCommandVar p2)
+{
+    Fvector pos					= Device.m_Camera.GetPosition();
+    if (NumericVectorRun		("Move to",&pos,3))
+        Device.m_Camera.Set		(Device.m_Camera.GetHPB(),pos);
+    return 						TRUE;
+}
 
 CCommandVar 	ExecuteCommandList(LPCSTR text)
 {
@@ -607,6 +615,7 @@ void TUI::RegisterCommands()
     	APPEND_SUB_CMD	("Extent",						0,0);
     	APPEND_SUB_CMD	("Selected",					1,0);
     REGISTER_SUB_CMD_END;
+	REGISTER_CMD_SE	    (COMMAND_MOVE_CAMERA_TO,        "Scene\\Move Camera To",CommandMoveCameraTo,false);
     REGISTER_CMD_SE	    (COMMAND_TOGGLE_RENDER_WIRE,	"Toggle Wireframe",		CommandToggleRenderWire,			false);
     REGISTER_CMD_C	    (COMMAND_RENDER_FOCUS,       	this,TUI::CommandRenderFocus);
 	REGISTER_CMD_CE	    (COMMAND_BREAK_LAST_OPERATION,	"Break Last Operation",	this,TUI::CommandBreakLastOperation,false);

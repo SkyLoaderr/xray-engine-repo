@@ -161,7 +161,7 @@ void	CEffect_Rain::Render	()
 	u32 desired_items			= iFloor	(0.5f*(1.f+factor)*float(max_desired_items));
 
 	// ambient sound
-	if (snd_Ambient.feedback){
+	if (snd_Ambient._feedback()){
 		Fvector					sndP;
 		sndP.mad				(Device.vCameraPosition,Fvector().set(0,1,0),source_offset);
 		snd_Ambient.set_position(sndP);

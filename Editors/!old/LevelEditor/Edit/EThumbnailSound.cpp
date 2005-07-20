@@ -149,10 +149,10 @@ void ESoundThumbnail::FillProp(PropItemVec& items)
 {                                    
 	FloatValue* V	= 0;  
     PHelper().CreateFloat		(items, "Quality", 		&m_fQuality);
-    PHelper().CreateFloat		(items, "Min Dist",		&m_fMinDist, 	0.f,1000.f);
-    V = PHelper().CreateFloat	(items, "Max Dist",		&m_fMaxDist, 	0.f,1000.f);
+    PHelper().CreateFloat		(items, "Min Dist",		&m_fMinDist, 	0.01f,1000.f);
+    V = PHelper().CreateFloat	(items, "Max Dist",		&m_fMaxDist, 	0.1f,1000.f);
     V->OnChangeEvent.bind		(this,&ESoundThumbnail::OnMaxDistChange);
-    V = PHelper().CreateFloat	(items, "Max AI Dist",	&m_fMaxAIDist, 	0.f,1000.f);
+    V = PHelper().CreateFloat	(items, "Max AI Dist",	&m_fMaxAIDist, 	0.1f,1000.f);
     V->OnAfterEditEvent.bind	(this,&ESoundThumbnail::OnMaxAIDistAfterEdit);
     PHelper().CreateFloat		(items, "Base Volume",	&m_fBaseVolume, 0.f,2.f);
     PHelper().CreateToken32		(items, "Game Type",	&m_uGameType, 	anomaly_type_token);
