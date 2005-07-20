@@ -22,7 +22,9 @@ LPCSTR CMapActionPlanner::object_name	() const
 
 void CMapActionPlanner::setup			(CUIMapWnd *object)
 {
+#ifdef LOG_ACTION
 	set_use_log						(false);
+#endif
 	inherited::setup				(object);
 	clear							();
 	
@@ -120,14 +122,18 @@ void CMapActionPlanner::add_actions		(u16 map_idx, CUILevelMap* map)
 CSomeMapAction::CSomeMapAction(CUILevelMap *object, u16 idx, LPCSTR action_name)
 :inherited((CUIMapWnd*)NULL, action_name), m_map(object)
 {
+#ifdef LOG_ACTION
 	name.sprintf("%d-%s", idx, action_name);
 	m_action_name = *name;
+#endif
 }
 CSomeMapEvaluator::CSomeMapEvaluator(CUICustomMap *object, u16 idx, LPCSTR evaluator_name)
 :inherited((CUIMapWnd*)NULL,evaluator_name),m_map(object)
 {	
+#ifdef LOG_ACTION
 	name.sprintf("%d-%s", idx, evaluator_name); 
 	m_evaluator_name = *name; 
+#endif
 };
 
 void calcRectLerp(float time_to, const Frect& desired_rect, Frect& current_rect)
