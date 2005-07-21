@@ -122,6 +122,18 @@
 			</work_area>
 		</left_frame>
 	
+		<right_frame x="0" y="0" width="761" height="475" a="90">
+			<texture>ui_pda_frame_sub</texture>
+
+			<right_frame_header x="8" y="16" width="745" height="27">
+				<texture>ui_string_02</texture>
+				
+			</right_frame_header>
+			
+			<work_area x="8" y="44" width="745" height="475">
+			</work_area>
+		</right_frame>
+	
 	
 	</main_wnd>
 	
