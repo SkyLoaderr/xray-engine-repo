@@ -61,33 +61,33 @@
 			<edit_gs_filter x="46" y2="163" y="273" width="476" height="21">
 				<texture>ui_linetextSmall_e</texture>
 			</edit_gs_filter>
-			<cap_server_properties x="0" y="191" width="194" height="17">
+			<cap_server_properties x="0" y="191" width="318" height="17">
 				<text font="letterica16" r="215" g="195" b="170" x="2">Server Properties</text>
 				<texture>ui_table_button_e</texture>
 			</cap_server_properties>		
-			<cap_players_list x="220" y="191" width="194" height="17">
+			<cap_players_list x="346" y="191" width="107" height="17">
 				<text font="letterica16" r="215" g="195" b="170" x="2">Players List</text>
 				<texture>ui_table_button_e</texture>
 			</cap_players_list>
-			<cap_frags x="414" y="191" width="54" height="17">
+			<cap_frags x="455" y="191" width="36" height="17">
 				<text font="letterica16" r="215" g="195" b="170" x="2">Frags</text>
 				<texture>ui_table_button_e</texture>
 			</cap_frags>
-			<cap_death x="468" y="191" width="54" height="17">
+			<cap_death x="491" y="191" width="36" height="17">
 				<text font="letterica16" r="215" g="195" b="170" x="2">Deaths</text>
 				<texture>ui_table_button_e</texture>
 			</cap_death>
-			<list_server_properties x="0" y="210" width="194" height="96" item_height="18">
+			<list_server_properties x="0" y="210" width="336" height="96" item_height="18">
 				<texture>ui_droplist_listbox</texture>
 				<text font="letterica16" r="255" g="255" b="255"/>
-				<frame x="0" y="210" width="174" height="96">
+				<frame x="0" y="210" width="318" height="96">
 					<texture>ui_droplist_listbox</texture>
 				</frame>
 			</list_server_properties>
-			<list_players_list x="219" y="210" width="321" height="96" item_height="18">
+			<list_players_list x="346" y="210" width="198" height="96" item_height="18">
 				<texture>ui_droplist_listbox</texture>
 				<text font="letterica16" r="255" g="255" b="255"/>
-				<frame x="219" y="210" width="301" height="96">
+				<frame x="346" y="210" width="180" height="96">
 					<texture>ui_droplist_listbox</texture>
 				</frame>
 			</list_players_list>

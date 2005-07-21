@@ -89,6 +89,7 @@ public:
 	virtual ETextAlignment	GetTextAlignment		();
 
 	// text additional
+	void		SetTextComplexMode			(bool md);
 	void		SetTextAlign_script			(u32 align);
 	u32			GetTextAlign_script			();
 	void		SetTextColor_script			(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
@@ -117,15 +118,12 @@ public:
 			float GetTextX					()						{return m_iTextOffsetX;}
 			float GetTextY					()						{return m_iTextOffsetY;}
 
-
-
-
 	void		SetStretchTexture			(bool stretch_texture)	{m_bStretchTexture = stretch_texture;}
 	bool		GetStretchTexture			()						{return m_bStretchTexture;}
 
 	void		SetClipRect					(Frect r);
 	Frect		GetSelfClipRect				();
-	Frect		GetClipperRect				();
+	Frect		GetClipperRect				();	
 
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap

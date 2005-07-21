@@ -71,6 +71,15 @@ void CServerList::Update(){
 				AfterDisappear();
 		}
 	}
+	CUIWindow::Update();
+}
+
+void CServerList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
+	if (m_bShowServerInfo && LIST_ITEM_CLICKED == msg && &m_list[LST_SERVER] == pWnd)
+	{
+        ClearDetailedServerInfo();
+		FillUpDetailedServerInfo();
+	}
 }
 
 void CServerList::BeforeAppear(){
@@ -98,18 +107,31 @@ void CServerList::FillUpDetailedServerInfo(){
 		ServerInfo srvInfo;
 		m_GSBrowser.GetServerInfoByIndex(&srvInfo, pItem->GetInfo()->info.Index);
 
-		xr_vector<PlayerInfo>::iterator it;
-		for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
 		{
-			PlayerInfo pf = *it;
+			xr_vector<PlayerInfo>::iterator it;
+			for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
+			{
+				PlayerInfo pf = *it;
+				CUIListItemAdv* pItemAdv = xr_new<CUIListItemAdv>();
+
+				char buf[16];
+
+				pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
+				pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
+				pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
+				m_list[LST_PLAYERS].AddItem(pItemAdv);
+			}
+		}
+
+		xr_vector<GameInfo>::iterator it;
+		for (it = srvInfo.m_aInfos.begin(); it != srvInfo.m_aInfos.end(); it++){
+			GameInfo gi = *it;
 			CUIListItemAdv* pItemAdv = xr_new<CUIListItemAdv>();
 
-			char buf[16];
+			pItemAdv->AddField(*gi.InfoName, m_list[LST_SRV_PROP].GetWidth()/2);
+			pItemAdv->AddField(*gi.InfoData, m_list[LST_SRV_PROP].GetWidth()/2);
 
-            pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
-			pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
-			pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
-			m_list[LST_PLAYERS].AddItem(pItemAdv);
+			m_list[LST_SRV_PROP].AddItem(pItemAdv);
 		}
 	}
 	else

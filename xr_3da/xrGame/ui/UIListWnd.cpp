@@ -292,9 +292,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			R_ASSERT(pListItem);
 
 			if(BUTTON_CLICKED == msg)
-			{
-				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
-				// 
+			{				
 				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
@@ -316,6 +314,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						pListItem2->SendMessage(this, LIST_ITEM_UNSELECT, pData);
 					}
 				}
+				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 			}
 			
 			else if(STATIC_FOCUS_RECEIVED == msg)

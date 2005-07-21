@@ -11,6 +11,7 @@ void CUIListItemAdv::AddField(LPCSTR val, float width){
 
 	CUIStatic* st = xr_new<CUIStatic>();
 	st->Init(GetNextLeftPos(), 0, width, height);
+	st->SetTextComplexMode(false);
 	st->SetText(val);
 	AttachChild(st);
 

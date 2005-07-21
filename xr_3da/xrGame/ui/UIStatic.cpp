@@ -175,6 +175,11 @@ void CUIStatic::SetFont(CGameFont* pFont){
 	m_pLines->SetFont(pFont);
 }
 
+void CUIStatic::SetTextComplexMode(bool md){
+	CREATE_LINES;
+	m_pLines->SetTextComplexMode(md);
+}
+
 CGameFont* CUIStatic::GetFont(){
 	CREATE_LINES;
 	return m_pLines->GetFont();
