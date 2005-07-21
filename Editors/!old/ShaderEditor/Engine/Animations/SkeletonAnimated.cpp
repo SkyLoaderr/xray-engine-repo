@@ -309,7 +309,7 @@ void CSkeletonAnimated::Update ()
 	u32 DT	= Device.dwTimeGlobal-Update_LastTime;
 	if (DT>66) DT=66;
 	float dt = float(DT)/1000.f;
-	Update_LastTime = Device.dwTimeGlobal;
+	Update_LastTime 	= Device.dwTimeGlobal;
 
 	BlendListIt	I,E;
 
@@ -322,6 +322,7 @@ void CSkeletonAnimated::Update ()
 		{
 			CBlend& B = *(*I);
 			if (B.dwFrame==Device.dwFrame)	continue;
+		    float sample_spf= 	SAMPLE_SPF / B.speed;
 			B.dwFrame		=	Device.dwFrame;
 			if (B.playing) 	B.timeCurrent += dt*B.speed; // stop@end - time is not going 
 			switch (B.blend) 
@@ -331,16 +332,16 @@ void CSkeletonAnimated::Update ()
 			case CBlend::eFixed:	
 				B.blendAmount 		+= dt*B.blendAccrue*B.blendPower;
 				if (B.blendAmount>B.blendPower)	B.blendAmount = B.blendPower; 
-				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
-					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;		// stop@end - time frozen at the end
+				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-sample_spf) )) {
+					B.timeCurrent	= B.timeTotal-sample_spf;		// stop@end - time frozen at the end
 					if (B.playing&&B.Callback)	B.Callback(&B);		// callback only once
 					B.playing		= FALSE;
 				}
 				break;
 			case CBlend::eAccrue:	
 				B.blendAmount 		+= dt*B.blendAccrue*B.blendPower;
-				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
-					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;		// stop@end - time frozen at the end
+				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-sample_spf) )) {
+					B.timeCurrent	= B.timeTotal-sample_spf;		// stop@end - time frozen at the end
 					if (B.playing&&B.Callback)	B.Callback(&B);		// callback only once
 					B.playing		= FALSE;
 					B.blend			= CBlend::eFixed;
