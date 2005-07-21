@@ -48,8 +48,13 @@ ph_snd_themes["radio_music"] = {"characters_voice\\human_01\\scenario\\bar\\radi
 	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_1"
 	                        }
 
-ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_]]}	                        
+ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_1]],
+									   [[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_2]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_2]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_3]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_4]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_5]]}	                        
 ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
 ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
 ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
