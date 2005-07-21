@@ -174,8 +174,10 @@ void CGamePersistent::WeathersUpdate()
 				ambient_effect_stop_time			= Device.dwTimeGlobal + eff->life_time;
 				if (eff){
 					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),FALSE);
-					ambient_particles->play_at_pos	(Device.vCameraPosition);
-					if (eff->sound._handle())			eff->sound.play_at_pos(0,Fvector().set(0,0,0),sm_2D);
+					Fvector pos; pos.add			(Device.vCameraPosition,eff->offset); 
+					ambient_particles->play_at_pos	(pos);
+					if (eff->sound._handle())		eff->sound.play_at_pos(0,pos);
+//.					if (eff->sound._handle())		eff->sound.play_at_pos(0,Fvector().set(0,0,0),sm_2D);
 				}
 			}
 		}
@@ -185,15 +187,18 @@ void CGamePersistent::WeathersUpdate()
 			if (bIndoor || Device.dwTimeGlobal>=ambient_effect_stop_time)
 				ambient_particles->Stop				();
 			// if particles playing update pos else - destroy
-			if (ambient_particles->IsPlaying()){
+			if (!ambient_particles->IsPlaying()){
+				ambient_particles->PSI_destroy		();
+				ambient_particles					= 0;
+			}
+/*.
+			else{
 				Fmatrix M; 
 				M.rotateY							(Environment.CurrentEnv.wind_direction);
 				M.translate_over					(Device.vCameraPosition);
 				ambient_particles->UpdateParent		(M,zero_vel);
-			}else{
-				ambient_particles->PSI_destroy		();
-				ambient_particles					= 0;
 			}
+*/
 		}
 	}
 }

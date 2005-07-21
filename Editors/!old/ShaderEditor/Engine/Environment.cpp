@@ -143,7 +143,8 @@ void CEnvAmbient::load(const shared_str& sect)
 			for (u32 k=0; k<cnt; ++k){
 				_GetItem(effs,k,tmp);
 				effects[k].life_time	= iFloor(pSettings->r_float(tmp,"life_time")*1000.f);
-				effects[k].particles	= pSettings->r_string(tmp,"particles");		VERIFY(effects[k].particles.size());
+				effects[k].particles	= pSettings->r_string	(tmp,"particles");		VERIFY(effects[k].particles.size());
+				effects[k].offset		= pSettings->r_fvector3	(tmp,"offset");
 				if (pSettings->line_exist(tmp,"sound"))
 					effects[k].sound.create	(TRUE,pSettings->r_string(tmp,"sound"));
 			}

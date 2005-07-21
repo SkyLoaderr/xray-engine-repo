@@ -37,7 +37,8 @@ public:
 	struct SEffect{
 		u32 			life_time;
 		ref_sound		sound;		
-		shared_str		particles;		
+		shared_str		particles;
+		Fvector			offset;
 	};
 	DEFINE_VECTOR(SEffect,EffectVec,EffectVecIt);
 protected:

@@ -63,6 +63,7 @@ void CSoundRender_Emitter::Event_Propagade	()
 	if (0==owner_data->g_type)	return;
 	if (0==SoundRender->Handler)return;
 
+	VERIFY						(_valid(p_source.volume));
 	// Calculate range
 	float	clip				= p_source.max_ai_distance*p_source.volume;
 	float	range				= _min(p_source.max_ai_distance,clip);
