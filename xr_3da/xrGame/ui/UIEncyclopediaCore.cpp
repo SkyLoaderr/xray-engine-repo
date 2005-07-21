@@ -71,10 +71,7 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 	m_iCurrentInfoListPos = 0;
 	// Удаляем текущую картинку
 	if (m_pCurrArticle && m_pCurrArticle->data())
-	{
 		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
-//		m_pCurrArticle->data()->image.SetWndPos(0, 0);
-	}
 
 	// для начала проверим, что нажатый элемент не рутовый
 	if (!pTVItem->IsRoot())
@@ -85,7 +82,6 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		Frect r = pInfoList->GetAbsoluteRect();
 
 		img.SetClipRect(r);
-//		UIImgMask.SetClipper(true, r);
 		AdjustImagePos(img);
 		pInfoList->AttachChild(&img);
 		
@@ -96,15 +92,9 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 
 		// Добавляем текст
 		CUIString str;
-		str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
-//		CUIStatic::PreprocessText(str.m_str, pInfoList->GetItemWidth() - 5, pInfoList->GetFont());
+		str.SetText(*CStringTable()(m_ArticlesDB[pTVItem->GetValue()]->data()->text.c_str()));
 		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
 
-//		m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
-//
-//		if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
-//			UIImgMask.Show(false);
-//		else
 
 		// Запоминаем текущий эдемент
 		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];

@@ -51,7 +51,7 @@ public:
 
 	void			ReloadArticles	();
 protected:
-
+	u32					prevArticlesCount;
 	// Элементы графического оформления
 	CUIFrameWindow		UIEncyclopediaIdxBkg;
 	CUIFrameWindow		UIEncyclopediaInfoBkg;

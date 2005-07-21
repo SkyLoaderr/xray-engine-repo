@@ -26,6 +26,7 @@ const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
 
 CUIEncyclopediaWnd::CUIEncyclopediaWnd()
 {
+	prevArticlesCount	= 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -145,7 +146,6 @@ void CUIEncyclopediaWnd::Draw()
 //////////////////////////////////////////////////////////////////////////
 void CUIEncyclopediaWnd::ReloadArticles()
 {
-	static u32 prevArticlesCount = 0;
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr() && pActor->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
 	{
