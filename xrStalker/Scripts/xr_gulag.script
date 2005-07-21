@@ -277,7 +277,11 @@ end
 function fract:get_population()
 	i = 0
 	for k,v in self.Object do
-		i = i + 1
+		-- если npc родился, то посчитать его только живым
+		-- если ещё не родился, посчитать в любом случае
+		if v == true or v:alive() then
+			i = i + 1
+		end
 	end
 	return i
 end
