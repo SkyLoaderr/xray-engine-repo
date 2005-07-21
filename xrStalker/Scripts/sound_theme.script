@@ -40,17 +40,20 @@ ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\mega
 	                      }
 ph_snd_themes["siren"] =  { "ambient\\siren2" }
 ph_snd_themes["bomb"] = {"detectors\\bomb_timer"}
+
+
 ph_snd_themes["radio_music"] = {"characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_4",
 	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_2",
 	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_3",
 	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_1"
 	                        }
-ph_snd_themes["dolg_megafon_1_hit"] = {"characters_voice\\human_01\\scenario\\bar\\dolg_megafon\\duty_gunfire_mega_1"
-	                        }
-ph_snd_themes["dolg_megafon_2_hit"] = {"characters_voice\\human_01\\scenario\\bar\\dolg_megafon\\duty_gunfire_mega_2"
-	                        }
-ph_snd_themes["dolg_megafon_kill"] = {"characters_voice\\human_01\\scenario\\bar\\dolg_megafon\\duty_gunfire_mega_3"
-	                        }
+
+ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_]]}	                        
+ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
+ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
+ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
+ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
