@@ -199,10 +199,10 @@
         <text>Вот флешка с информацией, которую передал профессор Круглов.</text>
     </string>
     <string id="bar_bar_barman_ecolog_flash_done_21">
-        <text>Хорошая работа, я думаю Долг будет благодарен за эту информацию. Вот твоя награда, деньги и интересная информация о полтергейсте.</text>
+        <text>Хорошая работа, я думаю Долг будет благодарен за эту информацию. Вот твоя награда.</text>
     </string>
     <string id="bar_bar_barman_ecolog_flash_done_31">
-        <text>Так-так. Информация говоришь? А ты хоть сам читал, что на ней написано? Иди с глаз долой.</text>
+        <text>Так-так. Информация говоришь? Прямо от профессора Круглова, да? Ты что, издеваться надо мной вздумал? "Я, профессор Круглов, во имя науки и человечества, стираю отчеты наших исследований" - это та информация которую ты должен был достать??? Даа... Я думаю Долг будет очень "доволен" когда узнает об этом.</text>
     </string>
     <string id="bar_bar_barman_killer_ambush_0">
         <text>Держи ПДА Тирана. Я выполнил твое задание.</text>
@@ -227,237 +227,6 @@
     </string>
     <string id="bar_bar_barman_veterans_finish_111">
         <text>Герой, слов нет, герой. Вот держи. Я думаю, ты не будешь обижен нашей сделкой.</text>
-    </string>
-    <string id="bar_bar_barmen_about_gorbun_0">
-        <text>Слушай, он вспоминал про какого-то Горбуна. Ты не знаешь кто это?</text>
-    </string>
-    <string id="bar_bar_barmen_about_gorbun_1">
-        <text>Хм. Надо подумать. Помниться видел его пару раз. Последний раз он с друзьями собирался за артефактами поглубже зайти. Трое их было. Горбун, Лысый, а третьего я не знаю. Кстати, лысый сейчас в баре сидит. Сходи, может он чего подскажет.</text>
-    </string>
-    <string id="bar_bar_barmen_about_gorbun_11">
-        <text>О, спасибо за наводку.</text>
-    </string>
-    <string id="bar_bar_barmen_about_psih_0">
-        <text>Чего с ним? Мычит что-то непонятное.</text>
-    </string>
-    <string id="bar_bar_barmen_about_psih_1">
-        <text>Да черт его разберет. Совсем, наверное, головой сдвинулся. Водки ему чтоли налить, или укол какой сделать.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_0">
-        <text>Работа для меня найдется?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_1">
-        <text>Нет, сегодня, ничего нет.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2">
-        <text>Есть работа, но только для ветеранов.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_21">
-        <text>Ближе к делу. Что нужно сделать?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_210">
-        <text>Дело такое, на "дикой территории" анархисты сбили вертолет с учеными. Уцелевших, включая профессора Круглова окружили. Будут ли боевики Свободы атаковать ученых, если не "договорятся", неизвестно. Круглов вез очень важную информацию, ее надо получит во что бы то ни стало и она не должна попасть к анархистам.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2101">
-        <text>Это все?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_21011">
-        <text>Времени у тебя до ночи, потому что ночью вылезут из своих нор мутанты и всех там попросту съедят. За это Долг обещает неплохо заплатить, а я заплачу тебе, только не дай анархистам получить информацию и доставь ее мне.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_210111">
-        <text>Хорошо, я согласен. Надеюсь информация стоит того.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2101111">
-        <text>Заметано. Как только информация будет у меня, ты получишь свое вознаграждение.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_210112">
-        <text>Нет уж. Пусть Долг со Свободой сами разбираются между собой, я в эту драку не полезу.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2101121">
-        <text>Ну как хочешь. Дело хозяйское. Смотри только не вздумай заигрывать со Свободой - Долг за это может все поотрывать.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_22">
-        <text>Извини, не буду пока браться.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2311">
-        <text>Есть одно серьезное дело. На "дикой территории" обретается группа сталкеров-ветеранов и последнее время участились случаи гибели одиноких сталкеров в их "районе". Ко мне приходили люди из Долга и просили разобраться с этими ветеранами. У Долга есть непровержимые доказательства причастности ветеранов к убийствам одиночек. Дело тут в том, что у них с Долгом старый договор, который Долг не может нарушить, а ребята эти уж слишком наглеют. Короче, Долг хочет чтобы их тихо убрали. Задание сложное, но хорошо оплачивается.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_23111">
-        <text>Еще какие-то дополнительные условия? И странно что Долг так все спускает.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_231111">
-        <text>Долг дорожит своей репутацией. Поэтому они хотят все сделать тихо. Тебе достаточно уничтожить главаря по кличке "Счастливчик" и принести его PDA в качестве доказательства.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2311111">
-        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_23111111">
-        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2311112">
-        <text>Нет, не буду браться.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_23111121">
-        <text>Ну как знаешь, просто помни что это хороший шанс получить благодарность от долговцев.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_251">
-        <text>Не спеши, Меченый. Ты еще с учеными не разобрался, а уже рвешься делать что-то еще.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_261">
-        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2611">
-        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_26111">
-        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2612">
-        <text>Нет, не буду браться.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_26121">
-        <text>Ну как знаешь.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_271">
-        <text>Не спеши, Меченый. Ты еще с ветеранами не разобрался, а уже рвешься делать что-то еще.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_3">
-        <text>Есть одно поручение. Но здесь о нем я говорить не желаю. Слишком шумно, да и лишних ушей много. Если интересует, пойдем поговорим наедине.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_31">
-        <text>Меня интересуют серьезные дела, идем обсудим наедине.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_311">
-        <text>Идем в мою комнату. Гарик тебя пропустит.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_32">
-        <text>Нет, сейчас не интересует.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_4">
-        <text>Есть работа и кое-что, о чем я здесь говорить не буду. Если хочешь, можем обсудить это наедине.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_41">
-        <text>Пока нет, в другой раз.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_0">
-        <text>Что за работа?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_1">
-        <text>Сталкеры вот уже несколько лет заинтересованы в открытии прохода на север, к центру. Но пока проход закрыт, и те, кто туда отправлялись, не возвращаются. Есть информация о некоем "выжигателе мозгов", который преграждает путь на север, но что это такое - никому не известно. По тем документам, которые ты принес с Агропрома, кое-что начинает проясняться. Похоже у "выжигателя мозгов" искусственная природа. Нужно больше данных, чтобы сказать точнее. В документах упоминается лаборатория X18, которая также работала над этим проектом. Описания сходятся с заброшенными подземными помещениям в Темной Долине, известными как "темная лаборатория".</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_11">
-        <text>Хочешь, чтобы я отправился в "темную лабораторию"? А какая оплата?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_111">
-        <text>Хехе. Сталкер свое дело знает, ага? Дело есть дело, но хабар карман не тянет. Хехе. Значит слушай, нужно хорошенько пошариться в лаборатории. Когда Зона бабахнула, ни у кого не было времени что-то эвакуировать. Наверняка много чего осталось. Если притащишь папки с документами об "антеннах" или о "излучателях", я тебе хорошо заплачу. Кроме того, в нагрузку поделюсь информацией о "выжигателе". Вот так то.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_1111">
-        <text>Хорошо, берусь.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_11111">
-        <text>Задание опасное, без вопросов. Что там сейчас творится неизвестно, да к тому же, Темная Долина всегда была небезопасным местом. Так что, поосторожнее там.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_111111">
-        <text>Что-то не покидает меня ощущение, что ты не первого сталкера на смерть посылаешь.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_1112">
-        <text>Нет, пока не хочу браться.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_11121">
-        <text>Твое дело, Меченный. Только знай, это единственная зацепка, которая поможет нам разгадать "выжигатель мозгов" и пройти на север. Рано или поздно кому-то прийдется этим заняться.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_3">
-        <text>Вовремя ты пришел, Меченый. Разобрал я то, что ученые передали и вот что я тебе скажу: "Выжигатель мозгов" это охрененная по размерам антенна, может быть даже не одна, излучение которой и гробит народ пачками. Но не все так просто. Излучение это идет не непрерывным потоком, а волнами. То есть, можно подгадать момент когда это излучение минимально, пробраться внутрь и отключить "антенну" через основное управление.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_31">
-        <text>Продолжай.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_311">
-        <text>В общем, все что нам надо это отключить ее нахрен. Если ты согласишься, то я тебе скину информацию о пиках и спадах излучения. Кроме того, только у тебя есть "шапка-невредимка", а без нее ни в какой спад не проберешься. Берешься?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_3111">
-        <text>Берусь. Эх, где наша не пропадала!?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_31111">
-        <text>Вот тебе вся необходимая информация. Удачи тебе, Меченый. И еще... береги себя.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_3112">
-        <text>Нет, хватит, я и так уже скоро психопатом по найму стану.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_31121">
-        <text>Тогда придется лет 40 ждать, пока на "Выжигателе" батарейки сядут. А может больше. Ты же советские военные разработки помнишь - они работали десятки лет, полностью раздолбанные, без половины деталей.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_complete_0">
-        <text>Я вернулся, задание выполнено.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_complete_1">
-        <text>Погоди, погоди. Идем в комнату, здесь слишком много людей.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_complete_11">
-        <text>Хорошо, идем.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_darklabdoc_done_0">
-        <text>Я принес папки из лаборатории, вот держи.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_darklabdoc_done_1">
-        <text>Так, но в общем все ясно. Не хочу тебя растраивать, но это всего лишь часть того, что нам нужно. Но здесь есть ссылка на вторую часть. Иди к ученным, добудь документы из x16.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_room_darklabdoc_done_11">
-        <text>Внатуре блин попал.</text>
-    </string>
-    <string id="bar_bar_barmen_start_1111">
-        <text>Ну что, приступим? Готов?</text>
-    </string>
-    <string id="bar_bar_barmen_start_1121">
-        <text>Ну, чего ждешь?</text>
-    </string>
-    <string id="bar_bar_barmen_start_1131">
-        <text>Хмм... А ты еще откуда взялся?</text>
-    </string>
-    <string id="bar_bar_barmen_start_121">
-        <text>Ну что, Меченный, документы из X16 при тебе?</text>
-    </string>
-    <string id="bar_bar_barmen_start_1211">
-        <text>Да, вот они.</text>
-    </string>
-    <string id="bar_bar_barmen_start_12111">
-        <text>Хорошо, очень хорошо. Идем, покажу что у меня есть.</text>
-    </string>
-    <string id="bar_bar_barmen_start_121111">
-        <text>Идем.</text>
-    </string>
-    <string id="bar_bar_barmen_start_1212">
-        <text>Нет.</text>
-    </string>
-    <string id="bar_bar_barmen_start_12121">
-        <text>От ты блин. Я тут понимаешь ли корячусь, лезу из кожи вон, а он прохлаждается. Быстро за документами! Без них наше дело не сдвинется с места!</text>
-    </string>
-    <string id="bar_bar_barmen_start_121211">
-        <text>Ладно.</text>
-    </string>
-    <string id="bar_bar_barmen_start_2">
-        <text>Здорово, Меченый. Принес документы с Агропрома?</text>
-    </string>
-    <string id="bar_bar_barmen_start_21">
-        <text>Нет, бумажек с Агропрома еще нет.</text>
-    </string>
-    <string id="bar_bar_barmen_start_211">
-        <text>Херово, Меченый, очень херово. Ты же понимаешь, как они нужны? А они очень нужны, поверь. У нас под боком выжигатель мозгов, а мы даже не в курсе, что это такое. Немедленно отправляйся за документами. Все разговоры позже.</text>
-    </string>
-    <string id="bar_bar_barmen_start_2111">
-        <text>Думаю, что понимаю.</text>
-    </string>
-    <string id="bar_bar_barmen_start_22">
-        <text>Да, вот держи документы с Агропрома.</text>
-    </string>
-    <string id="bar_bar_barmen_start_221">
-        <text>Отличная работа, Меченый. Похоже, в таких делах, на тебя можно положиться. Заходи почаще, у меня еще есть парочка интересных дел.</text>
-    </string>
-    <string id="bar_bar_barmen_start_3">
-        <text>Чего тебе, Меченый?</text>
-    </string>
-    <string id="bar_bar_barmen_start_4">
-        <text>Привет, Меченый. Время идет, а ты не меняешься, все такой же нелюдимый. Садись выпей, может подобреешь чуток.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_0">
         <text>Я хотел бы кое-что узнать.</text>
@@ -707,90 +476,6 @@
     </string>
     <string id="bar_bar_osvedomitel_trade_info_999">
         <text>В данный момент новой пока информации нет.</text>
-    </string>
-    <string id="bar_bar_psih_give_medkit_0">
-        <text>Тебе плохо? Может аптечку дать?</text>
-    </string>
-    <string id="bar_bar_psih_give_medkit_1">
-        <text>Больно! Я справлюсь! Я смогу! Аптечка! Да! Аптечку!</text>
-    </string>
-    <string id="bar_bar_psih_give_medkit_11">
-        <text>Держи, может поможет.</text>
-    </string>
-    <string id="bar_bar_psih_give_medkit_12">
-        <text>Извини, при себе нет.</text>
-    </string>
-    <string id="bar_bar_psih_start_gorbun_0">
-        <text>Горбун, это ты?</text>
-    </string>
-    <string id="bar_bar_psih_start_pain_11">
-        <text>Я, я нормальный!</text>
-    </string>
-    <string id="bar_bar_psih_start_pain_12">
-        <text>Я смогу, я справлюсь! Уйдите!</text>
-    </string>
-    <string id="bar_bar_psih_start_pain_13">
-        <text>Оставьте меня!</text>
-    </string>
-    <string id="bar_bar_psih_start_pain_14">
-        <text>Больно! Больно!</text>
-    </string>
-    <string id="bar_bar_psih_start_pain_15">
-        <text>Моя голова. Она. Она не моя!</text>
-    </string>
-    <string id="bar_bar_psih_talk_gorbun_0">
-        <text>Да, я - Горбун.</text>
-    </string>
-    <string id="bar_bar_psih_talk_gorbun_1">
-        <text>Нет, нет! Ты все врешь! Горбун умер!</text>
-    </string>
-    <string id="bar_bar_psih_talk_gorbun_2">
-        <text>Неужели?</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_0">
-        <text>Нет, я Лысый.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_1">
-        <text>Ты, сукин сын! Как ты смел? Оставить нас? Ты же обещал. Обещал! Понимаешь?</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_11">
-        <text>Мне жаль, действительно, очень жаль. Я просто испугался. Сперва эти призраки. Потом Горбун.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_111">
-        <text>Горбун! Что с ним? Ты его видел? Я думал что его убило первой волной.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_1111">
-        <text>Горбун побежал за тобой к антене. Я слышал только его маты и звуки выстрелов. После первой волны я попытался найти его, но боялся слишком близко подходить к антене. Я не видел его с тех пор.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_11111">
-        <text>Кто-то вытащил меня из-под антены. Если это был не ты, то наверное только Горбун. Врядли это сделали бы эти зомбированные уроды. А из сталкеров рассписание работы антены никто не знает больше.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_11112">
-        <text>Рябой. Я хочу вернуться туда. Я хочу найти Горбуна. Мне страшно подумать о том, что могло с ним случиться. Помоги мне.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_11113">
-        <text>Что-то ты осмелел. Я уже никуда не пойду. Но слушай сюда. Выжигатель иногда спит. В это время можно прокрасться мимо него. На этой флешке более детальная информация.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_11114">
-        <text>Спасибо тебе.</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_12">
-        <text>Ну обещал, извини! Но ты говорил что выжигатель уже не работает, что там безопасно!</text>
-    </string>
-    <string id="bar_bar_psih_talk_lisiy_121">
-        <text>Пошел к черту, Лысый. Ты прекрасно знал на что идешь!</text>
-    </string>
-    <string id="bar_bar_psih_talk_pain_0">
-        <text>Ты в порядке?</text>
-    </string>
-    <string id="bar_bar_psih_talk_pain_1">
-        <text>Больно! Больно! Уйдите. Я нормальный! Я справлюсь, я смогу.</text>
-    </string>
-    <string id="bar_bar_psih_talk_pain_2">
-        <text>Это, это! Бред. Бред кругом! Уйдите!</text>
-    </string>
-    <string id="bar_bar_psih_talk_pain_3">
-        <text>Не понимаю. Ничего не понимаю! Отпустите!</text>
     </string>
     <string id="bar_bar_visitors_10_start_71">
         <text>Чего тебе?</text>
@@ -1257,6 +942,54 @@
     <string id="bar_dolg_zastava_21">
         <text>О, привет старик! Рад, что тебя еще мутанты не сожрали.</text>
     </string>
+    <string id="bar_dolg_zastava_about_zastava_0">
+        <text>Перед заставой была какая-то бойня, что случилось?</text>
+    </string>
+    <string id="bar_dolg_zastava_about_zastava_1">
+        <text>Это останки от прошлой "волны" мутантов, которая прошла перед Выбросом. Дня три четыре затишье, а затем опять будет "волна". Если бы не мы, ни Бара ни Долга уже бы не было, мы последний заслон от обезумевших стай мутантов. Много наших тут полегло.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_0">
+        <text>Я бы хотел кое-что узнать.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_1">
+        <text>Что ты хочешь узнать?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2">
+        <text>Я тут впервые, можешь немного рассказать об этом месте?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21">
+        <text>До аварии в 86 это был обычный поселок городского типа. Теперь, как понимаешь, это уже разваленные остатки бывшего поселка. В местной подземной кафешке продовольственного магазина найдешь бар сталкеров, тут собираются сталкеры со всей Зоны, местный торговец работает здесь барменом. Содержит, так сказать, помещение. Тебе туда, если хочешь поторговать, пообщаться или интересное задание получить. Ну и новости последние узнаешь. Если идти от поселка, то придешь к старому заводу Росток. За заводом, находится база группировки "Долг". База закрыта от посторонних, не советую туда ломиться.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_211">
+        <text>Ты сказал здесь есть Бар. Можешь подсказать где он?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2111">
+        <text>В подвале за ангаром, я тебе отмечу на карте.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21111">
+        <text>Спасибо за информацию</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_212">
+        <text>Это территория Долга? А где можно найти лидера Долга?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2121">
+        <text>Да, это наша территория, находится под защитой Долга. Чужаков беспредельщиков здесь очень не любят. Веди себя аккуратно, пусть люди к тебе присмотрятся. А будешь стрелять, наш патруль тебя враз успокоит. К лидеру тебя так просто не пустят, но я тебе отметил на карте, куда подойти надо, дальше все от тебя будет зависеть.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21211">
+        <text>Спасибо за информацию</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_213">
+        <text>Ты сказал здесь есть Арена. Можешь подсказать где она?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2131">
+        <text>Как выйдешь из ангара с пробитой крышей сразу выйдешь к ней, я тебе отмечу на карте.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21311">
+        <text>Спасибо за информацию</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_214">
+        <text>Извини, я передумал</text>
+    </string>
     <string id="bar_dolg_zavskald_reward_0">
         <text>Я тут по делу.</text>
     </string>
@@ -1291,186 +1024,491 @@
         <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_0">
-        <text>I would like to find out something.</text>
+        <text>Я бы хотел кое-что узнать.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_1">
-        <text>Well, shoot!?</text>
+        <text>Что ты хочешь узнать?</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_11">
-        <text>Who are you and how did you get here?</text>
+        <text>Кто вы и как здесь оказались?</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_111">
-        <text>My name is Kruglov. I'm the professor of biology, I examine the Zone, classifying everything that I might find. Well, for example, yesterday I encountered very interesting species of Antropomorphus Dendromutantus Vulgaris. I work in the Zone, discovering and describing new types of mutated animals, their habits and peculiarities. Then this information is analyzed and I hand it over to the academy of sciences, something even tell to the barkeep. My discoveries have saved stalkers' lives more than once. In respond we seek help from the stalkers time to time. I was just carrying the results of my investigations to Yantar, when my helicopter fired upon.</text>
+        <text>Моя фамилия Круглов. Я профессор биологии, изучаю Зону, классифицирую все, что там найду. Вот, например, вчера наткнулся на один очень интересный вид Antropomorphus Dendromutantus Vulgaris. Работаю в Зоне, нахожу и описываю новые виды мутировавших животных, их повадки и особенности. Потом эта информация анализируется и я передаю ее в академию наук, кое-что передаю бармену. Мои открытия уже не раз спасали жизни сталкеров. Время от времени мы обращаемся к сталкерам, за помощью. Я как раз вез результаты своего исследования на Янтарь, когда мой вертолет был обстрелян.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_1112">
-        <text>Well. I guess it's now really pleasant to land the "wild territory" in the ablaze copter.</text>
+        <text>Да. Наверно неприятно садиться на "дикую территорию" в горящем вертолете.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_12">
-        <text>You are supposed to know a lot about the Zone. Maybe you can share with me the information you possess?</text>
+        <text>Ты наверно многое знаешь о Зоне. Может поделишься, тем что знаешь?</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_121">
-        <text>Zone - is the perfect gift to the humanity. No doubt there can be no living in here, radiation, anomalies, mutants are mortally dangerous, but they present a huge scientific value. This is nearly a natural experiment, a real reserve for the scientists. It's hard to imagine what might happen to the science after the examination of the Zone. New technologies, medicines, sorts of plants, herbs and edible ones. Biotechnologies, curing untreatable illnesses and what of it. The global Earth foodstuff problem might be solved. If it were not for the preventers we could possible be leading the humanity to the "golden age".</text>
+        <text>Зона - это замечательный подарок человечеству. Конечно, жить здесь нельзя, радиация, аномалии, мутанты - смертельно опасны, но они представляют собой огромную научную ценность. Это почти природный эксперимент, просто заповедник для ученых. Сложно представить, что станет с наукой, после изучения Зоны. Новые технологии, лекарства, сорта растений, лекарственных и употребляемых в пищу. Биотехнологии, исцеление неизлечимых болезней, да мало ли чего еще. Может быть пищевая проблема для всей Земли будет решена. Если бы только нам не мешали, может быть мы бы уже вели человечество в "золотой век".</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_1211">
-        <text>Guys from the Duty grouping think otherwise, and the Freedom is not eager to help you. As to me it shouldn't have existed at all.</text>
+        <text>Ребята из Долга думают иначе, да и Свобода не особо стремится вам помогать. А как по мне, лучше бы ее не было вовсе.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_12111">
-        <text>You can't conceive the entire picture in the global scale. Personally for you the problems here and now are much more significant than any progress in the future.</text>
+        <text>Вы не можете представить себе картину в целом, в глобальном масштабе. Для вас же проблемы здесь и сейчас важнее любого прогресса в будущем.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_121111">
-        <text>I'm not sure that I'm ready to sacrifice my life on the altar of science.</text>
+        <text>Не уверен, что готов положить свою жизнь на алтарь науки.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_1212">
-        <text>There might be a use in examining the Zone.</text>
+        <text>Может быть и есть польза в изучении Зоны.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_12121">
-        <text>Do you see it as well? How lovely is to find a conversable different from narrow-minded practician. I always say that the problem must be treated much broader, that the human yardsticks evaded. Maybe there is the harm from the Zone, but there can be benefit as well, and the benefit is huge I admit.</text>
+        <text>Вы тоже это видите? Как приятно найти в собеседнике не узколобого практика. Я всегда говорил, надо смотреть на проблему шире, отрешиться от человеческих мерок. Пусть даже есть вред от Зоны, но может же быть и польза, и польза огромная я вам скажу.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_121211">
-        <text>As a rule those "non narrow-minded practicians" can't survive in the Zone. That's the way the cookie crumbles.</text>
+        <text>Как правило "не узколобые практики" в Зоне не выживают. Так уж повелось.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_13">
-        <text>Why is Freedom hunting for the information?</text>
+        <text>Почему Свобода охотится за этой информацией?</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_131">
-        <text>Stalkers are like children, no offence though. They are really influenced by what they catch on. Consider for example stalkers legends about wish-granting "Monolith". This is truly a kind of childish folly. However this folly causes dangerous games with weapons and they even cost lives. And "Freedom" is behaving like an offended child, who is kept away from the dangerous information. Although they have not the sticks but guns and automatics. They see no bounds in acts of force, they are eager to shoot eliminating the researchers of the Zone. It seems to them that if they possessed this information the gates to the center of the Zone would open to them. Just naive fools, and, unfortunately, very dangerous fools.</text>
+        <text>Не хочу вас обидеть, но сталкеры - как дети. На них очень влияет то, что они узнают. Вы посмотрите на легенды сталкеров, про исполняющий желания "Монолит", например. Это же просто детский сад. Только игры в Зоне идут уже с оружием и стоят жизней. А "Свобода" ведет себя как обиженный ребенок, от которого утаивают опасную информацию. Вот только в руках у них не палки, а автоматы. И для них нет преград в применении силы, они легко начинают стрелять, уничтожая исследователей Зоны. Им кажется, получи они эту информацию, как перед ними откроются ворота к центру Зоны. Просто наивные дураки и, к сожалению, очень опасные дураки.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_1311">
-        <text>If I were you I wouldn't neglect the legends at all. Some people risked their lives in order to deliver this information.</text>
+        <text>Я бы легенды так легко не сбрасывал со счетов. Кое-кто жизнью рисковал, чтобы донести эту информацию.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_14">
-        <text>Unfortunately, I've got to go. Good luck.</text>
+        <text>К сожалению, мне пора. Удачи.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_11">
-        <text>Stalker, help! We were returning from Yantar, when we were hit by those bozos from "Freedom". It's said that they require this information, but I know that they'll shoot us down. Lead me to the Yantar and I'll share with you everything I know about the "brains burner", and bartender is definitely to pay you well for this kind of info.</text>
+        <text>Сталкер, помоги! Мы возвращались с Янтаря, когда нас сбили эти придурки из "Свободы". Говорят что им информация нужна, но я то знаю, что перестреляют они нас. Выведи меня к Янтарю и я поделюсь с тобой тем что знаю о вашем "выжигателе мозгов", а бармен тебе за это хорошо заплатит.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_111">
-        <text>Okay then, follow me.</text>
+        <text>Хорошо, следуй за мной.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1111">
-        <text>As you say, stalker. I'm under your command, just help me out of here.</text>
+        <text>Как ты скажешь, сталкер. Я в твоей власти, только выведи меня отсюда.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_112">
-        <text>No. Extricate yourself on your own.</text>
+        <text>Нет. Выбирайся сам.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1121">
-        <text>Oh, I'm sure you've said that without of spite. Anyway I won't manage to get out of here on my own. If you change your mind - I'll wait here, if I don't die earlier.</text>
+        <text>Нет. Я уверен, что ты это не со зла. Сам отсюда я все равно никуда не смогу уйти. Если передумаешь - я буду здесь, если не умру.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_21">
-        <text>Hurry up, we need to get out of here quickly.</text>
+        <text>Поторопись, нужно поскорее выбраться отсюда.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_31">
-        <text>Ooh. Are we really in safety? At last. Thanks for your help. I'm in the eternal debt before you, and now take this flash-drive. It contains the results of this expedition. I'm dead sure that the barkeep gives a worthy loot for it.</text>
+        <text>Фух. Неужели мы в безопасности? Наконец-то. Спасибо тебе за помощь. Я вечный твой должник, а пока возьми вот эту флешку. На ней результаты этой экспедиции. Уверен, что бармен за эту информацию достойно заплатит.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_41">
-        <text>Greetings, stalker. On behalf of the entire world's science I express my respect to you.</text>
+        <text>Здравствуй, сталкер. От имени всей мировой науки выражаю тебе свое почтение.</text>
     </string>
     <string id="bar_ecolog_dialog_0">
-        <text>Stalker, professor wants to talk to thee. Get to him, be so kind.</text>
+        <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>
     </string>
     <string id="bar_svoboda_dialog_0">
-        <text>Set all questions to Wolfhound, our supremo.</text>
+        <text>Все вопросы задавай Волкодаву, нашему старшему.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_0">
-        <text>I wanted to find out something.</text>
+        <text>Я бы хотел кое-что узнать.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1">
-        <text>Find out? What an insolence. Well okay try and ask.</text>
+        <text>Узнать? Ну наглец. Ну давай, попробуй, спроси.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_11">
-        <text>What does the "Freedom" grouping look like?</text>
+        <text>Что из себя представляет группировка "Свобода"?</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_111">
-        <text>Freedom grouping includes stalkers, who consider the Zone to be the common property. While the militaries and scientists desire to monopolize it and become the sole owners of the unique information and materials. We regard it as improper and do our best to fight those ones who try to become the individual proprietors of the Zone and the information about it. By the way owing to this we had the conflict with Duty emerged.</text>
+        <text>Группировка Свобода - это сталкеры, которые считают, что Зона - это всеобщее достояние. А те же военные и ученые хотят монополизировать ее, и стать единственными владельцами уникальной информации и материалов. Мы считаем это неправильным и всеми силами боремся против тех, кто пытается стать единоличным хозяином Зоны и информации о ней. На этой почве, кстати, и возник наш конфликт с Долгом.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1111">
-        <text>I would like to join Freedom. How can I do that?</text>
+        <text>Я бы хотел присоединиться к Свободе. Как это сделать?</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_11111">
-        <text>Get to our leader and he'll decide, if you are worthy of becoming Freedom soldier. Can give you certain task, having fulfilled which you'll be accepted with our brethren.</text>
+        <text>Приходишь к нашему лидеру и он решает, достоин ли ты стать бойцом Свободы. Может дать тебе какое-то задание, выполнив которое, тебя примут к нам.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_111111">
-        <text>Thanks for the information.</text>
+        <text>Спасибо за информацию.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1112">
-        <text>Why do you carry war with the Duty?</text>
+        <text>Почему вы воюете с Долгом?</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_11121">
-        <text>They are the monopolists as well, but if the scientists are examining the Zone, "duties" on the other hand attempt to close the Zone from everyone, except for them, for sure. According to their words they want to destroy the Zone, they say it's pure evil, that requires total annihilation, they purge the world from "Zone's pests". However they pay attention to no reasonable arguments. We know such humanists with attractive slogans - remember my words, their only desire is to take everything into possession.</text>
+        <text>Они - те же монополисты, но если ученые изучают Зону, то "долговцы" стараются закрыть Зону от всех, кроме себя, разумеется. По их словам, они хотят Зону уничтожить, дескать это чистое зло, подлежащее искоренению, и как крестоносцы очищают мир от "заразы Зоны". И никаких разумных доводов слушать не хотят. Знаем мы таких гуманистов с красивыми лозунгами - попомни мои слова, все себе заграбастать хотят.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_111211">
-        <text>hem...</text>
+        <text>хм...</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_12">
-        <text>Who are you and what are you engaged in?</text>
+        <text>Кто ты и чем занимаешься?</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_121">
-        <text>As I've said before my name is Wolfhound, while here in the Zone I'm in command of Freedom grouping named Canis. Until my arrival to the Zone I war a mercenary all over the world, used to get a fair payment for this. Been to Afghanistan, Bosnia, Iraq and in dozen of hot spots more, received invaluable experience, dozen of scars and two steel ribs.</text>
+        <text>Как я говорил, зовут меня Волкодав, а здесь, в Зоне, я командую подразделением Свободы под названием Псы. До Зоны наемничал по всему миру, был высокооплачиваемым воякой. Был в Афгане, в Боснии, в Ираке, еще в десятке горячих точек, где приобрел бесценный жизненный опыт, десяток шрамов и два стальных ребра.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1211">
-        <text>And why have you gone to the Zone?</text>
+        <text>А чего в Зону ушел?</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_12111">
-        <text>I was once abandoned by my employers. I was more dead than alive when I got out from there, since then I've got artificial ribs in my body. Recovered, visited my bosses then, after that I've decided to go there where they won't follow me to. But there are really few such places in the world - these employers are quite touchy, heh. Then I found the Zone, only such nuts as mine canisians are feeling themselves comfortable in here, the others are trying to get out as quick as possible.</text>
+        <text>А подставили меня как-то работодатели. Еле живой выбрался, с тех пор у меня ребра неродные и стоят. Вычухался, навестил их и после этого решил, что надо податься туда, куда они за мной не пойдут. А таких мест на свете мало - обидчивые они у меня, работодатели. А тут Зона подвернулась, здесь только такие психи как я и мои Псы нормально себя чувствуют, остальные же пытаются слинять поскорее.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_121111">
-        <text>Yes, Zone is not a place for sissified suckers.</text>
+        <text>Да, Зона - это место не для маменькиных сынков.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_13">
-        <text>Who are those Canisians?</text>
+        <text>Кто такие Псы?</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_131">
-        <text>Canisians are my proud, Freedom force, for special operations. They follow me through thick and thin, we leave only corpses and ruins behind. Each hireling has been picked out by me personally. If you want to join us, you should do your best. I don't take whoever to the troop. Only best of the best.</text>
+        <text>Псы - это моя гордость, отряд Свободы, для особых операций. Идут за мной в огонь и в воду, за нами только трупы и руины остаются. Каждого бойца лично отбирал. Если ты хочешь к нам податься, то сильно постараться придется. Я кого попало в отряд не беру. Только лучших из лучших.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_1311">
-        <text>Clear.</text>
+        <text>Ясно.</text>
     </string>
     <string id="bar_svoboda_volkodav_info_dp_14">
-        <text>I've changed my mind.</text>
+        <text>Я передумал.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_11">
-        <text>Hi. I'm Wolfhound the leader of this troop. We have a little hunt. Blocked the scientists behind the helicopter. My guys lay constant fire on them, in order not to let them run away. Join us, we're gonna finish them now. If you help us, I'll reward you with the scientific-suit, we've found it in the knocked down copter.</text>
+        <text>Здоров. Я Волкодав, вожак этой стаи. У нас тут небольшая охота. Зажали ученых, там за вертолетом. Мои ребята потихоньку их обстреливают, чтоб не сбежали. Ты давай подключайся, сейчас будем добивать. Если поможешь, то отдам тебе скафандр научный, из сбитого вертолета вытащили.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_111">
-        <text>I'll take part in the hunt, who's honored to be the prey?</text>
+        <text>Я буду участвовать в охоте, кто добыча?</text>
     </string>
     <string id="bar_svoboda_volkodav_start_1111">
-        <text>Your goal is professor Kruglov, eliminate him, otherwise he'll escape during the fight, I know his type. If you manage to kill him, the suit is yours, if not then unlucky you are.</text>
+        <text>Твоя цель - профессор Круглов, убей его, иначе сбежит он во время боя, я их породу знаю. Если убьешь его, скафандр твой, нет значит не судьба.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_11111">
-        <text>To the business.</text>
+        <text>За дело.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_112">
-        <text>No, I reject to participate.</text>
+        <text>Нет, я отказываюсь от участия.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_1121">
-        <text>Then don't Тогда не лезь под пули, смотри как охотится стая Волкодава.</text>
+        <text>Тогда не лезь под пули, смотри как охотится стая Волкодава.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_21">
-        <text>Proceed your own way, Stalker.</text>
+        <text>Иди своей дорогой, Сталкер.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_31">
-        <text>Later, stalker, later. Hunt's first of all!</text>
+        <text>Потом, сталкер, все потом. Сперва охота!</text>
     </string>
     <string id="bar_svoboda_volkodav_start_41">
-        <text>Perfect job. Killed Kruglov - take the scientific suit.</text>
+        <text>Отличная работа. Завалил Круглова, вот держи скафандр научный.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_51">
-        <text>Well, stalker, I guess you are capable only to hunt the rats. We've done the whole job so you'll receive nothing. Go practice yourself.</text>
+        <text>Да сталкер, тебе под силу разве что на крыс охотится. Мы всю работу сами сделали, так что ты ничего не получишь. Иди дальше тренируйся.</text>
     </string>
     <string id="bar_svoboda_volkodav_start_61">
-        <text>It was a worthy hunt. What do you need?</text>
+        <text>Веселая была охота. Что тебе нужно?</text>
     </string>
-    <string id="barman_dialog_0">
-        <text>default text</text>
+    <string id="bar_bar_barmen_about_gorbun_0">
+        <text>Слушай, он вспоминал про какого-то Горбуна. Ты не знаешь кто это?</text>
     </string>
-    <string id="barmen_dialog_0">
-        <text>Привет, Меченый. Вован уже рассказал о тебе. Стрелка значит ищешь, ну что ж, кой чего знаю о нем.</text>
+    <string id="bar_bar_barmen_about_gorbun_1">
+        <text>Хм. Надо подумать. Помниться видел его пару раз. Последний раз он с друзьями собирался за артефактами поглубже зайти. Трое их было. Горбун, Лысый, а третьего я не знаю. Кстати, лысый сейчас в баре сидит. Сходи, может он чего подскажет.</text>
     </string>
-    <string id="barmen_dialog_1">
-        <text>text in default</text>
+    <string id="bar_bar_barmen_about_gorbun_11">
+        <text>О, спасибо за наводку.</text>
     </string>
-    <string id="barmen_dialog_2">
-        <text>text in default</text>
+    <string id="bar_bar_barmen_about_psih_0">
+        <text>Чего с ним? Мычит что-то непонятное.</text>
     </string>
+    <string id="bar_bar_barmen_about_psih_1">
+        <text>Да черт его разберет. Совсем, наверное, головой сдвинулся. Водки ему чтоли налить, или укол какой сделать.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_0">
+        <text>Работа для меня найдется?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_1">
+        <text>Нет, сегодня, ничего нет.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2">
+        <text>Есть работа, но только для ветеранов.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_21">
+        <text>Ближе к делу. Что нужно сделать?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_210">
+        <text>Дело такое, на "дикой территории" анархисты сбили вертолет с учеными. Уцелевших, включая профессора Круглова окружили. Будут ли боевики Свободы атаковать ученых, если не "договорятся", неизвестно. Круглов вез очень важную информацию, ее надо получит во что бы то ни стало и она не должна попасть к анархистам.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2101">
+        <text>Это все?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_21011">
+        <text>Времени у тебя до ночи, потому что ночью вылезут из своих нор мутанты и всех там попросту съедят. За это Долг обещает неплохо заплатить, а я заплачу тебе, только не дай анархистам получить информацию и доставь ее мне.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_210111">
+        <text>Хорошо, я согласен. Надеюсь информация стоит того.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2101111">
+        <text>Заметано. Как только информация будет у меня, ты получишь свое вознаграждение.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_210112">
+        <text>Нет уж. Пусть Долг со Свободой сами разбираются между собой, я в эту драку не полезу.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2101121">
+        <text>Ну как хочешь. Дело хозяйское. Смотри только не вздумай заигрывать со Свободой - Долг за это может все поотрывать.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_22">
+        <text>Извини, не буду пока браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2311">
+        <text>Есть одно серьезное дело. На "дикой территории" обретается группа сталкеров-ветеранов и последнее время участились случаи гибели одиноких сталкеров в их "районе". Ко мне приходили люди из Долга и просили разобраться с этими ветеранами. У Долга есть непровержимые доказательства причастности ветеранов к убийствам одиночек. Дело тут в том, что у них с Долгом старый договор, который Долг не может нарушить, а ребята эти уж слишком наглеют. Короче, Долг хочет чтобы их тихо убрали. Задание сложное, но хорошо оплачивается.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_23111">
+        <text>Еще какие-то дополнительные условия? И странно что Долг так все спускает.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_231111">
+        <text>Долг дорожит своей репутацией. Поэтому они хотят все сделать тихо. Тебе достаточно уничтожить главаря по кличке "Счастливчик" и принести его PDA в качестве доказательства.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2311111">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_23111111">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2311112">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_23111121">
+        <text>Ну как знаешь, просто помни что это хороший шанс получить благодарность от долговцев.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_251">
+        <text>Не спеши, Меченый. Ты еще с учеными не разобрался, а уже рвешься делать что-то еще.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_261">
+        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2611">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_26111">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2612">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_26121">
+        <text>Ну как знаешь.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_271">
+        <text>Не спеши, Меченый. Ты еще с ветеранами не разобрался, а уже рвешься делать что-то еще.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3">
+        <text>Есть одно поручение. Но здесь о нем я говорить не желаю. Слишком шумно, да и лишних ушей много. Если интересует, пойдем поговорим наедине.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_31">
+        <text>Меня интересуют серьезные дела, идем обсудим наедине.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_311">
+        <text>Идем в мою комнату. Гарик тебя пропустит.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32">
+        <text>Нет, сейчас не интересует.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_4">
+        <text>Есть работа и кое-что, о чем я здесь говорить не буду. Если хочешь, можем обсудить это наедине.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_41">
+        <text>Пока нет, в другой раз.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_0">
+        <text>Что за работа?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_1">
+        <text>Сталкеры вот уже несколько лет заинтересованы в открытии прохода на север, к центру. Но пока проход закрыт, и те, кто туда отправлялись, не возвращаются. Есть информация о некоем "выжигателе мозгов", который преграждает путь на север, но что это такое - никому не известно. По тем документам, которые ты принес с Агропрома, кое-что начинает проясняться. Похоже у "выжигателя мозгов" искусственная природа. Нужно больше данных, чтобы сказать точнее. В документах упоминается лаборатория X18, которая также работала над этим проектом. Описания сходятся с заброшенными подземными помещениям в Темной Долине, известными как "темная лаборатория".</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_11">
+        <text>Хочешь, чтобы я отправился в "темную лабораторию"? А какая оплата?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_111">
+        <text>Хехе. Сталкер свое дело знает, ага? Дело есть дело, но хабар карман не тянет. Хехе. Значит слушай, нужно хорошенько пошариться в лаборатории. Когда Зона бабахнула, ни у кого не было времени что-то эвакуировать. Наверняка много чего осталось. Если притащишь папки с документами об "антеннах" или о "излучателях", я тебе хорошо заплачу. Кроме того, в нагрузку поделюсь информацией о "выжигателе". Вот так то.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_1111">
+        <text>Хорошо, берусь.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_11111">
+        <text>Задание опасное, без вопросов. Что там сейчас творится неизвестно, да к тому же, Темная Долина всегда была небезопасным местом. Так что, поосторожнее там.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_111111">
+        <text>Что-то не покидает меня ощущение, что ты не первого сталкера на смерть посылаешь.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_1112">
+        <text>Нет, пока не хочу браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_11121">
+        <text>Твое дело, Меченный. Только знай, это единственная зацепка, которая поможет нам разгадать "выжигатель мозгов" и пройти на север. Рано или поздно кому-то прийдется этим заняться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_3">
+        <text>Вовремя ты пришел, Меченый. Разобрал я то, что ученые передали и вот что я тебе скажу: "Выжигатель мозгов" это охрененная по размерам антенна, может быть даже не одна, излучение которой и гробит народ пачками. Но не все так просто. Излучение это идет не непрерывным потоком, а волнами. То есть, можно подгадать момент когда это излучение минимально, пробраться внутрь и отключить "антенну" через основное управление.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_31">
+        <text>Продолжай.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_311">
+        <text>В общем, все что нам надо это отключить ее нахрен. Если ты согласишься, то я тебе скину информацию о пиках и спадах излучения. Кроме того, только у тебя есть "шапка-невредимка", а без нее ни в какой спад не проберешься. Берешься?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_3111">
+        <text>Берусь. Эх, где наша не пропадала!?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_31111">
+        <text>Вот тебе вся необходимая информация. Удачи тебе, Меченый. И еще... береги себя.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_3112">
+        <text>Нет, хватит, я и так уже скоро психопатом по найму стану.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_31121">
+        <text>Тогда придется лет 40 ждать, пока на "Выжигателе" батарейки сядут. А может больше. Ты же советские военные разработки помнишь - они работали десятки лет, полностью раздолбанные, без половины деталей.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_complete_0">
+        <text>Я вернулся, задание выполнено.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_complete_1">
+        <text>Погоди, погоди. Идем в комнату, здесь слишком много людей.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_complete_11">
+        <text>Хорошо, идем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_darklabdoc_done_0">
+        <text>Я принес папки из лаборатории, вот держи.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_darklabdoc_done_1">
+        <text>Так, но в общем все ясно. Не хочу тебя растраивать, но это всего лишь часть того, что нам нужно. Но здесь есть ссылка на вторую часть. Иди к ученным, добудь документы из x16.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_darklabdoc_done_11">
+        <text>Внатуре блин попал.</text>
+    </string>
+    <string id="bar_bar_barmen_start_1111">
+        <text>Ну что, приступим? Готов?</text>
+    </string>
+    <string id="bar_bar_barmen_start_1121">
+        <text>Ну, чего ждешь?</text>
+    </string>
+    <string id="bar_bar_barmen_start_1131">
+        <text>Хмм... А ты еще откуда взялся?</text>
+    </string>
+    <string id="bar_bar_barmen_start_121">
+        <text>Ну что, Меченный, документы из X16 при тебе?</text>
+    </string>
+    <string id="bar_bar_barmen_start_1211">
+        <text>Да, вот они.</text>
+    </string>
+    <string id="bar_bar_barmen_start_12111">
+        <text>Хорошо, очень хорошо. Идем, покажу что у меня есть.</text>
+    </string>
+    <string id="bar_bar_barmen_start_121111">
+        <text>Идем.</text>
+    </string>
+    <string id="bar_bar_barmen_start_1212">
+        <text>Нет.</text>
+    </string>
+    <string id="bar_bar_barmen_start_12121">
+        <text>От ты блин. Я тут понимаешь ли корячусь, лезу из кожи вон, а он прохлаждается. Быстро за документами! Без них наше дело не сдвинется с места!</text>
+    </string>
+    <string id="bar_bar_barmen_start_121211">
+        <text>Ладно.</text>
+    </string>
+    <string id="bar_bar_barmen_start_2">
+        <text>Здорово, Меченый. Принес документы с Агропрома?</text>
+    </string>
+    <string id="bar_bar_barmen_start_21">
+        <text>Нет, бумажек с Агропрома еще нет.</text>
+    </string>
+    <string id="bar_bar_barmen_start_211">
+        <text>Херово, Меченый, очень херово. Ты же понимаешь, как они нужны? А они очень нужны, поверь. У нас под боком выжигатель мозгов, а мы даже не в курсе, что это такое. Немедленно отправляйся за документами. Все разговоры позже.</text>
+    </string>
+    <string id="bar_bar_barmen_start_2111">
+        <text>Думаю, что понимаю.</text>
+    </string>
+    <string id="bar_bar_barmen_start_22">
+        <text>Да, вот держи документы с Агропрома.</text>
+    </string>
+    <string id="bar_bar_barmen_start_221">
+        <text>Отличная работа, Меченый. Похоже, в таких делах, на тебя можно положиться. Заходи почаще, у меня еще есть парочка интересных дел.</text>
+    </string>
+    <string id="bar_bar_barmen_start_3">
+        <text>Чего тебе, Меченый?</text>
+    </string>
+    <string id="bar_bar_barmen_start_4">
+        <text>Привет, Меченый. Время идет, а ты не меняешься, все такой же нелюдимый. Садись выпей, может подобреешь чуток.</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_0">
+        <text>Тебе плохо? Может аптечку дать?</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_1">
+        <text>Больно! Я справлюсь! Я смогу! Аптечка! Да! Аптечку!</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_11">
+        <text>Держи, может поможет.</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_12">
+        <text>Извини, при себе нет.</text>
+    </string>
+    <string id="bar_bar_psih_start_gorbun_0">
+        <text>Горбун, это ты?</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_11">
+        <text>Я, я нормальный!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_12">
+        <text>Я смогу, я справлюсь! Уйдите!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_13">
+        <text>Оставьте меня!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_14">
+        <text>Больно! Больно!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_15">
+        <text>Моя голова. Она. Она не моя!</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_0">
+        <text>Да, я - Горбун.</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_1">
+        <text>Нет, нет! Ты все врешь! Горбун умер!</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_2">
+        <text>Неужели?</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_0">
+        <text>Нет, я Лысый.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_1">
+        <text>Ты, сукин сын! Как ты смел? Оставить нас? Ты же обещал. Обещал! Понимаешь?</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11">
+        <text>Мне жаль, действительно, очень жаль. Я просто испугался. Сперва эти призраки. Потом Горбун.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_111">
+        <text>Горбун! Что с ним? Ты его видел? Я думал что его убило первой волной.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_1111">
+        <text>Горбун побежал за тобой к антене. Я слышал только его маты и звуки выстрелов. После первой волны я попытался найти его, но боялся слишком близко подходить к антене. Я не видел его с тех пор.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11111">
+        <text>Кто-то вытащил меня из-под антены. Если это был не ты, то наверное только Горбун. Врядли это сделали бы эти зомбированные уроды. А из сталкеров рассписание работы антены никто не знает больше.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11112">
+        <text>Рябой. Я хочу вернуться туда. Я хочу найти Горбуна. Мне страшно подумать о том, что могло с ним случиться. Помоги мне.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11113">
+        <text>Что-то ты осмелел. Я уже никуда не пойду. Но слушай сюда. Выжигатель иногда спит. В это время можно прокрасться мимо него. На этой флешке более детальная информация.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11114">
+        <text>Спасибо тебе.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_12">
+        <text>Ну обещал, извини! Но ты говорил что выжигатель уже не работает, что там безопасно!</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_121">
+        <text>Пошел к черту, Лысый. Ты прекрасно знал на что идешь!</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_0">
+        <text>Ты в порядке?</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_1">
+        <text>Больно! Больно! Уйдите. Я нормальный! Я справлюсь, я смогу.</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_2">
+        <text>Это, это! Бред. Бред кругом! Уйдите!</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_3">
+        <text>Не понимаю. Ничего не понимаю! Отпустите!</text>
+    </string>
+
+
 </string_table>
