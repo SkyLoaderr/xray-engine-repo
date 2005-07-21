@@ -66,15 +66,7 @@ void CCar::SCarSound::Update()
 		snd_engine.set_volume			(volume);
 		break;
 	case sndStalling:
-	case sndStoping:
-		u32 time_passed=Device.dwTimeGlobal-time_state_start;
-		if(time_passed>2500) 
-		{
-			SwitchOff();
-			return;
-		}
-		snd_engine.set_volume(volume*1000.f/time_passed);
-		break;
+	case sndStoping: break;
 	}
 }
 
@@ -94,7 +86,7 @@ void CCar::SCarSound::Destroy()
 
 void CCar::SCarSound::SwitchOff()
 {
-	snd_engine.stop();
+	snd_engine.stop_deffered();
 	eCarSound=sndOff;
 	pcar->processing_deactivate();
 }
@@ -103,21 +95,19 @@ void CCar::SCarSound::Start()
 {
 	if(eCarSound==sndOff) SwitchOn();
 	eCarSound=sndStarting;
-	time_state_start=Device.dwTimeGlobal;
+
 }
 
 void CCar::SCarSound::Stall()
 {
 	if(eCarSound==sndOff)return;
 	eCarSound=sndStalling;
-	time_state_start=Device.dwTimeGlobal;
 }
 
 void CCar::SCarSound::Stop()
 {
 	if(eCarSound==sndOff)return;
 	eCarSound=sndStoping;
-	time_state_start=Device.dwTimeGlobal;
 }
 
 void CCar::SCarSound::Drive()
@@ -125,7 +115,6 @@ void CCar::SCarSound::Drive()
 
 	if(eCarSound==sndOff) SwitchOn();
 	eCarSound=sndDrive;
-	time_state_start=Device.dwTimeGlobal;
 }
 void CCar::SCarSound::TransmissionSwitch()
 {
