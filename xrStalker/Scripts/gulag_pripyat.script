@@ -17,43 +17,74 @@ function load_job(sj, gname, type, squad, groups)
 end
 
 function f_predicate1(obj) 
-	return obj:profile_name() == "veteran"
+	return obj:profile_name() == "stalker_veteran"
 end
 
 function f_predicate2(obj) 
-    local t = obj:best_weapon() 
-	return obj:profile_name() == "stalker_veteran" and t and t:animation_slot() == "4"
+    local t = obj:best_weapon()
+    printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
+	return obj:profile_name() == "stalker_veteran" and t:name() == "wpn_rpg70080" --and t and t:animation_slot() == "4"
 end
 
 function load_job_followers(sj, gname, type, squad, groups)
 	-----------------------------------------------------------------------
-	-- À»ƒ≈– - œ–»Œ–»“≈“ 3
+	-- À»ƒ≈– - œ–»Œ–»“≈“ 2,3
 	-----------------------------------------------------------------------
 	--- state: kamp
 	t = { section = "logic@pri_followers_leader_kamp",
 		idle = 0,
-		prior = 3, state = { state_kamp },
+		prior = 2, state = { state_kamp },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave1
 	t = { section = "logic@pri_followers_leader_wave1",
 		idle = 0,
-		prior = 3, state = { state_wave1 },
+		prior = 2, state = { state_wave1 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave2
 	t = { section = "logic@pri_followers_leader_wave2",
 		idle = 0,
+		prior = 2, state = { state_wave2 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
+		predicate = f_predicate1
+	}
+	table.insert(sj, t)
+	-----------------------------------------------------------------------
+	-- √–¿Õ¿“ŒÃ≈“◊»  - œ–»Œ–»“≈“ 3,2
+	-----------------------------------------------------------------------
+	--- state: kamp
+	t = { section = "logic@pri_followers_bomber_kamp",
+		idle = 0,
+		prior = 3, state = { state_kamp },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = f_predicate2
+	}
+	table.insert(sj, t)
+	--- state: wave1
+	t = { section = "logic@pri_followers_bomber_wave1",
+		idle = 0,
+		prior = 3, state = { state_wave1 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
+		predicate = f_predicate2
+	}
+	table.insert(sj, t)
+	--- state: wave2
+	t = { section = "logic@pri_followers_bomber_wave2",
+		idle = 0,
 		prior = 3, state = { state_wave2 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate2
 	}
 	table.insert(sj, t)
 	-----------------------------------------------------------------------
@@ -65,7 +96,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_kamp },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave1
@@ -74,7 +105,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave1 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave2
@@ -83,20 +114,9 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave2 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
-	--- state: wave3 - √–¿Õ¿“ŒÃ≈“◊»  - œ–»Œ–»“≈“ 2
---[[
-	t = { section = "logic@pri_followers_nap1_wave3",
-		idle = 0,
-		prior = 2, state = { state_wave3 },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "pri_followers_wave3_out_restr",
-		predicate = lb_predicate2
-	}
-	table.insert(sj, t)
---]]
 	-----------------------------------------------------------------------
 	-- Õ¿œ¿–Õ» 2 - œ–»Œ–»“≈“ 1
 	-----------------------------------------------------------------------
@@ -106,7 +126,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_kamp },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave1
@@ -115,7 +135,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave1 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave2
@@ -124,7 +144,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave2 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	-----------------------------------------------------------------------
@@ -136,7 +156,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_kamp },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave1
@@ -145,7 +165,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave1 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave1_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	--- state: wave2
@@ -154,7 +174,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave2 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave2_out_restr",
-		predicate = lb_predicate1
+		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 end
