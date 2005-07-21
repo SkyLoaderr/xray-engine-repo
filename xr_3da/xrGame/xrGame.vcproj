@@ -5315,6 +5315,9 @@
 						<File
 							RelativePath=".\script_game_object_use.cpp">
 						</File>
+						<File
+							RelativePath=".\script_game_object_use2.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="ScriptHit"
