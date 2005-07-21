@@ -35,7 +35,7 @@
 		</description>
 		
 		<location_btn x="225" y="3" width="32" height="23">
-			<texture>ui_checker</texture>
+			<texture>ui_icons_mapPDA_showmark</texture>
 		</location_btn>
 		
 		<switch_description_btn x="260" y="3" width="32" height="23">
@@ -52,7 +52,7 @@
 		</description>
 
 		<show_pointer_btn x="260" y="5" width="32" height="23">
-			<texture>ui_icons_mapPDA_showmark</texture>
+			<texture>ui_icons_mapPDA_galka</texture>
 		</show_pointer_btn>
 
 	</task_sub_item>
