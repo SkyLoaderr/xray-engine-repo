@@ -2,10 +2,20 @@
 <game_dialogs>
     <dialog id="pri_followers_start_dlg">
         <phrase_list>
+            <phrase id="111">
+                <text>pri_followers_start_dlg_111</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>pri_followers_start</give_info>
+            </phrase>
             <phrase id="1">
                 <text></text>
                 <dont_has_info>pri_followers_start</dont_has_info>
                 <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <has_info>pri_followers_start</has_info>
+                <next>21</next>
             </phrase>
             <phrase id="11">
                 <text>pri_followers_start_dlg_11</text>
@@ -15,14 +25,18 @@
             <phrase id="0">
                 <text></text>
                 <next>1</next>
+                <next>2</next>
             </phrase>
-            <phrase id="111">
-                <text>pri_followers_start_dlg_111</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>pri_followers_start</give_info>
+            <phrase id="21">
+                <text>pri_followers_start_dlg_21</text>
+                <next>211</next>
             </phrase>
             <phrase id="112">
                 <text>pri_followers_start_dlg_112</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="211">
+                <text>pri_followers_start_dlg_211</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
