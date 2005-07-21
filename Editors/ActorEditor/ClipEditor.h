@@ -138,6 +138,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSyncClick(TObject *Sender);
 	void __fastcall ebClearClick(TObject *Sender);
 public:
+    xr_string 			m_ClipFName;
 	class CUIClip: public CClip{
     public:                               
     	float			run_time;

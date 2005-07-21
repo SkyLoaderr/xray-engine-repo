@@ -42,7 +42,7 @@ xr_string	EFS_Utils::ExtractFilePath(LPCSTR src)
 xr_string	EFS_Utils::ExcludeBasePath(LPCSTR full_path, LPCSTR excl_path)
 {
     LPCSTR sub		= strstr(full_path,excl_path);
-	if (0!=sub) 	return xr_string(sub);
+	if (0!=sub) 	return xr_string(sub+xr_strlen(excl_path));
 	else	   		return xr_string(full_path);
 }
 

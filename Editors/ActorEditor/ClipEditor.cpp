@@ -547,11 +547,11 @@ void TClipMaker::AppendClip()
 
 void TClipMaker::LoadClips()
 {
- 	xr_string fn;
     bool bRes=true;
-	if (EFS.GetOpenName("$clips$",fn)){
+	if (EFS.GetOpenName("$clips$",m_ClipFName)){
     	Clear		();
-    	IReader* F	= FS.r_open(fn.c_str()); VERIFY(F);
+    	IReader* F	= FS.r_open(m_ClipFName.c_str()); VERIFY(F);
+        m_ClipFName	= EFS.ExcludeBasePath(m_ClipFName.c_str(),FS.get_path("$clips$")->m_Path);
         if (F->find_chunk(CHUNK_ZOOM)){
         	m_Zoom	= F->r_float();
         }
@@ -581,9 +581,9 @@ void TClipMaker::LoadClips()
 void TClipMaker::SaveClips()
 {
     if (!clips.empty()){
-		xr_string fn;
-        if (EFS.GetSaveName("$clips$",fn)){
-            IWriter* F	= FS.w_open(fn.c_str()); VERIFY(F);
+        if (EFS.GetSaveName("$clips$",m_ClipFName)){
+            IWriter* F	= FS.w_open(m_ClipFName.c_str()); VERIFY(F);
+	        m_ClipFName	= EFS.ExcludeBasePath(m_ClipFName.c_str(),FS.get_path("$clips$")->m_Path);
             if (F){
                 F->open_chunk(CHUNK_ZOOM);
                 F->w_float	(m_Zoom);
@@ -599,7 +599,7 @@ void TClipMaker::SaveClips()
                 F->close_chunk	();
                 FS.w_close(F);
             }else{
-		        Log			("!Can't save clip:",fn.c_str());
+		        Log			("!Can't save clip:",m_ClipFName.c_str());
             }
         }
     }else{
@@ -891,7 +891,10 @@ void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
                 u16 slot			= (*c_it)->CycleSlot(k);	
 				CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
 				CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str(),slot);
-				if (MI&&(len<MI->GetLength()/MD->Speed())) len = MI->GetLength()/MD->Speed();
+				if (MI){
+                	float new_len	= (MD->StopAtEnd()?MI->GetLength()-SAMPLE_SPF:MI->GetLength())/MD->Speed();
+	                if (len<new_len) len = new_len;
+                }
             }            
             (*c_it)->length = fis_zero(len)?2.f:len;
         }
