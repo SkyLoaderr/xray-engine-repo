@@ -99,6 +99,8 @@ public:
 	virtual	void	UpdateCL		();
 	virtual void	net_Destroy		();
 
+	virtual void	OnH_A_Chield		();
+
 	virtual bool	Attach(PIItem pIItem);
 	virtual bool	Detach(const char* item_section_name);
 	virtual bool	CanAttach(PIItem pIItem);

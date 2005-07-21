@@ -989,3 +989,14 @@ void	CWeaponMagazined::OnPrevFireMode		()
 	m_iCurFireMode = (m_iCurFireMode-1+m_aFireModes.size()) % m_aFireModes.size();
 	SetQueueSize(GetCurrentFireMode());	
 };
+
+void	CWeaponMagazined::OnH_A_Chield		()
+{
+	if (m_bHasDifferentFireModes)
+	{
+		CActor	*actor = smart_cast<CActor*>(H_Parent());
+		if (!actor) SetQueueSize(-1);
+		else SetQueueSize(GetCurrentFireMode());
+	};	
+	inherited::OnH_A_Chield();
+};
