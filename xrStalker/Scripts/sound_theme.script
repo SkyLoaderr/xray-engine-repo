@@ -278,7 +278,7 @@ function load_sound(obj)
 	-- Bar Rostok Duty Guards
 	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
 	theme[obj:id()]["bar_dolg_base_guard_no_talk"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
-	theme[obj:id()]["bar_bar_osvedomitel_hello"]	= load_sound_from_ltx(obj, "bar_bar_osvedomitel_hello")
+	theme[obj:id()]["bar_bar_osvedomitel_hello"]	= load_sound_from_ltx(obj, "bar_bar_osvedomitel_hello", 7, 10, 100)
 	theme[obj:id()]["bar_bar_barmen_hello"]			= load_sound_from_ltx(obj, "bar_bar_barmen_hello")
 	theme[obj:id()]["bar_bar_barmen_hello_room"]	= load_sound_from_ltx(obj, "bar_bar_barmen_hello_room")
 	theme[obj:id()]["bar_dolg_leader_hello"]		= load_sound_from_ltx(obj, "bar_dolg_leader_hello")
