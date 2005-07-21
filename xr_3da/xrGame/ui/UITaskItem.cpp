@@ -163,13 +163,13 @@ void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)
 	{
 		case eTaskUserDefined:
 		case eTaskStateInProgress:
-			m_stateStatic->InitTexture("ui_icons_mapPDA_galkaSm_e");
+			m_stateStatic->InitTexture("ui_icons_mapPDA_mark_e");
 			break;
 		case eTaskStateFail:
-			m_stateStatic->InitTexture("ui_icons_mapPDA_galkaSm_d");
+			m_stateStatic->InitTexture("ui_icons_mapPDA_mark_d");
 			break;
 		case eTaskStateCompleted:
-			m_stateStatic->InitTexture("ui_icons_mapPDA_galkaSm_t");
+			m_stateStatic->InitTexture("ui_icons_mapPDA_mark_t");
 			break;
 		default:
 			NODEFAULT;
