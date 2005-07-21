@@ -589,19 +589,19 @@ void CUIBag::InitWpnSectStorage()
 }
 
 void CUIBag::FillUpInfiniteItemsList(){
-	string256 itemsList;
-	string16 item;
+	shared_str itemsList;
+	string256 item;
 	shared_str ssItem;
 	// Get infinite items list
 	if(!pSettings->section_exist("multiplayer_extended_settings"))
 		return;
 
-	std::strcpy(itemsList, pSettings->r_string("multiplayer_extended_settings", "infinite_items"));
-	int itemsCount	= _GetItemCount(itemsList);
+	itemsList = pSettings->r_string("multiplayer_extended_settings", "infinite_items");
+	int itemsCount	= _GetItemCount(itemsList.c_str());
 
 	for (int i = 0; i < itemsCount; i++)
 	{
-		_GetItem(itemsList, i, item);
+		_GetItem(itemsList.c_str(), i, item);
 		ssItem = item;
 		m_vInfiniteItemsList.push_back(ssItem);
 	}

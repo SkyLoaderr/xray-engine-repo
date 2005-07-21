@@ -111,6 +111,25 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	else
 		m_iShootEffectorStart = 0;
 	//  [7/20/2005]
+	//  [7/21/2005]
+	if (pSettings->line_exist(section, "fire_modes"))
+	{
+		m_bHasDifferentFireModes = true;
+		shared_str FireModesList = pSettings->r_string(section, "fire_modes");
+		int ModesCount = _GetItemCount(FireModesList.c_str());
+		m_aFireModes.clear();
+		for (int i=0; i<ModesCount; i++)
+		{
+			string16 sItem;
+			_GetItem(FireModesList.c_str(), i, sItem);
+			int FireMode = atoi(sItem);
+			m_aFireModes.push_back(FireMode);			
+		}
+		m_iCurFireMode = ModesCount - 1;
+	}
+	else
+		m_bHasDifferentFireModes = false;
+	//  [7/21/2005]
 }
 
 void CWeaponMagazined::FireStart		()
@@ -472,7 +491,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	};
 		
 	VERIFY(!m_magazine.empty());
-	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot))
+	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
 	{
 		m_bFireSingleShot = false;
 
@@ -652,6 +671,22 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 					Reload();
 		} 
 		return true;
+	case kWPN_FIREMODE_PREV:
+		{
+			if(flags&CMD_START) 
+			{
+				OnPrevFireMode();
+				return true;
+			};
+		}break;
+	case kWPN_FIREMODE_NEXT:
+		{
+			if(flags&CMD_START) 
+			{
+				OnNextFireMode();
+				return true;
+			};
+		}break;
 	}
 	return false;
 }
@@ -939,3 +974,18 @@ void CWeaponMagazined::onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd)
 		PlayAnimIdle						();
 }
 
+void	CWeaponMagazined::OnNextFireMode		()
+{
+	if (!m_bHasDifferentFireModes) return;
+	if (STATE != eIdle) return;
+	m_iCurFireMode = (m_iCurFireMode+1+m_aFireModes.size()) % m_aFireModes.size();
+	SetQueueSize(GetCurrentFireMode());
+};
+
+void	CWeaponMagazined::OnPrevFireMode		()
+{
+	if (!m_bHasDifferentFireModes) return;
+	if (STATE != eIdle) return;
+	m_iCurFireMode = (m_iCurFireMode-1+m_aFireModes.size()) % m_aFireModes.size();
+	SetQueueSize(GetCurrentFireMode());	
+};

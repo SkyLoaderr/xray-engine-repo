@@ -137,6 +137,10 @@ protected:
 	//флаг того, что хотя бы один выстрел мы должны сделать
 	//(даже если очень быстро нажали на курок и вызвалось FireEnd)
 	bool			m_bFireSingleShot;
+	//режимы стрельбы
+	bool			m_bHasDifferentFireModes;
+	xr_vector<int>	m_aFireModes;
+	int				m_iCurFireMode;
 
 	//переменная блокирует использование
 	//только разных типов патронов
@@ -148,6 +152,10 @@ protected:
 public:
 	virtual void	OnZoomIn			();
 	virtual void	OnZoomOut			();
+	virtual	void	OnNextFireMode		();
+	virtual	void	OnPrevFireMode		();
+	virtual bool	HasFireModes		() { return m_bHasDifferentFireModes; };
+	virtual	int		GetCurrentFireMode	() { return m_aFireModes[m_iCurFireMode]; };	
 
 protected:
 	virtual bool	AllowFireWhileWorking() {return false;}
