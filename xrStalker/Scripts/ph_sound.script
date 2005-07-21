@@ -133,8 +133,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	st.theme    = utils.cfg_get_string(ini, section, "snd",	npc, false, "")
 	st.looped   = utils.cfg_get_bool (ini, section, "looped", npc, false)
-	st.pause_min = utils.cfg_get_number (ini, section, "pause_min", npc, false, 0)
-	st.pause_max = utils.cfg_get_number (ini, section, "pause_max", npc, false, 0)
+	st.pause_min = utils.cfg_get_number (ini, section, "min_idle", npc, false, 0)
+	st.pause_max = utils.cfg_get_number (ini, section, "max_idle", npc, false, 0)
 	if st.pause_max < st.pause_min then
 	   abort ("PH_SOUND - invalid time range !!!")
     end	    
