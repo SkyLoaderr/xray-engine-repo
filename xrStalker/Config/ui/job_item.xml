@@ -47,7 +47,7 @@
 		<state_image x="15" y="5" width="16" height="16">
 		</state_image>
 
-		<description x="45" y="5" width="195" height="16">
+		<description x="45" y="10" width="195" height="16">
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
 
