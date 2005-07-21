@@ -976,9 +976,6 @@
 					RelativePath=".\Config\ui\map.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\map_character.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\messages_window.xml">
 				</File>
 				<File
