@@ -28,7 +28,7 @@ path_look = alarm_commander_look
 
 ;------------------ пост на северных воротах -----------------------
 [logic@agr_nii_north_gate_walker1]
-active = {-agr_nii_alarm} walker1@agr_nii_north_gate, camper1@agr_nii_north_gate_alarm
+active = {-agr_nii_alarm} walker1@agr_nii_north_gate, walker1@agr_nii_north_gate_alarm
 
 [walker1@agr_nii_north_gate]
 path_walk = north_gate_walk1
@@ -732,6 +732,9 @@ path_look = look6
 
 ;---------------- помогают Кроту -----------------
 
+[danger_condition@agr_factory_defence_ignore_corpses]
+ignore_types = corpse
+
 [danger_condition@agr_factory_defence]
 ignore_distance = 0
 
@@ -744,7 +747,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk1
 ;path_look = krot_look1
 meet = meet@agr_factory_defence
-danger = danger_condition@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 
 [logic@agr_factory_defence_krot_walker2]
@@ -755,7 +758,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk2
 ;path_look = krot_look2
 meet = meet@agr_factory_defence
-danger = danger_condition@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 
 [logic@agr_factory_defence_krot_walker3]
@@ -766,7 +769,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk3
 ;path_look = krot_look3
 meet = meet@agr_factory_defence
-danger = danger_condition@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 
 [logic@agr_factory_defence_krot_walker4]
@@ -777,7 +780,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk4
 ;path_look = krot_look4
 meet = meet@agr_factory_defence
-danger = danger_condition@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 
 [logic@agr_factory_defence_krot_walker5]
@@ -788,7 +791,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk5
 ;path_look = krot_look5
 meet = meet@agr_factory_defence
-danger = danger_condition@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 
 [logic@agr_factory_defence_krot_walker6]
@@ -799,7 +802,7 @@ actor_dialogs = actor_dialogs@agr_factory_defence
 path_walk = krot_walk6
 ;path_look = krot_look6
 meet = meet@agr_factory_defence
-danger = danger_condition@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 ;---------------- Бегут к колодцу и стоят там -----------------
 

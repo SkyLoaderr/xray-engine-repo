@@ -71,7 +71,12 @@ function process_info_portion(info_id)
 		
 -- collector entrance		
 	elseif info_id == "agr_collector_entrance_info" then
-		level_tasks.add_location(305, "agr_collector_entrance_location")
+		level_tasks.add_location(311, "agr_collector_entrance_location")
+		level_tasks.add_location(312, "agr_collector_entrance_location")
+		level_tasks.add_location(313, "agr_collector_entrance_location")
+		level_tasks.add_location(314, "agr_collector_entrance_location")
+		level_tasks.add_location(315, "agr_collector_entrance_location")
+		level_tasks.add_location(316, "agr_collector_entrance_location")
 		return true	
 		
 -- captains chamber
