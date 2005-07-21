@@ -22,6 +22,8 @@ class CControlRotationJump : public CControl_ComCustom<> {
 		eNone
 	} m_stage;
 
+	CSkeletonAnimated	*m_skeleton_animated;
+
 public:
 	virtual void	reinit					();
 
