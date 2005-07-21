@@ -487,7 +487,7 @@ states = {
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "psycho_shoot"
-				
+				},
 	-- Бармен
 	bar_fas = {	weapon = "strapped",
 				movement = move.stand,
