@@ -224,5 +224,4 @@
     <texture id="ui_icons_mapPDA_mark_h" x="665" y="821" width="32" height="32" />
     <texture id="ui_icons_mapPDA_mark_t" x="665" y="853" width="32" height="32" />
     <texture id="ui_icons_mapPDA_mark_d" x="665" y="885" width="32" height="32" />
-    <texture id="ui_icons_mapPDA_userMark" x="493" y="872" width="32" height="32" />
 </ui_texture>
