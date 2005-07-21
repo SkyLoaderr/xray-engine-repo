@@ -12,12 +12,14 @@ using namespace	collide;
 
 void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 {
-	if (S->g_object && S->g_object->getDestroy())	return	;
+	if (S->g_object && S->g_object->getDestroy())	return;
+	if (0==S->feedback)								return;
+
 	clamp					(range,0.1f,500.f);
 
-	const CSound_params*	p	= S->feedback->get_params();
+	const CSound_params* p	= S->feedback->get_params();
 	VERIFY					(p && _valid(range) );
-	range						= _min(range,p->max_ai_distance);
+	range					= _min(range,p->max_ai_distance);
 	VERIFY					(_valid(p->position));
 	VERIFY					(_valid(p->max_ai_distance));
 	VERIFY					(_valid(p->volume));
