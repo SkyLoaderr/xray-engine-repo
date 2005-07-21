@@ -39,7 +39,7 @@
 		</objective>
 		<objective>
 			<text>no additional comments</text>
-			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="350" y="50" width="50" height="50">ui_icons_mapPDA_userMark</icon>
 		</objective>
 	</game_task>
 <!-- temporary for andy, do not delete !!! -->
