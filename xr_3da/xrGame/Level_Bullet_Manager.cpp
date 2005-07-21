@@ -7,7 +7,6 @@
 #include "Level_Bullet_Manager.h"
 #include "game_cl_base.h"
 #include "Actor.h"
-#include "AI/Stalker/ai_stalker.h"
 #include "gamepersistent.h"
 
 #define HIT_POWER_EPSILON 0.05f
@@ -233,30 +232,8 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 	result							= Level().ObjectSpace.RayQuery(rq_storage, RD, firetrace_callback, bullet, test_callback);
 	if (result) range				= (rq_storage.r_begin()+rq_storage.r_count()-1)->range;
 	range		= _max				(EPS_L,range);
-	// whine test
-	g_SpatialSpace->q_ray			(rq_spatial,0,STYPE_COLLIDEABLE,bullet->pos,bullet->dir,range);
-	// Determine visibility for dynamic part of scene
-	for (u32 o_it=0; o_it<rq_spatial.size(); o_it++)	{
-		CEntity*	entity			= smart_cast<CEntity*>(rq_spatial[o_it]->dcast_CObject());
-		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
-			ICollisionForm*	cform	= entity->collidable.model;
-			ECollisionFormType tp	= cform->Type();
-			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||smart_cast<CActor*>(entity))){
-				Fsphere S			= cform->getSphere();
-				entity->XFORM().transform_tiny	(S.P)	;
-				float dist			= range				;
-				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
-					Fvector			pt;
-					pt.mad			(bullet->pos, bullet->dir, dist);
-					CObject* initiator	= Level().Objects.net_Find	(bullet->parent_id);
-					Level().BulletManager().PlayWhineSound			(bullet,initiator,pt);
-				}
-			}
-		}
-	}
 
-	if(!bullet->flags.test(SBullet::RICOCHET_FLAG))
-	{
+	if(!bullet->flags.test(SBullet::RICOCHET_FLAG)){
 		//изменить положение пули
 		bullet->prev_pos = bullet->pos;
 		bullet->pos.mad(bullet->pos, cur_dir, range);

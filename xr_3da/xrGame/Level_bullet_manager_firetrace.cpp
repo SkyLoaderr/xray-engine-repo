@@ -14,6 +14,7 @@
 #include "clsid_game.h"
 #include "../skeletoncustom.h"
 #include "Actor.h"
+#include "AI/Stalker/ai_stalker.h"
 
 //константы shoot_factor, определ€ющие 
 //поведение пули при столкновении с объектом
@@ -32,6 +33,26 @@ BOOL __stdcall CBulletManager::test_callback(CObject* object, LPVOID params)
 	if( (object->ID() == bullet->parent_id)		&&  
 		(bullet->fly_dist<PARENT_IGNORE_DIST)	&&
 		(!bullet->flags.is(SBullet::RICOCHET_FLAG)))		return FALSE;
+
+	// whine sounds
+	if (object){
+		CEntity*	entity			= smart_cast<CEntity*>(object);
+		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
+			ICollisionForm*	cform	= entity->collidable.model;
+			ECollisionFormType tp	= cform->Type();
+			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||smart_cast<CActor*>(entity))){
+				Fsphere S			= cform->getSphere();
+				entity->XFORM().transform_tiny	(S.P)	;
+				float dist			= 1000.f;
+				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
+					Fvector			pt;
+					pt.mad			(bullet->pos, bullet->dir, dist);
+					CObject* initiator	= Level().Objects.net_Find	(bullet->parent_id);
+					Level().BulletManager().PlayWhineSound			(bullet,initiator,pt);
+				}
+			}
+		}
+	}
 	
 	return TRUE;
 }
