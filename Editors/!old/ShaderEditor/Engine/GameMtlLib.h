@@ -80,6 +80,7 @@ public:
         flLiquid 		= (1ul<<9ul),
 		flSuppressShadows	= (1ul<<10ul),
 		flSuppressWallmarks	= (1ul<<11ul),
+		flActorObstacle	= (1ul<<12ul),
 
         flInjurious		= (1ul<<28ul),// flInjurious = fInjuriousSpeed > 0.f
 		flShootable 	= (1ul<<29ul),
