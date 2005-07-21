@@ -57,7 +57,7 @@ end
 --	Установка и распарсивание тем в файлы.
 -----------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now)
-	--printf("*SND* try to change SND")
+	printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
 	local npc_id = npc:id()
 	if (db.sound[npc_id] == nil or
 	   db.sound[npc_id].theme ~= sound) or
@@ -77,7 +77,7 @@ function set_sound(npc, sound, now)
 			local t = 0		
 			for k,v in db.sound[npc_id].snd do
 				snd_table[t] = {}
-				get_sound(sound_theme.theme[npc:id()][v], snd_table[t], npc)
+				get_sound(sound_theme.theme[npc_id][v], snd_table[t], npc)
 				t = t + 1
 			end	
 			for k,v in snd_table do
@@ -113,7 +113,7 @@ function update(npc)
 	
 	local group_table = xr_sound.group_idle[key]	
 	
-	if  group_table == nil then
+	if group_table == nil then
 		return
 	end
 --	printf("busy[%s]", tostring(group_table.busy))

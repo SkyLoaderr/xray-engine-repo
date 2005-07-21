@@ -235,6 +235,7 @@ end
 function Cwound_manager:process_hp_wound(hp)
 	key = self:get_key_from_distance(self.a.hp_state, hp)
 	if key ~= nil then
+		local r1,r2
 		if self.npc:see(db.actor) then
 			if self.a.hp_state_see[key].state then
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_state_see[key].state)
@@ -257,6 +258,7 @@ end
 function Cwound_manager:process_psy_wound(hp)
 	key = self:get_key_from_distance(self.a.psy_state, hp)
 	if key ~= nil then
+		local r1,r2
 		if self.a.psy_state[key].state then
 			r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.psy_state[key].state)
 		end

@@ -163,12 +163,13 @@ function Cmeet_manager:update()
 	else
 		self.state,self.sound = self:process_meet()
 	end
-	
+	printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
 end
 function Cmeet_manager:process_zone()
 	if self.a.zone == nil then return "nil","nil" end
 	key = self:get_key_from_zone(self.a.zone)
 	if key ~= nil then
+		local r1,r2
 		if self.a.zone[key].state then
 			r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.zone[key].state)
 			self.emerg_state = true
@@ -184,6 +185,7 @@ function Cmeet_manager:process_meet()
 	if isWeapon(db.actor:active_item())	then
 		key = self:get_key_from_distance(self.a.meet_state_wpn)
 		if key ~= nil then
+			local r1,r2
 			if self.a.meet_state_wpn[key].state then
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].state)
 				self.emerg_state = true
@@ -196,6 +198,7 @@ function Cmeet_manager:process_meet()
 	else
 		key = self:get_key_from_distance(self.a.meet_state)
 		if key ~= nil then
+			local r1,r2
 			if self.a.meet_state[key].state then
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].state)
 				self.emerg_state = false
@@ -265,7 +268,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object, char_ini)
+function add_to_binder(object, char_ini, scheme, section, st)
 	local operators		= {}
 	local properties	= {}
 
@@ -279,10 +282,10 @@ function add_to_binder(object, char_ini)
 	operators["contact"]		= xr_actions_id.stohe_meet_base + 1
 
 	-- Evaluators
-	manager:add_evaluator (properties["contact"], 		evaluator_contact("meet_contact", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact("meet_contact", st))
 	
 	-- Actions
-	local action = action_meet_wait (object:name(),"action_process_meet", db.storage[object:id()].meet, char_ini)
+	local action = action_meet_wait (object:name(),"action_process_meet", st, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["danger"],		true))
@@ -380,7 +383,6 @@ function init_meet(npc, ini, section, st, scheme)
 end
 
 function parse_data(npc,s)
---	printf("parse_data [%s]", utils.to_str(s))
 	local t = {}
 
     if s then
@@ -417,7 +419,6 @@ function parse_data(npc,s)
 			table.insert(t, dat)
 		end
 	end
-
     return t
 end
 function parse_zone_data(npc,s)
