@@ -2,9 +2,13 @@
 ;-- AGROPROM. База военных на НИИ Агропром
 ;-------------------------------------------------------------------------------------------------
 
+[info@agr_nii_about_rats]
+in = agr_pda_soldiers_rats
+
 ;---------------------- командир ---------------------
 [logic@agr_nii_day_commander]
 active = walker@agr_nii_day_commander
+info = info@agr_nii_about_rats
 
 [walker@agr_nii_day_commander]
 path_walk = day_commander_walk
@@ -13,6 +17,7 @@ path_look = day_commander_look
 
 [logic@agr_nii_night_commander]
 active = sleeper@agr_nii_night_commander
+info = info@agr_nii_about_rats
 
 [sleeper@agr_nii_night_commander]
 path_main = night_commander_sleep
@@ -20,6 +25,7 @@ path_main = night_commander_sleep
 
 [logic@agr_nii_alarm_commander]
 active = camper@agr_nii_alarm_commander
+info = info@agr_nii_about_rats
 
 [camper@agr_nii_alarm_commander]
 radius = 8
@@ -29,6 +35,7 @@ path_look = alarm_commander_look
 ;------------------ пост на северных воротах -----------------------
 [logic@agr_nii_north_gate_walker1]
 active = {-agr_nii_alarm} walker1@agr_nii_north_gate, walker1@agr_nii_north_gate_alarm
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_north_gate]
 path_walk = north_gate_walk1
@@ -43,6 +50,7 @@ on_info   = {-agr_nii_alarm} walker1@agr_nii_north_gate
 
 [logic@agr_nii_north_gate_walker2]
 active = {-agr_nii_alarm} walker2@agr_nii_north_gate, walker2@agr_nii_north_gate_alarm
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_north_gate]
 path_walk = north_gate_walk2
@@ -57,6 +65,7 @@ on_info   = {-agr_nii_alarm} walker2@agr_nii_north_gate
 
 [logic@agr_nii_north_gate_walker3]
 active = {-agr_nii_alarm} walker3@agr_nii_north_gate, walker3@agr_nii_north_gate_alarm
+info = info@agr_nii_about_rats
 
 [walker3@agr_nii_north_gate]
 path_walk = north_gate_walk3
@@ -71,6 +80,7 @@ on_info   = {-agr_nii_alarm} walker3@agr_nii_north_gate
 ;------------------ пост на восточных воротах -----------------------
 [logic@agr_nii_east_gate_walker1]
 active = {-agr_nii_alarm} walker1@agr_nii_east_gate, walker1@agr_nii_east_gate_alarm
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_east_gate]
 path_walk = east_gate_walk1
@@ -85,6 +95,7 @@ on_info   = {-agr_nii_alarm} walker1@agr_nii_east_gate
 
 [logic@agr_nii_east_gate_walker2]
 active = {-agr_nii_alarm} walker2@agr_nii_east_gate, walker2@agr_nii_east_gate_alarm
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_east_gate]
 path_walk = east_gate_walk2
@@ -99,6 +110,7 @@ on_info   = {-agr_nii_alarm} walker2@agr_nii_east_gate
 ;------------------ 1-й этаж основного здания -----------------------
 [logic@agr_nii_floor1_day_walker1]
 active = walker1@agr_nii_floor1_day
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_floor1_day]
 path_walk = floor1_day_walk1
@@ -107,6 +119,7 @@ path_look = floor1_day_look1
 
 [logic@agr_nii_floor1_alarm_walker1]
 active = walker1@agr_nii_floor1_alarm
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_floor1_alarm]
 path_walk = floor1_alarm_walk1
@@ -115,6 +128,7 @@ path_look = floor1_alarm_look1
 
 [logic@agr_nii_floor1_day_walker2]
 active = walker2@agr_nii_floor1_day
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_floor1_day]
 path_walk = floor1_day_walk2
@@ -123,6 +137,7 @@ path_look = floor1_day_look2
 
 [logic@agr_nii_floor1_alarm_walker2]
 active = camper2@agr_nii_floor1_alarm
+info = info@agr_nii_about_rats
 
 [camper2@agr_nii_floor1_alarm]
 path_walk = floor1_alarm_walk1
@@ -132,6 +147,7 @@ radius = 3
 ;------------------ 2-й этаж основного здания -----------------------
 [logic@agr_nii_floor2_day_walker1]
 active = walker1@agr_nii_floor2_day
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_floor2_day]
 path_walk = floor2_day_walk1
@@ -140,6 +156,7 @@ path_look = floor2_day_look1
 
 [logic@agr_nii_floor2_alarm_walker1]
 active = walker1@agr_nii_floor2_alarm
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_floor2_alarm]
 path_walk = floor2_alarm_walk1
@@ -148,6 +165,7 @@ path_look = floor2_alarm_look1
 
 [logic@agr_nii_floor2_day_walker2]
 active = walker2@agr_nii_floor2_day
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_floor2_day]
 path_walk = floor2_day_walk2
@@ -158,6 +176,7 @@ path_look = floor2_day_look2
 ;------------------ 3-й этаж основного здания -----------------------
 [logic@agr_nii_floor3_walker1]
 active = {-agr_nii_alarm} walker1@agr_nii_floor3, camper1@agr_nii_floor3_alarm
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_floor3]
 path_walk = floor3_walk1
@@ -173,6 +192,7 @@ on_info   = {-agr_nii_alarm} walker1@agr_nii_floor3
 
 [logic@agr_nii_floor3_walker2]
 active = {-agr_nii_alarm} walker2@agr_nii_floor3, camper2@agr_nii_floor3_alarm
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_floor3]
 path_walk = floor3_walk2
@@ -188,6 +208,7 @@ on_info   = {-agr_nii_alarm} walker2@agr_nii_floor3
 
 [logic@agr_nii_floor3_walker3]
 active = {-agr_nii_alarm} walker3@agr_nii_floor3, camper3@agr_nii_floor3_alarm
+info = info@agr_nii_about_rats
 
 [walker3@agr_nii_floor3]
 path_walk = floor3_walk3
@@ -204,6 +225,7 @@ on_info   = {-agr_nii_alarm} walker3@agr_nii_floor3
 ;------------------ дневные патрули -----------------------
 [logic@agr_nii_day_patrol_walker1]
 active = walker1@agr_nii_day_patrol
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_day_patrol]
 path_walk = day_patrol_walk1
@@ -212,6 +234,7 @@ path_look = day_patrol_look1
 
 [logic@agr_nii_day_patrol_walker2]
 active = walker2@agr_nii_day_patrol
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_day_patrol]
 path_walk = day_patrol_walk2
@@ -219,6 +242,7 @@ path_look = day_patrol_look2
 
 [logic@agr_nii_day_patrol_walker3]
 active = walker3@agr_nii_day_patrol
+info = info@agr_nii_about_rats
 
 [walker3@agr_nii_day_patrol]
 path_walk = day_patrol_walk3
@@ -226,6 +250,7 @@ path_look = day_patrol_look3
 
 [logic@agr_nii_day_patrol_walker4]
 active = walker4@agr_nii_day_patrol
+info = info@agr_nii_about_rats
 
 [walker4@agr_nii_day_patrol]
 path_walk = day_patrol_walk4
@@ -233,6 +258,7 @@ path_look = day_patrol_look4
 
 [logic@agr_nii_day_patrol_walker5]
 active = walker5@agr_nii_day_patrol
+info = info@agr_nii_about_rats
 
 [walker5@agr_nii_day_patrol]
 path_walk = day_patrol_walk5
@@ -241,6 +267,7 @@ path_look = day_patrol_look5
 ;------------------ патрули в тревоге -----------------------
 [logic@agr_nii_alarm_patrol_walker1]
 active = walker1@agr_nii_alarm_patrol
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_alarm_patrol]
 path_walk = alarm_patrol_walk1
@@ -249,6 +276,7 @@ path_look = alarm_patrol_look1
 
 [logic@agr_nii_alarm_patrol_walker2]
 active = walker2@agr_nii_alarm_patrol
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_alarm_patrol]
 path_walk = alarm_patrol_walk2
@@ -257,6 +285,7 @@ path_look = alarm_patrol_look2
 
 [logic@agr_nii_alarm_patrol_walker3]
 active = walker3@agr_nii_alarm_patrol
+info = info@agr_nii_about_rats
 
 [walker3@agr_nii_alarm_patrol]
 path_walk = alarm_patrol_walk3
@@ -265,6 +294,7 @@ path_look = alarm_patrol_look3
 
 [logic@agr_nii_alarm_patrol_walker4]
 active = walker4@agr_nii_alarm_patrol
+info = info@agr_nii_about_rats
 
 [walker4@agr_nii_alarm_patrol]
 path_walk = alarm_patrol_walk3
@@ -273,6 +303,7 @@ path_look = alarm_patrol_look3
 
 [logic@agr_nii_alarm_patrol_walker5]
 active = walker5@agr_nii_alarm_patrol
+info = info@agr_nii_about_rats
 
 [walker5@agr_nii_alarm_patrol]
 path_walk = alarm_patrol_walk4
@@ -281,6 +312,7 @@ path_look = alarm_patrol_look4
 ;------------------ дневные отдыхающие -----------------------
 [logic@agr_nii_rest_walker1]
 active = walker1@agr_nii_rest
+info = info@agr_nii_about_rats
 
 [walker1@agr_nii_rest]
 path_walk = rest_walk1
@@ -289,6 +321,7 @@ path_look = rest_look
 
 [logic@agr_nii_rest_walker2]
 active = walker2@agr_nii_rest
+info = info@agr_nii_about_rats
 
 [walker2@agr_nii_rest]
 path_walk = rest_walk2
@@ -298,6 +331,7 @@ path_look = rest_look
 ;------------------ ночные отдыхающие -----------------------
 [logic@agr_nii_sleeper1]
 active = sleeper1@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper1@agr_nii]
 path_main = sleep1
@@ -305,6 +339,7 @@ path_main = sleep1
 
 [logic@agr_nii_sleeper2]
 active = sleeper2@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper2@agr_nii]
 path_main = sleep2
@@ -312,6 +347,7 @@ path_main = sleep2
 
 [logic@agr_nii_sleeper3]
 active = sleeper3@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper3@agr_nii]
 path_main = sleep3
@@ -319,6 +355,7 @@ path_main = sleep3
 
 [logic@agr_nii_sleeper4]
 active = sleeper4@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper4@agr_nii]
 path_main = sleep4
@@ -326,6 +363,7 @@ path_main = sleep4
 
 [logic@agr_nii_sleeper5]
 active = sleeper5@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper5@agr_nii]
 path_main = sleep5
@@ -333,6 +371,7 @@ path_main = sleep5
 
 [logic@agr_nii_sleeper6]
 active = sleeper6@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper6@agr_nii]
 path_main = sleep6
@@ -340,6 +379,7 @@ path_main = sleep6
 
 [logic@agr_nii_sleeper7]
 active = sleeper7@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper7@agr_nii]
 path_main = sleep7
@@ -347,6 +387,7 @@ path_main = sleep7
 
 [logic@agr_nii_sleeper8]
 active = sleeper8@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper8@agr_nii]
 path_main = sleep8
@@ -354,6 +395,7 @@ path_main = sleep8
 
 [logic@agr_nii_sleeper9]
 active = sleeper9@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper9@agr_nii]
 path_main = sleep9
@@ -361,12 +403,14 @@ path_main = sleep9
 
 [logic@agr_nii_sleeper10]
 active = sleeper10@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper10@agr_nii]
 path_main = sleep10
 
 [logic@agr_nii_sleeper11]
 active = sleeper11@agr_nii
+info = info@agr_nii_about_rats
 
 [sleeper11@agr_nii]
 path_main = sleep11
@@ -736,7 +780,7 @@ path_look = look6
 ignore_types = corpse
 
 [danger_condition@agr_factory_defence]
-ignore_distance = 0
+;ignore_distance = 0
 
 
 [logic@agr_factory_defence_krot_walker1]
