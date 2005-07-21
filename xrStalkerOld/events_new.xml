@@ -113,7 +113,7 @@
 			</left_frame_header>
 			
 			<work_area x="8" y="44" width="290" height="475">
-				<news_wnd>
+				<news_wnd>	<!--del this -->
 					<list x="0" y="0" width="290" height="475" item_height="15">
 						<font font="letterica18" r="225" g="225" b="250"></font>
 					</list>
