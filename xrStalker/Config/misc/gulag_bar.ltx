@@ -34,7 +34,7 @@ active = walker@bar_visitors_walker
 [walker@bar_visitors_walker]
 path_walk = walker_walk
 
-
+; пост перед входом во двор "долга"
 
 [actor_dialogs]
 id = bar_dolg_base_guard_acces
@@ -66,16 +66,16 @@ path_walk = guard_center_walk
 path_look = guard_center_look
 meet = meet@bar_dolg_general_guard
 
-
 [meet@bar_dolg_general_guard]
+;прописать фразу  "Стой! Тебе на территорию нельзя!"
+;meet_state 		= 15|{-bar_dolg_base_pass}threat@threat_stop,{+bar_dolg_base_pass}guard@talk_hello
 meet_dialog = bar_dolg_base_guard_start
 use = true
 use_wpn = true
-; прописать фразу  «Стой! Тебе на территорию нельзя!»
-meet_state 		= 15|{-bar_dolg_base_pass}threat@threat_stop,{+bar_dolg_base_pass}guard@talk_hello
+victim 			= 15| actor
+victim_wpn 		= 15| actor
+zone = bar_dolg_general_warn_zone|{-bar_dolg_base_pass}threat@threat_stop,{+bar_dolg_base_pass}guard@talk_hello
 
-
-; zones = bar_dolg_general_warn_zone|threat@threat_stop
 ;{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop
 ;|bar_dolg_general_guard_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_kill_zone|{-bar_dolg_base_pass}true
 
@@ -173,13 +173,15 @@ path_look = guard_bunker_1_look
 meet = meet@bar_dolg_veterans_guard_bunker
 
 [meet@bar_dolg_veterans_guard_bunker]
+;meet_state = 5|{-bar_dolg_community_leader}threat@threat_stop,{+bar_dolg_community_leader}guard@talk_hello
 meet_dialog = bar_dolg_guard_bunker_start 
 use = true
 use_wpn = true
+victim 			= 7| actor
+victim_wpn 		= 7| actor
+zone = bar_dolg_veterans_bunker_warn_zone|{-bar_dolg_community_leader}threat@threat_stop,{+bar_dolg_community_leader}guard@talk_hello
 ;zones = bar_dolg_veterans_bunker_warn_zone|{+bar_dolg_community_leader}guard,threat@{+bar_dolg_community_leader}state,threat_stop|bar_dolg_veterans_bunker_kill_zone|{-bar_dolg_community_leader}true
 ; прописать фразу   «Стой! В бункер тебе нельзя!» 
-meet_state 		= 7|{-bar_dolg_community_leader}threat@threat_stop,{+bar_dolg_community_leader}guard@talk_hello
-
 
 
 [logic2@bar_dolg_veterans_guard_bunker2]
@@ -189,9 +191,7 @@ actor_dialogs = actor_dialogs
 [walker2@bar_dolg_veterans_guard_bunker]
 path_walk = guard_bunker_2_walk
 path_look = guard_bunker_2_look
-radius = 5
 meet = meet@bar_dolg_veterans_guard_bunker
-
 
 
 [logic7@bar_dolg_veterans_bunker]
@@ -240,7 +240,7 @@ active = walker1@bar_dolg_veterans_bunker_camper
 [walker1@bar_dolg_veterans_bunker_camper]
 path_walk = guard_bunker
 path_look = camper_look1
-radius = 4
+
 
 
 
@@ -278,10 +278,13 @@ active = sleeper1@bar_dolg_bunker
 path_main = sleeper_1
 
 [meet@bar_dolg_bunker]
-meet_state 		= 5| guard@talk_hello
-meet_state_wpn 	= 7| guard@threat_weap
 use = true
 use_wpn = true
+victim 			= 10| actor
+victim_wpn 		= 10| actor
+meet_state 		= 5|guard@talk_hello
+meet_state_wpn 	= 10|guard@threat_weap|7|threat@threat_weap|5|threat@threat_weap
+
 
 
 
@@ -319,8 +322,10 @@ path_walk = guard_3_walk
 meet = meet@bar_dolg_zastava1
 
 [meet@bar_dolg_zastava1]
-meet_state 		= 30| guard@talk_hello
-meet_state_wpn 	= 30| guard@talk_hello| 15| guard@threat_weap
+meet_state 		= 20| guard@talk_hello
+meet_state_wpn 	= 20| guard@talk_hello| 15| threat@threat_weap
+victim 			= 20| actor
+victim_wpn 		= 20| actor
 use = true
 use_wpn = true
 meet_dialog = bar_dolg_zastava
@@ -353,7 +358,9 @@ meet = meet@bar_dolg_zastava2
 
 [meet@bar_dolg_zastava2]
 meet_state 		= 50| guard@talk_hello
-meet_state_wpn 	= 50| guard@talk_hello| 20| guard@threat_weap
+meet_state_wpn 	= 50| guard@talk_hello| 20| threat@threat_weap
+victim 			= 20| actor
+victim_wpn 		= 20| actor
 use = true
 use_wpn = true
 meet_dialog = bar_dolg_zastava
