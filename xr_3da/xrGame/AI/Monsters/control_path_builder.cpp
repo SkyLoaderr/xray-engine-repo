@@ -53,11 +53,13 @@ void CControlPathBuilder::update_schedule()
 	
 	// the one and only reason is because of the restriction-change, so wait until
 	// position and node will be in valid state
-	if (!accessible(m_data.target_position) || 
-		( (m_data.target_node != u32(-1)) && (!accessible(m_data.target_node)) )) {
-		return;
+	if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
+		if (!accessible(m_data.target_position) || 
+			( (m_data.target_node != u32(-1)) && (!accessible(m_data.target_node)) )) {
+				return;
+			}
 	}
-
+	
 	// reset evaluator
 	level_selector().set_evaluator			(0);
 	use_selector_path						(false);
