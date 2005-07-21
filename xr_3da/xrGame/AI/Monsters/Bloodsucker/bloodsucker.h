@@ -28,6 +28,10 @@ class CAI_Bloodsucker : public CBaseMonster,
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
 
+	LPCSTR					invisible_run_particles_name;
+	u32						m_run_particles_freq;
+	u32						m_last_invisible_run_play;
+
 public:
 
 	SAnimationTripleData	anim_triple_vampire;
@@ -75,6 +79,8 @@ public:
 	virtual void			UpdateCamera			();
 
 	virtual bool			check_start_conditions	(ControlCom::EControlType);
+
+			void			play_hidden_run_particles	();
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();

@@ -27,7 +27,6 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 
 	m_alien_control.init_external							(this);
 
-
 	com_man().add_ability(ControlCom::eControlRunAttack);
 }
 
@@ -51,7 +50,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
-	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
+	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
+	invisible_run_particles_name	= pSettings->r_string(section,"Particles_Invisible_Tracks");
+	m_run_particles_freq			= pSettings->r_u32(section,"Particles_Invisible_Tracks_Freq");
 
 	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
 	
@@ -132,13 +133,14 @@ void CAI_Bloodsucker::reinit()
 	CInvisibility::reinit		();
 	CControlledActor::reinit	();
 
-	Bones.Reset();
+	Bones.Reset					();
 
 	com_man().ta_fill_data(anim_triple_vampire, "vampire_0", "vampire_1", "vampire_2", TA_EXECUTE_LOOPED, TA_DONT_SKIP_PREPARE, ControlCom::eCapturePath | ControlCom::eCaptureMovement);
 	
 	m_alien_control.reinit();
 	
-	state_invisible = CInvisibility::is_active();
+	state_invisible				= CInvisibility::is_active();
+	m_last_invisible_run_play	= 0;
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -277,6 +279,12 @@ void CAI_Bloodsucker::UpdateCL()
 	CInvisibility::frame_update		();
 	CControlledActor::frame_update	();
 	
+	if (state_invisible && control().path_builder().is_moving_on_path()) {
+		if (m_last_invisible_run_play + m_run_particles_freq < Device.dwTimeGlobal) {
+			m_last_invisible_run_play	= Device.dwTimeGlobal + Random.randI(m_run_particles_freq - m_run_particles_freq/2, m_run_particles_freq + m_run_particles_freq/2);
+			play_hidden_run_particles	();
+		}
+	}
 }
 
 
@@ -382,6 +390,20 @@ bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
 	return true;
 }
 
+
+void CAI_Bloodsucker::play_hidden_run_particles()
+{
+	Fmatrix	xform			= XFORM();
+	Fvector pos;
+	pos.set	(Position());
+	pos.y	+= 0.1f;
+
+	xform.translate_over	(pos);
+
+	CParticlesObject*		ps = xr_new<CParticlesObject>(invisible_run_particles_name, TRUE);
+	ps->UpdateParent		(xform, zero_vel);
+	ps->Play				();
+}
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
