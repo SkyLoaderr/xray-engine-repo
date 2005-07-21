@@ -38,9 +38,12 @@ function snd_source:reset_scheme()
 	   self.current_sound = 1
 	end   
 	
+--	self.current_sound = 1 --DELME !!!
+	
 	--self.object:set_callback(callback.hit, self.hit_callback, self)
 	self.destructed = false
-	
+    self.st.pause_time = 0	
+    self.st.sound_set = false
 end
 
 function snd_source:hit_callback(obj, amount, local_direction, who, bone_index)
@@ -60,6 +63,27 @@ end
 
 function snd_source:update(delta)
     if self.destructed == true then return end
+
+    --if self.st.pause_time ~= 0 then
+       if self.st.pause_time - device ():time_global () > 0 then
+          --printf ("PAUSE. NEED TIME : %d, CURRENT TIME : %d", self.st.pause_time, device ():time_global ())
+          return
+       end
+       
+       self.st.pause_time = 0
+       if self.st.sound_set == true then
+          self.st.sound_set = false  
+          if self.st.looped == false then
+             self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position ())
+          else 
+             self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), 0, sound_object.looped)
+          end   
+          played_sound = self.sound_list[self.current_sound]
+          --printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
+       end   
+    --end        
+
+       
     if self.last_update == 0 then
        self.last_update = device ():time_global ()
     else
@@ -73,24 +97,25 @@ function snd_source:update(delta)
 	if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
 		return
 	end
+
 	
     if self.sound_list[self.current_sound]:playing () == false then
        if self.first_sound == false then
           self.st.signals["sound_end"] = true
-       end   
+       end
+          
        self.current_sound = self.current_sound + 1
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
           self.st.signals["theme_end"] = true
        end
-       if self.st.looped == false then
-          self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position ())
-       else 
-          self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), 0, sound_object.looped)
-       end   
+       self.st.sound_set = true
+       if self.st.pause_min ~= 0 or self.st.pause_max ~= 0 then
+          local time = math.random (self.st.pause_min, self.st.pause_max)
+          self.st.pause_time = device ():time_global () + time
+          --printf ("PAUSE TIME : %d, start : %d", time, self.st.pause_time)
+       end 
        self.first_sound = false
-       printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
-       played_sound = self.sound_list[self.current_sound]
     end
        
 end
@@ -108,5 +133,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	st.theme    = utils.cfg_get_string(ini, section, "snd",	npc, false, "")
 	st.looped   = utils.cfg_get_bool (ini, section, "looped", npc, false)
+	st.pause_min = utils.cfg_get_number (ini, section, "pause_min", npc, false, 0)
+	st.pause_max = utils.cfg_get_number (ini, section, "pause_max", npc, false, 0)
+	if st.pause_max < st.pause_min then
+	   abort ("PH_SOUND - invalid time range !!!")
+    end	    
 end
     
