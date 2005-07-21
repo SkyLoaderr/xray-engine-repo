@@ -216,43 +216,43 @@ function action_remark_activity:step()
 
 	-- Ќачальное состо€ние
 	if self.state == state_initial then
-		if self.st.no_move then
+--		if self.st.no_move then
 			self:stand_still()
 			self.state = state_standing
-		else
+--		else
 			-- ѕобежали к игроку
-			self.object:set_path_type(game_object.level_path)
-			self.object:set_desired_direction(self.target:direction())
+--			self.object:set_path_type(game_object.level_path)
+--			self.object:set_desired_direction(self.target:direction())
 			--printf("xr_remark <target>: %s:%s", utils.to_str(self.target), utils.to_str(self.target:level_vertex_id()))
-			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
-			self:go_to_target()
-			self.state = state_going_to_plr
-		end
+--			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
+--			self:go_to_target()
+--			self.state = state_going_to_plr
+--		end
 		return
 	end
 
-	if self.state == state_going_to_plr then
+--	if self.state == state_going_to_plr then
 		-- ѕробовать включать звук, когда мы близко, или долго не можем добратьс€ до игрока:
-		if self.st.snd and
-		   (distance_between(self.object, self.target) <= self.st.snd_dist or
-		    time_global() - self.reset_time >= self.st.snd_timeout) then
-			printf("_bp: action_remark_activity:step(): calling activate_sound from state_going_to_plr")
-			if not self.st.snd_anim_sync then
-				self:activate_sound()
-			end
-		end
+--		if self.st.snd and
+--		   (distance_between(self.object, self.target) <= self.st.snd_dist or
+--		    time_global() - self.reset_time >= self.st.snd_timeout) then
+--			printf("_bp: action_remark_activity:step(): calling activate_sound from state_going_to_plr")
+--			if not self.st.snd_anim_sync then
+--				self:activate_sound()
+--			end
+--		end
 
-		if distance_between(self.object, self.target) < 3 or
-		   self.st.arrival_timeout <= time_global() - self.reset_time then
-			self:stand_still()
-			self.st.no_move = true -- Ќе получаетс€ пробежать к актеру - больше и не пытатьс€
-			self:signal_arrival()
-			self.state = state_standing
-		else
-			self:update_destination()
-		end
-		return
-	end
+--		if distance_between(self.object, self.target) < 3 or
+--		   self.st.arrival_timeout <= time_global() - self.reset_time then
+--			self:stand_still()
+--			self.st.no_move = true -- Ќе получаетс€ пробежать к актеру - больше и не пытатьс€
+--			self:signal_arrival()
+--			self.state = state_standing
+--		else
+--			self:update_destination()
+--		end
+--		return
+--	end
 
 	if self.state == state_standing then
 		if self.st.snd then

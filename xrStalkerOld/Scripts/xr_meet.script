@@ -98,7 +98,11 @@ function action_meet_wait:execute ()
 		-- нужно отыграть фоновый
 		if self.sound ~= meet_manager.sound then
 			self.sound = meet_manager.sound
-			xr_sound.set_sound(self.object, meet_manager.sound)
+			if self.sound == "nil" then
+				xr_sound.set_sound(self.object, nil)
+			else
+				xr_sound.set_sound(self.object, meet_manager.sound)
+			end
 		end
 	else
 		-- нужно зарубить фоновый

@@ -43,6 +43,10 @@
         <texture x="550" y="0" width="200" height="150">ui\ui_icon_photo</texture>
         <text>rostok_tunel_gordon_diary</text>
     </article>
+    <article id="bar_radar_shedule" name="Radar shedule" group="Diary">
+        <texture x="550" y="0" width="200" height="150">ui\ui_icon_photo</texture>
+        <text>bar_radar_shedule</text>
+    </article>
 
 
 	<article id="mil_actor_main_quest" name = "Military main task" group="Diary">

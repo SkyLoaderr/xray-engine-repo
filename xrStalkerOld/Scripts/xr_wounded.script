@@ -135,7 +135,11 @@ function action_wounded:execute ()
 		-- нужно отыграть фоновый
 		if self.sound ~= wound_manager.sound then
 			self.sound = wound_manager.sound
-			xr_sound.set_sound(self.object, wound_manager.sound)
+			if self.sound == "nil" then
+				xr_sound.set_sound(self.object, nil)
+			else
+				xr_sound.set_sound(self.object, wound_manager.sound)
+			end
 		end
 	else
 		-- нужно зарубить фоновый

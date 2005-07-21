@@ -473,7 +473,15 @@ states = {
 				animstate = "stand",
 				animation = "psy_shoot"
 			},
-			
+	-- Псих в баре
+	psycho_pain = {weapon = "none",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "psycho_pain"
+			},
+				
 	-- Бармен
 	bar_fas = {	weapon = "strapped",
 				movement = move.stand,
@@ -542,6 +550,14 @@ states = {
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = nil
+			},
+
+	barman_shock = {	weapon = "none",
+				movement = move.walk,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "barman_shock"
 			},
 
 	barman_wait_danger = {	weapon = "none",

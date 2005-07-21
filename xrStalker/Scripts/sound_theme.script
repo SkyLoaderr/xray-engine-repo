@@ -259,7 +259,10 @@ function load_sound(obj)
 	theme[obj:id()]["bar_bar_osvedomitel_hello"]	= load_sound_from_ltx(obj, "bar_bar_osvedomitel_hello")
 	theme[obj:id()]["bar_bar_barmen_hello"]	= load_sound_from_ltx(obj, "bar_bar_barmen_hello")
 	theme[obj:id()]["bar_dolg_leader_hello"]	= load_sound_from_ltx(obj, "bar_dolg_leader_hello")
-
+	-- Bar psyh
+	theme[obj:id()]["bar_psycho_pain"]				= load_sound_from_ltx(obj, "bar_psycho_pain")
+	theme[obj:id()]["bar_psycho_goodluck"]			= load_sound_from_ltx(obj, "bar_psycho_goodluck")
+	theme[obj:id()]["bar_barman_psycho"]			= load_sound_from_ltx(obj, "bar_barman_psycho")
 
     -- Military sounds
     theme[obj:id()]["mil_max_thanx"]                  = load_sound_from_ltx(obj, "mil_max_thanx")

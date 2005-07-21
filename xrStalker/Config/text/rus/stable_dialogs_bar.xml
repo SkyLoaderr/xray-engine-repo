@@ -228,6 +228,21 @@
     <string id="bar_bar_barman_veterans_finish_111">
         <text>Герой, слов нет, герой. Вот держи. Я думаю, ты не будешь обижен нашей сделкой.</text>
     </string>
+    <string id="bar_bar_barmen_about_gorbun_0">
+        <text>Слушай, он вспоминал про какого-то Горбуна. Ты не знаешь кто это?</text>
+    </string>
+    <string id="bar_bar_barmen_about_gorbun_1">
+        <text>Хм. Надо подумать. Помниться видел его пару раз. Последний раз он с друзьями собирался за артефактами поглубже зайти. Трое их было. Горбун, Лысый, а третьего я не знаю. Кстати, лысый сейчас в баре сидит. Сходи, может он чего подскажет.</text>
+    </string>
+    <string id="bar_bar_barmen_about_gorbun_11">
+        <text>О, спасибо за наводку.</text>
+    </string>
+    <string id="bar_bar_barmen_about_psih_0">
+        <text>Чего с ним? Мычит что-то непонятное.</text>
+    </string>
+    <string id="bar_bar_barmen_about_psih_1">
+        <text>Да черт его разберет. Совсем, наверное, головой сдвинулся. Водки ему чтоли налить, или укол какой сделать.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_0">
         <text>Работа для меня найдется?</text>
     </string>
@@ -693,8 +708,89 @@
     <string id="bar_bar_osvedomitel_trade_info_999">
         <text>В данный момент новой пока информации нет.</text>
     </string>
-    <string id="bar_bar_psih_start_0">
-        <text>Hello!</text>
+    <string id="bar_bar_psih_give_medkit_0">
+        <text>Тебе плохо? Может аптечку дать?</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_1">
+        <text>Больно! Я справлюсь! Я смогу! Аптечка! Да! Аптечку!</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_11">
+        <text>Держи, может поможет.</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_12">
+        <text>Извини, при себе нет.</text>
+    </string>
+    <string id="bar_bar_psih_start_gorbun_0">
+        <text>Горбун, это ты?</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_11">
+        <text>Я, я нормальный!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_12">
+        <text>Я смогу, я справлюсь! Уйдите!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_13">
+        <text>Оставьте меня!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_14">
+        <text>Больно! Больно!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_15">
+        <text>Моя голова. Она. Она не моя!</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_0">
+        <text>Да, я - Горбун.</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_1">
+        <text>Нет, нет! Ты все врешь! Горбун умер!</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_2">
+        <text>Неужели?</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_0">
+        <text>Нет, я Лысый.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_1">
+        <text>Ты, сукин сын! Как ты смел? Оставить нас? Ты же обещал. Обещал! Понимаешь?</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11">
+        <text>Мне жаль, действительно, очень жаль. Я просто испугался. Сперва эти призраки. Потом Горбун.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_111">
+        <text>Горбун! Что с ним? Ты его видел? Я думал что его убило первой волной.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_1111">
+        <text>Горбун побежал за тобой к антене. Я слышал только его маты и звуки выстрелов. После первой волны я попытался найти его, но боялся слишком близко подходить к антене. Я не видел его с тех пор.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11111">
+        <text>Кто-то вытащил меня из-под антены. Если это был не ты, то наверное только Горбун. Врядли это сделали бы эти зомбированные уроды. А из сталкеров рассписание работы антены никто не знает больше.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11112">
+        <text>Рябой. Я хочу вернуться туда. Я хочу найти Горбуна. Мне страшно подумать о том, что могло с ним случиться. Помоги мне.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11113">
+        <text>Что-то ты осмелел. Я уже никуда не пойду. Но слушай сюда. Выжигатель иногда спит. В это время можно прокрасться мимо него. На этой флешке более детальная информация.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11114">
+        <text>Спасибо тебе.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_12">
+        <text>Ну обещал, извини! Но ты говорил что выжигатель уже не работает, что там безопасно!</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_121">
+        <text>Пошел к черту, Лысый. Ты прекрасно знал на что идешь!</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_0">
+        <text>Ты в порядке?</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_1">
+        <text>Больно! Больно! Уйдите. Я нормальный! Я справлюсь, я смогу.</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_2">
+        <text>Это, это! Бред. Бред кругом! Уйдите!</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_3">
+        <text>Не понимаю. Ничего не понимаю! Отпустите!</text>
     </string>
     <string id="bar_bar_visitors_10_start_71">
         <text>Чего тебе?</text>

@@ -225,7 +225,19 @@
 
 		 <!-- PSIHOPAT -->
 	<info_portion id="bar_psih_come"></info_portion>
+	<info_portion id="bar_psih_suicide"></info_portion>
 	<info_portion id="bar_psih_done"></info_portion>
+	
+	<info_portion id="bar_barman_need_1_phrase"></info_portion>
+	<info_portion id="bar_barman_say_1_phrase"></info_portion>
+	<info_portion id="bar_psih_nopain"></info_portion>
+	<info_portion id="bar_psih_know_pain"></info_portion>
+	<info_portion id="bar_psih_know_gorbun"></info_portion>
+	<info_portion id="bar_psih_know_lisiy"></info_portion>
+	<info_portion id="bar_psih_find_lisiy"></info_portion>
+	<info_portion id="bar_radar_shedule">
+		<article>bar_radar_shedule</article>
+	</info_portion>
 	    
 		<!-- DEACTIVATE RADAR -->
     <info_portion id="bar_deactivate_radar_start">

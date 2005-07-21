@@ -866,10 +866,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1383,6 +1383,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\scripts\bar_arena_sr.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\bar_bar_room.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\scripts\bar_barman.ltx">
