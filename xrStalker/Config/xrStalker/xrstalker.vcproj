@@ -1012,9 +1012,6 @@
 					RelativePath=".\config\ui\pda_map.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\pda_new.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\skin_selector.xml">
 				</File>
 				<File
