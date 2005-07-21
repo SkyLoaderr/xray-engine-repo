@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #pragma once
-
+/*
 #include "UIDialogWnd.h"
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
@@ -15,9 +15,6 @@
 #include "UIActorDiary.h"
 #include "UIPdaAux.h"
 
-///////////////////////////////////////
-// Дневник
-///////////////////////////////////////
 
 class CUIDiaryWnd: public CUIWindow
 {
@@ -96,3 +93,34 @@ protected:
 	//инициализация информации о торговце и заказах
 	void				SetContractTrader();
 };
+*/
+#include "UIWindow.h"
+
+class CUINewsWnd;
+class CUIFrameLineWnd;
+class CUIFrameWindow;
+class CUIAnimatedStatic;
+class CUIStatic;
+
+class CUIDiaryWnd: public CUIWindow
+{
+	typedef CUIWindow inherited;
+protected:
+	CUINewsWnd*			UINewsWnd;
+	CUIWindow*			m_UIMainWnd;
+	CUIFrameWindow*		m_UILeftFrame;
+	CUIFrameLineWnd*	m_UILeftHeader;
+	CUIAnimatedStatic*	m_UIAnimation;
+	CUIStatic*			m_UITitle;
+	void				SetTitle		(LPCSTR str);
+public:
+						CUIDiaryWnd		();
+	virtual				~CUIDiaryWnd	();
+
+			void		Init			();
+			void		AddNews			();
+			void		MarkNewsAsRead	(bool status);
+	virtual void		Show			(bool status);
+
+};
+

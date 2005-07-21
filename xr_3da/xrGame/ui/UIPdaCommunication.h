@@ -5,6 +5,7 @@
 #ifndef UI_PDA_COMMUNICATION_H_
 #define UI_PDA_COMMUNICATION_H_
 
+/*
 #include "UIWindow.h"
 
 
@@ -25,8 +26,8 @@ public:
 	CUIPdaCommunication();
 	virtual ~CUIPdaCommunication();
 
-	virtual void Init();
-	virtual void InitPDACommunication();
+			void Init();
+			void InitPDACommunication();
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
@@ -37,8 +38,8 @@ public:
 
 protected:
 	//контакты
-	virtual void InitPdaContacts();
-	virtual	void UpdatePdaContacts();
+			void InitPdaContacts();
+			void UpdatePdaContacts();
 
 	//диалог
 //	virtual void InitPdaDialog();
@@ -54,18 +55,18 @@ protected:
 	CInventoryOwner*	m_pInvOwner;
 	CPda*				m_pPda;
 
-/*	CUIPdaDialogWnd		UIPdaDialogWnd;
+//	CUIPdaDialogWnd		UIPdaDialogWnd;
 
 
 	//указатели на текущий контакт
-	u32					m_idContact;
-	CObject*			m_pContactObject;
-	CInventoryOwner*	m_pContactInvOwner;
-	CPda*				m_pContactPda;
+//	u32					m_idContact;
+//	CObject*			m_pContactObject;
+//	CInventoryOwner*	m_pContactInvOwner;
+//	CPda*				m_pContactPda;
 
 	//потеря контакта во время диалога
-	bool m_bContactLoss;
-*/
+//	bool m_bContactLoss;
+
 
 	//указатель на владельца инвентаря вызвавшего менюшку
 	//и его собеседника
@@ -99,5 +100,5 @@ protected:
 //protected:
 //	bool m_bNeedToUpdateQuestions;
 };
-
+*/
 #endif

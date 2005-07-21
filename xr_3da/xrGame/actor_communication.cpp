@@ -145,9 +145,10 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 		if(pGameSP) 
 		{
 			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
-				pGameSP->PdaMenu->UIDiaryWnd->UINewsWnd.IsShown())
+				pGameSP->PdaMenu->UIDiaryWnd->IsShown())
+//				pGameSP->PdaMenu->UIDiaryWnd->UINewsWnd.IsShown())
 			{
-				pGameSP->PdaMenu->UIDiaryWnd->UINewsWnd.AddNews();
+				pGameSP->PdaMenu->UIDiaryWnd->AddNews();
 				pGameSP->PdaMenu->UIDiaryWnd->MarkNewsAsRead(true);
 			}
 			else

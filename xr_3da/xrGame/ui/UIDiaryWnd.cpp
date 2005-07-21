@@ -65,7 +65,7 @@ CUIDiaryWnd::CUIDiaryWnd()
 		m_pJobsRoot				(NULL),
 		m_pNews					(NULL)
 {
-	Show(false);
+//	Show(false);
 }
 
 //-----------------------------------------------------------------------------/

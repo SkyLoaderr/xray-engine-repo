@@ -499,7 +499,7 @@ CUIMapWnd::CUIMapWnd()
 	m_activeMap				= NULL;
 	m_GlobalMap				= NULL;
 	m_flags.zero			();
-	Show					(false);
+//	Show					(false);
 }
 
 CUIMapWnd::~CUIMapWnd()

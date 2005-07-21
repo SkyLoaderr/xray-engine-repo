@@ -11,7 +11,7 @@
 #include "ui/UIMainInGameWnd.h"
 #include "UIGameSP.h"
 #include "ui/UIPDAWnd.h"
-#include "ui/UIDiaryWnd.h"
+//#include "ui/UIDiaryWnd.h"
 #include "ui/UIEventsWnd.h"
 
 struct FindTaskByID{
@@ -79,10 +79,10 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
 		{
-			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
+/*			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
 				pGameSP->PdaMenu->UIDiaryWnd->UIJobsWnd.IsShown())
 				pGameSP->PdaMenu->UIDiaryWnd->UIJobsWnd.ReloadJobs();
-
+*/
 			if(pGameSP->PdaMenu->UIEventsWnd->IsShown())
 				pGameSP->PdaMenu->UIEventsWnd->Reload();
 		}

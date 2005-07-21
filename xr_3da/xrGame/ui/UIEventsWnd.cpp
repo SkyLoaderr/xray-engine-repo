@@ -78,7 +78,7 @@ void CUIEventsWnd::Init				()
 	m_TaskFilter->SetWindowName		("filter_tab");
 	Register						(m_TaskFilter);
    AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
-   
+
    AddCallback						("list_wnd",LIST_ITEM_CLICKED,boost::bind(&CUIEventsWnd::OnListItemClicked,this,_1,_2));
 
    m_currFilter						= eActiveTask;

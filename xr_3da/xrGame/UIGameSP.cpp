@@ -61,21 +61,21 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 
 	case kACTIVE_JOBS:
 		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
-			PdaMenu->SetActiveSubdialog(epsActiveJobs);
+			PdaMenu->SetActiveSubdialog(eptQuests);
 			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
 
 	case kMAP:
 		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
-			PdaMenu->SetActiveSubdialog(epsMap);
+			PdaMenu->SetActiveSubdialog(eptMap);
 			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
 
 	case kCONTACTS:
 		if( !MainInputReceiver() || MainInputReceiver()==PdaMenu){
-			PdaMenu->SetActiveSubdialog(epsContacts);
+			PdaMenu->SetActiveSubdialog(eptContacts);
 			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;

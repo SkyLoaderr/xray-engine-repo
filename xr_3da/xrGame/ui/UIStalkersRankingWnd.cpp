@@ -35,7 +35,8 @@ void CUIStalkersRankingWnd::Init()
 
 	CUIXmlInit	xml_init;
 
-	inherited::Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+//	inherited::Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	xml_init.InitWindow(uiXml, "main_wnd", 0, this);
 
 	// Декоративное оформление
 	UICharIconFrame = xr_new<CUIFrameWindow>(); UICharIconFrame->SetAutoDelete(true);

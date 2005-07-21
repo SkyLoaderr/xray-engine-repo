@@ -46,8 +46,8 @@ public:
 	bool			HasArticle(ARTICLE_ID);
 
 	void			OpenTree(ARTICLE_ID id) { UIInfo.OpenTree(id); }
-	//  нопка возврата в меню заданий
-	CUIButton			UIBack;
+//  нопка возврата в меню заданий
+//	CUIButton			UIBack;
 
 	void			ReloadArticles	();
 protected:

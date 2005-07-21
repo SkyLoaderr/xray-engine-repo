@@ -45,6 +45,8 @@ void CUIActorInfoWnd::Init()
 
 	CUIXmlInit	xml_init;
 
+	xml_init.InitWindow(uiXml, "main_wnd", 0, this);
+
 	// Декоративное оформление
 	UICharIconFrame = xr_new<CUIFrameWindow>();	UICharIconFrame->SetAutoDelete	(true);
 	AttachChild(UICharIconFrame);

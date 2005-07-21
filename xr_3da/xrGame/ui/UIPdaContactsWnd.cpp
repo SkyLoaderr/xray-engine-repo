@@ -33,16 +33,17 @@ void CUIPdaContactsWnd::Show(bool status)
 	}
 }
 
-void CUIPdaContactsWnd::Init(float x, float y, float width, float height)
+void CUIPdaContactsWnd::Init()
 {
-	inherited::Init(x, y, width, height);
-
 	CUIXml		uiXml;
 	bool xml_result =uiXml.Init(CONFIG_PATH, UI_PATH, PDA_CONTACTS_XML);
 	R_ASSERT3(xml_result, "xml file not found", PDA_CONTACTS_XML);
 
 	CUIXmlInit	xml_init;
 	string128	buf;
+
+
+	xml_init.InitWindow(uiXml, "main_wnd", 0, this);
 
 	AttachChild(&UIFrameContacts);
 	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, &UIFrameContacts);

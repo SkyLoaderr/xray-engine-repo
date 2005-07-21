@@ -567,7 +567,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 			StartStopMenu(pPdaMenu,true);
 		else
 		{
-			pPdaMenu->SetActiveSubdialog(epsMap);
+			pPdaMenu->SetActiveSubdialog(eptMap);
 			StartStopMenu(pPdaMenu,true);
 		};		
 		return true;

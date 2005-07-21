@@ -39,22 +39,30 @@ CUINewsWnd::~CUINewsWnd()
 
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUINewsWnd::Init()
+void CUINewsWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 {
+	string512 pth;
+
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, NEWS_XML);
-	R_ASSERT3(xml_result, "xml file not found", NEWS_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
+	R_ASSERT3(xml_result, "xml file not found", xml_name);
 	CUIXmlInit xml_init;
 
-	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+//	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	strconcat(pth,start_from,"list");
+	xml_init.InitWindow(uiXml, pth, 0, this);
 
 	AttachChild(&UIListWnd);
-	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
+	xml_init.InitListWnd(uiXml, pth, 0, &UIListWnd);
 	UIListWnd.ActivateList(false);
 	UIListWnd.EnableScrollBar(true);
 	UIListWnd.SetRightIndention(static_cast<int>(20 * UI()->GetScaleX()));
+
+}
+
+void CUINewsWnd::Init()
+{
+	Init				(NEWS_XML,"");
 }
 
 //////////////////////////////////////////////////////////////////////////

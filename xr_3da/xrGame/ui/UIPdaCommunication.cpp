@@ -25,7 +25,7 @@
 
 CUIPdaCommunication::CUIPdaCommunication()
 {
-	Show(false);
+//	Show(false);
 
 	m_pInvOwner = NULL;
 	m_pPda = NULL;

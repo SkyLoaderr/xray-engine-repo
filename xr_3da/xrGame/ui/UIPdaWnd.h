@@ -14,12 +14,13 @@ class CUIButton;
 class CUITabControl;
 class CUIStatic;
 class CUIMapWnd;
-class CUIPdaCommunication;
+//class CUIPdaCommunication;
 class CUIEncyclopediaWnd;
 class CUIDiaryWnd;
 class CUIActorInfoWnd;
 class CUIStalkersRankingWnd;
 class CUIEventsWnd;
+class CUIPdaContactsWnd;
 //////////////////////////////////////////////////////////////////////////
 
 extern const char * const PDA_XML;
@@ -46,25 +47,18 @@ protected:
 	// Установить игровое время
 	void					UpdateDateTime		();
 
-	enum EPdaTabs
-	{
-		eptEvents = 0,
-		eptComm,
-		eptMap,
-		eptEncyclopedia,
-		eptActorStatistic,
-		eptRanking
-	};
 protected:
 	// Бэкграунд
 	CUIStatic*				UIMainPdaFrame;
 
 	// Текущий активный диалог
 	CUIWindow*				m_pActiveDialog;
+	EPdaTabs				m_pActiveSection;
 public:
 	// Поддиалоги PDA
 	CUIMapWnd*				UIMapWnd;
-	CUIPdaCommunication*	UIPdaCommunication;
+//	CUIPdaCommunication*	UIPdaCommunication;
+	CUIPdaContactsWnd*		UIPdaContactsWnd;
 	CUIEncyclopediaWnd*		UIEncyclopediaWnd;
 	CUIDiaryWnd*			UIDiaryWnd;
 	CUIActorInfoWnd*		UIActorInfo;
@@ -84,11 +78,6 @@ public:
 	virtual void 			Hide				();
 			void			OnNewArticleAdded	();
 	
-	// Специфичные для родительского окна PDA сообщения:
-	// Смена точки центрирования карты
-//	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
-	// Переключиться на карту и сфокусироваться на заданной точке
-	void					FocusOnMap			(const int x, const int y, const int z);
-	void					SetActiveSubdialog	(EPdaSections section, ARTICLE_ID addiotionalValue = "");
+	void					SetActiveSubdialog	(EPdaTabs section);
 	virtual bool			StopAnyMove			(){return false;}
 };

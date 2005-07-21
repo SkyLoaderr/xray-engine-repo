@@ -19,7 +19,8 @@
 #include "UIStatic.h"
 #include "UIFrameWindow.h"
 #include "UITabControl.h"
-#include "UIPdaCommunication.h"
+//#include "UIPdaCommunication.h"
+#include "UIPdaContactsWnd.h"
 #include "UIMapWnd.h"
 #include "UIDiaryWnd.h"
 #include "UIFrameLineWnd.h"
@@ -27,6 +28,8 @@
 #include "UIStalkersRankingWnd.h"
 #include "UIActorInfo.h"
 #include "UIEventsWnd.h"
+#include "../object_broker.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 const char * const PDA_XML					= "pda.xml";
@@ -39,7 +42,7 @@ CUIPdaWnd::CUIPdaWnd()
 {
 	Init();
 
-	Hide();
+//	Hide();
 	
 	SetFont(HUD().Font().pFontMedium);
 }
@@ -48,6 +51,13 @@ CUIPdaWnd::CUIPdaWnd()
 
 CUIPdaWnd::~CUIPdaWnd()
 {
+	delete_data		(UIMapWnd);
+	delete_data		(UIPdaContactsWnd);
+	delete_data		(UIEncyclopediaWnd);
+	delete_data		(UIDiaryWnd);
+	delete_data		(UIActorInfo);
+	delete_data		(UIStalkersRanking);
+	delete_data		(UIEventsWnd);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,44 +92,44 @@ void CUIPdaWnd::Init()
 	xml_init.InitFrameLine(uiXml, "timer_frame_line", 0, UITimerBackground);
 
 	// Oкно коммуникaции
-	UIPdaCommunication = xr_new<CUIPdaCommunication>(); UIPdaCommunication->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild(UIPdaCommunication);
-	UIPdaCommunication->Init();
+	UIPdaContactsWnd = xr_new<CUIPdaContactsWnd>();
+//	UIMainPdaFrame->AttachChild(UIPdaCommunication);
+	UIPdaContactsWnd->Init();
 
 	// Oкно карты
-	UIMapWnd = xr_new<CUIMapWnd>(); UIMapWnd->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild(UIMapWnd);
+	UIMapWnd = xr_new<CUIMapWnd>();
+//	UIMainPdaFrame->AttachChild(UIMapWnd);
 	UIMapWnd->Init("pda_map.xml","map_wnd");
 
 	// Oкно новостей
-	UIDiaryWnd = xr_new<CUIDiaryWnd>(); UIDiaryWnd->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild(UIDiaryWnd);
+	UIDiaryWnd = xr_new<CUIDiaryWnd>();
+//	UIMainPdaFrame->AttachChild(UIDiaryWnd);
 	UIDiaryWnd->Init();
 
 	// Окно энциклопедии
-	UIEncyclopediaWnd = xr_new<CUIEncyclopediaWnd>(); UIEncyclopediaWnd->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild(UIEncyclopediaWnd);
+	UIEncyclopediaWnd = xr_new<CUIEncyclopediaWnd>();
+//	UIMainPdaFrame->AttachChild(UIEncyclopediaWnd);
 	UIEncyclopediaWnd->Init();
-	UIEncyclopediaWnd->Show(false);
+//	UIEncyclopediaWnd->Show(false);
 
 	// Окно статистики о актере
-	UIActorInfo = xr_new<CUIActorInfoWnd>(); UIActorInfo->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild(UIActorInfo);
+	UIActorInfo = xr_new<CUIActorInfoWnd>();
+//	UIMainPdaFrame->AttachChild(UIActorInfo);
 	UIActorInfo->Init();
-	UIActorInfo->Show(false);
+//	UIActorInfo->Show(false);
 
 	// Окно рейтинга сталкеров
-	UIStalkersRanking = xr_new<CUIStalkersRankingWnd>(); UIStalkersRanking->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild(UIStalkersRanking);
+	UIStalkersRanking = xr_new<CUIStalkersRankingWnd>();
+//	UIMainPdaFrame->AttachChild(UIStalkersRanking);
 	UIStalkersRanking->Init();
-	UIStalkersRanking->Show(false);
+//	UIStalkersRanking->Show(false);
 
-	UIEventsWnd		= xr_new<CUIEventsWnd>(); UIEventsWnd->SetAutoDelete(true);
+	UIEventsWnd		= xr_new<CUIEventsWnd>();
 	UIEventsWnd->Init();
-	UIMainPdaFrame->AttachChild(UIEventsWnd);
-	UIEventsWnd->Show(false);
+//	UIMainPdaFrame->AttachChild(UIEventsWnd);
+//	UIEventsWnd->Show(false);
 
-	m_pActiveDialog = UIDiaryWnd;
+//	m_pActiveDialog = UIDiaryWnd;
 
 	// Tab control
 	UITabControl = xr_new<CUITabControl>(); UITabControl->SetAutoDelete(true);
@@ -137,12 +147,13 @@ void CUIPdaWnd::Init()
 	UIOffButton->SetMessageTarget(this);
 	if(GameID()!=GAME_SINGLE){
 		UITabControl->GetButtonsVector()->at(0)->Enable(false);
-		UITabControl->GetButtonsVector()->at(1)->Enable(false);
+		UITabControl->GetButtonsVector()->at(2)->Enable(false);
 		UITabControl->GetButtonsVector()->at(3)->Enable(false);
 		UITabControl->GetButtonsVector()->at(4)->Enable(false);
 		UITabControl->GetButtonsVector()->at(5)->Enable(false);
+		UITabControl->GetButtonsVector()->at(6)->Enable(false);
 	}
-	// Draw();
+	m_pActiveSection = eptNoActiveTab;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -153,50 +164,14 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		if (TAB_CHANGED == msg)
 		{
-			if (m_pActiveDialog)
-				m_pActiveDialog->Show(false);
-
-			// Add custom dialogs here
-			switch (UITabControl->GetActiveIndex()) 
-			{
-			case eptEvents:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIDiaryWnd);
-				InventoryUtilities::SendInfoToActor("ui_pda_events");
-				break;
-			case eptComm:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIPdaCommunication);
-				InventoryUtilities::SendInfoToActor("ui_pda_contacts");
-				break;
-			case eptMap:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIMapWnd);
-				break;
-			case eptEncyclopedia:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIEncyclopediaWnd);
-				InventoryUtilities::SendInfoToActor("ui_pda_encyclopedia");
-				break;
-			case eptActorStatistic:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIActorInfo);
-				InventoryUtilities::SendInfoToActor("ui_pda_actor_info");
-				break;
-			case eptRanking:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIStalkersRanking);
-				InventoryUtilities::SendInfoToActor("ui_pda_ranking");
-				break;
-			case 6:
-				m_pActiveDialog = smart_cast<CUIWindow*>(UIEventsWnd);
-				break;
-			default:
-				Msg("not registered button identifier [%d]",UITabControl->GetActiveIndex());
-			}
-			m_pActiveDialog->Reset();
-			m_pActiveDialog->Show(true);
+			SetActiveSubdialog	((EPdaTabs)UITabControl->GetActiveIndex());
 		}
 	}
 	// Сменить точку центрирования карты. Новые координаты поступают в pData
-	else if (PDA_MAP_SET_ACTIVE_POINT == msg)
+/*	else if (PDA_MAP_SET_ACTIVE_POINT == msg)
 	{
 		UIMapWnd->SetActivePoint(*reinterpret_cast<Fvector*>(pData));
-	}
+	}*/
 	else if (UIOffButton == pWnd)
 	{
 		if (STATIC_FOCUS_RECEIVED == msg)
@@ -206,7 +181,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		else if (BUTTON_CLICKED == msg)
 			Game().StartStopMenu(this,true);
 	}
-	else if (PDA_ENCYCLOPEDIA_HAS_ARTICLE == msg)
+/*	else if (PDA_ENCYCLOPEDIA_HAS_ARTICLE == msg)
 	{
 		CUIJobItem *pItem = smart_cast<CUIJobItem*>(pWnd);
 		if (pItem)
@@ -235,7 +210,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	else if (PDA_GO_BACK == msg)
 	{
 		UITabControl->SetNewActiveTab	(eptEvents);
-	}
+	}*/
 	else
 	{
 		R_ASSERT(m_pActiveDialog);
@@ -250,7 +225,7 @@ void CUIPdaWnd::Show()
 	InventoryUtilities::SendInfoToActor("ui_pda");
 
 	inherited::Show();
-	m_pActiveDialog->Show(true);
+//	m_pActiveDialog->Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -258,22 +233,13 @@ void CUIPdaWnd::Show()
 void CUIPdaWnd::Hide()
 {
 	inherited::Hide();
-	m_pActiveDialog->Show(false);
+//	m_pActiveDialog->Show(false);
 
 	InventoryUtilities::SendInfoToActor("ui_pda_hide");
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
-{
-	Fvector a;
-	a.set(static_cast<float>(x), static_cast<float>(y), static_cast<float>(z));
-	SendMessage(this, PDA_MAP_SET_ACTIVE_POINT, &a);
-	SetActiveSubdialog(epsMap);
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaWnd::UpdateDateTime()
 {
@@ -299,13 +265,60 @@ void CUIPdaWnd::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, ARTICLE_ID addiotionalValue)
+void CUIPdaWnd::SetActiveSubdialog(EPdaTabs section)
 {
+	if(	m_pActiveSection == section) return;
+
+	if (m_pActiveDialog){
+		UIMainPdaFrame->DetachChild(m_pActiveDialog);
+		m_pActiveDialog->Show(false);
+	}
+
+	switch (section) 
+	{
+	case eptDiary:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIDiaryWnd);
+		InventoryUtilities::SendInfoToActor("ui_pda_events");
+		break;
+	case eptContacts:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIPdaContactsWnd);
+		InventoryUtilities::SendInfoToActor("ui_pda_contacts");
+		break;
+	case eptMap:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIMapWnd);
+		break;
+	case eptEncyclopedia:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIEncyclopediaWnd);
+		InventoryUtilities::SendInfoToActor("ui_pda_encyclopedia");
+		break;
+	case eptActorStatistic:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIActorInfo);
+		InventoryUtilities::SendInfoToActor("ui_pda_actor_info");
+		break;
+	case eptRanking:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIStalkersRanking);
+		InventoryUtilities::SendInfoToActor("ui_pda_ranking");
+		break;
+	case eptQuests:
+		m_pActiveDialog = smart_cast<CUIWindow*>(UIEventsWnd);
+		break;
+	default:
+		Msg("not registered button identifier [%d]",UITabControl->GetActiveIndex());
+	}
+	UIMainPdaFrame->AttachChild		(m_pActiveDialog);
+	m_pActiveDialog->Reset			();
+	m_pActiveDialog->Show			(true);
+
+	if(UITabControl->GetActiveIndex()!=section)
+		UITabControl->SetNewActiveTab	(section);
+
+	m_pActiveSection = section;
+
+/*
 	switch (section)
 	{
-	case epsActiveJobs:
+	case eptQuests:
 		UITabControl->SetNewActiveTab	(eptEvents);
-		UIDiaryWnd->SetActiveSubdialog	(section);
 		break;
 	case epsMap:
 		UITabControl->SetNewActiveTab	(eptMap);
@@ -314,27 +327,24 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, ARTICLE_ID addiotionalV
 		UITabControl->SetNewActiveTab	(eptComm);
 		break;
 	case epsEncyclopedia:
-//		UITabControl.SetNewActiveTab	(eptEncyclopedia);
 		UIEncyclopediaWnd->OpenTree		(addiotionalValue);
 		UITabControl->SetNewActiveTab	(eptEncyclopedia);
 		UIEncyclopediaWnd->UIBack.Show	(true);
 		break;
 	case epsDiaryArticle:
 		UITabControl->SetNewActiveTab	(eptEvents);
-		UIDiaryWnd->SetActiveSubdialog	(section);
-		UIDiaryWnd->OpenDiaryTree		(addiotionalValue);
-		UIEncyclopediaWnd->UIBack.Show	(true);
 		break;
 	default:
 		NODEFAULT;
 	}
+*/
 }
 
 void CUIPdaWnd::OnNewArticleAdded	()
 {
-	if(UIDiaryWnd->IsShown() &&	UIDiaryWnd->UIActorDiaryWnd.IsShown())
+/*	if(UIDiaryWnd->IsShown() &&	UIDiaryWnd->UIActorDiaryWnd.IsShown())
 		UIDiaryWnd->ReloadArticles();
-
+*/
 	if(UIEncyclopediaWnd->IsShown())
 		UIEncyclopediaWnd->ReloadArticles();
 }

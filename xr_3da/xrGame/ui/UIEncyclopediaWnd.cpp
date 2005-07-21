@@ -49,6 +49,7 @@ void CUIEncyclopediaWnd::Init()
 	CUIXmlInit	xml_init;
 
 	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	xml_init.InitWindow		(uiXml, "main_wnd", 0, this);
 
 	// Load xml data
 	AttachChild(&UIEncyclopediaIdxBkg);
@@ -100,11 +101,12 @@ void CUIEncyclopediaWnd::Init()
 
 	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIEncyclopediaInfoBkg);
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UIEncyclopediaIdxBkg);
-
+/*
 	// Кнопка возврата
 	AttachChild(&UIBack);
 	xml_init.InitButton(uiXml, "back_button", 0, &UIBack);
 	UIBack.Show(false);
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -116,28 +118,6 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
 		R_ASSERT(pTVItem);
 
-//		if (!pTVItem->IsRoot())
-//		{
-//			// Удаляем текущую картинку и текст
-//			if (m_pCurrArticle)
-//			{
-//				UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->data()->image);
-//				m_pCurrArticle->data()->image.SetMask(NULL);
-//			}
-//			UIInfo.UIInfoDisplay.RemoveAll();
-//
-//			// Отображаем новые
-//			CUIString str;
-//			str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
-//			CUIStatic::PreprocessText(str.m_str, UIInfo.UIInfoDisplay.GetItemWidth() - 5, UIInfo.UIInfoDisplay.GetFont());
-//			UIInfo.UIInfoDisplay.AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
-//			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
-//			m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
-//
-//			if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
-//				UIImgMask.Show(false);
-//			else
-//				UIImgMask.Show(true);
 		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *UIInfo.SetCurrentArtice(pTVItem);
 		UIEncyclopediaInfoHeader.UITitleText.SetText(caption.c_str());
 		caption.erase(0, caption.find_last_of("/") + 1);
@@ -147,12 +127,12 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 //			m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 //		}
 	}
-	else if (&UIBack == pWnd && BUTTON_CLICKED == msg)
+/*	else if (&UIBack == pWnd && BUTTON_CLICKED == msg)
 	{
 		UIBack.Show(false);
 		GetTop()->SendMessage(this, PDA_GO_BACK, NULL);
 	}
-
+*/
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
@@ -192,7 +172,7 @@ void CUIEncyclopediaWnd::Show(bool status)
 	}
 	else
 	{
-		UIBack.Show(false);
+//		UIBack.Show(false);
 	}
 
 	UIInfo.Show(status);

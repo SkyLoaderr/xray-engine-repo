@@ -13,6 +13,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+/*
 // Разделы ПДА на которые можно сылаться извне для принудительного открытия
 enum EPdaSections
 {
@@ -21,7 +22,19 @@ enum EPdaSections
 	epsContacts,
 	epsEncyclopedia,
 	epsDiaryArticle
+};*/
+enum EPdaTabs
+{
+	eptQuests			= 0,
+	eptMap,
+	eptDiary,
+	eptContacts,
+	eptRanking,
+	eptActorStatistic,
+	eptEncyclopedia,
+	eptNoActiveTab		= u16(-1)
 };
+
 
 extern const char * const ALL_PDA_HEADER_PREFIX;
 
