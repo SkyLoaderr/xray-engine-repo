@@ -1206,18 +1206,6 @@
     <string id="bar_dolg_zavskald_reward_1311">
         <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
     </string>
-    <string id="barman_dialog_0">
-        <text>default text</text>
-    </string>
-    <string id="barmen_dialog_0">
-        <text>Привет, Меченый. Вован уже рассказал о тебе. Стрелка значит ищешь, ну что ж, кой чего знаю о нем.</text>
-    </string>
-    <string id="barmen_dialog_1">
-        <text>text in default</text>
-    </string>
-    <string id="barmen_dialog_2">
-        <text>text in default</text>
-    </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_0">
         <text>I would like to find out something.</text>
     </string>
