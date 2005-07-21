@@ -1,5 +1,178 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
+    <dialog id="agr_factory_stalker_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_stalker_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_swamp_ratcatcher_talks">
+        <phrase_list>
+            <phrase id="011111">
+                <text>agr_swamp_ratcatcher_talks_011111</text>
+                <next>0111111</next>
+            </phrase>
+            <phrase id="01111">
+                <text>agr_swamp_ratcatcher_talks_01111</text>
+                <give_info>agr_captains_chamber_info</give_info>
+                <give_info>agr_collector_entrance_info</give_info>
+                <next>011111</next>
+            </phrase>
+            <phrase id="0111">
+                <text>agr_swamp_ratcatcher_talks_0111</text>
+                <give_info>agr_collector_entrance_info</give_info>
+                <give_info>agr_captains_chamber_info</give_info>
+                <next>01111</next>
+            </phrase>
+            <phrase id="011">
+                <text>agr_swamp_ratcatcher_talks_011</text>
+                <dont_has_info>agr_collector_entrance_info</dont_has_info>
+                <next>0111</next>
+            </phrase>
+            <phrase id="01">
+                <text>agr_swamp_ratcatcher_talks_01</text>
+                <next>011</next>
+                <next>012</next>
+            </phrase>
+            <phrase id="012">
+                <text>agr_swamp_ratcatcher_talks_012</text>
+                <next>123</next>
+            </phrase>
+            <phrase id="123">
+                <text>agr_swamp_ratcatcher_talks_123</text>
+                <next>0111111</next>
+            </phrase>
+            <phrase id="0111111">
+                <text>agr_swamp_ratcatcher_talks_0111111</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text>agr_swamp_ratcatcher_talks_0</text>
+                <next>01</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_krot_about">
+        <has_info>agr_help_krot_done</has_info>
+        <phrase_list>
+            <phrase id="41">
+                <text>agr_factory_krot_about_41</text>
+                <action>dialogs.become_friend</action>
+            </phrase>
+            <phrase id="5">
+                <text>agr_factory_krot_about_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="4">
+                <text>agr_factory_krot_about_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="31">
+                <text>agr_factory_krot_about_31</text>
+            </phrase>
+            <phrase id="1">
+                <text>agr_factory_krot_about_1</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="2">
+                <text>agr_factory_krot_about_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>agr_factory_krot_about_21</text>
+            </phrase>
+            <phrase id="3">
+                <text>agr_factory_krot_about_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_about_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="51">
+                <text>agr_factory_krot_about_51</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_stalker_about">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text>agr_factory_stalker_about_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_stalker_about_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_krot_start">
+        <has_info>agr_help_krot_done</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_krot_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_krot_help">
+        <phrase_list>
+            <phrase id="10">
+                <text>agr_krot_help_10</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>agr_krot_skirmish_start</give_info>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_help_0</text>
+                <next>10</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_stalker_talk_level">
+        <precondition>dialogs.level_agroprom</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text>agr_stalker_talk_level_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="31">
+                <text>agr_stalker_talk_level_31</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <text>agr_stalker_talk_level_4</text>
+            </phrase>
+            <phrase id="3">
+                <text>agr_stalker_talk_level_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="2">
+                <text>agr_stalker_talk_level_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>agr_stalker_talk_level_21</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_stalker_talk_level_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="agr_stalker_talk_about_ratcatcher">
         <precondition>dialogs.level_agroprom</precondition>
         <phrase_list>
@@ -84,52 +257,14 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_stalker_talk_level">
-        <precondition>dialogs.level_agroprom</precondition>
-        <phrase_list>
-            <phrase id="1">
-                <text>agr_stalker_talk_level_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="31">
-                <text>agr_stalker_talk_level_31</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="4">
-                <text>agr_stalker_talk_level_4</text>
-            </phrase>
-            <phrase id="3">
-                <text>agr_stalker_talk_level_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="111">
-                <text />
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="2">
-                <text>agr_stalker_talk_level_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>agr_stalker_talk_level_21</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text />
-                <next>111</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_stalker_talk_level_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_stalker_esc">
         <precondition>dialogs.dialog_allowed</precondition>
         <dont_has_info>agr_warning_recieved</dont_has_info>
         <phrase_list>
+            <phrase id="20">
+                <text>agr_stalker_esc_20</text>
+                <next>200</next>
+            </phrase>
             <phrase id="30">
                 <text>agr_stalker_esc_30</text>
                 <next>300</next>
@@ -137,205 +272,14 @@
             <phrase id="300">
                 <text>agr_stalker_esc_300</text>
             </phrase>
-            <phrase id="20">
-                <text>agr_stalker_esc_20</text>
-                <next>200</next>
+            <phrase id="0">
+                <text>agr_stalker_esc_0</text>
+                <next>20</next>
             </phrase>
             <phrase id="200">
                 <text>agr_stalker_esc_200</text>
                 <give_info>agr_warning_recieved</give_info>
                 <next>30</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_stalker_esc_0</text>
-                <next>20</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_krot_about_gunslinger_cache">
-        <has_info>agr_help_krot_done</has_info>
-        <phrase_list>
-            <phrase id="10">
-                <text>agr_krot_about_gunslinger_cache_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="110">
-                <text>agr_krot_about_gunslinger_cache_110</text>
-                <next>20</next>
-            </phrase>
-            <phrase id="20">
-                <text>agr_krot_about_gunslinger_cache_20</text>
-            </phrase>
-            <phrase id="0">
-                <text>agr_krot_about_gunslinger_cache_0</text>
-                <next>10</next>
-            </phrase>
-            <phrase id="100">
-                <text>agr_krot_about_gunslinger_cache_100</text>
-                <next>110</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_krot_ask_about_gunslinger">
-        <has_info>agr_help_krot_done</has_info>
-        <phrase_list>
-            <phrase id="10">
-                <text>agr_krot_ask_about_gunslinger_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="100">
-                <text></text>
-                <give_info>agr_can_ask_krot_about_gunslinger</give_info>
-            </phrase>
-            <phrase id="0">
-                <text>agr_krot_ask_about_gunslinger_0</text>
-                <next>10</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_factory_stalker_start">
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_factory_stalker_start_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_factory_krot_about">
-        <has_info>agr_help_krot_done</has_info>
-        <phrase_list>
-            <phrase id="41">
-                <text>agr_factory_krot_about_41</text>
-                <action>dialogs.become_friend</action>
-            </phrase>
-            <phrase id="5">
-                <text>agr_factory_krot_about_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>agr_factory_krot_about_51</text>
-            </phrase>
-            <phrase id="4">
-                <text>agr_factory_krot_about_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="3">
-                <text>agr_factory_krot_about_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="2">
-                <text>agr_factory_krot_about_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="31">
-                <text>agr_factory_krot_about_31</text>
-            </phrase>
-            <phrase id="1">
-                <text>agr_factory_krot_about_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-            </phrase>
-            <phrase id="21">
-                <text>agr_factory_krot_about_21</text>
-            </phrase>
-            <phrase id="0">
-                <text>agr_factory_krot_about_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_factory_stalker_about">
-        <precondition>dialogs.dialog_allowed</precondition>
-        <phrase_list>
-            <phrase id="1">
-                <text>agr_factory_stalker_about_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>agr_factory_stalker_about_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_krot_general_info">
-        <has_info>agr_help_krot_done</has_info>
-        <phrase_list>
-            <phrase id="20">
-                <text>agr_krot_general_info_20</text>
-                <next>120</next>
-            </phrase>
-            <phrase id="30">
-                <text>agr_krot_general_info_30</text>
-            </phrase>
-            <phrase id="120">
-                <text>agr_krot_general_info_120</text>
-                <next>30</next>
-            </phrase>
-            <phrase id="10">
-                <text>agr_krot_general_info_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="100">
-                <text>agr_krot_general_info_100</text>
-                <next>20</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_krot_general_info_0</text>
-                <next>10</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_factory_krot_start">
-        <has_info>agr_help_krot_done</has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_factory_krot_start_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_swamp_ratcatcher_talks">
-        <phrase_list>
-            <phrase id="011111">
-                <text>agr_swamp_ratcatcher_talks_011111</text>
-                <next>0111111</next>
-            </phrase>
-            <phrase id="01111">
-                <text>agr_swamp_ratcatcher_talks_01111</text>
-                <give_info>agr_captains_chamber_info</give_info>
-                <give_info>agr_collector_entrance_info</give_info>
-                <next>011111</next>
-            </phrase>
-            <phrase id="0111">
-                <text>agr_swamp_ratcatcher_talks_0111</text>
-                <give_info>agr_collector_entrance_info</give_info>
-                <give_info>agr_captains_chamber_info</give_info>
-                <next>01111</next>
-            </phrase>
-            <phrase id="011">
-                <text>agr_swamp_ratcatcher_talks_011</text>
-                <dont_has_info>agr_collector_entrance_info</dont_has_info>
-                <next>0111</next>
-            </phrase>
-            <phrase id="01">
-                <text>agr_swamp_ratcatcher_talks_01</text>
-                <next>011</next>
-                <next>012</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_swamp_ratcatcher_talks_0</text>
-                <next>01</next>
-            </phrase>
-            <phrase id="012">
-                <text>agr_swamp_ratcatcher_talks_012</text>
-                <next>123</next>
-            </phrase>
-            <phrase id="123">
-                <text>agr_swamp_ratcatcher_talks_123</text>
-                <next>0111111</next>
-            </phrase>
-            <phrase id="0111111">
-                <text>agr_swamp_ratcatcher_talks_0111111</text>
-                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
@@ -375,33 +319,90 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_krot_help">
+    <dialog id="agr_krot_about_gunslinger_cache">
+        <has_info>agr_help_krot_done</has_info>
         <phrase_list>
+            <phrase id="110">
+                <text>agr_krot_about_gunslinger_cache_110</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="20">
+                <text>agr_krot_about_gunslinger_cache_20</text>
+            </phrase>
+            <phrase id="100">
+                <text>agr_krot_about_gunslinger_cache_100</text>
+                <next>110</next>
+            </phrase>
             <phrase id="10">
-                <text>agr_krot_help_10</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>agr_krot_skirmish_start</give_info>
+                <text>agr_krot_about_gunslinger_cache_10</text>
+                <next>100</next>
             </phrase>
             <phrase id="0">
-                <text>agr_krot_help_0</text>
+                <text>agr_krot_about_gunslinger_cache_0</text>
                 <next>10</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_krot_ask_about_gunslinger">
+        <has_info>agr_help_krot_done</has_info>
+        <phrase_list>
+            <phrase id="10">
+                <text>agr_krot_ask_about_gunslinger_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_ask_about_gunslinger_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="100">
+                <text></text>
+                <give_info>agr_can_ask_krot_about_gunslinger</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_krot_general_info">
+        <has_info>agr_help_krot_done</has_info>
+        <phrase_list>
+            <phrase id="20">
+                <text>agr_krot_general_info_20</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="30">
+                <text>agr_krot_general_info_30</text>
+            </phrase>
+            <phrase id="120">
+                <text>agr_krot_general_info_120</text>
+                <next>30</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_krot_general_info_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_general_info_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="100">
+                <text>agr_krot_general_info_100</text>
+                <next>20</next>
             </phrase>
         </phrase_list>
     </dialog>
     <dialog id="agr_krot_gunslinger_secret">
         <has_info>agr_can_ask_krot_about_gunslinger</has_info>
         <phrase_list>
+            <phrase id="10">
+                <text>agr_krot_gunslinger_secret_10</text>
+                <next>100</next>
+            </phrase>
             <phrase id="0">
                 <text>agr_krot_gunslinger_secret_0</text>
                 <has_info>agr_find_gunslinger_cache</has_info>
                 <next>10</next>
             </phrase>
-            <phrase id="10">
-                <text>agr_krot_gunslinger_secret_10</text>
-                <next>100</next>
-            </phrase>
             <phrase id="100">
                 <text>agr_krot_gunslinger_secret_100</text>
+                <has_info>agr_can_ask_krot_about_gunslinger</has_info>
             </phrase>
         </phrase_list>
     </dialog>
