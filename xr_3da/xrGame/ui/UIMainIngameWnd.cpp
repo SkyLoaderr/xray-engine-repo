@@ -371,8 +371,10 @@ void CUIMainIngameWnd::Draw()
 
 	
 	CActor* _pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(_pActor)
-		UISndNoiseBar.SetProgressPos( (s16)iFloor(_pActor->m_snd_noise*100.0f) );
+	if(_pActor){
+		s32 progr	= clampr(iFloor(_pActor->m_snd_noise*100.0f),(s32)UISndNoiseBar.GetRange_min(),(s32)UISndNoiseBar.GetRange_max());
+		UISndNoiseBar.SetProgressPos( (s16)progr );
+	}
 	
 
 	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
