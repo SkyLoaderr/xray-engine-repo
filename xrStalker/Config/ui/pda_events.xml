@@ -76,7 +76,17 @@
 						<texture>ui_string_03</texture>
 
 						<tool_bar x="0" y="6" width = "100" height="16">
-							<button x="15" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
+							<button x="15" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+							<window_name>default</window_name>
+								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">def</text>
+								<text_color>
+									<e r="181" g="170" b="148"/>
+									<d r="181" g="170" b="148"/>
+									<t r="127" g="127" b="127"/>				
+									<h r="231" g="153" b="22"/>
+								</text_color>			
+							</button>								
+							<button x="45" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
 							<window_name>to_global</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">global</text>
 								<text_color>
@@ -86,7 +96,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</button>								
-							<button x="70" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
+							<button x="100" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
 								<window_name>to_next</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">next</text>
 								<text_color>
@@ -96,7 +106,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</button>								
-							<button x="125" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+							<button x="155" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
 								<window_name>add_user_spot</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">add</text>
 								<text_color>
