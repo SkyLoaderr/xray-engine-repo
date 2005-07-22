@@ -4,11 +4,24 @@
 <window>
 
     <map_header_frame_line x="8" y="17" width="745" height="21">
+		<!--del it -->
         <title x="10" y="1" width="435" height="18">
             <text font="letterica16" r="255" g="255" b="255"></text>
         </title>
+        
+		<tool_bar x="0" y="6" width = "100" height="16">
+			<button x="15" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
+				<text x="0" y="0" font="letterica18" r="255" g="255" b="255">global</text>
+				<text_color>
+					<e r="181" g="170" b="148"/>
+					<d r="181" g="170" b="148"/>
+					<t r="127" g="127" b="127"/>				
+					<h r="231" g="153" b="22"/>
+				</text_color>			
+			</button>								
+		</tool_bar>					
+        
         <texture>ui_string_03</texture>
-        <base_texture>ui\ui_string_03</base_texture>
     </map_header_frame_line>
 
 	<main_wnd x="76" y="62" width="761" height="480"> 
