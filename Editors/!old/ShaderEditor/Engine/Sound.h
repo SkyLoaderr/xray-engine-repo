@@ -147,8 +147,7 @@ public:
 	*/
 	IC void					play					( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
 	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
-	IC void					play_no_feedback		( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
-	IC void					play_at_pos_no_feedback	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_no_feedback		( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */, Fvector* pos=0, float* vol=0, float* freq=0, Fvector2* range=0);
 	//@}
 
 	//! Stops playing this source
@@ -255,8 +254,7 @@ public:
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					play					( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f)	= 0;
 	virtual void					play_at_pos				( ref_sound& S, CObject* O,	const Fvector &pos,	u32 flags=0, float delay=0.f)			= 0;
-	virtual void					play_no_feedback		( ref_sound& S, CObject* O,						u32 flags=0, float delay=0.f)			= 0;
-	virtual void					play_at_pos_no_feedback	( ref_sound& S, CObject* O,	const Fvector &pos,	u32 flags=0, float delay=0.f)			= 0;
+	virtual void					play_no_feedback		( ref_sound& S, CObject* O,						u32 flags=0, float delay=0.f, Fvector* pos=0, float* vol=0, float* freq=0, Fvector2* range=0)= 0;
 
 	virtual void					set_volume				( float f=1.f )																			= 0;
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
@@ -281,23 +279,22 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);			}
-IC ref_sound_data::~ref_sound_data					()														{	::Sound->_destroy_data			(*this);							}
+IC ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)			{	::Sound->_create_data			(*this,_3D,fName, type);					}
+IC ref_sound_data::~ref_sound_data					()													{	::Sound->_destroy_data			(*this);									}
                                 
-IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
-IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
-IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);					}
-IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);				}
-IC void	ref_sound::play_no_feedback				( CObject* O,						u32 flags, float d)	{	::Sound->play_no_feedback		(*this,O,flags,d);					}
-IC void	ref_sound::play_at_pos_no_feedback		( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos_no_feedback(*this,O,pos,flags,d);				}
-IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(_feedback());_feedback()->set_position(pos);					}
-IC void	ref_sound::set_frequency				( float freq)											{	if (_feedback())	_feedback()->set_frequency(freq);				}
-IC void	ref_sound::set_range					( float min, float max )								{	if (_feedback())	_feedback()->set_range(min,max);				}
-IC void	ref_sound::set_volume					( float vol )											{	if (_feedback())	_feedback()->set_volume(vol);					}
-IC void	ref_sound::set_priority					( float p )												{	if (_feedback())	_feedback()->set_priority(p);					}
-IC void	ref_sound::stop							( )														{	if (_feedback())	_feedback()->stop(FALSE);						}
-IC void	ref_sound::stop_deffered				( )														{	if (_feedback())	_feedback()->stop(TRUE);						}
-IC const CSound_params*	ref_sound::get_params	( )														{	if (_feedback())	return _feedback()->get_params(); else return NULL;	}
+IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);							}
+IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);										}
+IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);								}
+IC void	ref_sound::play_at_pos					( CObject* O, const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);							}
+IC void	ref_sound::play_no_feedback				( CObject* O, u32 flags, float d, Fvector* pos, float* vol, float* freq, Fvector2* range)	{::Sound->play_no_feedback(*this,O,flags,d,pos,vol,freq,range);	}
+IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(_feedback());_feedback()->set_position(pos);								}
+IC void	ref_sound::set_frequency				( float freq)											{	if (_feedback())	_feedback()->set_frequency(freq);							}
+IC void	ref_sound::set_range					( float min, float max )								{	if (_feedback())	_feedback()->set_range(min,max);							}
+IC void	ref_sound::set_volume					( float vol )											{	if (_feedback())	_feedback()->set_volume(vol);								}
+IC void	ref_sound::set_priority					( float p )												{	if (_feedback())	_feedback()->set_priority(p);								}
+IC void	ref_sound::stop							( )														{	if (_feedback())	_feedback()->stop(FALSE);									}
+IC void	ref_sound::stop_deffered				( )														{	if (_feedback())	_feedback()->stop(TRUE);									}
+IC const CSound_params*	ref_sound::get_params	( )														{	if (_feedback())	return _feedback()->get_params(); else return NULL;			}
 IC void	ref_sound::set_params					( CSound_params* p )									
 {	
 	if (_feedback()){

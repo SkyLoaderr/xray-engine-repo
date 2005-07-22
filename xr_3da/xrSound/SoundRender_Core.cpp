@@ -243,7 +243,7 @@ void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float de
 	else				i_play					(&S,flags&sm_Looped,delay);
 	if (flags&sm_2D)	S._feedback()->switch_to_2D();
 }
-void	CSoundRender_Core::play_no_feedback		( ref_sound& S, CObject* O, u32 flags, float delay)
+void	CSoundRender_Core::play_no_feedback		( ref_sound& S, CObject* O, u32 flags, float delay, Fvector* pos, float* vol, float* freq, Fvector2* range)
 {
 	if (!bPresent || 0==S._handle())return;
 	verify_refsound		(S);
@@ -252,6 +252,10 @@ void	CSoundRender_Core::play_no_feedback		( ref_sound& S, CObject* O, u32 flags,
 	S._p->g_object		= O;
 	i_play				(&S,flags&sm_Looped,delay);
 	if (flags&sm_2D)	S._feedback()->switch_to_2D();
+	if (pos)			S._feedback()->set_position	(*pos);
+	if (freq)			S._feedback()->set_frequency(*freq);
+	if (range)			S._feedback()->set_range   	((*range)[0],(*range)[1]);
+	if (vol)			S._feedback()->set_volume   (*vol);
 	S._p				= old;
 }
 void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
@@ -263,19 +267,6 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 	else				i_play					(&S,flags&sm_Looped,delay);
 	S._feedback()->set_position					(pos);
 	if (flags&sm_2D)	S._feedback()->switch_to_2D();
-}
-void	CSoundRender_Core::play_at_pos_no_feedback( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
-{
-	if (!bPresent || 0==S._handle())return;
-	verify_refsound		(S);
-	ref_sound_data_ptr old = S._p;
-	S._p				= xr_new<ref_sound_data>(*S._p);
-	S._p->g_object		= O;
-	if (S._feedback())	((CSoundRender_Emitter*)S._feedback())->rewind ();
-	else				i_play					(&S,flags&sm_Looped,delay);
-	S._feedback()->set_position					(pos);
-	if (flags&sm_2D)	S._feedback()->switch_to_2D();
-	S._p				= old;
 }
 void	CSoundRender_Core::destroy	(ref_sound& S )
 {
