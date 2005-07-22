@@ -51,16 +51,17 @@ function action_go_position:execute ()
 		self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id())
 	end
 		
-	if self.object:accessible(self.a.pos_vertex) then
-		self.a.pp = patrol(self.a.center_point):level_vertex_id(0)
-		self.a.pp = level.vertex_in_direction(self.a.pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
-		self.object:set_dest_level_vertex_id(self.a.pos_vertex)
-		self.object:set_desired_direction(vector():sub(level.vertex_position(self.a.pp),level.vertex_position(self.a.pos_vertex)))
-		self.object:set_path_type(game_object.level_path)
-		state_mgr.set_state(self.object, "walk")	
-	else
-		abort("KAMP NODE IS NOT ACCESIBLE. npc=%s center_point=%s", self.object:name(), self.a.center_point)
-	end	
+	if not self.object:accessible(self.a.pos_vertex) then
+		printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest")
+		self.object:accessible_nearest(self.a.pos_vertex, self.a.pos_vertex)
+	end
+	
+	self.a.pp = patrol(self.a.center_point):level_vertex_id(0)
+	self.a.pp = level.vertex_in_direction(self.a.pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
+	self.object:set_dest_level_vertex_id(self.a.pos_vertex)
+	self.object:set_desired_direction(vector():sub(level.vertex_position(self.a.pp),level.vertex_position(self.a.pos_vertex)))
+	self.object:set_path_type(game_object.level_path)
+	state_mgr.set_state(self.object, "walk")	
 end
 function action_go_position:finalize ()
 	action_base.finalize (self)
