@@ -377,7 +377,7 @@
 
 <!---------------------------BAR LISIY---------------------->
 	<specific_character id="bar_bar_lisiy" team_default = "1">
-		<name>Неизвестный</name>
+		<name>Лысый</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Информация отсутствует.</bio>
