@@ -504,7 +504,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 {
-	if (kSCORES == key )
+	if (kSCORES == key && Phase() == GAME_PHASE_INPROGRESS)
 	{
 		if(m_game_ui)
 			if (Level().IR_GetKeyState(DIK_LCONTROL))
