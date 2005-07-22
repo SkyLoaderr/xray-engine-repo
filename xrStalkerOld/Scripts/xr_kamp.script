@@ -327,9 +327,32 @@ function CKampManager:updateNpc(npc)
 	table.insert(self.npc[npc_id].roles, {name = "joke_post",	min=5, max=6})
 
 	-- рассказать историю
-	table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story={"story_01"}})
-	table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
-	table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_01", ifnotend = "story_play"})
+	local t = math.mod(npc_id, 6)
+	if t == 0 then
+		table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story="story_01"})
+		table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+		table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_01", ifnotend = "story_play"})
+	elseif t == 1 then
+		table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story="story_02"})
+		table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+		table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_02", ifnotend = "story_play"})
+	elseif t == 2 then
+		table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story="story_03"})
+		table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+		table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_03", ifnotend = "story_play"})
+	elseif t == 3 then
+		table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story="story_04"})
+		table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+		table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_04", ifnotend = "story_play"})
+	elseif t == 4 then
+		table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story="story_05"})
+		table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+		table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_05", ifnotend = "story_play"})
+	elseif t == 5 then
+		table.insert(self.npc[npc_id].roles, {name = "story_wait",	min=2, max=3, allowed = {"idle"}, next = "story_play", story="story_06"})
+		table.insert(self.npc[npc_id].roles, {name = "story_play",	min=5, max=6, nosound = true, next = "story_post"})
+		table.insert(self.npc[npc_id].roles, {name = "story_post",	min=1, max=1, reac = "story_06", ifnotend = "story_play"})
+	end
 
 	-- запоминаем проигрываемые персонажем звуки.
 	self.npc[npc_id].speak = npc:active_sound_count()
@@ -367,7 +390,7 @@ function CKampManager:updateNpc(npc)
 		end
 	elseif self.kamp_state == "post_story" then
 		if role ~= "story_post" then
-			local dep = sound_theme.theme[npc:id()]["story_01"].depence[self.story_last]
+			local dep = sound_theme.theme[npc:id()][self.active_story].depence[self.story_last]
 			if dep then
 				if dep.type == "all" then
 					if self.npc[npc_id].need_reac == true then
@@ -461,7 +484,8 @@ function CKampManager:updateNpc(npc)
 	if role == "story_wait" then
 		self.kamp_state = "pre_story"
 		if self.npc[npc_id].new == true then
-			xr_sound.set_sound_play(npc, "story_01")
+			self.active_story = self.npc[npc_id].current.story
+			xr_sound.set_sound_play(npc, self.active_story)
 			self.npc[npc_id].new = false			
 		end
 		return self:getState(npc_id), ""
@@ -469,9 +493,9 @@ function CKampManager:updateNpc(npc)
 	if role == "story_play" then
 		self.kamp_state = "story"
 		if self.npc[npc_id].new == true then
-			xr_sound.set_sound_play(npc, "story_01")
+			xr_sound.set_sound_play(npc, self.active_story)
 			self.npc[npc_id].new = false
-			self.story_last, self.story_max = xr_sound.get_last_IDS(npc, "story_01")
+			self.story_last, self.story_max = xr_sound.get_last_IDS(npc, self.active_story)
 		end
 		return self:getState(npc_id), ""
 	end
@@ -482,7 +506,7 @@ function CKampManager:updateNpc(npc)
 			for k,v in self.npc do
 				v.need_reac = true
 			end
-			local dep = sound_theme.theme[npc:id()]["story_01"].depence[self.story_last]
+			local dep = sound_theme.theme[npc:id()][self.active_story].depence[self.story_last]
 			if dep and dep.min and dep.max then
 				self.npc[npc_id].idle = math.random(dep.min, dep.max)*1000
 			end

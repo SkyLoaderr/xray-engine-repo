@@ -236,15 +236,57 @@ function load_sound(obj)
 
 	-- »ÒÚÓËË
 	theme[obj:id()]["story_01"]						= load_sound_from_ltx(obj, "story_01")
-	theme[obj:id()]["story_01"].depence = {	[2] = {theme = "story_reac_wonder", min = 1, max = 1},
+	theme[obj:id()]["story_01"].depence = {	[2] = {theme = "story_reac_cool_info", min = 1, max = 1},
 											[3] = {theme = "story_reac_continue", min = 2, max = 3},
-											[5] = {theme = "story_reac_laught", type = "all"}}
+											[5] = {theme = "story_reac_laughter", type = "all"}}
+	theme[obj:id()]["story_02"]						= load_sound_from_ltx(obj, "story_02")
+	theme[obj:id()]["story_02"].depence = {	[2] = {theme = "story_reac_yes", min = 1, max = 2},
+											[3] = {theme = "story_reac_continue", min = 1, max = 1},
+											[4] = {theme = "story_reac_action_right", min = 1, max = 1},
+											[5] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+											[6] = {theme = "story_reac_continue", min = 1, max = 1},
+											[7] = {theme = "story_reac_belief_story, story_reac_final_happy, story_reac_yes", min = 2, max = 4}}
+	theme[obj:id()]["story_03"]						= load_sound_from_ltx(obj, "story_03")
+	theme[obj:id()]["story_03"].depence = {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
+											[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
+											[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}
+	theme[obj:id()]["story_04"]						= load_sound_from_ltx(obj, "story_04")
+	theme[obj:id()]["story_04"].depence = {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
+											[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
+											[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}
+	theme[obj:id()]["story_05"]						= load_sound_from_ltx(obj, "story_05")
+	theme[obj:id()]["story_05"].depence = {	[1] = {theme = "story_reac_advice_sceptic, story_reac_advice_support", min = 1, max = 1} }
+	theme[obj:id()]["story_06"]						= load_sound_from_ltx(obj, "story_06")
+	theme[obj:id()]["story_06"].depence = {	[2] = {theme = "story_reac_continue", min = 1, max = 1},
+											[3] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+											[4] = {theme = "story_reac_action_right", min = 1, max = 1},
+											[5] = {theme = "story_reac_yes", min = 1, max = 1},
+											[6] = {theme = "story_reac_disbelief_teller, story_reac_belief_story", min = 2, max = 3},
+											[7] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+											[8] = {theme = "story_reac_wonder", min = 1, max = 1},
+											[9] = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4}}
 
-
-	theme[obj:id()]["story_reac_wonder"]			= load_sound_from_ltx(obj, "story_reac_wonder", 1, 1, 100)
+	theme[obj:id()]["story_reac_action_right"]		= load_sound_from_ltx(obj, "story_reac_action_right", 1, 1, 100)
+	theme[obj:id()]["story_reac_action_wrong"]		= load_sound_from_ltx(obj, "story_reac_action_wrong", 1, 1, 100)
+	theme[obj:id()]["story_reac_advice_sceptic"]	= load_sound_from_ltx(obj, "story_reac_advice_sceptic", 1, 1, 100)
+	theme[obj:id()]["story_reac_advice_support"]	= load_sound_from_ltx(obj, "story_reac_advice_support", 1, 1, 100)
+	theme[obj:id()]["story_reac_belief_story"]		= load_sound_from_ltx(obj, "story_reac_belief_story", 1, 1, 100)
 	theme[obj:id()]["story_reac_continue"]			= load_sound_from_ltx(obj, "story_reac_continue", 1, 1, 100)
-	theme[obj:id()]["story_reac_laught"]			= load_sound_from_ltx(obj, "story_reac_laught", 1, 1, 100)
-	theme[obj:id()]["story_reac_disbelieve"]		= load_sound_from_ltx(obj, "story_reac_disbelieve", 1, 1, 100)
+	theme[obj:id()]["story_reac_cool_info"]			= load_sound_from_ltx(obj, "story_reac_cool_info", 1, 1, 100)
+	theme[obj:id()]["story_reac_cool_teller"]		= load_sound_from_ltx(obj, "story_reac_cool_teller", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelief"]			= load_sound_from_ltx(obj, "story_reac_disbelief", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelief_story"]	= load_sound_from_ltx(obj, "story_reac_disbelief_story", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelief_teller"]	= load_sound_from_ltx(obj, "story_reac_disbelief_teller", 1, 1, 100)
+	theme[obj:id()]["story_reac_doubt"]				= load_sound_from_ltx(obj, "story_reac_doubt", 1, 1, 100)
+	theme[obj:id()]["story_reac_fear"]				= load_sound_from_ltx(obj, "story_reac_fear", 1, 1, 100)
+	theme[obj:id()]["story_reac_final_happy"]		= load_sound_from_ltx(obj, "story_reac_final_happy", 1, 1, 100)
+	theme[obj:id()]["story_reac_final_tragic"]		= load_sound_from_ltx(obj, "story_reac_final_tragic", 1, 1, 100)
+	theme[obj:id()]["story_reac_laughter"]			= load_sound_from_ltx(obj, "story_reac_laughter", 1, 1, 100)
+	theme[obj:id()]["story_reac_old_story"]			= load_sound_from_ltx(obj, "story_reac_old_story", 1, 1, 100)
+	theme[obj:id()]["story_reac_uncertain"]			= load_sound_from_ltx(obj, "story_reac_uncertain", 1, 1, 100)
+	theme[obj:id()]["story_reac_wonder"]			= load_sound_from_ltx(obj, "story_reac_wonder", 1, 1, 100)
+	theme[obj:id()]["story_reac_yes"]				= load_sound_from_ltx(obj, "story_reac_yes", 1, 1, 100)
+	
 
 	-- ”Õ» ¿À‹Õ€≈ “≈Ã€
 	-- Garbage DramMoment
