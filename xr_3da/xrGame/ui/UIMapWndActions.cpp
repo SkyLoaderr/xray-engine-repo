@@ -73,6 +73,9 @@ void CMapActionPlanner::add_evaluators	(u16 map_idx, CUILevelMap* map)
 	add_evaluator				(make_map_id(map_idx,ePropMapOpenedIdle),xr_new<CMapEvaluatorConst>				(map,false,map_idx,"ePropMapOpenedIdle"));
 	add_evaluator				(make_map_id(map_idx,ePropGlobalMapCentered),xr_new<CEvaluatorGlobalMapCentered>(map,map_idx,"ePropGlobalMapCentered"));
 	add_evaluator				(make_map_id(map_idx,ePropLocalMapCentered),xr_new<CEvaluatorLocalMapCentered>	(map,map_idx,"ePropLocalMapCentered"));
+	add_evaluator				(make_map_id(map_idx,ePropLocalMapZoom),xr_new<CEvaluatorLocalMapZoom>			(map,map_idx,"ePropLocalMapZoom"));
+
+
 }
 
 void CMapActionPlanner::add_actions		(u16 map_idx, CUILevelMap* map)
@@ -100,18 +103,26 @@ void CMapActionPlanner::add_actions		(u16 map_idx, CUILevelMap* map)
 	add_condition				(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),	true);
 	add_condition				(action,make_map_id(map_idx,ePropGlobalMapCentered),false);
 	add_effect					(action,make_map_id(map_idx,ePropGlobalMapCentered),true);
-	add_operator				(make_map_id(map_idx,eOperatorGlobalMapCenter),action);
+	add_operator				(make_map_id(map_idx,eOperatorGlobalMapCenter),		action);
 
 	//center local
 								action = xr_new<CMapActionLocalMapCenter>(map,map_idx,"eOperatorLocalMapCenter");
-	add_condition				(action,make_map_id(map_idx,ePropMapOpened),true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),false);
-	add_effect					(action,make_map_id(map_idx,ePropLocalMapCentered),true);
-	add_operator				(make_map_id(map_idx,eOperatorLocalMapCenter),action);
+	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
+	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	false);
+	add_effect					(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
+	add_operator				(make_map_id(map_idx,eOperatorLocalMapCenter),		action);
 
+	//zoom local
+								action = xr_new<CMapActionLocalMapZoom>(map,map_idx,"eOperatorLocalMapZoom");
+	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
+	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
+	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		false);
+	add_effect					(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
+	add_operator				(make_map_id(map_idx,eOperatorLocalMapZoom),		action);
 
 								action = xr_new<CMapActionMapIdle>((CUILevelMap*)NULL,map_idx,"ePropMapOpenedIdle");
 	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
+	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
 	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
 	add_condition				(action,make_map_id(map_idx,ePropMapOpenedIdle),	false);
 	add_effect					(action,make_map_id(map_idx,ePropMapOpenedIdle),	true);
@@ -204,7 +215,7 @@ void CMapActionOpen::initialize()
 	m_map->m_prevRect				= rect_on_global;
 
 	Fvector2 						destLevelMapCP = m_map->TargetCenter();
-	float map_zoom					= 1.0f;
+	float map_zoom					= m_object->GetZoom();
 	m_map->CalcOpenRect				(destLevelMapCP, map_zoom, m_desiredLevelMapRect, m_desiredGlobalMapRect);
 	
 	m_object->GlobalMap()->m_prevRect = m_object->GlobalMap()->GetWndRect();//store
@@ -361,6 +372,18 @@ void CMapActionLocalMapCenter::execute		()
 	}
 }
 
+void CMapActionLocalMapZoom::initialize	()
+{
+}
+
+void CMapActionLocalMapZoom::execute		()
+{
+}
+
+void CMapActionLocalMapZoom::finalize	()
+{
+}
+
 
 bool CEvaluatorMapOpened::evaluate()
 {
@@ -407,4 +430,9 @@ bool CEvaluatorLocalMapCentered::evaluate		()
 	float dh						= vis_abs_rect.lt.y + vis_abs_rect.height()/2.0f - ppp.y;
 
 	return (_abs(dw)<5.0f && _abs(dh)<5.0f);
+}
+
+bool CEvaluatorLocalMapZoom::evaluate					()
+{
+	return true;
 }

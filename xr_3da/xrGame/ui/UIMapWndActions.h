@@ -98,6 +98,20 @@ public:
 	virtual	void	finalize					();
 };
 
+class CMapActionLocalMapZoom : public CSomeMapAction {
+private:
+	typedef CSomeMapAction	inherited;
+protected:
+	float			m_startMovingTime;
+	float			m_endMovingTime;
+	Frect			m_desiredLocalMapRect;
+public:
+					CMapActionLocalMapZoom	(CUILevelMap *object, u16 idx, LPCSTR action_name) : inherited(object, idx, action_name) {}
+	virtual	void	initialize					();
+	virtual	void	execute						();
+	virtual	void	finalize					();
+};
+
 class CMapActionMapIdle : public CSomeMapAction {
 private:
 	typedef CSomeMapAction	inherited;
@@ -154,6 +168,14 @@ private:
 	typedef CSomeMapEvaluator	inherited;
 public:
 					CEvaluatorGlobalMapOpened	(CUICustomMap *object = 0, u16 idx=0, LPCSTR evaluator_name=0):inherited(object,idx,evaluator_name){};
+	virtual bool	evaluate					();
+};
+
+class CEvaluatorLocalMapZoom : public CSomeMapEvaluator {
+private:
+	typedef CSomeMapEvaluator	inherited;
+public:
+					CEvaluatorLocalMapZoom	(CUICustomMap *object = 0, u16 idx=0, LPCSTR evaluator_name=0):inherited(object,idx,evaluator_name){};
 	virtual bool	evaluate					();
 };
 

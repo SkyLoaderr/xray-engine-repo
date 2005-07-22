@@ -36,7 +36,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 						eRemoveSpot,
 						eMaxBtn};
 	Flags32						m_flags;
-
+	float						m_currentZoom;
 	CUICustomMap*				m_activeMap;
 	CUIGlobalMap*				m_GlobalMap;
 	GameMaps					m_GameMaps;
@@ -67,6 +67,8 @@ public:
 	virtual void				Draw					();
 	virtual void				Update					();
 			void				ShowHint				();
+			float				GetZoom					()	{return m_currentZoom;}
+			void				SetZoom					(float value);
 
 	virtual void				OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual bool				OnKeyboard				(int dik, EUIMessages keyboard_action);

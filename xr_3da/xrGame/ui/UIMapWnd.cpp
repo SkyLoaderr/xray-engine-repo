@@ -42,6 +42,8 @@ CUIMapWnd::CUIMapWnd()
 	m_activeMap				= NULL;
 	m_GlobalMap				= NULL;
 	m_flags.zero			();
+	m_currentZoom			= 1.0f;
+
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -371,6 +373,8 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		break;
 		case WINDOW_LBUTTON_DOWN:
 			if(m_flags.test(lmUserSpotAdd) ){
+				if(ActiveMap()==GlobalMap() ) break;
+
 				Fvector2 cp = cursor_pos;
 				cp.sub(ActiveMap()->GetAbsolutePos());
 				Fvector2 p = ActiveMap()->ConvertLocalToReal(cp);
@@ -460,6 +464,11 @@ void CUIMapWnd::Update()
 	m_ActionPlanner->update		();
 }
 
+void CUIMapWnd::SetZoom	( float value)
+{
+	m_currentZoom	= value;
+}
+
 void CUIMapWnd::ShowHint()
 {
 /*	Fvector2 cursor_pos = GetUICursor()->GetPos();
@@ -477,30 +486,6 @@ void CUIMapWnd::ShowHint()
 	SetStatusInfo(hint);
 }
 
-/*
-void CUIMapWnd::OnToolBar				(CUIWindow* w, void* pData)
-{
-	shared_str prev_btn = m_ToolBar->GetCommandName((int)pData);
-
-
-	shared_str active_btn = m_ToolBar->GetCommandName(m_ToolBar->GetActiveIndex());
-	if(active_btn == "to_global"){
-		SetActiveMap(GlobalMap()->MapName());
-	}else
-	if(active_btn == "to_next"){
-		u16 curr_map_idx = 0;
-		if(GlobalMap()!=ActiveMap()){
-			curr_map_idx = GetIdxByName(ActiveMap()->MapName());
-			++curr_map_idx;
-			if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
-		}
-		SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
-	}else
-	if(active_btn == "add_user_spot"){
-		m_flags.set(lmUserSpotAdd,TRUE);
-	};
-}
-*/
 
 void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 {

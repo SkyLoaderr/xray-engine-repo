@@ -14,6 +14,7 @@ namespace UIMapWndActionsSpace {
 		ePropMapOpenedIdle,
 		ePropGlobalMapCentered,		
 		ePropLocalMapCentered,		
+		ePropLocalMapZoom,
 		ePropDummy					= u16(-1),
 	};
 
@@ -24,6 +25,7 @@ namespace UIMapWndActionsSpace {
 		eOperatorGlobalMapCenter,
 		eOperatorLocalMapCenter,
 		eOperatorMapOpenIdle,
+		eOperatorLocalMapZoom,
 		eWorldOperatorDummy			= u16(-1),
 	};
 };

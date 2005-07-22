@@ -80,7 +80,8 @@ void CUINewsWnd::AddNews()
 		if (lastNewsCount < news_vector.size())
 		{
 			lastNewsCount = news_vector.size();
-			GetMessageTarget()->SendMessage(this, DIARY_SET_NEWS_AS_UNREAD, NULL);
+			if(GetMessageTarget())
+				GetMessageTarget()->SendMessage(this, DIARY_SET_NEWS_AS_UNREAD, NULL);
 		}
 		
 		// Показать только NEWS_TO_SHOW последних ньюсов
