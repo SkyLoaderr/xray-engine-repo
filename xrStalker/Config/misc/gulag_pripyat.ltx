@@ -2,12 +2,12 @@
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@def]
-meet_state = 1|wait
-;meet_state_wpn = 15|threat@threat_weap
-victim = 1|actor
+meet_state = 2|wait
+meet_state_wpn = 1|wait
+victim = 2|actor
 victim_wpn = 1|actor
-use = false
-use_wpn = false
+use = true
+use_wpn = true
 
 ;--------------------------------------------------------------------------
 ; диалог лидера
@@ -94,7 +94,7 @@ combat_ignore_cond = always
 path_walk = wave1_bomber_walk1
 path_look = wave1_bomber_look1
 def_state_moving1 = sneak
-on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+;on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
 combat_ignore_cond = always
 
 ;--- bomber: wave2
@@ -132,7 +132,7 @@ on_signal = syn | walker@pri_followers_nap1_wave1
 path_walk = wave1_stalker1_walk1
 path_look = wave1_stalker1_look1
 def_state_moving1 = sneak
-on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+;on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
 
 ;--- nap1: wave2
 [logic@pri_followers_nap1_wave2]
@@ -167,7 +167,7 @@ on_signal = syn | walker@pri_followers_nap2_wave1
 path_walk = wave1_stalker2_walk1
 path_look = wave1_stalker2_look1
 def_state_moving1 = sneak
-on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+;on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
 
 ;--- nap2: wave2
 [logic@pri_followers_nap2_wave2]
@@ -202,7 +202,7 @@ on_signal = syn | walker@pri_followers_nap3_wave1
 path_walk = wave1_stalker3_walk1
 path_look = wave1_stalker3_look1
 def_state_moving1 = sneak
-on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
+;on_signal = arrived | {-pri_wave1_start} %+pri_wave1_start%
 
 ;--- nap3: wave2
 [logic@pri_followers_nap3_wave2]
