@@ -111,9 +111,10 @@ void CSnork::UpdateCL()
 	
 	string128 st;
 	sprintf(st,"V1=[%f,%f,%f] V2=[%f,%f,%f]",VPUSH(V1),VPUSH(V2));
-
+#ifdef DEBUG
 	DBG().text(this).clear();
 	DBG().text(this).add_item("", 200, 100, D3DCOLOR_XRGB(255,0,255));
+#endif
 }
 
 #define TRACE_RANGE 30.f
