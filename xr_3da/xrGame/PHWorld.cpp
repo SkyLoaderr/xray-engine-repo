@@ -128,18 +128,6 @@ void CPHWorld::Destroy(){
 	Device.seqFrame.Remove		(this);
 }
 
-void CPHWorld::play_collide_sound(SGameMtlPair* mtl_pair, const Fvector& pos, float volume)
-{
-	for (u32 k=0; k<PHWORLD_SOUND_CACHE_SIZE; ++k){
-		if (0==m_sound_cache[k]._feedback()){
-			m_sound_cache[k].clone			(SELECT_RANDOM1(mtl_pair->CollideSounds));
-			m_sound_cache[k].play_at_pos	(0,pos,0);
-			m_sound_cache[k].set_volume		(volume);
-			break;
-		}
-	}
-}
-
 void CPHWorld::OnFrame()
 {
 	// Msg									("------------- physics: %d / %d",u32(Device.dwFrame),u32(m_steps_num));

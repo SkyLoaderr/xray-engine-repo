@@ -123,16 +123,13 @@ void CStepManager::update()
 
 			// Играть звук
 			if (!mtl_pair->StepSounds.empty()) {
-
 				Fvector sound_pos = m_object->Position();
 				sound_pos.y += 0.5;
-
-				SELECT_RANDOM(m_step_info.activity[i].sound, mtl_pair, StepSounds);
+				CLONE_MTL_SOUND(m_step_info.activity[i].sound, mtl_pair, StepSounds);
 				m_step_info.activity[i].sound.play_at_pos	(m_object, sound_pos);
-				
 				const CSound_params *sound_params = m_step_info.activity[i].sound.get_params();
 				VERIFY(sound_params);
-				m_step_info.activity[i].sound.set_volume(sound_params->volume * m_step_info.params.step[i].power);
+				m_step_info.activity[i].sound.set_volume	(m_step_info.params.step[i].power);
 			}
 
 			// Играть партиклы
