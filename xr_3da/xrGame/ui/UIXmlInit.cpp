@@ -278,7 +278,9 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	if (xml_doc.NavigateToNode(hint, index))
         InitStatic(xml_doc, hint, index, &pWnd->m_hint);
 
-	pWnd->SetCheckMode ( (xml_doc.ReadAttribInt(path, index, "check_mode", 0)==0)?false : true);
+	int r = xml_doc.ReadAttribInt(path, index, "check_mode", -1);
+	if(r!=-1)
+	pWnd->SetCheckMode ( (r==1)?true : false);
 	
 	return true;
 }
