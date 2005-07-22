@@ -393,13 +393,13 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_antigas</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
-			wpn_ak74 = 1,0,0,0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_abakan = 1, scope launcher cond=0.9
+	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>		
 					
@@ -429,7 +429,7 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_vintorez \n
+			wpn_groza = 1, scope launcher cond=0.9 \n
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
 		</supplies>		
