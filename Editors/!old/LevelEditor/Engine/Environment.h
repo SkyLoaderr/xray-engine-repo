@@ -98,7 +98,7 @@ public:
 	Fvector3			sun_dir		;
 
     int					lens_flare_id;
-    BOOL				thunderbolt;
+	int					tb_id;
     
 	CEnvAmbient*		env_ambient;
 

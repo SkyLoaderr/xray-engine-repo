@@ -195,9 +195,9 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
     lens_flare_id			= parent->eff_LensFlare->AppendDef(pSettings,pSettings->r_string(S,"flares"));
-    thunderbolt				= pSettings->r_bool		(S,"thunderbolt");
-	bolt_period				= thunderbolt?pSettings->r_float	(S,"bolt_period"):0.f;
-	bolt_duration			= thunderbolt?pSettings->r_float	(S,"bolt_duration"):0.f;
+    tb_id					= parent->eff_Thunderbolt->AppendDef(pSettings,pSettings->r_string(S,"thunderbolt"));
+	bolt_period				= (tb_id>=0)?pSettings->r_float	(S,"bolt_period"):0.f;
+	bolt_duration			= (tb_id>=0)?pSettings->r_float	(S,"bolt_duration"):0.f;
 	env_ambient				= pSettings->line_exist(S,"env_ambient")?parent->AppendEnvAmb	(pSettings->r_string(S,"env_ambient")):0;
 
 	C_CHECK					(clouds_color);
@@ -571,10 +571,10 @@ void CEnvironment::OnFrame()
 		wind_strength_factor			= gust/10.f;
 	}
 
-    int id								=	(current_weight<0.5f)?Current[0]->lens_flare_id:Current[1]->lens_flare_id;
-	eff_LensFlare->OnFrame				(id);
-    BOOL tb_enabled						=	(current_weight<0.5f)?Current[0]->thunderbolt:Current[1]->thunderbolt;
-    eff_Thunderbolt->OnFrame			(tb_enabled,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
+    int l_id							=	(current_weight<0.5f)?Current[0]->lens_flare_id:Current[1]->lens_flare_id;
+	eff_LensFlare->OnFrame				(l_id);
+	int t_id							=	(current_weight<0.5f)?Current[0]->tb_id:Current[1]->tb_id;
+    eff_Thunderbolt->OnFrame			(t_id,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
 
 	// ******************** Environment params (setting)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(CurrentEnv.fog_color.x,CurrentEnv.fog_color.y,CurrentEnv.fog_color.z,0) )); 

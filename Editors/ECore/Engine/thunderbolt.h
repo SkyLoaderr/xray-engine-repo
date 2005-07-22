@@ -10,7 +10,7 @@
 class ENGINE_API IRender_DetailModel;
 class ENGINE_API CLAItem;
 
-struct CThunderboltDesc
+struct SThunderboltDesc
 {
 	// geom
 	IRender_DetailModel*		l_model;
@@ -31,19 +31,29 @@ struct CThunderboltDesc
     shared_str					name;
 	CLAItem*					color_anim;
 public:
-								CThunderboltDesc	(CInifile* pIni, LPCSTR sect);
-							    ~CThunderboltDesc	();
+								SThunderboltDesc	(CInifile* pIni, LPCSTR sect);
+							    ~SThunderboltDesc	();
+};
+
+struct SThunderboltCollection
+{
+	DEFINE_VECTOR(SThunderboltDesc*,DescVec,DescIt);
+	DescVec			  			palette;
+	shared_str					section;
+public:
+								SThunderboltCollection	(CInifile* pIni, LPCSTR sect);
+								~SThunderboltCollection	();
+	SThunderboltDesc*			GetRandomDesc			(){VERIFY(palette.size()>0); return palette[Random.randI(palette.size())];}
 };
 
 //
 class ENGINE_API CEffect_Thunderbolt
 {
-public:
+protected:
+	DEFINE_VECTOR(SThunderboltCollection*,CollectionVec,CollectionVecIt);
+	CollectionVec				collection;
+	SThunderboltDesc*			current;
 private:
-	DEFINE_VECTOR(CThunderboltDesc*,DescVec,DescIt);
-	DescVec			  			palette;
-    CThunderboltDesc*			current;
-
     Fmatrix				  		current_xform;
 	Fvector3					current_direction;
 
@@ -75,15 +85,18 @@ private:
     float						p_second_prop;
 	float						p_sky_color;
 	float						p_sun_color;
+	float						p_fog_color;
 private:
 	BOOL						RayPick				(const Fvector& s, const Fvector& d, float& range);
-    void						Bolt				(float period, float life_time);
+    void						Bolt				(int id, float period, float life_time);
 public:                     
-								CEffect_Thunderbolt	();
+								CEffect_Thunderbolt	(); 
 								~CEffect_Thunderbolt();
 
-	void						OnFrame				(BOOL enabled, float period, float duration);
+	void						OnFrame				(int id,float period, float duration);
 	void						Render				();
+
+	int							AppendDef			(CInifile* pIni, LPCSTR sect);
 };
 
 #endif //ThunderboltH

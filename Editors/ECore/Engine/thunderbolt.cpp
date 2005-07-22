@@ -16,7 +16,7 @@
 
 static const float MAX_DIST_FACTOR = 0.95f;
 
-CThunderboltDesc::CThunderboltDesc(CInifile* pIni, LPCSTR sect)
+SThunderboltDesc::SThunderboltDesc(CInifile* pIni, LPCSTR sect)
 {
 	name						= sect;
 	color_anim					= LALib.FindItem (pIni->r_string ( sect,"color_anim" )); VERIFY(color_anim);
@@ -45,7 +45,7 @@ CThunderboltDesc::CThunderboltDesc(CInifile* pIni, LPCSTR sect)
     if (m_name&&m_name[0]) snd.create(TRUE,m_name,0);
 }
 
-CThunderboltDesc::~CThunderboltDesc()
+SThunderboltDesc::~SThunderboltDesc()
 {
     ::Render->model_Delete			(l_model);
     m_GradientTop.hShader.destroy	();
@@ -53,6 +53,28 @@ CThunderboltDesc::~CThunderboltDesc()
     snd.destroy						();
 }
 
+//----------------------------------------------------------------------------------------------
+// collection
+//----------------------------------------------------------------------------------------------
+SThunderboltCollection::SThunderboltCollection(CInifile* pIni, LPCSTR sect)
+{
+	int tb_count	= pIni->line_count(sect);
+	for (int tb_idx=0; tb_idx<tb_count; tb_idx++){
+		LPCSTR		N, V;
+		if (pIni->r_line(sect,tb_idx,&N,&V))
+			palette.push_back(xr_new<SThunderboltDesc>(pIni,N));
+	}
+}
+SThunderboltCollection::~SThunderboltCollection()
+{
+	for (DescIt d_it=palette.begin(); d_it!=palette.end(); d_it++)
+		xr_delete(*d_it);
+	palette.clear	();
+}
+
+//----------------------------------------------------------------------------------------------
+// thunderbolt effect
+//----------------------------------------------------------------------------------------------
 CEffect_Thunderbolt::CEffect_Thunderbolt()
 {
 	current		= 0;
@@ -75,22 +97,25 @@ CEffect_Thunderbolt::CEffect_Thunderbolt()
     clamp			(p_second_prop,0.f,1.f);
     p_sky_color		= pSettings->r_float							( "thunderbolt_common","sky_color" );
     p_sun_color		= pSettings->r_float							( "thunderbolt_common","sun_color" );
-        
-    // descriptions
-    int tb_count	= pSettings->line_count("thunderbolts");
-    for (int tb_idx=0; tb_idx<tb_count; tb_idx++){
-        LPCSTR tb, sect_tb;
-        if (pSettings->r_line("thunderbolts",tb_idx,&tb,&sect_tb))
-        	palette.push_back(xr_new<CThunderboltDesc>(pSettings,sect_tb));
-    }
+	p_fog_color		= pSettings->r_float							( "thunderbolt_common","fog_color" );
 }
 
 CEffect_Thunderbolt::~CEffect_Thunderbolt()
 {
-	for (DescIt d_it=palette.begin(); d_it!=palette.end(); d_it++)
-    	xr_delete(*d_it);
+	for (CollectionVecIt d_it=collection.begin(); d_it!=collection.end(); d_it++)
+    	xr_delete				(*d_it);
+	collection.clear			();
 	hGeom_model.destroy			();
 	hGeom_gradient.destroy		();
+}
+
+int CEffect_Thunderbolt::AppendDef(CInifile* pIni, LPCSTR sect)
+{
+	if (!sect||(0==sect[0])) return -1;
+	for (CollectionVecIt it=collection.begin(); it!=collection.end(); it++)
+		if ((*it)->section==sect)	return int(it-collection.begin());
+	collection.push_back		(xr_new<SThunderboltCollection>(pIni,sect));
+	return collection.size()-1;
 }
 
 BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dist)
@@ -117,12 +142,13 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 }
 #define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
 #define SUN_DIR  g_pGamePersistent->Environment.CurrentEnv.sun_dir
-void CEffect_Thunderbolt::Bolt(float period, float lt)
+void CEffect_Thunderbolt::Bolt(int id, float period, float lt)
 {
+	VERIFY					(id>=0 && id<(int)collection.size());
 	state 		            = stWorking;
 	life_time	            = lt+Random.randF(-lt*0.5f,lt*0.5f);
     current_time            = 0.f;
-    current		            = palette[Random.randI(palette.size())]; VERIFY(current);
+    current		            = collection[id]->GetRandomDesc(); VERIFY(current);
 
     Fmatrix XF,S;
     Fvector pos,dev;
@@ -161,13 +187,14 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
 	current_direction.invert	();	// for env-sun
 }
 
-void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
+void CEffect_Thunderbolt::OnFrame(int id, float period, float duration)
 {
+	BOOL enabled			= (id>=0);
 	if (bEnabled!=enabled){
     	bEnabled			= enabled;
 	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.5f,period*0.5f);
     }else if (bEnabled&&(Device.fTimeGlobal>next_lightning_time)){ 
-    	if (state==stIdle)	Bolt(period,duration);
+    	if (state==stIdle && (id>=0)) Bolt(id,period,duration);
     }
 	if (state==stWorking){
     	if (current_time>life_time) state = stIdle;
@@ -182,12 +209,11 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
 
         g_pGamePersistent->Environment.CurrentEnv.sky_color.mad(fClr,p_sky_color);
         g_pGamePersistent->Environment.CurrentEnv.sun_color.mad(fClr,p_sun_color);
-//		g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color);
-//		g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color);
+		g_pGamePersistent->Environment.CurrentEnv.fog_color.mad(fClr,p_fog_color);
 
 		if (::Render->get_generation()==IRender_interface::GENERATION_R2)	{
 			g_pGamePersistent->Environment.CurrentEnv.sun_dir = current_direction;
-		}
+		} 
     }
 }
 
