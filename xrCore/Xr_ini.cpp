@@ -443,6 +443,10 @@ BOOL	CInifile::r_line( LPCSTR S, int L, const char** N, const char** V )
 		}
 	return FALSE;
 }
+BOOL	CInifile::r_line( const shared_str& S, int L, const char** N, const char** V )
+{
+	return r_line(*S,L,N,V);
+}
 
 //--------------------------------------------------------------------------------------------------------
 // Write functions

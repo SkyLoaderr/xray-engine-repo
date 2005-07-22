@@ -105,6 +105,7 @@ public:
 	BOOL		r_bool			( const shared_str& S, LPCSTR L )				{ return r_bool(*S,L);			}
 	int			r_token			( LPCSTR S, LPCSTR L,	const xr_token *token_list);
 	BOOL		r_line			( LPCSTR S, int L,	LPCSTR* N, LPCSTR* V );
+	BOOL		r_line			( const shared_str& S, int L,	LPCSTR* N, LPCSTR* V );
 
     void		w_string		( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment=0 );
 	void		w_u8			( LPCSTR S, LPCSTR L, u8				V, LPCSTR comment=0 );
