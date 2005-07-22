@@ -46,6 +46,7 @@ public:
 	SThunderboltDesc*			GetRandomDesc			(){VERIFY(palette.size()>0); return palette[Random.randI(palette.size())];}
 };
 
+#define THUNDERBOLT_CACHE_SIZE	8
 //
 class ENGINE_API CEffect_Thunderbolt
 {
