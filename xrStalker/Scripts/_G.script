@@ -1096,4 +1096,4 @@ end
 
 --prefetch("news_manager")   
 --prefetch("xr_effects")   
---profiler.setup_hook	()
+profiler.setup_hook	()
