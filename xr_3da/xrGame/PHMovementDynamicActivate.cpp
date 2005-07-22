@@ -428,7 +428,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	SetOjectContactCallback(saved_callback);
 	SetVelocity(vel);
 	saved_callback=0;
-	if(!ret)
+	if(!ret&&character_exist)
 	{
 		trying_times[id]=Device.dwTimeGlobal;
 		trying_poses[id].set(cast_fv(dBodyGetPosition(m_character->get_body())));
