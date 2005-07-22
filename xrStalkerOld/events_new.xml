@@ -113,8 +113,8 @@
 				</title_static>
 								
 				<filter_tab x="0" y="6" width = "252" height="12">
-					<button x="15" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
-						<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Game</text>
+					<button x="15" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
+						<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Journal</text>
 						<text_color>
 							<e r="181" g="170" b="148"/>
 							<d r="181" g="170" b="148"/>
@@ -122,7 +122,7 @@
 							<h r="231" g="153" b="22"/>
 						</text_color>			
 					</button>								
-					<button x="70" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
+					<button x="90" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
 						<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Info</text>
 						<text_color>
 							<e r="181" g="170" b="148"/>
@@ -131,7 +131,7 @@
 							<h r="231" g="153" b="22"/>
 						</text_color>			
 					</button>								
-					<button x="120" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
+					<button x="140" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
 						<text x="0" y="0" font="letterica18" r="255" g="255" b="255">News</text>
 						<text_color>
 							<e r="181" g="170" b="148"/>
