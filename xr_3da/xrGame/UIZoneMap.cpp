@@ -15,7 +15,7 @@
 #include "ai_space.h"
 #include "game_graph.h"
 
-#include "ui/UIMapWnd.h"
+#include "ui/UIMap.h"
 #include "ui/UIXmlInit.h"
 //////////////////////////////////////////////////////////////////////////
 

@@ -5,10 +5,11 @@
 #pragma once
 
 #include "../inventory_item.h"
-#include "UIStatic.h"
+//#include "UIStatic.h"
 #include "../character_info_defs.h"
 
 //////////////////////////////////////////////////////////////////////////
+class CUIStatic;
 
 //размеры сетки в текстуре инвентаря
 #define INV_GRID_WIDTH			50

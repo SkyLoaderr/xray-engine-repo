@@ -9828,6 +9828,12 @@
 					Name="MapWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIMap.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMap.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMapWnd.cpp">
 					</File>
 					<File

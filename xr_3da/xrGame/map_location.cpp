@@ -9,7 +9,7 @@
 #include "xrServer.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "ui/UIXmlInit.h"
-#include "ui/UIMapWnd.h"
+#include "ui/UIMap.h"
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
 #include "relation_registry.h"
@@ -28,7 +28,10 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 
 	LoadSpot				(type, false);
 	m_refCount				= 1;
-	DisablePointer			();
+	
+	if(GameID()==GAME_SINGLE)
+		DisablePointer		();
+
 	EnableSpot				();
 }
 

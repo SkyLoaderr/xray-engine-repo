@@ -6,7 +6,7 @@
 #include "LevelFogOfWar.h"
 #include "level.h"
 #include "alife_registry_wrappers.h"
-#include "ui/UIMapWnd.h"
+#include "ui/UIMap.h"
 #include "game_base_space.h"
 #include "MainUI.h"
 
