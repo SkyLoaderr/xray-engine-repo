@@ -968,6 +968,11 @@ on_death = death@bar_arena_monstr_savage
 path_walk = walk
 path_look = look
 on_signal = arrived | nil %+bar_arena_monstr_ready%
+danger = danger@bar_arena_monstr_savage
+
+[danger@bar_arena_monstr_savage]
+ignore_distance = 0
+ignore_types = grenade, hit, corpse, sound
 
 [death@bar_arena_monstr_savage]
 on_info = %+bar_arena_savage_defeated +bar_arena_monstr_dead%		

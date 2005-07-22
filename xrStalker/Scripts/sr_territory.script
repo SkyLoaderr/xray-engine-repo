@@ -29,7 +29,7 @@ function action_territory:death_callback(victim, who)
 	if who:id() ~= db.actor:id() then
 		return
 	end
-	if obj:relation(db.actor) == game_object.enemy then
+	if victim:relation(db.actor) == game_object.enemy then
 		return
 	end	
 	xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.territory_death)		return
