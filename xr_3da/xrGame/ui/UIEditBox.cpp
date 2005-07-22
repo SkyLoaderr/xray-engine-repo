@@ -350,7 +350,7 @@ void CUIEditBox::Enable(bool status){
 	if (!status)
 		m_lines.SetTextColor(color_argb(255,100,100,100));
 	else
-		m_lines.SetTextColor(color_argb(255,255,255,255));
+		m_lines.SetTextColor(color_argb(255,235,219,185));
 }
 
 void CUIEditBox::SetNumbersOnly(bool status){

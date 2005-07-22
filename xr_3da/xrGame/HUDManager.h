@@ -33,6 +33,7 @@ struct CFontManager :public pureDeviceReset			{
 	CGameFont*				pFontHeaderRussian;
 	CGameFont*				pFontHeaderEurope;
 	//רנטפעû הכÿ טםעונפויסא
+	CGameFont*				pFontArial14;
 	CGameFont*				pArialN21Russian;
 	CGameFont*				pFontGraffiti19Russian;
 	CGameFont*				pFontGraffiti22Russian;

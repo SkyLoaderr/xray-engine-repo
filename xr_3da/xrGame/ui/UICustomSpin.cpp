@@ -30,6 +30,8 @@ CUICustomSpin::CUICustomSpin(){
 	AttachChild(m_pBtnDown);
 	m_pLines->SetTextAlignment(CGameFont::alLeft);
 	m_pLines->SetVTextAlignment(valCenter);
+	m_pLines->SetFont(UI()->Font()->pFontLetterica16Russian);
+	m_pLines->SetTextColor(color_argb(255,235,219,185));
 }
 
 CUICustomSpin::~CUICustomSpin(){
@@ -74,7 +76,7 @@ void CUICustomSpin::Enable(bool status){
 	if (!status)
 		m_pLines->SetTextColor(color_argb(255,100,100,100));
 	else
-		m_pLines->SetTextColor(color_argb(255,255,255,255));
+		m_pLines->SetTextColor(color_argb(255,235,219,185));
 }
 
 void CUICustomSpin::OnBtnUpClick(){

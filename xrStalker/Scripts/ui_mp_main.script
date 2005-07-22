@@ -100,19 +100,21 @@ function mp_main:InitControls()
 	xml:InitLabel("cap_multiplayer",self.bk)
 	
 	-- Player Name	
-	local st = xml:InitStatic("static_player_name",self.bk)
-	self.player_name = xml:InitEditBox("edit_player_name", self.bk)
+	local st
+	xml:InitLabel("static_player_name",self)
+	self.player_name = xml:InitEditBox("edit_player_name", self)
 	
 
 	-- CD Key
-	st = CUIStatic()
-	st:SetAutoDelete(true)
-	st:Init(l_st_cdkey.x, l_st_cdkey.y, l_st_cdkey.width, l_st_cdkey.height)
-	st:SetFont(self.font_cap)
-	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
-	st:SetText("CD Key")	
-	st:SetStretchTexture(true)	
-	self.bk:AttachChild(st)
+	xml:InitLabel("cap_cd_key",self)
+--	st = CUIStatic()
+--	st:SetAutoDelete(true)
+--	st:Init(l_st_cdkey.x, l_st_cdkey.y, l_st_cdkey.width, l_st_cdkey.height)
+--	st:SetFont(self.font_cap)
+--	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
+--	st:SetText("CD Key")	
+--	st:SetStretchTexture(true)	
+--	self.bk:AttachChild(st)
 	
 	xml:InitCDkey("edit_cd_key", self.bk)
 		

@@ -5,14 +5,17 @@
 		<text font="graffiti22" r="215" g="195" b="170">MULTIPLAYER</text>
 	</cap_multiplayer>
 	<static_player_name x="137" y="143" width="100" height="24">		
-		<text font="letterica16" r="215" g="195" b="170">mm_mp_player_name</text>
+		<text font="letterica16" r="129" g="123" b="113">mm_mp_player_name</text>
 	</static_player_name>
 	<edit_player_name x="237" y="143" width="236" height="24">
 		<options_item entry="net_palyer_name" group="mm_mp_client"/>
-		<text font="letterica18" r="215" g="195" b="170"></text>
+		<text font="letterica18" r="235" g="219" b="185"></text>
 	</edit_player_name>
+	<cap_cd_key x="561" y="143" width="70" height="24">
+		<text font="letterica16" r="129" g="123" b="113">CD-Key</text>
+	</cap_cd_key>
 	<edit_cd_key x="617" y="143" width="236" height="24">		
-		<text font="letterica18" r="215" g="195" b="170"></text>
+		<text font="letterica18" r="235" g="219" b="185"></text>
 	</edit_cd_key>
 		
 	<tab x="130" y="195" width="1014" height="26">
@@ -21,18 +24,32 @@
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_client</text>
+			<text_color>
+				<e r="106" g="95" b="91"/>
+				<t r="227" g="199" b="178"/>
+				<h r="180" g="153" b="155"/>
+			</text_color>
 		</button>
 		<button x="116" y="0" width="116" height="26">
-			<shared_texture>ui_common.xml</shared_texture>
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_server</text>
+			<text_color>
+				<e r="106" g="95" b="91"/>				
+				<t r="227" g="199" b="178"/>				
+				<h r="180" g="153" b="155"/>
+			</text_color>
 		</button>
 		<button x="232" y="0" width="116" height="26">
 			<shared_texture>ui_common.xml</shared_texture>
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_options</text>
+			<text_color>
+				<e r="106" g="95" b="91"/>				
+				<t r="227" g="199" b="178"/>				
+				<h r="180" g="153" b="155"/>
+			</text_color>
 		</button>
 	</tab>
 	
@@ -49,7 +66,7 @@
 				<text font="letterica16" r="255" g="255" b="255"/>
 			</list_item>
 			<header x="0" y="0" width="0" height="18">
-				<text font="letterica16" r="215" g="195" b="170" x="2"/>
+				<text font="arial_14" r="215" g="195" b="170" x="2"/>
 				<texture>ui_table_button_e</texture>
 			</header>
 			<separator x="0" y="0" width="1" height="30" vertical="1">
@@ -59,22 +76,23 @@
 				<text font="letterica16" r="215" g="195" b="170"/>
 			</filter>
 			<edit_gs_filter x="46" y2="163" y="273" width="476" height="21">
+				<text font="letterica16" r="235" g="219" b="185"></text>
 				<texture>ui_linetextSmall_e</texture>
 			</edit_gs_filter>
 			<cap_server_properties x="0" y="191" width="318" height="17">
-				<text font="letterica16" r="215" g="195" b="170" x="2">Server Properties</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2">Server Properties</text>
 				<texture>ui_table_button_e</texture>
 			</cap_server_properties>		
 			<cap_players_list x="346" y="191" width="107" height="17">
-				<text font="letterica16" r="215" g="195" b="170" x="2">Players List</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2">Players List</text>
 				<texture>ui_table_button_e</texture>
 			</cap_players_list>
 			<cap_frags x="455" y="191" width="36" height="17">
-				<text font="letterica16" r="215" g="195" b="170" x="2">Frags</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2">Frags</text>
 				<texture>ui_table_button_e</texture>
 			</cap_frags>
 			<cap_death x="491" y="191" width="36" height="17">
-				<text font="letterica16" r="215" g="195" b="170" x="2">Deaths</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2">Deaths</text>
 				<texture>ui_table_button_e</texture>
 			</cap_death>
 			<list_server_properties x="0" y="210" width="336" height="96" item_height="18">
@@ -187,10 +205,12 @@
 		</spin_game_mode>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<options_item entry="net_srv_name" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
 		<edit_password x="150" y="65" width="275" height="21" password="1">		
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>
 		
@@ -199,11 +219,11 @@
 		</check_dedicated>
 		<map_list x="7" y="158" width="419" height="247">
 			<header_1 x="0" y="0" width="166" height="17">
-				<text font="letterica16" r="215" g="195" b="170" x="2">available maps</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2">available maps</text>
 				<texture>ui_table_button_e</texture>
 			</header_1>
 			<header_2 x="235" y="0" width="166" height="17">
-				<text font="letterica16" r="215" g="195" b="170" x="2">selected maps</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2">selected maps</text>
 				<texture>ui_table_button_e</texture>
 			</header_2>
 			<frame_1 x="0" y="18" width="166" height="231">
@@ -327,18 +347,22 @@
 		</check_no_anmalies>
 		
 		<edit_maprotlist x="123" y="65" width="98" height="23">
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<options_item entry="net_con_maprotlist" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>			
 		</edit_maprotlist>		
 		<edit_spectator x="175" y="90" width="45" height="23" numonly="1">
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<options_item entry="net_con_spectator" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_spectator>
 		<edit_force_respawn x="175" y="185" width="45" height="23" numonly="1">
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<options_item entry="net_force_respawn" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_force_respawn>
 		<edit_reinforcement x="175" y="210" width="45" height="23" numonly="1">
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<options_item entry="net_reinforcement" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_reinforcement>
@@ -376,6 +400,7 @@
 		</edit_anomaly_time>
 		
 		<edit_rate_of_change x="671" y="65" width="45" height="23" numonly="1" float="1">
+			<text font="letterica16" r="235" g="219" b="185"></text>
 			<!--options_item entry="net_weather_rateofchange" group="mm_mp_server"/-->
 			<texture>ui_linetextSmall_e</texture>
 		</edit_rate_of_change>
@@ -412,16 +437,36 @@
 	<btn_create x="393" y="646" width="157" height="48">
 		<text font="normal" align="c">Create</text>
 		<texture>ui_button_main01</texture>
+		<text_color>
+			<e r="227" g="199" b="178"/>				
+			<t r="180" g="153" b="155"/>				
+			<d r="106" g="95" b="91"/>							
+			<h r="255" g="255" b="200"/>
+		</text_color>
 	</btn_create>
 	
 	<btn_join x="549" y="646" width="157" height="48">
 		<text font="normal" align="c">Join</text>
 		<texture>ui_button_main02</texture>
+		<text_color>
+			<e r="227" g="199" b="178"/>				
+			<t r="180" g="153" b="155"/>				
+			<d r="106" g="95" b="91"/>							
+			<h r="255" g="255" b="200"/>
+		</text_color>
+
 	</btn_join>
 	
 	<btn_cancel x="705" y="646" width="157" height="48">
 		<text font="normal" align="c">Cancel</text>
 		<texture>ui_button_main03</texture>
+		<text_color>
+			<e r="227" g="199" b="178"/>				
+			<t r="180" g="153" b="155"/>				
+			<d r="106" g="95" b="91"/>							
+			<h r="0" g="0" b="0"/>
+		</text_color>
+
 	</btn_cancel>
 
 </window>

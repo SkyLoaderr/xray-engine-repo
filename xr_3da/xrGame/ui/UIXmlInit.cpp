@@ -561,6 +561,10 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		{
 			pFnt = UI()->Font()->pArialN21Russian;
 		}
+		else if(!xr_strcmp(*font_name, "arial_14"))
+		{
+			pFnt = UI()->Font()->pFontArial14;
+		}
 		else if(!xr_strcmp(*font_name, BIG_FONT_NAME))
 		{
 			pFnt = UI()->Font()->pFontBigDigit;

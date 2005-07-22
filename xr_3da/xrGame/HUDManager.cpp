@@ -25,6 +25,7 @@ CFontManager::CFontManager()
 	m_all_fonts.push_back(&pFontBigDigit			);
 	m_all_fonts.push_back(&pFontHeaderEurope		);
 	m_all_fonts.push_back(&pFontHeaderRussian		);
+	m_all_fonts.push_back(&pFontArial14				);
 	m_all_fonts.push_back(&pArialN21Russian			);
 	m_all_fonts.push_back(&pFontGraffiti19Russian	);
 	m_all_fonts.push_back(&pFontGraffiti22Russian	);
@@ -55,6 +56,7 @@ void CFontManager::InitializeFonts()
 	InitializeFont(pFontBigDigit			,"hud_font_big_digit"			);
 	InitializeFont(pFontHeaderEurope		,"ui_font_header_europe"		);
 	InitializeFont(pFontHeaderRussian		,"ui_font_header_russian"		);
+	InitializeFont(pFontArial14				,"ui_font_arial_14"				);
 	InitializeFont(pArialN21Russian			,"ui_font_arial_n_21_russian"	);
 	InitializeFont(pFontGraffiti19Russian	,"ui_font_graffiti19_russian"	);
 	InitializeFont(pFontGraffiti22Russian	,"ui_font_graffiti22_russian"	);
