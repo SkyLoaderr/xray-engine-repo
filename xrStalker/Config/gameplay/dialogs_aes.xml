@@ -1,6 +1,138 @@
-<?xml version='1.0' encoding="windows-1251"?>
-
+<?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-
-
+    <dialog id="aes_sergeant_diallog">
+        <phrase_list>
+            <phrase id="1000">
+                <text></text>
+                <next>1001</next>
+            </phrase>
+            <phrase id="1001">
+                <text>aes_sergeant_diallog_1001</text>
+                <next>1002</next>
+                <next>1003</next>
+            </phrase>
+            <phrase id="1002">
+                <text>aes_sergeant_diallog_1002</text>
+                <next>1004</next>
+            </phrase>
+            <phrase id="1004">
+                <text>aes_sergeant_diallog_1004</text>
+                <next>1005</next>
+            </phrase>
+            <phrase id="1005">
+                <text>aes_sergeant_diallog_1005</text>
+                <next>1006</next>
+            </phrase>
+            <phrase id="1006">
+                <text>aes_sergeant_diallog_1006</text>
+                <next>1007</next>
+            </phrase>
+            <phrase id="1007">
+                <text>aes_sergeant_diallog_1007</text>
+                <next>1008</next>
+            </phrase>
+            <phrase id="1008">
+                <text>aes_sergeant_diallog_1008</text>
+                <next>1009</next>
+            </phrase>
+            <phrase id="1009">
+                <text>aes_sergeant_diallog_1009</text>
+                <next>1010</next>
+            </phrase>
+            <phrase id="1010">
+                <text>aes_sergeant_diallog_1010</text>
+                <next>1011</next>
+                <next>1012</next>
+            </phrase>
+            <phrase id="1011">
+                <text>aes_sergeant_diallog_1011</text>
+                <next>1013</next>
+            </phrase>
+            <phrase id="1013">
+                <text>aes_sergeant_diallog_1013</text>
+                <next>1014</next>
+                <next>1015</next>
+            </phrase>
+            <phrase id="1014">
+                <text>aes_sergeant_diallog_1014</text>
+                <next>1016</next>
+            </phrase>
+            <phrase id="1016">
+                <text>aes_sergeant_diallog_1016</text>
+                <next>1017</next>
+            </phrase>
+            <phrase id="1017">
+                <text>aes_sergeant_diallog_1017</text>
+                <next>1018</next>
+            </phrase>
+            <phrase id="1018">
+                <text>aes_sergeant_diallog_1018</text>
+                <next>1019</next>
+            </phrase>
+            <phrase id="1019">
+                <text>aes_sergeant_diallog_1019</text>
+                <next>1020</next>
+            </phrase>
+            <phrase id="1020">
+                <text>aes_sergeant_diallog_1020</text>
+                <next>1021</next>
+            </phrase>
+            <phrase id="1021">
+                <text>aes_sergeant_diallog_1021</text>
+                <next>1022</next>
+            </phrase>
+            <phrase id="1022">
+                <text>aes_sergeant_diallog_1022</text>
+                <next>1023</next>
+            </phrase>
+            <phrase id="1023">
+                <text>aes_sergeant_diallog_1023</text>
+                <next>1024</next>
+            </phrase>
+            <phrase id="1024">
+                <text>aes_sergeant_diallog_1024</text>
+                <next>1025</next>
+            </phrase>
+            <phrase id="1025">
+                <text>aes_sergeant_diallog_1025</text>
+                <next>1026</next>
+            </phrase>
+            <phrase id="1026">
+                <text>aes_sergeant_diallog_1026</text>
+                <next>1027</next>
+            </phrase>
+            <phrase id="1027">
+                <text>aes_sergeant_diallog_1027</text>
+                <next>1028</next>
+            </phrase>
+            <phrase id="1028">
+                <text>aes_sergeant_diallog_1028</text>
+                <next>1029</next>
+            </phrase>
+            <phrase id="1029">
+                <text>aes_sergeant_diallog_1029</text>
+                <next>1030</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1030">
+                <text>aes_sergeant_diallog_1030</text>
+                <next>1031</next>
+            </phrase>
+            <phrase id="1031">
+                <text>aes_sergeant_diallog_1031</text>
+            </phrase>
+            <phrase id="1003">
+                <text>aes_sergeant_diallog_1003</text>
+            </phrase>
+            <phrase id="1012">
+                <text>aes_sergeant_diallog_1012</text>
+            </phrase>
+            <phrase id="1015">
+                <text>aes_sergeant_diallog_1015</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>
