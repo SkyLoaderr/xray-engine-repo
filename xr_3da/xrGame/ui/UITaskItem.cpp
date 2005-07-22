@@ -115,8 +115,7 @@ void CUITaskRootItem::OnShowLocationClicked	()
 
 void CUITaskRootItem::OnSwitchDescriptionClicked	()
 {
-//	bool bPushed = 
-		m_switchDescriptionBtn->GetCheck	();
+//	bool bPushed = 	m_switchDescriptionBtn->GetCheck	();
 }
 
 
