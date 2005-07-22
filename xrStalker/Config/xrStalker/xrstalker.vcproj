@@ -271,6 +271,9 @@
 						RelativePath=".\Config\gameplay\dialogs.xml">
 					</File>
 					<File
+						RelativePath=".\config\gameplay\dialogs_aes.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs_agroprom.xml">
 					</File>
 					<File
@@ -720,6 +723,13 @@
 							RelativePath=".\Config\text\rus\stable_dialogs_pripyat.xml">
 						</File>
 					</Filter>
+					<Filter
+						Name="l12_aes"
+						Filter="">
+						<File
+							RelativePath=".\config\text\rus\stable_dialogs_aes.xml">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="eng"
@@ -866,10 +876,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
