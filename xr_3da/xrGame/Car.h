@@ -335,6 +335,7 @@ virtual void ApplyDamage(u16 level);
 		~SCarSound();
 		Fvector relative_pos;
 		float	 volume;
+		u32		time_state_start;
 		CCar*	pcar;
 	} *m_car_sound;
 
