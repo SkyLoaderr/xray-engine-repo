@@ -317,8 +317,8 @@
 	<character id="bar_bar_drunk_dolg">
 		<class>stalker_bar_drunk_dolg</class>
 	</character>
-	<character id="bar_bar_night_sniper">
-		<class>stalker_bar_night_sniper</class>
+	<character id="bar_bar_lisiy">
+		<class>stalker_bar_bar_lisiy</class>
 	</character>
 	<character id="bar_ecolog_professor">
 		<class>bar_ecolog_professor</class>
