@@ -21,7 +21,53 @@ struct Triangle
 	dReal depth;
 	CDB::TRI* T ;
 };
-
+class CObjectContactCallback
+{
+	
+			CObjectContactCallback				*next			;
+			ObjectContactCallbackFun			*callback		;
+	public:
+		CObjectContactCallback		(ObjectContactCallbackFun			*c)
+			:callback(c)
+		{
+			next=NULL; VERIFY(c);
+		}
+		~CObjectContactCallback()
+		{
+			xr_delete(next);
+		}
+	void Add(ObjectContactCallbackFun		*c)
+	{
+		VERIFY(c);
+		VERIFY(callback!=c);
+	
+		if(next)
+		{
+			next->Add(c);
+		}
+		else
+		{
+			next=xr_new<CObjectContactCallback>(c);
+		}
+	}
+	bool	HasCallback(ObjectContactCallbackFun		*c)
+	{
+		for(CObjectContactCallback*i=this;i;i=i->next)
+		{
+			VERIFY(i->callback);
+			if(c==i->callback) return true;
+		}
+		return false;
+	}
+	void	Call(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+	{
+		for(CObjectContactCallback*i=this;i;i=i->next)
+		{
+			VERIFY(i->callback);
+			i->callback(do_colide,c,material_1,material_2);
+		}
+	}
+};
 
 class CGameObject;
 struct dxGeomUserData
@@ -36,7 +82,8 @@ struct dxGeomUserData
 	u16							tri_material									;
 	ContactCallbackFun			*callback										;
 	void						*callback_data									;
-	ObjectContactCallbackFun	*object_callback								;
+//	ObjectContactCallbackFun	*object_callback								;
+	CObjectContactCallback		*object_callbacks								;
 	u16							element_position								;
 	u16							bone_id											;
 	xr_vector<int>				cashed_tries									;
@@ -96,7 +143,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	(dGeomGetUserData(geom))->material=0;
 	(dGeomGetUserData(geom))->tri_material=0;
 	(dGeomGetUserData(geom))->callback=NULL;
-	(dGeomGetUserData(geom))->object_callback=NULL;
+	(dGeomGetUserData(geom))->object_callbacks=NULL;
 	(dGeomGetUserData(geom))->ph_ref_object=NULL;
 	(dGeomGetUserData(geom))->element_position=u16(-1);
 	(dGeomGetUserData(geom))->bone_id=u16(-1);
@@ -144,11 +191,27 @@ IC void dGeomUserDataSetContactCallback(dxGeom* geom,ContactCallbackFun* callbac
 	(dGeomGetUserData(geom))->callback=callback;
 }
 
-IC void dGeomUserDataSetObjectContactCallback(dxGeom* geom,ObjectContactCallbackFun* obj_callback)
+IC void dGeomUserDataSetObjectContactCallback(dxGeom* geom,ObjectContactCallbackFun	*obj_callback)
 {
-	(dGeomGetUserData(geom))->object_callback=obj_callback;
+	xr_delete((dGeomGetUserData(geom))->object_callbacks);
+	if(obj_callback)(dGeomGetUserData(geom))->object_callbacks=xr_new<CObjectContactCallback>(obj_callback);
 }
 
+IC void dGeomUserDataAddObjectContactCallback(dxGeom* geom,ObjectContactCallbackFun	*obj_callback)
+{
+	if((dGeomGetUserData(geom))->object_callbacks)
+	{
+		(dGeomGetUserData(geom))->object_callbacks->Add(obj_callback);
+	}
+	else dGeomUserDataSetObjectContactCallback(geom,obj_callback);
+}
+IC bool dGeomUserDataHasCallback(dxGeom* geom,ObjectContactCallbackFun	*obj_callback)
+{
+	geom=retrieveGeom(geom);
+	if(geom&&dGeomGetUserData(geom)&&(dGeomGetUserData(geom))->object_callbacks)
+				return (dGeomGetUserData(geom))->object_callbacks->HasCallback(obj_callback);
+	else return false;
+}
 IC void dGeomUserDataSetElementPosition(dxGeom* geom,u16 e_pos)
 {
 	(dGeomGetUserData(geom))->element_position=e_pos;

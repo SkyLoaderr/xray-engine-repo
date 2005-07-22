@@ -236,12 +236,12 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 			surface.bounce		=	_min(material_1->fPHBouncing,material_2->fPHBouncing);
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////
-		if(usr_data_2&&usr_data_2->object_callback){
-			usr_data_2->object_callback(do_collide,c,material_1,material_2);
+		if(usr_data_2&&usr_data_2->object_callbacks){
+			usr_data_2->object_callbacks->Call(do_collide,c,material_1,material_2);
 		}
 
-		if(usr_data_1&&usr_data_1->object_callback){
-			usr_data_1->object_callback(do_collide,c,material_1,material_2);
+		if(usr_data_1&&usr_data_1->object_callbacks){
+			usr_data_1->object_callbacks->Call(do_collide,c,material_1,material_2);
 		}
 
 		if(usr_data_2){

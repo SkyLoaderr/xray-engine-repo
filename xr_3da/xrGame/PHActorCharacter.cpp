@@ -6,6 +6,7 @@
 #include "PhysicsShellHolder.h"
 #include "ai/stalker/ai_stalker.h"
 #include "Actor.h"
+#include "GameMtlLib.h"
 //const float JUMP_HIGHT=0.5;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
@@ -269,4 +270,6 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 		}
 		if(do_collide)inherited::InitContact(c,do_collide,material_1,material_2);
 	}
+	if((material_1&&material_1->Flags.test(SGameMtl::flActorObstacle))||(material_2&&material_2->Flags.test(SGameMtl::flActorObstacle)))
+		do_collide=true;
 }

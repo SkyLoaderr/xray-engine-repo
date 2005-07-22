@@ -21,7 +21,7 @@ void __stdcall NodynamicsCollide(bool& do_colide,dContact& c,SGameMtl * /*materi
 
 	dBodyID body1=dGeomGetBody(c.geom.g1);
 	dBodyID body2=dGeomGetBody(c.geom.g2);
-	if(!body1||!body2||(retrieveGeomUserData(c.geom.g1)->object_callback==NodynamicsCollide&&retrieveGeomUserData(c.geom.g2)->object_callback==NodynamicsCollide))return;
+	if(!body1||!body2||(dGeomUserDataHasCallback(c.geom.g1,NodynamicsCollide)&&dGeomUserDataHasCallback(c.geom.g2,NodynamicsCollide)))return;
 	do_colide=false; 
 }
 

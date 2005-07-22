@@ -20,7 +20,7 @@ CCar::SWheel::SWheelCollisionParams::SWheelCollisionParams()
 }
 IC void CCar::SWheel::applywheelCollisionParams(const dxGeomUserData *ud,bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
-	if(ud&&ud->object_callback==WheellCollisionCallback)
+	if(ud&&ud->object_callbacks&&ud->object_callbacks->HasCallback(WheellCollisionCallback))
 	{
 		SWheelCollisionParams	&cp	=		*((SWheelCollisionParams*)(ud->callback_data))	;
 		dSurfaceParameters		&sp	=		c.surface										;
