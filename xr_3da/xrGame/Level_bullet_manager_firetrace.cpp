@@ -259,6 +259,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 
 	if(V)
 	{
+		VERIFY3(V->LL_GetBoneVisible(u16(R.element)),*R.O->cNameVisual(),V->LL_BoneName_dbg(u16(R.element)));
 		Fmatrix& m_bone = (V->LL_GetBoneInstance(u16(R.element))).mTransform;
 		Fmatrix  m_inv_bone;
 		m_inv_bone.invert(m_bone);
