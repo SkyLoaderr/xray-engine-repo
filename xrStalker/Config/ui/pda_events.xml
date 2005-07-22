@@ -76,7 +76,7 @@
 						<texture>ui_string_03</texture>
 
 						<tool_bar>
-							<global_map_btn x="5" y="0" width="40" height="12" push_off_x="0" push_off_y="2">
+							<global_map_btn x="5" y="0" width="40" height="12" check_mode="0">
 							<window_name>global_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">global</text>
 								<text_color>
@@ -86,7 +86,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</global_map_btn>								
-							<next_map_btn x="50" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
+							<next_map_btn x="50" y="0" width="30" height="12" check_mode="0">
 								<window_name>next_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">next</text>
 								<text_color>
@@ -96,7 +96,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</next_map_btn>								
-							<prev_map_btn x="85" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
+							<prev_map_btn x="85" y="0" width="30" height="12" check_mode="0">
 								<window_name>prev_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">prev</text>
 								<text_color>
@@ -106,7 +106,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</prev_map_btn>								
-							<zoom_in_btn x="120" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+							<zoom_in_btn x="120" y="0" width="20" height="12" check_mode="0">
 								<window_name>zoom_in_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z+</text>
 								<text_color>
@@ -116,7 +116,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</zoom_in_btn>								
-							<zoom_out_btn x="145" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+							<zoom_out_btn x="145" y="0" width="20" height="12" check_mode="0">
 								<window_name>zoom_out_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z-</text>
 								<text_color>
@@ -126,7 +126,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</zoom_out_btn>								
-							<add_spot_btn x="170" y="0" width="25" height="12" push_off_x="0" push_off_y="2">
+							<add_spot_btn x="170" y="0" width="25" height="12" check_mode="1">
 								<window_name>add_spot_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">add</text>
 								<text_color>
@@ -136,7 +136,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</add_spot_btn>								
-							<remove_spot_btn x="205" y="0" width="40" height="12" push_off_x="0" push_off_y="2">
+							<remove_spot_btn x="205" y="0" width="40" height="12" check_mode="1">
 								<window_name>remove_spot_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">remove</text>
 								<text_color>
