@@ -147,6 +147,8 @@ public:
 	*/
 	IC void					play					( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
 	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_no_feedback		( CObject* O /*!< Object */,											u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
+	IC void					play_at_pos_no_feedback	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	u32 flags=0 /*!< Looping */, float delay=0.f /*!< Delay */);
 	//@}
 
 	//! Stops playing this source
@@ -252,7 +254,9 @@ public:
 	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					play					( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f)	= 0;
-	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f)	= 0;
+	virtual void					play_at_pos				( ref_sound& S, CObject* O,	const Fvector &pos,	u32 flags=0, float delay=0.f)			= 0;
+	virtual void					play_no_feedback		( ref_sound& S, CObject* O,						u32 flags=0, float delay=0.f)			= 0;
+	virtual void					play_at_pos_no_feedback	( ref_sound& S, CObject* O,	const Fvector &pos,	u32 flags=0, float delay=0.f)			= 0;
 
 	virtual void					set_volume				( float f=1.f )																			= 0;
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
@@ -284,6 +288,8 @@ IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound-
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
 IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);					}
 IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);				}
+IC void	ref_sound::play_no_feedback				( CObject* O,						u32 flags, float d)	{	::Sound->play_no_feedback		(*this,O,flags,d);					}
+IC void	ref_sound::play_at_pos_no_feedback		( CObject* O,	const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos_no_feedback(*this,O,pos,flags,d);				}
 IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(_feedback());_feedback()->set_position(pos);					}
 IC void	ref_sound::set_frequency				( float freq)											{	if (_feedback())	_feedback()->set_frequency(freq);				}
 IC void	ref_sound::set_range					( float min, float max )								{	if (_feedback())	_feedback()->set_range(min,max);				}

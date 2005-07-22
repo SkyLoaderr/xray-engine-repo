@@ -229,37 +229,53 @@ void	CSoundRender_Core::verify_refsound		( ref_sound& S)
 
 void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, int type )
 {
-	if (!bPresent)					return;
-	verify_refsound					(S);
-
-    S._p		= xr_new<ref_sound_data>(_3D,fName,type);
+	if (!bPresent)		return;
+	verify_refsound		(S);
+    S._p				= xr_new<ref_sound_data>(_3D,fName,type);
 }
 
 void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float delay)
 {
 	if (!bPresent || 0==S._handle())return;
-	verify_refsound					(S);
-
+	verify_refsound		(S);
 	S._p->g_object		= O;
-	if (S._feedback())	{
-		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S._feedback();
-		E->rewind	();
-	}	
-	else			i_play	(&S,flags&sm_Looped,delay);
-	if (flags&sm_2D)		S._feedback()->switch_to_2D();
+	if (S._feedback())	((CSoundRender_Emitter*)S._feedback())->rewind ();
+	else				i_play					(&S,flags&sm_Looped,delay);
+	if (flags&sm_2D)	S._feedback()->switch_to_2D();
+}
+void	CSoundRender_Core::play_no_feedback		( ref_sound& S, CObject* O, u32 flags, float delay)
+{
+	if (!bPresent || 0==S._handle())return;
+	verify_refsound		(S);
+	ref_sound_data_ptr old = S._p;
+	S._p				= xr_new<ref_sound_data>(*S._p);
+	S._p->g_object		= O;
+	i_play				(&S,flags&sm_Looped,delay);
+	if (flags&sm_2D)	S._feedback()->switch_to_2D();
+	S._p				= old;
 }
 void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
 {
 	if (!bPresent || 0==S._handle())return;
-	verify_refsound					(S);
+	verify_refsound		(S);
 	S._p->g_object		= O;
-	if (S._feedback())	{
-		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S._feedback();
-		E->rewind		();
-	}	
-	else				i_play				(&S,flags&sm_Looped,delay);
-	S._feedback()->set_position				(pos);
+	if (S._feedback())	((CSoundRender_Emitter*)S._feedback())->rewind ();
+	else				i_play					(&S,flags&sm_Looped,delay);
+	S._feedback()->set_position					(pos);
 	if (flags&sm_2D)	S._feedback()->switch_to_2D();
+}
+void	CSoundRender_Core::play_at_pos_no_feedback( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
+{
+	if (!bPresent || 0==S._handle())return;
+	verify_refsound		(S);
+	ref_sound_data_ptr old = S._p;
+	S._p				= xr_new<ref_sound_data>(*S._p);
+	S._p->g_object		= O;
+	if (S._feedback())	((CSoundRender_Emitter*)S._feedback())->rewind ();
+	else				i_play					(&S,flags&sm_Looped,delay);
+	S._feedback()->set_position					(pos);
+	if (flags&sm_2D)	S._feedback()->switch_to_2D();
+	S._p				= old;
 }
 void	CSoundRender_Core::destroy	(ref_sound& S )
 {
