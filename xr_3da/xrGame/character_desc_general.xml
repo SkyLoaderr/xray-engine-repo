@@ -27,6 +27,7 @@
 		<actor_dialog>escape_trader_done_tutorial_artefact</actor_dialog>
 		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>
 		<actor_dialog>escape_trader_tutorial_wounded_end</actor_dialog>		
+		<actor_dialog>escape_trader_bandits_killed</actor_dialog>
 	</specific_character>
 
 	<specific_character id="doctor_izgoy" no_random = "1">
