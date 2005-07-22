@@ -75,7 +75,7 @@ void CCar::SCarSound::Update()
 			return;
 		}
 		if(time_passed>1)
-			snd_engine.set_volume(volume*1000.f/time_passed);
+			snd_engine.set_volume(clampr(volume*1000.f/time_passed,0.f,2.f));
 		break;
 	}
 }
