@@ -443,16 +443,26 @@ function load_states( gname, type )
 			end
 
 			local be
+			local alarm = false
 
-			for k, v in gulag.Object do
-				be = v:best_enemy()
-				if be and be:id() == actor:id() then
-					actor:give_info_portion( "agr_nii_alarm" )
-					return 3
+			if actor:has_info( "agr_nii_sniper_alarm" ) then
+				alarm = true
+			else
+				for k, v in gulag.Object do
+					be = v:best_enemy()
+					if be and be:id() == actor:id() then
+						alarm = true
+						break
+					end
 				end
 			end
 
-			actor:disable_info_portion( "agr_nii_alarm" )
+			if alarm then
+				actor:give_info_portion( "agr_nii_alarm" )
+				return 3
+			else
+				actor:disable_info_portion( "agr_nii_alarm" )
+			end
 
 			if level.get_time_hours() >= 6 and level.get_time_hours() < 21 then
 				return 0  -- день

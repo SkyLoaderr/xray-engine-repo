@@ -100,7 +100,11 @@
 
     <info_portion id="agr_nii_alarm">
     </info_portion>
-    
+    <info_portion id="agr_nii_sniper_alarm">
+    </info_portion>
+    <info_portion id="agr_nii_sniper_hit">
+    </info_portion>
+
     <info_portion id="agr_nii_helicopter_atack">
     </info_portion>
     
