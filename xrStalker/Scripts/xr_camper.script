@@ -322,7 +322,6 @@ function action_patrol:process_danger()
 	end
 	
 	printf("CAMPER [%s] danger_distance_sqr [%s]", self.object:name(), tostring(danger_distance_sqr))			
-	printf("CAMPER [%s] danger_name [%s]", self.object:name(), tostring(best_danger:object():name()))
 	position = {look_position = best_danger:position()}
 	local emerg = nil
 	if self.danger ~= true then
