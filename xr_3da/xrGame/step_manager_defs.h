@@ -17,8 +17,6 @@ DEFINE_MAP(MotionID, SStepParam, STEPS_MAP, STEPS_MAP_IT);
 
 struct SStepInfo {
 	struct {
-		ref_sound		sound;
-
 		bool			handled;		// обработан
 		u8				cycle;			// цикл в котором отработан
 	} activity[MAX_LEGS_COUNT];

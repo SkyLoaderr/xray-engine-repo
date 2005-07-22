@@ -125,11 +125,7 @@ void CStepManager::update()
 			if (!mtl_pair->StepSounds.empty()) {
 				Fvector sound_pos = m_object->Position();
 				sound_pos.y += 0.5;
-				CLONE_MTL_SOUND(m_step_info.activity[i].sound, mtl_pair, StepSounds);
-				m_step_info.activity[i].sound.play_at_pos	(m_object, sound_pos);
-				const CSound_params *sound_params = m_step_info.activity[i].sound.get_params();
-				VERIFY(sound_params);
-				m_step_info.activity[i].sound.set_volume	(m_step_info.params.step[i].power);
+				GET_RANDOM(mtl_pair->StepSounds).play_no_feedback(0,0,0,&sound_pos,&m_step_info.params.step[i].power);
 			}
 
 			// Играть партиклы
@@ -164,16 +160,6 @@ void CStepManager::update()
 
 	// определить текущий цикл
 	if (m_step_info.cur_cycle < step.cycles) m_step_info.cur_cycle = 1 + u8(float(cur_time - m_time_anim_started) / (1000.f * cycle_anim_time));
-
-	// позиционировать играемые звуки
-	for (i=0; i<m_legs_count; i++) {
-		if (m_step_info.activity[i].handled && m_step_info.activity[i].sound._feedback()) {
-			Fvector sound_pos = m_object->Position();
-			sound_pos.y += 0.5;
-			m_step_info.activity[i].sound.set_position	(sound_pos);
-			//m_step_info.activity[i].sound.set_volume	(m_step_info.params.step[i].power);
-		}
-	}
 
 	// если анимация циклическая...
 	u32 time_anim_end = m_time_anim_started + u32(get_blend_time() * 1000);		// время завершения работы анимации
