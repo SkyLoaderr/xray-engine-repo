@@ -2,6 +2,7 @@
 <game_information_portions>
     <info_portion id="pri_followers_start"></info_portion>
     <info_portion id="pri_followers_leader_hello"></info_portion>
+
     <info_portion id="pri_wave1_start"></info_portion>
     <info_portion id="pri_wave1_hide"></info_portion>
     <info_portion id="pri_wave1_monolith1_dead"></info_portion>
@@ -9,4 +10,12 @@
     <info_portion id="pri_wave1_monolith3_dead"></info_portion>
     <info_portion id="pri_wave1_monolith4_dead"></info_portion>
     <info_portion id="pri_wave1_side_start"></info_portion>
+
+    <info_portion id="pri_wave2_start"></info_portion>
+    <info_portion id="pri_wave2_monolith1_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith2_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith3_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith4_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith5_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith6_dead"></info_portion>
 </game_information_portions>
