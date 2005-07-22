@@ -21,10 +21,8 @@ use_wpn = true
 meet_dialog = agr_krot_help
 
 [walker@combat]
-path_walk = agr_krot_hold_walk
-path_look = agr_krot_hold_look
-;path_walk = agr_krot_hold_fake_walk
-;path_look = agr_krot_hold_fake_look
+path_walk = agr_krot_hold_combat_walk
+path_look = agr_krot_hold_fake_look
 radius    = 3
 on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_after_hold
 
@@ -55,10 +53,6 @@ on_signal = well | walker@well
 ;danger = danger_condition
 combat_ignore_cond = always
 
-
-[danger_condition]
-ignore_distance = 0
-
 [walker@well]
 path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
@@ -67,7 +61,7 @@ meet = meet@well
 [meet@well]
 ;meet_state     = 30 | hello@wait | 10 |
 ;meet_state_wpn = 30 | hello@wait
-meet_state 		= 30 | hello@wait |20| wait@wait| 10| ward@wait
+meet_state 		= 30 | hello@wait |20| wait@wait |5| wait
 meet_state_wpn 	= 30 | hello@wait |20| threat@threat_weap
 victim = 30 | actor
 victim_wpn = 30 | actor
@@ -78,3 +72,6 @@ meet_dialog = agr_factory_krot_start
 
 [death]
 on_info = %+agr_krot_dead%
+
+[danger_condition]
+ignore_distance = 0
