@@ -75,19 +75,9 @@
 						</title>
 						<texture>ui_string_03</texture>
 
-						<tool_bar x="0" y="6" width = "100" height="16">
-							<button x="15" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
-							<window_name>default</window_name>
-								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">def</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
-							</button>								
-							<button x="45" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
-							<window_name>to_global</window_name>
+						<tool_bar>
+							<global_map_btn x="5" y="0" width="40" height="12" push_off_x="0" push_off_y="2">
+							<window_name>global_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">global</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
@@ -95,9 +85,9 @@
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
-							</button>								
-							<button x="100" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
-								<window_name>to_next</window_name>
+							</global_map_btn>								
+							<next_map_btn x="50" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
+								<window_name>next_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">next</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
@@ -105,9 +95,39 @@
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
-							</button>								
-							<button x="155" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
-								<window_name>add_user_spot</window_name>
+							</next_map_btn>								
+							<prev_map_btn x="85" y="0" width="30" height="12" push_off_x="0" push_off_y="2">
+								<window_name>prev_map_btn</window_name>
+								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">prev</text>
+								<text_color>
+									<e r="181" g="170" b="148"/>
+									<d r="181" g="170" b="148"/>
+									<t r="127" g="127" b="127"/>				
+									<h r="231" g="153" b="22"/>
+								</text_color>			
+							</prev_map_btn>								
+							<zoom_in_btn x="120" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+								<window_name>zoom_in_btn</window_name>
+								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Z+</text>
+								<text_color>
+									<e r="181" g="170" b="148"/>
+									<d r="181" g="170" b="148"/>
+									<t r="127" g="127" b="127"/>				
+									<h r="231" g="153" b="22"/>
+								</text_color>			
+							</zoom_in_btn>								
+							<zoom_out_btn x="145" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+								<window_name>zoom_out_btn</window_name>
+								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Z-</text>
+								<text_color>
+									<e r="181" g="170" b="148"/>
+									<d r="181" g="170" b="148"/>
+									<t r="127" g="127" b="127"/>				
+									<h r="231" g="153" b="22"/>
+								</text_color>			
+							</zoom_out_btn>								
+							<add_spot_btn x="170" y="0" width="20" height="12" push_off_x="0" push_off_y="2">
+								<window_name>add_spot_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">add</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
@@ -115,7 +135,17 @@
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
-							</button>								
+							</add_spot_btn>								
+							<remove_spot_btn x="195" y="0" width="40" height="12" push_off_x="0" push_off_y="2">
+								<window_name>remove_spot_btn</window_name>
+								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">remove</text>
+								<text_color>
+									<e r="181" g="170" b="148"/>
+									<d r="181" g="170" b="148"/>
+									<t r="127" g="127" b="127"/>				
+									<h r="231" g="153" b="22"/>
+								</text_color>			
+							</remove_spot_btn>								
 						</tool_bar>					
 
 					</map_header_frame_line>
