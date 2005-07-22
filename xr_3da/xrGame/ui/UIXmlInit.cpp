@@ -83,18 +83,21 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 	float height = xml_doc.ReadAttribFlt(path, index, "height");
 	pWnd->Init(x, y, width, height);
 
-   	string256 buf;
+   	string512 buf;
 	CGameFont *LocalFont = NULL;
 	u32 cl;
 
-	shared_str text_path = strconcat(buf,path,":font");
-	InitFont(xml_doc, *text_path, index, cl, LocalFont);
+	strconcat(buf,path,":font");
+	InitFont(xml_doc, buf, index, cl, LocalFont);
 	if (LocalFont)
 	{
 		pWnd->SetFont(LocalFont);
 //		pWnd->SetTextColor(cl);
 	}
-
+	strconcat(buf,path,":window_name");
+	if(xml_doc.NavigateToNode(buf,index)){
+		pWnd->SetWindowName( xml_doc.Read(buf, index, NULL) );
+	}
 	return true;
 }
 
