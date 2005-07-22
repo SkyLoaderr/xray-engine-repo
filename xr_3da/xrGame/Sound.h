@@ -100,8 +100,6 @@ specific sub-systems
 struct	ref_sound
 {
 	ref_sound_data_ptr		_p;
-private:
-	ref_sound&				operator=				(const ref_sound&){R_ASSERT(0);}
 public:
     //! A constructor
     /*!
