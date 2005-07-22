@@ -16,7 +16,7 @@ class CUIFrameLineWnd;
 class CMapActionPlanner;
 class CUITabControl;
 class CUIStatic;
-
+class CUI3tButton;
 
 DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
@@ -27,6 +27,14 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	enum lmFlags{	lmMouseHold		= (1<<0),
 					lmUserSpotAdd	= (1<<1),
 				};
+	enum EMapToolBtn{	eGlobalMap=0,
+						eNextMap,
+						ePrevMap,
+						eZoomIn,
+						eZoomOut,
+						eAddSpot,
+						eRemoveSpot,
+						eMaxBtn};
 	Flags32						m_flags;
 
 	CUICustomMap*				m_activeMap;
@@ -39,11 +47,17 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	CUIWindow*					m_UILevelFrame;
 	CMapActionPlanner*			m_ActionPlanner;
 	CUIFrameLineWnd*			UIMainMapHeader;
-	CUITabControl*				m_ToolBar;
+	CUI3tButton*				m_ToolBar[eMaxBtn];
 	CUIStatic*					m_MapText;
 	void						OnScrollV				();
 	void						OnScrollH				();
-	void						OnToolBar				(CUIWindow*, void*);
+	void						OnToolGlobalMapClicked	(CUIWindow*, void*);
+	void						OnToolNextMapClicked	(CUIWindow*, void*);
+	void						OnToolPrevMapClicked	(CUIWindow*, void*);
+	void						OnToolZoomInClicked		(CUIWindow*, void*);
+	void						OnToolZoomOutClicked	(CUIWindow*, void*);
+	void						OnToolAddSpotClicked	(CUIWindow*, void*);
+	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
 public:
 								CUIMapWnd				();
 	virtual						~CUIMapWnd				();
@@ -73,6 +87,5 @@ public:
 	u16							GetIdxByName			(const shared_str& map_name);
 	void						SetStatusInfo			(LPCSTR status_text);
 	void						UpdateScroll			();
-	void						AddUserMapSpot			();
 	shared_str					cName					() const	{return "ui_map_wnd";};
 };

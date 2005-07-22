@@ -60,9 +60,9 @@ public:
 	void SetGlobalButtonColor(u32 cl)			{ m_cGlobalButtonColor = cl; m_bChangeColors = true; }
 	u32 GetGlobalButtonColor() const 			{ return m_cGlobalButtonColor; }
 
-	TABS_VECTOR * GetButtonsVector()			{ return &m_TabsArr; }
-	CUIButton*		GetButtonByIndex(int i)		{ R_ASSERT(i>=0 && i<(int)m_TabsArr.size()); return m_TabsArr[i];}
-
+	TABS_VECTOR *		GetButtonsVector()		{ return &m_TabsArr; }
+	CUIButton*			GetButtonByIndex(int i)	{ R_ASSERT(i>=0 && i<(int)m_TabsArr.size()); return m_TabsArr[i];}
+	const shared_str	GetCommandName(int i)	{ return (GetButtonByIndex(i))->WindowName();};
 protected:
 	// Список кнопок - переключателей закладок
 	TABS_VECTOR		m_TabsArr;

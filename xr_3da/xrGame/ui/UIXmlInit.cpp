@@ -278,6 +278,8 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	if (xml_doc.NavigateToNode(hint, index))
         InitStatic(xml_doc, hint, index, &pWnd->m_hint);
 
+	pWnd->SetCheckMode ( (xml_doc.ReadAttribInt(path, index, "check_mode", 0)==0)?false : true);
+	
 	return true;
 }
 
@@ -321,6 +323,7 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 
 	float pushOffsetX		= xml_doc.ReadAttribFlt(path, index, "push_off_x", 2);
 	float pushOffsetY		= xml_doc.ReadAttribFlt(path, index, "push_off_y", 3);
+
 
 	pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
 	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);

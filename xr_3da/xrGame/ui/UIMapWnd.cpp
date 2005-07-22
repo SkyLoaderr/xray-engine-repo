@@ -42,7 +42,6 @@ CUIMapWnd::CUIMapWnd()
 	m_activeMap				= NULL;
 	m_GlobalMap				= NULL;
 	m_flags.zero			();
-//	Show					(false);
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -110,13 +109,77 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	strconcat(pth,start_from,":main_wnd:map_header_frame_line");
 	xml_init.InitFrameLine			(uiXml, pth, 0, UIMainMapHeader);
 
-	m_ToolBar						= xr_new<CUITabControl>(); m_ToolBar->SetAutoDelete(true);
-	strconcat(pth,start_from,":main_wnd:map_header_frame_line:tool_bar");
-	xml_init.InitTabControl			(uiXml, pth, 0, m_ToolBar);
-	UIMainMapHeader->				AttachChild(m_ToolBar);
-	m_ToolBar->SetWindowName		("tool_bar");
-	Register						(m_ToolBar);
-    AddCallback						("tool_bar",TAB_CHANGED,boost::bind(&CUIMapWnd::OnToolBar,this,_1,_2));
+	ZeroMemory						(m_ToolBar,sizeof(m_ToolBar));
+	xr_string  sToolbar;
+	sToolbar	= xr_string(start_from) + ":main_wnd:map_header_frame_line:tool_bar";
+
+	EMapToolBtn		btnIndex;
+	btnIndex		= eGlobalMap;
+	strconcat(pth, sToolbar.c_str(), ":global_map_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolGlobalMapClicked,this,_1,_2));
+	}
+
+	btnIndex		= eNextMap;
+	strconcat(pth, sToolbar.c_str(), ":next_map_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolNextMapClicked,this,_1,_2));
+	}
+
+	btnIndex		= ePrevMap;
+	strconcat(pth, sToolbar.c_str(), ":prev_map_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolPrevMapClicked,this,_1,_2));
+	}
+
+	btnIndex		= eZoomIn;
+	strconcat(pth, sToolbar.c_str(), ":zoom_in_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolZoomInClicked,this,_1,_2));
+	}
+	btnIndex		= eZoomOut;
+	strconcat(pth, sToolbar.c_str(), ":zoom_out_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolZoomOutClicked,this,_1,_2));
+	}
+	btnIndex		= eAddSpot;
+	strconcat(pth, sToolbar.c_str(), ":add_spot_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolAddSpotClicked,this,_1,_2));
+	}
+	btnIndex		= eRemoveSpot;
+	strconcat(pth, sToolbar.c_str(), ":remove_spot_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolRemoveSpotClicked,this,_1,_2));
+	}
 
 
 // Load maps
@@ -156,9 +219,6 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 			l->Init(map_name, gameLtx, "hud\\set");
 
 			l->OptimalFit( m_UILevelFrame->GetWndRect() );
-			
-//			if(l->GlobalMapSpot())
-//				m_GlobalMap->AttachChild(l->GlobalMapSpot() );
 		}
 	}
 
@@ -201,11 +261,10 @@ void CUIMapWnd::Show(bool status)
 
 void CUIMapWnd::AddMapToRender			(CUICustomMap* m)
 {
-	Register							( smart_cast<CUIWindow*>(m) );
-//	if(!m_UILevelFrame->IsChild(smart_cast<CUIWindow*>(m)))//fix it!!!
-	m_UILevelFrame->AttachChild			( smart_cast<CUIWindow*>(m) );
+	Register							( m );
+	m_UILevelFrame->AttachChild			( m );
 	m->Show								( true );
-	m_UILevelFrame->BringToTop			( smart_cast<CUIWindow*>(m) );
+	m_UILevelFrame->BringToTop			( m );
 	m->SetClipRect						( ActiveMapRect() );
 }
 
@@ -217,8 +276,8 @@ void CUIMapWnd::RemoveMapToRender		(CUICustomMap* m)
 
 void CUIMapWnd::SetActiveMap(CUICustomMap* m)
 {
-	m_activeMap							=	m;
-	m_UILevelFrame->BringToTop			( smart_cast<CUIWindow*>(m) );
+	m_activeMap							= m;
+	m_UILevelFrame->BringToTop			( m );
 	m->SetClipRect						( ActiveMapRect() );
 	UpdateScroll						();
 }
@@ -257,9 +316,6 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	CWorldState							target_state;
 	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::make_map_id(map_idx,UIMapWndActionsSpace::ePropMapOpenedIdle),true));
 	m_ActionPlanner->set_target_state	(target_state);
-//	GetUICursor()->HoldMode(false);
-//	m_flags.set(lmMouseHold,FALSE);
-
 }
 
 
@@ -278,7 +334,7 @@ bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
 	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_A == dik)
 	{
 		if(ActiveMap() && ActiveMap()!=GlobalMap())
-			AddUserMapSpot();
+			m_flags.set(lmUserSpotAdd,TRUE);
 		return true;
 	}
 	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_G == dik)
@@ -308,7 +364,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 	if(ActiveMap() && !ActiveMap()->Locked() && ActiveMapRect().in( cursor_pos ) ){
 		switch (mouse_action){
 		case WINDOW_MOUSE_MOVE:
-			if(/*m_flags.test(lmMouseHold)*/ pInput->iGetAsyncBtnState(0)){
+			if( pInput->iGetAsyncBtnState(0) ){
 				ActiveMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
 			}
@@ -329,14 +385,9 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				t->m_Objectives[1].object_id	= ml->ObjectID();
 				t->m_Objectives[1].map_location	= spot;
 				m_flags.set(lmUserSpotAdd, FALSE);
+				m_ToolBar[eAddSpot]->SetButtonMode		(CUIButton::BUTTON_NORMAL);
 				break;
 			}
-//			GetUICursor()->HoldMode(true);
-//			m_flags.set(lmMouseHold,TRUE);
-		break;
-		case WINDOW_LBUTTON_UP:
-//			GetUICursor()->HoldMode(false);
-//			m_flags.set(lmMouseHold,FALSE);
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec();
@@ -426,13 +477,66 @@ void CUIMapWnd::ShowHint()
 	SetStatusInfo(hint);
 }
 
-void CUIMapWnd::AddUserMapSpot			()
+/*
+void CUIMapWnd::OnToolBar				(CUIWindow* w, void* pData)
 {
-	m_flags.set(lmUserSpotAdd,TRUE);
+	shared_str prev_btn = m_ToolBar->GetCommandName((int)pData);
+
+
+	shared_str active_btn = m_ToolBar->GetCommandName(m_ToolBar->GetActiveIndex());
+	if(active_btn == "to_global"){
+		SetActiveMap(GlobalMap()->MapName());
+	}else
+	if(active_btn == "to_next"){
+		u16 curr_map_idx = 0;
+		if(GlobalMap()!=ActiveMap()){
+			curr_map_idx = GetIdxByName(ActiveMap()->MapName());
+			++curr_map_idx;
+			if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
+		}
+		SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
+	}else
+	if(active_btn == "add_user_spot"){
+		m_flags.set(lmUserSpotAdd,TRUE);
+	};
+}
+*/
+
+void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
+{
+		SetActiveMap(GlobalMap()->MapName());
 }
 
-void CUIMapWnd::OnToolBar				(CUIWindow*, void*)
+void CUIMapWnd::OnToolNextMapClicked	(CUIWindow* w, void*)
 {
-
+		u16 curr_map_idx = 0;
+		if(GlobalMap()!=ActiveMap()){
+			curr_map_idx = GetIdxByName(ActiveMap()->MapName());
+			++curr_map_idx;
+			if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
+		}
+		SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
 }
 
+void CUIMapWnd::OnToolPrevMapClicked	(CUIWindow* w, void*)
+{
+}
+
+void CUIMapWnd::OnToolZoomInClicked		(CUIWindow* w, void*)
+{
+}
+
+void CUIMapWnd::OnToolZoomOutClicked	(CUIWindow* w, void*)
+{
+}
+
+void CUIMapWnd::OnToolAddSpotClicked	(CUIWindow* w, void*)
+{
+	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
+	bool bPushed = btn->GetCheck		();
+	m_flags.set							(lmUserSpotAdd,bPushed);
+}
+
+void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
+{
+}
