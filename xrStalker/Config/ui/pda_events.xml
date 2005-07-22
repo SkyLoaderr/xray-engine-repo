@@ -77,6 +77,7 @@
 
 						<tool_bar x="0" y="6" width = "100" height="16">
 							<button x="15" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
+							<window_name>to_global</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">global</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
@@ -86,6 +87,7 @@
 								</text_color>			
 							</button>								
 							<button x="70" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
+								<window_name>to_next</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">next</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
