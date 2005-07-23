@@ -355,6 +355,9 @@
 		<class>stalker_arena_guard</class>
 	</character>
 
+	<character id="bar_zastava_commander_1">
+		<class>stalker_bar_zastava_commander</class>
+	</character>
 
 	<!-- X18 -->
 	<character id="dar_stalker_explorer">
