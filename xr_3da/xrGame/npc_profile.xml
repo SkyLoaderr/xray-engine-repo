@@ -351,6 +351,11 @@
 		<class>Bar_psih</class>
 	</character>
 
+	<character id="bar_arena_guard">
+		<class>stalker_arena_guard</class>
+	</character>
+
+
 	<!-- X18 -->
 	<character id="dar_stalker_explorer">
 		<class>dar_stalker_explorer</class>

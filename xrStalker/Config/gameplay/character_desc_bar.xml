@@ -100,6 +100,29 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
+	<specific_character id="stalker_arena_guard" team_default = "1">
+		<name>Лёлик</name>
+		<icon x="8" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Телохранитель хозяина Арены. О его прошлом известно только плохое, ненавидит своих братьев.</bio>
+
+		<class>stalker_arena_guard</class>
+		<community>stalker</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\neytral\stalker_bar_security</visual>
+		<supplies>
+			[spawn] \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
+
 	<specific_character id="stalker_bar_white_novice_1" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="16" y="4"></icon>
