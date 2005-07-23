@@ -58,8 +58,6 @@
 		<team>Actor</team>
 		<supplies>
 			[spawn] \n
-			device_torch \n
-			wpn_knife \n
 		</supplies>
 		
 		<class>actor</class>
