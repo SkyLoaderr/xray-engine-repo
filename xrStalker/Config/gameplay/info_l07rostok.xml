@@ -214,6 +214,9 @@
     </info_portion>
 	<info_portion id="bar_darklab_document_gain"></info_portion>
 	<info_portion id="bar_darklab_document_done"></info_portion>
+
+        <!-- FIND DOCUMENTS X16 -->
+    <info_portion id="bar_x16_document_done"></info_portion>
     
 		 <!-- X16 DOCUMENTS -->
     <info_portion id="bar_x16_documents_start">
