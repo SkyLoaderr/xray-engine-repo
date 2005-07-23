@@ -9924,6 +9924,12 @@
 						RelativePath=".\ui\UIDiaryWnd2.cpp">
 					</File>
 					<File
+						RelativePath=".\ui\UIEncyclopediaArticleWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIEncyclopediaArticleWnd.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIEncyclopediaCore.cpp">
 					</File>
 					<File
