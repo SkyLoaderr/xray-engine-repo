@@ -199,7 +199,7 @@ end
 function disable_generic_schemes(npc, stype)
 	if stype == modules.stype_stalker then
 		xr_combat.disable_scheme(npc, "combat")
-		xr_death.disable_scheme(npc, "death")
+--		xr_death.disable_scheme(npc, "death")
 		xr_use.disable_scheme(npc, "use")
 		xr_hit.disable_scheme(npc, "hit")
 		xr_meet.disable_scheme(npc, "actor_dialogs")
@@ -228,11 +228,6 @@ function enable_generic_schemes(ini, npc, stype, section)
 			xr_combat.set_combat_checker(npc, ini, "combat", combat_section)
 		end
 		
-		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
-		if death_section then
-			xr_death.set_death_checker(npc, ini, "death", death_section)
-		end
-
 		local use_section = utils.cfg_get_string(ini, section, "on_use", npc, false, "")
 		if use_section then
 			xr_use.set_use_checker(npc, ini, "use", use_section)
@@ -257,6 +252,9 @@ function enable_generic_schemes(ini, npc, stype, section)
 
 		local meet_section = utils.cfg_get_string (ini, section, "meet", npc, false, "")
 		xr_meet.set_meet (npc, ini, "meet", meet_section)
+
+		local death_section = utils.cfg_get_string (ini, section, "on_death", npc, false, "")
+		xr_death.set_death (npc, ini, "death", death_section)
 
 		local heli_hunter_section = utils.cfg_get_string(ini, section, "heli_hunter", npc, false, "")
 		--if heli_hunter_section then
@@ -384,6 +382,7 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 		xr_meet.dialog_manager_reset(npc, st.stype)
 		xr_meet.reset_meet(npc, scheme, st, section)
 		xr_wounded.reset_wounded(npc, scheme, st, section)
+		xr_death.reset_death(npc, scheme, st, section)
 		xr_danger.reset_danger(npc, scheme, st, section)
 		stalker_generic.reset_threshold(npc, scheme, st, section)		
 		stalker_generic.reset_show_spot(npc, scheme, st, section)

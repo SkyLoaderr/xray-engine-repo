@@ -297,6 +297,8 @@ function add_to_binder(object, char_ini, scheme, section, st)
 
 	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))
+	
+	st.meet_manager = Cmeet_manager(object, st)
 end
 
 
@@ -306,7 +308,6 @@ end
 -- первичную настройку.
 function set_meet(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.meet_manager = Cmeet_manager(npc, st)
 end
 -- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
 function reset_meet(npc, scheme, st, section)

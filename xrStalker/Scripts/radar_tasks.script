@@ -1,192 +1,41 @@
 function proceed()
     local actor = db.actor
-	-- Bar Rostok
-	if	actor:has_info("bar_bar_hunter_quest_start") and 
- 		actor:dont_has_info("bar_bar_hunter_quest_find_rifle") and
-		actor:object("hunters_toz") ~= nil 
-	then		
-		actor:give_info_portion("bar_bar_hunter_quest_find_rifle")
-		level_tasks.set_task_state(task.completed, "bar_hunter_rifle", 1)
-	end 
 
-	if	actor:has_info("bar_kill_veteran_start") and 
- 		actor:dont_has_info("bar_kill_veteran_killed") and
-		actor:object("bar_lucky_pda") ~= nil 
-	then		
-		actor:give_info_portion("bar_kill_veteran_killed")
-		level_tasks.set_task_state(task.completed, "bar_crazy_veterans_quest", 1)
-	end 
-
-	-- выдача информации с флешки профессора
-	if actor:dont_has_info("bar_ecolog_research_normal") and
-	   actor:dont_has_info("bar_ecolog_research_corrupted") and
-	   actor:object("bar_ecolog_flash") 
+	-- Radar
+	if actor:dont_has_info("rad_code_door") and
+	   actor:object("rad_scientist_flash")
 	then
-		if actor:has_info("bar_resque_research_corruped") then
-			actor:give_info_portion("bar_ecolog_research_corrupted")
-		else
-			actor:give_info_portion("bar_ecolog_research_normal")
-		end
+		actor:give_info_portion("rad_code_door") 
 	end
 
+	if ( actor:has_info("rad_find_stalkers_reward_start") or
+	   actor:has_info("rad_find_stalkers_free_start") ) and
+	   actor:dont_has_info("rad_find_stalkers_found") and
+	   actor:object("pri_lom_ak74")
+	then
+		actor:give_info_portion("rad_find_stalkers_found")
+		level_tasks.set_task_state(task.completed, "rad_find_stalkers", 1)
+	end
 
-
-	if	actor:has_info("bar_bar_drunk_dolg_quest_start") and 
- 		actor:dont_has_info("bar_bar_drunk_dolg_quest_finish") and
- 		actor:dont_has_info("bar_bar_drunk_dolg_quest_gain") and
-		actor:object("bar_sniper_pda") ~= nil 
+	if actor:has_info("rad_find_stalkers_return_ak") and
+	   actor:dont_has_info("rad_find_stalkers_done")
 	then		
-		actor:give_info_portion("bar_bar_drunk_dolg_quest_gain")
-		level_tasks.set_task_state(task.completed, "bar_drunk_dolg_quest", 1)
-	end 
-
-
-	if	actor:has_info("bar_darklab_document_start") and 
- 		actor:dont_has_info("bar_darklab_document_gain") and
-		actor:object("bar_darklab_documents") ~= nil 
-	then		
-		actor:give_info_portion("bar_darklab_document_gain")
-		level_tasks.set_task_state(task.completed, "bar_darklab_documents", 1)
-	end 
-
-	if	actor:has_info("bar_svoboda_rg6_start") and 
- 		actor:dont_has_info("bar_dolg_veteran_gain") and
-		actor:object("dolg_arhive_documents") ~= nil 
-	then		
-		actor:give_info_portion("bar_dolg_veteran_gain")
-		level_tasks.set_task_state(task.completed, "bar_dolg_test_quest", 1)
-	end 
-
-	if	actor:has_info("bar_svoboda_rg6_start") and 
- 		actor:dont_has_info("bar_svoboda_rg6_done") and
- 		actor:dont_has_info("mil_svoboda_rg6_gain") and
-		actor:object("wpn_rg-6") ~= nil 
-	then		
-		actor:give_info_portion("mil_svoboda_rg6_gain")
-		level_tasks.set_task_state(task.completed, "bar_dolg_rg6_quest", 2)
-	end 
-
-	if	actor:has_info("bar_kill_borov_start") and
- 		actor:dont_has_info("val_borov_info_gain") and
-		actor:object("borov_flash") ~= nil
-	then		
-		actor:give_info_portion("val_borov_info_gain")
-		level_tasks.set_task_state(task.completed, "bar_dolg_borov_quest", 1)
-	end 
-
-	if	actor:has_info("bar_kill_svoboda_ambush_start") and
- 		actor:dont_has_info("bar_kill_svoboda_ambush_killed") and
-		actor:object("bar_tiran_pda") ~= nil
-	then		
-		actor:give_info_portion("bar_kill_svoboda_ambush_killed")
-		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 1)
-	end 
-
-	if	actor:has_info("bar_kill_svoboda_leader_start") and
- 		actor:dont_has_info("mil_kill_svoboda_leader_killed") and
-		actor:object("mil_svoboda_leader_pda") ~= nil
-	then		
-		actor:give_info_portion("mil_kill_svoboda_leader_killed")
-		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 1)
-	end 
-
-
-	if	actor:has_info("bar_x16_documents_start") and 
- 		actor:dont_has_info("yan_x16_documents_gain") and
-		actor:object("lab_x16_documents") ~= nil 
-	then		
-		actor:give_info_portion("yan_x16_documents_gain")
-		level_tasks.set_task_state(task.completed, "bar_x16_documents", 2)
+		actor:give_info_portion("rad_find_stalkers_done")
+		level_tasks.set_task_state(task.completed, "rad_find_stalkers", 0)
 	end 
 
 end
 
 function process_info_portion(info_id)
-	if info_id == "agroprom_military_case_done" then
-		level_tasks.set_task_state(task.completed, "agroprom_get_military_documents", 0)
-		return true	
-	elseif info_id == "bar_svoboda_rg6_done" then
-		level_tasks.set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
-		return true
-	elseif info_id == "bar_kill_borov_done" then
-		level_tasks.set_task_state(task.completed, "bar_dolg_borov_quest", 0)
-		return true
-	elseif info_id == "bar_kill_svoboda_ambush_done" then
-		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
-		return true	
-	elseif info_id == "bar_kill_svoboda_leader_done" then
-		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
-		return true	
+	if info_id == "bar_deactivate_radar_start" then
+		level_tasks.add_location(1000, "rad_antenna_location")
+	elseif info_id == "bar_deactivate_radar_done" then
+		level_tasks.remove_location(1000, "rad_antenna_location")
 
-	elseif info_id == "bar_resque_research_done" then
-		level_tasks.set_task_state(task.completed, "bar_resque_information", 0)
-		return true
-	elseif info_id == "bar_resque_research_fail" then
-		level_tasks.set_task_state(task.fail, "bar_resque_information", 0)
-		return true
-	elseif info_id == "bar_resque_research_dead" then
-		level_tasks.remove_location_safe(503, "bar_ecolog_crush_location")
-		return true
-	elseif info_id == "bar_kill_professor_start" then
-		level_tasks.add_location(509, "bar_freedom_volkodav_location")
-		return true		
-	elseif info_id == "bar_kill_professor_done" then
-		level_tasks.set_task_state(task.completed, "bar_kill_professor", 0)
-		return true
-	elseif info_id == "bar_kill_professor_reward" then
-		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
-		return true
-	elseif info_id == "bar_kill_professor_fail" then
-		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
-		level_tasks.set_task_state(task.fail, "bar_kill_professor", 0)
-		return true
-	elseif info_id == "bar_freedom_attack_ecolog" then
-		if news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom", nil, 509) then
-			db.actor:give_info_portion("bar_freedom_defence_ecolog")
-		end
-		return true
-	elseif info_id == "bar_ecolog_crush_actor_enemy" then
-		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
-		return true				
-	elseif info_id == "bar_kill_professor_volkodav_dead" then
-		level_tasks.remove_location_safe(509, "bar_freedom_volkodav_location")
-		return true				
-
-	elseif info_id == "bar_dolg_veteran_start" then
-		level_tasks.add_location(501, "bar_dolg_arhive_document_location")
-		return true
-	elseif info_id == "bar_dolg_petrenko" then
-		level_tasks.add_location(506, "bar_dolg_petrenko_location")
-		return true
-	elseif info_id == "bar_dolg_community_start" then
-		level_tasks.remove_location(506, "bar_dolg_petrenko_location")
-		level_tasks.add_location(505, "bar_dolg_captain_ivancov_location")
-		return true
-	elseif info_id == "bar_kill_svoboda_ambush_start" then
-		level_tasks.add_location(514, "bar_svoboda_ambush_tiran_location")
-		return true
-	elseif info_id == "bar_kill_svoboda_ambush_killed" then
-		level_tasks.remove_location(514, "bar_svoboda_ambush_tiran_location")
-		level_tasks.add_location(507, "bar_dolg_voronin_location")
-		return true
-	elseif info_id == "bar_dolg_community_leader" then
-		level_tasks.remove_location(505, "bar_dolg_captain_ivancov_location")
-		level_tasks.remove_location(501, "bar_dolg_arhive_document_location")
-		level_tasks.add_location(507, "bar_dolg_voronin_location")
-		return true	
-
-	elseif info_id == "bar_bar_drunk_dolg_quest_start" then
-		level_tasks.add_location(508, "bar_killer_sniper_location")
-		return true	
-	elseif info_id == "bar_bar_drunk_dolg_quest_gain" then
-		level_tasks.remove_location(508, "bar_killer_sniper_location")
-		level_tasks.add_location(510, "bar_bar_drunk_dolg_location")
-		return true
-	elseif info_id == "bar_bar_drunk_dolg_quest_finish" then
-		level_tasks.remove_location(510, "bar_bar_drunk_dolg_location")
-		return true
+	elseif info_id == "rad_code_door" then
+		level_tasks.add_location(1001, "rad_code_door_location")
+	elseif info_id == "rad_code_door_found" then
+		level_tasks.remove_location(1001, "rad_code_door_location")
 	end
-
 	return false
 end
-

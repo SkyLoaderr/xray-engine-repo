@@ -40,25 +40,23 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	xr_logic.subscribe_action_for_events(npc, storage, action)
 end
 
-function set_death_checker(npc, ini, scheme, section)
+
+function set_death(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	local tmp = utils.cfg_get_string(ini, section, "on_info", npc, false, "")
-	if tmp then
-		st.info = xr_logic.parse_condlist(npc, section, "death", tmp)
-	end
-	tmp = utils.cfg_get_string(ini, section, "on_info2", npc, false, "")
-	if tmp then
-		st.info2 = xr_logic.parse_condlist(npc, section, "death", tmp)
-	end
 end
 
-function disable_scheme(npc, scheme)
-	-- При отключении схемы, нужно снять подписку, чтобы hit callback перестал
-	-- передаваться:
-	--npc:set_callback(callback.death, nil)
-	local st = db.storage[npc:id()][scheme]
-	if st then
-		xr_logic.unsubscribe_action_from_events(npc, st, st.death_action)
+function reset_death(npc, scheme, st, section)
+	local death_section	
+	death_section = utils.cfg_get_string(st.ini, st.section_logic, "on_death", npc, false, "")
+	
+	if death_section then
+		local tmp = utils.cfg_get_string(st.ini, death_section, "on_info", npc, false, "")
+		if tmp then
+			st.info = xr_logic.parse_condlist(npc, death_section, "death", tmp)
+		end
+		tmp = utils.cfg_get_string(st.ini, death_section, "on_info2", npc, false, "")
+		if tmp then
+			st.info2 = xr_logic.parse_condlist(npc, death_section, "death", tmp)
+		end
 	end
 end
-

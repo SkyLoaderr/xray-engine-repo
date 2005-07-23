@@ -1,137 +1,50 @@
-	
 function proceed()
 	local actor = db.actor
-	--' Сюжет :)
-	if	actor:has_info("tutorial_artefact_start") and
-		actor:dont_has_info("tutorial_artefact_gain") and 
-		actor:object("af_blood_tutorial") ~= nil 
-	then		
-		actor:give_info_portion("tutorial_artefact_gain")
-		set_task_state(task.completed, "tutorial_find_artefact", 1)
-	end 
 
+	escape_tasks.proceed()
 
-	if actor:dont_has_info("tutorial_end") then
-		if actor:has_info("tutorial_wounded_help") or
-		   actor:has_info("tutorial_wounded_die") or
-		   actor:has_info("tutorial_wounded_death")
-		then
-			actor:give_info_portion("tutorial_end")
-		end	
-	end
-
-
-
-	if actor:has_info("escape_stalker_meet") and
-	   actor:dont_has_info("escape_stalker_give") and
-	   actor:object("fox_flash") ~= nil
-	then
-		actor:give_info_portion("escape_stalker_give")
-		set_task_state(task.completed, "esc_help_wounded_from_raid", 1)
-	end       	
-
-	if	actor:has_info("escape_artefact_start") and
-		actor:dont_has_info("escape_artefact_gain") and 
-		(actor:object("af_vyvert") ~= nil or
-		 actor:object("af_gravi") ~= nil or
-		 actor:object("af_gold_fish") ~= nil)
-	then		
-		actor:give_info_portion("escape_artefact_gain")
-		set_task_state(task.completed, "esc_trader_need_electra_artefact", 1)
-	end 
-
-	if actor:has_info("escape_blockpost_case") and
-	   actor:dont_has_info("escape_blockpost_case_have") and 
-	   actor:object("quest_case_01") ~= nil
-	then
-		actor:give_info_portion("escape_blockpost_case_have")
-		set_task_state(task.completed, "esc_blockpost_case_to_trader", 1)
-	end       	
-
-
-	if actor:has_info("escape_dynamite_start") and
-	   actor:dont_has_info("escape_dynamite_have") and 
-	   actor:object("dynamite") ~= nil
-	then
-		actor:give_info_portion("escape_dynamite_have")
-		set_task_state(task.completed, "esc_dinamit_to_volk", 2)
-	end
-
-	--' Выдача сообщения "на ее месте можешь быть ты"
-	if actor:has_info("tutorial_flesh_start") and
-	   actor:has_info("tutorial_flesh_die") and
-	   actor:dont_has_info("tutorial_flesh_die_processed")
-	then
-		news_manager.send_tip(actor, "tutorial_flash_anomaly_alarm", 3)
-		actor:give_info_portion("tutorial_flesh_die_processed")
-	end
-
-	--' Выдача сообщения "бля бегом помогать раненому"
-	if actor:has_info("tutorial_wounded_start") and
-	   actor:dont_has_info("tutorial_wounded_give_info")
-	then
-		news_manager.send_news(actor, "tutorial_trader_look_vagon")
-		actor:give_info_portion("tutorial_wounded_give_info")
-	end
-
-
-	--' GARBAGE
-	if actor:dont_has_info("agr_krot_band_start") and
-		actor:object("garbage_seriy_flash") ~= nil 
-	then
-		actor:give_info_portion("agr_krot_band_start")
-	end       	
+	garbage_tasks.proceed()	
 	
-	if actor:has_info("garbage_meetstalker_die") and
-		actor:dont_has_info("garbage_meetstalker_done") and
-		actor:dont_has_info("garbage_meetstalker_end")
-	then
-		level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
-		actor:give_info_portion("garbage_meetstalker_end")
-	end
-	
-	if actor:has_info("gar_kill_boars_done") and
-		actor:dont_has_info("gar_kill_boars_request") 
-	then
-		actor:give_info_portion("gar_kill_boars_request")
-		level_tasks.set_task_state(task.completed, "gar_kill_boars", 1)
-	end
-	
-	
-
 	agroprom_tasks.proceed()
 	
 	darkvalley_tasks.proceed()
 
 	bar_rostok_tasks.proceed()	
 
-    mil_tasks.process_tasks ()	
-	
+    mil_tasks.process_tasks()	
 
-	
-	-- Radar
-	if actor:dont_has_info("rad_code_door") and
-	   actor:object("rad_scientist_flash")
-	then
-		actor:give_info_portion("rad_code_door") 
-	end
-
-	if ( actor:has_info("rad_find_stalkers_reward_start") or
-	   actor:has_info("rad_find_stalkers_free_start") ) and
-	   actor:dont_has_info("rad_find_stalkers_found") and
-	   actor:object("pri_lom_ak74")
-	then
-		actor:give_info_portion("rad_find_stalkers_found")
-		set_task_state(task.completed, "rad_find_stalkers", 1)
-	end
-
-	if actor:has_info("rad_find_stalkers_return_ak") and
-	   actor:dont_has_info("rad_find_stalkers_done")
-	then		
-		actor:give_info_portion("rad_find_stalkers_done")
-		set_task_state(task.completed, "rad_find_stalkers", 0)
-	end 
+	radar_tasks.proceed()	
 end
+
+function process_info_portion(info_id)
+
+	if escape_tasks.process_info_portion(info_id) then
+		return
+
+	elseif garbage_tasks.process_info_portion(info_id) then
+		return
+	
+	-- Agroprom
+	elseif agroprom_tasks.process_info_portion(info_id) then
+		return
+
+	-- DARK VALLEY
+	elseif darkvalley_tasks.process_info_portion(info_id) then
+		return
+
+	-- BAR ROSTOK
+	elseif bar_rostok_tasks.process_info_portion(info_id) then
+		return
+
+	-- military	
+	elseif mil_tasks.process_info_portion(info_id) then
+		return
+
+	elseif radar_tasks.process_info_portion(info_id) then
+		return
+	end
+end
+
 
 function set_task_state(id_state, id_task, id_subtask)
 	if db.actor then
@@ -151,175 +64,9 @@ function set_task_state(id_state, id_task, id_subtask)
 		db.actor:set_task_state(id_state, id_task, id_subtask)
 	end
 end
+
 function notify_new_task()
 	news_manager.send_task(db.actor, "new")
-end
-
-
-
-
-function process_info_portion(info_id)
-
-	if info_id == "tutorial_artefact_start" then
-		add_location(002, "tutorial_artefact_location")
-		
-	elseif info_id == "tutorial_artefact_gain" then
-		remove_location(002, "tutorial_artefact_location")
-		add_location(003, "escape_trader_location")
-		
-	elseif info_id == "tutorial_artefact_done" then
-		remove_location(003, "escape_trader_location")
-		
-	elseif info_id == "tutorial_wounded_start" then
-		add_location(004, "tutorial_wounded_location")
-
-	elseif info_id == "tutorial_wounded_help" then
-		remove_location(004, "tutorial_wounded_location")
-		db.actor:give_info_portion("tutorial_wounded_end")
-		set_task_state(task.completed, "tutorial_help_wounded", 0)
-		news_manager.send_news(db.actor, "escape_stalker_helped", 5)
-
-	elseif info_id == "tutorial_wounded_die" then
-		remove_location(004, "tutorial_wounded_location")
-		if db.actor:dont_has_info("tutorial_wounded_end") then
-			db.actor:give_info_portion("tutorial_wounded_end")
-			set_task_state(task.fail, "tutorial_help_wounded", 0)
-			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
-		end
-
-	elseif info_id == "tutorial_wounded_death" then
-		remove_location(004, "tutorial_wounded_location")
-		if db.actor:dont_has_info("tutorial_wounded_end") then
-			db.actor:give_info_portion("tutorial_wounded_end")
-			set_task_state(task.fail, "tutorial_help_wounded", 0)
-			news_manager.send_news(db.actor, "escape_stalker_death", 5)
-		end
-		
-	elseif info_id == "escape_artefact_start" then
-		add_location(008, "esc_anomaly_field_location")
-
-	elseif info_id == "escape_artefact_gain" then
-		remove_location(008, "esc_anomaly_field_location")
-		add_location(003, "escape_trader_location")
-
-	elseif info_id == "escape_artefact_done" then
-		remove_location(003, "escape_trader_location")
-
-	elseif info_id == "escape_stalker_meet" then
-		add_location(005, "esc_stalker_fox_location")
-
-	elseif info_id == "escape_stalker_give" then
-		remove_location(005, "esc_stalker_fox_location")
-		add_location(003, "escape_trader_location")
-	
-	elseif info_id == "escape_stalker_done" then
-		remove_location(003, "escape_trader_location")
-
-	elseif info_id == "escape_blockpost_case" then
-		add_location(000, "esc_blockpost_box_location")
-	
-	elseif info_id == "escape_blockpost_case_have" then
-		remove_location(000, "esc_blockpost_box_location")
-		add_location(003, "escape_trader_location")
-	
-	elseif info_id == "escape_blockpost_case_done" then
-		remove_location(003, "escape_trader_location")
-
-	elseif info_id == "escape_dynamite_meet" then
-		add_location(009, "esc_bridge_stalkers_location")
-		
-	elseif info_id == "escape_factory_assault_say_hello" then
-		remove_location(009, "esc_bridge_stalkers_location")
-	
-	elseif info_id == "escape_dynamite_gain" then
-		add_location(007, "esc_dynamite_location")
-		remove_location(009, "esc_bridge_stalkers_location")
-	
-	elseif info_id == "escape_dynamite_have" then
-		add_location(006, "esc_wolf_location")
-		remove_location(007, "esc_dynamite_location")
-		remove_location(009, "esc_bridge_stalkers_location")
-	
-	elseif info_id == "escape_dynamite_done" then
-		remove_location(006, "esc_wolf_location")
-	
-	-- garbage
-	elseif info_id == "garbage_meetstalker_start" then
-		add_location(100, "gar_seryi_location")
-
-	elseif info_id == "garbage_meetstalker_done" or	info_id == "garbage_meetstalker_die" then
-		remove_location(100, "gar_seryi_location")
-
-	elseif info_id == "gar_kill_boars_quest" then
-		add_location(105, "gar_boars_nest_location")
-		
-	elseif info_id == "gar_kill_boars_done" then
-		remove_location(105, "gar_boars_nest_location")
-		add_location(108, "gar_dolg_blockpost_location")
-		
-	elseif info_id == "gar_bandits_raid" then
-		add_location(106, "gar_bandits_leader_location")
-		
-	elseif info_id == "gar_open_fire" then
-		remove_location(106, "gar_bandits_leader_location")
-		
-	elseif info_id == "gar_bandit_leader_dead" then
-		remove_location(106, "gar_bandits_leader_location")
-
-	elseif info_id == "gar_start_graveyard" then
-		add_location(107, "gar_hellcar_location")
-
-	elseif info_id == "gar_alarm" then
-		remove_location(107, "gar_hellcar_location")
-	
-	elseif info_id == "gar_no_mapspot" then
-		remove_location(107, "gar_hellcar_location")
-	
-	elseif info_id == "gar_after_battle" then
-		add_location(107, "gar_hellcar_location")	
-		
-	elseif info_id == "gar_hellcar_dialog_end" then
-		remove_location(107, "gar_hellcar_location")	
-		
-	elseif info_id == "gar_wounded_help" then
-		add_location(109, "gar_wounded_location")
-
-	elseif info_id == "gar_wounded_fight" then
-		remove_location(109, "gar_wounded_location")
-		
-	elseif info_id == "gar_free_pass" then
-		remove_location(108, "gar_dolg_blockpost_location")
-	
-	-- Agroprom
-	elseif agroprom_tasks.process_info_portion(info_id) then
-		return
-
-	-- DARK VALLEY
-	elseif darkvalley_tasks.process_info_portion(info_id) then
-		return
-
-	-- BAR ROSTOK
-	elseif bar_rostok_tasks.process_info_portion(info_id) then
-		return
-
-	-- military	
-	elseif mil_tasks.process_info_portion(info_id) then
-		return
-
-	-- radar
-	elseif info_id == "bar_deactivate_radar_start" then
-		add_location(1000, "rad_antenna_location")
-	elseif info_id == "bar_deactivate_radar_done" then
-		remove_location (1000, "rad_antenna_location")
-
-	elseif info_id == "rad_code_door" then
-		add_location(1001, "rad_code_door_location")
-	elseif info_id == "rad_code_door_found" then
-		remove_location (1001, "rad_code_door_location")
-	
-	end	
-
-
 end
 
 function add_location(sid, location)
@@ -343,7 +90,7 @@ function remove_location(sid, location)
 	end
 end
 
-function remove_location_safe (sid, location)
+function remove_location_safe(sid, location)
 	local sim = alife()
 	if sim then
 		obj = sim:story_object(sid)
@@ -355,7 +102,7 @@ function remove_location_safe (sid, location)
 	end
 end
 
-function is_map_spot_present (sid, location)
+function is_map_spot_present(sid, location)
 	local sim = alife()
 	if sim then
 		obj = sim:story_object(sid)
