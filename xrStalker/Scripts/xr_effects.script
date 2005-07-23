@@ -486,6 +486,8 @@ function bar_territory_logic(actor, npc)
 			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava1", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava2", db.actor)
 			xr_gulag.setGulagEnemy("bar_visitors", db.actor)
 			return
 		end
@@ -494,6 +496,8 @@ function bar_territory_logic(actor, npc)
 			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava1", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava2", db.actor)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_2_hit") then
@@ -511,6 +515,8 @@ function bar_territory_logic(actor, npc)
 			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava1", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava2", db.actor)
 			xr_gulag.setGulagEnemy("bar_visitors", db.actor)
 			return
 		end
@@ -520,6 +526,8 @@ function bar_territory_logic(actor, npc)
 			xr_gulag.setGulagEnemy("bar_dolg_general", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_veterans", db.actor)
 			xr_gulag.setGulagEnemy("bar_dolg_bunker", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava1", db.actor)
+			xr_gulag.setGulagEnemy("bar_dolg_zastava2", db.actor)
 			return
 		end
 		if db.actor:has_info("bar_dolg_territory_1_hit") then
