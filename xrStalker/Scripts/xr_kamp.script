@@ -52,7 +52,7 @@ function action_go_position:execute ()
 	end
 		
 	if not self.object:accessible(self.a.pos_vertex) then
-		printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest")
+		printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest", self.object:name())
 		self.object:accessible_nearest(self.a.pos_vertex, self.a.pos_vertex)
 	end
 	
@@ -529,6 +529,10 @@ function CKampManager:getState(npc_id)
 end
 function CKampManager:addNpc(npc)
 	printf("KAMP [%s] add npc", npc:name())
+	if self.npc[npc:id()] ~= nil then
+		printf("NPC is already exist")
+		return
+	end
 	self.npc[npc:id()] = {name = npc:name(), position = nil, roles = {}, current = nil, speak = 0}
 	self:selectPosition(npc:id())
 end
