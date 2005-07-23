@@ -1,12 +1,8 @@
 [logic]
-active = walker1
-actor_dialogs = actor_dialogs
+active = kamp
 
-[walker1]
-path_walk = escape_btr_path2
-path_look = escape_btr_look2
-meet_enabled = true
-meet_dialog = escape_factory_assault_hello
+[camp]
+center_popint = kamp_center
 on_info = {+esc_bandits_assault} walker
 
 [walker]
@@ -18,7 +14,3 @@ on_signal = b_final | walker2 | %+escape_assault_finished%
 [walker2]
 path_walk = escape_factory_return_path
 on_signal = b_final | nil
-
-[actor_dialogs]
-id = escape_factory_assault_talk, escape_factory_assault_attack
-
