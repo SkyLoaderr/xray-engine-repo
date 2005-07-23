@@ -19,13 +19,17 @@ function action_process_death:death_callback(victim, who)
 		db.storage[victim:id()].death.killer = -1
 	end
 
-	if db.storage[self.object:id()].active_scheme then
-		if db.actor then
-			if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
-				return
-			end
+
+	if db.actor then
+		if self.st.info then
+			xr_logic.pick_section_from_condlist(db.actor, self.npc, self.st.info)
+		end
+		if self.st.info2 then
+			xr_logic.pick_section_from_condlist(db.actor, self.npc, self.st.info2)
 		end
 	end
+
+
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -33,17 +37,19 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage) 	
 	local action = this.action_process_death(npc, storage)
-	storage.death_action = action
+	xr_logic.subscribe_action_for_events(npc, storage, action)
 end
 
 function set_death_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)	
-
-	-- НЕ СТАВИТЬ death callback напрямую - получаем его из motivator-а через
-	-- event в подписанном на него action-е:
-	--npc:set_callback(callback.death, st.death_action.death_callback, st.death_action)
-	xr_logic.subscribe_action_for_events(npc, st, st.death_action)
+	local tmp = utils.cfg_get_string(ini, section, "on_info", npc, false, "")
+	if tmp then
+		st.info = xr_logic.parse_condlist(npc, section, "death", tmp)
+	end
+	tmp = utils.cfg_get_string(ini, section, "on_info2", npc, false, "")
+	if tmp then
+		st.info2 = xr_logic.parse_condlist(npc, section, "death", tmp)
+	end
 end
 
 function disable_scheme(npc, scheme)

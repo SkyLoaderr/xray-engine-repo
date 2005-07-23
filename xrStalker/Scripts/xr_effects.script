@@ -404,6 +404,15 @@ function bar_check_heli_scene(actor,npc)
 	end
 end
 
+function bar_arena_hit(actor, npc)
+	local h = hit()
+	h.power = 1
+	h.direction = npc:direction()
+	h.draftsman = db.actor 
+	h.impulse = 1
+	h.type = hit.wound
+	npc:hit(h)
+end
 function bar_arena_introduce(actor, npc)
 	if db.actor:has_info("bar_arena_pseudodog_choosen") then
 		news_manager.send_tip(actor, "bar_arena_fight_pseudodog", nil, "arena", 7000)

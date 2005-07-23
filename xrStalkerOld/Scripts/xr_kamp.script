@@ -53,7 +53,8 @@ function action_go_position:execute ()
 		
 	if not self.object:accessible(self.a.pos_vertex) then
 		printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest", self.object:name())
-		self.object:accessible_nearest(self.a.pos_vertex, self.a.pos_vertex)
+		local ttp = Vector():set(0,0,0)
+		self.a.pos_vertex = self.object:accessible_nearest(level.vertex_position(self.a.pos_vertex), ttp)
 	end
 	
 	self.a.pp = patrol(self.a.center_point):level_vertex_id(0)
