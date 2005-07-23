@@ -94,7 +94,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</prev_map_btn_>								
-							<zoom_in_btn x="120" y="0" width="20" height="12" check_mode="0">
+							<zoom_in_btn x="120" y="0" width="20" height="12" check_mode="1">
 								<window_name>zoom_in_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z+</text>
 								<text_color>
@@ -104,7 +104,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</zoom_in_btn>								
-							<zoom_out_btn x="145" y="0" width="20" height="12" check_mode="0">
+							<zoom_out_btn x="145" y="0" width="20" height="12" check_mode="1">
 								<window_name>zoom_out_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z-</text>
 								<text_color>
