@@ -1,6 +1,7 @@
 [logic]
 active = walker1
 actor_dialogs = actor_dialogs
+meet = meet
 
 [walker1]
 path_walk = escape_btr_path1
@@ -21,3 +22,14 @@ on_signal = b_final | nil
 
 [spawn]
 binocular_a
+
+[meet]
+meet_state		= 30|hello@hail|20|wait@wait
+meet_state_wpn	= 30|backoff@threat_weap
+victim		= 30|actor
+victim_wpn		= 30|actor
+use		= true
+use_wpn		= false
+syndata		= hello@hail|backoff@threat_weap
+meet_dialog	= escape_factory_assault_hello
+
