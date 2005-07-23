@@ -108,6 +108,7 @@ void CMapActionPlanner::add_actions		(u16 map_idx, CUILevelMap* map)
 	//center local
 								action = xr_new<CMapActionLocalMapCenter>(map,map_idx,"eOperatorLocalMapCenter");
 	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
+	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
 	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	false);
 	add_effect					(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
 	add_operator				(make_map_id(map_idx,eOperatorLocalMapCenter),		action);
@@ -115,7 +116,6 @@ void CMapActionPlanner::add_actions		(u16 map_idx, CUILevelMap* map)
 	//zoom local
 								action = xr_new<CMapActionLocalMapZoom>(map,map_idx,"eOperatorLocalMapZoom");
 	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
 	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		false);
 	add_effect					(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
 	add_operator				(make_map_id(map_idx,eOperatorLocalMapZoom),		action);
@@ -167,10 +167,12 @@ void CMapActionOpenClose::execute		()
 		float time_to			= m_endMovingTime-gt;
 		float k					= _sqrt((gt-m_startMovingTime)/time_to);
 		//levelMap
-		if(!m_bOpening)
-			k = 1.0f - k;
-		u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
-		m_map->SetColor			(clr);
+		if(m_bTransp){
+			if(!m_bOpening)
+				k = 1.0f - k;
+			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
+			m_map->SetColor			(clr);
+		}
 
 		Frect curr_map_rect		= m_map->GetWndRect();
 		calcRectLerp			(time_to,m_desiredLevelMapRect,curr_map_rect);
@@ -182,13 +184,14 @@ void CMapActionOpenClose::execute		()
 		calcRectLerp			(time_to,m_desiredGlobalMapRect,curr_map_rect);
 		gm->SetWndRect			(curr_map_rect);
 	}else{
-		float k = 1.0f;
-		if(!m_bOpening)
-			k = 1.0f - k;
-
-		u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
 		//levelMap		
+		if(m_bTransp){
+			float k = 1.0f;
+			if(!m_bOpening)
+				k = 1.0f - k;
+			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
 		m_map->SetColor			(clr);
+		}
 		m_map->SetWndRect		(m_desiredLevelMapRect);
 		
 		//GlobalMap	
@@ -374,14 +377,24 @@ void CMapActionLocalMapCenter::execute		()
 
 void CMapActionLocalMapZoom::initialize	()
 {
+	inherited::initialize();
+
+	Fvector2 						destLevelMapCP = m_map->TargetCenter();
+	float map_zoom					= m_object->GetZoom();
+	m_map->CalcOpenRect				(destLevelMapCP, map_zoom, m_desiredLevelMapRect, m_desiredGlobalMapRect);
+	
+	m_startMovingTime				= Device.fTimeGlobal;
+	m_endMovingTime					= m_startMovingTime + 0.5f;
+	m_map->SetLocked				(true);
+	m_object->GlobalMap()->SetLocked(true);
 }
 
-void CMapActionLocalMapZoom::execute		()
-{
-}
 
 void CMapActionLocalMapZoom::finalize	()
 {
+	inherited::finalize			();
+	m_map->SetLocked				(false);
+	m_object->GlobalMap()->SetLocked(false);
 }
 
 
@@ -434,5 +447,5 @@ bool CEvaluatorLocalMapCentered::evaluate		()
 
 bool CEvaluatorLocalMapZoom::evaluate					()
 {
-	return true;
+	return !!fsimilar( m_object->GetZoom(), m_map->GetCurrentZoom(), EPS_L);
 }

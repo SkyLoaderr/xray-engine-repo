@@ -46,8 +46,9 @@ protected:
 	Frect			m_desiredLevelMapRect;
 	Frect			m_desiredGlobalMapRect;
 	bool			m_bOpening;
+	bool			m_bTransp;
 public:
-					CMapActionOpenClose		(CUILevelMap *object, u16 idx, LPCSTR action_name) : inherited(object, idx, action_name) {}
+					CMapActionOpenClose		(CUILevelMap *object, u16 idx, LPCSTR action_name) : inherited(object, idx, action_name) {m_bTransp = true; m_bOpening = true;}
 	virtual	void	execute					();
 
 };
@@ -84,13 +85,9 @@ public:
 	virtual	void	finalize					();
 };
 
-class CMapActionGlobalMapCenter : public CSomeMapAction {
+class CMapActionGlobalMapCenter : public CMapActionOpenClose {
 private:
-	typedef CSomeMapAction	inherited;
-protected:
-	float			m_startMovingTime;
-	float			m_endMovingTime;
-	Frect			m_desiredGlobalMapRect;
+	typedef CMapActionOpenClose	inherited;
 public:
 					CMapActionGlobalMapCenter	(CUILevelMap *object, u16 idx, LPCSTR action_name) : inherited(object, idx, action_name) {}
 	virtual	void	initialize					();
@@ -98,17 +95,12 @@ public:
 	virtual	void	finalize					();
 };
 
-class CMapActionLocalMapZoom : public CSomeMapAction {
+class CMapActionLocalMapZoom : public CMapActionOpenClose {
 private:
-	typedef CSomeMapAction	inherited;
-protected:
-	float			m_startMovingTime;
-	float			m_endMovingTime;
-	Frect			m_desiredLocalMapRect;
+	typedef CMapActionOpenClose	inherited;
 public:
-					CMapActionLocalMapZoom	(CUILevelMap *object, u16 idx, LPCSTR action_name) : inherited(object, idx, action_name) {}
+					CMapActionLocalMapZoom	(CUILevelMap *object, u16 idx, LPCSTR action_name) : inherited(object, idx, action_name) {m_bTransp = false;}
 	virtual	void	initialize					();
-	virtual	void	execute						();
 	virtual	void	finalize					();
 };
 

@@ -374,6 +374,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		case WINDOW_LBUTTON_DOWN:
 			if(m_flags.test(lmUserSpotAdd) ){
 				if(ActiveMap()==GlobalMap() ) break;
+				if(!ActiveMap()->GetAbsoluteRect().in(cursor_pos)) break;
 
 				Fvector2 cp = cursor_pos;
 				cp.sub(ActiveMap()->GetAbsolutePos());
@@ -391,7 +392,24 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				m_flags.set(lmUserSpotAdd, FALSE);
 				m_ToolBar[eAddSpot]->SetButtonMode		(CUIButton::BUTTON_NORMAL);
 				break;
+			}else
+			if(m_flags.test(lmZoomIn) || m_flags.test(lmZoomOut) ){
+				if(ActiveMap()==GlobalMap() ) break;
+				if(!ActiveMap()->GetAbsoluteRect().in(cursor_pos)) break;
+				if(m_flags.test(lmZoomIn))
+					SetZoom(GetZoom()+0.5f);
+				else
+					SetZoom(GetZoom()-0.5f);
+
+				Fvector2 cp = cursor_pos;
+				cp.sub(ActiveMap()->GetAbsolutePos());
+				Fvector2 p = ActiveMap()->ConvertLocalToReal(cp);
+
+				SetActiveMap	(ActiveMap()->MapName(), p);
 			}
+
+
+
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec();
@@ -467,6 +485,7 @@ void CUIMapWnd::Update()
 void CUIMapWnd::SetZoom	( float value)
 {
 	m_currentZoom	= value;
+	clamp		(m_currentZoom, 1.0f, 3.0f);
 }
 
 void CUIMapWnd::ShowHint()
@@ -494,32 +513,75 @@ void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 
 void CUIMapWnd::OnToolNextMapClicked	(CUIWindow* w, void*)
 {
-		u16 curr_map_idx = 0;
-		if(GlobalMap()!=ActiveMap()){
-			curr_map_idx = GetIdxByName(ActiveMap()->MapName());
-			++curr_map_idx;
-			if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
-		}
-		SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
+	u16 curr_map_idx = 0;
+	if(GlobalMap()!=ActiveMap()){
+		curr_map_idx = GetIdxByName(ActiveMap()->MapName());
+		++curr_map_idx;
+		if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
+	}
+	SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
 }
 
 void CUIMapWnd::OnToolPrevMapClicked	(CUIWindow* w, void*)
 {
+	u16 curr_map_idx = 0;
+	if(GlobalMap()!=ActiveMap()){
+		curr_map_idx = GetIdxByName(ActiveMap()->MapName());
+		--curr_map_idx;
+		if(curr_map_idx == -1) curr_map_idx = (u16)GameMaps().size()-1;
+	}
+	SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
 }
 
 void CUIMapWnd::OnToolZoomInClicked		(CUIWindow* w, void*)
 {
+	m_flags.zero		();
+
+	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
+	bool bPushed = btn->GetCheck		();
+	m_flags.set							(lmZoomIn,bPushed);
+	ValidateToolBar						();
 }
 
 void CUIMapWnd::OnToolZoomOutClicked	(CUIWindow* w, void*)
 {
+	m_flags.zero		();
+
+	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
+	bool bPushed = btn->GetCheck		();
+	m_flags.set							(lmZoomOut,bPushed);
+	ValidateToolBar						();
 }
 
 void CUIMapWnd::OnToolAddSpotClicked	(CUIWindow* w, void*)
 {
+	m_flags.zero		();
 	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
 	bool bPushed = btn->GetCheck		();
 	m_flags.set							(lmUserSpotAdd,bPushed);
+	ValidateToolBar						();
+}
+
+void CUIMapWnd::ValidateToolBar			()
+{
+	CUI3tButton* btn	= NULL;
+	btn					= m_ToolBar[eZoomIn];
+	if(btn)
+		btn->SetCheck	(!!m_flags.test(lmZoomIn));
+
+	btn					= m_ToolBar[eZoomOut];
+	if(btn)
+		btn->SetCheck	(!!m_flags.test(lmZoomOut));
+
+	btn					= m_ToolBar[eAddSpot];
+	if(btn)
+		btn->SetCheck	(!!m_flags.test(lmUserSpotAdd));
+
+	btn					= m_ToolBar[eRemoveSpot];
+	if(btn)
+		btn->SetCheck	(!!m_flags.test(lmUserSpotRemove));
+
+
 }
 
 void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)

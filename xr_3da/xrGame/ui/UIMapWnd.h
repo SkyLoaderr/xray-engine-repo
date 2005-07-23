@@ -24,8 +24,10 @@ DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 class CUIMapWnd: public CUIWindow, public CUIWndCallback
 {
 	typedef CUIWindow inherited;
-	enum lmFlags{	lmMouseHold		= (1<<0),
-					lmUserSpotAdd	= (1<<1),
+	enum lmFlags{	lmUserSpotAdd	= (1<<1),
+					lmUserSpotRemove= (1<<2),
+					lmZoomIn		= (1<<3),
+					lmZoomOut		= (1<<4),
 				};
 	enum EMapToolBtn{	eGlobalMap=0,
 						eNextMap,
@@ -58,6 +60,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	void						OnToolZoomOutClicked	(CUIWindow*, void*);
 	void						OnToolAddSpotClicked	(CUIWindow*, void*);
 	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
+	void						ValidateToolBar			();
 public:
 								CUIMapWnd				();
 	virtual						~CUIMapWnd				();
