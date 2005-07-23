@@ -7,10 +7,14 @@
 		<objective>
 			<text>agroprom_get_military_documents_1</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type>agr_military_case_location</map_location_type>
+            <object_story_id>agr_military_documents</object_story_id> 
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_2</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type>bar_barman_location</map_location_type>
+            <object_story_id>bar_Barman</object_story_id> 
 		</objective>
 	</game_task>
 

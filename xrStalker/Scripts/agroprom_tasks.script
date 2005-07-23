@@ -110,15 +110,6 @@ function process_info_portion(info_id)
 	elseif info_id == "agr_find_gunslinger_cache_done" then
 		level_tasks.remove_location(301, "agr_gunslinger_cache_location")
 		return true
-
-	elseif info_id == "agroprom_military_case" then
-		level_tasks.add_location(300, "agr_military_case_location")
-		return true
-
-	elseif info_id == "agroprom_military_case_have" then
-		level_tasks.remove_location(300, "agr_military_case_location")
-		level_tasks.add_location(500, "bar_barman_location")
-		return true
 	end
 
 	return false
