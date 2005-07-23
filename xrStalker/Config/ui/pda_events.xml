@@ -74,7 +74,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</global_map_btn>								
-							<next_map_btn x="50" y="0" width="30" height="12" check_mode="0">
+							<next_map_btn_ x="50" y="0" width="30" height="12" check_mode="0">
 								<window_name>next_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">next</text>
 								<text_color>
@@ -83,8 +83,8 @@
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
-							</next_map_btn>								
-							<prev_map_btn x="85" y="0" width="30" height="12" check_mode="0">
+							</next_map_btn_>								
+							<prev_map_btn_ x="85" y="0" width="30" height="12" check_mode="0">
 								<window_name>prev_map_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">prev</text>
 								<text_color>
@@ -93,7 +93,7 @@
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
-							</prev_map_btn>								
+							</prev_map_btn_>								
 							<zoom_in_btn x="120" y="0" width="20" height="12" check_mode="0">
 								<window_name>zoom_in_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z+</text>
