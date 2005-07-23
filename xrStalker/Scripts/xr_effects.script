@@ -209,62 +209,7 @@ function log_bp1(actor, npc)
 	printf("xr_effects: log_bp1 (actor='%s', npc='%s'", actor:name(), npc:name())
 end
 
--- FIXME: ÝÒÎ ÍÅ ÑÎÕÐÀÍßÅÒÑß !!!
---local counter = 0
---local need_monsters = 0
-function garbage_monster_death(actor, npc)
-    
-    local st = db.storage[npc:id ()]
-    if st.death.killer == -1 then return end
-    
-    if db.actor == nil then return end
-    
-    if db.storage[db.actor:id ()] == nil then
-       db.storage[db.actor:id ()] = {}
-    end    
-    
-    if db.storage[db.actor:id ()].gar_rush_killed == nil then
-       db.storage[db.actor:id ()].gar_rush_killed = 0
-       db.storage[db.actor:id ()].gar_rush_killed_by_actor = 0
-    end    
-    
-    -- remove from spawner 
-    --xr_spawner.remove_from_list (npc:id ())
-    db.storage[db.actor:id ()].gar_rush_killed = db.storage[db.actor:id ()].gar_rush_killed + 1
-    -- no actor kill monster - simple remove
-    if actor == nil or actor:id () ~= st.death.killer then 
-       return 
-    end
-    
-    db.storage[db.actor:id ()].gar_rush_killed_by_actor = db.storage[db.actor:id ()].gar_rush_killed_by_actor + 1
-    
-    printf ("Monster %s killed by actor", npc:name ())
-    
-    --counter = counter + 1
-    --printf ("Monsters killed by actor %d", counter)
-    --need_monsters = need_monsters + 1
-    
-    -- check for set gulag to normal mode
-    if db.storage[db.actor:id ()].gar_rush_killed > 10 then
-       -- set gulag to normal state
-       if actor:has_info ("gar_monsters_rush_wave1") then
-          actor:disable_info_portion ("gar_monsters_rush_wave1") 
-          --printf ("Return GULAG to start state")
-       end   
-    end
-    if db.storage[db.actor:id ()].gar_rush_killed_by_actor >= 10 then
-       actor:give_info_portion ("gar_dolg_help_kill_rush")
-       actor:give_info_portion ("gar_dolg_access_rostok")
-    end   
-    if db.storage[db.actor:id ()].gar_rush_killed_by_actor >= 15 then
-       actor:give_info_portion ("gar_dolg_help_kill_rush_good")
-       xr_gulag.setGulagRelation ("gar_dolg", game_object.friend, actor)
-    end   
-    if db.storage[db.actor:id ()].gar_rush_killed_by_actor >= 20 then
-       actor:give_info_portion ("gar_dolg_help_kill_rush_perfect")
-    end    
-    
-end
+
 
 function test_hit_in_actor_dir(actor, npc)
 --
