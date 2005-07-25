@@ -57,74 +57,81 @@ use_wpn        = false
 ;        Ладно, мразь, живи. Но больше на глаза мне не попадайся.
 ;--------------------------------------------------------------------------
 [remark1@phrase1]
-no_move = true
-no_rotate = true
-anim = sit_knee
-snd = speech
-target = 424
-meet = meet@ignore
-on_info = {=is_dead_one(424)} remark1@phrase3
-on_signal = sound_end | remark1@phrase3
+no_move             = true
+no_rotate           = true
+anim                = sit_knee
+snd                 = speech
+target              = 424
+meet                = meet@ignore
+on_info             = {=is_dead_one(424)} remark1@phrase3
+on_signal           = sound_end | remark1@phrase3
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Эй, дружище, ПОДХОДИ!!!...помоги отбить напарника у бандитской швали!
 ;--------------------------------------------------------------------------
 [remark1@phrase3]
-no_move = true
-no_rotate = true
-anim = guard
-snd = speech
-on_signal = sound_end | remark1@wait1
+no_move             = true
+no_rotate           = true
+anim                = guard
+snd                 = speech
+on_signal           = sound_end | remark1@wait1
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; ждем 5 сек
 ;--------------------------------------------------------------------------
 [remark1@wait1]
-no_move = true
-no_rotate = true
-anim = guard
-on_actor_dist_le = 5 | remark1@phrase6
-on_timer = 5000 | remark1@phrase4
+no_move             = true
+no_rotate           = true
+anim                = guard
+on_actor_dist_le    = 5 | remark1@phrase6
+on_timer            = 5000 | remark1@phrase4
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Скорей же!... время не ждет!..
 ;--------------------------------------------------------------------------
 [remark1@phrase4]
-no_move = true
-no_rotate = true
-anim = guard
-snd = val_escort_nap1_phrase1
-on_signal = sound_end | remark1@wait2
+no_move             = true
+no_rotate           = true
+anim                = guard
+snd                 = val_escort_nap1_phrase1
+on_signal           = sound_end | remark1@wait2
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; ждем 5 сек
 ;--------------------------------------------------------------------------
 [remark1@wait2]
-no_move = true
-no_rotate = true
-anim = guard
-on_actor_dist_le = 5 | remark1@phrase6
-on_timer = 5000 | remark1@phrase5
+no_move             = true
+no_rotate           = true
+anim                = guard
+on_actor_dist_le    = 5 | remark1@phrase6
+on_timer            = 5000 | remark1@phrase5
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Блин...Ну, как хочешь.
 ;--------------------------------------------------------------------------
 [remark1@phrase5]
-no_move = true
-no_rotate = true
-anim = guard
-snd = val_escort_nap1_phrase1
-on_signal = sound_end | walker1@ambush_go
+no_move             = true
+no_rotate           = true
+anim                = guard
+snd                 = val_escort_nap1_phrase1
+on_signal           = sound_end | walker1@ambush_go
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Давай за мной, я знаю место для засады! Поможешь - буду благодарен. Долги в "Долге" возвращают:)!.
 ;--------------------------------------------------------------------------
 [remark1@phrase6]
-no_move = true
-no_rotate = true
-anim = guard
-snd = speech
-on_signal = sound_end | walker1@ambush_go
+no_move             = true
+no_rotate           = true
+anim                = guard
+snd                 = speech
+on_signal           = sound_end | walker1@ambush_go
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; задание принято. идем к месту засады
@@ -218,12 +225,16 @@ no_move             = true
 no_rotate           = true
 anim                = idle
 snd                 = val_escort_nap1_phrase3
-meet               = meet@ignore
+meet                = meet@ignore
 on_signal           = sound_end | remark1@wait_to_talk
 
+;--------------------------------------------------------------------------
+; фраза: Подходи пообщаемся.
+;--------------------------------------------------------------------------
 [remark1@wait_to_talk]
 no_move             = true
 no_rotate           = true
+snd                 = val_escort_nap1_phrase_invite
 meet                = meet@invite_to_talk
 
 
