@@ -212,6 +212,7 @@ active = nil
 ;-------------------------------------------------------------------------------------------------
 [logic@gar_hellcar_group_hellcar]
 active = walker1@hellcar_way
+on_death = death@hellcar
 
 [walker1@hellcar_way]
 path_walk = hellcar_walk
@@ -255,6 +256,9 @@ victim = 15|actor
 victim_wpn = 15|actor
 use = true
 use_wpn = true
+
+[death@hellcar]
+on_info = %+gar_hellcar_death +gar_open_fire%
 
 
 [logic@gar_hellcar_group_walker1]
@@ -338,9 +342,6 @@ on_use = use
 [use]
 on_info = %+gar_hellcar_dialog_end%
 
-[death@hellcar]
-on_info = %+gar_hellcar_dialog_end%
-
 
 [meet@hellcar_group_in_battle]
 Meet_state 		= 1| wait@wait
@@ -403,7 +404,7 @@ combat_ignore_cond = {-gar_open_fire}
 [logic@gar_hellcar_group_camper4]
 active = camper@gar_hellcar_group_camper4
 on_hit = hit
-on_death = death
+on_death = death@hellcar
 combat_ignore = combat_ignore@hellcar
 
 [camper@gar_hellcar_group_camper4]
