@@ -157,7 +157,7 @@ combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
 no_move             = true
 no_rotate           = true
 anim                = hide
-snd                 = speech
+snd                 = val_escort_nap1_phrase2
 on_timer            = 40000 | remark1@phrase8
 on_info             = {+val_escort_combat} remark1@fight
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -169,7 +169,7 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 no_move             = true
 no_rotate           = true
 anim                = hide
-snd                 = speech
+snd                 = val_escort_nap1_phrase2
 ;meet               = meet@ignore
 on_info             = {+val_escort_combat} remark1@fight
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -213,12 +213,12 @@ on_info   = {+val_escort_captive_phrase1_end} remark1@phrase9
 ;--------------------------------------------------------------------------
 ; фраза: Это вот сталкера благодари. Он мне помог.
 ;--------------------------------------------------------------------------
-[remark1@phrase8]
+[remark1@phrase9]
 no_move             = true
 no_rotate           = true
 anim                = idle
-snd                 = speech
-;meet               = meet@ignore
+snd                 = val_escort_nap1_phrase3
+meet               = meet@ignore
 on_signal           = sound_end | remark1@wait_to_talk
 
 [remark1@wait_to_talk]
