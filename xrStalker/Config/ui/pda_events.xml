@@ -54,6 +54,7 @@
 	
 		<right_frame x="313" y="0" width="445" height="475">
 <!--			<texture>ui_pda_frame_sub</texture>  -->
+			<task_descr_view x="0" y="0" width="445" height="475"></task_descr_view>
 			<map_wnd>
 
 				<main_wnd x="0" y="0" width="445" height="475">
