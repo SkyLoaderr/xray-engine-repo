@@ -255,6 +255,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
 	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,indent,can_kill_member() ? "+" : "-");
 	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,indent,can_kill_enemy() ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%s%spick distance   : %f",indent,indent,indent,pick_distance());
+	HUD().Font().pFontSmall->OutNext	("%s%s%sfire make sense : %s",indent,indent,indent,fire_make_sense() ? "+" : "-");
 	if (memory().enemy().selected()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		

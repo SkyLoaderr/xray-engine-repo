@@ -38,9 +38,6 @@
 
 const float TEMP_DANGER_DISTANCE = 5.f;
 const u32	TEMP_DANGER_INTERVAL = 120000;
-const float PRECISE_DISTANCE	 = 2.5f;
-const float FLOOR_DISTANCE		 = 2.f;
-const float NEAR_DISTANCE		 = 2.5f;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -95,19 +92,7 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 
 bool CStalkerActionCombatBase::fire_make_sense		() const
 {
-	if (!object().memory().enemy().selected())
-		return							(false);
-
-	if ((object().pick_distance() + PRECISE_DISTANCE) < object().Position().distance_to(object().memory().enemy().selected()->Position()))
-		return							(false);
-
-	if (_abs(object().Position().y - object().memory().enemy().selected()->Position().y) > FLOOR_DISTANCE)
-		return							(false);
-
-	if (object().pick_distance() < NEAR_DISTANCE)
-		return							(false);
-
-	return								(true);
+	return					(object().fire_make_sense());
 }
 
 //////////////////////////////////////////////////////////////////////////

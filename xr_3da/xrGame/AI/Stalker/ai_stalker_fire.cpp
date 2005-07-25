@@ -42,6 +42,10 @@ using namespace StalkerSpace;
 const float DANGER_DISTANCE = 10.f;
 const u32	DANGER_INTERVAL = 120000;
 
+const float PRECISE_DISTANCE	 = 2.5f;
+const float FLOOR_DISTANCE		 = 2.f;
+const float NEAR_DISTANCE		 = 2.5f;
+
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
 	float				base = PI/180.f;
@@ -501,4 +505,21 @@ void CAI_Stalker::update_range_fov		(float &new_range, float &new_fov, float sta
 		inventory().ActiveItem()->modify_holder_params(range,fov);
 
 	return					(inherited::update_range_fov(new_range,new_fov,range,fov));
+}
+
+bool CAI_Stalker::fire_make_sense		()
+{
+	if (!memory().enemy().selected())
+		return							(false);
+
+	if ((pick_distance() + PRECISE_DISTANCE) < Position().distance_to(memory().enemy().selected()->Position()))
+		return							(false);
+
+	if (_abs(Position().y - memory().enemy().selected()->Position().y) > FLOOR_DISTANCE)
+		return							(false);
+
+	if (pick_distance() < NEAR_DISTANCE)
+		return							(false);
+
+	return								(true);
 }

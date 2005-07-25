@@ -276,6 +276,7 @@ public:
 	IC		bool						can_kill_member			();
 	IC		bool						can_kill_enemy			();
 	IC		float						pick_distance			();
+			bool						fire_make_sense			();
 			
 	virtual LPCSTR						Name					() const;
 	virtual BOOL						feel_touch_on_contact	(CObject* O);
