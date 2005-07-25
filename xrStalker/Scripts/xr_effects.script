@@ -948,13 +948,13 @@ function agr_krot_sos( actor, npc )
 end
 
 function agr_krot_sos1( actor, npc )
-	if actor:dont_has_info( "agr_help_krot_start" ) then
+	if actor:dont_has_info( "agr_help_krot_start" ) and actor:dont_has_info( "agr_help_krot_done" ) then
 		news_manager.send_tip( actor, "tips_agr_krot_sos1", 0, "krot", 10000 )
 	end
 end
 
 function agr_krot_sos2( actor, npc )
-	if actor:dont_has_info( "agr_help_krot_start" ) then
+	if actor:dont_has_info( "agr_help_krot_start" ) and actor:dont_has_info( "agr_help_krot_done" ) then
 		news_manager.send_tip( actor, "tips_agr_krot_sos2", 0, "krot", 10000 )
 	end
 end
