@@ -172,6 +172,12 @@ function gulag_empty(actor, npc, p)
 	return ( not p[1] ) or ( xr_gulag.getGulagPopulation( p[1] ) == 0 )
 end
 
+-- true, если  в указанном гулаге народу меньше чем надо.
+function gulag_population_le(actor, npc, p)
+	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) <= tonumber(p[2]) )
+	printf("!-!-!")
+end
+
 -------------------------------------------------------------------------------------------------------
 
 -- DELME: для тестов: {=test_condition_actor_near}
