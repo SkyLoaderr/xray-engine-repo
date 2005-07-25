@@ -80,6 +80,8 @@ public:
 	virtual		void			set_DynamicScales						(float l_scale=default_l_scale,float w_scale=default_w_scale)															= 0;
 	virtual		void			set_ContactCallback						(ContactCallbackFun* callback)																							= 0;
 	virtual		void			set_ObjectContactCallback				(ObjectContactCallbackFun* callback)																					= 0;
+	virtual		void			add_ObjectContactCallback				(ObjectContactCallbackFun* callback)																					= 0;
+	virtual		void			remove_ObjectContactCallback			(ObjectContactCallbackFun* callback)																					= 0;
 	virtual		void			set_CallbackData						(void * cd)																												= 0;
 	virtual		void			set_PhysicsRefObject					(CPhysicsShellHolder* ref_object)																						= 0;
 	virtual		void			get_LinearVel							(Fvector& velocity)																										= 0;

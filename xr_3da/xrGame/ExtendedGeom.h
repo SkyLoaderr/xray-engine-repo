@@ -59,6 +59,40 @@ class CObjectContactCallback
 		}
 		return false;
 	}
+
+static	void RemoveCallback(CObjectContactCallback	*callbacks,ObjectContactCallbackFun	*c)
+	{
+		if(!callbacks) return;
+		VERIFY(c);
+		VERIFY(callbacks->callback);
+
+			if(c==callbacks->callback)
+			{
+				CObjectContactCallback	*del=callbacks;
+				callbacks=callbacks->next;
+				del->next=NULL;
+				xr_delete(del);
+				VERIFY(!callbacks||!callbacks->HasCallback(c));
+			} else{
+				for(CObjectContactCallback	*i=callbacks->next,*p=callbacks;i;)
+				{
+					
+					VERIFY(p->callback);
+					VERIFY(i->callback);
+					if(c==i->callback)
+					{
+						CObjectContactCallback	*del=i;
+						p->next=i->next;del->next=NULL;xr_delete(del);
+						VERIFY(!callbacks->HasCallback(c));
+						break;
+					}
+					i=i->next;
+					p=p->next;
+					VERIFY(p->next==i);
+				}
+			}
+	}
+
 	void	Call(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 	{
 		for(CObjectContactCallback*i=this;i;i=i->next)
@@ -206,6 +240,12 @@ IC void dGeomUserDataAddObjectContactCallback(dxGeom* geom,ObjectContactCallback
 	}
 	else dGeomUserDataSetObjectContactCallback(geom,obj_callback);
 }
+
+IC void dGeomUserDataRemoveObjectContactCallback(dxGeom* geom,ObjectContactCallbackFun	*obj_callback)
+{
+	CObjectContactCallback::RemoveCallback((dGeomGetUserData(geom))->object_callbacks,(obj_callback));
+}
+
 IC bool dGeomUserDataHasCallback(dxGeom* geom,ObjectContactCallbackFun	*obj_callback)
 {
 	geom=retrieveGeom(geom);

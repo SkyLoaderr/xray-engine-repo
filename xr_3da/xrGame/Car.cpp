@@ -23,7 +23,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "CarWeapon.h"
 #include "game_object_space.h"
-
+#include "GameMtlLib.h"
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
@@ -154,6 +154,15 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	return							(CScriptEntity::net_Spawn(DC) && R);
 }
 
+void CCar::ActorObstacleCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	
+{
+	if(!do_colide)
+	{
+		if(material_1&&material_1->Flags.test(SGameMtl::flActorObstacle))do_colide=true;
+		if(material_2&&material_2->Flags.test(SGameMtl::flActorObstacle))do_colide=true;
+	}
+}
+
 void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 {
 	CSE_PHSkeleton		*so = smart_cast<CSE_PHSkeleton*>(D);
@@ -164,6 +173,7 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 	K->CalculateBones_Invalidate();//this need to call callbacks
 	K->CalculateBones	();
 	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
+	//PPhysicsShell()->add_ObjectContactCallback(ActorObstacleCallback);
 	SetDefaultNetState				(so);
 	CPHUpdateObject::Activate       ();
 }
@@ -460,6 +470,7 @@ void CCar::detach_Actor()
 	if(!Owner()) return;
 	Owner()->setVisible(1);
 	CHolderCustom::detach_Actor();
+	PPhysicsShell()->remove_ObjectContactCallback(ActorObstacleCallback);
 	NeutralDrive();
 	Unclutch();
 	ResetKeys();
@@ -493,6 +504,7 @@ bool CCar::attach_Actor(CGameObject* actor)
 	m_sits_transforms.push_back(instance.mTransform);
 	OnCameraChange(ectFirst);
 	PPhysicsShell()->Enable();
+	PPhysicsShell()->add_ObjectContactCallback(ActorObstacleCallback);
 	VisualUpdate();
 	processing_activate();
 	ReleaseHandBreak();

@@ -248,6 +248,34 @@ void CODEGeom::set_obj_contact_cb(ObjectContactCallbackFun* occb)
 		dGeomUserDataSetObjectContactCallback(m_geom_transform,occb);
 	}
 }
+void CODEGeom::add_obj_contact_cb(ObjectContactCallbackFun* occb)
+{
+	if(!m_geom_transform) return;
+	if(geom())
+	{
+		VERIFY(dGeomGetUserData(geom()));
+		dGeomUserDataAddObjectContactCallback(geom(),occb);
+	}
+	else
+	{
+		VERIFY(dGeomGetUserData(m_geom_transform));
+		dGeomUserDataAddObjectContactCallback(m_geom_transform,occb);
+	}
+}
+void CODEGeom::remove_obj_contact_cb(ObjectContactCallbackFun* occb)
+{
+	if(!m_geom_transform) return;
+	if(geom())
+	{
+		VERIFY(dGeomGetUserData(geom()));
+		dGeomUserDataRemoveObjectContactCallback(geom(),occb);
+	}
+	else
+	{
+		VERIFY(dGeomGetUserData(m_geom_transform));
+		dGeomUserDataRemoveObjectContactCallback(m_geom_transform,occb);
+	}
+}
 void CODEGeom::set_callback_data(void *cd)
 {
 	if(!m_geom_transform) return;

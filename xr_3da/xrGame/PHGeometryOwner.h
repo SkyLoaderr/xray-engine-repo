@@ -32,6 +32,8 @@ public:
 		bool						has_geoms								(){return !m_geoms.empty();}
 		void						set_ContactCallback						(ContactCallbackFun* callback);													//aux (may not be)
 		void						set_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
+		void						add_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
+		void						remove_ObjectContactCallback			(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
 		void						set_CallbackData						(void * cd);
 		ObjectContactCallbackFun	*get_ObjectContactCallback				();
 		void						set_PhysicsRefObject					(CPhysicsShellHolder* ref_object);												//aux

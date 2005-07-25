@@ -396,6 +396,18 @@ void CPHShell::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 	for(i=elements.begin();elements.end() != i;++i)
 		(*i)->set_ObjectContactCallback(callback);
 }
+void CPHShell::add_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	ELEMENT_I i;
+	for(i=elements.begin();elements.end() != i;++i)
+		(*i)->add_ObjectContactCallback(callback);
+}
+void CPHShell::remove_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	ELEMENT_I i;
+	for(i=elements.begin();elements.end() != i;++i)
+		(*i)->remove_ObjectContactCallback(callback);
+}
 void CPHShell::set_CallbackData(void *cd)
 {
 	ELEMENT_I i;

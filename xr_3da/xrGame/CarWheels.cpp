@@ -16,7 +16,6 @@ CCar::SWheel::SWheelCollisionParams::SWheelCollisionParams()
 		spring_factor								=1		;
 		damping_factor								=1		;
 		mu_factor									=1		;
-		saved_cb									=NULL	;
 }
 IC void CCar::SWheel::applywheelCollisionParams(const dxGeomUserData *ud,bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
@@ -26,10 +25,6 @@ IC void CCar::SWheel::applywheelCollisionParams(const dxGeomUserData *ud,bool& d
 		dSurfaceParameters		&sp	=		c.surface										;
 		sp.mu						*=		cp.mu_factor									;
 		MulSprDmp(sp.soft_cfm,sp.soft_cfm,cp.spring_factor,cp.damping_factor)				;
-		if(cp.saved_cb)
-		{
-			cp.saved_cb(do_colide,c,material_1,material_2);
-		}
 	}
 }
 
@@ -67,8 +62,7 @@ void CCar::SWheel::Init()
 	joint->SetBackRef(&joint);
 	R_ASSERT2(dJointGetType(joint->GetDJoint())==dJointTypeHinge2,"No wheel join was set for a wheel, only wheel-joint valid!!!");
 	ApplyDriveAxisVelTorque(0.f,0.f);
-	collision_params.saved_cb=e->get_ObjectContactCallback();
-	e->set_ObjectContactCallback(WheellCollisionCallback);
+	e->add_ObjectContactCallback(WheellCollisionCallback);
 	e->set_CallbackData((void*)&collision_params);
 	e->SetAirResistance(0,0);
 	inited=true;

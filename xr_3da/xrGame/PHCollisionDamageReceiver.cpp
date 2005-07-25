@@ -31,7 +31,7 @@ void CPHCollisionDamageReceiver::Init()
 			BoneInsert(index,float(atof(*item.second)));
 			CODEGeom* og= sh->PPhysicsShell()->get_GeomByID(index);
 			//R_ASSERT3(og, "collision damage bone has no physics collision", *item.first);
-			if(og)og->set_obj_contact_cb(CollisionCallback);
+			if(og)og->add_obj_contact_cb(CollisionCallback);
 		}
 		
 	}

@@ -85,6 +85,8 @@ virtual			void		set_local_form		(const Fmatrix& form)												=0;
 				void		set_material		(u16 ul_material)													;
 				void		set_contact_cb		(ContactCallbackFun* ccb)											;
 				void		set_obj_contact_cb	(ObjectContactCallbackFun* occb)									;
+				void		add_obj_contact_cb	(ObjectContactCallbackFun* occb)									;
+				void		remove_obj_contact_cb(ObjectContactCallbackFun* occb)									;
 				void		set_callback_data	(void *cd)															;
 				void		set_ref_object		(CPhysicsShellHolder* ro)											;
 				void		set_ph_object		(CPHObject* o)														;

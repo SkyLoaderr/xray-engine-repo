@@ -84,6 +84,8 @@ public:
 	virtual bool						has_geoms								(){return CPHGeometryOwner::has_geoms();}
 	virtual void						set_ContactCallback						(ContactCallbackFun* callback);													//aux (may not be)
 	virtual void						set_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
+	virtual void						add_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
+	virtual void						remove_ObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual void						set_CallbackData						(void * cd);
 	virtual	ObjectContactCallbackFun	*get_ObjectContactCallback				();
 	virtual void						set_PhysicsRefObject					(CPhysicsShellHolder* ref_object);												//aux

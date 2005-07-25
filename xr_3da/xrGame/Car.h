@@ -59,8 +59,9 @@ class CCar :
 #endif
 	
 	
-	
+
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
+	static	void __stdcall				ActorObstacleCallback		(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 	virtual void						PhDataUpdate				(dReal step)			;
 	virtual void						PhTune						(dReal step)			;
 /////////////////////////////////////////////////////////////////////////
@@ -136,7 +137,6 @@ public:
 			float						spring_factor		;
 			float						damping_factor		;
 			float						mu_factor			;
-			ObjectContactCallbackFun*	saved_cb			;
 			SWheelCollisionParams				();
 		}									collision_params	;
 

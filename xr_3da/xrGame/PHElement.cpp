@@ -888,6 +888,14 @@ void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	CPHGeometryOwner::set_ObjectContactCallback(callback);
 }
+void CPHElement::add_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	CPHGeometryOwner::add_ObjectContactCallback(callback);
+}
+void CPHElement::remove_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	CPHGeometryOwner::remove_ObjectContactCallback(callback);
+}
 ObjectContactCallbackFun* CPHElement::get_ObjectContactCallback()
 {
 	return CPHGeometryOwner::get_ObjectContactCallback();

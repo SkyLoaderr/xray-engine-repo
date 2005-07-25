@@ -252,6 +252,35 @@ void CPHGeometryOwner::set_ObjectContactCallback(ObjectContactCallbackFun* callb
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;++i) (*i)->set_obj_contact_cb(callback);
 }
+
+void CPHGeometryOwner::add_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	
+	if(!object_contact_callback)
+	{
+		object_contact_callback= callback;
+	}
+	if(!b_builded)return;
+	{
+		GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+		for(;i!=e;++i) (*i)->add_obj_contact_cb(callback);
+	}
+}
+
+void CPHGeometryOwner::remove_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+
+	if(object_contact_callback==callback)
+	{
+		object_contact_callback= NULL;
+	}
+	if(!b_builded)return;
+	{
+		GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+		for(;i!=e;++i) (*i)->remove_obj_contact_cb(callback);
+	}
+}
+
 ObjectContactCallbackFun* CPHGeometryOwner::get_ObjectContactCallback()
 {
 	return object_contact_callback;
