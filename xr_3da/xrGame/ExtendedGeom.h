@@ -159,17 +159,18 @@ IC void dGeomCreateUserData(dxGeom* geom)
 
 IC void dGeomDestroyUserData(dxGeom* geom)
 {
-	if(!geom)			return;
-	dxGeomUserData*	P	= dGeomGetUserData(geom);
+	if(!geom)			return							;
+	dxGeomUserData*	P	= dGeomGetUserData(geom)		;
 	if(P)
 	{
 #ifdef DEBUG
-	dbg_total_saved_tries-=P->cashed_tries.size();
+	dbg_total_saved_tries-=P->cashed_tries.size()		;
 #endif
-	P->cashed_tries		.clear();
+	P->cashed_tries		.clear()						;
 	}
-	xr_delete			(P);
-	dGeomSetData		(geom,0);
+	xr_delete			(P)								;
+	xr_delete			(object_callbacks)				;
+	dGeomSetData		(geom,0)						;
 }
 
 IC void dGeomUserDataSetCallbackData(dxGeom* geom,void *cd)
