@@ -29,8 +29,7 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	LoadSpot				(type, false);
 	m_refCount				= 1;
 	
-	if(GameID()==GAME_SINGLE)
-		DisablePointer		();
+	DisablePointer		();
 
 	EnableSpot				();
 }
