@@ -29,108 +29,34 @@ function mp_main:__finalize()
 end
 
 function mp_main:InitControls()	
-	local l_top = 143
-	local l_left = 122
-	
-	local l_cap_col = {};
-	l_cap_col.a = 255
-	l_cap_col.r = 138
-	l_cap_col.g = 133
-	l_cap_col.b = 136
-	
-	-- player name
-	local l_st_pname = {}
-	l_st_pname.x = l_left + 13
-	l_st_pname.y = l_top
-	l_st_pname.width = 100
-	l_st_pname.height = 24 
-	local l_ed_pname = {}
-	l_ed_pname.x = l_st_pname.x + l_st_pname.width
-	l_ed_pname.y = l_st_pname.y
-	l_ed_pname.height = l_st_pname.height
-	l_ed_pname.width = 236
-	-- cd key
-	local l_st_cdkey = {}
-	l_st_cdkey.x = l_ed_pname.x + l_ed_pname.width + 30
-	l_st_cdkey.y = l_st_pname.y
-	l_st_cdkey.height = l_st_pname.height
-	l_st_cdkey.width = 70
-	-- tab buttons
-	local l_tab_col = {}	
-	l_tab_col.a = 255
-	l_tab_col.r = 215
-	l_tab_col.g = 195
-	l_tab_col.b = 170
-	local l_tabbtn_texture_offset = -7
-	local l_btn_client = {}
-	l_btn_client.x = l_left + 8
-	l_btn_client.y = l_top + 45 - l_tabbtn_texture_offset 
-	l_btn_client.height = 26
-	l_btn_client.width = 116
-	local l_btn_server = {}
-	l_btn_server.x = l_btn_client.x + l_btn_client.width
-	l_btn_server.y = l_btn_client.y
-	l_btn_server.height = l_btn_client.height
-	l_btn_server.width = l_btn_client.width	
-	local l_btn_options = {}
-	l_btn_options.x = l_btn_server.x + l_btn_server.width
-	l_btn_options.y = l_btn_client.y
-	l_btn_options.height = l_btn_client.height
-	l_btn_options.width = l_btn_client.width	
-	
-	-- tab buttons
-	self.font_cap = GetFontLetterica16Russian()
-	self.font_edit = GetFontLetterica18Russian()
-	self.font_tab_btn = GetFontGraffiti22Russian()
-	
+
 	self:Init(0,0,1024,768)
-	
-	-- background
-	self.bk = CUIStatic()
-	self.bk:SetAutoDelete(true)
-	self.bk:InitTexture("ui\\ui_mp_main")
-	self.bk:Init(0,0,1024,768)
-	self:AttachChild(self.bk)
-	
-	self:Enable(true)
-	
+
 	local xml = CScriptXmlInit()
 	xml:ParseFile("ui_mm_mp.xml")
-	
-	xml:InitLabel("cap_multiplayer",self.bk)
-	
-	-- Player Name	
-	local st
+
+	xml:InitStatic("background", self)
+	self:Enable(true)
+
+	xml:InitLabel("cap_multiplayer",self)
 	xml:InitLabel("static_player_name",self)
 	self.player_name = xml:InitEditBox("edit_player_name", self)
-	
-
-	-- CD Key
 	xml:InitLabel("cap_cd_key",self)
---	st = CUIStatic()
---	st:SetAutoDelete(true)
---	st:Init(l_st_cdkey.x, l_st_cdkey.y, l_st_cdkey.width, l_st_cdkey.height)
---	st:SetFont(self.font_cap)
---	st:SetTextColor(l_cap_col.a, l_cap_col.r, l_cap_col.g, l_cap_col.b)
---	st:SetText("CD Key")	
---	st:SetStretchTexture(true)	
---	self.bk:AttachChild(st)
-	
-	xml:InitCDkey("edit_cd_key", self.bk)
+	xml:InitCDkey("edit_cd_key", self)
 		
 	self.dlg_join = ui_mm_mp_join.mp_join()
 	self.dlg_join:InitControls(121,224, xml, self)
-	self.bk:AttachChild(self.dlg_join)
+	self:AttachChild(self.dlg_join)
 	
 	self.dlg_options = ui_mm_mp_options.mp_options()
 	self.dlg_options:InitControls(121,224, xml, self)
 	self.dlg_options:Show(false)
-	self.bk:AttachChild(self.dlg_options)
+	self:AttachChild(self.dlg_options)
 
 	self.dlg_server = ui_mm_mp_server.mp_server()
 	self.dlg_server:InitControls(121,224, xml, self)
 	self.dlg_server:Show(false)
-	self.bk:AttachChild(self.dlg_server)
+	self:AttachChild(self.dlg_server)
 
 	btn = xml:Init3tButton("btn_create", self)
 	self:Register(btn, "btn_create")
@@ -144,7 +70,7 @@ function mp_main:InitControls()
 	btn = xml:Init3tButton("btn_cancel", self)
 	self:Register(btn, "btn_cancel")
 	
-	self.tab = xml:InitTab("tab",self.bk)
+	self.tab = xml:InitTab("tab",self)
 	self:Register(self.tab, "tab")
 end
 

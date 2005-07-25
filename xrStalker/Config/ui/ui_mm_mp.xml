@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
+	<background x="0" y="0" width="1024" height="768">
+		<texture>ui\ui_mp_main</texture>
+	</background>
 	<cap_multiplayer x="260" y="89" width="378" height="33">
 		<text font="graffiti22" r="215" g="195" b="170">MULTIPLAYER</text>
 	</cap_multiplayer>
