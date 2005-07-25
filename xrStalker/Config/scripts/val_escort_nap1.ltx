@@ -177,9 +177,9 @@ combat_ignore_cond  = always ;{=check_fighting(407:408) -val_escort_combat}
 ; ∆дем, чтоб актер подошел поближе
 ;--------------------------------------------------------------------------
 [remark1@wait_for_actor]
-no_move = true
-no_rotate = true
-anim = hide
+no_move                 = true
+no_rotate               = true
+anim                    = hide
 meet                    = meet@ignore
 on_info                 = {+val_escort_combat} remark1@fight
 on_actor_dist_le_nvis   = 4 | remark1@phrase7
