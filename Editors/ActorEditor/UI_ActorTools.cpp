@@ -422,6 +422,7 @@ bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 	CEditableObject* O = xr_new<CEditableObject>(obj_name);
 	if (O->Load(full_name.c_str())){
         O->m_Flags.set(CEditableObject::eoDynamic,TRUE);
+        O->m_Flags.set(CEditableObject::eoProgressive,TRUE);
         xr_delete(m_pEditObject);
         m_pEditObject = O;
         // delete visual
