@@ -21,13 +21,13 @@ function action_process_death:death_callback(victim, who)
 
 	if db.actor then
 		if self.st.info then
-			xr_logic.pick_section_from_condlist(db.actor, self.npc, self.st.info)
+			xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.info)
 		else
 			printf( "NOT ST.INFO" )
 		end
 
 		if self.st.info2 then
-			xr_logic.pick_section_from_condlist(db.actor, self.npc, self.st.info2)
+			xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.info2)
 		end
 	end
 end
