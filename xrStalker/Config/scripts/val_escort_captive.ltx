@@ -1,5 +1,5 @@
 [logic]
-active = walker1
+active = remark@start
 on_death = death
 combat_ignore = combat_ignore
 
@@ -21,7 +21,16 @@ use = true
 use_wpn = true
 
 ;--------------------------------------------------------------------------
-[walker1]
+; 
+;--------------------------------------------------------------------------
+[remark@start]
+no_move = true
+no_rotate = true
+anim = idle
+on_info = {+val_escort_start} walker@go
+
+;--------------------------------------------------------------------------
+[walker@go]
 path_walk = val_escort_captive_walk
 path_look = val_escort_captive_look
 on_signal = fight | %+val_escort_combat -val_escort_wait%
