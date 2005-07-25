@@ -1,5 +1,5 @@
 [logic]
-active        = walker@wait
+active        = remark1@begin ;walker@wait
 ;on_combat     = combat
 on_hit        = hit
 on_death      = death
@@ -50,6 +50,16 @@ victim_wpn     = 15|actor
 use            = true
 use_wpn        = false
 
+
+;--------------------------------------------------------------------------
+; начало
+;--------------------------------------------------------------------------
+[remark1@begin]
+no_move             = true
+no_rotate           = true
+anim                = sit_knee
+on_info             = {+val_escort_begin} remark1@phrase1
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фразы: ...Рассказывай, иначе узнаешь, как легко пуля пробивает череп.
