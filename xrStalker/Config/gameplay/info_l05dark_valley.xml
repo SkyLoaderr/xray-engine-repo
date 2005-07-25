@@ -29,6 +29,7 @@
 <info_portion id="val_escort_guard3_combat"></info_portion>
 <info_portion id="val_escort_nap1_dead"></info_portion>
 <info_portion id="val_escort_captive_dead"></info_portion>
+<info_portion id="val_escort_captive_phrase1_end"></info_portion>
 <info_portion id="val_escort_guard1_dead"></info_portion>
 <info_portion id="val_escort_guard2_dead"></info_portion>
 <info_portion id="val_escort_guard3_dead"></info_portion>
