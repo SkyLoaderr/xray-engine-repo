@@ -209,6 +209,18 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		-- ¬олк, собственной персоной.
+		t = { section = "logic@esc_lager_volk",
+			idle = 0,
+			prior = 16, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			predicate = function(obj) 
+        					return obj:profile_name() == "stalker_esc_wolf"			           
+						end
+		}
+		table.insert(sj, t)
+		
 		-- сп€щие ночью
 		t = { section = "logic@esc_lager_sleeper1",
 			idle = 0,
@@ -347,6 +359,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "camper@esc_fabrika_bandit_walker6",
 			idle = 0,
 			prior = 2, state = {2},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "camper@esc_fabrika_bandit_walker7",
+			idle = 0,
+			prior = 5, state = {0,2},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}

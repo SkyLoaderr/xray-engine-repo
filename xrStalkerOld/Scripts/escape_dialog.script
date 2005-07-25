@@ -6,9 +6,9 @@
 -- Trader
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(trader, actor)
-	if (actor:has_info("escape_artefact_start") and actor:dont_has_info("escape_artefact_done")) or
-	   (actor:has_info("escape_stalker_meet") or actor:dont_has_info("escape_stalker_done")) or
-	   (actor:has_info("escape_blockpost_case") or actor:dont_has_info("escape_blockpost_case_done"))
+	if (actor:has_info("esc_kill_bandits_quest_have") and actor:dont_has_info("esc_kill_bandits_quest_done")) or
+	   (actor:has_info("escape_stalker_meet") and actor:dont_has_info("escape_stalker_done")) or
+	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done"))
 	then
 		return true
 	end
@@ -26,9 +26,9 @@ function trader_dont_give_job(first_speaker, second_speaker)
 end
 
 function trader_dont_has_job(first_speaker, second_speaker)
-    if trader_need_blockpost_box(first_speaker, second_speaker) == false and
-	   trader_need_artefact(first_speaker, second_speaker) == false and
-	   trader_need_fox_info(first_speaker, second_speaker) == false
+    if trader_need_free_factory(first_speaker, second_speaker) == false and
+	   trader_need_fox_info(first_speaker, second_speaker) == false and
+	   trader_need_military_case(first_speaker, second_speaker) == false
 	then
 		return true
 	end
@@ -61,7 +61,7 @@ end
 function trader_need_fox_info(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
-	   actor:has_info("escape_artefact_done") and
+	   actor:has_info("esc_kill_bandits_quest_done") and
 	   actor:dont_has_info("escape_stalker_meet")
 	then
 		return true
@@ -102,6 +102,18 @@ function give_blockpost_case(first_speaker, second_speaker)
 	level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
 end
 
+--' Agroprom military case
+function trader_need_military_case(first_speaker, second_speaker)
+	local actor = db.actor
+    if actor ~= nil and
+	   actor:has_info("escape_stalker_done") and
+	   actor:dont_has_info("agroprom_military_case")
+	then
+		return true
+	end
+	return false
+end
+
 --' Escape trader artefact
 function have_artefact_from_fleshes(first_speaker, second_speaker)
 	local actor = db.actor
@@ -126,11 +138,14 @@ function give_artefact_from_fleshes(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 1500, "in")
 	level_tasks.set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
 end
-function trader_need_artefact(first_speaker, second_speaker)
+
+
+--' Kill bandits on factory
+function trader_need_free_factory(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
-	   actor:dont_has_info("escape_artefact_start")
+	   actor:dont_has_info("esc_kill_bandits_quest_have")
 	then
 		return true
 	end
@@ -166,6 +181,7 @@ function wolf_dont_has_job(first_speaker, second_speaker)
 	end
 	return false
 end
+
 function wolf_need_dynamite(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
@@ -234,4 +250,25 @@ end
 function transfer_vodka_to_assault(first_speaker, second_speaker)
 	local obj = first_speaker:object("vodka")
 	dialogs.relocate_item(second_speaker, obj, "out")
+end
+
+--' Escape Wounded's flash
+function wounded_give_flash(first_speaker, second_speaker)
+	local wounded_flash = second_speaker:object("esc_wounded_flash")
+	dialogs.relocate_item(second_speaker, wounded_flash, "in")
+end
+
+function have_wounded_flash(first_speaker, second_speaker)
+  	return first_speaker:object("esc_wounded_flash") ~= nil
+end
+
+function give_wounded_flash(first_speaker, second_speaker)
+	local wounded_flash = first_speaker:object("esc_wounded_flash")
+	dialogs.relocate_item(second_speaker, wounded_flash, "out")
+	dialogs.relocate_money(second_speaker, 250, "in")
+end
+
+--' Escape bandits factory
+function give_factory_reward_trader(first_speaker, second_speaker)
+	dialogs.relocate_money(second_speaker, 500, "in")
 end

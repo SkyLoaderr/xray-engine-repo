@@ -158,100 +158,120 @@ path_main = commander_sleep
 ;-------------------------------------------------------------------------------------------------
 ;-- ESCAPE LAGER
 ;-------------------------------------------------------------------------------------------------
+; Волк
+[logic@esc_lager_volk]
+active = walker@esc_lager_volk_walker1
+
+[walker@esc_lager_volk_walker1]
+path_walk = wolf_walk
+path_look = wolf_look
+;meet_dialog = escape_lager_volk_hello
+on_actor_dist_le = 5 | {+tutorial_wounded_help -tutorial_wounded_die} remark@esc_lager_volk_remark1
+meet = meet@wolf
+
+[remark@esc_lager_volk_remark1]
+snd = esc_volk_greet1
+on_info  = {=talking} remark@esc_lager_volk_remark3
+on_signal = sound_end | remark@esc_lager_volk_wait1
+meet = meet@wolf
+no_move = true
+
+[remark@esc_lager_volk_wait1]
+snd = esc_volk_greet1
+on_actor_dist_ge = 5 | walker@esc_lager_volk_walker2
+on_info  = {=talking} remark@esc_lager_volk_remark3
+on_timer = 5000 | remark@esc_lager_volk_remark2
+meet = meet@wolf
+no_move = true
+
+[walker@esc_lager_volk_walker2]
+path_walk = wolf_walk
+path_look = wolf_look
+on_actor_dist_le = 5 | {-tutorial_wounded_die} remark@esc_lager_volk_remark2, walker@esc_lager_volk_walker1
+meet = meet@wolf
+
+[remark@esc_lager_volk_remark2]
+anim = wait
+snd = esc_volk_greet2
+on_info  = {=talking} remark@esc_lager_volk_remark3
+on_signal = sound_end | remark@esc_lager_volk_wait2
+meet = meet@wolf
+no_move = true
+
+[remark@esc_lager_volk_wait2]
+anim = wait
+snd = esc_volk_greet2
+on_actor_dist_ge = 5 | walker@esc_lager_volk_walker3
+on_timer = 5000 | remark@esc_lager_volk_remark3
+on_info  = {=talking} remark@esc_lager_volk_remark3
+meet = meet@wolf
+no_move = true
+
+[walker@esc_lager_volk_walker3]
+path_walk = wolf_walk
+path_look = wolf_look
+on_actor_dist_le = 5 | remark@esc_lager_volk_remark3
+meet = meet@wolf
+
+[remark@esc_lager_volk_remark3]
+anim = wait
+on_actor_dist_ge = 5 | walker@esc_lager_volk_walker3
+meet = meet@wolf
+no_move = true
+
+[meet@wolf]
+meet_state		= 15|wait@wait
+meet_state_wpn	= 15|backoff@threat_weap
+victim		= 15|actor
+victim_wpn		= 15|actor
+use			= true
+use_wpn		= false
+syndata		= hello@hail|backoff@threat_weap
+
+
 ;охранники
-[zoneguard@esc_lager_actor_dialogs]
+[esc_lager_actor_dialogs]
 id = escape_lager_access
 
-
 [logic@esc_lager_zoneguard1]
-active = zoneguard1@esc_lager
-actor_dialogs = zoneguard@esc_lager_actor_dialogs
+active = walker@esc_lager_zoneguard1
+actor_dialogs = esc_lager_actor_dialogs
 
-[zoneguard1@esc_lager]
+[walker@esc_lager_zoneguard1]
 path_walk  = guard_walk1
 path_look  = guard_look1
-zone_guard = guard_kill_zone
-zone_warn  = guard_warn_zone1
-no_move    = true
-team       = guards
-snd_greet  = esc_novice_camp_guards
-anim       = backoff
-on_info    = {+tutorial_wounded_help} zoneguard1@esc_lager_friend, {+tutorial_wounded_death} zoneguard1@esc_lager_friend, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
-meet_talk_enabled = true
-meet_state = backoff
-meet_dialog = escape_lager_guard_start_dialog
-snd_anim_sync = true
+meet = meet@zoneguard_novice_lager1
 
-[zoneguard1@esc_lager_friend]
-path_walk  = guard_walk1
-path_look  = guard_look1
-zone_warn  = guard_warn_zone1
-team       = guards
-snd_greet  = talk_hello
-no_move    = true
-no_danger  = true
-meet_talk_enabled = true
-meet_dialog = escape_lager_guard_start_dialog
+[meet@zoneguard_novice_lager1]
+meet_state 		= 30| {+tutorial_wounded_help} wait, {+tutorial_wounded_death} wait, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
+meet_state_wpn 	= 30| {+tutorial_wounded_help} wait, {+tutorial_wounded_death} wait, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
+victim 			= 30| actor
+victim_wpn 		= 30| actor
+use			= true
+use_wpn		= true
+zone			= esc_lager_guard_warn_zone1|{-tutorial_end} threat@ {-tutorial_end} threat_back|esc_lager_guard_kill_zone| {-tutorial_end} true@ {-tutorial_end} talk_abuse
+meet_dialog		= escape_lager_guard_start_dialog
 
-[zoneguard1@esc_lager_enemy]
-path_walk  = guard_walk1
-path_look  = guard_look1
-zone_guard = guard_kill_zone
-zone_warn  = guard_warn_zone1
-no_move    = true
-team       = guards
-snd_greet  = threat_stop
-anim       = backoff
-meet_talk_enabled = true
-meet_state = backoff
-meet_dialog = escape_lager_guard_start_dialog
-snd_anim_sync = true
 
 
 [logic@esc_lager_zoneguard2]
-active = zoneguard2@esc_lager
-actor_dialogs = zoneguard@esc_lager_actor_dialogs
+active = walker@esc_lager_zoneguard2
+actor_dialogs = esc_lager_actor_dialogs
 
-[zoneguard2@esc_lager]
+[walker@esc_lager_zoneguard2]
 path_walk  = guard_walk2
 path_look  = guard_look2
-zone_guard = guard_kill_zone
-zone_warn  = guard_warn_zone2
-team       = guards
-no_move    = true
-snd_greet  = esc_novice_camp_guards
-anim       = backoff
-on_info    = {+tutorial_wounded_help} zoneguard2@esc_lager_friend, {+tutorial_wounded_death} zoneguard2@esc_lager_friend, {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
-meet_talk_enabled = true
-meet_state = backoff
-meet_dialog = escape_lager_guard_start_dialog
-snd_anim_sync = true
+meet = meet@zoneguard_novice_lager2
 
-[zoneguard2@esc_lager_friend]
-path_walk  = guard_walk2
-path_look  = guard_look2
-zone_warn  = guard_warn_zone2
-team       = guards
-snd_greet  = talk_hello
-no_move    = true
-no_danger  = true
-meet_talk_enabled = true
-meet_dialog = escape_lager_guard_start_dialog
-
-[zoneguard2@esc_lager_enemy]
-path_walk  = guard_walk2
-path_look  = guard_look2
-zone_guard = guard_kill_zone
-zone_warn  = guard_warn_zone2
-no_move    = true
-team       = guards
-snd_greet  = threat_stop
-anim       = backoff
-meet_talk_enabled = true
-meet_state = backoff
-meet_dialog = escape_lager_guard_start_dialog
-snd_anim_sync = true
-
+[meet@zoneguard_novice_lager2]
+meet_state 		= 30| {+tutorial_wounded_help} wait, {+tutorial_wounded_death} wait, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
+meet_state_wpn 	= 30| {+tutorial_wounded_help} wait, {+tutorial_wounded_death} wait, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
+victim 			= 30| actor
+victim_wpn 		= 30| actor
+use			= true
+use_wpn		= true
+zone			= esc_lager_guard_warn_zone2| {-tutorial_end} threat@ {-tutorial_end} threat_back|esc_lager_guard_kill_zone| {-tutorial_end} true@ {-tutorial_end} talk_abuse
+meet_dialog		= escape_lager_guard_start_dialog
 
 [logic@esc_lager_walker1]
 active = walker1@esc_lager
@@ -400,54 +420,56 @@ center_point = camp_center
 
 
 [camper@esc_fabrika_bandit_walker1]
-active = camper1@esc_fabrika_bandit
+active = walker11@esc_fabrika_bandit
 
-[camper1@esc_fabrika_bandit]
+[walker11@esc_fabrika_bandit]
 path_walk = day_alarm_walk1
 path_look = day_alarm_look1
-def_state_moving = raid
-def_state_moving_fire = raid_fire
-def_state_campering = threat
-def_state_campering_fire = threat_fire
+
 
 [camper@esc_fabrika_bandit_walker2]
-active = camper2@esc_fabrika_bandit
+active = walker22@esc_fabrika_bandit
 
-[camper2@esc_fabrika_bandit]
+[walker22@esc_fabrika_bandit]
 path_walk = day_alarm_walk2
 path_look = day_alarm_look2
 
 
 [camper@esc_fabrika_bandit_walker3]
-active = camper3@esc_fabrika_bandit
+active = walker33@esc_fabrika_bandit
 
-[camper3@esc_fabrika_bandit]
+[walker33@esc_fabrika_bandit]
 path_walk = day_alarm_walk3
 path_look = day_alarm_look3
-def_state_moving = raid
-def_state_moving_fire = raid_fire
-def_state_campering = threat
-def_state_campering_fire = threat_fire
+
 
 [camper@esc_fabrika_bandit_walker4]
-active = camper4@esc_fabrika_bandit
+active = walker44@esc_fabrika_bandit
 
-[camper4@esc_fabrika_bandit]
+[walker44@esc_fabrika_bandit]
 path_walk = day_alarm_walk4
 path_look = day_alarm_look4
 
 
 [camper@esc_fabrika_bandit_walker5]
-active = camper5@esc_fabrika_bandit
+active = walker55@esc_fabrika_bandit
 
-[camper5@esc_fabrika_bandit]
+[walker55@esc_fabrika_bandit]
 path_walk = day_alarm_walk5
 path_look = day_alarm_look5
 
 
 [camper@esc_fabrika_bandit_walker6]
-active = camper6@esc_fabrika_bandit
+active = walker66@esc_fabrika_bandit
 
-[camper6@esc_fabrika_bandit]
+[walker66@esc_fabrika_bandit]
 path_walk = day_alarm_walk6
 path_look = day_alarm_look6
+
+
+[camper@esc_fabrika_bandit_walker7]
+active = walker7@esc_fabrika_bandit
+
+[walker7@esc_fabrika_bandit]
+path_walk = day_night_sniper_walk
+path_look = day_night_sniper_look

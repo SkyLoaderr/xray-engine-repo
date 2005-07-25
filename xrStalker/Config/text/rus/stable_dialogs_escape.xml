@@ -15,44 +15,74 @@
     <string id="esc_stalker_talk_level_21">
         <text>Там свалка. Мрачное место. Местами из-за мусора пройти невозможно.</text>
     </string>
-    <string id="escape_factory_assault_attack_0">
-        <text>Пошли, начистим бандитам рыло.</text>
-    </string>
     <string id="escape_factory_assault_hello_121">
-        <text>Ну что, начальник? Мы готовы.</text>
+        <text>Ну что? Мы готовы к бою.</text>
     </string>
     <string id="escape_factory_assault_hello_2">
-        <text>Ты, наверное, тот малый, о котором Волк говорил? Вообщем смотри, бандитов в принципе немного. Вот только мы своей толпой тудя врядли тихо проберемся. На втором этаже снайпер сидит, все подходы пасет. Если бы не он - мы бы их как следует наказали.</text>
+        <text>А ты, сталкер, откуда нарисовался?</text>
+    </string>
+    <string id="escape_factory_assault_hello_22">
+        <text>Я тут от Волка нарисовался. Он вам тут привет из преисподней передает. Если вы в курсе о чем я.</text>
+    </string>
+    <string id="escape_factory_assault_hello_222">
+        <text>В курсе.Что надо?</text>
+    </string>
+    <string id="escape_factory_assault_hello_2222">
+        <text>Волк послал меня вам в поддержку. Атаковать будем.</text>
+    </string>
+    <string id="escape_factory_assault_hello_22222">
+        <text>Прямо сейчас?</text>
+    </string>
+    <string id="escape_factory_assault_hello_222222">
+        <text>Да. Атакуем.</text>
+    </string>
+    <string id="escape_factory_assault_hello_222223">
+        <text>Чуть позже. Я скажу когда.</text>
     </string>
     <string id="escape_factory_assault_hello_3">
-        <text>Ну что, уберешь снайпера? иначе мы в атаку не пойдем. По крайней мере трезвыми.</text>
+        <text>Настрелялись вдоволь. Надеюсь, Волк будет доволен.</text>
     </string>
-    <string id="escape_factory_assault_talk_0">
-        <text>Ну, бойцы, чего скажете?</text>
+    <string id="escape_factory_assault_talk_21">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_1">
-        <text>Все по прежнему. Бандиты сидят в развалинах. Несколько человек плюс часовой на втором этаже.</text>
+    <string id="escape_factory_assault_talk_22">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_11">
-        <text>Предлагаю вместе напасть на фабрику.</text>
+    <string id="escape_factory_attackers_11">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_111">
-        <text>Не, мы своими шкурами рисковать не будем. И не думай, что мы боимся. Мы вообще никогда не боимся. Ну разве только изредка... может быть и сейчас немного страшно... ну ладно, ладно, боимся. А ты бы не боялся трезвым лезть на окопавшихся на фабрике бандитов? Да еще снайпер сидит. Если бы ты нам предложил водки для храбрости, то тогда пожалуйста, а так - нет.</text>
+    <string id="escape_factory_attackers_111">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_112">
-        <text>О, я вижу ты принес нам "огненную воду". Ну, если так пойдет и дальше, то мы не только бандитов из фабрики выгоним, да мы всю Зону зачистим!</text>
+    <string id="escape_factory_attackers_112">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_1121">
-        <text>Держите водку. И будьте готовы атаковать в любой момент.</text>
+    <string id="escape_factory_attackers_1121">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_1122">
-        <text>Не, погодите. "Огненная вода" не для вас.</text>
+    <string id="escape_factory_attackers_11211">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_12">
-        <text>Хорошо.</text>
+    <string id="escape_factory_attackers_112111">
+        <text>empty text</text>
     </string>
-    <string id="escape_factory_assault_talk_2">
-        <text>Готовы хоть сейчас в атаку. Только дай команду.</text>
+    <string id="escape_factory_attackers_1121111">
+        <text>empty text</text>
+    </string>
+    <string id="escape_factory_attackers_11212">
+        <text>empty text</text>
+    </string>
+    <string id="escape_factory_attackers_112121">
+        <text>empty text</text>
+    </string>
+    <string id="escape_factory_attackers_1121211">
+        <text>empty text</text>
+    </string>
+    <string id="escape_factory_attackers_113">
+        <text>empty text</text>
+    </string>
+    <string id="escape_factory_attackers_12">
+        <text>empty text</text>
     </string>
     <string id="escape_fox_flame_dialog_0">
         <text>У меня есть вопросы к тебе.</text>
@@ -244,25 +274,34 @@
         <text>Ничего не знаю и знать не хочу. Извини, я знаю, что ты оттуда. Но слишком от этого какой-то мистикой прет. А поработав в Зоне хочешь не хочешь, а станешь суеверным. Мертвецы в кузове, мертвецы за рулем... Кто они, откуда... Надеюсь, что не с того света.</text>
     </string>
     <string id="escape_lager_volk_job_0">
-        <text>У тебя случайно работенки нет?</text>
+        <text>Слушай, там Сидорович что-то говорил про то, что надо бы местных беспрельщиков пощипать.</text>
     </string>
     <string id="escape_lager_volk_job_1">
-        <text>Я давно уже в зоне. Сыт этим всем по горло. Решил завязать. Есть у меня дела и во "внешнем мире". На последок подарок хочу оставить кое кому из друзей. Мои ребята несли его мне, да бандиты их порешили. Так вот подарочек надобно вернуть. Мне уже неохота перед дорогой домой шкурой рисковать. А ты - новенький, деньги наверняка нужны. А я заплачу пару тысячь. Так что...Бандиты эти сейчас обосновались на фабрике.</text>
+        <text>Да, надо бы. Но одному тебе не управиться. Значит слушай сюда. Рядом с фабрикой, под мостом мои разведчики этих уродов пасут. Ты к ним прийди и скажи, что от меня и что я послал тебя в качестве подкрепления к ним для штурма фабрики. Если не поверят - передай от меня "привет из преисподней". Это пароль.</text>
     </string>
     <string id="escape_lager_volk_job_11">
-        <text>Хорошо, по рукам. Скажи только что принести нужно.</text>
+        <text>Хорошо, договорились. А какой твой интерес в этой авантюре?</text>
     </string>
     <string id="escape_lager_volk_job_111">
-        <text>Договорились. А подарок... да ничего особенного, ящик динамита... Если нужна помощь - то там рядом с фабрикой наши ребята в засаде сидят, бандитов караулят. Обратись к ним - они помогут.</text>
+        <text>Во-первых, ребятам спокойнее ходить станет. А во-вторых, там мне ящик с динамитом тащили, да из-за бандитов недотащили. Этот ящик я серьезным людям обещал, так вот нехорошо получилось. Принесешь его мне - я с тобой рассчитаюсь.</text>
     </string>
-    <string id="escape_lager_volk_job_12">
-        <text>Не-е, за своим подарком сам бегай.</text>
+    <string id="escape_lager_volk_job_1111">
+        <text>Договорились. Готовь деньги.</text>
     </string>
-    <string id="escape_lager_volk_job_121">
-        <text>А че так, страшно стало? Ну да ладно, я не в обиде.</text>
+    <string id="escape_lager_volk_job_11111">
+        <text>Отлично, жду тебя с грузом.</text>
     </string>
-    <string id="escape_lager_volk_job_2">
-        <text>Ничего нет.</text>
+    <string id="escape_lager_volk_job_1112">
+        <text>Надорвусь я от тяжелого ящика, сам его волоки.</text>
+    </string>
+    <string id="escape_lager_volk_job_11121">
+        <text>Ладно, если ты денег не хочешь - я заставлять не буду.</text>
+    </string>
+    <string id="escape_trader_bandits_killed_0">
+        <text>Фу... Жаркое было дело. Порешили мы бандитов с парнями Волка. Жду причитающегося.</text>
+    </string>
+    <string id="escape_trader_bandits_killed_1">
+        <text>Да без базара. Вот твои деньги. Честно заработал.</text>
     </string>
     <string id="escape_trader_done_artefact_0">
         <text>Вот твой артефакт! Подойдет?</text>
@@ -288,17 +327,32 @@
     <string id="escape_trader_done_gift_111">
         <text>Да ладно, забей. Прийдет время, и ты сам все узнаешь. А пока могу сказать вот что: военные что-то раскопали в заброшенном НИИ "Агропром". Я не знаю что там, но если это заинтересовало армию, то это интересно и мне. Так что дуй на Агропром. Детали я тебе сообщу позже, как только сам пойму что к чему.</text>
     </string>
+    <string id="escape_trader_done_gift_2">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_21">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_211">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_2111">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_21111">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_211111">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_21112">
+        <text>empty text</text>
+    </string>
+    <string id="escape_trader_done_gift_211121">
+        <text>empty text</text>
+    </string>
     <string id="escape_trader_done_tutorial_artefact_0">
         <text>Ну что, держи мой "первый" артефакт.</text>
-    </string>
-    <string id="escape_trader_done_tutorial_artefact_1">
-        <text>Меченый, в следующий раз внимательно слушай мои сообщения. За артефакт спасибо, но немедленно дуй к раненому. Держи аптечку, смотри не потеряй.</text>
-    </string>
-    <string id="escape_trader_done_tutorial_artefact_1311">
-        <text>text in default</text>
-    </string>
-    <string id="escape_trader_done_tutorial_artefact_2">
-        <text>Ну вот и ладненько. Нечего добру попусту валяться.</text>
     </string>
     <string id="escape_trader_done_tutorial_artefact_3">
         <text>Меченный!!! Быстро дуй к вагончику возле дороги..Там раненые... Это сталкеры из лагеря - возвращались с моего задания. Черт их дернул вертолет обстрелять…Теперь вон СОС кричат…Держи аптечку быстрей...</text>
@@ -306,8 +360,23 @@
     <string id="escape_trader_jobs_0">
         <text>Работенка для меня найдется?</text>
     </string>
+    <string id="escape_trader_jobs_10">
+        <text>Значится так. Тут недалеко отсюда, на фабрике бандиты обосновались. И они пощипывают сталкеров, которые идут ко мне с артефактами, что как ты сам понимаешь торговле мешает. Да и не только мне. Тут в лагере ими тоже сильно недовольны. Так что можно объединить силы для очищения Кордона от этих ублюдков. И, понятное дело, за мной причитается.</text>
+    </string>
+    <string id="escape_trader_jobs_11">
+        <text>Хмм... причитается говришь... Ладно, пойду зачищать территорию. Кто мне в лагере помочь может?</text>
+    </string>
+    <string id="escape_trader_jobs_111">
+        <text>Волк, лидер новичков. Подойди к нему, он тебе окажет посильную помощь.</text>
+    </string>
     <string id="escape_trader_jobs_12">
         <text>Не, пока ничего нет.</text>
+    </string>
+    <string id="escape_trader_jobs_13">
+        <text>Не до сук мне сейчас Сидорович, дела есть, извини не могу.</text>
+    </string>
+    <string id="escape_trader_jobs_131">
+        <text>Ладно, но ты не сильно задерживайся. Без тебя этот гадюшник разгребут - на бобах останешься.</text>
     </string>
     <string id="escape_trader_jobs_15">
         <text>Ну вот и ладненько. Что нибудь еще?</text>
@@ -322,16 +391,7 @@
         <text>А может у тебя найдется особая работа для особого человека?</text>
     </string>
     <string id="escape_trader_jobs_5">
-        <text>Есть заказ на артефакты "выверт" либо "грави". Мне все равно, где ты его достанешь, но могу дать наводку: есть место на север от фабрики, где много аномалий "воронка". Так вот, там артефакты эти часто встречаются. Кстати, если артефактов там не окажется, то просто подожди, пока кто-нибудь не попадется в аномалию, собака или человек, все равно. Аномалия его вмиг на артефакт переделает.</text>
-    </string>
-    <string id="escape_trader_jobs_51">
-        <text>Вообщем суть в том, что из НИИ "Агропром" на блокпост передали то, что мне очень нужно. Белый пластиковый ящик. Нужно его спереть. Только осторожно. Военные когда обижаются, то вокруг такой шмон наводят, что даже крысы разбегаются. Я бы на твоем месте постарался это сделать ночью, и максимально тихо.</text>
-    </string>
-    <string id="escape_trader_jobs_511">
-        <text>А что за ящик то такой?</text>
-    </string>
-    <string id="escape_trader_jobs_5111">
-        <text>Да в самом ящике ничего особенного. Пластиковый белый саквояж. А вот то, что в самом ящике - мне очень нужно. Это документы - предварительный отчет экспедиции военных в НИИ "Агропром".</text>
+        <text>Слушай меня сюда ушами. До появления Зоны здесь было много засекреченных лабораторий и научных центров. Один из них скрывался под неброской вывеской НИИ Агропром. После появления Зоны никто ничего оттуда вывести не успел. Я даже не уверен, уцелел ли кто-нибудь из тех, кто во время катастрофы там был. Так вот, а недавно там появились военные и начали что-то в останках того НИИ копать. Да не просто копать, а еще и базу военную устроили временную там. Насколько я знаю скоро должны отправить отчет об экспедиции в центр, с приложенной к отчету раскопаной информацией. Думаю, что не стоит тебе объяснять, что это может пролить свет на многое, происходящее в Зоне.</text>
     </string>
     <string id="escape_trader_jobs_53">
         <text>Да, как раз появилась. Я тут провожу кое-какое расследование. Позже расскажу. Короче, ты должен встретить человека, который несет мне важную информацию. Зовут его Лис. Светиться у меня он не хочет, так что встретитесь с ним на хуторе за мостом. Координаты я тебе скину. Кстати, Меченный. Человек этот далеко не новичок, много знает, так что можешь расспросить его по своей теме. Все. Дуй к нему.</text>
@@ -348,29 +408,23 @@
     <string id="escape_trader_jobs_5321">
         <text>Ну как знаешь, я думал тебе действительно важно узнать, кто ты и что с тобой стряслось.</text>
     </string>
-    <string id="escape_trader_jobs_6">
-        <text>Согласен.</text>
+    <string id="escape_trader_jobs_55">
+        <text>В общем этот отчет скоммуниздить у вояк надо, я так понял? Посчитаем: разглашение государственной тайны, грабеж, нападение на солдат при исполнении, сопротивление при задержании, вероятнее всего несколько убийств. Учитывая реалии военного времени - расстрелов на пять потянет.</text>
     </string>
-    <string id="escape_trader_jobs_61">
-        <text>Хорошо, я постараюсь.</text>
+    <string id="escape_trader_jobs_555">
+        <text>Меченый, не строй из себя девочку. Можно втихаря дело провернуть, а кроме того там есть и другие сталкеры, они помогут. То, что оплата будет особая, я думаю, ты понимаешь, да и в случае чего спрячем тебя, если кипеж поднимется. В общем решайся - да или нет?</text>
     </string>
-    <string id="escape_trader_jobs_7">
-        <text>Нет, не хочу.</text>
+    <string id="escape_trader_jobs_5555">
+        <text>Блин, пошла рубаха рваться. Ладно, но ты со мной по приходу не расплатишься.</text>
     </string>
-    <string id="escape_trader_jobs_71">
-        <text>Нет, я не согласен.</text>
+    <string id="escape_trader_jobs_55555">
+        <text>О, слова не мальчика, но делового человека. Притащишь ящик - буду ждать в любое время суток.</text>
     </string>
-    <string id="escape_trader_jobs_8">
-        <text>По рукам.</text>
+    <string id="escape_trader_jobs_5556">
+        <text>Когда я найду более экзотический способ самоубийства, я может быть и соглашусь на твое предложение, а пока жить мне еще не надоело.</text>
     </string>
-    <string id="escape_trader_jobs_81">
-        <text>Ну принесешь ящик, тогда и рассчитаемся.</text>
-    </string>
-    <string id="escape_trader_jobs_9">
-        <text>Твое право.</text>
-    </string>
-    <string id="escape_trader_jobs_91">
-        <text>Ну как хочешь.</text>
+    <string id="escape_trader_jobs_55561">
+        <text>Ну ищи-ищи. Одумаешься - приходи, поговорим.</text>
     </string>
     <string id="escape_trader_start_dialog_171">
         <text>Ну что, принес?</text>
@@ -498,6 +552,24 @@
     <string id="escape_trader_talk_level_51">
         <text>От ты нудный. Ну ферма как ферма. Свиньи там еще до перестройки передохли.</text>
     </string>
+    <string id="escape_trader_tutorial_wounded_end_0">
+        <text>Ну, что скажешь, старик?</text>
+    </string>
+    <string id="escape_trader_tutorial_wounded_end_1">
+        <text>В общем, ты вроде как адекватен. Я передал в лагерь - они тебя теперь будут пускать. Кстати, тебе там товарищ должен был передать флешку с информацией. Где она?</text>
+    </string>
+    <string id="escape_trader_tutorial_wounded_end_11">
+        <text>Вот она, держи.</text>
+    </string>
+    <string id="escape_trader_tutorial_wounded_end_111">
+        <text>С каждым часом ты меня радуешь все больше, Меченый. Что ж, давай говорить как серьезные люди, делающие как серьезные дела.</text>
+    </string>
+    <string id="escape_trader_tutorial_wounded_end_12">
+        <text>Нет у меня ее.</text>
+    </string>
+    <string id="escape_trader_tutorial_wounded_end_121">
+        <text>Мне жаль Меченый, но пока ты ее мне не принесешь - серьезного разговора не будет.</text>
+    </string>
     <string id="tutorial_wounded_give_medkit_0">
         <text>Ты как, живой?</text>
     </string>
@@ -508,7 +580,7 @@
         <text>Держи.</text>
     </string>
     <string id="tutorial_wounded_give_medkit_21">
-        <text>Спасибо, брат. Я это не забуду. Я передам Волку, он главный в лагере в деревне. Он тебя отблагодарит.</text>
+        <text>Спасибо, брат. Я это не забуду. Я передам Волку, он главный в лагере в деревне. Он тебя отблагодарит. Да, кстати, вот флешка, отдай ее торговцу. Он знает, что с ней делать.</text>
     </string>
     <string id="tutorial_wounded_give_medkit_3">
         <text>Извини, брат, но аптечки нету.</text>
@@ -521,71 +593,5 @@
     </string>
     <string id="tutorial_wounded_give_medkit_41">
         <text>Ну и сволочь же ты, разве не понимаешь, что в следующий раз на моем месте можешь быть ты?</text>
-    </string>
-    <string id="escape_factory_assault_talk_21">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_assault_talk_22">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_11">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_112">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_1121">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_11211">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_112111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_1121111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_11212">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_112121">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_1121211">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_113">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_12">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_2">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_21">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_211">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_2111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_21111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_211111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_21112">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_211121">
-        <text>empty text</text>
     </string>
 </string_table>
