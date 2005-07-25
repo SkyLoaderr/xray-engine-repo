@@ -28,11 +28,22 @@ use            = false
 use_wpn        = false
 
 ;--------------------------------------------------------------------------
-; стандартный диалог
+; стандартная встреча
 ;--------------------------------------------------------------------------
 [meet@def]
 meet_state     = 30|hello@talk_hello|5|guard
-meet_state_wpn = 15|threat@threat_weap
+meet_state_wpn = 15|guard
+victim         = 15|actor
+victim_wpn     = 15|actor
+use            = false
+use_wpn        = false
+
+;--------------------------------------------------------------------------
+; стандартная встреча без приветствия
+;--------------------------------------------------------------------------
+[meet@def_no_hello]
+meet_state     = 30|guard
+meet_state_wpn = 15|guard
 victim         = 15|actor
 victim_wpn     = 15|actor
 use            = false
@@ -57,7 +68,8 @@ use_wpn        = false
 [remark1@begin]
 no_move             = true
 no_rotate           = true
-anim                = sit_knee
+anim                = hide
+meet                = meet@ignore
 on_info             = {+val_escort_begin} remark1@phrase1
 combat_ignore_cond  = always
 
@@ -84,6 +96,7 @@ combat_ignore_cond  = always
 no_move             = true
 no_rotate           = true
 anim                = guard
+meet                = meet@def
 snd                 = speech
 on_signal           = sound_end | remark1@wait1
 combat_ignore_cond  = always
@@ -95,6 +108,7 @@ combat_ignore_cond  = always
 no_move             = true
 no_rotate           = true
 anim                = guard
+meet                = meet@def_no_hello
 on_actor_dist_le    = 5 | remark1@phrase6
 on_timer            = 5000 | remark1@phrase4
 combat_ignore_cond  = always
@@ -106,6 +120,7 @@ combat_ignore_cond  = always
 no_move             = true
 no_rotate           = true
 anim                = guard
+meet                = meet@def_no_hello
 snd                 = val_escort_nap1_phrase1
 on_signal           = sound_end | remark1@wait2
 combat_ignore_cond  = always
@@ -117,6 +132,7 @@ combat_ignore_cond  = always
 no_move             = true
 no_rotate           = true
 anim                = guard
+meet                = meet@def_no_hello
 on_actor_dist_le    = 5 | remark1@phrase6
 on_timer            = 5000 | remark1@phrase5
 combat_ignore_cond  = always
@@ -128,8 +144,9 @@ combat_ignore_cond  = always
 no_move             = true
 no_rotate           = true
 anim                = guard
+meet                = meet@def_no_hello
 snd                 = val_escort_nap1_phrase1
-on_signal           = sound_end | walker1@ambush_go
+on_signal           = sound_end | walker1@ambush_go %+val_escort_start%
 combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
@@ -139,8 +156,9 @@ combat_ignore_cond  = always
 no_move             = true
 no_rotate           = true
 anim                = guard
+meet                = meet@def_no_hello
 snd                 = speech
-on_signal           = sound_end | walker1@ambush_go
+on_signal           = sound_end | walker1@ambush_go %+val_escort_start%
 combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
