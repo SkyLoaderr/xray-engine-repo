@@ -627,6 +627,8 @@ void CWeaponMagazined::PlayReloadSound()
 
 void CWeaponMagazined::switch2_Reload()
 {
+	CWeapon::FireEnd();
+
 	PlayReloadSound	();
 	PlaySound		(sndReload,get_LastFP());
 	PlayAnimReload	();
@@ -644,6 +646,8 @@ void CWeaponMagazined::switch2_Hiding()
 
 void CWeaponMagazined::switch2_Hidden()
 {
+	CWeapon::FireEnd();
+
 	signal_HideComplete		();
 	RemoveShotEffector		();
 }

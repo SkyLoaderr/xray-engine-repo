@@ -138,12 +138,18 @@ void CWeapon::StopShooting		()
 
 	//принудительно останавливать зацикленные партиклы
 	if(m_pFlameParticles && m_pFlameParticles->IsLooped())
-		StopFlameParticles	();
+		StopFlameParticles	();	
 
 	SwitchState(eIdle);
 
 	bWorking = false;
 	//if(IsWorking()) FireEnd();
+}
+
+void CWeapon::FireEnd				() 
+{
+	CShootingObject::FireEnd();
+	ClearShotEffector();
 }
 
 

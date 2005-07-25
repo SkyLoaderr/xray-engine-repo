@@ -5944,6 +5944,12 @@
 							RelativePath=".\EffectorShot.h">
 						</File>
 						<File
+							RelativePath=".\EffectorShotX.cpp">
+						</File>
+						<File
+							RelativePath=".\EffectorShotX.h">
+						</File>
+						<File
 							RelativePath=".\EffectorZoomInertion.cpp">
 						</File>
 						<File

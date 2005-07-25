@@ -342,7 +342,7 @@ protected:
 			void			FireTrace			(const Fvector& P, const Fvector& D);
 
 	virtual void			FireStart			() {CShootingObject::FireStart();}
-	virtual void			FireEnd				() {CShootingObject::FireEnd();}
+	virtual void			FireEnd				();// {CShootingObject::FireEnd();}
 
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
@@ -354,6 +354,7 @@ protected:
 	virtual void			OnShot				(){};
 	virtual void			AddShotEffector		();
 	virtual void			RemoveShotEffector	();
+	virtual	void			ClearShotEffector	();
 
 public:
 	//текущая дисперсия (в радианах) оружия с учетом используемого патрона

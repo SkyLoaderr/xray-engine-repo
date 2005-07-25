@@ -23,6 +23,8 @@ CEffectorShot::CEffectorShot	(float max_angle, float relax_speed,
 	fAngleHorzMax = max_angle_horz;//PI*0.05f;
 	fAngleHorzStep = step_angle_horz;//PI*0.05f*0.2f;
 
+	m_pActor = NULL;
+
 }
 
 CEffectorShot::~CEffectorShot	()

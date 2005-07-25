@@ -10,6 +10,7 @@
 
 #include "actoreffector.h"
 #include "effectorshot.h"
+#include "EffectorShotX.h"
 
 
 //возвращает 1, если оружие в отличном состоянии и >1 если повреждено
@@ -48,9 +49,10 @@ void CWeapon::AddShotEffector		()
 	if(pActor)
 	{
 		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, camMaxAngleHorz, camStepAngleHorz));
+		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShotX> (camMaxAngle,camRelaxSpeed, camMaxAngleHorz, camStepAngleHorz));
 		R_ASSERT				(S);
 		S->SetRndSeed(pActor->GetShotRndSeed());
+		S->SetActor(pActor);
 		S->Shot					(camDispersion);
 	}
 }
@@ -61,6 +63,16 @@ void  CWeapon::RemoveShotEffector	()
 	if(pActor)
 		pActor->EffectorManager().RemoveEffector	(eCEShot);
 }
+
+void	CWeapon::ClearShotEffector	()
+{
+	CActor* pActor = smart_cast<CActor*>(H_Parent());
+	if(pActor)
+	{
+		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
+		if (S) S->Clear();
+	};
+};
 
 const Fvector& CWeapon::GetRecoilDeltaAngle()
 {
