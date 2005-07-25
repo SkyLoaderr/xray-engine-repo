@@ -65,7 +65,7 @@
 
 					<scroll_view  x="4" y="40" width="416" height="416">
 						<objective_item x="0" y="0" width="400" height="10">
-							<image x="170" y="0" width="60" height="60" stretch="1"/>
+							<image x="170" y="0" width="90" height="90" stretch="1"/>
 							
 							<text_cont x="5" y="60" width="435" height="10">
 								<text font="letterica18" r="255" g="255" b="255"></text>
