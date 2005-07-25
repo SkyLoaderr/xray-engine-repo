@@ -55,14 +55,29 @@
 		<right_frame x="313" y="0" width="445" height="475">
 <!--			<texture>ui_pda_frame_sub</texture>  -->
 			<task_descr_view x="0" y="0" width="445" height="475">
-				<objective_item x="0" y="0" width="400" height="10">
-					<image x="170" y="0" width="60" height="60" stretch="1"/>
+
+				<main_frame x="0" y="0" width="445" height="475" a="90">
+					<texture>ui_pda_frame_sub</texture>
+
+					<header_frame_line x="8" y="17" width="430" height="21">
+						<texture>ui_string_03</texture>
+					</header_frame_line>
+
+					<scroll_view  x="4" y="40" width="416" height="416">
+						<objective_item x="0" y="0" width="400" height="10">
+							<image x="170" y="0" width="60" height="60" stretch="1"/>
+							
+							<text_cont x="5" y="60" width="435" height="10">
+								<text font="letterica18" r="255" g="255" b="255"></text>
+							</text_cont>
+							
+						</objective_item>
+					</scroll_view>
 					
-					<text_cont x="5" y="60" width="435" height="10">
-						<text font="letterica18" r="255" g="255" b="255"></text>
-					</text_cont>
-					
-				</objective_item>
+				</main_frame>
+
+
+				
 			</task_descr_view>
 			<map_wnd>
 
