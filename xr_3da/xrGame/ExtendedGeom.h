@@ -60,7 +60,7 @@ class CObjectContactCallback
 		return false;
 	}
 
-static	void RemoveCallback(CObjectContactCallback	*callbacks,ObjectContactCallbackFun	*c)
+static	void RemoveCallback(CObjectContactCallback*	&callbacks,ObjectContactCallbackFun	*c)
 	{
 		if(!callbacks) return;
 		VERIFY(c);
@@ -79,6 +79,8 @@ static	void RemoveCallback(CObjectContactCallback	*callbacks,ObjectContactCallba
 					
 					VERIFY(p->callback);
 					VERIFY(i->callback);
+					VERIFY(i);
+					VERIFY(p);
 					if(c==i->callback)
 					{
 						CObjectContactCallback	*del=i;

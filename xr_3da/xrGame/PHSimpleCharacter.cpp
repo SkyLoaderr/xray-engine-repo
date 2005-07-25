@@ -1158,7 +1158,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		c->surface.soft_erp=world_erp;
 	}
 	
-	if(tri_material->Flags.test(SGameMtl::flPassable))
+	if(tri_material->Flags.test(SGameMtl::flPassable)&&!do_collide)
 	{
 		UpdateStaticDamage(c,tri_material,bo1);
 		return;
