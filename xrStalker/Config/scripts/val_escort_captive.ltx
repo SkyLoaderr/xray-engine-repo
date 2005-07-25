@@ -28,6 +28,7 @@ no_move = true
 no_rotate = true
 anim = wait
 on_info = {+val_escort_start} walker@go
+combat_ignore_cond = always
 
 ;--------------------------------------------------------------------------
 [walker@go]
@@ -45,7 +46,7 @@ no_rotate = true
 anim = hide
 ;on_info = {=val_escort_combat_end} walker@leave
 on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@talk
-on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker1
+on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat -val_escort_guard3_combat} walker@go
 combat_ignore_cond = always
 
 ;--------------------------------------------------------------------------
