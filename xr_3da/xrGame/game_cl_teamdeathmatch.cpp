@@ -7,6 +7,7 @@
 #include "xr_level_controller.h"
 #include "clsid_game.h"
 #include "map_manager.h"
+#include "map_location.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
 #include "ui/UISkinSelector.h"
@@ -458,7 +459,7 @@ void game_cl_TeamDeathmatch::UpdateMapLocations		()
 			};
 			if (!Level().MapManager().HasMapLocation(FRIEND_LOCATION, id))
 			{
-				Level().MapManager().AddMapLocation(FRIEND_LOCATION, id);
+				(Level().MapManager().AddMapLocation(FRIEND_LOCATION, id))->EnablePointer();
 			}
 		}
 	};

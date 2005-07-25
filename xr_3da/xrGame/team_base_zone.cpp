@@ -17,6 +17,7 @@
 #include "game_cl_base.h"
 #include "clsid_game.h"
 #include "map_manager.h"
+#include "map_location.h"
 
 
 CTeamBaseZone::CTeamBaseZone		()
@@ -81,7 +82,8 @@ BOOL CTeamBaseZone::net_Spawn	(CSE_Abstract* DC)
 	{
 		char BaseMapLocation[1024];
 		sprintf (BaseMapLocation, "mp_team_base_%d_location", m_Team);
-		Level().MapManager().AddMapLocation(BaseMapLocation,ID());
+		(Level().MapManager().AddMapLocation(BaseMapLocation,ID()))->EnablePointer();
+		
 	};
 
 	return						(bOk);

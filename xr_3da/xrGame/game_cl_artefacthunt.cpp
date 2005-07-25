@@ -15,6 +15,7 @@
 #include "ui/UIPdaWnd.h"
 #include "xr_level_controller.h"
 #include "Artifact.h"
+#include "map_location.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -581,7 +582,7 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 				if (!Level().MapManager().HasMapLocation(ARTEFACT_NEUTRAL, artefactID))
 				{
 					Level().MapManager().RemoveMapLocationByObjectID(artefactID);
-					Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID);
+					(Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID))->EnablePointer();
 				};
 			}
 			else
@@ -591,7 +592,7 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 					if (!Level().MapManager().HasMapLocation(ARTEFACT_FRIEND, artefactID))
 					{
 						Level().MapManager().RemoveMapLocationByObjectID(artefactID);
-						Level().MapManager().AddMapLocation(ARTEFACT_FRIEND, artefactID);
+						(Level().MapManager().AddMapLocation(ARTEFACT_FRIEND, artefactID))->EnablePointer();
 					}
 				}
 				else
@@ -599,27 +600,10 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 					if (!Level().MapManager().HasMapLocation(ARTEFACT_ENEMY, artefactID))
 					{
 						Level().MapManager().RemoveMapLocationByObjectID(artefactID);
-						Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID);
+						(Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID))->EnablePointer();
 					}
 				}
 			};
-/*
-			if (old_artefactBearerID != artefactBearerID || old_teamInPossession != teamInPossession)
-			{
-				Level().MapManager().RemoveMapLocationByObjectID(old_artefactID);
-				if (!artefactBearerID)
-				{
-					Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID);
-				}
-				else
-				{
-					if (teamInPossession == local_player->team)
-						Level().MapManager().AddMapLocation(ARTEFACT_FRIEND, artefactID);
-					else
-						Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID);
-				};
-			};
-			*/
 		};
 		old_artefactBearerID = artefactBearerID;
 		old_artefactID = artefactID;
