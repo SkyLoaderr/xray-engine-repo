@@ -16,6 +16,7 @@
 <info_portion id="val_bs_victim_killed"></info_portion>
 
 <!-- Сцена 3 - транспортировка пленного -->
+<info_portion id="val_escort_begin"></info_portion>
 <info_portion id="val_escort_show_tip"></info_portion>
 <info_portion id="val_escort_start"></info_portion>
 <info_portion id="val_escort_combat"></info_portion>
@@ -119,6 +120,7 @@
 
 <!-- Раздавленный монолитовец -->
 <info_portion id="val_smashed_start"></info_portion>
+<info_portion id="val_smashed_btr_start"></info_portion>
 <info_portion id="val_smashed_kill_victim"></info_portion>
 
 <!-- Взрыв -->
