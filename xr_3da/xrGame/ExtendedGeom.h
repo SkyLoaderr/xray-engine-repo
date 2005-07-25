@@ -169,7 +169,6 @@ IC void dGeomDestroyUserData(dxGeom* geom)
 	P->cashed_tries		.clear()						;
 	}
 	xr_delete			(P)								;
-	xr_delete			(object_callbacks)				;
 	dGeomSetData		(geom,0)						;
 }
 
