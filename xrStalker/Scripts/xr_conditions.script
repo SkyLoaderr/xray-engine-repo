@@ -132,7 +132,7 @@ function is_dead_all(actor, npc, p)
 	return true
 end
 
--- проверка (по story_id) того, что чотя бы один из проверяемых сталкеров мертв
+-- проверка (по story_id) того, что хотя бы один из проверяемых сталкеров мертв
 -- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
 --       не успели проспавниться.
 function is_dead_one(actor, npc, p)
@@ -174,8 +174,8 @@ end
 
 -- true, если  в указанном гулаге народу меньше чем надо.
 function gulag_population_le(actor, npc, p)
-	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) <= tonumber(p[2]) )
 	printf("!-!-!")
+	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) <= (p[2]) )
 end
 
 -------------------------------------------------------------------------------------------------------
