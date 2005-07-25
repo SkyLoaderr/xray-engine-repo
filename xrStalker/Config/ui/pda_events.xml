@@ -63,7 +63,7 @@
 						<texture>ui_string_03</texture>
 					</header_frame_line>
 
-					<scroll_view  x="4" y="40" width="440" height="416">
+					<scroll_view  x="4" y="44" width="440" height="416">
 						<objective_item x="0" y="0" width="424" height="10">
 							<image x="170" y="0" width="90" height="90" stretch="1"/>
 							
