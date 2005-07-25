@@ -56,7 +56,7 @@
 <!--			<texture>ui_pda_frame_sub</texture>  -->
 			<task_descr_view x="0" y="0" width="445" height="475">
 				<objective_item x="0" y="0" width="400" height="10">
-					<image x="170" y="0" width="60" height="60"/>
+					<image x="170" y="0" width="60" height="60" stretch="1"/>
 					
 					<text_cont x="5" y="60" width="435" height="10">
 						<text font="letterica18" r="255" g="255" b="255"></text>
