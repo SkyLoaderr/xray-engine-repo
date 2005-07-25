@@ -410,12 +410,13 @@ void CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &dire
 
 void CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector direction, float distance)
 {
-	collide::rq_results		rq_storage	;
+	m_pick_distance			= 0.f;
+	collide::rq_results		rq_storage;
 	can_kill_entity			(position,direction,distance,rq_storage);
 	if (m_can_kill_member && m_can_kill_enemy)
 		return;
 
-	float					yaw, pitch, safety_fire_angle = PI_DIV_8*.5f;
+	float					yaw, pitch, safety_fire_angle = 1.f*PI_DIV_8*.5f;
 	direction.getHP			(yaw,pitch);
 
 	direction.setHP			(yaw - safety_fire_angle,pitch);
