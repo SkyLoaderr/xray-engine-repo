@@ -38,7 +38,6 @@ void	CEffectorShotX::Clear				()
 {
 	fAngleCurrent	= -EPS_S;
 	fAngleHorz = 0.0f;
-	Msg("- CEffectorShotX::Clear");
 };
 
 void	CEffectorShotX::UpdateActorCamera		(float dPitch, float dYaw)
