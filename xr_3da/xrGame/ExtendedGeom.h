@@ -164,9 +164,10 @@ IC void dGeomDestroyUserData(dxGeom* geom)
 	if(P)
 	{
 #ifdef DEBUG
-	dbg_total_saved_tries-=P->cashed_tries.size()		;
+		dbg_total_saved_tries-=P->cashed_tries.size()		;
 #endif
-	P->cashed_tries		.clear()						;
+		P->cashed_tries		.clear()						;
+		xr_delete			(P->object_callbacks)			;
 	}
 	xr_delete			(P)								;
 	dGeomSetData		(geom,0)						;
