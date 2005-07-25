@@ -389,8 +389,7 @@ IC BOOL __stdcall ray_query_callback	(collide::rq_result& result, LPVOID params)
 	if (param->m_holder->is_relation_enemy(entity_alive))
 		param->m_can_kill_enemy			= true;
 	else
-		if (!param->m_holder->is_relation_enemy(entity_alive))
-			param->m_can_kill_member	= true;
+		param->m_can_kill_member		= true;
 
 	param->m_pick_distance				= result.range;
 	return								(false);
