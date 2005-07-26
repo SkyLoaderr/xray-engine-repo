@@ -6,24 +6,19 @@
 //  Класс для представления ядра функциональности энциклопедии
 //=============================================================================
 
-#ifndef	UI_ENCYCLOPEDIA_CORE_H_
-#define	UI_ENCYCLOPEDIA_CORE_H_
-
 #pragma once
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "UIDialogWnd.h"
-#include "UIListWnd.h"
+#include "UIWindow.h"
 #include "UITreeViewItem.h"
-#include "UIFrameWindow.h"
 #include "../encyclopedia_article.h"
 
 //////////////////////////////////////////////////////////////////////////
 
 class CEncyclopediaArticle;
-
-//////////////////////////////////////////////////////////////////////////
+class CUIScrollView;
+class CUIFrameWindow;
 
 class CUIEncyclopediaCore: public CUIWindow
 {
@@ -31,7 +26,7 @@ private:
 	typedef CUIWindow inherited;
 public:
 					CUIEncyclopediaCore();
-	void			Init			(CUIListWnd *infoList, CUIListWnd *idxList);
+	void			Init			(CUIScrollView *infoList, CUIListWnd *idxList);
 	// Контролы и алгоритмы которые используются для вывода информации
 	// Добавляем статью и возвращаем путь к ней
 	shared_str		SetCurrentArtice(CUITreeViewItem *pTVItem);
@@ -55,20 +50,19 @@ public:
 	u32				m_uTreeItemColor;
 
 private:
-	void			AdjustImagePos	(CUIStatic &s);
+//.	void			AdjustImagePos	(CUIStatic &s);
 //.	void			OpenTree		(CUITreeViewItem *pItem);
 
-	CUIListWnd		*pInfoList, *pIdxList;
-	ArticlesDB		m_ArticlesDB;
+	CUIListWnd*				pIdxList;
+	CUIScrollView*			pInfoList;
+	ArticlesDB				m_ArticlesDB;
 	// Маска для изображения предмета текущей статьи
-	CUIFrameWindow	UIImgMask;
+	CUIFrameWindow*			UIImgMask;
 	
 	// Текущая выбранная статья
-	CEncyclopediaArticle	*m_pCurrArticle;
-	CUIStatic		*pItemImage;
+	CEncyclopediaArticle*	m_pCurrArticle;
+	CUIStatic*				pItemImage;
 
 	// Текущая позиция листа с информацией
-    int				m_iCurrentInfoListPos;
+    int						m_iCurrentInfoListPos;
 };
-
-#endif	//UI_ENCYCLOPEDIA_CORE_H_

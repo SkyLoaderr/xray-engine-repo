@@ -38,14 +38,14 @@ CUIEncyclopediaCore::CUIEncyclopediaCore()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
+void CUIEncyclopediaCore::Init(CUIScrollView *infoList, CUIListWnd *idxList)
 {
 	R_ASSERT(infoList);
 	R_ASSERT(idxList);
 
 	pIdxList	= idxList;
 	pInfoList	= infoList;
-	pInfoList->SetRightIndention(static_cast<int>(10 * UI()->GetScaleX()));
+//.	pInfoList->SetRightIndention(static_cast<int>(10 * UI()->GetScaleX()));
 
 	CUIXml		uiXml;
 	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, ENCYCLOPEDIA_CORE_XML);
@@ -67,15 +67,23 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 	R_ASSERT(pTVItem);
 
 	pInfoList->ScrollToBegin();
-	pInfoList->RemoveAll();
+	pInfoList->Clear();
 	m_iCurrentInfoListPos = 0;
+
 	// Удаляем текущую картинку
-	if (m_pCurrArticle && m_pCurrArticle->data())
-		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
+//.	if (m_pCurrArticle && m_pCurrArticle->data())
+//.		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
 
 	// для начала проверим, что нажатый элемент не рутовый
 	if (!pTVItem->IsRoot())
 	{
+
+		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+		article_info->Init			("pda_events.xml","main_wnd:right_frame:task_descr_view:main_frame:scroll_view:objective_item");
+		article_info->SetArticle	(m_ArticlesDB[pTVItem->GetValue()]->data());
+		m_UITaskInfoWnd->AddWindow	(article_info);
+
+/*
 		// Image
 		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
 		img.SetWndPos(0, 0);
@@ -95,7 +103,7 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		str.SetText(*CStringTable()(m_ArticlesDB[pTVItem->GetValue()]->data()->text.c_str()));
 		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
 
-
+*/
 		// Запоминаем текущий эдемент
 		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 
@@ -171,7 +179,7 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_ID article_id, bool bReaded)
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 {
 	// Выравниваем текстурку по центру листа
@@ -185,7 +193,7 @@ void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 		pInfoList->AddItem<CUIListItem>("");
 	}
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
