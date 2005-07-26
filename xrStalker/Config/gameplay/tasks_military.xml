@@ -8,6 +8,8 @@
 		<objective>
 			<text>mil_quest_kill_sniper</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type>mil_sniper_location</map_location_type>
+            <object_story_id>Mil_Sniper</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_support</text>
@@ -16,6 +18,8 @@
 		<objective>
 			<text>mil_dolg_assault_headquarter</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_lukash_location</map_location_type>
+            <object_story_id>Mil_Lukash</object_story_id>
 		</objective>
 		
 		

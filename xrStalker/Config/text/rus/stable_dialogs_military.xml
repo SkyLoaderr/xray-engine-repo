@@ -1068,8 +1068,26 @@
     <string id="mil_patrol_dialog2_9">
         <text>Эээ....Я пожалуй пойду.</text>
     </string>
-    <string id="mil_trader_dialog_0">
-        <text>Ну, чего приволок ?</text>
+    <string id="mil_trader_dialog_1001">
+        <text>Чего надо ?</text>
+    </string>
+    <string id="mil_trader_dialog_1002">
+        <text>Вопрос на засыпку - где можно разжиться артефактами, оружием ?</text>
+    </string>
+    <string id="mil_trader_dialog_1003">
+        <text>У меня, за деньги. Или в деревне на халяву, но больше риска.</text>
+    </string>
+    <string id="mil_trader_dialog_1004">
+        <text>В деревне ?</text>
+    </string>
+    <string id="mil_trader_dialog_1005">
+        <text>В деревне. Там аномалий дохрена и всякие новички в них часто попадают. Туда наши ребята пошли, хочешь - присоединись к ним.</text>
+    </string>
+    <string id="mil_trader_dialog_1006">
+        <text>Ясно.</text>
+    </string>
+    <string id="mil_trader_dialog_2001">
+        <text>Ну, чего принес ?</text>
     </string>
     <string id="mil_zoneguard_common1_0">
         <text>У вас тут повар есть ?</text>

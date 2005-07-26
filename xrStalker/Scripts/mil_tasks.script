@@ -285,7 +285,7 @@ function process_info_portion(info_id)
 	       level_tasks.remove_location (708, "mil_dolg_location")
 	    return true
     elseif info_id == "mil_dolg_dead" then 	       
-	       level_tasks.remove_location (704, "mil_sniper_location")
+	       --level_tasks.remove_location (704, "mil_sniper_location")
 	    return true  
 	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
 	       level_tasks.remove_location (707, "mil_lukash_location")
@@ -312,10 +312,10 @@ function process_info_portion(info_id)
 	       --remove_location (1008, "mil_dolg_location")
 	    return true  
     elseif info_id == "mil_sniper_get_job" then
-           level_tasks.add_location (704, "mil_sniper_location")
+           --level_tasks.add_location (704, "mil_sniper_location")
         return true
     elseif info_id == "mil_sniper_dead" and db.actor:has_info ("mil_sniper_get_job") then
-           level_tasks.remove_location (704, "mil_sniper_location")
+           --level_tasks.remove_location (704, "mil_sniper_location")
            level_tasks.set_task_state (task.completed, "mil_kill_sniper", 1)
            db.actor:give_info_portion ("mil_sniper_job_complete")
            --add_location (708, "mil_dolg_location")
@@ -324,7 +324,7 @@ function process_info_portion(info_id)
 		   level_tasks.remove_location (708, "mil_dolg_location")
 		return true
 	elseif info_id == "mil_sniper_job_failed" then
-	       level_tasks.remove_location (704, "mil_sniper_location") 
+	       --level_tasks.remove_location (704, "mil_sniper_location") 
 	    return true
 	elseif info_id == "mil_headquarter_attack" then    
            if db.actor:has_info ("mil_sniper_get_job") then
