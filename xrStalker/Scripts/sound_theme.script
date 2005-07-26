@@ -74,6 +74,7 @@ ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\
 ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
 ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
 ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garbage\distance_shooting]]}
+ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\human_01\scenario\bandits\bandit_replic_2]]}
 ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
 ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
 
