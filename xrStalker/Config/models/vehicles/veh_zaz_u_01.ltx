@@ -26,12 +26,12 @@ fuel_tank         		= 30.         	; L
 fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 30.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 2500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 2000.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 2200.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.02
-rpm_increment_factor	= 0.01
-rpm_decrement_factor	= 0.01
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.02
 
 ; additional engine parameters
 
@@ -57,11 +57,11 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.73, 1700,2850	
-N1                 		= 3.73, 1700,2850
-N2                 		= 2.29, 1700,2850
-N3                 		= 1.39, 1700,2850
-N4                 		= 0.96, 1700,2850
+R                  		= 3.73, 2100,2850	
+N1                 		= 3.73, 2100,2850
+N2                 		= 2.29, 2100,2850
+N3                 		= 1.39, 2100,2850
+N4                 		= 0.96, 2100,2850
 
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
@@ -208,8 +208,8 @@ period_number	    	=  50
 ;------ Others params ----------------------------------------------------------
 
 [air_resistance]
-linear_factor           = 5500.f	;
-angular_factor          = 2500.f	;
+linear_factor           = 1500.f	;
+angular_factor          = 5500.f	;
 
 [wheels_params]
 damping_factor          = 0.5		;
