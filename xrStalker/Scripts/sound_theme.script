@@ -73,6 +73,8 @@ ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_m
 ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
 ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
 ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
+ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
+ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
