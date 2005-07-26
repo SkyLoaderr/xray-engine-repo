@@ -902,9 +902,6 @@
 					RelativePath=".\Config\ui\car_panel.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\carbody.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\carbody_item.xml">
 				</File>
 				<File
@@ -959,16 +956,10 @@
 					RelativePath=".\Config\ui\jobs.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\jobs_new.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\maingame.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\maingame_character.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\maingame_new.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\maingame_pda_msg.xml">
@@ -993,9 +984,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\pda_character.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\pda_character_new.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\pda_contacts_new.xml">
