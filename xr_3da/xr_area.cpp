@@ -12,7 +12,7 @@ using namespace	collide;
 
 void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 {
-	if (S->g_object && S->g_object->getDestroy())	return;
+	if (S->g_object && S->g_object->getDestroy())	{S->g_object=0; return;}
 	if (0==S->feedback)								return;
 
 	clamp					(range,0.1f,500.f);
