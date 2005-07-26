@@ -328,31 +328,28 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_krot_general_info">
+    <dialog id="agr_krot_about_gunslinger_cache">
         <has_info>agr_help_krot_done</has_info>
+        <has_info>agr_can_ask_krot_about_gunslinger</has_info>
         <phrase_list>
-            <phrase id="20">
-                <text>agr_krot_general_info_20</text>
-                <next>120</next>
-            </phrase>
-            <phrase id="30">
-                <text>agr_krot_general_info_30</text>
-            </phrase>
-            <phrase id="120">
-                <text>agr_krot_general_info_120</text>
-                <next>30</next>
-            </phrase>
             <phrase id="10">
-                <text>agr_krot_general_info_10</text>
+                <text>agr_krot_about_gunslinger_cache_10</text>
                 <next>100</next>
             </phrase>
-            <phrase id="0">
-                <text>agr_krot_general_info_0</text>
-                <next>10</next>
+            <phrase id="110">
+                <text>agr_krot_about_gunslinger_cache_110</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="20">
+                <text>agr_krot_about_gunslinger_cache_20</text>
             </phrase>
             <phrase id="100">
-                <text>agr_krot_general_info_100</text>
-                <next>20</next>
+                <text>agr_krot_about_gunslinger_cache_100</text>
+                <next>110</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_about_gunslinger_cache_0</text>
+                <next>10</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -374,6 +371,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_krot_gunslinger_secret">
+        <has_info>agr_find_gunslinger_cache</has_info>
         <phrase_list>
             <phrase id="10">
                 <text>agr_krot_gunslinger_secret_10</text>
@@ -384,32 +382,34 @@
             </phrase>
             <phrase id="0">
                 <text>agr_krot_gunslinger_secret_0</text>
-                <has_info>agr_find_gunslinger_cache</has_info>
                 <next>10</next>
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_krot_about_gunslinger_cache">
+    <dialog id="agr_krot_general_info">
         <has_info>agr_help_krot_done</has_info>
         <phrase_list>
+            <phrase id="20">
+                <text>agr_krot_general_info_20</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="30">
+                <text>agr_krot_general_info_30</text>
+            </phrase>
+            <phrase id="120">
+                <text>agr_krot_general_info_120</text>
+                <next>30</next>
+            </phrase>
             <phrase id="10">
-                <text>agr_krot_about_gunslinger_cache_10</text>
+                <text>agr_krot_general_info_10</text>
                 <next>100</next>
             </phrase>
             <phrase id="100">
-                <text>agr_krot_about_gunslinger_cache_100</text>
-                <next>110</next>
-            </phrase>
-            <phrase id="110">
-                <text>agr_krot_about_gunslinger_cache_110</text>
+                <text>agr_krot_general_info_100</text>
                 <next>20</next>
             </phrase>
-            <phrase id="20">
-                <text>agr_krot_about_gunslinger_cache_20</text>
-            </phrase>
             <phrase id="0">
-                <text>agr_krot_about_gunslinger_cache_0</text>
-                <dont_has_info>agr_can_ask_krot_about_gunslinger</dont_has_info>
+                <text>agr_krot_general_info_0</text>
                 <next>10</next>
             </phrase>
         </phrase_list>
