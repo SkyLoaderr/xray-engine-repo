@@ -34,7 +34,7 @@
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
 		
-		<location_btn x="225" y="3" width="32" height="32">
+		<location_btn x="225" y="0" width="32" height="32">
 			<texture>ui_icons_mapPDA_showmark</texture>
 		</location_btn>
 		
