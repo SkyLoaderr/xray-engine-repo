@@ -53,17 +53,26 @@
 		</left_frame>
 	
 		<right_frame x="313" y="0" width="448" height="475">
-<!--			<texture>ui_pda_frame_sub</texture>  -->
 			<task_descr_view x="0" y="0" width="448" height="475">
 
 				<main_frame x="0" y="0" width="448" height="475" a="90">
 					<texture>ui_pda_frame_sub</texture>
 
+					<auto_static x="8" y="44" width="4" height="460">
+						<texture>ui\ui_pda_vertical_line_r_l</texture>
+					</auto_static>
+					<auto_static x="416" y="44" width="4" height="460">
+						<texture>ui\ui_pda_vertical_line_r_r</texture>
+					</auto_static>
+					<auto_static x="8" y="44" width="410" height="2" stretch="1">
+						<texture>ui\ui_pda_horizontal_line</texture>
+					</auto_static>
+
 					<header_frame_line x="8" y="17" width="430" height="21">
 						<texture>ui_string_03</texture>
 					</header_frame_line>
 
-					<scroll_view  x="4" y="44" width="436" height="416" right_ident="5">
+					<scroll_view  x="8" y="44" width="436" height="420" right_ident="10">
 						<objective_item x="0" y="0" width="424" height="10">
 							<image x="170" y="0" width="90" height="90" stretch="1"/>
 							

@@ -26,8 +26,11 @@ void CUITaskDescrWnd::Init	(CUIXml* doc, LPCSTR start_from)
 	strconcat				(str,start_from,":main_frame");
 	xml_init.InitFrameWindow(*doc,str,0,m_UIMainFrame);
 
+	strconcat				(str,start_from,":main_frame");
+	xml_init.InitAutoStaticGroup(*doc, str, m_UIMainFrame);
+
 	m_UIMainHeader			= xr_new<CUIFrameLineWnd>();m_UIMainHeader->SetAutoDelete(true);
-	AttachChild				(m_UIMainHeader);
+	m_UIMainFrame->AttachChild(m_UIMainHeader);
 	strconcat				(str,start_from,":main_frame:header_frame_line");
 	xml_init.InitFrameLine	(*doc,str,0,m_UIMainHeader);
 
@@ -46,7 +49,7 @@ void CUITaskDescrWnd::ClearAll					()
 void CUITaskDescrWnd::AddArticle				(LPCSTR article)
 {
 	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
-	article_info->Init			("pda_events.xml","main_wnd:right_frame:task_descr_view:main_frame:scroll_view:objective_item");
+	article_info->Init			("encyclopedia_item.xml","events_wnd:objective_item");
 	article_info->SetArticle	(article);
 	m_UITaskInfoWnd->AddWindow	(article_info);
 }

@@ -108,6 +108,7 @@ void CGameTask::Load(const TASK_ID& id)
 
 		objective.map_location			= g_gameTaskXml.Read(task_node, "objective:map_location_type", i, NULL);
 		LPCSTR object_story_id			= g_gameTaskXml.Read(task_node, "objective:object_story_id", i, NULL);
+		objective.def_location_enabled	= (NULL != g_gameTaskXml.Read(task_node, "objective:map_location_hidden", i, NULL));
 		bool b1,b2;
 		b1 = (0==objective.map_location.size());
 		b2 = (NULL==object_story_id);
@@ -123,14 +124,16 @@ void CGameTask::Load(const TASK_ID& id)
 
 bool CGameTask::HighlightedSpotOnMap(int objective_id)
 {
-	CMapLocation* ml = Level().MapManager().GetMapLocation(m_Objectives[objective_id].map_location, m_Objectives[objective_id].object_id);
-	return ml->PointerEnabled	();
+	CMapLocation* ml = m_Objectives[objective_id].HasMapLocation();
+	return (ml && ml->PointerEnabled	());
 }
 
 void CGameTask::HighlightSpotOnMap(int objective_id, bool bHighlight)
 {
 	Level().MapManager().DisableAllPointers();
-	CMapLocation* ml = Level().MapManager().GetMapLocation(m_Objectives[objective_id].map_location, m_Objectives[objective_id].object_id);
+	CMapLocation* ml = m_Objectives[objective_id].HasMapLocation();
+	
+	if(NULL==ml) return;
 
 	if(bHighlight)
 		ml->EnablePointer();
@@ -150,8 +153,8 @@ void CGameTask::ShowLocations			(bool bShow)
 {
 	for(u32 i=0; i<m_Objectives.size(); ++i){
 		SGameTaskObjective& obj = 	m_Objectives[i];
-		if(obj.HasMapLocation()){
-			CMapLocation* ml = Level().MapManager().GetMapLocation(m_Objectives[i].map_location, m_Objectives[i].object_id);
+		CMapLocation* ml		= obj.HasMapLocation		();
+		if(NULL!=ml){
 			if(bShow)
 				ml->EnableSpot();
 			else
@@ -163,15 +166,18 @@ void CGameTask::ShowLocations			(bool bShow)
 bool CGameTask::ShownLocations			()
 {
 	for(u32 i=0; i<m_Objectives.size(); ++i){
-		SGameTaskObjective& obj = 	m_Objectives[i];
-		if(obj.HasMapLocation()){
-			CMapLocation* ml = Level().MapManager().GetMapLocation(m_Objectives[i].map_location, m_Objectives[i].object_id);
-			return ml->SpotEnabled		();
-		}
+		SGameTaskObjective& obj						= m_Objectives[i];
+		CMapLocation* ml  = obj.HasMapLocation		();
+		if(ml) return ml->SpotEnabled				();
 	}
-
 	return false;
 }
 
+
+CMapLocation* SGameTaskObjective::HasMapLocation		()
+{
+	if( map_location.size()==0) return NULL;
+	return Level().MapManager().GetMapLocation(map_location, object_id);
+}
 
 

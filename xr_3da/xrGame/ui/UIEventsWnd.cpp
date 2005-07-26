@@ -182,10 +182,10 @@ void CUIEventsWnd::OnListItemClicked		(CUIWindow* w, void* d)
 	CUIListItem*	pSelItem	= (CUIListItem*)d;
 	CUITaskItem*	pTaskSelItem	= smart_cast<CUITaskItem*>(pSelItem);
 
-	if(pTaskSelItem->ObjectiveIdx() != 0 && pTaskSelItem->Objective()->HasMapLocation()){
-		CMapLocation* ml = Level().MapManager().GetMapLocation(	pTaskSelItem->Objective()->map_location,
-																pTaskSelItem->Objective()->object_id);
-		m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
+	if(pTaskSelItem->ObjectiveIdx() != 0 ){
+		CMapLocation* ml = pTaskSelItem->Objective()->HasMapLocation();
+		if(ml)
+			m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
 	}
 
 	int sz = m_ListWnd->GetSize		();
@@ -218,10 +218,10 @@ bool CUIEventsWnd::GetDescriptionMode		()
 void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 {
 	if(GetDescriptionMode()){//map
-		if(idx != 0 && t->m_Objectives[idx].HasMapLocation()){
-			CMapLocation* ml = Level().MapManager().GetMapLocation(	t->m_Objectives[idx].map_location,
-																	t->m_Objectives[idx].object_id);
-			m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
+		if(idx != 0 ){
+			CMapLocation* ml = t->m_Objectives[idx].HasMapLocation();
+			if(ml)
+				m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
 		}
 	}else{//articles
 		m_UITaskInfoWnd->ClearAll	();

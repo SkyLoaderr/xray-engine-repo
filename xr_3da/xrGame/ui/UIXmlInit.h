@@ -81,7 +81,6 @@ public:
 
 
 
-
 	//static void	SetTexture				(const xr_string& texture_name, CUIStatic* pWnd);
 	//static void SetTexture				(const xr_string& texture_name, CUIStaticItem* si);
 protected:
@@ -100,6 +99,7 @@ public:
 	typedef		StaticsVec::iterator	StaticsVec_it;
 
 	StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
+	StaticsVec InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd);
 
 	// Функции для пересчета координат для применения выравнивания
 	// Params:

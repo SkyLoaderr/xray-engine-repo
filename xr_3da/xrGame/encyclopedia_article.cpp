@@ -120,13 +120,17 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	data()->image.SetWndRect(0, 0, r.width(), r.height());
 
 	// Тип статьи
-	if (uiXml.ReadAttribInt(pNode, "article_type", 0))
-	{
-		data()->articleType = ARTICLE_DATA::eDiaryArticle;
-	}
-	else
-	{
+	xr_string atricle_type = uiXml.ReadAttrib(pNode, "article_type", "encyclopedia");
+	if(0==stricmp(atricle_type.c_str(),"encyclopedia")){
 		data()->articleType = ARTICLE_DATA::eEncyclopediaArticle;
+	}else
+	if(0==stricmp(atricle_type.c_str(),"journal")){
+		data()->articleType = ARTICLE_DATA::eJournalArticle;
+	}else
+	if(0==stricmp(atricle_type.c_str(),"task")){
+		data()->articleType = ARTICLE_DATA::eTaskArticle;
+	}else{
+		Msg("incorrect article type definition for [%s]",*item_data.id);
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "GameTaskDefs.h"
 
 class CGameTaskManager;
+class CMapLocation;
 
 struct SGameTaskObjective 
 {
@@ -18,12 +19,13 @@ struct SGameTaskObjective
 	shared_str				map_location;
 	u16						object_id;
 	ETaskState				task_state;
-	bool					HasMapLocation(){return map_location.size()!=0;}
-//	Flags16					flags;
+	CMapLocation*			HasMapLocation		();
+	
 
 	//прикрипленная иконка
 	shared_str				icon_texture_name;
 	Frect					icon_rect;//x,y,w,h
+	bool					def_location_enabled;
 };
 DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);
 

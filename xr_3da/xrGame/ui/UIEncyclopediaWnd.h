@@ -10,14 +10,6 @@
 #define UI_ENCYCLOPEDIA_WND_H_
 
 #include "UIWindow.h"
-/*
-#include "UIFrameLineWnd.h"
-#include "UIFrameWindow.h"
-#include "UIAnimatedStatic.h"
-#include "UIListWnd.h"
-#include "UITreeViewItem.h"
-#include "UIEncyclopediaCore.h"
-*/
 #include "../encyclopedia_article_defs.h"
 
 class CEncyclopediaArticle;
@@ -27,7 +19,8 @@ class CUIAnimatedStatic;
 class CUIStatic;
 class CUIListWnd;
 class CUIEncyclopediaCore;
-//////////////////////////////////////////////////////////////////////////
+class CUIScrollView;
+class CUITreeViewItem;
 
 class CUIEncyclopediaWnd: public CUIWindow
 {
@@ -35,27 +28,20 @@ private:
 	typedef CUIWindow inherited;
 
 	shared_str m_InfosHeaderStr;
-
-	// Изменить размер статика по размеру текстуры
-	void RescaleStatic(CUIStatic &s);
 public:
-					CUIEncyclopediaWnd();
-	virtual			~CUIEncyclopediaWnd();
+						CUIEncyclopediaWnd();
+	virtual				~CUIEncyclopediaWnd();
 
-	virtual void	Init();
-	virtual void	Show(bool status);
-	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
-	virtual void	Draw();
+	virtual void		Init();
+	virtual void		Show(bool status);
+	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	virtual void		Draw();
 
-	void			AddArticle(ARTICLE_ID, bool bReaded);
-	void			DeleteArticles();
-	bool			HasArticle(ARTICLE_ID);
+	void				AddArticle(ARTICLE_ID, bool bReaded);
+	void				DeleteArticles();
+	bool				HasArticle(ARTICLE_ID);
 
-//.	void			OpenTree(ARTICLE_ID id) { UIInfo.OpenTree(id); }
-// Кнопка возврата в меню заданий
-//	CUIButton			UIBack;
-
-	void			ReloadArticles	();
+	void				ReloadArticles	();
 protected:
 	u32					prevArticlesCount;
 	// Элементы графического оформления
@@ -66,10 +52,21 @@ protected:
 	CUIAnimatedStatic*	UIAnimation;
 	CUIStatic*			UIArticleHeader;
 
+	// Хранилище статей
+	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
+	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
+	ArticlesDB				m_ArticlesDB;
+	CGameFont*				m_pTreeRootFont;
+	u32						m_uTreeRootColor;
+	CGameFont*				m_pTreeItemFont;
+	u32						m_uTreeItemColor;
+
 	// Data lists
 	CUIListWnd*				UIIdxList;
-	CUIListWnd*				UIInfoList;
-	CUIEncyclopediaCore*	UIInfo;
+	CUIScrollView*			UIInfoList;
+//	CUIEncyclopediaCore*	UIInfo;
+
+	shared_str				SetCurrentArtice(CUITreeViewItem *pTVItem);
 };
 
 #endif	//UI_ENCYCLOPEDIA_WND_H_

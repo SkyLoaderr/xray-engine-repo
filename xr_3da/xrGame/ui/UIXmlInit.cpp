@@ -493,6 +493,29 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
+CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd)
+{
+	int items_num = xml_doc.GetNodesNum(path, 0, "auto_static");
+	// tmp statics vector
+	StaticsVec	tmpVec;
+
+	XML_NODE* _node = xml_doc.NavigateToNode(path,0);
+	xml_doc.SetLocalRoot(_node);
+
+	CUIStatic* pUIStatic = NULL;
+	for(int i=0; i<items_num; i++)
+	{
+		pUIStatic = xr_new<CUIStatic>();
+		InitStatic(xml_doc, "auto_static", i, pUIStatic);
+		pUIStatic->SetAutoDelete(true);
+		pParentWnd->AttachChild(pUIStatic);
+		tmpVec.push_back(pUIStatic);
+		pUIStatic = NULL;
+	}
+
+	xml_doc.SetLocalRoot(xml_doc.GetRoot());
+	return tmpVec;
+}
 
 CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)
 {
@@ -1166,8 +1189,10 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 {
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	InitWindow(xml_doc, path, index, pWnd);
-	pWnd->Init();
+	InitWindow							(xml_doc, path, index, pWnd);
+	float ri = xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
+	pWnd->SetRightIndention				(ri*UI()->GetScaleX());
+	pWnd->Init							();
 
-	return true;
+	return								true;
 }

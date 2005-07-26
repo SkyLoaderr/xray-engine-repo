@@ -13,10 +13,12 @@ friend class CUIXmlInit; //for init
 protected:
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
+	float			m_rightIdent;
 	void			RecalcSize			();
 	void			UpdateScroll		();
 	void			Init				();// need parent to be initialized
 	void			OnScrollV			();
+	void			SetRightIndention	(float val);
 public:
 					CUIScrollView		();
 	virtual			~CUIScrollView		();
@@ -26,4 +28,5 @@ public:
 			void	AddWindow			(CUIWindow* pWnd);
 			void	RemoveWindow		(CUIWindow* pWnd);
 			void	Clear				();
+			void	ScrollToBegin		();
 };

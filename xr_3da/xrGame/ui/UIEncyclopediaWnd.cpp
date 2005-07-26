@@ -9,41 +9,31 @@
 #include "StdAfx.h"
 #include "UIEncyclopediaWnd.h"
 #include "UIXmlInit.h"
-#include "../object_broker.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 #include "UIAnimatedStatic.h"
 #include "UIListWnd.h"
-#include "UIEncyclopediaCore.h"
+#include "UIScrollView.h"
+#include "UITreeViewItem.h"
 #include "UIPdaAux.h"
-
+#include "UIEncyclopediaArticleWnd.h"
+#include "../encyclopedia_article.h"
 #include "../alife_registry_wrappers.h"
 #include "../actor.h"
-
-//////////////////////////////////////////////////////////////////////////
+#include "../object_broker.h"
 
 const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
-
-//////////////////////////////////////////////////////////////////////////
 
 CUIEncyclopediaWnd::CUIEncyclopediaWnd()
 {
 	prevArticlesCount	= 0;
-	UIInfo		= xr_new<CUIEncyclopediaCore>();
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 CUIEncyclopediaWnd::~CUIEncyclopediaWnd()
 {
-//	if (m_pCurrArticle)
-//		UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->data()->image);
-
 	DeleteArticles();
-	delete_data(UIInfo);
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::Init()
 {
@@ -60,10 +50,10 @@ void CUIEncyclopediaWnd::Init()
 	AttachChild(UIEncyclopediaIdxBkg);
 	xml_init.InitFrameWindow(uiXml, "right_frame_window", 0, UIEncyclopediaIdxBkg);
 
-	xml_init.InitFont(uiXml, "tree_item_font", 0, UIInfo->m_uTreeItemColor, UIInfo->m_pTreeItemFont);
-	R_ASSERT(UIInfo->m_pTreeItemFont);
-	xml_init.InitFont(uiXml, "tree_root_font", 0, UIInfo->m_uTreeRootColor, UIInfo->m_pTreeRootFont);
-	R_ASSERT(UIInfo->m_pTreeRootFont);
+	xml_init.InitFont(uiXml, "tree_item_font", 0, m_uTreeItemColor, m_pTreeItemFont);
+	R_ASSERT(m_pTreeItemFont);
+	xml_init.InitFont(uiXml, "tree_root_font", 0, m_uTreeRootColor, m_pTreeRootFont);
+	R_ASSERT(m_pTreeRootFont);
 
 
 	UIEncyclopediaIdxHeader		= xr_new<CUIFrameLineWnd>(); UIEncyclopediaIdxHeader->SetAutoDelete(true);
@@ -94,18 +84,14 @@ void CUIEncyclopediaWnd::Init()
 	UIIdxList->SetMessageTarget(this);
 	UIIdxList->EnableScrollBar(true);
 
-	UIInfoList					= xr_new<CUIListWnd>(); UIInfoList->SetAutoDelete(true);
+	UIInfoList					= xr_new<CUIScrollView>(); UIInfoList->SetAutoDelete(true);
 	UIEncyclopediaInfoBkg->AttachChild(UIInfoList);
-	xml_init.InitListWnd(uiXml, "info_list", 0, UIInfoList);
-	UIInfoList->EnableScrollBar(true);
-	UIInfoList->SetNewRenderMethod(true);
-	UIInfoList->ActivateList(false);
-	UIInfoList->SetMessageTarget(UIInfo);
+	xml_init.InitScrollView(uiXml, "info_list", 0, UIInfoList);
+//	UIInfoList->EnableScrollBar(true);
+//	UIInfoList->SetNewRenderMethod(true);
+//	UIInfoList->ActivateList(false);
+//	UIInfoList->SetMessageTarget(UIInfo);
 
-	UIInfo->Init(UIInfoList, UIIdxList);
-
-	// Читаем максимальную длинну картинки в энциклопедии
-//	MAX_PICTURE_WIDTH = uiXml.ReadAttribInt("item_static", 0, "width", 0);
 
 	string256 header;
 	strconcat(header, ALL_PDA_HEADER_PREFIX, "/Encyclopedia");
@@ -121,7 +107,6 @@ void CUIEncyclopediaWnd::Init()
 */
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 {
@@ -130,21 +115,12 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
 		R_ASSERT(pTVItem);
 
-		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *UIInfo->SetCurrentArtice(pTVItem);
+		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *SetCurrentArtice(pTVItem);
 		UIEncyclopediaInfoHeader->UITitleText.SetText(caption.c_str());
 		caption.erase(0, caption.find_last_of("/") + 1);
 		UIArticleHeader->SetText(caption.c_str());
+	}
 
-			// Запоминаем текущий эдемент
-//			m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
-//		}
-	}
-/*	else if (&UIBack == pWnd && BUTTON_CLICKED == msg)
-	{
-		UIBack.Show(false);
-		GetTop()->SendMessage(this, PDA_GO_BACK, NULL);
-	}
-*/
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
@@ -154,7 +130,7 @@ void CUIEncyclopediaWnd::Draw()
 {
 	inherited::Draw();
 }
-//////////////////////////////////////////////////////////////////////////
+
 void CUIEncyclopediaWnd::ReloadArticles()
 {
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -166,14 +142,13 @@ void CUIEncyclopediaWnd::ReloadArticles()
 		{
 			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 			{
-				UIInfo->AddArticle(it->article_id, it->readed);
+				AddArticle(it->article_id, it->readed);
 			}
 		}
 		prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::Show(bool status)
 {
@@ -181,32 +156,108 @@ void CUIEncyclopediaWnd::Show(bool status)
 	{
 		ReloadArticles();
 	}
-	else
-	{
-//		UIBack.Show(false);
-	}
 
-	UIInfo->Show(status);
 	inherited::Show(status);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUIEncyclopediaWnd::AddArticle(ARTICLE_ID id, bool bReaded)
-{
-	UIInfo->AddArticle(id, bReaded);
-}
 
 bool CUIEncyclopediaWnd::HasArticle(ARTICLE_ID id)
 {
 	ReloadArticles();
-	return UIInfo->HasArticle(id);
+	for(std::size_t i = 0; i<m_ArticlesDB.size(); ++i)
+	{
+		if(m_ArticlesDB[i]->Id() == id) return true;
+	}
+	return false;
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::DeleteArticles()
 {
-	UIInfo->DeleteArticles();
+	delete_data			(m_ArticlesDB);
 	UIIdxList->RemoveAll();
+}
+
+shared_str CUIEncyclopediaWnd::SetCurrentArtice(CUITreeViewItem *pTVItem)
+{
+	R_ASSERT(pTVItem);
+
+	UIInfoList->ScrollToBegin();
+	UIInfoList->Clear();
+
+	// для начала проверим, что нажатый элемент не рутовый
+	if (!pTVItem->IsRoot())
+	{
+
+		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+		article_info->Init			("encyclopedia_item.xml","encyclopedia_wnd:objective_item");
+		article_info->SetArticle	(m_ArticlesDB[pTVItem->GetValue()]);
+		UIInfoList->AddWindow		(article_info);
+
+/*
+		// Image
+		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
+		img.SetWndPos(0, 0);
+		Frect r = pInfoList->GetAbsoluteRect();
+
+		img.SetClipRect(r);
+		AdjustImagePos(img);
+		pInfoList->AttachChild(&img);
+		
+		if( UIImgMask.GetParent() )
+			UIImgMask.GetParent()->DetachChild(&UIImgMask);
+
+		img.SetMask(&UIImgMask);
+
+		// Добавляем текст
+		CUIString str;
+		str.SetText(*CStringTable()(m_ArticlesDB[pTVItem->GetValue()]->data()->text.c_str()));
+		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
+
+*/
+		// Запоминаем текущий эдемент
+//		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
+
+		// Пометим как прочитанную
+		if (!pTVItem->IsArticleReaded())
+		{
+			CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
+
+			if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+			{
+				for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry->registry().objects().begin();
+					it != pActor->encyclopedia_registry->registry().objects().end(); it++)
+				{
+					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type &&
+						m_ArticlesDB[pTVItem->GetValue()]->Id() == it->article_id)
+					{
+						it->readed = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	return pTVItem->GetHierarchyAsText().c_str();
+}
+
+void CUIEncyclopediaWnd::AddArticle(ARTICLE_ID article_id, bool bReaded)
+{
+	for(std::size_t i = 0; i<m_ArticlesDB.size(); i++)
+	{
+		if(m_ArticlesDB[i]->Id() == article_id) return;
+	}
+
+	// Добавляем элемент
+	m_ArticlesDB.resize(m_ArticlesDB.size() + 1);
+	CEncyclopediaArticle*& a = m_ArticlesDB.back();
+	a = xr_new<CEncyclopediaArticle>();
+	a->Load(article_id);
+
+
+	// Теперь создаем иерархию вещи по заданному пути
+
+	CreateTreeBranch(a->data()->group, a->data()->name, UIIdxList, m_ArticlesDB.size() - 1, 
+		m_pTreeRootFont, m_uTreeRootColor, m_pTreeItemFont, m_uTreeItemColor, bReaded);
 }

@@ -18,6 +18,7 @@ public:
 	GameTasks&				GameTasks						();
 	CGameTask*				HasGameTask						(const TASK_ID& id);
 	CGameTask*				GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting=true);
+	void					SetTaskState					(const TASK_ID& id, int objective_num, ETaskState state);
 
 	void					ShowSpotOnMap					(CGameTask* t, int objective_id, bool bShow);
 	void					ShowSpotPointerOnMap			(CGameTask* t, int objective_id, bool bShow);

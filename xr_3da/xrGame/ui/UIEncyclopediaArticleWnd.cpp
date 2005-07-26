@@ -43,12 +43,18 @@ void CUIEncyclopediaArticleWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 void CUIEncyclopediaArticleWnd::SetArticle(CEncyclopediaArticle* article)
 {
-//	m_Article						= article;
 	m_UIImage->SetShader			(article->data()->image.GetShader());
 	m_UIImage->SetOriginalRect		(article->data()->image.GetStaticItem()->GetOriginalRect());
+	m_UIImage->SetWndSize			(article->data()->image.GetWndSize());
+	float img_x						= (GetWidth()-m_UIImage->GetWidth())/2.0f;
+	img_x							= _max(0.0f, img_x);
+	m_UIImage->SetWndPos			(img_x ,m_UIImage->GetWndPos().y);
+	
+	m_UIText->SetWndPos				(m_UIText->GetWndPos().x, m_UIImage->GetWndPos().y + m_UIImage->GetHeight());
 	m_UIText->SetText				(*CStringTable()(article->data()->text.c_str()));
 	m_UIText->AdjustHeightToText	();
-	SetHeight						(m_UIText->GetWndPos().y+m_UIText->GetHeight());
+	SetHeight						(	m_UIImage->GetWndPos().y + m_UIImage->GetHeight()+
+										m_UIText->GetWndPos().y+m_UIText->GetHeight());
 }
 
 void CUIEncyclopediaArticleWnd::SetArticle	(LPCSTR article)

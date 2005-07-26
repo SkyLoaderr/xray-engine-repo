@@ -566,33 +566,7 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	}
 
 	shared_str shared_name = task_id;
-	CGameTask* t= pActor->GameTaskManager().HasGameTask(shared_name);
-	if(NULL==t){
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"actor does not has task", task_id);
-		return;
-	}
-
-	if ((std::size_t)objective_num >= t->m_Objectives.size()) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
-		return;
-	}
-	t->m_Objectives[objective_num].task_state = state;
-
-	if(0 == objective_num){//setState for task and all sub-tasks
-		
-		for(u32 i=0; i<t->m_Objectives.size();++i)
-			if( t->m_Objectives[i].task_state==eTaskStateInProgress )
-				t->m_Objectives[i].task_state =state;
-	}
-
-	//если мы устанавливаем финальное состояние для основного задания, то
-	//запомнить время выполнения
-	if(0 == objective_num && eTaskStateCompleted == state || eTaskStateFail == state)
-	{
-		t->m_FinishTime = Level().GetGameTime();
-	}
-
-
+	pActor->GameTaskManager().SetTaskState(shared_name, objective_num, state);
 }
 
 STasks CScriptGameObject::GetAllGameTasks()

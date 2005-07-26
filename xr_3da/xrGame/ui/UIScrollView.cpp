@@ -8,6 +8,7 @@
 
 CUIScrollView::CUIScrollView()
 {
+	m_rightIdent		= 0.0f;
 }
 
 CUIScrollView::~CUIScrollView()
@@ -29,8 +30,8 @@ void CUIScrollView::Init				()
 	m_VScrollBar->Init			(GetWndSize().x-SCROLLBAR_WIDTH, 0.0f, GetWndSize().y, false);
 	m_VScrollBar->SetWindowName	("scroll_v");
 	m_VScrollBar->SetStepSize	(_max(1,iFloor(GetHeight()/10)));
-//	m_VScrollBar->SetPageSize	(iFloor(GetHeight()));
-	m_VScrollBar->SetPageSize	(iFloor(10));
+	m_VScrollBar->SetPageSize	(iFloor(GetHeight()));
+//	m_VScrollBar->SetPageSize	(iFloor(10));
 	Register					(m_VScrollBar);
 	AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIScrollView::OnScrollV,this));
 
@@ -56,11 +57,12 @@ void CUIScrollView::Clear				()
 
 void CUIScrollView::RecalcSize			()
 {
+	if(!m_pad)			return;
 	Fvector2			pad_size;
 	pad_size.set		(0.0f, 0.0f);
 
 	Fvector2			item_pos;
-	item_pos.set		(0.0f, 0.0f);
+	item_pos.set		(m_rightIdent, 0.0f);
 	u16 idx = 0;
 	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it,++idx)
 	{
@@ -68,10 +70,8 @@ void CUIScrollView::RecalcSize			()
 		item_pos.y				+= (*it)->GetWndSize().y;
 		pad_size.y				+= (*it)->GetWndSize().y;
 		pad_size.x				= _max(pad_size.x, (*it)->GetWndSize().x);
-		Msg("---idx[%d] height=%f",idx,(*it)->GetWndSize().y);
 	}
 	m_pad->SetWndSize			(pad_size);
-	Msg("---pad total height=%f",pad_size.y);
 
 	UpdateScroll				();
 }
@@ -89,7 +89,8 @@ void CUIScrollView::Draw				()
 {
 	Frect		visible_rect			= GetAbsoluteRect();
 	UI()->PushScissor					(visible_rect);
-	m_VScrollBar->Draw					();
+	if(GetHeight()<m_pad->GetHeight())	//fix it !!!
+		m_VScrollBar->Draw					();
 
 
 	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it)
@@ -133,4 +134,16 @@ void CUIScrollView::OnMouse				(float x, float y, EUIMessages mouse_action)
 		break;
 
 	};
+}
+
+void CUIScrollView::ScrollToBegin		()
+{
+	m_pad->SetWndPos			(0.0f,0.0f);
+	UpdateScroll				();
+}
+
+void CUIScrollView::SetRightIndention	(float val)
+{
+	m_rightIdent		= val;
+	RecalcSize			();
 }

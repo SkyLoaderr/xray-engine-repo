@@ -73,8 +73,8 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	}
 	article_vector.erase(last_end, E);
 
-	bool actor_diary_article = false;
-	bool encyclopedia_article = false;
+//	bool actor_diary_article = false;
+//	bool encyclopedia_article = false;
 
 	for(ARTICLE_ID_VECTOR::const_iterator it = info_portion->Articles().begin();
 									it != info_portion->Articles().end(); it++)
@@ -82,10 +82,10 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 		CEncyclopediaArticle article;
 
 		article.Load(*it);
-		if(article.data()->articleType == ARTICLE_DATA::eEncyclopediaArticle)
-			encyclopedia_article = true;
-		else if(article.data()->articleType == ARTICLE_DATA::eDiaryArticle)
-			actor_diary_article = true;
+//		if(article.data()->articleType == ARTICLE_DATA::eEncyclopediaArticle)
+//			encyclopedia_article = true;
+//		else if(article.data()->articleType == ARTICLE_DATA::eDiaryArticle)
+//			actor_diary_article = true;
 
 		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime(), article.data()->articleType));
 		LPCSTR g,n;

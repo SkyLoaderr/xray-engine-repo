@@ -15,13 +15,13 @@ typedef shared_str	ARTICLE_ID;
 
 struct ARTICLE_DATA : public IPureSerializeObject<IReader,IWriter>
 {
-	enum EArticleType {eEncyclopediaArticle, eDiaryArticle, eDummyArticle};
+	enum EArticleType {eEncyclopediaArticle, eJournalArticle, eTaskArticle};
 
 	ARTICLE_DATA			()
 		:	article_id		(NULL),
 			receive_time	(0),
 			readed			(false),
-			article_type	(EArticleType::eDummyArticle)
+			article_type	(EArticleType::eEncyclopediaArticle)
 	{}
 
 	ARTICLE_DATA			(ARTICLE_ID id, ALife::_TIME_ID time, EArticleType articleType)
