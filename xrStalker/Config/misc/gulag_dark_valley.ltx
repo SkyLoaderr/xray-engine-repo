@@ -209,10 +209,10 @@ combat_ignore = combat_ignore@val_lager_bandits_sniper_normal1
 [camper1@val_lager_bandits_sniper_normal1]
 path_walk = sniper_walk1
 path_look = sniper_look1
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = threat
-def_state_campering_fire = threat_fire
+def_state_moving = patrol
+def_state_moving_fire = patrol_fire
+def_state_campering = guard
+def_state_campering_fire = guard_fire
 combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
 
 [logic@val_lager_bandits_sniper_alarm1]
@@ -222,10 +222,10 @@ combat_ignore = combat_ignore@val_lager_bandits_sniper_alarm1
 [camper1@val_lager_bandits_sniper_alarm1]
 path_walk = sniper_alarm_walk1
 path_look = sniper_alarm_look1
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = threat
-def_state_campering_fire = threat_fire
+def_state_moving = sneak
+def_state_moving_fire = sneak_fire
+def_state_campering = hide
+def_state_campering_fire = hide_fire
 combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
 
 ;---
