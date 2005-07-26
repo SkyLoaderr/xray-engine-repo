@@ -26,6 +26,8 @@
 		<action>mil_tasks.set_lukash_mapspot</action>
 	</info_portion>
 	
+	<info_portion id="mil_ugrumy_dead"></info_portion>
+	
 	
 	<!-- Нападение на базу Свободы -->
 	<info_portion id="mil_enemy_nearest"></info_portion>
