@@ -8,6 +8,13 @@
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
 
+-- проверка того что дистанция до обьекта <= заданной
+-- параметры: [sid,dist]
+function distance_to_obj_le(actor, npc, p)
+    local npc1 = level_object_by_sid(p[1])
+	return npc:position():distance_to_sqr(npc1:position()) < p[2]*p[2]
+end
+
 -- true, если здоровье npc <= заданному значению
 -- false в противном случае
 function health_le(actor, npc, p)
