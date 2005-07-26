@@ -56,7 +56,7 @@ IC			void			SetWndSize_inline(const Fvector2& wnd_size);
 	// own methods
 			void			Reset();
 			void			ParseText();
-			float				GetVisibleHeight()					const;
+			float				GetVisibleHeight();
 			void			SetLinesInterval(float f)					{ m_interval = f; }
 			float			GetLinesInterval()					const	{ return m_interval; }
 
@@ -65,7 +65,7 @@ protected:
 				// %c<255,255,255,255>
 		u32		GetColorFromText(const xr_string& str)									const;
 		float	GetIndentByAlign(float length)											const;
-		float	GetVIndentByAlign()														const;
+		float	GetVIndentByAlign();
 		void	CutFirstColoredTextEntry(xr_string& entry, u32& color,xr_string& text)	const;
 	CUILine*	ParseTextToColoredLine(const xr_string& str)							const;
 

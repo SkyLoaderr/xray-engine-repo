@@ -96,7 +96,7 @@ void CUILines::Reset(){
 }
 
 void CUILines::ParseText(){
-	VERIFY(g_bRendering);
+//	VERIFY(g_bRendering);
 	Reset();
 
 	if (m_text.length() && NULL == m_pFont)
@@ -114,7 +114,10 @@ void CUILines::ParseText(){
 	uFlags.set(flNeedReparse, false);
 }
 
-float CUILines::GetVisibleHeight() const{
+float CUILines::GetVisibleHeight(){
+	if(uFlags.test(flNeedReparse))
+		ParseText	();
+
 	float interval = m_interval*m_pFont->CurrentHeightRel();
 	return (m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
 }
@@ -221,7 +224,7 @@ float CUILines::GetIndentByAlign(float length)const{
 	return 0;
 }
 
-float CUILines::GetVIndentByAlign()const{
+float CUILines::GetVIndentByAlign(){
 	switch(m_eVTextAlign) {
 	case valTop: 
 		return 0;
