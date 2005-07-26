@@ -143,7 +143,7 @@
 			<work_area x="8" y="44" width="290" height="475"/>
 		</left_frame>
 	
-		<right_frame x="313" y="0" width="445" height="475">
+		<right_frame x="313" y="0" width="448" height="475">
 			<texture>ui_pda_frame_sub</texture>
 
 			<right_frame_header x="8" y="16" width="430" height="27">

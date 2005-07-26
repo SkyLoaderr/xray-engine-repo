@@ -52,11 +52,11 @@
 			</list>
 		</left_frame>
 	
-		<right_frame x="313" y="0" width="445" height="475">
+		<right_frame x="313" y="0" width="448" height="475">
 <!--			<texture>ui_pda_frame_sub</texture>  -->
-			<task_descr_view x="0" y="0" width="445" height="475">
+			<task_descr_view x="0" y="0" width="448" height="475">
 
-				<main_frame x="0" y="0" width="445" height="475" a="90">
+				<main_frame x="0" y="0" width="448" height="475" a="90">
 					<texture>ui_pda_frame_sub</texture>
 
 					<header_frame_line x="8" y="17" width="430" height="21">
@@ -81,7 +81,7 @@
 			</task_descr_view>
 			<map_wnd>
 
-				<main_wnd x="0" y="0" width="445" height="475">
+				<main_wnd x="0" y="0" width="448" height="475">
 					<map_header_frame_line x="8" y="17" width="430" height="21">
 						<title x="10" y="1" width="435" height="18">
 							<text font="letterica16" r="255" g="255" b="255"></text>
@@ -164,7 +164,7 @@
 					</map_header_frame_line>
 				
 				 
-					<main_map_frame x="0" y="0" width="445" height="475" a="90">
+					<main_map_frame x="0" y="0" width="448" height="475" a="90">
 						<texture>ui_pda_frame_sub</texture>
 							<level_frame x="4" y="40" width="416" height="416">
 						</level_frame>
