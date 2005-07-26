@@ -22,6 +22,8 @@
 <info_portion id="val_escort_combat"></info_portion>
 <info_portion id="val_escort_actor_helped"></info_portion>
 <info_portion id="val_escort_nap1_phrase3"></info_portion>
+<info_portion id="+val_escort_nap1_phrase1_end"></info_portion>
+<info_portion id="+val_escort_nap1_phrase2_end"></info_portion>
 <info_portion id="val_escort_nap1_start_combat"></info_portion>
 <info_portion id="val_escort_actor_start_combat"></info_portion>
 <info_portion id="val_escort_guard1_combat"></info_portion>
