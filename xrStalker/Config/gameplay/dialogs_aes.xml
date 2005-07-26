@@ -105,6 +105,22 @@
                 <text>aes_sergeant_diallog_1027</text>
                 <next>1028</next>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1003">
+                <text>aes_sergeant_diallog_1003</text>
+                <action>dialogs_aes.aes_segeant_kill</action>
+            </phrase>
+            <phrase id="1012">
+                <text>aes_sergeant_diallog_1012</text>
+                <action>dialogs_aes.aes_segeant_kill</action>
+            </phrase>
+            <phrase id="1015">
+                <text>aes_sergeant_diallog_1015</text>
+                <action>dialogs_aes.aes_segeant_kill</action>
+            </phrase>
             <phrase id="1028">
                 <text>aes_sergeant_diallog_1028</text>
                 <next>1029</next>
@@ -113,25 +129,13 @@
                 <text>aes_sergeant_diallog_1029</text>
                 <next>1030</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1000</next>
-            </phrase>
             <phrase id="1030">
                 <text>aes_sergeant_diallog_1030</text>
                 <next>1031</next>
             </phrase>
             <phrase id="1031">
                 <text>aes_sergeant_diallog_1031</text>
-            </phrase>
-            <phrase id="1003">
-                <text>aes_sergeant_diallog_1003</text>
-            </phrase>
-            <phrase id="1012">
-                <text>aes_sergeant_diallog_1012</text>
-            </phrase>
-            <phrase id="1015">
-                <text>aes_sergeant_diallog_1015</text>
+                <action>dialogs_aes.aes_segeant_kill</action>
             </phrase>
         </phrase_list>
     </dialog>
