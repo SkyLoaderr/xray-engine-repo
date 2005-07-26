@@ -1561,109 +1561,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_dolg_skull_dialog">
-        <phrase_list>
-            <phrase id="103">
-                <text>mil_dolg_skull_dialog_103</text>
-                <next>104</next>
-            </phrase>
-            <phrase id="104">
-                <text>mil_dolg_skull_dialog_104</text>
-                <next>105</next>
-            </phrase>
-            <phrase id="105">
-                <text>mil_dolg_skull_dialog_105</text>
-                <next>106</next>
-            </phrase>
-            <phrase id="106">
-                <text>mil_dolg_skull_dialog_106</text>
-                <next>107</next>
-            </phrase>
-            <phrase id="107">
-                <text>mil_dolg_skull_dialog_107</text>
-                <next>108</next>
-            </phrase>
-            <phrase id="108">
-                <text>mil_dolg_skull_dialog_108</text>
-                <next>109</next>
-            </phrase>
-            <phrase id="109">
-                <text>mil_dolg_skull_dialog_109</text>
-                <next>110</next>
-            </phrase>
-            <phrase id="111">
-                <text>mil_dolg_skull_dialog_111</text>
-                <next>112</next>
-            </phrase>
-            <phrase id="121">
-                <text>mil_dolg_skull_dialog_121</text>
-            </phrase>
-            <phrase id="112">
-                <text>mil_dolg_skull_dialog_112</text>
-                <next>120</next>
-                <next>130</next>
-            </phrase>
-            <phrase id="130">
-                <text>mil_dolg_skull_dialog_130</text>
-                <next>131</next>
-            </phrase>
-            <phrase id="131">
-                <text>mil_dolg_skull_dialog_131</text>
-            </phrase>
-            <phrase id="120">
-                <text>mil_dolg_skull_dialog_120</text>
-                <give_info>mil_sniper_get_job</give_info>
-                <next>121</next>
-            </phrase>
-            <phrase id="110">
-                <text>mil_dolg_skull_dialog_110</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="101">
-                <text>mil_dolg_skull_dialog_101</text>
-                <give_info>mil_dolg_dialog_already</give_info>
-                <next>102</next>
-            </phrase>
-            <phrase id="102">
-                <text>mil_dolg_skull_dialog_102</text>
-                <next>103</next>
-            </phrase>
-            <phrase id="100">
-                <text>mil_dolg_skull_dialog_100</text>
-                <give_info>mil_dolg_dialog_already</give_info>
-                <next>101</next>
-            </phrase>
-            <phrase id="200">
-                <text>mil_dolg_skull_dialog_200</text>
-                <action>dialogs_military.mil_dolg_payment</action>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <has_info>mil_sniper_dead</has_info>
-                <has_info>mil_lukash_dead</has_info>
-                <next>200</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>mil_sniper_get_job</dont_has_info>
-                <next>100</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <has_info>mil_sniper_get_job</has_info>
-                <next>300</next>
-            </phrase>
-            <phrase id="300">
-                <text>mil_dolg_skull_dialog_300</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_cook_common3">
         <precondition>dialogs.dialog_allowed</precondition>
         <dont_has_info>mil_cook_dialog3</dont_has_info>
@@ -2138,27 +2035,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_bodyguard_dialog">
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_bodyguard_dialog_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_bodyguard_dialog_2</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_bodyguard_dialog_5</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>mil_lukash_guard_talked</give_info>
-            </phrase>
-            <phrase id="0">
-                <text>mil_bodyguard_dialog_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_freedom_commander">
         <phrase_list>
             <phrase id="3003">
@@ -2218,7 +2094,7 @@
                 <text>mil_freedom_commander_1013</text>
             </phrase>
             <phrase id="4000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_fblockpost_quest</dont_has_info>
                 <give_info>mil_fblockpost_spot_remove</give_info>
                 <has_info>mil_lukash_blockpost</has_info>
@@ -2236,25 +2112,25 @@
                 <text>mil_freedom_commander_2001</text>
             </phrase>
             <phrase id="3000">
-                <text></text>
+                <text />
                 <has_info>mil_fblockpost_quest_complete</has_info>
                 <next>3001</next>
             </phrase>
             <phrase id="2000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_fblockpost_quest_complete</dont_has_info>
                 <has_info>mil_fblockpost_quest</has_info>
                 <next>2001</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1000</next>
                 <next>2000</next>
                 <next>3000</next>
                 <next>4000</next>
             </phrase>
             <phrase id="1000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_fblockpost_quest</dont_has_info>
                 <dont_has_info>mil_lukash_blockpost</dont_has_info>
                 <next>1001</next>
@@ -2276,6 +2152,139 @@
                 <text>mil_freedom_commander_4002</text>
                 <action>xr_effects.mil_cap_mapspot_remove</action>
                 <next>4003</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_bodyguard_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_bodyguard_dialog_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_bodyguard_dialog_2</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_bodyguard_dialog_5</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_lukash_guard_talked</give_info>
+            </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_dolg_skull_dialog">
+        <phrase_list>
+            <phrase id="103">
+                <text>mil_dolg_skull_dialog_103</text>
+                <next>104</next>
+            </phrase>
+            <phrase id="104">
+                <text>mil_dolg_skull_dialog_104</text>
+                <next>105</next>
+            </phrase>
+            <phrase id="105">
+                <text>mil_dolg_skull_dialog_105</text>
+                <next>106</next>
+            </phrase>
+            <phrase id="107">
+                <text>mil_dolg_skull_dialog_107</text>
+                <next>108</next>
+            </phrase>
+            <phrase id="108">
+                <text>mil_dolg_skull_dialog_108</text>
+                <next>109</next>
+            </phrase>
+            <phrase id="109">
+                <text>mil_dolg_skull_dialog_109</text>
+                <next>110</next>
+            </phrase>
+            <phrase id="111">
+                <text>mil_dolg_skull_dialog_111</text>
+                <next>112</next>
+            </phrase>
+            <phrase id="130">
+                <text>mil_dolg_skull_dialog_130</text>
+                <next>131</next>
+            </phrase>
+            <phrase id="131">
+                <text>mil_dolg_skull_dialog_131</text>
+            </phrase>
+            <phrase id="101">
+                <text>mil_dolg_skull_dialog_101</text>
+                <give_info>mil_dolg_dialog_already</give_info>
+                <next>102</next>
+            </phrase>
+            <phrase id="102">
+                <text>mil_dolg_skull_dialog_102</text>
+                <next>103</next>
+            </phrase>
+            <phrase id="100">
+                <text>mil_dolg_skull_dialog_100</text>
+                <give_info>mil_dolg_dialog_already</give_info>
+                <next>101</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>mil_sniper_get_job</dont_has_info>
+                <next>100</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <has_info>mil_sniper_get_job</has_info>
+                <next>300</next>
+            </phrase>
+            <phrase id="300">
+                <text>mil_dolg_skull_dialog_300</text>
+            </phrase>
+            <phrase id="106">
+                <text>mil_dolg_skull_dialog_106</text>
+                <next>107</next>
+            </phrase>
+            <phrase id="110">
+                <text>mil_dolg_skull_dialog_110</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="112">
+                <text>mil_dolg_skull_dialog_112</text>
+                <next>120</next>
+                <next>130</next>
+            </phrase>
+            <phrase id="120">
+                <text>mil_dolg_skull_dialog_120</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="122">
+                <text>mil_dolg_skull_dialog_122</text>
+                <give_info>mil_sniper_get_job</give_info>
+                <next>123</next>
+            </phrase>
+            <phrase id="123">
+                <text>mil_dolg_skull_dialog_123</text>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <has_info>mil_sniper_dead</has_info>
+                <has_info>mil_lukash_dead</has_info>
+                <next>200</next>
+            </phrase>
+            <phrase id="200">
+                <text>mil_dolg_skull_dialog_200</text>
+                <action>dialogs_military.mil_dolg_payment</action>
+            </phrase>
+            <phrase id="121">
+                <text>mil_dolg_skull_dialog_121</text>
+                <action>dialogs_military.mil_dolg_payment2</action>
+                <next>122</next>
             </phrase>
         </phrase_list>
     </dialog>

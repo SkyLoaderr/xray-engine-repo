@@ -499,10 +499,16 @@
         <text>Вот это правильный подход. 2500 от нас, и кучу снаряжения на базе - трупов там будет много, это я тебе обещаю. И нам поможешь и сам доволен будешь. Тат как?</text>
     </string>
     <string id="mil_dolg_skull_dialog_120">
-        <text>Я готов. Я сообщу вам как только разберусь с ним.</text>
+        <text>Ладно, но договоримся так - сейчас 1000, а после еще 1500. Жизнь полна сюрпризов...</text>
     </string>
     <string id="mil_dolg_skull_dialog_121">
-        <text>Давай.</text>
+        <text>Ты в торговом училище обучался ? Договорились.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_122">
+        <text>Я в пути.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_123">
+        <text>Удачи.</text>
     </string>
     <string id="mil_dolg_skull_dialog_130">
         <text>Вначале я должен поглядеть, а потом я скажу, лады?</text>
