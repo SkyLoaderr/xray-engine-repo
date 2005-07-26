@@ -2,7 +2,6 @@
 active = camper@hold
 combat_ignore = combat_ignore
 on_death = death
-meet = meet
 
 [camper@hold]
 path_walk = agr_krot_hold_fake_walk
@@ -34,10 +33,10 @@ combat_ignore_cond = always
 on_actor_dist_le = 5 | %+agr_factory_spawn_spetsnaz% remark@thank
 
 [meet@wait_after_hold]
-meet_state     = 30 | hello@talk_hello
-meet_state_wpn = 30 | hello@talk_hello
-victim = 30 | actor
-victim_wpn = 30 | actor
+meet_state     = 10 | hello@talk_hello
+meet_state_wpn = 10 | hello@talk_hello
+victim = 10 | actor
+victim_wpn = 10 | actor
 
 [remark@thank]
 snd = speech
