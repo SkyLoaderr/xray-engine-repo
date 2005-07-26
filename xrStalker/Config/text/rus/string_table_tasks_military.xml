@@ -39,8 +39,12 @@
 	<text>Безумный сталкер.</text>
 </string>
 
-    <string id="mil_max">
+<string id="mil_max">
 	<text>Макс.</text>
+</string>
+
+<string id="mil_ugrumy">
+	<text>Угрюмый.</text>
 </string>
     
     <string id="mil_secret">
