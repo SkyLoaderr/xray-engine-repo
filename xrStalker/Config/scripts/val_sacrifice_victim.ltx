@@ -1,5 +1,5 @@
 [logic]
-active = remark1
+active = remark@wait
 combat_ignore = combat_ignore
 on_death = death
 
@@ -14,10 +14,46 @@ on_info2 = {=killed_by(404)} %=hit_npc(404:bip01_spine1:100:2000)%, {=killed_by(
 ;404 = "val_sacrifice_guard1"
 ;405 = "val_sacrifice_guard2"
 
-[remark1]
+[remark@wait]
 no_move = true
 no_rotate = true
-anim = wait_na
+anim = wait
+on_info = {+val_sacrifice_start} remark@phrase1, {+val_sacrifice_plr_detected} remark@free
+combat_ignore_cond = always
+
+;--------------------------------------------------------------------------
+; фраза: 
+; ждем на фразу 3 первого охранника
+;--------------------------------------------------------------------------
+[remark@phrase1]
+no_move = true
+;no_rotate = true
+anim = wait
+target = 404
+snd = speech
+on_signal = sound_end | %+val_sacrifice_victim_phrase1_end%
+on_info = {+val_sacrifice_plr_detected} remark@free
+on_info2 = {+val_sacrifice_guard1_phrase3_end} remark@phrase2
+combat_ignore_cond = always
+
+;--------------------------------------------------------------------------
+; фраза: 
+; ждем на фразу 3 первого охранника
+;--------------------------------------------------------------------------
+[remark@phrase2]
+no_move = true
+;no_rotate = true
+anim = wait
+target = 404
+snd = speech
+on_signal = sound_end | remark@stay %+val_sacrifice_victim_phrase2_end%
+on_info = {+val_sacrifice_plr_detected} remark@free
+combat_ignore_cond = always
+
+[remark@stay]
+no_move = true
+no_rotate = true
+anim = wait
 on_info = {+val_sacrifice_plr_detected} remark@free, {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} walker@leave %+val_sacrifice_victim_free%
 combat_ignore_cond = always
 

@@ -23,7 +23,7 @@ on_info = {=hit_by_actor} walker@leave %+val_sacrifice_plr_detected%
 ;405 = "val_sacrifice_guard2"
 
 ;--------------------------------------------------------------------------
-; ждем пока игрок не зайдет в одну из стартовых зон
+; ждем пока жертва не скажет первую фразу
 ;--------------------------------------------------------------------------
 [camper@wait]
 path_walk = val_sacrifice_guard1_walk 
@@ -32,7 +32,7 @@ def_state_campering = guard
 def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
-on_info = {+val_sacrifice_start} remark@phrase1
+on_info = {+val_sacrifice_victim_phrase1_end} remark@phrase1
 on_info2 = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
 combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
@@ -42,21 +42,49 @@ combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrific
 ;--------------------------------------------------------------------------
 [remark@phrase1]
 no_move = true
-no_rotate = true
+;no_rotate = true
+target = 405
 anim = guard
 snd = speech
-on_signal = sound_end | %+val_sacrifice_guard1_phrase1_done%
+on_signal = sound_end | %+val_sacrifice_guard1_phrase1_end%
 on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
-on_info2 = {+val_sacrifice_guard2_phrase12_done} remark@phrase2
+on_info2 = {+val_sacrifice_guard2_phrase2_end} remark@phrase2
 combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
 ; фраза: Угу. А у меня есть идея.
-; переходим в схему убийства пленного
 ;--------------------------------------------------------------------------
 [remark@phrase2]
 no_move = true
-no_rotate = true
+;no_rotate = true
+target = 405
+anim = guard
+snd = speech
+on_signal = sound_end | remark@phrase3
+on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
+
+;--------------------------------------------------------------------------
+; фраза: 
+;--------------------------------------------------------------------------
+[remark@phrase3]
+no_move = true
+;no_rotate = true
+target = 401
+anim = guard
+snd = speech
+on_signal = sound_end | %+val_sacrifice_guard1_phrase3_end%
+on_info = {+val_sacrifice_plr_detected} camper@kill, {+val_sacrifice_victim_dead} walker@leave
+on_info2 = {+val_sacrifice_victim_phrase2_end} remark@phrase4
+combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
+
+;--------------------------------------------------------------------------
+; фраза: 
+;--------------------------------------------------------------------------
+[remark@phrase4]
+no_move = true
+;no_rotate = true
+target = 401
 anim = guard
 snd = speech
 on_signal = sound_end | camper@kill
@@ -75,18 +103,18 @@ def_state_campering_fire = guard_fire
 def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 no_retreat = true
-on_info = {+val_sacrifice_victim_dead -val_sacrifice_plr_detected} remark@phrase3, {+val_sacrifice_plr_detected} walker@leave
+on_info = {+val_sacrifice_victim_dead} remark@phrase5
 combat_ignore_cond = {=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Все! Нет человека - нет проблемы. Скажем Борову, что типа доставили пленника куда следует. Идем.
 ;--------------------------------------------------------------------------
-[remark@phrase3]
+[remark@phrase5]
 no_move = true
 no_rotate = true
 anim = guard
 snd = speech
-on_signal = sound_end | walker@leave %+val_sacrifice_guard1_phrase3_done%
+on_signal = sound_end | walker@leave %+val_sacrifice_guard1_phrase5_end%
 on_info = {+val_sacrifice_plr_detected} walker@leave
 combat_ignore_cond = {=check_fighting(403)}
 

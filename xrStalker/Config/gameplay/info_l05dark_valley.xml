@@ -56,9 +56,12 @@
 <info_portion id="val_sacrifice_victim_dead"></info_portion>
 <info_portion id="val_sacrifice_guard1_dead"></info_portion>
 <info_portion id="val_sacrifice_guard2_dead"></info_portion>
-<info_portion id="val_sacrifice_guard1_phrase1_done"></info_portion>
-<info_portion id="val_sacrifice_guard2_phrase12_done"></info_portion>
-<info_portion id="val_sacrifice_guard1_phrase3_done"></info_portion>
+<info_portion id="val_sacrifice_victim_phrase1_end"></info_portion>
+<info_portion id="val_sacrifice_victim_phrase2_end"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase1_end"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase3_end"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase5_end"></info_portion>
+<info_portion id="val_sacrifice_guard2_phrase2_end"></info_portion>
 
 <!-- Стартует машина около бензоколонки -->
 <info_portion id="val_truck_actor_near_gas_st"></info_portion>
