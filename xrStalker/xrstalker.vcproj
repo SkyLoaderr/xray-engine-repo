@@ -941,9 +941,6 @@
 					RelativePath=".\Config\ui\ingame_msglog_sp.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\inventory.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\inventory_character.xml">
 				</File>
 				<File
@@ -954,12 +951,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\inventoryMP.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\inventoryMP_new.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\inventoryMP_new2.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\job_item.xml">
