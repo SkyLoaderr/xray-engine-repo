@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
+	<!-- QUEST wnd-->
     <!-- EVENTS INFO BACKGROUND -->
     <left_frame_window x="76" y="62" width="448" height="475" a="80">
 		<texture>ui_pda_frame_sub</texture>
@@ -107,10 +108,6 @@
 																	autoplay		= "1">
 					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
-				<!-- del it -->
-				<title_static x="20" y="4" width="100" height="16">
-					<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
-				</title_static>
 								
 				<filter_tab x="0" y="6" width = "252" height="12">
 					<button x="15" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
@@ -143,13 +140,7 @@
 				</filter_tab>					
 			</left_frame_header>
 			
-			<work_area x="8" y="44" width="290" height="475">
-				<news_wnd>	<!--del this -->
-					<list x="0" y="0" width="290" height="475" item_height="15">
-						<font font="letterica18" r="225" g="225" b="250"></font>
-					</list>
-				</news_wnd>
-			</work_area>
+			<work_area x="8" y="44" width="290" height="475"/>
 		</left_frame>
 	
 		<right_frame x="313" y="0" width="445" height="475">
