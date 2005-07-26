@@ -75,8 +75,6 @@ ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\
 ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
 ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garbage\distance_shooting]]}
 
-theme[obj:id()]["gar_seryi_shooting"]			= load_sound_from_ltx(obj, "gar_seryi_shooting")
-
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
