@@ -73,8 +73,6 @@ ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_m
 ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
 ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
 ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
-ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
-ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
@@ -307,6 +305,7 @@ function load_sound(obj)
 	theme[obj:id()]["gar_direction_fire"]			= load_sound_from_ltx(obj, "gar_direction_fire")
 	theme[obj:id()]["gar_hellcar_to_battle"]		= load_sound_from_ltx(obj, "gar_hellcar_to_battle")
 	theme[obj:id()]["gar_hellcar_victory"]			= load_sound_from_ltx(obj, "gar_hellcar_victory")
+	theme[obj:id()]["gar_seriy_shooting"]			= load_sound_from_ltx(obj, "gar_seriy_shooting")
 	
 	-- DarkValley
 	theme[obj:id()]["val_prisoner_captive_help_me"]	  = load_sound_from_ltx(obj, "val_prisoner_captive_help_me")
