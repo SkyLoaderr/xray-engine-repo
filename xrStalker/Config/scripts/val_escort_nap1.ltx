@@ -365,7 +365,7 @@ path_look = val_escort_nap1_look
 meet      = meet@talk
 ;on_info   = {+val_sacrifice_spawn} walker@fake_task, {+val_sacrifice_not_spawn} walker@fake_task
 ;on_info2  = {+val_escort_nap1_go_rescue} walker@ambush_go %+val_escort_start%
-on_timer  = 15000 | walker@ambush_go %+val_escort_start%
+on_timer  = 15000 | walker@ambush_go ;%+val_escort_start%
 
 ;--------------------------------------------------------------------------
 ; задание принято. идем к месту засады
@@ -433,7 +433,7 @@ def_state_moving1   = sneak
 ;def_state_campering = hide
 ;no_retreat          = true
 meet                = meet@ignore
-on_signal           = escort_start | %+val_escort_start%
+;on_signal           = escort_start | %+val_escort_start%
 on_info             = {+val_escort_combat} remark@fight
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 
