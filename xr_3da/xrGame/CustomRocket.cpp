@@ -225,7 +225,7 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 			if(ph_dbg_draw_mask.test(phDbgDrawExplosionPos))
 				DBG_DrawPoint(l_pos,0.05f,D3DCOLOR_XRGB(255,255,(!corrected_pos)*255));
 #endif
-			l_this->m_pPhysicsShell->set_ObjectContactCallback(NULL);
+			
 			l_this->Contact(l_pos, vUp);
 
 
