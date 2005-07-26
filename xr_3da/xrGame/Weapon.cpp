@@ -274,8 +274,8 @@ void CWeapon::Load		(LPCSTR section)
 	camMaxAngle			= deg2rad					(camMaxAngle);
 	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); 
 	camRelaxSpeed		= deg2rad					(camRelaxSpeed);
-	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
-	camDispersion		= deg2rad					(camDispersion);
+//	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
+//	camDispersion		= deg2rad					(camDispersion);
 
 	camMaxAngleHorz		= pSettings->r_float		(section,"cam_max_angle_horz"	); 
 	camMaxAngleHorz		= deg2rad					(camMaxAngleHorz);
@@ -357,6 +357,12 @@ void CWeapon::Load		(LPCSTR section)
 
 }
 
+void CWeapon::LoadFireParams		(LPCSTR section, LPCSTR prefix)
+{
+	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
+	camDispersion		= deg2rad					(camDispersion);
+	CShootingObject::LoadFireParams(section, prefix);
+};
 
 void CWeapon::LoadZoomOffset (LPCSTR section, LPCSTR prefix)
 {

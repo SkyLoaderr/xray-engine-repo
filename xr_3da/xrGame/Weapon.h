@@ -322,6 +322,8 @@ protected:
 	virtual void			UpdateXForm				();
 	virtual void			UpdateHudAdditonal		(Fmatrix&);
 	IC		void			UpdateFireDependencies	()			{ if (dwFP_Frame==Device.dwFrame) return; UpdateFireDependencies_internal(); };
+
+	virtual void			LoadFireParams		(LPCSTR section, LPCSTR prefix);
 public:	
 	IC		const Fvector&	get_LastFP				()			{ UpdateFireDependencies(); return m_firedeps.vLastFP;	}
 	IC		const Fvector&	get_LastFP2				()			{ UpdateFireDependencies(); return m_firedeps.vLastFP2;	}

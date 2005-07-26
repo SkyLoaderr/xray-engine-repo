@@ -77,6 +77,7 @@ protected:
 protected:
 	virtual void	ReloadMagazine	();
 	virtual void	UnloadMagazine	();
+	virtual	void	ApplySilencerKoeffs	();
 
 	virtual void	state_Fire		(float dt);
 	virtual void	state_MagEmpty	(float dt);

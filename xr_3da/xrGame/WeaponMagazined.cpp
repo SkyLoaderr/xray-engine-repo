@@ -851,10 +851,16 @@ void CWeaponMagazined::InitAddons()
 		m_sSmokeParticlesCurrent = m_sSilencerSmokeParticles;
 		m_pSndShotCurrent = &sndSilencerShot;
 
+
 		//сила выстрела
-		LoadFireParams	(*cNameSect(), "silencer_");
+//		LoadFireParams	(*cNameSect(), "silencer_");
+		LoadFireParams	(*cNameSect(), "");
+
 		//подсветка от выстрела
 		LoadLights		(*cNameSect(), "silencer_");
+		//  [7/26/2005]
+		ApplySilencerKoeffs();
+		//  [7/26/2005]
 	}
 	else
 	{
@@ -871,6 +877,38 @@ void CWeaponMagazined::InitAddons()
 	inherited::InitAddons();
 }
 
+void CWeaponMagazined::ApplySilencerKoeffs	()
+{
+	float BHPk = 1.0f, BSk = 1.0f;
+	float FDB_k = 1.0f, CD_k = 1.0f;
+	
+	if (pSettings->line_exist(m_sSilencerName, "bullet_hit_power_k"))
+	{
+		BHPk = pSettings->r_float(m_sSilencerName, "bullet_hit_power_k");
+		clamp(BHPk, 0.0f, 1.0f);
+	};
+	if (pSettings->line_exist(m_sSilencerName, "bullet_speed_k"))
+	{
+		BSk = pSettings->r_float(m_sSilencerName, "bullet_speed_k");
+		clamp(BSk, 0.0f, 1.0f);
+	};
+	if (pSettings->line_exist(m_sSilencerName, "fire_dispersion_base_k"))
+	{
+		FDB_k = pSettings->r_float(m_sSilencerName, "fire_dispersion_base_k");
+//		clamp(FDB_k, 0.0f, 1.0f);
+	};
+	if (pSettings->line_exist(m_sSilencerName, "cam_dispersion_k"))
+	{
+		CD_k = pSettings->r_float(m_sSilencerName, "cam_dispersion_k");
+		clamp(CD_k, 0.0f, 1.0f);
+	};
+
+	iHitPower			= int(iHitPower*BHPk);
+	fHitImpulse			*= BSk;
+	m_fStartBulletSpeed *= BSk;
+	fireDispersionBase	*= FDB_k;
+	camDispersion		*= CD_k;
+}
 
 //виртуальные функции для проигрывания анимации HUD
 void CWeaponMagazined::PlayAnimShow()

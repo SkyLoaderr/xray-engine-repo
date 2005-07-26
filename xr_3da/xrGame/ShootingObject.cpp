@@ -58,9 +58,9 @@ void CShootingObject::reinit()
 
 void CShootingObject::Load	(LPCSTR section)
 {
-	//базовая дисперсия оружия
-	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
-	fireDispersionBase	= deg2rad					(fireDispersionBase);
+//	//базовая дисперсия оружия
+//	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
+//	fireDispersionBase	= deg2rad					(fireDispersionBase);
 
 
 	//время затрачиваемое на выстрел
@@ -90,7 +90,9 @@ void CShootingObject::Light_Destroy		()
 void CShootingObject::LoadFireParams	(LPCSTR section, LPCSTR prefix)
 {
 	string256 full_name;
-
+	//базовая дисперсия оружия
+	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
+	fireDispersionBase	= deg2rad					(fireDispersionBase);
 	//сила выстрела и его мощьность
 	iHitPower			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power"));
 	fHitImpulse			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse"));
