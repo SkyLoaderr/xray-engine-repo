@@ -47,11 +47,11 @@ end
 
 function load_job_lager_bandits(sj, gname, type, squad, groups)
 	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 7 - ¡Œ–Œ¬
+	-- œ–»Œ–»“≈“ 9 - ¡Œ–Œ¬
 	-----------------------------------------------------------------------
 	t = { section = "logic@val_lager_bandits_leader_normal",
 		idle = 0,
-		prior = 7, state = { state_normal },
+		prior = 9, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_borov_restrictor",
 		predicate = lb_predicate1
@@ -63,7 +63,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_leader_alarm",
 		idle = 0,
-		prior = 7, state = { state_alarm },
+		prior = 9, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_borov_restrictor",
 		predicate = lb_predicate1
@@ -75,7 +75,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_leader_alarm",
 		idle = 0,
-		prior = 7, state = { state_alarm_actor_inside },
+		prior = 9, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_borov_restrictor",
 		predicate = lb_predicate1
@@ -86,11 +86,11 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 
 	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 6 - Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
+	-- œ–»Œ–»“≈“ 8 - Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
 	-----------------------------------------------------------------------
 	t = { section = "logic@val_lager_bandits_bodyguard_normal1",
 		idle = 0,
-		prior = 6, state = { state_normal },
+		prior = 8, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate2
@@ -102,7 +102,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_alarm1",
 		idle = 0,
-		prior = 6, state = { state_alarm },
+		prior = 8, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate2
@@ -114,7 +114,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_alarm1",
 		idle = 0,
-		prior = 6, state = { state_alarm_actor_inside },
+		prior = 8, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate2
@@ -126,7 +126,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_normal2",
 		idle = 0,
-		prior = 6, state = { state_normal },
+		prior = 8, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_bodyguards_restrictor",
 		predicate = lb_predicate2
@@ -138,7 +138,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_alarm2",
 		idle = 0,
-		prior = 6, state = { state_alarm },
+		prior = 8, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_bodyguards_restrictor",
 		predicate = lb_predicate2
@@ -150,7 +150,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_alarm2",
 		idle = 0,
-		prior = 6, state = { state_alarm_actor_inside },
+		prior = 8, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_bodyguards_restrictor",
 		predicate = lb_predicate2
@@ -162,7 +162,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_normal3",
 		idle = 0,
-		prior = 6, state = { state_normal },
+		prior = 8, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_bodyguards_restrictor",
 		predicate = lb_predicate2
@@ -174,7 +174,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_alarm3",
 		idle = 0,
-		prior = 6, state = { state_alarm },
+		prior = 8, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_bodyguards_restrictor",
 		predicate = lb_predicate2
@@ -186,7 +186,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_bodyguard_alarm3",
 		idle = 0,
-		prior = 6, state = { state_alarm_actor_inside },
+		prior = 8, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_bodyguards_restrictor",
 		predicate = lb_predicate2
@@ -197,11 +197,11 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 
 	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 5 - —»ƒﬂŸ»≈ ¬  ≈Ãœ≈
+	-- œ–»Œ–»“≈“ 7 - —»ƒﬂŸ»≈ ¬  ≈Ãœ≈ 1 ¬Œ«À≈ ¡Œ–Œ¬¿ » ¬  ≈Ãœ≈ 2 Õ¿ ¬“Œ–ŒÃ ›“¿∆≈
 	-----------------------------------------------------------------------
 	t = { section = "logic@val_lager_bandits_kamp1_normal1",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -213,7 +213,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_alarm1",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -225,7 +225,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_alarm1",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -237,7 +237,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_normal2",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -249,7 +249,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_alarm2",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -261,7 +261,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_alarm2",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -273,7 +273,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_normal3",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -285,7 +285,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_alarm3",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -297,7 +297,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp1_alarm3",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_building_restrictor",
 		predicate = lb_predicate3
@@ -309,7 +309,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp2_normal1",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -321,7 +321,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp2_alarm1",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -333,7 +333,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp2_alarm1",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -345,7 +345,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp2_normal2",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -357,7 +357,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp2_alarm2",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -369,7 +369,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_kamp2_alarm2",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -379,9 +379,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_kamp3_normal1",
+	t = { section = "logic@val_lager_bandits_kamp2_normal3",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -391,9 +391,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_kamp3_alarm1",
+	t = { section = "logic@val_lager_bandits_kamp2_alarm3",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -403,9 +403,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_kamp3_alarm1",
+	t = { section = "logic@val_lager_bandits_kamp2_alarm3",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -415,9 +415,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_kamp3_normal2",
+	t = { section = "logic@val_lager_bandits_kamp2_normal4",
 		idle = 0,
-		prior = 5, state = { state_normal },
+		prior = 7, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -427,9 +427,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_kamp3_alarm2",
+	t = { section = "logic@val_lager_bandits_kamp2_alarm4",
 		idle = 0,
-		prior = 5, state = { state_alarm },
+		prior = 7, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -439,9 +439,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_kamp3_alarm2",
+	t = { section = "logic@val_lager_bandits_kamp2_alarm4",
 		idle = 0,
-		prior = 5, state = { state_alarm_actor_inside },
+		prior = 7, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -450,160 +450,14 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 		            --end
 	}
 	table.insert(sj, t)
+
 
 	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 4 - —œﬂŸ»≈ ¡¿Õƒ»“€
-	-----------------------------------------------------------------------
-	t = { section = "logic@val_lager_bandits_sleeper_normal1",
-		idle = 0,
-		prior = 4, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm1",
-		idle = 0,
-		prior = 4, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm1",
-		idle = 0,
-		prior = 4, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_normal2",
-		idle = 0,
-		prior = 4, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm2",
-		idle = 0,
-		prior = 4, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm2",
-		idle = 0,
-		prior = 4, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_normal3",
-		idle = 0,
-		prior = 4, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm3",
-		idle = 0,
-		prior = 4, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm3",
-		idle = 0,
-		prior = 4, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_normal4",
-		idle = 0,
-		prior = 4, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm4",
-		idle = 0,
-		prior = 4, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_sleeper_alarm4",
-		idle = 0,
-		prior = 4, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 3 - ¡¿Õƒ»“€ Õ¿ ¬Œ–Œ“¿’
+	-- œ–»Œ–»“≈“ 6 - ¡¿Õƒ»“€ Õ¿ ¬Œ–Œ“¿’
 	-----------------------------------------------------------------------
 	t = { section = "logic@val_lager_bandits_guard_normal1",
 		idle = 0,
-		prior = 3, state = { state_normal },
+		prior = 6, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
 		predicate = lb_predicate3
@@ -615,7 +469,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_guard_alarm1",
 		idle = 0,
-		prior = 3, state = { state_alarm },
+		prior = 6, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
 		predicate = lb_predicate3
@@ -627,7 +481,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_guard_alarm1",
 		idle = 0,
-		prior = 3, state = { state_alarm_actor_inside },
+		prior = 6, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
 		predicate = lb_predicate3
@@ -639,7 +493,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_guard_normal2",
 		idle = 0,
-		prior = 3, state = { state_normal },
+		prior = 6, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = lb_predicate3
@@ -651,7 +505,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 
 	t = { section = "logic@val_lager_bandits_guard_alarm2",
 		idle = 0,
-		prior = 3, state = { state_alarm },
+		prior = 6, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_restrictor",
 		predicate = lb_predicate3
@@ -662,6 +516,376 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 
 	t = { section = "logic@val_lager_bandits_guard_alarm2",
+		idle = 0,
+		prior = 6, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 5 - œ¿“–”À‹Õ€≈ Õ¿ “≈––»“Œ–»»
+	-----------------------------------------------------------------------
+	t = { section = "logic@val_lager_bandits_patrol_normal1",
+		idle = 0,
+		prior = 5, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm1",
+		idle = 0,
+		prior = 5, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm1",
+		idle = 0,
+		prior = 5, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_normal2",
+		idle = 0,
+		prior = 5, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm2",
+		idle = 0,
+		prior = 5, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm2",
+		idle = 0,
+		prior = 5, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_normal3",
+		idle = 0,
+		prior = 5, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm3",
+		idle = 0,
+		prior = 5, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm3",
+		idle = 0,
+		prior = 5, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_normal4",
+		idle = 0,
+		prior = 5, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm4",
+		idle = 0,
+		prior = 5, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_patrol_alarm4",
+		idle = 0,
+		prior = 5, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 4 - —Õ¿…œ≈–€ Õ¿ ¬€ÿ ¿’
+	-----------------------------------------------------------------------
+	t = { section = "logic@val_lager_bandits_sniper_normal1",
+		idle = 0,
+		prior = 4, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sniper_alarm1",
+		idle = 0,
+		prior = 4, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sniper_alarm1",
+		idle = 0,
+		prior = 4, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sniper_normal2",
+		idle = 0,
+		prior = 4, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sniper_alarm2",
+		idle = 0,
+		prior = 4, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sniper_alarm2",
+		idle = 0,
+		prior = 4, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	-----------------------------------------------------------------------
+	-- œ–»Œ–»“≈“ 3 - —œﬂŸ»≈ ¡¿Õƒ»“€
+	-----------------------------------------------------------------------
+
+	t = { section = "logic@val_lager_bandits_sleeper_normal1",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm1",
+		idle = 0,
+		prior = 3, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm1",
+		idle = 0,
+		prior = 3, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_normal2",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm2",
+		idle = 0,
+		prior = 3, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm2",
+		idle = 0,
+		prior = 3, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_normal3",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm3",
+		idle = 0,
+		prior = 3, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm3",
+		idle = 0,
+		prior = 3, state = { state_alarm_actor_inside },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_normal4",
+		idle = 0,
+		prior = 3, state = { state_normal },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm4",
+		idle = 0,
+		prior = 3, state = { state_alarm },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		predicate = lb_predicate3
+		            --function(obj) 
+		            --	return obj:profile_name() == "bandit_general"
+		            --end
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@val_lager_bandits_sleeper_alarm4",
 		idle = 0,
 		prior = 3, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
@@ -674,158 +898,12 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 
 	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 2 - œ¿“–”À‹Õ€≈ Õ¿ “≈––»“Œ–»»
+	-- œ–»Œ–»“≈“ 2 - ¡¿Õƒ»“€ ¬ 3-Ã  ≈Ãœ≈
 	-----------------------------------------------------------------------
-	t = { section = "logic@val_lager_bandits_patrol_normal1",
+
+	t = { section = "logic@val_lager_bandits_kamp3_normal1",
 		idle = 0,
 		prior = 2, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm1",
-		idle = 0,
-		prior = 2, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm1",
-		idle = 0,
-		prior = 2, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_main_side_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_normal2",
-		idle = 0,
-		prior = 2, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm2",
-		idle = 0,
-		prior = 2, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm2",
-		idle = 0,
-		prior = 2, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_normal3",
-		idle = 0,
-		prior = 2, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm3",
-		idle = 0,
-		prior = 2, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm3",
-		idle = 0,
-		prior = 2, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_normal4",
-		idle = 0,
-		prior = 2, state = { state_normal },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm4",
-		idle = 0,
-		prior = 2, state = { state_alarm },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	t = { section = "logic@val_lager_bandits_patrol_alarm4",
-		idle = 0,
-		prior = 2, state = { state_alarm_actor_inside },
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
-		predicate = lb_predicate3
-		            --function(obj) 
-		            --	return obj:profile_name() == "bandit_general"
-		            --end
-	}
-	table.insert(sj, t)
-
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 1 - —Õ¿…œ≈–€ Õ¿ ¬€ÿ ¿’
-	-----------------------------------------------------------------------
-	t = { section = "logic@val_lager_bandits_sniper_normal1",
-		idle = 0,
-		prior = 1, state = { state_normal },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -835,9 +913,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_sniper_alarm1",
+	t = { section = "logic@val_lager_bandits_kamp3_alarm1",
 		idle = 0,
-		prior = 1, state = { state_alarm },
+		prior = 2, state = { state_alarm },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -847,9 +925,9 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_sniper_alarm1",
+	t = { section = "logic@val_lager_bandits_kamp3_alarm1",
 		idle = 0,
-		prior = 1, state = { state_alarm_actor_inside },
+		prior = 2, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
@@ -859,11 +937,11 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_sniper_normal2",
+	t = { section = "logic@val_lager_bandits_kamp3_normal2",
 		idle = 0,
-		prior = 1, state = { state_normal },
+		prior = 2, state = { state_normal },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
 		            --function(obj) 
 		            --	return obj:profile_name() == "bandit_general"
@@ -871,11 +949,11 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_sniper_alarm2",
+	t = { section = "logic@val_lager_bandits_kamp3_alarm2",
 		idle = 0,
-		prior = 1, state = { state_alarm },
+		prior = 2, state = { state_alarm },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
 		            --function(obj) 
 		            --	return obj:profile_name() == "bandit_general"
@@ -883,17 +961,18 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	t = { section = "logic@val_lager_bandits_sniper_alarm2",
+	t = { section = "logic@val_lager_bandits_kamp3_alarm2",
 		idle = 0,
-		prior = 1, state = { state_alarm_actor_inside },
+		prior = 2, state = { state_alarm_actor_inside },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "val_lager_bandits_restrictor",
+		in_rest = "", out_rest = "val_lager_bandits_nedostroyka_restrictor",
 		predicate = lb_predicate3
 		            --function(obj) 
 		            --	return obj:profile_name() == "bandit_general"
 		            --end
 	}
 	table.insert(sj, t)
+
 end
 
 function mb_predicate(obj)

@@ -353,6 +353,44 @@ combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacr
 
 ;---
 
+[logic@val_lager_bandits_kamp2_normal3]
+active = kamp1@val_lager_bandits_kamp2_normal3
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_normal3
+
+[kamp1@val_lager_bandits_kamp2_normal3]
+center_point = kamp2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp2_alarm3]
+active = walker1@val_lager_bandits_kamp2_alarm3
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_alarm3
+
+[walker1@val_lager_bandits_kamp2_alarm3]
+path_walk = kamp2_alarm_walk3
+path_look = kamp2_alarm_look3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp2_normal4]
+active = kamp1@val_lager_bandits_kamp2_normal4
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_normal4
+
+[kamp1@val_lager_bandits_kamp2_normal4]
+center_point = kamp2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp2_alarm4]
+active = walker1@val_lager_bandits_kamp2_alarm4
+combat_ignore = combat_ignore@val_lager_bandits_kamp2_alarm4
+
+[walker1@val_lager_bandits_kamp2_alarm4]
+path_walk = kamp2_alarm_walk4
+path_look = kamp2_alarm_look4
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
 [logic@val_lager_bandits_kamp3_normal1]
 active = kamp1@val_lager_bandits_kamp3_normal1
 combat_ignore = combat_ignore@val_lager_bandits_kamp3_normal1
@@ -387,6 +425,25 @@ combat_ignore = combat_ignore@val_lager_bandits_kamp3_alarm2
 [walker1@val_lager_bandits_kamp3_alarm2]
 path_walk = kamp3_alarm_walk2
 path_look = kamp3_alarm_look2
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+;---
+
+[logic@val_lager_bandits_kamp3_normal3]
+active = kamp1@val_lager_bandits_kamp3_normal3
+combat_ignore = combat_ignore@val_lager_bandits_kamp3_normal3
+
+[kamp1@val_lager_bandits_kamp3_normal3]
+center_point = kamp3
+combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
+
+[logic@val_lager_bandits_kamp3_alarm3]
+active = walker1@val_lager_bandits_kamp3_alarm3
+combat_ignore = combat_ignore@val_lager_bandits_kamp3_alarm3
+
+[walker1@val_lager_bandits_kamp3_alarm3]
+path_walk = kamp3_alarm_walk3
+path_look = kamp3_alarm_look3
 combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_victim_free}, {=check_fighting(402) -val_prisoner_free}
 
 ;---
