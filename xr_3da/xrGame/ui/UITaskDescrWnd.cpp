@@ -5,6 +5,7 @@
 #include "UIFrameLineWnd.h"
 #include "UIScrollView.h"
 #include "UIEncyclopediaArticleWnd.h"
+#include "../encyclopedia_article.h"
 
 
 CUITaskDescrWnd::CUITaskDescrWnd	()
@@ -47,6 +48,14 @@ void CUITaskDescrWnd::ClearAll					()
 }
 
 void CUITaskDescrWnd::AddArticle				(LPCSTR article)
+{
+	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+	article_info->Init			("encyclopedia_item.xml","events_wnd:objective_item");
+	article_info->SetArticle	(article);
+	m_UITaskInfoWnd->AddWindow	(article_info);
+}
+
+void CUITaskDescrWnd::AddArticle					(CEncyclopediaArticle* article)
 {
 	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
 	article_info->Init			("encyclopedia_item.xml","events_wnd:objective_item");

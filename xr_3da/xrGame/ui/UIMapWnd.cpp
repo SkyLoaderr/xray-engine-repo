@@ -291,6 +291,10 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name, Fvector2 pos)
 		map_idx							= GLOBAL_MAP_IDX;
 	else{
 		map_idx							= GetIdxByName(level_name);
+		if(map_idx==u16(-1)){
+			Msg("Attempt to activate not registered map [%s]",*level_name);
+			return;
+		}
 		CUILevelMap* lm					= smart_cast<CUILevelMap*>(GetMapByIdx(map_idx));
 		lm->TargetCenter()				= pos;
 	}
@@ -309,6 +313,10 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 		map_idx							= GLOBAL_MAP_IDX;
 	else{
 		map_idx							= GetIdxByName(level_name);
+		if(map_idx==u16(-1)){
+			Msg("Attempt to activate not registered map [%s]",*level_name);
+			return;
+		}
 		CUILevelMap* lm					= smart_cast<CUILevelMap*>(GetMapByIdx(map_idx));
 		Frect r							= lm->BoundRect();
 		r.getcenter						(lm->TargetCenter());
@@ -438,7 +446,10 @@ CUICustomMap*	CUIMapWnd::GetMapByIdx				(u16 idx)
 u16 CUIMapWnd::GetIdxByName			(const shared_str& map_name)
 {
 	GameMapsPairIt it				= m_GameMaps.find(map_name);
+	if(it==m_GameMaps.end())			return u16(-1);
+
 	return (u16)std::distance		(m_GameMaps.begin(),it);
+	
 }
 
 void CUIMapWnd::UpdateScroll()

@@ -5,6 +5,7 @@ class CUIScrollView;
 class CUIFrameWindow;
 class CUIFrameLineWnd;
 class CUIXml;
+class CEncyclopediaArticle;
 
 class CUITaskDescrWnd:public CUIWindow
 {
@@ -20,4 +21,5 @@ public:
 	void		Init						(CUIXml* doc, LPCSTR start_from);
 	void		ClearAll					();
 	void		AddArticle					(LPCSTR article);
+	void		AddArticle					(CEncyclopediaArticle* article);
 };

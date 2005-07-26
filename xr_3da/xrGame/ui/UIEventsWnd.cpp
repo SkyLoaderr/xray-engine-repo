@@ -21,6 +21,7 @@
 #include "../string_table.h"
 #include "UITaskItem.h"
 #include "../alife_registry_wrappers.h"
+#include "../encyclopedia_article.h"
 
 CUIEventsWnd::CUIEventsWnd			()
 {
@@ -114,6 +115,8 @@ void CUIEventsWnd::OnFilterChanged			(CUIWindow* w, void*)
 {
 	m_currFilter			=(ETaskFilters)m_TaskFilter->GetActiveIndex();
 	ReloadList				(false);
+	if(!GetDescriptionMode())
+		SetDescriptionMode		(true);
 }
 
 void CUIEventsWnd::Reload					()
@@ -156,9 +159,15 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	}
 
 }
-
+int i=0;
 void CUIEventsWnd::Show					(bool status)
 {
+	if(i==0&&status){
+		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_1", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		i=1;
+	};
 	inherited::Show			(status);
 	m_UIMapWnd->Show		(status);
 	m_UITaskInfoWnd->Show	(status);
@@ -182,11 +191,7 @@ void CUIEventsWnd::OnListItemClicked		(CUIWindow* w, void* d)
 	CUIListItem*	pSelItem	= (CUIListItem*)d;
 	CUITaskItem*	pTaskSelItem	= smart_cast<CUITaskItem*>(pSelItem);
 
-	if(pTaskSelItem->ObjectiveIdx() != 0 ){
-		CMapLocation* ml = pTaskSelItem->Objective()->HasMapLocation();
-		if(ml)
-			m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
-	}
+	ShowDescription		(pTaskSelItem->GameTask(), pTaskSelItem->ObjectiveIdx());
 
 	int sz = m_ListWnd->GetSize		();
 	for(int i=0; i<sz;++i){
@@ -220,13 +225,37 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 	if(GetDescriptionMode()){//map
 		if(idx != 0 ){
 			CMapLocation* ml = t->m_Objectives[idx].HasMapLocation();
-			if(ml)
+			if(ml&&ml->SpotEnabled())
 				m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
 		}
 	}else{//articles
 		m_UITaskInfoWnd->ClearAll	();
-		m_UITaskInfoWnd->AddArticle	("zone_anomalies_meat");
-		m_UITaskInfoWnd->AddArticle	("zone_anomalies_zharka");
+
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+	{
+		shared_str	need_group;
+		if(0==idx)
+			need_group	=	t->m_ID;
+		else
+			need_group.sprintf("%s/%d",*t->m_ID,idx);
+
+		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
+		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		{
+			if (ARTICLE_DATA::eTaskArticle == it->article_type)
+			{
+				CEncyclopediaArticle	A;
+				A.Load					(it->article_id);
+
+				if(strstr(*(A.data()->group), *(need_group))== *(A.data()->group))
+					m_UITaskInfoWnd->AddArticle(&A);
+			}
+		}
+	}
+
+//		m_UITaskInfoWnd->AddArticle	("zone_anomalies_meat");
+//		m_UITaskInfoWnd->AddArticle	("zone_anomalies_zharka");
 
 	}
 }

@@ -44,7 +44,8 @@ public:
 	bool					HasMapLocations			();
 	void					ShowLocations			(bool bShow);
 	bool					ShownLocations			();
-	//название задания
+	
+	shared_str				m_ID;
 	shared_str				m_Title;
 	OBJECTIVE_VECTOR		m_Objectives;
 	ALife::_TIME_ID			m_ReceiveTime;
