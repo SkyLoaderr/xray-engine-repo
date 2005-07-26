@@ -6,6 +6,7 @@
 -- Trader
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(trader, actor)
+	local actor = db.actor
 	if (actor:has_info("esc_kill_bandits_quest_have") and actor:dont_has_info("esc_kill_bandits_quest_done")) or
 	   (actor:has_info("escape_stalker_meet") and actor:dont_has_info("escape_stalker_done")) or
 	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done"))
@@ -24,6 +25,90 @@ end
 function trader_dont_give_job(first_speaker, second_speaker)
 	return not trader_alredy_give_job(first_speaker, second_speaker)
 end
+
+function trader_dont_need_artefact(first_speaker, second_speaker)
+	local actor = db.actor
+	if (actor:has_info("esc_artefact1_need") and actor:dont_has_info("esc_artefact1_have")) or
+	   (actor:has_info("esc_artefact2_need") and actor:dont_has_info("esc_artefact2_have")) or
+	   (actor:has_info("esc_artefact3_need") and actor:dont_has_info("esc_artefact3_have"))
+	then
+		return true
+	end
+	return false 
+end
+
+function actor_have_needed_artefact1(first_speaker, second_speaker)
+	local actor = db.actor
+	if actor ~= nil and
+	   (actor:has_info("esc_artefact1_need") and actor:dont_has_info("esc_artefact1_have")) and
+	   (actor:object("af_vyvert") ~= nil)
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function actor_have_needed_artefact2(first_speaker, second_speaker)
+	local actor = db.actor
+	if actor ~= nil and
+	   (actor:has_info("esc_artefact2_need") and actor:dont_has_info("esc_artefact2_have")) and
+	   (actor:object("af_blood") ~= nil)
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function actor_have_needed_artefact3(first_speaker, second_speaker)
+	local actor = db.actor
+	if actor ~= nil and
+	   (actor:has_info("esc_artefact3_need") and actor:dont_has_info("esc_artefact3_have")) and
+	   (actor:object("af_medusa") ~= nil)
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function actor_has_something(first_speaker, second_speaker)
+	local actor = db.actor
+	if actor ~= nil and
+	   (actor:object("af_blood") ~= nil) or
+	   (actor:object("af_medusa") ~= nil) or
+	   (actor:object("af_vyvert") ~= nil)
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function give_needed_artefact1(first_speaker, second_speaker)
+	local artefact1 = first_speaker:object("af_vyvert")
+	dialogs.relocate_item(second_speaker, artefact1, "out")
+	dialogs.relocate_money(second_speaker, 1000, "in")
+end
+
+function give_needed_artefact2(first_speaker, second_speaker)
+	local artefact2 = first_speaker:object("af_blood")
+	dialogs.relocate_item(second_speaker, artefact2, "out")
+	dialogs.relocate_money(second_speaker, 1000, "in")
+end
+
+function give_needed_artefact3(first_speaker, second_speaker)
+	local artefact3 = first_speaker:object("af_medusa")
+	dialogs.relocate_item(second_speaker, artefact3, "out")
+	dialogs.relocate_money(second_speaker, 1000, "in")
+end
+
+
+function trader_need_artefact(first_speaker, second_speaker)
+	return not trader_dont_need_artefact(first_speaker, second_speaker)
+end
+
 
 function trader_dont_has_job(first_speaker, second_speaker)
     if trader_need_free_factory(first_speaker, second_speaker) == false and

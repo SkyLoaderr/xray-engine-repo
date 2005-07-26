@@ -131,4 +131,14 @@
 	<info_portion id="esc_kill_bandits_quest_have"></info_portion>
 	<info_portion id="esc_kill_bandits_quest_kill"></info_portion>
 	<info_portion id="esc_kill_bandits_quest_done"></info_portion>
+	
+	
+	<!-- random artefacts -->
+	<info_portion id="esc_artefact1_need"></info_portion>
+	<info_portion id="esc_artefact1_have"></info_portion>
+	<info_portion id="esc_artefact2_need"></info_portion>
+	<info_portion id="esc_artefact2_have"></info_portion>
+	<info_portion id="esc_artefact3_need"></info_portion>
+	<info_portion id="esc_artefact3_have"></info_portion>	
+	
 </game_information_portions>
