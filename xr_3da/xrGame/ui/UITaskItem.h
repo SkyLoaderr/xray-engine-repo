@@ -6,15 +6,17 @@ class CGameTask;
 class CUIStatic;
 class CUIButton;
 struct SGameTaskObjective;
+class CUIEventsWnd;
 
 class CUITaskItem :public CUIListItem, public CUIWndCallback
 {
 	typedef		CUIListItem	inherited;
 protected:
+	CUIEventsWnd*	m_EventsWnd;
 	CGameTask*		m_GameTask;
 	int				m_TaskObjectiveIdx;
 public:
-					CUITaskItem				();
+					CUITaskItem				(CUIEventsWnd* w);
 	virtual			~CUITaskItem			();
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 					
@@ -37,7 +39,7 @@ protected:
 	CUI3tButton*	m_switchDescriptionBtn;
 	void			Init					();
 public:	
-					CUITaskRootItem			();
+					CUITaskRootItem			(CUIEventsWnd* w);
 	virtual			~CUITaskRootItem		();
 	virtual void	Update					();
 	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
@@ -59,7 +61,7 @@ protected:
 	void			Init					();
 
 public:	
-					CUITaskSubItem			();
+					CUITaskSubItem			(CUIEventsWnd* w);
 	virtual			~CUITaskSubItem			();
 	virtual void	Update					();
 	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);

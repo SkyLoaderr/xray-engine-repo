@@ -662,3 +662,8 @@ void CUIStatic::DeleteLastCharacter(){
 
 	this->SetText(str);
 }
+
+void CUIStatic::AdjustHeightToText			()
+{
+	SetHeight		(m_pLines->GetVisibleHeight());
+}

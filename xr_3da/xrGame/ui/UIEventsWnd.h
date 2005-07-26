@@ -11,6 +11,7 @@ class CUIListWnd;
 class CUIButton;
 class CUITabControl;
 class CGameTask;
+class CUITaskDescrWnd;
 
 class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	typedef CUIWindow			inherited;
@@ -19,6 +20,10 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 						eFailedTask,
 						eOwnTask,
 						eMaxTask};
+	enum EEventWndFlags{
+						flNeedReload	=(1<<0),
+						flMapMode		=(1<<1),
+	};
 	Flags16						m_flags;
 	ETaskFilters				m_currFilter;
 	CUIFrameWindow*				m_UILeftFrame;
@@ -26,6 +31,7 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	CUIFrameLineWnd*			m_UILeftHeader;
 	CUIAnimatedStatic*			m_UIAnimation;
 	CUIMapWnd*					m_UIMapWnd;
+	CUITaskDescrWnd*			m_UITaskInfoWnd;
 	CUIListWnd*					m_ListWnd;
 	CUITabControl*				m_TaskFilter;
 
@@ -34,6 +40,10 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	void						OnListItemClicked		(CUIWindow*,void*);
 
 	void						ReloadList				(bool bClearOnly);
+public:
+	void						SetDescriptionMode		(bool bMap);
+	bool						GetDescriptionMode		();
+	void						ShowDescription			(CGameTask* t, int idx);
 public:
 
 								CUIEventsWnd			();

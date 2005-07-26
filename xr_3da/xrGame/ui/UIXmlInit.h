@@ -36,7 +36,7 @@ class CUIMultiTextStatic;
 class CUIAnimatedStatic;
 class CUIArtefactPanel;
 class CUIOptionsItem;
-
+class CUIScrollView;
 //////////////////////////////////////////////////////////////////////////
 
 class CUIXmlInit
@@ -77,6 +77,9 @@ public:
 	static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
+	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
+
+
 
 
 	//static void	SetTexture				(const xr_string& texture_name, CUIStatic* pWnd);

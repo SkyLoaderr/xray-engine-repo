@@ -10057,31 +10057,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Lines"
-					Filter="">
-					<File
-						RelativePath=".\ui\UILine.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UILine.h">
-					</File>
-					<File
-						RelativePath=".\ui\UILines.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UILines.h">
-					</File>
-					<File
-						RelativePath=".\ui\uilinestd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UISubLine.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UISubLine.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="_Debug Fonts"
 					Filter="">
 					<File
@@ -10147,6 +10122,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIEventsWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITaskDescrWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITaskDescrWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UITaskItem.cpp">
@@ -10657,6 +10638,41 @@
 					</File>
 					<File
 						RelativePath="UIFrameRect.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ScrollView"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIScrollView.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollView.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Lines"
+					Filter="">
+					<File
+						RelativePath=".\ui\UILine.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UILine.h">
+					</File>
+					<File
+						RelativePath=".\ui\UILines.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UILines.h">
+					</File>
+					<File
+						RelativePath=".\ui\uilinestd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UISubLine.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISubLine.h">
 					</File>
 				</Filter>
 			</Filter>

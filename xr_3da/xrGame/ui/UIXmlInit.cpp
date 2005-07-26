@@ -28,6 +28,7 @@
 #include "UIAnimatedStatic.h"
 #include "uixmlinit.h"
 #include "uiartefactpanel.h"
+#include "UIScrollView.h"
 
 #include "UITextureMaster.h"
 
@@ -1159,4 +1160,14 @@ u32 CUIXmlInit::GetARGB(CUIXml& xml_doc, const char* path, int index){
 	u32 b = xml_doc.ReadAttribInt(path, index, "b");
 
 	return color_argb(a, r, g, b);
+}
+
+bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd)
+{
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+
+	InitWindow(xml_doc, path, index, pWnd);
+	pWnd->Init();
+
+	return true;
 }

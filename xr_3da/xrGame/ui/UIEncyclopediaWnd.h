@@ -9,18 +9,24 @@
 #ifndef UI_ENCYCLOPEDIA_WND_H_
 #define UI_ENCYCLOPEDIA_WND_H_
 
-#include "UIDialogWnd.h"
+#include "UIWindow.h"
+/*
 #include "UIFrameLineWnd.h"
 #include "UIFrameWindow.h"
 #include "UIAnimatedStatic.h"
 #include "UIListWnd.h"
 #include "UITreeViewItem.h"
 #include "UIEncyclopediaCore.h"
-
+*/
 #include "../encyclopedia_article_defs.h"
 
 class CEncyclopediaArticle;
-
+class CUIFrameWindow;
+class CUIFrameLineWnd;
+class CUIAnimatedStatic;
+class CUIStatic;
+class CUIListWnd;
+class CUIEncyclopediaCore;
 //////////////////////////////////////////////////////////////////////////
 
 class CUIEncyclopediaWnd: public CUIWindow
@@ -45,7 +51,7 @@ public:
 	void			DeleteArticles();
 	bool			HasArticle(ARTICLE_ID);
 
-	void			OpenTree(ARTICLE_ID id) { UIInfo.OpenTree(id); }
+//.	void			OpenTree(ARTICLE_ID id) { UIInfo.OpenTree(id); }
 // Кнопка возврата в меню заданий
 //	CUIButton			UIBack;
 
@@ -53,17 +59,17 @@ public:
 protected:
 	u32					prevArticlesCount;
 	// Элементы графического оформления
-	CUIFrameWindow		UIEncyclopediaIdxBkg;
-	CUIFrameWindow		UIEncyclopediaInfoBkg;
-	CUIFrameLineWnd		UIEncyclopediaIdxHeader;
-	CUIFrameLineWnd		UIEncyclopediaInfoHeader;
-	CUIAnimatedStatic	UIAnimation;
-	CUIStatic			UIArticleHeader;
+	CUIFrameWindow*		UIEncyclopediaIdxBkg;
+	CUIFrameWindow*		UIEncyclopediaInfoBkg;
+	CUIFrameLineWnd*	UIEncyclopediaIdxHeader;
+	CUIFrameLineWnd*	UIEncyclopediaInfoHeader;
+	CUIAnimatedStatic*	UIAnimation;
+	CUIStatic*			UIArticleHeader;
 
 	// Data lists
-	CUIListWnd			UIIdxList;
-	CUIListWnd			UIInfoList;
-	CUIEncyclopediaCore	UIInfo;
+	CUIListWnd*				UIIdxList;
+	CUIListWnd*				UIInfoList;
+	CUIEncyclopediaCore*	UIInfo;
 };
 
 #endif	//UI_ENCYCLOPEDIA_WND_H_

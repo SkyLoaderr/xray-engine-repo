@@ -42,7 +42,7 @@ public:
 	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData);
 	virtual void	Show			(bool status);
 	// Opens tree at item with specified value
-	void			OpenTree		(ARTICLE_ID value);
+//.	void			OpenTree		(ARTICLE_ID value);
 
 
 	// Хранилище статей
@@ -56,7 +56,7 @@ public:
 
 private:
 	void			AdjustImagePos	(CUIStatic &s);
-	void			OpenTree		(CUITreeViewItem *pItem);
+//.	void			OpenTree		(CUITreeViewItem *pItem);
 
 	CUIListWnd		*pInfoList, *pIdxList;
 	ArticlesDB		m_ArticlesDB;

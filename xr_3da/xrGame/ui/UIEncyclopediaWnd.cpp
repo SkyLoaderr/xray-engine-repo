@@ -8,13 +8,15 @@
 
 #include "StdAfx.h"
 #include "UIEncyclopediaWnd.h"
-#include "UIPdaWnd.h"
-
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "../HUDManager.h"
-#include "../level.h"
-#include "../string_table.h"
+#include "../object_broker.h"
+#include "UIFrameWindow.h"
+#include "UIFrameLineWnd.h"
+#include "UIAnimatedStatic.h"
+#include "UIListWnd.h"
+#include "UIEncyclopediaCore.h"
+#include "UIPdaAux.h"
+
 #include "../alife_registry_wrappers.h"
 #include "../actor.h"
 
@@ -27,6 +29,7 @@ const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
 CUIEncyclopediaWnd::CUIEncyclopediaWnd()
 {
 	prevArticlesCount	= 0;
+	UIInfo		= xr_new<CUIEncyclopediaCore>();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,6 +40,7 @@ CUIEncyclopediaWnd::~CUIEncyclopediaWnd()
 //		UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->data()->image);
 
 	DeleteArticles();
+	delete_data(UIInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,49 +53,56 @@ void CUIEncyclopediaWnd::Init()
 
 	CUIXmlInit	xml_init;
 
-	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	xml_init.InitWindow		(uiXml, "main_wnd", 0, this);
 
 	// Load xml data
-	AttachChild(&UIEncyclopediaIdxBkg);
-	xml_init.InitFrameWindow(uiXml, "right_frame_window", 0, &UIEncyclopediaIdxBkg);
+	UIEncyclopediaIdxBkg		= xr_new<CUIFrameWindow>(); UIEncyclopediaIdxBkg->SetAutoDelete(true);
+	AttachChild(UIEncyclopediaIdxBkg);
+	xml_init.InitFrameWindow(uiXml, "right_frame_window", 0, UIEncyclopediaIdxBkg);
 
-	xml_init.InitFont(uiXml, "tree_item_font", 0, UIInfo.m_uTreeItemColor, UIInfo.m_pTreeItemFont);
-	R_ASSERT(UIInfo.m_pTreeItemFont);
-	xml_init.InitFont(uiXml, "tree_root_font", 0, UIInfo.m_uTreeRootColor, UIInfo.m_pTreeRootFont);
-	R_ASSERT(UIInfo.m_pTreeRootFont);
-
-
-	UIEncyclopediaIdxBkg.AttachChild(&UIEncyclopediaIdxHeader);
-	xml_init.InitFrameLine(uiXml, "right_frame_line", 0, &UIEncyclopediaIdxHeader);
-
-	UIEncyclopediaIdxHeader.AttachChild(&UIAnimation);
-	xml_init.InitAnimatedStatic(uiXml, "a_static", 0, &UIAnimation);
-
-	AttachChild(&UIEncyclopediaInfoBkg);
-	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, &UIEncyclopediaInfoBkg);
-	UIEncyclopediaInfoBkg.AttachChild(&UIEncyclopediaInfoHeader);
-
-	UIEncyclopediaInfoHeader.UITitleText.SetElipsis(CUIStatic::eepBegin, 20);
-	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, &UIEncyclopediaInfoHeader);
-
-	UIEncyclopediaInfoBkg.AttachChild(&UIArticleHeader);
-	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleHeader);
+	xml_init.InitFont(uiXml, "tree_item_font", 0, UIInfo->m_uTreeItemColor, UIInfo->m_pTreeItemFont);
+	R_ASSERT(UIInfo->m_pTreeItemFont);
+	xml_init.InitFont(uiXml, "tree_root_font", 0, UIInfo->m_uTreeRootColor, UIInfo->m_pTreeRootFont);
+	R_ASSERT(UIInfo->m_pTreeRootFont);
 
 
-	UIEncyclopediaIdxBkg.AttachChild(&UIIdxList);
-	xml_init.InitListWnd(uiXml, "idx_list", 0, &UIIdxList);
-	UIIdxList.SetMessageTarget(this);
-	UIIdxList.EnableScrollBar(true);
+	UIEncyclopediaIdxHeader		= xr_new<CUIFrameLineWnd>(); UIEncyclopediaIdxHeader->SetAutoDelete(true);
+	UIEncyclopediaIdxBkg->AttachChild(UIEncyclopediaIdxHeader);
+	xml_init.InitFrameLine(uiXml, "right_frame_line", 0, UIEncyclopediaIdxHeader);
 
-	UIEncyclopediaInfoBkg.AttachChild(&UIInfoList);
-	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoList);
-	UIInfoList.EnableScrollBar(true);
-	UIInfoList.SetNewRenderMethod(true);
-	UIInfoList.ActivateList(false);
-	UIInfoList.SetMessageTarget(&UIInfo);
+	UIAnimation					= xr_new<CUIAnimatedStatic>(); UIAnimation->SetAutoDelete(true);
+	UIEncyclopediaIdxHeader->AttachChild(UIAnimation);
+	xml_init.InitAnimatedStatic(uiXml, "a_static", 0, UIAnimation);
 
-	UIInfo.Init(&UIInfoList, &UIIdxList);
+	UIEncyclopediaInfoBkg		= xr_new<CUIFrameWindow>();UIEncyclopediaInfoBkg->SetAutoDelete(true);
+	AttachChild(UIEncyclopediaInfoBkg);
+	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, UIEncyclopediaInfoBkg);
+
+	UIEncyclopediaInfoHeader	= xr_new<CUIFrameLineWnd>();UIEncyclopediaInfoHeader->SetAutoDelete(true);
+	UIEncyclopediaInfoBkg->AttachChild(UIEncyclopediaInfoHeader);
+
+	UIEncyclopediaInfoHeader->UITitleText.SetElipsis(CUIStatic::eepBegin, 20);
+	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, UIEncyclopediaInfoHeader);
+
+	UIArticleHeader				= xr_new<CUIStatic>(); UIArticleHeader->SetAutoDelete(true);
+	UIEncyclopediaInfoBkg->AttachChild(UIArticleHeader);
+	xml_init.InitStatic(uiXml, "article_header_static", 0, UIArticleHeader);
+
+	UIIdxList					= xr_new<CUIListWnd>(); UIIdxList->SetAutoDelete(true);
+	UIEncyclopediaIdxBkg->AttachChild(UIIdxList);
+	xml_init.InitListWnd(uiXml, "idx_list", 0, UIIdxList);
+	UIIdxList->SetMessageTarget(this);
+	UIIdxList->EnableScrollBar(true);
+
+	UIInfoList					= xr_new<CUIListWnd>(); UIInfoList->SetAutoDelete(true);
+	UIEncyclopediaInfoBkg->AttachChild(UIInfoList);
+	xml_init.InitListWnd(uiXml, "info_list", 0, UIInfoList);
+	UIInfoList->EnableScrollBar(true);
+	UIInfoList->SetNewRenderMethod(true);
+	UIInfoList->ActivateList(false);
+	UIInfoList->SetMessageTarget(UIInfo);
+
+	UIInfo->Init(UIInfoList, UIIdxList);
 
 	// Читаем максимальную длинну картинки в энциклопедии
 //	MAX_PICTURE_WIDTH = uiXml.ReadAttribInt("item_static", 0, "width", 0);
@@ -100,8 +111,8 @@ void CUIEncyclopediaWnd::Init()
 	strconcat(header, ALL_PDA_HEADER_PREFIX, "/Encyclopedia");
 	m_InfosHeaderStr = header;
 
-	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIEncyclopediaInfoBkg);
-	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UIEncyclopediaIdxBkg);
+	xml_init.InitAutoStatic(uiXml, "left_auto_static", UIEncyclopediaInfoBkg);
+	xml_init.InitAutoStatic(uiXml, "right_auto_static", UIEncyclopediaIdxBkg);
 /*
 	// Кнопка возврата
 	AttachChild(&UIBack);
@@ -114,15 +125,15 @@ void CUIEncyclopediaWnd::Init()
 
 void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 {
-	if (&UIIdxList == pWnd && LIST_ITEM_CLICKED == msg)
+	if (UIIdxList == pWnd && LIST_ITEM_CLICKED == msg)
 	{
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
 		R_ASSERT(pTVItem);
 
-		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *UIInfo.SetCurrentArtice(pTVItem);
-		UIEncyclopediaInfoHeader.UITitleText.SetText(caption.c_str());
+		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *UIInfo->SetCurrentArtice(pTVItem);
+		UIEncyclopediaInfoHeader->UITitleText.SetText(caption.c_str());
 		caption.erase(0, caption.find_last_of("/") + 1);
-		UIArticleHeader.SetText(caption.c_str());
+		UIArticleHeader->SetText(caption.c_str());
 
 			// Запоминаем текущий эдемент
 //			m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
@@ -155,7 +166,7 @@ void CUIEncyclopediaWnd::ReloadArticles()
 		{
 			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 			{
-				UIInfo.AddArticle(it->article_id, it->readed);
+				UIInfo->AddArticle(it->article_id, it->readed);
 			}
 		}
 		prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
@@ -175,7 +186,7 @@ void CUIEncyclopediaWnd::Show(bool status)
 //		UIBack.Show(false);
 	}
 
-	UIInfo.Show(status);
+	UIInfo->Show(status);
 	inherited::Show(status);
 }
 
@@ -183,19 +194,19 @@ void CUIEncyclopediaWnd::Show(bool status)
 
 void CUIEncyclopediaWnd::AddArticle(ARTICLE_ID id, bool bReaded)
 {
-	UIInfo.AddArticle(id, bReaded);
+	UIInfo->AddArticle(id, bReaded);
 }
 
 bool CUIEncyclopediaWnd::HasArticle(ARTICLE_ID id)
 {
 	ReloadArticles();
-	return UIInfo.HasArticle(id);
+	return UIInfo->HasArticle(id);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::DeleteArticles()
 {
-	UIInfo.DeleteArticles();
-	UIIdxList.RemoveAll();
+	UIInfo->DeleteArticles();
+	UIIdxList->RemoveAll();
 }

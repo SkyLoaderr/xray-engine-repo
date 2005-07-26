@@ -6,10 +6,12 @@
 #include "../string_table.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include "UIEventsWnd.h"
 
-CUITaskItem::CUITaskItem			()
+CUITaskItem::CUITaskItem			(CUIEventsWnd* w)
 :m_GameTask			(NULL),
-m_TaskObjectiveIdx	(-1)
+m_TaskObjectiveIdx	(-1),
+m_EventsWnd(w)
 {
 }
 
@@ -40,7 +42,8 @@ void CUITaskItem::Update				()
 	inherited::Update();
 }
 
-CUITaskRootItem::CUITaskRootItem		()
+CUITaskRootItem::CUITaskRootItem	(CUIEventsWnd* w)
+:inherited(w)
 {
 	Init();
 }
@@ -104,7 +107,7 @@ void CUITaskRootItem::Update		()
 		bool bShown							= m_GameTask->ShownLocations();
 		m_showLocationBtn->SetButtonMode		(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
 	}
-
+	m_switchDescriptionBtn->SetButtonMode		(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
 }
 
 void CUITaskRootItem::OnShowLocationClicked	()
@@ -115,11 +118,14 @@ void CUITaskRootItem::OnShowLocationClicked	()
 
 void CUITaskRootItem::OnSwitchDescriptionClicked	()
 {
-//	bool bPushed = 	m_switchDescriptionBtn->GetCheck	();
+	bool bPushed = 	m_switchDescriptionBtn->GetCheck	();
+	m_EventsWnd->SetDescriptionMode						(!bPushed);
+	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
 }
 
 
-CUITaskSubItem::CUITaskSubItem		()
+CUITaskSubItem::CUITaskSubItem		(CUIEventsWnd* w)
+:inherited(w)
 {
 	Init();
 }

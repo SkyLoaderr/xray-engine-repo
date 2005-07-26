@@ -223,7 +223,7 @@ void CUIEncyclopediaCore::Show(bool status)
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 void CUIEncyclopediaCore::OpenTree(ARTICLE_ID value)
 {
 	int itemVal = -1;
@@ -258,9 +258,8 @@ void CUIEncyclopediaCore::OpenTree(ARTICLE_ID value)
 		pIdxList->ScrollToPos(result->GetIndex());
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
-
+*/
+/*
 void CUIEncyclopediaCore::OpenTree(CUITreeViewItem *pItem)
 {
 	R_ASSERT(pItem);
@@ -272,3 +271,4 @@ void CUIEncyclopediaCore::OpenTree(CUITreeViewItem *pItem)
 	if (pItem->IsRoot())
 		pItem->Open();
 }
+*/

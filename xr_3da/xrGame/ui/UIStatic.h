@@ -97,6 +97,7 @@ public:
 //#pragma todo("Satan->Satan : delete next two functions")
 	virtual void			SetTextAlign		(CGameFont::EAligment align);
 	CGameFont::EAligment	GetTextAlign		();
+			void AdjustHeightToText			();
 
 	virtual void ClipperOn					();
 	virtual void ClipperOff					();

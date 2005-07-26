@@ -7,6 +7,7 @@
 #include "UIMapWnd.h"
 #include "UIListWnd.h"
 #include "UITabControl.h"
+#include "UITaskDescrWnd.h"
 #include "../MainUI.h"
 #include "../HUDManager.h"
 #include <boost/function.hpp>
@@ -18,7 +19,6 @@
 #include "../map_manager.h"
 #include "../map_location.h"
 #include "../string_table.h"
-//#include "UIJobItem.h"
 #include "UITaskItem.h"
 #include "../alife_registry_wrappers.h"
 
@@ -29,6 +29,8 @@ CUIEventsWnd::CUIEventsWnd			()
 
 CUIEventsWnd::~CUIEventsWnd			()
 {
+	delete_data			(m_UIMapWnd);
+	delete_data			(m_UITaskInfoWnd);
 }
 
 void CUIEventsWnd::Init				()
@@ -59,9 +61,13 @@ void CUIEventsWnd::Init				()
 	AttachChild						(m_UIRightWnd);
 	xml_init.InitWindow				(uiXml, "main_wnd:right_frame", 0, m_UIRightWnd);
 
-	m_UIMapWnd						= xr_new<CUIMapWnd>(); m_UIMapWnd->SetAutoDelete(true);
-	m_UIRightWnd->AttachChild		(m_UIMapWnd);
+	m_UIMapWnd						= xr_new<CUIMapWnd>(); m_UIMapWnd->SetAutoDelete(false);
+//	m_UIRightWnd->AttachChild		(m_UIMapWnd);
 	m_UIMapWnd->Init				("pda_events.xml","main_wnd:right_frame:map_wnd");
+
+	m_UITaskInfoWnd					= xr_new<CUITaskDescrWnd>(); m_UITaskInfoWnd->SetAutoDelete(false);
+	m_UITaskInfoWnd->Init			(&uiXml,"main_wnd:right_frame:task_descr_view");
+	
 
 	m_ListWnd						= xr_new<CUIListWnd>(); m_ListWnd->SetAutoDelete(true);
 	m_UILeftFrame->AttachChild		(m_ListWnd);
@@ -82,13 +88,14 @@ void CUIEventsWnd::Init				()
    AddCallback						("list_wnd",LIST_ITEM_CLICKED,boost::bind(&CUIEventsWnd::OnListItemClicked,this,_1,_2));
 
    m_currFilter						= eActiveTask;
+   SetDescriptionMode				(true);
 }
 
 void CUIEventsWnd::Update			()
 {
-	if(m_flags.test((1<<0)) ){
+	if(m_flags.test(flNeedReload) ){
 		ReloadList(false);
-		m_flags.set((1<<0),FALSE );
+		m_flags.set(flNeedReload,FALSE );
 	}
 	inherited::Update		();
 }
@@ -111,7 +118,7 @@ void CUIEventsWnd::OnFilterChanged			(CUIWindow* w, void*)
 
 void CUIEventsWnd::Reload					()
 {
-		m_flags.set((1<<0),TRUE );
+		m_flags.set(flNeedReload,TRUE );
 }
 
 void CUIEventsWnd::ReloadList				(bool bClearOnly)
@@ -138,9 +145,9 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 		for (u32 i = 0; i < task->m_Objectives.size(); ++i)
 		{
 			if(i==0)
-				pTaskItem = xr_new<CUITaskRootItem>();
+				pTaskItem = xr_new<CUITaskRootItem>(this);
 			else
-				pTaskItem = xr_new<CUITaskSubItem>();
+				pTaskItem = xr_new<CUITaskSubItem>(this);
 
 			pTaskItem->SetGameTask			(task, i);
 			m_ListWnd->AddItem<CUIListItem>	(pTaskItem);
@@ -154,6 +161,7 @@ void CUIEventsWnd::Show					(bool status)
 {
 	inherited::Show			(status);
 	m_UIMapWnd->Show		(status);
+	m_UITaskInfoWnd->Show	(status);
 
 	ReloadList				(status == false);
 }
@@ -187,5 +195,38 @@ void CUIEventsWnd::OnListItemClicked		(CUIWindow* w, void* d)
 			itm->MarkSelected	(true);
 		else
 			itm->MarkSelected	(false);
+	}
+}
+
+void CUIEventsWnd::SetDescriptionMode		(bool bMap)
+{
+	if(bMap){
+		m_UIRightWnd->DetachChild		(m_UITaskInfoWnd);
+		m_UIRightWnd->AttachChild		(m_UIMapWnd);
+	}else{
+		m_UIRightWnd->DetachChild		(m_UIMapWnd);
+		m_UIRightWnd->AttachChild		(m_UITaskInfoWnd);
+	}
+	m_flags.set(flMapMode, bMap);
+}
+
+bool CUIEventsWnd::GetDescriptionMode		()
+{
+	return !!m_flags.test(flMapMode);
+}
+
+void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
+{
+	if(GetDescriptionMode()){//map
+		if(idx != 0 && t->m_Objectives[idx].HasMapLocation()){
+			CMapLocation* ml = Level().MapManager().GetMapLocation(	t->m_Objectives[idx].map_location,
+																	t->m_Objectives[idx].object_id);
+			m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
+		}
+	}else{//articles
+		m_UITaskInfoWnd->ClearAll	();
+		m_UITaskInfoWnd->AddArticle	("zone_anomalies_meat");
+		m_UITaskInfoWnd->AddArticle	("zone_anomalies_zharka");
+
 	}
 }
