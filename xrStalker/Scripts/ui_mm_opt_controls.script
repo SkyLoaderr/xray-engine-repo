@@ -14,14 +14,10 @@ function opt_controls:InitControls(x, y, xml, handler)
 	
 	self.bk = xml:InitFrame("frame", self)
 	
-	local c
-
-	xml:InitLabel("tab_controls:cap_mousesens",			self)
-	xml:InitLabel("tab_controls:cap_keyboardsetup",		self)
-	xml:InitLabel("tab_controls:cap_keyboardsetup",		self)
-	xml:InitTrackBar("tab_controls:track_mousesens",	self)
-	xml:InitCheck("tab_controls:check_mouseinvert",		self)
-	
-	xml:InitStatic("tab_controls:stub",					self)
-	
+	xml:InitLabel		("tab_controls:cap_mousesens",		self)
+	xml:InitLabel		("tab_controls:cap_keyboardsetup",	self)
+	xml:InitLabel		("tab_controls:cap_keyboardsetup",	self)
+	xml:InitTrackBar	("tab_controls:track_mousesens",	self)
+	xml:InitCheck		("tab_controls:check_mouseinvert",	self)	
+	xml:InitKeyBinding	("tab_controls:key_binding",		self)
 end
