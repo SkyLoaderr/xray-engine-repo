@@ -977,9 +977,9 @@ end
 
 
 function check_fblockpost_state (gulag)
-    if db.actor:has_info ("mil_headquarter_attack") then
-       return 3
-    end    
+---    if db.actor:has_info ("mil_headquarter_attack") then
+--       return 3
+--    end    
     if db.actor:has_info ("mil_fblockpost_alarm") then
        return 2 
     elseif utils.is_day () == true then
