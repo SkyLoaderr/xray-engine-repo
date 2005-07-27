@@ -137,6 +137,9 @@ protected:
 	CUIMultiTextStatic	UIMoneyIndicator;
 	CUIStatic			UITeam1Sign, UITeam1Score;
 	CUIStatic			UITeam2Sign, UITeam2Score;
+	//  [7/27/2005]
+	CUIStatic			UIRankIndicator;
+	//  [7/27/2005]
 	
 	//список текстур, задаваемых извне, которые будут отрисованы
 	//на текущем кадре
@@ -148,6 +151,7 @@ public:
 	void DisplayMoneyChange(shared_str deltaMoney);
 	CUIStatic*	GetPDAOnline	() { return &UIPdaOnline; };
 	void	UpdateTeamsScore	(int t1, int t2);
+	void	SetRank				(int rank);
 protected:
 
 	// Ќадписи armor & health

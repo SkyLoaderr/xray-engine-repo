@@ -297,6 +297,12 @@ void CUIMainIngameWnd::Init()
 //			UITeam1Score.Show(false);
 //			UITeam2Score.Show(false);
 		}
+
+		//  [7/27/2005]
+		AttachChild(&UIRankIndicator);
+		xml_init.InitStatic(uiXml, "rank_icon", 0, &UIRankIndicator);
+		SetRank(0);
+		//  [7/27/2005]
 	}
 
 	// Flashing icons initialize
@@ -1627,3 +1633,10 @@ void	CUIMainIngameWnd::UpdateTeamsScore	(int t1, int t2)
 	};
 }
 //  [7/4/2005]
+
+//  [7/27/2005]
+void	CUIMainIngameWnd::SetRank				(int rank)
+{
+	UIRankIndicator.SetOriginalRect(rank*32.0f, 0.0f, 32.0f, 32.0f);	
+};
+//  [7/27/2005]

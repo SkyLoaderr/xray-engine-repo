@@ -114,6 +114,10 @@
 	<t2_static x="980" y="110" width="32" height="32" stretch = "1">
 		<texture>ui\ui_blueteam</texture>
 	</t2_static>
+	<!-- Rank Icon -->
+	<rank_icon x="826" y="26" width="32" height="32" stretch = "1">
+		<texture width="32" height="32"tile="0">ui\ui_mp_icon_rank</texture>
+	</rank_icon>
 	
 	<!-- FLASHING ICONS INDICATORS -->
 	<flashing_icons>
