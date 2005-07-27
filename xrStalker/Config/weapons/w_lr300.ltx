@@ -35,7 +35,7 @@ single_handed				= 0
 
 inv_name					= LR-300
 inv_name_short				= LR-300
-inv_weight					= 4
+inv_weight					= 3.5
 
 inv_grid_width				= 5
 inv_grid_height				= 2
@@ -58,11 +58,11 @@ fire_dispersion_base		= 0.03 	;угол (в градусах) базовой дисперсии оружия (оружи
 
 ;отдача
 cam_relax_speed        		= 3.7	;скорость возврата в исходное положение
-cam_dispersion         		= 0.9	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion         		= 0.8	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle				= 6		;максимальный угол отдачи
 cam_max_angle_horz			= 9.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz			= 1.0	;(degree) size of step camera moved in horizontal position while shooting
-
+control_inertion_factor	= 1.15f
 ;;;destroy it
 cam_horz_prob				= 0.35	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
 cam_horz_factor				= 1.3	;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
@@ -88,7 +88,7 @@ rpm_empty_click 	 		= 200
 ; ttc
 
 hit_power        			= 56
-hit_impulse		 			= 140
+hit_impulse		 			= 110
 hit_type 					= fire_wound
 
 fire_distance            	= 400
