@@ -234,11 +234,11 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 	{
-		shared_str	need_group;
+		string512	need_group;
 		if(0==idx)
-			need_group	=	t->m_ID;
+			strcpy(need_group,*t->m_ID);
 		else
-			need_group.sprintf("%s/%d",*t->m_ID,idx);
+			sprintf(need_group, "%s/%d", *t->m_ID, idx);
 
 		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
 		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
@@ -248,7 +248,7 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 				CEncyclopediaArticle	A;
 				A.Load					(it->article_id);
 
-				if(strstr(*(A.data()->group), *(need_group))== *(A.data()->group))
+				if(strstr(*(A.data()->group), need_group)== *(A.data()->group))
 					m_UITaskInfoWnd->AddArticle(&A);
 			}
 		}

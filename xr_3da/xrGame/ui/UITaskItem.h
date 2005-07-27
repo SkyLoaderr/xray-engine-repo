@@ -37,6 +37,8 @@ protected:
 	CUIStatic*		m_descriptionStatic;
 	CUI3tButton*	m_showLocationBtn;
 	CUI3tButton*	m_switchDescriptionBtn;
+	u32				m_defTextColor;
+	u32				m_defColor;
 	void			Init					();
 public:	
 					CUITaskRootItem			(CUIEventsWnd* w);
@@ -46,6 +48,7 @@ public:
 			void	OnShowLocationClicked	();
 			void	OnSwitchDescriptionClicked();
 
+	virtual void	MarkSelected				(bool b);
 };
 
 class CUITaskSubItem :public CUITaskItem

@@ -77,6 +77,8 @@ void CUITaskRootItem::Init			()
 	xml_init.Init3tButton		(uiXml,"task_root_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton		(uiXml,"task_root_item:switch_description_btn",0,m_switchDescriptionBtn);
 
+	m_defTextColor					= m_captionStatic->GetTextColor	();
+	m_defColor						= m_captionStatic->GetColor	();
 }
 
 void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)				
@@ -121,6 +123,17 @@ void CUITaskRootItem::OnSwitchDescriptionClicked	()
 	bool bPushed = 	m_switchDescriptionBtn->GetCheck	();
 	m_EventsWnd->SetDescriptionMode						(!bPushed);
 	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
+}
+
+void CUITaskRootItem::MarkSelected (bool b)
+{
+	if(b)
+		m_captionStatic->SetLightAnim	("ui_task_selected");
+	else{
+		m_captionStatic->SetLightAnim	(NULL);
+		m_captionStatic->SetTextColor	(m_defTextColor);
+		m_captionStatic->SetColor		(m_defColor);
+	}
 }
 
 
@@ -185,7 +198,7 @@ void CUITaskSubItem::Update					()
 {
 	inherited::Update						();
 	SGameTaskObjective	*obj				= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
-	bool bHasLocation						= obj->HasMapLocation();
+	bool bHasLocation						= (NULL != obj->HasMapLocation());
 	m_showPointerBtn->Enable				(bHasLocation);
 	if(bHasLocation){
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);

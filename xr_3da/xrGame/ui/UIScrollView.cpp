@@ -74,6 +74,7 @@ void CUIScrollView::RecalcSize			()
 	m_pad->SetWndSize			(pad_size);
 
 	UpdateScroll				();
+
 }
 
 void CUIScrollView::UpdateScroll		()

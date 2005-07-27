@@ -52,9 +52,12 @@ void CUIEncyclopediaArticleWnd::SetArticle(CEncyclopediaArticle* article)
 	
 	m_UIText->SetWndPos				(m_UIText->GetWndPos().x, m_UIImage->GetWndPos().y + m_UIImage->GetHeight());
 	m_UIText->SetText				(*CStringTable()(article->data()->text.c_str()));
+//.	Msg("---before m_UIText height=%f",m_UIText->GetWndSize().y);
 	m_UIText->AdjustHeightToText	();
+//.	Msg("---after m_UIText height=%f",m_UIText->GetWndSize().y);
+
 	SetHeight						(	m_UIImage->GetWndPos().y + m_UIImage->GetHeight()+
-										m_UIText->GetWndPos().y+m_UIText->GetHeight());
+										m_UIText->GetHeight());
 }
 
 void CUIEncyclopediaArticleWnd::SetArticle	(LPCSTR article)
