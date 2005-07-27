@@ -285,14 +285,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
 	}
-	if(m_character->LastMaterialIDX()!=u16(-1))
-	{
-		const SGameMtl *last_material=GMLib.GetMaterialByIdx(m_character->LastMaterialIDX());
-		if(last_material->Flags.test(SGameMtl::flInjurious))
-		{
-			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
-		}
-	}
+
 	if(ph_world->m_steps_num-m_character->m_creation_step<after_creation_collision_hit_block_steps_number)
 							gcontact_HealthLost=0;
 	CheckEnvironment(vPosition);
