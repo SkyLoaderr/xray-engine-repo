@@ -5,9 +5,6 @@
 #include "UIXmlInit.h"
 #include "../string_table.h"
 
-CUIStatic*			m_UIImage;
-CUIStatic*			m_UItext;
-
 CUIEncyclopediaArticleWnd::CUIEncyclopediaArticleWnd	()
 :m_Article(NULL)
 {

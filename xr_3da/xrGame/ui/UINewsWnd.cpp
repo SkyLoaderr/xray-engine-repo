@@ -10,7 +10,6 @@
 #include "UINewsWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "UIString.h"
 #include "../UI.h"
 #include "../HUDManager.h"
 #include "../level.h"
@@ -18,6 +17,8 @@
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
 #include "UIInventoryUtilities.h"
+#include "UINewsItemWnd.h"
+#include "UIScrollView.h"
 
 const char * const	NEWS_XML			= "news.xml";
 
@@ -27,8 +28,6 @@ const char * const	NEWS_XML			= "news.xml";
 
 CUINewsWnd::CUINewsWnd()
 {
-	// Remove this for enable interactive behaviour of list
-	UIListWnd.ActivateList(false);
 	SetWindowName("News");
 }
 
@@ -44,20 +43,15 @@ void CUINewsWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	string512 pth;
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
-	R_ASSERT3(xml_result, "xml file not found", xml_name);
+	bool xml_result				= uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
+	R_ASSERT3					(xml_result, "xml file not found", xml_name);
 	CUIXmlInit xml_init;
 
-//	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-	strconcat(pth,start_from,"list");
-	xml_init.InitWindow(uiXml, pth, 0, this);
-
-	AttachChild(&UIListWnd);
-	xml_init.InitListWnd(uiXml, pth, 0, &UIListWnd);
-	UIListWnd.ActivateList(false);
-	UIListWnd.EnableScrollBar(true);
-	UIListWnd.SetRightIndention(static_cast<int>(20 * UI()->GetScaleX()));
-
+	strconcat					(pth,start_from,"list");
+	xml_init.InitWindow			(uiXml, pth, 0, this);
+	UIScrollWnd					= xr_new<CUIScrollView>();UIScrollWnd->SetAutoDelete(true);
+	AttachChild					(UIScrollWnd);
+	xml_init.InitScrollView		(uiXml, pth, 0, UIScrollWnd);
 }
 
 void CUINewsWnd::Init()
@@ -70,7 +64,7 @@ void CUINewsWnd::Init()
 void CUINewsWnd::AddNews()
 {
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	UIListWnd.RemoveAll();
+	UIScrollWnd->Clear();
 
 	static u32 lastNewsCount = 0;
 
@@ -99,10 +93,12 @@ void CUINewsWnd::AddNews()
 
 void CUINewsWnd::AddNewsItem(const shared_str &text)
 {
-	static CUIString	str;
-	str.SetText(*text);
-	UIListWnd.AddParsedItem<CUIListItem>(str, 0, UIListWnd.GetTextColor());
-	UIListWnd.AddItem<CUIListItem>("");
+	CUINewsItemWnd* itm	= xr_new<CUINewsItemWnd>(); itm->SetAutoDelete(true);
+	itm->Init	(NEWS_XML,"news_item");
+	itm->SetText(text);
+	UIScrollWnd->AddWindow(itm);
+//	UIListWnd.AddParsedItem<CUIListItem>(str, 0, UIListWnd.GetTextColor());
+//	UIListWnd.AddItem<CUIListItem>("");
 }
 
 //////////////////////////////////////////////////////////////////////////

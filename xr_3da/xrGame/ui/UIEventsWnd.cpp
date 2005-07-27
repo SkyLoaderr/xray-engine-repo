@@ -250,6 +250,11 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 
 				if(strstr(*(A.data()->group), need_group)== *(A.data()->group))
 					m_UITaskInfoWnd->AddArticle(&A);
+			}else
+			if(t->m_Objectives[idx].article_id.size() && it->article_id ==t->m_Objectives[idx].article_id){
+				CEncyclopediaArticle			A;
+				A.Load							(it->article_id);
+				m_UITaskInfoWnd->AddArticle		(&A);
 			}
 		}
 	}

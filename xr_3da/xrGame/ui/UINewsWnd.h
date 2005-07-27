@@ -13,8 +13,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "UIListWnd.h"
-
+#include "UIWindow.h"
+class CUIScrollView;
 //////////////////////////////////////////////////////////////////////////
 
 class CUINewsWnd: public CUIWindow
@@ -30,7 +30,9 @@ public:
 	virtual void	Show		(bool status);
 
 	// Окно вывода информации
-	CUIListWnd		UIListWnd;
+//	CUIListWnd		UIListWnd;
+	CUIScrollView*	UIScrollWnd;
+
 
 private:
 	void			AddNewsItem	(const shared_str &text);

@@ -74,7 +74,8 @@ void CUIDiaryWnd::Init()
 	m_UIRightFrame->AttachChild		(m_UIRightWnd);
 
 	m_UINewsWnd						= xr_new<CUINewsWnd>();m_UINewsWnd->SetAutoDelete(false);
-	m_UINewsWnd->Init					("events_new.xml","main_wnd:right_frame:work_area:news_wnd:");
+//	m_UINewsWnd->Init				("events_new.xml","main_wnd:right_frame:work_area:news_wnd:");
+	m_UINewsWnd->Init				();
 	
 }
 

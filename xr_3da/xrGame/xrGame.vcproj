@@ -9924,6 +9924,12 @@
 						RelativePath=".\ui\UIJobsWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UINewsItemWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UINewsItemWnd.h">
+					</File>
+					<File
 						RelativePath=".\ui\UINewsWnd.cpp">
 					</File>
 					<File
