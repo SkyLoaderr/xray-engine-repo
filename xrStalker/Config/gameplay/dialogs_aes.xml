@@ -3,10 +3,6 @@
     <dialog id="aes_sergeant_diallog">
         <precondition>dialogs.allow_wounded_dialog</precondition>
         <phrase_list>
-            <phrase id="1000">
-                <text></text>
-                <next>1001</next>
-            </phrase>
             <phrase id="1001">
                 <text>aes_sergeant_diallog_1001</text>
                 <next>1002</next>
@@ -106,10 +102,6 @@
                 <text>aes_sergeant_diallog_1027</text>
                 <next>1028</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1000</next>
-            </phrase>
             <phrase id="1003">
                 <text>aes_sergeant_diallog_1003</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
@@ -137,6 +129,14 @@
             <phrase id="1031">
                 <text>aes_sergeant_diallog_1031</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
+            </phrase>
+            <phrase id="0">
+                <text>aes_sergeant_diallog_0</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text>aes_sergeant_diallog_1000</text>
+                <next>1001</next>
             </phrase>
         </phrase_list>
     </dialog>

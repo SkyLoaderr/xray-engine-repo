@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="aes_sergeant_diallog_0">
+        <text>d1</text>
+    </string>
+    <string id="aes_sergeant_diallog_1000">
+        <text>d2</text>
+    </string>
     <string id="aes_sergeant_diallog_1001">
         <text>Помогите... Помогите...</text>
     </string>
