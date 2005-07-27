@@ -9,6 +9,17 @@ on_info = %+val_escort_captive_dead%
 [combat_ignore]
 
 ;--------------------------------------------------------------------------
+; встреча отключена
+;--------------------------------------------------------------------------
+[meet@ignore]
+meet_state     = 1|wait
+meet_state_wpn = 1|guard
+victim         = 1|actor
+victim_wpn     = 1|actor
+use            = false
+use_wpn        = false
+
+;--------------------------------------------------------------------------
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@def]
@@ -23,9 +34,9 @@ use_wpn = true
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@talk]
-meet_dialog = val_escort_captive_dialog
-meet_state = 3|wait
-meet_state_wpn = 3|wait
+meet_dialog     = val_escort_captive_dialog
+meet_state      = 3|wait
+meet_state_wpn  = 3|wait
 victim = 30|actor
 victim_wpn = 20|actor
 use = true
@@ -35,62 +46,66 @@ use_wpn = true
 ; 
 ;--------------------------------------------------------------------------
 [remark@start]
-no_move = true
-no_rotate = true
-anim = wait
-on_info = {+val_escort_start} walker@go
-combat_ignore_cond = always
+no_move             = true
+no_rotate           = true
+anim                = wait
+on_info             = {+val_escort_start} walker@go
+meet                = meet@ignore
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
 [walker@go]
-path_walk = val_escort_captive_walk
-path_look = val_escort_captive_look
-on_signal = fight | walker@hide %+val_escort_combat -val_escort_wait%
-on_info = {+val_escort_combat} walker@hide
-on_info2 = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait
-combat_ignore_cond = always
+path_walk           = val_escort_captive_walk
+path_look           = val_escort_captive_look
+on_signal           = fight | walker@hide %+val_escort_combat -val_escort_wait%
+on_info             = {+val_escort_combat} walker@hide
+on_info2            = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait
+meet                = meet@ignore
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
 [remark@wait]
-no_move = true
-no_rotate = true
-anim = hide
-on_info = {+val_escort_combat} walker@hide
-on_info2 = {-val_escort_guard1_combat -val_escort_guard2_combat} walker@go
-combat_ignore_cond = always
+no_move             = true
+no_rotate           = true
+anim                = hide
+on_info             = {+val_escort_combat} walker@hide
+on_info2            = {-val_escort_guard1_combat -val_escort_guard2_combat} walker@go
+meet                = meet@ignore
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
 [walker@hide]
-path_walk = val_escort_captive_hide_walk
-path_look = val_escort_captive_hide_look
-def_state_moving1 = sprint
-def_state_moving2 = sprint
-def_state_moving3 = sprint
-on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@go_to_nap1
-combat_ignore_cond = always
+path_walk           = val_escort_captive_hide_walk
+path_look           = val_escort_captive_hide_look
+def_state_moving1   = sprint
+def_state_moving2   = sprint
+def_state_moving3   = sprint
+meet                = meet@ignore
+on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@go_to_nap1
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
 [follower@go_to_nap1]
 leader        = 406
-meet          = meet@def
+meet          = meet@ignore
 on_info       = {=distance_to_obj_le(406:2)} remark@check_state
 
 ;--------------------------------------------------------------------------
 [remark@check_state]
-no_move = true
-;no_rotate = true
-target = 406
-anim = wait
-meet = meet@def
-on_info = {-val_escort_nap1_dead} remark1@phrase1, remark1@phrase2
+no_move     = true
+;no_rotate   = true
+target      = 406
+anim        = wait
+meet        = meet@ignore
+on_info     = {-val_escort_nap1_dead} remark1@phrase1, remark1@phrase2
 
 ;--------------------------------------------------------------------------
 ; фраза: „ерт подери!!!...Ёх-ххх...ѕусть земл€ тебе будет пухом, дружище.
@@ -101,7 +116,7 @@ no_move             = true
 target              = 406
 anim                = wait
 snd                 = val_escort_dead
-meet                = meet@def
+meet                = meet@ignore
 on_signal           = sound_end | {+val_escort_actor_helped} remark@talk, walker@leave
 
 ;--------------------------------------------------------------------------
@@ -112,8 +127,8 @@ no_move             = true
 ;no_rotate           = true
 target              = 406
 anim                = wait
-snd                 = speech
-meet                = meet@def
+snd                 = val_escort_captive_phrase2
+meet                = meet@ignore
 on_signal           = sound_end | {+val_escort_actor_helped} remark1@wait1 %+val_escort_captive_phrase1_end%, remark1@wait2 %+val_escort_captive_phrase1_end%
 
 ;--------------------------------------------------------------------------
@@ -124,7 +139,7 @@ no_move             = true
 ;no_rotate           = true
 target              = 406
 anim                = wait
-meet                = meet@def
+meet                = meet@ignore
 on_info             = {+val_escort_nap1_phrase1_end} remark1@phrase3
 
 ;--------------------------------------------------------------------------
@@ -134,8 +149,8 @@ on_info             = {+val_escort_nap1_phrase1_end} remark1@phrase3
 no_move             = true
 ;no_rotate           = true
 anim                = wait
-snd                 = speech
-meet                = meet@def
+snd                 = val_escort_captive_phrase3
+meet                = meet@ignore
 on_signal           = sound_end | remark@talk
 
 ;--------------------------------------------------------------------------
@@ -156,13 +171,13 @@ no_move             = true
 ;no_rotate           = true
 target              = 406
 anim                = wait
-meet                = meet@def
+meet                = meet@ignore
 on_info             = {+val_escort_nap1_phrase2_end} walker@leave
 
 ;--------------------------------------------------------------------------
 [walker@leave]
 path_walk           = val_escort_captive_leave_walk
 path_look           = val_escort_captive_leave_look
-;meet               = meet@def
+;meet               = meet@ignore
 ;combat_ignore_cond = always
 on_signal           = arrived | nil %+val_escort_captive_offline%
