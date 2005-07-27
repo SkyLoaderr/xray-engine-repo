@@ -92,7 +92,7 @@ void CGameTask::Load(const TASK_ID& id)
 	for(int i=0; i<tag_num; i++)
 	{
 		SGameTaskObjective				objective;
-		objective.task_state			= eTaskStateInProgress; //todo: move to ctor
+//		objective.task_state			= eTaskStateInProgress; //todo: move to ctor. moved
 		LPCSTR tag_text					= g_gameTaskXml.Read(task_node, "objective:text", i, NULL);
 		objective.description			= tag_text;
 		tag_text						= g_gameTaskXml.Read(task_node, "objective:article", i, NULL);
@@ -181,4 +181,12 @@ CMapLocation* SGameTaskObjective::HasMapLocation		()
 	return Level().MapManager().GetMapLocation(map_location, object_id);
 }
 
-
+void SGameTaskObjective::SetTaskState		(ETaskState new_state)
+{
+	task_state = new_state;
+	if( (new_state==eTaskStateFail) || (new_state==eTaskStateCompleted) ){
+		CMapLocation* ml = HasMapLocation();
+		if(ml)
+			Level().MapManager().RemoveMapLocation(map_location, object_id);
+	}
+}

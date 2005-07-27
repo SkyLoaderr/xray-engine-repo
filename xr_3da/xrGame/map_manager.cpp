@@ -172,6 +172,7 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	}
 }
 
+
 u16 CMapManager::HasMapLocation(const shared_str& spot_type, u16 id)
 {
 	CMapLocation* l = GetMapLocation(spot_type, id);

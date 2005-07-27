@@ -129,6 +129,9 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	}else
 	if(0==stricmp(atricle_type.c_str(),"task")){
 		data()->articleType = ARTICLE_DATA::eTaskArticle;
+	}else
+	if(0==stricmp(atricle_type.c_str(),"info")){
+		data()->articleType = ARTICLE_DATA::eInfoArticle;
 	}else{
 		Msg("incorrect article type definition for [%s]",*item_data.id);
 	}

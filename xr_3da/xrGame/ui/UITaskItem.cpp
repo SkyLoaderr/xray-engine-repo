@@ -177,7 +177,7 @@ void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)
 
 	m_descriptionStatic->SetText	(*stbl(obj->description));
 
-	switch (obj->task_state)
+	switch (obj->TaskState())
 	{
 		case eTaskUserDefined:
 		case eTaskStateInProgress:

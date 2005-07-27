@@ -177,7 +177,7 @@ void CUIEventsWnd::Show					(bool status)
 
 bool CUIEventsWnd::Filter(CGameTask* t)
 {
-	ETaskState task_state = t->m_Objectives[0].task_state;
+	ETaskState task_state = t->m_Objectives[0].TaskState();
 	
 	return (m_currFilter==eActiveTask			&& task_state==eTaskStateInProgress )||
 			(m_currFilter==eAccomplishedTask	&& task_state==eTaskStateCompleted )||

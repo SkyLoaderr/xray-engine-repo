@@ -15,7 +15,7 @@ typedef shared_str	ARTICLE_ID;
 
 struct ARTICLE_DATA : public IPureSerializeObject<IReader,IWriter>
 {
-	enum EArticleType {eEncyclopediaArticle, eJournalArticle, eTaskArticle};
+	enum EArticleType {eEncyclopediaArticle, eJournalArticle, eTaskArticle, eInfoArticle};
 
 	ARTICLE_DATA			()
 		:	article_id		(NULL),

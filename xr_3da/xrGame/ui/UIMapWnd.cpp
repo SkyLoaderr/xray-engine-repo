@@ -393,8 +393,8 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				shared_str spot = "user";
 				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, ActiveMap()->MapName(), pos);
 				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
-				t->m_Objectives[0].task_state	= eTaskUserDefined;
-				t->m_Objectives[1].task_state	= eTaskUserDefined;
+				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
+				t->m_Objectives[1].SetTaskState	(eTaskUserDefined);
 				t->m_Objectives[1].object_id	= ml->ObjectID();
 				t->m_Objectives[1].map_location	= spot;
 				m_flags.set(lmUserSpotAdd, FALSE);

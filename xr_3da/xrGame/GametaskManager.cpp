@@ -102,18 +102,19 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 		Msg		("wrong objective num for [%s]", *id);
 		return;
 	}
-	t->m_Objectives[objective_num].task_state = state;
+	t->m_Objectives[objective_num].SetTaskState	(state);
 
 	if(0 == objective_num){//setState for task and all sub-tasks
 		
 		for(u32 i=0; i<t->m_Objectives.size();++i)
-			if( t->m_Objectives[i].task_state==eTaskStateInProgress )
-				t->m_Objectives[i].task_state =state;
+			if( t->m_Objectives[i].TaskState()==eTaskStateInProgress )
+				t->m_Objectives[i].SetTaskState(state);
 	}
 	
 	if(0!=objective_num && objective_num != (int)t->m_Objectives.size()-1){
 		SGameTaskObjective&	obj = t->m_Objectives[objective_num+1];
-		if( (false == obj.def_location_enabled)&&
+		if( (false == obj.def_location_enabled)						&& 
+			(obj.TaskState()==eTaskStateInProgress)	&&
 			(obj.map_location.size())		){
 				CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
 				ml->DisablePointer			();

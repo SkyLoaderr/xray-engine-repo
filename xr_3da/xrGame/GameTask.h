@@ -13,13 +13,18 @@ class CMapLocation;
 
 struct SGameTaskObjective 
 {
-	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1))	{}
+	friend struct SGameTaskKey;
+private:
+	ETaskState				task_state;
+public:
+	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1)),task_state(eTaskStateInProgress)	{}
 	shared_str				description;
 	ARTICLE_ID				article_id;
 	shared_str				map_location;
 	u16						object_id;
-	ETaskState				task_state;
 	CMapLocation*			HasMapLocation		();
+	ETaskState				TaskState			()	{return task_state;};
+	void					SetTaskState		(ETaskState new_state);
 	
 
 	//прикрипленная иконка

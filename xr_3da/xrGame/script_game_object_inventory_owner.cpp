@@ -553,7 +553,7 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
 		return eTaskStateDummy;
 	}
-	return t->m_Objectives[objective_num].task_state;
+	return t->m_Objectives[objective_num].TaskState();
 
 }
 
@@ -583,13 +583,13 @@ STasks CScriptGameObject::GetAllGameTasks()
 		tasks.m_all_tasks.resize(tasks.Size()+1);
 		STask& t = tasks.m_all_tasks.back();
 		t.m_name	= (*it).task_id;
-		t.m_state	= (*it).game_task->m_Objectives[0].task_state;
+		t.m_state	= (*it).game_task->m_Objectives[0].TaskState();
 		u32 sub_num = (*it).game_task->m_Objectives.size();
 		for(u32 i=0; i<sub_num;++i){
 			t.m_objectives.resize(t.m_objectives.size()+1);
 			STaskObjective& to	= t.m_objectives.back();
 			to.m_name			= (*it).game_task->m_Objectives[i].description;
-			to.m_state			= (*it).game_task->m_Objectives[i].task_state;
+			to.m_state			= (*it).game_task->m_Objectives[i].TaskState();
 		}
 	
 	}
