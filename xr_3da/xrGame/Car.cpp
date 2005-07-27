@@ -75,7 +75,7 @@ CCar::CCar(void)
 	m_time_to_explode=5000;
 	b_exploded=false;
 	m_car_weapon=NULL;
-
+	m_power_neutral_factor=0.25f;
 #ifdef DEBUG
 	InitDebug();
 #endif
@@ -623,7 +623,8 @@ void CCar::ParseDefinitions()
 	m_rpm_increment_factor		=		READ_IF_EXISTS(ini,r_float,"car_definition","rpm_increment_factor",m_rpm_increment_factor);
 	m_power_decrement_factor	=		READ_IF_EXISTS(ini,r_float,"car_definition","power_decrement_factor",m_power_increment_factor);
 	m_rpm_decrement_factor		=		READ_IF_EXISTS(ini,r_float,"car_definition","rpm_decrement_factor",m_rpm_increment_factor);
-
+	m_power_neutral_factor		=		READ_IF_EXISTS(ini,r_float,"car_definition","power_neutral_factor",m_power_neutral_factor);
+	R_ASSERT2(m_power_neutral_factor>0.1f&&m_power_neutral_factor<1.f,"power_neutral_factor must be 0 - 1 !!");
 	if(ini->line_exist("car_definition","exhaust_particles"))
 	{
 		m_exhaust_particles =ini->r_string("car_definition","exhaust_particles");
@@ -1204,29 +1205,7 @@ void CCar::TransmissionDown()
 	Transmission(transmission);
 
 }
-void CCar::InitParabola()
-{
-	//float t1=(m_power_rpm-m_torque_rpm);
-	//float t2=m_max_power/m_power_rpm;
-	//m_c = t2* (3.f*m_power_rpm - 4.f*m_torque_rpm)/t1/2.f;
-	//t2/=m_power_rpm;
-	//m_a = -t2/t1/2.f;
-	//m_b = t2*m_torque_rpm/t1;
 
-
-	//m_c = m_max_power* (3.f*m_power_rpm - 4.f*m_torque_rpm)/(m_power_rpm-m_torque_rpm)/2.f/m_power_rpm;
-	//m_a = -m_max_power/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm/2.f;
-	//m_b = m_max_power*m_torque_rpm/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm;
-
-
-
-
-	m_a=expf((m_power_rpm - m_torque_rpm)/(2.f*m_power_rpm))*m_max_power/m_power_rpm;
-	m_b=m_torque_rpm;
-	m_c=_sqrt(2.f*m_power_rpm*(m_power_rpm - m_torque_rpm));
-
-
-}
 void CCar::PhTune(dReal step)
 {
 	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
@@ -1398,7 +1377,29 @@ bool CCar::DoorOpen(u16 id)
 		return false;
 	}
 }
+void CCar::InitParabola()
+{
+	//float t1=(m_power_rpm-m_torque_rpm);
+	//float t2=m_max_power/m_power_rpm;
+	//m_c = t2* (3.f*m_power_rpm - 4.f*m_torque_rpm)/t1/2.f;
+	//t2/=m_power_rpm;
+	//m_a = -t2/t1/2.f;
+	//m_b = t2*m_torque_rpm/t1;
 
+
+	//m_c = m_max_power* (3.f*m_power_rpm - 4.f*m_torque_rpm)/(m_power_rpm-m_torque_rpm)/2.f/m_power_rpm;
+	//m_a = -m_max_power/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm/2.f;
+	//m_b = m_max_power*m_torque_rpm/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm;
+
+
+
+
+	m_a=expf((m_power_rpm - m_torque_rpm)/(2.f*m_power_rpm))*m_max_power/m_power_rpm;
+	m_b=m_torque_rpm;
+	m_c=_sqrt(2.f*m_power_rpm*(m_power_rpm - m_torque_rpm));
+
+
+}
 float CCar::Parabola(float rpm)
 {
 	//float rpm_2=rpm*rpm;
@@ -1406,6 +1407,7 @@ float CCar::Parabola(float rpm)
 	float ex=(rpm-m_b)/m_c;
 	float value=m_a*expf(-ex*ex)*rpm;
 	if(value<0.f) return 0.f;
+	if(e_state_drive==neutral) value*=m_power_neutral_factor;
 	return value;
 }
 

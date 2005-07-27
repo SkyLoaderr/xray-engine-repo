@@ -36,6 +36,8 @@ static float rpm_pow_max_ratio=1.f;
 void CCar::DbgCreatePlots()
 {
 	if(b_plots)return;
+	eStateDrive state=e_state_drive;
+	e_state_drive=drive;
 //////////////////////////////
 	int y_pos=0,y_w=100;
 	m_dbg_power_rpm.Init(CFunctionGraph::type_function(this,&CCar::Parabola),m_min_rpm,m_max_rpm,0,y_pos,500,y_w,1000,D3DCOLOR_XRGB(0,0,255));
@@ -89,6 +91,7 @@ void CCar::DbgCreatePlots()
 	m_dbg_dynamic_plot	->AddMarker(CStatGraph::stHor, (*i)[2]/rpm_pow_max_ratio,D3DCOLOR_XRGB(0, 0, 127));
 	}
 //////////////////////////////
+	e_state_drive=state;
 	b_plots=true;
 }
 void CCar::DBgClearPlots()
