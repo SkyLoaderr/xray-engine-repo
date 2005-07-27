@@ -166,6 +166,11 @@ void CUIEventsWnd::Show					(bool status)
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_1", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_2", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_3", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_4", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_5", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
+		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_6", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		i=1;
 	};
 	inherited::Show			(status);

@@ -11,9 +11,12 @@
 #include "UITabControl.h"
 #include "UIScrollView.h"
 #include "UIListWnd.h"
+#include "UITreeViewItem.h"
+#include "UIEncyclopediaArticleWnd.h"
 #include "../level.h"
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
+#include "../encyclopedia_article.h"
 
 CUIDiaryWnd::CUIDiaryWnd()
 {
@@ -25,6 +28,7 @@ CUIDiaryWnd::~CUIDiaryWnd()
 	delete_data(m_UINewsWnd);
 	delete_data(m_SrcListWnd);
 	delete_data(m_DescrView);
+	delete_data					(m_ArticlesDB);
 }
 
 void CUIDiaryWnd::Show(bool status)
@@ -157,16 +161,43 @@ void CUIDiaryWnd::UnloadJournalTab		()
 
 	m_UIRightWnd->DetachChild	(m_DescrView);
 	m_DescrView->Show			(false);
+	delete_data					(m_ArticlesDB);
+	m_DescrView->Clear			();
 }
 
 void CUIDiaryWnd::LoadJournalTab			()
 {
+	delete_data			(m_ArticlesDB);
+
 	m_UILeftWnd->AttachChild	(m_SrcListWnd);
 	m_SrcListWnd->Show			(true);
 
 	m_UIRightWnd->AttachChild	(m_DescrView);
 	m_DescrView->Show			(true);
-//	InitJournal					();
+
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+	{
+		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
+		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		{
+//.			if (ARTICLE_DATA::eJournalArticle == it->article_type)
+
+			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
+				
+			{
+				m_ArticlesDB.resize(m_ArticlesDB.size() + 1);
+				CEncyclopediaArticle*& a = m_ArticlesDB.back();
+				a = xr_new<CEncyclopediaArticle>();
+				a->Load(it->article_id);
+
+				bool bReaded = false;
+				CreateTreeBranch(a->data()->group, a->data()->name, m_SrcListWnd, m_ArticlesDB.size()-1, 
+					m_pTreeRootFont, m_uTreeRootColor, m_pTreeItemFont, m_uTreeItemColor, bReaded);
+			}
+		}
+	}
+
 }
 
 void CUIDiaryWnd::UnloadInfoTab		()
@@ -191,34 +222,13 @@ void CUIDiaryWnd::LoadNewsTab			()
 
 void CUIDiaryWnd::OnSrcListItemClicked	(CUIWindow* w,void* p)
 {
-	CUIListItem*	pSelItem	= (CUIListItem*)p;
-//	CUITaskItem*	pTaskSelItem	= smart_cast<CUITaskItem*>(pSelItem);
-
-//	ShowDescription		(pTaskSelItem->GameTask(), pTaskSelItem->ObjectiveIdx());
-
-}
-/*
-void CUIDiaryWnd::InitJournal			()
-{
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+	CUITreeViewItem*	pSelItem	= (CUITreeViewItem*)p;
+	m_DescrView->Clear	();
+	if (!pSelItem->IsRoot())
 	{
-		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
-		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
-		{
-			if (ARTICLE_DATA::eJournalArticle == it->article_type)
-			{
-				CEncyclopediaArticle	A;
-				A.Load					(it->article_id);
-
-				if(strstr(*(A.data()->group), need_group)== *(A.data()->group))
-					m_UITaskInfoWnd->AddArticle(&A);
-				
-				bool bReaded = false;
-				CreateTreeBranch(A.data()->group, A.data()->name, m_SrcListWnd, 0, 
-					m_pTreeRootFont, m_uTreeRootColor, m_pTreeItemFont, m_uTreeItemColor, bReaded);
-			}
-		}
+		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+		article_info->Init			("encyclopedia_item.xml","encyclopedia_wnd:objective_item");
+		article_info->SetArticle	(m_ArticlesDB[pSelItem->GetValue()]);
+		m_DescrView->AddWindow		(article_info);
 	}
 }
-*/

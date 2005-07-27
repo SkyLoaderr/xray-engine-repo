@@ -12,6 +12,7 @@ class CUIStatic;
 class CUITabControl;
 class CUIScrollView;
 class CUIListWnd;
+class CEncyclopediaArticle;
 
 class CUIDiaryWnd: public CUIWindow, public CUIWndCallback
 {
@@ -41,6 +42,10 @@ protected:
 	u32					m_uTreeRootColor;
 	CGameFont*			m_pTreeItemFont;
 	u32					m_uTreeItemColor;
+
+	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
+	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
+	ArticlesDB				m_ArticlesDB;
 
 			void		OnFilterChanged			(CUIWindow*,void*);
 			void		OnSrcListItemClicked	(CUIWindow*,void*);

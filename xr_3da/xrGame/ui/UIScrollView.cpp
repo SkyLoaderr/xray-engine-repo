@@ -13,6 +13,7 @@ CUIScrollView::CUIScrollView()
 
 CUIScrollView::~CUIScrollView()
 {
+	Clear	();
 }
 
 void CUIScrollView::SendMessage	(CUIWindow* pWnd, s16 msg, void* pData)
@@ -92,13 +93,18 @@ void CUIScrollView::Draw				()
 	UI()->PushScissor					(visible_rect);
 	if(GetHeight()<m_pad->GetHeight())	//fix it !!!
 		m_VScrollBar->Draw					();
+	int iDone = 0;
 
-
-	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it)
+	for(	WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); 
+			m_pad->GetChildWndList().end()!=it; 
+			++it)
 	{
 		Frect	item_rect		= (*it)->GetAbsoluteRect();
-		if(visible_rect.intersected		(item_rect))
+		if(visible_rect.intersected		(item_rect)){
 			(*it)->Draw					();
+			iDone						= 1;
+		}else
+			if(iDone==1)	break;
 	}
 	UI()->PopScissor					();
 }

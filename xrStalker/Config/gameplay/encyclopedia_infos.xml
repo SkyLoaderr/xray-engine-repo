@@ -59,6 +59,41 @@
 		his arms jaws very powerful.
 		</text>
     </article>
+    <article id="user_task_article_2" name="aaaaa" group="user_task/1" article_type="task">
+        <texture x="0" y="600" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>
+		Zombies are very angry and hungry\ncreatures. They moving slowly but\n
+		his arms jaws very powerful.
+		</text>
+    </article>
+    <article id="user_task_article_3" name="aaaaa" group="user_task/1" article_type="task">
+        <texture x="0" y="600" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>
+		Zombies are very angry and hungry\ncreatures. They moving slowly but\n
+		his arms jaws very powerful.
+		</text>
+    </article>
+    <article id="user_task_article_4" name="aaaaa" group="user_task/1" article_type="task">
+        <texture x="0" y="600" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>
+		Zombies are very angry and hungry\ncreatures. They moving slowly but\n
+		his arms jaws very powerful.
+		</text>
+    </article>
+    <article id="user_task_article_5" name="aaaaa" group="user_task/1" article_type="task">
+        <texture x="0" y="600" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>
+		Zombies are very angry and hungry\ncreatures. They moving slowly but\n
+		his arms jaws very powerful.
+		</text>
+    </article>
+    <article id="user_task_article_6" name="aaaaa" group="user_task/1" article_type="task">
+        <texture x="0" y="600" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>
+		Zombies are very angry and hungry\ncreatures. They moving slowly but\n
+		his arms jaws very powerful.
+		</text>
+    </article>
     
 </encyclopedia>
 

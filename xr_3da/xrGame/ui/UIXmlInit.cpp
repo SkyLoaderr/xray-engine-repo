@@ -411,6 +411,9 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 	pWnd->Init(x,y, width,height,item_height);
 	pWnd->EnableActiveBackground(!!active_background);
 
+	float ri = xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
+	pWnd->SetRightIndention				(ri*UI()->GetScaleX());
+
 	return true;
 }
 

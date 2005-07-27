@@ -143,8 +143,8 @@ public:
 	int		GetListPosition		() const		{ return m_iFirstShownIndex; }
 
 	// Отступ справа от края листа до текста
-	void	SetRightIndention	(int value)		{ m_iRightIndention = value; }
-	int		GetRightIndention	() const		{ return m_iRightIndention; }
+	void		SetRightIndention	(float value)		{ m_iRightIndention = value; }
+	float		GetRightIndention	() const			{ return m_iRightIndention; }
 
 	/* new_code_here
 	CUIListItem* GetClickedItem();
@@ -202,7 +202,7 @@ protected:
 	bool	m_bNewRenderMethod;
 
 	// Отступ справа от края листа до текста
-	int		m_iRightIndention;
+	float		m_iRightIndention;
 	/* new_code_here
 	CUIListItem* m_pClickedListItem;
 	*/
