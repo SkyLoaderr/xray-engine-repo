@@ -30,6 +30,10 @@
         <text>Как можно быстрее вернуться к торговцу.</text>
     </string>
 
+    <string id="val_come_to_trader_main">
+        <text>Вернуться к торговцу.</text>
+    </string>
+
     <string id="val_sos_help">
         <text>Помочь сталкеру.</text>
     </string>
@@ -38,10 +42,18 @@
         <text>Неизвестный сталкер просит о помощи.</text>
     </string>
 
+    <string id="val_sos_help_main">
+        <text>Неизвестный сталкер просит о помощи.</text>
+    </string>
+
     <string id="val_prisoner_help">
         <text>Помочь заключенному долговцу.</text>
     </string>
 
     <string id="val_prisoner_help_0">
+        <text>Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.</text>
+    </string>
+    
+    <string id="val_prisoner_help_main">
         <text>Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.</text>
     </string>
