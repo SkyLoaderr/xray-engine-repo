@@ -312,9 +312,11 @@ virtual void ApplyDamage(u16 level);
 
 	struct SCarSound
 	{
-		ref_sound					snd_engine;
-		ref_sound					snd_transmission;
-		enum 
+		ref_sound					snd_engine							;
+		ref_sound					snd_engine_start					;
+		ref_sound					snd_engine_stop						;
+		ref_sound					snd_transmission					;
+		enum ESoundState
 		{
 			sndOff,
 			sndStalling,
@@ -322,16 +324,22 @@ virtual void ApplyDamage(u16 level);
 			sndStarting,
 			sndDrive
 		} eCarSound;
-		void Update();
-		void SwitchOff();
-		void SwitchOn();
-		void Init();
-		void Destroy();
-		void Start();
-		void Stop();
-		void Stall();
-		void Drive();
-		void TransmissionSwitch();
+		void	Update				()							;
+		void	UpdateStarting		()							;
+		void	UpdateStoping		()							;
+		void	UpdateStalling		()							;
+		void	UpdateDrive			()							;
+		void	SwitchState			(ESoundState new_state)		;
+		void	SetSoundPosition	(ref_sound	&snd)			;
+		void	SwitchOff			()							;
+		void	SwitchOn			()							;
+		void	Init				()							;
+		void	Destroy			()							;
+		void	Start				()							;
+		void	Stop				()							;
+		void	Stall				()							;
+		void	Drive				()							;
+		void	TransmissionSwitch	()							;
 
 		SCarSound(CCar* car);
 		~SCarSound();

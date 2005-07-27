@@ -881,8 +881,7 @@ void CCar::StartEngine()
 {
 	if(m_fuel<EPS) return;
 	PlayExhausts();
-	//m_car_sound.Start();
-	m_car_sound->Drive();
+	m_car_sound->Start();
 	b_engine_on=true;
 	m_current_rpm=0.f;
 	b_starting=true;

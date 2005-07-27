@@ -27,7 +27,11 @@ void CCar::SCarSound::Init()
 	if (ini->section_exist("car_sound") && ini->line_exist("car_sound","snd_volume"))
 	{
 		volume  			= ini->r_float("car_sound","snd_volume");
+
 		snd_engine.create	(TRUE,ini->r_string("car_sound","snd_name"));//
+		snd_engine_start.create(TRUE,	READ_IF_EXISTS(ini,r_string,"car_sound","engine_start","car\\test_car_start"));
+		snd_engine_stop.create(TRUE,	READ_IF_EXISTS(ini,r_string,"car_sound","engine_stop","car\\test_car_stop"));
+
 		if(ini->line_exist("car_sound","relative_pos"))
 		{
 			relative_pos.set(ini->r_fvector3("car_sound","relative_pos"));
@@ -43,48 +47,70 @@ void CCar::SCarSound::Init()
 	}
 	eCarSound=sndOff;
 }
-
-void CCar::SCarSound::Update()
+void CCar::SCarSound::SetSoundPosition(ref_sound &snd)
 {
-	if(eCarSound==sndOff) return;
-	//float		velocity						= V.magnitude();
-	float		scale							= 0.2f+pcar->m_current_rpm/pcar->m_torque_rpm; clamp(scale,0.2f,2.0f);
-
-#pragma todo("Dima to Kostya : С тебя - пиво (Черниговское белое 0.5л)!")
-	if (snd_engine._feedback())
+	if (snd._feedback())
 	{
 		Fvector pos;
 		pcar->XFORM().transform_tiny(pos,relative_pos);
-		snd_engine.set_position		(pos);
+		snd.set_position		(pos);
+	}
+}
+void CCar::SCarSound::UpdateStarting()
+{	
+	SetSoundPosition(snd_engine_start);
+
+	if(snd_engine._feedback())
+	{
+			UpdateDrive();
+	} else
+	{
+		if(time_state_start+snd_engine_start._handle()->length_ms()/4<Device.dwTimeGlobal)
+		{
+			UpdateDrive();
+		}
 	}
 
+	if(!snd_engine_start._feedback())Drive();
+}
+void CCar::SCarSound::UpdateStoping()
+{
+	SetSoundPosition(snd_engine_stop);
+	if(!snd_engine_stop._feedback())SwitchOff();
+}
+void CCar::SCarSound::UpdateStalling()
+{
+	SetSoundPosition(snd_engine_stop);
+	if(!snd_engine_stop._feedback())SwitchOff();
+}
+void CCar::SCarSound::UpdateDrive()
+{
+float		scale							= 0.2f+pcar->m_current_rpm/pcar->m_torque_rpm; clamp(scale,0.2f,2.0f);
+			snd_engine.set_frequency		(scale);
+			SetSoundPosition(snd_engine);
+}
+void CCar::SCarSound::SwitchState(ESoundState new_state)
+{
+	eCarSound=new_state;
+	time_state_start=Device.dwTimeGlobal;
+}
+void CCar::SCarSound::Update()
+{
+	if(eCarSound==sndOff) return;
+	
 	switch (eCarSound)
 	{
-	case sndDrive:
-	case sndStarting:
-		snd_engine.set_frequency		(scale);
-		snd_engine.set_volume			(volume);
-		break;
-	case sndStalling:
-	case sndStoping:
-		u32 time_passed=Device.dwTimeGlobal-time_state_start;
-
-		if(time_passed>2500) 
-		{
-			SwitchOff();
-			return;
-		}
-		if(time_passed>1)
-			snd_engine.set_volume(clampr(volume*1000.f/time_passed,0.f,10.f));
-		break;
+	case sndStarting	:UpdateStarting	()	;	break;
+	case sndDrive		:UpdateDrive	()	;	break;
+	case sndStalling	:UpdateStalling	()	;	break;
+	case sndStoping		:UpdateStalling	()	;	break;
 	}
+	
+
 }
 
 void CCar::SCarSound::SwitchOn()
 {
-	Fvector pos;
-	pcar->XFORM().transform_tiny(pos,relative_pos);
-	snd_engine.play_at_pos			(pcar,pos,TRUE);
 	pcar->processing_activate();
 }
 void CCar::SCarSound::Destroy()
@@ -92,11 +118,12 @@ void CCar::SCarSound::Destroy()
 	SwitchOff();
 	snd_engine.destroy	();
 	snd_transmission.destroy();
+	snd_engine_stop.destroy();
+	snd_engine_start.destroy();
 }
 
 void CCar::SCarSound::SwitchOff()
 {
-	snd_engine.stop();
 	eCarSound=sndOff;
 	pcar->processing_deactivate();
 }
@@ -104,38 +131,42 @@ void CCar::SCarSound::SwitchOff()
 void CCar::SCarSound::Start()
 {
 	if(eCarSound==sndOff) SwitchOn();
-	eCarSound=sndStarting;
-	time_state_start=Device.dwTimeGlobal;
+	SwitchState(sndStarting);
+	snd_engine_start.play(pcar);
+	SetSoundPosition(snd_engine_start);
 }
 
 void CCar::SCarSound::Stall()
 {
 	if(eCarSound==sndOff)return;
-	eCarSound=sndStalling;
-	time_state_start=Device.dwTimeGlobal;
+	SwitchState(sndStalling);
+	snd_engine.stop_deffered();
+	snd_engine_stop.play(pcar);
+	SetSoundPosition(snd_engine_stop);
 }
 
 void CCar::SCarSound::Stop()
 {
 	if(eCarSound==sndOff)return;
-	eCarSound=sndStoping;
-	time_state_start=Device.dwTimeGlobal;
+	SwitchState(sndStoping);
+	snd_engine.stop_deffered();
+	snd_engine_stop.play(pcar);
+	SetSoundPosition(snd_engine_stop);
 }
 
 void CCar::SCarSound::Drive()
 {
-
 	if(eCarSound==sndOff) SwitchOn();
-	eCarSound=sndDrive;
-	time_state_start=Device.dwTimeGlobal;
+	SwitchState(sndDrive);
+	if(!snd_engine._feedback())snd_engine.play(pcar,sm_Looped);
+	SetSoundPosition(snd_engine);
 }
 void CCar::SCarSound::TransmissionSwitch()
 {
-	Fvector pos;
-	pcar->XFORM().transform_tiny(pos,relative_pos);
-	if(snd_transmission._handle())
+	if(snd_transmission._handle()&&eCarSound!=sndOff)
 	{
-		snd_transmission.play_at_pos(pcar,pos);
+		snd_transmission.play(pcar);
+		SetSoundPosition(snd_transmission);
 	}
 }
 
