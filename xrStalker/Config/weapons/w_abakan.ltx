@@ -40,7 +40,7 @@ animation_slot			= 2									; type of the animation that will be used
 
 inv_name	        	= ABAKAN								; name in inventory	
 inv_name_short			= AN-94
-inv_weight				= 2.5								; weight in inventory
+inv_weight				= 4								; weight in inventory
 
 inv_grid_width			= 5	 ; position and size of the icon that will be used to display weapon in the inventory menu
 inv_grid_height			= 2	 ; all icons are on the texture ui_icon_equipment.dds,   
@@ -73,11 +73,11 @@ fire_dispersion_base			= 0.045		;угол (в градусах) базовой дисперсии оружия (ору
 
 ;отдача
 cam_relax_speed         		= 3.0		;скорость возврата в исходное положение
-cam_dispersion          		= 0.8		;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion          		= 0.85		;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle					= 8	    	;максимальный угол отдачи
 cam_max_angle_horz				= 8			;(degree) maximum shot horizontal degree 
 cam_step_angle_horz				= 1.0		;(degree) size of step camera moved in horizontal position while shooting
-
+control_inertion_factor	= 1.19f
 fire_dispersion_condition_factor = 5	    ;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 			= 0.0003	    ;вероятность осечки при максимальном износе 
 condition_shot_dec 				= 0.00003	;увеличение износа при каждом выстреле
@@ -94,8 +94,8 @@ shell_point		 			= 0,0.252,0.196				; position (3rd person view) for shell to th
 shell_particles	 			= weapons\generic_shells	; name of the particles for shells
 
 ; ttc
-hit_power                	= 56						; size of damage by bullet
-hit_impulse		 			= 100						; size of physic impulse by bullet	
+hit_power                	= 58						; size of damage by bullet
+hit_impulse		 			= 110						; size of physic impulse by bullet	
 hit_type 					= fire_wound 				; [] type of the wound
 
 fire_distance            	= 450						; maximum fire distance that bullet can fly
