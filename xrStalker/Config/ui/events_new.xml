@@ -95,6 +95,16 @@
 		<left_frame x="0" y="0" width="298" height="475" a="90">
 			<texture>ui_pda_frame_sub</texture>
 
+			<auto_static x="8" y="52" width="4" height="430">
+				<texture>ui\ui_pda_vertical_line_r_l</texture>
+			</auto_static>
+			<auto_static x="275" y="52" width="4" height="430">
+				<texture>ui\ui_pda_vertical_line_r_r</texture>
+			</auto_static>
+			<auto_static x="14" y="50" width="265" height="2" stretch="1">
+				<texture>ui\ui_pda_horizontal_line</texture>
+			</auto_static>
+
 			<left_frame_header x="8" y="16" width="283" height="27">
 				<texture>ui_string_02</texture>
 				
@@ -140,11 +150,27 @@
 				</filter_tab>					
 			</left_frame_header>
 			
-			<work_area x="8" y="44" width="290" height="475"/>
+			<work_area x="8" y="44" width="290" height="475">
+				<src_list x="0" y="0" width="290" height="475" item_height="15">
+					<font font="letterica18" r="225" g="225" b="250"></font>
+					<tree_root_font font="letterica18" r="225" g="225" b="250">Encyclopedia</tree_root_font>
+					<tree_item_font font="letterica16" r="255" g="255" b="255">Encyclopedia</tree_item_font>
+				</src_list>
+			</work_area>
 		</left_frame>
 	
 		<right_frame x="313" y="0" width="448" height="475">
 			<texture>ui_pda_frame_sub</texture>
+			
+			<auto_static x="8" y="52" width="4" height="460">
+				<texture>ui\ui_pda_vertical_line_r_l</texture>
+			</auto_static>
+			<auto_static x="416" y="52" width="4" height="460">
+				<texture>ui\ui_pda_vertical_line_r_r</texture>
+			</auto_static>
+			<auto_static x="8" y="50" width="410" height="2" stretch="1">
+				<texture>ui\ui_pda_horizontal_line</texture>
+			</auto_static>
 
 			<right_frame_header x="8" y="16" width="430" height="27">
 				<texture>ui_string_02</texture>
@@ -157,6 +183,9 @@
 						<font font="letterica18" r="225" g="225" b="250"></font>
 					</list>
 				</news_wnd>
+				
+				<scroll_view  x="0" y="0" width="445" height="475" right_ident="10">
+				</scroll_view>
 			</work_area>
 		</right_frame>
 	

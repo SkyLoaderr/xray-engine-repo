@@ -1,9 +1,12 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window>
 	<!-- NEWS LIST -->
-	<list x="21" y="88" width="430" height="360" item_height="15">
+	<list x="0" y="6" width="445" height="475" item_height="15" right_ident="10">
         <font font="letterica18" r="225" g="225" b="250"></font>
     </list>
-
+	<news_item  x="0" y="0" width="410" height="10">
+		<text_cont x="0" y="0" width="410" height="10">
+			<text font="letterica18" r="255" g="255" b="250"></text>
+		</text_cont>
+	</news_item>	
 </window>
-

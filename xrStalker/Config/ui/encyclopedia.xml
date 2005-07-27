@@ -79,11 +79,11 @@
 		<texture>ui\ui_pda_vertical_line_l_l</texture>
 	</left_auto_static>
 	<!-- RIGHT LADDER -->
-	<left_auto_static x="416" y="82" width="4" height="388">
+	<left_auto_static x="416" y="41" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</left_auto_static>
 	<!-- UPPER HORISONTAL LINE -->
-	<left_auto_static x="14" y="78" width="405" height="2" stretch="1">
+	<left_auto_static x="14" y="40" width="405" height="2" stretch="1">
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</left_auto_static>
 
