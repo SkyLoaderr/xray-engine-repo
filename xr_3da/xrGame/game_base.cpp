@@ -18,6 +18,11 @@ game_PlayerState::game_PlayerState()
 	deaths				=	0;
 	money_total			=	0;
 	money_for_round		=	0;
+	//  [7/27/2005]
+	experience			=	0;
+	rank				=	0;
+	af_count			=	0;
+	//  [7/27/2005]
 	flags				=	0;
 
 	skin				=	0;
@@ -45,6 +50,12 @@ void game_PlayerState::clear()
 	deaths				= 0;
 	lasthitter		= 0;
 	lasthitweapon		= 0;
+
+	//  [7/27/2005]
+	experience			=	0;
+	rank				=	0;
+	af_count			=	0;
+	//  [7/27/2005]
 
 	pItemList.clear();
 	pSpawnPointsList.clear();
@@ -88,6 +99,11 @@ void	game_PlayerState::net_Export		(NET_Packet& P)
 	P.w_s16			(	deaths	);
 	P.w_s32			(	money_total	);
 	P.w_s32			(	money_for_round	);
+	//  [7/27/2005]
+	P.w_s16			(	experience	);
+	P.w_u8			(	rank		);
+	P.w_u8			(	af_count	);
+	//  [7/27/2005]
 	P.w_u16			(	flags	);
 	P.w_u16			(	ping	);
 	P.w_u16			(	Rping	);
@@ -108,6 +124,11 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 	P.r_s16			(	deaths	);
 	P.r_s32			(	money_total	);
 	P.r_s32			(	money_for_round	);
+	//  [7/27/2005]
+	P.r_s16			(	experience	);
+	P.r_u8			(	rank		);
+	P.r_u8			(	af_count	);
+	//  [7/27/2005]
 	P.r_u16			(	flags	);
 	P.r_u16			(	ping	);
 	P.r_u16			(	Rping	);

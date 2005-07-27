@@ -472,6 +472,12 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
 					}
 				}
+
+				if (Level().CurrentViewEntity() && HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+				{
+					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
+					HUD().GetUI()->UIMainIngameWnd->SetRank(int(ps->rank));
+				}
 			};
 		}break;
 	case GAME_PHASE_PENDING:

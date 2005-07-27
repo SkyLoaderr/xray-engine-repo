@@ -34,6 +34,9 @@ struct	game_PlayerState
 	s16			deaths;
 	s32			money_total;
 	s32			money_for_round;
+	s16			experience;
+	u8			rank;
+	u8			af_count;
 	u16			flags;
 
 	u16			ping;		//Ping from DirectX
