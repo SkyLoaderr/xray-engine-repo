@@ -8,7 +8,8 @@
 
   <info_portion id="global_dialogs">
     <dialog>actor_break_dialog</dialog>
-    <dialog>actor_help_wounded</dialog>
+<!--    <dialog>actor_help_wounded</dialog> -->
+    <dialog>aes_sergeant_diallog</dialog>
   </info_portion>
 
 
