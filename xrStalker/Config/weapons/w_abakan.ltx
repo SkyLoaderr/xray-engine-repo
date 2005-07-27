@@ -69,7 +69,7 @@ immunities_sect			= weapon
 ;-----------------------------------------------------------------------------------
 ;params of weapon recoil
 dispersion_start		= 2
-fire_dispersion_base			= 0.05		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base			= 0.045		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
 cam_relax_speed         		= 3.5		;скорость возврата в исходное положение
@@ -94,7 +94,7 @@ shell_point		 			= 0,0.252,0.196				; position (3rd person view) for shell to th
 shell_particles	 			= weapons\generic_shells	; name of the particles for shells
 
 ; ttc
-hit_power                	= 55						; size of damage by bullet
+hit_power                	= 56						; size of damage by bullet
 hit_impulse		 			= 140						; size of physic impulse by bullet	
 hit_type 					= fire_wound 				; [] type of the wound
 
@@ -144,8 +144,10 @@ grenade_launcher_y 			= 24
 ;sounds (name of the sound, volume (0.0 - 1.0), delay (sec))
 snd_draw					= weapons\ak74_draw
 snd_holster					= weapons\generic_holster
-snd_shoot					= weapons\ak74_shoot
-snd_shoot1					= weapons\ak74_shoot2		
+snd_shoot					= weapons\ak74u_shot_0
+snd_shoot1					= weapons\ak74u_shot_1
+snd_shoot2					= weapons\ak74u_shot_2
+snd_shoot3					= weapons\ak74u_shot_3		
 snd_empty					= weapons\gen_empty, 0.5
 snd_reload					= weapons\ak74_reload, 0.7, 0.35
 snd_shoot_grenade			= weapons\gen_grenshoot
