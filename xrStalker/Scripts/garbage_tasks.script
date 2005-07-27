@@ -73,8 +73,8 @@ function process_info_portion(info_id)
 	elseif info_id == "gar_no_mapspot" then
 		level_tasks.remove_location(107, "gar_hellcar_location")
 	
-	elseif info_id == "gar_after_battle" then
-		level_tasks.add_location(107, "gar_hellcar_location")	
+--	elseif info_id == "gar_after_battle" then
+--		level_tasks.add_location(107, "gar_hellcar_location")	
 		
 	elseif info_id == "gar_hellcar_dialog_end" then
 		level_tasks.remove_location(107, "gar_hellcar_location")	
