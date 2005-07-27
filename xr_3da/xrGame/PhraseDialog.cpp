@@ -185,7 +185,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 
 LPCSTR CPhraseDialog::DialogCaption()
 {
-	return *data()->m_sCaption?*data()->m_sCaption:GetPhraseText(START_PHRASE);
+	return data()->m_sCaption.size()?*data()->m_sCaption:GetPhraseText(START_PHRASE);
 }
 
 
