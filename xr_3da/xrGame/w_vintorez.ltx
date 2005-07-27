@@ -41,7 +41,7 @@ animation_slot			 	= 2		; type of the animation that will be used
 	
 inv_name		         	= VSS (Vintorez)
 inv_name_short		     	= Vintorez
-inv_weight		         	= 2.5
+inv_weight		         	= 3.5
 
 inv_grid_width				= 5
 inv_grid_height				= 2
@@ -60,14 +60,14 @@ immunities_sect				= weapon
 fire_dispersion_base		= 0.05		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed        		= 2.5		;скорость возврата в исходное положение
+cam_relax_speed        		= 2.9		;скорость возврата в исходное положение
 cam_dispersion         		= 0.7		;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle				= 5			;максимальный угол отдачи
 cam_max_angle_horz			= 5.0		;(degree) maximum shot horizontal degree 
 cam_step_angle_horz			= 1.0		;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.003	    ;вероятность осечки при максимальном износе 
+misfire_probability 		= 0.0003	    ;вероятность осечки при максимальном износе 
 condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
@@ -85,12 +85,12 @@ rpm_empty_click 	     	= 200
 
 ; ttc
 hit_power                	= 70 ; - увеличил хит поскольку уменьшил размер магазина до стандартных 10 патронов
-hit_impulse		         	= 87
+hit_impulse		         	= 120
 hit_type = fire_wound
 
 fire_distance            	= 400
-bullet_speed			 	= 280						;начальная скорость пули
-rpm                      	= 600
+bullet_speed			 	= 320						;начальная скорость пули
+rpm                      	= 800
 ; end ttc
 
 hud                      	= wpn_vintorez_hud
