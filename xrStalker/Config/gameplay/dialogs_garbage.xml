@@ -393,10 +393,6 @@
                 <text>gar_hellcar_dialog_thanks_12</text>
                 <next>121</next>
             </phrase>
-            <phrase id="121">
-                <text>gar_hellcar_dialog_thanks_121</text>
-                <next>1211</next>
-            </phrase>
             <phrase id="13">
                 <text>gar_hellcar_dialog_thanks_13</text>
                 <next>13111</next>
@@ -439,14 +435,6 @@
             <phrase id="15">
                 <text>gar_hellcar_dialog_thanks_15</text>
             </phrase>
-            <phrase id="1">
-                <text>gar_hellcar_dialog_thanks_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-                <next>15</next>
-            </phrase>
             <phrase id="131111">
                 <text>gar_hellcar_dialog_thanks_131111</text>
                 <next>1311111</next>
@@ -456,6 +444,18 @@
                 <action>garbage_dialogs.gar_hellcar_thanks</action>
                 <give_info>gar_hellcar_dialog_end</give_info>
                 <next>1</next>
+            </phrase>
+            <phrase id="121">
+                <text>gar_hellcar_dialog_thanks_121</text>
+                <next>1211</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_hellcar_dialog_thanks_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
             </phrase>
             <phrase id="11">
                 <text>gar_hellcar_dialog_thanks_11</text>
@@ -467,34 +467,6 @@
         <dont_has_info>gar_bandits_raid</dont_has_info>
         <dont_has_info>gar_bandits_damaged</dont_has_info>
         <phrase_list>
-            <phrase id="0">
-                <text>gar_hellcar_dialog_quest_0</text>
-                <give_info>gar_bandits_raid</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>gar_hellcar_dialog_quest_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>gar_hellcar_dialog_quest_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>gar_hellcar_dialog_quest_111</text>
-                <next>1111</next>
-                <next>1112</next>
-                <next>1113</next>
-            </phrase>
-            <phrase id="1111">
-                <text>gar_hellcar_dialog_quest_1111</text>
-                <give_info>gar_hellcar_help</give_info>
-                <next>11111</next>
-            </phrase>
-            <phrase id="11111">
-                <text>gar_hellcar_dialog_quest_11111</text>
-                <next>111111</next>
-            </phrase>
             <phrase id="111111">
                 <text>gar_hellcar_dialog_quest_111111</text>
             </phrase>
@@ -521,6 +493,34 @@
             </phrase>
             <phrase id="111311">
                 <text>gar_hellcar_dialog_quest_111311</text>
+            </phrase>
+            <phrase id="111">
+                <text>gar_hellcar_dialog_quest_111</text>
+                <next>1111</next>
+                <next>1112</next>
+                <next>1113</next>
+            </phrase>
+            <phrase id="0">
+                <text>gar_hellcar_dialog_quest_0</text>
+                <give_info>gar_bandits_raid</give_info>
+                <next>1</next>
+            </phrase>
+            <phrase id="1111">
+                <text>gar_hellcar_dialog_quest_1111</text>
+                <give_info>gar_hellcar_help</give_info>
+                <next>11111</next>
+            </phrase>
+            <phrase id="11111">
+                <text>gar_hellcar_dialog_quest_11111</text>
+                <next>111111</next>
+            </phrase>
+            <phrase id="11">
+                <text>gar_hellcar_dialog_quest_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_hellcar_dialog_quest_1</text>
+                <next>11</next>
             </phrase>
         </phrase_list>
     </dialog>
