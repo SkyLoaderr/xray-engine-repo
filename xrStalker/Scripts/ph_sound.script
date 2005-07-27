@@ -10,7 +10,6 @@ function snd_source:__init (obj, storage)
 end
 
 function snd_source:reset_scheme()
-    --xr_logic.mob_capture (self.object, true)
     if played_sound ~= nil then
        played_sound:stop ()
        played_sound = nil
@@ -118,6 +117,13 @@ function snd_source:update(delta)
        self.first_sound = false
     end
        
+end
+
+function snd_source:finalize ()
+    if played_sound ~= nil then
+       played_sound:stop ()
+       played_sound = nil
+    end
 end
 
 

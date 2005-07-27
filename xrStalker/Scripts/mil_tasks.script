@@ -236,18 +236,18 @@ function process_info_portion(info_id)
 	if info_id == "mil_barier_locator" then
 		--level_tasks.add_location(770, "mil_freedom_barier_location")
 		return true	
-	elseif info_id == "mil_max_job" then
-	       level_tasks.add_location (703, "mil_crazy_location")
-		return true		       
-	elseif info_id == "mil_max_flash_get" then       
-		   level_tasks.remove_location (703, "mil_crazy_location")
-		   if db.actor:has_info ("mil_max_job") then
-		      level_tasks.add_location (702, "mil_max_location") 
-		   end     
-		return true		   
+	--elseif info_id == "mil_max_job" then
+	       --level_tasks.add_location (703, "mil_crazy_location")
+	--	return true		       
+	--elseif info_id == "mil_max_flash_get" then       
+		   --level_tasks.remove_location (703, "mil_crazy_location")
+		   --if db.actor:has_info ("mil_max_job") then
+		      --level_tasks.add_location (702, "mil_max_location") 
+		   --end     
+		--return true		   
 	elseif info_id == "mil_max_job_complete" or info_id == "mil_freedom_cook_rg6_ask" then   
 	       level_tasks.add_location (706, "mil_rg6_location") 	 
-	       level_tasks.remove_location (702, "mil_max_location")  
+	       --level_tasks.remove_location (702, "mil_max_location")  
 	    return true   
 	elseif info_id == "mil_rg6_gain" then       
 		   level_tasks.remove_location (706, "mil_rg6_location")
@@ -267,7 +267,7 @@ function process_info_portion(info_id)
 		   db.actor:disable_info_portion ("mil_lukash_go_to_max")
 		return true
     elseif info_id == "mil_max_job_complete" then
-           level_tasks.remove_location (702, "mil_max_location")
+           --level_tasks.remove_location (702, "mil_max_location")
 	       level_tasks.add_location (706, "mil_rg6_location") 
 	elseif info_id == "mil_rg6_gain" then
 		   level_tasks.remove_location (706, "mil_rg6_location")
