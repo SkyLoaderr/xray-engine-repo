@@ -5580,6 +5580,22 @@
 							RelativePath=".\script_fcolor_script.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptParticles"
+						Filter="">
+						<File
+							RelativePath=".\script_particles.cpp">
+						</File>
+						<File
+							RelativePath=".\script_particles.h">
+						</File>
+						<File
+							RelativePath=".\script_particles_inline.h">
+						</File>
+						<File
+							RelativePath=".\script_particles_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"
