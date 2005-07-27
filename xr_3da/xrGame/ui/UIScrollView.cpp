@@ -64,8 +64,8 @@ void CUIScrollView::RecalcSize			()
 
 	Fvector2			item_pos;
 	item_pos.set		(m_rightIdent, 0.0f);
-	u16 idx = 0;
-	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it,++idx)
+
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it)
 	{
 		(*it)->SetWndPos		(item_pos);
 		item_pos.y				+= (*it)->GetWndSize().y;
