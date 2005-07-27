@@ -3,7 +3,7 @@ active = follower@walk
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
-;on_combat = combat
+on_combat = combat
 
 [death]
 on_info = %-val_escort_guard1_combat +val_escort_guard1_dead%
@@ -14,9 +14,10 @@ on_info = {=hit_by_actor} %+val_escort_combat +val_escort_actor_helped +val_esco
 on_info2 = {+val_escort_combat -val_escort_nap1_start_combat} %+val_escort_actor_start_combat%
 on_info3 = {=hitted_by(406) -val_escort_actor_start_combat} %+val_escort_nap1_start_combat%
 
-;[combat]
+[combat]
 ;on_info = %+val_escort_guard1_combat%
-;on_info2 = {=see_actor -val_escort_combat} remark@fight %+val_escort_combat +val_escort_actor_start_combat%
+on_info = {=see_actor -val_escort_nap1_start_combat -val_escort_actor_start_combat} %+val_escort_actor_start_combat%
+on_info = {=see_actor -val_escort_combat} remark@fight %+val_escort_combat%
 
 [combat_ignore]
 
