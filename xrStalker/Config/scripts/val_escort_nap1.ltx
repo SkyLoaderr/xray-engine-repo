@@ -67,6 +67,9 @@ victim_wpn     = 15|actor
 use            = true
 use_wpn        = true
 
+[danger1]
+ignore_distance = 10
+ignore_types = sound
 
 ;--------------------------------------------------------------------------
 ; начало
@@ -303,6 +306,7 @@ meet            = meet@ignore
 ;distance        = 2
 ;on_signal       = leader_dead | remark1@phrase10
 on_info         = {=distance_to_obj_le(400:2)} remark1@phrase10
+danger          = danger1
 
 ;--------------------------------------------------------------------------
 ; фраза: „ерт подери!!!...Ёх-ххх...ѕусть земл€ тебе будет пухом, дружище.
