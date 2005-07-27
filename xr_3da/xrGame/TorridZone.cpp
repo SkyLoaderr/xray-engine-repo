@@ -31,7 +31,7 @@ BOOL CTorridZone::net_Spawn(CSE_Abstract* DC)
 void CTorridZone::UpdateWorkload(u32 dt)
 {
 	inherited::UpdateWorkload	(dt);
-	m_animator->OnFrame			();
+	m_animator->Update			(float(dt)/1000.f);
 	XFORM().set					(m_animator->XFORM());
 	OnMove						();
 }

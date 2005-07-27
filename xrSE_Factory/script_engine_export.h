@@ -31,6 +31,7 @@
 #	include "script_monster_hit_info.h"
 #	include "script_sound_info.h"
 #	include "script_sound.h"
+#	include "script_particles.h"
 #	include "script_binder_object.h"
 #	include "motivation_action_manager.h"
 #	include "motivation_manager.h"

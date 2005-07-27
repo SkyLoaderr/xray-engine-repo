@@ -33,13 +33,14 @@ public:
     float&				Speed			(){return m_Speed;}
 
 	COMotion*			Play			(bool bLoop, LPCSTR name=0);
+	void				Pause			(bool val){return m_MParam.Pause(val);}
 	void				Stop			();
 	IC BOOL				IsPlaying		(){return m_MParam.bPlay;}
 
     IC const Fmatrix&	XFORM			(){return m_XFORM;}
 	
 	// Update
-	void				OnFrame			();
+	void				Update			(float dt);
     void				DrawPath		();
 };
 

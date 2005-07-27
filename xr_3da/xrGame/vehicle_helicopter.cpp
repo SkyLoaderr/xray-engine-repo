@@ -94,7 +94,7 @@ void CVehicleHelicopter::renderable_Render	()
 void CVehicleHelicopter::UpdateCL			()
 {
 	inherited::UpdateCL	();
-	m_animator->OnFrame	();
+	m_animator->Update	(Device.fTimeDelta);
 	m_engine_sound.set_position(XFORM().c);
 
 #ifndef _DEBUG

@@ -174,7 +174,7 @@ public:
     void			Update	(float dt, float speed, bool loop);
     void			Play	(){bPlay=true; t=min_t;}
     void			Stop	(){bPlay=false; t=min_t;}
-    void			Pause	(){bPlay=!bPlay;}
+    void			Pause	(bool val){bPlay=!val;}
 };
 
 class ENGINE_API CClip{
