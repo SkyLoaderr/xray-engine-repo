@@ -329,9 +329,11 @@ center_point = kamp_point
 active = remark@hellcar_way_final
 on_death = death@hellcar
 
+
 [remark@hellcar_way_final]
 on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
 anim = wait
+;on_info = %+gar_after_battle%
 
 [walker2@hellcar_way]
 path_walk = hellcar_walk
@@ -431,33 +433,27 @@ ignore_distance = 20
 ;-------------------------------------------------------------------------------------
 
 [logic@gar_dolg_blokpost_camper1]
-active = camper@gar_dolg_blokpost_camper1
+active = walkerr@gar_dolg_blokpost_camper1
 
-[camper@gar_dolg_blokpost_camper1]
+[walker@gar_dolg_blokpost_camper1]
 path_walk = camper_walk1
 path_look = camper_look1
-radius = 15
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_camper2]
-active = camper@gar_dolg_blokpost_camper2
+active = walker@gar_dolg_blokpost_camper2
 
-[camper@gar_dolg_blokpost_camper2]
+[walker@gar_dolg_blokpost_camper2]
 path_walk = camper_walk2
 path_look = camper_look2
-radius = 15
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_camper3]
-active = camper@gar_dolg_blokpost_camper3
+active = walker@gar_dolg_blokpost_camper3
 
-[camper@gar_dolg_blokpost_camper3]
+[walker@gar_dolg_blokpost_camper3]
 path_walk = camper_walk3
 path_look = camper_look3
-radius = 15
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_zoneguard1]
@@ -489,18 +485,8 @@ on_combat = combat
 [walker@gar_dolg_blokpost_zoneguard2]
 path_walk = zoneguard_walk2
 path_look = zoneguard_look2
-meet = meet@zoneguard2
+meet = meet@zoneguard1
 danger = danger_condition@dolg_zoneguard
-
-[meet@zoneguard2]
-meet_state = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
-meet_state_wpn = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
-victim = 20|actor
-victim_wpn = 20|actor
-use	= false
-use_wpn = false
-zone = gar_dolg_blokpost_zone_warn|{-gar_free_pass}backoff@{-gar_free_pass}gar_dolg_blokpost|gar_dolg_blokpost_zone_guard|{-gar_free_pass}true@{-gar_free_pass}gar_dolg_blokpost
-
 
 
 [logic@gar_dolg_blokpost_zoneguard3]
@@ -510,7 +496,7 @@ on_combat = combat
 [walker@gar_dolg_blokpost_zoneguard3]
 path_walk = zoneguard_walk3
 path_look = zoneguard_look3
-meet = meet@zoneguard2
+meet = meet@zoneguard1
 danger = danger_condition@dolg_zoneguard
 
 [combat]
@@ -522,7 +508,6 @@ active = kamp@gar_dolg_blokpost_kamp1
 
 [kamp@gar_dolg_blokpost_kamp1]
 center_point = kamp_point
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_kamp2]
@@ -530,7 +515,6 @@ active = kamp@gar_dolg_blokpost_kamp2
 
 [kamp@gar_dolg_blokpost_kamp2]
 center_point = kamp_point
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_kamp3]
@@ -538,7 +522,6 @@ active = kamp@gar_dolg_blokpost_kamp3
 
 [kamp@gar_dolg_blokpost_kamp3]
 center_point = kamp_point
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_raid1]
@@ -546,7 +529,6 @@ active = walker@gar_dolg_blokpost_raid1
 
 [walker@gar_dolg_blokpost_raid1]
 path_walk = raid_walk
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_raid2]
@@ -556,7 +538,6 @@ active = follower1@gar_dolg_blokpost_raid2
 anim_walk = raid
 anim_run = assault
 formation_line = true
-danger = danger_condition@dolg
 
 
 [logic@gar_dolg_blokpost_raid3]
@@ -566,13 +547,10 @@ active = follower2@gar_dolg_blokpost_raid3
 anim_walk = raid
 anim_run = assault
 formation_line = true
-danger = danger_condition@dolg
 
-[danger_condition@dolg]
-ignore_distance = 20
 
 [danger_condition@dolg_zoneguard]
-ignore_distance = 1
+ignore_distance = 25
 
 ;*****************************************************************
 ;Bandits on factory
