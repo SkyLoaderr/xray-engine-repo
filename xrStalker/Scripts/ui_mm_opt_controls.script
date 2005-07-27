@@ -19,5 +19,5 @@ function opt_controls:InitControls(x, y, xml, handler)
 	xml:InitLabel		("tab_controls:cap_keyboardsetup",	self)
 	xml:InitTrackBar	("tab_controls:track_mousesens",	self)
 	xml:InitCheck		("tab_controls:check_mouseinvert",	self)	
-	xml:InitKeyBinding	("tab_controls:key_binding",		self)
+--	xml:InitKeyBinding	("tab_controls:key_binding",		self)
 end
