@@ -1,0 +1,12 @@
+[logic]
+active = heli_move@descent
+
+[heli_move@descent]
+path_move = agr_factory_heli2_move
+on_signal = path_end | heli_move@idle
+combat_ignore = true
+
+[heli_move@idle]
+path_move = agr_heli2_idle_move
+engine_sound = false
+combat_ignore = true
