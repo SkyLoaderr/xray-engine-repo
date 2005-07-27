@@ -57,23 +57,18 @@ no_move = true
 no_rotate = true
 anim = guard
 snd = speech
-on_signal = sound_end | %+val_sacrifice_guard2_phrase2_end%
-on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase5_end} walker@leave ;camper@kill_wait
+on_signal = sound_end | remark@kill_wait %+val_sacrifice_guard2_phrase2_end%
+on_info = {+val_sacrifice_plr_detected} walker@leave
 combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
-; ждем последней фразы первого охранника и уходим
+; 
 ;--------------------------------------------------------------------------
-[camper@kill_wait]
-radius = 0
-path_walk = val_sacrifice_guard2_walk 
-path_look = val_sacrifice_guard2_look
-def_state_campering = guard
-def_state_campering_fire = guard_fire
-def_state_moving = patrol
-def_state_moving_fire = patrol_fire
-no_retreat = true
-on_info = {val_sacrifice_guard1_phrase5_end} walker@leave
+[remark@kill_wait]
+no_move = true
+no_rotate = true
+anim = guard
+on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase5_end} walker@leave
 combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
 
 ;--------------------------------------------------------------------------
