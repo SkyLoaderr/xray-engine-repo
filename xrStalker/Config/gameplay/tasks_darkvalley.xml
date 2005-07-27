@@ -32,6 +32,10 @@
 		<objective>
 			<text>val_come_to_trader_0</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+        </objective>
+		<objective>
+			<text>val_come_to_trader_main</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		    <map_location_type>val_exit_gate_location</map_location_type>
             <object_story_id>val_exit_gate</object_story_id>
         </objective>
@@ -42,6 +46,10 @@
 		<objective>
 			<text>val_sos_help_0</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+        </objective>
+		<objective>
+			<text>val_sos_help_main</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		    <map_location_type>val_sos_location</map_location_type>
             <object_story_id>val_sos_stalker</object_story_id>
         </objective>
@@ -51,6 +59,10 @@
 		<title>val_prisoner_help</title>
 		<objective>
 			<text>val_prisoner_help_0</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+        </objective>
+		<objective>
+			<text>val_prisoner_help_main</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		    <map_location_type>val_prisoner_location</map_location_type>
             <object_story_id>val_prisoner</object_story_id>
