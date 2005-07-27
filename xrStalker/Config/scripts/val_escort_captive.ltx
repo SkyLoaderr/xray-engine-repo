@@ -83,9 +83,12 @@ combat_ignore_cond  = always
 ; 
 ;--------------------------------------------------------------------------
 [follower@go_to_nap1]
-leader        = 406
-meet          = meet@ignore
-on_info       = {=distance_to_obj_le(406:2)} remark@check_state
+leader          = 406
+meet            = meet@ignore
+stub_for_corpse = true
+distance        = 2
+on_signal       = leader_dead | remark@check_state
+;on_info         = {=distance_to_obj_le(406:2)} remark@check_state
 
 ;--------------------------------------------------------------------------
 [remark@check_state]

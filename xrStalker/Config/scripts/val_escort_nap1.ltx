@@ -222,6 +222,7 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 ; бой с гвардами
 ;--------------------------------------------------------------------------
 [remark1@fight]
+anim    = guard
 meet    = meet@ignore
 on_info = {+val_escort_guard1_dead +val_escort_guard2_dead} remark1@task_done
 
@@ -296,12 +297,12 @@ on_signal       = sound_end | walker1@leave %+val_escort_nap1_phrase2_end%
 ;--------------------------------------------------------------------------
 [follower1@captive_dead]
 leader          = 400
-;stub_for_corpse = true
-;distance        = 0.5
 anim            = guard
 meet            = meet@ignore
-;on_signal       = leader_dead | remark1@phrase10
-on_info         = {=distance_to_obj_le(400:2)} remark1@phrase10
+stub_for_corpse = true
+distance        = 2
+on_signal       = leader_dead | remark1@phrase10
+;on_info         = {=distance_to_obj_le(400:2)} remark1@phrase10
 
 ;--------------------------------------------------------------------------
 ; фраза: „ерт подери!!!...Ёх-ххх...ѕусть земл€ тебе будет пухом, дружище.
