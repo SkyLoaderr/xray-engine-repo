@@ -86,7 +86,7 @@ public:
 
     // validation
     virtual bool		Valid					()=0;
-    virtual bool		Validate				()=0;
+    virtual bool		Validate				(bool)=0;
 
     // events
 	virtual void		OnDeviceCreate			()=0;

@@ -105,7 +105,7 @@ void ESceneCustomOTools::OnDeviceDestroy()
 }
 //----------------------------------------------------
 
-bool ESceneCustomOTools::Validate()
+bool ESceneCustomOTools::Validate(bool)
 {
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	if (!(*it)->Validate()) return false;

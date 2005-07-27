@@ -105,7 +105,7 @@ public:
 
     // validation
     virtual bool   		Valid					();
-    virtual bool		Validate				();
+    virtual bool		Validate				(bool full_test);
     virtual bool   		IsNeedSave				();
 
     // events

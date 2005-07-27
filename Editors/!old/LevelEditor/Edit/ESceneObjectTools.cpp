@@ -39,11 +39,10 @@ void ESceneObjectTools::RemoveControls()
 }
 //----------------------------------------------------
 
-bool ESceneObjectTools::Validate()
+bool ESceneObjectTools::Validate(bool full_test)
 {
-	if (!inherited::Validate()) return false;
+    bool bRes = inherited::Validate(full_test);
     // verify position & refs duplicate
-    bool bRes = true;
     CSceneObject *A, *B;
     for (ObjectIt a_it=m_Objects.begin(); a_it!=m_Objects.end(); a_it++){
         A = (CSceneObject*)(*a_it);
@@ -57,7 +56,25 @@ bool ESceneObjectTools::Validate()
                 }
             }
         }
+	    // validate lods
+        if (full_test&&A->IsMUStatic()){
+			CEditableObject* E	= A->GetReference(); VERIFY(E);
+            xr_string lod_name 	= E->GetLODTextureName();
+            xr_string l_name	= lod_name.c_str();
+            xr_string fn;
+            int age,age_nm;
+            FS.update_path		(fn,_textures_,EFS.ChangeFileExt(l_name,".tga").c_str());
+            age					= FS.get_file_age(fn.c_str());
+            l_name 				+= "_nm";
+            FS.update_path		(fn,_textures_,EFS.ChangeFileExt(l_name,".tga").c_str());
+            age_nm					= FS.get_file_age(fn.c_str());
+            if ((age!=E->Version())||(age_nm!=E->Version())){
+                Msg				("!Invalid LOD texture version: '%s'",E->GetName());
+                bRes 			= false;
+            }
+        }
     }
+    
     return bRes;
 }
 //----------------------------------------------------

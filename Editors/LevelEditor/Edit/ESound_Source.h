@@ -43,7 +43,7 @@ public:
     ESoundType		m_Type;
 public:
     virtual Fvector& GetPosition	()						{ return m_Params.position; 	}
-    virtual void 	SetPosition		(const Fvector& pos)	{ m_Params.position.set(pos); if (m_Source.feedback) m_Source.set_position(m_Params.position);	}
+    virtual void 	SetPosition		(const Fvector& pos)	{ m_Params.position.set(pos); if (m_Source._feedback()) m_Source.set_position(m_Params.position);	}
 public:
 					ESoundSource	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);

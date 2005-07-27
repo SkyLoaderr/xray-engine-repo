@@ -718,7 +718,7 @@ void ESceneWallmarkTools::FillProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
-bool ESceneWallmarkTools::Validate()
+bool ESceneWallmarkTools::Validate(bool)
 {
 	bool bRes = true;
 

@@ -477,21 +477,6 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         ReadObjects			(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject,pb);
         UI->ProgressEnd		(pb);
 
-        // snap list
-        if (F->find_chunk(CHUNK_SNAPOBJECTS)){
-        	shared_str 	buf;
-            int cnt 	= F->r_u32();
-            if (cnt){
-                for (int i=0; i<cnt; i++){
-                    F->r_stringZ	(buf);
-                    CCustomObject* O = FindObjectByName(buf.c_str(),OBJCLASS_SCENEOBJECT);
-                    if (!O)		ELog.Msg(mtError,"EScene: Can't find snap object '%s'.",buf.c_str());
-                    else		m_ESO_SnapObjects.push_back(O);
-                }
-            }
-            UpdateSnapList();
-        }
-        
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++){
@@ -508,6 +493,21 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
                 }
             }
 		}
+        
+        // snap list
+        if (F->find_chunk(CHUNK_SNAPOBJECTS)){
+        	shared_str 	buf;
+            int cnt 	= F->r_u32();
+            if (cnt){
+                for (int i=0; i<cnt; i++){
+                    F->r_stringZ	(buf);
+                    CCustomObject* O = FindObjectByName(buf.c_str(),OBJCLASS_SCENEOBJECT);
+                    if (!O)		ELog.Msg(mtError,"EScene: Can't find snap object '%s'.",buf.c_str());
+                    else		m_ESO_SnapObjects.push_back(O);
+                }
+            }
+            UpdateSnapList();
+        }
         
         Msg("EScene: %d objects loaded, %3.2f sec", ObjCount(), T.Stop() );
 

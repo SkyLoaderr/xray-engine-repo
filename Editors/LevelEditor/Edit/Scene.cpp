@@ -293,14 +293,14 @@ bool EScene::ExportGame(SExportStreams* F)
 }
 //------------------------------------------------------------------------------
 
-bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible)
+bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible, bool bFullTest)
 {
 	bool bRes = true;
     SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
     SceneToolsMapPairIt t_end 	= m_SceneTools.end();
     for (; t_it!=t_end; t_it++){
         if (t_it->second){
-        	if (!t_it->second->Validate()){
+        	if (!t_it->second->Validate(bFullTest)){
 				ELog.Msg(mtError,"ERROR: Validate '%s' failed!",t_it->second->ClassDesc());
                 bRes = false;
             }

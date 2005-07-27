@@ -255,9 +255,9 @@ void ESceneLightTools::RemoveLightControl(LPCSTR name)
 }
 //------------------------------------------------------------------------------
 
-bool ESceneLightTools::Validate()
+bool ESceneLightTools::Validate(bool full_test)
 {
-	if (!inherited::Validate()) return false;
+	if (!inherited::Validate(full_test)) return false;
 	bool bRes = !m_Objects.empty();
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
     	CLight* L = dynamic_cast<CLight*>(*it);

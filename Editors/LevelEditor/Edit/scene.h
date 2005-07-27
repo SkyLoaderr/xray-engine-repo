@@ -233,7 +233,7 @@ public:
     int 			GetUndoCount	(){return m_UndoStack.size();}
     int 			GetRedoCount	(){return m_RedoStack.size();}
 
-    bool 			Validate		(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible);
+    bool 			Validate		(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible, bool bFullTest);
     void 			OnObjectsUpdate	();
 
 					EScene			();

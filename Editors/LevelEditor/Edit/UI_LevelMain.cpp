@@ -286,7 +286,7 @@ CCommandVar CommandExportCompilerError(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandValidateScene(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-        Scene->Validate	(true,true,true,true,true);
+        Scene->Validate	(true,true,true,true,true,true);
 	    return 			TRUE;
     } else {
         ELog.DlgMsg		( mtError, "Scene sharing violation" );

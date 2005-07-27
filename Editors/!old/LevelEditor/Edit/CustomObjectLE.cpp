@@ -192,11 +192,16 @@ void CCustomObject::OnNumChangeScale(PropValue* sender)
 {
 	NumSetScale		(PScale);
 }
+void CCustomObject::OnNameChange(PropValue* sender)
+{
+	ExecCommand		(COMMAND_UPDATE_PROPERTIES);
+}
 
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper().CreateNameCB		(items, PrepareKey(pref, "Name"),&FName,NULL,NULL,RTextValue::TOnAfterEditEvent(this,&CCustomObject::OnObjectNameAfterEdit));
     PropValue* V;
+    V = PHelper().CreateNameCB	(items, PrepareKey(pref, "Name"),&FName,NULL,NULL,RTextValue::TOnAfterEditEvent(this,&CCustomObject::OnObjectNameAfterEdit));
+    V->OnChangeEvent.bind		(this,&CCustomObject::OnNameChange);
     V = PHelper().CreateVector	(items, PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
     V->OnChangeEvent.bind		(this,&CCustomObject::OnNumChangePosition);
     V = PHelper().CreateAngle3	(items, PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);

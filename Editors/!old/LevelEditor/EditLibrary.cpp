@@ -380,6 +380,10 @@ bool TfrmEditLibrary::GenerateLOD(ListItem* prop, bool bHighQuality)
 
 void TfrmEditLibrary::MakeLOD(bool bHighQuality)
 {
+	if (ebSave->Enabled){
+    	ELog.DlgMsg				(mtError,"Save library changes before generating LOD.");
+        return;
+    }
 	TElTreeItem* node 			= m_Items->GetSelected();
 	if (node&&cbPreview->Checked){
         LockForm();

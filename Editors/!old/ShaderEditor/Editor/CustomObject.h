@@ -103,6 +103,7 @@ protected:
 	virtual void 	SetRotation		(const Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale		(const Fvector& scale)	{ FScale.set(scale);	UpdateTransform();}
 
+    void __stdcall 	OnNameChange		(PropValue* sender);
     void __stdcall 	OnNumChangePosition	(PropValue* sender);
     void __stdcall 	OnNumChangeRotation	(PropValue* sender);
     void __stdcall 	OnNumChangeScale	(PropValue* sender);

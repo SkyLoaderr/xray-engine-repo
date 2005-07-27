@@ -64,7 +64,7 @@ public:
     virtual void		SaveSelection      		(IWriter&);
 
     // utils
-    virtual bool		Validate				();
+    virtual bool		Validate				(bool full_build);
     
     virtual void		BeforeRender			();
     virtual void		OnRender				(int priority, bool strictB2F);

@@ -36,7 +36,7 @@ public:
 
     // validation
     virtual bool		Valid					();
-    virtual bool		Validate				();
+    virtual bool		Validate				(bool);
 
     // events
 	virtual void		OnDeviceCreate			();

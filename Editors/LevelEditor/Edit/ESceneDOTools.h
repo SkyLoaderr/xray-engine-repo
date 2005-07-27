@@ -118,7 +118,7 @@ public:
 
     // validation
     virtual bool		Valid					(){return dtSlots||objects.size()||m_Base.Valid()||m_SnapObjects.size();}
-    virtual bool		Validate				(){return true;}
+    virtual bool		Validate				(bool){return true;}
 
     // events
 	virtual void		OnDeviceCreate			();

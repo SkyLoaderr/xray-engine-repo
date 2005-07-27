@@ -37,7 +37,7 @@ public:
 
 	virtual	bool		AllowEnabling    		(){return false;}
 
-    virtual bool		Validate				();
+    virtual bool		Validate				(bool full_build);
 
 	virtual void		OnFrame					();
 

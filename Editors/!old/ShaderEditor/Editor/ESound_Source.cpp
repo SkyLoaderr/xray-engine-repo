@@ -222,7 +222,7 @@ void ESoundSource::Save(IWriter& F)
 
 void ESoundSource::OnChangeWAV	(PropValue* prop)
 {
-	BOOL bPlay 		= !!m_Source.feedback;
+	BOOL bPlay 		= !!m_Source._feedback();
 	ResetSource		();
 	if (bPlay) 		Play();
 }
@@ -305,7 +305,7 @@ void ESoundSource::OnFrame()
 		m_Flags.set			(flSimulating,TRUE);
     	if ((fis_zero(m_ActiveTime.x)&&fis_zero(m_ActiveTime.y))||
         	((g_pGamePersistent->Environment.fGameTime>m_ActiveTime.x)&&(g_pGamePersistent->Environment.fGameTime<m_ActiveTime.y))){
-            if (0==m_Source.feedback){
+            if (0==m_Source._feedback()){
             	if (fis_zero(m_RandomPause.x)&&fis_zero(m_RandomPause.y)){    
                     m_Source.play			(0,sm_Looped);
                     m_Source.set_params		(&m_Params);
@@ -317,7 +317,7 @@ void ESoundSource::OnFrame()
                         m_Source.set_params	(&m_Params);
                         if (bFullPlay){
                             m_StopTime		= 0xFFFFFFFF;
-                            m_NextTime		= Device.dwTimeGlobal+m_Source.handle->length_ms()+Random.randF(m_RandomPause.x,m_RandomPause.y)*1000;
+                            m_NextTime		= Device.dwTimeGlobal+m_Source._handle()->length_ms()+Random.randF(m_RandomPause.x,m_RandomPause.y)*1000;
                         }else{
                             m_StopTime		= bFullPlay?0:Device.dwTimeGlobal+Random.randF(m_PlayTime.x,m_PlayTime.y)*1000;
                             m_NextTime		= m_StopTime+Random.randF(m_RandomPause.x,m_RandomPause.y)*1000;
@@ -330,7 +330,7 @@ void ESoundSource::OnFrame()
             }
             
         }else{
-            if (0!=m_Source.feedback)
+            if (0!=m_Source._feedback())
             	m_Source.stop_deffered();
         }
     }break;
@@ -344,7 +344,7 @@ void ESoundSource::ResetSource()
 	m_Source.destroy();
 	if (m_WAVName.size()){ 
     	m_Source.create		(1,*m_WAVName);
-        CSoundRender_Source* src= (CSoundRender_Source*)m_Source.handle;
+        CSoundRender_Source* src= (CSoundRender_Source*)m_Source._handle();
         m_Params.min_distance	= src->m_fMinDist;
         m_Params.max_distance	= src->m_fMaxDist;
         m_Params.max_ai_distance= src->m_fMaxAIDist;

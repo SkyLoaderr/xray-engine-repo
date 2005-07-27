@@ -164,7 +164,7 @@ public:
 
     // validation
     virtual bool   		Valid					();
-    virtual bool		Validate				(){return true;}
+    virtual bool		Validate				(bool){return true;}
     virtual bool   		IsNeedSave				();
 
     // events

@@ -62,7 +62,7 @@ BOOL SceneBuilder::Compile()
 	        // check debug
             bool bTestPortal = Scene->ObjCount(OBJCLASS_SECTOR)||Scene->ObjCount(OBJCLASS_PORTAL);
 	        // validate scene
-    	    VERIFY_COMPILE(Scene->Validate(false,bTestPortal,true,true,true),"Validation failed.","Invalid scene.");
+    	    VERIFY_COMPILE(Scene->Validate(false,bTestPortal,true,true,true,true),"Validation failed.","Invalid scene.");
 			// fill simple hemi
             simple_hemi.clear	();
 	        xrHemisphereBuild	(1,2.f,simple_hemi_callback,&simple_hemi);
@@ -121,7 +121,7 @@ BOOL SceneBuilder::MakeGame( )
 	        // clear error
             Tools->ClearDebugDraw();
 	        // validate scene
-    	    VERIFY_COMPILE(Scene->Validate(false,false,false,false,false),	"Validation failed.","Invalid scene.");
+    	    VERIFY_COMPILE(Scene->Validate(false,false,false,false,false,false),	"Validation failed.","Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.","");
