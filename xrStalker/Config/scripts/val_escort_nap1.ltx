@@ -334,10 +334,11 @@ on_timer        = 60000 | walker1@leave ; ждем минуту и уходим
 ; ждем диалога
 ;--------------------------------------------------------------------------
 [remark1@wait_to_talk]
-no_move         = true
-;no_rotate       = true
-meet            = meet@talk
-on_timer        = 60000 | walker1@leave ; ждем минуту и уходим
+no_move                 = true
+;no_rotate               = true
+meet                    = meet@talk
+;on_timer               = 60000 | walker1@leave ; ждем минуту и уходим
+on_actor_dist_ge_nvis   = 30 | walker1@leave
 
 ;--------------------------------------------------------------------------
 ; уходим с уровня
@@ -347,4 +348,3 @@ path_walk   = val_escort_nap1_leave_walk
 path_look   = val_escort_nap1_leave_look
 meet        = meet@talk
 on_signal   = arrived | nil
-

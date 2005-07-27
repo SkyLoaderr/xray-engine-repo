@@ -155,12 +155,13 @@ combat_ignore_cond  = always
 ; фраза: Подходи пообщаемся.
 ;--------------------------------------------------------------------------
 [remark@talk]
-no_move         = true
-;no_rotate       = true
-snd             = val_escort_phrase_invite
-meet            = meet@talk
-on_timer        = 60000 | walker@leave
-combat_ignore_cond  = always
+no_move                 = true
+;no_rotate               = true
+snd                     = val_escort_phrase_invite
+meet                    = meet@talk
+;on_timer               = 60000 | walker@leave
+on_actor_dist_ge_nvis   = 30 | walker@leave
+combat_ignore_cond      = always
 
 ;--------------------------------------------------------------------------
 ; ждем когда nap1 скажет фразу: Жив-здоров? Тогда возвращаемся на Базу за подмогой.
