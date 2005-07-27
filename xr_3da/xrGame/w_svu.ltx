@@ -35,11 +35,11 @@ fire_dispersion_base			= 0.027 ;угол (в градусах) базовой дисперсии оружия (оруж
 
 ;отдача
 cam_relax_speed     	    	= 3.0	;скорость возврата в исходное положение
-cam_dispersion      	    	= 2.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion      	    	= 1.6	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle					= 10	;максимальный угол отдачи
 cam_max_angle_horz				= 15.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz				= 0.5	;(degree) size of step camera moved in horizontal position while shooting
-
+control_inertion_factor	= 1.28f
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		    = 0.003	    ;вероятность осечки при максимальном износе 
 condition_shot_dec 				= 0.00003	;увеличение износа при каждом выстреле
@@ -80,12 +80,12 @@ shell_point		 		= 0.0, 0.128, 0.0
 shell_dir		 		= 0.0, 0.0, 0.4
 shell_particles	 		= weapons\generic_shells
 
-hit_power               = 105;95
-hit_impulse	        	= 224
+hit_power               = 145;95
+hit_impulse	        	= 200
 hit_type = fire_wound
 
 fire_distance           = 600
-bullet_speed			= 750			;начальная скорость пули
+bullet_speed			= 820			;начальная скорость пули
 rpm                     = 250
 ; end ttc
 hud                     = wpn_svu_hud
