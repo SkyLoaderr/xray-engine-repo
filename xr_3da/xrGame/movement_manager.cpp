@@ -336,4 +336,6 @@ void CMovementManager::verify_detail_path		()
 void CMovementManager::on_restrictions_change	()
 {
 	m_path_actuality			= false;
+	level_path_builder().remove		();
+	detail_path_builder().remove	();
 }
