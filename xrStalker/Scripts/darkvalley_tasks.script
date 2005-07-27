@@ -4,6 +4,19 @@ function proceed()
 	if actor:dont_has_info("val_player_knows_password") and
 	   actor:object("borov_flash") then
 		actor:give_info_portion("val_player_knows_password") 
+		level_tasks.set_task_state(task.completed, "val_get_docs_from_x18", 1)
+	end
+
+	if actor:has_info("val_prisoner_free") then
+		level_tasks.set_task_state(task.completed, "val_prisoner_help", 0)
+	elseif actor:has_info("val_prisoner_dead") then
+		level_tasks.set_task_state(task.fail, "val_prisoner_help", 0)
+	end
+
+	if actor:has_info("val_sos_got_medkit") then
+		level_tasks.set_task_state(task.completed, "val_sos_help", 0)
+	elseif actor:has_info("val_sos_dead") then
+		level_tasks.set_task_state(task.fail, "val_sos_help", 0)
 	end
 
 	-- Laboratory X18
@@ -60,21 +73,7 @@ function proceed()
 end
 
 function process_info_portion(info_id)
-	if info_id == "val_escort_show_tip" then
-		level_tasks.add_location(406, "val_escort_nap1_location")
-		return true
-	elseif info_id == "val_escort_start" then
-		level_tasks.add_location(406, "val_escort_nap1_location")
-		level_tasks.add_location(400, "val_escort_captive_location")
-		return true
-	elseif info_id == "val_escort_captive_can_leave" or info_id == "val_escort_captive_dead" then
-		level_tasks.remove_location(406, "val_escort_nap1_location")
-		level_tasks.remove_location(400, "val_escort_captive_location")
-		return true
-	elseif info_id == "val_exit_gate_show" then
-		level_tasks.add_location(421, "val_exit_gate_location")
-		return true
-	elseif info_id == "val_sos_give_tip" then
+    if info_id == "val_sos_give_tip" then
 		level_tasks.add_location(422, "val_sos_location")
 		return true
 	elseif info_id == "val_sos_actor_near_wounded" then

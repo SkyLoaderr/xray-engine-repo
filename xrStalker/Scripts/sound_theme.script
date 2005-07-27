@@ -327,7 +327,7 @@ function load_sound(obj)
 	theme[obj:id()]["val_escort_nap1_phrase5"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase5")
 	theme[obj:id()]["val_escort_dead"]                = load_sound_from_ltx(obj, "val_escort_dead")
 	theme[obj:id()]["val_escort_nap1_go_home"]        = load_sound_from_ltx(obj, "val_escort_nap1_go_home")
-	theme[obj:id()]["val_escort_nap1_phrase_invite"]  = load_sound_from_ltx(obj, "val_escort_nap1_phrase_invite")
+	theme[obj:id()]["val_escort_phrase_invite"]       = load_sound_from_ltx(obj, "val_escort_phrase_invite")
 
 	-- Agroprom
 	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")

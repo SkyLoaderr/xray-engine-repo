@@ -29,7 +29,7 @@ no_retreat = true
 on_info = {+val_escort_combat} remark@fight
 on_info2 = {+val_escort_nap1_dead} walker@return %-val_escort_guard2_combat%, {+val_escort_captive_dead} walker@return %-val_escort_guard2_combat%, %-val_escort_guard2_combat%
 ;combat_ignore_cond = {-val_escort_combat !see_actor}
-combat_ignore_cond = {=check_fighting(400:406) !see_actor}
+combat_ignore_cond = {=check_fighting(400) -val_escort_actor_start_combat} ;{=check_fighting(400:406) !see_actor}
 ;on_signal = leader_dead | walker@return
 
 [remark@fight]

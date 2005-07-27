@@ -1,6 +1,12 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
 
+<!-- FAKE: main task -->
+<info_portion id="val_give_main_task">
+	<task>val_get_docs_from_x18</task>
+	<action>level_tasks.notify_new_task</action>
+</info_portion>
+
 <!-- Нападение на игрока около входа на уровень -->
 <info_portion id="val_ambush_kill_plr"></info_portion>
 <info_portion id="val_ambush_t1_started"></info_portion>
@@ -22,8 +28,8 @@
 <info_portion id="val_escort_combat"></info_portion>
 <info_portion id="val_escort_actor_helped"></info_portion>
 <info_portion id="val_escort_nap1_phrase3"></info_portion>
-<info_portion id="+val_escort_nap1_phrase1_end"></info_portion>
-<info_portion id="+val_escort_nap1_phrase2_end"></info_portion>
+<info_portion id="val_escort_nap1_phrase1_end"></info_portion>
+<info_portion id="val_escort_nap1_phrase2_end"></info_portion>
 <info_portion id="val_escort_nap1_start_combat"></info_portion>
 <info_portion id="val_escort_actor_start_combat"></info_portion>
 <info_portion id="val_escort_guard1_combat"></info_portion>
@@ -41,6 +47,10 @@
 <info_portion id="val_escort_got_reward"></info_portion>
 <info_portion id="val_escort_nap1_join"></info_portion>
 <info_portion id="val_escort_captive_join"></info_portion>
+<info_portion id="val_escort_help_prisoner_task">
+	<task>val_prisoner_help</task>
+	<action>level_tasks.notify_new_task</action>
+</info_portion>
 
 <!-- Напарник 1 -->
 <info_portion id="val_escort_nap1_go_rescue"></info_portion>
@@ -71,6 +81,12 @@
 <!-- SOS на бензоколонке -->
 <info_portion id="val_sos_actor_near_wounded"></info_portion>
 <info_portion id="val_sos_give_tip"></info_portion>
+<info_portion id="val_sos_start_task">
+	<task>val_sos_help</task>
+	<action>level_tasks.notify_new_task</action>
+</info_portion>
+<info_portion id="val_sos_got_medkit"></info_portion>
+<info_portion id="val_sos_dead"></info_portion>
 
 <!-- Гулаг Монолита -->
 <info_portion id="val_monolith_actor_detected"></info_portion>
@@ -86,6 +102,7 @@
 <info_portion id="val_prisoner_door_unlocked"></info_portion>
 <info_portion id="val_prisoner_door_unlocked_demo"></info_portion>
 <info_portion id="val_prisoner_free"></info_portion>
+<info_portion id="val_prisoner_dead"></info_portion>
 <info_portion id="val_prisoner_give_info"></info_portion>
 <info_portion id="val_prisoner_join"></info_portion>
 <info_portion id="val_prisoner_plr_captured"></info_portion>
@@ -122,7 +139,10 @@
 <info_portion id="val_opendoor_monolith_chase_start"></info_portion>
 
 <!-- Типсы -->
-<info_portion id="val_exit_gate_show"></info_portion>
+<info_portion id="val_exit_gate_show">
+    <task>val_come_to_trader</task>
+	<action>level_tasks.notify_new_task</action>
+</info_portion>
 
 <!-- Раздавленный монолитовец -->
 <info_portion id="val_smashed_start"></info_portion>
@@ -146,14 +166,6 @@
 <info_portion id="val_rob_buying"></info_portion>
 <info_portion id="val_rob_no_thanx"></info_portion>
 <info_portion id="val_rob_no_money"></info_portion>
-
-<!-- Самоубийца -->
-<info_portion id="val_suicide_quest_start">
-	<task>val_suicide_find_lost_stalker</task>
-</info_portion>
-<info_portion id="val_suicide_artefact_given">
-	<task>val_suicide_artefact_quest</task>
-</info_portion>
 
 <!-- Погоня -->
 <info_portion id="val_chase_plr_in_car"></info_portion>

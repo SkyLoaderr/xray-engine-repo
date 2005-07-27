@@ -1,22 +1,58 @@
 
-	<game_task id="val_escort_release_stalker">
-		<title>val_escort_release_stalker</title>
+	<game_task id="val_get_docs_from_x18">
+		<title>val_get_docs_from_x18</title>
 		<objective>
-			<text>val_escort_release_stalker_0</text>
+			<text>val_get_docs_from_x18_0</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>val_get_info_from_borov</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		    <map_location_type>val_borov_location</map_location_type>
+            <object_story_id>val_borov</object_story_id>
+        </objective>
+		<objective>
+			<text>val_enter_x18</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		    <map_location_type>val_x18_enter_location</map_location_type>
+            <object_story_id>val_door_to_x18</object_story_id>
+        </objective>
+		<objective>
+			<text>x18_find_docs</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_back_to_barmen</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
-	<game_task id="val_suicide_find_lost_stalker">
-		<title>val_suicide_find_lost_stalker</title>
+
+	<game_task id="val_come_to_trader">
+		<title>val_come_to_trader</title>
 		<objective>
-			<text>val_suicide_find_lost_stalker_0</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
+			<text>val_come_to_trader_0</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		    <map_location_type>val_exit_gate_location</map_location_type>
+            <object_story_id>val_exit_gate</object_story_id>
+        </objective>
 	</game_task>
-	<game_task id="val_suicide_artefact_quest">
-		<title>val_suicide_artefact_quest</title>
+
+	<game_task id="val_sos_help">
+		<title>val_sos_help</title>
 		<objective>
-			<text>val_suicide_artefact_quest_0</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
+			<text>val_sos_help_0</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		    <map_location_type>val_sos_location</map_location_type>
+            <object_story_id>val_sos_stalker</object_story_id>
+        </objective>
+	</game_task>
+
+	<game_task id="val_prisoner_help">
+		<title>val_prisoner_help</title>
+		<objective>
+			<text>val_prisoner_help_0</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		    <map_location_type>val_prisoner_location</map_location_type>
+            <object_story_id>val_prisoner</object_story_id>
+        </objective>
 	</game_task>
