@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<keybingidg>
+	<group name="change direction">
+		<command id="left"							exe="left"/>
+		<command id="right"							exe="right"/>
+		<command id="up"							exe="up"/>
+		<command id="down"							exe="down"/>
+	</group>
+	<group name="movement">
+		<command id="forward"						exe="forward"/>
+		<command id="backward"						exe="back"/>
+		<command id="left strafe"					exe="lstrafe"/>
+		<command id="right strafe"					exe="rstrafe"/>
+		<command id="crouch"						exe="crouch"/>
+		<command id="crouch toggle"					exe="crouch_toggle"/>
+		<command id="change always run"				exe="accel"/>
+		<command id="sprint"						exe="spring_toggle"/>		
+		<command id="left look out"					exe="llookout"/>
+		<command id="right look out"				exe="rlookout"/>		
+	</group>
+	<group name="weapons">
+		<command id="weapon 1"						exe="wpn_1"/>
+		<command id="weapon 2"						exe="wpn_2"/>
+		<command id="weapon 3"						exe="wpn_3"/>
+		<command id="weapon 4"						exe="wpn_4"/>
+		<command id="weapon 5"						exe="wpn_5"/>
+		<command id="weapon 6"						exe="wpn_6"/>
+		<command id="weapon 7"						exe="wpn_7"/>
+		<command id="weapon 8"						exe="wpn_8"/>
+		<command id="weapon 9"						exe="wpn_9"/>
+		<command id="next weapon of this type"		exe="wnp_next"/>
+		<command id="previous weapon of this type"	exe="wpn_prev"/>
+		<command id="select weapon of netx slot"	exe="next_slot"/>
+		<command id="select weapon of prev slot"	exe="prev_slot"/>
+		<command id="fire"							exe="wpn_fire"/>
+		<command id="zoom"							exe="wpn_zoom"/>
+		<command id="reload"						exe="wpn_reload"/>
+		<command id="func(rename me)"				exe="wpn_func"/>
+	</group>
+	<group name="inventory">
+		<command id="show inventory"				exe="inventory"/>
+		<command id="show PDA"						exe="pda"/>
+		<command id="show Active Jobs in PDA"		exe="active_jobs"/>
+		<command id="show Map in PDA"				exe="map"/>
+		<command id="show Contacts in PDA"			exe="contacts"/>
+		<command id="torch"							exe="torch"/>
+		<command id="night vision"					exe="night_vision"/>
+		<command id="binoculars"					exe="binocularus"/>
+		<command id="drop"							exe="drop"/>		
+	</group>
+	<group name="common">
+		<command id="pause"							exe="pause"/>
+		<command id="use"							exe="use"/>			
+		<command id="screen shot"					exe="screenshot"/>
+		<command id="quit"							exe="quit"/>
+		<command id="console"						exe="console"/>
+		<command id="follower 1"					exe="follower1"/>
+		<command id="follower 2"					exe="follower2"/>
+		<command id="follower 3"					exe="follower3"/>
+		<command id="follower 4"					exe="follower4"/>
+		<command id="follower 5"					exe="follower5"/>
+	</group>
+	<group name="multiplayer">
+		<command id="scores"						exe="scores"/>
+		<command id="chat"							exe="chat"/>
+		<command id="team chat"						exe="chat_team"/>
+		<command id="buy menu"						exe="buy_menu"/>
+		<command id="select skin menu"				exe="skin_menu"/>
+		<command id="select team menu"				exe="team_menu"/>
+		<command id="vote yes"						exe="vote_yes"/>
+		<command id="vote no"						exe="vote_no"/>
+	</group>
+</keybingidg>

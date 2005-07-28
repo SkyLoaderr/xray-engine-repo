@@ -1,0 +1,31 @@
+#pragma once
+
+#include "UILabel.h"
+#include "UIOptionsItem.h"
+
+class CUIColorAnimatorWrapper;
+
+class CUIEditKeyBind : public CUILabel, public CUIOptionsItem {
+public:
+	CUIEditKeyBind();
+	// options item
+	virtual void	SetCurrentValue();
+	virtual void	SaveValue();
+
+	// CUIWindow methods
+	virtual void Init(float x, float y, float width, float height);	
+	virtual void Update();
+	virtual void OnMouseDown(bool left_button = true );
+	virtual void OnFocusLost();
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+	// IUITextControl
+	virtual void SetText(const char* text);
+
+protected:
+	virtual void InitTexture(LPCSTR texture, bool horizontal = true);
+
+	bool		m_bEditMode;
+	xr_string	m_val;
+
+	CUIColorAnimatorWrapper* m_pAnimation;
+};
