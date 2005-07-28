@@ -42,23 +42,23 @@ end
 
 function process_info_portion(info_id)
 	-- garbage
-	if info_id == "garbage_meetstalker_start" then
-		level_tasks.add_location(100, "gar_seryi_location")
+--	if info_id == "garbage_meetstalker_start" then
+--		level_tasks.add_location(100, "gar_seryi_location")
 
-	elseif info_id == "garbage_meetstalker_done" or	info_id == "garbage_meetstalker_die" then
-		level_tasks.remove_location(100, "gar_seryi_location")
+--	elseif info_id == "garbage_meetstalker_done" or	info_id == "garbage_meetstalker_die" then
+--		level_tasks.remove_location(100, "gar_seryi_location")
 
-	elseif info_id == "gar_kill_boars_quest" then
-		level_tasks.add_location(105, "gar_boars_nest_location")
+--	elseif info_id == "gar_kill_boars_quest" then
+--		level_tasks.add_location(105, "gar_boars_nest_location")
 		
-	elseif info_id == "gar_kill_boars_done" then
-		level_tasks.remove_location(105, "gar_boars_nest_location")
-		level_tasks.add_location(108, "gar_dolg_blockpost_location")
+--	elseif info_id == "gar_kill_boars_done" then
+--		level_tasks.remove_location(105, "gar_boars_nest_location")
+--		level_tasks.add_location(108, "gar_dolg_blockpost_location")
 		
-	elseif info_id == "gar_dymon_help" then
-		level_tasks.add_location(106, "gar_bandits_leader_location")
+--	elseif info_id == "gar_dymon_help" then
+--		level_tasks.add_location(106, "gar_bandits_leader_location")
 		
-	elseif info_id == "gar_open_fire" then
+	if info_id == "gar_open_fire" then
 		level_tasks.remove_location(106, "gar_bandits_leader_location")
 		
 	elseif info_id == "gar_bandit_leader_dead" then
@@ -70,14 +70,14 @@ function process_info_portion(info_id)
 	elseif info_id == "gar_alarm" then
 		level_tasks.remove_location(107, "gar_hellcar_location")
 	
-	elseif info_id == "gar_no_mapspot" then
-		level_tasks.remove_location(107, "gar_hellcar_location")
+--	elseif info_id == "gar_no_mapspot" then
+--		level_tasks.remove_location(107, "gar_hellcar_location")
 	
 --	elseif info_id == "gar_after_battle" then
 --		level_tasks.add_location(107, "gar_hellcar_location")	
 		
-	elseif info_id == "gar_hellcar_dialog_end" then
-		level_tasks.remove_location(107, "gar_hellcar_location")	
+--	elseif info_id == "gar_hellcar_dialog_end" then
+--		level_tasks.remove_location(107, "gar_hellcar_location")	
 		
 	elseif info_id == "gar_wounded_help" then
 		level_tasks.add_location(109, "gar_wounded_location")
@@ -85,8 +85,8 @@ function process_info_portion(info_id)
 	elseif info_id == "gar_wounded_fight" then
 		level_tasks.remove_location(109, "gar_wounded_location")
 		
-	elseif info_id == "gar_free_pass" then
-		level_tasks.remove_location(108, "gar_dolg_blockpost_location")
+--	elseif info_id == "gar_free_pass" then
+--		level_tasks.remove_location(108, "gar_dolg_blockpost_location")
 	end
 	
 	return false

@@ -50,6 +50,5 @@
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>gar_hellcar_location</map_location_type>
 			<object_story_id>gar_hellcar</object_story_id>
-			;<map_location_hidden/>
 		</objective>
 	</game_task>

@@ -218,17 +218,12 @@ on_death = death@hellcar
 path_walk = hellcar_walk
 path_look = hellcar_look
 on_info = {+gar_animation_radio} walker3@hellcar_way
-;remark@hellcar_way_radio
 meet = meet
 
 [walker11@hellcar_way]
 path_walk = hellcar_walk
 path_look = hellcar_look
 meet = meet
-
-[remark@hellcar_way_radio]
-anim = guard_rac
-on_timer = 30000| walker3@hellcar_way
 
 [walker3@hellcar_way]
 path_walk = hellcar_walk
@@ -361,7 +356,6 @@ combat_ignore = combat_ignore@hellcar
 [walker@gar_hellcar_group_camper1]
 path_walk = camper1_walk
 path_look = camper1_look
-;radius = 25
 combat_ignore_cond = {-gar_open_fire}
 
 
