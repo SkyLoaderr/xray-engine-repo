@@ -398,7 +398,7 @@
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
-			wpn_abakan = 1, scope launcher cond=0.9
+			wpn_abakan = 1, scope launcher cond=0.9\n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>		
