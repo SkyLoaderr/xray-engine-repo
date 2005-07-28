@@ -77,13 +77,13 @@
         <text>Встретиться на свалке со сталкером.</text>
     </string>
     <string id="garbage_meet_stalker_0">
-        <text>Встретиться со сталкером в гараже на свалке на счет информации о группировке Стрелка.</text>
+        <text>Встретиться с Серым на свалке насчет информации о группе Стрелка.</text>
     </string>
     <string id="agroprom_get_military_documents">
         <text>Достать документы военных.</text>
     </string>
     <string id="agroprom_get_military_documents_0">
-        <text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
+        <text>Достать военные документы и доставить их бармену в баре.</text>
     </string>
     <string id="agroprom_get_military_documents_1">
         <text>Добудьте военные документы.</text>
