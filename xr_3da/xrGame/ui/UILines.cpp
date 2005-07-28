@@ -18,7 +18,7 @@
 CUILines::CUILines()
 {
 	m_pFont = NULL;
-	m_interval = 0.3f;
+	m_interval = 3.0f;
 	m_eTextAlign = CGameFont::alLeft;
 	m_eVTextAlign = valTop;
 	m_dwTextColor = 0xffffffff;
@@ -118,8 +118,8 @@ float CUILines::GetVisibleHeight(){
 	if(uFlags.test(flNeedReparse))
 		ParseText	();
 
-	float interval = m_interval*m_pFont->CurrentHeightRel();
-	return (m_pFont->CurrentHeightRel() + interval)*m_lines.size() - interval;
+	//float interval = m_interval*m_pFont->CurrentHeightRel();
+	return (m_pFont->CurrentHeightRel() + m_interval)*m_lines.size() - m_interval;
 }
 
 void CUILines::Draw(float x, float y){
@@ -184,13 +184,13 @@ void CUILines::Draw(float x, float y){
 		float height	= m_pFont->CurrentHeightRel();
 		u32 size		= m_lines.size();
 
-		float interval = m_interval*m_pFont->CurrentHeightRel();
+	//	float interval = m_interval*m_pFont->CurrentHeightRel();
 
 		for (int i=0; i<(int)size; i++)
 		{
 			pos.x = x + GetIndentByAlign(m_lines[i].GetLength(m_pFont));
 			m_lines[i].Draw(m_pFont, pos.x, pos.y);
-			pos.y+= height + interval;
+			pos.y+= height + m_interval;
 		}
 
 	}
