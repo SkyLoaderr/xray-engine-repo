@@ -37,20 +37,7 @@ public:
 	void ParseShTexInfo	(LPCSTR xml_file);
 	void FreeShTexInfo	();
 	void InitWindow		(LPCSTR path, int index, CUIWindow* pWnd);
-//	void InitFrame		(LPCSTR path, int index, CUIFrameWindow* pWnd);
-//	void InitFrameLine	(LPCSTR path, int index, CUIFrameLineWnd* pWnd);
-//	void InitLabel		(LPCSTR path, int index, CUILabel* pWnd);
-//  void InitEditBox	(LPCSTR path, int index, CUIEditBox* pWnd);
-//	void InitStatic		(LPCSTR path, int index, CUIStatic* pWnd);
-//	void InitCheck		(LPCSTR path, int index, CUICheckButton* pWnd);
-//	void InitSpinNum	(LPCSTR path, int index, CUISpinNum* pWnd);
-//	void InitSpinText	(LPCSTR path, int index, CUISpinText* pWnd);
-//	void InitButton		(LPCSTR path, int index, CUIButton* pWnd);
-//	void Init3tButton	(LPCSTR path, int index, CUI3tButton* pWnd);
 	void InitList		(LPCSTR path, int index, CUIListWnd* pWnd);
-//	void InitTab		(LPCSTR path, int index, CUITabControl* pWnd);
-//	void InitServerList	(LPCSTR path, CServerList* pWnd);
-//	void InitMapList	(LPCSTR path, CUIMapList* pWnd);
 
 	CUIFrameWindow*		InitFrame(LPCSTR path, CUIWindow* parent);
 	CUIFrameLineWnd*	InitFrameLine(LPCSTR path, CUIWindow* parent);
@@ -67,6 +54,7 @@ public:
 	CUIMapList*			InitMapList(LPCSTR path, CUIWindow* parent);
 	CUITrackBar*		InitTrackBar(LPCSTR path, CUIWindow* parent);
 	CUIEditBox*			InitCDkey(LPCSTR path, CUIWindow* parent);
+	CUIWindow*			InitKeyBinding(LPCSTR path, CUIWindow* parent);
 
 protected:
 	CUIXml	m_xml;

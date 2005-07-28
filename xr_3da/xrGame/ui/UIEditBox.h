@@ -27,6 +27,7 @@ public:
 
 	virtual void	OnMouse			(float x, float y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard		(int dik, EUIMessages keyboard_action);
+	virtual void	OnFocusLost		();
 
 	virtual void	Update			();
 	virtual void	Draw			();

@@ -12,6 +12,9 @@ protected:
 	virtual void	SetCurrentValue()	=0;
 	virtual void	SaveValue()			=0;
 
+			// key binding
+			void		BindAction2Key(const char* val);
+
 			// string
 			LPCSTR		GetOptStringValue();
 			void		SaveOptStringValue(const char* val);
@@ -28,6 +31,6 @@ protected:
 			char*		GetOptTokenValue();
 			xr_token*	GetOptToken();
 			void		SaveOptTokenValue(const char* val);
-private:
+
 	xr_string		m_entry;
 };

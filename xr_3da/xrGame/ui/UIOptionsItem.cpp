@@ -24,6 +24,19 @@ void CUIOptionsItem::SaveOptStringValue(const char* val){
 	Console->Execute(command.c_str());
 }
 
+void CUIOptionsItem::BindAction2Key(const char* val){
+	if (!val || 0 == xr_strlen(val))
+		return;
+	xr_string comm_bind = "bind ";
+	xr_string comm_unbind = "unbind ";
+	comm_bind += m_entry;
+	comm_unbind += m_entry;
+	comm_bind += " ";
+	comm_bind += val;
+	Console->Execute(comm_unbind.c_str());
+	Console->Execute(comm_bind.c_str());
+}
+
 void CUIOptionsItem::GetOptIntegerValue(int& val, int& min, int& max){
 	Console->GetInteger(m_entry.c_str(), val, min, max);
 }

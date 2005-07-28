@@ -65,6 +65,12 @@ void CUIEditBox::SaveValue(){
 	SaveOptStringValue(GetText());
 }
 
+void CUIEditBox::OnFocusLost(){
+	GetParent()->SetKeyboardCapture(this, false);
+	m_bInputFocus = false;
+	m_iKeyPressAndHold = 0;
+}
+
 void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == GetParent())

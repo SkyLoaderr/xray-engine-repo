@@ -12,6 +12,7 @@
 #include "ui\UILabel.h"
 #include "ui\ServerList.h"
 #include "ui\UIMapList.h"
+#include "ui\UIKeyBinding.h"
 #include "ui\UIEditBox.h"
 #include "ui\UITrackBar.h"
 #include "ui\UICDkey.h"
@@ -209,6 +210,14 @@ CUIMapList* CScriptXmlInit::InitMapList(LPCSTR path, CUIWindow* parent){
 	return pWnd;	
 }
 
+CUIWindow* CScriptXmlInit::InitKeyBinding(LPCSTR path, CUIWindow* parent){
+	CUIKeyBinding* pWnd = xr_new<CUIKeyBinding>();
+	pWnd->InitFromXml(m_xml, path);	
+	pWnd->SetAutoDelete(true);
+	parent->AttachChild(pWnd);
+	return pWnd;
+}
+
 CUITrackBar* CScriptXmlInit::InitTrackBar(LPCSTR path, CUIWindow* parent){
 	CUITrackBar* pWnd = xr_new<CUITrackBar>();
 	CUIXmlInit::InitWindow(m_xml, path, 0, pWnd);
@@ -251,6 +260,7 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("InitMapList",		&CScriptXmlInit::InitMapList)
 		.def("InitTrackBar",	&CScriptXmlInit::InitTrackBar)
 		.def("InitCDkey",		&CScriptXmlInit::InitCDkey)
+		.def("InitKeyBinding",	&CScriptXmlInit::InitKeyBinding)
 
 	];
 

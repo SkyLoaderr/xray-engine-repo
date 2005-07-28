@@ -1037,7 +1037,13 @@
 					RelativePath=".\Config\ui\trade_item.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\trade_new.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_ingame.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_keybinding.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_mm_mp.xml">
