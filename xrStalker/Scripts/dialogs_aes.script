@@ -1,5 +1,6 @@
 
 function aes_segeant_kill (stalker, player)
+    local h = hit ()
     h.power = 5
     h.direction = vector():set (0, -1, 0)
     h.impulse = 1
