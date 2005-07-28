@@ -119,7 +119,6 @@ function gar_dm_bandits_fight(actor, npc)
 	local bandit3 = level_object_by_sid(103)
 	if bandit3 then
 		novice:set_relation(game_object.enemy, bandit3)
-		bandit3:set_relation(game_object.enemy, novice)
 		if not ignore_actor then
 			bandit3:set_relation(game_object.enemy, actor)
 		end
