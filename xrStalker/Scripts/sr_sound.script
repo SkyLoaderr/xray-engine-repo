@@ -196,8 +196,11 @@ function action_sound:on_enter( obj )
 			printf( "sr_sound: restrictor=%s pos_type=%d snd=%s", self.object:name(), self.st.pos_type, snd_name )
 
 			self.snd_obj	= sound_object(snd_name)
-			
-			self.snd_obj:play_at_pos( obj, pos, self.st.delay )
+	        if self.st.play_at_actor == false then
+			   self.snd_obj:play_at_pos( obj, pos, self.st.delay )
+			else
+			   self.snd_obj:play_at_pos( obj, pos, self.st.delay, sound_object.s2d )
+			end   
 			self.st.signals["sound_end"] = false
 		end
 	end
