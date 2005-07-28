@@ -119,11 +119,20 @@
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>rad_code_door_info</text>
     </article>
-
+<!--Agroprom NII -->
     <article id="agr_rats_n_soldiers" name="agr_rats_n_soldiers" group="Diary">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_rats_n_soldiers_text</text>
     </article>
-
+    
+    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule" group="Diary">
+        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <text>agr_nii_security_shedule</text>
+    </article>
+    
+    <article id="agr_nii_security_plan" name="agr_nii_security_plan" group="Diary">
+        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <text>agr_nii_security_plan</text>
+    </article>
 
 </encyclopedia>

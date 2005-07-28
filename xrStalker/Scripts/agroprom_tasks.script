@@ -22,6 +22,15 @@ function proceed()
 		actor:give_info_portion("agroprom_military_case_have")
 	end
 
+	if actor:object("agr_nii_security_shedule_file") then
+		actor:give_info_portion("agr_nii_security_shedule_file_have")
+	end
+
+	if actor:object("agr_nii_security_plan_flash") then
+		actor:give_info_portion("agr_nii_security_plan_flash_have")
+	end
+
+
 	if actor:has_info("agroprom_military_case") and
 	   actor:dont_has_info("agroprom_military_case_have") and
 	   actor:object("quest_case_02") ~= nil
