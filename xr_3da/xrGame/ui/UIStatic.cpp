@@ -96,7 +96,7 @@ u32 CUIStatic::GetTextureColor() const{
 
 void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 {
-	CUITextureMaster::InitTexture(tex_name, &m_UIStaticItem);
+	CUITextureMaster::InitTexture(tex_name, sh_name, &m_UIStaticItem);
 	m_UIStaticItem.SetPos(m_wndPos.x, m_wndPos.y);
 	m_bAvailableTexture = true;
 }

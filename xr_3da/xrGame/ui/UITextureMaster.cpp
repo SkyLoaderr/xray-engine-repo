@@ -71,6 +71,24 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextu
 	tc->CreateShader(texture_name.c_str());
 }
 
+void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* shader_name,	IUISimpleTextureControl* tc){
+	if (IsSh(texture_name))
+	{
+		shared_textures_it	sht_it;
+		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+		{
+			regions_it reg_it = (*sht_it).second.find(texture_name);
+			if (reg_it != (*sht_it).second.end())
+			{				
+				tc->CreateShader((*sht_it).first.c_str(), shader_name);	// texture file name
+				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+				return;
+			}
+		}
+	}
+	tc->CreateShader(texture_name.c_str());
+}
+
 void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
 //	static int full_time = 0;
 //	CTimer T;
@@ -79,6 +97,11 @@ void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureCon
 	InitTexture(tx, tc);
 //	full_time +=T.GetElapsed_ms();
 //	Msg("----InitTexture[%d]__full_time[%d]",T.GetElapsed_ms(), full_time);
+}
+
+void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc){
+	xr_string tx = texture_name;
+	InitTexture(tx, shader_name, tc);
 }
 
 float CUITextureMaster::GetTextureHeight(const char* texture_name){
