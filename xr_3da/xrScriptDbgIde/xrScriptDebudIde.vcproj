@@ -197,6 +197,12 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
 				RelativePath=".\DebugDialog.h">
 			</File>
 			<File
+				RelativePath=".\Executor.cpp">
+			</File>
+			<File
+				RelativePath=".\Executor.h">
+			</File>
+			<File
 				RelativePath=".\FindReplaceDlg.cpp">
 			</File>
 			<File

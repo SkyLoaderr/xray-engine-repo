@@ -27,6 +27,8 @@ public:
 	CLuaView*	OpenProjectFilesView(CProjectFile* pPF, int nLine=-1);
 	CLuaView*	LoadProjectFilesView(CProjectFile* pPF);
 	CLuaView*	FindProjectFilesView(CProjectFile* pPF);
+	void		FormatMessage(char* pszAPI);
+	CString		GetModuleDir();
 
 	CIdeApp();
 

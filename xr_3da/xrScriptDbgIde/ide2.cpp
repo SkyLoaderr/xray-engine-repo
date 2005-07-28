@@ -312,3 +312,44 @@ LONG res;
 			RegCloseKey( hk );
     }
 }
+
+
+void CIdeApp::FormatMessage(char *pszAPI)
+{
+	LPVOID lpMsgBuf;
+	::FormatMessage( 
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+		FORMAT_MESSAGE_FROM_SYSTEM | 
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		GetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+		(LPTSTR) &lpMsgBuf,
+		0,
+		NULL 
+	);
+	// Process any inserts in lpMsgBuf.
+	// ...
+	// Display the string.
+	CString str;
+	str.Format("ERROR: API    = %s.\n   error code = %d.\n   message    = %s.\n",
+		pszAPI, GetLastError(), lpMsgBuf);
+	MessageBox( NULL, (LPCTSTR)str, "Error", MB_OK | MB_ICONINFORMATION );
+	// Free the buffer.
+	LocalFree( lpMsgBuf );
+}
+
+CString CIdeApp::GetModuleDir()
+{
+	char drive[_MAX_DRIVE];
+	char dir[_MAX_DIR];
+	char fname[_MAX_FNAME];
+	char ext[_MAX_EXT];
+   	char lpFilename[MAX_PATH];
+
+	GetModuleFileName(GetModuleHandle(NULL), lpFilename, MAX_PATH);
+	_splitpath( lpFilename, drive, dir, fname, ext );
+	dir[strlen(dir)-1] = '\0';
+
+	return CString(drive) + CString(dir);
+}

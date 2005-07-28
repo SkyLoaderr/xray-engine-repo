@@ -16,6 +16,7 @@
 
 //#include "../xrGame/mslotutils.h"
 #include "/Projects/xray/xrGame/mslotutils.h"
+#include "Executor.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -469,12 +470,29 @@ void CProjectFile::SS_add_to_ss ()
 void CProjectFile::SyntaxCheck			()
 {
 	char* _args[3];
-	CString str = GetNameExt();
-	_args[0] = "luac.exe";
+	CString str = GetPathName();
+	_args[0] = "x:\\luac.exe";
 	_args[1] = str.GetBuffer(0);
 	_args[2] = NULL;
 
 	_spawnv(_P_NOWAIT, _args[0], _args);
+
+
+
+	CExecutor m_exe;
+	CString strCmdLine, strOutput;
+
+	g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(CString("Performing syntax check...\n"));
+
+	strCmdLine.Format("\"%s\" \"%s\"", 
+		theApp.GetModuleDir() + "\\" + "luac.exe", GetPathName());
+
+	m_exe.Execute(strCmdLine);
+	strOutput = m_exe.GetOutputString();
+	if ( !strOutput.IsEmpty() )
+		g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(strOutput);
+	
+	g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(CString("Done...\n"));
 }
 
 const CString&	CProjectFile::getWorkingFolder()
