@@ -2,6 +2,14 @@
 #include "game_sv_base.h"
 #include "game_sv_mp_team.h"
 
+#define MAX_TERMS  2
+struct Rank_Struct
+{
+	shared_str		m_sTitle;
+	int				m_iTerms[MAX_TERMS];
+
+	Rank_Struct () {ZeroMemory(this, sizeof(*this));};
+};
 
 class game_sv_mp :public game_sv_GameState
 {
@@ -13,12 +21,18 @@ protected:
 
 	CORPSE_LIST						m_CorpseList;
 
+	DEF_VECTOR(RANKS_LIST, Rank_Struct);
+
+	RANKS_LIST						m_aRanks;
+
 	TEAM_DATA_LIST					TeamList;
 
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
 	u32				m_uVoteEndTime;
 	shared_str		m_pVoteCommand;
+
+	virtual		void				LoadRanks	();
 	
 protected:
 
@@ -40,6 +54,7 @@ public:
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed){};
 	virtual		void				OnPlayerKilled			(NET_Packet P);
+	virtual		void				OnPlayerHitted			(NET_Packet P);
 	virtual		void				OnPlayerEnteredGame		(ClientID id_who);
 
 	virtual		void				OnDestroyObject			(u16 eid_who);			

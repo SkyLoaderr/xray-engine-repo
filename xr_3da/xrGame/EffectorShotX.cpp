@@ -2,8 +2,8 @@
 #include "EffectorShotX.h"
 #include "..\CameraBase.h"
 
-CEffectorShotX::CEffectorShotX	(float max_angle, float relax_speed, 
-								 float max_angle_horz, float step_angle_horz) : CEffectorShot(max_angle, relax_speed, max_angle_horz, step_angle_horz)
+CEffectorShotX::CEffectorShotX	(float max_angle, float relax_speed,
+								 float max_angle_horz, float step_angle_horz, float angle_frac) : CEffectorShot(max_angle, relax_speed, max_angle_horz, step_angle_horz, angle_frac)
 {
 }
 

@@ -34,6 +34,8 @@ using namespace InventoryUtilities;
 #include "../game_base_space.h"
 #include "../entitycondition.h"
 
+#include "../game_cl_base.h"
+
 #define MAX_ITEMS	70
 
 const char * const INVENTORY_ITEM_XML		= "inventory_item.xml";
@@ -237,7 +239,19 @@ void CUIInventoryWnd::Update()
 	if(pEntityAlive) 
 	{
 		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->conditions().GetHealth()*1000));
-		UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->conditions().GetSatiety()*1000));
+		//  [7/28/2005]
+		if (GameID() == GAME_SINGLE)
+			UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->conditions().GetSatiety()*1000));
+		else
+		{
+			if (Level().CurrentViewEntity())
+			{
+				game_PlayerState* ps = Game().GetPlayerByGameID(Level().CurrentViewEntity()->ID());
+				if (ps)
+					UIProgressBarSatiety.SetProgressPos(s16(ps->experience_D*1000));
+			}			
+		};
+		//  [7/28/2005]
 		UIProgressBarPsyHealth.SetProgressPos(s16(pEntityAlive->conditions().GetPsyHealth()*1000));
 		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->conditions().GetRadiation()*1000));
 

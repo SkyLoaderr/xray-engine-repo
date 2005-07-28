@@ -14,6 +14,7 @@ protected:
 	float	fAngleCurrent;
 	float	fRelaxSpeed;
 	float	fMaxAngle;
+	float	fAngleFrac;
 	BOOL	bActive;
 	float	fDispProbability;
 	float	fHorzDispFactor;
@@ -23,7 +24,7 @@ protected:
 	CRandom		m_Random;
 	s32			m_LastSeed;
 public:
-	CEffectorShot					(float max_angle, float relax_time , float max_angle_horz, float step_angle_horz);
+	CEffectorShot					(float max_angle, float relax_time , float max_angle_horz, float step_angle_horz, float angle_frac = 0.7f);
 	virtual ~CEffectorShot			();
 	
 	virtual	BOOL	Process				(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n, float& fFov, float& fFar, float& fAspect);

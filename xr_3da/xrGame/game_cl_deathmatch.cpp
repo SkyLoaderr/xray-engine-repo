@@ -476,7 +476,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				if (Level().CurrentViewEntity() && HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 				{
 					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
-					HUD().GetUI()->UIMainIngameWnd->SetRank(int(ps->rank));
+					if (ps) HUD().GetUI()->UIMainIngameWnd->SetRank(int(ps->rank));
 				}
 			};
 		}break;

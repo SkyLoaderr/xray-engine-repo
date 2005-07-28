@@ -154,6 +154,7 @@ enum EGameMessages {  //game_cl <----> game_sv messages
 	GAME_EVENT_PLAYER_ENTERED_GAME	,
 	
 	GAME_EVENT_PLAYER_KILLED			,//////!!!!!
+	GAME_EVENT_PLAYER_HITTED,
 
 	GAME_EVENT_PLAYER_JOIN_TEAM		,
 	GAME_EVENT_ROUND_STARTED		,

@@ -20,7 +20,7 @@ game_sv_mp::game_sv_mp() :inherited()
 	m_bVotingActive = false;
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
-	
+	m_aRanks.clear();	
 }
 
 void	game_sv_mp::Update	()
@@ -146,6 +146,10 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 		{
 			OnPlayerKilled(P);
 		}break;
+	case GAME_EVENT_PLAYER_HITTED:
+		{
+			OnPlayerHitted(P);			
+		}break;
 	case GAME_EVENT_PLAYER_READY:// cs & dm 
 		{
 			xrClientData *l_pC = m_server->ID_to_client(sender);
@@ -200,6 +204,7 @@ void game_sv_mp::Create (shared_str &options)
 
 	SetEnvironmentGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
 	//------------------------------------------------------------------
+	LoadRanks();
 };
 
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)
@@ -738,6 +743,26 @@ void	game_sv_mp::OnPlayerKilled			(NET_Packet P)
 	//---------------------------------------------------
 	SendPlayerKilledMessage((ps_killed)?ps_killed->GameID:KilledID, KillType, (ps_killer)?ps_killer->GameID:KillerID, WeaponID, SpecialKill);
 };
+
+void	game_sv_mp::OnPlayerHitted			(NET_Packet P)
+{
+	/*u16		id_hitted = */P.r_u16();
+	u16     id_hitter = P.r_u16();
+	float	dHealth = P.r_float();
+	game_PlayerState* PS		=	get_eid			(id_hitter);
+	if (!PS) return;
+
+	PS->experience_Real += dHealth;
+	if (PS->rank==m_aRanks.size()-1) PS->experience_D = 1.0f;
+	else
+	{
+		int CurExp = m_aRanks[PS->rank].m_iTerms[0];
+		int NextExp = m_aRanks[PS->rank+1].m_iTerms[0];
+		if (PS->experience_Real > NextExp) PS->experience_D = 1.0f;
+		else PS->experience_D = 1.0f - (NextExp - PS->experience_Real)/(NextExp - CurExp);
+		clamp(PS->experience_D, 0.0f, 1.0f);
+	};
+};
 	
 void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill)
 {
@@ -807,4 +832,28 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 
 	ps->setName(NewName);
 	signal_Syncronize();
+};
+
+void	game_sv_mp::LoadRanks	()
+{
+	m_aRanks.clear();
+	for (int i=0; ; i++)
+	{
+		string256 RankSect;
+		sprintf(RankSect, "rank_%d",i);
+		if (!pSettings->section_exist(RankSect)) break;
+		Rank_Struct NewRank; 
+		
+		NewRank.m_sTitle = pSettings->r_string(RankSect, "rank_name");
+		shared_str sTerms = pSettings->r_string(RankSect, "rank_exp");
+		int TermsCount = _GetItemCount(sTerms.c_str());
+		R_ASSERT2((TermsCount != 0 && TermsCount <= MAX_TERMS), "Error Number of Terms for Rank");
+
+		for (int t =0; t<TermsCount; t++)
+		{
+			string16						temp;			
+			NewRank.m_iTerms[t] = atoi(_GetItem(sTerms.c_str(), t, temp));
+		}
+		m_aRanks.push_back(NewRank);
+	};
 };

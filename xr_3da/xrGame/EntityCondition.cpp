@@ -273,7 +273,11 @@ void CEntityCondition::UpdateCondition()
 	{
 		CriticalHealth = true;
 		m_object->OnCriticalHitHealthLoss();
-	};
+	}
+	else
+	{
+		if (m_fDeltaHealth<0) m_object->OnHitHealthLoss(m_fHealth+m_fDeltaHealth);
+	}
 	//-----------------------------------------
 	UpdateHealth();
 	//-----------------------------------------

@@ -172,6 +172,7 @@ protected:
 	virtual void	PlayReloadSound		();
 
 	virtual void	StartIdleAnim		();
+	virtual	int		ShotsFired			() { return m_iShotNum; }
 
 };
 

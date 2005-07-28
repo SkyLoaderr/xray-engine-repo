@@ -281,6 +281,10 @@ void CWeapon::Load		(LPCSTR section)
 	camMaxAngleHorz		= deg2rad					(camMaxAngleHorz);
 	camStepAngleHorz	= pSettings->r_float		(section,"cam_step_angle_horz"	); 
 	camStepAngleHorz	= deg2rad					(camStepAngleHorz);
+	if (pSettings->line_exist(section, "cam_dispertion_frac"))
+		camDispertionFrac = pSettings->r_float(section, "cam_dispertion_frac");
+	else
+		camDispertionFrac = 0.7f;
 
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
 	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
@@ -361,6 +365,15 @@ void CWeapon::LoadFireParams		(LPCSTR section, LPCSTR prefix)
 {
 	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
 	camDispersion		= deg2rad					(camDispersion);
+
+	if (pSettings->line_exist(section,"cam_dispersion_inc"))
+	{
+		camDispersionInc		= pSettings->r_float		(section,"cam_dispersion_inc"	); 
+		camDispersionInc		= deg2rad					(camDispersionInc);
+	}
+	else
+		camDispersionInc = 0;
+
 	CShootingObject::LoadFireParams(section, prefix);
 };
 

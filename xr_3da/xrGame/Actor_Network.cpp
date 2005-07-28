@@ -795,6 +795,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_pLastHitter = NULL;
 	m_pLastHittingWeapon = NULL;
 	m_s16LastHittedElement = -1;
+	m_bWasHitted = false;
 
 	if (GameID() == GAME_SINGLE)
 		Level().MapManager().AddMapLocation("actor_location",ID());
@@ -1715,6 +1716,27 @@ void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element)
 	m_pLastHitter = who;
 	m_pLastHittingWeapon = weapon;
 	m_s16LastHittedElement = element;
+	m_fLastHealth = g_Health();
+	m_bWasHitted = true;
+};
+
+void				CActor::OnHitHealthLoss					(float NewHealth)
+{
+	if (!m_bWasHitted) return;
+	if (OnClient()) return;
+	float fNewHealth = NewHealth*100;
+	m_bWasHitted = false;
+	Msg ("Health Old : %.2f, Health New : %.2f", m_fLastHealth, fNewHealth);
+	if (m_pLastHitter)
+	{
+		NET_Packet P;
+		u_EventGen		(P,GE_GAME_EVENT,ID());
+		P.w_u16(GAME_EVENT_PLAYER_HITTED);
+		P.w_u16(u16(ID()&0xffff));
+		P.w_u16 (u16(m_pLastHitter->ID()&0xffff));
+		P.w_float(m_fLastHealth - fNewHealth);		
+		u_EventSend(P);
+	}	
 };
 
 void				CActor::OnCriticalHitHealthLoss			()
@@ -1725,6 +1747,18 @@ void				CActor::OnCriticalHitHealthLoss			()
 		*cName(),
 		(m_pLastHitter ? *(m_pLastHitter->cName()) : ""), 
 		((m_pLastHittingWeapon && m_pLastHittingWeapon != m_pLastHitter) ? *(m_pLastHittingWeapon->cName()) : ""));
+	//-------------------------------------------------------------------	
+	Msg ("- Health Old : %.2f, Health New : %.2f", m_fLastHealth, 0.0f);
+	if (m_pLastHitter)
+	{
+		NET_Packet P;
+		u_EventGen		(P,GE_GAME_EVENT,ID());
+		P.w_u16(GAME_EVENT_PLAYER_HITTED);
+		P.w_u16(u16(ID()&0xffff));
+		P.w_u16 (u16(m_pLastHitter->ID()&0xffff));
+		P.w_float(m_fLastHealth);
+		u_EventSend(P);
+	}	
 	//-------------------------------------------------------------------
 	u8 SpecialHit = 0;
 	if (m_s16LastHittedElement > 0)

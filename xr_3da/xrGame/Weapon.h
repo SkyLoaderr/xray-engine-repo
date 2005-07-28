@@ -357,6 +357,7 @@ protected:
 	virtual void			AddShotEffector		();
 	virtual void			RemoveShotEffector	();
 	virtual	void			ClearShotEffector	();
+	virtual	int				ShotsFired			() { return 0; }
 
 public:
 	//текущая дисперсия (в радианах) оружия с учетом используемого патрона
@@ -382,6 +383,8 @@ protected:
 	float					camMaxAngle;
 	float					camRelaxSpeed;
 	float					camDispersion;
+	float					camDispersionInc;
+	float					camDispertionFrac;
 	float					camMaxAngleHorz;
 	float					camStepAngleHorz;
 

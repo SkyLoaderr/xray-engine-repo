@@ -908,6 +908,7 @@ void CWeaponMagazined::ApplySilencerKoeffs	()
 	m_fStartBulletSpeed *= BSk;
 	fireDispersionBase	*= FDB_k;
 	camDispersion		*= CD_k;
+	camDispersionInc	*= CD_k;
 }
 
 //виртуальные функции для проигрывания анимации HUD

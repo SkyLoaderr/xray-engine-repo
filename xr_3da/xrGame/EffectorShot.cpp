@@ -9,12 +9,13 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot	(float max_angle, float relax_speed, 
-								 float max_angle_horz, float step_angle_horz) : CCameraEffector(eCEShot,100000.f,TRUE)
+CEffectorShot::CEffectorShot	(float max_angle, float relax_speed,
+								 float max_angle_horz, float step_angle_horz, float angle_frac) : CCameraEffector(eCEShot,100000.f,TRUE)
 {
 	fRelaxSpeed		= _abs(relax_speed);
 	fAngleCurrent	= -EPS_S;
 	fMaxAngle		= _abs(max_angle);
+	fAngleFrac		= _abs(angle_frac);
 	bActive			= FALSE;
 	m_LastSeed = 0;
 
@@ -35,7 +36,7 @@ CEffectorShot::~CEffectorShot	()
 
 void CEffectorShot::Shot		(float angle)
 {
-	fAngleCurrent	+= (angle*.7f+m_Random.randF(-1,1)*angle*.3f);
+	fAngleCurrent	+= (angle*fAngleFrac+m_Random.randF(-1,1)*angle*(1-fAngleFrac));
 	clamp			(fAngleCurrent,-fMaxAngle,fMaxAngle);
 	if(fis_zero(fAngleCurrent - fMaxAngle))
 			fAngleCurrent *= m_Random.randF(0.9f,1.1f);

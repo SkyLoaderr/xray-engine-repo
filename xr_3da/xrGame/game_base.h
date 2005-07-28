@@ -34,7 +34,8 @@ struct	game_PlayerState
 	s16			deaths;
 	s32			money_total;
 	s32			money_for_round;
-	s16			experience;
+	float		experience_Real;
+	float		experience_D;
 	u8			rank;
 	u8			af_count;
 	u16			flags;
