@@ -83,22 +83,22 @@
         <text>Достать документы военных.</text>
     </string>
     <string id="agroprom_get_military_documents_0">
-        <text>Достать военные документы и доставить их бармену в баре.</text>
+        <text>НИИ Агропром</text>
     </string>
     <string id="agroprom_get_military_documents_1">
         <text>Добудьте военные документы.</text>
     </string>
     <string id="agroprom_get_military_documents_2">
-        <text>Отнесите документы бармену в баре сталкеров.</text>
+        <text>Отнести документы бармену.</text>
     </string>
     <string id="agr_meet_krot_band">
         <text>Добыть информацию о пути к центру Зоны.</text>
     </string>
     <string id="agr_meet_krot_band_0">
-        <text>Найти группу Крота и получить от них информацию о пути к центру Зоны.</text>
+        <text>Найти группу Крота.</text>
     </string>
     <string id="agroprom_find_gunslinger_cache">
-        <text>Найти тайник группировки Стрелка.</text>
+        <text>Найти тайник группы Стрелка.</text>
     </string>
     <string id="agroprom_find_gunslinger_cache_0">
         <text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
