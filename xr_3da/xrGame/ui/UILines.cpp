@@ -18,7 +18,7 @@
 CUILines::CUILines()
 {
 	m_pFont = NULL;
-	m_interval = 3.0f;
+	m_interval = 0.0f;
 	m_eTextAlign = CGameFont::alLeft;
 	m_eVTextAlign = valTop;
 	m_dwTextColor = 0xffffffff;
