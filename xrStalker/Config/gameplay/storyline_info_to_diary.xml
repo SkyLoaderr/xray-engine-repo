@@ -126,6 +126,11 @@
         <text>agr_nii_security_plan</text>
     </article>
 
+    <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" group="Diary">
+        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <text>agr_krot_secret_info</text>
+    </article>
+
     <article id="storyline_gunslinger_cache_info" name="Krot Flash" group="Diary">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>storyline_gunslinger_cache_info</text>

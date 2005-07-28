@@ -32,6 +32,10 @@
 		<disable>agr_find_gunslinger_cache</disable>
 	</info_portion>
 
+	<info_portion id="agr_krot_secret_info">
+		<article>agr_krot_secret_info</article>
+	</info_portion>
+
 
 	<info_portion id="agroprom_find_stalker_phantom">
 		<task>agroprom_find_stalker_phantom</task>
