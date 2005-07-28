@@ -136,9 +136,9 @@ function action_sound:update( delta )
 	
 	local actor = db.actor
 	
-	if self.st.play_at_actor == true and self.snd_obj ~= nil and self.snd_obj:playing () == true then
-	   self.snd_obj:set_position (actor:position ())
-	end    
+	--if self.st.play_at_actor == true and self.snd_obj ~= nil and self.snd_obj:playing () == true then
+	  -- self.snd_obj:set_position (actor:position ())
+	--end    
 	    
 
 	-- если мы ещё нигде, то не считать ни входа, ни выхода
@@ -199,7 +199,7 @@ function action_sound:on_enter( obj )
 	        if self.st.play_at_actor == false then
 			   self.snd_obj:play_at_pos( obj, pos, self.st.delay )
 			else
-			   self.snd_obj:play_at_pos( obj, pos, self.st.delay, sound_object.s2d )
+			   self.snd_obj:play_at_pos( obj, vector ():set (0, 0, 0), self.st.delay, sound_object.s2d )
 			end   
 			self.st.signals["sound_end"] = false
 		end
