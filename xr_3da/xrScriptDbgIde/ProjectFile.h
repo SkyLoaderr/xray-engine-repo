@@ -57,6 +57,7 @@ public:
 	void			SS_get_latest		();
 	void			SS_add_to_ss		();
 	void			Check_view			();
+	void			SyntaxCheck			();
 protected:
 	const CString&	getWorkingFolder	();
 	void			Change_status(EVSSStatus st);

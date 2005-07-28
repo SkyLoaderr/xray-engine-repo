@@ -166,6 +166,8 @@ BEGIN
         MENUITEM "Difference",                  ID_VSS_DIFFERENCE
         MENUITEM "GetLatestVersion",            ID_VSS_GETLATESTVERSION
         MENUITEM "AddToSourceControl",          ID_VSS_ADDTOSOURCECONTROL
+        MENUITEM SEPARATOR
+        MENUITEM "Syntax check",                ID_VSS_SYNTAXCHECK
     END
 END
 

@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CTreeViewFiles, CTreeView)
 	ON_COMMAND(ID_VSS_GETLATESTVERSION,	OnVSSGetLatest)
 
 	ON_COMMAND(ID_VSS_ADDTOSOURCECONTROL,	OnVSSAddFile)
+	ON_COMMAND(ID_VSS_SYNTAXCHECK,			OnSyntaxCheck)
 
 	
 END_MESSAGE_MAP()
@@ -703,6 +704,13 @@ void CTreeViewFiles::OnVSSAddFile(){
 	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);
 	pPF->SS_add_to_ss();
 
+}
+
+void CTreeViewFiles::OnSyntaxCheck()
+{
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);
+	pPF->SyntaxCheck();
 }
 /*
 void CTreeViewFiles::VSSCheckIn(HTREEITEM itm){

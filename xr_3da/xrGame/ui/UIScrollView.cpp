@@ -9,6 +9,7 @@
 CUIScrollView::CUIScrollView()
 {
 	m_rightIdent		= 0.0f;
+	m_flags.zero		();
 }
 
 CUIScrollView::~CUIScrollView()
@@ -41,19 +42,30 @@ void CUIScrollView::Init				()
 void CUIScrollView::AddWindow			(CUIWindow* pWnd)
 {
 	m_pad->AttachChild	(pWnd);
-	RecalcSize			();
+	m_flags.set			(eNeedRecalc,TRUE);
+//	RecalcSize			();
 }
 
 void CUIScrollView::RemoveWindow		(CUIWindow* pWnd)
 {
 	m_pad->DetachChild	(pWnd);
-	RecalcSize			();
+	m_flags.set			(eNeedRecalc,TRUE);
+//	RecalcSize			();
 }
 
 void CUIScrollView::Clear				()
 {
 	m_pad->DetachAll	();
+	m_flags.set			(eNeedRecalc,TRUE);
 	RecalcSize			();
+}
+
+void CUIScrollView::Update				()
+{
+	if(m_flags.test	(eNeedRecalc) )
+		RecalcSize			();
+
+	inherited::Update();
 }
 
 void CUIScrollView::RecalcSize			()
@@ -65,17 +77,30 @@ void CUIScrollView::RecalcSize			()
 	Fvector2			item_pos;
 	item_pos.set		(m_rightIdent, 0.0f);
 
-	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it)
-	{
-		(*it)->SetWndPos		(item_pos);
-		item_pos.y				+= (*it)->GetWndSize().y;
-		pad_size.y				+= (*it)->GetWndSize().y;
-		pad_size.x				= _max(pad_size.x, (*it)->GetWndSize().x);
-	}
+	if(GetVertFlip()){
+		for(WINDOW_LIST::reverse_iterator it = m_pad->GetChildWndList().rbegin(); m_pad->GetChildWndList().rend() != it; ++it)
+		{
+			(*it)->SetWndPos		(item_pos);
+			item_pos.y				+= (*it)->GetWndSize().y;
+			pad_size.y				+= (*it)->GetWndSize().y;
+			pad_size.x				= _max(pad_size.x, (*it)->GetWndSize().x);
+		}
+
+	}else{
+		for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end() != it; ++it)
+		{
+			(*it)->SetWndPos		(item_pos);
+			item_pos.y				+= (*it)->GetWndSize().y;
+			pad_size.y				+= (*it)->GetWndSize().y;
+			pad_size.x				= _max(pad_size.x, (*it)->GetWndSize().x);
+		}
+	};
+
 	m_pad->SetWndSize			(pad_size);
 
 	UpdateScroll				();
 
+	m_flags.set			(eNeedRecalc,FALSE);
 }
 
 void CUIScrollView::UpdateScroll		()
@@ -89,6 +114,9 @@ void CUIScrollView::UpdateScroll		()
 
 void CUIScrollView::Draw				()
 {
+	if(m_flags.test	(eNeedRecalc) )
+		RecalcSize			();
+
 	Frect		visible_rect			= GetAbsoluteRect();
 	UI()->PushScissor					(visible_rect);
 	if(GetHeight()<m_pad->GetHeight())	//fix it !!!
@@ -152,5 +180,5 @@ void CUIScrollView::ScrollToBegin		()
 void CUIScrollView::SetRightIndention	(float val)
 {
 	m_rightIdent		= val;
-	RecalcSize			();
+	m_flags.set			(eNeedRecalc,TRUE);
 }

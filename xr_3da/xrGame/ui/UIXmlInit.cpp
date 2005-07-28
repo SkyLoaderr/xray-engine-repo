@@ -1193,9 +1193,11 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	InitWindow							(xml_doc, path, index, pWnd);
-	float ri = xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
+	float ri							= xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
 	pWnd->SetRightIndention				(ri*UI()->GetScaleX());
 	pWnd->Init							();
 
+	bool bVertFlip						= (1==xml_doc.ReadAttribInt	(path, index, "flip_vert", 0));
+	pWnd->SetVertFlip					(bVertFlip);
 	return								true;
 }

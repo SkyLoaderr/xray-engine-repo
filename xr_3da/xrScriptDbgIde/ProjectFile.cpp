@@ -12,6 +12,7 @@
 #include "MainFrame.h"
 #include "ScintillaView.h"
 #include "LuaView.h"
+#include <process.h>
 
 //#include "../xrGame/mslotutils.h"
 #include "/Projects/xray/xrGame/mslotutils.h"
@@ -464,6 +465,16 @@ void CProjectFile::SS_add_to_ss ()
 		UpdateSS_status();
 	}
 
+}
+void CProjectFile::SyntaxCheck			()
+{
+	char* _args[3];
+	CString str = GetNameExt();
+	_args[0] = "luac.exe";
+	_args[1] = str.GetBuffer(0);
+	_args[2] = NULL;
+
+	_spawnv(_P_NOWAIT, _args[0], _args);
 }
 
 const CString&	CProjectFile::getWorkingFolder()
