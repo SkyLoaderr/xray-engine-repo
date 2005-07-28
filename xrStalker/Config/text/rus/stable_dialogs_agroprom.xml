@@ -1,37 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="agr_factory_krot_about_0">
-        <text>Что вы здесь делаете?</text>
-    </string>
-    <string id="agr_factory_krot_about_1">
-        <text>А ты как думаешь?</text>
-    </string>
-    <string id="agr_factory_krot_about_2">
-        <text>Ищете артефакты?</text>
-    </string>
-    <string id="agr_factory_krot_about_21">
-        <text>А ты догадливый, неплохое место, здесь полно аномалий, мы тут добывали артефакты, а так же занимаемся кое какими поисками. Единственное надо быть особо осторожным, здесь полно военных.</text>
-    </string>
-    <string id="agr_factory_krot_about_3">
-        <text>Гуляете?</text>
-    </string>
-    <string id="agr_factory_krot_about_31">
-        <text>Смешной ты, ей богу. Гуляют на Канарах, а мы тут работаем. Вот недавно с военными "поработали". А будешь задавать много вопросов - и с тобой "поработаем".</text>
-    </string>
-    <string id="agr_factory_krot_about_4">
-        <text>Подставляете свои задницы под пули?</text>
-    </string>
-    <string id="agr_factory_krot_about_41">
-        <text>Ха-ха. Да ты, я вижу, малый с чувством юмора. Ценю. Таких ребят редко когда в зоне встретишь. Все угрюмые какие то, нет чтобы радоваться каждому прожитому дню - постоянно боятся смерти.</text>
-    </string>
-    <string id="agr_factory_krot_about_5">
-        <text>Не знаю.</text>
-    </string>
-    <string id="agr_factory_krot_about_51">
-        <text>Надо же, ты не знаешь. Вот побываешь в Зоне с мое - тогда сам узнаешь, что здесь люди делают.</text>
-    </string>
     <string id="agr_factory_krot_start_0">
-        <text>Спасибо брат, выручил меня, в долгу не останусь. Поделюсь с тобой информацией, спрашивай.</text>
+        <text>Спасибо тебе за твою помощь сталкер! Не прейди ты вовремя, я был бы уже покойником.</text>
     </string>
     <string id="agr_factory_stalker_about_0">
         <text>Что вы здесь делаете?</text>
@@ -42,86 +12,104 @@
     <string id="agr_factory_stalker_start_0">
         <text>Ух! Ну тут и заварушка была, врагу не пожелаешь. Совсем эти военные борзеют.</text>
     </string>
-    <string id="agr_krot_about_gunslinger_cache_0">
-        <text>Ты о нычке Стрелка слыхал?</text>
-    </string>
-    <string id="agr_krot_about_gunslinger_cache_10">
-        <text>Да я даже знаю где она, ты меня выручил за это я дам тебе информацию которая тебя интересует.\nДержи флешку там все что я знаю.</text>
-    </string>
-    <string id="agr_krot_about_gunslinger_cache_100">
-        <text>Спасибо за информацию, ты ведь меня не обманываешь? Я не люблю когда меня обманывают, надеюсь мне не надо будет возвращаться за тобой!</text>
-    </string>
-    <string id="agr_krot_about_gunslinger_cache_110">
-        <text>Ты меня выручил, я не стану тебя обманывать. \nНу, если ты посчитаешь что обманул, то найдешь меня и набьешь мне хавальник! Договорились?</text>
-    </string>
-    <string id="agr_krot_about_gunslinger_cache_20">
-        <text>Хорошо так и сделаю, тебя за язык никто не тянул!</text>
-    </string>
-    <string id="agr_krot_ask_about_gunslinger_0">
-        <text>Расскажи мне о Стрелке и его группе?</text>
-    </string>
-    <string id="agr_krot_ask_about_gunslinger_10">
-        <text>Слыхал разговоры разные ходят! Говорят он на этом заводе сидел, искал чего-то, а когда нашел, то отправился вроде к центру Зоны. Но бедняга вместе с группой своей пропал. Не знаю, добрался ли он к центру, но его после этого никто не видел. Да братков, что с ним отправились тоже никто не видел. Скорее всего они покойники, пол года уже прошло с того момента.</text>
-    </string>
-    <string id="agr_krot_ask_about_gunslinger_100">
-        <text>Спасибо.</text>
-    </string>
-    <string id="agr_krot_general_info_0">
+    <string id="agr_krot_about_agroprom_0">
         <text>Где находится НИИ Агропром?</text>
     </string>
-    <string id="agr_krot_general_info_10">
-        <text>Недалеко отсюда, пройди по дороге вверх она ведет к входу на завод. Я тебе инфу о место положении завода написал.</text>
+    <string id="agr_krot_about_agroprom_10">
+        <text>Недалеко отсюда, пройди по дороге вверх она ведет к входу на завод. </text>
     </string>
-    <string id="agr_krot_general_info_100">
+    <string id="agr_krot_about_agroprom_100">
         <text>Кто находится на территории НИИ?</text>
     </string>
-    <string id="agr_krot_general_info_120">
+    <string id="agr_krot_about_agroprom_120">
         <text>Как туда лучше проникнуть?</text>
     </string>
-    <string id="agr_krot_general_info_20">
-        <text>Там самая большая база военных в данной местности. Я не в курсе сколько их там, но из опыта могу сказать, военных там не меньше чем один взвод, это человек 16. Они хорошо вооружены, и прорваться, если ты уж решишься на пролом лететь, не получиться, завалят, пикнуть не успеешь.</text>
+    <string id="agr_krot_about_agroprom_130">
+        <text>Спасибо.</text>
     </string>
-    <string id="agr_krot_general_info_30">
+    <string id="agr_krot_about_agroprom_20">
+        <text>Там самая большая база военных, о которой я знаю. Я не в курсе сколько их там, но из опыта могу сказать, военных там не меньше чем один взвод, это человек 16. Они хорошо вооружены, и прорваться, если ты уж решишься на пролом лететь, не получиться, завалят, пикнуть не успеешь.</text>
+    </string>
+    <string id="agr_krot_about_agroprom_30">
         <text>Лучше всего туда проникнуть ночью, но я думаю ночью базу хорошо охраняют, у там них везде посты стоят. Поищи расписание смен караула, тогда у тебя появится реальный шанс незаметно пробраться на территорию и так же незаметно ее покинуть.</text>
     </string>
-    <string id="agr_krot_gunslinger_secret_0">
-        <text>Сразу к делу, Серый мне сказал, что у тебя есть флешка с данными о место нахождении тайника Стрелка!</text>
+    <string id="agr_krot_actor_hasnot_met_seriy_0">
+        <text>Я тебя спас. Расскажи мне, что ты тут делаешь?</text>
     </string>
-    <string id="agr_krot_gunslinger_secret_10">
-        <text>За твою помощь, я расскажу тебе, Серый тебя не обманул, вот флешка с инфой где находится тайник Стрелка.</text>
+    <string id="agr_krot_actor_hasnot_met_seriy_100">
+        <text>Спасибо, сталкер, за помощь, я тебе обязан жизнью. Я и моя бригада нашли тут неплохое место где мы собираем артефакты, а на фабрике у нас база.</text>
     </string>
-    <string id="agr_krot_gunslinger_secret_100">
-        <text>Дякую друже.</text>
+    <string id="agr_krot_actor_hasnot_met_seriy_1000">
+        <text>Артефакты? Почему тогда на вас военные напали? Врядли из-за артефактов!</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_150">
+        <text>Да, именно артефакты. Я не знаю, почему они напали. Я всего лишь пытаюсь выжить в этом сложном мире!\n</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_1500">
+        <text>Ответь мне на вопрос: тебе известно о сталкере с именем Стрелок?</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_200">
+        <text>Да, я слышал о таком, он вроде тоже промышлял в этих местах, здесь неплохое место. Он ушел отсюда давно, точно не знаю когда и куда. Больше мне ничего не известно.</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_2000">
+        <text>Я тебя спас! Говори, ты ведь здесь не зря сидел? Иначе зачем военный спецназ тут высадился?</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_250">
+        <text>Хорошо, мне еще кое-что известно о Стрелке.</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_2500">
+        <text>Да? Мне это очень нужно знать!</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_300">
+        <text>У меня есть информация о том, где находится тайник Стрелка!\n\nДействительно, но тайник не на фабрике, а под ней! Видишь отверстие? Это один из входов в туннели под фабрикой, я даже не знаю точного размера подземелий, но где-то там находится Тайник! \n</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_3000">
+        <text>Как мне найти тайник?\n</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_350">
+        <text>В знак благодарности я даю тебе флешку с информацией, а дальше ты сам разбирайся.</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_3500">
+        <text>Если ты меня обманул, я тебя найду, и доделаю то, что военные не смогли!</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_400">
+        <text>Я тебя не обманываю. Знаю, что тут никто никому не доверяет, но тут у тебя выбор небольшой.</text>
+    </string>
+    <string id="agr_krot_actor_hasnot_met_seriy_4000">
+        <text>Ты прав, мне пора, удачи!</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_0">
+        <text>Серый мне сказал, что ты знаешь что-то о тайнике Стрелка!</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_100">
+        <text>Раз ты друг Серого, то теперь получается ты и мой друг, особенно после этой заварушки с военными. Если бы те не помог мне я бы наверно уже был обедом для слепых псов.</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_1000">
+        <text>Ладно-ладно. Так что там с тайником?</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_150">
+        <text>Я знаю, где тайник Стрелка. Он прямо здесь на Агропроме, вернее под ним. Тут везде туннели идущие под заводом и не только. Но сам я туда уже не хочу - нужно линять от военных, зализывать раны. Хочешь - лезь сам, если жить надоело. Я солью тебе информацию на ПДА.</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_1500">
+        <text>Как мне попасть в туннели?</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_200">
+        <text>Это один из многих входов, через него ты попадешь в один из туннелей, ну а там смотри сам, у меня нет карты этих туннелей, но они очень длинные с множеством комнат и довольно запутаны.</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_2000">
+        <text>Что ты еще знаешь?</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_250">
+        <text>Больше мне ничего не известно, все что я знал уже тебе сказал, дальше ты сам должен действовать. Желаю тебе удачи.</text>
+    </string>
+    <string id="agr_krot_actor_met_seriy_2500">
+        <text>Мне пора, держись!!!</text>
     </string>
     <string id="agr_krot_help_0">
         <text>Помоги!</text>
     </string>
     <string id="agr_krot_help_10">
         <text>Добро!</text>
-    </string>
-    <string id="agr_krot_tunnel_0">
-        <text>Что это за дыра в земле?</text>
-    </string>
-    <string id="agr_krot_tunnel_10">
-        <text>Это вход в подземелье.</text>
-    </string>
-    <string id="agr_krot_tunnel_100">
-        <text>Что это за подземелье такое?</text>
-    </string>
-    <string id="agr_krot_tunnel_120">
-        <text>Как думаешь в этих подземельях опасно?</text>
-    </string>
-    <string id="agr_krot_tunnel_130">
-        <text>Есть ли там что-то ценное?</text>
-    </string>
-    <string id="agr_krot_tunnel_20">
-        <text>Это сервисные туннели они протянуты под всей территорией завода и окрестностей, точно не знаю как далеко. Но могу тебя заверить, что они очень длинные и запутанные.</text>
-    </string>
-    <string id="agr_krot_tunnel_30">
-        <text>Да, там очень опасно. Но ты ведь не боишься крыс? Вообще туда без фонарика соваться не советую! Ну и не забудь взять патронов по больше!</text>
-    </string>
-    <string id="agr_krot_tunnel_40">
-        <text>Да там полно всякого добра. Думаю если полазишь, по всему туннелям сможешь кучу интересных вещей найти.</text>
     </string>
     <string id="agr_stalker_esc_0">
         <text>Что ты здесь делаешь?</text>
