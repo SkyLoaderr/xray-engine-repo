@@ -36,6 +36,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 						eZoomOut,
 						eAddSpot,
 						eRemoveSpot,
+						eActor,
 						eMaxBtn};
 	Flags32						m_flags;
 	float						m_currentZoom;
@@ -54,6 +55,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	void						OnScrollV				();
 	void						OnScrollH				();
 	void						OnToolGlobalMapClicked	(CUIWindow*, void*);
+	void						OnToolActorClicked		(CUIWindow*, void*);
 	void						OnToolNextMapClicked	(CUIWindow*, void*);
 	void						OnToolPrevMapClicked	(CUIWindow*, void*);
 	void						OnToolZoomInClicked		(CUIWindow*, void*);

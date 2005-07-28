@@ -5,7 +5,7 @@
 #include "UIXmlInit.h"
 #include "UIAnimatedStatic.h"
 #include "UIMapWnd.h"
-#include "UIListWnd.h"
+#include "UIScrollView.h"
 #include "UITabControl.h"
 #include "UITaskDescrWnd.h"
 #include "../MainUI.h"
@@ -70,14 +70,14 @@ void CUIEventsWnd::Init				()
 	m_UITaskInfoWnd->Init			(&uiXml,"main_wnd:right_frame:task_descr_view");
 	
 
-	m_ListWnd						= xr_new<CUIListWnd>(); m_ListWnd->SetAutoDelete(true);
+	m_ListWnd						= xr_new<CUIScrollView>(); m_ListWnd->SetAutoDelete(true);
 	m_UILeftFrame->AttachChild		(m_ListWnd);
-	xml_init.InitListWnd			(uiXml, "main_wnd:left_frame:list", 0, m_ListWnd);
-	m_ListWnd->ActivateList			(true);
-	m_ListWnd->EnableScrollBar		(true);
-	m_ListWnd->EnableActiveBackground(false);
-	m_ListWnd->SetWindowName		("list_wnd");
-	Register						(m_ListWnd);
+	xml_init.InitScrollView			(uiXml, "main_wnd:left_frame:list", 0, m_ListWnd);
+//	m_ListWnd->ActivateList			(true);
+//	m_ListWnd->EnableScrollBar		(true);
+//	m_ListWnd->EnableActiveBackground(false);
+//	m_ListWnd->SetWindowName		("list_wnd");
+//	Register						(m_ListWnd);
 
 	m_TaskFilter					= xr_new<CUITabControl>(); m_TaskFilter->SetAutoDelete(true);
 	m_UILeftHeader->AttachChild		(m_TaskFilter);
@@ -86,7 +86,7 @@ void CUIEventsWnd::Init				()
 	Register						(m_TaskFilter);
    AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
 
-   AddCallback						("list_wnd",LIST_ITEM_CLICKED,boost::bind(&CUIEventsWnd::OnListItemClicked,this,_1,_2));
+//   AddCallback						("list_wnd",BUTTON_CLICKED,boost::bind(&CUIEventsWnd::OnListItemClicked,this,_1,_2));
 
    m_currFilter						= eActiveTask;
    SetDescriptionMode				(true);
@@ -126,7 +126,7 @@ void CUIEventsWnd::Reload					()
 
 void CUIEventsWnd::ReloadList				(bool bClearOnly)
 {
-	m_ListWnd->RemoveAll	();
+	m_ListWnd->Clear	();
 	if(bClearOnly)		return;
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -153,7 +153,8 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 				pTaskItem = xr_new<CUITaskSubItem>(this);
 
 			pTaskItem->SetGameTask			(task, i);
-			m_ListWnd->AddItem<CUIListItem>	(pTaskItem);
+			m_ListWnd->AddWindow			(pTaskItem);
+//			m_ListWnd->AddItem<CUIListItem>	(pTaskItem);
 		}
 
 	}
@@ -190,23 +191,6 @@ bool CUIEventsWnd::Filter(CGameTask* t)
 			(m_currFilter==eOwnTask				&& task_state==eTaskUserDefined );
 }
 
-void CUIEventsWnd::OnListItemClicked		(CUIWindow* w, void* d)
-{
-	//w -listwnd
-	CUIListItem*	pSelItem	= (CUIListItem*)d;
-	CUITaskItem*	pTaskSelItem	= smart_cast<CUITaskItem*>(pSelItem);
-
-	ShowDescription		(pTaskSelItem->GameTask(), pTaskSelItem->ObjectiveIdx());
-
-	int sz = m_ListWnd->GetSize		();
-	for(int i=0; i<sz;++i){
-		CUIListItem* itm = m_ListWnd->GetItem(i);
-		if(pSelItem==itm)	
-			itm->MarkSelected	(true);
-		else
-			itm->MarkSelected	(false);
-	}
-}
 
 void CUIEventsWnd::SetDescriptionMode		(bool bMap)
 {
@@ -263,9 +247,14 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 			}
 		}
 	}
+	}
 
-//		m_UITaskInfoWnd->AddArticle	("zone_anomalies_meat");
-//		m_UITaskInfoWnd->AddArticle	("zone_anomalies_zharka");
-
+	int sz = m_ListWnd->GetSize		();
+	for(int i=0; i<sz;++i){
+		CUITaskItem* itm = (CUITaskItem*)m_ListWnd->GetItem(i);
+		if((itm->GameTask()==t) && (itm->ObjectiveIdx()==idx) )	
+			itm->MarkSelected	(true);
+		else
+			itm->MarkSelected	(false);
 	}
 }

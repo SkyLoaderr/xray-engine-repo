@@ -126,6 +126,16 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolGlobalMapClicked,this,_1,_2));
 	}
 
+	btnIndex		= eActor;
+	strconcat(pth, sToolbar.c_str(), ":actor_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolActorClicked,this,_1,_2));
+	}
+
 	btnIndex		= eNextMap;
 	strconcat(pth, sToolbar.c_str(), ":next_map_btn");
 	if(uiXml.NavigateToNode(pth,0)){
@@ -196,8 +206,8 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_UILevelFrame->AttachChild				(m_GlobalMap);
 
 	m_MapText								= xr_new<CUIStatic>();
-	m_MapText->SetFont						(UI()->Font()->pFontGraffiti22Russian);
-	m_MapText->SetWndSize					(Fvector2().set(100.0f, 22.0f));
+	strconcat(pth,start_from,":title");
+	xml_init.InitStatic						(uiXml, pth, 0, m_MapText);
 
 	// initialize local maps
 	xr_string sect_name;
@@ -335,7 +345,7 @@ void CUIMapWnd::Draw()
 		ActiveMap()->SetClipRect( ActiveMapRect() );
 
 	inherited::Draw();
-	m_MapText->SetWndPos					(ActiveMapRect().lt);
+//	m_MapText->SetWndPos					(ActiveMapRect().lt);
 	m_MapText->Draw();
 }
 
@@ -597,4 +607,12 @@ void CUIMapWnd::ValidateToolBar			()
 
 void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
 {
+}
+
+void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
+{
+	Fvector v					= Level().CurrentEntity()->Position();
+	Fvector2 v2;
+	v2.set						(v.x,v.z);
+	SetActiveMap				(Level().name(), v2);
 }

@@ -33,4 +33,6 @@ public:
 			void	ScrollToBegin		();
 			void	SetVertFlip			(bool val)							{m_flags.set(eVertFlip, val);}
 			bool	GetVertFlip			()									{return !!m_flags.test(eVertFlip);}
+			u32		GetSize				();
+	CUIWindow*		GetItem				(u32 idx);
 };

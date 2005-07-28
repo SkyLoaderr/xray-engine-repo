@@ -12,6 +12,7 @@ class CUIButton;
 class CUITabControl;
 class CGameTask;
 class CUITaskDescrWnd;
+class CUIScrollView;
 
 class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	typedef CUIWindow			inherited;
@@ -32,12 +33,13 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	CUIAnimatedStatic*			m_UIAnimation;
 	CUIMapWnd*					m_UIMapWnd;
 	CUITaskDescrWnd*			m_UITaskInfoWnd;
-	CUIListWnd*					m_ListWnd;
+//	CUIListWnd*					m_ListWnd;
+	CUIScrollView*				m_ListWnd;
 	CUITabControl*				m_TaskFilter;
 
 	bool						Filter					(CGameTask* t);
 	void						OnFilterChanged			(CUIWindow*,void*);
-	void						OnListItemClicked		(CUIWindow*,void*);
+//	void						OnListItemClicked		(CUIWindow*,void*);
 
 	void						ReloadList				(bool bClearOnly);
 public:

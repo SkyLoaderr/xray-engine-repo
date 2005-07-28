@@ -182,3 +182,16 @@ void CUIScrollView::SetRightIndention	(float val)
 	m_rightIdent		= val;
 	m_flags.set			(eNeedRecalc,TRUE);
 }
+
+u32 CUIScrollView::GetSize				()
+{
+	return m_pad->GetChildNum		();
+}
+
+CUIWindow* CUIScrollView::GetItem		(u32 idx)
+{
+	WINDOW_LIST_it it = m_pad->GetChildWndList().begin();
+	std::advance(it, idx);
+	return (*it);
+}
+

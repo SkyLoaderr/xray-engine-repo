@@ -15,6 +15,8 @@ protected:
 	CUIEventsWnd*	m_EventsWnd;
 	CGameTask*		m_GameTask;
 	int				m_TaskObjectiveIdx;
+	void			OnClick					();
+	void			Init					();
 public:
 					CUITaskItem				(CUIEventsWnd* w);
 	virtual			~CUITaskItem			();

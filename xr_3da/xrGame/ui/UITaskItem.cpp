@@ -23,8 +23,6 @@ void CUITaskItem::SetGameTask(CGameTask* gt, int obj_idx)
 { 
 	m_GameTask = gt;
 	m_TaskObjectiveIdx = obj_idx;
-//	if(m_GameTask->m_Objectives[m_TaskObjectiveIdx].article_id.size())
-//		UIAdditionalMaterials.Show(true);
 }
 
 void CUITaskItem::SendMessage				(CUIWindow* pWnd, s16 msg, void* pData)
@@ -42,6 +40,19 @@ void CUITaskItem::Update				()
 	inherited::Update();
 }
 
+void CUITaskItem::Init				()
+{
+	SetWindowName					("job_item");
+//	Register						(m_showPointerBtn);
+	AddCallback						("job_item",BUTTON_CLICKED,boost::bind(&CUITaskItem::OnClick,this));
+}
+
+void CUITaskItem::OnClick				()
+{
+	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
+}
+
+
 CUITaskRootItem::CUITaskRootItem	(CUIEventsWnd* w)
 :inherited(w)
 {
@@ -53,6 +64,7 @@ CUITaskRootItem::~CUITaskRootItem		()
 
 void CUITaskRootItem::Init			()
 {
+	inherited::Init					();
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
 	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
@@ -70,6 +82,8 @@ void CUITaskRootItem::Init			()
 	AddCallback						("m_switchDescriptionBtn",BUTTON_CLICKED,boost::bind(&CUITaskRootItem::OnSwitchDescriptionClicked,this));
 
 	CUIXmlInit xml_init;
+	xml_init.InitWindow			(uiXml,"task_root_item",0,this);
+
 	xml_init.InitStatic			(uiXml,"task_root_item:image",0,m_taskImage);
 	xml_init.InitStatic			(uiXml,"task_root_item:caption",0,m_captionStatic);
 	xml_init.InitStatic			(uiXml,"task_root_item:description",0,m_descriptionStatic);
@@ -95,8 +109,15 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	m_taskImage->SetStretchTexture	(true);
 
 	m_captionStatic->SetText		(*stbl(m_GameTask->m_Title));
+	m_captionStatic->AdjustHeightToText	();
+
+
+	m_descriptionStatic->SetWndPos	(m_descriptionStatic->GetWndPos().x, m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
 	m_descriptionStatic->SetText	(*stbl(obj->description));
 	
+	m_descriptionStatic->AdjustHeightToText	();
+	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_descriptionStatic->GetWndPos().y+m_descriptionStatic->GetHeight());
+	SetHeight						(h);
 }
 
 void CUITaskRootItem::Update		()
@@ -148,6 +169,7 @@ CUITaskSubItem::~CUITaskSubItem		()
 
 void CUITaskSubItem::Init			()
 {
+	inherited::Init					();
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
 	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
@@ -161,6 +183,7 @@ void CUITaskSubItem::Init			()
 
 
 	CUIXmlInit xml_init;
+	xml_init.InitWindow				(uiXml,"task_sub_item",0,this);
 	xml_init.InitStatic				(uiXml,"task_sub_item:state_image",0,m_stateStatic);
 	xml_init.InitStatic				(uiXml,"task_sub_item:description",0,m_descriptionStatic);
 	xml_init.Init3tButton			(uiXml,"task_sub_item:show_pointer_btn",0,m_showPointerBtn);
@@ -175,8 +198,11 @@ void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)
 	CStringTable		stbl;
 	SGameTaskObjective	*obj = &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
 
-	m_descriptionStatic->SetText	(*stbl(obj->description));
-
+	m_descriptionStatic->SetText				(*stbl(obj->description));
+	m_descriptionStatic->AdjustHeightToText		();
+	float h = _max(	m_stateStatic->GetWndPos().y+m_stateStatic->GetHeight(),
+					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
+	SetHeight									(h);
 	switch (obj->TaskState())
 	{
 		case eTaskUserDefined:
