@@ -86,7 +86,7 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* sh
 			}
 		}
 	}
-	tc->CreateShader(texture_name.c_str());
+	tc->CreateShader(texture_name.c_str(), shader_name);
 }
 
 void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
