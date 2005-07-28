@@ -7,10 +7,16 @@
         <text>Мне к Лукашу, есть жизненно важная для вас информация.</text>
     </string>
     <string id="mil_bodyguard_dialog_2">
-        <text>Ну, проходи. И не вздумай баловать - вперед ногами вынесут.</text>
+        <text>И насколько она важна ?</text>
     </string>
     <string id="mil_bodyguard_dialog_5">
-        <text>Уговорил.</text>
+        <text>Долг планирует налет на вашу базу. Это достаточно важно ?</text>
+    </string>
+    <string id="mil_bodyguard_dialog_6">
+        <text>Вполне. Ну, проходи. И не вздумай баловать - вперед ногами вынесут.</text>
+    </string>
+    <string id="mil_bodyguard_dialog_7">
+        <text>Обязательно.</text>
     </string>
     <string id="mil_cook_common1_0">
         <text>Здравствуй.</text>
