@@ -402,6 +402,11 @@
 		<class>stalker_gar_hellcar</class>
 	</character>	
 
+	<!-- AES  -->
+	<character id="soldier_specnaz_aes">
+		<class>Soldier_specnaz_aes</class>
+	</character>
+
 
 
 </xml>

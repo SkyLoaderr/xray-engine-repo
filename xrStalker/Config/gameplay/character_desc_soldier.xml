@@ -582,5 +582,36 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+
+<!---------------------------SOLDIER SPECNAZ AES---------------------->
+	<specific_character id="soldier_specnaz_aes" team_default = "1">
+		<name>Неизвестный военный</name>
+		<icon x="14" y="2"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+
+		<team>Soldier_specnaz</team>
+		
+		<class>Soldier_specnaz_aes</class>
+		<community>military</community>
+		
+		<rank>80</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp = 1 \n
+			wpn_abakan = 1, scope launcher cond=0.9
+	    	ammo_5.45x39_ap = 1 \n
+			device_torch \n
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>aes_sergeant_diallog</actor_dialog>
+	</specific_character>
+
 	-->
 </xml>
