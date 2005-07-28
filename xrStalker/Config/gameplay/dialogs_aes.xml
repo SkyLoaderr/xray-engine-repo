@@ -3,23 +3,6 @@
     <dialog id="aes_sergeant_diallog">
         <precondition>dialogs.allow_wounded_dialog</precondition>
         <phrase_list>
-            <phrase id="1001">
-                <text>aes_sergeant_diallog_1001</text>
-                <next>1002</next>
-                <next>1003</next>
-            </phrase>
-            <phrase id="1002">
-                <text>aes_sergeant_diallog_1002</text>
-                <next>1004</next>
-            </phrase>
-            <phrase id="1004">
-                <text>aes_sergeant_diallog_1004</text>
-                <next>1005</next>
-            </phrase>
-            <phrase id="1005">
-                <text>aes_sergeant_diallog_1005</text>
-                <next>1006</next>
-            </phrase>
             <phrase id="1006">
                 <text>aes_sergeant_diallog_1006</text>
                 <next>1007</next>
@@ -131,12 +114,21 @@
                 <action>dialogs_aes.aes_segeant_kill</action>
             </phrase>
             <phrase id="0">
-                <text>aes_sergeant_diallog_0</text>
-                <next>1000</next>
+                <text>aes_sergeant_diallog_1001</text>
+                <next>1002</next>
+                <next>1003</next>
             </phrase>
-            <phrase id="1000">
-                <text>aes_sergeant_diallog_1000</text>
-                <next>1001</next>
+            <phrase id="1002">
+                <text>aes_sergeant_diallog_1002</text>
+                <next>1004</next>
+            </phrase>
+            <phrase id="1004">
+                <text>aes_sergeant_diallog_1004</text>
+                <next>1005</next>
+            </phrase>
+            <phrase id="1005">
+                <text>aes_sergeant_diallog_1005</text>
+                <next>1006</next>
             </phrase>
         </phrase_list>
     </dialog>
