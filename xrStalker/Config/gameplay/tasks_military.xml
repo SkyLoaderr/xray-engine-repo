@@ -54,14 +54,20 @@
 		<objective>
 			<text>mil_go_max</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_max_location</map_location_type>
+			<object_story_id>Mil_Master_Max</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_kill_dolg</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_dolg_location</map_location_type>
+			<object_story_id>Mil_Dolg_Zoneguard</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_return_lukash</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_lukash_location</map_location_type>
+			<object_story_id>Mil_Lukash</object_story_id>
 		</objective>
 	</game_task>
 	
@@ -103,3 +109,4 @@
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+

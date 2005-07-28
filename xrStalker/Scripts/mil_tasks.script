@@ -259,11 +259,11 @@ function process_info_portion(info_id)
            level_tasks.remove_location (705, "mil_secret_location")
 	    return true
 	elseif info_id == "mil_lukash_go_to_max" then
-	       level_tasks.add_location (702, "mil_max_location") 
+	       --level_tasks.add_location (702, "mil_max_location") 
 	       level_tasks.remove_location (707, "mil_lukash_location")
 	    return true
 	elseif info_id == "mil_max_arrive" then
-		   level_tasks.remove_location (702, "mil_max_location")
+		   --level_tasks.remove_location (702, "mil_max_location")
 		   db.actor:disable_info_portion ("mil_lukash_go_to_max")
 		return true
     elseif info_id == "mil_max_job_complete" then
