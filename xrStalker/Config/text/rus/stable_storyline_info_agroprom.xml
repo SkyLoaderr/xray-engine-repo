@@ -15,3 +15,7 @@
     <string id="agr_nii_security_plan">
         <text>План патрулирования территории НИИ "Агропром"</text>
     </string>
+    
+    <string id="agr_nii_security_plan_flash">
+        <text>Флешка солдата с НИИ "Агропром"</text>
+    </string>
