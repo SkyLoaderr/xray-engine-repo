@@ -261,36 +261,38 @@ CUIUserTaskItem::~CUIUserTaskItem			()
 
 void  CUIUserTaskItem::Init					()
 {
-	inherited::Init				();
+	inherited::Init					();
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
-	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
+	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
+	R_ASSERT3						(xml_result, "xml file not found", "job_item.xml");
 
-	m_image				= xr_new<CUIStatic>();		m_image->SetAutoDelete(true);				AttachChild(m_image);
-	m_descriptionStatic	= xr_new<CUIEditBox>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
+	m_image							= xr_new<CUIStatic>();		m_image->SetAutoDelete(true);				AttachChild(m_image);
+	m_descriptionStatic				= xr_new<CUIEditBox>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
+	m_descriptionStatic->			SetWindowName("m_descriptionStatic");
+	Register						(m_descriptionStatic);
+	AddCallback						("m_descriptionStatic",EDIT_TEXT_CHANGED,boost::bind(&CUIUserTaskItem::OnDescriptionChanged,this));
 
-	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);			m_showLocationBtn->SetCheckMode(true);
-	m_showLocationBtn->SetWindowName("m_showLocationBtn");
+	m_showLocationBtn				= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);			m_showLocationBtn->SetCheckMode(true);
+	m_showLocationBtn->				SetWindowName("m_showLocationBtn");
 	Register						(m_showLocationBtn);
 	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
 
-	m_showPointerBtn	= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);			m_showPointerBtn->SetCheckMode(true);
-	m_showPointerBtn->SetWindowName("m_showPointerBtn");
+	m_showPointerBtn				= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);			m_showPointerBtn->SetCheckMode(true);
+	m_showPointerBtn->				SetWindowName("m_showPointerBtn");
 	Register						(m_showPointerBtn);
 	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
 	AddCallback						("m_showPointerBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowPointerClicked,this));
+
 
 	CUIXmlInit xml_init;
 	xml_init.InitWindow				(uiXml,"task_user_item",0,this);
 
 	xml_init.InitStatic				(uiXml,"task_user_item:image",0,m_image);
 	xml_init.InitEditBox			(uiXml,"task_user_item:description",0,m_descriptionStatic);
-//	m_descriptionStatic->SetDbClikMode(true);
 	xml_init.Init3tButton			(uiXml,"task_user_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton			(uiXml,"task_user_item:show_pointer_btn",0,m_showPointerBtn);
 
 	m_defTextColor					= m_descriptionStatic->GetTextColor	();
-//	m_defColor						= m_descriptionStatic->GetColor	();
 }
 
 void CUIUserTaskItem::Update					()
@@ -320,8 +322,6 @@ void CUIUserTaskItem::SetGameTask				(CGameTask* gt, int obj_idx)
 	m_image->SetStretchTexture	(true);
 
 	m_descriptionStatic->SetText				(*stbl(obj->description));
-	// 
-//	m_descriptionStatic->AdjustHeightToText		();
 	float h = _max(	m_image->GetWndPos().y+m_image->GetHeight(),
 					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
 	SetHeight									(h);
@@ -343,12 +343,14 @@ void CUIUserTaskItem::OnShowLocationClicked	()
 void CUIUserTaskItem::MarkSelected				(bool b)
 {
 	if(b)
-		;
-//		m_descriptionStatic->SetLightAnim	("ui_task_selected");
+		m_descriptionStatic->SetLightAnim	("ui_task_selected");
 	else{
-//		m_descriptionStatic->SetLightAnim	(NULL);
+		m_descriptionStatic->SetLightAnim	(NULL);
 		m_descriptionStatic->SetTextColor	(m_defTextColor);
-//		m_descriptionStatic->SetColor		(m_defColor);
 	}
 }
 
+void CUIUserTaskItem::OnDescriptionChanged		()
+{
+	Objective()->description = m_descriptionStatic->GetText();
+}

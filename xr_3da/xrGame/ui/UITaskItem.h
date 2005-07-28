@@ -80,7 +80,6 @@ class CUIUserTaskItem :public CUITaskItem
 {
 	typedef			CUITaskItem	inherited;
 	u32				m_defTextColor;
-	u32				m_defColor;
 protected:
 	CUI3tButton*	m_showPointerBtn;
 	CUI3tButton*	m_showLocationBtn;
@@ -96,6 +95,6 @@ public:
 	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
 			void	OnShowLocationClicked	();
 			void	OnShowPointerClicked	();
-
-	virtual void	MarkSelected				(bool b);
+			void	OnDescriptionChanged	();
+	virtual void	MarkSelected			(bool b);
 };

@@ -147,7 +147,8 @@ enum EUIMessages
 	DIARY_SET_NEWS_AS_UNREAD,
 
 	//CUIAnimationBase
-    ANIMATION_STOPPED
+    ANIMATION_STOPPED,
+	EDIT_TEXT_CHANGED
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -142,9 +142,8 @@ bool CUIEditBox::OnKeyboard(int dik, EUIMessages keyboard_action)
 bool CUIEditBox::KeyPressed(int dik)
 {
 	xr_map<u32, char>::iterator it;
-
-	char out_me = ' ';
-
+	char out_me = 0;
+	bool bChanged = false;
 	switch(dik)
 	{
 	//перемещение курсора
@@ -152,37 +151,41 @@ bool CUIEditBox::KeyPressed(int dik)
 	case DIKEYBOARD_LEFT:
 		if(m_iCursorPos > 0) 
 			--m_iCursorPos;
-		return true;
+		break;
 	case DIK_RIGHT:
 	case DIKEYBOARD_RIGHT:
 		if(m_iCursorPos < xr_strlen(m_lines.GetText())) 
 			++m_iCursorPos;
-		return true;
+		break;
 	case DIK_LSHIFT:
 	case DIK_RSHIFT:
 		m_bShift = true;
-		return true;
+		break;
 	case DIK_ESCAPE:
 		SetText("");
-		return true;
+		bChanged = true;
+		break;
 	case DIK_RETURN:
 	case DIK_NUMPADENTER:
 		GetParent()->SetKeyboardCapture(this, false);
 		m_bInputFocus = false;
 		m_iKeyPressAndHold = 0;
-		return true;
+		break;
 	case DIK_BACKSPACE:
 		if(m_iCursorPos > 0)
 		{
 			--m_iCursorPos;
 			m_lines.DelChar(m_iCursorPos);
+			bChanged = true;
 		}
-		return true;
+		break;
 	case DIK_DELETE:
 	case DIKEYBOARD_DELETE:
-		if(m_iCursorPos < xr_strlen(m_lines.GetText()))
+		if(m_iCursorPos < xr_strlen(m_lines.GetText())){
 			m_lines.DelChar(m_iCursorPos);
-		return true;
+			bChanged = true;
+		}
+		break;
 	case DIK_SPACE:
 		out_me = ' ';					break;
 	case DIK_LBRACKET:
@@ -209,19 +212,29 @@ bool CUIEditBox::KeyPressed(int dik)
 		it = gs_DIK2CHR.find(dik);
 			
 		//нажата клавиша с буквой 
-		if (gs_DIK2CHR.end() != it)
+		if (gs_DIK2CHR.end() != it){
 			AddLetter((*it).second);
+			bChanged = true;
+		}
 
-		return true;
+		break;
 	}
 
 	if (m_bNumbersOnly)
 	{
-		if (('.' == out_me) && m_bFloatNumbers)
+		if (('.' == out_me) && m_bFloatNumbers){
 			AddChar(out_me);
+			bChanged = true;
+		}
 	}
 	else
+	if(out_me){
 		AddChar(out_me);
+		bChanged = true;
+	}
+
+	if(bChanged)
+		GetMessageTarget()->SendMessage(this,EDIT_TEXT_CHANGED,NULL);
 
 	return true;
 }
