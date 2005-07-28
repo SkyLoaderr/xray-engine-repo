@@ -217,7 +217,7 @@
         <text>Расскажи мне о коллекторе. Как в него попасть, и где входы и выходы?</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_0111">
-        <text>В коллекторе сейчас опасно.\nВходов шесть. Два из них на территории института - там база военных.\nТеритория НИИ патрулируется.\nРасписание патрулей находится у капитана в каптерке.</text>
+        <text>В коллекторе сейчас опасно. Входов шесть. Два из них на территории института - там база военных. Територия НИИ патрулируется. Расписание патрулей находится у капитана в каптерке.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_01111">
         <text>Откуда столько информации?</text>
@@ -226,13 +226,19 @@
         <text>Крысы рассказали.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_0111111">
-        <text>Ясно. Прощай.</text>
+        <text>Ясно. Прощай. Удачи тебе.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_013">
         <text>Ты кто?</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_0134">
-        <text>Я Крысолов. Развожу крыс в коллекторе, тем самым донимаю военных в институте.</text>
+        <text>Живу здесь. Если это можно жизнью назвать. А так, развожу крыс в коллекторе, тем самым донимаю военных в институте.</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_0135">
+        <text>Я Крысолов. </text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_01351">
+        <text>Что ты делаешь в этом болоте?</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_123">
         <text>А... понятно.... я в общем не из этой сказки.\nХа-ха-ха...</text>
