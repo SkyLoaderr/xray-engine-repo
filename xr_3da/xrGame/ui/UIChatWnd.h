@@ -43,6 +43,7 @@ public:
 	void				TeamChat			() { sendNextMessageToTeam = true; }
 	void				AllChat				() { sendNextMessageToTeam = false; }
 	void				SetOwner			(game_cl_GameState *pO) { pOwner = pO; }
+	virtual bool		NeedCursor			()const {return false;}
 
 	CUIEditBox			UIEditBox;
 
