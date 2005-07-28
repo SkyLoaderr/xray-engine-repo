@@ -1,8 +1,8 @@
     <string id="gar_kill_boars">
-        <text>Пропуск на Бар</text>
+        <text>Пропуск на Бар.</text>
     </string>
     <string id="gar_kill_boars_main">
-        <text>Убить кабанов для прохода на Бар.</text>
+        <text>Квест для прохода на Бар.</text>
     </string>
     <string id="gar_kill_boars_1">
         <text>Убить кабанов.</text>
@@ -11,17 +11,17 @@
         <text>Получить пропуск у Долга.</text>
     </string>
     <string id="gar_help_hellcar">
-        <text>Помочь нейтралам на кладбище машин.</text>
+        <text>Помочь нейтралам отбить рейд.</text>
     </string>
     <string id="gar_defend_garbage">
-        <text>Отбить атаку бандитов на свалку.</text>
+        <text>Уничтожить рейд бандитов.</text>
     </string>
     <string id="gar_kill_bandits">
         <text>Уничтожить рейд бандитов.</text>
     </string>
     <string id="gar_hellcar_alive">
-        <text>Лидер нейтралов должен выжить.</text>
+        <text>Даймон должен выжить.</text>
     </string>
     <string id="garbage_meet_stalker_1">
-        <text>Поговорить с Серым о группе Стрелка</text>
+        <text>Поговорить с Серым о Стрелке.</text>
     </string>
