@@ -122,7 +122,7 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 			UnloadJournalTab	();
 			break;
 		case eInfo:
-			UnloadInfoTab	();
+			UnloadJournalTab	();
 			break;
 		case eNews:
 			UnloadNewsTab	();
@@ -133,10 +133,10 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 
 	switch (m_currFilter){
 		case eJournal:
-			LoadJournalTab	();
+			LoadJournalTab	(ARTICLE_DATA::eJournalArticle);
 			break;
 		case eInfo:
-			LoadInfoTab	();
+			LoadJournalTab	(ARTICLE_DATA::eInfoArticle);
 			break;
 		case eNews:
 			LoadNewsTab	();
@@ -165,7 +165,7 @@ void CUIDiaryWnd::UnloadJournalTab		()
 	m_DescrView->Clear			();
 }
 
-void CUIDiaryWnd::LoadJournalTab			()
+void CUIDiaryWnd::LoadJournalTab			(ARTICLE_DATA::EArticleType _type)
 {
 	delete_data			(m_ArticlesDB);
 
@@ -183,7 +183,7 @@ void CUIDiaryWnd::LoadJournalTab			()
 		{
 //.			if (ARTICLE_DATA::eJournalArticle == it->article_type)
 
-			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
+			if (_type == it->article_type)
 				
 			{
 				m_ArticlesDB.resize(m_ArticlesDB.size() + 1);

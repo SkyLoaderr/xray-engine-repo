@@ -3,7 +3,7 @@
 
 #include "UIWindow.h"
 #include "UIWndCallback.h"
-
+#include "../encyclopedia_article_defs.h"
 class CUINewsWnd;
 class CUIFrameLineWnd;
 class CUIFrameWindow;
@@ -50,7 +50,7 @@ protected:
 			void		OnFilterChanged			(CUIWindow*,void*);
 			void		OnSrcListItemClicked	(CUIWindow*,void*);
 			void		UnloadJournalTab		();
-			void		LoadJournalTab			();
+			void		LoadJournalTab			(ARTICLE_DATA::EArticleType _type);
 			void		UnloadInfoTab			();
 			void		LoadInfoTab				();
 			void		UnloadNewsTab			();
