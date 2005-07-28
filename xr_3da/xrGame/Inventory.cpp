@@ -634,6 +634,8 @@ bool CInventory::Action(s32 cmd, u32 flags)
 				SendActionEvent(cmd, flags);
 			}break;
 		case kWPN_FUNC:
+		case kWPN_FIREMODE_NEXT:
+		case kWPN_FIREMODE_PREV:
 		case kWPN_1:
 		case kWPN_2:
 		case kWPN_3:
