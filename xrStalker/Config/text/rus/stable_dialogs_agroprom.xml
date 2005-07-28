@@ -228,6 +228,9 @@
     <string id="agr_swamp_ratcatcher_talks_0111111">
         <text>Ясно. Прощай. Удачи тебе.</text>
     </string>
+    <string id="agr_swamp_ratcatcher_talks_012">
+        <text>Ни с чем. До встречи.</text>
+    </string>
     <string id="agr_swamp_ratcatcher_talks_013">
         <text>Ты кто?</text>
     </string>
@@ -235,7 +238,7 @@
         <text>Живу здесь. Если это можно жизнью назвать. А так, развожу крыс в коллекторе, тем самым донимаю военных в институте.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_0135">
-        <text>Я Крысолов. </text>
+        <text>Я Крысолов.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_01351">
         <text>Что ты делаешь в этом болоте?</text>

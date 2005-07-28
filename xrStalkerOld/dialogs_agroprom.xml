@@ -365,21 +365,6 @@
                 <text>agr_swamp_ratcatcher_talks_123</text>
                 <next>0111111</next>
             </phrase>
-            <phrase id="0">
-                <text>agr_swamp_ratcatcher_talks_0</text>
-                <next>01</next>
-            </phrase>
-            <phrase id="01">
-                <text>agr_swamp_ratcatcher_talks_01</text>
-                <next>011</next>
-                <next>013</next>
-            </phrase>
-            <phrase id="013">
-                <text>agr_swamp_ratcatcher_talks_013</text>
-                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
-                <give_info>agr_sold_about_ratcatcher</give_info>
-                <next>0135</next>
-            </phrase>
             <phrase id="0135">
                 <text>agr_swamp_ratcatcher_talks_0135</text>
                 <next>01351</next>
@@ -394,6 +379,16 @@
                 <next>011</next>
                 <next>0111111</next>
             </phrase>
+            <phrase id="0">
+                <text>agr_swamp_ratcatcher_talks_0</text>
+                <next>01</next>
+            </phrase>
+            <phrase id="01">
+                <text>agr_swamp_ratcatcher_talks_01</text>
+                <next>011</next>
+                <next>013</next>
+                <next>012</next>
+            </phrase>
             <phrase id="011">
                 <text>agr_swamp_ratcatcher_talks_011</text>
                 <dont_has_info>agr_collector_entrance_info</dont_has_info>
@@ -401,6 +396,12 @@
                 <give_info>agr_captains_chamber_info</give_info>
                 <has_info>agr_sold_about_ratcatcher</has_info>
                 <next>0111</next>
+            </phrase>
+            <phrase id="013">
+                <text>agr_swamp_ratcatcher_talks_013</text>
+                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
+                <give_info>agr_sold_about_ratcatcher</give_info>
+                <next>0135</next>
             </phrase>
             <phrase id="0111">
                 <text>agr_swamp_ratcatcher_talks_0111</text>
@@ -417,6 +418,10 @@
             </phrase>
             <phrase id="0111111">
                 <text>agr_swamp_ratcatcher_talks_0111111</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="012">
+                <text>agr_swamp_ratcatcher_talks_012</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
