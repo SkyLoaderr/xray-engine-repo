@@ -9,11 +9,17 @@
     </string>
 
     <string id="agr_nii_security_shedule">
-        <text>Расписание патрулей не территории НИИ "Агропром"</text>
+        <text>Расписание патрулей на территории НИИ "Агропром"</text>
+    </string>
+    <string id="agr_nii_security_shedule_name">
+        <text>Расписание патрулей</text>
     </string>
 
     <string id="agr_nii_security_plan">
         <text>План патрулирования территории НИИ "Агропром"</text>
+    </string>
+    <string id="agr_nii_security_plan_name">
+        <text>План патрулирования НИИ "Агропром"</text>
     </string>
     
     <string id="agr_nii_security_plan_flash">

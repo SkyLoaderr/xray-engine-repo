@@ -125,12 +125,12 @@
         <text>agr_rats_n_soldiers_text</text>
     </article>
     
-    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule" group="Diary">
+    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" group="Diary">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_nii_security_shedule</text>
     </article>
     
-    <article id="agr_nii_security_plan" name="agr_nii_security_plan" group="Diary">
+    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" group="Diary">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_nii_security_plan</text>
     </article>
