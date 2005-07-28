@@ -156,7 +156,7 @@ void CCustomRocket::create_physic_shell	()
 void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c ,SGameMtl * material_1,SGameMtl * material_2) 
 {
 	do_colide = false;
-
+	
 
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
@@ -189,7 +189,7 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 	VERIFY(material);
 	if(material->Flags.is(SGameMtl::flPassable)) return;
 
-	if(!l_this) return;
+	if(!l_this||l_this->m_contact.contact) return;
 
 	CGameObject *l_pOwner = l_pUD1 ? smart_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? smart_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
@@ -227,8 +227,14 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 #endif
 			
 			l_this->Contact(l_pos, vUp);
-
-
+			l_this->m_pPhysicsShell->DisableCollision();
+			l_this->m_pPhysicsShell->set_LinearVel(Fvector().set(0,0,0));
+			l_this->m_pPhysicsShell->set_AngularVel(Fvector().set(0,0,0));
+			l_this->m_pPhysicsShell->setForce(Fvector().set(0,0,0));
+			l_this->m_pPhysicsShell->setTorque(Fvector().set(0,0,0));
+			l_this->m_pPhysicsShell->set_ApplyByGravity(false);
+			l_this->setEnabled(FALSE);
+			
 		}
 	} else {}
 }
@@ -300,6 +306,7 @@ void CCustomRocket::PlayContact()
 		m_pPhysicsShell->set_LinearVel(zero_vel);
 		m_pPhysicsShell->set_AngularVel(zero_vel);
 		m_pPhysicsShell->set_ObjectContactCallback(NULL);
+		m_pPhysicsShell->Disable();
 	}
 //	if (OnClient()) return;
 
