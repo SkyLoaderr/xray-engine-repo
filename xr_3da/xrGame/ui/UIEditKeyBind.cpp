@@ -99,7 +99,7 @@ void CUIEditKeyBind::SaveValue(){
 	if (m_bChanged)
 	{
         BindAction2Key(m_val.c_str());
-//		m_bChanged = false;
+		m_bChanged = false;
 	}
 }
 
