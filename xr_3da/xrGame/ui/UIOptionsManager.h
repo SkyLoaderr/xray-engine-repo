@@ -8,10 +8,11 @@ class CUIOptionsItem;
 
 class CUIOptionsManager{
 	friend class CUIOptionsItem;
-public:
+public:	
 	void SetCurrentValues(const char* group);
 	void SaveValues(const char* group);
 protected:
+	void SendMessage2Group(const char* group, const char* message);
 	void RegisterItem(CUIOptionsItem* item, const char* group);
 
 	typedef	xr_string									group_name;

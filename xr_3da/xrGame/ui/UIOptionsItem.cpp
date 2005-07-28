@@ -13,6 +13,14 @@ void CUIOptionsItem::Register(const char* entry, const char* group){
 	m_entry = entry;	
 }
 
+void CUIOptionsItem::SendMessage2Group(const char* group, const char* message){
+	UI()->OptionsManager()->SendMessage2Group(group,message);
+}
+
+void CUIOptionsItem::OnMessage(const char* group, const char* message){
+	// do nothing
+}
+
 LPCSTR CUIOptionsItem::GetOptStringValue(){
 	return Console->GetString(m_entry.c_str());
 }

@@ -11,6 +11,9 @@ public:
 protected:
 	virtual void	SetCurrentValue()	=0;
 	virtual void	SaveValue()			=0;
+			
+			void		SendMessage2Group(const char* group, const char* message);
+	virtual	void		OnMessage(const char* group, const char* message);
 
 			// key binding
 			void		BindAction2Key(const char* val);

@@ -23,6 +23,15 @@ void CUIOptionsManager::RegisterItem(CUIOptionsItem* item, const char* group){
 	}
 }
 
+void CUIOptionsManager::SendMessage2Group(const char* group, const char* message){
+	groups_it it = m_groups.find(group);
+
+	R_ASSERT2(m_groups.end() != it, "invalid group name");
+
+	for (u32 i = 0; i < (*it).second.size(); i++)
+		(*it).second[i]->OnMessage(group, message);
+}
+
 void CUIOptionsManager::SetCurrentValues(const char* group){
 	groups_it it = m_groups.find(group);
 
