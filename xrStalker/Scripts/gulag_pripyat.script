@@ -181,7 +181,7 @@ end
 
 function load_states(gname, type)
 	if type == "pri_followers" then
-	    printf("LOAD_STATES: pri_followers")
+	    --printf("LOAD_STATES: pri_followers")
 		return function(gulag)
 		    local state = gulag.state
 		    local actor = db.actor
