@@ -49,6 +49,7 @@ function action_wounded:initialize ()
 	self.object:set_desired_direction()
 	self.sound = "nil"
 	self.object:enable_talk()
+	self.object:set_start_dialog(self.a.help_start_dialog)
 end
 function action_wounded:execute ()
     action_base.execute (self)
@@ -358,6 +359,7 @@ function init_wounded(npc, ini, section, st, scheme)
 			st.hp_fight			= xr_meet.parse_data(npc, "10|false")
 			st.syndata			= xr_meet.parse_syn_data(npc, "")
 			st.help_dialog		= nil
+			st.help_start_dialog= nil
 		else
 			st.hp_state			= xr_meet.parse_data(npc, "30|help_me@help|10|wounded_heavy@help_heavy")
 			st.hp_state_see		= xr_meet.parse_data(npc, "30|wounded@help_see|10|wounded_heavy@help_heavy")
@@ -367,6 +369,7 @@ function init_wounded(npc, ini, section, st, scheme)
 			st.hp_fight			= xr_meet.parse_data(npc, "30|true|10|false")
 			st.syndata			= xr_meet.parse_syn_data(npc, "wounded@help")
 			st.help_dialog		= "actor_help_wounded"
+			st.help_start_dialog= nil
 		end
 	else
 		st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, ""))
@@ -377,6 +380,7 @@ function init_wounded(npc, ini, section, st, scheme)
 		st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, ""))
 		st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, ""))	
 		st.help_dialog	= utils.cfg_get_string(ini, section, "help_dialog", npc, false, "", "actor_help_wounded")
+		st.help_start_dialog = utils.cfg_get_string(ini, section, "help_start_dialog", npc, false, "", nil)
 	end
 	-- флажок, что функция хотя бы раз вызывалась
 	st.wounded_set = true
