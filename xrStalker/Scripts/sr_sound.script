@@ -93,6 +93,9 @@ function action_sound:reset_scheme()
 	--printf("_bp: sr_idle: action_sound:reset_scheme: self.object:name()='%s'", self.object:name())
 
 	self.st.idle_end = 0
+	self.st.signals = {}
+	self.is_actor_inside = false
+	self.snd_obj = nil
 	
 	self.slide_active = false
 end
@@ -132,6 +135,11 @@ function action_sound:update( delta )
 	---------------------------------------
 	
 	local actor = db.actor
+	
+	if self.st.play_at_actor == true and self.snd_obj ~= nil and self.snd_obj:playing () == true then
+	   self.snd_obj:set_position (actor:position ())
+	end    
+	    
 
 	-- если мы ещё нигде, то не считать ни входа, ни выхода
 	if self.is_actor_inside == nil then
@@ -144,6 +152,9 @@ function action_sound:update( delta )
 			self:on_enter( actor )
 			self.is_actor_inside = true
 		end
+        if self.snd_obj ~= nil and self.snd_obj:playing () == false then
+		   self.st.signals["sound_end"] = true
+		end    
 	else
 		if self.is_actor_inside then
 			--self.on_leave( actor )
@@ -187,6 +198,7 @@ function action_sound:on_enter( obj )
 			self.snd_obj	= sound_object(snd_name)
 			
 			self.snd_obj:play_at_pos( obj, pos, self.st.delay )
+			self.st.signals["sound_end"] = false
 		end
 	end
 end
@@ -271,4 +283,12 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 	else 
 		st.sound_slide		= false
 	end
+	
+	st.play_at_actor = utils.cfg_get_bool (ini, section, "play_at_actor", npc, false)
+    if st.play_at_actor ~= nil and st.play_at_actor == true then
+       if st.pos_type ~= pos_obj then
+          abort ("Can't define play sound at actor and path !!!")
+       end
+    end               
+	
 end
