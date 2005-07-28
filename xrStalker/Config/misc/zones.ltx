@@ -7,12 +7,6 @@
 #include "zone_rustyhair.ltx"
 
 
-
-
-
-
-
-
 [zone_gravi_zone]
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\gravi zone"
@@ -118,5 +112,12 @@ throw_out_power = 20			;импульс с которым артефакт будет выброшен из зоны в прои
 artefact_spawn_height = 1		;(м) высота на центром зоны где будет рожден артефакт
 
 
+[zone_gravi_zone_weak]:zone_gravi_zone
+$spawn 			= "zones\gravi zone_weak"
 
+[zone_gravi_zone_average]:zone_gravi_zone
+$spawn 			= "zones\gravi zone_average"
+
+[zone_gravi_zone_strong]:zone_gravi_zone
+$spawn 			= "zones\gravi zone_strong"
 
