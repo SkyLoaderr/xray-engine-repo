@@ -49,7 +49,10 @@ function action_wounded:initialize ()
 	self.object:set_desired_direction()
 	self.sound = "nil"
 	self.object:enable_talk()
-	self.object:set_start_dialog(self.a.help_start_dialog)
+
+	if self.a.help_start_dialog then
+		self.object:set_start_dialog(self.a.help_start_dialog)
+	end
 end
 function action_wounded:execute ()
     action_base.execute (self)
