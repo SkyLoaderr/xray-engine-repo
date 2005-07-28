@@ -166,36 +166,44 @@ void CMapActionOpenClose::execute		()
 		float gt				= Device.fTimeGlobal;
 		float time_to			= m_endMovingTime-gt;
 		float k					= _sqrt((gt-m_startMovingTime)/time_to);
-		//levelMap
+
+		CUIGlobalMap*			gm = m_object->GlobalMap();
+
 		if(m_bTransp){
 			if(!m_bOpening)
 				k = 1.0f - k;
 			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
 			m_map->SetColor			(clr);
+
+			
+			k = 1.0f - k;
+			clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
+			gm->SetColor			(clr);
 		}
 
 		Frect curr_map_rect		= m_map->GetWndRect();
 		calcRectLerp			(time_to,m_desiredLevelMapRect,curr_map_rect);
 		m_map->SetWndRect		(curr_map_rect);
 
-		//GlobalMap	
-		CUIGlobalMap*			gm = m_object->GlobalMap();
 		curr_map_rect			= gm->GetWndRect();
 		calcRectLerp			(time_to,m_desiredGlobalMapRect,curr_map_rect);
 		gm->SetWndRect			(curr_map_rect);
 	}else{
-		//levelMap		
+
+		CUIGlobalMap*			gm = m_object->GlobalMap();
 		if(m_bTransp){
 			float k = 1.0f;
 			if(!m_bOpening)
 				k = 1.0f - k;
 			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
-		m_map->SetColor			(clr);
+			m_map->SetColor			(clr);
+			
+			k = 1.0f - k;
+			clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
+			gm->SetColor			(clr);
 		}
 		m_map->SetWndRect		(m_desiredLevelMapRect);
 		
-		//GlobalMap	
-		CUIGlobalMap*			gm = m_object->GlobalMap();
 		gm->SetWndRect			(m_desiredGlobalMapRect);
 		
 		if(!m_bOpening)
@@ -226,6 +234,7 @@ void CMapActionOpen::initialize()
 	m_startMovingTime				= Device.fTimeGlobal;
 	m_endMovingTime					= m_startMovingTime + map_changing_time;
 	m_map->SetLocked				(true);
+	m_map->DetachAll				();
 	m_object->GlobalMap()->SetLocked(true);
 }
 
@@ -251,6 +260,7 @@ void CMapActionClose::initialize()
 	m_endMovingTime					= m_startMovingTime + map_changing_time;
 	m_map->SetLocked				(true);
 	m_object->GlobalMap()->SetLocked(true);
+	m_map->DetachAll				();
 
 	m_storage->set_property(0, false);
 }

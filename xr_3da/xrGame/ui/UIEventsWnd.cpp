@@ -144,7 +144,12 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 
 		CStringTable		stbl;
 		CUITaskItem			*pTaskItem = NULL;
-
+		if(task->m_Objectives[0].TaskState()==eTaskUserDefined){
+			VERIFY(task->m_Objectives.size()==1);
+			pTaskItem = xr_new<CUIUserTaskItem>(this);
+			pTaskItem->SetGameTask			(task, 0);
+			m_ListWnd->AddWindow			(pTaskItem);
+		}else
 		for (u32 i = 0; i < task->m_Objectives.size(); ++i)
 		{
 			if(i==0)
@@ -154,7 +159,6 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 
 			pTaskItem->SetGameTask			(task, i);
 			m_ListWnd->AddWindow			(pTaskItem);
-//			m_ListWnd->AddItem<CUIListItem>	(pTaskItem);
 		}
 
 	}
@@ -212,11 +216,9 @@ bool CUIEventsWnd::GetDescriptionMode		()
 void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 {
 	if(GetDescriptionMode()){//map
-		if(idx != 0 ){
-			CMapLocation* ml = t->m_Objectives[idx].HasMapLocation();
-			if(ml&&ml->SpotEnabled())
-				m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
-		}
+		CMapLocation* ml = t->m_Objectives[idx].HasMapLocation();
+		if(ml&&ml->SpotEnabled())
+			m_UIMapWnd->SetActiveMap(ml->LevelName(), ml->Position());
 	}else{//articles
 		m_UITaskInfoWnd->ClearAll	();
 

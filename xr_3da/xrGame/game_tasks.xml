@@ -34,11 +34,8 @@
 	<game_task id="user_task">
 		<title>My map task</title>
 		<objective>
-			<text></text>
-			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
 			<text>user defined map location</text>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 <!-- temporary for andy, do not delete !!! -->

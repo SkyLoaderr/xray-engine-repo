@@ -404,9 +404,8 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, ActiveMap()->MapName(), pos);
 				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
 				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
-				t->m_Objectives[1].SetTaskState	(eTaskUserDefined);
-				t->m_Objectives[1].object_id	= ml->ObjectID();
-				t->m_Objectives[1].map_location	= spot;
+				t->m_Objectives[0].object_id	= ml->ObjectID();
+				t->m_Objectives[0].map_location	= spot;
 				m_flags.set(lmUserSpotAdd, FALSE);
 				m_ToolBar[eAddSpot]->SetButtonMode		(CUIButton::BUTTON_NORMAL);
 				break;

@@ -26,7 +26,8 @@ CUICustomMap::~CUICustomMap ()
 void CUICustomMap::Update()
 {
 	CUIStatic::Update();
-	UpdateSpots();
+	if(!Locked())
+		UpdateSpots();
 }
 
 
@@ -367,8 +368,8 @@ void CUILevelMap::UpdateSpots		()
 		AttachChild					(m_anomalies_map);
 	}
 
-	CLevelFogOfWar* F	= Level().FogOfWarMngr().GetFogOfWar(MapName());
-	AttachChild		(F);
+//	CLevelFogOfWar* F	= Level().FogOfWarMngr().GetFogOfWar(MapName());
+//	AttachChild		(F);
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
 		if ((*it).location->Update())

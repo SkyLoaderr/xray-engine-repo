@@ -41,6 +41,7 @@ CUIEditBox::CUIEditBox(void)
 	m_textPos.set(3,0);
 	m_bNumbersOnly = false;
 	m_bFloatNumbers = false;
+	m_bFocusByDbClick = false;
 
 	m_pAnimation = xr_new<CUIColorAnimatorWrapper>("ui_map_area_anim");
 	m_cursorColor = 0xAAFFFF00;
@@ -86,6 +87,19 @@ void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
+	if (m_bFocusByDbClick)
+	{
+		if(mouse_action == WINDOW_LBUTTON_DB_CLICK && !m_bInputFocus)
+		{
+			GetParent()->SetKeyboardCapture(this, true);
+			m_bInputFocus = true;
+			m_iKeyPressAndHold = 0;
+
+			m_iCursorPos = xr_strlen(m_lines.GetText());
+		}
+		return;
+	}
+
 	if(mouse_action == WINDOW_LBUTTON_DOWN && !m_bInputFocus)
 	{
 		GetParent()->SetKeyboardCapture(this, true);
@@ -94,6 +108,7 @@ void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 
 		m_iCursorPos = xr_strlen(m_lines.GetText());
 	}
+
 }
 
 

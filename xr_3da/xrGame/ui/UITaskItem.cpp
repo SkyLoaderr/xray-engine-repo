@@ -7,7 +7,7 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include "UIEventsWnd.h"
-
+#include "UIEditBox.h"
 CUITaskItem::CUITaskItem			(CUIEventsWnd* w)
 :m_GameTask			(NULL),
 m_TaskObjectiveIdx	(-1),
@@ -248,3 +248,107 @@ void CUITaskSubItem::MarkSelected (bool b)
 		m_descriptionStatic->SetColor		(m_defColor);
 	}
 }
+
+CUIUserTaskItem::CUIUserTaskItem(CUIEventsWnd* w)
+:inherited(w)
+{
+	Init();
+}
+
+CUIUserTaskItem::~CUIUserTaskItem			()
+{
+}
+
+void  CUIUserTaskItem::Init					()
+{
+	inherited::Init				();
+	CUIXml uiXml;
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
+	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
+
+	m_image				= xr_new<CUIStatic>();		m_image->SetAutoDelete(true);				AttachChild(m_image);
+	m_descriptionStatic	= xr_new<CUIEditBox>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
+
+	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);			m_showLocationBtn->SetCheckMode(true);
+	m_showLocationBtn->SetWindowName("m_showLocationBtn");
+	Register						(m_showLocationBtn);
+	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
+
+	m_showPointerBtn	= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);			m_showPointerBtn->SetCheckMode(true);
+	m_showPointerBtn->SetWindowName("m_showPointerBtn");
+	Register						(m_showPointerBtn);
+	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
+	AddCallback						("m_showPointerBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowPointerClicked,this));
+
+	CUIXmlInit xml_init;
+	xml_init.InitWindow				(uiXml,"task_user_item",0,this);
+
+	xml_init.InitStatic				(uiXml,"task_user_item:image",0,m_image);
+	xml_init.InitEditBox			(uiXml,"task_user_item:description",0,m_descriptionStatic);
+//	m_descriptionStatic->SetDbClikMode(true);
+	xml_init.Init3tButton			(uiXml,"task_user_item:location_btn",0,m_showLocationBtn);
+	xml_init.Init3tButton			(uiXml,"task_user_item:show_pointer_btn",0,m_showPointerBtn);
+
+	m_defTextColor					= m_descriptionStatic->GetTextColor	();
+//	m_defColor						= m_descriptionStatic->GetColor	();
+}
+
+void CUIUserTaskItem::Update					()
+{
+	inherited::Update		();
+	SGameTaskObjective	*obj				= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
+	bool bHasLocation						= (NULL != obj->HasMapLocation());
+	m_showPointerBtn->Enable				(bHasLocation);
+	if(bHasLocation){
+		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
+		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
+		bool bShown							= m_GameTask->ShownLocations();
+		m_showLocationBtn->SetButtonMode	(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
+	}
+}
+
+void CUIUserTaskItem::SetGameTask				(CGameTask* gt, int obj_idx)
+{
+	inherited::SetGameTask			(gt, obj_idx);
+	CStringTable		stbl;
+	SGameTaskObjective	*obj = &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
+
+	m_image->InitTexture		(*obj->icon_texture_name);
+	Frect r							= obj->icon_rect;
+	m_image->SetOriginalRect	(r.x1, r.y1, r.x2, r.y2);
+	m_image->ClipperOn			();
+	m_image->SetStretchTexture	(true);
+
+	m_descriptionStatic->SetText				(*stbl(obj->description));
+	// 
+//	m_descriptionStatic->AdjustHeightToText		();
+	float h = _max(	m_image->GetWndPos().y+m_image->GetHeight(),
+					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
+	SetHeight									(h);
+
+}
+
+void CUIUserTaskItem::OnShowPointerClicked	()
+{
+	bool bPushed = m_showPointerBtn->GetCheck();
+	m_GameTask->HighlightSpotOnMap			(m_TaskObjectiveIdx,bPushed);
+}
+
+void CUIUserTaskItem::OnShowLocationClicked	()
+{
+	bool bPushed = m_showLocationBtn->GetCheck	();
+	m_GameTask->ShowLocations					(bPushed);
+}
+
+void CUIUserTaskItem::MarkSelected				(bool b)
+{
+	if(b)
+		;
+//		m_descriptionStatic->SetLightAnim	("ui_task_selected");
+	else{
+//		m_descriptionStatic->SetLightAnim	(NULL);
+		m_descriptionStatic->SetTextColor	(m_defTextColor);
+//		m_descriptionStatic->SetColor		(m_defColor);
+	}
+}
+

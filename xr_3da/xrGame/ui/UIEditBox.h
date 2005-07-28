@@ -38,6 +38,7 @@ public:
 			void	SetNumbersOnly	(bool status);
 			void	SetFloatNumbers	(bool status);
 			void	SetPasswordMode	(bool mode = true);
+			void	SetDbClickMode	(bool mode = true) {m_bFocusByDbClick = mode;}
 protected:
 
 	bool KeyPressed(int dik);
@@ -51,6 +52,7 @@ protected:
 
 	bool m_bNumbersOnly;
 	bool m_bFloatNumbers;
+	bool m_bFocusByDbClick;
 
 	//DIK клавиши, кот. нажата и удерживается, 0 если такой нет
 	int m_iKeyPressAndHold;

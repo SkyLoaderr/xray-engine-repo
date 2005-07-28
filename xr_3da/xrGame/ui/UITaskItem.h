@@ -7,6 +7,7 @@ class CUIStatic;
 class CUIButton;
 struct SGameTaskObjective;
 class CUIEventsWnd;
+class CUIEditBox;
 
 class CUITaskItem :public CUIListItem, public CUIWndCallback
 {
@@ -70,6 +71,30 @@ public:
 	virtual			~CUITaskSubItem			();
 	virtual void	Update					();
 	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
+			void	OnShowPointerClicked	();
+
+	virtual void	MarkSelected				(bool b);
+};
+
+class CUIUserTaskItem :public CUITaskItem
+{
+	typedef			CUITaskItem	inherited;
+	u32				m_defTextColor;
+	u32				m_defColor;
+protected:
+	CUI3tButton*	m_showPointerBtn;
+	CUI3tButton*	m_showLocationBtn;
+	CUIEditBox*		m_descriptionStatic;
+	CUIStatic*		m_image;
+
+	void			Init					();
+
+public:	
+					CUIUserTaskItem			(CUIEventsWnd* w);
+	virtual			~CUIUserTaskItem			();
+	virtual void	Update					();
+	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
+			void	OnShowLocationClicked	();
 			void	OnShowPointerClicked	();
 
 	virtual void	MarkSelected				(bool b);

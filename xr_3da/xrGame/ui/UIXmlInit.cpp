@@ -713,6 +713,9 @@ bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEd
 	InitLabel(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 
+	if (xml_doc.ReadAttribInt(path,index,"db_click",0))
+		pWnd->SetDbClickMode();
+
 	if (xml_doc.ReadAttribInt(path,index,"numonly",0))
 	{
         pWnd->SetNumbersOnly(true);
