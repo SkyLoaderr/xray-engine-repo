@@ -3,13 +3,14 @@
 #include "UIEditKeyBind.h"
 #include "UIColorAnimatorWrapper.h"
 
-#include "xr_level_controller.h"
+#include "../xr_level_controller.h"
 
 CUIEditKeyBind::CUIEditKeyBind(){
     m_bEditMode = false;
 
 	m_pAnimation = xr_new<CUIColorAnimatorWrapper>("ui_map_area_anim");
 	m_pAnimation->Cyclic(true);
+	m_bChanged = false;
 }
 
 void CUIEditKeyBind::SetText(const char* text){
@@ -37,35 +38,18 @@ extern _keybind keynames[];
 
 void CUIEditKeyBind::OnMouseDown(bool left_button){
 	if (m_bEditMode){		
-		int i = 0;
-
 		if (left_button){
-			while (keynames[i].name)
-			{
-				if (keynames[i].DIK == MOUSE_1)            
-				{
-					m_val = keynames[i].name;
-					SetText(keynames[i].name);
-					OnFocusLost();
-					return;
-				}
-				i++;
-			}
+			m_val = GetKey(MOUSE_1);
+			SetText(GetKeyName(MOUSE_1));
 		}
 		else
 		{
-			while (keynames[i].name)
-			{
-				if (keynames[i].DIK == MOUSE_2)            
-				{
-					m_val = keynames[i].name;
-					SetText(keynames[i].name);
-					OnFocusLost();
-					return;
-				}
-				i++;
-			}
+			m_val = GetKey(MOUSE_2);
+			SetText(GetKeyName(MOUSE_2));
 		}
+		OnFocusLost();
+		m_bChanged = true;
+		return;
 	}
 
 	if (left_button)
@@ -75,25 +59,17 @@ void CUIEditKeyBind::OnMouseDown(bool left_button){
 }
 
 bool CUIEditKeyBind::OnKeyboard(int dik, EUIMessages keyboard_action){
-	int i = 0;
-
 	if (CUILabel::OnKeyboard(dik, keyboard_action))
 		return true;
 
 	if (m_bEditMode)
-		while (keynames[i].name)
-		{
-            if (keynames[i].DIK == dik)            
-			{
-				m_val = keynames[i].name;
-				string64 buff;
-				strcpy(buff, (keynames[i].name[0]=='k')? keynames[i].name+1 : keynames[i].name);
-				SetText(buff);
-				OnFocusLost();
-				return true;
-			}
-			i++;
-		}
+	{
+		m_val = GetKey(dik);
+		SetText(GetKeyName(dik));
+		OnFocusLost();
+		m_bChanged = true;
+		return true;
+	}
 	return false;
 }
 
@@ -114,8 +90,45 @@ void CUIEditKeyBind::SetCurrentValue(){
 	ZeroMemory(buff,sizeof(buff));
 	GetActionBinding(m_entry.c_str(), buff);
 	SetText(buff);
+	ZeroMemory(buff,sizeof(buff));
+	GetActionBindingEx(m_entry.c_str(), buff);
+	m_val = buff;
 }
 
 void CUIEditKeyBind::SaveValue(){
-	BindAction2Key(m_val.c_str());
+	if (m_bChanged)
+	{
+        BindAction2Key(m_val.c_str());
+//		m_bChanged = false;
+	}
+}
+
+string64 get_key_str;
+
+char* GetKey(int dik){
+	int i = 0;
+	while (keynames[i].name)
+	{
+		if (keynames[i].DIK == dik)            
+			return keynames[i].name;
+		i++;
+	}
+
+	ZeroMemory(get_key_str,sizeof(get_key_str));
+	return get_key_str;
+}
+
+char* GetKeyName(int dik){
+	ZeroMemory(get_key_str,sizeof(get_key_str));
+	int i = 0;
+	while (keynames[i].name)
+	{
+		if (keynames[i].DIK == dik)
+		{
+			strcpy(get_key_str, (keynames[i].name[0]=='k')? keynames[i].name+1 : keynames[i].name);
+			return get_key_str;
+		}
+		i++;
+	}
+	return get_key_str;
 }

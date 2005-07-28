@@ -23,6 +23,21 @@ void CUIOptionsManager::RegisterItem(CUIOptionsItem* item, const char* group){
 	}
 }
 
+void CUIOptionsManager::UnRegisterGroup(const char* group){
+	groups_it it = m_groups.find(group);
+
+	if (it != m_groups.end())
+		m_groups.erase(it);
+}
+void CUIOptionsManager::UnRegisterItem(CUIOptionsItem* item){
+	groups_it it;
+	for (it = m_groups.begin(); it!= m_groups.end(); it++){
+		for (u32 i = 0; i < (*it).second.size(); i++)
+			if ((*it).second[i] == item){
+				(*it).second.erase((*it).second.begin() + i); return;}
+	}
+}
+
 void CUIOptionsManager::SendMessage2Group(const char* group, const char* message){
 	groups_it it = m_groups.find(group);
 

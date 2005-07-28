@@ -124,6 +124,7 @@ public:
 	void save(IWriter* F);
 };
 void GetActionBinding(LPCSTR action, char* dst_buff);
+void GetActionBindingEx(LPCSTR action, char* dst_buff);
 
 extern ConsoleBindCmds	bindConsoleCmds;
 

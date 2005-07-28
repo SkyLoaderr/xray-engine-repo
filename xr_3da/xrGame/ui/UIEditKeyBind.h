@@ -5,6 +5,9 @@
 
 class CUIColorAnimatorWrapper;
 
+char* GetKey(int dik);
+char* GetKeyName(int dik);
+
 class CUIEditKeyBind : public CUILabel, public CUIOptionsItem {
 public:
 	CUIEditKeyBind();
@@ -26,6 +29,7 @@ protected:
 
 	bool		m_bEditMode;
 	xr_string	m_val;
+	bool		m_bChanged;
 
 	CUIColorAnimatorWrapper* m_pAnimation;
 };

@@ -7,6 +7,7 @@
 class CUIOptionsItem{
 	friend class CUIOptionsManager;
 public:
+	virtual ~CUIOptionsItem();
 	virtual void Register(const char* entry, const char* group);
 protected:
 	virtual void	SetCurrentValue()	=0;

@@ -345,6 +345,28 @@ void GetActionBinding(LPCSTR action, char* dst_buff)
 
 }
 
+void GetActionBindingEx(LPCSTR action, char* dst_buff)
+{
+	for (int i=0; i<2048; ++i) {
+		if (key_binding[i]) {
+			for (int j=0; keybind[j].name ; ++j) {
+				if ( (keybind[j].DIK==key_binding[i])&&(_stricmp(keybind[j].name,action)==0) ) {
+					for (int k=0; keynames[k].name; ++k) {
+						if (keynames[k].DIK==i) {
+							if( xr_strlen(dst_buff) )
+								strcat(dst_buff, " or ");
+
+							strcat(dst_buff, keynames[k].name);
+							return;							
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
+
 class CCC_BindConsoleCmd : public IConsole_Command
 {
 public:

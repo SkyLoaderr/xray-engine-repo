@@ -14,6 +14,8 @@ public:
 protected:
 	void SendMessage2Group(const char* group, const char* message);
 	void RegisterItem(CUIOptionsItem* item, const char* group);
+	void UnRegisterGroup(const char* group);
+	void UnRegisterItem(CUIOptionsItem* item);
 
 	typedef	xr_string									group_name;
 	typedef xr_vector<CUIOptionsItem*>					items_list;
