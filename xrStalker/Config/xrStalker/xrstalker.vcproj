@@ -507,6 +507,9 @@
 					RelativePath=".\Config\mp\mp_actor.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\mp\mp_ranks.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\mp\teamdeathmatch_game.ltx">
 				</File>
 				<Filter
@@ -873,10 +876,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
