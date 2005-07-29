@@ -55,6 +55,7 @@ public:
 private:
 	shared_str		m_prev_active_map;
 	CUIMapWnd*		m_mapWnd;
+	float			m_minZoom;
 public:
 
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
@@ -63,11 +64,15 @@ public:
 					CUIGlobalMap			(CUIMapWnd*	pMapWnd);
 	virtual			~CUIGlobalMap			();
 	
+	IC void			SetMinZoom				(float zoom){m_minZoom=zoom;}
+	IC float		GetMinZoom				(){return m_minZoom;}
+
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();
 	virtual void	Update					();
 
 	CUIMapWnd*		MapWnd					() {return m_mapWnd;}
+	void			MoveWndDelta			(const Fvector2& d);
 };
 
 class CUILevelMap;
@@ -108,6 +113,8 @@ public:
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return m_globalMapSpot;}
 	virtual void				Draw				();
+	virtual void				Update				();
+	virtual void				OnMouse				(float x, float y, EUIMessages mouse_action);
 	
 	Frect						CalcWndRectOnGlobal	();
 	void						CalcOpenRect		(const Fvector2& destLevelMapLT, const float map_zoom, Frect& lmap_des_rect, Frect& gmap_des_rect);

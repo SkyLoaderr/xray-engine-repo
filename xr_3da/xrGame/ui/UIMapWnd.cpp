@@ -204,6 +204,9 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_GlobalMap->Init						("global_map",gameLtx,"hud\\default");
 
 	m_UILevelFrame->AttachChild				(m_GlobalMap);
+	m_GlobalMap->OptimalFit					(m_UILevelFrame->GetWndRect());
+	m_GlobalMap->SetMinZoom					(m_GlobalMap->GetCurrentZoom());
+	m_currentZoom							= m_GlobalMap->GetCurrentZoom();
 
 	m_MapText								= xr_new<CUIStatic>();
 	strconcat(pth,start_from,":title");
@@ -248,8 +251,10 @@ void CUIMapWnd::Show(bool status)
 		m_GlobalMap->Show	(true);
 		GameMaps::iterator	it = m_GameMaps.begin();
 		for(;it!=m_GameMaps.end();++it){
-			if(it->second->GlobalMapSpot())
-				m_GlobalMap->AttachChild	(it->second->GlobalMapSpot());
+			m_GlobalMap->AttachChild		(it->second);
+			it->second->Show(true);
+//.			if(it->second->GlobalMapSpot())
+//.				m_GlobalMap->AttachChild	(it->second->GlobalMapSpot());
 		}
 
 		if(	m_flags.test(lmFirst)){
@@ -356,28 +361,6 @@ void CUIMapWnd::Draw()
 
 bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
 {
-	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_A == dik)
-	{
-		if(ActiveMap() && ActiveMap()!=GlobalMap())
-			m_flags.set(lmUserSpotAdd,TRUE);
-		return true;
-	}
-	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_G == dik)
-	{
-		SetActiveMap(GlobalMap()->MapName());
-		return true;
-	}
-	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_N == dik)
-	{
-		u16 curr_map_idx = 0;
-		if(GlobalMap()!=ActiveMap()){
-			curr_map_idx = GetIdxByName(ActiveMap()->MapName());
-			++curr_map_idx;
-			if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
-		}
-		SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
-		return true;
-	}
 	return inherited::OnKeyboard	(dik, keyboard_action);
 }
 
@@ -406,7 +389,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				Fvector pos;
 				pos.set(p.x, 0.0f, p.y);
 				CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
-				shared_str spot = "user";
+				shared_str spot = "user"; 
 				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, ActiveMap()->MapName(), pos);
 				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
 				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
@@ -511,7 +494,7 @@ void CUIMapWnd::Update()
 void CUIMapWnd::SetZoom	( float value)
 {
 	m_currentZoom	= value;
-	clamp		(m_currentZoom, 1.0f, 3.0f);
+	clamp		(m_currentZoom, GlobalMap()->GetMinZoom(), 16.0f);
 }
 
 void CUIMapWnd::ShowHint()
@@ -534,7 +517,8 @@ void CUIMapWnd::ShowHint()
 
 void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 {
-		SetActiveMap(GlobalMap()->MapName());
+//.	SetActiveMap(GlobalMap()->MapName());
+	SetZoom(1.f);
 }
 
 void CUIMapWnd::OnToolNextMapClicked	(CUIWindow* w, void*)

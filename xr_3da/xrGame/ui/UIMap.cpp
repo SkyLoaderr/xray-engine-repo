@@ -90,8 +90,7 @@ Fvector2 CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixel
 	Fvector2 res;
 	if( !Heading() ){
 		return ConvertRealToLocalNoTransform(src);
-	}else
-	{
+	}else{
 		Fvector2 heading_pivot = GetStaticItem()->GetHeadingPivot();
 	
 		res = ConvertRealToLocalNoTransform(src);
@@ -245,6 +244,7 @@ bool CUICustomMap::NeedShowPointer(Frect r)
 CUIGlobalMap::CUIGlobalMap(CUIMapWnd*	pMapWnd)
 {
 	m_mapWnd				= pMapWnd;
+	m_minZoom				= 1.f;
 //	m_MinimizedSize.set		(0,0);
 //	m_NormalSize.set		(0,0);
 //	m_State					= stNone;
@@ -260,7 +260,6 @@ CUIGlobalMap::~CUIGlobalMap()
 void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 	inherited::Init(name, gameLtx, sh_name);
-
 }
 
 void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
@@ -272,6 +271,16 @@ void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 void CUIGlobalMap::Update()
 {
 	inherited::Update();
+	if (!fsimilar(GetCurrentZoom(),m_mapWnd->GetZoom(),EPS_L)){ 
+		float new_zoom	= GetCurrentZoom()+(m_mapWnd->GetZoom()-GetCurrentZoom())*1.f*Device.fTimeDelta;
+		Fvector2 np		= {0.f,0.f};
+		Frect tgt_rect;
+		tgt_rect.set	(np.x,np.y, np.x+BoundRect().width()*new_zoom,np.y+BoundRect().height()*new_zoom);
+		SetWndRect		(tgt_rect);
+//		SetWidth		(BoundRect().width()*new_zoom);
+//		SetHeight		(BoundRect().height()*new_zoom);
+		m_mapWnd->UpdateScroll();
+	}
 }
 
 void CUIGlobalMap::Draw					()
@@ -282,10 +291,24 @@ void CUIGlobalMap::Draw					()
 Fvector2 CUIGlobalMap::ConvertRealToLocal(const Fvector2& src)// pixels->pixels (relatively own left-top pos)
 {
 	Fvector2 res;
-	res.x = (src.x-m_BoundRect.lt.x ) * GetCurrentZoom();
-	res.y = (src.y-m_BoundRect.lt.y ) * GetCurrentZoom();
+	res.x = (src.x-m_BoundRect.lt.x) * GetCurrentZoom();
+	res.y = (src.y-m_BoundRect.lt.y) * GetCurrentZoom();
 	return res;
 }
+
+void CUIGlobalMap::MoveWndDelta(const Fvector2& d)
+{
+	inherited::MoveWndDelta	(d);
+
+	Frect clip			= GetClipperRect();
+	Frect r				= GetWndRect();
+	if (r.x2<clip.width())	r.x1 += clip.width()-r.x2;
+	if (r.y2<clip.height())	r.y1 += clip.height()-r.y2;
+	if (r.x1>0.0f)			r.x1 = 0.0f;
+	if (r.y1>0.0f)			r.y1 = 0.0f;
+	SetWndPos				(r.x1, r.y1);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -380,7 +403,7 @@ void CUILevelMap::UpdateSpots		()
 Frect CUILevelMap::CalcWndRectOnGlobal	()
 {
 	Frect res;
-	CUIGlobalMap*					globalMap = MapWnd()->GlobalMap();
+	CUIGlobalMap* globalMap			= MapWnd()->GlobalMap();
 
 	res.lt							= globalMap->ConvertRealToLocal(GlobalRect().lt);
 	res.rb							= globalMap->ConvertRealToLocal(GlobalRect().rb);
@@ -394,7 +417,7 @@ void CUILevelMap::CalcOpenRect			(	const Fvector2& destLevelMapCP,
 											Frect& lmap_des_rect, 
 											Frect& gmap_des_rect)
 {
-	CUIGlobalMap*					globalMap = MapWnd()->GlobalMap();
+	CUIGlobalMap* globalMap			= MapWnd()->GlobalMap();
 	Fvector2						local_map_center_old; 
 	Fvector2						local_map_center_new;
 
@@ -433,6 +456,36 @@ void CUILevelMap::CalcOpenRect			(	const Fvector2& destLevelMapCP,
 	gmap_des_rect.y2				= gmap_des_rect.y1			+ global_map_size_new.y;
 }
 
+void CUILevelMap::Update()
+{
+//.	if(Locked()) return;
+	//rect, pos
+	CUIGlobalMap*	w				= MapWnd()->GlobalMap();
+	Frect			rect;
+	Fvector2		tmp;
+
+	tmp								= w->ConvertRealToLocal(GlobalRect().lt);
+	rect.lt							= tmp;
+	tmp								= w->ConvertRealToLocal(GlobalRect().rb);
+	rect.rb							= tmp;
+
+	SetWndRect						(rect);
+
+	//highlight border
+//.
+}
+
+void CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
+{
+	inherited::OnMouse(x,y,mouse_action);
+	switch (mouse_action){			
+		case WINDOW_LBUTTON_DOWN:{	
+			CUIGlobalMap* globalMap	= MapWnd()->GlobalMap();
+			globalMap->MapWnd()->SetZoom(16.f/*globalMap->MapWnd()->GetZoom()*2.f*/);
+//			globalMap->MapWnd()->SetActiveMap( MapName() );
+		}break;
+	}
+}
 
 
 CUIMiniMap::CUIMiniMap()
