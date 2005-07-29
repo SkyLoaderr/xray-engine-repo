@@ -46,7 +46,11 @@
 	<character id="gar_bandit_leader">
 		<class>Bandit_leader</class>
 	</character>
-
+	<character id="bandit_novice_wounded">
+		<class>Bandit_novice_wounded</class>
+	</character>
+	
+	
 	<!-- Soldier  -->
 	<character id="soldier">
 		<class>Soldier_regular</class>
