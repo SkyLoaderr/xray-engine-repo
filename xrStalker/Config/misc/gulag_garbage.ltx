@@ -310,7 +310,7 @@ active = nil
 ;-------------------------------------------------------------------------------------------------
 [logic@gar_hellcar_group_hellcar]
 active = walker1@hellcar_way
-on_death = death@hellcar1
+on_death = death@hellcar
 
 [walker1@hellcar_way]
 path_walk = hellcar_walk
@@ -342,6 +342,22 @@ victim_wpn = 30|actor
 use = true
 use_wpn = true
 
+[meet@neutral]
+meet_state = 3|guard@wait
+meet_state_wpn = 3|guard@wait
+victim = 10|actor
+victim_wpn = 10|actor
+use = true
+use_wpn = true
+
+[meet@friend]
+meet_state = 5|wait@wait
+meet_state_wpn = 5|wait@wait
+victim = 20|actor
+victim_wpn = 20|actor
+use = true
+use_wpn = true
+
 [meet@after_battle]
 meet_state = 15|hello@talk_hello| 5|ward@wait
 meet_state_wpn = 15|hello@talk_hello| 5|ward@wait
@@ -353,8 +369,6 @@ use_wpn = true
 [death@hellcar]
 on_info = %+gar_hellcar_death +gar_open_fire%
 
-[death@hellcar1]
-on_info = {+gar_hellcar_help} %+gar_hellcar_death +gar_open_fire%
 
 [logic@gar_hellcar_group_walker1]
 active = walker1@gar_hellcar_group_walker1
@@ -404,6 +418,7 @@ active = kamp@gar_hellcar_group_rest1
 
 [kamp@gar_hellcar_group_rest1]
 center_point = kamp_point
+meet = meet@friend
 
 
 [logic@gar_hellcar_group_rest2]
@@ -411,6 +426,7 @@ active = kamp@gar_hellcar_group_rest2
 
 [kamp@gar_hellcar_group_rest2]
 center_point = kamp_point
+meet = meet@friend
 
 
 [logic@gar_hellcar_group_rest3]
@@ -418,17 +434,16 @@ active = kamp@gar_hellcar_group_rest3
 
 [kamp@gar_hellcar_group_rest3]
 center_point = kamp_point
+meet = meet@friend
 
 
 [logic@gar_hellcar_group_rest4]
 active = remark@hellcar_way_final
 on_death = death@hellcar
 
-
 [remark@hellcar_way_final]
 on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
 anim = wait
-;on_info = %+gar_after_battle%
 
 [walker2@hellcar_way]
 path_walk = hellcar_walk
@@ -529,6 +544,7 @@ active = walker@gar_dolg_blokpost_camper1
 [walker@gar_dolg_blokpost_camper1]
 path_walk = camper_walk1
 path_look = camper_look1
+meet = meet@neutral
 
 
 [logic@gar_dolg_blokpost_camper2]
@@ -537,6 +553,7 @@ active = walker@gar_dolg_blokpost_camper2
 [walker@gar_dolg_blokpost_camper2]
 path_walk = camper_walk2
 path_look = camper_look2
+meet = meet@neutral
 
 
 [logic@gar_dolg_blokpost_camper3]
@@ -545,6 +562,7 @@ active = walker@gar_dolg_blokpost_camper3
 [walker@gar_dolg_blokpost_camper3]
 path_walk = camper_walk3
 path_look = camper_look3
+meet = meet@neutral
 
 
 [logic@gar_dolg_blokpost_zoneguard1]
@@ -599,6 +617,7 @@ active = kamp@gar_dolg_blokpost_kamp1
 
 [kamp@gar_dolg_blokpost_kamp1]
 center_point = kamp_point
+meet = meet@neutral
 
 
 [logic@gar_dolg_blokpost_kamp2]
@@ -606,6 +625,7 @@ active = kamp@gar_dolg_blokpost_kamp2
 
 [kamp@gar_dolg_blokpost_kamp2]
 center_point = kamp_point
+meet = meet@neutral
 
 
 [logic@gar_dolg_blokpost_kamp3]
@@ -613,6 +633,7 @@ active = kamp@gar_dolg_blokpost_kamp3
 
 [kamp@gar_dolg_blokpost_kamp3]
 center_point = kamp_point
+meet = meet@neutral
 
 
 [logic@gar_dolg_blokpost_raid1]
