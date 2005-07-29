@@ -20,9 +20,8 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_lukash_location</map_location_type>
             <object_story_id>Mil_Lukash</object_story_id>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
-		
-		
 	</game_task>
 	
 	<game_task id="mil_mad_job">
@@ -79,18 +78,32 @@
 		<objective>
 			<text>mil_courier_phase1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_courier_location</map_location_type>
+			<object_story_id>Mil_Courier</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_courier_phase2</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_courier_location</map_location_type>
+			<object_story_id>Mil_Courier</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_courier_phase3</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_courier_location</map_location_type>
+			<object_story_id>Mil_Courier</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_courier_phase4</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_ara_location</map_location_type>
+			<object_story_id>Mil_Informator</object_story_id>
+		</objective>
+		<objective>
+			<text>mil_courier_phase5</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_lukash_location</map_location_type>
+            <object_story_id>Mil_Lukash</object_story_id>
 		</objective>
 	</game_task>
 	

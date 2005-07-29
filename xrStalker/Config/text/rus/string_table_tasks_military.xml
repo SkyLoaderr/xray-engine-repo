@@ -55,41 +55,45 @@
 	<text>РГ6 Угрюмого.</text>
 </string>
     
-    <string id="mil_lukash">
+<string id="mil_lukash">
 	<text>Лукаш.</text>
 </string>
 
-    <string id="mil_sniper">
+<string id="mil_sniper">
 	<text>Снайпер.</text>
 </string>
 
-    <string id="mil_dolg">
+<string id="mil_dolg">
 	<text>Группа "Долга".</text>
 </string>
 	
 	
-	<string id="mil_courier">
+<string id="mil_courier">
 	<text>Стукач.</text>
 </string>
 	
-	<string id="mil_courier_job">
+<string id="mil_courier_job">
 	<text>Разобраться со стукачом.</text>
 </string>
 	
-	<string id="mil_courier_phase1">
+<string id="mil_courier_phase1">
 	<text>Проследить за стукачом.</text>
 </string>
 	
-	<string id="mil_courier_phase2">
+<string id="mil_courier_phase2">
 	<text>Определить, с кем он встречается.</text>
 </string>
 	
-	<string id="mil_courier_phase3">
+<string id="mil_courier_phase3">
 	<text>Уничтожить стукача.</text>
 </string>
 
-	<string id="mil_courier_phase4">
+<string id="mil_courier_phase4">
 	<text>Уничтожить того, с кем курьер встречался</text>
+</string>
+
+<string id="mil_courier_phase5">
+	<text>Доложить Лукашу</text>
 </string>
 
 <string id="mil_blockpost_help">

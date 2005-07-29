@@ -92,11 +92,10 @@ function process_khutor ()
        return 
     end
     
-    if level_tasks.is_map_spot_present (710, "mil_courier_location") == false then
---    if db.actor:has_info ("mil_courier_quest_failed") == false and db.actor:has_info ("mil_courier_quest_complete")  == false then
-       level_tasks.add_location (710, "mil_courier_location")
-       level_tasks.remove_location (707, "mil_lukash_location")
-    end   
+    --if level_tasks.is_map_spot_present (710, "mil_courier_location") == false then
+       --level_tasks.add_location (710, "mil_courier_location")
+       --level_tasks.remove_location (707, "mil_lukash_location")
+    --end   
     
     if db.actor:has_info ("mil_courier_in_khutor_zone") then -- если курьер на хуторе, то...
        --if db.actor:dont_has_info ("mil_courier_khutor_leave") then  -- если он его не покинул...
@@ -104,12 +103,14 @@ function process_khutor ()
              if db.actor:dont_has_info ("mil_courier_quest_part1") then   
                 if db.actor:has_info ("mil_courier_call") then
                    level_tasks.set_task_state (task.completed, "mil_courier_job", 1) -- первая часть выполнена
+                   printf ("COURIER OBJECTIVE 1 COMPLETED")
                    db.actor:give_info_portion ("mil_courier_quest_part1")
                 end   
              end   
              if db.actor:has_info ("mil_ara_entered") then --если в это время явился Ара, то и вторая часть выполнена
                 if db.actor:dont_has_info ("mil_courier_quest_part2") then   
                    level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
+                   printf ("COURIER OBJECTIVE 2 COMPLETED")
                    db.actor:give_info_portion ("mil_courier_quest_part2")
                 end
              end   
@@ -121,13 +122,15 @@ function process_khutor ()
        if db.actor:has_info ("mil_courier_quest_part1") then -- если первая часть задачи выполнена
           if db.actor:dont_has_info ("mil_courier_quest_part3") then   
              level_tasks.set_task_state (task.completed, "mil_courier_job", 3) -- третья часть выполнена
+             printf ("COURIER OBJECTIVE 3 COMPLETED")
              db.actor:give_info_portion ("mil_courier_quest_part3")
           end   
        else   
           level_tasks.set_task_state (task.fail, "mil_courier_job", 0) --иначе, задача провалена
+          printf ("COURIER TASK FAILED")
           db.actor:give_info_portion ("mil_courier_quest_failed")
-          level_tasks.remove_location (710, "mil_courier_location")
-          level_tasks.add_location (707, "mil_lukash_location")
+          --level_tasks.remove_location (710, "mil_courier_location")
+          --level_tasks.add_location (707, "mil_lukash_location")
        end
     end   
     
@@ -135,28 +138,33 @@ function process_khutor ()
        if db.actor:has_info ("mil_courier_quest_part2") then -- если вторая часть задачи выполнена
           if db.actor:dont_has_info ("mil_courier_quest_part4") then   
              level_tasks.set_task_state (task.completed, "mil_courier_job", 4) -- третья часть выполнена
+             printf ("COURIER OBJECTIVE 4 COMPLETED")
              db.actor:give_info_portion ("mil_courier_quest_part4")
           end   
        else
           level_tasks.set_task_state (task.fail, "mil_courier_job", 0) --иначе, задача провалена
+          printf ("COURIER TASK FAILED")
           db.actor:give_info_portion ("mil_courier_quest_failed")
-          level_tasks.remove_location (710, "mil_courier_location")
-          level_tasks.add_location (707, "mil_lukash_location")
+          --level_tasks.remove_location (710, "mil_courier_location")
+          --level_tasks.add_location (707, "mil_lukash_location")
        end
     end
     
     if db.actor:has_info ("mil_ara_leave") then      
        level_tasks.set_task_state (task.fail, "mil_courier_job", 0) --если Ара ушел, то задача провалена
+       printf ("COURIER TASK FAILED")
        db.actor:give_info_portion ("mil_courier_quest_failed")
-       level_tasks.remove_location (710, "mil_courier_location")
-       level_tasks.add_location (707, "mil_lukash_location")
+       --level_tasks.remove_location (710, "mil_courier_location")
+       --level_tasks.add_location (707, "mil_lukash_location")
     end   
           
     if db.actor:has_info ("mil_courier_quest_part1") and 
        db.actor:has_info ("mil_courier_quest_part2") and
        db.actor:has_info ("mil_courier_quest_part3") and
        db.actor:has_info ("mil_courier_quest_part4") then
+       level_tasks.set_task_state (task.completed, "mil_courier_job", 5)
        level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
+       printf ("COURIER TASK COMPLETED")
        db.actor:give_info_portion ("mil_courier_quest_complete")
        db.actor:disable_info_portion ("mil_courier_dead")
        db.actor:disable_info_portion ("mil_ara_dead")
@@ -167,8 +175,8 @@ function process_khutor ()
        db.actor:disable_info_portion ("mil_courier_in_khutor_zone")
        db.actor:disable_info_portion ("mil_actor_in_khutor_zone_inside")
        db.actor:disable_info_portion ("mil_courier_khutor_leave")
-       level_tasks.remove_location (710, "mil_courier_location")
-       level_tasks.add_location (707, "mil_lukash_location")
+       --level_tasks.remove_location (710, "mil_courier_location")
+       --level_tasks.add_location (707, "mil_lukash_location")
     end       
        
              --if db.actor:has_info ("mil_actor_in_khutor_zone_inside") then
