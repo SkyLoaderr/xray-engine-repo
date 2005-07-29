@@ -1723,7 +1723,7 @@ void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element)
 void				CActor::OnHitHealthLoss					(float NewHealth)
 {
 	if (!m_bWasHitted) return;
-	if (OnClient()) return;
+	if (GameID() == GAME_SINGLE || !OnServer()) return;
 	float fNewHealth = NewHealth*100;
 	m_bWasHitted = false;
 	Msg ("Health Old : %.2f, Health New : %.2f", m_fLastHealth, fNewHealth);
