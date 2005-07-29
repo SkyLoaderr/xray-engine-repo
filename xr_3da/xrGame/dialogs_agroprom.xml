@@ -7,38 +7,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_krot_about_agroprom">
-        <has_info>agr_help_krot_done</has_info>
-        <phrase_list>
-            <phrase id="10">
-                <text>agr_krot_about_agroprom_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="100">
-                <text>agr_krot_about_agroprom_100</text>
-                <next>20</next>
-            </phrase>
-            <phrase id="20">
-                <text>agr_krot_about_agroprom_20</text>
-                <next>120</next>
-            </phrase>
-            <phrase id="120">
-                <text>agr_krot_about_agroprom_120</text>
-                <next>30</next>
-            </phrase>
-            <phrase id="30">
-                <text>agr_krot_about_agroprom_30</text>
-                <next>130</next>
-            </phrase>
-            <phrase id="130">
-                <text>agr_krot_about_agroprom_130</text>
-            </phrase>
-            <phrase id="0">
-                <text>agr_krot_about_agroprom_0</text>
-                <next>10</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_stalker_talk_level">
         <precondition>dialogs.level_agroprom</precondition>
         <phrase_list>
@@ -284,21 +252,11 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_factory_krot_start">
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_factory_krot_start_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_krot_actor_hasnot_met_seriy">
         <has_info>agr_help_krot_done</has_info>
         <dont_has_info>agr_krot_band_start</dont_has_info>
+        <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
         <phrase_list>
-            <phrase id="100">
-                <text>agr_krot_actor_hasnot_met_seriy_100</text>
-                <next>1000</next>
-            </phrase>
             <phrase id="1000">
                 <text>agr_krot_actor_hasnot_met_seriy_1000</text>
                 <next>150</next>
@@ -321,10 +279,6 @@
             <phrase id="3500">
                 <text>agr_krot_actor_hasnot_met_seriy_3500</text>
                 <next>400</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_krot_actor_hasnot_met_seriy_0</text>
-                <next>100</next>
             </phrase>
             <phrase id="200">
                 <text>agr_krot_actor_hasnot_met_seriy_200</text>
@@ -355,11 +309,20 @@
                 <action>agroprom_dialog.krot_give_flash</action>
                 <next>3500</next>
             </phrase>
+            <phrase id="100">
+                <text>agr_krot_actor_hasnot_met_seriy_100</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_actor_hasnot_met_seriy_0</text>
+                <next>100</next>
+            </phrase>
         </phrase_list>
     </dialog>
     <dialog id="agr_krot_actor_met_seriy">
         <has_info>agr_help_krot_done</has_info>
         <has_info>agr_krot_band_start</has_info>
+        <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
         <phrase_list>
             <phrase id="2500">
                 <text>agr_krot_actor_met_seriy_2500</text>
@@ -384,10 +347,6 @@
                 <text>agr_krot_actor_met_seriy_200</text>
                 <next>2000</next>
             </phrase>
-            <phrase id="0">
-                <text>agr_krot_actor_met_seriy_0</text>
-                <next>100</next>
-            </phrase>
             <phrase id="1000">
                 <text>agr_krot_actor_met_seriy_1000</text>
                 <give_info>agr_krot_secret_info</give_info>
@@ -397,6 +356,49 @@
                 <text>agr_krot_actor_met_seriy_150</text>
                 <action>agroprom_dialog.krot_give_flash</action>
                 <next>1500</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_actor_met_seriy_0</text>
+                <next>100</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_krot_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_krot_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_krot_about_agroprom">
+        <has_info>agr_help_krot_done</has_info>
+        <phrase_list>
+            <phrase id="120">
+                <text>agr_krot_about_agroprom_120</text>
+                <next>30</next>
+            </phrase>
+            <phrase id="30">
+                <text>agr_krot_about_agroprom_30</text>
+                <next>130</next>
+            </phrase>
+            <phrase id="130">
+                <text>agr_krot_about_agroprom_130</text>
+            </phrase>
+            <phrase id="0">
+                <text>agr_krot_about_agroprom_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_krot_about_agroprom_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="100">
+                <text>agr_krot_about_agroprom_100</text>
+                <next>20</next>
+            </phrase>
+            <phrase id="20">
+                <text>agr_krot_about_agroprom_20</text>
+                <next>120</next>
             </phrase>
         </phrase_list>
     </dialog>

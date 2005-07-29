@@ -23,7 +23,7 @@
 		<disable>agr_can_ask_krot_about_gunslinger</disable>
 	</info_portion>
 
-	<info_portion id="agr_find_gunslinger_cache">
+	<info_portion id="agr_find_gunslinger_cache_start">
 		<task>agroprom_find_gunslinger_cache</task>
 		<article>storyline_gunslinger_cache_info</article>
 		<action>level_tasks.notify_new_task</action>

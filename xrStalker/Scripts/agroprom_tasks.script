@@ -3,12 +3,14 @@
 function proceed()
     local actor = db.actor
 
-	if actor:object("krot_flash") then
+	if actor:object("krot_flash") and
+	   actor:dont_has_info("agr_find_gunslinger_cache_start")
+	then
 		if level_tasks.is_map_spot_present(302, "agr_krot_location") then
 			level_tasks.remove_location(302, "agr_krot_location")
 		end
 
-		actor:give_info_portion("agr_find_gunslinger_cache")
+		actor:give_info_portion("agr_find_gunslinger_cache_start")
 
 		actor:give_info_portion("agr_factory_spawn_spetsnaz")
 
