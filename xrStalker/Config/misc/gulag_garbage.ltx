@@ -310,7 +310,7 @@ active = nil
 ;-------------------------------------------------------------------------------------------------
 [logic@gar_hellcar_group_hellcar]
 active = walker1@hellcar_way
-on_death = death@hellcar
+on_death = death@hellcar1
 
 [walker1@hellcar_way]
 path_walk = hellcar_walk
@@ -353,6 +353,8 @@ use_wpn = true
 [death@hellcar]
 on_info = %+gar_hellcar_death +gar_open_fire%
 
+[death@hellcar1]
+on_info = {+gar_hellcar_help} %+gar_hellcar_death +gar_open_fire%
 
 [logic@gar_hellcar_group_walker1]
 active = walker1@gar_hellcar_group_walker1
