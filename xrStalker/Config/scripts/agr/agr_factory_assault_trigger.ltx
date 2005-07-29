@@ -1,8 +1,16 @@
 [logic]
-active = sr_idle
+active = sr_sound
+
+[sr_sound]
+snd = ambient\gunfire_2
+position = agr_factory_gunfire
+;delay = 0
+idle = 5000000000
+on_timer = 15000 | sr_idle
+on_actor_inside = %+agr_factory_assault_start%
 
 [sr_idle]
-on_actor_inside = %+agr_factory_assault_start +agr_help_stalkers_start% sr_idle@sos
+on_actor_inside = %+agr_help_stalkers_start% sr_idle@sos
 
 [sr_idle@sos]
 on_info  = %=agr_krot_sos% sr_idle@sos_pause

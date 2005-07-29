@@ -4,7 +4,13 @@ active = heli_move@idle1
 [heli_move@idle1]
 path_move = agr_heli3_idle_move
 engine_sound = false
-on_info = {+agr_factory_assault_start} heli_move@descent
+on_info = {+agr_factory_heli_start} heli_move@idle1_timed
+combat_ignore = true
+
+[heli_move@idle1_timed]
+path_move = agr_heli3_idle_move
+engine_sound = false
+on_timer = 20000| heli_move@descent
 combat_ignore = true
 
 [heli_move@descent]

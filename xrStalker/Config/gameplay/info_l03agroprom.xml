@@ -52,6 +52,8 @@
 	<info_portion id="agr_warning_recieved">
 	</info_portion>
 
+	<info_portion id="agr_factory_heli_start">
+	</info_portion>
 	<info_portion id="agr_factory_assault_start">
 	</info_portion>
 	<info_portion id="agr_factory_assault_skirmish">
