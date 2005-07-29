@@ -488,7 +488,14 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		HUD().Font().pFontSmall->OutNext("%s%s%spath          : %s",indent,indent,indent,*movement().patrol().path_name());
 		HUD().Font().pFontSmall->OutNext("%s%s%scompleted     : %s",indent,indent,indent,movement().patrol().completed() ? "+" : "-");
 		HUD().Font().pFontSmall->OutNext("%s%s%scurrent point : %d",indent,indent,indent,movement().patrol().get_current_point_index());
-		HUD().Font().pFontSmall->OutNext("%s%s%sextrapolate   : %s",indent,indent,indent,movement().patrol().extrapolate_path() ? "+" : "-");
+		if	(
+				movement().patrol().get_path()
+				&&
+				movement().patrol().get_path()->vertex(movement().patrol().get_current_point_index())
+			)
+			HUD().Font().pFontSmall->OutNext("%s%s%sextrapolate   : %s",indent,indent,indent,movement().patrol().extrapolate_path() ? "+" : "-");
+		else
+			HUD().Font().pFontSmall->OutNext("%s%s%sextrapolate   : unknown",indent,indent,indent);
 	}
 
 	if (movement().path_type() == MovementManager::ePathTypeGamePath) {
