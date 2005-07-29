@@ -17,7 +17,7 @@ struct SGameTaskObjective
 private:
 	ETaskState				task_state;
 public:
-	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1)),task_state(eTaskStateInProgress)	{}
+	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1)),task_state(eTaskStateInProgress),def_location_enabled(true)	{}
 	shared_str				description;
 	ARTICLE_ID				article_id;
 	shared_str				map_location;

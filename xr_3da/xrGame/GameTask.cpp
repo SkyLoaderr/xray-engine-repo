@@ -109,7 +109,12 @@ void CGameTask::Load(const TASK_ID& id)
 
 		objective.map_location			= g_gameTaskXml.Read(task_node, "objective:map_location_type", i, NULL);
 		LPCSTR object_story_id			= g_gameTaskXml.Read(task_node, "objective:object_story_id", i, NULL);
-		objective.def_location_enabled	= (NULL == g_gameTaskXml.Read(task_node, "objective:map_location_hidden", i, NULL));
+		LPCSTR ddd;
+		ddd = g_gameTaskXml.Read(task_node, "objective:map_location_hidden", i, NULL);
+		if(ddd)
+			objective.def_location_enabled = false;
+
+//		objective.def_location_enabled	= (NULL != g_gameTaskXml.Read(task_node, "objective:map_location_hidden", i, NULL));
 		bool b1,b2;
 		b1 = (0==objective.map_location.size());
 		b2 = (NULL==object_story_id);

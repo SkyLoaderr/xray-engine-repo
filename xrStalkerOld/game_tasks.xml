@@ -58,6 +58,7 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>agr_krot_location</map_location_type>
 			<object_story_id>Escape_Tutorial_Artefact</object_story_id>
+			<map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>
 
