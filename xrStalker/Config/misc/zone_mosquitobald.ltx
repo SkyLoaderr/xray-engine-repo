@@ -88,12 +88,32 @@ blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowou
 
 [zone_mosquito_bald_weak]:zone_mosquito_bald
 $spawn 			= "zones\mosquito bald_weak"
+hit_impulse_scale	= 0.3
+effective_radius	= 0.65 
+actor_blowout_radius_percent= 0.6
+
+awaking_time		= 100
+blowout_time		= 500	
+accamulate_time	= 5 
+
+artefacts		= af_medusa,0.25, af_cristall_flower, 0.15,af_night_star, 0.05
+
+blowout_wind_power			= 0.2
+
 
 [zone_mosquito_bald_average]:zone_mosquito_bald
 $spawn 			= "zones\mosquito bald_average"
 
+
+
+
 [zone_mosquito_bald_strong]:zone_mosquito_bald
 $spawn 			= "zones\mosquito bald_strong"
+
+
+
+
+
 
 [zone_mine_field]
 GroupControlSection	= spawn_group_zone
