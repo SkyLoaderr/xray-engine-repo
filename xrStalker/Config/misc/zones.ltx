@@ -114,6 +114,20 @@ artefact_spawn_height = 1		;(м) высота на центром зоны где будет рожден артефакт
 
 [zone_gravi_zone_weak]:zone_gravi_zone
 $spawn 			= "zones\gravi zone_weak"
+throw_in_impulse			= 		2000	;сила импульса вт€гивани€ (дл€ тела 100кг)
+throw_out_impulse			=		4000	;сила выбрасывани€ взрывом
+throw_in_impulse_alive		= 		400	;сила импульса вт€гивани€ дл€ живых
+throw_in_atten				= 	2		;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+blowout_radius_percent		= 	0.8	;радиус (в процентах от всего радиуса) непосредственно выброса
+actor_blowout_radius_percent=		0.5
+
+artefacts		= af_vyvert,0.4, af_gravi, 0.2, af_gold_fish, 0.05
+BirthProbability = 0.2;0.1
+
+awaking_time		= 1000
+blowout_time		= 2500	
+accamulate_time		= 500
+
 
 [zone_gravi_zone_average]:zone_gravi_zone
 $spawn 			= "zones\gravi zone_average"
