@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
+	<info_portion id="test_andy_info">
+		<task>andy_task_1</task>
+	</info_portion>
 
 	<info_portion id="tutorial_artefact_start">
 		<task>tutorial_find_artefact</task>

@@ -78,14 +78,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
-		{
-/*			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
-				pGameSP->PdaMenu->UIDiaryWnd->UIJobsWnd.IsShown())
-				pGameSP->PdaMenu->UIDiaryWnd->UIJobsWnd.ReloadJobs();
-*/
-			if(pGameSP->PdaMenu->UIEventsWnd->IsShown())
-				pGameSP->PdaMenu->UIEventsWnd->Reload();
-		}
+			pGameSP->PdaMenu->UIEventsWnd->Reload();
 	}
 	return t;
 }
@@ -127,6 +120,10 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 	{
 		t->m_FinishTime = Level().GetGameTime();
 	}
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(pGameSP) 
+		pGameSP->PdaMenu->UIEventsWnd->Reload();
+
 }
 
 void CGameTaskManager::ShowSpotOnMap			(CGameTask* t, int objective_id, bool bShow)

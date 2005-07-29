@@ -63,7 +63,6 @@ void CUIEventsWnd::Init				()
 	xml_init.InitWindow				(uiXml, "main_wnd:right_frame", 0, m_UIRightWnd);
 
 	m_UIMapWnd						= xr_new<CUIMapWnd>(); m_UIMapWnd->SetAutoDelete(false);
-//	m_UIRightWnd->AttachChild		(m_UIMapWnd);
 	m_UIMapWnd->Init				("pda_events.xml","main_wnd:right_frame:map_wnd");
 
 	m_UITaskInfoWnd					= xr_new<CUITaskDescrWnd>(); m_UITaskInfoWnd->SetAutoDelete(false);
@@ -73,11 +72,6 @@ void CUIEventsWnd::Init				()
 	m_ListWnd						= xr_new<CUIScrollView>(); m_ListWnd->SetAutoDelete(true);
 	m_UILeftFrame->AttachChild		(m_ListWnd);
 	xml_init.InitScrollView			(uiXml, "main_wnd:left_frame:list", 0, m_ListWnd);
-//	m_ListWnd->ActivateList			(true);
-//	m_ListWnd->EnableScrollBar		(true);
-//	m_ListWnd->EnableActiveBackground(false);
-//	m_ListWnd->SetWindowName		("list_wnd");
-//	Register						(m_ListWnd);
 
 	m_TaskFilter					= xr_new<CUITabControl>(); m_TaskFilter->SetAutoDelete(true);
 	m_UILeftHeader->AttachChild		(m_TaskFilter);
@@ -85,8 +79,6 @@ void CUIEventsWnd::Init				()
 	m_TaskFilter->SetWindowName		("filter_tab");
 	Register						(m_TaskFilter);
    AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
-
-//   AddCallback						("list_wnd",BUTTON_CLICKED,boost::bind(&CUIEventsWnd::OnListItemClicked,this,_1,_2));
 
    m_currFilter						= eActiveTask;
    SetDescriptionMode				(true);
@@ -164,10 +156,10 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	}
 
 }
-int i=0;
+//int i=0;
 void CUIEventsWnd::Show					(bool status)
 {
-	if(i==0&&status){
+/*	if(i==0&&status){
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_1", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
@@ -177,7 +169,7 @@ void CUIEventsWnd::Show					(bool status)
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_5", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_6", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		i=1;
-	};
+	};*/
 	inherited::Show			(status);
 	m_UIMapWnd->Show		(status);
 	m_UITaskInfoWnd->Show	(status);
