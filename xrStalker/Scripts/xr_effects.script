@@ -798,9 +798,9 @@ function mil_cap_mapspot (actor, npc)
 end
 
 function mil_cap_mapspot_remove (stalker1, stalker2)
-    if actor:has_info ("mil_fblockpost_spot") then
+    if db.actor:has_info ("mil_fblockpost_spot") then
        level_tasks.remove_location_safe (724, "mil_fblockpost_location")
-       actor:disable_info_portion ("mil_fblockpost_spot_remove")
+       db.actor:disable_info_portion ("mil_fblockpost_spot_remove")
     end      
 end
 
