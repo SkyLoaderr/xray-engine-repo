@@ -202,7 +202,7 @@ function animation:set_state(id, reset)
 									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
 									obj:enable_attachable_item(false)
 									printf("droped [%s] for [%s]", obj:name(), self.npc:name())
-									self.npc:drop_item(obj, self.npc:position())
+									self.npc:drop_item(obj)--, self.npc:position()) !!!FIXED !!!
 								end
 								self.states.attach_items[v.d].mode = "detach"
 								self.states.attach_items[v.d].done = true
