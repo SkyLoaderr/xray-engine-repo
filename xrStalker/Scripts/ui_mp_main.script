@@ -75,12 +75,6 @@ function mp_main:InitControls()
 	
 	self.tab = xml:InitTab("tab",self)
 	self:Register(self.tab, "tab")
-	
-	local ml = CUIMapList()
-	ml:SetAutoDelete(true)
-	ml:Show(false)
-	self:AttachChild(ml)
-	
 end
 
 function mp_main:UpdateControls()

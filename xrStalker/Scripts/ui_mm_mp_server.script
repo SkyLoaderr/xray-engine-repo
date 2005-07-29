@@ -41,10 +41,5 @@ function mp_server:InitControls(x, y, xml, handler)
 	-- EDIT BOXES
 	handler.edit_server_name = xml:InitEditBox("tab_server:edit_server_name", self)
 	handler.edit_password = xml:InitEditBox("tab_server:edit_password", self)
-	
-	local ml = CUIMapList()
-	ml:SetAutoDelete(true)
-	ml:Show(false)
-	self:AttachChild(ml)
 end
 
