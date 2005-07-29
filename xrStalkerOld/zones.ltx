@@ -148,7 +148,7 @@ blowout_radius_percent		= 	0.8	;радиус (в процентах от всего радиуса) непосредст
 actor_blowout_radius_percent=		0.5
 
 artefacts		= af_vyvert,0.5, af_gravi, 0.25, af_gold_fish, 0.05
-BirthProbability = 0.2;0.1
+
 
 awaking_time		= 100
 blowout_time		= 2500	
@@ -157,6 +157,38 @@ accamulate_time		= 250
 [zone_gravi_zone_strong]:zone_gravi_zone
 $spawn 			= "zones\gravi zone_strong"
 
+hit_impulse_scale	= 0.3
+effective_radius	= 0.9 
+actor_blowout_radius_percent= 0.85
+
+throw_in_impulse			= 		4000	;сила импульса вт€гивани€ (дл€ тела 100кг)
+throw_out_impulse			=		4000	;сила выбрасывани€ взрывом
+throw_in_impulse_alive		= 		800	;сила импульса вт€гивани€ дл€ живых
+throw_in_atten				= 	2		;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+blowout_radius_percent		= 	0.8	;радиус (в процентах от всего радиуса) непосредственно выброса
+actor_blowout_radius_percent=		0.5
+
+artefacts		= af_vyvert,0.6, af_gravi, 0.3, af_gold_fish, 0.1
+
+awaking_time		= 80
+blowout_time		= 2500	
+accamulate_time		= 200
+
 [zone_gravi_zone_killing]:zone_gravi_zone
 $spawn 			= "zones\gravi zone_killing"
+hit_impulse_scale	= 1
+effective_radius	= 1 
+actor_blowout_radius_percent= 1
 
+throw_in_impulse			= 		6000	;сила импульса вт€гивани€ (дл€ тела 100кг)
+throw_out_impulse			=		4000	;сила выбрасывани€ взрывом
+throw_in_impulse_alive		= 		800	;сила импульса вт€гивани€ дл€ живых
+throw_in_atten				= 	2		;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+blowout_radius_percent		= 	0.8	;радиус (в процентах от всего радиуса) непосредственно выброса
+actor_blowout_radius_percent=		0.5
+
+artefacts		= af_vyvert,0.0, af_gravi, 0.0, af_gold_fish, 0.0
+
+awaking_time		= 100
+blowout_time		= 2500	
+accamulate_time		= 150
