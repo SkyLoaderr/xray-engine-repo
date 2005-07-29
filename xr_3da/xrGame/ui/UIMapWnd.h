@@ -28,6 +28,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 					lmUserSpotRemove= (1<<2),
 					lmZoomIn		= (1<<3),
 					lmZoomOut		= (1<<4),
+					lmFirst			= (1<<5),
 				};
 	enum EMapToolBtn{	eGlobalMap=0,
 						eNextMap,

@@ -71,7 +71,7 @@ void CUITaskRootItem::Init			()
 
 	m_taskImage			= xr_new<CUIStatic>();		m_taskImage->SetAutoDelete(true);			AttachChild(m_taskImage);
 	m_captionStatic		= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
-	m_descriptionStatic	= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
+//	m_descriptionStatic	= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
 	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);			m_showLocationBtn->SetCheckMode(true);
 	m_switchDescriptionBtn= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);	m_switchDescriptionBtn->SetCheckMode(true);
 	m_showLocationBtn->SetWindowName("m_showLocationBtn");
@@ -86,7 +86,7 @@ void CUITaskRootItem::Init			()
 
 	xml_init.InitStatic			(uiXml,"task_root_item:image",0,m_taskImage);
 	xml_init.InitStatic			(uiXml,"task_root_item:caption",0,m_captionStatic);
-	xml_init.InitStatic			(uiXml,"task_root_item:description",0,m_descriptionStatic);
+//	xml_init.InitStatic			(uiXml,"task_root_item:description",0,m_descriptionStatic);
 	
 	xml_init.Init3tButton		(uiXml,"task_root_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton		(uiXml,"task_root_item:switch_description_btn",0,m_switchDescriptionBtn);
@@ -112,11 +112,11 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	m_captionStatic->AdjustHeightToText	();
 
 
-	m_descriptionStatic->SetWndPos	(m_descriptionStatic->GetWndPos().x, m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
-	m_descriptionStatic->SetText	(*stbl(obj->description));
+//	m_descriptionStatic->SetWndPos	(m_descriptionStatic->GetWndPos().x, m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
+//	m_descriptionStatic->SetText	(*stbl(obj->description));
 	
-	m_descriptionStatic->AdjustHeightToText	();
-	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_descriptionStatic->GetWndPos().y+m_descriptionStatic->GetHeight());
+//	m_descriptionStatic->AdjustHeightToText	();
+	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
 	SetHeight						(h);
 }
 

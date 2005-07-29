@@ -238,6 +238,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_ActionPlanner					= xr_new<CMapActionPlanner>();
 	m_ActionPlanner->setup			(this);
 	SetActiveMap					(m_GlobalMap);
+	m_flags.set(lmFirst,TRUE);
 }
 
 void CUIMapWnd::Show(bool status)
@@ -251,8 +252,11 @@ void CUIMapWnd::Show(bool status)
 				m_GlobalMap->AttachChild	(it->second->GlobalMapSpot());
 		}
 
-		if(ActiveMap()==NULL)
-			SetActiveMap		(m_GlobalMap->MapName());
+		if(	m_flags.test(lmFirst)){
+			OnToolActorClicked	(NULL,NULL);
+			m_flags.set(lmFirst,FALSE);
+			}
+//			SetActiveMap		(m_GlobalMap->MapName());
 //		if(m_activeLevelMap==NULL)
 //			SetActiveMap				(Level().name());
 //		SetActivePoint				( Level().CurrentEntity()->Position() );
@@ -303,6 +307,7 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name, Fvector2 pos)
 		map_idx							= GetIdxByName(level_name);
 		if(map_idx==u16(-1)){
 			Msg("Attempt to activate not registered map [%s]",*level_name);
+			SetActiveMap		(GlobalMap()->MapName());
 			return;
 		}
 		CUILevelMap* lm					= smart_cast<CUILevelMap*>(GetMapByIdx(map_idx));
@@ -386,6 +391,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		case WINDOW_MOUSE_MOVE:
 			if( pInput->iGetAsyncBtnState(0) ){
 				ActiveMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
+				if(ActiveMap() != GlobalMap())GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
 			}
 		break;

@@ -482,14 +482,13 @@ void CUIGlobalMapSpot::Draw		()
 void CUIGlobalMapSpot::Init	(u32 color, LPCSTR tex_name)
 {
 	inherited::Init				(0.0f,0.0f,20.0f,20.0f);
-//	UIBorder.SetVisiblePart(CUIFrameRect::fmBK,FALSE);
-//	UIBorder.Init("ui_frame_very_small",0.0f,0.0f,20.0f,20.0f);
 	UIBorder					= xr_new<CUIStatic>(); UIBorder->SetAutoDelete(true);
 	UIBorder->Init				(tex_name,0.0f,0.0f,20.0f,20.0f);
 	UIBorder->SetStretchTexture	(true);
 	UIBorder->ClipperOn			();
 
-	UIBorder->SetColor			(color);
+	UIBorder->SetColor			(0);
+//	UIBorder->SetColor			(color);
 	AttachChild					(UIBorder);
 }
 
@@ -524,7 +523,7 @@ void CUIGlobalMapSpot::Update()
 	UIBorder->SetHeight		(rect.height());
 
 	//highlight border
-	if(!w->Locked()){
+/*	if(!w->Locked()){
 		if(w->MapWnd()->ActiveMap()==m_owner_map)
 			UIBorder->SetColor(ourLevelMapColor);
 		else{
@@ -534,7 +533,7 @@ void CUIGlobalMapSpot::Update()
 			else
 					UIBorder->SetColor(inactiveLocalMapColor);
 		};
-	}
+	}*/
 }
 LPCSTR CUIGlobalMapSpot::GetHint()
 {

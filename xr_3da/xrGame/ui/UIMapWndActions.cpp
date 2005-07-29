@@ -169,18 +169,14 @@ void CMapActionOpenClose::execute		()
 
 		CUIGlobalMap*			gm = m_object->GlobalMap();
 
+/*		k = 1.0f;
 		if(m_bTransp){
 			if(!m_bOpening)
 				k = 1.0f - k;
 			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
 			m_map->SetColor			(clr);
-
-			
-			k = 1.0f - k;
-			clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
-			gm->SetColor			(clr);
 		}
-
+*/
 		Frect curr_map_rect		= m_map->GetWndRect();
 		calcRectLerp			(time_to,m_desiredLevelMapRect,curr_map_rect);
 		m_map->SetWndRect		(curr_map_rect);
@@ -191,17 +187,14 @@ void CMapActionOpenClose::execute		()
 	}else{
 
 		CUIGlobalMap*			gm = m_object->GlobalMap();
-		if(m_bTransp){
+/*		if(m_bTransp){
 			float k = 1.0f;
 			if(!m_bOpening)
 				k = 1.0f - k;
 			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
 			m_map->SetColor			(clr);
-			
-			k = 1.0f - k;
-			clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
-			gm->SetColor			(clr);
 		}
+*/
 		m_map->SetWndRect		(m_desiredLevelMapRect);
 		
 		gm->SetWndRect			(m_desiredGlobalMapRect);
