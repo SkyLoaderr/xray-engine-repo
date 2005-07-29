@@ -100,8 +100,65 @@ void CUIMapList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData ){
 		else if (m_pList2 ==pWnd)
 			OnBtnLeftClick();
 	}
+	else if (LIST_ITEM_CLICKED == msg)
+	{
+		if (pWnd == m_pList1)
+            OnListItemClicked();
+	}
 
 		
+}
+
+void CUIMapList::OnListItemClicked(){
+	int iItem = m_pList1->GetSelectedItem();
+	if (-1 == iItem)
+		return;
+
+	CUIListItem* pItem = m_pList1->GetItem(iItem);
+	xr_string map_name = "ui\\ui_map_pic_";
+	map_name +=	pItem->GetText();
+	xr_string full_name = map_name + ".dds";
+
+	if (FS.exist("$game_textures$",full_name.c_str()))
+		m_pMapPic->InitTexture(map_name.c_str());
+	else
+		m_pMapPic->InitTexture("ui\\ui_map_nopic");
+
+	xr_string desc_txt = "text\\map_desc\\";
+	desc_txt += pItem->GetText();
+	desc_txt += ".txt";
+
+
+	m_pMapName->SetText(pItem->GetText());
+
+	if (FS.exist("$game_config$", desc_txt.c_str()))
+	{
+		IReader *F = FS.r_open("$game_config$", desc_txt.c_str());
+		if(F==NULL) return;
+
+		CMemoryWriter W;	
+		
+		m_pMapDesc->SetText(ParseFile(W, F));
+		//	W.w(F->pointer(),F->length());
+		W.w_stringZ("");
+		FS.r_close(F);
+	}
+	else
+		m_pMapDesc->SetText("");
+
+}
+
+LPCSTR ParseFile(CMemoryWriter& W, IReader *F )
+{
+	string4096	str;
+
+	while( !F->eof() ){
+		F->r_string		(str,sizeof(str));
+		W.w_string		(str);
+	}
+	W.w_stringZ("");
+
+	return (LPCSTR )W.pointer();
 }
 
 xr_token g_GameModes[ ];
@@ -274,6 +331,15 @@ void CUIMapList::SetModeSelector(CUISpinText* ms){
 	m_pModeSelector = ms;
 }
 
+void CUIMapList::SetMapPic(CUIStatic* map_pic){
+	m_pMapPic = map_pic;
+}
+
+void CUIMapList::SetMapDesc(CUIStatic* map_desc, CUILabel* map_name){
+	m_pMapDesc = map_desc;
+	m_pMapName = map_name;
+}
+
 void CUIMapList::SetServerParams(LPCSTR params){
 	m_srv_params = params;
 }
@@ -319,9 +385,6 @@ void CUIMapList::UpdateMapList(GAME_TYPE GameType){
 
 void CUIMapList::OnBtnLeftClick(){
 	m_item2del = m_pList2->GetSelectedItem();
-//	int isel = m_pList2->GetSelectedItem();
-//	if (-1 != isel)
-//		m_pList2->RemoveItem(isel);
 }
 
 void CUIMapList::Update(){

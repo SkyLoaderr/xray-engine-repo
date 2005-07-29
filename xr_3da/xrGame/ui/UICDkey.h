@@ -5,6 +5,7 @@
 class CUICDkey : public CUIEditBox {
 public:
 	CUICDkey();
+	~CUICDkey();
 	// 
 	virtual	void	SetText			(LPCSTR str) {}
 	// CUIOptionsItem

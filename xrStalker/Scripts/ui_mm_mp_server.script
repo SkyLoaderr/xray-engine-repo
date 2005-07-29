@@ -23,11 +23,12 @@ function mp_server:InitControls(x, y, xml, handler)
 	handler.spin_max_players = xml:InitSpinNum("tab_server:spin_max_players", self)
 	handler.spin_mode = xml:InitSpinText("tab_server:spin_game_mode", self)
 	handler:Register(handler.spin_mode,"spin_game_mode")
-	
 	local map_list = xml:InitMapList("tab_server:map_list", self)
 	map_list:SetWeatherSelector(handler.spin_weather)
 	map_list:SetModeSelector(handler.spin_mode)
 	map_list:LoadMapList()
+	map_list:SetMapPic(handler.map_pic)
+	map_list:SetMapDesc(handler.map_desc, handler.map_name)
 	handler.map_list = map_list;
 	xml:InitLabel("tab_server:cap_server_settings", self)	
 	xml:InitStatic("tab_server:cap_server_name",	self)
@@ -40,5 +41,10 @@ function mp_server:InitControls(x, y, xml, handler)
 	-- EDIT BOXES
 	handler.edit_server_name = xml:InitEditBox("tab_server:edit_server_name", self)
 	handler.edit_password = xml:InitEditBox("tab_server:edit_password", self)
+	
+	local ml = CUIMapList()
+	ml:SetAutoDelete(true)
+	ml:Show(false)
+	self:AttachChild(ml)
 end
 

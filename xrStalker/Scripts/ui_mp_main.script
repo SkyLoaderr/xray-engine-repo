@@ -34,8 +34,11 @@ function mp_main:InitControls()
 
 	local xml = CScriptXmlInit()
 	xml:ParseFile("ui_mm_mp.xml")
-
-	xml:InitStatic("background", self)
+	
+	self.map_pic = xml:InitStatic("static_map_pic", self)
+	local bk = xml:InitStatic("background", self)
+	self.map_desc= xml:InitStatic("cap_map_description", bk)
+	self.map_name= xml:InitLabel("cap_map_name", bk)
 	self:Enable(true)
 
 	xml:InitLabel("cap_multiplayer",self)
@@ -72,6 +75,12 @@ function mp_main:InitControls()
 	
 	self.tab = xml:InitTab("tab",self)
 	self:Register(self.tab, "tab")
+	
+	local ml = CUIMapList()
+	ml:SetAutoDelete(true)
+	ml:Show(false)
+	self:AttachChild(ml)
+	
 end
 
 function mp_main:UpdateControls()

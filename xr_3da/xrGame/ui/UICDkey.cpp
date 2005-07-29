@@ -10,6 +10,11 @@ CUICDkey::CUICDkey(){
 	SetCurrentValue();
 }
 
+CUICDkey::~CUICDkey(){	
+
+
+}
+
 void CUICDkey::Draw(){
 	CUIFrameLineWnd::Draw();
 

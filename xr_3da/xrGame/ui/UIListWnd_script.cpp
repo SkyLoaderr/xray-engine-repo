@@ -99,7 +99,9 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("GetCommandLine",			&CUIMapList::GetCommandLine)
 		.def("SetServerParams",			&CUIMapList::SetServerParams)
 		.def("GetCurGameType",			&CUIMapList::GetCurGameType)
-		.def("StartDedicatedServer",	&CUIMapList::StartDedicatedServer),
+		.def("StartDedicatedServer",	&CUIMapList::StartDedicatedServer)
+		.def("SetMapPic",				&CUIMapList::SetMapPic)
+		.def("SetMapDesc",				&CUIMapList::SetMapDesc),	
 		
 
 		class_<enum_exporter<GAME_TYPE> >("GAME_TYPE")

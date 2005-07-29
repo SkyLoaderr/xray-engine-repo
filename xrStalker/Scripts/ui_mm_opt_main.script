@@ -71,6 +71,7 @@ function options_dialog:UpdateControls()
 	opt:SetCurrentValues("mm_opt_video")
 	opt:SetCurrentValues("mm_opt_sound")
 	opt:SetCurrentValues("mm_opt_controls")
+	opt:SetCurrentValues("key_binding")
 end
 
 
@@ -82,14 +83,28 @@ function options_dialog:InitCallBacks()
 end
 
 function options_dialog:OnBtnAccept()
-	local console = get_console()
+	
 	local opt = COptionsManager()
 	
-	opt:SaveValues("mm_opt_video")
-	opt:SaveValues("mm_opt_sound")
-	opt:SaveValues("mm_opt_controls")
+--	opt:SaveValues("mm_opt_video")
+--	opt:SaveValues("mm_opt_sound")
+--	opt:SaveValues("mm_opt_controls")
+--	opt:SaveValues("key_binding")
+--	console:execute("vid_restart")
 	
-	console:execute("vid_restart")
+	local i = self.tab:GetActiveIndex()
+	if i == 0 then
+		local console = get_console()
+		opt:SaveValues("mm_opt_video")
+		console:execute("vid_restart")
+	elseif i == 1 then		
+		opt:SaveValues("mm_opt_sound")
+	elseif i == 2 then
+--		self.dlg_gameplay:Show(true)
+	elseif i == 3 then
+		opt:SaveValues("mm_opt_controls")
+		opt:SaveValues("key_binding")
+	end
 
 end
 

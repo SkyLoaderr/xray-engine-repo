@@ -5,6 +5,7 @@
 
 class CUIListWnd;
 class CUILabel;
+class CUIStatic;
 class CUIFrameWindow;
 class CUI3tButton;
 class CUISpinText;
@@ -22,6 +23,7 @@ enum	GAME_TYPE
 };
 
 bool GetToken(char** sx, char* e, char* token);
+LPCSTR ParseFile(CMemoryWriter& W, IReader *F );
 
 class CUIMapList : public CUIWindow {
 public:
@@ -34,13 +36,17 @@ public:
 
 			void	SetWeatherSelector(CUISpinText* ws);
 			void	SetModeSelector(CUISpinText* ms);
+			void	SetMapPic(CUIStatic* map_pic);
+			void	SetMapDesc(CUIStatic* map_desc, CUILabel* map_name);
 			void	SetServerParams(LPCSTR params);
 			void	OnModeChange();
+			void	OnListItemClicked();
 			void	LoadMapList();
 			void	SaveMapList();
 	const char*		GetCommandLine(LPCSTR player_name);
 		GAME_TYPE	GetCurGameType();
 			void	StartDedicatedServer();
+
 private:
 	const char*		GetCLGameModeName(); // CL - command line
 			void	UpdateMapList(GAME_TYPE GameType);						
@@ -66,6 +72,9 @@ private:
 
 	CUISpinText*		m_pWeatherSelector;
 	CUISpinText*		m_pModeSelector;
+	CUIStatic*			m_pMapPic;
+	CUIStatic*			m_pMapDesc;
+	CUILabel*			m_pMapName;
 
 	GAME_TYPE	m_GameType;
 	char		m_Maps[GAME_END_LIST][20][1024];
