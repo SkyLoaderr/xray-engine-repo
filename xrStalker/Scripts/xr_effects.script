@@ -784,9 +784,6 @@ function mil_emeny_nearest (actor, npc)
     end    
 end
 
-function mil_remove_base_spot (actor, npc)
-    level_tasks.remove_location (733, "mil_freedom_location")
-end
 
 function mil_lukash_dead (actor, npc)
     if actor:has_info ("mil_sniper_get_job") then
