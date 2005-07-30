@@ -95,6 +95,8 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 		Msg		("wrong objective num for [%s]", *id);
 		return;
 	}
+	bool bHasPolinter = t->HighlightedSpotOnMap(objective_num);
+
 	t->m_Objectives[objective_num].SetTaskState	(state);
 
 	if(0 == objective_num){//setState for task and all sub-tasks
@@ -112,6 +114,8 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 				CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
 				ml->DisablePointer			();
 			}
+		if(bHasPolinter && (obj.TaskState()==eTaskStateInProgress) && (obj.HasMapLocation()) )
+			t->HighlightSpotOnMap(objective_num+1, true);
 	}
 
 	//если мы устанавливаем финальное состояние для основного задания, то

@@ -249,7 +249,7 @@ void CUIMapWnd::Show(bool status)
 		}
 
 		if(	m_flags.test(lmFirst)){
-//.!!		OnToolActorClicked	(NULL,NULL);
+//			OnToolActorClicked	(NULL,NULL);
 			m_flags.set(lmFirst,FALSE);
 			}
 		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
@@ -356,19 +356,20 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 			}
 		break;
 		case WINDOW_LBUTTON_DOWN:
-/*
+
 			if(m_flags.test(lmUserSpotAdd) ){
-				if(ActiveMap()==GlobalMap() ) break;
-				if(!ActiveMap()->GetAbsoluteRect().in(cursor_pos)) break;
+				if(m_tgtMap==NULL ) break;
+				if(m_tgtMap==GlobalMap() ) break;
+				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
 
 				Fvector2 cp = cursor_pos;
-				cp.sub(ActiveMap()->GetAbsolutePos());
-				Fvector2 p = ActiveMap()->ConvertLocalToReal(cp);
+				cp.sub(m_tgtMap->GetAbsolutePos());
+				Fvector2 p = m_tgtMap->ConvertLocalToReal(cp);
 				Fvector pos;
 				pos.set(p.x, 0.0f, p.y);
 				CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 				shared_str spot = "user"; 
-				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, ActiveMap()->MapName(), pos);
+				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, m_tgtMap->MapName(), pos);
 				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
 				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
 				t->m_Objectives[0].object_id	= ml->ObjectID();
@@ -378,20 +379,21 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				break;
 			}else
 			if(m_flags.test(lmZoomIn) || m_flags.test(lmZoomOut) ){
-				if(ActiveMap()==GlobalMap() ) break;
-				if(!ActiveMap()->GetAbsoluteRect().in(cursor_pos)) break;
+				if(m_tgtMap==NULL ) break;
+				if(m_tgtMap==GlobalMap() ) break;
+				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
 				if(m_flags.test(lmZoomIn))
 					SetZoom(GetZoom()+0.5f);
 				else
 					SetZoom(GetZoom()-0.5f);
 
 				Fvector2 cp = cursor_pos;
-				cp.sub(ActiveMap()->GetAbsolutePos());
-				Fvector2 p = ActiveMap()->ConvertLocalToReal(cp);
+				cp.sub(m_tgtMap->GetAbsolutePos());
+				Fvector2 p = m_tgtMap->ConvertLocalToReal(cp);
 
-				SetActiveMap	(ActiveMap()->MapName(), p);
+				SetTargetMap	(m_tgtMap, p);
 			}
-*/
+
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec();
@@ -475,11 +477,10 @@ void CUIMapWnd::SetZoom	( float value)
 
 void CUIMapWnd::ShowHint()
 {
-/*	LPCSTR hint = NULL;
-	if(ActiveMap())
-		hint = *(ActiveMap()->MapName());
+	LPCSTR hint = NULL;
+	if(m_tgtMap)
+		hint = *(m_tgtMap->MapName());
 	SetStatusInfo(hint);
-*/
 }
 
 

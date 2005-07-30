@@ -366,10 +366,10 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	float kw = m_GlobalRect.width	()	/	BoundRect().width		();
 	float kh = m_GlobalRect.height	()	/	BoundRect().height	();
 
-	if(fsimilar(kw,kh,EPS_L)){
+	if(FALSE==fsimilar(kw,kh,EPS_L)){
 		Msg("----incorrect global rect definition for map [%s]  kw=%f kh=%f",*MapName(),kw,kh);
-		Msg("----try x2=",m_GlobalRect.x1+kh*BoundRect().width());
-		Msg("----or  y2=",m_GlobalRect.y1+kw*BoundRect().height());
+		Msg("----try x2=%f",m_GlobalRect.x1+kh*BoundRect().width());
+		Msg("----or  y2=%f",m_GlobalRect.y1+kw*BoundRect().height());
 	}
 
 	if(gameLtx.line_exist(MapName(),"anomalies_texture")){
@@ -418,8 +418,6 @@ Frect CUILevelMap::CalcWndRectOnGlobal	()
 
 void CUILevelMap::Update()
 {
-//.	if(Locked()) return;
-	//rect, pos
 	CUIGlobalMap*	w				= MapWnd()->GlobalMap();
 	Frect			rect;
 	Fvector2		tmp;
@@ -431,8 +429,7 @@ void CUILevelMap::Update()
 
 	SetWndRect						(rect);
 
-	//highlight border
-//.
+	inherited::Update		();
 }
 
 void CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
