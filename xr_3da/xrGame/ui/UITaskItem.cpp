@@ -133,6 +133,10 @@ void CUITaskRootItem::Update		()
 	m_switchDescriptionBtn->SetButtonMode		(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
 }
 
+void CUITaskRootItem::OnDbClick	()
+{
+}
+
 void CUITaskRootItem::OnShowLocationClicked	()
 {
 	bool bPushed = m_showLocationBtn->GetCheck	();
@@ -230,6 +234,11 @@ void CUITaskSubItem::Update					()
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
 		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
 	}
+}
+
+void CUITaskSubItem::OnDbClick				()
+{
+	m_GameTask->HighlightSpotOnMap			(m_TaskObjectiveIdx,true);
 }
 
 void CUITaskSubItem::OnShowPointerClicked	()

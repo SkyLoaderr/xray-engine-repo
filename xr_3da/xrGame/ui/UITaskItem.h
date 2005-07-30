@@ -51,7 +51,8 @@ public:
 			void	OnShowLocationClicked	();
 			void	OnSwitchDescriptionClicked();
 
-	virtual void	MarkSelected				(bool b);
+	virtual void	MarkSelected			(bool b);
+	virtual void	OnDbClick				();
 };
 
 class CUITaskSubItem :public CUITaskItem
@@ -73,7 +74,8 @@ public:
 	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
 			void	OnShowPointerClicked	();
 
-	virtual void	MarkSelected				(bool b);
+	virtual void	MarkSelected			(bool b);
+	virtual void	OnDbClick				();
 };
 
 class CUIUserTaskItem :public CUITaskItem
@@ -96,5 +98,6 @@ public:
 			void	OnShowLocationClicked	();
 			void	OnShowPointerClicked	();
 			void	OnDescriptionChanged	();
+	virtual void	OnDbClick				()	{};
 	virtual void	MarkSelected			(bool b);
 };

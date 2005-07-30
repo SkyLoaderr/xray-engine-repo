@@ -377,6 +377,9 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 void CUILevelMap::UpdateSpots		()
 {
 	DetachAll		();
+	if( fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(),MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ) ) return;
+	if( FALSE==MapWnd()->ActiveMapRect().intersected(GetAbsoluteRect())) return;
+
 	if(m_anomalies_map){
 		m_anomalies_map->SetWndPos	(0.0f,0.0f);
 		m_anomalies_map->SetWndSize	(GetWndSize());
