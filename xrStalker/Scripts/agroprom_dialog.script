@@ -11,6 +11,10 @@ function sell_krot_flash_to_friend(first_speaker, second_speaker)
     second_speaker:transfer_money(1000, first_speaker)
 end
 
+function krot_give_flash(first_speaker, second_speaker)
+	first_speaker:transfer_item(first_speaker:object("krot_flash"), second_speaker)
+end
+
 ------------------------------------------------------------------------------------
 -- Talks about Ratcatcher
 ------------------------------------------------------------------------------------
