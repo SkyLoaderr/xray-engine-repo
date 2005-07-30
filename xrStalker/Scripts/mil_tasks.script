@@ -47,9 +47,10 @@ function process_tasks ()
 	
 	if actor:dont_has_info ("mil_freedom_rg6_task_complete") then
 	   if actor:object ("wpn_rg-6") and actor:has_info ("mil_freedom_rg6_task") then 
+	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
 	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
 	      actor:give_info_portion ("mil_freedom_rg6_task_complete")
-	      level_tasks.remove_location (706, "mil_rg6_location")
+	      --level_tasks.remove_location (706, "mil_rg6_location")
 	   end   
 	end	
 	
@@ -253,12 +254,14 @@ function process_info_portion(info_id)
 		      --level_tasks.add_location (702, "mil_max_location") 
 		   --end     
 		--return true		   
-	elseif info_id == "mil_max_job_complete" or info_id == "mil_freedom_cook_rg6_ask" then   
+	elseif info_id == "mil_max_job_complete" then   
 	       level_tasks.add_location (706, "mil_rg6_location") 	 
 	       --level_tasks.remove_location (702, "mil_max_location")  
 	    return true   
 	elseif info_id == "mil_rg6_gain" then       
-		   level_tasks.remove_location (706, "mil_rg6_location")
+	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
+	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
+		   --level_tasks.remove_location (706, "mil_rg6_location")
 		return true   
 	elseif info_id == "mil_bandit_flash_get" and db.actor:dont_has_info ("mil_bandit_secret_found") then
 	       level_tasks.add_location (705, "mil_secret_location")
@@ -278,7 +281,9 @@ function process_info_portion(info_id)
            --level_tasks.remove_location (702, "mil_max_location")
 	       level_tasks.add_location (706, "mil_rg6_location") 
 	elseif info_id == "mil_rg6_gain" then
-		   level_tasks.remove_location (706, "mil_rg6_location")
+--		   level_tasks.remove_location (706, "mil_rg6_location")
+	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
+	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
 		return true   
 	elseif info_id == "mil_max_lukash_call" then
 	       level_tasks.add_location (707, "mil_lukash_location")

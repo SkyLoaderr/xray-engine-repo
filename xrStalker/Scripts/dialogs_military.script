@@ -125,3 +125,15 @@ end
 function remove_ugrumy_mapspot (actor, npc)
     level_tasks.remove_location (727, "mil_ugrumy_location") 
 end
+
+function mil_remove_base_spot (actor, npc)
+    level_tasks.remove_location (733, "mil_freedom_location")
+end
+
+function mil_cook_subtask_completed (actor, npc)
+    level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 1)
+end
+
+function set_cook_subtask2_complete (actor, npc)
+    level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 2)
+end

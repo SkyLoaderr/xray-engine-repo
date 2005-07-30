@@ -127,5 +127,19 @@
 			<map_location_type>mil_freedom_location</map_location_type>
             <object_story_id>Mil_Freedom_base</object_story_id>
 		</objective>
+		<objective>
+			<text>mil_talk_cook</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_cook_location</map_location_type>
+            <object_story_id>Mil_Cook</object_story_id>
+            <map_location_hidden>1</map_location_hidden>
+		</objective>
+		<objective>
+			<text>mil_rg6</text>
+			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_rg6_location</map_location_type>
+            <object_story_id>Mil_RG6</object_story_id>
+            <map_location_hidden>1</map_location_hidden>
+		</objective>
 	</game_task>
 

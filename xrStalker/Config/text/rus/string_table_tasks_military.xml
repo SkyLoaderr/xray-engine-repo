@@ -111,3 +111,7 @@
 <string id="mil_find_cook">
 	<text>Найти повара на базе Свободы</text>
 </string>
+
+<string id="mil_talk_cook">
+	<text>Поговорить с поваром</text>
+</string>
