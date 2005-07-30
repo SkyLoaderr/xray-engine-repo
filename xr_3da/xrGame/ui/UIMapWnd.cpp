@@ -316,6 +316,8 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 
 	CWorldState							target_state;
 	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::ePropMapIdle,true));
+	m_ActionPlanner->m_storage.set_property(1,false);
+
 	m_ActionPlanner->set_target_state	(target_state);
 }
 

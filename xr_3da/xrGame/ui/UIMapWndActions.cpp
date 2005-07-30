@@ -153,7 +153,7 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 #endif
 	inherited::setup				(object);
 	clear							();
-	
+	m_storage.set_property		(1,false);
 	add_evaluator				(ePropFoo,				xr_new<CEvaluatorMapConst>		(false,"ePropFoo"));
 	add_evaluator				(ePropTargetMapShown,	xr_new<CEvaluatorTargetMapShown>("ePropTargetMapShown"));
 	add_evaluator				(ePropMapMinimized,		xr_new<CEvaluatorMapMinimized>	("ePropMapMinimized"));
@@ -279,6 +279,8 @@ void CMapActionIdle::finalize	()
 void CMapActionIdle::execute	()
 {
 	inherited::execute			();
+	m_storage->set_property	(1,true);
+
 }
 //-----------------------------------------------------------------------------
 
@@ -325,6 +327,7 @@ void CMapActionCenter::execute	()
 //-----------------------------------------------------------------------------
 bool CEvaluatorTargetMapShown::evaluate()
 {
+	if(m_storage->property(1)) return true;
 	VERIFY(m_object->m_tgtMap);
 	bool res = !!m_object->m_tgtMap->GetAbsoluteRect().intersected(m_object->ActiveMapRect());
 	return res;
@@ -333,6 +336,7 @@ bool CEvaluatorTargetMapShown::evaluate()
 
 bool CEvaluatorMapMinimized::evaluate	()
 {
+	if(m_storage->property(1)) return true;
 	VERIFY(m_object->m_tgtMap);
 	bool res = !!fsimilar(m_object->GlobalMap()->GetCurrentZoom(),m_object->GlobalMap()->GetMinZoom(),EPS );
 	return res;
@@ -341,6 +345,7 @@ bool CEvaluatorMapMinimized::evaluate	()
 
 bool CEvaluatorMapCentered::evaluate	()
 {
+	if(m_storage->property(1)) return true;
 	VERIFY(m_object->m_tgtMap);
 	Fvector2 destMapCP			= m_object->m_tgtMap->ConvertRealToLocalNoTransform(m_object->m_tgtMap->TargetCenter());
 	destMapCP.add				(m_object->m_tgtMap->GetAbsolutePos());
@@ -354,6 +359,7 @@ bool CEvaluatorMapCentered::evaluate	()
 
 bool CEvaluatorMapZoomed::evaluate			()
 {
+	if(m_storage->property(1)) return true;
 	VERIFY(m_object->m_tgtMap);
 	bool res = !!fsimilar(m_object->m_tgtMap->GetCurrentZoom(),m_object->GetZoom(),EPS );
 	return res;
