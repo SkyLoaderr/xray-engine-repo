@@ -4,6 +4,131 @@
 #include "UIMap.h"
 #include "UIMapWnd.h"
 
+typedef CActionBase<CUIMapWnd>				WORLD_OPERATOR;
+
+//actions
+class CSomeMapAction : public WORLD_OPERATOR {
+private:
+	typedef WORLD_OPERATOR	inherited;
+public:
+					CSomeMapAction		(LPCSTR action_name):inherited((CUIMapWnd*)NULL,action_name){}
+	virtual	void	initialize			()		{inherited::initialize	();};
+	virtual	void	execute				()		{inherited::execute		();};
+	virtual	void	finalize			()		{inherited::finalize	();};
+};
+
+class CMapActionZoomControl: public CSomeMapAction{
+private:
+	typedef CSomeMapAction	inherited;
+protected:
+	float			m_startMovingTime;
+	float			m_endMovingTime;
+	Frect			m_desiredMapRect;
+	bool			m_bZoomIn;
+public:
+					CMapActionZoomControl	(LPCSTR action_name) : inherited(action_name) {m_bZoomIn = true;}
+	virtual	void	execute				();
+	virtual	void	initialize			();
+	virtual	void	finalize			();
+};
+
+class CMapActionMaximize : public CMapActionZoomControl {
+private:
+	typedef CMapActionZoomControl	inherited;
+public:
+					CMapActionMaximize	(LPCSTR action_name) : inherited(action_name) {m_bZoomIn = true;}
+	virtual	void	initialize			();
+	virtual	void	finalize			();
+};
+
+class CMapActionMinimize : public CMapActionZoomControl {
+private:
+	typedef CMapActionZoomControl	inherited;
+public:
+					CMapActionMinimize	(LPCSTR action_name) : inherited(action_name) {m_bZoomIn = false;}
+	virtual	void	initialize			();
+	virtual	void	finalize			();
+};
+
+class CMapActionCenter : public CSomeMapAction {
+private:
+	typedef CSomeMapAction	inherited;
+protected:
+	float			m_startMovingTime;
+	float			m_endMovingTime;
+	Frect			m_desiredMapRect;
+public:
+					CMapActionCenter	(LPCSTR action_name) : inherited(action_name) {}
+	virtual	void	initialize			();
+	virtual	void	execute				();
+	virtual	void	finalize			();
+};
+
+class CMapActionIdle : public CSomeMapAction {
+private:
+	typedef CSomeMapAction	inherited;
+public:
+					CMapActionIdle		(LPCSTR action_name) : inherited(action_name) {}
+	virtual	void	initialize			();
+	virtual	void	execute				();
+	virtual	void	finalize			();
+};
+
+//evaluators
+class CSomeMapEvaluator : public CPropertyEvaluator<CUIMapWnd>
+{
+private:
+	typedef CPropertyEvaluator<CUIMapWnd>	inherited;
+public:
+					CSomeMapEvaluator	(LPCSTR evaluator_name):inherited((CUIMapWnd*)NULL,evaluator_name){}
+	virtual 		~CSomeMapEvaluator	()										{};
+};
+
+class CEvaluatorTargetMapShown : public CSomeMapEvaluator {
+private:
+	typedef CSomeMapEvaluator	inherited;
+public:
+					CEvaluatorTargetMapShown(LPCSTR evaluator_name=0):inherited(evaluator_name){};
+	virtual bool	evaluate			();
+};
+
+class CEvaluatorMapMinimized : public CSomeMapEvaluator {
+private:
+	typedef CSomeMapEvaluator	inherited;
+public:
+					CEvaluatorMapMinimized	(LPCSTR evaluator_name=0):inherited(evaluator_name){};
+	virtual bool	evaluate			();
+};
+
+class CEvaluatorMapCentered : public CSomeMapEvaluator {
+private:
+	typedef CSomeMapEvaluator	inherited;
+public:
+					CEvaluatorMapCentered(LPCSTR evaluator_name=0):inherited(evaluator_name){};
+	virtual bool	evaluate			();
+};
+
+class CEvaluatorMapZoomed : public CSomeMapEvaluator {
+private:
+	typedef CSomeMapEvaluator	inherited;
+public:
+	CEvaluatorMapZoomed(LPCSTR evaluator_name=0):inherited(evaluator_name){};
+	virtual bool	evaluate			();
+};
+
+class CEvaluatorMapConst: public CSomeMapEvaluator{
+private:
+	typedef CSomeMapEvaluator	inherited;
+	bool	ret_value;
+public:
+					CEvaluatorMapConst	(bool val=false, LPCSTR evaluator_name=0):inherited(evaluator_name){ret_value=val;};
+	virtual bool	evaluate			(){return ret_value;};
+
+};
+
+//-----------------------------------------------------------------------------
+// action planner implementation
+//-----------------------------------------------------------------------------
 
 using namespace UIMapWndActionsSpace;
 const float			map_changing_time			= 1.0f;//sec
@@ -21,133 +146,56 @@ LPCSTR CMapActionPlanner::object_name	() const
 }
 
 
-void CMapActionPlanner::setup			(CUIMapWnd *object)
+void CMapActionPlanner::setup		(CUIMapWnd *object)
 {
 #ifdef LOG_ACTION
-	set_use_log						(false);
+	set_use_log						(true);
 #endif
 	inherited::setup				(object);
 	clear							();
 	
-	m_storage.set_property			(0, false);
-	m_storage.set_property			(1, false);
+	add_evaluator				(ePropFoo,				xr_new<CEvaluatorMapConst>		(false,"ePropFoo"));
+	add_evaluator				(ePropTargetMapShown,	xr_new<CEvaluatorTargetMapShown>("ePropTargetMapShown"));
+	add_evaluator				(ePropMapMinimized,		xr_new<CEvaluatorMapMinimized>	("ePropMapMinimized"));
+	add_evaluator				(ePropMapCentered,		xr_new<CEvaluatorMapCentered>	("ePropMapCentered"));
+	add_evaluator				(ePropMapIdle,			xr_new<CEvaluatorMapConst>		(false,"ePropMapIdle"));
+	add_evaluator				(ePropMapZoomed,		xr_new<CEvaluatorMapZoomed>		("ePropMapZoomed"));
 
-//GlobalMap
-	add_evaluator				(make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),	xr_new<CEvaluatorGlobalMapOpened>(object->GlobalMap(),GLOBAL_MAP_IDX,"ePropGlobalMapOpened"));
-	add_evaluator				(make_map_id(GLOBAL_MAP_IDX,ePropMapOpenedIdle),xr_new<CMapEvaluatorConst>		(object->GlobalMap(),false,GLOBAL_MAP_IDX,"ePropMapOpenedIdle"));
-
-	_world_operator				*action = xr_new<CMapActionMapIdle>((CUILevelMap*)NULL,GLOBAL_MAP_IDX,"eOperatorGlobalMapOpenedIdle");
-	add_condition				(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),		true);
-	add_condition				(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpenedIdle),	false);
-	add_effect					(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpenedIdle),	true);
-	add_operator				(make_map_id(GLOBAL_MAP_IDX,eOperatorMapOpenIdle),action);
-
-//LevelMaps
-	const GameMaps& maps			= object->GameMaps();
-	u32 sz = maps.size();
-	for(u16 idx=0; idx<sz;++idx){
-		CUILevelMap* map			= smart_cast<CUILevelMap*>(object->GetMapByIdx(idx));
-		add_evaluators				(idx, map);
-		add_actions					(idx, map);
-	}
+	// final world state
+	_world_operator* action		= xr_new<CMapActionIdle>("eOperatorMapIdle");
+	add_condition				(action,ePropMapZoomed,		true);
+	add_condition				(action,ePropMapCentered,	true);
+	add_condition				(action,ePropTargetMapShown,true);
+	add_condition				(action,ePropMapIdle,		false);
+	add_effect					(action,ePropMapIdle,		true);
+	add_operator				(eOperatorMapIdle,action);
 
 
+	action						= xr_new<CMapActionMaximize>("eOperatorMapZoomIn");
+	add_condition				(action,ePropMapCentered,	true);
+	add_condition				(action,ePropMapMinimized,	false);
+	add_condition				(action,ePropTargetMapShown,true);
+	add_condition				(action,ePropMapZoomed,		false);
+	add_effect					(action,ePropMapMinimized,	false);
+	add_effect					(action,ePropMapZoomed,		true);
+	add_operator				(eOperatorMapZoomIn,action);
 
-//foo
-	add_evaluator				(ePropFoo,	xr_new<CMapEvaluatorConst>		((CUILevelMap*)NULL,false,u16(0),"ePropFoo"));
-								action = xr_new<CSomeMapAction>		((CUILevelMap*)NULL,u16(0),"ePropFoo");
-	add_condition				(action, ePropFoo, false);
-	add_effect					(action, ePropFoo, true);
-	add_operator				(eOperatorFoo,action);
+	action						= xr_new<CMapActionMinimize>("eOperatorMapZoomOut");
+	add_condition				(action,ePropMapMinimized,	false);
+	add_condition				(action,ePropTargetMapShown,false);
+	add_effect					(action,ePropMapMinimized,	true);
+	add_effect					(action,ePropTargetMapShown,true);
+	add_operator				(eOperatorMapZoomOut,action);
 
-
-	CWorldState					target_state;
-	target_state.add_condition	(CWorldProperty(ePropFoo,true));
-	set_target_state			(target_state);
-}
-
-
-void CMapActionPlanner::add_evaluators	(u16 map_idx, CUILevelMap* map)
-{
-	add_evaluator				(make_map_id(map_idx,ePropMapOpened),	 xr_new<CEvaluatorMapOpened>			(map,map_idx,"ePropMapOpened"));
-	add_evaluator				(make_map_id(map_idx,ePropMapOpenedIdle),xr_new<CMapEvaluatorConst>				(map,false,map_idx,"ePropMapOpenedIdle"));
-	add_evaluator				(make_map_id(map_idx,ePropGlobalMapCentered),xr_new<CEvaluatorGlobalMapCentered>(map,map_idx,"ePropGlobalMapCentered"));
-	add_evaluator				(make_map_id(map_idx,ePropLocalMapCentered),xr_new<CEvaluatorLocalMapCentered>	(map,map_idx,"ePropLocalMapCentered"));
-	add_evaluator				(make_map_id(map_idx,ePropLocalMapZoom),xr_new<CEvaluatorLocalMapZoom>			(map,map_idx,"ePropLocalMapZoom"));
-
-
-}
-
-void CMapActionPlanner::add_actions		(u16 map_idx, CUILevelMap* map)
-{
-	//open
-	_world_operator				*action = xr_new<CMapActionOpen>(map,map_idx,"eOperatorMapOpen");
-	add_condition				(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),	true);
-	add_condition				(action,make_map_id(map_idx,ePropGlobalMapCentered),true);
-	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		false);
-	add_effect					(action,make_map_id(map_idx,ePropMapOpened),		true);
-	add_effect					(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened), false);
-	add_operator				(make_map_id(map_idx,eOperatorMapOpen),action);
-
-
-	//close
-								action = xr_new<CMapActionClose>(map,map_idx,"eOperatorMapClose");
-	add_condition				(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),	false);
-	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
-	add_effect					(action,make_map_id(map_idx,ePropMapOpened),		false);
-	add_effect					(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),	true);
-	add_operator				(make_map_id(map_idx,eOperatorMapClose),action);
-
-	//center global
-								action = xr_new<CMapActionGlobalMapCenter>(map,map_idx,"eOperatorGlobalMapCenter");
-	add_condition				(action,make_map_id(GLOBAL_MAP_IDX,ePropMapOpened),	true);
-	add_condition				(action,make_map_id(map_idx,ePropGlobalMapCentered),false);
-	add_effect					(action,make_map_id(map_idx,ePropGlobalMapCentered),true);
-	add_operator				(make_map_id(map_idx,eOperatorGlobalMapCenter),		action);
-
-	//center local
-								action = xr_new<CMapActionLocalMapCenter>(map,map_idx,"eOperatorLocalMapCenter");
-	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	false);
-	add_effect					(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
-	add_operator				(make_map_id(map_idx,eOperatorLocalMapCenter),		action);
-
-	//zoom local
-								action = xr_new<CMapActionLocalMapZoom>(map,map_idx,"eOperatorLocalMapZoom");
-	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		false);
-	add_effect					(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
-	add_operator				(make_map_id(map_idx,eOperatorLocalMapZoom),		action);
-
-								action = xr_new<CMapActionMapIdle>((CUILevelMap*)NULL,map_idx,"ePropMapOpenedIdle");
-	add_condition				(action,make_map_id(map_idx,ePropMapOpened),		true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapZoom),		true);
-	add_condition				(action,make_map_id(map_idx,ePropLocalMapCentered),	true);
-	add_condition				(action,make_map_id(map_idx,ePropMapOpenedIdle),	false);
-	add_effect					(action,make_map_id(map_idx,ePropMapOpenedIdle),	true);
-	add_operator				(make_map_id(map_idx,eOperatorMapOpenIdle),action);
-
+	action						= xr_new<CMapActionCenter>("eOperatorMapCenter");
+	add_condition				(action,ePropTargetMapShown,true);
+	add_condition				(action,ePropMapCentered,	false);
+	add_effect					(action,ePropMapCentered,	true);
+	add_operator				(eOperatorMapCenter,action);
 }
 
 // actions and evaluators implementation
-CSomeMapAction::CSomeMapAction(CUILevelMap *object, u16 idx, LPCSTR action_name)
-:inherited((CUIMapWnd*)NULL, action_name), m_map(object)
-{
-#ifdef LOG_ACTION
-	name.sprintf("%d-%s", idx, action_name);
-	m_action_name = *name;
-#endif
-}
-CSomeMapEvaluator::CSomeMapEvaluator(CUICustomMap *object, u16 idx, LPCSTR evaluator_name)
-:inherited((CUIMapWnd*)NULL,evaluator_name),m_map(object)
-{	
-#ifdef LOG_ACTION
-	name.sprintf("%d-%s", idx, evaluator_name); 
-	m_evaluator_name = *name; 
-#endif
-};
-
+//-----------------------------------------------------------------------------
 void calcRectLerp(float time_to, const Frect& desired_rect, Frect& current_rect)
 {
 	float gdt				= Device.fTimeDelta;
@@ -159,296 +207,154 @@ void calcRectLerp(float time_to, const Frect& desired_rect, Frect& current_rect)
 	current_rect.y2		+= ((desired_rect.y2-current_rect.y2)/time_to)*gdt;
 }
 
-void CMapActionOpenClose::execute		()
+void CMapActionZoomControl::initialize	()
+{
+	VERIFY(m_object->m_tgtMap);
+}
+void CMapActionZoomControl::finalize	()
+{
+//	m_object->m_tgtMap	= NULL;
+}
+void CMapActionZoomControl::execute		()
 {
 	inherited::execute();
+	CUIGlobalMap*			gm	= m_object->GlobalMap();
 	if(m_endMovingTime > Device.fTimeGlobal){
 		float gt				= Device.fTimeGlobal;
 		float time_to			= m_endMovingTime-gt;
-		float k					= _sqrt((gt-m_startMovingTime)/time_to);
 
-		CUIGlobalMap*			gm = m_object->GlobalMap();
-
-/*		k = 1.0f;
-		if(m_bTransp){
-			if(!m_bOpening)
-				k = 1.0f - k;
-			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
-			m_map->SetColor			(clr);
-		}
-*/
-		Frect curr_map_rect		= m_map->GetWndRect();
-		calcRectLerp			(time_to,m_desiredLevelMapRect,curr_map_rect);
-		m_map->SetWndRect		(curr_map_rect);
-
-		curr_map_rect			= gm->GetWndRect();
-		calcRectLerp			(time_to,m_desiredGlobalMapRect,curr_map_rect);
+		Frect curr_map_rect		= gm->GetWndRect();
+		calcRectLerp			(time_to,m_desiredMapRect,curr_map_rect);
 		gm->SetWndRect			(curr_map_rect);
 	}else{
-
-		CUIGlobalMap*			gm = m_object->GlobalMap();
-/*		if(m_bTransp){
-			float k = 1.0f;
-			if(!m_bOpening)
-				k = 1.0f - k;
-			u32 clr					= color_rgba_f(1.0f,1.0f,1.0f,k);
-			m_map->SetColor			(clr);
-		}
-*/
-		m_map->SetWndRect		(m_desiredLevelMapRect);
-		
-		gm->SetWndRect			(m_desiredGlobalMapRect);
-		
-		if(!m_bOpening)
-			m_object->SetActiveMap	(gm);
-		else
-			m_object->SetActiveMap	(m_map);
-
+		gm->SetWndRect			(m_desiredMapRect);
 	}	
 }
+//-----------------------------------------------------------------------------
 
-void CMapActionOpen::initialize()
+void CMapActionMaximize::initialize()
 {
 	inherited::initialize();
-	m_object->RemoveMapToRender		(m_object->ActiveMap());
-
-	m_object->AddMapToRender		(m_map);
-
-	Frect rect_on_global			= m_map->CalcWndRectOnGlobal();
-	m_map->SetWndRect				(rect_on_global);
-	m_map->m_prevRect				= rect_on_global;
-
-	Fvector2 						destLevelMapCP = m_map->TargetCenter();
-	float map_zoom					= m_object->GetZoom();
-	m_map->CalcOpenRect				(destLevelMapCP, map_zoom, m_desiredLevelMapRect, m_desiredGlobalMapRect);
 	
-	m_object->GlobalMap()->m_prevRect = m_object->GlobalMap()->GetWndRect();//store
+	Fvector2 destMapCP			= m_object->m_tgtMap->ConvertRealToLocalNoTransform(m_object->m_tgtMap->TargetCenter());
+	destMapCP.add				(m_object->m_tgtMap->GetWndPos());
+
+	m_object->GlobalMap()->CalcOpenRect(destMapCP,m_desiredMapRect, 16.0f);
 	
-	m_startMovingTime				= Device.fTimeGlobal;
-	m_endMovingTime					= m_startMovingTime + map_changing_time;
-	m_map->SetLocked				(true);
-	m_map->DetachAll				();
-	m_object->GlobalMap()->SetLocked(true);
+	m_startMovingTime			= Device.fTimeGlobal;
+	m_endMovingTime				= m_startMovingTime + map_changing_time;
 }
-
-
-void CMapActionOpen::finalize		()
+void CMapActionMaximize::finalize		()
 {
 	inherited::finalize				();
-	m_map->SetLocked				(false);
-	m_object->GlobalMap()->SetLocked(false);
-	m_storage->set_property(0, false);
 }
+//-----------------------------------------------------------------------------
 
-
-void CMapActionClose::initialize()
-{
-	inherited::initialize			();
-
-	m_desiredLevelMapRect			= m_map->m_prevRect;
-	
-	m_desiredGlobalMapRect			= m_object->GlobalMap()->m_prevRect;
-
-	m_startMovingTime				= Device.fTimeGlobal;
-	m_endMovingTime					= m_startMovingTime + map_changing_time;
-	m_map->SetLocked				(true);
-	m_object->GlobalMap()->SetLocked(true);
-	m_map->DetachAll				();
-
-	m_storage->set_property(0, false);
-}
-
-
-
-void CMapActionClose::finalize	()
-{
-	inherited::finalize			();
-
-	m_map->SetLocked				(false);
-	m_object->GlobalMap()->SetLocked(false);
-	m_object->RemoveMapToRender		(m_map);
-}
-
-void CMapActionGlobalMapCenter::initialize	()
-{
-	inherited::initialize			();
-
-	CUIGlobalMap* globalMap			= m_object->GlobalMap();
-	Fvector2						level_rect_center;
-	Fvector2						global_map_center;
-	Fvector2						global_map_dest_center;
-	Frect							r;
-	r								= m_map->GlobalRect();
-	r.getcenter						(level_rect_center);
-
-	global_map_dest_center			= globalMap->ConvertRealToLocal(level_rect_center);
-	global_map_dest_center.add		(globalMap->GetAbsolutePos());
-	r								= m_object->ActiveMapRect();
-	r.getcenter						(global_map_center);
-
-	m_desiredGlobalMapRect			= globalMap->GetWndRect();
-	m_desiredGlobalMapRect.add		(	global_map_center.x - global_map_dest_center.x,
-										global_map_center.y - global_map_dest_center.y);
-
-	float _t =						global_map_dest_center.distance_to(global_map_center);
-	_t								*=map_moving_speed;
-	m_startMovingTime				= Device.fTimeGlobal;
-	m_endMovingTime					= m_startMovingTime+_t;
-	globalMap->SetLocked			(true);
-}
-
-void CMapActionGlobalMapCenter::execute						()
-{
-	inherited::execute			();
-
-	CUIGlobalMap* globalMap		= m_object->GlobalMap();
-
-	if(m_endMovingTime > Device.fTimeGlobal){
-		float gt				= Device.fTimeGlobal;
-		float time_to			= m_endMovingTime-gt;
-
-		Frect					curr_map_rect;
-		curr_map_rect			= globalMap->GetWndRect();
-		calcRectLerp			(time_to,m_desiredGlobalMapRect,curr_map_rect);
-		globalMap->SetWndRect	(curr_map_rect);
-	}else{
-		globalMap->SetWndRect	(m_desiredGlobalMapRect);
-	}
-}
-
-void CMapActionGlobalMapCenter::finalize	()
-{
-	inherited::finalize					();
-
-	m_object->GlobalMap()->SetLocked	(false);
-	m_storage->set_property				(0, true);
-}
-
-void CMapActionMapIdle::initialize			()
-{
-	m_storage->set_property				(0, true);
-	m_storage->set_property				(1, true);
-}
-
-void CMapActionMapIdle::finalize			()
-{
-}
-
-void CMapActionMapIdle::execute				()
-{
-}
-
-void CMapActionLocalMapCenter::initialize	()
-{
-	inherited::initialize			();
-
-	m_desiredLevelMapRect			= m_map->GetWndRect();
-
-	Fvector2 ppp					= m_map->ConvertRealToLocalNoTransform(m_map->TargetCenter());
-	ppp.add							(m_map->GetAbsolutePos());
-	Frect	vis_abs_rect			= m_object->ActiveMapRect();
-	float dw						= vis_abs_rect.lt.x + vis_abs_rect.width()/2.0f - ppp.x;
-	float dh						= vis_abs_rect.lt.y + vis_abs_rect.height()/2.0f - ppp.y;
-	m_desiredLevelMapRect.add		(dw,dh);
-
-	float _t =						_sqrt(dw*dw+dh*dh);
-	_t								*=map_moving_speed;
-	m_startMovingTime				= Device.fTimeGlobal;
-	m_endMovingTime					= m_startMovingTime+_t;
-}
-
-void CMapActionLocalMapCenter::finalize		()
-{
-	inherited::finalize			();
-}
-
-void CMapActionLocalMapCenter::execute		()
-{
-	inherited::execute			();
-	if(m_endMovingTime > Device.fTimeGlobal){
-		float gt				= Device.fTimeGlobal;
-		float time_to			= m_endMovingTime-gt;
-
-		Frect					curr_map_rect;
-		curr_map_rect			= m_map->GetWndRect();
-		calcRectLerp			(time_to,m_desiredLevelMapRect,curr_map_rect);
-		m_map->SetWndRect	(curr_map_rect);
-	}else{
-		m_map->SetWndRect	(m_desiredLevelMapRect);
-	}
-}
-
-void CMapActionLocalMapZoom::initialize	()
+void CMapActionMinimize::initialize()
 {
 	inherited::initialize();
 
-	Fvector2 						destLevelMapCP = m_map->TargetCenter();
-	float map_zoom					= m_object->GetZoom();
-	m_map->CalcOpenRect				(destLevelMapCP, map_zoom, m_desiredLevelMapRect, m_desiredGlobalMapRect);
-	
-	m_startMovingTime				= Device.fTimeGlobal;
-	m_endMovingTime					= m_startMovingTime + 0.5f;
-	m_map->SetLocked				(true);
-	m_object->GlobalMap()->SetLocked(true);
+	Fvector2 destMapCP			= m_object->m_tgtMap->ConvertRealToLocalNoTransform(m_object->m_tgtMap->TargetCenter());
+	destMapCP.add				(m_object->m_tgtMap->GetWndPos());
+
+	m_object->GlobalMap()->CalcOpenRect(destMapCP,m_desiredMapRect,m_object->GlobalMap()->GetMinZoom());
+
+	m_startMovingTime			= Device.fTimeGlobal;
+	m_endMovingTime				= m_startMovingTime + map_changing_time;
 }
-
-
-void CMapActionLocalMapZoom::finalize	()
+void CMapActionMinimize::finalize()
 {
 	inherited::finalize			();
-	m_map->SetLocked				(false);
-	m_object->GlobalMap()->SetLocked(false);
+}
+//-----------------------------------------------------------------------------
+
+void CMapActionIdle::initialize	()
+{
+	inherited::initialize		();
+}
+void CMapActionIdle::finalize	()
+{
+	inherited::finalize			();
+}
+void CMapActionIdle::execute	()
+{
+	inherited::execute			();
+}
+//-----------------------------------------------------------------------------
+
+void CMapActionCenter::initialize()
+{
+	inherited::initialize		();
+
+	Fvector2 destMapCP			= m_object->m_tgtMap->ConvertRealToLocalNoTransform(m_object->m_tgtMap->TargetCenter());
+	destMapCP.add				(m_object->m_tgtMap->GetAbsolutePos());
+
+	Frect	vis_abs_rect		= m_object->ActiveMapRect();
+	Fvector2 tmp_pt2;
+	vis_abs_rect.getcenter		(tmp_pt2);
+	tmp_pt2.sub					(destMapCP);
+
+	m_desiredMapRect			= m_object->GlobalMap()->GetWndRect();
+	m_desiredMapRect.add		(tmp_pt2.x, tmp_pt2.y);
+
+	m_startMovingTime			= Device.fTimeGlobal;
+	m_endMovingTime				= m_startMovingTime + _sqrt(tmp_pt2.x*tmp_pt2.x+tmp_pt2.y*tmp_pt2.y)*map_moving_speed;
 }
 
-
-bool CEvaluatorMapOpened::evaluate()
+void CMapActionCenter::finalize	()
 {
-	return (m_map == m_object->ActiveMap());
+	inherited::finalize			();
+}
+void CMapActionCenter::execute	()
+{
+	inherited::execute			();
+
+	CUIGlobalMap*			gm	= m_object->GlobalMap();
+	if(m_endMovingTime > Device.fTimeGlobal){
+		float gt				= Device.fTimeGlobal;
+		float time_to			= m_endMovingTime-gt;
+
+		Frect					curr_map_rect;
+		curr_map_rect			= gm->GetWndRect();
+		calcRectLerp			(time_to,m_desiredMapRect,curr_map_rect);
+		gm->SetWndRect			(curr_map_rect);
+	}else{
+		gm->SetWndRect			(m_desiredMapRect);
+	}
+}
+//-----------------------------------------------------------------------------
+bool CEvaluatorTargetMapShown::evaluate()
+{
+	VERIFY(m_object->m_tgtMap);
+	bool res = !!m_object->m_tgtMap->GetAbsoluteRect().intersected(m_object->ActiveMapRect());
+	return res;
+}
+//-----------------------------------------------------------------------------
+
+bool CEvaluatorMapMinimized::evaluate	()
+{
+	VERIFY(m_object->m_tgtMap);
+	bool res = !!fsimilar(m_object->GlobalMap()->GetCurrentZoom(),m_object->GlobalMap()->GetMinZoom(),EPS );
+	return res;
+}
+//-----------------------------------------------------------------------------
+
+bool CEvaluatorMapCentered::evaluate	()
+{
+	VERIFY(m_object->m_tgtMap);
+	Fvector2 destMapCP			= m_object->m_tgtMap->ConvertRealToLocalNoTransform(m_object->m_tgtMap->TargetCenter());
+	destMapCP.add				(m_object->m_tgtMap->GetAbsolutePos());
+
+	Frect	vis_abs_rect		= m_object->ActiveMapRect();
+	Fvector2 tmp_pt2;
+	vis_abs_rect.getcenter		(tmp_pt2);
+	tmp_pt2.sub					(destMapCP);
+	return (_sqrt(tmp_pt2.x*tmp_pt2.x+tmp_pt2.y*tmp_pt2.y) < 3.0f);
 }
 
-bool CEvaluatorGlobalMapOpened::evaluate()
+bool CEvaluatorMapZoomed::evaluate			()
 {
-	return ( m_map == m_object->ActiveMap() );
-}
-
-bool CEvaluatorGlobalMapCentered::evaluate	()
-{
-	if(m_storage->property(0)) return true;
-	CUIGlobalMap* globalMap			= m_object->GlobalMap();
-	CUILevelMap*  levelMap			= (CUILevelMap*)m_map; VERIFY(smart_cast<CUILevelMap*>(m_map));
-	Fvector2						level_rect_center;
-	Fvector2						visible_center;
-	Fvector2						global_map_dest_center;
-	Frect							r;
-	r								= levelMap->GlobalRect();
-	r.getcenter						(level_rect_center);
-	
-
-	global_map_dest_center			= globalMap->ConvertRealToLocal(level_rect_center);
-	global_map_dest_center.add		(globalMap->GetAbsolutePos());
-
-	r								= m_object->ActiveMapRect();
-	r.getcenter						(visible_center);
-
-	float _dist =					global_map_dest_center.distance_to(visible_center);
-	return (_dist<5.0f);
-}
-
-bool CEvaluatorLocalMapCentered::evaluate		()
-{
-	if(m_storage->property(1)) return true;
-	CUILevelMap*  levelMap			= (CUILevelMap*)m_map; VERIFY(smart_cast<CUILevelMap*>(m_map));
-
-	Fvector2 ppp					= levelMap->ConvertRealToLocalNoTransform(levelMap->TargetCenter());
-	ppp.add							(levelMap->GetAbsolutePos());
-	Frect	vis_abs_rect			= m_object->ActiveMapRect();
-	float dw						= vis_abs_rect.lt.x + vis_abs_rect.width()/2.0f - ppp.x;
-	float dh						= vis_abs_rect.lt.y + vis_abs_rect.height()/2.0f - ppp.y;
-
-	return (_abs(dw)<5.0f && _abs(dh)<5.0f);
-}
-
-bool CEvaluatorLocalMapZoom::evaluate					()
-{
-	return !!fsimilar( m_object->GetZoom(), m_map->GetCurrentZoom(), EPS_L);
+	VERIFY(m_object->m_tgtMap);
+	bool res = !!fsimilar(m_object->m_tgtMap->GetCurrentZoom(),m_object->GetZoom(),EPS );
+	return res;
 }

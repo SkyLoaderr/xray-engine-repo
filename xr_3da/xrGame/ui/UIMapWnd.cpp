@@ -39,11 +39,10 @@ const				HSCROLLBAR_STEP				= 20; // В пикселях
 
 CUIMapWnd::CUIMapWnd()
 {
-	m_activeMap				= NULL;
+	m_tgtMap				= NULL;
 	m_GlobalMap				= NULL;
 	m_flags.zero			();
 	m_currentZoom			= 1.0f;
-
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -53,12 +52,6 @@ CUIMapWnd::~CUIMapWnd()
 	delete_data			(m_MapText);
 }
 
-void CUIMapWnd::SetActivePoint(const Fvector &vNewPoint)
-{
-	if(!ActiveMap())return;
-	ActiveMap()->SetActivePoint(vNewPoint);
-	UpdateScroll();
-}
 
 void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 {
@@ -240,8 +233,8 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	Register						(m_GlobalMap);
 	m_ActionPlanner					= xr_new<CMapActionPlanner>();
 	m_ActionPlanner->setup			(this);
-	SetActiveMap					(m_GlobalMap);
-	m_flags.set(lmFirst,TRUE);
+	SetTargetMap					(m_GlobalMap);
+	m_flags.set						(lmFirst,TRUE);
 }
 
 void CUIMapWnd::Show(bool status)
@@ -253,18 +246,12 @@ void CUIMapWnd::Show(bool status)
 		for(;it!=m_GameMaps.end();++it){
 			m_GlobalMap->AttachChild		(it->second);
 			it->second->Show(true);
-//.			if(it->second->GlobalMapSpot())
-//.				m_GlobalMap->AttachChild	(it->second->GlobalMapSpot());
 		}
 
 		if(	m_flags.test(lmFirst)){
-			OnToolActorClicked	(NULL,NULL);
+//.!!		OnToolActorClicked	(NULL,NULL);
 			m_flags.set(lmFirst,FALSE);
 			}
-//			SetActiveMap		(m_GlobalMap->MapName());
-//		if(m_activeLevelMap==NULL)
-//			SetActiveMap				(Level().name());
-//		SetActivePoint				( Level().CurrentEntity()->Position() );
 		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
 	}else{
 		if(GlobalMap()){
@@ -295,67 +282,46 @@ void CUIMapWnd::RemoveMapToRender		(CUICustomMap* m)
 		m_UILevelFrame->DetachChild			(smart_cast<CUIWindow*>(m));
 }
 
-void CUIMapWnd::SetActiveMap(CUICustomMap* m)
+void CUIMapWnd::SetTargetMap			(const shared_str& name, const Fvector2& pos)
 {
-	m_activeMap							= m;
-	m_UILevelFrame->BringToTop			( m );
-	m->SetClipRect						( ActiveMapRect() );
-	UpdateScroll						();
+	u16	idx						= GetIdxByName			(name);
+	CUICustomMap*		lm		=GetMapByIdx			(idx);
+	SetTargetMap				(lm, pos);
 }
 
-void CUIMapWnd::SetActiveMap			(shared_str level_name, Fvector2 pos)
+void CUIMapWnd::SetTargetMap			(const shared_str& name)
 {
-	u16 map_idx;
-	if(level_name == m_GlobalMap->MapName())
-		map_idx							= GLOBAL_MAP_IDX;
-	else{
-		map_idx							= GetIdxByName(level_name);
-		if(map_idx==u16(-1)){
-			Msg("Attempt to activate not registered map [%s]",*level_name);
-			SetActiveMap		(GlobalMap()->MapName());
-			return;
-		}
-		CUILevelMap* lm					= smart_cast<CUILevelMap*>(GetMapByIdx(map_idx));
-		lm->TargetCenter()				= pos;
-	}
-
-	m_ActionPlanner->m_storage.set_property(1, false);
-	CWorldState							target_state;
-	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::make_map_id(map_idx,UIMapWndActionsSpace::ePropMapOpenedIdle),true));
-	m_ActionPlanner->set_target_state	(target_state);
-
+	u16	idx						= GetIdxByName			(name);
+	CUICustomMap*		lm		=GetMapByIdx			(idx);
+	SetTargetMap				(lm);
 }
 
-void CUIMapWnd::SetActiveMap			(shared_str level_name)
+void CUIMapWnd::SetTargetMap			(CUICustomMap* m)
 {
-	u16 map_idx;
-	if(level_name == m_GlobalMap->MapName())
-		map_idx							= GLOBAL_MAP_IDX;
-	else{
-		map_idx							= GetIdxByName(level_name);
-		if(map_idx==u16(-1)){
-			Msg("Attempt to activate not registered map [%s]",*level_name);
-			return;
-		}
-		CUILevelMap* lm					= smart_cast<CUILevelMap*>(GetMapByIdx(map_idx));
-		Frect r							= lm->BoundRect();
-		r.getcenter						(lm->TargetCenter());
-	}
+	m_tgtMap							= m;
+	Fvector2							pos;
+	Frect r								= m->BoundRect();
+	r.getcenter							(pos);
+	SetTargetMap						(m,pos);
+}
 
-	m_ActionPlanner->m_storage.set_property(1, false);
+void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
+{
+	m_tgtMap							= m;
+	m->TargetCenter()					= pos;
+	if(m==GlobalMap())
+		SetZoom(GlobalMap()->GetMinZoom());
+	else
+		SetZoom(16.0f);
+
 	CWorldState							target_state;
-	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::make_map_id(map_idx,UIMapWndActionsSpace::ePropMapOpenedIdle),true));
+	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::ePropMapIdle,true));
 	m_ActionPlanner->set_target_state	(target_state);
 }
-
 
 void CUIMapWnd::Draw()
 {
-	if(ActiveMap())
-		ActiveMap()->SetClipRect( ActiveMapRect() );
-
 	inherited::Draw();
-//	m_MapText->SetWndPos					(ActiveMapRect().lt);
 	m_MapText->Draw();
 }
 
@@ -369,16 +335,16 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 	inherited::OnMouse(x,y,mouse_action);
 	Fvector2 cursor_pos = GetUICursor()->GetPos();
 
-	if(ActiveMap() && !ActiveMap()->Locked() && ActiveMapRect().in( cursor_pos ) ){
+	if(GlobalMap() && !GlobalMap()->Locked() && ActiveMapRect().in( cursor_pos ) ){
 		switch (mouse_action){
 		case WINDOW_MOUSE_MOVE:
 			if( pInput->iGetAsyncBtnState(0) ){
-				ActiveMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
-				if(ActiveMap() != GlobalMap())GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
+				GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
 			}
 		break;
 		case WINDOW_LBUTTON_DOWN:
+/*
 			if(m_flags.test(lmUserSpotAdd) ){
 				if(ActiveMap()==GlobalMap() ) break;
 				if(!ActiveMap()->GetAbsoluteRect().in(cursor_pos)) break;
@@ -413,9 +379,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 
 				SetActiveMap	(ActiveMap()->MapName(), p);
 			}
-
-
-
+*/
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec();
@@ -452,9 +416,9 @@ u16 CUIMapWnd::GetIdxByName			(const shared_str& map_name)
 
 void CUIMapWnd::UpdateScroll()
 {
-	Fvector2 w_pos					= ActiveMap()->GetWndPos();
-	m_UIMainScrollV->SetRange		(0,iFloor(ActiveMap()->GetHeight()));
-	m_UIMainScrollH->SetRange		(0,iFloor(ActiveMap()->GetWidth()));
+	Fvector2 w_pos					= GlobalMap()->GetWndPos();
+	m_UIMainScrollV->SetRange		(0,iFloor(GlobalMap()->GetHeight()));
+	m_UIMainScrollH->SetRange		(0,iFloor(GlobalMap()->GetWidth()));
 
 	m_UIMainScrollV->SetScrollPos	(iFloor(-w_pos.y));
 	m_UIMainScrollH->SetScrollPos	(iFloor(-w_pos.x));
@@ -463,18 +427,18 @@ void CUIMapWnd::UpdateScroll()
 
 void CUIMapWnd::OnScrollV()
 {
-	if (ActiveMap()){
+	if (GlobalMap()){
 		int s_pos					= m_UIMainScrollV->GetScrollPos();
-		Fvector2 w_pos				= ActiveMap()->GetWndPos();
-		ActiveMap()->SetWndPos	(w_pos.x,float(-s_pos));
+		Fvector2 w_pos				= GlobalMap()->GetWndPos();
+		GlobalMap()->SetWndPos	(w_pos.x,float(-s_pos));
 	}
 }
 void CUIMapWnd::OnScrollH()
 {
-	if (ActiveMap()){
+	if (GlobalMap()){
 		int s_pos					= m_UIMainScrollH->GetScrollPos();
-		Fvector2 w_pos				= ActiveMap()->GetWndPos();
-		ActiveMap()->SetWndPos	(float(-s_pos),w_pos.y);
+		Fvector2 w_pos				= GlobalMap()->GetWndPos();
+		GlobalMap()->SetWndPos	(float(-s_pos),w_pos.y);
 	}
 }
 
@@ -499,19 +463,11 @@ void CUIMapWnd::SetZoom	( float value)
 
 void CUIMapWnd::ShowHint()
 {
-/*	Fvector2 cursor_pos = GetUICursor()->GetPos();
-	LPCSTR hint = NULL;
-
-	if( ActiveMap()==m_GlobalMap && m_GlobalMap->GetAbsoluteRect().in(cursor_pos) ){
-		hint = m_GlobalMap->GetHint();
-	}else
-		if( ActiveMap() && ActiveMap()->GetAbsoluteRect().in(cursor_pos) ){
-			hint = ActiveMap()->GetHint();
-	}*/
-	LPCSTR hint = NULL;
+/*	LPCSTR hint = NULL;
 	if(ActiveMap())
 		hint = *(ActiveMap()->MapName());
 	SetStatusInfo(hint);
+*/
 }
 
 
@@ -523,24 +479,26 @@ void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 
 void CUIMapWnd::OnToolNextMapClicked	(CUIWindow* w, void*)
 {
-	u16 curr_map_idx = 0;
+/*	u16 curr_map_idx = 0;
 	if(GlobalMap()!=ActiveMap()){
 		curr_map_idx = GetIdxByName(ActiveMap()->MapName());
 		++curr_map_idx;
 		if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
 	}
 	SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
+*/
 }
 
 void CUIMapWnd::OnToolPrevMapClicked	(CUIWindow* w, void*)
 {
-	u16 curr_map_idx = 0;
+/*	u16 curr_map_idx = 0;
 	if(GlobalMap()!=ActiveMap()){
 		curr_map_idx = GetIdxByName(ActiveMap()->MapName());
 		--curr_map_idx;
 		if(curr_map_idx == -1) curr_map_idx = (u16)GameMaps().size()-1;
 	}
 	SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
+*/
 }
 
 void CUIMapWnd::OnToolZoomInClicked		(CUIWindow* w, void*)
@@ -603,5 +561,6 @@ void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 	Fvector v					= Level().CurrentEntity()->Position();
 	Fvector2 v2;
 	v2.set						(v.x,v.z);
-	SetActiveMap				(Level().name(), v2);
+
+	SetTargetMap				(Level().name(), v2);
 }

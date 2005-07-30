@@ -309,20 +309,34 @@ void CUIGlobalMap::MoveWndDelta(const Fvector2& d)
 	SetWndPos				(r.x1, r.y1);
 }
 
+void CUIGlobalMap::CalcOpenRect		(const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom)
+{
+	Fvector2				new_center_pt;
+	map_desired_rect.set	(0.0f,0.0f, BoundRect().width()*m_mapWnd->GetZoom(),BoundRect().height()*m_mapWnd->GetZoom());
+	float d_zoom			= tgt_zoom/GetCurrentZoom();
+	new_center_pt.set		(center_point.x*d_zoom,center_point.y*d_zoom);
+	
+	Fvector2 tmp_pt			= GetAbsolutePos();
+	Frect	vis_abs_rect	= m_mapWnd->ActiveMapRect();
+	Fvector2 tmp_pt2;
+	vis_abs_rect.getcenter	(tmp_pt2);
+	float dx				= (tmp_pt2.x-tmp_pt.x)*d_zoom;
+	float dy				= (tmp_pt2.y-tmp_pt.y)*d_zoom;
+
+	map_desired_rect.add	(GetWndPos().x+dx,GetWndPos().y+dy);
+}
 
 //////////////////////////////////////////////////////////////////////////
 
 CUILevelMap::CUILevelMap(CUIMapWnd* p)
 {
 	m_mapWnd			= p;
-	m_globalMapSpot		= xr_new<CUIGlobalMapSpot>(this);
 	m_anomalies_map		= NULL;
 	Show				(false);
 }
 
 CUILevelMap::~CUILevelMap()
 {
-	xr_delete			(m_globalMapSpot);
 	xr_delete			(m_anomalies_map);
 }
 
@@ -352,21 +366,11 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	float kw = m_GlobalRect.width	()	/	BoundRect().width		();
 	float kh = m_GlobalRect.height	()	/	BoundRect().height	();
 
-	if(abs(kw-kh)>0.1){
+	if(fsimilar(kw,kh,EPS_L)){
 		Msg("----incorrect global rect definition for map [%s]  kw=%f kh=%f",*MapName(),kw,kh);
+		Msg("----try x2=",m_GlobalRect.x1+kh*BoundRect().width());
+		Msg("----or  y2=",m_GlobalRect.y1+kw*BoundRect().height());
 	}
-
-	LPCSTR global_map_spot = NULL;
-	if( gameLtx.line_exist(name,"texture_global") ){
-		global_map_spot			= gameLtx.r_string(name,"texture_global");
-	}else
-	if( gameLtx.line_exist(name,"texture") ){
-		global_map_spot			= gameLtx.r_string(name,"texture");
-	}else
-	{
-		global_map_spot = "ui\\ui_nomap2";
-	}
-	m_globalMapSpot->Init(inactiveLocalMapColor, global_map_spot);
 
 	if(gameLtx.line_exist(MapName(),"anomalies_texture")){
 		LPCSTR texture						= gameLtx.r_string	(MapName(),"anomalies_texture");
@@ -412,50 +416,6 @@ Frect CUILevelMap::CalcWndRectOnGlobal	()
 	return res;
 }
 
-void CUILevelMap::CalcOpenRect			(	const Fvector2& destLevelMapCP, 
-											const float map_zoom, 
-											Frect& lmap_des_rect, 
-											Frect& gmap_des_rect)
-{
-	CUIGlobalMap* globalMap			= MapWnd()->GlobalMap();
-	Fvector2						local_map_center_old; 
-	Fvector2						local_map_center_new;
-
-	float kk						= GetWndRect().width();
-	GetWndRect().getcenter			(local_map_center_old);
-
-	lmap_des_rect.set				(	0.0f, 
-										0.0f,
-										0.0f+BoundRect().width()*map_zoom,
-										0.0f+BoundRect().height()*map_zoom);
-	
-	Frect tmp_rect					= GetWndRect();
-	SetWndRect						(lmap_des_rect);
-	Fvector2 ppp					= ConvertRealToLocalNoTransform(destLevelMapCP);
-	SetWndRect						(tmp_rect);
-
-	Frect	vis_abs_rect			= m_mapWnd->ActiveMapRect();
-	float dw						= vis_abs_rect.width()/2.0f - ppp.x;
-	float dh						= vis_abs_rect.height()/2.0f - ppp.y;
-	lmap_des_rect.add				(dw,dh);
-
-	lmap_des_rect.getcenter			(local_map_center_new);
-	
-
-	Fvector2 global_map_pos_old		= globalMap->GetWndPos();
-	Fvector2 global_map_size_old	= globalMap->GetWndSize();
-	Fvector2 global_map_size_new	= global_map_size_old;
-	global_map_size_new.mul			(lmap_des_rect.width()/kk);
-
-	float kw						= (local_map_center_old.x-global_map_pos_old.x)/global_map_size_old.x;
-	float kh						= (local_map_center_old.y-global_map_pos_old.y)/global_map_size_old.y;
-
-	gmap_des_rect.x1				= local_map_center_new.x	- global_map_size_new.x*kw;
-	gmap_des_rect.y1				= local_map_center_new.y	- global_map_size_new.y*kh;
-	gmap_des_rect.x2				= gmap_des_rect.x1			+ global_map_size_new.x;
-	gmap_des_rect.y2				= gmap_des_rect.y1			+ global_map_size_new.y;
-}
-
 void CUILevelMap::Update()
 {
 //.	if(Locked()) return;
@@ -480,9 +440,9 @@ void CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 	inherited::OnMouse(x,y,mouse_action);
 	switch (mouse_action){			
 		case WINDOW_LBUTTON_DOWN:{	
-			CUIGlobalMap* globalMap	= MapWnd()->GlobalMap();
-			globalMap->MapWnd()->SetZoom(16.f/*globalMap->MapWnd()->GetZoom()*2.f*/);
-//			globalMap->MapWnd()->SetActiveMap( MapName() );
+			MapWnd()->SetTargetMap( MapName() );
+//			CUIGlobalMap* globalMap	= MapWnd()->GlobalMap();
+//			globalMap->MapWnd()->SetZoom(16.f/*globalMap->MapWnd()->GetZoom()*2.f*/);
 		}break;
 	}
 }
@@ -514,81 +474,4 @@ void CUIMiniMap::UpdateSpots()
 			(*it).location->UpdateMiniMap(this);
 	}
 
-}
-
-
-CUIGlobalMapSpot::CUIGlobalMapSpot		(CUICustomMap* m)
-{
-	m_owner_map = smart_cast<CUILevelMap*>(m);
-}
-
-CUIGlobalMapSpot::~CUIGlobalMapSpot		()
-{}
-
-
-void CUIGlobalMapSpot::Draw		()
-{
-	if(m_owner_map->Locked()) return;
-	inherited::Draw(	);
-}
-
-void CUIGlobalMapSpot::Init	(u32 color, LPCSTR tex_name)
-{
-	inherited::Init				(0.0f,0.0f,20.0f,20.0f);
-	UIBorder					= xr_new<CUIStatic>(); UIBorder->SetAutoDelete(true);
-	UIBorder->Init				(tex_name,0.0f,0.0f,20.0f,20.0f);
-	UIBorder->SetStretchTexture	(true);
-	UIBorder->ClipperOn			();
-
-	UIBorder->SetColor			(0);
-//	UIBorder->SetColor			(color);
-	AttachChild					(UIBorder);
-}
-
-void CUIGlobalMapSpot::OnMouse	(float x, float y, EUIMessages mouse_action)
-{
-	inherited::OnMouse(x,y,mouse_action);
-		switch (mouse_action){
-			case WINDOW_LBUTTON_DOWN:{
-					CUIGlobalMap* globalMap = (CUIGlobalMap*)GetParent();
-					globalMap->MapWnd()->SetActiveMap( m_owner_map->MapName() );
-				}break;
-		}
-}
-
-void CUIGlobalMapSpot::Update()
-{
-	if(m_owner_map->Locked()) return;
-	//rect, pos
-	CUIGlobalMap* w = (CUIGlobalMap*)GetParent();
-	Frect rect;
-	Fvector2 tmp;
-
-	tmp = w->ConvertRealToLocal(m_owner_map->GlobalRect().lt);
-	rect.lt = tmp;
-
-	tmp = w->ConvertRealToLocal(m_owner_map->GlobalRect().rb);
-	rect.rb = tmp;
-	
-	SetWndRect				(rect);
-	UIBorder->SetWndPos		(0.0f,0.0f);
-	UIBorder->SetWidth		(rect.width());
-	UIBorder->SetHeight		(rect.height());
-
-	//highlight border
-/*	if(!w->Locked()){
-		if(w->MapWnd()->ActiveMap()==m_owner_map)
-			UIBorder->SetColor(ourLevelMapColor);
-		else{
-			Fvector2 cursor_pos = GetUICursor()->GetPos();
-			if(GetAbsoluteRect().in( cursor_pos ) )
-					UIBorder->SetColor(activeLocalMapColor);
-			else
-					UIBorder->SetColor(inactiveLocalMapColor);
-		};
-	}*/
-}
-LPCSTR CUIGlobalMapSpot::GetHint()
-{
-	return *m_owner_map->MapName();
 }

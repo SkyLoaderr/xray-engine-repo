@@ -41,7 +41,6 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 						eMaxBtn};
 	Flags32						m_flags;
 	float						m_currentZoom;
-	CUICustomMap*				m_activeMap;
 	CUIGlobalMap*				m_GlobalMap;
 	GameMaps					m_GameMaps;
 	
@@ -65,6 +64,8 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
 	void						ValidateToolBar			();
 public:
+	CUICustomMap*				m_tgtMap;
+public:
 								CUIMapWnd				();
 	virtual						~CUIMapWnd				();
 
@@ -80,16 +81,15 @@ public:
 	virtual bool				OnKeyboard				(int dik, EUIMessages keyboard_action);
 	virtual void				SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	void						SetActivePoint			(const Fvector &vPoint);
-	void						SetActiveMap			(shared_str level_name);
-	void						SetActiveMap			(shared_str level_name, Fvector2 pos);
-	void						SetActiveMap			(CUICustomMap* m);
+	void						SetTargetMap			(CUICustomMap* m);
+	void						SetTargetMap			(CUICustomMap* m, const Fvector2& pos);
+	void						SetTargetMap			(const shared_str& name, const Fvector2& pos);
+	void						SetTargetMap			(const shared_str& name);
 	
 	Frect						ActiveMapRect			()		{return m_UILevelFrame->GetAbsoluteRect();};
 	void						AddMapToRender			(CUICustomMap*);
 	void						RemoveMapToRender		(CUICustomMap*);
 	CUIGlobalMap*				GlobalMap				()		{return m_GlobalMap;};
-	CUICustomMap*				ActiveMap				()		{return m_activeMap;};
 	const GameMaps&				GameMaps				()		{return m_GameMaps;};	
 	CUICustomMap*				GetMapByIdx				(u16 idx);
 	u16							GetIdxByName			(const shared_str& map_name);
