@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
     <dialog id="aes_sergeant_diallog">
-        <precondition>dialogs.allow_wounded_dialog</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>aes_sergeant_diallog_1032</text>

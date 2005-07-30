@@ -51,6 +51,7 @@ function action_wounded:initialize ()
 	self.object:enable_talk()
 
 	if self.a.help_start_dialog then
+		printf( "WOUNDED set_start_dialog id=%s", self.a.help_start_dialog )
 		self.object:set_start_dialog(self.a.help_start_dialog)
 	end
 end
