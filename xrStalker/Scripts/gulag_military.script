@@ -678,18 +678,10 @@ function check_state (gulag)
     end        
     
     if db.actor:has_info ("mil_freedom_under_attack") then
-       if this.check_enemy (gulag) == true then
-          if db.actor:has_info ("mil_enemy_nearest") then
-             printf ("GULAG SET TO STATE 2") 
-             return 2
-           else
-             printf ("GULAG SET TO STATE 1") 
-             return 2
-          end
+       if this.check_enemy (gulag) == true or db.actor:dont_has_info ("mil_dolg_dead") then
+          return 2
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
-          db.actor:disable_info_portion ("mil_enemy_nearest")
-          printf ("GULAG SET TO STATE 0")
           return 0
        end
     end            
