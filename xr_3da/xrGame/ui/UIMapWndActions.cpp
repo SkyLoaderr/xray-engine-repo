@@ -26,6 +26,7 @@ protected:
 	float			m_targetZoom;
 	float			m_startZoom;
 	Fvector2		m_startCenter;
+	Fvector2		m_targetCenter;
 public:
 					CMapActionZoomControl	(LPCSTR action_name) : inherited(action_name) {}
 	virtual	void	execute				();
@@ -120,7 +121,7 @@ public:
 //-----------------------------------------------------------------------------
 
 using namespace UIMapWndActionsSpace;
-const float			map_changing_time			= 1.0f;//sec
+const float			map_changing_time			= 0.3f;//sec
 const float			map_moving_speed			= 0.003f;
 
 CMapActionPlanner::CMapActionPlanner	()
@@ -177,13 +178,18 @@ void CMapActionZoomControl::initialize	()
 	inherited::initialize		();
 	VERIFY						(m_object->m_tgtMap);
 	m_startMovingTime			= Device.fTimeGlobal;
-	m_endMovingTime				= m_startMovingTime+1.0f;
+	m_endMovingTime				= m_startMovingTime+map_changing_time;
 	m_startZoom					= m_object->GlobalMap()->GetCurrentZoom();
 
 	Frect vis_rect				= m_object->ActiveMapRect		();
 	vis_rect.getcenter			(m_startCenter);
 	m_startCenter.sub			(m_object->GlobalMap()->GetAbsolutePos());
 	m_startCenter.div			(m_object->GlobalMap()->GetCurrentZoom());
+
+	m_targetCenter				= m_object->m_tgtCenter;
+
+//	Frect rect;
+//	gm->CalcOpenRect			(newCP,rect,new_zoom);
 }
 void CMapActionZoomControl::finalize	()
 {
