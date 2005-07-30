@@ -14,7 +14,6 @@ protected:
 	enum EFlags{	eLocked	=(1<<0),};
 
 public:
-	Fvector2		m_tgtCenter;			// for moving
 	Frect			m_prevRect;
 					CUICustomMap					();
 	virtual			~CUICustomMap					();
@@ -45,7 +44,6 @@ public:
 			bool	NeedShowPointer					(Frect r);
 			bool	Locked							()				{return !!m_flags.test(eLocked);}
 			void	SetLocked						(bool b)		{m_flags.set(eLocked,b);}
-		Fvector2&  TargetCenter						()				{return m_tgtCenter;}
 protected:
 	virtual void	UpdateSpots						() {};
 };
@@ -68,6 +66,7 @@ public:
 	
 	IC void			SetMinZoom				(float zoom){m_minZoom=zoom;}
 	IC float		GetMinZoom				(){return m_minZoom;}
+	IC float		GetMaxZoom				(){return 8.0f;}
 
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();

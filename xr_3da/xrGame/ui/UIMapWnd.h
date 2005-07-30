@@ -65,6 +65,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	void						ValidateToolBar			();
 public:
 	CUICustomMap*				m_tgtMap;
+	Fvector2					m_tgtCenter;
 public:
 								CUIMapWnd				();
 	virtual						~CUIMapWnd				();

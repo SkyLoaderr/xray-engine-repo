@@ -308,16 +308,26 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m)
 void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 {
 	m_tgtMap							= m;
-	m->TargetCenter()					= pos;
-	if(m==GlobalMap())
-		SetZoom(GlobalMap()->GetMinZoom());
-	else
-		SetZoom(16.0f);
+
+
+	if(m==GlobalMap()){
+		SetZoom							(GlobalMap()->GetMinZoom());
+		Frect vis_rect					= ActiveMapRect		();
+		vis_rect.getcenter				(m_tgtCenter);
+		m_tgtCenter.sub					(GlobalMap()->GetAbsolutePos());
+		m_tgtCenter.div					(GlobalMap()->GetCurrentZoom());
+ 	}else{
+		//translate real level position to identity GlobalMapPosition
+		SetZoom							(GlobalMap()->GetMaxZoom());
+		m_tgtCenter						= m->ConvertRealToLocalNoTransform(pos);
+		m_tgtCenter.add					(m->GetWndPos()).div(GlobalMap()->GetCurrentZoom());
+	}
+
 
 	CWorldState							target_state;
 	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::ePropMapIdle,true));
 	m_ActionPlanner->m_storage.set_property(1,false);
-
+	m_ActionPlanner->m_storage.set_property(2,false);
 	m_ActionPlanner->set_target_state	(target_state);
 }
 
@@ -460,7 +470,7 @@ void CUIMapWnd::Update()
 void CUIMapWnd::SetZoom	( float value)
 {
 	m_currentZoom	= value;
-	clamp		(m_currentZoom, GlobalMap()->GetMinZoom(), 16.0f);
+	clamp		(m_currentZoom, GlobalMap()->GetMinZoom(), GlobalMap()->GetMaxZoom());
 }
 
 void CUIMapWnd::ShowHint()
@@ -475,8 +485,7 @@ void CUIMapWnd::ShowHint()
 
 void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 {
-//.	SetActiveMap(GlobalMap()->MapName());
-	SetZoom(1.f);
+	SetTargetMap(GlobalMap());
 }
 
 void CUIMapWnd::OnToolNextMapClicked	(CUIWindow* w, void*)
