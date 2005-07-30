@@ -1,11 +1,10 @@
 
 function aes_segeant_kill (stalker, player)
-    printf ("STALKER : %s, player: %s", stalker:name (), player:name ())
     local h = hit ()
     h.power = 100
     h.direction = vector():set (0, -1, 0)
     h.impulse = 1
-    h.draftsman = stalker
+    h.draftsman = player
     h.type = hit.strike
-    player:hit (h)
+    stalker:hit (h)
 end
