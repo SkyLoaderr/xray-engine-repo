@@ -271,16 +271,13 @@ void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 void CUIGlobalMap::Update()
 {
 	inherited::Update();
-/*	if (!fsimilar(GetCurrentZoom(),m_mapWnd->GetZoom(),EPS_L)){ 
-		float new_zoom	= GetCurrentZoom()+(m_mapWnd->GetZoom()-GetCurrentZoom())*1.f*Device.fTimeDelta;
-		Fvector2 np		= {0.f,0.f};
-		Frect tgt_rect;
-		tgt_rect.set	(np.x,np.y, np.x+BoundRect().width()*new_zoom,np.y+BoundRect().height()*new_zoom);
-		SetWndRect		(tgt_rect);
-//		SetWidth		(BoundRect().width()*new_zoom);
-//		SetHeight		(BoundRect().height()*new_zoom);
-		m_mapWnd->UpdateScroll();
-	}*/
+	Frect clip				= GetClipperRect();
+	Frect r					= GetWndRect();
+	if (r.x2<clip.width())	r.x1 += clip.width()-r.x2;
+	if (r.y2<clip.height())	r.y1 += clip.height()-r.y2;
+	if (r.x1>0.0f)			r.x1 = 0.0f;
+	if (r.y1>0.0f)			r.y1 = 0.0f;
+	SetWndPos				(r.x1, r.y1);
 }
 
 void CUIGlobalMap::Draw					()
@@ -299,32 +296,23 @@ Fvector2 CUIGlobalMap::ConvertRealToLocal(const Fvector2& src)// pixels->pixels 
 void CUIGlobalMap::MoveWndDelta(const Fvector2& d)
 {
 	inherited::MoveWndDelta	(d);
-/*
-	Frect clip			= GetClipperRect();
-	Frect r				= GetWndRect();
-	if (r.x2<clip.width())	r.x1 += clip.width()-r.x2;
-	if (r.y2<clip.height())	r.y1 += clip.height()-r.y2;
-	if (r.x1>0.0f)			r.x1 = 0.0f;
-	if (r.y1>0.0f)			r.y1 = 0.0f;
-	SetWndPos				(r.x1, r.y1);
-*/
 }
 
 void CUIGlobalMap::CalcOpenRect         (const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom)
 {
-        Fvector2                                new_center_pt;
-        map_desired_rect.set    (0.0f,0.0f, BoundRect().width()*tgt_zoom,BoundRect().height()*tgt_zoom);
-        float d_zoom                    = tgt_zoom/GetCurrentZoom();
-        new_center_pt.set               (center_point.x*d_zoom,center_point.y*d_zoom);
-        
-        Fvector2 tmp_pt                 = GetAbsolutePos(); tmp_pt.add(new_center_pt);
-        Frect   vis_abs_rect    = m_mapWnd->ActiveMapRect();
-        Fvector2 tmp_pt2;
-        vis_abs_rect.getcenter  (tmp_pt2);
-        float dx                                = (tmp_pt2.x-tmp_pt.x)*d_zoom;
-        float dy                                = (tmp_pt2.y-tmp_pt.y)*d_zoom;
+    Fvector2                    new_center_pt;
+    map_desired_rect.set		(0.0f,0.0f, BoundRect().width()*tgt_zoom,BoundRect().height()*tgt_zoom);
+    float d_zoom                = tgt_zoom/GetCurrentZoom();
+    new_center_pt.set           (center_point.x*d_zoom,center_point.y*d_zoom);
+    
+    Fvector2 tmp_pt             = GetAbsolutePos(); tmp_pt.add(new_center_pt);
+    Frect   vis_abs_rect		= m_mapWnd->ActiveMapRect();
+    Fvector2 tmp_pt2;
+    vis_abs_rect.getcenter		(tmp_pt2);
+    float dx                    = (tmp_pt2.x-tmp_pt.x)*d_zoom;
+    float dy                    = (tmp_pt2.y-tmp_pt.y)*d_zoom;
 
-        map_desired_rect.add    (GetWndPos().x+dx,GetWndPos().y+dy);
+    map_desired_rect.add		(GetWndPos().x+dx,GetWndPos().y+dy);
 }
 //////////////////////////////////////////////////////////////////////////
 
