@@ -12,10 +12,10 @@ on_info = %+val_escort_captive_dead%
 ; встреча отключена
 ;--------------------------------------------------------------------------
 [meet@ignore]
-meet_state     = 0|wait
-meet_state_wpn = 0|guard
-victim         = 0|actor
-victim_wpn     = 0|actor
+meet_state     = 1|wait
+meet_state_wpn = 1|guard
+victim         = 1|actor
+victim_wpn     = 1|actor
 use            = false
 use_wpn        = false
 
@@ -83,12 +83,12 @@ combat_ignore_cond  = always
 ; 
 ;--------------------------------------------------------------------------
 [follower@go_to_nap1]
-leader          = 406
-meet            = meet@ignore
-;stub_for_corpse = true
-;distance        = 2
-;on_signal       = leader_dead | remark@check_state
-on_info         = {=distance_to_obj_le(406:2)} remark@check_state
+leader              = 406
+meet                = meet@ignore
+stub_for_corpse     = true
+distance            = 2
+on_signal           = leader_dead | remark@check_state
+on_info             = {=distance_to_obj_le(406:2)} remark@check_state
 combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
@@ -106,12 +106,13 @@ combat_ignore_cond  = always
 ;--------------------------------------------------------------------------
 [remark1@phrase2]
 no_move             = true
-;no_rotate           = true
-target              = 406
+no_rotate           = true
+;target              = 406
 anim                = wait
 snd                 = val_escort_dead
 meet                = meet@ignore
 on_signal           = sound_end | {+val_escort_actor_helped} remark@talk, walker@leave
+on_timer            = 20000 | {+val_escort_actor_helped} remark@talk, walker@leave
 combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
@@ -157,6 +158,7 @@ combat_ignore_cond  = always
 [remark@talk]
 no_move                 = true
 ;no_rotate               = true
+anim                    = wait
 snd                     = val_escort_phrase_invite
 meet                    = meet@talk
 ;on_timer               = 60000 | walker@leave

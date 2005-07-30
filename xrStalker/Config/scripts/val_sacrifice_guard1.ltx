@@ -6,7 +6,7 @@ on_hit = hit
 combat_ignore = combat_ignore
 
 [combat]
-on_info = {=see_actor -val_sacrifice_victim_dead -val_sacrifice_plr_detected} camper@kill %+val_sacrifice_plr_detected%, walker@leave ;{=see_actor} 
+on_info = {=see_actor -val_sacrifice_victim_dead -val_sacrifice_plr_detected} %+val_sacrifice_plr_detected%
 
 [death]
 on_info = %+val_sacrifice_guard1_dead%
@@ -104,7 +104,7 @@ def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 no_retreat = true
 on_info = {+val_sacrifice_victim_dead} remark@phrase5
-combat_ignore_cond = {!check_fighting(401)}, {=check_fighting(403)}
+combat_ignore_cond = {=check_fighting(403)} ;, {!check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Все! Нет человека - нет проблемы. Скажем Борову, что типа доставили пленника куда следует. Идем.

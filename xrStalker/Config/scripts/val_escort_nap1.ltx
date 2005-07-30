@@ -26,10 +26,10 @@ on_info = {=hitted_by(407:408)} %+val_escort_combat%
 ; встреча отключена
 ;--------------------------------------------------------------------------
 [meet@ignore]
-meet_state     = 0|wait
-meet_state_wpn = 0|guard
-victim         = 0|actor
-victim_wpn     = 0|actor
+meet_state     = 1|wait
+meet_state_wpn = 1|guard
+victim         = 1|actor
+victim_wpn     = 1|actor
 use            = false
 use_wpn        = false
 
@@ -195,6 +195,7 @@ anim                    = hide
 meet                    = meet@ignore
 on_info                 = {+val_escort_combat} remark1@fight
 on_actor_dist_le_nvis   = 10 | remark1@phrase7
+on_info                 = {=distance_to_obj_le(400:15)} remark1@phrase8
 combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
@@ -205,8 +206,9 @@ no_move             = true
 no_rotate           = true
 anim                = hide
 snd                 = val_escort_nap1_phrase4
-on_timer            = 40000 | remark1@phrase8
+;on_timer            = 40000 | remark1@phrase8
 on_info             = {+val_escort_combat} remark1@fight
+on_info2            = {=distance_to_obj_le(400:15)} remark1@phrase8
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 
 ;--------------------------------------------------------------------------
@@ -216,7 +218,7 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 no_move             = true
 no_rotate           = true
 anim                = hide
-snd                 = val_escort_nap1_phrase4
+snd                 = val_escort_nap1_phrase6
 ;meet               = meet@ignore
 on_info             = {+val_escort_combat} remark1@fight
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -290,7 +292,7 @@ on_info   = {+val_escort_captive_phrase1_end} remark1@phrase11
 no_move         = true
 ;no_rotate       = true
 target          = 400
-anim            = wait
+anim            = guard
 snd             = val_escort_nap1_go_home
 meet            = meet@ignore
 on_signal       = sound_end | walker1@leave %+val_escort_nap1_phrase2_end%
@@ -302,9 +304,9 @@ on_signal       = sound_end | walker1@leave %+val_escort_nap1_phrase2_end%
 leader          = 400
 anim            = guard
 meet            = meet@ignore
-;stub_for_corpse = true
-;distance        = 2
-;on_signal       = leader_dead | remark1@phrase10
+stub_for_corpse = true
+distance        = 2
+on_signal       = leader_dead | remark1@phrase10
 on_info         = {=distance_to_obj_le(400:2)} remark1@phrase10
 danger          = danger1
 
@@ -313,12 +315,13 @@ danger          = danger1
 ;--------------------------------------------------------------------------
 [remark1@phrase10]
 no_move         = true
-;no_rotate       = true
-target          = 400
-anim            = wait
+no_rotate       = true
+;target          = 400
+anim            = guard
 snd             = val_escort_dead
 meet            = meet@ignore
 on_signal       = sound_end | {+val_escort_actor_helped} remark1@wait_to_talk_phrase, walker1@leave
+on_timer        = 20000 | {+val_escort_actor_helped} remark1@wait_to_talk_phrase, walker1@leave
 
 ;--------------------------------------------------------------------------
 ; фраза: Подходи пообщаемся.
@@ -326,6 +329,7 @@ on_signal       = sound_end | {+val_escort_actor_helped} remark1@wait_to_talk_ph
 [remark1@wait_to_talk_phrase]
 no_move         = true
 ;no_rotate       = true
+anim            = guard
 snd             = val_escort_phrase_invite
 meet            = meet@talk
 on_timer        = 60000 | walker1@leave ; ждем минуту и уходим
@@ -336,6 +340,7 @@ on_timer        = 60000 | walker1@leave ; ждем минуту и уходим
 [remark1@wait_to_talk]
 no_move                 = true
 ;no_rotate               = true
+anim                    = guard
 meet                    = meet@talk
 ;on_timer               = 60000 | walker1@leave ; ждем минуту и уходим
 on_actor_dist_ge_nvis   = 30 | walker1@leave
