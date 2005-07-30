@@ -107,3 +107,7 @@
 <string id="mil_freedom_rg6_task">
 	<text>Достать РГ6 у Свободы</text>
 </string>
+
+<string id="mil_find_cook">
+	<text>Найти повара на базе Свободы</text>
+</string>

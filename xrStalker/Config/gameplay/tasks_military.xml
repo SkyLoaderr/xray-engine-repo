@@ -121,5 +121,11 @@
 			<text>mil_freedom_rg6_task</text>
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
+		<objective>
+			<text>mil_find_cook</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_freedom_location</map_location_type>
+            <object_story_id>Mil_Freedom_base</object_story_id>
+		</objective>
 	</game_task>
 
