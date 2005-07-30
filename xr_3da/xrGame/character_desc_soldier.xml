@@ -610,7 +610,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>aes_sergeant_diallog</actor_dialog>
 	</specific_character>
 
 	-->
