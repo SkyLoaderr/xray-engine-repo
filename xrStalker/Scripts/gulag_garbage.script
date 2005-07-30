@@ -1323,6 +1323,52 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	
+	--' Bandits post
+	if type == "bandit_post" then
+		t = { section = "logic@bandit_post_sniper",
+			idle = 0,
+			prior = 10, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bandit_post_walker2",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bandit_post_walker3",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bandit_post_walker4",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bandit_post_walker5",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bandit_post_walker6",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bandit_post_walker7",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "gar_bandits_lager2"
+		}
+		table.insert(sj, t)
+	end
 end
 
 
@@ -1471,6 +1517,13 @@ function load_states(gname, type)
 		end
 	end
 	
+	if type == "bandit_post" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	
 	if type == "gar_dogs_nest" then        
 		return function(gulag)
 			local t = db.zone_by_name["gar_dogs_territory"]
@@ -1521,6 +1574,10 @@ function checkStalker(npc_community, gulag_type)
 	end
 	
 	if gulag_type == "gar_bandit_agr" then
+		return npc_community == "bandit"
+	end
+	
+	if gulag_type == "bandit_post" then
 		return npc_community == "bandit"
 	end
 	
