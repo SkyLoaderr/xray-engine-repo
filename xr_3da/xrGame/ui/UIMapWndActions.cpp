@@ -24,8 +24,11 @@ protected:
 	float			m_startMovingTime;
 	float			m_endMovingTime;
 	float			m_targetZoom;
+/*
 	float			m_startZoom;
 	Fvector2		m_startCenter;
+*/
+	Frect			m_desiredMapRect;
 public:
 					CMapActionZoomControl	(LPCSTR action_name) : inherited(action_name) {}
 	virtual	void	execute				();
@@ -120,21 +123,14 @@ public:
 //-----------------------------------------------------------------------------
 
 using namespace UIMapWndActionsSpace;
-const float			map_changing_time			= 1.0f;//sec
-const float			map_moving_speed			= 0.003f;
+const float			map_changing_time			= 0.5f;//sec
 
-CMapActionPlanner::CMapActionPlanner	()
-{}
-
-CMapActionPlanner::~CMapActionPlanner	()
-{}
-
+CMapActionPlanner::CMapActionPlanner	(){}
+CMapActionPlanner::~CMapActionPlanner	(){}
 LPCSTR CMapActionPlanner::object_name	() const
 {
 	return						("");
 }
-
-
 void CMapActionPlanner::setup		(CUIMapWnd *object)
 {
 #ifdef LOG_ACTION
@@ -157,7 +153,6 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 	add_effect					(action,ePropMapIdle,		true);
 	add_operator				(eOperatorMapIdle,action);
 
-
 	action						= xr_new<CMapActionResize>("eOperatorMapResize");
 	add_condition				(action,ePropTargetMapShown,	true);
 	add_condition				(action,ePropMapResized,		false);
@@ -168,92 +163,43 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 	add_condition				(action,ePropTargetMapShown,false);
 	add_effect					(action,ePropTargetMapShown,true);
 	add_operator				(eOperatorMapMinimize,		action);
-
 }
 
 //-----------------------------------------------------------------------------
 void CMapActionZoomControl::initialize	()
 {
 	inherited::initialize		();
-	VERIFY						(m_object->m_tgtMap);
 	m_startMovingTime			= Device.fTimeGlobal;
 	m_endMovingTime				= m_startMovingTime+map_changing_time;
-	m_startZoom					= m_object->GlobalMap()->GetCurrentZoom();
 
-	Frect vis_rect				= m_object->ActiveMapRect		();
-	vis_rect.getcenter			(m_startCenter);
-	m_startCenter.sub			(m_object->GlobalMap()->GetAbsolutePos());
-	m_startCenter.div			(m_object->GlobalMap()->GetCurrentZoom());
+	m_object->GlobalMap()->CalcOpenRect	(m_object->m_tgtCenter,m_desiredMapRect,m_targetZoom);
+	m_object->GlobalMap()->SetLocked	(true);
 }
-
-void calcRectLerp(float time_to, const Frect& desired_rect, Frect& current_rect)
-{
-	float gdt				= Device.fTimeDelta;
-	gdt						= _min(gdt,time_to);
-
-	current_rect.x1		+= ((desired_rect.x1-current_rect.x1)/time_to)*gdt;
-	current_rect.y1		+= ((desired_rect.y1-current_rect.y1)/time_to)*gdt;
-	current_rect.x2		+= ((desired_rect.x2-current_rect.x2)/time_to)*gdt;
-	current_rect.y2		+= ((desired_rect.y2-current_rect.y2)/time_to)*gdt;
-}
-
-
 
 void CMapActionZoomControl::finalize	()
 {
-	inherited::finalize();
-	m_object->UpdateScroll	();
+	inherited::finalize					();
+	m_object->UpdateScroll				();
+	m_object->GlobalMap()->SetLocked	(false);
 }
 
 void CMapActionZoomControl::execute		()
 {
 	inherited::execute();
 	CUIGlobalMap*			gm	= m_object->GlobalMap();
-
 	float gt				= Device.fTimeGlobal;
-	float k_dist			= m_endMovingTime-m_startMovingTime;
-	float pos				= (clampr((gt-m_startMovingTime)/(k_dist),0.0f,1.0f));
+	float time_to			= m_endMovingTime-gt;
+	float dt				= _min(Device.fTimeDelta,time_to);
 
-	float k0,invk0;
-	float k1,invk1;
-/*
-	if (m_startZoom<m_targetZoom){
-		if(pos<0.49f){
-			k0					= pos*2.f;
-			k1					= 0.f;
-		}else{
-			k0					= 1.f;
-			k1					= (pos-0.5f)*2.f;
-		}
-	}else{
-		if(pos<0.49f){
-			k1					= pos*2.f;
-			k0					= 0.f;
-		}else{
-			k1					= 1.f;
-			k0					= (pos-0.5f)*2.f;
-		}
-	}
-*/
-	k0=pos;
-	k1=pos;
-	invk0					= 1.f-k0;
-	invk1					= 1.f-k1;
+	Frect current_rect		= gm->GetWndRect();
+	current_rect.x1			+= ((m_desiredMapRect.x1-current_rect.x1)/time_to)*dt;
+	current_rect.y1			+= ((m_desiredMapRect.y1-current_rect.y1)/time_to)*dt;
+	current_rect.x2			+= ((m_desiredMapRect.x2-current_rect.x2)/time_to)*dt;
+	current_rect.y2			+= ((m_desiredMapRect.y2-current_rect.y2)/time_to)*dt;
+	gm->SetWndRect			(current_rect);
 
-	float new_zoom			= m_startZoom*invk1 + m_targetZoom*k1;
-
-	Fvector2 newCP,startCP=m_startCenter,tgtCP=m_object->m_tgtCenter;
-	newCP.x					= startCP.x*invk0 + tgtCP.x*k0;
-	newCP.y					= startCP.y*invk0 + tgtCP.y*k0;
-
-//	newCP.mul				(gm->GetCurrentZoom());
-
-	Frect rect;
-	gm->CalcOpenRect		(newCP,rect,new_zoom);
-	gm->SetWndRect          (rect); 
 	gm->Update				();
 	m_object->UpdateScroll	();
-
 }
 //-----------------------------------------------------------------------------
 
@@ -313,7 +259,6 @@ bool CEvaluatorTargetMapShown::evaluate()
 {
 	if(m_storage->property(1)) return true;
 	if(m_storage->property(2)) return true;
-	VERIFY(m_object->m_tgtMap);
 	Fvector2 pt					= m_object->m_tgtCenter; 
 	pt.mul						(m_object->GlobalMap()->GetCurrentZoom());
 	pt.add						(m_object->GlobalMap()->GetAbsolutePos());
@@ -322,25 +267,21 @@ bool CEvaluatorTargetMapShown::evaluate()
 		return true;
 	}
 	return false;
-//	bool res = !!m_object->m_tgtMap->GetAbsoluteRect().intersected(m_object->ActiveMapRect());
-//	return res;
 }
 //-----------------------------------------------------------------------------
 
 bool CEvaluatorMapMinimized::evaluate	()
 {
 	if(m_storage->property(1)) return true;
-	VERIFY(m_object->m_tgtMap);
 	bool res = !!fsimilar(m_object->GlobalMap()->GetCurrentZoom(),m_object->GlobalMap()->GetMinZoom(),EPS_L );
 	return res;
 }
 //-----------------------------------------------------------------------------
 
-
 bool CEvaluatorMapResized::evaluate			()
 {
 	if(m_storage->property(1)) return true;
-	VERIFY(m_object->m_tgtMap);
 	bool res = !!fsimilar(m_object->GlobalMap()->GetCurrentZoom(),m_object->GetZoom(),EPS );
 	return res;
 }
+//-----------------------------------------------------------------------------

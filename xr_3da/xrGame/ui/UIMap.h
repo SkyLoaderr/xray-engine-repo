@@ -66,7 +66,7 @@ public:
 	
 	IC void			SetMinZoom				(float zoom){m_minZoom=zoom;}
 	IC float		GetMinZoom				(){return m_minZoom;}
-	IC float		GetMaxZoom				(){return 8.0f;}
+	IC float		GetMaxZoom				(){return 16.0f;}
 
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();
@@ -76,6 +76,8 @@ public:
 	void			MoveWndDelta			(const Fvector2& d);
 
 	void			CalcOpenRect			(const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom);
+
+	void			ClipByVisRect			();
 };
 
 class CUILevelMap: public CUICustomMap{

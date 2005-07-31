@@ -317,18 +317,18 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 
 
 	if(m==GlobalMap()){
-		SetZoom							(GlobalMap()->GetMinZoom());
+		CUIGlobalMap* gm				= GlobalMap();
+		SetZoom							(gm->GetMinZoom());
 		Frect vis_rect					= ActiveMapRect		();
 		vis_rect.getcenter				(m_tgtCenter);
-		m_tgtCenter.sub					(GlobalMap()->GetAbsolutePos());
-		m_tgtCenter.div					(GlobalMap()->GetCurrentZoom());
+		m_tgtCenter.sub					(gm->GetAbsolutePos());
+		m_tgtCenter.div					(gm->GetCurrentZoom());
  	}else{
 		//translate real level position to identity GlobalMapPosition
 		SetZoom							(GlobalMap()->GetMaxZoom());
 		m_tgtCenter						= m->ConvertRealToLocalNoTransform(pos);
 		m_tgtCenter.add					(m->GetWndPos()).div(GlobalMap()->GetCurrentZoom());
 	}
-
 
 	CWorldState							target_state;
 	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::ePropMapIdle,true));
