@@ -241,11 +241,13 @@ void CUIMapWnd::Show(bool status)
 {
 	if (status)
 	{
-		m_GlobalMap->Show	(true);
-		GameMaps::iterator	it = m_GameMaps.begin();
+		m_GlobalMap->Show			(true);
+		m_GlobalMap->SetClipRect	(ActiveMapRect());
+		GameMaps::iterator	it		= m_GameMaps.begin();
 		for(;it!=m_GameMaps.end();++it){
-			m_GlobalMap->AttachChild		(it->second);
-			it->second->Show(true);
+			m_GlobalMap->AttachChild(it->second);
+			it->second->Show		(true);
+			it->second->SetClipRect	(ActiveMapRect());
 		}
 
 		if(	m_flags.test(lmFirst)){
@@ -284,16 +286,20 @@ void CUIMapWnd::RemoveMapToRender		(CUICustomMap* m)
 
 void CUIMapWnd::SetTargetMap			(const shared_str& name, const Fvector2& pos)
 {
-	u16	idx						= GetIdxByName			(name);
-	CUICustomMap*		lm		=GetMapByIdx			(idx);
-	SetTargetMap				(lm, pos);
+	u16	idx								= GetIdxByName			(name);
+	if (idx!=u16(-1)){
+		CUICustomMap* lm				= GetMapByIdx			(idx);
+		SetTargetMap					(lm, pos);
+	}
 }
 
 void CUIMapWnd::SetTargetMap			(const shared_str& name)
 {
-	u16	idx						= GetIdxByName			(name);
-	CUICustomMap*		lm		=GetMapByIdx			(idx);
-	SetTargetMap				(lm);
+	u16	idx								= GetIdxByName			(name);
+	if (idx!=u16(-1)){
+		CUICustomMap* lm				= GetMapByIdx			(idx);
+		SetTargetMap					(lm);
+	}
 }
 
 void CUIMapWnd::SetTargetMap			(CUICustomMap* m)
@@ -414,16 +420,19 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 CUICustomMap*	CUIMapWnd::GetMapByIdx				(u16 idx)
 {
+	VERIFY							(idx!=u16(-1));
 	GameMapsPairIt it				= m_GameMaps.begin();
-	std::advance(it, idx);
-	return it->second;
+	std::advance					(it, idx);
+	return							it->second;
 }
 
 u16 CUIMapWnd::GetIdxByName			(const shared_str& map_name)
 {
 	GameMapsPairIt it				= m_GameMaps.find(map_name);
-	if(it==m_GameMaps.end())			return u16(-1);
-
+	if(it==m_GameMaps.end()){	
+		Msg							("! Level Map '%s' not registered",map_name.c_str());
+		return						u16(-1);
+	}
 	return (u16)std::distance		(m_GameMaps.begin(),it);
 	
 }
