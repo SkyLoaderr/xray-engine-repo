@@ -159,6 +159,30 @@
 		<start_dialog>gar_dramm_novice_start</start_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
 	</specific_character>	
+	
+		<specific_character id="gar_newbie_in_tonnel" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="20" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+
+		<class>gar_newbie_in_tonnel</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\novice\green_stalker_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+			
+		<start_dialog>gar_newbie_in_tonnel</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+	</specific_character>
 
 	<specific_character id="stalker_agr_krot" team_default = "1">
 		<name>Сталкер "Крот"</name>

@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<character id="default">
@@ -245,6 +245,11 @@
 	<!-- Drammoment Garbage Novice  -->
 	<character id="stalker_gar_dram_novice">
 		<class>stalker_gar_dram_novice</class>
+	</character>
+	
+	<!-- Drammoment in tunnel -->
+	<character id="gar_newbie_in_tonnel">
+		<class>gar_newbie_in_tonnel</class>
 	</character>
 	
 	<character id="svoboda_bodyguard">
