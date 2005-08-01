@@ -40,7 +40,6 @@ void CUIEventsWnd::Init				()
 	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_events.xml");
 	R_ASSERT3						(xml_result, "xml file not found", "pda_events.xml");
 
-	// load map background
 	CUIXmlInit xml_init;
 	xml_init.InitWindow				(uiXml, "main_wnd", 0, this);
 
@@ -63,7 +62,6 @@ void CUIEventsWnd::Init				()
 	xml_init.InitWindow				(uiXml, "main_wnd:right_frame", 0, m_UIRightWnd);
 
 	m_UIMapWnd						= xr_new<CUIMapWnd>(); m_UIMapWnd->SetAutoDelete(false);
-//	m_UIRightWnd->AttachChild		(m_UIMapWnd);
 	m_UIMapWnd->Init				("pda_events.xml","main_wnd:right_frame:map_wnd");
 
 	m_UITaskInfoWnd					= xr_new<CUITaskDescrWnd>(); m_UITaskInfoWnd->SetAutoDelete(false);
@@ -73,11 +71,6 @@ void CUIEventsWnd::Init				()
 	m_ListWnd						= xr_new<CUIScrollView>(); m_ListWnd->SetAutoDelete(true);
 	m_UILeftFrame->AttachChild		(m_ListWnd);
 	xml_init.InitScrollView			(uiXml, "main_wnd:left_frame:list", 0, m_ListWnd);
-//	m_ListWnd->ActivateList			(true);
-//	m_ListWnd->EnableScrollBar		(true);
-//	m_ListWnd->EnableActiveBackground(false);
-//	m_ListWnd->SetWindowName		("list_wnd");
-//	Register						(m_ListWnd);
 
 	m_TaskFilter					= xr_new<CUITabControl>(); m_TaskFilter->SetAutoDelete(true);
 	m_UILeftHeader->AttachChild		(m_TaskFilter);
@@ -85,8 +78,6 @@ void CUIEventsWnd::Init				()
 	m_TaskFilter->SetWindowName		("filter_tab");
 	Register						(m_TaskFilter);
    AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
-
-//   AddCallback						("list_wnd",BUTTON_CLICKED,boost::bind(&CUIEventsWnd::OnListItemClicked,this,_1,_2));
 
    m_currFilter						= eActiveTask;
    SetDescriptionMode				(true);

@@ -17,6 +17,7 @@ class CMapActionPlanner;
 class CUITabControl;
 class CUIStatic;
 class CUI3tButton;
+class CUILevelMap;
 
 DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
@@ -24,12 +25,6 @@ DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 class CUIMapWnd: public CUIWindow, public CUIWndCallback
 {
 	typedef CUIWindow inherited;
-	enum lmFlags{	lmUserSpotAdd	= (1<<1),
-					lmUserSpotRemove= (1<<2),
-					lmZoomIn		= (1<<3),
-					lmZoomOut		= (1<<4),
-					lmFirst			= (1<<5),
-				};
 	enum EMapToolBtn{	eGlobalMap=0,
 						eNextMap,
 						ePrevMap,
@@ -39,7 +34,15 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 						eRemoveSpot,
 						eActor,
 						eMaxBtn};
+public:
+	enum lmFlags{	lmUserSpotAdd	= (1<<1),
+					lmUserSpotRemove= (1<<2),
+					lmZoomIn		= (1<<3),
+					lmZoomOut		= (1<<4),
+					lmFirst			= (1<<5),
+				};
 	Flags32						m_flags;
+private:
 	float						m_currentZoom;
 	CUIGlobalMap*				m_GlobalMap;
 	GameMaps					m_GameMaps;
@@ -86,6 +89,7 @@ public:
 	void						SetTargetMap			(CUICustomMap* m, const Fvector2& pos);
 	void						SetTargetMap			(const shared_str& name, const Fvector2& pos);
 	void						SetTargetMap			(const shared_str& name);
+	void						AddUserSpot				(CUILevelMap*);
 	
 	Frect						ActiveMapRect			()		{return m_UILevelFrame->GetAbsoluteRect();};
 	void						AddMapToRender			(CUICustomMap*);

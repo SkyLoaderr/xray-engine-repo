@@ -97,8 +97,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	Register						(m_UIMainScrollH);
 
 	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,boost::bind(&CUIMapWnd::OnScrollH,this));
-	AddCallback						("map",SCROLLBAR_NEEDUPDATE,boost::bind(&CUIMapWnd::UpdateScroll,this));
-	
+
 	UIMainMapHeader					= xr_new<CUIFrameLineWnd>(); UIMainMapHeader->SetAutoDelete(true);
 	m_UIMainFrame->AttachChild		(UIMainMapHeader);
 	strconcat(pth,start_from,":main_wnd:map_header_frame_line");
@@ -363,27 +362,6 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		break;
 		case WINDOW_LBUTTON_DOWN:
 
-			if(m_flags.test(lmUserSpotAdd) ){
-				if(m_tgtMap==NULL ) break;
-				if(m_tgtMap==GlobalMap() ) break;
-				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
-
-				Fvector2 cp = cursor_pos;
-				cp.sub(m_tgtMap->GetAbsolutePos());
-				Fvector2 p = m_tgtMap->ConvertLocalToReal(cp);
-				Fvector pos;
-				pos.set(p.x, 0.0f, p.y);
-				CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
-				shared_str spot = "user"; 
-				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, m_tgtMap->MapName(), pos);
-				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
-				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
-				t->m_Objectives[0].object_id	= ml->ObjectID();
-				t->m_Objectives[0].map_location	= spot;
-				m_flags.set(lmUserSpotAdd, FALSE);
-				m_ToolBar[eAddSpot]->SetButtonMode		(CUIButton::BUTTON_NORMAL);
-				break;
-			}else
 			if(m_flags.test(lmZoomIn) || m_flags.test(lmZoomOut) ){
 				if(m_tgtMap==NULL ) break;
 				if(m_tgtMap==GlobalMap() ) break;
@@ -584,4 +562,26 @@ void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 	v2.set						(v.x,v.z);
 
 	SetTargetMap				(Level().name(), v2);
+}
+
+void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
+{
+	VERIFY(m_flags.test(lmUserSpotAdd) );
+
+	Fvector2 cursor_pos = GetUICursor()->GetPos();
+	VERIFY(lm->GetAbsoluteRect().in(cursor_pos));
+
+	cursor_pos.sub					(lm->GetAbsolutePos());
+	Fvector2 p =					lm->ConvertLocalToReal(cursor_pos);
+	Fvector pos;
+	pos.set							(p.x, 0.0f, p.y);
+	CActor* pActor					= smart_cast<CActor*>(Level().CurrentEntity());
+	shared_str spot					= "user"; 
+	CMapLocation* ml				= Level().MapManager().AddUserLocation(spot, lm->MapName(), pos);
+	CGameTask* t					= pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
+	t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
+	t->m_Objectives[0].object_id	= ml->ObjectID();
+	t->m_Objectives[0].map_location	= spot;
+	m_flags.set						(lmUserSpotAdd, FALSE);
+	m_ToolBar[eAddSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
 }

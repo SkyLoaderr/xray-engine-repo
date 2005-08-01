@@ -447,6 +447,12 @@ void CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 //			CUIGlobalMap* globalMap	= MapWnd()->GlobalMap();
 //			globalMap->MapWnd()->SetZoom(16.f/*globalMap->MapWnd()->GetZoom()*2.f*/);
 		}break;
+
+		case WINDOW_LBUTTON_DOWN:{
+			if(MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
+				MapWnd()->AddUserSpot(this);
+		}break;
+
 	}
 }
 
