@@ -180,7 +180,7 @@ void CModelPool::Destroy()
 		REGISTRY_IT it	= Registry.begin();
 		IRender_Visual* V=(IRender_Visual*)it->first;
 #ifdef _DEBUG
-		Msg				("ModelPool: Destroy object: '%s'",V->dbg_name);
+		Msg				("ModelPool: Destroy object: '%s'",*V->dbg_name);
 #endif
 		DeleteInternal	(V,TRUE);
 	}
