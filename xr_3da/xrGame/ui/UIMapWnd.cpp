@@ -355,52 +355,15 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 			}
 		break;
 		case WINDOW_LBUTTON_DOWN:
-
-			if(m_flags.test(lmUserSpotAdd) ){
-				if(m_tgtMap==NULL ) break;
-				if(m_tgtMap==GlobalMap() ) break;
-				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
-
-				Fvector2 cp = cursor_pos;
-				cp.sub(m_tgtMap->GetAbsolutePos());
-				Fvector2 p = m_tgtMap->ConvertLocalToReal(cp);
-				Fvector pos;
-				pos.set(p.x, 0.0f, p.y);
-				CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
-				shared_str spot = "user"; 
-				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, m_tgtMap->MapName(), pos);
-				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
-				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
-				t->m_Objectives[0].object_id	= ml->ObjectID();
-				t->m_Objectives[0].map_location	= spot;
-				m_flags.set(lmUserSpotAdd, FALSE);
-				m_ToolBar[eAddSpot]->SetButtonMode		(CUIButton::BUTTON_NORMAL);
-				break;
-			}else if (m_flags.is_any(lmZoomIn+lmZoomOut)){
+			if (m_flags.is_any(lmZoomIn+lmZoomOut)){
 				CUIGlobalMap* gm				= GlobalMap();
-				if(m_flags.test(lmZoomIn))		SetZoom(GetZoom()+1.f);
-				else							SetZoom(GetZoom()-1.f);
+				if(m_flags.test(lmZoomIn))		SetZoom(GetZoom()*1.5f);
+				else							SetZoom(GetZoom()/1.5f);
 				m_tgtCenter						= cursor_pos;
 				m_tgtCenter.sub					(gm->GetAbsolutePos());
 				m_tgtCenter.div					(gm->GetCurrentZoom());
 				ResetActionPlanner				();
 			}
-/*			else if(m_flags.test(lmZoomIn) || m_flags.test(lmZoomOut) ){
-				if(m_tgtMap==NULL ) break;
-				if(m_tgtMap==GlobalMap() ) break;
-				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
-				if(m_flags.test(lmZoomIn))
-					SetZoom(GetZoom()+0.5f);
-				else
-					SetZoom(GetZoom()-0.5f);
-
-				Fvector2 cp = cursor_pos;
-				cp.sub(m_tgtMap->GetAbsolutePos());
-				Fvector2 p = m_tgtMap->ConvertLocalToReal(cp);
-
-				SetTargetMap	(m_tgtMap, p);
-			}
-*/
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec();
