@@ -21,13 +21,8 @@ class CMapActionZoomControl: public CSomeMapAction{
 private:
 	typedef CSomeMapAction	inherited;
 protected:
-	float			m_startMovingTime;
 	float			m_endMovingTime;
 	float			m_targetZoom;
-/*
-	float			m_startZoom;
-	Fvector2		m_startCenter;
-*/
 	Frect			m_desiredMapRect;
 public:
 					CMapActionZoomControl	(LPCSTR action_name) : inherited(action_name) {}
@@ -169,8 +164,7 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 void CMapActionZoomControl::initialize	()
 {
 	inherited::initialize		();
-	m_startMovingTime			= Device.fTimeGlobal;
-	m_endMovingTime				= m_startMovingTime+map_changing_time;
+	m_endMovingTime				= Device.fTimeGlobal+map_changing_time;
 
 	m_object->GlobalMap()->CalcOpenRect	(m_object->m_tgtCenter,m_desiredMapRect,m_targetZoom);
 	m_object->GlobalMap()->SetLocked	(true);
@@ -191,12 +185,16 @@ void CMapActionZoomControl::execute		()
 	float time_to			= m_endMovingTime-gt;
 	float dt				= _min(Device.fTimeDelta,time_to);
 
-	Frect current_rect		= gm->GetWndRect();
-	current_rect.x1			+= ((m_desiredMapRect.x1-current_rect.x1)/time_to)*dt;
-	current_rect.y1			+= ((m_desiredMapRect.y1-current_rect.y1)/time_to)*dt;
-	current_rect.x2			+= ((m_desiredMapRect.x2-current_rect.x2)/time_to)*dt;
-	current_rect.y2			+= ((m_desiredMapRect.y2-current_rect.y2)/time_to)*dt;
-	gm->SetWndRect			(current_rect);
+	if(m_endMovingTime > Device.fTimeGlobal){
+		Frect current_rect	= gm->GetWndRect();
+		current_rect.x1		+= ((m_desiredMapRect.x1-current_rect.x1)/time_to)*dt;
+		current_rect.y1		+= ((m_desiredMapRect.y1-current_rect.y1)/time_to)*dt;
+		current_rect.x2		+= ((m_desiredMapRect.x2-current_rect.x2)/time_to)*dt;
+		current_rect.y2		+= ((m_desiredMapRect.y2-current_rect.y2)/time_to)*dt;
+		gm->SetWndRect		(current_rect);
+	}else{
+		gm->SetWndRect		(m_desiredMapRect);
+	}	
 
 	gm->Update				();
 	m_object->UpdateScroll	();
