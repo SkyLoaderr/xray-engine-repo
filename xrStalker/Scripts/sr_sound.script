@@ -95,9 +95,9 @@ function action_sound:reset_scheme()
 	self.st.idle_end = 0
 	self.st.signals = {}
 	self.is_actor_inside = false
-	if self.snd_obj ~= nil then
-	   self.snd_obj:stop()
-	end    
+	--if self.snd_obj ~= nil then
+	   --self.snd_obj:stop()
+	--end    
 	self.snd_obj = nil
 	
 	self.slide_active = false
