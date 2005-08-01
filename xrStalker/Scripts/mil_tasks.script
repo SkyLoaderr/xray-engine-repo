@@ -364,3 +364,16 @@ function mil_lukash_test (npc1, npc2)
        db.actor:disable_info_portion ("mil_lukash_map_spot")
     end   
 end
+
+-- test !!!
+function mil_test_task_rg6_have ()
+    return db.actor:object ("wpn_rg-6") ~= nil
+end
+
+function mil_test_task_l85_have ()
+    return db.actor:object ("wpn_l85") ~= nil
+end    
+
+function mil_test_task_lr300_have ()
+    return db.actor:object ("wpn_lr300") ~= nil
+end    
