@@ -363,11 +363,15 @@ void CUIMainIngameWnd::Draw()
 	bool zoom_mode = false;
 	bool scope_mode = false;
 	// show IO icon
-	bool IOActive = (FS.dwOpenCounter>0);
-	if(IOActive) UIStaticDiskIO_start_time = Device.fTimeGlobal;
+	bool IOActive	= (FS.dwOpenCounter>0);
+	if	(IOActive)	UIStaticDiskIO_start_time = Device.fTimeGlobal;
 
-	UIStaticDiskIO.Show( (UIStaticDiskIO_start_time+2.0f) > Device.fTimeGlobal ); 
-
+	if ((UIStaticDiskIO_start_time+2.0f) > Device.fTimeGlobal)	UIStaticDiskIO.Show(false); 
+	else {
+		u32		alpha		= iFloor(255.f*(Device.fTimeGlobal-UIStaticDiskIO_start_time)/2.f);
+		UIStaticDiskIO.Show		( true  ); 
+		UIStaticDiskIO.SetColor	(color_rgba(255,255,255,alpha);
+	}
 	FS.dwOpenCounter = 0;
 
 	float	luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
