@@ -20,7 +20,7 @@ function opt_sound:InitControls(x, y, xml, handler)
 	xml:InitLabel("tab_sound:cap_musicvolume",		self)
 	xml:InitLabel("tab_sound:cap_sfxvolume",		self)
 	xml:InitLabel("tab_sound:cap_voicevolume",		self)
-	xml:InitLabel("tab_sound:cap_soundqhality",		self)
+	xml:InitLabel("tab_sound:cap_soundquality",		self)	
 	
 	c = xml:InitCheck("tab_sound:check_reverse",	self)
 	c:Enable(false)
