@@ -9,6 +9,9 @@ class CGameTask;
 class CGameTaskManager
 {
 	CGameTaskWrapper*		m_gametasks;
+
+protected:
+	void					UpdateActiveTask				();
 public:
 
 							CGameTaskManager				();
@@ -20,6 +23,5 @@ public:
 	CGameTask*				GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting=true);
 	void					SetTaskState					(const TASK_ID& id, int objective_num, ETaskState state);
 
-	void					ShowSpotOnMap					(CGameTask* t, int objective_id, bool bShow);
-	void					ShowSpotPointerOnMap			(CGameTask* t, int objective_id, bool bShow);
+	void					UpdateTasks						();
 };

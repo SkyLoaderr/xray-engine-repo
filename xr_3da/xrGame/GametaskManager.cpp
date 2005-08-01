@@ -95,6 +95,9 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 		Msg		("wrong objective num for [%s]", *id);
 		return;
 	}
+
+	if(t->m_Objectives[objective_num].m_bTaskDependent && state == eTaskStateFail) objective_num = 0;//for all
+
 	bool bHasPolinter = t->HighlightedSpotOnMap(objective_num);
 
 	t->m_Objectives[objective_num].SetTaskState	(state);
@@ -130,12 +133,32 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 
 }
 
-void CGameTaskManager::ShowSpotOnMap			(CGameTask* t, int objective_id, bool bShow)
+void CGameTaskManager::UpdateTasks						()
 {
+	GameTasks_it it		= GameTasks().begin();
+	GameTasks_it it_e	= GameTasks().end();
+	for( ;it!=it_e; ++it ){
+		CGameTask* t		= (*it).game_task;
+		if(t->m_Objectives[0].TaskState()!=eTaskStateInProgress) continue;
+
+		for(u32 i=0; i<t->m_Objectives.size() ;++i){
+			SGameTaskObjective& obj = t->m_Objectives[i];
+			if(obj.TaskState()!=eTaskStateInProgress) continue;
+
+			ETaskState state = obj.UpdateState();
+
+			if( (state==eTaskStateFail || state==eTaskStateCompleted)){
+				SetTaskState(t->m_ID, i, state);
+				return;
+			}
+		}
+	}
 }
 
-void CGameTaskManager::ShowSpotPointerOnMap		(CGameTask* t, int objective_id, bool bShow)
+
+void CGameTaskManager::UpdateActiveTask				()
 {
+
 }
 
 

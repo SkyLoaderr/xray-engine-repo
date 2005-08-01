@@ -77,6 +77,7 @@
 #include "ui/UIArtefactPanel.h"
 
 #include "map_manager.h"
+#include "GameTaskManager.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -924,7 +925,8 @@ void CActor::shedule_Update	(u32 DT)
 		pHudItem->SetHUDmode(HUDview());
 
 	//обновление инвентаря
-	UpdateInventoryOwner(DT);
+	UpdateInventoryOwner			(DT);
+	GameTaskManager().UpdateTasks	();
 
 	if(m_holder || !getEnabled() || !Ready())
 	{

@@ -124,13 +124,13 @@ void CUITaskRootItem::Update		()
 {
 	inherited::Update				();
 
-	bool bHasLocation						= m_GameTask->HasMapLocations();
-	m_showLocationBtn->Enable				(bHasLocation);
+	bool bHasLocation					= m_GameTask->HasMapLocations();
+	m_showLocationBtn->Show				(bHasLocation);
 	if(bHasLocation){
-		bool bShown							= m_GameTask->ShownLocations();
-		m_showLocationBtn->SetButtonMode		(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
+		bool bShown						= m_GameTask->ShownLocations();
+		m_showLocationBtn->SetButtonMode(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
 	}
-	m_switchDescriptionBtn->SetButtonMode		(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
+	m_switchDescriptionBtn->SetButtonMode(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
 }
 
 void CUITaskRootItem::OnDbClick	()
@@ -229,7 +229,7 @@ void CUITaskSubItem::Update					()
 	inherited::Update						();
 	SGameTaskObjective	*obj				= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
 	bool bHasLocation						= (NULL != obj->HasMapLocation());
-	m_showPointerBtn->Enable				(bHasLocation);
+	m_showPointerBtn->Show					(bHasLocation);
 	if(bHasLocation){
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
 		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);

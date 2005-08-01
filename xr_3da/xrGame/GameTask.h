@@ -7,6 +7,7 @@
 
 #include "encyclopedia_article_defs.h"
 #include "GameTaskDefs.h"
+#include "script_space.h"
 
 class CGameTaskManager;
 class CMapLocation;
@@ -17,7 +18,7 @@ struct SGameTaskObjective
 private:
 	ETaskState				task_state;
 public:
-	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1)),task_state(eTaskStateInProgress),def_location_enabled(true)	{}
+	SGameTaskObjective		():description(NULL),article_id(NULL),map_location(NULL),object_id(u16(-1)),task_state(eTaskStateInProgress),def_location_enabled(true),m_bTaskDependent(false)	{}
 	shared_str				description;
 	ARTICLE_ID				article_id;
 	shared_str				map_location;
@@ -25,12 +26,21 @@ public:
 	CMapLocation*			HasMapLocation		();
 	ETaskState				TaskState			()	{return task_state;};
 	void					SetTaskState		(ETaskState new_state);
-	
+	ETaskState				UpdateState			();
 
 	//прикрипленная иконка
 	shared_str				icon_texture_name;
 	Frect					icon_rect;//x,y,w,h
 	bool					def_location_enabled;
+//complete/fail stuff
+	xr_vector<shared_str>	m_completeInfos;
+	xr_vector<shared_str>	m_failInfos;
+	shared_str				m_info_on_complete;
+	shared_str				m_info_on_fail;
+	luabind::functor<bool>	m_complete_lua_function;
+	luabind::functor<bool>	m_fail_lua_function;
+	bool					m_bTaskDependent;
+
 };
 DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);
 

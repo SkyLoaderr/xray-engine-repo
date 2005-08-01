@@ -22,6 +22,7 @@ u16					storyId2GameId	(ALife::_STORY_ID);
 
 
 #include "level.h"
+#include "actor.h"
 #include "script_space.h"
 #include "ai_space.h"
 #include "alife_object_registry.h"
@@ -78,54 +79,89 @@ void CGameTask::Load(const TASK_ID& id)
 {
 	if(!g_gameTaskXmlInited)
 		g_gameTaskXml.Init			(CONFIG_PATH, "gameplay", "game_tasks.xml");
-	XML_NODE* task_node = g_gameTaskXml.NavigateToNodeWithAttribute("game_task","id",*id);
+	XML_NODE* task_node				= g_gameTaskXml.NavigateToNodeWithAttribute("game_task","id",*id);
 
-	THROW3(task_node, "game task id=", *id);
-
-	int tag_num = g_gameTaskXml.GetNodesNum(task_node, "objective");
+	THROW3							(task_node, "game task id=", *id);
+	g_gameTaskXml.SetLocalRoot		(task_node);
+	m_Title							= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "title", 0, NULL);
+	int tag_num						= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"objective");
 
 	m_Objectives.clear		();
-	m_Objectives.reserve	(tag_num);
-
-	m_Title = g_gameTaskXml.Read(task_node, "title", 0, NULL);
-
+	m_Objectives.resize		(tag_num);
 	for(int i=0; i<tag_num; i++)
 	{
-		SGameTaskObjective				objective;
-//		objective.task_state			= eTaskStateInProgress; //todo: move to ctor. moved
-		LPCSTR tag_text					= g_gameTaskXml.Read(task_node, "objective:text", i, NULL);
+		g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.NavigateToNode("objective",i));
+
+		SGameTaskObjective&				objective = m_Objectives[i];
+
+
+		LPCSTR tag_text					= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "text", 0, NULL);
 		objective.description			= tag_text;
-		tag_text						= g_gameTaskXml.Read(task_node, "objective:article", i, NULL);
+		tag_text						= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "article", 0, NULL);
 		if(tag_text)
 			objective.article_id		= tag_text;
 
-		objective.icon_texture_name		= g_gameTaskXml.Read(task_node, "objective:icon", i, NULL);
+		objective.icon_texture_name		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "icon", 0, NULL);
 		if(objective.icon_texture_name.size()){
-			objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(task_node, "objective:icon", i, "x");
-			objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(task_node, "objective:icon", i, "y");
-			objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(task_node, "objective:icon", i, "width");
-			objective.icon_rect.y2			= g_gameTaskXml.ReadAttribFlt(task_node, "objective:icon", i, "height");
+			objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "x");
+			objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "y");
+			objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "width");
+			objective.icon_rect.y2			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "height");
 		}
 
-		objective.map_location			= g_gameTaskXml.Read(task_node, "objective:map_location_type", i, NULL);
-		LPCSTR object_story_id			= g_gameTaskXml.Read(task_node, "objective:object_story_id", i, NULL);
+		objective.map_location			= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "map_location_type", 0, NULL);
+		LPCSTR object_story_id			= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "object_story_id", 0, NULL);
 		LPCSTR ddd;
-		ddd = g_gameTaskXml.Read(task_node, "objective:map_location_hidden", i, NULL);
+		ddd								= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "map_location_hidden", 0, NULL);
 		if(ddd)
 			objective.def_location_enabled = false;
 
-//		objective.def_location_enabled	= (NULL != g_gameTaskXml.Read(task_node, "objective:map_location_hidden", i, NULL));
 		bool b1,b2;
-		b1 = (0==objective.map_location.size());
-		b2 = (NULL==object_story_id);
-		VERIFY3(b1==b2,"incorrect task objective definition for: ",*objective.description);
-		objective.object_id = u16(-1);
+		b1								= (0==objective.map_location.size());
+		b2								= (NULL==object_story_id);
+		VERIFY3							(b1==b2,"incorrect task objective definition for: ",*objective.description);
+		objective.object_id				= u16(-1);
 		if(object_story_id){
-			ALife::_STORY_ID _sid = story_id(object_story_id);
-			objective.object_id = storyId2GameId(_sid);
+			ALife::_STORY_ID _sid		= story_id(object_story_id);
+			objective.object_id			= storyId2GameId(_sid);
 		}
-		m_Objectives.push_back(objective);
+
+
+
+		int info_num					= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"infoportion_complete");
+		objective.m_completeInfos.resize(info_num);
+		int j;
+		for(j=0; j<info_num; ++j)
+			objective.m_completeInfos[j]= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_complete", j, NULL);
+
+		info_num						= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"infoportion_fail");
+		objective.m_failInfos.resize	(info_num);
+
+		for(j=0; j<info_num; ++j)
+			objective.m_failInfos[j]	= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_fail", j, NULL);
+
+		objective.m_info_on_complete	= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_set_complete", 0, NULL);
+		objective.m_info_on_fail		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_set_fail", 0, NULL);
+
+		LPCSTR		str					= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "function_complete", 0, NULL);
+		if(str){
+			bool functor_exists			= ai().script_engine().functor(str ,objective.m_complete_lua_function);
+			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
+		}
+		str								= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "function_fail", 0, NULL);
+		if(str){
+			bool functor_exists			= ai().script_engine().functor(str ,objective.m_fail_lua_function);
+			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
+		}
+
+		LPCSTR s						= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "task_dependent", 0, NULL);
+		if(s)
+			objective.m_bTaskDependent	= true;
+		
+		if(i==0)						objective.m_bTaskDependent = true;
+		g_gameTaskXml.SetLocalRoot		(task_node);
 	}
+	g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.GetRoot());
 }
 
 bool CGameTask::HighlightedSpotOnMap(int objective_id)
@@ -193,5 +229,50 @@ void SGameTaskObjective::SetTaskState		(ETaskState new_state)
 		CMapLocation* ml = HasMapLocation();
 		if(ml)
 			Level().MapManager().RemoveMapLocation(map_location, object_id);
+
+		if( (task_state==eTaskStateFail)&&m_info_on_fail.size() ){
+				CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
+				actor->TransferInfo		(m_info_on_fail,true);
+		}else
+		if( (task_state==eTaskStateCompleted)&&m_info_on_complete.size() ){
+				CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
+				actor->TransferInfo		(m_info_on_complete,true);
+		}
 	}
+}
+
+ETaskState SGameTaskObjective::UpdateState()
+{
+	CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
+	
+//check complete infos
+	xr_vector<shared_str>::iterator it;
+	bool bRes = false;
+	for(it=m_completeInfos.begin(); it!=m_completeInfos.end(); ++it){
+		bRes = actor->HasInfo	((*it));
+		if(!bRes) break;
+	}
+	if(bRes)
+		return		eTaskStateCompleted;
+
+//check fail infos
+	for(it=m_failInfos.begin(); it!=m_failInfos.end(); ++it){
+		bRes = actor->HasInfo	((*it));
+		if(!bRes) break;
+	}
+	if(bRes)
+		return		eTaskStateFail;
+//check complete functor
+	if(m_complete_lua_function.is_valid())
+		bRes	= m_complete_lua_function();
+	if(bRes)
+		return		eTaskStateCompleted;
+
+//check fail functor
+	if(m_fail_lua_function.is_valid())
+		bRes	= m_fail_lua_function();
+	if(bRes)
+		return		eTaskStateFail;
+	
+	return TaskState();
 }

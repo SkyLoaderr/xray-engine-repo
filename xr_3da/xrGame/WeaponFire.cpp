@@ -57,49 +57,22 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
 	
-	float	weapon_fire_disp	= GetFireDispersion(false);
-	Fvector dir_base_disp;
-	random_dir					(dir_base_disp,D,weapon_fire_disp);
+//	float	weapon_fire_disp	= GetFireDispersion(false);
+//	Fvector dir_base_disp;
+//.	random_dir					(dir_base_disp,D,weapon_fire_disp);
 //.	dir_base_disp.random_dir	(D, weapon_fire_disp, Random);
 
+//	float fire_disp				= GetFireDispersion(true);
+//	float cartirdge_fire_disp = fire_disp - weapon_fire_disp;
+
 	float fire_disp				= GetFireDispersion(true);
-	float cartirdge_fire_disp = fire_disp - weapon_fire_disp;
-
-#ifdef DEBUG
-	if(bDebug){
-		const CInventoryOwner* pOwner	=	smart_cast<const CInventoryOwner*>(H_Parent());
-		VERIFY (pOwner);
-		float parent_disp = pOwner->GetWeaponAccuracy();
-
-		Msg("disp_without cart=%f",rad2deg(weapon_fire_disp-parent_disp));
-		Msg("disp_with cart=%f",rad2deg(fire_disp-parent_disp));
-		
-		Msg("disp_owner=%f",rad2deg(parent_disp));
-		
-		Fvector ddd, dd;
-		dd = dir_base_disp;
-//.		ddd.random_dir(dd, cartirdge_fire_disp, Random);
-		random_dir(ddd,dd,cartirdge_fire_disp);
-
-		float diff;
-		Fvector _D = D;
-		_D.normalize_safe();
-		ddd.normalize_safe();
-		
-		diff = acos(_D.dotproduct(ddd));
-
-
-		Msg("total angle diff=%f", rad2deg(diff));
-	}
-
-#endif
 
 	bool SendHit = SendHitAllowed(H_Parent());
 	//выстерлить пулю (с учетом возможной стрельбы дробью)
 	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
 	{
-		FireBullet(P, dir_base_disp, cartirdge_fire_disp,
-					l_cartridge, H_Parent()->ID(), ID(), SendHit);
+//.		FireBullet(P, dir_base_disp, cartirdge_fire_disp, l_cartridge, H_Parent()->ID(), ID(), SendHit);
+		FireBullet(P, D, fire_disp, l_cartridge, H_Parent()->ID(), ID(), SendHit);
 	}
 
 	StartShotParticles	();
