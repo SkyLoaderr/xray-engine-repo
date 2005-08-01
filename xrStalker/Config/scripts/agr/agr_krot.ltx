@@ -11,8 +11,8 @@ meet = meet@hold
 on_info = {+agr_krot_skirmish_start} walker@combat
 
 [meet@hold]
-meet_state     = 5 | hide_na@speech1
-meet_state_wpn = 5 | hide_na@speech1
+meet_state     = 0 | hide_na@speech1
+meet_state_wpn = 0 | hide_na@speech1
 victim = actor
 victim_wpn = actor
 use = true
@@ -21,7 +21,7 @@ meet_dialog = agr_krot_help
 
 [walker@combat]
 path_walk = agr_krot_hold_combat_walk
-path_look = agr_krot_hold_fake_look
+path_look = agr_krot_hold_combat_look
 on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_after_hold
 
 [walker@wait_after_hold]
