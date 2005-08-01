@@ -89,6 +89,17 @@ function set_enemies(actor, npc, p)
 	end
 end
 
+-- играть звук в голове актёра
+function play_snd(actor, npc, p)
+	if p[1] then
+--		self.snd_obj:play_at_pos(obj, vector ():set (0, 0, 0), self.st.delay, sound_object.s2d)
+
+		local snd_obj = sound_object(p[1])
+		snd_obj:play(actor, p[2] or 0, sound_object.s2d)
+	end
+end
+------------------------------------------------------------------------------------------------
+
 -- Кто-то из участников сценки вступил в бой - теперь нужно пообижать всех на всех
 function gar_dm_bandits_fight(actor, npc)
 	local novice = level_object_by_sid(104)
