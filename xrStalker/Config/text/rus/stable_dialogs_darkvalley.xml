@@ -297,6 +297,12 @@
     <string id="val_prisoner_hello_311">
         <text>Нет, ничего.</text>
     </string>
+    <string id="val_prisoner_hello_41">
+        <text>Ей, друг. Там на стене есть переключатель. Он открывает дверь решетки.</text>
+    </string>
+    <string id="val_prisoner_hello_411">
+        <text>Ок, я гляну.</text>
+    </string>
     <string id="val_prisoner_hello_5">
         <text>Слушай, может вместе пойдем? Легче все же будет вдвоем-то.</text>
     </string>

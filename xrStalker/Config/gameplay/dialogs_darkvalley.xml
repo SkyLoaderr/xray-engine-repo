@@ -659,21 +659,6 @@
     </dialog>
     <dialog id="val_prisoner_hello">
         <phrase_list>
-            <phrase id="11">
-                <text>val_prisoner_hello_11</text>
-                <next>111</next>
-                <next>112</next>
-            </phrase>
-            <phrase id="111">
-                <text>val_prisoner_hello_111</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_prisoner_sit</give_info>
-            </phrase>
-            <phrase id="112">
-                <text>val_prisoner_hello_112</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_prisoner_sit</give_info>
-            </phrase>
             <phrase id="2111">
                 <text>val_prisoner_hello_2111</text>
                 <next>5</next>
@@ -706,20 +691,50 @@
                 <text>val_prisoner_hello_51</text>
                 <next>511</next>
             </phrase>
-            <phrase id="511">
-                <text>val_prisoner_hello_511</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_prisoner_join</give_info>
-            </phrase>
             <phrase id="311">
                 <text>val_prisoner_hello_311</text>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="111">
+                <text>val_prisoner_hello_111</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_prisoner_sit</give_info>
+            </phrase>
+            <phrase id="112">
+                <text>val_prisoner_hello_112</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_prisoner_sit</give_info>
+            </phrase>
+            <phrase id="11">
+                <text>val_prisoner_hello_11</text>
+                <next>111</next>
+                <next>112</next>
             </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="41">
+                <text>val_prisoner_hello_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="511">
+                <text>val_prisoner_hello_511</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_prisoner_join</give_info>
+            </phrase>
+            <phrase id="411">
+                <text>val_prisoner_hello_411</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>val_prisoner_free</dont_has_info>
+                <dont_has_info>val_prisoner_near_door</dont_has_info>
+                <next>11</next>
             </phrase>
             <phrase id="2">
                 <text></text>
@@ -732,10 +747,11 @@
                 <has_info>val_prisoner_give_info</has_info>
                 <next>31</next>
             </phrase>
-            <phrase id="1">
+            <phrase id="4">
                 <text></text>
                 <dont_has_info>val_prisoner_free</dont_has_info>
-                <next>11</next>
+                <has_info>val_prisoner_near_door</has_info>
+                <next>41</next>
             </phrase>
         </phrase_list>
     </dialog>
