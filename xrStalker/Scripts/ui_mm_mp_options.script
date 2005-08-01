@@ -17,7 +17,9 @@ function mp_options:InitControls(x, y, xml, handler)
 	self:SetAutoDelete(true)
 	
 	self.bk = xml:InitFrame("frame", self)
-
+	
+	xml:InitFrameLine("tab_options:vert_separator",self)
+	xml:InitFrameLine("tab_options:vert_separator_2",self)
 	xml:InitLabel("tab_options:cap_network_connection",	self.bk)
 	xml:InitLabel("tab_options:cap_respawn_options",	self.bk)
 	xml:InitLabel("tab_options:cap_server_list",		self.bk)
