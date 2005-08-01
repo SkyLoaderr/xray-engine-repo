@@ -368,9 +368,9 @@ void CUIMainIngameWnd::Draw()
 
 	if ((UIStaticDiskIO_start_time+2.0f) > Device.fTimeGlobal)	UIStaticDiskIO.Show(false); 
 	else {
-		u32		alpha		= iFloor(255.f*(Device.fTimeGlobal-UIStaticDiskIO_start_time)/2.f);
+		u32		alpha			= clampr(iFloor(255.f*(1-(Device.fTimeGlobal-UIStaticDiskIO_start_time)/2.f)),0,255);
 		UIStaticDiskIO.Show		( true  ); 
-		UIStaticDiskIO.SetColor	(color_rgba(255,255,255,alpha);
+		UIStaticDiskIO.SetColor	(color_rgba(255,255,255,alpha));
 	}
 	FS.dwOpenCounter = 0;
 
