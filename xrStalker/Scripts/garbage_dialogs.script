@@ -40,3 +40,7 @@ function gar_hellcar_thanks(actor, npc)
 		end
 	end
 end
+
+function give_money_from_newbie(first_speaker, second_speaker)	
+	dialogs.relocate_money(first_speaker, 500, "in")
+end

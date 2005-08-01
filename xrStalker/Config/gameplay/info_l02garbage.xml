@@ -64,6 +64,12 @@
 	<!-- Атака псевдособак -->
 	<info_portion id="gar_dog_attack"></info_portion>
 	
+	<!-- Новичок в туннеле -->
+	<info_portion id="gar_help_newbie"></info_portion>
+	<info_portion id="gar_help_newbie_done"></info_portion>
+	<info_portion id="gar_help_newbie_die"></info_portion>
+	<info_portion id="gar_help_newbie_reward"></info_portion>
+	<info_portion id="gar_help_newbie_exit"></info_portion>
 		
   <!-- Драм-момент -->
   <info_portion id="gar_dm_novice_asked_for_help"></info_portion>
