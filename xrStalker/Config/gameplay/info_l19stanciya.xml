@@ -21,6 +21,10 @@
 	<info_portion id="aes_actor_btr"></info_portion>
 	<info_portion id="aes_first_wave_sound"></info_portion>
 	<info_portion id="aes_choper_hunt"></info_portion>
+	<info_portion id="aes_desant_proceed1"></info_portion>
+	<info_portion id="aes_desant_proceed2"></info_portion>
+	<info_portion id="aes_desant_proceed3"></info_portion>
+	<info_portion id="aes_desant_proceed4"></info_portion>
 
 </game_information_portions>
 
