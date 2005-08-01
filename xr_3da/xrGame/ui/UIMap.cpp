@@ -441,18 +441,15 @@ void CUILevelMap::Update()
 void CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x,y,mouse_action);
+	if (MapWnd()->GlobalMap()->Locked()) return;
 	switch (mouse_action){			
-		case WINDOW_LBUTTON_DB_CLICK:{	
+		case WINDOW_LBUTTON_DB_CLICK:
 			MapWnd()->SetTargetMap( MapName() );
-//			CUIGlobalMap* globalMap	= MapWnd()->GlobalMap();
-//			globalMap->MapWnd()->SetZoom(16.f/*globalMap->MapWnd()->GetZoom()*2.f*/);
-		}break;
-
-		case WINDOW_LBUTTON_DOWN:{
+		break;
+		case WINDOW_LBUTTON_DOWN:
 			if(MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
 				MapWnd()->AddUserSpot(this);
-		}break;
-
+		break;
 	}
 }
 
