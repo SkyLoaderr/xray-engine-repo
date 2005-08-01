@@ -196,7 +196,7 @@ function action_car:reset_scheme(loading)
 	    --printf("car <fire>: target = %s", self.st.fire_target)
 	    if self.st.fire_target == "points" then
 	        self.state_firetarget = state_firetarget_points
-	    elseif self.st.fire_target == "actor" then
+	    elseif self.st.fire_target == "actor" and db.actor:alive() then
 	        self.state_firetarget = state_firetarget_actor
 	    --elseif self.st.fire_target == "enemy" then
 	    --    self.state_firetarget = state_firetarget_actor
@@ -889,7 +889,7 @@ function action_car:fast_update()
 	            end
 	        end
 	    elseif self.state_firetarget == state_firetarget_actor then
-	        if self.car:IsObjectVisible(db.actor) then
+	        if db.actor:alive() and self.car:IsObjectVisible(db.actor) then
 	            printf("car <fire>: actor is visible.")
 
 		        self.target_fire_pt = db.actor:position()
