@@ -11,6 +11,9 @@
 #include "control_movement_base.h"
 #include "control_path_builder_base.h"
 
+#ifdef DEBUG
+#include "../../level_debug.h"
+#endif
 
 void CControlJump::reinit()
 {
@@ -184,7 +187,10 @@ Fvector CControlJump::get_target(CObject *obj)
 	global_transform.set	(obj->XFORM());
 	global_transform.mulB	(bone.mTransform);
 
-	return	(predict_position(obj, global_transform.c));
+	if (m_object->m_monster_type == CBaseMonster::eMonsterTypeOutdoor)
+		return	(predict_position(obj, global_transform.c));
+	else
+		return	(global_transform.c);
 }
 
 void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
@@ -297,30 +303,37 @@ Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
 	float prediction_dist = jump_time * velocity;
 
-	//Fvector dir;
-	//dir.set(m_object->movement_control()->GetVelocity());
-	//dir.normalize_safe();
+	CEntityAlive *entity = smart_cast<CEntityAlive*>(obj);
 
-	//GetCharacterVelocity
+	Fvector					dir;
+	dir.set					(entity->movement_control()->GetVelocity());
+	float speed				= dir.magnitude();
+	dir.normalize_safe		();
 
-	Fvector prediction_pos;
-	prediction_pos.mad(pos, obj->Direction(), prediction_dist);
+	Fvector					prediction_pos;
+	//prediction_pos.mad		(pos, dir, prediction_dist);
+	prediction_pos.mad		(pos, dir, speed * jump_time / 2);
 
-	// проверить prediction_pos на дистанцию и угол
-	float dist = m_object->Position().distance_to(prediction_pos);
-	if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
+	//// проверить prediction_pos на дистанцию и угол
+	//float dist = m_object->Position().distance_to(prediction_pos);
+	//if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
 
-	// получить вектор направления и его мир угол
-	Fvector		dir;
-	float		dir_yaw, dir_pitch;
+	//// получить вектор направления и его мир угол
+	//float		dir_yaw, dir_pitch;
 
-	dir.sub		(prediction_pos, m_object->Position());
-	dir.getHP	(dir_yaw, dir_pitch);
+	//dir.sub		(prediction_pos, m_object->Position());
+	//dir.getHP	(dir_yaw, dir_pitch);
 
-	// проверка на angle и на dist
-	float yaw_current, yaw_target;
-	m_object->control().direction().get_heading(yaw_current, yaw_target);
-	if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
+	//// проверка на angle и на dist
+	//float yaw_current, yaw_target;
+	//m_object->control().direction().get_heading(yaw_current, yaw_target);
+	//if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
+	
+#ifdef DEBUG
+	DBG().level_info(this).clear	();
+	DBG().level_info(this).add_item	(pos, 0.35f, D3DCOLOR_XRGB(0,0,255));
+	DBG().level_info(this).add_item	(prediction_pos, 0.35f, D3DCOLOR_XRGB(255,0,0));
+#endif
 
 	return prediction_pos;
 }
