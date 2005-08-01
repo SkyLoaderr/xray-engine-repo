@@ -61,7 +61,7 @@ void CSoundRender_Emitter::Event_Propagade	()
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
 	if (!(owner_data))					return;
 	if (0==owner_data->g_type)			return;
-	if (owner_data->g_type&0x00000080)	return; //. hack
+	if (0==owner_data->g_object)		return;
 	if (0==SoundRender->Handler)		return;
 
 	VERIFY						(_valid(p_source.volume));
