@@ -294,7 +294,11 @@ end
 
 
 function fighting_actor(actor, npc)
-	return db.storage[npc:id()].enemy:id() == actor:id()
+    local enemy = db.storage[npc:id()].enemy
+    if enemy then
+	    return enemy:id() == actor:id()
+	end
+	return false
 end
 
 function fighting_dist_ge_20(actor, npc)
