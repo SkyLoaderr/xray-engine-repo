@@ -176,7 +176,7 @@ function action_patrol:execute()
 	
 	--забывание врага по времени.	
 	if self.a.mem_enemy ~= nil then
-		--printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+		printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 		if time_global()- self.a.mem_enemy > self.a.idle then
 			if self.enemy ~= nil then
 				printf ("DISABLE ENEMY : %s", self.enemy:name ())
