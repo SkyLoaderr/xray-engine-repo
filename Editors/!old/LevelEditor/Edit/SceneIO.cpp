@@ -290,12 +290,14 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     SceneToolsMapPairIt _I = m_SceneTools.begin();
     SceneToolsMapPairIt _E = m_SceneTools.end();
     for (; _I!=_E; _I++){
-        if (_I->second&&_I->second->IsNeedSave()){
+        if (_I->second){
             if (bUndo && _I->second->IsEnabled()&&_I->second->IsEditable()){
-	         	_I->second->Save(m_SaveCache);
-	        	F->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
-				F->w			(m_SaveCache.pointer(),m_SaveCache.size());
-	        	F->close_chunk	();
+            	if (_I->second->IsNeedSave()){
+                    _I->second->Save(m_SaveCache);
+                    F->open_chunk	(CHUNK_TOOLS_DATA+_I->first);
+                    F->w			(m_SaveCache.pointer(),m_SaveCache.size());
+                    F->close_chunk	();
+                }
             }else{
                 if (_I->second->IsEnabled()&&_I->second->IsEditable()){
                     xr_string		part_name = part_prefix+_I->second->ClassName()+".part";
