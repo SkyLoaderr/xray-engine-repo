@@ -129,3 +129,7 @@
 <string id="mil_test_task_phase2">
 	<text>Зайти в рестриктор 2</text>
 </string>
+
+<string id="mil_test_task_phase3">
+	<text>Поднять РГ6 для выполнения задачи или LR300 для провала</text>
+</string>
