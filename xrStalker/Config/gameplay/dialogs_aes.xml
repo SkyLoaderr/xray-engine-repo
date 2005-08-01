@@ -2,10 +2,6 @@
 <game_dialogs>
     <dialog id="aes_sergeant_diallog">
         <phrase_list>
-            <phrase id="1002">
-                <text>aes_sergeant_diallog_1002</text>
-                <next>1004</next>
-            </phrase>
             <phrase id="1004">
                 <text>aes_sergeant_diallog_1004</text>
                 <next>1005</next>
@@ -21,10 +17,6 @@
             <phrase id="1007">
                 <text>aes_sergeant_diallog_1007</text>
                 <next>1008</next>
-            </phrase>
-            <phrase id="1008">
-                <text>aes_sergeant_diallog_1008</text>
-                <next>1009</next>
             </phrase>
             <phrase id="1009">
                 <text>aes_sergeant_diallog_1009</text>
@@ -108,20 +100,6 @@
                 <text>aes_sergeant_diallog_1030</text>
                 <next>1031</next>
             </phrase>
-            <phrase id="0">
-                <text>aes_sergeant_diallog_1032</text>
-                <next>1001</next>
-            </phrase>
-            <phrase id="1001">
-                <text>aes_sergeant_diallog_1001</text>
-                <next>1002</next>
-                <next>1003</next>
-            </phrase>
-            <phrase id="1003">
-                <text>aes_sergeant_diallog_1003</text>
-                <action>dialogs_aes.aes_segeant_kill</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
             <phrase id="1012">
                 <text>aes_sergeant_diallog_1012</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
@@ -136,6 +114,24 @@
                 <text>aes_sergeant_diallog_1031</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text>aes_sergeant_diallog_1001</text>
+                <next>1002</next>
+                <next>1003</next>
+            </phrase>
+            <phrase id="1002">
+                <text>aes_sergeant_diallog_1002</text>
+                <next>1004</next>
+            </phrase>
+            <phrase id="1003">
+                <text>aes_sergeant_diallog_1003</text>
+                <action>dialogs_aes.aes_segeant_kill</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1008">
+                <text>aes_sergeant_diallog_1008</text>
+                <next>1009</next>
             </phrase>
         </phrase_list>
     </dialog>
