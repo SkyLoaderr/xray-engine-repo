@@ -173,24 +173,34 @@ void		CModelPool::Instance_Register(LPCSTR N, IRender_Visual* V)
 void CModelPool::Destroy()
 {
 	// Pool
-	Pool.clear		();
+	Pool.clear			();
 
 	// Registry
-	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++)
-	{
-		xr_delete	((IRender_Visual*)it->first);
+	while(!Registry.empty()){
+		REGISTRY_IT it	= Registry.begin();
+		IRender_Visual* V=(IRender_Visual*)it->first;
+#ifdef _DEBUG
+		Msg				("ModelPool: Destroy object: '%s'",V->dbg_name);
+#endif
+		DeleteInternal	(V,TRUE);
+	}
+	VERIFY				(Models.empty());
+/*
+	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++){
+		IRender_Visual* V = (IRender_Visual*)it->first;
+		xr_delete	(V);
 		xr_free		(it->second);
 	}
 	Registry.clear();
 
 	// Base/Reference
 	xr_vector<ModelDef>::iterator	I;
-	for (I=Models.begin(); I!=Models.end(); I++) 
-	{
+	for (I=Models.begin(); I!=Models.end(); I++){
 		I->model->Release();
 		xr_delete(I->model);
 	}
 	Models.clear();
+*/
 
 	// cleanup motions container
 	g_pMotionsContainer->clean(false);
@@ -323,16 +333,13 @@ void	CModelPool::Discard	(IRender_Visual* &V)
 {
 	//
 	REGISTRY_IT	it		= Registry.find	(V);
-	if (it!=Registry.end())
-	{
+	if (it!=Registry.end()){
 		// Pool - OK
 
 		// Base
 		LPCSTR	name	= it->second;
-		for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++)
-		{
-			if (I->name[0] && (0==xr_strcmp(*I->name,name))) 
-			{
+		for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++){
+			if (I->name[0] && (0==xr_strcmp(*I->name,name))){
             	VERIFY(I->refs>0);
             	I->refs--; 
                 if (0==I->refs){
