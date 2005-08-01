@@ -7,7 +7,6 @@
 #include "../IGame_Level.h"
 #include "xr_Level_controller.h"
 #include "ui\UITextureMaster.h"
-#include "ui/UIOptionsManager.h"
 #include <dinput.h>
 
 
@@ -110,7 +109,6 @@ CMainUI::CMainUI	()
 	m_startDialog				= NULL;
 	m_pUICursor					= xr_new<CUICursor>();
 	m_pFontManager				= xr_new<CFontManager>();
-	m_pOptionsManager			= xr_new<CUIOptionsManager>();	
 	g_pGamePersistent->m_pMainUI= this;
 	if (Device.bReady)			OnDeviceCreate();
 	// only temp
@@ -125,7 +123,6 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_startDialog);
 	xr_delete						(m_pUICursor);
 	xr_delete						(m_pFontManager);
-	xr_delete						(m_pOptionsManager);
 	g_pGamePersistent->m_pMainUI	= NULL;
 }
 void CMainUI::Activate	(bool bActivate)

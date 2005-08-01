@@ -3,12 +3,14 @@
 ///////////////////////////////////////////////////
 
 #pragma once
+#include "UIOptionsManager.h"
 
 class CUIOptionsItem{
 	friend class CUIOptionsManager;
 public:
 	virtual ~CUIOptionsItem();
 	virtual void Register(const char* entry, const char* group);
+	static CUIOptionsManager* GetOptionsManager() {return &m_optionsManager;}
 protected:
 	virtual void	SetCurrentValue()	=0;
 	virtual void	SaveValue()			=0;
@@ -37,4 +39,6 @@ protected:
 			void		SaveOptTokenValue(const char* val);
 
 	xr_string		m_entry;
+
+	static CUIOptionsManager m_optionsManager;
 };

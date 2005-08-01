@@ -5,20 +5,22 @@
 #include "StdAfx.h"
 #include "UIOptionsItem.h"
 #include "UIOptionsManager.h"
-#include "../MainUI.h"
+//#include "../MainUI.h"
 #include "../../xr_ioconsole.h"
 
+CUIOptionsManager CUIOptionsItem::m_optionsManager;
+
 CUIOptionsItem::~CUIOptionsItem(){
-	UI()->OptionsManager()->UnRegisterItem(this);
+	m_optionsManager.UnRegisterItem(this);
 }
 
 void CUIOptionsItem::Register(const char* entry, const char* group){
-	UI()->OptionsManager()->RegisterItem(this, group);
+	m_optionsManager.RegisterItem(this, group);
 	m_entry = entry;	
 }
 
 void CUIOptionsItem::SendMessage2Group(const char* group, const char* message){
-	UI()->OptionsManager()->SendMessage2Group(group,message);
+	m_optionsManager.SendMessage2Group(group,message);
 }
 
 void CUIOptionsItem::OnMessage(const char* group, const char* message){
