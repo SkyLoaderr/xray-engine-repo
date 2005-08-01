@@ -8431,6 +8431,9 @@
 						RelativePath="game_base.h">
 					</File>
 					<File
+						RelativePath=".\game_base_kill_type.h">
+					</File>
+					<File
 						RelativePath=".\game_base_script.cpp">
 					</File>
 					<File
