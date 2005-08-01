@@ -141,7 +141,7 @@ function Cmeet_manager:update()
 		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_dialog)
 		if self.startdialog ~= tmp then
 			self.startdialog = tmp
-			printf("*DIALOGS %s* SET [%s]", self.npc:name(), utils.to_str(tmp))
+--			printf("*DIALOGS %s* SET [%s]", self.npc:name(), utils.to_str(tmp))
 			if tmp == nil or tmp == "nil" then
 				-- восстановление начального
 				self.npc:restore_default_start_dialog()
@@ -165,7 +165,7 @@ function Cmeet_manager:update()
 	else
 		self.state,self.sound = self:process_meet()
 	end
-	printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
+--	printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
 end
 function Cmeet_manager:process_zone()
 	if self.a.zone == nil then return "nil","nil" end
