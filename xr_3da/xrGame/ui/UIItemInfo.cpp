@@ -65,7 +65,7 @@ void CUIItemInfo::Init(float x, float y, float width, float height, const char* 
 	xml_init.InitListWnd(uiXml, "descr_list", 0, &UIDesc);
 	UIDesc.EnableScrollBar(true);
 	UIDesc.ActivateList(false);
-	UIDesc.SetRightIndention(static_cast<int>(5 * UI()->GetScaleX()));
+	UIDesc.SetRightIndention(5 * UI()->GetScaleX());
 
 	if (uiXml.NavigateToNode("image_static", 0))
 	{	
