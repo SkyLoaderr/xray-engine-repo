@@ -313,6 +313,10 @@ function military_dolg_dead (actor, npc)
     
 end
 
+function mil_cook_dead (actor, npc)
+    level_tasks.set_task_state (task.fail, "mil_freedom_rg6_task", 2)
+end
+
 function search_gulag_job(actor, npc)
 	local st = xr_gulag.isUnderFraction (npc)
 	if st ~= nil then

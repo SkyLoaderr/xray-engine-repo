@@ -143,3 +143,31 @@
 		</objective>
 	</game_task>
 
+	<game_task id="mil_test_task">
+		<title>mil_test_task_title</title>
+		<objective>
+			<text>mil_test_task_title</text>
+			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_test_task_phase1</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_freedom_location</map_location_type>
+            <object_story_id>Mil_Sniper1</object_story_id>
+            <infoportion_fail>mil_fblockpost_rush_wave3</infoportion_fail>
+            <infoportion_complete>mil_fblockpost_rush_wave1</infoportion_complete>
+            <infoportion_set_complete>mil_lukash_dead</infoportion_set_complete>
+            <infoportion_set_fail>mil_dolg_dead</infoportion_set_fail>
+		</objective>
+		<objective>
+			<text>mil_test_task_phase2</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_cook_location</map_location_type>
+            <object_story_id>Mil_Sniper2</object_story_id>
+            <infoportion_complete>mil_fblockpost_rush_wave2</infoportion_complete>
+            <infoportion_fail>mil_fblockpost_rush_wave3</infoportion_fail>
+            <infoportion_set_complete>mil_cook_dialog1</infoportion_set_complete>
+            <infoportion_set_fail>mil_cook_dialog2</infoportion_set_fail>
+            <map_location_hidden>1</map_location_hidden>
+		</objective>
+	</game_task>

@@ -244,4 +244,11 @@
 	<!-- Телохранители мочат игрока -->
 	<info_portion id="mil_bodyguard_kill"></info_portion>
 	
+	<!-- Тестовая задачка -->
+	<info_portion id="mil_test_task">
+		<task>mil_test_task</task>
+	</info_portion>
+	
+	
+	
 </game_information_portions>

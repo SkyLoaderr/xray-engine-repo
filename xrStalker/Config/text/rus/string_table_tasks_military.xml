@@ -115,3 +115,17 @@
 <string id="mil_talk_cook">
 	<text>Поговорить с поваром</text>
 </string>
+
+
+
+<string id="mil_test_task_title">
+	<text>Тестовая задача</text>
+</string>
+
+<string id="mil_test_task_phase1">
+	<text>Зайти в рестриктор 1</text>
+</string>
+
+<string id="mil_test_task_phase2">
+	<text>Зайти в рестриктор 2</text>
+</string>
