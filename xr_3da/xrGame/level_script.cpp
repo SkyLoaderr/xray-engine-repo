@@ -316,7 +316,37 @@ void spawn_phantom(const Fvector &position)
 	Level().spawn_item("m_phantom", position, u32(-1), u16(-1), false);
 }
 
+void iterate_sounds					(LPCSTR prefix, u32 max_count, const CScriptCallbackEx<void> &callback)
+{
+	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
+		string256					fn, s;
+		LPSTR						S = (LPSTR)&s;
+		_GetItem					(prefix,j,S);
+		if (FS.exist(fn,"$game_sounds$",S,".ogg"))
+			callback				(prefix);
 
+		for (u32 i=0; i<max_count; ++i){
+			string256				name;
+			sprintf					(name,"%s%d",S,i);
+			if (FS.exist(fn,"$game_sounds$",name,".ogg"))
+				callback			(name);
+		}
+	}
+}
+
+void iterate_sounds1				(LPCSTR prefix, u32 max_count, luabind::functor<void> functor)
+{
+	CScriptCallbackEx<void>		temp;
+	temp.set					(functor);
+	iterate_sounds				(prefix,max_count,temp);
+}
+
+void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, luabind::functor<void> functor)
+{
+	CScriptCallbackEx<void>		temp;
+	temp.set					(functor,object);
+	iterate_sounds				(prefix,max_count,temp);
+}
 
 void CLevel::script_register(lua_State *L)
 {
@@ -383,6 +413,9 @@ void CLevel::script_register(lua_State *L)
 		def("present",							is_level_present),
 		def("disable_input",					disable_input),
 		def("enable_input",						enable_input),
-		def("spawn_phantom",					spawn_phantom)
+		def("spawn_phantom",					spawn_phantom),
+
+		def("iterate_sounds",					&iterate_sounds1),
+		def("iterate_sounds",					&iterate_sounds2)
 	];
 }
