@@ -70,6 +70,7 @@
 
 					<header_frame_line x="8" y="17" width="430" height="21">
 						<texture>ui_string_03</texture>
+						<title>task additional materials</title>
 					</header_frame_line>
 
 					<scroll_view  x="8" y="44" width="436" height="420" right_ident="10">
