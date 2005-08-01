@@ -290,7 +290,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     SceneToolsMapPairIt _I = m_SceneTools.begin();
     SceneToolsMapPairIt _E = m_SceneTools.end();
     for (; _I!=_E; _I++){
-        if (_I->second){
+        if ((_I->first!=OBJCLASS_DUMMY) && _I->second){
             if (bUndo && _I->second->IsEnabled()&&_I->second->IsEditable()){
             	if (_I->second->IsNeedSave()){
                     _I->second->Save(m_SaveCache);
