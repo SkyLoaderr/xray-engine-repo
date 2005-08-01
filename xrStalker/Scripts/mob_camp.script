@@ -83,6 +83,12 @@ function mob_camp:update(delta)
 		return
 	end
 
+	-- if dead then release
+	if not self.object:alive() then
+		xr_logic.mob_release(self.object)
+		return
+	end
+
 	-- update point changer
 	if (self.time_point_changed + self.st.time_change_point < time_global()) then
 		self:select_current_home_point(false)
