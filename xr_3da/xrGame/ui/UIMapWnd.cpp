@@ -314,7 +314,6 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 {
 	m_tgtMap							= m;
 
-
 	if(m==GlobalMap()){
 		CUIGlobalMap* gm				= GlobalMap();
 		SetZoom							(gm->GetMinZoom());
@@ -328,12 +327,7 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 		m_tgtCenter						= m->ConvertRealToLocalNoTransform(pos);
 		m_tgtCenter.add					(m->GetWndPos()).div(GlobalMap()->GetCurrentZoom());
 	}
-
-	CWorldState							target_state;
-	target_state.add_condition			(CWorldProperty(UIMapWndActionsSpace::ePropMapIdle,true));
-	m_ActionPlanner->m_storage.set_property(1,false);
-	m_ActionPlanner->m_storage.set_property(2,false);
-	m_ActionPlanner->set_target_state	(target_state);
+	ResetActionPlanner				();
 }
 
 void CUIMapWnd::Draw()
@@ -362,7 +356,36 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		break;
 		case WINDOW_LBUTTON_DOWN:
 
-			if(m_flags.test(lmZoomIn) || m_flags.test(lmZoomOut) ){
+			if(m_flags.test(lmUserSpotAdd) ){
+				if(m_tgtMap==NULL ) break;
+				if(m_tgtMap==GlobalMap() ) break;
+				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
+
+				Fvector2 cp = cursor_pos;
+				cp.sub(m_tgtMap->GetAbsolutePos());
+				Fvector2 p = m_tgtMap->ConvertLocalToReal(cp);
+				Fvector pos;
+				pos.set(p.x, 0.0f, p.y);
+				CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
+				shared_str spot = "user"; 
+				CMapLocation* ml = Level().MapManager().AddUserLocation(spot, m_tgtMap->MapName(), pos);
+				CGameTask* t = pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
+				t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
+				t->m_Objectives[0].object_id	= ml->ObjectID();
+				t->m_Objectives[0].map_location	= spot;
+				m_flags.set(lmUserSpotAdd, FALSE);
+				m_ToolBar[eAddSpot]->SetButtonMode		(CUIButton::BUTTON_NORMAL);
+				break;
+			}else if (m_flags.is_any(lmZoomIn+lmZoomOut)){
+				CUIGlobalMap* gm				= GlobalMap();
+				if(m_flags.test(lmZoomIn))		SetZoom(GetZoom()+1.f);
+				else							SetZoom(GetZoom()-1.f);
+				m_tgtCenter						= cursor_pos;
+				m_tgtCenter.sub					(gm->GetAbsolutePos());
+				m_tgtCenter.div					(gm->GetCurrentZoom());
+				ResetActionPlanner				();
+			}
+/*			else if(m_flags.test(lmZoomIn) || m_flags.test(lmZoomOut) ){
 				if(m_tgtMap==NULL ) break;
 				if(m_tgtMap==GlobalMap() ) break;
 				if(!m_tgtMap->GetAbsoluteRect().in(cursor_pos)) break;
@@ -377,7 +400,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 
 				SetTargetMap	(m_tgtMap, p);
 			}
-
+*/
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec();
@@ -473,6 +496,7 @@ void CUIMapWnd::ShowHint()
 
 void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 {
+	if (GlobalMap()->Locked())			return;
 	SetTargetMap(GlobalMap());
 }
 
@@ -500,24 +524,34 @@ void CUIMapWnd::OnToolPrevMapClicked	(CUIWindow* w, void*)
 */
 }
 
-void CUIMapWnd::OnToolZoomInClicked		(CUIWindow* w, void*)
+void CUIMapWnd::ResetActionPlanner()
 {
-	m_flags.zero		();
-
-	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
-	bool bPushed = btn->GetCheck		();
-	m_flags.set							(lmZoomIn,bPushed);
-	ValidateToolBar						();
+	m_ActionPlanner->m_storage.set_property(1,false);
+	m_ActionPlanner->m_storage.set_property(2,false);
 }
 
-void CUIMapWnd::OnToolZoomOutClicked	(CUIWindow* w, void*)
+void CUIMapWnd::OnToolZoomInClicked	(CUIWindow* w, void*)
 {
-	m_flags.zero		();
+	if (GlobalMap()->Locked())		return;
 
-	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
-	bool bPushed = btn->GetCheck		();
-	m_flags.set							(lmZoomOut,bPushed);
-	ValidateToolBar						();
+	m_flags.zero					();
+
+	CUI3tButton* btn				= smart_cast<CUI3tButton*>(w);
+	bool bPushed					= btn->GetCheck		();
+	m_flags.set						(lmZoomIn,bPushed);
+	ValidateToolBar					();
+}
+
+void CUIMapWnd::OnToolZoomOutClicked(CUIWindow* w, void*)
+{
+	if (GlobalMap()->Locked())		return;
+
+	m_flags.zero					();
+
+	CUI3tButton* btn				= smart_cast<CUI3tButton*>(w);
+	bool bPushed					= btn->GetCheck		();
+	m_flags.set						(lmZoomOut,bPushed);
+	ValidateToolBar					();
 }
 
 void CUIMapWnd::OnToolAddSpotClicked	(CUIWindow* w, void*)
@@ -557,6 +591,8 @@ void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
 
 void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 {
+	if (GlobalMap()->Locked())			return;
+
 	Fvector v					= Level().CurrentEntity()->Position();
 	Fvector2 v2;
 	v2.set						(v.x,v.z);

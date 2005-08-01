@@ -129,7 +129,7 @@ LPCSTR CMapActionPlanner::object_name	() const
 void CMapActionPlanner::setup		(CUIMapWnd *object)
 {
 #ifdef LOG_ACTION
-	set_use_log						(false);
+	set_use_log						(true);
 #endif
 	inherited::setup				(object);
 	clear							();
@@ -158,6 +158,10 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 	add_condition				(action,ePropTargetMapShown,false);
 	add_effect					(action,ePropTargetMapShown,true);
 	add_operator				(eOperatorMapMinimize,		action);
+
+	CWorldState					target_state;
+	target_state.add_condition	(CWorldProperty(ePropMapIdle,true));
+	set_target_state			(target_state);
 }
 
 //-----------------------------------------------------------------------------

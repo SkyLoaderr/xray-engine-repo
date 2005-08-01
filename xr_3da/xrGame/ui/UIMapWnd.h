@@ -66,6 +66,8 @@ private:
 	void						OnToolAddSpotClicked	(CUIWindow*, void*);
 	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
 	void						ValidateToolBar			();
+
+	void						ResetActionPlanner		();
 public:
 	CUICustomMap*				m_tgtMap;
 	Fvector2					m_tgtCenter;
