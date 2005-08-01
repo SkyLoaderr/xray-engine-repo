@@ -507,6 +507,9 @@
 					RelativePath=".\Config\mp\mp_actor.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\mp\mp_bonuses.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\mp\mp_ranks.ltx">
 				</File>
 				<File

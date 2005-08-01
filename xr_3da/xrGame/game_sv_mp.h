@@ -1,6 +1,7 @@
 #pragma once
 #include "game_sv_base.h"
 #include "game_sv_mp_team.h"
+#include "game_base_kill_type.h"
 
 #define MAX_TERMS  2
 struct Rank_Struct
@@ -24,6 +25,7 @@ protected:
 	DEF_VECTOR(RANKS_LIST, Rank_Struct);
 
 	RANKS_LIST						m_aRanks;
+	bool							m_bRankUp_Allowed;
 
 	TEAM_DATA_LIST					TeamList;
 
@@ -32,11 +34,18 @@ protected:
 	u32				m_uVoteEndTime;
 	shared_str		m_pVoteCommand;
 
-	virtual		void				LoadRanks	();
+	virtual		void				LoadRanks				();
+	virtual		void				Player_AddExperience	(game_PlayerState* ps, float Exp);
+	virtual		bool				Player_Check_Rank		(game_PlayerState* ps);
+	virtual		void				Player_Rank_Up			(game_PlayerState* ps);
+	virtual		bool				Player_RankUp_Allowed	() {return m_bRankUp_Allowed;};
+	virtual		void				Player_ExperienceFin	(game_PlayerState* ps);
+	virtual		void				Set_RankUp_Allowed		(bool RUA) {m_bRankUp_Allowed = RUA;};
+
 	
 protected:
 
-	virtual		void				SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill);
+	virtual		void				SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 KillerID, u16 WeaponID, SPECIAL_KILL_TYPE SpecialKill);
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 				void				SpawnPlayer				(ClientID id, LPCSTR N);
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
@@ -52,8 +61,9 @@ public:
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
-	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed){};
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA){};
 	virtual		void				OnPlayerKilled			(NET_Packet P);
+	virtual		bool				CheckTeams				() { return false; };
 	virtual		void				OnPlayerHitted			(NET_Packet P);
 	virtual		void				OnPlayerEnteredGame		(ClientID id_who);
 

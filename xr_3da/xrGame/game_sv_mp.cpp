@@ -100,13 +100,8 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	if (xrCData && xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 	if (xrCData) 
 	{
-//		xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-//		xrCData->ps->deaths				+=	1;
-//		xrCData->ps->DeathTime			= Device.dwTimeGlobal;
 		//-------------------------------------------------------
-//		Game().m_WeaponUsageStatistic.OnPlayerKilled(xrCData->ps);
-		//-------------------------------------------------------
-		OnPlayerKillPlayer(xrCData->ps, xrCData->ps);
+		OnPlayerKillPlayer(xrCData->ps, xrCData->ps, KT_HIT, SKT_NONE, NULL);
 		xrCData->ps->m_bClearRun = false;
 	};
 	//-------------------------------------------------------
@@ -122,7 +117,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	//-------------------------------------------------------
 	u16 PlayerID = (xrCData != 0) ? xrCData->ps->GameID : GameID;
 	//-------------------------------------------------------
-	SendPlayerKilledMessage(PlayerID, 0, PlayerID, 0, 0);
+	SendPlayerKilledMessage(PlayerID, KT_HIT, PlayerID, 0, SKT_NONE);
 	//-------------------------------------------------------
 	// Kill Player on all clients
 	NET_Packet			P;
@@ -205,6 +200,8 @@ void game_sv_mp::Create (shared_str &options)
 	SetEnvironmentGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
 	//------------------------------------------------------------------
 	LoadRanks();
+	//------------------------------------------------------------------
+	Set_RankUp_Allowed(true);
 };
 
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)
@@ -721,8 +718,9 @@ void	game_sv_mp::ClearPlayerState		(game_PlayerState* ps)
 	if (!ps) return;
 
 	ps->kills				= 0;
+	ps->m_iKillsInRow		= 0;
 	ps->deaths				= 0;
-	ps->lasthitter		= 0;
+	ps->lasthitter			= 0;
 	ps->lasthitweapon		= 0;
 
 	ClearPlayerItems		(ps);
@@ -731,50 +729,44 @@ void	game_sv_mp::ClearPlayerState		(game_PlayerState* ps)
 void	game_sv_mp::OnPlayerKilled			(NET_Packet P)
 {
 	u16 KilledID = P.r_u16();
-	u8 KillType = P.r_u8();
+	KILL_TYPE KillType = KILL_TYPE(P.r_u8());
 	u16 KillerID = P.r_u16();
 	u16	WeaponID = P.r_u16();
-	u8 SpecialKill = P.r_u8();
+	SPECIAL_KILL_TYPE SpecialKill = SPECIAL_KILL_TYPE(P.r_u8());
 
 	game_PlayerState* ps_killer = get_eid(KillerID);
 	game_PlayerState* ps_killed = get_eid(KilledID);
-	OnPlayerKillPlayer(ps_killer, ps_killed);
+	CSE_Abstract* pWeaponA = get_entity_from_eid(WeaponID);
 
+	OnPlayerKillPlayer(ps_killer, ps_killed, KillType, SpecialKill, pWeaponA);
 	//---------------------------------------------------
 	SendPlayerKilledMessage((ps_killed)?ps_killed->GameID:KilledID, KillType, (ps_killer)?ps_killer->GameID:KillerID, WeaponID, SpecialKill);
 };
 
 void	game_sv_mp::OnPlayerHitted			(NET_Packet P)
 {
-	/*u16		id_hitted = */P.r_u16();
+	u16		id_hitted = P.r_u16();
 	u16     id_hitter = P.r_u16();
 	float	dHealth = P.r_float();
-	game_PlayerState* PS		=	get_eid			(id_hitter);
-	if (!PS) return;
+	game_PlayerState* PSHitter		=	get_eid			(id_hitter);
+	if (!PSHitter) return;
+	game_PlayerState* PSHitted		=	get_eid			(id_hitted);
 
-	PS->experience_Real += dHealth;
-	if (PS->rank==m_aRanks.size()-1) PS->experience_D = 1.0f;
-	else
-	{
-		int CurExp = m_aRanks[PS->rank].m_iTerms[0];
-		int NextExp = m_aRanks[PS->rank+1].m_iTerms[0];
-		if (PS->experience_Real > NextExp) PS->experience_D = 1.0f;
-		else PS->experience_D = 1.0f - (NextExp - PS->experience_Real)/(NextExp - CurExp);
-		clamp(PS->experience_D, 0.0f, 1.0f);
-	};
+	if (!PSHitted || !CheckTeams() || PSHitted->team != PSHitter->team)
+		Player_AddExperience(PSHitter, dHealth);
 };
 	
-void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill)
+void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 KillerID, u16 WeaponID, SPECIAL_KILL_TYPE SpecialKill)
 {
 	NET_Packet			P;
 	GenerateGameMessage (P);
 	P.w_u32				(GAME_EVENT_PLAYER_KILLED);
 
-	P.w_u8	(KillType);
+	P.w_u8	(u8(KillType));
 	P.w_u16	(KilledID);
 	P.w_u16	(KillerID);
 	P.w_u16	(WeaponID);
-	P.w_u8	(SpecialKill);
+	P.w_u8	(u8(SpecialKill));
 
 	u32	cnt = get_players_count();	
 	for(u32 it=0; it<cnt; it++)	
@@ -857,3 +849,48 @@ void	game_sv_mp::LoadRanks	()
 		m_aRanks.push_back(NewRank);
 	};
 };
+
+void	game_sv_mp::Player_AddExperience	(game_PlayerState* ps, float Exp)
+{
+	if (!ps) return;
+
+	ps->experience_New += Exp;
+	
+	if (Player_Check_Rank(ps) && Player_RankUp_Allowed()) Player_Rank_Up(ps);	
+
+	if (ps->rank==m_aRanks.size()-1) ps->experience_D = 1.0f;
+	else
+	{
+		int CurExp = m_aRanks[ps->rank].m_iTerms[0];
+		int NextExp = m_aRanks[ps->rank+1].m_iTerms[0];
+		if ((ps->experience_Real+ps->experience_New) > NextExp) ps->experience_D = 1.0f;
+		else ps->experience_D = 1.0f - (NextExp - ps->experience_Real- ps->experience_New)/(NextExp - CurExp);
+		clamp(ps->experience_D, 0.0f, 1.0f);
+	};
+};
+
+bool	game_sv_mp::Player_Check_Rank		(game_PlayerState* ps)
+{
+	if (!ps) return false;
+	if (ps->rank==m_aRanks.size()-1) return false;
+	int NextExp = m_aRanks[ps->rank+1].m_iTerms[0];
+	if ((ps->experience_Real+ps->experience_New) < NextExp) return false;
+	return true;
+}
+
+void	game_sv_mp::Player_Rank_Up		(game_PlayerState* ps)
+{
+	if (!ps) return;
+
+	if (ps->rank==m_aRanks.size()-1) return;
+	
+	ps->rank++;
+	Player_ExperienceFin(ps);
+};
+
+void	game_sv_mp::Player_ExperienceFin	(game_PlayerState* ps)
+{
+	if (!ps) return;
+	ps->experience_Real += ps->experience_New;
+	ps->experience_New = 0;
+}

@@ -15,6 +15,7 @@ game_PlayerState::game_PlayerState()
 	name[0]				=	0;
 	team				=	-1;
 	kills				=	0;
+	m_iKillsInRow		=	0;
 	deaths				=	0;
 	money_total			=	0;
 	money_for_round		=	0;
@@ -23,6 +24,7 @@ game_PlayerState::game_PlayerState()
 	experience_Real		=	0;
 	rank				=	0;
 	af_count			=	0;
+	experience_New		=	0;
 	//  [7/27/2005]
 	flags				=	0;
 
@@ -48,6 +50,7 @@ void game_PlayerState::clear()
 {
 	name[0]				= 0;
 	kills				= 0;
+	m_iKillsInRow		= 0;
 	deaths				= 0;
 	lasthitter		= 0;
 	lasthitweapon		= 0;
@@ -57,6 +60,7 @@ void game_PlayerState::clear()
 	experience_Real		=	0;
 	rank				=	0;
 	af_count			=	0;
+	experience_New		=	0;
 	//  [7/27/2005]
 
 	pItemList.clear();

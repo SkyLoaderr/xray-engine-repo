@@ -74,11 +74,13 @@ protected:
 	ref_shader				m_KillEventIconsShader;
 	ref_shader				m_RadiationIconsShader;
 	ref_shader				m_BloodLossIconsShader;
+	ref_shader				m_RankIconsShader;
 
 	virtual ref_shader		GetEquipmentIconsShader	();
 	virtual ref_shader		GetKillEventIconsShader	();
 	virtual ref_shader		GetRadiationIconsShader	();
 	virtual ref_shader		GetBloodLossIconsShader	();
+	virtual ref_shader		GetRankIconsShader();
 
 	virtual void			OnPlayerKilled			(NET_Packet& P);
 
@@ -116,6 +118,9 @@ public:
 	virtual		void				OnPlayerChangeName		(NET_Packet& P);
 
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
+	virtual		void				net_import_update		(NET_Packet& P);
+	virtual		void				net_import_state		(NET_Packet& P);
+	virtual		void				OnRankChanged			();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

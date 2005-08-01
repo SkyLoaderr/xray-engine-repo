@@ -38,6 +38,8 @@
 #include "game_object_space.h"
 #include "GameTaskManager.h"
 
+#include "game_base_kill_type.h"
+
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
 int			g_dwInputUpdateDelta	= 20;
@@ -1743,12 +1745,13 @@ void				CActor::OnCriticalHitHealthLoss			()
 {
 	if (GameID() == GAME_SINGLE || !OnServer()) return;
 
+#ifdef DEBUG
 	Msg("%s killed by hit from %s %s", 
 		*cName(),
 		(m_pLastHitter ? *(m_pLastHitter->cName()) : ""), 
 		((m_pLastHittingWeapon && m_pLastHittingWeapon != m_pLastHitter) ? *(m_pLastHittingWeapon->cName()) : ""));
-	//-------------------------------------------------------------------	
-	Msg ("- Health Old : %.2f, Health New : %.2f", m_fLastHealth, 0.0f);
+#endif
+	//-------------------------------------------------------------------
 	if (m_pLastHitter)
 	{
 		NET_Packet P;
@@ -1760,14 +1763,14 @@ void				CActor::OnCriticalHitHealthLoss			()
 		u_EventSend(P);
 	}	
 	//-------------------------------------------------------------------
-	u8 SpecialHit = 0;
+	SPECIAL_KILL_TYPE SpecialHit = SKT_NONE;
 	if (m_s16LastHittedElement > 0)
 	{
 		if (m_s16LastHittedElement == m_head)
 		{
 			CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(m_pLastHittingWeapon);
 			if (pWeaponMagazined)
-				SpecialHit = 1;
+				SpecialHit = SKT_HEADSHOT;
 		}
 		else
 		{
@@ -1779,23 +1782,23 @@ void				CActor::OnCriticalHitHealthLoss			()
 				ParentBone = pKinematics->LL_GetData(ParentBone).GetParentID();
 				if (ParentBone && ParentBone == m_head)
 				{
-					SpecialHit = 1;
+					SpecialHit = SKT_HEADSHOT;
 					break;
 				};
 			}
 		};
 	};
 	//-------------------------------
-	if (m_bWasBackStabbed) SpecialHit = 2;
+	if (m_bWasBackStabbed) SpecialHit = SKT_BACKSTAB;
 	//-------------------------------
 	NET_Packet P;
 	u_EventGen		(P,GE_GAME_EVENT,ID());
 	P.w_u16(GAME_EVENT_PLAYER_KILLED);
 	P.w_u16(u16(ID()&0xffff));
-	P.w_u8	(0);
+	P.w_u8	(KT_HIT);
 	P.w_u16 ((m_pLastHitter) ? u16(m_pLastHitter->ID()&0xffff) : 0);
 	P.w_u16 ((m_pLastHittingWeapon && m_pLastHitter != m_pLastHittingWeapon) ? u16(m_pLastHittingWeapon->ID()&0xffff) : 0);
-	P.w_u8	(SpecialHit);
+	P.w_u8	(u8(SpecialHit));
 	u_EventSend(P);
 	//-------------------------------------------
 	if (GameID() != GAME_SINGLE)
@@ -1805,17 +1808,18 @@ void				CActor::OnCriticalHitHealthLoss			()
 void				CActor::OnCriticalWoundHealthLoss		() 
 {
 	if (GameID() == GAME_SINGLE || !OnServer()) return;
-
+#ifdef DEBUG
 	Msg("%s is bleed out, thanks to %s", *cName(), (m_pLastHitter ? *(m_pLastHitter->cName()) : ""));
+#endif
 	//-------------------------------
 	NET_Packet P;
 	u_EventGen		(P,GE_GAME_EVENT,ID());
 	P.w_u16(GAME_EVENT_PLAYER_KILLED);
 	P.w_u16(u16(ID()&0xffff));
-	P.w_u8	(1);
+	P.w_u8	(KT_BLEEDING);
 	P.w_u16 ((m_pLastHitter) ? u16(m_pLastHitter->ID()&0xffff) : 0);
 	P.w_u16	(0);
-	P.w_u8	(0);
+	P.w_u8	(SKT_NONE);
 	u_EventSend(P);
 };
 
@@ -1828,10 +1832,10 @@ void				CActor::OnCriticalRadiationHealthLoss	()
 	u_EventGen		(P,GE_GAME_EVENT,ID());
 	P.w_u16(GAME_EVENT_PLAYER_KILLED);
 	P.w_u16(u16(ID()&0xffff));
-	P.w_u8	(2);
+	P.w_u8	(KT_RADIATION);
 	P.w_u16	(0);
 	P.w_u16	(0);
-	P.w_u8	(0);
+	P.w_u8	(SKT_NONE);
 	u_EventSend(P);
 };
 

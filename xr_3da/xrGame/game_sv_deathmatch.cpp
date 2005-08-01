@@ -148,11 +148,12 @@ void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
 	inherited::OnRoundEnd(reason);
 };
 
-void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed)
+void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
 {
 	if(ps_killed){
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
+		ps_killed->m_iKillsInRow		= 0;
 		ps_killed->DeathTime			= Device.dwTimeGlobal;		
 		if (!ps_killer)
 			ps_killed->kills -=1;
@@ -166,33 +167,109 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_
 
 	if (!ps_killed || !ps_killer) return;
 	
-	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
-	if (ps_killer == ps_killed)	
+	KILL_RES KillRes = GetKillResult (ps_killer, ps_killed);
+	bool CanGiveBonus = OnKillResult(KillRes, ps_killer, ps_killed);
+	if (CanGiveBonus) OnGiveBonus(KillRes, ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
+}
+
+KILL_RES			game_sv_Deathmatch::GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim)
+{
+	if (!pKiller || !pVictim) return KR_NONE;
+
+	if (pKiller == pVictim) return KR_SELF;
+	return KR_RIVAL;
+};
+
+bool				game_sv_Deathmatch::OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim)
+{
+	if (!pKiller || !pVictim) return false;
+	bool res = true;
+	TeamStruct* pTeam		= GetTeamData(u8(pKiller->team));
+	switch (KillResult)
 	{
-		// By himself
-		ps_killer->kills			-=	1;
-
-		if (pTeam)
-			Player_AddMoney(ps_killer, pTeam->m_iM_KillSelf);
-	} else {
-		// Opponent killed - frag 
-		ps_killer->kills			+=	1;
-		if (pTeam)
+	case KR_NONE:
 		{
-			s32 ResMoney = pTeam->m_iM_KillRival;
-			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
-				ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
-			Player_AddMoney(ps_killer, ResMoney);
-		};
-
-//		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
+			res = false;
+		}break;
+	case KR_SELF:
+		{
+			pKiller->kills -= 1;
+			if (pTeam) Player_AddMoney(pKiller, pTeam->m_iM_KillSelf);
+			res = false;
+		}break;
+	case KR_RIVAL:
+		{
+			pKiller->kills += 1;
+			pKiller->m_iKillsInRow ++;
+			if (pTeam)
+			{
+				s32 ResMoney = pTeam->m_iM_KillRival;
+				if (pKiller->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+					ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
+				Player_AddMoney(pKiller, ResMoney);
+			};
+			res = true;
+		}break;
+	default:
+		{
+		}break;
 	}
+	return res;
+}
 
-	// Send Message About Player Killed
-//	SendPlayerKilledMessage(id_killer, id_killed);
+void				game_sv_Deathmatch::OnGiveBonus				(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
+{
+	if (!pKiller) return;
+	switch (KillResult)
+	{
+	case KR_RIVAL:
+		{
+			if (pKiller->m_iKillsInRow)
+			{
+				string64 tmpStr;
+				sprintf(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRow);
+				Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", tmpStr,0));
+			};			
 
-//	ps_killed->lasthitter			= 0;
-//	ps_killed->lasthitweapon		= 0;
+			switch (KillType)
+			{
+			case KT_HIT:
+				{
+					switch (SpecialKillType)
+					{
+					case SKT_HEADSHOT:
+						{
+							Player_AddExperience(pKiller, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "headshot",0));
+							Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "headshot",0));
+						}break;
+					case SKT_BACKSTAB:
+						{
+							Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "backstab",0));
+						}break;
+					default:
+						{
+							if (pWeaponA)
+							{								
+								switch (pWeaponA->m_tClassID)
+								{
+								case CLSID_OBJECT_W_KNIFE:
+									{
+										Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "knife_kill",0));
+									}break;
+								};
+							};
+						}break;
+					};
+				}break;
+			default:
+				{
+				}break;
+			};
+		}break;
+	default:
+		{
+		}break;
+	}
 }
 
 game_PlayerState*	game_sv_Deathmatch::GetWinningPlayer		()

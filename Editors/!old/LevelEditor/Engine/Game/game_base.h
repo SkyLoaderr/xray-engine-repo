@@ -31,10 +31,12 @@ struct	game_PlayerState
 	string64	name;
 	s16			team;
 	s16			kills;
+	s16			m_iKillsInRow;
 	s16			deaths;
 	s32			money_total;
 	s32			money_for_round;
 	float		experience_Real;
+	float		experience_New;
 	float		experience_D;
 	u8			rank;
 	u8			af_count;

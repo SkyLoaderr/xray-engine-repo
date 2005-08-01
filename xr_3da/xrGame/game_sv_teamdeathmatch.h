@@ -34,7 +34,11 @@ public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 
 	virtual		void				OnPlayerChangeTeam		(ClientID id_who, s16 team);
-	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
+	virtual		KILL_RES			GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim);
+	virtual		bool				OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim);
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
+	virtual		void				UpdateTeamScore			(game_PlayerState* ps_killer);
+	virtual		bool				CheckTeams				() { return true; };
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
 

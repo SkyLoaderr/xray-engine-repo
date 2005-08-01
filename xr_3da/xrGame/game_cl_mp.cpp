@@ -15,11 +15,13 @@
 #include "ui/UIInventoryUtilities.h"
 #include "ui/UIMessagesWindow.h"
 #include "CustomZone.h"
+#include "game_base_kill_type.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
 #define RADIATION_ICONS "ui\\ui_mn_radiations_hard"
 #define BLOODLOSS_ICONS "ui\\ui_mn_wounds_hard"
+#define RANK_ICONS		"ui\\ui_mp_icon_rank"
 
 #define KILLEVENT_GRID_WIDTH	64
 #define KILLEVENT_GRID_HEIGHT	64
@@ -489,15 +491,22 @@ ref_shader game_cl_mp::GetBloodLossIconsShader	()
 	return m_BloodLossIconsShader;
 	*/
 }
+ref_shader		game_cl_mp::GetRankIconsShader()
+{
+	if (m_RankIconsShader) return m_RankIconsShader;
+
+	m_RankIconsShader.create("hud\\default", RANK_ICONS);
+	return m_RankIconsShader;
+}
 
 void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 {
 	//-----------------------------------------------------------
-	u8 KillType = P.r_u8();
+	KILL_TYPE KillType = KILL_TYPE(P.r_u8());
 	u16 KilledID = P.r_u16();
 	u16 KillerID = P.r_u16();
 	u16	WeaponID = P.r_u16();
-	u8 SpecialKill = P.r_u8();
+	SPECIAL_KILL_TYPE SpecialKill = SPECIAL_KILL_TYPE(P.r_u8());
 	//-----------------------------------------------------------
 	CObject* pOKiller = Level().Objects.net_Find(KillerID);
 	CObject* pWeapon = Level().Objects.net_Find(WeaponID);
@@ -522,7 +531,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	switch (KillType)
 	{
 		//-----------------------------------------------------------
-	case 0:			//from hit
+	case KT_HIT:			//from hit
 		{
 
 			if (pWeapon)
@@ -590,7 +599,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			string512 SpecialKillText = "";
 			switch (SpecialKill)
 			{
-			case 0:		// not special
+			case SKT_NONE:		// not special
 				{
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 					{
@@ -598,7 +607,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 							PlaySndMessage(ID_BUTCHER);
 					};
 				}break;
-			case 1:		// Head Shot
+			case SKT_HEADSHOT:		// Head Shot
 				{
 					sprintf(SpecialKillText, "%swith %sHEADSHOT!",
 						Color_Main,
@@ -613,7 +622,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_HEADSHOT);
 				}break;
-			case 2:		// BackStab
+			case SKT_BACKSTAB:		// BackStab
 				{
 					
 					sprintf(SpecialKillText, "%swith %sBACKSTAB!",
@@ -647,7 +656,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 
 		}break;
 		//-----------------------------------------------------------
-	case 1:			//from bleeding
+	case KT_BLEEDING:			//from bleeding
 		{
 			sprintf(Text, "%shas %sbleed out %s, thanks to %s%s",
 				Color_Main,
@@ -683,7 +692,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			};
 		}break;
 		//-----------------------------------------------------------
-	case 2:			//from radiation
+	case KT_RADIATION:			//from radiation
 		{			
 			sprintf(Text, "%shas died from %sradiation",
 				Color_Main,
@@ -729,3 +738,38 @@ void	game_cl_mp::LoadSndMessages				()
 	LoadSndMessage("mp_snd_messages", "assassin", ID_ASSASSIN);
 	LoadSndMessage("mp_snd_messages", "ready", ID_READY);
 };
+
+void	game_cl_mp::OnRankChanged	()
+{
+	KillMessageStruct KMS;
+	KMS.m_killer.m_name = "You are now";
+	KMS.m_initiator.m_shader = GetRankIconsShader();
+	KMS.m_initiator.m_rect.x1 = float(local_player->rank*32);
+	KMS.m_initiator.m_rect.y1 = 0;
+	KMS.m_initiator.m_rect.x2 = float((local_player->rank+1)*32);
+	KMS.m_initiator.m_rect.y2 = 32;
+
+	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
+};
+
+void	game_cl_mp::net_import_update		(NET_Packet& P)
+{
+	u8 OldRank = 0;
+	if (local_player) OldRank = local_player->rank;
+
+	inherited::net_import_update(P);
+
+	if (local_player && OldRank != local_player->rank)		
+		OnRankChanged();
+}
+
+void	game_cl_mp::net_import_state		(NET_Packet& P)
+{
+	u8 OldRank = 0;
+	if (local_player) OldRank = local_player->rank;
+
+	inherited::net_import_state(P);
+
+	if (local_player && OldRank != local_player->rank)		
+		OnRankChanged();
+}

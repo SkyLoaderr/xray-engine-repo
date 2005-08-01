@@ -126,7 +126,11 @@ public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		void				OnPlayerReady			(ClientID id_who);
-	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
+	virtual		KILL_RES			GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim);
+	virtual		bool				OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim);
+	virtual		void				OnGiveBonus				(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
+	virtual		bool				CheckTeams				() { return false; };
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
 				void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
 	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
 
@@ -163,7 +167,6 @@ public:
 	virtual		void				LoadAnomalySets			();
 	virtual		void				StartAnomalies			(int AnomalySet = -1);
 
-//	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------

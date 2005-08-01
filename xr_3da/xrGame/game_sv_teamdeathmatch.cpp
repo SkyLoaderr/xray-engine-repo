@@ -154,53 +154,17 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 	SetPlayersDefItems(ps_who);
 }
 
-
-void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed)
+void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
 {
-	if(ps_killed){
-		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-		ps_killed->deaths				+=	1;
-		ps_killed->DeathTime			= Device.dwTimeGlobal;
-		if (!ps_killer)
-			ps_killed->kills -=1;
-
-		SetPlayersDefItems		(ps_killed);
-		//---------------------------------------
-		Game().m_WeaponUsageStatistic.OnPlayerKilled(ps_killed);
-	};
-
-	signal_Syncronize();
-
 	if (!ps_killed || !ps_killer) return;
 
-	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
-
-	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
-	{
-		// By himself
-		ps_killer->kills			-=	1;
-
-		if (pTeam)
-		{
-			if (ps_killer == ps_killed)
-				Player_AddMoney(ps_killer, pTeam->m_iM_KillSelf);
-			else
-				Player_AddMoney(ps_killer, pTeam->m_iM_KillTeam);
-		}
-	} else {
-		// Opponent killed - frag 
-		ps_killer->kills			+=	1;
-
-		if (pTeam)
-		{
-			s32 ResMoney = pTeam->m_iM_KillRival;
-			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
-				ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
-			Player_AddMoney(ps_killer, ResMoney);
-		};
-	}
+	inherited::OnPlayerKillPlayer(ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
 	
-//	teams[ps_killer->team-1].score = 0;
+	UpdateTeamScore(ps_killer);	
+}
+
+void	game_sv_TeamDeathmatch::UpdateTeamScore			(game_PlayerState* ps_killer)
+{
 	SetTeamScore(ps_killer->team-1, 0);
 	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -209,16 +173,46 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, g
 		game_PlayerState*	ps	=	get_it	(it);
 		if (ps->team != ps_killer->team) continue;
 
-//		teams[ps_killer->team-1].score += ps->kills;
 		SetTeamScore(ps_killer->team-1, GetTeamScore(ps_killer->team-1)+ps->kills );
-	};	
-
-	// Send Message About Player Killed
-//	SendPlayerKilledMessage(id_killer, id_killed);
-
-//	ps_killed->lasthitter			= 0;
-//	ps_killed->lasthitweapon		= 0;
+	};
 }
+
+KILL_RES	game_sv_TeamDeathmatch::GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim)
+{
+	KILL_RES Res = inherited::GetKillResult(pKiller, pVictim);
+	switch (Res)
+	{
+	case KR_RIVAL:
+		{
+			if (pKiller->team == pVictim->team)
+				Res = KR_TEAMMATE;
+		}break;
+	default:
+		{
+		}break;
+	};
+	return Res;
+};
+
+bool	game_sv_TeamDeathmatch::OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim)
+{	
+	bool res = true;
+	TeamStruct* pTeam		= GetTeamData(u8(pKiller->team));
+	switch (KillResult)
+	{
+	case KR_TEAMMATE:
+		{
+			pKiller->kills -= 1;
+			if (pTeam) Player_AddMoney(pKiller, pTeam->m_iM_KillTeam);
+			res = false;
+		}break;
+	default:
+		{
+			res = inherited::OnKillResult(KillResult, pKiller, pVictim);
+		}break;
+	}
+	return res;
+};
 
 bool game_sv_TeamDeathmatch::checkForFragLimit()
 {

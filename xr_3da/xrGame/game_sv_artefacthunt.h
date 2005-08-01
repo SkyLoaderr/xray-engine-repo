@@ -29,6 +29,7 @@ protected:
 	u16								m_dwArtefactID;	
 
 	ARTEFACT_STATE					m_eAState;
+	bool							m_bWasTaken;
 
 	xr_vector<RPoint>				Artefact_rpoints;
 	xr_vector<u8>					ArtefactsRPoints_ID;
@@ -36,6 +37,7 @@ protected:
 
 	int								m_dwArtefactsNum;//ah
 	u16								artefactBearerID;//ah,ZoneMap
+	u16								m_iAfBearerMenaceID;
 	u8								teamInPossession;//ah,ZoneMap
 
 	bool							bNoLostMessage;
@@ -57,6 +59,8 @@ protected:
 	virtual		void				ConsoleCommands_Create	();
 	virtual		void				ConsoleCommands_Clear	();
 
+	virtual		bool				Player_Check_Rank		(game_PlayerState* ps);
+
 public:
 
 									game_sv_ArtefactHunt	(){type = GAME_ARTEFACTHUNT;}
@@ -66,7 +70,12 @@ public:
 	// Events	
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				OnRoundStart			();							// старт раунда
-	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
+	virtual		KILL_RES			GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim);
+	virtual		bool				OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim);
+	virtual		void				OnGiveBonus				(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
+	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
+	virtual		void				UpdateTeamScore			(game_PlayerState* ps_killer) {};
 	virtual		void				OnPlayerReady			(ClientID id_who);
 
 	virtual		void				OnTimelimitExceed		();

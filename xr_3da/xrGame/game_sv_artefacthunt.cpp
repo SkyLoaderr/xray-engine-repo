@@ -61,11 +61,14 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 	m_ArtefactsSpawnedTotal = 0;
 	//---------------------------------------------------------------
 	artefactBearerID = 0;
+	m_iAfBearerMenaceID = 0;
 	teamInPossession = 0;
 	m_dwArtefactID = 0;
 
 	bNoLostMessage = false;
 	m_bArtefactWasBringedToBase = true;
+	//---------------------------------------------------------------
+	Set_RankUp_Allowed(false);
 }
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
@@ -81,65 +84,89 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	Artefact_PrepareForSpawn();
 }
 
-void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed)
+KILL_RES	game_sv_ArtefactHunt::GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim)
 {
-	if(ps_killed){
-		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-		ps_killed->deaths				+=	1;
-		ps_killed->DeathTime			= Device.dwTimeGlobal;
-		if (!ps_killer)
-			ps_killed->kills -=1;
-
-		SetPlayersDefItems		(ps_killed);
-		//---------------------------------------
-		Game().m_WeaponUsageStatistic.OnPlayerKilled(ps_killed);
-	};
-
-	signal_Syncronize();
-
-	if (!ps_killed || !ps_killer) return;
-
-	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
-
-	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
+	KILL_RES Res = inherited::GetKillResult(pKiller, pVictim);
+	switch (Res)
 	{
-		// By himself
-		ps_killer->kills			-=	1;
-
-		if (pTeam)
+	case KR_TEAMMATE:
 		{
-			if (ps_killer == ps_killed)
-				Player_AddMoney(ps_killer, pTeam->m_iM_KillSelf);
-			else
-				if (ps_killed->GameID == artefactBearerID)
-					Player_AddMoney(ps_killer, pTeam->m_iM_TargetTeam);
-				else
-					Player_AddMoney(ps_killer, pTeam->m_iM_KillTeam);
-		}
-	} else {
-		// Opponent killed - frag 
-		ps_killer->kills			+=	1;
-
-		if (pTeam)
+			if (pVictim->GameID == artefactBearerID)
+				Res = KR_TEAMMATE_CRITICAL;
+		}break;
+	case KR_RIVAL:
 		{
-			s32 ResMoney = 0;
-			if (ps_killed->GameID == artefactBearerID)
-				ResMoney = pTeam->m_iM_TargetRival;
-			else
-				ResMoney = pTeam->m_iM_KillRival;
+			if (pVictim->GameID == artefactBearerID)
+				Res = KR_RIVAL_CRITICAL;
+		}break;
+	default:
+		{
+		}break;
+	};
+	return Res;
+};
 
-			if (ps_killer->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
-				ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
-
-			Player_AddMoney(ps_killer, ResMoney);
-		};
+bool	game_sv_ArtefactHunt::OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim)
+{	
+	bool res = true;	
+	TeamStruct* pTeam		= GetTeamData(u8(pKiller->team));
+	switch (KillResult)
+	{
+	case KR_TEAMMATE_CRITICAL:
+		{
+			pKiller->kills -= 1;
+			if (pTeam) Player_AddMoney(pKiller, pTeam->m_iM_TargetTeam);
+			res = false;
+		}break;
+	case KR_RIVAL_CRITICAL:
+		{
+			pKiller->kills += 1;
+			pKiller->m_iKillsInRow ++;
+			if (pTeam)
+			{
+				u32 ResMoney = pTeam->m_iM_TargetRival;
+				if (pKiller->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+					ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
+				Player_AddMoney(pKiller, ResMoney);
+			};
+			res = true;
+		}break;
+	default:
+		{
+			res = inherited::OnKillResult(KillResult, pKiller, pVictim);
+		}break;
 	}
-	// Send Message About Player Killed
-//	SendPlayerKilledMessage(id_killer, id_killed);
-
-//	ps_killed->lasthitter			= 0;
-//	ps_killed->lasthitweapon		= 0;
+	return res;
 }
+
+
+void				game_sv_ArtefactHunt::OnGiveBonus				(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
+{
+	if (!pKiller) return;	
+	switch (KillResult)
+	{
+	case KR_RIVAL:
+		{
+			if (pVictim->GameID == m_iAfBearerMenaceID)
+				Player_AddExperience(pKiller, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "assist_kill",0));
+		}break;
+	case KR_RIVAL_CRITICAL:
+		{
+			inherited::OnGiveBonus(KR_RIVAL, pKiller, pVictim, KillType, SpecialKillType, pWeaponA);
+		}break;
+	default:
+		{
+			inherited::OnGiveBonus(KillResult, pKiller, pVictim, KillType, SpecialKillType, pWeaponA);
+		}break;
+	}	
+}
+
+void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
+{
+	inherited::OnPlayerKillPlayer(ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
+	if (ps_killed && ps_killed->GameID == m_iAfBearerMenaceID)
+		m_iAfBearerMenaceID = 0;
+};
 
 void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 {
@@ -445,6 +472,7 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 		if (pIArtefact)
 		{
 			artefactBearerID = eid_who;
+			m_iAfBearerMenaceID = 0;
 			teamInPossession = A->g_team();
 			signal_Syncronize();
 
@@ -460,6 +488,25 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 				P.w_u16				(ps_who->GameID);
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
+				//-- Artefact is taken for first time
+				if (!m_bWasTaken)
+				{
+					m_bWasTaken = true;
+					TeamStruct* pTeam		= GetTeamData(u8(ps_who->team));
+					if (pTeam)
+					{					
+						u32		cnt = get_players_count();
+						for		(u32 it=0; it<cnt; ++it)	
+						{
+							// init
+							xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+							game_PlayerState* pstate	= l_pC->ps;
+							if (!l_pC->net_Ready || pstate->Skip || pstate->team != ps_who->team) continue;
+
+							Player_AddExperience(pstate, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "af_first_take_all",0));
+						}
+					}
+				}
 			};
 			return TRUE;
 		};
@@ -488,6 +535,7 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 		if (pIArtefact)
 		{
 			artefactBearerID = 0;
+			m_iAfBearerMenaceID = 0;
 			teamInPossession = 0;
 			signal_Syncronize();
 			m_eAState = ON_FIELD;
@@ -575,12 +623,14 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	if (!ps) return;
 	//-----------------------------------------------
 	//add player's points
-	ps->kills += 5;
-
+	
+	Set_RankUp_Allowed(true);
 	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
 	if (pTeam)
 	{
 		Player_AddMoney(ps, pTeam->m_iM_TargetSucceed);
+		Player_AddExperience(ps, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp","target_succeed",0));
+		ps->af_count++;
 
 		// Add money to players in this team
 		u32		cnt = get_players_count();
@@ -591,11 +641,21 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 			game_PlayerState* pstate	= l_pC->ps;
 			if (!l_pC->net_Ready || pstate->Skip || pstate == ps) continue;
 			if (pstate->team == ps->team)
-				Player_AddMoney(pstate, pTeam->m_iM_TargetSucceedAll);
+			{
+				Player_AddMoney(pstate, pTeam->m_iM_TargetSucceedAll);				
+				Player_AddExperience(pstate, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "target_succeed_all",0));
+			}
 			else
+			{
 				Player_AddMoney(pstate, pTeam->m_iM_TargetFailed);
+				pstate->experience_New *= READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "target_failed_all_mul",1.0f);				
+			};
+			
+			Player_AddExperience(pstate, 0);
+			Player_ExperienceFin(pstate);
 		}
 	}
+	Set_RankUp_Allowed(false);
 
 //	teams[ps->team-1].score++;
 	SetTeamScore( ps->team-1, GetTeamScore(ps->team-1)+1 );
@@ -654,7 +714,6 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	m_dwArtefactID = af->ID;
 	//-----------------------------------------------
 	NET_Packet P;
-//	P.w_begin			(M_GAMEMESSAGE);
 	GenerateGameMessage (P);
 	P.w_u32				(GAME_EVENT_ARTEFACT_SPAWNED);
 	u_EventSend(P);
@@ -665,19 +724,9 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 	signal_Syncronize();
 	//-------------------------------------------------
-	/*
-	if (m_bArtefactWasBringedToBase)
-	{
-		if (m_iReinforcementTime == -1)
-		{
-			RespawnAllNotAlivePlayers();
-		};
-		m_bArtefactWasBringedToBase = false;
-	};
-	*/
-	//-------------------------------------------------
 	if (m_bAnomaliesEnabled)	StartAnomalies();
 	//-------------------------------------------------
+	m_bWasTaken = false;
 };
 
 void	game_sv_ArtefactHunt::RemoveArtefact			()
@@ -847,6 +896,7 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
 	m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
 
 	artefactBearerID	= 0;
+	m_iAfBearerMenaceID = 0;
 	teamInPossession	= 0;
 
 	signal_Syncronize();
@@ -1146,3 +1196,27 @@ void game_sv_ArtefactHunt::OnRender				()
 }
 #endif
 	//  [7/5/2005]
+
+//  [7/29/2005]
+bool	game_sv_ArtefactHunt::Player_Check_Rank		(game_PlayerState* ps)
+{	
+	if (!inherited::Player_Check_Rank(ps)) return false;
+	if (ps->af_count < m_aRanks[ps->rank+1].m_iTerms[1]) return false;
+	return true;
+}
+//  [7/29/2005]
+
+void	game_sv_ArtefactHunt::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P)
+{
+	inherited::OnPlayerHitPlayer(id_hitter, id_hitted, P);
+
+	game_PlayerState*	ps_hitter = get_eid(id_hitter);
+	game_PlayerState*	ps_hitted = get_eid(id_hitted);
+
+	if (!ps_hitter || !ps_hitted) return;
+	if (ps_hitter->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps_hitted->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+	if (ps_hitted->team == ps_hitter->team) return;
+
+	if (ps_hitted->GameID == artefactBearerID)
+		m_iAfBearerMenaceID = ps_hitter->GameID;
+};
