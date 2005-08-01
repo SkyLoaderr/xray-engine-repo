@@ -227,9 +227,10 @@ IReader*	IReader::open_chunk_iterator	(u32& ID, IReader* _prev)
 
 void	IReader::r	(void *p,int cnt)
 {
-	VERIFY		(Pos+cnt<=Size);
-	Memory.mem_copy(p,pointer(),cnt);
-	advance		(cnt);
+	VERIFY				(Pos+cnt<=Size);
+	Memory.mem_copy		(p,pointer(),cnt);
+	advance				(cnt);
+	FS.dwOpenCounter	++;
 };
 
 IC BOOL			is_term		(char a) { return (a==13)||(a==10); };
