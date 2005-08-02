@@ -135,6 +135,7 @@ void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskS
 
 void CGameTaskManager::UpdateTasks						()
 {
+	return;
 	GameTasks_it it		= GameTasks().begin();
 	GameTasks_it it_e	= GameTasks().end();
 	for( ;it!=it_e; ++it ){
