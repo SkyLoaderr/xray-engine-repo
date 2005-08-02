@@ -370,12 +370,12 @@ void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 	result.rb.x 		= ClientToScreenScaledX(float(result.rb.x),0);
 	result.rb.y 		= ClientToScreenScaledY(float(result.rb.y),0);
 
-	VERIFY(result.x1>=0&&result.y1>=0&&(result.x2<=UI_BASE_WIDTH*GetScaleX())&&(result.y2<=UI_BASE_HEIGHT*GetScaleY()));
 	Irect r;
 	r.x1 = iFloor(result.x1);
 	r.x2 = iFloor(result.x2);
 	r.y1 = iFloor(result.y1);
 	r.y2 = iFloor(result.y2);
+	VERIFY(r.x1>=0&&r.y1>=0&&(r.x2<=UI_BASE_WIDTH*GetScaleX())&&(r.y2<=UI_BASE_HEIGHT*GetScaleY()));
 	RCache.set_Scissor	(&r);
 }
 
