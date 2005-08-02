@@ -23,7 +23,7 @@ public:
 	//virtual void Enable(bool bEnable);
 	virtual void ShowAssociatedWindow(bool bShow = true);
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void OnMouseDown(bool left_button = true);
 	virtual void Update();
 

@@ -205,7 +205,8 @@ void CUIMessageBox::SetText(LPCSTR str)
 	}
 	m_UIStatic.SetText(str);
 }
-void CUIMessageBox::OnMouse(float x, float y, EUIMessages mouse_action)
+
+bool CUIMessageBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	inherited::OnMouse(x, y, mouse_action);
+	return inherited::OnMouse(x, y, mouse_action);
 }

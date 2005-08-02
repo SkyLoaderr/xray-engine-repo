@@ -18,7 +18,7 @@ public:
 	virtual void	SaveValue();
 	// CUIWindow
 	virtual void Init(float x, float y, float width, float height);
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Enable(bool status);
 	virtual void OnMouseDown(bool left_button = true);
 	

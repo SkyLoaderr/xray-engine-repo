@@ -123,7 +123,7 @@ void CUIPropertiesBox::Hide()
 	GetParent()->SetCapture(this, false);
 }
 
-void CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	bool cursor_on_box;
 
@@ -137,9 +137,10 @@ void CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
 	if(mouse_action == WINDOW_LBUTTON_DOWN && !cursor_on_box)
 	{
 		Hide();
+		return true;
 	}
 
-	inherited::OnMouse(x, y, mouse_action);
+	return inherited::OnMouse(x, y, mouse_action);
 }
 
 void CUIPropertiesBox::AutoUpdateSize()

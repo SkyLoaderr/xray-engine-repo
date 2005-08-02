@@ -200,7 +200,7 @@ Frect CUIWindow::GetAbsoluteRect()
 
 #define DOUBLE_CLICK_TIME 250
 
-void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 {	
 	Frect	wndRect = GetWndRect();
 
@@ -233,7 +233,7 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	if(GetParent()== NULL) //вызов из главного окна у которого нет предков
 	{
 		if(!wndRect.in(cursor_pos))
-            return;
+            return false;
 		//получить координаты относительно окна
 		cursor_pos.x -= wndRect.left;
 		cursor_pos.y -= wndRect.top;
@@ -247,7 +247,7 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 		m_pMouseCapturer->OnMouse(cursor_pos.x - m_pMouseCapturer->GetWndRect().left, 
 								  cursor_pos.y - m_pMouseCapturer->GetWndRect().top, 
 								  mouse_action);
-		return;
+		return true;
 	}
 
 	// handle any action
@@ -263,7 +263,7 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 		case WINDOW_RBUTTON_DOWN:
 			OnMouseDown(/*left_button = */false);	break;
 		case WINDOW_LBUTTON_DB_CLICK:
-			if (OnDbClick()) return ;
+			if (OnDbClick()) return true;
 			break;
 		default:
             break;
@@ -281,19 +281,18 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 		{
 			if((*it)->IsEnabled())
 			{
-				(*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
-							   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
-				return;
+				if( (*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
+							   cursor_pos.y -(*it)->GetWndRect().top, mouse_action))return true;
 			}
 		}
 		else if ((*it)->IsEnabled() && (*it)->CursorOverWindow())
 		{
-			(*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
-						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
+			if( (*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
+						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action))return true;
 		}
 	}
 
-
+	return false;
 }
 
 bool CUIWindow::HasChildMouseHandler(){

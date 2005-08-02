@@ -39,7 +39,7 @@ public:
 
 	CUIInteractiveListItem();
 	virtual ~CUIInteractiveListItem() {}
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Update();
 	virtual void Draw();
 

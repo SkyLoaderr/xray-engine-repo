@@ -24,7 +24,7 @@ public:
 					CUIScrollView		();
 	virtual			~CUIScrollView		();
 	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
-	virtual void	OnMouse				(float x, float y, EUIMessages mouse_action);
+	virtual bool	OnMouse				(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw				();
 	virtual void	Update				();
 			void	AddWindow			(CUIWindow* pWnd);

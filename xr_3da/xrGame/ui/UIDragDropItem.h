@@ -28,7 +28,7 @@ public:
 	virtual void	Init						(LPCSTR tex_name, float x, float y, float width, float height);
 	virtual CUIDragDropItem* cast_drag_drop_item()	{return this;}
 
-	virtual void	OnMouse						(float x, float y, EUIMessages mouse_action);
+	virtual bool	OnMouse						(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw						();
 	virtual void	Update						();
 

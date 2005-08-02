@@ -126,20 +126,22 @@ void CUIDragDropList::DropAll()
 	ScrollBarRecalculate(true);
 }
 
-void CUIDragDropList::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIDragDropList::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 	case WINDOW_MOUSE_WHEEL_DOWN:
 		if( m_flags.test(flScrollBarEnabled) )
 			m_ScrollBar.TryScrollInc();
+			return true;
 			break;
 	case WINDOW_MOUSE_WHEEL_UP:
 		if( m_flags.test(flScrollBarEnabled) )
 			m_ScrollBar.TryScrollDec();
+			return true;
 			break;
 	}
 
-	inherited::OnMouse(x, y, mouse_action);
+	return inherited::OnMouse(x, y, mouse_action);
 }
 
 //обработка сообщений для DragDrop

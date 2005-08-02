@@ -45,9 +45,9 @@ void CUIListItem::Init(const char* str, float x, float y, float width, float hei
 	SetText(str);	
 }
 
-void CUIListItem::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIListItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	CUIButton::OnMouse(x, y, mouse_action);
+	return CUIButton::OnMouse(x, y, mouse_action);
 }	
 
 

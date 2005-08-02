@@ -30,7 +30,7 @@ public:
 
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
 	bool AddItem_script(const char*  str){return AddItem(str);};

@@ -81,7 +81,7 @@ public:
 //	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void	OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool	OnMouse(float x, float y, EUIMessages mouse_action);
 
 	virtual void	Draw			();
 

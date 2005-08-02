@@ -121,24 +121,27 @@ void CUIOutfitSlot::DropAll()
 	inherited::AttachChild(&UIOutfitIcon);
 }
 
-void CUIOutfitSlot::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIOutfitSlot::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if (WINDOW_LBUTTON_DB_CLICK == mouse_action)
 	{
 		GetMessageTarget()->SendMessage(this, UNDRESS_OUTFIT, NULL);
+		return true;
 	}
 	else if (WINDOW_LBUTTON_DOWN == mouse_action && GetCurrentOutfit())
 	{
 		CUIDragDropItem *pDDItem = GetCurrentOutfit();
 		pDDItem->Show(true);
+		return true;
 	}
 	else if (WINDOW_LBUTTON_UP == mouse_action && GetCurrentOutfit())
 	{
 		CUIDragDropItem *pDDItem = GetCurrentOutfit();
 		pDDItem->Show(false);
+		return true;
 	}
 
-	inherited::OnMouse(x, y, mouse_action);
+	return inherited::OnMouse(x, y, mouse_action);
 }
 
 CUIDragDropItem * CUIOutfitSlot::GetCurrentOutfit()

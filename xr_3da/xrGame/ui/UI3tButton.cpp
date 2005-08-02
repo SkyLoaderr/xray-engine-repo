@@ -43,11 +43,11 @@ void CUI3tButton::OnClick(){
     PlaySoundT();
 }
 
-void CUI3tButton::OnMouse(float x, float y, EUIMessages mouse_action){
+bool CUI3tButton::OnMouse(float x, float y, EUIMessages mouse_action){
 	if (m_bCheckMode)
-		CUIWindow::OnMouse(x,y,mouse_action);
+		return CUIWindow::OnMouse(x,y,mouse_action);
 	else
-		CUIButton::OnMouse(x,y,mouse_action);
+		return CUIButton::OnMouse(x,y,mouse_action);
 }
 
 void CUI3tButton::OnMouseDown(bool left_button /* = true */){

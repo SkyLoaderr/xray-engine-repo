@@ -211,7 +211,7 @@ CUIInventoryWnd::~CUIInventoryWnd()
 	ClearDragDrop(m_vDragDropItems);
 }
 
-void CUIInventoryWnd::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIInventoryWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	//вызов дополнительного меню по правой кнопке
 	if(mouse_action == WINDOW_RBUTTON_DOWN)
@@ -219,10 +219,11 @@ void CUIInventoryWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		if(UIPropertiesBox.IsShown())
 		{
 			UIPropertiesBox.Hide();
+			return true;
 		}
 	}
 
-	CUIWindow::OnMouse(x, y, mouse_action);
+	return CUIWindow::OnMouse(x, y, mouse_action);
 }
 
 void CUIInventoryWnd::Draw()

@@ -45,7 +45,7 @@ void CUIScrollBox::Init(float x, float y, float length, float broad, bool bIsHor
 //////////////////////////////////////////////////////////////////////////
 
 
-void CUIScrollBox::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIScrollBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	float deltaX = 0;
 	float deltaY = 0;
@@ -125,6 +125,8 @@ void CUIScrollBox::OnMouse(float x, float y, EUIMessages mouse_action)
 	//возможного перемещения каретки
 	m_iOldMouseX = x - deltaX;
 	m_iOldMouseY = y - deltaY;
+
+	return true;
 }
 
 void CUIScrollBox::Draw()

@@ -83,7 +83,7 @@ public:
 			float				GetZoom					()	{return m_currentZoom;}
 			void				SetZoom					(float value);
 
-	virtual void				OnMouse					(float x, float y, EUIMessages mouse_action);
+	virtual bool				OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual bool				OnKeyboard				(int dik, EUIMessages keyboard_action);
 	virtual void				SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 

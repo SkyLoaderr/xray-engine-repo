@@ -42,7 +42,7 @@ public:
 	//сообщени€, отправл€емые родительскому окну
 //	typedef enum{OK_CLICKED, YES_CLICKED, NO_CLICKED, CANCEL_CLICKED} E_MESSAGE;
 
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 

@@ -15,7 +15,7 @@ public:
 	virtual ~CUIOutfitSlot();
 
 	virtual void Init(float x, float y, float width, float height);
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 
 	virtual void AttachChild(CUIWindow *pChild);
 	virtual void DetachChild(CUIWindow *pChild);

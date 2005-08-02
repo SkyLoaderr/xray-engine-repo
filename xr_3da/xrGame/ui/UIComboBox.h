@@ -36,7 +36,7 @@ public:
 	virtual void		Draw();
 protected:
 	virtual void		SetState(UIState state);	
-	virtual void		OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool		OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void		OnBtnClicked();
 	virtual void		ShowList(bool bShow);
 	virtual void		OnListItemSelect();

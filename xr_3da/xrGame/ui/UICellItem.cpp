@@ -27,14 +27,18 @@ void CUICellItem::Draw()
 {
 	inherited::Draw();
 };
-void CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
+
+bool CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if(mouse_action == WINDOW_LBUTTON_DOWN){
 		GetMessageTarget()->SendMessage(this,DRAG_DROP_ITEM_SELECTED,NULL);
+		return true;
 	}
 	if(mouse_action == WINDOW_MOUSE_MOVE && pInput->iGetAsyncBtnState(0)){
 		GetMessageTarget()->SendMessage(this,DRAG_DROP_ITEM_DRAG,NULL);
+		return true;
 	}
+	return false;
 };
 
 CUIFlyingItem* CUICellItem::CreateFlyingItem()
@@ -72,11 +76,13 @@ void CUIFlyingItem::Init(const ref_shader& sh, const Frect& rect, const Frect& t
 
 }
 
-void CUIFlyingItem::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIFlyingItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if(mouse_action == WINDOW_MOUSE_MOVE){
 		MoveWndDelta(GetUICursor()->GetPosDelta());
+		return true;
 	}
+	return false;
 }
 
 void CUIFlyingItem::OnMouseMoved(Fvector2 delta)

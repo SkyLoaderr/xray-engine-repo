@@ -70,7 +70,7 @@ void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data
 //-----------------------------------------------------------------------------/
 //  Обработка событий мыши
 //-----------------------------------------------------------------------------/
-void CUIInteractiveListItem::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIInteractiveListItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	std::pair<float, float> tmpPair(x, y);
 	itCurrIItem = std::find_if(vPositions.begin(), vPositions.end(), 
@@ -81,9 +81,10 @@ void CUIInteractiveListItem::OnMouse(float x, float y, EUIMessages mouse_action)
 	if (m_bInteractiveBahaviour && WINDOW_LBUTTON_DOWN == mouse_action && itCurrIItem != vPositions.end())
 	{
 		GetMessageTarget()->SendMessage(this, INTERACTIVE_ITEM_CLICK, (void*)&(*itCurrIItem).ID);
+		return	true;
 	}
 	else
-		inherited::OnMouse(x, y, mouse_action);
+		return inherited::OnMouse(x, y, mouse_action);
 }
 
 //-----------------------------------------------------------------------------/

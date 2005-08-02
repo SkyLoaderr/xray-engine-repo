@@ -128,17 +128,19 @@ void CUIScrollBar::UpdateScrollBar()
 	}
 }
 
-void CUIScrollBar::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIScrollBar::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	switch(mouse_action){
 		case WINDOW_MOUSE_WHEEL_DOWN:
 			TryScrollInc();
+			return true;
 			break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			TryScrollDec();
+			return true;
 			break;
 	};
-	inherited::OnMouse(x, y, mouse_action);
+	return inherited::OnMouse(x, y, mouse_action);
 }
 
 

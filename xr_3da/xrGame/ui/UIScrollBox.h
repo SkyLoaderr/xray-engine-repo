@@ -21,7 +21,7 @@ public:
 //	typedef enum{SCROLLBOX_MOVE, SCROLLBOX_STOP} E_MESSAGE;
 
 
-	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Draw();
 						
 

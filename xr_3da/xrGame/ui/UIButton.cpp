@@ -84,18 +84,18 @@ void CUIButton::Enable(bool status){
 		m_bCursorOverWindow = false;
 }
 
-void  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
+bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	m_bButtonClicked = false;
 
-	inherited::OnMouse(x, y, mouse_action);
+	if( inherited::OnMouse(x, y, mouse_action) ) return true;
 
 	if ( (	WINDOW_LBUTTON_DOWN==mouse_action	||
 			WINDOW_LBUTTON_UP==mouse_action		||
 			WINDOW_RBUTTON_DOWN==mouse_action	||
 			WINDOW_RBUTTON_UP==mouse_action)	&& 
 			HasChildMouseHandler())
-		return;
+		return false;
 
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 		GetParent()->SetCapture(this, m_bCursorOverWindow);
@@ -165,6 +165,7 @@ void  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 
 		break;
 	}
+	return false;
 }
 
 void CUIButton::OnClick(){

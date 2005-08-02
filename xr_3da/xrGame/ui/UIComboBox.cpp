@@ -117,8 +117,8 @@ void CUIComboBox::Update(){
 		SetState(S_Disabled);
 }
 
-void CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
-    CUIWindow::OnMouse(x, y, mouse_action);
+bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
+    if(CUIWindow::OnMouse(x, y, mouse_action)) return true;
 
 	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
 
@@ -134,15 +134,19 @@ void CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
 			{
                 ShowList(false);
                 GetParent()->SetCapture(this, false);
+				return true;
 			}
-			else
+			else{
 				GetParent()->SetCapture(this, true);
+				return true;
+			}
 			break;
 		case LIST_FONDED:
 			break;
 		default:
 			break;
 	}	
+	return false;
 }
 
 void CUIComboBox::SetState(UIState state){

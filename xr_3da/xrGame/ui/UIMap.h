@@ -96,7 +96,7 @@ public:
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
 	virtual void				Draw				();
 	virtual void				Update				();
-	virtual void				OnMouse				(float x, float y, EUIMessages mouse_action);
+	virtual bool				OnMouse				(float x, float y, EUIMessages mouse_action);
 	
 	Frect						CalcWndRectOnGlobal	();
 	CUIMapWnd*					MapWnd				() {return m_mapWnd;}

@@ -124,11 +124,11 @@ int CUISkinSelectorWnd::SwitchSkin(const int idx)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	Frect rect;
 
-	inherited::OnMouse(x, y, mouse_action); // need to generate DB_CLICK action
+	if(inherited::OnMouse(x, y, mouse_action)) return true; // need to generate DB_CLICK action
 	
 	switch (mouse_action){
 		case WINDOW_LBUTTON_DOWN:
@@ -138,12 +138,14 @@ void CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				if (rect.in(x,y) && i != m_uActiveIndex)
 				{
 					SwitchSkin(i);
+					return true;
 				}
 			}
 			break;
 		default:
 			break;
 	}	
+	return false;
 }
 
 

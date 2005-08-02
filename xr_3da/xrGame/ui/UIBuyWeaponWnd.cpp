@@ -736,7 +736,7 @@ void CUIBuyWeaponWnd::OnMenuLevelChange(){
 		UITabControl.SetActiveState();
 }
 
-void CUIBuyWeaponWnd::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIBuyWeaponWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if (WINDOW_LBUTTON_DOWN == mouse_action || WINDOW_RBUTTON_DOWN == mouse_action)
 	{
@@ -757,7 +757,7 @@ void CUIBuyWeaponWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		}
 	}
 
-	inherited::OnMouse(x, y, mouse_action);
+	return inherited::OnMouse(x, y, mouse_action);
 }
 
 void CUIBuyWeaponWnd::Draw()

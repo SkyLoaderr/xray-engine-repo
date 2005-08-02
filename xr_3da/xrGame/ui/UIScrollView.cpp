@@ -144,16 +144,18 @@ void CUIScrollView::OnScrollV			()
 	m_pad->SetWndPos			(w_pos.x,float(-s_pos));
 }
 
-void CUIScrollView::OnMouse				(float x, float y, EUIMessages mouse_action)
+bool CUIScrollView::OnMouse				(float x, float y, EUIMessages mouse_action)
 {
-	inherited::OnMouse(x,y,mouse_action);
+	if(inherited::OnMouse(x,y,mouse_action)) return true;
 
 	switch (mouse_action){
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_VScrollBar->TryScrollDec();
+			return true;
 		break;
 		case WINDOW_MOUSE_WHEEL_DOWN:
 			m_VScrollBar->TryScrollInc();
+			return true;
 		break;
 		case WINDOW_MOUSE_MOVE:
 			if( pInput->iGetAsyncBtnState(0) ){
@@ -165,10 +167,11 @@ void CUIScrollView::OnMouse				(float x, float y, EUIMessages mouse_action)
 				clamp							(curr_pad_pos.y,-max_pos,0.0f);
 				m_pad->SetWndPos				(curr_pad_pos);
 				UpdateScroll					();
+				return true;
 			}
 		break;
-
 	};
+	return false;
 }
 
 void CUIScrollView::ScrollToBegin		()

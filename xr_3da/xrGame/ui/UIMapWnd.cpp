@@ -341,9 +341,9 @@ bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
 	return inherited::OnKeyboard	(dik, keyboard_action);
 }
 
-void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	inherited::OnMouse(x,y,mouse_action);
+	if(inherited::OnMouse(x,y,mouse_action)) return true;
 	Fvector2 cursor_pos = GetUICursor()->GetPos();
 
 	if(GlobalMap() && !GlobalMap()->Locked() && ActiveMapRect().in( cursor_pos ) ){
@@ -352,6 +352,7 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 			if( pInput->iGetAsyncBtnState(0) ){
 				GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
+				return							true;
 			}
 		break;
 		case WINDOW_LBUTTON_DOWN:
@@ -363,18 +364,20 @@ void CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				m_tgtCenter.sub					(gm->GetAbsolutePos());
 				m_tgtCenter.div					(gm->GetCurrentZoom());
 				ResetActionPlanner				();
+				return							true;
 			}
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
-			m_UIMainScrollV->TryScrollDec();
+			m_UIMainScrollV->TryScrollDec		();
+			return								true;
 		break;
 		case WINDOW_MOUSE_WHEEL_DOWN:
 			m_UIMainScrollV->TryScrollInc();
+			return								true;
 		break;
-
-
 		}	
 	};
+	return								false;
 }
 
 void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)

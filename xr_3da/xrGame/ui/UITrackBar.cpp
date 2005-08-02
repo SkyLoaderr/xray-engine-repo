@@ -49,7 +49,7 @@ void CUITrackBar::Init(float x, float y, float width, float height){
 	m_pSlider->InitTexture(SLIDER_TEXTURE);
 }	
 
-void CUITrackBar::OnMouse(float x, float y, EUIMessages mouse_action){
+bool CUITrackBar::OnMouse(float x, float y, EUIMessages mouse_action){
 	//CUIWindow::OnMouse(x,y, mouse_action);
 //	Frect	wndRect = GetWndRect();
 
@@ -86,6 +86,7 @@ void CUITrackBar::OnMouse(float x, float y, EUIMessages mouse_action){
 		default:
 			break;
 	}
+	return false;
 }
 
 void CUITrackBar::OnMouseDown(bool left_button /* = true */){

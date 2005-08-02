@@ -21,7 +21,7 @@ public:
 
 //	virtual		void*		GetData					()											{return m_pData;}
 //	virtual		void		SetData					(void* pData)								{m_pData = pData;}
-	virtual		void		OnMouse					(float x, float y, EUIMessages mouse_action);
+	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		Update					()						{inherited::Update();};
 
@@ -44,7 +44,7 @@ public:
 							CUIFlyingItem(CUICellItem* parent);
 	virtual		void		Init(const ref_shader& sh, const Frect& rect, const Frect& text_rect);
 	virtual					~CUIFlyingItem();
-	virtual		void		OnMouse					(float x, float y, EUIMessages mouse_action);
+	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	void	__stdcall		OnMouseMoved			(Fvector2 delta);
 };

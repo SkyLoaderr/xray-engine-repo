@@ -85,7 +85,7 @@ void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 }
 
-void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if (m_bFocusByDbClick)
 	{
@@ -97,7 +97,6 @@ void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 
 			m_iCursorPos = xr_strlen(m_lines.GetText());
 		}
-		return;
 	}
 
 	if(mouse_action == WINDOW_LBUTTON_DOWN && !m_bInputFocus)
@@ -108,7 +107,7 @@ void CUIEditBox::OnMouse(float x, float y, EUIMessages mouse_action)
 
 		m_iCursorPos = xr_strlen(m_lines.GetText());
 	}
-
+	return false;
 }
 
 

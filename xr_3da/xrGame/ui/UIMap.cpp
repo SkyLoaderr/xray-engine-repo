@@ -438,19 +438,24 @@ void CUILevelMap::Update()
 	inherited::Update		();
 }
 
-void CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
+bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 {
-	inherited::OnMouse(x,y,mouse_action);
-	if (MapWnd()->GlobalMap()->Locked()) return;
+	if (inherited::OnMouse(x,y,mouse_action))	return true;
+	if (MapWnd()->GlobalMap()->Locked())		return true;
 	switch (mouse_action){			
 		case WINDOW_LBUTTON_DB_CLICK:
 			MapWnd()->SetTargetMap( MapName() );
+			return true;
 		break;
+
 		case WINDOW_LBUTTON_DOWN:
-			if(MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
+			if(MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
 				MapWnd()->AddUserSpot(this);
+				return true;
+			}
 		break;
 	}
+	return false;
 }
 
 

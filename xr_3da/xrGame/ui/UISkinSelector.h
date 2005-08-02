@@ -24,7 +24,7 @@ public:
 	
 	virtual void	Init(const char *strSectionName);
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData = NULL);
-	virtual void	OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool	OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
 	virtual void	Draw();
 	// event handlers

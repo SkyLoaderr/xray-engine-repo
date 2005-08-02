@@ -74,7 +74,7 @@ void CUIDragDropItem::Init(LPCSTR tex_name, float x, float y, float width, float
 	SetStretchTexture	(true);
 }
 
-void  CUIDragDropItem::OnMouse(float x, float y, EUIMessages mouse_action)
+bool  CUIDragDropItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	float deltaX = 0;
 	float deltaY = 0;
@@ -190,6 +190,7 @@ void  CUIDragDropItem::OnMouse(float x, float y, EUIMessages mouse_action)
 	m_iOldMouseX = x - deltaX;
 	m_iOldMouseY = y - deltaY;
 
+	return true;
 }
 
 
