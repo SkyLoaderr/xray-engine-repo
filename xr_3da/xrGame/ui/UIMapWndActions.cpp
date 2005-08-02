@@ -220,7 +220,7 @@ void CMapActionResize::finalize		()
 void CMapActionMinimize::initialize()
 {
 	m_targetZoom				= m_object->GlobalMap()->GetMinZoom();
-	inherited::initialize();
+	inherited::initialize		();
 }
 
 void CMapActionMinimize::finalize()
