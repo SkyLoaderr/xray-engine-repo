@@ -418,6 +418,8 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,		rsRefresh60hz);
 	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic);
 	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.01f,	1.0f);
+	CMD3(CCC_Mask,		"rs_render_statics",	&psDeviceFlags,		rsDrawStatic);
+	CMD3(CCC_Mask,		"rs_render_dynamics",	&psDeviceFlags,		rsDrawDynamic);
 
 	CMD3(CCC_Mask,		"rs_occ_draw",			&psDeviceFlags,		rsOcclusionDraw);
 	CMD3(CCC_Mask,		"rs_occ_stats",			&psDeviceFlags,		rsOcclusionStats);

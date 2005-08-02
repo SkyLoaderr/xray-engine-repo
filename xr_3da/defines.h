@@ -25,13 +25,17 @@ enum {
 	rsDetails			= (1ul<<7ul),
 	rsRefresh60hz		= (1ul<<8ul),
 	rsConstantFPS		= (1ul<<9ul),
-	mtSound				= (1ul<<10ul),
-	mtPhysics			= (1ul<<11ul),
-	mtNetwork			= (1ul<<12ul),
-	mtParticles			= (1ul<<13ul),
+	rsDrawStatic		= (1ul<<10ul),
+	rsDrawDynamic		= (1ul<<11ul),
 
-	rsOcclusionDraw		= (1ul<<14ul),
-	rsOcclusionStats	= (1ul<<15ul),
+	rsOcclusionDraw		= (1ul<<12ul),
+	rsOcclusionStats	= (1ul<<13ul),
+
+	mtSound				= (1ul<<14ul),
+	mtPhysics			= (1ul<<15ul),
+	mtNetwork			= (1ul<<16ul),
+	mtParticles			= (1ul<<17ul),
+
 	// 20-32 bit - defined in Editor
 };
 
