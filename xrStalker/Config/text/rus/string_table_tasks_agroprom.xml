@@ -1,6 +1,46 @@
+    <string id="agroprom_get_military_documents">
+        <text>Достать документы военных.</text>
+    </string>
+    <string id="agroprom_get_military_documents_0">
+        <text>НИИ Агропром</text>
+    </string>
+    <string id="agroprom_get_military_documents_1">
+        <text>Добудьте военные документы.</text>
+    </string>
+    <string id="agroprom_get_military_documents_2">
+        <text>Отнести документы бармену.</text>
+    </string>
+
     <string id="agr_krot">
         <text>Встретиться со сталкерами</text>
     </string>
+    <string id="agr_meet_krot_band">
+        <text>Получить информацию о Стрелке</text>
+    </string>
+    <string id="agr_meet_krot_band_0">
+        <text>Серый сказал, что Крот что-то знает</text>
+    </string>
+    <string id="agr_meet_krot_band_1">
+        <text>Встретиться с Кротом</text>
+    </string>
+    <string id="agr_meet_krot_band_2">
+        <text>Получить от Крота информацию</text>
+    </string>
+
+    <string id="agroprom_find_gunslinger_cache">
+        <text>Найти тайник группы Стрелка.</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache_0">
+        <text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
+    </string>
+
+    <string id="agroprom_find_stalker_phantom">
+        <text>Найти Призрака.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom_0">
+        <text>Призрак точно знает, где найти Стрелка.</text>
+    </string>
+
     <string id="agr_gunslinger_cache">
         <text>Тайник Стрелка</text>
     </string>
@@ -14,6 +54,12 @@
     <string id="agr_help_stalkers_0">
         <text>Помочь сталкерам Крота отбиться от военных на заводе</text>
     </string>
+    <string id="agr_help_stalkers_1">
+        <text>Уничтожить военных</text>
+    </string>
+    <string id="agr_help_stalkers_2">
+        <text>Спасти сталкеров</text>
+    </string>
 
     <string id="agr_help_krot">
         <text>Спасти Крота</text>
@@ -21,4 +67,9 @@
     <string id="agr_help_krot_0">
         <text>Военные зажали Крота на фабрике. Долго ему не продержаться</text>
     </string>
-
+    <string id="agr_help_krot_1">
+        <text>Уничтожить военных</text>
+    </string>
+    <string id="agr_help_krot_2">
+        <text>Спасти Крота</text>
+    </string>

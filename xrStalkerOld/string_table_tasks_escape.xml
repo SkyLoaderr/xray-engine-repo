@@ -79,36 +79,6 @@
     <string id="garbage_meet_stalker_0">
         <text>Встретиться с Серым на свалке.</text>
     </string>
-    <string id="agroprom_get_military_documents">
-        <text>Достать документы военных.</text>
-    </string>
-    <string id="agroprom_get_military_documents_0">
-        <text>НИИ Агропром</text>
-    </string>
-    <string id="agroprom_get_military_documents_1">
-        <text>Добудьте военные документы.</text>
-    </string>
-    <string id="agroprom_get_military_documents_2">
-        <text>Отнести документы бармену.</text>
-    </string>
-    <string id="agr_meet_krot_band">
-        <text>Добыть информацию о пути к центру Зоны.</text>
-    </string>
-    <string id="agr_meet_krot_band_0">
-        <text>Найти группу Крота.</text>
-    </string>
-    <string id="agroprom_find_gunslinger_cache">
-        <text>Найти тайник группы Стрелка.</text>
-    </string>
-    <string id="agroprom_find_gunslinger_cache_0">
-        <text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
-    </string>
-    <string id="agroprom_find_stalker_phantom">
-        <text>Найти Призрака.</text>
-    </string>
-    <string id="agroprom_find_stalker_phantom_0">
-        <text>Призрак точно знает, где найти Стрелка.</text>
-    </string>
     <string id="esc_wounded_to_trader_gift">
         <text>Доставить пакет торговцу.</text>
     </string>
