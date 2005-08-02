@@ -57,9 +57,6 @@
     <string id="val_escort_captive_dialog_211">
         <text>Да ладно, чего там. Просто помог хорошему человеку.</text>
     </string>
-    <string id="val_escort_captive_dialog_22">
-        <text>Я тут подумываю скоро сваливать отседова, так что если есть че спросить - спрашивай.</text>
-    </string>
     <string id="val_escort_captive_dialog_221">
         <text>Не бери в голову. Пока.</text>
     </string>
@@ -92,6 +89,12 @@
     </string>
     <string id="val_escort_captive_dialog_444">
         <text>ОК, спасибо за информацию.</text>
+    </string>
+    <string id="val_escort_captive_dialog_51">
+        <text>Ты что-то говорил про Серегу...</text>
+    </string>
+    <string id="val_escort_captive_dialog_52">
+        <text>Да не за что. Больше не попадайся бандитам.</text>
     </string>
     <string id="val_escort_nap1_dialog_11">
         <text>Сталкер, помоги мне освободить товарища. "Долг" выслал сюда на разведку нашу группу из трех человек, но мы попали в засаду бандитов, когда возвращались. Я узнал, что одного из моих напарников сейчас будут конвоировать на базу Монолита, но, боюсь, один я с ними не справлюсь. Помоги мне, я в долгу не останусь.</text>
