@@ -133,25 +133,35 @@ function heli_binder:on_point( distance, position, path_idx )
 end
 
 --------------------------------------------------------------------------
+function get_heli_health( heli, st )
+	local health
+
+	if self.st.invulnerable then
+		health = 100
+		heli:SetfHealth( health )
+	else
+		health = heli:GetfHealth()
+
+		if health < 0 then
+			heli:SetfHealth( 0 )
+			health = 0
+		end
+	end
+
+	return health
+end
+
+function is_heli_alive( obj )
+	return get_heli_health( obj:get_helicopter(), db.storage[obj:id()] ) > 0.5
+end
+
 function heli_binder:check_health()
 	local heli = self.heliObject
 
 --	printf( "heli health: %d", heli:GetfHealth() )
 
 	if not heli.m_dead then
-		local health 
-
-		if self.st.invulnerable then
-			health = 100
-			heli:SetfHealth( health )
-		else
-			health = heli:GetfHealth()
-
-			if health < 0 then
-				heli:SetfHealth( 0 )
-				health = 0
-			end
-		end
+		local health = get_heli_health( self.heliObject, self.st )
 
 		if health < 30 and not heli.m_flame_started then
 			heli_start_flame( self.object )
