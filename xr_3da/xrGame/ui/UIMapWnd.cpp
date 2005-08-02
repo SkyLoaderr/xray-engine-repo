@@ -228,6 +228,22 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 			l->OptimalFit( m_UILevelFrame->GetWndRect() );
 		}
 	}
+	GameMaps::iterator it = m_GameMaps.begin();
+	GameMaps::iterator it2;
+	for(;it!=m_GameMaps.end();++it){
+		CUILevelMap* l = smart_cast<CUILevelMap*>(it->second);VERIFY(l);
+		for(it2=it; it2!=m_GameMaps.end();++it2){
+			if(it==it2) continue;
+			CUILevelMap* l2 = smart_cast<CUILevelMap*>(it2->second);VERIFY(l2);
+			if(l->GlobalRect().intersected(l2->GlobalRect())){
+				Msg("--error-incorrect map definition!!! global rect of map [%s] intersects with [%s]", *l->MapName(), *l2->MapName());
+			}
+		}
+		if(FALSE == l->GlobalRect().intersected(GlobalMap()->BoundRect())){
+			Msg("--error-incorrect map definition!!! map [%s] places outside global map", *l->MapName());
+		}
+
+	}
 
 	Register						(m_GlobalMap);
 	m_ActionPlanner					= xr_new<CMapActionPlanner>();
