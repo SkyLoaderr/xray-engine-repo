@@ -141,7 +141,7 @@ function act_state_mgr_weapon_unstrapp:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_unstrapp:initialize()
 	action_base.initialize(self)
-	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_item(get_idle_state(self.st), self.object:best_weapon())
 	self.st.need_reweapon = false
 end
 function act_state_mgr_weapon_unstrapp:execute()
@@ -193,7 +193,7 @@ function act_state_mgr_weapon_fire:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_fire:initialize()
 	action_base.initialize(self)
-	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_item(get_idle_state(self.st), self.object:best_weapon())
 	self.st.need_reweapon = false
 end
 function act_state_mgr_weapon_fire:execute()
@@ -220,7 +220,13 @@ function act_state_mgr_weapon_drop:finalize()
 	action_base.finalize(self)
 end
 
-
+function get_idle_state(st)
+	if state_lib.states[st.target_state].mental == anim.danger then
+		return object.aim1
+	else
+		return object.idle
+	end
+end
 
 function strappable_weapon(obj)
     local id = get_clsid(obj)
