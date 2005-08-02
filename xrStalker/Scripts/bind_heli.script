@@ -136,7 +136,7 @@ end
 function get_heli_health( heli, st )
 	local health
 
-	if self.st.invulnerable then
+	if st.invulnerable then
 		health = 100
 		heli:SetfHealth( health )
 	else
