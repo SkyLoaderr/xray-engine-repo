@@ -33,6 +33,15 @@ active = walker@bar_visitors_walker
 
 [walker@bar_visitors_walker]
 path_walk = walker_walk
+meet = meet@bar_visitors_walker
+
+[meet@bar_visitors_walker]
+meet_state 		= 10| guard@talk_hello
+meet_state_wpn 	= 10| guard@talk_hello| 15| threat@threat_weap
+victim 			= 10| actor
+victim_wpn 		= 10| actor
+use = true
+use_wpn = true
 
 ; пост перед входом во двор "долга"
 
