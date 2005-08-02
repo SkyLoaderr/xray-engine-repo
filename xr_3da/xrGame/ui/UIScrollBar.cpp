@@ -101,8 +101,10 @@ void CUIScrollBar::Enable(bool b)
 }
 
 void CUIScrollBar::UpdateScrollBar()
-{	
-	Show						( !!(0!=ScrollSize()) );
+{
+	// next line disabled because of problems with appearance after size changing in listwnd
+	//	Show						( !!(0!=ScrollSize()) );
+
 	if (IsShown()){
 		//уcтановить размер и положение каретки
 		float box_sz				= float(m_ScrollWorkArea)*float(m_iPageSize ? m_iPageSize : 1)/float(m_iMaxPos-m_iMinPos);
