@@ -246,7 +246,21 @@ public:
 	virtual void Execute(LPCSTR args) 
 	{
 		u32 SVObjNum = Level().Server->GetEntitiesNum();
+		xr_vector<u16>	SObjID;
+		for (u32 i=0; i<SVObjNum; i++)
+		{
+			CSE_Abstract* pEntity = Level().Server->GetEntity(i);
+			SObjID.push_back(pEntity->ID);
+		};
+		std::sort(SObjID.begin(), SObjID.end());
+
 		u32 CLObjNum = Level().Objects.o_count();
+		xr_vector<u16>	CObjID;
+		for (i=0; i<CLObjNum; i++)
+		{
+			CObjID.push_back(Level().Objects.o_get_by_iterator(i)->ID());
+		};
+		std::sort(CObjID.begin(), CObjID.end());
 
 		Msg("Client Objects : %d", CLObjNum);
 		Msg("Server Objects : %d", SVObjNum);
@@ -255,22 +269,27 @@ public:
 		{
 			if (CO < CLObjNum && CO < SVObjNum)
 			{
-				CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
-				char color = (Level().Objects.o_get_by_iterator(CO)->ID() == pEntity->ID) ? '-' : '!';
+//				CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
+//				char color = (Level().Objects.o_get_by_iterator(CO)->ID() == pEntity->ID) ? '-' : '!';
+				CSE_Abstract* pEntity = Level().Server->ID_to_entity(SObjID[CO]);
+				CObject* pObj = Level().Objects.net_Find(CObjID[CO]);
+				char color = (pObj->ID() == pEntity->ID) ? '-' : '!';
+
 				Msg("%c%4d: Client - %20s[%5d] <===> Server - %s [%d]", color, CO+1, 
-					*(Level().Objects.o_get_by_iterator(CO)->cNameSect()), Level().Objects.o_get_by_iterator(CO)->ID(),
+					*(pObj->cNameSect()), pObj->ID(),
 					pEntity->s_name.c_str(), pEntity->ID);
 			}
 			else
 			{
 				if (CO<CLObjNum)
 				{
+					CObject* pObj = Level().Objects.net_Find(CObjID[CO]);
 					Msg("! %2d: Client - %s [%d] <===> Server - -----------------", CO+1, 
-						*(Level().Objects.o_get_by_iterator(CO)->cNameSect()), Level().Objects.o_get_by_iterator(CO)->ID());
+						*(pObj->cNameSect()), pObj->ID());
 				}
 				else
 				{
-					CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
+					CSE_Abstract* pEntity = Level().Server->ID_to_entity(SObjID[CO]);
 					Msg("! %2d: Client - ----- <===> Server - %s [%d]", CO+1, 
 						pEntity->s_name.c_str(), pEntity->ID);
 				}

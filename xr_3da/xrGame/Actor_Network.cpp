@@ -1728,7 +1728,7 @@ void				CActor::OnHitHealthLoss					(float NewHealth)
 	if (GameID() == GAME_SINGLE || !OnServer()) return;
 	float fNewHealth = NewHealth*100;
 	m_bWasHitted = false;
-	Msg ("Health Old : %.2f, Health New : %.2f", m_fLastHealth, fNewHealth);
+	
 	if (m_pLastHitter)
 	{
 		NET_Packet P;
