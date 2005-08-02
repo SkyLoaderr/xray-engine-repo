@@ -387,6 +387,9 @@ protected:
 	float					camDispertionFrac;
 	float					camMaxAngleHorz;
 	float					camStepAngleHorz;
+	//  [8/2/2005]
+	float					m_fParentDispersionModifier;
+	//  [8/2/2005]
 
 protected:
 	//для отдачи оружия

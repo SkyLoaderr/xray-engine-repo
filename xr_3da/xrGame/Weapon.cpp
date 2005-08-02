@@ -285,6 +285,9 @@ void CWeapon::Load		(LPCSTR section)
 		camDispertionFrac = pSettings->r_float(section, "cam_dispertion_frac");
 	else
 		camDispertionFrac = 0.7f;
+	//  [8/2/2005]
+	m_fParentDispersionModifier = READ_IF_EXISTS(pSettings, r_float, section, "parent_dispersion_modifier",1.0f);
+	//  [8/2/2005]
 
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
 	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
