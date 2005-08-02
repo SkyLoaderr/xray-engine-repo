@@ -27,7 +27,7 @@ public:
 	CUIFrameWindow	UIBackground;
     
 	virtual void Init(CUIXml& xmlDoc, int index, shared_str section);
-	virtual void OnDbClick();
+	virtual bool OnDbClick();
 private:
 	shared_str GetSkinName(shared_str section, int index);
 };

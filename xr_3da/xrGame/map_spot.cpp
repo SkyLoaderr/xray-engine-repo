@@ -37,6 +37,11 @@ void CMapSpot::Draw()
 	inherited::Draw();
 }
 
+bool CMapSpot::OnDbClick		()
+{
+	return true;
+}
+
 
 CMapSpotPointer::CMapSpotPointer(CMapLocation* ml)
 :inherited(ml)

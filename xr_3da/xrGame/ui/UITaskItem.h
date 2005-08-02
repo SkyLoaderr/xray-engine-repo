@@ -52,7 +52,7 @@ public:
 			void	OnSwitchDescriptionClicked();
 
 	virtual void	MarkSelected			(bool b);
-	virtual void	OnDbClick				();
+	virtual bool	OnDbClick				();
 };
 
 class CUITaskSubItem :public CUITaskItem
@@ -75,7 +75,7 @@ public:
 			void	OnShowPointerClicked	();
 
 	virtual void	MarkSelected			(bool b);
-	virtual void	OnDbClick				();
+	virtual bool	OnDbClick				();
 };
 
 class CUIUserTaskItem :public CUITaskItem
@@ -98,6 +98,6 @@ public:
 			void	OnShowLocationClicked	();
 			void	OnShowPointerClicked	();
 			void	OnDescriptionChanged	();
-	virtual void	OnDbClick				()	{};
+	virtual bool	OnDbClick				()	{return true;};
 	virtual void	MarkSelected			(bool b);
 };

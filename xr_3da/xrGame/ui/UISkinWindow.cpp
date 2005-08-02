@@ -126,8 +126,9 @@ void CUISkinWindow::Init(CUIXml& xmlDoc, int index, shared_str section){
         UIHighlight.GetUIStaticItem().SetColor(clActive);
 }
 
-void CUISkinWindow::OnDbClick(){
+bool CUISkinWindow::OnDbClick(){
 	GetMessageTarget()->SendMessage(this, WINDOW_LBUTTON_DB_CLICK, NULL);
+	return true;
 }
 
 shared_str CUISkinWindow::GetSkinName(shared_str section, int index){

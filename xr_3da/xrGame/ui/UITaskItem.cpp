@@ -133,8 +133,9 @@ void CUITaskRootItem::Update		()
 	m_switchDescriptionBtn->SetButtonMode(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
 }
 
-void CUITaskRootItem::OnDbClick	()
+bool CUITaskRootItem::OnDbClick	()
 {
+	return true;
 }
 
 void CUITaskRootItem::OnShowLocationClicked	()
@@ -236,9 +237,10 @@ void CUITaskSubItem::Update					()
 	}
 }
 
-void CUITaskSubItem::OnDbClick				()
+bool CUITaskSubItem::OnDbClick				()
 {
 	m_GameTask->HighlightSpotOnMap			(m_TaskObjectiveIdx,true);
+	return true;
 }
 
 void CUITaskSubItem::OnShowPointerClicked	()

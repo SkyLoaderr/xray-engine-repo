@@ -70,7 +70,9 @@
 
 					<header_frame_line x="8" y="17" width="430" height="21">
 						<texture>ui_string_03</texture>
-						<title>task additional materials</title>
+						<title x="10" y="1" width="435" height="18">
+							<text font="letterica16" r="255" g="255" b="255">Task Detail Information</text>
+						</title>
 					</header_frame_line>
 
 					<scroll_view  x="8" y="44" width="436" height="420" right_ident="10">
@@ -184,7 +186,7 @@
 				 
 					<main_map_frame x="0" y="0" width="448" height="475" a="90">
 						<texture>ui_pda_frame_sub</texture>
-							<level_frame x="4" y="40" width="416" height="416">
+							<level_frame x="4" y="40" width="416" height="410">
 						</level_frame>
 					</main_map_frame>
 				</main_wnd>

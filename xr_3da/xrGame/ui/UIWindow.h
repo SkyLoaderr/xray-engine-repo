@@ -57,7 +57,7 @@ public:
 	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void OnMouseMove();
 	virtual void OnMouseScroll(float iDirection);
-	virtual void OnDbClick();
+	virtual bool OnDbClick();
 	virtual void OnMouseDown(bool left_button = true);
 	virtual void OnMouseUp(bool left_button = true);
 	virtual void OnFocusReceive();

@@ -263,7 +263,8 @@ void CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 		case WINDOW_RBUTTON_DOWN:
 			OnMouseDown(/*left_button = */false);	break;
 		case WINDOW_LBUTTON_DB_CLICK:
-			OnDbClick();							break;
+			if (OnDbClick()) return ;
+			break;
 		default:
             break;
 	}
@@ -319,9 +320,10 @@ void CUIWindow::OnMouseScroll(float iDirection){
 	; // do nothing
 }
 
-void CUIWindow::OnDbClick(){
+bool CUIWindow::OnDbClick(){
 	if (GetMessageTarget())
 		GetMessageTarget()->SendMessage(this, WINDOW_LBUTTON_DB_CLICK);
+	return false;
 }
 
 void CUIWindow::OnMouseDown(bool left_button){

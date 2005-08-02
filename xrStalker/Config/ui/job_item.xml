@@ -2,31 +2,31 @@
 <window>
 
 	<task_root_item x="0" y="0" width="285" height="40">
-		<image x="8" y="8" width="32" height="32">
+		<image x="8" y="16" width="32" height="32">
 		</image>
 		
-		<caption x="45" y="8" width="165" height="18">
+		<caption x="45" y="16" width="165" height="18">
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
-		
+<!--		
 		<description x="45" y="23" width="200" height="16">
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
-		
-		<location_btn x="225" y="8" width="32" height="32">
+-->		
+		<location_btn x="225" y="16" width="32" height="32">
 			<texture>ui_icons_mapPDA_showmark</texture>
 		</location_btn>
 		
-		<switch_description_btn x="260" y="8" width="32" height="32">
+		<switch_description_btn x="260" y="16" width="32" height="32">
 			<texture>ui_checker</texture>
 		</switch_description_btn>
 	</task_root_item>
 
 	<task_sub_item x="0" y="0" width="285" height="32">
-		<state_image x="15" y="0" width="16" height="16">
+		<state_image x="5" y="0" width="16" height="16">
 		</state_image>
 
-		<description x="45" y="5" width="195" height="16">
+		<description x="35" y="8" width="195" height="16">
 			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
 		</description>
 
