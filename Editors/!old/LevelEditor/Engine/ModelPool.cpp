@@ -124,9 +124,6 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N, BOOL allow_register)
 	// Actual loading
 	if (bLogging)		Msg		("- Uncached model loading: %s",fn);
 
-	//.
-	// if (0!=strstr(fn,"physics\\zabor\\zabor_dver_01"))	__asm int 3;
-
 	IReader*			data	= FS.r_open(fn);
 	ogf_header			H;
 	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
