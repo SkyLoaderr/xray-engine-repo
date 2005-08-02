@@ -124,5 +124,10 @@
 	<info_portion id="agr_nii_security_plan_flash_have">
 		<article>agr_nii_security_plan</article>
 	</info_portion>
+	
+	<info_portion id="agr_deserter_friend">
+		<article>agr_nii_security_plan</article>
+	</info_portion>
+		
  
 </game_information_portions>
