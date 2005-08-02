@@ -349,10 +349,10 @@ function load_job(sj, gname, type, squad, groups)
         t = { section = "logic@bar_dolg_zastava1_cammander_1",
         idle = 0,
         prior = 9, state = {0},
+        in_rest = "", out_rest = "bar_zastava_restrictor",
 		predicate = function(obj)
 			           	return obj:name() == "bar_zastava_commander_1"
-			        end,     
-        in_rest = "", out_rest = "bar_zastava_restrictor"   
+			        end
         }
 		table.insert(sj, t)	
         for i = 1,3 do
