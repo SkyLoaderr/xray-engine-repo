@@ -87,6 +87,7 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 //	m_level_graph			= xr_new<CLevelNavigationGraph>();
 //	m_graph_engine			= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
 	//  [7/11/2005]
+	m_bPDAHunt = TRUE;
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -201,7 +202,7 @@ bool				game_sv_Deathmatch::OnKillResult			(KILL_RES KillResult, game_PlayerStat
 		{
 			pKiller->kills += 1;
 			pKiller->m_iKillsInRow ++;
-			if (pTeam)
+			if (pTeam && !m_bPDAHunt)
 			{
 				s32 ResMoney = pTeam->m_iM_KillRival;
 				if (pKiller->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
@@ -903,6 +904,8 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	};
 	
 	Player_AddMoney(ps, ps->LastBuyAcount);
+	//-----------------------------------------------------
+	if (m_bPDAHunt) SpawnWeapon4Actor(pA->ID, "device_pda", 0);
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
@@ -1548,6 +1551,32 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 		//---------------------------------------------------------------
 		if (IsBuyableItem(*e_what->s_name)) return TRUE;
 		//---------------------------------------------------------------
+		if (e_what->m_tClassID == CLSID_DEVICE_PDA) 
+		{
+			if (e_what->ID_Parent == 0xffff)
+			{			
+				//-------------------------------
+				NET_Packet		P;
+				u_EventGen		(P,GE_DESTROY,e_what->ID);
+				m_server->OnMessage(P, m_server->GetServerClient()->ID);
+				//-------------------------------
+				game_PlayerState* pKiller = get_eid(eid_who);
+				if (pKiller)
+				{
+					TeamStruct* pTeam		= GetTeamData(u8(pKiller->team));
+					if (pTeam && m_bPDAHunt)
+					{
+						s32 ResMoney = pTeam->m_iM_KillRival;
+						if (pKiller->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+							ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
+						Player_AddMoney(pKiller, ResMoney);
+					};
+				};
+				//-------------------------------
+				return FALSE;
+			};
+			return TRUE;
+		};
 	};
 	// We don't know what the hell is it, so disallow ownership just for safety 
 	return FALSE;
@@ -1846,6 +1875,8 @@ void game_sv_Deathmatch::ConsoleCommands_Create	()
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	CMD_ADD(CCC_SV_Int,"sv_anomalies_enabled", (int*)&m_bAnomaliesEnabled, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_anomalies_length", (int*)&m_dwAnomalySetLengthTime, 0, 3600000,g_bConsoleCommandsCreated_DM,Cmnd);
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_ADD(CCC_SV_Int,"sv_pda_hunt", (int*)&m_bPDAHunt, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
 	//-------------------------------------
 	g_bConsoleCommandsCreated_DM = true;
 };

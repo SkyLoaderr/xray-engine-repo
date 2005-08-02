@@ -14,6 +14,7 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 
 	m_delayedRoundEnd = false;
 	m_eAState = NONE;
+	m_bPDAHunt = FALSE;
 	//---------------------------------------------------
 	// loading respawn points for artefacts
 	m_LastRespawnPointID = 0;

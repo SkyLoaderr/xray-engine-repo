@@ -38,6 +38,7 @@ protected:
 	s32								timelimit; //dm
 	u32								damageblocklimit;//dm,tdm
 	BOOL							m_bDamageBlockIndicators;
+	BOOL							m_bPDAHunt;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
 	u32								m_u32ForceRespawn;
 
