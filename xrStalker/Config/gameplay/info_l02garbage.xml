@@ -65,9 +65,10 @@
 	<info_portion id="gar_dog_attack"></info_portion>
 	
 	<!-- Новичок в туннеле -->
-	<info_portion id="gar_help_newbie"></info_portion>
+	<info_portion id="gar_help_newbie">
 		<task>gar_help_tunnel_newbie</task>
 		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="gar_help_newbie_done"></info_portion>
 	<info_portion id="gar_help_newbie_die"></info_portion>
 	<info_portion id="gar_help_newbie_return"></info_portion>

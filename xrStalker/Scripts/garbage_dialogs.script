@@ -41,6 +41,16 @@ function gar_hellcar_thanks(actor, npc)
 	end
 end
 
+function gar_newbie_thanks(actor, npc)
+	if db.actor then
+		if db.actor:dont_has_info("gar_help_newbie_reward")
+		then	
+			level_tasks.set_task_state(task.completed, "gar_help_tunnel_newbie", 0)
+			db.actor:give_info_portion("gar_help_newbie_reward")
+		end
+	end
+end
+
 function give_money_from_newbie(first_speaker, second_speaker)	
 	dialogs.relocate_money(first_speaker, 500, "in")
 end

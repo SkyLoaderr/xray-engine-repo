@@ -39,6 +39,22 @@ function proceed()
 		level_tasks.set_task_state(task.fail, "gar_help_dymon", 0)
 	end
 	
+	
+	if actor:has_info("gar_help_newbie_done") and
+		actor:dont_has_info("gar_help_newbie_return") and
+		actor:has_info("gar_help_newbie")
+	then	
+		level_tasks.set_task_state(task.completed, "gar_help_tunnel_newbie", 1)
+		actor:give_info_portion("gar_help_newbie_return")
+	end
+	
+	if actor:has_info("gar_help_newbie_die") and
+		actor:dont_has_info("gar_help_newbie_exit")
+	then	
+		level_tasks.set_task_state(task.fail, "gar_help_tunnel_newbie", 0)
+		actor:give_info_portion("gar_help_newbie_exit")
+	end
+
 end
 
 function process_info_portion(info_id)
