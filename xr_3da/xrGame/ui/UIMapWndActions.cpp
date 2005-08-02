@@ -262,7 +262,7 @@ bool CEvaluatorTargetMapShown::evaluate()
 	if(m_storage->property(1)) return true;
 	if(m_storage->property(2)) return true;
 	Fvector2 pt					= m_object->m_tgtCenter; 
-	pt.mul						(m_object->GlobalMap()->GetCurrentZoom());
+	pt.mul						(m_object->GlobalMap()->GetCurrentZoom()*2.f);
 	pt.add						(m_object->GlobalMap()->GetAbsolutePos());
 	if (m_object->ActiveMapRect().in(pt)){
 		m_storage->set_property	(2,true);
