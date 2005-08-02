@@ -65,6 +65,7 @@ BOOL CCustomRocket::net_Spawn(CSE_Abstract* DC)
 {
 	m_eState = eInactive;
 	BOOL result = inherited::net_Spawn(DC);
+	m_LaunchXForm.set(XFORM());
 	return result;
 }
 
