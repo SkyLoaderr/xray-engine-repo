@@ -1,59 +1,75 @@
-    <string id="val_get_docs_from_x18">
-        <text>Добыть документы из лаборатории X18.</text>
-    </string>
-
-    <string id="val_get_docs_from_x18_0">
-        <text>Необходимо пробраться на территорию Темной долины и из подземной лаборатории X18, находящейся там принести документы.</text>
-    </string>
-
-    <string id="val_get_info_from_borov">
-        <text>Забрать у лидера бандитов Борова материалы, добытые долговцами.</text>
-    </string>
-
-    <string id="val_enter_x18">
-        <text>Пробраться в лабораторию.</text>
-    </string>
-
-    <string id="x18_find_docs">
-        <text>Найти в лаборатории X18 нужные документы.</text>
-    </string>
-
-    <string id="bar_back_to_barmen">
-        <text>Отдать документы бармену.</text>
-    </string>
-
-    <string id="val_come_to_trader">
-        <text>Вернуться к торговцу.</text>
-    </string>
-
-    <string id="val_come_to_trader_0">
-        <text>Как можно быстрее вернуться к торговцу.</text>
-    </string>
-
-    <string id="val_come_to_trader_main">
-        <text>Вернуться к торговцу.</text>
-    </string>
-
-    <string id="val_sos_help">
-        <text>Помочь сталкеру.</text>
-    </string>
-
-    <string id="val_sos_help_0">
-        <text>Неизвестный сталкер просит о помощи.</text>
-    </string>
-
-    <string id="val_sos_help_main">
-        <text>Неизвестный сталкер просит о помощи.</text>
-    </string>
-
-    <string id="val_prisoner_help">
-        <text>Помочь заключенному долговцу.</text>
-    </string>
-
-    <string id="val_prisoner_help_0">
-        <text>Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.</text>
-    </string>
-    
-    <string id="val_prisoner_help_main">
-        <text>Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.</text>
-    </string>
+<string id="val_get_docs_from_x18">
+    <text>
+        Добыть документы из лаборатории X18.
+    </text>
+</string>
+<string id="val_get_docs_from_x18_0">
+    <text>
+        Необходимо пробраться на территорию Темной долины и из подземной лаборатории X18, находящейся там принести документы.
+    </text>
+</string>
+<string id="val_get_info_from_borov">
+    <text>
+        Забрать у лидера бандитов Борова материалы, добытые долговцами.
+    </text>
+</string>
+<string id="val_enter_x18">
+    <text>
+        Пробраться в лабораторию.
+    </text>
+</string>
+<string id="x18_find_docs">
+    <text>
+        Найти в лаборатории X18 нужные документы.
+    </text>
+</string>
+<string id="bar_back_to_barmen">
+    <text>
+        Отдать документы бармену.
+    </text>
+</string>
+<string id="val_come_to_trader">
+    <text>
+        Вернуться к торговцу.
+    </text>
+</string>
+<string id="val_come_to_trader_0">
+    <text>
+        Как можно быстрее вернуться к торговцу.
+    </text>
+</string>
+<string id="val_come_to_trader_main">
+    <text>
+        Вернуться к торговцу.
+    </text>
+</string>
+<string id="val_sos_help">
+    <text>
+        Помочь сталкеру.
+    </text>
+</string>
+<string id="val_sos_help_0">
+    <text>
+        Неизвестный сталкер просит о помощи.
+    </text>
+</string>
+<string id="val_sos_help_main">
+    <text>
+        Неизвестный сталкер просит о помощи. Он находится на заброшенной заправочной станции.
+    </text>
+</string>
+<string id="val_prisoner_help">
+    <text>
+        Помочь заключенному долговцу.
+    </text>
+</string>
+<string id="val_prisoner_help_0">
+    <text>
+        Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.
+    </text>
+</string>
+<string id="val_prisoner_help_main">
+    <text>
+        Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.
+    </text>
+</string>
