@@ -77,22 +77,24 @@ void CShootingObject::Load	(LPCSTR section)
 void CShootingObject::Light_Create		()
 {
 	//lights
-	light_render				= ::Render->light_create();
-	light_render->set_shadow	(true);
-	m_bShotLight = true;
+	light_render				=	::Render->light_create();
+	if (::Render->get_generation()==IRender_interface::GENERATION_R2)	light_render->set_shadow	(true);
+	else																light_render->set_shadow	(false);
+	m_bShotLight				=	true;
 }
+
 void CShootingObject::Light_Destroy		()
 {
 	//lights
-	light_render.destroy	();
+	light_render.destroy		();
 }
 
 void CShootingObject::LoadFireParams	(LPCSTR section, LPCSTR prefix)
 {
 	string256 full_name;
 	//базовая дисперсия оружия
-	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
-	fireDispersionBase	= deg2rad					(fireDispersionBase);
+	fireDispersionBase	= pSettings->r_float	(section,"fire_dispersion_base"	);
+	fireDispersionBase	= deg2rad				(fireDispersionBase);
 	//сила выстрела и его мощьность
 	iHitPower			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power"));
 	fHitImpulse			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse"));
