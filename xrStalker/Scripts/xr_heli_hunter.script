@@ -6,6 +6,7 @@
 --------------------------------------------------------------------------------------------------------------------]]
 
 local def_attack_dist = 100 * 100 -- расстояние, на котором вертолёт может быть атакован
+local def_actor_dist = 20 * 20 -- расстояние, на котором игрок может быть атакован
 
 function get_nearest_heli(npc_position, attack_dist_sqr)
 	print_table(db.heli)
@@ -39,15 +40,34 @@ function evaluator_shoot:evaluate()
 		if self.a.heli == nil then
 			-- поиск вертолета
 			self.a.heli = this.get_nearest_heli(self.object:position(), self.a.attack_dist_sqr)
-		else
-			-- проверка не потерялся ли вертолет.
-			if db.heli[self.a.heli:id()] ~= nil and
-			   self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr 
-			then
-				self.a.heli = nil
+		end
+
+		if self.a.heli ~= nil then
+			-- Проверка на то, что вертолет еще живой.
+			if not bind_heli.is_heli_alive(self.a.heli) then
+				return false
 			end
 		end
-		return self.a.heli ~= nil
+				
+		-- проверка не потерялся ли вертолет.
+		if db.heli[self.a.heli:id()] ~= nil and
+			self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr 
+		then
+			self.a.heli = nil
+			return false
+		end
+
+		-- Проверка на то, что враг-игрок не подошел слишком близко
+		local best_enemy = self.object:best_enemy()
+		if best_enemy and
+		   best_enemy:id() == db.actor:id()
+		then
+		    if db.actor:position():distance_to_sqr(self.object:position()) < self.a.attack_actor_sqr then
+				return false
+		    end
+		end
+
+		return true
 	end
 	return false
 end
@@ -103,6 +123,7 @@ function set_scheme( npc, ini, scheme, section )
 	local a = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
 
 	a.attack_dist_sqr = math.pow( utils.cfg_get_number( ini, section, "dist", npc, false, def_attack_dist ), 2 )
+	a.attack_actor_sqr = math.pow( utils.cfg_get_number( ini, section, "actor_dist", npc, false, def_actor_dist ), 2 )
 	a.heli = nil
 	a.enabled = true
 end
