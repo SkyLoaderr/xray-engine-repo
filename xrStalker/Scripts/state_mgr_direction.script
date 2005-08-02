@@ -127,7 +127,11 @@ function act_state_mgr_direction_search:initialize()
 	action_base.initialize(self)
 	if self.st.no_rotate ~= true then
 		self.st.is_current_object = false
-		self.object:set_sight(look.danger, nil, 0)
+		local type = look.danger
+		if state_lib.states[self.st.target_state].direction then
+			type = state_lib.states[self.st.target_state].direction
+		end
+		self.object:set_sight(type, nil, 0)
 	end
 	self.st.current_direction = nil
 end

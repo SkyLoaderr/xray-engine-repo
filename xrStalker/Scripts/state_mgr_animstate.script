@@ -121,6 +121,22 @@ function eva_state_mgr_animstate_wounded_now:evaluate()
 	return self.st.animstate:state() == "wounded"
 end
 
+--' Нужно ли нам быть раненым
+class "eva_state_mgr_animstate_wounded_heavy" (property_evaluator)
+function eva_state_mgr_animstate_wounded_heavy:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_wounded_heavy:evaluate()
+	return state_lib.states[self.st.target_state].animstate == "wounded_heavy"
+end
+--' Ранены ли мы
+class "eva_state_mgr_animstate_wounded_heavy_now" (property_evaluator)
+function eva_state_mgr_animstate_wounded_heavy_now:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animstate_wounded_heavy_now:evaluate()
+	return self.st.animstate:state() == "wounded_heavy"
+end
 
 --' Садимся
 class "act_state_mgr_animstate_2sit" (action_base)
@@ -212,6 +228,21 @@ end
 function act_state_mgr_animstate_2wounded:finalize()
 	action_base.finalize(self)
 end
+--' Ранены сильно
+class "act_state_mgr_animstate_2wounded_heavy" (action_base)
+function act_state_mgr_animstate_2wounded_heavy:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animstate_2wounded_heavy:initialize()
+	action_base.initialize(self)
+	self.st.animstate:set_state("wounded_heavy")
+end
+function act_state_mgr_animstate_2wounded_heavy:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animstate_2wounded_heavy:finalize()
+	action_base.finalize(self)
+end
 
 
 
@@ -228,7 +259,8 @@ function body_state:__init(npc)
 						sit_knee	= {nrm = {"idle_0_to_sit_1"}},
 						sit_ass		= {nrm = {"idle_0_to_sit_2"}},
 						sleep		= {nrm = {"idle_0_to_sit_0","sit_to_sleep_0"}}, 
-						wounded		= {nrm = {"idle_to_wounded_0"}} },
+						wounded		= {nrm = {"idle_to_wounded_0"}},
+						wounded_heavy={nrm = {"idle_to_wounded_1"}} },
 
 		sit			= { sit_knee	= {nrm = {"sit_idle_0_to_sit_idle_1"}},
 						sit_ass		= {nrm = {"sit_idle_0_to_sit_idle_2"}},
@@ -236,7 +268,9 @@ function body_state:__init(npc)
 									   lazy ={"sit_0_lazy_idle_0"}},
 						sleep		= {nrm = {"sit_0_to_sleep_0"}},
 						wounded		= {nrm = {"sit_0_to_idle_0","idle_to_wounded_0"},
-									   lazy ={"sit_0_lazy_idle_0","idle_to_wounded_0"}} },
+									   lazy ={"sit_0_lazy_idle_0","idle_to_wounded_0"}},
+						wounded_heavy={nrm = {"sit_0_to_idle_0","idle_to_wounded_1"},
+									   lazy ={"sit_0_lazy_idle_0","idle_to_wounded_1"}} },
 
 		sit_knee	= { sit			= {nrm = {"sit_idle_1_to_sit_idle_0"}},
 						sit_ass		= {nrm = {"sit_idle_1_to_sit_idle_2"}},
@@ -244,7 +278,9 @@ function body_state:__init(npc)
 									   lazy ={"sit_1_lazy_idle_0"}},
 						sleep		= {nrm = {"sit_idle_1_to_sleep_0"}},
 						wounded		= {nrm = {"sit_1_to_idle_0","idle_to_wounded_0"},
-									   lazy ={"sit_1_lazy_idle_0","idle_to_wounded_0"}} },
+									   lazy ={"sit_1_lazy_idle_0","idle_to_wounded_0"}},
+						wounded_heavy={nrm = {"sit_1_to_idle_0","idle_to_wounded_1"},
+									   lazy ={"sit_1_lazy_idle_0","idle_to_wounded_1"}}},
 
 		sit_ass		= { sit			= {nrm = {"sit_idle_2_to_sit_idle_0"}},
 						sit_knee	= {nrm = {"sit_idle_2_to_sit_idle_1"}},
@@ -252,7 +288,9 @@ function body_state:__init(npc)
 									   lazy= {"sit_2_lazy_idle_0"}},
 						sleep		= {nrm = {"sit_2_to_sleep_0"}},
 						wounded		= {nrm = {"sit_2_to_idle_0","idle_to_wounded_0"},
-									   lazy ={"sit_2_lazy_idle_0","idle_to_wounded_0"}} },
+									   lazy ={"sit_2_lazy_idle_0","idle_to_wounded_0"}},
+						wounded_heavy={nrm = {"sit_2_to_idle_0","idle_to_wounded_1"},
+									   lazy ={"sit_2_lazy_idle_0","idle_to_wounded_1"}} },
 						
 		sleep		= {	stand		= {nrm = {"sleep_to_sit_0","sit_0_to_idle_0"},
 									   lazy ={"sleep_to_sit_0","sit_0_lazy_idle_0"}},
@@ -260,13 +298,24 @@ function body_state:__init(npc)
 						sit_knee	= {nrm = {"sleep_0_to_sit_idle_1"}},
 						sit_ass		= {nrm = {"sleep_0_to_sit_2"}},
 						wounded		= {nrm = {"sleep_to_sit_0","sit_0_to_idle_0","idle_to_wounded_0"},
-									   nrm = {"sleep_to_sit_0","sit_0_lazy_idle_0","idle_to_wounded_0"}} },
+									   lazy = {"sleep_to_sit_0","sit_0_lazy_idle_0","idle_to_wounded_0"}},
+						wounded_heavy={nrm = {"sleep_to_sit_0","sit_0_to_idle_0","idle_to_wounded_1"},
+									   lazy = {"sleep_to_sit_0","sit_0_lazy_idle_0","idle_to_wounded_1"}} },
 
 		wounded		= {	stand		= {nrm = {"wounded_to_idle_0"}},
 						sit			= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0"}},
 						sit_knee	= {nrm = {"wounded_to_idle_0","idle_0_to_sit_1"}},
 						sit_ass		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_2"}},
-						sleep		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"}} } 
+						wounded_heavy={nrm = {"waunded_1_in"}},
+						sleep		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"}} },
+
+		wounded_heavy	= {stand	= {nrm = {"waunded_1_out","wounded_to_idle_0"}},
+						sit			= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_0"}},
+						sit_knee	= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_1"}},
+						sit_ass		= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_2"}},
+						wounded		= {nrm = {"waunded_1_out"}},
+						sleep		= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"}} }
+
 	}
 
 	self.idle_anim = {
@@ -274,7 +323,8 @@ function body_state:__init(npc)
 		sit_knee	= "sit_1_idle_0",
 		sit_ass		= "sit_2_idle_0",
 		sleep		= "sleep_idle_0",
-		wounded		= "wounded_idle_0"
+		wounded		= "wounded_idle_0",
+		wounded_heavy	= "waunded_1_idle_0"
 	}
 
 end

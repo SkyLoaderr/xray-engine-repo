@@ -323,6 +323,8 @@ function state_manager:__init(npc)
 	self.properties["animstate_sleep_now"]	= 72
 	self.properties["animstate_wounded"]	= 73
 	self.properties["animstate_wounded_now"]= 74
+	self.properties["animstate_wounded_heavy"]= 75
+	self.properties["animstate_wounded_heavy_now"]= 76
 
 	self.properties["animation"]			= 81	
 	self.properties["animation_locked"]		= 82
@@ -385,6 +387,8 @@ function state_manager:__init(npc)
 	self.planner:add_evaluator(self.properties["animstate_sleep_now"],		state_mgr_animstate.eva_state_mgr_animstate_sleep_now("state_mgr_animstate_sleep_now", self))
 	self.planner:add_evaluator(self.properties["animstate_wounded"],		state_mgr_animstate.eva_state_mgr_animstate_wounded("state_mgr_animstate_wounded", self))
 	self.planner:add_evaluator(self.properties["animstate_wounded_now"],	state_mgr_animstate.eva_state_mgr_animstate_wounded_now("state_mgr_animstate_wounded_now", self))
+	self.planner:add_evaluator(self.properties["animstate_wounded_heavy"],	state_mgr_animstate.eva_state_mgr_animstate_wounded_heavy("state_mgr_animstate_wounded_heavy", self))
+	self.planner:add_evaluator(self.properties["animstate_wounded_heavy_now"],state_mgr_animstate.eva_state_mgr_animstate_wounded_heavy_now("state_mgr_animstate_wounded_heavy_now", self))
 
 	self.animation = state_mgr_animation.animation(npc, self)
 	self.npc:set_callback(callback.script_animation , self.animation.anim_callback, self.animation)
@@ -432,6 +436,7 @@ function state_manager:__init(npc)
 	self.operators["animstate_2idle"]		= 66
 	self.operators["animstate_2sleep"]		= 67
 	self.operators["animstate_clear_anim"]	= 68
+	self.operators["animstate_2wounded_heavy"]= 69
 	
 	self.operators["animation_start"]		= 71
 	self.operators["animation_stop"]		= 72
@@ -672,6 +677,19 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["animstate"],			true))
 	action:add_effect 			(world_property(self.properties["animstate_wounded_now"],true))
 	self.planner:add_action(self.operators["animstate_2wounded"], action)
+
+	action = state_mgr_animstate.act_state_mgr_animstate_2wounded_heavy("state_mgr_animstate_2wounded_heavy", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["animstate"],			false))
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
+	action:add_precondition		(world_property(self.properties["direction"],			true))
+	action:add_precondition		(world_property(self.properties["mental"],				true))
+	action:add_precondition		(world_property(self.properties["weapon"],				true))
+	action:add_precondition		(world_property(self.properties["animstate_wounded_heavy"],	true))
+	action:add_effect 			(world_property(self.properties["animstate"],			true))
+	action:add_effect 			(world_property(self.properties["animstate_wounded_heavy_now"],true))
+	self.planner:add_action(self.operators["animstate_2wounded_heavy"], action)
 
 	action = state_mgr_animstate.act_state_mgr_animstate_2idle("state_mgr_animstate_2idle", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))

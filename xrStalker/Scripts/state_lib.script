@@ -433,6 +433,7 @@ states = {
 				movement = move.stand,
 				mental = anim.danger,
 				bodystate = move.crouch,
+				direction = look.cur_dir,
 				animstate = "wounded",
 				animation = nil
 			},
@@ -440,8 +441,9 @@ states = {
 				movement = move.stand,
 				mental = anim.danger,
 				bodystate = move.crouch,
-				animstate = "wounded",
-				animation = "wound_heavy"
+				direction = look.cur_dir,
+				animstate = "wounded_heavy",
+				animation = nil
 			},
 	help_me = {	weapon = "strapped",
 				movement = move.stand,
