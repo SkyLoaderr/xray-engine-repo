@@ -220,6 +220,11 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%shealth        : %f",indent,conditions().health());
 	// visual
 	HUD().Font().pFontSmall->OutNext	("%svisual",indent);
+	
+	float								object_range, object_fov;
+	update_range_fov					(object_range,object_fov,eye_range,deg2rad(eye_fov));
+	HUD().Font().pFontSmall->OutNext	("%s%seye range   : %f",indent,indent,object_range);
+	HUD().Font().pFontSmall->OutNext	("%s%sFOV         : %f",indent,indent,rad2deg(object_fov));
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().visual().objects().size());
 	HUD().Font().pFontSmall->OutNext	("%s%snot yet     : %d",indent,indent,memory().visual().not_yet_visible_objects().size());
 	HUD().Font().pFontSmall->OutNext	("%s%sin frustum  : %d",indent,indent,memory().visual().raw_objects().size());
