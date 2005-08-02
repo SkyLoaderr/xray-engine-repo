@@ -198,7 +198,7 @@
 			<frame x="0" y="20" width="431" height="181">
 				<texture>ui_droplist_listbox</texture>
 			</frame>
-			<list x="0" y="20" width="451" height="181" item_height="18">
+			<list x="0" y="20" width="451" height="181" item_height="18" always_show_scroll="1">
 				<group_name font="letterica16" r="215" g="195" b="170"/>
 				<item_text font="letterica16" r="215" g="215" b="215"/>				
 			</list>

@@ -71,6 +71,7 @@ void CUIScrollBar::SetHeight(float height)
 {
 	if(height<=0.0f) height = 1.0f;
 	inherited::SetHeight(height);
+	UpdateScrollBar();
 }
 
 void CUIScrollBar::SetStepSize(int step)
@@ -104,7 +105,7 @@ void CUIScrollBar::UpdateScrollBar()
 	Show						( !!(0!=ScrollSize()) );
 	if (IsShown()){
 		//уcтановить размер и положение каретки
-		float box_sz				= float(m_ScrollWorkArea)*float(m_iPageSize)/float(m_iMaxPos-m_iMinPos);
+		float box_sz				= float(m_ScrollWorkArea)*float(m_iPageSize ? m_iPageSize : 1)/float(m_iMaxPos-m_iMinPos);
 		if(m_bIsHorizontal){	
 			// set width
 			clamp					(box_sz,_min(SCROLLBAR_WIDTH,GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
@@ -112,6 +113,7 @@ void CUIScrollBar::UpdateScrollBar()
 			// set pos
 			int pos					= PosViewFromScroll(iFloor(m_ScrollBox->GetWidth()),iFloor(SCROLLBAR_WIDTH));
 			m_ScrollBox->SetWndPos	(float(pos), m_ScrollBox->GetWndRect().top);
+			m_IncButton->SetWndPos	(GetWidth() -SCROLLBAR_WIDTH, 0.0f);
 		}else{
 			// set height
 			clamp					(box_sz,_min(SCROLLBAR_HEIGHT,GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
@@ -119,6 +121,7 @@ void CUIScrollBar::UpdateScrollBar()
 			// set pos
 			int pos				= PosViewFromScroll(iFloor(m_ScrollBox->GetHeight()),iFloor(SCROLLBAR_HEIGHT));
 			m_ScrollBox->SetWndPos	(m_ScrollBox->GetWndRect().left, float(pos));
+			m_IncButton->SetWndPos	(0.0f, GetHeight() -SCROLLBAR_HEIGHT);
 		}
 	}
 }

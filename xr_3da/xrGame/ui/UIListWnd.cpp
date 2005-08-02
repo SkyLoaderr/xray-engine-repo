@@ -36,6 +36,7 @@ CUIListWnd::CUIListWnd()
 	m_iLastUniqueID				= 0;
 	m_bNewRenderMethod			= false;
 	m_iRightIndention			= 0;
+	m_bAlwaysShowScroll			= false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -523,11 +524,17 @@ int CUIListWnd::GetLongestSignWidth()
 
 void CUIListWnd::UpdateScrollBar()
 {
+//	m_ScrollBar->UpdateScrollBar();
 	//спрятать скорлинг, если он не нужен
-	if ((int)m_ItemList.size()<=m_ScrollBar->GetPageSize())
-		m_ScrollBar->Show(false);
+	if (!m_bAlwaysShowScroll){
+		if ((int)m_ItemList.size()<=m_ScrollBar->GetPageSize())
+			m_ScrollBar->Show(false);
+		else
+			m_ScrollBar->Show(true);
+	}
 	else
 		m_ScrollBar->Show(true);
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
