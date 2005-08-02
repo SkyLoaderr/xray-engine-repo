@@ -29,6 +29,16 @@
 		<mini_map  spot="gar_wounded_spot" pointer="quest_pointer"></mini_map>
 	</gar_wounded_location>
 	
+	<gar_bandit_post_location hint="gar_bandit_post" store="1">
+		<level_map spot="gar_bandit_post_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_bandit_post_spot" pointer="quest_pointer"></mini_map>
+	</gar_bandit_post_location>
+	
+	<gar_tunnel_newbie_location hint="gar_bandit_post" store="1">
+		<level_map spot="gar_tunnel_newbie_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_tunnel_newbie_spot" pointer="quest_pointer"></mini_map>
+	</gar_tunnel_newbie_location>
+	
 	<!-- spots -->
 	<gar_seryi_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="32" y="0" width="32" height="32">ui\ui_icons_map</texture>
@@ -53,3 +63,11 @@
 	<gar_wounded_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="224" y="64" width="32" height="32">ui\ui_icons_map</texture>
 	</gar_wounded_spot>
+	
+	<gar_bandit_post_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="96" y="64" width="32" height="32">ui\ui_icons_map</texture>
+	</gar_bandit_post_spot>
+
+	<gar_tunnel_newbie_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="0" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</gar_tunnel_newbie_spot>
