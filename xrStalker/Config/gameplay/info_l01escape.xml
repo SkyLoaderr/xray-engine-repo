@@ -2,7 +2,7 @@
 
 <game_information_portions>
 	<info_portion id="test_andy_info">
-		<task>andy_task_1</task>
+		<task>agroprom_get_military_documents</task>
 	</info_portion>
 
 	<info_portion id="tutorial_artefact_start">
