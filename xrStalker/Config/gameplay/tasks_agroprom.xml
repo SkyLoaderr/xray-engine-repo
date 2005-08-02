@@ -25,6 +25,16 @@
 			<text>agr_meet_krot_band_0</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
+		<objective>
+			<text>agr_meet_krot_band_1</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+		</objective>
+		<objective>
+			<text>agr_meet_krot_band_2</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+            <map_location_type>agr_krot_location</map_location_type>
+            <object_story_id>agr_krot</object_story_id> 
+		</objective>
 	</game_task>
 
 	<game_task id="agroprom_find_gunslinger_cache">
@@ -49,6 +59,16 @@
 			<text>agr_help_stalkers_0</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
+		<objective>
+			<text>agr_help_stalkers_1</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+		</objective>
+		<objective>
+			<text>agr_help_stalkers_2</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+            <map_location_type>agr_factory_skirmish1_location</map_location_type>
+            <object_story_id>agr_factory_skirmish1</object_story_id> 
+		</objective>
 	</game_task>
 
 	<game_task id="agr_help_krot">
@@ -56,5 +76,15 @@
 		<objective>
 			<text>agr_help_krot_0</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+		</objective>
+		<objective>
+			<text>agr_help_krot_1</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+		</objective>
+		<objective>
+			<text>agr_help_krot_2</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+            <map_location_type>agr_krot_location</map_location_type>
+            <object_story_id>agr_krot</object_story_id> 
 		</objective>
 	</game_task>
