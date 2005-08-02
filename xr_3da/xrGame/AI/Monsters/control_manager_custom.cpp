@@ -2,11 +2,11 @@
 #include "control_manager_custom.h"
 #include "BaseMonster/base_monster.h"
 #include "control_sequencer.h"
-#include "control_rotation_jump.h"
 #include "control_run_attack.h"
 #include "../../PhysicsShell.h"
 #include "../../detail_path_manager.h"
 #include "../../level.h"
+#include "control_animation_base.h"
 
 
 CControlManagerCustom::CControlManagerCustom()
@@ -26,6 +26,12 @@ CControlManagerCustom::~CControlManagerCustom()
 	xr_delete	(m_jump);
 	xr_delete	(m_run_attack);
 }	
+
+void CControlManagerCustom::reinit()
+{
+	inherited::reinit		();
+	m_rot_jump_data.clear	();
+}
 
 void CControlManagerCustom::add_ability(ControlCom::EControlType type)
 {
@@ -369,8 +375,46 @@ void CControlManagerCustom::check_rotation_jump()
 	if (!m_man->check_start_conditions(ControlCom::eControlRotationJump)) return;	
 	if (!m_object->check_start_conditions(ControlCom::eControlRotationJump)) return;
 
-	m_man->capture		(this, ControlCom::eControlRotationJump);
-	m_man->activate		(ControlCom::eControlRotationJump);
+	VERIFY						(!m_rot_jump_data.empty());
+	
+	m_man->capture				(this, ControlCom::eControlRotationJump);
+	
+	SControlRotationJumpData	*ctrl_data = (SControlRotationJumpData *) m_man->data(this, ControlCom::eControlRotationJump);
+	VERIFY						(ctrl_data);
+
+	(*ctrl_data)				= m_rot_jump_data[Random.randI(m_rot_jump_data.size())];
+
+	m_man->activate				(ControlCom::eControlRotationJump);
+}
+
+void CControlManagerCustom::add_rotation_jump_data(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle)
+{
+	VERIFY				(m_object->Visual());
+	CSkeletonAnimated	*skeleton_animated	= smart_cast<CSkeletonAnimated*>(m_object->Visual());
+
+	SControlRotationJumpData	data;
+
+	MotionID			motion;
+	
+	motion				= skeleton_animated->ID_Cycle_Safe(left1);
+	data.anim_stop_ls	= motion;
+	m_object->anim().AddAnimTranslation(motion,left1);
+	
+	motion				= skeleton_animated->ID_Cycle_Safe(left2);
+	data.anim_run_ls	= motion;
+	m_object->anim().AddAnimTranslation(motion,left2);
+
+	motion				= skeleton_animated->ID_Cycle_Safe(right1);
+	data.anim_stop_rs	= motion;
+	m_object->anim().AddAnimTranslation(motion,right1);
+
+	motion				= skeleton_animated->ID_Cycle_Safe(right2);
+	data.anim_run_rs	= motion;
+	m_object->anim().AddAnimTranslation(motion,right2);
+
+	data.turn_angle		= angle;
+
+	m_rot_jump_data.push_back	(data);
 }
 
 void CControlManagerCustom::check_run_attack()

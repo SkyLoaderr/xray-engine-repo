@@ -35,22 +35,5 @@ private:
 };
 
 
-template<typename _Object>
-class CStateTest1 : public CState<_Object> {
-	typedef CState<_Object> inherited;
-
-	u32				m_time_state;
-
-public:
-						CStateTest1	(_Object *obj) : inherited(obj) {}
-	
-	virtual void		reinit					();	
-	virtual void		initialize				();
-	virtual	void		execute					();
-	virtual bool 		check_completion		();
-};
-
-
-
 #include "controller_state_attack_hide_inline.h"
 

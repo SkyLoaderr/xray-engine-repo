@@ -229,9 +229,6 @@ void CController::reload(LPCSTR section)
 	CPsyAuraController::reload	(section);
 
 	com_man().ta_fill_data(anim_triple_control,	"stand_sit_down_attack_0",	"control_attack_0",	"sit_stand_up_attack_0", true, false);
-
-	//SVelocityParam &velocity_run = move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-	//CJumping::AddState			(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, velocity_run.velocity.angular_real);
 }
 
 void CController::reinit()

@@ -9,27 +9,15 @@
 
 #define ROTATION_JUMP_DELAY_MIN		3000
 #define ROTATION_JUMP_DELAY_MAX		5000
-#define CHECK_YAW				120 * PI / 180
+#define CHECK_YAW					150 * PI / 180
 #define START_SPEED_DELTA			2.f
 
 void CControlRotationJump::reinit()
 {
-	CControl_ComCustom<>::reinit();
+	inherited::reinit();
 
 	m_time_next_rotation_jump	= 0;
-
 	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_object->Visual());
-
-	m_anim_stop_ls	= m_skeleton_animated->ID_Cycle_Safe("1");
-	m_anim_run_ls	= m_skeleton_animated->ID_Cycle_Safe("2");
-	
-	m_anim_stop_rs	= m_skeleton_animated->ID_Cycle_Safe("3");
-	m_anim_run_rs	= m_skeleton_animated->ID_Cycle_Safe("4");
-
-	m_object->anim().AddAnimTranslation(m_anim_stop_ls,	"1");
-	m_object->anim().AddAnimTranslation(m_anim_run_ls,	"2");
-	m_object->anim().AddAnimTranslation(m_anim_stop_rs,	"3");
-	m_object->anim().AddAnimTranslation(m_anim_run_rs,	"4");
 }
 
 
@@ -95,7 +83,7 @@ void CControlRotationJump::on_event(ControlCom::EEventType type, ControlCom::IEv
 void CControlRotationJump::build_line_first()
 {
 	// get animation time
-	m_time						= m_man->animation().motion_time(m_right_side ? m_anim_stop_rs : m_anim_stop_ls, m_object->Visual());
+	m_time						= m_man->animation().motion_time(m_right_side ? m_data.anim_stop_rs : m_data.anim_stop_ls, m_object->Visual());
 	// set acceleration and velocity
 	m_start_velocity			= m_man->movement().velocity_current();
 	m_target_velocity			= 0.f;
@@ -111,8 +99,7 @@ void CControlRotationJump::build_line_first()
 	SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
 	VERIFY									(ctrl_data_dir);	
 
-	float target_yaw = m_right_side ? Fvector().set(m_object->XFORM().i).getH(): Fvector().invert(m_object->XFORM().i).getH();
-	target_yaw								= angle_normalize(-target_yaw);
+	float target_yaw						= angle_normalize(-m_object->Direction().getH() + (m_right_side ? m_data.turn_angle : -m_data.turn_angle));
 	ctrl_data_dir->heading.target_angle		= target_yaw;
 	
 	float cur_yaw;
@@ -147,7 +134,7 @@ void CControlRotationJump::build_line_first()
 		SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 		VERIFY						(ctrl_data);
 
-		ctrl_data->global.motion	= m_right_side ? m_anim_stop_rs : m_anim_stop_ls;
+		ctrl_data->global.motion	= m_right_side ? m_data.anim_stop_rs : m_data.anim_stop_ls;
 		ctrl_data->global.actual	= false;
 	}
 }
@@ -164,7 +151,7 @@ void CControlRotationJump::build_line_second()
 	m_start_velocity			= 0;
 	
 	// get animation time
-	m_time						= m_man->animation().motion_time(m_right_side ? m_anim_run_rs : m_anim_run_ls, m_object->Visual());
+	m_time						= m_man->animation().motion_time(m_right_side ? m_data.anim_run_rs : m_data.anim_run_ls, m_object->Visual());
 
 	// acceleration
 	m_accel = (m_target_velocity - m_start_velocity) / m_time;
@@ -219,8 +206,7 @@ void CControlRotationJump::build_line_second()
 		SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 		VERIFY						(ctrl_data);
 
-		ctrl_data->global.motion	= m_right_side ? m_anim_run_rs : m_anim_run_ls;
+		ctrl_data->global.motion	= m_right_side ? m_data.anim_run_rs : m_data.anim_run_ls;
 		ctrl_data->global.actual	= false;
-
 	}
 }

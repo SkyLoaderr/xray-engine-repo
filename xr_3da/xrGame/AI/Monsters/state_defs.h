@@ -38,6 +38,10 @@ enum EMonsterState {
 	eStateAttack_AttackHidden		= eStateAttack | 7,
 	eStateAttack_AttackRat			= eStateAttack | 8,
 
+	eStateAttack_HideInCover		= eStateAttack | 9,
+	eStateAttack_MoveOut			= eStateAttack | 10,
+
+
 	// -------------------------------------------------------------
 
 	eStatePanic						= eGlobalState << 4,
@@ -108,7 +112,6 @@ enum EMonsterState {
 	eStateSquad_RestFollow_Idle			= eStateSquad | 5,
 	eStateSquad_RestFollow_WalkToPoint	= eStateSquad | 6,
 
-
 	// -------------------------------------------------------------
 
 	eStateCustom					= eGlobalState << 15,
@@ -128,6 +131,7 @@ enum EMonsterState {
 	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 6,
 	
 	// -------------------------------------------------------------
+
 
 	eStateUnknown					= u32(-1),
 };

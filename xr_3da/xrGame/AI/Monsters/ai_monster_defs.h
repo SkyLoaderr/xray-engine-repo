@@ -1,34 +1,11 @@
 #pragma once
 
 #include "../../../skeletonanimated.h"
+#include "../../../cameramanager.h"
 
 typedef u32 TTime;
 
-// Logging
-// Using multiparam macros: 
-// e.g. LOG_EX2("X = [%u], vector = [%f,%f,%f]", *"*/ m_dwCurrentTime, VPUSH(Position())  /*"*);
-
-//#define ENABLE_WRITE_LOG_EX
 class CBlend;
-
-#undef	LOG_EX
-#undef	LOG_EX2
-
-#ifndef _DEBUG
-	#undef ENABLE_WRITE_LOG_EX
-#endif
-
-#ifndef ENABLE_WRITE_LOG_EX
-	
-	#define LOG_EX(str) 
-	#define LOG_EX2(str,params) 
-	
-#else
-
-	#define LOG_EX(str) Msg(str)
-	#define LOG_EX2(str,params) Msg(str,/params/)
-
-#endif
 
 // специальные параметры анимаций (animation spec params)
 #define ASP_MOVE_BKWD			(1 << 0) 
@@ -83,9 +60,7 @@ class CBlend;
 
 #define STANDART_ATTACK					-PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,3.5f
 #define SIMPLE_ENEMY_HIT_TEST
-//#define TEST_EAT_STATE
 
-#include "../../../cameramanager.h"
 
 // StepSounds
 struct SStepSound {

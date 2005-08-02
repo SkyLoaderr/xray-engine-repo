@@ -38,12 +38,13 @@ void CStateControllerHideAbstract::execute()
 	object->anim().accel_set_braking	(false);
 	
 	object->sound().play				(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
+	object->set_look_point				(Level().CurrentEntity()->Position());
 }
 
 TEMPLATE_SPECIALIZATION
 bool CStateControllerHideAbstract::check_start_conditions()
 {
-	if (m_time_finished + 1000 > Device.dwTimeGlobal) return false;
+	//if (m_time_finished + 1000 > Device.dwTimeGlobal) return false;
 	
 	return true;
 }
@@ -79,55 +80,27 @@ void CStateControllerHideAbstract::select_target_point()
 
 	object->m_ce_best->setup	(Level().CurrentEntity()->Position(),10.f,30.f);
 	CCoverPoint					*point = ai().cover_manager().best_cover(object->Position(),30.f,*object->m_ce_best,CControllerCoverPredicate());
-	VERIFY(point);
-
-
-	target.node					= point->level_vertex_id();
-	target.position				= point->position();
+	//VERIFY(point);
+	if (point) {
+		target.node					= point->level_vertex_id	();
+		target.position				= point->position			();
 
 #ifdef DEBUG
-	Fvector cur_pos = point->position();
-	float	r = 0.5f;
-	for (u32 i = 0; i< 5; i++) {
-		DBG().level_info(this).add_item(cur_pos, r, D3DCOLOR_XRGB(0,0,255));
-		DBG().level_info(this).add_item(cur_pos, r+0.05f, D3DCOLOR_XRGB(0,0,255));
-		cur_pos.mad(Fvector().set(0.f,1.f,0.f), r * 2);
-	}
+		Fvector cur_pos = point->position();
+		float	r = 0.5f;
+		for (u32 i = 0; i< 5; i++) {
+			DBG().level_info(this).add_item(cur_pos, r, D3DCOLOR_XRGB(0,0,255));
+			DBG().level_info(this).add_item(cur_pos, r+0.05f, D3DCOLOR_XRGB(0,0,255));
+			cur_pos.mad(Fvector().set(0.f,1.f,0.f), r * 2);
+		}
 #endif
 
+
+	} else {
+		target.node					= 0;
+		target.position				= ai().level_graph().vertex_position(target.node);			
+	}
 }
-
-
-#define CStateTest1Abstract CStateTest1<_Object>
-
-TEMPLATE_SPECIALIZATION
-void CStateTest1Abstract::execute()
-{
-	object->set_action			(ACT_STAND_IDLE);
-	object->dir().face_target	(Level().CurrentEntity()->Position(), 1200);
-	
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateTest1Abstract::reinit()
-{
-	inherited::reinit();
-	m_time_state = 0;
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateTest1Abstract::initialize()
-{
-	inherited::initialize();
-	m_time_state = Device.dwTimeGlobal;
-}
-
-TEMPLATE_SPECIALIZATION
-bool CStateTest1Abstract::check_completion()
-{
-	return (m_time_state + 2000 < Device.dwTimeGlobal);
-}
-
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateControllerHideAbstract

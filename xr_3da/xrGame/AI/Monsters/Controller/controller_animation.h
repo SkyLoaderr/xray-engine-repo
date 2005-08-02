@@ -20,7 +20,8 @@ class CControllerAnimation : public CControlAnimationBase {
 		eLegsRunFwdRight,
 		eLegsRunBkwdLeft,
 		eLegsRunBkwdRight,
-		eLegsSteal,
+		eLegsStealFwd,
+		eLegsStealBkwd,
 		
 		eLegsStandDamaged,
 		eLegsRunDamaged,

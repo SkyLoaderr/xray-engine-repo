@@ -15,6 +15,7 @@ public:
 	virtual			~CAI_Dog			();	
 
 	virtual void	Load				(LPCSTR section);
+	virtual void	reinit				();
 
 	virtual void	CheckSpecParams		(u32 spec_params);
 

@@ -3,27 +3,31 @@
 
 #include "anim_triple.h"
 #include "control_jump.h"
-
+#include "control_rotation_jump.h"
 
 
 class CAnimationSequencer;
 class CControlRotationJump;
 class CControlRunAttack;
 
-
-
 class CControlManagerCustom : public CControl_ComBase {
+	typedef					CControl_ComBase	inherited;
+
 	CAnimationSequencer		*m_sequencer;
 	CAnimationTriple		*m_triple_anim;
 
 	CControlRotationJump	*m_rotation_jump;
 	CControlJump			*m_jump;
 	CControlRunAttack		*m_run_attack;
+	
+	DEFINE_VECTOR			(SControlRotationJumpData, ROT_JUMP_DATA_VEC, ROT_JUMP_DATA_VEC_IT);
+	ROT_JUMP_DATA_VEC		m_rot_jump_data;
 
 public:
 					CControlManagerCustom	();
 					~CControlManagerCustom	();
 
+	virtual void	reinit					();
 	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*);
 	virtual void	on_start_control		(ControlCom::EControlType type);
 	virtual void	on_stop_control			(ControlCom::EControlType type);
@@ -54,6 +58,11 @@ public:
 	void		load_jump_data			(LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask);
 	
 	bool		script_jump				(CObject *obj);
+
+	//-------------------------------------------------------------------------------
+	// Rotation Jump
+	void		add_rotation_jump_data	(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle);
+
 private:
 
 	void		check_attack_jump		();

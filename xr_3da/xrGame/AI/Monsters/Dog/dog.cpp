@@ -109,6 +109,15 @@ void CAI_Dog::Load(LPCSTR section)
 
 }
 
+void CAI_Dog::reinit()
+{
+	inherited::reinit();
+
+	com_man().add_rotation_jump_data("1","2","3","4", PI_DIV_2);
+	com_man().add_rotation_jump_data("5","6","7","8", deg(179));
+}
+
+
 void CAI_Dog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {

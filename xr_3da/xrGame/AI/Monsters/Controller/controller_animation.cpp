@@ -86,7 +86,8 @@ void CControllerAnimation::load()
 	m_legs[eLegsRunFwdRight]			= skeleton->ID_Cycle_Safe("stand_fwd_rs");
 	m_legs[eLegsRunBkwdLeft]			= skeleton->ID_Cycle_Safe("stand_bwd_ls");
 	m_legs[eLegsRunBkwdRight]			= skeleton->ID_Cycle_Safe("stand_bwd_rs");
-	m_legs[eLegsSteal]					= skeleton->ID_Cycle_Safe("new_run_fwd_0");
+	m_legs[eLegsStealFwd]				= skeleton->ID_Cycle_Safe("new_walk_steal_0");
+	m_legs[eLegsStealBkwd]				= skeleton->ID_Cycle_Safe("new_walk_steal_beack_0");
 	
 	m_legs[eLegsStandDamaged]			= skeleton->ID_Cycle_Safe("new_run_fwd_0");
 	m_legs[eLegsRunDamaged]				= skeleton->ID_Cycle_Safe("new_run_fwd_0");
@@ -107,7 +108,8 @@ void CControllerAnimation::load()
 	add_path_rotation					(ACT_RUN, (PI - PI_DIV_4),	eLegsRunBkwdLeft);
 	add_path_rotation					(ACT_RUN, -(PI - PI_DIV_4),	eLegsRunBkwdRight);
 
-	add_path_rotation					(ACT_STEAL, 0,				eLegsSteal);
+	add_path_rotation					(ACT_STEAL, 0,				eLegsStealFwd);
+	add_path_rotation					(ACT_STEAL, PI,				eLegsStealBkwd);
 
 	// 1. link animation with action
 	// 2. link animation with velocities and path velocities
@@ -134,6 +136,8 @@ void CControllerAnimation::select_velocity()
 {
 	if (m_tAction == ACT_RUN)
 		m_man->path_builder().set_desirable_speed(4.f);
+	else if (m_tAction == ACT_STEAL)
+		m_man->path_builder().set_desirable_speed(1.5f);
 	else 
 		m_man->path_builder().set_desirable_speed(0.f);
 }
@@ -197,6 +201,9 @@ void CControllerAnimation::select_legs_animation()
 
 CControllerAnimation::SPathRotations CControllerAnimation::get_path_rotation(float cur_yaw)
 {
+	EAction action = m_tAction;
+	if ((action != ACT_RUN) && (action != ACT_STEAL)) action = ACT_RUN;
+	
 	float target_yaw = m_man->path_builder().detail().direction().getH();
 	target_yaw = angle_normalize(-target_yaw);
 
@@ -205,9 +212,9 @@ CControllerAnimation::SPathRotations CControllerAnimation::get_path_rotation(flo
 
 	diff = angle_normalize(diff);
 
-	PATH_ROTATIONS_VEC_IT it_best = m_path_rotations[ACT_RUN].begin();
+	PATH_ROTATIONS_VEC_IT it_best = m_path_rotations[m_tAction].begin();
 	float best_diff = flt_max;
-	for (PATH_ROTATIONS_VEC_IT it = m_path_rotations[ACT_RUN].begin(); it != m_path_rotations[ACT_RUN].end(); it++) {
+	for (PATH_ROTATIONS_VEC_IT it = m_path_rotations[m_tAction].begin(); it != m_path_rotations[m_tAction].end(); it++) {
 		float angle_diff = angle_normalize(it->angle);
 
 		float cur_diff = angle_difference(angle_diff, diff);

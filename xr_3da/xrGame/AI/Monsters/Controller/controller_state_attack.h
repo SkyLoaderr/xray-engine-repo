@@ -9,15 +9,6 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
-	enum EAttackStates {
-		eStateRun			= u32(0),
-		eStateMelee,
-		eStateControlAttack,
-		eStateFaceEnemy, 
-		eStateTakeCover,
-		eStateMoveOutFromCover
-	};
-
 public:
 						CStateControllerAttack	(_Object *obj, state_ptr state_run, state_ptr state_melee);
 	virtual				~CStateControllerAttack	();
