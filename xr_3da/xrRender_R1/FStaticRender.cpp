@@ -32,7 +32,7 @@ ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float
 ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
 {
 	switch (phase)		{
-	case PHASE_NORMAL:	return (((_sqrt(cdist_sq) - pVisual->vis.sphere.R)<40)?pVisual->shader->E[SE_R1_NORMAL_HQ]:pVisual->shader->E[SE_R1_NORMAL_LQ])._get();
+	case PHASE_NORMAL:	return (((_sqrt(cdist_sq) - pVisual->vis.sphere.R)<44)?pVisual->shader->E[SE_R1_NORMAL_HQ]:pVisual->shader->E[SE_R1_NORMAL_LQ])._get();
 	case PHASE_POINT:	return pVisual->shader->E[SE_R1_LPOINT]._get();
 	case PHASE_SPOT:	return pVisual->shader->E[SE_R1_LSPOT]._get();
 	default:			NODEFAULT;
@@ -75,6 +75,7 @@ void					CRender::create					()
 	xrRender_apply_tf			();
 	::PortalTraverser.initialize();
 }
+
 void					CRender::destroy				()
 {
 	::PortalTraverser.destroy	();
@@ -84,11 +85,13 @@ void					CRender::destroy				()
 	xr_delete					(Models);
 	Device.seqFrame.Remove		(this);
 }
+
 void					CRender::reset_begin			()
 {
 	xr_delete					(Target);
 	HWOCC.occq_destroy			();
 }
+
 void					CRender::reset_end				()
 {
 	xrRender_apply_tf			();
@@ -96,6 +99,7 @@ void					CRender::reset_end				()
 	Target						=	xr_new<CRenderTarget>	();
 	if (L_Projector)			L_Projector->invalidate		();
 }
+
 void					CRender::OnFrame				()
 {
 	Models->DeleteQueue	();
