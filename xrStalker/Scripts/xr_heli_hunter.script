@@ -45,6 +45,7 @@ function evaluator_shoot:evaluate()
 		if self.a.heli ~= nil then
 			-- Проверка на то, что вертолет еще живой.
 			if not bind_heli.is_heli_alive(self.a.heli) then
+				self.a.heli = nil
 				return false
 			end
 		end
@@ -65,6 +66,18 @@ function evaluator_shoot:evaluate()
 		    if db.actor:position():distance_to_sqr(self.object:position()) < self.a.attack_actor_sqr then
 				return false
 		    end
+		end
+		-- Проверка на то, что денжер-игрок не подошел слишком близко
+		local best_danger = self.object:best_danger()
+		if best_danger then
+		   local bd_object = best_danger:object()
+		   if bd_object ~= nil and
+		      bd_object:id() == db.actor:id() 
+		   then
+				if best_danger:position():distance_to_sqr(self.object:position()) < self.a.attack_actor_sqr then
+					return false
+				end
+		   end
 		end
 
 		return true
