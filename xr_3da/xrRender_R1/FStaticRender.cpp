@@ -311,98 +311,102 @@ void CRender::Calculate				()
 			);
 
 		// Determine visibility for static geometry hierrarhy
-		for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
-		{
-			CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
-			IRender_Visual*	root	= sector->root();
-			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+		if  (psDeviceFlags.test(rsDrawStatic))	{
+			for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
 			{
-				set_Frustum			(&(sector->r_frustums[v_it]));
-				add_Geometry		(root);
+				CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
+				IRender_Visual*	root	= sector->root();
+				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+				{
+					set_Frustum			(&(sector->r_frustums[v_it]));
+					add_Geometry		(root);
+				}
 			}
 		}
 
 		// Traverse object database
-		g_SpatialSpace->q_frustum
-			(
-			lstRenderables,
-			ISpatial_DB::O_ORDERED,
-			STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
-			ViewBase
-			);
+		if  (psDeviceFlags.test(rsDrawDynamic))	{
+			g_SpatialSpace->q_frustum
+				(
+				lstRenderables,
+				ISpatial_DB::O_ORDERED,
+				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
+				ViewBase
+				);
 
-		// Exact sorting order (front-to-back)
-		std::sort							(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
+			// Exact sorting order (front-to-back)
+			std::sort							(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
-		// Determine visibility for dynamic part of scene
-		set_Object							(0);
-		g_pGameLevel->pHUD->Render_First	( );	// R1 shadows
-		g_pGameLevel->pHUD->Render_Last		( );	
-		u32 uID_LTRACK						= 0xffffffff;
-		if (phase==PHASE_NORMAL)			{
-			uLastLTRACK	++;
-			if (lstRenderables.size())		uID_LTRACK	= uLastLTRACK%lstRenderables.size();
+			// Determine visibility for dynamic part of scene
+			set_Object							(0);
+			g_pGameLevel->pHUD->Render_First	( );	// R1 shadows
+			g_pGameLevel->pHUD->Render_Last		( );	
+			u32 uID_LTRACK						= 0xffffffff;
+			if (phase==PHASE_NORMAL)			{
+				uLastLTRACK	++;
+				if (lstRenderables.size())		uID_LTRACK	= uLastLTRACK%lstRenderables.size();
 
-			// update light-vis for current entity / actor
-			CObject*	O					= g_pGameLevel->CurrentViewEntity();
-			if (O)		{
-				CROS_impl*	R					= (CROS_impl*) O->ROS();
-				if (R)		R->update			(O);
-			}
-		}
-		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
-		{
-			ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
-			CSector*	sector		= (CSector*)spatial->spatial.sector	;
-			if	(0==sector)										continue;	// disassociated from S/P structure
-			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
-			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
-			{
-				CFrustum&	view	= sector->r_frustums[v_it];
-				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
-
-				if (spatial->spatial.type & STYPE_RENDERABLE)
-				{
-					// renderable
-					IRenderable*	renderable		= spatial->dcast_Renderable	();
-					if (0==renderable)	{
-						// It may be an glow
-						CGlow*		glow				= dynamic_cast<CGlow*>(spatial);
-						VERIFY							(glow);
-						L_Glows->add					(glow);
-					} else {
-						// Occlusion
-						vis_data&		v_orig			= renderable->renderable.visual->vis;
-						vis_data		v_copy			= v_orig;
-						v_copy.box.xform				(renderable->renderable.xform);
-						BOOL			bVisible		= HOM.visible(v_copy);
-						v_orig.accept_frame				= v_copy.accept_frame;
-						v_orig.marker					= v_copy.marker;
-						v_orig.hom_frame				= v_copy.hom_frame;
-						v_orig.hom_tested				= v_copy.hom_tested;
-						if (!bVisible)					break;	// exit loop on frustums
-
-						// rendering
-						if (o_it==uID_LTRACK && renderable->renderable.ROS)	{
-							// track lighting environment
-							CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
-							T->update			(renderable);
-						}
-						set_Object						(renderable);
-						renderable->renderable_Render	();
-						set_Object						(0);	//? is it needed at all
-					}
-				} else {
-					VERIFY								(spatial->spatial.type & STYPE_LIGHTSOURCE);
-					// lightsource
-					light*			L					= (light*)	spatial->dcast_Light	();
-					VERIFY								(L);
-					if (L->spatial.sector)				{
-						vis_data&		vis		= L->get_homdata	( );
-						if	(HOM.visible(vis))	L_DB->add_light		(L);
-					}
+				// update light-vis for current entity / actor
+				CObject*	O					= g_pGameLevel->CurrentViewEntity();
+				if (O)		{
+					CROS_impl*	R					= (CROS_impl*) O->ROS();
+					if (R)		R->update			(O);
 				}
-				break;	// exit loop on frustums
+			}
+			for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
+			{
+				ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
+				CSector*	sector		= (CSector*)spatial->spatial.sector	;
+				if	(0==sector)										continue;	// disassociated from S/P structure
+				if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
+				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+				{
+					CFrustum&	view	= sector->r_frustums[v_it];
+					if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
+
+					if (spatial->spatial.type & STYPE_RENDERABLE)
+					{
+						// renderable
+						IRenderable*	renderable		= spatial->dcast_Renderable	();
+						if (0==renderable)	{
+							// It may be an glow
+							CGlow*		glow				= dynamic_cast<CGlow*>(spatial);
+							VERIFY							(glow);
+							L_Glows->add					(glow);
+						} else {
+							// Occlusion
+							vis_data&		v_orig			= renderable->renderable.visual->vis;
+							vis_data		v_copy			= v_orig;
+							v_copy.box.xform				(renderable->renderable.xform);
+							BOOL			bVisible		= HOM.visible(v_copy);
+							v_orig.accept_frame				= v_copy.accept_frame;
+							v_orig.marker					= v_copy.marker;
+							v_orig.hom_frame				= v_copy.hom_frame;
+							v_orig.hom_tested				= v_copy.hom_tested;
+							if (!bVisible)					break;	// exit loop on frustums
+
+							// rendering
+							if (o_it==uID_LTRACK && renderable->renderable.ROS)	{
+								// track lighting environment
+								CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
+								T->update			(renderable);
+							}
+							set_Object						(renderable);
+							renderable->renderable_Render	();
+							set_Object						(0);	//? is it needed at all
+						}
+					} else {
+						VERIFY								(spatial->spatial.type & STYPE_LIGHTSOURCE);
+						// lightsource
+						light*			L					= (light*)	spatial->dcast_Light	();
+						VERIFY								(L);
+						if (L->spatial.sector)				{
+							vis_data&		vis		= L->get_homdata	( );
+							if	(HOM.visible(vis))	L_DB->add_light		(L);
+						}
+					}
+					break;	// exit loop on frustums
+				}
 			}
 		}
 
