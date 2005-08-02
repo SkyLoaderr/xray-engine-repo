@@ -42,6 +42,11 @@ void CUITaskDescrWnd::Init	(CUIXml* doc, LPCSTR start_from)
 
 }
 
+void CUITaskDescrWnd::Draw						()
+{
+	inherited::Draw		();
+}
+
 void CUITaskDescrWnd::ClearAll					()
 {
 	m_UITaskInfoWnd->Clear		();

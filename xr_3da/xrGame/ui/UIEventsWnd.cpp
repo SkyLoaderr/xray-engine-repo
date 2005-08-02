@@ -155,10 +155,10 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	}
 
 }
-int i=0;
+/*int i=0;*/
 void CUIEventsWnd::Show					(bool status)
 {
-	if(i==0&&status){
+/*	if(i==0&&status){
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_1", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
@@ -169,6 +169,8 @@ void CUIEventsWnd::Show					(bool status)
 		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_6", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
 		i=1;
 	};
+*/
+
 	inherited::Show			(status);
 	m_UIMapWnd->Show		(status);
 	m_UITaskInfoWnd->Show	(status);
