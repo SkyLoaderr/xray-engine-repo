@@ -84,16 +84,19 @@ void CServerList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 
 void CServerList::BeforeAppear(){
     UpdateSizes();
+	UpdateVisibility();
 }
 void CServerList::AfterAppear(){
 	FillUpDetailedServerInfo();
-
+	UpdateVisibility();
 }
 void CServerList::BeforeDisapear(){
 	ClearDetailedServerInfo();
+	UpdateVisibility();
 }
 void CServerList::AfterDisappear(){
 	UpdateSizes();
+	UpdateVisibility();
 }
 
 void CServerList::FillUpDetailedServerInfo(){
@@ -155,14 +158,6 @@ void CServerList::ShowServerInfo(){
 }
 
 void CServerList::UpdateSizes(){
-	m_list[LST_SRV_PROP].Show(m_bShowServerInfo);
-	m_list[LST_PLAYERS].Show(m_bShowServerInfo);
-	m_frame[LST_SRV_PROP].Show(m_bShowServerInfo);
-	m_frame[LST_PLAYERS].Show(m_bShowServerInfo);
-
-	for (int i = 0; i<5; i++)
-		m_header2[i].Show(m_bShowServerInfo);
-
 	m_list[LST_SERVER].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);
 	m_frame[LST_SERVER].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);
 	Fvector2 pos = m_edit_gs_filter.GetWndPos();
@@ -171,6 +166,16 @@ void CServerList::UpdateSizes(){
 
 	for (int i = 0; i< 5; i++)
 		m_separator[i].SetHeight(m_bShowServerInfo? m_fListH[1]:m_fListH[0]);	
+}
+
+void CServerList::UpdateVisibility(){
+	m_list[LST_SRV_PROP].Show(m_bShowServerInfo ? !m_bAnimation : false);
+	m_list[LST_PLAYERS].Show(m_bShowServerInfo ? !m_bAnimation: false);
+	m_frame[LST_SRV_PROP].Show(m_bShowServerInfo ? true : m_bAnimation);
+	m_frame[LST_PLAYERS].Show(m_bShowServerInfo ? true : m_bAnimation);
+
+	for (int i = 0; i<5; i++)
+		m_header2[i].Show(m_bShowServerInfo ? true : m_bAnimation);
 }
 
 void CServerList::SetFilters(SServerFilters& sf){
@@ -233,6 +238,7 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 	}
 	InitHeader();
 	UpdateSizes();
+	UpdateVisibility();
 }
 
 void CServerList::ConnectToSelected(){
@@ -353,6 +359,9 @@ void CServerList::RefreshQuick(){
 
 
 	RefreshList();
+
+	ClearDetailedServerInfo();
+	FillUpDetailedServerInfo();
 //	ServerInfo NewServerInfo;
 //	m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, pItem->GetInfo()->info.Index);
 //	UpdateServerInList(&NewServerInfo, pItem);

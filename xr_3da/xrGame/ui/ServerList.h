@@ -57,6 +57,7 @@ protected:
 			bool IsValidItem(ServerInfo& item);
 			void SrvInfo2LstSrvInfo(const ServerInfo* pSrvInfo);
 			void UpdateSizes();
+			void UpdateVisibility();
 			void BeforeAppear();
 			void AfterAppear();
 			void BeforeDisapear();
