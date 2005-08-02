@@ -129,7 +129,7 @@ LPCSTR CMapActionPlanner::object_name	() const
 void CMapActionPlanner::setup		(CUIMapWnd *object)
 {
 #ifdef LOG_ACTION
-	set_use_log						(true);
+	set_use_log						(false);
 #endif
 	inherited::setup				(object);
 	clear							();
