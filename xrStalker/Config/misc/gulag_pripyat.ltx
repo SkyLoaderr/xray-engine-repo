@@ -70,8 +70,8 @@ team = followers
 on_signal = syn | walker@pri_followers_leader_wave2
 
 [walker@pri_followers_leader_wave2]
-path_walk = wave1_leader_walk2
-path_look = wave1_leader_look2
+path_walk = wave2_leader_walk2
+path_look = wave2_leader_look2
 def_state_moving1 = sneak
 on_signal = arrived | {-pri_wave2_start} %+pri_wave2_start%
 
@@ -245,15 +245,15 @@ def_state_moving1 = sneak
 active = walker@pri_followers_nap3_wave2_wait
 
 [walker@pri_followers_nap3_wave2_wait]
-path_walk = wave2_stalker3_walk2
-path_look = wave2_stalker3_look2
+path_walk = wave2_stalker3_walk1
+path_look = wave2_stalker3_look1
 def_state_moving1 = sneak
 team = followers
 on_signal = syn | walker@pri_followers_nap3_wave2
 
 [walker@pri_followers_nap3_wave2]
-path_walk = wave2_stalker3_walk1
-path_look = wave2_stalker3_look1
+path_walk = wave2_stalker3_walk2
+path_look = wave2_stalker3_look2
 def_state_moving1 = sneak
 ;on_signal = arrived | {-pri_wave2_start} %+pri_wave2_start%
 
