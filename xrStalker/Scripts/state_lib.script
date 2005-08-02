@@ -253,7 +253,7 @@ states = {
 				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = nil
+				animation = "hands_up"
 			},
 
 	hide_no_wpn = {	weapon = "strapped",
