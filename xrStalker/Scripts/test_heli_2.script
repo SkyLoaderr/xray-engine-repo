@@ -113,7 +113,7 @@ function HeliManager:Start()
 end
 
 
-function  main()
+function  ___main()
 
 local heli_mngr = HeliManager()
    printf("------------HELI INIT----------------------")
@@ -124,12 +124,16 @@ heli_mngr:Start()
 --		heli:heli_go_by_patrol_path( "heli_way_1" )
 end
 
-function  __main()
+function  main()
 --	local n = level.debug_object( "_niva" )
 --   level.map_add_object_spot(n:id(),"heli_location","niva_super_car");
 
 	local info = "test_andy_info" 
+	db.actor:give_info_portion(info) 
 	
+	info = "tutorial_artefact_start" 
+	db.actor:give_info_portion(info) 
+	
+	
+end
 
---local info = "tutorial_artefact_start" 
-	db.actor:give_info_portion(info) end
