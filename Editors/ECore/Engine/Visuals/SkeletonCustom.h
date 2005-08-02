@@ -198,6 +198,7 @@ public:
 	ICF Fmatrix&				LL_GetTransform_R	(u16 bone_id)		{	return LL_GetBoneInstance(bone_id).mRenderTransform;			}	// rendering only
 	Fobb&						LL_GetBox			(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	return (*bones)[bone_id]->obb;	}
 	void						LL_GetBindTransform (xr_vector<Fmatrix>& matrices);
+    int 						LL_GetBoneGroups 	(xr_vector<xr_vector<u16> >& groups);
 
 	u16							LL_GetBoneRoot		()					{	return iRoot;													}
 	void						LL_SetBoneRoot		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	iRoot=bone_id;					}

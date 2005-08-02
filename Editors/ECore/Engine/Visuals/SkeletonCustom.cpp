@@ -289,6 +289,16 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	Update_Callback	= NULL;
 	// reset update frame
 	wm_frame		= u32(-1);
+/*
+    xr_vector<xr_vector<u16> > groups;
+    LL_GetBoneGroups(groups);
+    for (u32 g=0; g<groups.size(); ++g){
+        Msg("groups %d",g);
+	    for (u32 b=0; b<groups[g].size(); ++b){
+        	Msg("|- %d",b);
+    	}	
+    }
+*/    
 }
 
 #define PCOPY(a)	a = pFrom->a
@@ -606,3 +616,18 @@ void CKinematics::ClearWallmarks()
 		xr_delete	(*it);
 	wallmarks.clear ();
 }
+
+int CKinematics::LL_GetBoneGroups(xr_vector<xr_vector<u16> >& groups)
+{
+	groups.resize	(children.size());
+    for (u16 bone_idx=0; bone_idx<(u16)bones->size(); bone_idx++) {
+        CBoneData*	B 	= (*bones)[bone_idx];
+        for (u32 child_idx=0; child_idx<children.size(); child_idx++){
+        	if (!B->child_faces[child_idx].empty()){ 
+            	groups[child_idx].push_back(bone_idx);
+            }
+        }
+    }
+    return groups.size();
+}
+
