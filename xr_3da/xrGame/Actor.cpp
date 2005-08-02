@@ -664,17 +664,17 @@ void CActor::Die	(CObject* who)
 				continue;
 			};
 
+			if ((*l_it)->object().CLS_ID == CLSID_DEVICE_PDA)
+			{
+				(*l_it)->Drop();
+				continue;
+			};
+
 			CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> (*l_it);
 			if (pOutfit) continue;
 
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
-//			if ((*l_it)->CLS_ID == CLSID_DEVICE_PDA)
-			{
-				(*l_it)->object().DestroyObject();
-//				NET_Packet P;
-//				u_EventGen(P,GE_DESTROY,(*l_it)->object().ID());
-//				u_EventSend(P, TRUE);
-			}
+			(*l_it)->object().DestroyObject();
 		};
 	};
 	//-------------------------------------
