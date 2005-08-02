@@ -4,12 +4,12 @@
 		<mini_map  spot="val_borov_spot" pointer="quest_pointer"></mini_map>
 	</val_borov_location>
 
-	<val_x18_enter_location hint="val_borov_location" store="1">
+	<val_x18_enter_location hint="val_x18_enter_location" store="1">
 		<level_map spot="val_x18_enter_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="val_x18_enter_spot" pointer="quest_pointer"></mini_map>
 	</val_x18_enter_location>
 
-	<val_prisoner_location hint="val_sos_location" store="1">
+	<val_prisoner_location hint="val_prisoner_location" store="1">
 		<level_map spot="val_prisoner_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="val_prisoner_spot" pointer="quest_pointer"></mini_map>
 	</val_prisoner_location>
