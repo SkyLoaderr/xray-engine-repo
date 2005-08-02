@@ -241,8 +241,21 @@ states = {
 				animstate = "stand",
 				animation = "salut_free"
 			},
+	hands_up	= {weapon = "strapped",
+				movement = nil,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 
-
+	hide_no_wpn = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = "hide"
+			},
 	-- Сидячие состояния
 	sit = {		weapon = "strapped",
 				movement = move.stand,

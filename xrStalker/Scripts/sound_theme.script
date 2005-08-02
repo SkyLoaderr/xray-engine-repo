@@ -238,6 +238,8 @@ function load_sound(obj)
 	-- шутки, прибаутки
 	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")
 	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
+	-- не стрел€йте
+	theme[obj:id()]["dont_shoot_ukr"]				= load_sound_from_ltx(obj, "dont_shoot_ukr")
 
 	-- »стории
 	theme[obj:id()]["story_01"]						= load_sound_from_ltx(obj, "story_01")
