@@ -265,7 +265,7 @@ bool CEvaluatorTargetMapShown::evaluate()
 	pt.mul						(m_object->GlobalMap()->GetCurrentZoom());
 	pt.add						(m_object->GlobalMap()->GetAbsolutePos());
 	Frect	rect	=	m_object->ActiveMapRect();
-			rect.grow	(rect.width()/2.f,rect.height()/2.f);
+			//rect.grow	(rect.width()/2.f,rect.height()/2.f);
 	if (rect.in(pt))	{
 		m_storage->set_property	(2,true);
 		return true;
