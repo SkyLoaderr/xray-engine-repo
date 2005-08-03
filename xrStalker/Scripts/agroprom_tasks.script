@@ -14,10 +14,10 @@ function proceed()
 
 		actor:give_info_portion("agr_factory_spawn_spetsnaz")
 
-		if actor:has_info("agr_krot_band_start") then
-			actor:give_info_portion("agr_krot_band_done")
-			level_tasks.set_task_state(task.completed, "agr_meet_krot_band", 0)
-		end
+--		if actor:has_info("agr_krot_band_start") then
+--			actor:give_info_portion("agr_krot_band_done")
+--			level_tasks.set_task_state(task.completed, "agr_meet_krot_band", 0)
+--		end
 	end
 	
 	if actor:object("agr_nii_security_shedule_file") then
@@ -28,15 +28,15 @@ function proceed()
 		actor:give_info_portion("agr_nii_security_plan_flash_have")
 	end
 
-	if actor:has_info("agroprom_military_case") and
-	   actor:dont_has_info("agroprom_military_case_have") and
-	   actor:object("quest_case_02") ~= nil
-	then
-		actor:give_info_portion("agroprom_military_case_have")
-		level_tasks.set_task_state(task.completed, "agroprom_get_military_documents", 1)
-	end
+--	if actor:has_info("agroprom_military_case") and
+--	   actor:dont_has_info("agroprom_military_case_have") and
+--	   actor:object("quest_case_02") ~= nil
+--	then
+--		actor:give_info_portion("agroprom_military_case_have")
+--		level_tasks.set_task_state(task.completed, "agroprom_get_military_documents", 1)
+--	end
 
-	if actor:has_info("agr_find_gunslinger_cache") and
+	if actor:has_info("agr_find_gunslinger_cache_start") and
 	   actor:object("gunslinger_flash") ~= nil
 	then
 		actor:give_info_portion("agr_find_gunslinger_cache_done")
@@ -61,17 +61,17 @@ function process_info_portion(info_id)
 --		level_tasks.remove_location(303, "agr_factory_skirmish1_location")
 --		return true
 
-	if info_id == "agr_help_stalkers_assault_dead" and db.actor:has_info( "agr_help_stalkers_done" ) then
+--	if info_id == "agr_help_stalkers_assault_dead" and db.actor:has_info( "agr_help_stalkers_done" ) then
 --		actor:give_info_portion("agr_help_stalkers_done")
-		level_tasks.set_task_state(task.completed, "agr_help_stalkers", 0)
-		return true
+--		level_tasks.set_task_state(task.completed, "agr_help_stalkers", 0)
+--		return true
 
-	elseif info_id == "agr_help_stalkers_defence_dead" and db.actor:has_info( "agr_help_stalkers_done" ) then
+--	elseif info_id == "agr_help_stalkers_defence_dead" and db.actor:has_info( "agr_help_stalkers_done" ) then
 --		actor:give_info_portion("agr_help_stalkers_done")
-		level_tasks.set_task_state(task.fail, "agr_help_stalkers", 0)
-		return true
+--		level_tasks.set_task_state(task.fail, "agr_help_stalkers", 0)
+--		return true
 
-	elseif info_id == "agr_sold_about_ratcatcher" then
+	if info_id == "agr_sold_about_ratcatcher" then
 		level_tasks.add_location(304, "agr_ratcatcher_location")
 		return true
 		
@@ -95,28 +95,38 @@ function process_info_portion(info_id)
 --		level_tasks.add_location(302, "agr_krot_location")
 --		return true
 
-	elseif info_id == "agr_krot_dead" and db.actor:has_info( "agr_help_krot_start" ) and db.actor:dont_has_info( "agr_help_krot_done" ) then
-		db.actor:give_info_portion("agr_help_krot_done")
-		level_tasks.set_task_state(task.fail, "agr_help_krot", 0)
-		return true
+--	elseif info_id == "agr_krot_dead" and db.actor:has_info( "agr_help_krot_start" ) and db.actor:dont_has_info( "agr_help_krot_done" ) then
+--		db.actor:give_info_portion("agr_help_krot_done")
+--		level_tasks.set_task_state(task.fail, "agr_help_krot", 0)
+--		return true
 
-	elseif info_id == "agr_help_krot_done" then
-		level_tasks.set_task_state(task.completed, "agr_help_krot", 0)
-		return true
+--	elseif info_id == "agr_help_krot_done" then
+--		level_tasks.set_task_state(task.completed, "agr_help_krot", 0)
+--		return true
 
 
 --	elseif info_id == "agr_krot_band_start" and not level_tasks.is_map_spot_present (302, "agr_krot_location") then
 --		level_tasks.add_location(302, "agr_krot_location")
 --		return true
 
-	elseif info_id == "agr_find_gunslinger_cache" then
-		level_tasks.add_location(301, "agr_gunslinger_cache_location")
-		return true
+--	elseif info_id == "agr_find_gunslinger_cache" then
+--		level_tasks.add_location(301, "agr_gunslinger_cache_location")
+--		return true
 
-	elseif info_id == "agr_find_gunslinger_cache_done" then
-		level_tasks.remove_location(301, "agr_gunslinger_cache_location")
-		return true
+--	elseif info_id == "agr_find_gunslinger_cache_done" then
+--		level_tasks.remove_location(301, "agr_gunslinger_cache_location")
+--		return true
 	end
 
 	return false
+end
+
+----------------------------------------------------------------------------------------------
+
+function have_quest_case_02(task, objective)
+	return db.actor:object("quest_case_02") ~= nil
+end
+
+function have_krots_flash(task, objective)
+	return db.actor:object("krot_flash") ~= nil
 end
