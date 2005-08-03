@@ -29,7 +29,7 @@
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="agr_find_gunslinger_cache_done">
-		<disable>agr_find_gunslinger_cache</disable>
+		<disable>agr_find_gunslinger_cache_start</disable>
 	</info_portion>
 
 	<info_portion id="agr_krot_secret_info">

@@ -15,7 +15,7 @@
         <text>storyline_borov_flash_info</text>
     </article>
 
-    <article id="storyline_seriy_flash_info" name="Seriy Flash" group="Diary">
+    <article id="storyline_seriy_flash_info" name="Seriy Flash" article_type="task" group="agr_meet_krot_band">
         <texture x="200" y="800" width="200" height="150">ui\ui_icon_photo</texture>
         <text>storyline_seriy_flash_info</text>
     </article>
@@ -111,27 +111,27 @@
     </article>
 
 <!--Agroprom NII -->
-    <article id="agr_rats_n_soldiers" name="agr_rats_n_soldiers" group="Diary">
+    <article id="agr_rats_n_soldiers" name="agr_rats_n_soldiers" article_type="task" group="agroprom_get_military_documents/1">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_rats_n_soldiers_text</text>
     </article>
     
-    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" group="Diary">
+    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" article_type="task" group="agroprom_get_military_documents/1">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_nii_security_shedule</text>
     </article>
     
-    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" group="Diary">
+    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" article_type="task" group="agroprom_get_military_documents/1">
         <texture x="400" y="650" width="300" height="300">ui\ui_icon_photo</texture>
         <text>agr_nii_security_plan</text>
     </article>
 
-    <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" group="Diary">
+    <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" article_type="task" group="agroprom_find_gunslinger_cache/1">
         <texture x="500" y="350" width="500" height="300">ui\ui_icon_photo</texture>
         <text>agr_krot_secret_info</text>
     </article>
 
-    <article id="storyline_gunslinger_cache_info" name="Krot Flash" group="Diary">
+    <article id="storyline_gunslinger_cache_info" name="Krot Flash" article_type="task" group="agroprom_find_gunslinger_cache/1">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>storyline_gunslinger_cache_info</text>
     </article>
