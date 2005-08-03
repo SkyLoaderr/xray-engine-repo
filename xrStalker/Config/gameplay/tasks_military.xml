@@ -113,6 +113,14 @@
 			<text>mil_blockpost_help</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
+		<objective>
+			<text>mil_fblockpost_phase1</text>
+			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_fblockpost_phase2</text>
+			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
 	</game_task>
 
 	<game_task id="mil_freedom_rg6_task">
@@ -177,5 +185,28 @@
 			<function_complete>mil_tasks.mil_test_task_rg6_have</function_complete>
 			<function_fail>mil_tasks.mil_test_task_lr300_have</function_fail>
             <task_dependent>1</task_dependent>
+		</objective>
+	</game_task>
+	
+	<game_task id = "mil_hunters_task">
+		<objective>
+			<title>mil_hunters_task</title>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_hunters_phase1</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_ugrumy_location</map_location_type>
+            <object_story_id>Mil_Hunter3</object_story_id>
+		</objective>
+		<objective>
+			<text>mil_hunters_phase2</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_hunters_phase3</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>mil_miser_location</map_location_type>
+            <object_story_id>Mil_Miser</object_story_id>
 		</objective>
 	</game_task>

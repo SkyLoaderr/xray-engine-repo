@@ -231,6 +231,15 @@
 	<info_portion id="mil_fblockpost_spot_remove"></info_portion>
 	<info_portion id="mil_actor_blockpost"></info_portion>
 	<info_portion id="mil_neutral_commander_talk"></info_portion>
+	<info_portion id="mil_fblockpost_actor_outside"></info_portion>
+	
+	<!-- Çàäà÷à Cêğÿãè -->
+	<info_portion id="mil_miser_task">
+		<task>mil_hunters_task</task>
+	</info_portion>
+	<info_portion id="mil_controller_dead"></info_portion>
+	<info_portion id="mil_miser_task_complete"></info_portion>
+	<info_portion id="mil_miser_task_failed"></info_portion>
 
 	<!-- Îõîòíè÷êè, ìëÿ -->
 	<info_portion id="mil_hunt_ready"></info_portion>

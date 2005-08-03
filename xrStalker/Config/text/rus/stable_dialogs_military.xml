@@ -1095,6 +1095,66 @@
     <string id="mil_trader_dialog_2001">
         <text>Ну, чего принес ?</text>
     </string>
+    <string id="mil_trader_dialog_3001">
+        <text>Ну, что надо ?</text>
+    </string>
+    <string id="mil_trader_dialog_3002">
+        <text>Да вот, хочу у тебя про артефакты спростить. Где можно разжиться ?</text>
+    </string>
+    <string id="mil_trader_dialog_3003">
+        <text>Там же, где и всегда - в аномалиях. Какой ты глупый... Но, есть еще варианты...</text>
+    </string>
+    <string id="mil_trader_dialog_3004">
+        <text>Огласи весь список.</text>
+    </string>
+    <string id="mil_trader_dialog_3005">
+        <text>Ну, первый пункт ясен - в аномалиях. Второй - я могу дать тебе "Кристалл", если ты окажешь одну услугу...</text>
+    </string>
+    <string id="mil_trader_dialog_3006">
+        <text>Какую ?</text>
+    </string>
+    <string id="mil_trader_dialog_3007">
+        <text>Тройка наших ребят отправилась в деревню - там какая-то тварь завелась. Поможешь им ее заломать - так и быть, отдам тебе "Кристалл".</text>
+    </string>
+    <string id="mil_trader_dialog_3008">
+        <text>А тебе то это зачем ?</text>
+    </string>
+    <string id="mil_trader_dialog_3009">
+        <text>Блин, ну какой ты непонятливый. Там в аномалиях попадаются артефакты, но народ боится туда идти из-за мутанта, который там объявился и, соответственно, мне нечем торговать. А если мутанта завалят, то народ будет вылавливать там хабар и нести мне. Усек ?</text>
+    </string>
+    <string id="mil_trader_dialog_3010">
+        <text>Понятно. Ладно, прогуляюсь пожалуй...</text>
+    </string>
+    <string id="mil_trader_dialog_3011">
+        <text>Другое дело. Ты, если что найдешь - тащи, я возьму по хорошей цене.</text>
+    </string>
+    <string id="mil_trader_dialog_3020">
+        <text>Да ну его к монахам...</text>
+    </string>
+    <string id="mil_trader_dialog_3021">
+        <text>Как знаешь...</text>
+    </string>
+    <string id="mil_trader_dialog_4001">
+        <text>Как прошла охота ?</text>
+    </string>
+    <string id="mil_trader_dialog_4002">
+        <text>Хреново. Тварь ваша на мозги действует. Ребята полегли...</text>
+    </string>
+    <string id="mil_trader_dialog_4003">
+        <text>Как ?</text>
+    </string>
+    <string id="mil_trader_dialog_4004">
+        <text>Сначала все было более-менее прилично, а когда добрались до водокачки с ними что-то случилось - оружие побросали и схватились за головы. У меня самого перед глазами туман кровавый появился, но тут тварь появилась. На человека похоже, в рванье каком-то. Еле завалил. А как тварь сдохла, то и ребята умерли. Может она им что-то с мозгами сделала... Я сам себя хреново чувствую...</text>
+    </string>
+    <string id="mil_trader_dialog_4005">
+        <text>Хреново дело... Угрюмый - умелый сталкер. Жаль. Ладно, вот плата за твою работу.</text>
+    </string>
+    <string id="mil_trader_dialog_5001">
+        <text>Итак, задачку ты завалил... И артефакта я тебе не дам.</text>
+    </string>
+    <string id="mil_trader_dialog_5002">
+        <text>Не очень-то и хотелось.</text>
+    </string>
     <string id="mil_zoneguard_common1_0">
         <text>У вас тут повар есть ?</text>
     </string>

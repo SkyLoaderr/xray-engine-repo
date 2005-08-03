@@ -100,6 +100,14 @@
 	<text>Оказать помощь блокпосту Свободы "Барьер"</text>
 </string>
 
+<string id="mil_fblockpost_phase1">
+	<text>Помочь отбить две волны мутантов</text>
+</string>
+
+<string id="mil_fblockpost_phase2">
+	<text>Помочь в уничтожении прорывающегося отряда Монолита</text>
+</string>
+
 <string id="mil_fblockpost_commander">
 	<text>Командир блокпоста "Кеп"</text>
 </string>
@@ -116,6 +124,21 @@
 	<text>Поговорить с поваром</text>
 </string>
 
+<string id="mil_hunters_task">
+	<text>Помочь охотникам Свободы уничтожить опасного мутанта в деревне</text>
+</string>
+
+<string id="mil_hunters_phase1">
+	<text>Найти Угрюмого в деревне</text>
+</string>
+
+<string id="mil_hunters_phase2">
+	<text>Уничтожить опасного мутанта</text>
+</string>
+
+<string id="mil_hunters_phase3">
+	<text>Вернуться к Скряге за артефактом</text>
+</string>
 
 
 <string id="mil_test_task_title">

@@ -137,3 +137,12 @@ end
 function set_cook_subtask2_complete (actor, npc)
     level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 2)
 end
+
+function send_artefact (npc, actor)
+    local artefact = npc:object ("af_cristall")
+    if artefact ~= nil then
+       dialogs.relocate_item (npc, artefact, "in")
+    else
+       printf ("MISER DON'T HAVE A ARTEFACT")    
+    end   
+end
