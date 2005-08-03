@@ -112,64 +112,109 @@
         <text>Добро!</text>
     </string>
     <string id="agr_stalker_esc_0">
-        <text>Что ты здесь делаешь?</text>
+        <text>Ты кто?</text>
     </string>
     <string id="agr_stalker_esc_20">
-        <text>Я из группы Крота, что засела на заводе. Я не знаю как, но группу вычислили военные. Я не стал дожидаться их появления и свалил с завода.</text>
+        <text>Звать Глаз.</text>
     </string>
     <string id="agr_stalker_esc_200">
-        <text>У тебя есть еще информация?</text>
+        <text>Ты что здесь делаешь?</text>
     </string>
     <string id="agr_stalker_esc_30">
-        <text>Нет, я больше ничего не знаю.</text>
+        <text>А какое твое дело?</text>
     </string>
     <string id="agr_stalker_esc_300">
-        <text>Спасибо, удачи.</text>
+        <text>Просто спросил, не кипятись.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_0">
+    <string id="agr_stalker_esc_40">
+        <text>Ладно, я с завода иду, это на запад прямо по дороге. Не знаю как, но нашу группу вычислили военные. Не стал я дожидаться их прихода и свалил оттуда. Надеюсь, наши все уже слиняли, а то, если долго задержатся, им точно недолго жить осталось.</text>
+    </string>
+    <string id="agr_stalker_esc_400">
+        <text>Понял, спасибо.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher1_0">
         <text>Что у вас тут интересного творится?</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_1">
+    <string id="agr_stalker_talk_about_ratcatcher1_1">
         <text>Про Крысолова знаешь? Информация будет стоить 30 денег.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_11">
+    <string id="agr_stalker_talk_about_ratcatcher1_11">
         <text>По рукам.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_111">
+    <string id="agr_stalker_talk_about_ratcatcher1_111">
         <text>Есть у нас тут один герой местный, зовут Крысолов. Живет он на болотах. Он развел столько крыс в коллекторах, что что они скоро съедят заживо легавых.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_1111">
+    <string id="agr_stalker_talk_about_ratcatcher1_1111">
         <text>Отлично. Спасибо.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_1112">
+    <string id="agr_stalker_talk_about_ratcatcher1_1112">
         <text>Расскажи подробнее о коллекторах.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_11121">
+    <string id="agr_stalker_talk_about_ratcatcher1_11121">
         <text>Коллекторы... Да обычная вонючая канализация. Отводит агропромовские стоки к ближайшему водоему. \n</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_111211">
+    <string id="agr_stalker_talk_about_ratcatcher1_111211">
         <text>Отлично. Пока. Береги себя.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_12">
+    <string id="agr_stalker_talk_about_ratcatcher1_12">
         <text>Знаю уже. Спасибо.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_121">
+    <string id="agr_stalker_talk_about_ratcatcher1_121">
         <text>Больше ничего рассказать не могу.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_13">
+    <string id="agr_stalker_talk_about_ratcatcher1_13">
         <text>У меня не достаточно средств.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_14">
+    <string id="agr_stalker_talk_about_ratcatcher1_14">
         <text>Мне это не интересно.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_3">
+    <string id="agr_stalker_talk_about_ratcatcher1_3">
         <text>Что у вас тут интересного творится?</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_31">
+    <string id="agr_stalker_talk_about_ratcatcher1_31">
         <text>Совсем ничего.</text>
     </string>
-    <string id="agr_stalker_talk_about_ratcatcher_311">
+    <string id="agr_stalker_talk_about_ratcatcher1_311">
         <text>Ясно. Пока!</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_0">
+        <text>У меня есть пара вопросов.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_10">
+        <text>Что ты хочешь узнать?</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_100">
+        <text>Где тут можно спокойно отдохнуть?</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_1000">
+        <text>Что тут в районе интересного?</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_120">
+        <text>Сколько тебе надо?</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_130">
+        <text>Вот, держи деньги, говори где оно.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_131">
+        <text>Да пошел ты…</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_140">
+        <text>Спасибо.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_20">
+        <text>Да есть местечко! Тока придется немного раскошелится!</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_21">
+        <text>Раньше спокойно всё было. А сейчас чё-то военные разбушевались. Мочат всех. Вот бандитов недавно выкурили. Говорят, часть успела уйти в катакомбы.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_30">
+        <text>Ну, тридцать и по рукам? </text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_40">
+        <text>На радиационном болте есть вагон там можно спокойно перекантоваться.</text>
+    </string>
+    <string id="agr_stalker_talk_about_ratcatcher_9999">
+        <text>Пока!</text>
     </string>
     <string id="agr_stalker_talk_level_0">
         <text>Расскажи мне об этом месте.</text>
