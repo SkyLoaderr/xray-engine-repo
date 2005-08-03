@@ -127,4 +127,13 @@
     <mil_freedom_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="160" y="128" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_freedom_spot>
+
+	<mil_miser_location hint="mil_miser" store="1">
+		<level_map spot="mil_miser_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_miser_spot" pointer="quest_pointer"></mini_map>
+	</mil_miser_location>
+
+    <mil_miser_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_miser_spot>
 		
