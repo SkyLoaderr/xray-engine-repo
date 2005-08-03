@@ -148,7 +148,7 @@ function main ()
 
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)			
-		printf("%s",file:NameFull())
+		printf("%s",file)
 	end
 	
 end
