@@ -148,8 +148,7 @@ function main ()
 
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)			
-		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
-		printf(file_name)
+		printf(file:NameFull())
 	end
 	
 end
