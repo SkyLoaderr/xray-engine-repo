@@ -58,15 +58,11 @@ ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_1]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_2]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_3]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_4]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_5]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_7]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_8]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_9]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_10]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_11]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_12]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_13]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_14]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_15]]}
 ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
@@ -77,18 +73,6 @@ ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garb
 ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\human_01\scenario\bandits\bandit_replic_2]]}
 ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
 ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
-ph_snd_themes["bar_megafon_music"] = {  "characters_voice\\human_01\\scenario\\megafon\\megafon_music_1",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_2",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_3",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_5",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_6",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_7",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_8",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_9",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_12",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_14",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_15"
-	                        }
 	                      
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
