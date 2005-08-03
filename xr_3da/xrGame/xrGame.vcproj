@@ -9989,6 +9989,12 @@
 						RelativePath=".\ui\UIMessagesWindow.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIMoneyIndicator.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMoneyIndicator.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMotionIcon.cpp">
 					</File>
 					<File

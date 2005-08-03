@@ -99,6 +99,21 @@
 			<animation anim="fade" period="3" cyclic="0"></animation>
 		</phrase>
 	</money_mt_static>
+	<money_wnd x="860" y="10" width="200" height="200">
+		<money_indicator x="0" y="0" width="200" height="64">
+			<texture>ui\ui_mn_weapons</texture>
+			<text x="85" y="4" font="small" r="255" g="255" b="255" a="130">money</text>
+			<total_money x="20" y="15">
+				<text font="graffiti50" r="238" g="155" b="23" a="255">total</text>
+			</total_money>
+		</money_indicator>
+		<money_change x="20" y="65" width="130" height="32">
+			<text font="graffiti32" r="238" g="155" b="23" a="255">change</text>
+		</money_change>
+		<money_bonus x="20" y="97" width="130" height="32">
+			<text font="graffiti32" r="23" g="155" b="23" a="255">bonus</text>
+		</money_bonus>
+	</money_wnd>
 	
 	<!-- TEAM 1 SCORE -->
 	<t1_score x="948" y="80" width="32" height="32" >		

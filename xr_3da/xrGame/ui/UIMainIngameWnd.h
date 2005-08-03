@@ -36,6 +36,7 @@ class					CUIPdaMsgListItem;
 class					CLAItem;
 class					CUIZoneMap;
 class					CUIArtefactPanel;
+class					CUIMoneyIndicator;
 //////////////////////////////////////////////////////////////////////////
 
 struct CUSTOM_TEXTURE
@@ -134,7 +135,7 @@ protected:
 	CUIStatic			UIWeaponIcon;
 
 	// Для мультиплеера выводим денежки
-	CUIMultiTextStatic	UIMoneyIndicator;
+	CUIMoneyIndicator*	m_pMoneyIndicator;
 	CUIStatic			UITeam1Sign, UITeam1Score;
 	CUIStatic			UITeam2Sign, UITeam2Score;
 	//  [7/27/2005]

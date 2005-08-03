@@ -32,6 +32,7 @@
 #include "../../LightAnimLibrary.h"
 
 #include "UIInventoryUtilities.h"
+#include "UIMoneyIndicator.h"
 
 
 #include "UIXmlInit.h"
@@ -274,8 +275,10 @@ void CUIMainIngameWnd::Init()
 	// Money
 	if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
 	{
-		AttachChild(&UIMoneyIndicator);
-		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
+		m_pMoneyIndicator = xr_new<CUIMoneyIndicator>();
+		AttachChild(m_pMoneyIndicator);
+		m_pMoneyIndicator->InitFromXML(uiXml);
+//		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
 
 		if (GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
 		{
@@ -1351,20 +1354,22 @@ void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 
 void CUIMainIngameWnd::ChangeTotalMoneyIndicator(shared_str newMoneyString)
 {
-	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(0);
-	sp->str = newMoneyString;
+	m_pMoneyIndicator->SetMoneyAmount(*newMoneyString);
+//	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(0);
+//	sp->str = newMoneyString;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::DisplayMoneyChange(shared_str deltaMoney)
 {
-	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(1);
-	sp->str				= deltaMoney;
-	sp->effect.PlayAnimation();
-	EffectParams *eff	= sp->effect.SetStyleParams(CUITextBanner::tbsFade);
-	eff->bOn			= true;
-	sp->effect.ResetAnimation(CUITextBanner::tbsFade);
+	m_pMoneyIndicator->SetMoneyChange(*deltaMoney);
+//	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(1);
+//	sp->str				= deltaMoney;
+//	sp->effect.PlayAnimation();
+//	EffectParams *eff	= sp->effect.SetStyleParams(CUITextBanner::tbsFade);
+//	eff->bOn			= true;
+//	sp->effect.ResetAnimation(CUITextBanner::tbsFade);
 }
 
 //-----------------------------------------------------------------------------/
