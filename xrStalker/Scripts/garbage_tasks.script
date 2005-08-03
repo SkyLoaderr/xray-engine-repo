@@ -36,8 +36,10 @@ function proceed()
 		actor:dont_has_info("gar_after_battle") 
 	then
 		actor:give_info_portion("gar_after_battle")
-		level_tasks.set_task_state(task.fail, "gar_help_dymon", 0)
+		level_tasks.set_task_state(task.fail, "gar_help_dymon", 2)
+		level_tasks.set_task_state(task.complete, "gar_help_dymon", 0)
 	end
+	
 	
 	
 	if actor:has_info("gar_help_newbie_done") and
