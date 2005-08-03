@@ -138,6 +138,11 @@ function  __main()
 end
 
 function main ()
+	FillList()
+end	
+
+function main___ ()
+	FillList()
 	local f = getFS()
 	local flist = f:file_list_open("$game_sounds$","dialogs",FS.FS_ListFiles)
 	local f_cnt = flist:Size()
@@ -146,6 +151,24 @@ function main ()
 		local file		=	flist:GetAt(it)			
 		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
 		printf(file_name)
+	end
+	
+end
+
+function FillList()
+
+	local f = getFS()
+	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly),"*.sav")
+	local f_cnt = flist:Size()
+	
+	flist:Sort(FS.FS_sort_by_modif_down)
+	
+	for	it=0, f_cnt-1 	do
+		local file		=	flist:GetAt(it)			
+		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
+		local date_time = "[" .. file:Modif() .. "]"
+		--menu_item =  .. 
+		self:AddItemToList(file_name, date_time)
 	end
 	
 end
