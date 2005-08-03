@@ -117,17 +117,17 @@
     </article>
     
     <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" group="Diary">
-        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_nii_security_shedule</text>
     </article>
     
     <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" group="Diary">
-        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="400" y="650" width="300" height="300">ui\ui_icon_photo</texture>
         <text>agr_nii_security_plan</text>
     </article>
 
     <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" group="Diary">
-        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="500" y="350" width="500" height="300">ui\ui_icon_photo</texture>
         <text>agr_krot_secret_info</text>
     </article>
 
