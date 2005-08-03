@@ -15,22 +15,36 @@
 
 
 struct SBoneProtections{
-	typedef xr_map<s16,float>		storage_type;
+	struct BoneProtection {
+		float		koeff;
+		float		armour;
+	};
+	typedef xr_map<s16,BoneProtection>		storage_type;
 	typedef storage_type::iterator	storage_it;
-						SBoneProtections	()								{m_default = 1.0f;}
-	float				m_default;
+						SBoneProtections	()								{m_default.koeff = 1.0f; m_default.armour = 0;}
+	BoneProtection		m_default;
 	storage_type		m_bones_koeff;
 	void				reload				(const shared_str& outfit_section, CKinematics* kinematics);
 	float				getBoneProtection	(s16 bone_id);
+	float				getBoneArmour		(s16 bone_id);
 };
 
 float SBoneProtections::getBoneProtection	(s16 bone_id)
 {
 	storage_it it = m_bones_koeff.find(bone_id);
 	if( it != m_bones_koeff.end() )
-		return it->second;
+		return it->second.koeff;
 	else
-		return m_default;
+		return m_default.koeff;
+}
+
+float SBoneProtections::getBoneArmour	(s16 bone_id)
+{
+	storage_it it = m_bones_koeff.find(bone_id);
+	if( it != m_bones_koeff.end() )
+		return it->second.armour;
+	else
+		return m_default.armour;
 }
 
 void SBoneProtections::reload(const shared_str& outfit_section, CKinematics* kinematics)
@@ -44,15 +58,24 @@ void SBoneProtections::reload(const shared_str& outfit_section, CKinematics* kin
 
 	CInifile::Sect	&protections = pSettings->r_section(bone_sect);
 	for (CInifile::SectIt i=protections.begin(); protections.end() != i; ++i) {
-		float k = (float)atof( *(*i).second );
+//		float k = (float)atof( *(*i).second );
+		string256 buffer;
+		float Koeff = (float)atof( _GetItem(*(*i).second, 0, buffer) );
+		float Armour = (float)atof( _GetItem(*(*i).second, 1, buffer) );
+		
+		BoneProtection	BP;
+		BP.koeff = Koeff;
+		BP.armour = Armour;
+
 		if (!xr_strcmp(*(*i).first,"default"))
 		{
-			m_default	= k ;
+			m_default = BP;
 		}
-		else {
+		else 
+		{
 			s16	bone_id				= kinematics->LL_BoneID(i->first);
-			R_ASSERT2				(BI_NONE != bone_id, *(*i).first);
-			m_bones_koeff.insert(mk_pair(bone_id,k));
+			R_ASSERT2				(BI_NONE != bone_id, *(*i).first);			
+			m_bones_koeff.insert(mk_pair(bone_id,BP));
 		}
 	}
 
@@ -110,6 +133,9 @@ void CCustomOutfit::Load(LPCSTR section)
 		m_fPowerLoss = pSettings->r_float(section, "power_loss");
 	else
 		m_fPowerLoss = 1.0f;
+	//  [8/3/2005]
+	m_fHitFrac = READ_IF_EXISTS(pSettings, r_float, section, "hit_fraction",	0.1f);
+	//  [8/3/2005]
 }
 
 void CCustomOutfit::net_Destroy() 
@@ -170,6 +196,14 @@ float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type, s16 element)
 	float bone = m_boneProtection->getBoneProtection(element);
 	return 1.0f - fBase*bone;
 }
+
+float	CCustomOutfit::HitThruArmour(float hit_power, s16 element)
+{
+	float BoneArmour = m_boneProtection->getBoneArmour(element)*GetCondition();	
+	float NewHitPower = hit_power - BoneArmour/100.0f;
+	if (NewHitPower < hit_power*m_fHitFrac) return hit_power*m_fHitFrac;
+	return NewHitPower;
+};
 
 void	CCustomOutfit::OnMoveToSlot		()
 {

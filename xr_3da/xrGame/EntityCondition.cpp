@@ -385,7 +385,12 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 
 	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
 	if(!pOutfit) return hit_power;
-	float new_hit_power = hit_power*pOutfit->GetHitTypeProtection(hit_type,element);
+	float new_hit_power = hit_power;
+	if (hit_type == ALife::eHitTypeFireWound && GameID() != GAME_SINGLE)
+		new_hit_power = pOutfit->HitThruArmour(hit_power, element);
+	else
+		new_hit_power *= pOutfit->GetHitTypeProtection(hit_type,element);
+	
 	//увеличить изношенность костюма
 	pOutfit->Hit(hit_power, hit_type);
 
