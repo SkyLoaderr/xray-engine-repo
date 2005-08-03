@@ -3,8 +3,8 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-function printf()
-end
+--function printf()
+--end
 
 --' Эвалуатор, который синхронизирует менеджер.
 --' Мы уже в безраличном состоянии idle или нет
@@ -850,12 +850,15 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	else
 		self.subanim = 0
 	end
-	
+
+	local switched = false	
 	if self.target_state ~= state_name then
 		self.target_state = state_name
 --		printf("SETING_REWEAPON")
 		self.need_reweapon = true
+		switched = true
 	end
+
 	if state_lib.states[state_name].reset == true then
 		self.reset_state = true
 	else
@@ -863,7 +866,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	end
 	
 
-	if emerg ~= nil then
+	if switched and emerg ~= nil then
 --		if  self.animation:target_state() ~= state_lib.states[state_name].animation then
 			self.emerg.animation = emerg.animation
 			self.emerg.animation_nout = emerg.animation_nout
