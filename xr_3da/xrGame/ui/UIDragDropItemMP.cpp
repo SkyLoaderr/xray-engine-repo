@@ -40,7 +40,10 @@ void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bo
 		R_ASSERT(this_inventory);
 
 		CUIDragDropItemMP *pPossibleAddon = this_inventory->GetAddonByID(this, iAddonIndex);
-
+        
+		if (bAttach)
+			R_ASSERT(this_inventory->IsItemInBag(pPossibleAddon));
+		
 		AttachDetachAddon(pPossibleAddon, bAttach, bRealRepresentationSet);
 	}
 }

@@ -61,7 +61,7 @@ CUIBag::~CUIBag(){
 	xr_list<CUIDragDropItemMP*>::iterator it;
 
 	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
-		delete *it;
+		xr_delete(*it);
 }
 
 void CUIBag::GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx){
