@@ -150,6 +150,7 @@ public:
 	void ChangeTotalMoneyIndicator(shared_str newMoneyString);
 	// Показать (с анимацией) помледнте заработанные/отняные денежки
 	void DisplayMoneyChange(shared_str deltaMoney);
+	void DisplayMoneyBonus(shared_str bonus);
 	CUIStatic*	GetPDAOnline	() { return &UIPdaOnline; };
 	void	UpdateTeamsScore	(int t1, int t2);
 	void	SetRank				(int rank);

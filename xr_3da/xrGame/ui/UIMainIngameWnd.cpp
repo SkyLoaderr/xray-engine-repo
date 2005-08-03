@@ -1355,8 +1355,6 @@ void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 void CUIMainIngameWnd::ChangeTotalMoneyIndicator(shared_str newMoneyString)
 {
 	m_pMoneyIndicator->SetMoneyAmount(*newMoneyString);
-//	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(0);
-//	sp->str = newMoneyString;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1364,12 +1362,10 @@ void CUIMainIngameWnd::ChangeTotalMoneyIndicator(shared_str newMoneyString)
 void CUIMainIngameWnd::DisplayMoneyChange(shared_str deltaMoney)
 {
 	m_pMoneyIndicator->SetMoneyChange(*deltaMoney);
-//	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(1);
-//	sp->str				= deltaMoney;
-//	sp->effect.PlayAnimation();
-//	EffectParams *eff	= sp->effect.SetStyleParams(CUITextBanner::tbsFade);
-//	eff->bOn			= true;
-//	sp->effect.ResetAnimation(CUITextBanner::tbsFade);
+}
+
+void CUIMainIngameWnd::DisplayMoneyBonus(shared_str bonus){
+	m_pMoneyIndicator->SetMoneyBonus(*bonus);
 }
 
 //-----------------------------------------------------------------------------/
