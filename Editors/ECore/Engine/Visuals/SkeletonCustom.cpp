@@ -293,12 +293,12 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     xr_vector<xr_vector<u16> > groups;
     LL_GetBoneGroups(groups);
     for (u32 g=0; g<groups.size(); ++g){
-        Msg("groups %d",g);
+        Msg("part %d",g);
 	    for (u32 b=0; b<groups[g].size(); ++b){
-        	Msg("|- %d",b);
+        	Msg("|- %d (%s)",groups[g][b],LL_BoneName_dbg(groups[g][b]));
     	}	
     }
-*/    
+//*/    
 }
 
 #define PCOPY(a)	a = pFrom->a

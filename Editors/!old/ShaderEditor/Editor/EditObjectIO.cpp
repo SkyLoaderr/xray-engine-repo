@@ -25,17 +25,21 @@ bool CEditableObject::Load(const char* fname)
 
 bool CEditableObject::LoadObject(const char* fname)
 {
-    IReader* F = FS.r_open(fname); R_ASSERT(F);
-    IReader* OBJ = F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
-    R_ASSERT2(OBJ,"Corrupted file.");
-    bool bRes = Load(*OBJ);
-    OBJ->close();
-	FS.r_close(F);
-    if (bRes){ 
-    	m_LoadName 		= fname;
-        m_ObjectVersion = FS.get_file_age(fname);
+	if (FS.exist(fname)){
+        int age			= FS.get_file_age	(fname);		VERIFY3(age>0,"Invalid file age:",fname);
+        IReader* F 		= FS.r_open			(fname); 		R_ASSERT(F);
+        IReader* OBJ 	= F->open_chunk		(EOBJ_CHUNK_OBJECT_BODY);
+        R_ASSERT2		(OBJ,"Corrupted file.");
+        bool bRes 		= Load(*OBJ);
+        OBJ->close();
+        FS.r_close(F);
+        if (bRes){ 
+            m_LoadName 		= fname;
+            m_ObjectVersion = age; 
+        }
+        return bRes;
     }
-    return bRes;
+    return false;
 }
 #endif
 
@@ -67,7 +71,7 @@ bool CEditableObject::SaveObject(const char* fname)
         FS.w_close		(F);
 
         m_LoadName 		= fname;
-        m_ObjectVersion = FS.get_file_age(fname);
+        m_ObjectVersion = FS.get_file_age(fname); 	VERIFY3(m_ObjectVersion>0,"Invalid file age:",fname);
         return			true;
     }else{
     	return 			false;

@@ -125,13 +125,15 @@ protected:
     struct ECORE_API SSplit: public CSkeletonCollectorPacked{
     	shared_str		m_Shader;
         shared_str		m_Texture;
+        u16 			m_PartID;
         Fbox			m_Box;
+        U16Vec			m_UsedBones;
 
         // Progressive
 		ArbitraryList<VIPM_SWR>	m_SWR;// The records of the collapses.
 	    BOOL			m_b2Link;
     public:
-        SSplit			(CSurface* surf, const Fbox& bb);
+        SSplit			(CSurface* surf, const Fbox& bb, u16 part);
 
         bool			valid()
         {
@@ -158,7 +160,7 @@ protected:
 	SplitVec			m_Splits;
     Fbox 				m_Box;
 //----------------------------------------------------
-    int     			FindSplit			(LPCSTR shader, LPCSTR texture);
+    int     			FindSplit			(shared_str shader, shared_str texture, u16 part_id);
     void				ComputeBounding	()
     {
         m_Box.invalidate();

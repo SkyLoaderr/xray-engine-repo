@@ -97,11 +97,12 @@ CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &_bb, int apx_vert
 }
 //----------------------------------------------------
 
-CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollectorPacked(bb)
+CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb, u16 part):CSkeletonCollectorPacked(bb)
 {
 	m_b2Link	= FALSE;
-	m_Texture 	= surf->_Texture();
-	m_Shader	= surf->_ShaderName();
+    m_Shader	= surf->m_ShaderName;
+    m_Texture	= surf->m_Texture;
+    m_PartID 	= part;
 }
 //----------------------------------------------------
 
@@ -350,7 +351,7 @@ void CExportSkeleton::SSplit::CalculateTB()
     Fvector2	Tsize;
     Tsize.sub	(Tmax,Tmin);
     if ((Tsize.x>32)||(Tsize.y>32))
-    	Msg		("#!Surface [T:'%s', S:'%s'] has UV tiled more than 32 times.",m_Texture.c_str(),m_Shader.c_str());
+    	Msg		("#!Surface [T:'%s', S:'%s'] has UV tiled more than 32 times.",*m_Texture,*m_Shader);
     
     // 2. Recalc UV mapping
     for (v_idx=0; v_idx!=v_cnt; v_idx++){
@@ -518,14 +519,21 @@ void ComputeOBB_WML		(Fobb &B, FvectorVec& V)
 }
 //----------------------------------------------------
 
-int CExportSkeletonCustom::FindSplit(LPCSTR shader, LPCSTR texture)
+int CExportSkeletonCustom::FindSplit(shared_str shader, shared_str texture, u16 part_id)
 {
-	for (SplitIt it=m_Splits.begin(); it!=m_Splits.end(); it++){
-		if ((0==stricmp(*it->m_Texture,texture))&&(0==stricmp(*it->m_Shader,shader))) return it-m_Splits.begin();
-    }
+	for (SplitIt it=m_Splits.begin(); it!=m_Splits.end(); it++)
+		if (it->m_Shader.equal(shader)&&it->m_Texture.equal(texture)&&(it->m_PartID==part_id)) return it-m_Splits.begin();
     return -1;
 }
 //----------------------------------------------------
+
+IC void BuildGroups(CBone* B, U16Vec& tgt, u16 id, u16& last_id)
+{
+    if (B->IK_data.ik_flags.is(SJointIKData::flBreakable)) id = ++last_id;
+	tgt[B->SelfID]	= id;
+    for (BoneIt bone_it=B->children.begin(); bone_it!=B->children.end(); bone_it++)
+    	BuildGroups	(*bone_it,tgt,id,last_id);
+}
 
 bool CExportSkeleton::PrepareGeometry()
 {
@@ -549,56 +557,97 @@ bool CExportSkeleton::PrepareGeometry()
     SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"..Prepare skeleton geometry");
     pb->Inc		();
 
-    u32 mtl_cnt=0;
+    bool bBreakable		= false;
+    U16Vec   			bone_brk_parts(m_Source->BoneCount());
+    CBone* root 		= 0;
+    for (BoneIt bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++){
+	    CBone* B 		= *bone_it;
+    	if (B->IK_data.ik_flags.is(SJointIKData::flBreakable))	bBreakable 	= true;
+    	if (B->IsRoot()) 										root 		= B;
+    }
+    if (bBreakable){
+    	VERIFY 			(root);
+        u16 last_id		= 0;
+		BuildGroups    	(root,bone_brk_parts,0,last_id);
+    }
+/*
+	for (U16It uit=bone_brk_parts.begin(); uit!=bone_brk_parts.end(); uit++){
+    	Msg				("Bone: %s - Part: %d",*m_Source->GetBone(uit-bone_brk_parts.begin())->Name(),*uit);
+    }
+*/    
+    bool bRes			= true;
 	UI->SetStatus("..Split meshes");
+    U16Vec				tmp_bone_list;
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
+    	if (!bRes)		break;
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
         pb->Inc		();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
+	    	if (!bRes)	break;
             IntVec& face_lst = sp_it->second;
             CSurface* surf = sp_it->first;
             u32 dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
             R_ASSERT(dwTexCnt==1);
-            int mtl_idx = FindSplit(surf->_ShaderName(),surf->_Texture());
-            if (mtl_idx<0){
-            	m_Splits.push_back(SSplit(surf,m_Source->GetBox()));
-                mtl_idx=mtl_cnt++;
-            }
-            SSplit& split=m_Splits[mtl_idx];
             for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
+		    	if (!bRes)break;
             	int f_idx = *f_it;
-//.                st_Face& face = MESH->m_Faces[f_idx];
                 {
+                	BOOL b2Link	= FALSE;
                     SSkelVert v[3];
+					tmp_bone_list.clear_not_free();
                     for (int k=0; k<3; k++){
-//.                        st_FaceVert& 	fv 	= face.pv[k];
                         st_SVert& 		sv 	= MESH->m_SVertices[f_idx*3+k];
                         if ((sv.bone1==BI_NONE)||(sv.bone0==sv.bone1)){
 	                        v[k].set		(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
+                            tmp_bone_list.push_back	(sv.bone0);
                         }else{                                   
                         	if (fsimilar(sv.w,0.f,EPS_L)){ 
 		                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
+	                            tmp_bone_list.push_back	(sv.bone0);
                             }else if (fsimilar(sv.w,1.f,EPS_L)){
 		                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone1,sv.bone1);
-                            }else{
-                                split.m_b2Link = TRUE;     
+                                tmp_bone_list.push_back	(sv.bone1);
+	                        }else{
+                            	b2Link		= TRUE;
+//.								split.m_b2Link = TRUE;     
                                 v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone1);
+                                tmp_bone_list.push_back	(sv.bone0);
+                                tmp_bone_list.push_back	(sv.bone1);
                             }
                         }
                     }
+                    u16 bone_brk_part		= 0;
+                    if (bBreakable){
+                        std::sort			(tmp_bone_list.begin(),tmp_bone_list.end());
+                        U16It ne			= std::unique(tmp_bone_list.begin(),tmp_bone_list.end());
+                        tmp_bone_list.erase	(ne,tmp_bone_list.end());
+                        U16It tit			= tmp_bone_list.begin();
+                        bone_brk_part		= bone_brk_parts[*tit]; tit++;
+                        for (; tit!=tmp_bone_list.end(); tit++)
+                        	if (bone_brk_part!=bone_brk_parts[*tit]){
+                                ELog.Msg	(mtError,"Can't export object as breakable. Object have N-Link face(s).");
+                                bRes		= false;
+                            }                    	
+                    }
+                    // find split
+                    int mtl_idx 	= FindSplit(surf->m_ShaderName,surf->m_Texture,bone_brk_part);
+                    if (mtl_idx<0){
+                        m_Splits.push_back(SSplit(surf,m_Source->GetBox(),bone_brk_part));
+                        mtl_idx		= m_Splits.size()-1;
+                    }
+                    SSplit& split	= m_Splits[mtl_idx];
+                    split.m_b2Link 	= b2Link;
+                    split.m_UsedBones.insert(split.m_UsedBones.end(),tmp_bone_list.begin(),tmp_bone_list.end());
+                    // append face
                     split.add_face(v[0], v[1], v[2]);
 			        if (surf->m_Flags.is(CSurface::sf2Sided)){
                     	v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
                     	split.add_face	(v[0], v[2], v[1]);
                     }
                 }
-            }
-            if (!split.valid()){
-				ELog.Msg(mtError,"Degenerate split found (Material '%s'). Removed.",surf->_Name());
-                m_Splits.pop_back();
             }
         }
         // mesh fin
@@ -607,23 +656,38 @@ bool CExportSkeleton::PrepareGeometry()
         MESH->UnloadFNormals();
         pb->Inc		();
     }
-    UI->SetStatus("..Calculate TB");
+    UI->SetStatus	("..Calculate TB");
 
-    // calculate TB
-    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
-		split_it->CalculateTB();
-        pb->Inc		();
+    // check splits
+    if (bRes){
+        Msg				("Split statistic:");
+        for (int k=0; k<(int)m_Splits.size(); k++){
+            if (!m_Splits[k].valid()){
+                ELog.Msg		(mtError,"Empty split found (Shader/Texture: %s/%s). Removed.",*m_Splits[k].m_Shader,*m_Splits[k].m_Texture);
+                m_Splits.erase	(m_Splits.begin()+k); k--;
+            }else{
+                SSplit& split	= m_Splits[k];
+                std::sort		(split.m_UsedBones.begin(),split.m_UsedBones.end());
+                U16It ne		= std::unique(split.m_UsedBones.begin(),split.m_UsedBones.end());
+                split.m_UsedBones.erase	(ne,split.m_UsedBones.end());
+                Msg				(" - Split %d: [Bones: %d, Links: %d, Faces: %d, Verts: %d, BrPart: %d, Shader/Texture: '%s'/'%s']",k,split.m_UsedBones.size(),split.m_b2Link?2:1,split.getTS(),split.getVS(),split.m_PartID,*m_Splits[k].m_Shader,*m_Splits[k].m_Texture);
+            }
+        }
+        // calculate TB
+        for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+            split_it->CalculateTB();
+            pb->Inc		();
+        }
+        pb->Inc			();
+        // compute bounding
+        ComputeBounding	();
     }
-    pb->Inc			();
     UI->ProgressEnd(pb);
-
-    // coumpute bounding
-    ComputeBounding	();
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
 
-    return true;
+    return bRes;
 }
 
 bool CExportSkeleton::ExportGeometry(IWriter& F)
