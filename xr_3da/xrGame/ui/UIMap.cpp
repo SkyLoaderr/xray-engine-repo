@@ -303,7 +303,7 @@ void CUIGlobalMap::MoveWndDelta(const Fvector2& d)
 	m_mapWnd->UpdateScroll	();
 }
 
-void CUIGlobalMap::CalcOpenRect         (const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom)
+float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom)
 {
     Fvector2                    new_center_pt;
 	// calculate desired rect in new zoom
@@ -328,6 +328,14 @@ void CUIGlobalMap::CalcOpenRect         (const Fvector2& center_point, Frect& ma
 	if (r.y1>0.0f)	np.y		= 0.0f;
 	np.sub						(r.lt);
 	map_desired_rect.add		(np.x,np.y);
+	// calculate dist
+	Fvector2 cp0,cp1;
+	vis_abs_rect.getcenter		(cp0);
+	cp0.sub						(GetAbsolutePos());
+	cp0.div						(GetCurrentZoom());
+	map_desired_rect.getcenter	(cp1);
+	cp1.div						(tgt_zoom);
+	return cp0.distance_to		(cp1);
 }
 //////////////////////////////////////////////////////////////////////////
 

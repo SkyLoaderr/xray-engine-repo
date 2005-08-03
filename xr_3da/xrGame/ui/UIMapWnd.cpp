@@ -510,6 +510,7 @@ void CUIMapWnd::ResetActionPlanner()
 {
 	m_ActionPlanner->m_storage.set_property(1,false);
 	m_ActionPlanner->m_storage.set_property(2,false);
+	m_ActionPlanner->m_storage.set_property(3,false);
 }
 
 void CUIMapWnd::OnToolZoomInClicked	(CUIWindow* w, void*)

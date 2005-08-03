@@ -75,7 +75,7 @@ public:
 	CUIMapWnd*		MapWnd					() {return m_mapWnd;}
 	void			MoveWndDelta			(const Fvector2& d);
 
-	void			CalcOpenRect			(const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom);
+	float			CalcOpenRect			(const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom);
 
 	void			ClipByVisRect			();
 };

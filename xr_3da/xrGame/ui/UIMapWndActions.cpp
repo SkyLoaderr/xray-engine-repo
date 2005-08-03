@@ -49,15 +49,6 @@ public:
 	virtual	void	finalize			();
 };
 
-class CMapActionCenter : public CMapActionZoomControl {
-private:
-	typedef CMapActionZoomControl	inherited;
-public:
-					CMapActionCenter	(LPCSTR action_name) : inherited(action_name) {}
-	virtual	void	initialize			();
-	virtual	void	finalize			();
-};
-
 class CMapActionIdle : public CSomeMapAction {
 private:
 	typedef CSomeMapAction	inherited;
@@ -118,7 +109,8 @@ public:
 //-----------------------------------------------------------------------------
 
 using namespace UIMapWndActionsSpace;
-const float			map_changing_time			= 0.5f;//sec
+//const float		map_changing_time			= 1.5f;// sec
+const float			map_resize_speed			= 500.f;// m/s
 
 CMapActionPlanner::CMapActionPlanner	(){}
 CMapActionPlanner::~CMapActionPlanner	(){}
@@ -135,6 +127,8 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 	clear							();
 	m_storage.set_property		(1,false);
 	m_storage.set_property		(2,false);
+	m_storage.set_property		(3,false);
+
 	add_evaluator				(ePropTargetMapShown,	xr_new<CEvaluatorTargetMapShown>("ePropTargetMapShown"));
 	add_evaluator				(ePropMapMinimized,		xr_new<CEvaluatorMapMinimized>	("ePropMapMinimized"));
 	add_evaluator				(ePropMapResized,		xr_new<CEvaluatorMapResized>	("ePropMapResized"));
@@ -168,17 +162,16 @@ void CMapActionPlanner::setup		(CUIMapWnd *object)
 void CMapActionZoomControl::initialize	()
 {
 	inherited::initialize		();
-	m_endMovingTime				= Device.fTimeGlobal+map_changing_time;
-
-	m_object->GlobalMap()->CalcOpenRect	(m_object->m_tgtCenter,m_desiredMapRect,m_targetZoom);
-	m_object->GlobalMap()->SetLocked	(true);
+	float dist					= m_object->GlobalMap()->CalcOpenRect(m_object->m_tgtCenter,m_desiredMapRect,m_targetZoom);
+	m_endMovingTime				= Device.fTimeGlobal+dist/map_resize_speed;
+//	m_object->GlobalMap()->SetLocked	(true);
 }
 
 void CMapActionZoomControl::finalize	()
 {
 	inherited::finalize					();
 	m_object->UpdateScroll				();
-	m_object->GlobalMap()->SetLocked	(false);
+//	m_object->GlobalMap()->SetLocked	(false);
 }
 
 void CMapActionZoomControl::execute		()
@@ -198,6 +191,7 @@ void CMapActionZoomControl::execute		()
 		gm->SetWndRect		(current_rect);
 	}else{
 		gm->SetWndRect		(m_desiredMapRect);
+		m_storage->set_property	(3,true);
 	}	
 
 	gm->Update				();
@@ -229,17 +223,6 @@ void CMapActionMinimize::finalize()
 }
 
 //-----------------------------------------------------------------------------
-void CMapActionCenter::initialize()
-{
-	m_targetZoom				= m_object->GetZoom();
-	inherited::initialize();
-}
-
-void CMapActionCenter::finalize		()
-{
-	inherited::finalize				();
-}
-//-----------------------------------------------------------------------------
 void CMapActionIdle::initialize	()
 {
 	inherited::initialize		();
@@ -254,6 +237,7 @@ void CMapActionIdle::execute	()
 	inherited::execute			();
 	m_storage->set_property	(1,true);
 	m_storage->set_property	(2,false);
+	m_storage->set_property	(3,false);
 }
 //-----------------------------------------------------------------------------
 
@@ -265,7 +249,7 @@ bool CEvaluatorTargetMapShown::evaluate()
 	pt.mul						(m_object->GlobalMap()->GetCurrentZoom());
 	pt.add						(m_object->GlobalMap()->GetAbsolutePos());
 	Frect	rect	=	m_object->ActiveMapRect();
-			//rect.grow	(rect.width()/2.f,rect.height()/2.f);
+			rect.grow	(rect.width(),rect.height());
 	if (rect.in(pt))	{
 		m_storage->set_property	(2,true);
 		return true;
@@ -285,7 +269,6 @@ bool CEvaluatorMapMinimized::evaluate	()
 bool CEvaluatorMapResized::evaluate			()
 {
 	if(m_storage->property(1)) return true;
-	bool res = !!fsimilar(m_object->GlobalMap()->GetCurrentZoom(),m_object->GetZoom(),EPS );
-	return res;
+	return m_storage->property(3);
 }
 //-----------------------------------------------------------------------------
