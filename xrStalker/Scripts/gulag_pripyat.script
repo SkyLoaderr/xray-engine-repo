@@ -31,7 +31,7 @@ function load_job_followers(sj, gname, type, squad, groups)
 	-- À»ƒ≈– - œ–»Œ–»“≈“ 2,3
 	-----------------------------------------------------------------------
 	--- state: kamp
-	t = { section = "logic@pri_followers_leader_kamp",
+	t = { section = "logic@pri_followers_leader_wait",
 		idle = 0,
 		prior = 2, state = { state_kamp },
 		squad = squad, group = groups[1],

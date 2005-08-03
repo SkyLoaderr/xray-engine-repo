@@ -26,8 +26,8 @@ use_wpn = false
 ;-------------------------------------------------------------------------------------------------
 
 ;--- leader: kamp --------------------------------------------------------------------------------
-[logic@pri_followers_leader_kamp]
-active = kamp@pri_followers_leader_kamp
+[logic@pri_followers_leader_wait]
+active = walker@pri_followers_leader_wait
 combat_ignore = combat_ignore
 
 [kamp@pri_followers_leader_kamp]
@@ -36,7 +36,7 @@ meet = meet@def
 on_info = {+pri_followers_leader_hello} walker@pri_followers_leader_hello
 combat_ignore_cond = always
 
-[walker@pri_followers_leader_hello]
+[walker@pri_followers_leader_wait]
 path_walk = leader_hello_walk
 path_look = leader_hello_look
 meet = meet@leader
