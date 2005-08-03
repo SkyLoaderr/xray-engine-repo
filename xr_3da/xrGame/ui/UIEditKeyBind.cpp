@@ -62,12 +62,17 @@ bool CUIEditKeyBind::OnKeyboard(int dik, EUIMessages keyboard_action){
 	if (CUILabel::OnKeyboard(dik, keyboard_action))
 		return true;
 
+	string64 message;
 	if (m_bEditMode)
-	{
+	{		
 		m_val = GetKey(dik);
-		SetText(GetKeyName(dik));
+		strcpy(message,m_entry.c_str());
+		const char* kn = GetKeyName(dik);
+		strcat(message,"=");strcat(message,kn);		
+		SetText(kn);
 		OnFocusLost();
 		m_bChanged = true;
+		SendMessage2Group("key_binding",message);
 		return true;
 	}
 	return false;
@@ -101,6 +106,23 @@ void CUIEditKeyBind::SaveValue(){
         BindAction2Key(m_val.c_str());
 		m_bChanged = false;
 	}
+}
+
+void CUIEditKeyBind::OnMessage(const char* message){
+	// message = "command=key"
+	int eq = (int)strcspn(message,"=");
+	if (0 != xr_strcmp(m_lines.GetText(),message + eq + 1))
+		return;
+
+	string64 command;
+	strcpy(command,message);
+	command[eq] = 0;
+
+    if (0 == xr_strcmp(m_entry.c_str(),command))
+		return;
+
+	SetText("");
+	m_val = "";
 }
 
 string64 get_key_str;

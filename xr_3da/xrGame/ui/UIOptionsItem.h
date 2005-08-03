@@ -16,7 +16,7 @@ protected:
 	virtual void	SaveValue()			=0;
 			
 			void		SendMessage2Group(const char* group, const char* message);
-	virtual	void		OnMessage(const char* group, const char* message);
+	virtual	void		OnMessage(const char* message);
 
 			// key binding
 			void		BindAction2Key(const char* val);

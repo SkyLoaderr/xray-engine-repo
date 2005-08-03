@@ -44,7 +44,7 @@ void CUIOptionsManager::SendMessage2Group(const char* group, const char* message
 	R_ASSERT2(m_groups.end() != it, "invalid group name");
 
 	for (u32 i = 0; i < (*it).second.size(); i++)
-		(*it).second[i]->OnMessage(group, message);
+		(*it).second[i]->OnMessage(message);
 }
 
 void CUIOptionsManager::SetCurrentValues(const char* group){

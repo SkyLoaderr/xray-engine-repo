@@ -23,7 +23,7 @@ void CUIOptionsItem::SendMessage2Group(const char* group, const char* message){
 	m_optionsManager.SendMessage2Group(group,message);
 }
 
-void CUIOptionsItem::OnMessage(const char* group, const char* message){
+void CUIOptionsItem::OnMessage(const char* message){
 	// do nothing
 }
 
@@ -39,16 +39,18 @@ void CUIOptionsItem::SaveOptStringValue(const char* val){
 }
 
 void CUIOptionsItem::BindAction2Key(const char* val){
-	if (!val || 0 == xr_strlen(val))
-		return;
-	xr_string comm_bind = "bind ";
 	xr_string comm_unbind = "unbind ";
-	comm_bind += m_entry;
 	comm_unbind += m_entry;
-	comm_bind += " ";
-	comm_bind += val;
 	Console->Execute(comm_unbind.c_str());
-	Console->Execute(comm_bind.c_str());
+
+	if (val && xr_strlen(val))
+	{
+		xr_string comm_bind = "bind ";
+		comm_bind += m_entry;
+		comm_bind += " ";
+		comm_bind += val;
+		Console->Execute(comm_bind.c_str());
+	}	
 }
 
 void CUIOptionsItem::GetOptIntegerValue(int& val, int& min, int& max){

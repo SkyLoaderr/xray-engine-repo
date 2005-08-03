@@ -14,6 +14,7 @@ public:
 	// options item
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
+	virtual	void	OnMessage(const char* message);
 
 	// CUIWindow methods
 	virtual void Init(float x, float y, float width, float height);	
