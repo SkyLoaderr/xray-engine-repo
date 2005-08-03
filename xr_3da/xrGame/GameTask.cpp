@@ -1,33 +1,28 @@
-///////////////////////////////////////////////////////////////
-// GameTask.cpp
-// Класс игрового задания задания
-///////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "GameTask.h"
-#include "gameobject.h"
-#include "script_engine.h"
-#include "ai_space.h"
-#include "alife_simulator.h"
-#include "alife_story_registry.h"
-#include "script_game_object.h"
-#include "script_space.h"
-#include "object_broker.h"
 #include "ui/xrXMLParser.h"
 #include "encyclopedia_article.h"
 #include "map_location.h"
 #include "map_manager.h"
-ALife::_STORY_ID	story_id		(LPCSTR story_id);
-u16					storyId2GameId	(ALife::_STORY_ID);
-
 
 #include "level.h"
 #include "actor.h"
 #include "script_space.h"
+#include "script_engine.h"
+#include "script_engine.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 #include "ai_space.h"
 #include "alife_object_registry.h"
+#include "alife_simulator.h"
 #include "alife_story_registry.h"
-#include "script_engine.h"
+#include "game_object_space.h"
+#include "object_broker.h"
+
+
+ALife::_STORY_ID	story_id		(LPCSTR story_id);
+u16					storyId2GameId	(ALife::_STORY_ID);
+
 using namespace luabind;
 
 ALife::_STORY_ID	story_id	(LPCSTR story_id)
@@ -87,32 +82,33 @@ void CGameTask::Load(const TASK_ID& id)
 	int tag_num						= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"objective");
 
 	m_Objectives.clear		();
-	m_Objectives.resize		(tag_num);
 	for(int i=0; i<tag_num; i++)
 	{
-		g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.NavigateToNode("objective",i));
+		XML_NODE*	l_root = NULL;
+		l_root							= g_gameTaskXml.NavigateToNode("objective",i); 
+		g_gameTaskXml.SetLocalRoot		(l_root);
+		m_Objectives.push_back			(SGameTaskObjective(this,i));
+		SGameTaskObjective&				objective = m_Objectives.back();
 
-		SGameTaskObjective&				objective = m_Objectives[i];
 
-
-		LPCSTR tag_text					= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "text", 0, NULL);
+		LPCSTR tag_text					= g_gameTaskXml.Read(l_root, "text", 0, NULL);
 		objective.description			= tag_text;
-		tag_text						= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "article", 0, NULL);
+		tag_text						= g_gameTaskXml.Read(l_root, "article", 0, NULL);
 		if(tag_text)
 			objective.article_id		= tag_text;
 
 		objective.icon_texture_name		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "icon", 0, NULL);
 		if(objective.icon_texture_name.size()){
-			objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "x");
-			objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "y");
-			objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "width");
-			objective.icon_rect.y2			= g_gameTaskXml.ReadAttribFlt(g_gameTaskXml.GetLocalRoot(), "icon", 0, "height");
+			objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "x");
+			objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "y");
+			objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "width");
+			objective.icon_rect.y2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "height");
 		}
 
-		objective.map_location			= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "map_location_type", 0, NULL);
-		LPCSTR object_story_id			= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "object_story_id", 0, NULL);
+		objective.map_location			= g_gameTaskXml.Read(l_root, "map_location_type", 0, NULL);
+		LPCSTR object_story_id			= g_gameTaskXml.Read(l_root, "object_story_id", 0, NULL);
 		LPCSTR ddd;
-		ddd								= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "map_location_hidden", 0, NULL);
+		ddd								= g_gameTaskXml.Read(l_root, "map_location_hidden", 0, NULL);
 		if(ddd)
 			objective.def_location_enabled = false;
 
@@ -127,41 +123,73 @@ void CGameTask::Load(const TASK_ID& id)
 		}
 
 
-
-		int info_num					= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"infoportion_complete");
+//------infoportion_complete
+		int info_num					= g_gameTaskXml.GetNodesNum(l_root,"infoportion_complete");
 		objective.m_completeInfos.resize(info_num);
 		int j;
 		for(j=0; j<info_num; ++j)
-			objective.m_completeInfos[j]= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_complete", j, NULL);
+			objective.m_completeInfos[j]= g_gameTaskXml.Read(l_root, "infoportion_complete", j, NULL);
 
-		info_num						= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"infoportion_fail");
+//------infoportion_fail
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"infoportion_fail");
 		objective.m_failInfos.resize	(info_num);
 
 		for(j=0; j<info_num; ++j)
-			objective.m_failInfos[j]	= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_fail", j, NULL);
+			objective.m_failInfos[j]	= g_gameTaskXml.Read(l_root, "infoportion_fail", j, NULL);
 
-		objective.m_info_on_complete	= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_set_complete", 0, NULL);
-		objective.m_info_on_fail		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "infoportion_set_fail", 0, NULL);
+//------infoportion_set_complete
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"infoportion_set_complete");
+		objective.m_infos_on_complete.resize(info_num);
+		for(j=0; j<info_num; ++j)
+			objective.m_infos_on_complete[j]= g_gameTaskXml.Read(l_root, "infoportion_set_complete", j, NULL);
 
-		LPCSTR		str					= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "function_complete", 0, NULL);
-		if(str){
-			bool functor_exists			= ai().script_engine().functor(str ,objective.m_complete_lua_function);
+//------infoportion_set_fail
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"infoportion_set_fail");
+		objective.m_infos_on_fail.resize(info_num);
+		for(j=0; j<info_num; ++j)
+			objective.m_infos_on_fail[j]= g_gameTaskXml.Read(l_root, "infoportion_set_fail", j, NULL);
+
+
+//------function_complete
+		LPCSTR		str;
+		bool functor_exists;
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"function_complete");
+		objective.m_complete_lua_functions.resize(info_num);
+		for(j=0; j<info_num; ++j){
+			str							= g_gameTaskXml.Read(l_root, "function_complete", j, NULL);
+			functor_exists				= ai().script_engine().functor(str ,objective.m_complete_lua_functions[j]);
 			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
 		}
-		str								= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "function_fail", 0, NULL);
-		if(str){
-			bool functor_exists			= ai().script_engine().functor(str ,objective.m_fail_lua_function);
+
+
+//------function_fail
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"function_fail");
+		objective.m_fail_lua_functions.resize(info_num);
+		for(j=0; j<info_num; ++j){
+			str							= g_gameTaskXml.Read(l_root, "function_fail", j, NULL);
+			functor_exists				= ai().script_engine().functor(str ,objective.m_fail_lua_functions[j]);
 			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
 		}
 
-		LPCSTR s						= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "task_dependent", 0, NULL);
-		if(s)
-			objective.m_bTaskDependent	= true;
-		
-		if(i==0)						objective.m_bTaskDependent = true;
 		g_gameTaskXml.SetLocalRoot		(task_node);
 	}
 	g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.GetRoot());
+/*
+//perform consistency check
+	SGameTaskObjective& root_obj		= Objective(0);
+	bool b_root_compl					= root_obj.m_completeInfos.size()	|| root_obj.m_complete_lua_functions.size();
+	bool b_root_fail					= root_obj.m_failInfos.size()		|| root_obj.m_fail_lua_functions.size();
+	VERIFY3								(b_root_compl==b_root_fail,*m_ID,"incorrect task definition");
+	
+	for(u32 i = 0; i<m_Objectives.size(); ++i)
+	{
+		SGameTaskObjective& sub_obj			= Objective(i);
+		bool b_compl						= sub_obj.m_completeInfos.size()	|| sub_obj.m_complete_lua_functions.size();
+		bool b_fail							= sub_obj.m_failInfos.size()		|| sub_obj.m_fail_lua_functions.size();
+		VERIFY3								(b_compl==b_fail,*m_ID,"incorrect task objective definition");
+		VERIFY3								((b_compl==b_root_compl)&&(b_root_fail==b_fail),*m_ID,"incorrect task objective definition");
+	}
+*/
 }
 
 bool CGameTask::HighlightedSpotOnMap(int objective_id)
@@ -215,6 +243,18 @@ bool CGameTask::ShownLocations			()
 	return false;
 }
 
+SGameTaskObjective::SGameTaskObjective		(CGameTask* parent, int _idx)
+:description		(NULL),
+article_id			(NULL),
+map_location		(NULL),
+object_id			(u16(-1)),
+task_state			(eTaskStateInProgress),
+def_location_enabled(true),
+parent				(parent),
+idx					(_idx)
+{
+
+}
 
 CMapLocation* SGameTaskObjective::HasMapLocation		()
 {
@@ -226,53 +266,76 @@ void SGameTaskObjective::SetTaskState		(ETaskState new_state)
 {
 	task_state = new_state;
 	if( (new_state==eTaskStateFail) || (new_state==eTaskStateCompleted) ){
-		CMapLocation* ml = HasMapLocation();
-		if(ml)
-			Level().MapManager().RemoveMapLocation(map_location, object_id);
 
-		if( (task_state==eTaskStateFail)&&m_info_on_fail.size() ){
-				CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
-				actor->TransferInfo		(m_info_on_fail,true);
-		}else
-		if( (task_state==eTaskStateCompleted)&&m_info_on_complete.size() ){
-				CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
-				actor->TransferInfo		(m_info_on_complete,true);
-		}
+		if( task_state==eTaskStateFail )
+				SendInfo				(m_infos_on_complete);
+		else
+		if( task_state==eTaskStateCompleted )
+				SendInfo				(m_infos_on_fail);
+
+		//callback for scripters
+		ChangeStateCallback(parent->m_ID, idx, new_state);
 	}
 }
 
-ETaskState SGameTaskObjective::UpdateState()
+ETaskState SGameTaskObjective::UpdateState	()
 {
-	CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
-	
-//check complete infos
-	xr_vector<shared_str>::iterator it;
-	bool bRes = false;
-	for(it=m_completeInfos.begin(); it!=m_completeInfos.end(); ++it){
-		bRes = actor->HasInfo	((*it));
-		if(!bRes) break;
-	}
-	if(bRes)
-		return		eTaskStateCompleted;
-
 //check fail infos
-	for(it=m_failInfos.begin(); it!=m_failInfos.end(); ++it){
-		bRes = actor->HasInfo	((*it));
-		if(!bRes) break;
-	}
-	if(bRes)
+	if( CheckInfo(m_failInfos) )
 		return		eTaskStateFail;
-//check complete functor
-	if(m_complete_lua_function.is_valid())
-		bRes	= m_complete_lua_function();
-	if(bRes)
-		return		eTaskStateCompleted;
 
 //check fail functor
-	if(m_fail_lua_function.is_valid())
-		bRes	= m_fail_lua_function();
-	if(bRes)
+	if( CheckFunctions(m_fail_lua_functions) )
 		return		eTaskStateFail;
 	
+//check complete infos
+	if( CheckInfo(m_completeInfos) )
+		return		eTaskStateCompleted;
+
+
+//check complete functor
+	if( CheckFunctions(m_complete_lua_functions) )
+		return		eTaskStateCompleted;
+
+	
 	return TaskState();
+}
+
+void SGameTaskObjective::SendInfo		(xr_vector<shared_str>& v)
+{
+	CActor* actor						= smart_cast<CActor*>(Level().CurrentEntity()); VERIFY(actor);
+	xr_vector<shared_str>::iterator it	= v.begin();
+	for(;it!=v.end();++it)
+		actor->TransferInfo					((*it),true);
+
+}
+
+bool SGameTaskObjective::CheckInfo		(xr_vector<shared_str>& v)
+{
+	bool res = false;
+	CActor* actor						= smart_cast<CActor*>(Level().CurrentEntity()); VERIFY(actor);
+	xr_vector<shared_str>::iterator it	= v.begin();
+	for(;it!=v.end();++it){
+		res = actor->HasInfo					(*it);
+		if(!res) break;
+	}
+	return res;
+}
+
+bool SGameTaskObjective::CheckFunctions	(xr_vector<luabind::functor<bool> >& v)
+{
+	bool res = false;
+	xr_vector<luabind::functor<bool> >::iterator it	= v.begin();
+	for(;it!=v.end();++it){
+		if( (*it).is_valid() ) res = (*it)(*(parent->m_ID), idx);
+		if(!res) break;
+	}
+	return res;
+
+}
+
+void ChangeStateCallback(shared_str& task_id, int obj_id, ETaskState state){
+
+	CActor* actor			= smart_cast<CActor*>(Level().CurrentEntity()); VERIFY(actor);
+	actor->callback(GameObject::eTaskStateChange)(*task_id, obj_id, state);
 }

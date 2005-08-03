@@ -128,11 +128,18 @@ function  main()
 --	local n = level.debug_object( "_niva" )
 --   level.map_add_object_spot(n:id(),"heli_location","niva_super_car");
 
-	local info = "test_andy_info" 
-	db.actor:give_info_portion(info) 
+--	local info = "test_andy_info" 
+--	db.actor:give_info_portion(info) 
 	
 --	info = "tutorial_artefact_start" 
 --	db.actor:give_info_portion(info) 
+
+--	info = "agr_nii_security_plan_flash_have" 
+--	db.actor:give_info_portion(info) 
+
+	info = "gar_bandits_killed" 
+	db.actor:give_info_portion(info) 
+	
 	
 	
 end

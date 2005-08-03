@@ -598,9 +598,10 @@ void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
 	shared_str spot					= "user"; 
 	CMapLocation* ml				= Level().MapManager().AddUserLocation(spot, lm->MapName(), pos);
 	CGameTask* t					= pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
-	t->m_Objectives[0].SetTaskState	(eTaskUserDefined);
 	t->m_Objectives[0].object_id	= ml->ObjectID();
 	t->m_Objectives[0].map_location	= spot;
+	pActor->GameTaskManager().SetTaskState(t, 0, eTaskUserDefined);
+
 	m_flags.set						(lmUserSpotAdd, FALSE);
 	m_ToolBar[eAddSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
 }

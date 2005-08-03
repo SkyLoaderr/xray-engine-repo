@@ -25,12 +25,15 @@ struct FindTaskByID{
 CGameTaskManager::CGameTaskManager()
 {
 	m_gametasks					= xr_new<CGameTaskWrapper>();
+	m_flags.zero				();
+	m_flags.set					(eChanged, TRUE);
 }
 
 CGameTaskManager::~CGameTaskManager()
 {
-	delete_data		(m_gametasks);
+	delete_data							(m_gametasks);
 }
+
 void CGameTaskManager::initialize(u16 id)
 {
 	m_gametasks->registry().init(id);// actor's id
@@ -54,6 +57,7 @@ CGameTask* CGameTaskManager::HasGameTask(const TASK_ID& id)
 CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting)
 {
 	if(bCheckExisting && HasGameTask(id)) return NULL;
+	m_flags.set					(eChanged, TRUE);
 
 	GameTasks().push_back			(SGameTaskKey(id) );
 
@@ -83,83 +87,104 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 	return t;
 }
 
-void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskState state)
+void CGameTaskManager::SetTaskState(CGameTask* t, int objective_num, ETaskState state)
 {
-	CGameTask* t= HasGameTask(id);
-	if(NULL==t){
-		Msg		("actor does not has task [%s]", *id);
-		return;
-	}
+	m_flags.set					(eChanged, TRUE);
+	bool isRoot =				(objective_num==0);
+	if ((u32)objective_num >= t->m_Objectives.size()) {Msg("wrong objective num for [%s]", *(t->m_ID)); return;}
 
-	if ((std::size_t)objective_num >= t->m_Objectives.size()) {
-		Msg		("wrong objective num for [%s]", *id);
-		return;
-	}
+	SGameTaskObjective& o	= t->Objective(objective_num);
+	CMapLocation* ml		= o.HasMapLocation();
+	if(((state==eTaskStateFail)||(state==eTaskStateCompleted))&&ml )
+		Level().MapManager().RemoveMapLocation(o.map_location, o.object_id);
 
-	if(t->m_Objectives[objective_num].m_bTaskDependent && state == eTaskStateFail) objective_num = 0;//for all
+	o.SetTaskState			(state);
 
-	bool bHasPolinter = t->HighlightedSpotOnMap(objective_num);
-
-	t->m_Objectives[objective_num].SetTaskState	(state);
-
-	if(0 == objective_num){//setState for task and all sub-tasks
+	if(isRoot){//setState for task and all sub-tasks
 		
 		for(u32 i=0; i<t->m_Objectives.size();++i)
-			if( t->m_Objectives[i].TaskState()==eTaskStateInProgress )
-				t->m_Objectives[i].SetTaskState(state);
+			if( t->Objective(i).TaskState()==eTaskStateInProgress )
+				SetTaskState(t,i,state);
 	}
 	
-	if(0!=objective_num && objective_num != (int)t->m_Objectives.size()-1){
-		SGameTaskObjective&	obj = t->m_Objectives[objective_num+1];
-		if( (false == obj.def_location_enabled)						&& 
-			(obj.TaskState()==eTaskStateInProgress)	&&
-			(obj.map_location.size())		){
-				CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
-				ml->DisablePointer			();
-			}
-		if(bHasPolinter && (obj.TaskState()==eTaskStateInProgress) && (obj.HasMapLocation()) )
-			t->HighlightSpotOnMap(objective_num+1, true);
-	}
-
-	//если мы устанавливаем финальное состояние для основного задания, то
-	//запомнить время выполнения
 	if(0 == objective_num && eTaskStateCompleted == state || eTaskStateFail == state)
-	{
 		t->m_FinishTime = Level().GetGameTime();
-	}
+
+
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(pGameSP) 
 		pGameSP->PdaMenu->UIEventsWnd->Reload();
+}
 
+void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskState state)
+{
+	CGameTask* t				= HasGameTask(id);
+	if (NULL==t)				{Msg("actor does not has task [%s]", *id);	return;}
+	SetTaskState				(t,objective_num, state);
 }
 
 void CGameTaskManager::UpdateTasks						()
 {
-	return;
-	//GameTasks_it it		= GameTasks().begin();
-	//GameTasks_it it_e	= GameTasks().end();
-	//for( ;it!=it_e; ++it ){
-	//	CGameTask* t		= (*it).game_task;
-	//	if(t->m_Objectives[0].TaskState()!=eTaskStateInProgress) continue;
+	GameTasks_it it		= GameTasks().begin();
+	GameTasks_it it_e	= GameTasks().end();
+	for( ;it!=it_e; ++it ){
+		CGameTask* t		= (*it).game_task;
+		for(u32 i=0; i<t->m_Objectives.size() ;++i){
+			SGameTaskObjective& obj = t->Objective(i);
+			if(obj.TaskState()!=eTaskStateInProgress && i==0) break;
+			if(obj.TaskState()!=eTaskStateInProgress) continue;
 
-	//	for(u32 i=0; i<t->m_Objectives.size() ;++i){
-	//		SGameTaskObjective& obj = t->m_Objectives[i];
-	//		if(obj.TaskState()!=eTaskStateInProgress) continue;
+			ETaskState state = obj.UpdateState();
 
-	//		ETaskState state = obj.UpdateState();
+			if( (state==eTaskStateFail || state==eTaskStateCompleted))
+				SetTaskState(t, i, state);
+		}
+	}
 
-	//		if( (state==eTaskStateFail || state==eTaskStateCompleted)){
-	//			SetTaskState(t->m_ID, i, state);
-	//			return;
-	//		}
-	//	}
-	//}
+	if(	m_flags.test(eChanged) )
+		UpdateActiveTask	();
 }
 
 
 void CGameTaskManager::UpdateActiveTask				()
 {
+	GameTasks_it it			= GameTasks().begin();
+	GameTasks_it it_e		= GameTasks().end();
+	bool bHasSpotPointer	= false;
+	for( ;it!=it_e; ++it ){
+		CGameTask* t		= (*it).game_task;
+		if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
+		for(u32 i=0; i<t->m_Objectives.size() ;++i){
+			SGameTaskObjective& obj = t->Objective(i);
+			//1-st enable hidden locations
+			if(	(false==obj.def_location_enabled)&&t->Objective(i-1).TaskState()!=eTaskStateInProgress ){
+				if(obj.object_id!=u16(-1) && obj.map_location.size()){
+					CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
+					ml->DisablePointer			();
+				}
+			bHasSpotPointer = bHasSpotPointer || t->HighlightedSpotOnMap(i);
+			}
+		}
+	}
+	// highlight new spot pointer
+	if(false==bHasSpotPointer){
+		it			= GameTasks().begin();
+		bool bDone=false;
+		for( ;(it!=it_e)&&(!bDone); ++it ){
+			CGameTask* t		= (*it).game_task;
+			if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
+			for(u32 i=0; i<t->m_Objectives.size() ;++i){
+				if(t->Objective(i).HasMapLocation()){
+					t->HighlightSpotOnMap(i,true);
+					bDone = true;
+				}else
+				if(i!=0)
+					bDone = true;
+			}
+		}
+	}
 
+	m_flags.set					(eChanged, FALSE);
 }
 
 
