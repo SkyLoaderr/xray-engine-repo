@@ -35,7 +35,6 @@ float CWeapon::GetFireDispersion	(float cartridge_k) const
 	VERIFY (pOwner);
 
 	float parent_disp = pOwner->GetWeaponAccuracy();
-	parent_disp *= m_fParentDispersionModifier;
 	fire_disp += parent_disp;
 
 	return fire_disp;

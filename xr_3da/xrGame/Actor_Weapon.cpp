@@ -23,27 +23,26 @@ float CActor::GetWeaponAccuracy() const
 	if(m_bZoomAimingMode&&W&&!W->IsRotatingToZoom())
 		return m_fDispAim;
 
-	float dispersion = m_fDispBase;
+	float dispersion = m_fDispBase*W->Get_PDM_Base();
 
 	CEntity::SEntityState state;
 	if (g_State(state))
 	{
 		// angular factor
-		dispersion *= (1.f + (state.fAVelocity/VEL_A_MAX)*m_fDispVelFactor);
+		dispersion *= (1.f + (state.fAVelocity/VEL_A_MAX)*m_fDispVelFactor*W->Get_PDM_Vel_F());
 //		Msg("--- base=[%f] angular disp=[%f]",m_fDispBase, dispersion);
 		// linear movement factor
 		bool bAccelerated = isActorAccelerated(mstate_real, IsZoomAimingMode());
 		if( bAccelerated )
-			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*
-			m_fDispVelFactor*(1.f + m_fDispAccelFactor));
+			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor*W->Get_PDM_Vel_F()*(1.f + m_fDispAccelFactor*W->Get_PDM_Accel_F()));
 		else
-			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor);
+			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor*W->Get_PDM_Vel_F());
 
 		if (state.bCrouch){	
-			dispersion *= (1.f + m_fDispCrouchFactor);
+			dispersion *= (1.f + m_fDispCrouchFactor*W->Get_PDM_Crouch());
 
 			if(!bAccelerated )
-				dispersion *= (1.f + m_fDispCrouchNoAccelFactor);
+				dispersion *= (1.f + m_fDispCrouchNoAccelFactor*W->Get_PDM_Crouch_NA());
 		}
 	}
 

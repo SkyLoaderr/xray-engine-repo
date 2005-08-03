@@ -388,7 +388,11 @@ protected:
 	float					camMaxAngleHorz;
 	float					camStepAngleHorz;
 	//  [8/2/2005]
-	float					m_fParentDispersionModifier;
+	float					m_fPDM_disp_base			;
+	float					m_fPDM_disp_vel_factor		;
+	float					m_fPDM_disp_accel_factor	;
+	float					m_fPDM_disp_crouch			;
+	float					m_fPDM_disp_crouch_no_acc	;
 	//  [8/2/2005]
 
 protected:
@@ -430,7 +434,14 @@ public:
 													u32 ParentID = 0xffffffff);
 
 	//показывать ли кол-во патронов на экране
-			bool			ShowAmmo			() {return m_bShowAmmo;	}
+			bool			ShowAmmo			() {return m_bShowAmmo;	}		
+	//  [8/3/2005]
+	virtual	float			Get_PDM_Base		()	const	{ return m_fPDM_disp_base			; };
+	virtual	float			Get_PDM_Vel_F		()	const	{ return m_fPDM_disp_vel_factor		; };
+	virtual	float			Get_PDM_Accel_F		()	const	{ return m_fPDM_disp_accel_factor	; };
+	virtual	float			Get_PDM_Crouch		()	const	{ return m_fPDM_disp_crouch			; };
+	virtual	float			Get_PDM_Crouch_NA	()	const	{ return m_fPDM_disp_crouch_no_acc	; };
+	//  [8/3/2005]
 protected:
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine
