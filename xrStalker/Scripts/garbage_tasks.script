@@ -28,7 +28,7 @@ function proceed()
 		actor:dont_has_info("gar_after_battle") 
 	then
 		actor:give_info_portion("gar_after_battle")
-		level_tasks.set_task_state(task.completed, "gar_help_dymon", 1)
+		level_tasks.set_task_state(task.completed, "gar_help_dymon", 2)
 	end
 	
 	if actor:has_info("gar_hellcar_death") and
@@ -37,7 +37,7 @@ function proceed()
 		actor:dont_has_info("gar_after_battle") and
 		actor:dont_has_info("gar_hellcar_dialog_end")		
 	then
-		level_tasks.set_task_state(task.fail, "gar_help_dymon", 2)
+		level_tasks.set_task_state(task.fail, "gar_help_dymon", 1)
 		actor:give_info_portion("gar_hellcar_dialog_end")
 	end
 	
@@ -113,6 +113,88 @@ function process_info_portion(info_id)
 
 	elseif info_id == "gar_wounded_fight" then
 		level_tasks.remove_location(109, "gar_wounded_location")
+	
+	
+--  Fake_spots
+
+	elseif info_id == "gar_add_fake_spot1" then
+		level_tasks.add_location(112, "gar_spot_swamp_location")
+		
+	elseif info_id == "gar_remove_fake_spot1" then
+		level_tasks.remove_location(112, "gar_spot_swamp_location")
+	
+			
+	elseif info_id == "gar_add_fake_spot2" then
+		level_tasks.add_location(113, "gar_spot_secret1_location")
+		
+	elseif info_id == "gar_remove_fake_spot2" then
+		level_tasks.remove_location(113, "gar_spot_secret1_location")
+		
+		
+	elseif info_id == "gar_add_fake_spot3" then
+		level_tasks.add_location(114, "gar_spot_car_graveyard_location")
+		
+	elseif info_id == "gar_remove_fake_spot3" then
+		level_tasks.remove_location(114, "gar_spot_car_graveyard_location")	
+	
+	
+	elseif info_id == "gar_add_fake_spot4" then
+		level_tasks.add_location(115, "gar_spot_dolg_blokpost_location")
+		
+	elseif info_id == "gar_remove_fake_spot4" then
+		level_tasks.remove_location(115, "gar_spot_dolg_blokpost_location")
+		
+		
+	elseif info_id == "gar_add_fake_spot5" then
+		level_tasks.add_location(116, "gar_spot_angar_location")
+		
+	elseif info_id == "gar_remove_fake_spot5" then
+		level_tasks.remove_location(116, "gar_spot_angar_location")
+		
+		
+	elseif info_id == "gar_add_fake_spot6" then
+		level_tasks.add_location(117, "gar_spot_bandit_agr_location")
+		
+	elseif info_id == "gar_remove_fake_spot6" then
+		level_tasks.remove_location(117, "gar_spot_bandit_agr_location")
+		
+		
+	elseif info_id == "gar_add_fake_spot7" then
+		level_tasks.add_location(118, "gar_spot_tunnel_location")
+		
+	elseif info_id == "gar_remove_fake_spot7" then
+		level_tasks.remove_location(118, "gar_spot_tunnel_location")							
+		
+		
+	elseif info_id == "gar_add_fake_spot8" then
+		level_tasks.add_location(119, "gar_spot_dogs_forest_location")
+		
+	elseif info_id == "gar_remove_fake_spot8" then
+		level_tasks.remove_location(119, "gar_spot_dogs_forest_location")		
+		
+		
+	elseif info_id == "gar_add_fake_spot9" then
+		level_tasks.add_location(120, "gar_spot_trash1_location")
+		
+	elseif info_id == "gar_remove_fake_spot9" then
+		level_tasks.remove_location(120, "gar_spot_trash1_location")		
+		
+		
+	elseif info_id == "gar_add_fake_spot10" then
+		level_tasks.add_location(121, "gar_spot_trash2_location")
+		
+	elseif info_id == "gar_remove_fake_spot10" then
+		level_tasks.remove_location(121, "gar_spot_trash2_location")
+		
+		
+	elseif info_id == "gar_add_fake_spot11" then
+		level_tasks.add_location(122, "gar_spot_trash3_location")
+		
+	elseif info_id == "gar_remove_fake_spot11" then
+		level_tasks.remove_location(122, "gar_spot_trash3_location")				
+		
+		
+		
 		
 --	elseif info_id == "gar_free_pass" then
 --		level_tasks.remove_location(108, "gar_dolg_blockpost_location")
