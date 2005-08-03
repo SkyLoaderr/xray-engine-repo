@@ -165,7 +165,7 @@ function motivator_binder:stalker_death_impulse(victim, who)
 	local pshell = victim:get_physics_shell()
 	local dir = actor_pos:sub(npc_pos)
 	local constant = 5000
-	pshell:apply_force(constant * dir.x, constant * dir.y, constant * dir.z)
+	--pshell:apply_force(constant * dir.x, constant * dir.y, constant * dir.z)
 end
 
 function motivator_binder:update(delta)
