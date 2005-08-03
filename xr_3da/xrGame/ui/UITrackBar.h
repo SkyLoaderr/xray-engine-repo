@@ -21,9 +21,7 @@ public:
 	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Enable(bool status);
 	virtual void OnMouseDown(bool left_button = true);
-	
-
-			
+    virtual void Update();			
 
 protected:
 			void UpdatePos();

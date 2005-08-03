@@ -134,3 +134,10 @@ void CUITrackBar::UpdatePos(){
 	m_pSlider->SetWndPos(pos);
 	SaveValue();
 }
+
+#include "../../xr_input.h"
+void CUITrackBar::Update(){
+	if (m_bCursorOverWindow)
+		if (pInput->iGetAsyncBtnState(0))
+			OnMouseDown(true);	
+}
