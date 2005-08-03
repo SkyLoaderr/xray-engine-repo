@@ -8,8 +8,10 @@
 
 class CUI3tButton;
 class CUIFrameLineWnd;
+class CUITrackButton;
 
 class CUITrackBar : public CUIWindow, public CUIOptionsItem {
+	friend class CUITrackButton;
 public:
 	CUITrackBar();
 	~CUITrackBar();
@@ -18,15 +20,16 @@ public:
 	virtual void	SaveValue();
 	// CUIWindow
 	virtual void Init(float x, float y, float width, float height);
-	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
+//	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Enable(bool status);
-	virtual void OnMouseDown(bool left_button = true);
+	//virtual void OnMouseDown(bool left_button = true);
     virtual void Update();			
 
 protected:
 			void UpdatePos();
+			void UpdatePosRelativeToMouse();
 
-    CUI3tButton*		m_pSlider;
+    CUITrackButton*		m_pSlider;
 	CUIFrameLineWnd*	m_pFrameLine;
 	CUIFrameLineWnd*	m_pFrameLine_d;
 	float				m_val;
