@@ -304,6 +304,25 @@ $spawn			= "monsters\arena\burer_arena"
 panic_threshold		= 0.05
 species				= arena_monstr
 
+explosion_immunity		= 0.5
+fire_wound_immunity		= 0.1
+
+; Gravi Strike
+Gravi_Speed					= 76	; meter/sec	
+Gravi_Step					= 2		; meter
+Gravi_Time_To_Hold			= 1200	; milisec
+Gravi_Radius				= 3.0
+Gravi_Impulse_To_Objects	= 60.0
+Gravi_Impulse_To_Enemy		= 400.0
+Gravi_Hit_Power				= 50.0
+
+; Tele Strike
+Tele_Max_Handled_Objects = 4	;1;3	
+Tele_Time_To_Hold		 = 300	;600
+Tele_Object_Min_Mass	 = 30.0
+Tele_Object_Max_Mass	 = 2000.0 ;1000.0
+Tele_Find_Radius		 = 15	;7.0
+
 
 [burer_indoor]:m_burer_e
 $spawn			= "monsters\burers\burer_indoor"
