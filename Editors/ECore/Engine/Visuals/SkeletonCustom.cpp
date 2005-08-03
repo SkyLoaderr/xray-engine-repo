@@ -289,16 +289,58 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	Update_Callback	= NULL;
 	// reset update frame
 	wm_frame		= u32(-1);
-/*
-    xr_vector<xr_vector<u16> > groups;
-    LL_GetBoneGroups(groups);
-    for (u32 g=0; g<groups.size(); ++g){
-        Msg("part %d",g);
-	    for (u32 b=0; b<groups[g].size(); ++b){
-        	Msg("|- %d (%s)",groups[g][b],LL_BoneName_dbg(groups[g][b]));
-    	}	
+
+    LL_Validate		();
+}
+
+IC void iBuildGroups(CBoneData* B, U16Vec& tgt, u16 id, u16& last_id)
+{
+    if (B->IK_data.ik_flags.is(SJointIKData::flBreakable)) id = ++last_id;
+	tgt[B->GetSelfID()]	= id;
+    for (xr_vector<CBoneData*>::iterator bone_it=B->children.begin(); bone_it!=B->children.end(); bone_it++)
+    	iBuildGroups	(*bone_it,tgt,id,last_id);
+}
+
+void CKinematics::LL_Validate()
+{
+	// check breakable
+    BOOL bCheckBreakable			= FALSE;
+    for (u16 k=0; k<LL_BoneCount(); k++){
+        if (LL_GetData(k).IK_data.ik_flags.is(SJointIKData::flBreakable)) {
+        	bCheckBreakable			= TRUE;
+            break;
+        }
     }
-//*/    
+
+    if (bCheckBreakable){
+        BOOL bValidBreakable		= TRUE;
+
+        xr_vector<xr_vector<u16> > 	groups;
+        LL_GetBoneGroups			(groups);
+
+        xr_vector<u16>   			b_parts(LL_BoneCount(),BI_NONE);
+        CBoneData* root 			= &LL_GetData(LL_GetBoneRoot());
+        u16 last_id					= 0;
+        iBuildGroups    			(root,b_parts,0,last_id);
+
+        for (u16 g=0; g<groups.size(); ++g){
+            xr_vector<u16>&	group	= groups[g];
+            u16 bp_id				= b_parts[group[0]];
+            for (u32 b=1; b<groups[g].size(); b++)
+                if (bp_id!=b_parts[groups[g][b]]){ bValidBreakable = FALSE; break; }
+        }
+    
+        if (bValidBreakable==FALSE){
+            for (u16 k=0; k<LL_BoneCount(); k++){
+                CBoneData& BD		= LL_GetData(k);
+                if (BD.IK_data.ik_flags.is(SJointIKData::flBreakable))
+                    BD.IK_data.ik_flags.set(SJointIKData::flBreakable,FALSE);
+            }
+#ifdef DEBUG            
+            Msg						("! ERROR: Invalid breakable object: '%s'",*dbg_name);
+#endif
+        }
+    }
 }
 
 #define PCOPY(a)	a = pFrom->a

@@ -570,11 +570,11 @@ bool CExportSkeleton::PrepareGeometry()
         u16 last_id		= 0;
 		BuildGroups    	(root,bone_brk_parts,0,last_id);
     }
-/*
+//*
 	for (U16It uit=bone_brk_parts.begin(); uit!=bone_brk_parts.end(); uit++){
     	Msg				("Bone: %s - Part: %d",*m_Source->GetBone(uit-bone_brk_parts.begin())->Name(),*uit);
     }
-*/    
+//*/    
     bool bRes			= true;
 	UI->SetStatus("..Split meshes");
     U16Vec				tmp_bone_list;

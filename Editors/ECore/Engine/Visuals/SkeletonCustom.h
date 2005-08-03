@@ -171,6 +171,8 @@ protected:
 	virtual void				IBoneInstances_Destroy	();
 	void						Visibility_Invalidate	()	{ Update_Visibility=TRUE; };
 	void						Visibility_Update		()	;
+
+    void						LL_Validate				();
 public:
 	UpdateCallback				Update_Callback;
 	void*						Update_Callback_Param;
