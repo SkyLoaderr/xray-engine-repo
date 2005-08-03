@@ -1,0 +1,463 @@
+---------------------------------------------------------------------------------------------------------------------
+--	Схема озвучки
+--	автор:  Диденко Руслан  (Stohe)
+--	update: Чугай Александр (Chugai)
+----------------------------------------------------------------------------------------------------------------------
+local nstl = 20
+
+local snd_ini = ini_file("misc\\script_sound.ltx")
+
+theme = {}
+
+ph_snd_themes = {}           
+ph_snd_themes["music"] = {  "characters_voice\\human_01\\scenario\\megafon\\megafon_music_1",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_2",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_3",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_4",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_5",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_6",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_7",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_8",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_9",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_10",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_11",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_12",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_13",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_14",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_15"
+	                        }
+ph_snd_themes["alarm1"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_1",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_10",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_11",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_12",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_13"
+	                        }
+ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_2",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_3",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_4",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_5",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_6"
+	                      }
+ph_snd_themes["siren"] =  { "ambient\\siren2" }
+ph_snd_themes["bomb"] = {"detectors\\bomb_timer"}
+
+
+ph_snd_themes["radio_music"] = {"characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_4",
+	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_2",
+	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_3",
+	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_1"
+	                        }
+
+ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_1]],
+									   [[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_2]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_2]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_3]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_4]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_5]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_1]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_2]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_3]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_4]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_5]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_7]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_8]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_9]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_10]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_11]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_12]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_13]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_14]],
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_15]]}
+ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
+ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
+ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
+ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
+ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garbage\distance_shooting]]}
+ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\human_01\scenario\bandits\bandit_replic_2]]}
+ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
+ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
+
+	                      
+function select_sound_from_ltx(obj, section, ltx)
+--	1. проверка по story_id
+	local c = obj:story_id()
+	if ltx:line_exist(section, utils.to_str(c)) then
+		return ltx:r_string(section, utils.to_str(c))
+	end
+
+--	2. проверка по npc_profile
+	c = obj:profile_name()
+	if ltx:line_exist(section, c) then
+		return ltx:r_string(section, c)
+	end
+
+--	3. проверка по character_community
+	c = obj:character_community()
+	if ltx:line_exist(section, c) then
+		return ltx:r_string(section, c)
+	end
+	
+--	4. загрузка дефолта
+	if ltx:line_exist(section, "stalker") then
+		return ltx:r_string(section, "stalker")
+	else
+		return nil
+	end
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_sound(obj)
+	local sounds_base = stalker_ids.sound_script + 10000
+
+	function id()
+		sounds_base = sounds_base + 1
+		return sounds_base - 1
+	end
+
+	-- загрузка звуков на основе данных ltx
+	function load_sound_from_ltx(obj, name, min, max, rnd, prior)
+		local t = {}		
+		if snd_ini:section_exist(name.."_rnd") then		
+			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)
+			if s then
+				local sid = id()				
+				t.rnd_id = sid
+				t.rnd_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, sid)
+				if t.rnd_max == 0 then
+					printf( "No random sound loaded: %s", s )
+				end
+			end
+		end
+		if snd_ini:section_exist(name.."_seq") then
+			local s = select_sound_from_ltx(obj, name.."_seq", snd_ini)
+			if s then
+				local sid = id()				
+				t.into_id = sid
+				t.into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, sid)
+				if t.into_max == 0 then
+					printf( "No into sound loaded: %s", s )
+				end
+			end
+		end
+		if t.into_id ~= nil or
+		   t.rnd_id ~= nil
+		then
+			if min ~= nil then
+				t.min_snd = min
+			else
+				t.min_snd = 3
+			end
+			if max ~= nil then
+				t.max_snd = max
+			else
+				t.max_snd = 5
+			end
+			if rnd ~= nil then
+				t.rnd_snd = rnd
+			else
+				t.rnd_snd = 100
+			end
+			if prior ~= nil then
+				t.prior = prior
+			else
+				t.prior = 5
+			end
+			return t
+		end
+		return nil
+	end
+
+	-- ОСНОВНЫЕ ТЕМЫ
+	-- фразы о погоде
+	theme[obj:id()] = {}
+	theme[obj:id()]["weather"] = { exec = weather_class, types = {}}
+	theme[obj:id()]["weather"].types["bad"]			= load_sound_from_ltx(obj, "weather_bad")
+	theme[obj:id()]["weather"].types["good"]		= load_sound_from_ltx(obj, "weather_good")
+
+	-- состояния тела
+	theme[obj:id()]["state"] = { exec = state_class, types = {}}
+	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle")
+
+	theme[obj:id()]["sleep"]						= load_sound_from_ltx(obj, "state_sleep", 10, 15, 75)
+
+	-- просьба о помощи
+	theme[obj:id()]["help"]							= load_sound_from_ltx(obj, "help")
+	theme[obj:id()]["help_see"]						= load_sound_from_ltx(obj, "help_see")
+	theme[obj:id()]["help_see_tutor"]				= load_sound_from_ltx(obj, "help_see_tutor")
+	theme[obj:id()]["help_heavy"]					= load_sound_from_ltx(obj, "help_heavy")
+	theme[obj:id()]["help_stalker_thanx"]			= load_sound_from_ltx(obj, "help_thanx")   -- Нужно переименовать в help_thanx
+	theme[obj:id()]["wounded_psy"]					= load_sound_from_ltx(obj, "wounded_psy")	
+	theme[obj:id()]["wounded_psy_shoot"]			= load_sound_from_ltx(obj, "wounded_psy_shoot")	
+
+	-- окрик
+	theme[obj:id()]["hail"]							= load_sound_from_ltx(obj, "hail")
+
+	-- ожидание
+	theme[obj:id()]["wait"]							= load_sound_from_ltx(obj, "wait")
+
+	-- speech
+    theme[obj:id()]["speech"]						= load_sound_from_ltx(obj, "speech")
+    theme[obj:id()]["speech1"]						= load_sound_from_ltx(obj, "speech1")
+    
+	-- угрозы
+	theme[obj:id()]["threat_weap"]					= load_sound_from_ltx(obj, "threat_weap")
+	theme[obj:id()]["threat_back"]					= load_sound_from_ltx(obj, "threat_back")
+	theme[obj:id()]["threat_stop"]					= load_sound_from_ltx(obj, "threat_stop")
+
+	-- реакции
+	theme[obj:id()]["reac_hear"]					= load_sound_from_ltx(obj, "reac_hear")
+	theme[obj:id()]["reac_see"]						= load_sound_from_ltx(obj, "reac_see")
+	theme[obj:id()]["reac_crps_monstr"]				= load_sound_from_ltx(obj, "reac_crps_monstr")
+	theme[obj:id()]["reac_crps_enemy"]				= load_sound_from_ltx(obj, "reac_crps_enemy")
+	theme[obj:id()]["reac_crps_neutral"]			= load_sound_from_ltx(obj, "reac_crps_neutral")
+	theme[obj:id()]["reac_crps_friend"]				= load_sound_from_ltx(obj, "reac_crps_friend")
+	theme[obj:id()]["reac_nothing"]					= load_sound_from_ltx(obj, "reac_nothing")
+	
+	theme[obj:id()]["reac_music"]					= load_sound_from_ltx(obj, "reac_music", 1, 2, 100)
+	theme[obj:id()]["reac_joke"]					= load_sound_from_ltx(obj, "reac_joke", 1, 2, 100)
+
+	-- болтовня
+	theme[obj:id()]["talk_hello"]					= load_sound_from_ltx(obj, "talk_hello")
+	theme[obj:id()]["talk_hello_friend"]			= load_sound_from_ltx(obj, "talk_hello_friend")
+	theme[obj:id()]["talk_bye"]						= load_sound_from_ltx(obj, "talk_bye")
+	theme[obj:id()]["talk_accept"]					= load_sound_from_ltx(obj, "talk_accept")
+	theme[obj:id()]["talk_reject"]					= load_sound_from_ltx(obj, "talk_reject")
+	theme[obj:id()]["talk_abuse"]					= load_sound_from_ltx(obj, "talk_abuse")
+
+	-- торговля
+	theme[obj:id()]["trade_yes"]					= load_sound_from_ltx(obj, "trade_yes")
+	theme[obj:id()]["trade_no"]						= load_sound_from_ltx(obj, "trade_no")
+
+	-- игра на губной гармошке
+	theme[obj:id()]["intro_harmonica"]				= load_sound_from_ltx(obj, "intro_harmonica")
+	theme[obj:id()]["harmonica"]					= load_sound_from_ltx(obj, "harmonica")
+	-- игра на гитаре
+	theme[obj:id()]["intro_guitar"]					= load_sound_from_ltx(obj, "intro_guitar")
+	theme[obj:id()]["guitar"]						= load_sound_from_ltx(obj, "guitar")
+	-- шутки, прибаутки
+	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")
+	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
+
+	-- Истории
+	theme[obj:id()]["story_01"]						= load_sound_from_ltx(obj, "story_01")
+	theme[obj:id()]["story_01"].depence = {	[2] = {theme = "story_reac_cool_info", min = 1, max = 1},
+											[3] = {theme = "story_reac_continue", min = 2, max = 3},
+											[5] = {theme = "story_reac_laughter", type = "all"}}
+	theme[obj:id()]["story_02"]						= load_sound_from_ltx(obj, "story_02")
+	theme[obj:id()]["story_02"].depence = {	[2] = {theme = "story_reac_yes", min = 1, max = 2},
+											[3] = {theme = "story_reac_continue", min = 1, max = 1},
+											[4] = {theme = "story_reac_action_right", min = 1, max = 1},
+											[5] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+											[6] = {theme = "story_reac_continue", min = 1, max = 1},
+											[7] = {theme = "story_reac_belief_story, story_reac_final_happy, story_reac_yes", min = 2, max = 4}}
+	theme[obj:id()]["story_03"]						= load_sound_from_ltx(obj, "story_03")
+	theme[obj:id()]["story_03"].depence = {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
+											[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
+											[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}
+	theme[obj:id()]["story_04"]						= load_sound_from_ltx(obj, "story_04")
+	theme[obj:id()]["story_04"].depence = {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
+											[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
+											[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}
+	theme[obj:id()]["story_05"]						= load_sound_from_ltx(obj, "story_05")
+	theme[obj:id()]["story_05"].depence = {	[1] = {theme = "story_reac_advice_sceptic, story_reac_advice_support", min = 1, max = 1} }
+	theme[obj:id()]["story_06"]						= load_sound_from_ltx(obj, "story_06")
+	theme[obj:id()]["story_06"].depence = {	[2] = {theme = "story_reac_continue", min = 1, max = 1},
+											[3] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+											[4] = {theme = "story_reac_action_right", min = 1, max = 1},
+											[5] = {theme = "story_reac_yes", min = 1, max = 1},
+											[6] = {theme = "story_reac_disbelief_teller, story_reac_belief_story", min = 2, max = 3},
+											[7] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+											[8] = {theme = "story_reac_wonder", min = 1, max = 1},
+											[9] = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4}}
+
+	theme[obj:id()]["story_reac_action_right"]		= load_sound_from_ltx(obj, "story_reac_action_right", 1, 1, 100)
+	theme[obj:id()]["story_reac_action_wrong"]		= load_sound_from_ltx(obj, "story_reac_action_wrong", 1, 1, 100)
+	theme[obj:id()]["story_reac_advice_sceptic"]	= load_sound_from_ltx(obj, "story_reac_advice_sceptic", 1, 1, 100)
+	theme[obj:id()]["story_reac_advice_support"]	= load_sound_from_ltx(obj, "story_reac_advice_support", 1, 1, 100)
+	theme[obj:id()]["story_reac_belief_story"]		= load_sound_from_ltx(obj, "story_reac_belief_story", 1, 1, 100)
+	theme[obj:id()]["story_reac_continue"]			= load_sound_from_ltx(obj, "story_reac_continue", 1, 1, 100)
+	theme[obj:id()]["story_reac_cool_info"]			= load_sound_from_ltx(obj, "story_reac_cool_info", 1, 1, 100)
+	theme[obj:id()]["story_reac_cool_teller"]		= load_sound_from_ltx(obj, "story_reac_cool_teller", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelief"]			= load_sound_from_ltx(obj, "story_reac_disbelief", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelief_story"]	= load_sound_from_ltx(obj, "story_reac_disbelief_story", 1, 1, 100)
+	theme[obj:id()]["story_reac_disbelief_teller"]	= load_sound_from_ltx(obj, "story_reac_disbelief_teller", 1, 1, 100)
+	theme[obj:id()]["story_reac_doubt"]				= load_sound_from_ltx(obj, "story_reac_doubt", 1, 1, 100)
+	theme[obj:id()]["story_reac_fear"]				= load_sound_from_ltx(obj, "story_reac_fear", 1, 1, 100)
+	theme[obj:id()]["story_reac_final_happy"]		= load_sound_from_ltx(obj, "story_reac_final_happy", 1, 1, 100)
+	theme[obj:id()]["story_reac_final_tragic"]		= load_sound_from_ltx(obj, "story_reac_final_tragic", 1, 1, 100)
+	theme[obj:id()]["story_reac_laughter"]			= load_sound_from_ltx(obj, "story_reac_laughter", 1, 1, 100)
+	theme[obj:id()]["story_reac_old_story"]			= load_sound_from_ltx(obj, "story_reac_old_story", 1, 1, 100)
+	theme[obj:id()]["story_reac_uncertain"]			= load_sound_from_ltx(obj, "story_reac_uncertain", 1, 1, 100)
+	theme[obj:id()]["story_reac_wonder"]			= load_sound_from_ltx(obj, "story_reac_wonder", 1, 1, 100)
+	theme[obj:id()]["story_reac_yes"]				= load_sound_from_ltx(obj, "story_reac_yes", 1, 1, 100)
+	
+
+	-- УНИКАЛЬНЫЕ ТЕМЫ
+	-- Garbage DramMoment
+	theme[obj:id()]["gar_dm_bandit_backoff1"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff1", 5, 8, 100)
+	theme[obj:id()]["gar_dm_bandit_backoff2"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff2", 5, 8, 100)
+	theme[obj:id()]["gar_dm_bandit_demand"]			= load_sound_from_ltx(obj, "gar_dm_bandit_demand", 8, 10, 100)
+	theme[obj:id()]["gar_dm_newbie_no_money"]		= load_sound_from_ltx(obj, "gar_dm_newbie_no_money")
+	theme[obj:id()]["gar_dm_newbie_help_me"]		= load_sound_from_ltx(obj, "gar_dm_newbie_help_me")
+	theme[obj:id()]["gar_dm_newbie_thank_you"]		= load_sound_from_ltx(obj, "gar_dm_newbie_thank_you")
+	
+	theme[obj:id()]["gar_hellcar_alarm"]			= load_sound_from_ltx(obj, "gar_hellcar_alarm")
+	theme[obj:id()]["gar_hellcar_ambush"]			= load_sound_from_ltx(obj, "gar_hellcar_ambush")
+	theme[obj:id()]["gar_bandits_seryi"]			= load_sound_from_ltx(obj, "gar_bandits_seryi")
+	theme[obj:id()]["gar_grey_grey"]				= load_sound_from_ltx(obj, "gar_grey_grey")
+	theme[obj:id()]["gar_seryi_see_actor"]			= load_sound_from_ltx(obj, "gar_seryi_see_actor")
+	theme[obj:id()]["gar_dolg_blokpost"]			= load_sound_from_ltx(obj, "gar_dolg_blokpost", 10, 15, 100)
+	theme[obj:id()]["gar_direction_fire"]			= load_sound_from_ltx(obj, "gar_direction_fire")
+	theme[obj:id()]["gar_hellcar_to_battle"]		= load_sound_from_ltx(obj, "gar_hellcar_to_battle")
+	theme[obj:id()]["gar_hellcar_victory"]			= load_sound_from_ltx(obj, "gar_hellcar_victory")
+	
+	-- DarkValley
+	theme[obj:id()]["val_prisoner_captive_help_me"]	  = load_sound_from_ltx(obj, "val_prisoner_captive_help_me")
+	theme[obj:id()]["val_prisoner_captive_come_here"] = load_sound_from_ltx(obj, "val_prisoner_captive_come_here")
+	theme[obj:id()]["val_rob_leader_call"]			  = load_sound_from_ltx(obj, "val_rob_leader_call")
+	theme[obj:id()]["val_rob_guard_jeer"]			  = load_sound_from_ltx(obj, "val_rob_guard_jeer")
+	theme[obj:id()]["val_gate_soldiers"]			  = load_sound_from_ltx(obj, "val_gate_soldiers")
+	theme[obj:id()]["val_chase_soldiers"]			  = load_sound_from_ltx(obj, "val_chase_soldiers")
+	theme[obj:id()]["val_opendoor_soldier"]			  = load_sound_from_ltx(obj, "val_opendoor_soldier")
+	theme[obj:id()]["val_escort_guards"]			  = load_sound_from_ltx(obj, "val_escort_guards")
+	theme[obj:id()]["val_escort_captive_phrase1"]	  = load_sound_from_ltx(obj, "val_escort_captive_phrase1")
+	theme[obj:id()]["val_escort_captive_phrase2"]	  = load_sound_from_ltx(obj, "val_escort_captive_phrase2")
+	theme[obj:id()]["val_escort_captive_phrase3"]	  = load_sound_from_ltx(obj, "val_escort_captive_phrase3")
+	theme[obj:id()]["val_escort_nap1_phrase1"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase1")
+	theme[obj:id()]["val_escort_nap1_phrase2"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase2")
+	theme[obj:id()]["val_escort_nap1_phrase3"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase3")
+	theme[obj:id()]["val_escort_nap1_phrase4"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase4")
+	theme[obj:id()]["val_escort_nap1_phrase5"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase5")
+	theme[obj:id()]["val_escort_nap1_phrase6"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase6")
+	theme[obj:id()]["val_escort_dead"]                = load_sound_from_ltx(obj, "val_escort_dead")
+	theme[obj:id()]["val_escort_nap1_go_home"]        = load_sound_from_ltx(obj, "val_escort_nap1_go_home")
+	theme[obj:id()]["val_escort_phrase_invite"]       = load_sound_from_ltx(obj, "val_escort_phrase_invite")
+
+	-- Agroprom
+	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")
+
+	-- Bar Rostok Duty Guards
+	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
+	theme[obj:id()]["bar_dolg_base_guard_no_talk"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
+	theme[obj:id()]["bar_bar_osvedomitel_hello"]	= load_sound_from_ltx(obj, "bar_bar_osvedomitel_hello", 7, 10, 100)
+	theme[obj:id()]["bar_bar_barmen_hello"]			= load_sound_from_ltx(obj, "bar_bar_barmen_hello")
+	theme[obj:id()]["bar_bar_barmen_hello_room"]	= load_sound_from_ltx(obj, "bar_bar_barmen_hello_room")
+	theme[obj:id()]["bar_dolg_leader_hello"]		= load_sound_from_ltx(obj, "bar_dolg_leader_hello")
+
+	-- Bar dolg guard
+	theme[obj:id()]["bar_dolg_guard_stop"]	= load_sound_from_ltx(obj, "bar_dolg_guard_stop")
+	
+	-- Bar dolg hangar bridge
+	theme[obj:id()]["bar_dolg_hangar_bridge_hello"]	= load_sound_from_ltx(obj, "bar_dolg_hangar_bridge_hello")
+
+	-- Bar dolg Petrenko
+	theme[obj:id()]["bar_dolg_petrenko_hello"]	= load_sound_from_ltx(obj, "bar_dolg_petrenko_hello")
+
+	-- Bar psyh
+	theme[obj:id()]["bar_psycho_pain"]				= load_sound_from_ltx(obj, "bar_psycho_pain")
+	theme[obj:id()]["bar_psycho_goodluck"]			= load_sound_from_ltx(obj, "bar_psycho_goodluck")
+	theme[obj:id()]["bar_barman_psycho"]			= load_sound_from_ltx(obj, "bar_barman_psycho")
+
+    -- Military sounds
+    theme[obj:id()]["mil_max_thanx"]                  = load_sound_from_ltx(obj, "mil_max_thanx")
+    theme[obj:id()]["mil_max_before_collect"]         = load_sound_from_ltx(obj, "mil_max_before_collect")
+    theme[obj:id()]["mil_kolyan"]                     = load_sound_from_ltx(obj, "mil_kolyan1")
+    theme[obj:id()]["mil_max_to_kolyan"]              = load_sound_from_ltx(obj, "mil_max_to_kolyan")
+    theme[obj:id()]["mil_max_to_tolyan"]              = load_sound_from_ltx(obj, "mil_max_to_tolyan")
+    theme[obj:id()]["mil_collect_laugh1"]             = load_sound_from_ltx(obj, "mil_collect_laugh1")
+    theme[obj:id()]["mil_collect_laugh2"]             = load_sound_from_ltx(obj, "mil_collect_laugh2")
+    theme[obj:id()]["mil_collect_laugh3"]             = load_sound_from_ltx(obj, "mil_collect_laugh3")
+    theme[obj:id()]["mil_collect_laugh4"]             = load_sound_from_ltx(obj, "mil_collect_laugh4")
+    theme[obj:id()]["mil_collect_laugh5"]             = load_sound_from_ltx(obj, "mil_collect_laugh5")
+    theme[obj:id()]["mil_collect_phrase1"]            = load_sound_from_ltx(obj, "mil_collect_phrase1")
+    theme[obj:id()]["mil_collect_phrase2"]            = load_sound_from_ltx(obj, "mil_collect_phrase2")
+    theme[obj:id()]["mil_collect_phrase3"]            = load_sound_from_ltx(obj, "mil_collect_phrase3")
+    theme[obj:id()]["mil_collect_phrase4"]            = load_sound_from_ltx(obj, "mil_collect_phrase4")
+    theme[obj:id()]["mil_collect_phrase5"]            = load_sound_from_ltx(obj, "mil_collect_phrase5")
+    theme[obj:id()]["mil_collect_phrase6"]            = load_sound_from_ltx(obj, "mil_collect_phrase6")
+    theme[obj:id()]["mil_collect_phrase7"]            = load_sound_from_ltx(obj, "mil_collect_phrase7")
+    theme[obj:id()]["mil_crazy"]                      = load_sound_from_ltx(obj, "mil_crazy")
+    theme[obj:id()]["mil_dolg_about_sniper"]          = load_sound_from_ltx(obj, "mil_dolg_about_sniper")
+    theme[obj:id()]["mil_dolg_go_attack"]             = load_sound_from_ltx(obj, "mil_dolg_go_attack")
+    theme[obj:id()]["mil_freedom_patrol"]             = load_sound_from_ltx(obj, "mil_freedom_patrol")
+    theme[obj:id()]["mil_dolg_after_kill1"]           = load_sound_from_ltx(obj, "mil_dolg_after_kill1")
+    theme[obj:id()]["mil_dolg_after_kill2"]           = load_sound_from_ltx(obj, "mil_dolg_after_kill2")
+    theme[obj:id()]["mil_dolg_after_kill3"]           = load_sound_from_ltx(obj, "mil_dolg_after_kill3")
+    theme[obj:id()]["mil_freedom_zoneguard"]          = load_sound_from_ltx(obj, "mil_freedom_zoneguard")
+    theme[obj:id()]["mil_freedom_patrol_base"]        = load_sound_from_ltx(obj, "mil_freedom_patrol")
+    theme[obj:id()]["mil_max_khutor_attack"]          = load_sound_from_ltx(obj, "mil_max_khutor_attack")
+    theme[obj:id()]["mil_guard_to_max"]               = load_sound_from_ltx(obj, "mil_guard_to_max")
+    theme[obj:id()]["mil_lukash_to_guard"]            = load_sound_from_ltx(obj, "mil_lukash_to_guard")
+    theme[obj:id()]["mil_lukash_to_actor"]            = load_sound_from_ltx(obj, "mil_lukash_to_actor")
+    theme[obj:id()]["mil_paul_frost"]                 = load_sound_from_ltx(obj, "mil_paul_frost")
+    theme[obj:id()]["mil_dolg_killer"]                = load_sound_from_ltx(obj, "mil_dolg_killer")
+    theme[obj:id()]["mil_dolg_scull"]                 = load_sound_from_ltx(obj, "mil_dolg_scull")
+    theme[obj:id()]["mil_max_to_actor"]               = load_sound_from_ltx(obj, "mil_max_to_actor")
+    theme[obj:id()]["mil_collect_phrases"]            = load_sound_from_ltx(obj, "mil_collect_phrases")
+    theme[obj:id()]["mil_pavlik_to_ara"]              = load_sound_from_ltx(obj, "mil_pavlik_to_ara")
+    theme[obj:id()]["mil_ara_to_pavlik"]              = load_sound_from_ltx(obj, "mil_ara_to_pavlik")
+    theme[obj:id()]["mil_ara_ambush"]                 = load_sound_from_ltx(obj, "mil_ara_ambush")
+    theme[obj:id()]["mil_hunter1"]                    = load_sound_from_ltx(obj, "mil_hunter1")
+    theme[obj:id()]["mil_hunter2"]                    = load_sound_from_ltx(obj, "mil_hunter2")
+    theme[obj:id()]["mil_hunter3"]                    = load_sound_from_ltx(obj, "mil_hunter3")
+    theme[obj:id()]["mil_dolg_getready"]              = load_sound_from_ltx(obj, "mil_dolg_getready")
+    theme[obj:id()]["mil_dolg_lukash_done"]           = load_sound_from_ltx(obj, "mil_dolg_lukash_done")
+    theme[obj:id()]["mil_freedom_ambush1"]            = load_sound_from_ltx(obj, "mil_freedom_ambush1")
+    theme[obj:id()]["mil_freedom_ambush2"]            = load_sound_from_ltx(obj, "mil_freedom_ambush2")
+    theme[obj:id()]["mil_freedom_ambush3"]            = load_sound_from_ltx(obj, "mil_freedom_ambush3")
+    theme[obj:id()]["mil_freedom_ambush4"]            = load_sound_from_ltx(obj, "mil_freedom_ambush4")
+    theme[obj:id()]["mil_freedom_ambush5"]            = load_sound_from_ltx(obj, "mil_freedom_ambush5")
+    theme[obj:id()]["mil_freedom_ambush6"]            = load_sound_from_ltx(obj, "mil_freedom_ambush6")
+    theme[obj:id()]["mil_freedom_victory1"]           = load_sound_from_ltx(obj, "mil_freedom_victory1")
+    theme[obj:id()]["mil_freedom_victory2"]           = load_sound_from_ltx(obj, "mil_freedom_victory2")
+    theme[obj:id()]["mil_freedom_victory3"]           = load_sound_from_ltx(obj, "mil_freedom_victory3")
+    theme[obj:id()]["mil_freedom_victory4"]           = load_sound_from_ltx(obj, "mil_freedom_victory4")
+    theme[obj:id()]["mil_freedom_victory5"]           = load_sound_from_ltx(obj, "mil_freedom_victory5")
+    
+    
+	-- ТЕМЫ, КОТОРЫЕ НУЖНО ПРИВЕСТИ К ВАРИАНТУ ОСНОВНОЙ ТЕМЫ
+	theme[obj:id()]["esc_volk_greet1"]			= load_sound_from_ltx(obj, "volk_greet1")
+	theme[obj:id()]["esc_volk_greet2"]			= load_sound_from_ltx(obj, "volk_greet2")
+
+	-- лагерь новичков на эскейп
+	theme[obj:id()]["esc_novice_camp_guards"]	= load_sound_from_ltx(obj, "novice_camp_guards")
+
+    -- радио для командира патруля
+    theme[obj:id()]["patrol_radio_1"]			= load_sound_from_ltx(obj, "military_radio")
+
+  	-- radar monolith
+	theme[obj:id()]["monolith_mumble"]			= load_sound_from_ltx(obj, "military_radio", 0, 0, 100)
+  
+	-- делаем заготовку в db.sound
+	db.sound[obj:id()] = {}
+	
+	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+	--print_table(theme)
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Theme  functions
+-----------------------------------------------------------------------------------------------------------------------------------
+function weather_class(avail_types, npc, target)
+	local type = "good"
+	if level.rain_factor() < 0.07 then
+		type = "good"
+	else
+		type = "bad"
+	end
+	return type
+end          
+function state_class(avail_types, npc, target)
+	local type = "idle"
+	if npc.power < 0.5 then
+		type = "fatique"
+	end
+	if npc.satiety < 0.5 then
+		type = "starvation"
+	end
+	if npc.health < 0.5 then
+		type = "health"
+	end
+	return type
+end
