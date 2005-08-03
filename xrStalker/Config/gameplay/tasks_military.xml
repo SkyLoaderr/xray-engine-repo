@@ -171,4 +171,11 @@
             <map_location_hidden>1</map_location_hidden>
             <task_dependent>1</task_dependent>
 		</objective>
+		<objective>
+			<text>mil_test_task_phase3</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<function_complete>mil_tasks.mil_test_task_rg6_have</function_complete>
+			<function_fail>mil_tasks.mil_test_task_lr300_have</function_fail>
+            <task_dependent>1</task_dependent>
+		</objective>
 	</game_task>
