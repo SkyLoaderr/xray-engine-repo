@@ -124,16 +124,28 @@ heli_mngr:Start()
 --		heli:heli_go_by_patrol_path( "heli_way_1" )
 end
 
-function  main()
+function  __main()
 --	local n = level.debug_object( "_niva" )
 --   level.map_add_object_spot(n:id(),"heli_location","niva_super_car");
 
 	local info = "test_andy_info" 
 	db.actor:give_info_portion(info) 
 	
-	info = "tutorial_artefact_start" 
-	db.actor:give_info_portion(info) 
+--	info = "tutorial_artefact_start" 
+--	db.actor:give_info_portion(info) 
 	
 	
 end
 
+function main ()
+	local f = getFS()
+	local flist = f:file_list_open_ex("$game_sounds$","dialogs",FS.FS_ListFiles)
+	local f_cnt = flist:Size()
+
+	for	it=0, f_cnt-1 	do
+		local file		=	flist:GetAt(it)			
+		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
+		printf(file_name)
+	end
+	
+end
