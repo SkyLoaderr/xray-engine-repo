@@ -15,11 +15,11 @@ use_wpn = true
 [meet@leader]
 meet_dialog = pri_followers_start_dlg
 meet_state = 30|hello@talk_hello|5|guard@wait
-meet_state_wpn = 15|threat@threat_weap
+meet_state_wpn = 30|hello@talk_hello|5|guard@wait
 victim = 30|actor
-victim_wpn = 20|actor
+victim_wpn = 30|actor
 use = true
-use_wpn = false
+use_wpn = true
 
 ;-------------------------------------------------------------------------------------------------
 ;-- Followers
@@ -29,12 +29,6 @@ use_wpn = false
 [logic@pri_followers_leader_wait]
 active = walker@pri_followers_leader_wait
 combat_ignore = combat_ignore
-
-[kamp@pri_followers_leader_kamp]
-center_point = kamp_point
-meet = meet@def
-on_info = {+pri_followers_leader_hello} walker@pri_followers_leader_hello
-combat_ignore_cond = always
 
 [walker@pri_followers_leader_wait]
 path_walk = leader_hello_walk
