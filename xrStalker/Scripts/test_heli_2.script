@@ -139,7 +139,7 @@ end
 
 function main ()
 	local f = getFS()
-	local flist = f:file_list_open_ex("$game_sounds$","dialogs",FS.FS_ListFiles)
+	local flist = f:file_list_open("$game_sounds$","dialogs",FS.FS_ListFiles)
 	local f_cnt = flist:Size()
 
 	for	it=0, f_cnt-1 	do
