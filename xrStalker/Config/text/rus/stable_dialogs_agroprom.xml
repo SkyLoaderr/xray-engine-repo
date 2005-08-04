@@ -111,6 +111,9 @@
     <string id="agr_krot_help_10">
         <text>Добро!</text>
     </string>
+    <string id="agr_ratcatcher_start_0">
+        <text>Не стреляй, братишка!</text>
+    </string>
     <string id="agr_stalker_esc_0">
         <text>Ты кто?</text>
     </string>
@@ -279,37 +282,37 @@
     <string id="agr_swamp_ratcatcher_talks1_123">
         <text>А... понятно.... я в общем не из этой сказки.\nХа-ха-ха...</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_100">
+    <string id="agr_swamp_ratcatcher_talks_0">
         <text>Ты шо тут, салага, делаешь?</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_120">
+    <string id="agr_swamp_ratcatcher_talks_10">
+        <text>Я прячусь тут. Я не хочу проблем. Не стреляй!</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_100">
         <text>Как ты тут оказался? От кого прячешься? Говори!</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_130">
+    <string id="agr_swamp_ratcatcher_talks_120">
         <text>А что за коллектор?</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_131">
+    <string id="agr_swamp_ratcatcher_talks_130">
         <text>Что ты можешь про свою базу рассказать?</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_132">
+    <string id="agr_swamp_ratcatcher_talks_140">
         <text>И что дальше делать собираешься?</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_133">
+    <string id="agr_swamp_ratcatcher_talks_150">
         <text>Ну, отсиживайся, убивать я тебя не буду. С голоду смотри не подохни.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_20">
-        <text>Я прячусь тут. Я не хочу проблем. Не стреляй!</text>
-    </string>
-    <string id="agr_swamp_ratcatcher_talks_30">
         <text>Я из разведотряда. Нас в коллектор послали, чтоб посмотреть, что там творится под базой. Там полная жопа. Я один убежал. Остальные, наверное, уже не жильцы. Но возвращаться на базу я не хочу. Нами вечно все дыры в этой проклятой зоне затыкают, чёртовы ублюдки.</text>
     </string>
-    <string id="agr_swamp_ratcatcher_talks_31">
-        <text>Я тебе могу набросать на бумажке план охраны. Ещё я тебе на карте покажу, где каптёрка капитана - редкой сволочи.</text>
-    </string>
-    <string id="agr_swamp_ratcatcher_talks_32">
-        <text>Хм. Не знаю. По военным законам я дезертир. Буду тут отсиживаться какое-то время.</text>
+    <string id="agr_swamp_ratcatcher_talks_30">
+        <text>Подземные туннели. Они ведут из НИИ за его территорию, я покажу тебе, где входы. Карт самих катакомб у меня нету.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_40">
-        <text>Подземные туннели. Они ведут из НИИ за его территорию, я покажу тебе, где входы. Карт самих катакомб у меня нету.</text>
+        <text>Я тебе могу набросать на бумажке план охраны. Ещё я тебе на карте покажу, где каптёрка капитана - редкой сволочи.</text>
+    </string>
+    <string id="agr_swamp_ratcatcher_talks_50">
+        <text>Хм. Не знаю. По военным законам я дезертир. Буду тут отсиживаться какое-то время.</text>
     </string>
 </string_table>
