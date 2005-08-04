@@ -1435,3 +1435,13 @@ void CPHElement::CutVelocity(float l_limit,float a_limit)
 			dBodySetAngularVel(m_body,limiteda[0],limiteda[1],limiteda[2]);
 	}
 }
+void CPHElement::ClearDestroyInfo()
+{
+	xr_delete(m_fratures_holder);
+}
+//bool CPHElement::CheckBreakConsistent()
+//{
+//	if(!m_fratures_holder) return true;
+//	m_fratures_holder->m_fractures
+//	m_fratures_holder->Fracture()
+//}

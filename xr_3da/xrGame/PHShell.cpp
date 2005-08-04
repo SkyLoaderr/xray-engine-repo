@@ -546,7 +546,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0,&vis_check);
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
 	//SetCallbacks(BonesCallback);
-	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
+	if(m_spliter_holder->isEmpty())ClearBreakInfo();
 }
 
 void CPHShell::preBuild_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
@@ -558,14 +558,31 @@ void CPHShell::preBuild_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	bool vis_check=false;
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0,&vis_check);
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
-	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
+	if(m_spliter_holder->isEmpty())ClearBreakInfo();
 	m_pKinematics=0;
 }
+void CPHShell::ClearBreakInfo()
+{
+	{		
+		ELEMENT_I i=elements.begin(),e=elements.end();
+		for(;i!=e;++i)(*i)->ClearDestroyInfo();
+	}
 
+	{
+		JOINT_I i=joints.begin(),e=joints.end();
+		for(;i!=e;++i) (*i)->ClearDestroyInfo();
+	}	
+	xr_delete(m_spliter_holder);
+}
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number,bool* vis_check)
 {
 
 	//CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
 	Fmatrix fm_position;

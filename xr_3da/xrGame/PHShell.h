@@ -227,5 +227,6 @@ private:
 				void				SetJointRootGeom				(CPhysicsElement* root_e,CPhysicsJoint* J)										;
 				void				ReanableObject					()																				;
 				void				ExplosionHit					(const Fvector& pos, const Fvector& dir, float val,const u16 id)				;
+				void				ClearBreakInfo					();
 };
 #endif

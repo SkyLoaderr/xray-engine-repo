@@ -233,6 +233,8 @@ public:																																				//
 			void						Start									();																		//aux
 			void						RunSimulation							();																		//called anywhere ph state influent
 			void						RunSimulation							(const Fmatrix& start_from);											//
+			void						ClearDestroyInfo						();
+	//		bool						CheckBreakConsistent					()
 	CPHElement										();																						//aux
 	virtual ~CPHElement								();																						//aux
 };

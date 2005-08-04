@@ -1180,3 +1180,7 @@ void CPHJoint::SetShell(CPHShell* p)
 		pShell=p;
 	}
 }
+void CPHJoint::ClearDestroyInfo()
+{
+	xr_delete(m_destroy_info);
+}

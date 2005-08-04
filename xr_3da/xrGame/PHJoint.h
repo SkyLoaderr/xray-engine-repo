@@ -110,6 +110,8 @@ IC				CPHElement				*PSecondElement 			()																																							
 	virtual								~CPHJoint					()																																																						;
 				void					SetShell					(CPHShell* p)																																																			;			
 
+				void					ClearDestroyInfo			();
+
 };
 
 
