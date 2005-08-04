@@ -27,7 +27,9 @@
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
-
+const float effective_gravity			=	world_gravity/2.f								;
+const float anti_gravity_accel			=	world_gravity-effective_gravity					;
+const float gravity_factor_impulse		=	_sqrt(effective_gravity/world_gravity)			;
 CCar::CCar(void)
 {
 
@@ -442,10 +444,28 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/100.f);
 }
+
+
 void CCar::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	if(!m_pPhysicsShell)	return;
 	if(m_bone_steer==element) return;
-	if(m_pPhysicsShell)		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
+	if(CPHUpdateObject::IsActive())
+	{
+		Fvector vimpulse;vimpulse.set(dir);
+		vimpulse.mul(impulse);
+		vimpulse.y *=gravity_factor_impulse;
+		float mag=vimpulse.magnitude();
+		if(!fis_zero(mag))
+		{
+			 vimpulse.mul(1.f/mag);
+			 m_pPhysicsShell->applyHit(p_in_object_space,vimpulse,mag,element,hit_type);
+		}
+		
+	} else
+	{
+		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
+	}
 }
 
 
@@ -1205,12 +1225,14 @@ void CCar::TransmissionDown()
 
 }
 
+
+
 void CCar::PhTune(dReal step)
 {
 	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
 	{
 		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
-		if(e->bActive&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*world_gravity/2.f,0);
+		if(e->bActive&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*anti_gravity_accel,0);
 	}
 }
 void CCar::UpdateBack()

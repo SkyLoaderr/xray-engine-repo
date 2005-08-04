@@ -334,19 +334,20 @@ virtual void ApplyDamage(u16 level);
 		void	SwitchOff			()							;
 		void	SwitchOn			()							;
 		void	Init				()							;
-		void	Destroy			()							;
+		void	Destroy				()							;
 		void	Start				()							;
 		void	Stop				()							;
 		void	Stall				()							;
 		void	Drive				()							;
 		void	TransmissionSwitch	()							;
 
-		SCarSound(CCar* car);
-		~SCarSound();
-		Fvector relative_pos;
-		float	 volume;
-		u32		time_state_start;
-		CCar*	pcar;
+				SCarSound			(CCar* car)					;
+				~SCarSound			()							;
+		Fvector	relative_pos									;
+		float	volume											;
+		float	engine_start_delay								;//snd_engine starts after engine_start_delay*snd_engine_start._handle()->length_ms() ms by snd_engine_start
+		u32		time_state_start								;
+		CCar*	pcar											;
 	} *m_car_sound;
 
 private:
