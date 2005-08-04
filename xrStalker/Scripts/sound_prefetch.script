@@ -2,3 +2,60 @@
 --	Презагрузка звуков.
 --	автор:  Диденко Руслан  (Stohe)
 ----------------------------------------------------------------------------------------------------------------------
+
+function prefetch_sounds()
+	printf("Prefetching ph_snd_themes")
+
+	prefetch("news_manager") 
+	
+	for k,v in sound_theme.ph_snd_themes do
+--		printf("prefetch [%s]", tostring(k))
+		for kk,vv in v do
+--			printf("file [%s]", tostring(vv))
+			level.prefetch_sound(vv)
+		end
+	end
+
+	printf("Prefetching stalker sounds")
+	for t,p in sound_theme.theme do
+		for k,v in p do
+			local name = tostring(k)
+			if v.types then
+				for kk,vv in v.types do
+					prefetch_section(sound_theme.snd_ini, name.."_"..tostring(kk))
+				end
+			else
+				prefetch_section(sound_theme.snd_ini, name)
+			end
+		end
+		break
+	end	
+end
+
+
+function prefetch_section(ini, name)
+	if ini:section_exist(name.."_rnd") then
+		local n = ini:line_count(name.."_rnd")
+		local id, value = "", ""
+		for i=0,n-1 do
+			result, id, value	= ini:r_line(name.."_rnd",i,"","")
+			prefetch_snd_files(value)
+		end
+	end
+	if ini:section_exist(name.."_seq") then
+		local n = ini:line_count(name.."_seq")
+		local id, value = "", ""
+		for i=0,n-1 do
+			result, id, value	= ini:r_line(name.."_seq",i,"","")
+			prefetch_snd_files(value)
+		end
+	end
+end
+
+function prefetch_snd_files(path)
+	level.iterate_sounds(path, sound_theme.nstl, sound_prefetch.prefetch_file);
+end
+
+function prefetch_file(name)
+	level.prefetch_sound(name)
+end

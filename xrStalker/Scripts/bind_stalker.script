@@ -158,6 +158,9 @@ function actor_binder:update(delta)
  	if self.bCheckStart then
 		printf("SET DEFAULT INFOS")		
 
+		--старт префетча звуков
+		sound_prefetch.prefetch_sounds()
+
 		if self.object:dont_has_info("storyline_actor_start") and
 		   (level.name() == "l01_escape")
 		then

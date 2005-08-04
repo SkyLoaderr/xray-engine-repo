@@ -3,9 +3,9 @@
 --	автор:  Диденко Руслан  (Stohe)
 --	update: Чугай Александр (Chugai)
 ----------------------------------------------------------------------------------------------------------------------
-local nstl = 20
+nstl = 20
 
-local snd_ini = ini_file("misc\\script_sound.ltx")
+snd_ini = ini_file("misc\\script_sound.ltx")
 
 theme = {}
 
@@ -171,7 +171,6 @@ function load_sound(obj)
 	theme[obj:id()]["weather"].types["good"]		= load_sound_from_ltx(obj, "weather_good")
 
 	-- состояния тела
-	theme[obj:id()]["state"] = { exec = state_class, types = {}}
 	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle")
 
 	theme[obj:id()]["sleep"]						= load_sound_from_ltx(obj, "state_sleep", 10, 15, 75)
@@ -233,8 +232,6 @@ function load_sound(obj)
 	-- шутки, прибаутки
 	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")
 	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
-	-- не стреляйте
-	theme[obj:id()]["dont_shoot_ukr"]				= load_sound_from_ltx(obj, "dont_shoot_ukr")
 
 	-- Истории
 	theme[obj:id()]["story_01"]						= load_sound_from_ltx(obj, "story_01")
@@ -333,6 +330,8 @@ function load_sound(obj)
 
 	-- Agroprom
 	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")
+	-- не стреляйте
+	theme[obj:id()]["dont_shoot_ukr"]				= load_sound_from_ltx(obj, "dont_shoot_ukr")
 
 	-- Bar Rostok Duty Guards
 	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
@@ -442,19 +441,6 @@ function weather_class(avail_types, npc, target)
 		type = "good"
 	else
 		type = "bad"
-	end
-	return type
-end          
-function state_class(avail_types, npc, target)
-	local type = "idle"
-	if npc.power < 0.5 then
-		type = "fatique"
-	end
-	if npc.satiety < 0.5 then
-		type = "starvation"
-	end
-	if npc.health < 0.5 then
-		type = "health"
 	end
 	return type
 end
