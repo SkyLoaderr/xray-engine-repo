@@ -303,6 +303,7 @@ active = walker1@bar_dolg_zastava1_cammander_1
 [walker1@bar_dolg_zastava1_cammander_1]
 path_walk = commander_1_walk
 path_look = commander_1_look
+meet = meet@bar_dolg_zastava_comander1
 
 [logic@bar_dolg_zastava1_walker1]
 active = walker1@bar_dolg_zastava1_walker1
@@ -336,6 +337,14 @@ victim_wpn 		= 20| actor
 use = true
 use_wpn = true
 meet_dialog = bar_dolg_zastava
+
+[meet@bar_dolg_zastava_comander1]
+meet_state 		= 10| guard@talk_hello
+meet_state_wpn 	= 10| guard@talk_hello| 7| threat@threat_weap
+victim 			= 10| actor
+victim_wpn 		= 10| actor
+use = true
+use_wpn = false
 
 ; Застава 2
 
