@@ -306,7 +306,7 @@ void CKinematics::LL_Validate()
 	// check breakable
     BOOL bCheckBreakable			= FALSE;
     for (u16 k=0; k<LL_BoneCount(); k++){
-        if (LL_GetData(k).IK_data.ik_flags.is(SJointIKData::flBreakable)&&LL_GetData(k).IK_data.type!=jtNone) {
+        if (LL_GetData(k).IK_data.ik_flags.is(SJointIKData::flBreakable)&&(LL_GetData(k).IK_data.type!=jtNone)) {
         	bCheckBreakable			= TRUE;
             break;
         }
