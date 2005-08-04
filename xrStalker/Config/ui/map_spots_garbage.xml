@@ -34,7 +34,7 @@
 		<mini_map  spot="gar_bandit_post_spot" pointer="quest_pointer"></mini_map>
 	</gar_bandit_post_location>
 	
-	<gar_tunnel_newbie_location hint="gar_bandit_post" store="1">
+	<gar_tunnel_newbie_location hint="gar_newbie" store="1">
 		<level_map spot="gar_tunnel_newbie_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="gar_tunnel_newbie_spot" pointer="quest_pointer"></mini_map>
 	</gar_tunnel_newbie_location>
