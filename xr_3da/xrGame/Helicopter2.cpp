@@ -8,7 +8,7 @@
 #include "PhysicsShell.h"
 #include "clsid_game.h"
 #include "script_callback_ex.h"
-
+#include "ai/stalker/ai_stalker.h"
 
 bool CHelicopter::isObjectVisible			(CObject* O)
 {
@@ -248,15 +248,8 @@ if(who==this)
 #endif
 	};
 	
-	if (who){
-		switch (who->CLS_ID){
-			case CLSID_OBJECT_ACTOR:
-			case CLSID_AI_STALKER:{
-				callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,who->ID());
-		}break;
-		default:
-			break;
-		}
+	if (who&&((who->CLS_ID==CLSID_OBJECT_ACTOR)||(smart_cast<CAI_Stalker*>(who)))  ){
+		callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,who->ID());
 	}
 
 }
