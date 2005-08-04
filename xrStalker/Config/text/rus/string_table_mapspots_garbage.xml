@@ -34,4 +34,30 @@
 		<text>Кучи мусора с аномалиями и артефактами.</text>
 	</string>
 	
-				
+	<string id="gar_seriy">
+		<text>Группа Серого.</text>
+	</string>
+	
+	<string id="gar_boars_nest">
+		<text>Скопление кабанов.</text>
+	</string>
+
+	<string id="gar_bandits_leader">
+		<text>Рейд бандитов возглавляемый паханом.</text>
+	</string>
+	
+	<string id="gar_hellcar">
+		<text>Даймон, лидер группы сталкеров-нейтралов.</text>
+	</string>
+	
+	<string id="gar_wounded_help">
+		<text>Сигнал СОС. Очевидно, раненый сталкер.</text>
+	</string>
+	
+	<string id="gar_bandit_post">
+		<text>Укрепрайон бандитов по дороге на Агропром.</text>
+	</string>
+	
+	<string id="gar_newbie">
+		<text>Новичок, испуганый и уставший.</text>
+	</string>
