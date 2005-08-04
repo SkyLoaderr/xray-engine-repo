@@ -35,6 +35,7 @@ const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях
 const				HSCROLLBAR_STEP				= 20; // В пикселях
 
+static bool			MAP_FLY_MODE				= true;
 
 
 CUIMapWnd::CUIMapWnd()
@@ -339,7 +340,7 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 		m_tgtCenter.div					(gm->GetCurrentZoom());
  	}else{
 		//translate real level position to identity GlobalMapPosition
-		SetZoom							(GlobalMap()->GetMaxZoom());
+//		SetZoom							(GlobalMap()->GetMaxZoom());
 		m_tgtCenter						= m->ConvertRealToLocalNoTransform(pos);
 		m_tgtCenter.add					(m->GetWndPos()).div(GlobalMap()->GetCurrentZoom());
 	}
@@ -508,9 +509,15 @@ void CUIMapWnd::OnToolPrevMapClicked	(CUIWindow* w, void*)
 
 void CUIMapWnd::ResetActionPlanner()
 {
-	m_ActionPlanner->m_storage.set_property(1,false);
-	m_ActionPlanner->m_storage.set_property(2,false);
-	m_ActionPlanner->m_storage.set_property(3,false);
+	if (MAP_FLY_MODE){
+		m_ActionPlanner->m_storage.set_property(1,false);
+		m_ActionPlanner->m_storage.set_property(2,false);
+		m_ActionPlanner->m_storage.set_property(3,false);
+	}else{
+		Frect m_desiredMapRect;
+		GlobalMap()->CalcOpenRect	(m_tgtCenter,m_desiredMapRect,GetZoom());
+		GlobalMap()->SetWndRect		(m_desiredMapRect);
+	}
 }
 
 void CUIMapWnd::OnToolZoomInClicked	(CUIWindow* w, void*)

@@ -328,12 +328,19 @@ float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desire
 	if (r.y1>0.0f)	np.y		= 0.0f;
 	np.sub						(r.lt);
 	map_desired_rect.add		(np.x,np.y);
-	// calculate dist
-	Fvector2 cp0;
-	vis_abs_rect.getcenter		(cp0);
-	cp0.sub						(GetAbsolutePos());
-	cp0.div						(GetCurrentZoom());
-	return cp0.distance_to		(center_point);
+	// calculate max way dist
+	float dist					= 0.f;
+	Frect s_rect,t_rect;
+//	s_rect.div					(GetWndRect(),GetCurrentZoom(),GetCurrentZoom());
+//	t_rect.div					(map_desired_rect,tgt_zoom,tgt_zoom);
+	s_rect.set					(GetWndRect());
+	t_rect.set					(map_desired_rect);
+
+	Fvector2 sp[4]={{s_rect.x1,s_rect.y1},{s_rect.x2,s_rect.y1},{s_rect.x2,s_rect.y2},{s_rect.x1,s_rect.y2}};
+	Fvector2 tp[4]={{t_rect.x1,t_rect.y1},{t_rect.x2,t_rect.y1},{t_rect.x2,t_rect.y2},{t_rect.x1,t_rect.y2}};
+
+	for (u32 k=0; k<4; ++k)		dist = _max(dist,sp[k].distance_to(tp[k]));
+	return dist;
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -448,12 +455,17 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 {
 	if (inherited::OnMouse(x,y,mouse_action))	return true;
 	if (MapWnd()->GlobalMap()->Locked())		return true;
+	if (MapWnd()->m_flags.is_any(CUIMapWnd::lmZoomIn+CUIMapWnd::lmZoomOut))	return false;
 	switch (mouse_action){			
-		case WINDOW_LBUTTON_DOWN:
-			if(MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
-				MapWnd()->AddUserSpot(this);
-			}else
+		case WINDOW_LBUTTON_DB_CLICK:
+			if (!MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
+				MapWnd()->SetZoom(MapWnd()->GlobalMap()->GetMaxZoom());
 				MapWnd()->SetTargetMap( MapName() );
+			}
+		break;
+		case WINDOW_LBUTTON_DOWN:
+			if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
+				MapWnd()->AddUserSpot(this);
 			return true;
 	}
 	return false;

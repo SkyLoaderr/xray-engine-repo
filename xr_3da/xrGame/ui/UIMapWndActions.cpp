@@ -5,6 +5,7 @@
 #include "UIMapWnd.h"
 
 typedef CActionBase<CUIMapWnd>				WORLD_OPERATOR;
+static const float	map_resize_speed		= 750.f;// y.e./sec
 
 //actions
 class CSomeMapAction : public WORLD_OPERATOR {
@@ -109,8 +110,6 @@ public:
 //-----------------------------------------------------------------------------
 
 using namespace UIMapWndActionsSpace;
-//const float		map_changing_time			= 1.5f;// sec
-const float			map_resize_speed			= 75.f;// m/s
 
 CMapActionPlanner::CMapActionPlanner	(){}
 CMapActionPlanner::~CMapActionPlanner	(){}
@@ -163,14 +162,13 @@ void CMapActionZoomControl::initialize	()
 {
 	inherited::initialize		();
 	float dist					= m_object->GlobalMap()->CalcOpenRect(m_object->m_tgtCenter,m_desiredMapRect,m_targetZoom);
+	float zoom_factor			= _max(m_targetZoom,m_object->GlobalMap()->GetCurrentZoom())/2.f;
+	m_endMovingTime				= Device.fTimeGlobal+dist/(map_resize_speed*zoom_factor);
 
-	float zoom_tm				= 0.75f*
-							(	(m_object->GlobalMap()->GetCurrentZoom()-m_object->GlobalMap()->GetMinZoom() ) /
-								(m_object->GlobalMap()->GetMaxZoom()	-m_object->GlobalMap()->GetMinZoom() )
-							);
+//	bool bZoom					= !fsimilar(m_targetZoom,m_object->GlobalMap()->GetCurrentZoom(),EPS_L);
+//	bool bMove					= fis_zero(dist);
 
 
-	m_endMovingTime				= Device.fTimeGlobal+_max(dist/map_resize_speed, zoom_tm);
 //	m_object->GlobalMap()->SetLocked	(true);
 }
 
@@ -222,10 +220,11 @@ void CMapActionMinimize::initialize()
 {
 	m_targetZoom				= m_object->GlobalMap()->GetMinZoom();
 	inherited::initialize		();
-	m_endMovingTime				= Device.fTimeGlobal+0.75f*
-		(	(m_object->GlobalMap()->GetCurrentZoom()-m_object->GlobalMap()->GetMinZoom() ) /
-			(m_object->GlobalMap()->GetMaxZoom()	-m_object->GlobalMap()->GetMinZoom() )
-		);
+	m_endMovingTime				= Device.fTimeGlobal+0.5f;
+//	*
+//		(	(m_object->GlobalMap()->GetCurrentZoom()-m_object->GlobalMap()->GetMinZoom() ) /
+//			(m_object->GlobalMap()->GetMaxZoom()	-m_object->GlobalMap()->GetMinZoom() )
+//		);
 }
 
 void CMapActionMinimize::finalize()
