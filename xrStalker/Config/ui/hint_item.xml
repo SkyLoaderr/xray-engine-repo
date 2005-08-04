@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 
-	<hint_item x="0" y="0" width="285" height="40">
-		<frame  x="0" y="0" width="100" height="100" a="80">
-			<texture>ui\ui_frame_very_small</texture>
+	<hint_item x="0" y="0" width="200" height="200">
+		<frame  x="0" y="0" width="200" height="200" a="80">
+			<texture>ui_pda_frame_sub</texture>
 		</frame>	
-		<description x="4" y="4" width="92" height="92">
+		<description x="4" y="4" width="192" height="192">
 			<text x="0" y="0" font="letterica18"></text>
 		</description>
 	</hint_item>

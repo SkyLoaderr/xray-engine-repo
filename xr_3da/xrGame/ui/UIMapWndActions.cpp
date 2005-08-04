@@ -110,7 +110,7 @@ public:
 
 using namespace UIMapWndActionsSpace;
 //const float		map_changing_time			= 1.5f;// sec
-const float			map_resize_speed			= 500.f;// m/s
+const float			map_resize_speed			= 75.f;// m/s
 
 CMapActionPlanner::CMapActionPlanner	(){}
 CMapActionPlanner::~CMapActionPlanner	(){}
@@ -163,7 +163,14 @@ void CMapActionZoomControl::initialize	()
 {
 	inherited::initialize		();
 	float dist					= m_object->GlobalMap()->CalcOpenRect(m_object->m_tgtCenter,m_desiredMapRect,m_targetZoom);
-	m_endMovingTime				= Device.fTimeGlobal+dist/map_resize_speed;
+
+	float zoom_tm				= 0.75f*
+							(	(m_object->GlobalMap()->GetCurrentZoom()-m_object->GlobalMap()->GetMinZoom() ) /
+								(m_object->GlobalMap()->GetMaxZoom()	-m_object->GlobalMap()->GetMinZoom() )
+							);
+
+
+	m_endMovingTime				= Device.fTimeGlobal+_max(dist/map_resize_speed, zoom_tm);
 //	m_object->GlobalMap()->SetLocked	(true);
 }
 
@@ -215,6 +222,10 @@ void CMapActionMinimize::initialize()
 {
 	m_targetZoom				= m_object->GlobalMap()->GetMinZoom();
 	inherited::initialize		();
+	m_endMovingTime				= Device.fTimeGlobal+0.75f*
+		(	(m_object->GlobalMap()->GetCurrentZoom()-m_object->GlobalMap()->GetMinZoom() ) /
+			(m_object->GlobalMap()->GetMaxZoom()	-m_object->GlobalMap()->GetMinZoom() )
+		);
 }
 
 void CMapActionMinimize::finalize()

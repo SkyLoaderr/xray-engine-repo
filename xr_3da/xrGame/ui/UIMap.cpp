@@ -329,13 +329,11 @@ float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desire
 	np.sub						(r.lt);
 	map_desired_rect.add		(np.x,np.y);
 	// calculate dist
-	Fvector2 cp0,cp1;
+	Fvector2 cp0;
 	vis_abs_rect.getcenter		(cp0);
 	cp0.sub						(GetAbsolutePos());
 	cp0.div						(GetCurrentZoom());
-	map_desired_rect.getcenter	(cp1);
-	cp1.div						(tgt_zoom);
-	return cp0.distance_to		(cp1);
+	return cp0.distance_to		(center_point);
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -451,17 +449,12 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 	if (inherited::OnMouse(x,y,mouse_action))	return true;
 	if (MapWnd()->GlobalMap()->Locked())		return true;
 	switch (mouse_action){			
-		case WINDOW_LBUTTON_DB_CLICK:
-			MapWnd()->SetTargetMap( MapName() );
-			return true;
-		break;
-
 		case WINDOW_LBUTTON_DOWN:
 			if(MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
 				MapWnd()->AddUserSpot(this);
-				return true;
-			}
-		break;
+			}else
+				MapWnd()->SetTargetMap( MapName() );
+			return true;
 	}
 	return false;
 }

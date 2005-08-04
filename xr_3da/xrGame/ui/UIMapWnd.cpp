@@ -365,7 +365,7 @@ bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 	if(GlobalMap() && !GlobalMap()->Locked() && ActiveMapRect().in( cursor_pos ) ){
 		switch (mouse_action){
 		case WINDOW_MOUSE_MOVE:
-			if( pInput->iGetAsyncBtnState(0) ){
+			if( pInput->iGetAsyncBtnState(1) ){
 				GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
 				return							true;
