@@ -123,6 +123,7 @@ public:
 					CPHUpdateObject	()																;
 	void			Activate		()																;
 	void			Deactivate		()																;
+IC	bool			IsActive		()																{return b_activated;}
 	virtual void	PhDataUpdate	(dReal step)													=0;
 	virtual void	PhTune			(dReal step)													=0;
 };
