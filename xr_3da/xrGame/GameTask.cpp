@@ -214,7 +214,7 @@ void CGameTask::HighlightSpotOnMap(int objective_id, bool bHighlight)
 bool CGameTask::HasMapLocations			()
 {
 	for(u32 i=0; i<m_Objectives.size(); ++i)
-		if(m_Objectives[i].HasMapLocation())return true;
+		if(m_Objectives[i].HasMapLocation()!=NULL)return true;
 
 	return false;
 }

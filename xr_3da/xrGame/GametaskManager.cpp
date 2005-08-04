@@ -93,12 +93,21 @@ void CGameTaskManager::SetTaskState(CGameTask* t, int objective_num, ETaskState 
 	bool isRoot =				(objective_num==0);
 	if ((u32)objective_num >= t->m_Objectives.size()) {Msg("wrong objective num for [%s]", *(t->m_ID)); return;}
 
-	SGameTaskObjective& o	= t->Objective(objective_num);
-	CMapLocation* ml		= o.HasMapLocation();
+	SGameTaskObjective& o			= t->Objective(objective_num);
+	CMapLocation* ml				= o.HasMapLocation();
+	bool bHighlighted				= ml&&ml->PointerEnabled();
 	if(((state==eTaskStateFail)||(state==eTaskStateCompleted))&&ml )
 		Level().MapManager().RemoveMapLocation(o.map_location, o.object_id);
 
 	o.SetTaskState			(state);
+	
+	//highlight next objective if needed
+	if(!isRoot && bHighlighted && objective_num != (int)(t->m_Objectives.size()-1) ){//not last
+		SGameTaskObjective& next_o			= t->Objective(objective_num+1);
+		if(next_o.HasMapLocation())
+			t->HighlightSpotOnMap	(objective_num+1, true);
+	}
+
 
 	if(isRoot){//setState for task and all sub-tasks
 		

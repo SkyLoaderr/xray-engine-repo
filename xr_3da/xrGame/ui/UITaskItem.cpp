@@ -8,6 +8,8 @@
 #include <boost/bind.hpp>
 #include "UIEventsWnd.h"
 #include "UIEditBox.h"
+#include "../map_location.h"
+
 CUITaskItem::CUITaskItem			(CUIEventsWnd* w)
 :m_GameTask			(NULL),
 m_TaskObjectiveIdx	(-1),
@@ -111,11 +113,6 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	m_captionStatic->SetText		(*stbl(m_GameTask->m_Title));
 	m_captionStatic->AdjustHeightToText	();
 
-
-//	m_descriptionStatic->SetWndPos	(m_descriptionStatic->GetWndPos().x, m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
-//	m_descriptionStatic->SetText	(*stbl(obj->description));
-	
-//	m_descriptionStatic->AdjustHeightToText	();
 	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
 	SetHeight						(h);
 }
@@ -229,8 +226,9 @@ void CUITaskSubItem::Update					()
 {
 	inherited::Update						();
 	SGameTaskObjective	*obj				= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
-	bool bHasLocation						= (NULL != obj->HasMapLocation());
-	m_showPointerBtn->Show					(bHasLocation);
+	CMapLocation* ml						= obj->HasMapLocation();
+	bool bHasLocation						= (NULL != ml);
+	m_showPointerBtn->Show					(bHasLocation&&ml->SpotEnabled());
 	if(bHasLocation){
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
 		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
@@ -310,8 +308,9 @@ void CUIUserTaskItem::Update					()
 {
 	inherited::Update		();
 	SGameTaskObjective	*obj				= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
-	bool bHasLocation						= (NULL != obj->HasMapLocation());
-	m_showPointerBtn->Enable				(bHasLocation);
+	CMapLocation* ml						= obj->HasMapLocation();
+	bool bHasLocation						= (NULL != ml);
+	m_showPointerBtn->Show					(bHasLocation&&ml->SpotEnabled());
 	if(bHasLocation){
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
 		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
