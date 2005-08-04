@@ -800,13 +800,6 @@ function mil_emeny_nearest (actor, npc)
 end
 
 
-function mil_lukash_dead (actor, npc)
-    if actor:has_info ("mil_sniper_get_job") then
-       level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
-       level_tasks.remove_location (707, "mil_lukash_location")
-    end   
-end
-
 function mil_cap_mapspot (actor, npc)
     local cap = level_object_by_sid (724)
     if cap == nil or cap:alive () == false then
