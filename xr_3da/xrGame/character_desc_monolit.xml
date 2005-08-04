@@ -197,6 +197,35 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 
+<!---------------------------MONOLIT SNIPER GAUSS---------------------->
+  <specific_character id="monolit_sniper_gauss" team_default = "1">
+    <name>Сталкер группировки "Монолит"</name>
+    <icon x="4" y="2"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <team>Monolit_sniper</team>
+
+    <class>Monolit_sniper_gauss</class>
+    <community>monolith</community>
+
+    <rank>50</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_hood_9</visual>
+    <supplies>
+      [spawn] \n
+      wpn_hpsa \n
+      ammo_9x19_fmj = 1 \n
+      wpn_gauss \n
+      ammo_gauss = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+
 <!---------------------------MONOLIT SPECNAZ---------------------->
   <specific_character id="monolit_specnaz_default1" team_default = "1">
     <name>Сталкер группировки "Монолит"</name>

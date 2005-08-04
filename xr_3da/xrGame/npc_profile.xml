@@ -416,6 +416,10 @@
 		<class>Soldier_specnaz_aes</class>
 	</character>
 
+	<character id="monolit_sniper_gauss">
+		<class>Monolit_sniper_gauss</class>
+	</character>
+
 
 
 </xml>
