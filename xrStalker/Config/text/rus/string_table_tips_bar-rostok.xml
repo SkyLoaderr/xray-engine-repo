@@ -104,11 +104,23 @@
     <string id="bar_arena_fight_60">
 		<text>Прошла минута!</text>
     </string>
+    <string id="bar_arena_fight_70">
+		<text>Прошла минута и 10 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_80">
+		<text>Прошла минута и 20 секунд!</text>
+    </string>
+    <string id="bar_arena_fight_90">
+		<text>Прошло полторы минуты!</text>
+    </string>
     <string id="bar_arena_fight_victory">
 		<text>Итак! Претендент успел уложить противника в отведенное время и выиграл!</text>
     </string>
+    <string id="bar_arena_fight_timeout">
+		<text>Время вышло! Претендент проиграл, но все еще борется за свою жизнь!</text>
+    </string>
     <string id="bar_arena_fight_lose">
-		<text>Итак! Претендент уложил противника, но не успел в отведенное время, и проиграл!</text>
+		<text>Итак! Претендент таки уложил противника, но не успел в отведенное время и проиграл!</text>
     </string>
     <string id="bar_arena_fight_dead">
 		<text>Итак! Противник уложил претендента. Вот так номер!</text>
