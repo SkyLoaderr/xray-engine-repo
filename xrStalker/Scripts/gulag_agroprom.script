@@ -556,6 +556,18 @@ function load_states( gname, type )
 				if actor:has_info( "agr_krot_dead" ) then
 					return 2
 				elseif actor:has_info( "agr_krot_skirmish_start" ) then
+					-- раздать всем хиты, чтоб не ходили спокойно
+					local h     = hit()
+					h.power     = 1
+					h.direction = vector():set( 1, 0, 0 )
+					h.draftsman = level_object_by_sid( 302 )
+					h.impulse   = 1
+					h.type      = hit.wound
+
+					for k, v in gulag.Object do
+						v:hit( h )
+					end
+
 					return 1
 				else
 					return 0
