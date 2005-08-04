@@ -23,7 +23,7 @@ end
 function f_predicate2(obj) 
     local t = obj:best_weapon()
     printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
-	return obj:profile_name() == "stalker_veteran" and t:name() == "wpn_rpg70080" --and t and t:animation_slot() == "4"
+	return obj:profile_name() == "stalker_veteran" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --and t and t:animation_slot() == "4"
 end
 
 function load_job_followers(sj, gname, type, squad, groups)
