@@ -127,7 +127,7 @@
     </article>
 
     <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" article_type="task" group="agroprom_find_gunslinger_cache/1">
-        <texture x="500" y="350" width="500" height="300">ui\ui_icon_photo</texture>
+        <texture x="650" y="350" width="370" height="250">ui\ui_icon_photo</texture>
         <text>agr_krot_secret_info</text>
     </article>
 
