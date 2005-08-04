@@ -290,6 +290,9 @@
 		<disable>bar_arena_fight_40</disable>
 		<disable>bar_arena_fight_50</disable>
 		<disable>bar_arena_fight_60</disable>		
+		<disable>bar_arena_fight_70</disable>		
+		<disable>bar_arena_fight_80</disable>		
+		<disable>bar_arena_fight_90</disable>	
 		
 		<disable>bar_arena_spawn_monstr</disable>
 		<disable>bar_arena_monstr_ready</disable>
@@ -319,6 +322,9 @@
 	<info_portion id="bar_arena_fight_40"></info_portion>
 	<info_portion id="bar_arena_fight_50"></info_portion>
 	<info_portion id="bar_arena_fight_60"></info_portion>
+	<info_portion id="bar_arena_fight_70"></info_portion>
+	<info_portion id="bar_arena_fight_80"></info_portion>
+	<info_portion id="bar_arena_fight_90"></info_portion>
 	
 	
 	<info_portion id="bar_arena_pseudodog_choosen"></info_portion>
