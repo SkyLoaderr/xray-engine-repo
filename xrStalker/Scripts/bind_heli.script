@@ -124,6 +124,10 @@ function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
 	if not self.st.combat.enemy_id then
 		self.st.combat.enemy_id = enemy_id
 	end
+
+	if self.st.hit then
+		xr_logic.issue_event( self.object, self.st.hit, "hit_callback", self.object, power, nil, level.object_by_id( enemy_id ), nil )
+	end
 end
 
 function heli_binder:on_point( distance, position, path_idx )
@@ -207,4 +211,3 @@ function heli_die( obj )
 	st.last_alt       = heli:GetRealAltitude()
 	st.alt_check_time = time_global() + 1000
 end
-
