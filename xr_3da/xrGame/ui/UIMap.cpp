@@ -330,6 +330,7 @@ float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desire
 	map_desired_rect.add		(np.x,np.y);
 	// calculate max way dist
 	float dist					= 0.f;
+/*
 	Frect s_rect,t_rect;
 //	s_rect.div					(GetWndRect(),GetCurrentZoom(),GetCurrentZoom());
 //	t_rect.div					(map_desired_rect,tgt_zoom,tgt_zoom);
@@ -340,6 +341,17 @@ float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desire
 	Fvector2 tp[4]={{t_rect.x1,t_rect.y1},{t_rect.x2,t_rect.y1},{t_rect.x2,t_rect.y2},{t_rect.x1,t_rect.y2}};
 
 	for (u32 k=0; k<4; ++k)		dist = _max(dist,sp[k].distance_to(tp[k]));
+*/
+	Frect s_rect,t_rect;
+	s_rect.div					(GetWndRect(),GetCurrentZoom(),GetCurrentZoom());
+	t_rect.div					(map_desired_rect,tgt_zoom,tgt_zoom);
+
+	Fvector2 cpS,cpT;
+	s_rect.getcenter			(cpS);
+	t_rect.getcenter			(cpT);
+
+	dist						= cpS.distance_to(cpT);
+
 	return dist;
 }
 //////////////////////////////////////////////////////////////////////////

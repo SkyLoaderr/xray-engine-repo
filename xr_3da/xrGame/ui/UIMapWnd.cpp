@@ -517,6 +517,7 @@ void CUIMapWnd::ResetActionPlanner()
 		Frect m_desiredMapRect;
 		GlobalMap()->CalcOpenRect	(m_tgtCenter,m_desiredMapRect,GetZoom());
 		GlobalMap()->SetWndRect		(m_desiredMapRect);
+		UpdateScroll				();
 	}
 }
 
