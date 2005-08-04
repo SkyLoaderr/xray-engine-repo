@@ -282,10 +282,10 @@
 	</specific_character>
 
 	<specific_character id="stalker_agr_ratcatcher" team_default = "1">
-		<name>Сталкер "Крысолов"</name>
+		<name>Неизвестный солдат</name>
 		<icon x="60" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Бывшый сотрудник киевского зоопарка, профессиональный зоотехник. Уволен после скандала связаного со смертью жирафов. В Зону пришел заработать денег.</bio>
+		<bio>Бывшый солдат. Сейчас дезертировал.</bio>
 
 		<class>stalker_agr_ratcatcher</class>
 		<community>stalker</community>
@@ -293,15 +293,14 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_rukzak_6</visual>
+		<visual>actors\soldier\soldier_bandana</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp \n
-			wpn_lr300 \n
-			ammo_5.56x45_ss190 \n
+			wpn_pm \n
+			ammo_9x18_pbp = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-			medkit = 2 \n
 		</supplies>
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
 	</specific_character>
