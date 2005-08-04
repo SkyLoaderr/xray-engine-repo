@@ -31,7 +31,8 @@ void CCar::SCarSound::Init()
 		snd_engine.create	(TRUE,ini->r_string("car_sound","snd_name"));//
 		snd_engine_start.create(TRUE,	READ_IF_EXISTS(ini,r_string,"car_sound","engine_start","car\\test_car_start"));
 		snd_engine_stop.create(TRUE,	READ_IF_EXISTS(ini,r_string,"car_sound","engine_stop","car\\test_car_stop"));
-		engine_start_delay=READ_IF_EXISTS(ini,r_float,"car_sound","engine_sound_start_dellay",0.25f);
+		float fengine_start_delay=READ_IF_EXISTS(ini,r_float,"car_sound","engine_sound_start_dellay",0.25f);
+		engine_start_delay=snd_engine_start._handle()->length_ms()*fengine_start_delay;
 		if(ini->line_exist("car_sound","relative_pos"))
 		{
 			relative_pos.set(ini->r_fvector3("car_sound","relative_pos"));
@@ -65,7 +66,8 @@ void CCar::SCarSound::UpdateStarting()
 			UpdateDrive();
 	} else
 	{
-		if(time_state_start+snd_engine_start._handle()->length_ms()*engine_start_delay<Device.dwTimeGlobal)
+		
+		if(time_state_start+engine_start_delay<Device.dwTimeGlobal)
 		{
 			snd_engine.play(pcar,sm_Looped);
 			UpdateDrive();

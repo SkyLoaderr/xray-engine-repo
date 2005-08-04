@@ -345,7 +345,7 @@ virtual void ApplyDamage(u16 level);
 				~SCarSound			()							;
 		Fvector	relative_pos									;
 		float	volume											;
-		float	engine_start_delay								;//snd_engine starts after engine_start_delay*snd_engine_start._handle()->length_ms() ms by snd_engine_start
+		u32		engine_start_delay								;//snd_engine starts after engine_start_delay ms by snd_engine_start
 		u32		time_state_start								;
 		CCar*	pcar											;
 	} *m_car_sound;
