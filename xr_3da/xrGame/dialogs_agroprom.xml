@@ -216,7 +216,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_krot_help">
-        <has_info>agr_help_krot_done</has_info>
+        <dont_has_info>agr_help_krot_done</dont_has_info>
         <phrase_list>
             <phrase id="0">
                 <text>agr_krot_help_0</text>
