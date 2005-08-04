@@ -5,7 +5,7 @@
 	</agr_factory_skirmish1_location>
 
     <agr_factory_skirmish1_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="224" y="64" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="99" y="227" width="27" height="27">ui\ui_icons_map</texture>
 	</agr_factory_skirmish1_spot>
 
 	
@@ -15,7 +15,7 @@
 	</agr_krot_location>
 
     <agr_krot_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="32" y="0" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="2" y="229" width="27" height="27">ui\ui_icons_map</texture>
 	</agr_krot_spot>
 
 
@@ -25,7 +25,7 @@
 	</agr_gunslinger_cache_location>
 
     <agr_gunslinger_cache_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="128" y="128" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="99" y="227" width="27" height="27">ui\ui_icons_map</texture>
 	</agr_gunslinger_cache_spot>
 
 
@@ -44,7 +44,7 @@
 		<mini_map  spot="agr_ratcatcher_spot" pointer="quest_pointer"></mini_map>
 	</agr_ratcatcher_location>
 
-     	<agr_ratcatcher_spot x="0" y="0" width="64" height="64"alignment="c">
+     	<agr_ratcatcher_spot x="0" y="0" width="32" height="32"alignment="c">
 		<texture x="191" y="191" width="64" height="64" scale="0.5" >ui\ui_icons_map</texture>
 	</agr_ratcatcher_spot>
 
@@ -63,6 +63,6 @@
 		<mini_map  spot="agr_captains_chamber_spot" pointer="quest_pointer"></mini_map>
 	</agr_captains_chamber_location>
 
-     	<agr_captains_chamber_spot x="0" y="0" width="64" height="64" alignment="c">
-		<texture x="191" y="191" width="64" height="64">ui\ui_icons_map</texture>
+     	<agr_captains_chamber_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="72" y="232" width="16" height="16">ui\ui_icons_map</texture>
 	</agr_captains_chamber_spot>
