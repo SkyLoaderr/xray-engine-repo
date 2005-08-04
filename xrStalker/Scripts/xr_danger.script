@@ -6,10 +6,10 @@
 function printf()
 end
 
-local def_ignore_distance = 50
+local def_ignore_distance = 150
 local def_ignore_distance_grenade = 15
 local def_ignore_distance_corpse = 10
-local def_ignore_distance_hit = 50
+local def_ignore_distance_hit = 150
 local def_ignore_distance_sound = 50
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -64,7 +64,8 @@ function evaluator_danger:evaluate()
 			printf("DANGER [%s] [TRUE] ignore corpse", self.object:name())
 			return true			
 		end
-	elseif bd_type == danger_object.entity_attacked then
+	elseif bd_type == danger_object.entity_attacked or
+		   bd_type == danger_object.attacked then
 		if self.a.ignore_types["hit"] == true then
 			printf("DANGER [%s] [TRUE] ignore hit", self.object:name())
 			return true			
@@ -126,7 +127,8 @@ function evaluator_danger:evaluate()
 			printf("DANGER [%s]->[%s] [TRUE] extra dist corpse [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
 			return true
 		end
-	elseif bd_type == danger_object.entity_attacked then
+	elseif bd_type == danger_object.entity_attacked or
+	       bd_type == danger_object.attacked then
 		if danger_distance_sqr > self.a.ignore_distance_hit then
 			printf("DANGER [%s]->[%s] [TRUE] extra dist hit [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
 			return true
