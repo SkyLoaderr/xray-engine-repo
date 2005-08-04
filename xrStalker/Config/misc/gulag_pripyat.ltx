@@ -151,7 +151,7 @@ def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_bomber_wave2
-combat_ignore_cond  = always
+combat_ignore_cond  = {!check_fighting(804:805)} ;always
 
 [walker@pri_followers_bomber_wave2]
 path_walk           = wave2_bomber_walk2
@@ -159,7 +159,7 @@ path_look           = wave2_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
-combat_ignore_cond  = always
+combat_ignore_cond  = {!check_fighting(804:805)} ;always
 
 ;--- bomber: wave3
 [logic@pri_followers_bomber_wave3]
@@ -172,15 +172,29 @@ path_look           = wave3_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
-on_signal           = syn | walker@pri_followers_bomber_wave3
+on_signal           = syn | walker@pri_followers_bomber_wave3_hide
 combat_ignore_cond  = always
 
-[walker@pri_followers_bomber_wave3]
-path_walk           = wave3_bomber_walk2
-path_look           = wave3_bomber_look2
+[walker@pri_followers_bomber_wave3_hide]
+path_walk           = wave3_bomber_hide_walk
+path_look           = wave3_bomber_hide_look
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | {-pri_wave3_start} %+pri_wave3_start%
+on_info             = {+pri_wave2_btr_arrived} walker@pri_followers_bomber_wave3_fire
+combat_ignore_cond  = always
+
+[walker@pri_followers_bomber_wave3_fire]
+path_walk           = wave3_bomber_fire_walk
+path_look           = wave3_bomber_fire_look
+def_state_moving1   = assault
+def_state_moving2   = assault
+on_timer            = 10000 | remark@pri_followers_bomber_wave3_die
+combat_ignore_cond  = always
+
+[remark@pri_followers_bomber_wave3_die]
+no_move             = true
+no_rotate           = true
+anim                = hide
 combat_ignore_cond  = always
 
 ;--- nap1: kamp ------------------------------------------------------------------------------------
