@@ -39,6 +39,63 @@
 		<mini_map  spot="gar_tunnel_newbie_spot" pointer="quest_pointer"></mini_map>
 	</gar_tunnel_newbie_location>
 	
+	<!-- Fake location with spots -->
+	<gar_spot_swamp_location hint="gar_swamp" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_swamp_location>
+	
+	<gar_spot_secret1_location hint="gar_secret1" store="1">
+		<level_map spot="gar_fake_small_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_small_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_secret1_location>
+	
+	<gar_spot_dogs_forest_location hint="gar_dogs_in_forest" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_dogs_forest_location>
+	
+	<gar_spot_angar_location hint="gar_angar" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_angar_location>		
+	
+	<gar_spot_tunnel_location hint="gar_tunnel" store="1">
+		<level_map spot="gar_fake_small_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_small_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_tunnel_location>
+	
+	<gar_spot_car_graveyard_location hint="gar_car_graveyard" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_car_graveyard_location>
+	
+	<gar_spot_bandit_agr_location hint="gar_bandit_agr" store="1">
+		<level_map spot="gar_fake_small_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_small_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_bandit_agr_location>
+	
+	<gar_spot_dolg_blokpost_location hint="gar_dolg_blokpost" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_dolg_blokpost_location>
+	
+	<gar_spot_trash1_location hint="gar_trash1" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_trash1_location>	
+
+	<gar_spot_trash2_location hint="gar_trash2" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_trash2_location>		
+	
+	<gar_spot_trash3_location hint="gar_trash3" store="1">
+		<level_map spot="gar_fake_big_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_fake_big_spot" pointer="quest_pointer"></mini_map>
+	</gar_spot_trash3_location>		
+	
+	
 	<!-- spots -->
 	<gar_seryi_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="32" y="0" width="32" height="32">ui\ui_icons_map</texture>
@@ -71,3 +128,12 @@
 	<gar_tunnel_newbie_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="0" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</gar_tunnel_newbie_spot>
+	
+	<gar_fake_big_spot x="0" y="0" width="64" height="64" alignment="c">
+		<texture x="191" y="191" width="64" height="64">ui\ui_icons_map</texture>
+	</gar_fake_big_spot>
+	
+	<gar_fake_small_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="191" y="191" width="64" height="64">ui\ui_icons_map</texture>
+	</gar_fake_small_spot>	
+	
