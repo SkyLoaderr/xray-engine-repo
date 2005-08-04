@@ -787,6 +787,9 @@ function action_car:fast_update()
 	    self.state_shooting = state_none
 	    self:set_shooting(self.state_shooting)
 	    xr_logic.mob_release(self.object)
+	    if self.st.on_death_info ~= nil then
+	        db.actor:give_info_portion(self.st.on_death_info)
+	    end
 	    return true
 	end
 	
@@ -950,6 +953,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
 	st.invulnerable = utils.cfg_get_bool(ini, section, "invulnerable", npc, false, false)
 	st.headlights = utils.cfg_get_string(ini, section, "headlights", npc, false, gulag_name, "off")
+	st.on_death_info = utils.cfg_get_string(ini, section, "on_death_info", npc, false, gulag_name, nil)
 
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще не загружены.
 	st.path_fire_info = nil
