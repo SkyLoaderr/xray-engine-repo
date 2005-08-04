@@ -351,7 +351,7 @@ function load_job(sj, gname, type, squad, groups)
         prior = 9, state = {0},
         in_rest = "", out_rest = "bar_zastava_restrictor",
 		predicate = function(obj)
-			           	return obj:name() == "bar_zastava_commander_1"
+			           	return obj:profile_name() == "bar_zastava_commander_1"
 			        end
         }
 		table.insert(sj, t)	
