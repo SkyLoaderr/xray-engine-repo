@@ -268,10 +268,10 @@ void SGameTaskObjective::SetTaskState		(ETaskState new_state)
 	if( (new_state==eTaskStateFail) || (new_state==eTaskStateCompleted) ){
 
 		if( task_state==eTaskStateFail )
-				SendInfo				(m_infos_on_complete);
+				SendInfo				(m_infos_on_fail);
 		else
 		if( task_state==eTaskStateCompleted )
-				SendInfo				(m_infos_on_fail);
+				SendInfo				(m_infos_on_complete);
 
 		//callback for scripters
 		ChangeStateCallback(parent->m_ID, idx, new_state);
