@@ -64,11 +64,24 @@ ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_9]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_12]],
 									   [[characters_voice\human_01\scenario\megafon\megafon_music_14]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_15]]}
+									   [[characters_voice\human_01\scenario\megafon\megafon_music_15]],
+									   [[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_new_fight]]}
 ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
 ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
 ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
 ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
+ph_snd_themes["arena_introduce_pseudodog"]	= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_pseudodog]]}
+ph_snd_themes["arena_introduce_snork"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_snork]]}
+ph_snd_themes["arena_introduce_bloodsucker"]= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_bloodsucker]]}
+ph_snd_themes["arena_introduce_burer"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_burer]]}
+ph_snd_themes["arena_introduce_savage"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_zver]]}
+ph_snd_themes["arena_actor_afraid"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_coward]]}
+ph_snd_themes["arena_fight_begin"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_start]]}
+ph_snd_themes["arena_fight_victory"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_1]],
+											   [[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_2]]}
+ph_snd_themes["arena_fight_lose"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_out_of_time_win]]}
+ph_snd_themes["arena_fight_death"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_dead]]}
+
 ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garbage\distance_shooting]]}
 ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\human_01\scenario\bandits\bandit_replic_2]]}
 ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}

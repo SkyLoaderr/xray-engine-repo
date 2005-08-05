@@ -6,6 +6,9 @@
 key_by_id = {}
 group_idle = {}
 
+function printf()
+end
+
 function get_sound(path, tt, npc)
 	if path == nil then return nil end
 	if path.exec == nil then

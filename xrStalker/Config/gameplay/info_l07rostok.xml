@@ -265,11 +265,14 @@
 	<info_portion id="bar_arena_start">
 		<disable>bar_arena_reset</disable>
 	</info_portion>	
+	<info_portion id="bar_arena_start_introduce"></info_portion>
 	<info_portion id="bar_arena_spawn_monstr"></info_portion>
 	<info_portion id="bar_arena_monstr_ready"></info_portion>
 	<info_portion id="bar_arena_monstr_dead"></info_portion>
 	<info_portion id="bar_arena_actor_victory"></info_portion>
 	<info_portion id="bar_arena_actor_lose"></info_portion>
+	<info_portion id="bar_arena_actor_afraid"></info_portion>
+	<info_portion id="bar_arena_actor_dead"></info_portion>
 	<info_portion id="bar_arena_pause"></info_portion>
 	
 	<info_portion id="bar_arena_reset">
@@ -294,11 +297,14 @@
 		<disable>bar_arena_fight_80</disable>		
 		<disable>bar_arena_fight_90</disable>	
 		
+		<disable>bar_arena_start_introduce</disable>
 		<disable>bar_arena_spawn_monstr</disable>
 		<disable>bar_arena_monstr_ready</disable>
 		<disable>bar_arena_monstr_dead</disable>
 		<disable>bar_arena_actor_victory</disable>
 		<disable>bar_arena_actor_lose</disable>
+		<disable>bar_arena_actor_afraid</disable>
+		<disable>bar_arena_actor_dead</disable>
 		
 		<disable>bar_arena_pseudodog_choosen</disable>
 		<disable>bar_arena_snork_choosen</disable>				

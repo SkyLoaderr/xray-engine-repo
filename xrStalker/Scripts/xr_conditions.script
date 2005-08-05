@@ -8,6 +8,21 @@
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
 
+-- проверка, что актер жив
+function actor_alive(actor, npc)
+    if db.actor and db.actor:alive() then
+	    return true
+	end
+	return false
+end
+-- проверка, что актер мертв
+function actor_dead(actor, npc)
+    if db.actor and not db.actor:alive() then
+	    return true
+	end
+	return false
+end
+
 -- проверка того что дистанция до обьекта <= заданной
 -- параметры: [sid,dist]
 function distance_to_obj_le(actor, npc, p)
