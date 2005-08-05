@@ -310,7 +310,7 @@
     <texture id="ui_icons_PDA_dialog_lt" x="826" y="252" width="32" height="32" />
     <texture id="ui_icons_PDA_dialog_l" x="826" y="284" width="32" height="32" />
     <texture id="ui_icons_PDA_dialog_lb" x="826" y="316" width="32" height="32" />
-    <texture id="ui_icons_PDA_dialog_b" x="858" y="316" width="32" height="32" />
+    <texture id="ui_icons_PDA_dialog_b" x="858" y="316" width="32" height="35" />
     <texture id="ui_icons_PDA_dialog_back" x="858" y="284" width="32" height="32" />
     <texture id="ui_icons_PDA_dialog_t" x="858" y="252" width="32" height="32" />
     <texture id="ui_icons_PDA_dialog_rt" x="890" y="252" width="32" height="32" />
@@ -332,4 +332,6 @@
     <texture id="ui_icons_PDA_dialog_line_back" x="506" y="212" width="16" height="1" />
     <texture id="ui_icons_PDA_dialog_line_e" x="506" y="212" width="16" height="1" />
     <texture id="ui_icons_PDA_picture" x="730" y="348" width="244" height="44" />
+    <texture id="ui_icons_newPDA_man" x="730" y="392" width="64" height="64" />
+    <texture id="ui_icons_newPDA_manArrow" x="794" y="392" width="64" height="64" />
 </ui_texture>
