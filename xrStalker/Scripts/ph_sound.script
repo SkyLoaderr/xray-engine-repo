@@ -40,6 +40,7 @@ function snd_source:reset_scheme()
 --	self.current_sound = 1 --DELME !!!
 	
 	--self.object:set_callback(callback.hit, self.hit_callback, self)
+	self.first_sound = true
 	self.destructed = false
     self.st.pause_time = 0	
     self.st.sound_set = false
@@ -82,6 +83,7 @@ function snd_source:update(delta)
              self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), 0, sound_object.looped)
           end   
           played_sound = self.sound_list[self.current_sound]
+          self.first_sound = false
           --printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        end   
     --end        
