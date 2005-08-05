@@ -599,6 +599,8 @@ void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 	Fvector v					= Level().CurrentEntity()->Position();
 	Fvector2 v2;
 	v2.set						(v.x,v.z);
+	if(fsimilar(GlobalMap()->GetCurrentZoom(), GlobalMap()->GetMinZoom(),EPS_L ))
+		SetZoom(GlobalMap()->GetMaxZoom());
 
 	SetTargetMap				(Level().name(), v2);
 }
