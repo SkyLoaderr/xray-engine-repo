@@ -129,9 +129,10 @@ protected:
 	shared_str		m_StrSectionName;
 
 	bool SlotToSection(const u32 SlotNum);
-	bool BeltToSection(CUIDragDropItemMP *pDDItemMP);
-	bool CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum);
-	bool CanPutInBelt(CUIDragDropItemMP *pDDItemMP);
+	bool BeltToSection(CUIDragDropItemMP* pDDItemMP);
+	bool CanPutInSlot(CUIDragDropItemMP* pDDItemMP, const u32 slotNum);
+	bool CanPutInBelt(CUIDragDropItemMP* pDDItemMP);
+	bool CanAttachAddOn(CUIDragDropItemMP* pAddonOwner, CUIDragDropItemMP* pAddOn);
 	// for buy presets
 
 	typedef struct {

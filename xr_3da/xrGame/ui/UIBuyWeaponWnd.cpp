@@ -547,19 +547,21 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				UIBagWnd.SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DROP, NULL);
 				break;
 			case ATTACH_SCOPE_ADDON:
+				SetCurrentDDItem(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
 				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case ATTACH_SILENCER_ADDON:
 //				bool bPistolAvailable = UITopList[PISTOL_SLOT].GetChildWndList().size() ? true : false;
 //				bool bRiffleAvailable = UITopList[RIFLE_SLOT].GetChildWndList().size() ? true : false;
-				SetCurrentDDItem(UITopList[RIFLE_SLOT].GetDragDropItemsList().back());
+				SetCurrentDDItem(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
 				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case ATTACH_SILENCER_ADDON_PISTOL:
-				SetCurrentDDItem(UITopList[PISTOL_SLOT].GetDragDropItemsList().back());
+				SetCurrentDDItem(UITopList[PISTOL_SLOT].GetDragDropItemsList().front());
 				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case ATTACH_GRENADE_LAUNCHER_ADDON:
+				SetCurrentDDItem(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
 				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case DETACH_SCOPE_ADDON:
@@ -880,6 +882,14 @@ void CUIBuyWeaponWnd::Hide()
 	}
 }
 
+bool CUIBuyWeaponWnd::CanAttachAddOn(CUIDragDropItemMP* pAddonOwner, CUIDragDropItemMP* pAddOn){
+	for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+		if (pAddonOwner->m_AddonInfo[j].strAddonName == pAddOn->GetSectionName())
+			return true;
+
+	return false;
+}
+
 
 // Контекстное меню
 void CUIBuyWeaponWnd::ActivatePropertiesBox()
@@ -910,15 +920,30 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 			bool bPistolAvailable = UITopList[PISTOL_SLOT].GetDragDropItemsList().size() ? true : false;
 			bool bRiffleAvailable = UITopList[RIFLE_SLOT].GetDragDropItemsList().size() ? true : false;
 			
+
+
 			//m_pCurrentDragDropItem = pDDItemMP;			
 			if (bRiffleAvailable)
-                UIPropertiesBox.AddItem("Attach add-on to riffle", 
-									NULL,
-									pDDItemMP->IsAddonAttached(ID) ? DETACH_SILENCER_ADDON + static_cast<int>(ID) : ATTACH_SILENCER_ADDON + static_cast<int>(ID));
+				if (CanAttachAddOn((CUIDragDropItemMP*)UITopList[RIFLE_SLOT].GetDragDropItemsList().front(),m_pCurrentDragDropItem))
+				{
+						switch(ID){
+						case CUIDragDropItemMP::ID_SILENCER:
+							UIPropertiesBox.AddItem("Attach add-on to riffle", NULL, pDDItemMP->IsAddonAttached(ID) ? DETACH_SILENCER_ADDON /*+ static_cast<int>(ID)*/ : ATTACH_SILENCER_ADDON /*+ static_cast<int>(ID)*/);
+							break;
+						case CUIDragDropItemMP::ID_SCOPE:
+							UIPropertiesBox.AddItem("Attach add-on to riffle", NULL, pDDItemMP->IsAddonAttached(ID) ? DETACH_SCOPE_ADDON /*+ static_cast<int>(ID)*/ : ATTACH_SCOPE_ADDON /*+ static_cast<int>(ID)*/);
+							break;
+						case CUIDragDropItemMP::ID_GRENADE_LAUNCHER:
+							UIPropertiesBox.AddItem("Attach add-on to riffle", NULL, pDDItemMP->IsAddonAttached(ID) ? DETACH_GRENADE_LAUNCHER_ADDON /*+ static_cast<int>(ID)*/ : ATTACH_GRENADE_LAUNCHER_ADDON /*+ static_cast<int>(ID)*/);
+                    
+					}
+				}
+		
 			if (bPistolAvailable)
-                UIPropertiesBox.AddItem("Attach add-on to pistol", 
-					NULL,
-					pDDItemMP->IsAddonAttached(ID) ? DETACH_SILENCER_ADDON_PISTOL + static_cast<int>(ID) : ATTACH_SILENCER_ADDON_PISTOL + static_cast<int>(ID));
+				if (CanAttachAddOn((CUIDragDropItemMP*)UITopList[PISTOL_SLOT].GetDragDropItemsList().front(),m_pCurrentDragDropItem))
+					UIPropertiesBox.AddItem("Attach add-on to pistol", 
+						NULL,
+						pDDItemMP->IsAddonAttached(ID) ? DETACH_SILENCER_ADDON_PISTOL + static_cast<int>(ID) : ATTACH_SILENCER_ADDON_PISTOL + static_cast<int>(ID));
 		}
 		else
 		{
@@ -946,19 +971,40 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 						if (!this->UIBagWnd.IsItemInBag(pItem))
 							break;
 						strMenuItem = xr_string("Attach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
-						if (UITopList[RIFLE_SLOT].GetDragDropItemsList().back() == m_pCurrentDragDropItem)
-                            UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON + i);
-						else
-							UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON_PISTOL + i);
+						
+						switch(static_cast<CUIDragDropItemMP::AddonIDs>(i)){
+						case CUIDragDropItemMP::ID_SILENCER:
+							if (UITopList[RIFLE_SLOT].GetDragDropItemsList().front() == m_pCurrentDragDropItem)
+								UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON);
+							else
+								UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON_PISTOL);
+							break;
+						case CUIDragDropItemMP::ID_SCOPE:
+								UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SCOPE_ADDON);
+							break;
+						case CUIDragDropItemMP::ID_GRENADE_LAUNCHER:
+								UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_GRENADE_LAUNCHER_ADDON);
+							break;
+						}
 					}
 					break;
 				case 1:
 					strMenuItem = xr_string("Detach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
-					if (UITopList[RIFLE_SLOT].GetDragDropItemsList().back() == m_pCurrentDragDropItem)
-                        UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_SILENCER_ADDON + i);
-					else
-						UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_SILENCER_ADDON_PISTOL + i);
-					break;
+					switch(static_cast<CUIDragDropItemMP::AddonIDs>(i)){
+					case CUIDragDropItemMP::ID_SILENCER:
+						if (UITopList[RIFLE_SLOT].GetDragDropItemsList().front() == m_pCurrentDragDropItem)
+							UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_SILENCER_ADDON + i);
+						else
+							UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_SILENCER_ADDON_PISTOL + i);
+						break;
+					case CUIDragDropItemMP::ID_SCOPE:
+						UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_SCOPE_ADDON);
+						break;
+					case CUIDragDropItemMP::ID_GRENADE_LAUNCHER:
+						UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_GRENADE_LAUNCHER_ADDON);
+						break;
+					}
+
 				default:
 					continue;
 				}
