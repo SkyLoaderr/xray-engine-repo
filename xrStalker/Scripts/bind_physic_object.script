@@ -88,9 +88,11 @@ function generic_physics_binder:net_spawn(data)
 end
 
 function generic_physics_binder:net_destroy()
-	--if self.object:clsid() == clsid.projector then
-	--	db.del_sl(self.object)
-	--end
+	local st = db.storage[self.object:id()]
+	if st.active_scheme then
+		xr_logic.issue_event(self.object, st[st.active_scheme], "net_destroy")
+	end
+
 	db.del_sl(self.object)
 
 	db.storage[self.object:id()] = nil
