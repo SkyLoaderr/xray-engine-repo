@@ -61,7 +61,7 @@ void CUIMoneyIndicator::Update(){
 		if (!m_pAnimBonus->Done())
 		{
 			m_pAnimBonus->Update();
-			m_money_bonus.SetTextColor(subst_alpha(m_money_change.GetTextColor(), m_pAnimBonus->GetColor()));
+			m_money_bonus.SetTextColor(subst_alpha(m_money_bonus.GetTextColor(), m_pAnimBonus->GetColor()));
 		}
 		else
 			m_money_bonus.SetVisible(false);
