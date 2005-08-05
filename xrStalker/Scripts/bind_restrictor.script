@@ -58,6 +58,11 @@ function restrictor_binder:net_spawn(data)
 end
 
 function restrictor_binder:net_destroy()
+	local st = db.storage[self.object:id()]
+	if st.active_scheme then
+		xr_logic.issue_event(self.object, st[st.active_scheme], "net_destroy")
+	end
+
 	db.del_zone( self.object )
 
 	updatable_binders[self.object:id()] = nil
