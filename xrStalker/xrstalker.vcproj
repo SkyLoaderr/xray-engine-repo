@@ -1617,18 +1617,6 @@
 					Name="Pripyat"
 					Filter="">
 					<File
-						RelativePath=".\Config\scripts\pri_followers_leader.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\pri_followers_stalker1.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\pri_followers_stalker2.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\pri_followers_stalker3.ltx">
-					</File>
-					<File
 						RelativePath=".\Config\scripts\pri_wave3_btr.ltx">
 					</File>
 				</Filter>
