@@ -52,6 +52,7 @@ pda_sos  = sound_object([[device\pda\pda_sos]])
 pda_task = sound_object([[device\pda\pda_objective]])
 
 tips_icons = {
+	trader	 = {   0, 100 },
 	dolg     = { 150,   0 },
 	freedom  = {   0, 150 },
 	ecolog   = { 450, 100 },

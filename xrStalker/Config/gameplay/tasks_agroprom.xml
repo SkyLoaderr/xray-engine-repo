@@ -11,6 +11,7 @@
             <map_location_type>agr_military_case_location</map_location_type>
             <object_story_id>agr_military_documents</object_story_id>
             <function_complete>agroprom_tasks.have_quest_case_02</function_complete>
+            <function_call_complete>agroprom_tasks.agr_trader_documents</function_call_complete>
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_2</text>

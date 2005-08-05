@@ -130,3 +130,7 @@ end
 function have_krots_flash(task, objective)
 	return db.actor:object("krot_flash") ~= nil
 end
+
+function agr_trader_documents( actor, npc )
+	news_manager.send_tip( actor, "tips_agr_trader_documents", 0, "trader", 10000 )
+end
