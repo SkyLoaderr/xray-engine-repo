@@ -31,6 +31,8 @@
 	<info_portion id="aes_dog"></info_portion>
 	<info_portion id="aes_desant_proceed_part2"></info_portion>
 	<info_portion id="aes_desant_proceed_part3"></info_portion>
+	<info_portion id="aes_desant_gate"></info_portion>
+	<info_portion id="aes_desant_gate2"></info_portion>
 
 </game_information_portions>
 
