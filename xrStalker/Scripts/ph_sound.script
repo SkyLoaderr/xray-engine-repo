@@ -63,6 +63,10 @@ end
 function snd_source:update(delta)
     if self.destructed == true then return end
 
+	if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
+		return
+	end
+
     --if self.st.pause_time ~= 0 then
        if self.st.pause_time - device ():time_global () > 0 then
           --printf ("PAUSE. NEED TIME : %d, CURRENT TIME : %d", self.st.pause_time, device ():time_global ())
@@ -93,11 +97,6 @@ function snd_source:update(delta)
        end          
     end
        
-	if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
-		return
-	end
-
-	
     if self.sound_list[self.current_sound]:playing () == false then
        if self.first_sound == false then
           self.st.signals["sound_end"] = true
