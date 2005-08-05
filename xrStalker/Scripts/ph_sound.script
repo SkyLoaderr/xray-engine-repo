@@ -109,8 +109,10 @@ function snd_source:update(delta)
        self.current_sound = self.current_sound + 1
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
-          printf("SETTING signal THEME_END")
-          self.st.signals["theme_end"] = true
+          if self.first_sound == false then
+             self.st.signals["theme_end"] = true
+             printf("SETTING signal THEME_END")
+          end   
        end
        self.st.sound_set = true
        if self.st.pause_min ~= 0 or self.st.pause_max ~= 0 then
