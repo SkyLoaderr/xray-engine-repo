@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <encyclopedia>
+#include "gameplay\storyline_info_escape.xml"
+#include "gameplay\storyline_info_garbage.xml"
 #include "gameplay\storyline_info_agroprom.xml"
 #include "gameplay\storyline_info_bar.xml"
 #include "gameplay\storyline_info_darkvalley.xml"
-#include "gameplay\storyline_info_escape.xml"
-#include "gameplay\storyline_info_garbage.xml"
 #include "gameplay\storyline_info_military.xml"
 #include "gameplay\storyline_info_radar.xml"
 
@@ -41,16 +41,6 @@
     <article id="dar_document5" name="dar_document5" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
         <text>Another fake of important documents </text>
-    </article>
-
-    <article id="storyline_gunslinger_cache_info" name="Krot Flash" article_type="task" group="agroprom_find_gunslinger_cache/1">
-        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>storyline_gunslinger_cache_info</text>
-    </article>
-
-    <article id="storyline_gunslinger_flash_info" name="Gunslinger Flash" group="Diary">
-        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
-        <text>storyline_gunslinger_flash_info</text>
     </article>
 
 </encyclopedia>
