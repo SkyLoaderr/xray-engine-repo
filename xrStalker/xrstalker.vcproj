@@ -1116,6 +1116,9 @@
 						RelativePath=".\Config\ui\map_spots_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\map_spots_lchangers.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\map_spots_military.xml">
 					</File>
 					<File
@@ -1123,6 +1126,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\map_spots_radar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_spots_relations.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\map_spots_rostok.xml">

@@ -9,10 +9,18 @@
 #include "ui\map_spots_military.xml"
 #include "ui\map_spots_radar.xml"
 #include "ui\map_spots_mp.xml"
+#include "ui\map_spots_relations.xml"
+#include "ui\map_spots_lchangers.xml"
 
 
+	<level_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</level_map_spot_border>
+	
+	<mini_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</mini_map_spot_border>
 
-<!-- user-defined spot -->
 	<user>
 		<level_map spot="user_level_spot" pointer="user_pointer"></level_map>
 		<mini_map spot="user_mini_spot" pointer="user_pointer"></mini_map>
@@ -30,16 +38,7 @@
 		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
 	</user_pointer>
 
-	<level_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
-	</level_map_spot_border>
 	
-	<mini_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
-	</mini_map_spot_border>
-<!-- end of user-defined spot -->
-	
-<!-- location definitions -->
 	<actor_location hint="actor">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
 	</actor_location>
@@ -60,27 +59,7 @@
 		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
 	</actor_pointer>
 
-
-	<enemy_location hint="enemy" no_offline="1">
-		<mini_map  spot="enemy_mini_spot"></mini_map>
-<!--	<level_map  spot="enemy_mini_spot"></level_map>		<!---->
-	</enemy_location>
-
-	<neutral_location hint="neutral">
-		<mini_map  spot="neutral_mini_spot"></mini_map>
-<!--	<level_map  spot="neutral_mini_spot"></level_map>	<!---->
-	</neutral_location>
-
-	<friend_location hint="friend">
-		<mini_map  spot="friend_mini_spot"></mini_map>
-<!--	<level_map  spot="friend_mini_spot"></level_map>	<!---->
-	</friend_location>
 	
-	<anomaly_zone_location hint="anomaly_zone">
-<!--	<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map> -->
-		<mini_map  spot="anomaly_zone_mini_spot"></mini_map> 
-	</anomaly_zone_location>
-
 	<general_wounded_location hint="general_wounded">
 		<level_map spot="general_wounded_spot"></level_map>
 		<mini_map  spot="general_wounded_spot"></mini_map>
@@ -91,41 +70,11 @@
 	
 	
 
-<!-- level changers -->
-	<lchanger_up_location hint="lchanger_up">
-		<level_map  spot="lchanger_up_spot"></level_map>
-	</lchanger_up_location>
-	<lchanger_up_spot x="0" y="0" width="32" height="32" heading="1" alignment="c">
-		<texture x="96" y="160" width="32" height="32">ui\ui_icons_map</texture>
-	</lchanger_up_spot>
-
-	<lchanger_down_location hint="lchanger_down">
-		<level_map  spot="lchanger_down_spot"></level_map>
-	</lchanger_down_location>
-	<lchanger_down_spot x="0" y="0" width="32" height="32" heading="1" alignment="c">
-		<texture x="128" y="160" width="32" height="32">ui\ui_icons_map</texture>
-	</lchanger_down_spot>
-
-	<lchanger_right_location hint="lchanger_right">
-		<level_map  spot="lchanger_right_spot"></level_map>
-	</lchanger_right_location>
-	<lchanger_right_spot x="0" y="0" width="32" height="32" heading="1" alignment="c">
-		<texture x="160" y="160" width="32" height="32">ui\ui_icons_map</texture>
-	</lchanger_right_spot>
-
-	<lchanger_left_location hint="lchanger_left">
-		<level_map  spot="lchanger_left_spot"></level_map>
-	</lchanger_left_location>
-	<lchanger_left_spot x="0" y="0" width="32" height="32" heading="1" alignment="c">
-		<texture x="192" y="160" width="32" height="32">ui\ui_icons_map</texture>
-	</lchanger_left_spot>
-
 <!--test -->
 	<heli_location hint="helicopter" store="1">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
 		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
 	</heli_location>
-
 
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
 		<texture x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture>
@@ -134,18 +83,11 @@
 	</heli_mini_spot>
 <!--test -->
 	
-	<enemy_mini_spot width="3" height="3" alignment="c" light_anim="ui_minimap_enemy">
-		<texture r="255" g="0" b="0">ui\hud_map_point</texture>
-	</enemy_mini_spot>
-	
-	<neutral_mini_spot width="3" height="3" alignment="c"> 
-		<texture r="255" g="200" b="0">ui\hud_map_point</texture>
-	</neutral_mini_spot>
+	<anomaly_zone_location hint="anomaly_zone">
+<!--	<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map> -->
+		<mini_map  spot="anomaly_zone_mini_spot"></mini_map> 
+	</anomaly_zone_location>
 
-	<friend_mini_spot height="3" alignment="c"> 
-		<texture r="50" g="255" b="0">ui\hud_map_point</texture>
-	</friend_mini_spot>
-	
 	<anomaly_zone_mini_spot x="0" y="0" width="16" height="16" alignment="c" stretch = "1"> 
 		<texture x="1" y="202" width="31" height="30" r="255" g="100" b="100">ui\ui_mp_icon_kill</texture>
 	</anomaly_zone_mini_spot>

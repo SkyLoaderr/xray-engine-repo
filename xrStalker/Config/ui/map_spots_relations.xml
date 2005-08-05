@@ -1,0 +1,28 @@
+
+	<enemy_location hint="enemy" no_offline="1">
+		<mini_map  spot="enemy_mini_spot"></mini_map>
+<!--	<level_map  spot="enemy_mini_spot"></level_map>		<!---->
+	</enemy_location>
+
+	<neutral_location hint="neutral">
+		<mini_map  spot="neutral_mini_spot"></mini_map>
+<!--	<level_map  spot="neutral_mini_spot"></level_map>	<!---->
+	</neutral_location>
+
+	<friend_location hint="friend">
+		<mini_map  spot="friend_mini_spot"></mini_map>
+<!--	<level_map  spot="friend_mini_spot"></level_map>	<!---->
+	</friend_location>
+
+	<enemy_mini_spot width="3" height="3" alignment="c" light_anim="ui_minimap_enemy">
+		<texture r="255" g="0" b="0">ui\hud_map_point</texture>
+	</enemy_mini_spot>
+	
+	<neutral_mini_spot width="3" height="3" alignment="c"> 
+		<texture r="255" g="200" b="0">ui\hud_map_point</texture>
+	</neutral_mini_spot>
+
+	<friend_mini_spot height="3" alignment="c"> 
+		<texture r="50" g="255" b="0">ui\hud_map_point</texture>
+	</friend_mini_spot>
+	
