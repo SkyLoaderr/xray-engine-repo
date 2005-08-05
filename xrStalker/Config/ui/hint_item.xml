@@ -2,8 +2,8 @@
 <window>
 
 	<hint_item x="0" y="0" width="200" height="200">
-		<frame  x="0" y="0" width="200" height="200" a="80">
-			<texture>ui_pda_frame_sub</texture>
+		<frame  x="0" y="0" width="200" height="200">
+			<texture>ui_icons_PDA_dialog</texture>
 		</frame>	
 		<description x="4" y="4" width="192" height="192">
 			<text x="0" y="0" font="letterica18"></text>

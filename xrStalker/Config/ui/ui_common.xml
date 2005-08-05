@@ -283,14 +283,14 @@
     <texture id="ui_icons_newPDA_mapMarDel_d" x="589" y="872" width="32" height="32" />
     <texture id="ui_icons_newPDA_mapMarDel_h" x="589" y="904" width="32" height="32" />
     <texture id="ui_icons_newPDA_setSelect_e" x="589" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_setSelect_t" x="589" y="936" width="32" height="32" />
+    <texture id="ui_icons_newPDA_setSelect_t" x="589" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_setSelect_d" x="589" y="936" width="32" height="32" />
     <texture id="ui_icons_newPDA_setSelect_h" x="589" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_e" x="633" y="693" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_h" x="633" y="693" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_t" x="633" y="693" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_d" x="633" y="693" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showMarkonmap_e" x="633" y="725" width="32" height="325" />
+    <texture id="ui_icons_newPDA_showMarkonmap_e" x="633" y="725" width="32" height="32" />
     <texture id="ui_icons_newPDA_showMarkonmap_t" x="633" y="725" width="32" height="32" />
     <texture id="ui_icons_newPDA_showMarkonmap_d" x="633" y="725" width="32" height="32" />
     <texture id="ui_icons_newPDA_showMarkonmap_h" x="633" y="757" width="32" height="32" />
