@@ -77,8 +77,8 @@ ph_snd_themes["arena_introduce_burer"]		= {[[characters_voice\human_01\scenario\
 ph_snd_themes["arena_introduce_savage"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_zver]]}
 ph_snd_themes["arena_actor_afraid"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_coward]]}
 ph_snd_themes["arena_fight_begin"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_start]]}
-ph_snd_themes["arena_fight_victory"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_1]],
-											   [[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_2]]}
+ph_snd_themes["arena_fight_victory"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_1]]}
+ph_snd_themes["arena_fight_victory_notime"]	= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_2]]}
 ph_snd_themes["arena_fight_lose"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_out_of_time_win]]}
 ph_snd_themes["arena_fight_death"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_dead]]}
 
@@ -367,7 +367,8 @@ function load_sound(obj)
 	theme[obj:id()]["bar_psycho_pain"]				= load_sound_from_ltx(obj, "bar_psycho_pain")
 	theme[obj:id()]["bar_psycho_goodluck"]			= load_sound_from_ltx(obj, "bar_psycho_goodluck")
 	theme[obj:id()]["bar_barman_psycho"]			= load_sound_from_ltx(obj, "bar_barman_psycho")
-
+	theme[obj:id()]["bar_arena_public"]				= load_sound_from_ltx(obj, "bar_arena_public", 5, 7, 80)
+    
     -- Military sounds
     theme[obj:id()]["mil_max_thanx"]                  = load_sound_from_ltx(obj, "mil_max_thanx")
     theme[obj:id()]["mil_max_before_collect"]         = load_sound_from_ltx(obj, "mil_max_before_collect")

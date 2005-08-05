@@ -51,7 +51,7 @@ snd = arena_introduce_savage
 on_signal = theme_end| ph_idle@fight %-bar_arena_start_introduce%
 
 [ph_idle@fight]
-on_info = {-bar_arena_start} ph_sound@idle, {+bar_arena_actor_victory +bar_arena_start_introduce} ph_sound@victory, {+bar_arena_actor_lose +bar_arena_start_introduce} ph_sound@lose, {+bar_arena_actor_dead +bar_arena_start_introduce} ph_sound@death,  {+bar_arena_monstr_ready +bar_arena_start_introduce} ph_sound@fight_begin
+on_info = {-bar_arena_start} ph_sound@idle, {+bar_arena_actor_victory +bar_arena_20_p +bar_arena_start_introduce} ph_sound@victory, {+bar_arena_actor_victory +bar_arena_start_introduce} ph_sound@victory, {+bar_arena_actor_lose +bar_arena_start_introduce} ph_sound@lose, {+bar_arena_actor_dead +bar_arena_start_introduce} ph_sound@death,  {+bar_arena_monstr_ready +bar_arena_start_introduce} ph_sound@fight_begin
 
 
 [ph_sound@fight_begin]
@@ -60,6 +60,10 @@ on_signal = theme_end| ph_idle@fight %-bar_arena_start_introduce%
 
 [ph_sound@victory]
 snd = arena_fight_victory
+on_signal = theme_end| ph_sound@idle %-bar_arena_start_introduce%
+
+[ph_sound@victory_notime]
+snd = arena_fight_victory_notime
 on_signal = theme_end| ph_sound@idle %-bar_arena_start_introduce%
 
 [ph_sound@lose]

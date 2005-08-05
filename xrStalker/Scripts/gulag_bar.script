@@ -91,19 +91,19 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_kamp3",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[4],
+			prior = 5, state = {1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_kamp3",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[4],
+			prior = 5, state = {1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_kamp3",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[4],
+			prior = 5, state = {1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
@@ -129,31 +129,81 @@ function load_job(sj, gname, type, squad, groups)
 
 		t = { section = "logic@bar_visitors_walker",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 7, state = {1,3}, squad = squad, group = groups[1],
+			prior = 7, state = {1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_walker",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 7, state = {1,3}, squad = squad, group = groups[1],
+			prior = 7, state = {1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_walker",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 7, state = {1,3}, squad = squad, group = groups[1],
+			prior = 7, state = {1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_walker",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 7, state = {1,3}, squad = squad, group = groups[1],
+			prior = 7, state = {1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@bar_visitors_walker",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 7, state = {1,3}, squad = squad, group = groups[1],
+			prior = 7, state = {1}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		
+		-- Бой на арене
+		t = { section = "logic@bar_visitors_arena_1",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_2",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_3",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_4",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_5",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_6",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_7",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_visitors_arena_8",
+			idle = 0, timeout = 0,
+			prior = 7, state = {3}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
@@ -1606,7 +1656,21 @@ end
 function load_states(gname, type)
 	if type == "bar_visitors" then
 		return function(gulag)
-			return 1
+			return 3
+//			-- Проверка боя на арене
+//			if db.actor:has_info("bar_arena_start") and
+//			   db.actor:dont_has_info("bar_arena_actor_victory") and
+//			   db.actor:dont_has_info("bar_arena_actor_lose") and
+//			   db.actor:dont_has_info("bar_arena_actor_afraid") and
+//			   db.actor:dont_has_info("bar_arena_actor_dead")
+//			then
+//				return 3
+//			end
+//			
+//			if level.rain_factor() > 0.07 then
+//				return 2
+//			end
+//			return 1
 		end
 	end
 
