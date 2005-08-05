@@ -121,6 +121,7 @@ public:
 	virtual		void				net_import_update		(NET_Packet& P);
 	virtual		void				net_import_state		(NET_Packet& P);
 	virtual		void				OnRankChanged			();
+	virtual		void				OnMoneyChanged			(NET_Packet& P);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

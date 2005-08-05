@@ -39,6 +39,8 @@ void	game_sv_mp::Update	()
 	};
 
 	if (IsVoteEnabled() && IsVotingActive()) UpdateVote();
+	//-------------------------------------------------------
+	UpdatePlayersMoney();
 }
 
 void game_sv_mp::OnRoundStart			()
@@ -894,3 +896,37 @@ void	game_sv_mp::Player_ExperienceFin	(game_PlayerState* ps)
 	ps->experience_Real += ps->experience_New;
 	ps->experience_New = 0;
 }
+
+void	game_sv_mp::UpdatePlayersMoney		()
+{
+	u32	cnt = get_players_count();	
+	for(u32 it=0; it<cnt; it++)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC || !l_pC->net_Ready || !ps) continue;
+		if (!ps->money_added && ps->m_aBonusMoney.empty()) continue;
+		//-----------------------------------------------------------
+		NET_Packet P;
+		
+		GenerateGameMessage (P);
+		P.w_u32		(GAME_EVENT_PLAYERS_MONEY_CHANGED);
+
+		P.w_s32(ps->money_added);	
+		ps->money_added = 0;
+		P.w_u8(u8(ps->m_aBonusMoney.size() & 0xff));
+		if (!ps->m_aBonusMoney.empty())
+		{
+			for (u32 i=0; i<ps->m_aBonusMoney.size(); i++)
+			{
+				Bonus_Money_Struct* pBMS = &(ps->m_aBonusMoney[i]);
+				P.w_s32(pBMS->Money);
+				P.w_u8(u8(pBMS->Reason & 0xff));
+				if (pBMS->Reason == SKT_KIR) P.w_u8(pBMS->Kills);
+			};
+			ps->m_aBonusMoney.clear();
+		};		
+
+		m_server->SendTo(l_pC->ID, P);
+	};
+};

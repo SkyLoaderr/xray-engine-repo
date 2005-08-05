@@ -202,7 +202,7 @@ bool				game_sv_Deathmatch::OnKillResult			(KILL_RES KillResult, game_PlayerStat
 		{
 			pKiller->kills += 1;
 			pKiller->m_iKillsInRow ++;
-			if (pTeam && !m_bPDAHunt)
+			if (pTeam)
 			{
 				s32 ResMoney = pTeam->m_iM_KillRival;
 				if (pKiller->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
@@ -225,13 +225,6 @@ void				game_sv_Deathmatch::OnGiveBonus				(KILL_RES KillResult, game_PlayerStat
 	{
 	case KR_RIVAL:
 		{
-			if (pKiller->m_iKillsInRow)
-			{
-				string64 tmpStr;
-				sprintf(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRow);
-				Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", tmpStr,0));
-			};			
-
 			switch (KillType)
 			{
 			case KT_HIT:
@@ -241,11 +234,11 @@ void				game_sv_Deathmatch::OnGiveBonus				(KILL_RES KillResult, game_PlayerStat
 					case SKT_HEADSHOT:
 						{
 							Player_AddExperience(pKiller, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "headshot",0));
-							Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "headshot",0));
+							Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "headshot",0), SKT_HEADSHOT);
 						}break;
 					case SKT_BACKSTAB:
 						{
-							Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "backstab",0));
+							Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "backstab",0), SKT_BACKSTAB);
 						}break;
 					default:
 						{
@@ -255,7 +248,7 @@ void				game_sv_Deathmatch::OnGiveBonus				(KILL_RES KillResult, game_PlayerStat
 								{
 								case CLSID_OBJECT_W_KNIFE:
 									{
-										Player_AddMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "knife_kill",0));
+										Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "knife_kill",0), SKT_KNIFEKILL);
 									}break;
 								};
 							};
@@ -266,6 +259,13 @@ void				game_sv_Deathmatch::OnGiveBonus				(KILL_RES KillResult, game_PlayerStat
 				{
 				}break;
 			};
+
+			if (pKiller->m_iKillsInRow)
+			{
+				string64 tmpStr;
+				sprintf(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRow);
+				Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", tmpStr,0), SKT_KIR, u8(pKiller->m_iKillsInRow & 0xff));
+			};			
 		}break;
 	default:
 		{
@@ -1563,13 +1563,9 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 				game_PlayerState* pKiller = get_eid(eid_who);
 				if (pKiller)
 				{
-					TeamStruct* pTeam		= GetTeamData(u8(pKiller->team));
-					if (pTeam && m_bPDAHunt)
+					if (m_bPDAHunt)
 					{
-						s32 ResMoney = pTeam->m_iM_KillRival;
-						if (pKiller->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
-							ResMoney = s32(ResMoney * pTeam->m_fInvinsibleKillModifier);
-						Player_AddMoney(pKiller, ResMoney);
+						Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "pda_taken",0), SKT_PDA);
 					};
 				};
 				//-------------------------------
@@ -1622,6 +1618,16 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 	SetPlayersDefItems(ps_who);
 }
 
+void	game_sv_Deathmatch::Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill)
+{
+	if (!ps) return;
+	//-----------------------------
+	if (MoneyAmount) ps->m_aBonusMoney.push_back(Bonus_Money_Struct(MoneyAmount, u8(Reason & 0xff), Kill));
+	//-----------------------------
+	Player_AddMoney(ps, MoneyAmount);
+	//-----------------------------
+	ps->money_added -= MoneyAmount;
+}
 void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 {
 	if (!ps) return;
@@ -1630,6 +1636,7 @@ void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmoun
 	s64 TotalMoney = ps->money_for_round;
 
 	TotalMoney	+= MoneyAmount;
+	ps->money_added += MoneyAmount;
 	
 	if (TotalMoney<pTeam->m_iM_Min) 
 		TotalMoney = pTeam->m_iM_Min;

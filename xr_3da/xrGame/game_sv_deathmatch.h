@@ -173,6 +173,7 @@ public:
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(ClientID	id_who);
 	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
+	virtual		void				Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill = 0);
 	virtual		s32					GetMoneyAmount			(char* caSection, char* caMoneyStr);
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 				int					GetTeamScore			(u32 idx);

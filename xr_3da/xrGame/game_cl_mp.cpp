@@ -14,6 +14,7 @@
 #include "UIGameCustom.h"
 #include "ui/UIInventoryUtilities.h"
 #include "ui/UIMessagesWindow.h"
+#include "ui/UIMainIngameWnd.h"
 #include "CustomZone.h"
 #include "game_base_kill_type.h"
 
@@ -276,6 +277,10 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	case GAME_EVENT_PLAYER_NAME:
 		{
 			OnPlayerChangeName(P);
+		}break;
+	case GAME_EVENT_PLAYERS_MONEY_CHANGED:
+		{
+			OnMoneyChanged(P);
 		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
@@ -741,35 +746,103 @@ void	game_cl_mp::LoadSndMessages				()
 
 void	game_cl_mp::OnRankChanged	()
 {
+	/*
 	KillMessageStruct KMS;
 	KMS.m_killer.m_name = "You are now";
-	KMS.m_initiator.m_shader = GetRankIconsShader();
-	KMS.m_initiator.m_rect.x1 = float(local_player->rank*32);
-	KMS.m_initiator.m_rect.y1 = 0;
-	KMS.m_initiator.m_rect.x2 = float((local_player->rank+1)*32);
-	KMS.m_initiator.m_rect.y2 = 32;
+	sprintf(tmp, "rank_%d",local_player->rank);
+	KMS.m_victim.m_name.sprintf("%s", READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
+//	KMS.m_initiator.m_shader = GetRankIconsShader();
+//	KMS.m_initiator.m_rect.x1 = float(local_player->rank*32);
+//	KMS.m_initiator.m_rect.y1 = 0;
+//	KMS.m_initiator.m_rect.x2 = float((local_player->rank+1)*32);
+//	KMS.m_initiator.m_rect.y2 = 32;
 
 	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
+*/
+	string256 tmp;
+	string1024 RankStr;
+	sprintf(tmp, "rank_%d",local_player->rank);
+	sprintf(RankStr, "Your rank now is : %s", READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
+	CommonMessageOut(RankStr);
+
+	
 };
 
 void	game_cl_mp::net_import_update		(NET_Packet& P)
 {
 	u8 OldRank = 0;
-	if (local_player) OldRank = local_player->rank;
-
+	if (local_player) 
+	{
+		OldRank = local_player->rank;
+	};
+	//---------------------------------------------
 	inherited::net_import_update(P);
-
-	if (local_player && OldRank != local_player->rank)		
-		OnRankChanged();
+	//---------------------------------------------
+	if (local_player)
+	{
+		if (OldRank != local_player->rank)	OnRankChanged();
+	};
 }
 
 void	game_cl_mp::net_import_state		(NET_Packet& P)
 {
 	u8 OldRank = 0;
-	if (local_player) OldRank = local_player->rank;
+	if (local_player) 
+	{
+		OldRank = local_player->rank;
+	};
 
 	inherited::net_import_state(P);
 
-	if (local_player && OldRank != local_player->rank)		
-		OnRankChanged();
+	if (local_player)
+	{
+		if (OldRank != local_player->rank)	OnRankChanged();
+	};
 }
+
+void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
+{
+	if (!local_player) return;
+	shared_str MoneyStr;
+	s32 Money_Added = P.r_s32();
+	if (Money_Added != 0)
+	{
+		MoneyStr.sprintf((Money_Added>0)?"+%d":"%d", Money_Added);
+		if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+			HUD().GetUI()->UIMainIngameWnd->DisplayMoneyChange(MoneyStr);
+	};
+	u8 NumBonuses = P.r_u8();
+	s32 TotalBonusMoney = 0;
+	shared_str BonusStr = (NumBonuses > 1) ? "Your bonuses : " : ((NumBonuses == 1) ? "Your bonus : " : "");
+	for (u8 i=0; i<NumBonuses; i++)
+	{
+		s32 BonusMoney = P.r_s32();
+		SPECIAL_KILL_TYPE BonusReason = SPECIAL_KILL_TYPE(P.r_u8());
+		u8 BonusKills = (BonusReason == SKT_KIR)? P.r_u8() : 0;
+		TotalBonusMoney += BonusMoney;
+		//---------------------------------------------------------
+		shared_str BName = "";
+		switch (BonusReason)
+		{
+		case SKT_HEADSHOT: BName = "headshot"; break;
+		case SKT_BACKSTAB: BName = "backstab"; break;
+		case SKT_KNIFEKILL: BName = "knife_kill"; break;
+		case SKT_PDA: BName = "pda_taken"; break;
+		case SKT_KIR: BName.sprintf("%d_kill_in_row", BonusKills); break;
+		};
+		shared_str BStr = READ_IF_EXISTS(pSettings, r_string, "mp_bonus_money", BName.c_str(), "");
+		if (!BStr.size()) continue;
+		string256 tmp;
+		_GetItem(BStr.c_str(), 1, tmp);
+		if (BonusReason == SKT_KIR) sprintf(tmp, "%s Kill", tmp);
+		BonusStr.sprintf("%s%s +%d%s", BonusStr.c_str(), tmp, BonusMoney, (i == NumBonuses-1) ? "" : "; ");		
+	};
+	if (TotalBonusMoney != 0)
+	{
+		if (BonusStr.size()) CommonMessageOut(BonusStr.c_str());
+
+		MoneyStr.sprintf("+%d", TotalBonusMoney);
+		if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+			HUD().GetUI()->UIMainIngameWnd->DisplayMoneyBonus(MoneyStr);
+	};	
+};

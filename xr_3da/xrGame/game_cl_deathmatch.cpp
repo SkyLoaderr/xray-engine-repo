@@ -371,27 +371,13 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 			
 			if(local_player)
 			{
-				game_PlayerState * P = local_player;
-
-				string16	tmp;
-				_itoa(P->money_for_round, tmp, 10);
-				shared_str PMoney(tmp);
-				HUD().GetUI()->UIMainIngameWnd->ChangeTotalMoneyIndicator(PMoney);
-
-				if (P->money_for_round != m_iCurrentPlayersMoney)
+				if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 				{
-					s32 dMoney = P->money_for_round - m_iCurrentPlayersMoney;
-					if (dMoney > 0)
-						sprintf(tmp,"+%d", dMoney);
-					else
-						sprintf(tmp,"%d", dMoney);				
+					shared_str MoneyStr;
+					MoneyStr.sprintf("%d", local_player->money_for_round);
+					HUD().GetUI()->UIMainIngameWnd->ChangeTotalMoneyIndicator(MoneyStr);
+				}				
 
-					PMoney._set(tmp);
-
-					HUD().GetUI()->UIMainIngameWnd->DisplayMoneyChange(PMoney);
-
-					m_iCurrentPlayersMoney = P->money_for_round;
-				};
 				m_game_ui->SetSpectatorMsgCaption("");
 				m_game_ui->SetPressJumpMsgCaption("");
 				m_game_ui->SetPressBuyMsgCaption("");

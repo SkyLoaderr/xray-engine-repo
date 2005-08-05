@@ -42,6 +42,7 @@ protected:
 	virtual		void				Player_ExperienceFin	(game_PlayerState* ps);
 	virtual		void				Set_RankUp_Allowed		(bool RUA) {m_bRankUp_Allowed = RUA;};
 
+	virtual		void				UpdatePlayersMoney		();
 	
 protected:
 

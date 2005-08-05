@@ -108,10 +108,10 @@
 			</total_money>
 		</money_indicator>
 		<money_change x="20" y="65" width="130" height="32">
-			<text font="graffiti32" r="238" g="155" b="23" a="255">change</text>
+			<text font="graffiti22" r="238" g="155" b="23" a="255">change</text>
 		</money_change>
-		<money_bonus x="20" y="97" width="130" height="32">
-			<text font="graffiti32" r="23" g="155" b="23" a="255">bonus</text>
+		<money_bonus x="20" y="87" width="130" height="32">
+			<text font="graffiti22" r="53" g="255" b="53" a="255">bonus</text>
 		</money_bonus>
 	</money_wnd>
 	

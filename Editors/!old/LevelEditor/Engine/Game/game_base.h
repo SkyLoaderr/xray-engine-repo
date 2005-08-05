@@ -26,6 +26,14 @@ add_to_type_list(RPoint)
 #undef script_type_list
 #define script_type_list save_type_list(RPoint)
 
+struct Bonus_Money_Struct {
+	s32		Money;
+	u8		Reason;
+	u8		Kills;
+	Bonus_Money_Struct(s32 M, u8 R, u8 K) {Money = M; Reason = R; Kills = K;}
+	Bonus_Money_Struct() {Money = 0; Reason = 0; Kills=0;}
+};
+
 struct	game_PlayerState 
 {
 	string64	name;
@@ -34,7 +42,8 @@ struct	game_PlayerState
 	s16			m_iKillsInRow;
 	s16			deaths;
 	s32			money_total;
-	s32			money_for_round;
+	s32			money_for_round;	
+
 	float		experience_Real;
 	float		experience_New;
 	float		experience_D;
@@ -63,6 +72,10 @@ struct	game_PlayerState
 	//---------------------------
 	DEF_DEQUE	(OLD_GAME_ID, u16);
 	OLD_GAME_ID	mOldIDs;
+	//-------------------------------------
+	s32			money_added;
+	DEF_VECTOR	(MONEY_BONUS, Bonus_Money_Struct);
+	MONEY_BONUS	m_aBonusMoney;
 
 /*
 private:

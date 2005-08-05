@@ -18,7 +18,7 @@ game_PlayerState::game_PlayerState()
 	m_iKillsInRow		=	0;
 	deaths				=	0;
 	money_total			=	0;
-	money_for_round		=	0;
+	money_for_round		=	0;	
 	//  [7/27/2005]
 	experience_D		=	0;
 	experience_Real		=	0;
@@ -44,6 +44,9 @@ game_PlayerState::game_PlayerState()
 	//--------------------------------
 	Rping = 0;
 	mOldIDs.clear();
+	//--------------------------------
+	money_added = 0;
+	m_aBonusMoney.clear();
 }
 
 void game_PlayerState::clear()
@@ -53,7 +56,7 @@ void game_PlayerState::clear()
 	m_iKillsInRow		= 0;
 	deaths				= 0;
 	lasthitter		= 0;
-	lasthitweapon		= 0;
+	lasthitweapon		= 0;	
 
 	//  [7/27/2005]
 	experience_D		=	0;
@@ -71,6 +74,9 @@ void game_PlayerState::clear()
 
 	DeathTime = 0;
 	mOldIDs.clear();
+	//---------------------
+	money_added = 0;
+	m_aBonusMoney.clear();
 }
 
 game_PlayerState::~game_PlayerState()
