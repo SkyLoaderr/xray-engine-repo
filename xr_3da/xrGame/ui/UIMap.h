@@ -39,7 +39,7 @@ public:
 
 	virtual void	Draw							();
 	virtual void	Update							();
-
+	virtual void	SendMessage						(CUIWindow* pWnd, s16 msg, void* pData);
 			bool	IsRectVisible					(Frect r);
 			bool	NeedShowPointer					(Frect r);
 			bool	Locked							()				{return !!m_flags.test(eLocked);}
@@ -58,7 +58,6 @@ private:
 	float			m_minZoom;
 public:
 
-	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 	virtual Fvector2 ConvertRealToLocal		(const Fvector2& src);// pixels->pixels (relatively own left-top pos)
 
 					CUIGlobalMap			(CUIMapWnd*	pMapWnd);
@@ -85,6 +84,7 @@ class CUILevelMap: public CUICustomMap{
 	CUIMapWnd*					m_mapWnd;
 	Frect						m_GlobalRect;			// virtual map size (meters)
 	CUIStatic*					m_anomalies_map;
+	float						m_focusReceivedTm;
 private:
 								CUILevelMap			(const CUILevelMap &obj) {}
 			CUILevelMap			&operator=			(const CUILevelMap &obj) {}
@@ -97,9 +97,14 @@ public:
 	virtual void				Draw				();
 	virtual void				Update				();
 	virtual bool				OnMouse				(float x, float y, EUIMessages mouse_action);
+	virtual void				SendMessage			(CUIWindow* pWnd, s16 msg, void* pData);
 	
 	Frect						CalcWndRectOnGlobal	();
 	CUIMapWnd*					MapWnd				() {return m_mapWnd;}
+
+	virtual		void			OnFocusLost			();
+	virtual		void			OnFocusReceive		();
+
 protected:
 	virtual void				UpdateSpots			();
 

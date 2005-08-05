@@ -29,6 +29,10 @@ protected:
 	CMapSpotPointer*		m_level_spot_pointer;
 	CMiniMapSpot*			m_minimap_spot;
 	CMapSpotPointer*		m_minimap_spot_pointer;
+
+	CMapSpot*				m_level_map_spot_border;
+	CMapSpot*				m_mini_map_spot_border;
+
 	u16						m_objectID;
 	u16						m_refCount;
 	int						m_ttl;
@@ -43,7 +47,7 @@ protected :
 	void					UpdateSpot						(CUICustomMap* map, CMapSpot* sp );
 	void					UpdateSpotPointer				(CUICustomMap* map, CMapSpotPointer* sp );
 	CMapSpotPointer*		GetSpotPointer					(CMapSpot* sp);
-
+	CMapSpot*				GetSpotBorder					(CMapSpot* sp);
 public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();

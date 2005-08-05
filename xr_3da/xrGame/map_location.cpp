@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "map_location.h"
 #include "map_spot.h"
+#include "map_manager.h"
 
 #include "level.h"
 #include "../xr_object.h"
@@ -23,6 +24,10 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	m_level_spot_pointer	= NULL;
 	m_minimap_spot			= NULL;
 	m_minimap_spot_pointer	= NULL;
+
+	m_level_map_spot_border	= NULL;
+	m_mini_map_spot_border	= NULL;
+
 	m_objectID				= object_id;
 	m_actual_time			= 0;
 
@@ -44,6 +49,8 @@ void CMapLocation::destroy()
 	delete_data(m_level_spot_pointer);
 	delete_data(m_minimap_spot);
 	delete_data(m_minimap_spot_pointer);
+	delete_data(m_level_map_spot_border);
+	delete_data(m_mini_map_spot_border);
 }
 
 CUIXml	g_uiSpotXml;
@@ -278,6 +285,13 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 			sp->SetClipRect( clip_rect );
 			map->AttachChild(sp);
 		}
+		if( GetSpotPointer(sp) ){
+			CMapSpot* s = GetSpotBorder(sp);
+			if(s){
+				s->SetWndPos(sp->GetWndPos());
+				map->AttachChild(s);
+			}
+		}
 		if( GetSpotPointer(sp) && map->NeedShowPointer(wnd_rect)){
 			UpdateSpotPointer( map, GetSpotPointer(sp) );
 		}
@@ -353,6 +367,25 @@ CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 	if(sp==m_minimap_spot)
 		return m_minimap_spot_pointer;
 
+	return NULL;
+}
+
+CMapSpot* CMapLocation::GetSpotBorder(CMapSpot* sp)
+{
+	R_ASSERT(sp);
+	if(!PointerEnabled()) return NULL;
+	if(sp==m_level_spot){
+		if(NULL==m_level_map_spot_border){
+			m_level_map_spot_border	= xr_new<CMapSpot>(this);
+			m_level_map_spot_border->Load(&g_uiSpotXml,"level_map_spot_border");
+		}return m_level_map_spot_border;
+	}else
+		if(sp==m_minimap_spot){
+		if(NULL==m_mini_map_spot_border){
+			m_mini_map_spot_border	= xr_new<CMapSpot>(this);
+			m_mini_map_spot_border->Load(&g_uiSpotXml,"mini_map_spot_border");
+		}return m_mini_map_spot_border;
+	}
 	return NULL;
 }
 

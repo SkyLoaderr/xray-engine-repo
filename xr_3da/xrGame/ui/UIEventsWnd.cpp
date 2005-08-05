@@ -208,8 +208,9 @@ bool CUIEventsWnd::GetDescriptionMode		()
 
 void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 {
+	SGameTaskObjective& o		= t->Objective(idx);
 	if(GetDescriptionMode()){//map
-		CMapLocation* ml = t->m_Objectives[idx].HasMapLocation();
+		CMapLocation* ml = o.HasMapLocation();
 		if(ml&&ml->SpotEnabled())
 			m_UIMapWnd->SetTargetMap(ml->LevelName(), ml->Position());
 	}else{//articles
@@ -219,10 +220,14 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 	{
 		string512	need_group;
-		if(0==idx)
+		if(0==idx){
 			strcpy(need_group,*t->m_ID);
-		else
+		}else
+		if(o.article_key.size()){
+			sprintf(need_group, "%s/%s", *t->m_ID, *o.article_key);
+		}else{
 			sprintf(need_group, "%s/%d", *t->m_ID, idx);
+		}
 
 		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
 		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
@@ -235,7 +240,7 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 				if(strstr(*(A.data()->group), need_group)== *(A.data()->group))
 					m_UITaskInfoWnd->AddArticle(&A);
 			}else
-			if(t->m_Objectives[idx].article_id.size() && it->article_id ==t->m_Objectives[idx].article_id){
+			if(o.article_id.size() && it->article_id ==o.article_id){
 				CEncyclopediaArticle			A;
 				A.Load							(it->article_id);
 				m_UITaskInfoWnd->AddArticle		(&A);

@@ -50,7 +50,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "UIDragDropListEx.h"
+#include "map_hint.h"
 static CTestDragDropWnd* w = NULL;
+CUIMapHint* w_ = NULL;
 
 using namespace InventoryUtilities;
 
@@ -359,10 +361,12 @@ void CUIMainIngameWnd::Init()
 	UIStaticDiskIO.SetStretchTexture		(TRUE);
 
 }
-
 float UIStaticDiskIO_start_time = 0.0f;
 void CUIMainIngameWnd::Draw()
 {
+	if(w_)
+		w_->Draw();
+
 	bool zoom_mode = false;
 	bool scope_mode = false;
 	// show IO icon
@@ -800,6 +804,18 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			xr_delete						(w);
 		}
 	}
+
+	if(dik==DIK_J&&strstr(Core.Params,"andy")){
+		if(!w_){
+			w_ = xr_new<CUIMapHint>	();
+			w_->Init				();
+			w_->SetText("UIPdaOnline. SetTextColor (subst_alpha (UIPdaOnline. GetTextColor(), color_get_A (UIContactsAnimation. GetColor())));");
+			w_->SetWndPos(200.f,200.f);
+		}else{
+			xr_delete						(w_);
+		}
+	}
+
 	
 /*	if(dik==DIK_O&&strstr(Core.Params,"andy")){
 		ref_shader sh_base, sh_1[1000];

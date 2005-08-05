@@ -3,6 +3,7 @@
 #include "../LevelFogOfWar.h"
 #include "../map_location.h"
 #include "../map_manager.h"
+#include "../map_spot.h"
 #include "../MainUI.h"
 #include "UIMap.h"
 #include "UIMapWnd.h"
@@ -241,6 +242,12 @@ bool CUICustomMap::NeedShowPointer(Frect r)
 	return !map_visible_rect.intersected(r);
 }
 
+void	CUICustomMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	CUIWndCallback::OnEvent(pWnd, msg, pData);
+}
+
+
 CUIGlobalMap::CUIGlobalMap(CUIMapWnd*	pMapWnd)
 {
 	m_mapWnd				= pMapWnd;
@@ -262,10 +269,6 @@ void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	inherited::Init(name, gameLtx, sh_name);
 }
 
-void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
-{
-	CUIWndCallback::OnEvent(pWnd, msg, pData);
-}
 
 void CUIGlobalMap::ClipByVisRect()
 {
@@ -361,6 +364,7 @@ CUILevelMap::CUILevelMap(CUIMapWnd* p)
 	m_mapWnd			= p;
 	m_anomalies_map		= NULL;
 	Show				(false);
+	m_focusReceivedTm	= -1.0f;
 }
 
 CUILevelMap::~CUILevelMap()
@@ -460,7 +464,20 @@ void CUILevelMap::Update()
 
 	SetWndRect						(rect);
 
-	inherited::Update		();
+	inherited::Update				();
+
+	if(m_bCursorOverWindow){
+		VERIFY(m_focusReceivedTm>0.0f);
+		if( Device.fTimeGlobal>(m_focusReceivedTm+1.0f) ){
+
+			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ))
+				MapWnd()->ShowHint(this, *MapName());
+			else
+				MapWnd()->HideHint(this);
+
+		}
+	}
+
 }
 
 bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
@@ -469,18 +486,43 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 	if (MapWnd()->GlobalMap()->Locked())		return true;
 	if (MapWnd()->m_flags.is_any(CUIMapWnd::lmZoomIn+CUIMapWnd::lmZoomOut))	return false;
 	switch (mouse_action){			
-		case WINDOW_LBUTTON_DB_CLICK:
-			if (!MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
-				MapWnd()->SetZoom(MapWnd()->GlobalMap()->GetMaxZoom());
-				MapWnd()->SetTargetMap( MapName() );
-			}
-		break;
+
 		case WINDOW_LBUTTON_DOWN:
-			if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
+			if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
 				MapWnd()->AddUserSpot(this);
+			}else
+			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ))
+				MapWnd()->SetTargetMap( this );
 			return true;
 	}
 	return false;
+}
+
+void	CUILevelMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	inherited::SendMessage(pWnd, msg, pData);
+
+	if(msg==MAP_SHOW_HINT){
+		CMapSpot* sp =smart_cast<CMapSpot*>(pWnd);VERIFY(sp);
+		MapWnd()->ShowHint(pWnd, sp->GetHint());
+	}else
+	if(msg==MAP_HIDE_HINT){
+		MapWnd()->HideHint(pWnd);
+	}
+
+}
+
+void CUILevelMap::OnFocusLost			()
+{
+	inherited::OnFocusLost		();
+	m_focusReceivedTm			= -1.0f;
+	MapWnd()->HideHint			(this);
+}
+
+void CUILevelMap::OnFocusReceive		()
+{
+	inherited::OnFocusReceive		();
+	m_focusReceivedTm		= Device.fTimeGlobal;
 }
 
 

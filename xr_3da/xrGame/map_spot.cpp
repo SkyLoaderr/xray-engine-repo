@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "map_spot.h"
 #include "map_location.h"
+
 #include "ui/UIXmlInit.h"
 #include "ui/UIMApWnd.h"
 #include "level.h"
 #include "../xr_object.h"
+#include "object_broker.h"
 
 CMapSpot::CMapSpot(CMapLocation* ml)
 :m_map_location(ml)
 {
-	ClipperOn();
+	ClipperOn			();
+	m_focusReceivedTm	= -1.0f;
 }
 
 CMapSpot::~CMapSpot()
@@ -30,6 +33,12 @@ LPCSTR CMapSpot::GetHint()
 void CMapSpot::Update()
 {
 	inherited::Update();
+	if(m_bCursorOverWindow){
+		VERIFY(m_focusReceivedTm>0.0f);
+		if( Device.fTimeGlobal>(m_focusReceivedTm+1.0f) ){
+			GetMessageTarget()->SendMessage(this, MAP_SHOW_HINT, NULL);
+		}
+	}
 }
 
 void CMapSpot::Draw()
@@ -40,6 +49,19 @@ void CMapSpot::Draw()
 bool CMapSpot::OnDbClick		()
 {
 	return true;
+}
+
+void CMapSpot::OnFocusLost		()
+{
+	inherited::OnFocusLost		();
+	m_focusReceivedTm			= -1.0f;
+	GetMessageTarget()->SendMessage(this, MAP_HIDE_HINT, NULL);
+}
+
+void CMapSpot::OnFocusReceive	()
+{
+	inherited::OnFocusReceive		();
+	m_focusReceivedTm		= Device.fTimeGlobal;
 }
 
 

@@ -87,6 +87,7 @@ void CGameTask::Load(const TASK_ID& id)
 		XML_NODE*	l_root = NULL;
 		l_root							= g_gameTaskXml.NavigateToNode("objective",i); 
 		g_gameTaskXml.SetLocalRoot		(l_root);
+
 		m_Objectives.push_back			(SGameTaskObjective(this,i));
 		SGameTaskObjective&				objective = m_Objectives.back();
 
@@ -96,6 +97,10 @@ void CGameTask::Load(const TASK_ID& id)
 		tag_text						= g_gameTaskXml.Read(l_root, "article", 0, NULL);
 		if(tag_text)
 			objective.article_id		= tag_text;
+
+		tag_text						= g_gameTaskXml.ReadAttrib(l_root, "key", NULL);
+		if(tag_text)
+			objective.article_key		= tag_text;
 
 		objective.icon_texture_name		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "icon", 0, NULL);
 		if(objective.icon_texture_name.size()){
@@ -168,6 +173,25 @@ void CGameTask::Load(const TASK_ID& id)
 		for(j=0; j<info_num; ++j){
 			str							= g_gameTaskXml.Read(l_root, "function_fail", j, NULL);
 			functor_exists				= ai().script_engine().functor(str ,objective.m_fail_lua_functions[j]);
+			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
+		}
+
+//------function_on_complete
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"function_call_complete");
+		objective.m_complete_lua_functions.resize(info_num);
+		for(j=0; j<info_num; ++j){
+			str							= g_gameTaskXml.Read(l_root, "function_call_complete", j, NULL);
+			functor_exists				= ai().script_engine().functor(str ,objective.m_lua_functions_on_complete[j]);
+			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
+		}
+
+
+//------function_on_fail
+		info_num						= g_gameTaskXml.GetNodesNum(l_root,"function_call_fail");
+		objective.m_fail_lua_functions.resize(info_num);
+		for(j=0; j<info_num; ++j){
+			str							= g_gameTaskXml.Read(l_root, "function_call_fail", j, NULL);
+			functor_exists				= ai().script_engine().functor(str ,objective.m_lua_functions_on_fail[j]);
 			THROW3						(functor_exists, "Cannot find script function described in task objective  ", str);
 		}
 
@@ -267,12 +291,14 @@ void SGameTaskObjective::SetTaskState		(ETaskState new_state)
 	task_state = new_state;
 	if( (new_state==eTaskStateFail) || (new_state==eTaskStateCompleted) ){
 
-		if( task_state==eTaskStateFail )
+		if( task_state==eTaskStateFail ){
 				SendInfo				(m_infos_on_fail);
-		else
-		if( task_state==eTaskStateCompleted )
+				CallAllFuncs			(m_lua_functions_on_fail);
+		}else
+		if( task_state==eTaskStateCompleted ){
 				SendInfo				(m_infos_on_complete);
-
+				CallAllFuncs			(m_lua_functions_on_complete);
+		}
 		//callback for scripters
 		ChangeStateCallback(parent->m_ID, idx, new_state);
 	}
@@ -332,6 +358,14 @@ bool SGameTaskObjective::CheckFunctions	(xr_vector<luabind::functor<bool> >& v)
 	}
 	return res;
 
+}
+
+void SGameTaskObjective::CallAllFuncs	(xr_vector<luabind::functor<bool> >& v)
+{
+	xr_vector<luabind::functor<bool> >::iterator it	= v.begin();
+	for(;it!=v.end();++it){
+		if( (*it).is_valid() ) (*it)(*(parent->m_ID), idx);
+	}
 }
 
 void ChangeStateCallback(shared_str& task_id, int obj_id, ETaskState state){

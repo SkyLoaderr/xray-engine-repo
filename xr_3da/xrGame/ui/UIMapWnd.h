@@ -18,6 +18,7 @@ class CUITabControl;
 class CUIStatic;
 class CUI3tButton;
 class CUILevelMap;
+class CUIMapHint;
 
 DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
@@ -55,6 +56,8 @@ private:
 	CUIFrameLineWnd*			UIMainMapHeader;
 	CUI3tButton*				m_ToolBar[eMaxBtn];
 	CUIStatic*					m_MapText;
+	CUIMapHint*					m_hint;
+
 	void						OnScrollV				();
 	void						OnScrollH				();
 	void						OnToolGlobalMapClicked	(CUIWindow*, void*);
@@ -82,6 +85,9 @@ public:
 			void				ShowHint				();
 			float				GetZoom					()	{return m_currentZoom;}
 			void				SetZoom					(float value);
+
+			void				ShowHint				(CUIWindow* parent, LPCSTR text);
+			void				HideHint				(CUIWindow* parent);
 
 	virtual bool				OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual bool				OnKeyboard				(int dik, EUIMessages keyboard_action);

@@ -138,6 +138,8 @@ enum EUIMessages
 	//CUIAnimationBase
     ANIMATION_STOPPED,
 	EDIT_TEXT_CHANGED,
+	MAP_SHOW_HINT,
+	MAP_HIDE_HINT,
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -4,11 +4,11 @@
 class CMapLocation;
 class CUIXml;
 
-
 class CMapSpot :public CUIStatic
 {
 	typedef CUIStatic inherited;
 	CMapLocation*			m_map_location;
+	float					m_focusReceivedTm;
 public:
 							CMapSpot						(CMapLocation*);
 	virtual					~CMapSpot						();
@@ -18,6 +18,8 @@ public:
 	virtual		void		Update							();
 	virtual		void		Draw							();
 	virtual		bool		OnDbClick						();
+	virtual		void		OnFocusLost						();
+	virtual		void		OnFocusReceive					();
 };
 
 

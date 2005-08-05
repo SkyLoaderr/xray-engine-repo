@@ -20,6 +20,7 @@
 #include "UITabControl.h"
 #include "UIMapWndActions.h"
 #include "UIMapWndActionsSpace.h"
+#include "map_hint.h"
 
 #include "../HUDManager.h"
 
@@ -44,6 +45,7 @@ CUIMapWnd::CUIMapWnd()
 	m_GlobalMap				= NULL;
 	m_flags.zero			();
 	m_currentZoom			= 1.0f;
+	m_hint					= NULL;
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -51,6 +53,7 @@ CUIMapWnd::~CUIMapWnd()
 	delete_data			(m_ActionPlanner);
 	delete_data			(m_GameMaps);
 	delete_data			(m_MapText);
+	delete_data			(m_hint);
 }
 
 
@@ -186,6 +189,9 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolRemoveSpotClicked,this,_1,_2));
 	}
 
+	m_hint								= xr_new<CUIMapHint>();
+	m_hint->Init						();
+	m_hint->SetAutoDelete				(false);
 
 // Load maps
 	string256								gameLtxPath;
@@ -282,6 +288,7 @@ void CUIMapWnd::Show(bool status)
 	}
 
 	inherited::Show(status);
+	m_hint->SetOwner		(NULL);
 }
 
 
@@ -350,6 +357,7 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 void CUIMapWnd::Draw()
 {
 	inherited::Draw();
+	if(m_hint->GetOwner()) m_hint->Draw_();
 	m_MapText->Draw();
 }
 
@@ -369,6 +377,7 @@ bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 			if( pInput->iGetAsyncBtnState(1) ){
 				GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
+				m_hint->SetOwner				(NULL);
 				return							true;
 			}
 		break;
@@ -381,15 +390,18 @@ bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				m_tgtCenter.sub					(gm->GetAbsolutePos());
 				m_tgtCenter.div					(gm->GetCurrentZoom());
 				ResetActionPlanner				();
+				m_hint->SetOwner				(NULL);
 				return							true;
 			}
 		break;
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec		();
+			m_hint->SetOwner				(NULL);
 			return								true;
 		break;
 		case WINDOW_MOUSE_WHEEL_DOWN:
 			m_UIMainScrollV->TryScrollInc();
+			m_hint->SetOwner				(NULL);
 			return								true;
 		break;
 		}	
@@ -612,4 +624,41 @@ void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
 
 	m_flags.set						(lmUserSpotAdd, FALSE);
 	m_ToolBar[eAddSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
+}
+
+bool is_in(const Frect& b1, const Frect& b2){
+	return (b1.x1<b2.x1)&&(b1.x2>b2.x2)&&(b1.y1<b2.y1)&&(b1.y2>b2.y2);
+}
+
+void CUIMapWnd::ShowHint					(CUIWindow* parent, LPCSTR text)
+{
+	if(m_hint->GetOwner())	return;
+	Fvector2 c_pos			= GetUICursor()->GetPos();
+	Frect vis_rect			= ActiveMapRect				();
+	if(FALSE==vis_rect.in(c_pos)) return;
+
+	m_hint->SetOwner		(parent);
+	m_hint->SetText			(text);
+
+	//select appropriate position
+	//walk clockwise
+	Frect r;
+	r.set					(0.0f, 0.0f, m_hint->GetWidth(), m_hint->GetHeight());
+	r.add					(c_pos.x, c_pos.y);
+
+	if (false==is_in(vis_rect,r))
+		r.sub				(0.0f,r.height());
+	if (false==is_in(vis_rect,r))
+		r.sub				(r.width(),0.0f);
+	if (false==is_in(vis_rect,r))
+		r.add				(0.0f,r.height());
+
+	m_hint->SetWndPos		(r.lt);
+}
+
+void CUIMapWnd::HideHint					(CUIWindow* parent)
+{
+	if(m_hint->GetOwner() == parent)
+		m_hint->SetOwner	(NULL);
+//		parent->DetachChild	(m_hint);
 }

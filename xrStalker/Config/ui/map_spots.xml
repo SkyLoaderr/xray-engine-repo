@@ -28,7 +28,14 @@
 	<user_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
 		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
 	</user_pointer>
+
+	<level_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</level_map_spot_border>
 	
+	<mini_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</mini_map_spot_border>
 <!-- end of user-defined spot -->
 	
 <!-- location definitions -->

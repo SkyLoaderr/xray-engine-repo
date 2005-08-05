@@ -17,6 +17,7 @@ private:
 	CGameTask*				parent;
 	int						idx;
 	void					SendInfo		(xr_vector<shared_str>&);
+	void					CallAllFuncs	(xr_vector<luabind::functor<bool> >& v);
 	bool					CheckInfo		(xr_vector<shared_str>&);
 	bool					CheckFunctions	(xr_vector<luabind::functor<bool> >& v);
 	void					SetTaskState	(ETaskState new_state);
@@ -26,6 +27,7 @@ public:
 	ARTICLE_ID				article_id;
 	shared_str				map_location;
 	u16						object_id;
+	shared_str				article_key;
 	CMapLocation*			HasMapLocation		();
 	ETaskState				TaskState			()	{return task_state;};
 	ETaskState				UpdateState			();
@@ -41,6 +43,10 @@ public:
 	xr_vector<shared_str>				m_infos_on_fail;
 	xr_vector<luabind::functor<bool> >	m_complete_lua_functions;
 	xr_vector<luabind::functor<bool> >	m_fail_lua_functions;
+
+	xr_vector<luabind::functor<bool> >	m_lua_functions_on_complete;
+	xr_vector<luabind::functor<bool> >	m_lua_functions_on_fail;
+
 };
 
 DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);

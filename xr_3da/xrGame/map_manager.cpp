@@ -215,3 +215,4 @@ Locations&	CMapManager::Locations	()
 {
 	return m_locations->registry().objects();
 }
+
