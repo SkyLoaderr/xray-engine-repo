@@ -49,21 +49,17 @@
 	</actor_location_p>
 
 	<actor_level_spot x="0" y="0" width="64" height="64" alignment="c">
-		<texture x="730" y="393" width="64" height="64">ui\ui_common</texture>
+		<texture x="730" y="392" width="64" height="64">ui\ui_common</texture>
 	</actor_level_spot>
 	
 	<actor_level_spot_p x="0" y="0" width="64" height="64" heading="1" alignment="c">
-		<texture x="794" y="393" width="64" height="64">ui\ui_common</texture>
+		<texture x="794" y="392" width="64" height="64">ui\ui_common</texture>
 	</actor_level_spot_p>
 
 	<actor_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
 		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
 	</actor_pointer>
 
-<!--	<actor_level_spot x="0" y="0" width="32" height="32" heading="1" alignment="c">
-		<texture x="0" y="0" width="32" height="32"> ui\ui_map_arrow_02</texture>
-	</actor_level_spot>
--->
 
 	<enemy_location hint="enemy" no_offline="1">
 		<mini_map  spot="enemy_mini_spot"></mini_map>
