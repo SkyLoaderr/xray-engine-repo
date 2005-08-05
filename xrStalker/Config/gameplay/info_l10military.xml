@@ -75,6 +75,7 @@
 	<info_portion id="mil_scull_sniper_info_get"></info_portion>
 	<info_portion id="mil_dolg_task_complete"></info_portion>
 	<info_portion id="mil_dolg_collected"></info_portion>
+	<info_portion id="mil_dolg_task_fail"></info_portion>
 
 	<info_portion id="mil_headquarter_attack"></info_portion>
 	
@@ -240,6 +241,7 @@
 	<info_portion id="mil_controller_dead"></info_portion>
 	<info_portion id="mil_miser_task_complete"></info_portion>
 	<info_portion id="mil_miser_task_failed"></info_portion>
+	<info_portion id="mil_ugrumy_found"></info_portion>
 
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>

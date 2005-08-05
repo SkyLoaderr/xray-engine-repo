@@ -4,16 +4,24 @@
 		<objective>
 			<text>mil_dolg_assault_freedom</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_fail>mil_dolg_task_fail</infoportion_fail>
+			<infoportion_complete>mil_lukash_dead</infoportion_complete>
+			<infoportion_set_complete>mil_dolg_mission_complete</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>mil_quest_kill_sniper</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type>mil_sniper_location</map_location_type>
             <object_story_id>Mil_Sniper</object_story_id>
+            <infoportion_complete>mil_sniper_dead</infoportion_complete>
+            <infoportion_fail>mil_dolg_dead</infoportion_fail>
+            <infoportion_set_fail>mil_dolg_task_fail</infoportion_set_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_support</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_headquarter_attack</infoportion_complete>
+			<infoportion_fail>mil_dolg_dead</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_headquarter</text>
@@ -21,6 +29,7 @@
 			<map_location_type>mil_lukash_location</map_location_type>
             <object_story_id>Mil_Lukash</object_story_id>
             <map_location_hidden>1</map_location_hidden>
+            <infoportion_complete>mil_lukash_dead</infoportion_complete>
 		</objective>
 	</game_task>
 	
@@ -29,18 +38,24 @@
 		<objective>
 			<text>mil_take_flash</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_max_job_complete</infoportion_complete>
+			<infoportion_fail>mil_max_dead</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_take_flash</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type>mil_crazy_location</map_location_type>
             <object_story_id>Mil_Crazy</object_story_id>
+            <function_complete>mil_tasks.mil_task_crazy_flash_have</function_complete>
 		</objective>
 		<objective>
 			<text>mil_put_flash_to_max</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_max_location</map_location_type>
 			<object_story_id>Mil_Master_Max</object_story_id>
+			<infoportion_complete>mil_max_job_complete</infoportion_complete>
+			<infoportion_fail>mil_max_dead</infoportion_fail>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>
 	
@@ -55,6 +70,8 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_max_location</map_location_type>
 			<object_story_id>Mil_Master_Max</object_story_id>
+			<infoportion_complete>mil_max_talk3</infoportion_complete>
+			<infoportion_fail></infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_kill_dolg</text>
@@ -112,14 +129,20 @@
 		<objective>
 			<text>mil_blockpost_help</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_fblockpost_phase1</text>
 			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_fblockpost_rush_wave3</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_fblockpost_phase2</text>
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
 		</objective>
 	</game_task>
 
@@ -192,21 +215,30 @@
 		<objective>
 			<title>mil_hunters_task</title>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_miser_task_complete</infoportion_complete>
+			<infoportion_fail>mil_miser_task_failed</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_hunters_phase1</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_ugrumy_location</map_location_type>
             <object_story_id>Mil_Hunter3</object_story_id>
+            <infoportion_complete>mil_hunt_ready</infoportion_complete>
+            <infoportion_fail>mil_ugrumy_dead</infoportion_fail>
+            <infoportion_set_complete>mil_ugrumy_found</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>mil_hunters_phase2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_controller_dead</infoportion_complete>
+            <infoportion_fail>mil_miser_task_failed</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_hunters_phase3</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_miser_location</map_location_type>
             <object_story_id>Mil_Miser</object_story_id>
+            <infoportion_complete>mil_miser_task_complete</infoportion_complete>
+            <infoportion_fail>mil_miser_task_failed</infoportion_fail>
 		</objective>
 	</game_task>

@@ -1,8 +1,6 @@
 function process_tasks ()
     local actor = db.actor
     
-    process_crazy ()
-    
     
     if db.actor:has_info ("mil_lukash_dead") and 
        db.actor:has_info ("mil_sniper_dead") and
@@ -50,36 +48,10 @@ function process_tasks ()
 	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
 	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
 	      actor:give_info_portion ("mil_freedom_rg6_task_complete")
-	      --level_tasks.remove_location (706, "mil_rg6_location")
 	   end   
 	end	
 	
-	if db.actor:dont_has_info ("mil_fblockpost_final") then
-	   if db.actor:has_info ("mil_fblockpost_quest") then
-          if db.actor:has_info ("mil_fblockpost_quest_complete") then
-	         level_tasks.set_task_state (task.completed, "mil_blockpost_job", 0) 
-	         db.actor:give_info_portion ("mil_fblockpost_final")
-	      end
-	      if db.actor:has_info ("mil_fblockpost_quest_fail") then
-             level_tasks.set_task_state (task.fail, "mil_blockpost_job", 0) 
-             db.actor:give_info_portion ("mil_fblockpost_final")
-	      end   
-	   end   
-	end   
-	
 	process_khutor () 
-end
-
-function process_crazy ()
-    if db.actor:object ("crazy_flash") == nil then return end
-    
-    if db.actor:dont_has_info ("mil_max_flash_get") then
-       db.actor:give_info_portion ("mil_max_flash_get")
-    end   
-    
-    if db.actor:has_info ("mil_max_job") then
-       level_tasks.set_task_state (task.completed, "mil_mad_job", 1)
-    end    
 end
 
 
@@ -180,88 +152,12 @@ function process_khutor ()
        --level_tasks.add_location (707, "mil_lukash_location")
     end       
        
-             --if db.actor:has_info ("mil_actor_in_khutor_zone_inside") then
-             --level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
-             --db.actor:give_info_portion ("mil_courier_quest_part2")
-          --end
-       --else
-          --if db.actor:has_info ("mil_actor_in_khutor_zone") then
-             --level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
-             --db.actor:give_info_portion ("mil_courier_quest_part1")
-          --else
-             --level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
-             --db.actor:give_info_portion ("mil_courier_quest_failed")
-             --level_tasks.remove_location (710, "mil_courier_location")
-             --level_tasks.add_location (707, "mil_lukash_location")
-             --return
-          --end 
-          --if db.actor:has_info ("mil_actor_in_khutor_zone_inside") then
-             --level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
-             --db.actor:give_info_portion ("mil_courier_quest_part2")
-             --level_tasks.remove_location (710, "mil_courier_location")
-             --level_tasks.add_location (707, "mil_lukash_location")
-          --else   
-             --level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
-             --db.actor:give_info_portion ("mil_courier_quest_failed")
-             --level_tasks.remove_location (710, "mil_courier_location")
-             --level_tasks.add_location (707, "mil_lukash_location")
-             --return
-          --end
-       --end   
-    --end      
-    
-    --if db.actor:has_info ("mil_courier_dead") then
-       --if db.actor:dont_has_info ("mil_courier_in_khutor_zone") then
-          --level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
-          --db.actor:give_info_portion ("mil_courier_quest_failed")
-          --level_tasks.remove_location (710, "mil_courier_location")
-          --level_tasks.add_location (707, "mil_lukash_location")
-          --return
-       --else
-          --level_tasks.set_task_state (task.completed, "mil_courier_job", 3)
-          --level_tasks.remove_location (710, "mil_courier_location")
-          --level_tasks.add_location (707, "mil_lukash_location")
-       --end   
-    --end
-    
---    if db.actor:has_info ("mil_courier_dead") and 
-       --db.actor:has_info ("mil_courier_quest_part1") and
-       --db.actor:has_info ("mil_courier_quest_part2") then
-       --level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
-       --db.actor:give_info_portion ("mil_courier_quest_complete")
-       --db.actor:disable_info_portion ("mil_courier_dead")
-       --db.actor:disable_info_portion ("mil_courier_quest_part1")
-       --db.actor:disable_info_portion ("mil_courier_quest_part2")
-       --db.actor:disable_info_portion ("mil_courier_in_khutor_zone")
-       --db.actor:disable_info_portion ("mil_actor_in_khutor_zone_inside")
-       --db.actor:disable_info_portion ("mil_courier_khutor_leave")
-       --level_tasks.remove_location (710, "mil_courier_location")
-       --level_tasks.add_location (707, "mil_lukash_location")
-       --return
-    --end   
 end
 
 function process_info_portion(info_id)
-	if info_id == "mil_barier_locator" then
-		--level_tasks.add_location(770, "mil_freedom_barier_location")
-		return true	
-	--elseif info_id == "mil_max_job" then
-	       --level_tasks.add_location (703, "mil_crazy_location")
-	--	return true		       
-	--elseif info_id == "mil_max_flash_get" then       
-		   --level_tasks.remove_location (703, "mil_crazy_location")
-		   --if db.actor:has_info ("mil_max_job") then
-		      --level_tasks.add_location (702, "mil_max_location") 
-		   --end     
-		--return true		   
-	elseif info_id == "mil_max_job_complete" then   
-	       level_tasks.add_location (706, "mil_rg6_location") 	 
-	       --level_tasks.remove_location (702, "mil_max_location")  
-	    return true   
-	elseif info_id == "mil_rg6_gain" then       
+	if info_id == "mil_rg6_gain" then       
 	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
 	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
-		   --level_tasks.remove_location (706, "mil_rg6_location")
 		return true   
 	elseif info_id == "mil_bandit_flash_get" and db.actor:dont_has_info ("mil_bandit_secret_found") then
 	       level_tasks.add_location (705, "mil_secret_location")
@@ -277,14 +173,6 @@ function process_info_portion(info_id)
 		   --level_tasks.remove_location (702, "mil_max_location")
 		   db.actor:disable_info_portion ("mil_lukash_go_to_max")
 		return true
-    elseif info_id == "mil_max_job_complete" then
-           --level_tasks.remove_location (702, "mil_max_location")
-	       level_tasks.add_location (706, "mil_rg6_location") 
-	elseif info_id == "mil_rg6_gain" then
---		   level_tasks.remove_location (706, "mil_rg6_location")
-	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
-	       level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
-		return true   
 	elseif info_id == "mil_max_lukash_call" then
 	       level_tasks.add_location (707, "mil_lukash_location")
 	    return true
@@ -321,30 +209,7 @@ function process_info_portion(info_id)
            level_tasks.remove_location (710, "mil_courier_location")
            level_tasks.add_location (707, "mil_lukash_location")
            level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
-	--elseif info_id == "mil_lukash_job_complete" then
-	       --remove_location (1008, "mil_dolg_location")
 	    return true  
-    elseif info_id == "mil_sniper_get_job" then
-           --level_tasks.add_location (704, "mil_sniper_location")
-        return true
-    elseif info_id == "mil_sniper_dead" and db.actor:has_info ("mil_sniper_get_job") then
-           --level_tasks.remove_location (704, "mil_sniper_location")
-           level_tasks.set_task_state (task.completed, "mil_kill_sniper", 1)
-           db.actor:give_info_portion ("mil_sniper_job_complete")
-           --add_location (708, "mil_dolg_location")
-        return true
-    elseif info_id == "mil_sniper_job_complete" then
-		   level_tasks.remove_location (708, "mil_dolg_location")
-		return true
-	elseif info_id == "mil_sniper_job_failed" then
-	       --level_tasks.remove_location (704, "mil_sniper_location") 
-	    return true
-	elseif info_id == "mil_headquarter_attack" then    
-           if db.actor:has_info ("mil_sniper_get_job") then
-              level_tasks.set_task_state (task.completed, "mil_kill_sniper", 2)
-              level_tasks.add_location (707, "mil_lukash_location")
-           end   
-           return true
     end
 	
 	return false
@@ -377,3 +242,15 @@ end
 function mil_test_task_lr300_have ()
     return db.actor:object ("wpn_lr300") ~= nil
 end    
+
+function mil_task_rg6_have (task_id, subtask)
+    return db.actor:object ("wpn_rg-6") ~= nil 
+end
+
+function mil_task_crazy_flash_have (task_id, subtask)
+    if db.actor:object ("crazy_flash") ~= nil then
+       db.actor:give_info_portion ("mil_max_flash_get")
+       return true
+    end
+    return false    
+end
