@@ -47,12 +47,12 @@
 		<level_map spot="actor_level_spot_p"></level_map>
 	</actor_location_p>
 
-	<actor_level_spot x="0" y="0" width="64" height="64" alignment="c">
-		<texture x="730" y="392" width="64" height="64">ui\ui_common</texture>
+	<actor_level_spot x="0" y="0" width="60" height="60" alignment="c">
+		<texture x="730" y="394" width="60" height="60">ui\ui_common</texture>
 	</actor_level_spot>
 	
-	<actor_level_spot_p x="0" y="0" width="64" height="64" heading="1" alignment="c">
-		<texture x="794" y="392" width="64" height="64">ui\ui_common</texture>
+	<actor_level_spot_p x="0" y="0" width="60" height="60" heading="1" alignment="c">
+		<texture x="794" y="394" width="60" height="60">ui\ui_common</texture>
 	</actor_level_spot_p>
 
 	<actor_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
