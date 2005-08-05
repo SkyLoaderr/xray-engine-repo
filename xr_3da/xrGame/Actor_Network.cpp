@@ -799,8 +799,10 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_s16LastHittedElement = -1;
 	m_bWasHitted = false;
 
-	if (GameID() == GAME_SINGLE)
+	if (GameID() == GAME_SINGLE){
 		Level().MapManager().AddMapLocation("actor_location",ID());
+		Level().MapManager().AddMapLocation("actor_location_p",ID());
+	}
 
 	m_game_task_manager	= xr_new<CGameTaskManager>();
 	GameTaskManager().initialize(ID());
