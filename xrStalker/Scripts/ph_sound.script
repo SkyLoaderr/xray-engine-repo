@@ -44,6 +44,7 @@ function snd_source:reset_scheme()
 	self.destructed = false
     self.st.pause_time = 0	
     self.st.sound_set = false
+    printf("PH_SOUND reset_scheme")
 end
 
 function snd_source:hit_callback(obj, amount, local_direction, who, bone_index)
@@ -101,12 +102,14 @@ function snd_source:update(delta)
        
     if self.sound_list[self.current_sound]:playing () == false then
        if self.first_sound == false then
+		  printf("SETTING signal SOUND_END")
           self.st.signals["sound_end"] = true
        end
           
        self.current_sound = self.current_sound + 1
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
+          printf("SETTING signal THEME_END")
           self.st.signals["theme_end"] = true
        end
        self.st.sound_set = true
