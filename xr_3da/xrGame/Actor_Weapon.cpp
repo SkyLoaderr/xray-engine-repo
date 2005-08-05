@@ -15,34 +15,37 @@
 static const float VEL_MAX		= 10.f;
 static const float VEL_A_MAX	= 10.f;
 
+#define GetWeaponParam(pWeapon, func_name, def_value)	((pWeapon) ? (pWeapon->func_name) : def_value)
+
 //возвращает текуший разброс стрельбы (в радианах)с учетом движения
 float CActor::GetWeaponAccuracy() const
 {
 	CWeapon* W	= smart_cast<CWeapon*>(inventory().ActiveItem());
+	
 
-	if(m_bZoomAimingMode&&W&&!W->IsRotatingToZoom())
+	if(m_bZoomAimingMode&&W&&!GetWeaponParam(W, IsRotatingToZoom(), false))
 		return m_fDispAim;
 
-	float dispersion = m_fDispBase*W->Get_PDM_Base();
+	float dispersion = m_fDispBase*GetWeaponParam(W, Get_PDM_Base(), 1.0f);
 
 	CEntity::SEntityState state;
 	if (g_State(state))
 	{
 		// angular factor
-		dispersion *= (1.f + (state.fAVelocity/VEL_A_MAX)*m_fDispVelFactor*W->Get_PDM_Vel_F());
+		dispersion *= (1.f + (state.fAVelocity/VEL_A_MAX)*m_fDispVelFactor*GetWeaponParam(W, Get_PDM_Vel_F(), 1.0f));
 //		Msg("--- base=[%f] angular disp=[%f]",m_fDispBase, dispersion);
 		// linear movement factor
 		bool bAccelerated = isActorAccelerated(mstate_real, IsZoomAimingMode());
 		if( bAccelerated )
-			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor*W->Get_PDM_Vel_F()*(1.f + m_fDispAccelFactor*W->Get_PDM_Accel_F()));
+			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor*GetWeaponParam(W, Get_PDM_Vel_F(), 1.0f)*(1.f + m_fDispAccelFactor*GetWeaponParam(W, Get_PDM_Accel_F(), 1.0f)));
 		else
-			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor*W->Get_PDM_Vel_F());
+			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor*GetWeaponParam(W, Get_PDM_Vel_F(), 1.0f));
 
 		if (state.bCrouch){	
-			dispersion *= (1.f + m_fDispCrouchFactor*W->Get_PDM_Crouch());
+			dispersion *= (1.f + m_fDispCrouchFactor*GetWeaponParam(W, Get_PDM_Crouch(), 1.0f));
 
 			if(!bAccelerated )
-				dispersion *= (1.f + m_fDispCrouchNoAccelFactor*W->Get_PDM_Crouch_NA());
+				dispersion *= (1.f + m_fDispCrouchNoAccelFactor*GetWeaponParam(W, Get_PDM_Crouch_NA(), 1.0f));
 		}
 	}
 
