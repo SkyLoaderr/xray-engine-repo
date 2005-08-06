@@ -700,6 +700,9 @@
 							RelativePath=".\Config\text\rus\stable_storyline_info_bar-rostok.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_bar.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_bar.xml">
 						</File>
 						<File
@@ -799,6 +802,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_storyline_info_bar-rostok.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_storyline_info_bar.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_storyline_info_darkvalley.xml">
