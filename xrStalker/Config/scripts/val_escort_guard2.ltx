@@ -1,5 +1,5 @@
 [logic]
-active = follower@walk
+active = remark@start ;follower@walk
 on_death = death
 on_hit = hit
 combat_ignore = combat_ignore
@@ -20,6 +20,16 @@ on_info = {=see_actor -val_escort_nap1_start_combat -val_escort_actor_start_comb
 on_info2 = {=see_actor -val_escort_combat} remark@fight %+val_escort_combat%
 
 [combat_ignore]
+
+;--------------------------------------------------------------------------
+; 
+;--------------------------------------------------------------------------
+[remark@start]
+no_move = true
+no_rotate = true
+anim = wait
+on_info = {+val_escort_start} follower@walk
+combat_ignore_cond  = always
 
 [follower@walk]
 leader = 400

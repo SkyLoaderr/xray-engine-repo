@@ -1,5 +1,5 @@
 [logic]
-active = walker@go
+active = remark@start ;walker@go
 on_death = death
 combat_ignore = combat_ignore
 
@@ -48,6 +48,16 @@ hp_state_see = 10|wounded_heavy@help_heavy
 hp_victim = 0|nil
 hp_fight = 0|false
 hp_cover = 0|false
+
+;--------------------------------------------------------------------------
+; 
+;--------------------------------------------------------------------------
+[remark@start]
+no_move = true
+no_rotate = true
+anim = wait
+on_info = {+val_escort_start} walker@go
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
