@@ -37,7 +37,6 @@
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type>agr_krot_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
-			<infoportion_complete>agr_krot_dead</infoportion_complete>
 			<infoportion_fail>agr_krot_dead</infoportion_fail>
 		</objective>
 		<objective>
