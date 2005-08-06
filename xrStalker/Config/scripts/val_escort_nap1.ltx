@@ -211,7 +211,7 @@ anim                    = hide
 meet                    = meet@ignore
 on_info                 = {+val_escort_combat} remark1@fight
 on_actor_dist_le_nvis   = 10 | remark1@phrase7
-on_info                 = {=distance_to_obj_le(400:15)} remark1@phrase8
+on_info                 = {=distance_to_obj_le(400:30)} remark1@phrase8
 combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
 wounded                 = wounded
 
@@ -225,7 +225,7 @@ anim                = hide
 snd                 = val_escort_nap1_phrase4
 ;on_timer            = 40000 | remark1@phrase8
 on_info             = {+val_escort_combat} remark1@fight
-on_info2            = {=distance_to_obj_le(400:15)} remark1@phrase8
+on_info2            = {=distance_to_obj_le(400:30)} remark1@phrase8
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 wounded             = wounded
 
