@@ -16,7 +16,10 @@ L02_garbage_ai
 L03_agroprom_ai2
 ;L04_darkvalley_ai
 L04_darkvalley
+L05_bar
+L05_bar_ai
 L06_rostok
+L05_rostok_ai
 l07_military_proba
 ;l07_military
 ;l10_radar_ai
@@ -118,13 +121,29 @@ bound_rect		= -291.194,-719.090, 689.281,323.544
 global_rect		= 335.0, 680.0,	429.038269,780.0
 weathers		= default
 
-[L05_rostok]
-texture         = ui\ui_map_l05_rostok
-bound_rect      = -512.001,-512.030, 512.000,512.001
+
+[L05_bar]
+texture         = ui\ui_map_rostok
+bound_rect      = -512.001,-512.000, 512.000,512.001
 global_rect		= 213.0,538.0,324.0,649.0
 weathers		= default
+music_tracks    = l06_rostok_musics
+
+[L05_bar_ai]
+texture         = ui\ui_map_rostok
+bound_rect      = -512.001,-512.000, 512.000,512.001
+global_rect		= 324.0,538.0,424.0,649.0
+weathers		= default
+music_tracks    = l06_rostok_musics
 
 [L06_rostok]
+texture         = ui\ui_map_rostok
+bound_rect      = -512.001,-512.000, 512.000,512.001
+global_rect		= 213.0,538.0,324.0,649.0
+weathers		= default
+music_tracks    = l06_rostok_musics
+
+[L05_rostok_ai]
 texture         = ui\ui_map_rostok
 bound_rect      = -512.001,-512.000, 512.000,512.001
 global_rect		= 213.0,538.0,324.0,649.0
