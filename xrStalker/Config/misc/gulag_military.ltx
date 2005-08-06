@@ -247,7 +247,7 @@ on_info = %+mil_courier_dead%
 
 [kamp1@mil_freedom_stalker3]
 center_point = camp_center1
-on_info = {+mil_courier_quest =is_courier_time} remark1@mil_freedom_stalker3
+on_info = {+mil_leader_quest2_start =is_courier_time} remark1@mil_freedom_stalker3
 meet_enable = true
 meet_dialog = mil_dolg_relax_dialog
 
@@ -265,7 +265,7 @@ on_signal = final | walker3@mil_freedom_stalker3
 path_walk = stukach_walk4
 path_look = stukach_look4
 on_signal = arrive | remark2@mil_freedom_stalker3 %+mil_courier_call%
-on_actor_dist_le = 50 | walker4@mil_freedom_stalker3 %=mil_courier_quest_fail%
+on_actor_dist_le = 50 | walker4@mil_freedom_stalker3 %+mil_courier_see_actor%
 
 [remark2@mil_freedom_stalker3]
 no_rotate = true
@@ -868,7 +868,8 @@ on_signal = action_end | walker11@mil_freedom_max_attack
 path_walk = max_center_walk
 path_look = max_center_look
 meet = on_meet@mil_freedom_max_attack
-on_info = {+mil_max_talk3} remark3@mil_freedom_max_attack
+on_info = {+mil_max_talk3} walker11@mil_freedom_max_attack
+;remark3@mil_freedom_max_attack
 
 [on_meet@mil_freedom_max_attack]
 meet_state = 10|ward@mil_max_to_actor

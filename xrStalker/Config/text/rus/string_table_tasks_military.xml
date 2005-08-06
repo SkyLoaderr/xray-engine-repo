@@ -81,7 +81,7 @@
 </string>
 	
 <string id="mil_courier_phase2">
-	<text>Определить, с кем он встречается.</text>
+	<text>Дождаться пока стукач вызовет информатора.</text>
 </string>
 	
 <string id="mil_courier_phase3">
@@ -89,11 +89,11 @@
 </string>
 
 <string id="mil_courier_phase4">
-	<text>Уничтожить того, с кем курьер встречался</text>
+	<text>Уничтожить информатора.</text>
 </string>
 
 <string id="mil_courier_phase5">
-	<text>Доложить Лукашу</text>
+	<text>Доложить Лукашу о выполнении.</text>
 </string>
 
 <string id="mil_blockpost_help">

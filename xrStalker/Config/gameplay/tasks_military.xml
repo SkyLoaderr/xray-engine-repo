@@ -64,26 +64,35 @@
 		<objective>
 			<text>mil_kill_dolg</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_fail>mil_lukash_dolg_task_fail</infoportion_fail>
+			<infoportion_complete>mil_lukash_dolg_task_complete</infoportion_complete>
+			<infoportion_set_complete>mil_lukash_task_dolg_end</infoportion_set_complete>
+			<infoportion_set_fail>mil_lukash_task_dolg_end</infoportion_set_fail>
 		</objective>
 		<objective>
 			<text>mil_go_max</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_max_location</map_location_type>
 			<object_story_id>Mil_Master_Max</object_story_id>
-			<infoportion_complete>mil_max_talk3</infoportion_complete>
-			<infoportion_fail></infoportion_fail>
+			<infoportion_complete>mil_max_arrive</infoportion_complete>
+			<infoportion_fail>mil_max_dead</infoportion_fail>
+			<infoportion_set_fail>mil_lukash_dolg_task_fail</infoportion_set_fail>
 		</objective>
 		<objective>
 			<text>mil_kill_dolg</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_dolg_location</map_location_type>
 			<object_story_id>Mil_Dolg_Zoneguard</object_story_id>
+			<infoportion_complete>mil_dolg_dead</infoportion_complete>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 		<objective>
 			<text>mil_return_lukash</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_lukash_location</map_location_type>
 			<object_story_id>Mil_Lukash</object_story_id>
+			<infoportion_complete>mil_lukash_dolg_task_complete</infoportion_complete>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>
 	
@@ -91,36 +100,56 @@
 		<title>mil_courier_job</title>
 		<objective>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_leader_quest2_complete</infoportion_complete>
+			<infoportion_fail>mil_leader_quest2_failed</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_courier_phase1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_courier_location</map_location_type>
 			<object_story_id>Mil_Courier</object_story_id>
+			<infoportion_complete>mil_courier_in_khutor_zone</infoportion_complete>
+			<infoportion_complete>mil_actor_in_khutor_zone</infoportion_complete>
+			<infoportion_fail>mil_courier_see_actor</infoportion_fail>
+			<infoportion_set_fail>mil_leader_quest2_failed</infoportion_set_fail>
 		</objective>
 		<objective>
 			<text>mil_courier_phase2</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_courier_location</map_location_type>
 			<object_story_id>Mil_Courier</object_story_id>
+			<infoportion_complete>mil_actor_in_khutor_zone</infoportion_complete>
+			<infoportion_complete>mil_courier_call</infoportion_complete>
+			<infoportion_fail>mil_courier_dead</infoportion_fail>
+			<infoportion_set_fail>mil_leader_quest2_failed</infoportion_set_fail>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 		<objective>
 			<text>mil_courier_phase3</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_courier_location</map_location_type>
 			<object_story_id>Mil_Courier</object_story_id>
+			<infoportion_complete>mil_courier_dead</infoportion_complete>
+			<infoportion_fail>mil_courier_khutor_leave</infoportion_fail>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 		<objective>
 			<text>mil_courier_phase4</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_ara_location</map_location_type>
 			<object_story_id>Mil_Informator</object_story_id>
+			<infoportion_complete>mil_ara_dead</infoportion_complete>
+			<infoportion_fail>mil_ara_leave</infoportion_fail>
+			<infoportion_set_fail>mil_leader_quest2_failed</infoportion_set_fail>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 		<objective>
 			<text>mil_courier_phase5</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_lukash_location</map_location_type>
             <object_story_id>Mil_Lukash</object_story_id>
+			<infoportion_complete>mil_leader_quest2_complete</infoportion_complete>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>
 	
@@ -157,6 +186,7 @@
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>mil_freedom_location</map_location_type>
             <object_story_id>Mil_Freedom_base</object_story_id>
+            <infoportion_fail>mil_dolg_after_explode</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_talk_cook</text>
@@ -164,6 +194,7 @@
 			<map_location_type>mil_cook_location</map_location_type>
             <object_story_id>Mil_Cook</object_story_id>
             <map_location_hidden>1</map_location_hidden>
+            <infoportion_fail>mil_dolg_after_explode</infoportion_fail>
 		</objective>
 		<objective>
 			<text>mil_rg6</text>
@@ -240,5 +271,6 @@
             <object_story_id>Mil_Miser</object_story_id>
             <infoportion_complete>mil_miser_task_complete</infoportion_complete>
             <infoportion_fail>mil_miser_task_failed</infoportion_fail>
+            <map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>

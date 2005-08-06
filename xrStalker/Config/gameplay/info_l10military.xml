@@ -52,7 +52,8 @@
 	<info_portion id="mil_dolg_phase1"></info_portion>
 	<info_portion id="mil_dolg_phase2"></info_portion>
 	<info_portion id="mil_dolg_phase3"></info_portion>
-		
+	
+	
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
 	
@@ -130,10 +131,7 @@
 	<info_portion id="mil_courier_quest_part2"></info_portion>
 	<info_portion id="mil_courier_quest_part3"></info_portion>
 	<info_portion id="mil_courier_quest_part4"></info_portion>
-	<info_portion id="mil_courier_quest">
-		<task>mil_courier_job</task>
-		<action>level_tasks.notify_new_task</action>
-	</info_portion>	
+	<info_portion id="mil_courier_quest"></info_portion>	
 	<info_portion id="mil_courier_quest_failed"></info_portion>
 	<info_portion id="mil_courier_quest_complete"></info_portion>
 	<info_portion id="mil_courier_dead"></info_portion>
@@ -151,6 +149,7 @@
 	<info_portion id="mil_courier_meet"></info_portion>
 	<info_portion id="mil_courier_visited"></info_portion>
 	<info_portion id="mil_ara_leave"></info_portion>	
+	<info_portion id="mil_mutants_offline"></info_portion>
 
 	<!-- Хутор наемников -->
 	<info_portion id="mil_killer_with_bandits_combat"></info_portion>
@@ -158,7 +157,14 @@
 	<info_portion id="mil_actor_in_khutor_zone"></info_portion>
 	
 	
-	<!-- Атака Свободы -->
+	<!-- Нападение на хутор Долга-->
+	<info_portion id="mil_lukash_dolg_task">
+		<task>mil_lukash_job</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
+	<info_portion id="mil_lukash_dolg_task_complete"></info_portion>
+	<info_portion id="mil_lukash_dolg_task_fail"></info_portion>
+	<info_portion id="mil_lukash_task_dolg_end"></info_portion>
 	<info_portion id="mil_freedom_attack"></info_portion>
 	<info_portion id="mil_freedom_attack_complete"></info_portion>
 	<info_portion id="mil_freedom_arrive"></info_portion>
@@ -166,7 +172,8 @@
 	<info_portion id="mil_freedom_attack_continue2"></info_portion>
 	<info_portion id="mil_freedom_attack_continue3"></info_portion>
 	
-	
+	<!-- Задача на стукача-->
+	<info_portion id="mil_lukash_courier_task"></info_portion>
 	<info_portion id="mil_ugrum_flash_get"><article>mil_flash_ugrumy</article></info_portion>
 	<info_portion id="mil_bandit_flash_get"><article>mil_flash_bandit</article></info_portion>
 	<info_portion id="mil_max_owner_flash_get"><article>mil_flash_max</article></info_portion>
@@ -176,12 +183,20 @@
 	
 	<info_portion id="mil_leader_quest1_start"></info_portion>
 	<info_portion id="mil_leader_quest1_complete"></info_portion>
+	
 	<info_portion id="mil_leader_quest2_start">
 		<task>mil_courier_job</task>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_leader_quest2_complete"><article>mil_courier_doc</article></info_portion>
 	<info_portion id="mil_leader_quest2_failed"></info_portion>
+	<info_portion id="mil_courier_see_actor"></info_portion>
+	<info_portion id="mil_leader_quest2_phase1"></info_portion>
+	<info_portion id="mil_leader_quest2_phase2"></info_portion>
+	<info_portion id="mil_leader_quest2_phase3"></info_portion>
+	<info_portion id="mil_leader_quest2_phase4"></info_portion>
+	<info_portion id="mil_leader_quest2_phase5"></info_portion>
+	
 	<info_portion id="mil_leader_attach_community"></info_portion>
 	<info_portion id="mil_leader_task_set">
 		<task>mil_lukash_job</task>
