@@ -107,6 +107,8 @@
 
     <info_portion id="agr_nii_alarm">
     </info_portion>
+    <info_portion id="agr_nii_rupor_off">
+    </info_portion>
     <info_portion id="agr_nii_sniper_alarm">
     </info_portion>
     <info_portion id="agr_nii_sniper_hit">
