@@ -1,0 +1,39 @@
+function main()
+	if db.actor then
+		-- выполненный эскейп
+		db.actor:give_info_portion("tutorial_artefact_start")
+		db.actor:give_info_portion("tutorial_artefact_gain")
+		db.actor:give_info_portion("tutorial_artefact_done")
+		level_tasks.set_task_state(task.completed, "tutorial_find_artefact", 0)
+		db.actor:give_info_portion("tutorial_wounded_start")
+		db.actor:give_info_portion("tutorial_wounded_help")
+		level_tasks.set_task_state(task.completed, "tutorial_help_wounded", 0)
+		db.actor:give_info_portion("tutorial_end")
+		db.actor:give_info_portion("escape_artefact_start")
+		db.actor:give_info_portion("escape_artefact_gain")
+		db.actor:give_info_portion("escape_artefact_done")
+		level_tasks.set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
+		db.actor:give_info_portion("escape_stalker_meet")
+		db.actor:give_info_portion("escape_stalker_give")
+		db.actor:give_info_portion("escape_stalker_done")
+		level_tasks.set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
+		db.actor:give_info_portion("escape_blockpost_case")
+		db.actor:give_info_portion("escape_blockpost_case_have")
+		db.actor:give_info_portion("escape_blockpost_case_done")
+		level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
+		db.actor:give_info_portion("escape_dynamite_start")
+		db.actor:give_info_portion("escape_dynamite_meet")
+		db.actor:give_info_portion("escape_dynamite_gain")
+		db.actor:give_info_portion("escape_dynamite_have")
+		db.actor:give_info_portion("escape_dynamite_done")
+		level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
+		
+		-- выполненная свалка		
+		db.actor:give_info_portion("garbage_meetstalker_start")
+		db.actor:give_info_portion("garbage_meetstalker_done")
+		level_tasks.set_task_state(task.completed, "garbage_meet_stalker", 0)
+
+		-- связка с агропромом
+		db.actor:give_info_portion("agroprom_military_case")
+	end
+end
