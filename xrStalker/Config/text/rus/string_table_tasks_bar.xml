@@ -101,18 +101,25 @@
 	<text>Принести этот ПДА бармену в качестве доказательства</text>
 </string>
 	
-	<string id="secret_laboratory_documents">
-	<text>Добыть документы из  секретной лаборатории</text>
+<string id="secret_laboratory_documents">
+	<text>Добыть документы</text>
 </string>
-	<string id="secret_documents_from_darklab">
-	<text>Найти документы в Темной долине</text>
+<string id="secret_documents_from_darklab">
+	<text>Принести документы из лаборатории X18</text>
 </string>
-	<string id="find_secret_documents">
-	<text>Найти документы в заброшенной лаборатории</text>
+<string id="get_darklab_key">
+	<text>Получить ключ от входа</text>
 </string>
-	<string id="bring_secret_documents">
-	<text>Принести их бармену</text>
+<string id="find_darklab_entrance">
+	<text>Найти вход в лабораторию</text>
 </string>
+<string id="find_secret_documents">
+	<text>Найти и забрать документы</text>
+</string>
+<string id="bring_secret_documents">
+	<text>Принести документу бармену</text>
+</string>
+
 
 
 <string id="x16_documents">
