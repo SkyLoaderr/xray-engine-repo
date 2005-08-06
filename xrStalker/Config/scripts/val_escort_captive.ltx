@@ -42,6 +42,13 @@ victim_wpn = 20|actor
 use = true
 use_wpn = true
 
+[wounded]
+hp_state = 10|wounded_heavy@help_heavy
+hp_state_see = 10|wounded_heavy@help_heavy
+hp_victim = 0|nil
+hp_fight = 0|false
+hp_cover = 0|false
+
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
@@ -53,6 +60,7 @@ on_info             = {+val_escort_combat} walker@hide
 on_info2            = {+val_escort_guard1_combat} remark@wait, {+val_escort_guard2_combat} remark@wait
 meet                = meet@ignore
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; 
@@ -65,6 +73,7 @@ on_info             = {+val_escort_combat} walker@hide
 on_info2            = {-val_escort_guard1_combat -val_escort_guard2_combat} walker@go
 meet                = meet@ignore
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; 
@@ -78,6 +87,7 @@ def_state_moving3   = sprint
 meet                = meet@ignore
 on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@go_to_nap1
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; 
@@ -90,16 +100,18 @@ distance            = 2
 on_signal           = leader_dead | remark@check_state
 on_info             = {=distance_to_obj_le(406:2)} remark@check_state
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 [remark@check_state]
-no_move     = true
-;no_rotate   = true
-target      = 406
-anim        = wait
-meet        = meet@ignore
-on_info     = {-val_escort_nap1_dead} remark1@phrase1, remark1@phrase2
+no_move             = true
+;no_rotate           = true
+target              = 406
+anim                = wait
+meet                = meet@ignore
+on_info             = {-val_escort_nap1_dead} remark1@phrase1, remark1@phrase2
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; фраза: Черт подери!!!...Эх-ххх...Пусть земля тебе будет пухом, дружище.
@@ -114,6 +126,7 @@ meet                = meet@ignore
 on_signal           = sound_end | {+val_escort_actor_helped} remark@talk, walker@leave
 on_timer            = 20000 | {+val_escort_actor_helped} remark@talk, walker@leave
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; фраза: Пуля! Спасибо, друг. Я блин уже с жизнью попрощался!!
@@ -127,6 +140,7 @@ snd                 = val_escort_captive_phrase2
 meet                = meet@ignore
 on_signal           = sound_end | {+val_escort_actor_helped} remark1@wait1 %+val_escort_captive_phrase1_end%, remark1@wait2 %+val_escort_captive_phrase1_end%
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; ждем когда nap1 скажет фразу: Это вот сталкера благодари. Он мне помог.
@@ -139,6 +153,7 @@ anim                = wait
 meet                = meet@ignore
 on_info             = {+val_escort_nap1_phrase1_end} remark1@phrase3
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; фраза: Спасибо, чувак!
@@ -151,6 +166,7 @@ snd                 = val_escort_captive_phrase3
 meet                = meet@ignore
 on_signal           = sound_end | remark@talk
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 ; фраза: Подходи пообщаемся.
@@ -164,6 +180,7 @@ meet                    = meet@talk
 ;on_timer               = 60000 | walker@leave
 on_actor_dist_ge_nvis   = 30 | walker@leave
 combat_ignore_cond      = always
+wounded                 = wounded
 
 ;--------------------------------------------------------------------------
 ; ждем когда nap1 скажет фразу: Жив-здоров? Тогда возвращаемся на Базу за подмогой.
@@ -176,6 +193,7 @@ anim                = wait
 meet                = meet@ignore
 on_info             = {+val_escort_nap1_phrase2_end} walker@leave
 combat_ignore_cond  = always
+wounded             = wounded
 
 ;--------------------------------------------------------------------------
 [walker@leave]
