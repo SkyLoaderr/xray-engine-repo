@@ -7,6 +7,8 @@
 	<action>level_tasks.notify_new_task</action>
 </info_portion>
 
+<info_portion id="val_x18_door_open"></info_portion>
+
 <!-- Нападение на игрока около входа на уровень -->
 <info_portion id="val_ambush_kill_plr"></info_portion>
 <info_portion id="val_ambush_t1_started"></info_portion>
