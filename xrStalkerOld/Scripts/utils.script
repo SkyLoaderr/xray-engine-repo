@@ -270,6 +270,7 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 
 	rslt.flags = wpflags
 
+	local at
 	if string.find(wpname, "|", at, true) == nil then
 		return rslt
 	end

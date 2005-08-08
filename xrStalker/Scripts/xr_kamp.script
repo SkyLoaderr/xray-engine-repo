@@ -91,7 +91,7 @@ function action_wait:execute()
 			return
 		end
 	end
-	state, sound, substate = kamps[self.a.center_point]:updateNpc(self.object)
+	local state, sound, substate = kamps[self.a.center_point]:updateNpc(self.object)
 	
 	--' повернуть его лицом к центру	
 	state_mgr.set_state(self.object, state, nil, nil, {look_position = level.vertex_position(self.a.pp)}, nil, nil, {subanim = substate})

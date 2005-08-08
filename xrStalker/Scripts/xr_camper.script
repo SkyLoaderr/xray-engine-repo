@@ -305,7 +305,7 @@ function action_patrol:execute()
 		
 end
 function action_patrol:process_danger()
-	best_danger = self.object:best_danger()
+	local best_danger = self.object:best_danger()
 	if best_danger == nil then
 		return false
 	end
