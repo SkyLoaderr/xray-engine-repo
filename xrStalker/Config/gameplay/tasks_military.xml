@@ -111,6 +111,8 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_leader_quest2_complete</infoportion_complete>
 			<infoportion_fail>mil_leader_quest2_failed</infoportion_fail>
+            <function_call_complete>mil_tasks.switch_mutants_online</function_call_complete>
+            <function_call_fail>mil_tasks.switch_mutants_online</function_call_fail>
 		</objective>
 		<objective>
 			<text>mil_courier_phase1</text>
@@ -207,6 +209,7 @@
 		<objective>
 			<text>mil_freedom_rg6_task</text>
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>mil_find_cook</text>
@@ -229,6 +232,11 @@
 			<map_location_type>mil_rg6_location</map_location_type>
             <object_story_id>Mil_RG6</object_story_id>
             <map_location_hidden>1</map_location_hidden>
+		</objective>
+		<objective>
+			<text>mil_return_to_voronin</text>
+			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
 		</objective>
 	</game_task>
 
