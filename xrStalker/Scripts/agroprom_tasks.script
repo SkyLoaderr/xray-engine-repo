@@ -36,12 +36,12 @@ function proceed()
 --		level_tasks.set_task_state(task.completed, "agroprom_get_military_documents", 1)
 --	end
 
-	if actor:has_info("agr_find_gunslinger_cache_start") and
-	   actor:object("gunslinger_flash") ~= nil
-	then
-		actor:give_info_portion("agr_find_gunslinger_cache_done")
-		level_tasks.set_task_state(task.completed, "agroprom_find_gunslinger_cache", 0)
-	end
+--	if actor:has_info("agr_find_gunslinger_cache_start") and
+--	   actor:object("gunslinger_flash") ~= nil
+--	then
+--		actor:give_info_portion("agr_find_gunslinger_cache_done")
+--		level_tasks.set_task_state(task.completed, "agroprom_find_gunslinger_cache", 0)
+--	end
 
 	if actor:dont_has_info("agroprom_find_stalker_phantom") and
 	   actor:object("gunslinger_flash") ~= nil
@@ -141,4 +141,8 @@ end
 
 function agr_trader_documents( actor, npc )
 	news_manager.send_tip( actor, "tips_agr_trader_documents", 0, "trader", 10000 )
+end
+
+function have_gunslingers_flash(task, objective)
+	return db.actor:object("gunslinger_flash") ~= nil
 end
