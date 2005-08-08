@@ -12,6 +12,43 @@
 #include "ui\map_spots_relations.xml"
 #include "ui\map_spots_lchangers.xml"
 
+	<blue_location>
+		<level_map spot="blue_spot"			pointer="user_pointer"></level_map>
+		<mini_map spot="blue_mini_spot"		pointer="user_pointer"></mini_map>
+	</blue_location>
+	<blue_spot  x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</blue_spot>
+	<blue_mini_spot  x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</blue_mini_spot>
+	
+	
+	
+	<green_location>
+		<level_map spot="green_spot"		pointer="user_pointer"></level_map>
+		<mini_map spot="green_mini_spot"	pointer="user_pointer"></mini_map>
+	</green_location>
+	<green_spot  x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</green_spot>
+	<green_mini_spot  x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</green_mini_spot>
+	
+	<red_location>
+		<level_map spot="red_spot"			pointer="user_pointer"></level_map>
+		<mini_map spot="red_mini_spot"		pointer="user_pointer"></mini_map>
+	</red_location>
+	<red_spot  x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</red_spot>
+	<red_mini_spot  x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	</red_mini_spot>
+	
+
+
 
 	<level_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
@@ -25,6 +62,7 @@
 		<level_map spot="user_level_spot" pointer="user_pointer"></level_map>
 		<mini_map spot="user_mini_spot" pointer="user_pointer"></mini_map>
 	</user>
+	
 	
 	<user_level_spot x="0" y="0" width="32" height="32" alignment="c">
 	   <texture x="493" y="968" width="32" height="32">ui\ui_common</texture>
