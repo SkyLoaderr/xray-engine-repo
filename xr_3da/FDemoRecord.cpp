@@ -103,7 +103,7 @@ void CDemoRecord::MakeLevelMapProcess()
 	case 0: 
 		s_dev_flags			= psDeviceFlags;
 		psDeviceFlags.zero	();
-		psDeviceFlags.set	(rsClearBB|rsFullscreen,TRUE);
+		psDeviceFlags.set	(rsClearBB|rsFullscreen|rsDrawStatic,TRUE);
 		if (!psDeviceFlags.equal(s_dev_flags,rsFullscreen))Device.Reset();
 		break;
 	case DEVICE_RESET_PRECACHE_FRAME_COUNT+1:{
@@ -115,6 +115,7 @@ void CDemoRecord::MakeLevelMapProcess()
 
 		// build camera matrix
 		bb.getcenter						(Device.vCameraPosition);
+
 		Device.vCameraDirection.set			( 0.f,-1.f,0.f	);
 		Device.vCameraTop.set				( 0.f,0.f,1.f	);
 		Device.vCameraRight.set				( 1.f,0.f,0.f	);
@@ -124,6 +125,7 @@ void CDemoRecord::MakeLevelMapProcess()
 
 		// build project matrix
 		Device.mProject.build_projection_ortho(bb.max.x-bb.min.x,bb.max.y-bb.min.y,bb.min.z,bb.max.z);
+
 		}break;
 	case DEVICE_RESET_PRECACHE_FRAME_COUNT+2:{
 		m_bOverlapped				= FALSE;
