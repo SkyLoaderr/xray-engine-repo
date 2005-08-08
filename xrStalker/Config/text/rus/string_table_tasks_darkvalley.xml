@@ -1,33 +1,3 @@
-<string id="val_get_docs_from_x18">
-    <text>
-        Добыть документы из лаборатории X18.
-    </text>
-</string>
-<string id="val_get_docs_from_x18_0">
-    <text>
-        Необходимо пробраться на территорию Темной долины и из подземной лаборатории X18, находящейся там принести документы.
-    </text>
-</string>
-<string id="val_get_info_from_borov">
-    <text>
-        Забрать у лидера бандитов Борова материалы, добытые долговцами.
-    </text>
-</string>
-<string id="val_enter_x18">
-    <text>
-        Пробраться в лабораторию.
-    </text>
-</string>
-<string id="x18_find_docs">
-    <text>
-        Найти в лаборатории X18 нужные документы.
-    </text>
-</string>
-<string id="bar_back_to_barmen">
-    <text>
-        Отдать документы бармену.
-    </text>
-</string>
 <string id="val_come_to_trader">
     <text>
         Вернуться к торговцу.

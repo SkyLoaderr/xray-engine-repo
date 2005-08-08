@@ -3,8 +3,6 @@
 
 <!-- FAKE: main task -->
 <info_portion id="val_give_main_task">
-	<task>val_get_docs_from_x18</task>
-	<action>level_tasks.notify_new_task</action>
 </info_portion>
 
 <info_portion id="val_x18_door_open"></info_portion>

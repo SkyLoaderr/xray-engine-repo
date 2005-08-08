@@ -1,17 +1,27 @@
 <string id="bar_resque_information">
-	<text>Спасти профессора Круглова.</text>
+	<text>Спасти исследования профессора Круглова.</text>
+</string>
+<string id="bar_resque_scientific_information">
+	<text>Необходимо любой ценой спасти исследования от рук "Свободы".</text>
+</string>
+<string id="bar_resque_scientific_information_get">
+	<text>Получить у профессора флешку с результатами исследований.</text>
+</string>
+<string id="bar_resque_scientific_information_bring">
+	<text>Доставить флешку бармену.</text>
 </string>
 
-    <string id="bar_resque_scientific_information">
-	<text>Необходимо любой ценой вывести профессора Круглова за пределы "Ростка".</text>
-</string>
-
-    <string id="bar_kill_professor">
+<string id="bar_kill_professor">
 	<text>Убить профессора Круглова.</text>
 </string>
-
-    <string id="bar_kill_professor_info">
+<string id="bar_kill_professor_info">
 	<text>Помогите боевикам Свободы в охоте на профессора Круглова.</text>
+</string>
+<string id="bar_kill_professor_kill">
+	<text>Убить профессора Круглова</text>
+</string>
+<string id="bar_kill_professor_reward">
+	<text>Получить награду у осведомителя в баре</text>
 </string>
 
 

@@ -4,7 +4,6 @@
 
 	<info_portion id="agroprom_military_case">
 		<task>agroprom_get_military_documents</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="agroprom_military_case_have">
 		<article>agr_military_case</article>

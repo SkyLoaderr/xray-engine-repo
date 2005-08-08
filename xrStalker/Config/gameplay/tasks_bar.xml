@@ -4,8 +4,21 @@
 		<objective>
 			<text>bar_resque_scientific_information</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_resque_research_done</infoportion_complete>
+			<infoportion_fail>bar_resque_research_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>bar_resque_scientific_information_get</text>
 			<map_location_type>bar_ecolog_crush_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
+			<function_complete>bar_rostok_tasks.has_professor_research</function_complete>
+		</objective>
+		<objective>
+			<text>bar_resque_scientific_information_bring</text>
+			<map_location_type>bar_barman_location</map_location_type>
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_resque_research_done</infoportion_complete>
+			<infoportion_fail>bar_resque_research_dead</infoportion_fail>
 		</objective>
 	</game_task>
 
@@ -14,8 +27,23 @@
 		<objective>
 			<text>bar_kill_professor_info</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
+			<infoportion_fail>bar_kill_professor_fail</infoportion_fail>
+			<infoportion_fail>bar_kill_professor_volkodav_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>bar_kill_professor_kill</text>
 			<map_location_type>bar_ecolog_crush_location</map_location_type>
-			<object_story_id>bar_ecolog_professor</object_story_id>			
+			<object_story_id>bar_ecolog_professor</object_story_id>
+			<infoportion_complete>bar_kill_professor_done</infoportion_complete>
+			<infoportion_fail>bar_kill_professor_fail</infoportion_fail>
+			<infoportion_fail>bar_kill_professor_volkodav_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>bar_kill_professor_reward</text>
+			<map_location_type>bar_osvedomitel_location</map_location_type>
+			<object_story_id>bar_bar_osvedonitel</object_story_id>
+			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
 		</objective>
 	</game_task>
 
@@ -24,18 +52,22 @@
 		<objective>
 			<text>bar_bring_hunter_rifle</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_bar_hunter_quest_finish</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_hunter_find_rifle</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_hunter_toz_location</map_location_type>
-			<object_story_id>bar_hunter_toz</object_story_id>			
+			<object_story_id>bar_hunter_toz</object_story_id>
+			<function_complete>bar_rostok_tasks.has_hunter_rifle</function_complete>
+			<infoportion_set_complete>bar_bar_hunter_quest_find_rifle</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>bar_hunter_return_rifle</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_hunter_location</map_location_type>
 			<object_story_id>bar_hunter</object_story_id>			
+			<infoportion_complete>bar_bar_hunter_quest_finish</infoportion_complete>
 		</objective>
 	</game_task>
 
@@ -44,18 +76,20 @@
 		<objective>
 			<text>bar_kill_veterans</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_kill_crazy_veterans</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_crazy_veterans_location</map_location_type>
 			<object_story_id>bar_crazy_veterans_leader</object_story_id>			
+			<function_complete>bar_rostok_tasks.has_lucky_pda</function_complete>
+			<infoportion_set_complete>bar_dolg_veteran_gain</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>bar_bring_pda_lucky</text>
-			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
-			<object_story_id>bar_Barman</object_story_id>			
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
 	</game_task>
 
@@ -106,14 +140,20 @@
 		<objective>
 			<text>bar_dolg_svoboda_ambush_quest</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_kill_svoboda_ambush_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_dolg_kill_tiran</text>
-			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_svoboda_ambush_tiran_location</map_location_type>
+			<object_story_id>bar_svoboda_ambush_tiran</object_story_id>
+			<function_complete>bar_rostok_tasks.has_tiran_pda</function_complete>
+			<infoportion_set_complete>bar_kill_svoboda_ambush_killed</infoportion_set_complete>			
 		</objective>
 		<objective>
 			<text>bar_dolg_svoboda_ambush_return</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>bar_barman_location</map_location_type>
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_kill_svoboda_ambush_done</infoportion_complete>
 		</objective>
 	</game_task>
 
@@ -138,27 +178,44 @@
 		<title>secret_laboratory_documents</title>
 		<objective>
 			<text>secret_documents_from_darklab</text>
-			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_darklab_document_done</infoportion_complete>
+		</objective>
+		<objective>
+			<text>get_darklab_key</text>
+			<map_location_type>val_borov_location</map_location_type>
+			<object_story_id>val_borov</object_story_id>
+            <function_complete>darkvalley_tasks.has_darklab_key</function_complete>
+		</objective>
+		<objective>
+			<text>find_darklab_entrance</text>
+			<map_location_type>val_x18_enter_location</map_location_type>
+			<map_location_hidden>1</map_location_hidden>
+			<object_story_id>val_door_to_x18</object_story_id>
+			<infoportion_complete>val_x18_door_open</infoportion_complete>
 		</objective>
 		<objective>
 			<text>find_secret_documents</text>
-			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_darklab_documents_location</map_location_type>
-			<object_story_id>bar_darklab_documents</object_story_id>						
+			<object_story_id>bar_darklab_documents</object_story_id>
+			<function_complete>darkvalley_tasks.has_darklab_documents</function_complete>
+			<infoportion_set_complete>bar_darklab_document_gain</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>bring_secret_documents</text>
-			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
-			<object_story_id>bar_Barman</object_story_id>						
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_darklab_document_done</infoportion_complete>
 		</objective>
 	</game_task>
+
 
 	<game_task id="bar_x16_documents">
 		<title>x16_documents</title>
 		<objective>
 			<text>x16_yantar</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_x16_documents_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>find_x16_location</text>
@@ -169,12 +226,15 @@
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_decoding_documents_location</map_location_type>
 			<object_story_id>bar_decoding_documents</object_story_id>						
+			<function_complete>darkvalley_tasks.has_x16_documents</function_complete>
+			<infoportion_set_complete>yan_x16_documents_gain</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>bring_x16_documents</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
-			<object_story_id>bar_Barman</object_story_id>						
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_x16_documents_done</infoportion_complete>	
 		</objective>
 	</game_task>
 
