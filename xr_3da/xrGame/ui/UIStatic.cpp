@@ -612,11 +612,13 @@ void CUIStatic::Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsis
 }
 
 void CUIStatic::OnFocusReceive(){
-	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
+	if (GetMessageTarget())
+        GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
 }
 
 void CUIStatic::OnFocusLost(){
-	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
+	if (GetMessageTarget())
+		GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
 }
 
 // Note: you can use "limit = -1" to fit text to 
