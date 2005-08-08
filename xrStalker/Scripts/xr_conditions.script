@@ -139,6 +139,15 @@ function is_alive_one(actor, npc, p)
 	return false
 end
 
+-- проверка (по story_id) того, что проверяемыq npc жив
+-- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
+--       не успели проспавниться.
+function is_alive(actor, npc, p)
+	local npc1
+	npc1 = level_object_by_sid(p[1])
+	return npc1 and npc1:alive()
+end
+
 -- проверка (по story_id) все ли проверяемые сталкеры мертвы
 -- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
 --       не успели проспавниться.
@@ -164,12 +173,21 @@ function is_dead_one(actor, npc, p)
 	local npc1
 	for i, v in pairs(p) do
 		npc1 = level_object_by_sid(v)
-		if npc1 and not npc1:alive() then
+		if not npc1 or not npc1:alive() then
 			printf("_bp: is_dead_one(%d) = true", v)
 			return true
 		end
 	end
 	return false
+end
+
+-- проверка (по story_id) того, что хотя бы один из проверяемых сталкеров мертв
+-- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
+--       не успели проспавниться.
+function is_dead(actor, npc, p)
+	local npc1
+	npc1 = level_object_by_sid(p[1])
+	return not npc1 or not npc1:alive()
 end
 
 -- проверка (по story_id) того, что нашим врагом есть хотя бы кото-то один из списка
@@ -192,7 +210,7 @@ function check_fighting(actor, npc, p)
 	return false
 end
 
--- true, если гулага с таким именем не существует или в нём есть хоть кто-то
+-- true, если гулага с таким именем не существует или в нём нет никого
 function gulag_empty(actor, npc, p)
 	return ( not p[1] ) or ( xr_gulag.getGulagPopulation( p[1] ) == 0 )
 end
