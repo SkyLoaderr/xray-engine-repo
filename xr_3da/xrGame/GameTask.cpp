@@ -178,7 +178,7 @@ void CGameTask::Load(const TASK_ID& id)
 
 //------function_on_complete
 		info_num						= g_gameTaskXml.GetNodesNum(l_root,"function_call_complete");
-		objective.m_complete_lua_functions.resize(info_num);
+		objective.m_lua_functions_on_complete.resize(info_num);
 		for(j=0; j<info_num; ++j){
 			str							= g_gameTaskXml.Read(l_root, "function_call_complete", j, NULL);
 			functor_exists				= ai().script_engine().functor(str ,objective.m_lua_functions_on_complete[j]);
@@ -188,7 +188,7 @@ void CGameTask::Load(const TASK_ID& id)
 
 //------function_on_fail
 		info_num						= g_gameTaskXml.GetNodesNum(l_root,"function_call_fail");
-		objective.m_fail_lua_functions.resize(info_num);
+		objective.m_lua_functions_on_fail.resize(info_num);
 		for(j=0; j<info_num; ++j){
 			str							= g_gameTaskXml.Read(l_root, "function_call_fail", j, NULL);
 			functor_exists				= ai().script_engine().functor(str ,objective.m_lua_functions_on_fail[j]);

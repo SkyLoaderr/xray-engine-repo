@@ -648,12 +648,13 @@ void CUIMapWnd::ShowHint					(CUIWindow* parent, LPCSTR text)
 	r.set					(0.0f, 0.0f, m_hint->GetWidth(), m_hint->GetHeight());
 	r.add					(c_pos.x, c_pos.y);
 
-	if (false==is_in(vis_rect,r))
-		r.sub				(0.0f,r.height());
+	r.sub					(0.0f,r.height());
 	if (false==is_in(vis_rect,r))
 		r.sub				(r.width(),0.0f);
 	if (false==is_in(vis_rect,r))
 		r.add				(0.0f,r.height());
+	if (false==is_in(vis_rect,r))
+		r.add				(r.width(),0.0f);
 
 	m_hint->SetWndPos		(r.lt);
 }
