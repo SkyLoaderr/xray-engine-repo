@@ -17,9 +17,10 @@ class CGroupObject: public CCustomObject{
     Flags32			m_Flags;
     SStringVec*		m_PObjects;
     shared_str		m_ReferenceName;
-	bool 			UpdateReference	();
 	void 			ReferenceChange	(PropValue* sender);
     void			Clear			();
+public:
+	bool 			UpdateReference	();
 public:
 					CGroupObject	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);

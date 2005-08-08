@@ -83,6 +83,12 @@ void __fastcall TfraGroup::ebSaveSelectedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraGroup::ebReloadRefsClick(TObject *Sender)
+{
+	ParentTools->ReloadRefsSelectedObject();	
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraGroup::ExtBtn1Click(TObject *Sender)
 {
 	SelByRefObject( true );
@@ -164,5 +170,6 @@ void TfraGroup::SelByRefObject( bool flag )
     }
 }
 //---------------------------------------------------------------------------
+
 
 

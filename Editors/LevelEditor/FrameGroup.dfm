@@ -106,7 +106,7 @@ object fraGroup: TfraGroup
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      Caption = 'Save...'
+      Caption = 'Save As...'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -152,6 +152,25 @@ object fraGroup: TfraGroup
       Font.Style = []
       ParentFont = False
       OnClick = ebCloseClick
+    end
+    object ebReloadRefs: TExtBtn
+      Left = 110
+      Top = 48
+      Width = 107
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Reload Refs'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ebReloadRefsClick
     end
   end
   object paCurrentObject: TPanel

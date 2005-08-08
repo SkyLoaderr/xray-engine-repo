@@ -27,10 +27,12 @@ void ESceneGroupTools::RemoveControls()
 void ESceneGroupTools::UngroupObjects(bool bUndo)
 {
     ObjectList lst 	= m_Objects;
+    int sel_cnt		= 0;
     if (!lst.empty()){
     	bool bModif	= false;
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
         	if ((*it)->Selected()){
+            	sel_cnt++;
             	CGroupObject* obj 	= dynamic_cast<CGroupObject*>(*it); VERIFY(obj);
                 if (obj->CanUngroup(true)){
                     Scene->RemoveObject	(obj,false);
@@ -44,6 +46,7 @@ void ESceneGroupTools::UngroupObjects(bool bUndo)
         }
 	    if (bUndo&&bModif) Scene->UndoSave();
     }
+    if (0==sel_cnt)	ELog.Msg		(mtError,"Nothing selected.");
 }
 //----------------------------------------------------
 
@@ -69,10 +72,12 @@ void ESceneGroupTools::GroupObjects(bool bUndo)
 void ESceneGroupTools::OpenGroups(bool bUndo)
 {
     ObjectList lst 	= m_Objects;
+    int sel_cnt		= 0;
     if (!lst.empty()){
     	bool bModif	= false;
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
         	if ((*it)->Selected()){
+            	sel_cnt++;
             	CGroupObject* obj 	= dynamic_cast<CGroupObject*>(*it); VERIFY(obj);
                 if (obj->CanUngroup(true)){
                     obj->OpenGroup	();
@@ -84,19 +89,24 @@ void ESceneGroupTools::OpenGroups(bool bUndo)
         }
 	    if (bUndo&&bModif) Scene->UndoSave();
     }
+    if (0==sel_cnt)	ELog.Msg		(mtError,"Nothing selected.");
 }
 //----------------------------------------------------
 
 void ESceneGroupTools::CloseGroups(bool bUndo)
 {
     ObjectList lst 	= m_Objects;
+    int sel_cnt		= 0;
     if (!lst.empty()){
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-        	if ((*it)->Selected())
+        	if ((*it)->Selected()){
+            	sel_cnt++;
                 ((CGroupObject*)(*it))->CloseGroup();
+            }
         }
 	    if (bUndo) Scene->UndoSave();
     }
+    if (0==sel_cnt)	ELog.Msg		(mtError,"Nothing selected.");
 }
 //----------------------------------------------------
 
@@ -122,10 +132,12 @@ void __stdcall  FillGroupItems(ChooseItemVec& items, void* param)
 void ESceneGroupTools::AlignToObject()
 {
     ObjectList& lst 	= m_Objects;
+    int sel_cnt		= 0;
     if (!lst.empty()){
         LPCSTR nm;
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
         	if ((*it)->Selected()){
+			    sel_cnt++;
                 if (TfrmChoseItem::SelectItem(smCustom,nm,1,nm,FillGroupItems,*it)){
                     ((CGroupObject*)(*it))->UpdatePivot(nm,false);
                 }else break;
@@ -133,6 +145,7 @@ void ESceneGroupTools::AlignToObject()
         }
         Scene->UndoSave();
     }
+    if (0==sel_cnt)	ELog.Msg		(mtError,"Nothing selected.");
 }
 //----------------------------------------------------
 
@@ -141,6 +154,29 @@ CCustomObject* ESceneGroupTools::CreateObject(LPVOID data, LPCSTR name)
 	CCustomObject* O	= xr_new<CGroupObject>(data,name);
     O->ParentTools		= this;
     return O;
+}
+//----------------------------------------------------
+
+void ESceneGroupTools::ReloadRefsSelectedObject()
+{
+    ObjectList lst 	= m_Objects;
+    int sel_cnt		= 0;
+    if (!lst.empty()){
+    	bool bModif	= false;
+        for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+        	if ((*it)->Selected()){
+			    sel_cnt++;
+            	CGroupObject* obj 	= dynamic_cast<CGroupObject*>(*it); VERIFY(obj);
+                if (obj->UpdateReference()){
+                    bModif			= true;
+                }else{
+                    ELog.Msg		(mtError,"Can't reload group: '%s'.",obj->Name);    
+                }
+            }
+        }
+	    if (bModif) Scene->UndoSave();
+    }
+    if (0==sel_cnt)	ELog.Msg		(mtError,"Nothing selected.");
 }
 //----------------------------------------------------
 

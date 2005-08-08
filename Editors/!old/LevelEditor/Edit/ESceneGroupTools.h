@@ -41,6 +41,7 @@ public:
     void 				AlignToObject			();
 
     void 				SaveSelectedObject		();
+    void 				ReloadRefsSelectedObject();
     void 				SetCurrentObject		(LPCSTR nm);
     LPCSTR				GetCurrentObject		(){return m_CurrentObject.c_str();}
     

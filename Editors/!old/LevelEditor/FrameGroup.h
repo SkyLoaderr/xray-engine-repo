@@ -48,6 +48,7 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seSelPercent;
 	TExtBtn *ebOpen;
 	TExtBtn *ebClose;
+	TExtBtn *ebReloadRefs;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebMakeGroupClick(TObject *Sender);
@@ -63,6 +64,7 @@ __published:	// IDE-managed Components
 	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
 	void __fastcall ebOpenClick(TObject *Sender);
 	void __fastcall ebCloseClick(TObject *Sender);
+	void __fastcall ebReloadRefsClick(TObject *Sender);
 private:	// User declarations
 	ESceneGroupTools* ParentTools;
 	void 			SelByRefObject		( bool flag );

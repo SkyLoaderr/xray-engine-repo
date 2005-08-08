@@ -441,6 +441,11 @@ bool CGroupObject::SetReference(LPCSTR ref_name)
 
 bool CGroupObject::UpdateReference()
 {
+	if (!m_ReferenceName.size()){
+        ELog.Msg		(mtError,"ERROR: '%s' - has empty reference.",Name);
+     	return false;
+    }
+    
     xr_string fn		= m_ReferenceName.c_str();
     fn					= EFS.ChangeFileExt(fn,".group");
     IReader* R			= FS.r_open(_groups_,fn.c_str());
@@ -450,6 +455,7 @@ bool CGroupObject::UpdateReference()
 		Clear			();
         xr_string nm	= Name;
 		shared_str old_refs	= m_ReferenceName;
+        UpdateTransform	(true);
         Fvector old_pos	= PPosition;
         Fvector old_rot	= PRotation;
         Fvector old_sc	= PScale;
@@ -465,7 +471,7 @@ bool CGroupObject::UpdateReference()
         UpdateTransform	(true);
         FS.r_close		(R);
     }else{
-        ELog.DlgMsg		(mtError,"Can't open group file: '%s'.",fn.c_str());
+        ELog.Msg		(mtError,"ERROR: Can't open group file: '%s'.",fn.c_str());
     }
     return bres;
 }
