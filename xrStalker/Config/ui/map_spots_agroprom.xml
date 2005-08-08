@@ -72,14 +72,14 @@
 		<level_map spot="agr_factory_spot" pointer="quest_pointer"></level_map>
 	</agr_factory_location>
 
-     <agr_factory_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="191" y="191" width="64" height="64" scale="0.5" >ui\ui_icons_map</texture>
+     <agr_factory_spot x="0" y="0" width="64" height="64" alignment="c">
+		<texture x="191" y="191" width="64" height="64">ui\ui_icons_map</texture>
 	</agr_factory_spot>
 <!--nii-->
 	<agr_nii_location hint="agr_nii" store="1">
 		<level_map spot="agr_nii_spot" pointer="quest_pointer"></level_map>
 	</agr_nii_location>
 
-     <agr_nii_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="191" y="191" width="64" height="64" scale="0.5" >ui\ui_icons_map</texture>
+     <agr_nii_spot x="0" y="0" width="64" height="64" alignment="c">
+		<texture x="191" y="191" width="64" height="64">ui\ui_icons_map</texture>
 	</agr_nii_spot>
