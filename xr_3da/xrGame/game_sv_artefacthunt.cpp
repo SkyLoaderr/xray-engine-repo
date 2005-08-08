@@ -167,6 +167,7 @@ void				game_sv_ArtefactHunt::OnGiveBonus				(KILL_RES KillResult, game_PlayerSt
 void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
 {
 	inherited::OnPlayerKillPlayer(ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
+
 	if (ps_killed && ps_killed->GameID == m_iAfBearerMenaceID)
 		m_iAfBearerMenaceID = 0;
 };

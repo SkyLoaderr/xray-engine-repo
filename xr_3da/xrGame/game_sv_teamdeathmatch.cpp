@@ -156,9 +156,9 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 
 void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
 {
-	if (!ps_killed || !ps_killer) return;
-
 	inherited::OnPlayerKillPlayer(ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
+
+	if (!ps_killed || !ps_killer) return;
 	
 	UpdateTeamScore(ps_killer);	
 }
