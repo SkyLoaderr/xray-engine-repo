@@ -36,7 +36,7 @@ enum {
 	mtNetwork			= (1ul<<16ul),
 	mtParticles			= (1ul<<17ul),
 
-	// 20-32 bit - defined in Editor
+	// 20-32 bit - reserved to Editor
 };
 
 
