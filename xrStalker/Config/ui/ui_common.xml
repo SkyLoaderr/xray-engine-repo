@@ -342,4 +342,5 @@
     <texture id="ui_icons_newPDA_SmallYell" x="504" y="1000" width="11" height="11" />
     <texture id="ui_icons_newPDA_SmallGreen" x="515" y="1000" width="11" height="11" />
     <texture id="ui_icons_newPDA_SmallRed" x="526" y="1000" width="11" height="11" />
-</ui_texture>
+    <texture id="ui_icons_newPDA_markQuest" x="665" y="853" width="32" height="32" />
+ </ui_texture>
