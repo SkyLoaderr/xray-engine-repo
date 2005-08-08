@@ -239,16 +239,14 @@ C++ class story_ids {
     const gar_exit_to_darkvalley_high = 196;
     const Mil_Hunter1 = 725;
     const bar_dolg_general_voronin = 507;
+    const pri_wave2_monolith_victim1 = 804;
     const test_searchlight1 = 20002;
     const Escape_bridge_stalkers = 9;
     const Mil_patrol_kamikadze3 = 722;
     const Mil_Sniper3 = 732;
     const Escape_blockpost_case = 0;
-    const Escape_stalker_from_raid = 5;
     const Mil_Attacker5 = 715;
     const Mil_Attacker7 = 717;
-    const Mil_Sniper2 = 731;
-    const agr_krot = 302;
     const gar_bandit_post = 111;
     const gar_spot_dolg_blokpost = 115;
     const test_stalker2 = 20001;
@@ -264,6 +262,7 @@ C++ class story_ids {
     const Mil_Sniper1 = 730;
     const bar_freedom_volkodav = 509;
     const esc_vagon_newbie2 = 13;
+    const pri_bomber = 806;
     const test_searchlight2 = 20003;
     const val_borov = 425;
     const val_opendoor_victim = 411;
@@ -283,6 +282,7 @@ C++ class story_ids {
     const Mil_Miser = 734;
     const Mil_Sniper = 704;
     const val_stopper_soldier2 = 419;
+    const bar_bar_osvedonitel = 515;
     const bar_dolg_captain_ivancov = 505;
     const bar_dolg_polkovnik_petrenko = 506;
     const gar_spot_car_graveyard = 114;
@@ -349,12 +349,14 @@ C++ class story_ids {
     const Mil_RG6 = 706;
     const Mil_patrol_kamikadze1 = 720;
     const Mil_Attacker3 = 713;
+    const agr_nii_location = 321;
     const gar_spot_dogs_forest = 119;
     const pri_heli4 = 803;
     const val_lvl_changer2 = 416;
     const val_prisoner = 402;
     const Escape_raid_commander1 = 10;
     const Mil_Controller = 729;
+    const agr_factory_location = 320;
     const gar_exit_to_bar = 194;
     const val_lvl_changer3 = 417;
     const gar_newbie_in_tunnel = 110;
@@ -379,6 +381,10 @@ C++ class story_ids {
     const Escape_Trader = 3;
     const Mil_patrol_kamikadze2 = 721;
     const gar_spot_trash1 = 120;
+    const pri_wave2_monolith_victim2 = 805;
+    const Escape_stalker_from_raid = 5;
+    const Mil_Sniper2 = 731;
+    const agr_krot = 302;
     
 };
 
@@ -4526,10 +4532,11 @@ C++ class sound_object {
     function set_position(const vector&);
     function stop_deffered();
     function get_position() const;
-    function stop();
+    function play_no_feedback(game_object*, number, number, vector, number);
     function play_at_pos(game_object*, const vector&);
     function play_at_pos(game_object*, const vector&, number);
     function play_at_pos(game_object*, const vector&, number, number);
+    function stop();
     function length();
     function play(game_object*);
     function play(game_object*, number);
