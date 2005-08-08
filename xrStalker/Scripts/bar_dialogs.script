@@ -145,15 +145,12 @@ function barman_darklab_documents_given(actor,npc)
 end
 
 function have_darklab_documents(first_speaker, second_speaker)
-  	return first_speaker:object("bar_darklab_documents") ~= nil
+  	return first_speaker:object("dar_document4") ~= nil
 end
-
 function give_darklab_documents(first_speaker, second_speaker)
-	local darklab_documents = first_speaker:object("bar_darklab_documents")
+	local darklab_documents = first_speaker:object("dar_document4")
 	dialogs.relocate_item(second_speaker, darklab_documents, "out")
-	level_tasks.set_task_state(task.completed, "bar_darklab_documents", 0)
 end
-
 function give_darklab_reward(first_speaker, second_speaker)
 		dialogs.relocate_money(second_speaker, 4500, "in")
 end
@@ -237,17 +234,6 @@ function enter_to_dolg(first_speaker, second_speaker)
 end
 
 
--- флэшка Борова
-function have_borov_flash(first_speaker, second_speaker)
-  	return first_speaker:object("borov_flash") ~= nil
-end
-function give_borov_flash(first_speaker, second_speaker)
-	local borov_flash = first_speaker:object("borov_flash")
-	dialogs.relocate_item(second_speaker, borov_flash, "out")
-end
-
-
-
 -- PDA Тирана
 function have_bar_tiran_pda(first_speaker, second_speaker)
   	return first_speaker:object("bar_tiran_pda") ~= nil
@@ -288,12 +274,6 @@ function have_tiran_reward(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 2000, "in")
 end
 
-function have_borov_reward(first_speaker, second_speaker)
-	local dolg_rifle = second_speaker:object("wpn_spas12")
---	dialogs.relocate_item(second_speaker, dolg_rifle, "in")
-	dialogs.relocate_money(second_speaker, 1000, "in")
-end
-
 function have_svoboda_leader_reward(first_speaker, second_speaker)
 	local super_suit = second_speaker:object("scientific_outfit")
 	dialogs.relocate_item(second_speaker, super_suit, "in")
@@ -312,23 +292,6 @@ function give_hunters_toz(first_speaker, second_speaker)
 end
 function have_hunter_reward(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 500, "in")
-end
-
-
---PDA ночного снайпера
-function have_sniper_pda(first_speaker, second_speaker)
-  	return first_speaker:object("bar_sniper_pda") ~= nil
-end
-
-function give_sniper_pda(first_speaker, second_speaker)
-	local sniper_pda = first_speaker:object("bar_sniper_pda")
-	dialogs.relocate_item(second_speaker, sniper_pda, "out")
-	level_tasks.set_task_state(task.completed, "bar_drunk_dolg_quest", 0)
-end
-
-function have_sniper_reward(first_speaker, second_speaker)
-	local dolg_detector = second_speaker:object("detector_advances")
-	dialogs.relocate_item(second_speaker, dolg_detector, "in")
 end
 
 
