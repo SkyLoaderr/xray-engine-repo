@@ -1356,7 +1356,7 @@ void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
 void	game_sv_Deathmatch::LoadAnomalySets			()
 {	
 	//-----------------------------------------------------------
-	if (!m_AnomalySetsList.empty()) return;
+	m_AnomalySetsList.clear();
 	//-----------------------------------------------------------
 	if (!m_AnomalyIDSetsList.empty())
 	{
