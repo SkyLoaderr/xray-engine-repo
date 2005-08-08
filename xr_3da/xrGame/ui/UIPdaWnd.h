@@ -77,6 +77,7 @@ public:
 	virtual void 			Show				();
 	virtual void 			Hide				();
 			void			OnNewArticleAdded	();
+			void			OnContactsChanged	();
 	
 	void					SetActiveSubdialog	(EPdaTabs section);
 	virtual bool			StopAnyMove			(){return false;}

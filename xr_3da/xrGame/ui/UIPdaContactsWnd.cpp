@@ -8,6 +8,7 @@
 #include "../Pda.h"
 #include "../HUDManager.h"
 #include "UIXmlInit.h"
+#include "../actor.h"
 
 #define PDA_CONTACT_HEIGHT 70
 
@@ -16,6 +17,7 @@ const char * const PDA_CONTACTS_HEADER_SUFFIX		= "/Contacts";
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
 {
+	m_flags.zero();
 }
 
 CUIPdaContactsWnd::~CUIPdaContactsWnd()
@@ -25,12 +27,6 @@ CUIPdaContactsWnd::~CUIPdaContactsWnd()
 void CUIPdaContactsWnd::Show(bool status)
 {
 	inherited::Show(status);
-	inherited::Enable(status);
-
-	if (status)
-	{
-		UIListWnd.Reset();
-	}
 }
 
 void CUIPdaContactsWnd::Init()
@@ -80,6 +76,24 @@ void CUIPdaContactsWnd::Init()
 void CUIPdaContactsWnd::Update()
 {
 	inherited::Update();
+	if(TRUE==m_flags.test(flNeedUpdate)){
+		UIListWnd.Reset();
+
+		UIListWnd.RemoveAll();
+
+		xr_vector<CPda*>	pda_list;
+		CPda*	pPda		= Actor()->GetPDA	();
+		if(!pPda)			return;
+
+		pPda->ActiveContacts(pda_list);
+
+		xr_vector<CPda*>::iterator it = pda_list.begin();
+
+		for(; it!=pda_list.end();++it){
+			AddContact(*it);
+		}
+		m_flags.set(flNeedUpdate, FALSE);
+	}
 }
 
 void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
@@ -139,4 +153,9 @@ bool CUIPdaContactsWnd::IsInList(CPda* pda)
 		return false;
 	else
 		return true;
+}
+
+void CUIPdaContactsWnd::Reload()
+{
+	m_flags.set(flNeedUpdate,TRUE);
 }

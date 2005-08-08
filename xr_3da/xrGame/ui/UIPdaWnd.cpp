@@ -314,30 +314,7 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaTabs section)
 
 	m_pActiveSection = section;
 
-/*
-	switch (section)
-	{
-	case eptQuests:
-		UITabControl->SetNewActiveTab	(eptEvents);
-		break;
-	case epsMap:
-		UITabControl->SetNewActiveTab	(eptMap);
-		break;
-	case epsContacts:
-		UITabControl->SetNewActiveTab	(eptComm);
-		break;
-	case epsEncyclopedia:
-		UIEncyclopediaWnd->OpenTree		(addiotionalValue);
-		UITabControl->SetNewActiveTab	(eptEncyclopedia);
-		UIEncyclopediaWnd->UIBack.Show	(true);
-		break;
-	case epsDiaryArticle:
-		UITabControl->SetNewActiveTab	(eptEvents);
-		break;
-	default:
-		NODEFAULT;
-	}
-*/
+
 }
 
 void CUIPdaWnd::OnNewArticleAdded	()
@@ -347,4 +324,9 @@ void CUIPdaWnd::OnNewArticleAdded	()
 */
 	if(UIEncyclopediaWnd->IsShown())
 		UIEncyclopediaWnd->ReloadArticles();
+}
+
+void CUIPdaWnd::OnContactsChanged	()
+{
+	UIPdaContactsWnd->Reload		();
 }

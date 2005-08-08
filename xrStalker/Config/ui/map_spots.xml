@@ -17,10 +17,10 @@
 		<mini_map spot="blue_mini_spot"		pointer="user_pointer"></mini_map>
 	</blue_location>
 	<blue_spot  x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+		<texture x="525" y="872" width="32" height="32">ui\ui_common</texture>
 	</blue_spot>
-	<blue_mini_spot  x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	<blue_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
+		<texture x="493" y="1000" width="11" height="11">ui\ui_common</texture>
 	</blue_mini_spot>
 	
 	
@@ -30,10 +30,10 @@
 		<mini_map spot="green_mini_spot"	pointer="user_pointer"></mini_map>
 	</green_location>
 	<green_spot  x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+		<texture x="525" y="904" width="32" height="32">ui\ui_common</texture>
 	</green_spot>
-	<green_mini_spot  x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	<green_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
+		<texture x="515" y="1000" width="11" height="11">ui\ui_common</texture>
 	</green_mini_spot>
 	
 	<red_location>
@@ -43,8 +43,8 @@
 	<red_spot  x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
 	</red_spot>
-	<red_mini_spot  x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	<red_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
+		<texture x="526" y="1000" width="11" height="11">ui\ui_common</texture>
 	</red_mini_spot>
 	
 
@@ -54,23 +54,22 @@
 		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
 	</level_map_spot_border>
 	
-	<mini_map_spot_border x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="633" y="693" width="32" height="32">ui\ui_common</texture>
+	<mini_map_spot_border x="0" y="0" width="15" height="15" alignment="c">
+		<texture x="501" y="944" width="15" height="15">ui\ui_common</texture>
 	</mini_map_spot_border>
 
 	<user>
 		<level_map spot="user_level_spot" pointer="user_pointer"></level_map>
 		<mini_map spot="user_mini_spot" pointer="user_pointer"></mini_map>
 	</user>
-	
-	
 	<user_level_spot x="0" y="0" width="32" height="32" alignment="c">
 	   <texture x="493" y="968" width="32" height="32">ui\ui_common</texture>
 	</user_level_spot>
-	
-	<user_mini_spot x="0" y="0" width="32" height="32" alignment="c">
-	   <texture x="493" y="968" width="32" height="32">ui\ui_common</texture>
+	<user_mini_spot x="0" y="0" width="11" height="11" alignment="c">
+	   <texture x="504" y="1000" width="11" height="11">ui\ui_common</texture>
 	</user_mini_spot>
+
+
 
 	<user_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
 		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>

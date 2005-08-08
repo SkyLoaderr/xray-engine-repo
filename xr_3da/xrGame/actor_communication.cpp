@@ -368,6 +368,12 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 	HUD().GetUI()->UIMainIngameWnd->AnimateContacts();
 
 	Level().MapManager().AddRelationLocation( pInvOwner );
+
+	if( HUD().GetUI() ){
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP) 
+			pGameSP->PdaMenu->OnContactsChanged();
+	}
 }
 
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
@@ -381,6 +387,12 @@ void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 			Level().MapManager().RemoveMapLocation(RELATION_REGISTRY().GetSpotName(tt),	GO->ID());
 		}
 	};
+
+	if( HUD().GetUI() ){
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP) 
+			pGameSP->PdaMenu->OnContactsChanged();
+	}
 
 }
 

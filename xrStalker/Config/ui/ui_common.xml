@@ -253,6 +253,7 @@
     <texture id="ui_icons_newPDA_mark_e" x="493" y="904" width="32" height="32" />
     <texture id="ui_icons_newPDA_mark_d" x="493" y="904" width="32" height="32" />
     <texture id="ui_icons_newPDA_mark_t" x="633" y="853" width="32" height="32" />
+    <texture id="ui_icons_newPDA_markSmall_h" x="501" y="944" width="15" height="15" />
     <texture id="ui_icons_newPDA_mark_h" x="493" y="936" width="32" height="32" />
     <texture id="ui_icons_newPDA_markPersonal_e" x="493" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_markPersonal_h" x="493" y="968" width="32" height="32" />
@@ -337,4 +338,8 @@
     <texture id="ui_icons_PDA_subtask_accomplished" x="493" y="1011" width="11" height="11" />
     <texture id="ui_icons_PDA_subtask_active" x="504" y="1011" width="11" height="11" />
     <texture id="ui_icons_PDA_subtask_failed" x="515" y="1011" width="11" height="11" />
+    <texture id="ui_icons_newPDA_SmallBlue" x="493" y="1000" width="11" height="11" />
+    <texture id="ui_icons_newPDA_SmallYell" x="504" y="1000" width="11" height="11" />
+    <texture id="ui_icons_newPDA_SmallGreen" x="515" y="1000" width="11" height="11" />
+    <texture id="ui_icons_newPDA_SmallRed" x="526" y="1000" width="11" height="11" />
 </ui_texture>
