@@ -334,4 +334,7 @@
     <texture id="ui_icons_PDA_picture" x="730" y="348" width="244" height="44" />
     <texture id="ui_icons_newPDA_man" x="730" y="392" width="64" height="64" />
     <texture id="ui_icons_newPDA_manArrow" x="794" y="392" width="64" height="64" />
+    <texture id="ui_icons_PDA_subtask_accomplished" x="493" y="1011" width="11" height="11" />
+    <texture id="ui_icons_PDA_subtask_active" x="504" y="1011" width="11" height="11" />
+    <texture id="ui_icons_PDA_subtask_failed" x="515" y="1011" width="11" height="11" />
 </ui_texture>
