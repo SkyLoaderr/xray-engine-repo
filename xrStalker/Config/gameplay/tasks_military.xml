@@ -40,10 +40,22 @@
 			<text>mil_dolg_assault_support</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_sniper1_dead</infoportion_complete>
+			<map_location_type>mil_sniper_location</map_location_type>
+            <object_story_id>Mil_Sniper1</object_story_id>
+		</objective>
+		<objective>
+			<text>mil_dolg_assault_support</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_sniper2_dead</infoportion_complete>
+			<map_location_type>mil_sniper_location</map_location_type>
+            <object_story_id>Mil_Sniper2</object_story_id>
+		</objective>
+		<objective>
+			<text>mil_dolg_assault_support</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_sniper3_dead</infoportion_complete>
-			<infoportion_fail>mil_dolg_dead</infoportion_fail>
-			<infoportion_set_fail>mil_dolg_lukash_kill_fail</infoportion_set_fail>
+			<map_location_type>mil_sniper_location</map_location_type>
+            <object_story_id>Mil_Sniper3</object_story_id>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_headquarter</text>

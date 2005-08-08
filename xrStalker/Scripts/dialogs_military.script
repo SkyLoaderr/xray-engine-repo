@@ -154,18 +154,18 @@ end
 
 function set_snipers_spots (npc, actor)
 
-       local sniper = level_object_by_sid (730)
-       if sniper and sniper:alive () == true then        
-          level_tasks.add_location (730, "mil_sniper_location")
-       end   
+       --local sniper = level_object_by_sid (730)
+       --if sniper and sniper:alive () == true then        
+          --level_tasks.add_location (730, "mil_sniper_location")
+       --end   
        
-       sniper = level_object_by_sid (731)
-       if sniper and sniper:alive () == true then        
-          level_tasks.add_location (731, "mil_sniper_location")
-       end   
+       --sniper = level_object_by_sid (731)
+       --if sniper and sniper:alive () == true then        
+          --level_tasks.add_location (731, "mil_sniper_location")
+       --end   
        
-       sniper = level_object_by_sid (732)
-       if sniper and sniper:alive () == true then        
-          level_tasks.add_location (732, "mil_sniper_location")          
-       end   
+       --sniper = level_object_by_sid (732)
+       --if sniper and sniper:alive () == true then        
+          --level_tasks.add_location (732, "mil_sniper_location")          
+       --end   
 end

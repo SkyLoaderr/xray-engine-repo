@@ -2,19 +2,20 @@ function process_tasks ()
     local actor = db.actor
     
     
-    if db.actor:has_info ("mil_lukash_dead") and 
-       db.actor:has_info ("mil_sniper_dead") and
-       db.actor:has_info ("mil_dolg_mission_complete") and 
-       db.actor:dont_has_info ("mil_dolg_task_complete") then
+    if actor:has_info ("mil_lukash_dead") and 
+       actor:has_info ("mil_sniper_dead") and
+       actor:has_info ("mil_dolg_mission_complete") and 
+       actor:dont_has_info ("mil_dolg_task_complete") and
+       actor:dont_has_info ("mil_dolg_dead") then
        news_manager.send_tip (db.actor, "mil_mission_complete", nil, "dolg")
        db.actor:give_info_portion ("mil_dolg_task_complete")
     end        
     
-    if db.actor:has_info ("mil_courier_report") then
-       if level_tasks.is_map_spot_present (707, "mil_lukash_location") == true then
-          level_tasks.remove_location (707, "mil_lukash_location")
-       end   
-    end
+    --if db.actor:has_info ("mil_courier_report") then
+       --if level_tasks.is_map_spot_present (707, "mil_lukash_location") == true then
+          --level_tasks.remove_location (707, "mil_lukash_location")
+       --end   
+    --end
     
     if db.actor:has_info ("mil_fblockpost_spot") then
        if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
@@ -43,13 +44,13 @@ function process_tasks ()
 	   db.actor:give_info_portion("mil_max_owner_flash_get")  
 	end
 	
-	if actor:dont_has_info ("mil_freedom_rg6_task_complete") then
-	   if actor:object ("wpn_rg-6") and actor:has_info ("mil_freedom_rg6_task") then 
-	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
-	      level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
-	      actor:give_info_portion ("mil_freedom_rg6_task_complete")
-	   end   
-	end	
+	--if actor:dont_has_info ("mil_freedom_rg6_task_complete") then
+	   --if actor:object ("wpn_rg-6") and actor:has_info ("mil_freedom_rg6_task") then 
+	      --level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 3) 
+	      --level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 0) 
+	      --actor:give_info_portion ("mil_freedom_rg6_task_complete")
+	   --end   
+	--end	
 	
 	process_khutor () 
 end
@@ -205,12 +206,12 @@ function process_info_portion(info_id)
            end   
            level_tasks.remove_location (710, "mil_courier_location")
         return true
-    elseif info_id == "mil_leader_quest2_complete" then
-           level_tasks.remove_location (710, "mil_courier_location")
-           level_tasks.add_location (707, "mil_lukash_location")
-           level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
-	    return true  
-    end
+    --elseif info_id == "mil_leader_quest2_complete" then
+           --level_tasks.remove_location (710, "mil_courier_location")
+           --level_tasks.add_location (707, "mil_lukash_location")
+           --level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
+	    --return true  
+    --end
 	
 	return false
 end
