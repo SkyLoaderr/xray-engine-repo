@@ -96,7 +96,7 @@
 		<class>Svoboda_bodyguard</class>
 		<community>freedom</community>
 		
-		<rank>40</rank>
+		<rank>80</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
@@ -124,7 +124,7 @@
 		<class>Svoboda_bodyguard</class>
 		<community>freedom</community>
 		
-		<rank>40</rank>
+		<rank>80</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
@@ -152,7 +152,7 @@
 		<class>Svoboda_bodyguard</class>
 		<community>freedom</community>
 		
-		<rank>40</rank>
+		<rank>80</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
@@ -181,7 +181,7 @@
 		<class>Svoboda_sniper</class>
 		<community>freedom</community>
 
-		<rank>50</rank>
+		<rank>90</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_91</visual>
@@ -461,7 +461,7 @@
 		<class>Svoboda_blockpost_leader</class>
 		<community>freedom</community>
 
-		<rank>70</rank>
+		<rank>90</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
