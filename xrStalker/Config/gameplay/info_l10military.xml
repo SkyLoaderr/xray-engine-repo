@@ -52,6 +52,7 @@
 	<info_portion id="mil_dolg_phase1"></info_portion>
 	<info_portion id="mil_dolg_phase2"></info_portion>
 	<info_portion id="mil_dolg_phase3"></info_portion>
+	<info_portion id="mil_dolg_skull_talk"></info_portion>
 	
 	
 	<!-- База Свободы под атакой-->
@@ -121,7 +122,10 @@
 	<info_portion id="mil_lukash_final"></info_portion>
 	<info_portion id="mil_lukash_arrive"></info_portion>
 	<info_portion id="mil_lukash_dead"></info_portion>
-	<info_portion id="mil_lukash_blockpost"></info_portion>
+	<info_portion id="mil_lukash_blockpost">
+		<task>mil_blockpost_job2</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>		
 	<info_portion id="mil_actor_on_lukash"></info_portion>
 	<info_portion id="mil_bodyguard_talk"></info_portion>
 	
@@ -248,6 +252,8 @@
 	<info_portion id="mil_actor_blockpost"></info_portion>
 	<info_portion id="mil_neutral_commander_talk"></info_portion>
 	<info_portion id="mil_fblockpost_actor_outside"></info_portion>
+	<info_portion id="mil_freedom_commander_talk"></info_portion>
+	<info_portion id="mil_fblockpost_commander_dead"></info_portion>
 	
 	<!-- Задача Cкряги -->
 	<info_portion id="mil_miser_task">

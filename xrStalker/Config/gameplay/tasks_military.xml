@@ -18,6 +18,15 @@
             <infoportion_set_fail>mil_dolg_task_fail</infoportion_set_fail>
 		</objective>
 		<objective>
+			<text>mil_dolg_return_to_skull</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type>mil_dolg_location</map_location_type>
+            <object_story_id>Mil_Dolg_Zoneguard</object_story_id>
+			<infoportion_fail>mil_dolg_dead</infoportion_fail>
+			<infoportion_complete>mil_dolg_skull_talk</infoportion_complete>
+            <map_location_hidden>1</map_location_hidden>
+		</objective>
+		<objective>
 			<text>mil_dolg_assault_support</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_headquarter_attack</infoportion_complete>
@@ -172,6 +181,24 @@
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
 			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
+		</objective>
+	</game_task>
+
+	<game_task id="mil_blockpost_job2">
+		<title>mil_talk_with_cap</title>
+		<objective>
+			<text>mil_talk_with_cap</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_freedom_commander_talk</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_commander_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>mil_fblockpost_phase3</text>
+			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_freedom_commander_talk</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_commander_dead</infoportion_fail>
+			<map_location_type>mil_fblockpost_location</map_location_type>
+            <object_story_id>Mil_Kap</object_story_id>
 		</objective>
 	</game_task>
 

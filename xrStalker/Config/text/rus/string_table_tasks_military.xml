@@ -100,6 +100,18 @@
 	<text>Оказать помощь блокпосту Свободы "Барьер"</text>
 </string>
 
+<string id="mil_talk_with_cap">
+	<text>Поговорить с командиром блокпоста Свободы Кэпом</text>
+</string>
+
+<string id="mil_dolg_return_to_skull">
+	<text>Вернуться к Черепу</text>
+</string>
+
+<string id="mil_fblockpost_phase3">
+	<text>Поговорить с командиром блокпоста "Барьер"</text>
+</string>
+
 <string id="mil_fblockpost_phase1">
 	<text>Помочь отбить две волны мутантов</text>
 </string>
