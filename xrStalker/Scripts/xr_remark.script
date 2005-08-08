@@ -364,7 +364,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
 	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
-	if st.target ~= actor then
+	if st.target ~= db.actor then
 		st.target_sid = tonumber(st.target)
 	end
 	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
