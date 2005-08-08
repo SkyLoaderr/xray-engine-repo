@@ -1,12 +1,10 @@
 	
 <!-- multiplayer -->
 	<mp_team_base_1_location hint="team_base_1">
-	<!--	<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map> -->
 		<mini_map  spot="mp_team_base_1_mini_spot"  pointer="mp_team_base_1_pointer"></mini_map> 
 	</mp_team_base_1_location>
 	
 	<mp_team_base_2_location hint="team_base_2">
-	<!--	<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map> -->
 		<mini_map  spot="mp_team_base_2_mini_spot"  pointer="mp_team_base_2_pointer"></mini_map> 
 	</mp_team_base_2_location>
 

@@ -77,7 +77,7 @@
 
 	
 	<actor_location hint="actor">
-		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
+		<level_map spot="actor_level_spot"></level_map>
 	</actor_location>
 	
 	<actor_location_p hint="actor">
@@ -92,10 +92,6 @@
 		<texture x="794" y="394" width="60" height="60">ui\ui_common</texture>
 	</actor_level_spot_p>
 
-	<actor_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128">ui\ui_map_arrow_02</texture>
-	</actor_pointer>
-
 	
 	<general_wounded_location hint="general_wounded">
 		<level_map spot="general_wounded_spot"></level_map>
@@ -107,21 +103,8 @@
 	
 	
 
-<!--test -->
-	<heli_location hint="helicopter" store="1">
-		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
-		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
-	</heli_location>
-
-	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
-		<texture x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture>
-		<texture_above x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture_above>
-		<texture_below x="10" y="9" width="11" height="13">ui\ui_map_arrow_02</texture_below>
-	</heli_mini_spot>
-<!--test -->
 	
 	<anomaly_zone_location hint="anomaly_zone">
-<!--	<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map> -->
 		<mini_map  spot="anomaly_zone_mini_spot"></mini_map> 
 	</anomaly_zone_location>
 
