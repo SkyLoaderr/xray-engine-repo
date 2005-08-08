@@ -9,12 +9,14 @@
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_get</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_ecolog_crush_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<function_complete>bar_rostok_tasks.has_professor_research</function_complete>
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_bring</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_resque_research_done</infoportion_complete>
@@ -33,6 +35,7 @@
 		</objective>
 		<objective>
 			<text>bar_kill_professor_kill</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_ecolog_crush_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_kill_professor_done</infoportion_complete>
@@ -41,6 +44,7 @@
 		</objective>
 		<objective>
 			<text>bar_kill_professor_reward</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_osvedomitel_location</map_location_type>
 			<object_story_id>bar_bar_osvedonitel</object_story_id>
 			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
@@ -80,6 +84,7 @@
 		</objective>
 		<objective>
 			<text>bar_kill_crazy_veterans</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_crazy_veterans_location</map_location_type>
 			<object_story_id>bar_crazy_veterans_leader</object_story_id>			
 			<function_complete>bar_rostok_tasks.has_lucky_pda</function_complete>
@@ -87,6 +92,7 @@
 		</objective>
 		<objective>
 			<text>bar_bring_pda_lucky</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
@@ -144,6 +150,7 @@
 		</objective>
 		<objective>
 			<text>bar_dolg_kill_tiran</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_svoboda_ambush_tiran_location</map_location_type>
 			<object_story_id>bar_svoboda_ambush_tiran</object_story_id>
 			<function_complete>bar_rostok_tasks.has_tiran_pda</function_complete>
@@ -151,6 +158,7 @@
 		</objective>
 		<objective>
 			<text>bar_dolg_svoboda_ambush_return</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_kill_svoboda_ambush_done</infoportion_complete>
@@ -183,12 +191,14 @@
 		</objective>
 		<objective>
 			<text>get_darklab_key</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>val_borov_location</map_location_type>
 			<object_story_id>val_borov</object_story_id>
             <function_complete>darkvalley_tasks.has_darklab_key</function_complete>
 		</objective>
 		<objective>
 			<text>find_darklab_entrance</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>val_x18_enter_location</map_location_type>
 			<map_location_hidden>1</map_location_hidden>
 			<object_story_id>val_door_to_x18</object_story_id>
@@ -196,6 +206,7 @@
 		</objective>
 		<objective>
 			<text>find_secret_documents</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_darklab_documents_location</map_location_type>
 			<object_story_id>bar_darklab_documents</object_story_id>
 			<function_complete>darkvalley_tasks.has_darklab_documents</function_complete>
@@ -203,6 +214,7 @@
 		</objective>
 		<objective>
 			<text>bring_secret_documents</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>bar_barman_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_darklab_document_done</infoportion_complete>
