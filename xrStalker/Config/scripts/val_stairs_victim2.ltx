@@ -16,6 +16,7 @@ def_state_moving1 = assault
 ;no_retreat = true
 combat_ignore_cond = always
 on_info = {+val_stairs_start} walker2
+danger = danger1
 
 [walker2]
 path_walk = val_stairs_victim2_walk
@@ -27,3 +28,8 @@ def_state_moving1 = assault
 ;no_retreat = true
 on_info = {+val_stairs_heli_arrived} nil
 combat_ignore_cond = always
+danger = danger1
+
+[danger1]
+ignore_danger_sound = 1
+
