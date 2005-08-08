@@ -251,7 +251,7 @@ void CCustomMonster::net_Import(NET_Packet& P)
 
 void CCustomMonster::shedule_Update	( u32 DT )
 {
-	VERIFY				(!g_Alive() || Props.bActiveCounter);
+	VERIFY				(!g_Alive() || processing_enabled());
 	// Queue shrink
 	VERIFY				(_valid(Position()));
 	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
