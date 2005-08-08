@@ -345,6 +345,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_stalker_talk_about_ratcatcher">
+    <precondition>dialogs.level_agroprom</precondition>
         <phrase_list>
             <phrase id="140">
                 <text>agr_stalker_talk_about_ratcatcher_140</text>
