@@ -21,8 +21,10 @@ extern void export_classes(lua_State *L);
 
 CScriptEngine::CScriptEngine			()
 {
-	m_stack_level		= 0;
-	m_reload_modules	= false;
+	m_stack_level			= 0;
+	m_reload_modules		= false;
+	m_last_no_file_length	= 0;
+	*m_last_no_file			= 0;
 
 #ifdef USE_DEBUGGER
 	m_scriptDebugger	= NULL;
@@ -43,6 +45,8 @@ CScriptEngine::~CScriptEngine			()
 void CScriptEngine::unload				()
 {
 	lua_settop				(lua(),m_stack_level);
+	m_last_no_file_length	= 0;
+	*m_last_no_file			= 0;
 }
 
 int CScriptEngine::lua_panic			(CLuaVirtualMachine *L)
@@ -213,12 +217,19 @@ void CScriptEngine::load_common_scripts()
 
 void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_exist)
 {
+	u32						string_length = xr_strlen(file_name);
+	if (!warn_if_not_exist && no_file_exists(file_name,string_length))
+		return;
+
 	string256				S,S1;
-	bool					global_script_loaded = (!*file_name || !xr_strcmp(file_name,"_G"));
+	LPCSTR					_G = "_G";
+	bool					global_script_loaded = !string_length || ((string_length == 2) && (*(u16*)file_name == *(u16*)_G));
 	if (global_script_loaded || m_reload_modules || !namespace_loaded(file_name)) {
 		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
-		if (!warn_if_not_exist && !FS.exist(S))
+		if (!warn_if_not_exist && !FS.exist(S)) {
+			add_no_file		(file_name,string_length);
 			return;
+		}
 		Msg					("* loading script %s",S1);
 		m_reload_modules	= false;
 		load_file			(S,true);
@@ -311,3 +322,17 @@ void CScriptEngine::restartDebugger				()
 	Msg				("Script debugger succesfully restarted.");
 }
 #endif
+
+bool CScriptEngine::no_file_exists	(LPCSTR file_name, u32 string_length)
+{
+	if (m_last_no_file_length != string_length)
+		return				(false);
+
+	return					(!memcmp(m_last_no_file,file_name,string_length*sizeof(char)));
+}
+
+void CScriptEngine::add_no_file		(LPCSTR file_name, u32 string_length)
+{
+	m_last_no_file_length	= string_length;
+	Memory.mem_copy			(m_last_no_file,file_name,(string_length+1)*sizeof(char));
+}
