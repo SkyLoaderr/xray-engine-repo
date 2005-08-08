@@ -150,6 +150,8 @@ void				game_sv_ArtefactHunt::OnGiveBonus				(KILL_RES KillResult, game_PlayerSt
 		{
 			if (pVictim->GameID == m_iAfBearerMenaceID)
 				Player_AddExperience(pKiller, READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "assist_kill",0));
+
+			inherited::OnGiveBonus(KR_RIVAL, pKiller, pVictim, KillType, SpecialKillType, pWeaponA);
 		}break;
 	case KR_RIVAL_CRITICAL:
 		{

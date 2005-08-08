@@ -40,7 +40,7 @@ public :
 	virtual							~game_cl_ArtefactHunt		();
 	virtual			void				Init					();
 	virtual			CUIGameCustom*		createGameUI			();
-					void				net_import_state		(NET_Packet& P);
+	virtual			void				net_import_state		(NET_Packet& P);
 	virtual			void				GetMapEntities(xr_vector<SZoneMapEntityData>& dst);
 	virtual			char*				getTeamSection			(int Team);
 	virtual			bool				PlayerCanSprint			(CActor* pActor);
