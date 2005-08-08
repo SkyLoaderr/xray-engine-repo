@@ -435,7 +435,7 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 		for(int i = 0; i < iAmmoElapsed; ++i) 
 			m_magazine.push(m_DefaultCartridge);
 	}
-	
+
 	
 	Light_Create		();
 
@@ -940,102 +940,118 @@ bool CWeapon::SilencerAttachable()
 	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eSilencerStatus);
 }
 
+shared_str wpn_scope				= "wpn_scope";
+shared_str wpn_silencer				= "wpn_silencer";
+shared_str wpn_grenade_launcher		= "wpn_grenade_launcher";
+shared_str wpn_launcher				= "wpn_launcher";
+
+
+
+
 void CWeapon::UpdateHUDAddonsVisibility()
 {//actor only
-	if( H_Parent() != Level().CurrentEntity() ) return;
-	if(m_pHUD->IsHidden()) return;
-	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());
+	if( H_Parent() != Level().CurrentEntity() )				return;
+	if(m_pHUD->IsHidden())									return;
+	CKinematics* pHudVisual									= smart_cast<CKinematics*>(m_pHUD->Visual());
+	if (H_Parent() != Level().CurrentEntity()) pHudVisual	= NULL;
+
+
 	if (!pHudVisual)return;
-	
+	s16  bone_id;
+
 	if(ScopeAttachable())
 	{
-		if(IsScopeAttached())
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
-		else
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
+		bone_id = pHudVisual->LL_BoneID(wpn_scope);
+		if(IsScopeAttached()){
+			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
+			pHudVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
+		}else{
+			if(TRUE==pHudVisual->LL_GetBoneVisible		(bone_id))
+			pHudVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+		}
 	}
 	if(SilencerAttachable())
 	{
-		if(IsSilencerAttached())
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
-		else	
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
+		bone_id = pHudVisual->LL_BoneID(wpn_silencer);
+		if(IsSilencerAttached()){
+			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
+			pHudVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
+		}else{
+			if(TRUE==pHudVisual->LL_GetBoneVisible		(bone_id))
+			pHudVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+		}
 
 	}
-/*	if(GrenadeLauncherAttachable())
+	if(GrenadeLauncherAttachable())
 	{
+		bone_id = pHudVisual->LL_BoneID(wpn_grenade_launcher);
+		if(bone_id==BI_NONE)
+			bone_id = pHudVisual->LL_BoneID(wpn_launcher);
+
 		if(IsGrenadeLauncherAttached())
 		{
-			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
+			pHudVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
+		}else{
+			if(TRUE==pHudVisual->LL_GetBoneVisible		(bone_id))
+			pHudVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
 		}
-		else
-		{
-			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
-		}
-	}*/
+	}
 }
 
 void CWeapon::UpdateAddonsVisibility()
 {
-	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());// R_ASSERT(pHudVisual);
-	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
+//	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());// R_ASSERT(pHudVisual);
+//	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
 	CKinematics* pWeaponVisual = smart_cast<CKinematics*>(Visual()); R_ASSERT(pWeaponVisual);
-	
+
+	s16  bone_id;
+	UpdateHUDAddonsVisibility								();	
+
 	if(ScopeAttachable())
 	{
+		bone_id = pWeaponVisual->LL_BoneID					(wpn_scope);
 		if(IsScopeAttached())
 		{
-			if (pHudVisual)	pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
+			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
+			pWeaponVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
 		}
 		else
 		{
-			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
+			if(TRUE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
+			pWeaponVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
 		}
 	}
 	if(SilencerAttachable())
 	{
+		bone_id = pWeaponVisual->LL_BoneID					(wpn_silencer);
 		if(IsSilencerAttached())
 		{
-			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
+			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
+			pWeaponVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
 		}
 		else
 		{
-			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
+			if(TRUE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
+			pWeaponVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
 		}
 	}
 	if(GrenadeLauncherAttachable())
 	{
+		bone_id = pWeaponVisual->LL_BoneID					(wpn_launcher);
 		if(IsGrenadeLauncherAttached())
 		{
-			if (pHudVisual){
-				u16 b = pHudVisual->LL_BoneID("wpn_grenade_launcher");
-				if(b!=BI_NONE)
-					pHudVisual->LL_SetBoneVisible(b,TRUE,TRUE);
-				else
-					pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
-			}
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
+			pWeaponVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
 		}
 		else
 		{
-			if (pHudVisual){
-				u16 b = pHudVisual->LL_BoneID("wpn_grenade_launcher");
-				if(b!=BI_NONE)
-					pHudVisual->LL_SetBoneVisible(b,FALSE,TRUE);
-				else
-					pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
-			}
-			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+			if(TRUE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
+			pWeaponVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
 		}
 	}
-	pWeaponVisual->CalculateBones_Invalidate();
-	pWeaponVisual->CalculateBones();
+	pWeaponVisual->CalculateBones_Invalidate				();
+	pWeaponVisual->CalculateBones							();
 }
 
 bool CWeapon::Activate() 

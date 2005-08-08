@@ -120,7 +120,7 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	m_ListWnd->Clear	();
 	if(bClearOnly)		return;
 
-	if(!Actor()) return;
+	if(Actor()) return;
 
 	GameTasks& tasks = Actor()->GameTaskManager().GameTasks();
 	GameTasks::iterator it =  tasks.begin();

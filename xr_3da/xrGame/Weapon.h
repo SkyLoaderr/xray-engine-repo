@@ -483,7 +483,6 @@ protected:
 	// therefore we should hold them by ourself :-((
 	float					m_addon_holder_range_modifier;
 	float					m_addon_holder_fov_modifier;
-
 public:
 	virtual	void			modify_holder_params		(float &range, float &fov) const;
 };
