@@ -2531,6 +2531,7 @@
             <phrase id="400">
                 <text>mil_dolg_skull_dialog_400</text>
                 <action>dialogs_military.mil_dolg_payment</action>
+                <action>dialogs_military.set_snipers_spots</action>
                 <next>401</next>
             </phrase>
         </phrase_list>

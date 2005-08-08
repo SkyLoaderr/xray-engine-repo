@@ -622,13 +622,13 @@ function mil_courier_quest_fail (actor, npc)
 end
 
 function mil_scull_news (actor, npc)
-    if actor:has_info ("mil_scull_sniper_info_get") then return end
-    if actor:has_info ("mil_sniper_get_job") and 
-       actor:has_info ("mil_sniper_dead") then
-       news_manager.send_tip (actor, "mil_scull_info", nil, "dolg")
-       actor:give_info_portion ("mil_scull_sniper_info_get")
+--    if actor:has_info ("mil_scull_sniper_info_get") then return end
+--    if actor:has_info ("mil_sniper_get_job") and 
+       --actor:has_info ("mil_sniper_dead") then
+       --news_manager.send_tip (actor, "mil_scull_info", nil, "dolg")
+       --actor:give_info_portion ("mil_scull_sniper_info_get")
        
-    end       
+    --end       
 end
 
 function mil_sniper_dead (actor, npc)
