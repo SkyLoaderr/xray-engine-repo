@@ -63,6 +63,23 @@
 		<mini_map  spot="agr_captains_chamber_spot" pointer="quest_pointer"></mini_map>
 	</agr_captains_chamber_location>
 
-     	<agr_captains_chamber_spot x="0" y="0" width="32" height="32" alignment="c">
+    <agr_captains_chamber_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="72" y="232" width="16" height="16">ui\ui_icons_map</texture>
 	</agr_captains_chamber_spot>
+	
+<!--factory-->
+	<agr_factory_location hint="agr_factory" store="1">
+		<level_map spot="agr_factory_spot" pointer="quest_pointer"></level_map>
+	</agr_factory_location>
+
+     <agr_factory_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="191" y="191" width="64" height="64" scale="0.5" >ui\ui_icons_map</texture>
+	</agr_factory_spot>
+<!--nii-->
+	<agr_nii_location hint="agr_nii" store="1">
+		<level_map spot="agr_nii_spot" pointer="quest_pointer"></level_map>
+	</agr_nii_location>
+
+     <agr_nii_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="191" y="191" width="64" height="64" scale="0.5" >ui\ui_icons_map</texture>
+	</agr_nii_spot>

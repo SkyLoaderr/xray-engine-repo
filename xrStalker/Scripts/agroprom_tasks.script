@@ -90,6 +90,14 @@ function process_info_portion(info_id)
 		level_tasks.add_location(306, "agr_captains_chamber_location")
 		return true	
 
+-- agroprom factory location
+	elseif info_id == "agr_factory_location" then
+		level_tasks.add_location(320, "agr_factory_location")
+		return true	
+-- agroprom nii location
+	elseif info_id == "agr_nii_location" then
+		level_tasks.add_location(321, "agr_nii_location")
+		return true	
 
 --	elseif info_id == "agr_help_krot_start" and not level_tasks.is_map_spot_present (302, "agr_krot_location") then
 --		level_tasks.add_location(302, "agr_krot_location")
