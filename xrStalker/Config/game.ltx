@@ -10,18 +10,18 @@ testers_mp_workshop
 [level_maps_single]
 L01_escape
 L02_garbage
-L02_garbage_ai
-;L03_agroprom
+;L02_garbage_ai
+L03_agroprom
 ;L03_agroprom_ai1
-L03_agroprom_ai2
-L04_darkvalley_ai
-;L04_darkvalley
+;L03_agroprom_ai2
+;L04_darkvalley_ai
+L04_darkvalley
 L05_bar
-L05_bar_ai
+;L05_bar_ai
 L06_rostok
-L05_rostok_ai
-l07_military_proba
-;l07_military
+;L05_rostok_ai
+;l07_military_proba
+l07_military
 ;l10_radar_ai
 
 ;_light_
@@ -79,8 +79,9 @@ weathers		= default
 [L02_garbage]
 texture         = ui\ui_map_garbage
 bound_rect      = -320.700,-322.650, 319.500,318.000
-global_rect		= 256.0,650.0,420.884094,815.0
+global_rect		= 235.0,650.0,332.884094,750.0
 weathers		= default
+music_tracks    = l02_garbage_musics
 
 [L02_garbage_ai]
 texture         = ui\ui_map_garbage
@@ -97,9 +98,9 @@ weathers		= default
 music_tracks    = l03_agroprom_musics
 
 [l03_agroprom]
-texture			= ui\ui_map_agroprom
+texture			= ui\ui_agroprom
 bound_rect		= -280.157, -416.406, 379.802, 278.340
-global_rect		= 142.0, 673.0, 230.343353, 766.0
+global_rect		= 142.0, 673.0, 235.0,766.0
 weathers		= default
 music_tracks    = l03_agroprom_musics
 
@@ -119,14 +120,15 @@ weathers		= default
 [l04_darkvalley]
 texture			= ui\ui_map_darkvalley
 bound_rect		= -291.194,-719.090, 689.281,323.544
-global_rect		= 335.0, 680.0,	429.038269,780.0
+global_rect		= 335.0, 680.0,	430.0,780.0
 weathers		= default
+music_tracks    = l04_darkvalley_musics
 
 
 [L05_bar]
 texture         = ui\ui_map_rostok
 bound_rect      = -512.001,-512.000, 512.000,512.001
-global_rect		= 213.0,538.0,324.0,649.0
+global_rect		= 324.0,538.0,424.0,649.0
 weathers		= default
 music_tracks    = l06_rostok_musics
 
@@ -161,9 +163,9 @@ music_tracks    = l07_military_musics
 [l07_military]
 texture         = ui\ui_military_map
 bound_rect      = -443.667,-131.666, 196.334,508.334
-global_rect		= 244.0,462.0,319.0,536.0
+global_rect		= 210.0,462.0,284.000122,536.0
 weathers		= default
-music_tracks	= l07_military_musics
+music_tracks    = l07_military_musics
 
 [L10_radar_ai]
 texture         = ui\ui_radar
