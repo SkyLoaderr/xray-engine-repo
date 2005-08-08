@@ -24,10 +24,12 @@ public:
 	
 	virtual void					UpdateCL						();
 	virtual void					shedule_Update					(u32 dt);	
+			void					UpdateWorkload					(u32 dt);
+
 	
 	virtual bool					CanTake							() const;
 
-	virtual void					renderable_Render				();
+	//virtual void					renderable_Render				();
 	virtual BOOL					renderable_ShadowGenerate		()		{ return FALSE;	}
 	virtual BOOL					renderable_ShadowReceive		()		{ return TRUE;	}
 	virtual void					create_physic_shell();
@@ -73,6 +75,21 @@ public:
 	float							m_fPowerRestoreSpeed;
 	float							m_fBleedingRestoreSpeed;
 	CHitImmunity 					m_ArtefactHitImmunities;
+
+	// optimization FAST/SLOW mode
+public:						
+	u32						o_render_frame				;
+	BOOL					o_fastmode					;
+	IC void					o_switch_2_fast				()	{
+		if (o_fastmode)		return	;
+		o_fastmode			= TRUE	;
+		//processing_activate		();
+	}
+	IC void					o_switch_2_slow				()	{
+		if (!o_fastmode)	return	;
+		o_fastmode			= FALSE	;
+		//processing_deactivate		();
+	}
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -67,7 +67,7 @@ BOOL CBlackGraviArtefact::net_Spawn(CSE_Abstract* DC)
 
 void CBlackGraviArtefact::UpdateCLChild() 
 {
-	inherited::UpdateCLChild();
+	inherited::UpdateCLChild	();
 
 	if (getVisible() && m_pPhysicsShell) {
 		if (m_bStrike) {

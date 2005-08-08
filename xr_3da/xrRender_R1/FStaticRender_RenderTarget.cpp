@@ -257,7 +257,8 @@ void CRenderTarget::End		()
 	RCache.Vertex.Unlock									(4,g_postprocess.stride());
 
 	// Actual rendering
-	RCache.set_c		("c_brightness",color_get_R(p_brightness)/255.f,color_get_G(p_brightness)/255.f,color_get_B(p_brightness)/255.f,0);
+	static	shared_str	s_brightness	= "c_brightness";
+	RCache.set_c		(s_brightness,color_get_R(p_brightness)/255.f,color_get_G(p_brightness)/255.f,color_get_B(p_brightness)/255.f,0);
 	RCache.set_Geometry	(g_postprocess);
 	RCache.Render		(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }

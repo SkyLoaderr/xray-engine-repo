@@ -9,6 +9,8 @@
 #include "ai_object_location.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 
+#define	FASTMODE_DISTANCE (50.f)	//distance to camera from sphere, when zone switches to fast update sequence
+
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\
 		if(x>z){inst_x;}\
@@ -130,7 +132,9 @@ BOOL CArtefact::net_Spawn(CSE_Abstract* DC)
 	CSkeletonAnimated	*K=smart_cast<CSkeletonAnimated*>(Visual());
 	if(K)K->PlayCycle("idle");
 	
-	
+	o_fastmode					= FALSE	;		// start initially with fast-mode enabled
+	o_render_frame				= 0		;
+
 	return result;	
 }
 
@@ -183,36 +187,61 @@ void CArtefact::OnH_B_Independent()
 	}
 }
 
-void CArtefact::UpdateCL() 
+// called only in "fast-mode"
+void CArtefact::UpdateCL		() 
 {
+	inherited::UpdateCL			();
+	if (o_fastmode)				UpdateWorkload	(Device.dwTimeDelta);	
+}
+
+void CArtefact::UpdateWorkload		(u32 dt) 
+{
+	// particles - velocity
 	Fvector vel = {0, 0, 0};
 	if (H_Parent()) 
 	{
 		CPhysicsShellHolder* pPhysicsShellHolder = smart_cast<CPhysicsShellHolder*>(H_Parent());
 		if(pPhysicsShellHolder) pPhysicsShellHolder->PHGetLinearVell(vel);
 	}
+	CParticlesPlayer::SetParentVel	(vel);
 
-	CParticlesPlayer::SetParentVel(vel);
-	inherited::UpdateCL();
-
-	UpdateLights();
-	if(m_activationObj){
-		CPHUpdateObject::Activate();
-		m_activationObj->UpdateActivation();
-		return;
+	// 
+	UpdateLights					();
+	if(m_activationObj)	{
+		CPHUpdateObject::Activate			();
+		m_activationObj->UpdateActivation	();
+		return	;
 	}
-	UpdateCLChild();
+
+	// custom-logic
+	UpdateCLChild					();
 }
 
-void CArtefact::shedule_Update	(u32 dt) 
+void CArtefact::shedule_Update		(u32 dt) 
 {
-	inherited::shedule_Update(dt);
+	inherited::shedule_Update		(dt);
+
+	//////////////////////////////////////////////////////////////////////////
+	// check "fast-mode" border
+	if (H_Parent())			o_switch_2_slow	();
+	else					{
+		Fvector	center;			Center(center);
+		BOOL	rendering		= (Device.dwFrame==o_render_frame);
+		float	cam_distance	= Device.vCameraPosition.distance_to(center)-Radius();
+		if (rendering || (cam_distance < FASTMODE_DISTANCE))	o_switch_2_fast	();
+		else													o_switch_2_slow	();
+	}
+	if (!o_fastmode)		UpdateWorkload	(dt);
 }
 
-void CArtefact::renderable_Render() 
+/*
+void CArtefact::renderable_Render	() 
 {
-	inherited::renderable_Render();
+	inherited::renderable_Render	();
+	//o_switch_2_fast					();
+	//o_render_frame				= Device.dwFrame+1;
 }
+*/
 
 void CArtefact::create_physic_shell	()
 {
