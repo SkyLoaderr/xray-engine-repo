@@ -317,21 +317,25 @@ path_walk = hellcar_walk
 path_look = hellcar_look
 on_info = {+gar_animation_radio} walker3@hellcar_way
 meet = meet
+danger = danger_condition@hellcar_group
 
 [walker11@hellcar_way]
 path_walk = hellcar_walk
 path_look = hellcar_look
+danger = danger_condition@hellcar_group
 meet = meet
 
 [walker3@hellcar_way]
 path_walk = hellcar_walk
 path_look = hellcar_look
 on_info = {+gar_direction -gar_alarm} remark@hellcar_way
+danger = danger_condition@hellcar_group
 meet = meet
 
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
 on_signal = sound_end |walker11@hellcar_way %+gar_alarm%
+danger = danger_condition@hellcar_group
 anim = wait
 
 [meet]
@@ -369,6 +373,8 @@ use_wpn = true
 [death@hellcar]
 on_info = %+gar_hellcar_death +gar_open_fire%
 
+[danger_condition@hellcar_group]
+ignore_distance = 5
 
 [logic@gar_hellcar_group_walker1]
 active = walker1@gar_hellcar_group_walker1
@@ -377,11 +383,13 @@ active = walker1@gar_hellcar_group_walker1
 path_walk = observer_walk
 path_look = observer_look
 on_info = {+gar_bandits_raid} walker@gar_hellcar_group_return_observer
+danger = danger_condition@hellcar_group
 
 [walker@gar_hellcar_group_return_observer]
 path_walk = return_observer_walk
 path_look = return_observer_look
 on_signal = alarm | remark@gar_hellcar_group_return_observer %+gar_direction%
+danger = danger_condition@hellcar_group
 meet = meet@1
 
 [remark@gar_hellcar_group_return_observer]
@@ -404,6 +412,7 @@ active = walker@gar_hellcar_group_walker2
 path_walk = walk2
 path_look = look2
 meet = meet@neutral
+danger = danger_condition@hellcar_group
 
 
 [logic@gar_hellcar_group_walker3]
@@ -413,6 +422,7 @@ active = walker@gar_hellcar_group_walker3
 path_walk = walk3
 path_look = look3
 meet = meet@neutral
+danger = danger_condition@hellcar_group
 
 
 [logic@gar_hellcar_group_rest1]
