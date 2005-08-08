@@ -616,13 +616,12 @@ void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
 	Fvector2 p =					lm->ConvertLocalToReal(cursor_pos);
 	Fvector pos;
 	pos.set							(p.x, 0.0f, p.y);
-	CActor* pActor					= smart_cast<CActor*>(Level().CurrentEntity());
 	shared_str spot					= "user"; 
 	CMapLocation* ml				= Level().MapManager().AddUserLocation(spot, lm->MapName(), pos);
-	CGameTask* t					= pActor->GameTaskManager().GiveGameTaskToActor("user_task",false);
+	CGameTask* t					= Actor()->GameTaskManager().GiveGameTaskToActor("user_task",false);
 	t->m_Objectives[0].object_id	= ml->ObjectID();
 	t->m_Objectives[0].map_location	= spot;
-	pActor->GameTaskManager().SetTaskState(t, 0, eTaskUserDefined);
+	Actor()->GameTaskManager().SetTaskState(t, 0, eTaskUserDefined);
 
 	m_flags.set						(lmUserSpotAdd, FALSE);
 	m_ToolBar[eAddSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);

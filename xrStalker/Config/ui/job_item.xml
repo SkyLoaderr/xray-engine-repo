@@ -5,28 +5,33 @@
 		<image x="8" y="16" width="32" height="32">
 		</image>
 		
-		<caption x="45" y="16" width="165" height="18">
+		<caption x="45" y="16" width="170" height="18">
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
-		<location_btn x="225" y="16" width="32" height="32">
+
+		<location_btn x="228" y="16" width="32" height="32">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 		
-		<switch_description_btn x="260" y="16" width="32" height="32">
-			<texture>ui_icons_newPDA_showtext</texture>
+		<switch_description_btn x="252" y="16" width="32" height="32">
+			<texture>ui_icons_newPDA_showmap</texture>
 		</switch_description_btn>
 	</task_root_item>
 
 	<task_sub_item x="0" y="0" width="285" height="32">
-		<state_image x="5" y="0" width="16" height="16">
+		<state_image x="8" y="10" width="11" height="11">
 		</state_image>
 
-		<description x="35" y="8" width="195" height="16">
-			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
+		<description x="25" y="8" width="220" height="16">
+			<text x="0" y="0" font="letterica16" r="255" g="255" b="255" a="255"></text>
+			<text_colors>
+				<accomplished	r="150" g="150" b="180" a="255"/>
+				<failed			r="150" g="150" b="180" a="255"/>
+				<active			r="128" g="128" b="128" a="255"/>
+			</text_colors>
 		</description>
 
-		<show_pointer_btn x="260" y="5" width="32" height="32">
-<!--			<texture>ui_checker</texture> -->
+		<show_pointer_btn x="252" y="5" width="32" height="32">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 
@@ -38,14 +43,14 @@
 		</image>
 
 		<description x="50" y="5" width="195" height="16" db_click="1">
-			<text x="0" y="0" font="letterica16" r="225" g="225" b="250"></text>
+			<text x="0" y="0" font="letterica16" r="150" g="150" b="180" a="255"></text>
 		</description>
 
-		<show_pointer_btn x="260" y="5" width="32" height="32">
+		<show_pointer_btn x="252" y="5" width="32" height="32">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 		
-		<location_btn x="225" y="5" width="32" height="32">
+		<location_btn x="228" y="5" width="32" height="32">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 

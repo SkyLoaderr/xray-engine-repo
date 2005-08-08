@@ -40,10 +40,17 @@
 
 #include "game_base_kill_type.h"
 
-int			g_cl_InterpolationType = 0;
+int			g_cl_InterpolationType		= 0;
 u32			g_cl_InterpolationMaxPoints = 0;
-int			g_dwInputUpdateDelta	= 20;
-BOOL		net_cl_inputguaranteed	= FALSE;
+int			g_dwInputUpdateDelta		= 20;
+BOOL		net_cl_inputguaranteed		= FALSE;
+CActor*		g_actor						= NULL;
+
+CActor*			Actor()	
+{
+	VERIFY(g_actor); 
+	return g_actor; 
+};
 
 //--------------------------------------------------------------------
 void	CActor::ConvState(u32 mstate_rl, string128 *buf)
@@ -646,7 +653,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	{
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
-
+	
 	// motions
 	m_bAnimTorsoPlayed			= false;
 	m_current_legs_blend		= 0;
@@ -809,6 +816,10 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	spatial.type |=STYPE_REACTTOSOUND;
 	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
+
+	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) )
+		g_actor = this;
+
 	return					TRUE;
 }
 
@@ -852,6 +863,7 @@ void CActor::net_Destroy	()
 		xr_delete(m_sndShockEffector);
 
 	DestroyFollowerInternal();
+	if(g_actor == this) g_actor= NULL;
 }
 
 void CActor::net_Relcase	(CObject* O)

@@ -329,20 +329,18 @@ ETaskState SGameTaskObjective::UpdateState	()
 
 void SGameTaskObjective::SendInfo		(xr_vector<shared_str>& v)
 {
-	CActor* actor						= smart_cast<CActor*>(Level().CurrentEntity()); VERIFY(actor);
 	xr_vector<shared_str>::iterator it	= v.begin();
 	for(;it!=v.end();++it)
-		actor->TransferInfo					((*it),true);
+		Actor()->TransferInfo					((*it),true);
 
 }
 
 bool SGameTaskObjective::CheckInfo		(xr_vector<shared_str>& v)
 {
 	bool res = false;
-	CActor* actor						= smart_cast<CActor*>(Level().CurrentEntity()); VERIFY(actor);
 	xr_vector<shared_str>::iterator it	= v.begin();
 	for(;it!=v.end();++it){
-		res = actor->HasInfo					(*it);
+		res = Actor()->HasInfo					(*it);
 		if(!res) break;
 	}
 	return res;
@@ -370,6 +368,5 @@ void SGameTaskObjective::CallAllFuncs	(xr_vector<luabind::functor<bool> >& v)
 
 void ChangeStateCallback(shared_str& task_id, int obj_id, ETaskState state){
 
-	CActor* actor			= smart_cast<CActor*>(Level().CurrentEntity()); VERIFY(actor);
-	actor->callback(GameObject::eTaskStateChange)(*task_id, obj_id, state);
+	Actor()->callback(GameObject::eTaskStateChange)(*task_id, obj_id, state);
 }

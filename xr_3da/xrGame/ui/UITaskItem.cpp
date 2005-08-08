@@ -115,6 +115,14 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 
 	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
 	SetHeight						(h);
+	
+	
+	m_curr_descr_mode				= m_EventsWnd->GetDescriptionMode();
+	if(m_curr_descr_mode)
+		m_switchDescriptionBtn->InitTexture	("ui_icons_newPDA_showmap");
+	else
+		m_switchDescriptionBtn->InitTexture	("ui_icons_newPDA_showtext");
+
 }
 
 void CUITaskRootItem::Update		()
@@ -127,6 +135,15 @@ void CUITaskRootItem::Update		()
 		bool bShown						= m_GameTask->ShownLocations();
 		m_showLocationBtn->SetButtonMode(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
 	}
+
+	if( m_curr_descr_mode	!= m_EventsWnd->GetDescriptionMode() ){
+		m_curr_descr_mode				= m_EventsWnd->GetDescriptionMode();
+		if(m_curr_descr_mode)
+			m_switchDescriptionBtn->InitTexture	("ui_icons_newPDA_showmap");
+		else
+			m_switchDescriptionBtn->InitTexture	("ui_icons_newPDA_showtext");
+	}
+
 	m_switchDescriptionBtn->SetButtonMode(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
 }
 
@@ -191,6 +208,11 @@ void CUITaskSubItem::Init			()
 	xml_init.Init3tButton			(uiXml,"task_sub_item:show_pointer_btn",0,m_showPointerBtn);
 	m_defTextColor					= m_descriptionStatic->GetTextColor	();
 	m_defColor						= m_descriptionStatic->GetColor	();
+
+
+	m_active_color					= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:active",0);
+	m_failed_color					= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:failed",0);
+	m_accomplished_color			= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:accomplished",0);
 }
 
 void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)				
@@ -209,13 +231,16 @@ void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)
 	{
 		case eTaskUserDefined:
 		case eTaskStateInProgress:
-			m_stateStatic->InitTexture("ui_icons_mapPDA_mark_e");
+			m_stateStatic->InitTexture				("ui_icons_PDA_subtask_active");
+			m_descriptionStatic->SetTextColor		(m_active_color);
 			break;
 		case eTaskStateFail:
-			m_stateStatic->InitTexture("ui_icons_mapPDA_mark_d");
+			m_stateStatic->InitTexture				("ui_icons_PDA_subtask_failed");
+			m_descriptionStatic->SetTextColor		(m_failed_color);
 			break;
 		case eTaskStateCompleted:
-			m_stateStatic->InitTexture("ui_icons_mapPDA_mark_t");
+			m_stateStatic->InitTexture				("ui_icons_PDA_subtask_accomplished");
+			m_descriptionStatic->SetTextColor		(m_accomplished_color);
 			break;
 		default:
 			NODEFAULT;

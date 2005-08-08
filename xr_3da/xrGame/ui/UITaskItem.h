@@ -37,11 +37,11 @@ class CUITaskRootItem :public CUITaskItem
 protected:
 	CUIStatic*		m_taskImage;
 	CUIStatic*		m_captionStatic;
-//	CUIStatic*		m_descriptionStatic;
 	CUI3tButton*	m_showLocationBtn;
 	CUI3tButton*	m_switchDescriptionBtn;
 	u32				m_defTextColor;
 	u32				m_defColor;
+	bool			m_curr_descr_mode;
 	void			Init					();
 public:	
 					CUITaskRootItem			(CUIEventsWnd* w);
@@ -60,6 +60,9 @@ class CUITaskSubItem :public CUITaskItem
 	typedef			CUITaskItem	inherited;
 	u32				m_defTextColor;
 	u32				m_defColor;
+	u32				m_active_color;
+	u32				m_failed_color;
+	u32				m_accomplished_color;
 protected:
 	CUI3tButton*	m_showPointerBtn;
 	CUIStatic*		m_descriptionStatic;

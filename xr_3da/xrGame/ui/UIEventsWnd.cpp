@@ -120,10 +120,9 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	m_ListWnd->Clear	();
 	if(bClearOnly)		return;
 
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor) return;
+	if(Actor()) return;
 
-	GameTasks& tasks = pActor->GameTaskManager().GameTasks();
+	GameTasks& tasks = Actor()->GameTaskManager().GameTasks();
 	GameTasks::iterator it =  tasks.begin();
 	CGameTask* task = NULL;
 	for(;it!=tasks.end();++it){
@@ -216,8 +215,7 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 	}else{//articles
 		m_UITaskInfoWnd->ClearAll	();
 
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+	if(Actor()->encyclopedia_registry->registry().objects_ptr())
 	{
 		string512	need_group;
 		if(0==idx){
@@ -229,8 +227,8 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 			sprintf(need_group, "%s/%d", *t->m_ID, idx);
 		}
 
-		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
-		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		ARTICLE_VECTOR::const_iterator it = Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
+		for(; it != Actor()->encyclopedia_registry->registry().objects_ptr()->end(); it++)
 		{
 			if (ARTICLE_DATA::eTaskArticle == it->article_type)
 			{

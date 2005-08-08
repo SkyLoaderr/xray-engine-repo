@@ -5,9 +5,9 @@
 #include "UIMapWnd.h"
 
 typedef CActionBase<CUIMapWnd>				WORLD_OPERATOR;
-static const float	map_resize_speed		= 350.f;// y.e./sec
-static const float	map_zoom_time			= 0.5f;	// sec
-
+static const float	map_resize_speed		= 350.f;	// y.e./sec
+static const float	map_zoom_time			= 0.5f;		// sec
+static const float	min_move_time			= 0.25f;	// sec
 //actions
 class CSomeMapAction : public WORLD_OPERATOR {
 private:
@@ -168,7 +168,7 @@ void CMapActionZoomControl::initialize	()
 	m_endMovingTime				= Device.fTimeGlobal;
 	if (bZoom&&bMove)			m_endMovingTime += _max(map_zoom_time,dist/map_resize_speed);
 	else if (bZoom)				m_endMovingTime += map_zoom_time;
-	else if (bMove)				m_endMovingTime += dist/map_resize_speed;
+	else if (bMove)				m_endMovingTime += _max(dist/map_resize_speed, min_move_time);
 //	m_object->GlobalMap()->SetLocked	(true);
 }
 

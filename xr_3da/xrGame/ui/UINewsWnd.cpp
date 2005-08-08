@@ -63,14 +63,13 @@ void CUINewsWnd::Init()
 
 void CUINewsWnd::AddNews()
 {
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	UIScrollWnd->Clear();
 
 	static u32 lastNewsCount = 0;
 
-	if (pActor)
+	if (Actor())
 	{
-		GAME_NEWS_VECTOR& news_vector = pActor->game_news_registry->registry().objects();
+		GAME_NEWS_VECTOR& news_vector = Actor()->game_news_registry->registry().objects();
 		if (lastNewsCount < news_vector.size())
 		{
 			lastNewsCount = news_vector.size();

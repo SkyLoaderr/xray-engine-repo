@@ -56,9 +56,9 @@ void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
 }
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay)
 {
-	CActor* pActor = smart_cast<CActor*>(&object());
+/*	CActor* pActor = smart_cast<CActor*>(&object());
 	if(!pActor) return false;
-
+*/
 	GAME_NEWS_DATA news_data;
 	news_data.news_text = CStringTable().IndexById(news);
 
@@ -85,10 +85,10 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 //CTimer T;
 //T.Start();
 	if(delay==0){
-		pActor->AddGameNews(news_data);
+		Actor()->AddGameNews(news_data);
 	}
 	else{
-		pActor->AddGameNews_deffered(news_data,delay);
+		Actor()->AddGameNews_deffered(news_data,delay);
 	}
 //Msg("---CScriptGameObject::GiveGameNews [%d]ms",T.GetElapsed_ms());
 	return true;
@@ -540,13 +540,14 @@ LPCSTR CScriptGameObject::snd_character_profile_sect () const
 #include "GameTaskManager.h"
 ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
 {
-	CActor* pActor = smart_cast<CActor*>(&object());
+/*	CActor* pActor = smart_cast<CActor*>(&object());
 	if (!pActor) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetGameTaskState available only for actor");
 		return eTaskStateDummy;
 	}
+*/
 	shared_str shared_name = task_id;
-	CGameTask* t= pActor->GameTaskManager().HasGameTask(shared_name);
+	CGameTask* t= Actor()->GameTaskManager().HasGameTask(shared_name);
 	if(NULL==t) return eTaskStateDummy;
 
 	if ((std::size_t)objective_num >= t->m_Objectives.size()) {
@@ -559,26 +560,15 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 
 void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num)
 {
-	CActor* pActor = smart_cast<CActor*>(&object());
-	if (!pActor) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetGameTaskState available only for actor");
-		return;
-	}
-
 	shared_str shared_name = task_id;
-	pActor->GameTaskManager().SetTaskState(shared_name, objective_num, state);
+	Actor()->GameTaskManager().SetTaskState(shared_name, objective_num, state);
 }
 
 STasks CScriptGameObject::GetAllGameTasks()
 {
 	STasks	tasks;
-	CActor* pActor = smart_cast<CActor*>(&object());
-	if (!pActor) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetGameTaskState available only for actor");
-		return tasks;
-	}
 
-	GameTasks& _tasks = pActor->GameTaskManager().GameTasks();
+	GameTasks& _tasks = Actor()->GameTaskManager().GameTasks();
 	for(GameTasks::iterator it = _tasks.begin(); it!=_tasks.end();++it){
 		tasks.m_all_tasks.resize(tasks.Size()+1);
 		STask& t = tasks.m_all_tasks.back();
@@ -594,28 +584,6 @@ STasks CScriptGameObject::GetAllGameTasks()
 	
 	}
 	return tasks;
-/*
-	const GAME_TASK_VECTOR* tasks_ =  pActor->game_task_registry->registry().objects_ptr();
-	if(!tasks_) 
-		return tasks;
-
-	for(GAME_TASK_VECTOR::const_iterator it = tasks_->begin(); tasks_->end() != it; ++it)
-	{
-		CGameTask gt;
-		gt.Init(*it);
-		tasks.m_all_tasks.resize(tasks.Size()+1);
-		STask& t = tasks.m_all_tasks.back();
-		t.m_name	= gt.Id();
-		t.m_state	= gt.m_ObjectiveStates[0].m_state;
-		u32 sub_num = gt.ObjectivesNum();
-		for(u32 i=0; i<sub_num;++i){
-			t.m_objectives.resize(t.m_objectives.size()+1);
-			STaskObjective& to	= t.m_objectives.back();
-			to.m_name			= gt.ObjectiveDesc(i);
-			to.m_state			= gt.ObjectiveState(i);
-		}
-	}
-	return tasks;*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -832,14 +800,12 @@ bool CScriptGameObject::attachable_item_enabled	() const
 
 void  CScriptGameObject::RestoreWeapon		()
 {
-	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
-	pActor->inventory().setSlotsBlocked(false);
+	Actor()->inventory().setSlotsBlocked(false);
 }
 
 void  CScriptGameObject::HideWeapon			()
 {
-	CActor* pActor = smart_cast<CActor*>(&object());	VERIFY(pActor);
-	pActor->inventory().setSlotsBlocked(true);
+	Actor()->inventory().setSlotsBlocked(true);
 }
 
 

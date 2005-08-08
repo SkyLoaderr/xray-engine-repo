@@ -133,19 +133,18 @@ void CUIEncyclopediaWnd::Draw()
 
 void CUIEncyclopediaWnd::ReloadArticles()
 {
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr() && pActor->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
+	if(Actor()->encyclopedia_registry->registry().objects_ptr() && Actor()->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
 	{
-		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
+		ARTICLE_VECTOR::const_iterator it = Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
 		std::advance(it, prevArticlesCount);
-		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		for(; it != Actor()->encyclopedia_registry->registry().objects_ptr()->end(); it++)
 		{
 			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 			{
 				AddArticle(it->article_id, it->readed);
 			}
 		}
-		prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
+		prevArticlesCount = Actor()->encyclopedia_registry->registry().objects_ptr()->size();
 	}
 }
 
@@ -221,12 +220,10 @@ shared_str CUIEncyclopediaWnd::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		// Пометим как прочитанную
 		if (!pTVItem->IsArticleReaded())
 		{
-			CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
-
-			if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+			if(Actor()->encyclopedia_registry->registry().objects_ptr())
 			{
-				for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry->registry().objects().begin();
-					it != pActor->encyclopedia_registry->registry().objects().end(); it++)
+				for(ARTICLE_VECTOR::iterator it = Actor()->encyclopedia_registry->registry().objects().begin();
+					it != Actor()->encyclopedia_registry->registry().objects().end(); it++)
 				{
 					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type &&
 						m_ArticlesDB[pTVItem->GetValue()]->Id() == it->article_id)

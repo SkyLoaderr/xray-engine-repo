@@ -175,11 +175,10 @@ void CUIDiaryWnd::LoadJournalTab			(ARTICLE_DATA::EArticleType _type)
 	m_UIRightWnd->AttachChild	(m_DescrView);
 	m_DescrView->Show			(true);
 
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
+	if(Actor()->encyclopedia_registry->registry().objects_ptr())
 	{
-		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
-		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		ARTICLE_VECTOR::const_iterator it = Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
+		for(; it != Actor()->encyclopedia_registry->registry().objects_ptr()->end(); it++)
 		{
 //.			if (ARTICLE_DATA::eJournalArticle == it->article_type)
 

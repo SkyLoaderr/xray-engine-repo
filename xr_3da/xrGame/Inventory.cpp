@@ -1040,9 +1040,14 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
 	TIItemContainer	&l_list = m_all;
+
+	u32 crc = crc32(caItemName, xr_strlen(caItemName));
+
 	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-		if (!xr_strcmp((*l_it)->object().cNameSect().c_str(),caItemName))
+		if ((*l_it)->object().cNameSect()._get()->dwCRC == crc){
+			VERIFY(	0 == xr_strcmp( (*l_it)->object().cNameSect().c_str(), caItemName)  );
 			return	(*l_it);
+		}
 //	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*smart_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
 }

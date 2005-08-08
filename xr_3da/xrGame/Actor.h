@@ -709,6 +709,8 @@ IC	CActorCondition	&CActor::conditions	() const
 	return			(*m_entity_condition);
 }
 
+extern CActor*		g_actor;
+CActor*				Actor		();
 //extern float	g_fNumUpdates;
 extern const float	s_fFallTime;
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
