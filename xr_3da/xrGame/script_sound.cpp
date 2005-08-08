@@ -55,3 +55,9 @@ void CScriptSound::PlayAtPos		(CScriptGameObject *object, const Fvector &positio
 //	Msg					("%6d : CScriptSound::Play (%s), delay %f, flags %d",m_sound._handle()->file_name(),delay,flags);
 	m_sound.play_at_pos(&object->object(), position,flags,delay);
 }
+
+void CScriptSound::PlayNoFeedback	(CScriptGameObject *object,	u32 flags/*!< Looping */, float delay/*!< Delay */, Fvector pos, float vol)
+{
+	VERIFY						(m_sound._handle());
+	m_sound.play_no_feedback	(&object->object(), flags,delay,&pos,&vol);
+}
