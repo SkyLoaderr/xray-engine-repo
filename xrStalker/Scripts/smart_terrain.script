@@ -822,3 +822,14 @@ function update( self )
 --		end
 	end
 end
+
+---------------------------------------------------------------------------------------------------------
+
+-- Перевести npc из одного smart terrain в другой.
+-- Работает только если smart_terrain
+function transfer_npc( npc, dest_id )
+	local src_name = xr_gulag.isUnderFraction( npc )
+	if src_name then
+		
+	end
+end

@@ -142,6 +142,12 @@ function loadStates(gname, type)
 		end
 	end
 
+	if type == "test_mob" then
+		return function(gulag)
+			return 0
+		end
+	end
+
 	if type == "rest" or type == "search" or type == "walkers" or type == "campers" then
 		return function(gulag)
 			return 0
