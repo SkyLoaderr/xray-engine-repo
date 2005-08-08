@@ -96,5 +96,5 @@ function has_darklab_key(task, objective)
 	return db.actor:object("borov_flash") ~= nil
 end
 function has_darklab_documents(task, objective)
-	return db.actor:object("bar_darklab_documents") ~= nil
+	return db.actor:object("dar_document4") ~= nil
 end
