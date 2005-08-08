@@ -152,14 +152,14 @@ function evaluator_danger:evaluate()
 	if active_scheme == "camper" then
 		if best_danger:type() == danger_object.grenade then
 			self.danger_time = time_global()
-			printf("DANGER [%s]->[%s] [FALSE] camper", self.object:name(), best_danger_name)
+			printf("DANGER [%s]->[%s] [FALSE] camper, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
 			return false
 		else
 			return true	
 		end
 	else
 		self.danger_time = time_global()
-		printf("DANGER [%s]->[%s] [FALSE] other", self.object:name(), best_danger_name)
+		printf("DANGER [%s]->[%s] [FALSE] other, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
 		return false
 	end
 	printf("DANGER [%s]->[%s] [FALSE] default", self.object:name(), best_danger_name)
