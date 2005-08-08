@@ -1,12 +1,11 @@
 
 	<game_task id="mil_kill_sniper">
-		<title>mil_dolg_assault_freedom</title>
+		<title>mil_quest_kill_sniper</title>
 		<objective>
-			<text>mil_dolg_assault_freedom</text>
+			<text>mil_quest_kill_sniper</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_fail>mil_dolg_task_fail</infoportion_fail>
-			<infoportion_complete>mil_lukash_dead</infoportion_complete>
-			<infoportion_set_complete>mil_dolg_mission_complete</infoportion_set_complete>
+			<infoportion_complete>mil_dolg_skull_talk</infoportion_complete>
 		</objective>
 		<objective>
 			<text>mil_quest_kill_sniper</text>
@@ -26,11 +25,23 @@
 			<infoportion_complete>mil_dolg_skull_talk</infoportion_complete>
             <map_location_hidden>1</map_location_hidden>
 		</objective>
+	</game_task>
+		
+	<game_task id="mil_kill_lukash">
+		<title>mil_dolg_assault_freedom</title>
+		<objective>
+			<text>mil_dolg_assault_freedom</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_fail>mil_dolg_lukash_kill_fail</infoportion_fail>
+			<infoportion_complete>mil_lukash_dead</infoportion_complete>
+			<infoportion_set_complete>mil_dolg_mission_complete</infoportion_set_complete>
+		</objective>
 		<objective>
 			<text>mil_dolg_assault_support</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_headquarter_attack</infoportion_complete>
 			<infoportion_fail>mil_dolg_dead</infoportion_fail>
+			<infoportion_set_fail>mil_dolg_lukash_kill_fail</infoportion_set_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_headquarter</text>
@@ -39,6 +50,7 @@
             <object_story_id>Mil_Lukash</object_story_id>
             <map_location_hidden>1</map_location_hidden>
             <infoportion_complete>mil_lukash_dead</infoportion_complete>
+			<infoportion_set_fail>mil_dolg_lukash_kill_fail</infoportion_set_fail>
 		</objective>
 	</game_task>
 	

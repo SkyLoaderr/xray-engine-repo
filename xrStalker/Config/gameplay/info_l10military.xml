@@ -52,7 +52,11 @@
 	<info_portion id="mil_dolg_phase1"></info_portion>
 	<info_portion id="mil_dolg_phase2"></info_portion>
 	<info_portion id="mil_dolg_phase3"></info_portion>
-	<info_portion id="mil_dolg_skull_talk"></info_portion>
+	<info_portion id="mil_dolg_skull_talk">
+		<task>mil_kill_lukash</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
+	<info_portion id="mil_dolg_lukash_kill_fail"></info_portion>
 	
 	
 	<!-- База Свободы под атакой-->
