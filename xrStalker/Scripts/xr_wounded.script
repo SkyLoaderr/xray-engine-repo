@@ -211,6 +211,7 @@ function Cwound_manager:update()
 --	printf("st[%s]so[%s]", utils.to_str(self.state), utils.to_str(self.sound))
 end
 function Cwound_manager:process_fight(hp)
+	local key
 	key = self:get_key_from_distance(self.a.hp_fight, hp)
 	if key ~= nil then
 		if self.a.hp_fight[key].state then
@@ -220,6 +221,7 @@ function Cwound_manager:process_fight(hp)
 	return "true"
 end
 function Cwound_manager:process_cover(hp)
+	local key
 	key = self:get_key_from_distance(self.a.hp_cover, hp)
 	if key ~= nil then
 		if self.a.hp_cover[key].state then
@@ -229,6 +231,7 @@ function Cwound_manager:process_cover(hp)
 	return "true"
 end
 function Cwound_manager:process_victim(hp)
+	local key
 	key = self:get_key_from_distance(self.a.hp_victim, hp)
 	if key ~= nil then
 		if self.a.hp_victim[key].state then
@@ -238,6 +241,7 @@ function Cwound_manager:process_victim(hp)
 	return "nil"
 end
 function Cwound_manager:process_hp_wound(hp)
+	local key
 	key = self:get_key_from_distance(self.a.hp_state, hp)
 	if key ~= nil then
 		local r1,r2
@@ -261,6 +265,7 @@ function Cwound_manager:process_hp_wound(hp)
 	return "nil","nil"
 end
 function Cwound_manager:process_psy_wound(hp)
+	local key
 	key = self:get_key_from_distance(self.a.psy_state, hp)
 	if key ~= nil then
 		local r1,r2

@@ -169,6 +169,7 @@ function Cmeet_manager:update()
 end
 function Cmeet_manager:process_zone()
 	if self.a.zone == nil then return "nil","nil" end
+	local key
 	key = self:get_key_from_zone(self.a.zone)
 	if key ~= nil then
 		local r1,r2
@@ -184,6 +185,7 @@ function Cmeet_manager:process_zone()
 	return "nil","nil"
 end
 function Cmeet_manager:process_meet()
+	local key
 	if isWeapon(db.actor:active_item())	then
 		key = self:get_key_from_distance(self.a.meet_state_wpn)
 		if key ~= nil then
@@ -214,6 +216,7 @@ function Cmeet_manager:process_meet()
 	return "nil","nil"
 end
 function Cmeet_manager:process_victim()
+	local key
 	if isWeapon(db.actor:active_item())	then
 		key = self:get_key_from_distance(self.a.victim_wpn)
 		if key ~= nil then
