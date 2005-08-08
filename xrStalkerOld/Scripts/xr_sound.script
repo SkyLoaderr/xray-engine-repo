@@ -28,7 +28,8 @@ function get_sound(path, tt, npc)
 			tt.rnd_snd = path.rnd_snd
 		end
 	else
-		get_sound(path.types[path.exec(path.types, npc, target)], tt)
+//		get_sound(path.types[path.exec(path.types, npc, target)], tt)
+		get_sound(path.types[path.exec(path.types, npc)], tt)
 	end
 end
 -- Формирование ключа персонажа

@@ -449,7 +449,8 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
-function weather_class(avail_types, npc, target)
+//function weather_class(avail_types, npc, target)
+function weather_class(avail_types, npc)
 	local type = "good"
 	if level.rain_factor() < 0.07 then
 		type = "good"
