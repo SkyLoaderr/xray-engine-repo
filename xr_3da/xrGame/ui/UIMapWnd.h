@@ -55,7 +55,6 @@ private:
 	CMapActionPlanner*			m_ActionPlanner;
 	CUIFrameLineWnd*			UIMainMapHeader;
 	CUI3tButton*				m_ToolBar[eMaxBtn];
-	CUIStatic*					m_MapText;
 	CUIMapHint*					m_hint;
 
 	void						OnScrollV				();
@@ -82,7 +81,6 @@ public:
 	virtual void				Show					(bool status);
 	virtual void				Draw					();
 	virtual void				Update					();
-			void				ShowHint				();
 			float				GetZoom					()	{return m_currentZoom;}
 			void				SetZoom					(float value);
 
@@ -106,7 +104,6 @@ public:
 	const GameMaps&				GameMaps				()		{return m_GameMaps;};	
 	CUICustomMap*				GetMapByIdx				(u16 idx);
 	u16							GetIdxByName			(const shared_str& map_name);
-	void						SetStatusInfo			(LPCSTR status_text);
 	void						UpdateScroll			();
 	shared_str					cName					() const	{return "ui_map_wnd";};
 };

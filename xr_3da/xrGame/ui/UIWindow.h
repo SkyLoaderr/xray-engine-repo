@@ -188,7 +188,6 @@ protected:
 
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
-	virtual LPCSTR			GetHint			()						{return NULL;};
 	// Последняя позиция мышки
 	Fvector2 cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION

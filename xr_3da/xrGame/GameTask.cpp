@@ -121,7 +121,9 @@ void CGameTask::Load(const TASK_ID& id)
 		b1								= (0==objective.map_location.size());
 		b2								= (NULL==object_story_id);
 		VERIFY3							(b1==b2,"incorrect task objective definition for: ",*objective.description);
+		
 		objective.object_id				= u16(-1);
+		objective.map_hint				= g_gameTaskXml.ReadAttrib(l_root, "map_location_type", 0, "hint", NULL);
 		if(object_story_id){
 			ALife::_STORY_ID _sid		= story_id(object_story_id);
 			objective.object_id			= storyId2GameId(_sid);

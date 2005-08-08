@@ -70,6 +70,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 		obj = &t->m_Objectives[i];
 		if(obj->object_id!=u16(-1) && obj->map_location.size() && obj->def_location_enabled){
 			CMapLocation* ml =	Level().MapManager().AddMapLocation(obj->map_location, obj->object_id);
+			if(obj->map_hint.size())	ml->SetHint(obj->map_hint);
 			ml->DisablePointer			();
 		}
 	}

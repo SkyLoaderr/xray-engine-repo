@@ -200,23 +200,6 @@ void CUICustomMap::SetActivePoint(const Fvector &vNewPoint)
 	SetHeadingPivot				(pos_on_map);
 }
 
-LPCSTR	CUICustomMap::GetHint()
-{
-	Fvector2 cursor_pos = GetUICursor()->GetPos();
-	LPCSTR hint = NULL;
-	WINDOW_LIST& wl = GetChildWndList();
-	WINDOW_LIST::reverse_iterator it = wl.rbegin();
-	for(;it!=wl.rend();++it)
-		if( (*it)->GetAbsoluteRect().in(cursor_pos) ){
-			hint=(*it)->GetHint();
-			if(hint)
-				break;
-		}
-	if(NULL==hint)
-		hint = *m_name;
-
-	return hint;
-}
 
 void CUICustomMap::Draw()
 {

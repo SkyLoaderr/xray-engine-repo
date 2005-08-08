@@ -35,7 +35,6 @@ public:
 
 	shared_str		MapName							() {return m_name;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		() {return NULL;}
-	virtual LPCSTR	GetHint							(); 
 
 	virtual void	Draw							();
 	virtual void	Update							();

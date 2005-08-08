@@ -16,7 +16,8 @@
 #include "relation_registry.h"
 #include "InventoryOwner.h"
 #include "object_broker.h"
-//////////////////////////////////////////////////
+#include "string_table.h"
+
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {
 	m_flags.zero			();
@@ -343,7 +344,7 @@ u16	CMapLocation::AddRef()
 void CMapLocation::save(IWriter &stream)
 {
 	stream.w_u16	(RefCount());
-	stream.w_stringZ(GetHint());
+	stream.w_stringZ(m_hint);
 	stream.w_u32	(m_flags.flags);
 }
 
@@ -356,6 +357,17 @@ void CMapLocation::load(IReader &stream)
 	SetRefCount		(c);
 	m_flags.flags	= stream.r_u32	();
 }
+
+void CMapLocation::SetHint	(const shared_str& hint)		
+{
+	m_hint = hint;
+};
+
+LPCSTR CMapLocation::GetHint	()					
+{
+	CStringTable	stbl;
+	return *stbl	(m_hint);
+};
 
 CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 {

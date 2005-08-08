@@ -52,8 +52,8 @@ public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();
 	virtual void			destroy							();
-	virtual		LPCSTR		GetHint							()					{return *m_hint;};
-	void					SetHint							(LPCSTR hint)		{m_hint = hint;};
+			LPCSTR			GetHint							();
+	void					SetHint							(const shared_str& hint);
 	bool					PointerEnabled					()					{return SpotEnabled() && !!m_flags.test(ePointerEnabled);};
 	void					EnablePointer					()					{m_flags.set(ePointerEnabled,TRUE);};
 	void					DisablePointer					()					{m_flags.set(ePointerEnabled,FALSE);};

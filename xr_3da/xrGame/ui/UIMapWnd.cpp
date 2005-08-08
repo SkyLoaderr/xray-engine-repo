@@ -52,7 +52,6 @@ CUIMapWnd::~CUIMapWnd()
 {
 	delete_data			(m_ActionPlanner);
 	delete_data			(m_GameMaps);
-	delete_data			(m_MapText);
 	delete_data			(m_hint);
 }
 
@@ -207,10 +206,6 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_GlobalMap->SetMinZoom					(m_GlobalMap->GetCurrentZoom());
 	m_currentZoom							= m_GlobalMap->GetCurrentZoom();
 
-	m_MapText								= xr_new<CUIStatic>();
-	strconcat(pth,start_from,":title");
-	xml_init.InitStatic						(uiXml, pth, 0, m_MapText);
-
 	// initialize local maps
 	xr_string sect_name;
 	if(GameID()==GAME_SINGLE)
@@ -360,7 +355,6 @@ void CUIMapWnd::Draw()
 {
 	inherited::Draw();
 	if(m_hint->GetOwner()) m_hint->Draw_();
-	m_MapText->Draw();
 }
 
 bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
@@ -463,16 +457,10 @@ void CUIMapWnd::OnScrollH()
 	}
 }
 
-void CUIMapWnd::SetStatusInfo			(LPCSTR status_text)
-{
-//	UIMainMapHeader->UITitleText.SetText(status_text);
-	m_MapText->SetText					(status_text);
-}
 
 void CUIMapWnd::Update()
 {
 	inherited::Update			();
-	ShowHint					();
 	m_ActionPlanner->update		();
 }
 
@@ -482,13 +470,6 @@ void CUIMapWnd::SetZoom	( float value)
 	clamp		(m_currentZoom, GlobalMap()->GetMinZoom(), GlobalMap()->GetMaxZoom());
 }
 
-void CUIMapWnd::ShowHint()
-{
-	LPCSTR hint = NULL;
-	if(m_tgtMap)
-		hint = *(m_tgtMap->MapName());
-	SetStatusInfo(hint);
-}
 
 
 void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)

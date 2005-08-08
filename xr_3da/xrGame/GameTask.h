@@ -25,6 +25,7 @@ public:
 	SGameTaskObjective		(CGameTask* parent, int idx);
 	shared_str				description;
 	ARTICLE_ID				article_id;
+	shared_str				map_hint;
 	shared_str				map_location;
 	u16						object_id;
 	shared_str				article_key;
