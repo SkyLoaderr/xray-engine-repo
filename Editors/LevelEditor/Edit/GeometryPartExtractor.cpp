@@ -193,9 +193,9 @@ bool SBPart::Export	(IWriter& F)
                                   
     for (SBFaceVecIt pf_it=m_Faces.begin(); pf_it!=m_Faces.end(); pf_it++){
     	SBFace* face		= *pf_it;
-        int mtl_idx			= FindSplit(face->surf->_ShaderName(),face->surf->_Texture());
+        int mtl_idx			= FindSplit(face->surf->_ShaderName(),face->surf->_Texture(),0);
         if (mtl_idx<0){
-            m_Splits.push_back(SSplit(face->surf,m_BBox));
+            m_Splits.push_back(SSplit(face->surf,m_BBox,0));
             mtl_idx	= mtl_cnt++;
         }
         SSplit& split=m_Splits[mtl_idx];

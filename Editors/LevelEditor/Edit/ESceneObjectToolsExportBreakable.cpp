@@ -17,6 +17,8 @@
 #include "GeometryPartExtractor.h"
 #include "ResourceManager.h"
 
+static bool s_draw_dbg = false;
+
 //----------------------------------------------------
 IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtractor* extractor, u32 game_mtl_mask, BOOL ignore_shader)
 {
@@ -133,6 +135,15 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams* F)
                     m_Data->angle().set			(P->m_RefRotate);
                     m_Visual->set_visual		(sn.c_str(),false);
 
+					if (s_draw_dbg){
+                        Fmatrix MX;
+                        MX.setXYZi				(P->m_RefRotate);
+                        MX.translate_over		(P->m_RefOffset);
+                        Fvector DR				= {0,0,1};
+                        MX.transform_dir		(DR);
+                        Tools->m_DebugDraw.AppendLine(P->m_RefOffset,Fvector().mad(P->m_RefOffset,MX.k,1.f),0xFF0000FF,false,false);
+                    }
+                    
                     NET_Packet					Packet;
                     m_Data->Spawn_Write			(Packet,TRUE);
 
@@ -258,9 +269,11 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams* F)
                         F->spawn.stream.w			(Packet.B.data,Packet.B.count);
                         F->spawn.stream.close_chunk	();
 
-                        Tools->m_DebugDraw.AppendOBB(P->m_OBB);
-                        M.transform_dir				(local_normal);
-                        Tools->m_DebugDraw.AppendLine(P->m_RefOffset,Fvector().mad(P->m_RefOffset,local_normal,1.f));
+						if (s_draw_dbg){
+                            Tools->m_DebugDraw.AppendOBB(P->m_OBB);
+                            M.transform_dir				(local_normal);
+                            Tools->m_DebugDraw.AppendLine(P->m_RefOffset,Fvector().mad(P->m_RefOffset,local_normal,1.f));
+                        }
                     }
                     destroy_entity				(m_Data);
                 }
