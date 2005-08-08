@@ -491,7 +491,8 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 		if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
 			MapWnd()->AddUserSpot(this);
 		else
-			MapWnd()->SetTargetMap( this, true );
+			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L) )
+				MapWnd()->SetTargetMap( this, true );
 
 		return true;
 	};

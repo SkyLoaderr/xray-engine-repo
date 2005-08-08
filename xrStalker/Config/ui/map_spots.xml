@@ -41,7 +41,7 @@
 		<mini_map spot="red_mini_spot"		pointer="user_pointer"></mini_map>
 	</red_location>
 	<red_spot  x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="655" y="853" width="32" height="32">ui\ui_common</texture>
+		<texture x="665" y="853" width="32" height="32">ui\ui_common</texture>
 	</red_spot>
 	<red_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
 		<texture x="526" y="1000" width="11" height="11">ui\ui_common</texture>
