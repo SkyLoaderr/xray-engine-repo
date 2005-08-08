@@ -43,8 +43,8 @@ private:
 #ifdef PRECOMPUTED_INSIDE
 private:
 	IC		void	actual				(bool value) const;
-	IC		void	prepare				() const;
-	IC		bool	prepared_inside		(const Fvector &position, float radius) const;
+			void	prepare				() const;
+			bool	prepared_inside		(const Fvector &position, float radius) const;
 #endif
 
 public:
@@ -62,7 +62,7 @@ public:
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif
-	virtual	CSpaceRestrictor*	cast_restrictor	()	{return this;}
+	virtual	CSpaceRestrictor*			cast_restrictor	()	{return this;}
 };
 
 #include "space_restrictor_inline.h"
