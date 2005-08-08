@@ -304,22 +304,22 @@ function military_dolg_dead (actor, npc)
     -- если все умерли и была задача мочить снайпера, но сообщать не кому, то
     -- ставим задачу, как не выполненую
     if db.storage[id].mil_dolg_killed == 8 then
-       if db.actor:has_info ("mil_sniper_get_job") and db.actor:dont_has_info ("mil_sniper_job_complete") then 
-          level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
-          actor:disable_info_portion ("mil_sniper_get_job")
-       end
+--       if db.actor:has_info ("mil_sniper_get_job") and db.actor:dont_has_info ("mil_sniper_job_complete") then 
+  --        level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
+    --      actor:disable_info_portion ("mil_sniper_get_job")
+      -- end
        --printf ("!!! DOLG IS DEAD !!!")
        actor:give_info_portion ("mil_dolg_dead")
-       if actor:has_info ("mil_leader_quest1_start") then
-          level_tasks.set_task_state (task.completed, "mil_lukash_job", 2)
-          actor:give_info_portion ("mil_leader_quest1_complete")
-          if actor:dont_has_info ("mil_freedom_attack") then
-             level_tasks.set_task_state (task.fail, "mil_lukash_job", 1)
-             level_tasks.remove_location (702, "mil_max_location")
-          end   
-       else
-          actor:give_info_portion ("mil_max_dolg_killed")  
-       end        
+--       if actor:has_info ("mil_leader_quest1_start") then
+--          level_tasks.set_task_state (task.completed, "mil_lukash_job", 2)
+--          actor:give_info_portion ("mil_leader_quest1_complete")
+--          if actor:dont_has_info ("mil_freedom_attack") then
+--             level_tasks.set_task_state (task.fail, "mil_lukash_job", 1)
+--             level_tasks.remove_location (702, "mil_max_location")
+--          end   
+--       else
+--          actor:give_info_portion ("mil_max_dolg_killed")  
+--       end        
     end   
     
 end
@@ -628,20 +628,6 @@ function mil_scull_news (actor, npc)
        news_manager.send_tip (actor, "mil_scull_info", nil, "dolg")
        actor:give_info_portion ("mil_scull_sniper_info_get")
        
-       local sniper = level_object_by_sid (730)
-       if sniper and sniper:alive () == true then        
-          level_tasks.add_location (730, "mil_sniper_location")
-       end   
-       
-       sniper = level_object_by_sid (731)
-       if sniper and sniper:alive () == true then        
-          level_tasks.add_location (731, "mil_sniper_location")
-       end   
-       
-       sniper = level_object_by_sid (732)
-       if sniper and sniper:alive () == true then        
-          level_tasks.add_location (732, "mil_sniper_location")
-       end   
     end       
 end
 
