@@ -227,7 +227,10 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 	if (global_script_loaded || m_reload_modules || !namespace_loaded(file_name)) {
 		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
 		if (!warn_if_not_exist && !FS.exist(S)) {
-			//Msg			("* trying script %s",S1);
+#ifdef DEBUG
+			print_stack		();
+			Msg				("* trying access variable %s, which doesn't exist, or load script %s, , which doesn't exist too",file_name,S1);
+#endif
 			add_no_file		(file_name,string_length);
 			return;
 		}
