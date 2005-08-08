@@ -93,10 +93,10 @@ public:
 	virtual bool				OnKeyboard				(int dik, EUIMessages keyboard_action);
 	virtual void				SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	void						SetTargetMap			(CUICustomMap* m);
-	void						SetTargetMap			(CUICustomMap* m, const Fvector2& pos);
-	void						SetTargetMap			(const shared_str& name, const Fvector2& pos);
-	void						SetTargetMap			(const shared_str& name);
+	void						SetTargetMap			(CUICustomMap* m, bool bZoomIn = false);
+	void						SetTargetMap			(CUICustomMap* m, const Fvector2& pos, bool bZoomIn = false);
+	void						SetTargetMap			(const shared_str& name, const Fvector2& pos, bool bZoomIn = false);
+	void						SetTargetMap			(const shared_str& name, bool bZoomIn = false);
 	void						AddUserSpot				(CUILevelMap*);
 	
 	Frect						ActiveMapRect			()		{return m_UILevelFrame->GetAbsoluteRect();};

@@ -285,7 +285,7 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 			sp->SetClipRect( clip_rect );
 			map->AttachChild(sp);
 		}
-		if( GetSpotPointer(sp) ){
+		if( GameID() == GAME_SINGLE && GetSpotPointer(sp) ){
 			CMapSpot* s = GetSpotBorder(sp);
 			if(s){
 				s->SetWndPos(sp->GetWndPos());

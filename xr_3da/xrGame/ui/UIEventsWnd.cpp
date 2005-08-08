@@ -212,7 +212,7 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 	if(GetDescriptionMode()){//map
 		CMapLocation* ml = o.HasMapLocation();
 		if(ml&&ml->SpotEnabled())
-			m_UIMapWnd->SetTargetMap(ml->LevelName(), ml->Position());
+			m_UIMapWnd->SetTargetMap(ml->LevelName(), ml->Position(), true);
 	}else{//articles
 		m_UITaskInfoWnd->ClearAll	();
 

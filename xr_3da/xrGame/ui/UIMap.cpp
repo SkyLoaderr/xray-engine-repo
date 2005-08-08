@@ -485,17 +485,16 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 	if (inherited::OnMouse(x,y,mouse_action))	return true;
 	if (MapWnd()->GlobalMap()->Locked())		return true;
 	if (MapWnd()->m_flags.is_any(CUIMapWnd::lmZoomIn+CUIMapWnd::lmZoomOut))	return false;
-	switch (mouse_action){			
 
-		case WINDOW_LBUTTON_DOWN:
-			if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) ){
-				MapWnd()->AddUserSpot(this);
-			}else
-				if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L )){
-				MapWnd()->SetZoom(MapWnd()->GlobalMap()->GetMaxZoom());
-				MapWnd()->SetTargetMap( this );
-			}return true;
-	}
+	if (mouse_action == WINDOW_LBUTTON_DOWN){			
+
+		if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
+			MapWnd()->AddUserSpot(this);
+		else
+			MapWnd()->SetTargetMap( this, true );
+
+		return true;
+	};
 	return false;
 }
 

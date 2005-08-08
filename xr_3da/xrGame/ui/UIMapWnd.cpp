@@ -307,34 +307,34 @@ void CUIMapWnd::RemoveMapToRender		(CUICustomMap* m)
 		m_UILevelFrame->DetachChild			(smart_cast<CUIWindow*>(m));
 }
 
-void CUIMapWnd::SetTargetMap			(const shared_str& name, const Fvector2& pos)
+void CUIMapWnd::SetTargetMap			(const shared_str& name, const Fvector2& pos, bool bZoomIn)
 {
 	u16	idx								= GetIdxByName			(name);
 	if (idx!=u16(-1)){
 		CUICustomMap* lm				= GetMapByIdx			(idx);
-		SetTargetMap					(lm, pos);
+		SetTargetMap					(lm, pos, bZoomIn);
 	}
 }
 
-void CUIMapWnd::SetTargetMap			(const shared_str& name)
+void CUIMapWnd::SetTargetMap			(const shared_str& name, bool bZoomIn)
 {
 	u16	idx								= GetIdxByName			(name);
 	if (idx!=u16(-1)){
 		CUICustomMap* lm				= GetMapByIdx			(idx);
-		SetTargetMap					(lm);
+		SetTargetMap					(lm, bZoomIn);
 	}
 }
 
-void CUIMapWnd::SetTargetMap			(CUICustomMap* m)
+void CUIMapWnd::SetTargetMap			(CUICustomMap* m, bool bZoomIn)
 {
 	m_tgtMap							= m;
 	Fvector2							pos;
 	Frect r								= m->BoundRect();
 	r.getcenter							(pos);
-	SetTargetMap						(m,pos);
+	SetTargetMap						(m, pos, bZoomIn);
 }
 
-void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
+void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos, bool bZoomIn)
 {
 	m_tgtMap							= m;
 
@@ -346,8 +346,10 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos)
 		m_tgtCenter.sub					(gm->GetAbsolutePos());
 		m_tgtCenter.div					(gm->GetCurrentZoom());
  	}else{
-		//translate real level position to identity GlobalMapPosition
-//		SetZoom							(GlobalMap()->GetMaxZoom());
+
+		if(bZoomIn && fsimilar(GlobalMap()->GetCurrentZoom(), GlobalMap()->GetMinZoom(),EPS_L ))
+			SetZoom(GlobalMap()->GetMaxZoom());
+
 		m_tgtCenter						= m->ConvertRealToLocalNoTransform(pos);
 		m_tgtCenter.add					(m->GetWndPos()).div(GlobalMap()->GetCurrentZoom());
 	}
@@ -599,10 +601,8 @@ void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 	Fvector v					= Level().CurrentEntity()->Position();
 	Fvector2 v2;
 	v2.set						(v.x,v.z);
-	if(fsimilar(GlobalMap()->GetCurrentZoom(), GlobalMap()->GetMinZoom(),EPS_L ))
-		SetZoom(GlobalMap()->GetMaxZoom());
 
-	SetTargetMap				(Level().name(), v2);
+	SetTargetMap				(Level().name(), v2, true);
 }
 
 void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
