@@ -5,35 +5,42 @@
 	
 	<article id="dar_password_info1" name="dar_password_info1" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>Password: 1243 </text>
+        <text>pass_to_1st_door</text>
+        <!-- <text>Password: 1243 </text> -->
     </article>
 
     <article id="dar_password_info2" name="dar_password_info2" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>Password: 9524</text>
+        <!-- <text>Password: 9524</text> -->
+        <text>pass_to_2nd_door</text>
     </article>
 
     <article id="dar_document1" name="dar_document1" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>Very important documents </text>
+        <!-- <text>Very important documents </text> -->
+        <text>documents_1</text>
     </article>
 
     <article id="dar_document2" name="dar_document2" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>Some useless documents </text>
+        <!-- <text>Some useless documents </text> -->
+        <text>documents_2</text>
     </article>
 
     <article id="dar_document3" name="dar_document3" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>It seems to be very important documents... But no, it's a bullshit </text>
+        <!-- <text>It seems to be very important documents... But no, it's a bullshit </text> -->
+        <text>documents_3</text>
     </article>
 
     <article id="dar_document4" name="dar_document4" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>VERY VERY IMPORTANT DOCS</text>
+        <!-- <text>VERY VERY IMPORTANT DOCS</text> -->
+        <text>documents_4</text>
     </article>
 
     <article id="dar_document5" name="dar_document5" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>Another fake of important documents </text>
+        <!-- <text>Another fake of important documents </text> -->
+        <text>documents_5</text>
     </article>
