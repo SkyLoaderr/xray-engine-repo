@@ -1,3 +1,4 @@
+
 	<tutorial_artefact_location hint="tutorial_artefact" store="1">
 		<level_map spot="tutorial_artefact_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="tutorial_artefact_spot" pointer="quest_pointer"></mini_map>
@@ -83,3 +84,4 @@
 	<quest_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
 		<texture x="8" y="7" width="15" height="17" r="238" g="155" b="23">ui\ui_map_arrow_02</texture>
 	</quest_pointer>
+	
