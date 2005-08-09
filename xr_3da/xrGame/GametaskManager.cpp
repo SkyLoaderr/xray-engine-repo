@@ -172,8 +172,8 @@ void CGameTaskManager::UpdateActiveTask				()
 					CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
 					ml->DisablePointer			();
 				}
-			bHasSpotPointer = bHasSpotPointer || t->HighlightedSpotOnMap(i);
 			}
+			bHasSpotPointer = bHasSpotPointer || t->HighlightedSpotOnMap(i);
 		}
 	}
 	// highlight new spot pointer
@@ -183,7 +183,7 @@ void CGameTaskManager::UpdateActiveTask				()
 		for( ;(it!=it_e)&&(!bDone); ++it ){
 			CGameTask* t		= (*it).game_task;
 			if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
-			for(u32 i=0; i<t->m_Objectives.size() ;++i){
+			for(u32 i=0; (i<t->m_Objectives.size())&&(!bDone) ;++i){
 				if(t->Objective(i).HasMapLocation()){
 					t->HighlightSpotOnMap(i,true);
 					bDone = true;

@@ -79,7 +79,8 @@ public:
 
 	virtual void			save							(IWriter &stream);
 	virtual void			load							(IReader &stream);
-
+	virtual bool			CanBeSelected					()						{return false;}
+	virtual bool			CanBeUserRemoved				()						{return false;}
 };
 
 class CRelationMapLocation :public CMapLocation
@@ -109,4 +110,7 @@ public:
 			void			InitExternal					(const shared_str& level_name, const Fvector& pos);
 	virtual void			save							(IWriter &stream);
 	virtual void			load							(IReader &stream);
+
+	virtual bool			CanBeSelected					()						{return true;}
+	virtual bool			CanBeUserRemoved				()						{return true;}
 };

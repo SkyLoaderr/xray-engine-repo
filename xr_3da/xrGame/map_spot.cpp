@@ -46,10 +46,12 @@ void CMapSpot::Draw()
 	inherited::Draw();
 }
 
-bool CMapSpot::OnDbClick		()
+void CMapSpot::OnMouseDown		(bool left_button)
 {
-	return true;
+	if(left_button)
+		GetMessageTarget()->SendMessage(this, MAP_SELECT_SPOT);
 }
+
 
 void CMapSpot::OnFocusLost		()
 {

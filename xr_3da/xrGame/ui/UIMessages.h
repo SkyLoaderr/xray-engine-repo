@@ -140,6 +140,7 @@ enum EUIMessages
 	EDIT_TEXT_CHANGED,
 	MAP_SHOW_HINT,
 	MAP_HIDE_HINT,
+	MAP_SELECT_SPOT,
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -172,6 +172,11 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	}
 }
 
+void CMapManager::RemoveMapLocation			(CMapLocation* ml)
+{
+	//.
+}
+
 
 u16 CMapManager::HasMapLocation(const shared_str& spot_type, u16 id)
 {
@@ -210,6 +215,7 @@ void CMapManager::DisableAllPointers			()
 	for(; it!=Locations().end();++it)
 		(*it).location->DisablePointer	();
 }
+
 
 Locations&	CMapManager::Locations	() 
 {

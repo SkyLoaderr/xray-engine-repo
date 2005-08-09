@@ -19,6 +19,7 @@ class CUIStatic;
 class CUI3tButton;
 class CUILevelMap;
 class CUIMapHint;
+class CMapLocation;
 
 DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
@@ -56,6 +57,7 @@ private:
 	CUIFrameLineWnd*			UIMainMapHeader;
 	CUI3tButton*				m_ToolBar[eMaxBtn];
 	CUIMapHint*					m_hint;
+	CMapLocation*				m_selected_location;
 
 	void						OnScrollV				();
 	void						OnScrollH				();
@@ -96,7 +98,8 @@ public:
 	void						SetTargetMap			(const shared_str& name, const Fvector2& pos, bool bZoomIn = false);
 	void						SetTargetMap			(const shared_str& name, bool bZoomIn = false);
 	void						AddUserSpot				(CUILevelMap*);
-	
+	void						Select					(CMapLocation* ml);
+
 	Frect						ActiveMapRect			()		{return m_UILevelFrame->GetAbsoluteRect();};
 	void						AddMapToRender			(CUICustomMap*);
 	void						RemoveMapToRender		(CUICustomMap*);

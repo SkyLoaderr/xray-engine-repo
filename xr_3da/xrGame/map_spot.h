@@ -17,7 +17,7 @@ public:
 	virtual LPCSTR			GetHint							();
 	virtual		void		Update							();
 	virtual		void		Draw							();
-	virtual		bool		OnDbClick						();
+	virtual		void		OnMouseDown						(bool left_button = true);
 	virtual		void		OnFocusLost						();
 	virtual		void		OnFocusReceive					();
 };
@@ -32,8 +32,7 @@ public:
 	virtual					~CMapSpotPointer				();
 	virtual		void		Draw							();
 	virtual		void		Update							();
-	virtual LPCSTR			GetHint							();
-	virtual		bool		OnDbClick						()								{return true;};
+	virtual		LPCSTR		GetHint							();
 };
 
 class CMiniMapSpot :public CMapSpot
@@ -47,5 +46,4 @@ public:
 	virtual		void		Load							(CUIXml* xml, LPCSTR path);
 	virtual		void		Draw							();
 	virtual		void		Update							();
-	virtual		bool		OnDbClick						()								{return true;};
 };

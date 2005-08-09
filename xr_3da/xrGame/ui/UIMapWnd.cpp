@@ -46,6 +46,7 @@ CUIMapWnd::CUIMapWnd()
 	m_flags.zero			();
 	m_currentZoom			= 1.0f;
 	m_hint					= NULL;
+	m_selected_location		= NULL;
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -573,6 +574,10 @@ void CUIMapWnd::ValidateToolBar			()
 
 void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
 {
+	if(m_selected_location&&m_selected_location->CanBeUserRemoved()){
+		Level().MapManager().RemoveMapLocation(m_selected_location);
+		m_selected_location = NULL;
+	}
 }
 
 void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
@@ -643,5 +648,14 @@ void CUIMapWnd::HideHint					(CUIWindow* parent)
 {
 	if(m_hint->GetOwner() == parent)
 		m_hint->SetOwner	(NULL);
-//		parent->DetachChild	(m_hint);
+}
+
+void CUIMapWnd::Select				(CMapLocation* ml)
+{
+	m_selected_location		= NULL;
+
+	if(!ml)		return;
+	if(ml->CanBeSelected())
+		m_selected_location = ml;
+
 }
