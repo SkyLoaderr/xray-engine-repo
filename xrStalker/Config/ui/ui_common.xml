@@ -269,7 +269,7 @@
     <texture id="ui_icons_newPDA_markSrtef_h" x="525" y="904" width="32" height="32" />
     <texture id="ui_icons_newPDA_gomark_e" x="525" y="936" width="32" height="32" />
     <texture id="ui_icons_newPDA_gomark_d" x="525" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_gomark_t" x="525" y="936" width="32" height="32" />
+    <texture id="ui_icons_newPDA_gomark_t" x="525" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_gomark_h" x="525" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_showtext_e" x="557" y="872" width="32" height="32" />
     <texture id="ui_icons_newPDA_showtext_d" x="557" y="872" width="32" height="32" />
