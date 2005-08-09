@@ -19,7 +19,7 @@
 		<objective>
 			<text>mil_dolg_return_to_skull</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
             <object_story_id>Mil_Dolg_Zoneguard</object_story_id>
 			<infoportion_fail>mil_dolg_dead</infoportion_fail>
 			<infoportion_complete>mil_dolg_skull_talk</infoportion_complete>
@@ -60,7 +60,7 @@
 		<objective>
 			<text>mil_dolg_assault_headquarter</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
             <object_story_id>Mil_Lukash</object_story_id>
             <map_location_hidden>1</map_location_hidden>
             <infoportion_complete>mil_lukash_dead</infoportion_complete>
@@ -86,7 +86,7 @@
 		<objective>
 			<text>mil_put_flash_to_max</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
 			<object_story_id>Mil_Master_Max</object_story_id>
 			<infoportion_complete>mil_max_job_complete</infoportion_complete>
 			<infoportion_fail>mil_max_dead</infoportion_fail>
@@ -124,7 +124,7 @@
 		<objective>
 			<text>mil_return_lukash</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
 			<object_story_id>Mil_Lukash</object_story_id>
 			<infoportion_complete>mil_lukash_dolg_task_complete</infoportion_complete>
             <map_location_hidden>1</map_location_hidden>
@@ -183,7 +183,7 @@
 		<objective>
 			<text>mil_courier_phase5</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
             <object_story_id>Mil_Lukash</object_story_id>
 			<infoportion_complete>mil_leader_quest2_complete</infoportion_complete>
             <map_location_hidden>1</map_location_hidden>
@@ -225,7 +225,7 @@
 			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_freedom_commander_talk</infoportion_complete>
 			<infoportion_fail>mil_fblockpost_commander_dead</infoportion_fail>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
             <object_story_id>Mil_Kap</object_story_id>
 		</objective>
 	</game_task>
@@ -315,7 +315,7 @@
 		<objective>
 			<text>mil_hunters_phase1</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
             <object_story_id>Mil_Hunter3</object_story_id>
             <infoportion_complete>mil_hunt_ready</infoportion_complete>
             <infoportion_fail>mil_ugrumy_dead</infoportion_fail>
@@ -330,7 +330,7 @@
 		<objective>
 			<text>mil_hunters_phase3</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>blue_location</map_location_type>
             <object_story_id>Mil_Miser</object_story_id>
             <infoportion_complete>mil_miser_task_complete</infoportion_complete>
             <infoportion_fail>mil_miser_task_failed</infoportion_fail>
