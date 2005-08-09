@@ -260,3 +260,11 @@ end
 function switch_mutants_online (task_id, subtask)
     db.actor:disable_info_portion ("mil_mutants_offline")
 end
+
+function fail_rg6_task (task_id, subtask)
+    if db.actor:has_info ("mil_dolg_after_explode") or
+       db.actor:has_info ("mil_cook_dead") then 
+       return true
+    end
+    return false   
+end

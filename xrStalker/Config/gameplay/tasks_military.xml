@@ -242,7 +242,7 @@
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type>green_location</map_location_type>
             <object_story_id>Mil_Freedom_base</object_story_id>
-            <infoportion_fail>mil_dolg_after_explode</infoportion_fail>
+            <function_fail>mil_tasks.fail_rg6_task</function_fail>
 		</objective>
 		<objective>
 			<text>mil_talk_cook</text>
@@ -250,7 +250,7 @@
             <map_location_type>green_location</map_location_type>
             <object_story_id>Mil_Cook</object_story_id>
             <map_location_hidden>1</map_location_hidden>
-            <infoportion_fail>mil_dolg_after_explode</infoportion_fail>
+            <function_fail>mil_tasks.fail_rg6_task</function_fail>
 		</objective>
 		<objective>
 			<text>mil_rg6</text>
