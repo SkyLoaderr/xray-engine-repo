@@ -41,7 +41,7 @@ function zone_binder:net_spawn( server_object )
 
 	self.object:set_callback( callback.zone_enter, self.on_enter, self )
 
-	self.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
+	self.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object )
 
 	return true
 end

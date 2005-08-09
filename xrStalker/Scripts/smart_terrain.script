@@ -370,7 +370,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "cl_smart_terrain"
 
-function cl_smart_terrain:__init( se_obj, ini )
+function cl_smart_terrain:__init( se_obj )
 	-- взять свойства из серверного объекта
 	self.id                 = se_obj.id
 	self.npcs               = se_obj.npcs
