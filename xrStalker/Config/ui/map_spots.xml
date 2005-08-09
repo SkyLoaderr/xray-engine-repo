@@ -12,7 +12,7 @@
 #include "ui\map_spots_relations.xml"
 #include "ui\map_spots_lchangers.xml"
 
-	<blue_location>
+<!--<blue_location>
 		<level_map spot="blue_spot"			pointer="user_pointer"></level_map>
 		<mini_map spot="blue_mini_spot"		pointer="user_pointer"></mini_map>
 	</blue_location>
@@ -22,25 +22,25 @@
 	<blue_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
 		<texture x="493" y="1000" width="11" height="11">ui\ui_common</texture>
 	</blue_mini_spot>
-	
-	<crlc_big  x="0" y="0" width="115" height="115" alignment="c">
+-->	
+	<crlc_big>
 		<level_map spot="crcl_big_spot"</level_map>
 	</crlc_big>
-	<crcl_big_spot>
+	<crcl_big_spot  x="0" y="0" width="115" height="115" alignment="c">
 		<texture x="730" y="456" width="115" height="115">ui\ui_common</texture>
 	</crcl_big_spot>
 	
-	<crlc_mdl  x="0" y="0" width="62" height="62" alignment="c">
+	<crlc_mdl>
 		<level_map spot="crlc_mdl_spot"</level_map>
 	</crlc_mdl>
-	<crlc_mdl_spot>
+	<crlc_mdl_spot  x="0" y="0" width="62" height="62" alignment="c">
 		<texture x="858" y="392" width="62" height="62">ui\ui_common</texture>
 	</crlc_mdl_spot>
 	
-	<crlc_small  x="0" y="0" width="31" height="31" alignment="c">
+	<crlc_small>
 		<level_map spot="crlc_small_spot"</level_map>
 	</crlc_small>
-	<crlc_small_spot>
+	<crlc_small_spot  x="0" y="0" width="31" height="31" alignment="c">
 		<texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
 	</crlc_small_spot>
 
