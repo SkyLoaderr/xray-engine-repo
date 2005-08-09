@@ -355,4 +355,8 @@
     <texture id="ui_icons_newPDA_CrclMiddle_e" x="920" y="392" width="62" height="62" />
     <texture id="ui_icons_newPDA_CrclMiddle_d" x="920" y="392" width="62" height="62" />
     <texture id="ui_icons_newPDA_CrclMiddle_t" x="920" y="392" width="62" height="62" />
+    <texture id="ui_icons_newPDA_ZoomMin_h" x="665" y="885" width="32" height="32" />
+    <texture id="ui_icons_newPDA_ZoomMin_e" x="665" y="917" width="32" height="32" />
+    <texture id="ui_icons_newPDA_ZoomMin_t" x="665" y="949" width="32" height="32" />
+    <texture id="ui_icons_newPDA_ZoomMin_d" x="665" y="917" width="32" height="32" />
 </ui_texture>
