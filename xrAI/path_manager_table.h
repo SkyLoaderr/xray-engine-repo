@@ -52,9 +52,11 @@ protected:
 
 protected:
 	int					_i,_j;
+	_index_type			m_best_node_index;
 
 public:
 	virtual				~CPathManager		();
+	IC		void		begin				(const _index_type &vertex_id, const_iterator &begin, const_iterator &end);
 	IC		void		setup				(const _Graph *graph, _DataStorage *_data_storage, xr_vector<_index_type> *_path, const _index_type	&_start_node_index, const _index_type &_goal_node_index, const _Parameters &params);
 	IC		_dist_type	evaluate			(const _index_type &node_index1, const _index_type &node_index2, const typename _Graph::const_iterator &i) const;
 	IC		_dist_type	estimate			(const _index_type &node_index) const;

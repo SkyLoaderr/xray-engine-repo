@@ -28,6 +28,13 @@ CTablePathManager::~CPathManager			()
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CTablePathManager::begin					(const _index_type &vertex_id, const_iterator &begin, const_iterator &end)
+{
+	m_best_node_index		= vertex_id;
+	inherited::begin		(m_best_node_index,begin,end);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CTablePathManager::setup			(
 		const _Graph			*_graph,
 		_DataStorage			*_data_storage,
