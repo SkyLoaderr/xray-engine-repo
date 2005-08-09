@@ -271,7 +271,9 @@ function fail_rg6_task (task_id, subtask)
 end
 
 function is_actor_enemy_freedom ()
-    local member = xr_gulag.fraction["mil_freedom"]:get_member ()
+    local gulag = xr_gulag.fraction["mil_freedom"]
+    if gulag == nil then return false end
+    local member = gulag:get_member ()
     if member == nil or member:alive () == false then return false end
     return member:relation (db.actor) == game_object.enemy
 end
