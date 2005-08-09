@@ -32,6 +32,7 @@ extern void	xrConvertMaps		();
 extern void	test_goap			();
 extern void	smart_cover			(LPCSTR name);
 extern void	verify_level_graph	(LPCSTR name, bool verbose);
+extern void connectivity_test	(LPCSTR);
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
@@ -133,7 +134,8 @@ void Startup(LPSTR     lpCmdLine)
 					if (strstr(cmd,"-t")) {
 //						path_test			(prjName);
 //						test_smooth_path	(prjName);
-						test_hierarchy		(prjName);
+//						test_hierarchy		(prjName);
+						connectivity_test	(prjName);
 //						test_goap			();
 //						smart_cover			(prjName);
 					}

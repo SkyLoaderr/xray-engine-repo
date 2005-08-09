@@ -299,7 +299,8 @@ bool CControlJump::can_jump(CObject *target)
 
 Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 {
-	float velocity = m_object->movement_control()->GetVelocityActual();
+//	float velocity = 
+		m_object->movement_control()->GetVelocityActual();
 	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
 //	float prediction_dist = jump_time * velocity;
 

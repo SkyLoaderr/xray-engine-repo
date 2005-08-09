@@ -26,6 +26,8 @@ protected:
 	_cell_type			invalid_value;
 	_cell_type			valid_value;
 	CHeader				m_header;
+	u32					m_current_vertex_id;
+
 public:
 	typedef	_cell_type const_iterator;
 
@@ -71,11 +73,18 @@ public:
 
 	IC		bool		is_accessible	(const u32 node_index) const
 	{
+		VERIFY					(node_index < m_header.vertex_count());
 		return					(table[node_index] != invalid_value);
 	}
 
 	IC const CHeader	&header() const
 	{
 		return					(m_header);
+	}
+
+	IC	void			enable			(const u32 &node_index, bool value)
+	{
+		VERIFY					(node_index < m_header.vertex_count());
+		table[node_index]		= value ? valid_value : invalid_value;
 	}
 };
