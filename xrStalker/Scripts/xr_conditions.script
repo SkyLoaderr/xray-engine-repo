@@ -293,6 +293,10 @@ function actor_has_weapon (actor, npc)
     return true
 end
 
+function heavy_wounded(actor, npc)
+	return xr_wounded.is_heavy_wounded_by_id( npc:id() )
+end
+
 function is_day (actor, npc)
     return level.get_time_hours() >= 6 and level.get_time_hours() < 21
 end    
