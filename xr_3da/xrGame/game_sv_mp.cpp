@@ -203,7 +203,7 @@ void game_sv_mp::Create (shared_str &options)
 	//------------------------------------------------------------------
 	LoadRanks();
 	//------------------------------------------------------------------
-	Set_RankUp_Allowed(true);
+	Set_RankUp_Allowed(false);
 };
 
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)

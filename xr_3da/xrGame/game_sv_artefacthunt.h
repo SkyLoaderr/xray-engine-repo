@@ -75,6 +75,7 @@ public:
 	virtual		void				OnGiveBonus				(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
 	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
+	virtual		void				Victim_Exp				(game_PlayerState* pVictim) {};
 	virtual		void				UpdateTeamScore			(game_PlayerState* ps_killer) {};
 	virtual		void				OnPlayerReady			(ClientID id_who);
 

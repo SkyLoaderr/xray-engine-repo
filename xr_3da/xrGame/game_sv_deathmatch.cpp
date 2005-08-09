@@ -151,18 +151,7 @@ void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
 
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)
 {
-	if(ps_killed){
-		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-		ps_killed->deaths				+=	1;
-		ps_killed->m_iKillsInRow		= 0;
-		ps_killed->DeathTime			= Device.dwTimeGlobal;		
-		if (!ps_killer)
-			ps_killed->kills -=1;
-
-		SetPlayersDefItems		(ps_killed);
-		//---------------------------------------
-		Game().m_WeaponUsageStatistic.OnPlayerKilled(ps_killed);
-	};
+	Processing_Victim(ps_killed, ps_killer);
 
 	signal_Syncronize();
 
@@ -172,6 +161,32 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_
 	bool CanGiveBonus = OnKillResult(KillRes, ps_killer, ps_killed);
 	if (CanGiveBonus) OnGiveBonus(KillRes, ps_killer, ps_killed, KillType, SpecialKillType, pWeaponA);
 }
+
+void				game_sv_Deathmatch::Processing_Victim		(game_PlayerState* pVictim, game_PlayerState* pKiller)
+{
+	if (!pVictim) return;
+	
+	pVictim->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+	pVictim->deaths				+=	1;
+	pVictim->m_iKillsInRow		= 0;
+	pVictim->DeathTime			= Device.dwTimeGlobal;		
+	if (!pKiller)
+		pVictim->kills -=1;
+
+	SetPlayersDefItems		(pVictim);
+
+	Victim_Exp				(pVictim);
+	//---------------------------------------
+	Game().m_WeaponUsageStatistic.OnPlayerKilled(pVictim);
+	//---------------------------------------
+};
+
+void				game_sv_Deathmatch::Victim_Exp				(game_PlayerState* pVictim)
+{
+	Set_RankUp_Allowed(true);
+	Player_AddExperience(pVictim, 0.0f);
+	Set_RankUp_Allowed(false);
+};
 
 KILL_RES			game_sv_Deathmatch::GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim)
 {
