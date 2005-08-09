@@ -1059,6 +1059,8 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 	VERIFY			(m_pOwner);
 //	VERIFY			(inventory_item->object().H_Parent() == NULL);
 
+	if (inventory_item->object().getDestroy()) return false;
+
 	if(!inventory_item->CanTake()) return false;
 
 	for(TIItemContainer::const_iterator it = m_all.begin(); it != m_all.end(); it++)
