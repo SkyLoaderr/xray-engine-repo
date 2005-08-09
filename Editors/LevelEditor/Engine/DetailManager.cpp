@@ -154,8 +154,8 @@ void CDetailManager::Load		()
 	swing_desc[0].rot2	= 1.f;
 	swing_desc[0].speed	= 2.f;
 	// fast
-	swing_desc[1].amp1	= 1.f;
-	swing_desc[1].amp2	= .5f;
+	swing_desc[1].amp1	= 0.75f;
+	swing_desc[1].amp2	= .33f;
 	swing_desc[1].rot1	= .01f;
 	swing_desc[1].rot2	= .9f;
 	swing_desc[1].speed	= 1.f;
