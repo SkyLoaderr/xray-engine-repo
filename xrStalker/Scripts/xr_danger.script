@@ -159,7 +159,7 @@ function evaluator_danger:evaluate()
 		end
 	else
 		self.danger_time = time_global()
-		printf("DANGER [%s]->[%s] [FALSE] other, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
+		printf("DANGER [%s]->[%s] [FALSE] other, type [%s], dist [%s]", self.object:name(), best_danger_name, tostring(bd_type), tostring(danger_distance_sqr))
 		return false
 	end
 	printf("DANGER [%s]->[%s] [FALSE] default", self.object:name(), best_danger_name)
