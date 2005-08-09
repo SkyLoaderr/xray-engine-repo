@@ -39,8 +39,8 @@ protected:
 	CUIStatic*		m_captionStatic;
 	CUI3tButton*	m_showLocationBtn;
 	CUI3tButton*	m_switchDescriptionBtn;
-	u32				m_defTextColor;
-	u32				m_defColor;
+//	u32				m_defTextColor;
+//	u32				m_defColor;
 	bool			m_curr_descr_mode;
 	void			Init					();
 public:	
@@ -58,8 +58,8 @@ public:
 class CUITaskSubItem :public CUITaskItem
 {
 	typedef			CUITaskItem	inherited;
-	u32				m_defTextColor;
-	u32				m_defColor;
+//	u32				m_defTextColor;
+//	u32				m_defColor;
 	u32				m_active_color;
 	u32				m_failed_color;
 	u32				m_accomplished_color;
@@ -85,7 +85,7 @@ public:
 class CUIUserTaskItem :public CUITaskItem
 {
 	typedef			CUITaskItem	inherited;
-	u32				m_defTextColor;
+//	u32				m_defTextColor;
 protected:
 	CUI3tButton*	m_showPointerBtn;
 	CUI3tButton*	m_showLocationBtn;

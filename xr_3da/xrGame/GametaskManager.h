@@ -5,6 +5,7 @@
 
 class CGameTaskWrapper;
 class CGameTask;
+class CMapLocation;
 
 class CGameTaskManager
 {
@@ -26,4 +27,5 @@ public:
 	void					SetTaskState					(CGameTask* t, int objective_num, ETaskState state);
 
 	void					UpdateTasks						();
+	void					RemoveUserTask					(CMapLocation* ml);
 };

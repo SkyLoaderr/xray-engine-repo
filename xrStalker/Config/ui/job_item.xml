@@ -9,11 +9,11 @@
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
 
-		<location_btn x="228" y="16" width="32" height="32">
+		<location_btn x="228" y="16" width="32" height="32" check_mode="1">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 		
-		<switch_description_btn x="252" y="16" width="32" height="32">
+		<switch_description_btn x="252" y="16" width="32" height="32" check_mode="1">
 			<texture>ui_icons_newPDA_showmap</texture>
 		</switch_description_btn>
 	</task_root_item>
@@ -31,11 +31,11 @@
 			</text_colors>
 		</description>
 
-		<show_pointer_btn x="220" y="4" width="22" height="22">
+		<show_pointer_btn x="220" y="4" width="22" height="22" check_mode="1">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 
-		<show_descr_btn x="252" y="4" width="22" height="22">
+		<show_descr_btn x="252" y="4" width="22" height="22" check_mode="1">
 			<texture>ui_icons_newPDA_gomark</texture>
 		</show_descr_btn>
 
@@ -50,11 +50,11 @@
 			<text x="0" y="0" font="letterica16" r="150" g="150" b="180" a="255"></text>
 		</description>
 
-		<show_pointer_btn x="252" y="5" width="32" height="32">
+		<show_pointer_btn x="252" y="5" width="32" height="32" check_mode="1">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 		
-		<location_btn x="228" y="5" width="32" height="32">
+		<location_btn x="228" y="5" width="32" height="32" check_mode="1">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 

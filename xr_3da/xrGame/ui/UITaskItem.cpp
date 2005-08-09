@@ -74,8 +74,8 @@ void CUITaskRootItem::Init			()
 	m_taskImage			= xr_new<CUIStatic>();		m_taskImage->SetAutoDelete(true);			AttachChild(m_taskImage);
 	m_captionStatic		= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
 //	m_descriptionStatic	= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
-	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);			m_showLocationBtn->SetCheckMode(true);
-	m_switchDescriptionBtn= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);	m_switchDescriptionBtn->SetCheckMode(true);
+	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);
+	m_switchDescriptionBtn= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);
 	m_showLocationBtn->SetWindowName("m_showLocationBtn");
 	Register(m_showLocationBtn);
 	m_switchDescriptionBtn->SetWindowName("m_switchDescriptionBtn");
@@ -93,8 +93,8 @@ void CUITaskRootItem::Init			()
 	xml_init.Init3tButton		(uiXml,"task_root_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton		(uiXml,"task_root_item:switch_description_btn",0,m_switchDescriptionBtn);
 
-	m_defTextColor					= m_captionStatic->GetTextColor	();
-	m_defColor						= m_captionStatic->GetColor	();
+//	m_defTextColor					= m_captionStatic->GetTextColor	();
+//	m_defColor						= m_captionStatic->GetColor	();
 }
 
 void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)				
@@ -167,13 +167,14 @@ void CUITaskRootItem::OnSwitchDescriptionClicked	()
 
 void CUITaskRootItem::MarkSelected (bool b)
 {
-	if(b)
+/*	if(b)
 		m_captionStatic->SetLightAnim	("ui_task_selected");
 	else{
 		m_captionStatic->SetLightAnim	(NULL);
 		m_captionStatic->SetTextColor	(m_defTextColor);
 		m_captionStatic->SetColor		(m_defColor);
 	}
+*/
 }
 
 
@@ -195,7 +196,7 @@ void CUITaskSubItem::Init			()
 
 	m_stateStatic		= xr_new<CUIStatic>();		m_stateStatic->SetAutoDelete(true);		AttachChild(m_stateStatic);
 	m_descriptionStatic	= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
-	m_showPointerBtn	= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn); m_showPointerBtn->SetCheckMode(true);
+	m_showPointerBtn	= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);
 	m_showDescriptionBtn= xr_new<CUI3tButton>();	m_showDescriptionBtn->SetAutoDelete(true);		AttachChild(m_showDescriptionBtn);
 
 	m_showPointerBtn->SetWindowName					("m_showPointerBtn");
@@ -213,8 +214,8 @@ void CUITaskSubItem::Init			()
 	xml_init.InitStatic				(uiXml,"task_sub_item:description",0,m_descriptionStatic);
 	xml_init.Init3tButton			(uiXml,"task_sub_item:show_pointer_btn",0,m_showPointerBtn);
 	xml_init.Init3tButton			(uiXml,"task_sub_item:show_descr_btn",0,m_showDescriptionBtn);
-	m_defTextColor					= m_descriptionStatic->GetTextColor	();
-	m_defColor						= m_descriptionStatic->GetColor	();
+//	m_defTextColor					= m_descriptionStatic->GetTextColor	();
+//	m_defColor						= m_descriptionStatic->GetColor	();
 
 
 	m_active_color					= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:active",0);
@@ -289,13 +290,14 @@ void CUITaskSubItem::OnShowDescriptionClicked ()
 
 void CUITaskSubItem::MarkSelected (bool b)
 {
-	if(b)
+/*	if(b)
 		m_descriptionStatic->SetLightAnim	("ui_task_selected");
 	else{
 		m_descriptionStatic->SetLightAnim	(NULL);
 		m_descriptionStatic->SetTextColor	(m_defTextColor);
 		m_descriptionStatic->SetColor		(m_defColor);
-	}
+	}*/
+	m_showDescriptionBtn->SetButtonMode		(b ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
 }
 
 CUIUserTaskItem::CUIUserTaskItem(CUIEventsWnd* w)
@@ -321,12 +323,12 @@ void  CUIUserTaskItem::Init					()
 	Register						(m_descriptionStatic);
 	AddCallback						("m_descriptionStatic",EDIT_TEXT_CHANGED,boost::bind(&CUIUserTaskItem::OnDescriptionChanged,this));
 
-	m_showLocationBtn				= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);			m_showLocationBtn->SetCheckMode(true);
+	m_showLocationBtn				= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);
 	m_showLocationBtn->				SetWindowName("m_showLocationBtn");
 	Register						(m_showLocationBtn);
 	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
 
-	m_showPointerBtn				= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);			m_showPointerBtn->SetCheckMode(true);
+	m_showPointerBtn				= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);
 	m_showPointerBtn->				SetWindowName("m_showPointerBtn");
 	Register						(m_showPointerBtn);
 	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
@@ -341,7 +343,7 @@ void  CUIUserTaskItem::Init					()
 	xml_init.Init3tButton			(uiXml,"task_user_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton			(uiXml,"task_user_item:show_pointer_btn",0,m_showPointerBtn);
 
-	m_defTextColor					= m_descriptionStatic->GetTextColor	();
+//	m_defTextColor					= m_descriptionStatic->GetTextColor	();
 }
 
 void CUIUserTaskItem::Update					()
@@ -392,12 +394,12 @@ void CUIUserTaskItem::OnShowLocationClicked	()
 
 void CUIUserTaskItem::MarkSelected				(bool b)
 {
-	if(b)
+/*	if(b)
 		m_descriptionStatic->SetLightAnim	("ui_task_selected");
 	else{
 		m_descriptionStatic->SetLightAnim	(NULL);
 		m_descriptionStatic->SetTextColor	(m_defTextColor);
-	}
+	}*/
 }
 
 void CUIUserTaskItem::OnDescriptionChanged		()

@@ -72,6 +72,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 			CMapLocation* ml =	Level().MapManager().AddMapLocation(obj->map_location, obj->object_id);
 			if(obj->map_hint.size())	ml->SetHint(obj->map_hint);
 			ml->DisablePointer			();
+			ml->SetSerializable			(true);
 		}
 	}
 	
@@ -97,8 +98,11 @@ void CGameTaskManager::SetTaskState(CGameTask* t, int objective_num, ETaskState 
 	SGameTaskObjective& o			= t->Objective(objective_num);
 	CMapLocation* ml				= o.HasMapLocation();
 	bool bHighlighted				= ml&&ml->PointerEnabled();
-	if(((state==eTaskStateFail)||(state==eTaskStateCompleted))&&ml )
+	if(((state==eTaskStateFail)||(state==eTaskStateCompleted))&&ml ){
 		Level().MapManager().RemoveMapLocation(o.map_location, o.object_id);
+		o.map_location	= NULL;
+		o.object_id		= u16(-1);
+	}
 
 	o.SetTaskState			(state);
 	
@@ -170,7 +174,10 @@ void CGameTaskManager::UpdateActiveTask				()
 			if(	(false==obj.def_location_enabled) && t->Objective(i-1).TaskState()==eTaskStateCompleted ){
 				if(obj.object_id!=u16(-1) && obj.map_location.size()){
 					CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
+					if(obj.map_hint.size())		ml->SetHint(obj.map_hint);
 					ml->DisablePointer			();
+					ml->SetSerializable			(true);
+
 				}
 			}
 			bHasSpotPointer = bHasSpotPointer || t->HighlightedSpotOnMap(i);
@@ -197,6 +204,28 @@ void CGameTaskManager::UpdateActiveTask				()
 	m_flags.set					(eChanged, FALSE);
 }
 
+void CGameTaskManager::RemoveUserTask					(CMapLocation* ml)
+{
+	GameTasks_it it			= GameTasks().begin();
+	GameTasks_it it_e		= GameTasks().end();
+
+	for( ;it!=it_e; ++it ){
+		CGameTask* t		= (*it).game_task;
+		SGameTaskObjective& obj = t->Objective(0);
+		if(obj.TaskState()!=eTaskUserDefined) continue;
+		if(obj.object_id == ml->ObjectID()){
+			GameTasks().erase		(it);
+			m_flags.set				(eChanged, TRUE);
+			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if(pGameSP) 
+				pGameSP->PdaMenu->UIEventsWnd->Reload();
+			return;
+		}
+
+	}
+
+}
+
 
 void SGameTaskKey::save(IWriter &stream)
 {
@@ -211,6 +240,7 @@ void SGameTaskKey::save(IWriter &stream)
 		save_data(game_task->m_Objectives[i].object_id,		stream);
 		save_data(game_task->m_Objectives[i].task_state,	stream);
 		save_data(game_task->m_Objectives[i].def_location_enabled,stream);
+		save_data(game_task->m_Objectives[i].map_hint,		stream);
 	}
 }
 
@@ -228,6 +258,9 @@ void SGameTaskKey::load(IReader &stream)
 		load_data(game_task->m_Objectives[i].object_id,		stream);
 		load_data(game_task->m_Objectives[i].task_state,	stream);
 		load_data(game_task->m_Objectives[i].def_location_enabled,stream);
+		load_data(game_task->m_Objectives[i].map_hint,stream);
+
+		
 	}
 }
 

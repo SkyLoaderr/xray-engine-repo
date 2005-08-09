@@ -3,9 +3,11 @@
 #include "alife_registry_wrappers.h"
 #include "inventoryowner.h"
 #include "level.h"
+#include "actor.h"
 #include "relation_registry.h"
 #include "GameObject.h"
 #include "map_location.h"
+#include "GameTaskManager.h"
 #include "xrServer.h"
 
 struct FindLocationBySpotID{
@@ -24,6 +26,15 @@ struct FindLocationByID{
 	}
 };
 
+struct FindLocation{
+	CMapLocation*			ml;
+	FindLocation(CMapLocation* m):ml(m){}
+	bool operator () (const SLocationKey& key){
+		return (ml==key.location);
+	}
+};
+
+void CheckUserLocation		(CMapLocation* ml);
 
 void SLocationKey::save(IWriter &stream)
 {
@@ -149,6 +160,7 @@ void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
 	if( it!=Locations().end() ){
 
 		if( 1==(*it).location->RefCount() ){
+			CheckUserLocation		((*it).location);
 			delete_data				(*it);
 			Locations().erase		(it);
 		}else
@@ -162,19 +174,26 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	while( it!= Locations().end() ){
 		
-		if( (*it).location->IsUserDefined() )
-			Level().Server->FreeID(id,Device.TimerAsync());
+			CheckUserLocation		((*it).location);
+			delete_data				(*it);
+			Locations().erase		(it);
 
-		delete_data				(*it);
-		Locations().erase		(it);
-
-		it = std::find_if(Locations().begin(),Locations().end(),key);
+			it = std::find_if(Locations().begin(),Locations().end(),key);
 	}
 }
 
 void CMapManager::RemoveMapLocation			(CMapLocation* ml)
 {
-	//.
+	VERIFY(ml->CanBeUserRemoved());
+	FindLocation key(ml);
+
+	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
+	if( it!=Locations().end() ){
+		CheckUserLocation		((*it).location);
+		delete_data				(*it);
+		Locations().erase		(it);
+	}
+
 }
 
 
@@ -222,3 +241,11 @@ Locations&	CMapManager::Locations	()
 	return m_locations->registry().objects();
 }
 
+void CheckUserLocation		(CMapLocation* ml)
+{
+	if(false == ml->IsUserDefined()) return;
+	Level().Server->FreeID(ml->ObjectID(),Device.TimerAsync());
+
+	Actor()->GameTaskManager().RemoveUserTask(ml);
+
+}

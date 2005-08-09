@@ -255,4 +255,5 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 		else
 			itm->MarkSelected	(false);
 	}
+
 }
