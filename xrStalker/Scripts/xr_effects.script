@@ -692,6 +692,9 @@ function mil_bomb_explode (actor, npc)
     this.set_stalker_enemy (730, skull)     -- hit to Sniper1
     this.set_stalker_enemy (731, skull)     -- hit to Sniper2
     this.set_stalker_enemy (732, skull)     -- hit to Sniper3
+    this.set_stalker_enemy (730, actor)     -- hit to Sniper1
+    this.set_stalker_enemy (731, actor)     -- hit to Sniper2
+    this.set_stalker_enemy (732, actor)     -- hit to Sniper3
 
 end
 
