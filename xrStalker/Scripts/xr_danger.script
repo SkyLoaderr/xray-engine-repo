@@ -141,9 +141,12 @@ function evaluator_danger:evaluate()
 		end
 	end
 	
---	printf("danger_distance_sqr [%s]", tostring(danger_distance_sqr))			
---	printf("danger_name [%s]", tostring(best_danger:object():name()))
-	
+	-- Отсеиваем по зоне
+	if sr_danger.check_danger_position(best_danger:position()) then
+		printf("DANGER [%s]->[%s] [TRUE] nodanger_zone", self.object:name(), best_danger_name)
+		return true
+	end
+		
 	if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
 		printf("DANGER [%s]->[%s] [TRUE] heavy_wounded", self.object:name(), best_danger_name)
 		return true
