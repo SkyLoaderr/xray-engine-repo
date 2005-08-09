@@ -60,8 +60,8 @@
 		<objective>
 			<text>andy_task_1_4</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type_>crlc_big</map_location_type_>
-			<object_story_id_>Escape_blockpost_case</object_story_id_>
+			<map_location_type>crlc_big</map_location_type>
+			<object_story_id>Escape_blockpost_case</object_story_id>
 		</objective>
 	</game_task>
 
