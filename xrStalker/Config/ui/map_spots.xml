@@ -12,7 +12,8 @@
 #include "ui\map_spots_relations.xml"
 #include "ui\map_spots_lchangers.xml"
 
-<!--<blue_location>
+<!--
+	<blue_location>
 		<level_map spot="blue_spot"			pointer="user_pointer"></level_map>
 		<mini_map spot="blue_mini_spot"		pointer="user_pointer"></mini_map>
 	</blue_location>
