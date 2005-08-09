@@ -129,7 +129,7 @@ void CUIInteractiveListItem::Draw()
 	// Подсвечиваем интерактивный элемент
 	if (itCurrIItem != vPositions.end() && m_bCursorOverWindow && m_bInteractiveBahaviour)
 	{
-		UpdateTextAlign();
+//		UpdateTextAlign();
 		GetFont()->SetAligment(GetTextAlign());
 
 		GetFont()->SetColor(m_HighlightColor);
