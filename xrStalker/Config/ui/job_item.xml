@@ -31,11 +31,11 @@
 			</text_colors>
 		</description>
 
-		<show_pointer_btn x="220" y="4" width="32" height="32">
+		<show_pointer_btn x="220" y="4" width="22" height="22">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 
-		<show_descr_btn x="252" y="4" width="32" height="32">
+		<show_descr_btn x="252" y="4" width="22" height="22">
 			<texture>ui_icons_newPDA_gomark</texture>
 		</show_descr_btn>
 
