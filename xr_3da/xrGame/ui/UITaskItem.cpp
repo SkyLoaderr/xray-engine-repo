@@ -231,7 +231,7 @@ void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)
 
 	m_descriptionStatic->SetText				(*stbl(obj->description));
 	m_descriptionStatic->AdjustHeightToText		();
-	float h = _max(	m_stateStatic->GetWndPos().y+m_stateStatic->GetHeight(),
+	float h = _max(	m_showPointerBtn->GetWndPos().y+m_showPointerBtn->GetHeight(),
 					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
 	SetHeight									(h);
 	switch (obj->TaskState())
