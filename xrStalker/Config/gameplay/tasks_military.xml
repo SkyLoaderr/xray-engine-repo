@@ -258,6 +258,7 @@
             <map_location_type>green_location</map_location_type>
             <object_story_id>Mil_RG6</object_story_id>
             <function_complete>mil_tasks.mil_task_rg6_have</function_complete>
+            <infoportion_set_complete>mil_svoboda_rg6_gain</infoportion_set_complete>
             <map_location_hidden>1</map_location_hidden>
 		</objective>
 		<objective>

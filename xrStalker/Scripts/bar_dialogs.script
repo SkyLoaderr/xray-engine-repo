@@ -259,8 +259,7 @@ end
 -- Петренко, выдача награды
 
 function actor_need_reward (actor, npc)
-	if (db.actor:has_info("bar_kill_borov_done") and db.actor:dont_has_info("bar_kill_borov_reward")) or
-	   (db.actor:has_info("bar_kill_svoboda_ambush_done") and db.actor:dont_has_info("bar_kill_svoboda_reward"))or
+	if (db.actor:has_info("bar_kill_svoboda_ambush_done") and db.actor:dont_has_info("bar_kill_svoboda_reward"))or
 	   (db.actor:has_info("bar_kill_svoboda_leader_done") and db.actor:dont_has_info("bar_kill_svoboda_leader_reward"))
 	then
 		return true
