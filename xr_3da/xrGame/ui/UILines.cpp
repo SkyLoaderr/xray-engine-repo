@@ -26,10 +26,13 @@ CUILines::CUILines()
 	m_bShowMe = true;
 	m_wndPos.x = 0;
 	m_wndPos.y = 0;
-	uFlags.set(flNeedReparse,	false);
-	uFlags.set(flComplexMode,	true);
-	uFlags.set(flPasswordMode,	false);
+	uFlags.zero();
+	uFlags.set(flNeedReparse,	FALSE);
+	uFlags.set(flComplexMode,	TRUE);
+	uFlags.set(flPasswordMode,	FALSE);
 	m_pFont = UI()->Font()->pFontLetterica16Russian;
+	m_cursor_pos.set(0,0);
+	m_iCursorPos = 0;
 }
 
 CUILines::~CUILines(){
@@ -39,11 +42,11 @@ CUILines::~CUILines(){
 void CUILines::SetTextComplexMode(bool mode){
 	uFlags.set(flComplexMode, mode);
 	if (mode)
-		uFlags.set(flPasswordMode, false);
+		uFlags.set(flPasswordMode, FALSE);
 }
 
 bool CUILines::GetTextComplexMode(){
-	return uFlags.is(flComplexMode) ? true : false;
+	return uFlags.test(flComplexMode) ? true : false;
 }
 
 void CUILines::SetPasswordMode(bool mode){
@@ -63,7 +66,7 @@ void CUILines::SetText(const char* text){
 	if (text && xr_strlen(text) > 0)
 	{
         m_text = text;
-		uFlags.set(flNeedReparse, true);
+		uFlags.set(flNeedReparse, TRUE);
 	}
 	else
 	{
@@ -72,19 +75,58 @@ void CUILines::SetText(const char* text){
 	}
 }
 
-void CUILines::AddChar(const char ch){
-	m_text.push_back(ch);
-	uFlags.set(flNeedReparse, true);
+void CUILines::AddCharAtCursor(const char ch){
+	uFlags.set(flNeedReparse, TRUE);
+	m_text.insert(m_text.begin()+GetAbsCursorPos(),ch);
+	IncCursorPos();
 }
 
-void CUILines::AddChar(const char ch, int pos){
-	m_text.insert(m_text.begin()+pos, ch);
-	uFlags.set(flNeedReparse, true);
+int CUILines::GetAbsCursorPos(){
+	int abs_pos = 0;
+	if (uFlags.test(flComplexMode))
+		if (0 != m_cursor_pos.y)
+		{
+			int n = m_lines.size();
+			if (n>m_cursor_pos.y)
+				n = m_cursor_pos.y;
+			for (int i = 0; i<n; i++)
+				abs_pos += m_lines[i].GetSize();
+		}	
+	abs_pos += m_cursor_pos.x;
+	return abs_pos;
 }
 
-void CUILines::DelChar(int i){
-	m_text.erase(i);
-	uFlags.set(flNeedReparse, true);
+
+void CUILines::MoveCursorToEnd(){
+	const int sz = m_lines.size();
+	if (sz >0)
+	{
+		m_cursor_pos.y = sz - 1;
+		m_cursor_pos.x = m_lines[m_cursor_pos.y].GetSize();
+	}
+	else
+	{
+		m_cursor_pos.x = (int)m_text.size();
+	}
+}
+
+void CUILines::DelChar(){
+	const int pos = GetAbsCursorPos();
+	const int sz = (int)m_text.size();
+	if (pos < sz)
+	{
+        m_text.erase(m_text.begin()+pos);
+        uFlags.set(flNeedReparse, TRUE);
+	}
+}
+
+void CUILines::DelLeftChar(){
+	const int pos = GetAbsCursorPos();
+	if (pos>0)
+	{
+		DecCursorPos();
+		DelChar();
+	}	
 }
 
 const char* CUILines::GetText(){
@@ -96,9 +138,10 @@ void CUILines::Reset(){
 }
 
 void CUILines::ParseText(){
-//	VERIFY(g_bRendering);
-	Reset();
+	if (!uFlags.test(flComplexMode) || !uFlags.test(flNeedReparse))
+		return;
 
+	Reset();
 	if (m_text.length() && NULL == m_pFont)
 		R_ASSERT2(false, "can't parse text without font");
 		
@@ -111,15 +154,32 @@ void CUILines::ParseText(){
 		m_lines.push_back(*line->CutByLength(m_pFont, m_wndSize.x));
 
 	xr_delete(line);
-	uFlags.set(flNeedReparse, false);
+	uFlags.set(flNeedReparse, FALSE);
 }
 
 float CUILines::GetVisibleHeight(){
-	if(uFlags.test(flNeedReparse))
-		ParseText	();
+	if (uFlags.test(flComplexMode))
+	{
+		if(uFlags.test(flNeedReparse))
+			ParseText	();
+		return (m_pFont->CurrentHeightRel() + m_interval)*m_lines.size() - m_interval;
+	}
+	else
+		return m_pFont->CurrentHeightRel();
+}
 
-	//float interval = m_interval*m_pFont->CurrentHeightRel();
-	return (m_pFont->CurrentHeightRel() + m_interval)*m_lines.size() - m_interval;
+void CUILines::SetTextColor(u32 color){
+	if (color == m_dwTextColor)
+		return;
+	uFlags.set(flNeedReparse, true);
+	m_dwTextColor = color; 
+}
+
+void CUILines::SetFont(CGameFont* pFont){
+	if (pFont == m_pFont)
+		return;
+	uFlags.set(flNeedReparse, true);
+	m_pFont = pFont;
 }
 
 void CUILines::Draw(float x, float y){
@@ -137,22 +197,13 @@ void CUILines::Draw(float x, float y){
 		text_pos.set(0,0);
 
 		text_pos.x = x + GetIndentByAlign(m_pFont->SizeOfRel(m_text.c_str()));
-		switch(m_eVTextAlign) {
-		case valTop: 
-			text_pos.y = y + 0; break;
-		case valCenter:
-			text_pos.y = y + (m_wndSize.y - m_pFont->CurrentHeightRel())/2; break;
-		case valBotton:
-			text_pos.y = y + m_wndSize.y - m_pFont->CurrentHeightRel(); break;
-		default:
-			NODEFAULT;
-		}
+		text_pos.y = y + GetVIndentByAlign();
 
 		Frect r;
 		r.x1=0.0f; r.x2=UI_BASE_WIDTH;
 		r.y1=0.0f; r.y2=UI_BASE_HEIGHT;
 
-		if (uFlags.is(flPasswordMode))
+		if (uFlags.test(flPasswordMode))
 		{
 			int sz = (int)m_text.size();
 			for (int i = 0; i < sz; i++)
@@ -169,22 +220,18 @@ void CUILines::Draw(float x, float y){
 
 		if (m_oldWidth != m_wndSize.x)
 		{
-			uFlags.set(flNeedReparse, true);
+			uFlags.set(flNeedReparse, TRUE);
 			m_oldWidth = m_wndSize.x;
 		}
 
-		if (uFlags.is(flNeedReparse))
+		if (uFlags.test(flNeedReparse))
 			ParseText();
-
-		//	m_pFont->SetAligment(m_eTextAlign);
 
 		Fvector2 pos;
 		// get vertical indent
-		pos.y= y + GetVIndentByAlign();
+		pos.y			= y + GetVIndentByAlign();
 		float height	= m_pFont->CurrentHeightRel();
 		u32 size		= m_lines.size();
-
-	//	float interval = m_interval*m_pFont->CurrentHeightRel();
 
 		for (int i=0; i<(int)size; i++)
 		{
@@ -198,6 +245,68 @@ void CUILines::Draw(float x, float y){
 	m_pFont->OnRender();
 }
 
+void CUILines::DrawCursor(float x, float y){
+	int sz = (int)m_lines.size();
+	int lnsz = (int)m_text.size();
+
+	if (m_cursor_pos.y > sz)
+		m_cursor_pos.y = sz;
+
+	Fvector2 text_pos;
+	text_pos.set(0,0);
+
+	if (0 == lnsz)
+	{
+		text_pos.x = x + GetIndentByAlign(0);		
+		text_pos.y = y + GetVIndentByAlign();
+		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+		return;
+	}
+	
+	if (!uFlags.test(flComplexMode))
+	{
+		text_pos.x = x + GetIndentByAlign(m_pFont->SizeOfRel(m_text.c_str()));		
+		text_pos.y = y + GetVIndentByAlign();
+		
+		char tmp = m_text[m_cursor_pos.x];
+		m_text[m_cursor_pos.x] = 0;
+
+		if (uFlags.test(flPasswordMode))
+			text_pos.x += m_pFont->SizeOfRel("*")*xr_strlen(m_text.c_str());
+		else
+			text_pos.x += iFloor(m_pFont->SizeOfRel(m_text.c_str()));
+
+		m_text[m_cursor_pos.x] = tmp;
+		
+		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+	}
+	else
+	{
+		if (0 == sz)
+		{
+			text_pos.x = x + GetIndentByAlign(0);		
+			text_pos.y = y + GetVIndentByAlign();
+			CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+			return;
+		}
+		text_pos.y= y + GetVIndentByAlign();
+		float height	= m_pFont->CurrentHeightRel();
+		text_pos.y += (height + m_interval)*m_cursor_pos.y;
+		text_pos.x = x + GetIndentByAlign(m_lines[m_cursor_pos.y].GetLength(m_pFont));
+		m_lines[m_cursor_pos.y].DrawCursor(m_cursor_pos.x, m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+	}	
+}
+
+float CUILines::GetDrawCursorPos(){
+	R_ASSERT(!uFlags.test(flComplexMode));
+	float x = GetIndentByAlign(m_pFont->SizeOfRel(m_text.c_str()));		
+	char tmp = m_text[m_cursor_pos.x];
+	m_text[m_cursor_pos.x] = 0;
+	x += m_pFont->SizeOfRel(m_text.c_str());
+	m_text[m_cursor_pos.x] = tmp;
+	return x;
+}
+
 void CUILines::Draw(){
 	Draw(m_wndPos.x, m_wndPos.y);
 }
@@ -206,7 +315,7 @@ void CUILines::Update(){
 }
 
 void CUILines::OnDeviceReset(){
-	uFlags.set(flNeedReparse, true);
+	uFlags.set(flNeedReparse, TRUE);
 }
 
 float CUILines::GetIndentByAlign(float length)const{
@@ -254,7 +363,7 @@ u32 CUILines::GetColorFromText(const xr_string& str)const{
 		return m_dwTextColor;
 
 	// Try predefined in XML colors
-	CUIXmlInit xml;
+//	CUIXmlInit xml;
 	for (CUIXmlInit::ColorDefs::const_iterator it = CUIXmlInit::GetColorDefs()->begin(); it != CUIXmlInit::GetColorDefs()->end(); ++it)
 	{
 		int cmp = str.compare(begin+3, end-begin-3, *it->first);			
@@ -351,3 +460,80 @@ void CUILines::CutFirstColoredTextEntry(xr_string& entry, u32& color, xr_string&
 void CUILines::SetWndSize_inline(const Fvector2& wnd_size){
 	m_wndSize = wnd_size;
 }
+
+void CUILines::IncCursorPos(){
+	const int txt_len = (int)m_text.size();
+
+	if (0 == txt_len)
+		return;
+
+	if (m_iCursorPos < txt_len)
+        m_iCursorPos++;
+
+	UpdateCursor();
+	return;
+
+    
+	const int sz = (int)m_lines.size();
+	if (uFlags.test(flComplexMode) && uFlags.test(flNeedReparse))
+		ParseText();
+	const int lnsz = uFlags.test(flComplexMode) ? m_lines[m_cursor_pos.y].GetSize() : (int)m_text.size();
+	
+	if (lnsz > m_cursor_pos.x)
+		m_cursor_pos.x++;
+	else
+		if (sz > m_cursor_pos.y)
+		{
+			m_cursor_pos.x = 0;
+			m_cursor_pos.y++;
+		}
+}
+
+void CUILines::DecCursorPos(){
+	const int txt_len = (int)m_text.size();
+
+	if (0 == txt_len)
+		return;
+
+	if (m_iCursorPos > 0)
+		m_iCursorPos--;
+
+	UpdateCursor();
+	return;
+
+	if (m_cursor_pos.x>0)
+		m_cursor_pos.x--;
+	else
+		if (m_cursor_pos.y>0)
+		{
+			m_cursor_pos.y--;
+			m_cursor_pos.x = m_lines[m_cursor_pos.y].GetSize();
+		}
+}
+
+void CUILines::UpdateCursor(){
+	if (uFlags.test(flComplexMode))
+	{
+		ParseText();
+		const int sz = (int)m_lines.size();
+		int len = 0;
+		for (int i = 0; i < sz; i++)
+		{
+            int curlen = m_lines[i].GetSize();
+			if (m_iCursorPos <= len + curlen)
+			{
+				m_cursor_pos.y = i;
+				m_cursor_pos.x = m_iCursorPos - len;
+				return;
+			}
+			len += curlen;
+		}
+//		R_ASSERT(false);
+	}
+	else
+	{
+		m_cursor_pos.y = 0;
+		m_cursor_pos.x = m_iCursorPos;
+	}	
+}
+

@@ -7102,7 +7102,8 @@
 									<File
 										RelativePath=".\WeaponKnife.h">
 									</File>
-								</Filter>
+								</Filter>
+
 								<Filter
 									Name="Weapon Groza"
 									Filter="">
@@ -10429,8 +10430,24 @@
 						RelativePath=".\ui\UIEditBox.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIEditBox_script.cpp">
+						RelativePath=".\ui\UIEditBoxEx.cpp">
 					</File>
+					<File
+						RelativePath=".\ui\UIEditBoxEx.h">
+					</File>
+					<Filter
+						Name="customEB"
+						Filter="">
+						<File
+							RelativePath=".\ui\UICustomEdit.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UICustomEdit.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIEditBox_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Windows"

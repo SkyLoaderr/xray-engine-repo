@@ -16,7 +16,7 @@ CUICDkey::~CUICDkey(){
 }
 
 void CUICDkey::Draw(){
-	CUIFrameLineWnd::Draw();
+	//CUIFrameLineWnd::Draw();
 
 	Frect rect = GetAbsoluteRect();
 	float outX, outY;
@@ -33,18 +33,19 @@ void CUICDkey::Draw(){
 	if(m_bInputFocus)
 	{	
 		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
-		xr_string tmp_str;
-		tmp_str.assign(m_lines.m_text.begin(), m_lines.m_text.begin()+m_iCursorPos);
-		outX = m_lines.m_pFont->SizeOfRel(tmp_str.c_str());
-		outX += m_lines.m_pFont->SizeOfRel("-")*(_min(iFloor(m_iCursorPos/4.0f),3));
+//		xr_string tmp_str;
+//		tmp_str.assign(m_lines.m_text.begin(), m_lines.m_text.begin()+m_iCursorPos);
+		outX = m_lines.GetDrawCursorPos();
+		outX += m_lines.m_pFont->SizeOfRel("-")*(_min(iFloor(m_lines.m_cursor_pos.x/4.0f),3));
 		//}
-		m_pAnimation->Update();
-		m_lines.m_pFont->SetColor(subst_alpha(m_cursorColor, color_get_A(m_pAnimation->GetColor())));
+//		m_animation.Update();
+//		m_lines.m_pFont->SetColor(subst_alpha(m_cursorColor, color_get_A(m_animation.GetColor())));
 
-		UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
-			rect.top+outY,  "|");
+		CUILine::DrawCursor(m_lines.m_pFont, rect.left+outX, rect.top+outY, m_lines.GetTextColor());
 
-		GetFont()->OnRender();
+		//UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, rect.top+outY,  "|");
+
+		//GetFont()->OnRender();
 	}
 }
 

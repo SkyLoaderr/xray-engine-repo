@@ -717,7 +717,9 @@ bool CUIXmlInit::InitLabel(CUIXml& xml_doc, const char* path, int index, CUILabe
 }
 
 bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEditBox* pWnd){
-	InitLabel(xml_doc, path, index, pWnd);
+	InitWindow(xml_doc, path, index, pWnd);
+	InitText(xml_doc, path, index, (IUITextControl*)pWnd);
+	InitTexture(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 
 	if (xml_doc.ReadAttribInt(path,index,"db_click",0))

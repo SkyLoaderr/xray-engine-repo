@@ -218,9 +218,6 @@ void CUIButton::DrawHighlightedText(){
 	}
 
 	Frect rect = GetAbsoluteRect();
-//	Irect r = GetSelfClipRect();
-//	CGameFont * F = GetFont();
-//	F->SetColor(m_HighlightColor);
 	u32 def_col = m_pLines->GetTextColor();
 	m_pLines->SetTextColor(m_HighlightColor);
 
@@ -243,38 +240,6 @@ void CUIButton::DrawHighlightedText(){
 
 	m_pLines->SetTextColor(def_col);
 
-	//UI()->OutText(F, r, 
-	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r, 
-	//	(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r,
-	//	(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r, 
-	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r,
-	//	(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r,
-	//	(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r,
-	//	(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
-	//	(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
-	//UI()->OutText(F, r,
-	//	(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
-	//	(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-	//	m_str);
 }
 
 void CUIButton::DrawText(){
@@ -309,24 +274,4 @@ bool CUIButton::IsHighlightText()
 void  CUIButton::Update()
 {
 	CUIStatic::Update();
-}
-
-void CUIButton::UpdateTextAlign()
-{
-#pragma todo("Need change for ::m_lines")
-	//if (m_iTextOffsetY < 0)
-	//	m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
-
-	//if(m_eTextAlign == CGameFont::alCenter)
-	//{
-	//	m_iTextOffsetX = GetWidth()/2;
-	//}
-	//else if(m_eTextAlign == CGameFont::alRight)
-	//{
-	//	m_iTextOffsetX = GetWidth();
-	//}
-	//else
-	//{
-	//	m_iTextOffsetX = 0;
-	//}
 }

@@ -47,7 +47,7 @@ void CUIChatWnd::Init(CUIXml& uiXml)
 	//UIPrefix.SetStretchTexture(true);
 
 	AttachChild(&UIEditBox);
-	CUIXmlInit::InitLabel(uiXml, "chat_edit_box", 0, &UIEditBox);
+	CUIXmlInit::InitEditBox(uiXml, "chat_edit_box", 0, &UIEditBox);
 	//UIEditBox.InitSharedTexture("ui_texture.xml","debug");
 	//UIEditBox.SetStretchTexture(true);
 

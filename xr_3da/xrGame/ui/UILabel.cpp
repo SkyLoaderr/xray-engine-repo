@@ -22,14 +22,6 @@ void CUILabel::Draw(){
 	m_lines.Draw(r.x1 + m_textPos.x, r.y1 + m_textPos.y);
 }
 
-void CUILabel::SetTextPosX(float x){
-	m_textPos.x = x;
-}
-
-void CUILabel::SetTextPosY(float y){
-	m_textPos.y = y;
-}
-
 void CUILabel::SetWidth(float width){
 	m_lines.SetWidth(width);
 	CUIFrameLineWnd::SetWidth(width);

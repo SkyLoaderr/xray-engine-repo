@@ -58,7 +58,7 @@ public:
 	float			GetPushOffsetX() {return m_iPushOffsetX;}
 	float			GetPushOffsetY() {return m_iPushOffsetY;}
 
-	virtual	void	UpdateTextAlign();
+//	virtual	void	UpdateTextAlign();
 
 	//подсвечен ли текст на кнопке
 	virtual bool	IsHighlightText();

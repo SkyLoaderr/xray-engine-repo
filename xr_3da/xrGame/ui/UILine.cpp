@@ -10,10 +10,14 @@
 #include "StdAfx.h"
 #include "UILine.h"
 #include "uilinestd.h"
+#include "UIColorAnimatorWrapper.h"
 
+CUIColorAnimatorWrapper CUILine::m_animation;
 
 CUILine::CUILine(){
 	m_tmpLine = NULL;
+	m_animation.SetColorAnimation("ui_map_area_anim");
+	m_animation.Cyclic(true);
 }
 
 CUILine::~CUILine(){
@@ -77,6 +81,42 @@ void CUILine::Draw(CGameFont* pFont, float x, float y) const{
 		m_subLines[i].Draw(pFont, x+length, y);
 		length+=m_subLines[i].GetLength(pFont);
 	}
+}
+
+int CUILine::DrawCursor(int pos, CGameFont* pFont, float x, float y, u32 color) const{
+	int size = m_subLines.size();
+	xr_string whole_line;
+	for (int i=0; i<size; i++)
+		whole_line += m_subLines[i].m_text;
+
+	int sz = (int)whole_line.size();
+		
+	if (pos > sz)
+		pos = sz;
+
+	whole_line[pos] = 0;
+	x += pFont->SizeOfRel(whole_line.c_str());
+	DrawCursor(pFont, x, y, color);
+
+	return pos;
+}
+
+int CUILine::GetSize(){
+	int sz = 0;
+	int size = m_subLines.size();
+	for (int i=0; i<size; i++)
+		sz += (int)m_subLines[i].m_text.size();
+
+	return sz;
+}
+
+void CUILine::DrawCursor(CGameFont* pFont, float x, float y, u32 color){
+	m_animation.Update();
+	pFont->SetColor(subst_alpha(color, color_get_A(m_animation.GetColor())));
+
+	Frect scr_rect;
+	scr_rect.set(0,0,1024,768);
+	UI()->OutText(pFont, scr_rect, x, y,  "|");
 }
 
 CUILine* CUILine::CutByLength(CGameFont* pFont, float length){

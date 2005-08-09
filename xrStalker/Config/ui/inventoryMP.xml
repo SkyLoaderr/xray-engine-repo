@@ -16,9 +16,9 @@
 	</bag_back_btn>
 
 	<!-- DESCRIPTION WINDOW -->
-	<desc_static x="340" y="235" width="420" height="400">
-		<!--texture>ui\ui_dg_info_multiplayer</texture-->
+	<desc_static x="340" y="235" width="420" height="400">		
 		<text x="20" y="10" font="graffiti22" r="231" g="153" b="22">ui_inv_description</text>
+		<rank_icon x="10" y="36" width="32" height="32"></rank_icon>
 	</desc_static>
 
 	<!-- CHARACTER WINDOW -->

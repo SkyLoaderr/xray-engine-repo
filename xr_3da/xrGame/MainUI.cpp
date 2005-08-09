@@ -116,6 +116,7 @@ CMainUI::CMainUI	()
    	CUITextureMaster::ParseShTexInfo("ui_common.xml");
 	CUITextureMaster::ParseShTexInfo("ui_old_textures.xml");
 	CUITextureMaster::ParseShTexInfo("ui_ingame.xml");
+	CUITextureMaster::ParseShTexInfo("ui_mp_icon_rank.xml");
 }
 
 CMainUI::~CMainUI	()
