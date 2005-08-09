@@ -23,8 +23,27 @@
 		<texture x="493" y="1000" width="11" height="11">ui\ui_common</texture>
 	</blue_mini_spot>
 	
+	<crlc_big  x="0" y="0" width="115" height="115" alignment="c">
+		<level_map spot="crcl_big_spot"</level_map>
+	</crlc_big>
+	<crcl_big_spot>
+		<texture x="730" y="456" width="115" height="115">ui\ui_common</texture>
+	</crcl_big_spot>
 	
+	<crlc_mdl  x="0" y="0" width="62" height="62" alignment="c">
+		<level_map spot="crlc_mdl_spot"</level_map>
+	</crlc_mdl>
+	<crlc_mdl_spot>
+		<texture x="858" y="392" width="62" height="62">ui\ui_common</texture>
+	</crlc_mdl_spot>
 	
+	<crlc_small  x="0" y="0" width="31" height="31" alignment="c">
+		<level_map spot="crlc_small_spot"</level_map>
+	</crlc_small>
+	<crlc_small_spot>
+		<texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
+	</crlc_small_spot>
+
 	<green_location>
 		<level_map spot="green_spot"		pointer="user_pointer"></level_map>
 		<mini_map spot="green_mini_spot"	pointer="user_pointer"></mini_map>
