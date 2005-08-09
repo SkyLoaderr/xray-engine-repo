@@ -323,7 +323,11 @@ function reset_meet(npc, scheme, st, section)
 	else
 		meet_section = utils.cfg_get_string(st.ini, section, "meet", npc, false, "")
 	end
-	init_meet(npc, st.ini, meet_section, st.meet, scheme)
+	if meet_section == "default_meet" then
+		init_meet(npc, st.ini, nil, st.meet, scheme)
+	else
+		init_meet(npc, st.ini, meet_section, st.meet, scheme)
+	end
 end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_meet(npc, ini, section, st, scheme)
