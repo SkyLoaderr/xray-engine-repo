@@ -39,6 +39,7 @@ public:
 		ref_sound		sound;		
 		shared_str		particles;
 		Fvector			offset;
+		float			wind_gust_factor;
 	};
 	DEFINE_VECTOR(SEffect,EffectVec,EffectVecIt);
 protected:
@@ -89,7 +90,6 @@ public:
 
     float				wind_velocity;
     float				wind_direction;  
-	float				gust_factor;
     
 	Fvector3			ambient		;
 	Fvector3			lmap_color	;
@@ -119,8 +119,13 @@ class ENGINE_API	CEnvironment
 		IC bool operator()(const shared_str& x, const shared_str& y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
-public:
+
+protected:
 	CPerlinNoise1D*			PerlinNoise1D;
+public:
+	float					wind_strength_factor;	
+	float					wind_gust_factor;
+public:
 
 	DEFINE_VECTOR			(CEnvAmbient*,EnvAmbVec,EnvAmbVecIt);
 	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
@@ -136,8 +141,6 @@ public:
 	WeatherMap				Weathers;
 	xr_vector<CEnvModifier>	Modifiers;
 	EnvAmbVec				Ambients;
-
-	float					wind_strength_factor;	
 
 	ref_shader				sh_2sky;
 	ref_geom				sh_2geom;

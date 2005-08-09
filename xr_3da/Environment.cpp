@@ -142,9 +142,10 @@ void CEnvAmbient::load(const shared_str& sect)
 			effects.resize(cnt);
 			for (u32 k=0; k<cnt; ++k){
 				_GetItem(effs,k,tmp);
-				effects[k].life_time	= iFloor(pSettings->r_float(tmp,"life_time")*1000.f);
-				effects[k].particles	= pSettings->r_string	(tmp,"particles");		VERIFY(effects[k].particles.size());
-				effects[k].offset		= pSettings->r_fvector3	(tmp,"offset");
+				effects[k].life_time		= iFloor(pSettings->r_float(tmp,"life_time")*1000.f);
+				effects[k].particles		= pSettings->r_string	(tmp,"particles");		VERIFY(effects[k].particles.size());
+				effects[k].offset			= pSettings->r_fvector3	(tmp,"offset");
+				effects[k].wind_gust_factor	= pSettings->r_float	(tmp,"wind_gust_factor");
 				if (pSettings->line_exist(tmp,"sound"))
 					effects[k].sound.create	(TRUE,pSettings->r_string(tmp,"sound"));
 			}
@@ -188,7 +189,6 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	rain_color				= pSettings->r_fvector3	(S,"rain_color");            
     wind_velocity			= pSettings->r_float	(S,"wind_velocity");
     wind_direction			= deg2rad(pSettings->r_float(S,"wind_direction"));
-	gust_factor				= pSettings->r_float	(S,"gust_factor");		clamp(gust_factor,0.f,1.f);
 	ambient					= pSettings->r_fvector3	(S,"ambient");
 	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
 	hemi_color				= pSettings->r_fvector4	(S,"hemi_color");
@@ -259,7 +259,6 @@ void CEnvDescriptor::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescriptor& B,
 	bolt_period				=	fi*A.bolt_period + f*B.bolt_period;
 	bolt_duration			=	fi*A.bolt_duration + f*B.bolt_duration;
 	// wind
-	gust_factor				=	fi*A.gust_factor + f*B.gust_factor;
     wind_velocity			=	fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction			=	fi*A.wind_direction + f*B.wind_direction;
 	// colors
@@ -337,6 +336,7 @@ CEnvironment::CEnvironment	()
     fTimeFactor				= 12.f;
 
 	wind_strength_factor	= 0.f;
+	wind_gust_factor		= 0.f;
 
 	// fill clouds hemi verts & faces 
 	const Fvector* verts;
@@ -563,12 +563,10 @@ void CEnvironment::OnFrame()
 		}
 	}
 	wind_strength_factor				= 0.f;
-	if (!fis_zero(CurrentEnv.gust_factor,EPS_L)){
-		PerlinNoise1D->SetFrequency		(CurrentEnv.gust_factor*MAX_NOISE_FREQ);
-		float gust						= clampr(PerlinNoise1D->Get(Device.fTimeGlobal)+0.5f,0.f,1.f); 
-		float gust_weight				= 0.25f;
-		CurrentEnv.wind_velocity		= CurrentEnv.wind_velocity*gust_weight+CurrentEnv.wind_velocity*(1.f-gust_weight)*gust;
-		wind_strength_factor			= gust/10.f;
+	if (!fis_zero(wind_gust_factor,EPS_L)){
+		PerlinNoise1D->SetFrequency		(wind_gust_factor*MAX_NOISE_FREQ);
+		wind_strength_factor			= clampr(PerlinNoise1D->Get(Device.fTimeGlobal)+0.5f,0.f,1.f); 
+		Log("wsf",wind_strength_factor);
 	}
 
     int l_id							=	(current_weight<0.5f)?Current[0]->lens_flare_id:Current[1]->lens_flare_id;

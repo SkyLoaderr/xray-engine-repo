@@ -153,7 +153,7 @@ void CGamePersistent::WeathersUpdate()
 		if (actor) bIndoor			= actor->renderable.ROS->get_luminocity_hemi()<0.05f;
 //.		Log("ros",actor->renderable.ROS->get_luminocity_hemi());
 
-		int data_set				= Random.randF()<1.f-Environment.CurrentEnv.weight?0:1; 
+		int data_set				= (Random.randF()<(1.f-Environment.CurrentEnv.weight))?0:1; 
 		CEnvDescriptor* _env		= Environment.Current[data_set]; VERIFY(_env);
 		CEnvAmbient* env_amb		= _env->env_ambient;
 		if (env_amb){
@@ -170,6 +170,7 @@ void CGamePersistent::WeathersUpdate()
 			// start effect
 			if ((FALSE==bIndoor) && (0==ambient_particles) && Device.dwTimeGlobal>ambient_effect_next_time){
 				CEnvAmbient::SEffect* eff			= env_amb->get_rnd_effect(); 
+				Environment.wind_gust_factor		= eff->wind_gust_factor;
 				ambient_effect_next_time			= Device.dwTimeGlobal + env_amb->get_rnd_effect_time();
 				ambient_effect_stop_time			= Device.dwTimeGlobal + eff->life_time;
 				if (eff){
@@ -177,28 +178,18 @@ void CGamePersistent::WeathersUpdate()
 					Fvector pos; pos.add			(Device.vCameraPosition,eff->offset); 
 					ambient_particles->play_at_pos	(pos);
 					if (eff->sound._handle())		eff->sound.play_at_pos(0,pos);
-//.					if (eff->sound._handle())		eff->sound.play_at_pos(0,Fvector().set(0,0,0),sm_2D);
 				}
 			}
 		}
-		// update & destroy particles
-		if (ambient_particles){
-			// stop if time exceed
-			if (bIndoor || Device.dwTimeGlobal>=ambient_effect_stop_time)
-				ambient_particles->Stop				();
-			// if particles playing update pos else - destroy
-			if (!ambient_particles->IsPlaying()){
-				ambient_particles->PSI_destroy		();
-				ambient_particles					= 0;
-			}
-/*.
-			else{
-				Fmatrix M; 
-				M.rotateY							(Environment.CurrentEnv.wind_direction);
-				M.translate_over					(Device.vCameraPosition);
-				ambient_particles->UpdateParent		(M,zero_vel);
-			}
-*/
+		// stop if time exceed or indoor
+		if (bIndoor || Device.dwTimeGlobal>=ambient_effect_stop_time){
+			if (ambient_particles)					ambient_particles->Stop();
+			Environment.wind_gust_factor			= 0.f;
+		}
+		// if particles not playing - destroy
+		if (ambient_particles&&!ambient_particles->IsPlaying()){
+			ambient_particles->PSI_destroy			();
+			ambient_particles						= NULL;
 		}
 	}
 }
