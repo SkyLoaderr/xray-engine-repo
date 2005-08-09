@@ -8,7 +8,7 @@
 		<objective>
 			<text>garbage_meet_stalker_1</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>gar_seryi_location</map_location_type>
+			<map_location_type>green_location</map_location_type>
 			<object_story_id>Garbage_Seriy</object_story_id>
 		</objective>
 	</game_task>
