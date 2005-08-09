@@ -112,11 +112,12 @@ void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 void EFS_Utils::RegisterAccess(LPCSTR fn, LPCSTR start_msg, bool bLog)
 {
 	xr_string		m_LastAccessFN;
-	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
-	CInifile*	ini	= CInifile::Create(m_LastAccessFN.c_str(),false);
-	ini->w_string	("last_access",fn,Core.CompName);
-	CInifile::Destroy(ini);
-	if (bLog) 	WriteAccessLog(fn,start_msg);
+    VERIFY			(xr_strlen(fn)<_MAX_PATH);
+    FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
+    CInifile* ini	= CInifile::Create(m_LastAccessFN.c_str(),false);
+    ini->w_string	("last_access",fn,Core.CompName);
+    CInifile::Destroy(ini);
+    if (bLog) 		WriteAccessLog(fn,start_msg);
 }
 
 BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool bMsg, shared_str* owner)

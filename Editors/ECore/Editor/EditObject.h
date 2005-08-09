@@ -291,7 +291,7 @@ public:
     IC LPCSTR		SMotionRefs				()	{return *m_SMotionRefs; }
     IC void			SkeletonPlay 			()	{m_SMParam.Play();}
     IC void			SkeletonStop 			()	{m_SMParam.Stop();}
-    IC void			SkeletonPause 			()	{m_SMParam.Pause();}
+    IC void			SkeletonPause 			(bool val)	{m_SMParam.Pause(val);}
 
 
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}

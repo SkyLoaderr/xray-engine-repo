@@ -31,6 +31,7 @@ void SGameMtl::FillProp		(PropItemVec& items, ListItem* owner)
     PHelper().CreateFlag32			(items,	"Flags\\Liquid",			        &Flags,	flLiquid);
     PHelper().CreateFlag32			(items,	"Flags\\Suppress Shadows",	        &Flags,	flSuppressShadows);
     PHelper().CreateFlag32			(items,	"Flags\\Suppress Wallmarks",        &Flags,	flSuppressWallmarks);
+    PHelper().CreateFlag32			(items,	"Flags\\Actor Obstacle",        	&Flags,	flActorObstacle);
     // physics part
     PHelper().CreateFloat			(items,	"Physics\\Friction",		        &fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
     PHelper().CreateFloat			(items,	"Physics\\Damping",			        &fPHDamping,			0.001f,	100.f, 	0.001f, 3); 

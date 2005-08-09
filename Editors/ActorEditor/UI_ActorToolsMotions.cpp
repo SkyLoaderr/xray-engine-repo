@@ -365,7 +365,7 @@ void CActorTools::StopMotion()
 void CActorTools::PauseMotion()
 {
 	if (m_pEditObject)
-    	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPause();
+    	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPause(true);
         else if (fraLeftBar->ebRenderEngineStyle->Down&&m_RenderObject.m_pBlend) {
         	m_RenderObject.m_pBlend->playing=!m_RenderObject.m_pBlend->playing;
         }

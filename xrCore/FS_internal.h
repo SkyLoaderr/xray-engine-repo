@@ -3,6 +3,10 @@
 #pragma once
 
 #include "lzhuf.h"
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+#include <share.h>
 
 void* __stdcall FileDownload	(LPCSTR fn, u32* pdwSize=NULL);
 void			FileCompress	(const char *fn, const char* sign, void* data, u32 size);
@@ -18,7 +22,13 @@ public:
 		R_ASSERT	(name && name[0]);
 		fName		= name;
 		VerifyPath	(*fName);
-		hf			= fopen	(*fName, "wb");
+        int handle	= _sopen(*fName,_O_WRONLY|_O_TRUNC|_O_CREAT|_O_BINARY,SH_DENYWR);
+#ifdef _EDITOR
+		if (handle==-1)
+			Msg		("!Can't create file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
+#endif
+        hf			= _fdopen(handle,"wb");
+//		hf			= fopen(*fName,"wb");
 #ifdef _EDITOR
 		if (hf==0)
 			Msg		("!Can't write file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
@@ -29,7 +39,15 @@ public:
 
 	virtual 		~CFileWriter()
 	{
-		if (0!=hf)	fclose(hf);        
+		if (0!=hf){	
+        	fclose				(hf);
+        	// release RO attrib
+	        DWORD dwAttr 		= GetFileAttributes(*fName);
+	        if ((dwAttr != -1)&&(dwAttr&FILE_ATTRIBUTE_READONLY)){
+                dwAttr 			&=~ FILE_ATTRIBUTE_READONLY;
+                SetFileAttributes(*fName, dwAttr);
+            }
+        }
 	}
     bool 			valid		() {return (0!=hf);}
 	// kernel

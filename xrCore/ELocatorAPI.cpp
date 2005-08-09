@@ -261,9 +261,7 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
     data.masks		= masks.empty()?0:&masks;
     data.dest		= &dest;
 
-CTimer TTT; TTT.Start();
     Recurse			(fpath.c_str(),flags&FS_RootOnly,file_list_cb,&data);
-Log("Recurse",TTT.Stop());
 	return dest.size();
 }
 

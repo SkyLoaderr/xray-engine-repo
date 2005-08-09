@@ -56,11 +56,11 @@ CSHSoundEnvTools::~CSHSoundEnvTools()
 
 void CSHSoundEnvTools::OnChangeWAV	(PropValue* prop)
 {
-	BOOL bPlay 		= !!m_PreviewSnd.feedback;
+	BOOL bPlay 		= !!m_PreviewSnd._feedback();
 	m_PreviewSnd.destroy();
 	if (m_SoundName.size()){
     	m_PreviewSnd.create				(1,*m_SoundName);
-        CSoundRender_Source* src= (CSoundRender_Source*)m_PreviewSnd.handle;
+        CSoundRender_Source* src= (CSoundRender_Source*)m_PreviewSnd._handle();
         m_Params.min_distance	= src->m_fMinDist;
         m_Params.max_distance	= src->m_fMaxDist;
     }
@@ -121,7 +121,7 @@ void CSHSoundEnvTools::OnFrame()
 
 void CSHSoundEnvTools::OnRender()
 {
-	if (m_PreviewSnd.handle){	
+	if (m_PreviewSnd._handle()){	
 	 	RCache.set_xform_world	(Fidentity);
 	 	Device.SetShader	(Device.m_WireShader);
         u32 clr0			= SOUND_SEL0_COLOR;
