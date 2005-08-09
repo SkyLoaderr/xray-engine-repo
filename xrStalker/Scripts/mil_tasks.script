@@ -277,3 +277,51 @@ function is_actor_enemy_freedom ()
     if member == nil or member:alive () == false then return false end
     return member:relation (db.actor) == game_object.enemy
 end
+
+function lukash_job_fail (task_id, subtask)
+    if db.actor:has_info ("mil_lukash_dolg_task_fail") or 
+       this.is_actor_enemy_freedom () then
+       return true
+    end
+    return false     
+end
+
+function max_job_failed (task_id, subtask)
+    if db.actor:has_info ("mil_max_dead") or 
+       this.is_actor_enemy_freedom () then
+       return true
+    end
+    return false     
+end
+
+function courier_job_failed (task_id, subtask)
+    if db.actor:has_info ("mil_leader_quest2_failed") or 
+       this.is_actor_enemy_freedom () then
+       return true
+    end
+    return false     
+end
+
+function fblockpost_job_failed (task_id, subtask)
+    if db.actor:has_info ("mil_fblockpost_quest_fail") or 
+       this.is_actor_enemy_freedom () then
+       return true
+    end
+    return false     
+end
+
+function fblockpost_job_failed2 (task_id, subtask)
+    if db.actor:has_info ("mil_fblockpost_commander_dead") or 
+       this.is_actor_enemy_freedom () then
+       return true
+    end
+    return false     
+end
+
+function miser_task_failed (task_id, subtask)
+    if db.actor:has_info ("mil_miser_task_failed") or 
+       this.is_actor_enemy_freedom () then
+       return true
+    end
+    return false     
+end
