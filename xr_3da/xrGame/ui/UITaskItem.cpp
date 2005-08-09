@@ -196,9 +196,15 @@ void CUITaskSubItem::Init			()
 	m_stateStatic		= xr_new<CUIStatic>();		m_stateStatic->SetAutoDelete(true);		AttachChild(m_stateStatic);
 	m_descriptionStatic	= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
 	m_showPointerBtn	= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn); m_showPointerBtn->SetCheckMode(true);
-	m_showPointerBtn->SetWindowName	("m_showPointerBtn");
-	Register						(m_showPointerBtn);
+	m_showDescriptionBtn= xr_new<CUI3tButton>();	m_showDescriptionBtn->SetAutoDelete(true);		AttachChild(m_showDescriptionBtn);
+
+	m_showPointerBtn->SetWindowName					("m_showPointerBtn");
+	m_showDescriptionBtn->SetWindowName				("m_showDescriptionBtn");
+	Register										(m_showPointerBtn);
+	Register										(m_showDescriptionBtn);
+
 	AddCallback						("m_showPointerBtn",BUTTON_CLICKED,boost::bind(&CUITaskSubItem::OnShowPointerClicked,this));
+	AddCallback						("m_showDescriptionBtn",BUTTON_CLICKED,boost::bind(&CUITaskSubItem::OnShowDescriptionClicked,this));
 
 
 	CUIXmlInit xml_init;
@@ -206,6 +212,7 @@ void CUITaskSubItem::Init			()
 	xml_init.InitStatic				(uiXml,"task_sub_item:state_image",0,m_stateStatic);
 	xml_init.InitStatic				(uiXml,"task_sub_item:description",0,m_descriptionStatic);
 	xml_init.Init3tButton			(uiXml,"task_sub_item:show_pointer_btn",0,m_showPointerBtn);
+	xml_init.Init3tButton			(uiXml,"task_sub_item:show_descr_btn",0,m_showDescriptionBtn);
 	m_defTextColor					= m_descriptionStatic->GetTextColor	();
 	m_defColor						= m_descriptionStatic->GetColor	();
 
@@ -254,6 +261,9 @@ void CUITaskSubItem::Update					()
 	CMapLocation* ml						= obj->HasMapLocation();
 	bool bHasLocation						= (NULL != ml);
 	m_showPointerBtn->Show					(bHasLocation&&ml->SpotEnabled());
+
+	bool bIsMapMode							= m_EventsWnd->GetDescriptionMode(); 
+	m_showDescriptionBtn->Show				(!bIsMapMode||(bIsMapMode&&bHasLocation&&ml->SpotEnabled()) );
 	if(bHasLocation){
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
 		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
@@ -270,6 +280,11 @@ void CUITaskSubItem::OnShowPointerClicked	()
 {
 	bool bPushed = m_showPointerBtn->GetCheck();
 	m_GameTask->HighlightSpotOnMap			(m_TaskObjectiveIdx,bPushed);
+}
+
+void CUITaskSubItem::OnShowDescriptionClicked ()
+{
+	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
 }
 
 void CUITaskSubItem::MarkSelected (bool b)

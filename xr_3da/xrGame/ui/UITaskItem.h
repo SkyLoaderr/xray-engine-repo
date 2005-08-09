@@ -65,6 +65,7 @@ class CUITaskSubItem :public CUITaskItem
 	u32				m_accomplished_color;
 protected:
 	CUI3tButton*	m_showPointerBtn;
+	CUI3tButton*	m_showDescriptionBtn;
 	CUIStatic*		m_descriptionStatic;
 	CUIStatic*		m_stateStatic;
 
@@ -76,7 +77,7 @@ public:
 	virtual void	Update					();
 	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
 			void	OnShowPointerClicked	();
-
+			void	OnShowDescriptionClicked();
 	virtual void	MarkSelected			(bool b);
 	virtual bool	OnDbClick				();
 };
