@@ -295,8 +295,7 @@ function max_job_failed (task_id, subtask)
 end
 
 function courier_job_failed (task_id, subtask)
-    if db.actor:has_info ("mil_leader_quest2_failed") or 
-       this.is_actor_enemy_freedom () then
+    if db.actor:has_info ("mil_leader_quest2_failed") then
        return true
     end
     return false     
