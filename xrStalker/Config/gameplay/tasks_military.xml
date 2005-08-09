@@ -257,6 +257,7 @@
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type>green_location</map_location_type>
             <object_story_id>Mil_RG6</object_story_id>
+            <function_complete>mil_tasks.mil_task_rg6_have</function_complete>
             <map_location_hidden>1</map_location_hidden>
 		</objective>
 		<objective>
