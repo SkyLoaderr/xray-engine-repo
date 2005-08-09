@@ -139,25 +139,29 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</prev_map_btn_>								
-							<zoom_in_btn x="120" y="0" width="20" height="12" check_mode="1">
+							<zoom_in_btn x="120" y="0" width="32" height="32" check_mode="1">
 								<window_name>zoom_in_btn</window_name>
-								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z+</text>
+								<texture>ui_icons_newPDA_zoom</texture>
+<!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z+</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
 									<d r="181" g="170" b="148"/>
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
+-->								
 							</zoom_in_btn>								
-							<zoom_out_btn x="145" y="0" width="20" height="12" check_mode="1">
+							<zoom_out_btn x="145" y="0" width="32" height="32" check_mode="1">
 								<window_name>zoom_out_btn</window_name>
-								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z-</text>
+								<texture>ui_icons_newPDA_ZoomMin</texture>
+<!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z-</text>
 								<text_color>
 									<e r="181" g="170" b="148"/>
 									<d r="181" g="170" b="148"/>
 									<t r="127" g="127" b="127"/>				
 									<h r="231" g="153" b="22"/>
 								</text_color>			
+-->								
 							</zoom_out_btn>								
 							<add_spot_btn x="170" y="0" width="25" height="12" check_mode="1">
 								<window_name>add_spot_btn</window_name>

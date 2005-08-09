@@ -957,7 +957,7 @@ void CWeapon::UpdateHUDAddonsVisibility()
 
 
 	if (!pHudVisual)return;
-	s16  bone_id;
+	u16  bone_id;
 
 	if(ScopeAttachable())
 	{
@@ -1005,7 +1005,7 @@ void CWeapon::UpdateAddonsVisibility()
 //	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
 	CKinematics* pWeaponVisual = smart_cast<CKinematics*>(Visual()); R_ASSERT(pWeaponVisual);
 
-	s16  bone_id;
+	u16  bone_id;
 	UpdateHUDAddonsVisibility								();	
 
 	if(ScopeAttachable())
