@@ -122,3 +122,13 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	else
 		return				(abstract);
 }
+
+void	CLevel::ProcessGameSpawns	()
+{
+	while (!game_spawn_queue.empty())
+	{
+		g_sv_Spawn					(game_spawn_queue.front());
+		F_entity_Destroy			(game_spawn_queue.front());
+		game_spawn_queue.pop_front	();
+	}
+}

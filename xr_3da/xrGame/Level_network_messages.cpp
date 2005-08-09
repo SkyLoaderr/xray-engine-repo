@@ -37,6 +37,7 @@ void CLevel::ClientReceive()
 				};
 
 				game_spawn_queue.push_back(E);
+				if (g_bDebugEvents)		ProcessGameSpawns();
 			}
 			break;
 		case M_UPDATE:
@@ -268,10 +269,5 @@ void CLevel::ClientReceive()
 		net_msg_Release();
 	}
 
-	while (!game_spawn_queue.empty())
-	{
-		g_sv_Spawn					(game_spawn_queue.front());
-		F_entity_Destroy			(game_spawn_queue.front());
-		game_spawn_queue.pop_front	();
-	}
+	if (!g_bDebugEvents) ProcessGameSpawns();
 }

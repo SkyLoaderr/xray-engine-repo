@@ -171,6 +171,7 @@ public:
 	virtual void				OnFrame					( void );
 	virtual void				OnRender				( );
 	void						ProcessGameEvents		( );
+	void						ProcessGameSpawns		( );
 
 	// Input
 	virtual	void				IR_OnKeyboardPress		( int btn );
