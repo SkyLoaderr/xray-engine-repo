@@ -12,7 +12,7 @@
 #include "ui\map_spots_relations.xml"
 #include "ui\map_spots_lchangers.xml"
 
-<!--
+
 	<blue_location>
 		<level_map spot="blue_spot"			pointer="user_pointer"></level_map>
 		<mini_map spot="blue_mini_spot"		pointer="user_pointer"></mini_map>
@@ -23,7 +23,7 @@
 	<blue_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
 		<texture x="493" y="1000" width="11" height="11">ui\ui_common</texture>
 	</blue_mini_spot>
--->	
+
 	<crlc_big>
 		<level_map spot="crcl_big_spot"</level_map>
 	</crlc_big>
