@@ -67,6 +67,7 @@ public:
 			void	ClearRealRepresentationFlags();
 			void	GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
 			u8		GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum);
+			void	SetRank(int rank) {m_iCurrentRank = rank;}
 
 CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName);
 CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
@@ -82,6 +83,7 @@ protected:
 			bool	SetMenuLevel(MENU_LEVELS level);
 			void	ShowSectionEx(int iSection);
 			void	EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable = true);			
+			void	EnableDDItemByRank(CUIDragDropItemMP* pDDItem);
 			void	OnItemSelect();			
 			void	OnItemDrop(CUIDragDropItemMP* pItem);
 			void	OnBackClick();
@@ -97,6 +99,8 @@ protected:
 			void	FillUpItem(CUIDragDropItemMP* pDDItem, int iGroup, int j);
 			void	FillUpInfiniteItemsList();
 			bool	IsItemInfinite(CUIDragDropItemMP* pDDItem);
+			int		GetItemRank(const char* item);
+			bool	IsInRank(const char* item, const char* rank);
 CUIDragDropList*	GetCurrentGroup();
 			int		GetCurrentGroupIndex();
 
@@ -104,12 +108,13 @@ CUIDragDropList*	GetCurrentGroup();
 	shared_str					m_StrSectionName;
 	shared_str					m_StrPricesSection;
 	int							m_iMoneyAmount;
+	int							m_iCurrentRank;
 	Irect						m_rectWorkSpace;
 	MENU_LEVELS					m_mlCurrLevel;
 	CUIDragDropItemMP*			m_pCurrentDDItem;
 	xr_list<shared_str>			m_vInfiniteItemsList;
 	xr_list<CUIDragDropItemMP*>	m_vCopyList;
-
+    
 	BoxInfo m_boxesDefs[4];
 
 	DEF_VECTOR(WPN_SECT_NAMES, xr_string); // vector of weapons. it represents ONE section 

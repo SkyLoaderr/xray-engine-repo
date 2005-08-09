@@ -251,6 +251,8 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
+	UIDescWnd.AttachChild(&UIDescRankIcon);
+	xml_init.InitStatic(uiXml, "desc_static:rank_icon",0,&UIDescRankIcon);
 
 	UpdatePresetPrices();
 	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
@@ -1546,6 +1548,17 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 			UIItemInfo.UIItemImage.SetWidth	(_min(v_r.width(),UIItemInfo.UIItemImageSize.x));
 			UIItemInfo.UIItemImage.SetHeight(_min(v_r.height(),UIItemInfo.UIItemImageSize.y));
 			UIItemInfo.UIItemImage.TextureOn();
+
+			
+			if (pDDItemMP->m_iRank>=0 && pDDItemMP->m_iRank<=4)
+			{
+				string64 tex_name;
+				string64 foo;
+				strconcat(tex_name,"rank_",itoa(pDDItemMP->m_iRank,foo,10));
+				UIDescRankIcon.InitTexture(tex_name);
+			}
+			
+			
 
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
 			{

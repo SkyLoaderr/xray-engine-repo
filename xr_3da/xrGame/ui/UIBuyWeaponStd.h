@@ -9,6 +9,7 @@
 const u32			cDetached					= 0xffffffff;
 const u32			cAttached					= 0xff00ff00;
 const u32			cUnableToBuy				= 0xffff8080;
+const u32			cUnableByRank				= 0x88ff9999;
 const u32			cAbleToBuy					= cDetached;
 const u32			cAbleToBuyOwned				= 0xff9696ff;
 const float			SECTION_ICON_SCALE			= 4.0f/5.0f;

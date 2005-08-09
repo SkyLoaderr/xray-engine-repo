@@ -30,6 +30,7 @@
 extern const u32	cDetached;
 extern const u32	cAttached;
 extern const u32	cUnableToBuy;
+extern const u32	cUnableByRank;
 extern const u32	cAbleToBuy;
 extern const u32	cAbleToBuyOwned;
 extern const float	fRealItemSellMultiplier;
@@ -62,6 +63,7 @@ protected:
 	CUIStatic			UIBackground;
 	CUIBag				UIBagWnd;
 	CUIStatic			UIDescWnd;
+	CUIStatic			UIDescRankIcon;
 	CUIStatic			UIPersonalWnd;
 	CUIBuyWeaponTab		UITabControl;
 	CUIStatic			UIStaticBelt;
@@ -212,6 +214,7 @@ public:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
 	const u8	GetWeaponAddonInfoByIndex(u8 idx);
 	const u8	GetBeltSize();
+	void		SetRank(int rank) {UIBagWnd.SetRank(rank);}
 	void		ReInitItems	(LPCSTR strSectionName);
 
 	// Процедуры принудительного перемещения оружия (эмуляция даблклика).

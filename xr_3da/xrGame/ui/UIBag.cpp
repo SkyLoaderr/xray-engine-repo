@@ -15,6 +15,9 @@
 #include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "../../xr_ioconsole.h"
+#include "../../xr_ioc_cmd.h"
+
 
 using namespace InventoryUtilities;
 
@@ -26,6 +29,7 @@ CUIBag::CUIBag(CHECK_PROC proc){
 	m_mlCurrLevel	= mlRoot;
 	m_pCurrentDDItem = NULL;
 	m_iMoneyAmount = 10000;
+	m_iCurrentRank = 0;
 
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 	{
@@ -153,6 +157,8 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	FillUpGroups();
 	HideAll();
 	SetMenuLevel(mlRoot);
+
+	CMD4(CCC_Integer,"rank_for_buymenu",&m_iCurrentRank,0,4);
 }
 
 bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
@@ -163,6 +169,40 @@ bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
 			return true;
 
     return false;
+}
+
+int CUIBag::GetItemRank(const char* item){
+	char rank[16];
+	char foo[5];
+
+	// from 4 downto 1
+	for (int i = 4; i>0; i--)
+	{
+		strconcat(rank,"rank_",itoa(i,foo,10));
+		if (IsInRank(item,rank))
+			return i;
+	}
+
+	return 0;	
+}
+
+bool CUIBag::IsInRank(const char* item, const char* rank){
+	if(!pSettings->section_exist(rank))
+		return false;
+
+	xr_string itemsList; 
+	string256 single_item;
+
+	itemsList = pSettings->r_string(rank, "available_items");
+	int itemsCount	= _GetItemCount(itemsList.c_str());
+
+	for (int i = 0; i < itemsCount; i++)
+	{
+		_GetItem(itemsList.c_str(), i, single_item);		
+		if (0 == xr_strcmp(item, single_item))
+			return true;
+	}    
+	return false;
 }
 
 void CUIBag::Init(float x, float y, float width, float height){
@@ -191,7 +231,8 @@ void CUIBag::UpdateBuyPossibility(){
 	{
 		pDDItem = (CUIDragDropItemMP*)(*it);
 		flag = !(pDDItem->GetCost() > money);
-		EnableDDItem(pDDItem, flag);		
+		EnableDDItem(pDDItem, flag);
+		EnableDDItemByRank(pDDItem);
 	}
 }
 
@@ -242,6 +283,14 @@ void CUIBag::EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable){
 	u32 color = bEnable ? (owned ? cAbleToBuyOwned : cAbleToBuy) : cUnableToBuy;
 	pDDItem->SetColor(color);
 	pDDItem->EnableDragDrop(bEnable);
+}
+
+void CUIBag::EnableDDItemByRank(CUIDragDropItemMP* pDDItem){
+	if (pDDItem->m_iRank > m_iCurrentRank)
+	{
+		pDDItem->SetColor(cUnableByRank);
+		pDDItem->EnableDragDrop(false);
+	}    
 }
 
 bool CUIBag::IsItemInBag(CUIDragDropItemMP* pDDItem){
@@ -433,27 +482,8 @@ bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 		if (dik <= DIK_0 && dik >= DIK_1)
 		{
 			CUIDragDropItemMP* pDDItemMP = GetItemByKey(dik,GetCurrentGroupIndex());
-
 			if (pDDItemMP)
 				GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
-
-   //         CUIDragDropList* pDDList = GetCurrentGroup();
-			//unsigned int index = static_cast<u32>(dik - 2);
-			//if (pDDList->GetDragDropItemsList().size() >= index)
-			//{
-			//	DRAG_DROP_LIST_it it = pDDList->GetDragDropItemsList().begin();
-			//	
-			//	for (; it != pDDList->GetDragDropItemsList().end(); ++it)
-			//	{
-			//		CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
-			//		
-			//		if (pDDItemMP->GetPosInSubSection() == index)
-			//		{
-			//			GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
-			//			return true;
-			//		}
-			//	}
-			//}
 		}
 		break;
 	default:
@@ -696,7 +726,8 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 			float(iGridHeight * INV_GRID_HEIGHT));
 
 
-		pDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());		
+		pDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());
+		pDDItem->m_iRank = GetItemRank(m_wpnSectStorage[group][j].c_str());
 		pDDItem->SetMessageTarget(GetParent());
 		pDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
