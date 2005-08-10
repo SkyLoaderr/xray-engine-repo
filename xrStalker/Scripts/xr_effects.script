@@ -817,6 +817,10 @@ function mil_cap_mapspot_remove (stalker1, stalker2)
     end      
 end
 
+function set_actor_enemy_for_freedom (actor, npc)
+    xr_gulag.setGulagEnemy ("mil_freedom", actor)
+end
+
 
 -- GARBAGE
 
