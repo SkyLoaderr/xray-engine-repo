@@ -175,7 +175,7 @@
 								</text_color>			
 -->								
 							</add_spot_btn>								
-							<remove_spot_btn x="225" y="-7" width="32" height="32" check_mode="1">
+							<remove_spot_btn x="225" y="-7" width="32" height="32" check_mode="0">
 								<window_name>remove_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssigndel</texture>
 <!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">remove</text>
