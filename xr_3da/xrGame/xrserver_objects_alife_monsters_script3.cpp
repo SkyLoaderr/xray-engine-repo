@@ -74,3 +74,19 @@ void CSE_ALifeCreaturePhantom::script_register(lua_State *L)
 	];
 }
 
+
+void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_creature1(
+			CSE_ALifeCreatureAbstract,
+			"cse_alife_creature_abstract",
+			CSE_ALifeDynamicObjectVisual
+		)
+		.def("health",&CSE_ALifeCreatureAbstract::g_Health)
+		.def("alive",&CSE_ALifeCreatureAbstract::g_Alive)
+		.def_readwrite("team",&CSE_ALifeCreatureAbstract::s_team)
+		.def_readwrite("squad",&CSE_ALifeCreatureAbstract::s_squad)
+		.def_readwrite("group",&CSE_ALifeCreatureAbstract::s_group)
+	];
+}
