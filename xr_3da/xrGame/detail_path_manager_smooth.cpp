@@ -208,6 +208,12 @@ bool CDetailPathManager::build_circle_trajectory(
 		n				= 1;
 	else {
 		int				m = _min(iFloor(_abs(angle)/position.angular_velocity*10.f + 1.5f),iFloor(position.radius*_abs(angle)/min_dist + 1.5f));
+#ifdef DEBUG
+		if (m>=10000) {
+			Msg			("! [position.radius=%f],[angle=%f],[m=%d]",position.radius,angle,m);
+			VERIFY		(m<10000);
+		}
+#endif
 		n				= !m ? 1 : m;
 	}
 	int					k = vertex_id ? 0 : -1;
