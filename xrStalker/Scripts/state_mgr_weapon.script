@@ -221,7 +221,9 @@ function act_state_mgr_weapon_drop:finalize()
 end
 
 function get_idle_state(st)
-	if state_lib.states[st.target_state].mental == anim.danger then
+	if state_lib.states[st.target_state].mental == anim.danger and
+	   state_lib.states[st.target_state].movement = move.stand 
+	then
 		return object.aim1
 	else
 		return object.idle
