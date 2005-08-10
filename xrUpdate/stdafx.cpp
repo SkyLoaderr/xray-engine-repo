@@ -4,5 +4,4 @@
 
 #include "stdafx.h"
 
-#pragma comment(lib,"xr_3da")
 #pragma comment(lib,"xrCore")
