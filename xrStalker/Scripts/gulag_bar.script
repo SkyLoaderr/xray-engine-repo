@@ -1709,7 +1709,7 @@ function load_states(gname, type)
 	if type == "bar_dolg_veterans" then        
 		return function (gulag)
 				for k,v in gulag.Object do
-					enemy = v:best_enemy()
+					local enemy = v:best_enemy()
 					if enemy ~= nil then
    						gulag.alarm_start = game.get_game_time()
    						return 2 -- тревога
