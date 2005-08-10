@@ -13,6 +13,7 @@
 #include "GameFont.h"
 #include "xr_trims.h"
 #include "CustomHUD.h"
+#include <locale>
 
 #define  LDIST .05f
 
@@ -312,13 +313,17 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_INSERT:
 		if( OpenClipboard(0) )
 		{
-			HGLOBAL hmem = GetClipboardData(CF_OEMTEXT);
+			HGLOBAL hmem = GetClipboardData(CF_TEXT);
 			if( hmem ){
 				LPCSTR	clipdata = (LPCSTR)GlobalLock(hmem);
 				strncpy (editor,clipdata,MAX_LEN-1); editor[MAX_LEN-1]=0;
+				std::locale loc ("English");
 				for (u32 i=0; i<xr_strlen(editor); i++)
-					if (isprint(editor[i]))	editor[i]=char(_tolower(editor[i]));
-					else					editor[i]=' ';
+					if (isprint(editor[i]))	{
+						editor[i]=char(tolower(editor[i],loc));
+					}else{
+						editor[i]=' ';
+					}
 				
 				GlobalUnlock( hmem );
 				CloseClipboard();
