@@ -47,7 +47,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
 
-	tmp = utils.cfg_get_string(ini, section, "territory_hit", obj, false, "")
+	local tmp = utils.cfg_get_string(ini, section, "territory_hit", obj, false, "")
 	if tmp then
 		st.territory_hit = xr_logic.parse_condlist(obj, section, "territory_hit", tmp)
 	else
