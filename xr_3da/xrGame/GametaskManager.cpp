@@ -191,6 +191,9 @@ void CGameTaskManager::UpdateActiveTask				()
 			CGameTask* t		= (*it).game_task;
 			if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
 			for(u32 i=0; (i<t->m_Objectives.size())&&(!bDone) ;++i){
+				
+				if(t->Objective(i).TaskState() != eTaskStateInProgress) continue;
+				
 				if(t->Objective(i).HasMapLocation()){
 					t->HighlightSpotOnMap(i,true);
 					bDone = true;

@@ -279,8 +279,9 @@ bool CUITaskSubItem::OnDbClick				()
 
 void CUITaskSubItem::OnShowPointerClicked	()
 {
-	bool bPushed = m_showPointerBtn->GetCheck();
+	bool bPushed							= m_showPointerBtn->GetCheck();
 	m_GameTask->HighlightSpotOnMap			(m_TaskObjectiveIdx,bPushed);
+	m_EventsWnd->ShowDescription			(GameTask(), ObjectiveIdx());
 }
 
 void CUITaskSubItem::OnShowDescriptionClicked ()

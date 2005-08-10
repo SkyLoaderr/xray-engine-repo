@@ -207,7 +207,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 			l = xr_new<CUILevelMap>(this);
 			
-			l->Init(map_name, gameLtx, "hud\\set");
+			l->Init(map_name, gameLtx, "hud\\default");
 
 			l->OptimalFit( m_UILevelFrame->GetWndRect() );
 		}
