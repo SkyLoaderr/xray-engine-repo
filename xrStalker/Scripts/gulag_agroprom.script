@@ -600,7 +600,7 @@ function load_states( gname, type )
 					end
 				end
 			else
-				if actor and ( gulag:get_population() < 4 or game.get_game_time():diffSec( gulag.stateBegin ) > 600 ) then
+				if actor and ( gulag:get_population() < 6 or game.get_game_time():diffSec( gulag.stateBegin ) > 600 ) then
 					actor:disable_info_portion( "agr_rush_start" )
 					return 0
 				else
