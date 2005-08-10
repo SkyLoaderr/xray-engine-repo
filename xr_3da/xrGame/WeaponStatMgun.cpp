@@ -277,11 +277,13 @@ bool CWeaponStatMgun::attach_Actor		(CGameObject* actor)
 {
 	inheritedHolder::attach_Actor	(actor);
 	SetBoneCallbacks				();
+	FireEnd							();
 	return true;
 }
 
-void CWeaponStatMgun::detach_Actor()
+void CWeaponStatMgun::detach_Actor		()
 {
 	inheritedHolder::detach_Actor	();
 	ResetBoneCallbacks				();
+	FireEnd							();
 }

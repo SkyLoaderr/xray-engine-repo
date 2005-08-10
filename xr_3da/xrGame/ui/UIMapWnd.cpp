@@ -132,25 +132,6 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolActorClicked,this,_1,_2));
 	}
 
-	btnIndex		= eNextMap;
-	strconcat(pth, sToolbar.c_str(), ":next_map_btn");
-	if(uiXml.NavigateToNode(pth,0)){
-		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
-		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
-		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
-		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolNextMapClicked,this,_1,_2));
-	}
-
-	btnIndex		= ePrevMap;
-	strconcat(pth, sToolbar.c_str(), ":prev_map_btn");
-	if(uiXml.NavigateToNode(pth,0)){
-		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
-		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
-		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
-		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolPrevMapClicked,this,_1,_2));
-	}
 
 	btnIndex		= eZoomIn;
 	strconcat(pth, sToolbar.c_str(), ":zoom_in_btn");
@@ -463,6 +444,8 @@ void CUIMapWnd::Update()
 {
 	inherited::Update			();
 	m_ActionPlanner->update		();
+	if(m_ToolBar[eRemoveSpot])
+		m_ToolBar[eRemoveSpot]->Show(m_selected_location&&m_selected_location->CanBeUserRemoved());
 }
 
 void CUIMapWnd::SetZoom	( float value)
@@ -479,29 +462,6 @@ void CUIMapWnd::OnToolGlobalMapClicked	(CUIWindow* w, void*)
 	SetTargetMap(GlobalMap());
 }
 
-void CUIMapWnd::OnToolNextMapClicked	(CUIWindow* w, void*)
-{
-/*	u16 curr_map_idx = 0;
-	if(GlobalMap()!=ActiveMap()){
-		curr_map_idx = GetIdxByName(ActiveMap()->MapName());
-		++curr_map_idx;
-		if(curr_map_idx == (u16)GameMaps().size()) curr_map_idx = 0;
-	}
-	SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
-*/
-}
-
-void CUIMapWnd::OnToolPrevMapClicked	(CUIWindow* w, void*)
-{
-/*	u16 curr_map_idx = 0;
-	if(GlobalMap()!=ActiveMap()){
-		curr_map_idx = GetIdxByName(ActiveMap()->MapName());
-		--curr_map_idx;
-		if(curr_map_idx == -1) curr_map_idx = (u16)GameMaps().size()-1;
-	}
-	SetActiveMap(GetMapByIdx(curr_map_idx)->MapName());
-*/
-}
 
 void CUIMapWnd::ResetActionPlanner()
 {
@@ -628,7 +588,6 @@ void CUIMapWnd::ShowHint					(CUIWindow* parent, LPCSTR text)
 	m_hint->SetText			(text);
 
 	//select appropriate position
-	//walk clockwise
 	Frect r;
 	r.set					(0.0f, 0.0f, m_hint->GetWidth(), m_hint->GetHeight());
 	r.add					(c_pos.x, c_pos.y);

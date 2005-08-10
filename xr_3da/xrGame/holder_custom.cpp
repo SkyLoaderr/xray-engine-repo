@@ -12,6 +12,6 @@ bool CHolderCustom::attach_Actor(CGameObject* actor)
 
 void CHolderCustom::detach_Actor()
 {
-	m_owner						= 0;
+	m_owner						= NULL;
 	m_ownerActor				= NULL;
 }

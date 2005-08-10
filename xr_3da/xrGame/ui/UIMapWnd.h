@@ -28,8 +28,6 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 {
 	typedef CUIWindow inherited;
 	enum EMapToolBtn{	eGlobalMap=0,
-						eNextMap,
-						ePrevMap,
 						eZoomIn,
 						eZoomOut,
 						eAddSpot,
