@@ -4419,6 +4419,7 @@
     </dialog>
     <dialog id="bar_dolg_leader_prisyaga">
         <has_info>bar_svoboda_rg6_done</has_info>
+        <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
         <phrase_list>
             <phrase id="3">
                 <text>bar_dolg_leader_prisyaga_3</text>
