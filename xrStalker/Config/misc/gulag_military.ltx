@@ -1268,6 +1268,7 @@ active = walker1@mil_fblockpost_patrol1
 [walker1@mil_fblockpost_patrol1]
 path_walk = patrol_walk1
 path_look = patrol_look1
+meet = meet@fblockpost_common
 
 ;-- патруль 2
 [logic@mil_fblockpost_patrol2]
@@ -1276,6 +1277,7 @@ active = walker1@mil_fblockpost_patrol2
 [walker1@mil_fblockpost_patrol2]
 path_walk = patrol_walk2
 path_look = patrol_look2
+meet = meet@fblockpost_common
 
 
 ;-- кэмперы
@@ -1453,6 +1455,7 @@ active = walker1@mil_fneutral_patrol1
 [walker1@mil_fneutral_patrol1]
 path_walk = patrol_walk1
 path_look = patrol_look1
+meet = meet@fblockpost_common
 
 ;-- патруль 2
 [logic@mil_fneutral_patrol2]
@@ -1461,6 +1464,7 @@ active = walker1@mil_fneutral_patrol2
 [walker1@mil_fneutral_patrol2]
 path_walk = patrol_walk2
 path_look = patrol_look2
+meet = meet@fblockpost_common
 
 
 ;-- кэмперы
@@ -1519,3 +1523,13 @@ threshold@mil_fbarier
 [threshold@mil_fbarier]
 max_ignore_distance = 150
 ignore_monster = 0.1
+
+
+[meet@fblockpost_common]
+use = false
+use_wpn = false
+victim = 2|actor
+victim_wpn = 2|actor
+meet_state = 2|wait@talk_hello
+meet_state_wpn = 2|wait@talk_hello
+synpairs = wait@talk_hello
