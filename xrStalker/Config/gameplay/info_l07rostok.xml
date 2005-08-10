@@ -17,31 +17,15 @@
 
 	<!-- bar talk infoportions -->
 	<info_portion id="bar_bar_kill_svoboda_ambush_start"></info_portion>
-	<info_portion id="bar_bar_kill_svoboda_ambush_done">
-		<disable>bar_bar_kill_svoboda_ambush_start</disable>
-	</info_portion>
-	<info_portion id="bar_bar_kill_bloodsucker_start"></info_portion>
-	<info_portion id="bar_bar_kill_bloodsucker_done">
-		<disable>bar_bar_kill_bloodsucker_start</disable>
-	</info_portion>	
-	<info_portion id="bar_bar_kill_svoboda_leader_start"></info_portion>
-	<info_portion id="bar_bar_kill_svoboda_leader_done">
-		<disable>bar_bar_kill_svoboda_leader_start</disable>
-	</info_portion>	
+	<info_portion id="bar_bar_kill_svoboda_ambush_done"></info_portion>
+	
 	<info_portion id="bar_kill_veteran_start">
 		<task>bar_crazy_veterans_quest</task>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_kill_veteran_killed"></info_portion>
-	<info_portion id="bar_kill_veteran_done">
-		<disable>bar_kill_veteran_start</disable>
-		<disable>bar_kill_veteran_killed</disable>
-	</info_portion>	
-	<info_portion id="bar_bar_yantar_off_start"></info_portion>
-	<info_portion id="bar_bar_yantar_off_done">
-		<disable>bar_bar_yantar_off_start</disable>
-	</info_portion>	
-
+	<info_portion id="bar_kill_veteran_done"></info_portion>	
+	
 	<!-- barman walk info portions -->
 	<info_portion id="bar_barman_need_hole">
 		<disable>bar_barman_need_room</disable>
@@ -115,7 +99,6 @@
 	</info_portion>
 	<info_portion id="mil_kill_svoboda_leader_killed"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_done"></info_portion>
-	<info_portion id="bar_kill_svoboda_leader_reward"></info_portion>
 
     <info_portion id="rostok_heli_start"></info_portion>
 
