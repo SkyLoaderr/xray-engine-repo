@@ -212,6 +212,10 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CEatableItem,		CInventoryItem)
 
+		DECLARE_SPECIALIZATION	(CBaseMonster,		CGameObject,	cast_base_monster);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CBaseMonster,		CGameObject)
+
 #	endif
 	
 	DECLARE_SPECIALIZATION	(CSE_Abstract,		CSE_ALifeInventoryItem,	cast_abstract);

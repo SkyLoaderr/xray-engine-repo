@@ -34,6 +34,7 @@ class CWeapon;
 class CExplosive;
 class CHolderCustom;
 class CAttachmentOwner;
+class CBaseMonster;
 
 namespace GameObject {
 	enum ECallbackType;
@@ -79,6 +80,7 @@ public:
 	virtual CSpaceRestrictor*			cast_restrictor				()						{return NULL;}
 	virtual CAttachableItem*			cast_attachable_item		()						{return NULL;}
 	virtual CHolderCustom*				cast_holder_custom			()						{return NULL;}
+	virtual CBaseMonster*				cast_base_monster			()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)					{return TRUE;}
