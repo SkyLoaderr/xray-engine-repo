@@ -10,6 +10,7 @@
 #include "monster_velocity_space.h"
 #include "monster_event_manager.h"
 #include "control_jump.h"
+#include "../../sound_player.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -446,6 +447,8 @@ void CControlAnimationBase::check_hit(MotionID motion)
 
 	SAAParam &params		= AA_GetParams(motion);
 	
+	m_object->sound().play	(MonsterSpace::eMonsterSoundAttackHit);
+
 	bool should_hit = true;
 	// определить дистанцию до врага
 	Fvector d;
