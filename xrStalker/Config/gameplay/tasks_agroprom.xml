@@ -8,15 +8,15 @@
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_1</text>
-            <map_location_type>agr_military_case_location</map_location_type>
+            <map_location_type hint="agr_take_case_hint">green_location</map_location_type>
             <object_story_id>agr_military_documents</object_story_id>
             <function_complete>agroprom_tasks.have_quest_case_02</function_complete>
-<!--        <function_call_complete>agroprom_tasks.agr_trader_documents</function_call_complete> -->
+            <function_call_complete>agroprom_tasks.agr_trader_documents</function_call_complete>
 			<infoportion_set_complete>agroprom_military_case_have</infoportion_set_complete>            
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_2</text>
-            <map_location_type>bar_barman_location</map_location_type>
+            <map_location_type hint="agr_give_case_to_barman_hint">blue_location</map_location_type>
             <object_story_id>bar_Barman</object_story_id>
             <infoportion_complete>agroprom_military_case_done</infoportion_complete>
 		</objective>
@@ -33,14 +33,14 @@
 		<objective>
 			<text>agr_meet_krot_band_1</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>agr_krot_location</map_location_type>
+            <map_location_type hint="agr_meet_krot_hint">green_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
 			<infoportion_fail>agr_krot_dead</infoportion_fail>
 		</objective>
 		<objective>
 			<text>agr_meet_krot_band_2</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>agr_krot_location</map_location_type>
+            <map_location_type hint="agr_take_krots_info_hint">green_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
             <function_complete>agroprom_tasks.have_krots_flash</function_complete>
 		</objective>
@@ -56,7 +56,7 @@
 		<objective>
 			<text>agroprom_find_gunslinger_cache_1</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>agr_gunslinger_cache_location</map_location_type>
+            <map_location_type hint="agr_find_gunslinger_cache_hint">green_location</map_location_type>
             <object_story_id>agr_gunslinger_collector_entrance</object_story_id>
 			<infoportion_complete>agr_find_gunslinger_cache_found</infoportion_complete>
 		</objective>
@@ -91,7 +91,7 @@
 		<objective>
 			<text>agr_help_stalkers_2</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>agr_factory_skirmish1_location</map_location_type>
+            <map_location_type hint="agr_help_stalkers_hint">green_location</map_location_type>
             <object_story_id>agr_factory_skirmish1</object_story_id>
             <infoportion_complete>agr_help_stalkers_assault_dead</infoportion_complete>
             <infoportion_fail>agr_help_stalkers_defence_dead</infoportion_fail>
@@ -115,7 +115,7 @@
 		<objective>
 			<text>agr_help_krot_2</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>agr_krot_location</map_location_type>
+            <map_location_type hint="agr_help_krot_hint">green_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
             <infoportion_fail>agr_krot_dead</infoportion_fail>
 		</objective>

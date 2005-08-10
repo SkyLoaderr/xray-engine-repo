@@ -72,7 +72,7 @@ function process_info_portion(info_id)
 --		return true
 
 	if info_id == "agr_sold_about_ratcatcher" then
-		level_tasks.add_location(304, "agr_ratcatcher_location")
+		level_tasks.add_location(304, "agr_ratcatcher_location", "agr_swamp_hint")
 		return true
 		
 -- collector entrance		
@@ -87,17 +87,17 @@ function process_info_portion(info_id)
 		
 -- captains chamber
 	elseif info_id == "agr_captains_chamber_info" then
-		level_tasks.add_location(306, "agr_captains_chamber_location")
-		return true	
+		level_tasks.add_location(306, "agr_captains_chamber_location", "agr_captains_chamber_hint")
+		return true
 
 -- agroprom factory location
 	elseif info_id == "agr_factory_location" then
-		level_tasks.add_location(320, "agr_factory_location")
-		return true	
+		level_tasks.add_location(320, "agr_factory_location", "agr_factory_hint")
+		return true
 -- agroprom nii location
 	elseif info_id == "agr_nii_location" then
-		level_tasks.add_location(321, "agr_nii_location")
-		return true	
+		level_tasks.add_location(321, "agr_nii_location", "agr_nii_hint")
+		return true
 
 --	elseif info_id == "agr_help_krot_start" and not level_tasks.is_map_spot_present (302, "agr_krot_location") then
 --		level_tasks.add_location(302, "agr_krot_location")
