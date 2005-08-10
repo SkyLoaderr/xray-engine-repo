@@ -101,8 +101,10 @@ bool  CAttachableItem::can_be_attached		() const
 }
 void CAttachableItem::afterAttach			()
 {
+	processing_activate		();
 }
 
 void CAttachableItem::afterDetach			()
 {
+	processing_deactivate		();
 }
