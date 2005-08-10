@@ -549,8 +549,20 @@
     <string id="mil_dolg_soldier_dialog_2">
         <text>Ну, вот и славненько. Есть желание заработать?</text>
     </string>
+    <string id="mil_dolg_soldier_dialog_20">
+        <text>Ну, не знаю...</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_21">
+        <text>Тебе что, жить надоело ?</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_22">
+        <text>Мммммм. Нет.</text>
+    </string>
     <string id="mil_dolg_soldier_dialog_3">
         <text>Всегда.</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_30">
+        <text>Да как сказать...</text>
     </string>
     <string id="mil_dolg_soldier_dialog_4">
         <text>Тогда двигай за нами, поговоришь с нашим командиром.</text>

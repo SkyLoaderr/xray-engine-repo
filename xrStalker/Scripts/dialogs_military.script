@@ -169,3 +169,20 @@ function set_snipers_spots (npc, actor)
           --level_tasks.add_location (732, "mil_sniper_location")          
        --end   
 end
+
+function killactor (actor, npc)
+    ---printf ("NPC NAME : %s, actor name : %s", npc:name (), actor:name ())
+    this.set_actor_enemy_for (718)
+    this.set_actor_enemy_for (735)
+    this.set_actor_enemy_for (736)
+    this.set_actor_enemy_for (737)
+    this.set_actor_enemy_for (738)
+end
+
+function set_actor_enemy_for (sid)
+    local npc = level_object_by_sid (sid)
+    if npc == nil or npc:alive () == false then
+       return 
+    end    
+    npc:set_relation (game_object.enemy, db.actor)
+end

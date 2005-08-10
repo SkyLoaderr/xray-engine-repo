@@ -961,7 +961,7 @@ end
 
 function killactor (actor, npc)
     npc:set_relation (game_object.enemy, actor)
-    actor:give_info_portion ("mil_bodyguard_kill")
+    --actor:give_info_portion ("mil_bodyguard_kill")
 end
 
 -------------------------------------------------------------------------------------
