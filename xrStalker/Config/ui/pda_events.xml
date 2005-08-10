@@ -108,6 +108,7 @@
 									<h r="231" g="153" b="22"/>
 								</text_color>			
 							</global_map_btn>
+
 							<actor_btn x="50" y="0" width="50" height="12" push_off_x="0" push_off_y="2">
 							<window_name>actor_btn</window_name>
 								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">actor</text>
@@ -119,73 +120,24 @@
 								</text_color>			
 							</actor_btn>								
 															
-							<next_map_btn_ x="50" y="0" width="30" height="12" check_mode="0">
-								<window_name>next_map_btn</window_name>
-								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">next</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
-							</next_map_btn_>								
-							<prev_map_btn_ x="85" y="0" width="30" height="12" check_mode="0">
-								<window_name>prev_map_btn</window_name>
-								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">prev</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
-							</prev_map_btn_>								
 							<zoom_in_btn x="120" y="-7" width="32" height="32" check_mode="1">
 								<window_name>zoom_in_btn</window_name>
 								<texture>ui_icons_newPDA_zoom</texture>
-<!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z+</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
--->								
 							</zoom_in_btn>								
+
 							<zoom_out_btn x="153" y="-7" width="32" height="32" check_mode="1">
 								<window_name>zoom_out_btn</window_name>
 								<texture>ui_icons_newPDA_ZoomMin</texture>
-<!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">z-</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
--->								
 							</zoom_out_btn>								
+
 							<add_spot_btn x="190" y="-7" width="32" height="32" check_mode="1">
 								<window_name>add_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssign</texture>
-<!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">add</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
--->								
 							</add_spot_btn>								
+
 							<remove_spot_btn x="225" y="-7" width="32" height="32" check_mode="0">
 								<window_name>remove_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssigndel</texture>
-<!--								<text x="0" y="0" font="letterica18" r="255" g="255" b="255">remove</text>
-								<text_color>
-									<e r="181" g="170" b="148"/>
-									<d r="181" g="170" b="148"/>
-									<t r="127" g="127" b="127"/>				
-									<h r="231" g="153" b="22"/>
-								</text_color>			
--->								
 							</remove_spot_btn>								
 						</tool_bar>					
 
