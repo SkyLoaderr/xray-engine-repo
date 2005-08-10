@@ -472,7 +472,7 @@ void CUILines::IncCursorPos(){
 
 	UpdateCursor();
 	return;
-
+/**
     
 	const int sz = (int)m_lines.size();
 	if (uFlags.test(flComplexMode) && uFlags.test(flNeedReparse))
@@ -487,6 +487,7 @@ void CUILines::IncCursorPos(){
 			m_cursor_pos.x = 0;
 			m_cursor_pos.y++;
 		}
+/**/
 }
 
 void CUILines::DecCursorPos(){
