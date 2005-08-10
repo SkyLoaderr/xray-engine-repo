@@ -6,6 +6,8 @@
 function printf()
 end
 
+aim_ratio = 5000/22500
+
 --' Эвалуатор, который синхронизирует менеджер.
 --' Мы уже в безраличном состоянии idle или нет
 class "evaluator_state_mgr_idle" (property_evaluator)
@@ -195,11 +197,10 @@ function act_state_mgr_end:execute()
 		return
 	end
 	if t == "fire" or t == "sniper_fire" then
---		printf("FIRE 1")
+		local sniper_aim = 3000
 		if self.st.look_object ~= nil then
 			local look_object = level.object_by_id(self.st.look_object)
 			if look_object == nil then
-				printf("STATE_MGR[%s] clearing look object", self.object:name())
 				self.st.look_object = nil
 				return
 			end
@@ -209,7 +210,8 @@ function act_state_mgr_end:execute()
 				look_object:alive() == true
 			then
 				if t == "sniper_fire" then
-					self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
+					sniper_aim = self.object:position():distance_to_sqr(look_object:position())*aim_ratio
+					self.object:set_item(object.fire1, self.object:best_weapon(), 1, sniper_aim)
 				else
 					self.object:set_item(object.fire1, self.object:best_weapon())
 				end
@@ -223,9 +225,9 @@ function act_state_mgr_end:execute()
 		if self.st.look_position ~= nil and 
 			self.st.look_object == nil
 		then
---			printf("FIRE!!!")
 			if t == "sniper_fire" then
-				self.object:set_item(object.fire1, self.object:best_weapon(), 1, 3000)
+				sniper_aim = self.object:position():distance_to_sqr(look_position)*aim_ratio
+				self.object:set_item(object.fire1, self.object:best_weapon(), 1, sniper_aim)
 			else
 				self.object:set_item(object.fire1, self.object:best_weapon())
 			end
