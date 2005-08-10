@@ -8,7 +8,7 @@ function get_state(ini, section, obj)
 		def_state = ""
 	end
 	
-	return utils.cfg_get_string(ini, section, "state", npc, false, "", def_state)
+	return utils.cfg_get_string(ini, section, "state", obj, false, "", def_state)
 end
 
 function set_state(obj, actor, state)
