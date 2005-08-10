@@ -234,7 +234,7 @@ void CPhantom::shedule_Update(u32 DT)
 	inherited::shedule_Update(DT);
 
 	CSkeletonAnimated *K	= smart_cast<CSkeletonAnimated*>(Visual());
-	K->Update				();
+	K->UpdateTracks			();
 }
 
 void CPhantom::UpdateCL()

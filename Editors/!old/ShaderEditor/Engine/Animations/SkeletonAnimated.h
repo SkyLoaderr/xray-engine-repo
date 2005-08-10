@@ -188,7 +188,7 @@ public:
 	CBlendInstance&				LL_GetBlendInstance	(u16 bone_id)	{	VERIFY(bone_id<LL_BoneCount()); return blend_instances[bone_id];	}
 	                                                                
 	// Main functionality
-	void						Update			();								// Update motions
+	void						UpdateTracks	();								// Update motions
 	virtual void				CalculateBones	(BOOL bForced=FALSE);			// Recalculate skeleton 
 
 	// cycles

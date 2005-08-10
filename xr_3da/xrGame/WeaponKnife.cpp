@@ -94,7 +94,7 @@ void CWeaponKnife::UpdateCL	()
 	{
 	case eShowing:
 	case eHiding:
-		smart_cast<CSkeletonAnimated*>(m_pHUD->Visual())->Update();
+		smart_cast<CSkeletonAnimated*>(m_pHUD->Visual())->UpdateTracks();
 		break;
 	case eFire:
 		//state_Attacking	(dt);

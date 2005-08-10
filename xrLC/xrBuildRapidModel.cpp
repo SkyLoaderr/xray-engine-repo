@@ -45,7 +45,10 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 	CDB::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
 	for (vecFaceIt it=g_faces.begin(); it!=g_faces.end(); it++)
 	{
-		Face*	F	= (*it);
+		Face*	F				= (*it);
+		Shader_xrLC&	SH		= F->Shader();
+		if (!SH.flags.bLIGHT_CastShadow)					continue;
+
 		Progress	(float(it-g_faces.begin())/float(g_faces.size()));
 
 		// Collect

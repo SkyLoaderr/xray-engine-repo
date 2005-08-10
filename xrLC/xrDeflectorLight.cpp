@@ -117,7 +117,6 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 			base_Face* F										= (base_Face*) clT.dummy;
 			if (0==F)											continue;
 			if (skip==F)										continue;
-			if (bUseFaceDisable && F->flags.bDisableShadowCast)	continue;
 
 			Shader_xrLC&	SH									= F->Shader();
 			if (!SH.flags.bLIGHT_CastShadow)					continue;

@@ -303,7 +303,7 @@ CBlend*	CSkeletonAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float blend
 	return			B;
 }
 
-void CSkeletonAnimated::Update ()
+void CSkeletonAnimated::UpdateTracks	()
 {
 	if (Update_LastTime==Device.dwTimeGlobal) return;
 	u32 DT	= Device.dwTimeGlobal-Update_LastTime;
@@ -498,7 +498,7 @@ void CSkeletonAnimated::IBlend_Startup	()
 
 CBlend*	CSkeletonAnimated::IBlend_Create	()
 {
-	Update();
+	UpdateTracks	();
 	CBlend *I=blend_pool.begin(), *E=blend_pool.end();
 	for (; I!=E; I++)
 		if (I->blend == CBlend::eFREE_SLOT) return I;
@@ -740,10 +740,10 @@ void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
 	// early out.
 	// check if the info is still relevant
 	// skip all the computations - assume nothing changes in a small period of time :)
-	if		(Device.dwTimeGlobal == UCalc_Time)										return;	// early out for "fast" update
-	Update	();
-	if		(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
-	if		(Update_Visibility)									Visibility_Update	();
+	if			(Device.dwTimeGlobal == UCalc_Time)										return;	// early out for "fast" update
+	UpdateTracks();
+	if			(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
+	if			(Update_Visibility)									Visibility_Update	();
 
 	// here we have either:
 	//	1:	timeout elapsed

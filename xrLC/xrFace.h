@@ -117,7 +117,6 @@ public:
 	struct					{
 		u16					bSplitted			:		1;
 		u16					bProcessed			:		1;
-		u16					bDisableShadowCast	:		1;
 		u16					bOpaque				:		1;	// For ray-tracing speedup
 		u16					bLocked				:		1;	// For tesselation
 	}						flags;

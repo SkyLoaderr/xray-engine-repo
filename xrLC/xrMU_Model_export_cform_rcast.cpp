@@ -8,7 +8,9 @@ void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 
 	for (v_faces_it it = m_faces.begin(); it!=m_faces.end(); it++)
 	{
-		_face*	F		= (*it);
+		_face*	F				= (*it);
+		Shader_xrLC&	SH		= F->Shader();
+		if (!SH.flags.bLIGHT_CastShadow)		continue;
 
 		// Collect
 		adjacent.clear	();

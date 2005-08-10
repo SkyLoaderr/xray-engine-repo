@@ -166,7 +166,7 @@ void CWeaponHUD::UpdateHud		()
 	}
 
 	if(m_bCurrentEntityIsParent)
-		smart_cast<CSkeletonAnimated*>(Visual())->Update	();
+		smart_cast<CSkeletonAnimated*>(Visual())->UpdateTracks	();
 }
 
 void CWeaponHUD::StopCurrentAnim	()
