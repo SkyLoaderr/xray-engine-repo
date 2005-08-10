@@ -78,7 +78,7 @@ public:
 		dist = -(numer / denom);
 		return ((dist>0.f)||fis_zero(dist));
 	}
-	IC BOOL intersectRayPoint(const _vector3<T>& P, const _vector3<T>& D, _vector3<T>& dest) 
+	ICF BOOL intersectRayPoint(const _vector3<T>& P, const _vector3<T>& D, _vector3<T>& dest) 
 	{
 		T numer = classify(P);
 		T denom = n.dotproduct(D);

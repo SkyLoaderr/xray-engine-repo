@@ -110,7 +110,7 @@ IC	void CLevelGraph::unpack_xz(const CLevelGraph::CVertex *vertex, T &x, T &z) c
 	unpack_xz			(*vertex,x,z);
 }
 
-IC	const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &source_position) const
+ICF	const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &source_position) const
 {
 	Fvector				dest_position;
 	unpack_xz			(source_position,dest_position.x,dest_position.z);
@@ -118,7 +118,7 @@ IC	const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &sou
 	return				(dest_position);
 }
 
-IC	const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CLevelGraph::CPosition &source_position) const
+ICF	const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CLevelGraph::CPosition &source_position) const
 {
 	return				(dest_position = vertex_position(source_position));
 }
