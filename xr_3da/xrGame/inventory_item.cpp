@@ -184,7 +184,6 @@ LPCSTR CInventoryItem::NameComplex()
 			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], l_subName);
 	}*/
 
-
 	if(m_bUsingCondition){
 		string32		cond;
 		if(GetCondition()<0.33)		strcpy		(cond,	"[poor]");
@@ -195,7 +194,6 @@ LPCSTR CInventoryItem::NameComplex()
 		// sprintf			(temp,"%s %s",*m_nameComplex,cond);
 		m_nameComplex	= temp;
 	}
-
 
 	return *m_nameComplex;
 }

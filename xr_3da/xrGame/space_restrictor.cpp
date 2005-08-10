@@ -163,6 +163,9 @@ void CSpaceRestrictor::spatial_move		()
 
 void CSpaceRestrictor::prepare			() const
 {
+	Center							(m_selfbounds.P);
+	m_selfbounds.R					= Radius();
+
 	m_spheres.resize				(0);
 	m_boxes.resize					(0);
 
@@ -221,14 +224,11 @@ bool CSpaceRestrictor::prepared_inside	(const Fvector &position, float radius) c
 {
 	VERIFY							(actual());
 	
-	Fsphere							sphere;
-	sphere.P						= position;
-	sphere.R						= radius;
+	Fsphere							sphere	;
+	sphere.P						=		position;
+	sphere.R						=		radius;
 
-	Fsphere							self;
-	Center							(self.P);
-	self.R							= Radius();
-	if (!self.intersect(sphere))	return false	;
+	if (!m_selfbounds.intersect(sphere))	return false	;
 
 	{
 		SPHERES::const_iterator		I = m_spheres.begin();

@@ -35,9 +35,10 @@ private:
 
 #ifdef PRECOMPUTED_INSIDE
 private:
-	mutable bool	m_actuality;
 	mutable SPHERES	m_spheres;
 	mutable BOXES	m_boxes;
+	mutable Fsphere	m_selfbounds;
+	mutable bool	m_actuality;
 #endif
 
 #ifdef PRECOMPUTED_INSIDE

@@ -80,7 +80,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
 		if (ai().game_graph().header().levels().find(game_vertex->level_id()) != ai().game_graph().header().levels().end())
 		{
-			sprintf(locationName, "%s ", *CStringTable()(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()));
+			strconcat	(locationName,*CStringTable()(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()), " ");
 		}
 
 		// Substitute placeholders with real names
@@ -123,8 +123,8 @@ LPCSTR GAME_NEWS_DATA::FullText()
 	split_time		(receive_time, years, months, days, hours, minutes, seconds, milliseconds);
 #pragma todo("Satan->Satan : insert carry-over")
 	//sprintf(time, "%02i:%02i \\n", hours, minutes);
-	sprintf(time, "%02i:%02i ", hours, minutes);
-	strconcat(result, locationName, time, newsPhrase);
+	sprintf		(time, "%02i:%02i ", hours, minutes);
+	strconcat	(result, locationName, time, newsPhrase);
 
 	full_news_text = result;
 
