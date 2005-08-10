@@ -123,6 +123,8 @@ void CGamePersistent::Disconnect()
 		ambient_particles		= 0;
 	}
 	__super::Disconnect			();
+
+	::Sound->stop_emitters		();
 }
 
 void CGamePersistent::OnGameStart()
