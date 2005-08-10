@@ -501,7 +501,7 @@ void CUILines::DecCursorPos(){
 
 	UpdateCursor();
 	return;
-
+/**
 	if (m_cursor_pos.x>0)
 		m_cursor_pos.x--;
 	else
@@ -510,6 +510,7 @@ void CUILines::DecCursorPos(){
 			m_cursor_pos.y--;
 			m_cursor_pos.x = m_lines[m_cursor_pos.y].GetSize();
 		}
+/**/
 }
 
 void CUILines::UpdateCursor(){
