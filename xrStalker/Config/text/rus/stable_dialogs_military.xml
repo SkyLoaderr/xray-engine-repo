@@ -1197,6 +1197,36 @@
     <string id="mil_trader_dialog_3021">
         <text>Как знаешь...</text>
     </string>
+    <string id="mil_trader_dialog_3100">
+        <text>Видел я там твоих ребят.</text>
+    </string>
+    <string id="mil_trader_dialog_3101">
+        <text>И что ?</text>
+    </string>
+    <string id="mil_trader_dialog_3110">
+        <text>Сидят, осматриваются...</text>
+    </string>
+    <string id="mil_trader_dialog_3111">
+        <text>Ну, если ты им поможешь в охоте, то я дам тебе артефакт под названием "Кристалл". Ну как ?</text>
+    </string>
+    <string id="mil_trader_dialog_3200">
+        <text>Мы поговорили и пошли по деревне - мутанта какого-то ловить...</text>
+    </string>
+    <string id="mil_trader_dialog_3201">
+        <text>И что ? Не тяни кота за хвост !</text>
+    </string>
+    <string id="mil_trader_dialog_3300">
+        <text>Завалили мы тварь какую-то, но ребята погибли. Как подошли к водокачке, они за головы похватались, да и у меня туман кровавый перед глазами... Тварь эта на мозги действует. Завалил я ее, но ребятам это уже не помогло.</text>
+    </string>
+    <string id="mil_trader_dialog_3301">
+        <text>Хреново дело... Угрюмый - умелый сталкер. Жаль. Ладно, возьми артефакт за то, что ребятам помог...</text>
+    </string>
+    <string id="mil_trader_dialog_3310">
+        <text>Ну, ребята пошли охотиться, а я сюда вернулся...</text>
+    </string>
+    <string id="mil_trader_dialog_3311">
+        <text>Понятно.</text>
+    </string>
     <string id="mil_trader_dialog_4001">
         <text>Как прошла охота ?</text>
     </string>
