@@ -8,7 +8,7 @@
 		<objective>
 			<text>garbage_meet_stalker_1</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="garbage_meet_stalker_1">green_location</map_location_type>
 			<object_story_id>Garbage_Seriy</object_story_id>
 		</objective>
 	</game_task>
@@ -22,13 +22,13 @@
 		<objective>
 			<text>gar_kill_boars_1</text>
 			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="gar_kill_boars_1">green_location</map_location_type>
 			<object_story_id>gar_boars_nest</object_story_id>
 		</objective>
 		<objective>
 			<text>gar_kill_boars_2</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="gar_kill_boars_2">green_location</map_location_type>
 			<object_story_id>gar_dolg_blockpost</object_story_id>
 		</objective>
 	</game_task>
@@ -42,13 +42,13 @@
 		<objective>
 			<text>gar_hellcar_alive</text>
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
 			<object_story_id>gar_hellcar</object_story_id>
 		</objective>
 		<objective>
 			<text>gar_kill_bandits</text>
 			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="gar_kill_bandits">green_location</map_location_type>
 			<object_story_id>gar_bandits_leader</object_story_id>
 		</objective>
 	</game_task>
@@ -62,13 +62,13 @@
 		<objective>
 			<text>gar_kill_bandits_around_tunnel</text>
 			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="gar_kill_bandits_around_tunnel">green_location</map_location_type>
 			<object_story_id>gar_bandit_post</object_story_id>
 		</objective>
 		<objective>
 			<text>gar_say_free_pass</text>
 			<icon x="400" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="gar_say_free_pass">green_location</map_location_type>
 			<object_story_id>gar_newbie_in_tunnel</object_story_id>
 		</objective>
 	</game_task>
