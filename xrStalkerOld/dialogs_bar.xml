@@ -4145,6 +4145,37 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_dolg_leader_quest_svoboda_leader_start">
+        <has_info>bar_dolg_community_leader_done</has_info>
+        <dont_has_info>bar_kill_svoboda_leader_start</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_svoboda_leader_start_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_svoboda_leader_start_0</text>
+                <give_info>bar_kill_svoboda_leader_start</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_quest_svoboda_leader_finish">
+        <precondition>bar_dialogs.have_mil_svoboda_leader_pda</precondition>
+        <has_info>bar_kill_svoboda_leader_start</has_info>
+        <has_info>mil_kill_svoboda_leader_killed</has_info>
+        <dont_has_info>bar_kill_svoboda_leader_done</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_svoboda_leader_finish_0</text>
+                <action>bar_dialogs.give_mil_svoboda_leader_pda</action>
+                <give_info>bar_kill_svoboda_leader_done</give_info>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_svoboda_leader_finish_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_arena_manager_game">
         <dont_has_info>bar_arena_start</dont_has_info>
         <phrase_list>
@@ -4386,53 +4417,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_dolg_leader_quest_svoboda_leader_start">
-        <has_info>bar_dolg_community_leader_done</has_info>
-        <dont_has_info>bar_kill_svoboda_leader_start</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_svoboda_leader_start_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_svoboda_leader_start_0</text>
-                <give_info>bar_kill_svoboda_leader_start</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_leader_quest_svoboda_leader_finish">
-        <precondition>bar_dialogs.have_mil_svoboda_leader_pda</precondition>
-        <has_info>bar_kill_svoboda_leader_start</has_info>
-        <has_info>mil_kill_svoboda_leader_killed</has_info>
-        <dont_has_info>bar_kill_svoboda_leader_done</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_svoboda_leader_finish_0</text>
-                <action>bar_dialogs.give_mil_svoboda_leader_pda</action>
-                <give_info>bar_kill_svoboda_leader_done</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_svoboda_leader_finish_1</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_leader_quest_rg6_finish">
-        <precondition>bar_dialogs.have_rg6</precondition>
-        <has_info>bar_svoboda_rg6_start</has_info>
-        <dont_has_info>bar_svoboda_rg6_done</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_rg6_finish_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_rg6_finish_0</text>
-                <action>bar_dialogs.give_rg6</action>
-                <give_info>bar_svoboda_rg6_done</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_dolg_leader_prisyaga">
         <has_info>bar_svoboda_rg6_done</has_info>
         <phrase_list>
@@ -4456,10 +4440,6 @@
                 <text>bar_dolg_leader_prisyaga_5</text>
                 <next>6</next>
             </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_prisyaga_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="9">
                 <text>bar_dolg_leader_prisyaga_9</text>
             </phrase>
@@ -4477,6 +4457,26 @@
                 <action>dialogs.actor_set_dolg</action>
                 <give_info>bar_dolg_community_leader_done</give_info>
                 <next>9</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_prisyaga_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_quest_rg6_finish">
+        <precondition>bar_dialogs.have_rg6</precondition>
+        <has_info>bar_svoboda_rg6_start</has_info>
+        <dont_has_info>bar_svoboda_rg6_done</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_rg6_finish_0</text>
+                <action>bar_dialogs.give_rg6</action>
+                <give_info>bar_svoboda_rg6_done</give_info>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_rg6_finish_1</text>
             </phrase>
         </phrase_list>
     </dialog>
