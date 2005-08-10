@@ -12,6 +12,7 @@
 #include "ai_space.h"
 #include "level_navigation_graph.h"
 #include "space_restriction_base.h"
+#include "profiler.h"
 
 const float dependent_distance = 100.f;
 
@@ -135,6 +136,7 @@ IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictio
 
 void CSpaceRestriction::merge_in_out_restrictions	()
 {
+	START_PROFILE("AI/Restricted Object/Merge In-Out");
 	xr_vector<u32>					temp_border;
 	xr_vector<u32>::iterator		I;
 
@@ -152,6 +154,7 @@ void CSpaceRestriction::merge_in_out_restrictions	()
 	std::sort						(m_border.begin(),m_border.end());
 	I								= unique(m_border.begin(),m_border.end());
 	m_border.erase					(I,m_border.end());
+	STOP_PROFILE;
 }
 
 CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const
@@ -179,6 +182,7 @@ CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictio
 
 void CSpaceRestriction::merge_free_in_retrictions	()
 {
+	START_PROFILE("AI/Restricted Object/Merge Free In");
 	string256								temp;
 	for (u32 i=0, n=_GetItemCount(*m_in_restrictions); i<n ;++i) {
 		SpaceRestrictionHolder::CBaseRestrictionPtr bridge = m_space_restriction_manager->restriction(shared_str(_GetItem(*m_in_restrictions,i,temp)));
@@ -206,6 +210,7 @@ void CSpaceRestriction::merge_free_in_retrictions	()
 			}
 		}
 	}
+	STOP_PROFILE;
 }
 
 void CSpaceRestriction::initialize					()
