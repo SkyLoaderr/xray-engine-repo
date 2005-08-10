@@ -195,7 +195,7 @@ bool CDetailPathManager::build_circle_trajectory(
 	curr_pos.set		(position.position.x,0.f,position.position.y);
 	curr_vertex_id		= position.vertex_id;
 	float				angle = position.angle;
-	u32					size = path ? path->size() : u32(-1);
+	int					size = path ? (int)path->size() : -1;
 
 	if (!fis_zero(direction.square_magnitude()))
 		direction.normalize	();
@@ -203,8 +203,13 @@ bool CDetailPathManager::build_circle_trajectory(
 		direction.set	(1.f,0.f);
 
 	float				sina, cosa, sinb, cosb, sini, cosi, temp;
-	u32					m = _min(iFloor(_abs(angle)/position.angular_velocity*10.f + 1.5f),iFloor(position.radius*_abs(angle)/min_dist + 1.5f));
-	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
+	int					n;
+	if (fis_zero(position.angular_velocity))
+		n				= 1;
+	else {
+		int				m = _min(iFloor(_abs(angle)/position.angular_velocity*10.f + 1.5f),iFloor(position.radius*_abs(angle)/min_dist + 1.5f));
+		n				= !m ? 1 : m;
+	}
 	int					k = vertex_id ? 0 : -1;
 
 	if (path)
@@ -217,7 +222,7 @@ bool CDetailPathManager::build_circle_trajectory(
 	sini				= 0.f;
 	cosi				= 1.f;
 
-	for (u32 i=0; i<=n + k; ++i) {
+	for (int i=0; i<=n + k; ++i) {
 		VERIFY			(t.velocity != u32(-1));
 		t.position.x	= -sin_apb(sina,cosa,sini,cosi)*position.radius + position.center.x;
 		t.position.z	= cos_apb(sina,cosa,sini,cosi)*position.radius + position.center.y;
