@@ -226,7 +226,7 @@ function act_state_mgr_end:execute()
 			self.st.look_object == nil
 		then
 			if t == "sniper_fire" then
-				sniper_aim = self.object:position():distance_to_sqr(look_position)*aim_ratio
+				sniper_aim = self.object:position():distance_to_sqr(self.st.look_position)*aim_ratio
 				self.object:set_item(object.fire1, self.object:best_weapon(), 1, sniper_aim)
 			else
 				self.object:set_item(object.fire1, self.object:best_weapon())
