@@ -66,54 +66,6 @@ CTrade::~CTrade()
 	
 }
 
-bool CTrade::CanTrade()
-{
-	CEntity *pEntity;
-
-	xr_vector<CObject*>		q_nearest;			// = Level().ObjectSpace.q_nearest; 
-
-	Level().ObjectSpace.GetNearest	(q_nearest,pThis.base->Position(),2.f);
-	if (!q_nearest.empty()) 
-	{
-		for (u32 i=0, n = q_nearest.size(); i<n; ++i) 
-		{
-			// Может ли объект торговать
-			pEntity = smart_cast<CEntity *>(q_nearest[i]);
-			if (pEntity && !pEntity->g_Alive()) return false;
-			if (SetPartner(pEntity)) break;
-		}
-	} 
-	
-	if (!pPartner.base) return false;
-
-	// Объект рядом
-	float dist = pPartner.base->Position().distance_to(pThis.base->Position());
-	if (dist < 0.5f || dist > 4.5f)  
-	{
-		RemovePartner();
-		return false;
-	}
-
-	// Объект смотрит на меня
-	float yaw, pitch;
-	float yaw2, pitch2;
-
-	pThis.base->Direction().getHP(yaw,pitch);
-	pPartner.base->Direction().getHP(yaw2,pitch2);
-	yaw = angle_normalize(yaw);
-	yaw2 = angle_normalize(yaw2);
-
-	float Res = rad2deg(_abs(yaw - yaw2) < PI ? _abs(yaw - yaw2) : 
-								 PI_MUL_2 - _abs(yaw - yaw2));
-	if (Res < 165.f || Res > 195.f) 
-	{
-		RemovePartner();
-		return false;
-	}
-
-	return true;
-}
-
 void CTrade::RemovePartner()
 {
 	pPartner.Set(TT_NONE,0,0);
