@@ -100,23 +100,53 @@
 	</game_task>
 
 
+	<game_task id="bar_dolg_community_quest">
+		<title>bar_dolg_community_quest</title>
+		<objective>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_community_quest_recomendation</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_ivancov">green_location</map_location_type>
+			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
+			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
+		</objective>
+		<objective>
+			<text>bar_dolg_community_quest_vernost</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_voronin">blue_location</map_location_type>
+			<object_story_id>bar_dolg_general_voronin</object_story_id>
+			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
+		</objective>
+		<objective>
+			<text>bar_dolg_community_quest_prisyaga</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_voronin">blue_location</map_location_type>
+			<object_story_id>bar_dolg_general_voronin</object_story_id>
+		</objective>
+	</game_task>
+
 	<game_task id="bar_dolg_test_quest">
 		<title>bar_dolg_test_quest</title>
 		<objective>
-			<text>bar_dolg_bring_document</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_dolg_find_document</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_dolg_arhive_document_location</map_location_type>
+			<map_location_type>green_location</map_location_type>
 			<object_story_id>bar_dolg_arhive_documents</object_story_id>			
+			<function_complete>bar_rostok_tasks.has_dolg_arhive_documents</function_complete>
+			<infoportion_set_complete>bar_dolg_veteran_gain</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>bar_dolg_document_to_ivancov</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_dolg_captain_ivancov_location</map_location_type>
-			<object_story_id>bar_dolg_captain_ivancov</object_story_id>			
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
+			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
 	</game_task>
 

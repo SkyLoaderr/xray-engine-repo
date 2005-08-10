@@ -12,63 +12,21 @@ function proceed()
 			actor:give_info_portion("bar_ecolog_research_normal")
 		end
 	end
-
-	if	actor:object("dolg_arhive_documents") ~= nil 
-	then		
-		actor:give_info_portion("bar_dolg_veteran_gain")
-		level_tasks.set_task_state(task.completed, "bar_dolg_test_quest", 1)
-	end 
-
-
-
-
-	if	actor:has_info("bar_svoboda_rg6_start") and 
- 		actor:dont_has_info("bar_svoboda_rg6_done") and
- 		actor:dont_has_info("mil_svoboda_rg6_gain") and
-		actor:object("wpn_rg-6") ~= nil 
-	then		
-		actor:give_info_portion("mil_svoboda_rg6_gain")
-		level_tasks.set_task_state(task.completed, "bar_dolg_rg6_quest", 2)
-	end 
-
-	if	actor:has_info("bar_kill_svoboda_leader_start") and
- 		actor:dont_has_info("mil_kill_svoboda_leader_killed") and
-		actor:object("mil_svoboda_leader_pda") ~= nil
-	then		
-		actor:give_info_portion("mil_kill_svoboda_leader_killed")
-		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 1)
-	end 
 end
 
 function process_info_portion(info_id)
-	if info_id == "bar_svoboda_rg6_done" then
-		level_tasks.set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
-		return true
-	elseif info_id == "bar_kill_svoboda_leader_done" then
-		level_tasks.set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
-		return true	
-
-	elseif info_id == "bar_freedom_attack_ecolog" then
+	if info_id == "bar_freedom_attack_ecolog" then
 		if news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom", nil, 509) then
 			db.actor:give_info_portion("bar_freedom_defence_ecolog")
 		end
 		return true
-
-
 	elseif info_id == "bar_dolg_petrenko" then
-		level_tasks.add_location(506, "bar_dolg_petrenko_location")
-		return true
+		level_tasks.add_location(506, "green_location", "bar_petrenko")
+		return true		
 	elseif info_id == "bar_dolg_community_start" then
-		level_tasks.remove_location(506, "bar_dolg_petrenko_location")
-		level_tasks.add_location(505, "bar_dolg_captain_ivancov_location")
-		return true
-	elseif info_id == "bar_dolg_community_leader" then
-		level_tasks.remove_location(505, "bar_dolg_captain_ivancov_location")
-		level_tasks.remove_location(501, "bar_dolg_arhive_document_location")
-		level_tasks.add_location(507, "bar_dolg_voronin_location")
-		return true	
+		level_tasks.remove_location(506, "green_location", "bar_petrenko")
+		return true		
 	end
-
 	return false
 end
 
@@ -90,4 +48,8 @@ end
 
 function has_professor_research(task, objective)
 	return db.actor:object("bar_ecolog_flash") ~= nil
+end
+
+function has_dolg_arhive_documents(task, objective)
+	return db.actor:object("dolg_arhive_documents") ~= nil
 end

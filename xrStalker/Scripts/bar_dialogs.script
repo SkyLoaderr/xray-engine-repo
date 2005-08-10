@@ -206,7 +206,6 @@ end
 function give_dolg_arhive_document(first_speaker, second_speaker)
 	local document = first_speaker:object("dolg_arhive_documents")
 	dialogs.relocate_item(second_speaker, document, "out")
-	level_tasks.set_task_state(task.completed, "bar_dolg_test_quest", 0)
 end
 -- Флешка ученных с ростка
 function actor_have_research(first_speaker, second_speaker)
@@ -259,8 +258,7 @@ end
 -- Петренко, выдача награды
 
 function actor_need_reward (actor, npc)
-	if (db.actor:has_info("bar_kill_svoboda_ambush_done") and db.actor:dont_has_info("bar_kill_svoboda_reward"))or
-	   (db.actor:has_info("bar_kill_svoboda_leader_done") and db.actor:dont_has_info("bar_kill_svoboda_leader_reward"))
+	if db.actor:has_info("bar_kill_svoboda_leader_done") and db.actor:dont_has_info("bar_kill_svoboda_leader_reward")
 	then
 		return true
 	end

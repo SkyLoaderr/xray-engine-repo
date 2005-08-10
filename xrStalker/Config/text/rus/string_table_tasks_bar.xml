@@ -25,6 +25,7 @@
 </string>
 
 
+
 	<string id="bar_hunter_rifle">
 	<text>Ружье охотника</text>
 </string>
@@ -38,11 +39,21 @@
 	<text>Вернуть ружье охотнику</text>
 </string>
 
+<string id="bar_dolg_community_quest">
+	<text>Вступление в группировку "Долг"</text>
+</string>
+<string id="bar_dolg_community_quest_recomendation">
+	<text>Получить рекомендацию капитана Иванцова</text>
+</string>
+<string id="bar_dolg_community_quest_vernost">
+	<text>Доказать свою верность "Долгу"</text>
+</string>
+<string id="bar_dolg_community_quest_prisyaga">
+	<text>Принять присягу</text>
+</string>
+
 <string id="bar_dolg_test_quest">
 	<text>Проверка для вступления в Долг</text>
-</string>
-<string id="bar_dolg_bring_document">
-	<text>Необходимо пройти испытание долга для доказательства собственного мужества.</text>
 </string>
 <string id="bar_dolg_find_document">
 	<text>Возмите архивные документы в заброшенном ангаре.</text>

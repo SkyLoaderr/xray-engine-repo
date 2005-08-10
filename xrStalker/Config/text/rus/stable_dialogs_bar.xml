@@ -1179,6 +1179,36 @@
     <string id="bar_dolg_leader_join_11121">
         <text>Дело твое.</text>
     </string>
+    <string id="bar_dolg_leader_prisyaga_0">
+        <text>Я готов принять присягу!</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_1">
+        <text>Молодец! Тогда повторяй за мной: Я, сталкер по прозвищу Меченный, клянусь защищать цели и идеалы Долга.</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_2">
+        <text>Я, сталкер по прозвищу Меченный, клянусь защищать цели и идеалы Долга.</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_3">
+        <text>Беречь Землю от опасностей Зоны. Преследовать и уничтожать любые проявления Зоны как внутри ее, так и за ее границами.</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_4">
+        <text>Беречь Землю от опасностей Зоны. Преследовать и уничтожать любые проявления Зоны как внутри ее, так и за ее границами.</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_5">
+        <text>Бороться с любым инакомыслием в лице как отдельных сталкеров, так и группировок.</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_6">
+        <text>Бороться с любым инакомыслием в лице как отдельных сталкеров, так и группировок.</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_7">
+        <text>И отдать жизнь, во имя справедливости и порядка на Земле!</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_8">
+        <text>И отдать жизнь, во имя справедливости и порядка на Земле!</text>
+    </string>
+    <string id="bar_dolg_leader_prisyaga_9">
+        <text>Поздравляю! Отныне ты являешься полноправным членом группировки Долг.</text>
+    </string>
     <string id="bar_dolg_leader_quest_rg6_finish_0">
         <text>Я выполнил Вашу просьбу, принес РГ-6.</text>
     </string>
