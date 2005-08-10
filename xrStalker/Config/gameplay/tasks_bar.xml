@@ -31,7 +31,7 @@
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
 			<infoportion_fail>bar_kill_professor_fail</infoportion_fail>
-			<infoportion_fail>bar_kill_professor_volkodav_dead</infoportion_fail>
+			<infoportion_fail>bar_heli_scene_volkodav_die</infoportion_fail>
 		</objective>
 		<objective>
 			<text>bar_kill_professor_kill</text>
@@ -40,7 +40,7 @@
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_kill_professor_done</infoportion_complete>
 			<infoportion_fail>bar_kill_professor_fail</infoportion_fail>
-			<infoportion_fail>bar_kill_professor_volkodav_dead</infoportion_fail>
+			<infoportion_fail>bar_heli_scene_volkodav_die</infoportion_fail>
 		</objective>
 		<objective>
 			<text>bar_kill_professor_reward</text>

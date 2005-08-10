@@ -26,6 +26,27 @@ function process_info_portion(info_id)
 	elseif info_id == "bar_dolg_community_start" then
 		level_tasks.remove_location(506, "green_location", "bar_petrenko")
 		return true		
+	-- убирание отметки Волкодава
+	elseif info_id == "bar_heli_scene_volkodav_die" then
+		level_tasks.remove_location_safe(509, "green_location")
+		return true		
+	elseif info_id == "bar_resque_research_start" then
+		level_tasks.remove_location_safe(509, "green_location")
+		return true		
+	elseif info_id == "bar_kill_professor_start" then
+		level_tasks.remove_location_safe(509, "green_location")
+		return true		
+	-- убирание отметки Профессора
+	elseif info_id == "bar_heli_scene_professor_die" then
+		level_tasks.remove_location_safe(503, "green_location")
+		return true		
+	elseif info_id == "bar_resque_research_start" then
+		level_tasks.remove_location_safe(503, "green_location")
+		return true		
+	elseif info_id == "bar_kill_professor_start" then
+		level_tasks.remove_location_safe(503, "green_location")
+		return true		
+
 	end
 	return false
 end

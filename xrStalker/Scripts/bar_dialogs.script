@@ -173,7 +173,7 @@ end
 function actor_transfer_research(first_speaker, second_speaker)
 	local flash = first_speaker:object("bar_ecolog_flash")
 	dialogs.relocate_item(second_speaker, flash, "out")
-	dialogs.relocate_money(second_speaker, 2000, "in")
+	dialogs.relocate_money(second_speaker, 1621, "in")
 end
 
 

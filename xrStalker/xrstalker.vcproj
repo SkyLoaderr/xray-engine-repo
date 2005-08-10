@@ -703,6 +703,9 @@
 							RelativePath=".\Config\text\rus\stable_storyline_info_bar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\string_table_mapspots_bar.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_tasks_bar.xml">
 						</File>
 						<File
@@ -909,10 +912,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
