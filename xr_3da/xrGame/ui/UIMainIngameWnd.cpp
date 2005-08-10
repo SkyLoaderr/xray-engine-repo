@@ -709,7 +709,7 @@ void CUIMainIngameWnd::Update()
 
 
     // radar
-	UIZoneMap->UpdateRadar(m_pActor);
+	UIZoneMap->UpdateRadar(Device.vCameraPosition);
 	// viewport
 	float h,p;
 	Device.vCameraDirection.getHP	(h,p);

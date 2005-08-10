@@ -82,10 +82,10 @@ void CUIZoneMap::SetHeading		(float angle)
 	m_compass.SetHeading(angle);
 };
 
-void CUIZoneMap::UpdateRadar		(CActor* Actor)
+void CUIZoneMap::UpdateRadar		(Fvector pos)
 {
 	m_background.Update();
-	m_activeMap->SetActivePoint( Actor->Position() );
+	m_activeMap->SetActivePoint( pos );
 }
 
 bool CUIZoneMap::ZoomIn()

@@ -26,7 +26,7 @@ public:
 	void						Init			();
 
 	void						Render			();
-	void						UpdateRadar		(CActor* Actor);
+	void						UpdateRadar		(Fvector pos);
 
 	void						SetScale		(float s)							{m_fScale = s;}
 	float						GetScale		()									{return m_fScale;}
