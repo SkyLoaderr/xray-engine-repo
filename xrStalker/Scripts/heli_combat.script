@@ -24,7 +24,7 @@ local combat_type_flyby  = 0   -- атака пролётами над целью
 local combat_type_search = 1   -- поиск врага, кружение вокруг точки, где последний раз видел, атака кружась вокруг цели
 
 local flyby_state_to_attack_dist = 0
-local flyby_state_to_enemy_pos   = 1
+local flyby_state_to_enemy       = 1
 
 local flyby_attack_altitude      = 35
 
