@@ -11,46 +11,28 @@ local state_fight = 1
 
 function load_job(sj, gname, type, squad, groups)
     ------Stalkers-------------------------------------------------------
-	if type == "val_lager_bandits" then
-		return load_job_lager_bandits(sj, gname, type, squad, groups)
-	elseif type == "val_monolith_base" then
-		return load_job_monolith_base(sj, gname, type, squad, groups)
-	elseif type == "val_war_soldiers" then
-		return load_job_war_soldiers(sj, gname, type, squad, groups)
+	if type == "val_lager_bandits"      then    return load_job_lager_bandits   (sj, gname, type, squad, groups)
+	elseif type == "val_monolith_base"  then    return load_job_monolith_base   (sj, gname, type, squad, groups)
+	elseif type == "val_war_soldiers"   then    return load_job_war_soldiers    (sj, gname, type, squad, groups)
     ------Monsters-------------------------------------------------------
     --- Dogs
-	elseif type == "val_dogs_nest1" then
-		return load_job_dogs_nest1(sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest2" then
-		return load_job_dogs_nest2(sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest3" then
-		return load_job_dogs_nest3(sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest4" then
-		return load_job_dogs_nest4(sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest5" then
-		return load_job_dogs_nest5(sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest1"     then    return load_job_dogs_nest1      (sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest2"     then    return load_job_dogs_nest2      (sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest3"     then    return load_job_dogs_nest3      (sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest4"     then    return load_job_dogs_nest4      (sj, gname, type, squad, groups)
+	elseif type == "val_dogs_nest5"     then    return load_job_dogs_nest5      (sj, gname, type, squad, groups)
 	--- Fleshes
-	elseif type == "val_fleshes_nest1" then
-		return load_job_fleshes_nest1(sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest2" then
-		return load_job_fleshes_nest2(sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest3" then
-		return load_job_fleshes_nest3(sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest4" then
-		return load_job_fleshes_nest4(sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest5" then
-		return load_job_fleshes_nest5(sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest1"  then    return load_job_fleshes_nest1   (sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest2"  then    return load_job_fleshes_nest2   (sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest3"  then    return load_job_fleshes_nest3   (sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest4"  then    return load_job_fleshes_nest4   (sj, gname, type, squad, groups)
+	elseif type == "val_fleshes_nest5"  then    return load_job_fleshes_nest5   (sj, gname, type, squad, groups)
 	--- Boars
-	elseif type == "val_boars_nest1" then
-		return load_job_boars_nest1(sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest2" then
-		return load_job_boars_nest2(sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest3" then
-		return load_job_boars_nest3(sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest4" then
-		return load_job_boars_nest4(sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest5" then
-		return load_job_boars_nest5(sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest1"    then    return load_job_boars_nest1     (sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest2"    then    return load_job_boars_nest2     (sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest3"    then    return load_job_boars_nest3     (sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest4"    then    return load_job_boars_nest4     (sj, gname, type, squad, groups)
+	elseif type == "val_boars_nest5"    then    return load_job_boars_nest5     (sj, gname, type, squad, groups)
 	end
 	
 	return
@@ -2179,319 +2161,266 @@ end
 --------------------------------------------------------------------------
 function load_states(gname, type)
     --- Soldiers -------------------------------------------
-	if type == "val_lager_bandits" then
-		return check_state_lager_bandits(gulag)
-	elseif type == "val_monolith_base" then
-		return check_state_monolith_base(gulag)
-	elseif type == "val_war_soldiers" then
-		return check_state_war_soldiers(gulag)
+	if type == "val_lager_bandits"      then    return check_state_lager_bandits
+	elseif type == "val_monolith_base"  then    return check_state_monolith_base
+	elseif type == "val_war_soldiers"   then    return check_state_war_soldiers
 	--- Monsters -------------------------------------------
 	--- Dogs
-	elseif type == "val_dogs_nest1" then  
-	    return check_state_dogs_nest1(gulag)
-	elseif type == "val_dogs_nest2" then  
-	    return check_state_dogs_nest2(gulag)
-	elseif type == "val_dogs_nest3" then  
-	    return check_state_dogs_nest3(gulag)
-	elseif type == "val_dogs_nest4" then  
-	    return check_state_dogs_nest4(gulag)
-	elseif type == "val_dogs_nest5" then  
-	    return check_state_dogs_nest5(gulag)
+	elseif type == "val_dogs_nest1"     then    return check_state_dogs_nest1
+	elseif type == "val_dogs_nest2"     then    return check_state_dogs_nest2
+	elseif type == "val_dogs_nest3"     then    return check_state_dogs_nest3
+	elseif type == "val_dogs_nest4"     then    return check_state_dogs_nest4
+	elseif type == "val_dogs_nest5"     then    return check_state_dogs_nest5
 	--- Fleshes
-	elseif type == "val_fleshes_nest1" then  
-	    return check_state_fleshes_nest1(gulag)
-	elseif type == "val_fleshes_nest2" then  
-	    return check_state_fleshes_nest2(gulag)
-	elseif type == "val_fleshes_nest3" then  
-	    return check_state_fleshes_nest3(gulag)
-	elseif type == "val_fleshes_nest4" then  
-	    return check_state_fleshes_nest4(gulag)
-	elseif type == "val_fleshes_nest5" then  
-	    return check_state_fleshes_nest5(gulag)
+	elseif type == "val_fleshes_nest1"  then    return check_state_fleshes_nest1
+	elseif type == "val_fleshes_nest2"  then    return check_state_fleshes_nest2
+	elseif type == "val_fleshes_nest3"  then    return check_state_fleshes_nest3
+	elseif type == "val_fleshes_nest4"  then    return check_state_fleshes_nest4
+	elseif type == "val_fleshes_nest5"  then    return check_state_fleshes_nest5
 	--- Boars
-	elseif type == "val_boars_nest1" then  
-	    return check_state_boars_nest1(gulag)
-	elseif type == "val_boars_nest2" then  
-	    return check_state_boars_nest2(gulag)
-	elseif type == "val_boars_nest3" then  
-	    return check_state_boars_nest3(gulag)
-	elseif type == "val_boars_nest4" then  
-	    return check_state_boars_nest4(gulag)
-	elseif type == "val_boars_nest5" then  
-	    return check_state_boars_nest5(gulag)
+	elseif type == "val_boars_nest1"    then    return check_state_boars_nest1
+	elseif type == "val_boars_nest2"    then    return check_state_boars_nest2
+	elseif type == "val_boars_nest3"    then    return check_state_boars_nest3
+	elseif type == "val_boars_nest4"    then    return check_state_boars_nest4
+	elseif type == "val_boars_nest5"    then    return check_state_boars_nest5
 	end
 
 	return nil
 end
 
 function check_state_lager_bandits(gulag)
-	return function(gulag)
-		for k,v in gulag.Object do
-			local enemy = v:best_enemy()
-			if enemy ~= nil then
-				enemy_type = get_clsid(enemy)
-				if enemy_type == clsid.actor and
-				   utils.npc_in_zone(db.actor, db.zone_by_name["val_lager_bandits_restrictor"]) then
-					return state_alarm_actor_inside
-				end
-				if enemy_type == clsid.actor or
-  	   			   enemy_type == clsid.soldier or
-	   			   enemy_type == clsid.script_stalker or
-   				   enemy_type == clsid.trader
-   				then
-   					gulag.alarm_start = game.get_game_time()
-   					return state_alarm
-   				end
+	for k,v in gulag.Object do
+		local enemy = v:best_enemy()
+		if enemy ~= nil then
+			enemy_type = get_clsid(enemy)
+			if enemy_type == clsid.actor and
+				utils.npc_in_zone(db.actor, db.zone_by_name["val_lager_bandits_restrictor"]) then
+				return state_alarm_actor_inside
 			end
-		end		
-		
-		if gulag.alarm_start == nil or game.get_game_time():diffSec(gulag.alarm_start) > 900 then
-			return state_normal -- מבûקםמו סמסעמÿםטו
+			if enemy_type == clsid.actor or
+  	   			enemy_type == clsid.soldier or
+	   			enemy_type == clsid.script_stalker or
+   				enemy_type == clsid.trader
+   			then
+   				gulag.alarm_start = game.get_game_time()
+   				return state_alarm
+   			end
 		end
-		return state_alarm -- ענוגמדא
+	end		
+	
+	if gulag.alarm_start == nil or game.get_game_time():diffSec(gulag.alarm_start) > 900 then
+		return state_normal -- מבûקםמו סמסעמÿםטו
 	end
+	return state_alarm -- ענוגמדא
 end
 
 function check_state_monolith_base(gulag)
-	return function(gulag)
-		return state_normal
-	end
+	return state_normal
 end
 
 function check_state_war_soldiers(gulag)
-	return function(gulag)
-	    if db.actor:has_info("val_opendoor_chase_start") then
-		    return state_normal
-		end
-		return state_fight
+	if db.actor:has_info("val_opendoor_chase_start") then
+		return state_normal
 	end
+	return state_fight
 end
 
 function check_state_dogs_nest1(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_dogs_nest1_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_dogs_nest1_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_dogs_nest2(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_dogs_nest2_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_dogs_nest2_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_dogs_nest3(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_dogs_nest3_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_dogs_nest3_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_dogs_nest4(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_dogs_nest4_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_dogs_nest4_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_dogs_nest5(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_dogs_nest5_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_dogs_nest5_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_fleshes_nest1(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_fleshes_nest1_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_fleshes_nest1_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_fleshes_nest2(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_fleshes_nest2_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_fleshes_nest2_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_fleshes_nest3(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_fleshes_nest3_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_fleshes_nest3_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_fleshes_nest4(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_fleshes_nest4_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_fleshes_nest4_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_fleshes_nest5(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_fleshes_nest5_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_fleshes_nest5_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_boars_nest1(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_boars_nest1_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_boars_nest1_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_boars_nest2(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_boars_nest2_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_boars_nest2_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_boars_nest3(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_boars_nest3_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_boars_nest3_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_boars_nest4(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_boars_nest4_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_boars_nest4_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
 function check_state_boars_nest5(gulag)
-	return function(gulag)
-		local t = db.zone_by_name["val_boars_nest5_big_restr"] -- טלÿ במכüרמדמ נוסענ.
-		if t and db.actor then
-			if t:inside(db.actor:position()) then
-				return 1
-			else
-				return 0
-			end
+	local t = db.zone_by_name["val_boars_nest5_big_restr"] -- טלÿ במכüרמדמ נוסענ.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
 		else
-			return gulag.state
+			return 0
 		end
+	else
+		return gulag.state
 	end
 end
 
+--------------------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "val_lager_bandits" then
 		return npc_community == "bandit"
