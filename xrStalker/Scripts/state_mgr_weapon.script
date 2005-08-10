@@ -222,7 +222,7 @@ end
 
 function get_idle_state(st)
 	if state_lib.states[st.target_state].mental == anim.danger and
-	   state_lib.states[st.target_state].movement = move.stand 
+	   state_lib.states[st.target_state].movement == move.stand 
 	then
 		return object.aim1
 	else
