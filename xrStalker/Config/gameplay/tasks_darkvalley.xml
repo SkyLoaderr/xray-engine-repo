@@ -45,7 +45,7 @@
             ui\ui_icons_task
         </icon>
         <map_location_type>
-            val_sos_location
+            green_location
         </map_location_type>
         <object_story_id>
             val_sos_stalker
@@ -72,7 +72,7 @@
             ui\ui_icons_task
         </icon>
         <map_location_type>
-            val_prisoner_location
+            green_location
         </map_location_type>
         <object_story_id>
             val_prisoner
