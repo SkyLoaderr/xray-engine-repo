@@ -20,7 +20,7 @@ float		r_ssaLOD_A,			r_ssaLOD_B;
 float		r_ssaGLOD_start,	r_ssaGLOD_end;
 float		r_ssaHZBvsTEX;
 
-IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
+ICF	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 {
 	float R	= V->vis.sphere.R + 0;
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C)+EPS;
