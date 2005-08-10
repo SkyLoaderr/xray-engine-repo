@@ -32,7 +32,7 @@ void CCar::SCarSound::Init()
 		snd_engine_start.create(TRUE,	READ_IF_EXISTS(ini,r_string,"car_sound","engine_start","car\\test_car_start"));
 		snd_engine_stop.create(TRUE,	READ_IF_EXISTS(ini,r_string,"car_sound","engine_stop","car\\test_car_stop"));
 		float fengine_start_delay=READ_IF_EXISTS(ini,r_float,"car_sound","engine_sound_start_dellay",0.25f);
-		engine_start_delay=snd_engine_start._handle()->length_ms()*fengine_start_delay;
+		engine_start_delay=iFloor(snd_engine_start._handle()->length_ms()*fengine_start_delay);
 		if(ini->line_exist("car_sound","relative_pos"))
 		{
 			relative_pos.set(ini->r_fvector3("car_sound","relative_pos"));
