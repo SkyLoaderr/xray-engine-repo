@@ -46,7 +46,7 @@
 			<text>bar_kill_professor_reward</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_kill_professor_reward">green_location</map_location_type>
-			<object_story_id>bar_bar_osvedonitel</object_story_id>
+			<object_story_id>bar_bar_osvedomitel</object_story_id>
 			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
 		</objective>
 	</game_task>
