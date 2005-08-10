@@ -85,6 +85,12 @@ void CSoundRender_Core::_clear	()
     s_emitters.clear			();
 }
 
+void CSoundRender_Core::stop_emitters()
+{
+	for (u32 eit=0; eit<s_emitters.size(); eit++)
+		s_emitters[eit]->stop	(FALSE);
+}
+
 void CSoundRender_Core::env_load	()
 {
 	// Load environment
