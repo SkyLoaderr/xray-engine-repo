@@ -284,13 +284,13 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 	
 	if ini:line_exist( section, "slide_velocity" ) then
 		st.sound_slide		= true
-		st.sound_slide_vel	= utils.cfg_get_number(ini, section, "slide_velocity",	npc, false, 3)
-		st.sound_slide_once	= utils.cfg_get_bool(ini, section, "slide_sound_once",  npc, false)
+		st.sound_slide_vel	= utils.cfg_get_number(ini, section, "slide_velocity",	obj, false, 3)
+		st.sound_slide_once	= utils.cfg_get_bool(ini, section, "slide_sound_once",  obj, false)
 	else 
 		st.sound_slide		= false
 	end
 	
-	st.play_at_actor = utils.cfg_get_bool (ini, section, "play_at_actor", npc, false)
+	st.play_at_actor = utils.cfg_get_bool (ini, section, "play_at_actor", obj, false)
     if st.play_at_actor ~= nil and st.play_at_actor == true then
        if st.pos_type ~= pos_obj then
           abort ("Can't define play sound at actor and path !!!")
