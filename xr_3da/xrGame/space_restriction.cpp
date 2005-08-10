@@ -180,6 +180,7 @@ CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictio
 	return							(m_space_restriction_manager->restriction(temp));
 }
 
+#ifdef USE_FREE_IN_RESTRICTIONS
 void CSpaceRestriction::merge_free_in_retrictions	()
 {
 	START_PROFILE("AI/Restricted Object/Merge Free In");
@@ -212,6 +213,7 @@ void CSpaceRestriction::merge_free_in_retrictions	()
 	}
 	STOP_PROFILE;
 }
+#endif
 
 void CSpaceRestriction::initialize					()
 {
@@ -245,8 +247,10 @@ void CSpaceRestriction::initialize					()
 
 	if (m_out_space_restriction)
 		merge_in_out_restrictions	();
+#ifdef USE_FREE_IN_RESTRICTIONS
 	else
 		merge_free_in_retrictions	();
+#endif
 
 	m_initialized					= true;
 }
@@ -265,6 +269,7 @@ void CSpaceRestriction::remove_border			()
 		return;
 	}
 
+#ifdef USE_FREE_IN_RESTRICTIONS
 	FREE_IN_RESTRICTIONS::iterator	I = m_free_in_restrictions.begin();
 	FREE_IN_RESTRICTIONS::iterator	E = m_free_in_restrictions.end();
 	for ( ; I != E; ++I)
@@ -273,6 +278,9 @@ void CSpaceRestriction::remove_border			()
 			(*I).m_enabled					= false;
 			ai().level_graph().clear_mask	((*I).m_restriction->border());
 		}
+#else
+	ai().level_graph().clear_mask	(m_in_space_restriction->border());
+#endif
 }
 
 u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &result)

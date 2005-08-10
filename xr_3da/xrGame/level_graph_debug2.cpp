@@ -1192,6 +1192,7 @@ void CLevelGraph::on_render2	()
 			RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(r,g,b));
 		}
 
+#ifdef USE_FREE_IN_RESTRICTIONS
 		CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator II = (*I).second->m_free_in_restrictions.begin();
 		CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator EE = (*I).second->m_free_in_restrictions.end();
 		for ( ; II != EE; ++II) {
@@ -1212,6 +1213,7 @@ void CLevelGraph::on_render2	()
 				}
 			}
 		}
+#endif
 	}
 }
 

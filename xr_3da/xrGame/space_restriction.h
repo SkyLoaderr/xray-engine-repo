@@ -13,6 +13,8 @@
 #include "space_restriction_bridge.h"
 #include "space_restriction_abstract.h"
 
+//#define USE_FREE_IN_RESTRICTIONS
+
 class CSpaceRestrictionManager;
 
 class CSpaceRestriction : 
@@ -53,7 +55,9 @@ protected:
 	CSpaceRestrictionManager		*m_space_restriction_manager;
 	CBaseRestrictionPtr				m_out_space_restriction;
 	CBaseRestrictionPtr				m_in_space_restriction;
+#ifdef USE_FREE_IN_RESTRICTIONS
 	FREE_IN_RESTRICTIONS			m_free_in_restrictions;
+#endif
 
 private:
 	IC		bool					intersects					(CBaseRestrictionPtr bridge);

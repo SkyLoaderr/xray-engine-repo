@@ -48,6 +48,7 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 		return;
 	}
 
+#ifdef USE_FREE_IN_RESTRICTIONS
 	FREE_IN_RESTRICTIONS::iterator	I = m_free_in_restrictions.begin();
 	FREE_IN_RESTRICTIONS::iterator	E = m_free_in_restrictions.end();
 	for ( ; I != E; ++I)
@@ -56,6 +57,9 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 			(*I).m_enabled					= true;
 			ai().level_graph().set_mask		((*I).m_restriction->border());
 		}
+#else
+	ai().level_graph().set_mask		(m_in_space_restriction->border());
+#endif
 }
 
 IC	bool CSpaceRestriction::applied					() const
