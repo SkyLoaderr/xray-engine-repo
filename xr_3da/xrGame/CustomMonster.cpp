@@ -911,7 +911,10 @@ BOOL CCustomMonster::feel_touch_on_contact	(CObject *O)
 	if (!custom_zone)
 		return	(TRUE);
 
-	if (custom_zone->inside(Position()))
+	Fsphere		sphere;
+	sphere.P	= Position();
+	sphere.R	= EPS_L;
+	if (custom_zone->inside(sphere))
 		return	(TRUE);
 
 	return		(FALSE);
@@ -923,7 +926,10 @@ BOOL CCustomMonster::feel_touch_contact		(CObject *O)
 	if (!custom_zone)
 		return	(TRUE);
 
-	if (custom_zone->inside(Position()))
+	Fsphere		sphere;
+	sphere.P	= Position();
+	sphere.R	= EPS_L;
+	if (custom_zone->inside(sphere))
 		return	(TRUE);
 
 	return		(FALSE);

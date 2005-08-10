@@ -33,7 +33,7 @@ protected:
 public:
 	IC						CSpaceRestrictionComposition	(CSpaceRestrictionHolder *space_restriction_holder, shared_str space_restrictors);
 		virtual void		initialize						();
-		virtual bool		inside							(const Fvector &position, float radius);
+		virtual bool		inside							(const Fsphere &sphere);
 	IC	virtual shared_str	name							() const;
 	IC	virtual bool		shape							() const;
 	IC	virtual bool		default_restrictor				() const;

@@ -26,8 +26,7 @@ public:
 			const xr_vector<u32>	&border						() const;
 			bool					initialized					() const;
 			void					initialize					();
-			bool					inside						(const Fvector &position);
-			bool					inside						(const Fvector &position, float radius);
+			bool					inside						(const Fsphere &sphere);
 			bool					inside						(u32 level_vertex_id, bool partially_inside);
 			bool					inside						(u32 level_vertex_id, bool partially_inside, float radius);
 			shared_str				name						() const;
@@ -38,10 +37,9 @@ public:
 			bool					out_of_border				(const Fvector &position);
 
 	template <typename T>
-	IC		bool					accessible_neighbours		(T &restriction, u32 level_vertex_id, bool out_restriction);
-
-	template <typename T>
 	IC		u32						accessible_nearest			(T &restriction, const Fvector &position, Fvector &result, bool out_restriction);
+	template <typename T>
+	IC		const xr_vector<u32>	&accessible_neighbour_border(T &restriction, bool out_restriction);
 };
 
 #include "space_restriction_bridge_inline.h"

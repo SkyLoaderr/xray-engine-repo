@@ -479,6 +479,8 @@ void CAI_Stalker::update_object_handler	()
 
 void CAI_Stalker::UpdateCL()
 {
+//	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
+//		Msg				("[%6d][CL][%s]",Device.dwTimeGlobal,*cName());
 	if (g_Alive()) {
 		if (g_mt_config.test(mtObjectHandler) && CObjectHandler::planner().initialized()) {
 			fastdelegate::FastDelegate0<>								f = fastdelegate::FastDelegate0<>(this,&CAI_Stalker::update_object_handler);
@@ -535,6 +537,8 @@ CPHDestroyable*		CAI_Stalker::		ph_destroyable	()
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
+//	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
+//		Msg				("[%6d][SH][%s]",Device.dwTimeGlobal,*cName());
 	// Queue shrink
 	VERIFY				(_valid(Position()));
 	u32	dwTimeCL		= Level().timeServer()-NET_Latency;

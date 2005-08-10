@@ -1244,6 +1244,16 @@
 							RelativePath=".\space_restriction_holder_inline.h">
 						</File>
 						<Filter
+							Name="SpaceRestrictionAbstract"
+							Filter="">
+							<File
+								RelativePath=".\space_restriction_abstract.h">
+							</File>
+							<File
+								RelativePath=".\space_restriction_abstract_inline.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="SpaceRestrictionBase"
 							Filter="">
 							<File
@@ -7103,7 +7113,6 @@
 										RelativePath=".\WeaponKnife.h">
 									</File>
 								</Filter>
-
 								<Filter
 									Name="Weapon Groza"
 									Filter="">

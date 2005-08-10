@@ -52,7 +52,7 @@ public:
 	IC				CSpaceRestrictor	();
 	virtual			~CSpaceRestrictor	();
 	virtual	BOOL	net_Spawn			(CSE_Abstract* data);
-			bool	inside				(const Fvector &position, float radius = EPS_L) const;
+			bool	inside				(const Fsphere &sphere) const;
 	virtual void	Center				(Fvector &C) const;
 	virtual float	Radius				() const;
 	virtual BOOL	UsedAI_Locations	();

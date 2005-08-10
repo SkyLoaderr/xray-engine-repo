@@ -196,11 +196,11 @@ void CSpaceRestrictionShape::test_correctness	()
 }
 #endif
 
-bool CSpaceRestrictionShape::inside	(const Fvector &position, float radius)
+bool CSpaceRestrictionShape::inside	(const Fsphere &sphere)
 {
 	VERIFY							(m_initialized);
 	VERIFY							(m_restrictor);
-	return							(m_restrictor->inside(position,radius));
+	return							(m_restrictor->inside(sphere));
 }
 
 shared_str	CSpaceRestrictionShape::name() const

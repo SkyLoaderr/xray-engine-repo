@@ -49,7 +49,7 @@ struct CRemoveMergedFreeInRestrictions {
 	}
 };
 
-bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
+bool CSpaceRestriction::accessible				(const Fsphere &sphere)
 {
 	if (!initialized()) {
 		initialize					();
@@ -58,14 +58,14 @@ bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
 	}
 
 	return							(
-		ai().level_graph().valid_vertex_position(position)
+		ai().level_graph().valid_vertex_position(sphere.P)
 		&&
 		(
 			m_out_space_restriction ? 
 			(
-				m_out_space_restriction->inside(position,radius) && 
-				!m_out_space_restriction->on_border(position) &&
-				!m_out_space_restriction->out_of_border(position)
+				m_out_space_restriction->inside(sphere) && 
+				!m_out_space_restriction->on_border(sphere.P) &&
+				!m_out_space_restriction->out_of_border(sphere.P)
 			) :
 			true
 		)
@@ -73,8 +73,8 @@ bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
 		(
 			m_in_space_restriction ? 
 			(
-				!m_in_space_restriction->inside(position,radius) && 
-				!m_in_space_restriction->on_border(position)
+				!m_in_space_restriction->inside(sphere) && 
+				!m_in_space_restriction->on_border(sphere.P)
 			) :
 			true
 		)
@@ -284,9 +284,9 @@ u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &re
 	return							(m_in_space_restriction->accessible_nearest(m_in_space_restriction,position,result,false));
 }
 
-bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fvector &start_position, float radius) const
+bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fsphere &sphere) const
 {
-	if (bridge->inside(start_position))
+	if (bridge->inside(sphere))
 		return						(false);
 
 	return							(true);
@@ -300,15 +300,28 @@ bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr 
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, u32 start_vertex_id, float radius) const
 {
-	return							(affect(bridge,ai().level_graph().vertex_position(start_vertex_id),radius));
+	Fsphere							sphere;
+	sphere.P						= ai().level_graph().vertex_position(start_vertex_id);
+	sphere.R						= radius;
+	return							(affect(bridge,sphere));
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, const Fvector &start_position, const Fvector &dest_position) const
 {
-	return							(affect(bridge,start_position,0.f) || affect(bridge,dest_position,0.f));
+	Fsphere							sphere0, sphere1;
+	sphere0.P						= start_position;
+	sphere0.R						= 0.f;
+	sphere1.P						= dest_position;
+	sphere1.R						= 0.f;
+	return							(affect(bridge,sphere0) || affect(bridge,sphere1));
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, u32 start_vertex_id, u32 dest_vertex_id) const
 {
 	return							(affect(bridge,start_vertex_id,0.f) || affect(bridge,dest_vertex_id,0.f));
+}
+
+shared_str CSpaceRestriction::name				() const
+{
+	return							(m_out_restrictions);
 }

@@ -8,21 +8,9 @@
 
 #pragma once
 
-IC	CSpaceRestrictionBase::CSpaceRestrictionBase		()
+#ifdef DEBUG
+IC	bool CSpaceRestrictionBase::correct	() const
 {
-	m_initialized				= false;
+	return	(m_correct);
 }
-
-IC	const xr_vector<u32> &CSpaceRestrictionBase::border	()
-{
-	if (!initialized())
-		initialize				();
-	VERIFY						(initialized());
-	VERIFY3						(!m_border.empty(),"Space restrictor has no border!",*name());
-	return						(m_border);
-}
-
-IC	bool CSpaceRestrictionBase::initialized				() const
-{
-	return						(m_initialized);
-}
+#endif

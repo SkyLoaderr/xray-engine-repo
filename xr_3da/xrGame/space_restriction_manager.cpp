@@ -114,11 +114,11 @@ IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, shared_st
 	collect_garbage								();
 }
 
-bool CSpaceRestrictionManager::accessible						(ALife::_OBJECT_ID id, const Fvector &position, float radius)
+bool CSpaceRestrictionManager::accessible						(ALife::_OBJECT_ID id, const Fsphere &sphere)
 {
 	CRestrictionPtr				client_restriction = restriction(id);
 	if (client_restriction)
-		return					(client_restriction->accessible(position,radius));
+		return					(client_restriction->accessible(sphere));
 	return						(true);
 }
 

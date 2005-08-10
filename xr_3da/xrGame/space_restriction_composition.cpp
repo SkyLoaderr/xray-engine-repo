@@ -35,7 +35,7 @@ IC	void CSpaceRestrictionComposition::merge	(CBaseRestrictionPtr restriction)
 	m_border.insert				(m_border.begin(),restriction->border().begin(),restriction->border().end());
 }
 
-bool CSpaceRestrictionComposition::inside					(const Fvector &position, float radius)
+bool CSpaceRestrictionComposition::inside					(const Fsphere &sphere)
 {
 	if (!initialized()) {
 		initialize				();
@@ -46,7 +46,7 @@ bool CSpaceRestrictionComposition::inside					(const Fvector &position, float ra
 	RESTRICTIONS::iterator		I = m_restrictions.begin();
 	RESTRICTIONS::iterator		E = m_restrictions.end();
 	for ( ; I != E; ++I)
-		if ((*I)->inside(position,radius))
+		if ((*I)->inside(sphere))
 			return				(true);
 
 	return						(false);

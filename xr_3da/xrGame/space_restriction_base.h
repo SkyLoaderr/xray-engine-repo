@@ -8,35 +8,31 @@
 
 #pragma once
 
-class CSpaceRestrictionBase {
-protected:
-	xr_vector<u32>					m_border;
-	bool							m_initialized;
+#include "space_restriction_abstract.h"
 
-#ifdef DEBUG
+class CSpaceRestrictionBase : public CSpaceRestrictionAbstract{
+private:
+	typedef CSpaceRestrictionAbstract		inherited;
+
 public:
-	xr_vector<u32>					m_test_storage;
-	bool							m_correct;
+#ifdef DEBUG
+	xr_vector<u32>		m_test_storage;
+	bool				m_correct;
 #endif
 
-
 protected:
-			void					process_borders			();
+			void		process_borders		();
 
 public:
-									CSpaceRestrictionBase	();
-			bool					inside					(u32 level_vertex_id, bool partially_inside);
-			bool					inside					(u32 level_vertex_id, bool partially_inside, float radius);
-			bool					inside					(const Fvector &position);
-	virtual	bool					inside					(const Fvector &position, float radius) = 0;
-	virtual	void					initialize				() = 0;
-	IC		const xr_vector<u32>	&border					();
-	IC		bool					initialized				() const;
-	virtual shared_str				name					() const = 0;
-	virtual bool					shape					() const = 0;
-	virtual bool					default_restrictor		() const = 0;
+			bool		inside				(u32 level_vertex_id, bool partially_inside);
+			bool		inside				(u32 level_vertex_id, bool partially_inside, float radius);
+	virtual	bool		inside				(const Fsphere &sphere) = 0;
+	virtual bool		shape				() const = 0;
+	virtual bool		default_restrictor	() const = 0;
+
+public:
 #ifdef DEBUG
-	IC		bool					correct					() const {return m_correct;}
+	IC		bool		correct				() const;
 #endif
 };
 

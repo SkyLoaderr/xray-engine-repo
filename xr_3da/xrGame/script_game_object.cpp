@@ -381,7 +381,10 @@ bool CScriptGameObject::inside					(const Fvector &position, float epsilon) cons
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSpaceRestrictor : cannot access class member inside!");
 		return			(false);
 	}
-	return				(space_restrictor->inside(position,epsilon));
+	Fsphere				sphere;
+	sphere.P			= position;
+	sphere.R			= epsilon;
+	return				(space_restrictor->inside(sphere));
 }
 
 bool CScriptGameObject::inside					(const Fvector &position) const

@@ -131,7 +131,7 @@ bool CCF_Shape_inside				(const CCF_Shape *self, const Fvector &position, float 
 	return false;
 }
 
-bool CSpaceRestrictor::inside	(const Fvector &position, float radius) const
+bool CSpaceRestrictor::inside	(const Fsphere &sphere) const
 {
 #ifndef PRECOMPUTED_INSIDE
 	return		(CCF_Shape_inside((CCF_Shape*)collidable.model,position,radius));
@@ -144,11 +144,10 @@ bool CSpaceRestrictor::inside	(const Fvector &position, float radius) const
 	VERIFY		(value0 == value1);
 	return		(value0);
 #else
-	Fsphere		sphere	;
-	sphere.P	=		position;
-	sphere.R	=		radius;
-	if (!m_selfbounds.intersect(sphere))	return	false	;
-	else									return	(prepared_inside(sphere));
+	if (!m_selfbounds.intersect(sphere))
+		return	(false);
+	
+	return		(prepared_inside(sphere));
 #endif
 #endif
 }

@@ -18,13 +18,6 @@ IC	CSpaceRestriction::CSpaceRestriction			(CSpaceRestrictionManager *space_restr
 	m_applied						= false;
 }
 
-IC	const xr_vector<u32> &CSpaceRestriction::border	()
-{
-	if (!initialized())
-		initialize					();
-	return							(m_border);
-}
-
 IC	bool CSpaceRestriction::initialized				() const
 {
 	return							(m_initialized);
@@ -70,9 +63,9 @@ IC	bool CSpaceRestriction::applied					() const
 	return							(m_applied);
 }
 
-IC	bool CSpaceRestriction::inside					(const Fvector &position)
+IC	bool CSpaceRestriction::inside					(const Fsphere &sphere)
 {
-	return							(accessible(position,EPS_L));
+	return							(accessible(sphere));
 }
 
 IC	bool CSpaceRestriction::inside					(u32 level_vertex_id, bool partially_inside)

@@ -121,7 +121,10 @@ bool CRestrictedObject::accessible			(const Fvector &position) const
 bool CRestrictedObject::accessible			(const Fvector &position, float radius) const
 {
 	START_PROFILE("AI/Restricted Object/Accessible");
-	return						(Level().space_restriction_manager().accessible(object().ID(),position,radius));
+	Fsphere						sphere;
+	sphere.P					= position;
+	sphere.R					= radius;
+	return						(Level().space_restriction_manager().accessible(object().ID(),sphere));
 	STOP_PROFILE;
 }
 
