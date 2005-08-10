@@ -144,7 +144,11 @@ bool CSpaceRestrictor::inside	(const Fvector &position, float radius) const
 	VERIFY		(value0 == value1);
 	return		(value0);
 #else
-	return		(prepared_inside(position, radius));
+	Fsphere		sphere	;
+	sphere.P	=		position;
+	sphere.R	=		radius;
+	if (!m_selfbounds.intersect(sphere))	return	false	;
+	else									return	(prepared_inside(sphere));
 #endif
 #endif
 }
@@ -220,16 +224,10 @@ void CSpaceRestrictor::prepare			() const
 	actual							(true);
 }
 
-bool CSpaceRestrictor::prepared_inside	(const Fvector &position, float radius) const
+bool CSpaceRestrictor::prepared_inside	(const Fsphere &sphere) const
 {
 	VERIFY							(actual());
 	
-	Fsphere							sphere	;
-	sphere.P						=		position;
-	sphere.R						=		radius;
-
-	if (!m_selfbounds.intersect(sphere))	return false	;
-
 	{
 		SPHERES::const_iterator		I = m_spheres.begin();
 		SPHERES::const_iterator		E = m_spheres.end();

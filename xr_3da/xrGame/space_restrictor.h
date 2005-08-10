@@ -45,7 +45,7 @@ private:
 private:
 	IC		void	actual				(bool value) const;
 			void	prepare				() const;
-			bool	prepared_inside		(const Fvector &position, float radius) const;
+			bool	prepared_inside		(const Fsphere &sphere) const;
 #endif
 
 public:
