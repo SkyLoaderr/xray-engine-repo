@@ -15,9 +15,10 @@
 #include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#ifdef DEBUG
 #include "../../xr_ioconsole.h"
 #include "../../xr_ioc_cmd.h"
-
+#endif //#ifdef DEBUG
 
 using namespace InventoryUtilities;
 
@@ -157,8 +158,9 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	FillUpGroups();
 	HideAll();
 	SetMenuLevel(mlRoot);
-
+#ifdef DEBUG
 	CMD4(CCC_Integer,"rank_for_buymenu",&m_iCurrentRank,0,4);
+#endif
 }
 
 bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){

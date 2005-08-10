@@ -20,7 +20,7 @@ void CUITextureMaster::ParseShTexInfo(LPCSTR xml_file){
 
 	CUIXml xml;
 	xml.Init(CONFIG_PATH, UI_PATH, xml_file);
-	xr_string texture = xml.Read("file_name",0); 
+	shader_name texture = xml.Read("file_name",0); 
 
 	shared_textures_it	sht_it = m_shTex.find(texture);
 	if (m_shTex.end() == sht_it)
@@ -49,54 +49,67 @@ void CUITextureMaster::FreeShTexInfo(){
 #endif
 }
 
-bool CUITextureMaster::IsSh(const xr_string& texture_name){
-	return xr_string::npos == texture_name.find("\\");
+//bool CUITextureMaster::IsSh(const xr_string& texture_name){
+//	return xr_string::npos == texture_name.find("\\");
+//}
+
+bool CUITextureMaster::IsSh(const char* texture_name){
+	return NULL == strstr(texture_name,"\\");
 }
 
-void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc){
+//void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc){
+//	if (IsSh(texture_name))
+//	{
+//		shared_textures_it	sht_it;
+//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+//		{
+//			regions_it reg_it = (*sht_it).second.find(texture_name);
+//			if (reg_it != (*sht_it).second.end())
+//			{				
+//				tc->CreateShader((*sht_it).first.c_str());	// texture file name
+//				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+//				return;
+//			}
+//		}
+//	}
+//	tc->CreateShader(texture_name.c_str());
+//}
+
+//void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* shader_name,	IUISimpleTextureControl* tc){
+//	if (IsSh(texture_name))
+//	{
+//		shared_textures_it	sht_it;
+//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+//		{
+//			regions_it reg_it = (*sht_it).second.find(texture_name);
+//			if (reg_it != (*sht_it).second.end())
+//			{				
+//				tc->CreateShader((*sht_it).first.c_str(), shader_name);	// texture file name
+//				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+//				return;
+//			}
+//		}
+//	}
+//	tc->CreateShader(texture_name.c_str(), shader_name);
+//}
+
+void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc){
 	if (IsSh(texture_name))
 	{
 		shared_textures_it	sht_it;
 		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
 		{
-			regions_it reg_it = (*sht_it).second.find(texture_name);
-			if (reg_it != (*sht_it).second.end())
+			int sz = (*sht_it).second.size();
+			for (int i = 0; i<sz; i++ )			
 			{				
-				tc->CreateShader((*sht_it).first.c_str());	// texture file name
-				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+				tc->CreateShader(*(((*sht_it).first));	// texture file name
+				tc->SetOriginalRectEx((*sht_it).second[i]);    // region on texture
 				return;
 			}
 		}
 	}
-	tc->CreateShader(texture_name.c_str());
-}
+	tc->CreateShader(texture_name);
 
-void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* shader_name,	IUISimpleTextureControl* tc){
-	if (IsSh(texture_name))
-	{
-		shared_textures_it	sht_it;
-		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
-		{
-			regions_it reg_it = (*sht_it).second.find(texture_name);
-			if (reg_it != (*sht_it).second.end())
-			{				
-				tc->CreateShader((*sht_it).first.c_str(), shader_name);	// texture file name
-				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
-				return;
-			}
-		}
-	}
-	tc->CreateShader(texture_name.c_str(), shader_name);
-}
-
-void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
-//	static int full_time = 0;
-//	CTimer T;
-//	T.Start();
-	xr_string tx = texture_name;
-	InitTexture(tx, tc);
-//	full_time +=T.GetElapsed_ms();
-//	Msg("----InitTexture[%d]__full_time[%d]",T.GetElapsed_ms(), full_time);
 }
 
 void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc){

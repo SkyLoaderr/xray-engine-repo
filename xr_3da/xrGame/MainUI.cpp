@@ -110,13 +110,8 @@ CMainUI::CMainUI	()
 	m_pUICursor					= xr_new<CUICursor>();
 	m_pFontManager				= xr_new<CFontManager>();
 	g_pGamePersistent->m_pMainUI= this;
-	if (Device.bReady)			OnDeviceCreate();
-	// only temp
-
-   	CUITextureMaster::ParseShTexInfo("ui_common.xml");
-	CUITextureMaster::ParseShTexInfo("ui_old_textures.xml");
-	CUITextureMaster::ParseShTexInfo("ui_ingame.xml");
-	CUITextureMaster::ParseShTexInfo("ui_mp_icon_rank.xml");
+	if (Device.bReady)			OnDeviceCreate();  	
+	ReadTextureInfo();
 }
 
 CMainUI::~CMainUI	()
@@ -126,6 +121,25 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_pFontManager);
 	g_pGamePersistent->m_pMainUI	= NULL;
 }
+
+void CMainUI::ReadTextureInfo(){
+	if (pSettings->section_exist("texture_desc"))
+	{
+		xr_string itemsList; 
+		string256 single_item;
+
+		itemsList = pSettings->r_string("texture_desc", "files");
+		int itemsCount	= _GetItemCount(itemsList.c_str());
+
+		for (int i = 0; i < itemsCount; i++)
+		{
+			_GetItem(itemsList.c_str(), i, single_item);
+			strcat(single_item,".xml");
+			CUITextureMaster::ParseShTexInfo(single_item);
+		}		
+	}
+}
+
 void CMainUI::Activate	(bool bActivate)
 {
 	if(!!m_Flags.is(flActive) == bActivate)	return;

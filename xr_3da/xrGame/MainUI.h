@@ -59,6 +59,7 @@ class CMainUI :
 	C2DFrustum		m_2DFrustum;
 	string_path		m_screenshot_name;
 	u32				m_screenshotFrame;
+			void	ReadTextureInfo();
 public:
 					CMainUI							();
 	virtual			~CMainUI						();

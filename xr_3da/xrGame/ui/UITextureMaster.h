@@ -16,18 +16,20 @@ public:
 	static void ParseShTexInfo			(LPCSTR xml_file);
 	static void FreeShTexInfo			();
 
-	static void InitTexture(const char* texture_name,		IUISimpleTextureControl* tc);
-	static void InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc);
-	static void InitTexture(const xr_string& texture_name, const char* shader_name, IUISimpleTextureControl* tc);
+//	static void InitTexture(const char* texture_name,		IUISimpleTextureControl* tc);
+//	static void InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc);
+//	static void InitTexture(const xr_string& texture_name, const char* shader_name, IUISimpleTextureControl* tc);
 	static void InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc);
 	static float GetTextureHeight(const char* texture_name);
 	static float GetTextureWidth(const char* texture_name);
 
 protected:
 	IC	static bool IsSh					(const xr_string& texture_name);
+	IC	static bool IsSh					(const char* texture_name);
 
-	typedef xr_string region_name;
-	typedef xr_string shader_name;
+
+	typedef shared_str region_name;
+	typedef shared_str shader_name;
 	typedef xr_map<region_name, Frect>				regions;
 	typedef xr_map<region_name, Frect>::iterator	regions_it;
 	typedef xr_map<shader_name, regions>			shared_textures;
