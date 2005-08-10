@@ -10,14 +10,14 @@
 		<objective>
 			<text>bar_resque_scientific_information_get</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_ecolog_crush_location</map_location_type>
+			<map_location_type hint="bar_resque_scientific_information_get">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<function_complete>bar_rostok_tasks.has_professor_research</function_complete>
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_bring</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_barman_location</map_location_type>
+			<map_location_type hint="bar_resque_scientific_information_bring">blue_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_resque_research_done</infoportion_complete>
 			<infoportion_fail>bar_resque_research_dead</infoportion_fail>
@@ -36,7 +36,7 @@
 		<objective>
 			<text>bar_kill_professor_kill</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_ecolog_crush_location</map_location_type>
+			<map_location_type hint="bar_kill_professor_kill">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_kill_professor_done</infoportion_complete>
 			<infoportion_fail>bar_kill_professor_fail</infoportion_fail>
@@ -45,7 +45,7 @@
 		<objective>
 			<text>bar_kill_professor_reward</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_osvedomitel_location</map_location_type>
+			<map_location_type hint="bar_kill_professor_reward">green_location</map_location_type>
 			<object_story_id>bar_bar_osvedonitel</object_story_id>
 			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
 		</objective>
@@ -61,7 +61,7 @@
 		<objective>
 			<text>bar_hunter_find_rifle</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_hunter_toz_location</map_location_type>
+			<map_location_type hint="bar_hunter_find_rifle">green_location</map_location_type>
 			<object_story_id>bar_hunter_toz</object_story_id>
 			<function_complete>bar_rostok_tasks.has_hunter_rifle</function_complete>
 			<infoportion_set_complete>bar_bar_hunter_quest_find_rifle</infoportion_set_complete>
@@ -69,7 +69,7 @@
 		<objective>
 			<text>bar_hunter_return_rifle</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_hunter_location</map_location_type>
+			<map_location_type hint="bar_hunter_return_rifle">green_location</map_location_type>
 			<object_story_id>bar_hunter</object_story_id>			
 			<infoportion_complete>bar_bar_hunter_quest_finish</infoportion_complete>
 		</objective>
@@ -85,7 +85,7 @@
 		<objective>
 			<text>bar_kill_crazy_veterans</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_crazy_veterans_location</map_location_type>
+			<map_location_type hint="bar_kill_crazy_veterans">green_location</map_location_type>
 			<object_story_id>bar_crazy_veterans_leader</object_story_id>			
 			<function_complete>bar_rostok_tasks.has_lucky_pda</function_complete>
 			<infoportion_set_complete>bar_dolg_veteran_gain</infoportion_set_complete>
@@ -93,7 +93,7 @@
 		<objective>
 			<text>bar_bring_pda_lucky</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_barman_location</map_location_type>
+			<map_location_type hint="bar_bring_pda_lucky">blue_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
@@ -108,21 +108,21 @@
 		<objective>
 			<text>bar_dolg_community_quest_recomendation</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bar_ivancov">green_location</map_location_type>
+			<map_location_type hint="bar_dolg_community_quest_recomendation">green_location</map_location_type>
 			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_dolg_community_quest_vernost</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bar_voronin">blue_location</map_location_type>
+			<map_location_type hint="bar_dolg_community_quest_vernost">blue_location</map_location_type>
 			<object_story_id>bar_dolg_general_voronin</object_story_id>
 			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_dolg_community_quest_prisyaga</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bar_voronin">blue_location</map_location_type>
+			<map_location_type hint="bar_dolg_community_quest_prisyaga">blue_location</map_location_type>
 			<object_story_id>bar_dolg_general_voronin</object_story_id>
 		</objective>
 	</game_task>
@@ -136,7 +136,7 @@
 		<objective>
 			<text>bar_dolg_find_document</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="bar_dolg_find_document">green_location</map_location_type>
 			<object_story_id>bar_dolg_arhive_documents</object_story_id>			
 			<function_complete>bar_rostok_tasks.has_dolg_arhive_documents</function_complete>
 			<infoportion_set_complete>bar_dolg_veteran_gain</infoportion_set_complete>
@@ -144,7 +144,7 @@
 		<objective>
 			<text>bar_dolg_document_to_ivancov</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>green_location</map_location_type>
+			<map_location_type hint="bar_dolg_document_to_ivancov">green_location</map_location_type>
 			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
@@ -201,14 +201,14 @@
 		<objective>
 			<text>get_darklab_key</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>val_borov_location</map_location_type>
+			<map_location_type hint="get_darklab_key">green_location</map_location_type>
 			<object_story_id>val_borov</object_story_id>
             <function_complete>darkvalley_tasks.has_darklab_key</function_complete>
 		</objective>
 		<objective>
 			<text>find_darklab_entrance</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>val_x18_enter_location</map_location_type>
+			<map_location_type hint="find_darklab_entrance">green_location</map_location_type>
 			<map_location_hidden>1</map_location_hidden>
 			<object_story_id>val_door_to_x18</object_story_id>
 			<infoportion_complete>val_x18_door_open</infoportion_complete>
@@ -216,7 +216,7 @@
 		<objective>
 			<text>find_secret_documents</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_darklab_documents_location</map_location_type>
+			<map_location_type hint="find_secret_documents">green_location</map_location_type>
 			<object_story_id>bar_darklab_documents</object_story_id>
 			<function_complete>darkvalley_tasks.has_darklab_documents</function_complete>
 			<infoportion_set_complete>bar_darklab_document_gain</infoportion_set_complete>
@@ -224,7 +224,7 @@
 		<objective>
 			<text>bring_secret_documents</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_barman_location</map_location_type>
+			<map_location_type hint="bring_secret_documents">blue_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_darklab_document_done</infoportion_complete>
 		</objective>
@@ -245,7 +245,7 @@
 		<objective>
 			<text>find_x16_documents</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_decoding_documents_location</map_location_type>
+			<map_location_type hint="find_x16_documents">green_location</map_location_type>
 			<object_story_id>bar_decoding_documents</object_story_id>						
 			<function_complete>darkvalley_tasks.has_x16_documents</function_complete>
 			<infoportion_set_complete>yan_x16_documents_gain</infoportion_set_complete>
@@ -253,7 +253,7 @@
 		<objective>
 			<text>bring_x16_documents</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_barman_location</map_location_type>
+			<map_location_type hint="bring_x16_documents">blue_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_x16_documents_done</infoportion_complete>	
 		</objective>
