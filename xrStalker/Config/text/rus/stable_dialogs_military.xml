@@ -711,14 +711,26 @@
     <string id="mil_hunter_after_dialog_0">
         <text>Ну, вот и все. Тварь подохла. Мы возвращаемся на базу.</text>
     </string>
-    <string id="mil_hunter_dialog_0">
-        <text>А тебя то сталкер как в это гиблое место занесло, уноси лучше ноги пока не поздно.</text>
-    </string>
     <string id="mil_hunter_dialog_1">
         <text>Вам можно значит, а мне нельзя?</text>
     </string>
+    <string id="mil_hunter_dialog_101">
+        <text>А тебя то сталкер как в это гиблое место занесло, уноси лучше ноги пока не поздно.</text>
+    </string>
     <string id="mil_hunter_dialog_2">
         <text>Думаешь, мы тут по своей воле? Лукаш подонок, нас сюда отправил, говорит бойцы в деревне пропадают, мол надо выяснить. Вот сам бы пошел и выяснил.</text>
+    </string>
+    <string id="mil_hunter_dialog_201">
+        <text>Ну, брат, ты вчера и учудил...</text>
+    </string>
+    <string id="mil_hunter_dialog_202">
+        <text>А что я начудил ? Нихрена не помню...</text>
+    </string>
+    <string id="mil_hunter_dialog_203">
+        <text>Мы тут сидим, осматриваемся, и тут идешь ты, пьяный до состояния предмета. Прешь прямо в деревню. Хорошо хоть мы тебя тормознули и положили отсыпаться, а то еще случилось бы чего...</text>
+    </string>
+    <string id="mil_hunter_dialog_204">
+        <text>А вы тут чего сидите ?</text>
     </string>
     <string id="mil_hunter_dialog_3">
         <text>А что здесь происходит?</text>
