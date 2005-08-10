@@ -32,64 +32,43 @@
 		<button x="0" y="10" width="40" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Quests</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button>
 		<button x="60" y="10" width="20" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Map</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button> 
 		<button x="100" y="10" width="35" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Diary</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button>
 		<button x="155" y="10" width="54" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Contacts</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button>
 		<button x="230" y="10" width="48" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Ranking</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button>
 		<button x="298" y="10" width="68" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Statistics</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button>
 		<button x="385" y="10" width="80" height="20" push_off_x="0" push_off_y="0">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Encyclopedia</text>
 			<text_color>
-				<e r="181" g="170" b="148"/>
-				<d r="181" g="170" b="148"/>
-				<t r="127" g="127" b="127"/>				
-				<h r="231" g="153" b="22"/>
+				<t r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 			</text_color>
 		</button>
 	</tab>

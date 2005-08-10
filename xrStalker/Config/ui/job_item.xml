@@ -5,7 +5,7 @@
 		<image x="8" y="16" width="32" height="32">
 		</image>
 		
-		<caption x="45" y="16" width="170" height="18">
+		<caption x="45" y="16" width="200" height="18">
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
 
@@ -14,7 +14,7 @@
 		</location_btn>
 		
 		<switch_description_btn x="252" y="16" width="32" height="32" check_mode="1">
-			<texture>ui_icons_newPDA_showmap</texture>
+			<texture>ui_icons_newPDA_showtext</texture>
 		</switch_description_btn>
 	</task_root_item>
 
