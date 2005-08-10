@@ -2,6 +2,8 @@
 #pragma hdrstop
 
 #include "freeimage.h"
+#include "io.h"
+#include "fcntl.h"
 
 struct SExts{
 	xr_vector<LPSTR>	exts;
@@ -69,6 +71,8 @@ void	Surface_Init()
 	Surface_FormatExt(FIF_WBMP);
 	Surface_FormatExt(FIF_PSD);
 	Surface_FormatExt(FIF_IFF);
+
+	Core._initialize("hhh",0,TRUE,"fs_tex_design.ltx");
 
 	Msg("* %d supported formats",formats.size());
 }

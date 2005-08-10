@@ -4,6 +4,7 @@
 #pragma once
 #include "afxwin.h"
 #include "TextureList.h"
+#include "Image.h"
 
 
 // CTexturesListDlg dialog
@@ -12,6 +13,9 @@ class CTexturesListDlg : public CDialog
 // Construction
 public:
 	CTexturesListDlg(CWnd* pParent = NULL);	// standard constructor
+
+	CRect m_textureRect;
+	CRect m_cur_tex_rect;
 
 // Dialog Data
 	enum { IDD = IDD_TEXTURESLIST_DIALOG };
@@ -24,9 +28,13 @@ public:
 protected:
 	CTextureList m_texList;
 	HICON m_hIcon;
+	CImage m_texture;
 
 	void UpdateList();
 	void UpdatePicture();
+	void xrLoadTexture();
+
+	CRect GetDestRect();
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -54,4 +62,6 @@ public:
 	CButton m_btnSave;
 	afx_msg void OnLbnDblclkList1();
 	CStatic m_pic;
+	CButton m_checkFitImage;
+	afx_msg void OnBnClickedCheck1();
 };

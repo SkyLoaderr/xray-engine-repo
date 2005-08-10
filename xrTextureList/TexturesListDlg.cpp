@@ -13,13 +13,16 @@
 
 // CTexturesListDlg dialog
 
-
+extern void	Surface_Init();
 
 CTexturesListDlg::CTexturesListDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CTexturesListDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_texList.Reset();
+
+	m_textureRect.SetRect(500, 50, 800, 300);
+	m_cur_tex_rect.SetRect(0,0,0,0);
 }
 
 void CTexturesListDlg::DoDataExchange(CDataExchange* pDX)
@@ -37,6 +40,7 @@ void CTexturesListDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_NEW_NAME, m_editNewName);
 	DDX_Control(pDX, IDC_BUTTON4, m_btnSave);
 	DDX_Control(pDX, IDC_STATIC1242345, m_pic);
+	DDX_Control(pDX, IDC_CHECK1, m_checkFitImage);
 }
 
 BEGIN_MESSAGE_MAP(CTexturesListDlg, CDialog)
@@ -51,6 +55,7 @@ BEGIN_MESSAGE_MAP(CTexturesListDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON4, OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BTN_SAVEAS, OnBnClickedBtnSaveas)
 	ON_LBN_DBLCLK(IDC_LIST1, OnLbnDblclkList1)
+	ON_BN_CLICKED(IDC_CHECK1, OnBnClickedCheck1)
 END_MESSAGE_MAP()
 
 
@@ -58,6 +63,7 @@ END_MESSAGE_MAP()
 
 BOOL CTexturesListDlg::OnInitDialog()
 {
+	Surface_Init();	
 	CDialog::OnInitDialog();
 
 	// Set the icon for this dialog.  The framework does this automatically
@@ -73,7 +79,7 @@ BOOL CTexturesListDlg::OnInitDialog()
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
-
+void DrawBitmap(HDC hdc, const CRect& r, u32* data, u32 w, u32 h,  const CRect& source);
 void CTexturesListDlg::OnPaint() 
 {
 	if (IsIconic())
@@ -94,9 +100,70 @@ void CTexturesListDlg::OnPaint()
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
-	{
-		CDialog::OnPaint();	
+	{	
+		PAINTSTRUCT ps;
+		CDC* pDC = BeginPaint(&ps);
+		pDC->Rectangle(m_textureRect);
+		if (m_texture.pData && m_cur_tex_rect.Width() && m_cur_tex_rect.Height())
+			DrawBitmap(pDC->GetSafeHdc(),GetDestRect(),m_texture.pData, m_texture.dwWidth, m_texture.dwHeight, m_cur_tex_rect);
+		EndPaint(&ps);
+		CDialog::OnPaint();
 	}
+}
+
+
+CRect CTexturesListDlg::GetDestRect(){
+	CRect dest_rect;
+
+	dest_rect = m_textureRect;
+	
+	if (m_checkFitImage.GetCheck())
+	{
+		float scale_ratio;
+		float rw = m_textureRect.Width()/float(m_cur_tex_rect.Width());
+		float rh = m_textureRect.Height()/float(m_cur_tex_rect.Height());
+		if ( rw < rh)
+			scale_ratio = rw;
+		else
+			scale_ratio = rh;
+
+		dest_rect.bottom = dest_rect.top + int(m_cur_tex_rect.Height()*scale_ratio);
+		dest_rect.right = dest_rect.left + int(m_cur_tex_rect.Width()*scale_ratio);
+	}
+	else
+	{
+		dest_rect.bottom = dest_rect.top + m_cur_tex_rect.Height();
+		dest_rect.right = dest_rect.left + m_cur_tex_rect.Width();
+	}
+    return dest_rect;
+}
+
+
+void DrawBitmap(HDC hdc, const CRect& r, u32* _data, u32 _w, u32 _h, const CRect& source)
+{
+	U32Vec data(source.Width()*source.Height());
+
+	for (u32 y = source.top; y<source.bottom; y++)
+		Memory.mem_copy(&data[(y - source.top)*source.Width()],&_data[y*_w + source.left],source.Width()*4);
+
+	BITMAPINFO          bmi;
+	bmi.bmiHeader.biSize			= sizeof(BITMAPINFOHEADER);
+	bmi.bmiHeader.biWidth			= source.Width();
+	bmi.bmiHeader.biHeight			= source.Height();
+	bmi.bmiHeader.biPlanes			= 1;
+	bmi.bmiHeader.biBitCount		= 32;
+	bmi.bmiHeader.biCompression		= BI_RGB;
+	bmi.bmiHeader.biSizeImage		= 0;
+	bmi.bmiHeader.biXPelsPerMeter	= 0;
+	bmi.bmiHeader.biYPelsPerMeter	= 0;
+	bmi.bmiHeader.biClrUsed			= 0;
+	bmi.bmiHeader.biClrImportant	= 0;
+
+	SetMapMode(hdc,MM_ANISOTROPIC);
+	SetStretchBltMode(hdc,HALFTONE);
+	int err=StretchDIBits (hdc,r.left,r.top,r.Width(),r.Height(),0,0,source.Width(),source.Height(),&*data.begin(), &bmi,DIB_RGB_COLORS,SRCCOPY);
+	if (err==GDI_ERROR)
+		Log("!StretchDIBits - Draw failed.");
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
@@ -191,22 +258,14 @@ void CTexturesListDlg::OnBnClickedLoad()
 
 		m_texList.ParseFile(pathName);
 		this->m_editTexName.SetWindowText(m_texList.m_fileName);
+		xrLoadTexture();
 		UpdateList();
 		m_btnSave.EnableWindow();
 	}
 }
 
 void CTexturesListDlg::UpdatePicture(){
-	int cur_sel = m_list.GetCurSel();
-
-	if (cur_sel == 1)
-	{
-
-	}
-	else
-	{
-
-	}
+	InvalidateRect(m_textureRect);
 }
 
 void CTexturesListDlg::OnLbnSelchangeList1()
@@ -217,6 +276,8 @@ void CTexturesListDlg::OnLbnSelchangeList1()
 	m_list.GetText(cur_sel, str);
 	CMyTexture texture;
 	m_texList.Get(texture, str);
+
+	m_cur_tex_rect.SetRect(texture.x,texture.y,texture.x + texture.width, texture.y+texture.height);
 
 //	str = texture.m_name + " ";
 	str = "x=";
@@ -244,7 +305,7 @@ void CTexturesListDlg::OnBnClickedBtnRemove()
 }
 
 void CTexturesListDlg::OnBnClickedBtnRenameFile()
-{
+{	
 	CString str;
 	m_editNewName.GetWindowText(str);
 	if (str.IsEmpty())
@@ -255,6 +316,7 @@ void CTexturesListDlg::OnBnClickedBtnRenameFile()
 	m_texList.m_fileName = str;
 	m_editTexName.SetWindowText(str);
 	m_editNewName.SetWindowText("");
+	xrLoadTexture();
 	
 }
 
@@ -305,4 +367,18 @@ void CTexturesListDlg::OnLbnDblclkList1()
 	str = itoa(texture.height, buff, 10);
 	m_editHeight.SetWindowText(str);
 //	m_editTexParams.SetWindowText(str);
+}
+
+void CTexturesListDlg::xrLoadTexture(){
+	CString tex;
+	m_editTexName.GetWindowText(tex);
+	tex.Replace(_T("ui\\"),_T(""));
+	if (m_texture.LoadTGA(tex))
+		InvalidateRect(m_textureRect);
+}
+
+void CTexturesListDlg::OnBnClickedCheck1()
+{
+	InvalidateRect(m_textureRect);
+
 }
