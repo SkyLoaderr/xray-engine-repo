@@ -67,6 +67,24 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
+	if type == "test_restr_changer" then
+	    local i
+	    for i = 1, 6 do
+		    t = { section = "logic@test_restr_changer_walker",
+			    idle = 0,
+			    prior = 0, state = {0},
+			    in_rest = "", out_rest = "test_restr_changer_restr1"
+		    }
+		    table.insert(sj, t)
+		    t = { section = "logic@test_restr_changer_walker",
+			    idle = 0,
+			    prior = 0, state = {1},
+			    in_rest = "", out_rest = "test_restr_changer_restr2"
+		    }
+		    table.insert(sj, t)
+		end
+	end
 --'--------------------------------------------------------------------------	
 --' ”ниверсальные гулаги дл€ smart terrain
 --'--------------------------------------------------------------------------
@@ -115,7 +133,7 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 		
-	gulag_escape.load_job    (sj, gname, type, squad, groups)
+	gulag_escape.load_job     (sj, gname, type, squad, groups)
 	gulag_garbage.load_job    (sj, gname, type, squad, groups)
 	gulag_dark_valley.load_job(sj, gname, type, squad, groups)
 	gulag_labx18.load_job     (sj, gname, type, squad, groups)
@@ -139,6 +157,30 @@ function loadStates(gname, type)
 			else
 				return 1
 			end
+		end
+	end
+	
+	if type == "test_restr_changer" then
+		return function(gulag)
+		    local state, tg
+		    local inv = {[0] = 1, [1] = 0}
+		    return inv[gulag.state]
+
+		    --[[
+		    state = gulag.state
+		    tg = time_global()
+		    if not gulag.haron_prev_time then
+		        gulag.haron_prev_time = tg
+		        return 0
+		    else
+		        if tg - gulag.haron_prev_time > 1000 then
+		            gulag.haron_prev_time = tg
+		            return inv[state]
+		        else
+		            return state
+		        end
+		    end
+		    ]]
 		end
 	end
 
