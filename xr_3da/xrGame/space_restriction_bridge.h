@@ -35,6 +35,7 @@ public:
 			bool					default_restrictor			() const;
 			bool					on_border					(const Fvector &position) const;
 			bool					out_of_border				(const Fvector &position);
+			Fsphere					sphere						() const;
 
 	template <typename T>
 	IC		u32						accessible_nearest			(T &restriction, const Fvector &position, Fvector &result, bool out_restriction);

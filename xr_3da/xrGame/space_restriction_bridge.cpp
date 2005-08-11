@@ -59,6 +59,11 @@ bool CSpaceRestrictionBridge::default_restrictor		() const
 	return				(object().default_restrictor());
 }
 
+Fsphere CSpaceRestrictionBridge::sphere					() const
+{
+	return				(object().sphere());
+}
+
 bool CSpaceRestrictionBridge::inside					(u32 level_vertex_id, bool partially_inside)
 {
 	START_PROFILE("AI/Restricted Object/Bridge/Inside Vertex");

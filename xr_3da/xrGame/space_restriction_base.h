@@ -29,6 +29,7 @@ public:
 	virtual	bool		inside				(const Fsphere &sphere) = 0;
 	virtual bool		shape				() const = 0;
 	virtual bool		default_restrictor	() const = 0;
+	virtual	Fsphere		sphere				() const = 0;
 
 public:
 #ifdef DEBUG

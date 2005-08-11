@@ -37,6 +37,7 @@ public:
 		virtual shared_str	name					() const;
 	IC	virtual bool		shape					() const;
 	IC	virtual bool		default_restrictor		() const;
+		virtual	Fsphere		sphere					() const;
 #ifdef DEBUG
 				void		test_correctness		();
 #endif

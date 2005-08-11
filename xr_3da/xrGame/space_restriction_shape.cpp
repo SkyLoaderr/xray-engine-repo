@@ -209,3 +209,10 @@ shared_str	CSpaceRestrictionShape::name() const
 	return							(m_restrictor->cName());
 }
 
+Fsphere CSpaceRestrictionShape::sphere	() const
+{
+	Fsphere							result;
+	m_restrictor->Center			(result.P);
+	result.R						= m_restrictor->Radius();
+	return							(result);
+}

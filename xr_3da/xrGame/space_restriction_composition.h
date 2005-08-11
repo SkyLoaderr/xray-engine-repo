@@ -26,6 +26,7 @@ protected:
 	RESTRICTIONS			m_restrictions;
 	shared_str				m_space_restrictors;
 	CSpaceRestrictionHolder	*m_space_restriction_holder;
+	Fsphere					m_sphere;
 
 protected:
 	IC			void		merge							(CBaseRestrictionPtr restriction);
@@ -37,6 +38,7 @@ public:
 	IC	virtual shared_str	name							() const;
 	IC	virtual bool		shape							() const;
 	IC	virtual bool		default_restrictor				() const;
+		virtual	Fsphere		sphere							() const;
 #ifdef DEBUG
 				void		test_correctness				();
 #endif
