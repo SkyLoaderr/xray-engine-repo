@@ -374,7 +374,7 @@ use_wpn = true
 on_info = %+gar_hellcar_death +gar_open_fire%
 
 [danger_condition@hellcar_group]
-ignore_distance = 5
+ignore_distance = 20
 
 [logic@gar_hellcar_group_walker1]
 active = walker1@gar_hellcar_group_walker1
@@ -431,6 +431,7 @@ active = kamp@gar_hellcar_group_rest1
 [kamp@gar_hellcar_group_rest1]
 center_point = kamp_point
 meet = meet@friend
+danger = danger_condition@hellcar_group
 
 
 [logic@gar_hellcar_group_rest2]
@@ -439,6 +440,7 @@ active = kamp@gar_hellcar_group_rest2
 [kamp@gar_hellcar_group_rest2]
 center_point = kamp_point
 meet = meet@friend
+danger = danger_condition@hellcar_group
 
 
 [logic@gar_hellcar_group_rest3]
@@ -447,6 +449,7 @@ active = kamp@gar_hellcar_group_rest3
 [kamp@gar_hellcar_group_rest3]
 center_point = kamp_point
 meet = meet@friend
+danger = danger_condition@hellcar_group
 
 
 [logic@gar_hellcar_group_rest4]
@@ -462,6 +465,7 @@ path_walk = hellcar_walk
 path_look = hellcar_look2
 meet = meet@after_battle
 on_use = use
+danger = danger_condition@hellcar_group
 
 
 [meet@hellcar_group_in_battle]
