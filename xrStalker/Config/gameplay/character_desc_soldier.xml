@@ -23,6 +23,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -50,6 +51,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -79,6 +81,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -109,6 +112,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -138,6 +142,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -167,6 +172,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -196,6 +202,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -225,6 +232,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -255,6 +263,7 @@
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -284,6 +293,7 @@
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 			</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -313,6 +323,7 @@
 			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 			</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -343,6 +354,7 @@
 			wpn_vintorez \n
 			ammo_9x39_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -372,6 +384,7 @@
 			wpn_val \n
 			ammo_9x39_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -401,6 +414,7 @@
 			wpn_abakan = 1, scope launcher cond=0.9\n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -432,6 +446,7 @@
 			wpn_groza = 1, scope launcher cond=0.9 \n
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -462,6 +477,7 @@
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -492,6 +508,7 @@
 			wpn_vintorez \n
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -522,6 +539,7 @@
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
