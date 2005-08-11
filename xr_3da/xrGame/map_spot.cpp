@@ -13,6 +13,7 @@ CMapSpot::CMapSpot(CMapLocation* ml)
 {
 	ClipperOn			();
 	m_focusReceivedTm	= -1.0f;
+	m_bScale			= false;
 }
 
 CMapSpot::~CMapSpot()
@@ -22,7 +23,8 @@ CMapSpot::~CMapSpot()
 void CMapSpot::Load(CUIXml* xml, LPCSTR path)
 {
 	CUIXmlInit::InitStatic(*xml,path,0,this);
-
+	int i = xml->ReadAttribInt(path, 0, "scale", 0);
+	m_bScale		= (i==1);
 }
 
 LPCSTR CMapSpot::GetHint() 

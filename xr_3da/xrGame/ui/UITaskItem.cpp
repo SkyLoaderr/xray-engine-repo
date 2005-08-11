@@ -109,6 +109,8 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	m_captionStatic->AdjustHeightToText	();
 
 	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
+	h	= _max(h,m_switchDescriptionBtn->GetWndPos().y+m_switchDescriptionBtn->GetHeight());
+	h	= _max(h,m_showLocationBtn->GetWndPos().y+m_showLocationBtn->GetHeight());
 	SetHeight						(h);
 	
 	

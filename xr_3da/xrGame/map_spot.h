@@ -9,6 +9,7 @@ class CMapSpot :public CUIStatic
 	typedef CUIStatic inherited;
 	CMapLocation*			m_map_location;
 	float					m_focusReceivedTm;
+	bool					m_bScale;
 public:
 							CMapSpot						(CMapLocation*);
 	virtual					~CMapSpot						();

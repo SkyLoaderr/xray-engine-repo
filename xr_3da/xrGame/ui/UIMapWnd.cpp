@@ -170,6 +170,17 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolRemoveSpotClicked,this,_1,_2));
 	}
 
+	btnIndex		= eHighlightSpot;
+	strconcat(pth, sToolbar.c_str(), ":highlight_spot_btn");
+	if(uiXml.NavigateToNode(pth,0)){
+		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
+		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
+		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
+		Register						(m_ToolBar[btnIndex]);
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolHighlightSpotClicked,this,_1,_2));
+	}
+
+
 	m_hint								= xr_new<CUIMapHint>();
 	m_hint->Init						();
 	m_hint->SetAutoDelete				(false);
@@ -444,8 +455,6 @@ void CUIMapWnd::Update()
 {
 	inherited::Update			();
 	m_ActionPlanner->update		();
-	if(m_ToolBar[eRemoveSpot])
-		m_ToolBar[eRemoveSpot]->Show(m_selected_location&&m_selected_location->CanBeUserRemoved());
 }
 
 void CUIMapWnd::SetZoom	( float value)
@@ -510,6 +519,47 @@ void CUIMapWnd::OnToolAddSpotClicked	(CUIWindow* w, void*)
 	ValidateToolBar						();
 }
 
+void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
+{
+	m_flags.zero		();
+	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
+	bool bPushed = btn->GetCheck		();
+	m_flags.set							(lmUserSpotRemove,bPushed);
+	ValidateToolBar						();
+}
+
+void CUIMapWnd::OnToolHighlightSpotClicked(CUIWindow* w, void*)
+{
+	m_flags.zero		();
+	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
+	bool bPushed = btn->GetCheck		();
+	m_flags.set							(lmHighlightSpot,bPushed);
+	ValidateToolBar						();
+}
+
+void CUIMapWnd::RemoveSpot			()
+{
+	if(m_selected_location&&m_selected_location->CanBeUserRemoved()){
+		Level().MapManager().RemoveMapLocation(m_selected_location);
+		m_selected_location				= NULL;
+		m_flags.set						(lmHighlightSpot,FALSE);
+		m_ToolBar[eRemoveSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
+	}
+}
+
+void CUIMapWnd::HighlightSpot			()
+{
+	if(m_selected_location){
+		bool b = m_selected_location->PointerEnabled	();
+		if(b)
+			m_selected_location->DisablePointer();
+		else
+			m_selected_location->EnablePointer();
+
+		m_ToolBar[eHighlightSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
+	}
+}
+
 void CUIMapWnd::ValidateToolBar			()
 {
 	CUI3tButton* btn	= NULL;
@@ -529,16 +579,13 @@ void CUIMapWnd::ValidateToolBar			()
 	if(btn)
 		btn->SetCheck	(!!m_flags.test(lmUserSpotRemove));
 
+	btn					= m_ToolBar[eHighlightSpot];
+	if(btn)
+		btn->SetCheck	(!!m_flags.test(lmHighlightSpot));
 
+	
 }
 
-void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
-{
-	if(m_selected_location&&m_selected_location->CanBeUserRemoved()){
-		Level().MapManager().RemoveMapLocation(m_selected_location);
-		m_selected_location = NULL;
-	}
-}
 
 void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 {
@@ -617,4 +664,9 @@ void CUIMapWnd::Select				(CMapLocation* ml)
 	if(ml->CanBeSelected())
 		m_selected_location = ml;
 
+	if(!!m_flags.test(lmUserSpotRemove) && ml->CanBeUserRemoved() )
+		RemoveSpot	();
+
+	if(	m_flags.test(lmHighlightSpot))
+		HighlightSpot	();
 }

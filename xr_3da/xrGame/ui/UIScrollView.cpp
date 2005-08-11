@@ -119,8 +119,8 @@ void CUIScrollView::Draw				()
 
 	Frect		visible_rect			= GetAbsoluteRect();
 	UI()->PushScissor					(visible_rect);
-	if(GetHeight()<m_pad->GetHeight())	//fix it !!!
-		m_VScrollBar->Draw					();
+//	if(GetHeight()<m_pad->GetHeight())	//fix it !!!
+	m_VScrollBar->Draw					();
 	int iDone = 0;
 
 	for(	WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); 

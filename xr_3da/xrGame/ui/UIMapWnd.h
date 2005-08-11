@@ -33,6 +33,7 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 						eAddSpot,
 						eRemoveSpot,
 						eActor,
+						eHighlightSpot,
 						eMaxBtn};
 public:
 	enum lmFlags{	lmUserSpotAdd	= (1<<1),
@@ -40,6 +41,7 @@ public:
 					lmZoomIn		= (1<<3),
 					lmZoomOut		= (1<<4),
 					lmFirst			= (1<<5),
+					lmHighlightSpot = (1<<6),
 				};
 	Flags32						m_flags;
 private:
@@ -60,6 +62,7 @@ private:
 	void						OnScrollV				();
 	void						OnScrollH				();
 	void						OnToolGlobalMapClicked	(CUIWindow*, void*);
+	void						OnToolHighlightSpotClicked(CUIWindow*, void*);
 	void						OnToolActorClicked		(CUIWindow*, void*);
 	void						OnToolNextMapClicked	(CUIWindow*, void*);
 	void						OnToolPrevMapClicked	(CUIWindow*, void*);
@@ -69,6 +72,8 @@ private:
 	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
 	void						ValidateToolBar			();
 
+	void						RemoveSpot				();
+	void						HighlightSpot			();
 	void						ResetActionPlanner		();
 public:
 	CUICustomMap*				m_tgtMap;

@@ -64,7 +64,7 @@ public:
 	
 	IC void			SetMinZoom				(float zoom){m_minZoom=zoom;}
 	IC float		GetMinZoom				(){return m_minZoom;}
-	IC float		GetMaxZoom				(){return 12.0f;}
+	IC float		GetMaxZoom				(){return 8.0f;}
 
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();
