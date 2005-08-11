@@ -77,5 +77,26 @@
     <string id="general_new_diary">
         <text>Новая запись в дневнике.</text>
     </string>    
-    
+
+    <string id="to_escape">
+        <text>На кордон</text>
+    </string>    
+    <string id="to_garbage">
+        <text>На свалку</text>
+    </string>    
+    <string id="to_agroprom">
+        <text>На "Агропром"</text>
+    </string>    
+    <string id="to_darkvalley">
+        <text>В темную долину</text>
+    </string>    
+    <string id="to_bar">
+        <text>На бар</text>
+    </string>    
+    <string id="to_rostok">
+        <text>На "Росток"</text>
+    </string>    
+    <string id="to_military">
+        <text>На склады</text>
+    </string>    
 </string_table>
