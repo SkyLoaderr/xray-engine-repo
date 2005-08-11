@@ -542,7 +542,7 @@ void CUIMapWnd::RemoveSpot			()
 	if(m_selected_location&&m_selected_location->CanBeUserRemoved()){
 		Level().MapManager().RemoveMapLocation(m_selected_location);
 		m_selected_location				= NULL;
-		m_flags.set						(lmHighlightSpot,FALSE);
+		m_flags.set						(lmUserSpotRemove,FALSE);
 		m_ToolBar[eRemoveSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
 	}
 }
@@ -557,6 +557,7 @@ void CUIMapWnd::HighlightSpot			()
 			m_selected_location->EnablePointer();
 
 		m_ToolBar[eHighlightSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
+		m_flags.set						(lmHighlightSpot,FALSE);
 	}
 }
 
@@ -667,6 +668,6 @@ void CUIMapWnd::Select				(CMapLocation* ml)
 	if(!!m_flags.test(lmUserSpotRemove) && ml->CanBeUserRemoved() )
 		RemoveSpot	();
 
-	if(	m_flags.test(lmHighlightSpot))
+	if(	!!m_flags.test(lmHighlightSpot))
 		HighlightSpot	();
 }
