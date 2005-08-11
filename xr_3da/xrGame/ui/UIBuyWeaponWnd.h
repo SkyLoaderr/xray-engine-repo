@@ -45,7 +45,6 @@ public:
 	virtual ~CUIBuyWeaponWnd();
 
 	virtual void Init(LPCSTR strSectionName, LPCSTR strPricesSection);
-
 	void InitInventory();
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
@@ -222,9 +221,9 @@ public:
 	//			uIndexInSlot			- порядковый уровень оружия в списке группы секций
 	//			bRealRepresentationSet	- новое флага , который указывает на наличие у вещи реального 
 	//									  представления
-	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot, bool bRealRepresentationSet) {}
+//	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot, bool bRealRepresentationSet) {}
 	// Params:	sectionName		- имя конфигурационной секции оружия
-	void		MoveWeapon(const char *sectionName, bool bRealRepresentationSet) {}
+//	void		MoveWeapon(const char *sectionName, bool bRealRepresentationSet) {}
 
 	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
 	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
