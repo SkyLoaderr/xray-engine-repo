@@ -253,7 +253,8 @@ void CSpaceRestriction::initialize					()
 #endif
 	
 #ifdef DEBUG
-	m_border						= m_in_space_restriction->border();
+	if (!m_out_space_restriction)
+		m_border					= m_in_space_restriction->border();
 #endif
 
 	m_initialized					= true;
