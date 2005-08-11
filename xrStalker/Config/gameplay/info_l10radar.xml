@@ -19,11 +19,9 @@
 	</info_portion>
 
 	<info_portion id="rad_find_stalkers_reward_start">
-		<action>level_tasks.notify_new_task</action>
 		<task>rad_find_stalkers</task>
 	</info_portion>
 	<info_portion id="rad_find_stalkers_free_start">
-		<action>level_tasks.notify_new_task</action>
 		<task>rad_find_stalkers</task>
 	</info_portion>
 	<info_portion id="rad_find_stalkers_found">
@@ -37,7 +35,6 @@
 		<disable>rad_find_stalkers_return_ak</disable>
 	</info_portion>
 	<info_portion id="rad_find_treasurer_start">
-		<action>level_tasks.notify_new_task</action>
 		<task>rad_find_treasurer</task>
 	</info_portion>
 	<info_portion id="rad_find_treasurer_done">

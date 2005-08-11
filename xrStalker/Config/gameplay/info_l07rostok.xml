@@ -21,7 +21,6 @@
 	
 	<info_portion id="bar_kill_veteran_start">
 		<task>bar_crazy_veterans_quest</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_kill_veteran_killed"></info_portion>
 	<info_portion id="bar_kill_veteran_done"></info_portion>	
@@ -50,7 +49,6 @@
 	<!-- BAR HUNTER QUEST -->
 	<info_portion id="bar_bar_hunter_quest_start">
 		<task>bar_hunter_rifle</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_bar_hunter_quest_find_rifle"></info_portion>                                                        
 	<info_portion id="bar_bar_hunter_quest_finish"></info_portion>
@@ -64,12 +62,10 @@
 
 	<info_portion id="bar_dolg_community_start">
 		<task>bar_dolg_community_quest</task>	
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 
 	<info_portion id="bar_dolg_veteran_start">
 		<task>bar_dolg_test_quest</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_dolg_veteran_gain"></info_portion>
 	<info_portion id="bar_dolg_veteran_done"></info_portion>
@@ -80,14 +76,12 @@
 
 	<info_portion id="bar_svoboda_rg6_start">
 		<task>mil_freedom_rg6_task</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_svoboda_rg6_gain"></info_portion>
 	<info_portion id="bar_svoboda_rg6_done"></info_portion>
 
 	<info_portion id="bar_kill_svoboda_ambush_start">
 		<task>bar_dolg_svoboda_ambush_quest</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_killed"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
@@ -95,7 +89,6 @@
 
 	<info_portion id="bar_kill_svoboda_leader_start">
 		<task>bar_dolg_svoboda_leader_kill_quest</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_kill_svoboda_leader_killed"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_done"></info_portion>
@@ -123,7 +116,6 @@
 	
 	<info_portion id="bar_resque_research_start">
 		<task>bar_resque_information</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion> 
 	<info_portion id="bar_resque_research_done"></info_portion>
 	<info_portion id="bar_resque_research_fail"></info_portion>	
@@ -139,7 +131,6 @@
     <!-- FREEDOM FLASH QUEST -->
 	<info_portion id="bar_kill_professor_start">
 		<task>bar_kill_professor</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_kill_professor_done"></info_portion>
 	<info_portion id="bar_kill_professor_fail"></info_portion>		
@@ -166,7 +157,6 @@
     <!-- BAR BARMEN JOB -->
         <!-- FIND DOCUMENTS -->
     <info_portion id="bar_darklab_document_start">
-		<action>level_tasks.notify_new_task</action>
 		<task>bar_darklab_documents</task>
     </info_portion>
 	<info_portion id="bar_darklab_document_gain"></info_portion>
@@ -174,7 +164,6 @@
 
 		 <!-- X16 DOCUMENTS -->
     <info_portion id="bar_x16_documents_start">
-		<action>level_tasks.notify_new_task</action>
 		<task>bar_x16_documents</task>
     </info_portion>
 	<info_portion id="yan_x16_documents_gain"></info_portion>
@@ -198,7 +187,6 @@
 	    
 		<!-- DEACTIVATE RADAR -->
     <info_portion id="bar_deactivate_radar_start">
-		<action>level_tasks.notify_new_task</action>
 		<task>bar_radar_deactivate</task>
     </info_portion>
 	<info_portion id="bar_deactivate_radar_done"></info_portion>

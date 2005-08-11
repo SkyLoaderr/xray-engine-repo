@@ -5,7 +5,7 @@
 	<!-- атака бандитов на Серого -->
 	<info_portion id="garbage_meetstalker_start">
 		<task>garbage_meet_stalker</task>
-		<action>level_tasks.notify_new_task</action>
+
 	</info_portion>
 	<info_portion id="garbage_meetstalker_done"></info_portion>
 	<info_portion id="garbage_meetstalker_die"></info_portion>
@@ -28,7 +28,6 @@
 	<info_portion id="gar_bandits_damaged"></info_portion>
 	<info_portion id="gar_hellcar_help">
 		<task>gar_help_dymon</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="gar_open_fire"></info_portion>
 	<info_portion id="gar_counter_fire"></info_portion>
@@ -45,7 +44,6 @@
 	<!-- Застава Долга -->
 	<info_portion id="gar_kill_boars_quest">
 		<task>gar_kill_boars</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>	
 	<info_portion id="gar_kill_boars_done"></info_portion>
 	<info_portion id="gar_kill_boars_request"></info_portion>	
@@ -67,7 +65,6 @@
 	<!-- Новичок в туннеле -->
 	<info_portion id="gar_help_newbie">
 		<task>gar_help_tunnel_newbie</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="gar_help_newbie_done"></info_portion>
 	<info_portion id="gar_help_newbie_die"></info_portion>

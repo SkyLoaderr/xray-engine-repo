@@ -49,7 +49,6 @@
 <info_portion id="val_escort_captive_join"></info_portion>
 <info_portion id="val_escort_help_prisoner_task">
 	<task>val_prisoner_help</task>
-	<action>level_tasks.notify_new_task</action>
 </info_portion>
 
 <!-- Напарник 1 -->
@@ -83,7 +82,6 @@
 <info_portion id="val_sos_give_tip"></info_portion>
 <info_portion id="val_sos_start_task">
 	<task>val_sos_help</task>
-	<action>level_tasks.notify_new_task</action>
 </info_portion>
 <info_portion id="val_sos_got_medkit"></info_portion>
 <info_portion id="val_sos_dead"></info_portion>
@@ -144,7 +142,6 @@
 <!-- Типсы -->
 <info_portion id="val_exit_gate_show">
     <task>val_come_to_trader</task>
-	<action>level_tasks.notify_new_task</action>
 </info_portion>
 
 <!-- Раздавленный монолитовец -->

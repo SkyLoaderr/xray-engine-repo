@@ -49,7 +49,6 @@
 	<info_portion id="mil_dolg_phase3"></info_portion>
 	<info_portion id="mil_dolg_skull_talk">
 		<task>mil_kill_lukash</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_dolg_lukash_kill_fail"></info_portion>
 	<info_portion id="mil_dog_payment_already"></info_portion>
@@ -72,7 +71,6 @@
 	<info_portion id="mil_sniper_dead"></info_portion>
 	<info_portion id="mil_sniper_get_job">
 		<task>mil_kill_sniper</task>
-		<action>level_tasks.notify_new_task</action>
     </info_portion>
 	<info_portion id="mil_sniper_job_failed"></info_portion>
 	<info_portion id="mil_sniper_job_complete"></info_portion>
@@ -104,7 +102,6 @@
 	<info_portion id="mil_max_talk3"></info_portion>
 	<info_portion id="mil_max_job">
 		<task>mil_mad_job</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_max_lukash_call"></info_portion>
 	<info_portion id="mil_max_flash_get"><article>mil_crazy_flash_info</article></info_portion>
@@ -118,7 +115,6 @@
 	<info_portion id="mil_lukash_first_talk"></info_portion>
 	<info_portion id="mil_lukash_get_job">
 		<task>mil_lukash_job</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_lukash_go_to_max"></info_portion>
 	<info_portion id="mil_lukash_job_failed"></info_portion>
@@ -128,7 +124,6 @@
 	<info_portion id="mil_lukash_dead"></info_portion>
 	<info_portion id="mil_lukash_blockpost">
 		<task>mil_blockpost_job2</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>		
 	<info_portion id="mil_actor_on_lukash"></info_portion>
 	<info_portion id="mil_bodyguard_talk"></info_portion>
@@ -168,7 +163,6 @@
 	<!-- Нападение на хутор Долга-->
 	<info_portion id="mil_lukash_dolg_task">
 		<task>mil_lukash_job</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_lukash_dolg_task_complete"></info_portion>
 	<info_portion id="mil_lukash_dolg_task_fail"></info_portion>
@@ -194,7 +188,6 @@
 	
 	<info_portion id="mil_leader_quest2_start">
 		<task>mil_courier_job</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_leader_quest2_complete"><article>mil_courier_doc</article></info_portion>
 	<info_portion id="mil_leader_quest2_failed"></info_portion>
@@ -208,7 +201,6 @@
 	<info_portion id="mil_leader_attach_community"></info_portion>
 	<info_portion id="mil_leader_task_set">
 		<task>mil_lukash_job</task>
-		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	
 	<!-- Диалог с поваром-->
@@ -240,7 +232,6 @@
 	<info_portion id="mil_fblockpost_alarm"></info_portion>
 	<info_portion id="mil_fblockpost_quest">
 			<task>mil_blockpost_job</task>
-   			<action>level_tasks.notify_new_task</action>
 	</info_portion>			
 	<info_portion id="mil_fblockpost_quest_complete"></info_portion>
 	<info_portion id="mil_fblockpost_quest_fail"></info_portion>
