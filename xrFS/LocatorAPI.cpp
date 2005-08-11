@@ -238,19 +238,18 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 
 	m_Flags.set		(flags,TRUE);
 
+	// scan root directory
+	bNoRecurse		= TRUE;
+	string_path		buf;
+	IReader* F		= 0;
+	Recurse			("");
 	// append application path
-
 	if (m_Flags.is(flScanAppRoot)){
 		append_path		("$app_root$",Core.ApplicationPath,0,FALSE);
     }
 	if (m_Flags.is(flTargetFolderOnly)){
 		append_path		("$target_folder$",target_folder,0,TRUE);
 	}else{
-		// scan root directory
-		bNoRecurse		= TRUE;
-		string_path		buf;
-		IReader* F		= 0;
-		Recurse			("");
 		LPCSTR fs_ltx	= (fs_name&&fs_name[0])?fs_name:FSLTX;
 		F				= r_open(fs_ltx); 
 		if (!F&&m_Flags.is(flScanAppRoot))
