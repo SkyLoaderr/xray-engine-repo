@@ -8,11 +8,15 @@
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
 
-		<switch_description_btn x="272" y="16" width="32" height="32" check_mode="1">
+		<caption_received x="60" y="46" width="200" height="18">
+			<text x="0" y="0" font="letterica16"></text>
+		</caption_received>
+
+		<switch_description_btn x="272" y="16" width="20" height="20" check_mode="1">
 			<texture>ui_icons_newPDA_showtext</texture>
 		</switch_description_btn>
 
-		<location_btn x="272" y="48" width="32" height="32" check_mode="1">
+		<location_btn x="272" y="40" width="20" height="20" check_mode="1">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 
@@ -30,11 +34,11 @@
 			</text_colors>
 		</description>
 
-		<show_pointer_btn x="248" y="4" width="22" height="22" check_mode="1">
+		<show_pointer_btn x="249" y="4" width="18" height="18" check_mode="1">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 
-		<show_descr_btn x="272" y="4" width="22" height="22" check_mode="1">
+		<show_descr_btn x="272" y="4" width="21" height="19" check_mode="1">
 			<texture>ui_icons_newPDA_gomark</texture>
 		</show_descr_btn>
 
@@ -48,11 +52,11 @@
 			<text x="0" y="0" font="letterica16" r="150" g="150" b="180" a="255"></text>
 		</description>
 
-		<location_btn x="248" y="5" width="32" height="32" check_mode="1">
+		<location_btn x="248" y="5" width="20" height="20" check_mode="1">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 
-		<show_pointer_btn x="272" y="5" width="32" height="32" check_mode="1">
+		<show_pointer_btn x="272" y="5" width="18" height="18" check_mode="1">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 		

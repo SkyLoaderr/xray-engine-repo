@@ -26,21 +26,21 @@
 	<crlc_big>
 		<level_map spot="crcl_big_spot"		pointer="user_pointer"></level_map>
 	</crlc_big>
-	<crcl_big_spot  x="0" y="0" width="115" height="115" alignment="c" scale="1" real_size="100">
+	<crcl_big_spot  x="0" y="0" width="115" height="115" alignment="c" scale="1" stretch = "1">
 		<texture x="730" y="456" width="115" height="115">ui\ui_common</texture>
 	</crcl_big_spot>
 
 	<crlc_mdl>
 		<level_map spot="crlc_mdl_spot"		pointer="user_pointer"></level_map>
 	</crlc_mdl>
-	<crlc_mdl_spot  x="0" y="0" width="62" height="62" alignment="c" scale="1" real_size="75">
+	<crlc_mdl_spot  x="0" y="0" width="62" height="62" alignment="c" scale="1" stretch = "1">
 		<texture x="858" y="392" width="62" height="62">ui\ui_common</texture>
 	</crlc_mdl_spot>
 	
 	<crlc_small>
 		<level_map spot="crlc_small_spot"	pointer="user_pointer"></level_map>
 	</crlc_small>
-	<crlc_small_spot  x="0" y="0" width="31" height="31" alignment="c" scale="1" real_size="30">
+	<crlc_small_spot  x="0" y="0" width="31" height="31" alignment="c" scale="1" stretch = "1">
 		<texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
 	</crlc_small_spot>
 

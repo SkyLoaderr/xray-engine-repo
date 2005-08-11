@@ -9,8 +9,10 @@ class CMapSpot :public CUIStatic
 	typedef CUIStatic inherited;
 	CMapLocation*			m_map_location;
 	float					m_focusReceivedTm;
-	bool					m_bScale;
 public:
+	bool					m_bScale;
+	Fvector2				m_originSize;
+	float					m_real_size;
 							CMapSpot						(CMapLocation*);
 	virtual					~CMapSpot						();
 	virtual		void		Load							(CUIXml* xml, LPCSTR path);

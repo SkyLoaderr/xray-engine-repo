@@ -99,39 +99,39 @@
 						<texture>ui_string_03</texture>
 
 						<tool_bar>
-							<global_map_btn x="0" y="-7" width="32" height="32" check_mode="0">
+							<global_map_btn x="0" y="1" width="21" height="15" check_mode="0">
 							<window_name>global_map_btn</window_name>
-								<texture>ui_icons_newPDA_showpers</texture>
+								<texture>ui_icons_newPDA_compas</texture>
 							</global_map_btn>
 
-							<actor_btn x="32" y="-7" width="32" height="32" check_mode="0">
+							<actor_btn x="22" y="1" width="21" height="15" check_mode="0">
 							<window_name>actor_btn</window_name>
-							<texture>ui_icons_newPDA_compas</texture>
+							<texture>ui_icons_newPDA_showpers</texture>
 							</actor_btn>								
 							
 															
-							<highlight_spot_btn x="234" y="-7" width="32" height="32" check_mode="1">
+							<highlight_spot_btn x="275" y="1" width="21" height="15" check_mode="1">
 								<window_name>highlight_spot_btn</window_name>
 								<texture>ui_icons_newPDA_mark</texture>
 							</highlight_spot_btn>								
 
 
-							<zoom_in_btn x="266" y="-7" width="32" height="32" check_mode="1">
+							<zoom_in_btn x="296" y="2" width="21" height="15" check_mode="1">
 								<window_name>zoom_in_btn</window_name>
 								<texture>ui_icons_newPDA_zoom</texture>
 							</zoom_in_btn>								
 
-							<zoom_out_btn x="298" y="-7" width="32" height="32" check_mode="1">
+							<zoom_out_btn x="318" y="2" width="21" height="15" check_mode="1">
 								<window_name>zoom_out_btn</window_name>
 								<texture>ui_icons_newPDA_ZoomMin</texture>
 							</zoom_out_btn>								
 
-							<add_spot_btn x="330" y="-7" width="32" height="32" check_mode="1">
+							<add_spot_btn x="340" y="1" width="21" height="15" check_mode="1">
 								<window_name>add_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssign</texture>
 							</add_spot_btn>								
 
-							<remove_spot_btn x="362" y="-7" width="32" height="32" check_mode="1">
+							<remove_spot_btn x="362" y="1" width="21" height="15" check_mode="1">
 								<window_name>remove_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssigndel</texture>
 							</remove_spot_btn>								
