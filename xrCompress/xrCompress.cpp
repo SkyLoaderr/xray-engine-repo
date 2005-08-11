@@ -58,6 +58,8 @@ BOOL	testSKIP		(LPCSTR path)
 	if (0==stricmp(p_ext,".tga"))	return TRUE;
 	if (0==stricmp(p_ext,".txt"))	return TRUE;
 	if (0==stricmp(p_ext,".smf"))	return TRUE;
+	if (0==stricmp(p_ext,".uvm"))	return TRUE;
+	if (0==stricmp(p_ext,".raw"))	return TRUE;
 	if (0==stricmp(p_name,"build"))	return TRUE;
 	if ('~'==p_ext[1])				return TRUE;
 	if ('_'==p_ext[1])				return TRUE;
@@ -305,8 +307,11 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 	string_path		tmp;
 	strncpy			(tmp,params,ltx_fn-params); tmp[ltx_fn-params]=0;
 	_Trim			(tmp);
-	bool bExist		= !!FS.exist(fn,"$app_root$",tmp,".ltx"); 
-	R_ASSERT3		(bExist,"ERROR: Can't find ltx file: ",fn);
+	strcat			(tmp,".ltx");
+	strcpy			(fn,tmp);
+	if (!FS.exist(fn)||!FS.exist(fn,"$app_root$",tmp)) 
+		Debug.fail	("ERROR: Can't find ltx file: '%s'",fn);
+
 	CInifile ltx	(fn);
 	printf			("Processing LTX...\n");
 
@@ -317,9 +322,13 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 		bool bRecurse	= CInifile::IsBOOL(s_it->second.c_str());
 		u32 mask		= bRecurse?FS_ListFiles:FS_ListFiles|FS_RootOnly;
 
-		LPCSTR path		= 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
+		string_path path;
+		LPCSTR _path		= 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
+		strcpy				(path,_path);
+		u32 path_len		= xr_strlen(path);
+		if ((0!=path_len)&&(path[path_len-1]!='\\')) strcat(path,"\\");
 
-		printf				("- Append path: '%s'\n",s_it->first.c_str());
+		printf				("- Append path: '%s'\n",path);
 		xr_vector<char*>*	i_list	= FS.file_list_open	("$target_folder$",path,mask);
 		R_ASSERT3			(i_list,	"Unable to open file list:", path);
 		// collect folders
