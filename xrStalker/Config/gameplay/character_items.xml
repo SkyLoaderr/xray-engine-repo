@@ -1,5 +1,6 @@
 medkit = 2, prob=0.5 \n
 bandage = 3, prob=0.6 \n
+antirad = 3, prob=0.3 \n
 bread_a = 1, prob=0.8 \n
 kolbasa_a = 1, prob=0.8 \n
 vodka_a = 1, prob=0.8 \n
