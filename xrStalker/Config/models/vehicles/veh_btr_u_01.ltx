@@ -29,11 +29,11 @@ engine_power      		= 100        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.001 ;0.001
+power_increment_factor	= 0.002 ;0.001
 power_decrement_factor	= 0.01 ;0.01
 rpm_increment_factor	= 0.01 ;0.02
 rpm_decrement_factor	= 0.01 ;0.02
-
+m_power_neutral_factor	= 0.25
 ; additional engine parameters
 
 max_engine_rpm    		= 4000			; rpm (5000) rpm will never be more
@@ -58,7 +58,7 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.73, 2500,3850	;2100,2850	
+R                  		= 3.73, 2500,3850
 N1                 		= 3.73, 2500,3850
 N2                 		= 2.29, 2500,3850
 N3                 		= 1.39, 2500,3850
@@ -68,32 +68,35 @@ N4                 		= 0.96, 2500,3850
 ;------ Rest Adjustment --------------------------------------------------------
 
 [lights]
-headlights         = f1,f2
+headlights         		= f1,f2
 
 [f1]
-bone               = left_light
-color              = 0.6,0.6,0.6,0.5
-range              = 25
-cone_angle         = 80
-spot_texture       = lights\lights_blamplight
-glow_texture       = glow\glow_Yellow
-glow_radius        = 0.5
+bone               		= left_light
+color              		= 0.6,0.6,0.6,0.5
+range              		= 25
+cone_angle         		= 80
+spot_texture       		= lights\lights_blamplight
+glow_texture       		= glow\glow_Yellow
+glow_radius        		= 0.5
 
 [f2]
-bone               = right_light
-color              = 0.6,0.6,0.6,0.6
-range              = 25
-cone_angle         = 80
-spot_texture       = lights\lights_blamplight
-glow_texture       = glow\glow_Yellow
-glow_radius        = 0.5
+bone               		= right_light
+color              		= 0.6,0.6,0.6,0.6
+range              		= 25
+cone_angle         		= 80
+spot_texture       		= lights\lights_blamplight
+glow_texture       		= glow\glow_Yellow
+glow_radius        		= 0.5
 
 [car_sound]
-snd_volume         = 1.0
-snd_name           = car\car2
-transmission_switch = car\car_gearchange
-explosion_sound    = weapons\heli_explosion
-relative_pos       = 0.0,0.5,3.0.
+snd_volume         		= 1.0
+snd_name           		= car\car2
+engine_sound_start_dellay	= 0.5
+engine_start			= car\test_car_start
+engine_stop				= car\test_car_stop
+transmission_switch		= car\car_gearchange
+explosion_sound    		= weapons\heli_explosion
+relative_pos       		= 0.0,0.5,3.0.
 
 ;-------------------------------------------------------------------------------
 ;------ animations params ------------------------------------------------------
