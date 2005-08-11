@@ -388,7 +388,7 @@ function CKampManager:updateNpc(npc)
 		end
 	elseif self.kamp_state == "post_joke" then
 		if role ~= "joke_post" then
-			sound = "reac_joke"
+			sound = "reac_joke, story_reac_laughter"
 		end
 	elseif self.kamp_state == "post_story" then
 		if role ~= "story_post" then
