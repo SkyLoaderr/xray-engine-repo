@@ -74,16 +74,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="gar_hellcar_in_battle">
-        <has_info>gar_hellcar_help</has_info>
-        <dont_has_info>gar_after_battle</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>gar_hellcar_in_battle_0</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="gar_wounded_bandit">
         <phrase_list>
             <phrase id="1">
@@ -103,101 +93,6 @@
             </phrase>
             <phrase id="0">
                 <text>gar_wounded_bandit_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="gar_hellcar_dialog_thanks">
-        <has_info>gar_hellcar_help</has_info>
-        <has_info>gar_after_battle</has_info>
-        <phrase_list>
-            <phrase id="13111111">
-                <text>gar_hellcar_dialog_thanks_13111111</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1311111">
-                <text>gar_hellcar_dialog_thanks_1311111</text>
-                <next>13111111</next>
-            </phrase>
-            <phrase id="131111">
-                <text>gar_hellcar_dialog_thanks_131111</text>
-                <next>1311111</next>
-            </phrase>
-            <phrase id="13111">
-                <text>gar_hellcar_dialog_thanks_13111</text>
-                <next>131111</next>
-            </phrase>
-            <phrase id="11">
-                <text>gar_hellcar_dialog_thanks_11</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="121">
-                <text>gar_hellcar_dialog_thanks_121</text>
-                <next>1211</next>
-            </phrase>
-            <phrase id="1211">
-                <text>gar_hellcar_dialog_thanks_1211</text>
-            </phrase>
-            <phrase id="1411">
-                <text>gar_hellcar_dialog_thanks_1411</text>
-                <give_info>gar_remove_fake_spot9</give_info>
-                <give_info>gar_remove_fake_spot10</give_info>
-                <give_info>gar_remove_fake_spot11</give_info>
-                <next>14111</next>
-            </phrase>
-            <phrase id="14">
-                <text>gar_hellcar_dialog_thanks_14</text>
-                <next>141</next>
-            </phrase>
-            <phrase id="141">
-                <text>gar_hellcar_dialog_thanks_141</text>
-                <next>1411</next>
-            </phrase>
-            <phrase id="14111">
-                <text>gar_hellcar_dialog_thanks_14111</text>
-                <next>141111</next>
-                <next>141112</next>
-            </phrase>
-            <phrase id="141111">
-                <text>gar_hellcar_dialog_thanks_141111</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>gar_hellcar_dialog_thanks_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-                <next>15</next>
-            </phrase>
-            <phrase id="12">
-                <text>gar_hellcar_dialog_thanks_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="13">
-                <text>gar_hellcar_dialog_thanks_13</text>
-                <next>13111</next>
-            </phrase>
-            <phrase id="15">
-                <text>gar_hellcar_dialog_thanks_15</text>
-            </phrase>
-            <phrase id="0">
-                <text>gar_hellcar_dialog_thanks_0</text>
-                <action>garbage_dialogs.gar_hellcar_thanks</action>
-                <next>1</next>
-            </phrase>
-            <phrase id="141112">
-                <text>gar_hellcar_dialog_thanks_141112</text>
-                <next>1411121</next>
-            </phrase>
-            <phrase id="1411121">
-                <text>gar_hellcar_dialog_thanks_1411121</text>
-                <next>14111211</next>
-            </phrase>
-            <phrase id="14111211">
-                <text>gar_hellcar_dialog_thanks_14111211</text>
-                <give_info>gar_add_fake_spot5</give_info>
-                <give_info>gar_add_fake_spot6</give_info>
                 <next>1</next>
             </phrase>
         </phrase_list>
@@ -365,9 +260,6 @@
                 <has_info>garbage_meetstalker_done</has_info>
                 <next>55</next>
             </phrase>
-            <phrase id="11">
-                <text>gar_seriy_start_11</text>
-            </phrase>
             <phrase id="3">
                 <text></text>
                 <precondition>xr_conditions.gar_bandits_seryi_die</precondition>
@@ -406,39 +298,8 @@
                 <next>4</next>
                 <next>5</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="gar_seriy_help">
-        <precondition>xr_conditions.gar_bandits_seryi_die</precondition>
-        <has_info>gar_seryi_open_fire</has_info>
-        <phrase_list>
-            <phrase id="111">
-                <text>gar_seriy_help_111</text>
-                <action>garbage_dialogs.transfer_seriy_flash</action>
-                <give_info>garbage_meetstalker_done</give_info>
-                <next>1111</next>
-            </phrase>
             <phrase id="11">
-                <text>gar_seriy_help_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="1">
-                <text>gar_seriy_help_1</text>
-                <action>garbage_dialogs.meet_seriy_done</action>
-                <next>11</next>
-            </phrase>
-            <phrase id="1111">
-                <text>gar_seriy_help_1111</text>
-                <give_info>agr_krot_band_start</give_info>
-                <give_info>agr_can_ask_krot_about_gunslinger</give_info>
-                <next>11111</next>
-            </phrase>
-            <phrase id="11111">
-                <text>gar_seriy_help_11111</text>
-            </phrase>
-            <phrase id="0">
-                <text>gar_seriy_help_0</text>
-                <next>1</next>
+                <text>gar_seriy_start_11</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -450,10 +311,6 @@
             </phrase>
             <phrase id="444">
                 <text>gar_newbie_in_tonnel_444</text>
-            </phrase>
-            <phrase id="11">
-                <text>gar_newbie_in_tonnel_11</text>
-                <next>111</next>
             </phrase>
             <phrase id="111">
                 <text>gar_newbie_in_tonnel_111</text>
@@ -526,6 +383,10 @@
                 <action>garbage_dialogs.gar_newbie_thanks</action>
                 <next>3333</next>
             </phrase>
+            <phrase id="11">
+                <text>gar_newbie_in_tonnel_11</text>
+                <next>111</next>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
@@ -535,31 +396,66 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="gar_seriy_help">
+        <precondition>xr_conditions.gar_bandits_seryi_die</precondition>
+        <has_info>gar_seryi_open_fire</has_info>
+        <phrase_list>
+            <phrase id="111">
+                <text>gar_seriy_help_111</text>
+                <action>garbage_dialogs.transfer_seriy_flash</action>
+                <give_info>garbage_meetstalker_done</give_info>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_seriy_help_1</text>
+                <action>garbage_dialogs.meet_seriy_done</action>
+                <next>11</next>
+            </phrase>
+            <phrase id="1111">
+                <text>gar_seriy_help_1111</text>
+                <give_info>agr_krot_band_start</give_info>
+                <give_info>agr_can_ask_krot_about_gunslinger</give_info>
+                <next>11111</next>
+            </phrase>
+            <phrase id="11">
+                <text>gar_seriy_help_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="0">
+                <text>gar_seriy_help_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11111">
+                <text>gar_seriy_help_11111</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="gar_hellcar_start">
         <phrase_list>
-            <phrase id="3">
-                <text></text>
-                <has_info>gar_hellcar_help</has_info>
-                <has_info>gar_after_battle</has_info>
-                <next>31</next>
-            </phrase>
             <phrase id="5">
                 <text></text>
                 <has_info>gar_bandits_damaged</has_info>
                 <next>51</next>
             </phrase>
-            <phrase id="4">
-                <text></text>
-                <dont_has_info>gar_after_battle</dont_has_info>
-                <has_info>gar_hellcar_help</has_info>
-                <next>41</next>
-            </phrase>
             <phrase id="21">
                 <text>gar_hellcar_start_21</text>
                 <next>211</next>
             </phrase>
+            <phrase id="51">
+                <text>gar_hellcar_start_51</text>
+            </phrase>
+            <phrase id="211">
+                <text>gar_hellcar_start_211</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
             <phrase id="11">
                 <text>gar_hellcar_start_11</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>gar_bandits_raid</dont_has_info>
+                <dont_has_info>gar_bandits_damaged</dont_has_info>
+                <next>11</next>
             </phrase>
             <phrase id="2">
                 <text></text>
@@ -567,11 +463,23 @@
                 <has_info>gar_bandits_raid</has_info>
                 <next>21</next>
             </phrase>
-            <phrase id="1">
+            <phrase id="3">
                 <text></text>
-                <dont_has_info>gar_bandits_raid</dont_has_info>
-                <dont_has_info>gar_bandits_damaged</dont_has_info>
-                <next>11</next>
+                <has_info>gar_hellcar_help</has_info>
+                <has_info>gar_after_battle</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>gar_hellcar_start_31</text>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <dont_has_info>gar_after_battle</dont_has_info>
+                <has_info>gar_hellcar_help</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>gar_hellcar_start_41</text>
             </phrase>
             <phrase id="0">
                 <text></text>
@@ -581,18 +489,110 @@
                 <next>4</next>
                 <next>5</next>
             </phrase>
-            <phrase id="211">
-                <text>gar_hellcar_start_211</text>
+        </phrase_list>
+    </dialog>
+    <dialog id="gar_hellcar_in_battle">
+        <has_info>gar_hellcar_help</has_info>
+        <dont_has_info>gar_after_battle</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>gar_hellcar_in_battle_0</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="31">
-                <text>gar_hellcar_start_31</text>
+        </phrase_list>
+    </dialog>
+    <dialog id="gar_hellcar_dialog_thanks">
+        <has_info>gar_hellcar_help</has_info>
+        <has_info>gar_after_battle</has_info>
+        <phrase_list>
+            <phrase id="13111111">
+                <text>gar_hellcar_dialog_thanks_13111111</text>
+                <next>1</next>
             </phrase>
-            <phrase id="41">
-                <text>gar_hellcar_start_41</text>
+            <phrase id="1311111">
+                <text>gar_hellcar_dialog_thanks_1311111</text>
+                <next>13111111</next>
             </phrase>
-            <phrase id="51">
-                <text>gar_hellcar_start_51</text>
+            <phrase id="131111">
+                <text>gar_hellcar_dialog_thanks_131111</text>
+                <next>1311111</next>
+            </phrase>
+            <phrase id="13111">
+                <text>gar_hellcar_dialog_thanks_13111</text>
+                <next>131111</next>
+            </phrase>
+            <phrase id="11">
+                <text>gar_hellcar_dialog_thanks_11</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="121">
+                <text>gar_hellcar_dialog_thanks_121</text>
+                <next>1211</next>
+            </phrase>
+            <phrase id="1211">
+                <text>gar_hellcar_dialog_thanks_1211</text>
+            </phrase>
+            <phrase id="1411">
+                <text>gar_hellcar_dialog_thanks_1411</text>
+                <give_info>gar_remove_fake_spot9</give_info>
+                <give_info>gar_remove_fake_spot10</give_info>
+                <give_info>gar_remove_fake_spot11</give_info>
+                <next>14111</next>
+            </phrase>
+            <phrase id="14">
+                <text>gar_hellcar_dialog_thanks_14</text>
+                <next>141</next>
+            </phrase>
+            <phrase id="141">
+                <text>gar_hellcar_dialog_thanks_141</text>
+                <next>1411</next>
+            </phrase>
+            <phrase id="14111">
+                <text>gar_hellcar_dialog_thanks_14111</text>
+                <next>141111</next>
+                <next>141112</next>
+            </phrase>
+            <phrase id="141111">
+                <text>gar_hellcar_dialog_thanks_141111</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_hellcar_dialog_thanks_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+            </phrase>
+            <phrase id="12">
+                <text>gar_hellcar_dialog_thanks_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="13">
+                <text>gar_hellcar_dialog_thanks_13</text>
+                <next>13111</next>
+            </phrase>
+            <phrase id="15">
+                <text>gar_hellcar_dialog_thanks_15</text>
+            </phrase>
+            <phrase id="141112">
+                <text>gar_hellcar_dialog_thanks_141112</text>
+                <next>1411121</next>
+            </phrase>
+            <phrase id="1411121">
+                <text>gar_hellcar_dialog_thanks_1411121</text>
+                <next>14111211</next>
+            </phrase>
+            <phrase id="14111211">
+                <text>gar_hellcar_dialog_thanks_14111211</text>
+                <give_info>gar_add_fake_spot5</give_info>
+                <give_info>gar_add_fake_spot6</give_info>
+                <next>1</next>
+            </phrase>
+            <phrase id="0">
+                <text>gar_hellcar_dialog_thanks_0</text>
+                <action>garbage_dialogs.gar_hellcar_thanks</action>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -600,45 +600,46 @@
         <dont_has_info>gar_bandits_raid</dont_has_info>
         <dont_has_info>gar_bandits_damaged</dont_has_info>
         <phrase_list>
-            <phrase id="111111">
-                <text>gar_hellcar_dialog_quest_111111</text>
-            </phrase>
-            <phrase id="11121">
-                <text>gar_hellcar_dialog_quest_11121</text>
-                <next>111211</next>
-            </phrase>
-            <phrase id="111211">
-                <text>gar_hellcar_dialog_quest_111211</text>
-            </phrase>
-            <phrase id="111311">
-                <text>gar_hellcar_dialog_quest_111311</text>
-            </phrase>
             <phrase id="111">
                 <text>gar_hellcar_dialog_quest_111</text>
                 <next>1111</next>
                 <next>1112</next>
                 <next>1113</next>
             </phrase>
-            <phrase id="11111">
-                <text>gar_hellcar_dialog_quest_11111</text>
-                <next>111111</next>
-            </phrase>
             <phrase id="1">
                 <text>gar_hellcar_dialog_quest_1</text>
                 <next>11</next>
             </phrase>
-            <phrase id="11131">
-                <text>gar_hellcar_dialog_quest_11131</text>
-                <next>111311</next>
+            <phrase id="11">
+                <text>gar_hellcar_dialog_quest_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>gar_hellcar_dialog_quest_1111</text>
+                <precondition>xr_conditions.gar_not_damaged_bandits</precondition>
+                <give_info>gar_hellcar_help</give_info>
+                <next>11111</next>
             </phrase>
             <phrase id="0">
                 <text>gar_hellcar_dialog_quest_0</text>
                 <give_info>gar_bandits_raid</give_info>
                 <next>1</next>
             </phrase>
-            <phrase id="11">
-                <text>gar_hellcar_dialog_quest_11</text>
-                <next>111</next>
+            <phrase id="11111">
+                <text>gar_hellcar_dialog_quest_11111</text>
+                <next>111111</next>
+            </phrase>
+            <phrase id="111211">
+                <text>gar_hellcar_dialog_quest_111211</text>
+            </phrase>
+            <phrase id="1112">
+                <text>gar_hellcar_dialog_quest_1112</text>
+                <precondition>xr_conditions.gar_not_damaged_bandits</precondition>
+                <next>11121</next>
+            </phrase>
+            <phrase id="11121">
+                <text>gar_hellcar_dialog_quest_11121</text>
+                <next>111211</next>
             </phrase>
             <phrase id="1113">
                 <text>gar_hellcar_dialog_quest_1113</text>
@@ -646,16 +647,16 @@
                 <give_info>gar_bandits_damaged</give_info>
                 <next>11131</next>
             </phrase>
-            <phrase id="1112">
-                <text>gar_hellcar_dialog_quest_1112</text>
-                <precondition>xr_conditions.gar_not_damaged_bandits</precondition>
-                <next>11121</next>
+            <phrase id="11131">
+                <text>gar_hellcar_dialog_quest_11131</text>
+                <next>111311</next>
             </phrase>
-            <phrase id="1111">
-                <text>gar_hellcar_dialog_quest_1111</text>
-                <precondition>xr_conditions.gar_not_damaged_bandits</precondition>
-                <give_info>gar_hellcar_help</give_info>
-                <next>11111</next>
+            <phrase id="111311">
+                <text>gar_hellcar_dialog_quest_111311</text>
+            </phrase>
+            <phrase id="111111">
+                <text>gar_hellcar_dialog_quest_111111</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
