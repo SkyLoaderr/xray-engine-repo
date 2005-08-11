@@ -16,6 +16,7 @@ CTelekineticObject::CTelekineticObject()
 		state				= TS_None;
 		object				= 0;
 		telekinesis			= 0;
+		m_rotate			= false;
 }
 
 CTelekineticObject::~CTelekineticObject()
@@ -25,7 +26,7 @@ CTelekineticObject::~CTelekineticObject()
 
 
 
-bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk) 
+bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk, bool rot) 
 {
 	if(!can_activate(obj)) return false;
 
@@ -44,9 +45,12 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 	time_fire_started	= 0;
 	//time_raise_started	= Device.dwTimeGlobal;
 
+	m_rotate			= rot;
+
 	if(object->m_pPhysicsShell)
 		object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
-	
+
+
 	return true;
 }
 
@@ -55,8 +59,7 @@ void CTelekineticObject::raise_update()
 	if (check_height()) prepare_keep();// начать удержание предмета
 	else if (check_raise_time_out()) release();
 	else {
-
-		rotate();
+		if (m_rotate) rotate();
 	}
 }
 void CTelekineticObject::keep_update()

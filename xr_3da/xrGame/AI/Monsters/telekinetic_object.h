@@ -30,12 +30,14 @@ public:
 	u32					time_fire_started;
 
 	float				strength;
-	
+
+	bool				m_rotate;
+
 public:
 								CTelekineticObject		();
 								~CTelekineticObject		();
 	
-virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
+virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk, bool rot = true); 
 	
 virtual		void				raise					(float step);
 virtual		void				raise_update			();

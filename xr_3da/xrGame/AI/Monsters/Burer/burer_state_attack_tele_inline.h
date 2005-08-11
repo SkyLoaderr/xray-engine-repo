@@ -111,8 +111,7 @@ void CStateBurerAttackTeleAbstract::critical_finalize()
 {
 	inherited::critical_finalize		();
 
-	// ???????????????????????????????????????????????????
-	//object->anim().TA_Deactivate		();
+	object->com_man().ta_pointbreak		();
 	object->CTelekinesis::Deactivate	();
 	object->DeactivateShield			();
 
@@ -234,19 +233,32 @@ void CStateBurerAttackTeleAbstract::ExecuteTeleContinue()
 	}
 }
 
+#define HEAD_OFFSET_INDOOR	1.f
+#define HEAD_OFFSET_OUTDOOR 5.f
+
 TEMPLATE_SPECIALIZATION
 void CStateBurerAttackTeleAbstract::ExecuteTeleFire()
 {
 	object->com_man().ta_pointbreak();
 
-	Fvector enemy_pos = object->EnemyMan.get_enemy()->Position();
-	enemy_pos.y += 5 * object->EnemyMan.get_enemy()->Radius();
+	float	dist	= selected_object->Position().distance_to(object->EnemyMan.get_enemy()->Position());
+	
+	Fvector enemy_pos;
+	float	power;
 
-	float dist = selected_object->Position().distance_to(object->EnemyMan.get_enemy()->Position());
-	object->CTelekinesis::fire(selected_object, enemy_pos, dist/12);
+	if (object->m_monster_type == CBaseMonster::eMonsterTypeIndoor) {
+		power		= dist/8;
+		enemy_pos	= get_head_position(const_cast<CEntityAlive*>(object->EnemyMan.get_enemy()));
+		enemy_pos.y += 2 * object->EnemyMan.get_enemy()->Radius();
+	} else {
+		enemy_pos	= object->EnemyMan.get_enemy()->Position();
+		enemy_pos.y += 5 * object->EnemyMan.get_enemy()->Radius();
+		power		= dist/12;
+	}
+	
+	object->CTelekinesis::fire(selected_object, enemy_pos, power);
 
 	object->StopTeleObjectParticle(selected_object);
-
 	object->sound().play(MonsterSpace::eMonsterSoundTeleAttack);
 	object->DeactivateShield();
 }
@@ -330,8 +342,12 @@ void CStateBurerAttackTeleAbstract::SelectObjects()
 		CPhysicsShellHolder *obj = tele_objects[i];
 
 		// применить телекинез на объект
-		object->CTelekinesis::activate(obj, 3.f, 2.f, 10000);
-		object->StartTeleObjectParticle(obj);
+		
+		float	height = (object->m_monster_type == CBaseMonster::eMonsterTypeIndoor) ? 1.3f : 2.f;
+		bool	rotate = (object->m_monster_type == CBaseMonster::eMonsterTypeIndoor) ? false : true;
+		
+		object->CTelekinesis::activate		(obj, 3.f, height, 10000, rotate);
+		object->StartTeleObjectParticle		(obj);
 
 		// удалить из списка
 		tele_objects[i] = tele_objects[tele_objects.size()-1];

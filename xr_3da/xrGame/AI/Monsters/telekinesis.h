@@ -21,7 +21,7 @@ public:
 
 
 			// активировать объект
-virtual		bool	activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep);
+virtual		bool	activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot = true);
 
 			// деактивировать все объекты
 			void	deactivate			();

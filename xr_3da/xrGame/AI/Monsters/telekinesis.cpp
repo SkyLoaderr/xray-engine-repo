@@ -3,12 +3,12 @@
 #include "../../entity_alive.h"
 #include "../../PhysicsShell.h"
 
-bool	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep)
+bool	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
 {
 	active = true;
 
 	CTelekineticObject* tele_object=alloc_tele_object();		
-	if (!tele_object->init(this,obj,strength, height,max_time_keep)) return false;
+	if (!tele_object->init(this,obj,strength, height,max_time_keep,rot)) return false;
 
 	// добавить объект
 	objects.push_back(tele_object);

@@ -16,7 +16,7 @@ class CTeleWhirlwindObject : public CTelekineticObject
 public:
 	virtual							~CTeleWhirlwindObject	(){};
 									CTeleWhirlwindObject	();
-	virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
+	virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk, bool rot = true); 
 				void				set_throw_power			(float throw_pow);
 	virtual		bool				can_activate			(CPhysicsShellHolder *obj);
 	virtual		void				raise					(float step);
@@ -53,7 +53,7 @@ public:
 		void					set_destroing_particles (const shared_str& destroying_particles){m_destroying_particles=destroying_particles;}
 		const shared_str&		destroing_particles		()										{return m_destroying_particles;}
 		void					play_destroy			(CTeleWhirlwindObject* obj);
-virtual	bool					activate				(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep);
+virtual	bool					activate				(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot = true);
 virtual void					clear					()										;
 virtual	void					clear_notrelevant		()										;
 virtual CTelekineticObject*		alloc_tele_object		()										{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}

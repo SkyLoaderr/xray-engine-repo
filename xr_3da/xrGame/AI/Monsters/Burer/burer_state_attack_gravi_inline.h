@@ -83,9 +83,8 @@ TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
-
-	// ???????????????????????????????????
-	//object->anim().TA_Deactivate	();
+	
+	object->com_man().ta_pointbreak	();
 	object->DeactivateShield		();
 	object->StopGraviPrepare		();
 	object->set_script_capture		(false);

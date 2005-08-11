@@ -4,6 +4,7 @@
 #include "burer_state_attack_gravi.h"
 #include "burer_state_attack_melee.h"
 #include "../states/state_look_point.h"
+#include "../states/state_move_to_restrictor.h"
 #include "burer_state_attack_run_around.h"
 
 #define GRAVI_PERCENT		80
@@ -25,6 +26,8 @@ CStateBurerAttackAbstract::CStateBurerAttack(_Object *obj) : inherited(obj)
 	
 	add_state(eStateBurerAttack_FaceEnemy,	xr_new<CStateMonsterLookToPoint<_Object> >	(obj));
 	add_state(eStateBurerAttack_RunAround,	xr_new<CStateBurerAttackRunAround<_Object> >(obj));
+
+	add_state(eStateCustomMoveToRestrictor,	xr_new<CStateMonsterMoveToRestrictor<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -32,6 +35,11 @@ void CStateBurerAttackAbstract::reselect_state()
 {
 	if (get_state(eStateBurerAttack_Melee)->check_start_conditions()) {
 		select_state(eStateBurerAttack_Melee);
+		return;
+	}
+	
+	if (get_state(eStateCustomMoveToRestrictor)->check_start_conditions()) {
+		select_state(eStateCustomMoveToRestrictor);
 		return;
 	}
 

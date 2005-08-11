@@ -16,9 +16,9 @@ CTeleWhirlwind ::CTeleWhirlwind ()
 
 }
 
-bool CTeleWhirlwind::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep)
+bool CTeleWhirlwind::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
 {
-	if(inherited::activate(obj,strength,height,max_time_keep))
+	if(inherited::activate(obj,strength,height,max_time_keep,rot))
 	{
 		CTeleWhirlwindObject*o=smart_cast<CTeleWhirlwindObject*>(objects.back());
 		VERIFY(o);
@@ -86,9 +86,9 @@ void CTeleWhirlwind::play_destroy(CTeleWhirlwindObject *obj)
 }
 	
 
-bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk)
+bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk,bool rot)
 {
-			bool result			=inherited::init(tele,obj,s,h,ttk);
+			bool result			=inherited::init(tele,obj,s,h,ttk,rot);
 			m_telekinesis		=static_cast<CTeleWhirlwind*>(tele);
 
 			throw_power			=strength;
