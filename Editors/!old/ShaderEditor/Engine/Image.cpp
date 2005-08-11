@@ -183,7 +183,6 @@ struct TGAHeader
 #pragma pack(pop)
 
 extern u32 *Surface_Load(char*,u32&,u32&);
-BOOL	Surface_Detect(LPSTR F, LPSTR N);
 
 void CImage::Load	(LPCSTR name)
 {
@@ -193,12 +192,7 @@ void CImage::Load	(LPCSTR name)
 
 bool CImage::LoadTGA(LPCSTR name)
 {
-	string256		full;
-	string256		nm;
-	strcpy(nm,name);
-    if (!Surface_Detect(full,nm)) 
-		return false;
-	destructor<IReader>	TGA(FS.r_open(full));
+	destructor<IReader>	TGA(FS.r_open(name));
 
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;
