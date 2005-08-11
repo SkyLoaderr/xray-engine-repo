@@ -72,8 +72,6 @@ void	Surface_Init()
 	Surface_FormatExt(FIF_PSD);
 	Surface_FormatExt(FIF_IFF);
 
-	Core._initialize("hhh",0,TRUE,"fs_tex_design.ltx");
-
 	Msg("* %d supported formats",formats.size());
 }
 
