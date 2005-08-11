@@ -589,16 +589,16 @@ function load_states( gname, type )
 			local actor = db.actor
 
 			if gulag.state ~= 2 then
-				if actor and actor:has_info( "agr_rush_start" ) then
-					return 2
-				else
+--				if actor and actor:has_info( "agr_rush_start" ) then
+--					return 2
+--				else
 					local z = db.zone_by_name["agr_rush_nest_outer"]
 					if utils.npc_in_zone( actor, z ) then
 						return 1
 					else
 						return 0
 					end
-				end
+--				end
 			else
 				if actor and ( gulag:get_population() < 6 or game.get_game_time():diffSec( gulag.stateBegin ) > 600 ) then
 					actor:disable_info_portion( "agr_rush_start" )
