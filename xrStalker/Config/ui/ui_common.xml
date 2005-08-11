@@ -230,31 +230,7 @@
     <texture id="ui_options_controls_line_bot_b" x="513" y="215" width="36" height="18" />
     <texture id="ui_options_controls_line_bot_back" x="531" y="215" width="36" height="18" />
     <texture id="ui_options_controls_line_bot_e" x="531" y="215" width="36" height="18" />
-    <texture id="ui_icons_newPDA_showpers_e" x="388" y="931" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showpers_h" x="388" y="963" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showpers_t" x="633" y="917" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showpers_d" x="388" y="931" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssign_e" x="388" y="992" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssign_t" x="633" y="949" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssign_d" x="388" y="992" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssign_h" x="420" y="963" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssigndel_e" x="420" y="931" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssigndel_d" x="420" y="931" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssigndel_t" x="633" y="981" width="32" height="32" />
-    <texture id="ui_icons_newPDA_perssigndel_h" x="420" y="992" width="32" height="32" />
-    <texture id="ui_icons_newPDA_compas_e" x="452" y="931" width="32" height="32" />
-    <texture id="ui_icons_newPDA_compas_t" x="665" y="693" width="32" height="32" />
-    <texture id="ui_icons_newPDA_compas_d" x="452" y="931" width="32" height="32" />
-    <texture id="ui_icons_newPDA_compas_h" x="452" y="963" width="32" height="32" />
-    <texture id="ui_icons_newPDA_zoom_e" x="452" y="990" width="32" height="32" />
-    <texture id="ui_icons_newPDA_zoom_d" x="452" y="990" width="32" height="32" />
-    <texture id="ui_icons_newPDA_zoom_t" x="633" y="885" width="32" height="32" />
-    <texture id="ui_icons_newPDA_zoom_h" x="493" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mark_e" x="493" y="904" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mark_d" x="493" y="904" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mark_t" x="633" y="853" width="32" height="32" />
     <texture id="ui_icons_newPDA_markSmall_h" x="501" y="944" width="15" height="15" />
-    <texture id="ui_icons_newPDA_mark_h" x="493" y="936" width="32" height="32" />
     <texture id="ui_icons_newPDA_markPersonal_e" x="493" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_markPersonal_h" x="493" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_markPersonal_t" x="493" y="968" width="32" height="32" />
@@ -267,34 +243,10 @@
     <texture id="ui_icons_newPDA_markSrtef_d" x="525" y="904" width="32" height="32" />
     <texture id="ui_icons_newPDA_markSrtef_t" x="525" y="904" width="32" height="32" />
     <texture id="ui_icons_newPDA_markSrtef_h" x="525" y="904" width="32" height="32" />
-    <texture id="ui_icons_newPDA_gomark_e" x="525" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_gomark_d" x="525" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_gomark_t" x="525" y="968" width="32" height="32" />
-    <texture id="ui_icons_newPDA_gomark_h" x="525" y="968" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showtext_e" x="557" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showtext_d" x="557" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showtext_t" x="557" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showtext_h" x="557" y="904" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showmap_e" x="557" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showmap_t" x="557" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showmap_d" x="557" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showmap_h" x="557" y="968" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mapMarDel_e" x="589" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mapMarDel_t" x="589" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mapMarDel_d" x="589" y="872" width="32" height="32" />
-    <texture id="ui_icons_newPDA_mapMarDel_h" x="589" y="904" width="32" height="32" />
-    <texture id="ui_icons_newPDA_setSelect_e" x="589" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_setSelect_t" x="589" y="968" width="32" height="32" />
-    <texture id="ui_icons_newPDA_setSelect_d" x="589" y="936" width="32" height="32" />
-    <texture id="ui_icons_newPDA_setSelect_h" x="589" y="968" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_e" x="633" y="693" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_h" x="633" y="693" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_t" x="633" y="693" width="32" height="32" />
     <texture id="ui_icons_newPDA_mainSelect_d" x="633" y="693" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showMarkonmap_e" x="633" y="725" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showMarkonmap_t" x="633" y="725" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showMarkonmap_d" x="633" y="725" width="32" height="32" />
-    <texture id="ui_icons_newPDA_showMarkonmap_h" x="633" y="757" width="32" height="32" />
     <texture id="ui_icons_newPDA_setPersF_h" x="633" y="789" width="32" height="32" />
     <texture id="ui_icons_newPDA_setPersF_e" x="633" y="821" width="32" height="32" />
     <texture id="ui_icons_newPDA_setPersF_d" x="633" y="821" width="32" height="32" />
@@ -355,12 +307,60 @@
     <texture id="ui_icons_newPDA_CrclMiddle_e" x="920" y="392" width="62" height="62" />
     <texture id="ui_icons_newPDA_CrclMiddle_d" x="920" y="392" width="62" height="62" />
     <texture id="ui_icons_newPDA_CrclMiddle_t" x="920" y="392" width="62" height="62" />
-    <texture id="ui_icons_newPDA_ZoomMin_h" x="665" y="885" width="32" height="32" />
-    <texture id="ui_icons_newPDA_ZoomMin_e" x="665" y="917" width="32" height="32" />
-    <texture id="ui_icons_newPDA_ZoomMin_t" x="665" y="949" width="32" height="32" />
-    <texture id="ui_icons_newPDA_ZoomMin_d" x="665" y="917" width="32" height="32" />
     <texture id="ui_scroll_PDA_b" x="922" y="318" width="17" height="30" />
     <texture id="ui_scroll_PDA_back" x="922" y="288" width="17" height="30" />
     <texture id="ui_scroll_PDA_button" x="922" y="258" width="17" height="30" />
     <texture id="ui_scroll_PDA_t" x="939" y="258" width="17" height="21" />
+    <texture id="ui_icons_newPDA_compas_d" x="461" y="939" width="15" height="15" />
+    <texture id="ui_icons_newPDA_compas_e" x="461" y="939" width="15" height="15" />
+    <texture id="ui_icons_newPDA_compas_h" x="461" y="971" width="15" height="15" />
+    <texture id="ui_icons_newPDA_compas_t" x="671" y="701" width="21" height="15" />
+    <texture id="ui_icons_newPDA_gomark_d" x="531" y="943" width="21" height="19" />
+    <texture id="ui_icons_newPDA_gomark_e" x="531" y="943" width="21" height="19" />
+    <texture id="ui_icons_newPDA_gomark_h" x="531" y="975" width="21" height="19" />
+    <texture id="ui_icons_newPDA_gomark_t" x="531" y="975" width="21" height="19" />
+    <texture id="ui_icons_newPDA_mapMarDel_d" x="595" y="878" width="20" height="20" />
+    <texture id="ui_icons_newPDA_mapMarDel_e" x="595" y="878" width="20" height="20" />
+    <texture id="ui_icons_newPDA_mapMarDel_h" x="595" y="910" width="20" height="20" />
+    <texture id="ui_icons_newPDA_mapMarDel_t" x="595" y="878" width="20" height="20" />
+    <texture id="ui_icons_newPDA_mark_d" x="501" y="912" width="15" height="15" />
+    <texture id="ui_icons_newPDA_mark_e" x="501" y="912" width="15" height="15" />
+    <texture id="ui_icons_newPDA_mark_h" x="501" y="944" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssign_d" x="397" y="1000" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssign_e" x="397" y="1000" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssign_t" x="639" y="957" width="21" height="15" />
+    <texture id="ui_icons_newPDA_perssign_h" x="429" y="971" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssigndel_d" x="429" y="939" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssigndel_e" x="429" y="939" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssigndel_h" x="429" y="1000" width="15" height="15" />
+    <texture id="ui_icons_newPDA_perssigndel_t" x="639" y="989" width="21" height="15" />
+    <texture id="ui_icons_newPDA_mark_t" x="638" y="861" width="21" height="15" />
+    <texture id="ui_icons_newPDA_setSelect_t" x="596" y="975" width="18" height="18" />
+    <texture id="ui_icons_newPDA_setSelect_h" x="596" y="975" width="18" height="18" />
+    <texture id="ui_icons_newPDA_setSelect_e" x="596" y="943" width="18" height="18" />
+    <texture id="ui_icons_newPDA_setSelect_d" x="596" y="943" width="18" height="18" />
+    <texture id="ui_icons_newPDA_showmap_d" x="563" y="942" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showmap_e" x="563" y="942" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showmap_h" x="563" y="974" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showmap_t" x="563" y="942" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showMarkonmap_d" x="639" y="731" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showMarkonmap_e" x="639" y="731" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showMarkonmap_h" x="639" y="763" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showMarkonmap_t" x="639" y="731" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showpers_d" x="396" y="939" width="15" height="15" />
+    <texture id="ui_icons_newPDA_showpers_e" x="396" y="939" width="15" height="15" />
+    <texture id="ui_icons_newPDA_showpers_h" x="396" y="971" width="15" height="15" />
+    <texture id="ui_icons_newPDA_showpers_t" x="638" y="925" width="21" height="15" />
+    <texture id="ui_icons_newPDA_showtext_d" x="563" y="878" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showtext_e" x="563" y="878" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showtext_h" x="563" y="910" width="20" height="20" />
+    <texture id="ui_icons_newPDA_showtext_t" x="563" y="878" width="20" height="20" />
+    <texture id="ui_icons_newPDA_zoom_d" x="459" y="999" width="18" height="14" />
+    <texture id="ui_icons_newPDA_zoom_h" x="500" y="881" width="18" height="14" />
+    <texture id="ui_icons_newPDA_zoom_e" x="459" y="999" width="18" height="14" />
+    <texture id="ui_icons_newPDA_zoom_t" x="638" y="893" width="21" height="15" />
+    <texture id="ui_icons_newPDA_ZoomMin_e" x="672" y="926" width="18" height="14" />
+    <texture id="ui_icons_newPDA_ZoomMin_h" x="672" y="894" width="18" height="14" />
+    <texture id="ui_icons_newPDA_ZoomMin_d" x="672" y="926" width="18" height="14" />
+    <texture id="ui_icons_newPDA_ZoomMin_t" x="670" y="957" width="21" height="15" />
 </ui_texture>
