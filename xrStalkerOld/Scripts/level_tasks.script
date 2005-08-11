@@ -124,69 +124,79 @@ function add_lchanger_location()
 		-- escape
 		local obj = sim:story_object(91)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_up_location", "to_garbage")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_garbage")
 		end
 
 		-- garbage
 		obj = sim:story_object(191)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_agroprom")
 		end
 		obj = sim:story_object(192)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_agroprom")
 		end
 		obj = sim:story_object(193)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_down_location", "to_escape")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_escape")
 		end
 		obj = sim:story_object(194)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_up_location", "to_rostok")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_rostok")
 		end
 		obj = sim:story_object(195)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_darkvalley")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_darkvalley")
 		end
 		obj = sim:story_object(196)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_darkvalley")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_darkvalley")
 		end
 		
 		-- agroprom
 		obj = sim:story_object(391)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_garbage")
 		end
 		obj = sim:story_object(392)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_garbage")
 		end
 
 		-- darkvalley
 		obj = sim:story_object(415)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_garbage")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_garbage")
 		end
 		obj = sim:story_object(416)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_garbage")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_garbage")
 		end
 
 		-- rostok
 		obj = sim:story_object(591)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_bar")
 		end
+		
+		-- bar
 		obj = sim:story_object(592)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_military")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_military")
+		end
+		obj = sim:story_object(593)
+		if obj then
+			level.map_add_object_spot(obj.id, "crlc_small", "to_garbage")
+		end
+		obj = sim:story_object(594)
+		if obj then
+			level.map_add_object_spot(obj.id, "crlc_small", "to_rostok")
 		end
 
 		-- military
 		obj = sim:story_object(771)
 		if obj then
-			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_rostok")
+			level.map_add_object_spot(obj.id, "crlc_small", "to_rostok")
 		end
 
 
