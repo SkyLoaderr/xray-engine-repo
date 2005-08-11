@@ -85,8 +85,8 @@ function process_info_portion(info_id)
 	elseif info_id == "gar_start_graveyard" then
 		level_tasks.add_location(107, "green_location")
 
-	elseif info_id == "gar_alarm" then
-		level_tasks.remove_location(107, "green_location")
+--	elseif info_id == "gar_alarm" then
+--		level_tasks.remove_location(107, "green_location")
 	
 	elseif info_id == "gar_no_mapspot" then
 		level_tasks.remove_location(107, "green_location")
