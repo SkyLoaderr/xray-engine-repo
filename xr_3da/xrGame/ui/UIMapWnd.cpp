@@ -551,6 +551,7 @@ void CUIMapWnd::HighlightSpot			()
 {
 	if(m_selected_location){
 		bool b = m_selected_location->PointerEnabled	();
+		Level().MapManager().DisableAllPointers();
 		if(b)
 			m_selected_location->DisablePointer();
 		else
