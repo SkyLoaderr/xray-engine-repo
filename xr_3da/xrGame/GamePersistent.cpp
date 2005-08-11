@@ -48,8 +48,7 @@ CGamePersistent::CGamePersistent(void)
 		Device.seqFrame.Add	(this);
 		eDemoStart			=	Engine.Event.Handler_Attach("GAME:demo",this);	
 		uTime2Change		=	0;
-	} else
-	{
+	} else {
 		pDemoFile			=	NULL;
 		eDemoStart			=	NULL;
 	}
