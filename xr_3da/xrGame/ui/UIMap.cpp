@@ -357,16 +357,17 @@ CUILevelMap::~CUILevelMap()
 
 void CUILevelMap::Draw()
 {
-	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
-	{
-		CMapSpot* sp = smart_cast<CMapSpot*>((*it));
-		if(sp&&sp->m_bScale){
-			Fvector2 sz = sp->m_originSize;
-			sz.mul		(MapWnd()->GlobalMap()->GetCurrentZoom()/MapWnd()->GlobalMap()->GetMaxZoom());
-			sp->SetWndSize(sz);
+	if(MapWnd()){
+		for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
+		{
+			CMapSpot* sp			= smart_cast<CMapSpot*>((*it));
+			if(sp&&sp->m_bScale){
+				Fvector2 sz			= sp->m_originSize;
+				sz.mul				(MapWnd()->GlobalMap()->GetCurrentZoom());
+				sp->SetWndSize		(sz);
+			}
 		}
 	}
-
 	inherited::Draw();
 /*
 	CGameFont* F		= UI()->Font()->pFontDI;

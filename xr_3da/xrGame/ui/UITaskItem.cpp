@@ -9,6 +9,7 @@
 #include "UIEventsWnd.h"
 #include "UIEditBox.h"
 #include "../map_location.h"
+#include "UIInventoryUtilities.h"
 
 CUITaskItem::CUITaskItem			(CUIEventsWnd* w)
 :m_GameTask			(NULL),
@@ -74,6 +75,8 @@ void CUITaskRootItem::Init			()
 	m_captionStatic		= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
 	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);
 	m_switchDescriptionBtn= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);
+	m_captionTime		= xr_new<CUI3tButton>();	m_captionTime->SetAutoDelete(true);			AttachChild(m_captionTime);
+
 	m_showLocationBtn->SetWindowName("m_showLocationBtn");
 	Register(m_showLocationBtn);
 	m_switchDescriptionBtn->SetWindowName("m_switchDescriptionBtn");
@@ -86,11 +89,12 @@ void CUITaskRootItem::Init			()
 
 	xml_init.InitStatic			(uiXml,"task_root_item:image",0,m_taskImage);
 	xml_init.InitStatic			(uiXml,"task_root_item:caption",0,m_captionStatic);
+	xml_init.InitStatic			(uiXml,"task_root_item:caption_time",0,m_captionTime);
 	
 	xml_init.Init3tButton		(uiXml,"task_root_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton		(uiXml,"task_root_item:switch_description_btn",0,m_switchDescriptionBtn);
-
 }
+
 
 void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)				
 {
@@ -107,8 +111,16 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 
 	m_captionStatic->SetText		(*stbl(m_GameTask->m_Title));
 	m_captionStatic->AdjustHeightToText	();
+	
+	xr_string	txt ="Time: ";
+	txt			+= *(InventoryUtilities::GetDateAsString(gt->m_ReceiveTime, InventoryUtilities::edpDateToDay));
+	txt			+= " ";
+	txt			+= *(InventoryUtilities::GetTimeAsString(gt->m_ReceiveTime, InventoryUtilities::etpTimeToMinutes));
 
-	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight());
+	m_captionTime->SetText		(txt.c_str());
+	m_captionTime->SetWndPos(m_captionTime->GetWndPos().x,m_captionStatic->GetWndPos().y+m_captionStatic->GetHeight()+3.0f);
+
+	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionTime->GetWndPos().y+m_captionTime->GetHeight());
 	h	= _max(h,m_switchDescriptionBtn->GetWndPos().y+m_switchDescriptionBtn->GetHeight());
 	h	= _max(h,m_showLocationBtn->GetWndPos().y+m_showLocationBtn->GetHeight());
 	SetHeight						(h);

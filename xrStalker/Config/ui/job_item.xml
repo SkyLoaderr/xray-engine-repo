@@ -8,9 +8,9 @@
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
 
-		<caption_received x="60" y="46" width="200" height="18">
-			<text x="0" y="0" font="letterica16"></text>
-		</caption_received>
+		<caption_time x="30" y="46" width="200" height="18">
+			<text x="0" y="0" font="medium" r="150" g="150" b="180" a="255"></text>
+		</caption_time>
 
 		<switch_description_btn x="272" y="16" width="20" height="20" check_mode="1">
 			<texture>ui_icons_newPDA_showtext</texture>

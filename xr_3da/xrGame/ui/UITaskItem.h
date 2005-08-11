@@ -37,6 +37,7 @@ class CUITaskRootItem :public CUITaskItem
 protected:
 	CUIStatic*		m_taskImage;
 	CUIStatic*		m_captionStatic;
+	CUIStatic*		m_captionTime;
 	CUI3tButton*	m_showLocationBtn;
 	CUI3tButton*	m_switchDescriptionBtn;
 //	u32				m_defTextColor;
