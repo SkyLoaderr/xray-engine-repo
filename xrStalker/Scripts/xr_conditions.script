@@ -366,6 +366,10 @@ function gar_damaged_bandits(actor, npc)
 	return (not g) or (g:get_population() <= 5)
 end
 
+function gar_not_damaged_bandits(actor, npc)
+	return  not this.gar_damaged_bandits (actor, npc)
+end
+
 function gar_bandits_seryi_die()
 	if db.actor then
 		if xr_gulag.getGulagPopulation("gar_seryi_bandits") == 0 and db.actor:has_info("gar_seryi_open_fire") then
