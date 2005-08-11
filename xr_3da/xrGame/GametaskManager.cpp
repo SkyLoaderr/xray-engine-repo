@@ -86,6 +86,8 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 		if(pGameSP) 
 			pGameSP->PdaMenu->UIEventsWnd->Reload();
 	}
+	
+	ChangeStateCallback(t->m_ID,0,eTaskStateInProgress);
 	return t;
 }
 
