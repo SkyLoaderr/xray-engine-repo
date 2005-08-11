@@ -89,7 +89,7 @@ function actor_binder:sleep_callback()
 	self.delayed_sleep_callback_start_tm = time_global() + 1500
 end
 ----------------------------------------------------------------------------------------------------------------------
-function actor_binder:task_callback(task, subtask, id_state)
+function actor_binder:task_callback(id_task, subtask, id_state)
 	if subtask == 0 then
 		if id_state == task.fail then
 			news_manager.send_task(db.actor, "fail")
