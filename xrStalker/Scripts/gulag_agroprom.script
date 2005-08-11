@@ -412,7 +412,8 @@ function load_job( sj, gname, type, squad, groups )
 
 	-- Кабаны -----------------------
 	if type == "agr_boar_nest_type" then
-            local boar_num = 6
+		local boar_num = 6
+
 		for i=1, boar_num do
 			t = { section = "logic@agr_boar_nest_in", 
 				idle = 0,
@@ -428,6 +429,56 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 5, state = {1}, squad = squad, group = groups[0],
 				in_rest = "", out_rest = "agr_boar_territory"
+			}
+			table.insert(sj, t)
+		end
+	end
+
+	------------------ Гнездо собак 1 ------------------------------------------
+	if type == "agr_dogs1" then
+		local dogs_num = 10
+
+		for i = 1, dogs_num do
+			t = { section = "logic@agr_nest_nil",
+				idle = 0,
+				prior = 0, state = {0},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_dog_nest1"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, dogs_num do
+			t = { section = "logic@agr_territory_nil",
+				idle = 0,
+				prior = 0, state = {1},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_dog_territory1"
+			}
+			table.insert(sj, t)
+		end
+	end
+
+	------------------ Гнездо псевдособак 1 ------------------------------------------
+	if type == "agr_pseudodogs1" then
+		local dogs_num = 5
+
+		for i = 1, dogs_num do
+			t = { section = "logic@agr_nest_nil",
+				idle = 0,
+				prior = 0, state = {0},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_pseudodog_nest1"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, dogs_num do
+			t = { section = "logic@agr_territory_nil",
+				idle = 0,
+				prior = 0, state = {1},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = "agr_pseudodog_territory1"
 			}
 			table.insert(sj, t)
 		end
@@ -625,6 +676,32 @@ function load_states( gname, type )
 		end
 	end
 
+	if type == "agr_dogs1" then
+		return function( gulag )
+			local actor = db.actor
+
+			local z = db.zone_by_name["agr_dog_territory1"]
+			if utils.npc_in_zone( actor, z ) then
+				return 1
+			else
+				return 0
+			end
+		end
+	end
+
+	if type == "agr_pseudodogs1" then
+		return function( gulag )
+			local actor = db.actor
+
+			local z = db.zone_by_name["agr_pseudodog_territory1"]
+			if utils.npc_in_zone( actor, z ) then
+				return 1
+			else
+				return 0
+			end
+		end
+	end
+
 	return nil
 end
 
@@ -641,12 +718,16 @@ function checkStalker( npc_community, gulag_type )
 end
 
 function checkMonster( npc_community, gulag_type )
-	if gulag_type == "agr_rush" then
+	if gulag_type == "agr_rush" or gulag_type == "agr_dogs1" then
 		return npc_community == "dog"
 	end
 
 	if gulag_type == "agr_boar_nest_type" then
 		return npc_community == "boar"
+	end
+
+	if gulag_type == "agr_pseudodogs1" then
+		return npc_community == "pseudodog"
 	end
 
 	return false
