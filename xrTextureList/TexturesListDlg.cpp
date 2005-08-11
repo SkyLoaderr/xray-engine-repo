@@ -369,12 +369,19 @@ void CTexturesListDlg::OnLbnDblclkList1()
 //	m_editTexParams.SetWindowText(str);
 }
 
+
+BOOL	Surface_Detect(LPSTR F, LPSTR N);
+
 void CTexturesListDlg::xrLoadTexture(){
 	CString tex;
 	m_editTexName.GetWindowText(tex);
 	tex.Replace(_T("ui\\"),_T(""));
-	if (m_texture.LoadTGA(tex))
+	string256		full;
+	string256		nm;
+	strcpy(nm,tex);
+	if (Surface_Detect(full,nm)) 
 	{
+		m_texture.LoadTGA(full);
 		InvalidateRect(m_textureRect);
 	}
 }
