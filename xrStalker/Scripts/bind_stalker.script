@@ -34,6 +34,7 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.on_item_take, nil)
 	self.object:set_callback(callback.on_item_drop, nil)
 	self.object:set_callback(callback.actor_sleep, nil)
+	self.object:set_callback(callback.task_state, nil)
 
 	db.storage[self.object:id()] = nil
 
@@ -57,6 +58,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
 	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
 	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
+	self.object:set_callback(callback.task_state, self.task_callback, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
@@ -85,6 +87,10 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:sleep_callback()
 	self.delayed_sleep_callback_start_tm = time_global() + 1500
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:task_callback(task, subtask)
+	printf("TASK CALLBACK [%s], [%s]", tostring(task), tostring(subtask))
 end
 ----------------------------------------------------------------------------------------------------------------------
 local drop_location = nil
