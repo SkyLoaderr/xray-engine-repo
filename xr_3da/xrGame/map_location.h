@@ -80,7 +80,7 @@ public:
 
 	virtual void			save							(IWriter &stream);
 	virtual void			load							(IReader &stream);
-	virtual bool			CanBeSelected					()						{return false;}
+	virtual bool			CanBeSelected					()						{return true;}
 	virtual bool			CanBeUserRemoved				()						{return false;}
 };
 
