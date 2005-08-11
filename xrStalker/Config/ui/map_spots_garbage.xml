@@ -41,8 +41,8 @@
 	
 	<!-- Fake location with spots -->
 	<gar_spot_swamp_location hint="gar_swamp" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_big" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_big" pointer="quest_pointer"></mini_map>
 	</gar_spot_swamp_location>
 	
 	<gar_spot_secret1_location hint="gar_secret1" store="1">
@@ -51,13 +51,13 @@
 	</gar_spot_secret1_location>
 	
 	<gar_spot_dogs_forest_location hint="gar_dogs_in_forest" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_big" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_big" pointer="quest_pointer"></mini_map>
 	</gar_spot_dogs_forest_location>
 	
 	<gar_spot_angar_location hint="gar_angar" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_mdl" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_mdl" pointer="quest_pointer"></mini_map>
 	</gar_spot_angar_location>		
 	
 	<gar_spot_tunnel_location hint="gar_tunnel" store="1">
@@ -66,33 +66,33 @@
 	</gar_spot_tunnel_location>
 	
 	<gar_spot_car_graveyard_location hint="gar_car_graveyard" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_big" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_big" pointer="quest_pointer"></mini_map>
 	</gar_spot_car_graveyard_location>
 	
 	<gar_spot_bandit_agr_location hint="gar_bandit_agr" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_mdl" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_mdl" pointer="quest_pointer"></mini_map>
 	</gar_spot_bandit_agr_location>
 	
 	<gar_spot_dolg_blokpost_location hint="gar_dolg_blokpost" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_mdl" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_mdl" pointer="quest_pointer"></mini_map>
 	</gar_spot_dolg_blokpost_location>
 	
 	<gar_spot_trash1_location hint="gar_trash1" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_big" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_big" pointer="quest_pointer"></mini_map>
 	</gar_spot_trash1_location>	
 
 	<gar_spot_trash2_location hint="gar_trash1" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_big" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_big" pointer="quest_pointer"></mini_map>
 	</gar_spot_trash2_location>		
 	
 	<gar_spot_trash3_location hint="gar_trash1" store="1">
-		<level_map spot="crlc_small" pointer="quest_pointer"></level_map>
-		<mini_map  spot="crlc_small" pointer="quest_pointer"></mini_map>
+		<level_map spot="crlc_big" pointer="quest_pointer"></level_map>
+		<mini_map  spot="crlc_big" pointer="quest_pointer"></mini_map>
 	</gar_spot_trash3_location>		
 	
 	
