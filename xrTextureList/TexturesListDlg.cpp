@@ -144,7 +144,7 @@ void DrawBitmap(HDC hdc, const CRect& r, u32* _data, u32 _w, u32 _h, const CRect
 	U32Vec data(source.Width()*source.Height());
 
 	for (u32 y = source.top; y<source.bottom; y++)
-		Memory.mem_copy(&data[(y - source.top)*source.Width()],&_data[y*_w + source.left],source.Width()*4);
+		Memory.mem_copy(&data[(y - source.top)*source.Width()],&_data[(source.bottom - (y - source.top))*_w + source.left],source.Width()*4);
 
 	BITMAPINFO          bmi;
 	bmi.bmiHeader.biSize			= sizeof(BITMAPINFOHEADER);
@@ -374,7 +374,9 @@ void CTexturesListDlg::xrLoadTexture(){
 	m_editTexName.GetWindowText(tex);
 	tex.Replace(_T("ui\\"),_T(""));
 	if (m_texture.LoadTGA(tex))
+	{
 		InvalidateRect(m_textureRect);
+	}
 }
 
 void CTexturesListDlg::OnBnClickedCheck1()
