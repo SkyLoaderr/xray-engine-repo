@@ -1,28 +1,27 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 
-	<task_root_item x="0" y="0" width="285" height="40">
-		<image x="8" y="16" width="32" height="32">
-		</image>
+	<task_root_item x="0" y="0" width="320" height="40">
+		<image x="8" y="16" width="45" height="45"/>
 		
-		<caption x="45" y="16" width="200" height="18">
+		<caption x="60" y="16" width="200" height="18">
 			<text x="0" y="0" font="letterica18"></text>
 		</caption>
 
-		<location_btn x="228" y="16" width="32" height="32" check_mode="1">
-			<texture>ui_icons_newPDA_showMarkonmap</texture>
-		</location_btn>
-		
-		<switch_description_btn x="252" y="16" width="32" height="32" check_mode="1">
+		<switch_description_btn x="272" y="16" width="32" height="32" check_mode="1">
 			<texture>ui_icons_newPDA_showtext</texture>
 		</switch_description_btn>
+
+		<location_btn x="272" y="48" width="32" height="32" check_mode="1">
+			<texture>ui_icons_newPDA_showMarkonmap</texture>
+		</location_btn>
+
 	</task_root_item>
 
-	<task_sub_item x="0" y="0" width="285" height="38">
-		<state_image x="8" y="10" width="11" height="11">
-		</state_image>
+	<task_sub_item x="0" y="0" width="320" height="38">
+		<state_image x="8" y="10" width="11" height="11"/>
 
-		<description x="25" y="8" width="220" height="16">
+		<description x="25" y="8" width="250" height="16">
 			<text x="0" y="0" font="letterica16" r="255" g="255" b="255" a="255"></text>
 			<text_colors>
 				<accomplished	r="150" g="150" b="180" a="255"/>
@@ -31,33 +30,32 @@
 			</text_colors>
 		</description>
 
-		<show_pointer_btn x="220" y="4" width="22" height="22" check_mode="1">
+		<show_pointer_btn x="248" y="4" width="22" height="22" check_mode="1">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
 
-		<show_descr_btn x="252" y="4" width="22" height="22" check_mode="1">
+		<show_descr_btn x="272" y="4" width="22" height="22" check_mode="1">
 			<texture>ui_icons_newPDA_gomark</texture>
 		</show_descr_btn>
 
 	</task_sub_item>
 	
 	
-	<task_user_item x="0" y="0" width="285" height="32">
-		<image x="15" y="4" width="32" height="32">
-		</image>
+	<task_user_item x="0" y="0" width="320" height="32">
+		<image x="8" y="4" width="32" height="32"/>
 
 		<description x="50" y="5" width="195" height="16" db_click="1">
 			<text x="0" y="0" font="letterica16" r="150" g="150" b="180" a="255"></text>
 		</description>
 
-		<show_pointer_btn x="252" y="5" width="32" height="32" check_mode="1">
-			<texture>ui_icons_newPDA_setSelect</texture>
-		</show_pointer_btn>
-		
-		<location_btn x="228" y="5" width="32" height="32" check_mode="1">
+		<location_btn x="248" y="5" width="32" height="32" check_mode="1">
 			<texture>ui_icons_newPDA_showMarkonmap</texture>
 		</location_btn>
 
+		<show_pointer_btn x="272" y="5" width="32" height="32" check_mode="1">
+			<texture>ui_icons_newPDA_setSelect</texture>
+		</show_pointer_btn>
+		
 	</task_user_item>
 	
 </window>

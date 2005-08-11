@@ -61,7 +61,7 @@
     </a_static>
 
     <!-- ENCYCLOPEDIA INFO LIST -->
-    <info_list x="20" y="87" width="420" height="370" item_height="15" right_ident="5">
+    <info_list x="20" y="87" width="423" height="374" item_height="15" right_ident="5">
         <font font="letterica18" r="255" g="255" b="255"></font>
     </info_list>
 
@@ -76,11 +76,11 @@
 	
 	<!-- LEFT LADDER -->
 	<left_auto_static x="8" y="41" width="4" height="430">
-		<texture>ui\ui_pda_vertical_line_l_l</texture>
+		<texture>ui\ui_pda_vertical_line_r_l</texture>
 	</left_auto_static>
 	<!-- RIGHT LADDER -->
 	<left_auto_static x="416" y="41" width="4" height="430">
-		<texture>ui\ui_pda_vertical_line_l_r</texture>
+		<texture>ui\ui_pda_vertical_line_r_r</texture>
 	</left_auto_static>
 	<!-- UPPER HORISONTAL LINE -->
 	<left_auto_static x="14" y="40" width="405" height="2" stretch="1">

@@ -359,4 +359,8 @@
     <texture id="ui_icons_newPDA_ZoomMin_e" x="665" y="917" width="32" height="32" />
     <texture id="ui_icons_newPDA_ZoomMin_t" x="665" y="949" width="32" height="32" />
     <texture id="ui_icons_newPDA_ZoomMin_d" x="665" y="917" width="32" height="32" />
+    <texture id="ui_scroll_PDA_b" x="922" y="318" width="17" height="30" />
+    <texture id="ui_scroll_PDA_back" x="922" y="288" width="17" height="30" />
+    <texture id="ui_scroll_PDA_button" x="922" y="258" width="17" height="30" />
+    <texture id="ui_scroll_PDA_t" x="939" y="258" width="17" height="21" />
 </ui_texture>
