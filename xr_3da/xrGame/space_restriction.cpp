@@ -251,6 +251,10 @@ void CSpaceRestriction::initialize					()
 	else
 		merge_free_in_retrictions	();
 #endif
+	
+#ifdef DEBUG
+	m_border						= m_in_space_restriction->border();
+#endif
 
 	m_initialized					= true;
 }
