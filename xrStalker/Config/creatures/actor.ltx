@@ -65,7 +65,7 @@ hit_sounds			= actor_hit_snds
 immunities_sect				= actor_immunities
 condition_sect				= actor_condition
 
-heavy_breath_snd = heart\8		;звук тяжелого дыхания при усталости	
+heavy_breath_snd = actor\breath_1		;звук тяжелого дыхания при усталости	
 
 medkit = 0.3					;временно! вместо аптечки
 medkit_wound = 0.2				;сколько процентов кровотечения оставливает аптечка 
@@ -142,10 +142,10 @@ overweight_jump_k			=	10				;10					;коэффициент влияние перегрузки прыжок с вес
 
 stand_power				=	-0.01								
 walk_power				=	0.000001			;умешьшение силы за секнду во время ходьбы без учета веса ноши
-walk_weight_power			=	0.0005			;умешьшение силы за секнду во время ходьбы с учетом веса ноши, для максимального допустимого веса
-overweight_walk_k			=	10				;10					;коэффициент влияние перегрузки ноши (умножается на walk_weight_power)
-accel_k					=	1.1;1				;3						;коэффициент на бег (умножается walk_power, walk_weight_power)
-sprint_k				=	200;80;40;20;20000;5000;15000				;6						;коэффициент на "sprint" бег (умножается walk_power, walk_weight_power)
+walk_weight_power			=	0.0004			;умешьшение силы за секнду во время ходьбы с учетом веса ноши, для максимального допустимого веса
+overweight_walk_k			=	8				;10					;коэффициент влияние перегрузки ноши (умножается на walk_weight_power)
+accel_k					=	1.2;1				;3						;коэффициент на бег (умножается walk_power, walk_weight_power)
+sprint_k				=	180;80;40;20;20000;5000;15000				;6						;коэффициент на "sprint" бег (умножается walk_power, walk_weight_power)
 
 ; хромота
 limping_health_begin =	0.1		;порог здоровья меньше которого актер начинает хромать
