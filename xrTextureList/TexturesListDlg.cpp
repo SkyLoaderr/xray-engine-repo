@@ -64,7 +64,7 @@ END_MESSAGE_MAP()
 BOOL CTexturesListDlg::OnInitDialog()
 {
 	Surface_Init();	
-	Core._initialize("xr_",0,TRUE,"fs_tex_design.ltx");
+	Core._initialize("xr",0,TRUE,"fs_tex_design.ltx");
 	CDialog::OnInitDialog();
 
 	// Set the icon for this dialog.  The framework does this automatically
