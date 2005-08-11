@@ -89,8 +89,18 @@ function actor_binder:sleep_callback()
 	self.delayed_sleep_callback_start_tm = time_global() + 1500
 end
 ----------------------------------------------------------------------------------------------------------------------
-function actor_binder:task_callback(task, subtask)
-	printf("TASK CALLBACK [%s], [%s]", tostring(task), tostring(subtask))
+function actor_binder:task_callback(task, subtask, id_state)
+	if subtask == 0 then
+		if id_state == task.fail then
+			news_manager.send_task(db.actor, "fail")
+		elseif id_state == task.completed then
+			news_manager.send_task(db.actor, "complete")
+		else
+			news_manager.send_task(db.actor, "new")
+		end
+	else
+		news_manager.send_task(db.actor, "update")
+	end
 end
 ----------------------------------------------------------------------------------------------------------------------
 local drop_location = nil
