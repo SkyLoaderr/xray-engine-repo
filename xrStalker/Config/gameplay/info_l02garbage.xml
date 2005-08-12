@@ -39,6 +39,7 @@
 	<info_portion id="gar_after_battle"></info_portion>
 	<info_portion id="gar_hellcar_dialog_end"></info_portion>
 	<info_portion id="gar_hellcar_death"></info_portion>
+	<info_portion id="gar_hellcar_thanks"></info_portion>
 	
 	
 	<!-- Застава Долга -->
