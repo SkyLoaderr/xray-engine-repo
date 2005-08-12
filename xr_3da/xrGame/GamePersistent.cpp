@@ -117,9 +117,10 @@ void CGamePersistent::Start		(LPCSTR op)
 
 void CGamePersistent::Disconnect()
 {
-	__super::Disconnect			();
 	// destroy ambient particles
 	CParticlesObject::Destroy(ambient_particles);
+
+	__super::Disconnect			();
 	// stop all played emitters
 	::Sound->stop_emitters		();
 }
