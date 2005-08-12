@@ -47,7 +47,7 @@ function proceed()
 		actor:dont_has_info("gar_hellcar_dialog_end")		
 	then
 		level_tasks.set_task_state(task.fail, "gar_help_dymon", 1)
-		level_tasks.set_task_state(task.comleted, "gar_help_dymon", 0)
+		level_tasks.set_task_state(task.completed, "gar_help_dymon", 0)
 		actor:give_info_portion("gar_hellcar_dialog_end")
 	end
 	
