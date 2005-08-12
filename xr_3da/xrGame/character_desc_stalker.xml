@@ -226,6 +226,8 @@
 
 		<rank>50</rank>
 		<reputation>0</reputation>
+		
+		<panic_treshold>0</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_hood_5</visual>
 		<supplies>
