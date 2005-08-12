@@ -507,6 +507,15 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	// Search entry
 	file			desc_f;
 	desc_f.name		= fname;
+
+static bool aaa = false;
+if (aaa){
+	Log("files count:",files.size());
+	Log("file name:",desc_f.name);
+	for				(files_it I=files.begin(); I!=files.end(); I++)
+		Log			(I->name);
+}
+
 	files_it	I 	= files.find(desc_f);
 	if (I == files.end()) return NULL;
 
@@ -885,8 +894,9 @@ void CLocatorAPI::rescan_path(LPCSTR full_path, BOOL bRecurse)
 		const file& entry 	= *cur_item;
     	I					= cur_item; I++;
 		if (0!=strncmp(entry.name,full_path,base_len))	break;	// end of list
+		if (entry.vfs!=0xFFFFFFFF)						continue;
 		const char* entry_begin = entry.name+base_len;
-        if (!bRecurse&&strstr(entry_begin,"\\")) continue;
+        if (!bRecurse&&strstr(entry_begin,"\\"))		continue;
         // erase item
 		char* str		= LPSTR(cur_item->name);
 		xr_free			(str);
