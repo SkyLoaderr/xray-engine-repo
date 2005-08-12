@@ -27,6 +27,7 @@
 #include "text\rus\string_table_mapspots_garbage.xml"
 #include "text\rus\string_table_mapspots_agroprom.xml"
 #include "text\rus\string_table_mapspots_bar.xml"
+#include "text\rus\string_table_mapspots_military.xml"
 
     <string id="inventory_item_use">
         <text>Поднять предмет ($$ACTION_USE$$)</text>

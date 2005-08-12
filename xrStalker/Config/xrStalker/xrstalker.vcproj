@@ -726,6 +726,9 @@
 							RelativePath=".\Config\text\rus\stable_storyline_info_military.xml">
 						</File>
 						<File
+							RelativePath=".\config\text\rus\string_table_mapspots_military.xml">
+						</File>
+						<File
 							RelativePath=".\config\text\rus\string_table_tasks_military.xml">
 						</File>
 						<File
@@ -912,10 +915,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
