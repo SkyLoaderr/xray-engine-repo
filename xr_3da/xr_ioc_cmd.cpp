@@ -113,6 +113,12 @@ public:
 		Msg		("* [x-ray]: economy: strings[%d K], smem[%d K]",_eco_strings/1024,_eco_smem);
 	}
 };
+class CCC_MemVerify : public IConsole_Command
+{
+public:
+	CCC_MemVerify(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) { g_pStringContainer->verify(); }
+};
 //-----------------------------------------------------------------------
 class CCC_MotionsStat : public IConsole_Command
 {
@@ -386,6 +392,7 @@ void CCC_Register()
 	CMD1(CCC_MotionsStat,	"stat_motions"		);
 	CMD1(CCC_MemStats,		"stat_memory"		);
 	CMD1(CCC_MemStat,		"stat_mem_dump"		);
+	CMD1(CCC_MemVerify,		"stat_mem_verify"	);
 	CMD1(CCC_TexturesStat,	"stat_textures"		);
 	
 	CMD3(CCC_Mask,		"mt_particles",			&psDeviceFlags,			mtParticles);
