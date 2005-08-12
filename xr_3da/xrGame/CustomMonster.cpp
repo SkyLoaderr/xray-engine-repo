@@ -760,13 +760,23 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 
 	if (ai().get_level_graph() && UsedAI_Locations() && (e->ID_Parent == 0xffff)) {
 		if (ai().game_graph().valid_vertex_id(E->m_tGraphID))
-			ai_location().game_vertex			(E->m_tGraphID);
+			ai_location().game_vertex				(E->m_tGraphID);
 
-		if (ai().game_graph().valid_vertex_id(E->m_tNextGraphID) && movement().restrictions().accessible(ai().game_graph().vertex(E->m_tNextGraphID)->level_vertex_id()))
-			movement().set_game_dest_vertex	(E->m_tNextGraphID);
+		if	(
+				ai().game_graph().valid_vertex_id(E->m_tNextGraphID)
+				&&
+				(ai().game_graph().vertex(E->m_tNextGraphID)->level_id() == ai().level_graph().level_id())
+				&&
+				movement().restrictions().accessible(
+					ai().game_graph().vertex(
+						E->m_tNextGraphID
+					)->level_vertex_id()
+				)
+			)
+			movement().set_game_dest_vertex			(E->m_tNextGraphID);
 
 		if (movement().restrictions().accessible(ai_location().level_vertex_id()))
-			movement().set_level_dest_vertex	(ai_location().level_vertex_id());
+			movement().set_level_dest_vertex		(ai_location().level_vertex_id());
 		else {
 			Fvector									dest_position;
 			u32										level_vertex_id;
