@@ -12,6 +12,12 @@
 #include "actor.h"
 #include "xrserver_objects_alife.h"
 #include "level.h"
+#include "ai_object_location.h"
+#include "ai_space.h"
+#include "level_navigation_graph.h"
+#include "game_level_cross_table.h"
+
+xr_vector<CLevelChanger*>	g_lchangers;
 
 CLevelChanger::~CLevelChanger	()
 {
@@ -27,6 +33,14 @@ float CLevelChanger::Radius		() const
 	return CFORM()->getRadius	();
 }
 
+void CLevelChanger::net_Destroy	() 
+{
+	inherited ::net_Destroy	();
+	xr_vector<CLevelChanger*>::iterator it = std::find(g_lchangers.begin(), g_lchangers.end(), this);
+	if(it != g_lchangers.end())
+		g_lchangers.erase(it);
+}
+
 BOOL CLevelChanger::net_Spawn	(CSE_Abstract* DC) 
 {
 	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
@@ -40,6 +54,12 @@ BOOL CLevelChanger::net_Spawn	(CSE_Abstract* DC)
 	m_level_vertex_id			= l_tpALifeLevelChanger->m_dwNextNodeID;
 	m_position					= l_tpALifeLevelChanger->m_tNextPosition;
 	m_angles					= l_tpALifeLevelChanger->m_tAngles;
+
+	if (ai().get_level_graph()) {
+		//. this information should be computed in xrAI
+		ai_location().level_vertex	(ai().level_graph().vertex(u32(-1),Position()));
+		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
+	}
 
 	feel_touch.clear			();
 	
@@ -64,7 +84,7 @@ BOOL CLevelChanger::net_Spawn	(CSE_Abstract* DC)
 		XFORM().transform_tiny	(P,CFORM()->getSphere().P);
 		setEnabled				(true);
 	}
-
+	g_lchangers.push_back		(this);
 	return						(bOk);
 }
 

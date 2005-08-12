@@ -12,11 +12,15 @@
 #include "ui/UIXmlInit.h"
 #include "ui/UIMap.h"
 #include "alife_simulator.h"
+#include "graph_engine.h"
+#include "actor.h"
+#include "ai_object_location.h"
 #include "alife_object_registry.h"
 #include "relation_registry.h"
 #include "InventoryOwner.h"
 #include "object_broker.h"
 #include "string_table.h"
+#include "level_changer.h"
 
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {
@@ -244,6 +248,8 @@ bool CMapLocation::Update() //returns actual
 	return false;
 }
 
+extern xr_vector<CLevelChanger*>	g_lchangers;
+
 void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 {
 	if( map->MapName()==LevelName() ){
@@ -296,8 +302,41 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		if( GetSpotPointer(sp) && map->NeedShowPointer(wnd_rect)){
 			UpdateSpotPointer( map, GetSpotPointer(sp) );
 		}
+	}else
+	if(Level().name()==map->MapName() && GetSpotPointer(sp)){
+		CSE_ALifeDynamicObject* obj = NULL;
+		VERIFY(ai().get_alife());
+		obj = ai().alife().objects().object(m_objectID);
+		VERIFY(obj);
+	
+		
+		xr_vector<u32> path_;
+		bool res = ai().graph_engine().search(ai().game_graph(),Actor()->ai_location().game_vertex_id(), obj->m_tGraphID, &path_, GraphEngineSpace::CBaseParameters());
+		if(res){
+			xr_vector<u32>::iterator it = path_.begin();
+			xr_vector<u32>::iterator it_e = path_.end();
 
-	};
+			xr_vector<CLevelChanger*>::iterator lit,lit_e;
+			lit_e							= g_lchangers.end();
+			bool bDone						= false;
+			for(; (it!=it_e)&&(!bDone) ;++it){
+				for(lit=g_lchangers.begin();lit!=lit_e; ++lit){
+					if((*it)==(*lit)->ai_location().game_vertex_id() ){
+						bDone = true;
+						break;
+					}
+				}
+			}
+			if(bDone){
+				Fvector2 position;
+				position.set			((*lit)->Position().x, (*lit)->Position().z);
+				m_position_on_map		= map->ConvertRealToLocal(position);
+				UpdateSpotPointer		(map, GetSpotPointer(sp));
+			}
+		}
+	}
+
+
 }
 
 void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )

@@ -39,7 +39,7 @@ void CMapSpot::Update()
 	inherited::Update();
 	if(m_bCursorOverWindow){
 		VERIFY(m_focusReceivedTm>0.0f);
-		if( Device.fTimeGlobal>(m_focusReceivedTm+1.0f) ){
+		if( Device.fTimeGlobal>(m_focusReceivedTm+0.5f) ){
 			GetMessageTarget()->SendMessage(this, MAP_SHOW_HINT, NULL);
 		}
 	}

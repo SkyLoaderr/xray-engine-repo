@@ -95,6 +95,10 @@
 			<map_wnd>
 
 				<main_wnd x="0" y="0" width="409" height="475">
+
+					<text_hint x="735" y="510" width="100" height="22">
+						<text font="graffiti22"/>
+					</text_hint>
 					<map_header_frame_line x="8" y="17" width="395" height="21">
 						<texture>ui_string_03</texture>
 

@@ -3,6 +3,11 @@
 
 	<map_wnd>
 		<main_wnd x="76" y="62" width="761" height="480"> 
+			<text_hint x="735" y="510" width="100" height="22">
+				<text font="graffiti22"/>
+			</text_hint>
+
+
 			<map_header_frame_line x="8" y="17" width="745" height="21">
 				<title x="10" y="1" width="435" height="18">
 					<text font="letterica16" r="255" g="255" b="255"></text>
@@ -39,9 +44,6 @@
 				<level_frame x="6" y="44" width="730" height="408"/>
 			</main_map_frame>
 		</main_wnd>
-		<title x="735" y="510" width="100" height="22">
-			<text font="graffiti22"/>
-		</title>
 	</map_wnd>
 	
 </window>

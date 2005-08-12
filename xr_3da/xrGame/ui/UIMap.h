@@ -69,6 +69,7 @@ public:
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();
 	virtual void	Update					();
+	virtual bool	OnMouse							(float x, float y, EUIMessages mouse_action);
 
 	CUIMapWnd*		MapWnd					() {return m_mapWnd;}
 	void			MoveWndDelta			(const Fvector2& d);

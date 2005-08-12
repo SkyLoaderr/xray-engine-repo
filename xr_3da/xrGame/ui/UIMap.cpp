@@ -7,6 +7,7 @@
 #include "../MainUI.h"
 #include "UIMap.h"
 #include "UIMapWnd.h"
+#include "../../xr_input.h"		//remove me !!!
 
 const u32			activeLocalMapColor			= 0xffffffff;//0xffc80000;
 const u32			inactiveLocalMapColor		= 0xffffffff;//0xff438cd1;
@@ -228,6 +229,18 @@ bool CUICustomMap::NeedShowPointer(Frect r)
 void	CUICustomMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
+}
+
+bool CUIGlobalMap::OnMouse	(float x, float y, EUIMessages mouse_action)
+{
+	if(inherited::OnMouse(x,y,mouse_action)) return true;
+	if(mouse_action==WINDOW_MOUSE_MOVE){
+		if(MapWnd()&&(FALSE==pInput->iGetAsyncBtnState(1))){
+			MapWnd()->Hint(MapName());
+			return true;
+		}
+	}
+	return false;
 }
 
 
@@ -465,7 +478,7 @@ void CUILevelMap::Update()
 
 	if(m_bCursorOverWindow){
 		VERIFY(m_focusReceivedTm>0.0f);
-		if( Device.fTimeGlobal>(m_focusReceivedTm+1.0f) ){
+		if( Device.fTimeGlobal>(m_focusReceivedTm+0.5f) ){
 
 			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ))
 				MapWnd()->ShowHint(this, *MapName());
@@ -493,6 +506,14 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 
 		return true;
 	};
+
+	if(mouse_action==WINDOW_MOUSE_MOVE){
+		if(MapWnd()&&(FALSE==pInput->iGetAsyncBtnState(1))){
+			MapWnd()->Hint(MapName());
+			return true;
+		}
+	}
+
 	return false;
 }
 

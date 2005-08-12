@@ -47,6 +47,7 @@ CUIMapWnd::CUIMapWnd()
 	m_currentZoom			= 1.0f;
 	m_hint					= NULL;
 	m_selected_location		= NULL;
+	m_text_hint				= NULL;
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -54,6 +55,7 @@ CUIMapWnd::~CUIMapWnd()
 	delete_data			(m_ActionPlanner);
 	delete_data			(m_GameMaps);
 	delete_data			(m_hint);
+	delete_data			(m_text_hint);
 }
 
 
@@ -180,6 +182,9 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolHighlightSpotClicked,this,_1,_2));
 	}
 
+	m_text_hint							= xr_new<CUIStatic>();
+	strconcat							(pth,start_from,":main_wnd:text_hint");
+	xml_init.InitStatic					(uiXml, pth, 0, m_text_hint);
 
 	m_hint								= xr_new<CUIMapHint>();
 	m_hint->Init						();
@@ -249,6 +254,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 void CUIMapWnd::Show(bool status)
 {
+	inherited::Show(status);
 	if (status)
 	{
 		m_GlobalMap->Show			(true);
@@ -261,7 +267,8 @@ void CUIMapWnd::Show(bool status)
 		}
 
 		if(	m_flags.test(lmFirst)){
-//			OnToolActorClicked	(NULL,NULL);
+			Update				();
+			OnToolActorClicked	(NULL,NULL);
 			m_flags.set(lmFirst,FALSE);
 			}
 		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
@@ -275,7 +282,6 @@ void CUIMapWnd::Show(bool status)
 			it->second->DetachAll();
 	}
 
-	inherited::Show(status);
 	m_hint->SetOwner		(NULL);
 }
 
@@ -347,7 +353,8 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos, bool bZoom
 void CUIMapWnd::Draw()
 {
 	inherited::Draw();
-	if(m_hint->GetOwner()) m_hint->Draw_();
+	if(m_hint->GetOwner())	m_hint->Draw_();
+	m_text_hint->Draw		();
 }
 
 bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
@@ -646,8 +653,9 @@ void CUIMapWnd::ShowHint					(CUIWindow* parent, LPCSTR text)
 		r.sub				(r.width(),0.0f);
 	if (false==is_in(vis_rect,r))
 		r.add				(0.0f,r.height());
+
 	if (false==is_in(vis_rect,r))
-		r.add				(r.width(),0.0f);
+		r.add				(r.width(), 45.0f);
 
 	m_hint->SetWndPos		(r.lt);
 }
@@ -671,4 +679,9 @@ void CUIMapWnd::Select				(CMapLocation* ml)
 
 	if(	!!m_flags.test(lmHighlightSpot))
 		HighlightSpot	();
+}
+
+void CUIMapWnd::Hint					(const shared_str& text)
+{
+	m_text_hint->SetText				(*text);
 }

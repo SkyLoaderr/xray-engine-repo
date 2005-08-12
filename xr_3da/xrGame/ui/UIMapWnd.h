@@ -58,6 +58,7 @@ private:
 	CUI3tButton*				m_ToolBar[eMaxBtn];
 	CUIMapHint*					m_hint;
 	CMapLocation*				m_selected_location;
+	CUIStatic*					m_text_hint;
 
 	void						OnScrollV				();
 	void						OnScrollH				();
@@ -91,7 +92,7 @@ public:
 
 			void				ShowHint				(CUIWindow* parent, LPCSTR text);
 			void				HideHint				(CUIWindow* parent);
-
+			void				Hint					(const shared_str& text);
 	virtual bool				OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual bool				OnKeyboard				(int dik, EUIMessages keyboard_action);
 	virtual void				SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
