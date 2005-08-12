@@ -52,7 +52,7 @@ void CControllerCoverEvaluator::initialize(const Fvector &start_position)
 void CControllerCoverEvaluator::evaluate(CCoverPoint *cover_point, float weight)
 {
 #ifdef DEBUG
-	DBG().level_info(this).add_item(cover_point->position(), D3DCOLOR_XRGB(0,255,0));
+	//DBG().level_info(this).add_item(cover_point->position(), D3DCOLOR_XRGB(0,255,0));
 #endif
 
 	if (fis_zero(weight))

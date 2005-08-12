@@ -3,6 +3,7 @@
 #include "controller_state_manager.h"
 
 #include "controller_animation.h"
+#include "controller_direction.h"
 #include "../control_direction_base.h"
 #include "../control_movement_base.h"
 #include "../control_path_builder_base.h"
@@ -80,7 +81,7 @@ void CStateManagerController::execute()
 		else			state_id = eStateRest;
 	}
 	
-	if (state_id == eStateAttack) 
+	if (state_id == eStateAttack)
 		object->set_mental_state(CController::eStateDanger);
 	else 
 		object->set_mental_state(CController::eStateIdle);

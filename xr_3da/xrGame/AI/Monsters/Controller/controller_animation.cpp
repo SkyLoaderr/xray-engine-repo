@@ -4,6 +4,11 @@
 #include "../../../detail_path_manager.h"
 #include "../../../level.h"
 #include "../control_direction_base.h"
+#include "../control_path_builder_base.h"
+#include "controller_direction.h"
+#include "../monster_velocity_space.h"
+
+const float	_pmt_psy_attack_time  = 0.5f;
 
 void CControllerAnimation::reinit()
 {
@@ -12,10 +17,11 @@ void CControllerAnimation::reinit()
 	load					();
 	inherited::reinit		();
 
-	//m_cur_action				= ACT_RUN;
-	//m_use_separate			= true;
-	//m_current_legs_action		= eLegsStand;
-	//m_current_torso_action	= eTorsoIdle;
+	set_body_state			(eTorsoIdle, eLegsTypeStand);
+
+	m_man->animation().add_anim_event(m_torso[eTorsoPsyAttack], _pmt_psy_attack_time, CControlAnimation::eAnimationHit);
+	m_wait_torso_anim_end	= false;
+
 }
 
 void CControllerAnimation::on_start_control(ControlCom::EControlType type)
@@ -52,8 +58,21 @@ void CControllerAnimation::on_event(ControlCom::EEventType type, ControlCom::IEv
 {
 	switch (type) {
 	case ControlCom::eventAnimationEnd:			select_animation();			break;
-	case ControlCom::eventTorsoAnimationEnd:	select_torso_animation();	break;
+	case ControlCom::eventTorsoAnimationEnd:	
+		m_wait_torso_anim_end	= false;
+		select_torso_animation	();
+		break;
 	case ControlCom::eventLegsAnimationEnd:		select_legs_animation();	break;
+	case ControlCom::eventAnimationSignal:	
+		{
+			SAnimationSignalEventData *event_data = (SAnimationSignalEventData *)data;
+			if (event_data->event_id == CControlAnimation::eAnimationHit) {
+				if (event_data->motion == m_torso[eTorsoPsyAttack])
+					m_controller->psy_fire();
+				else
+					check_hit(event_data->motion);	break;
+			}
+		}
 	}
 }
 
@@ -63,10 +82,8 @@ void CControllerAnimation::update_frame()
 		inherited::update_frame();
 		return;
 	}
-
-	static u32 last_time = 0;
-
-	set_direction			();
+	
+	if (is_moving()) set_path_direction();
 	
 	select_legs_animation	();	
 	select_torso_animation	();	
@@ -78,9 +95,10 @@ void CControllerAnimation::load()
 {
 	CSkeletonAnimated *skeleton = smart_cast<CSkeletonAnimated*>(m_object->Visual());
 	
-	m_legs[eLegsStand]					= skeleton->ID_Cycle_Safe("new_run_fwd_0");
+	m_legs[eLegsStand]					= skeleton->ID_Cycle_Safe("new_idle_0");
+	m_legs[eLegsSteal]					= skeleton->ID_Cycle_Safe("new_cr_idle_0");
 	m_legs[eLegsRun]					= skeleton->ID_Cycle_Safe("new_run_fwd_0");
-	m_legs[eLegsWalk]					= skeleton->ID_Cycle_Safe("new_run_fwd_0");
+	m_legs[eLegsWalk]					= skeleton->ID_Cycle_Safe("new_walk_0");
 	m_legs[eLegsBackRun]				= skeleton->ID_Cycle_Safe("new_run_beack_0");
 	m_legs[eLegsRunFwdLeft]				= skeleton->ID_Cycle_Safe("stand_fwd_ls");
 	m_legs[eLegsRunFwdRight]			= skeleton->ID_Cycle_Safe("stand_fwd_rs");
@@ -89,6 +107,11 @@ void CControllerAnimation::load()
 	m_legs[eLegsStealFwd]				= skeleton->ID_Cycle_Safe("new_walk_steal_0");
 	m_legs[eLegsStealBkwd]				= skeleton->ID_Cycle_Safe("new_walk_steal_beack_0");
 	
+	m_legs[eLegsStealFwdLeft]			= skeleton->ID_Cycle_Safe("steal_fwd_ls");
+	m_legs[eLegsStealFwdRight]			= skeleton->ID_Cycle_Safe("steal_fwd_rs");
+	m_legs[eLegsStealBkwdLeft]			= skeleton->ID_Cycle_Safe("steal_bwd_ls");
+	m_legs[eLegsStealBkwdRight]			= skeleton->ID_Cycle_Safe("steal_bwd_rs");
+
 	m_legs[eLegsStandDamaged]			= skeleton->ID_Cycle_Safe("new_run_fwd_0");
 	m_legs[eLegsRunDamaged]				= skeleton->ID_Cycle_Safe("new_run_fwd_0");
 	m_legs[eLegsWalkDamaged]			= skeleton->ID_Cycle_Safe("new_run_fwd_0");
@@ -96,27 +119,32 @@ void CControllerAnimation::load()
 	m_legs[eLegsRunStrafeLeftDamaged]	= skeleton->ID_Cycle_Safe("new_run_fwd_0");
 	m_legs[eLegsRunStrafeRightDamaged]	= skeleton->ID_Cycle_Safe("new_run_fwd_0");
 
-	m_torso[eTorsoIdle]					= skeleton->ID_Cycle_Safe("new_torso_attack_0");
-	m_torso[eTorsoDanger]				= skeleton->ID_Cycle_Safe("new_torso_steal_0");
-	m_torso[eTorsoPsyAttack]			= skeleton->ID_Cycle_Safe("new_torso_idle_0");
-	m_torso[eTorsoPanic]				= skeleton->ID_Cycle_Safe("new_torso_run_0");
+	m_torso[eTorsoIdle]					= skeleton->ID_Cycle_Safe("new_torso_idle_0");
+	m_torso[eTorsoSteal]				= skeleton->ID_Cycle_Safe("new_torso_steal_0");
+	m_torso[eTorsoPsyAttack]			= skeleton->ID_Cycle_Safe("new_torso_attack_0");
+	m_torso[eTorsoRun]					= skeleton->ID_Cycle_Safe("new_torso_run_0");
 
-	add_path_rotation					(ACT_RUN, 0,				eLegsRun);
-	add_path_rotation					(ACT_RUN, PI,				eLegsBackRun);
-	add_path_rotation					(ACT_RUN, PI_DIV_4,			eLegsRunFwdLeft);
-	add_path_rotation					(ACT_RUN, -PI_DIV_4,		eLegsRunFwdRight);
-	add_path_rotation					(ACT_RUN, (PI - PI_DIV_4),	eLegsRunBkwdLeft);
-	add_path_rotation					(ACT_RUN, -(PI - PI_DIV_4),	eLegsRunBkwdRight);
+	add_path_rotation					(eLegsTypeRun, 0,				eLegsRun);
+	add_path_rotation					(eLegsTypeRun, PI,				eLegsBackRun);
+	add_path_rotation					(eLegsTypeRun, PI_DIV_4,		eLegsRunFwdLeft);
+	add_path_rotation					(eLegsTypeRun, -PI_DIV_4,		eLegsRunFwdRight);
+	add_path_rotation					(eLegsTypeRun, (PI - PI_DIV_4),	eLegsRunBkwdLeft);
+	add_path_rotation					(eLegsTypeRun, -(PI - PI_DIV_4),eLegsRunBkwdRight);
 
-	add_path_rotation					(ACT_STEAL, 0,				eLegsStealFwd);
-	add_path_rotation					(ACT_STEAL, PI,				eLegsStealBkwd);
+	add_path_rotation					(eLegsTypeStealMotion, 0,				eLegsStealFwd);
+	add_path_rotation					(eLegsTypeStealMotion, PI,				eLegsStealBkwd);
+	add_path_rotation					(eLegsTypeStealMotion, PI_DIV_4,		eLegsStealFwdLeft);
+	add_path_rotation					(eLegsTypeStealMotion, -PI_DIV_4,		eLegsStealFwdRight);
+	add_path_rotation					(eLegsTypeStealMotion, (PI - PI_DIV_4),	eLegsStealBkwdLeft);
+	add_path_rotation					(eLegsTypeStealMotion, -(PI - PI_DIV_4),eLegsStealBkwdRight);
+
 
 	// 1. link animation with action
 	// 2. link animation with velocities and path velocities
 	// 3. 
 }
 
-void CControllerAnimation::add_path_rotation(EAction action, float angle, ELegsActionType type)
+void CControllerAnimation::add_path_rotation(ELegsActionType action, float angle, ELegsActionType type)
 {
 	SPathRotations	rot;
 	rot.angle		= angle;
@@ -134,19 +162,19 @@ void CControllerAnimation::add_path_rotation(EAction action, float angle, ELegsA
 
 void CControllerAnimation::select_velocity() 
 {
-	if (m_tAction == ACT_RUN)
+	if (m_current_legs_action == eLegsTypeRun)
 		m_man->path_builder().set_desirable_speed(4.f);
-	else if (m_tAction == ACT_STEAL)
-		m_man->path_builder().set_desirable_speed(1.5f);
+	else if (m_current_legs_action == eLegsTypeStealMotion)
+		m_man->path_builder().set_desirable_speed(1.1f);
 	else 
 		m_man->path_builder().set_desirable_speed(0.f);
 }
 
-void CControllerAnimation::set_direction()
+// set body direction using path_direction
+// and according to point it has to look at
+void CControllerAnimation::set_path_direction()
 {
-	if (!m_man->path_builder().is_moving_on_path()) return;
-	
-	float cur_yaw = Fvector().sub(m_controller->m_look_point, m_object->Position()).getH();
+	float cur_yaw = Fvector().sub(m_controller->custom_dir().get_head_look_point(), m_object->Position()).getH();
 	cur_yaw = angle_normalize(-cur_yaw);
 
 	float target_yaw = m_man->path_builder().detail().direction().getH();
@@ -160,15 +188,25 @@ void CControllerAnimation::set_direction()
 
 void CControllerAnimation::select_torso_animation()
 {
-	// select from mental state	
-	// start new animation
+	if (m_wait_torso_anim_end) return;
+	
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	if (!ctrl_data) return;
 
-	if (ctrl_data->torso.motion != m_torso[eTorsoDanger])
-		ctrl_data->torso.actual	= false;
+	MotionID target_motion;
 
-	ctrl_data->torso.motion	= m_torso[eTorsoDanger];
+	// check fire animation
+	if (m_controller->can_psy_fire()) {
+		target_motion			= m_torso[eTorsoPsyAttack];
+		m_wait_torso_anim_end	= true;
+	} else {
+		target_motion			= m_torso[m_current_torso_action];
+	}
+	
+	if (ctrl_data->torso.motion != target_motion) {
+		ctrl_data->torso.motion	= target_motion;
+		ctrl_data->torso.actual	= false;
+	}
 }
 
 void CControllerAnimation::select_legs_animation()
@@ -176,7 +214,7 @@ void CControllerAnimation::select_legs_animation()
 	// select from action
 	ELegsActionType legs_action = eLegsUndefined;
 
-	if (m_man->path_builder().is_moving_on_path()) {
+	if (is_moving()) {
 		// if we are moving, get yaw from path
 		float cur_yaw, target_yaw;
 		m_man->direction().get_heading(cur_yaw, target_yaw);
@@ -186,7 +224,13 @@ void CControllerAnimation::select_legs_animation()
 	
 	} else {
 		// else select standing animation
-		legs_action		= eLegsStand;
+		for (LEGS_MOTION_MAP_IT it = m_legs.begin(); it != m_legs.end(); it++) {
+			if ((it->first & m_current_legs_action) == m_current_legs_action) {
+				legs_action		= it->first;
+				break;
+			}
+		}
+		VERIFY(legs_action != eLegsUndefined);
 	}
 	
 	// start new animation
@@ -201,9 +245,6 @@ void CControllerAnimation::select_legs_animation()
 
 CControllerAnimation::SPathRotations CControllerAnimation::get_path_rotation(float cur_yaw)
 {
-	EAction action = m_tAction;
-	if ((action != ACT_RUN) && (action != ACT_STEAL)) action = ACT_RUN;
-	
 	float target_yaw = m_man->path_builder().detail().direction().getH();
 	target_yaw = angle_normalize(-target_yaw);
 
@@ -212,9 +253,9 @@ CControllerAnimation::SPathRotations CControllerAnimation::get_path_rotation(flo
 
 	diff = angle_normalize(diff);
 
-	PATH_ROTATIONS_VEC_IT it_best = m_path_rotations[m_tAction].begin();
+	PATH_ROTATIONS_VEC_IT it_best = m_path_rotations[m_current_legs_action].begin();
 	float best_diff = flt_max;
-	for (PATH_ROTATIONS_VEC_IT it = m_path_rotations[m_tAction].begin(); it != m_path_rotations[m_tAction].end(); it++) {
+	for (PATH_ROTATIONS_VEC_IT it = m_path_rotations[m_current_legs_action].begin(); it != m_path_rotations[m_current_legs_action].end(); it++) {
 		float angle_diff = angle_normalize(it->angle);
 
 		float cur_diff = angle_difference(angle_diff, diff);
@@ -225,4 +266,66 @@ CControllerAnimation::SPathRotations CControllerAnimation::get_path_rotation(flo
 	}
 
 	return (*it_best);
+}
+
+void CControllerAnimation::set_body_state(ETorsoActionType torso, ELegsActionType legs)
+{
+	m_current_legs_action		= legs;
+	m_current_torso_action		= torso;
+}
+
+bool CControllerAnimation::is_moving()
+{
+	if (!m_man->path_builder().is_moving_on_path()) return false;
+
+	if (((m_current_legs_action & eLegsTypeStealMotion) != eLegsTypeStealMotion) &&
+		((m_current_legs_action & eLegsTypeWalk) != eLegsTypeWalk) &&
+		((m_current_legs_action & eLegsTypeRun) != eLegsTypeRun)) return false;
+
+	
+	return true;
+}										
+
+// if we gonna build path in direction opposite which we look
+// then set negative speed 
+void CControllerAnimation::set_path_params()
+{
+	bool moving_action =	((m_current_legs_action & eLegsTypeStealMotion) == eLegsTypeStealMotion) ||
+							((m_current_legs_action & eLegsTypeWalk) == eLegsTypeWalk) ||
+							((m_current_legs_action & eLegsTypeRun) == eLegsTypeRun);
+	
+	if (moving_action) {
+		
+		u32 vel_mask = 0;
+		u32 des_mask = 0;		
+
+		bool looking_fwd = true;
+
+		Fvector target_pos	= m_object->path().get_target_set();
+		Fvector dir			= Fvector().sub(target_pos, m_object->Position());
+		if (!fis_zero(dir.square_magnitude())) {
+			
+			float target_yaw	= dir.getH();
+			target_yaw			= angle_normalize(-target_yaw);
+			float cur_yaw		= m_man->direction().get_heading_current();
+			
+			if (angle_difference(target_yaw,cur_yaw) > PI_DIV_2)
+				looking_fwd = false;
+		}
+	
+		if (looking_fwd) {
+			vel_mask = MonsterMovement::eControllerVelocityParamsMoveFwd;
+			des_mask = MonsterMovement::eControllerVelocityParameterMoveFwd;		
+		} else {
+			vel_mask = MonsterMovement::eControllerVelocityParamsMoveBkwd;
+			des_mask = MonsterMovement::eControllerVelocityParameterMoveBkwd;
+		}
+
+		m_object->path().set_velocity_mask	(vel_mask);
+		m_object->path().set_desirable_mask	(des_mask);
+
+		m_object->path().enable_path		();
+	} else {
+		m_object->path().disable_path		();
+	}
 }

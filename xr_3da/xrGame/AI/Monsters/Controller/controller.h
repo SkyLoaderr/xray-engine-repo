@@ -4,10 +4,10 @@
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
-#include "../ai_monster_bones.h"
 #include "controller_covers.h"
 
 class CControllerAnimation;
+class CControllerDirection;
 
 class CController : public CBaseMonster, 
 					public CPsyAuraController {
@@ -32,9 +32,18 @@ class CController : public CBaseMonster,
 	LPCSTR				particle_fire;
 
 	CControllerAnimation	*m_custom_anim_base;
+	CControllerDirection	*m_custom_dir_base;
+
+	u32					m_psy_fire_start_time;
+	u32					m_psy_fire_delay;
+
+public:	
+	SVelocityParam		m_velocity_move_fwd;
+	SVelocityParam		m_velocity_move_bkwd;
 
 public:	
 	CControllerAnimation	&custom_anim()	{return (*m_custom_anim_base);}
+	CControllerDirection	&custom_dir()	{return (*m_custom_dir_base);}
 
 public:
 	xr_vector<CEntity*> m_controlled_objects;
@@ -59,10 +68,11 @@ public:
 
 	virtual void	InitThink			();
 
-	virtual void	create_base_controls	();	
+	virtual void	create_base_controls();	
 	
+	virtual const MonsterSpace::SBoneRotation &head_orientation	() const;
 
-			void	Jump				();
+	virtual void	TranslateActionToPathParams	();
 
 	//-------------------------------------------------------------------
 	// Controller ability
@@ -80,25 +90,19 @@ public:
 			void	play_control_sound_hit		();
 
 			void	control_hit					();
+
+			void	psy_fire					();
+			bool	can_psy_fire				();
+			
+			void	set_psy_fire_delay_zero		();
+			void	set_psy_fire_delay_default	();
+
+
 	//-------------------------------------------------------------------
 
 public: 
-	static	void __stdcall	bone_callback			(CBoneInstance *B);
-	void					assign_bones			();
-	void					look_direction			(Fvector to_dir, float bone_turn_speed);
 
-	bonesManipulation		m_bones;
-
-	CBoneInstance			*bone_spine;
-	CBoneInstance			*bone_head;
-
-	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const;
-	MonsterSpace::SBoneRotation m_head_orient;
-	void					update_head_orientation	();
-
-
-	void					draw_fire_particles();
-
+	void						draw_fire_particles();
 	
 	CControllerCoverEvaluator	*m_ce_best;
 	void						test_covers();
@@ -110,11 +114,7 @@ public:
 		eStateDanger
 	} m_mental_state;
 
-	Fvector					m_look_point;
-
-	void					set_look_point	(const Fvector &look_point) {m_look_point = look_point;}
-	void					set_mental_state(EMentalState state){m_mental_state = state;}
-
+	void			set_mental_state			(EMentalState state){m_mental_state = state;}
 
 public:
 	virtual bool	use_center_to_aim			() const {return true;}

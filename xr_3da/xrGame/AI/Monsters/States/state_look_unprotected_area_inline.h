@@ -27,7 +27,7 @@ void CStateMonsterLookToUnprotectedAreaAbstract::initialize()
 	position = object->Position();
 	position.y += 0.3f;
 
-	float angle = ai().level_graph().vertex_less_cover(object->ai_location().level_vertex_id(),PI_DIV_6);
+	float angle = ai().level_graph().vertex_cover_angle(object->ai_location().level_vertex_id(),PI_DIV_6,CLevelGraph::PredicateBetterCover());
 
 	Fvector dir;
 	dir.set(1.f,0.f,0.f);

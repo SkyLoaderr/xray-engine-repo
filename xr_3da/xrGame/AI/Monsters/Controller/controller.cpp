@@ -21,9 +21,17 @@
 #include "../../../cover_manager.h"
 
 #include "controller_animation.h"
+#include "controller_direction.h"
+
 #include "../control_direction_base.h"
 #include "../control_movement_base.h"
 #include "../control_path_builder_base.h"
+
+#include "../../../level_navigation_graph.h"
+#include "../../../ai_object_location.h"
+
+const u32	_pmt_psy_attack_delay		= 2000;
+const float	_pmt_psy_attack_min_angle	= deg(5);
 
 
 CController::CController()
@@ -137,6 +145,9 @@ void CController::Load(LPCSTR section)
 
 	m_ce_best = xr_new<CControllerCoverEvaluator>(&control().path_builder().restrictions());
 
+	m_velocity_move_fwd.Load	(section, "Velocity_MoveFwd");
+	m_velocity_move_bkwd.Load	(section, "Velocity_MoveBkwd");
+
 }
 
 BOOL CController::net_Spawn(CSE_Abstract *DC)
@@ -148,8 +159,6 @@ BOOL CController::net_Spawn(CSE_Abstract *DC)
 		CPsyAuraController::deactivate();
 		CPsyAuraController::set_auto_activate(false);
 	}
-	
-	assign_bones();
 	
 	return (TRUE);
 }
@@ -238,10 +247,13 @@ void CController::reinit()
 	
 	int_need_deactivate = false;
 
-	m_bones.Reset();
-	m_head_orient = control().path_builder().body_orientation();
-	m_look_point.set(0.f,0.f,0.f);
 	m_mental_state = eStateIdle;
+
+	m_psy_fire_start_time	= 0;
+	m_psy_fire_delay		= _pmt_psy_attack_delay;
+
+	control().path_builder().detail().add_velocity(MonsterMovement::eControllerVelocityParameterMoveFwd,	CDetailPathManager::STravelParams(m_velocity_move_fwd.velocity.linear,	m_velocity_move_fwd.velocity.angular_path,	m_velocity_move_fwd.velocity.angular_real));
+	control().path_builder().detail().add_velocity(MonsterMovement::eControllerVelocityParameterMoveBkwd,	CDetailPathManager::STravelParams(m_velocity_move_bkwd.velocity.linear,	m_velocity_move_bkwd.velocity.angular_path, m_velocity_move_bkwd.velocity.angular_real));
 }
 
 void CController::control_hit()
@@ -267,7 +279,7 @@ void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	//CPsyAuraController::frame_update();
+	CPsyAuraController::frame_update();
 
 	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
 		processing_deactivate();
@@ -305,19 +317,9 @@ void CController::shedule_Update(u32 dt)
 	CPsyAuraController::schedule_update();
 
 	UpdateControlled();
-
-	if (m_mental_state == eStateDanger) {
-		look_direction(Fvector().sub(m_look_point, Position()),PI_MUL_2);
-	}
-	
-	update_head_orientation();
 	
 	// DEBUG
 	test_covers();
-}
-
-void CController::Jump()
-{
 }
 
 void CController::Die(CObject* who)
@@ -354,156 +356,111 @@ void CController::OnFreedFromControl(const CEntity *entity)
 	}
 }
 
-
-void __stdcall CController::bone_callback(CBoneInstance *B)
-{
-	CController *this_class = static_cast<CController*> (B->Callback_Param);
-	this_class->m_bones.Update(B, Device.dwTimeGlobal);
-}
-
-
-void CController::assign_bones()
-{
-	// Установка callback на кости
-
-	bone_spine =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine"));
-	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
-	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
-	{
-		bone_spine->set_callback(bctCustom,bone_callback,this);
-		bone_head->set_callback(bctCustom, bone_callback,this);
-	}
-
-	// Bones settings
-	m_bones.Reset();
-	m_bones.AddBone(bone_spine, AXIS_X);	m_bones.AddBone(bone_spine, AXIS_Y);
-	m_bones.AddBone(bone_head, AXIS_X);		m_bones.AddBone(bone_head, AXIS_Y);
-}
-
-
-#define MAX_BONE_ANGLE			PI_DIV_2
-#define MAX_HEAD_BONE_ANGLE		PI_DIV_6
-#define MAX_TORSO_BONE_ANGLE	PI_DIV_2
-
-void CController::look_direction(Fvector to_dir, float bone_turn_speed)
-{
-	if (!control().path_builder().is_moving_on_path())
-		dir().face_target(Level().CurrentEntity()->Position(), 4000);
-
-	// получаем вектор направления к источнику звука и его мировые углы
-	float		yaw,pitch;
-	to_dir.getHP(yaw,pitch);
-	yaw = angle_normalize(-yaw);
-
-	// установить параметры вращения по yaw
-	float cur_yaw, target_yaw;
-	control().direction().get_heading(cur_yaw, target_yaw);		// текущий мировой угол монстра
-	
-	float bone_angle;											// угол для боны	
-
-	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
-
-	if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
-		bone_angle = dy;
-	} else {													// torso & bone turn 
-		if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
-		else bone_angle = MAX_BONE_ANGLE;
-	}
-
-	//bone_angle /= 2;
-	if (!from_right(yaw,cur_yaw)) bone_angle *= -1.f;
-
-	m_bones.SetMotion(bone_spine, AXIS_X,  bone_angle, bone_turn_speed, 100);
-	//m_bones.SetMotion(bone_head,  AXIS_X,  bone_angle , bone_turn_speed, 100);
-
-	// установить параметры вращения по pitch
-	clamp(pitch, -MAX_BONE_ANGLE, MAX_BONE_ANGLE);
-	//pitch /= 2; 
-
-	m_bones.SetMotion(bone_spine, AXIS_Y, pitch, bone_turn_speed, 100);
-	m_bones.SetMotion(bone_head, AXIS_Y, pitch, bone_turn_speed, 100);	
-}
-
-const MonsterSpace::SBoneRotation &CController::head_orientation	() const
-{
-	return m_head_orient;
-}
-
-void CController::update_head_orientation()
-{
-	m_head_orient.current.yaw	= 0.f;
-	m_head_orient.current.pitch	= 0.f;
-	m_head_orient.current.roll	= 0.f;
-
-	bonesAxis &x_spine = m_bones.GetBoneParams	(bone_spine, AXIS_X);
-	bonesAxis &x_head = m_bones.GetBoneParams	(bone_head,	 AXIS_X);
-
-	float yaw = x_spine.cur_yaw + x_head.cur_yaw;
-
-	// установить параметры вращения по yaw
-	float cur_yaw, target_yaw;
-	control().direction().get_heading(cur_yaw, target_yaw);		// текущий мировой угол монстра
-
-	cur_yaw += yaw;
-	m_head_orient.current.yaw	= cur_yaw;
-}
-
+//////////////////////////////////////////////////////////////////////////
 
 void CController::draw_fire_particles()
 {
-	// ---------------------------------------------------------------------
-	// draw particle
-	CParticlesObject* ps = CParticlesObject::Create("weapons\\generic_weapon07",TRUE);
+	if (!EnemyMan.get_enemy()) return;
+	//if (!EnemyMan.see_enemy_now()) return;
+	CEntityAlive *enemy	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
 
 	// вычислить позицию и направленность партикла
-	Fvector dir;
-	dir.sub(Level().CurrentEntity()->Position(), Position());
-	dir.normalize();
+	Fvector my_head_pos;
+	my_head_pos.set	(get_head_position(this));
+	
+	Fvector position;
+	position.set	(get_head_position(enemy));
+	position.y		-= 0.5f;
+	
+	Fvector			dir;
+	dir.sub			(position, my_head_pos);
+	dir.normalize	();
 
-	Fvector center;
-	Center(center);
+	PlayParticles("weapons\\generic_weapon07", my_head_pos, dir);
 
-	Fmatrix pos; 
-	pos.identity();
-	pos.k.set(dir);
-	Fvector::generate_orthonormal_basis_normalized(pos.k,pos.j,pos.i);
-	// установить позицию
-	pos.translate_over(center);
-
-	ps->UpdateParent(pos, zero_vel);
-	ps->Play();
+	NET_Packet	l_P;
+	u_EventGen	(l_P,GE_HIT, enemy->ID());
+	l_P.w_u16	(ID());
+	l_P.w_u16	(ID());
+	l_P.w_dir	(dir);
+	l_P.w_float	(20.f);
+	l_P.w_s16	(smart_cast<CKinematics*>(enemy->Visual())->LL_GetBoneRoot());
+	l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
+	l_P.w_float	(200.f);
+	l_P.w_u16	( u16(ALife::eHitTypeWound) );
+	u_EventSend	(l_P);
+	
 }
 
+void CController::psy_fire()
+{
+	draw_fire_particles			();
+	play_control_sound_hit		();
+
+	m_psy_fire_start_time		= time();
+}
+
+bool CController::can_psy_fire()
+{
+	if (m_psy_fire_start_time + m_psy_fire_delay > time ())			return false;
+	if (!EnemyMan.get_enemy())										return false;
+	if (!EnemyMan.see_enemy_now())									return false;
+
+	float cur_yaw	= custom_dir().get_head_orientation().current.yaw;
+	float dir_yaw	= Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getH();
+	dir_yaw			= angle_normalize(-dir_yaw);
+	if (angle_difference(cur_yaw,dir_yaw) > _pmt_psy_attack_min_angle) return false;
+
+	return true;
+}
+
+void CController::set_psy_fire_delay_zero()
+{
+	m_psy_fire_delay = 0;
+}
+void CController::set_psy_fire_delay_default()
+{
+	m_psy_fire_delay = _pmt_psy_attack_delay;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+const MonsterSpace::SBoneRotation &CController::head_orientation	() const
+{
+	return m_custom_dir_base->get_head_orientation();
+}
 
 void CController::test_covers()
 {
 	//////////////////////////////////////////////////////////////////////////
 	// update covers
 	//////////////////////////////////////////////////////////////////////////
-	
-	//DBG().level_info(this).clear();
-	//m_ce_best->setup	(Level().CurrentEntity()->Position(),10.f,30.f);
-	//CCoverPoint			*point = ai().cover_manager().best_cover(Position(),30.f,*m_ce_best,CControllerCoverPredicate());
-	//if (point) {
-	//	Fvector cur_pos = point->position();
-	//	float	r = 0.5f;
-	//	for (u32 i = 0; i< 5; i++) {
-	//		DBG().level_info(this).add_item(cur_pos, r, D3DCOLOR_XRGB(0,0,255));
-	//		DBG().level_info(this).add_item(cur_pos, r+0.05f, D3DCOLOR_XRGB(0,0,255));
-	//		cur_pos.mad(Fvector().set(0.f,1.f,0.f), r * 2);
-	//	}
-	//} 
 }
 
 void CController::create_base_controls()
 {
 	m_custom_anim_base	= xr_new<CControllerAnimation>		(); 
+	m_custom_dir_base	= xr_new<CControllerDirection>		(); 
 	
 	m_anim_base			= m_custom_anim_base;
+	m_dir_base			= m_custom_dir_base;
+
 	m_move_base			= xr_new<CControlMovementBase>		();
 	m_path_base			= xr_new<CControlPathBuilderBase>	();
-	m_dir_base			= xr_new<CControlDirectionBase>		();
 }
+
+void CController::TranslateActionToPathParams()
+{
+	if (m_mental_state == eStateIdle) {
+		inherited::TranslateActionToPathParams();
+		return;
+	}
+	
+	custom_anim().set_path_params();
+}
+
+
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CController::show_debug_info()
