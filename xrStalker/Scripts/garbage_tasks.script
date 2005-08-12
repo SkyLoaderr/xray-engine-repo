@@ -34,7 +34,7 @@ function proceed()
 	if actor:has_info("gar_hellcar_death") and
 		actor:has_info("gar_hellcar_help") and
 --		xr_conditions.is_dead_all(actor, nil, {107}) and
---		actor:dont_has_info("gar_after_battle") and
+		actor:dont_has_info("gar_after_battle") and
 		actor:dont_has_info("gar_hellcar_dialog_end")		
 	then
 		level_tasks.set_task_state(task.fail, "gar_help_dymon", 1)
