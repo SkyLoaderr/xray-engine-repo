@@ -136,7 +136,7 @@ function level_garbage(first_speaker, second_speaker)
 end
 
 function level_agroprom(first_speaker, second_speaker)
-	return level.name() == "l03_agroprom_ai2"
+	return level.name() == "l03_agroprom_ai2" or level.name() == "l03_agroprom"
 end
 
 -----------------------------------------------------------------------------------
