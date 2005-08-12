@@ -389,6 +389,7 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	Fvector4 tmp = gameLtx.r_fvector4(MapName(),"global_rect");
 	m_GlobalRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
 
+#ifdef DEBUG
 	float kw = m_GlobalRect.width	()	/	BoundRect().width		();
 	float kh = m_GlobalRect.height	()	/	BoundRect().height	();
 
@@ -397,8 +398,8 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 		Msg("----try x2=%f",m_GlobalRect.x1+kh*BoundRect().width());
 		Msg("----or  y2=%f",m_GlobalRect.y1+kw*BoundRect().height());
 	}
-
-	Msg("Succesfully loaded map %s. Identity zoom=%f",*name, kw);
+#endif
+//	Msg("Succesfully loaded map %s. Identity zoom=%f",*name, kw);
 	
 	if(gameLtx.line_exist(MapName(),"anomalies_texture")){
 		LPCSTR texture						= gameLtx.r_string	(MapName(),"anomalies_texture");
