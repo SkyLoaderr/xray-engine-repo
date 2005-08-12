@@ -265,12 +265,9 @@ void CHelicopter::net_Destroy()
 	CShootingObject::StopFlameParticles	();
 	CPHSkeleton::RespawnInit			();
 	m_engineSound.stop					();
-	if(m_pParticle)m_pParticle->PSI_destroy			();
-	m_pParticle							= NULL;
+	CParticlesObject::Destroy			(m_pParticle);
 	m_light_render.destroy				();
-	
 	m_movement.net_Destroy				();
-
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
 #endif

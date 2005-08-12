@@ -159,7 +159,7 @@ void CShootingObject::StartParticles (CParticlesObject*& pParticles, LPCSTR part
 		return;
 	}
 
-	pParticles = xr_new<CParticlesObject>(particles_name,(BOOL)auto_remove_flag);
+	pParticles = CParticlesObject::Create(particles_name,(BOOL)auto_remove_flag);
 	
 	UpdateParticles(pParticles, pos, vel);
 	pParticles->Play();
@@ -169,8 +169,7 @@ void CShootingObject::StopParticles (CParticlesObject*&	pParticles)
 	if(pParticles == NULL) return;
 
 	pParticles->Stop		();
-	pParticles->PSI_destroy	();
-	pParticles				= NULL;
+	CParticlesObject::Destroy(pParticles);
 }
 
 void CShootingObject::UpdateParticles (CParticlesObject*& pParticles, 
@@ -188,8 +187,7 @@ void CShootingObject::UpdateParticles (CParticlesObject*& pParticles,
 		&& !pParticles->PSI_alive())
 	{
 		pParticles->Stop		();
-		pParticles->PSI_destroy	();
-		pParticles				= NULL;
+		CParticlesObject::Destroy(pParticles);
 	}
 }
 
@@ -240,7 +238,7 @@ void CShootingObject::OnShellDrop	(const Fvector& play_pos,
 	if(!m_sShellParticles) return;
 	if( Device.vCameraPosition.distance_to_sqr(play_pos)>2*2 ) return;
 
-	CParticlesObject* pShellParticles	= xr_new<CParticlesObject>(*m_sShellParticles,TRUE);
+	CParticlesObject* pShellParticles	= CParticlesObject::Create(*m_sShellParticles,TRUE);
 
 	Fmatrix particles_pos; 
 	particles_pos.set		(get_ParticlesXFORM());
@@ -273,7 +271,7 @@ void CShootingObject::StartFlameParticles	()
 	}
 
 	StopFlameParticles();
-	m_pFlameParticles = xr_new<CParticlesObject>(*m_sFlameParticlesCurrent,FALSE);
+	m_pFlameParticles = CParticlesObject::Create(*m_sFlameParticlesCurrent,FALSE);
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
 
@@ -304,8 +302,7 @@ void CShootingObject::UpdateFlameParticles	()
 		!m_pFlameParticles->PSI_alive())
 	{
 		m_pFlameParticles->Stop();
-		m_pFlameParticles->PSI_destroy();
-		m_pFlameParticles = NULL;
+		CParticlesObject::Destroy(m_pFlameParticles);
 	}
 }
 

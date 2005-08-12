@@ -13,10 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()
 {
-	if(p_pgobject){
-		p_pgobject->PSI_destroy();
-		p_pgobject = NULL;
-	}
+	CParticlesObject::Destroy(p_pgobject);
 }
 
 void CCar::SExhaust::Init()
@@ -30,7 +27,7 @@ void CCar::SExhaust::Init()
 	//pelement->InterpolateGlobalTransform(&element_transform);
 	//element_transform.invert();
 	//transform.mulA(element_transform);
-	p_pgobject=xr_new<CParticlesObject>(*pcar->m_exhaust_particles,FALSE);
+	p_pgobject=CParticlesObject::Create(*pcar->m_exhaust_particles,FALSE);
 	Fvector zero_vector;
 	zero_vector.set(0.f,0.f,0.f);
 	p_pgobject->UpdateParent(pcar->XFORM(), zero_vector );
@@ -54,8 +51,7 @@ void CCar::SExhaust::Update()
 
 void CCar::SExhaust::Clear()
 {
-	p_pgobject->PSI_destroy();
-	p_pgobject = NULL;
+	CParticlesObject::Destroy(p_pgobject);
 }
 
 void CCar::SExhaust::Play()

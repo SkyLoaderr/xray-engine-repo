@@ -25,7 +25,7 @@ CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(C
 	if (pi)				return pi;
 	particles.push_back	(SParticlesInfo());
 	pi					= &particles.back();
-	pi->ps				= xr_new<CParticlesObject>(*ps_name,FALSE);
+	pi->ps				= CParticlesObject::Create(*ps_name,FALSE);
 	return pi;
 }
 void CParticlesPlayer::SBoneInfo::StopParticles(const shared_str& ps_name)
@@ -93,7 +93,7 @@ void	CParticlesPlayer::net_DestroyParticles	()
 		for (ParticlesInfoListIt p_it=b_info.particles.begin(); p_it!=b_info.particles.end(); p_it++)
 		{
 			SParticlesInfo& p_info	= *p_it;
-			p_info.ps->PSI_destroy		();
+			CParticlesObject::Destroy(p_info.ps);
 		}
 		b_info.particles.clear();
 	}
@@ -250,7 +250,7 @@ void CParticlesPlayer::UpdateParticles()
 				p_info.ps->Stop();
 
 			if(!p_info.ps->IsPlaying()){
-				p_info.ps->PSI_destroy		();
+				CParticlesObject::Destroy(p_info.ps);
 				ParticlesInfoListIt cur_it	= p_it++;
 				b_info.particles.erase		(cur_it);
 			}

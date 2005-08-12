@@ -19,7 +19,7 @@ void CScriptParticleAction::SetParticle			(LPCSTR caParticleToRun, bool bAutoRem
 {
 	m_caParticleToRun	= caParticleToRun;
 	m_tGoalType			= eGoalTypeParticleAttached;
-	m_tpParticleSystem	= xr_new<CParticlesObject>(*m_caParticleToRun,BOOL(m_bAutoRemove = bAutoRemove));
+	m_tpParticleSystem	= CParticlesObject::Create(*m_caParticleToRun,BOOL(m_bAutoRemove = bAutoRemove));
 	m_bStartedToPlay	= false;
 	m_bCompleted		= false;
 }

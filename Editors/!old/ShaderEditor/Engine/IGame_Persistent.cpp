@@ -71,21 +71,17 @@ void IGame_Persistent::Start		(LPCSTR op)
 
 void IGame_Persistent::Disconnect	()
 {
-	// Cleanup particles, some of them can be still active
-	ps_needtoplay.clear				();
-//	ps_destroy.clear				();
-
 #ifndef _EDITOR
-	while (ps_destroy.size())
-	{
-		CPS_Instance*	psi		= ps_destroy.back	();
-//		if (psi->Locked())		break;
-		ps_destroy.pop_back		();
-		psi->PSI_internal_delete();
-	}
-
+	// clear "need to play" particles
+	ps_needtoplay.clear				();
+	// delete destroyed particles
+	for (xr_vector<CPS_Instance*>::iterator d_it=ps_destroy.begin(); d_it!=ps_destroy.end(); d_it++)
+		(*d_it)->PSI_internal_delete();
+	ps_destroy.clear				();
+	// delete active particles
 	while (!ps_active.empty())
 		(*ps_active.begin())->PSI_internal_delete();
+	VERIFY(ps_needtoplay.empty()&&ps_destroy.empty()&&ps_active.empty());
 #endif
 }
 

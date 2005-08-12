@@ -453,7 +453,7 @@ void CController::draw_fire_particles()
 {
 	// ---------------------------------------------------------------------
 	// draw particle
-	CParticlesObject* ps = xr_new<CParticlesObject>("weapons\\generic_weapon07",TRUE);
+	CParticlesObject* ps = CParticlesObject::Create("weapons\\generic_weapon07",TRUE);
 
 	// вычислить позицию и направленность партикла
 	Fvector dir;

@@ -39,7 +39,7 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 	m_flames.push_back			(element);
 
 	// Start Particles
-	CParticlesObject *ps = xr_new<CParticlesObject>(m_flame_particles,TRUE);
+	CParticlesObject *ps = CParticlesObject::Create(m_flame_particles,TRUE);
 	
 	// вычислить позицию и направленность партикла
 	CKinematics *pK = smart_cast<CKinematics*>(const_cast<CObject*>(target_object)->Visual());

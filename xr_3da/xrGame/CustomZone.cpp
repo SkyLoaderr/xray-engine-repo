@@ -344,11 +344,7 @@ void CCustomZone::net_Destroy()
 	m_pLight.destroy		();
 	m_pIdleLight.destroy	();
 
-	if (m_pIdleParticles)
-	{
-		m_pIdleParticles->PSI_destroy();
-		m_pIdleParticles = NULL;
-	}
+	CParticlesObject::Destroy(m_pIdleParticles);
 
 	m_effector.Stop		();
 	//---------------------------------------------
@@ -627,7 +623,7 @@ void CCustomZone::PlayIdleParticles()
 	{
 		if (!m_pIdleParticles)
 		{
-			m_pIdleParticles = xr_new<CParticlesObject>(*m_sIdleParticles,FALSE);
+			m_pIdleParticles = CParticlesObject::Create(*m_sIdleParticles,FALSE);
 			m_pIdleParticles->UpdateParent(XFORM(),zero_vel);
 		}
 		m_pIdleParticles->Play();
@@ -691,7 +687,7 @@ void CCustomZone::PlayBlowoutParticles()
 	if(!m_sBlowoutParticles) return;
 
 	CParticlesObject* pParticles;
-	pParticles	= xr_new<CParticlesObject>(*m_sBlowoutParticles,TRUE);
+	pParticles	= CParticlesObject::Create(*m_sBlowoutParticles,TRUE);
 	pParticles->UpdateParent(XFORM(),zero_vel);
 	pParticles->Play();
 }
@@ -783,7 +779,7 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 	if(!m_sEntranceParticlesSmall) return;
 	
 	CParticlesObject* pParticles;
-	pParticles = xr_new<CParticlesObject>(*m_sEntranceParticlesSmall,TRUE);
+	pParticles = CParticlesObject::Create(*m_sEntranceParticlesSmall,TRUE);
 	
 	Fmatrix M;
 	M = XFORM();
@@ -1168,7 +1164,7 @@ void CCustomZone::ThrowOutArtefact(CArtefact* pArtefact)
 	if(*m_sArtefactSpawnParticles)
 	{
 		CParticlesObject* pParticles;
-		pParticles = xr_new<CParticlesObject>(*m_sArtefactSpawnParticles,TRUE);
+		pParticles = CParticlesObject::Create(*m_sArtefactSpawnParticles,TRUE);
 		pParticles->UpdateParent(pArtefact->XFORM(),zero_vel);
 		pParticles->Play();
 	}

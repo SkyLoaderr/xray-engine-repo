@@ -81,7 +81,7 @@ void CBottleItem::BreakToPieces()
 	{
 		//показываем эффекты
 		CParticlesObject* pStaticPG; 
-		pStaticPG = xr_new<CParticlesObject>(*m_sBreakParticles,TRUE); 
+		pStaticPG = CParticlesObject::Create(*m_sBreakParticles,TRUE); 
 		pStaticPG->play_at_pos(Position());
 	}
 

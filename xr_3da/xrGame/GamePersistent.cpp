@@ -187,10 +187,8 @@ void CGamePersistent::WeathersUpdate()
 			Environment.wind_gust_factor			= 0.f;
 		}
 		// if particles not playing - destroy
-		if (ambient_particles&&!ambient_particles->IsPlaying()){
-			ambient_particles->PSI_destroy			();
-			ambient_particles						= NULL;
-		}
+		if (ambient_particles&&!ambient_particles->IsPlaying())
+			CParticlesObject::Destroy(ambient_particles);
 	}
 }
 
@@ -202,7 +200,6 @@ void CGamePersistent::OnFrame	()
 
 	// update weathers ambient
 	WeathersUpdate				();
-
 
 	if	(0!=pDemoFile){
 		if	(Device.dwTimeGlobal>uTime2Change){

@@ -70,7 +70,7 @@ BOOL CLevel::Load_GameSpecific_After()
 		for (IReader *OBJ = F->open_chunk_iterator(chunk); OBJ; OBJ = F->open_chunk_iterator(chunk,OBJ)) {
 			OBJ->r_stringZ				(ref_name,sizeof(ref_name));
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
-			pStaticParticles			= xr_new<CParticlesObject>	(ref_name,FALSE);
+			pStaticParticles			= CParticlesObject::Create(ref_name,FALSE);
 			pStaticParticles->UpdateParent	(transform,zero_vel);
 			pStaticParticles->Play			();
 			m_StaticParticles.push_back		(pStaticParticles);

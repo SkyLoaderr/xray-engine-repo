@@ -8089,9 +8089,6 @@
 					Name="Particles"
 					Filter="">
 					<File
-						RelativePath=".\particles_object_script.cpp">
-					</File>
-					<File
 						RelativePath=".\ParticlesObject.cpp">
 					</File>
 					<File

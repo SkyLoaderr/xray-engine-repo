@@ -220,7 +220,7 @@ void CBurer::UpdateGraviObject()
 
 	// ---------------------------------------------------------------------
 	// draw particle
-	CParticlesObject* ps = xr_new<CParticlesObject>(particle_gravi_wave,TRUE);
+	CParticlesObject* ps = CParticlesObject::Create(particle_gravi_wave,TRUE);
 
 	// вычислить позицию и направленность партикла
 	Fmatrix pos; 
@@ -305,7 +305,7 @@ void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_objec
 		CParticlesPlayer::MakeXFORM(this,element,dir,p_in_object_space,pos);
 
 		// установить particles
-		CParticlesObject* ps = xr_new<CParticlesObject>(particle_fire_shield,TRUE);
+		CParticlesObject* ps = CParticlesObject::Create(particle_fire_shield,TRUE);
 		
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 		GamePersistent().ps_needtoplay.push_back(ps);

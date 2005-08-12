@@ -458,9 +458,9 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 			CParticlesObject* ps = NULL;
 
 			if (eacFirstEye == cam_active && this == Level().CurrentEntity())
-				ps = xr_new<CParticlesObject>(invincibility_fire_shield_1st,TRUE);
+				ps = CParticlesObject::Create(invincibility_fire_shield_1st,TRUE);
 			else
-				ps = xr_new<CParticlesObject>(invincibility_fire_shield_3rd,TRUE);
+				ps = CParticlesObject::Create(invincibility_fire_shield_3rd,TRUE);
 
 			ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 			GamePersistent().ps_needtoplay.push_back(ps);

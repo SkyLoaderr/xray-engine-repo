@@ -10,20 +10,22 @@ class ENGINE_API CPS_Instance	:
 	public ISheduled,
 	public IRenderable
 {
+	friend class			IGame_Persistent;
 protected:
 	int						m_iLifeTime			;
 	BOOL					m_bAutoRemove		;
 	BOOL					m_bDead				;
 protected:
 	virtual					~CPS_Instance		();
-public:
-	CPS_Instance			();
 
+	void					PSI_internal_delete	();
+public:
+							CPS_Instance		();
+
+	void					PSI_destroy			();
 	IC BOOL					PSI_alive			()						{	return m_iLifeTime>0;				}
 	IC BOOL					PSI_IsAutomatic		()						{	return m_bAutoRemove;				}
 	IC void					PSI_SetLifeTime		(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
-	void					PSI_destroy			();
-	void					PSI_internal_delete	();
 
 	virtual void			Play				()				= 0;
 	virtual BOOL			Locked				()				{ return FALSE; }

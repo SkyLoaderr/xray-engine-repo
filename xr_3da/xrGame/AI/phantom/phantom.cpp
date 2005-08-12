@@ -263,7 +263,7 @@ Fmatrix	CPhantom::XFORM_center()
 
 CParticlesObject* CPhantom::PlayParticles(const shared_str& name, BOOL bAutoRemove, const Fmatrix& xform)
 {
-	CParticlesObject* ps = xr_new<CParticlesObject>(name.c_str(),bAutoRemove);
+	CParticlesObject* ps = CParticlesObject::Create(name.c_str(),bAutoRemove);
 	ps->UpdateParent	(xform, zero_vel);
 	ps->Play			();
 	return bAutoRemove?0:ps;

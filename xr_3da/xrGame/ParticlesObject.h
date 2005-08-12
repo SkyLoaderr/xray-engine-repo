@@ -2,7 +2,6 @@
 #define ParticlesObjectH
 
 #include "../PS_instance.h"
-#include "script_export_space.h"
 
 extern const Fvector zero_vel;
 
@@ -18,6 +17,7 @@ protected:
 	bool				m_bStopping;		//вызвана функция Stop()
 protected:
 	u32					mt_dt;
+protected:
 	virtual				~CParticlesObject	();
 public:
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);
@@ -56,10 +56,6 @@ public:
 			p					= 0;
 		}
 	}
-	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-add_to_type_list(CParticlesObject)
-#undef script_type_list
-#define script_type_list save_type_list(CParticlesObject)
 
 #endif /*ParticlesObjectH*/

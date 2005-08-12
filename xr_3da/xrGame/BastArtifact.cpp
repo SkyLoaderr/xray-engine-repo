@@ -191,9 +191,7 @@ void CBastArtefact::UpdateCLChild()
 		if(m_fEnergy>0 && ::Random.randF(0.f, 1.0f)<(m_fEnergy/(m_fStrikeImpulse*100.f)))
 		{
 			CParticlesObject* pStaticPG;
-			//pStaticPG = xr_new<CParticlesObject>("ghoul\\fx-01-camp-fire_00",TRUE);
-			pStaticPG = xr_new<CParticlesObject>(*m_sParticleName,TRUE);
-			//pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",TRUE);
+			pStaticPG = CParticlesObject::Create(*m_sParticleName,TRUE);
 			Fmatrix pos; 
 			pos.set(XFORM()); 
 			Fvector vel; 

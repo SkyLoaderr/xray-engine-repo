@@ -52,7 +52,7 @@ void CFryupZone::OnRender()
 //		Fvector zero_vel = {0.f,0.f,0.f};
 //		for(s32 i = 0; i < l_c; ++i) {
 //			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
-//			pStaticPG = xr_new<CParticlesObject>(*m_effects[i],FALSE);
+//			pStaticPG = CParticlesObject::Create(*m_effects[i],FALSE);
 //			pStaticPG->UpdateParent(l_m,zero_vel);
 //			pStaticPG->Play();
 //			m_effectsPSs.push_back(pStaticPG);
