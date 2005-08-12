@@ -508,14 +508,6 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	file			desc_f;
 	desc_f.name		= fname;
 
-static bool aaa = false;
-if (aaa){
-	Log("files count:",files.size());
-	Log("file name:",desc_f.name);
-	for				(files_it I=files.begin(); I!=files.end(); I++)
-		Log			(I->name);
-}
-
 	files_it	I 	= files.find(desc_f);
 	if (I == files.end()) return NULL;
 
