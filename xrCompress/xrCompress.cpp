@@ -310,7 +310,7 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 	strcat			(tmp,".ltx");
 	strcpy			(fn,tmp);
 	if (!FS.exist(fn)||!FS.exist(fn,"$app_root$",tmp)) 
-		Debug.fail	("ERROR: Can't find ltx file: '%s'",fn);
+		Debug.fatal	("ERROR: Can't find ltx file: '%s'",fn);
 
 	CInifile ltx	(fn);
 	printf			("Processing LTX...\n");
