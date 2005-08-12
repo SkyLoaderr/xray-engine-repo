@@ -26,7 +26,9 @@ end
 --Бармен в комнате
 function give_agroprom_documents(first_speaker, second_speaker)
 	local agroprom_documents = first_speaker:object("quest_case_02")
-	dialogs.relocate_item(second_speaker, agroprom_documents, "out")
+	if agroprom_documents then
+		dialogs.relocate_item(second_speaker, agroprom_documents, "out")
+	end
 end
 
 function give_agroprom_reward(first_speaker, second_speaker)
@@ -108,7 +110,9 @@ function have_darklab_documents(first_speaker, second_speaker)
 end
 function give_darklab_documents(first_speaker, second_speaker)
 	local darklab_documents = first_speaker:object("dar_document4")
-	dialogs.relocate_item(second_speaker, darklab_documents, "out")
+	if darklab_documents then
+		dialogs.relocate_item(second_speaker, darklab_documents, "out")
+	end
 end
 function give_darklab_reward(first_speaker, second_speaker)
 		dialogs.relocate_money(second_speaker, 4500, "in")
@@ -133,14 +137,15 @@ function give_x16_documents(first_speaker, second_speaker)
 	if documents then
 		dialogs.relocate_item(second_speaker, documents, "out")
 	end
-	level_tasks.set_task_state(task.completed, "bar_x16_documents", 0)
 end
 function give_x16_reward(first_speaker, second_speaker)
 		dialogs.relocate_money(second_speaker, 5000, "in")
 end
 function give_ryaboy_flash(first_speaker, second_speaker)
 	local obj = first_speaker:object("ryaboy_flash")
-	dialogs.relocate_item(first_speaker, obj, "in")
+	if obj then
+		dialogs.relocate_item(first_speaker, obj, "in")
+	end
 end
 
 
@@ -164,7 +169,9 @@ end
 
 function give_dolg_arhive_document(first_speaker, second_speaker)
 	local document = first_speaker:object("dolg_arhive_documents")
-	dialogs.relocate_item(second_speaker, document, "out")
+	if document then
+		dialogs.relocate_item(second_speaker, document, "out")
+	end
 end
 -- Флешка ученных с ростка
 function actor_have_research(first_speaker, second_speaker)
@@ -172,8 +179,10 @@ function actor_have_research(first_speaker, second_speaker)
 end
 function actor_transfer_research(first_speaker, second_speaker)
 	local flash = first_speaker:object("bar_ecolog_flash")
-	dialogs.relocate_item(second_speaker, flash, "out")
-	dialogs.relocate_money(second_speaker, 1621, "in")
+	if flash then
+		dialogs.relocate_item(second_speaker, flash, "out")
+		dialogs.relocate_money(second_speaker, 1621, "in")
+	end
 end
 
 
@@ -186,9 +195,10 @@ function have_lucky_pda(actor,npc)
 end
 function give_lucky_pda(first_speaker, second_speaker)
 	local lucky_pda = first_speaker:object("bar_lucky_pda")
-	dialogs.relocate_item(second_speaker, lucky_pda, "out")
-	dialogs.relocate_money(second_speaker, 2500, "in")
-	level_tasks.set_task_state(task.completed, "bar_crazy_veterans_quest", 0)
+	if lucky_pda then
+		dialogs.relocate_item(second_speaker, lucky_pda, "out")
+		dialogs.relocate_money(second_speaker, 2500, "in")
+	end
 end
 
 
@@ -198,7 +208,9 @@ function have_bar_tiran_pda(first_speaker, second_speaker)
 end
 function give_bar_tiran_pda(first_speaker, second_speaker)
 	local bar_tiran_pda = first_speaker:object("bar_tiran_pda")
-	dialogs.relocate_item(second_speaker, bar_tiran_pda, "out")
+	if bar_tiran_pda then
+		dialogs.relocate_item(second_speaker, bar_tiran_pda, "out")
+	end
 end
 function have_tiran_reward(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 2000, "in")
@@ -219,12 +231,16 @@ end
 
 function give_rg6(first_speaker, second_speaker)
 	local rg6 = first_speaker:object("wpn_rg-6")
-	dialogs.relocate_item(second_speaker, rg6, "out")
+	if rg6 then
+		dialogs.relocate_item(second_speaker, rg6, "out")
+	end
 end
 
 function enter_to_dolg(first_speaker, second_speaker)
 	local dolg_outfit = second_speaker:object("dolg_outfit")
-	dialogs.relocate_item(second_speaker, dolg_outfit, "in")
+	if dolg_outfit then
+		dialogs.relocate_item(second_speaker, dolg_outfit, "in")
+	end
 end
 
 -- PDA Лидера Свободы
@@ -233,7 +249,9 @@ function have_mil_svoboda_leader_pda(first_speaker, second_speaker)
 end
 function give_mil_svoboda_leader_pda(first_speaker, second_speaker)
 	local mil_svoboda_leader_pda = first_speaker:object("mil_svoboda_leader_pda")
-	dialogs.relocate_item(second_speaker, mil_svoboda_leader_pda, "out")
+	if mil_svoboda_leader_pda then
+		dialogs.relocate_item(second_speaker, mil_svoboda_leader_pda, "out")
+	end
 end
 
 
@@ -250,8 +268,10 @@ end
 
 function have_svoboda_leader_reward(first_speaker, second_speaker)
 	local super_suit = second_speaker:object("scientific_outfit")
-	dialogs.relocate_item(second_speaker, super_suit, "in")
-	dialogs.relocate_money(second_speaker, 10000, "in")
+	if super_suit then
+		dialogs.relocate_item(second_speaker, super_suit, "in")
+		dialogs.relocate_money(second_speaker, 10000, "in")
+	end
 end
 
 
@@ -261,8 +281,9 @@ function have_hunters_toz(first_speaker, second_speaker)
 end
 function give_hunters_toz(first_speaker, second_speaker)
 	local hunters_toz = first_speaker:object("hunters_toz")
-	dialogs.relocate_item(second_speaker, hunters_toz, "out")
-	level_tasks.set_task_state(task.completed, "bar_hunter_rifle", 0)
+	if hunters_toz then
+		dialogs.relocate_item(second_speaker, hunters_toz, "out")
+	end
 end
 function have_hunter_reward(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 500, "in")
