@@ -172,6 +172,8 @@ ICF static void simple_hemi_callback(float x, float y, float z, float E, LPVOID 
     dst->push_back  			(T);
 }
 
+const u32 lod_ss_quality  = 8;
+
 void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
 {
 	U32Vec 	s_pixels,d_pixels;
@@ -216,9 +218,9 @@ void CreateLODSamples(const Fbox& bbox, U32Vec& tgt_data, u32 tgt_w, u32 tgt_h)
 	    RCache.set_xform_project(mP);
 	    RCache.set_xform_view	(mV);
         Device.mFullTransform.mul(mP,mV);
-        Device.MakeScreenshot	(s_pixels,tgt_w*8,tgt_h*8);
+        Device.MakeScreenshot	(s_pixels,tgt_w*lod_ss_quality,tgt_h*lod_ss_quality);
         d_pixels.resize 		(tgt_w*tgt_h);
-		imf_Process				(d_pixels.begin(),tgt_w,tgt_h,s_pixels.begin(),tgt_w*8,tgt_h*8,imf_box);
+		imf_Process				(d_pixels.begin(),tgt_w,tgt_h,s_pixels.begin(),tgt_w*lod_ss_quality,tgt_h*lod_ss_quality,imf_box);
         // copy LOD to final
 		for (u32 y=0; y<tgt_h; y++)
     		CopyMemory			(tgt_data.begin()+y*pitch+frame*tgt_w,d_pixels.begin()+y*tgt_w,tgt_w*sizeof(u32));
