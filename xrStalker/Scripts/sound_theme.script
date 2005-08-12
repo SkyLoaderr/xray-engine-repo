@@ -86,7 +86,13 @@ ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garb
 ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\human_01\scenario\bandits\bandit_replic_2]]}
 ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
 ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
-	                      
+ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\human_01\scenario\garbage\grey_bandit_1]],      
+										[[characters_voice\human_01\scenario\garbage\grey_bandit_2]],
+										[[characters_voice\human_01\scenario\garbage\grey_bandit_3]],
+										[[characters_voice\human_01\scenario\garbage\grey_bandit_4]],
+										[[characters_voice\human_01\scenario\garbage\grey_bandit_5]]}
+										
+										
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
 	local c = obj:story_id()
