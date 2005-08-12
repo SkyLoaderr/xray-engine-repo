@@ -1,15 +1,21 @@
 [rank_sign]
 texture = ui\ui_icon_rank
 
+[mp_item_groups]
+gg_1 = mp_grenade_f1, mp_grenade_rgd5
+gg_2 = gg_1, mp_grenade_gd-05
+
 [rank_0]
 rank_name = Recruit		; звание
 rank_exp = 0, 0         ; опыт, артефакты
 available_items = mp_wpm_pm, mp_wpn_pb, mp_wpn_fort, mp_wpn_hpsa, mp_wpn_walther, mp_wpn_beretta, mp_wpn_colt1911, mp_wpn_sig220, mp_wpn_bm16, mp_wpn_toz34, mp_wpn_ak74u, mp_wpn_mp5
+amount_restriction = gg_1:1, mp_medkit:no_limit
 
 [rank_1]
 rank_name = Novice
 rank_exp = 500, 0
 available_items = mp_wpn_usp, mp_wpn_desert_eagle, mp_wpn_spas12, mp_wpn_ak74, mp_wpn_l85
+amount_restriction = gg_2:3
 
 [rank_2]
 rank_name = Experienced
