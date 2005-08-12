@@ -496,8 +496,8 @@ bool CAI_Rat::Useful() const
 #ifdef DEBUG
 void CAI_Rat::OnRender()
 {
-	inherited::OnRender();
-	CEatableItem::OnRender();
+//	inherited::OnRender();
+//	CEatableItem::OnRender();
 }
 #endif
 
