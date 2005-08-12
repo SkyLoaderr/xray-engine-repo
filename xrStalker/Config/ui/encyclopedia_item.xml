@@ -2,10 +2,10 @@
 <window>
 
 	<events_wnd>
-		<objective_item x="0" y="0" width="405" height="10">
+		<objective_item x="0" y="0" width="380" height="10">
 			<image x="170" y="32" width="90" height="90" stretch="1"/>
 			
-			<text_cont x="0" y="90" width="405" height="10">
+			<text_cont x="0" y="90" width="380" height="10">
 				<text font="letterica18" r="255" g="255" b="255"></text>
 			</text_cont>
 		</objective_item>
