@@ -64,8 +64,9 @@ void CUIPdaMsgListItem::Init(float x, float y, float width, float height)
 	AttachChild(&UIMsgText);
 	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);	
 	UIMsgText.SetWidth(width - UIIcon.GetWidth());
-	y = (height - (int)UIMsgText.GetFont()->CurrentHeight())/2;
-	UIMsgText.SetTextPos(UIMsgText.GetTextX(), y);
+	UIMsgText.SetWndPos(UIMsgText.GetWndPos().x, UIIcon.GetWndPos().y);
+	//y = (height - (int)UIMsgText.GetFont()->CurrentHeight())/2;
+	//UIMsgText.SetTextPos(UIMsgText.GetTextX(), y);
 }
 
 void CUIPdaMsgListItem::SetDelay(int iDelay){

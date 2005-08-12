@@ -37,12 +37,13 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	VERIFY(item);
 
 	pItem->UIMsgText.SetText(msg.c_str());	
+	pItem->UIMsgText.SetVTextAlignment(valTop);
 	pItem->SetFont(GetFont());
-	float h		= pItem->GetHeight();
-	float h2	= pItem->UIMsgText.GetFont()->CurrentHeightRel();
-	float y = (h - h2)/2;	
-	pItem->UIMsgText.SetTextPos(0, y);
-	pItem->UIMsgText.SetWndPos(0, 0);	
+//	float h		= pItem->GetHeight();
+//	float h2	= pItem->UIMsgText.GetFont()->CurrentHeightRel();
+//	float y = (h - h2)/2;	
+//	pItem->UIMsgText.SetTextPos(0, y);
+//	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->SetData(animation);
 
 	item->Show(true);

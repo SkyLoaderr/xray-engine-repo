@@ -123,7 +123,7 @@ CUIPdaMsgListItem* CUIMessagesWindow::AddMessageToList(LPCSTR message, CUIListWn
 	pItem->SetData(p);
 	// set id to item. With this we can find item in list and for some manipulation
 	pItem->SetValue(iId);
-	pItem->UIMsgText.SetWndPos(0, 0);	
+//	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->UIMsgText.SetText(message);	
 
 	return pItem;
@@ -136,13 +136,14 @@ void CUIMessagesWindow::AddPersonalPdaMessage(CInventoryOwner* pSender, LPCSTR m
 }
 
 void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay){
-	CTimer 	 T;
+	
 	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iId, iDelay);
 	if (pItem)
 	{
 		pItem->UIIcon.InitTexture(textureName);
 		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.SetWndPos(originalRect.right, 0/*originalRect.bottom*/);
+		pItem->UIMsgText.SetWndPos(originalRect.right, pItem->UIMsgText.GetWndPos().y);
+		pItem->UIMsgText.SetVTextAlignment(valTop);
 	}
 }
 
