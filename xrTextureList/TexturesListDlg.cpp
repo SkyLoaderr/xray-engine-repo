@@ -25,6 +25,11 @@ CTexturesListDlg::CTexturesListDlg(CWnd* pParent /*=NULL*/)
 	m_cur_tex_rect.SetRect(0,0,0,0);
 }
 
+CTexturesListDlg::~CTexturesListDlg(){
+	Core._destroy();
+//	FlushLog();
+}
+
 void CTexturesListDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -41,6 +46,7 @@ void CTexturesListDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON4, m_btnSave);
 	DDX_Control(pDX, IDC_STATIC1242345, m_pic);
 	DDX_Control(pDX, IDC_CHECK1, m_checkFitImage);
+	DDX_Control(pDX, IDC_EDIT1, m_editSearch);
 }
 
 BEGIN_MESSAGE_MAP(CTexturesListDlg, CDialog)
@@ -56,6 +62,7 @@ BEGIN_MESSAGE_MAP(CTexturesListDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_SAVEAS, OnBnClickedBtnSaveas)
 	ON_LBN_DBLCLK(IDC_LIST1, OnLbnDblclkList1)
 	ON_BN_CLICKED(IDC_CHECK1, OnBnClickedCheck1)
+	ON_EN_CHANGE(IDC_EDIT1, OnEnChangeEdit1)
 END_MESSAGE_MAP()
 
 
@@ -65,6 +72,8 @@ BOOL CTexturesListDlg::OnInitDialog()
 {
 	Surface_Init();	
 	Core._initialize("xr",0,TRUE,"fs_tex_design.ltx");
+	Msg("Core Init");
+	FlushLog();
 	CDialog::OnInitDialog();
 
 	// Set the icon for this dialog.  The framework does this automatically
@@ -145,7 +154,7 @@ void DrawBitmap(HDC hdc, const CRect& r, u32* _data, u32 _w, u32 _h, const CRect
 	U32Vec data(source.Width()*source.Height());
 
 	for (u32 y = source.top; y<source.bottom; y++)
-		Memory.mem_copy(&data[(y - source.top)*source.Width()],&_data[(source.bottom - (y - source.top))*_w + source.left],source.Width()*4);
+		Memory.mem_copy(&data[(y - source.top)*source.Width()],&_data[(source.bottom - (y - source.top) -1 )*_w + source.left],source.Width()*4);
 
 	BITMAPINFO          bmi;
 	bmi.bmiHeader.biSize			= sizeof(BITMAPINFOHEADER);
@@ -229,6 +238,9 @@ void CTexturesListDlg::OnBnClickedBtnAdd()
 	height = atoi(str.GetBuffer());
 	m_texList.Add(name, x, y, width, height);
 	UpdateList();
+	m_list.SelectString(0,name);
+	OnLbnSelchangeList1();
+	//UpdatePicture();
 
 	m_editTextureID.SetWindowText("");
 	m_editX.SetWindowText("");
@@ -236,12 +248,40 @@ void CTexturesListDlg::OnBnClickedBtnAdd()
 	m_editWidth.SetWindowText("");
 	m_editHeight.SetWindowText("");
 }
+
+
+void CTexturesListDlg::OnEnChangeEdit1()
+{
+	UpdateList();
+}
+
 void CTexturesListDlg::UpdateList(){
+	m_list.SetRedraw(FALSE);
 	m_list.ResetContent();
 	for (unsigned int i = 0; i <m_texList.m_list.size(); i++)
-	{
 		m_list.AddString(m_texList.m_list[i].m_name.GetBuffer());
-	}
+	CString txt;
+	CString text;
+	m_editSearch.GetWindowText(txt);
+	bool flag;
+	do {
+		int sz = m_list.GetCount();
+		bool fl = true;
+		for (int i=0; i<sz; i++)
+		{
+			m_list.GetText(i,text);
+			int pos = text.Find(_T(txt));
+			if (-1 == pos)
+			{
+				m_list.DeleteString(i);
+				fl = false;
+				break;
+			}
+		}
+		flag = fl;
+	}while (!flag);
+
+	m_list.SetRedraw(TRUE);
 }
 
 void CTexturesListDlg::OnBnClickedLoad()
@@ -291,6 +331,11 @@ void CTexturesListDlg::OnLbnSelchangeList1()
 	str += itoa(texture.height, buff, 10);
 
 	m_editTexParams.SetWindowText(str);
+	m_editTextureID.SetWindowText("");
+	m_editX.SetWindowText("");
+	m_editY.SetWindowText("");
+	m_editWidth.SetWindowText("");
+	m_editHeight.SetWindowText("");
 
 	UpdatePicture();
 }
@@ -382,8 +427,15 @@ void CTexturesListDlg::xrLoadTexture(){
 	strcpy(nm,tex);
 	if (Surface_Detect(full,nm)) 
 	{
+		Msg("Load Texture %s", full);
+		FlushLog();
 		m_texture.LoadTGA(full);
 		InvalidateRect(m_textureRect);
+	}
+	else
+	{
+		Msg("Can't find texture %s",nm);
+		FlushLog();
 	}
 }
 

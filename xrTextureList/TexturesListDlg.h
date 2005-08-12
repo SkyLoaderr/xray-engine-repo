@@ -13,6 +13,7 @@ class CTexturesListDlg : public CDialog
 // Construction
 public:
 	CTexturesListDlg(CWnd* pParent = NULL);	// standard constructor
+	~CTexturesListDlg();
 
 	CRect m_textureRect;
 	CRect m_cur_tex_rect;
@@ -64,4 +65,6 @@ public:
 	CStatic m_pic;
 	CButton m_checkFitImage;
 	afx_msg void OnBnClickedCheck1();
+	CEdit m_editSearch;
+	afx_msg void OnEnChangeEdit1();
 };
