@@ -432,18 +432,30 @@ end
 
 -- Отметка интересных мест на карте
 function locate_bar_bar(actor,npc)
+	local sim = alife()
+	if sim == nil then
+		return
+	end
 	local obj = sim:story_object(570)
 	if obj then
 		level.map_add_object_spot(obj.id, "crlc_small", "bar_bar_locator")
 	end
 end
 function locate_bar_arena(actor,npc)
+	local sim = alife()
+	if sim == nil then
+		return
+	end
 	local obj = sim:story_object(571)
 	if obj then
 		level.map_add_object_spot(obj.id, "crlc_small", "bar_arena_locator")
 	end
 end
 function locate_bar_dolg(actor,npc)
+	local sim = alife()
+	if sim == nil then
+		return
+	end
 	local obj = sim:story_object(572)
 	if obj then
 		level.map_add_object_spot(obj.id, "crlc_small", "bar_dolg_locator")
