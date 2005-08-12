@@ -125,12 +125,13 @@ function snd_source:update(delta)
        
 end
 
-function snd_source:finalize ()
+function snd_source:deactivate ()
     if played_sound ~= nil then
        played_sound:stop ()
        played_sound = nil
     end
 end
+
 
 
 function add_to_binder (npc, ini, scheme, section, storage)
