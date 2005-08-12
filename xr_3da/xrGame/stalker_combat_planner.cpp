@@ -30,6 +30,7 @@
 #include "agent_member_manager.h"
 #include "member_order.h"
 #include "ai/stalker/ai_stalker_space.h"
+#include "motivation_action_manager_stalker.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -60,6 +61,9 @@ void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *sto
 IC	void CStalkerCombatPlanner::update_cover	()
 {
 	if (!m_object->memory().enemy().selected())
+		return;
+
+	if (!m_object->brain().affect_cover())
 		return;
 
 	CMemoryInfo						memory_object = m_object->memory().memory(m_object->memory().enemy().selected());

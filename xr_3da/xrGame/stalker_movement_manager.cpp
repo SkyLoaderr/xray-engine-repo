@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+
 //	Module 		: stalker_movement_manager.cpp
 //	Created 	: 27.12.2003
 //  Modified 	: 27.12.2003
@@ -472,6 +472,7 @@ void CStalkerMovementManager::set_nearest_accessible_position()
 
 void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_position, u32 level_vertex_id)
 {
+//	Msg							("[%6d][%s][set_nearest_accessible_position]",Device.dwTimeGlobal,*object().cName());
 	if (!ai().level_graph().inside(level_vertex_id,desired_position))
 		desired_position		= ai().level_graph().vertex_position(level_vertex_id);
 
@@ -480,7 +481,10 @@ void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_po
 
 	VERIFY						(ai().level_graph().inside(level_vertex_id,desired_position));
 
+	VERIFY						(restrictions().accessible(level_vertex_id));
 	set_level_dest_vertex		(level_vertex_id);
+	
+	VERIFY						(restrictions().accessible(desired_position));
 	set_desired_position		(&desired_position);
 }
 
@@ -558,4 +562,11 @@ void CStalkerMovementManager::update(u32 time_delta)
 void CStalkerMovementManager::on_travel_point_change	(const u32 &previous_travel_point_index)
 {
 	inherited::on_travel_point_change	(previous_travel_point_index);
+}
+
+void CStalkerMovementManager::on_restrictions_change	()
+{
+	inherited::on_restrictions_change	();
+	if (use_desired_position() && !restrictions().accessible(desired_position()))
+		set_nearest_accessible_position	();
 }

@@ -263,7 +263,7 @@ public:
 	IC		CDetailPathBuilder		&detail_path_builder		() const;
 
 public:
-			void					on_restrictions_change		();
+	virtual	void					on_restrictions_change		();
 };
 
 #include "movement_manager_inline.h"

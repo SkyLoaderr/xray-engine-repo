@@ -123,6 +123,7 @@ public:
 	virtual	void	reload					(LPCSTR section);
 	virtual	void	update					(u32 time_delta);
 	virtual void	on_travel_point_change	(const u32 &previous_travel_point_index);
+	virtual	void	on_restrictions_change	();
 			void	initialize				();
 	IC		float	path_direction_angle	();
 	IC		bool	turn_in_place			() const;
