@@ -10,9 +10,12 @@ not_collide_parts = 1
 ;---------------------------------------------
 [destroyed]
 
-physics\box\prt\box_wood_01_prt1
-physics\box\prt\box_wood_01_prt2
-physics\vehicles\Zaz\veh_zaz_u_01_part0
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
 
 ;---------------------------------------------
 
@@ -60,10 +63,10 @@ fire_wound_immunity      = 0.5
 ;-------------------------------------------------------------------------------
 
 [impulse_transition_to_parts]
-random_min               = 0.1     ; величина случайно направленного импульса пропорционально массе нового объекта
-random_hit_imp           = 0.1     ; величина случайно направленного импульса пропорционально разрушающему хиту
+random_min               = 2.0     ; величина случайно направленного импульса пропорционально массе нового объекта
+random_hit_imp           = 0.5     ; величина случайно направленного импульса пропорционально разрушающему хиту
 ;ref_bone                          ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
-imp_transition_factor    = 0.8     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
+imp_transition_factor    = 2.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
 lv_transition_factor     = 0.2     ; коэффициент передачи линейной скорости
 av_transition_factor     = 0.2     ; коэффициент передачи угловой скорости
 
