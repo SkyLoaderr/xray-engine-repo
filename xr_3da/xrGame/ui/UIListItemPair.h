@@ -37,7 +37,7 @@ public:
 protected:
 	
 
-	CUIListItem m_staticFileName;
-	CUIListItem m_staticDateTime;
+	CUIStatic m_staticFileName;
+	CUIStatic m_staticDateTime;
 	int       m_iBorder;
 };

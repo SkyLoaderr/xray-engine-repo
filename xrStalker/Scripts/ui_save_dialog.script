@@ -94,7 +94,7 @@ function save_dialog:InitControls()
 
 
 
-    local list_wnd = CUIListWndEx()
+    local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
     list_wnd:SetWindowName("list_window")
 	list_wnd:ShowSelectedItem(true)

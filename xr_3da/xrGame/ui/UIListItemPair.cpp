@@ -96,8 +96,8 @@ void CUIListItemPair::Draw(){
 }
 
 void CUIListItemPair::SetHighlightText(bool Highlight){
-	m_staticFileName.SetHighlightText(Highlight); 
-	m_staticDateTime.SetHighlightText(Highlight); 
+	//m_staticFileName.SetHighlightText(Highlight); 
+	//m_staticDateTime.SetHighlightText(Highlight); 
 }
 
 //-------------------------------------------------

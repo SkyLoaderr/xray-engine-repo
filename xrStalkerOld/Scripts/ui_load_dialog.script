@@ -61,10 +61,7 @@ function load_dialog:InitControls()
 							 y = info_rect.y + 16,
 							 width = 128,
 							 height = 128}
-	
-							 
-							 
-							 
+								 
 	local list_rect_f     = {x = self.indent*2,
 						     y = info_rect.y + info_rect.height + self.indent,
 						     width = 0,
@@ -101,7 +98,7 @@ function load_dialog:InitControls()
     txt_list:Init(self.texture_list_frame, list_rect_f.x, list_rect_f.y, list_rect_f.width, list_rect_f.height)
     self.main_frame:AttachChild(txt_list) 
 
-    local list_wnd = CUIListWndEx()
+    local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
     list_wnd:SetWindowName("list_window")
 	list_wnd:SetItemHeight(20)
