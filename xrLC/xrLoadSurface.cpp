@@ -2,8 +2,6 @@
 #pragma hdrstop
 
 #include "freeimage.h"
-#include "io.h"
-#include "fcntl.h"
 
 struct SExts{
 	xr_vector<LPSTR>	exts;
