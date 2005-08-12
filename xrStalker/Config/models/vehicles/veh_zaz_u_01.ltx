@@ -44,7 +44,7 @@ idling_engine_rpm		= 780       	; rpm (750) min rpm - starts from this rpm value
 reference_radius  		= 0.28			; –адиус колеса, используемый при просчЄте двигател€
 axle_friction     		= 0.00001      	; ќслабление скорости в неетральной позиции. (N*m)
 steering_speed    		= 3.5         	; ¬рем€ поворота рулевого колеса, в максимум. rps (1)
-steering_torque   		= 10000.    	; —ила гидроусилител€ рул€. (N*m)
+steering_torque   		= 90000.    	; —ила гидроусилител€ рул€. (N*m)
 break_torque      		= 0.02        	; —ила тормозных колодок. (N*m)
 break_time        		= 1.0         	; врем€ нарастани€ силы торможени€ до максимума, при подтормаживании (стрелка назад)
 hand_break_torque 		= 0.02        	; сила торможени€ пробелом (по умолчанию = break_torque)
@@ -211,8 +211,8 @@ period_number	    	=  50
 ;------ Others params ----------------------------------------------------------
 
 [air_resistance]
-linear_factor           = 1500.f	;
-angular_factor          = 5500.f	;
+linear_factor           = 500.f	;
+angular_factor          = 15500.f	;
 
 [wheels_params]
 damping_factor          = 0.5		;
@@ -221,14 +221,14 @@ friction_factor         = 1.1		;
 
 [front_left_wheel]
 break_torque			= 0.015		; —ила тормозных колодок. (N*m
-hand_break_torque		= 0.003		; сила торможени€ пробелом (по умолчанию = break_torque)
+hand_break_torque		= 0.005		; сила торможени€ пробелом (по умолчанию = break_torque)
 damping_factor          = 0.5		;
 spring_factor           = 0.5		;
 friction_factor         = 1.3		;
 
 [front_right_wheel]
 break_torque			= 0.015		; —ила тормозных колодок. (N*m
-hand_break_torque		= 0.003		; сила торможени€ пробелом (по умолчанию = break_torque)
+hand_break_torque		= 0.005		; сила торможени€ пробелом (по умолчанию = break_torque)
 damping_factor          = 0.5		;
 spring_factor           = 0.5		;
 friction_factor         = 1.3		;
@@ -238,14 +238,14 @@ break_torque			= 0.015		; —ила тормозных колодок. (N*m
 hand_break_torque		= 0.015		; сила торможени€ пробелом (по умолчанию = break_torque)
 damping_factor          = 0.5		;
 spring_factor           = 0.5		;
-friction_factor         = 1.2		;
+friction_factor         = 1.4		;
 
 [back_right_wheel]
 break_torque			= 0.015		; —ила тормозных колодок. (N*m
 hand_break_torque		= 0.015		; сила торможени€ пробелом (по умолчанию = break_torque)
 damping_factor          = 0.5		;
 spring_factor           = 0.5		;
-friction_factor         = 1.2		;
+friction_factor         = 1.4		;
 
 ;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
