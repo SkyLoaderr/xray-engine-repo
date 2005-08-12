@@ -31,8 +31,6 @@ CUIListItem::~CUIListItem(void)
 void CUIListItem::Init(float x, float y, float width, float height)
 {
 	inherited::Init(x, y, width, height);
-
-
 	SetPressMode(CUIButton::DOWN_PRESS);
 	SetPushOffsetX(0);
 	SetPushOffsetY(0);
@@ -63,5 +61,5 @@ int CUIListItem::GetSignWidht()
 
 bool CUIListItem::IsHighlightText()
 {
-	return m_bHighlightText;
+	return CUIButton::IsHighlightText();
 }
