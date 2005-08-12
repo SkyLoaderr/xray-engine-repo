@@ -582,3 +582,21 @@ IC	bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvecto
 {
 	return					(check_vertex_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),finish_vertex_id));
 }
+
+template <class _predicate>
+float CLevelGraph::vertex_cover_angle(u32 vertex_id, float inc_angle, _predicate compare_predicate) const
+{
+	float best_angle	= 0.f;
+	float best_value	= compute_square(best_angle, PI_DIV_2, vertex_id);
+
+	for (float angle = inc_angle; angle <= PI_MUL_2; angle += inc_angle) {
+		float cover = compute_square(angle, PI_DIV_2, vertex_id);
+		if (compare_predicate(cover,best_value)) {
+			best_value = cover;
+			best_angle = angle;
+		}
+	}
+
+	return best_angle;
+}
+

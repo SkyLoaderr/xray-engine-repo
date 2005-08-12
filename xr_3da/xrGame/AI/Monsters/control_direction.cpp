@@ -158,6 +158,11 @@ void CControlDirection::get_heading(float &current, float &target)
 	target	= m_data.heading.target_angle;
 }
 
+float CControlDirection::get_heading_current()
+{
+	return m_heading.current_angle;
+}
+
 float CControlDirection::angle_to_target(const Fvector &position)
 {
 	float		angle = Fvector().sub(position, m_object->Position()).getH();

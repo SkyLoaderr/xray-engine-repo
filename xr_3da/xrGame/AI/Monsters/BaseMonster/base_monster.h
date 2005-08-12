@@ -257,6 +257,7 @@ public:
 	void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 	virtual	void	HitEntityInJump					(const CEntity *pEntity) {}
 	void			PsyHit							(const CGameObject *object, float value);
+	void			PlayParticles					(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove = TRUE);
 
 	// --------------------------------------------------------------------------------------
 	// Kill From Here

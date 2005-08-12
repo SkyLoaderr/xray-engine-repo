@@ -25,14 +25,14 @@ public:
 	virtual void	reinit					();
 	virtual void	update_frame			();
 
-	void	use_path_direction		(bool reversed = false);
+			void	use_path_direction		(bool reversed = false);
 
-	void	face_target				(const Fvector &position,	u32 delay = 0);
-	void	face_target				(const CObject *obj,		u32 delay = 0);
-	IC			void	set_delay				(u32 delay) {m_delay = delay;}
+	virtual	void	face_target				(const Fvector &position,	u32 delay = 0);
+	virtual	void	face_target				(const CObject *obj,		u32 delay = 0);
+	IC		void	set_delay				(u32 delay) {m_delay = delay;}
 
-	void	set_heading_speed		(float value, bool force = false);
-	void	set_heading				(float value, bool force = false);
+			void	set_heading_speed		(float value, bool force = false);
+			void	set_heading				(float value, bool force = false);
 
 	IC	const	SAxis	&heading	() {return m_heading;}	
 };

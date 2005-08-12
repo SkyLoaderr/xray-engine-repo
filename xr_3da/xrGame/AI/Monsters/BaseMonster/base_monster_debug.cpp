@@ -150,6 +150,11 @@ void CBaseMonster::debug_fsm()
 		case eStateAttack_Steal:						sprintf(st,"Attack :: Steal");				break;
 		case eStateAttack_AttackHidden:					sprintf(st,"Attack :: Attack Hidden");		break;
 		case eStateAttack_AttackRat:					sprintf(st,"Attack :: Attack Rat");			break;
+		
+		case eStateAttack_HideInCover:					sprintf(st,"Attack :: Hide In Cover");		break;
+		case eStateAttack_MoveOut:						sprintf(st,"Attack :: Move Out From Cover");break;
+		case eStateAttack_CampInCover:					sprintf(st,"Attack :: Camp In Cover");		break;
+
 		case eStatePanic_Run:							sprintf(st,"Panic :: Run Away");				break;
 		case eStatePanic_FaceUnprotectedArea:			sprintf(st,"Panic :: Face Unprotected Area");	break;
 		case eStateHitted_Hide:							sprintf(st,"Hitted :: Hide");					break;

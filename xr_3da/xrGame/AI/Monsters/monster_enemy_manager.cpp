@@ -8,12 +8,14 @@
 
 CMonsterEnemyManager::CMonsterEnemyManager()
 {
-	monster		= 0;
-	enemy		= 0;
-	flags.zero	();
-	forced		= false;
-	prev_enemy	= 0;
-	danger_type = eNone;
+	monster							= 0;
+	enemy							= 0;
+	flags.zero						();
+	forced							= false;
+	prev_enemy						= 0;
+	danger_type						= eNone;
+	my_vertex_enemy_last_seen		= u32(-1);
+	enemy_vertex_enemy_last_seen	= u32(-1);
 }
 
 CMonsterEnemyManager::~CMonsterEnemyManager()
@@ -106,6 +108,11 @@ void CMonsterEnemyManager::update()
 	prev_enemy_position = position;
 
 	expediency			= true;
+
+	if (enemy && see_enemy_now()) {
+		my_vertex_enemy_last_seen		= monster->ai_location().level_vertex_id();
+		enemy_vertex_enemy_last_seen	= enemy->ai_location().level_vertex_id();
+	}	
 }
 
 
@@ -146,12 +153,16 @@ u32	CMonsterEnemyManager::get_enemies_count()
 
 void CMonsterEnemyManager::reinit()
 {
-	enemy			= 0;
-	time_last_seen	= 0;
-	flags.zero		();
-	forced			= false;
-	prev_enemy		= 0;
-	danger_type		= eNone;
+	enemy						= 0;
+	time_last_seen				= 0;
+	flags.zero					();
+	forced						= false;
+	prev_enemy					= 0;
+	danger_type					= eNone;
+
+	my_vertex_enemy_last_seen		= monster->ai_location().level_vertex_id();
+	enemy_vertex_enemy_last_seen	= u32(-1);
+
 }
 
 

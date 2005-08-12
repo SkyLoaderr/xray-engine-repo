@@ -46,6 +46,14 @@ namespace MonsterMovement {
 		eSnorkVelocityParamsJump			= eSnorkVelocityParameterJumpOne | eSnorkVelocityParameterJumpTwo,
 	};
 
+	enum EMovementParametersController {
+		eControllerVelocityParameterMoveFwd		= eVelocityParameterCustom << 1,
+		eControllerVelocityParameterMoveBkwd	= eVelocityParameterCustom << 2,
+
+		eControllerVelocityParamsMoveFwd		= eControllerVelocityParameterMoveFwd	| eVelocityParameterStand,
+		eControllerVelocityParamsMoveBkwd		= eControllerVelocityParameterMoveBkwd	| eVelocityParameterStand,
+	};
+
 };
 
 

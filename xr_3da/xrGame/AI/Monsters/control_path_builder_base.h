@@ -46,6 +46,7 @@ class CControlPathBuilderBase : public CControl_ComBase {
 	bool		m_failed;
 	bool		m_force_rebuild;
 	bool		m_wait_path_end;
+	u32			m_last_time_dir_set;
 
 	bool		m_target_actual;		// устанавливаемый таргет соответствует предыдущему
 
@@ -88,13 +89,13 @@ public:
 	IC	void	set_use_dest_orient		(bool new_val) {m_use_dest_orient	= new_val;}
 	IC	void	disable_path			() {m_enable = false;}
 	IC	void	enable_path				() {m_enable = true;}
-	IC	void	set_dest_direction		(const Fvector &dir);
 	IC	void	extrapolate_path		(bool val) {m_extrapolate = val;}
 	IC	void	set_level_path_type		() {m_path_type = MovementManager::ePathTypeLevelPath;}
 	IC	void	set_game_path_type		() {m_path_type = MovementManager::ePathTypeGamePath;}
 	IC	void	set_patrol_path_type	() {m_path_type = MovementManager::ePathTypePatrolPath;}
 	IC	void	set_velocity_mask		(u32 mask) {m_velocity_mask = mask;}
 	IC	void	set_desirable_mask		(u32 mask) {m_desirable_mask = mask;}
+		void	set_dest_direction		(const Fvector &dir);
 
 	// -------------------------------------------------------------------
 	// Properties
@@ -121,6 +122,8 @@ public:
 		void		detour_graph_points		();
 	IC	void		set_generic_parameters	();
 
+		Fvector		get_target_found		() {return m_target_found.position;}
+		Fvector		get_target_set			() {return m_target_set.position;}
 private:
 		// functional
 		void		update_target_point			();

@@ -164,7 +164,9 @@ public:
 			float	cover_in_direction			(float angle, float b0, float b1, float b2, float b3) const;
 	IC		float	cover_in_direction			(float angle, const CVertex *vertex) const;
 	IC		float	cover_in_direction			(float angle, u32 vertex_id) const;
-			float	vertex_less_cover			(u32 vertex_id, float inc_angle) const;
+
+	template <class _predicate>
+	IC		float	vertex_cover_angle			(u32 vertex_id, float inc_angle, _predicate compare_predicate) const;
 	IC		void	set_invalid_vertex			(u32 &vertex_id, CVertex **vertex = NULL) const;
 	IC		const u32 vertex_id					(const CLevelGraph::CVertex *vertex) const;
 			u32		vertex_id					(const Fvector &position) const;
@@ -196,6 +198,10 @@ public:
 #ifndef AI_COMPILER
 			void	find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, GameGraph::_GRAPH_ID tGraphID) const;
 #endif
+
+public:
+	typedef		std::greater<float>				PredicateWorstCover;
+	typedef		std::less<float>				PredicateBetterCover;
 
 public:
 	struct STravelParams {

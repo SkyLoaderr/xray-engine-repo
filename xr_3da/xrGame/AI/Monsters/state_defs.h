@@ -40,7 +40,9 @@ enum EMonsterState {
 
 	eStateAttack_HideInCover		= eStateAttack | 9,
 	eStateAttack_MoveOut			= eStateAttack | 10,
-
+	eStateAttack_CampInCover		= eStateAttack | 11,
+	eStateAttack_ControlFire		= eStateAttack | 12,
+	eStateAttack_HideInCoverLite	= eStateAttack | 13,
 
 	// -------------------------------------------------------------
 

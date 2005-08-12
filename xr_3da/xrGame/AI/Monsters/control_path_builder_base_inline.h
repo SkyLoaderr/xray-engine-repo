@@ -35,8 +35,3 @@ IC void CControlPathBuilderBase::set_generic_parameters()
 	CControlPathBuilderBase::set_use_covers				();
 	CControlPathBuilderBase::set_cover_params			(5.f, 30.f, 1.f, 30.f);
 }
-
-IC void CControlPathBuilderBase::set_dest_direction(const Fvector &dir)
-{
-	m_dest_dir.set	(dir);
-}

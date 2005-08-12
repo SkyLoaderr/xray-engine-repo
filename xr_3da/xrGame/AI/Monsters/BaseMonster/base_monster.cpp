@@ -384,4 +384,19 @@ void CBaseMonster::set_action(EAction action)
 	anim().m_tAction		= action;
 }
 
+void CBaseMonster::PlayParticles(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove)
+{
+	CParticlesObject* ps = xr_new<CParticlesObject>(name.c_str(),auto_remove);
+	
+	// вычислить позицию и направленность партикла
+	Fmatrix	matrix; 
+
+	matrix.identity			();
+	matrix.k.set			(dir);
+	Fvector::generate_orthonormal_basis_normalized(matrix.k,matrix.j,matrix.i);
+	matrix.translate_over	(position);
+	
+	ps->UpdateParent		(matrix, zero_vel);
+	ps->Play();
+}
 

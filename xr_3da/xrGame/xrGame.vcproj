@@ -2643,9 +2643,6 @@
 							RelativePath=".\ai\Monsters\ai_monster_defs.h">
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\ai_monster_movement_space.h">
-						</File>
-						<File
 							RelativePath=".\ai\Monsters\ai_monster_shared_data.h">
 						</File>
 						<File
@@ -2703,13 +2700,13 @@
 							<File
 								RelativePath=".\ai\Monsters\monster_sound_memory.cpp">
 							</File>
-							<File
-								RelativePath=".\ai\Monsters\monster_sound_memory.h">
-							</File>
 						</Filter>
 						<Filter
 							Name="State"
 							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\monster_sound_memory.h">
+							</File>
 							<File
 								RelativePath=".\ai\Monsters\monster_state_manager.h">
 							</File>
@@ -3643,10 +3640,28 @@
 								Name="Cover"
 								Filter="">
 								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_camp.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_camp_inline.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_fire.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_fire_inline.h">
+								</File>
+								<File
 									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide.h">
 								</File>
 								<File
 									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide_inline.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide_lite.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide_lite_inline.h">
 								</File>
 								<File
 									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout.h">
@@ -3689,6 +3704,12 @@
 							<Filter
 								Name="Direction"
 								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_direction.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_direction.h">
+								</File>
 							</Filter>
 						</Filter>
 					</Filter>

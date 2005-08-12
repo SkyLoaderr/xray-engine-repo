@@ -50,6 +50,7 @@ public:
 			bool	is_turning			();
 
 			void	get_heading			(float &current, float &target);
+			float	get_heading_current	();	
 
 			float	angle_to_target		(const Fvector &position);	
 private:				
