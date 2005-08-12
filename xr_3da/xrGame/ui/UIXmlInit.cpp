@@ -72,6 +72,18 @@ CUIXmlInit::~CUIXmlInit()
 
 //////////////////////////////////////////////////////////////////////////
 
+Frect CUIXmlInit::GetFRect(CUIXml& xml_doc, const char* path, int index){
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+	Frect rect;
+	rect.set(0,0,0,0);
+	rect.x1 = xml_doc.ReadAttribFlt(path, index, "x");
+	rect.y1	= xml_doc.ReadAttribFlt(path, index, "y");
+	rect.x2 = rect.x1 + xml_doc.ReadAttribFlt(path, index, "width");
+	rect.y2 = rect.y2 + xml_doc.ReadAttribFlt(path, index, "height");
+
+	return rect;
+}
+
 bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path, 	
 							int index, CUIWindow* pWnd)
 {

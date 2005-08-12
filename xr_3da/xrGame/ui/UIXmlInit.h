@@ -78,6 +78,7 @@ public:
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
+	static Frect GetFRect				(CUIXml& xml_doc, const char* path, int index);
 
 
 
