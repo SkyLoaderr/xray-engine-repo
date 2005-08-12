@@ -61,3 +61,14 @@ IC u32	time()
 {
 	return Device.dwTimeGlobal;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// bone routines
+//////////////////////////////////////////////////////////////////////////
+extern	Fvector get_bone_position	(CObject *object, LPCSTR bone_name);
+
+IC Fvector get_head_position(CObject *object) 
+{
+	return get_bone_position(object, "bip01_head");
+}
+
