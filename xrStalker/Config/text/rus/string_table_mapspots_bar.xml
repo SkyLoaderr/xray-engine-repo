@@ -4,3 +4,12 @@
 	<string id="rostok_volkodav">
 		<text>Волкодав.</text>
 	</string>	
+	<string id="bar_bar_locator">
+		<text>Бар "100 рентген".</text>
+	</string>	
+	<string id="bar_arena_locator">
+		<text>Арена.</text>
+	</string>	
+	<string id="bar_dolg_locator">
+		<text>База группировки "Долг".</text>
+	</string>		
