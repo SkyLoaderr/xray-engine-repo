@@ -1,4 +1,4 @@
-local played_sound = nil
+--local played_sound = nil
 
 class "snd_source"
 
@@ -7,17 +7,15 @@ function snd_source:__init (obj, storage)
 	self.st	= storage
 	self.destructed = false
 	self.first_sound = true
+	self.played_sound = nil
 end
 
 function snd_source:reset_scheme()
-    if played_sound ~= nil then
-       played_sound:stop ()
-       played_sound = nil
-    end
 	self.sound_list = {}
 	self.current_sound = 1
 	self.last_update = 0
 	self.st.signals = {}
+	self.played_sound = nil
 	--load the sounds
 	if sound_theme.ph_snd_themes[self.st.theme] == nil or table.getn (sound_theme.ph_snd_themes[self.st.theme]) == 0 then
 	   abort ("Invalid sound theme for object %s", self.object:name ())
@@ -83,7 +81,7 @@ function snd_source:update(delta)
           else 
              self.sound_list[self.current_sound]:play_at_pos (self.object, self.object:position (), 0, sound_object.looped)
           end   
-          played_sound = self.sound_list[self.current_sound]
+          self.played_sound = self.sound_list[self.current_sound]
           self.first_sound = false
           --printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        end   
@@ -126,9 +124,9 @@ function snd_source:update(delta)
 end
 
 function snd_source:deactivate ()
-    if played_sound ~= nil then
-       played_sound:stop ()
-       played_sound = nil
+    if self.played_sound ~= nil then
+       self.played_sound:stop ()
+       self.played_sound = nil
     end
 end
 
