@@ -116,7 +116,7 @@
 		<objective>
 			<text>mil_kill_dolg</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
+            <map_location_type>crlc_mdl</map_location_type>
 			<object_story_id>Mil_Dolg_Zoneguard</object_story_id>
 			<infoportion_complete>mil_dolg_dead</infoportion_complete>
             <map_location_hidden>1</map_location_hidden>
