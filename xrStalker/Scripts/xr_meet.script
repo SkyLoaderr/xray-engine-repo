@@ -54,7 +54,7 @@ function action_meet_wait:initialize()
 end
 function action_meet_wait:execute ()
 	action_base.execute(self)
-	meet_manager = self.a.meet_manager
+	local meet_manager = self.a.meet_manager
 	
 	local victim = nil	
 	if meet_manager.victim == "actor" then
@@ -164,6 +164,10 @@ function Cmeet_manager:update()
 		self.state,self.sound = self.state_zone,self.sound_zone
 	else
 		self.state,self.sound = self:process_meet()
+	end
+	-- Если актер говорит, и говорит не с нами, то мы не должны говорить звуков.
+	if db.actor:is_talking() and not self.npc:is_talking() then
+		self.sound = "nil"
 	end
 --	printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
 end
