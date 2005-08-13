@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<string_table>
+    <string id="pri_followers_start_dlg_11">
+        <text>Пошли с нами?</text>
+    </string>
+    <string id="pri_followers_start_dlg_111">
+        <text>Ок. Идем.</text>
+    </string>
+    <string id="pri_followers_start_dlg_112">
+        <text>Сорри. Без меня.</text>
+    </string>
+    <string id="pri_followers_start_dlg_21">
+        <text>Выдвигаемся вдоль по улице. В случае чего - прикроешь.</text>
+    </string>
+    <string id="pri_followers_start_dlg_211">
+        <text>Ок.</text>
+    </string>
+</string_table>
