@@ -94,7 +94,7 @@ function process_info_portion(info_id)
 --		level_tasks.remove_location(106, "gar_bandits_leader_location")
 
 	elseif info_id == "gar_start_graveyard" then
-		level_tasks.add_location(107, "green_location")
+		level_tasks.add_location(107, "green_location", "gar_hellcar")
 
 --	elseif info_id == "gar_alarm" then
 --		level_tasks.remove_location(107, "green_location")
@@ -103,7 +103,7 @@ function process_info_portion(info_id)
 		level_tasks.remove_location(107, "green_location")
 	
 	elseif info_id == "gar_wounded_help" then
-		level_tasks.add_location(109, "green_location")
+		level_tasks.add_location(109, "green_location", "gar_wounded_help")
 
 	elseif info_id == "gar_wounded_fight" then
 		level_tasks.remove_location(109, "green_location")
