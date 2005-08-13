@@ -341,6 +341,7 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 
 void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
 {
+	if(sp->GetParent()) return ;// already is child
 	float		heading;
 	Fvector2	pointer_pos;
 	map->GetPointerTo(m_position_on_map, sp->GetWidth()/2, pointer_pos, heading);

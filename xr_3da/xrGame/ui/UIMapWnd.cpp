@@ -228,6 +228,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 			l->OptimalFit( m_UILevelFrame->GetWndRect() );
 		}
 	}
+#ifdef DEBUG
 	GameMaps::iterator it = m_GameMaps.begin();
 	GameMaps::iterator it2;
 	for(;it!=m_GameMaps.end();++it){
@@ -244,11 +245,14 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		}
 
 	}
+#endif
 
 	Register						(m_GlobalMap);
 	m_ActionPlanner					= xr_new<CMapActionPlanner>();
 	m_ActionPlanner->setup			(this);
-	SetTargetMap					(m_GlobalMap);
+
+//	OnToolActorClicked	(NULL,NULL);
+//	SetTargetMap					(m_GlobalMap);
 	m_flags.set						(lmFirst,TRUE);
 }
 
@@ -267,9 +271,9 @@ void CUIMapWnd::Show(bool status)
 		}
 
 		if(	m_flags.test(lmFirst)){
-			Update				();
-			OnToolActorClicked	(NULL,NULL);
-			m_flags.set(lmFirst,FALSE);
+			inherited::Update		();// only maps, not action planner
+			OnToolActorClicked		(NULL,NULL);
+			m_flags.set				(lmFirst,FALSE);
 			}
 		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
 	}else{
@@ -604,7 +608,14 @@ void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 	Fvector2 v2;
 	v2.set						(v.x,v.z);
 
-	SetTargetMap				(Level().name(), v2, true);
+	CUICustomMap* lm			= NULL;
+	u16	idx						= GetIdxByName			(Level().name());
+	if (idx!=u16(-1)){
+		lm						= GetMapByIdx			(idx);
+	}else
+		lm						= GlobalMap();
+
+	SetTargetMap				(lm, v2, true);
 }
 
 void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
