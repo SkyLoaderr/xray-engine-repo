@@ -134,10 +134,10 @@ function action_wounded:execute ()
 			end
 		end	
 		--жрание аптечек и прочей срани.
-		if self.npc:object("medkit") ~= nil then
-			self.npc:eat(self.npc:object("medkit"))
-		elseif self.npc:object("bandage") ~= nil then
-			self.npc:eat(self.npc:object("bandage"))
+		if self.object:object("medkit") ~= nil then
+			self.object:eat(self.object:object("medkit"))
+		elseif self.object:object("bandage") ~= nil then
+			self.object:eat(self.object:object("bandage"))
 		end   		
 		state_mgr.set_state(self.object, wound_manager.state, nil, nil, {look_object = victim}, nil, synsound)
 	end
