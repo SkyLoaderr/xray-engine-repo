@@ -1328,7 +1328,7 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "gar_bandit_post" then
 		t = { section = "logic@gar_bandit_post_sniper",
 			idle = 0,
-			prior = 10, state = {0},
+			prior = 3, state = {0},
 			in_rest = "", out_rest = "gar_bandits_lager2"
 		}
 		table.insert(sj, t)
