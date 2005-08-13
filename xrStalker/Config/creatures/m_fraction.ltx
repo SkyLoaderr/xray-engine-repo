@@ -258,12 +258,14 @@ bone_model				 = bip01
 DynamicObjectsCount	     = 32
 DynamicSoundsCount	     = 32 
 ;---------------------------------------------------------------------
-ph_skeleton_airr_lin_factor  = 1.5
-ph_skeleton_airr_ang_factor  = 1.5
-ph_skeleton_hinger_factor1   = 1
-ph_skeleton_ddelay	     	 = 15
-ph_skel_fatal_impulse_factor = 9
-ph_skel_shot_up_factor       = 2.4; 0.8f
+ph_skeleton_airr_lin_factor   = 700.0
+ph_skeleton_airr_ang_factor   = 0.1
+ph_skeleton_hinger_factor1    = 5.0
+ph_skeleton_hinge_vel	      = 100
+ph_skeleton_ddelay	     	  = 100
+ph_skel_fatal_impulse_factor  = 4.0
+ph_after_death_velocity_factor= 1.2
+ph_skel_shot_up_factor        = 0.10
 ;---------------------------------------------------------------------
 ; selectors
 ;                           fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
