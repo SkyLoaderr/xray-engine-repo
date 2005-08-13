@@ -1,0 +1,36 @@
+;[logic]
+;active = ph_sound@normal
+
+;[ph_sound@normal]
+;snd = music
+;on_info = {+agr_nii_alarm} ph_sound@alarm
+
+
+;[ph_sound@alarm]
+;snd = siren
+;looped = true
+;on_info = {-agr_nii_alarm} ph_sound@normal
+
+[logic]
+active = ph_sound@normal
+on_hit = hit
+
+[hit]
+on_info = %+agr_nii_rupor_off%
+
+[ph_sound@normal]
+snd = music
+on_info = {+agr_nii_alarm} ph_sound@alarm
+on_info2 = {+agr_nii_rupor_off} nil
+on_info3 = {!is_day} ph_idle
+
+[ph_sound@alarm]
+snd = siren
+looped = true
+on_info = {-agr_nii_alarm} ph_sound@normal
+on_info2 = {+agr_nii_rupor_off} nil
+
+[ph_idle]
+on_info = {+agr_nii_alarm} ph_sound@alarm
+on_info2 = {+agr_nii_rupor_off} nil
+on_info3 = {=is_day} ph_sound@normal
