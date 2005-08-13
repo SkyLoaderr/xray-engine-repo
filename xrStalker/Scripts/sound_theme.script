@@ -198,7 +198,7 @@ function load_sound(obj)
 	theme[obj:id()]["help"]							= load_sound_from_ltx(obj, "help")
 	theme[obj:id()]["help_see"]						= load_sound_from_ltx(obj, "help_see")
 	theme[obj:id()]["help_see_tutor"]				= load_sound_from_ltx(obj, "help_see_tutor")
-	theme[obj:id()]["help_heavy"]					= load_sound_from_ltx(obj, "help_heavy")
+	theme[obj:id()]["help_heavy"]					= load_sound_from_ltx(obj, "help_heavy", 2, 3, 100)
 	theme[obj:id()]["help_stalker_thanx"]			= load_sound_from_ltx(obj, "help_thanx")   -- Нужно переименовать в help_thanx
 	theme[obj:id()]["wounded_psy"]					= load_sound_from_ltx(obj, "wounded_psy")	
 	theme[obj:id()]["wounded_psy_shoot"]			= load_sound_from_ltx(obj, "wounded_psy_shoot")	
