@@ -1,34 +1,10 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="outfit_bandit">
         <text>Traditional bandit’s outfit – leather jacket with plated kevlar elements. Increases bulletproof and splinter protection. Doesn’t protect from psi-influence.</text>
     </string>
-    <string id="outfit_soldier">
-        <text>Standard soldier’s equipment set – light army body armour. Rather effective against pistol bullets and splinters. Doesn’t protect from psi-influence.</text>
-    </string>
-    <string id="outfit_stalker">
-        <text>Stalker’s overalls produced by &amp;quot;artisans&amp;quot;. Light army body armour plus plated amplifying kevlar elements. Rather effective against pistol bullets and splinters. Gummed tarpaulin is good against the radiation dust and weak anomalies. Doesn’t protect from psi-influence.</text>
-    </string>
-    <string id="outfit_svoboda_light">
-        <text>Stalker’s light overalls produced by &amp;quot;Freedom&amp;quot; grouping. Light army body armour plus plated amplifying kevlar elements. Rather effective against pistol bullets and splinters. Gummed tarpaulin is good against the radiation dust and weak anomalies. Doesn’t protect from psi-influence.</text>
-    </string>
-    <string id="outfit_killer">
-        <text>Stalker’s light overalls produced by &amp;quot;Hirelings&amp;quot; grouping. Samples of SWAT equipment of the western armies have been taken as the basis. Due to the special fabric treatment heatproof and antirad fabric properties have been improved. Average army body armour belonging to the suit amplified with the titanic elements. Rather effective against sub-machine gun bullets on medium and long distances. Due to the presence of the metallic gauze in the hood reduces psi-influence a bit.</text>
-    </string>
-    <string id="outfit_svoboda_heavy">
-        <text>Stalker’s amplified overalls produced by &amp;quot;Freedom&amp;quot; grouping. Average army body armour plus plated amplifying zirconium elements provide good defence against sub-machine gun bullets on medium and long distances. Suit material consists of two layers: specially treated fabric and fabric with asbestos thread. Good protection from radiation and weak anomalies. Due to the presence of the metallic gauze in the hood reduces psi-influence a bit.</text>
-    </string>
     <string id="outfit_dolg">
         <text>Stalker’s amplified overalls produced by &amp;quot;Duty&amp;quot; grouping craftsmen. Average army body armour plus plated composite elements provide good defence against sub-machine gun bullets and splinters on medium and long distances. Suit material consists of two layers: specially treated leather and kevlar layer, that prevents animals from inflicting heavy damage. Good protection from radiation and weak anomalies. Due to the presence of the metallic gauze in the hood reduces psi-influence a bit.</text>
-    </string>
-    <string id="outfit_monolit">
-        <text>Stalker’s overalls by &amp;quot;Monolith&amp;quot; grouping. Manufacturer unknown. Average army body armour plus plated kevlar elements give good protection against sub machine gun bullets and splinters on medium and long distances. Suit material consists of two layers. Specially treated fabric and a layer of special polyethylene. Great protection from radiation and weak anomalies. Stable to chemically aggressive environments. Due to the advanced metallic gauzes system and split rings greatly reduce psi-influence.</text>
-    </string>
-    <string id="outfit_specops">
-        <text>Modified army SWAT equipment for in-Zone work – Beryl-5M. Includes: average army body armour, double layered suit amplified by the titanic plates with beryllium covering and Shpere-08 helmet. Good defence from the sub machine gun bullets and splinters on medium and long distances. Average protection from radiation and anomalies. Good heatproof. Due to the presence of metallic helmet reduces psi-influence a bit.</text>
-    </string>
-    <string id="outfit_protection">
-        <text>Modified chemical defence suit for in-Zone activities SSP-98М. Used by scientific camps guard detachments. Integrated aerial compensation system, that allows to reduce the harm from falling overloads and from anomalies strikes. Built-in air filtering and conditioner systems. Stable to the chemically aggressive environments. Great protection from the radiation. Good heatproof. Average defence from bullets and splinters. Due to the presence of directed electricity neutralization system greatly reduces pri-influence.</text>
     </string>
     <string id="outfit_ecolog">
         <text>Modified chemical defence suit for in-Zone activities SSP-99М. Used in scientific expeditions and cooperating stalkers-ecologists. Built-in aerial compensation system, that allows to reduce the harm from falling overloads and anomalies strikes. Integrated air filtering and conditioning system. Great protection from radiation and biological anomalies. Stable to chemically aggressive environments. Good heatproof. Average defence from bullets and splinters. Due to the direct fields neutralization system greatly reduces psi-influence.</text>
@@ -36,13 +12,37 @@
     <string id="outfit_exo">
         <text>Experimental sample of military exo-skeleton. Manufacturer – some foreign military research center, interested in running in his “child” in hard Zone conditions. Heavy hydraulic equipment, attached to the back nevertheless allows to transport more weight and get less tired. Hydraulics allow to reduce the harm from falling overloads and from anomalies strikes. Gear system plays a defensive role for the body from the bullets and splinters. Worn on the suit.</text>
     </string>
-    <string id="outfit_military_stalker">
-        <text>Created specially to work in Zone conditions, army stalkers equipment set - SCAT-9. Includes: heavy army body armour, built-in compensation suit, double layered (strengthened kevlar, polyethylene) suit amplified by titanic plates with beryllium covering and Sphere-12 covering. Great defence from sub-machine gun bullets and splinters. Amplified defence characteristics against explosion, falling and gravity strikes. Good defence from radiation and anomalies. Good heatproof. Quite good chemically aggressive environments stableness. Due to the presence of the metallic helmet with the system of metallic gauzes and split rings reduces psi-influence.</text>
+    <string id="outfit_killer">
+        <text>Stalker’s light overalls produced by &amp;quot;Hirelings&amp;quot; grouping. Samples of SWAT equipment of the western armies have been taken as the basis. Due to the special fabric treatment heatproof and antirad fabric properties have been improved. Average army body armour belonging to the suit amplified with the titanic elements. Rather effective against sub-machine gun bullets on medium and long distances. Due to the presence of the metallic gauze in the hood reduces psi-influence a bit.</text>
     </string>
     <string id="outfit_military_commander">
         <text>Specially created for in-Zone activities, army stalker-commander equipment set -SCAT-9М. Includes: heavy army body armour, built-in compensation suit, double layered (strengthened kevlar, polyethylene) suit amplified by titanic plates with beryllium covering and Sphere-12 covering. Great defence from sub-machine gun bullets and splinters. Amplified defence characteristics against explosion, falling and gravity strikes. Good defence from radiation and anomalies. Good heatproof. Quite good chemically aggressive environments stableness. Due to the presence of the metallic helmet with the system of metallic gauzes and split rings is good at reducing psi-influence..</text>
     </string>
+    <string id="outfit_military_stalker">
+        <text>Created specially to work in Zone conditions, army stalkers equipment set - SCAT-9. Includes: heavy army body armour, built-in compensation suit, double layered (strengthened kevlar, polyethylene) suit amplified by titanic plates with beryllium covering and Sphere-12 covering. Great defence from sub-machine gun bullets and splinters. Amplified defence characteristics against explosion, falling and gravity strikes. Good defence from radiation and anomalies. Good heatproof. Quite good chemically aggressive environments stableness. Due to the presence of the metallic helmet with the system of metallic gauzes and split rings reduces psi-influence.</text>
+    </string>
+    <string id="outfit_monolit">
+        <text>Stalker’s overalls by &amp;quot;Monolith&amp;quot; grouping. Manufacturer unknown. Average army body armour plus plated kevlar elements give good protection against sub machine gun bullets and splinters on medium and long distances. Suit material consists of two layers. Specially treated fabric and a layer of special polyethylene. Great protection from radiation and weak anomalies. Stable to chemically aggressive environments. Due to the advanced metallic gauzes system and split rings greatly reduce psi-influence.</text>
+    </string>
+    <string id="outfit_protection">
+        <text>Modified chemical defence suit for in-Zone activities SSP-98М. Used by scientific camps guard detachments. Integrated aerial compensation system, that allows to reduce the harm from falling overloads and from anomalies strikes. Built-in air filtering and conditioner systems. Stable to the chemically aggressive environments. Great protection from the radiation. Good heatproof. Average defence from bullets and splinters. Due to the presence of directed electricity neutralization system greatly reduces pri-influence.</text>
+    </string>
     <string id="outfit_scientific">
         <text>Stalker environmental suit of the highest defence. Stalker master or grouping leader equipment. Manufactured and selled underground by one of the defensive Kiev scientific research institute. Very expensive, thus wasn’t added to the armoury of army stalkers. Includes: diverse armouring on the vital important body parts, built-in compensation suit, integrated air filtering and conditioning system, helmet from the suit of the highest chemical defence suit with the complicated system of psi-influence neutralization. Great defence against the sub-machine gun bullets and splinters. Improved defence characteristics from explosions, fallings and gravity strikes. Great defence from radiation and anomalies. Good heatproof. Perfectly stable to the chemically aggressive environments.</text>
+    </string>
+    <string id="outfit_soldier">
+        <text>Standard soldier’s equipment set – light army body armour. Rather effective against pistol bullets and splinters. Doesn’t protect from psi-influence.</text>
+    </string>
+    <string id="outfit_specops">
+        <text>Modified army SWAT equipment for in-Zone work – Beryl-5M. Includes: average army body armour, double layered suit amplified by the titanic plates with beryllium covering and Shpere-08 helmet. Good defence from the sub machine gun bullets and splinters on medium and long distances. Average protection from radiation and anomalies. Good heatproof. Due to the presence of metallic helmet reduces psi-influence a bit.</text>
+    </string>
+    <string id="outfit_stalker">
+        <text>Stalker’s overalls produced by &amp;quot;artisans&amp;quot;. Light army body armour plus plated amplifying kevlar elements. Rather effective against pistol bullets and splinters. Gummed tarpaulin is good against the radiation dust and weak anomalies. Doesn’t protect from psi-influence.</text>
+    </string>
+    <string id="outfit_svoboda_heavy">
+        <text>Stalker’s amplified overalls produced by &amp;quot;Freedom&amp;quot; grouping. Average army body armour plus plated amplifying zirconium elements provide good defence against sub-machine gun bullets on medium and long distances. Suit material consists of two layers: specially treated fabric and fabric with asbestos thread. Good protection from radiation and weak anomalies. Due to the presence of the metallic gauze in the hood reduces psi-influence a bit.</text>
+    </string>
+    <string id="outfit_svoboda_light">
+        <text>Stalker’s light overalls produced by &amp;quot;Freedom&amp;quot; grouping. Light army body armour plus plated amplifying kevlar elements. Rather effective against pistol bullets and splinters. Gummed tarpaulin is good against the radiation dust and weak anomalies. Doesn’t protect from psi-influence.</text>
     </string>
 </string_table>

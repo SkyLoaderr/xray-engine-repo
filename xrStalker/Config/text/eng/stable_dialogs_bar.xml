@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="bar_arena_manager_game_0">
         <text>Я хочу сразиться. Кто у тебя на этот раз?</text>
@@ -228,6 +228,21 @@
     <string id="bar_bar_barman_veterans_finish_111">
         <text>Герой, слов нет, герой. Вот держи. Я думаю, ты не будешь обижен нашей сделкой.</text>
     </string>
+    <string id="bar_bar_barmen_about_gorbun_0">
+        <text>Слушай, он вспоминал про какого-то Горбуна. Ты не знаешь кто это?</text>
+    </string>
+    <string id="bar_bar_barmen_about_gorbun_1">
+        <text>Хм. Надо подумать. Помниться видел его пару раз. Последний раз он с друзьями собирался за артефактами поглубже зайти. Трое их было. Горбун, Лысый, а третьего я не знаю. Кстати, лысый сейчас в баре сидит. Сходи, может он чего подскажет.</text>
+    </string>
+    <string id="bar_bar_barmen_about_gorbun_11">
+        <text>О, спасибо за наводку.</text>
+    </string>
+    <string id="bar_bar_barmen_about_psih_0">
+        <text>Чего с ним? Мычит что-то непонятное.</text>
+    </string>
+    <string id="bar_bar_barmen_about_psih_1">
+        <text>Да черт его разберет. Совсем, наверное, головой сдвинулся. Водки ему чтоли налить, или укол какой сделать.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_0">
         <text>Работа для меня найдется?</text>
     </string>
@@ -435,6 +450,48 @@
     <string id="bar_bar_barmen_start_1131">
         <text>Хмм... А ты еще откуда взялся?</text>
     </string>
+    <string id="bar_bar_barmen_start_121">
+        <text>Ну что, Меченный, документы из X16 при тебе?</text>
+    </string>
+    <string id="bar_bar_barmen_start_1211">
+        <text>Да, вот они.</text>
+    </string>
+    <string id="bar_bar_barmen_start_12111">
+        <text>Хорошо, очень хорошо. Идем, покажу что у меня есть.</text>
+    </string>
+    <string id="bar_bar_barmen_start_121111">
+        <text>Идем.</text>
+    </string>
+    <string id="bar_bar_barmen_start_1212">
+        <text>Нет.</text>
+    </string>
+    <string id="bar_bar_barmen_start_12121">
+        <text>От ты блин. Я тут понимаешь ли корячусь, лезу из кожи вон, а он прохлаждается. Быстро за документами! Без них наше дело не сдвинется с места!</text>
+    </string>
+    <string id="bar_bar_barmen_start_121211">
+        <text>Ладно.</text>
+    </string>
+    <string id="bar_bar_barmen_start_131">
+        <text>Ну, Меченый, осталось только с "выжигателем" разобраться и на Север проход открыть. Готов сейчас отправиться?</text>
+    </string>
+    <string id="bar_bar_barmen_start_1311">
+        <text>Готов.</text>
+    </string>
+    <string id="bar_bar_barmen_start_13111">
+        <text>Хорошо, очень хорошо. Идем ко мне, объясню что да как.</text>
+    </string>
+    <string id="bar_bar_barmen_start_131111">
+        <text>Идем.</text>
+    </string>
+    <string id="bar_bar_barmen_start_1312">
+        <text>Нет, я пока не готов.</text>
+    </string>
+    <string id="bar_bar_barmen_start_13121">
+        <text>Готовься, Меченый. Такое дело не может долго ждать.</text>
+    </string>
+    <string id="bar_bar_barmen_start_131211">
+        <text>Ладно.</text>
+    </string>
     <string id="bar_bar_barmen_start_2">
         <text>Здорово, Меченый. Принес документы с Агропрома?</text>
     </string>
@@ -612,6 +669,33 @@
     <string id="bar_bar_hunter_start_31">
         <text>Спасибо тебе брат. Я не забуду, как ты мне помог.</text>
     </string>
+    <string id="bar_bar_lisiy_talk_0">
+        <text>Ты Лысый! Мне сказал об этом бармен.</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_1">
+        <text>И что с того?</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_2">
+        <text>Рябого вытащили с Радара, вот что. А Горбун погиб, по словам Рябого.</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_3">
+        <text>Черт.</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_4">
+        <text>Рябой в очень плохом состоянии, ничего не соображает. Ты не можешь попробовать его разговорить? Нам надо узнать время работы "выжигателя мозгов"</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_5">
+        <text>Нет, нет, нет! Это из-за меня погиб Горбун, и Рябому досталось. В самый тяжелый момент я их предал и сбежал. Я не смогу теперь Рябому в глаза смотреть.</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_6">
+        <text>Расскажи подробнее что произошло.</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_7">
+        <text>Я, Горбун и Рябой давно готовились прорываться на Север. У нас не хватало только времени спада излучения "выжигателя", и Рябой достал эту информацию, у кого я совершенно без понятия. Мы прошли пол Радара, как "выжигатель" неожиданно включился. Рябому снесло крышу, он потерял сознание и свалился со склона. Я запаниковал, решил все бросить и возвращаться. Горбун настаивал на том чтобы вытащить Рябого, но это было бы чистейшим самоубийством, спускаться и тащить Рябого всю дорогу обратно. Я согласился с Горбуном и он полез вниз по склону к Рябому, как очередной всплеск "выжигателя" не накрыл нас. Я опомнился уже возле военной базы, до этого времени я считал что они погибли, но похоже Горбун ценой своей жизни вытащил Рябого.</text>
+    </string>
+    <string id="bar_bar_lisiy_talk_8">
+        <text>Спасибо за рассказ, Лысый. Я попробуй разговорить Рябого.</text>
+    </string>
     <string id="bar_bar_osvedomitel_reward_0">
         <text>Волкодав сказал, что ты мне кое-что передашь.</text>
     </string>
@@ -707,6 +791,90 @@
     </string>
     <string id="bar_bar_osvedomitel_trade_info_999">
         <text>В данный момент новой пока информации нет.</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_0">
+        <text>Тебе плохо? Может аптечку дать?</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_1">
+        <text>Больно! Я справлюсь! Я смогу! Аптечка! Да! Аптечку!</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_11">
+        <text>Держи, может поможет.</text>
+    </string>
+    <string id="bar_bar_psih_give_medkit_12">
+        <text>Извини, при себе нет.</text>
+    </string>
+    <string id="bar_bar_psih_start_gorbun_0">
+        <text>Горбун, это ты?</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_11">
+        <text>Я, я нормальный!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_12">
+        <text>Я смогу, я справлюсь! Уйдите!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_13">
+        <text>Оставьте меня!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_14">
+        <text>Больно! Больно!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_15">
+        <text>Моя голова. Она. Она не моя!</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_0">
+        <text>Да, я - Горбун.</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_1">
+        <text>Нет, нет! Ты все врешь! Горбун умер!</text>
+    </string>
+    <string id="bar_bar_psih_talk_gorbun_2">
+        <text>Неужели?</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_0">
+        <text>Нет, я Лысый.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_1">
+        <text>Ты, сукин сын! Как ты смел? Оставить нас? Ты же обещал. Обещал! Понимаешь?</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11">
+        <text>Мне жаль, действительно, очень жаль. Я просто испугался. Сперва эти призраки. Потом Горбун.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_111">
+        <text>Горбун! Что с ним? Ты его видел? Я думал что его убило первой волной.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_1111">
+        <text>Горбун побежал за тобой к антене. Я слышал только его маты и звуки выстрелов. После первой волны я попытался найти его, но боялся слишком близко подходить к антене. Я не видел его с тех пор.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11111">
+        <text>Кто-то вытащил меня из-под антены. Если это был не ты, то наверное только Горбун. Врядли это сделали бы эти зомбированные уроды. А из сталкеров рассписание работы антены никто не знает больше.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11112">
+        <text>Рябой. Я хочу вернуться туда. Я хочу найти Горбуна. Мне страшно подумать о том, что могло с ним случиться. Помоги мне.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11113">
+        <text>Что-то ты осмелел. Я уже никуда не пойду. Но слушай сюда. Выжигатель иногда спит. В это время можно прокрасться мимо него. На этой флешке более детальная информация.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_11114">
+        <text>Спасибо тебе.</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_12">
+        <text>Ну обещал, извини! Но ты говорил что выжигатель уже не работает, что там безопасно!</text>
+    </string>
+    <string id="bar_bar_psih_talk_lisiy_121">
+        <text>Пошел к черту, Лысый. Ты прекрасно знал на что идешь!</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_0">
+        <text>Ты в порядке?</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_1">
+        <text>Больно! Больно! Уйдите. Я нормальный! Я справлюсь, я смогу.</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_2">
+        <text>Это, это! Бред. Бред кругом! Уйдите!</text>
+    </string>
+    <string id="bar_bar_psih_talk_pain_3">
+        <text>Не понимаю. Ничего не понимаю! Отпустите!</text>
     </string>
     <string id="bar_bar_visitors_10_start_71">
         <text>Чего тебе?</text>
@@ -1173,6 +1341,54 @@
     <string id="bar_dolg_zastava_21">
         <text>О, привет старик! Рад, что тебя еще мутанты не сожрали.</text>
     </string>
+    <string id="bar_dolg_zastava_about_zastava_0">
+        <text>Перед заставой была какая-то бойня, что случилось?</text>
+    </string>
+    <string id="bar_dolg_zastava_about_zastava_1">
+        <text>Это останки от прошлой "волны" мутантов, которая прошла перед Выбросом. Дня три четыре затишье, а затем опять будет "волна". Если бы не мы, ни Бара ни Долга уже бы не было, мы последний заслон от обезумевших стай мутантов. Много наших тут полегло.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_0">
+        <text>Я бы хотел кое-что узнать.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_1">
+        <text>Что ты хочешь узнать?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2">
+        <text>Я тут впервые, можешь немного рассказать об этом месте?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21">
+        <text>До аварии в 86 это был обычный поселок городского типа. Теперь, как понимаешь, это уже разваленные остатки бывшего поселка. В местной подземной кафешке продовольственного магазина найдешь бар сталкеров, тут собираются сталкеры со всей Зоны, местный торговец работает здесь барменом. Содержит, так сказать, помещение. Тебе туда, если хочешь поторговать, пообщаться или интересное задание получить. Ну и новости последние узнаешь. Если идти от поселка, то придешь к старому заводу Росток. За заводом, находится база группировки "Долг". База закрыта от посторонних, не советую туда ломиться.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_211">
+        <text>Ты сказал здесь есть Бар. Можешь подсказать где он?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2111">
+        <text>В подвале за ангаром, я тебе отмечу на карте.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21111">
+        <text>Спасибо за информацию</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_212">
+        <text>Это территория Долга? А где можно найти лидера Долга?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2121">
+        <text>Да, это наша территория, находится под защитой Долга. Чужаков беспредельщиков здесь очень не любят. Веди себя аккуратно, пусть люди к тебе присмотрятся. А будешь стрелять, наш патруль тебя враз успокоит. К лидеру тебя так просто не пустят, но я тебе отметил на карте, куда подойти надо, дальше все от тебя будет зависеть.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21211">
+        <text>Спасибо за информацию</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_213">
+        <text>Ты сказал здесь есть Арена. Можешь подсказать где она?</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_2131">
+        <text>Как выйдешь из ангара с пробитой крышей сразу выйдешь к ней, я тебе отмечу на карте.</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_21311">
+        <text>Спасибо за информацию</text>
+    </string>
+    <string id="bar_dolg_zastava_talk_214">
+        <text>Извини, я передумал</text>
+    </string>
     <string id="bar_dolg_zavskald_reward_0">
         <text>Я тут по делу.</text>
     </string>
@@ -1376,5 +1592,17 @@
     </string>
     <string id="bar_svoboda_volkodav_start_61">
         <text>It was a worthy hunt. What do you need?</text>
+    </string>
+    <string id="barman_dialog_0">
+        <text>default text</text>
+    </string>
+    <string id="barmen_dialog_0">
+        <text>Привет, Меченый. Вован уже рассказал о тебе. Стрелка значит ищешь, ну что ж, кой чего знаю о нем.</text>
+    </string>
+    <string id="barmen_dialog_1">
+        <text>text in default</text>
+    </string>
+    <string id="barmen_dialog_2">
+        <text>text in default</text>
     </string>
 </string_table>

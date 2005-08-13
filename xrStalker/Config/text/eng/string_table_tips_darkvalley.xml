@@ -1,23 +1,18 @@
-    <string id="val_give_escort_task_pda">
-        <text>Помоги выручить друга.</text>
-    </string>
-
-    <string id="val_monolith_trader_pda1">
-        <text>Меченый! Базу Монолита атаковали военные, в главном здании сейчас перестрелка. Не суйся туда, попробуй идти в обход через двор.</text>
-    </string>
-
-    <string id="val_monolith_trader_pda2">
-        <text>Военные думают, что перекрыли все выходы из Темной Долины. Но есть старая дорога на юг, правда без машины тебе ничего не светит. Найди какую-то тачку и сваливай оттуда.</text>
-    </string>
-
-    <string id="val_monolith_trader_pda3">
-        <text>Меченый! Военные запросили еще один вертолет! У вас там становится жарко. Жми к воротам, выбивай их нафиг и двигай ко мне.</text>
-    </string>
-
-    <string id="val_sos_pda">
-        <text>Друг, помоги. Я ранен. Отсиживаюсь на старой заправке.</text>
-    </string>
-
     <string id="info_val_give_suicider_task">
-        <text>Меченый, сталкеры шепчутся о появлении в окрестностях сталкера Сокола, которого не видели уже месяцев шесть. Он пытался найти проход к центру зоны и бесследно исчез, а теперь вот вдруг объявился. Его недавно видели в Темной Долине, где-то за базой Монолита. Будет время - разузнай, что там с ним.</text>
+        <text>Branded One, stalkers whisper about stalker Hawk to hve shown up in the area. Nobody has seen him for six months now. He tried locating a passage to the Zone center and disappeared without trace, only to reappear now. He was recently spotted in the Dark Valley, somewhere behind the Monolith base. When time permits, clarify what's about him.</text>
+    </string>
+    <string id="val_give_escort_task_pda">
+        <text>Help liberating the friend.</text>
+    </string>
+    <string id="val_monolith_trader_pda1">
+        <text>Branded One! The Monolith base was attacked by the military. There's skirmish going in the main building now. Don't poke in there, try skirting around via the yard.</text>
+    </string>
+    <string id="val_monolith_trader_pda2">
+        <text>The military believe to have blocked all the exits from the Dark Valley. But there's an old road to the south, although you won't succeed without a car there. Find a vehicle and get outta there.</text>
+    </string>
+    <string id="val_monolith_trader_pda3">
+        <text>Branded One! The military called for another chopper! It's getting hot there. Dash to the gates, smash the damn gates and head toward me.</text>
+    </string>
+    <string id="val_sos_pda">
+        <text>Help! I'm about to kick the bucket.</text>
     </string>

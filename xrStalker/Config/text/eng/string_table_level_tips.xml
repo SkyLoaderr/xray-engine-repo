@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
-<!-- ПРИ ЛОКАЛИЗАЦИИ НЕ ЗАБЫТЬ ИЗМЕНИТЬ ПУТЬ -->
 #include "text\eng\string_table_tips_escape.xml"
 #include "text\eng\string_table_tips_garbage.xml"
 #include "text\eng\string_table_tips_agroprom.xml"
@@ -24,8 +23,12 @@
 #include "text\eng\string_table_tasks_radar.xml"
 #include "text\eng\string_table_tasks_garbage.xml"
 
-    <string id="inventory_item_use">
-        <text>Поднять предмет ($$ACTION_USE$$)</text>
+#include "text\eng\string_table_mapspots_garbage.xml"
+#include "text\eng\string_table_mapspots_agroprom.xml"
+#include "text\eng\string_table_mapspots_bar.xml"
+#include "text\eng\string_table_mapspots_military.xml"
+    <string id="car_use">
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
     </string>
     <string id="character_use">
         <text>Говорить ($$ACTION_USE$$)</text>
@@ -33,45 +36,43 @@
     <string id="dead_character_use">
         <text>Обыскать труп ($$ACTION_USE$$)</text>
     </string>
-    <string id="car_use">
-        <text>Открыть дверь ($$ACTION_USE$$)</text>
-    </string>
-    <string id="physic_shell_use">
-        <text>Двигать объект ()</text>
-    </string>
-
-    <string id="general_help">
-        <text>Срочно нужна аптечка, помираю!!!</text>
-    </string>
-    <string id="general_new_task">
-        <text>Получено новое задание.</text>
-    </string>
     <string id="general_complete_task">
         <text>Задание выплонено.</text>
     </string>
     <string id="general_fail_task">
         <text>Задание провалено.</text>
     </string>
-    <string id="general_update_task">
-        <text>Задание обновлено.</text>
+    <string id="general_help">
+        <text>Срочно нужна аптечка, помираю!!!</text>
     </string>
     <string id="general_in_item">
         <text>Получен предмет.</text>
     </string>
-    <string id="general_out_item">
-        <text>Потерян предмет.</text>
-    </string>
     <string id="general_in_money">
         <text>Получены деньги.</text>
     </string>
-    <string id="general_out_money">
-        <text>Потеряны деньги.</text>
+    <string id="general_new_diary">
+        <text>Новая запись в дневнике.</text>
     </string>
     <string id="general_new_encyclopedy">
         <text>Новая статья в энциклопедии.</text>
     </string>
-    <string id="general_new_diary">
-        <text>Новая запись в дневнике.</text>
-    </string>    
-    
+    <string id="general_new_task">
+        <text>Получено новое задание.</text>
+    </string>
+    <string id="general_out_item">
+        <text>Потерян предмет.</text>
+    </string>
+    <string id="general_out_money">
+        <text>Потеряны деньги.</text>
+    </string>
+    <string id="general_update_task">
+        <text>Задание обновлено.</text>
+    </string>
+    <string id="inventory_item_use">
+        <text>Поднять предмет ($$ACTION_USE$$)</text>
+    </string>
+    <string id="physic_shell_use">
+        <text>Двигать объект ()</text>
+    </string>
 </string_table>

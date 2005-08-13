@@ -1,4 +1,12 @@
-
     <string id="tips_agr_krot_sos">
-        <text>SOS, военные режут нашего брата сталкера, мужики, все кто меня слышат - помогите!</text>
+        <text>SOS, militaries are cutting down our brothers-stalkers, men, everyone who can hear me - help!</text>
+    </string>
+    <string id="tips_agr_krot_sos1">
+        <text>Help. They will kill us!</text>
+    </string>
+    <string id="tips_agr_krot_sos2">
+        <text>All my guys have been knocked down!</text>
+    </string>
+    <string id="tips_agr_trader_documents">
+        <text>Branded one, I've told Barkeep about you - he has to deal with the traders in order to let you in. So get your body straight to him.</text>
     </string>

@@ -1,16 +1,75 @@
-    <string id="agr_krot">
-        <text>Встретиться со сталкерами</text>
-    </string>
     <string id="agr_gunslinger_cache">
-        <text>Тайник Стрелка</text>
+        <text>Gunslinger's cache</text>
     </string>
-    <string id="agr_military_case">
-        <text>Добыть военные документы</text>
+    <string id="agr_help_krot">
+        <text>Save Mole</text>
     </string>
-
+    <string id="agr_help_krot_0">
+        <text>Militaries have blocked Mole at the factory. He won't hold there for long</text>
+    </string>
+    <string id="agr_help_krot_1">
+        <text>Eliminate the militaries</text>
+    </string>
+    <string id="agr_help_krot_2">
+        <text>Save Mole</text>
+    </string>
     <string id="agr_help_stalkers">
-        <text>Помочь сталкерам Крота</text>
+        <text>Help Mole's stalkers</text>
     </string>
     <string id="agr_help_stalkers_0">
-        <text>Помочь сталкерам Крота отбиться от военных на заводе</text>
+        <text>Help Mole's stalkers withstand militaries at the factory</text>
+    </string>
+    <string id="agr_help_stalkers_1">
+        <text>Eliminate the militaries</text>
+    </string>
+    <string id="agr_help_stalkers_2">
+        <text>Save stalkers</text>
+    </string>
+    <string id="agr_krot">
+        <text>Meet the stalkers</text>
+    </string>
+    <string id="agr_meet_krot_band">
+        <text>Receive information about the Gunslinger</text>
+    </string>
+    <string id="agr_meet_krot_band_0">
+        <text>Grey have told that Mole knows something</text>
+    </string>
+    <string id="agr_meet_krot_band_1">
+        <text>Meet the Mole</text>
+    </string>
+    <string id="agr_meet_krot_band_2">
+        <text>Receive information from the Mole</text>
+    </string>
+    <string id="agr_military_case">
+        <text>Obtain military documents</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache">
+        <text>Find the Gunslinger's grouping cache</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache_0">
+        <text>Find and search the Gunslinger's grouping cache. It may contain the information on how to find Gunslinger himself.</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache_1">
+        <text>Find the cache</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache_2">
+        <text>Find the information on the Gunslinger in the cache</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom">
+        <text>Find the Ghost.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom_0">
+        <text>Ghost knows exactly where to find Gunslinger.</text>
+    </string>
+    <string id="agroprom_get_military_documents">
+        <text>Obtain the militaries' documents.</text>
+    </string>
+    <string id="agroprom_get_military_documents_0">
+        <text>Agroprom Scientific Research Institute</text>
+    </string>
+    <string id="agroprom_get_military_documents_1">
+        <text>Obtain the military documents.</text>
+    </string>
+    <string id="agroprom_get_military_documents_2">
+        <text>Deliver documents to the barkeep.</text>
     </string>

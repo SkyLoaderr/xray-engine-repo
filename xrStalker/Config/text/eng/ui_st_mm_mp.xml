@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
-    <string id="mm_mp_player_name">
-        <text>Player Name:</text>
-    </string>
     <string id="mm_mp_cd_key">
         <text>CD-Key</text>
     </string>
     <string id="mm_mp_client">
         <text>Client</text>
     </string>
-    <string id="mm_mp_server">
-        <text>Server</text>
-    </string>
-    <string id="mm_mp_options">
-        <text>Options</text>
-    </string>
-    <string id="mm_mp_network_connection">
-        <text>Network connection</text>
-    </string>
     <string id="mm_mp_internet">
         <text>Internet</text>
     </string>
     <string id="mm_mp_lan">
         <text>LAN</text>
+    </string>
+    <string id="mm_mp_network_connection">
+        <text>Network connection</text>
+    </string>
+    <string id="mm_mp_options">
+        <text>Options</text>
+    </string>
+    <string id="mm_mp_player_name">
+        <text>Player Name:</text>
+    </string>
+    <string id="mm_mp_server">
+        <text>Server</text>
     </string>
     <string id="mm_mp_server_list">
         <text>List of Servers</text>

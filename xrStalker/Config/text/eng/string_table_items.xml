@@ -1,27 +1,24 @@
-п»ї<?xml version='1.0' encoding="windows-1251"?>
-<!-- для описания всевозможных предметов в игре -->
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
-	<string id="item test1">
-		<text>This is a ITEM test string</text>
-	</string>
-	<string id="item test2">
-		<text>This is a another ITEM test string</text>
-	</string>
-
-	<string id="item_krot_flash">
-		<text>Флешка Крота с информацией о тайнике Стрелка</text>
-	</string>
-	<string id="item_gunslinger_flash">
-		<text>Флешка из тайника Стрелка</text>
-	</string>
-	<string id="item_scientist_flash">
-		<text>Флешка мёртвого учёного найденного в лесу</text>
-	</string>
-	<string id="item_quest_case_02">
-		<text>Документы из лагеря военных на НИИ Агропром</text>
-	</string>
-	<string id="item_pri_lom_ak74">
-		<text>Личный автомат сталкера по кличке Лом</text>
-	</string>
-
+    <string id="item test1">
+        <text>This is a ITEM test string</text>
+    </string>
+    <string id="item test2">
+        <text>This is a another ITEM test string</text>
+    </string>
+    <string id="item_gunslinger_flash">
+        <text>Флешка из тайника Стрелка</text>
+    </string>
+    <string id="item_krot_flash">
+        <text>Флешка Крота с информацией о тайнике Стрелка</text>
+    </string>
+    <string id="item_pri_lom_ak74">
+        <text>Личный автомат сталкера по кличке Лом</text>
+    </string>
+    <string id="item_quest_case_02">
+        <text>Документы из лагеря военных на НИИ Агропром</text>
+    </string>
+    <string id="item_scientist_flash">
+        <text>Флешка мёртвого учёного найденного в лесу</text>
+    </string>
 </string_table>

@@ -1,30 +1,63 @@
-<string id="val_escort_release_stalker">
-    <text>
-        Помочь освободить сталкера захваченого в плен.
-    </text>
-</string>
-<string id="val_escort_release_stalker_0">
-    <text>
-        Друг, помоги освободить моего напарника. Его скоро должны переводить под охраной на базу монолита.
-    </text>
-</string>
-<string id="val_suicide_find_lost_stalker">
-    <text>
-        Найти сталкера Сокола, пропавшего в окрестностях Темной Долины.
-    </text>
-</string>
-<string id="val_suicide_find_lost_stalker_0">
-    <text>
-        Меченый, сталкеры шепчутся о появлении в окрестностях сталкера Сокола, которого не видели уже месяцев шесть. Он пытался найти проход к центру зоны и бесследно исчез, а теперь вот вдруг объявился. Его недавно видели в Темной Долине, где-то за базой Монолита. Будет время - разузнай, что там с ним.
-    </text>
-</string>
-<string id="val_suicide_artefact_quest">
-    <text>
-        fixme - Отнести артефакт бармену.
-    </text>
-</string>
-<string id="val_suicide_artefact_quest_0">
-    <text>
-        fixme - Сталкер в Темной Долине попросил отнести артефакт бармену.
-    </text>
-</string>
+    <string id="bar_back_to_barmen">
+        <text>Отдать документы бармену.</text>
+    </string>
+    <string id="val_come_to_trader">
+        <text>Return to the dealer.</text>
+    </string>
+    <string id="val_come_to_trader_0">
+        <text>Return to the dealer as soon as possible.</text>
+    </string>
+    <string id="val_come_to_trader_main">
+        <text>Return to the dealer.</text>
+    </string>
+    <string id="val_enter_x18">
+        <text>Пробраться в лабораторию.</text>
+    </string>
+    <string id="val_escort_release_stalker">
+        <text>Помочь освободить сталкера захваченого в плен.</text>
+    </string>
+    <string id="val_escort_release_stalker_0">
+        <text>Друг, помоги освободить моего напарника. Его скоро должны переводить под охраной на базу монолита.</text>
+    </string>
+    <string id="val_get_docs_from_x18">
+        <text>Добыть документы из лаборатории X18.</text>
+    </string>
+    <string id="val_get_docs_from_x18_0">
+        <text>Необходимо пробраться на территорию Темной долины и из подземной лаборатории X18, находящейся там принести документы.</text>
+    </string>
+    <string id="val_get_info_from_borov">
+        <text>Забрать у лидера бандитов Борова материалы, добытые долговцами.</text>
+    </string>
+    <string id="val_prisoner_help">
+        <text>Help out the imprisoned Duty stalker.</text>
+    </string>
+    <string id="val_prisoner_help_0">
+        <text>Set the Duty stalker free from bandit captivity. Find the captive in the basement of the bandit base.</text>
+    </string>
+    <string id="val_prisoner_help_main">
+        <text>Set the Duty stalker free from bandit captivity. Find the captive in the basement of the bandit base.</text>
+    </string>
+    <string id="val_sos_help">
+        <text>Help out stalker.</text>
+    </string>
+    <string id="val_sos_help_0">
+        <text>Unknown stalker is asking for help.</text>
+    </string>
+    <string id="val_sos_help_main">
+        <text>Unknown stalker is asking for help. Find him on the neglected fuel station.</text>
+    </string>
+    <string id="val_suicide_artefact_quest">
+        <text>fixme - Отнести артефакт бармену.</text>
+    </string>
+    <string id="val_suicide_artefact_quest_0">
+        <text>fixme - Сталкер в Темной Долине попросил отнести артефакт бармену.</text>
+    </string>
+    <string id="val_suicide_find_lost_stalker">
+        <text>Найти сталкера Сокола, пропавшего в окрестностях Темной Долины.</text>
+    </string>
+    <string id="val_suicide_find_lost_stalker_0">
+        <text>Меченый, сталкеры шепчутся о появлении в окрестностях сталкера Сокола, которого не видели уже месяцев шесть. Он пытался найти проход к центру зоны и бесследно исчез, а теперь вот вдруг объявился. Его недавно видели в Темной Долине, где-то за базой Монолита. Будет время - разузнай, что там с ним.</text>
+    </string>
+    <string id="x18_find_docs">
+        <text>Найти в лаборатории X18 нужные документы.</text>
+    </string>

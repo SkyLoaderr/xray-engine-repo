@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="actor_break_dialog_0">
         <text>See you!</text>
@@ -30,13 +30,49 @@
     <string id="actor_help_wounded_141">
         <text>You choose, but don’t think it does an honor for you.</text>
     </string>
+    <string id="companion_hire_dialog_0">
+        <text>Не желаешь составить мне компанию?</text>
+    </string>
+    <string id="companion_hire_dialog_1">
+        <text>Отчего бы и не составить. Я согласен.</text>
+    </string>
+    <string id="companion_hire_dialog_2">
+        <text>Извини, у меня другие планы.</text>
+    </string>
+    <string id="companion_management_dialog_0">
+        <text>Слушай команду.</text>
+    </string>
+    <string id="companion_management_dialog_1">
+        <text>Я слушаю.</text>
+    </string>
+    <string id="companion_management_dialog_11">
+        <text>Следуй за мной.</text>
+    </string>
+    <string id="companion_management_dialog_13">
+        <text>Следуй за мной и не атакуй врагов первым.</text>
+    </string>
+    <string id="companion_management_dialog_14">
+        <text>Жди здесь.</text>
+    </string>
+    <string id="companion_management_dialog_16">
+        <text>Жди здесь и не атакуй врагов первым.</text>
+    </string>
+    <string id="companion_management_dialog_17">
+        <text>Я пропил все твои деньги...</text>
+    </string>
+    <string id="companion_release_dialog_0">
+        <text>Спасибо за сотрудничество. Ты свободен.</text>
+    </string>
+    <string id="companion_release_dialog_1">
+        <text>И тебе спасибо. Удачи.</text>
+    </string>
+    <string id="hello_dialog_0">
+        <text>Hi!</text>
+    </string>
     <string id="hello_dialog_2">
         <text>Hi!</text>
     </string>
     <string id="hello_dialog_3">
         <text>Listen, dude, help me!</text>
-    </string>
-    <string id="hello_dialog_0">
-        <text>Hi!</text>
     </string>
 </string_table>

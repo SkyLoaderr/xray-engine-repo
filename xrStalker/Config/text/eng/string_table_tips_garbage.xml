@@ -1,13 +1,18 @@
-
-    <string id="gar_dolg_warning">
-        <text>Сталкер, ты на территории Долга. Будешь буянить - получишь 4-ю степень инвалидности !</text>
+    <string id="gar_direction_fire">
+        <text>Let's allow them to approach closer, so as no one escapes. I'll fire first, then you do.</text>
+    </string>
+    <string id="gar_dolg_blokpost_warning">
+        <text>Stalker, you have entered the territory controlled by Duty faction. Any sign of agression will be severely punished.</text>
     </string>
     <string id="gar_dolg_monster_rush">
-        <text>Всем прием!! Говорит застава Долга на Свалке. Из Темной долины по направлению к Бару идет волна мутантов. Всем, кто поможет отстрелять нечисть - признательность с нашей стороны гарантируем.</text>
+        <text>Attention everyone!! Duty's outpost at the Garbage speaking. The wave of mutants is moving from the Dark Valley to the Bar's direction. Everyone who assists in shooting off the vermins will be granted the gratitude from our side.</text>
+    </string>
+    <string id="gar_dolg_warning">
+        <text>Stalker, you have entered the Duty's territory. Would you try to make any rows - you'll be granted the invalidity!</text>
+    </string>
+    <string id="gar_hellcar_victory">
+        <text>Attaboys, guys, we've defeated them. Everyone rest now, and you stalker come closer, let's have a chat.</text>
     </string>
     <string id="tips_gar_hellcar_alarm">
-        <text>Внимание свободным сталкерам! Говорит Даймон. Бандиты хотят получить контроль над этой территорией. Все, кого это не устраивает и кто в состоянии держать в руках оружие, собираются на кладбище машин.</text>
-    </string>
-	<string id="gar_dolg_blokpost_warning">
-        <text>Сталкер, ты на территории, контролируемой Долгом. Любое проявление агрессии будет наказано.</text>
+        <text>Attention to all available stalkers! Damon is speaking. Bandits want to obtain control over this territory. Everyone who has objections and who is capable to bear arms, gathers at the machinery waste.</text>
     </string>

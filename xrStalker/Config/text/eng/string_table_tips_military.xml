@@ -1,22 +1,30 @@
-
-    <string id="mil_info_max_village">
-        <text>Branded one be careful - it's said that the village has got another anomaly - it's moving very fast, moreover it's hard to notice it, damn.</text>
+    <string id="mil_actor_blockpost">
+        <text>"Stalkers, don't forget about the barrier. Any help is valued."</text>
     </string>
-    <string id="mil_info_max_mines">
-        <text>Remember about the mines - sapper can be mistaken twice...</text>
+    <string id="mil_after_sniper_dead">
+        <text>"Branded one, come up to us. Soon everyone gathers and we'll start the gaiety!"</text>
+    </string>
+    <string id="mil_fblockpost_warning">
+        <text>Branded One, return and assume the position</text>
     </string>
     <string id="mil_info_freedom_radio">
         <text>If you sit the whole night in the village on the Tower - the something is DEFINITELY going to happen... :)</text>
     </string>
-    <string id="mil_sniper_to_player_warning">
-		<text>Branded one, be careful, of you may catch a bullet with your noodle...</text>
+    <string id="mil_info_max_mines">
+        <text>Remember about the mines - sapper can be mistaken twice...</text>
+    </string>
+    <string id="mil_info_max_village">
+        <text>Branded one be careful - it's said that the village has got another anomaly - it's moving very fast, moreover it's hard to notice it, damn.</text>
     </string>
     <string id="mil_info_to_all">
         <text>Attention to everyone interested - the passage to Radar is guarded by the Monolithian troop, I think that you know that they're shooting off everyone who passes by. Good luck.</text>
     </string>
-    <string id="mil_scull_info">
-		<text>Branded one, cope with the stalkers!!!</text>
-    </string>
     <string id="mil_mission_complete">
-		<text>Our task is fulfilled. Thanks for your help.</text>
+        <text>Our task is fulfilled. Thanks for your help.</text>
+    </string>
+    <string id="mil_scull_info">
+        <text>Branded one, cope with the snipers!!!</text>
+    </string>
+    <string id="mil_sniper_to_player_warning">
+        <text>Branded one, be careful, of you may catch a bullet with your noodle...</text>
     </string>

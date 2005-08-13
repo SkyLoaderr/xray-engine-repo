@@ -1,11 +1,11 @@
-    <string id="mil_crazy_flash_info">
-        <text>1: Today we've set off for the new hunt for the arts to the village. Everything like always. \n\n 2: Where have these beasts come from? They're likely to appear from the Radar. Everyone lied down, and I'm sitting on the tower and waiting, when these monsters chill out. I'll try to escape at night...\n\n 3: I can't remember how I get out of there - that was a total nightmare... My head is cleaving - images, sounds, I don't know where do they come from, damn radiation. And the sensor damn it is broken. I have to have a rest, hence I'll feel better.</text>
-    </string>
-    <string id="mil_flash_ugrumy">
-        <text>1: A hell made me go to Radar, I hardly got through - few more time and there could be another exhibit with the washy brains.\n\n 2: Four bandits surrounded me as a newbie, it could happen because of my carelessness - didn't notice an ambush. I've been saved by talkativeness and greediness, instead of riddling me, they've decided to undress me - they laid an eye on my suit. This was their last misstake, but one of them actually was able to damage me, ehh - I'm getting really old...\n\n 3: Gunslinger's messenger wasn't breathing when I arrived. Yes, hardly a man can cope with three bloodsuckers, while that guy did four ones in moreover several more bloodcolored tracks lead into different sides. The only information that he possessed - was the code to the door (19840519), but from which one, we don't have a possibility to find out.\n\n 4: Intercepted the soldiers, who were matching to Radar. They had neither documents not the orders but at least they had ammunition with them. I'm gonna put my RG-6 into the cellar, later I'll return for it.</text>
+    <string id="mil_actor_main_quest">
+        <text>According to general Voronin's words only Freedom grouping has this gun in its possession, so it's up to me how to obtain it. The grouping is bossed over by someone named Lucash and I really doubt that he'll dish RG 6 out to me freely. But, as far as I understand, one of the ways to get hold of it is to warm into Freedom stalker - Cook's confidence, on the words of general he's a great fancy to have a shot. So you should stock up with vodka, it could be of a good use to you.</text>
     </string>
     <string id="mil_courier_doc">
         <text>Messenger documents.</text>
+    </string>
+    <string id="mil_crazy_flash_info">
+        <text>1: Today we've set off for the new hunt for the arts to the village. Everything like always. \n\n 2: Where have these beasts come from? They're likely to appear from the Radar. Everyone lied down, and I'm sitting on the tower and waiting, when these monsters chill out. I'll try to escape at night...\n\n 3: I can't remember how I get out of there - that was a total nightmare... My head is cleaving - images, sounds, I don't know where do they come from, damn radiation. And the sensor damn it is broken. I have to have a rest, hence I'll feel better.</text>
     </string>
     <string id="mil_flash_bandit">
         <text>Damn, bozos from Duty driven us away from the high-grade location. Dug in within our farmside. We haven't even got enough time to take the stuff from the attic. Well alright, the Freedom base is nearby so they'll sooner or later be pushed away from there.</text>
@@ -13,6 +13,6 @@
     <string id="mil_flash_max">
         <text>Today we've cleaned out the militaries, who were matching to the Radar, obtain few RG-6's. Cool stuff. One has been taken by Lucash, the other has been hidden in the house cellar withing the village by Morose</text>
     </string>
-	<string id="mil_actor_main_quest">
-		<text>According to general Voronin's words only Freedom grouping has this gun in its possession, so it's up to me how to obtain it. The grouping is bossed over by someone named Lucash and I really doubt that he'll dish RG 6 out to me freely. But, as far as I understand, one of the ways to get hold of it is to warm into Freedom stalker - Cook's confidence, on the words of general he's a great fancy to have a shot. So you should stock up with vodka, it could be of a good use to you.</text>
-	</string>
+    <string id="mil_flash_ugrumy">
+        <text>1: A hell made me go to Radar, I hardly got through - few more time and there could be another exhibit with the washy brains.\n\n 2: Four bandits surrounded me as a newbie, it could happen because of my carelessness - didn't notice an ambush. I've been saved by talkativeness and greediness, instead of riddling me, they've decided to undress me - they laid an eye on my suit. This was their last misstake, but one of them actually was able to damage me, ehh - I'm getting really old...\n\n 3: Gunslinger's messenger wasn't breathing when I arrived. Yes, hardly a man can cope with three bloodsuckers, while that guy did four ones in moreover several more bloodcolored tracks lead into different sides. The only information that he possessed - was the code to the door (19840519), but from which one, we don't have a possibility to find out.\n\n 4: Intercepted the soldiers, who were matching to Radar. They had neither documents not the orders but at least they had ammunition with them. I'm gonna put my RG-6 into the cellar, later I'll return for it.</text>
+    </string>
