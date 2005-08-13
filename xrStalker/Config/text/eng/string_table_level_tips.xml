@@ -28,51 +28,51 @@
 #include "text\eng\string_table_mapspots_bar.xml"
 #include "text\eng\string_table_mapspots_military.xml"
     <string id="car_use">
-        <text>Открыть дверь ($$ACTION_USE$$)</text>
+        <text>Open door ($$ACTION_USE$$)</text>
     </string>
     <string id="character_use">
-        <text>Говорить ($$ACTION_USE$$)</text>
+        <text>Talk ($$ACTION_USE$$)</text>
     </string>
     <string id="dead_character_use">
-        <text>Обыскать труп ($$ACTION_USE$$)</text>
+        <text>Search corpse ($$ACTION_USE$$)</text>
     </string>
     <string id="general_complete_task">
-        <text>Задание выплонено.</text>
+        <text>Task complete.</text>
     </string>
     <string id="general_fail_task">
-        <text>Задание провалено.</text>
+        <text>Task fail.</text>
     </string>
     <string id="general_help">
         <text>Срочно нужна аптечка, помираю!!!</text>
     </string>
     <string id="general_in_item">
-        <text>Получен предмет.</text>
+        <text>Recieve item.</text>
     </string>
     <string id="general_in_money">
-        <text>Получены деньги.</text>
+        <text>Recieve money.</text>
     </string>
     <string id="general_new_diary">
-        <text>Новая запись в дневнике.</text>
+        <text>New diary article.</text>
     </string>
     <string id="general_new_encyclopedy">
-        <text>Новая статья в энциклопедии.</text>
+        <text>New encyclopedy article.</text>
     </string>
     <string id="general_new_task">
-        <text>Получено новое задание.</text>
+        <text>New task.</text>
     </string>
     <string id="general_out_item">
-        <text>Потерян предмет.</text>
+        <text>Lost item.</text>
     </string>
     <string id="general_out_money">
-        <text>Потеряны деньги.</text>
+        <text>Lost money.</text>
     </string>
     <string id="general_update_task">
-        <text>Задание обновлено.</text>
+        <text>Task update.</text>
     </string>
     <string id="inventory_item_use">
-        <text>Поднять предмет ($$ACTION_USE$$)</text>
+        <text>Take item ($$ACTION_USE$$)</text>
     </string>
     <string id="physic_shell_use">
-        <text>Двигать объект ()</text>
+        <text>Move item ()</text>
     </string>
 </string_table>
