@@ -19,6 +19,15 @@
     <string id="bar_arena_fight_60">
         <text>A minute has passed!</text>
     </string>
+    <string id="bar_arena_fight_70">
+        <text>A minute and 10 seconds passed!</text>
+    </string>
+    <string id="bar_arena_fight_80">
+        <text>A minute and 20 seconds have passed!</text>
+    </string>
+    <string id="bar_arena_fight_90">
+        <text>A minute and a half passed!</text>
+    </string>
     <string id="bar_arena_fight_begin">
         <text>The battle has begun!</text>
     </string>
@@ -32,7 +41,7 @@
         <text>And so! The opponent has defeated the candidate. That was worth seeing!</text>
     </string>
     <string id="bar_arena_fight_lose">
-        <text>And so! The candidate has knocked down the enemy, but didn't fit in time and thus lost!</text>
+        <text>And so! The contender managed to knock down the enemy, but failed to fit in the time given and therefore lost!</text>
     </string>
     <string id="bar_arena_fight_pseudodog">
         <text>Attention everyone! The new round begins soon on the Arena! A warm and fuzzy, but extremely spiteful Pseudo-dog in the left corner! And the came-from-nowhere and going-to-nowhere man in the right corner. Everyone calls him Branded one!</text>
@@ -42,6 +51,9 @@
     </string>
     <string id="bar_arena_fight_snork">
         <text>Attention everyone! The new round begins soon on the Arena! An expert of matrial arts and proper nurition Snork in the left corner! And a man without the past. Everyone calls him Branded one!</text>
+    </string>
+    <string id="bar_arena_fight_timeout">
+        <text>Time is up! The contender has lost, but is still struggling for his life!</text>
     </string>
     <string id="bar_arena_fight_victory">
         <text>And so! The candidate was in time to knock down the opponent and won the match!</text>
@@ -92,22 +104,22 @@
         <text>Kruglov, haven't you dug it yet?! We've knocked down your bloody copter and we demand the information that you're transporting. Once you hand it over to us, you can turn loose around with your guys. This is your last chance to get out of here, gimme the damn flash-drive and get lost.</text>
     </string>
     <string id="bar_psih_come">
-        <text>Срочно дуй сюда! Возле Радара мои ребята отловили спятившего сталкера, сейчас пытаемся его допрашивать.</text>
+        <text>Urgently rush here! Near the Radar my guys have caught a crazy stalker, now trying to interrogate him.</text>
     </string>
     <string id="bar_territory_dolg_1_hit">
-        <text>Меченый, ты что спятил? Немедленно прекрати стрельбу! Это приказ!</text>
+        <text>Branded one, are you off the hook? Stop shooting immediately! This is an order!</text>
     </string>
     <string id="bar_territory_dolg_2_hit">
-        <text>Меченый, немедленно прекрати стрельбу! Если ты ослушаешься приказа ты труп!</text>
+        <text>Branded one, stop firing right now! If you disobey the order, you are dead!</text>
     </string>
     <string id="bar_territory_dolg_3_hit">
-        <text>Меченный. За нарушение кодекса Долга ты изгнан из группировки. Отныне ты наш враг.</text>
+        <text>Branded one. You are banished from the grouping for violating the code of Duty. From now on you are our enemy.</text>
     </string>
     <string id="bar_territory_dolg_kill">
-        <text>Меченый, ты ослушался приказа! Теперь ты труп! Долг такого не прощает!</text>
+        <text>Branded one, you just disobeyed the order! Now you die! The Duty never forgive it!</text>
     </string>
     <string id="bar_territory_nodolg_1_hit">
-        <text>Прекратить стрельбу! На территории Долга стрельба запрещена! Ослушавшиеся будут наказаны!</text>
+        <text>Stop firing! On the territory of Duty shooting is prohibited! The disobeying will be punished!</text>
     </string>
     <string id="bar_territory_nodolg_2_hit">
         <text>Внимание! За нарушение закона о применении оружия на территории Долга, Меченный объявлен преступником.</text>

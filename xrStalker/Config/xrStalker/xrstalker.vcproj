@@ -774,6 +774,9 @@
 						RelativePath=".\Config\text\eng\stable_dialogs.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_aes.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_agroprom.xml">
 					</File>
 					<File
@@ -793,6 +796,9 @@
 					</File>
 					<File
 						RelativePath=".\config\text\eng\stable_dialogs_military.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_pripyat.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_radar.xml">
@@ -861,6 +867,18 @@
 						RelativePath=".\Config\text\eng\string_table_level_tips.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\string_table_mapspots_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_mapspots_bar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_mapspots_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_mapspots_military.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\string_table_news.xml">
 					</File>
 					<File
@@ -910,6 +928,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\string_table_ui.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\test_string.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">

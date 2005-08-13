@@ -17,22 +17,34 @@
         <text>Найти в ангаре архивные документы и принести их капитану Иванцову</text>
     </string>
     <string id="bar_dolg_bring_rg6">
-        <text>Добыть РГ-6 для генерала Воронина</text>
+        <text>Procure RG6 for General Voronin</text>
+    </string>
+    <string id="bar_dolg_community_quest">
+        <text>Entering the Duty grouping</text>
+    </string>
+    <string id="bar_dolg_community_quest_prisyaga">
+        <text>Adjure</text>
+    </string>
+    <string id="bar_dolg_community_quest_recomendation">
+        <text>Receive a reference letter of Captain Ivantsov</text>
+    </string>
+    <string id="bar_dolg_community_quest_vernost">
+        <text>Prove your allegiance to the Duty</text>
     </string>
     <string id="bar_dolg_document_to_ivancov">
-        <text>Отнесите документы капитану Иванцову</text>
+        <text>Deliver the documents to Captain Ivantsov</text>
     </string>
     <string id="bar_dolg_find_cook">
-        <text>Втереться в доверие к повару Свободы и узнать, где хранится РГ-6</text>
+        <text>Worm into the confidence of the Freedom's cook to find out where the RG6 is stored.</text>
     </string>
     <string id="bar_dolg_find_document">
-        <text>Возмите архивные документы в заброшенном ангаре.</text>
+        <text>Pick up archive documents in the abandoned hangar.</text>
     </string>
     <string id="bar_dolg_find_rg6">
-        <text>Проникнуть на территорию группировки Свободы, найти и выкрасть РГ-6</text>
+        <text>Penetrate the territory of the Freedom grouping, locate and steal RG6</text>
     </string>
     <string id="bar_dolg_info_gain">
-        <text>Найти перехваченную информацию о лаборатории X18</text>
+        <text>Locate the intercepted information about laboratory X18</text>
     </string>
     <string id="bar_dolg_kill_borov">
         <text>Найти в Темной долине Борова и убить его</text>
@@ -41,13 +53,13 @@
         <text>Killing the head of Tyran squad. Tear insignia off Tyran's body as a proof to his death</text>
     </string>
     <string id="bar_dolg_return_info">
-        <text>Вернуть информацию о лаборатории X18 генералу Воронину</text>
+        <text>Return the information about laboratory X18 to General Voronin</text>
     </string>
     <string id="bar_dolg_return_rg6">
-        <text>Принести РГ-6 генералу Воронину</text>
+        <text>Deliver RG6 to General Voronin</text>
     </string>
     <string id="bar_dolg_rg6_quest">
-        <text>Задание для вступления в Долг</text>
+        <text>Task for entering the Duty</text>
     </string>
     <string id="bar_dolg_svoboda_ambush_quest">
         <text>Cleansing of Freedom combatants on wild territory</text>
@@ -56,13 +68,13 @@
         <text>Return to general Voronin with Tyran's insignia</text>
     </string>
     <string id="bar_dolg_svoboda_leader_kill_quest">
-        <text>Уничтожение лидера группировки Свободы</text>
+        <text>Elimination of the Freedom grouping leader</text>
     </string>
     <string id="bar_dolg_svoboda_leader_kill_return">
-        <text>Вернуться к генералу Воронину с нашивками Лидера Свободы</text>
+        <text>Return to General Voronin with the Freedom Leader's insignia</text>
     </string>
     <string id="bar_dolg_test_quest">
-        <text>Проверка для вступления в Долг</text>
+        <text>Test for entering the Duty</text>
     </string>
     <string id="bar_drunk_dolg_quest">
         <text>Помочь пьяному долговцу</text>
@@ -91,59 +103,77 @@
     <string id="bar_kill_professor_info">
         <text>Help the Freedom combatants in their hunt on professor Kruglov.</text>
     </string>
+    <string id="bar_kill_professor_kill">
+        <text>Kill Professor Kruglov</text>
+    </string>
+    <string id="bar_kill_professor_reward">
+        <text>Obtain award from the informer in the bar</text>
+    </string>
     <string id="bar_kill_veterans">
         <text>Destroy the camp of mad veterans</text>
     </string>
     <string id="bar_resque_information">
-        <text>Save professor Kruglov.</text>
+        <text>Save the research of Professor Kruglov.</text>
     </string>
     <string id="bar_resque_scientific_information">
-        <text>By all means possible escort professor Kruglov beyond the perimeter of "Rostok".</text>
+        <text>By all means possible save the research results from the hands of the Freedom.</text>
+    </string>
+    <string id="bar_resque_scientific_information_bring">
+        <text>Deliver the flash memory card to bartender.</text>
+    </string>
+    <string id="bar_resque_scientific_information_get">
+        <text>Obtain a flash memory card with the research results from the professor..</text>
     </string>
     <string id="bring_decoding_documents">
         <text>Принести расшифрованные документы бармену</text>
     </string>
     <string id="bring_secret_documents">
-        <text>Принести их бармену</text>
+        <text>Deliver the documents to bartender</text>
     </string>
     <string id="bring_x16_documents">
-        <text>Принести бармену</text>
+        <text>Bring to bartender</text>
     </string>
     <string id="deactivate_radar">
-        <text>Отключить радар</text>
+        <text>Deactivate the radar</text>
     </string>
     <string id="deactivate_radar_now">
-        <text>Отключить радар</text>
+        <text>Deactivate the radar</text>
     </string>
     <string id="decoding_secret_documents">
         <text>Расшифровать документы из секретной лаборатории</text>
     </string>
     <string id="find_and_deactivate_radar">
-        <text>Найти и отключить радар</text>
+        <text>Locate and deactivate the radar</text>
+    </string>
+    <string id="find_darklab_entrance">
+        <text>Locate the laboratory entrance</text>
     </string>
     <string id="find_researchers">
         <text>Передать ученым документы для расшифровки</text>
     </string>
     <string id="find_secret_documents">
-        <text>Найти документы в заброшенной лаборатории</text>
+        <text>Locate the pick up the documents</text>
     </string>
     <string id="find_x16_documents">
-        <text>Найти документы в лаборатории X16</text>
+        <text>Locate the documents in laboratory X16</text>
     </string>
     <string id="find_x16_location">
-        <text>Узнать у ученных местонахождение лаборатории X16</text>
+        <text>Find out from scientists about the location of laboratory X16</text>
+    </string>
+    <string id="get_darklab_key">
+        <text>Obtain the key to the entrance</text>
     </string>
     <string id="mil_svoboda_leader_kill">
-        <text>На территории Военной базы найти и уничтожить лидера группировки Свобода. Снять с трупа нашивки Лидера, как доказательство его смерти</text>
+        <text>On the territory of the Military base locate and neutralise the leader of Freedom grouping. Rip the clan Leader's insignia off as a proof of his death.</text>
     </string>
     <string id="secret_documents_from_darklab">
-        <text>Найти документы в Темной долине</text>
+        <text>Deliver the documents from Laboratory X18</text>
     </string>
     <string id="secret_documents_to_yantar">
         <text>Найти ученых, которые расшифруют документы</text>
     </string>
     <string id="secret_laboratory_documents">
-        <text>Добыть документы из секретной лаборатории</text>
+        <text>Obtain the documents</text>
     </string>
     <string id="x16_documents">
         <text>Найти документы из лаборатории X16</text>
