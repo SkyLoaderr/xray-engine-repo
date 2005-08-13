@@ -133,6 +133,12 @@ function action_wounded:execute ()
 				synsound = wound_manager.sound
 			end
 		end	
+		--жрание аптечек и прочей срани.
+		if self.npc:object("medkit") ~= nil then
+			self.npc:eat(self.npc:object("medkit"))
+		elseif self.npc:object("bandage") ~= nil then
+			self.npc:eat(self.npc:object("bandage"))
+		end   		
 		state_mgr.set_state(self.object, wound_manager.state, nil, nil, {look_object = victim}, nil, synsound)
 	end
 
@@ -193,14 +199,6 @@ function Cwound_manager:update()
 		self.cover	= self:process_cover(hp)
 		self.victim = self:process_victim(hp)
 		self.state, self.sound = self:process_hp_wound(hp)
-		
-		--жрание аптечек и прочей срани.
-		if self.npc:object("medkit") ~= nil then
-			self.npc:eat(self.npc:object("medkit"))
-		elseif self.npc:object("bandage") ~= nil then
-			self.npc:eat(self.npc:object("bandage"))
-		end   
-		
 	else
 		-- устанавливаем пси раненость
 		self.fight = "false"
