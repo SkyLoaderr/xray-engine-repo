@@ -251,8 +251,8 @@
 		<objective>
 			<text>find_x16_documents</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="find_x16_documents">green_location</map_location_type>
-			<object_story_id>bar_decoding_documents</object_story_id>						
+<!--			<map_location_type hint="find_x16_documents">green_location</map_location_type> -->
+<!--			<object_story_id>bar_decoding_documents</object_story_id>						-->
 			<function_complete>darkvalley_tasks.has_x16_documents</function_complete>
 			<infoportion_set_complete>yan_x16_documents_gain</infoportion_set_complete>
 		</objective>
