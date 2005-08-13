@@ -432,77 +432,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_factory_krot_start">
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_factory_krot_start_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_stalker_talk_about_ratcatcher" priority="6">
-        <precondition>dialogs.level_agroprom</precondition>
-        <phrase_list>
-            <phrase id="9999">
-                <text>agr_stalker_talk_about_ratcatcher_9999</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="1000">
-                <text>agr_stalker_talk_about_ratcatcher_1000</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>agr_stalker_talk_about_ratcatcher_21</text>
-            </phrase>
-            <phrase id="140">
-                <text>agr_stalker_talk_about_ratcatcher_140</text>
-            </phrase>
-            <phrase id="131">
-                <text>agr_stalker_talk_about_ratcatcher_131</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="10">
-                <text>agr_stalker_talk_about_ratcatcher_10</text>
-                <next>100</next>
-                <next>1000</next>
-                <next>9999</next>
-            </phrase>
-            <phrase id="120">
-                <text>agr_stalker_talk_about_ratcatcher_120</text>
-                <next>30</next>
-            </phrase>
-            <phrase id="20">
-                <text>agr_stalker_talk_about_ratcatcher_20</text>
-                <next>120</next>
-            </phrase>
-            <phrase id="100">
-                <text>agr_stalker_talk_about_ratcatcher_100</text>
-                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
-                <next>20</next>
-            </phrase>
-            <phrase id="30">
-                <text>agr_stalker_talk_about_ratcatcher_30</text>
-                <next>130</next>
-                <next>131</next>
-            </phrase>
-            <phrase id="130">
-                <text>agr_stalker_talk_about_ratcatcher_130</text>
-                <precondition>agroprom_dialog.has_30_money</precondition>
-                <action>agroprom_dialog.give_30_money_to_stalker_for_info_about_ratcatcher</action>
-                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
-                <give_info>agr_sold_about_ratcatcher</give_info>
-                <next>40</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_stalker_talk_about_ratcatcher_0</text>
-                <next>10</next>
-            </phrase>
-            <phrase id="40">
-                <text>agr_stalker_talk_about_ratcatcher_40</text>
-                <give_info>agr_sold_about_ratcatcher</give_info>
-                <next>140</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_krot_about_agroprom">
         <has_info>agr_help_krot_done</has_info>
         <phrase_list>
@@ -534,6 +463,76 @@
             <phrase id="20">
                 <text>agr_krot_about_agroprom_20</text>
                 <next>120</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_krot_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_krot_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_stalker_talk_about_ratcatcher" priority="6">
+        <precondition>dialogs.level_agroprom</precondition>
+        <phrase_list>
+            <phrase id="9999">
+                <text>agr_stalker_talk_about_ratcatcher_9999</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1000">
+                <text>agr_stalker_talk_about_ratcatcher_1000</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>agr_stalker_talk_about_ratcatcher_21</text>
+            </phrase>
+            <phrase id="140">
+                <text>agr_stalker_talk_about_ratcatcher_140</text>
+            </phrase>
+            <phrase id="20">
+                <text>agr_stalker_talk_about_ratcatcher_20</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="100">
+                <text>agr_stalker_talk_about_ratcatcher_100</text>
+                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
+                <next>20</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_stalker_talk_about_ratcatcher_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_stalker_talk_about_ratcatcher_10</text>
+                <next>100</next>
+                <next>1000</next>
+                <next>9999</next>
+            </phrase>
+            <phrase id="120">
+                <text>agr_stalker_talk_about_ratcatcher_120</text>
+                <next>30</next>
+            </phrase>
+            <phrase id="30">
+                <text>agr_stalker_talk_about_ratcatcher_30</text>
+                <next>130</next>
+                <next>131</next>
+            </phrase>
+            <phrase id="40">
+                <text>agr_stalker_talk_about_ratcatcher_40</text>
+                <give_info>agr_sold_about_ratcatcher</give_info>
+                <next>140</next>
+            </phrase>
+            <phrase id="130">
+                <text>agr_stalker_talk_about_ratcatcher_130</text>
+                <precondition>agroprom_dialog.has_30_money</precondition>
+                <action>agroprom_dialog.give_30_money_to_stalker_for_info_about_ratcatcher</action>
+                <dont_has_info>agr_sold_about_ratcatcher</dont_has_info>
+                <give_info>agr_sold_about_ratcatcher</give_info>
+                <next>40</next>
+            </phrase>
+            <phrase id="131">
+                <text>agr_stalker_talk_about_ratcatcher_131</text>
             </phrase>
         </phrase_list>
     </dialog>
