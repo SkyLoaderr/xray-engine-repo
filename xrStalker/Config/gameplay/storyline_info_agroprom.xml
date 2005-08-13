@@ -20,7 +20,7 @@
     </article>
     
     <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" article_type="task" group="agroprom_get_military_documents/1">
-        <texture x="400" y="650" width="300" height="300">ui\ui_icon_photo</texture>
+        <texture x="400" y="600" width="300" height="300">ui\ui_icon_photo</texture>
         <text>agr_nii_security_plan</text>
     </article>
 
