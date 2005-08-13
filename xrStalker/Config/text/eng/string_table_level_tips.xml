@@ -75,4 +75,29 @@
     <string id="physic_shell_use">
         <text>Move item ()</text>
     </string>
+    
+    <string id="to_escape">
+        <text>To kordon</text>
+    </string>    
+    <string id="to_garbage">
+        <text>To garbage</text>
+    </string>    
+    <string id="to_agroprom">
+        <text>To "Agroprom"</text>
+    </string>    
+    <string id="to_agroprom_underground">
+        <text>To catacombs</text>
+    </string>    
+    <string id="to_darkvalley">
+        <text>To dark valley</text>
+    </string>    
+    <string id="to_bar">
+        <text>To bar</text>
+    </string>    
+    <string id="to_rostok">
+        <text>To "Rostok"</text>
+    </string>    
+    <string id="to_military">
+        <text>To warehouse</text>
+    </string>        
 </string_table>
