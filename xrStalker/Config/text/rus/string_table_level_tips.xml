@@ -88,6 +88,9 @@
     <string id="to_agroprom">
         <text>На "Агропром"</text>
     </string>    
+    <string id="to_agroprom_underground">
+        <text>В катакомбы</text>
+    </string>    
     <string id="to_darkvalley">
         <text>В темную долину</text>
     </string>    
