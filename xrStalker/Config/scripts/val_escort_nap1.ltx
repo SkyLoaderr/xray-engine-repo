@@ -198,7 +198,7 @@ def_state_moving3   = rush
 meet                = meet@ignore
 on_signal           = ambush_start | remark1@wait_for_actor
 on_info             = {+val_escort_combat} remark1@fight
-combat_ignore_cond  = always ;{=check_fighting(407:408) -val_escort_combat}
+combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 wounded             = wounded
 
 ;--------------------------------------------------------------------------
