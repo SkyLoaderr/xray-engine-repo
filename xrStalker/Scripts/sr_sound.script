@@ -204,6 +204,7 @@ function action_sound:on_enter( obj )
 			else
 			   self.snd_obj:play_at_pos( obj, vector ():set (0, 0, 0), self.st.delay, sound_object.s2d )
 			end   
+			printf ("SOUND PLAY %s", snd_name)
 			self.st.signals["sound_end"] = false
 		end
 	end
