@@ -1,0 +1,12 @@
+	<string id="val_zone_bandits_hint">
+		<text>Лагерь бандитов</text>
+	</string>
+	<string id="val_zone_monolith_hint">
+		<text>База монолита</text>
+	</string>
+	<string id="val_zone_robbers_hint">
+		<text>Заброшенная свиноферма</text>
+	</string>
+	<string id="val_zone_south_gate_hint">
+		<text>Ворота</text>
+	</string>
