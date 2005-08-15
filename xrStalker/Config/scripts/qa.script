@@ -1,0 +1,35 @@
+
+local object_list = {}
+object_list["test1"] = {
+		"test1_dog1",
+		"test1_dog2"
+}
+
+object_list["test2"] = {
+		"test1_dog1",
+		"test1_dog2"
+}
+
+-- move all offline
+function offline_all()
+	for a, b in pairs(object_list) do
+		for x, y in pairs(b) do
+			local obj =					level.debug_object(tostring(y))
+			alife():set_switch_online	(obj:id(),false)
+		end
+	end
+end
+
+
+function r(index)
+	
+	offline_all()
+	
+	local tab = object_list["test" .. tostring(index)];
+
+	for a, b in pairs(tab) do
+		local obj =					level.debug_object(tostring(b))
+		alife():set_switch_online	(obj:id(),true)
+	end
+
+end
