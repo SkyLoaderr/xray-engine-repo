@@ -54,6 +54,7 @@
 <!-- Напарник 1 -->
 <info_portion id="val_escort_nap1_go_rescue"></info_portion>
 <info_portion id="val_escort_nap1_no_thanx"></info_portion>
+<info_portion id="val_show_zones"></info_portion>
 
 <!-- Жертвоприношение -->
 <info_portion id="val_sacrifice_not_spawn"></info_portion>
