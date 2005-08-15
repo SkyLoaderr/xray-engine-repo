@@ -3,6 +3,6 @@ function main ()
 	local obj1 	= level.debug_object("test1_dog1")
 	local obj2 	= level.debug_object("test2_dog2")
 	
-	alife().set_switch_online	(obj1:id(),true)
+	alife().set_switch_online	(obj1:id(),false)
 	alife().set_switch_online	(obj2:id(),false)
 end
