@@ -218,6 +218,13 @@ function action_sound:next_point()
 	
 end
 
+function action_sound:deactivate ()
+    if self.snd_obj ~= nil and self.snd_obj:playing () == false then
+       self.snd_obj:stop ()
+       self.snd_obj = nil
+    end    
+end
+
 function action_sound:set_positions()
 	
 	if (self:next_point() == 0) then
