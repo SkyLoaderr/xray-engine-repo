@@ -6,7 +6,7 @@ using namespace luabind;
 
 void CUIMessageBox::script_register(lua_State *L)
 {
-	module(L)
+/*	module(L)
 	[
 		class_<CUIMessageBox,CUIFrameWindow>("CUIMessageBox")
 		.def(					constructor<>())
@@ -24,4 +24,5 @@ void CUIMessageBox::script_register(lua_State *L)
 //		.def("",					&CUIMessageBox::)
 
 	];
+*/
 }

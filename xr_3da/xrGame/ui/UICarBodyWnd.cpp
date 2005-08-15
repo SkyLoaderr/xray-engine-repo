@@ -115,12 +115,12 @@ void CUICarBodyWnd::Init()
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	UIPropertiesBox.Hide();
-
+/*
 	AttachChild(&UIMessageBox);
 	UIMessageBox.Init("ui\\ui_frame", 0, 0, 300, 300);
 	UIMessageBox.AutoCenter();
 	UIMessageBox.Hide();
-	
+*/	
 	//////
 	UIOurBagList.SetCheckProc(OurBagProc);
 	UIOthersBagList.SetCheckProc(OthersBagProc);
@@ -155,7 +155,7 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 
 	m_pMouseCapturer = NULL;
 	UIPropertiesBox.Hide();
-	UIMessageBox.Hide();
+//	UIMessageBox.Hide();
 	EnableAll();
 
 

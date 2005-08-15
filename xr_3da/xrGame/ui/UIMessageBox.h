@@ -1,57 +1,37 @@
-// UIMessageBox.h: 
-//
-// окшко с собщением и конпками
-//////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 
-#include "uiframewindow.h"
-#include "uibutton.h"
-
+#include "UIStatic.h"
 #include "../script_export_space.h"
 
-class CUIMessageBox: public CUIFrameWindow
+class CUI3tButton;
+
+class CUIMessageBox: public CUIStatic
 {
 private:
-	typedef CUIFrameWindow inherited;
+	typedef CUIStatic inherited;
 public:
-	////////////////////////////////////
-	//конструктор/деструктор
-	CUIMessageBox();
-	virtual ~CUIMessageBox();
+				CUIMessageBox		();
+	virtual		~CUIMessageBox		();
 
 	//разновидности MessageBox
 	typedef enum {MESSAGEBOX_OK, MESSAGEBOX_YES_NO, MESSAGEBOX_YES_NO_CANCEL } 
 				E_MESSAGEBOX_STYLE;
 
-	////////////////////////////////////
-	//инициализация
-	virtual void Init(LPCSTR base_name, float x, float y, float width, float height);
-	virtual void SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle);
-			void SetStyle_script(u32 messageBoxStyle){SetStyle((E_MESSAGEBOX_STYLE)messageBoxStyle);};
-	virtual void SetText(LPCSTR str);
+			void Init				(LPCSTR box_template);
+	virtual void SetText			(LPCSTR str);
 
-	virtual void Show();
-	virtual void Hide();
-
-	//автоматическая центровка
-	void AutoCenter();
-
-
-	//сообщения, отправляемые родительскому окну
-//	typedef enum{OK_CLICKED, YES_CLICKED, NO_CLICKED, CANCEL_CLICKED} E_MESSAGE;
-
-	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual bool OnMouse			(float x, float y, EUIMessages mouse_action);
+	virtual void SendMessage		(CUIWindow *pWnd, s16 msg, void *pData);
 
 
 protected:
-	CUIButton m_UIButtonYesOk;
-	CUIButton m_UIButtonNo;
-	CUIButton m_UIButtonCancel;
+	CUI3tButton* m_UIButtonYesOk;
+	CUI3tButton* m_UIButtonNo;
+	CUI3tButton* m_UIButtonCancel;
 
-	CUIStatic m_UIStatic;
+	CUIStatic*	m_UIStaticPicture;
+	CUIStatic*	m_UIStaticText;
 	 
 	E_MESSAGEBOX_STYLE m_eMessageBoxStyle;
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -58,7 +58,7 @@ void CUILine::Clear(){
 	m_subLines.clear();
 }
 
-float CUILine::GetLength(CGameFont* pFont) const{
+float CUILine::GetLength(CGameFont* pFont){
 	float length = 0.0f;
 	int size = m_subLines.size();
 	for (int i=0; i< size; i++)

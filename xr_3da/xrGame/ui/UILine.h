@@ -43,7 +43,7 @@ CUILine& operator=(const CUILine& other);
 	void AddSubLine(const char* str, u32 color);
 	void AddSubLine(const CUISubLine* subLine);
 	void Clear();
-	float  GetLength(CGameFont* pFont)									const;
+	float  GetLength(CGameFont* pFont);
 CUILine* CutByLength(CGameFont* pFont, float length);
 
 	void Draw(CGameFont* pFont, float x, float y)						const;

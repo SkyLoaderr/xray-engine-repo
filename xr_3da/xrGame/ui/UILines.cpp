@@ -60,6 +60,7 @@ void CUILines::Init(float x, float y, float width, float heigt){
 }
 
 void CUILines::SetText(const char* text){
+	if(m_text==text) return;
 	if (!m_pFont)
         m_pFont = UI()->Font()->pFontLetterica16Russian;
 

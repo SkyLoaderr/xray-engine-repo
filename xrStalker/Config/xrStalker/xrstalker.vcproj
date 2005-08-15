@@ -1047,6 +1047,9 @@
 					RelativePath=".\Config\ui\map.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\message_box.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\messages_window.xml">
 				</File>
 				<File

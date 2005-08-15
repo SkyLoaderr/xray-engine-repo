@@ -792,6 +792,8 @@ void CUIMainIngameWnd::Update()
 
 	CUIWindow::Update();
 }
+#include "UIMessageBox.h"
+CUIMessageBox* mb = NULL;
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
@@ -806,33 +808,24 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 	}
 
 	if(dik==DIK_J&&strstr(Core.Params,"andy")){
-		if(!w_){
-			w_ = xr_new<CUIMapHint>	();
-			w_->Init				();
-			w_->SetText("UIPdaOnline. SetTextColor (subst_alpha (UIPdaOnline. GetTextColor(), color_get_A (UIContactsAnimation. GetColor())));");
-			w_->SetWndPos(200.f,200.f);
+//		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+//		if(pGameSP)pGameSP->ChangeLevel(1,1,Fvector(),Fvector());
+		if(!mb){
+			mb = xr_new<CUIMessageBox>		();
+			mb->Init						("message_box_error");
+			HUD().GetUI()->AddDialogToRender(mb);
+//			Game().StartStopMenu			(mb,true);
 		}else{
-			xr_delete						(w_);
+			HUD().GetUI()->RemoveDialogToRender(mb);
+			xr_delete						(mb);
 		}
+		
 	}
 
-	
-/*	if(dik==DIK_O&&strstr(Core.Params,"andy")){
-		ref_shader sh_base, sh_1[1000];
-		sh_base.create("hud\\default","ui\\ui_icons_task");
-		CTimer T;
-		T.Start();
-		for (int i=0; i<1000; ++i){
-			sh_1[i].create("hud\\default","ui\\ui_icons_task");
-		}
-		Msg("--creating shader consumed [%d] ms",T.GetElapsed_ms()/1000);
-	}*/
 	// поддержка режима adjust hud mode
 	bool flag = false;
 	if (g_bHudAdjustMode)
 	{
-//		bool bCamFirstEye = pActor->cam_Active()==pActor->cam_FirstEye();
-
 		CWeaponHUD *pWpnHud = NULL;
 		if (m_pWeapon)
 		{

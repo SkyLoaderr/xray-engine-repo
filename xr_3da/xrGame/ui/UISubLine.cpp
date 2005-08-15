@@ -62,11 +62,26 @@ float CUISubLine::GetLength(CGameFont* pFont) const{
 	return (pFont->SizeOfRel(m_text.c_str()));
 }
 
-float CUISubLine::GetVisibleLength(CGameFont* pFont) const{
+float CUISubLine::GetVisibleLength(CGameFont* pFont){
+/*
+	int end = (int)m_text.find_last_not_of(' ');
+	bool b = (end!=m_text.npos);
+	if(b)
+		m_text[end+1] = 0;
+	
+	float res = (pFont->SizeOfRel(m_text.c_str()));
+	
+	if(b)
+		m_text[end+1] = ' ';
+
+	return res;
+*/
+
 	xr_string text;
 	StrSize end = m_text.find_last_not_of(' ');
 
 	text.assign(m_text, 0, end + 1);
 
 	return (pFont->SizeOfRel(text.c_str()));
+
 }

@@ -19,7 +19,7 @@ class CInventory;
 
 #include "UIEditBox.h"
 #include "UIListWnd.h"
-#include "UIMessageBox.h"
+//#include "UIMessageBox.h"
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
@@ -93,7 +93,7 @@ protected:
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
 	//окно с сообщением
-	CUIMessageBox	 UIMessageBox;
+//	CUIMessageBox	 UIMessageBox;
 
 	DD_ITEMS_VECTOR m_vDragDropItems;
 
