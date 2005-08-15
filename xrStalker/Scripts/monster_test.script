@@ -5,6 +5,6 @@ function main ()
 	
 	printf("Holly Shit!!!")
 	
-	--alife().set_switch_online	(obj1:id(),false)
-	--alife().set_switch_online	(obj2:id(),false)
+	alife().set_switch_online	(obj1:id(),false)
+	alife().set_switch_online	(obj2:id(),false)
 end
