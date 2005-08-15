@@ -15,6 +15,7 @@
 #include "ui/UIPdaWnd.h"
 #include "ui/UITalkWnd.h"
 #include "ui/UICarBodyWnd.h"
+#include "ui/UIMessageBox.h"
 
 CUIGameSP::CUIGameSP()
 {
@@ -25,6 +26,7 @@ CUIGameSP::CUIGameSP()
 	PdaMenu			= xr_new<CUIPdaWnd>			();
 	TalkMenu		= xr_new<CUITalkWnd>		();
 	UICarBodyMenu	= xr_new<CUICarBodyWnd>		();
+	UIChangeLevelWnd= xr_new<CChangeLevelWnd>		();
 
 }
 
@@ -35,6 +37,7 @@ CUIGameSP::~CUIGameSP()
 	delete_data(PdaMenu);	
 	delete_data(TalkMenu);
 	delete_data(UICarBodyMenu);
+	delete_data(UIChangeLevelWnd);
 }
 
 void CUIGameSP::SetClGame (game_cl_GameState* g)
@@ -133,3 +136,47 @@ void CUIGameSP::ReInitInventoryWnd		()
 	if (InventoryMenu->IsShown()) 
 		InventoryMenu->InitInventory(); 
 };
+
+void CUIGameSP::ChangeLevel				(u32 game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
+{
+	UIChangeLevelWnd->m_game_vertex_id		= game_vert_id;
+	UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
+	UIChangeLevelWnd->m_position			= pos;
+	UIChangeLevelWnd->m_angles				= ang;
+
+	m_game->StartStopMenu(UIChangeLevelWnd,true);
+}
+
+
+CChangeLevelWnd::CChangeLevelWnd		()
+{
+	m_messageBox			= xr_new<CUIMessageBox>();	m_messageBox->SetAutoDelete(true);
+	SetWndPos				(200.0f,200.0f);
+	SetWndSize				(Fvector2().set(300.0f,150.0f));
+	AttachChild				(m_messageBox);
+	m_messageBox->Init		("message_box_error");
+//	m_messageBox->AutoCenter();
+//	m_messageBox->SetStyle	(CUIMessageBox::MESSAGEBOX_YES_NO);
+	m_messageBox->SetText	("Leave current level and jump to another ?");
+}
+
+void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
+{
+	if(pWnd==m_messageBox){
+		if(msg==MESSAGE_BOX_YES_CLICKED){
+			Game().StartStopMenu	(this, true);
+			NET_Packet		p;
+			p.w_begin		(M_CHANGE_LEVEL);
+			p.w				(&m_game_vertex_id,sizeof(m_game_vertex_id));
+			p.w				(&m_level_vertex_id,sizeof(m_level_vertex_id));
+			p.w_vec3		(m_position);
+			p.w_vec3		(m_angles);
+
+//			Level().Send	(m_net_packet,net_flags(TRUE));
+		}
+	}else{
+		if(msg==MESSAGE_BOX_NO_CLICKED){
+			Game().StartStopMenu	(this, true);
+		}
+	}
+}

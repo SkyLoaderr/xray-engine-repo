@@ -262,7 +262,8 @@ CUIGlobalMap::~CUIGlobalMap()
 
 void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
-	inherited::Init(name, gameLtx, sh_name);
+	inherited::Init			(name, gameLtx, sh_name);
+	SetMaxZoom				(gameLtx.r_float(m_name,"max_zoom"));
 }
 
 

@@ -55,6 +55,7 @@ private:
 	shared_str		m_prev_active_map;
 	CUIMapWnd*		m_mapWnd;
 	float			m_minZoom;
+	float			m_max_zoom;
 public:
 
 	virtual Fvector2 ConvertRealToLocal		(const Fvector2& src);// pixels->pixels (relatively own left-top pos)
@@ -64,7 +65,8 @@ public:
 	
 	IC void			SetMinZoom				(float zoom){m_minZoom=zoom;}
 	IC float		GetMinZoom				(){return m_minZoom;}
-	IC float		GetMaxZoom				(){return 8.0f;}
+	IC float		GetMaxZoom				(){return m_max_zoom;}
+	IC void			SetMaxZoom				(float zoom){m_max_zoom = zoom;}
 
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();
