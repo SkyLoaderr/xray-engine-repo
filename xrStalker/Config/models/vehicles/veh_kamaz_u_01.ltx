@@ -1,4 +1,4 @@
-                                [disable]
+[disable]
 linear_factor			= 0.5
 angular_factor    		= 0.5
 
@@ -7,16 +7,16 @@ angular_factor    		= 0.5
 
 [car_definition]
 
-camera_pos        = -0.7, 2.5, 3.0
+camera_pos        		= -0.7, 2.5, 3.0
 
-driving_wheels    = back_left_wheel,back_right_wheel,front_left_wheel,front_right_wheel,back_left_wheel2,back_right_wheel2   ; ведущие колёса
-steering_wheels   = front_left_wheel,front_right_wheel                                    ; рулевые колёса
-breaking_wheels   = back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2   ; тормозящие колёса
-doors             = left_door,right_door                                                  ; двери
-steer             = stearing_wheel                                                        ; руль
-driver_place      = seat_left                                                             ; место водителя
-exhausts          = exhausts                                                              ; выхлопная труба
-exhaust_particles = vehiclefx\exhausts\exhaust_kamaz
+driving_wheels    		= back_left_wheel,back_right_wheel,front_left_wheel,front_right_wheel,back_left_wheel2,back_right_wheel2   ; ведущие колёса
+steering_wheels   		= front_left_wheel,front_right_wheel                                    ; рулевые колёса
+breaking_wheels   		= back_left_wheel,back_right_wheel,back_left_wheel2,back_right_wheel2   ; тормозящие колёса
+doors             		= left_door,right_door                                                  ; двери
+steer             		= stearing_wheel                                                        ; руль
+driver_place      		= seat_left                                                             ; место водителя
+exhausts          		= exhausts                                                              ; выхлопная труба
+exhaust_particles 		= vehiclefx\exhausts\exhaust_kamaz
 damage              	= damage_bones
 
 ;-------------------------------------------------------------------------------
@@ -67,32 +67,32 @@ N4                 		= 0.96, 2500,3850
 ;------ Rest Adjustment --------------------------------------------------------
 
 [lights]
-headlights         = f1,f2
+headlights         		= f1,f2
 
 [f1]
-bone               = left_light
-color              = 0.6,0.6,0.6,0.5
-range              = 25
-cone_angle         = 80
-spot_texture       = lights\lights_blamplight
-glow_texture       = glow\glow_Yellow
-glow_radius        = 0.5
+bone               		= left_light
+color              		= 0.6,0.6,0.6,0.5
+range              		= 25
+cone_angle         		= 80
+spot_texture       		= lights\lights_blamplight
+glow_texture       		= glow\glow_Yellow
+glow_radius        		= 0.5
 
 [f2]
-bone               = right_light
-color              = 0.6,0.6,0.6,0.6
-range              = 25
-cone_angle         = 80
-spot_texture       = lights\lights_blamplight
-glow_texture       = glow\glow_Yellow
-glow_radius        = 0.5
+bone               		= right_light
+color              		= 0.6,0.6,0.6,0.6
+range              		= 25
+cone_angle         		= 80
+spot_texture       		= lights\lights_blamplight
+glow_texture       		= glow\glow_Yellow
+glow_radius        		= 0.5
 
 [car_sound]
-snd_volume         = 1.0
-snd_name           = car\car2
-transmission_switch = car\car_gearchange
-explosion_sound    = weapons\heli_explosion
-relative_pos       = 0.0,0.5,3.0.
+snd_volume         		= 1.0
+snd_name           		= car\car2
+transmission_switch		= car\car_gearchange
+explosion_sound    		= weapons\heli_explosion
+relative_pos       		= 0.0,0.5,3.0.
 
 ;-------------------------------------------------------------------------------
 ;------ animations params ------------------------------------------------------
@@ -109,53 +109,53 @@ driver_animation_type 	= 0	;тип анимаций актера для данной машины.
 
 [damage_particles]
 
-explosion_particles             = explosions\expl_car
-car_damage_particles1           = explosions\expl_car_smoke_small
-car_damage_particles2           = explosions\expl_car_smoke_big
-wheels_damage_particles1        = vehiclefx\exhaust_1
-wheels_damage_particles2        = vehiclefx\exhaust_1
+explosion_particles		= explosions\expl_car
+car_damage_particles1	= explosions\expl_car_smoke_small
+car_damage_particles2	= explosions\expl_car_smoke_big
+wheels_damage_particles1	= vehiclefx\exhaust_1
+wheels_damage_particles2	= vehiclefx\exhaust_1
 
-particle_bones1                 = kabina; root;left_door,right_door
-particle_bones2                 = root ;kabina
+particle_bones1			= kabina; root;left_door,right_door
+particle_bones2			= root ;kabina
 
 ;-------------------------------------------------------------------------------
 ;------ particle bones ---------------------------------------------------------
 
 [particle_bones]
-root                  =  1.5,-0.5,1
-back_left_wheel       =  0,0,0
-back_right_wheel      =  0,0,0
-front_left_wheel      =  0,0,0
-front_right_wheel     =  0,0,0
-kabina                =  1.3,-0.5,-1
-left_door             =  0,0,0
-right_door            =  0,0,0
-
+root                  	=  1.5,-0.5,1
+back_left_wheel       	=  0,0,0
+back_right_wheel      	=  0,0,0
+front_left_wheel      	=  0,0,0
+front_right_wheel     	=  0,0,0
+kabina                	=  1.3,-0.5,-1
+left_door             	=  0,0,0
+right_door            	=  0,0,0
+						
 ;-------------------------------------------------------------------------------
 ;------ damage items -----------------------------------------------------------
 
 [damage_items]
-back_left_wheel       = 5000
-back_right_wheel      = 5000
-front_left_wheel      = 5000
-front_right_wheel     = 5000
-left_door             = 2000
-right_door            = 2000
+back_left_wheel       	= 5000
+back_right_wheel      	= 5000
+front_left_wheel      	= 5000
+front_right_wheel     	= 5000
+left_door             	= 2000
+right_door            	= 2000
 
 ;-------------------------------------------------------------------------------
 ;------ collisiondamage --------------------------------------------------------
 
 [collision_damage]
-root                  = 0.0001
-kabina                = 0.0001
-left_door             = 0.0001
-right_door            = 0.0001
-back_left_wheel       = 0.00001
-back_right_wheel      = 0.00001
-back_left_wheel2      = 0.00001
-back_right_wheel2     = 0.00001
-front_left_wheel      = 0.00001
-front_right_wheel     = 0.00001
+root                  	= 0.0001
+kabina                	= 0.0001
+left_door             	= 0.0001
+right_door            	= 0.0001
+back_left_wheel       	= 0.00001
+back_right_wheel      	= 0.00001
+back_left_wheel2      	= 0.00001
+back_right_wheel2     	= 0.00001
+front_left_wheel      	= 0.00001
+front_right_wheel     	= 0.00001
 
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
@@ -168,15 +168,15 @@ front_right_wheel     = 0.00001
 default       			= 1, -1, 0.1
 
 [immunities]
-burn_immunity         = 0.5             ;коэффициенты иммунитета
-strike_immunity       = 0.01
-shock_immunity        = 0.01
-wound_immunity        = 0.01
-radiation_immunity    = 0.01
-telepatic_immunity    = 0.01
-chemical_burn_immunity = 0.01
-explosion_immunity    = 0.1
-fire_wound_immunity   = 0.01
+burn_immunity         	= 0.5             ;коэффициенты иммунитета
+strike_immunity       	= 0.01
+shock_immunity        	= 0.01
+wound_immunity        	= 0.01
+radiation_immunity    	= 0.01
+telepatic_immunity    	= 0.01
+chemical_burn_immunity 	= 0.01
+explosion_immunity    	= 0.1
+fire_wound_immunity   	= 0.01
 
 ;-------------------------------------------------------------------------------
 ;----------------explosion params-----------------------------------------------
