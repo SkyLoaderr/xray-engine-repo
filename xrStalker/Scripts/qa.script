@@ -37,43 +37,77 @@ object_list["test5"] = {
 		"test5_dog2"
 }
 
+object_id_list = {}
+
+
+function object_online(object_id)
+	return (alife() == nil) or alife():object(object_id).online
+end
 
 -- move all offline
 function offline_all()
 	for a, b in pairs(object_list) do
 		for x, y in pairs(b) do
 			local obj =					level.debug_object(tostring(y))
-			alife():set_switch_online	(obj:id(),false)
+			if ((obj ~= nil) and (object_online(obj:id()))) then
+				alife():set_switch_online	(obj:id(),false)
+				alife():set_switch_offline	(obj:id(),true)
+			end
 		end
 	end
 end
 
--- move all offline
-function take_under_script()
-	for a, b in pairs(object_list) do
-		for x, y in pairs(b) do
-			--local obj =		level.debug_object(tostring(y))
-			local obj =		debug_get_level_object(tostring(y))
-			obj:script		( true, script_name() )
+function online_scene(index)
+	debug()
+
+	local tab = object_id_list["test" .. tostring(index)];
+
+	for a, b in pairs(tab) do
+		local obj =	level.object_by_id(tonumber(b))
+		if (obj ~= nil) then
+			alife():set_switch_online	(obj:id(),true)
+			alife():set_switch_offline	(obj:id(),false)
+		else 
+			printf(":: DEBUG : Error finding object by id")
 		end
 	end
 end
 
 
 function r(index)
-	
 	offline_all()
-	
-	local tab = object_list["test" .. tostring(index)];
+	online_scene(index)
+end
 
-	for a, b in pairs(tab) do
-		local obj =					level.debug_object(tostring(b))
-		alife():set_switch_online	(obj:id(),true)
+
+function save_object_id()
+	for a, b in pairs(object_list) do
+		local tab = {}
+		for x, y in pairs(b) do
+			local obj =	level.debug_object(tostring(y))
+			if (obj ~= nil) then
+				table.insert(tab,tonumber(obj:id()))
+			end
+		end
+		object_id_list[tostring(a)] = tab
 	end
+end
 
+function debug()
+	for a, b in pairs(object_id_list) do
+		printf(":: TEST : test [%s]", tostring(a))
+		for x, y in pairs(b) do
+			local obj =	level.object_by_id(tonumber(y))
+			if (obj ~= nil) then
+				printf(":: TEST : obj_name = [%s] id =[%u]",obj:name(), tonumber(y))
+			end
+		end
+	end
 end
 
 function main()
-	--printf(":: Hello")
-	--take_under_script()
+	wait_game(2000)
+	save_object_id()
+	debug()
+	offline_all()
 end
