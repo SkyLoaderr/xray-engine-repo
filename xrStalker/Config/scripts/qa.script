@@ -73,5 +73,6 @@ function r(index)
 end
 
 function main()
+	printf(":: Hello")
 	take_under_script()
 end
