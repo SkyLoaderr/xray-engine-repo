@@ -1,14 +1,42 @@
 
 local object_list = {}
+
+object_list["test0"] = {
+		"test0_dog1"
+}
+
 object_list["test1"] = {
 		"test1_dog1",
 		"test1_dog2"
 }
 
 object_list["test2"] = {
-		"test1_dog1",
-		"test1_dog2"
+		"test2_dog1",
+		"test2_dog2",
+		"test2_dog3",
+		"test2_dog4",
+		"test2_dog5",
+		"test2_dog6"
+		
 }
+
+object_list["test3"] = {
+		"test3_controller1"
+}
+
+object_list["test4"] = {
+		"test4_controller1",
+		"test4_controller2"
+}
+
+object_list["test5"] = {
+		"test5_controller1",
+		"test5_flesh1",
+		"test5_flesh2",
+		"test5_dog1",
+		"test5_dog2"
+}
+
 
 -- move all offline
 function offline_all()
