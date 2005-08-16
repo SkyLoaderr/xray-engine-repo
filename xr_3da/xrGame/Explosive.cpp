@@ -216,14 +216,14 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 			blasted_obj->setEnabled(TRUE);return 1.f;
 		}
 		l_dir.mul(1.f/mag);
-		#ifdef DEBUG
+#ifdef DEBUG
 			if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
 			{
 			DBG_DrawPoint(l_source_p,0.1f,D3DCOLOR_XRGB(0,0,255));
 			DBG_DrawPoint(l_end_p,0.1f,D3DCOLOR_XRGB(0,0,255));
 			DBG_DrawLine(l_source_p,l_end_p,D3DCOLOR_XRGB(0,0,255));
 			}
-		#endif
+#endif
 		
 	
 		float l_S=effective_volume*(_abs(l_dir.dotproduct(obj_xform.i))/l_d.x+_abs(l_dir.dotproduct(obj_xform.j))/l_d.y+_abs(l_dir.dotproduct(obj_xform.k))/l_d.z);
@@ -248,12 +248,11 @@ float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,flo
 #ifdef DEBUG
 		SExpQParams			ep		(source_p,dir);
 #else
-		SExpQParams			ep		();
+		SExpQParams			ep;
 #endif
-
-
 		g_pGameLevel->ObjectSpace.RayQuery(storage,RD,grenade_hit_callback,&ep);
 		shoot_factor=ep.shoot_factor;
+
 	
 	}
 	else return dist_factor;
