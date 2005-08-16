@@ -1,0 +1,46 @@
+-- звук реакции пилотов вертолёта на разные события
+-- Чугай
+
+snd_see_enemy = {
+	sound_object( [[characters_voice\human_01\scenario\aes\aes_choper_hunt_1]] )
+}
+
+snd_hit = {
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_1]] ),
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_2]] ),
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_3]] ),
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_4]] ),
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_5]] ),
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_6]] ),
+	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_7]] )
+}
+
+snd_damaged = {
+	sound_object( [[characters_voice\human_01\scenario\aes\aes_choper_hunt_2]] )
+}
+
+snd_down = {
+	sound_object( [[characters_voice\human_01\fight\death\stalker\death_5]] )
+}
+
+--------------------------------------------------------------------------------
+
+function play_snd( st, snd_set, priority )
+	if not st.snd_obj or
+	   not st.snd_obj:playing() or
+	   st.snd_priority < priority
+	then
+		stop_snd( st )
+
+		st.snd_obj = snd_set[math.random( 1, table.getn( snd_set ) )]
+		st.snd_obj:play( db.actor, 0, sound_object.s2d )
+
+		st.snd_priority = priority
+	end
+end
+
+function stop_snd( st )
+	if st.snd_obj then
+		st.snd_obj:stop()
+	end
+end

@@ -8,6 +8,11 @@ Helicoter binding
 
 local heli_ltx = ini_file( "creatures\\helicopter.ltx" )
 
+
+---------------------------------------------------------------------------------------------
+-- ‘ункци€ дл€ бинда
+---------------------------------------------------------------------------------------------
+
 function bind( obj )
     printf( "BIND HELICOPTER id=%d", obj:id() )
 
@@ -52,6 +57,8 @@ function heli_binder:reinit()
 	self.st.heli_ltx = heli_ltx
 
 	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
+
+	self.last_hit_snd_timeout = 0
 
 	-- на случай загрузки
 	self.st.last_alt       = self.heliObject:GetRealAltitude()
@@ -117,6 +124,51 @@ function heli_binder:load( packet )
 	self.st.combat:load( packet )
 end
 
+function heli_binder:check_health()
+	local heli = self.heliObject
+
+--	printf( "heli health: %d", heli:GetfHealth() )
+
+	if not heli.m_dead then
+		local health = get_heli_health( self.heliObject, self.st )
+
+		if health < 30 and not heli.m_flame_started then
+			heli_start_flame( self.object )
+
+			heli_snd.play_snd( self.st, heli_snd.snd_damaged, 3 )
+		end
+
+		if health <= 0.5 and not self.st.immortal then
+			heli_die( self.object )
+
+			heli_snd.play_snd( self.st, heli_snd.snd_down, 4 )
+		end
+	elseif not heli.m_exploded then
+		-- вертолЄт должен взорватьс€, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
+		local altitude = heli:GetRealAltitude()
+
+		if altitude < 3.0 then
+--			printf( "heli: explode" )
+			self.heliObject:Explode()
+
+			heli_snd.stop_snd( self.st )
+		end
+
+		if self.st.alt_check_time < time_global() then
+			self.st.alt_check_time = time_global() + 500
+
+			if self.st.last_alt - altitude < 1 then
+--				printf( "heli: explode (hanged)" )
+				heli:Explode()
+
+				heli_snd.stop_snd( self.st )
+			end
+
+			self.st.last_alt = altitude
+		end
+	end
+end
+
 ------------------------------ callbacks ---------------------------------
 function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
 	printf( "heli_binder: hit callback" )
@@ -127,6 +179,11 @@ function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
 
 	if self.st.hit then
 		xr_logic.issue_event( self.object, self.st.hit, "hit_callback", self.object, power, nil, level.object_by_id( enemy_id ), nil )
+	end
+
+	if self.last_hit_snd_timeout < time_global() then
+		heli_snd.play_snd( self.st, heli_snd.snd_hit, 2 )
+		self.last_hit_snd_timeout = time_global() + math.random( 4000, 8000 )
 	end
 end
 
@@ -157,43 +214,6 @@ end
 
 function is_heli_alive( obj )
 	return get_heli_health( obj:get_helicopter(), db.storage[obj:id()] ) > 0.5
-end
-
-function heli_binder:check_health()
-	local heli = self.heliObject
-
---	printf( "heli health: %d", heli:GetfHealth() )
-
-	if not heli.m_dead then
-		local health = get_heli_health( self.heliObject, self.st )
-
-		if health < 30 and not heli.m_flame_started then
-			heli_start_flame( self.object )
-		end
-
-		if health <= 0.5 and not self.st.immortal then
-			heli_die( self.object )
-		end
-	elseif not heli.m_exploded then
-		-- вертолЄт должен взорватьс€, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
-		local altitude = heli:GetRealAltitude()
-
-		if altitude < 3.0 then
---			printf( "heli: explode" )
-			self.heliObject:Explode()
-		end
-
-		if self.st.alt_check_time < time_global() then
-			self.st.alt_check_time = time_global() + 500
-
-			if self.st.last_alt - altitude < 1 then
---				printf( "heli: explode (hanged)" )
-				heli:Explode()
-			end
-
-			self.st.last_alt = altitude
-		end
-	end
 end
 
 function heli_start_flame( obj )
