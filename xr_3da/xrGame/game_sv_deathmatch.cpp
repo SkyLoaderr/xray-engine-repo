@@ -36,6 +36,9 @@ game_sv_Deathmatch::game_sv_Deathmatch()
 
 	m_level_graph			= 0;
 	m_graph_engine			= 0;
+	//-------------------------------
+	m_vFreeRPoints.clear();
+	m_dwLastRPoint = u32(-1);
 };
 
 game_sv_Deathmatch::~game_sv_Deathmatch()
@@ -64,7 +67,8 @@ game_sv_Deathmatch::~game_sv_Deathmatch()
 
 	xr_delete				(m_graph_engine);
 	xr_delete				(m_level_graph);
-	
+	//-------------------------------------------------------------
+	m_vFreeRPoints.clear();
 };
 
 void	game_sv_Deathmatch::Create					(shared_str& options)
@@ -105,6 +109,11 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	};
 
 	inherited::OnRoundStart	();
+
+	//-------------------------------------
+	m_vFreeRPoints.clear();
+	m_dwLastRPoint = u32(-1);
+	//-------------------------------------
 
 	// Respawn all players and some info
 	u32		cnt = get_players_count();
@@ -635,8 +644,45 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 		if (ps->team == pA->s_team && !teams.empty()) pFriends.push_back(it);
 		else pEnemies.push_back(it);
 	};
+	//-------------------------------------------------------------------------------
+	if (m_vFreeRPoints.empty())
+	{
+		for (u32 i=0; i<rp.size(); i++)
+		{
+			if (i==m_dwLastRPoint) continue;
+			m_vFreeRPoints.push_back(i);
+		}
+	};
+	R_ASSERT(m_vFreeRPoints.size());
+	xr_vector<RPointData>	tmpPoints;
+	for (u32 i=0; i<m_vFreeRPoints.size(); i++)
+	{
+		RPoint&				r	= rp[m_vFreeRPoints[i]];
+		float MinEnemyDist = 10000.0f;
+		for (u32 e=0; e<pEnemies.size(); e++)
+		{
+			xrClientData* xrCData	=	m_server->ID_to_client(get_it_2_id(pEnemies[e]));
+			if (!xrCData || !xrCData->owner) continue;
 
+			CSE_Abstract* pOwner = xrCData->owner;
+			float Dist = r.P.distance_to_sqr(pOwner->o_Position);
 
+			if (MinEnemyDist > Dist) MinEnemyDist = Dist;
+		};
+		tmpPoints.push_back(RPointData(i, MinEnemyDist, false));
+	}
+	R_ASSERT(tmpPoints.size());
+	std::sort(tmpPoints.begin(), tmpPoints.end());
+	u32 HalfList = tmpPoints.size()/(pEnemies.empty() ? 1 : 2);
+	u32 NewPointID = (HalfList) ? (tmpPoints.size()-HalfList + ::Random.randI(HalfList)) : 0;
+
+	m_dwLastRPoint = m_vFreeRPoints[tmpPoints[NewPointID].PointID];
+	m_vFreeRPoints.erase(m_vFreeRPoints.begin() + tmpPoints[NewPointID].PointID);
+
+	RPoint&	r	= rp[m_dwLastRPoint];
+//	Msg("-------------- used %d", m_dwLastRPoint);
+	//-------------------------------------------------------------------------------
+	/*
 	u8 OldTeam = pA->s_team;
 	pA->s_team = u8(Team);
 	
@@ -706,16 +752,16 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 		};
 	};
 	ps_who->m_s16LastSRoint = ps_who->pSpawnPointsList[PointID];
-	//		Msg("used %d", ps_who->m_s16LastSRoint);
+	
 	ps_who->pSpawnPointsList.erase(ps_who->pSpawnPointsList.begin()+PointID);
 
 	RPoint&				r	= rp[ps_who->m_s16LastSRoint];
 	SetPointFreezed(&r);
-
+*/
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
 
-	pA->s_team = OldTeam;		
+//	pA->s_team = OldTeam;		
 	
 };
 
@@ -724,8 +770,10 @@ bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
 	for (u8 i=0; i<TeamList.size(); i++)
 	{
 		TEAM_WPN_LIST	WpnList = TeamList[i].aWeapons;
-		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), ItemName);
-		if (pWpnI != WpnList.end() && ((*pWpnI) == ItemName)) return true;
+///		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), ItemName);
+//		if (pWpnI != WpnList.end() && ((*pWpnI) == ItemName)) return true;
+		WeaponDataStruct* pWpnS = NULL;
+		if (GetTeamItem_ByName(&pWpnS, &WpnList, ItemName)) return true;
 	};
 	return false;
 };
@@ -739,9 +787,10 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 	WeaponDataStruct* pWpnS = NULL;
 
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), *(pItem->object().cNameSect()));
-	if (pWpnI == WpnList.end() || !((*pWpnI) == *(pItem->object().cNameSect()))) return;
-	pWpnS = &(*pWpnI);
+//	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), *(pItem->object().cNameSect()));
+//	if (pWpnI == WpnList.end() || !((*pWpnI) == *(pItem->object().cNameSect()))) return;
+//	pWpnS = &(*pWpnI);
+	if (!GetTeamItem_ByName(&pWpnS, &WpnList, *(pItem->object().cNameSect()))) return;
 	//-------------------------------------------
 	bool	found = false;
 	for (u32 it = 0; it < pItemsDesired->size(); it++)
@@ -909,13 +958,16 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	for (u32 i = 0; i<ps->pItemList.size(); i++)
 	{
 		u16 ItemID = ps->pItemList[i];
-		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (ItemID & 0xFF1f));
+//		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (ItemID & 0xFF1f));
+//		if (pWpnI == WpnList.end() || !((*pWpnI) == (ItemID & 0xFF1f))) continue;
+		WeaponDataStruct* pWpnS = NULL;
+		if (!GetTeamItem_ByID(&pWpnS, &WpnList, ItemID)) continue;
 
-		if (pWpnI == WpnList.end() || !((*pWpnI) == (ItemID & 0xFF1f))) continue;
-
-		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
+//		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
+		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		//-------------------------------------------------------------------------------
-		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
+//		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
+		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, pWpnS->WeaponName.c_str());
 	};
 	
 	Player_AddMoney(ps, ps->LastBuyAcount);
@@ -1010,10 +1062,12 @@ void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, TEAM_WPN_LIST *pW
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
-		TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
-		if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) continue;
+//		TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
+//		if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) continue;
+		WeaponDataStruct* pWpnS = NULL;
+		if (!GetTeamItem_ByName(&pWpnS, pWpnList, ItemName)) continue;
 		
-		pDefItems->push_back((*pWpnI).SlotItem_ID);
+		pDefItems->push_back(pWpnS->SlotItem_ID);
 	};
 };
 
@@ -1237,56 +1291,6 @@ void game_sv_Deathmatch::Money_SetStart			(ClientID	id_who)
 	ps_who->money_for_round = pTeamData->m_iM_Start;
 }
 
-/*
-s16 game_sv_Deathmatch::GetItemCost			(u32 id_who, s16 ItemID)
-{
-	s16	res = 0;
-	game_PlayerState*	ps	=	get_id	(id_who);
-	if (!ps) return res;
-
-	if (!(ps->team < s16(TeamList.size()))) return res;
-
-	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-	
-	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (ItemID & 0xFF1f));
-	
-	if (pWpnI == WpnList.end() || (*pWpnI).SlotItem_ID != (ItemID & 0xFF1f)) return res;
-
-	WeaponDataStruct* pWpnS = &(*pWpnI);
-	res = s16(pWpnS->Cost);
-	//--------- Addons -----------------------------
-	u8 Addons = (u8(ItemID & 0x00ff)) >> 0x05;
-	
-	string256 AddonName;
-	if (Addons & CSE_ALifeItemWeapon::eWeaponAddonScope)
-	{
-		if (pSettings->line_exist(pWpnS->WeaponName.c_str(), "scope_name"))
-		{
-			std::strcpy(AddonName, pSettings->r_string(pWpnS->WeaponName.c_str(), "scope_name"));
-			TEAM_WPN_LIST_it pWpnAddon	= std::find(WpnList.begin(), WpnList.end(), AddonName);
-			if (pWpnAddon != WpnList.end() && ((*pWpnAddon) == AddonName))
-			{
-				res = res + s16((*pWpnAddon).Cost);
-			}
-		}
-	}
-	if (Addons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
-	{
-		if (pSettings->line_exist(pWpnS->WeaponName.c_str(), "wpn_addon_grenade_launcher"))
-		{
-			std::strcpy(AddonName, pSettings->r_string(pWpnS->WeaponName.c_str(), "wpn_addon_grenade_launcher"));
-		}
-	}
-	if (Addons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
-	{
-		if (pSettings->line_exist(pWpnS->WeaponName.c_str(), "silencer_name"))
-		{
-			std::strcpy(AddonName, pSettings->r_string(pWpnS->WeaponName.c_str(), "silencer_name"));
-		}
-	}
-	return res;
-}
-*/
 void	game_sv_Deathmatch::RemoveItemFromActor	(CSE_Abstract* pItem)
 {
 	if (!pItem) return;

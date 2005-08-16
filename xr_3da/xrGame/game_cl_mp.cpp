@@ -763,39 +763,43 @@ void	game_cl_mp::OnRankChanged	()
 	string1024 RankStr;
 	sprintf(tmp, "rank_%d",local_player->rank);
 	sprintf(RankStr, "Your rank now is : %s", READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
-	CommonMessageOut(RankStr);
-
-	
+	CommonMessageOut(RankStr);	
 };
 
 void	game_cl_mp::net_import_update		(NET_Packet& P)
 {
-	u8 OldRank = 0;
+	u8 OldRank = u8(-1);
+	s16 OldTeam = -1;
 	if (local_player) 
 	{
 		OldRank = local_player->rank;
+		OldTeam = local_player->team;
 	};
 	//---------------------------------------------
 	inherited::net_import_update(P);
 	//---------------------------------------------
 	if (local_player)
 	{
+		if (OldTeam != local_player->team)	OnTeamChanged();
 		if (OldRank != local_player->rank)	OnRankChanged();
 	};
 }
 
 void	game_cl_mp::net_import_state		(NET_Packet& P)
 {
-	u8 OldRank = 0;
+	u8 OldRank = u8(-1);
+	s16 OldTeam = -1;
 	if (local_player) 
 	{
 		OldRank = local_player->rank;
+		OldTeam = local_player->team;
 	};
 
 	inherited::net_import_state(P);
 
 	if (local_player)
 	{
+		if (OldTeam != local_player->team)	OnTeamChanged();
 		if (OldRank != local_player->rank)	OnRankChanged();
 	};
 }

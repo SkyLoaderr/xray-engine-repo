@@ -713,6 +713,30 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 			ps->pItemList.push_back(aDefItems[i]);
 		}
 	};
+	//---------------------------------------------------
+	string16 RankStr;
+	string256 ItemStr;
+	string256 NewItemStr;
+	char tmp[5];
+	for (int i=1; i<=ps->rank; i++)
+	{
+		strconcat(RankStr,"rank_",itoa(i,tmp,10));
+		if (!pSettings->section_exist(RankStr)) continue;
+		for (u32 it=0; it<ps->pItemList.size(); it++)
+		{
+			u16* pItemID = &(ps->pItemList[it]);
+			WeaponDataStruct* pWpnS = NULL;
+			if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
+
+			strconcat(ItemStr, "def_item_repl_", pWpnS->WeaponName.c_str());
+			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
+			
+			strcpy(NewItemStr,pSettings->r_string(RankStr, ItemStr));
+			if (!GetTeamItem_ByName(&pWpnS, &(TeamList[ps->team].aWeapons), NewItemStr)) continue;
+
+			*pItemID = pWpnS->SlotItem_ID;
+		}
+	}
 };
 
 void	game_sv_mp::ClearPlayerState		(game_PlayerState* ps)
@@ -929,4 +953,22 @@ void	game_sv_mp::UpdatePlayersMoney		()
 
 		m_server->SendTo(l_pC->ID, P);
 	};
+};
+
+bool	game_sv_mp::GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID)
+{
+	if (!pWpnList) return false;
+	TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), (ItemID & 0xFF1f));
+	if (pWpnI == pWpnList->end() || !((*pWpnI) == (ItemID & 0xFF1f))) return false;
+	*pRes = &(*pWpnI);
+	return true;
+};
+
+bool	game_sv_mp::GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName)
+{
+	if (!pWpnList) return false;
+	TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
+	if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) return false;
+	*pRes = &(*pWpnI);
+	return true;
 };

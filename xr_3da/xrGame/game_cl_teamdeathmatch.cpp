@@ -214,6 +214,7 @@ void game_cl_TeamDeathmatch::OnTeamSelect(int Team)
 //-----------------------------------------------------------------
 void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 {
+	if (!local_player) return;
 	if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 	{
 		if (local_player->team == 1) 
@@ -230,10 +231,7 @@ void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 
 //	if(!pCurSkinMenu)SetCurrentSkinMenu	();
 	if (pCurBuyMenu) pCurBuyMenu->SetSkin(local_player->skin);
-	if (!pCurBuyMenu) return;
-
-	if (!local_player) return;
-
+	if (!pCurBuyMenu) return;	
 };
 
 void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
@@ -495,3 +493,9 @@ void				game_cl_TeamDeathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		}break;
 	};
 }
+
+void				game_cl_TeamDeathmatch::OnTeamChanged			()
+{
+	SetCurrentBuyMenu();
+	inherited::OnTeamChanged();
+};

@@ -27,7 +27,10 @@ protected:
 			return MinEnemyDist < x.MinEnemyDist;
 		};
 	};
-
+	//---------------------------------------------------
+	xr_vector<u32>					m_vFreeRPoints;
+	u32								m_dwLastRPoint;
+	//---------------------------------------------------
 
 	BOOL							m_delayedRoundEnd;
 	u32								m_roundEndDelay;

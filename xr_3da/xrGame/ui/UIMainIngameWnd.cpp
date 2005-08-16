@@ -657,9 +657,14 @@ void CUIMainIngameWnd::Update()
 				}
 			}
 
-			shared_str sItemName = m_pItem->NameShort();
+//			shared_str sItemName = m_pItem->NameShort();
+			string256 sItemName;
+			strcpy(sItemName, m_pItem->NameShort());			
+			
 			if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
 			{
+				strcat(sItemName, pWeaponMagazined->GetCurrentFireModeStr());
+				/*
 				int FireMode = pWeaponMagazined->GetCurrentFireMode();
 				switch (FireMode)
 				{
@@ -670,9 +675,10 @@ void CUIMainIngameWnd::Update()
 					sItemName.sprintf("%s (%d)", m_pItem->NameShort(), FireMode);
 					break;
 				};	
-			}
+				*/
+			}			
 
-			UIWeaponBack.SetText(sItemName.c_str());
+			UIWeaponBack.SetText(sItemName);
 			UIWeaponBack.SetTextX(((UIWeaponBack.GetAbsoluteRect().right - 
 				UIWeaponBack.GetAbsoluteRect().left) * 0.5f - 
 				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2.0f));

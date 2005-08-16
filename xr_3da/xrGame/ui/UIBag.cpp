@@ -15,10 +15,10 @@
 #include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#ifdef DEBUG
-#include "../../xr_ioconsole.h"
-#include "../../xr_ioc_cmd.h"
-#endif //#ifdef DEBUG
+//#ifdef DEBUG
+//#include "../../xr_ioconsole.h"
+//#include "../../xr_ioc_cmd.h"
+//#endif //#ifdef DEBUG
 
 using namespace InventoryUtilities;
 
@@ -85,6 +85,13 @@ void CUIBag::GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &i
 			}
 		}
 	}
+}
+
+char* CUIBag::GetWeaponNameByIndex(u8 grpNum, u8 idx)
+{
+	if (grpNum >= m_wpnSectStorage.size()) return NULL;
+	if (idx >= m_wpnSectStorage[grpNum].size()) return NULL;
+	return (char*) m_wpnSectStorage[grpNum][idx].c_str();
 }
 
 u8 CUIBag::GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum){
@@ -158,9 +165,9 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	FillUpGroups();
 	HideAll();
 	SetMenuLevel(mlRoot);
-#ifdef DEBUG
-	CMD4(CCC_Integer,"rank_for_buymenu",&m_iCurrentRank,0,4);
-#endif
+//#ifdef DEBUG
+//	CMD4(CCC_Integer,"rank_for_buymenu",&m_iCurrentRank,0,4);
+//#endif
 }
 
 bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
@@ -178,14 +185,14 @@ int CUIBag::GetItemRank(const char* item){
 	char foo[5];
 
 	// from 4 downto 1
-	for (int i = 4; i>0; i--)
+	for (int i = 4; i>=0; i--)
 	{
 		strconcat(rank,"rank_",itoa(i,foo,10));
 		if (IsInRank(item,rank))
 			return i;
 	}
 
-	return 0;	
+	return 255;	
 }
 
 bool CUIBag::IsInRank(const char* item, const char* rank){
@@ -881,3 +888,34 @@ void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectio
 		}
 	}
 }
+
+void	CUIBag::ReloadItemsPrices	()
+{
+	string256 ItemCostStr = "";
+	string256 RankStr = "";
+
+	xr_list<CUIDragDropItemMP*>::iterator it;
+	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+	{
+		R_ASSERT(pSettings->line_exist(m_StrPricesSection, (*it)->strName));
+		(*it)->SetCost(pSettings->r_u32(m_StrPricesSection, (*it)->strName.c_str()));
+		//-------------------------------------------------------------------------------
+		strconcat(ItemCostStr, (*it)->strName.c_str(), "_cost");
+		if (pSettings->line_exist(m_StrSectionName, ItemCostStr))
+			(*it)->SetCost(pSettings->r_u32(m_StrSectionName, ItemCostStr));
+		//-------------------------------------------------------------------------------
+		for (int i=1; i<=m_iCurrentRank; i++)
+		{
+			string16 tmp;
+			strconcat(RankStr, "rank_", itoa(i, tmp, 10));
+			if (!pSettings->line_exist(RankStr, ItemCostStr)) continue;
+			(*it)->SetCost(pSettings->r_u32(RankStr, ItemCostStr));
+		}
+	};
+};
+
+void	CUIBag::SetRank(int rank) 
+{
+	m_iCurrentRank = rank;
+	ReloadItemsPrices();
+};

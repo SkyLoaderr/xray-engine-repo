@@ -43,6 +43,7 @@ protected:
 //	TEAMS_LIST						m_aTeamSections;
 	PRESET_ITEMS					PresetItemsTeam0;
 	PRESET_ITEMS*					pCurPresetItems;
+	PRESET_ITEMS					PlayerDefItems;
 
 	CUIBuyWeaponWnd*				pBuyMenuTeam0;
 	CUIBuyWeaponWnd*				pCurBuyMenu;
@@ -78,7 +79,10 @@ protected:
 	virtual		bool				OnKeyboardRelease		(int key);
 
 	virtual		void				LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
-	virtual		s16					GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID);
+	virtual		void				LoadPlayerDefItems			(char* TeamName, CUIBuyWeaponWnd* pBuyMenu);
+	virtual		void				LoadDefItemsForRank			(CUIBuyWeaponWnd* pBuyMenu);
+	virtual		void				ChangeItemsCosts			(CUIBuyWeaponWnd* pBuyMenu);
+	virtual		s16					GetBuyMenuItemIndex			(u8 SlotID, u8 ItemID);
 
 	virtual		void				ConvertTime2String		(string64* str, u32 Time);
 	virtual		int					GetPlayersPlace			(game_PlayerState* ps);
@@ -91,6 +95,7 @@ public:
 	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };
 
 	virtual void					OnBuyMenu_Ok			();
+	virtual	void					OnBuyMenu_DefaultItems	();
 	virtual void					OnSkinMenu_Ok			();
 
 	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
@@ -107,6 +112,8 @@ public:
 
 	virtual		void				OnSpawn					(CObject* pObj);
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
+	virtual		void				OnRankChanged			();
+	virtual		void				OnTeamChanged			();
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

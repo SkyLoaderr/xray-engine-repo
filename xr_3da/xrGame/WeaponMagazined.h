@@ -120,7 +120,7 @@ public:
 public:
 	virtual void	SwitchMode				();
 	virtual bool	SingleShotMode			()			{return 1 == m_iQueueSize;}
-	virtual void	SetQueueSize			(int size)  {m_iQueueSize = size; }
+	virtual void	SetQueueSize			(int size);
 	virtual bool	StopedAfterQueueFired	()			{return m_bStopedAfterQueueFired; }
 	virtual void	StopedAfterQueueFired	(bool value){m_bStopedAfterQueueFired = value; }
 
@@ -144,6 +144,7 @@ protected:
 	bool			m_bHasDifferentFireModes;
 	xr_vector<int>	m_aFireModes;
 	int				m_iCurFireMode;
+	string16		m_sCurFireMode;
 
 	//переменная блокирует использование
 	//только разных типов патронов
@@ -159,6 +160,7 @@ public:
 	virtual	void	OnPrevFireMode		();
 	virtual bool	HasFireModes		() { return m_bHasDifferentFireModes; };
 	virtual	int		GetCurrentFireMode	() { return m_aFireModes[m_iCurFireMode]; };	
+	virtual LPCSTR	GetCurrentFireModeStr	() {return m_sCurFireMode;};
 
 protected:
 	virtual bool	AllowFireWhileWorking() {return false;}

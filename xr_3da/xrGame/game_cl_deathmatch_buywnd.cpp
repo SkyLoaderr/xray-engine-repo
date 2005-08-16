@@ -236,3 +236,60 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWea
 		pPresetItems->push_back(ID);
 	};
 };
+
+void	game_cl_Deathmatch::OnBuyMenu_DefaultItems	()
+{
+//	pCurBuyMenu->IgnoreMoney(true);
+	//---------------------------------------------------------
+	PRESET_ITEMS_it It = PlayerDefItems.begin();
+	PRESET_ITEMS_it Et = PlayerDefItems.end();
+	for ( ; It != Et; ++It) 
+	{
+		s16	ItemID = (*It);
+
+		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
+	};
+	//---------------------------------------------------------
+//	pCurBuyMenu->IgnoreMoney(false);
+};
+
+void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWeaponWnd* pBuyMenu)
+{
+	if (!pCurBuyMenu) return;
+	//---------------------------------------------------
+	LoadPlayerDefItems(getTeamSection(local_player->team), pCurBuyMenu);
+	//---------------------------------------------------
+	string16 RankStr;
+	string256 ItemStr;
+	string256 NewItemStr;
+	char tmp[5];
+	for (int i=1; i<=local_player->rank; i++)
+	{
+		strconcat(RankStr,"rank_",itoa(i,tmp,10));
+		if (!pSettings->section_exist(RankStr)) continue;
+		for (u32 it=0; it<PlayerDefItems.size(); it++)
+		{
+			s16* pItemID = &(PlayerDefItems[it]);
+
+			char* ItemName = pBuyMenu->GetWeaponNameByIndex(u8(((*pItemID)&0xff00)>>0x08), u8((*pItemID)&0x00ff));
+			if (!ItemName) continue;
+			strconcat(ItemStr, "def_item_repl_", ItemName);
+			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
+
+			strcpy(NewItemStr,pSettings->r_string(RankStr, ItemStr));
+
+			u8 SlotID, ItemID;
+			pBuyMenu->GetWeaponIndexByName(NewItemStr, SlotID, ItemID);
+			if (SlotID == 0xff || ItemID == 0xff) continue;
+
+			s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);			
+
+			*pItemID = ID;
+		}
+	}
+};
+
+void				game_cl_Deathmatch::ChangeItemsCosts			(CUIBuyWeaponWnd* pBuyMenu)
+{
+	if (!pBuyMenu) return;
+};

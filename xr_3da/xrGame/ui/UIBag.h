@@ -66,8 +66,10 @@ public:
 			bool	IsItemInBag(CUIDragDropItemMP* pDDItem);
 			void	ClearRealRepresentationFlags();
 			void	GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
+			char*	GetWeaponNameByIndex(u8 grpNum, u8 idx);
 			u8		GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum);
-			void	SetRank(int rank) {m_iCurrentRank = rank;}
+			void	SetRank(int rank);
+			void	ReloadItemsPrices	();
 
 CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName);
 CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);

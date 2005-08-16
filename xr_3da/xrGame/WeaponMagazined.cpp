@@ -1043,3 +1043,12 @@ void	CWeaponMagazined::OnH_A_Chield		()
 	};	
 	inherited::OnH_A_Chield();
 };
+
+void	CWeaponMagazined::SetQueueSize			(int size)  
+{
+	m_iQueueSize = size; 
+	if (m_iQueueSize == -1)
+		strcpy(m_sCurFireMode, " (A)");
+	else
+		sprintf(m_sCurFireMode, " (%d)", m_iQueueSize);
+};

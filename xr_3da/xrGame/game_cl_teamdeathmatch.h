@@ -31,6 +31,7 @@ public :
 
 	virtual			void				OnTeamSelect			(int Result);
 	virtual			char*				getTeamSection			(int Team);
+	virtual			void				OnTeamChanged			();
 
 	virtual			void				Set_ShowPlayerNames		(bool Show) {m_bShowPlayersNames = Show;};
 	virtual			bool				Get_ShowPlayerNames		() {return m_bShowPlayersNames;};

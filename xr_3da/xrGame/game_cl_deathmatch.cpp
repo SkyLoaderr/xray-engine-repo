@@ -27,6 +27,7 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	pCurBuyMenu		= NULL;
 	
 	PresetItemsTeam0.clear();
+	PlayerDefItems.clear();
 	pCurPresetItems	= NULL;;
 
 	pSkinMenuTeam0	= NULL;
@@ -66,6 +67,9 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pInventoryMenu);
 	//---------------------------------------	
 	xr_delete(pPdaMenu);
+	//---------------------------------------
+	PresetItemsTeam0.clear();
+	PlayerDefItems.clear();
 }
 
 
@@ -743,3 +747,26 @@ void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		}break;
 	};
 }
+
+void				game_cl_Deathmatch::OnRankChanged			()
+{
+	inherited::OnRankChanged();
+	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
+	LoadDefItemsForRank(pCurBuyMenu);
+	ChangeItemsCosts(pCurBuyMenu);
+};
+
+void				game_cl_Deathmatch::OnTeamChanged			()
+{
+	if (!pCurBuyMenu) return;
+	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
+	LoadDefItemsForRank(pCurBuyMenu);
+	ChangeItemsCosts(pCurBuyMenu);
+};
+
+void				game_cl_Deathmatch::LoadPlayerDefItems			(char* TeamName, CUIBuyWeaponWnd* pBuyMenu)
+{
+	if (!local_player) return;
+	LoadTeamDefaultPresetItems(TeamName, pBuyMenu, &PlayerDefItems);
+};
+

@@ -656,7 +656,9 @@ void CUIBuyWeaponWnd::OnBtnClearClicked(){
 		BeltToSection(static_cast<CUIDragDropItemMP*>(*it));
 
 	// put free pistol
-	GetTop()->SendMessage(UIBagWnd.GetItemByKey(DIK_1, GROUP_2), DRAG_DROP_ITEM_DB_CLICK);
+//	GetTop()->SendMessage(UIBagWnd.GetItemByKey(DIK_1, GROUP_2), DRAG_DROP_ITEM_DB_CLICK);
+	game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
+	if (dm) dm->OnBuyMenu_DefaultItems();
 }
 
 bool CUIBuyWeaponWnd::ClearTooExpensiveItems(){
@@ -1147,6 +1149,11 @@ void CUIBuyWeaponWnd::GetWeaponIndexByName(const xr_string sectionName, u8 &grpN
 	UIBagWnd.GetWeaponIndexByName(sectionName, grpNum, idx);
 }
 
+char*	CUIBuyWeaponWnd::GetWeaponNameByIndex(u8 grpNum, u8 idx)
+{
+	return UIBagWnd.GetWeaponNameByIndex(grpNum, idx);
+}
+
 CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32 idx)
 {
 	R_ASSERT(slotNum < MP_SLOTS_NUM);
@@ -1607,4 +1614,9 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		pDDItemMP->Show(true);
 
 	return false;
+}
+
+void	CUIBuyWeaponWnd::ReloadItemsPrices	()
+{
+	UIBagWnd.ReloadItemsPrices();
 }

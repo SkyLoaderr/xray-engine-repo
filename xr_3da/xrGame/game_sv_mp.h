@@ -55,6 +55,9 @@ protected:
 				void				AllowDeadBodyRemove		(ClientID id, u16 GameID);
 				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons );
 				void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
+	virtual		bool				GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID);
+	virtual		bool				GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName);
+
 public:
 									game_sv_mp				();
 	virtual		void				Create					(shared_str &options);

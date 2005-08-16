@@ -208,6 +208,7 @@ public:
 	const u8	GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);
 	
 	void		GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
+	char*		GetWeaponNameByIndex(u8 grpNum, u8 idx);
 
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
@@ -229,4 +230,6 @@ public:
 	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
 	void		ClearSlots();
 	void		ClearRealRepresentationFlags();
+
+	void		ReloadItemsPrices	();
 };
