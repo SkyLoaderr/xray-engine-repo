@@ -10965,25 +10965,10 @@
 						RelativePath=".\ui\UIAutobuyIndication.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIBag.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIBag.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIBuyWeaponStd.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIBuyWeaponTab.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIBuyWeaponTab.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIBuyWeaponWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIBuyWeaponWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropItemMP.cpp">
@@ -10997,6 +10982,35 @@
 					<File
 						RelativePath=".\ui\UITabButtonMP.h">
 					</File>
+					<Filter
+						Name="BAG"
+						Filter="">
+						<File
+							RelativePath=".\ui\Restrictions.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\Restrictions.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIBag.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIBag.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="main"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIBuyWeaponStd.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIBuyWeaponWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIBuyWeaponWnd.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="common"
