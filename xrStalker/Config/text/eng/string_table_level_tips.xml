@@ -23,11 +23,13 @@
 #include "text\eng\string_table_tasks_radar.xml"
 #include "text\eng\string_table_tasks_garbage.xml"
 
-#include "text\eng\string_table_mapspots_darkvalley.xml"
-#include "text\eng\string_table_mapspots_garbage.xml"
 #include "text\eng\string_table_mapspots_agroprom.xml"
 #include "text\eng\string_table_mapspots_bar.xml"
+#include "text\eng\string_table_mapspots_darkvalley.xml"
+#include "text\eng\string_table_mapspots_garbage.xml"
+#include "text\eng\string_table_mapspots_escape.xml"
 #include "text\eng\string_table_mapspots_military.xml"
+#include "text\eng\string_table_mapspots_radar.xml"
     <string id="car_use">
         <text>Open door ($$ACTION_USE$$)</text>
     </string>
