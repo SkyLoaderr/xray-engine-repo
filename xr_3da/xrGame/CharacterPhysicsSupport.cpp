@@ -338,6 +338,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		if(A->Holder()) return;
 		if(m_eState==esRemoved)return;
 	}
+	CKinematics* K=smart_cast<CKinematics*>(m_EntityAlife.Visual());
 //////////////////////this needs to evaluate object box//////////////////////////////////////////////////////
 	K->CalculateBones_Invalidate();
 	K->CalculateBones	();
@@ -373,7 +374,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 
 	m_pPhysicsShell=m_physics_skeleton;
 	m_physics_skeleton=NULL;
-	CKinematics* K=smart_cast<CKinematics*>(m_EntityAlife.Visual());
+	
 	m_pPhysicsShell->set_Kinematics(K);
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
