@@ -22,28 +22,29 @@ damage              	= damage_bones
 ;-------------------------------------------------------------------------------
 ;------ Factory parameters of Engine -------------------------------------------
 
-fuel_tank         		= 30.         	; L
-fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 30.         	; horse_power (kW=hp*0.808) max power
-max_power_rpm     		= 4500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3700.       	; on this rpm engine torque reaches maximum
+fuel_tank         		= 250.         	; L
+fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
+engine_power      		= 50        	; horse_power (kW=hp*0.808) max power
+max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
+max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.02
-power_decrement_factor	= 0.2 ;0.02
-rpm_increment_factor	= 0.05
-rpm_decrement_factor	= 0.05
-m_power_neutral_factor	= 0.50 ;0.25
+power_increment_factor	= 0.002
+power_decrement_factor	= 0.01
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.02
+m_power_neutral_factor	= 0.75
+
 ; additional engine parameters
 
-max_engine_rpm    		= 5000			; rpm (5000) rpm will never be more
-idling_engine_rpm		= 780       	; rpm (750) min rpm - starts from this rpm value
+max_engine_rpm    		= 4000			; rpm (5000) rpm will never be more
+idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
 
 ;-------------------------------------------------------------------------------
 ;------ Adjustment a wheel -----------------------------------------------------
 
-reference_radius  		= 0.28			; Радиус колеса, используемый при просчёте двигателя
+reference_radius  		= 0.43			; Радиус колеса, используемый при просчёте двигателя
 axle_friction     		= 0.00001      	; Ослабление скорости в неетральной позиции. (N*m)
-steering_speed    		= 3.5         	; Время поворота рулевого колеса, в максимум. rps (1)
+steering_speed    		= 2.0         	; Время поворота рулевого колеса, в максимум. rps (1)
 steering_torque   		= 90000.    	; Сила гидроусилителя руля. (N*m)
 break_torque      		= 0.02        	; Сила тормозных колодок. (N*m)
 break_time        		= 1.0         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
@@ -52,16 +53,16 @@ hand_break_torque 		= 0.02        	; сила торможения пробелом (по умолчанию = br
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
 
-main_gear_ratio    		= 6.63         	; Передаточное отношение
+main_gear_ratio    		= 8.63        	; Передаточное отношение
 auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.73, 3100,4950	
-N1                 		= 3.73, 3100,4950
-N2                 		= 2.29, 3100,4950
-N3                 		= 1.39, 3100,4950
-N4                 		= 0.96, 3100,4950
+R                  		= 3.73, 2500,3850	;2100,2850
+N1                 		= 3.73, 2500,3850
+N2                 		= 2.29, 2500,3850
+N3                 		= 1.39, 2500,3850
+N4                 		= 0.96, 2500,38500
 
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
