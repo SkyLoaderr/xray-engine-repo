@@ -132,7 +132,7 @@ void CActor::cam_Update(float dt, float fFOV)
 //	}
 	if(mstate_real & mcClimb)
 	{
-		camUpdateLeader(dt);
+		camUpdateLadder(dt);
 	}
 	Fvector point={0,CameraHeight(),0}, dangle={0,0,0};
 	
