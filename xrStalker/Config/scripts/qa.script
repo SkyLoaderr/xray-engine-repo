@@ -48,6 +48,16 @@ function offline_all()
 	end
 end
 
+-- move all offline
+function take_under_script()
+	for a, b in pairs(object_list) do
+		for x, y in pairs(b) do
+			local obj =		level.debug_object(tostring(y))
+			obj:script		( true, script_name() )
+		end
+	end
+end
+
 
 function r(index)
 	
@@ -60,4 +70,8 @@ function r(index)
 		alife():set_switch_online	(obj:id(),true)
 	end
 
+end
+
+function main()
+	take_under_script()
 end
