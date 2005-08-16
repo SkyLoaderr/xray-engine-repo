@@ -8,6 +8,7 @@ function snd_source:__init (obj, storage)
 	self.destructed = false
 	self.first_sound = true
 	self.played_sound = nil
+	self.old_sound = 0
 end
 
 function snd_source:reset_scheme()
@@ -42,10 +43,12 @@ function snd_source:reset_scheme()
 	self.destructed = false
     self.st.pause_time = 0	
     self.st.sound_set = false
+    self.old_sound = 0
     printf("PH_SOUND reset_scheme")
 end
 
 function snd_source:hit_callback(obj, amount, local_direction, who, bone_index)
+    printf ("SOUND SOURCE HAVE A HIT")
 	local who_name
 	if who then
 		who_name = who:name()
@@ -100,17 +103,24 @@ function snd_source:update(delta)
        
     if self.sound_list[self.current_sound]:playing () == false then
        if self.first_sound == false then
-		  printf("SETTING signal SOUND_END")
           self.st.signals["sound_end"] = true
        end
           
-       self.current_sound = self.current_sound + 1
-       if self.current_sound > table.getn (self.sound_list) then
-          self.current_sound = 1
-          if self.first_sound == false then
-             self.st.signals["theme_end"] = true
-             printf("SETTING signal THEME_END")
-          end   
+       if self.st.random == true and table.getn (self.sound_list) > 1 then   
+          local cur = math.random (1, table.getn (self.sound_list))
+          while cur == self.old_sound do
+                cur = math.random (1, table.getn (self.sound_list))
+          end      
+          self.current_sound = cur      
+       else        
+          self.current_sound = self.current_sound + 1
+          if self.current_sound > table.getn (self.sound_list) then
+             self.current_sound = 1
+             if self.first_sound == false then
+                self.st.signals["theme_end"] = true
+                printf("SETTING signal THEME_END")
+             end   
+          end
        end
        self.st.sound_set = true
        if self.st.pause_min ~= 0 or self.st.pause_max ~= 0 then
@@ -119,6 +129,8 @@ function snd_source:update(delta)
           --printf ("PAUSE TIME : %d, start : %d", time, self.st.pause_time)
        end 
        self.first_sound = false
+    else
+       self.sound_list[self.current_sound]:set_position (self.object:position ())
     end
        
 end
@@ -144,10 +156,14 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	st.theme    = utils.cfg_get_string(ini, section, "snd",	npc, false, "")
 	st.looped   = utils.cfg_get_bool (ini, section, "looped", npc, false)
+	st.random   = utils.cfg_get_bool (ini, section, "random", npc, false)
 	st.pause_min = utils.cfg_get_number (ini, section, "min_idle", npc, false, 0)
 	st.pause_max = utils.cfg_get_number (ini, section, "max_idle", npc, false, 0)
 	if st.pause_max < st.pause_min then
 	   abort ("PH_SOUND - invalid time range !!!")
     end	    
+    if st.looped == true and st.random == true then
+       abort ("PH_SOUND - can't set looped sound with random play mode")
+    end    
 end
     
