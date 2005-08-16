@@ -50,7 +50,7 @@ public:
 protected:
 	CUIChatLog			*pUILogList;
 	CUIStatic			UIPrefix;
-	shared_str			m_AuthorName;
+//	shared_str			m_AuthorName;
 	bool				sendNextMessageToTeam;
 	game_cl_GameState	*pOwner;
 };

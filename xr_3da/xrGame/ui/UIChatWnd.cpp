@@ -51,7 +51,7 @@ void CUIChatWnd::Init(CUIXml& uiXml)
 	//UIEditBox.InitSharedTexture("ui_texture.xml","debug");
 	//UIEditBox.SetStretchTexture(true);
 
-	m_AuthorName = Level().CurrentEntity()->cName();
+//	m_AuthorName = Level().CurrentEntity()->cName();
 }
 
 //////////////////////////////////////////////////////////////////////////
