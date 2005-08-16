@@ -1816,3 +1816,11 @@ float	CCar:: RefWheelCurTorque()
 	if(b_transmission_switching) return 0.f;
 	return EngineCurTorque()*((m_current_gear_ratio<0.f) ? -m_current_gear_ratio : m_current_gear_ratio);
 }
+void CCar::GetRayExplosionSourcePos(Fvector &pos)
+{
+	const Fbox &l_b1 = BoundingBox();
+	Fvector l_c, l_d;l_b1.get_CD(l_c,l_d);
+	pos.random_point(l_d);
+	XFORM().transform_tiny(pos);
+	pos.add(l_c);
+}

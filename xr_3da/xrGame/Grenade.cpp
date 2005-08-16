@@ -13,7 +13,7 @@
 #include "game_cl_base.h"
 
 #define GRENADE_REMOVE_TIME		30000
-
+const float default_grenade_detonation_threshold_hit=100;
 CGrenade::CGrenade(void) 
 {
 	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
@@ -37,13 +37,30 @@ void CGrenade::Load(LPCSTR section)
 		m_dwGrenadeRemoveTime = pSettings->r_u32(section,"grenade_remove_time");
 	else
 		m_dwGrenadeRemoveTime = GRENADE_REMOVE_TIME;
+	m_grenade_detonation_threshold_hit=READ_IF_EXISTS(pSettings,r_float,section,"detonation_threshold_hit",default_grenade_detonation_threshold_hit);
 	//////////////////////////////////////
+}
+
+void CGrenade::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse,ALife::EHitType hit_type)
+{
+	if( ALife::eHitTypeExplosion==hit_type && m_grenade_detonation_threshold_hit<P) 
+	{
+		CExplosive::SetCurrentParentID(who->ID());
+		Destroy();
+	}
+	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
 }
 
 BOOL CGrenade::net_Spawn(CSE_Abstract* DC) 
 {
 	m_dwGrenadeIndependencyTime = 0;
-	return (inherited::net_Spawn(DC)/* && CInventoryItemObject::net_Spawn(DC)*/);
+	BOOL ret= inherited::net_Spawn(DC);/* && CInventoryItemObject::net_Spawn(DC)*/
+	Fvector box;BoundingBox().getsize(box);
+	float max_size=max(max(box.x,box.y),box.z);
+	box.set(max_size,max_size,max_size);
+	box.mul(3.f);
+	CExplosive::SetExplosionSize(box);
+	return ret;
 }
 
 void CGrenade::net_Destroy() 

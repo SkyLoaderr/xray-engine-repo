@@ -338,6 +338,10 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		if(A->Holder()) return;
 		if(m_eState==esRemoved)return;
 	}
+//////////////////////this needs to evaluate object box//////////////////////////////////////////////////////
+	K->CalculateBones_Invalidate();
+	K->CalculateBones	();
+////////////////////////////////////////////////////////////////////////////
 	if(m_pPhysicsShell) return;
 	Fvector velocity;
 	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
@@ -350,20 +354,15 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	Fvector activation_pos;m_EntityAlife.Center(activation_pos);
 	Fvector center_shift;center_shift.sub(m_EntityAlife.Position(),activation_pos);
 	activation_pos.add(shift);
-	//m_PhysicMovementControl.SetPosition(dp);
-	//}
-	CPHActivationShape activation_shape;//Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
 
-	Fbox box;box.set(m_EntityAlife.BoundingBox());//box.grow(0.5f);
+	CPHActivationShape activation_shape;
+
+	Fbox box;box.set(m_EntityAlife.BoundingBox());
 	Fvector vbox;
 	box.getsize(vbox);
 
 	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
-	//Fbox b=m_EntityAlife.BoundingBox();b.grow(Fvector().set(0.5f,0.1f,0.5f));
-	//m_PhysicMovementControl.SetBox(3,b);
-	//m_PhysicMovementControl.ActivateBoxDynamic(3,20,1,0.05f);
-	//m_PhysicMovementControl.GetPosition(m_EntityAlife.Position());
-	//m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
+
 	m_PhysicMovementControl.DestroyCharacter();
 
 	activation_shape.Activate(vbox,1,1.f,M_PI/8.f);
@@ -390,9 +389,10 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	b_death_anim_on=false;
 	m_eState=esDead;
 	b_skeleton_in_shell=true;
+	
 	if(GameID()==GAME_SINGLE)
 	{
-		m_pPhysicsShell->SetPrefereExactIntegration	();
+		m_pPhysicsShell->SetPrefereExactIntegration	();//use exact integration for ragdolls in single
 	}
 	else
 	{
@@ -401,7 +401,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {
-	//R_ASSERT2(m_eState!=esDead,"Cant change visual for dead body");
+	
 	if(!m_physics_skeleton&&!m_pPhysicsShell) return;
 	if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
 	xr_delete(m_physics_skeleton) ;

@@ -44,7 +44,7 @@ void CActor::cam_SetLadder()
 		C->bClampYaw			= true;
 	}
 }
-void CActor::camUpdateLeader(float dt)
+void CActor::camUpdateLadder(float dt)
 {
 	if(cameras[eacFirstEye]->bClampYaw) return;
 	float yaw	= (-XFORM().k.getH());

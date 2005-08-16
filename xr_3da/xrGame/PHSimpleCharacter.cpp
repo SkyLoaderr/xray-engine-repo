@@ -1410,6 +1410,8 @@ void CPHSimpleCharacter::SCollisionDamageInfo::HitDir(Fvector& dir)	const
 
 u16 CPHSimpleCharacter::SCollisionDamageInfo::DamageInitiatorID() const
 {
+	if(!m_object) 
+				return u16(-1);
 	IDamageSource* ds=m_object->cast_IDamageSource();
 	if(ds) return ds->Initiator();
 	return u16(-1);

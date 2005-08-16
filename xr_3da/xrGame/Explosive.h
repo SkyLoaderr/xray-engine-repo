@@ -13,7 +13,7 @@
 #include "script_export_space.h"
 #include "DamageSource.h"
 class IRender_Light;
-
+DEFINE_VECTOR(CPhysicsShellHolder*,BLASTED_OBJECTS_V,BLASTED_OBJECTS_I);
 class CExplosive : 
 //	public Feel::Touch,
 	public IDamageSource
@@ -35,7 +35,7 @@ public:
 	virtual void 				Explode();
 	virtual void 				ExplodeParams	(const Fvector& pos, const Fvector& dir);
 
-	static float 				ExplosionEffect	(collide::rq_results& storage, CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
+	static float 				ExplosionEffect	(collide::rq_results& storage,CExplosive*exp_obj,CPhysicsShellHolder*blasted_obj,  const Fvector &expl_centre, const float expl_radius);
 
 
 	virtual void 				OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
@@ -56,14 +56,27 @@ public:
 	virtual CGameObject			*cast_game_object()=0;
 	virtual CExplosive*			cast_explosive(){return this;}
 	virtual IDamageSource*		cast_IDamageSource()	{return this;}
+	virtual void				GetRayExplosionSourcePos(Fvector &pos);
+	virtual	void				GetExplosionBox			(Fvector &size);
+	virtual void				ActivateExplosionBox	(const Fvector &size,Fvector &in_out_pos);
+			void				SetExplosionSize		(const Fvector &new_size);
 private:
 			void				PositionUpdate();
+static		void				GetRaySourcePos(CExplosive	*exp_obj,const Fvector &expl_centre,Fvector	&p);
+
+			void				ExplodeWaveProcessObject(collide::rq_results& storage,CPhysicsShellHolder*sh);
+			void				ExplodeWaveProcess();
+static		float				TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,float range,float ef_radius,collide::rq_results& storage);
+			
 protected:
+
+	
 	//ID персонажа который иницировал действие
 	u16 m_iCurrentParentID;
 	
 	bool	m_bReadyToExplode;
 	Fvector m_vExplodePos;
+	Fvector m_vExplodeSize;
 	Fvector m_vExplodeDir;
 
 	//параметры взрыва
@@ -85,7 +98,7 @@ protected:
 	float m_fUpThrowFactor;
 
 	//список пораженных объектов
-	xr_vector<CGameObject*> m_blasted_objects;
+	BLASTED_OBJECTS_V m_blasted_objects;
 
 	//текущая продолжительность взрыва
 	float m_fExplodeDuration;

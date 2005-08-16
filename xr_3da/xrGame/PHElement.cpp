@@ -94,7 +94,7 @@ void CPHElement::			build	(){
 	dBodyDisable(m_body);
 	//dBodySetFiniteRotationMode(m_body,1);
 	//dBodySetFiniteRotationAxis(m_body,0,0,0);
-
+	VERIFY2(dMass_valide(&m_mass)&&m_mass.mass>0.f,"Element has bad mass");
 	dBodySetMass(m_body,&m_mass);
 
 

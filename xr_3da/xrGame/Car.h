@@ -459,108 +459,110 @@ IC	size_t				CurrentTransmission					(){return m_current_transmission_num;}
 	void				ReleaseBreaks						();
 	void				Revert								();
 
-	void StartBreaking							();
-	void StopBreaking							();
-	void UpdateBack								();
+	void StartBreaking									();
+	void StopBreaking									();
+	void UpdateBack										();
 
-	void HandBreak								();
-	void ReleaseHandBreak						();
-	void DriveForward							();
-	void DriveBack								();
-	void ParseDefinitions						();
-	void CreateSkeleton							();//creates m_pPhysicsShell
-	void Init									();
+	void HandBreak										();
+	void ReleaseHandBreak								();
+	void DriveForward									();
+	void DriveBack										();
+	void ParseDefinitions								();
+	void CreateSkeleton									();//creates m_pPhysicsShell
+	void Init											();
 
-	void PlayExhausts							();
-	void StopExhausts							();
-	void UpdateExhausts							();
-	void ClearExhausts							();
-	void UpdateFuel								(float time_delta);
-	float AddFuel								(float ammount); //ammount - fuel to load, ret - fuel loaded
-	void CarExplode								();
-	////////////////////////////////////////////////////
+	void PlayExhausts									();
+	void StopExhausts									();
+	void UpdateExhausts									();
+	void ClearExhausts									();
+	void UpdateFuel										(float time_delta);
+	float AddFuel										(float ammount); //ammount - fuel to load, ret - fuel loaded
+	void CarExplode										();
+	////////////////////////////////////////////		////////
 
-	void					OnCameraChange		(int type);
-
-
+	void					OnCameraChange				(int type);
 
 
 
-	bool					HUDview				( ) { return IsFocused(); }
 
-	static void __stdcall	cb_Steer			(CBoneInstance* B);
-	virtual void Hit							(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual void PHHit							(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
-			bool WheelHit						(float P,s16 element,ALife::EHitType hit_type);
-			bool DoorHit						(float P,s16 element,ALife::EHitType hit_type);
+
+	bool					HUDview						( ) { return IsFocused(); }
+
+	static void __stdcall	cb_Steer					(CBoneInstance* B);
+	virtual void Hit									(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual void PHHit									(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
+			bool WheelHit								(float P,s16 element,ALife::EHitType hit_type);
+			bool DoorHit								(float P,s16 element,ALife::EHitType hit_type);
 public:
-	virtual bool			allowWeapon			() const		{return true;};
-	virtual bool			HUDView				() const;
-	virtual Fvector			ExitPosition		(){return m_exit_position;}
-	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
-	void					cam_Update			(float dt, float fov);
-	void					detach_Actor		();
-	bool					attach_Actor		(CGameObject* actor);
-	bool					is_Door				(u16 id,xr_map<u16,SDoor>::iterator& i);
-	bool					is_Door				(u16 id);
-	bool					DoorOpen			(u16 id);
-	bool					DoorClose			(u16 id);
-	bool					DoorUse				(u16 id);
-	bool					DoorSwitch			(u16 id);
-	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
-	bool					Exit				(const Fvector& pos,const Fvector& dir);
-	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
-	u16						DriverAnimationType ();
+	virtual bool			allowWeapon					() const		{return true;};
+	virtual bool			HUDView						() const;
+	virtual Fvector			ExitPosition				(){return m_exit_position;}
+	void					GetVelocity					(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
+	void					cam_Update					(float dt, float fov);
+	void					detach_Actor				();
+	bool					attach_Actor				(CGameObject* actor);
+	bool					is_Door						(u16 id,xr_map<u16,SDoor>::iterator& i);
+	bool					is_Door						(u16 id);
+	bool					DoorOpen					(u16 id);
+	bool					DoorClose					(u16 id);
+	bool					DoorUse						(u16 id);
+	bool					DoorSwitch					(u16 id);
+	bool					Enter						(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
+	bool					Exit						(const Fvector& pos,const Fvector& dir);
+	bool					Use							(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
+	u16						DriverAnimationType 		();
 	// Core events
-	virtual DLL_Pure		*_construct			();
-	virtual void			Load				( LPCSTR section );
-	virtual BOOL			net_Spawn			( CSE_Abstract* DC );
-	virtual void			net_Destroy			();
-	virtual void			UpdateCL			( ); 
-	virtual	void			UpdateEx			(float fov); //called by owner
+	virtual DLL_Pure		*_construct					();
+	virtual void			Load						( LPCSTR section );
+	virtual BOOL			net_Spawn					( CSE_Abstract* DC );
+	virtual void			net_Destroy					();
+	virtual void			UpdateCL					( ); 
+	virtual	void			UpdateEx					(float fov); //called by owner
 
-	virtual void			shedule_Update		(u32 dt);
-	virtual void			renderable_Render	( ); 
-	virtual	bool			bfAssignMovement	(CScriptEntityAction *tpEntityAction);
-	virtual	bool			bfAssignObject		(CScriptEntityAction *tpEntityAction);
+	virtual void			shedule_Update				(u32 dt);
+	virtual void			renderable_Render			( ); 
+	virtual	bool			bfAssignMovement			(CScriptEntityAction *tpEntityAction);
+	virtual	bool			bfAssignObject				(CScriptEntityAction *tpEntityAction);
 
 	// Network
-	virtual void			net_Export			(NET_Packet& P);				// export to server
-	virtual void			net_Import			(NET_Packet& P);				// import from server
-	virtual BOOL			net_Relevant		()	{ return getLocal(); };		// relevant for export to server
-	virtual BOOL			UsedAI_Locations	();
+	virtual void			net_Export					(NET_Packet& P);				// export to server
+	virtual void			net_Import					(NET_Packet& P);				// import from server
+	virtual BOOL			net_Relevant				()	{ return getLocal(); };		// relevant for export to server
+	virtual BOOL			UsedAI_Locations			();
 
 	// Input
-	virtual void			OnMouseMove			(int x, int y);
-	virtual void			OnKeyboardPress		(int dik);
-	virtual void			OnKeyboardRelease	(int dik);
-	virtual void			OnKeyboardHold		(int dik);
-	virtual void			vfProcessInputKey	(int iCommand, bool bPressed);
-	virtual void			OnEvent				( NET_Packet& P, u16 type);
-	virtual void			OnAfterExplosion	();
-	virtual void			OnBeforeExplosion	();
-	virtual void			ResetScriptData		(void *P=0);
+	virtual void			OnMouseMove					(int x, int y);
+	virtual void			OnKeyboardPress				(int dik);
+	virtual void			OnKeyboardRelease			(int dik);
+	virtual void			OnKeyboardHold				(int dik);
+	virtual void			vfProcessInputKey			(int iCommand, bool bPressed);
+	virtual void			OnEvent						( NET_Packet& P, u16 type);
+	virtual void			OnAfterExplosion			();
+	virtual void			OnBeforeExplosion			();
+	virtual void			GetRayExplosionSourcePos	(Fvector &pos);
+	virtual void			ActivateExplosionBox		(const Fvector &size,Fvector &in_out_pos){};
+	virtual void			ResetScriptData				(void *P=0);
 
-	virtual void			Action				(int id, u32 flags);
-	virtual void			SetParam			(int id, Fvector2 val);
-	virtual void			SetParam			(int id, Fvector val);
-			bool			HasWeapon			();
-			bool			WpnCanHit			();
-			float			FireDirDiff			();
-			bool			isObjectVisible		(CScriptGameObject* O);
-			Fvector			CurrentVel			();
-	virtual float			GetfHealth						() const		{return CEntity::GetfHealth();};
-	virtual float			SetfHealth						(float value)	{return CEntity::SetfHealth(value);};
+	virtual void			Action						(int id, u32 flags);
+	virtual void			SetParam					(int id, Fvector2 val);
+	virtual void			SetParam					(int id, Fvector val);
+			bool			HasWeapon					();
+			bool			WpnCanHit					();
+			float			FireDirDiff					();
+			bool			isObjectVisible				(CScriptGameObject* O);
+			Fvector			CurrentVel					();
+	virtual float			GetfHealth					() const		{return CEntity::GetfHealth();};
+	virtual float			SetfHealth					(float value)	{return CEntity::SetfHealth(value);};
 
 	// Hits
-	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
-	virtual void			HitImpulse			(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};
-	virtual void			g_fireParams		(const CHudItem* /**pHudItem/**/, Fvector& /**P/**/, Fvector& /**D/**/)											{};
-	virtual u16				Initiator			();
+	virtual void			HitSignal					(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
+	virtual void			HitImpulse					(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};
+	virtual void			g_fireParams				(const CHudItem* /**pHudItem/**/, Fvector& /**P/**/, Fvector& /**D/**/)											{};
+	virtual u16				Initiator					();
 	// HUD
-	virtual void			OnHUDDraw			(CCustomHUD* hud);
+	virtual void			OnHUDDraw					(CCustomHUD* hud);
 
-	CCameraBase*			Camera				(){return active_camera;}
+	CCameraBase*			Camera						(){return active_camera;}
 
 	// Inventory for the car	
 	CInventory*						GetInventory						(){return inventory;}

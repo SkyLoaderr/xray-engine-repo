@@ -51,7 +51,7 @@ public:
 
 	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,
 					 Fvector position_in_object_space, float impulse, 
-					 ALife::EHitType hit_type = ALife::eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
+					 ALife::EHitType hit_type = ALife::eHitTypeWound);
 
 	virtual bool			NeedToDestroyObject	() const; 
 	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
@@ -64,7 +64,8 @@ protected:
 protected:
 	HUD_SOUND		sndCheckout;
 	ESoundTypes		m_eSoundCheckout;
-
+private:
+	float			m_grenade_detonation_threshold_hit;
 protected:
 	virtual	void			UpdateXForm			()		{ CMissile::UpdateXForm(); };
 public:

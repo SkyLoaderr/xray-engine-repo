@@ -266,7 +266,13 @@ IC void		prg_pos_on_axis(const Fvector	&in_ax_p,const Fvector &in_ax_d,Fvector &
 	in_out_pos.mul(prg/ax_mag);
 	in_out_pos.add(in_ax_p);
 }
-
+IC float		prg_pos_on_plane(const Fvector	&in_norm,float d,const Fvector &in_pos,Fvector &out_pos)
+{
+	float prg=d-in_pos.dotproduct(in_norm);
+	Fvector diff;diff.set(in_norm);diff.mul(prg);
+	out_pos.add(in_pos,diff);
+	return prg;
+}
 IC void		restrict_vector_in_dir(Fvector& V,const Fvector& dir)
 {
 	Fvector sub;sub.set(dir);

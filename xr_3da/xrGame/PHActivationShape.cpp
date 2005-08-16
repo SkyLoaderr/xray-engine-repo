@@ -94,9 +94,8 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	{
 		DBG_OpenCashedDraw();
 		Fmatrix M;M.identity();M.c.set(cast_fv(dBodyGetPosition(m_body)));
-		Fvector v;v.set(need_size);v.mul(0.5f);
+		Fvector v;dGeomBoxGetLengths(m_geom,cast_fp(v));v.mul(0.5f);
 		DBG_DrawOBB(M,v,D3DCOLOR_XRGB(0,255,0));
-		DBG_ClosedCashedDraw(30000);
 	}
 #endif
 	VERIFY(m_geom&&m_body);
@@ -148,6 +147,16 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		ph_world->CutVelocity(max_vel,max_a_vel);
 	}
 	ph_world->UnFreeze();
+#ifdef	DEBUG 
+	if(ph_dbg_draw_mask.test(phDbgDrawDeathActivationBox))
+	{
+		DBG_OpenCashedDraw();
+		Fmatrix M;M.identity();M.c.set(cast_fv(dBodyGetPosition(m_body)));
+		Fvector v;v.set(need_size);v.mul(0.5f);
+		DBG_DrawOBB(M,v,D3DCOLOR_XRGB(0,255,255));
+		DBG_ClosedCashedDraw(30000);
+	}
+#endif
 	return ret;
 }
 const Fvector&	CPHActivationShape::	Position							()																
@@ -156,7 +165,7 @@ const Fvector&	CPHActivationShape::	Position							()
 }
 void	CPHActivationShape::	Size								(Fvector &size)																
 {
-	
+	dGeomBoxGetLengths(m_geom,cast_fp(size));
 }
 
 void	CPHActivationShape::	PhDataUpdate						(dReal step)												

@@ -7837,6 +7837,16 @@
 							<File
 								RelativePath=".\TorridZone.h">
 							</File>
+							<Filter
+								Name="ZoneVisual"
+								Filter="">
+								<File
+									RelativePath=".\ZoneVisual.cpp">
+								</File>
+								<File
+									RelativePath=".\ZoneVisual.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="SpaceRestrictor"
@@ -7849,16 +7859,6 @@
 							</File>
 							<File
 								RelativePath=".\space_restrictor_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="ZoneVisual"
-							Filter="">
-							<File
-								RelativePath=".\ZoneVisual.cpp">
-							</File>
-							<File
-								RelativePath=".\ZoneVisual.h">
 							</File>
 						</Filter>
 						<Filter
@@ -9014,6 +9014,9 @@
 							RelativePath=".\CycleConstStorage.h">
 						</File>
 						<File
+							RelativePath=".\MathUtils.cpp">
+						</File>
+						<File
 							RelativePath=".\MathUtils.h">
 						</File>
 						<File
@@ -9650,6 +9653,28 @@
 				</File>
 				<File
 					RelativePath=".\Hit.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="IK"
+				Filter="">
+				<File
+					RelativePath=".\Ik\Dof7control.cpp">
+				</File>
+				<File
+					RelativePath=".\Ik\Dof7control.h">
+				</File>
+				<File
+					RelativePath=".\Ik\math3d.cpp">
+				</File>
+				<File
+					RelativePath=".\Ik\math3d.h">
+				</File>
+				<File
+					RelativePath=".\Ik\mathTrig.cpp">
+				</File>
+				<File
+					RelativePath=".\Ik\mathTrig.h">
 				</File>
 			</Filter>
 		</Filter>

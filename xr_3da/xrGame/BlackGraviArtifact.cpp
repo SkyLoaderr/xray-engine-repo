@@ -173,7 +173,7 @@ void CBlackGraviArtefact::GraviStrike()
 		if(impulse > .001f) 
 		{
 			setEnabled(false);
-			impulse *= CExplosive::ExplosionEffect	(rq_storage,pGameObject, Position(), m_fRadius, elements_list, bone_position_list);
+			impulse *= CExplosive::ExplosionEffect	(rq_storage,NULL,pGameObject, Position(),m_fRadius);
 			setEnabled(true);
 		}
 
