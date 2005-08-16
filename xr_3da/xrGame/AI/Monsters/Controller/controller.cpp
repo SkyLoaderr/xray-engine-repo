@@ -394,6 +394,8 @@ void CController::draw_fire_particles()
 
 void CController::psy_fire()
 {
+	if (!EnemyMan.get_enemy())	return;
+
 	draw_fire_particles			();
 	play_control_sound_hit		();
 
