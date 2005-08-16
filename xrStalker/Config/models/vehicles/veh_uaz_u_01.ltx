@@ -28,11 +28,11 @@ engine_power      		= 50        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.002
+power_increment_factor	= 0.004
 power_decrement_factor	= 0.01
-rpm_increment_factor	= 0.02
-rpm_decrement_factor	= 0.02
-m_power_neutral_factor	= 0.75
+rpm_increment_factor	= 0.03
+rpm_decrement_factor	= 0.03
+m_power_neutral_factor	= 0.50
 
 ; additional engine parameters
 
@@ -45,7 +45,7 @@ idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
 reference_radius  		= 0.43			; Радиус колеса, используемый при просчёте двигателя
 axle_friction     		= 0.00001      	; Ослабление скорости в неетральной позиции. (N*m)
 steering_speed    		= 2.0         	; Время поворота рулевого колеса, в максимум. rps (1)
-steering_torque   		= 90000.    	; Сила гидроусилителя руля. (N*m)
+steering_torque   		= 900000.    	; Сила гидроусилителя руля. (N*m)
 break_torque      		= 0.02        	; Сила тормозных колодок. (N*m)
 break_time        		= 1.0         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
 hand_break_torque 		= 0.02        	; сила торможения пробелом (по умолчанию = break_torque)
