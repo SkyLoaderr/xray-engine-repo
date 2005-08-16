@@ -23,6 +23,7 @@
 #include "text\eng\string_table_tasks_radar.xml"
 #include "text\eng\string_table_tasks_garbage.xml"
 
+#include "text\eng\string_table_mapspots_darkvalley.xml"
 #include "text\eng\string_table_mapspots_garbage.xml"
 #include "text\eng\string_table_mapspots_agroprom.xml"
 #include "text\eng\string_table_mapspots_bar.xml"
