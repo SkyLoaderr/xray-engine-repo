@@ -34,17 +34,12 @@
 #ifndef _MYVECH
 #define _MYVECH
 
-#include <math.h>
 
-
-#include <string.h>
 
 #define DTOR(x)  ((x)*M_PI/180.0)
 #define DOT4(u,v)  ((u)[0]*(v)[0]+(u)[1]*(v)[1]+(u)[2]*(v)[2]+(u)[3]*((v)[3]))
 
-#ifdef _WINDOWS
-#define M_PI            3.14159265358979323846
-#endif
+
 
 typedef float Matrix[4][4];
 typedef float Quaternion[4];
