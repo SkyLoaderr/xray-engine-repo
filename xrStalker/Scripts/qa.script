@@ -113,6 +113,5 @@ end
 function main()
 	wait_game(2000)
 	save_object_id()
-	debug()
 	offline_all()
 end
