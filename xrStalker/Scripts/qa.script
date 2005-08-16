@@ -52,7 +52,8 @@ end
 function take_under_script()
 	for a, b in pairs(object_list) do
 		for x, y in pairs(b) do
-			local obj =		level.debug_object(tostring(y))
+			--local obj =		level.debug_object(tostring(y))
+			local obj =		debug_get_level_object(tostring(y))
 			obj:script		( true, script_name() )
 		end
 	end
@@ -73,6 +74,6 @@ function r(index)
 end
 
 function main()
-	printf(":: Hello")
-	take_under_script()
+	--printf(":: Hello")
+	--take_under_script()
 end
