@@ -106,7 +106,7 @@
         <text>Likewise.</text>
     </string>
     <string id="gar_hellcar_dialog_quest_0">
-        <text>Hello to you too. What's the business?</text>
+        <text>Hello to you too. You need help as far as I understand?</text>
     </string>
     <string id="gar_hellcar_dialog_quest_1">
         <text>Bandits fell in here recentlly. Previously they resided at Agroprom, away from the main road inside the Zone, and now roamed in here. If they manage to take control over this territory, the way further in the Zone will be obstructed. While this we can't allow to happen. We've suffered a skirmish half an hour ago; they've been driven away, however we had casualties as well. Some part of them retreated, and several men slightly impaired broke through headed for the Dark Valley. So be careful, you can poke right into them on your way.</text>
@@ -115,7 +115,7 @@
         <text>And how can I help? Do you think that the militaries won't beat them out, if they become really impudent?</text>
     </string>
     <string id="gar_hellcar_dialog_quest_111">
-        <text>They pehaps can beat them out, but the common stalkers won't feel a real ease of it. We've shoot off these bastards, but not all of them. The remainders run for help. If you aid us in destroying theur reinforcements, be sure I won't stay in debt.</text>
+        <text>Desperately need it. Bandit gang is trying to gain control over the Garbage. Half an hour ago there was a brawl here. We did in three of the bastards. The rest of the gangsters retreated, but are likely to return with reinforcements any minute. We are few, so any extra barrel would come in handy. If you help us eliminate their reinforcements, I will repay as due. \n</text>
     </string>
     <string id="gar_hellcar_dialog_quest_1111">
         <text>Okay, I'm gonna stretch my legs before the long walk...</text>
@@ -214,7 +214,7 @@
         <text>Okay.</text>
     </string>
     <string id="gar_hellcar_start_11">
-        <text>Greetings to you, stalker. I've got a business for you.</text>
+        <text>Greetings to you, stalker. You're right on time.</text>
     </string>
     <string id="gar_hellcar_start_21">
         <text>I have nothing to do with you.</text>
@@ -313,7 +313,7 @@
         <text>Listen, buddy, what's interesting to be found on this dump here?</text>
     </string>
     <string id="gar_seryi_about_garbage_1">
-        <text>Ass-kicking troubles galore here. But if you are so full of pioneer's zeal, listen here. To the east there is a small forest, there's nothing interesting there, however packs of dogs frequent there. Be careful. If you follow these rails, they will lead you to a tunnel. Many anomalies are there, maybe there's something interesting left there, I don't know, I didn't explore it thoroughly. I think you know about the army post of Duty in the north. That's basically it of what I know about this level.  \n</text>
+        <text>Ass-kicking troubles galore here. But if you are so full of pioneer's zeal, listen here. To the east there is a small forest, there's nothing interesting there, however packs of dogs frequent there. Be careful. If you follow these rails, they will lead you to a tunnel. Many anomalies are there, maybe there's something interesting left there, I don't know, I didn't explore it thoroughly. I think you know about the army post of Duty in the north. That's basically it of what I know about this level. \n</text>
     </string>
     <string id="gar_seryi_about_garbage_11">
         <text>Thanks, this has been helpful, will take into account.</text>
