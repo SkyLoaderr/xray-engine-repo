@@ -36,6 +36,7 @@
 	<info_portion id="aes_monster_sound"></info_portion>
 	<info_portion id="aes_actor_road"></info_portion>
 	<info_portion id="aes_monolit_blockpost2"></info_portion>
+	<info_portion id="aes_actor_bridge"></info_portion>
 
 </game_information_portions>
 
