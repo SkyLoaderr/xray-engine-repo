@@ -110,8 +110,8 @@ protected:
 
 	//////////////////////////////////////////////
 	//для разлета осколков
-	float				tracerHeadSpeed;
-	float				tracerMaxLength;
+	float				m_fFragmentSpeed;
+	float				m_fFragmentTracerMaxLength;
 
 	//звуки
 	ref_sound			sndExplode;

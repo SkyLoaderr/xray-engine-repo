@@ -344,16 +344,14 @@ void CBulletManager::Render	()
 		to_camera.sub(bullet->pos,Device.vCameraPosition);
 		float dist_to_camera = to_camera.magnitude();
 
-		if(dist_to_camera<m_fMinViewDist)
-			length = m_fTracerLengthMin;
-		else if(dist_to_camera<m_fMaxViewDist)
-		{
+		if(dist_to_camera<m_fMinViewDist)		length = m_fTracerLengthMin;
+		else if(dist_to_camera<m_fMaxViewDist){
 			float length_max = m_fTracerLengthMin + 
 							  (max_length - m_fTracerLengthMin)*
 							  (dist_to_camera-m_fMinViewDist)/
 							  (m_fMaxViewDist-m_fMinViewDist);
 
-			if(length>length_max) length  = length_max;
+			if(length>length_max)				length = length_max;
 		}
 
 		float width;
@@ -362,10 +360,10 @@ void CBulletManager::Render	()
 		else 
 			width = length/m_fLengthToWidthRatio;
 
-		dist.normalize();
+		dist.normalize			();
 
 		Fvector center;
-		center.mad(bullet->pos, dist,  -length*bullet->render_offset);
+		center.mad				(bullet->pos, dist,  -length*bullet->render_offset);
 		tracers.Render			(verts, center, dist, length, width);
 	}
 

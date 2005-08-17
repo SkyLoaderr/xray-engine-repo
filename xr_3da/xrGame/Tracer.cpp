@@ -71,13 +71,10 @@ IC void FillSprite	(FVF::V*& pv, const Fvector& pos, const Fvector& dir, float r
     pv->set         (b.x+pos.x,b.y+pos.y,b.z+pos.z, 1.f,0.f);        pv++;
 }
 
-void  CTracer::Render	(FVF::V*&verts,  
-						 const Fvector& center, const Fvector& dir,
-						 float length, float width)
+void  CTracer::Render	(FVF::V*&verts, const Fvector& center, const Fvector& dir, float length, float width)
 {
-	if (::Render->ViewBase.testSphere_dirty((Fvector&)center,length*.5f))
-	{
-		FillSprite(verts,center,width,width);
-		FillSprite(verts,center,dir,width,length);
+	if (::Render->ViewBase.testSphere_dirty((Fvector&)center,length*.5f)){
+		FillSprite	(verts,center,width,width);
+		FillSprite	(verts,center,dir,width,length);
 	}
 }

@@ -101,8 +101,8 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 	m_fLightTime		= ini->r_float(section,"light_time");
 
 	//трассы для разлета осколков
-	tracerHeadSpeed		= ini->r_float		(section,"tracer_head_speed"	);
-	tracerMaxLength		= ini->r_float		(section,"tracer_max_length"	);
+	m_fFragmentSpeed			= ini->r_float	(section,"fragment_speed"				);
+	m_fFragmentTracerMaxLength	= ini->r_float	(section,"fragment_tracer_max_length"	);
 
 	shared_str				snd_name = ini->r_string(section,"snd_explode");
 	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
@@ -310,31 +310,30 @@ void CExplosive::Explode()
 	if (OnServer()) SendHits = true;
 	else SendHits = false;
 	//-------------------------------------
-	for(int i = 0; i < m_iFragsNum; ++i) 
-	{
-		frag_dir.random_dir();
-		frag_dir.normalize();
+	for(int i = 0; i < m_iFragsNum; ++i){
+		frag_dir.random_dir	();
+		frag_dir.normalize	();
 		
-		float		m_fCurrentFireDist = m_fFragsRadius;
-		float		m_fCurrentHitPower = m_fFragHit;
-		float		m_fCurrentHitImpulse = m_fFragHitImpulse;
-		ALife::EHitType m_eCurrentHitType = m_eHitTypeFrag;
-		float		m_fCurrentWallmarkSize = fWallmarkSize;
-		Fvector		m_vCurrentShootDir = frag_dir;
-		Fvector		m_vCurrentShootPos = pos;
+		float		m_fCurrentFireDist		= m_fFragsRadius;
+		float		m_fCurrentHitPower		= m_fFragHit;
+		float		m_fCurrentHitImpulse	= m_fFragHitImpulse;
+		ALife::EHitType m_eCurrentHitType	= m_eHitTypeFrag;
+		float		m_fCurrentWallmarkSize	= fWallmarkSize;
+		Fvector		m_vCurrentShootDir		= frag_dir;
+		Fvector		m_vCurrentShootPos		= pos;
 		
 		CCartridge cartridge;
-		cartridge.m_kDist = 1.f;
-		cartridge.m_kHit = 1.f;
-		cartridge.m_kImpulse = 1.f;
-		cartridge.m_kPierce = 1.f;
-		cartridge.fWallmarkSize = m_fCurrentWallmarkSize;
-#pragma todo("oles to yura: zdes' tozge nebilo materiala, ya ne znayu kakoy nado")
-		cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);	//. hack???
+		cartridge.m_kDist					= 1.f;
+		cartridge.m_kHit					= 1.f;
+		cartridge.m_kImpulse				= 1.f;
+		cartridge.m_kPierce					= 1.f;
+		cartridge.fWallmarkSize				= m_fCurrentWallmarkSize;
+		cartridge.bullet_material_idx		= GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 
-		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
+		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, m_fFragmentSpeed,
 											m_fCurrentHitPower, m_fCurrentHitImpulse, Initiator(),
-											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, SendHits, tracerMaxLength);
+											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, 
+											cartridge, SendHits, m_fFragmentTracerMaxLength );
 	}	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (cast_game_object()->Remote()) return;
