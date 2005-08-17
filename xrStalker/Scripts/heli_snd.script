@@ -27,9 +27,9 @@ snd_down = {
 
 function play_snd( st, snd_set, priority )
 	if not st.mute and
-	   not st.snd_obj or
+	   ( not st.snd_obj or
 	   not st.snd_obj:playing() or
-	   st.snd_priority < priority
+	   st.snd_priority < priority )
 	then
 		stop_snd( st )
 
