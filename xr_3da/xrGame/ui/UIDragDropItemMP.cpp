@@ -12,15 +12,18 @@
 #include "UIBuyWeaponWnd.h"
 #include "../MainUI.h"
 #include "../HUDManager.h"
+#include "Restrictions.h"
+
+extern CRestrictions g_mp_restrictions;
 
 //////////////////////////////////////////////////////////////////////////
 CUIDragDropItemMP::CUIDragDropItemMP()
-:slotNum					(0),
-sectionNum					(0),
-bAddonsAvailable			(false),
-cost						(0),
-m_bAlreadyPaid				(false),
-m_bHasRealRepresentation	(false)
+	:slotNum					(0),
+	sectionNum					(0),
+	bAddonsAvailable			(false),
+	cost						(0),
+	m_bAlreadyPaid				(false),
+	m_bHasRealRepresentation	(false)
 {
 	std::strcpy(m_strAddonTypeNames[0], "Silencer");
 	std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
@@ -30,6 +33,17 @@ m_bHasRealRepresentation	(false)
 		m_pAddon[i] = NULL;
 }
 
+bool CUIDragDropItemMP::HasAmountControl(){
+	return g_mp_restrictions.HasAmountControl(GetSectionName());
+}
+
+bool CUIDragDropItemMP::GetPermissionToBuy(bool& last){
+	return g_mp_restrictions.GetPermission(GetSectionName(), last);
+}
+
+void CUIDragDropItemMP::OnReturn(){
+	g_mp_restrictions.Return(GetSectionName());
+}
 
 void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bool bRealRepresentationSet)
 {
@@ -195,7 +209,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	pDDItemMP->GetFont()->SetColor(pDDItemMP->GetColor());
 	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), left, 
 		bottom - pDDItemMP->GetFont()->CurrentHeight(),
-		"%d", pDDItemMP->GetPosInSubSection() + 1);
+		"%d", (pDDItemMP->GetPosInSubSection() + 1)%10);
 
 	pDDItemMP->GetFont()->OnRender();
 }

@@ -41,8 +41,11 @@ class CUIDragDropItemMP: public CUIDragDropItem
 	// Игровая стоимость вещи
 	int				cost;
 
-	bool			m_bIsInfinite;
+//	bool			m_bIsInfinite;
 public:
+	bool	HasAmountControl();
+	bool	GetPermissionToBuy(bool& last);
+	void	OnReturn();
 		CUIDragDropItemMP						();
 	// Для слота
 	void SetSlot								(int slot);

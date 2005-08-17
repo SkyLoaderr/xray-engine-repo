@@ -15,14 +15,18 @@
 #include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "Restrictions.h"
 //#ifdef DEBUG
 //#include "../../xr_ioconsole.h"
 //#include "../../xr_ioc_cmd.h"
 //#endif //#ifdef DEBUG
 
+CRestrictions g_mp_restrictions;
 using namespace InventoryUtilities;
 
+
 CUIBag::CUIBag(CHECK_PROC proc){
+	g_mp_restrictions.InitGroups();
 
 	for (int i=0; i<4; i++)
         subSection_group3[i] = -1;
@@ -739,7 +743,7 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 		pDDItem->m_iRank = GetItemRank(m_wpnSectStorage[group][j].c_str());
 		pDDItem->SetMessageTarget(GetParent());
 		pDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
-		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
+//		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
 }
 
 CUIDragDropItemMP* CUIBag::CreateCopy(CUIDragDropItemMP *pDDItem){
@@ -774,6 +778,7 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 		{
 			pItem->GetParent()->DetachChild(pItem);
 			m_vCopyList.remove(pItem);
+			Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - SUCCESS", pDDItem->GetSectionName());
 
 #ifdef DEBUG
 			DRAG_DROP_LIST ddList_2 = pDDItem->GetOwner()->GetDragDropItemsList();
@@ -789,11 +794,8 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 			return;
 		}
 	}
-    
-
-#ifdef DEBUG
-	R_ASSERT2(false, "CUIBag::DeleteCopy - copy not found");
-#endif
+	Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - can't find it item",pDDItem->GetSectionName());
+ 
 }
 
 void CUIBag::PutItemToGroup(CUIDragDropItemMP* pDDItem, int iGroup){
@@ -916,6 +918,6 @@ void	CUIBag::ReloadItemsPrices	()
 
 void	CUIBag::SetRank(int rank) 
 {
-	m_iCurrentRank = rank;
+	g_mp_restrictions.SetRank(rank);	
 	ReloadItemsPrices();
 };

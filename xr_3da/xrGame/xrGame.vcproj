@@ -10965,22 +10965,10 @@
 						RelativePath=".\ui\UIAutobuyIndication.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIBuyWeaponTab.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIBuyWeaponTab.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIDragDropItemMP.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropItemMP.h">
-					</File>
-					<File
-						RelativePath=".\ui\UITabButtonMP.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UITabButtonMP.h">
 					</File>
 					<Filter
 						Name="BAG"
@@ -10999,7 +10987,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="main"
+						Name="BUY WND"
 						Filter="">
 						<File
 							RelativePath=".\ui\UIBuyWeaponStd.h">
@@ -11009,6 +10997,22 @@
 						</File>
 						<File
 							RelativePath=".\ui\UIBuyWeaponWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="TAB"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIBuyWeaponTab.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIBuyWeaponTab.h">
+						</File>
+						<File
+							RelativePath=".\ui\UITabButtonMP.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UITabButtonMP.h">
 						</File>
 					</Filter>
 				</Filter>
