@@ -242,12 +242,13 @@ void CController::reload(LPCSTR section)
 
 void CController::reinit()
 {
+	// must be before inherited call because of its use in ControlAnimation com
+	m_mental_state = eStateIdle;
+	
 	inherited::reinit();
 	CPsyAuraController::reinit();
 	
 	int_need_deactivate = false;
-
-	m_mental_state = eStateIdle;
 
 	m_psy_fire_start_time	= 0;
 	m_psy_fire_delay		= _pmt_psy_attack_delay;
