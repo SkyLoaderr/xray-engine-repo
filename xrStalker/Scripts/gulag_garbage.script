@@ -174,37 +174,37 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp1",
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp2",
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp3",
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp4",
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp5",
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_bandit_agr_kamp6",
 			idle = 0,
-			prior = 10, state = {2},
+			prior = 10, state = {2}, group = groups[1],
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
         		return obj:profile_name() == "gar_bandit_leader"			           
@@ -213,13 +213,13 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp7",
 			idle = 0,
-			prior = 3, state = {2},
+			prior = 3, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_kamp8",
 			idle = 0,
-			prior = 3, state = {2},
+			prior = 3, state = {2}, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -374,19 +374,19 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_kamp1",
 			idle = 0,
-			prior = 3, state = {0},
+			prior = 3, state = {0}, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_kamp2",
 			idle = 0,
-			prior = 3, state = {0},
+			prior = 3, state = {0}, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_kamp3",
 			idle = 0,
-			prior = 3, state = {0},
+			prior = 3, state = {0}, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1288,37 +1288,37 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp1",
 			idle = 0,
-			prior = 5, state = {3},
+			prior = 5, state = {3}, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp2",
 			idle = 0,
-			prior = 5, state = {3},
+			prior = 5, state = {3}, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp3",
 			idle = 0,
-			prior = 5, state = {3},
+			prior = 5, state = {3}, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp4",
 			idle = 0,
-			prior = 5, state = {3},
+			prior = 5, state = {3}, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp5",
 			idle = 0,
-			prior = 5, state = {3},
+			prior = 5, state = {3}, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_kamp6",
 			idle = 0,
-			prior = 5, state = {3},
+			prior = 5, state = {3}, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
