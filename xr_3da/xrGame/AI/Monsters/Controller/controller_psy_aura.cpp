@@ -138,4 +138,11 @@ void CPsyAuraController::feel_touch_delete(CObject* O)
 }
 //////////////////////////////////////////////////////////////////////////
 
-
+void CPsyAuraController::on_relcase(CObject *O)
+{
+	if (m_actor == O) m_actor = 0;
+	
+	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
+	if (element != m_enemies.end())
+		m_enemies.erase(element);
+}

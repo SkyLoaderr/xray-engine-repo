@@ -340,6 +340,12 @@ void CController::net_Destroy()
 	FreeFromControl();
 }
 
+void CController::net_Relcase(CObject *O)
+{
+	inherited::net_Relcase(O);
+	CPsyAuraController::on_relcase(O);
+}
+
 void CController::FreeFromControl()
 {
 	for	(u32 i=0; i<m_controlled_objects.size(); i++) smart_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control();

@@ -43,6 +43,8 @@ public:
 
 			bool	effector_active			() {return m_effector.IsActive();}
 
+			void	on_relcase				(CObject *O);
+
 #ifdef DEBUG
 public:
 			float	get_current_radius		(){return m_current_radius;}
