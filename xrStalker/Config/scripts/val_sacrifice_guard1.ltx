@@ -17,6 +17,9 @@ on_info = {=hit_by_actor} walker@leave %+val_sacrifice_plr_detected%
 
 [combat_ignore]
 
+[danger1]
+ignore_danger_sound = 1
+
 ;401 = "val_sacrifice_victim"
 ;403 = "val_sacrifice_bloodsucker"
 ;404 = "val_sacrifice_guard1"
@@ -104,7 +107,8 @@ def_state_moving = patrol
 def_state_moving_fire = patrol_fire
 no_retreat = true
 on_info = {+val_sacrifice_victim_dead} remark@phrase5
-combat_ignore_cond = {=check_fighting(403)} ;, {!check_fighting(401)}
+combat_ignore_cond = {=check_fighting(403)} ;, {!check_fighting(401)} ;, {=fighting_actor -val_sacrifice_plr_detected}
+;danger = danger1
 
 ;--------------------------------------------------------------------------
 ; фраза: Все! Нет человека - нет проблемы. Скажем Борову, что типа доставили пленника куда следует. Идем.
@@ -117,6 +121,7 @@ snd = speech
 on_signal = sound_end | walker@leave %+val_sacrifice_guard1_phrase5_end%
 on_info = {+val_sacrifice_plr_detected} walker@leave
 combat_ignore_cond = {=check_fighting(403)}
+;danger = danger1
 
 ;--------------------------------------------------------------------------
 ; уходим
