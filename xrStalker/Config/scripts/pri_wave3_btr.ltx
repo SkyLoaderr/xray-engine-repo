@@ -1,2 +1,18 @@
 [logic]
-active = kamp@start
+active = ph_idle1
+ 
+[ph_idle1]
+on_info = {+pri_wave3_btr_start} ph_car1
+ 
+[ph_car1]
+path_walk = pri_wave3_btr_walk
+path_fire = pri_wave3_btr_look
+auto_fire = true
+on_signal       = arrived | %+pri_wave3_btr_arrived%
+on_info         = {+pri_wave3_bomber_on_position} ph_car@kill_bomber
+;invulnerable = true
+
+[ph_car@kill_bomber]
+target          = 806
+on_info         = {+pri_bomber_dead} nil
+ 

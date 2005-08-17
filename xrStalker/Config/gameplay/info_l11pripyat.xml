@@ -5,6 +5,8 @@
     <info_portion id="pri_followers_start"></info_portion>
     <info_portion id="pri_followers_leader_hello"></info_portion>
 
+    <info_portion id="pri_bomber_dead"></info_portion>
+
     <info_portion id="pri_wave1_start"></info_portion>
     <info_portion id="pri_wave1_hide"></info_portion>
     <info_portion id="pri_wave1_monolith1_dead"></info_portion>
@@ -22,5 +24,7 @@
     <info_portion id="pri_wave2_monolith6_dead"></info_portion>
 
     <info_portion id="pri_wave3_btr_start"></info_portion>
+    <info_portion id="pri_wave3_btr_arrived"></info_portion>
+    <info_portion id="pri_wave3_bomber_on_position"></info_portion>
     <info_portion id="pri_wave3_btr_dead"></info_portion>
 </game_information_portions>
