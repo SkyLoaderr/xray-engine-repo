@@ -1,4 +1,4 @@
-// EffectorShot.h: interface for the CEffectorShot class.
+// EffectorShot.h: interface for the CCameraShotEffector class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -8,35 +8,45 @@
 #include "../cameramanager.h"
 #include "Actor.h"
 
-class CEffectorShot : public CCameraEffector
+class CWeaponShotEffector{
+protected:
+	float			fAngleVert;
+	float			fAngleVertMax;
+	float			fAngleVertFrac;
+	float			fAngleHorz;
+	float			fAngleHorzMax;
+	float			fAngleHorzStep;
+	float			fRelaxSpeed;
+protected:
+	BOOL			bActive;
+private:
+	CRandom			m_Random;
+	s32				m_LastSeed;
+public:
+					CWeaponShotEffector	();
+	virtual			~CWeaponShotEffector(){};
+
+	void			Initialize			(float max_angle, float relax_speed, float max_angle_horz, float step_angle_horz, float angle_frac);
+	IC BOOL			IsActive			(){return bActive;}
+	void			Update				();
+	
+	void			SetRndSeed			(s32 Seed);
+
+	virtual void	Shot				(float angle);
+	virtual void	GetDeltaAngle		(Fvector& delta_angle);
+};
+
+class CCameraShotEffector : public CWeaponShotEffector, public CCameraEffector
 {
 protected:
-	float	fAngleCurrent;
-	float	fRelaxSpeed;
-	float	fMaxAngle;
-	float	fAngleFrac;
-	BOOL	bActive;
-	float	fDispProbability;
-	float	fHorzDispFactor;
-
-	CActor*	m_pActor;
-
-	CRandom		m_Random;
-	s32			m_LastSeed;
+	CActor*			m_pActor;
 public:
-	CEffectorShot					(float max_angle, float relax_time , float max_angle_horz, float step_angle_horz, float angle_frac = 0.7f);
-	virtual ~CEffectorShot			();
+					CCameraShotEffector	(float max_angle, float relax_speed, float max_angle_horz, float step_angle_horz, float angle_frac);
+	virtual			~CCameraShotEffector();
 	
 	virtual	BOOL	Process				(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n, float& fFov, float& fFar, float& fAspect);
-	virtual	void	Shot				(float angle);
 
 	virtual void	SetActor			(CActor* pActor) {m_pActor = pActor;};
 	virtual	void	Clear				() {};
-	virtual	void	GetDeltaAngle		(Fvector& delta_angle);
-	virtual	void	SetRndSeed			(s32 Seed);
-	virtual CEffectorShot			*cast_effector_shot				()	{return this;}
-protected:
-			float	fAngleHorz;
-			float	fAngleHorzMax;
-			float	fAngleHorzStep;
+	virtual CCameraShotEffector*		cast_effector_shot				()	{return this;}
 };

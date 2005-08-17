@@ -18,7 +18,7 @@ enum ECameraEffectorType
 	eCEHit
 };
 
-class CEffectorShot;
+class CCameraShotEffector;
 class CEffectorZoomInertion;
 
 class CCameraEffector
@@ -34,7 +34,7 @@ public:
 	IC BOOL					Affected		() {return bAffected;}
 	IC float				LifeTime		() {return fLifeTime;}
 
-	virtual CEffectorShot			*cast_effector_shot				()	{return 0;}
+	virtual CCameraShotEffector		*cast_effector_shot				()	{return 0;}
 	virtual CEffectorZoomInertion	*cast_effector_zoom_inertion	()	{return 0;}
 
 	virtual	BOOL		Process			(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)= 0;

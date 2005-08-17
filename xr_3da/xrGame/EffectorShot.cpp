@@ -1,109 +1,107 @@
-// EffectorShot.cpp: implementation of the CEffectorShot class.
+// EffectorShot.cpp: implementation of the CCameraShotEffector class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "EffectorShot.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-CEffectorShot::CEffectorShot	(float max_angle, float relax_speed,
-								 float max_angle_horz, float step_angle_horz, float angle_frac) : CCameraEffector(eCEShot,100000.f,TRUE)
+//-----------------------------------------------------------------------------
+// Weapon shot effector
+//-----------------------------------------------------------------------------
+CWeaponShotEffector::CWeaponShotEffector()
 {
-	fRelaxSpeed		= _abs(relax_speed);
-	fAngleCurrent	= -EPS_S;
-	fMaxAngle		= _abs(max_angle);
-	fAngleFrac		= _abs(angle_frac);
-	bActive			= FALSE;
-	m_LastSeed = 0;
-
-
-	fAngleHorz = 0.f;
-	fAngleHorzMax = max_angle_horz;//PI*0.05f;
-	fAngleHorzStep = step_angle_horz;//PI*0.05f*0.2f;
-
-	m_pActor = NULL;
-
+	fAngleHorz				= 0.f;
+	fAngleVert				= -EPS_S;
+	bActive					= FALSE;
+	m_LastSeed				= 0;
+	fRelaxSpeed				= 0.f;
+	fAngleVertMax			= 0.f;
+	fAngleVertFrac			= 1.f;
+	fAngleHorzMax			= 0.f;
+	fAngleHorzStep			= 0.f;
 }
 
-CEffectorShot::~CEffectorShot	()
+void CWeaponShotEffector::Initialize(float max_angle, float relax_speed, float max_angle_horz, float step_angle_horz, float angle_frac)
 {
-
+	fRelaxSpeed				= _abs(relax_speed);
+	fAngleVertMax			= _abs(max_angle);
+	fAngleVertFrac			= _abs(angle_frac);
+	fAngleHorzMax			= max_angle_horz;
+	fAngleHorzStep			= step_angle_horz;
 }
 
-
-void CEffectorShot::Shot		(float angle)
+void CWeaponShotEffector::Shot	(float angle)
 {
-	fAngleCurrent	+= (angle*fAngleFrac+m_Random.randF(-1,1)*angle*(1-fAngleFrac));
-	clamp			(fAngleCurrent,-fMaxAngle,fMaxAngle);
-	if(fis_zero(fAngleCurrent - fMaxAngle))
-			fAngleCurrent *= m_Random.randF(0.9f,1.1f);
-
-	fAngleHorz		= fAngleHorz + (fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1)*fAngleHorzStep;
-	clamp			(fAngleHorz,-fAngleHorzMax,fAngleHorzMax);
-		
-	bActive			= TRUE;
+	fAngleVert				+= (angle*fAngleVertFrac+m_Random.randF(-1,1)*angle*(1-fAngleVertFrac));
+	clamp					(fAngleVert,-fAngleVertMax,fAngleVertMax);
+	if(fis_zero(fAngleVert-fAngleVertMax))
+		fAngleVert			*= m_Random.randF(0.9f,1.1f);
+	fAngleHorz				= fAngleHorz + (fAngleVert/fAngleVertMax)*m_Random.randF(-1,1)*fAngleHorzStep;
+	clamp					(fAngleHorz,-fAngleHorzMax,fAngleHorzMax);
+	bActive					= TRUE;
 }
 
-BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+void CWeaponShotEffector::Update()
 {
-	if (bActive)
-	{
-#pragma todo("Andy to Andy: optimize next")
-		float			h,p;
-		d.getHP			(h,p);
-		d.setHP			(h+fAngleHorz,p+fAngleCurrent);
-
-		float time_to_relax = _abs(fAngleCurrent)/fRelaxSpeed;
-		float relax_speed = _abs(fAngleHorz)/time_to_relax;
+	if (bActive){
+		float time_to_relax	= _abs(fAngleVert)/fRelaxSpeed;
+		float relax_speed	= _abs(fAngleHorz)/time_to_relax;
 		if (fAngleHorz>=0.f)
-			fAngleHorz	 -= relax_speed*Device.fTimeDelta;
+			fAngleHorz		-= relax_speed*Device.fTimeDelta;
 		else
-			fAngleHorz	 += relax_speed*Device.fTimeDelta;
+			fAngleHorz		+= relax_speed*Device.fTimeDelta;
 
-
-
-		if (fAngleCurrent>=0.f)
-		{
-			fAngleCurrent		-= fRelaxSpeed*Device.fTimeDelta;
-		
-			if (fAngleCurrent<0.f)
-			{
-				fAngleCurrent	= 0.f;
-				fAngleHorz		= 0.f;
-				bActive			= FALSE;
-				m_LastSeed		= 0;
-			}
+		if (fAngleVert>=0.f){
+			fAngleVert		-= fRelaxSpeed*Device.fTimeDelta;
+			if (fAngleVert<0.f) bActive	= FALSE;
+		}else{
+			fAngleVert		+= fRelaxSpeed*Device.fTimeDelta;
+			if (fAngleVert>0.f)	bActive	= FALSE;
 		}
-		else
-		{
-			fAngleCurrent		+= fRelaxSpeed*Device.fTimeDelta;
-			if (fAngleCurrent>0.f)
-			{
-				fAngleCurrent	= 0.f;
-				fAngleHorz		= 0.f;
-				bActive			= FALSE;
-				m_LastSeed		= 0;
-			}
+		if (!bActive){
+			fAngleVert		= 0.f;
+			fAngleHorz		= 0.f;
+			m_LastSeed		= 0;
 		}
+	}
+}
+
+void CWeaponShotEffector::GetDeltaAngle	(Fvector &delta_angle)
+{
+	delta_angle.x			= -fAngleVert;
+	delta_angle.y			= -fAngleHorz;
+	delta_angle.z			= 0.0f;
+}
+
+void CWeaponShotEffector::SetRndSeed	(s32 Seed)
+{
+	if (m_LastSeed == 0){
+		m_LastSeed			= Seed;
+		m_Random.seed		(Seed);
+	};
+};
+
+//-----------------------------------------------------------------------------
+// Camera shot effector
+//-----------------------------------------------------------------------------
+CCameraShotEffector::CCameraShotEffector(float max_angle, float relax_speed, float max_angle_horz, float step_angle_horz, float angle_frac) : CCameraEffector(eCEShot,100000.f,TRUE)
+{
+	CWeaponShotEffector::Initialize(max_angle, relax_speed, max_angle_horz, step_angle_horz, angle_frac);
+	m_pActor		= NULL;
+}
+
+CCameraShotEffector::~CCameraShotEffector()
+{
+}
+
+BOOL CCameraShotEffector::Process	(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+{
+	if (bActive){
+		float		h,p;
+		d.getHP		(h,p);
+		d.setHP		(h+fAngleHorz,p+fAngleVert);
+		Update		();
 	}
 	return TRUE;
 }
 
-void  CEffectorShot::GetDeltaAngle	(Fvector &delta_angle)
-{
-	delta_angle.x = -fAngleCurrent;
-	delta_angle.y = 0.0f;
-	delta_angle.z = 0.0f;
-}
-
-void	CEffectorShot::SetRndSeed			(s32 Seed)
-{
-	if (m_LastSeed == 0)
-	{
-		m_LastSeed = Seed;
-		m_Random.seed(Seed);
-	};
-};

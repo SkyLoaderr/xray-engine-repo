@@ -152,9 +152,9 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CWeaponAmmo,		CInventoryItem)
 
-		DECLARE_SPECIALIZATION	(CEffectorShot,		CCameraEffector,		cast_effector_shot);
+		DECLARE_SPECIALIZATION	(CCameraShotEffector, CCameraEffector,		cast_effector_shot);
 #		undef cast_type_list
-#		define cast_type_list save_cast_list	(CEffectorShot,		CCameraEffector)
+#		define cast_type_list save_cast_list	(CCameraShotEffector,CCameraEffector)
 
 		DECLARE_SPECIALIZATION	(CEffectorZoomInertion,	CCameraEffector,	cast_effector_zoom_inertion);
 #		undef cast_type_list

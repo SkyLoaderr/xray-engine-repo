@@ -2,45 +2,45 @@
 #include "EffectorShotX.h"
 #include "..\CameraBase.h"
 
-CEffectorShotX::CEffectorShotX	(float max_angle, float relax_speed,
-								 float max_angle_horz, float step_angle_horz, float angle_frac) : CEffectorShot(max_angle, relax_speed, max_angle_horz, step_angle_horz, angle_frac)
+CCameraShotEffectorX::CCameraShotEffectorX	(float max_angle, float relax_speed,
+								 float max_angle_horz, float step_angle_horz, float angle_frac) : CCameraShotEffector(max_angle, relax_speed, max_angle_horz, step_angle_horz, angle_frac)
 {
 }
 
-CEffectorShotX::~CEffectorShotX	()
+CCameraShotEffectorX::~CCameraShotEffectorX	()
 {
 }
 
-BOOL CEffectorShotX::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+BOOL CCameraShotEffectorX::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
 	return TRUE;
 };
 
-void CEffectorShotX::GetDeltaAngle		(Fvector& delta_angle)
+void CCameraShotEffectorX::GetDeltaAngle	(Fvector& delta_angle)
 {
 	delta_angle.x = 0.0f;
 	delta_angle.y = 0.0f;
 	delta_angle.z = 0.0f;
 }
 
-void CEffectorShotX::Shot		(float angle)
+void CCameraShotEffectorX::Shot			(float angle)
 {
-	float fAC_Old = fAngleCurrent;
+	float fAC_Old = fAngleVert;
 	float fAH_Old = fAngleHorz;
 	inherited::Shot(angle);
-	float dAC = fAngleCurrent - fAC_Old;
+	float dAC = fAngleVert - fAC_Old;
 	float dAH = fAngleHorz - fAH_Old;
 
 	UpdateActorCamera(-dAC, -dAH);	
 }
 
-void	CEffectorShotX::Clear				()
+void	CCameraShotEffectorX::Clear				()
 {
-	fAngleCurrent	= -EPS_S;
-	fAngleHorz = 0.0f;
+	fAngleVert	= -EPS_S;
+	fAngleHorz	= 0.0f;
 };
 
-void	CEffectorShotX::UpdateActorCamera		(float dPitch, float dYaw)
+void	CCameraShotEffectorX::UpdateActorCamera		(float dPitch, float dYaw)
 {
 	if (!m_pActor) return;
 

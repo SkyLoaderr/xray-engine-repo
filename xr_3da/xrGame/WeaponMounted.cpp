@@ -359,8 +359,8 @@ void CWeaponMounted::AddShotEffector				()
 {
 	if(OwnerActor())
 	{
-		CEffectorShot* S		= smart_cast<CEffectorShot*>	(OwnerActor()->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)OwnerActor()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f));
+		CCameraShotEffector* S	= smart_cast<CCameraShotEffector*>(OwnerActor()->EffectorManager().GetEffector(eCEShot)); 
+		if (!S)	S				= (CCameraShotEffector*)OwnerActor()->EffectorManager().AddEffector(xr_new<CCameraShotEffector> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f, 0.7f));
 		R_ASSERT				(S);
 		S->Shot					(0.01f);
 	}

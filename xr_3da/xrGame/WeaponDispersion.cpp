@@ -46,10 +46,9 @@ float CWeapon::GetFireDispersion	(float cartridge_k) const
 void CWeapon::AddShotEffector		()
 {
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
-	if(pActor)
-	{
-		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShotX> (camMaxAngle,camRelaxSpeed, camMaxAngleHorz, camStepAngleHorz, camDispertionFrac));
+	if(pActor){
+		CCameraShotEffector* S	= smart_cast<CCameraShotEffector*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
+		if (!S)	S				= (CCameraShotEffector*)pActor->EffectorManager().AddEffector(xr_new<CCameraShotEffectorX> (camMaxAngle,camRelaxSpeed, camMaxAngleHorz, camStepAngleHorz, camDispertionFrac));
 		R_ASSERT				(S);
 		S->SetRndSeed(pActor->GetShotRndSeed());
 		S->SetActor(pActor);
@@ -69,7 +68,7 @@ void	CWeapon::ClearShotEffector	()
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
-		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
+		CCameraShotEffector* S		= smart_cast<CCameraShotEffector*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
 		if (S) S->Clear();
 	};
 };
@@ -78,9 +77,9 @@ const Fvector& CWeapon::GetRecoilDeltaAngle()
 {
 	CActor* pActor		= smart_cast<CActor*>(H_Parent());
 
-	CEffectorShot* S = NULL;
+	CCameraShotEffector* S = NULL;
 	if(pActor)
-		S = smart_cast<CEffectorShot*>(pActor->EffectorManager().GetEffector(eCEShot)); 
+		S = smart_cast<CCameraShotEffector*>(pActor->EffectorManager().GetEffector(eCEShot)); 
 
 	if(S)
 	{
