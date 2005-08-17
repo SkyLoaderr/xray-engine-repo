@@ -22,29 +22,29 @@ damage              	= damage_bones
 ;-------------------------------------------------------------------------------
 ;------ Factory parameters of Engine -------------------------------------------
 
-fuel_tank         		= 250.         	; L
-fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
+fuel_tank         		= 80         	; L
+fuel_consumption  		= 7		       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 30        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3100       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.005
-power_decrement_factor	= 0.03
-rpm_increment_factor	= 0.03
-rpm_decrement_factor	= 0.03
+power_decrement_factor	= 0.02
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.02
 m_power_neutral_factor	= 0.85
 
 ; additional engine parameters
 
 max_engine_rpm    		= 4000			; rpm (5000) rpm will never be more
-idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
+idling_engine_rpm		= 950       	; rpm (750) min rpm - starts from this rpm value
 
 ;-------------------------------------------------------------------------------
 ;------ Adjustment a wheel -----------------------------------------------------
 
 reference_radius  		= 0.43			; Радиус колеса, используемый при просчёте двигателя
 axle_friction     		= 0.00001      	; Ослабление скорости в неетральной позиции. (N*m)
-steering_speed    		= 2.0         	; Время поворота рулевого колеса, в максимум. rps (1)
+steering_speed    		= 1.0         	; Время поворота рулевого колеса, в максимум. rps (1)
 steering_torque   		= 900000.    	; Сила гидроусилителя руля. (N*m)
 break_torque      		= 0.02        	; Сила тормозных колодок. (N*m)
 break_time        		= 1.0         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
