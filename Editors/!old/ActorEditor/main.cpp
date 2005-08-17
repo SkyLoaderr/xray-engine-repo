@@ -65,6 +65,9 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
     ExecCommand				(COMMAND_UPDATE_GRID);
     ExecCommand				(COMMAND_RENDER_FOCUS);
     FillChooseEvents		();
+
+    // special case :(
+	frmMain->WindowState = fsStorage->ReadInteger("window_state",frmMain->WindowState);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
@@ -251,7 +254,10 @@ void __fastcall TfrmMain::paRenderResize(TObject *Sender)
 	ExecCommand(COMMAND_RENDER_RESIZE);
 }
 //---------------------------------------------------------------------------
-
-
-
+ 
+void __fastcall TfrmMain::fsStorageSavePlacement(TObject *Sender)
+{
+    fsStorage->WriteInteger("window_state",frmMain->WindowState);
+}
+//---------------------------------------------------------------------------
 

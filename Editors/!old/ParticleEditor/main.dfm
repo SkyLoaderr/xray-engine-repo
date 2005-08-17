@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 107
-  Top = 211
+  Left = -795
+  Top = 245
   Width = 770
   Height = 452
   Color = clBtnFace
@@ -179,8 +179,10 @@ object frmMain: TfrmMain
   end
   object fsStorage: TFormStorage
     IniSection = 'Main Form'
+    Options = [fpPosition]
     RegistryRoot = prLocalMachine
     Version = 1
+    OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paLeftBar.Tag')
     StoredValues = <>
