@@ -4,12 +4,18 @@
 		<objective>
 			<text>garbage_meet_stalker_0</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>garbage_meetstalker_done</infoportion_complete>
+			<infoportion_fail>garbage_meetstalker_die</infoportion_fail>
 		</objective>
 		<objective>
 			<text>garbage_meet_stalker_1</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="garbage_meet_stalker_1">green_location</map_location_type>
 			<object_story_id>Garbage_Seriy</object_story_id>
+			<infoportion_complete>garbage_meetstalker_done</infoportion_complete>
+			<infoportion_fail>garbage_meetstalker_die</infoportion_fail>
+			<infoportion_set_complete>garbage_meetstalker_end</infoportion_set_complete>
+			<infoportion_set_fail>garbage_meetstalker_end</infoportion_set_fail>
 		</objective>
 	</game_task>
 	
@@ -18,18 +24,22 @@
 		<objective>
 			<text>gar_kill_boars_main</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>gar_kill_boars_request</infoportion_complete>
 		</objective>
 		<objective>
 			<text>gar_kill_boars_1</text>
 			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="gar_kill_boars_1">green_location</map_location_type>
 			<object_story_id>gar_boars_nest</object_story_id>
+			<infoportion_complete>gar_kill_boars_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>gar_kill_boars_2</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="gar_kill_boars_2">green_location</map_location_type>
 			<object_story_id>gar_dolg_blockpost</object_story_id>
+			<infoportion_complete>gar_kill_boars_request</infoportion_complete>
+			<infoportion_set_complete>gar_free_pass</infoportion_set_complete>
 		</objective>
 	</game_task>
 	
@@ -38,18 +48,22 @@
 		<objective>
 			<text>gar_defend_garbage</text>
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>gar_hellcar_alive</text>
-			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
-			<object_story_id>gar_hellcar</object_story_id>
+			<function_complete>garbage_tasks.task_hellcar_complete</function_complete>
 		</objective>
 		<objective>
 			<text>gar_kill_bandits</text>
 			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="gar_kill_bandits">green_location</map_location_type>
 			<object_story_id>gar_bandits_leader</object_story_id>
+			<infoportion_complete>gar_bandits_killed</infoportion_complete>
+		</objective>
+		<objective>
+			<text>gar_hellcar_alive</text>
+			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
+			<object_story_id>gar_hellcar</object_story_id>
+			<infoportion_fail>gar_hellcar_death</infoportion_fail>
+			<infoportion_complete>gar_hellcar_dialog_end</infoportion_complete>
 		</objective>
 	</game_task>
 	
@@ -58,17 +72,21 @@
 		<objective>
 			<text>gar_kill_bandits_post</text>
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_fail>gar_help_newbie_die</infoportion_fail>
+			<infoportion_complete>gar_help_newbie_reward</infoportion_complete>
 		</objective>
 		<objective>
 			<text>gar_kill_bandits_around_tunnel</text>
 			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="gar_kill_bandits_around_tunnel">green_location</map_location_type>
 			<object_story_id>gar_bandit_post</object_story_id>
+			<infoportion_complete>gar_help_newbie_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>gar_say_free_pass</text>
 			<icon x="400" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="gar_say_free_pass">green_location</map_location_type>
 			<object_story_id>gar_newbie_in_tunnel</object_story_id>
+			<infoportion_complete>gar_help_newbie_reward</infoportion_complete>
 		</objective>
 	</game_task>
