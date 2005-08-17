@@ -36,6 +36,12 @@ void CUIListItem::Init(float x, float y, float width, float height)
 	SetPushOffsetY(0);
 }
 
+#pragma todo("SATAN -> ANDY : this is is the way to set icon to list item")
+void CUIListItem::InitTexture(LPCSTR tex_name){
+	CUIButton::InitTexture(tex_name);
+	SetTextX(m_UIStaticItem.GetRect().width());
+}
+
 
 void CUIListItem::Init(const char* str, float x, float y, float width, float height)
 {
