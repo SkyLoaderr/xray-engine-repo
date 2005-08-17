@@ -352,7 +352,7 @@ void CEntity::shedule_Update	(u32 dt)
 			NET_Packet			P;
 			u_EventGen			(P,GE_ASSIGN_KILLER,ID());
 			P.w_u16				(u16(-1));
-			u_EventSend			(P);
+			if (GameID() == GAME_SINGLE)	u_EventSend			(P);
 		}
 	}
 }

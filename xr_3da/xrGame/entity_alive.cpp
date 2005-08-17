@@ -308,7 +308,7 @@ void CEntityAlive::Die	(CObject* who)
 	NET_Packet		P;
 	u_EventGen		(P,GE_ASSIGN_KILLER,ID());
 	P.w_u16			(u16(who->ID()));
-	u_EventSend		(P);
+	if (GameID() == GAME_SINGLE) u_EventSend		(P);
 
 	// disable react to sound
 	ISpatial* self	= smart_cast<ISpatial*> (this);
