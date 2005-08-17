@@ -222,6 +222,14 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	else if (0 == xr_strcmp(al, "l"))
 		pWnd->SetTextAlign(CGameFont::alLeft);
 
+	al = xml_doc.ReadAttrib(*text_path, index, "vert_align", "");
+	if (0 == xr_strcmp(al, "c"))
+		pWnd->SetVTextAlignment(valCenter);
+	else if (0 == xr_strcmp(al, "b"))
+		pWnd->SetVTextAlignment(valBotton);
+	else if (0 == xr_strcmp(al, "t"))
+		pWnd->SetVTextAlignment(valTop);
+
 	// Text coordinates
 	float text_x = xml_doc.ReadAttribFlt(*text_path, index, "x", -1);
 	float text_y = xml_doc.ReadAttribFlt(*text_path, index, "y", -1);
