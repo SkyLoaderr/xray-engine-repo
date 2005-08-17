@@ -5,7 +5,6 @@
 	<!-- атака бандитов на Серого -->
 	<info_portion id="garbage_meetstalker_start">
 		<task>garbage_meet_stalker</task>
-
 	</info_portion>
 	<info_portion id="garbage_meetstalker_done"></info_portion>
 	<info_portion id="garbage_meetstalker_die"></info_portion>
@@ -39,6 +38,7 @@
 	<info_portion id="gar_after_battle"></info_portion>
 	<info_portion id="gar_hellcar_dialog_end"></info_portion>
 	<info_portion id="gar_hellcar_death"></info_portion>
+	<info_portion id="gar_hellcar_death_2"></info_portion>
 	<info_portion id="gar_hellcar_thanks"></info_portion>
 	
 	
@@ -69,7 +69,6 @@
 	</info_portion>
 	<info_portion id="gar_help_newbie_done"></info_portion>
 	<info_portion id="gar_help_newbie_die"></info_portion>
-	<info_portion id="gar_help_newbie_return"></info_portion>
 	<info_portion id="gar_help_newbie_reward"></info_portion>
 	<info_portion id="gar_help_newbie_exit"></info_portion>
 		

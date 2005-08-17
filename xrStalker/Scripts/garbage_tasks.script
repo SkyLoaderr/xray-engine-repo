@@ -7,77 +7,20 @@ function proceed()
 	then
 		actor:give_info_portion("agr_krot_band_start")
 	end       	
-	
-	if actor:has_info("garbage_meetstalker_die") and
-		actor:dont_has_info("garbage_meetstalker_done") and
-		actor:dont_has_info("garbage_meetstalker_end")
-	then
-		level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
-		actor:give_info_portion("garbage_meetstalker_end")
-	end
-	
-	if actor:has_info("gar_kill_boars_done") and
-		actor:dont_has_info("gar_kill_boars_request") 
-	then
-		actor:give_info_portion("gar_kill_boars_request")
-		level_tasks.set_task_state(task.completed, "gar_kill_boars", 1)
-	end
-	
-	if actor:has_info("gar_bandits_killed") and
-		actor:dont_has_info("gar_hellcar_death") and
-		actor:dont_has_info("gar_after_battle") 
-	then
-		actor:give_info_portion("gar_after_battle")
-		level_tasks.set_task_state(task.completed, "gar_help_dymon", 2)
-	end
-	
-	if actor:has_info("gar_hellcar_death") and
-		actor:has_info("gar_hellcar_help") and
---		xr_conditions.is_dead_all(actor, nil, {107}) and
-		actor:dont_has_info("gar_after_battle") and
-		actor:dont_has_info("gar_hellcar_dialog_end")		
-	then
-		level_tasks.set_task_state(task.fail, "gar_help_dymon", 1)
-		actor:give_info_portion("gar_hellcar_dialog_end")
-	end
-	
-	if actor:has_info("gar_hellcar_death") and
-		actor:has_info("gar_hellcar_help") and
-		actor:has_info("gar_after_battle") and
-		actor:dont_has_info("gar_hellcar_dialog_end")		
-	then
-		level_tasks.set_task_state(task.fail, "gar_help_dymon", 1)
-		level_tasks.set_task_state(task.completed, "gar_help_dymon", 0)
-		actor:give_info_portion("gar_hellcar_dialog_end")
-	end
-	
-	
-	if actor:has_info("gar_bandits_killed") and
-		actor:has_info("gar_hellcar_help") and
-		actor:has_info("gar_hellcar_death") and
-		xr_conditions.is_dead_all(actor, nil, {107}) and
-		actor:dont_has_info("gar_after_battle") 
-	then
-		actor:give_info_portion("gar_after_battle")
-		level_tasks.set_task_state(task.completed, "gar_help_dymon", 0)
-	end
-	
-	
-	if actor:has_info("gar_help_newbie_done") and
-		actor:dont_has_info("gar_help_newbie_return") and
-		actor:has_info("gar_help_newbie")
-	then	
-		level_tasks.set_task_state(task.completed, "gar_help_tunnel_newbie", 1)
-		actor:give_info_portion("gar_help_newbie_return")
-	end
-	
-	if actor:has_info("gar_help_newbie_die") and
-		actor:dont_has_info("gar_help_newbie_exit")
-	then	
-		level_tasks.set_task_state(task.fail, "gar_help_tunnel_newbie", 0)
-		actor:give_info_portion("gar_help_newbie_exit")
-	end
 
+end
+
+function task_hellcar_complete()
+	local actor = db.actor
+	if actor:has_info("gar_hellcar_help") and
+	   actor:has_info("gar_bandits_killed") and
+	   (actor:has_info("gar_hellcar_death_2") or
+	   actor:has_info("gar_hellcar_dialog_end"))
+	then
+		return true
+	else
+		return false
+	end
 end
 
 function process_info_portion(info_id)
@@ -197,12 +140,8 @@ function process_info_portion(info_id)
 		
 	elseif info_id == "gar_remove_fake_spot11" then
 		level_tasks.remove_location(122, "crlc_big")				
+	
 		
-		
-		
-		
---	elseif info_id == "gar_free_pass" then
---		level_tasks.remove_location(108, "gar_dolg_blockpost_location")
 	end
 	
 	return false

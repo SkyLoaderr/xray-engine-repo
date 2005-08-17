@@ -63,6 +63,7 @@
 			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
 			<object_story_id>gar_hellcar</object_story_id>
 			<infoportion_fail>gar_hellcar_death</infoportion_fail>
+			<infoportion_set_fail>gar_hellcar_death_2</infoportion_set_fail>
 			<infoportion_complete>gar_hellcar_dialog_end</infoportion_complete>
 		</objective>
 	</game_task>
