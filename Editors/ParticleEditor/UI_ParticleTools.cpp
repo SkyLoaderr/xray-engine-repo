@@ -194,7 +194,7 @@ void CParticleTools::OnFrame()
     	m_EditObject->OnFrame();
 
     if (m_Flags.is(flAnimatedParent)){
-    	m_ParentAnimator->OnFrame();
+    	m_ParentAnimator->Update(Device.fTimeDelta);
         if (m_ParentAnimator->IsPlaying()){
         	Fvector new_vel;
             new_vel.sub (m_ParentAnimator->XFORM().c,m_Transform.c);
