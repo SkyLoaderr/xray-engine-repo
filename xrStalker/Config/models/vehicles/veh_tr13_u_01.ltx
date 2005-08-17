@@ -1,66 +1,73 @@
 [disable]
-linear_factor     = 0.3
-angular_factor    = 0.3
+linear_factor     		= 0.3
+angular_factor    		= 0.3
 
 ;-------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------
 
 [car_definition]
-camera_pos        = -0.0, 2.2, -0.7
+camera_pos        		= -0.0, 2.2, -0.7
 
-driving_wheels    = back_left_wheel,back_right_wheel                                      ; ведущие колёса
-steering_wheels   = front_left_wheel,front_right_wheel                                    ; рулевые колёса
-breaking_wheels   = back_left_wheel,back_right_wheel,front_left_wheel,front_right_wheel   ; тормозящие колёса
-doors             = left_door,right_door                                                  ; двери
-steer             = stearing_wheel                                                        ; руль
-driver_place      = seat_left                                                             ; место водителя
-exhausts          = exhausts                                                              ; выхлопная труба
-exhaust_particles = vehiclefx\exhaust_1
+driving_wheels    		= back_left_wheel,back_right_wheel                                      ; ведущие колёса
+steering_wheels   		= front_left_wheel,front_right_wheel                                    ; рулевые колёса
+breaking_wheels   		= back_left_wheel,back_right_wheel,front_left_wheel,front_right_wheel   ; тормозящие колёса
+doors             		= left_door,right_door                                                  ; двери
+steer             		= stearing_wheel                                                        ; руль
+driver_place      		= seat_left                                                             ; место водителя
+exhausts          		= exhausts                                                              ; выхлопная труба
+exhaust_particles 		= vehiclefx\exhaust_1
+damage              	= damage_bones
 
 ;-------------------------------------------------------------------------------
 ;------ Factory parameters of Engine -------------------------------------------
 
-fuel_tank         = 250.             ; L
-fuel_consumption  = 20               ; L / (100k R); liters per 100 000 rotations
-engine_power      = 120.             ; horse_power (kW=hp*0.808) max power
-max_power_rpm     = 3000.            ; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    = 2500             ; on this rpm engine torque reaches maximum
+fuel_tank         		= 250.         	; L
+fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
+engine_power      		= 50        	; horse_power (kW=hp*0.808) max power
+max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
+max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
+
+power_increment_factor	= 0.002 ;0.001
+power_decrement_factor	= 0.01 ;0.01
+rpm_increment_factor	= 0.02 ;0.02
+rpm_decrement_factor	= 0.02 ;0.02
+m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
 
-max_engine_rpm    = 3000.            ; rpm (5000) rpm will never be more
-idling_engine_rpm = 500.             ; rpm (750) min rpm - starts from this rpm value
-
-power_increment_factor  = 0.02       ;
-rpm_increment_factor    = 0.02       ;
+max_engine_rpm    		= 4000			; rpm (5000) rpm will never be more
+idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
 
 ;-------------------------------------------------------------------------------
 ;------ Adjustment a wheel -----------------------------------------------------
 
-reference_radius  = 0.65             ; Радиус колеса, используемый при просчёте двигателя
-axle_friction     = 0.01             ; Ослабление скорости в неетральной позиции. (N*m)
-steering_speed    = 0.6              ; Время поворота рулевого колеса, в максимум. rps (1)
-steering_torque   = 900000.          ; Сила гидроусилителя руля. (N*m)
-break_torque      = 0.02             ; Сила тормозных колодок. (N*m)
-break_time        = 0.5              ; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
-hand_break_torque = 0.03             ; сила торможения пробелом (по умолчанию = break_torque)
+reference_radius		= 0.65			; Радиус колеса, используемый при просчёте двигателя
+axle_friction     		= 0.0001       	; Ослабление скорости в неетральной позиции. (N*m)
+steering_speed    		= 0.5         	; Время поворота рулевого колеса, в максимум. rps (1)
+steering_torque   		= 900000.    	; Сила гидроусилителя руля. (N*m)
+break_torque			= 0.060			; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.060			; сила торможения пробелом (по умолчанию = break_torque)
+break_time        		= 1.0 
 
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
+;R                  = 6.02, 740,  3000 ; shift down/ shift up. (rpm, необходимое для переключения)
+;N1                 = 6.38, 740,  1500
+;N2                 = 3.29, 1200, 2000
+;N3                 = 2.04, 1700, 2800
 
-main_gear_ratio    = 12              ; Передаточное отношение
-auto_transmission  = on              ; Автоматическая коробка (on/off)
-auto_transmission_rpm  = ,740,3000   ; shift down/ shift up
-
+main_gear_ratio    		= 12.63         ; Передаточное отношение
+auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
+										; shift down/ shift up. (rpm, необходимое для переключения)
+R                  		= 3.73, 2500,3850	;2100,2850
+N1                 		= 3.73, 2500,3850
+N2                 		= 2.29, 2500,3850
+N3                 		= 1.39, 2500,3850
 
-R                  = 6.02, 740,  3000 ; shift down/ shift up. (rpm, необходимое для переключения)
-N1                 = 6.38, 740,  1500
-N2                 = 3.29, 1200, 2000
-N3                 = 2.04, 1700, 2800
 
-damage             = damage_bones
+
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
 
@@ -162,17 +169,6 @@ front_right_wheel     = 0.00001
 ;-1 - must be -1
 default               = 1, -1, 0.0
 
-root                  = 1, -1, 0.0
-kabina                = 1, -1, 0.0
-left_door             = 1, -1, 0.0
-right_door            = 1, -1, 0.0
-front_axle            = 1, -1, 0.0
-back_axle             = 1, -1, 0.0
-back_left_wheel       = 1, -1, 0.0
-back_right_wheel      = 1, -1, 0.0
-front_left_wheel      = 1, -1, 0.0
-front_right_wheel     = 1, -1, 0.0
-
 [immunities]
 burn_immunity         = 0.5             ;коэффициенты иммунитета
 strike_immunity       = 0.01
@@ -188,34 +184,74 @@ fire_wound_immunity   = 0.01
 ;----------------explosion params-----------------------------------------------
 
 [explosion]
-blast                 = 100
-blast_r               = 15
-blast_impulse         = 350
-frags                 = 15
-frags_r               = 20
-frag_hit              = 45
-frag_hit_impulse      = 250
-hit_type_blast        = explosion
-hit_type_frag         = fire_wound
-up_throw_factor       = 1.4
-wm_size               = 0.1
-explode_particles     = explosions\expl_car
-light_color           = 0.6,0.5,0.3
-light_range           = 15.0
-light_time            = 1.0
+blast					= 100
+blast_r					= 15
+blast_impulse			= 350
+frags		        	= 15
+frags_r					= 30
+frag_hit				= 50
+frag_hit_impulse		= 350
+hit_type_blast			= explosion
+hit_type_frag			= fire_wound
+up_throw_factor			= 0.25
+wm_size             	= 0.1
+explode_particles		= explosions\expl_car
+light_color				= 0.6,0.5,0.3
+light_range				= 15.0
+light_time 				= 0.5
 
 ;трассы от осколков
-tracer_head_speed     = 76
-tracer_max_length     = 3
-explode_duration      = 50    ;подолжительность взрыва (с)
+tracer_head_speed		= 76
+tracer_max_length   	= 3
+explode_duration    	= 30		;подолжительность взрыва (с)
 
 ;звуки
-snd_explode           = weapons\heli_explosion
+snd_explode 			= weapons\heli_explosion
 
 [explode_effector]
-time                  = 0.75
-amplitude             = 5.0
-period_number         = 50
+time					=  0.75
+amplitude				=  5.0
+period_number	    	=  50
+
+;-------------------------------------------------------------------------------
+;------ Others params ----------------------------------------------------------
+
+[air_resistance]
+linear_factor           = 500.f	;
+angular_factor          = 25500.f	;
+
+[wheels_params]
+damping_factor          = 0.5		;
+spring_factor           = 0.5		;
+friction_factor         = 1.5		;
+
+[front_left_wheel]
+break_torque			= 0.025		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.010		; сила торможения пробелом (по умолчанию = break_torque)
+damping_factor          = 1.5		;
+spring_factor           = 0.1		;
+friction_factor         = 1.5		;
+
+[front_right_wheel]
+break_torque			= 0.025		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.010		; сила торможения пробелом (по умолчанию = break_torque)
+damping_factor          = 1.5		;
+spring_factor           = 0.1		;
+friction_factor         = 1.5		;
+
+[back_left_wheel]
+break_torque			= 0.025		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.025		; сила торможения пробелом (по умолчанию = break_torque)
+damping_factor          = 1.5		;
+spring_factor           = 0.1		;
+friction_factor         = 1.6		;
+
+[back_right_wheel]
+break_torque			= 0.025		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.025		; сила торможения пробелом (по умолчанию = break_torque)
+damping_factor          = 1.5		;
+spring_factor           = 0.1		;
+friction_factor         = 1.6		;
 
 ;-------------------------------------------------------------------------------
 ;------ End params ------------------------------------------------------------- 
