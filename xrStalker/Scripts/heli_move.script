@@ -370,4 +370,5 @@ function set_scheme( npc, ini, scheme, section )
 
 	st.invulnerable = utils.cfg_get_bool( ini, section, "invulnerable", npc, false, false )
 	st.immortal     = utils.cfg_get_bool( ini, section, "immortal",     npc, false, false )
+	st.mute         = utils.cfg_get_bool( ini, section, "mute",         npc, false, false )
 end
