@@ -630,7 +630,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 	};
 	//-------------------------------------------------------------------------------
 	xr_vector<RPoint>&	rp	= rpoints[Team];
-	float MinTeamPRointDist = rpoints_MinDist[Team];
+//	float MinTeamPRointDist = rpoints_MinDist[Team];
 	//create Enemies list
 	xr_vector <u32>					pEnemies;
 	xr_vector <u32>					pFriends;
