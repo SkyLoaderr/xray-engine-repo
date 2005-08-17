@@ -129,10 +129,10 @@ void CBaseMonster::shedule_Update(u32 dt)
 
 void CBaseMonster::Die(CObject* who)
 {
+	if (StateMan) StateMan->critical_finalize();
+
 	inherited::Die(who);
 
-	if (StateMan) StateMan->critical_finalize();
-	
 	if (is_special_killer(who))
 		sound().play			(MonsterSpace::eMonsterSoundDieInAnomaly);
 	else
