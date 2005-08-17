@@ -234,7 +234,7 @@ void CSpawnPoint::SSpawnData::OnFrame()
 	    if (m_Data->m_editor_flags.is(ISE_Abstract::flMotionChange))
         	m_Motion->OnChangeMotion();
     	if (m_Motion->animator)
-    		m_Motion->animator->OnFrame();
+    		m_Motion->animator->Update(Device.fTimeDelta);
     }
     // reset editor flags
     m_Data->m_editor_flags.zero	();
