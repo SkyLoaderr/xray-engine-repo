@@ -19,6 +19,7 @@ on_info = %+val_escort_nap1_dead%
 
 [hit]
 on_info = {=hitted_by(407:408)} %+val_escort_combat%
+on_info = {=hit_by_actor} nil %+val_escort_nap1_dead%
 
 [combat_ignore]
 
@@ -68,8 +69,7 @@ use            = true
 use_wpn        = true
 
 [danger1]
-ignore_distance = 10
-ignore_types = sound
+ignore_danger_sound = 10
 
 [wounded]
 hp_state = 10|wounded_heavy@help_heavy
@@ -198,7 +198,7 @@ def_state_moving3   = rush
 meet                = meet@ignore
 on_signal           = ambush_start | remark1@wait_for_actor
 on_info             = {+val_escort_combat} remark1@fight
-combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
+combat_ignore_cond  = always ;{=check_fighting(407:408) -val_escort_combat}
 wounded             = wounded
 
 ;--------------------------------------------------------------------------
