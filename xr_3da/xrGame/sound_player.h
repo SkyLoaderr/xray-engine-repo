@@ -127,6 +127,7 @@ public:
 	IC		u32			active_sound_count			(bool only_playing = false) const;
 			bool		need_bone_data				() const;
 	IC		const SOUND_COLLECTIONS &objects		() const;
+	IC		bool		active_sound_type			(u32 synchro_mask) const;
 };
 
 #include "sound_player_inline.h"

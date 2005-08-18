@@ -57,3 +57,18 @@ IC	const CSoundPlayer::SOUND_COLLECTIONS &CSoundPlayer::objects	() const
 {
 	return				(m_sounds);
 }
+
+IC	bool CSoundPlayer::active_sound_type							(u32 synchro_mask) const
+{
+	xr_vector<CSoundSingle>::const_iterator	I = m_playing_sounds.begin();
+	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
+	for ( ; I != E; ++I) {
+		if ((*I).m_sound->_feedback() || ((*I).m_start_time <= Device.dwTimeGlobal)) {
+			if (synchro_mask == (*I).m_synchro_mask) {
+				return	(true);
+			}
+		}
+	}
+
+	return				(false);
+}

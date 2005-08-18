@@ -59,6 +59,8 @@
 #	include "../../visual_memory_manager.h"
 #endif
 
+#include "../../enemy_manager.h"
+
 using namespace StalkerSpace;
 
 extern int g_AI_inactive_time;
@@ -157,6 +159,8 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	sound().add						(pSettings->r_string(section,"sound_search"),					100, SOUND_TYPE_MONSTER_TALKING,	5, u32(eStalkerSoundMaskSearch),				eStalkerSoundSearch,				head_bone_name, xr_new<CStalkerSoundData>(this));
 	sound().add						(pSettings->r_string(section,"sound_humming"),					100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskHumming),				eStalkerSoundHumming,				head_bone_name, 0);
 	sound().add						(pSettings->r_string(section,"sound_need_backup"),				100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskNeedBackup),			eStalkerSoundNeedBackup,			head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_running_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundRunningInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_walking_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundWalkingInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -194,7 +198,7 @@ void CAI_Stalker::Die				(CObject* who)
 	agent_manager().corpse().register_corpse	(this);
 
 	inherited::Die					(who);
-	m_hammer_is_clutched			= !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
+	m_hammer_is_clutched			= !!memory().enemy().selected() && !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
@@ -497,6 +501,25 @@ void CAI_Stalker::UpdateCL()
 		}
 		else
 			update_object_handler			();
+
+		if	(
+				(movement().speed(m_PhysicMovementControl) > EPS_L)
+				&& 
+				(eMovementTypeStand != movement().movement_type())
+				&&
+				(eMentalStateDanger == movement().mental_state())
+			) {
+			if	(
+					(eBodyStateStand == movement().body_state())
+					&&
+					(eMovementTypeRun == movement().movement_type())
+				) {
+				sound().play	(eStalkerSoundRunningInDanger);
+			}
+			else {
+				sound().play	(eStalkerSoundWalkingInDanger);
+			}
+		}
 	}
 
 	inherited::UpdateCL				();
