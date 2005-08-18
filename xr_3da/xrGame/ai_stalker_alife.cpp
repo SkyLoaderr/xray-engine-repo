@@ -342,7 +342,7 @@ void CAI_Stalker::choose_detector					()
 
 		// evaluating item
 		ai().ef_storage().non_alife().member_item() = detector;
-		float					current_value = ai().ef_storage().m_pfEquipmentType->ffGetValue();
+		float					current_value = ai().ef_storage().m_pfDetectorType->ffGetValue();
 		// choosing the best item
 		if ((current_value > best_value)) {
 			best_detector		= &*I;
