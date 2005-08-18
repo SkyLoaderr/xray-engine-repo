@@ -6,11 +6,15 @@
 function printf()
 end
 
-local def_ignore_distance = 150
-local def_ignore_distance_grenade = 15
-local def_ignore_distance_corpse = 10
-local def_ignore_distance_hit = 150
-local def_ignore_distance_sound = 50
+local def_ignore_distance			= 150
+local def_ignore_distance_grenade	= 15
+local def_ignore_distance_corpse	= 10
+local def_ignore_distance_hit		= 150
+local def_ignore_distance_sound		= 50
+
+local def_danger_expiration_time	= 5000
+local def_danger_inertion_time		= 10000
+
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
 ----------------------------------------------------------------------------------------------------------------------
@@ -101,12 +105,12 @@ function evaluator_danger:evaluate()
 	
 	-- инерция возврата. Только не для кемпера.
 	if self.danger_time and
-	   time_global() - self.danger_time < 10000 then
+	   time_global() - self.danger_time < self.a.danger_inertion_time then
 	   printf("DANGER [%s]->[%s] [FALSE] inertion time", self.object:name(), best_danger_name)
 	   return false
 	end
 
-	if time_global() - best_danger:time() >= 5000 then
+	if time_global() - best_danger:time() >= self.a.danger_expiration_time then
 		printf("DANGER [%s]->[%s] [TRUE] extra time", self.object:name(), best_danger_name)
 		return true
 	end
@@ -210,4 +214,7 @@ function reset_danger(npc, scheme, st, section)
 	st.danger.ignore_distance_corpse	=  math.pow(utils.cfg_get_number(st.ini, danger_section, "ignore_distance_corpse", npc, false, def_ignore_distance_corpse), 2)
 	st.danger.ignore_distance_hit		=  math.pow(utils.cfg_get_number(st.ini, danger_section, "ignore_distance_hit", npc, false, def_ignore_distance_hit), 2)
 	st.danger.ignore_distance_sound		=  math.pow(utils.cfg_get_number(st.ini, danger_section, "ignore_distance_sound", npc, false, def_ignore_distance_sound), 2)
+
+	st.danger.danger_expiration_time	=  utils.cfg_get_number(st.ini, danger_section, "danger_expiration_time", npc, false, def_danger_expiration_time)
+	st.danger.danger_inertion_time		=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time", npc, false, def_danger_inertion_time)	
 end
