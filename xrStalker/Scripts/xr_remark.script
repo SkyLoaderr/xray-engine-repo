@@ -106,7 +106,13 @@ function action_remark_activity:if_actor_far_go_to_actor()
 end
 
 function action_remark_activity:get_sug_body_state()
-	if self.st.no_danger or self.object:relation(self.target) == game_object.friend then
+				not IsStalker(self.target) or				
+				self.object:relation(self.target) == game_object.friend 
+
+	if self.st.no_danger or 
+	   not IsStalker(self.target) or				
+	   self.object:relation(self.target) == game_object.friend  
+	then
 		return body_state_free --"guard"
 	else
 		return body_state_danger --"threat"
