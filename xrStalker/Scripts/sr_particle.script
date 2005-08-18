@@ -6,26 +6,169 @@ class "action_particle"
 function action_particle:__init (obj, storage)
 	self.object = obj
 	self.st = storage
-	self.st.single_point = true
-	self.st.current_point = 0
+    self.particles = nil
+    self.actor_in_zone = false
+    self.current_point = 0
+    self.points = nil
+    self.last_time = 0
+    self.last_update = 0
+    self.flags = {}
+    self.single_points = false
+    self.snd_obj = nil
 end
 ------------------------
 function action_particle:reset_scheme()
     printf ("SR_PARTICLE : RESET_SCHEME START")
-	self.single_point = self.st.path:count () == 1
-	local params = particle_params (self.st.path:point (self.st.current_point))
-	self.st.psystem = particle (self.st.particle_name, params);
+    
+    --create particles object
+    self.particles = particles_object (self.st.name)
+    self.actor_in_zone = false
+    self.current_point = 0
+    self.points = nil
+    self.flags = {}
+    self.single_points = false
+    self.wait_time = 0
+    self.snd_obj = nil
+    
     printf ("SR_PARTICLE : RESET_SCHEME END")
 end
 ------------------------
 function action_particle:update (delta)
+
+    local time = time_global ()
+    if self.last_update ~= 0 then
+       if time - self.last_update < 50 then
+          return
+       else
+          self.last_update = time
+       end     
+    else
+       self.last_update = time
+    end       
+
+    local actor = db.actor
+    --проверим, а не в зоне ли актер ?
+    if self.actor_in_zone == false then
+       if self.object:inside (actor:position ()) == true then
+          --пометим, что он в зоне  
+          self.actor_in_zone = true
+          self:start ()
+       else
+          return -- не в зоне - свободен !
+       end
+    else
+       if self.object:inside (actor:position ()) == false and self.st.stop_on_exit == true then
+          if self.particles ~= nil and self.particles:playing () == true then
+             self.particles:stop ()
+          end    
+          if self.snd_obj ~= nil and self.snd_obj:playing () == true then
+             self.snd_obj:stop ()
+          end   
+          return
+       end
+       -- если у нас задан патрульный путь как набор точек, то проапдейтимся   
+       if self.single_points == true then
+          self:process_next_point (time)
+       end   
+    end
+    
+    xr_logic.try_switch_to_another_section (self.object, self.st, actor)
 end
 ------------------------
-function action_particle:on_enter (obj)
+function action_particle:process_next_point (time)
+    -- если время нулевое, то это означает, что партиклы играются из точки вечно
+    if self.wait_time == 0 then 
+       return
+    end
+    --если время еще не вышло, то выдем и мы :)    
+    if time - self.last_time < self.wait_time then
+       return
+    end    
+    
+    local index = self.current_point
+    local count = self.points:count ()
+    if self.st.random == true then
+       while index == self.current_point do
+             index = math.random (0, count)
+       end
+       self.current_point = index
+    else
+       self.current_point = self.current_point + 1
+       if self.current_point == count then
+          self.current_point = 0
+       end
+    end
+    
+    self.particles:stop ()
+    self.particles:play_at_pos (self.points:point (self.current_point))                  
+    self.last_time = time
+    self.wait_time = tonumber (self.flags[self.current_point]["t"])
+    if self.snd_obj ~= nil then
+       self.snd_obj:stop ()
+     end
+    if self.flags[self.current_point]["s"] ~= nil then
+       local snd_name = self:get_sound_name ()
+       if snd_name ~= nil then
+          self.snd_obj = sound_object (snd_name)
+          self.snd_obj:play_at_pos (self.object, self.points:point (self.current_point), 0)
+       end   
+    end   
+        
+end
+------------------------
+function action_particle:start ()
+    if self.st.move_path ~= nil then
+       self.particles:load_path (self.st.move_path)
+       self.particles:start_path (self.st.looped) 
+       self.particles:play ()
+    else
+       self.points = patrol (self.st.points)
+       if self.points:count () > 1 and self.st.random == true then
+          self.current_point = math.random (0, self.points:count ())
+       else
+          self.current_point = 0
+       end
+       self.flags = utils.path_parse_waypoints (self.st.points)
+       self.particles:play_at_pos (self.points:point (self.current_point))                  
+       self.last_time = time_global ()
+       self.single_points = true
+       if self.points:count () == 1 then
+          self.wait_time = 0
+       else     
+          self.wait_time = tonumber (self.flags[self.current_point]["t"])
+       end   
+       if self.snd_obj ~= nil then
+          self.snd_obj:stop ()
+       end
+       if self.flags[self.current_point]["s"] ~= nil then
+          local snd_name = self:get_sound_name ()
+          if snd_name ~= nil then
+             self.snd_obj = sound_object (snd_name)
+             self.snd_obj:play_at_pos (self.object, self.points:point (self.current_point), 0)
+          end   
+       end   
+    end        
+end
+------------------------
+function action_particle:get_sound_name ()
+    local theme = self.flags[self.current_point]["s"]
+    if theme == nil then 
+       return
+    end
+    
+    local index = math.random (1, table.getn (sound_theme.ph_snd_themes[theme]))
+    return sound_theme.ph_snd_themes[theme][index]
 end
 ------------------------
 function action_particle:deactivate ()
-    printf ("PARTICLES END")
+    if self.particles ~= nil and self.particles:playing () == true then
+       self.particles:stop ()
+       self.particles = nil
+    end    
+    if self.snd_obj ~= nil and self.snd_obj:playing () == true then
+       self.snd_obj:stop ()
+       self.snd_obj = nil
+    end   
 end
 
 
@@ -39,23 +182,31 @@ function add_to_binder (npc, ini, scheme, section, storage)
 end
 -----------------------------------------------------------------------------------------------------
 function set_scheme (obj, ini, scheme, section, gulag_name)
+
 	local st = xr_logic.assign_storage_and_bind (obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, obj)
-	
-	local str = utils.cfg_get_string (ini, section, "path", obj, true, "", nil)
-	if str == nil or str == "" then
-	   abort ("sr_particle - invalid path name !!!")
-	end    
-    st.path = patrol (str)
-    printf ("SR_PARTICLE : PATH - %s", str)
+
+    st.name         = utils.cfg_get_string (ini, section, "name", obj, true, "", nil)
+    st.move_path    = utils.cfg_get_string (ini, section, "path_move", obj, false, "", nil)
+    st.points       = utils.cfg_get_string (ini, section, "points", obj, false, "", nil)
+    st.looped       = utils.cfg_get_bool   (ini, section, "looped_move", obj, false)
+    st.random       = utils.cfg_get_bool   (ini, section, "random_point", obj, false)
+    st.stop_on_exit = utils.cfg_get_bool   (ini, section, "stop_on_exit", obj, false)
     
-    str = utils.cfg_get_string (ini, section, "name", obj, true, "", nil)
-    if str == nil or str == "" then
-       abort ("sr_particle - invalid particle name")
+    if st.move_path ~= nil and st.points ~= nil then
+       abort ("SR_PARTICLE : can't definition move path and points path simultaneously") 
     end   
-    st.particle_name = str
-    printf ("SR_PARTICLE : NAME - %s", st.particle_name)
-    
-    st.collision_detection = utils.cfg_get_bool (ini, section, "col_det", obj, false)
-    st.move_speed = utils.cfg_get_number (ini, section, "move_speed", obj, false, 0)
+        
 end
+
+    --function pause_path(boolean);
+    --function play_at_pos(const vector&);
+    --function move_to(const vector&, const vector&);
+    --function looped() const;
+    --function load_path(string);
+    --function start_path(boolean);
+    --function stop();
+    --function stop_path();
+    --function stop_deffered();
+    --function play();
+    --function playing() const;
