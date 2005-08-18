@@ -67,6 +67,7 @@ public:
 	virtual		float			getMass									()																														= 0;
 	virtual		float			getDensity								()																														= 0;
 	virtual		float			getVolume								()																														= 0;
+	virtual		void			get_Extensions							(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)														= 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual		void			applyForce								(const Fvector& dir, float val)																							= 0;
 	virtual		void			applyForce								(float x,float y,float z)																								= 0;
@@ -137,7 +138,6 @@ public:
 	virtual		const	Fvector					&local_mass_Center						()																													= 0;
 	virtual		float							getRadius								()																													= 0;
 	virtual		dMass							*getMassTensor							()																													= 0;
-	virtual		void							get_Extensions							(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)													= 0;
 	virtual		void							get_MaxAreaDir							(Fvector& dir)																										= 0;
 	virtual		ObjectContactCallbackFun		*get_ObjectContactCallback				()																													= 0;
 	virtual		void							Fix										()																													= 0;

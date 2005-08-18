@@ -680,10 +680,14 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);
 
 	m_pPhysics_support->in_NetSpawn	(e);
+
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 	m_PhysicMovementControl->ActivateBox	(0);
-
+	if(E->m_holderID!=u16(-1))
+	{ 
+		m_PhysicMovementControl->DestroyCharacter();
+	}
 	r_torso_tgt_roll		= 0;
 
 	r_model_yaw				= E->o_torso.yaw;
@@ -800,6 +804,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	}
 	
 	Level().client_spawn_manager().add(E->m_holderID,ID(),this);
+	//F
 	//-------------------------------------------------------------
 	m_pLastHitter = NULL;
 	m_pLastHittingWeapon = NULL;

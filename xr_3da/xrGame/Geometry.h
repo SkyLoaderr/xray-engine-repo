@@ -41,6 +41,7 @@ public:
 				void		get_global_center_bt(Fvector& center)													 ;		//for built
 				void		get_local_form_bt	(Fmatrix& form)														 ;	    //for built
 				void		get_global_form_bt	(Fmatrix& form)														 ;		//for built
+				
 				void		set_static_ref_form	(const Fmatrix& form)												 ;		//for built
 	virtual		void		get_max_area_dir_bt	(Fvector& dir)														=0;
 	virtual		float		radius				()																	=0;
@@ -93,7 +94,8 @@ virtual			void		set_local_form		(const Fmatrix& form)												=0;
 				
 	//build/destroy
 protected:
-	void		init				()																	;
+				void		init				()																	;
+				void		get_final_tx_bt		(const dReal*	&p,const dReal*	&R,dReal * bufV, dReal* bufM)		;
 	virtual		dGeomID		create				()																	=0;
 public:
 				void		build				(const Fvector& ref_point)											;

@@ -14,6 +14,7 @@
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
+#include "PHDynamicData.h"
 static float max_depth			=0.f;
 static float friction_factor	=0.f;
 static float cfm				=1.e-10f;
@@ -89,11 +90,13 @@ void CPHActivationShape::	Destroy	()
 }
 bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,float max_displacement,float max_rotation)										
 {
+
 #ifdef	DEBUG 
 	if(ph_dbg_draw_mask.test(phDbgDrawDeathActivationBox))
 	{
 		DBG_OpenCashedDraw();
-		Fmatrix M;M.identity();M.c.set(cast_fv(dBodyGetPosition(m_body)));
+		Fmatrix M;
+		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),M);
 		Fvector v;dGeomBoxGetLengths(m_geom,cast_fp(v));v.mul(0.5f);
 		DBG_DrawOBB(M,v,D3DCOLOR_XRGB(0,255,0));
 	}
@@ -151,7 +154,8 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	if(ph_dbg_draw_mask.test(phDbgDrawDeathActivationBox))
 	{
 		DBG_OpenCashedDraw();
-		Fmatrix M;M.identity();M.c.set(cast_fv(dBodyGetPosition(m_body)));
+		Fmatrix M;
+		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),M);
 		Fvector v;v.set(need_size);v.mul(0.5f);
 		DBG_DrawOBB(M,v,D3DCOLOR_XRGB(0,255,255));
 		DBG_ClosedCashedDraw(30000);

@@ -81,6 +81,7 @@ public:
 	virtual void			setDensity				(float M)									;
 	virtual float			getDensity				()											;
 	virtual float			getVolume				()											;
+	virtual	void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);
 	virtual void			applyForce				(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( dir, val);
@@ -152,6 +153,7 @@ public:
 	virtual		CPhysicsJoint		*get_JointByStoreOrder			(u16 num);
 	virtual		u16					get_JointsNumber				();
 	virtual		CODEGeom			*get_GeomByID					(u16 bone_id);
+
 	virtual		void				Enable							();
 	virtual		void				Disable							();
 	virtual		void				DisableCollision				();

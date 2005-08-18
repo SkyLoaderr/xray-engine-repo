@@ -24,6 +24,7 @@
 #include "CarWeapon.h"
 #include "game_object_space.h"
 #include "GameMtlLib.h"
+#include "PHActivationShape.h"
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
@@ -292,11 +293,44 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 /////////////////////////////////////////////////////////////////////////
 	Fmatrix restored_form;
 	PPhysicsShell()->GetGlobalTransformDynamic(&restored_form);
+/////////////////////////////////////////////////////////////////////
 	Fmatrix inv ,replace,sof;
 	sof.setHPB(co->o_Angle.x,co->o_Angle.y,co->o_Angle.z);
 	sof.c.set(co->o_Position);
 	inv.set(restored_form);
 	inv.invert();
+	replace.mul(sof,inv);
+////////////////////////////////////////////////////////////////////
+	{
+		
+		PKinematics(Visual())->CalculateBones_Invalidate();
+		PKinematics(Visual())->CalculateBones();
+		PPhysicsShell()->DisableCollision();
+		CPHActivationShape activation_shape;//Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
+
+		Fvector center;Center(center);
+		Fvector obj_size;BoundingBox().getsize(obj_size);
+		center.set(0,0,0);
+		for(int i=0;3>i;++i)
+		{	
+			float lo,hi;
+			Fvector &ax=cast_fv(((float*)&restored_form+i*4));
+			PPhysicsShell()->get_Extensions(ax,0,lo,hi);
+			obj_size[i]=hi-lo;center.add(ax.mul((lo+hi)/2));
+		}
+		replace.transform(center);
+		activation_shape.Create(center,obj_size,NULL);
+		dMatrix3 rot;PHDynamicData::FMXtoDMX(sof,rot);
+
+		dBodySetRotation(activation_shape.ODEBody(),rot);
+		activation_shape.Activate(obj_size,1,1.f,M_PI/8.f);
+		Fvector dd;
+		dd.sub(activation_shape.Position(),center);
+		activation_shape.Destroy();
+		sof.c.add(dd);
+		PPhysicsShell()->EnableCollision();
+	}
+////////////////////////////////////////////////////////////////////
 	replace.mul(sof,inv);
 	PPhysicsShell()->TransformPosition(replace);
 	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());

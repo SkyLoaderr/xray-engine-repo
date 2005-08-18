@@ -130,7 +130,9 @@ void CPHCommander::remove_call(CPHReqComparerV* cmp_condition,CPHReqComparerV* c
 {
 	//PHCALL_I i=find_call(cmp_condition,cmp_action);
 	//if(i!=m_calls.end())remove_call(i);
-	remove_if(m_calls.begin(),m_calls.end(),SFRemovePred2(cmp_condition,cmp_action));
+	
+	PHCALL_I I= remove_if(m_calls.begin(),m_calls.end(),SFRemovePred2(cmp_condition,cmp_action));
+	m_calls.erase(I,m_calls.end());
 }
 
 void CPHCommander::add_call_unique(CPHCondition* condition,CPHReqComparerV* cmp_condition,CPHAction* action,CPHReqComparerV* cmp_action)

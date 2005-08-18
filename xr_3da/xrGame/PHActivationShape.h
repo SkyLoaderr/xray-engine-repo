@@ -1,7 +1,8 @@
 #ifndef PH_ACTIVATION_SHAPE
 #define PH_ACTIVATION_SHAPE
 #endif
-
+#include "MathUtils.h"
+#include "phvalidevalues.h"
 class CPHActivationShape : public CPHObject
 {
 dBodyID					m_body																																							;

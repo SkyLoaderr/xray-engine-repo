@@ -11,8 +11,7 @@
 #include "CustomZone.h"
 #include "Extendedgeom.h"
 #include "Physics.h"
-#include "MathUtils.h"
-#include "phvalidevalues.h"
+
 #include "PHActivationShape.h"
 const float default_hinge_friction = 5.f;
 
