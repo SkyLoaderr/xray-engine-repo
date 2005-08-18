@@ -7,6 +7,7 @@
 #include "weapon.h"
 #include "inventoryowner.h"
 #include "actor.h"
+#include "inventory_item_impl.h"
 
 #include "actoreffector.h"
 #include "effectorshot.h"
@@ -45,6 +46,8 @@ float CWeapon::GetFireDispersion	(float cartridge_k) const
 // Для эффекта отдачи оружия
 void CWeapon::AddShotEffector		()
 {
+	inventory_owner().on_weapon_shot_start	(this);
+/**
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor){
 		CCameraShotEffector* S	= smart_cast<CCameraShotEffector*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
@@ -54,25 +57,35 @@ void CWeapon::AddShotEffector		()
 		S->SetActor(pActor);
 		S->Shot					(camDispersion+camDispersionInc*float(ShotsFired()));
 	}
+/**/
 }
 
 void  CWeapon::RemoveShotEffector	()
 {
+	if (m_pInventory)
+		inventory_owner().on_weapon_shot_stop	(this);
+/**
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 		pActor->EffectorManager().RemoveEffector	(eCEShot);
+/**/
 }
 
 void	CWeapon::ClearShotEffector	()
 {
+	if (m_pInventory)
+		inventory_owner().on_weapon_hide	(this);
+/**
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
 		CCameraShotEffector* S		= smart_cast<CCameraShotEffector*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
 		if (S) S->Clear();
 	};
+/**/
 };
 
+/**
 const Fvector& CWeapon::GetRecoilDeltaAngle()
 {
 	CActor* pActor		= smart_cast<CActor*>(H_Parent());
@@ -92,3 +105,4 @@ const Fvector& CWeapon::GetRecoilDeltaAngle()
 		return m_vRecoilDeltaAngle;
 	}
 }
+/**/

@@ -484,3 +484,15 @@ CInventoryItem* CInventoryOwner::GetCurrentOutfit() const
 {
     return inventory().m_slots[OUTFIT_SLOT].m_pIItem;
 }
+
+void CInventoryOwner::on_weapon_shot_start		(CWeapon *weapon)
+{
+}
+
+void CInventoryOwner::on_weapon_shot_stop		(CWeapon *weapon)
+{
+}
+
+void CInventoryOwner::on_weapon_hide			(CWeapon *weapon)
+{
+}

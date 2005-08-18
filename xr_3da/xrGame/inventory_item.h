@@ -303,6 +303,9 @@ protected:
 
 public:
 	virtual	void			modify_holder_params	(float &range, float &fov) const;
+
+protected:
+	IC		CInventoryOwner	&inventory_owner		() const;
 };
 
 #include "inventory_item_inline.h"

@@ -82,6 +82,9 @@ class CObjectActionShow : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
+private:
+	CWeapon				*m_weapon;
+
 public:
 						CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize			();

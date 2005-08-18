@@ -149,7 +149,7 @@ public:
 	u32					TotalVolume					() const;
 	u32					GetMaxVolume				() const;
 
-	CInventoryOwner*	GetOwner					() const				{ return m_pOwner; }
+	inline	CInventoryOwner*GetOwner				() const				{ return m_pOwner; }
 	
 
 	// Объект на который наведен прицел

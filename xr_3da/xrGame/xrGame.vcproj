@@ -6828,6 +6828,9 @@
 								RelativePath=".\inventory_item.h">
 							</File>
 							<File
+								RelativePath=".\inventory_item_impl.h">
+							</File>
+							<File
 								RelativePath=".\inventory_item_inline.h">
 							</File>
 						</Filter>

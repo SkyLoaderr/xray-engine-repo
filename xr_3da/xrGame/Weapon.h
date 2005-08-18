@@ -357,18 +357,27 @@ protected:
 	virtual void			AddShotEffector		();
 	virtual void			RemoveShotEffector	();
 	virtual	void			ClearShotEffector	();
-	virtual	int				ShotsFired			() { return 0; }
 
 public:
 	//текущая дисперсия (в радианах) оружия с учетом используемого патрона
 	float					GetFireDispersion	(bool with_cartridge)			const;
 	float					GetFireDispersion	(float cartridge_k)				const;
-	const Fvector&			GetRecoilDeltaAngle	();
+//	const Fvector&			GetRecoilDeltaAngle	();
+	virtual	int				ShotsFired			() { return 0; }
 
 	//параметы оружия в зависимоти от его состояния исправности
 	float					GetConditionDispersionFactor	() const;
 	float					GetConditionMisfireProbability	() const;
 
+public:
+	//отдача при стрельбе 
+	float					camMaxAngle;
+	float					camRelaxSpeed;
+	float					camDispersion;
+	float					camDispersionInc;
+	float					camDispertionFrac;
+	float					camMaxAngleHorz;
+	float					camStepAngleHorz;
 
 protected:
 	//фактор увеличения дисперсии при максимальной изношености 
@@ -379,14 +388,6 @@ protected:
 	//увеличение изношености при выстреле
 	float					conditionDecreasePerShot;
 
-	//отдача при стрельбе 
-	float					camMaxAngle;
-	float					camRelaxSpeed;
-	float					camDispersion;
-	float					camDispersionInc;
-	float					camDispertionFrac;
-	float					camMaxAngleHorz;
-	float					camStepAngleHorz;
 	//  [8/2/2005]
 	float					m_fPDM_disp_base			;
 	float					m_fPDM_disp_vel_factor		;

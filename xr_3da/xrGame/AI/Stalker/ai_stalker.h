@@ -42,6 +42,7 @@ class CMotivationActionManagerStalker;
 class CSightManager;
 class CStalkerMovementManager;
 class CStalkerSoundDataVisitor;
+class CWeaponShotEffector;
 
 template <
 	typename _action_type,
@@ -392,6 +393,17 @@ public:
 			bool						zoom_state						() const;
 			void						react_on_grenades				();
 			void						react_on_member_death			();
+private:
+	CWeaponShotEffector					*m_weapon_shot_effector;
+	s32									m_weapon_shot_random_seed;
+
+public:
+	virtual	void						on_weapon_shot_start			(CWeapon *weapon);
+	virtual	void						on_weapon_shot_stop				(CWeapon *weapon);
+	virtual	void						on_weapon_hide					(CWeapon *weapon);
+	IC		CWeaponShotEffector			&weapon_shot_effector			() const;
+	IC		Fvector						weapon_shot_effector_direction	(const Fvector &current) const;
+	virtual void						UpdateCamera					();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

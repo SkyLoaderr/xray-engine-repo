@@ -51,6 +51,7 @@
 #include "../../stalker_sound_data_visitor.h"
 #include "ai_stalker_space.h"
 #include "../../mt_config.h"
+#include "../../effectorshot.h"
 
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
@@ -77,6 +78,7 @@ CAI_Stalker::~CAI_Stalker			()
 	xr_delete						(m_brain);
 	xr_delete						(m_sight_manager);
 	xr_delete						(m_setup_manager);
+	xr_delete						(m_weapon_shot_effector);
 }
 
 void CAI_Stalker::reinit			()
@@ -132,6 +134,8 @@ void CAI_Stalker::reinit			()
 	m_can_kill_member				= false;
 	m_pick_distance					= 0.f;
 	m_pick_frame_id					= 0;
+
+	m_weapon_shot_random_seed		= s32(Level().timeServer_Async());
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)
@@ -512,6 +516,9 @@ void CAI_Stalker::UpdateCL()
 		Exec_Look					(Device.fTimeDelta);
 
 		CStepManager::update		();
+
+		if (weapon_shot_effector().IsActive())
+			weapon_shot_effector().Update	();
 	}
 }
 
@@ -764,16 +771,32 @@ DLL_Pure *CAI_Stalker::_construct			()
 	CCustomMonster::_construct			();
 	CObjectHandler::_construct			();
 	CStepManager::_construct			();
+
 	m_pPhysics_support					= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	m_actor_relation_flags.zero			();
 	m_animation_manager					= xr_new<CStalkerAnimationManager>();
 	m_brain								= xr_new<CMotivationActionManagerStalker>();
 	m_sight_manager						= xr_new<CSightManager>(this);
 	m_setup_manager						= xr_new<CSSetupManager>(this);
+	m_weapon_shot_effector				= xr_new<CWeaponShotEffector>();
+
 	return								(this);
 }
 
 bool CAI_Stalker::use_center_to_aim		() const
 {
 	return								(movement().body_state() != eBodyStateCrouch);
+}
+
+void CAI_Stalker::UpdateCamera			()
+{
+	float								new_range = eye_range, new_fov = eye_fov;
+	Fvector								temp = eye_matrix.k;
+	if (g_Alive()) {
+		update_range_fov				(new_range, new_fov, memory().visual().current_state().m_max_view_distance*eye_range, eye_fov);
+		if (weapon_shot_effector().IsActive())
+			temp						= weapon_shot_effector_direction(temp);
+	}
+
+	g_pGameLevel->Cameras.Update		(eye_matrix.c,temp,eye_matrix.j,new_fov,.75f,new_range);
 }

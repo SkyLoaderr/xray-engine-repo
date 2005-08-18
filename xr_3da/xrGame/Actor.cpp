@@ -78,6 +78,7 @@
 
 #include "map_manager.h"
 #include "GameTaskManager.h"
+#include "EffectorShotX.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -1614,4 +1615,54 @@ DLL_Pure *CActor::_construct			()
 bool CActor::use_center_to_aim			() const
 {
 	return							(!(mstate_real&mcCrouch));
+}
+
+// shot effector stuff
+void CActor::on_weapon_shot_start		(CWeapon *weapon)
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>	(EffectorManager().GetEffector(eCEShot)); 
+	if (!effector) {
+		effector					= 
+			(CCameraShotEffector*)EffectorManager().AddEffector(
+				xr_new<
+					CCameraShotEffectorX
+				>
+				(
+					weapon->camMaxAngle,
+					weapon->camRelaxSpeed,
+					weapon->camMaxAngleHorz,
+					weapon->camStepAngleHorz,
+					weapon->camDispertionFrac
+				)
+			);
+	}
+
+	R_ASSERT						(effector);
+
+	effector->SetRndSeed			(GetShotRndSeed());
+	effector->SetActor				(this);
+	effector->Shot					(weapon->camDispersion + weapon->camDispersionInc*float(weapon->ShotsFired()));
+}
+
+void CActor::on_weapon_shot_stop		(CWeapon *weapon)
+{
+	EffectorManager().RemoveEffector(eCEShot);
+}
+
+void CActor::on_weapon_hide				(CWeapon *weapon)
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(EffectorManager().GetEffector(eCEShot)); 
+	if (effector)
+		effector->Clear				();
+}
+
+Fvector CActor::weapon_recoil_delta_angle	()
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(EffectorManager().GetEffector(eCEShot));
+	Fvector							result = {0.f,0.f,0.f};
+
+	if (effector)
+		effector->GetDeltaAngle		(result);
+
+	return							(result);
 }

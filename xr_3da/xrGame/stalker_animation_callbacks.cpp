@@ -12,6 +12,7 @@
 #include "sight_manager.h"
 #include "stalker_movement_manager.h"
 #include "game_object_space.h"
+#include "effectorshot.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -41,8 +42,17 @@ void __stdcall head_callback	(CBoneInstance *B)
 		yaw_factor			= y_head_factor;
 		pitch_factor		= p_head_factor;
 	}
-	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw - (A->movement().body_orientation().current.yaw)));
-	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch));
+
+	float					effector_yaw = 0.f, effector_pitch = 0.f;
+	if (A->weapon_shot_effector().IsActive()) {
+		Fvector				temp;
+		A->weapon_shot_effector().GetDeltaAngle(temp);
+		effector_yaw		= temp.y;
+		effector_pitch		= temp.x;
+	}
+
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw + effector_yaw - (A->movement().body_orientation().current.yaw)));
+	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch + effector_pitch));
 
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
@@ -64,8 +74,18 @@ void __stdcall shoulder_callback(CBoneInstance *B)
 		yaw_factor			= y_shoulder_factor;
 		pitch_factor		= p_shoulder_factor;
 	}
-	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw - (A->movement().body_orientation().current.yaw)));
-	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch));
+
+	float					effector_yaw = 0.f, effector_pitch = 0.f;
+	if (A->weapon_shot_effector().IsActive()) {
+		Fvector				temp;
+		A->weapon_shot_effector().GetDeltaAngle(temp);
+		effector_yaw		= temp.y;
+		effector_pitch		= temp.x;
+	}
+
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw + effector_yaw - (A->movement().body_orientation().current.yaw)));
+	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch + effector_pitch));
+
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
 	B->mTransform.mulA_43	(spin);
@@ -86,8 +106,18 @@ void __stdcall spine_callback(CBoneInstance *B)
 		yaw_factor			= y_spin_factor;
 		pitch_factor		= p_spin_factor;
 	}
-	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw - (A->movement().body_orientation().current.yaw)));
-	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch));
+
+	float					effector_yaw = 0.f, effector_pitch = 0.f;
+	if (A->weapon_shot_effector().IsActive()) {
+		Fvector				temp;
+		A->weapon_shot_effector().GetDeltaAngle(temp);
+		effector_yaw		= temp.y;
+		effector_pitch		= temp.x;
+	}
+
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw + effector_yaw - (A->movement().body_orientation().current.yaw)));
+	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch + effector_pitch));
+
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
 	B->mTransform.mulA_43	(spin);

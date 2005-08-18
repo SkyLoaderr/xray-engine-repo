@@ -9,6 +9,7 @@
 #include "HUDManager.h"
 #include "WeaponHUD.h"
 #include "entity_alive.h"
+#include "inventory_item_impl.h"
 
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
@@ -847,10 +848,10 @@ int CWeapon::GetAmmoCurrent(bool use_item_to_spawn) const
 		if (!use_item_to_spawn)
 			continue;
 
-		if (!m_pInventory->GetOwner()->item_to_spawn())
+		if (!inventory_owner().item_to_spawn())
 			continue;
 
-		iAmmoCurrent += m_pInventory->GetOwner()->ammo_in_box_to_spawn();
+		iAmmoCurrent += inventory_owner().ammo_in_box_to_spawn();
 	}
 	return l_count + iAmmoCurrent;
 }

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "inventory_item.h"
+#include "inventory_item_impl.h"
 #include "inventory.h"
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
@@ -1003,8 +1004,9 @@ ALife::_TIME_ID	 CInventoryItem::TimePassedAfterIndependant()	const
 bool	CInventoryItem::CanTrade() const 
 {
 	bool res = true;
+#pragma todo("Dima to Andy : why CInventoryItem::CanTrade can be called for the item, which doesn't have owner?")
 	if(m_pInventory){
-		res = m_pInventory->GetOwner()->AllowItemToTrade(this,m_eItemPlace);
+		res = inventory_owner().AllowItemToTrade(this,m_eItemPlace);
 	}
 	return (res&&m_bCanTrade);
 }

@@ -17,6 +17,7 @@
 #include "weaponmagazined.h"
 #include "object_handler_space.h"
 #include "stalker_animation_manager.h"
+#include "effectorshot.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand
@@ -41,18 +42,32 @@ void CObjectActionCommand::initialize	()
 CObjectActionShow::CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
+	m_weapon						= smart_cast<CWeapon*>(item);
 }
 
 void CObjectActionShow::initialize		()
 {
 	inherited::initialize			();
+	
 	VERIFY							(m_item);
 	if (object().inventory().m_slots[m_item->GetSlot()].m_pIItem)
 		object().inventory().Ruck	(object().inventory().m_slots[m_item->GetSlot()].m_pIItem);
+
 	object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	object().inventory().Slot		(m_item);
+
 	bool							result = object().inventory().Activate	(m_item->GetSlot());
 	VERIFY							(result);
+	if (!m_weapon)
+		return;
+
+	object().weapon_shot_effector().Initialize(
+		m_weapon->camMaxAngle,
+		m_weapon->camRelaxSpeed,
+		m_weapon->camMaxAngleHorz,
+		m_weapon->camStepAngleHorz,
+		m_weapon->camDispertionFrac
+	);
 }
 
 void CObjectActionShow::execute		()

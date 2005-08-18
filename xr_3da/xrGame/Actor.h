@@ -699,6 +699,12 @@ public:
 	virtual void				OnPrevWeaponSlot				();
 public:	//. hack for MP test
 	ref_light					dbgmp_light						;
+
+public:
+	virtual	void				on_weapon_shot_start			(CWeapon *weapon);
+	virtual	void				on_weapon_shot_stop				(CWeapon *weapon);
+	virtual	void				on_weapon_hide					(CWeapon *weapon);
+			Fvector				weapon_recoil_delta_angle		();
 };
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

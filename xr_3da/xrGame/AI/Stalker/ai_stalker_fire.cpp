@@ -36,6 +36,7 @@
 #include "../../visual_memory_manager.h"
 #include "../../weapon.h"
 #include "ai_stalker_space.h"
+#include "../../effectorshot.h"
 
 using namespace StalkerSpace;
 
@@ -88,6 +89,8 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 	if (!weapon) {
 		P				= eye_matrix.c;
 		D				= eye_matrix.k;
+		if (weapon_shot_effector().IsActive())
+			D			= weapon_shot_effector_direction(D);
 		return;
 	}
 
@@ -99,9 +102,10 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 
 	switch (movement().body_state()) {
 		case eBodyStateStandDamaged : {
-//			P			= weapon->get_LastFP();
-//			D			= weapon->get_LastFD();
 			D.setHP		(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
+			if (weapon_shot_effector().IsActive())
+				D		= weapon_shot_effector_direction(D);
+
 			Center		(P);
 			P.mad		(D,.5f);
 			P.y			+= .50f;
@@ -111,9 +115,13 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 			if (movement().movement_type() == eMovementTypeStand) {
 				P		= eye_matrix.c;
 				D		= eye_matrix.k;
+				if (weapon_shot_effector().IsActive())
+					D	= weapon_shot_effector_direction(D);
 			}
 			else {
 				D.setHP	(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
+				if (weapon_shot_effector().IsActive())
+					D			= weapon_shot_effector_direction(D);
 				Center	(P);
 				P.mad	(D,.5f);
 				P.y		+= .50f;
@@ -125,6 +133,8 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 		case eBodyStateCrouch : {
 			P			= eye_matrix.c;
 			D			= eye_matrix.k;
+			if (weapon_shot_effector().IsActive())
+				D		= weapon_shot_effector_direction(D);
 			return;
 		}
 		default			: NODEFAULT;
@@ -522,4 +532,19 @@ bool CAI_Stalker::fire_make_sense		()
 		return							(false);
 
 	return								(true);
+}
+
+// shot effector stuff
+void CAI_Stalker::on_weapon_shot_start		(CWeapon *weapon)
+{
+	weapon_shot_effector().SetRndSeed	(m_weapon_shot_random_seed);
+	weapon_shot_effector().Shot			(weapon->camDispersion + weapon->camDispersionInc*float(weapon->ShotsFired()));
+}
+
+void CAI_Stalker::on_weapon_shot_stop		(CWeapon *weapon)
+{
+}
+
+void CAI_Stalker::on_weapon_hide			(CWeapon *weapon)
+{
 }

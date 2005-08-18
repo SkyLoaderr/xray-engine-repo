@@ -189,6 +189,11 @@ protected:
 public:
 	IC		const shared_str	&item_to_spawn			() const {return m_item_to_spawn;}
 	IC		const u32			&ammo_in_box_to_spawn	() const {return m_ammo_in_box_to_spawn;}
+
+public:
+	virtual	void				on_weapon_shot_start	(CWeapon *weapon);
+	virtual	void				on_weapon_shot_stop		(CWeapon *weapon);
+	virtual	void				on_weapon_hide			(CWeapon *weapon);
 };
 
 #include "inventory_owner_inline.h"

@@ -8,57 +8,57 @@
 
 #pragma once
 
-IC	BOOL CAI_Stalker::UsedAI_Locations				()
+IC	BOOL CAI_Stalker::UsedAI_Locations							()
 {
 	return	(TRUE);
 }
 
-IC	CStalkerAnimationManager &CAI_Stalker::animation() const
+IC	CStalkerAnimationManager &CAI_Stalker::animation			() const
 {
 	VERIFY	(m_animation_manager);
 	return	(*m_animation_manager);
 }
 
-IC	CMotivationActionManagerStalker &CAI_Stalker::brain() const
+IC	CMotivationActionManagerStalker &CAI_Stalker::brain			() const
 {
 	VERIFY	(m_brain);
 	return	(*m_brain);
 }
 
-IC	CSightManager &CAI_Stalker::sight				() const
+IC	CSightManager &CAI_Stalker::sight							() const
 {
 	VERIFY	(m_sight_manager);
 	return	(*m_sight_manager);
 }
 
-IC	CAI_Stalker::CSSetupManager &CAI_Stalker::setup	() const
+IC	CAI_Stalker::CSSetupManager &CAI_Stalker::setup				() const
 {
 	VERIFY	(m_setup_manager);
 	return	(*m_setup_manager);
 }
 
-IC	LPCSTR CAI_Stalker::Name						() const
+IC	LPCSTR CAI_Stalker::Name									() const
 {
 	return	(CInventoryOwner::Name());
 }
 
-IC	void CAI_Stalker::body_action					(const StalkerSpace::EBodyAction &body_action)
+IC	void CAI_Stalker::body_action								(const StalkerSpace::EBodyAction &body_action)
 {
 	m_body_action	= body_action;
 }
 
-IC	const StalkerSpace::EBodyAction	&CAI_Stalker::body_action() const
+IC	const StalkerSpace::EBodyAction	&CAI_Stalker::body_action	() const
 {
 	return			(m_body_action);
 }
 
-IC	CStalkerMovementManager	&CAI_Stalker::movement	() const
+IC	CStalkerMovementManager	&CAI_Stalker::movement				() const
 {
 	VERIFY			(m_movement_manager);
 	return			(*m_movement_manager);
 }
 
-IC	bool CAI_Stalker::frame_check					(u32 &frame)
+IC	bool CAI_Stalker::frame_check								(u32 &frame)
 {
 	if (Device.dwFrame == frame)
 		return		(false);
@@ -67,25 +67,31 @@ IC	bool CAI_Stalker::frame_check					(u32 &frame)
 	return			(true);
 }
 
-IC	bool CAI_Stalker::group_behaviour				() const
+IC	bool CAI_Stalker::group_behaviour							() const
 {
 	return			(m_group_behaviour);
 }
 
-IC	bool CAI_Stalker::can_kill_member				()
+IC	bool CAI_Stalker::can_kill_member							()
 {
 	update_can_kill_info	();
 	return					(m_can_kill_member);
 }
 
-IC	bool CAI_Stalker::can_kill_enemy				()
+IC	bool CAI_Stalker::can_kill_enemy							()
 {
 	update_can_kill_info	();
 	return					(m_can_kill_enemy);
 }
 
-IC	float CAI_Stalker::pick_distance				()
+IC	float CAI_Stalker::pick_distance							()
 {
 	update_can_kill_info	();
 	return					(m_pick_distance);
+}
+
+IC	CWeaponShotEffector &CAI_Stalker::weapon_shot_effector		() const
+{
+	VERIFY					(m_weapon_shot_effector);
+	return					(*m_weapon_shot_effector);
 }
