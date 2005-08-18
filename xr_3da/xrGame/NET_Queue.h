@@ -61,6 +61,23 @@ public:
 		NET_Event		E;
 		E.import		(P);
 		queue.insert	(E);
+		/*
+		//-------------------------------------------
+#ifdef DEBUG
+		shared_str EventName;
+		string16 tmp;
+		
+		switch (E.type)
+		{
+		case 1: EventName = "GE_OWNERSHIP_TAKE [1]"; break;
+		case 2: EventName = "GE_OWNERSHIP_REJECT [2]"; break;
+		default: EventName = itoa(E.type, tmp, 10); break;
+		}
+
+		Msg("Event %s to %d - at %d", *EventName, E.destination, E.timestamp);		
+#endif
+		//-------------------------------------------
+		//*/
 	}
 	IC BOOL				available	(u32 T)
 	{

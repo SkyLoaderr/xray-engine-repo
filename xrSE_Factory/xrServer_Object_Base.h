@@ -99,6 +99,10 @@ public:
 	u64								m_min_spawn_interval;
 	u64								m_max_spawn_interval;
 
+	//-------------------------------------------------------
+	u32								m_dwSpawnTime;
+	//-------------------------------------------------------
+
 	//client object custom data serialization
 	xr_vector<u8>					client_data;
 	virtual void					load			(NET_Packet	&tNetPacket);

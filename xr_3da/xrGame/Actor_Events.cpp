@@ -80,6 +80,10 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				
 				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
 				if (pWeapon) SelectBestWeapon();
+#ifdef DEBUG
+//				Msg("COnEvent - %s - TAKE - %s - PASSED", *cName(), *(O->cName()));
+#endif
+
 			} 
 			else 
 			{
@@ -87,6 +91,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
 				P.w_u16(u16(O->ID()));
 				u_EventSend(P);
+#ifdef DEBUG
+//				Msg("OnEvent - %s - TAKE - %s - FAILED", *cName(), *(O->cName()));
+#endif
 			}
 		}
 		break;
@@ -102,6 +109,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				Msg("! Error: No object to reject/sell [%d]", id);
 				break;
 			}
+#ifdef DEBUG
+//			Msg("OnEvent - %s - REJECT - %s", *cName(), *(O->cName()));
+#endif
 			
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) 
 			{

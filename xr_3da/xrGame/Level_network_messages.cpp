@@ -18,7 +18,7 @@ void CLevel::ClientReceive()
 		switch (m_type)
 		{
 		case M_SPAWN:
-			{
+			{				
 				// Begin analysis
 				shared_str			s_name;
 				P->r_stringZ		(s_name);
@@ -29,7 +29,13 @@ void CLevel::ClientReceive()
 				E->Spawn_Read		(*P);
 				if (E->s_flags.is(M_SPAWN_UPDATE))
 					E->UPDATE_Read	(*P);
-
+				//-------------------------------------------------
+				if (E->s_flags.is(M_SPAWN_TIME))
+				{
+					E->m_dwSpawnTime = P->r_u32();
+//					Msg ("M_SPAWN - %s - %d", *s_name, E->m_dwSpawnTime );
+				}
+				//-------------------------------------------------
 				//force object to be local for server client
 				if (OnServer())
 				{

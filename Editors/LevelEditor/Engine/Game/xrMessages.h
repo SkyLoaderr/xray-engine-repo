@@ -201,6 +201,7 @@ enum
 	M_SPAWN_OBJECT_PHANTOM		= (1<<4),	// after spawn it must become viewable
 	M_SPAWN_VERSION				= (1<<5),	// control version
 	M_SPAWN_UPDATE				= (1<<6),	// + update packet
+	M_SPAWN_TIME				= (1<<7),	// + spawn time
 
 	M_SPAWN_OBJECT_FORCEDWORD	= u32(-1)
 };

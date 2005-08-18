@@ -39,7 +39,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 //	CTimer		T(false);
 
 #ifdef DEBUG
-	//Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
+	Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
 #endif
 
 	// Optimization for single-player only	- minimize traffic between client and server
@@ -72,7 +72,12 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 			// Generate ownership-event
 			NET_Packet			GEN;
 			GEN.w_begin			(M_EVENT);
-			GEN.w_u32			(Level().timeServer());//-NET_Latency);
+			//---------------------------------------------
+			if (E->s_flags.is(M_SPAWN_TIME))
+				GEN.w_u32			(E->m_dwSpawnTime);
+			else
+			//-----------------------------------------
+				GEN.w_u32			(Level().timeServer());//-NET_Latency);
 			GEN.w_u16			(GE_OWNERSHIP_TAKE);
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));
