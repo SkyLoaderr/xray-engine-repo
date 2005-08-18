@@ -19,6 +19,7 @@ public:
 protected:
 	void InitGroups();
 	void SetRank			(int rank)		{m_rank = rank;}
+	int  GetRank			()				{return m_rank;}
 	bool GetPermission		(LPCSTR item, bool& last);
 	void Return				(LPCSTR item);
 	bool HasAmountControl	(LPCSTR item);

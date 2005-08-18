@@ -1,6 +1,10 @@
 #include "stdafx.h"
 
 #include "Restrictions.h"
+#ifdef DEBUG
+#include "../../xr_ioconsole.h"
+#include "../../xr_ioc_cmd.h"
+#endif //#ifdef DEBUG
 
 CRestrictions::CRestrictions(){	
 	m_rank = 0;
@@ -91,6 +95,10 @@ void CRestrictions::InitGroups(){
 				m_base_rank_rest.insert(mk_pair(r.name, r.n));
 			}
 		}
+
+#ifdef DEBUG
+	CMD4(CCC_Integer,"rank_for_buymenu",&m_rank,0,4);
+#endif
 			
 	
 }

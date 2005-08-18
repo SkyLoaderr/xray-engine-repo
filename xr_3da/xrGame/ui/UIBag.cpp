@@ -34,7 +34,7 @@ CUIBag::CUIBag(CHECK_PROC proc){
 	m_mlCurrLevel	= mlRoot;
 	m_pCurrentDDItem = NULL;
 	m_iMoneyAmount = 10000;
-	m_iCurrentRank = 0;
+//	m_iCurrentRank = 0;
 
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 	{
@@ -165,23 +165,12 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 
 	InitBoxes(xml);
 	InitWpnSectStorage();
-	FillUpInfiniteItemsList();
 	FillUpGroups();
 	HideAll();
 	SetMenuLevel(mlRoot);
 //#ifdef DEBUG
 //	CMD4(CCC_Integer,"rank_for_buymenu",&m_iCurrentRank,0,4);
 //#endif
-}
-
-bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
-	xr_list<shared_str>::iterator it;
-
-	for (it = m_vInfiniteItemsList.begin(); it != m_vInfiniteItemsList.end(); ++it)
-        if (0 ==xr_strcmp(pDDItem->GetSectionName(), *it))
-			return true;
-
-    return false;
 }
 
 int CUIBag::GetItemRank(const char* item){
@@ -299,7 +288,7 @@ void CUIBag::EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable){
 }
 
 void CUIBag::EnableDDItemByRank(CUIDragDropItemMP* pDDItem){
-	if (pDDItem->m_iRank > m_iCurrentRank)
+	if (pDDItem->m_iRank > g_mp_restrictions.GetRank())
 	{
 		pDDItem->SetColor(cUnableByRank);
 		pDDItem->EnableDragDrop(false);
@@ -631,25 +620,6 @@ void CUIBag::InitWpnSectStorage()
 	}
 }
 
-void CUIBag::FillUpInfiniteItemsList(){
-	shared_str itemsList;
-	string256 item;
-	shared_str ssItem;
-	// Get infinite items list
-	if(!pSettings->section_exist("multiplayer_extended_settings"))
-		return;
-
-	itemsList = pSettings->r_string("multiplayer_extended_settings", "infinite_items");
-	int itemsCount	= _GetItemCount(itemsList.c_str());
-
-	for (int i = 0; i < itemsCount; i++)
-	{
-		_GetItem(itemsList.c_str(), i, item);
-		ssItem = item;
-		m_vInfiniteItemsList.push_back(ssItem);
-	}
-}
-
 void CUIBag::FillUpGroups()
 {	
 	for (WPN_LISTS::size_type i = 0; i < m_wpnSectStorage.size(); ++i)
@@ -661,13 +631,15 @@ void CUIBag::FillUpGroup(const u32 group)
 	for (WPN_SECT_NAMES::size_type j = 0; j < m_wpnSectStorage[group].size(); ++j)
 	{
 		CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
-		FillUpItem(pNewDDItem, group, static_cast<int>(j));
+		FillUpItem(pNewDDItem, m_wpnSectStorage[group][j].c_str());
+		pNewDDItem->SetSectionGroupID(group);
+		pNewDDItem->SetPosInSectionsGroup(static_cast<u32>(j));
 		PutItemToGroup(pNewDDItem, group);
 		m_allItems.push_back(pNewDDItem);		
 	}
 }
 
-void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
+void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, const char* name){
 		pDDItem->SetAutoDelete(false);
 
 		pDDItem->CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
@@ -676,33 +648,33 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 		pDDItem->SetColor(0xffffffff);
 
 		//properties used by inventory menu
-		int iGridWidth	= pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "inv_grid_width");
-		int iGridHeight	= pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "inv_grid_height");
-		int iXPos		= pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "inv_grid_x");
-		int iYPos		= pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "inv_grid_y");
+		int iGridWidth	= pSettings->r_u32(name, "inv_grid_width");
+		int iGridHeight	= pSettings->r_u32(name, "inv_grid_height");
+		int iXPos		= pSettings->r_u32(name, "inv_grid_x");
+		int iYPos		= pSettings->r_u32(name, "inv_grid_y");
 
 		u32 slot;
-		if(pSettings->line_exist(m_wpnSectStorage[group][j].c_str(), "slot"))
-			slot = pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "slot");
+		if(pSettings->line_exist(name, "slot"))
+			slot = pSettings->r_u32(name, "slot");
 		else
 			slot = NO_ACTIVE_SLOT;
 		
 		pDDItem->SetSlot(slot);
-		pDDItem->SetSectionGroupID(group);
-		pDDItem->SetPosInSectionsGroup(static_cast<u32>(j));
+		
 
 		pDDItem->SetFont(UI()->Font()->pFontLetterica16Russian);
 
 		// Читаем стоимость оружия
-		if (pSettings->line_exist(m_StrSectionName, static_cast<xr_string>(m_wpnSectStorage[group][j] + "_cost").c_str()))
-			pDDItem->SetCost(pSettings->r_u32(m_StrSectionName, static_cast<xr_string>(m_wpnSectStorage[group][j] + "_cost").c_str()));
-		else if (pSettings->line_exist(m_StrPricesSection, m_wpnSectStorage[group][j].c_str()))
-			pDDItem->SetCost(pSettings->r_u32(m_StrPricesSection, m_wpnSectStorage[group][j].c_str()));
+		string256 buff;
+		if (pSettings->line_exist(m_StrSectionName, strconcat(buff, name, "_cost")))
+			pDDItem->SetCost(pSettings->r_u32(m_StrSectionName, buff));
+		else if (pSettings->line_exist(m_StrPricesSection, name))
+			pDDItem->SetCost(pSettings->r_u32(m_StrPricesSection, name));
 		else
 		{
 			string256	buf;
 			sprintf(buf, "Cannot find price for an item %s in sections: %s, %s",
-					m_wpnSectStorage[group][j].c_str(), *m_StrSectionName, *m_StrPricesSection);
+					name, *m_StrSectionName, *m_StrPricesSection);
 			R_ASSERT2(false, buf);
 		}
 
@@ -714,7 +686,7 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 			for (CONFORMITY_TABLE_it it = m_ConformityTable.begin(); it != m_ConformityTable.end(); ++it)
 			{
 				// Информация о таком арморе есть
-				if (0 == xr_strcmp(it->first, m_wpnSectStorage[group][j].c_str()))
+				if (0 == xr_strcmp(it->first, name))
 				{
 					shared_str modelName = it->second;
 
@@ -727,7 +699,7 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 			}
 		}
 
-		InitAddonsInfo(*pDDItem, m_wpnSectStorage[group][j]);
+		InitAddonsInfo(*pDDItem, name);
 
 		pDDItem->SetGridHeight(iGridHeight);
 		pDDItem->SetGridWidth(iGridWidth);
@@ -739,8 +711,8 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 			float(iGridHeight * INV_GRID_HEIGHT));
 
 
-		pDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());
-		pDDItem->m_iRank = GetItemRank(m_wpnSectStorage[group][j].c_str());
+		pDDItem->SetSectionName(name);
+		pDDItem->m_iRank = GetItemRank(name);
 		pDDItem->SetMessageTarget(GetParent());
 		pDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 //		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
@@ -756,7 +728,10 @@ CUIDragDropItemMP* CUIBag::CreateCopy(CUIDragDropItemMP *pDDItem){
 	CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
 	pNewDDItem->SetAutoDelete(true);
 
-	FillUpItem(pNewDDItem, group, index);
+	//FillUpItem(pNewDDItem, group, index);
+	FillUpItem(pNewDDItem, m_wpnSectStorage[group][index].c_str());
+	pNewDDItem->SetSectionGroupID(group);
+	pNewDDItem->SetPosInSectionsGroup(index);
 	PutItemToGroup(pNewDDItem, group);
 
 	m_vCopyList.push_back(pNewDDItem);
@@ -906,7 +881,7 @@ void	CUIBag::ReloadItemsPrices	()
 		if (pSettings->line_exist(m_StrSectionName, ItemCostStr))
 			(*it)->SetCost(pSettings->r_u32(m_StrSectionName, ItemCostStr));
 		//-------------------------------------------------------------------------------
-		for (int i=1; i<=m_iCurrentRank; i++)
+		for (int i=1; i<=g_mp_restrictions.GetRank(); i++)
 		{
 			string16 tmp;
 			strconcat(RankStr, "rank_", itoa(i, tmp, 10));
