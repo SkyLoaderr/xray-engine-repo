@@ -323,8 +323,12 @@ float CEquipmentType::ffGetValue()
 float CItemDeterioration::ffGetValue()
 {
 	if (ef_storage().non_alife().member_item()) {
-#pragma todo("Dima to Dima : Append ItemDeterioration with non-ALife branch")
-		return					(0);
+		const CWeapon			*weapon = smart_cast<const CWeapon*>(ef_storage().non_alife().member_item());
+		if (weapon)
+			return				(1.f - weapon->GetCondition());
+
+#pragma todo("Dima to Dima : Append ItemDeterioration with non-ALife non-weapon branch")
+		return					(0.f);
 	}
 	else {
 		const CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<const CSE_ALifeInventoryItem*>(ef_storage().alife().member_item());
