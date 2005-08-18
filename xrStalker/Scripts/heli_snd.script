@@ -2,25 +2,41 @@
 -- Чугай
 
 snd_see_enemy = {
-	sound_object( [[characters_voice\human_01\scenario\aes\aes_choper_hunt_1]] )
+	sound_object( [[helicopter\see_enemy_1]] ),
+	sound_object( [[helicopter\see_enemy_2]] ),
+	sound_object( [[helicopter\see_enemy_3]] ),
+	sound_object( [[helicopter\see_enemy_4]] ),
+	sound_object( [[helicopter\see_enemy_5]] ),
+	sound_object( [[helicopter\see_enemy_6]] ),
+	sound_object( [[helicopter\see_enemy_7]] )
 }
 
 snd_hit = {
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_1]] ),
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_2]] ),
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_3]] ),
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_4]] ),
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_5]] ),
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_6]] ),
-	sound_object( [[characters_voice\human_01\fight\hit\stalker\hit_7]] )
+	sound_object( [[helicopter\hit_1]] ),
+	sound_object( [[helicopter\hit_2]] ),
+	sound_object( [[helicopter\hit_3]] ),
+	sound_object( [[helicopter\hit_4]] ),
+	sound_object( [[helicopter\hit_5]] ),
+	sound_object( [[helicopter\hit_6]] ),
+	sound_object( [[helicopter\hit_7]] ),
+	sound_object( [[helicopter\hit_8]] ),
+	sound_object( [[helicopter\hit_9]] )
 }
 
 snd_damaged = {
-	sound_object( [[characters_voice\human_01\scenario\aes\aes_choper_hunt_2]] )
+	sound_object( [[helicopter\damage_1]] ),
+	sound_object( [[helicopter\damage_2]] ),
+	sound_object( [[helicopter\damage_3]] ),
+	sound_object( [[helicopter\damage_4]] )
 }
 
 snd_down = {
-	sound_object( [[characters_voice\human_01\fight\death\stalker\death_5]] )
+	sound_object( [[helicopter\death_1]] ),
+	sound_object( [[helicopter\death_2]] ),
+	sound_object( [[helicopter\death_3]] ),
+	sound_object( [[helicopter\death_4]] ),
+	sound_object( [[helicopter\death_5]] ),
+	sound_object( [[helicopter\death_6]] )
 }
 
 --------------------------------------------------------------------------------
