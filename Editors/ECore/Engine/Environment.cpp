@@ -261,6 +261,7 @@ void CEnvDescriptor::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescriptor& B,
 	// wind
     wind_velocity			=	fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction			=	fi*A.wind_direction + f*B.wind_direction;
+
 	// colors
 	ambient.lerp			(A.ambient,B.ambient,f).add(M.ambient).mul(_power);
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
@@ -630,8 +631,8 @@ void CEnvironment::RenderClouds			()
 
 	Fvector wd0,wd1;
 	Fvector4 wind_dir;
-	wd0.setHP					(CurrentEnv.wind_direction,0);
-	wd1.setHP					(CurrentEnv.wind_direction+PI_DIV_8,0);
+	wd0.setHP					(PI_DIV_4,0);
+	wd1.setHP					(PI_DIV_4+PI_DIV_8,0);
 	wind_dir.set				(wd0.x,wd0.z,wd1.x,wd1.z).mul(0.5f).add(0.5f).mul(255.f);
 	u32		i_offset,v_offset;
 	u32		C0					= color_rgba(iFloor(wind_dir.x),iFloor(wind_dir.y),iFloor(wind_dir.w),iFloor(wind_dir.z));
