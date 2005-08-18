@@ -103,7 +103,7 @@ public:
 
     void			Blink					(CSurface* surf=0);
 
-    virtual bool	Validate				();
+    virtual bool	Validate				(bool bMsg);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

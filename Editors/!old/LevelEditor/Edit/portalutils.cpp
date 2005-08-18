@@ -164,8 +164,9 @@ CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
 bool CPortalUtils::Validate(bool bMsg)
 {
     Fbox box;
-    bool bResult = false;
+    bool bResult 	= false;
 	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
+	    bResult 	= true;
 		CSector* sector_def=xr_new<CSector>((LPVOID)0,DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedMeshes();
         int f_cnt;
@@ -174,24 +175,16 @@ bool CPortalUtils::Validate(bool bMsg)
         	if (bMsg){ 
             	ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
                 for (SItemIt it=sector_def->sector_items.begin();it!=sector_def->sector_items.end();it++)
-                	Msg("! - scene object: '%s' [O:'%s', M:'%s']",it->object->Name,it->object->GetRefName(),it->mesh->GetName());
+                	Msg		("! - scene object: '%s' [O:'%s', M:'%s']",it->object->Name,it->object->GetRefName(),it->mesh->GetName());
             }
-        }else{
-			if (bMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
-            bResult = true;
+            bResult = false;
         }
-        xr_delete(sector_def);
+        xr_delete	(sector_def);
 
         // verify sectors
         ObjectList& s_lst=Scene->ListObj(OBJCLASS_SECTOR);
-        for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++){
-	        ((CSector*)(*_F))->GetCounts(0,0,&f_cnt);
-        	if (f_cnt<=4){
-				if (bMsg) ELog.Msg(mtError,"*ERROR: Sector: '%s' - face count < 4!",(*_F)->Name);
-            	bResult=false;
-                break;
-            }
-        }
+        for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++)
+        	if (!((CSector*)(*_F))->Validate(bMsg)) bResult = false;
     }else{
 		if (bMsg) ELog.DlgMsg(mtInformation,"Validation failed! Can't compute bbox.");
     }

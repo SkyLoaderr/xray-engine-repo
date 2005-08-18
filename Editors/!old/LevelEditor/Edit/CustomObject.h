@@ -122,7 +122,7 @@ public:
     IC BOOL			IsDeleted		(){return m_RT_Flags.is(flRT_NeedSelfDelete);}
 
 	// editor integration
-    virtual bool	Validate		(){return true;}
+    virtual bool	Validate		(bool bMsg){return true;}
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 	void			AnimationFillProp(LPCSTR pref, PropItemVec& items);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);

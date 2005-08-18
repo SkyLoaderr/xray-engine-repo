@@ -99,6 +99,8 @@ public:
 
     EVisible		Intersect	(const Fvector& center, float radius);
 	EVisible 		Intersect	(const Fbox& box);
+
+    virtual bool	Validate	(bool bMsg);
 };
 
 #endif /*_INCDEF_Sector_H_*/

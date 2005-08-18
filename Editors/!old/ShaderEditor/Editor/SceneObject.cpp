@@ -345,7 +345,7 @@ void CSceneObject::Blink(CSurface* surf)
 }
 //----------------------------------------------------
 
-bool CSceneObject::Validate()
+bool CSceneObject::Validate(bool bMsg)
 {
 	CEditableObject* E 	= GetReference(); R_ASSERT(E);
     return E->Validate();
