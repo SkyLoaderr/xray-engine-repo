@@ -15,6 +15,7 @@ function action_particle:__init (obj, storage)
     self.flags = {}
     self.single_points = false
     self.snd_obj = nil
+    self.playing = false
 end
 ------------------------
 function action_particle:reset_scheme()
@@ -29,6 +30,7 @@ function action_particle:reset_scheme()
     self.single_points = false
     self.wait_time = 0
     self.snd_obj = nil
+    self.st.signals = {}
     
     printf ("SR_PARTICLE : RESET_SCHEME END")
 end
@@ -72,6 +74,12 @@ function action_particle:update (delta)
        end   
     end
     
+    if self.playing == true then
+       if self.particles ~= nil and self.particles:playing () == false then
+          self.st.signals["particles_end"] = true
+       end
+    end                 
+    
     xr_logic.try_switch_to_another_section (self.object, self.st, actor)
 end
 ------------------------
@@ -96,6 +104,9 @@ function action_particle:process_next_point (time)
        self.current_point = self.current_point + 1
        if self.current_point == count then
           self.current_point = 0
+          self.st.signals["points_end"] = true
+       else
+          self.st.signals["points_end"] = false
        end
     end
     
@@ -148,6 +159,7 @@ function action_particle:start ()
           end   
        end   
     end        
+    self.playing = true        
 end
 ------------------------
 function action_particle:get_sound_name ()
