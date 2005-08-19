@@ -151,15 +151,66 @@ MotionVec* motions_value::motions(shared_str bone_name)
 	return &it->second;
 }
 //-----------------------------------
+motions_container::motions_container()
+{
+}
+motions_container::~motions_container()
+{
+//	clean	(false);
+//	clean	(true);
+//	dump	();
+	VERIFY	(container.empty());
+}
+motions_value* motions_container::dock(shared_str key, IReader *data, vecBones* bones)
+{
+	motions_value*	result		= 0	;
+	SharedMotionsMapIt	I		= container.find	(key);
+	if (I!=container.end())		result = I->second;
+	if (0==result)				{
+		// loading motions
+		result					= xr_new<motions_value>();
+		result->m_dwReference	= 0;
+		BOOL bres				= result->load	(key.c_str(),data,bones);
+		if (bres)				container.insert(mk_pair(key,result));
+		else					xr_delete		(result);
+	}
+	return result;
+}
+void motions_container::clean(bool force_destroy)
+{
+	SharedMotionsMapIt it	= container.begin();
+	SharedMotionsMapIt _E	= container.end();
+	if (force_destroy){
+		for (; it!=_E; it++){
+			motions_value*	sv = it->second;
+			xr_delete		(sv);
+		}
+		container.clear		();
+	}else{
+		for (; it!=_E; )	{
+			motions_value*	sv = it->second;
+			if (0==sv->m_dwReference)	
+			{
+				SharedMotionsMapIt	i_current	= it;
+				SharedMotionsMapIt	i_next		= ++it;
+				xr_delete			(sv);
+				container.erase		(i_current);
+				it					= i_next;
+			} else {
+				it++;
+			}
+		}
+	}
+}
 void motions_container::dump()
 {
-	SharedMapIt it	= container.begin();
-	SharedMapIt _E	= container.end();
+	SharedMotionsMapIt it	= container.begin();
+	SharedMotionsMapIt _E	= container.end();
 	Log	("--- motion container --- begin:");
 	u32 sz					= sizeof(*this);
 	for (u32 k=0; it!=_E; k++,it++){
 		sz					+= it->second->mem_usage();
-		Msg("#%3d: [%3d/%5d Kb] - %s",k,it->second->m_ref_cnt,it->second->mem_usage()/1024,it->first.c_str());
+		Msg("#%3d: [%3d/%5d Kb] - %s",k,it->second->m_dwReference,it->second->mem_usage()/1024,it->first.c_str());
 	}
 	Msg ("--- items: %d, mem usage: %d Kb ",container.size(),sz/1024);
 	Log	("--- motion container --- end.");
