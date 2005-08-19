@@ -75,6 +75,15 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
+	--- state: wave5
+	t = { section = "logic@pri_followers_leader_wave5",
+		idle = 0,
+		prior = 2, state = { state_wave5 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave5_out_restr",
+		predicate = f_predicate1
+	}
+	table.insert(sj, t)
 	-----------------------------------------------------------------------
 	-- √–¿Õ¿“ŒÃ≈“◊»  - œ–»Œ–»“≈“ 3,2
 	-----------------------------------------------------------------------
@@ -120,6 +129,15 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 3, state = { state_wave4 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave4_out_restr",
+		predicate = f_predicate2
+	}
+	table.insert(sj, t)
+	--- state: wave5
+	t = { section = "logic@pri_followers_bomber_wave5",
+		idle = 0,
+		prior = 3, state = { state_wave5 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave5_out_restr",
 		predicate = f_predicate2
 	}
 	table.insert(sj, t)
@@ -171,6 +189,15 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
+	--- state: wave5
+	t = { section = "logic@pri_followers_nap1_wave5",
+		idle = 0,
+		prior = 1, state = { state_wave5 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave5_out_restr",
+		predicate = f_predicate1
+	}
+	table.insert(sj, t)
 	-----------------------------------------------------------------------
 	-- Õ¿œ¿–Õ» 2 - œ–»Œ–»“≈“ 1
 	-----------------------------------------------------------------------
@@ -216,6 +243,15 @@ function load_job_followers(sj, gname, type, squad, groups)
 		prior = 1, state = { state_wave4 },
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "pri_followers_wave4_out_restr",
+		predicate = f_predicate1
+	}
+	table.insert(sj, t)
+	--- state: wave5
+	t = { section = "logic@pri_followers_nap2_wave5",
+		idle = 0,
+		prior = 1, state = { state_wave5 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave5_out_restr",
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
@@ -267,6 +303,15 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
+	--- state: wave5
+	t = { section = "logic@pri_followers_nap3_wave5",
+		idle = 0,
+		prior = 1, state = { state_wave5 },
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "pri_followers_wave5_out_restr",
+		predicate = f_predicate1
+	}
+	table.insert(sj, t)
 end
 
 function load_states(gname, type)
@@ -299,6 +344,15 @@ function load_states(gname, type)
 		    --if state == state_wave3 and actor:has_info("pri_wave3_btr_dead") then
 		    --    return state_wave4
 		    --end
+		    if state == state_wave4 and
+		       actor:has_info("pri_wave4_monolith1_dead") and
+		       actor:has_info("pri_wave4_monolith2_dead") and
+		       actor:has_info("pri_wave4_monolith3_dead") and
+		       actor:has_info("pri_wave4_monolith4_dead") and
+		       --actor:has_info("pri_wave4_monolith5_dead") and
+		    then
+		        return state_wave5
+		    end
 	        return state
 	    end
 	--elseif type == "val_monolith_base" then
