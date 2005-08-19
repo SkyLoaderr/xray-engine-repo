@@ -182,7 +182,6 @@
 		</supplies>
 			
 		<start_dialog>gar_newbie_in_tonnel</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_agr_krot" team_default = "1">
@@ -270,7 +269,6 @@
 		</supplies>
 
 		<start_dialog>rad_chief_start_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
@@ -327,12 +325,8 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default2" team_default = "1">
@@ -356,12 +350,8 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default3" team_default = "1">
@@ -387,12 +377,8 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default4" team_default = "1">
@@ -416,12 +402,8 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default5" team_default = "1">
@@ -445,12 +427,8 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default6" team_default = "1">
@@ -476,12 +454,8 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default9" team_default = "1">
@@ -505,12 +479,8 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_novice_default10" team_default = "1">
@@ -534,12 +504,8 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>companion_hire_dialog</actor_dialog>
-		<actor_dialog>companion_management_dialog</actor_dialog>
-		<actor_dialog>companion_release_dialog</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER GENERAL---------------------->
@@ -567,7 +533,6 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
@@ -601,7 +566,6 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
@@ -634,7 +598,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
@@ -667,7 +630,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
@@ -700,7 +662,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
@@ -734,7 +695,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -766,7 +726,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -798,7 +757,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -830,7 +788,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -862,7 +819,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -896,7 +852,6 @@
 		</supplies>
 						
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -929,7 +884,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -962,7 +916,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -995,7 +948,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -1028,7 +980,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
@@ -1275,7 +1226,6 @@
 		</supplies>
 						
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
