@@ -1004,7 +1004,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 				case 0:
 					// Если денег на аддон хватает
 					pItem = GetAddonByID(m_pCurrentDragDropItem, static_cast<CUIDragDropItemMP::AddonIDs>(i));
-					if (pItem->GetCost() <= GetMoneyAmount())
+					if (pItem->GetCost() <= GetMoneyAmount() && pItem->IsDragDropEnabled())
 					{
 						if (!this->UIBagWnd.IsItemInBag(pItem))
 							break;

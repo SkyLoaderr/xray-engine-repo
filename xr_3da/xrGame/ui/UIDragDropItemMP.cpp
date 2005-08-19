@@ -63,7 +63,7 @@ void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bo
 }
 
 void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, bool bAttach, bool bRealRepresentationSet)
-{
+{	
 	// Проверяем является ли pPossibleAddon действительно нашим аддоном
 	AddonIDs ID = IsOurAddon(pPossibleAddon);
 	if (ID != ID_NONE)
@@ -73,6 +73,8 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 
 		if (bAttach)
 		{
+			if (!pPossibleAddon->IsDragDropEnabled())
+				return;
 			if (m_AddonInfo[ID].iAttachStatus != 1 && pPossibleAddon->GetCost() <= this_inventory->GetMoneyAmount())
 			{
 				m_pAddon[ID] = pPossibleAddon;
