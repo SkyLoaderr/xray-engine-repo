@@ -1491,6 +1491,30 @@
     <string id="bar_ecolog_dialog_0">
         <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>
     </string>
+    <string id="bar_scared_novice_start_11">
+        <text>Привет! Тоже в бар идешь, да? Я тоже шел. Только вот проблемка есть, да? Ты ведь мне поможешь, да? Собаки тут неподалеку, много их. Ты ведь тоже слышишь их вой, да? Так вот одному мне страшно, понимаешь? Пошли вдвоем, вдвоем наверняка пройдем. Ты мне поможешь, да?</text>
+    </string>
+    <string id="bar_scared_novice_start_111">
+        <text>Ну пошли.</text>
+    </string>
+    <string id="bar_scared_novice_start_112">
+        <text>Тихо! Я сам.</text>
+    </string>
+    <string id="bar_scared_novice_start_21">
+        <text>Вот, почти подошли. Они за тем горбиком, прямо перед рвом. Идем, да?</text>
+    </string>
+    <string id="bar_scared_novice_start_211">
+        <text>Идем.</text>
+    </string>
+    <string id="bar_scared_novice_start_212">
+        <text>Подожди, я сам.</text>
+    </string>
+    <string id="bar_scared_novice_start_31">
+        <text>Ой, спасибо тебе. Я постараюсь не забыть, да? Ну если что, ты мне напомни, да?</text>
+    </string>
+    <string id="bar_scared_novice_start_41">
+        <text>Идем, идем! Чего стоишь? Идем!</text>
+    </string>
     <string id="bar_svoboda_dialog_0">
         <text>Все вопросы задавай Волкодаву, нашему старшему.</text>
     </string>
