@@ -12,21 +12,21 @@ on_info2 = {+x18_door2} ph_door@horror_knock %-x18_door2%
 locked = true
 closed = true
 snd_open_start = trader_door_locked
-on_info = {~60} ph_door@horror_wait %=hit_npc(x18_point_knock:door:0:2000)%, ph_door@horror_silence %=hit_npc(x18_point_knock:door:0:2000)%
+on_info = {~60} ph_door@horror_wait %+info_knock =hit_npc(x18_point_knock:door:0:2000) %, ph_door@horror_silence %+info_knock =hit_npc(x18_point_knock:door:0:2000)%
 on_info2 = {+x18_door2_knock_stop} ph_door@locked
 
 [ph_door@horror_wait]
 locked = true
 closed = true
 snd_open_start = trader_door_locked
-on_timer = 1500| ph_door@horror_knock
+on_timer = 1500| ph_door@horror_knock %-info_knock%
 
 [ph_door@horror_silence]
 locked = true
 closed = true
 snd_open_start = trader_door_locked
-on_timer = 4000| ph_door@horror_knock
-on_info = {+x18_door2_knock_stop} ph_door@locked
+on_timer = 4000| ph_door@horror_knock %-info_knock%
+on_info = {+x18_door2_knock_stop} ph_door@locked  %-info_knock%
 
 [ph_door@unlocked]
 locked = false
