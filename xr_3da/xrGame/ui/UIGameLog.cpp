@@ -42,7 +42,7 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 //	float h		= pItem->GetHeight();
 //	float h2	= pItem->UIMsgText.GetFont()->CurrentHeightRel();
 //	float y = (h - h2)/2;	
-//	pItem->UIMsgText.SetTextPos(0, y);
+	pItem->UIMsgText.SetTextX(0);
 	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->SetData(animation);
 
