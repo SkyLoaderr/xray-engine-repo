@@ -108,6 +108,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
 	m_pMPChatWnd				= NULL;
 	m_pMPLogWnd					= NULL;	
+	m_pMoneyIndicator			= NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -457,7 +458,7 @@ void CUIMainIngameWnd::Draw()
 
 //	DrawPdaMessages();
 
-#ifdef DEBUG
+#ifdef DEBUG 
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
 	{
 		CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
