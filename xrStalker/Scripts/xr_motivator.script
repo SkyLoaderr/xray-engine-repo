@@ -171,10 +171,6 @@ end
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 	
-	if self.object:name () == "mil_dolg_stalker0005" then
-	   printf ("Update delta for mil_dolg_stalker0005 is %d", delta)
-	end   
-
 	if not self.initialized and db.actor then
 		self.initialized = true
 		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
