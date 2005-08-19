@@ -2,6 +2,13 @@
 
 <game_information_portions>
 
+	<!-- Scared Novice -->
+	<info_portion id="bar_scared_novice_start"></info_portion>
+	<info_portion id="bar_scared_novice_hide"></info_portion>
+	<info_portion id="bar_scared_novice_attack"></info_portion>
+	<info_portion id="bar_scared_novice_done"></info_portion>
+
+
 	<!-- BAR -->
     <info_portion id="bar_bar_square_1_state_1"></info_portion>
     <info_portion id="bar_bar_square_1_state_2"></info_portion>
