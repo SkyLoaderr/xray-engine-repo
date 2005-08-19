@@ -52,14 +52,13 @@
 #include "ai_stalker_space.h"
 #include "../../mt_config.h"
 #include "../../effectorshot.h"
+#include "../../visual_memory_manager.h"
+#include "../../enemy_manager.h"
 
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
 #	include "../../alife_object_registry.h"
-#	include "../../visual_memory_manager.h"
 #endif
-
-#include "../../enemy_manager.h"
 
 using namespace StalkerSpace;
 
