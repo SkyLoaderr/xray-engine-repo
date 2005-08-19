@@ -118,13 +118,12 @@ public:
 };
 
 // shared motions
-struct ENGINE_API		motions_value
+struct ENGINE_API		motions_value:		public shared_value
 {
 	accel_map			m_motion_map;		// motion associations
 	accel_map			m_cycle;			// motion data itself	(shared)
 	accel_map			m_fx;				// motion data itself	(shared)
 	CPartition			m_partition;		// partition
-	u32					m_dwReference;
 	DEFINE_MAP			(shared_str,MotionVec,BoneMotionMap,BoneMotionMapIt);
 	BoneMotionMap		m_motions;
     MotionDefVec		m_mdefs;
@@ -143,40 +142,29 @@ struct ENGINE_API		motions_value
 	}
 };
 
-class ENGINE_API		motions_container
+class ENGINE_API		motions_container: public shared_container<motions_value>
 {
-	DEFINE_MAP			(shared_str,motions_value*,SharedMotionsMap,SharedMotionsMapIt);
-	SharedMotionsMap	container;
 public:
-						motions_container	();
-						~motions_container	();
-	motions_value*		dock				(shared_str key, IReader *data, vecBones* bones);
 	void				dump				();
-	void				clean				(bool force_destroy);
 };
 
 ENGINE_API extern		motions_container*	g_pMotionsContainer;
 
-class ENGINE_API		shared_motions
+class ENGINE_API		shared_motions: public shared_item<motions_value>
 {
-private:
-	motions_value*		p_;
 protected:
-	// ref-counting
-	void				destroy			()							{	if (0==p_) return;	p_->m_dwReference--; 	if (0==p_->m_dwReference)	p_=0;	}
+	struct	on_new_pred{
+		IReader*		data;
+		vecBones*		bones;
+						on_new_pred		(IReader* _data, vecBones* _bones):data(_data),bones(_bones){}
+		BOOL			operator()		(const shared_str& key, motions_value* val) const {return val->load(key.c_str(),data,bones);}
+	};
 public:
-	void				create			(shared_str key, IReader *data, vecBones* bones){	motions_value* v = g_pMotionsContainer->dock(key,data,bones); if (0!=v) v->m_dwReference++; destroy(); p_ = v;	}
-	void				create			(shared_motions const &rhs)	{	motions_value* v = rhs.p_; if (0!=v) v->m_dwReference++; destroy(); p_ = v;	}
+	void				create			(shared_str key, IReader *data, vecBones* bones)
+	{	
+		shared_item<motions_value>::create(key,g_pMotionsContainer,on_new_pred(data,bones));	
+	}
 public:
-	// construction
-						shared_motions	()							{	p_ = 0;											}
-						shared_motions	(shared_motions const &rhs)	{	p_ = 0;	create(rhs);							}
-						~shared_motions	()							{	destroy();										}
-
-	// assignment & accessors
-	shared_motions&		operator=		(shared_motions const &rhs)	{	create(rhs);return *this;	}
-
-	// misc func
 	MotionVec*			motions			(shared_str bone_name)		{	VERIFY(p_); return p_->motions(bone_name);		}
 	accel_map*			motion_map		()							{	VERIFY(p_); return &p_->m_motion_map;			}
 	accel_map*			cycle			()							{	VERIFY(p_); return &p_->m_cycle;				}
