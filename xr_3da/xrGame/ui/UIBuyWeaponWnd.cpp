@@ -74,8 +74,10 @@ void CUIBuyWeaponWnd::PerformAutoBuy()
 	for (int i = 0; i < (int)buy_list.size(); i++)
 	{
 		CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(*buy_list[i]);
-		if(pDDItem)
-			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		if(pDDItem){
+			if (pDDItem->IsDragDropEnabled())
+                SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+			}
 		else{
 			Msg("ERROR CUIBuyWeaponWnd::PerformAutoBuy cannot find item with section name=%s",*buy_list[i]);
 		}
@@ -103,7 +105,7 @@ void CUIBuyWeaponWnd::FillUpPresets(){
 	for (int i = 0; i < 3; i++)
 	{
         ParseStrToVector(preset[i], m_presets[i].m_list);
-		UpdatePresetPrice(m_presets[i]);
+//		UpdatePresetPrice(m_presets[i]);
 	}
 }
 
@@ -282,9 +284,10 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	bool last;
 	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last))
+		if (pDDItemMP->GetPermissionToBuy(last)){
 			if (!last)
 				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+		}
 		else
 			return false;
 	this_inventory->SlotToSection(KNIFE_SLOT);
@@ -311,11 +314,12 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	bool last;
 	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last))
+		if (pDDItemMP->GetPermissionToBuy(last)){
 			if (!last)
 				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-			else
-				return false;
+		}
+		else
+			return false;
 	this_inventory->SlotToSection(PISTOL_SLOT);
 
 	// И отнимаем от денег стоимость вещи.
@@ -351,11 +355,12 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	bool last;
 	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last))
+		if (pDDItemMP->GetPermissionToBuy(last)){
 			if (!last)
 				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-			else
-				return false;
+		}
+		else
+			return false;
 	this_inventory->SlotToSection(RIFLE_SLOT);
 
 	// И отнимаем от денег стоимость вещи.
@@ -386,11 +391,12 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	bool last;
 	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last))
+		if (pDDItemMP->GetPermissionToBuy(last)){
 			if (!last)
 				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-			else
-				return false;
+		}
+		else
+			return false;
 
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
@@ -416,11 +422,12 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	bool last;
 	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last))
+		if (pDDItemMP->GetPermissionToBuy(last)){
 			if (!last)
 				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-			else
-				return false;
+		}
+		else
+			return false;
 
 	this_inventory->SlotToSection(APPARATUS_SLOT);
 
@@ -1426,12 +1433,31 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 {
 	CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(sectionName);	
 	int iSlot = pDDItem->GetSlot();
-
 	if (UIBagWnd.IsItemInBag(pDDItem))
 		if (UITopList[iSlot].GetDragDropItemsList().empty() || GRENADE_SLOT == iSlot)
 		{
 			pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
 			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		}
+}
+
+void CUIBuyWeaponWnd::SectionToSlot(const char* sectionName, u8 addon_info, bool bRealRepresentationSet){
+	CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(sectionName, /* bCreateOnFail = */true);
+	int iSlot = pDDItem->GetSlot();
+	if (UIBagWnd.IsItemInBag(pDDItem))
+		if (UITopList[iSlot].GetDragDropItemsList().empty() || GRENADE_SLOT == iSlot)
+		{
+			pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
+			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+			if (addon_info != 0)
+			{
+				if ((addon_info & 1) != 0)
+					pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, bRealRepresentationSet);
+				if ((addon_info & 2) != 0)
+					pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true, bRealRepresentationSet);
+				if ((addon_info & 4) != 0)
+					pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, bRealRepresentationSet);
+			}
 		}
 }
 

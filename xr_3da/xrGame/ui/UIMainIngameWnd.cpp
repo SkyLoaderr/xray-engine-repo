@@ -117,6 +117,7 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 	DestroyFlashingIcons();
 	xr_delete(UIZoneMap);
 	xr_delete(m_artefactPanel);
+	xr_delete(m_pMoneyIndicator);
 }
 
 //////////////////////////////////////////////////////////////////////////

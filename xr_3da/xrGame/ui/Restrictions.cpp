@@ -164,9 +164,8 @@ bool CRestrictions::GetPermission(LPCSTR item, bool& last){
 		ret &= Try((*it).second, last);
 	else
 	{
-		rest = m_base_rank_rest;
-		it = rest.find(item);
-		if (rest.end() != it)
+		it = m_base_rank_rest.find(item);
+		if (m_base_rank_rest.end() != it)
 			ret &= Try((*it).second, last);
 		else
             ret &= true;
@@ -210,9 +209,9 @@ void CRestrictions::Return(LPCSTR item){
 	}
 	else
 	{
-		rank_rest& rest = m_base_rank_rest;
-		rank_rest_it it = rest.find(item);
-		if (rest.end() != it)
+//		rank_rest& rest = m_base_rank_rest;
+		it = m_base_rank_rest.find(item);
+		if (m_base_rank_rest.end() != it)
 		{
 			RESTR_N& r = (*it).second;
 			if (r.cur_val >= 0)
@@ -242,9 +241,9 @@ bool CRestrictions::HasAmountControl(LPCSTR item){
 		return true;
 	else
 	{
-		rest = m_base_rank_rest;
-		rank_rest_it it = rest.find(item);
-		if (rest.end() != it)
+//		rest = m_base_rank_rest;
+		it = m_base_rank_rest.find(item);
+		if (m_base_rank_rest.end() != it)
 			return true;
 		else return false;
 	}

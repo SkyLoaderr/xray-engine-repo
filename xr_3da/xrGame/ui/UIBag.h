@@ -71,7 +71,7 @@ public:
 			void	SetRank(int rank);
 			void	ReloadItemsPrices	();
 
-CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName);
+CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName, bool bCreateOnFail = false);
 CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
 CUIDragDropItemMP*	GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
 
@@ -121,7 +121,7 @@ CUIDragDropList*	GetCurrentGroup();
 	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES); // vector of sections
 	WPN_LISTS	m_wpnSectStorage;
 
-	xr_list<CUIDragDropItemMP*> m_allItems;
+	xr_vector<CUIDragDropItemMP*> m_allItems;
 
 	// “аблица соответсви€ имени армора с именами моделей персонажей. «аполн€етс€ на этапе считывани€ 
 	// информации из ltx файла соответствующего типу сетевой игры

@@ -67,7 +67,7 @@ CUIBag::CUIBag(CHECK_PROC proc){
 }
 
 CUIBag::~CUIBag(){
-	xr_list<CUIDragDropItemMP*>::iterator it;
+	xr_vector<CUIDragDropItemMP*>::iterator it;
 
 	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
 		xr_delete(*it);
@@ -238,7 +238,7 @@ void CUIBag::UpdateBuyPossibility(){
 	}
 }
 
-CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char *sectionName){
+CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char* sectionName, bool bCreateOnFail){
 
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 	{
@@ -250,7 +250,23 @@ CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char *sectionName){
 			if (0 == xr_strcmp(pDDItem->GetSectionName(), sectionName))
 				return pDDItem;
 		}
+	}	
+
+	if (bCreateOnFail && pSettings->line_exist(m_StrPricesSection, sectionName))
+	{
+		for (u32 i = 0; i < m_allItems.size(); i++)
+			if (0 == xr_strcmp(m_allItems[i]->GetSectionName(), sectionName))
+				return NULL;
+
+		CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
+		FillUpItem(pNewDDItem, sectionName);
+		pNewDDItem->SetSectionGroupID(0);
+		pNewDDItem->SetPosInSectionsGroup(0);
+		PutItemToGroup(pNewDDItem, GROUP_DEFAULT);
+		m_allItems.push_back(pNewDDItem);
+		return pNewDDItem;
 	}
+
 	return NULL;
 }
 
@@ -271,7 +287,7 @@ CUIDragDropItemMP* CUIBag::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
 }
 
 void CUIBag::ClearRealRepresentationFlags(){
-	xr_list<CUIDragDropItemMP*>::iterator it;
+	xr_vector<CUIDragDropItemMP*>::iterator it;
 
 	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
 	{
@@ -310,7 +326,7 @@ void CUIBag::Draw(){
 CUIDragDropItemMP * CUIBag::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID){
 	R_ASSERT(pAddonOwner);
 	// Пробегаемся по списку вещей и ищем там нужный аддон
-	xr_list<CUIDragDropItemMP*>::iterator it;
+	xr_vector<CUIDragDropItemMP*>::iterator it;
 
 	for (it = m_allItems.begin(); it!=m_allItems.end(); ++it)
 		for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
@@ -715,7 +731,6 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, const char* name){
 		pDDItem->m_iRank = GetItemRank(name);
 		pDDItem->SetMessageTarget(GetParent());
 		pDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
-//		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
 }
 
 CUIDragDropItemMP* CUIBag::CreateCopy(CUIDragDropItemMP *pDDItem){
@@ -769,7 +784,7 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 			return;
 		}
 	}
-	Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - can't find it item",pDDItem->GetSectionName());
+	Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - can't find item",pDDItem->GetSectionName());
  
 }
 
@@ -871,7 +886,7 @@ void	CUIBag::ReloadItemsPrices	()
 	string256 ItemCostStr = "";
 	string256 RankStr = "";
 
-	xr_list<CUIDragDropItemMP*>::iterator it;
+	xr_vector<CUIDragDropItemMP*>::iterator it;
 	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
 	{
 		R_ASSERT(pSettings->line_exist(m_StrPricesSection, (*it)->strName));

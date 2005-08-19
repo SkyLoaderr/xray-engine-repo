@@ -18,7 +18,8 @@ CUIMoneyIndicator::CUIMoneyIndicator(){
 }
 
 CUIMoneyIndicator::~CUIMoneyIndicator(){
-
+	xr_delete(m_pAnimChange);
+	xr_delete(m_pAnimBonus);
 }
 
 void CUIMoneyIndicator::InitFromXML(CUIXml& xml_doc){

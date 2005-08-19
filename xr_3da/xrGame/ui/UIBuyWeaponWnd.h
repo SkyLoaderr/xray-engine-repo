@@ -227,6 +227,7 @@ public:
 //	void		MoveWeapon(const char *sectionName, bool bRealRepresentationSet) {}
 
 	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
+	void		SectionToSlot(LPCSTR name, const u8 addon_info, bool bRealRepresentationSet);
 	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
 	void		ClearSlots();
 	void		ClearRealRepresentationFlags();
