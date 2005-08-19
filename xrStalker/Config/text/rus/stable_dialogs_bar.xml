@@ -1426,7 +1426,7 @@
         <text>Хорошо, следуй за мной.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1111">
-        <text>Как ты скажешь, сталкер. Я в твоей власти, только выведи меня отсюда.</text>
+        <text>Как скажешь, сталкер. Только иди первым, а я за тобой. Боец из меня плохой, поэтому лучше ты разведывай дорогу.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_112">
         <text>Нет. Выбирайся сам.</text>
@@ -1442,6 +1442,51 @@
     </string>
     <string id="bar_ecolog_crush_professor_start_41">
         <text>Здравствуй, сталкер. От имени всей мировой науки выражаю тебе свое почтение.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_51">
+        <text>Меченый, останови их! Они же нас прикончат!!!</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_511">
+        <text>Посиди тут тихо, я сейчас с ними разберусь.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_5111">
+        <text>Я буду ждать тебя, Меченый.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_512">
+        <text>Опасности больше нет, можно выбираться.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_5121">
+        <text>Спасибо, Меченый, за помощь. Идем скорее.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_61">
+        <text>Там кто-то есть, Меченый. Сходи разведай.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_611">
+        <text>Хорошо, посиди тут тихо, я сейчас все узнаю.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_6111">
+        <text>Хорошо, я подожду здесь.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_612">
+        <text>Там никого нет, можно идти</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_6121">
+        <text>Хорошо, идем скорее.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_613">
+        <text>Я всех убил, можно идти.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_6131">
+        <text>Спасибо, Меченый. Идем скорее.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_71">
+        <text>Осторожнее с Жаркой, Меченый. Мне не опасно, меня защитит скафандр, а тебе лучше избежать приближения жарки.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_711">
+        <text>Спасибо за совет.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_712">
+        <text>Не волнуйся, у меня тоже защита неплохая.</text>
     </string>
     <string id="bar_ecolog_dialog_0">
         <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>
