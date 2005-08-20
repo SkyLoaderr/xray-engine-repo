@@ -1,4 +1,5 @@
-
+function printf()
+end
 
 --' Анимации персонажа
 --' мы уже находимся в необходимом состоянии?
@@ -230,6 +231,7 @@ function animation:set_state(id, reset)
 					if type(anima) == "table" then
 						for k,v in anima do
 							if type(v) == "table" then
+								printf("set_a_c out old")
 								self:set_anim_callback(v)
 							else
 								self.npc:add_animation(v, true)
@@ -250,6 +252,7 @@ function animation:set_state(id, reset)
 			if type(anima) == "table" then
 				for k,v in anima do
 					if type(v) == "table" then
+						printf("set_a_c in new")
 						self:set_anim_callback(v)
 					else
 						self.npc:add_animation(v, true)
@@ -573,6 +576,7 @@ end
 function animation:set_anim_callback(a)
 	print_table(a)
 	self.clb_settings.cnt = self.npc:animation_count()
+	printf("a_count [%s]", self.clb_settings.cnt)
 	self.clb_settings.a = a.a
 	self.clb_settings.d = a.d
 	self.clb_settings.s = a.s
@@ -581,6 +585,7 @@ function animation:set_anim_callback(a)
 end
 --' коллбек на особые действия
 function animation:anim_callback()
+	printf("anim callback [%s]", self.clb_settings.cnt)
 	self.clb_settings.cnt = self.clb_settings.cnt - 1
 	if self.clb_settings.cnt == 0 then
 		if self.clb_settings.a ~= nil and
