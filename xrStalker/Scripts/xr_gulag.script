@@ -496,6 +496,13 @@ function setGulagEnemy(name, victim)
 	end
 end
 
+function getGulagState(name)
+	if xr_gulag.fraction[name] ~= nil then
+		return xr_gulag.fraction[name].state
+	end
+	return 0
+end
+
 function setGulagRelation(gulag_name, relation, object)
     if xr_gulag.fraction[gulag_name] == nil then return end
     xr_gulag.fraction[gulag_name]:set_relation (relation, object)

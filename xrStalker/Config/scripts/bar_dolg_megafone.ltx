@@ -5,22 +5,25 @@ active = ph_sound@idle
 snd = dolg_speech
 min_idle = 5000
 max_idle = 15000
-on_info = {+bar_arena_start} ph_idle@idle, {+bar_territory_nodolg_1_hit -bar_dolg_territory_1_hit_notify} ph_sound@1_hit, {+bar_territory_nodolg_2_hit -bar_dolg_territory_2_hit_notify} ph_sound@2_hit, {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill
+on_info = {+bar_arena_start} ph_idle@idle, {+bar_territory_nodolg_1_hit -bar_dolg_territory_1_hit_notify} ph_sound@1_hit, {+bar_territory_nodolg_2_hit -bar_dolg_territory_2_hit_notify} ph_sound@2_hit, {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill, {=bar_dolg_alarm} ph_sound@alarm
  
 [ph_sound@1_hit]
 snd = dolg_megafon_1_hit
-on_timer = 30000|ph_sound@idle %+bar_dolg_territory_1_hit_notify%
+on_timer = 15000|ph_sound@idle %+bar_dolg_territory_1_hit_notify%
 on_info = {+bar_territory_nodolg_2_hit -bar_dolg_territory_2_hit_notify} ph_sound@2_hit, {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill
 
 [ph_sound@2_hit]
 snd = dolg_megafon_2_hit
-on_timer = 30000|ph_sound@idle %+bar_dolg_territory_2_hit_notify +bar_dolg_territory_1_hit_notify%
+on_timer = 15000|ph_sound@idle %+bar_dolg_territory_2_hit_notify +bar_dolg_territory_1_hit_notify%
 on_info = {+bar_territory_nodolg_kill -bar_dolg_territory_kill_notify} ph_sound@kill
 
 [ph_sound@kill]
 snd = dolg_megafon_kill
-on_timer = 30000|ph_sound@idle %+bar_dolg_territory_kill_notify +bar_dolg_territory_1_hit_notify +bar_dolg_territory_2_hit_notify%
+on_timer = 15000|ph_sound@idle %+bar_dolg_territory_kill_notify +bar_dolg_territory_1_hit_notify +bar_dolg_territory_2_hit_notify%
 
+[ph_sound@alarm]
+snd = dolg_alarm
+on_info = {!bar_dolg_alarm} ph_sound@idle
 
 
 [ph_idle@idle]

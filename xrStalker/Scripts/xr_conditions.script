@@ -548,6 +548,15 @@ function bar_arena_actor_outside(actor,npc)
 	end
 	return false
 end
+function bar_dolg_alarm(actor,npc)
+	if xr_gulag.getGulagState("bar_dolg_general") == 2 then
+		return true
+	end
+	if xr_gulag.getGulagState("bar_dolg_veterans") == 2 then
+		return true
+	end
+	return false
+end
 
 
 function is_courier_time (actor, npc)
