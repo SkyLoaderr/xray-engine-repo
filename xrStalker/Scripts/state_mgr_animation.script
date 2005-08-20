@@ -585,7 +585,7 @@ function animation:set_anim_callback(a)
 end
 --' коллбек на особые действия
 function animation:anim_callback()
-	printf("anim callback [%s]", self.clb_settings.cnt)
+	printf("anim callback [%s] of [%s]", self.clb_settings.cnt, self.npc:animation_count())
 	self.clb_settings.cnt = self.clb_settings.cnt - 1
 	if self.clb_settings.cnt == 0 then
 		if self.clb_settings.a ~= nil and
