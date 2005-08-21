@@ -6,6 +6,7 @@
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_resque_research_done</infoportion_complete>
 			<infoportion_fail>bar_resque_research_dead</infoportion_fail>
+			<article>bar_resque_information</article>
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_get</text>
@@ -32,6 +33,7 @@
 			<infoportion_complete>bar_kill_professor_reward</infoportion_complete>
 			<infoportion_fail>bar_kill_professor_fail</infoportion_fail>
 			<infoportion_fail>bar_heli_scene_volkodav_die</infoportion_fail>
+			<article>bar_kill_professor</article>
 		</objective>
 		<objective>
 			<text>bar_kill_professor_kill</text>
@@ -57,6 +59,7 @@
 			<text>bar_bring_hunter_rifle</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_bar_hunter_quest_finish</infoportion_complete>
+			<article>bar_hunter_rifle</article>
 		</objective>
 		<objective>
 			<text>bar_hunter_find_rifle</text>
@@ -81,6 +84,7 @@
 			<text>bar_kill_veterans</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
+			<article>bar_crazy_veterans_quest</article>
 		</objective>
 		<objective>
 			<text>bar_kill_crazy_veterans</text>
@@ -111,6 +115,7 @@
 			<map_location_type hint="bar_dolg_community_quest_recomendation">green_location</map_location_type>
 			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
+			<article>bar_dolg_community_quest</article>
 		</objective>
 		<objective>
 			<text>bar_dolg_community_quest_vernost</text>
@@ -132,6 +137,7 @@
 		<objective>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
+			<article>bar_dolg_test_quest</article>
 		</objective>
 		<objective>
 			<text>bar_dolg_find_document</text>
@@ -156,6 +162,7 @@
 			<text>bar_dolg_svoboda_ambush_quest</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_kill_svoboda_ambush_done</infoportion_complete>
+			<article>bar_dolg_svoboda_ambush_quest</article>
 		</objective>
 		<objective>
 			<text>bar_dolg_kill_tiran</text>
@@ -180,6 +187,7 @@
 		<objective>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_kill_svoboda_leader_done</infoportion_complete>
+			<article>bar_dolg_svoboda_leader_kill_quest</article>
 		</objective>
 		<objective>
 			<text>mil_svoboda_leader_kill</text>
@@ -203,6 +211,7 @@
 			<text>secret_documents_from_darklab</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_darklab_document_done</infoportion_complete>
+			<article>bar_darklab_documents</article>
 		</objective>
 		<objective>
 			<text>get_darklab_key</text>
@@ -243,6 +252,7 @@
 			<text>x16_yantar</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_x16_documents_done</infoportion_complete>
+			<article>bar_x16_documents</article>
 		</objective>
 		<objective>
 			<text>find_x16_location</text>
@@ -270,6 +280,7 @@
 		<objective>
 			<text>find_and_deactivate_radar</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<article>bar_radar_deactivate</article>
 		</objective>
 		<objective>
 			<text>deactivate_radar_now</text>
