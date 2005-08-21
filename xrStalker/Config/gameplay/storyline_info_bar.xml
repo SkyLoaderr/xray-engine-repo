@@ -14,33 +14,33 @@
         <texture x="550" y="0" width="200" height="150">ui\ui_icon_photo</texture>
         <text>bar_radar_shedule</text>
     </article>
-    <article id="bar_resque_information" name="resque information" group="Diary">
-        <text>bar_resque_information</text>
+    <article id="descr_bar_resque_information" name="resque information" group="Diary">
+        <text>descr_bar_resque_information</text>
     </article>
-    <article id="bar_kill_professor" name="kill professor" group="Diary">
-        <text>bar_kill_professor</text>
+    <article id="descr_bar_kill_professor" name="kill professor" group="Diary">
+        <text>descr_bar_kill_professor</text>
     </article>
-    <article id="bar_hunter_rifle" name="hunter rifle" group="Diary">
-        <text>bar_hunter_rifle</text>
+    <article id="descr_bar_hunter_rifle" name="hunter rifle" group="Diary">
+        <text>descr_bar_hunter_rifle</text>
     </article>
-    <article id="bar_crazy_veterans_quest" name="crazy veterans quest" group="Diary">
-        <text>bar_crazy_veterans_quest</text>
+    <article id="descr_bar_crazy_veterans_quest" name="crazy veterans quest" group="Diary">
+        <text>descr_bar_crazy_veterans_quest</text>
     </article>
-    <article id="bar_dolg_test_quest" name="dolg test quest" group="Diary">
-        <text>bar_dolg_test_quest</text>
+    <article id="descr_bar_dolg_test_quest" name="dolg test quest" group="Diary">
+        <text>descr_bar_dolg_test_quest</text>
     </article>
-    <article id="bar_dolg_svoboda_ambush_quest" name="dolg svoboda ambush quest" group="Diary">
-        <text>bar_dolg_svoboda_ambush_quest</text>
+    <article id="descr_bar_dolg_svoboda_ambush_quest" name="dolg svoboda ambush quest" group="Diary">
+        <text>descr_bar_dolg_svoboda_ambush_quest</text>
     </article>
-    <article id="bar_dolg_svoboda_leader_kill_quest" name="dolg svoboda leader kill quest" group="Diary">
-        <text>bar_dolg_svoboda_leader_kill_quest</text>
+    <article id="descr_bar_dolg_svoboda_leader_kill_quest" name="dolg svoboda leader kill quest" group="Diary">
+        <text>descr_bar_dolg_svoboda_leader_kill_quest</text>
     </article>
-    <article id="bar_darklab_documents" name="darklab documents" group="Diary">
-        <text>bar_darklab_documents</text>
+    <article id="descr_bar_darklab_documents" name="darklab documents" group="Diary">
+        <text>descr_bar_darklab_documents</text>
     </article>
-    <article id="bar_x16_documents" name="x16 documents" group="Diary">
-        <text>bar_x16_documents</text>
+    <article id="descr_bar_x16_documents" name="x16 documents" group="Diary">
+        <text>descr_bar_x16_documents</text>
     </article>
-    <article id="bar_radar_deactivate" name="radar deactivate" group="Diary">
-        <text>bar_radar_deactivate</text>
+    <article id="descr_bar_radar_deactivate" name="radar deactivate" group="Diary">
+        <text>descr_bar_radar_deactivate</text>
     </article>
