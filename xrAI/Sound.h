@@ -251,6 +251,7 @@ public:
 	//@{
 	/// Sound interface
 	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
+	virtual void					clone					( ref_sound& S, const ref_sound& from, int type )										= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					stop_emitters			( )																						= 0;	
 
@@ -284,7 +285,8 @@ extern XRSOUND_API CSound_manager_interface*		Sound;
 IC ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)			{	::Sound->_create_data			(*this,_3D,fName, type);					}
 IC ref_sound_data::~ref_sound_data					()													{	::Sound->_destroy_data			(*this);									}
                                 
-IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);							}
+IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);						}
+IC void	ref_sound::clone						( const ref_sound& from, int type )						{	::Sound->clone					(*this,type);								}
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);										}
 IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);								}
 IC void	ref_sound::play_at_pos					( CObject* O, const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);							}
@@ -305,12 +307,5 @@ IC void	ref_sound::set_params					( CSound_params* p )
         _feedback()->set_range   	(p->min_distance,p->max_distance);
         _feedback()->set_volume   	(p->volume);
     }
-}
-IC void	ref_sound::clone						( const ref_sound& from, int type )		
-{
-    _p				= xr_new<ref_sound_data>(*from._p);
-	_p->feedback	= 0;
-	_p->g_object	= 0;
-	_p->g_type		= (type==st_SourceType)?_p->handle->game_type():type;
 }
 #endif
