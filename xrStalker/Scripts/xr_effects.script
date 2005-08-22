@@ -219,6 +219,14 @@ function log_bp1(actor, npc)
 	printf("xr_effects: log_bp1 (actor='%s', npc='%s'", actor:name(), npc:name())
 end
 
+function psi_hit_npc(actor, npc)
+    local h = hit()
+    h.power = 20
+    h.direction = vector():set( 1, 0, 0 )
+    h.impulse = 1
+    h.draftsman = c
+    h.type = hit.telepatic
+end
 
 
 function test_hit_in_actor_dir(actor, npc)
@@ -743,13 +751,7 @@ function mil_hunters_psi_hit (actor, npc)
     --if npc == nil then return end
     local c = level_object_by_sid (729)
     if c == nil then return end
-    local h = hit ()
-    h.power = 100
-    h.direction = vector():set( 1, 0, 0 )
-    h.impulse = 1
-    h.draftsman = c
-    h.type = hit.telepatic
-    
+
     local hunter = level_object_by_sid (725)
     if hunter ~= nil and hunter:alive () == true then
        if hunter.psy_health > 0.08 then
