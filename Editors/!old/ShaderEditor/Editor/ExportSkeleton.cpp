@@ -639,7 +639,8 @@ bool CExportSkeleton::PrepareGeometry()
                         mtl_idx		= m_Splits.size()-1;
                     }
                     SSplit& split	= m_Splits[mtl_idx];
-                    split.m_b2Link 	= b2Link;
+					if (b2Link)	split.m_b2Link 	= TRUE;
+//					split.m_b2Link 	= b2Link;
                     split.m_UsedBones.insert(split.m_UsedBones.end(),tmp_bone_list.begin(),tmp_bone_list.end());
                     // append face
                     split.add_face(v[0], v[1], v[2]);
