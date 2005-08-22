@@ -52,6 +52,15 @@
 	<text>Принять присягу</text>
 </string>
 
+
+<string id="bar_dolg_base_rules">
+	<text>Отметиться у начальника охраны Долга</text>
+</string>
+<string id="bar_dolg_base_rules_talk">
+	<text>Найти начальника охраны Долга и отметиться у него</text>
+</string>
+
+
 <string id="bar_dolg_test_quest">
 	<text>Проверка для вступления в Долг</text>
 </string>
