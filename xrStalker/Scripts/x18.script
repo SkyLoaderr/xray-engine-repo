@@ -16,13 +16,13 @@ object_list["test1"] = {
 }
 -- Полтергейст (гулаг в ком.центре)
 object_list["test2"] = {
-"dar_m_poltergeist_e",
-"dar_m_poltergeist_e_0001",
-"dar_m_poltergeist_e_0002"
+	"dar_m_poltergeist_e",
+	"dar_m_poltergeist_e_0001",
+	"dar_m_poltergeist_e_0002"
 }
 -- Полтергейст в комнате с кодом
 object_list["test3"] = {
-		"dar_m_poltergeist_e_0000"
+	"dar_m_poltergeist_e_0000"
 }
 -- Снорки на верхнем этаже
 object_list["test4"] = {
@@ -85,6 +85,12 @@ function offline_all_except(test_index)
 				if ((obj ~= nil) and (object_online(obj:id()))) then
 					alife():set_switch_online	(obj:id(),false)
 					alife():set_switch_offline	(obj:id(),true)
+				else 
+					if (obj == nil) then
+						printf(":: DEBUG : Object[%s] == nil", tostring(obj_name))
+					else 
+						printf(":: DEBUG : Object[%s] is offline", tostring(obj_name))
+					end
 				end
 			end
 		end
