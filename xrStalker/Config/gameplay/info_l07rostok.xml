@@ -62,7 +62,12 @@
 
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
-	
+
+        <!-- Отметиться у начальника охраны Долга -->
+	<info_portion id="bar_dolg_base_rules_start"></info_portion>
+	<info_portion id="bar_dolg_base_rules_finish"></info_portion>	
+
+
 	<info_portion id="bar_dolg_petrenko"></info_portion>
 	
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
@@ -170,6 +175,8 @@
 
     
     <!-- BAR BARMEN JOB -->
+
+
         <!-- FIND DOCUMENTS -->
     <info_portion id="bar_darklab_document_start">
 		<task>bar_darklab_documents</task>
