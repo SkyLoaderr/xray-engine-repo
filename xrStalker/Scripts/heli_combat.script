@@ -247,8 +247,8 @@ function heli_combat:forget_enemy()
 end
 
 function heli_combat:update_forgetting()
-	if ( self.enemy_forgetable and self.can_forget_enemy ) and
-	   ( ( time_global() - self.enemy_last_seen_time > 60000 ) or not self.enemy:alive() )
+	if ( ( self.enemy_forgetable and self.can_forget_enemy ) and
+	   ( time_global() - self.enemy_last_seen_time > 60000 ) ) or not self.enemy:alive()
 	then
 		self:forget_enemy()
 	end
