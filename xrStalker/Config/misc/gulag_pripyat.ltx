@@ -224,16 +224,21 @@ path_walk           = wave3_bomber_walk2
 path_look           = wave3_bomber_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
-on_info             = {+pri_wave3_btr_arrived} walker@pri_followers_bomber_wave3_fire
+on_info             = {+pri_wave3_btr_arrived} walker@pri_followers_bomber_wave3_fire_place
+combat_ignore_cond  = always
+
+[walker@pri_followers_bomber_wave3_fire_place]
+path_walk           = wave3_bomber_walk3
+def_state_moving1   = sneak
+def_state_moving2   = sneak
+on_signal           = arrived | walker@pri_followers_bomber_wave3_fire
 combat_ignore_cond  = always
 
 [walker@pri_followers_bomber_wave3_fire]
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
-def_state_moving1   = sneak
-def_state_moving2   = sneak
-on_timer            = 10000 | remark@pri_followers_bomber_wave3_die
-on_signal           = arrived | %+pri_wave3_bomber_on_position%
+on_timer            = 10000 | remark@pri_followers_bomber_wave3_die %+pri_wave3_bomber_on_position%
+;on_signal           = arrived | walker@pri_followers_bomber_wave3_die
 combat_ignore_cond  = always
 
 [remark@pri_followers_bomber_wave3_die]
