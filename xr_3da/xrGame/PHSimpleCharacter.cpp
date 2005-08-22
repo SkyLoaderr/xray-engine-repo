@@ -1168,6 +1168,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	dReal dumping_rate=def_dumping_rate;
 	bool object=(dGeomGetBody(g1)&&dGeomGetBody(g2));
 	b_on_object=b_on_object||object;
+
 	*p_lastMaterialIDX=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 
 	if(g1==m_hat_transform||g2==m_hat_transform)
@@ -1198,6 +1199,11 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 			obj_material=material_1;
 		}
 		UpdateDynamicDamage(c,obj_material,b,bo1);
+		if(g1==m_wheel||g2==m_wheel)
+		{
+			dxGeomUserData	*ud=bo1	? retrieveGeomUserData(c->geom.g2) : retrieveGeomUserData(c->geom.g1);
+			*p_lastMaterialIDX	= ud->material;
+		}
 	}
 
 	b_any_contacts=true;
