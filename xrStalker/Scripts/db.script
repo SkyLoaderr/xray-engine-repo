@@ -11,6 +11,7 @@ sound		 = {}
 actor        = nil
 heli		 = {}
 camp_storage = {}
+story_by_id	 = {}
 
 function add_obj( obj )
 --	obj_by_id [obj:id()] = obj
