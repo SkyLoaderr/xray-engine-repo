@@ -228,7 +228,10 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
-		}
+			predicate = function(obj)
+			           	return obj:profile_name() == "bar_dolg_guard_commander"
+			        end
+        }
 		table.insert(sj, t)		    
 
 		t = { section = "logic4@bar_dolg_general_kamp",
