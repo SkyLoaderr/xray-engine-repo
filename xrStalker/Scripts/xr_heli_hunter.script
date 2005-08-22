@@ -9,8 +9,10 @@ local def_attack_dist = 100 * 100 -- расстояние, на котором вертолёт может быть 
 local def_actor_dist = 20 * 20 -- расстояние, на котором игрок может быть атакован
 
 function get_nearest_heli(npc_position, attack_dist_sqr)
-	print_table(db.heli)
+--	print_table(db.heli)
+
 	local heli = nil
+
 	for k,v in db.heli do
 		if v:position():distance_to_sqr(npc_position) <= attack_dist_sqr and
 		   (heli == nil or
@@ -19,6 +21,7 @@ function get_nearest_heli(npc_position, attack_dist_sqr)
 			heli = v
 		end
 	end
+
 	return heli
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -33,28 +36,30 @@ function evaluator_shoot:evaluate()
 	if not self.a.enabled then
 		return false
 	end
+
 	overrides = xr_logic.generic_scheme_overrides( self.object )
+
 	if overrides and overrides.heli_hunter ~= nil and
 	   xr_logic.pick_section_from_condlist(db.actor, self.object, overrides.heli_hunter) == "true"
 	then
-		if self.a.heli == nil then
+--		if self.a.heli == nil then
 			-- поиск вертолета
-			self.a.heli = this.get_nearest_heli(self.object:position(), self.a.attack_dist_sqr)
-		end
+			self.a.heli = get_nearest_heli(self.object:position(), self.a.attack_dist_sqr)
+--		end
 
 		if self.a.heli == nil then
 			return false
 		end
-				
+
 		-- Проверка на то, что вертолет еще живой.
 		if not bind_heli.is_heli_alive(self.a.heli) then
 			self.a.heli = nil
 			return false
 		end
-				
+
 		-- проверка не потерялся ли вертолет.
 		if db.heli[self.a.heli:id()] ~= nil and
-			self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr 
+			self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr
 		then
 			self.a.heli = nil
 			return false
@@ -69,12 +74,13 @@ function evaluator_shoot:evaluate()
 				return false
 		    end
 		end
+
 		-- Проверка на то, что денжер-игрок не подошел слишком близко
 		local best_danger = self.object:best_danger()
 		if best_danger then
 		   local bd_object = best_danger:object()
 		   if bd_object ~= nil and
-		      bd_object:id() == db.actor:id() 
+		      bd_object:id() == db.actor:id()
 		   then
 				if best_danger:position():distance_to_sqr(self.object:position()) < self.a.attack_actor_sqr then
 					return false
@@ -84,6 +90,7 @@ function evaluator_shoot:evaluate()
 
 		return true
 	end
+
 	return false
 end
 
@@ -149,4 +156,3 @@ function disable_scheme(npc, scheme)
 		st.enabled = false
 	end
 end
-
