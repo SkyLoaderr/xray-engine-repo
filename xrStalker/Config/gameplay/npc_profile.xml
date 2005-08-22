@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="UTF-8"?>
+﻿<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<character id="default">
@@ -316,6 +316,9 @@
 	</character>
 	<character id="bar_dolg_leader">
 		<class>stalker_bar_leader</class>
+	</character>
+	<character id="bar_dolg_guard_commander">
+		<class>stalker_bar_dolg_guard_commander</class>
 	</character>
 	<character id="bar_bar_osvedomitel">
 		<class>stalker_bar_osvedomitel</class>
