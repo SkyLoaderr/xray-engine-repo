@@ -246,7 +246,6 @@ end
 
 -- продолжить движение со следующей точки, а не с ближайшей.
 -- состояние move manager-a не сбрасывается.
--- нужно, в частности, для кемпера.
 function move_mgr:continue()
 	printf("_bp: object '%s': continue moving", self.object:name())
 	self:setup_movement_by_patrol_path()
