@@ -52,6 +52,9 @@
 <!-- new circulation -->
 	<info_portion id="rad_start_camp_talks">
 	</info_portion>
-
+	
+	<info_portion id="rad_start_suicide">
+	</info_portion>
+	
 
 </game_information_portions>
