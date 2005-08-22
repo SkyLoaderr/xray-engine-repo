@@ -13,7 +13,7 @@
     <info_portion id="pri_wave1_monolith2_dead"></info_portion>
     <info_portion id="pri_wave1_monolith3_dead"></info_portion>
     <info_portion id="pri_wave1_monolith4_dead"></info_portion>
-    <info_portion id="pri_wave1_side_start"></info_portion>
+    <info_portion id="pri_wave1_end"></info_portion>
 
     <info_portion id="pri_wave2_start"></info_portion>
     <info_portion id="pri_wave2_monolith1_dead"></info_portion>
@@ -22,11 +22,13 @@
     <info_portion id="pri_wave2_monolith4_dead"></info_portion>
     <info_portion id="pri_wave2_monolith5_dead"></info_portion>
     <info_portion id="pri_wave2_monolith6_dead"></info_portion>
+    <info_portion id="pri_wave2_end"></info_portion>
 
-    <info_portion id="pri_wave3_btr_start"></info_portion>
+    <info_portion id="pri_wave3_start"></info_portion>
     <info_portion id="pri_wave3_btr_arrived"></info_portion>
     <info_portion id="pri_wave3_bomber_on_position"></info_portion>
     <info_portion id="pri_wave3_btr_dead"></info_portion>
+    <info_portion id="pri_wave3_end"></info_portion>
 
     <info_portion id="pri_wave4_start"></info_portion>
     <info_portion id="pri_wave4_monolith1_dead"></info_portion>
@@ -34,10 +36,12 @@
     <info_portion id="pri_wave4_monolith3_dead"></info_portion>
     <info_portion id="pri_wave4_monolith4_dead"></info_portion>
     <info_portion id="pri_wave4_monolith5_dead"></info_portion>
+    <info_portion id="pri_wave4_end"></info_portion>
 
     <info_portion id="pri_wave5_start"></info_portion>
     <info_portion id="pri_wave5_monolith1_dead"></info_portion>
     <info_portion id="pri_wave5_monolith2_dead"></info_portion>
     <info_portion id="pri_wave5_monolith3_dead"></info_portion>
     <info_portion id="pri_wave5_monolith4_dead"></info_portion>
+    <info_portion id="pri_wave5_end"></info_portion>
 </game_information_portions>
