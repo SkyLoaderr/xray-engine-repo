@@ -20,6 +20,7 @@ class CControlPathBuilderBase : public CControl_ComBase {
 	bool						m_extrapolate;
 	u32							m_velocity_mask;
 	u32							m_desirable_mask;
+	bool						m_reset_actuality;
 
 	// -----------------------------------------------------------
     // build path members
@@ -38,14 +39,12 @@ class CControlPathBuilderBase : public CControl_ComBase {
 			node			= vertex;
 		}
 
-	} m_target_set, m_target_selected, m_target_found;
+	} m_target_set, m_target_found;
 
 	u32			m_time;					// время перестроения пути
 	u32			m_last_time_target_set;
 	float		m_distance_to_path_end;
 	bool		m_failed;
-	bool		m_force_rebuild;
-	bool		m_wait_path_end;
 	u32			m_last_time_dir_set;
 
 	bool		m_target_actual;		// устанавливаемый таргет соответствует предыдущему
@@ -66,6 +65,16 @@ class CControlPathBuilderBase : public CControl_ComBase {
 	CCoverEvaluatorCloseToEnemy	*m_cover_approach;
 
 	// -----------------------------------------------------------
+
+	enum {
+		eStatePathValid			= u32(1) << 0,		
+		eStateWaitNewPath		= u32(1) << 1,
+		eStatePathEnd			= u32(1) << 2,
+		eStateNoPath			= u32(1) << 3
+	};
+	u32							m_state;
+
+	bool						m_path_end;
 
 public:
 						CControlPathBuilderBase				();
@@ -98,18 +107,7 @@ public:
 		void	set_dest_direction		(const Fvector &dir);
 
 	// -------------------------------------------------------------------
-	// Properties
-		bool	enabled					(){return m_enable;}
-	
-		float	get_path_angle			() {return 0.f;}
-
-
-	//////////////////////////////////////////////////////////////////////////
-	// special path
-		bool		build_special			(const Fvector &target, u32 node, u32 vel_mask, bool linear = true) {return false;}
-	
-	//////////////////////////////////////////////////////////////////////////
-	// 
+	// Set methods
 		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
 		void		set_retreat_from_point	(const Fvector &position);
 
@@ -118,29 +116,36 @@ public:
 	IC	void		set_use_covers			(bool val = true);
 	IC	void		set_distance_to_end		(float dist);
 
+
 		void		prepare_builder			();
 		void		detour_graph_points		();
 	IC	void		set_generic_parameters	();
 
 		Fvector		get_target_found		() {return m_target_found.position;}
 		Fvector		get_target_set			() {return m_target_set.position;}
+
+		// -------------------------------------------------------------------
+		// Services
+		void		set_target_accessible	(STarget &target, const Fvector &position);
+
 private:
 		// functional
+		void		update_path_builder_state	();
 		void		update_target_point			();
 		void		check_failure				();
 
 		bool		target_point_need_update	();
-		void		find_target					();
+		void		find_target_point			();
 
 		void		select_target				();		// выбрать 
 
 		void		set_path_builder_params		();		// set params to control
-		// results	
-		IC	bool		failed					();
-
+		
 		void		reset						();
 
 		void		travel_point_changed		();
+		void		on_path_built				();
+		void		on_path_end					();
 };
 
 #include "control_path_builder_base_inline.h"

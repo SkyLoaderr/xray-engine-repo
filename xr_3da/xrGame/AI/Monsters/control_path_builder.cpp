@@ -60,6 +60,8 @@ void CControlPathBuilder::update_schedule()
 			}
 	}
 	
+	if (m_data.reset_actuality)				make_inactual();
+
 	// reset evaluator
 	level_selector().set_evaluator			(0);
 	use_selector_path						(false);
@@ -182,6 +184,8 @@ bool CControlPathBuilder::is_path_end(float dist_to_end)
 	if (detail().path().size() < 2) return true;
 	if (path_completed())			return true;
 
+	//detail().completed(object().Position(),!detail().state_patrol_path()
+
 	float cur_dist_to_end = 0.f;
 	for (u32 i=detail().curr_travel_point_index(); i<detail().path().size()-1; i++) {
 		cur_dist_to_end += detail().path()[i].position.distance_to(detail().path()[i+1].position);
@@ -200,6 +204,24 @@ bool CControlPathBuilder::valid_destination(const Fvector &pos, u32 node)
 		ai().level_graph().inside(node, pos)
 	);
 }
+
+bool CControlPathBuilder::valid_and_accessible(Fvector &pos, u32 node)
+{
+	if (!valid_destination(pos, node) || !accessible(node))	return false;
+
+	if (!accessible(pos)) {
+		Fvector		res_pos;
+		u32			level_vertex_id = restrictions().accessible_nearest(pos,res_pos);
+		VERIFY		(level_vertex_id == node);
+
+		pos.set		(res_pos);
+	}
+
+	return true;
+}
+
+
+
 void CControlPathBuilder::fix_position(const Fvector &pos, u32 node, Fvector &res_pos)
 {
 	VERIFY(accessible(node));
@@ -233,3 +255,10 @@ bool CControlPathBuilder::get_node_in_radius(u32 src_node, float min_radius, flo
 	return false;
 }
 
+void CControlPathBuilder::make_inactual()
+{
+	// switch once
+	enable_movement(!enabled());
+	// switch twice
+	enable_movement(!enabled());
+}

@@ -3,6 +3,8 @@
 #include "BaseMonster/base_monster.h"
 #include "../../phmovementcontrol.h"
 #include "../../cover_evaluators.h"
+#include "../../level_path_manager.h"
+#include "../../detail_path_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Construction / Destruction
@@ -41,23 +43,21 @@ void CControlPathBuilderBase::reset()
 	m_velocity_mask					= u32(-1);
 	m_desirable_mask				= u32(-1);
 	m_last_time_dir_set				= 0;
-	
-	if (!m_man->path_builder().accessible(m_object->Position())) {
-		m_target_found.node		= m_man->path_builder().restrictions().accessible_nearest(m_object->Position(), m_target_found.position);
-	} else {
-		m_target_found.node			= u32(-1);
-		m_target_found.position		= m_object->Position();
-	}
-	
+	m_last_time_target_set			= 0;
+	m_reset_actuality				= false;
+
 	prepare_builder					();
+
+	m_path_end						= false;
+
 }
 
 
 void CControlPathBuilderBase::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
 {
 	switch (type) {
-	case ControlCom::eventPathBuilt:			check_failure(); break;
-	case ControlCom::eventTravelPointChange:	travel_point_changed(); break;
+	case ControlCom::eventPathBuilt:				on_path_built(); break;
+	case ControlCom::eventTravelPointChange:		travel_point_changed(); break;
 	}
 }
 
@@ -91,4 +91,40 @@ void CControlPathBuilderBase::set_dest_direction(const Fvector &dir)
 	m_last_time_dir_set		 = time();
 }
 
+void CControlPathBuilderBase::set_target_accessible(STarget &target, const Fvector &position)
+{
+	if (!m_man->path_builder().accessible(position)) {
+		target.node			= m_man->path_builder().restrictions().accessible_nearest(position, target.position);
+	} else {
+		target.node			= u32(-1);
+		target.position		= position;
+	}
+}
 
+// обновить информацию о построенном пути (m_failed)
+void CControlPathBuilderBase::on_path_built()
+{
+	m_failed		= false;
+
+	// если level_path_manager failed
+	if (m_man->path_builder().level_path().failed()) {
+		m_failed	= true;
+	}
+
+	// проверка на конец пути
+	if (!m_man->path_builder().detail().path().empty() && 
+		(m_man->path_builder().detail().curr_travel_point_index() < m_man->path_builder().detail().path().size() - 1))
+		m_path_end = false;
+}
+
+void CControlPathBuilderBase::on_path_end()
+{
+	m_path_end	= true;
+}
+
+void CControlPathBuilderBase::travel_point_changed()
+{
+	if (m_man->path_builder().detail().curr_travel_point_index() >= m_man->path_builder().detail().path().size() - 1) {
+		on_path_end();
+	}
+}

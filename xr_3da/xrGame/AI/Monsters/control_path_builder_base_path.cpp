@@ -9,179 +9,100 @@
 #include "../../level_path_manager.h"
 #include "../../ai_object_location.h"
 
-#define MAX_PATH_DISTANCE		100.f
-
-void CControlPathBuilderBase::prepare_builder() 
-{
-	m_target_selected.init		();
-	m_target_set.init			();
-
-	m_time						= 0;
-	m_last_time_target_set		= 0;
-	m_distance_to_path_end		= 1.f;
-	m_failed					= false;
-	m_cover_info.use_covers		= false;
-
-	m_force_rebuild				= false;
-	m_target_actual				= false;
-	m_wait_path_end				= false;
-
-	m_target_selected.init		();
-	m_target_set.init			();
-
-	if (!m_man->path_builder().accessible(m_object->Position())) {
-		m_target_found.node			= m_man->path_builder().restrictions().accessible_nearest(m_object->Position(), m_target_found.position);
-	} else {
-		m_target_found.node			= u32(-1);
-		m_target_found.position		= m_object->Position();
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Set Target Point Routines
-//////////////////////////////////////////////////////////////////////////
-
-void CControlPathBuilderBase::set_target_point(const Fvector &position, u32 node)
-{
-	// обновить актуальность
-	if (m_target_set.position.similar(position))	m_target_actual = true;
-	else											m_target_actual = false;
-
-	// установить позицию
-	m_target_set.set	(position,node);
-
-	// установить глобальные параметры передвижения
-	m_target_type		= eMoveToTarget;
-	select_target		();
-}
-
-void CControlPathBuilderBase::set_retreat_from_point(const Fvector &position)
-{
-	// обновить актуальность
-	if (m_target_set.position.similar(position))	m_target_actual = true;
-	else											m_target_actual = false;
-
-	// установить позицию
-	m_target_set.set	(position,u32(-1));	
-
-	// установить глобальные параметры передвижения
-	m_target_type		= eRetreatFromTarget;
-
-	select_target		();
-}
-
-#define RANDOM_POINT_DISTANCE	20.f
-
-void CControlPathBuilderBase::select_target()
-{
-	if (m_wait_path_end) return;
-
-	if (m_target_actual && m_failed) {
-
-		m_force_rebuild		= true;
-		m_wait_path_end		= true;
-
-		// если путь завершен или failed - выбрать другую случайную точку
-		Fvector	pos_random;	
-		Fvector dir;		dir.random_dir	();
-
-		pos_random.mad(m_object->Position(), dir, RANDOM_POINT_DISTANCE);
-
-		// установить m_target.position
-		if (!m_man->path_builder().accessible(pos_random)) {
-			m_target_selected.node		= m_man->path_builder().restrictions().accessible_nearest(pos_random, m_target_selected.position);
-		} else {
-			m_target_selected.node		= u32(-1);
-			m_target_selected.position	= pos_random;
-		}
-	} else {
-		m_target_selected.set			(m_target_set.position, m_target_set.node);
-	}
-
-	set_level_path_type();
-}
+const float		pmt_find_point_dist				= 30.f;
+const u32		pmt_find_random_pos_attempts	= 5;
 
 //////////////////////////////////////////////////////////////////////////
 bool CControlPathBuilderBase::target_point_need_update()
 {
-	if (m_force_rebuild) {
-		m_force_rebuild		= false;
-		return				true;
-	}
+	if (m_state == eStatePathValid) {
+		
+		// если путь ещё не завершен
+		if (!m_man->path_builder().is_path_end(m_distance_to_path_end)) {
 
-	// если путь ещё не завершен
-	if (!m_man->path_builder().is_path_end(m_distance_to_path_end)) {
-
-		if (m_wait_path_end) return false;
-
-		// если время движения по пути не вышло, не перестраивать
-		return (m_last_time_target_set + m_time < Device.dwTimeGlobal);
-	}
-
-	// конец пути
-
-	m_wait_path_end	= false;
-
-	// если путь ещё не построен - выход
-	if (!m_man->path_builder().detail().actual() && (m_man->path_builder().detail().time_path_built() < m_last_time_target_set)) 
+			if (m_target_actual) return false;
+			
+			// если время движения по пути не вышло, не перестраивать
+			return (m_last_time_target_set + m_time < time());
+		}
+	
+		//return (!m_target_actual); // логический конец пути
+		return (true);
+	} else if ((m_state & eStateWaitNewPath) == eStateWaitNewPath) {
 		return false;
-	return true;
+	} else if ((m_state & eStateNoPath) == eStateNoPath) {
+		return true;
+	} else if ((m_state & eStatePathEnd) == eStatePathEnd) {
+		return true; // физический конец пути
+	}
+
+	return false;
 }
 
-
 //////////////////////////////////////////////////////////////////////////
-// если на выходе функции m_target_found.node != u32(-1) - нода найдена
-void CControlPathBuilderBase::find_target()
+// Нахождение m_target_found
+// На входе есть установленные нода и позиция m_target_set
+void CControlPathBuilderBase::find_target_point()
 {
-	m_target_found.node	= m_target_selected.node;
+	m_target_found.set(m_target_set.position,m_target_set.node);
 	
-	// I. ограничить по макс расстоянию
-	// выбрать целевую позицию в соответствии с направлением движения, вычислить направление движения
-	Fvector	dir;
+	//---------------------------------------------------
+	// Быстрые тесты
+
 	if (m_target_type == eMoveToTarget) {
+		// 1. быстрый тест на достижимость цели
+		if (m_man->path_builder().valid_and_accessible(m_target_found.position,m_target_found.node)) 
+			return;
 
-		dir.sub						(m_target_selected.position, m_object->Position());
-		dir.normalize_safe			();
-		m_target_found.position	= m_target_selected.position;
+		// 2. быстрый тест на недостижимость цели (выбрать случайную позицию)
+		if (!m_man->path_builder().accessible(m_target_found.position)) {
+			m_target_found.node = m_man->path_builder().restrictions().accessible_nearest(Fvector().set(m_target_found.position),m_target_found.position);
+			
+			Fvector	pos_random;	
+			Fvector dir;		
+			dir.random_dir			();
 
-	} else if (m_target_type == eRetreatFromTarget){
+			pos_random.mad			(m_object->Position(), dir, pmt_find_point_dist);
+			set_target_accessible	(m_target_found, pos_random);
 
-		if (m_target_found.node == u32(-1)) {
-			dir.sub							(m_object->Position(), m_target_selected.position);
-			dir.normalize_safe				();
-			m_target_found.position.mad		(m_object->Position(), dir, MAX_PATH_DISTANCE - 1.f);
-		} else {
-			m_target_found.position	= m_target_selected.position;
+			if (m_target_found.node != u32(-1)) return;
 		}
 	}
 
-	// определить расстояние до выбранной точки
-	float dist = m_object->Position().distance_to(m_target_found.position);		
+	m_target_found.node = u32(-1);
+	
+	//---------------------------------------------------
+	// I. Выбрать позицию
 
-	// лимитировать по расстоянию
-	if (dist > MAX_PATH_DISTANCE) {
-		m_target_found.position.mad	(m_object->Position(), dir, MAX_PATH_DISTANCE);
-		m_target_found.node			= u32(-1);
-	} else {
-		// если задана нода...
-		if ((m_target_found.node != u32(-1)) && m_man->path_builder().accessible(m_target_found.node)) {
+	if (m_target_type == eRetreatFromTarget) {
+		Fvector	dir;
 
-			// если корректые нода и позиция, то выходим
-			if (m_man->path_builder().valid_destination(m_target_found.position, m_target_found.node)) return;
-			else m_target_found.node = u32(-1);
-		}
+		dir.sub						(m_object->Position(), m_target_found.position);
+		dir.normalize_safe			();
+		m_target_set.position.mad	(m_object->Position(), dir, pmt_find_point_dist);
 	}
 
 	// проверить позицию на accessible
 	if (!m_man->path_builder().accessible(m_target_found.position)) {
 		m_target_found.node = m_man->path_builder().restrictions().accessible_nearest(Fvector().set(m_target_found.position),m_target_found.position);
-		// всё получили - выход
-		return;
+	}
+	
+	// если новая позиция = позиции монстра - выбрать рандомную валидную позицию
+	for (u32 i = 0; i < pmt_find_random_pos_attempts; i++ ) {
+		if (m_target_found.position.similar(m_object->Position(), 0.5f)) {
+			
+			Fvector	pos_random;	
+			Fvector dir;		
+			dir.random_dir			();
+
+			pos_random.mad			(m_object->Position(), dir, pmt_find_point_dist);
+			set_target_accessible	(m_target_found, pos_random);
+		} else break;
 	}
 
-	// TODO: find out reason
-	//VERIFY(m_target_found.node == u32(-1));
+	if (m_target_found.node != u32(-1)) return;
 
+	//---------------------------------------------------
 	// II. Выбрана позиция, ищем ноду
 
 	// нода в прямой видимости?
@@ -219,6 +140,6 @@ void CControlPathBuilderBase::find_target()
 		}
 	}
 
-	// нода не найдена. на следующем этапе будет использованы либо каверы, либо селекторы
+	// нода не найдена. на следующем этапе будет использован селектор
 	m_target_found.node = u32(-1);
 }

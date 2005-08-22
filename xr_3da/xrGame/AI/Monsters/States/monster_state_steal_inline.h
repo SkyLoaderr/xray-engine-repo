@@ -74,9 +74,9 @@ bool CStateMonsterStealAbstract::check_conditions()
 	if (object->HitMemory.is_hit())								return false;
 
 	// Path with minimal deviation
-	if (object->control().path_builder().detail().time_path_built() >= time_state_started) {
-		if (object->path().get_path_angle() > STEAL_MAX_PATH_ANGLE)	return false;
-	}
+	//if (object->control().path_builder().detail().time_path_built() >= time_state_started) {
+	//	if (object->path().get_path_angle() > STEAL_MAX_PATH_ANGLE)	return false;
+	//}
 	
 	// check distance to enemy
 	float dist = object->MeleeChecker.distance_to_enemy(object->EnemyMan.get_enemy());

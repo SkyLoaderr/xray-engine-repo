@@ -50,8 +50,8 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 	Fvector target_position;
 	target_position.mad(object->Position(), object->Direction(), object->db().m_run_attack_path_dist);
 	
-	if (!object->path().build_special(target_position, u32(-1), MonsterMovement::eVelocityParamsRunAttack)) return false;
-	else object->path().enable_path();
+	//if (!object->control().path_builder().build_special(target_position, u32(-1), MonsterMovement::eVelocityParamsRunAttack)) return false;
+	//else object->path().enable_path();
 
 	return true;
 }

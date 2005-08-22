@@ -18,11 +18,6 @@ IC void CControlPathBuilderBase::set_rebuild_time(u32 time)
 	m_time	= time;
 }
 
-IC bool CControlPathBuilderBase::failed() 
-{
-	return m_failed;
-}
-
 IC void	CControlPathBuilderBase::set_distance_to_end(float dist)
 {
 	m_distance_to_path_end = dist;

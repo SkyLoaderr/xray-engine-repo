@@ -53,7 +53,7 @@ namespace ControlCom {
 		eventPathBuilt,
 		eventJumpEnd,
 		eventRotationJumpEnd,
-		eventRunAttackEnd
+		eventRunAttackEnd,
 	};
 
 	enum ECaptureType {

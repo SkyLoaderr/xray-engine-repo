@@ -3027,6 +3027,9 @@
 										RelativePath=".\ai\Monsters\control_path_builder_base_path.cpp">
 									</File>
 									<File
+										RelativePath=".\ai\Monsters\control_path_builder_base_set.cpp">
+									</File>
+									<File
 										RelativePath=".\ai\Monsters\control_path_builder_base_update.cpp">
 									</File>
 								</Filter>

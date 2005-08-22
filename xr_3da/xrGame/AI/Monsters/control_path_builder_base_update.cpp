@@ -2,42 +2,53 @@
 #include "control_path_builder_base.h"
 #include "BaseMonster/base_monster.h"
 #include "../../detail_path_manager.h"
-#include "../../level_location_selector.h"
-#include "../../level_path_manager.h"
+#include "../../profiler.h"
 
-//////////////////////////////////////////////////////////////////////////
-// Update Movement
 void CControlPathBuilderBase::update_frame()
 {	
-	//Msg("Time [%u] ::ControlPath_Base:: Update Frame", Device.dwTimeGlobal);
-
 	START_PROFILE("AI/Base Monster/Think/Find Target Point");
 
+	// обновить состояние билдера
+	update_path_builder_state						();
+	
 	// обновить / установить целевую позицию
 	update_target_point								();
 
 	// set params
 	set_path_builder_params							();	
-	
+
 	STOP_PROFILE;
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-// update path with new scheme method
 void CControlPathBuilderBase::update_target_point() 
 {
+	m_reset_actuality = false;
+	
 	if (!m_enable)											return;
 	if (m_path_type != MovementManager::ePathTypeLevelPath) return;
 
 	// проверить условия, когда путь строить не нужно
 	if (!target_point_need_update())						return; 
 
+	STarget saved_target;
+	saved_target.set(m_target_found.position, m_target_found.node);
+
 	// выбрать ноду и позицию в соответствии с желаемыми нодой и позицией
-	find_target			();
+	find_target_point		();
+
+	//-----------------------------------------------------------------------
+	// postprocess target_point
+	if (m_target_found.node == saved_target.node) {
+		// level_path останется актуальным - сбросить актуальность
+		m_reset_actuality = true;
+	}
+	//-----------------------------------------------------------------------
 
 	// сохранить текущее время 
 	m_last_time_target_set	= Device.dwTimeGlobal;
+
+	// параметры установлены, включаем актуальность
+	m_target_actual			= true;
 }
 
 void CControlPathBuilderBase::set_path_builder_params()
@@ -55,33 +66,25 @@ void CControlPathBuilderBase::set_path_builder_params()
 	ctrl_data->extrapolate			= m_extrapolate;
 	ctrl_data->velocity_mask		= m_velocity_mask;
 	ctrl_data->desirable_mask		= m_desirable_mask;
+	ctrl_data->reset_actuality		= m_reset_actuality;
 }
 
 
-// обновить информацию о построенном пути (m_failed)
-void CControlPathBuilderBase::check_failure()
+void CControlPathBuilderBase::update_path_builder_state()
 {
-	m_failed		= false;
+	m_state = eStatePathValid;
 
-	//bool new_path = detail().time_path_built() >= m_last_time_target_set;
-	if (m_man->path_builder().is_path_end(m_distance_to_path_end) && 
-		m_man->path_builder().actual() && 
-		!m_wait_path_end && 
-		(m_target_selected.position.similar(m_target_set.position))) 
-	{
-		m_failed	= true;	
+	// нет пути
+	if (m_man->path_builder().detail().path().empty()) {
+		m_state = eStateNoPath; 
+	} 
+	// проверка на конец пути
+	else if (m_path_end) {
+		m_state = eStatePathEnd;
 	}
 
-	// если level_path_manager failed
-	if (m_man->path_builder().level_path().failed()) {
-		m_failed	= true;
-	}
-}
-
-void CControlPathBuilderBase::travel_point_changed()
-{
-	if (m_man->path_builder().detail().curr_travel_point_index() >= m_man->path_builder().detail().path().size() - 1) {
-		if (!m_target_found.position.similar(m_target_set.position)) m_failed	= true;
+	// ждать пока не будет построен путь
+	if ( !m_man->path_builder().detail().actual() && (m_man->path_builder().detail().time_path_built() < m_last_time_target_set)) {
+		m_state = m_state | eStateWaitNewPath;
 	}
 }
-
