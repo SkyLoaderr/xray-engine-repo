@@ -1,6 +1,8 @@
 function printf()
 end
 
+local anima=0
+
 --' Анимации персонажа
 --' мы уже находимся в необходимом состоянии?
 class "eva_state_mgr_animation" (property_evaluator)
