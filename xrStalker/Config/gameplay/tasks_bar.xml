@@ -108,14 +108,14 @@
 		<title>bar_dolg_community_quest</title>
 		<objective>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<article>descr_bar_dolg_community_quest</article>
 		</objective>
 		<objective>
 			<text>bar_dolg_community_quest_recomendation</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_dolg_community_quest_recomendation">green_location</map_location_type>
 			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
-			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
-			<article>descr_bar_dolg_community_quest</article>
+			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>			
 		</objective>
 		<objective>
 			<text>bar_dolg_community_quest_vernost</text>
