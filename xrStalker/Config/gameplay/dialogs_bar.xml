@@ -4581,9 +4581,38 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_dolg_base_guard_rules">
+        <has_info>bar_dolg_base_rules_start</has_info>
+        <dont_has_info>bar_dolg_base_rules_finish</dont_has_info>
+        <phrase_list>
+            <phrase id="5">
+                <text>bar_dolg_base_guard_rules_5</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_base_guard_rules_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_dolg_base_guard_rules_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>bar_dolg_base_guard_rules_4</text>
+                <give_info>bar_dolg_base_rules_finish</give_info>
+                <next>5</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_dolg_base_guard_rules_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_dolg_base_guard_rules_1</text>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_dolg_base_guard_acces">
         <precondition>dialogs.dialog_allowed</precondition>
-        <has_info>bar_dolg_base_pass_finish</has_info>
         <dont_has_info>bar_dolg_base_pass</dont_has_info>
         <phrase_list>
             <phrase id="21">
@@ -4613,21 +4642,6 @@
                 <next>311</next>
                 <next>312</next>
             </phrase>
-            <phrase id="12">
-                <text>bar_dolg_base_guard_acces_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_dolg_base_guard_acces_121</text>
-            </phrase>
-            <phrase id="111">
-                <text>bar_dolg_base_guard_acces_111</text>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_base_guard_acces_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
             <phrase id="11">
                 <text>bar_dolg_base_guard_acces_11</text>
                 <precondition>bar_dialogs.has_dolg_deposite</precondition>
@@ -4636,39 +4650,24 @@
                 <give_info>bar_dolg_petrenko</give_info>
                 <next>111</next>
             </phrase>
+            <phrase id="1">
+                <text>bar_dolg_base_guard_acces_1</text>
+                <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_dolg_base_guard_acces_111</text>
+            </phrase>
+            <phrase id="12">
+                <text>bar_dolg_base_guard_acces_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_dolg_base_guard_acces_121</text>
+            </phrase>
             <phrase id="0">
                 <text>bar_dolg_base_guard_acces_0</text>
                 <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_base_guard_rules">
-        <has_info>bar_dolg_base_rules_start</has_info>
-        <dont_has_info>bar_dolg_base_rules_finish</dont_has_info>
-        <phrase_list>
-            <phrase id="5">
-                <text>bar_dolg_base_guard_rules_5</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_base_guard_rules_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_dolg_base_guard_rules_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>bar_dolg_base_guard_rules_4</text>
-                <give_info>bar_dolg_base_rules_finish</give_info>
-                <next>5</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_dolg_base_guard_rules_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_base_guard_rules_1</text>
-                <next>2</next>
             </phrase>
         </phrase_list>
     </dialog>
