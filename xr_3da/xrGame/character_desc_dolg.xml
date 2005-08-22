@@ -396,7 +396,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Начальник охраны на территории Долга.</bio>
 
-		<class>stalker_bar_guard_commander</class>
+		<class>stalker_bar_dolg_guard_commander</class>
 		<community>dolg</community>
 		
 		<rank>50</rank>
