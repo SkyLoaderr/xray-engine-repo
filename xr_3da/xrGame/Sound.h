@@ -251,7 +251,7 @@ public:
 	//@{
 	/// Sound interface
 	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
-	virtual void					clone					( ref_sound& S, const ref_sound& from, int type )										= 0;
+	virtual void					clone					( ref_sound& S, const ref_sound& from,		int		type=st_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					stop_emitters			( )																						= 0;	
 
@@ -282,11 +282,11 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)			{	::Sound->_create_data			(*this,_3D,fName, type);					}
-IC ref_sound_data::~ref_sound_data					()													{	::Sound->_destroy_data			(*this);									}
+IC ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)			{	::Sound->_create_data			(*this,_3D,fName, type);						}
+IC ref_sound_data::~ref_sound_data					()													{	::Sound->_destroy_data			(*this);										}
                                 
-IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);						}
-IC void	ref_sound::clone						( const ref_sound& from, int type )						{	::Sound->clone					(*this,type);								}
+IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);							}
+IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	::Sound->clone					(*this,from,type);								}
 IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);										}
 IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	::Sound->play					(*this,O,flags,d);								}
 IC void	ref_sound::play_at_pos					( CObject* O, const Fvector &pos,	u32 flags, float d)	{	::Sound->play_at_pos			(*this,O,pos,flags,d);							}

@@ -67,6 +67,7 @@ public:
 	// Sound interface
 			void						verify_refsound			( ref_sound& S);
 	virtual void						create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0);
+	virtual void						clone					( ref_sound& S, const ref_sound& from,		int		type=0);
 	virtual void						destroy					( ref_sound& S);
 	virtual void						stop_emitters			( );
 

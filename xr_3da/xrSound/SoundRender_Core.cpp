@@ -240,6 +240,16 @@ void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, i
     S._p				= xr_new<ref_sound_data>(_3D,fName,type);
 }
 
+void	CSoundRender_Core::clone				( ref_sound& S, const ref_sound& from, int	type )
+{
+	if (!bPresent)		return;
+	S._p				= xr_new<ref_sound_data>(*from._p);
+	S._p->feedback		= 0;
+	S._p->g_object		= 0;
+	S._p->g_type		= (type==st_SourceType)?S._p->handle->game_type():type;
+}
+
+
 void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float delay)
 {
 	if (!bPresent || 0==S._handle())return;
