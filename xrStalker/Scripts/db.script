@@ -3,24 +3,24 @@
 Чугай Саша
 --------------------------------------------------------------------------------------------------]]
 
---obj_by_id    = {}
-zone_by_name = {}
-sl_by_name   = {}
-storage      = {}
-sound		 = {}
-actor        = nil
-heli		 = {}
-camp_storage = {}
-story_by_id	 = {}
+zone_by_name  = {}
+sl_by_name    = {}
+storage       = {}
+sound		  = {}
+actor         = nil
+heli		  = {}
+camp_storage  = {}
+story_by_id	  = {}
+smart_terrain_by_id = {}
+
 
 function add_obj( obj )
---	obj_by_id [obj:id()] = obj
 end
 
 function del_obj( obj )
---	obj_by_id [obj:id()] = nil
 	storage   [obj:id()] = nil
 end
+
 
 function add_zone( zone )
 	zone_by_name[zone:name()] = zone
@@ -32,6 +32,7 @@ function del_zone( zone )
 	del_obj( zone )
 end
 
+
 function add_sl( sl )
 	sl_by_name[sl:name()] = sl
 	add_obj( sl )
@@ -41,6 +42,7 @@ function del_sl( sl )
 	sl_by_name[sl:name()] = nil
 	del_obj( sl )
 end
+
 
 function add_actor( obj )
 	actor = obj
@@ -52,9 +54,19 @@ function del_actor()
 	actor = nil
 end
 
+
 function add_heli(obj)	
 	heli[obj:id()] = obj
 end	
 function del_heli(obj)
 	heli[obj:id()] = nil
 end	
+
+
+function add_smart_terrain( obj )
+	smart_terrain_by_id[obj.id] = obj
+end
+
+function del_smart_terrain( obj )
+	smart_terrain_by_id[obj.id] = nil
+end
