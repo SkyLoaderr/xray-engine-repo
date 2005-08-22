@@ -119,7 +119,7 @@ def_state_moving1   = assault
 def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 
-;--- leader: wave4
+;--- leader: wave5
 [logic@pri_followers_leader_wave5]
 active              = walker@pri_followers_leader_wave5_wait
 
@@ -208,6 +208,7 @@ combat_ignore_cond  = {!check_fighting(804:805)} ;always
 ;--- bomber: wave3
 [logic@pri_followers_bomber_wave3]
 active              = walker@pri_followers_bomber_wave3_wait
+on_death            = death@bomber
 combat_ignore       = combat_ignore
 
 [walker@pri_followers_bomber_wave3_wait]
@@ -229,16 +230,16 @@ combat_ignore_cond  = always
 
 [walker@pri_followers_bomber_wave3_fire_place]
 path_walk           = wave3_bomber_walk3
-def_state_moving1   = sneak
-def_state_moving2   = sneak
+def_state_moving1   = sprint
+def_state_moving2   = sprint
 on_signal           = arrived | walker@pri_followers_bomber_wave3_fire
 combat_ignore_cond  = always
 
 [walker@pri_followers_bomber_wave3_fire]
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
-on_timer            = 10000 | remark@pri_followers_bomber_wave3_die %+pri_wave3_bomber_on_position%
-;on_signal           = arrived | walker@pri_followers_bomber_wave3_die
+on_timer            = 5000 | remark@pri_followers_bomber_wave3_die
+on_signal           = arrived | %+pri_wave3_bomber_on_position%
 combat_ignore_cond  = always
 
 [remark@pri_followers_bomber_wave3_die]
@@ -246,7 +247,6 @@ no_move             = true
 no_rotate           = true
 anim                = hide
 combat_ignore_cond  = always
-
 
 ;--- bomber: wave4
 [logic@pri_followers_bomber_wave4]
