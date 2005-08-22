@@ -12,6 +12,7 @@
 #include "../LightAnimLibrary.h"
 #include "MainUI.h"
 #include "HudManager.h"
+#include "physicscommon.h"
 //50fps fixed
 float STEP=0.02f;
 
@@ -153,7 +154,9 @@ void CHelicopter::reload(LPCSTR section)
 
 void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {	do_colide=false; }
-
+void ContactCallbackAlife(CDB::TRI* T,dContactGeom* c)
+{
+}
 BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 {
 
@@ -282,6 +285,7 @@ void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)
 	{
 		PPhysicsShell()->EnabledCallbacks				(FALSE);
 		PPhysicsShell()->set_ObjectContactCallback		(CollisionCallbackAlife);
+		PPhysicsShell()->set_ContactCallback			(ContactCallbackAlife);
 		PPhysicsShell()->Disable						();
 	}
 }

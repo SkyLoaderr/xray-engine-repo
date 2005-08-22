@@ -278,6 +278,7 @@ void CHelicopter::DieHelicopter()
 		///PPhysicsShell()=P_build_Shell	(this,false);
 		PPhysicsShell()->EnabledCallbacks(TRUE);
 		PPhysicsShell()->set_ObjectContactCallback(NULL);
+		PPhysicsShell()->set_ContactCallback(ContactShotMark);
 	}
 	Fvector lin_vel;
 
