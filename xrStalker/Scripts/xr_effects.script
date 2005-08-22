@@ -221,10 +221,9 @@ end
 
 function psi_hit_npc(actor, npc)
     local h = hit()
-    h.power = 20
+    h.power = 19
     h.direction = vector():set( 1, 0, 0 )
     h.impulse = 1
-    h.draftsman = c
     h.type = hit.telepatic
 end
 
