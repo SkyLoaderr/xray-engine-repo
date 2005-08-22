@@ -75,6 +75,7 @@ function offline_all()
 	end
 end
 
+
 function offline_all_except(test_index)
 	local except_name = "test" .. tostring(test_index)
 	
@@ -82,15 +83,27 @@ function offline_all_except(test_index)
 		if (except_name ~= test_name) then
 			for index, obj_name in pairs(test_name_table) do
 				local obj =	 level.debug_object(tostring(obj_name))
+				
+				printf(":: DEBUG : Try to offline Object[%s] test[%s]", tostring(obj_name), tostring(test_name))				
+				
 				if ((obj ~= nil) and (object_online(obj:id()))) then
 					alife():set_switch_online	(obj:id(),false)
 					alife():set_switch_offline	(obj:id(),true)
 				else 
-					if (obj == nil) then
-						printf(":: DEBUG : Object[%s] == nil", tostring(obj_name))
-					else 
-						printf(":: DEBUG : Object[%s] is offline", tostring(obj_name))
-					end
+				
+--					local obj = alife():object(tostring(obj_name))
+--					
+--					if ((obj ~= nil) then
+--						alife():set_switch_online	(obj:id(),false)
+--						alife():set_switch_offline	(obj:id(),true)
+--					
+--					
+--					
+--					if (obj == nil) then
+--						printf(":: DEBUG : Object[%s] == nil", tostring(obj_name))
+--					else 
+--						printf(":: DEBUG : Object[%s] is offline", tostring(obj_name))
+--					end
 				end
 			end
 		end
@@ -117,7 +130,7 @@ end
 
 -- Base function
 function r(index)
-	offline_all_except(index)
+	offline_all_except	(index)
 end
 
 -- Save id of object while loading
