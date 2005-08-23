@@ -14,7 +14,7 @@ float		ps_r__Detail_rainbow_hemi	= 0.75f	;
 
 float		ps_r__Tree_w_rot			= 10.0f	;
 float		ps_r__Tree_w_speed			= 1.00f	;
-float		ps_r__Tree_w_amp			= 0.01f	;
+float		ps_r__Tree_w_amp			= 0.005f;
 Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 float		ps_r__Tree_SBC				= 1.f	;	// scale bias correct
 
