@@ -1,5 +1,6 @@
 
-local object_list = {}
+local object_list		= {}
+local smart_terrains	= {}
 
 -- Бюреры отдельные по углам
 object_list["test0"] = {
@@ -17,12 +18,13 @@ object_list["test1"] = {
 -- Полтергейст (гулаг в ком.центре)
 object_list["test2"] = {
 	"dar_m_poltergeist_e",
-	"dar_m_poltergeist_e_0001",
-	"dar_m_poltergeist_e_0002"
+	"dar_m_poltergeist_e_0000",
+	"dar_m_poltergeist_e_0001"
 }
 -- Полтергейст в комнате с кодом
 object_list["test3"] = {
-	"dar_m_poltergeist_e_0000"
+	"dar_m_poltergeist_e_0002",
+	"dar_m_poltergeist_e_0003"
 }
 -- Снорки на верхнем этаже
 object_list["test4"] = {
@@ -57,6 +59,33 @@ object_list["test5"] = {
 
 object_id_list = {}
 
+smart_terrains["test1"] = {
+	"dar_burer_ring"
+}
+
+smart_terrains["test2"] = {
+	"dar_com_center_poltergeist"
+}
+
+function is_gulag_in_test(gulag_name, test_name)
+	for index, cur_gulag_name in smart_terrains[test_name] do
+		if gulag_name == cur_gulag_name then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function remove_gulags_except(test_name)
+	for k, v in db.smart_terrain_by_id do
+		if (is_gulag_in_test(v:name(), test_name) == false) then
+			smart_terrain.remove_gulag(v)
+		end
+	end
+end
+
+
 -- Check if object online
 function object_online(object_id)
 	return (alife() == nil) or alife():object(object_id).online
@@ -76,9 +105,7 @@ function offline_all()
 end
 
 
-function offline_all_except(test_index)
-	local except_name = "test" .. tostring(test_index)
-	
+function offline_all_except(except_name)
 	for test_name, test_name_table in pairs(object_list) do
 		if (except_name ~= test_name) then
 			for index, obj_name in pairs(test_name_table) do
@@ -130,7 +157,9 @@ end
 
 -- Base function
 function r(index)
-	offline_all_except	(index)
+	local test_name = "test" .. tostring(index)
+	remove_gulags_except	(test_name)	
+	offline_all_except		(test_name)
 end
 
 -- Save id of object while loading
