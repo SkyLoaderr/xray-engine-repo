@@ -1,23 +1,19 @@
 [logic]
-active = walker1
-on_death = death
+active = walker
 
-[death]
-on_info = %=rad_suicide_stalker_died%
+[spawn]
+wpn_beretta
+ammo_9x19_pbp = 10
 
-[walker1]
-path_walk = rad_suicide_walk
-path_look = rad_suicide_look
-meet_dialog = rad_suicider_dialog
-meet_talk_enabled = true
-meet_state = wait_na
-on_info = {+rad_suicide_artefact_given} remark@die
+[walker]
+path_walk = way
+path_look = way_0000
+wounded = wounded@suicide
 
-[remark@die]
-no_move = true
-no_rotate = true
-anim = suicide
-snd = rad_suicide_before_death
-snd_anim_sync = true
-on_signal = action_end | nil %=rad_suicide_kill_self%
+[wounded@suicide]
+psy_state = 100|{+rad_start_suicide}psy_shoot,psy_armed@{+rad_start_suicide}wounded_psy_shoot,wounded_psy
+hp_victim = 100|nil
+hp_cover = 100|false
+hp_fight = 100|false
+help_dialog = nil
 

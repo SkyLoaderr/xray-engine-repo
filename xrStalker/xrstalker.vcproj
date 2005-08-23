@@ -954,10 +954,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1693,6 +1693,13 @@
 					Filter="">
 					<File
 						RelativePath=".\Config\scripts\pri_wave3_btr.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="Radar"
+					Filter="">
+					<File
+						RelativePath=".\Config\scripts\rad\rad_suicide_stalker.ltx">
 					</File>
 				</Filter>
 			</Filter>
