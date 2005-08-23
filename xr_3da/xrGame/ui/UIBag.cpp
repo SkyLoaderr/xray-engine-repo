@@ -212,36 +212,34 @@ void CUIBag::Init(float x, float y, float width, float height){
 }
 
 void CUIBag::UpdateBuyPossibility(){
-//	CUIDragDropItemMP* pDDItem;
-//	CUIDragDropList* currentDDList;
+	CUIDragDropItemMP* pDDItem;
+	CUIDragDropList* currentDDList;
 	int money = GetMoneyAmount();
 	bool flag;
 
-	for (u32 i = 0; i<m_allItems.size(); i++){
-		flag = !(m_allItems[i]->GetCost() > money);
-		EnableDDItem(m_allItems[i], flag);
-		EnableDDItemByRank(m_allItems[i]);
+	for (int i = GROUP_2; i<GROUP_34; i++)
+	{
+		if (GROUP_BOXES == i)
+			continue;
+
+		currentDDList = &m_groups[i];
+		if (!currentDDList)
+			return;
+
+
+		DRAG_DROP_LIST ddList = currentDDList->GetDragDropItemsList();
+		DRAG_DROP_LIST_it it;
+
+		for (it = ddList.begin(); it != ddList.end(); ++it)
+		{
+			pDDItem = (CUIDragDropItemMP*)(*it);
+			flag = !(pDDItem->GetCost() > money);
+			EnableDDItem(pDDItem, flag);
+			EnableDDItemByRank(pDDItem);
+		}
 	}
 
-	// disable items player can't buy
-	/*if (GROUP_BOXES == GetCurrentGroupIndex())
-		return;
-
-	currentDDList = GetCurrentGroup();
-	if (!currentDDList)
-		return;
-
-
-	DRAG_DROP_LIST ddList = currentDDList->GetDragDropItemsList();
-	DRAG_DROP_LIST_it it;
-
-	for (it = ddList.begin(); it != ddList.end(); ++it)
-	{
-		pDDItem = (CUIDragDropItemMP*)(*it);
-		flag = !(pDDItem->GetCost() > money);
-		EnableDDItem(pDDItem, flag);
-		EnableDDItemByRank(pDDItem);
-	}*/
+	
 }
 
 CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char* sectionName, bool bCreateOnFail){
