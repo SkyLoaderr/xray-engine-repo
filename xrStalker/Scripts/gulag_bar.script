@@ -601,7 +601,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_commander", 
 			idle = 0,
-			prior = 6, state = {0,1}, squad = squad, group = groups[0],
+			prior = 9, state = {0,1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:profile_name() == "bar_svoboda_attack_commander"
@@ -610,13 +610,13 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper_5", 
 			idle = 0,
-			prior = 8, state = {0,1}, squad = squad, group = groups[0],
+			prior = 5, state = {0,1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper_6", 
 			idle = 0,
-			prior = 8, state = {0}, squad = squad, group = groups[0],
+			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
