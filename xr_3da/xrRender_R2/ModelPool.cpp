@@ -289,8 +289,8 @@ extern ENGINE_API BOOL				g_bRendering;
 void	CModelPool::DeleteInternal	(IRender_Visual* &V, BOOL bDiscard)
 {
 	VERIFY					(!g_bRendering);
-    if (V)					V->Depart();
-//	bDiscard = false;
+    if (!V)					return;
+	V->Depart				();
 	if (bDiscard||bForceDiscard){
     	Discard	(V); 
 	}else{
@@ -308,22 +308,23 @@ void	CModelPool::DeleteInternal	(IRender_Visual* &V, BOOL bDiscard)
 	V	=	NULL;
 }
 
-void	CModelPool::Delete			(IRender_Visual* &V, BOOL bDiscard)
+void	CModelPool::Delete		(IRender_Visual* &V, BOOL bDiscard)
 {
-	if	(g_bRendering)		{
+	if (NULL==V)				return;
+	if (g_bRendering){
 		VERIFY					(!bDiscard);
 		ModelsToDelete.push_back(V);
 	} else {
 		DeleteInternal			(V,bDiscard);
-	}
-	V	=	NULL;
+	}	
+	V							=	NULL;
 }
 
 void	CModelPool::DeleteQueue		()
 {
 	for (u32 it=0; it<ModelsToDelete.size(); it++)
 		DeleteInternal(ModelsToDelete[it]);
-	ModelsToDelete.clear	();
+	ModelsToDelete.clear			();
 }
 
 void	CModelPool::Discard	(IRender_Visual* &V)

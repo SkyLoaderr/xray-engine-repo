@@ -32,39 +32,39 @@
 
 CWeapon::CWeapon(LPCSTR name)
 {
-	STATE				= NEXT_STATE		= eHidden;
-	m_sub_state			= eSubstateReloadBegin;
-	m_bTriStateReload	= false;
-	SetDefaults			();
+	STATE					= NEXT_STATE = eHidden;
+	m_sub_state				= eSubstateReloadBegin;
+	m_bTriStateReload		= false;
+	SetDefaults				();
 
 	m_Offset.identity		();
 	m_StrapOffset.identity	();
 
-	iAmmoCurrent		= -1;
-	m_dwAmmoCurrentCalcFrame = 0;
+	iAmmoCurrent			= -1;
+	m_dwAmmoCurrentCalcFrame= 0;
 
-	iAmmoElapsed		= -1;
-	iMagazineSize		= -1;
-	iBuckShot			= 1;
-	m_ammoType			= 0;
-	m_ammoName			= NULL;
+	iAmmoElapsed			= -1;
+	iMagazineSize			= -1;
+	iBuckShot				= 1;
+	m_ammoType				= 0;
+	m_ammoName				= NULL;
 
-	eHandDependence		= hdNone;
+	eHandDependence			= hdNone;
 
-	m_fZoomFactor		= DEFAULT_FOV;
-	m_fZoomRotationFactor = 0.f;
-
-
-	m_pAmmo				= NULL;
+	m_fZoomFactor			= DEFAULT_FOV;
+	m_fZoomRotationFactor	= 0.f;
 
 
-	m_pFlameParticles2	= NULL;
-	m_sFlameParticles2 = NULL;
+	m_pAmmo					= NULL;
+
+
+	m_pFlameParticles2		= NULL;
+	m_sFlameParticles2		= NULL;
 
 
 	m_fCurrentCartirdgeDisp = 1.f;
 
-	m_bShowAmmo = true;
+	m_bShowAmmo				= true;
 
 	m_strap_bone0			= 0;
 	m_strap_bone1			= 0;
@@ -153,15 +153,16 @@ void CWeapon::UpdateFireDependencies_internal()
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
+			VERIFY					(V);
 			V->CalculateBones		();
 
 			// fire point&direction
 			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->FireBone()));
 			Fmatrix& parent			= m_pHUD->Transform	();
 
-			Fvector& fp				= m_pHUD->FirePoint();
-			Fvector& fp2			= m_pHUD->FirePoint2();
-			Fvector& sp				= m_pHUD->ShellPoint();
+			const Fvector& fp		= m_pHUD->FirePoint();
+			const Fvector& fp2		= m_pHUD->FirePoint2();
+			const Fvector& sp		= m_pHUD->ShellPoint();
 
 			fire_mat.transform_tiny	(m_firedeps.vLastFP,fp);
 			parent.transform_tiny	(m_firedeps.vLastFP);
@@ -171,16 +172,12 @@ void CWeapon::UpdateFireDependencies_internal()
 			fire_mat.transform_tiny	(m_firedeps.vLastSP,sp);
 			parent.transform_tiny	(m_firedeps.vLastSP);
 
-			m_firedeps.vLastSD.set	(0.f,0.f,1.f);
-			parent.transform_dir	(m_firedeps.vLastSD);
-
-			
 			m_firedeps.vLastFD.set	(0.f,0.f,1.f);
 			parent.transform_dir	(m_firedeps.vLastFD);
 
 			m_firedeps.m_FireParticlesXForm.identity();
 			m_firedeps.m_FireParticlesXForm.k.set(m_firedeps.vLastFD);
-			Fvector::generate_orthonormal_basis(m_firedeps.m_FireParticlesXForm.k,
+			Fvector::generate_orthonormal_basis_normalized(m_firedeps.m_FireParticlesXForm.k,
 									m_firedeps.m_FireParticlesXForm.j, m_firedeps.m_FireParticlesXForm.i);
 		} else {
 			// 3rd person or no parent
@@ -195,10 +192,6 @@ void CWeapon::UpdateFireDependencies_internal()
 			
 			m_firedeps.vLastFD.set	(0.f,0.f,1.f);
 			parent.transform_dir	(m_firedeps.vLastFD);
-
-			//vLastSD = sd;
-			m_firedeps.vLastSD.set	(0.f,0.f,1.f);
-			parent.transform_dir	(m_firedeps.vLastSD);
 
 			m_firedeps.m_FireParticlesXForm.set(parent);
 		}
@@ -954,101 +947,83 @@ void CWeapon::UpdateHUDAddonsVisibility()
 	if( H_Parent() != Level().CurrentEntity() )				return;
 	if(m_pHUD->IsHidden())									return;
 	CKinematics* pHudVisual									= smart_cast<CKinematics*>(m_pHUD->Visual());
+	VERIFY(pHudVisual);
 	if (H_Parent() != Level().CurrentEntity()) pHudVisual	= NULL;
 
 
 	if (!pHudVisual)return;
 	u16  bone_id;
 
-	if(ScopeAttachable())
-	{
+	if(ScopeAttachable()){
 		bone_id = pHudVisual->LL_BoneID(wpn_scope);
 		if(IsScopeAttached()){
 			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
-			pHudVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
+				pHudVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
 		}else{
-			if(TRUE==pHudVisual->LL_GetBoneVisible		(bone_id))
-			pHudVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+			if(pHudVisual->LL_GetBoneVisible			(bone_id))
+				pHudVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
 	}
-	if(SilencerAttachable())
-	{
+	if(SilencerAttachable()){
 		bone_id = pHudVisual->LL_BoneID(wpn_silencer);
 		if(IsSilencerAttached()){
 			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
-			pHudVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
+				pHudVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
 		}else{
-			if(TRUE==pHudVisual->LL_GetBoneVisible		(bone_id))
-			pHudVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+			if(pHudVisual->LL_GetBoneVisible			(bone_id))
+				pHudVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
-
 	}
-	if(GrenadeLauncherAttachable())
-	{
+	if(GrenadeLauncherAttachable()){
 		bone_id = pHudVisual->LL_BoneID(wpn_grenade_launcher);
 		if(bone_id==BI_NONE)
 			bone_id = pHudVisual->LL_BoneID(wpn_launcher);
 
-		if(IsGrenadeLauncherAttached())
-		{
+		if(IsGrenadeLauncherAttached()){
 			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
-			pHudVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
+				pHudVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
 		}else{
-			if(TRUE==pHudVisual->LL_GetBoneVisible		(bone_id))
-			pHudVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+			if(pHudVisual->LL_GetBoneVisible			(bone_id))
+				pHudVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
 	}
 }
 
 void CWeapon::UpdateAddonsVisibility()
 {
-//	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());// R_ASSERT(pHudVisual);
-//	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
 	CKinematics* pWeaponVisual = smart_cast<CKinematics*>(Visual()); R_ASSERT(pWeaponVisual);
 
 	u16  bone_id;
 	UpdateHUDAddonsVisibility								();	
 
-	if(ScopeAttachable())
-	{
+	if(ScopeAttachable()){
 		bone_id = pWeaponVisual->LL_BoneID					(wpn_scope);
-		if(IsScopeAttached())
-		{
+		if(IsScopeAttached()){
 			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
 			pWeaponVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
-		}
-		else
-		{
-			if(TRUE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
-			pWeaponVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+		}else{
+			if(pWeaponVisual->LL_GetBoneVisible				(bone_id))
+				pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
 	}
-	if(SilencerAttachable())
-	{
+	if(SilencerAttachable()){
 		bone_id = pWeaponVisual->LL_BoneID					(wpn_silencer);
-		if(IsSilencerAttached())
-		{
+		if(IsSilencerAttached()){
 			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
-			pWeaponVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
-		}
-		else
-		{
-			if(TRUE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
-			pWeaponVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+				pWeaponVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
+		}else{
+			if(pWeaponVisual->LL_GetBoneVisible				(bone_id))
+				pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
 	}
-	if(GrenadeLauncherAttachable())
-	{
+	if(GrenadeLauncherAttachable()){
 		bone_id = pWeaponVisual->LL_BoneID					(wpn_launcher);
-		if(IsGrenadeLauncherAttached())
-		{
+		if(IsGrenadeLauncherAttached()){
 			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
-			pWeaponVisual->LL_SetBoneVisible				(bone_id,TRUE,TRUE);
-		}
-		else
-		{
-			if(TRUE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
-			pWeaponVisual->LL_SetBoneVisible				(bone_id,FALSE,TRUE);
+				pWeaponVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
+		}else{
+			if(pWeaponVisual->LL_GetBoneVisible				(bone_id))
+				pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
 	}
 	pWeaponVisual->CalculateBones_Invalidate				();
@@ -1080,6 +1055,7 @@ void CWeapon::OnZoomOut()
 
 	StartHudInertion();
 }
+
 CUIStaticItem* CWeapon::ZoomTexture()
 {
 	if(m_UIScope.GetShader()) 
@@ -1087,7 +1063,6 @@ CUIStaticItem* CWeapon::ZoomTexture()
 	else 
 		return NULL;
 }
-
 
 void CWeapon::SwitchState(u32 S)
 {

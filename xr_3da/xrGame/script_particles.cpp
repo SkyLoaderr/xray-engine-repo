@@ -33,7 +33,7 @@ void CScriptParticlesCustom::shedule_Update(u32 _dt)
 void CScriptParticlesCustom::LoadPath(LPCSTR caPathName)
 {
 	if (!m_animator) m_animator	= xr_new<CObjectAnimator>();
-	if (0!=xr_strcmp(m_animator->Name(),caPathName)){
+	if ((0==m_animator->Name())||(0!=xr_strcmp(m_animator->Name(),caPathName))){
 		m_animator->Clear		();
 		m_animator->Load		(caPathName);
 	}

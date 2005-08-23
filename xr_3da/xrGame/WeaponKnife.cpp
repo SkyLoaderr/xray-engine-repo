@@ -88,14 +88,12 @@ void CWeaponKnife::UpdateCL	()
 {
 	inherited::UpdateCL	();
 
-	
 	// cycle update
-	switch (STATE)
-	{
+	switch (STATE){
 	case eShowing:
-	case eHiding:
-		smart_cast<CSkeletonAnimated*>(m_pHUD->Visual())->UpdateTracks();
-		break;
+	case eHiding:{
+//.		smart_cast<CSkeletonAnimated*>(m_pHUD->Visual())->UpdateTracks();
+		}break;
 	case eFire:
 		//state_Attacking	(dt);
 		break;

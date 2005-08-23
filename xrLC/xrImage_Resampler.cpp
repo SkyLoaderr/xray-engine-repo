@@ -336,7 +336,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 					w_b			+=	W*float(color_get_B(P));
 					w_a			+=	W*float(color_get_A(P));
 				}
-				put_pixel(tmp, i, k, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
+				put_pixel(tmp, i, k, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+0.5f)));
 			}
 		}
 		xr_free(raster);
@@ -432,7 +432,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 					w_b			+=	W*float(color_get_B(P));
 					w_a			+=	W*float(color_get_A(P));
 				}
-				put_pixel(&dst, k, i, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
+				put_pixel(&dst, k, i, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+0.5f)));
 			}
 
 		}

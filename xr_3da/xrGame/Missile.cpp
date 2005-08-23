@@ -613,24 +613,21 @@ void  CMissile::UpdateFireDependencies_internal	()
 {
 	if (0==H_Parent())		return;
 
-    if (Device.dwFrame!=dwFP_Frame) 
-	{
+    if (Device.dwFrame!=dwFP_Frame){
 		dwFP_Frame = Device.dwFrame;
 
 		UpdateXForm			();
 		
-		if (hud_mode && !IsHidden())
-		{
+		if (hud_mode && !IsHidden()){
 			// 1st person view - skeletoned
 			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
+			VERIFY					(V);
 			V->CalculateBones		();
 
 			// fire point&direction
 			Fmatrix& parent			= m_pHUD->Transform	();
 			m_throw_direction.set	(parent.k);
-		} 
-		else 
-		{
+		}else{
 			// 3rd person
 			Fmatrix& parent			= H_Parent()->XFORM();
 
@@ -642,7 +639,7 @@ void  CMissile::UpdateFireDependencies_internal	()
 
 void CMissile::activate_physic_shell()
 {
-	MSG1	("start activ shell");
+	MSG1	("start active shell");
 
 	if (!smart_cast<CMissile*>(H_Parent())) {
 		inherited::activate_physic_shell();

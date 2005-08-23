@@ -305,7 +305,7 @@ private:
 		Fmatrix				m_FireParticlesXForm;	//направление для партиклов огня и дыма
 		Fvector				vLastFP, vLastFP2	;	//огня
 		Fvector				vLastFD				;	// direction
-		Fvector				vLastSP, vLastSD	;	//гильз	
+		Fvector				vLastSP				;	//гильз	
 
 		_firedeps()			{
 			m_FireParticlesXForm.identity();
@@ -313,7 +313,6 @@ private:
 			vLastFP2.set		(0,0,0);
 			vLastFD.set			(0,0,0);
 			vLastSP.set			(0,0,0);
-			vLastSD.set			(0,0,0);
 		}
 	}						m_firedeps			;
 protected:
@@ -329,7 +328,6 @@ public:
 	IC		const Fvector&	get_LastFP2				()			{ UpdateFireDependencies(); return m_firedeps.vLastFP2;	}
 	IC		const Fvector&	get_LastFD				()			{ UpdateFireDependencies(); return m_firedeps.vLastFD;	}
 	IC		const Fvector&	get_LastSP				()			{ UpdateFireDependencies(); return m_firedeps.vLastSP;	}
-	IC		const Fvector&	get_LastSD				()			{ UpdateFireDependencies(); return m_firedeps.vLastSD;	}
 
 	virtual const Fvector&	get_CurrentFirePoint	()			{ return get_LastFP();				}
 	virtual const Fmatrix&	get_ParticlesXFORM		()			{ UpdateFireDependencies(); return m_firedeps.m_FireParticlesXForm;	}

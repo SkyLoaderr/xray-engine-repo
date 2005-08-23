@@ -1045,14 +1045,6 @@ void CActor::shedule_Update	(u32 DT)
 	//если в режиме HUD, то сама модель актера не рисуется
 	if(!character_physics_support()->IsRemoved())
 										setVisible				(!HUDview	());
-/*
-	//установить режим показа HUD для текущего активного слота
-	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
-	if(pHudItem && !pHudItem->object().getDestroy()) 
-		pHudItem->SetHUDmode(HUDview());
-*/
-
-
 	//что актер видит перед собой
 	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	

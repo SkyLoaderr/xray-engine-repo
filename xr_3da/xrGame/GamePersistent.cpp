@@ -15,6 +15,7 @@
 #include "actor.h"
 //  [7/11/2005]
 #include "game_base_space.h"
+#include "weaponhud.h"
 //  [7/11/2005]
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -53,11 +54,12 @@ CGamePersistent::CGamePersistent(void)
 		eDemoStart			=	NULL;
 	}
 
+	CWeaponHUD::CreateSharedContainer();
 }
 
 CGamePersistent::~CGamePersistent(void)
 {
-
+	CWeaponHUD::DestroySharedContainer();
 	FS.r_close					(pDemoFile);
 	Device.seqFrame.Remove		(this);
 	Engine.Event.Handler_Detach	(eDemoStart,this);
@@ -117,6 +119,8 @@ void CGamePersistent::Start		(LPCSTR op)
 
 void CGamePersistent::Disconnect()
 {
+	CWeaponHUD::CleanSharedContainer();
+
 	// destroy ambient particles
 	CParticlesObject::Destroy(ambient_particles);
 

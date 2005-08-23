@@ -63,7 +63,7 @@ void CHudItem::Load(LPCSTR section)
 {
 	//загрузить hud, если он нужен
 	if(pSettings->line_exist(section,"hud"))
-		hud_sect = pSettings->r_string		(section,"hud");
+		hud_sect		= pSettings->r_string		(section,"hud");
 
 	if(*hud_sect){
 		m_pHUD			= xr_new<CWeaponHUD> (this);
@@ -84,8 +84,8 @@ void CHudItem::net_Destroy()
 	if(m_pHUD)
 		m_pHUD->net_DestroyHud	();
 
-	hud_mode = FALSE;
-	m_dwStateTime = 0;
+	hud_mode			= FALSE;
+	m_dwStateTime		= 0;
 }
 
 void CHudItem::PlaySound	(HUD_SOUND& hud_snd, const Fvector& position)
@@ -98,25 +98,19 @@ BOOL  CHudItem::net_Spawn	(CSE_Abstract* DC)
 	return TRUE;
 }
 
-
 void CHudItem::renderable_Render()
 {
 	UpdateXForm	();
-	BOOL		_hud_render		= ::Render->get_HUD() && hud_mode;
-	if(_hud_render && !m_pHUD->IsHidden() && !item().IsHidden())
-	{ 
+	BOOL _hud_render			= ::Render->get_HUD() && hud_mode;
+	if(_hud_render && !m_pHUD->IsHidden() && !item().IsHidden()){ 
 		// HUD render
-		if(m_bRenderHud)
-		{
+		if(m_bRenderHud){
 			::Render->set_Transform		(&m_pHUD->Transform());
 			::Render->add_Visual		(m_pHUD->Visual());
 		}
+	}else if(!object().H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !item().IsHidden())){
+		on_renderable_Render	();
 	}
-	else
-		if(!object().H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !item().IsHidden()))
-		{
-			on_renderable_Render();
-		}
 }
 
 bool CHudItem::Action(s32 cmd, u32 flags) 
@@ -182,8 +176,7 @@ void CHudItem::Deactivate()
 
 void CHudItem::UpdateHudPosition	()
 {
-	if (m_pHUD && hud_mode)
-	{
+	if (m_pHUD && hud_mode){
 		if(item().IsHidden()) hud_mode = false;
 
 		Fmatrix							trans;
@@ -253,17 +246,13 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 
 		// calc moving inertion
 	}
-/*
-	static u32 sl = 0;
-	if (sl)	Sleep(sl);
-*/
 }
 
 void CHudItem::UpdateCL()
 {
 	m_dwStateTime += Device.dwTimeDelta;
 
-	if(m_pHUD) m_pHUD->UpdateHud();
+	if(m_pHUD) m_pHUD->Update();
 	UpdateHudPosition	();
 }
 
@@ -273,9 +262,9 @@ void CHudItem::OnH_A_Chield		()
 	
 	if (m_pHUD) {
 		if(Level().CurrentEntity() == object().H_Parent() && smart_cast<CActor*>(object().H_Parent()))
-			m_pHUD->SetCurrentEntityHud(true);
+			m_pHUD->Visible(true);
 		else
-			m_pHUD->SetCurrentEntityHud(false);
+			m_pHUD->Visible(false);
 	}
 }
 
@@ -291,7 +280,7 @@ void CHudItem::OnH_B_Independent	()
 {
 	hud_mode = FALSE;
 	if (m_pHUD)
-		m_pHUD->SetCurrentEntityHud(false);
+		m_pHUD->Visible(false);
 	
 	StopHUDSounds();
 	UpdateXForm();

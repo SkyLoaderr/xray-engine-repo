@@ -2,8 +2,6 @@
 #include "hud_item_object.h"
 #include "HudSound.h"
 
-class CWeaponHUD;
-
 #define MS_HIDDEN	0
 #define MS_SHOWING	1
 #define MS_IDLE		2

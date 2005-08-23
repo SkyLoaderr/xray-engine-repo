@@ -491,14 +491,15 @@ void CUIMainIngameWnd::Draw()
 			Fvector FP,SP;//,FP2;
 
 			CKinematics* V			= smart_cast<CKinematics*>(pWpnHud->Visual());
+			VERIFY					(V);
 			V->CalculateBones		();
 
 			// fire point&direction
 			Fmatrix& fire_mat		= V->LL_GetTransform(u16(pWpnHud->FireBone()));
 			Fmatrix& parent			= pWpnHud->Transform	();
 
-			Fvector& fp				= pWpnHud->FirePoint();
-			Fvector& sp				= pWpnHud->ShellPoint();
+			const Fvector& fp		= pWpnHud->FirePoint();
+			const Fvector& sp		= pWpnHud->ShellPoint();
 
 			fire_mat.transform_tiny	(FP,fp);
 			parent.transform_tiny	(FP);
@@ -981,7 +982,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				break;
 			}
 		
-			pWpnHud->SetFirePoint(tmpV);
+			pWpnHud->dbg_SetFirePoint(tmpV);
 		}
 		else if (4 == g_bHudAdjustMode) //ShellPoint
 		{
@@ -1037,8 +1038,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				flag = true;
 				break;
 			}
-		
-			pWpnHud->SetShellPoint(tmpV);
+			pWpnHud->dbg_SetShellPoint(tmpV);
 		}
 		else if (3 == g_bHudAdjustMode) //MissileOffset
 		{

@@ -1003,12 +1003,8 @@ void CWeaponMagazined::SwitchMode			()
  
 void CWeaponMagazined::StartIdleAnim			()
 {
-	if(IsZoomed())
-	{
-		m_pHUD->animDisplay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
-	}
-	else
-		m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
+	if(IsZoomed())	m_pHUD->animDisplay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
+	else			m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
 }
 
 void CWeaponMagazined::onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd)

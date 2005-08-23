@@ -59,8 +59,8 @@ void CWeaponShotgun::Load	(LPCSTR section)
 
 void CWeaponShotgun::OnShot () 
 {
-	std::swap(m_pHUD->FirePoint(), m_pHUD->FirePoint2());
-	std::swap(vLoadedFirePoint, vLoadedFirePoint2);
+//.?std::swap(m_pHUD->FirePoint(), m_pHUD->FirePoint2());
+//.	std::swap(vLoadedFirePoint, vLoadedFirePoint2);
 	inherited::OnShot();
 }
 

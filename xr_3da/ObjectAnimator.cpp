@@ -15,6 +15,7 @@ CObjectAnimator::CObjectAnimator()
 	bLoop			= false;
     m_Current		= 0;
     m_Speed			= 1.f;
+	m_Name			= "";
 }
 
 CObjectAnimator::~CObjectAnimator()
