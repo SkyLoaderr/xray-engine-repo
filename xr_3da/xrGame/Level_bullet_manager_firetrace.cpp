@@ -350,7 +350,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 
 	float ricoshet_factor	= bullet->dir.dotproduct(tgt_dir);
 
-	float f			= Random.randF	(-1.f,1.f);
+	float f			= Random.randF	(0.5f,1.f);
 //	if(shoot_factor<RICOCHET_THRESHOLD &&  )
 	if (((f+shoot_factor)<ricoshet_factor) && bullet->flags.test(SBullet::RICOCHET_ENABLED_FLAG)){
 		//уменьшение скорости полета в зависимости 
