@@ -325,7 +325,7 @@ function load_states(gname, type)
 		    local state = gulag.state
 		    local actor = db.actor
 		    if state == state_kamp and actor:has_info("pri_followers_start") then
-		        return state_wave3 --state_wave1
+		        return state_wave1 --state_wave1
 		    end
 		    if state == state_wave1 and
 		       actor:has_info("pri_wave1_monolith1_dead") and
@@ -333,6 +333,7 @@ function load_states(gname, type)
 		       actor:has_info("pri_wave1_monolith3_dead") and
 		       actor:has_info("pri_wave1_monolith4_dead")
 		    then
+		        actor:give_info_portion("pri_wave1_end")
 		        return state_wave2
 		    end
 		    if state == state_wave2 and
@@ -343,9 +344,11 @@ function load_states(gname, type)
 		       --actor:has_info("pri_wave2_monolith5_dead") and
 		       actor:has_info("pri_wave2_monolith6_dead")
 		    then
+		        actor:give_info_portion("pri_wave2_end")
 		        return state_wave3
 		    end
 		    if state == state_wave3 and actor:has_info("pri_wave3_btr_dead") then
+		        actor:give_info_portion("pri_wave3_end")
 		        return state_wave4
 		    end
 		    if state == state_wave4 and
@@ -355,6 +358,7 @@ function load_states(gname, type)
 		       actor:has_info("pri_wave4_monolith4_dead") and
 		       actor:has_info("pri_wave4_monolith5_dead")
 		    then
+		        actor:give_info_portion("pri_wave4_end")
 		        return state_wave5
 		    end
 	        return state
