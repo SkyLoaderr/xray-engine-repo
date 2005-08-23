@@ -389,6 +389,9 @@ void CKinematics::Depart		()
 	// wallmarks
 	ClearWallmarks				();
 
+	// unmask all bones
+	visimask.zero				();
+	for (u32 b=0; b<bones->size(); b++) visimask.set((u64(1)<<b),TRUE);
 	// visibility
 	children.insert				(children.end(),children_invisible.begin(),children_invisible.end());
 	children_invisible.clear	();
