@@ -61,6 +61,10 @@ function motivator_binder:reinit()
 
     --' Создание менеджера контроля положений тела
 	self.st.state_mgr = state_mgr.bind_manager(self.object)	
+	
+    --' Загрузка историй для лагеря.
+	xr_kamp.loadStories(self.object, char_ini)	
+	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)

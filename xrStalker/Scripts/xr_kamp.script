@@ -3,8 +3,8 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-function printf()
-end
+--function printf()
+--end
 
 kamps = {}
 kamp_stalkers = {}
@@ -210,7 +210,7 @@ function CKampManager:__init(path)
 						pre_guitar			= { min = 3000 },
 						guitar				= { min = 5000, soundstart = true },
 						post_guitar			= { min = 3000 },
-						story				= { min = 5000, soundstart = true },
+						story				= { min = 1000, soundstart = true },
 						post_story			= { min = 3000 },
 						pre_joke			= { min = 3000 },
 						joke				= { min = 5000, soundstart = true },
@@ -222,7 +222,7 @@ function CKampManager:__init(path)
 						 story = false, post_story = false,
 						 pre_joke = true, joke = true, post_joke = true}
 	-- Таблица допустимых переходов между состояниями с вероятностями.
-	self.trans_kamp = { idle			= { idle = 40, pre_harmonica = 15, pre_guitar = 15, story = 15, pre_joke = 15 }, 
+	self.trans_kamp = { idle			= { idle = 40, pre_harmonica = 0, pre_guitar = 0, story = 15, pre_joke = 15 }, 
 						pre_harmonica	= { harmonica = 100 }, 
 						harmonica		= { post_harmonica = 100 }, 
 						post_harmonica	= { idle = 60, harmonica = 40 },
@@ -278,19 +278,20 @@ function CKampManager:getDestVertex(npc_id)
 end
 function CKampManager:proceedState(npc)
 	-- Проверка на таймаут
-	if self.begin ~= nil and
-	   time_global() - self.begin < self.timeout[self.kamp_state].min
-	then
-		return
-	end
 	local npc_id = npc:id()
 	local active_sound_count = npc:active_sound_count()
 	if self.npc[npc_id].need_sound_begin == true then
 		if active_sound_count == 0 then
+			printf("Sound not begin")
 			return
 		else			
 			self.npc[npc_id].need_sound_begin = false
 		end
+	end
+	if self.begin ~= nil and
+	   time_global() - self.begin < self.timeout[self.kamp_state].min
+	then
+		return
 	end
 
 	-- Если режиссер не закончил говорить - ждем конца фразы.
@@ -299,6 +300,22 @@ function CKampManager:proceedState(npc)
 	end
 
 	printf("Proceed state for [%s]", npc_id)
+	-- В случае с историей переход обрабатывается отдельно
+	if self.kamp_state == "post_story" then
+		if self.story_last < self.story_max - 1 then
+			self.npc[npc_id].begin = nil
+			self.npc[npc_id].need_sound_begin = true
+			self.director = npc_id
+			self.kamp_state = "story"
+			self.begin = time_global()
+			for kk,vv in self.npc do
+				vv.new = true
+			end		
+			return
+		else
+			self.selected_story = nil
+		end
+	end
 	-- Определяются допустимые в данный момент переходы.
 	local temp = {}
 	local max_rnd = 0
@@ -329,9 +346,17 @@ function CKampManager:proceedState(npc)
 					self.npc[npc_id].need_sound_begin = true
 				end
 				self.director = npc_id
-			end
+				self.censor = nil
+			end			
 			self.kamp_state = k
 			self.begin = time_global()
+			-- Меняем таймаут для истории
+			if k == "post_story" then
+				local dep = sound_theme.theme[npc_id][self.selected_story].depence[self.story_last]
+				if dep and dep.min and dep.max then
+					self.timeout["post_story"].min = math.random(dep.min, dep.max)*1000
+				end
+			end
 			for kk,vv in self.npc do
 				vv.new = true
 			end
@@ -365,10 +390,19 @@ function CKampManager:proceedRole(npc, director)
 				table.insert(temp, v)
 			end
 		end
+		
+		-- Если мы решили говорить историю, надо выбрать какую именно говорить.
+		if sound == "play_story" and self.selected_story == nil and db.story_by_id[npc_id] ~= nil then
+			local story_num = table.getn(db.story_by_id[npc_id])
+			if story_num > 0 then
+				self.selected_story = db.story_by_id[npc_id][math.random(story_num)]
+			end			
+		end
+
 		self.npc[npc_id].begin = time_global()
 		state = temp[math.random(table.getn(temp))]
 		self.npc[npc_id].state_selected = state
-		self.npc[npc_id].state_idle = math.random(10000,20000)
+		self.npc[npc_id].state_idle = math.random(15000,20000)		
 	else
 		if director then
 			sound = self.avail_sound[self.kamp_state].directed
@@ -421,6 +455,9 @@ function CKampManager:updateNpc(npc)
 				xr_sound.set_sound_play(npc, "intro_joke", math.random(2000,3000))
 			elseif sound == "play_joke" then
 				xr_sound.set_sound_play(npc, "joke", math.random(2000,3000))
+			elseif sound == "play_story" then
+				xr_sound.set_sound_play(npc, self.selected_story)
+				self.story_last, self.story_max = xr_sound.get_last_IDS(npc, self.selected_story)
 			end
 			self.npc[npc_id].new = false
 		end
@@ -446,14 +483,27 @@ function CKampManager:updateNpc(npc)
 		sound = "reac_music"
 	elseif sound == "reac_joke" then
 		if self.npc[npc_id].new == true then
-			if math.random(100) > 70 then
-				xr_sound.set_sound_play(npc, "story_reac_laughter", math.random(100,300))
-			else
+			if self.censor == nil then
 				xr_sound.set_sound_play(npc, "reac_joke", math.random(2000,3000))
+				self.censor = npc_id
+			else
+				xr_sound.set_sound_play(npc, "story_reac_laughter", math.random(100,300))
 			end
 			self.npc[npc_id].new = false
 		end
 		sound = ""
+	elseif sound == "reac_story" then
+		sound = ""
+		if self.npc[npc_id].new == true then
+			local dep = sound_theme.theme[npc_id][self.selected_story].depence[self.story_last+1]
+			if dep then
+				if dep.type == "all" then
+					xr_sound.set_sound_play(npc, dep.theme, math.random(100,300))
+				else
+					sound = dep.theme
+				end
+			end
+		end
 	elseif sound == "reac_story" then
 		sound = ""
 	else
@@ -510,6 +560,18 @@ function CKampManager:checkNpcAbility(npc)
 		self.kamp_states["guitar"] = false
 		self.kamp_states["post_guitar"] = false
 	end	
+	-- Если чувак знает истории, надо добавить их к лагерю
+	if db.story_by_id[npc:id()] ~= nil then
+		self.npc[npc:id()].states["play_story"] = true 
+		self.npc[npc:id()].states["post_story"] = true 
+		self.kamp_states["story"] = true
+		self.kamp_states["post_story"] = true
+	else
+		self.npc[npc:id()].states["play_story"] = false
+		self.npc[npc:id()].states["post_story"] = false
+		self.kamp_states["story"] = false
+		self.kamp_states["post_story"] = false	
+	end
 end
 function CKampManager:addNpc(npc)
 	printf("KAMP [%s] add npc", npc:name())
@@ -520,7 +582,7 @@ function CKampManager:addNpc(npc)
 	self.npc[npc:id()] = {name = npc:name(), position = nil, current = nil, speak = 0, states = {
 							stand_wait = true, sit = true, sit_ass = true, sit_knee = true, declarate = true,
 							eat_kolbasa = false, eat_vodka = false, eat_bread = false,
-							play_harmonica = false, play_guitar = false, play_joke = false}}
+							play_harmonica = false, play_guitar = false, play_joke = false, play_story = false}}
 	self:selectPosition(npc:id())
 end
 function CKampManager:removeNpc(npc)
@@ -590,4 +652,15 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 	kamps[st.center_point]:addNpc(npc)
 	st.pos_vertex = nil
+end
+
+
+function loadStories(npc, char_ini)
+	if char_ini:section_exist("game_info") then
+		local tmp = utils.cfg_get_string(char_ini, "game_info", "stories", npc, false, "")
+		if tmp then
+			printf("*KAMP* Load stories for [%s] -> [%s]", npc:name(), tmp)
+			db.story_by_id[npc:id()] = parse_names(tmp)
+		end
+	end
 end

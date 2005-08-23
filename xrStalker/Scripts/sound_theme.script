@@ -283,6 +283,27 @@ function load_sound(obj)
 											[7] = {theme = "story_reac_cool_teller", min = 1, max = 1},
 											[8] = {theme = "story_reac_wonder", min = 1, max = 1},
 											[9] = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4}}
+	theme[obj:id()]["legend_01"]					= load_sound_from_ltx(obj, "legend_01")
+	theme[obj:id()]["legend_01"].depence = {[1] = {theme = "story_reac_doubt", min = 1, max = 1},
+											[2] = {theme = "story_reac_wonder, story_reac_disbelief_story", min = 1, max = 1},
+											[3] = {theme = "story_reac_yes", min = 2, max = 3},
+											[4] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}
+	theme[obj:id()]["legend_02"]					= load_sound_from_ltx(obj, "legend_02")
+	theme[obj:id()]["legend_02"].depence = {[1] = {theme = "story_reac_doubt", min = 1, max = 1},
+											[2] = {theme = "story_reac_disbelief_story", min = 1, max = 1},
+											[3] = {theme = "story_reac_wonder", min = 1, max = 1},
+											[4] = {theme = "story_reac_laughter", min = 1, max = 1},
+											[5] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}
+	theme[obj:id()]["legend_03"]					= load_sound_from_ltx(obj, "legend_03")
+	theme[obj:id()]["legend_03"].depence = {[1] = {theme = "story_reac_cool_info", min = 1, max = 1},
+											[2] = {theme = "story_reac_yes, story_reac_doubt", min = 2, max = 4}}
+	theme[obj:id()]["legend_04"]					= load_sound_from_ltx(obj, "legend_04")
+	theme[obj:id()]["legend_04"].depence = {[1] = {theme = "story_reac_fear", min = 1, max = 1},
+											[2] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}
+	theme[obj:id()]["legend_05"]					= load_sound_from_ltx(obj, "legend_05")
+	theme[obj:id()]["legend_05"].depence = {[1] = {theme = "story_reac_yes", min = 2, max = 3},
+											[2] = {theme = "story_reac_doubt", min = 1, max = 1},
+											[3] = {theme = "story_reac_disbelief_story, story_reac_belief_story", min = 2, max = 4}}
 
 	theme[obj:id()]["story_reac_action_right"]		= load_sound_from_ltx(obj, "story_reac_action_right", 1, 1, 100)
 	theme[obj:id()]["story_reac_action_wrong"]		= load_sound_from_ltx(obj, "story_reac_action_wrong", 1, 1, 100)
