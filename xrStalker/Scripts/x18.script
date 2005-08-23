@@ -11,9 +11,9 @@ object_list["test0"] = {
 
 -- Бюреры под гулагом-элюдером
 object_list["test1"] = {
-	"dar_m_burer_0004",
-	"dar_m_burer_0005",
-	"dar_m_burer_0006"
+	"dar_m_burer_e_0004",
+	"dar_m_burer_e_0005",
+	"dar_m_burer_e_0006"
 }
 -- Полтергейст (гулаг в ком.центре)
 object_list["test2"] = {
