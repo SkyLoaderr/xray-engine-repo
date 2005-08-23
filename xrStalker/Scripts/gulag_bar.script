@@ -1906,7 +1906,7 @@ function load_states(gname, type)
 			if db.actor:has_info("bar_heli_scene_professor_die") then
 			     return 3 -- relax
 			end	 
-			return 0
+		
 		end
 	end
 	if type == "bar_ecolog_crush" then        
