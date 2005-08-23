@@ -3,8 +3,8 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
---function printf()
---end
+function printf()
+end
 
 kamps = {}
 kamp_stalkers = {}
@@ -134,6 +134,7 @@ function CKampManager:__init(path)
 					 {dir = vector():set(0, 0, -1),	used = nil},
 					 {dir = vector():set(1, 0, -1),	used = nil}}
 	self.npc = {}
+	self.population = 0
 	self.kamp_state = "idle"	
 	-- Где то здесь распарсим патрульный путь и проапдейтим вектор позиций.
 	-- 0 вершина - центр лагеря.
@@ -559,16 +560,22 @@ function CKampManager:checkNpcAbility(npc)
 		self.kamp_states["pre_guitar"] = false
 		self.kamp_states["guitar"] = false
 		self.kamp_states["post_guitar"] = false
+	end
+	-- анекдоты
+	if self.population > 1 then
+		self.kamp_states["pre_joke"] = true
+		self.kamp_states["joke"] = true
+		self.kamp_states["post_joke"] = true
+	else
+		self.kamp_states["pre_joke"] = false
+		self.kamp_states["joke"] = false
+		self.kamp_states["post_joke"] = false
 	end	
 	-- Если чувак знает истории, надо добавить их к лагерю
-	if db.story_by_id[npc:id()] ~= nil then
-		self.npc[npc:id()].states["play_story"] = true 
-		self.npc[npc:id()].states["post_story"] = true 
+	if self.population > 1 and db.story_by_id[npc:id()] ~= nil then
 		self.kamp_states["story"] = true
 		self.kamp_states["post_story"] = true
 	else
-		self.npc[npc:id()].states["play_story"] = false
-		self.npc[npc:id()].states["post_story"] = false
 		self.kamp_states["story"] = false
 		self.kamp_states["post_story"] = false	
 	end
@@ -584,11 +591,13 @@ function CKampManager:addNpc(npc)
 							eat_kolbasa = false, eat_vodka = false, eat_bread = false,
 							play_harmonica = false, play_guitar = false, play_joke = false, play_story = false}}
 	self:selectPosition(npc:id())
+	self.population = self.population + 1
 end
 function CKampManager:removeNpc(npc)
 	printf("KAMP [%s] remove npc", npc:name())
 	self.position[self.npc[npc:id()].position].used = nil
 	self.npc[npc:id()] = nil
+	self.population = self.population - 1
 end
 
 ----------------------------------------------------------------------------------------------------------------------
