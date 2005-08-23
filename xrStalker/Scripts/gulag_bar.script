@@ -1895,13 +1895,17 @@ function load_states(gname, type)
 
 	if type == "bar_freedom_attack" then        
 		return function (gulag)
-			if db.actor == nil then
-				return 0
+			if db.actor:has_info("bar_freedom_attack_ecolog") and
+			   db_actor:dont_has_info("bar_resque_research_start") then
+				 return 1 -- actor enemy
 			end
-			
-			if db.actor:has_info("bar_resque_research_dead") then
-				return 1			
+			if db.actor:has_info("bar_resque_research_start") and
+			   db.actor:dont_has_info("bar_heli_scene_professor_die") then
+				 return 2 -- start chasing			
 			end
+			if db.actor:has_info("bar_heli_scene_professor_die") then
+			     return 3 -- relax
+			end	 
 			return 0
 		end
 	end
