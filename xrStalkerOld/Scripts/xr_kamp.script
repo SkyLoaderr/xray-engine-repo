@@ -222,7 +222,7 @@ function CKampManager:__init(path)
 						 story = false, post_story = false,
 						 pre_joke = true, joke = true, post_joke = true}
 	-- Таблица допустимых переходов между состояниями с вероятностями.
-	self.trans_kamp = { idle			= { idle = 40, pre_harmonica = 0, pre_guitar = 0, story = 15, pre_joke = 15 }, 
+	self.trans_kamp = { idle			= { idle = 40, pre_harmonica = 15, pre_guitar = 15, story = 15, pre_joke = 15 }, 
 						pre_harmonica	= { harmonica = 100 }, 
 						harmonica		= { post_harmonica = 100 }, 
 						post_harmonica	= { idle = 60, harmonica = 40 },
