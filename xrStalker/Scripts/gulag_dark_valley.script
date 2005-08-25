@@ -2420,9 +2420,9 @@ end
 
 --------------------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
-	if gulag_type == "val_lager_bandits"        then    return npc_community == "bandit"
-	elseif gulag_type == "val_monolith_base"    then    return npc_community == "monolith"
-	elseif gulag_type == "val_war_soldiers"     then    return npc_community == "military"
+	if      gulag_type == "val_lager_bandits"   then    return npc_community == "bandit"
+	elseif  gulag_type == "val_monolith_base"   then    return npc_community == "monolith"
+	elseif  gulag_type == "val_war_soldiers"    then    return npc_community == "military"
 	end    
 
 	return false
