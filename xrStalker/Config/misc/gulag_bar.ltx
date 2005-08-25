@@ -1049,10 +1049,13 @@ on_info = {+bar_resque_research_start} walker@bar_ecolog_professor_companion
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
 path_look = escape_hide_1_look
-on_signal = freedom_chase | nil %+bar_rescue_research_chasing_start%
-on_info = {+bar_resque_research_done} nil
+on_signal = freedom_chase | camper@bar_rescue_research_hide_1 %+bar_rescue_research_chasing_start%
 combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
 
+[camper@bar_rescue_research_hide_1]
+path_walk = escape_hide_1_walk
+path_look = escape_hide_1_look
+combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
 
 [death@ecolog_crush]
 on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_done +bar_resque_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_fail +bar_resque_research_corruped +bar_heli_scene_professor_die%, %+bar_resque_research_dead +bar_resque_research_corruped +bar_heli_scene_professor_die%
