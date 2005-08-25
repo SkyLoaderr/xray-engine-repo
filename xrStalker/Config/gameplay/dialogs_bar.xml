@@ -296,13 +296,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_ecolog_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_ecolog_dialog_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_ecolog_crush_professor_give_info_dp">
         <has_info>bar_resque_research_done</has_info>
         <phrase_list>
@@ -4530,6 +4523,13 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_ecolog_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_ecolog_dialog_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_ecolog_crush_professor_start">
         <phrase_list>
             <phrase id="1121">
@@ -4557,16 +4557,6 @@
             </phrase>
             <phrase id="1111">
                 <text>bar_ecolog_crush_professor_start_1111</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-                <next>7</next>
             </phrase>
             <phrase id="31">
                 <text>bar_ecolog_crush_professor_start_31</text>
@@ -4639,13 +4629,6 @@
                 <has_info>bar_fire_anomaly_forward</has_info>
                 <next>71</next>
             </phrase>
-            <phrase id="6">
-                <text></text>
-                <dont_has_info>bar_bandits_dead</dont_has_info>
-                <has_info>bar_rescue_research_chasing_end</has_info>
-                <has_info>bar_bandits_alive</has_info>
-                <next>61</next>
-            </phrase>
             <phrase id="21">
                 <text>bar_ecolog_crush_professor_start_21</text>
             </phrase>
@@ -4675,10 +4658,26 @@
                 <has_info>bar_rescue_research_chasing_start</has_info>
                 <next>51</next>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="6">
+                <text></text>
+                <dont_has_info>bar_bandits_dead</dont_has_info>
+                <has_info>bar_rescue_research_chasing_end</has_info>
+                <has_info>bar_bandits_alive</has_info>
+                <next>61</next>
+            </phrase>
             <phrase id="2">
                 <text></text>
                 <dont_has_info>bar_resque_research_done</dont_has_info>
-                <dont_has_info>bar_rescue_research_chasing_end</dont_has_info>
                 <has_info>bar_resque_research_start</has_info>
                 <next>21</next>
             </phrase>
