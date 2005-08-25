@@ -204,7 +204,7 @@ def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_bomber_wave1
-combat_ignore_cond  = always
+combat_ignore_cond  = {!check_fighting(808)} ;always
 danger              = danger@ignore
 
 [walker@pri_followers_bomber_wave1]
@@ -213,7 +213,7 @@ path_look           = wave1_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
-combat_ignore_cond  = always
+combat_ignore_cond  = {!check_fighting(808)} ;always
 
 ;--- BOMBER: WAVE2 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave2]
@@ -703,4 +703,6 @@ def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 
 ;--- Monsters ----------------------------------------------------------------------------------
-
+;--- Dogs ----------------------
+[logic@pri_dogs_nest1]
+active = nil
