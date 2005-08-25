@@ -58,7 +58,7 @@ CGamePersistent::CGamePersistent(void)
 }
 
 CGamePersistent::~CGamePersistent(void)
-{
+{	
 	CWeaponHUD::DestroySharedContainer();
 	FS.r_close					(pDemoFile);
 	Device.seqFrame.Remove		(this);
@@ -147,6 +147,7 @@ void CGamePersistent::OnGameStart()
 void CGamePersistent::OnGameEnd	()
 {
 	__super::OnGameEnd			();
+	CWeaponHUD::CleanSharedContainer();
 }
 
 void CGamePersistent::WeathersUpdate()
