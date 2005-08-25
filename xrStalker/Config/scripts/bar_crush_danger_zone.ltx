@@ -10,3 +10,7 @@ on_info = {+bar_freedom_defence_ecolog} sr_idle@ecolog_defence
 
 [sr_idle@ecolog_defence]
 on_timer = 3000 | nil %=bar_freedom_defence_ecolog%
+on_info = {+bar_rescue_research_start} sr_idle@help_kruglov
+
+[sr_idle@help_kruglov]
+on_actor_inside = %+bar_actor_helps_kruglov%
