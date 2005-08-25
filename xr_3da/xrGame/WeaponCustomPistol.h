@@ -13,10 +13,12 @@ private:
 public:
 					CWeaponCustomPistol	(LPCSTR name);
 	virtual			~CWeaponCustomPistol();
+	virtual	int		GetCurrentFireMode	() { return 1; };
 protected:
 	virtual void	FireEnd				();
 	virtual void	switch2_Fire		();
 	virtual void	OnAnimationEnd		();
+
 
 };
 

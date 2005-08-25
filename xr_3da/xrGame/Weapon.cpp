@@ -570,6 +570,8 @@ void CWeapon::shedule_Update	(u32 dT)
 
 void CWeapon::OnH_B_Independent	()
 {
+	RemoveShotEffector			();
+
 	inherited::OnH_B_Independent();
 
 	if (m_pHUD)
@@ -585,7 +587,6 @@ void CWeapon::OnH_B_Independent	()
 	m_bZoomMode					= false;
 	UpdateXForm					();
 
-	RemoveShotEffector			();
 }
 
 void CWeapon::OnH_A_Independent	()

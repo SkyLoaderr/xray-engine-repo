@@ -57,6 +57,8 @@ class SndShockEffector;
 class CActorFollowerMngr;
 class CGameTaskManager;
 
+class CCameraShotEffector;
+
 class	CActor: 
 	public CEntityAlive, 
 	public IInputReceiver,
@@ -701,10 +703,13 @@ public:	//. hack for MP test
 	ref_light					dbgmp_light						;
 
 public:
+	
 	virtual	void				on_weapon_shot_start			(CWeapon *weapon);
 	virtual	void				on_weapon_shot_stop				(CWeapon *weapon);
 	virtual	void				on_weapon_hide					(CWeapon *weapon);
 			Fvector				weapon_recoil_delta_angle		();
+protected:
+	virtual	void				update_camera					(CCameraShotEffector* effector);
 };
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

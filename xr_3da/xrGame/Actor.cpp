@@ -203,6 +203,7 @@ CActor::CActor() : CEntityAlive()
 	m_pLastHitter			= NULL;
 	m_pLastHittingWeapon	= NULL;
 	m_game_task_manager		= NULL;
+	//-----------------------------------------------------------------------------------
 }
 
 
@@ -238,6 +239,7 @@ CActor::~CActor()
 
 	xr_delete(m_anims);
 	xr_delete(m_vehicle_anims);
+	//-------------------------------------------------------------
 }
 
 void CActor::reinit	()
@@ -859,7 +861,9 @@ void CActor::UpdateCL	()
 	else 
 		cam_Update(dt, DEFAULT_FOV);
 */
+	Device.Statistic.TEST1.Begin		();
 	cam_Update(float(Device.dwTimeDelta)/1000.0f, currentFOV());
+	Device.Statistic.TEST1.End		();
 
 	if(pWeapon)
 	{
@@ -916,6 +920,7 @@ void CActor::UpdateCL	()
 		else
 			xr_delete(m_sndShockEffector);
 	}
+	//-------------------------------------------
 }
 
 void CActor::shedule_Update	(u32 DT)
@@ -1610,14 +1615,37 @@ bool CActor::use_center_to_aim			() const
 }
 
 // shot effector stuff
-void CActor::on_weapon_shot_start		(CWeapon *weapon)
+void CActor::update_camera (CCameraShotEffector* effector)
 {
+	if (!effector) return;
+
+	CCameraBase* pACam = cam_FirstEye();
+	if (!pACam) return;
+
+	if (pACam->bClampPitch)
+	{
+		while (pACam->pitch < pACam->lim_pitch[0])
+			pACam->pitch += PI_MUL_2;
+		while (pACam->pitch > pACam->lim_pitch[1])
+			pACam->pitch -= PI_MUL_2;
+	};
+
+	effector->ApplyLastAngles(&(pACam->pitch), &(pACam->yaw));
+
+	if (pACam->bClampYaw)	clamp(pACam->yaw,pACam->lim_yaw[0],pACam->lim_yaw[1]);
+	if (pACam->bClampPitch)	clamp(pACam->pitch,pACam->lim_pitch[0],pACam->lim_pitch[1]);
+
+}
+void CActor::on_weapon_shot_start		(CWeapon *weapon)
+{	
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (weapon);
+	//*
 	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>	(EffectorManager().GetEffector(eCEShot)); 
 	if (!effector) {
 		effector					= 
 			(CCameraShotEffector*)EffectorManager().AddEffector(
 				xr_new<
-					CCameraShotEffectorX
+					CCameraShotEffector
 				>
 				(
 					weapon->camMaxAngle,
@@ -1628,23 +1656,54 @@ void CActor::on_weapon_shot_start		(CWeapon *weapon)
 				)
 			);
 	}
-
 	R_ASSERT						(effector);
+
+	if (pWM)
+	{
+		if (effector->IsSingleShot())
+			update_camera(effector);
+
+		if (pWM->GetCurrentFireMode() == 1)
+		{
+			effector->SetSingleShoot(TRUE);
+		}
+		else
+		{
+			effector->SetSingleShoot(FALSE);
+		}
+	};
 
 	effector->SetRndSeed			(GetShotRndSeed());
 	effector->SetActor				(this);
 	effector->Shot					(weapon->camDispersion + weapon->camDispersionInc*float(weapon->ShotsFired()));
+	
+	if (pWM)
+	{
+		if (pWM->GetCurrentFireMode() != 1)
+		{
+			effector->SetActive(FALSE);
+			update_camera(effector);
+		}		
+	}
 }
 
 void CActor::on_weapon_shot_stop		(CWeapon *weapon)
 {
+	//---------------------------------------------
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(EffectorManager().GetEffector(eCEShot)); 
+	if (effector && effector->IsActive())
+	{
+		if (effector->IsSingleShot())
+			update_camera(effector);
+	}
+	//---------------------------------------------
 	EffectorManager().RemoveEffector(eCEShot);
 }
 
 void CActor::on_weapon_hide				(CWeapon *weapon)
 {
 	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(EffectorManager().GetEffector(eCEShot)); 
-	if (effector)
+	if (effector && !effector->IsActive())
 		effector->Clear				();
 }
 

@@ -62,27 +62,17 @@ void CWeapon::AddShotEffector		()
 
 void  CWeapon::RemoveShotEffector	()
 {
-	if (m_pInventory)
-		inventory_owner().on_weapon_shot_stop	(this);
-/**
-	CActor* pActor = smart_cast<CActor*>(H_Parent());
-	if(pActor)
-		pActor->EffectorManager().RemoveEffector	(eCEShot);
-/**/
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(H_Parent());
+	if (pInventoryOwner)
+		pInventoryOwner->on_weapon_shot_stop	(this);
 }
 
 void	CWeapon::ClearShotEffector	()
 {
-	if (m_pInventory)
-		inventory_owner().on_weapon_hide	(this);
-/**
-	CActor* pActor = smart_cast<CActor*>(H_Parent());
-	if(pActor)
-	{
-		CCameraShotEffector* S		= smart_cast<CCameraShotEffector*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
-		if (S) S->Clear();
-	};
-/**/
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(H_Parent());
+	if (pInventoryOwner)
+		pInventoryOwner->on_weapon_hide	(this);
+
 };
 
 /**
