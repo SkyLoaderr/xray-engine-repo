@@ -29,9 +29,9 @@ max_power_rpm     		= 4500        	; (nominal rpm ) on this rpm value engine pow
 max_torque_rpm    		= 4000.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.02
-power_decrement_factor	= 0.02 ;0.02
-rpm_increment_factor	= 0.05
-rpm_decrement_factor	= 0.05
+power_decrement_factor	= 0.02
+rpm_increment_factor	= 0.06
+rpm_decrement_factor	= 0.06
 m_power_neutral_factor	= 0.50
 ; additional engine parameters
 
@@ -71,12 +71,12 @@ headlights  = f1
 
 [f1]
 bone               		= right_light
-color              		= 0.8,0.8,0.8,0.5
-range              		= 20
-cone_angle         		= 80
+color              		= 1.0,1.0,1.0,0.8 ;0.8,0.8,0.8,0.5
+range              		= 25
+cone_angle         		= 90
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
-glow_radius        		= 0.5
+glow_radius        		= 1.0
 
 [car_sound]
 snd_volume         			= 1.0
@@ -238,14 +238,14 @@ break_torque			= 0.015		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 20		;
 spring_factor           = 0.1		;
-friction_factor         = 1.8		;
+friction_factor         = 1.7		;
 
 [back_right_wheel]
 break_torque			= 0.015		; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 20		;
 spring_factor           = 0.1		;
-friction_factor         = 1.8		;
+friction_factor         = 1.7		;
 
 ;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
