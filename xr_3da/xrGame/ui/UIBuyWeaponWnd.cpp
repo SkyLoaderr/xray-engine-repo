@@ -1642,10 +1642,9 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	// Need to delete copy before adding
 	if (pDDItemMP->HasAmountControl())
-	{
         pDDItemMP->OnReturn();
-        this_inventory->UIBagWnd.DeleteCopy(pDDItemMP);
-	}
+	this_inventory->UIBagWnd.DeleteCopy(pDDItemMP);
+
 	pDDItemMP->GetParent()->DetachChild(pDDItemMP);
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
 	pDDItemMP->Rescale(pDDItemMP->GetOwner()->GetItemsScaleX(), pDDItemMP->GetOwner()->GetItemsScaleY());
