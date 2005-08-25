@@ -6,7 +6,7 @@ function proceed()
 	   actor:dont_has_info("bar_ecolog_research_corrupted") and
 	   actor:object("bar_ecolog_flash") 
 	then
-		if actor:has_info("bar_resque_research_corruped") then
+		if actor:has_info("bar_rescue_research_corruped") then
 			actor:give_info_portion("bar_ecolog_research_corrupted")
 		else
 			actor:give_info_portion("bar_ecolog_research_normal")
@@ -30,7 +30,7 @@ function process_info_portion(info_id)
 	elseif info_id == "bar_heli_scene_volkodav_die" then
 		level_tasks.remove_location_safe(509, "green_location")
 		return true		
-	elseif info_id == "bar_resque_research_start" then
+	elseif info_id == "bar_rescue_research_start" then
 		level_tasks.remove_location_safe(509, "green_location")
 		return true		
 	elseif info_id == "bar_kill_professor_start" then
@@ -40,7 +40,7 @@ function process_info_portion(info_id)
 	elseif info_id == "bar_heli_scene_professor_die" then
 		level_tasks.remove_location_safe(503, "green_location")
 		return true		
-	elseif info_id == "bar_resque_research_start" then
+	elseif info_id == "bar_rescue_research_start" then
 		level_tasks.remove_location_safe(503, "green_location")
 		return true		
 	elseif info_id == "bar_kill_professor_start" then
