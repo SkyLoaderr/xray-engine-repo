@@ -26,12 +26,12 @@ fuel_tank         		= 30.         	; L
 fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 10.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 4000.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 3900.       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.03
-power_decrement_factor	= 0.03
-rpm_increment_factor	= 0.05
-rpm_decrement_factor	= 0.05
+power_increment_factor	= 0.01
+power_decrement_factor	= 0.02
+rpm_increment_factor	= 0.025
+rpm_decrement_factor	= 0.025
 m_power_neutral_factor	= 0.50
 ; additional engine parameters
 
@@ -72,11 +72,11 @@ headlights  = f1
 [f1]
 bone               		= right_light
 color              		= 2.0,2.0,2.0,0.5 ;0.8,0.8,0.8,0.5
-range              		= 20
+range              		= 30
 cone_angle         		= 75
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
-glow_radius        		= 1.0
+glow_radius        		= 1.5
 
 [car_sound]
 snd_volume         			= 1.0
