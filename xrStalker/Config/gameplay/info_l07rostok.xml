@@ -128,13 +128,13 @@
 	<info_portion id="bar_ecolog_crush_heli_start"></info_portion>
 	<info_portion id="bar_ecolog_crush_heli_down"></info_portion>
 	
-	<info_portion id="bar_resque_research_start">
+	<info_portion id="bar_rescue_research_start">
 		<task>bar_resque_information</task>
 	</info_portion> 
-	<info_portion id="bar_resque_research_done"></info_portion>
-	<info_portion id="bar_resque_research_fail"></info_portion>	
-	<info_portion id="bar_resque_research_dead"></info_portion>
-	<info_portion id="bar_resque_research_reward"></info_portion>
+	<info_portion id="bar_rescue_research_done"></info_portion>
+	<info_portion id="bar_rescue_research_fail"></info_portion>	
+	<info_portion id="bar_rescue_research_dead"></info_portion>
+	<info_portion id="bar_rescue_research_reward"></info_portion>
 	<info_portion id="bar_actor_heared_freedom_talk"></info_portion>
 	
     <info_portion id="bar_spawn_heli_psevdodogs"></info_portion>
