@@ -4555,10 +4555,6 @@
                 <next>111</next>
                 <next>112</next>
             </phrase>
-            <phrase id="112">
-                <text>bar_ecolog_crush_professor_start_112</text>
-                <next>1121</next>
-            </phrase>
             <phrase id="1111">
                 <text>bar_ecolog_crush_professor_start_1111</text>
             </phrase>
@@ -4610,34 +4606,10 @@
                 <has_info>bar_resque_research_start</has_info>
                 <next>31</next>
             </phrase>
-            <phrase id="21">
-                <text>bar_ecolog_crush_professor_start_21</text>
-            </phrase>
-            <phrase id="712">
-                <text>bar_ecolog_crush_professor_start_712</text>
-                <give_info>bar_go_through_anomaly</give_info>
-            </phrase>
-            <phrase id="711">
-                <text>bar_ecolog_crush_professor_start_711</text>
-                <give_info>bar_go_through_anomaly</give_info>
-            </phrase>
             <phrase id="71">
                 <text>bar_ecolog_crush_professor_start_71</text>
                 <next>711</next>
                 <next>712</next>
-            </phrase>
-            <phrase id="7">
-                <text></text>
-                <dont_has_info>bar_resque_research_done</dont_has_info>
-                <has_info>bar_fire_anomaly_forward</has_info>
-                <next>71</next>
-            </phrase>
-            <phrase id="6">
-                <text></text>
-                <dont_has_info>bar_bandits_dead</dont_has_info>
-                <has_info>bar_rescue_research_chasing_end</has_info>
-                <has_info>bar_bandits_alive</has_info>
-                <next>61</next>
             </phrase>
             <phrase id="611">
                 <text>bar_ecolog_crush_professor_start_611</text>
@@ -4652,6 +4624,41 @@
                 <text>bar_ecolog_crush_professor_start_613</text>
                 <give_info>bar_bandits_dead</give_info>
                 <next>6131</next>
+            </phrase>
+            <phrase id="712">
+                <text>bar_ecolog_crush_professor_start_712</text>
+                <give_info>bar_go_through_anomaly</give_info>
+            </phrase>
+            <phrase id="711">
+                <text>bar_ecolog_crush_professor_start_711</text>
+                <give_info>bar_go_through_anomaly</give_info>
+            </phrase>
+            <phrase id="7">
+                <text></text>
+                <dont_has_info>bar_resque_research_done</dont_has_info>
+                <has_info>bar_fire_anomaly_forward</has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="6">
+                <text></text>
+                <dont_has_info>bar_bandits_dead</dont_has_info>
+                <has_info>bar_rescue_research_chasing_end</has_info>
+                <has_info>bar_bandits_alive</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_ecolog_crush_professor_start_21</text>
+            </phrase>
+            <phrase id="112">
+                <text>bar_ecolog_crush_professor_start_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_ecolog_crush_professor_start_111</text>
+                <give_info>bar_resque_research_start</give_info>
+                <give_info>bar_ecolog_crush_actor_enemy</give_info>
+                <give_info>bar_freedom_attack_ecolog</give_info>
+                <next>1111</next>
             </phrase>
             <phrase id="511">
                 <text>bar_ecolog_crush_professor_start_511</text>
@@ -4668,16 +4675,10 @@
                 <has_info>bar_rescue_research_chasing_start</has_info>
                 <next>51</next>
             </phrase>
-            <phrase id="111">
-                <text>bar_ecolog_crush_professor_start_111</text>
-                <give_info>bar_resque_research_start</give_info>
-                <give_info>bar_ecolog_crush_actor_enemy</give_info>
-                <give_info>bar_freedom_attack_ecolog</give_info>
-                <next>1111</next>
-            </phrase>
             <phrase id="2">
                 <text></text>
                 <dont_has_info>bar_resque_research_done</dont_has_info>
+                <dont_has_info>bar_rescue_research_chasing_end</dont_has_info>
                 <has_info>bar_resque_research_start</has_info>
                 <next>21</next>
             </phrase>
