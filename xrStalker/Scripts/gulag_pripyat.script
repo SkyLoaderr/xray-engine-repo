@@ -325,7 +325,7 @@ function load_states(gname, type)
 		    local state = gulag.state
 		    local actor = db.actor
 		    if state == state_kamp and actor:has_info("pri_followers_start") then
-		        return state_wave1 --state_wave1
+		        return state_wave3 --state_wave1
 		    end
 		    if state == state_wave1 and
 		       actor:has_info("pri_wave1_monolith1_dead") and

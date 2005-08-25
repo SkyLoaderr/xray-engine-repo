@@ -160,11 +160,11 @@ function action_car:reset_scheme(loading)
 	    else
 		    self.target_walk_pt = self:get_nearest_walkpoint()
 	    end
-	    --if self:at_target_walkpoint() then
-		--    self:walk_arrival_callback(self.target_walk_pt)
-	    --end
+	    if self:at_target_walkpoint() then
+		    self:walk_arrival_callback(self.target_walk_pt)
+	    end
     	
-	    --self:go_to_walkpoint(self.target_walk_pt)
+	    self:go_to_walkpoint(self.target_walk_pt)
 	else
 	    self.state_moving = state_moving_stop
 	end
@@ -218,6 +218,7 @@ function action_car:reset_scheme(loading)
 	            end
 	        end
 	    end
+
 	    if self.st.on_target_vis then
 	        vis = self.st.on_target_vis
 	        if vis.v1 == "actor" then
@@ -260,6 +261,18 @@ function action_car:reset_scheme(loading)
 	    self.fire_pt_count = 0
 	    
 	    self.def_fire_time = self.st.fire_time
+	    if self.st.fire_rep then
+	        if self.st.fire_rep == "inf" then
+	            self.def_fire_rep = -1
+	        else
+	            local c = tonumber(self.st.fire_rep)
+		        self.def_fire_rep = if_then_else(c > 0, c, 0)
+		    end
+		else
+		    self.def_fire_rep = 0
+	    end
+	    self.fire_rep = self.def_fire_rep
+	    printf("car <fire>: def_rep = %d (%s)", self.fire_rep, utils.to_str(self.st.fire_rep))
 	    
 	    -- path_fire
 	    if self.state_firetarget == state_firetarget_points and self.st.path_fire then
@@ -306,13 +319,13 @@ function action_car:reset_scheme(loading)
 	    end
 	end
 	
-	if self.st.path_walk then
-	    if self:at_target_walkpoint() and self.state_firetarget == state_none then
-		    self:walk_arrival_callback(self.target_walk_pt)
-	    end
-    	
-	    self:go_to_walkpoint(self.target_walk_pt)
-    end
+	--if self.st.path_walk then
+	--    if self:at_target_walkpoint() and self.state_firetarget == state_none then
+	--	    self:walk_arrival_callback(self.target_walk_pt)
+	--    end
+    --	
+	--    self:go_to_walkpoint(self.target_walk_pt)
+    --end
 
 	self.object:set_fastcall(self.fastcall, self)
 end
@@ -555,11 +568,11 @@ function action_car:walk_arrival_callback(index)
 		            self.fire_rep = if_then_else(c > 0, c, 0)
 		        end
 	        else
-	            self.fire_rep = 0
+	            self.fire_rep = self.def_fire_rep
 	        end
 	    else
 	        self.fire_wait = false
-	        self.fire_rep = 0
+	        self.fire_rep = self.def_fire_rep
 	    end
         printf("car <fire>: fire_wait = %s", if_then_else(self.fire_wait, "true", "false"))
         printf("car <fire>: fire_rep = %d", self.fire_rep)
@@ -568,24 +581,30 @@ function action_car:walk_arrival_callback(index)
 	-- Выбрать следующую точку езды:
 	self.target_walk_pt = self:get_next_walkpoint()
 	printf("car <move>: target_walk_pt = %s.", utils.to_str(self.target_walk_pt))
-	if not self.target_walk_pt then
-	    printf("car <move>: stop moving.")
-	    self:stop_car()
+	--if not self.target_walk_pt then
+	--    printf("car <move>: stop moving.")
+	--    self:stop_car()
 		-- Остановить машину
 	    --if self.state_cannon == state_cannon_stop then
 		--    xr_logic.mob_capture(self.object, true)
 		--end
 		--action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
 		--self.state_moving = state_moving_end
-		return
-	end
+	--    return
+	--end
 
-	-- Если эта точка рядом и уже приехали - не ждать апдейта, чтобы вызвать callback
-	if self:at_target_walkpoint() then
-		self:walk_arrival_callback(self.target_walk_pt)
-    else
-        --self.target_dist = -1
-	    self:go_to_walkpoint(self.target_walk_pt)
+    if self.target_walk_pt then
+	    -- Если эта точка рядом и уже приехали - не ждать апдейта, чтобы вызвать callback
+	    if self:at_target_walkpoint() then
+		    self:walk_arrival_callback(self.target_walk_pt)
+        else
+            --self.target_dist = -1
+	        self:go_to_walkpoint(self.target_walk_pt)
+	    end
+	else
+	    printf("car <move>: stop moving.")
+	    self:stop_car()
+	    self.state_moving = state_moving_stop
 	end
 end
 
@@ -594,6 +613,8 @@ end
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
 
 function action_car:change_fire_pts()
+	printf("car <fire>: action_car:change_fire_pts()")
+
 	self.state_cannon = state_none
 	self.state_shooting = state_none
 	
@@ -604,32 +625,40 @@ function action_car:change_fire_pts()
 	self.fire_rot_dir = 1
 	self.fire_start_time = 0
 
-    if not self.path_fire or not self.target_walk_pt then return end
+    if not self.path_fire then return end
     
-	-- Значение флагов огневых точек, котые будем искать:
-	local fire_flags = self.path_walk_info[self.target_walk_pt].flags
-	
-	if fire_flags:get() == 0 then
-		return
-	end
+    local fire_idx
+    if self.target_walk_pt then
+	    -- Значение флагов огневых точек, котые будем искать:
+	    local fire_flags = self.path_walk_info[self.target_walk_pt].flags
+    	
+	    if fire_flags:get() == 0 then
+		    return
+	    end
 
-    local this_val
-	for fire_idx = 0, self.path_fire:count() - 1 do
-		this_val = self.path_fire_info[fire_idx].flags
-		if this_val:equal(fire_flags) then
+        local this_val
+	    for fire_idx = 0, self.path_fire:count() - 1 do
+		    this_val = self.path_fire_info[fire_idx].flags
+		    if this_val:equal(fire_flags) then
+			    table.insert(self.fire_pt_arr, fire_idx)
+			    self.fire_pt_count = self.fire_pt_count + 1
+		    end
+	    end
+	else
+	    for fire_idx = 0, self.path_fire:count() - 1 do
 			table.insert(self.fire_pt_arr, fire_idx)
-			self.fire_pt_count = self.fire_pt_count + 1
-		end
+	    end
+	    self.fire_pt_count = self.path_fire:count()
 	end
 	
+	printf("car <fire>: points")
+	print_table(self.fire_pt_arr)
+
 	if self.fire_pt_count == 0 then
 	    self.state_cannon = state_cannon_stop
 	    return
 	end
 	
-	printf("car <fire>: action_car:change_fire_pts()")
-	print_table(self.fire_pt_arr)
-
 	--if self.fire_pt_count > 0 then
 	--    self.target_fire_pt_idx = 0
 	--    self.target_fire_pt = self.path_fire:point(self.fire_pt_arr[0])
@@ -639,28 +668,28 @@ end
 function action_car:get_next_firepoint()
     if self.fire_pt_count < 1 then return nil end
 
-    printf("car <fire>: action_car:get_next_firepoint()")
+    printf("car <fire>: action_car:get_next_firepoint(%d,%d,%d)", self.target_fire_pt_idx, self.fire_pt_count, self.fire_rep)
     local pt_idx
     if self.target_fire_pt_idx > 0 then -- not first time
         if self.fire_pt_count > 1 then -- we have at least 2 point to switch
             pt_idx = self.target_fire_pt_idx + self.fire_rot_dir
             if (pt_idx < 1 or pt_idx > self.fire_pt_count) then
                 self.fire_rot_dir = -self.fire_rot_dir -- change rotate direction [-1,1]
-                --printf("car <fire>: changing direction")
-                if self.fire_rep > 0 then
+                printf("car <fire>: changing direction")
+                if self.fire_rep == -1 then
+                    pt_idx = self.target_fire_pt_idx + self.fire_rot_dir
+                elseif self.fire_rep > 0 then
                     pt_idx = self.target_fire_pt_idx + self.fire_rot_dir
                     self.fire_rep = self.fire_rep - 1
-                elseif self.fire_rep == -1 then
-                    pt_idx = self.target_fire_pt_idx + self.fire_rot_dir
                 else
                     pt_idx = 0
                 end
             end
+        elseif self.fire_rep == -1 then -- left same point in the infinity loop
+            pt_idx = 1
         elseif self.fire_rep > 0 then -- left same point if loop defined
             pt_idx = 1
             self.fire_rep = self.fire_rep - 1
-        elseif self.fire_rep == -1 then -- left same point in the infinity loop
-            pt_idx = 1
         end
     else
         pt_idx = 1
@@ -814,6 +843,7 @@ end
 function action_car:set_signal(sig)
 	local stor = db.storage[self.object:id()]
 	stor[stor.active_scheme].signals[sig] = true
+	printf("car <sig>: %s", sig)
 end
 
 function angle_xz(npc, target_pos)
@@ -852,6 +882,21 @@ function action_car:update(delta)
 	end
 end
 
+function action_car:destroy_car()
+	self.state_moving = state_moving_end
+	self:stop_car()
+	self.state_cannon = state_none
+	self.state_firetarget = state_none
+	self.state_shooting = state_none
+	self.car:Action(CCar.eWpnAutoFire, 0)
+	self:set_shooting(self.state_shooting)
+	xr_logic.mob_release(self.object)
+	if self.st.on_death_info ~= nil then
+	    db.actor:give_info_portion(self.st.on_death_info)
+	    printf("car <death>: give info")
+	end
+end
+
 -- Вернуть true, если апдейты больше не нужны
 function action_car:fast_update()
     --printf("car <state>: action_car:update(): state=%d", self.state_moving)
@@ -864,16 +909,7 @@ function action_car:fast_update()
 	
 	if self.car:GetfHealth() <= 0 then
 	    printf("car <state>: killed.")
-	    self.state_moving = state_moving_end
-	    self:stop_car()
-	    self.state_cannon = state_none
-	    self.state_firetarget = state_none
-	    self.state_shooting = state_none
-	    self:set_shooting(self.state_shooting)
-	    xr_logic.mob_release(self.object)
-	    if self.st.on_death_info ~= nil then
-	        db.actor:give_info_portion(self.st.on_death_info)
-	    end
+	    self:destroy_car()
 	    return true
 	end
 	
@@ -897,10 +933,13 @@ function action_car:fast_update()
 	if self.state_moving == state_moving_end and self.state_cannon == state_cannon_stop then
 		if xr_logic.mob_captured(self.object) and not self.object:action() then
 		    --printf("car <state>: stop fast updating. moving(%s) cannon(%s)", utils.to_str(self.state_moving), utils.to_str(self.state_cannon))
-			xr_logic.mob_release(self.object)
-	        if self.st.on_death_info ~= nil then
-	            db.actor:give_info_portion(self.st.on_death_info)
-	        end
+			--xr_logic.mob_release(self.object)
+	        --if self.st.on_death_info ~= nil then
+	        --    printf("car <death>: stopped")
+	        --    db.actor:give_info_portion(self.st.on_death_info)
+	        --end
+	        printf("car <state>: stopped")
+	        self:destroy_car()
 			return true -- апдейты больше не нужны
 		end
 		return false
@@ -960,7 +999,7 @@ function action_car:fast_update()
 	if self.hasWeapon then
 	    --printf("car <fire>: target(%d)", self.state_firetarget)
 		if self.on_target_vis and self.on_target_vis.v1:alive() and self.car:IsObjectVisible(self.on_target_vis.v1) then
-	        printf("car <vis>: try")
+	        --printf("car <vis>: try")
 		    local new_section = xr_logic.pick_section_from_condlist(db.actor, self.object, self.on_target_vis.condlist)
 		    if new_section then
 	            printf("car <vis>: switch to section [%s]", new_section)
@@ -969,7 +1008,7 @@ function action_car:fast_update()
 		end
 
 		if self.on_target_nvis and self.on_target_nvis.v1:alive() and not self.car:IsObjectVisible(self.on_target_nvis.v1) then
-	        printf("car <nvis>: try")
+	        --printf("car <nvis>: try")
 		    local new_section = xr_logic.pick_section_from_condlist(db.actor, self.object, self.on_target_nvis.condlist)
 		    if new_section then
 	            printf("car <nvis>: switch to section [%s]", new_section)
@@ -979,11 +1018,11 @@ function action_car:fast_update()
 
 	    if self.state_firetarget == state_firetarget_points then
 	        if self.fire_pt_count > 0 and self.state_cannon ~= state_cannon_stop then
-	            printf("car <fire>: shooting points")
+	            --printf("car <fire>: shooting points")
 	            if self.state_cannon == state_cannon_delay then
 	                if self.fire_start_time + self.fire_time < time_global() then
 	                    --printf("car <fire>: stop delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
-		                --printf("car <fire>: 1.new fire point.")
+		                printf("car <fire>: 1.new fire point.")
 	                    self:fire_arrival_callback(self.target_fire_pt_idx)
 	                else
 	                    printf("car <fire>: delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
@@ -1055,7 +1094,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk        = utils.cfg_get_string  (ini, section, "path_walk",         npc, false, gulag_name)
 	st.path_fire        = utils.cfg_get_string  (ini, section, "path_fire",         npc, false, gulag_name, nil)
 	st.auto_fire        = utils.cfg_get_bool    (ini, section, "auto_fire",         npc, false, false)
-	st.fire_time        = utils.cfg_get_string  (ini, section, "fire_time",         npc, false, def_min_fire_time)
+	st.fire_time        = utils.cfg_get_number  (ini, section, "fire_time",         npc, false, def_min_fire_time)
+	st.fire_rep         = utils.cfg_get_string  (ini, section, "fire_repeat",       npc, false, gulag_name, nil)
 	st.fire_target      = utils.cfg_get_string  (ini, section, "target",            npc, false, gulag_name, "points")
 	st.nonscript_usable = utils.cfg_get_bool    (ini, section, "nonscript_usable",  npc, false)
 	st.invulnerable     = utils.cfg_get_bool    (ini, section, "invulnerable",      npc, false, false)
