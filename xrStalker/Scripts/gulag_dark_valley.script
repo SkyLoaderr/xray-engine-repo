@@ -11,31 +11,29 @@ local state_fight = 1
 
 function load_job(sj, gname, type, squad, groups)
     ------Stalkers-------------------------------------------------------
-	if type == "val_lager_bandits"      then    return load_job_lager_bandits   (sj, gname, type, squad, groups)
-	elseif type == "val_monolith_base"  then    return load_job_monolith_base   (sj, gname, type, squad, groups)
-	elseif type == "val_war_soldiers"   then    return load_job_war_soldiers    (sj, gname, type, squad, groups)
+	if      type == "val_lager_bandits" then    load_job_lager_bandits  (sj, gname, type, squad, groups)
+	elseif  type == "val_monolith_base" then    load_job_monolith_base  (sj, gname, type, squad, groups)
+	elseif  type == "val_war_soldiers"  then    load_job_war_soldiers   (sj, gname, type, squad, groups)
     ------Monsters-------------------------------------------------------
     --- Dogs
-	elseif type == "val_dogs_nest1"     then    return load_job_dogs_nest1      (sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest2"     then    return load_job_dogs_nest2      (sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest3"     then    return load_job_dogs_nest3      (sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest4"     then    return load_job_dogs_nest4      (sj, gname, type, squad, groups)
-	elseif type == "val_dogs_nest5"     then    return load_job_dogs_nest5      (sj, gname, type, squad, groups)
+	elseif  type == "val_dogs_nest1"    then    load_job_dogs_nest1     (sj, gname, type, squad, groups)
+	elseif  type == "val_dogs_nest2"    then    load_job_dogs_nest2     (sj, gname, type, squad, groups)
+	elseif  type == "val_dogs_nest3"    then    load_job_dogs_nest3     (sj, gname, type, squad, groups)
+	elseif  type == "val_dogs_nest4"    then    load_job_dogs_nest4     (sj, gname, type, squad, groups)
+	elseif  type == "val_dogs_nest5"    then    load_job_dogs_nest5     (sj, gname, type, squad, groups)
 	--- Fleshes
-	elseif type == "val_fleshes_nest1"  then    return load_job_fleshes_nest1   (sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest2"  then    return load_job_fleshes_nest2   (sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest3"  then    return load_job_fleshes_nest3   (sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest4"  then    return load_job_fleshes_nest4   (sj, gname, type, squad, groups)
-	elseif type == "val_fleshes_nest5"  then    return load_job_fleshes_nest5   (sj, gname, type, squad, groups)
+	elseif  type == "val_fleshes_nest1" then    load_job_fleshes_nest1  (sj, gname, type, squad, groups)
+	elseif  type == "val_fleshes_nest2" then    load_job_fleshes_nest2  (sj, gname, type, squad, groups)
+	elseif  type == "val_fleshes_nest3" then    load_job_fleshes_nest3  (sj, gname, type, squad, groups)
+	elseif  type == "val_fleshes_nest4" then    load_job_fleshes_nest4  (sj, gname, type, squad, groups)
+	elseif  type == "val_fleshes_nest5" then    load_job_fleshes_nest5  (sj, gname, type, squad, groups)
 	--- Boars
-	elseif type == "val_boars_nest1"    then    return load_job_boars_nest1     (sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest2"    then    return load_job_boars_nest2     (sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest3"    then    return load_job_boars_nest3     (sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest4"    then    return load_job_boars_nest4     (sj, gname, type, squad, groups)
-	elseif type == "val_boars_nest5"    then    return load_job_boars_nest5     (sj, gname, type, squad, groups)
+	elseif  type == "val_boars_nest1"   then    load_job_boars_nest1    (sj, gname, type, squad, groups)
+	elseif  type == "val_boars_nest2"   then    load_job_boars_nest2    (sj, gname, type, squad, groups)
+	elseif  type == "val_boars_nest3"   then    load_job_boars_nest3    (sj, gname, type, squad, groups)
+	elseif  type == "val_boars_nest4"   then    load_job_boars_nest4    (sj, gname, type, squad, groups)
+	elseif  type == "val_boars_nest5"   then    load_job_boars_nest5    (sj, gname, type, squad, groups)
 	end
-	
-	return
 end
 
 function lb_predicate1(obj) 
@@ -2422,47 +2420,32 @@ end
 
 --------------------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
-	if gulag_type == "val_lager_bandits" then
-		return npc_community == "bandit"
-	end
-	
-	if gulag_type == "val_monolith_base" then
-	    return npc_community == "monolith"
-	end    
-
-	if gulag_type == "val_war_soldiers" then
-	    return npc_community == "military"
+	if gulag_type == "val_lager_bandits"        then    return npc_community == "bandit"
+	elseif gulag_type == "val_monolith_base"    then    return npc_community == "monolith"
+	elseif gulag_type == "val_war_soldiers"     then    return npc_community == "military"
 	end    
 
 	return false
 end
 
 function checkMonster(npc_community, gulag_type)
-    if gulag_type == "val_dogs_nest1" or
-       gulag_type == "val_dogs_nest2" or
-       gulag_type == "val_dogs_nest3" or
-       gulag_type == "val_dogs_nest4" or
-       gulag_type == "val_dogs_nest5"
-    then
-	    return npc_community == "dog"
-    end
+    if      gulag_type == "val_dogs_nest1" or
+            gulag_type == "val_dogs_nest2" or
+            gulag_type == "val_dogs_nest3" or
+            gulag_type == "val_dogs_nest4" or
+            gulag_type == "val_dogs_nest5"      then return npc_community == "dog"
 
-    if gulag_type == "val_fleshes_nest1" or
-       gulag_type == "val_fleshes_nest2" or
-       gulag_type == "val_fleshes_nest3" or
-       gulag_type == "val_fleshes_nest4" or
-       gulag_type == "val_fleshes_nest5"
-    then
-	    return npc_community == "flesh"
-    end
+    elseif  gulag_type == "val_fleshes_nest1" or
+            gulag_type == "val_fleshes_nest2" or
+            gulag_type == "val_fleshes_nest3" or
+            gulag_type == "val_fleshes_nest4" or
+            gulag_type == "val_fleshes_nest5"   then return npc_community == "flesh"
 
-    if gulag_type == "val_boars_nest1" or
-       gulag_type == "val_boars_nest2" or
-       gulag_type == "val_boars_nest3" or
-       gulag_type == "val_boars_nest4" or
-       gulag_type == "val_boars_nest5"
-    then
-	    return npc_community == "boar"
+    elseif  gulag_type == "val_boars_nest1" or
+            gulag_type == "val_boars_nest2" or
+            gulag_type == "val_boars_nest3" or
+            gulag_type == "val_boars_nest4" or
+            gulag_type == "val_boars_nest5"     then return npc_community == "boar"
     end
 
     return false
