@@ -186,15 +186,3 @@ function set_scheme (obj, ini, scheme, section, gulag_name)
     end   
             
 end
-
-    --function pause_path(boolean);
-    --function play_at_pos(const vector&);
-    --function move_to(const vector&, const vector&);
-    --function looped() const;
-    --function load_path(string);
-    --function start_path(boolean);
-    --function stop();
-    --function stop_path();
-    --function stop_deffered();
-    --function play();
-    --function playing() const;
