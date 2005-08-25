@@ -114,6 +114,8 @@ public:
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 	virtual		void				OnRankChanged			();
 	virtual		void				OnTeamChanged			();
+
+	virtual		void				OnSwitchPhase_InProgress();
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

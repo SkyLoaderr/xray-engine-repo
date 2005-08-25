@@ -473,6 +473,12 @@ void				game_cl_TeamDeathmatch::LoadSndMessages				()
 	LoadSndMessage("tdm_snd_messages", "team2_lead", ID_TEAM2_LEAD);
 };
 
+void				game_cl_TeamDeathmatch::OnSwitchPhase_InProgress()
+{
+	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
+	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
+};
+
 void				game_cl_TeamDeathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 {
 	inherited::OnSwitchPhase(old_phase, new_phase);

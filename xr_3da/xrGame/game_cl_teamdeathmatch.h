@@ -60,11 +60,13 @@ protected:
 
 	virtual	bool		OnKeyboardPress		(int key);
 
-	virtual		void				OnRender				();
-	virtual		bool				IsEnemy					(game_PlayerState* ps);
+	virtual		void	OnRender				();
+	virtual		bool	IsEnemy					(game_PlayerState* ps);
 
-	virtual void			UpdateMapLocations		();
-	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
+	virtual void		UpdateMapLocations		();
+	virtual	void		OnSwitchPhase			(u32 old_phase, u32 new_phase);	
+
+	virtual	void		OnSwitchPhase_InProgress();
 };
 
 IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)

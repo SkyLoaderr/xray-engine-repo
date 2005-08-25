@@ -726,6 +726,11 @@ void				game_cl_Deathmatch::LoadSndMessages				()
 	LoadSndMessage("dm_snd_messages", "you_won", ID_YOU_WON);
 };
 
+void				game_cl_Deathmatch::OnSwitchPhase_InProgress()
+{
+	LoadTeamDefaultPresetItems(TEAM0_MENU, pBuyMenuTeam0, &PresetItemsTeam0);
+};
+
 void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 {
 	inherited::OnSwitchPhase(old_phase, new_phase);
@@ -734,6 +739,7 @@ void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	case GAME_PHASE_INPROGRESS:
 		{
 			WinnerName[0] = 0;
+			
 		}break;
 	case GAME_PHASE_PLAYER_SCORES:
 		{

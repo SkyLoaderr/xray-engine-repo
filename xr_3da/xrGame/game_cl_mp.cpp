@@ -430,6 +430,10 @@ void game_cl_mp::LoadTeamData			(char* TeamName)
 	TeamList.push_back(Team);
 }
 
+void game_cl_mp::OnSwitchPhase_InProgress()
+{
+};
+
 void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 {
 	inherited::OnSwitchPhase(old_phase, new_phase);
@@ -441,6 +445,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 			{
 				HUD().GetUI()->ShowIndicators();
 			};
+			OnSwitchPhase_InProgress();
 		}break;
 	case GAME_PHASE_PENDING:
 		{

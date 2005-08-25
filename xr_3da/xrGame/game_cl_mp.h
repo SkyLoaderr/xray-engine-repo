@@ -124,6 +124,8 @@ public:
 	virtual		void				OnTeamChanged			() {};
 	virtual		void				OnMoneyChanged			(NET_Packet& P);
 
+	virtual		void				OnSwitchPhase_InProgress();
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_cl_mp)
