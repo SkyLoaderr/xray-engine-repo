@@ -56,5 +56,7 @@
 	<info_portion id="rad_start_suicide">
 	</info_portion>
 	
+	<info_portion id="rad_start_cache_guards">
+	</info_portion>
 
 </game_information_portions>
