@@ -52,24 +52,15 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 				j					= atoi(_GetItem(V, 0, buf));
 				if (!j)		j		= 1;
 
-				bScope		=	(NULL!=strstr(V,"scope"));
-				bSilencer	=	(NULL!=strstr(V,"silencer"));
-				bLauncher	=	(NULL!=strstr(V,"launcher"));
-			//probability
-			if(NULL!=strstr(V,"prob=")){
-				string16						c_prob;
-				sscanf							(strstr(V,"prob=")+5,"%[^ ] ",c_prob);
-				p								=(float)atof(c_prob);
-			}			
-
-			if (fis_zero(p))
-				p								= 1.0f;
-
-			if(NULL!=strstr(V,"cond=")){
-				string16						c_cond;
-				sscanf							(strstr(V,"cond=")+5,"%[^ ] ",c_cond);
-				f_cond							= (float)atof(c_cond);
-			}
+				bScope				= (NULL!=strstr(V,"scope"));
+				bSilencer			= (NULL!=strstr(V,"silencer"));
+				bLauncher			= (NULL!=strstr(V,"launcher"));
+				//probability
+				if(NULL!=strstr(V,"prob="))
+					p				= (float)atof(strstr(V,"prob=")+5);
+				if (fis_zero(p)) p	= 1.0f;
+				if(NULL!=strstr(V,"cond="))
+					f_cond			= (float)atof(strstr(V,"cond=")+5);
 			}
 			for (u32 i=0; i<j; ++i) {
 				if (randF(1.f) < p) {
