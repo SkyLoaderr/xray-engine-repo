@@ -94,7 +94,7 @@ void CWeaponShotEffector::Update()
 				if (fLastDeltaVert>0.f)	bSSActive	= FALSE;
 			}
 		};		
-		Msg ("- fAV : %f, fAH : %f; fLAV : %f, fLAH : %f", fAngleVert, fAngleHorz, fLastDeltaVert, fLastDeltaHorz);
+		
 		//-------------------------------------------------------
 		if (!bActive){
 			fAngleVert		= 0.f;
