@@ -777,7 +777,7 @@ void	game_sv_mp::OnPlayerHitted			(NET_Packet P)
 	game_PlayerState* PSHitter		=	get_eid			(id_hitter);
 	if (!PSHitter) return;
 	game_PlayerState* PSHitted		=	get_eid			(id_hitted);
-
+	if (PSHitted == PSHitter) return;
 	if (!PSHitted || !CheckTeams() || PSHitted->team != PSHitter->team)
 		Player_AddExperience(PSHitter, dHealth);
 };
