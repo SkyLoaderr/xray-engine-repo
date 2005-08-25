@@ -587,6 +587,14 @@ function bar_actor_is_enemy(actor, npc)
 			xr_gulag.setGulagEnemy("bar_visitors", db.actor)
 end
 
+function bar_actor_enemy_set (actor, npc)
+    local dog = level_object_by_sid (509)
+    if dog ~= nil then
+       dog:set_relation (game_object.enemy, db.actor) 
+    end   
+end
+
+
 
 function military_max_dead (actor, npc)
     --if actor:has_info ("mil_max_job") then
@@ -657,6 +665,7 @@ function mil_actor_enemy_set (actor, npc)
     end   
     --xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)    
 end
+
 
 function mil_actor_enemy_reset (actor, npc)
     local sniper = level_object_by_sid (704)
