@@ -1044,7 +1044,7 @@ path_walk = professor_walk
 path_look = professor_look
 def_state_moving = assault
 meet = meet@ecolog_kruglov
-on_info = {+bar_actor_helps_kruglov} walker@bar_ecolog_professor_companion
+on_info = {+bar_resque_research_start} walker@bar_ecolog_professor_companion
 
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
@@ -1056,6 +1056,31 @@ combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
 path_walk = escape_hide_1_walk
 path_look = escape_hide_1_look
 combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
+on_info = {+bar_rescue_research_chasing_end} walker@bar_ecolog_professor_companoin_1
+
+[walker@bar_ecolog_professor_companoin_1]
+path_walk = escape_2_walk
+path_look = escape_hide_2_look
+on_signal = bandits_alive | camper@bar_rescue_research_hide_2 %+bar_bandits_alive%
+combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
+
+[camper@bar_rescue_research_hide_2]
+path_walk = escape_hide_2_walk
+path_look = escape_hide_2_look
+combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
+on_info = {+bar_bandits_dead} walker@bar_ecolog_professor_companoin_2
+
+[walker@bar_ecolog_professor_companoin_2]
+path_walk = escape_3_walk
+path_look = escape_3_look
+on_signal = fire_anomaly | %+bar_bandits_alive%
+on_info = {+bar_go_through_anomaly} walker@bar_ecolog_professor_companoin_3
+combat_ignore_cond = {+bar_resque_research_start -bar_resque_research_done}
+
+[walker@bar_ecolog_professor_companoin_3]
+path_walk = escape_3_walk
+path_look = escape_4_look
+on_signal = arrived | %+bar_resque_research_done%
 
 [death@ecolog_crush]
 on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_done +bar_resque_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_resque_research_dead +bar_kill_professor_fail +bar_resque_research_corruped +bar_heli_scene_professor_die%, %+bar_resque_research_dead +bar_resque_research_corruped +bar_heli_scene_professor_die%
