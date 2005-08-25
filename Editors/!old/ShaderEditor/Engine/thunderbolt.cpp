@@ -58,6 +58,7 @@ SThunderboltDesc::~SThunderboltDesc()
 //----------------------------------------------------------------------------------------------
 SThunderboltCollection::SThunderboltCollection(CInifile* pIni, LPCSTR sect)
 {
+	section			= sect;
 	int tb_count	= pIni->line_count(sect);
 	for (int tb_idx=0; tb_idx<tb_count; tb_idx++){
 		LPCSTR		N, V;
