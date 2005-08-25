@@ -1,2 +1,82 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Проигровка звуков в голове актера
+Tunduk Vladimir aka Sidorovich
 
--- a
+--------------------------------------------------------------------------------------------------------------------]]
+
+
+class "action_sound2d"
+----------------------
+function action_sound2d:__init (obj, storage)
+	self.object = obj
+	self.st = storage
+	self.snd_obj = nil
+	self.time = 0
+	self.playing = false
+end
+----------------------
+function action_sound2d:reset_scheme()
+
+    self.snd_obj = sound_object (self.st.snd_name)    
+	self.st.signals = {}
+	self.time = time_global ()
+	self.st.signals = {}
+	self.playing = false
+end
+----------------------
+function action_sound2d:update (delta)
+    if self.snd_obj == nil then 
+       return 
+    end
+    
+    local actor = db.actor
+    
+    if self.playing == false then
+       self.snd_obj:play_at_pos (actor, vector ():set (0, 0, 0), self.st.delay, sound_object.s2d)
+       self.playing = true
+       return
+    end
+        
+    if self.snd_obj:playing () == false then
+       self.st.signals["sound_end"] = true
+    end   
+    
+    xr_logic.try_switch_to_another_section (self.object, self.st, actor)
+end
+----------------------
+function action_sound2d:deactivate ()
+    if self.snd_obj ~= nil then
+       if self.snd_obj:playing () == true then
+          self.snd_obj:stop ()
+       end
+       self.snd_obj = nil
+    end         
+end
+
+----------------------
+function add_to_binder( npc, ini, scheme, section, storage )
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+
+	local new_action = action_sound2d (npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events (npc, storage, new_action)
+end
+----------------------
+function set_scheme (obj, ini, scheme, section, gulag_name)
+
+	local st = xr_logic.assign_storage_and_bind (obj, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, obj)
+	st.snd_name = utils.cfg_get_string (ini, section, "sound", obj, false, "", nil)
+	st.delay = utils.cfg_get_number (ini, section, "delay", obj, false, 0)
+	
+	if st.snd_name == nil or st.snd_name == "" then
+	   abort ("SR_SOUND2D : invalid sound name")
+	end   
+	
+end
+----------------------
+----------------------
+----------------------
+----------------------
+
