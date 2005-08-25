@@ -2,8 +2,10 @@
 #define PH_WORLD_H
 
 // refs
-struct SGameMtlPair;
-
+struct	SGameMtlPair;
+class	CPHCommander;
+class	CPHCondition;
+class	CPHAction;
 class CPHMesh {
 	dGeomID Geom;
 public:
@@ -37,6 +39,7 @@ class CPHWorld	: public pureFrame
 	PH_OBJECT_STORAGE			m_recently_disabled_objects									;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
 	dGeomID						m_motion_ray;
+	CPHCommander				*m_commander;
 public:
 	xr_vector<ISpatial*>		r_spatial;
 public:
@@ -45,13 +48,15 @@ public:
 	dReal						m_frame_time												;
 	float						m_update_time												;
 	u16							disable_count												;
-	
+	float						m_gravity													;
 								CPHWorld						()							;
 	virtual						~CPHWorld						(){}						;
 
 //IC	dSpaceID					GetSpace						()			{return Space;}	;
 
 	void						Create							()							;
+	void						SetGravity						(float	g)					;
+IC	float						Gravity							()							{return m_gravity;}
 	void						AddObject						(CPHObject* object)			;
 	void						AddUpdateObject					(CPHUpdateObject* object)	;
 	void						AddRecentlyDisabled				(CPHObject* object)			;
@@ -74,12 +79,16 @@ IC	bool						Processing						()							{return b_processing;}
 	u32							CalcNumSteps					(u32 dTime)					;
 	u16							ObjectsNumber					()							;
 	u16							UpdateObjectsNumber				()							;
+	void						NetRelcase						(CPhysicsShell* s)			;
+	void						AddCall							(CPHCondition*c,CPHAction*a);
 #ifdef DEBUG
 	virtual void 				OnRender						()							;
 #endif
 	virtual void				OnFrame							()							;
 
-
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-
+add_to_type_list(CPHWorld)
+#undef script_type_list
+#define script_type_list save_type_list(CPHWorld)
 #endif

@@ -82,22 +82,9 @@ public:
 	virtual float			getDensity				()											;
 	virtual float			getVolume				()											;
 	virtual	void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);
-	virtual void			applyForce				(const Fvector& dir, float val)				{
-		if(!bActive) return;
-		(*elements.begin())->applyForce				( dir, val);
-		EnableObject(0);
-	};
-	virtual void			applyForce				(float x,float y,float z)				
-	{
-		if(!bActive) return;
-		(*elements.begin())->applyForce				( x,y,z);
-		EnableObject(0);
-	};
-	virtual void			applyImpulse			(const Fvector& dir, float val)				{
-		if(!bActive) return;
-		(*elements.begin())->applyImpulse			( dir, val);
-		EnableObject(0);
-	};
+	virtual void			applyForce				(const Fvector& dir, float val)				;
+	virtual void			applyForce				(float x,float y,float z)					;
+	virtual void			applyImpulse			(const Fvector& dir, float val)				;
 	virtual void			applyGravityAccel		(const Fvector& accel);
 	virtual void			setTorque				(const Fvector& torque);
 	virtual void			setForce				(const Fvector& force);

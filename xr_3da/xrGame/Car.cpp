@@ -28,9 +28,7 @@
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
-const float effective_gravity			=	world_gravity/2.f								;
-const float anti_gravity_accel			=	world_gravity-effective_gravity					;
-const float gravity_factor_impulse		=	_sqrt(effective_gravity/world_gravity)			;
+
 CCar::CCar(void)
 {
 
@@ -488,7 +486,7 @@ void CCar::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_obj
 	{
 		Fvector vimpulse;vimpulse.set(dir);
 		vimpulse.mul(impulse);
-		vimpulse.y *=gravity_factor_impulse;
+		vimpulse.y *=GravityFactorImpulse();
 		float mag=vimpulse.magnitude();
 		if(!fis_zero(mag))
 		{
@@ -888,10 +886,6 @@ void CCar::Init()
 
 void CCar::Revert()
 {
-	//if(!bActive) return;
-	//dBodyAddForce(Bodies[0], 0, 2*9000, 0);
-	//dBodyAddRelTorque(Bodies[0], 300, 0, 0);
-
 	m_pPhysicsShell->applyForce(0,40.f*m_pPhysicsShell->getMass(),0);
 }
 
@@ -1263,11 +1257,26 @@ void CCar::TransmissionDown()
 
 void CCar::PhTune(dReal step)
 {
+	
+
+
 	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
 	{
 		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
-		if(e->bActive&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*anti_gravity_accel,0);
+		if(e->bActive&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*AntiGravityAccel(),0);
 	}
+}
+float CCar::EffectiveGravity()
+{
+	return ph_world->Gravity()/2.f;
+}
+float CCar::AntiGravityAccel()
+{
+	return ph_world->Gravity()-EffectiveGravity();
+}
+float CCar::GravityFactorImpulse()
+{
+	return _sqrt(EffectiveGravity()/ph_world->Gravity());
 }
 void CCar::UpdateBack()
 {

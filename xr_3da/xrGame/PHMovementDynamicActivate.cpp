@@ -10,7 +10,7 @@
 #include "GameMtlLib.h"
 #include "PhysicsShellHolder.h"
 
-
+extern	class CPHWorld	*ph_world;
 ObjectContactCallbackFun* saved_callback		=	0	;
 static float max_depth							=	0.f	;
 
@@ -69,7 +69,7 @@ void __stdcall TTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* materia
 		c.surface.mu*=Pars.calback_friction_factor;
 		if(test_depth>Pars.depth_to_use_force)
 		{
-			float force = Pars.callback_force_factor*world_gravity;
+			float force = Pars.callback_force_factor*ph_world->Gravity();
 			dBodyID b1=dGeomGetBody(c.geom.g1);
 			dBodyID b2=dGeomGetBody(c.geom.g2);
 			if(b1)dBodyAddForce(b1,c.geom.normal[0]*force,c.geom.normal[1]*force,c.geom.normal[2]*force);
@@ -364,7 +364,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	{
 		Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 		EnableCharacter();
-		m_character->ApplyForce(0,world_gravity*m_character->Mass(),0);
+		m_character->ApplyForce(0,ph_world->Gravity()*m_character->Mass(),0);
 		max_depth=0.f;
 		ph_world->Step();
 		if(max_depth	<	resolve_depth) 
@@ -386,7 +386,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 			max_depth=0.f;
 			Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 			EnableCharacter();
-			m_character->ApplyForce(0,world_gravity*m_character->Mass(),0);
+			m_character->ApplyForce(0,ph_world->Gravity()*m_character->Mass(),0);
 			ph_world->Step();
 			ph_world->CutVelocity(max_vel,max_a_vel);
 			if(max_depth	<	resolve_depth) 

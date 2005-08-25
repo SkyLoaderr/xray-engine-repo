@@ -7,7 +7,7 @@
 #include "Entity.h"
 #include "inventory_item.h"
 #include "../skeletoncustom.h"
-
+extern	class CPHWorld	*ph_world;
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 CPHCapture::CPHCapture	(CPHCharacter   *a_character, CPhysicsShellHolder	*a_taget_object)
@@ -232,7 +232,7 @@ void CPHCapture::Init(CInifile* ini)
 	m_capture_time			=ini->r_u32("capture","time_limit")*1000;				//time;		
 	m_time_start			=Device.dwTimeGlobal;
 	float max_pull_force    =ini->r_float("capture","pull_force");					//pull force
-	m_pull_force			=pool_force_factor*world_gravity*m_taget_element->PhysicsShell()->getMass();
+	m_pull_force			=pool_force_factor*ph_world->Gravity()*m_taget_element->PhysicsShell()->getMass();
 	if(m_pull_force>max_pull_force) m_pull_force=max_pull_force;
 
 

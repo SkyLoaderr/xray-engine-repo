@@ -642,6 +642,8 @@ void CExplosive::SetExplosionSize(const Fvector	&new_size)
 }
 void CExplosive::ActivateExplosionBox(const Fvector &size,Fvector &in_out_pos)
 {
+	CPhysicsShell* self_shell=smart_cast<CPhysicsShellHolder*>(cast_game_object())->PPhysicsShell();
+	if(self_shell&&self_shell->bActive)self_shell->DisableCollision();
 	CPHActivationShape activation_shape;//Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
 	activation_shape.Create(in_out_pos,size,NULL);
 	dBodySetGravityMode(activation_shape.ODEBody(),0);
@@ -649,4 +651,5 @@ void CExplosive::ActivateExplosionBox(const Fvector &size,Fvector &in_out_pos)
 	in_out_pos.set(activation_shape.Position());
 	activation_shape.Size(m_vExplodeSize);
 	activation_shape.Destroy();
+	if(self_shell&&self_shell->bActive)self_shell->EnableCollision();
 }

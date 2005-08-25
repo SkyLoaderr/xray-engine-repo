@@ -306,7 +306,7 @@ IC					CKinematics					*PKinematics								()																{return m_pKinemati
 	virtual			Fmatrix						&ObjectInRoot								()																							= 0;
 	virtual			void						ObjectToRootForm							(const Fmatrix& form)							    										= 0;
 	virtual			void						SetPrefereExactIntegration					()																							= 0;
-	virtual										~CPhysicsShell								(){}
+	virtual										~CPhysicsShell								()																							;
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 	};

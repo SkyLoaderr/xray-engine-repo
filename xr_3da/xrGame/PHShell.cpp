@@ -241,6 +241,28 @@ void	CPHShell::UnFreezeContent()
 		(*i)->UnFreeze();
 	
 }
+void		CPHShell::	applyForce				(const Fvector& dir, float val)				
+{
+	if(!bActive) return;
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		(*i)->applyForce( dir, val);
+	EnableObject(0);
+};
+void		CPHShell::	applyForce				(float x,float y,float z)				
+{
+	if(!bActive) return;
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		(*i)->applyForce( x,y,z);
+	EnableObject(0);
+};
+void	CPHShell::		applyImpulse			(const Fvector& dir, float val)				
+{
+	if(!bActive) return;
+	(*elements.begin())->applyImpulse			( dir, val);
+	EnableObject(0);
+};
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);

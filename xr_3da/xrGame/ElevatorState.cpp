@@ -3,6 +3,7 @@
 #include "ClimableObject.h"
 #include "PHCharacter.h"
 #include "MathUtils.h"
+#include "PHWorld.h"
 #ifdef DEBUG
 #include "../Statgraph.h"
 #include "PHDebug.h"
@@ -15,7 +16,8 @@ static const float out_dist				=1.5f;
 
 static const float look_angle_cosine	=0.9238795f;//22.5
 static const float lookup_angle_sine	=0.34202014f;//20
-	CElevatorState::CElevatorState()
+extern	class CPHWorld	*ph_world;
+CElevatorState::CElevatorState()
 {
 	m_state=clbNoLadder;
 	m_ladder=NULL;
@@ -195,7 +197,7 @@ void CElevatorState::UpdateStClimbingDown()
 	m_character->GetVelocity(vel);
 	if(vel.y>EPS_S)
 	{
-		m_character->ApplyForce(0.f,-m_character->Mass()*world_gravity,0.f);
+		m_character->ApplyForce(0.f,-m_character->Mass()*ph_world->Gravity(),0.f);
 	}
 	//if(to_ax-m_character->FootRadius()>out_dist)
 	//														SwitchState((clbNone));
@@ -231,7 +233,7 @@ void CElevatorState::UpdateClimbingCommon(const Fvector	&d_to_ax,float to_ax,con
 	if(to_ax-m_character->FootRadius()>out_dist)
 										SwitchState((clbNoLadder));
 	if(fis_zero(ca)&&d_to_ax.dotproduct(m_ladder->Norm())<0.f) 
-		m_character->ApplyForce(d_to_ax,m_character->Mass()*world_gravity);//
+		m_character->ApplyForce(d_to_ax,m_character->Mass()*ph_world->Gravity());//
 }
 void CElevatorState::GetControlDir(Fvector& dir)
 {

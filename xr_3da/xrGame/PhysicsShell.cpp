@@ -12,6 +12,12 @@
 #include "physicsshellholder.h"
 #include "../skeletoncustom.h"
 
+extern CPHWorld			*ph_world;
+CPhysicsShell::~CPhysicsShell()
+{
+	if(ph_world)ph_world->NetRelcase(this);
+}
+
 CPhysicsElement*			P_create_Element		()
 {
 	CPHElement* element=xr_new<CPHElement>	();

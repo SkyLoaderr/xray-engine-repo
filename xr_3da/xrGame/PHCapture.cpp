@@ -186,11 +186,7 @@ void CPHCapture::PullingUpdate()
 		e_state=cstCaptured;
 		return;
 	}
-
 	m_taget_element->applyForce(dir,m_pull_force);
-
-	///m_character->ApplyForce(dir,-m_pull_force/2.f);
-
 }
 
 void CPHCapture::CapturedUpdate()

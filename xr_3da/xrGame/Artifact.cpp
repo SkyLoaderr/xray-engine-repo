@@ -8,7 +8,7 @@
 #include "level.h"
 #include "ai_object_location.h"
 #include "xrServer_Objects_ALife_Monsters.h"
-
+#include "phworld.h"
 #define	FASTMODE_DISTANCE (50.f)	//distance to camera from sphere, when zone switches to fast update sequence
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -383,7 +383,7 @@ void SArtefactActivation::PhDataUpdate(dReal step)
 		
 		if(Level().ObjectSpace.RayTest(m_af->Position(), dir, 1.0f, collide::rqtBoth) )
 		{
-			dir.y = world_gravity*1.1f; 
+			dir.y = ph_world->Gravity()*1.1f; 
 
 			m_af->m_pPhysicsShell->applyGravityAccel(dir);
 		}

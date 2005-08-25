@@ -12,13 +12,14 @@ extern const dReal	default_l_scale									;
 extern const dReal	default_w_scale									;
 
 extern const dReal	fixed_step										;
-extern const dReal	world_gravity									;
+
 extern const dReal  world_cfm										;
 extern const dReal  world_erp										;
 extern const dReal  world_spring									;
 extern const dReal  world_damping									;
 extern const dReal	mass_limit										;
 extern const u16	max_joint_allowed_for_exeact_integration		;
+extern const dReal	default_world_gravity							;
 extern		 float	phTimefactor									;
 extern	int			phFPS											;
 extern	int			phIterations									;

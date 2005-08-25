@@ -7,6 +7,7 @@
 #include "phdestroyable.h"
 #include "xrmessages.h"
 #include "../SkeletonCustom.h"
+#include "PHWorld.h"
 CTeleWhirlwind ::CTeleWhirlwind () 
 {
 	m_owner_object=NULL;
@@ -256,7 +257,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			}
 			
 			
-			E->applyForce(force.x,force.y+world_gravity*E->getMass(),force.z);
+			E->applyForce(force.x,force.y+ph_world->Gravity()*E->getMass(),force.z);
 		}
 		Fvector dist;dist.sub(center,maxE->mass_Center());
 		if(dist.magnitude()<m_telekinesis->keep_radius()&&b_destroyable)
@@ -298,8 +299,6 @@ void		CTeleWhirlwindObject::		keep					()
 		if(force<0.f)
 		{
 			dir.mul(force);
-			//E->applyForce(dir.x,dir.y+world_gravity*E->getMass(),dir.z);
-			//E->applyForce(0.f,world_gravity*E->getMass(),0.f);
 		}
 	}
 	

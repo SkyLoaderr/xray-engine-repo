@@ -12,6 +12,8 @@
 #	include "../StatGraph.h"
 #	include "PHDebug.h"
 #endif
+#include "PHCommander.h"
+#include "PHSimpleCalls.h"
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -26,6 +28,7 @@ void CPHMesh ::Create(dSpaceID space, dWorldID world){
 ////////////////////////////////////////////////////////////////////////////
 
 void CPHMesh ::Destroy(){
+	
 	dGeomDestroy(Geom);
 	dTriListClass=-1;
 
@@ -61,13 +64,14 @@ CPHWorld::CPHWorld()
 	m_update_delay_count=0;
 	b_world_freezed=false;
 	b_processing=false;
+	m_gravity	=default_world_gravity;
 }
 void CPHWorld::Create()
 {
 	dWorldID phWorld=0;
 	if (psDeviceFlags.test(mtPhysics))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
 	else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
-
+	m_commander							=xr_new<CPHCommander>();
 	//dVector3 extensions={2048,256,2048};
 	/*
 	Fbox	level_box		=	Level().ObjectSpace.GetBoundingVolume();
@@ -87,7 +91,7 @@ void CPHWorld::Create()
 
 #endif
 	ContactGroup			= dJointGroupCreate(0);		
-	dWorldSetGravity		(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
+	dWorldSetGravity		(phWorld, 0,-Gravity(), 0);//-2.f*9.81f
 	Mesh.Create				(0,phWorld);
 #ifdef PH_PLAIN
 	plane=dCreatePlane(Space,0,1,0,0.3f);
@@ -109,6 +113,7 @@ void CPHWorld::Create()
 /////////////////////////////////////////////////////////////////////////////
 
 void CPHWorld::Destroy(){
+	xr_delete(m_commander);
 	Mesh.Destroy();
 #ifdef PH_PLAIN
 	dGeomDestroy(plane);
@@ -126,6 +131,13 @@ void CPHWorld::Destroy(){
 	dRayMotionsClassUser=-1;
 	Device.seqFrameMT.Remove	(this);
 	Device.seqFrame.Remove		(this);
+}
+void CPHWorld::SetGravity(float g)
+{
+	m_gravity				=g;
+	dWorldID phWorld		=0;
+	dWorldSetGravity		(phWorld, 0,-m_gravity, 0);//-2.f*9.81f
+
 }
 
 void CPHWorld::OnFrame()
@@ -217,7 +229,9 @@ void CPHWorld::Step()
 	dbg_joints_num=0;
 	dbg_islands_num=0;
 #endif
-
+//////////////////////////////////////////////////////////////////////
+	m_commander						->update();
+//////////////////////////////////////////////////////////////////////
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{	
 		CPHObject* obj=(*i_object);
@@ -397,7 +411,15 @@ void CPHWorld::CutVelocity(float l_limit,float a_limit)
 		++i_object;
 	}
 }
-
+void CPHWorld::NetRelcase(CPhysicsShell *s)
+{
+	CPHReqComparerHasShell c(s);
+	m_commander->remove_calls(&c);
+}
+void CPHWorld::AddCall(CPHCondition*c,CPHAction*a)
+{
+	m_commander->add_call(c,a);
+}
 u16 CPHWorld::ObjectsNumber()
 {
 	return m_objects.count();

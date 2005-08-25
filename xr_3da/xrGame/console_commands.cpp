@@ -24,6 +24,7 @@
 #include "xrServer_Objects.h"
 #include "ui/UIMainIngameWnd.h"
 #include "PhysicsGamePars.h"
+#include "phworld.h"
 #include "string_table.h"
 #include "autosave_manager.h"
 #include "ai_space.h"
@@ -1642,6 +1643,27 @@ public:
 	  }
 };
 
+class CCC_PHGravity : public IConsole_Command {
+public:
+		CCC_PHGravity(LPCSTR N) :
+		IConsole_Command(N)
+		{};
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  if(!ph_world)	return;
+		  ph_world->SetGravity(float(atof(args)));
+	  }
+	  virtual void	Status	(TStatus& S)
+	{	
+		if(ph_world)
+			sprintf	(S,"%3.5f",ph_world->Gravity());
+		else
+			sprintf	(S,"%3.5f",default_world_gravity);
+		while	(xr_strlen(S) && ('0'==S[xr_strlen(S)-1]))	S[xr_strlen(S)-1] = 0;
+	}
+	
+};
+
 #ifdef DEBUG
 extern void print_help(lua_State *L);
 
@@ -2002,6 +2024,7 @@ void CCC_RegisterCommands()
 	// Physics
 	CMD4(CCC_Integer,			"ph_fps",						&phFPS						,			10,		100				);
 	CMD4(CCC_Integer,			"ph_tri_clear_disable_count",	&ph_tri_clear_disable_count	,			0,		255				);
+	CMD1(CCC_PHGravity,			"ph_gravity"																					);
 	CMD1(CCC_PHIterations,		"ph_iterations"																					);
 	CMD4(CCC_FloatBlock,		"ph_timefactor",				&phTimefactor				,			0.0001f	,1000.f			);
 	CMD4(CCC_FloatBlock,		"ph_break_common_factor",		&phBreakCommonFactor		,			0.f		,1000000000.f	);

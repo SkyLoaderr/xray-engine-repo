@@ -10,6 +10,7 @@
 #include "../ode/src/joint.h"
 #pragma warning(default:4995)
 #pragma warning(default:4267)
+extern	class CPHWorld	*ph_world;
 static const float torque_factor=10000000.f;
 CPHFracturesHolder::CPHFracturesHolder()
 {
@@ -465,7 +466,7 @@ bool CPHFracture::Update(CPHElement* element)
 		}
 	}
 	Fvector gravity_force;
-	gravity_force.set(0.f,-world_gravity*m_firstM.mass,0.f);
+	gravity_force.set(0.f,-ph_world->Gravity()*m_firstM.mass,0.f);
 	first_part_force.add(gravity_force);
 	second_part_force.add(gravity_force);
 	dMatrix3 glI1,glI2,glInvI,tmp;	
