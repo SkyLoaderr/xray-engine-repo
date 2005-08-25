@@ -159,6 +159,13 @@
     <info_portion id="bar_ecolog_crush_actor_enemy"></info_portion>
     <info_portion id="bar_actor_helps_kruglov"></info_portion>
 	<info_portion id="bar_rescue_research_chasing_start"></info_portion>
+
+<info_portion id="bar_go_through_anomaly"></info_portion>
+<info_portion id="bar_fire_anomaly_forward"></info_portion>
+<info_portion id="bar_bandits_dead"></info_portion>
+<info_portion id="bar_bandits_alive"></info_portion>
+<info_portion id="bar_rescue_research_chasing_end"></info_portion>
+
 <info_portion id="bar_freedom_talk"></info_portion>
 <info_portion id="bar_freedom_talk_v1"></info_portion>
 <info_portion id="bar_freedom_talk_v2"></info_portion>
