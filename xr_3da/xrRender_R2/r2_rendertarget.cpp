@@ -175,6 +175,22 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 
 CRenderTarget::CRenderTarget		()
 {
+	param_blur			= 0.f;
+	param_gray			= 0.f;
+	param_noise			= 0.f;
+	param_duality_h		= 0.f;
+	param_duality_v		= 0.f;
+	param_noise_fps		= 25.f;
+	param_noise_scale	= 1.f;
+
+	im_noise_time		= 1/100;
+	im_noise_shift_w	= 0;
+	im_noise_shift_h	= 0;
+
+	param_color_base	= color_rgba(127,127,127,	0);
+	param_color_gray	= color_rgba(85,85,85,		0);
+	param_color_add		= color_rgba(0,0,0,			0);
+
 	dwAccumulatorClearMark			= 0;
 	Device.Resources->Evict			();
 
@@ -428,6 +444,10 @@ CRenderTarget::CRenderTarget		()
 			}
 		}
 	}
+
+	// PP
+	s_postprocess.create				("postprocess");
+	g_postprocess.create				(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_SPECULAR|D3DFVF_TEX3,RCache.Vertex.Buffer(),RCache.QuadIB);
 
 	// 
 	dwWidth		= Device.dwWidth;

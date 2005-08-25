@@ -40,10 +40,10 @@ public:
 	IDirect3DSurface9*	pTempZB;
 
 private:
-	BOOL				Create				();
-	BOOL				NeedPostProcess		();
+	BOOL				Create				()	;
+	BOOL				NeedPostProcess		()	;
 	BOOL				Available			()	{ return bAvailable; }
-	BOOL				Perform				();
+	BOOL				Perform				()	;
 
 	void				calc_tc_noise		(Fvector2& p0, Fvector2& p1);
 	void				calc_tc_duality_ss	(Fvector2& r0, Fvector2& r1, Fvector2& l0, Fvector2& l1);

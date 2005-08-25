@@ -117,6 +117,13 @@ private:
 	ref_shader					s_combine_dbg_Accumulator;
 	ref_shader					s_combine;
 private:
+	ref_shader					s_postprocess;
+	ref_geom					g_postprocess;
+
+	float						im_noise_time;
+	u32							im_noise_shift_w;
+	u32							im_noise_shift_h;
+	
 	float						param_blur;
 	float						param_gray;
 	float						param_duality_h;
@@ -142,6 +149,9 @@ public:
 	void						u_compute_texgen_jitter	(Fmatrix&	dest);
 	void						u_setrt					(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb);
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
+	void						u_calc_tc_noise			(Fvector2& p0, Fvector2& p1);
+	void						u_calc_tc_duality_ss	(Fvector2& r0, Fvector2& r1, Fvector2& l0, Fvector2& l1);
+	BOOL						u_need_PP				();
 
 	void						phase_scene_prepare		();
 	void						phase_scene_begin		();
@@ -168,6 +178,7 @@ public:
 	void						phase_luminance			();
 	void						phase_distortion		();
 	void						phase_combine			();
+	void						phase_pp				();
 
 	virtual void				set_blur				(float	f)		{ param_blur=f;						}
 	virtual void				set_gray				(float	f)		{ param_gray=f;						}
@@ -179,6 +190,7 @@ public:
 	virtual void				set_color_base			(u32	f)		{ param_color_base=f;				}
 	virtual void				set_color_gray			(u32	f)		{ param_color_gray=f;				}
 	virtual void				set_color_add			(u32	f)		{ param_color_add=f;				}
+
 	virtual u32					get_width				()				{ return dwWidth;					}
 	virtual u32					get_height				()				{ return dwHeight;					}
 
