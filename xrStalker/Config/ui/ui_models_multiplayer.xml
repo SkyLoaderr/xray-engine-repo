@@ -1,0 +1,17 @@
+<ui_texture>
+    <file_name>ui\ui_models_multiplayer</file_name>
+    <texture id="stalker_killer_exoskeleton" x="512" y="380" width="128" height="325" />
+    <texture id="stalker_sci_killer" x="640" y="380" width="128" height="325" />
+    <texture id="stalker_killer_military" x="768" y="380" width="128" height="325" />
+    <texture id="stalker_sv_exoskeleton" x="512" y="705" width="128" height="320" />
+    <texture id="stalker_sci_svoboda" x="640" y="705" width="128" height="320" />
+    <texture id="stalker_sv_military" x="768" y="705" width="128" height="320" />
+    <texture id="mp_skin_blue_0" x="0" y="380" width="128" height="325" />
+    <texture id="mp_skin_blue_1" x="128" y="380" width="128" height="325" />
+    <texture id="mp_skin_blue_2" x="256" y="380" width="128" height="325" />
+    <texture id="mp_skin_blue_3" x="384" y="380" width="128" height="325" />
+    <texture id="mp_skin_green_0" x="0" y="705" width="128" height="320" />
+    <texture id="mp_skin_green_1" x="128" y="705" width="128" height="320" />
+    <texture id="mp_skin_green_2" x="256" y="705" width="128" height="320" />
+    <texture id="mp_skin_green_3" x="384" y="705" width="128" height="320" />
+</ui_texture>
