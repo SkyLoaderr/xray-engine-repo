@@ -1,0 +1,55 @@
+	<string id="tutorial_artefact">
+		<text>Артефакт.</text>
+	</string>
+	
+	<string id="trader">
+		<text>Торговец.</text>
+	</string>
+	
+	<string id="tutorial_wounded">
+		<text>Раненый в вагончике.</text>
+	</string>
+	
+	<string id="esc_fox">
+		<text>Раненый Лис.</text>
+	</string>
+	
+	<string id="blokpost_case">
+		<text>Кейс с документами.</text>
+	</string>
+	
+	<string id="wolfs_rangers">
+		<text>Разведчики из группы Волка.</text>
+	</string>
+	
+	<string id="factory_bandits">
+		<text>Бандиты на фабрике.</text>
+	</string>
+	
+	<string id="escape_dinamit">
+		<text>Динамит на фабрике.</text>
+	</string>
+	
+	<string id="volk">
+		<text>Волк, лидер лагеря новчиков.</text>
+	</string>
+	
+	<string id="anomaly_field_mincer">
+		<text>Скопление аномалий "карусель". Там может найтись артефакт "кровь камня"</text>
+	</string>
+	
+	<string id="anomaly_field_gravy">
+		<text>Скопление аномалий "воронка". Там может найтись артефакт "выверт"</text>
+	</string>
+	
+	<string id="anomaly_field_mosquito">
+		<text>Скопление аномалий "трамплин". Там может найтись артефакт "медуза"</text>
+	</string>
+	
+	<string id="killers_team">
+		<text>Группа неизвестных наемников.</text>
+	</string>
+	
+	<string id="novice_leader">
+		<text>Лидер лагеря новчиков.</text>
+	</string>	
