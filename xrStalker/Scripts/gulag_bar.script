@@ -550,14 +550,50 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_ecolog_professor", 
 			idle = 0,
-			prior = 10, state = {0}, squad = squad, group = groups[0],
+			prior = 10, state = {0,1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:profile_name() == "bar_ecolog_professor"
 			            end
 		}
 		table.insert(sj, t)
-	end
+        t = { section = "logic@bar_ecolog_crush_sniper_chase_1", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_chase_2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_chase_3", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_chase_4", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_chase_5", 
+			idle = 0,
+			prior = 6, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_chase_6", 
+			idle = 0,
+			prior = 6, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t) 	
+    end
 
 	-- Свобода, атакующая ученных с целью отнимания инфы
 	if type == "bar_freedom_attack" then
@@ -1911,7 +1947,11 @@ function load_states(gname, type)
 	end
 	if type == "bar_ecolog_crush" then        
 		return function (gulag)
-			return 0
+			if db.actor:has_info("bar_rescue_research_chasing_start") and 
+               db.actor:dont_has_info("bar_rescue_research_chasing_end") then
+                    return 1
+            end
+            return 0
 		end
 	end
 	if type == "bar_svoboda_ambush" then        
