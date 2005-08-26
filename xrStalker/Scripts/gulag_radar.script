@@ -3,71 +3,43 @@ local t = {}
 function load_job(sj, gname, type, squad, groups)
 	--' Radar antena
 	if type == "rad_antena" then
-		-- охрана ворот
-		t = { section = "logic@rad_antena_gate_walker1",
-			idle = 0,
-			prior = 5, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@rad_antena_gate_walker2",
-			idle = 0,
-			prior = 5, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		-- шатающиеся по территории
-		t = { section = "logic@rad_antena_walker1",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@rad_antena_walker2",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@rad_antena_walker3",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@rad_antena_walker4",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@rad_antena_walker5",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		-- мост
-		t = { section = "logic@rad_antena_bridge_walker1",
-			idle = 0,
-			prior = 1, state = {0},
-			squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
+		for i = 1, 18 do
+			t = { section = "logic@rad_patroler"..i,
+				idle = 0,
+				prior = 5, state = {0},
+				squad = squad, group = groups[1],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
 	end
 end
 
 function load_states(gname, type)
-	if type == "rad_antenna" then
+	if type == "rad_antena" then
 		return function(gulag)
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			end
+
+			local be
+			local alarm = false
+
+			for k, v in gulag.Object do
+				be = v:best_enemy()
+				if be and be:id() == actor:id() then
+					alarm = true
+					break
+				end
+			end
+
+			if alarm then
+				actor:give_info_portion( "rad_alarm" )
+				return 1
+			else
+				actor:disable_info_portion( "rad_alarm" )
+			end
 			return 0
 		end
 	end

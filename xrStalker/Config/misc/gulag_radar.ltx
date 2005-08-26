@@ -2,61 +2,147 @@
 ;-- RADAR ANTENA
 ;-------------------------------------------------------------------------------------------------
 
-; охрана ворот
-[logic@rad_antena_gate_walker1]
-active = walker1@rad_antena_gate
+;-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
-[walker1@rad_antena_gate]
-path_walk = gate_walk1
+[logic@rad_patroler1]
+active = walker@rad_patroler1
 
-
-[logic@rad_antena_gate_walker2]
-active = walker2@rad_antena_gate
-
-[walker2@rad_antena_gate]
-path_walk = gate_walk2
+[walker@rad_patroler1]
+path_walk = walk_0000
+path_look = look_0000
 
 
-;шатающиес€ по территории
-[logic@rad_antena_walker1]
-active = walker1@rad_antena
+[logic@rad_patroler2]
+active = walker@rad_patroler2
 
-[walker1@rad_antena]
-path_walk = walk1
-
-
-[logic@rad_antena_walker2]
-active = walker2@rad_antena
-
-[walker2@rad_antena]
-path_walk = walk2
+[walker@rad_patroler2]
+path_walk = walk_0001
+path_look = look_0000
 
 
-[logic@rad_antena_walker3]
-active = walker3@rad_antena
+[logic@rad_patroler3]
+active = walker@rad_patroler3
 
-[walker3@rad_antena]
-path_walk = walk3
-
-
-[logic@rad_antena_walker4]
-active = walker4@rad_antena
-
-[walker4@rad_antena]
-path_walk = walk4
+[walker@rad_patroler3]
+path_walk = walk_0002
+path_look = look_0001
 
 
-[logic@rad_antena_walker5]
-active = walker5@rad_antena
+[logic@rad_patroler4]
+active = walker@rad_patroler4
 
-[walker5@rad_antena]
-path_walk = walk5
+[walker@rad_patroler4]
+path_walk = walk_0003
+path_look = look_0001
 
 
-; на мосту
-[logic@rad_antena_bridge_walker1]
-active = walker1@rad_antena_bridge
+[logic@rad_patroler5]
+active = walker@rad_patroler5
 
-[walker1@rad_antena_bridge]
-path_walk = bridge_walk1
+[walker@rad_patroler5]
+path_walk = walk_0004
+path_look = look_0002
 
+
+[logic@rad_patroler6]
+active = walker@rad_patroler6
+
+[walker@rad_patroler6]
+path_walk = walk_0005
+path_look = look_0003
+
+
+[logic@rad_patroler7]
+active = walker@rad_patroler7
+
+[walker@rad_patroler7]
+path_walk = walk_0006
+path_look = look_0004
+
+
+[logic@rad_patroler8]
+active = walker@rad_patroler8
+
+[walker@rad_patroler8]
+path_walk = walk_0007
+path_look = look_0005
+
+
+[logic@rad_patroler9]
+active = walker@rad_patroler9
+
+[walker@rad_patroler9]
+path_walk = walk_0008
+path_look = look_0006
+
+
+[logic@rad_patroler10]
+active = walker@rad_patroler10
+
+[walker@rad_patroler10]
+path_walk = walk_0009
+path_look = look_0006
+
+
+[logic@rad_patroler11]
+active = walker@rad_patroler11
+
+[walker@rad_patroler11]
+path_walk = walk_0010
+path_look = look_0007
+
+
+[logic@rad_patroler12]
+active = walker@rad_patroler12
+
+[walker@rad_patroler12]
+path_walk = walk_0011
+path_look = look_0007
+
+
+[logic@rad_patroler13]
+active = walker@rad_patroler13
+
+[walker@rad_patroler13]
+path_walk = walk_0012
+path_look = look_0008
+
+
+[logic@rad_patroler14]
+active = walker@rad_patroler14
+
+[walker@rad_patroler14]
+path_walk = walk_0013
+path_look = look_0008
+
+
+[logic@rad_patroler15]
+active = walker@rad_patroler15
+
+[walker@rad_patroler15]
+path_walk = walk_0014
+path_look = look_0007
+
+
+[logic@rad_patroler16]
+active = walker@rad_patroler16
+
+[walker@rad_patroler16]
+path_walk = walk_0017
+path_look = look_0011
+
+
+[logic@rad_patroler17]
+active = walker@rad_patroler17
+
+[walker@rad_patroler17]
+path_walk = walk_0017
+path_look = look_0012
+
+
+[logic@rad_patroler18]
+active = walker@rad_patroler18
+
+[walker@rad_patroler18]
+path_walk = walk_0019
+path_look = look_0013
