@@ -10,9 +10,9 @@ fire_dispersion_base			= 0.21		;угол (в градусах) базовой дисперсии оружия (оруж
 control_inertion_factor			= 1.3f
 
 ;отдача
-cam_relax_speed         		= 3.5		;скорость возврата в исходное положение
+cam_relax_speed         		= 0.125		;скорость возврата в исходное положение
 cam_dispersion          		= 0.125		;увеличения угла (в градусах) с каждым выстрелом
-cam_dispersion_inc			= 0.27		;увеличениe cam_dispersion с каждым выстрелом
+cam_dispersion_inc			= 0.25		;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac			= 0.9		;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
 cam_max_angle				= 30.0	    	;максимальный угол отдачи
 cam_max_angle_horz			= 15.0		;(degree) maximum shot horizontal degree 
@@ -56,7 +56,7 @@ grenade_class				= mp_ammo_vog-25, mp_ammo_vog-25p
 fire_dispersion_base			= 0.2		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 control_inertion_factor			= 1.25f
 ;отдача
-cam_relax_speed         		= 3.0		;скорость возврата в исходное положение
+cam_relax_speed         		= 0.15		;скорость возврата в исходное положение
 cam_dispersion          		= 0.15		;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc			= 0.3		;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac			= 0.9		;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -101,7 +101,7 @@ fire_dispersion_base			= 0.35		;угол (в градусах) базовой дисперсии оружия (оруж
 control_inertion_factor			= 1.00f
 
 ;отдача
-cam_relax_speed         		= 3.0		;скорость возврата в исходное положение
+cam_relax_speed         		= 0.3		;скорость возврата в исходное положение
 cam_dispersion          		= 0.3		;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc			= 0.15		;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac			= 0.9		;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -143,7 +143,7 @@ silencer_name  			= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.26 		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 6.5		;скорость возврата в исходное положение
+cam_relax_speed         	= 1.3		;скорость возврата в исходное положение
 cam_dispersion          	= 1.3		;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0		;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0		;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -182,7 +182,7 @@ silencer_bullet_speed	 	= 240
 
 [mp_wpn_binoc]:wpn_binoc
 $spawn              	= ""
-vision_present				= false
+vision_present		= false
 
 ;-----------------------------------------------------------------------------------
 
@@ -193,13 +193,13 @@ fire_dispersion_base		= 0.4  ;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.7f
 
 ;отдача
-cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 30.0	;скорость возврата в исходное положение
 cam_dispersion          	= 15.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
-cam_max_angle			= 30.0	;максимальный угол отдачи
+cam_max_angle			= 45.0	;максимальный угол отдачи
 cam_max_angle_horz		= 30.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz		= 3.0	;(degree) size of step camera moved in horizontal position while shooting
+cam_step_angle_horz		= 4.0	;(degree) size of step camera moved in horizontal position while shooting
 
 PDM_disp_base 			= 1.0
 PDM_disp_vel_factor 		= 1.8
@@ -232,8 +232,8 @@ silencer_name  			= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.22	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
-cam_dispersion          	= 3	;увеличения угла (в градусах) с каждым выстрелом
+cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
+cam_dispersion          	= 3.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
 cam_max_angle			= 20.0	;максимальный угол отдачи
@@ -282,7 +282,7 @@ fire_dispersion_base		= 0.2  ;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.3f
 
 ;отдача
-cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 10.0	;скорость возврата в исходное положение
 cam_dispersion          	= 10.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -330,7 +330,7 @@ fire_dispersion_base		= 0.2 	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.1f
 
 ;отдача
-cam_relax_speed         	= 2.8	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.2	;скорость возврата в исходное положение
 cam_dispersion          	= 0.2	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.1	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -369,7 +369,7 @@ silencer_name  			= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.37  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.7	;скорость возврата в исходное положение
 cam_dispersion          	= 0.7	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -417,7 +417,7 @@ control_inertion_factor		= 1.4f
 fire_dispersion_base		= 0.002 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 4.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.05	;скорость возврата в исходное положение
 cam_dispersion          	= 0.05	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle			= 4.0	;максимальный угол отдачи
 cam_max_angle_horz		= 5.0	;(degree) maximum shot horizontal degree 
@@ -451,7 +451,7 @@ fire_dispersion_base		= 0.18	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.05f
 
 ;отдача
-cam_relax_speed         	= 2.8	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.3	;скорость возврата в исходное положение
 cam_dispersion          	= 0.3	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.12	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 0.75	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -497,7 +497,7 @@ silencer_name  				= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.27 		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 6.5	;скорость возврата в исходное положение
+cam_relax_speed         	= 1.2	;скорость возврата в исходное положение
 cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -549,7 +549,7 @@ fire_dispersion_base		= 0.16	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.15f
 
 ;отдача
-cam_relax_speed        		= 3.5	;скорость возврата в исходное положение
+cam_relax_speed        		= 0.5	;скорость возврата в исходное положение
 cam_dispersion         		= 0.5	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.1	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -592,7 +592,7 @@ fire_dispersion_base		= 0.18 	;угол (в градусах) базовой дисперсии оружия (оружи
 control_inertion_factor		= 1.2f
 
 ;отдача
-cam_relax_speed        		= 3.5	;скорость возврата в исходное положение
+cam_relax_speed        		= 0.15	;скорость возврата в исходное положение
 cam_dispersion         		= 0.15	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.15	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -631,7 +631,7 @@ fire_dispersion_base		= 0.25 	;угол (в градусах) базовой дисперсии оружия (оружи
 control_inertion_factor		= 1.07f
 
 ;отдача
-cam_relax_speed        		= 3.5	;скорость возврата в исходное положение
+cam_relax_speed        		= 0.2	;скорость возврата в исходное положение
 cam_dispersion         		= 0.2	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.05	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 0.4	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -674,10 +674,10 @@ $spawn              		= ""
 fire_dispersion_base		= 0.35 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 7.0	;скорость возврата в исходное положение
-cam_dispersion          	= 1.3	;увеличения угла (в градусах) с каждым выстрелом
+cam_relax_speed         	= 0.6	;скорость возврата в исходное положение
+cam_dispersion          	= 0.6	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
-cam_dispertion_frac		= 0.8	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
 cam_max_angle			= 20.0	;максимальный угол отдачи
 cam_max_angle_horz		= 10.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz		= 1.5	;(degree) size of step camera moved in horizontal position while shooting
@@ -712,7 +712,7 @@ silencer_hit_power       	= 30
 fire_dispersion_base		= 0.4 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 6.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 1.0	;скорость возврата в исходное положение
 cam_dispersion          	= 1.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -758,7 +758,7 @@ $spawn              	= ""
 $spawn              		= ""
 ammo_class		 	= mp_ammo_og-7b
 rocket_class			= mp_wpn_rpg7_missile
-control_inertion_factor		= 10.0f
+control_inertion_factor		= 3.0f
 sprint_allowed			= false
 ;-----------------------------------------------------------------------------------
 
@@ -773,7 +773,7 @@ silencer_name  			= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.24	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 1.2	;скорость возврата в исходное положение
 cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -821,7 +821,7 @@ fire_dispersion_base		= 0.13	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.4f
 
 ;отдача
-cam_relax_speed        		= 3.5	;скорость возврата в исходное положение
+cam_relax_speed        		= 0.09	;скорость возврата в исходное положение
 cam_dispersion         		= 0.09	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.22	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -862,13 +862,13 @@ fire_dispersion_base		= 0.45 	;угол (в градусах) базовой дисперсии оружия (оружи
 control_inertion_factor		= 1.5f
 
 ;отдача
-cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 10.0	;скорость возврата в исходное положение
 cam_dispersion          	= 10.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
 cam_max_angle			= 90.0	;максимальный угол отдачи
 cam_max_angle_horz		= 30.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz		= 3.0	;(degree) size of step camera moved in horizontal position while shooting
+cam_step_angle_horz		= 10.0	;(degree) size of step camera moved in horizontal position while shooting
 
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
@@ -902,7 +902,7 @@ control_inertion_factor		= 2.5f
 fire_dispersion_base		= 0.03	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 	
 ;отдача
-cam_relax_speed         	= 2.5	;скорость возврата в исходное положение
+cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
 cam_dispersion          	= 3.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -945,7 +945,7 @@ control_inertion_factor		= 1.7f
 fire_dispersion_base		= 0.05	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 	
 ;отдача
-cam_relax_speed         	= 2.5	;скорость возврата в исходное положение
+cam_relax_speed         	= 6.0	;скорость возврата в исходное положение
 cam_dispersion          	= 6.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 0.9	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -986,13 +986,13 @@ fire_dispersion_base		= 0.4  	;угол (в градусах) базовой дисперсии оружия (оружи
 control_inertion_factor		= 1.9f
 
 ;отдача
-cam_relax_speed         	= 3.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 30.0	;скорость возврата в исходное положение
 cam_dispersion          	= 15.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 10.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
 cam_max_angle			= 45.0	;максимальный угол отдачи
 cam_max_angle_horz		= 30.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz		= 2.0	;(degree) size of step camera moved in horizontal position while shooting
+cam_step_angle_horz		= 2.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
@@ -1026,7 +1026,7 @@ silencer_name  			= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.28	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
+cam_relax_speed         	= 1.2	;скорость возврата в исходное положение
 cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -1066,7 +1066,7 @@ fire_dispersion_base		= 0.14	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.04f
 
 ;отдача
-cam_relax_speed         	= 2.8	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.3	;скорость возврата в исходное положение
 cam_dispersion          	= 0.3	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.05	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -1105,7 +1105,7 @@ fire_dispersion_base		= 0.05	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.04f
 
 ;отдача
-cam_relax_speed         	= 2.8	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.125	;скорость возврата в исходное положение
 cam_dispersion          	= 0.125	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.2	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -1142,7 +1142,7 @@ silencer_name  			= mp_wpn_addon_silencer
 fire_dispersion_base		= 0.3 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 6.5	;скорость возврата в исходное положение
+cam_relax_speed         	= 0.85	;скорость возврата в исходное положение
 cam_dispersion          	= 0.85	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
