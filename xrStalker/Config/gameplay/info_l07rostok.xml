@@ -159,6 +159,7 @@
     <info_portion id="bar_ecolog_crush_actor_enemy"></info_portion>
     <info_portion id="bar_actor_helps_kruglov"></info_portion>
 	<info_portion id="bar_rescue_research_chasing_start"></info_portion>
+	<info_portion id="bar_ecolog_see_chase"></info_portion>
 
 <info_portion id="bar_go_through_anomaly"></info_portion>
 <info_portion id="bar_fire_anomaly_forward"></info_portion>
