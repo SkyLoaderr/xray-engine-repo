@@ -65,11 +65,11 @@ explode_sound						= weapons\heli_explosion		;звук собственного взрыва
 ;------------------------------все для пулемета
 snd_shoot_rocket					= weapons\heli_rocket_shoot		;звук выстрела ракетой   
 
-fire_dispersion_base	= 4   ; 2
-fire_dispersion_null	= 0.01
+fire_dispersion_base	= 5   ;4; 2
+fire_dispersion_null	= 0.02;0,01
 fire_trace_width		= 1.0
 rpm                     = 800 ;400
-hit_power               = 35;5
+hit_power               = 65;35;5
 hit_impulse		 		= 220
 fire_distance           = 500
 bullet_speed			= 500			;начальная скорость пули
@@ -92,7 +92,7 @@ launch_speed			= 45;50;60;76; 500
 
 ;------------------------------коэффициенты иммунитета 
 burn_immunity			= 0.8	
-strike_immunity			= 0.0 ;0.7
+strike_immunity			= 1 ;0.7
 shock_immunity			= 1 ;1.0
 wound_immunity			= 0.0 ;0.15
 radiation_immunity		= 0.0 ;0.2
