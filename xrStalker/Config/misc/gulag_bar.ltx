@@ -1062,11 +1062,11 @@ on_info = {+bar_rescue_research_chasing_start} camper@bar_rescue_research_hide_1
 path_walk = escape_hide_1_walk
 path_look = escape_hide_1_look
 def_state_moving = assault
-on_signal = ecolog_chase | %+bar_ecolog_see_chase% 
+on_signal = ecolog_chase |nil %+bar_ecolog_see_chase% 
 meet = meet@ecolog_kruglov
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {+bar_rescue_research_chasing_end} walker@bar_ecolog_professor_companoin_1
-on_info2 = {+bar_ecolog_see_chase} %=bar_ecolog_spam_5%
+on_info2 = {+bar_ecolog_see_chase} nil %=bar_ecolog_spam_5%
 
 [walker@bar_ecolog_professor_companoin_1]
 path_walk = escape_2_walk
