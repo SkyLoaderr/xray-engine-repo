@@ -54,7 +54,7 @@ local def_update_time = 1.6
 local def_max_fc_upd_num = 1000 -- default maximum fastcall updates num
 local def_arriving_koef = 3 --70
 
-local delay_after_ignition = 1000
+local delay_after_ignition = 500
 
 local state_none = 0
 
@@ -84,6 +84,7 @@ function action_car:__init(obj, storage)
 end
 
 function action_car:reset_scheme(loading)
+	printf("car <state>: START INITIALIZING ======================================================")
     printf("car <state>: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 
 	self.object:set_nonscript_usable(self.st.nonscript_usable)
@@ -119,8 +120,19 @@ function action_car:reset_scheme(loading)
 	--xr_logic.mob_capture(self.object, true)
 	self.st.signals = {}
 
+	self.headlights = object.deactivate
+	if self.st.headlights == "on" then
+	    self.headlights = object.activate
+	end
+	printf("car <state>: headlights %s", self.st.headlights)
+	xr_logic.mob_capture(self.object, true)
+	action(self.object,
+		object("right_light", self.headlights),
+		object("left_light", self.headlights),
+		cond(cond.time_end, time_infinite))
+	
 	self.fc_upd_num = 0 -- fastcall updates num
-	self.fc_upd_avg = 150 -- average time of the fastcall updates (in millisecond)
+	self.fc_upd_avg = 10 -- average time of the fastcall updates (in millisecond)
 	self.fc_last_upd_tm = -1 -- fastcall last update time
 
 	self.last_pos = nil
@@ -141,47 +153,37 @@ function action_car:reset_scheme(loading)
         self:start_car()
 	    self.path_walk_count = self.path_walk:count()
 
+	    --if not self.path_walk_info then
+		self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	    if not self.path_walk_info then
-		    self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
-	        if not self.path_walk_info then
-		        abort("object '%s': path_walk ('%s'): unable to obtain path_walk_info from path",
-			        self.object:name(), self.st.path_walk)
-	        end
+		    abort("object '%s': path_walk ('%s'): unable to obtain path_walk_info from path",
+			    self.object:name(), self.st.path_walk)
 	    end
+	    --end
 
 	    self.arrival_signalled = false
 	    self.target_dist = -1
 
 	    if loading then
 		    self.target_walk_pt = xr_logic.pstor_retrieve(self.object, "target_walk_pt")
-		    if self.target_walk_pt == false then
+		    if self.target_walk_pt == -1 then
 		        self.target_walk_pt = self:get_nearest_walkpoint()
 		    end
 	    else
 		    self.target_walk_pt = self:get_nearest_walkpoint()
 	    end
+
 	    if self:at_target_walkpoint() then
 		    self:walk_arrival_callback(self.target_walk_pt)
 	    end
     	
 	    self:go_to_walkpoint(self.target_walk_pt)
 	else
+	    printf("car <state>: self.target_walk_pt = -2")
+	    self.target_walk_pt = -2
 	    self.state_moving = state_moving_stop
 	end
-	
-	if self.st.headlights == "on" then
-	    printf("car <state>: headlights on")
-		action(self.object,
-			object("right_light", object.activate),
-			object("left_light", object.activate),
-			cond(cond.time_end, time_infinite))
-	else
-	    printf("car <state>: headlights off")
-		action(self.object,
-			object("right_light", object.deactivate),
-			object("left_light", object.deactivate),
-			cond(cond.time_end, time_infinite))
-	end
+	printf("car <move>: start target_pt1 = %d", self.target_walk_pt)
 	
 	self.state_firetarget = state_none
 	self.state_cannon = state_none
@@ -328,15 +330,18 @@ function action_car:reset_scheme(loading)
     --end
 
 	self.object:set_fastcall(self.fastcall, self)
+	printf("car <move>: start target_pt2 = %d", self.target_walk_pt)
+	printf("car <state>: END INITIALIZING ========================================================\n")
 end
 
 function action_car:save()
+    printf("car <state>: saving")
 	xr_logic.pstor_store(self.object, "speed", self.speed)
 	xr_logic.pstor_store(self.object, "loop", self.loop)
 	xr_logic.pstor_store(self.object, "min_delta_per_sec", self.min_delta_per_sec)
 	xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
 	xr_logic.pstor_store(self.object, "state_moving", self.state_moving)
-	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt or false)
+	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt) -- or -2)
 end
 
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
@@ -349,17 +354,20 @@ function action_car:get_nearest_walkpoint()
 end
 
 function action_car:get_next_walkpoint()
-	if self.target_walk_pt < self.path_walk_count - 1 then
+	if self.target_walk_pt >= 0 and self.target_walk_pt < self.path_walk_count - 1 then
+	    printf("car <move>: action_car:get_next_walkpoint(%d)", self.target_walk_pt + 1)
 		return self.target_walk_pt + 1
-	elseif self.loop then
+	elseif self.target_walk_pt == -1 or self.loop then
+	    printf("car <move>: action_car:get_next_walkpoint(0)")
 		return 0
 	end
-	return nil
+	printf("car <move>: action_car:get_next_walkpoint(-2)")
+	return -2
 end
 
 function action_car:at_target_walkpoint()
     printf("car <move>: action_car:at_target_walkpoint(%s)", utils.to_str(self.target_walk_pt))
-    if self.target_walk_pt == -1 then return end
+    if self.target_walk_pt == -2 then return true end
 
     local curVel = self.car:CurrentVel():magnitude()
 	local dist = self.object:position():distance_to(self.path_walk:point(self.target_walk_pt))
@@ -387,7 +395,7 @@ function action_car:at_target_walkpoint()
 	end
 	
 	local diff = dist - self.target_dist
-	printf("car <move>: dist = %f, target = %f, diff = %f", dist, self.target_dist, diff)
+	printf("car <move>: dist = %f, target = %f, diff = %f, curVel = %f, speed = %f", dist, self.target_dist, diff, curVel, self.speed)
 	if self.target_dist ~= -1 and not arrived then
 	    if diff > 0 then
 	        if diff > def_arriving_dist then
@@ -421,37 +429,48 @@ end
 function action_car:go_to_walkpoint(pt)
 	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
 	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
-	--printf("car <move>: action_car:go_to_walkpoint(%s)", utils.to_str(pt))
-	if self.state_delaying and time_global() - self.delay_time_start < delay_after_ignition then
-	    return
-	else
-	    self.state_delaying = false
+	printf("car <move>: action_car:go_to_walkpoint(%s)", utils.to_str(pt))
+	if self.state_delaying then
+	    if time_global() - self.delay_time_start >= delay_after_ignition then
+	        printf("car <state>: stop delaying after ignition")
+	        self.state_delaying = false
+	    else
+	        printf("car <state>: delaying after ignition")
+	        self.state_moving = state_moving_stop
+	        return
+	    end
 	end
 
 	if pt == nil or pt < 0 then
-	    self:stop_car()
-		self.state_moving = state_moving_stop
+	    if self.state_cannon ~= state_cannon_stop then
+	        self:stop_car()
+		    self.state_moving = state_moving_stop
+		end
+		printf("car <state>: pt < 0 or pt == nil")
 		return
 	end
 
     local diff_angle = angle_xz(self.object, self.path_walk:point(pt))
     local accel = move.none
     local curVel = self.car:CurrentVel():magnitude()
+    printf("car <move>: curVel = %f, speed = %f", curVel, self.speed)
     if curVel < self.speed then
         accel = move.fwd
+        printf("car <move>: forward")
     elseif curVel > self.speed * 1.15 then
         accel = move.back
+        printf("car <move>: backward")
     end
     --printf("car <move>: diff_angle = %f, katet = %f", diff_angle, get_katet(self.object, self.path_walk:point(pt)))
 	--if utils.no_need_to_rotate_xz(self.object, self.path_walk:point(pt)) then
 	if diff_angle < def_not_rotating_angle then
-		printf("car <move>: no_need_to_rotate. speed = %f, time = %f", self.speed, self.fc_upd_avg)
 		if self.state_moving ~= state_moving_fwd and accel ~= move.none then
+		    printf("car <move>: no_need_to_rotate. speed = %f, time = %f", self.speed, self.fc_upd_avg)
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
 				move(accel, self.speed), --move.on + 
-				--object("right_light", object.deactivate),
-				--object("left_light", object.deactivate),
+				--object("right_light", self.headlights),
+				--object("left_light", self.headlights),
 				cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 			self.state_moving = state_moving_fwd
 		end
@@ -466,8 +485,8 @@ function action_car:go_to_walkpoint(pt)
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
 					move(accel + move.left, self.speed), --move.on + 
-					--object("right_light", object.deactivate),
-					--object("left_light", object.activate),
+					--object("right_light", self.headlights),
+					--object("left_light", self.headlights),
 					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 				self.state_moving = state_moving_rot_left
 			end
@@ -476,8 +495,8 @@ function action_car:go_to_walkpoint(pt)
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
 					move(accel + move.right, self.speed), --move.on + 
-					--object("right_light", object.activate),
-					--object("left_light", object.deactivate),
+					--object("right_light", self.headlights),
+					--object("left_light", self.headlights),
 					cond(cond.time_end, time_infinite)) --self.fc_upd_avg))
 				self.state_moving = state_moving_rot_right
 			end
@@ -490,19 +509,22 @@ function action_car:start_car()
 	xr_logic.mob_capture(self.object, true)
 	action(self.object, move(move.on + move.fwd, 100), cond(cond.time_end, 5000))
 	--self.speed = 0
-	--self.state_delaying = true
+	self.state_delaying = true
 	self.delay_time_start = time_global()
 end
 
 function action_car:stop_car()
     printf("car <move>: car stopping.")
+	self.state_delaying = false
+	self.speed = 0
 	xr_logic.mob_capture(self.object, true)
 	action(self.object, move(move.off + move.handbrake, 0), cond(cond.time_end, 3000)) --cond(cond.move_end))
-	self.speed = 0
+	--self.target_walk_pt = -1
 end
 
 function action_car:walk_arrival_callback(index)
 	printf("car <move>: action_car:walk_arrival_callback(%d)", index)
+	if index == -2 then return end
 
 	local suggested_explode = self.path_walk_info[index]["explode"]
 	if suggested_explode == "true" then
@@ -551,7 +573,7 @@ function action_car:walk_arrival_callback(index)
     if self.hasWeapon and self.state_firetarget == state_firetarget_points then
         local next_idx = self:get_next_walkpoint()
         --local next_idx = self.target_walk_pt
-        if next_idx then
+        if next_idx >= 0 then
 	        local fw = self.path_walk_info[next_idx]["fw"]
 	        if fw then
 		        self.fire_wait = if_then_else(fw == "true", true, false)
@@ -593,7 +615,7 @@ function action_car:walk_arrival_callback(index)
 	--    return
 	--end
 
-    if self.target_walk_pt then
+    if self.target_walk_pt >= 0 then
 	    -- Если эта точка рядом и уже приехали - не ждать апдейта, чтобы вызвать callback
 	    if self:at_target_walkpoint() then
 		    self:walk_arrival_callback(self.target_walk_pt)
@@ -603,8 +625,11 @@ function action_car:walk_arrival_callback(index)
 	    end
 	else
 	    printf("car <move>: stop moving.")
-	    self:stop_car()
-	    self.state_moving = state_moving_stop
+	    --self.target_walk_pt = -2
+	    if self.state_moving ~= state_moving_stop and self.state_moving ~= state_moving_end then
+	        self:stop_car()
+	        self.state_moving = state_moving_stop
+	    end
 	end
 end
 
@@ -628,7 +653,7 @@ function action_car:change_fire_pts()
     if not self.path_fire then return end
     
     local fire_idx
-    if self.target_walk_pt then
+    if self.target_walk_pt >= 0 then
 	    -- Значение флагов огневых точек, котые будем искать:
 	    local fire_flags = self.path_walk_info[self.target_walk_pt].flags
     	
@@ -899,6 +924,8 @@ end
 
 -- Вернуть true, если апдейты больше не нужны
 function action_car:fast_update()
+	printf("car <state>: START FAST UPDATE ======================================================")
+	printf("car <state>: check moving1 - [%d][%d]", self.state_moving, self.target_walk_pt)
     --printf("car <state>: action_car:update(): state=%d", self.state_moving)
 
 	--if not self.object:action() then
@@ -913,21 +940,21 @@ function action_car:fast_update()
 	    return true
 	end
 	
-	local time = time_global()
+	local cur_time = time_global()
 
 	if self.fc_upd_num < def_max_fc_upd_num then
 	    local last_upd = self.fc_last_upd_tm
 	    if last_upd ~= -1 then
 	        local n = self.fc_upd_num
 	        if n < 3000 then
-	            self.fc_upd_avg = (self.fc_upd_avg * n + (time - last_upd))/(n + 1)
+	            self.fc_upd_avg = (self.fc_upd_avg * n + (cur_time - last_upd))/(n + 1)
 	            self.fc_upd_num = n + 1
 	        else
 	            self.fc_upd_num = 1
 	        end
 	    end
-	    self.fc_last_upd_tm = time
-	    printf("car <state>: average update = %f, time(%f)", self.fc_upd_avg, time)
+	    self.fc_last_upd_tm = cur_time
+	    printf("car <state>: average update = %f, time(%f)", self.fc_upd_avg, cur_time)
 	end
 
 	if self.state_moving == state_moving_end and self.state_cannon == state_cannon_stop then
@@ -946,11 +973,11 @@ function action_car:fast_update()
 	end
 
 	if self.state_moving ~= state_moving_end and self.state_moving ~= state_moving_stop and 
-	   time >= self.last_pos_time + self.min_car_explode_time then
+	   cur_time >= self.last_pos_time + self.min_car_explode_time then
 	    printf("car <state>: moving(%s)", utils.to_str(self.state_moving))
 		if not self.last_pos then
 			self.last_pos = self.object:position()
-			self.last_pos_time = time_global()
+			self.last_pos_time = cur_time
 		else
 			local cur_pos = self.object:position()
 			local diff = self.last_pos:distance_to(cur_pos)
@@ -958,40 +985,47 @@ function action_car:fast_update()
                 printf("car <move>: got stuck (%f < %f) - stop.", diff, self.min_delta_per_sec)
                 self:stop_car()
 				--self:car_explode()
-				self.state_moving = state_moving_end
+				self.state_moving = state_moving_stop
 				--return false
 			else
 			    self.last_pos = cur_pos
 			end
-			self.last_pos_time = time_global()
+			self.last_pos_time = cur_time
 		end
 	end
 	
+	printf("car <state>: check moving2 - [%d][%d]", self.state_moving, self.target_walk_pt)
 	if self.state_moving ~= state_moving_end and self.state_moving ~= state_none then
-	    if self.target_walk_pt then
+	    printf("car <move>: try")
+	    if self.target_walk_pt >= 0 then
 	        if self:at_target_walkpoint() then
+	            printf("car <move>: at target point")
 	            -- если нет флага ожидания стрельбы или мы уже отстрелялись или пошли в цикле обратно
 	            if not self.fire_wait or self.state_cannon == state_cannon_stop then --self.fire_rot_dir == -1 then
 	                    --printf("car <move>: car go to the new point.")
 		                -- Прибыли, выбрать новую точку
-		                printf("car <move>: new target = %s", utils.to_str(self.target_walk_pt))
 		                self:walk_arrival_callback(self.target_walk_pt)
+		                printf("car <move>: new target = %s", utils.to_str(self.target_walk_pt))
 		                -- меняем точки отстрела
 		                self:change_fire_pts()
-	            elseif self.state_moving ~= state_moving_stop then
+	            else
 	                printf("car <move>: 1.car stopped.")
-	                self:stop_car()
+	                if self.state_moving ~= state_moving_stop then
+	                    self:stop_car()
+	                end
 	                self.state_moving = state_moving_stop
 	            end
 	        else
-	            --printf("_pc: car keep going.")
+	            printf("car <move>: car keep going.")
 		        -- Продолжать ехать, или поворачиваться
 		        self:go_to_walkpoint(self.target_walk_pt)
 	        end
-	    elseif self.state_cannon == state_cannon_stop then
+	    else
 	        printf("car <move>: 2.car stopped.")
-	        self:stop_car()
-            self.state_moving = state_moving_end
+	        if self.state_cannon ~= state_cannon_stop then
+	            self:stop_car()
+                self.state_moving = state_moving_stop
+	        end
 	    end
 	end
 	
@@ -1020,12 +1054,12 @@ function action_car:fast_update()
 	        if self.fire_pt_count > 0 and self.state_cannon ~= state_cannon_stop then
 	            --printf("car <fire>: shooting points")
 	            if self.state_cannon == state_cannon_delay then
-	                if self.fire_start_time + self.fire_time < time_global() then
+	                if self.fire_start_time + self.fire_time < cur_time then
 	                    --printf("car <fire>: stop delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
 		                printf("car <fire>: 1.new fire point.")
 	                    self:fire_arrival_callback(self.target_fire_pt_idx)
 	                else
-	                    printf("car <fire>: delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, time_global())
+	                    printf("car <fire>: delaying(%.2f + %.2f < %.2f)", self.fire_start_time, self.fire_time, cur_time)
 	                end
 	            else
 	                if self.car:CanHit() or self.target_fire_pt_idx == 0 then
@@ -1069,6 +1103,7 @@ function action_car:fast_update()
 	    end
 	end
 	
+	printf("car <state>: END FAST UPDATE ========================================================\n")
 	return false
 end
 

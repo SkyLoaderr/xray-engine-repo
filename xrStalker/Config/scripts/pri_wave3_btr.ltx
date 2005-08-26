@@ -9,6 +9,7 @@ path_walk       = pri_wave3_btr_walk
 target          = actor
 on_signal       = arrived | %+pri_wave3_btr_arrived%
 on_info         = {+pri_wave2_end} ph_car@main, {+pri_wave3_bomber_on_position} ph_idle@wait_bomber
+headlights      = on
  
 [ph_car@main]
 path_walk       = pri_wave3_btr_walk
@@ -19,6 +20,7 @@ on_signal       = arrived | %+pri_wave3_btr_arrived%
 on_info         = {+pri_wave3_bomber_on_position} ph_idle@wait_bomber
 on_death_info   = pri_wave3_btr_dead
 on_target_vis   = actor | ph_car@fight_actor1
+headlights      = on
 
 [ph_car@fight_actor1]
 path_walk       = pri_wave3_btr_walk
@@ -37,12 +39,13 @@ on_info         = {+pri_bomber_dead} ph_car@fire
 on_death_info   = pri_wave3_btr_dead
 
 [ph_car@fire]
-path_walk       = pri_wave3_btr_walk
+;path_walk       = pri_wave3_btr_walk
 path_fire       = pri_wave3_btr_look
 fire_repeat     = inf
 auto_fire       = true
 on_target_vis   = actor | ph_car@fight_actor2
 on_death_info   = pri_wave3_btr_dead
+headlights      = on
 
 [ph_car@fight_actor2]
 target          = actor
