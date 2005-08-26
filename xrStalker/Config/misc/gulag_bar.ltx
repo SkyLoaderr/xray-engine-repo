@@ -1129,10 +1129,15 @@ on_info = {+bar_bandits_dead} walker@bar_ecolog_professor_companoin_2
 path_walk = escape_3_walk
 path_look = escape_3_look
 on_signal = fire_anomaly | %+bar_fire_anomaly_forward%
-meet = meet@ecolog_kruglov
-on_info = {+bar_go_through_anomaly} walker@bar_ecolog_professor_companoin_3
+on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
+[camper@bar_rescue_research_hide_3]
+path_walk = escape_stay
+path_look = escape_look
+meet = meet@ecolog_kruglov
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+on_info = {+bar_go_through_anomaly} walker@bar_ecolog_professor_companoin_3
 
 [walker@bar_ecolog_professor_companoin_3]
 path_walk = escape_4_walk
