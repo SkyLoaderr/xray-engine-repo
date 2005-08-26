@@ -2,7 +2,7 @@
 active = sr_idle@idle
 
 [sr_idle@idle]
-on_actor_inside = {-bar_freedom_attack_ecolog} sr_idle@wait %+bar_freedom_attack_ecolog =bar_freedom_angry_actor%
+on_actor_inside = {-bar_freedom_attack_ecolog} sr_idle@wait %+bar_freedom_attack_ecolog +bar_ecolog_crush_actor_enemy =bar_freedom_angry_actor%
 on_info = {+bar_freedom_attack_ecolog} sr_idle@wait
 
 [sr_idle@wait]
