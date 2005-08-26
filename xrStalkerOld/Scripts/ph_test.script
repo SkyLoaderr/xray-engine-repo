@@ -17,8 +17,8 @@ function main()
    local function door_callback(door,actor)
 
        --local door        = get_level_object("physic_object0001")
-       local ph_shell= door:get_physics_shell()
-       local joint=ph_shell:get_joint_by_bone_name("door")
+      -- local ph_shell= door:get_physics_shell()
+       --local joint=ph_shell:get_joint_by_bone_name("door")
 
       local low_limit=0
       local hi_limit=0
@@ -34,7 +34,7 @@ function main()
       end
     end
    
-   local ph_object = get_level_object ("level_prefix_physic_object_0000")
+   local ph_object = level_object_by_sid (014)
    ph_object:set_use_callback(callback)
    //local door        = get_level_object("physic_object0001")
    //door:set_use_callback(door_callback)
