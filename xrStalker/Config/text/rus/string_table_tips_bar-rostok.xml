@@ -46,7 +46,12 @@
     <string id="bar_ecolog_attack">
 		<text>Как вам будет угодно.</text>
     </string>
-    
+    <string id="bar_ecolog_escape">
+		<text>Парни, эколог сбежал! Все за ним!</text>
+    </string>
+    <string id="bar_freedom_chase">
+		<text>Они гонятся за нами!</text>
+    </string>
 
 
     <string id="bar_arena_fight_pseudodog">
