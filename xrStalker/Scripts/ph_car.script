@@ -126,10 +126,9 @@ function action_car:reset_scheme(loading)
 	end
 	printf("car <state>: headlights %s", self.st.headlights)
 	xr_logic.mob_capture(self.object, true)
-	action(self.object,
-		object("right_light", self.headlights),
-		object("left_light", self.headlights),
-		cond(cond.time_end, time_infinite))
+	action(self.object, object("left_light",  self.headlights), cond(cond.time_end, time_infinite))
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, object("right_light", self.headlights), cond(cond.time_end, time_infinite))
 --[[
 	xr_logic.mob_capture(self.object, true)
 	if self.st.headlights == "on" then
