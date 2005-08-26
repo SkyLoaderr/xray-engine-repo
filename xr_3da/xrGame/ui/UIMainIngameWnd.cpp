@@ -981,8 +981,9 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				flag = true;
 				break;
 			}
-		
+#ifdef	DEBUG
 			pWpnHud->dbg_SetFirePoint(tmpV);
+#endif
 		}
 		else if (4 == g_bHudAdjustMode) //ShellPoint
 		{
@@ -1038,7 +1039,9 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				flag = true;
 				break;
 			}
+#ifdef DEBUG
 			pWpnHud->dbg_SetShellPoint(tmpV);
+#endif
 		}
 		else if (3 == g_bHudAdjustMode) //MissileOffset
 		{
