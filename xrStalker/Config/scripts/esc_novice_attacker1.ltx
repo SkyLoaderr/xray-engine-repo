@@ -12,18 +12,18 @@ path_walk = escape_factory_way1
 path_look = escape_factory_look_common
 team = escape_attack_team
 on_signal = b_final | walker2 | %+escape_assault_finished%
-meet = meet@attacker
+
 
 [walker2]
 path_walk = escape_factory_return_path
 on_signal = b_final | nil
-
+meet = meet@attacker
 
 [meet@attacker]
-meet_state		= 30|hello@hail|20|wait@wait
-meet_state_wpn	= 30|backoff@threat_weap
-victim		= 30|actor
-victim_wpn		= 30|actor
+meet_state		= 20|wait@wait
+meet_state_wpn	= 10|backoff@threat_weap
+victim		= 10|actor
+victim_wpn		= 10|actor
 use		= true
 use_wpn		= false
 syndata		= hello@hail|backoff@threat_weap
