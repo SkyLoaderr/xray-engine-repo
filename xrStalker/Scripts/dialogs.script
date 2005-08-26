@@ -460,21 +460,3 @@ function companion_suicide(actor, npc)
 
 end
 
-------------------------------------------------------------------------------------
--- escape factory combat
-------------------------------------------------------------------------------------
-function dont_have_a_vodka (player, stalker)
-    return player:object ("vodka") == nil
-end
-
-function have_a_vodka (player, stalker)
-    return player:object ("vodka") ~= nil
-end
-
-function transfer_vodka (stalker, player)
-	local obj = player:object ("vodka")
-	if obj then	
-		dialogs.relocate_item(stalker, obj, "out")
-	end
-
-end
