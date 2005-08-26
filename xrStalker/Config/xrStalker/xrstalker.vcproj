@@ -1892,6 +1892,9 @@
 				<File
 					RelativePath=".\scripts\test_heli_2.script">
 				</File>
+				<File
+					RelativePath=".\scripts\x18.script">
+				</File>
 			</Filter>
 			<Filter
 				Name="Documentation"
