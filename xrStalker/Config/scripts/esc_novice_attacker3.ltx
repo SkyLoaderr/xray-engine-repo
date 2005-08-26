@@ -7,10 +7,16 @@ on_info = {+esc_bandits_assault} walker
 
 [walker]
 path_walk = escape_factory_way3
-path_look = escape_factory_look_common
+path_look = escape_factory_look3
 team = escape_attack_team
-on_signal = b_final | walker2 | %+escape_assault_finished%
+on_signal = flight | walker@fight 
+on_info = {+esc_kill_bandits_quest_kill}walker2
+
+[walker@fight]
+path_walk = esc_assault_final3
+path_look = esc_assault_final3_look
+on_info = {+esc_kill_bandits_quest_kill}walker2
+def_state_moving3 = raid
 
 [walker2]
 path_walk = escape_factory_return_path
-on_signal = b_final | nil
