@@ -557,42 +557,7 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-        t = { section = "logic@bar_ecolog_crush_sniper_chase_1", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_ecolog_crush_sniper_chase_2", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_ecolog_crush_sniper_chase_3", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_ecolog_crush_sniper_chase_4", 
-			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_ecolog_crush_sniper_chase_5", 
-			idle = 0,
-			prior = 6, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@bar_ecolog_crush_sniper_chase_6", 
-			idle = 0,
-			prior = 6, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t) 	
+        
     end
 
 	-- Свобода, атакующая ученных с целью отнимания инфы
