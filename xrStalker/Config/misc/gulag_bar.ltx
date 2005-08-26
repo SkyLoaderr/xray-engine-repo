@@ -689,7 +689,7 @@ active = camper1@bar_freedom_attack_guard_2
 path_walk = aguard_2_walk
 path_look = aguard_2_look
 def_state_moving = assault
-
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 radius = 5
 no_retreat = true
 
@@ -1092,6 +1092,7 @@ combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 path_walk = escape_4_walk
 path_look = escape_4_look
 meet = meet@ecolog_kruglov
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = arrived | %+bar_rescue_research_done%
 
 [death@ecolog_crush]
