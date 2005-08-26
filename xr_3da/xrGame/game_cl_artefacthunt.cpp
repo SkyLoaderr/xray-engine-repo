@@ -272,7 +272,9 @@ CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
 
 	//----------------------------------------------------------------
 	pBuyMenuTeam1 = InitBuyMenu("artefacthunt_base_cost", 1);
+	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
 	pBuyMenuTeam2 = InitBuyMenu("artefacthunt_base_cost", 2);
+	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
 	//----------------------------------------------------------------
 	pSkinMenuTeam1 = InitSkinMenu(1);
 	pSkinMenuTeam2 = InitSkinMenu(2);

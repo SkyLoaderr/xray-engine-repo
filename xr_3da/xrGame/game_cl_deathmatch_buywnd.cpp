@@ -213,9 +213,10 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 	};
 };
 
-void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* BuyMenu, PRESET_ITEMS* pPresetItems)
+void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* pBuyMenu, PRESET_ITEMS* pPresetItems)
 {
 	if (!pSettings->line_exist(caSection, "default_items")) return;
+	if (!pBuyMenu) return;
 
 	pPresetItems->clear();
 
@@ -230,7 +231,7 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWea
 		_GetItem(DefItems, i, ItemName);
 
 		u8 SlotID, ItemID;
-		BuyMenu->GetWeaponIndexByName(ItemName, SlotID, ItemID);
+		pBuyMenu->GetWeaponIndexByName(ItemName, SlotID, ItemID);
 		if (SlotID == 0xff || ItemID == 0xff) continue;
 		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
 		pPresetItems->push_back(ID);
