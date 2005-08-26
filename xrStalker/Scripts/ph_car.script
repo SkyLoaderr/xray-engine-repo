@@ -5,40 +5,7 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 -- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
-
---[[
-C++ class CCar : CGameObject,holder {
-    const eWpnActivate = 3;
-    const eWpnAutoFire = 5;
-    const eWpnFire = 4;
-    const eWpnDesiredDir = 1;
-    const eWpnDesiredPos = 2;
-    const eWpnToDefaultDir = 6;
-    
-    CCar ();
-    
-    function _construct();
-    function GetfHealth() const;
-    function CurrentVel();
-    function getVisible() const;
-    function net_Spawn(cse_abstract*);
-    function setVisible(number);
-    function SetParam(number, vector);
-    function net_Export(net_packet&);
-    function Visual();
-    function IsObjectVisible(game_object*);
-    function net_Import(net_packet&);
-    function HasWeapon();
-    function SetfHealth(number);
-    function engaged();
-    function FireDirDiff();
-    function CanHit();
-    function getEnabled() const;
-    function Action(number, number);
-    function setEnabled(number);
-    function use(CGameObject*);
-};
---]]
+function printf() end
 
 local pi_2 = math.pi / 3 -- 60 degree
 
