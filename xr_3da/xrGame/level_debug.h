@@ -194,6 +194,8 @@ public:
 	void		draw_text			();
 	void		draw_level_info		();
 
+	void		on_destroy_object	(CObject *obj);
+
 private:
 	void		free_mem			();
 	

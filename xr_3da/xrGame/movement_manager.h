@@ -232,6 +232,7 @@ public:
 
 	virtual void	on_travel_point_change	(const u32 &previous_travel_point_index) {}
 	virtual void	on_build_path			() {}
+	virtual void	on_selector_failed		() {}
 
 	template <typename T>
 	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;

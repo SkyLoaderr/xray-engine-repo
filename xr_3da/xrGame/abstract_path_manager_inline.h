@@ -157,6 +157,11 @@ IC	CRestrictedObject &CPathManagerTemplate::object			() const
 	VERIFY					(m_object);
 	return					(*m_object);
 }
+TEMPLATE_SPECIALIZATION
+IC void	CPathManagerTemplate::reset()
+{
+	m_failed = false;
+}
 
 #undef CPathManagerTemplate
 #undef TEMPLATE_SPECIALIZATION

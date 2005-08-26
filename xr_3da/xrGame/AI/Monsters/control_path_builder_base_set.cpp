@@ -18,6 +18,11 @@ void CControlPathBuilderBase::prepare_builder()
 	m_target_set.init			();
 
 	set_target_accessible		(m_target_found, m_object->Position());
+
+	m_last_time_target_set		= 0;
+
+	m_time_global_failed_started	= 0;
+	m_time_path_updated_external	= 0;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -33,8 +33,12 @@ void CControlPathBuilderBase::update_target_point()
 	STarget saved_target;
 	saved_target.set(m_target_found.position, m_target_found.node);
 
-	// выбрать ноду и позицию в соответствии с желаемыми нодой и позицией
-	find_target_point		();
+	if (global_failed())
+		find_target_point_failed	();
+	else 
+		// выбрать ноду и позицию в соответствии с желаемыми нодой и позицией
+		find_target_point_set		();
+
 
 	//-----------------------------------------------------------------------
 	// postprocess target_point
@@ -72,6 +76,8 @@ void CControlPathBuilderBase::set_path_builder_params()
 
 void CControlPathBuilderBase::update_path_builder_state()
 {
+	u32 state_prev = m_state;
+	
 	m_state = eStatePathValid;
 
 	// нет пути
@@ -83,8 +89,22 @@ void CControlPathBuilderBase::update_path_builder_state()
 		m_state = eStatePathEnd;
 	}
 
-	// ждать пока не будет построен путь
-	if ( !m_man->path_builder().detail().actual() && (m_man->path_builder().detail().time_path_built() < m_last_time_target_set)) {
-		m_state = m_state | eStateWaitNewPath;
+	// ждать пока не будет построен путь (путь должен быть гарантированно построен)
+	if ((m_last_time_target_set > m_time_path_updated_external) || 
+		(!m_man->path_builder().detail().actual() && (m_man->path_builder().detail().time_path_built() < m_last_time_target_set))) {
+		m_state |= eStateWaitNewPath;
 	}
+	
+	if (m_failed) {
+		// set
+		m_state |= eStatePathFailed;
+		// clear
+		m_state &= ~eStatePathValid;
+		m_state &= ~eStateWaitNewPath;
+
+		m_failed						= false;
+
+		m_time_global_failed_started	= time();
+	}
+
 }

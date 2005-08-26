@@ -191,7 +191,9 @@ void CBaseMonster::debug_fsm()
 	}
 	
 	DBG().object_info(this,this).remove_item (u32(0));
-	DBG().object_info(this,this).add_item	 (st, D3DCOLOR_XRGB(255,0,0), 0);
+	DBG().object_info(this,this).remove_item (u32(1));
+	DBG().object_info(this,this).add_item	 (*cName(), D3DCOLOR_XRGB(255,0,0), 0);
+	DBG().object_info(this,this).add_item	 (st, D3DCOLOR_XRGB(255,0,0), 1);
 }
 
 

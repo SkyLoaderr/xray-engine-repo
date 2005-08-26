@@ -31,6 +31,20 @@ CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, ALife::_OBJE
 	return			(self->objects().object(id,true));
 }
 
+CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, LPCSTR name)
+{
+	VERIFY			(self);
+	
+	for (CALifeObjectRegistry::OBJECT_REGISTRY::const_iterator it = self->objects().objects().begin(); it != self->objects().objects().end(); it++) {
+		CSE_ALifeDynamicObject *obj = it->second;
+		if (xr_strcmp(obj->name(),name) == 0)
+			return it->second;
+	}
+	
+	return			(0);
+}
+
+
 CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, ALife::_OBJECT_ID id, bool no_assert)
 {
 	VERIFY			(self);
@@ -83,6 +97,7 @@ void CALifeSimulator::script_register(lua_State *L)
 	[
 		class_<CALifeSimulator>("alife_simulator")
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID))(alife_object))
+			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,LPCSTR))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID, bool))(alife_object))
 			.def("story_object",			(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_STORY_ID))(alife_story_object))
 			.def("set_switch_online",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_switch_online))

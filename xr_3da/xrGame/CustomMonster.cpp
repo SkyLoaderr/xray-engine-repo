@@ -32,6 +32,7 @@
 #include "entitycondition.h"
 #include "sound_player.h"
 #include "level.h"
+#include "level_debug.h"
 #include "material_manager.h"
 #include "sound_user_data_visitor.h"
 #include "mt_config.h"
@@ -860,6 +861,10 @@ void CCustomMonster::net_Destroy()
 			&CCustomMonster::Exec_Visibility
 		)
 	);
+	
+#ifdef DEBUG
+	DBG().on_destroy_object(this);
+#endif
 }
 
 BOOL CCustomMonster::UsedAI_Locations()

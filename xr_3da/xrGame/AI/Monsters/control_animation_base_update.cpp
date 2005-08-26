@@ -43,7 +43,7 @@ void CControlAnimationBase::SelectAnimation()
 
 	m_object->CheckSpecParams		(spec_params);	
 	if (prev_motion	!= cur_anim_info().motion) 
-		CheckTransition				(prev_motion, cur_anim_info().motion);
+		if (CheckTransition(prev_motion, cur_anim_info().motion)) return;
 
 	CheckReplacedAnim				();
 	SetTurnAnimation				();
@@ -60,7 +60,8 @@ void CControlAnimationBase::SetTurnAnimation()
 	bool turn_left = true;
 	if (from_right(yaw_target, yaw_current)) turn_left = false; 
 
-	if (IsStandCurAnim() && (!fis_zero(delta_yaw))) {
+	EPState	anim_state = GetState(cur_anim_info().motion);
+	if (IsStandCurAnim() && (anim_state == PS_STAND) && (!fis_zero(delta_yaw))) {
 		m_object->SetTurnAnimation(turn_left);
 		return;
 	}

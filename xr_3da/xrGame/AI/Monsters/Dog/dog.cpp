@@ -129,6 +129,16 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 	}
 }
 
+bool CAI_Dog::check_start_conditions(ControlCom::EControlType control_type)
+{
+	if (control_type == ControlCom::eControlRotationJump) {
+		EMonsterState state = StateMan->get_state_type();
+		if (!is_state(state, eStateAttack)) return false;
+	}
+	return true;
+}
+
+
 #ifdef _DEBUG
 void CAI_Dog::debug_on_key(int key)
 {
@@ -150,3 +160,4 @@ void CAI_Dog::debug_on_key(int key)
 	}
 }
 #endif
+

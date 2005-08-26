@@ -9,6 +9,7 @@
 #include "../../ai_object_location.h"
 #include "../../ai_space.h"
 #include "../../movement_manager_space.h"
+#include "../../level_path_manager.h"
 
 CControlPathBuilder::CControlPathBuilder(CCustomMonster *monster) : CMovementManager(monster)
 {
@@ -96,6 +97,7 @@ void CControlPathBuilder::update_schedule()
 
 			// set selector
 			if (m_data.target_node == u32(-1)) {
+				make_inactual						();
 				level_selector().set_evaluator		(m_selector_approach);
 				level_selector().set_query_interval	(0);
 				init_selector						(m_selector_approach, m_data.target_position);
@@ -105,7 +107,9 @@ void CControlPathBuilder::update_schedule()
 	}
 
 	update_path								();
-
+	
+	m_man->notify							(ControlCom::eventPathUpdated, 0);
+	
 	STOP_PROFILE;
 }
 
@@ -129,6 +133,11 @@ void CControlPathBuilder::on_travel_point_change(const u32 &previous_travel_poin
 void CControlPathBuilder::on_build_path()
 {
 	m_man->notify	(ControlCom::eventPathBuilt, 0);
+}
+
+void CControlPathBuilder::on_selector_failed()
+{
+	m_man->notify	(ControlCom::eventPathSelectorFailed, 0);
 }
 
 //////////////////////////////////////////////////////////////////////////

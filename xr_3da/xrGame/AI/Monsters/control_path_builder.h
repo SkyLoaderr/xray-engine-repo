@@ -49,6 +49,7 @@ public:
 
 	virtual	void	on_travel_point_change	(const u32 &previous_travel_point_index);
 	virtual void	on_build_path			();
+	virtual void	on_selector_failed		();
 
 			// services
 			bool	is_path_end				(float dist_to_end);

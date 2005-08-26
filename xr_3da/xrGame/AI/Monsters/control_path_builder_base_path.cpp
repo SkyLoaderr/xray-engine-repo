@@ -15,12 +15,14 @@ const u32		pmt_find_random_pos_attempts	= 5;
 //////////////////////////////////////////////////////////////////////////
 bool CControlPathBuilderBase::target_point_need_update()
 {
-	if (m_state == eStatePathValid) {
+	if ((m_state & eStatePathFailed) == eStatePathFailed)
+		return true;
+	else if (m_state == eStatePathValid) {
 		
 		// если путь ещё не завершен
 		if (!m_man->path_builder().is_path_end(m_distance_to_path_end)) {
 
-			if (m_target_actual) return false;
+			if (m_target_actual && !global_failed()) return false;  // если global_failed - игнорировать актуальность
 			
 			// если время движения по пути не вышло, не перестраивать
 			return (m_last_time_target_set + m_time < time());
@@ -28,6 +30,8 @@ bool CControlPathBuilderBase::target_point_need_update()
 	
 		//return (!m_target_actual); // логический конец пути
 		return (true);
+	//} else if ((m_state & eStateWaitParamsApplied) == eStateWaitParamsApplied) {
+	//	return false;
 	} else if ((m_state & eStateWaitNewPath) == eStateWaitNewPath) {
 		return false;
 	} else if ((m_state & eStateNoPath) == eStateNoPath) {
@@ -42,7 +46,7 @@ bool CControlPathBuilderBase::target_point_need_update()
 //////////////////////////////////////////////////////////////////////////
 // Нахождение m_target_found
 // На входе есть установленные нода и позиция m_target_set
-void CControlPathBuilderBase::find_target_point()
+void CControlPathBuilderBase::find_target_point_set()
 {
 	m_target_found.set(m_target_set.position,m_target_set.node);
 	
@@ -79,7 +83,7 @@ void CControlPathBuilderBase::find_target_point()
 
 		dir.sub						(m_object->Position(), m_target_found.position);
 		dir.normalize_safe			();
-		m_target_set.position.mad	(m_object->Position(), dir, pmt_find_point_dist);
+		m_target_found.position.mad	(m_object->Position(), dir, pmt_find_point_dist);
 	}
 
 	// проверить позицию на accessible
@@ -104,7 +108,37 @@ void CControlPathBuilderBase::find_target_point()
 
 	//---------------------------------------------------
 	// II. Выбрана позиция, ищем ноду
+	
+	find_node();
+}
 
+//////////////////////////////////////////////////////////////////////////
+// if path FAILED
+void CControlPathBuilderBase::find_target_point_failed() 
+{
+	// если новая позиция = позиции монстра - выбрать рандомную валидную позицию
+	for (u32 i = 0; i < pmt_find_random_pos_attempts; i++ ) {
+		Fvector	pos_random;	
+		Fvector dir;		
+		dir.random_dir			();
+
+		pos_random.mad			(m_object->Position(), dir, pmt_find_point_dist);
+		set_target_accessible	(m_target_found, pos_random);
+
+		if (!m_target_found.position.similar(m_object->Position(), 0.5f)) break;
+	}
+
+	if (m_target_found.node != u32(-1)) return;
+
+	//---------------------------------------------------
+	// II. Выбрана позиция, ищем ноду
+	find_node();
+}
+
+
+
+void CControlPathBuilderBase::find_node()
+{
 	// нода в прямой видимости?
 	m_man->path_builder().restrictions().add_border		(m_object->Position(), m_target_found.position);
 	m_target_found.node	= ai().level_graph().check_position_in_direction(m_object->ai_location().level_vertex_id(),m_object->Position(),m_target_found.position);
@@ -143,3 +177,4 @@ void CControlPathBuilderBase::find_target_point()
 	// нода не найдена. на следующем этапе будет использован селектор
 	m_target_found.node = u32(-1);
 }
+

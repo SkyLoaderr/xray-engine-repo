@@ -5,6 +5,9 @@
 #include "../../cover_evaluators.h"
 #include "../../level_path_manager.h"
 #include "../../detail_path_manager.h"
+#include "../../level_location_selector.h"
+
+const u32 pmt_global_failed_duration = 3000;
 
 //////////////////////////////////////////////////////////////////////////
 // Construction / Destruction
@@ -49,7 +52,6 @@ void CControlPathBuilderBase::reset()
 	prepare_builder					();
 
 	m_path_end						= false;
-
 }
 
 
@@ -57,7 +59,9 @@ void CControlPathBuilderBase::on_event(ControlCom::EEventType type, ControlCom::
 {
 	switch (type) {
 	case ControlCom::eventPathBuilt:				on_path_built(); break;
+	case ControlCom::eventPathUpdated:				on_path_updated(); break;
 	case ControlCom::eventTravelPointChange:		travel_point_changed(); break;
+	case ControlCom::eventPathSelectorFailed:		on_selector_failed(); break;
 	}
 }
 
@@ -66,6 +70,8 @@ void CControlPathBuilderBase::on_start_control(ControlCom::EControlType type)
 	switch (type) {
 	case ControlCom::eControlPath:	m_man->subscribe	(this, ControlCom::eventPathBuilt);	
 									m_man->subscribe	(this, ControlCom::eventTravelPointChange);	
+									m_man->subscribe	(this, ControlCom::eventPathUpdated);
+									m_man->subscribe	(this, ControlCom::eventPathSelectorFailed);
 									break;
 	}
 }
@@ -75,6 +81,8 @@ void CControlPathBuilderBase::on_stop_control(ControlCom::EControlType type)
 	switch (type) {
 	case ControlCom::eControlPath:	m_man->unsubscribe	(this, ControlCom::eventPathBuilt);	
 									m_man->unsubscribe	(this, ControlCom::eventTravelPointChange);	
+									m_man->unsubscribe	(this, ControlCom::eventPathUpdated);
+									m_man->unsubscribe	(this, ControlCom::eventPathSelectorFailed);
 									break;
 	}
 }
@@ -101,20 +109,43 @@ void CControlPathBuilderBase::set_target_accessible(STarget &target, const Fvect
 	}
 }
 
-// обновить информацию о построенном пути (m_failed)
+// обновит	ь информацию о построенном пути (m_failed)
 void CControlPathBuilderBase::on_path_built()
 {
-	m_failed		= false;
-
-	// если level_path_manager failed
-	if (m_man->path_builder().level_path().failed()) {
-		m_failed	= true;
-	}
-
 	// проверка на конец пути
 	if (!m_man->path_builder().detail().path().empty() && 
 		(m_man->path_builder().detail().curr_travel_point_index() < m_man->path_builder().detail().path().size() - 1))
 		m_path_end = false;
+
+}
+
+void CControlPathBuilderBase::on_path_updated()
+{
+	// если level_path_manager failed
+	if (m_man->path_builder().level_path().failed()) {
+		m_failed									= true;
+		m_man->path_builder().level_path().reset	();
+		VERIFY(!m_man->path_builder().level_path().failed());
+	}
+
+	// если level_path_manager failed
+	if (m_man->path_builder().detail().failed()) 
+		m_failed	= true;
+
+
+	// проверка на конец пути
+	if ((m_man->path_builder().detail().path().empty() ||
+		(m_man->path_builder().detail().curr_travel_point_index() >= m_man->path_builder().detail().path().size() - 1)) &&
+		m_man->path_builder().detail().actual()) {
+			m_failed	= true;
+		}
+
+	m_time_path_updated_external = time();
+}
+
+void CControlPathBuilderBase::on_selector_failed()
+{
+	m_failed = true;
 }
 
 void CControlPathBuilderBase::on_path_end()
@@ -127,4 +158,9 @@ void CControlPathBuilderBase::travel_point_changed()
 	if (m_man->path_builder().detail().curr_travel_point_index() >= m_man->path_builder().detail().path().size() - 1) {
 		on_path_end();
 	}
+}
+
+bool CControlPathBuilderBase::global_failed()
+{
+	return (m_time_global_failed_started + pmt_global_failed_duration > time());
 }

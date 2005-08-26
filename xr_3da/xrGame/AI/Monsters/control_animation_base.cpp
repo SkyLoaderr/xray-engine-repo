@@ -140,9 +140,9 @@ void CControlAnimationBase::select_animation()
 }
 
 // проверить существует ли переход из анимации from в to
-void CControlAnimationBase::CheckTransition(EMotionAnim from, EMotionAnim to)
+bool CControlAnimationBase::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
-	if (!m_man->check_start_conditions(ControlCom::eControlSequencer)) return;
+	if (!m_man->check_start_conditions(ControlCom::eControlSequencer)) return false;
 
 	// поиск соответствующего перехода
 	bool		b_activated	= false;
@@ -183,7 +183,10 @@ void CControlAnimationBase::CheckTransition(EMotionAnim from, EMotionAnim to)
 
 	if (b_activated) {
 		m_object->com_man().seq_switch		();
+		return true;
 	}
+
+	return false;
 }
 
 void CControlAnimationBase::CheckReplacedAnim()
@@ -257,6 +260,15 @@ float CControlAnimationBase::GetAnimSpeed(EMotionAnim anim)
 	return				(def->Dequantize(def->speed));
 }
 
+
+bool CControlAnimationBase::IsTurningCurAnim()
+{
+	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim_info().motion);
+	VERIFY(m_tAnims.end() != item_it);
+
+	if (!fis_zero(item_it->second.velocity.velocity.angular_real)) return true;
+	return false;
+}
 
 bool CControlAnimationBase::IsStandCurAnim()
 {

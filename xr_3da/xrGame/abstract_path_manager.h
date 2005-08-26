@@ -53,6 +53,7 @@ public:
 	IC	_vertex_id_type	dest_vertex_id				() const;
 	IC	virtual	bool	completed					() const;
 	IC			bool	failed						() const;
+	IC			void	reset						();
 	IC	virtual	void	select_intermediate_vertex	();
 	IC	CRestrictedObject &object					() const;
 	

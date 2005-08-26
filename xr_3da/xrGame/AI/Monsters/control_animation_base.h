@@ -106,7 +106,7 @@ public:
 	void		AddReplacedAnim			(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim);
 
 	// -------------------------------------
-	void		CheckTransition			(EMotionAnim from, EMotionAnim to);
+	bool		CheckTransition			(EMotionAnim from, EMotionAnim to);
 
 	void		SetSpecParams			(u32 param) {spec_params |= param;}
 	void		SetCurAnim				(EMotionAnim a) {cur_anim_info().motion = a;}
@@ -139,6 +139,7 @@ protected:
 public:
 	float		GetAnimSpeed			(EMotionAnim anim);
 	bool		IsStandCurAnim			();
+	bool		IsTurningCurAnim		();
 	void		ValidateAnimation		();
 	
 	//////////////////////////////////////////////////////////////////////////

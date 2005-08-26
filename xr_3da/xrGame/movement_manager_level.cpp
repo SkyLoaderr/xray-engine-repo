@@ -28,8 +28,10 @@ void CMovementManager::process_level_path()
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
 			level_selector().select_location(object().ai_location().level_vertex_id(), true);
-			if (level_selector().failed())
+			if (level_selector().failed()) {
+				on_selector_failed();
 				break;
+			}
 
 			m_path_state		= ePathStateBuildLevelPath;
 			

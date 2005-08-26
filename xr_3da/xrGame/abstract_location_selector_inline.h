@@ -36,7 +36,7 @@ IC	CSelectorTemplate::~CAbstractLocationSelector	()
 TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 {
-	m_failed				= true;
+	m_failed				= false;
 	m_selected_vertex_id	= _vertex_id_type(-1);
 	m_evaluator				= 0;
 	m_last_query_time		= 0;
@@ -151,6 +151,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::after_search		()
 {
 }
+
 
 #undef CSelectorTemplate
 #undef TEMPLATE_SPECIALIZATION

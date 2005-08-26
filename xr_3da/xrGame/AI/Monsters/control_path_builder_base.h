@@ -70,12 +70,17 @@ class CControlPathBuilderBase : public CControl_ComBase {
 		eStatePathValid			= u32(1) << 0,		
 		eStateWaitNewPath		= u32(1) << 1,
 		eStatePathEnd			= u32(1) << 2,
-		eStateNoPath			= u32(1) << 3
+		eStateNoPath			= u32(1) << 3,
+		eStatePathFailed		= u32(1) << 4
 	};
 	u32							m_state;
 
 	bool						m_path_end;
 
+	// состояние, в котором path_builder работает независимо
+	u32							m_time_global_failed_started;
+	u32							m_time_path_updated_external;
+	
 public:
 						CControlPathBuilderBase				();
 	virtual				~CControlPathBuilderBase			();
@@ -135,7 +140,8 @@ private:
 		void		check_failure				();
 
 		bool		target_point_need_update	();
-		void		find_target_point			();
+		void		find_target_point_set		();
+		void		find_target_point_failed	();
 
 		void		select_target				();		// выбрать 
 
@@ -146,6 +152,13 @@ private:
 		void		travel_point_changed		();
 		void		on_path_built				();
 		void		on_path_end					();
+		void		on_path_updated				();
+		void		on_selector_failed			();
+
+		// нашли позицию, найти ноду
+		void		find_node					();
+
+		bool		global_failed				();
 };
 
 #include "control_path_builder_base_inline.h"

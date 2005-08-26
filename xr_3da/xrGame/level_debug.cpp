@@ -257,4 +257,19 @@ void CLevelDebug::CLevelInfo::draw_info()
 	process				(pred);	
 }
 
+void CLevelDebug::on_destroy_object(CObject *obj)
+{
+	// handle all of the objects
+	for (OBJECT_INFO_MAP_IT it = m_objects_info.begin(); it != m_objects_info.end(); ++it) {
+		// если объект невалидный - удалить информацию
+		if (it->first == obj) {
+			for (CLASS_INFO_MAP_IT it_class = it->second.begin(); it_class != it->second.end(); ++it_class){
+				xr_delete(it_class->second);
+			}
+			m_objects_info.erase(it);
+			break;
+		}
+	}
+}
+
 #endif
