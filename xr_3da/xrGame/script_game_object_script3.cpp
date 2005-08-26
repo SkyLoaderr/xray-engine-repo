@@ -239,6 +239,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("inside",						(bool (CScriptGameObject::*)(const Fvector &, float) const)(&CScriptGameObject::inside))
 		.def("inside",						(bool (CScriptGameObject::*)(const Fvector &) const)(&CScriptGameObject::inside))
 		.def("set_fastcall",				&CScriptGameObject::set_fastcall)
+		.def("set_const_force",				&CScriptGameObject::set_const_force)
 		.def("info_add",					&CScriptGameObject::info_add)
 		.def("info_clear",					&CScriptGameObject::info_clear)
 

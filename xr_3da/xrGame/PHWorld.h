@@ -1,11 +1,12 @@
 #ifndef PH_WORLD_H
 #define PH_WORLD_H
-
+#include "Physics.h"
 // refs
 struct	SGameMtlPair;
 class	CPHCommander;
 class	CPHCondition;
 class	CPHAction;
+
 class CPHMesh {
 	dGeomID Geom;
 public:

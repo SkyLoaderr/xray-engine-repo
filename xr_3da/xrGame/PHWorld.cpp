@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Physics.h"
+
 #include "PHWorld.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PhysicsCommon.h"

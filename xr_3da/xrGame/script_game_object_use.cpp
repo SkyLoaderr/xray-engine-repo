@@ -17,6 +17,8 @@
 #include "patrol_path_manager.h"
 #include "PHCommander.h"
 #include "PHScriptCall.h"
+#include "PHSimpleCalls.h"
+#include "phworld.h"
 void CScriptGameObject::SetTipText (LPCSTR tip_text)
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
@@ -199,4 +201,16 @@ void CScriptGameObject::set_fastcall(const luabind::functor<bool> &functor, cons
 	Level().ph_commander_scripts().add_call(c,a);
 	
 
+}
+void CScriptGameObject::set_const_force(const Fvector &dir,float value,u32 time_interval)
+{
+	CPhysicsShell	*shell=object().cast_physics_shell_holder()->PPhysicsShell();
+	if(ph_world&&shell)
+	{
+		Fvector force;force.set(dir);force.mul(value);
+		CPHConstForceAction a(shell,force);
+		CPHExpireOnStepCondition cn;
+		cn.set_time_interval(time_interval);
+		ph_world->AddCall(&cn,&a);
+	}
 }
