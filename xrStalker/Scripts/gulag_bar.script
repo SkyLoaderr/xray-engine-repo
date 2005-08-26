@@ -1895,7 +1895,7 @@ function load_states(gname, type)
 
 	if type == "bar_freedom_attack" then        
 		return function (gulag)
-			if db.actor:has_info("bar_freedom_attack_ecolog") and
+			if (db.actor:has_info("bar_freedom_attack_ecolog") or db.actor:has_info("bar_kill_professor_start")) and
 			   db.actor:dont_has_info("bar_rescue_research_chasing_start") then
 				 return 1 -- actor enemy
 			end

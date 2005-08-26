@@ -748,6 +748,7 @@ active = camper@bar_freedom_attack_camper_5
 path_walk = camper_5_walk
 path_look = camper_5_look
 def_state_moving = assault
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 
 radius = 5
 no_retreat = true
@@ -1053,8 +1054,8 @@ on_info = {+bar_actor_helps_kruglov} walker@bar_ecolog_professor_companion
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
 path_look = escape_hide_1_look
-on_signal = freedom_chase | camper@bar_rescue_research_hide_1 %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
-on_signal2 = ecolog_chase | %=bar_ecolog_spam_5%
+on_signal = freedom_chase | %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
+on_signal2 = ecolog_chase | camper@bar_rescue_research_hide_1 %=bar_ecolog_spam_5%
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
 [camper@bar_rescue_research_hide_1]
