@@ -228,10 +228,18 @@ function psi_hit_npc(actor, npc,p)
     h.type = hit.telepatic
 	npc:hit(h)]]
 
+	local h = hit ()
+    h.power = 100
+    h.direction = vector():set(1, 0, 0)
+    h.impulse = 1
+    h.draftsman = actor
+    h.type = hit.telepatic
+    npc:hit(h)
+--[[
 	if p[1] then
 		npc.psy_health = p[1] * 0.01
 		printf( "psy h = %f", npc.psy_health )
-	end
+	end]]
 end
 
 
