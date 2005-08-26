@@ -550,7 +550,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_ecolog_professor", 
 			idle = 0,
-			prior = 10, state = {0,1}, squad = squad, group = groups[0],
+			prior = 10, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:profile_name() == "bar_ecolog_professor"
@@ -1912,11 +1912,7 @@ function load_states(gname, type)
 	end
 	if type == "bar_ecolog_crush" then        
 		return function (gulag)
-			if db.actor:has_info("bar_rescue_research_chasing_start") and 
-               db.actor:dont_has_info("bar_rescue_research_chasing_end") then
-                    return 1
-            end
-            return 0
+			    return 0
 		end
 	end
 	if type == "bar_svoboda_ambush" then        
