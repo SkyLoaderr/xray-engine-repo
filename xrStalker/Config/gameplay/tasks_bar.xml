@@ -4,7 +4,7 @@
 		<objective>
 			<text>bar_resque_scientific_information</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>bar_resue_research_done</infoportion_complete>
+			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
 			<infoportion_fail>bar_rescue_research_dead</infoportion_fail>
 			<article>descr_bar_resque_information</article>
 		</objective>
