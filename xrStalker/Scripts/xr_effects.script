@@ -389,6 +389,9 @@ end
 function bar_ecolog_spam_5(actor, npc)
 	news_manager.send_tip(actor, "bar_freedom_chase", nil, "ecolog", nil, 503)
 end
+function bar_ecolog_hit(actor, npc)
+	news_manager.send_tip(actor, "bar_ecolog_hit", nil, "ecolog", nil, 503)
+end
 function bar_freedom_spam_5(actor, npc)
 	news_manager.send_tip(actor, "bar_ecolog_escape", nil, "freedom", nil, 509)
 end
