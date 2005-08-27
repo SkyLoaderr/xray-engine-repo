@@ -27,7 +27,8 @@ news = {
 	bar_ecolog_spam_2				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_4]]),
 	bar_ecolog_spam_3				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_5]]),
 	bar_ecolog_spam_4				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_6]]),
-	bar_ecolog_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]]),
+	bar_ecolog_spam_5               = sound_object([[characters_voice\human_01\states\panic_monster\stalker\panic_2]]), 
+    bar_ecolog_attack				= sound_object([[characters_voice\human_01\scenario\Rostok\Heli_crush\kruglov_pda_7]]),
 
 	bar_psih_come					= sound_object([[characters_voice\human_01\scenario\bar\barman\barman_pda_psycho]]),
 
