@@ -42,7 +42,9 @@
     <string id="bar_ecolog_spam_4">
 		<text>Волкодав, уводи своих собак, пока хвосты не ободрали!</text>
     </string>        
-    
+     <string id="bar_ecolog_hit">
+		<text>Меченый, помоги мне!!!Меня убивают!!!</text>
+    </string>    
     <string id="bar_ecolog_attack">
 		<text>Как вам будет угодно.</text>
     </string>
