@@ -1132,7 +1132,6 @@ path_look = escape_hide_1_look
 def_state_moving = assault
 on_signal = ecolog_chase |%+bar_ecolog_see_chase% 
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_hit = hit@ecolog_professor
 on_info = {+bar_rescue_research_chasing_end} walker@bar_ecolog_professor_companoin_1
 on_info2 = {+bar_ecolog_see_chase -bar_ecolog_saw_chase} %=bar_ecolog_spam_5 +bar_ecolog_saw_chase%
@@ -1148,12 +1147,12 @@ path_walk = escape_hide_2_walk
 path_look = escape_hide_2_look
 meet = meet@ecolog_kruglov
 on_hit = hit@ecolog_professor
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {+bar_bandits_dead} walker@bar_ecolog_professor_companoin_2
 
 [walker@bar_ecolog_professor_companoin_2]
 path_walk = escape_3_walk
 on_hit = hit@ecolog_professor
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = fire_anomaly | %+bar_fire_anomaly_forward%
 on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3
 
