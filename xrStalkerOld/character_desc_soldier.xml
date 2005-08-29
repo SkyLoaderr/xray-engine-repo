@@ -617,7 +617,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\stalker_militari_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
