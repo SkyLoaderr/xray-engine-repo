@@ -57,8 +57,7 @@ object_list["test5"] = {
 	"dar_m_tushkano_e_0012"
 }
 
-object_id_list = {}
-
+-- define smart terrains
 smart_terrains["test1"] = {
 	"dar_burer_ring"
 }
@@ -67,146 +66,14 @@ smart_terrains["test2"] = {
 	"dar_com_center_poltergeist"
 }
 
-function is_gulag_in_test(gulag_name, test_name)
-	if smart_terrains[test_name] == nil then 
-		printf(":: DEBUG : No such test")
-		return false 
-	end
-	
-	printf(":: DEBUG : There is such test")
-	
-	for index, cur_gulag_name in smart_terrains[test_name] do
-		printf(":: DEBUG : Is In Test :: Cur Gulag [%s] Test[%s]",cur_gulag_name, test_name)
-		if gulag_name == cur_gulag_name then
-			return true
-		end
-	end
-	
-	return false
-end
-
-function remove_gulags_except(test_name)
-	printf(":: DEBUG : Remove Gulags Except Test[%s]", test_name)
-	
-	for k, v in db.smart_terrain_by_id do
-		--local val = is_gulag_in_test(v:name(), test_name)
-		printf(":: DEBUG : Gulag[%s] in test [%s]?",v:name(), test_name)
-		if (is_gulag_in_test(v:name(), test_name) == false) then
-			smart_terrain.remove_gulag(v,true)
-			printf(":: DEBUG : Gulag[%s] removed", v:name())
-		end
-	end
-end
-
-
--- Check if object online
-function object_online(object_id)
-	return (alife() == nil) or alife():object(object_id).online
-end
-
--- Move all offline
-function offline_all()
-	for test_name, test_name_table in pairs(object_list) do
-		for index, obj_name in pairs(test_name_table) do
-			local obj =	 level.debug_object(tostring(obj_name))
-			if ((obj ~= nil) and (object_online(obj:id()))) then
-				alife():set_switch_online	(obj:id(),false)
-				alife():set_switch_offline	(obj:id(),true)
-			end
-		end
-	end
-end
-
-
-function offline_all_except(except_name)
-	for test_name, test_name_table in pairs(object_list) do
-		if (except_name ~= test_name) then
-			for index, obj_name in pairs(test_name_table) do
-				local obj =	 level.debug_object(tostring(obj_name))
-				
-				printf(":: DEBUG : Try to offline Object[%s] test[%s]", tostring(obj_name), tostring(test_name))				
-				
-				if ((obj ~= nil) and (object_online(obj:id()))) then
-					alife():set_switch_online	(obj:id(),false)
-					alife():set_switch_offline	(obj:id(),true)
-				else 
-				
---					local obj = alife():object(tostring(obj_name))
---					
---					if ((obj ~= nil) then
---						alife():set_switch_online	(obj:id(),false)
---						alife():set_switch_offline	(obj:id(),true)
---					
---					
---					
---					if (obj == nil) then
---						printf(":: DEBUG : Object[%s] == nil", tostring(obj_name))
---					else 
---						printf(":: DEBUG : Object[%s] is offline", tostring(obj_name))
---					end
-				end
-			end
-		end
-	end
-end
-
--- Move online objects that are in scene index 
-function online_scene(index)
-	local tab = object_id_list["test" .. tostring(index)];
-
-	for index, obj_id in pairs(tab) do
-		local obj =	alife():object(tonumber(obj_id))
-		if (obj ~= nil) then
-			--printf(":: TEST : try online [%s] real_id[%u] saved_id[%u]", obj:name(), obj:id(), tonumber(obj_id))
-			--alife():set_switch_online	(obj:id(),true)
-			--alife():set_switch_offline	(obj:id(),false)
-			alife():set_switch_online	(obj_id,true)
-			alife():set_switch_offline	(obj_id,false)
-		else 
-			printf(":: DEBUG : Error finding object by id")
-		end
-	end
-end
-
+-----------------------------------------------------------------------------------------
 -- Base function
 function r(index)
-	local test_name = "test" .. tostring(index)
-	remove_gulags_except	(test_name)	
-	offline_all_except		(test_name)
+	test_utils.setup_test(object_list, smart_terrains)
+	test_utils.run_test(index)
 end
-
--- Save id of object while loading
-function save_object_id()
-	for test_name, test_name_table in pairs(object_list) do
-		local tab = {}
-		for index, obj_name in pairs(test_name_table) do
-			printf(":: TEST : saving object [name=%s]", tostring(obj_name))
-			local obj =	level.debug_object(tostring(obj_name))
-			if (obj ~= nil) then
-				table.insert(tab,tonumber(obj:id()))
-			end
-		end
-		object_id_list[tostring(test_name)] = tab
-	end
-end
-
--- Debug info
-function debug()
-	for test_name, test_name_table in pairs(object_id_list) do
-		printf(":: TEST : test [%s]", tostring(test_name))
-		for index, obj_id in pairs(test_name_table) do
-			printf(":: TEST : getting object [id=%u]", tonumber(obj_id))
-			local obj =	alife():object(tonumber(obj_id))
-			if (obj ~= nil) then
-				printf(":: TEST : obj_name = [%s] id =[%u]",obj:name(), tonumber(obj_id))
-			end
-		end
-	end
-end
-
 
 function main()
-	wait_game(2000)
-	save_object_id()
-	offline_all()
+	test_utils.run_global()
 end
+-----------------------------------------------------------------------------------------
