@@ -149,12 +149,13 @@ void CLightR_Manager::render_point	()
 	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
 		light*	L					= *it;
-		VERIFY						(L->spatial.sector);
+		VERIFY						(L->spatial.sector && _valid(L->range));
 
 		//		0. Dimm & Clip
 		float	lc_dist				= lc_COP.distance_to	(L->spatial.center) - L->spatial.radius;
 		float	lc_scale			= 1 - lc_dist/lc_limit;
 		if		(lc_scale<EPS)		continue;
+		if		(L->range<0.01f)	continue;
 
 		//		1. Calculate light frustum
 		Fvector						L_dir,L_up,L_right,L_pos;
