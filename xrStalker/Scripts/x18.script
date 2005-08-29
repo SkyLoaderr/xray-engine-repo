@@ -1,7 +1,3 @@
-
-local object_list		= {}
-local smart_terrains	= {}
-
 -- Á‏נונû מעהוכüםûו ןמ ףדכאל
 object_list["test0"] = {
 	"dar_m_burer_e_0001",
@@ -66,14 +62,18 @@ smart_terrains["test2"] = {
 	"dar_com_center_poltergeist"
 }
 
------------------------------------------------------------------------------------------
--- Base function
+------------------------------------------------------------------------------
+-- Base Run function (load extern)
+------------------------------------------------------------------------------
 function r(index)
 	test_utils.setup_test(object_list, smart_terrains)
 	test_utils.run_test(index)
 end
 
+------------------------------------------------------------------------------
+-- Main function (called on level load)
+------------------------------------------------------------------------------
 function main()
 	test_utils.run_global()
 end
------------------------------------------------------------------------------------------
+

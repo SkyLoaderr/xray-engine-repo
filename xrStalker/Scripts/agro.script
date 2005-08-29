@@ -1,6 +1,3 @@
-
-local object_list		= {}
-local object_id_list	= {}
 -----------------------------------------------------------------------------------
 -- Test Definitions
 -----------------------------------------------------------------------------------
@@ -38,70 +35,16 @@ object_list["test4"] = {
 }
 
 ------------------------------------------------------------------------------
--- Services
+-- Base Run function (load extern)
 ------------------------------------------------------------------------------
-
--- Save id of object while loading
-function save_object_id()
-	for test_name, test_name_table in pairs(object_list) do
-		local tab = {}
-		for index, obj_name in pairs(test_name_table) do
-			local obj =	level.debug_object(tostring(obj_name))
-			if (obj ~= nil) then
-				table.insert(tab,tonumber(obj:id()))
-			end
-		end
-		object_id_list[tostring(test_name)] = tab
-	end
-end
-
-
--- Check if object online
-function object_online(object_id)
-	return (alife() == nil) or alife():object(object_id).online
-end
-
--- Move all offline
-function offline_all()
-	for test_name, test_name_table in pairs(object_list) do
-		for index, obj_name in pairs(test_name_table) do
-			local obj =	 level.debug_object(tostring(obj_name))
-			if ((obj ~= nil) and (object_online(obj:id()))) then
-				alife():set_switch_online	(obj:id(),false)
-				alife():set_switch_offline	(obj:id(),true)
-			end
-		end
-	end
-end
-
-
--- Move online objects that are in scene index 
-function online_scene(index)
-	local tab = object_id_list["test" .. tostring(index)];
-	for index, obj_id in pairs(tab) do
-		local obj =	alife():object(tonumber(obj_id))
-		if (obj ~= nil) then
-			alife():set_switch_online	(obj_id,true)
-			alife():set_switch_offline	(obj_id,false)
-		end
-	end
+function r(index)
+	test_utils.setup_test(object_list, nil)
+	test_utils.run_test(index)
 end
 
 ------------------------------------------------------------------------------
 -- Main function (called on level load)
 ------------------------------------------------------------------------------
 function main()
-	wait_game		(2000)
-	save_object_id	()
-	offline_all		()
+	test_utils.run_global()
 end
-
-
-------------------------------------------------------------------------------
--- Base Run function (load extern)
-------------------------------------------------------------------------------
-function r(index)
-	offline_all		()
-	online_scene	(index)
-end
-
