@@ -44,32 +44,40 @@ function action_walker_activity:activate_scheme()
 end
 
 function action_walker_activity:reset_scheme()
+
+	if not self.was_reset then
+		--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
+
+		--self.object:clear_animations()
+		printf( "walker: reset_scheme: npc=%s  start moving", self.object:name() )
+
+		self.st.signals = {}
+
+		if self.st.path_walk_info == nil then
+			self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
+		end
+		if self.st.path_look_info == nil then
+			self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+		end
+
+		self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info,
+			self.st.team, self.st.suggested_state)
+	else
+		printf( "walker: reset_scheme: npc=%s  continue moving", self.object:name() )
+
+		self.move_mgr:continue()
+	end
+
 	self.was_reset = true
-
-	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
-
-	--self.object:clear_animations()
-
-	self.st.signals = {}
-	
-	if self.st.path_walk_info == nil then
-		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
-	end
-	if self.st.path_look_info == nil then
-		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
-	end
-
-	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info,
-		self.st.team, self.st.suggested_state)
-end	
+end
 
 function action_walker_activity:execute()
 	action_base.execute(self)
-	
-        if not self.was_reset then
-                self:reset_scheme()
-        end
-	
+
+	if not self.was_reset then
+		self:reset_scheme()
+	end
+
 	self.move_mgr:update()
 --	if self.move_mgr:arrived_to_first_waypoint() then
 		if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
@@ -91,14 +99,14 @@ function add_to_binder(npc, ini, scheme, section, storage)
 		printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
   		local operators	= {}
 	  	local properties  = {}
-		
+
 	   	local manager = npc:motivation_action_manager()
 		--manager:show("")
-	
+
 		properties["event"] = xr_evaluators_id.reaction
 	 	properties["need_walker"] = xr_evaluators_id.zmey_walker_base + 1
 		properties["danger"]		= xr_evaluators_id.danger
-		
+
 	 	operators["action_walker"] = xr_actions_id.zmey_walker_base + 1
 
 	   	-- // evaluators
@@ -122,7 +130,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 -- ¬ключение схемы
--- 
+--
 -- enabled - включена ли схема
 -- path_walk - основной путь, по которому ходит охранник
 -- path_look [опционально] - путь, куда смотрит охранник
@@ -148,4 +156,3 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk_info = nil -- Ѕудут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
 end
-
