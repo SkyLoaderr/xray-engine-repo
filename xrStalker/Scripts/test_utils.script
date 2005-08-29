@@ -122,14 +122,17 @@ end
 function run_test(index)
 	local test_name = "test" .. tostring(index)
 	
-	-- not using smart terrains?
-	if smart_terrains == nil then
-		offline_all()
-		online_scene(index)
-	else -- using smart terrains
-		remove_gulags_except(test_name)	
-		offline_all_except(test_name)
-	end
+--	-- not using smart terrains?
+--	if smart_terrains == nil then
+--		offline_all()
+--		online_scene(index)
+--	else -- using smart terrains
+--		remove_gulags_except(test_name)	
+--		offline_all_except(test_name)
+--	end
+
+	remove_gulags_except(test_name)	
+	offline_all_except(test_name)
 end
 
 -- Execute Base
