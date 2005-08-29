@@ -153,7 +153,7 @@ void CUIStatsListItem::XmlInit(const char *path, CUIXml &uiXml)
 		pButton = xr_new<CUIButton>();
 		xml_init.InitStatic(uiXml, "static", i, pButton);
 		//pButton->SetNewRenderMethod(true);
-		pButton->SetTextAlign(CGameFont::alLeft);
+		pButton->SetTextAlignment(CGameFont::alLeft);
 		AttachChild(pButton);
 		FieldsVector.push_back(pButton);
 	}

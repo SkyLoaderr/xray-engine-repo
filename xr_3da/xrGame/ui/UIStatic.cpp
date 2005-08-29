@@ -17,7 +17,6 @@ const char * const	clDefault	= "default";
 
 CUIStatic:: CUIStatic()
 {
-	//m_str					= NULL;
 	m_bAvailableTexture		= false;
 	m_bTextureEnable		= true;
 	m_bClipper				= false;
@@ -52,7 +51,7 @@ CUIStatic::~ CUIStatic()
 
 void CUIStatic::SetLightAnim(LPCSTR lanim)
 {
-	if(lanim&&xr_strlen(lanim))
+	if(lanim && lanim[0]!=0)
 		m_lanim	= LALib.FindItem(lanim);
 	else
 		m_lanim	= NULL;
@@ -72,6 +71,7 @@ void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float 
 
 void CUIStatic::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
+	m_xxxRect.set(x,y,x+width,y+height);
 }
 
 void CUIStatic::InitTexture(LPCSTR texture){
@@ -184,12 +184,6 @@ CGameFont* CUIStatic::GetFont(){
 	CREATE_LINES;
 	return m_pLines->GetFont();
 }
-
-//void CUIStatic::AddLetter(char letter)
-//{
-//	CREATE_LINES;
-//	m_pLines->AddChar(letter);
-//}
 
 void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect)
 {
@@ -316,25 +310,12 @@ u32& CUIStatic::GetTextColorRef(){
 	return m_pLines->GetTextColorRef();
 }
 
-//void CUIStatic::SetLines(LPCSTR str){
-//	if (!m_pLines)
-//		m_pLines = xr_new<CUILines>();
-//	m_pLines->SetWndRect(GetAbsoluteRect());
-//	m_pLines->SetText(str);	
-//}
-
 void CUIStatic::SetText(LPCSTR str)
 {
-	if (!str) return;
-	
+	if (!str || 0 == str[0]) 
+		return;
 	CREATE_LINES;
 	m_pLines->SetText(str);
-
-//	if (str && xr_strlen(str) > 0)
-//	{
-//		CREATE_LINES;
-//		m_pLines->SetText(str);
-//	}	
 }
 
 void CUIStatic::SetTextColor(u32 color, E4States state){
@@ -367,11 +348,8 @@ Frect CUIStatic::GetSelfClipRect()
 void CUIStatic::SetMask(CUIFrameWindow *pMask)
 {
 	DetachChild(m_pMask);
-
 	m_pMask = pMask;
-
-	if (m_pMask)
-	{
+	if (m_pMask){
 		AttachChild			(m_pMask);
 		Frect r				= GetWndRect();
 		m_pMask->SetWidth	(r.right - r.left);
@@ -379,18 +357,18 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 	}
 }
 
-CGameFont::EAligment CUIStatic::GetTextAlign(){
-	return m_pLines->GetTextAlignment();
-}
+//CGameFont::EAligment CUIStatic::GetTextAlign(){
+//	return m_pLines->GetTextAlignment();
+//}
 
 CGameFont::EAligment CUIStatic::GetTextAlignment(){
 	return m_pLines->GetTextAlignment();
 }
 
-void CUIStatic::SetTextAlign(CGameFont::EAligment align){
-	CREATE_LINES;
-	m_pLines->SetTextAlignment(align);
-}
+//void CUIStatic::SetTextAlign(CGameFont::EAligment align){
+//	CREATE_LINES;
+//	m_pLines->SetTextAlignment(align);
+//}
 
 void CUIStatic::SetTextAlignment(CGameFont::EAligment align){
 	CREATE_LINES;
@@ -522,8 +500,6 @@ void CUIStatic::Elipsis(const Frect &rect, EElipsisPosition elipsisPos)
 	//buf_str.resize(str_len + 1);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 {
 #pragma todo("Satan->Satan : need adaptation")
@@ -531,14 +507,10 @@ void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 	m_iElipsisIndent	= indent;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::SetClipRect(Frect r)
 {
 	m_ClipRect = r;
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
 {
@@ -621,52 +593,28 @@ void CUIStatic::OnFocusLost(){
 		GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
 }
 
-// Note: you can use "limit = -1" to fit text to 
-// element's width
-void CUIStatic::PerformTextLengthLimit(int limit){
-	// our minimal length is length of two spaces
-	int minLength = (int)this->GetFont()->SizeOf("  ");
-	int selfWidth = iFloor(this->GetWidth());
-
-	// no coment
-	if (limit < 0)
-		limit = selfWidth;
-	if (limit < minLength)
-		limit = minLength;
-
-	int currentLength = (int)this->GetFont()->SizeOf(this->GetText());
-
-	if (currentLength <= limit)
-		return;
-	else
-		do
-		{
-			// delete one character (last) and recalculate current length
-			this->DeleteLastCharacter();
-			currentLength = (int)this->GetFont()->SizeOf(this->GetText());
-		}while(currentLength > limit);	    
-}
-
-void CUIStatic::DeleteLastCharacter(){
-	LPCSTR str = this->GetText();
-	STRING arr;
-
-	// exit if there is void string
-	if (xr_strlen(str) == 0)
-		return;
-
-	// get string without last character
-	for(u32 i=0, n=xr_strlen(str) - 1; i<n; ++i)
-		arr.push_back(str[i]);
-
-	arr.push_back(0);
-	str = &arr.front();
-
-	this->SetText(str);
-}
-
-void CUIStatic::AdjustHeightToText			()
-{
+void CUIStatic::AdjustHeightToText(){
 	m_pLines->SetWidth(GetWidth());
 	SetHeight		(m_pLines->GetVisibleHeight());
+}
+
+void CUIStatic::RescaleRelative2Rect(const Frect& r){
+	Frect my_r = m_xxxRect;
+	float h_rel = my_r.width()/r.width();
+	float v_rel = my_r.height()/r.height();
+	float w;
+	float h;
+	if (h_rel < v_rel){
+		w = r.width()*h_rel;
+		h = r.height()*h_rel;
+	}
+	else{
+		w = r.width()*v_rel;
+		h = r.height()*v_rel;
+	}
+	my_r.x1 += (GetWidth() - w)/2;
+	my_r.y1 += (GetHeight() - h)/2;
+	my_r.x2 = my_r.x1 + w;
+	my_r.y2 = my_r.y1 + h;
+	SetWndRect(my_r);
 }

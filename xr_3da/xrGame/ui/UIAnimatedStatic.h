@@ -1,10 +1,3 @@
-//=============================================================================
-//  Filename:   UIAnimatedStatic.h
-//	Created by Roman E. Marchenko, vortex@gsc-game.kiev.ua
-//	Copyright 2004. GSC Game World
-//	---------------------------------------------------------------------------
-//  Статик для отображения анимированной иконки
-//=============================================================================
 
 #ifndef UI_ANIMATED_STATIC_H_
 #define UI_ANIMATED_STATIC_H_
@@ -33,6 +26,8 @@ class CUIAnimatedStatic: public CUIStatic
 	// Признак проигрывания анимации
 	bool	m_bPlaying;
 
+	Fvector2 m_pos;
+
 	// Инициализация первого кадра
 	// Params:	frameNum	- номер кадра: [0..m_uFrameCount)
 	void SetFrame(const u32 frameNum);
@@ -40,6 +35,7 @@ public:
 	CUIAnimatedStatic();
 	
 	// Устанавливаем параметры
+	void SetOffset(float x, float y)					{m_pos.set(x,y);};
 	void SetFramesCount(u32 frameCnt)					{ m_uFrameCount = frameCnt; m_bParamsChanged = true; }
 	void SetAnimCols(u32 animCols)						{ m_uAnimCols = animCols; m_bParamsChanged = true; }
 	void SetAnimationDuration(u32 animDur)				{ m_uAnimationDuration = animDur; m_bParamsChanged = true; }

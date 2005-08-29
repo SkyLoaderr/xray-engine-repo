@@ -31,8 +31,6 @@ CUIButton:: CUIButton()
 	m_iPushOffsetX				= PUSH_OFFSET_RIGHT;
     m_iPushOffsetY				= PUSH_OFFSET_DOWN;
 
-	SetTextAlign				(CGameFont::alCenter);
-
 	m_HighlightColor			= 0xFF999999;
 	m_uAccelerator				= static_cast<u32>(-1);
 

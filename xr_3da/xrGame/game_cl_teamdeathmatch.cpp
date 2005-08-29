@@ -245,7 +245,7 @@ void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
 		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu,true);
 
 	pCurSkinMenu = pNewSkinMenu;
-	pCurSkinMenu->SwitchSkin(local_player->skin);
+	//pCurSkinMenu->SwitchSkin(local_player->skin);
 };
 
 bool game_cl_TeamDeathmatch::CanBeReady				()

@@ -22,6 +22,7 @@ public:
 	static void InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc);
 	static float GetTextureHeight(const char* texture_name);
 	static float GetTextureWidth(const char* texture_name);
+	static Frect GetTextureRect(const char* texture_name);
 
 protected:
 	IC	static bool IsSh					(const xr_string& texture_name);

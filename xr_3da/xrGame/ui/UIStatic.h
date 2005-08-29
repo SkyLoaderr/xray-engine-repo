@@ -38,8 +38,8 @@ public:
 	virtual void	Init					(float x, float y, float width, float height);
 	virtual void	Draw					();
 	virtual void	Update					();
-	// CUIWindow
-			
+	//
+			void	RescaleRelative2Rect(const Frect& r);	//need to save proportions of texture			
 
 	// IUISingleTextureOwner--------------------------------------------------------------------------------
 	virtual void		CreateShader				(const char* tex, const char* sh = "hud\\default");
@@ -80,32 +80,29 @@ public:
 
 	//IUITextControl
 	virtual void			SetText					(LPCSTR str);
-	virtual LPCSTR			GetText					();		//get text
+	virtual LPCSTR			GetText					();
 	virtual void			SetTextColor			(u32 color);
-	virtual u32				GetTextColor			();		//const
+	virtual u32				GetTextColor			();
 	virtual void			SetFont					(CGameFont* pFont);
 	virtual CGameFont*		GetFont					();
 	virtual void			SetTextAlignment		(ETextAlignment alignment);
 	virtual ETextAlignment	GetTextAlignment		();
 
 	// text additional
-	void		SetTextComplexMode			(bool md);
-	void		SetTextAlign_script			(u32 align);
-	u32			GetTextAlign_script			();
-	void		SetTextColor_script			(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
-	u32&		GetTextColorRef				();
+			void	SetTextComplexMode			(bool md);
+			void	SetTextAlign_script			(u32 align);
+			u32		GetTextAlign_script			();
+			void	SetTextColor_script			(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
+			u32&	GetTextColorRef				();
 //#pragma todo("Satan->Satan : delete next two functions")
-	virtual void			SetTextAlign		(CGameFont::EAligment align);
-	CGameFont::EAligment	GetTextAlign		();
+//	virtual void			SetTextAlign		(CGameFont::EAligment align);
+//	CGameFont::EAligment	GetTextAlign		();
 			void AdjustHeightToText			();
 
 	virtual void ClipperOn					();
 	virtual void ClipperOff					();
 	virtual void ClipperOff					(CUIStaticItem& UIStaticItem);
 	virtual bool GetClipperState			()								{return m_bClipper;}
-
-	//отсечение части изображение, при его выходе за
-	//пределы родительского окна
 	void TextureClipper						(float offset_x = 0, float offset_y = 0,Frect* pClipRect = NULL);
 	void TextureClipper						(float offset_x, float offset_y, Frect* pClipRect, CUIStaticItem& UIStaticItem);
 
@@ -129,9 +126,6 @@ public:
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
 	static void PreprocessText				(STRING &str, float width, CGameFont *pFont);
-//	void DrawString							(const Frect &rect);
-	// Когда текст надписи не влазит в статик, то, иногда, нам необходимо показать троеточие и обрезать
-	// надпись. Вот для этого и предназначена эта функция
 	enum EElipsisPosition
 	{
 		eepNone,
@@ -141,12 +135,6 @@ public:
 	};
 
 	void SetElipsis							(EElipsisPosition pos, int indent);
-
-
-
-	// performs text length limit :)
-	void PerformTextLengthLimit				(int limit = -1);
-	void DeleteLastCharacter				();
 	
 	void	SetHeading						(float f)				{m_fHeading = f;};
 	float	GetHeading						()						{return m_fHeading;}
@@ -166,8 +154,6 @@ public:
 
 	CUILines*				m_pLines;
 protected:
-	//цвет текста
-//	u32 m_dwFontColor;
 	// this array of color will be useful in CUI3tButton class
 	// but we really need to declare it directly there because it must be initialized in CUIXmlInit::InitStatic
 	u32  m_dwTextColor[4];
@@ -175,22 +161,9 @@ protected:
 
 	bool m_bClipper;
 	bool m_bStretchTexture;
-
-	
-	///////////////////////////////////////	
-	//Графический интрефейс для рисования
-	///////////////////////////////////////
 	bool m_bAvailableTexture;
 	bool m_bTextureEnable;
 	CUIStaticItem m_UIStaticItem;
-
-
-	/////////////////////////////////////
-	//форматированный вывод текста
-	/////////////////////////////////////
-//	void WordOut(const Frect &rect);
-//	void AddLetter(char letter);
-//	u32 ReadColor(int pos, int& r, int& g, int& b);
 	
 	float m_iTextOffsetX;
 	float m_iTextOffsetY;
@@ -200,17 +173,16 @@ protected:
 
     // Для вывода текстуры с обрезанием по маске используем CUIFrameWindow
 	CUIFrameWindow	*m_pMask;
-
-	// для смещения текстуры
 	float m_iTexOffsetX, m_iTexOffsetY;
 
 	// Обрезка надписи
 	EElipsisPosition	m_ElipsisPos;
 	void Elipsis(const Frect &rect, EElipsisPosition elipsisPos);
 	int	m_iElipsisIndent;
-
-	// Clip rect
 	Frect	m_ClipRect;
+
+private:
+	Frect	m_xxxRect; // need by RescaleRelative2Rect(Frect& r). it is initializes only once in Init(x,y,width,height)
 
 public:
 	static void Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont);

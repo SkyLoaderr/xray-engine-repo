@@ -8,21 +8,24 @@
 // #pragma once
 
 #include "UIDialogWnd.h"
-#include "UIButton.h"
-#include "UISkinWindow.h"
+//#include "UIButton.h"
+//#include "UISkinWindow.h"
 
 const u32			SKIN_TEX_HEIGHT			= 341;
 const u32			SKIN_TEX_WIDTH			= 128;
+
+class CUIStatic;
+class CUIStatix;
 
 class CUISkinSelectorWnd: public CUIDialogWnd
 {
 	typedef CUIDialogWnd inherited;
 public:	
 	CUISkinSelectorWnd(const char* strSectionName);
-	CUISkinSelectorWnd();
+//	CUISkinSelectorWnd();
 	~CUISkinSelectorWnd();
 	
-	virtual void	Init(const char *strSectionName);
+	virtual void	Init(const char* strSectionName);
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData = NULL);
 	virtual bool	OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
@@ -31,15 +34,23 @@ public:
 	virtual void	OnBtnOK();
 	virtual void	OnBtnCancel();
 
-	int				GetActiveIndex()		{ return m_uActiveIndex; } 	// Получаем индекс (0 <= Index < SKINS_COUNT) выбранного скина	
-	int				SwitchSkin(const int idx);  // returns previous skin
+	int				GetActiveIndex()		{ return m_iActiveIndex; } 	// Получаем индекс (0 <= Index < SKINS_COUNT) выбранного скина	
+//	int				SwitchSkin(const int idx);  // returns previous skin
 protected:
-	shared_str		m_strSection;    // Запоминаем имя секции откуда читать инфу о скинах
-	int				m_uActiveIndex;  // Индекс текущего выбранного скина
-	CUIButton		UIOkBtn, UICancelBtn;
-	void			DrawKBAccelerators();	// Отобразить подписи-клавиатурные акселераторы, для каждого скина
+			void	InitSkins();
+			void	UpdateSkins();
+	CUIStatic*		m_pBackground;
+	CUIStatic*		m_pFrames;
+	CUIStatix*		m_pImage[4];
 	
-	CUISkinWindow	m_vSkinWindows[SKINS_COUNT];	// Массив окошек со скинами
+	shared_str		m_strSection;    // Запоминаем имя секции откуда читать инфу о скинах
+	int				m_iActiveIndex;  
+	xr_vector<xr_string> m_skins;
+	int				m_fristSkin;
+//	CUIButton		UIOkBtn, UICancelBtn;
+//	void			DrawKBAccelerators();	// Отобразить подписи-клавиатурные акселераторы, для каждого скина
+	
+//	CUISkinWindow	m_vSkinWindows[SKINS_COUNT];	// Массив окошек со скинами
 };
 
 #endif

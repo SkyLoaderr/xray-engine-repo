@@ -216,11 +216,11 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	// Load font alignment
 	shared_str al = xml_doc.ReadAttrib(*text_path, index, "align", "");
 	if (0 == xr_strcmp(al, "c"))
-		pWnd->SetTextAlign(CGameFont::alCenter);
+		pWnd->SetTextAlignment(CGameFont::alCenter);
 	else if (0 == xr_strcmp(al, "r"))
-		pWnd->SetTextAlign(CGameFont::alRight);
+		pWnd->SetTextAlignment(CGameFont::alRight);
 	else if (0 == xr_strcmp(al, "l"))
-		pWnd->SetTextAlign(CGameFont::alLeft);
+		pWnd->SetTextAlignment(CGameFont::alLeft);
 
 	al = xml_doc.ReadAttrib(*text_path, index, "vert_align", "");
 	if (0 == xr_strcmp(al, "c"))
@@ -846,7 +846,9 @@ bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	InitStatic(xml_doc, path, index, pWnd);
-
+    
+	float x				= xml_doc.ReadAttribFlt(path, index, "x_offset", 0);
+	float y				= xml_doc.ReadAttribFlt(path, index, "y_offset", 0);
 	u32 framesCount		= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "frames", 0));
 	u32 animDuration	= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "duration", 0));
 	u32 animCols		= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "columns", 0));
@@ -860,6 +862,7 @@ bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index
 	pWnd->m_bCyclic = cyclic;
 	pWnd->SetAnimCols(animCols);
 	pWnd->SetAnimationDuration(animDuration);
+	pWnd->SetOffset(x,y);
 	if (play) pWnd->Play();
 
 	return true;

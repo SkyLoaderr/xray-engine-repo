@@ -18,6 +18,7 @@
 #include "../string_table.h"
 #include "../actor.h"
 #include "../inventory.h"
+#include "UITextureMaster.h"
 
 using namespace InventoryUtilities;
 
@@ -33,8 +34,8 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	m_pCurrentDragDropItem = NULL;
 	m_iMoneyAmount = 10000;
 
-	m_iIconTextureY	= 0;
-	m_iIconTextureX	= 0;
+//	m_iIconTextureY	= 0;
+//	m_iIconTextureX	= 0;
 
 	SetFont(HUD().Font().pFontMedium);
 
@@ -247,9 +248,9 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	// Иконка изображения персонажа в костюме
 	AttachChild(&UIOutfitIcon);
 	xml_init.InitStatic(uiXml, "outfit_static", 0, &UIOutfitIcon);
-	UIOutfitIcon.SetShader(GetMPCharIconsShader());
+//	UIOutfitIcon.SetShader(GetMPCharIconsShader());
 	UIOutfitIcon.SetStretchTexture(true);
-	UIOutfitIcon.ClipperOn();
+//	UIOutfitIcon.ClipperOn();
 
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
@@ -459,14 +460,18 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 		// и купленного костюма
 
 		// Сначала проверим проинициализирован ли правильно костюм
-		if (pDDItemMP->m_fAdditionalInfo.size() < 2)
-			R_ASSERT(!"Unknown suit");
+//		if (pDDItemMP->m_fAdditionalInfo.size() < 2)
+//			R_ASSERT(!"Unknown suit");
 
-		xr_vector<float>::iterator it = pDDItemMP->m_fAdditionalInfo.begin();
-		this_inventory->UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+		R_ASSERT(!pDDItemMP->m_additionalInfo.empty());
+
+		this_inventory->UIOutfitIcon.InitTexture(pDDItemMP->m_additionalInfo.c_str());
+
+//		xr_vector<float>::iterator it = pDDItemMP->m_fAdditionalInfo.begin();
+/*		this_inventory->UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
 			(*it), 
 			(*(it+1)),
-			float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT - 15));
+			float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT - 15));*/
 		this_inventory->UIOutfitIcon.Show(true);
 		this_inventory->UIOutfitIcon.SetColor(pDDItemMP->GetColor());
 
@@ -861,10 +866,10 @@ void CUIBuyWeaponWnd::Update()
 	}
 
 	// Ecли в слоте с костюмом армор показывается, то спрятать его.
-	bool flag = true;
-	if (UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty() && flag)
+	static bool flag = true;
+	if (flag && UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
 	{
-		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(m_iIconTextureX, m_iIconTextureY, float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT));
+		UpdateOutfit();
 		flag = false;
 	}
 
@@ -872,6 +877,11 @@ void CUIBuyWeaponWnd::Update()
 		flag = true;
 
 	CUIWindow::Update();
+}
+
+void CUIBuyWeaponWnd::UpdateOutfit(){
+	UIOutfitIcon.InitTexture(m_current_skin.c_str());
+	UIOutfitIcon.RescaleRelative2Rect(CUITextureMaster::GetTextureRect(m_current_skin.c_str()));
 }
 
 void CUIBuyWeaponWnd::DropItem()
@@ -893,9 +903,10 @@ void CUIBuyWeaponWnd::Show()
 
 	if (GameID() != GAME_SINGLE)
 	{
+		UpdateOutfit();
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
-		pActor->HideCurrentWeapon(GEG_PLAYER_BUYMENU_OPEN);//, false);
+		pActor->HideCurrentWeapon(GEG_PLAYER_BUYMENU_OPEN);//, false);		
 	}
 	UITabControl.SetActiveState();
 	UpdatePresetPrices();
@@ -1360,18 +1371,17 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 
 void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
 {
-	const shared_str		skinsParamName = "skins";
-	shared_str				tmpStr;
+	LPCSTR skins = pSettings->r_string(m_StrSectionName, "skins");
 
-	// Читаем список скинов
-	tmpStr = pSettings->r_string(m_StrSectionName, *skinsParamName);
-
-	R_ASSERT(_GetItemCount(*tmpStr) > SkinID);
+	R_ASSERT(_GetItemCount(skins) > SkinID);
 
 	// Получаем имя скина, и координаты соответствующей иконки
-	string32 a;
-	tmpStr = _GetItem(*tmpStr, SkinID, a);
-	sscanf(pSettings->r_string("multiplayer_skins", a), "%i,%i", &m_iIconTextureX, &m_iIconTextureY);
+	string64 item;
+	_GetItem(skins, SkinID, item);
+//	Frect r = CUITextureMaster::GetTextureRect(item);
+	m_current_skin = item;
+//	m_iIconTextureX = r.x1;
+//	m_iIconTextureY = r.x2;
 }
 
 void CUIBuyWeaponWnd::ClearSlots()

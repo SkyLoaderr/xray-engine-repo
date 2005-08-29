@@ -708,12 +708,13 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, const char* name){
 				// Информация о таком арморе есть
 				if (0 == xr_strcmp(it->first, name))
 				{
-					shared_str modelName = it->second;
+					//shared_str modelName = it->second;
+					pDDItem->m_additionalInfo = *it->second;
 
-					int m_iSkinX = 0, m_iSkinY = 0;
-					sscanf(pSettings->r_string("multiplayer_skins", *modelName), "%i,%i", &m_iSkinX, &m_iSkinY);
-					pDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinX));
-					pDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinY));
+//					int m_iSkinX = 0, m_iSkinY = 0;
+//					sscanf(pSettings->r_string("multiplayer_skins", *modelName), "%i,%i", &m_iSkinX, &m_iSkinY);
+//					pDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinX));
+//					pDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinY));
 				}
 		
 			}

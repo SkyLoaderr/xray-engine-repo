@@ -216,7 +216,7 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIStaticQuickHelp);
 	xml_init.InitStatic(uiXml, "quick_info", 0, &UIStaticQuickHelp);
 	UIStaticQuickHelp.SetTextColor(0xffffffff);
-	UIStaticQuickHelp.SetTextAlign(CGameFont::alCenter);
+	UIStaticQuickHelp.SetTextAlignment(CGameFont::alCenter);
 
 	uiXml.SetLocalRoot(uiXml.GetRoot());
 

@@ -1,74 +1,117 @@
-//-----------------------------------------------------------------------------/
-//  Окно выбора скина в сетевой игре
-//-----------------------------------------------------------------------------/
-
 #include "StdAfx.h"
 #include <dinput.h>
 #include "UISkinSelector.h"
 #include "../level.h"
-#include"../hudmanager.h"
-
+//#include"../hudmanager.h"
+#include "UIXmlInit.h"
+#include "UIStatic.h"
+#include "UIStatix.h"
 #include "../game_cl_deathmatch.h"
 
 const char * const	SKIN_SELECTOR_XML		= "skin_selector.xml";
 
 CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
-	: m_uActiveIndex(0)
 {
+	m_pBackground = xr_new<CUIStatic>();	AttachChild(m_pBackground);
+	m_pFrames = xr_new<CUIStatic>();		AttachChild(m_pFrames);
+	for (int i = 0; i<4; i++)
+	{
+		m_pImage[i] = xr_new<CUIStatix>();
+		AttachChild(m_pImage[i]);
+	}
+	m_fristSkin = 0;
 	Init(strSectionName);
-
-	Hide();
-}
-
-CUISkinSelectorWnd::CUISkinSelectorWnd()
-{
-	// For tests
-//	Init("deathmatch_team0");
 }
 
 CUISkinSelectorWnd::~CUISkinSelectorWnd()
 {
+	xr_delete(m_pBackground);
+	xr_delete(m_pFrames);
+	for (int i = 0; i<4; i++)
+		xr_delete(m_pImage[i]);
 }
 
-void CUISkinSelectorWnd::Init(const char *strSectionName)
-{
-	R_ASSERT(xr_strcmp(strSectionName, ""));
-	m_strSection = strSectionName;
+void CUISkinSelectorWnd::InitSkins(){
+	R_ASSERT2(pSettings->section_exist(m_strSection), *m_strSection);
+	R_ASSERT2(pSettings->line_exist(m_strSection, "skins"), *m_strSection);
 
-	CUIXml xmlDoc;
-	bool xml_result = xmlDoc.Init(CONFIG_PATH, UI_PATH, SKIN_SELECTOR_XML);
+	LPCSTR lst = pSettings->r_string(m_strSection,"skins");
+	string256	singleItem;
+	u32 count	= _GetItemCount(lst);
+	R_ASSERT2(count,"no skins in this game");
+	for (u32 j = 0; j < count; ++j)
+	{
+		_GetItem(lst, j, singleItem);
+		m_skins.push_back(singleItem);
+	}
+}
+
+void CUISkinSelectorWnd::UpdateSkins(){
+	//string64 buff;
+	//for (int i = 0; i<4; i++)
+	//{		
+	//	sprintf(buff,"skin_selector:image_%d",i);
+	//	CUIXmlInit::InitStatic(xml_doc,buff,0,m_pImage[i]);
+ //       m_pImage[i]->InitTexture(m_skins[i].c_str());
+	//	m_pImage[i]->RescaleRelative2Rect();
+	//}
+
+}
+
+void CUISkinSelectorWnd::Init(const char* strSectionName)
+{
+	R_ASSERT(0 != strSectionName[0]);
+	m_strSection = strSectionName;
+	InitSkins();		
+
+	CUIXml xml_doc;
+	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, SKIN_SELECTOR_XML);
 	R_ASSERT2(xml_result, "xml file not found");
 
-	CUIXmlInit xml_init;
+	CUIXmlInit::InitWindow(xml_doc,"skin_selector",0,this);
+	CUIXmlInit::InitStatic(xml_doc,"skin_selector:background",0,m_pBackground);
+	CUIXmlInit::InitStatic(xml_doc,"skin_selector:image_frames",0,m_pFrames);
 
-	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
-					CUIXmlInit::ApplyAlignY(0, alCenter),
-					UI_BASE_WIDTH, UI_BASE_HEIGHT);
-
-	for (int i = 0; i < SKINS_COUNT; ++i)
+	string64 buff;
+	for (int i = 0; i<4; i++)
 	{
-		AttachChild(&m_vSkinWindows[i]);
-		m_vSkinWindows[i].Init(xmlDoc, i, m_strSection);
+		sprintf(buff,"skin_selector:image_%d",i);
+		CUIXmlInit::InitStatic(xml_doc,buff,0,m_pImage[i]);
+		m_pImage[i]->SetStretchTexture(true);
+		m_pImage[i]->InitTexture(m_skins[i].c_str());
+		m_pImage[i]->RescaleRelative2Rect(m_pImage[i]->GetStaticItem()->GetOriginalRect());
 	}
+	UpdateSkins();
+
+	
+	//CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+	//				CUIXmlInit::ApplyAlignY(0, alCenter),
+	//				UI_BASE_WIDTH, UI_BASE_HEIGHT);
+
+	//for (int i = 0; i < SKINS_COUNT; ++i)
+	//{
+	//	AttachChild(&m_vSkinWindows[i]);
+	//	m_vSkinWindows[i].Init(xmlDoc, i, m_strSection);
+	//}
 
 	// Ok button
-	Frect r = m_vSkinWindows[0].UIBackground.GetWndRect();
+//	Frect r = m_vSkinWindows[0].UIBackground.GetWndRect();
 
-	AttachChild(&UIOkBtn);
-	xml_init.InitButton(xmlDoc, "button", 0, &UIOkBtn);
-	Frect rect = UIOkBtn.GetWndRect();
+	//AttachChild(&UIOkBtn);
+	//xml_init.InitButton(xmlDoc, "button", 0, &UIOkBtn);
+	//Frect rect = UIOkBtn.GetWndRect();
 
-	UIOkBtn.SetWndPos(	UI_BASE_WIDTH/2.0f - ((rect.right - rect.left) * 1.5f),
-						r.bottom + r.top/2.0f - UIOkBtn.GetHeight());
+	//UIOkBtn.SetWndPos(	UI_BASE_WIDTH/2.0f - ((rect.right - rect.left) * 1.5f),
+	//					r.bottom + r.top/2.0f - UIOkBtn.GetHeight());
 
-	// cancel button
-	AttachChild(&UICancelBtn);
-	xml_init.InitButton(xmlDoc, "button", 1, &UICancelBtn);
-	rect	= UICancelBtn.GetWndRect();
-	UICancelBtn.SetWndPos(UI_BASE_WIDTH/2.0f + ((rect.right - rect.left) * 0.5f),
-		r.bottom+r.top/2.0f - UICancelBtn.GetHeight());
+	//// cancel button
+	//AttachChild(&UICancelBtn);
+	//xml_init.InitButton(xmlDoc, "button", 1, &UICancelBtn);
+	//rect	= UICancelBtn.GetWndRect();
+	//UICancelBtn.SetWndPos(UI_BASE_WIDTH/2.0f + ((rect.right - rect.left) * 0.5f),
+	//	r.bottom+r.top/2.0f - UICancelBtn.GetHeight());
 
-	SetFont(HUD().Font().pFontHeaderRussian);
+	//SetFont(HUD().Font().pFontHeaderRussian);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -77,22 +120,27 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	switch (msg){
 		case BUTTON_CLICKED:
-			if (pWnd == &UIOkBtn)
-				OnBtnOK();
-			else if (pWnd == &UICancelBtn)
-				OnBtnCancel();
-			break;
-		case WINDOW_LBUTTON_DB_CLICK:
-			for ( u8 i = 0; i < SKINS_COUNT; i++)
-                if (pWnd == &m_vSkinWindows[i])
+			for (int i = 0; i<4; i++)
+                if (pWnd == m_pImage[i])
 				{
-					SwitchSkin(i);
+                    m_iActiveIndex = i;
 					OnBtnOK();
+					break;
 				}
+			
 			break;
 	}
-    
-	inherited::SendMessage(pWnd, msg, pData);
+	//	case WINDOW_LBUTTON_DB_CLICK:
+	//		for ( u8 i = 0; i < SKINS_COUNT; i++)
+ //               if (pWnd == &m_vSkinWindows[i])
+	//			{
+	//				SwitchSkin(i);
+	//				OnBtnOK();
+	//			}
+	//		break;
+	//}
+ //   
+	//inherited::SendMessage(pWnd, msg, pData);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -111,40 +159,41 @@ void CUISkinSelectorWnd::OnBtnOK(){
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int CUISkinSelectorWnd::SwitchSkin(const int idx)
-{
-	if (idx >= SKINS_COUNT) return m_uActiveIndex;
+//int CUISkinSelectorWnd::SwitchSkin(const int idx)
+//{
+//	if (idx >= SKINS_COUNT) return m_uActiveIndex;
 
-	int prevIdx = m_uActiveIndex;
-	m_vSkinWindows[m_uActiveIndex].UIHighlight.SetColor(clInactive);
-	m_vSkinWindows[idx].UIHighlight.SetColor(clActive);
-	m_uActiveIndex = idx;
-	return prevIdx;
-}
+	//int prevIdx = m_uActiveIndex;
+	//m_vSkinWindows[m_uActiveIndex].UIHighlight.SetColor(clInactive);
+	//m_vSkinWindows[idx].UIHighlight.SetColor(clActive);
+	//m_uActiveIndex = idx;
+	//return prevIdx;
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 bool CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	Frect rect;
+	CUIWindow::OnMouse(x,y,mouse_action);
+	//Frect rect;
 
-	if(inherited::OnMouse(x, y, mouse_action)) return true; // need to generate DB_CLICK action
-	
-	switch (mouse_action){
-		case WINDOW_LBUTTON_DOWN:
-			for (int i = 0; i < SKINS_COUNT; ++i)
-			{
-				rect = m_vSkinWindows[i].UIHighlight.GetAbsoluteRect();
-				if (rect.in(x,y) && i != m_uActiveIndex)
-				{
-					SwitchSkin(i);
-					return true;
-				}
-			}
-			break;
-		default:
-			break;
-	}	
+	//if(inherited::OnMouse(x, y, mouse_action)) return true; // need to generate DB_CLICK action
+	//
+	//switch (mouse_action){
+	//	case WINDOW_LBUTTON_DOWN:
+	//		for (int i = 0; i < SKINS_COUNT; ++i)
+	//		{
+	//			rect = m_vSkinWindows[i].UIHighlight.GetAbsoluteRect();
+	//			if (rect.in(x,y) && i != m_uActiveIndex)
+	//			{
+	//				SwitchSkin(i);
+	//				return true;
+	//			}
+	//		}
+	//		break;
+	//	default:
+	//		break;
+	//}	
 	return false;
 }
 
@@ -154,19 +203,20 @@ bool CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 
 bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (dik > DIK_ESCAPE && dik < SKINS_COUNT + 2 && WINDOW_KEY_PRESSED == keyboard_action)
+	if (dik >= DIK_1 && dik < DIK_4 + 2 && WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		SwitchSkin(static_cast<u8>(dik - 2));
+		m_iActiveIndex = dik - DIK_1;
+		OnBtnOK();
 		return true;
 	}
-	if (DIK_RETURN == dik && WINDOW_KEY_PRESSED == keyboard_action)
-	{
-		SendMessage(&UIOkBtn, BUTTON_CLICKED, NULL);
-		return true;
-	}
+	//if (DIK_RETURN == dik && WINDOW_KEY_PRESSED == keyboard_action)
+	//{
+	//	SendMessage(&UIOkBtn, BUTTON_CLICKED, NULL);
+	//	return true;
+	//}
 	if (DIK_ESCAPE == dik && WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		SendMessage(&UICancelBtn, BUTTON_CLICKED, NULL);
+		OnBtnCancel();
 		return true;
 	}
 	return false;
@@ -174,27 +224,28 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUISkinSelectorWnd::DrawKBAccelerators()
-{
-	for (u8 i = 0; i < SKINS_COUNT; ++i)
-	{
-		Frect rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
-
-		Frect r;
-		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_WIDTH);
-
-		UI()->OutText(GetFont(), r,
-			(rect.right - rect.left) / 2.0f + rect.left, 
-			float(rect.bottom - HUD().Font().pFontHeaderRussian->CurrentHeight()- 40),
-			"%d", i + 1);
-		GetFont()->OnRender();
-	}
-}
+//void CUISkinSelectorWnd::DrawKBAccelerators()
+//{
+//	for (u8 i = 0; i < SKINS_COUNT; ++i)
+//	{
+//		Frect rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
+//
+//		Frect r;
+//		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_WIDTH);
+//
+//		UI()->OutText(GetFont(), r,
+//			(rect.right - rect.left) / 2.0f + rect.left, 
+//			float(rect.bottom - HUD().Font().pFontHeaderRussian->CurrentHeight()- 40),
+//			"%d", i + 1);
+//		GetFont()->OnRender();
+//	}
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void CUISkinSelectorWnd::Draw()
 {
 	inherited::Draw();
-	DrawKBAccelerators();
+	//DrawKBAccelerators();
 }
+

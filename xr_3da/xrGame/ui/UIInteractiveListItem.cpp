@@ -130,7 +130,7 @@ void CUIInteractiveListItem::Draw()
 	if (itCurrIItem != vPositions.end() && m_bCursorOverWindow && m_bInteractiveBahaviour)
 	{
 //		UpdateTextAlign();
-		GetFont()->SetAligment(GetTextAlign());
+		GetFont()->SetAligment(GetTextAlignment());
 
 		GetFont()->SetColor(m_HighlightColor);
 		Frect rect = GetSelfClipRect();

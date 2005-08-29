@@ -8,6 +8,7 @@
 #include "../CustomOutfit.h"
 #include "../game_cl_base.h"
 #include "../Level.h"
+#include "UITextureMaster.h"
 #include "UISkinSelector.h"
 
 #include "UIInventoryUtilities.h"
@@ -67,12 +68,15 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 	}
 	else
 	{
+		// warning! rect using in two different interpretations
 		UIOutfitIcon.SetShader(GetCharIconsShader());
-		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			float(pOutfit->GetIconX()*ICON_GRID_WIDTH),
-			float(pOutfit->GetIconY()*ICON_GRID_HEIGHT),
-			float(CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH),
-			float(CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT));
+		Frect r;
+		r.set(float(pOutfit->GetIconX()*ICON_GRID_WIDTH),float(pOutfit->GetIconY()*ICON_GRID_HEIGHT),
+			CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(r.x1,r.y1,r.x2,r.y2);
+		r.x2 += r.x1;
+		r.y2 += r.y1;
+		UIOutfitIcon.RescaleRelative2Rect(r);
 	}
 
 	// Скрываем изображение
@@ -98,11 +102,14 @@ void CUIOutfitSlot::SetOriginalOutfit()
 	else
 	{
 		UIOutfitIcon.SetShader(GetCharIconsShader());
-		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			m_iNoOutfitX*ICON_GRID_WIDTH,
-			m_iNoOutfitY*ICON_GRID_HEIGHT,
-			CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-			CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+		// warning! rect using in two different interpretations
+		Frect r;
+		r.set(m_iNoOutfitX*ICON_GRID_WIDTH, m_iNoOutfitY*ICON_GRID_HEIGHT,
+			CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(r.x1, r.y1, r.x2, r.y2);
+		r.x2 += r.x1;
+		r.y2 += r.y1;
+		UIOutfitIcon.RescaleRelative2Rect(r);
 	}
 }
 
@@ -164,7 +171,8 @@ void CUIOutfitSlot::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUIOutfitSlot::SetMPOutfit()
 {
-	UIOutfitIcon.SetShader(GetMPCharIconsShader());
+	
+	//UIOutfitIcon.SetShader(GetMPCharIconsShader());
 	CObject *pInvOwner = smart_cast<CObject*>(Level().CurrentEntity());
 	if (!pInvOwner) return;
 	if (!pInvOwner->cNameVisual().size() ) return;
@@ -180,12 +188,15 @@ void CUIOutfitSlot::SetMPOutfit()
 	if ('.' == a[a.size() - 4])
 		a.erase(a.size() - 4);
 
-	int m_iSkinX = 0, m_iSkinY = 0;
-	
-	if( pSettings->line_exist("multiplayer_skins", a.c_str())){
-		sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
+	UIOutfitIcon.InitTexture(a.c_str());
+	UIOutfitIcon.RescaleRelative2Rect(CUITextureMaster::GetTextureRect(a.c_str()));
 
-		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			float(m_iSkinX), float(m_iSkinY), float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT)); 
-	}
+	//int m_iSkinX = 0, m_iSkinY = 0;
+	//
+	//if( pSettings->line_exist("multiplayer_skins", a.c_str())){
+	//	sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
+
+	//	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+	//		float(m_iSkinX), float(m_iSkinY), float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT)); 
+	//}
 }

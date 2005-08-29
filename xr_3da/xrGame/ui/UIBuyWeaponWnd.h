@@ -53,6 +53,7 @@ public:
 
 
 	virtual void Update();
+			void UpdateOutfit();
 	virtual void Draw();
 
 	virtual void Show();
@@ -169,7 +170,8 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 	bool		m_bIgnoreMoney;
 
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
-	float		m_iIconTextureX, m_iIconTextureY;
+//	float		m_iIconTextureX, m_iIconTextureY;
+	xr_string	m_current_skin;		
 	void		FillItemInfo(CUIDragDropItemMP *pDDItemMP);
 	void		BuyReaction();
 

@@ -114,7 +114,8 @@ public:
 
 	// Массив дополнительных полей которые могут быть специфичны для определенных типов вещей,
 	// например для арморов храним координаты иконки в общей текстуре его представляющей
-	xr_vector<float>	m_fAdditionalInfo;
+//	xr_vector<float>	m_fAdditionalInfo;
+	xr_string			m_additionalInfo;
 };
 
 #endif	//UI_DRAG_DROP_ITEM_MP_H_
