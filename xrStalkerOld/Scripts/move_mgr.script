@@ -247,7 +247,7 @@ end
 -- продолжить движение со следующей точки, а не с ближайшей.
 -- состояние move manager-a не сбрасывается.
 function move_mgr:continue()
-	printf("_bp: object '%s': continue moving", self.object:name())
+--	printf("_bp: object '%s': continue moving", self.object:name())
 	self:setup_movement_by_patrol_path()
 end
 
@@ -256,9 +256,9 @@ function move_mgr:setup_movement_by_patrol_path()
 	self.object:set_detail_path_type(move.line)
 
 	if self.current_point_index then
-		--printf("start point index=%d", self.current_point_index)
-		self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+		printf("start point index=%d", self.current_point_index)
 		self.object:set_start_point(self.current_point_index)
+		self.object:set_patrol_path(self.path_walk, patrol.start, patrol.continue, true)
 	else
 		self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
 	end
