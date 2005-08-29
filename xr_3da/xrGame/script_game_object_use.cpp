@@ -215,9 +215,9 @@ void CScriptGameObject::set_const_force(const Fvector &dir,float value,u32 time_
 	}
 
 	Fvector force;force.set(dir);force.mul(value);
-	CPHConstForceAction a(shell,force);
-	CPHExpireOnStepCondition cn;
-	cn.set_time_interval(time_interval);
-	ph_world->AddCall(&cn,&a);
+	CPHConstForceAction *a=	xr_new<CPHConstForceAction>(shell,force);
+	CPHExpireOnStepCondition *cn=xr_new<CPHExpireOnStepCondition>();
+	cn->set_time_interval(time_interval);
+	ph_world->AddCall(cn,a);
 	
 }
