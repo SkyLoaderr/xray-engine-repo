@@ -1,3 +1,6 @@
+local object_list		= {}
+local smart_terrains	= {}
+
 -- Á‏נונû מעהוכüםûו ןמ ףדכאל
 object_list["test0"] = {
 	"dar_m_burer_e_0001",
