@@ -709,7 +709,11 @@ function create_gulag( self )
 end
 
 -- всех освободить, убить гулаг
-function remove_gulag( self )
+function remove_gulag( self, disable )
+	-- DEBUG
+	self.disabled = disable
+	--------
+
 	o = true
 	-- освободить всех, кто ещё жив в гулаге
 	for id, v in self.gulag.Object do
@@ -738,6 +742,12 @@ end
 
 -- обработка входа существа в smart terrain
 function on_touch( self, obj )
+	-- DEBUG 
+	if self.disabled then
+		return
+	end
+	--------
+
 	if not monster_classes then
 		monster_classes = {
 			[clsid.bloodsucker_s ] = "bloodsucker",
