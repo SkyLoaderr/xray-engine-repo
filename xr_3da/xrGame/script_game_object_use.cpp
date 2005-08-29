@@ -205,12 +205,19 @@ void CScriptGameObject::set_fastcall(const luabind::functor<bool> &functor, cons
 void CScriptGameObject::set_const_force(const Fvector &dir,float value,u32 time_interval)
 {
 	CPhysicsShell	*shell=object().cast_physics_shell_holder()->PPhysicsShell();
-	if(ph_world&&shell)
-	{
-		Fvector force;force.set(dir);force.mul(value);
-		CPHConstForceAction a(shell,force);
-		CPHExpireOnStepCondition cn;
-		cn.set_time_interval(time_interval);
-		ph_world->AddCall(&cn,&a);
+	if(!ph_world)	{
+		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"set_const_force : ph_world do not exist!");
+		return;
 	}
+	if(!shell){
+		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"set_const_force : object %s has no physics shell!",*object().cName());
+		return;
+	}
+
+	Fvector force;force.set(dir);force.mul(value);
+	CPHConstForceAction a(shell,force);
+	CPHExpireOnStepCondition cn;
+	cn.set_time_interval(time_interval);
+	ph_world->AddCall(&cn,&a);
+	
 }

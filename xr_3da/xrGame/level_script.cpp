@@ -27,7 +27,7 @@
 
 #include "map_manager.h"
 #include "map_location.h"
-
+#include "phworld.h"
 #include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
@@ -290,7 +290,10 @@ void remove_calls_for_object(const luabind::object &lua_object)
 	Level().ph_commander_scripts().remove_calls(&c);
 }
 
-
+CPHWorld* physics_world()
+{
+	return	ph_world;
+}
 CEnvironment *environment()
 {
 	return		(&g_pGamePersistent->Environment);
@@ -415,6 +418,7 @@ void CLevel::script_register(lua_State *L)
 		def("spawn_phantom",					spawn_phantom),
 
 		def("iterate_sounds",					&iterate_sounds1),
-		def("iterate_sounds",					&iterate_sounds2)
+		def("iterate_sounds",					&iterate_sounds2),
+		def("physics_world",					&physics_world)
 	];
 }
