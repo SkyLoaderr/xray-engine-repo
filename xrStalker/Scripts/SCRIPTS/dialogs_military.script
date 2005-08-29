@@ -1,0 +1,173 @@
+-------------------------------------------------------------------------
+--	created:	2005/02/12
+--	created:	12:2:2005   12:59
+--	filename: 	x:\gamedata\scripts\dialogs_military.script
+--	file path:	x:\gamedata\scripts
+--	file base:	dialogs_military
+--	file ext:	script
+--	author:		Tunduk Vladimir aka Sidorovich
+--	
+--	purpose:	dialog support for military
+-------------------------------------------------------------------------
+
+-- Оплата долговцем наших услуг по устранению снайпера
+function mil_dolg_payment (stalker, player)
+	dialogs.relocate_money(stalker, 1500, "in")
+end
+
+function mil_dolg_payment2 (stalker, player)
+	dialogs.relocate_money(stalker, 1000, "in")
+end
+-- Отмечаем провал задачи
+function mil_dolg_sniper_failed (stalker, player)
+    level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
+    level_tasks.set_task_state (task.fail, "mil_kill_sniper", 1)
+end
+
+-- отмечаем выполнение задачи
+function mil_dolg_sniper_complete (stalker, player)
+    level_tasks.set_task_state (task.completed, "mil_kill_sniper", 0)
+end
+
+function transfer_flash (player, stalker)
+	dialogs.relocate_item(stalker, player:object("crazy_flash"), "out")
+end
+
+function is_player_help (player, stalker)
+    if db.storage[db.actor:id ()] == nil then return false end
+    return db.storage[db.actor:id ()].mil_dolg["killed_by_actor"]
+end
+
+function no_player_help (stalker, player)
+    return not this.is_player_help (player, stalker)
+end
+
+function transfer_rg6 (stalker, player)
+    return
+end
+
+function set_freedom_enemy (player, stalker)
+    db.actor:set_character_community ("dolg")
+end
+
+function set_task1_complete (player, stalker)
+    if db.actor:has_info ("mil_leader_quest1_start") then
+       level_tasks.set_task_state (task.completed, "mil_lukash_job", 1)
+    end   
+end
+
+function set_task3_complete (player, stalker)
+    if db.actor:has_info ("mil_leader_quest1_start") then
+       level_tasks.set_task_state (task.completed, "mil_lukash_job", 0)
+       level_tasks.set_task_state (task.completed, "mil_lukash_job", 3)
+    end   
+end
+
+function set_courier_task_complete (stalker, player)
+    --if db.actor:has_info ("mil_leader_quest2_start") then
+       --level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
+       --level_tasks.set_task_state (task.completed, "mil_courier_job", 3)
+       --dialogs.relocate_item(stalker, player:object("mil_courier_doc"), "out")
+       --level_tasks.remove_location (707, "mil_lukash_location")
+    --end   
+end    
+
+function actor_has_weapon (stalker, player)
+    return xr_conditions.actor_has_weapon (player, stalker)
+end
+
+function actor_dont_has_weapon (stalker, player)
+    return not xr_conditions.actor_has_weapon (player, stalker)
+end
+
+function transfer_vodka (player, stalker)
+    if player:object ("vodka") == nil then return end
+    dialogs.relocate_item (stalker, player:object ("vodka"), "out")
+end    
+
+function have_a_vodka (stalker, player)
+    return stalker:object ("vodka") ~= nil
+end
+
+function actor_punch (first_speaker, second_speaker)
+	db.storage[db.actor:id()].punch = {}
+	local st = db.storage[db.actor:id()].punch
+	st.dest_walk = patrol("mil_actor_path"):point(0)
+	st.dest_look = utils.vector_copy_by_val ( patrol("mil_actor_path"):point(1)):sub(st.dest_walk)
+	st.info = {}-- "val_prisoner_plr_captured", "val_prisoner_door_unlocked",  "val_prisoner_door_unlocked_demo" }
+	--db.storage[second_speaker:id()].punch.enabled = true
+	xr_punch.put_actor_to_sleep_instantly ()
+	dialogs.break_dialog (first_speaker, second_speaker, 0)
+end
+
+function send_ammo_for_AK (actor, npc)
+    printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+    dialogs.relocate_item(npc, npc:object("ammo_5.56x45_ap"), "in")
+end
+
+function send_ammo_for_LR (actor, npc)
+    --printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
+    dialogs.relocate_item(npc, npc:object("ammo_11.43x23_hydro"), "in")
+end
+
+function commander_transfer (actor, npc)
+    dialogs.relocate_money (npc, npc:money() / 2, "in")
+end
+
+function set_ugrumy_mapspot (actor, npc)
+    level_tasks.add_location (727, "mil_ugrumy_location") 
+end
+
+function remove_ugrumy_mapspot (actor, npc)
+    level_tasks.remove_location (727, "mil_ugrumy_location") 
+end
+
+function mil_remove_base_spot (actor, npc)
+    level_tasks.remove_location (733, "mil_freedom_location")
+end
+
+function mil_cook_subtask_completed (actor, npc)
+    level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 1)
+end
+
+function set_cook_subtask2_complete (actor, npc)
+    level_tasks.set_task_state (task.completed, "mil_freedom_rg6_task", 2)
+end
+
+function send_artefact (npc, actor)
+    local artefact = npc:object ("af_cristall")
+    if artefact ~= nil then
+       dialogs.relocate_item (npc, artefact, "in")
+    else
+       printf ("MISER DON'T HAVE A ARTEFACT")    
+    end   
+end
+
+function send_desert_eagle (npc, actor)
+    local gun = npc:object ("wpn_desert_eagle")
+    if gun ~= nil then
+       dialogs.relocate_item (npc, gun, "in") 
+    else   
+       printf ("MAX DON'T HAVE A DESERT EAGLE")    
+    end   
+end
+
+function set_snipers_spots (npc, actor)
+end
+
+function killactor (actor, npc)
+    ---printf ("NPC NAME : %s, actor name : %s", npc:name (), actor:name ())
+    this.set_actor_enemy_for (718)
+    this.set_actor_enemy_for (735)
+    this.set_actor_enemy_for (736)
+    this.set_actor_enemy_for (737)
+    this.set_actor_enemy_for (738)
+end
+
+function set_actor_enemy_for (sid)
+    local npc = level_object_by_sid (sid)
+    if npc == nil or npc:alive () == false then
+       return 
+    end    
+    npc:set_relation (game_object.enemy, db.actor)
+end

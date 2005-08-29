@@ -1,0 +1,44 @@
+-------------------------------------------------------------------------
+--	created:	2005/02/28
+--	created:	28:2:2005   16:08
+--	filename: 	x:\gamedata\scripts\dialogs_darkvalley.script
+--	file path:	x:\gamedata\scripts
+--	file base:	dialogs_darkvalley
+--	file ext:	script
+--	author:		Andrey Fidrya aka Zmey
+--	
+--	purpose:	dialog support for Dark Valley
+-------------------------------------------------------------------------
+
+function val_rob_actor_has_money(first_speaker, second_speaker)
+	return first_speaker:money() >= 100
+end
+
+function val_suicide_stalker_found(stalker, player)
+	db.actor:set_task_state(task.completed, "val_suicide_find_lost_stalker", 0)
+end
+
+function val_punch_ambush(first_speaker, second_speaker)
+	--abort("KICK ASS !!!!")
+	--xr_punch.punch[first_speaker:id()] = second_speaker
+	db.storage[db.actor:id()].punch = {}
+	local st = db.storage[db.actor:id()].punch
+	st.dest_walk = patrol("val_ambush_dest_walk"):point(0)
+	st.dest_look = utils.vector_copy_by_val(
+		patrol("val_ambush_dest_look"):point(0)):sub(st.dest_walk)
+	st.info = { "val_prisoner_plr_captured", "val_prisoner_door_unlocked",
+		"val_prisoner_door_unlocked_demo", "val_sacrifice_start" }
+	st.dump_inventory_pos = patrol("val_ambush_inventory_dump_place"):point(0)
+	st.disable_input_tm = 15000
+
+	db.storage[second_speaker:id()].punch.enabled = true
+	-- xr_punch.put_actor_to_sleep_instantly()
+end
+
+function val_suicide_give_artefact(npc, actor)
+	printf("_bp: val_suicide_give_artefact: npc='%s'", npc:name())
+	local obj = npc:object("af_electra_moonlight")
+	if obj then
+		dialogs.relocate_item(npc, obj, "in")   
+	end
+end

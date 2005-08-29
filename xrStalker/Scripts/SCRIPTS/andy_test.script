@@ -1,0 +1,108 @@
+
+function fe(item, parent)
+	local p = parent:position()
+	p.x = -31
+	p.y = 1
+	p.z = -61
+	parent:drop_item(item,p)
+end
+
+function  main0005()
+	local news_id = "general_new_task"
+    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
+//    db.actor:set_news_show_time(news_id, 0)
+//    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
+//    db.actor:set_news_show_time(news_id, -1)
+//    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
+//    db.actor:set_news_show_time(news_id, 0)	
+end
+
+function main01()
+		level.disable_input()
+		wait(10000)
+		level.enable_input()
+
+	
+--	local info = "storyline_actor_start" 
+--	db.actor:give_info_portion(info) 
+end
+
+function main0008 ()
+
+	local info = "tutorial_artefact_start" 
+	if db.actor:has_info(info) then
+		db.actor:disable_info_portion(info)
+		printf ("has_info==TRUE")
+	else
+		db.actor:give_info_portion(info) 
+		printf ("has_info==FALSE")
+	end
+
+end
+
+function main005 ()
+	local info = "tutorial_artefact_start" 
+	if db.actor:has_info(info) then
+		db.actor:disable_info_portion(info)
+	else
+		db.actor:give_info_portion(info) 
+	end
+
+	local h = db.actor:dont_has_info("storyline_actor_start")
+	if h then 
+		printf ("dont_has_info(storyline_actor_start) ==TRUE")
+	else
+		printf ("dont_has_info(storyline_actor_start) ==FALSE")
+	end
+
+	db.actor:give_info_portion("storyline_actor_start")
+
+	h = db.actor:dont_has_info("storyline_actor_start")
+	if h then 
+		printf ("dont_has_info(storyline_actor_start) ==TRUE")
+	else
+		printf ("dont_has_info(storyline_actor_start) ==FALSE")
+	end
+
+--	local a 	= level.debug_actor()
+--	a:inventory_for_each(fe)
+end
+
+function main______()
+	local gametask = db.actor:get_all_tasks()
+	local task_cnt = gametask:get_tasks_num()
+	for i=0,task_cnt-1 do
+		local t = gametask:get_task(i)
+		local task_name = t:name()   
+		local task_state = t.state	 
+		local sub_task_cnt = t:get_objectives_num()
+		for j=0,sub_task_cnt-1 do
+			local objective = t:get_objective(j)		
+			local objective_name = objective:name()   	
+			local objective_state = objective.state	  	
+		end
+		
+	end
+end
+
+
+function main ()
+
+--	local object 	= level.debug_object ("vagon")
+--	level.map_add_object_spot(db.actor:id(), "rad_antenna_location", "hit" )
+	
+	local object 	= level.debug_object ("level_prefix_m_car")
+	level.map_add_object_spot(object:id(), "enemy_location", "tractor" )
+	
+	
+end
+
+function main000()
+	local psy_hit 					= hit();
+	psy_hit.power 					= 10;
+	psy_hit.direction 				= vector():set( 0, 0, 0 );
+	psy_hit.impulse 				= 0;
+	psy_hit.draftsman 				= db.actor; 
+	psy_hit.type 					= hit.telepatic;
+	db.actor:hit					(psy_hit);
+end

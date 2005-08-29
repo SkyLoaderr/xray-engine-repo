@@ -1,0 +1,242 @@
+function init    (obj)
+	xr_motivator.AddToMotivator(obj)
+end
+
+lasthealth  = 0
+lasttime	= 0
+----------------------------------------------------------------------------------------------------------------------
+class "actor_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:__init (obj) super(obj)
+	self.bCheckStart = false
+	
+	self.delayed_sleep_callback_start_tm = time_global()
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:net_spawn(data)
+	
+	self.bCheckStart = true
+
+	if object_binder.net_spawn(self,data) == false then
+		return false
+	end
+
+	db.add_actor(self.object)
+
+	return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:net_destroy()
+	db.del_actor(self.object)
+    sr_light.clean_up ()
+	self.object:set_callback(callback.inventory_info, nil)
+	self.object:set_callback(callback.article_info, nil)
+	self.object:set_callback(callback.on_item_take, nil)
+	self.object:set_callback(callback.on_item_drop, nil)
+	self.object:set_callback(callback.actor_sleep, nil)
+	self.object:set_callback(callback.task_state, nil)
+
+	db.storage[self.object:id()] = nil
+
+	object_binder.net_destroy(self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:reinit()
+	object_binder.reinit(self)
+	
+	local npc_id = self.object:id()
+
+	db.storage[npc_id] = { }
+
+	self.st = db.storage[npc_id]
+	self.st.pstor = nil
+
+	self.next_restrictors_update_time = -10000
+
+	self.object:set_callback(callback.inventory_info, self.info_callback, self)
+	self.object:set_callback(callback.article_info, self.article_callback, self)
+	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
+	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
+	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
+	self.object:set_callback(callback.task_state, self.task_callback, self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:info_callback(npc, info_id)
+	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
+	--' Сюжет
+	level_tasks.proceed(self.object)
+	-- Отметки на карте
+	level_tasks.process_info_portion(info_id)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:article_callback(npc, group, name)
+--	printf("article_callback [%s][%s]", group, name)
+	if device().precache_frame >1 then return end
+	
+	if group == "Diary" then
+		news_manager.send_encyclopedy("diary")
+	else
+		news_manager.send_encyclopedy("encyclopedy")
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:inventory_callback(npc, info_id)
+	--' Сюжет
+	level_tasks.proceed(self.object)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:sleep_callback()
+	self.delayed_sleep_callback_start_tm = time_global() + 1500
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:task_callback(id_task, subtask, id_state)
+	if subtask == 0 then
+		if id_state == task.fail then
+			news_manager.send_task(db.actor, "fail")
+		elseif id_state == task.completed then
+			news_manager.send_task(db.actor, "complete")
+		else
+			news_manager.send_task(db.actor, "new")
+		end
+	else
+		news_manager.send_task(db.actor, "update")
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+local drop_location = nil
+function drop_item(item, who)
+	printf("_bp: drop_item")
+	who:drop_item(item, drop_location)
+end
+
+function actor_binder:delayed_sleep_callback()
+	self.delayed_sleep_callback_start_tm = nil
+
+	printf("*SLEEP CALLBACK*")
+	if self.st.punch and self.st.punch.enabled then
+		self.object:set_actor_position(self.st.punch.dest_walk)
+		self.object:set_actor_direction(self.st.punch.dest_look.y)
+		
+		if self.st.punch.dump_inventory_pos then
+			printf("_bp: dump_inventory_pos")
+			drop_location = self.st.punch.dump_inventory_pos
+			self.object:inventory_for_each(drop_item)
+			self.st.punch.dump_inventory_pos = nil
+		end
+		
+		if self.st.punch.disable_input_tm then
+			printf("_bp: disable_input")
+			level.disable_input()
+			self.st.enable_input_tm = time_global() + self.st.punch.disable_input_tm
+			self.st.punch.disable_input_tm = nil
+		end
+
+		if self.st.punch.info then
+			for k, v in self.st.punch.info do
+				if self.object:dont_has_info(v) then
+					self.object:give_info_portion(v)
+				end
+			end
+		end
+	
+		self.st.punch.enabled = false
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:update(delta)
+	object_binder.update(self, delta)
+
+	local time = time_global()
+
+	if self.delayed_sleep_callback_start_tm and time >= self.delayed_sleep_callback_start_tm then
+		self:delayed_sleep_callback()
+	end
+
+	if self.st.enable_input_tm and time >= self.st.enable_input_tm then
+		level.enable_input()
+		self.st.enable_input_tm = nil
+	end
+
+	--' Проверка потери жизни
+--[[
+	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
+	lasthealth = self.object.health
+	lasttime = game.time()
+]]
+
+	-- обновление рестрикторов, которые под логикой, срабатывает через интервалы времени
+	if self.next_restrictors_update_time < time then
+		bind_restrictor.actor_update(delta)
+
+		self.next_restrictors_update_time = time + 200
+	end
+
+ 	if self.bCheckStart then
+		printf("SET DEFAULT INFOS")		
+
+		if self.object:dont_has_info("storyline_actor_start") and
+		   (level.name() == "l01_escape")
+		then
+			self.object:give_info_portion("storyline_actor_start")
+			_G.g_start_avi = true
+			printf("*AVI* RUN START AVI")			
+		end
+
+		if self.object:dont_has_info("encyclopedy") then
+			self.object:give_info_portion("encyclopedy")
+		end
+
+		if self.object:dont_has_info("global_dialogs") then
+			self.object:give_info_portion("global_dialogs")
+		end
+
+		if self.object:dont_has_info("level_changer_icons") then
+			self.object:give_info_portion("level_changer_icons")
+		end
+
+		level_tasks.add_lchanger_location()
+
+		self.bCheckStart = false		
+	end		
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:save(packet)
+	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
+	object_binder.save(self, packet)
+
+	xr_logic.pstor_save_all(self.object, packet)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:load(reader)
+	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
+	object_binder.load(self, reader)
+
+	xr_logic.pstor_load_all(self.object, reader)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_init    (npc)
+	npc:bind_object(actor_binder(npc))
+end
+--старт префетча звуков
+sound_prefetch.prefetch_sounds()
+
+
+// this is test for section iteration
+/**
+local function test_section_iteration(file_name, section_name)
+	printf			("file    : %s",file_name)
+	printf			("section : %s",section_name)
+	
+	local			file = ini_file(file_name)
+	local			n = file:line_count(section_name)
+	printf			("lines   : %d",n)
+	
+	local			id, value = "", "", result
+	for i=0,n-1 do
+		result, id, value	= file:r_line(section_name,i,"","")
+		printf		("line %d : %s = %s",i,id,value)
+	end
+end
+
+test_section_iteration("system.ltx","space_restrictor")
+/**/
