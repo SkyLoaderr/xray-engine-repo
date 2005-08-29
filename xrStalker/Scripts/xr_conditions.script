@@ -501,6 +501,13 @@ function esc_vagon_all_dead(actor, npc)
 	return xr_conditions_impl.esc_vagon_all_dead()
 end
 
+function esc_blokpost_night(actor,npc)
+	if xr_gulag.getGulagState("esc_blokpost") == 1 then
+		return true
+	end
+	return false
+end
+
 ------------------------------------------------------------------------------------
 -- Special functions for LabX18
 ------------------------------------------------------------------------------------
