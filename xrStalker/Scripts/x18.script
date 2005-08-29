@@ -92,7 +92,7 @@ function remove_gulags_except(test_name)
 		--local val = is_gulag_in_test(v:name(), test_name)
 		printf(":: DEBUG : Gulag[%s] in test [%s]?",v:name(), test_name)
 		if (is_gulag_in_test(v:name(), test_name) == false) then
-			smart_terrain.remove_gulag(v)
+			smart_terrain.remove_gulag(v,true)
 			printf(":: DEBUG : Gulag[%s] removed", v:name())
 		end
 	end

@@ -954,10 +954,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1881,6 +1881,9 @@
 				Name="Tests"
 				Filter="">
 				<File
+					RelativePath=".\scripts\agro.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\andy_test.script">
 				</File>
 				<File
@@ -1891,6 +1894,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\test_heli_2.script">
+				</File>
+				<File
+					RelativePath=".\scripts\test_utils.script">
 				</File>
 				<File
 					RelativePath=".\scripts\x18.script">
