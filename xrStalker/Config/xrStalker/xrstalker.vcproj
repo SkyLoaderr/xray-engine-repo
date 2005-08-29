@@ -1198,6 +1198,12 @@
 						RelativePath=".\Config\ui\ui_common.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_map_description.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_models_multiplayer.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_mp_icon_rank.xml">
 					</File>
 					<File
