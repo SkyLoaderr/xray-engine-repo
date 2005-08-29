@@ -210,6 +210,11 @@
 		<specific_character>stalker_esc_wolf</specific_character>
 	</character>				
 
+	<character id="stalker_esc_fanat">
+		<class>stalker_esc_fanat</class>
+		<specific_character>stalker_esc_fanat</specific_character>
+	</character>	
+
 	<character id="stalker_esc_bariga">
 		<class>stalker_esc_bariga</class>
 		<specific_character>stalker_esc_bariga</specific_character>

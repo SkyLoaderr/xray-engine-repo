@@ -31,7 +31,38 @@
 		<actor_dialog>escape_lager_volk_info</actor_dialog>		
 		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
 	</specific_character>
+	
+	<specific_character id="stalker_esc_fanat" team_default = "1">
+		<name>Сталкер "Фанат"</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Стал лидером лагеря новичков после Волка. Целеустремлен, агрессивен, пользуется среди новичков заслуженным авторитетом.</bio>
 
+		<class>stalker_esc_fanat</class>
+		<community>stranger</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			medkit \n
+		</supplies>
+					
+		<start_dialog>escape_lager_leader_hello</start_dialog>
+		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
+		<actor_dialog>escape_lager_leader_request</actor_dialog>		
+	</specific_character
+	
+	
+	
+	
 	<specific_character id="stalker_esc_fox" team_default = "1">
 		<name>Сталкер "Лис"</name>
 		<icon x="16" y="10"></icon>
