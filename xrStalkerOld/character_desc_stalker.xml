@@ -58,7 +58,7 @@
 		<start_dialog>escape_lager_leader_hello</start_dialog>
 		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
 		<actor_dialog>escape_lager_leader_request</actor_dialog>		
-	</specific_character
+	</specific_character>
 	
 	
 	
