@@ -30,26 +30,31 @@ void CPHSimpleCharacter::UpdateDynamicDamage(dContact* c,SGameMtl* obj_material,
 	dReal c_vel;
 	dMass m;
 	dBodyGetMass(b,&m);
+
 	const dReal* obj_vel=dBodyGetLinearVel(b);
-	dVector3 obj_vel_effective={obj_vel[0]*object_damage_factor,obj_vel[1]*object_damage_factor,obj_vel[2]*object_damage_factor};
-	dVector3 obj_impuls={obj_vel_effective[0]*m.mass,obj_vel_effective[1]*m.mass,obj_vel_effective[2]*m.mass};
-	dVector3 impuls={vel[0]*m_mass,vel[1]*m_mass,vel[2]*m_mass};
-	dVector3 c_mas_impuls={obj_impuls[0]+impuls[0],obj_impuls[1]+impuls[1],obj_impuls[2]+impuls[2]};
-	dReal cmass=m_mass+m.mass;
-	dVector3 c_mass_vel={c_mas_impuls[0]/cmass,c_mas_impuls[1]/cmass,c_mas_impuls[2]/cmass};
-	//dVector3 rel_impuls={obj_impuls[0]-impuls[0],obj_impuls[1]-impuls[1],obj_impuls[2]-impuls[2]};
-	//c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*_sqrt(m.mass/m_mass));
-	dReal vel_prg=dDOT(vel,c->geom.normal);
-	dReal obj_vel_prg=dDOT(obj_vel_effective,c->geom.normal);
-	dReal c_mass_vel_prg=dDOT(c_mass_vel,c->geom.normal);
+	const dReal* norm=c->geom.normal;
+	dReal norm_vel=dDOT(vel,norm);
+	dReal norm_obj_vel=dDOT(obj_vel,norm);
 
-	//dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f*object_damage_factor;
-	//dReal kin_energy_end=dDOT(c_mass_vel,c_mass_vel)*cmass/2.f;
+	if((bo1&&norm_vel>norm_obj_vel)||
+		(!bo1&&norm_obj_vel>norm_vel)
+		) return ; 
 
-	dReal kin_energy_start=vel_prg*vel_prg*m_mass/2.f+obj_vel_prg*obj_vel_prg*m.mass/2.f;
-	dReal kin_energy_end=c_mass_vel_prg*c_mass_vel_prg*cmass/2.f;
 
-	dReal accepted_energy=(kin_energy_start-kin_energy_end);
+	dVector3 Pc={vel[0]*m_mass+obj_vel[0]*m.mass,vel[1]*m_mass+obj_vel[1]*m.mass,vel[2]*m_mass+obj_vel[2]*m.mass};
+	//dVectorMul(Vc,1.f/(m_mass+m.mass));
+	//dVector3 vc_obj={obj_vel[0]-Vc[0],obj_vel[1]-Vc[1],obj_vel[2]-Vc[2]};
+	//dVector3 vc_self={vel[0]-Vc[0],vel[1]-Vc[1],vel[2]-Vc[2]};
+	//dReal vc_obj_norm=dDOT(vc_obj,norm);
+	//dReal vc_self_norm=dDOT(vc_self,norm);
+
+	dReal Kself=norm_vel*norm_vel*m_mass/2.f;
+	dReal Kobj=norm_obj_vel*norm_obj_vel*m.mass/2.f;
+
+	dReal Pcnorm=dDOT(Pc,norm);
+	dReal KK=Pcnorm*Pcnorm/(m_mass+m.mass)/2.f;
+	dReal accepted_energy=Kself*m_collision_damage_factor+Kobj*object_damage_factor-KK;
+	//DeltaK=m1*m2*(v1-v2)^2/(2*(m1+m2))
 	if(accepted_energy>0.f)
 		c_vel=dSqrt(accepted_energy/m_mass*2.f)*obj_material->fBounceDamageFactor;
 	else c_vel=0.f;

@@ -93,7 +93,7 @@ private:
 	float				fMass;
 	float				fMinCrashSpeed;
 	float				fMaxCrashSpeed;
-	
+	float				fCollisionDamageFactor;
 	float				fAirControlParam;
 
 	Fvector				vVelocity;

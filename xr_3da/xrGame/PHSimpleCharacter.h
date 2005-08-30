@@ -65,7 +65,7 @@ protected:
 	dVector3 m_wall_contact_position;
 	dVector3 m_ground_contact_position;
 	dReal	 jump_up_velocity;//=6.0f;//5.6f;
-
+	dReal	 m_collision_damage_factor;
 	dReal	 m_max_velocity;
 
 	float   m_air_control_factor;
@@ -171,6 +171,7 @@ public:
 	virtual		void		SetVelocity							(Fvector vel)		;
 	virtual		void		SetAirControlFactor					(float factor)		{m_air_control_factor=factor;}
 	virtual		void		SetElevator							(CClimableObject* climable){m_elevator_state.SetElevator(climable);};
+	virtual		void		SetCollisionDamageFactor			(float f)			{m_collision_damage_factor=f;}
 	virtual		void		GetPosition							(Fvector& vpos)		;
 	virtual		float		FootRadius							()					;
 	virtual		void		DeathPosition						(Fvector& deathPos)	;

@@ -76,6 +76,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	m_cap=NULL;
 	m_cap_transform=NULL;
 	dVectorSetZero(m_safe_velocity);
+	m_collision_damage_factor=1.f;
 }
 
 

@@ -345,7 +345,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	GetCharacterVelocity(vel);
 	GetCharacterPosition(pos);
 	//const Fbox& box =Box();
-	float pass=_abs(Box().getradius()-boxes[id].getradius());
+	float pass=	character_exist ? _abs(Box().getradius()-boxes[id].getradius()) : boxes[id].getradius();
 	float max_vel=pass/2.f/fnum_it/fnum_steps/fixed_step;
 	float max_a_vel=M_PI/8.f/fnum_it/fnum_steps/fixed_step;
 	dBodySetForce(GetBody(),0.f,0.f,0.f);

@@ -57,6 +57,7 @@ CPHMovementControl::CPHMovementControl(void)
 	fAirControlParam	= 0.f;
 	m_character=NULL;
 	m_dwCurBox = 0xffffffff;
+	fCollisionDamageFactor=1.f;
 }
 
 CPHMovementControl::~CPHMovementControl(void)
@@ -712,7 +713,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 
 	if(pSettings->line_exist(section,"actor_restrictor"))
 		SetRestrictionType(CPHCharacter::ERestrictionType(pSettings->r_token(section,"actor_restrictor",retrictor_types)));
-
+	fCollisionDamageFactor=READ_IF_EXISTS(pSettings,r_float,section,"collision_damage_factor",fCollisionDamageFactor);
 	SetCrashSpeeds	(cs_min,cs_max);
 	SetMass		(mass);
 
@@ -961,6 +962,7 @@ void CPHMovementControl::CreateCharacter()
 	m_character->SetMaterial(m_material);
 	m_character->SetAirControlFactor(fAirControlParam);
 	m_character->SetPosition(vPosition);
+	m_character->SetCollisionDamageFactor(fCollisionDamageFactor*fCollisionDamageFactor);
 	trying_times[0]=trying_times[1]=trying_times[2]=trying_times[3]=u32(-1);
 	trying_poses[0].set(vPosition);
 	trying_poses[1].set(vPosition);
