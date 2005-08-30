@@ -117,37 +117,39 @@ void	CSoundRender_TargetA::update			()
 
 void	CSoundRender_TargetA::fill_parameters()
 {
+	CSoundRender_Emitter* SE = pEmitter; VERIFY(SE);
+
 	inherited::fill_parameters();
 
     // 3D params
+	VERIFY2(pEmitter,SE->source->file_name());
     A_CHK(alSourcef	(pSource, AL_REFERENCE_DISTANCE, 	pEmitter->p_source.min_distance));
+
+	VERIFY2(pEmitter,SE->source->file_name());
     A_CHK(alSourcef	(pSource, AL_MAX_DISTANCE, 			pEmitter->p_source.max_distance));
-//.	if (pEmitter->b2D){
-//.		A_CHK(alSource3f(pSource, AL_POSITION,	 		-5.f,0.f,0.f));
-//.	}else{
-//.		A_CHK(alSource3f(pSource, AL_POSITION,	 		pEmitter->p_source.position.x,pEmitter->p_source.position.y,-pEmitter->p_source.position.z));
-//.	}
+
+	VERIFY2(pEmitter,SE->source->file_name());
 	A_CHK(alSource3f(pSource, AL_POSITION,	 			pEmitter->p_source.position.x,pEmitter->p_source.position.y,-pEmitter->p_source.position.z));
+
+	VERIFY2(pEmitter,SE->source->file_name());
     A_CHK(alSourcei	(pSource, AL_SOURCE_RELATIVE,		pEmitter->b2D));
     // 2D params
     A_CHK(alSourcef	(pSource, AL_ROLLOFF_FACTOR,		psSoundRolloff));
-//	Log(pEmitter->source->file_name());
-	VERIFY(pEmitter);
-//	CSoundRender_Emitter* SE = pEmitter;
+
+	VERIFY2(pEmitter,SE->source->file_name());
     float	_gain	= pEmitter->smooth_volume;			clamp	(_gain,EPS_S,1.f);
     if (!fsimilar(_gain,cache_gain)){
         cache_gain	= _gain;
         A_CHK(alSourcef	(pSource, AL_GAIN,				_gain));
     }
-//	if (!pEmitter){
-//		Log("-----",SE->source->file_name());
-//	}
-	VERIFY(pEmitter);
+
+	VERIFY2(pEmitter,SE->source->file_name());
     float	_pitch	= pEmitter->p_source.freq;			clamp	(_pitch,EPS_S,2.f);
     if (!fsimilar(_pitch,cache_pitch)){
         cache_pitch	= _pitch;
         A_CHK(alSourcef	(pSource, AL_PITCH,				_pitch));
     }
+	VERIFY2(pEmitter,SE->source->file_name());
 }
 
 void	CSoundRender_TargetA::fill_block	(ALuint BufferID)
