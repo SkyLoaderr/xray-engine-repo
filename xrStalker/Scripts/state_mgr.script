@@ -855,8 +855,10 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	local switched = false	
 	if self.target_state ~= state_name then
 		self.target_state = state_name
---		printf("SETING_REWEAPON")
-		self.need_reweapon = true
+		--printf("SETING_REWEAPON [%s]", self.npc:name())
+		if not (self.npc:weapon_unstrapped() or self.npc:weapon_strapped()) then
+			self.need_reweapon = true
+		end
 		switched = true
 	end
 

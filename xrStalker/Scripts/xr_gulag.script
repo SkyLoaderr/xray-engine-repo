@@ -1,5 +1,8 @@
 -- Автор:     Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
+--function printf()
+--end
+
 fraction = {}
 
 local i

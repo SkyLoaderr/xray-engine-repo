@@ -15,7 +15,7 @@ function eva_state_mgr_weapon:evaluate()
 		return true
 	end
 	if self.st.need_reweapon then
---		printf("REWEAPON")
+		--printf("REWEAPON [%s]", self.object:name())
 		return false
 	end
 	
