@@ -37,7 +37,7 @@ void CPHCallOnStepCondition::set_time_interval(float time)
 }
 void CPHCallOnStepCondition::set_time_interval(u32 time)
 {
-	set_time_interval(float(1000*time));
+	set_time_interval(float(time)/1000.f);
 }
 void CPHCallOnStepCondition::set_global_time(float time)
 {
@@ -47,7 +47,7 @@ void CPHCallOnStepCondition::set_global_time(float time)
 }
 void CPHCallOnStepCondition::set_global_time(u32 time)
 {
-	set_global_time(float(1000*time));
+	set_global_time(float(time)/1000.f);
 }
 
 CPHShellBasedAction::CPHShellBasedAction(CPhysicsShell	*shell)
