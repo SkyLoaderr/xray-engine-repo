@@ -35,6 +35,16 @@ object_list["test4"] = {
 	"test4_dog7"
 }
 
+object_list["test5"] = {
+	"test5_gigant1"
+}
+
+object_list["test6"] = {
+	"test6_gigant1",
+	"test6_gigant2"
+}
+
+
 ------------------------------------------------------------------------------
 -- Base Run function (load extern)
 ------------------------------------------------------------------------------
