@@ -6,6 +6,7 @@
 
 #include "CameraEffector.h"
 #include "../cameramanager.h"
+#include "WeaponMagazined.h"
 
 class CEffectorZoomInertion : public CCameraEffector
 {
@@ -35,6 +36,7 @@ class CEffectorZoomInertion : public CCameraEffector
 	CRandom		m_Random;
 
 	void			CalcNextPoint		();
+	void			LoadParams			(LPCSTR Section, LPCSTR Prefix);
 public:
 	CEffectorZoomInertion				();
 	virtual ~CEffectorZoomInertion		();
@@ -46,6 +48,7 @@ public:
 											Fvector &delta_n, float& fFov,
 											float& fFar, float& fAspect);
 	virtual	void	SetRndSeed				(s32 Seed) { m_Random.seed(Seed); };
+	virtual	void	Init				(CWeaponMagazined*	pWeapon);
 
 	virtual CEffectorZoomInertion	*cast_effector_zoom_inertion	()	{return this;}
 };

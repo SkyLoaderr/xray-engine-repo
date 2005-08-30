@@ -24,15 +24,21 @@ CEffectorZoomInertion::~CEffectorZoomInertion	()
 
 }
 
+void CEffectorZoomInertion::LoadParams			(LPCSTR Section, LPCSTR Prefix)
+{
+	string256 full_name;
+	m_fCameraMoveEpsilon	= READ_IF_EXISTS(pSettings, r_float, Section, strconcat(full_name, Prefix, "camera_move_epsilon"),	pSettings->r_float(EFFECTOR_ZOOM_SECTION, "camera_move_epsilon"));
+	m_fDispMin				= READ_IF_EXISTS(pSettings, r_float, Section, strconcat(full_name, Prefix, "disp_min"),				pSettings->r_float(EFFECTOR_ZOOM_SECTION, "disp_min"));
+	m_fSpeedMin				= READ_IF_EXISTS(pSettings, r_float, Section, strconcat(full_name, Prefix, "speed_min"),			pSettings->r_float(EFFECTOR_ZOOM_SECTION, "speed_min"));
+	m_fZoomAimingDispK		= READ_IF_EXISTS(pSettings, r_float, Section, strconcat(full_name, Prefix, "zoom_aim_disp_k"),		pSettings->r_float(EFFECTOR_ZOOM_SECTION, "zoom_aim_disp_k"));
+	m_fZoomAimingSpeedK		= READ_IF_EXISTS(pSettings, r_float, Section, strconcat(full_name, Prefix, "zoom_aim_speed_k"),		pSettings->r_float(EFFECTOR_ZOOM_SECTION, "zoom_aim_speed_k"));
+	m_dwDeltaTime			= READ_IF_EXISTS(pSettings, r_u32, Section, strconcat(full_name, Prefix, "delta_time"),			pSettings->r_u32(EFFECTOR_ZOOM_SECTION, "delta_time"));
+};
+
 void CEffectorZoomInertion::Load		()
 {
-	m_fCameraMoveEpsilon= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "camera_move_epsilon");
-	m_fDispMin			= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "disp_min");
-	m_fSpeedMin			= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "speed_min");
-	m_fZoomAimingDispK	= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "zoom_aim_disp_k");
-	m_fZoomAimingSpeedK	= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "zoom_aim_speed_k");
-
-	m_dwDeltaTime		= pSettings->r_u32(EFFECTOR_ZOOM_SECTION, "delta_time");
+	LoadParams(EFFECTOR_ZOOM_SECTION, "");
+	
 	m_dwTimePassed		= 0;
 
 	m_fFloatSpeed		= m_fSpeedMin;
@@ -46,6 +52,13 @@ void CEffectorZoomInertion::Load		()
 	m_vTargetPoint.set(0.f,0.f,0.f);
 	m_vLastPoint.set(0.f,0.f,0.f);
 }
+
+void	CEffectorZoomInertion::Init				(CWeaponMagazined*	pWeapon)
+{
+	if (!pWeapon) return;
+
+	LoadParams(*pWeapon->cNameSect(), "ezi_");
+};
 
 void CEffectorZoomInertion::SetParams	(float disp)
 {
