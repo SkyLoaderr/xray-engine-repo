@@ -71,8 +71,7 @@
 
 	<!-- DESCRIPTION WINDOW -->
 	<desc_frame_window x="350" y="22" width="320" height="256">
-		<texture>ui_frame_03</texture>
-		<base_texture>ui\ui_frame_03</base_texture>
+		<texture>ui_frame_03</texture>		
 	</desc_frame_window>
 
 	<price_mt_static x="35" y="10" width="347" height="40">

@@ -16,8 +16,7 @@
 
 	<!-- DIALOG FRAME -->
 	<frame_window x="215" y="42" width="588" height="470">
-		<texture>ui_frame_03</texture>
-		<base_texture>ui\ui_frame_03</base_texture>
+		<texture>ui_frame_03</texture>		
 		<title y="-13" width="190" height="22">
 			<text font="graffiti22" r="238" g="153" b="26"/>
 		</title>
@@ -27,8 +26,7 @@
 
 	<!-- OUR PHRASES FRAME -->
 	<frame_window x="215" y="540" width="588" height="177">
-		<texture>ui_frame_03</texture>
-		<base_texture>ui\ui_frame_03</base_texture>
+		<texture>ui_frame_03</texture>		
 		<title y="-13" width="190" height="22">
 			<text font="graffiti22" r="238" g="153" b="26"/>
 		</title>
