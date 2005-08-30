@@ -133,15 +133,15 @@ void	CSoundRender_TargetA::fill_parameters()
     A_CHK(alSourcef	(pSource, AL_ROLLOFF_FACTOR,		psSoundRolloff));
 //	Log(pEmitter->source->file_name());
 	VERIFY(pEmitter);
-	CSoundRender_Emitter* SE = pEmitter;
+//	CSoundRender_Emitter* SE = pEmitter;
     float	_gain	= pEmitter->smooth_volume;			clamp	(_gain,EPS_S,1.f);
     if (!fsimilar(_gain,cache_gain)){
         cache_gain	= _gain;
         A_CHK(alSourcef	(pSource, AL_GAIN,				_gain));
     }
-	if (!pEmitter){
-		Log("-----",SE->source->file_name());
-	}
+//	if (!pEmitter){
+//		Log("-----",SE->source->file_name());
+//	}
 	VERIFY(pEmitter);
     float	_pitch	= pEmitter->p_source.freq;			clamp	(_pitch,EPS_S,2.f);
     if (!fsimilar(_pitch,cache_pitch)){
