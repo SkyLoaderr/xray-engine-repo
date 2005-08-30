@@ -9,7 +9,6 @@
 #include "PHCollideValidator.h"
 #include "gamemtllib.h"
 #ifdef    DEBUG
-#	include "../StatGraph.h"
 #	include "PHDebug.h"
 #endif
 #include "PHCommander.h"

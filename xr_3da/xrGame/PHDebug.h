@@ -2,6 +2,7 @@
 #define PH_DEBUG_H
 #ifdef DEBUG
 //#include "FastDelegate.h"
+#include "../StatGraph.h"
 #define DRAW_CONTACTS
 
 extern	Flags32			ph_dbg_draw_mask						;
@@ -15,6 +16,7 @@ extern	u32 			dbg_bodies_num							;
 extern	u32 			dbg_joints_num							;
 extern	u32 			dbg_islands_num							;
 extern	u32 			dbg_contacts_num						;
+extern	float			dbg_vel_collid_damage_to_display		;
 #ifdef DRAW_CONTACTS
 
 struct SPHContactDBGDraw
@@ -54,7 +56,8 @@ enum
 	phDbgDrawCarAllTrnsm		=		1<<21,
 	phDbgDrawZDisable			=		1<<22,
 	phDbgAlwaysUseAiPhMove		=		1<<23,
-	phDbgNeverUseAiPhMove		=		1<<24
+	phDbgNeverUseAiPhMove		=		1<<24,
+	phDbgDispObjCollisionDammage=		1<<25
 };
 struct SPHObjDBGDraw
 {

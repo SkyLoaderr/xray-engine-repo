@@ -12,16 +12,16 @@ Flags32		ph_dbg_draw_mask;
 bool		draw_frame=0;
 
 
-u32 dbg_bodies_num							=0;
-u32 dbg_joints_num							=0;
-u32 dbg_islands_num							=0;
-u32 dbg_contacts_num						=0;
-u32 dbg_tries_num							=0;
-u32 dbg_saved_tries_for_active_objects		=0;
-u32 dbg_total_saved_tries					=0;
-u32 dbg_reused_queries_per_step				=0;
-u32 dbg_new_queries_per_step				=0;
-
+u32	 	dbg_bodies_num							=0;
+u32	 	dbg_joints_num							=0;
+u32	 	dbg_islands_num							=0;
+u32	 	dbg_contacts_num						=0;
+u32	 	dbg_tries_num							=0;
+u32	 	dbg_saved_tries_for_active_objects		=0;
+u32	 	dbg_total_saved_tries					=0;
+u32	 	dbg_reused_queries_per_step				=0;
+u32	 	dbg_new_queries_per_step				=0;
+float	dbg_vel_collid_damage_to_display		=7.f;
 #ifdef DRAW_CONTACTS
 CONTACT_VECTOR Contacts0;
 CONTACT_VECTOR Contacts1;

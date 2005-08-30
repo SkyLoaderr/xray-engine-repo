@@ -8,7 +8,6 @@
 #include "PhysicsShellHolder.h"
 #include "PHCollideValidator.h"
 #ifdef DEBUG
-#include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
 ///////////////////////////////////////////////////////////////
