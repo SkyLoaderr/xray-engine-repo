@@ -13,14 +13,12 @@
 	
 	<!-- Main buttons background -->
 	<mbbackground_frame_line x="76" y="546" width="591" height="32">
-		<texture>ui_string_01</texture>
-		<base_texture>ui\ui_string_01</base_texture>
+		<texture>ui_string_01</texture>		
 	</mbbackground_frame_line>
 
 	<!-- TIME DISPLAY BACKGROUND -->
 	<timer_frame_line x="676" y="546" width="161" height="32">
-		<texture>ui_string_01</texture>
-		<base_texture>ui\ui_string_01</base_texture>
+		<texture>ui_string_01</texture>		
 		<title x="10" y="8" width="435" height="18">
 			<text font="letterica18" r="255" g="255" b="255"></text>
 		</title>
