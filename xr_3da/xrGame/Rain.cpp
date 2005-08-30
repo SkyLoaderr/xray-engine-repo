@@ -19,8 +19,8 @@ static const float	source_radius		= 12.5f;
 static const float	source_offset		= 40.f;
 static const float	max_distance		= source_offset*1.25f;
 static const float	sink_offset			= -(max_distance-source_offset);
-static const float	drop_length			= 3.f;
-static const float	drop_width			= 0.28f;
+static const float	drop_length			= 5.f;
+static const float	drop_width			= 0.30f;
 static const float	drop_angle			= 3.0f;
 static const float	drop_max_angle		= deg2rad(10.f);
 static const float	drop_max_wind_vel	= 20.0f;
@@ -39,7 +39,7 @@ CEffect_Rain::CEffect_Rain()
 {
 	state							= stIdle;
 	
-	Sound->create					(snd_Ambient,TRUE,"ambient\\rain");
+	snd_Ambient.create				(TRUE,"ambient\\rain");
 
 	destructor<IReader>	F			(FS.r_open("$game_meshes$","dm\\rain.dm"));
 	DM_Drop							= ::Render->model_CreateDM		(&F());
@@ -53,7 +53,7 @@ CEffect_Rain::CEffect_Rain()
 
 CEffect_Rain::~CEffect_Rain()
 {
-	Sound->destroy					(snd_Ambient);
+	snd_Ambient.destroy				();
 
 	// Cleanup
 	p_destroy						();
@@ -114,8 +114,8 @@ void CEffect_Rain::RenewItem(Item& dest, float height, BOOL bHit)
 		dest.Phit.set	(dest.P);
 	}
 }
-//#include "xr_input.h"
-void	CEffect_Rain::Render	()
+
+void	CEffect_Rain::OnFrame	()
 {
 #ifndef _EDITOR
 	if (!g_pGameLevel)			return;
@@ -128,20 +128,7 @@ void	CEffect_Rain::Render	()
 	if (E&&E->renderable.ROS)
 		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable.ROS->get_luminocity_hemi()),0.2f));
 #endif
-/*
-	if (pInput->iGetAsyncKeyState(DIK_J))
-	{
-		snd_Ambient.stop_deffered();
-	}
-	if (pInput->iGetAsyncKeyState(DIK_H))
-	{
-		snd_Ambient.stop();
-	}
-	if (pInput->iGetAsyncKeyState(DIK_L))
-	{
-		snd_Ambient.play(0,sm_Looped);
-	}
-*/
+
 	switch (state)
 	{
 	case stIdle:		
@@ -149,17 +136,15 @@ void	CEffect_Rain::Render	()
 		state					= stWorking;
 		snd_Ambient.play		(0,sm_Looped);
 		snd_Ambient.set_range	(source_offset,source_offset*2.f);
-		break;
+	break;
 	case stWorking:
-		if (factor<EPS_L)
-		{
-			state					= stIdle;
-			snd_Ambient.stop		();
+		if (factor<EPS_L){
+			state				= stIdle;
+			snd_Ambient.stop	();
 			return;
 		}
 		break;
 	}
-	u32 desired_items			= iFloor	(0.5f*(1.f+factor)*float(max_desired_items));
 
 	// ambient sound
 	if (snd_Ambient._feedback()){
@@ -168,7 +153,18 @@ void	CEffect_Rain::Render	()
 		snd_Ambient.set_position(sndP);
 		snd_Ambient.set_volume	(1.5f*factor*hemi_factor);
 	}
+}
 
+//#include "xr_input.h"
+void	CEffect_Rain::Render	()
+{
+#ifndef _EDITOR
+	if (!g_pGameLevel)			return;
+#endif
+	float	factor				= g_pGamePersistent->Environment.CurrentEnv.rain_density;
+	if (factor<EPS_L)			return;
+
+	u32 desired_items			= iFloor	(0.5f*(1.f+factor)*float(max_desired_items));
 	// visual
 	float		factor_visual	= factor/2.f+.5f;
 	Fvector3	f_rain_color	= g_pGamePersistent->Environment.CurrentEnv.rain_color;

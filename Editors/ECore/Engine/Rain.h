@@ -80,10 +80,11 @@ private:
 	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range, collide::rq_target tgt);
 	void							RenewItem		(Item& dest, float height, BOOL bHit);
 public:
-	void							Render			();
+									CEffect_Rain	();
+									~CEffect_Rain	();
 
-	CEffect_Rain					();
-	~CEffect_Rain					();
+	void							Render			();
+	void							OnFrame			();
 };
 
 #endif //RainH
