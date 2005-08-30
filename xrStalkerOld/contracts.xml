@@ -8,8 +8,7 @@
 
 	<!-- MASK FRAME -->
 	<mask_frame_window x="0" y="0" width="10" height="10">
-		<texture>ui_pda_frame2</texture>
-		<base_texture>ui\ui_pda_frame2</base_texture>
+		<texture>ui_pda_frame2</texture>		
 	</mask_frame_window>
 </window>
 

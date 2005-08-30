@@ -34,8 +34,7 @@
 
 	<!-- DESCRIPTION WINDOW -->
 	<frame_window x="375" y="274" width="267" height="460">
-		<texture>ui_frame</texture>
-		<base_texture>ui\ui_frame</base_texture>
+		<texture>ui_frame</texture>		
 		<left_top_texture x="5" y="10">ui\ui_inv_info_over_lt</left_top_texture>
 	</frame_window>
 
