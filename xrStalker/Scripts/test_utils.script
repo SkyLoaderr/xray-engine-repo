@@ -1,41 +1,39 @@
 
 local object_list		= {}
 local smart_terrains	= {}
-local object_id_list	= {}
 
 ------------------------------------------------------------------------------
 -- Services
 ------------------------------------------------------------------------------
-
--- Save id of object while loading
-function save_object_id()
-	for test_name, test_name_table in pairs(object_list) do
-		local tab = {}
-		for index, obj_name in pairs(test_name_table) do
-			local obj =	level.debug_object(tostring(obj_name))
-			if (obj ~= nil) then
-				table.insert(tab,tonumber(obj:id()))
-			end
-		end
-		object_id_list[tostring(test_name)] = tab
-	end
-end
-
 
 -- Check if object online
 function object_online(object_id)
 	return (alife() == nil) or alife():object(object_id).online
 end
 
+function is_object_online(name)
+	return (alife() == nil) or (level.debug_object(name) ~= nil)
+end
+
+-- Get object id
+function get_object_id(name)
+	if is_object_online(name) then
+		return level.debug_object(name):id()
+	else 
+		return alife():object(name).id
+	end
+end
+
+
 -- Move all offline
 function offline_all()
 	for test_name, test_name_table in pairs(object_list) do
 		for index, obj_name in pairs(test_name_table) do
-			local obj =	 level.debug_object(tostring(obj_name))
-			if ((obj ~= nil) and (object_online(obj:id()))) then
-				alife():set_switch_online	(obj:id(),false)
-				alife():set_switch_offline	(obj:id(),true)
-			end
+			
+			local obj_id = get_object_id(tostring(obj_name))
+			alife():set_switch_online	(obj_id,false)
+			alife():set_switch_offline	(obj_id,true)
+			
 		end
 	end
 end
@@ -45,11 +43,11 @@ function offline_all_except(except_name)
 	for test_name, test_name_table in pairs(object_list) do
 		if (except_name ~= test_name) then
 			for index, obj_name in pairs(test_name_table) do
-				local obj =	 level.debug_object(tostring(obj_name))
-				if ((obj ~= nil) and (object_online(obj:id()))) then
-					alife():set_switch_online	(obj:id(),false)
-					alife():set_switch_offline	(obj:id(),true)
-				end
+
+				local obj_id = get_object_id(tostring(obj_name))
+				alife():set_switch_online	(obj_id,false)
+				alife():set_switch_offline	(obj_id,true)
+		
 			end
 		end
 	end
@@ -58,13 +56,18 @@ end
 
 
 -- Move online objects that are in scene index 
-function online_scene(index)
-	local tab = object_id_list["test" .. tostring(index)];
-	for index, obj_id in pairs(tab) do
-		local obj =	alife():object(tonumber(obj_id))
-		if (obj ~= nil) then
-			alife():set_switch_online	(obj_id,true)
-			alife():set_switch_offline	(obj_id,false)
+function online_scene(scene_name)
+	for test_name, test_name_table in pairs(object_list) do
+		if (scene_name == test_name) then
+			for index, obj_name in pairs(test_name_table) do
+
+				if ( not is_object_online(tostring(obj_name))) then
+					local obj_id = get_object_id(tostring(obj_name))
+					
+					alife():set_switch_online	(obj_id,true)
+					alife():set_switch_offline	(obj_id,false)
+				end		
+			end
 		end
 	end
 end
@@ -121,24 +124,16 @@ end
 
 function run_test(index)
 	local test_name = "test" .. tostring(index)
-	
---	-- not using smart terrains?
---	if smart_terrains == nil then
---		offline_all()
---		online_scene(index)
---	else -- using smart terrains
---		remove_gulags_except(test_name)	
---		offline_all_except(test_name)
---	end
 
 	remove_gulags_except(test_name)	
 	offline_all_except(test_name)
+	wait_game(2000)
+	online_scene(test_name)
 end
 
 -- Execute Base
 function run_global()
 	wait_game(2000)
-	save_object_id()
 	offline_all()
 end
 
