@@ -120,14 +120,14 @@
 		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"></text>
 	</t1_score>
 	<t1_static x="980" y="80" width="32" height="32" stretch = "1">
-		<texture>ui\ui_greenteam</texture>
+		<texture>green_team_logo_small</texture>
 	</t1_static>
 	<!-- TEAM 2 SIGN -->
 	<t2_score x="948" y="110" width="32" height="32">
 		<text font="graffiti32" r="0" g="255" b="255" a="255" align="r"></text>
 	</t2_score>
-	<t2_static x="980" y="110" width="32" height="32" stretch = "1">
-		<texture>ui\ui_blueteam</texture>
+	<t2_static x="980" y="112" width="32" height="32" stretch = "1">
+		<texture>blue_team_logo_small</texture>
 	</t2_static>
 	<!-- Rank Icon -->
 	<rank_icon x="826" y="26" width="32" height="32" stretch = "1">

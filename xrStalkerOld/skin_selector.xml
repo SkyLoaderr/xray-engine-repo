@@ -5,6 +5,9 @@
 		<background x="0" y="0" width="749" height="543">
 			<texture>ui_frame_mainDes</texture>
 		</background>
+		<caption x="42" y="4" width="330" height="32">
+			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">Team Selection</text>
+		</caption>
 		<image_frames x="53" y="45" width="664" height="273">
 			<texture>ui_TV_Skin</texture>
 		</image_frames>
@@ -24,8 +27,7 @@
 
     <!-- SKIN WINDOW TEMPLATE -->
 	<frame_window x="0" y="0" width="320" height="700">
-		<texture>ui_frame_03</texture>
-		<base_texture>ui\ui_frame_03</base_texture>
+		<texture>ui_frame_03</texture>		
 		<title x="20" y="0" width="240" height="60">
 			<text font="header" r="255" g="255" b="255"></text>
 		</title>

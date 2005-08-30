@@ -1,10 +1,34 @@
 ﻿<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+	<team_selector x="144" y="115" width="749" height="543">
+		<background x="0" y="0" width="749" height="543">
+			<texture>ui_frame_mainDes</texture>
+		</background>
+		<caption x="42" y="4" width="330" height="32">
+			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">Skin Selection</text>
+		</caption>
+		<image_frames_tl x="53" y="56" width="332" height="57">
+			<texture>ui_TV_team_tl</texture>
+		</image_frames_tl>
+		<image_frames_tr x="385" y="56" width="332" height="57">
+			<texture>ui_TV_team_tr</texture>
+		</image_frames_tr>
+		<image_frames_bottom x="53" y="113" width="664" height="208">
+			<texture>ui_TV_team_bottom</texture>
+		</image_frames_bottom>
+		<image_0 x="80" y="69" width="293" height="219">
+			<texture>green_team_logo</texture>			
+			<text font="graffiti32" align="r" vert_align="t">1</text>
+		</image_0>
+		<image_1 x="391" y="69" width="293" height="219">
+			<texture>blue_team_logo</texture>			
+			<text font="graffiti32" align="r" vert_align="t">2</text>
+		</image_1>		
+	</team_selector>
 
     <!-- BACKGROUND -->
 	<frame_window x="0" y="0" width="400" height="480">
-		<texture>ui_frame</texture>
-		<base_texture>ui\ui_frame</base_texture>
+		<texture>ui_frame</texture>		
 		<left_top_texture x="15" y="20">ui\ui_inv_list_over_lt</left_top_texture>
 		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>
 		<title x="20" y="0" width="240" height="60"><text font="header" r="255" g="255" b="255">Spawn</text></title>
