@@ -47,5 +47,6 @@ end
 -- Main function (called on level load)
 ------------------------------------------------------------------------------
 function main()
+	test_utils.setup_test(object_list, nil)
 	test_utils.run_global()
 end

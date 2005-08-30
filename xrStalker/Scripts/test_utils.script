@@ -33,7 +33,6 @@ function offline_all()
 			local obj_id = get_object_id(tostring(obj_name))
 			alife():set_switch_online	(obj_id,false)
 			alife():set_switch_offline	(obj_id,true)
-			
 		end
 	end
 end
