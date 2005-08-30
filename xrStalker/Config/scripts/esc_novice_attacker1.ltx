@@ -11,8 +11,13 @@ meet = meet@attacker
 path_walk = escape_factory_way1
 path_look = escape_factory_look1
 team = escape_attack_team
-on_signal = flight | walker@fight 
+on_signal = flight | remark
 on_info = {+esc_kill_bandits_quest_kill}walker2
+
+[remark]
+anim = hide
+snd = gar_hellcar_to_battle
+on_signal = sound_end| walker@fight
 
 [walker@fight]
 path_walk = esc_assault_final1
