@@ -275,7 +275,7 @@ void CEnvironment::OnFrame()
 	if (!g_pGameLevel)		return;
 #endif
 
-	if (pInput->iGetAsyncKeyState(DIK_O))		SetWeatherFX("surge_day"); 
+//	if (pInput->iGetAsyncKeyState(DIK_O))		SetWeatherFX("surge_day"); 
 
 	if (bWFX&&(wfx_time<=0.f)) StopWFX();
 
