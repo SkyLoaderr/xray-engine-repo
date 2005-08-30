@@ -149,7 +149,7 @@ function load_states(gname, type)
 	end
 	if type == "rad_chimeras" then
 		return function(gulag)
-			local t = db.zone_by_name["rad_boars_migrate_territory"] 
+			local t = db.zone_by_name["rad_chimeras_territory"] 
 			local actor = db.actor
 
 			if t and actor then
