@@ -895,6 +895,13 @@ function action_car:destroy_car()
 	self.state_shooting = state_none
 	self.car:Action(CCar.eWpnAutoFire, 0)
 	self:set_shooting(self.state_shooting)
+
+    -- turn off lights
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, object("left_light",  object.deactivate), cond(cond.time_end, time_infinite))
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, object("right_light", object.deactivate), cond(cond.time_end, time_infinite))
+
 	xr_logic.mob_release(self.object)
 	if self.st.on_death_info ~= nil then
 	    db.actor:give_info_portion(self.st.on_death_info)
