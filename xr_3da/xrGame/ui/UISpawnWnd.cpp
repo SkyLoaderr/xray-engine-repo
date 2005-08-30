@@ -6,133 +6,140 @@
 #include "../hudmanager.h"
 #include "../level.h"
 #include "../game_cl_teamdeathmatch.h"
-
-//////////////////////////////////////////////////////////////////////////
-
-const char * const SPAWN_XML		= "spawn.xml";
-
-//-----------------------------------------------------------------------------/
-//  Ctor and Dtor
-//-----------------------------------------------------------------------------/
+#include "UIStatix.h"
 
 CUISpawnWnd::CUISpawnWnd()
-	: m_bDual(false),
-	  m_iResult(-1)//,
-//	  pCallbackFunc(NULL)
-{
-	Init("-= Green Team =-", 0xff40ff40, "-= Blue Team =-", 0xff4040ff, true);
+//	: m_bDual(false),
+//	  m_iResult(-1)
+{	
+	m_pBackground	= xr_new<CUIStatic>();	AttachChild(m_pBackground);	
+	m_pCaption		= xr_new<CUIStatic>();	AttachChild(m_pCaption);	
+	m_pImage1		= xr_new<CUIStatix>();	AttachChild(m_pImage1);
+	m_pImage2		= xr_new<CUIStatix>();	AttachChild(m_pImage2);
 
-	SetFont(HUD().Font().pFontMedium);
+	m_pFrames[0]	= xr_new<CUIStatic>();	AttachChild(m_pFrames[0]);
+	m_pFrames[1]	= xr_new<CUIStatic>();	AttachChild(m_pFrames[1]);
+	m_pFrames[2]	= xr_new<CUIStatic>();	AttachChild(m_pFrames[2]);
+	Init();
+	
 }
 
 CUISpawnWnd::~CUISpawnWnd()
 {
+	xr_delete(m_pCaption);
+	xr_delete(m_pBackground);
+	xr_delete(m_pFrames[0]);
+	xr_delete(m_pFrames[1]);
+	xr_delete(m_pFrames[2]);
+	xr_delete(m_pImage1);
+	xr_delete(m_pImage2);
 
 }
-
-//void	CUISpawnWnd::SetCallbackFunc (ButtonClickCallback pFunc)
-//{
-//	pCallbackFunc = pFunc;
-//};
-void CUISpawnWnd::Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
-						const char *strCaptionSecondary, const u32 ColorSecondary, 
-						bool bDual)
+void CUISpawnWnd::Init()
 {
-	CUIXml uiXml;
-///	bool xml_result = uiXml.Init("$game_data$", SPAWN_XML);
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, SPAWN_XML);
-	R_ASSERT3(xml_result, "xml file not found", SPAWN_XML);
+	CUIXml xml_doc;
+	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, "spawn.xml");
+	R_ASSERT3(xml_result, "xml file not found", "spawn.xml");
 
-	CUIXmlInit xml_init;
+	CUIXmlInit::InitWindow(xml_doc,"team_selector",						0,	this);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:caption",				0,	m_pCaption);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:background",			0,	m_pBackground);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_frames_tl",		0,	m_pFrames[0]);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_frames_tr",		0,	m_pFrames[1]);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_frames_bottom",	0,	m_pFrames[2]);
 
-	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
-					CUIXmlInit::ApplyAlignY(0, alCenter),
-					UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	Frect r;
+	r.set(0,0,256,256);
 
-	// „итаем из xml файла параметры окна и контролов
-	AttachChild(&UIFrameWndPrimary);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndPrimary);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_0",0,m_pImage1);
+	m_pImage1->SetStretchTexture(true);
+	m_pImage1->RescaleRelative2Rect(r);
+	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_1",0,m_pImage2);
+	m_pImage2->SetStretchTexture(true);
+	m_pImage2->RescaleRelative2Rect(r);
 
-	UIFrameWndPrimary.AttachChild(&UIStaticTextPrimary);
-	xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextPrimary);
-	UIStaticTextPrimary.SetText(strCaptionPrimary);
-	UIStaticTextPrimary.SetTextColor(ColorPrimary);
+	//CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+	//				CUIXmlInit::ApplyAlignY(0, alCenter),
+	//				UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	// sign
-	UIFrameWndPrimary.AttachChild(&UITeamSign1);
-	xml_init.InitStatic(uiXml, "t1_static", 0, &UITeamSign1);
+	//// „итаем из xml файла параметры окна и контролов
+	//AttachChild(&UIFrameWndPrimary);
+	//xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndPrimary);
 
-	UIFrameWndPrimary.AttachChild(&UIButtonPrimary);
-	// ”станавливем получателем сообщений родительское окно, так как FrameWindow не обрабатывает сообщени€
-	UIButtonPrimary.SetMessageTarget(this);
-	xml_init.InitButton(uiXml, "button", 0, &UIButtonPrimary);
+	//UIFrameWndPrimary.AttachChild(&UIStaticTextPrimary);
+	//xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextPrimary);
+	//UIStaticTextPrimary.SetText(strCaptionPrimary);
+	//UIStaticTextPrimary.SetTextColor(ColorPrimary);
 
+	//// sign
+	//UIFrameWndPrimary.AttachChild(&UITeamSign1);
+	//xml_init.InitStatic(uiXml, "t1_static", 0, &UITeamSign1);
 
-	// вторичный фрейм не аттачитс€, так как по умолчанию режим отображени€ одиночный
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndSecondary);
-
-	UIFrameWndSecondary.AttachChild(&UIStaticTextSecondary);
-	xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextSecondary);
-	UIStaticTextSecondary.SetText(strCaptionSecondary);
-	UIStaticTextSecondary.SetTextColor(ColorSecondary);
-
-	// sign
-	UIFrameWndSecondary.AttachChild(&UITeamSign2);
-	xml_init.InitStatic(uiXml, "t2_static", 0, &UITeamSign2);
+	//UIFrameWndPrimary.AttachChild(&UIButtonPrimary);
+	//// ”станавливем получателем сообщений родительское окно, так как FrameWindow не обрабатывает сообщени€
+	//UIButtonPrimary.SetMessageTarget(this);
+	//xml_init.InitButton(uiXml, "button", 0, &UIButtonPrimary);
 
 
-	UIFrameWndSecondary.AttachChild(&UIButtonSecondary);
-	// ”станавливем получателем сообщений родительское окно, так как FrameWindow не ретровает сообщени€
-	UIButtonSecondary.SetMessageTarget(this);
-	xml_init.InitButton(uiXml, "button", 0, &UIButtonSecondary);
+	//// вторичный фрейм не аттачитс€, так как по умолчанию режим отображени€ одиночный
+	//xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndSecondary);
 
-	SetDisplayMode(bDual);
+	//UIFrameWndSecondary.AttachChild(&UIStaticTextSecondary);
+	//xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextSecondary);
+	//UIStaticTextSecondary.SetText(strCaptionSecondary);
+	//UIStaticTextSecondary.SetTextColor(ColorSecondary);
+
+	//// sign
+	//UIFrameWndSecondary.AttachChild(&UITeamSign2);
+	//xml_init.InitStatic(uiXml, "t2_static", 0, &UITeamSign2);
+
+
+	//UIFrameWndSecondary.AttachChild(&UIButtonSecondary);
+	//// ”станавливем получателем сообщений родительское окно, так как FrameWindow не ретровает сообщени€
+	//UIButtonSecondary.SetMessageTarget(this);
+	//xml_init.InitButton(uiXml, "button", 0, &UIButtonSecondary);
+
+	//SetDisplayMode(bDual);
 }
 
 void CUISpawnWnd::SetDisplayMode(bool bDual)
 {
-	m_bDual = bDual;
+	//m_bDual = bDual;
 
-	Frect frameCoords = UIFrameWndSecondary.GetWndRect();
-	float updatedX, updatedY;
+	//Frect frameCoords = UIFrameWndSecondary.GetWndRect();
+	//float updatedX, updatedY;
 
-	updatedY = UI_BASE_HEIGHT / 2 - (frameCoords.bottom - frameCoords.top) / 2;
+	//updatedY = UI_BASE_HEIGHT / 2 - (frameCoords.bottom - frameCoords.top) / 2;
 
-	if (m_bDual)
-	{
-		// ≈сли окна 2, то аттачим вторичные контролы
-		AttachChild(&UIFrameWndSecondary);
-		
-		updatedX = UI_BASE_WIDTH / 4 - (frameCoords.right - frameCoords.left) / 2;
-		updatedX += updatedX / 2;
-		// обновить второе окно
-		UIFrameWndSecondary.SetWndRect(2 * updatedX + frameCoords.right, updatedY, frameCoords.right, frameCoords.bottom);
-	}
-	else
-	{
-		DetachChild(&UIFrameWndSecondary);
-		updatedX = UI_BASE_WIDTH / 2 - (frameCoords.right - frameCoords.left) / 2;
-	}
-	// обновить первое окно
-	UIFrameWndPrimary.SetWndRect(updatedX, updatedY, frameCoords.right, frameCoords.bottom);
+	//if (m_bDual)
+	//{
+	//	// ≈сли окна 2, то аттачим вторичные контролы
+	//	AttachChild(&UIFrameWndSecondary);
+	//	
+	//	updatedX = UI_BASE_WIDTH / 4 - (frameCoords.right - frameCoords.left) / 2;
+	//	updatedX += updatedX / 2;
+	//	// обновить второе окно
+	//	UIFrameWndSecondary.SetWndRect(2 * updatedX + frameCoords.right, updatedY, frameCoords.right, frameCoords.bottom);
+	//}
+	//else
+	//{
+	//	DetachChild(&UIFrameWndSecondary);
+	//	updatedX = UI_BASE_WIDTH / 2 - (frameCoords.right - frameCoords.left) / 2;
+	//}
+	//// обновить первое окно
+	//UIFrameWndPrimary.SetWndRect(updatedX, updatedY, frameCoords.right, frameCoords.bottom);
 }
 
 void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if (BUTTON_CLICKED == msg)
 	{
-		if (pWnd == &UIButtonPrimary)
-			m_iResult = 0;
-		else
-			m_iResult = 1;
-//		if (pCallbackFunc) 
-//		{
-//			pCallbackFunc(m_iResult+1);
-//			m_iResult = -1;
-//		};
 		Game().StartStopMenu(this,true);
 		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
-		dm->OnTeamSelect(m_iResult);
+		if (pWnd == m_pImage1)
+			dm->OnTeamSelect(0);
+		else
+			dm->OnTeamSelect(1);		
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -142,6 +149,17 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
+	if ((DIK_1 == dik || DIK_2 == dik ) && WINDOW_KEY_PRESSED == keyboard_action)
+	{
+		Game().StartStopMenu(this,true);
+		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		if (DIK_1 == dik)
+			dm->OnTeamSelect(0);
+		else
+			dm->OnTeamSelect(1);
+		return true;
+	}
+
 	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
 	{
 		Game().StartStopMenu(this,true);

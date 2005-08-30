@@ -39,6 +39,7 @@ public:
 protected:
 			void	InitSkins();
 			void	UpdateSkins();
+	CUIStatic*		m_pCaption;
 	CUIStatic*		m_pBackground;
 	CUIStatic*		m_pFrames;
 	CUIStatix*		m_pImage[4];

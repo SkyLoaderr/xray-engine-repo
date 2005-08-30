@@ -534,6 +534,9 @@
 					RelativePath=".\Config\mp\mp_ranks.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\mp\team_logo.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\mp\teamdeathmatch_game.ltx">
 				</File>
 				<Filter

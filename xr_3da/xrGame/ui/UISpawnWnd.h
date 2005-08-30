@@ -5,8 +5,11 @@
 #pragma once
 
 #include "UIDialogWnd.h"
-#include "UIFrameWindow.h"
-#include "UIButton.h"
+//#include "UIFrameWindow.h"
+//#include "UIButton.h"
+
+class CUIStatix;
+class CUIStatic;
 
 //typedef	void (*ButtonClickCallback) (int);
 
@@ -18,9 +21,7 @@ public:
 	CUISpawnWnd();
 	virtual ~CUISpawnWnd();
 
-	virtual void Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
-						const char *strCaptionSecondary, const u32 ColorSecondary, 
-						bool bDual = false);
+	virtual void Init();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 
@@ -28,30 +29,16 @@ public:
 	void SetDisplayMode(bool bDual = false);
 
 	// -1 - еще не нажималась, 0 - primary (левая), 1 - secondary (правая)
-	int GetPressingResult() { return m_iResult; }
+	int GetPressingResult() { return 1; }
 
 //	void	SetCallbackFunc (ButtonClickCallback pFunc);
 
 protected:
-	// Подложка окна
-	CUIFrameWindow		UIFrameWndPrimary;
-	CUIFrameWindow		UIFrameWndSecondary;
-	// Статик контролы для вывода текста
-	CUIStatic			UIStaticTextPrimary;
-	CUIStatic			UIStaticTextSecondary;
-	CUIStatic			UITeamSign1;
-	CUIStatic			UITeamSign2;
-
-	// Кнопки
-	CUIButton			UIButtonPrimary;
-	CUIButton			UIButtonSecondary;
-
-	// режим диалога: двойной, одиночный
-	bool				m_bDual;
-	// Индикатор нажатой кнопки: -1 - еще не нажималась, 0 - primary (левая), 1 - secondary (правая)
-	int					m_iResult;
-
-//	ButtonClickCallback	pCallbackFunc;
+	CUIStatic*		m_pCaption;
+	CUIStatic*		m_pBackground;
+	CUIStatic*		m_pFrames[3];
+	CUIStatix*		m_pImage1;
+	CUIStatix*		m_pImage2;
 };
 
 #endif

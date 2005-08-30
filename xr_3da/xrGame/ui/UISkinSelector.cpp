@@ -11,9 +11,10 @@
 const char * const	SKIN_SELECTOR_XML		= "skin_selector.xml";
 
 CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
-{
-	m_pBackground = xr_new<CUIStatic>();	AttachChild(m_pBackground);
-	m_pFrames = xr_new<CUIStatic>();		AttachChild(m_pFrames);
+{	
+	m_pBackground	= xr_new<CUIStatic>();	AttachChild(m_pBackground);
+	m_pCaption		= xr_new<CUIStatic>();	AttachChild(m_pCaption);
+	m_pFrames		= xr_new<CUIStatic>();	AttachChild(m_pFrames);
 	for (int i = 0; i<4; i++)
 	{
 		m_pImage[i] = xr_new<CUIStatix>();
@@ -25,6 +26,7 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 
 CUISkinSelectorWnd::~CUISkinSelectorWnd()
 {
+	xr_delete(m_pCaption);
 	xr_delete(m_pBackground);
 	xr_delete(m_pFrames);
 	for (int i = 0; i<4; i++)
@@ -69,8 +71,9 @@ void CUISkinSelectorWnd::Init(const char* strSectionName)
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit::InitWindow(xml_doc,"skin_selector",0,this);
-	CUIXmlInit::InitStatic(xml_doc,"skin_selector:background",0,m_pBackground);
-	CUIXmlInit::InitStatic(xml_doc,"skin_selector:image_frames",0,m_pFrames);
+	CUIXmlInit::InitStatic(xml_doc,"skin_selector:caption",		0,	m_pCaption);
+	CUIXmlInit::InitStatic(xml_doc,"skin_selector:background",	0,	m_pBackground);
+	CUIXmlInit::InitStatic(xml_doc,"skin_selector:image_frames",0,	m_pFrames);
 
 	string64 buff;
 	for (int i = 0; i<4; i++)

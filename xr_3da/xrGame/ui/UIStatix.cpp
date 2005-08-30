@@ -4,7 +4,7 @@
 #include "UIColorAnimatorWrapper.h"
 
 CUIStatix::CUIStatix(){
-	m_anim = xr_new<CUIColorAnimatorWrapper>("ui_map_area_anim");
+	m_anim = xr_new<CUIColorAnimatorWrapper>("ui_slow_blinking");
 	m_anim->Cyclic(true);
 }
 
