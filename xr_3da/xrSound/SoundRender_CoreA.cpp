@@ -56,7 +56,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	}
 
     // Get the device specifier.
-    ALCubyte* 			        deviceSpecifier;
+    const ALCchar*		        deviceSpecifier;
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
 	Msg				        	("* sound: OpenAL: Using device '%s'.", deviceSpecifier);
 
@@ -84,10 +84,10 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     A_CHK				        (alListenerf		(AL_GAIN,1.f));
 
     // Check for EAX extension
-    bEAX 				        = alIsExtensionPresent		((ALubyte*)"EAX");
-    eaxSet 				        = (EAXSet*)alGetProcAddress	((ALubyte*)"EAXSet");
+    bEAX 				        = alIsExtensionPresent		((const ALchar*)"EAX");
+    eaxSet 				        = (EAXSet*)alGetProcAddress	((const ALchar*)"EAXSet");
     if (eaxSet==NULL) bEAX 		= false;
-    eaxGet 				        = (EAXGet*)alGetProcAddress	((ALubyte*)"EAXGet");
+    eaxGet 				        = (EAXGet*)alGetProcAddress	((const ALchar*)"EAXGet");
     if (eaxGet==NULL) bEAX 		= false;
 
     if (bEAX){
