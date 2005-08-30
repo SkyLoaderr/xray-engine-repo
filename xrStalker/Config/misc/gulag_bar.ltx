@@ -584,7 +584,7 @@ active = camper1@bar_freedom_attack_sniper_1
 path_walk = acamper_1_walk
 path_look = acamper_1_look
 def_state_moving = assault
-
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 radius = 5
 no_retreat = true
 
@@ -604,9 +604,9 @@ active = camper1@bar_freedom_attack_sniper_2
 path_walk = acamper_2_walk
 path_look = acamper_2_look
 def_state_moving = assault
-
 radius = 5
 no_retreat = true
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 
 [logic@bar_freedom_attack_sniper_3]
 active = camper1@bar_freedom_attack_sniper_3 
@@ -619,6 +619,7 @@ def_state_moving = assault
 meet = meet@freedom_attacker
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 
+
 [logic@bar_freedom_attack_sniper_c3]
 active = camper1@bar_freedom_attack_sniper_3
 
@@ -626,7 +627,7 @@ active = camper1@bar_freedom_attack_sniper_3
 path_walk = acamper_3_walk
 path_look = acamper_3_look
 def_state_moving = assault
-
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 radius = 5
 no_retreat = true
 
@@ -639,6 +640,7 @@ path_look = camper_4_look
 def_state_moving = assault
 meet = meet@freedom_attacker
 
+
 [logic@bar_freedom_attack_sniper_c4]
 active = camper1@bar_freedom_attack_sniper_4
 
@@ -646,10 +648,9 @@ active = camper1@bar_freedom_attack_sniper_4
 path_walk = acamper_4_walk
 path_look = acamper_4_look
 def_state_moving = assault
-
 radius = 5
 no_retreat = true
-
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 
 [logic@bar_freedom_attack_guard_1]
 active = camper@bar_freedom_attack_guard_1
@@ -667,7 +668,7 @@ active = camper1@bar_freedom_attack_guard_1
 path_walk = aguard_1_walk
 path_look = aguard_1_look
 def_state_moving = assault
-
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 radius = 5
 no_retreat = true
 
@@ -704,6 +705,7 @@ path_look = commandir_look
 def_state_moving = assault
 meet = meet@freedom_volkodav
 on_info = {-bar_freedom_talk_end +bar_freedom_talk_v1} remark@volkodav_talk_1
+on_info2 = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 
 [remark@volkodav_talk_1]
 snd = talk_hello
@@ -732,7 +734,7 @@ path_look = camper_6_look
 def_state_moving = assault
 radius = 5
 on_info = {-bar_freedom_talk_end +bar_actor_heared_freedom_talk} remark@camper_talk
-
+on_info2 = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 
 [remark@camper_talk]
 snd = talk_hello
@@ -783,7 +785,7 @@ path_look = acamper_6_look
 def_state_moving = assault
 radius = 5
 no_retreat = true
-
+on_info = {-bar_kill_professor_start +bar_freedom_attack_ecolog} %=bar_freedom_angry_actor%
 
 [logic@bar_freedom_attack_chaser_1]
 active = camper@bar_freedom_attack_chaser_1
