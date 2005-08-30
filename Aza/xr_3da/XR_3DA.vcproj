@@ -634,6 +634,12 @@
 					RelativePath=".\Environment.h">
 				</File>
 				<File
+					RelativePath=".\Environment_misc.cpp">
+				</File>
+				<File
+					RelativePath=".\Environment_render.cpp">
+				</File>
+				<File
 					RelativePath=".\xrHemisphere.cpp">
 				</File>
 				<File

@@ -182,7 +182,9 @@ void CGamePersistent::WeathersUpdate()
 					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),FALSE);
 					Fvector pos; pos.add			(Device.vCameraPosition,eff->offset); 
 					ambient_particles->play_at_pos	(pos);
-					if (eff->sound._handle())		eff->sound.play_at_pos(0,pos);
+					if (eff->sound._handle()){
+						eff->sound.play_at_pos(0,pos);
+					}
 				}
 			}
 		}

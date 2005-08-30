@@ -14,6 +14,8 @@ class ENGINE_API	CEffect_Thunderbolt;
 
 class ENGINE_API	CPerlinNoise1D;
 
+#define DAY_LENGTH		86400.f
+
 // t-defs
 class ENGINE_API	CEnvModifier
 {
@@ -27,6 +29,8 @@ public:
 	float				fog_density;
 	Fvector3			ambient;
 	Fvector3			lmap_color;
+	Fvector3			sky_color;		
+	Fvector3			hemi_color;
 
 	void				load		(IReader*		fs);
 	float				sum			(CEnvModifier&	_another, Fvector3& view);
@@ -60,13 +64,9 @@ public:
 class ENGINE_API	CEnvDescriptor
 {
 public:
-    float				exec_time;
+	float				exec_time;
+	float				exec_time_loaded;
 	
-	STextureList		sky_r_textures;		// C
-	STextureList		sky_r_textures_env;	// C
-	STextureList		clouds_r_textures;	// C
-	float				weight;				// C
-
 	ref_texture			sky_texture		;
 	ref_texture			sky_texture_env	;
 	ref_texture			clouds_texture	;
@@ -79,8 +79,6 @@ public:
 
 	Fvector3			fog_color;
 	float				fog_density;
-	float				fog_near;		// C
-	float				fog_far;		// C
 
 	float				rain_density;
 	Fvector3			rain_color;
@@ -102,43 +100,83 @@ public:
     
 	CEnvAmbient*		env_ambient;
 
+#ifdef DEBUG
+	shared_str			sect_name;
+#endif	
 						CEnvDescriptor	();
 
 	void				load			(LPCSTR exec_tm, LPCSTR sect, CEnvironment* parent);
-    void				unload			();
-    
+	void				copy			(const CEnvDescriptor& src)
+	{
+		float tm0		= exec_time;
+		float tm1		= exec_time_loaded; 
+		*this			= src;
+		exec_time		= tm0;
+		exec_time_loaded= tm1;
+	}
+};
+
+class ENGINE_API	CEnvDescriptorMixer: public CEnvDescriptor{
+public:
+	STextureList		sky_r_textures;		
+	STextureList		sky_r_textures_env;	
+	STextureList		clouds_r_textures;	
+	float				weight;				
+
+	float				fog_near;		
+	float				fog_far;		
+public:
 	void				lerp			(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power);
+	void				clear			();
 };
 
 class ENGINE_API	CEnvironment
 {
-	FvectorVec				CloudsVerts;
-	U16Vec					CloudsIndices;
-
 	struct str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
 		IC bool operator()(const shared_str& x, const shared_str& y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
-
+public:
+	DEFINE_VECTOR			(CEnvAmbient*,EnvAmbVec,EnvAmbVecIt);
+	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
+	DEFINE_MAP_PRED			(shared_str,EnvVec,EnvsMap,EnvsMapIt,str_pred);
+private:
+	// clouds
+	FvectorVec				CloudsVerts;
+	U16Vec					CloudsIndices;
+private:
+	float					NormalizeTime	(float tm);
+	float					TimeDiff		(float prev, float cur);
+	float					TimeWeight		(float val, float min_t, float max_t);
+	void					SelectEnvs		(EnvVec* envs, CEnvDescriptor*& e0, CEnvDescriptor*& e1, float tm);
+	void					SelectEnv		(EnvVec* envs, CEnvDescriptor*& e, float tm);
+	void					StopWFX			();
+public:
+	static bool sort_env_pred	(const CEnvDescriptor* x, const CEnvDescriptor* y)
+	{	return x->exec_time < y->exec_time;	}
+	static bool sort_env_etl_pred	(const CEnvDescriptor* x, const CEnvDescriptor* y)
+	{	return x->exec_time_loaded < y->exec_time_loaded;	}
 protected:
 	CPerlinNoise1D*			PerlinNoise1D;
+
+	float					fGameTime;
 public:
 	float					wind_strength_factor;	
 	float					wind_gust_factor;
-public:
-
-	DEFINE_VECTOR			(CEnvAmbient*,EnvAmbVec,EnvAmbVecIt);
-	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
-	DEFINE_MAP_PRED			(shared_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
-
 	// Environments
-	CEnvDescriptor			CurrentEnv;
+	CEnvDescriptorMixer		CurrentEnv;
 	CEnvDescriptor*			Current[2];
-    bool					bTerminator;
+
+	bool					bWFX;
+	float					wfx_time;
+	CEnvDescriptor*			WFX_end_desc[2];
     
     EnvVec*					CurrentWeather;
     shared_str				CurrentWeatherName;
-	WeatherMap				Weathers;
+	shared_str				CurrentCycleName;
+
+	EnvsMap					WeatherCycles;
+	EnvsMap					WeatherFXs;
 	xr_vector<CEnvModifier>	Modifiers;
 	EnvAmbVec				Ambients;
 
@@ -152,7 +190,6 @@ public:
 	CLensFlare*				eff_LensFlare;
 	CEffect_Thunderbolt*	eff_Thunderbolt;
 
-	float					fGameTime;
 	float					fTimeFactor;
 	ref_texture				tonemap;
 
@@ -179,9 +216,10 @@ public:
 	void					RenderFlares		();
 	void					RenderLast			();
 
+	bool					SetWeatherFX		(shared_str name);
     void					SetWeather			(shared_str name, bool forced=false);
     shared_str				GetWeather			()					{ return CurrentWeatherName;}
-	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
+	void					SetGameTime			(float game_time, float time_factor);
 
 	void					OnDeviceCreate		();
 	void					OnDeviceDestroy		();
