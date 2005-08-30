@@ -41,7 +41,6 @@ object_list["test5"] = {
 -- Base Run function (load extern)
 ------------------------------------------------------------------------------
 function r(index)
-	test_utils.setup_test(object_list, nil)
 	test_utils.run_test(index)
 end
 
@@ -49,5 +48,6 @@ end
 -- Main function (called on level load)
 ------------------------------------------------------------------------------
 function main()
+	test_utils.setup_test(object_list, nil)
 	test_utils.run_global()
 end

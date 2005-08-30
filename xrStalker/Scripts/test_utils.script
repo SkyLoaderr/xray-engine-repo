@@ -88,6 +88,19 @@ end
 
 -- remove all gulags except test name
 function remove_gulags_except(test_name)
+	-- check
+	if (smart_terrains == nil) or (smart_terrains[test_name] == nil) then 
+		if (db.smart_terrain_by_id ~= nil) then
+			printf(":: TEST : WARNING: there are gulags that not removed!!!")
+		end
+		return
+	else 
+		if (db.smart_terrain_by_id == nil) then
+			printf(":: TEST : ERROR: there are NO gulags on level")
+		end
+	end
+	
+	-- remove
 	for k, v in db.smart_terrain_by_id do
 		if (is_gulag_in_test(v:name(), test_name) == false) then
 			smart_terrain.remove_gulag(v,true)
