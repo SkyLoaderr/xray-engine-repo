@@ -33,8 +33,10 @@ CUISpawnWnd::~CUISpawnWnd()
 	xr_delete(m_pFrames[2]);
 	xr_delete(m_pImage1);
 	xr_delete(m_pImage2);
-
 }
+
+
+
 void CUISpawnWnd::Init()
 {
 	CUIXml xml_doc;
@@ -58,76 +60,16 @@ void CUISpawnWnd::Init()
 	m_pImage2->SetStretchTexture(true);
 	m_pImage2->RescaleRelative2Rect(r);
 
-	//CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
-	//				CUIXmlInit::ApplyAlignY(0, alCenter),
-	//				UI_BASE_WIDTH, UI_BASE_HEIGHT);
-
-	//// „итаем из xml файла параметры окна и контролов
-	//AttachChild(&UIFrameWndPrimary);
-	//xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndPrimary);
-
-	//UIFrameWndPrimary.AttachChild(&UIStaticTextPrimary);
-	//xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextPrimary);
-	//UIStaticTextPrimary.SetText(strCaptionPrimary);
-	//UIStaticTextPrimary.SetTextColor(ColorPrimary);
-
-	//// sign
-	//UIFrameWndPrimary.AttachChild(&UITeamSign1);
-	//xml_init.InitStatic(uiXml, "t1_static", 0, &UITeamSign1);
-
-	//UIFrameWndPrimary.AttachChild(&UIButtonPrimary);
-	//// ”станавливем получателем сообщений родительское окно, так как FrameWindow не обрабатывает сообщени€
-	//UIButtonPrimary.SetMessageTarget(this);
-	//xml_init.InitButton(uiXml, "button", 0, &UIButtonPrimary);
-
-
-	//// вторичный фрейм не аттачитс€, так как по умолчанию режим отображени€ одиночный
-	//xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndSecondary);
-
-	//UIFrameWndSecondary.AttachChild(&UIStaticTextSecondary);
-	//xml_init.InitStatic(uiXml, "static", 0, &UIStaticTextSecondary);
-	//UIStaticTextSecondary.SetText(strCaptionSecondary);
-	//UIStaticTextSecondary.SetTextColor(ColorSecondary);
-
-	//// sign
-	//UIFrameWndSecondary.AttachChild(&UITeamSign2);
-	//xml_init.InitStatic(uiXml, "t2_static", 0, &UITeamSign2);
-
-
-	//UIFrameWndSecondary.AttachChild(&UIButtonSecondary);
-	//// ”станавливем получателем сообщений родительское окно, так как FrameWindow не ретровает сообщени€
-	//UIButtonSecondary.SetMessageTarget(this);
-	//xml_init.InitButton(uiXml, "button", 0, &UIButtonSecondary);
-
-	//SetDisplayMode(bDual);
+	InitTeamLogo();
 }
 
-void CUISpawnWnd::SetDisplayMode(bool bDual)
-{
-	//m_bDual = bDual;
+void CUISpawnWnd::InitTeamLogo(){
+	R_ASSERT(pSettings->section_exist("team_logo"));
+	R_ASSERT(pSettings->line_exist("team_logo", "team1"));
+	R_ASSERT(pSettings->line_exist("team_logo", "team2"));
 
-	//Frect frameCoords = UIFrameWndSecondary.GetWndRect();
-	//float updatedX, updatedY;
-
-	//updatedY = UI_BASE_HEIGHT / 2 - (frameCoords.bottom - frameCoords.top) / 2;
-
-	//if (m_bDual)
-	//{
-	//	// ≈сли окна 2, то аттачим вторичные контролы
-	//	AttachChild(&UIFrameWndSecondary);
-	//	
-	//	updatedX = UI_BASE_WIDTH / 4 - (frameCoords.right - frameCoords.left) / 2;
-	//	updatedX += updatedX / 2;
-	//	// обновить второе окно
-	//	UIFrameWndSecondary.SetWndRect(2 * updatedX + frameCoords.right, updatedY, frameCoords.right, frameCoords.bottom);
-	//}
-	//else
-	//{
-	//	DetachChild(&UIFrameWndSecondary);
-	//	updatedX = UI_BASE_WIDTH / 2 - (frameCoords.right - frameCoords.left) / 2;
-	//}
-	//// обновить первое окно
-	//UIFrameWndPrimary.SetWndRect(updatedX, updatedY, frameCoords.right, frameCoords.bottom);
+	m_pImage1->InitTexture(pSettings->r_string("team_logo", "team1"));
+	m_pImage2->InitTexture(pSettings->r_string("team_logo", "team2"));
 }
 
 void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)

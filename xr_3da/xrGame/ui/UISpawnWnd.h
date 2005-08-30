@@ -25,11 +25,14 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 
+protected:
+			void InitTeamLogo();
+
 	// Установка нового режима отображения
-	void SetDisplayMode(bool bDual = false);
+//	void SetDisplayMode(bool bDual = false);
 
 	// -1 - еще не нажималась, 0 - primary (левая), 1 - secondary (правая)
-	int GetPressingResult() { return 1; }
+//	int GetPressingResult() { return 1; }
 
 //	void	SetCallbackFunc (ButtonClickCallback pFunc);
 

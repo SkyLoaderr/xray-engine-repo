@@ -16,12 +16,10 @@
 		<image_frames_bottom x="53" y="113" width="664" height="208">
 			<texture>ui_TV_team_bottom</texture>
 		</image_frames_bottom>
-		<image_0 x="80" y="69" width="293" height="219">
-			<texture>green_team_logo</texture>			
+		<image_0 x="80" y="69" width="293" height="219">				
 			<text font="graffiti32" align="r" vert_align="t">1</text>
 		</image_0>
-		<image_1 x="391" y="69" width="293" height="219">
-			<texture>blue_team_logo</texture>			
+		<image_1 x="391" y="69" width="293" height="219">			
 			<text font="graffiti32" align="r" vert_align="t">2</text>
 		</image_1>		
 	</team_selector>
