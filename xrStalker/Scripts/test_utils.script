@@ -24,15 +24,27 @@ function get_object_id(name)
 	end
 end
 
+-- check if anme is correct and object is on level
+function object_on_level(name)
+	if is_object_online(name) then
+		return (level.debug_object(name) ~= nil)
+	else 
+		return (alife():object(name) ~= nil)
+	end
+end
+
+
 
 -- Move all offline
 function offline_all()
 	for test_name, test_name_table in pairs(object_list) do
 		for index, obj_name in pairs(test_name_table) do
 			
-			local obj_id = get_object_id(tostring(obj_name))
-			alife():set_switch_online	(obj_id,false)
-			alife():set_switch_offline	(obj_id,true)
+			if (object_on_level(tostring(obj_name))) then
+				local obj_id = get_object_id(tostring(obj_name))
+				alife():set_switch_online	(obj_id,false)
+				alife():set_switch_offline	(obj_id,true)
+			end
 		end
 	end
 end
@@ -43,9 +55,11 @@ function offline_all_except(except_name)
 		if (except_name ~= test_name) then
 			for index, obj_name in pairs(test_name_table) do
 
-				local obj_id = get_object_id(tostring(obj_name))
-				alife():set_switch_online	(obj_id,false)
-				alife():set_switch_offline	(obj_id,true)
+				if (object_on_level(tostring(obj_name))) then
+					local obj_id = get_object_id(tostring(obj_name))
+					alife():set_switch_online	(obj_id,false)
+					alife():set_switch_offline	(obj_id,true)
+				end
 		
 			end
 		end
@@ -60,12 +74,14 @@ function online_scene(scene_name)
 		if (scene_name == test_name) then
 			for index, obj_name in pairs(test_name_table) do
 
-				if ( not is_object_online(tostring(obj_name))) then
-					local obj_id = get_object_id(tostring(obj_name))
-					
-					alife():set_switch_online	(obj_id,true)
-					alife():set_switch_offline	(obj_id,false)
-				end		
+				if (object_on_level(tostring(obj_name))) then
+					if ( not is_object_online(tostring(obj_name))) then
+						local obj_id = get_object_id(tostring(obj_name))
+						
+						alife():set_switch_online	(obj_id,true)
+						alife():set_switch_offline	(obj_id,false)
+					end		
+				end
 			end
 		end
 	end
@@ -88,7 +104,7 @@ end
 -- remove all gulags except test name
 function remove_gulags_except(test_name)
 	-- check
-	if (smart_terrains == nil) or (smart_terrains[test_name] == nil) then 
+	if (smart_terrains == nil) then 
 		if (db.smart_terrain_by_id ~= nil) then
 			printf(":: TEST : WARNING: there are gulags that not removed!!!")
 		end
