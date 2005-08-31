@@ -1824,6 +1824,9 @@
 					<File
 						RelativePath=".\Config\models\vehicles\veh_zaz_u_01.ltx">
 					</File>
+					<File
+						RelativePath=".\Config\models\vehicles\veh_zaz_u_01_part0.ltx">
+					</File>
 				</Filter>
 				<Filter
 					Name="creatures"
