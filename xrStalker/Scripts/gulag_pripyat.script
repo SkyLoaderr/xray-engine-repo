@@ -560,7 +560,7 @@ function check_state_followers(gulag)
 		return state_wave6
 	end
 	if state == state_wave6 and
-		actor:has_info("pri_wave6_monolith1_dead") and
+		--actor:has_info("pri_wave6_monolith1_dead") and
 		actor:has_info("pri_wave6_monolith2_dead") and
 		actor:has_info("pri_wave6_monolith3_dead")
 	then
