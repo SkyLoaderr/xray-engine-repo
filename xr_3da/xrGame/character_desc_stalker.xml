@@ -1,95 +1,12 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-	<specific_character id="stalker_esc_wolf" team_default = "1">
-		<name>Сталкер "Волк"</name>
-		<icon x="16" y="4"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Главарь лагеря новичков.</bio>
-
-		<class>stalker_esc_wolf</class>
-		<community>stranger</community>
-		
-		<rank>90</rank>
-		<reputation>0</reputation>
- 
-		<visual>actors\neytral\stalker_neytral_balon_1</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
-			af_medusa \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
-			device_torch \n
-			stalker_outfit \n
-			medkit \n
-		</supplies>
-					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
-		<actor_dialog>escape_lager_volk_job</actor_dialog>
-		<actor_dialog>escape_lager_volk_info</actor_dialog>		
-		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
-	</specific_character>
-	
-	<specific_character id="stalker_esc_fanat" team_default = "1">
-		<name>Сталкер "Фанат"</name>
-		<icon x="26" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Стал лидером лагеря новичков после Волка. Целеустремлен, агрессивен, пользуется среди новичков заслуженным авторитетом.</bio>
-
-		<class>stalker_esc_fanat</class>
-		<community>stranger</community>
-		
-		<rank>90</rank>
-		<reputation>0</reputation>
- 
-		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
-			device_torch \n
-			medkit \n
-		</supplies>
-					
-		<start_dialog>escape_lager_leader_hello</start_dialog>
-		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
-		<actor_dialog>escape_lager_leader_request</actor_dialog>		
-	</specific_character>
 	
 	
 	
 	
-	<specific_character id="stalker_esc_fox" team_default = "1">
-		<name>Сталкер "Лис"</name>
-		<icon x="16" y="10"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Старый прожженый зоной одиночка.</bio>
-
-		<class>stalker_esc_fox</class>
-		<community>stalker</community>
-		
-		<rank>30</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\neytral\stalker_neytral_balon_4</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
-			device_torch \n
-			fox_flash \n
-		</supplies>
-					
-		<start_dialog>escape_fox_hello_dialog</start_dialog>
-		<actor_dialog>escape_fox_flash_dialog</actor_dialog>
-		<actor_dialog>escape_fox_flame_dialog</actor_dialog>
-	</specific_character>
+	
+	
 
 	<specific_character id="stalker_esc_bariga" team_default = "1">
 		<name>Сталкер "Барыга"</name>
@@ -117,104 +34,8 @@
 		<actor_dialog>escape_lager_hlam_talk_people</actor_dialog>
 	</specific_character>
 
-	<specific_character id="stalker_esc_tutorial_wounded" team_default = "1">
-		<name>Неизвестный новичок</name>
-		<icon x="30" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Просто сталкер.</bio>
-
-		<class>stalker_esc_tutorial_wounded</class>
-		<community>stranger</community>
-		
-		<rank>20</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\novice\green_stalker_1</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_fmj = 1 \n
-			device_torch \n
-		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>tutorial_wounded_give_medkit</actor_dialog>
-	</specific_character>
 	
-	<specific_character id="stalker_gar_seriy" team_default = "1">
-		<name>Сталкер Серый</name>
-		<icon x="26" y="4"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Сталкер с грязным лицом и не менее грязной биографией.</bio>
-
-		<class>stalker_gar_seriy</class>
-		<community>stalker</community>
-		
-		<rank>30</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\neytral\stalker_neytral_hood_4</visual>
-		<supplies>
-			[spawn] \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
-			device_torch \n
-			medkit = 1 \n
-			garbage_seriy_flash \n
-		</supplies>
-					
-		<start_dialog>gar_seriy_start</start_dialog>
-		<actor_dialog>gar_seriy_help</actor_dialog>
-		<actor_dialog>gar_seryi_about_garbage</actor_dialog>		
-	</specific_character>	
-
-	<specific_character id="stalker_gar_dram_novice" team_default = "1">
-		<name>Юрик</name>
-		<icon x="30" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Сталкер новичок. Делает первые шаги в Зоне.</bio>
-
-		<class>stalker_gar_dram_novice</class>
-		<community>stalker</community>
-		
-		<rank>20</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\novice\green_stalker_1</visual>
-		<supplies>
-			[spawn] \n
-			device_torch \n
-			wpn_pb \n
-			ammo_9x18_fmj = 1 \n
-		</supplies>
-					
-		<start_dialog>gar_dramm_novice_start</start_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
-	</specific_character>	
 	
-	<specific_character id="gar_newbie_in_tonnel" team_default = "1">
-		<name>Неизвестный новичок</name>
-		<icon x="26" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
-
-		<class>gar_newbie_in_tonnel</class>
-		<community>stranger</community>
-		
-		<rank>20</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\novice\green_stalker_5</visual>
-		<supplies>
-			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_fmj = 1 \n
-			device_torch \n
-		</supplies>
-			
-		<start_dialog>gar_newbie_in_tonnel</start_dialog>
-	</specific_character>
-
 	<specific_character id="stalker_agr_krot" team_default = "1">
 		<name>Сталкер "Крот"</name>
 		<icon x="30" y="0"></icon>
@@ -243,38 +64,6 @@
 		<actor_dialog>agr_krot_about_agroprom</actor_dialog>
 		<actor_dialog>agr_krot_actor_hasnot_met_seriy</actor_dialog>
 		<actor_dialog>agr_krot_actor_met_seriy</actor_dialog>
-	</specific_character>
-
-	<specific_character id="stalker_gar_hellcar" team_default = "1">
-		<name>Сталкер Даймон</name>
-		<icon x="22" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Бежал в Зону, прячась от правоохранительных органов. В одиночку старается поддерживать порядок в Зоне, так, как он себе его представляет. Борец с беспределом. Жесток, но справедлив.</bio>
-
-		<class>stalker_gar_hellcar</class>
-		<community>stalker</community>
-
-		<rank>50</rank>
-		<reputation>0</reputation>
-		
-		<panic_treshold>0</panic_treshold>
-
-		<visual>actors\neytral\stalker_neytral_hood_5</visual>
-		<supplies>
-			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
-			device_torch \n
-			medkit = 1 \n
-			stalker_outfit \n
-		</supplies>
-
-		<start_dialog>gar_hellcar_start</start_dialog>
-		<actor_dialog>gar_hellcar_dialog_quest</actor_dialog>
-		<actor_dialog>gar_hellcar_dialog_thanks</actor_dialog>
-		<actor_dialog>gar_hellcar_bandits_damaged</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_jaw" team_default = "1">
