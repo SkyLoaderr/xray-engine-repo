@@ -53,3 +53,8 @@
 	<string id="novice_leader">
 		<text>Лидер лагеря новчиков.</text>
 	</string>	
+	
+	<string id="tutorial_secret_place">
+		<text>Тайник, оставленный погибшим сталкером.</text>
+	</string>	
+	
