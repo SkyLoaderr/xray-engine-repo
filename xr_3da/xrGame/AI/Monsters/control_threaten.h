@@ -1,13 +1,10 @@
 #pragma once
 #include "control_combase.h"
 
-class CControlRunAttack : public CControl_ComCustom<> {
-	float			m_min_dist;
-	float			m_max_dist;
+class CControlThreaten : public CControl_ComCustom<> {
 public:
-	virtual void	load					(LPCSTR section);
 	virtual void	reinit					();
-
+	virtual void	update_schedule			();
 	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*);
 	virtual void	activate				();
 	virtual void	on_release				();

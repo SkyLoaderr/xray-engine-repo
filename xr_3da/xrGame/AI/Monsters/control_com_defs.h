@@ -17,6 +17,7 @@ namespace ControlCom {
 		eControlJump,					// capture: path, movement, triple_anim     disable : fsm, dir
 		eControlRotationJump,			// capture: path, movement, sequencer, dir
 		eControlRunAttack,				// capture: path, movement, sequencer
+		eControlThreaten,				
 
 		eControlAnimationBase,
 		eControlMovementBase,
@@ -56,6 +57,7 @@ namespace ControlCom {
 		eventRunAttackEnd,
 		eventPathUpdated,
 		eventPathSelectorFailed,
+		eventThreatenEnd
 	};
 
 	enum ECaptureType {

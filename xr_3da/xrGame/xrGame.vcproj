@@ -3097,6 +3097,16 @@
 										RelativePath=".\ai\Monsters\control_run_attack.h">
 									</File>
 								</Filter>
+								<Filter
+									Name="Threaten"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_threaten.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_threaten.h">
+									</File>
+								</Filter>
 							</Filter>
 						</Filter>
 					</Filter>

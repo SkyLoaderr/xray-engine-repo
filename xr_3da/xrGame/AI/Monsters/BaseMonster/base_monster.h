@@ -176,6 +176,7 @@ public:
 	
 	virtual void			event_on_step					() {}
 	
+	virtual void			on_threaten_execute				() {}
 	// ---------------------------------------------------------------------------------
 	// Memory
 			void			UpdateMemory					();

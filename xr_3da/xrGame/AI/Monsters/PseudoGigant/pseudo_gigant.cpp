@@ -15,6 +15,9 @@ CPseudoGigant::CPseudoGigant()
 	CControlled::init_external(this);
 
 	StateMan = xr_new<CStateManagerGigant>(this);
+	
+	com_man().add_ability(ControlCom::eControlRunAttack);
+	com_man().add_ability(ControlCom::eControlThreaten);
 }
 
 CPseudoGigant::~CPseudoGigant()
@@ -63,6 +66,7 @@ void CPseudoGigant::Load(LPCSTR section)
 	anim().AddAnim(eAnimDie,			"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
 	anim().AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1, &velocity_none,		PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	//anim().AddAnim(eAnimThreaten,		"stand_kick_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
 	anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	anim().LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
@@ -89,6 +93,14 @@ void CPseudoGigant::Load(LPCSTR section)
 
 }
 
+void CPseudoGigant::reinit()
+{
+	inherited::reinit();
+	
+}
+
+
+
 #define MAX_STEP_RADIUS 60.f
 
 void CPseudoGigant::event_on_step()
@@ -110,3 +122,18 @@ void CPseudoGigant::event_on_step()
 	}
 	//////////////////////////////////
 }
+
+bool CPseudoGigant::check_start_conditions(ControlCom::EControlType type)
+{
+	if (type == ControlCom::eControlRunAttack)
+		return true;
+
+	return true;
+}
+
+void CPseudoGigant::on_threaten_execute()
+{
+	int a = 0;
+
+}
+

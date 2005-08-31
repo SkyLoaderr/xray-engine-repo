@@ -9,6 +9,7 @@
 class CAnimationSequencer;
 class CControlRotationJump;
 class CControlRunAttack;
+class CControlThreaten;
 
 class CControlManagerCustom : public CControl_ComBase {
 	typedef					CControl_ComBase	inherited;
@@ -19,7 +20,8 @@ class CControlManagerCustom : public CControl_ComBase {
 	CControlRotationJump	*m_rotation_jump;
 	CControlJump			*m_jump;
 	CControlRunAttack		*m_run_attack;
-	
+	CControlThreaten		*m_threaten;
+
 	DEFINE_VECTOR			(SControlRotationJumpData, ROT_JUMP_DATA_VEC, ROT_JUMP_DATA_VEC_IT);
 	ROT_JUMP_DATA_VEC		m_rot_jump_data;
 
@@ -69,5 +71,6 @@ private:
 	void		check_jump_over_physics	();
 	void		check_rotation_jump		();
 	void		check_run_attack		();
+	void		check_threaten			();
 };
 

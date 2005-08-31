@@ -3,6 +3,7 @@
 #include "BaseMonster/base_monster.h"
 #include "control_sequencer.h"
 #include "control_run_attack.h"
+#include "control_threaten.h"
 #include "../../PhysicsShell.h"
 #include "../../detail_path_manager.h"
 #include "../../level.h"
@@ -16,6 +17,7 @@ CControlManagerCustom::CControlManagerCustom()
 	m_rotation_jump	= 0;
 	m_jump			= 0;
 	m_run_attack	= 0;
+	m_threaten		= 0;
 }
 
 CControlManagerCustom::~CControlManagerCustom()
@@ -25,6 +27,7 @@ CControlManagerCustom::~CControlManagerCustom()
 	xr_delete	(m_rotation_jump);
 	xr_delete	(m_jump);
 	xr_delete	(m_run_attack);
+	xr_delete	(m_threaten);
 }	
 
 void CControlManagerCustom::reinit()
@@ -35,30 +38,32 @@ void CControlManagerCustom::reinit()
 
 void CControlManagerCustom::add_ability(ControlCom::EControlType type)
 {
-	if (type == ControlCom::eControlSequencer) {
-
+	switch (type) {
+	case ControlCom::eControlSequencer:
 		m_sequencer		= xr_new<CAnimationSequencer>();
 		m_man->add		(m_sequencer, ControlCom::eControlSequencer);
-
-	} else if (type == ControlCom::eControlTripleAnimation) {
-		
+		break;
+	case ControlCom::eControlTripleAnimation:
 		m_triple_anim	= xr_new<CAnimationTriple>();
 		m_man->add		(m_triple_anim, ControlCom::eControlTripleAnimation);
-	
-	} else if (type == ControlCom::eControlRotationJump) {
-
+		break;
+	case ControlCom::eControlRotationJump:
 		m_rotation_jump = xr_new<CControlRotationJump>();
 		m_man->add		(m_rotation_jump, ControlCom::eControlRotationJump);
-
-	} else if (type == ControlCom::eControlJump) {
-
+		break;
+	case ControlCom::eControlJump:
 		m_jump			= xr_new<CControlJump>();
 		m_man->add		(m_jump, ControlCom::eControlJump);
-
-	} else if (type == ControlCom::eControlRunAttack) {
+		break;
+	case ControlCom::eControlRunAttack:
 		m_run_attack	= xr_new<CControlRunAttack>();
 		m_man->add		(m_run_attack, ControlCom::eControlRunAttack);
-	}	
+		break;
+	case ControlCom::eControlThreaten:
+		m_threaten		= xr_new<CControlThreaten>();
+		m_man->add		(m_threaten, ControlCom::eControlThreaten);
+		break;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,6 +76,7 @@ void CControlManagerCustom::on_start_control(ControlCom::EControlType type)
 	case ControlCom::eControlJump:				m_man->subscribe	(this, ControlCom::eventJumpEnd);			break;
 	case ControlCom::eControlRotationJump:		m_man->subscribe	(this, ControlCom::eventRotationJumpEnd);	break;
 	case ControlCom::eControlRunAttack:			m_man->subscribe	(this, ControlCom::eventRunAttackEnd);		break;
+	case ControlCom::eControlThreaten:			m_man->subscribe	(this, ControlCom::eventThreatenEnd);		break;
 	}
 }
 
@@ -82,6 +88,7 @@ void CControlManagerCustom::on_stop_control	(ControlCom::EControlType type)
 	case ControlCom::eControlJump:				m_man->unsubscribe	(this, ControlCom::eventJumpEnd);		break;
 	case ControlCom::eControlRotationJump:		m_man->unsubscribe	(this, ControlCom::eventRotationJumpEnd);break;
 	case ControlCom::eControlRunAttack:			m_man->unsubscribe	(this, ControlCom::eventRunAttackEnd);	break;
+	case ControlCom::eControlThreaten:			m_man->unsubscribe	(this, ControlCom::eventThreatenEnd);	break;
 	}
 }
 
@@ -100,6 +107,7 @@ void CControlManagerCustom::on_event(ControlCom::EEventType type, ControlCom::IE
 	case ControlCom::eventJumpEnd:			m_man->release(this, ControlCom::eControlJump); break;
 	case ControlCom::eventRotationJumpEnd:	m_man->release(this, ControlCom::eControlRotationJump); break;
 	case ControlCom::eventRunAttackEnd:		m_man->release(this, ControlCom::eControlRunAttack); break;
+	case ControlCom::eventThreatenEnd:		m_man->release(this, ControlCom::eControlThreaten); break;
 	}
 }
 
@@ -117,6 +125,7 @@ void CControlManagerCustom::update_schedule()
 	}
 	if (m_rotation_jump)	check_rotation_jump	();
 	if (m_run_attack)		check_run_attack	();
+	if (m_threaten)			check_threaten		();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -425,3 +434,13 @@ void CControlManagerCustom::check_run_attack()
 	m_man->capture		(this, ControlCom::eControlRunAttack);
 	m_man->activate		(ControlCom::eControlRunAttack);
 }
+
+void CControlManagerCustom::check_threaten()
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlThreaten)) return;	
+	if (!m_object->check_start_conditions(ControlCom::eControlThreaten)) return;
+
+	m_man->capture		(this, ControlCom::eControlThreaten);
+	m_man->activate		(ControlCom::eControlThreaten);
+}
+

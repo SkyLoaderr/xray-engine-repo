@@ -6,6 +6,12 @@
 #include "control_direction_base.h"
 #include "control_movement_base.h"
 
+void CControlRunAttack::load(LPCSTR section)
+{
+	m_min_dist	= pSettings->r_float(section,"Run_Attack_Min_Dist");
+	m_max_dist	= pSettings->r_float(section,"Run_Attack_Max_Dist");
+}
+
 void CControlRunAttack::reinit()
 {
 	CControl_ComCustom<>::reinit();
@@ -56,7 +62,7 @@ bool CControlRunAttack::check_start_conditions()
 	
 	float dist = enemy->Position().distance_to(m_object->Position());
 	// check distance to enemy
-	if ((dist > 3.f) || (dist < 1.f)) return false;
+	if ((dist > m_max_dist) || (dist < m_min_dist)) return false;
 	
 	// check if run state, speed
 	SVelocityParam &velocity_run			= m_object->move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);

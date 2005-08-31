@@ -3,6 +3,7 @@
 #include "../controlled_entity.h"
 #include "../../../script_export_space.h"
 
+
 class CPseudoGigant : public CBaseMonster,
 					  public CControlledEntity<CPseudoGigant> {
 	
@@ -16,14 +17,20 @@ class CPseudoGigant : public CBaseMonster,
 		float period_number;
 	} step_effector;
 
+
 public:
 					CPseudoGigant				();
 	virtual			~CPseudoGigant				();	
 
 	virtual void	Load				(LPCSTR section);
+	virtual void	reinit				();
 
 	virtual bool	ability_earthquake	() {return true;}
 	virtual void	event_on_step		();
+
+	virtual bool	check_start_conditions(ControlCom::EControlType type);
+
+	virtual	void	on_threaten_execute	();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
