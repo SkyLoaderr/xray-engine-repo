@@ -988,10 +988,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1934,6 +1934,9 @@
 				</File>
 				<File
 					RelativePath=".\scripts\monster_test.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\postprocess.script">
 				</File>
 				<File
 					RelativePath=".\scripts\qa.script">
