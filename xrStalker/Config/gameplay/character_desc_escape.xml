@@ -1,5 +1,148 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+		<specific_character id="escape_trader" no_random = "1">
+		<name>Сидорович</name>
+		<icon x="2" y="0"></icon>
+		<map_icon x="6" y="0"></map_icon>
+		<bio>Промышлял торговлей с малых лет. В детском садике продавал цветные карандаши.
+		В школе торговал жевательной резинкой.
+		В институте промышлял продажей легкой наркоты. С появлением Зоны смекнул, что на
+		этом можно хорошо заработать. Славится тем, что способен наладить хорошие торговые
+		отношения с самыми разношерстными клиентами.</bio>
+
+		<class>trader</class>
+		<community>trader</community>
+		<visual>actors\trader\trader</visual>
+				
+		<rank>70</rank>
+		<reputation>65</reputation>
+		
+		<start_dialog>escape_trader_start_dialog</start_dialog>	
+		<actor_dialog>escape_trader_talk_level</actor_dialog>
+		<actor_dialog>escape_trader_talk_info</actor_dialog>
+		<actor_dialog>escape_trader_jobs</actor_dialog>
+		<actor_dialog>escape_trader_done_artefact</actor_dialog>
+		<actor_dialog>escape_trader_done_tutorial_artefact</actor_dialog>
+		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>
+		<actor_dialog>escape_trader_tutorial_wounded_end</actor_dialog>		
+		<actor_dialog>escape_trader_bandits_killed</actor_dialog>
+		<actor_dialog>escape_trader_need_artefacts</actor_dialog>
+		
+	</specific_character>
+
+	<specific_character id="esc_wolf" team_default = "1">
+		<name>Сталкер "Волк"</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Главарь лагеря новичков.</bio>
+
+		<class>esc_wolf</class>
+		<community>stranger</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\neytral\stalker_neytral_balon_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			af_medusa \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			stalker_outfit \n
+			medkit \n
+		</supplies>
+					
+		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<actor_dialog>escape_lager_volk_job</actor_dialog>
+		<actor_dialog>escape_lager_volk_info</actor_dialog>		
+		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="esc_fanat" team_default = "1">
+		<name>Сталкер "Фанат"</name>
+		<icon x="26" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Стал лидером лагеря новичков после Волка. Целеустремлен, агрессивен, пользуется среди новичков заслуженным авторитетом.</bio>
+
+		<class>esc_fanat</class>
+		<community>stranger</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			medkit \n
+		</supplies>
+					
+		<start_dialog>escape_lager_leader_hello</start_dialog>
+		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
+		<actor_dialog>escape_lager_leader_request</actor_dialog>		
+	</specific_character>
+	
+	<specific_character id="esc_fox" team_default = "1">
+		<name>Сталкер "Лис"</name>
+		<icon x="16" y="10"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Старый прожженый зоной одиночка.</bio>
+
+		<class>esc_fox</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_balon_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			fox_flash \n
+		</supplies>
+					
+		<start_dialog>escape_fox_hello_dialog</start_dialog>
+		<actor_dialog>escape_fox_flash_dialog</actor_dialog>
+		<actor_dialog>escape_fox_flame_dialog</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="esc_tutorial_wounded" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="30" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Просто сталкер.</bio>
+
+		<class>esc_tutorial_wounded</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\novice\green_stalker_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>tutorial_wounded_give_medkit</actor_dialog>
+	</specific_character>
+	
+	
+	
 	
 </xml>
