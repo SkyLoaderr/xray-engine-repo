@@ -126,6 +126,8 @@ void CHelicopter::Explode ()
 	m_explodeSound.set_position(XFORM().c);
 
 	m_pParticle->Play();
+	if(CPHDestroyable::CanDestroy())
+		CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	m_exploded = true;
 }
 
@@ -221,6 +223,10 @@ void CHelicopter::Hit(	float P,
 
 
 inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
+if(GetfHealth()<=0.f)//.
+{
+	CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,position_in_bone_space,impulse,hit_type));
+}
 if(GetfHealth()<0.5f)
 					return;
 if(state() == CHelicopter::eDead ) return;

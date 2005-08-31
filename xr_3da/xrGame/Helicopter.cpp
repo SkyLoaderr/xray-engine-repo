@@ -253,7 +253,8 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 
 	if(g_Alive())processing_activate	();
 	TurnEngineSound(false);
-
+	if(pUserData->section_exist("destroyed"))
+		CPHDestroyable::Load(pUserData,"destroyed");
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
 #endif
@@ -267,6 +268,7 @@ void CHelicopter::net_Destroy()
 	CShootingObject::Light_Destroy		();
 	CShootingObject::StopFlameParticles	();
 	CPHSkeleton::RespawnInit			();
+	CPHDestroyable::RespawnInit			();
 	m_engineSound.stop					();
 	CParticlesObject::Destroy			(m_pParticle);
 	m_light_render.destroy				();
@@ -435,7 +437,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	if (!getEnabled())	return;
 
 	inherited::shedule_Update	(time_delta);
-	CPHSkeleton::Update			(time_delta);
+	if(CPHDestroyable::Destroyed())CPHDestroyable::SheduleUpdate(time_delta);
+	else	CPHSkeleton::Update(time_delta);
 	
 	if(state() != CHelicopter::eDead){
 		for(u32 i=getRocketCount(); i<4; ++i)

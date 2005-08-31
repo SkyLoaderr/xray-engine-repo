@@ -12,7 +12,7 @@
 
 #include "patrol_path.h"
 #include "intrusive_ptr.h"
-
+#include "PHDestroyable.h"
 class CScriptGameObject;
 class CLAItem;
 class CHelicopterMovManager;
@@ -130,6 +130,7 @@ class CHelicopter : 	public CEntity,
 						public CShootingObject,
 						public CRocketLauncher,
 						public CPHSkeleton,
+						public CPHDestroyable,
 						public CHitImmunity
 					#ifdef DEBUG
 						,public pureRender
