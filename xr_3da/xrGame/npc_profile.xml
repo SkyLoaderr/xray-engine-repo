@@ -228,11 +228,6 @@
 		<class>Svoboda_zombi_stalker</class>
 	</character>
 
-	<!-- X18 -->
-	<character id="dar_stalker_explorer">
-		<class>dar_stalker_explorer</class>
-	</character>
-
 	<character id="dolg_veteran_silence">
 		<class>Dolg_specnaz_silence</class>
 	</character>
@@ -336,6 +331,11 @@
 	<character id="val_bandit_borov">
 		<class>val_bandit_borov</class>
 		<specific_character>val_bandit_borov</specific_character>
+	</character>
+	
+	<!-- X18 -->
+	<character id="dar_stalker_explorer">
+		<class>dar_stalker_explorer</class>
 	</character>
 
 	<!-- Bar + Rostok -->
