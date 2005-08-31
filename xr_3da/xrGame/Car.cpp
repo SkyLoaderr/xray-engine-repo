@@ -215,6 +215,7 @@ void	CCar::net_Destroy()
 	CPHUpdateObject::Deactivate();
 	CPHSkeleton::RespawnInit();
 	m_damage_particles.Clear();
+	CPHDestroyable::RespawnInit();
 	CPHCollisionDamageReceiver::Clear();
 	m_death_time=u32(-1);
 	b_breaks=false;
