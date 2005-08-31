@@ -42,7 +42,7 @@ end
 function set_use_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	xr_logic.subscribe_action_for_ev7ents(npc, st, st.action)
+	xr_logic.subscribe_action_for_events(npc, st, st.action)
 end
 
 function disable_scheme(npc, scheme)

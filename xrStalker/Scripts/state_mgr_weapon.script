@@ -16,7 +16,12 @@ function eva_state_mgr_weapon:evaluate()
 	end
 	if self.st.need_reweapon then
 		--printf("REWEAPON [%s]", self.object:name())
-		return false
+		if self.st.do_reweapon == true then
+			self.st.need_reweapon = false
+			self.st.do_reweapon = false
+		else
+			return false
+		end
 	end
 	
 	if not isWeapon(self.object:best_weapon()) then
@@ -51,7 +56,8 @@ function eva_state_mgr_weapon:evaluate()
 end
 --' Лочим ли мы все это для оружия или нет?
 class "eva_state_mgr_weapon_locked" (property_evaluator)
-function eva_state_mgr_weapon_locked:__init(name) super (nil, name)
+function eva_state_mgr_weapon_locked:__init(name, st) super (nil, name)
+	self.st = st
 end
 function eva_state_mgr_weapon_locked:evaluate()
 	return not (self.object:weapon_unstrapped() or self.object:weapon_strapped())
@@ -142,7 +148,7 @@ end
 function act_state_mgr_weapon_unstrapp:initialize()
 	action_base.initialize(self)
 	self.object:set_item(get_idle_state(self.st), self.object:best_weapon())
-	self.st.need_reweapon = false
+	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_unstrapp:execute()
 	action_base.execute(self)
@@ -162,7 +168,7 @@ function act_state_mgr_weapon_strapp:initialize()
 	else
 		self.object:set_item(object.idle, nil)
 	end
-	self.st.need_reweapon = false
+	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_strapp:execute()	
 	action_base.execute(self)
@@ -178,7 +184,7 @@ end
 function act_state_mgr_weapon_none:initialize()
 	action_base.initialize(self)
 	self.object:set_item(object.idle, nil)
-	self.st.need_reweapon = false
+	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_none:execute()
 	action_base.execute(self)
@@ -194,7 +200,7 @@ end
 function act_state_mgr_weapon_fire:initialize()
 	action_base.initialize(self)
 	self.object:set_item(get_idle_state(self.st), self.object:best_weapon())
-	self.st.need_reweapon = false
+	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_fire:execute()
 	action_base.execute(self)
@@ -211,7 +217,7 @@ end
 function act_state_mgr_weapon_drop:initialize()
 	action_base.initialize(self)
 	self.object:set_item(object.drop, self.object:best_weapon())
-	self.st.need_reweapon = false
+	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_drop:execute()
 	action_base.execute(self)
