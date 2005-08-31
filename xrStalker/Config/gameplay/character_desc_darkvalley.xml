@@ -1,5 +1,34 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-	
+<!---------------------------BANDIT BOROV----------------------->
+	<specific_character id="val_bandit_borov" team_default = "1">
+		<name>Боров</name>
+		<icon x="26" y="14"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Лидер бандитов.</bio>
+
+		<class>val_bandit_borov</class>
+		<community>bandit</community>
+		
+		<rank>60</rank>
+		<reputation>-70</reputation>
+ 
+		<visual>actors\bandit\stalker_bandit_borov</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_toz34 \n
+			ammo_12x76_zhekan \n
+			borov_flash \n
+			device_torch \n
+			val_key_to_underground \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 </xml>
