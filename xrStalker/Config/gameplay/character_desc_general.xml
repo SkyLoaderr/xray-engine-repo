@@ -1,35 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-	<specific_character id="escape_trader" no_random = "1">
-		<name>Сидорович</name>
-		<icon x="2" y="0"></icon>
-		<map_icon x="6" y="0"></map_icon>
-		<bio>Промышлял торговлей с малых лет. В детском садике продавал цветные карандаши.
-		В школе торговал жевательной резинкой.
-		В институте промышлял продажей легкой наркоты. С появлением Зоны смекнул, что на
-		этом можно хорошо заработать. Славится тем, что способен наладить хорошие торговые
-		отношения с самыми разношерстными клиентами.</bio>
-
-		<class>trader</class>
-		<community>trader</community>
-		<visual>actors\trader\trader</visual>
-				
-		<rank>70</rank>
-		<reputation>65</reputation>
-		
-		<start_dialog>escape_trader_start_dialog</start_dialog>	
-		<actor_dialog>escape_trader_talk_level</actor_dialog>
-		<actor_dialog>escape_trader_talk_info</actor_dialog>
-		<actor_dialog>escape_trader_jobs</actor_dialog>
-		<actor_dialog>escape_trader_done_artefact</actor_dialog>
-		<actor_dialog>escape_trader_done_tutorial_artefact</actor_dialog>
-		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>
-		<actor_dialog>escape_trader_tutorial_wounded_end</actor_dialog>		
-		<actor_dialog>escape_trader_bandits_killed</actor_dialog>
-		<actor_dialog>escape_trader_need_artefacts</actor_dialog>
-		
-	</specific_character>
+	
 
 	<specific_character id="actor" no_random = "1">
 		<name>Меченый</name>
