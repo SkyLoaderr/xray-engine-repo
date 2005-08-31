@@ -21,14 +21,21 @@
 		<objective>
 			<text>tutorial_find_artefact_0</text>
 			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>tutorial_artefact_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>tutorial_find_artefact_1</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="tutorial_artefact">green_location</map_location_type>
+			<object_story_id>Escape_Tutorial_Artefact</object_story_id>
+			<infoportion_complete>tutorial_artefact_gain</infoportion_complete>
 		</objective>
 		<objective>
 			<text>tutorial_find_artefact_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="trader">blue_location</map_location_type>
+			<object_story_id>Escape_Trader</object_story_id>
+			<infoportion_complete>tutorial_artefact_done</infoportion_complete>
 		</objective>
 	</game_task>
 
@@ -37,23 +44,23 @@
 		<objective>
 			<text>tutorial_help_wounded_0</text>
 			<icon x="250" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
-
-	<game_task id="esc_trader_need_electra_artefact">
-		<title>esc_trader_need_electra_artefact</title>
-		<objective>
-			<text>esc_trader_need_electra_artefact_0</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_serious_talk</infoportion_complete>
 		</objective>
 		<objective>
-			<text>esc_trader_need_electra_artefact_1</text>
-			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<text>tutorial_help_wounded_1</text>
+			<icon x="250" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
+			<object_story_id>Escape_tutorial_wounded</object_story_id>
+			<infoportion_complete>tutorial_wounded_help</infoportion_complete>
+			<infoportion_fail>tutorial_wounded_fail</infoportion_fail>	
 		</objective>
 		<objective>
-			<text>esc_trader_need_electra_artefact_2</text>
+			<text>tutorial_help_wounded_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>	
+			<map_location_type hint="trader">blue_location</map_location_type>
+			<object_story_id>Escape_Trader</object_story_id>
+			<infoportion_complete>esc_serious_talk</infoportion_complete>
+		</objective>
 	</game_task>
 
 	<game_task id="esc_help_wounded_from_raid">
@@ -62,17 +69,24 @@
 			<text>esc_help_wounded_from_raid_0</text>
 			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<article>storyline_fox_flash_info</article>
+			<infoportion_complete>escape_stalker_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_1</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="esc_fox">green_location</map_location_type>
+			<object_story_id>Escape_stalker_from_raid</object_story_id>
+			<infoportion_complete>escape_fox_heal</infoportion_complete>
+			<infoportion_fail>escape_dogs_return</infoportion_fail>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="esc_fox">green_location</map_location_type>
+			<object_story_id>Escape_stalker_from_raid</object_story_id>
+			<infoportion_complete>escape_stalker_done</infoportion_complete>
 		</objective>
 	</game_task>
-
 
 
 	<game_task id="esc_blockpost_case_to_trader">
@@ -80,14 +94,21 @@
 		<objective>
 			<text>esc_blockpost_case_to_trader_0</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>escape_blockpost_case_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_blockpost_case_to_trader_1</text>
 			<icon x="300" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="blokpost_case">green_location</map_location_type>
+			<object_story_id>Escape_blockpost_case</object_story_id>
+			<infoportion_complete>escape_blockpost_case_have</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_blockpost_case_to_trader_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="trader">blue_location</map_location_type>
+			<object_story_id>Escape_Trader</object_story_id>
+			<infoportion_complete>escape_blockpost_case_done</infoportion_complete>			
 		</objective>
 	</game_task>
 
@@ -96,18 +117,122 @@
 		<objective>
 			<text>esc_dinamit_to_volk_0</text>
 			<icon x="300" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>escape_dynamite_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_dinamit_to_volk_1</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="wolfs_rangers">green_location</map_location_type>
+			<object_story_id>Escape_bridge_stalkers</object_story_id>
+			<infoportion_complete>escape_factory_assault_say_hello</infoportion_complete>			
 		</objective>		
 		<objective>
 			<text>esc_dinamit_to_volk_2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="escape_dinamit">green_location</map_location_type>
+			<object_story_id>Escape_dinamite</object_story_id>
+			<infoportion_complete>escape_dynamite_have</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_dinamit_to_volk_3</text>
 			<icon x="0" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="volk">green_location</map_location_type>
+			<object_story_id>Escape_novice_lager_volk</object_story_id>
+			<infoportion_complete>escape_dynamite_done</infoportion_complete>
 		</objective>
 	</game_task>
 
+	<game_task id="esc_bandits_factory">
+		<title>esc_bandits_on_factory</title>
+		<objective>
+			<text>esc_bandits_on_factory_0</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
+		</objective>
+		<objective>
+			<text>esc_bandits_on_factory_1</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="factory_bandits">green_location</map_location_type>
+			<object_story_id>esc_bandits_factory</object_story_id>
+			<infoportion_complete>esc_kill_bandits_quest_kill</infoportion_complete>
+		</objective>		
+		<objective>
+			<text>esc_bandits_on_factory_2</text>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="trader">blue_location</map_location_type>
+			<object_story_id>Escape_Trader</object_story_id>
+			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
+		</objective>
+	</game_task>
+	
+	<game_task id="esc_af_blood">
+		<title>esc_af_blood</title>
+		<objective>
+			<text>esc_af_blood_0</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_artefact2_have</infoportion_complete>
+		</objective>
+		<objective>
+			<text>esc_af_blood_1</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="anomaly_field_mincer">green_location</map_location_type>
+			<object_story_id>esc_anomaly_field_mincer</object_story_id>
+			<infoportion_complete>esc_artefact2_have</infoportion_complete>
+		</objective>		
+	</game_task>
+	
+	<game_task id="esc_af_vyvert">
+		<title>esc_af_vyvert</title>
+		<objective>
+			<text>esc_af_vyvert_0</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_artefact1_have</infoportion_complete>
+		</objective>
+		<objective>
+			<text>esc_af_vyvert_1</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="anomaly_field_gravy">green_location</map_location_type>
+			<object_story_id>esc_anomaly_field_gravy</object_story_id>
+			<infoportion_complete>esc_artefact1_have</infoportion_complete>
+		</objective>		
+	</game_task>
+	
+	<game_task id="esc_af_medusa">
+		<title>esc_af_medusa</title>
+		<objective>
+			<text>esc_af_medusa_0</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_artefact3_have</infoportion_complete>
+		</objective>
+		<objective>
+			<text>esc_af_medusa_1</text>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="anomaly_field_mosquito">green_location</map_location_type>
+			<object_story_id>esc_anomaly_field_mosquito</object_story_id>
+			<infoportion_complete>esc_artefact3_have</infoportion_complete>
+		</objective>		
+	</game_task>
+	
+	<game_task id="esc_defend_lager">
+		<title>esc_defend_lager_from_killers</title>
+		<objective>
+			<text>esc_defend_lager_from_killers_0</text>
+			<icon x="400" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<function_complete>escape_tasks.task_lager_complete</function_complete>
+		</objective>
+		<objective>
+			<text>esc_defend_lager_from_killers_1</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="killers_team">green_location</map_location_type>
+			<object_story_id>esc_leader_killers</object_story_id>
+			<infoportion_complete>escape_lager_killers_die</infoportion_complete>
+		</objective>		
+		<objective>
+			<text>esc_defend_lager_from_killers_2</text>
+			<icon x="400" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="novice_leader">green_location</map_location_type>
+			<object_story_id>esc_lager_leader</object_story_id>
+			<infoportion_complete>escape_lager_complete</infoportion_complete>
+			<infoportion_fail>esc_fanat_die</infoportion_fail>
+		</objective>
+	</game_task>

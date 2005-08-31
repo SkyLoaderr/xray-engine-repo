@@ -6,7 +6,6 @@ function proceed()
 		actor:object("af_blood_tutorial") ~= nil 
 	then		
 		actor:give_info_portion("tutorial_artefact_gain")
-		level_tasks.set_task_state(task.completed, "tutorial_find_artefact", 1)
 	end 
 
 
@@ -19,6 +18,13 @@ function proceed()
 		end	
 	end
 
+	if actor:dont_has_info("tutorial_wounded_fail") and actor:dont_has_info("tutorial_wounded_help")then
+		if actor:has_info("tutorial_wounded_die") or
+		   actor:has_info("tutorial_wounded_death")
+		then
+			actor:give_info_portion("tutorial_wounded_fail")
+		end	
+	end
 
 
 	if actor:has_info("escape_stalker_meet") and
@@ -26,26 +32,23 @@ function proceed()
 	   actor:object("fox_flash") ~= nil
 	then
 		actor:give_info_portion("escape_stalker_give")
-		level_tasks.set_task_state(task.completed, "esc_help_wounded_from_raid", 1)
+--		level_tasks.set_task_state(task.completed, "esc_help_wounded_from_raid", 1)
 	end       	
-
-	if	actor:has_info("escape_artefact_start") and
-		actor:dont_has_info("escape_artefact_gain") and 
-		(actor:object("af_vyvert") ~= nil or
-		 actor:object("af_gravi") ~= nil or
-		 actor:object("af_gold_fish") ~= nil)
-	then		
-		actor:give_info_portion("escape_artefact_gain")
-		level_tasks.set_task_state(task.completed, "esc_trader_need_electra_artefact", 1)
-	end 
 
 	if actor:has_info("escape_blockpost_case") and
 	   actor:dont_has_info("escape_blockpost_case_have") and 
 	   actor:object("quest_case_01") ~= nil
 	then
 		actor:give_info_portion("escape_blockpost_case_have")
-		level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 1)
 	end       	
+	
+	if actor:has_info("escape_stalker_meet") and
+		actor:dont_has_info("escape_stalker_done") and
+		actor:object("fox_flash") ~= nil
+	then
+		actor:give_info_portion("escape_stalker_done")
+	end
+
 
 
 	if actor:has_info("escape_dynamite_start") and
@@ -53,7 +56,6 @@ function proceed()
 	   actor:object("dynamite") ~= nil
 	then
 		actor:give_info_portion("escape_dynamite_have")
-		level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 2)
 	end
 
 	--' Выдача сообщения "на ее месте можешь быть ты"
@@ -72,93 +74,121 @@ function proceed()
 		news_manager.send_news(actor, "tutorial_trader_look_vagon")
 		actor:give_info_portion("tutorial_wounded_give_info")
 	end
-
 end
+
+function task_lager_complete()
+	local actor = db.actor
+	if actor:has_info("escape_lager_help") and
+		actor:has_info("escape_lager_killers_die") and
+	   (actor:has_info("esc_fanat_die") or
+	   actor:has_info("escape_lager_complete"))
+	then
+		return true
+	else
+		return false
+	end
+end	
+
 
 function process_info_portion(info_id)
 	if info_id == "tutorial_artefact_start" then
-		level_tasks.add_location(002, "tutorial_artefact_location")
+		level_tasks.add_location(002, "green_location", "tutorial_artefact")
 		
 	elseif info_id == "tutorial_artefact_gain" then
-		level_tasks.remove_location(002, "tutorial_artefact_location")
-		level_tasks.add_location(003, "escape_trader_location")
+		level_tasks.remove_location(002, "green_location")
+		level_tasks.add_location(003, "blue_location", "trader")
 		
 	elseif info_id == "tutorial_artefact_done" then
-		level_tasks.remove_location(003, "escape_trader_location")
+		level_tasks.remove_location(003, "blue_location")
 		
 	elseif info_id == "tutorial_wounded_start" then
-		level_tasks.add_location(004, "tutorial_wounded_location")
+		level_tasks.add_location(004, "green_location", "tutorial_wounded")
 
 	elseif info_id == "tutorial_wounded_help" then
-		level_tasks.remove_location(004, "tutorial_wounded_location")
+		level_tasks.remove_location(004, "green_location")
 		db.actor:give_info_portion("tutorial_wounded_end")
-		level_tasks.set_task_state(task.completed, "tutorial_help_wounded", 0)
 		news_manager.send_news(db.actor, "escape_stalker_helped", 5)
 
 	elseif info_id == "tutorial_wounded_die" then
-		level_tasks.remove_location(004, "tutorial_wounded_location")
+		level_tasks.remove_location(004, "green_location")
 		if db.actor:dont_has_info("tutorial_wounded_end") then
 			db.actor:give_info_portion("tutorial_wounded_end")
-			level_tasks.set_task_state(task.fail, "tutorial_help_wounded", 0)
 			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
 		end
 
 	elseif info_id == "tutorial_wounded_death" then
-		level_tasks.remove_location(004, "tutorial_wounded_location")
+		level_tasks.remove_location(004, "green_location")
 		if db.actor:dont_has_info("tutorial_wounded_end") then
 			db.actor:give_info_portion("tutorial_wounded_end")
-			level_tasks.set_task_state(task.fail, "tutorial_help_wounded", 0)
 			news_manager.send_news(db.actor, "escape_stalker_death", 5)
 		end
 		
-	elseif info_id == "escape_artefact_start" then
-		level_tasks.add_location(008, "esc_anomaly_field_location")
-
-	elseif info_id == "escape_artefact_gain" then
-		level_tasks.remove_location(008, "esc_anomaly_field_location")
-		level_tasks.add_location(003, "escape_trader_location")
-
-	elseif info_id == "escape_artefact_done" then
-		level_tasks.remove_location(003, "escape_trader_location")
-
 	elseif info_id == "escape_stalker_meet" then
-		level_tasks.add_location(005, "esc_stalker_fox_location")
+		level_tasks.add_location(005, "green_location", "esc_fox")
 
 	elseif info_id == "escape_stalker_give" then
-		level_tasks.remove_location(005, "esc_stalker_fox_location")
-		level_tasks.add_location(003, "escape_trader_location")
+		level_tasks.remove_location(005, "green_location")
+		level_tasks.add_location(003, "blue_location", "trader")
 	
 	elseif info_id == "escape_stalker_done" then
-		level_tasks.remove_location(003, "escape_trader_location")
+		level_tasks.remove_location(003, "blue_location")
 
 	elseif info_id == "escape_blockpost_case" then
-		level_tasks.add_location(000, "esc_blockpost_box_location")
+		level_tasks.add_location(000, "green_location", "blokpost_case")
 	
 	elseif info_id == "escape_blockpost_case_have" then
-		level_tasks.remove_location(000, "esc_blockpost_box_location")
-		level_tasks.add_location(003, "escape_trader_location")
+		level_tasks.remove_location(000, "green_location")
+		level_tasks.add_location(003, "blue_location", "trader")
 	
 	elseif info_id == "escape_blockpost_case_done" then
-		level_tasks.remove_location(003, "escape_trader_location")
+		level_tasks.remove_location(003, "blue_location")
 
 	elseif info_id == "escape_dynamite_meet" then
-		level_tasks.add_location(009, "esc_bridge_stalkers_location")
+		level_tasks.add_location(009, "green_location", "wolfs_rangers")
 		
 	elseif info_id == "escape_factory_assault_say_hello" then
-		level_tasks.remove_location(009, "esc_bridge_stalkers_location")
+		level_tasks.remove_location(009, "green_location")
 	
 	elseif info_id == "escape_dynamite_gain" then
-		level_tasks.add_location(007, "esc_dynamite_location")
-		level_tasks.remove_location(009, "esc_bridge_stalkers_location")
+		level_tasks.add_location(007, "green_location", "escape_dinamit")
+		level_tasks.remove_location(009, "green_location")
 	
 	elseif info_id == "escape_dynamite_have" then
-		level_tasks.add_location(006, "esc_wolf_location")
-		level_tasks.remove_location(007, "esc_dynamite_location")
-		level_tasks.remove_location(009, "esc_bridge_stalkers_location")
+		level_tasks.add_location(006, "green_location", "volk")
+		level_tasks.remove_location(007, "green_location")
+		level_tasks.remove_location(009, "green_location")
 	
 	elseif info_id == "escape_dynamite_done" then
-		level_tasks.remove_location(006, "esc_wolf_location")
-	end
+		level_tasks.remove_location(006, "green_location")
+		
+	elseif info_id == "esc_kill_bandits_quest_have" then
+		level_tasks.add_location(017, "green_location", "factory_bandits")
 	
+	elseif info_id == "esc_kill_bandits_quest_kill" then
+		level_tasks.remove_location(017, "green_location")
+		level_tasks.add_location(003, "blue_location", "trader")
+		
+	elseif info_id == "esc_kill_bandits_quest_done" then
+		level_tasks.remove_location(003, "blue_location")	
+	
+	elseif info_id == "esc_artefact1_need" then
+		level_tasks.add_location(019, "green_location", "anomaly_field_gravy")
+
+	elseif info_id == "esc_artefact1_have" then
+		level_tasks.remove_location(019, "green_location")
+		
+	elseif info_id == "esc_artefact2_need" then
+		level_tasks.add_location(018, "green_location", "anomaly_field_mincer")
+
+	elseif info_id == "esc_artefact2_have" then
+		level_tasks.remove_location(018, "green_location")
+		
+	elseif info_id == "esc_artefact3_need" then
+		level_tasks.add_location(020, "green_location", "anomaly_field_mosquito")
+
+	elseif info_id == "esc_artefact3_have" then
+		level_tasks.remove_location(020, "green_location")
+		
 	return false
+	end
 end

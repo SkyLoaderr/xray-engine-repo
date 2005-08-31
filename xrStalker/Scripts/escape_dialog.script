@@ -8,7 +8,6 @@
 function trader_alredy_give_job(trader, actor)
 	local actor = db.actor
 	if (actor:has_info("esc_kill_bandits_quest_have") and actor:dont_has_info("esc_kill_bandits_quest_done")) or
-	   (actor:has_info("escape_stalker_meet") and actor:dont_has_info("escape_stalker_done")) or
 	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done"))
 	then
 		return true
@@ -112,7 +111,6 @@ end
 
 function trader_dont_has_job(first_speaker, second_speaker)
     if trader_need_free_factory(first_speaker, second_speaker) == false and
-	   trader_need_fox_info(first_speaker, second_speaker) == false and
 	   trader_need_military_case(first_speaker, second_speaker) == false
 	then
 		return true
@@ -135,34 +133,28 @@ end
 function give_tutorial_artefact(first_speaker, second_speaker)
 	local artefact = first_speaker:object("af_blood_tutorial")
 	dialogs.relocate_item(second_speaker, artefact, "out")
-	level_tasks.set_task_state(task.completed, "tutorial_find_artefact", 0)
 end
 
 
---' Escape trader need meet fox
+--' Meet fox
 function have_fox_info(first_speaker, second_speaker)
   	return first_speaker:object("fox_flash") ~= nil
 end
-function trader_need_fox_info(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("esc_kill_bandits_quest_done") and
-	   actor:dont_has_info("escape_stalker_meet")
-	then
-		return true
-	end
-	return false
-end
+
 function give_flash_to_actor(npc, actor)
 	local item = npc:object("fox_flash")
 	if item then
 		dialogs.relocate_item(npc, item, "in")
 	end
 end
-function give_fox_info(first_speaker, second_speaker)
-	local item = first_speaker:object("fox_flash")
-	dialogs.relocate_item(second_speaker, item, "out")
-	level_tasks.set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
+
+--' fox help
+
+function transfer_medikit_to_fox (player, wounded)
+    local obj = player:object("medkit")
+    dialogs.relocate_item(wounded, obj, "out")   
+	wounded:set_relation(game_object.friend, player)
+	db.actor:give_info_portion("escape_fox_heal")
 end
 
 
@@ -183,8 +175,8 @@ end
 function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	dialogs.relocate_item(second_speaker, case, "out")
-	dialogs.relocate_money(second_speaker, 500, "in")
-	level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
+	dialogs.relocate_money(second_speaker, 2000, "in")
+--	level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
 end
 
 --' Agroprom military case
@@ -210,18 +202,6 @@ function have_artefact_from_fleshes(first_speaker, second_speaker)
 		return true
 	end
   	return false
-end
-function give_artefact_from_fleshes(first_speaker, second_speaker)
-	local artefact = first_speaker:object("af_vyvert")
-	if artefact == nil then
-		artefact = first_speaker:object("af_gravi")
-	end
-	if artefact == nil then
-		artefact = first_speaker:object("af_gold_fish")
-	end
-	dialogs.relocate_item(second_speaker, artefact, "out")
-	dialogs.relocate_money(second_speaker, 1500, "in")
-	level_tasks.set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
 end
 
 
@@ -255,6 +235,29 @@ function trader_need_military_document(first_speaker, second_speaker)
 	return false
 end
 
+--' trader dialog about docs from labx18
+function actor_has_documents (actor, npc)
+	if actor:object("dar_document4") then
+		return true
+	else
+		return false
+	end
+end
+
+function actor_give_docs_x18 (actor, npc)
+	local obj = player:object("dar_document4")
+	dialogs.relocate_item(npc, obj, "out")
+	db.actor:disable_info_portion("esc_return")
+end
+
+
+function reward_docs_x18_small (actor, npc)
+	dialogs.relocate_money(npc, 1000, "in")
+end
+
+function reward_docs_x18_normal (actor, npc)
+	dialogs.relocate_money(npc, 2000, "in")
+end
 
 
 
@@ -278,9 +281,9 @@ function wolf_need_dynamite(first_speaker, second_speaker)
 	end
 	return false
 end
-function wolf_notify_meet(first_speaker, second_speaker)
-	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 1)
-end
+--function wolf_notify_meet(first_speaker, second_speaker)
+--	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+--end
 
 --' WOLF
 function has_novice_access(actor, npc)
@@ -317,7 +320,7 @@ function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	dialogs.relocate_item(second_speaker, case, "out")
 	dialogs.relocate_money(second_speaker, 1000, "in")
-	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
+--	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
 
 function assault_ready(first_speaker, second_speaker)
@@ -356,4 +359,9 @@ end
 --' Escape bandits factory
 function give_factory_reward_trader(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 500, "in")
+end
+
+--' Kill killers raid
+function give_reward_killers(first_speaker, second_speaker)
+	dialogs.relocate_money(second_speaker, 2500, "in")
 end

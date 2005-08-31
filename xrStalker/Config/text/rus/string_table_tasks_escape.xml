@@ -29,16 +29,16 @@
         <text>Принести флешку торговцу.</text>
     </string>
      <string id="esc_help_wounded_from_raid">
-        <text>Передать торговцу информацию.</text>
+        <text>Помочь раненому Лису.</text>
     </string>
     <string id="esc_help_wounded_from_raid_0">
-        <text>Помочь торговцу достать важную информацию о результатах военной разведки.</text>
+        <text>Оказать помощь раненому сталкеру.</text>
     </string>
     <string id="esc_help_wounded_from_raid_1">
-        <text>Встретить сталкера по прозвищу "Лис".</text>
+        <text>Помочь Лису отбиться от мутантов.</text>
     </string>
     <string id="esc_help_wounded_from_raid_2">
-        <text>Доставить торговцу информацию от "Лиса".</text>
+        <text>Получить у него важную информацию о Стрелке.</text>
     </string>
     <string id="esc_blockpost_case_to_trader">
         <text>Украсть ящик с блокпоста.</text>

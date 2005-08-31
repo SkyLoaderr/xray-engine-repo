@@ -28,20 +28,18 @@
 	<info_portion id="tutorial_wounded_help"></info_portion>
 	<info_portion id="tutorial_wounded_die"></info_portion>
 	<info_portion id="tutorial_wounded_death"></info_portion>
+	<info_portion id="tutorial_wounded_fail"></info_portion>
 	<info_portion id="tutorial_wounded_end"></info_portion>
 	<info_portion id="tutorial_end"></info_portion>
 	<info_portion id="tutorial_wounded_volk_greet"></info_portion>
 	<info_portion id="esc_serious_talk"></info_portion>
 
-	<info_portion id="escape_artefact_start">
-		<task>esc_trader_need_electra_artefact</task>
-	</info_portion>
-	<info_portion id="escape_artefact_gain"></info_portion>
-	<info_portion id="escape_artefact_done"></info_portion>
-
+	<!-- Fox -->
 	<info_portion id="escape_stalker_help"></info_portion>
+	<info_portion id="escape_fox_heal"></info_portion>
 	<info_portion id="escape_stalker_spawn"></info_portion>
 	<info_portion id="escape_stalker_dog_spawn"></info_portion>	
+	<info_portion id="escape_stalker_dog_die"></info_portion>	
 	<info_portion id="escape_stalker_meet">
 		<task>esc_help_wounded_from_raid</task>
 	</info_portion>
@@ -49,14 +47,17 @@
 		<article>storyline_fox_flash_info</article>
 	</info_portion>	
 	<info_portion id="escape_stalker_done"></info_portion>
+	<info_portion id="esc_dogs_return"></info_portion>
 	
+	
+	<!-- Blokpost_case -->
 	<info_portion id="escape_blockpost_case">
 		<task>esc_blockpost_case_to_trader</task>
 	</info_portion>
 	<info_portion id="escape_blockpost_case_have"></info_portion>
 	<info_portion id="escape_blockpost_case_done"></info_portion>
-
-
+	
+	<!-- Dinamyte -->
 	<info_portion id="escape_dynamite_start">
 		<task>esc_dinamit_to_volk</task>
 	</info_portion>
@@ -65,6 +66,18 @@
 	<info_portion id="escape_dynamite_gain"></info_portion>
 	<info_portion id="escape_dynamite_have"></info_portion>
 	<info_portion id="escape_dynamite_done"></info_portion>
+
+	<!-- Newbie_lager_help -->
+	<info_portion id="escape_lager_help">
+		<task>esc_defend_lager</task>
+	</info_portion>
+	<info_portion id="escape_lager_spawn_killers"></info_portion>
+	<info_portion id="escape_lager_killers_die"></info_portion>
+	<info_portion id="escape_lager_complete"></info_portion>
+	<info_portion id="esc_fanat_spawn"></info_portion>
+	<info_portion id="esc_open_killer_fire"></info_portion>
+	<info_portion id="esc_open_lager_fire"></info_portion>
+	<info_portion id="esc_fanat_die"></info_portion>
 
 	<!-- Порядок фраз торговца -->
 	<info_portion id="esc_trader_talked_about_zone"></info_portion>
@@ -86,6 +99,7 @@
 
 	<!-- вспомогательные в лагере -->
 	<info_portion id="esc_lager_bariga_talk_klans"></info_portion>
+	<info_portion id="esc_return"></info_portion>
 
 	<!-- Приветствия торговца -->
 	<info_portion id="esc_trader_hello_played"></info_portion>
@@ -125,17 +139,25 @@
 	
 	
 	<!-- trader bandits on factory -->
-	<info_portion id="esc_kill_bandits_quest_have"></info_portion>
+	<info_portion id="esc_kill_bandits_quest_have">
+		<task>esc_bandits_factory</task>
+	</info_portion>
 	<info_portion id="esc_kill_bandits_quest_kill"></info_portion>
 	<info_portion id="esc_kill_bandits_quest_done"></info_portion>
 	
 	
 	<!-- random artefacts -->
-	<info_portion id="esc_artefact1_need"></info_portion>
+	<info_portion id="esc_artefact1_need">
+		<task>esc_af_vyvert</task>
+	</info_portion>
 	<info_portion id="esc_artefact1_have"></info_portion>
-	<info_portion id="esc_artefact2_need"></info_portion>
+	<info_portion id="esc_artefact2_need">
+		<task>esc_af_blood</task>
+	</info_portion>
 	<info_portion id="esc_artefact2_have"></info_portion>
-	<info_portion id="esc_artefact3_need"></info_portion>
+	<info_portion id="esc_artefact3_need">
+		<task>esc_af_medusa</task>
+	</info_portion>
 	<info_portion id="esc_artefact3_have"></info_portion>	
 	
 </game_information_portions>
