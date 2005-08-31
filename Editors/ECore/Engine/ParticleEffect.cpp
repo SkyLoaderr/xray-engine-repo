@@ -71,6 +71,7 @@ void CParticleEffect::RefreshShader()
 
 void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM)
 {
+	bXFORM = 1;
 	m_RT_Flags.set			(flRT_XFORM, bXFORM);
 	if (bXFORM)				m_XFORM.set	(m);
 	else{
@@ -287,19 +288,18 @@ void CParticleEffect::Render(float )
                             FillSprite		(pv,M.k,M.i,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
                         }
                     }else if ((speed>=EPS_S)&&m_Def->m_Flags.is(CPEDef::dfFaceAlign)){
-                    	Fmatrix	M;  	
-						Fvector 			right,up,dir;
-                        dir.div				(m.vel,speed);
-                        up.set 				(0,1,0);	if (_abs(up.dotproduct(dir))>.99f)  up.set(0,0,1);
-                        right.crossproduct	(up,dir);	right.normalize	();
-                        up.crossproduct   	(dir,right);up.normalize  ();
+                    	Fmatrix	M;  		M.identity();
+                        M.k.div				(m.vel,speed);
+                        M.j.set 			(0,1,0);	if (_abs(M.j.dotproduct(M.k))>.99f)  M.j.set(0,0,1);
+                        M.i.crossproduct	(M.j,M.k);	M.i.normalize	();
+                        M.j.crossproduct   	(M.k,M.i);	M.j.normalize  ();
                         if (m_RT_Flags.is(flRT_XFORM)){
                             Fvector p;
                             m_XFORM.transform_tiny(p,m.pos);
 	                        M.mulB_43		(m_XFORM);
-                            FillSprite		(pv,up,right,p,lt,rb,r_x,r_y,m.color,m.rot.x);
+                            FillSprite		(pv,M.j,M.i,p,lt,rb,r_x,r_y,m.color,m.rot.x);
                         }else{
-                            FillSprite		(pv,up,right,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
+                            FillSprite		(pv,M.j,M.i,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
                         }
                     }else{
 						Fvector 			dir;
