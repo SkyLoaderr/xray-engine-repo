@@ -139,6 +139,23 @@ function load_job(sj, gname, type, squad, groups)
 			table.insert(sj, t)
 		end
 	end
+
+	if type == "rad_gig" then
+			t = { section = "logic@rad_gig", 
+				idle = 0,
+				prior = 5, state = {1}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_gig"
+			}
+			table.insert(sj, t)
+
+			t = { section = "logic@rad_gig", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_gig_territory"
+			}
+			table.insert(sj, t)
+	end
+
 end
 
 function load_states(gname, type)
@@ -240,6 +257,23 @@ function load_states(gname, type)
 			end
 		end
 	end
+
+	if type == "rad_gig" then
+		return function(gulag)
+			local t = db.zone_by_name["rad_gig_territory"] 
+			local actor = db.actor
+
+			if t and actor then
+				if t:inside(actor:position()) then
+					return 0
+				else
+					return 1
+				end
+			else
+				return gulag.state
+			end
+		end
+	end
 end
 
 function checkStalker(npc_community, gulag_type)
@@ -262,6 +296,9 @@ function checkMonster( npc_community, gulag_type )
 
 	if gulag_type == "rad_fleshes" then
 		return npc_community == "flesh"
+	end
+	if gulag_type == "rad_gig" then
+		return npc_community == "pseudo_gigant"
 	end
 
 	return false
