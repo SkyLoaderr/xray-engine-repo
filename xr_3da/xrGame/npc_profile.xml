@@ -206,10 +206,7 @@
 	<character id="stalker_gar_dram_novice">
 		<class>stalker_gar_dram_novice</class>
 	</character>
-	<!-- Drammoment in tunnel -->
-	<character id="gar_newbie_in_tonnel">
-		<class>gar_newbie_in_tonnel</class>
-	</character>
+	
 	<character id="svoboda_bodyguard">
 		<class>svoboda_bodyguard</class>
 	</character>	
