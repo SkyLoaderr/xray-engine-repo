@@ -300,7 +300,10 @@
 	<!-- Agroprom + undeground-->
 	
 	<!-- Darkvalley + X18 -->
-	
+	<character id="val_bandit_borov">
+		<class>val_bandit_borov</class>
+	</character>
+
 	<!-- Bar + Rostok -->
 	<character id="bar_barman">
 		<class>bar_barman</class>
