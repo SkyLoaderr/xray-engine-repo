@@ -245,17 +245,20 @@ void		CPHShell::	applyForce				(const Fvector& dir, float val)
 {
 	if(!bActive) return;
 	ELEMENT_I i=elements.begin(),e=elements.end();
+	val/=getMass();
 	for(; e!=i ;++i)
-		(*i)->applyForce( dir, val);
+		(*i)->applyForce( dir, val*(*i)->getMass());
 	EnableObject(0);
 };
 void		CPHShell::	applyForce				(float x,float y,float z)				
 {
-	if(!bActive) return;
-	ELEMENT_I i=elements.begin(),e=elements.end();
-	for(; e!=i ;++i)
-		(*i)->applyForce( x,y,z);
-	EnableObject(0);
+Fvector dir;dir.set(x,y,z);
+float val=dir.magnitude();
+	if(!fis_zero(val))
+	{
+		dir.mul(1.f/val);
+		applyForce(dir,val);
+	}
 };
 void	CPHShell::		applyImpulse			(const Fvector& dir, float val)				
 {

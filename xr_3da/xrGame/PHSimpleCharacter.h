@@ -4,6 +4,9 @@
 #include "MathUtils.h"
 #include "ElevatorState.h"
 #include "IColisiondamageInfo.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 //#define DRAW_BOXES
 
 class CPHSimpleCharacter : 
