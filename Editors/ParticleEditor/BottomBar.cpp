@@ -93,8 +93,8 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     miWeather->Add	(mi);
 
     // append weathers
-    CEnvironment::WeatherPairIt _I=g_pGamePersistent->Environment.Weathers.begin();
-    CEnvironment::WeatherPairIt _E=g_pGamePersistent->Environment.Weathers.end();
+    CEnvironment::EnvsMapIt _I=g_pGamePersistent->Environment.WeatherCycles.begin();
+    CEnvironment::EnvsMapIt _E=g_pGamePersistent->Environment.WeatherCycles.end();
     for (; _I!=_E; _I++){
         mi				= xr_new<TMenuItem>((TComponent*)0);
         mi->Caption 	= *_I->first;
