@@ -140,6 +140,47 @@ function load_job(sj, gname, type, squad, groups)
 		end
 	end
 
+	if type == "rad_pseudodogs" then
+		local chimera_num = 9
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_pseudodogs", 
+				idle = 0,
+				prior = 5, state = {1}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_pseudodogs"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_pseudodogs", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_pseudodogs_territory"
+			}
+			table.insert(sj, t)
+		end
+	end
+
+	if type == "rad_zombies" then
+		local chimera_num = 6
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_zombies", 
+				idle = 0,
+				prior = 5, state = {1}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_zombies_nest"
+			}
+			table.insert(sj, t)
+		end
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_zombies", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_zombies_territory"
+			}
+			table.insert(sj, t)
+		end
+	end
+
 	if type == "rad_gig" then
 			t = { section = "logic@rad_gig", 
 				idle = 0,
@@ -274,6 +315,39 @@ function load_states(gname, type)
 			end
 		end
 	end
+
+	if type == "rad_pseudodogs" then
+		return function(gulag)
+			local t = db.zone_by_name["rad_pseudodogs_territory"] 
+			local actor = db.actor
+
+			if t and actor then
+				if t:inside(actor:position()) then
+					return 0
+				else
+					return 1
+				end
+			else
+				return gulag.state
+			end
+		end
+	end
+	if type == "rad_zombies" then
+		return function(gulag)
+			local t = db.zone_by_name["rad_zombies_territory"] 
+			local actor = db.actor
+
+			if t and actor then
+				if t:inside(actor:position()) then
+					return 0
+				else
+					return 1
+				end
+			else
+				return gulag.state
+			end
+		end
+	end
 end
 
 function checkStalker(npc_community, gulag_type)
@@ -299,6 +373,14 @@ function checkMonster( npc_community, gulag_type )
 	end
 	if gulag_type == "rad_gig" then
 		return npc_community == "pseudo_gigant"
+	end
+
+	if gulag_type == "rad_pseudodogs" then
+		return npc_community == "pseudodog"
+	end
+
+	if gulag_type == "rad_zombies" then
+		return true
 	end
 
 	return false
