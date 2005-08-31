@@ -302,6 +302,7 @@
 	<!-- Darkvalley + X18 -->
 	<character id="val_bandit_borov">
 		<class>val_bandit_borov</class>
+		<specific_character>val_bandit_borov</specific_character>
 	</character>
 
 	<!-- Bar + Rostok -->
