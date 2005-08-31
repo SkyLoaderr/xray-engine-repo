@@ -294,6 +294,7 @@ protected:
 	EHandDependence			eHandDependence;
 	bool					m_bIsSingleHanded;
 
+public:
 	//загружаемые параметры
 	Fvector					vLoadedFirePoint	;
 	Fvector					vLoadedFirePoint2	;

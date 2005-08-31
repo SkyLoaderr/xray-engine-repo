@@ -260,7 +260,7 @@ void CShootingObject::StartSmokeParticles	(const Fvector& play_pos,
 
 void CShootingObject::StartFlameParticles	()
 {
-	if(!m_sFlameParticlesCurrent) return;
+	if(0==m_sFlameParticlesCurrent.size()) return;
 
 	//если партиклы циклические
 	if(m_pFlameParticles && m_pFlameParticles->IsLooped() && 
@@ -278,7 +278,7 @@ void CShootingObject::StartFlameParticles	()
 }
 void CShootingObject::StopFlameParticles	()
 {
-	if(!m_sFlameParticlesCurrent) return;
+	if(0==m_sFlameParticlesCurrent.size()) return;
 	if(m_pFlameParticles == NULL) return;
 
 	m_pFlameParticles->SetAutoRemove(true);
@@ -288,7 +288,7 @@ void CShootingObject::StopFlameParticles	()
 
 void CShootingObject::UpdateFlameParticles	()
 {
-	if(!m_sFlameParticlesCurrent)		return;
+	if(m_sFlameParticlesCurrent.size())		return;
 	if(!m_pFlameParticles)				return;
 
 	Fmatrix		pos; 

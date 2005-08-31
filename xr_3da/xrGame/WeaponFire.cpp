@@ -57,21 +57,12 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
 	
-//	float	weapon_fire_disp	= GetFireDispersion(false);
-//	Fvector dir_base_disp;
-//.	random_dir					(dir_base_disp,D,weapon_fire_disp);
-//.	dir_base_disp.random_dir	(D, weapon_fire_disp, Random);
-
-//	float fire_disp				= GetFireDispersion(true);
-//	float cartirdge_fire_disp = fire_disp - weapon_fire_disp;
-
 	float fire_disp				= GetFireDispersion(true);
 
 	bool SendHit = SendHitAllowed(H_Parent());
 	//выстерлить пулю (с учетом возможной стрельбы дробью)
 	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
 	{
-//.		FireBullet(P, dir_base_disp, cartirdge_fire_disp, l_cartridge, H_Parent()->ID(), ID(), SendHit);
 		FireBullet(P, D, fire_disp, l_cartridge, H_Parent()->ID(), ID(), SendHit);
 	}
 

@@ -472,9 +472,9 @@ void CUIMainIngameWnd::Draw()
 		if(!pActor)
 			return;
 
-		bool bCamFirstEye = pActor->cam_Active()==pActor->cam_FirstEye();
-//		string32 hud_view="HUD view";
-//		string32 _3rd_person_view="3-rd person view";
+		bool bCamFirstEye = !!m_pWeapon->GetHUDmode();
+		string32 hud_view="HUD view";
+		string32 _3rd_person_view="3-rd person view";
 		CGameFont* F		= UI()->Font()->pFontDI;
 		F->SetAligment		(CGameFont::alCenter);
 		F->SetSizeI			(0.02f);
@@ -482,13 +482,13 @@ void CUIMainIngameWnd::Draw()
 		F->SetColor			(0xffffffff);
 		F->OutNext			("Hud_adjust_mode=%d",g_bHudAdjustMode);
 		if(g_bHudAdjustMode==1)
-			F->OutNext			("adjusting zoom offset");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+			F->OutNext			("adjusting zoom offset");
 		else if(g_bHudAdjustMode==2)
-			F->OutNext			("adjusting fire point");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+			F->OutNext			("adjusting fire point for %s",bCamFirstEye?hud_view:_3rd_person_view);
 		else if(g_bHudAdjustMode==3)
-			F->OutNext			("adjusting missile offset");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+			F->OutNext			("adjusting missile offset");
 		else if(g_bHudAdjustMode==4)
-			F->OutNext			("adjusting shell point");// for %s",bCamFirstEye?hud_view:_3rd_person_view);
+			F->OutNext			("adjusting shell point for %s",bCamFirstEye?hud_view:_3rd_person_view);
 
 		if(bCamFirstEye)
 		{
@@ -808,8 +808,7 @@ void CUIMainIngameWnd::Update()
 
 	CUIWindow::Update();
 }
-#include "UIMessageBox.h"
-CUIMessageBox* mb = NULL;
+
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
@@ -823,20 +822,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		}
 	}
 
-	if(dik==DIK_J&&strstr(Core.Params,"andy")){
-//		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-//		if(pGameSP)pGameSP->ChangeLevel(1,1,Fvector(),Fvector());
-		if(!mb){
-			mb = xr_new<CUIMessageBox>		();
-			mb->Init						("message_box_error");
-			HUD().GetUI()->AddDialogToRender(mb);
-//			Game().StartStopMenu			(mb,true);
-		}else{
-			HUD().GetUI()->RemoveDialogToRender(mb);
-			xr_delete						(mb);
-		}
-		
-	}
+
 
 	// поддержка режима adjust hud mode
 	bool flag = false;
@@ -846,7 +832,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		if (m_pWeapon)
 		{
 			pWpnHud = m_pWeapon->GetHUD();
-			if (!pWpnHud) return false;
+//			if (!pWpnHud) return false;
 		}
 		else
 			return false;
@@ -855,6 +841,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 
 		if (1 == g_bHudAdjustMode) //zoom offset
 		{
+			if (!pWpnHud) return false;
 			tmpV = pWpnHud->ZoomOffset();
 
 			switch (dik)
@@ -936,7 +923,11 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		}
 		else if (2 == g_bHudAdjustMode) //firePoint
 		{
-			tmpV = pWpnHud->FirePoint();
+			if(TRUE==m_pWeapon->GetHUDmode())
+				tmpV = pWpnHud->FirePoint();
+			else
+				tmpV = m_pWeapon->vLoadedFirePoint;
+
 		
 			switch (dik)
 			{
@@ -980,21 +971,32 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 					Log(tmpStr);
 				}
 
+			if(TRUE==m_pWeapon->GetHUDmode())
+				Msg("weapon hud section:");
+			else
+				Msg("weapon section:");
+
 				sprintf(tmpStr, "fire_point\t\t\t= %f,%f,%f",
-					pWpnHud->FirePoint().x,
-					pWpnHud->FirePoint().y,
-					pWpnHud->FirePoint().z);
+					tmpV.x,
+					tmpV.y,
+					tmpV.z);
 				Log(tmpStr);
 				flag = true;
 				break;
 			}
 #ifdef	DEBUG
-			pWpnHud->dbg_SetFirePoint(tmpV);
+			if(TRUE==m_pWeapon->GetHUDmode())
+				pWpnHud->dbg_SetFirePoint(tmpV);
+			else
+				m_pWeapon->vLoadedFirePoint = tmpV;
 #endif
 		}
 		else if (4 == g_bHudAdjustMode) //ShellPoint
 		{
-			tmpV = pWpnHud->ShellPoint();
+			if(TRUE==m_pWeapon->GetHUDmode())
+				tmpV = pWpnHud->ShellPoint();
+			else
+				tmpV = m_pWeapon->vLoadedShellPoint;
 
 			switch (dik)
 			{
@@ -1038,16 +1040,25 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 					Log(tmpStr);
 				}
 
+			if(TRUE==m_pWeapon->GetHUDmode())
+				Msg("weapon hud section:");
+			else
+				Msg("weapon section:");
+
 				sprintf(tmpStr, "shell_point\t\t\t= %f,%f,%f",
-					pWpnHud->ShellPoint().x,
-					pWpnHud->ShellPoint().y,
-					pWpnHud->ShellPoint().z);
+					tmpV.x,
+					tmpV.y,
+					tmpV.z);
 				Log(tmpStr);
 				flag = true;
 				break;
 			}
 #ifdef DEBUG
-			pWpnHud->dbg_SetShellPoint(tmpV);
+			if(TRUE==m_pWeapon->GetHUDmode())
+				pWpnHud->dbg_SetShellPoint(tmpV);
+			else
+				m_pWeapon->vLoadedShellPoint = tmpV;
+
 #endif
 		}
 		else if (3 == g_bHudAdjustMode) //MissileOffset

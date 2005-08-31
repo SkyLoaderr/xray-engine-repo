@@ -151,6 +151,7 @@ protected:
 protected:
 	//имя пратиклов для гильз
 	shared_str				m_sShellParticles;
+public:
 	Fvector					vLoadedShellPoint;
 
 protected:
