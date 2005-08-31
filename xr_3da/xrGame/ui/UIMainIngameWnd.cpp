@@ -291,6 +291,13 @@ void CUIMainIngameWnd::Init()
 			xml_init.InitStatic(uiXml, "t1_static", 0, &UITeam1Sign);
 			xml_init.InitStatic(uiXml, "t2_static", 0, &UITeam2Sign);
 
+			R_ASSERT(pSettings->section_exist("team_logo_small"));
+			R_ASSERT(pSettings->line_exist("team_logo_small", "team1"));
+			R_ASSERT(pSettings->line_exist("team_logo_small", "team2"));
+
+			UITeam1Sign.InitTexture(pSettings->r_string("team_logo_small", "team1"));
+			UITeam2Sign.InitTexture(pSettings->r_string("team_logo_small", "team2"));
+
 			AttachChild(&UITeam1Score);
 			AttachChild(&UITeam2Score);
 			xml_init.InitStatic(uiXml, "t1_score", 0, &UITeam1Score);
