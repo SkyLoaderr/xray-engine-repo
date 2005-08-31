@@ -1,5 +1,47 @@
+----------------
+class "RejectPP" (effector)
+----------------
+function RejectPP:__init () super (1002,10000000)
+	self.params = effector_params ();
+end
+----------------
+function RejectPP:process (pp)
+	pp:assign (self.params);
+    effector.process(self,pp);
+    return true;
+end
+----------------
 
 
+----------------
+class "Reject"
+----------------
+function Reject:__init ()
+	self.pp = RejectPP ();
+	self.pp:start ();
+end
+----------------
+function Reject:__finalize ()
+	self.pp:finish ();
+end;
+----------------
+function Reject:update (dt)
+	self.pp.params.color_base			= color(0.2,0.15,0.0);		// max base color diff			[0.0-0.5]
+	self.pp.params.color_gray			= color(0.33,0.33,0.33);	// RGB							[0.0-1.0]
+	self.pp.params.color_add 			= color(0.1,0.1,0.1);	    // RGB							[0.0-1.0]
+	self.pp.params.gray					= 0.5;						// gray max intensity			[0.0-1.0]
+	self.pp.params.dual					= duality (0.5,0.5);
+	self.pp.params.noise				= noise(0.9,0.3,30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+end
+----------------
+g_Reject = Reject ();
+----------------
 function main ()
-    
+	local prev_time	= time_global ();
+	while 1 do
+			wait ();
+			local dt = time_global () - prev_time;
+			prev_time = time_global();
+			g_Reject:update (dt);
+	end
 end
