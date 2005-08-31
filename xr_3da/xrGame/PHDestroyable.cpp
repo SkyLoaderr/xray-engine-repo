@@ -53,10 +53,11 @@ void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual
 	VERIFY						(l_tpPHSkeleton);
 	l_tpPHSkeleton->source_id	= ref_id;
 	//init
-	InitServerObject			(D);
+
 	// Send
 	D->s_name			= section;//*cNameSect()
 	D->ID_Parent		= u16(-1);
+	InitServerObject	(D);
 	if (OnServer())
 	{
 		NET_Packet			P;

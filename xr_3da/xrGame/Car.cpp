@@ -149,6 +149,8 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	
 	
 	CInifile* pUserData		= PKinematics(Visual())->LL_UserData(); 
+	if(pUserData->section_exist("destroyed"))
+		CPHDestroyable::Load(pUserData,"destroyed");
 	if(pUserData->section_exist("mounted_weapon_definition"))
 		m_car_weapon = xr_new<CCarWeapon>(this);
 
@@ -347,11 +349,13 @@ void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 void CCar::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	CPHSkeleton::Update(dt);
+	if(CPHDestroyable::Destroyed())CPHDestroyable::SheduleUpdate(dt);
+	else	CPHSkeleton::Update(dt);
 	
 	if(m_death_time!=u32(-1)&&GetfHealth()<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
 	{
 		CarExplode();
+		
 		m_death_time=u32(-1);
 	}
 	if(b_exploded&&!m_bExploding&&!getEnabled())
@@ -471,7 +475,11 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	P *= m_HitTypeK[hit_type]*hitScale;
 	
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	if(GetfHealth()<=0.f)CExplosive::SetInitiator(who->ID());
+	if(GetfHealth()<=0.f)
+	{
+		CExplosive::SetInitiator(who->ID());
+		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
+	}
 	HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/100.f);
@@ -886,7 +894,7 @@ void CCar::Init()
 
 void CCar::Revert()
 {
-	m_pPhysicsShell->applyForce(0,40.f*m_pPhysicsShell->getMass(),0);
+	m_pPhysicsShell->applyForce(0,EffectiveGravity()*m_pPhysicsShell->getMass(),0);
 }
 
 void CCar::NeutralDrive()
@@ -1680,6 +1688,17 @@ void CCar::CarExplode()
 	if(b_exploded) return;
 	b_exploded=true;
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
+	CActor* A=OwnerActor();
+	if(A)
+	{
+		if(!m_doors.empty())m_doors.begin()->second.GetExitPosition(m_exit_position);
+		else m_exit_position.set(Position());
+		A->detach_Vehicle();
+		if(A->g_Alive()<=0.f)A->movement_control()->DestroyCharacter();
+	}
+
+	if(CPHDestroyable::CanDestroy())
+		CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	//m_damage_particles.PlayExplosion(this);
 	//m_car_sound->Explosion();
 	//

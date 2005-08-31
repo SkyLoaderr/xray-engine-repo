@@ -1228,6 +1228,7 @@ void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 	}
 
 	dest->m_geoms.insert(dest->m_geoms.end(),i_from,e);
+	dest->b_builded=true;
 	m_geoms.erase(i_from,e);
 }
 void CPHElement::SplitProcess(ELEMENT_PAIR_VECTOR &new_elements)
