@@ -71,7 +71,6 @@ void CParticleEffect::RefreshShader()
 
 void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM)
 {
-	bXFORM = 1;
 	m_RT_Flags.set			(flRT_XFORM, bXFORM);
 	if (bXFORM)				m_XFORM.set	(m);
 	else{
