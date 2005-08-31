@@ -14,6 +14,37 @@ sect_thunderbolt_01
 sect_thunderbolt_02
 sect_thunderbolt_03
 
+[thunderbolt_collection_stancia]
+sect_thunderbolt_stancia_00
+sect_thunderbolt_stancia_01
+
+[sect_thunderbolt_stancia_00]
+lightning_model			= dm\dm_lightning_stancia_01.dm
+color_anim				= weathers\thunderbolt_00	; отыгрывается вся последовательность, независимо от FPS and FrameCount 
+sound					= anomaly\stancia_thunder
+gradient_top_opacity   	= 1
+gradient_top_radius     = 0.500, 0.250
+gradient_top_texture    = pfx\pfx_anomaly_8
+gradient_top_shader    	= effects\sun
+gradient_center_opacity = 0.6
+gradient_center_radius  = 2.000, 1.000
+gradient_center_texture = fx\fx_gradient
+gradient_center_shader 	= effects\sun
+
+[sect_thunderbolt_stancia_01]
+lightning_model			= dm\dm_lightning_stancia_02.dm
+color_anim				= weathers\thunderbolt_00	; отыгрывается вся последовательность, независимо от FPS and FrameCount 
+sound					= anomaly\stancia_thunder
+gradient_top_opacity   	= 0.6
+gradient_top_radius     = 0.500, 0.250
+gradient_top_texture    = fx\fx_gradient
+gradient_top_shader    	= effects\sun
+gradient_center_opacity = 0.6
+gradient_center_radius  = 2.000, 1.000
+gradient_center_texture = fx\fx_gradient
+gradient_center_shader 	= effects\sun
+
+
 [sect_thunderbolt_00]
 lightning_model			= dm\dm_lightning-01.dm
 color_anim				= weathers\thunderbolt_00	; отыгрывается вся последовательность, независимо от FPS and FrameCount 
