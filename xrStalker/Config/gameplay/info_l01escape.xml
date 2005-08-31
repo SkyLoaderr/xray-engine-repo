@@ -160,4 +160,10 @@
 	</info_portion>
 	<info_portion id="esc_artefact3_have"></info_portion>	
 	
+	<!-- интересные места -->
+	<info_portion id="esc_tutorial_secret_place">
+		<article>tutorial_secret_place</article>
+	</info_portion>
+	<info_portion id="esc_tutorial_secret_place_found"></info_portion>
+	
 </game_information_portions>
