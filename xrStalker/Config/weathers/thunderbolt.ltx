@@ -18,6 +18,7 @@ sect_thunderbolt_03
 sect_thunderbolt_stancia_00
 sect_thunderbolt_stancia_01
 sect_thunderbolt_stancia_02
+sect_thunderbolt_stancia_03
 
 [sect_thunderbolt_stancia_00]
 lightning_model			= dm\dm_lightning_stancia_01.dm
@@ -58,6 +59,18 @@ gradient_center_radius  = 2.000, 1.000
 gradient_center_texture = fx\fx_gradient
 gradient_center_shader 	= effects\sun
 
+[sect_thunderbolt_stancia_03]
+lightning_model			= dm\dm_lightning-01.dm
+color_anim				= weathers\thunderbolt_00	; отыгрывается вся последовательность, независимо от FPS and FrameCount 
+sound					= nature\thunder-0
+gradient_top_opacity   	= 0.6
+gradient_top_radius     = 0.500, 0.250
+gradient_top_texture    = fx\fx_gradient
+gradient_top_shader    	= effects\sun
+gradient_center_opacity = 0.6
+gradient_center_radius  = 2.000, 1.000
+gradient_center_texture = fx\fx_gradient
+gradient_center_shader 	= effects\sun
 
 [sect_thunderbolt_00]
 lightning_model			= dm\dm_lightning-01.dm
