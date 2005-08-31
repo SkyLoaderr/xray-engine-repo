@@ -49,7 +49,12 @@ function proceed()
 		actor:give_info_portion("escape_stalker_done")
 	end
 
-
+	
+	if	actor:dont_has_info("esc_tutorial_secret_place") and
+		actor:object("fox_flash") ~= nil
+	then
+		actor:give_info_portion("esc_tutorial_secret_place")
+	end
 
 	if actor:has_info("escape_dynamite_start") and
 	   actor:dont_has_info("escape_dynamite_have") and 
@@ -188,6 +193,14 @@ function process_info_portion(info_id)
 
 	elseif info_id == "esc_artefact3_have" then
 		level_tasks.remove_location(020, "green_location")
+		
+	--' пометки на карте
+	
+	elseif info_id == "esc_tutorial_secret_place" then
+		level_tasks.add_location(025, "green_location", "tutorial_secret_place1")
+		
+	elseif info_id == "esc_tutorial_secret_place_found" then
+		level_tasks.remove_location(025, "green_location")
 		
 	return false
 	end
