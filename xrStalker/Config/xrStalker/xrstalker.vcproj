@@ -196,42 +196,6 @@
 				Name="gameplay"
 				Filter="">
 				<File
-					RelativePath=".\Config\gameplay\character_desc_bandit.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_bar.xml">
-				</File>
-				<File
-					RelativePath=".\config\gameplay\character_desc_dar.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_dolg.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_ecolog.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_general.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_killer.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_monolit.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_soldier.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_stalker.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_svoboda.xml">
-				</File>
-				<File
-					RelativePath=".\Config\gameplay\character_desc_zombied.xml">
-				</File>
-				<File
 					RelativePath=".\Config\gameplay\character_items.xml">
 				</File>
 				<File
@@ -445,6 +409,73 @@
 					</File>
 					<File
 						RelativePath=".\Config\gameplay\info_portions_test.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="profiles"
+					Filter="">
+					<File
+						RelativePath=".\Config\gameplay\character_desc_aes.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_bandit.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_bar.xml">
+					</File>
+					<File
+						RelativePath=".\config\gameplay\character_desc_dar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_darkvalley.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_dolg.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_ecolog.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_general.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_killer.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_military.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_monolit.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_pripyat.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_radar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_soldier.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_stalker.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_svoboda.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_yantar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_zombied.xml">
 					</File>
 				</Filter>
 			</Filter>
@@ -957,10 +988,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
