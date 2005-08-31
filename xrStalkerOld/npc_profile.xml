@@ -150,10 +150,6 @@
 		<class>Rostok_barman</class>
 		<specific_character>rostok_barman</specific_character>
 	</character>
-	<character id="dolg_leader">
-		<class>Dolg_leader</class>
-		<specific_character>dolg_leader</specific_character>
-	</character>
 	<character id="killer_leader">
 		<class>Killer_leader</class>
 		<specific_character>killer_leader</specific_character>
@@ -244,96 +240,8 @@
 		<class>Dolg_specnaz_cherep</class>
 	</character>
 
-
-	<!-- БАР -->
-	<character id="bar_white_novice">
-		<class>stalker_bar_white_novice</class>
-	</character>
-	<character id="bar_brown_novice">
-		<class>stalker_bar_brown_novice</class>
-	</character>
-	<character id="bar_general">
-		<class>stalker_bar_general</class>
-	</character>
-	<character id="bar_dolg">
-		<class>stalker_bar_dolg</class>
-	</character>
-	<character id="bar_bandit">
-		<class>stalker_bar_bandit</class>
-	</character>
-	<character id="bar_killer">
-		<class>stalker_bar_killer</class>
-	</character>
-	<character id="bar_barman_guard">
-		<class>stalker_bar_guard</class>
-	</character>
-	<character id="bar_barman_guard2">
-		<class>stalker_bar_guard2</class>
-	</character>
-	<character id="bar_dolg_petrenko">
-		<class>stalker_bar_petrenko</class>
-	</character>
-	<character id="bar_dolg_ivancov">
-		<class>stalker_bar_ivancov</class>
-	</character>
 	<character id="svoboda_zombi_stalker">
 		<class>Svoboda_zombi_stalker</class>
-	</character>
-	<character id="bar_dolg_leader">
-		<class>stalker_bar_leader</class>
-	</character>
-	<character id="bar_dolg_guard_commander">
-		<class>stalker_bar_dolg_guard_commander</class>
-	</character>
-	<character id="bar_bar_osvedomitel">
-		<class>stalker_bar_osvedomitel</class>
-	</character>
-	<character id="bar_bar_hunter">
-		<class>stalker_bar_hunter</class>
-	</character>
-	<character id="bar_bar_drunk_dolg">
-		<class>stalker_bar_drunk_dolg</class>
-	</character>
-	<character id="bar_bar_lisiy">
-		<class>stalker_bar_bar_lisiy</class>
-	</character>
-	<character id="bar_ecolog_professor">
-		<class>bar_ecolog_professor</class>
-	</character>
-	<character id="bar_svoboda_attack_commander">
-		<class>bar_svoboda_attack_commander</class>
-	</character>
-	<character id="bar_killer_ambush_tiran">
-		<class>bar_killer_ambush_tiran</class>
-	</character>
-	<character id="bar_crazy_veterans_lucky">
-		<class>bar_crazy_veterans_lucky</class>
-	</character>
-	<character id="bar_crazy_veterans">
-		<class>bar_crazy_veterans</class>
-	</character>
-
-	<character id="bar_arena_manager">
-		<class>bar_arena_manager</class>
-	</character>
-	<character id="bar_arena_savage">
-		<class>bar_arena_savage</class>
-	</character>
-	
-	<character id="bar_stalker_freeman">
-		<class>bar_stalker_freeman</class>
-	</character>
-	
-	<character id="bar_psih">
-		<class>Bar_psih</class>
-	</character>
-
-	<character id="bar_arena_guard">
-		<class>stalker_arena_guard</class>
-	</character>
-
-	<character id="bar_zastava_commander_1">
-		<class>stalker_bar_zastava_commander</class>
 	</character>
 
 	<!-- X18 -->
@@ -389,5 +297,114 @@
 		<class>Stalker_general</class>
 	</character>
 
+	<!-- Escape -->
+	
+	<!-- Garbage -->
+	
+	<!-- Agroprom + undeground-->
+	
+	<!-- Darkvalley + X18 -->
+	
+	<!-- Bar + Rostok -->
+	<character id="bar_barman">
+		<class>bar_barman</class>
+		<specific_character>bar_barman</specific_character>
+	</character>	
+	<character id="bar_white_novice">
+		<class>bar_stalker_white_novice</class>
+	</character>
+	<character id="bar_brown_novice">
+		<class>bar_stalker_brown_novice</class>
+	</character>
+	<character id="bar_general">
+		<class>bar_stalker_general</class>
+	</character>
+	<character id="bar_dolg">
+		<class>bar_stalker_dolg</class>
+	</character>
+	<character id="bar_bandit">
+		<class>bar_stalker_bandit</class>
+	</character>
+	<character id="bar_killer">
+		<class>bar_stalker_killer</class>
+	</character>
+	<character id="bar_barman_guard">
+		<class>bar_stalker_guard</class>
+	</character>
+	<character id="bar_barman_guard2">
+		<class>bar_stalker_guard2</class>
+	</character>
+	<character id="bar_bar_osvedomitel">
+		<class>bar_stalker_osvedomitel</class>
+	</character>
+	<character id="bar_bar_hunter">
+		<class>bar_stalker_hunter</class>
+	</character>
+	<character id="bar_bar_drunk_dolg">
+		<class>bar_stalker_drunk_dolg</class>
+	</character>
+	<character id="bar_bar_lisiy">
+		<class>bar_stalker_lisiy</class>
+	</character>
+	<character id="bar_psih">
+		<class>Bar_psih</class>
+	</character>
+	<character id="bar_arena_manager">
+		<class>bar_arena_manager</class>
+	</character>
+	<character id="bar_arena_guard">
+		<class>bar_arena_guard</class>
+	</character>
+	<character id="bar_arena_savage">
+		<class>bar_arena_savage</class>
+	</character>
+	
+	<character id="bar_dolg_leader">
+		<class>bar_dolg_leader</class>
+	</character>
+	<character id="bar_dolg_petrenko">
+		<class>bar_dolg_petrenko</class>
+	</character>
+	<character id="bar_dolg_ivancov">
+		<class>bar_dolg_ivancov</class>
+	</character>
+	<character id="bar_dolg_guard_commander">
+		<class>bar_dolg_guard_commander</class>
+	</character>
+	<character id="bar_zastava_commander_1">
+		<class>bar_zastava_commander</class>
+	</character>
 
+	<character id="bar_ecolog_professor">
+		<class>bar_ecolog_professor</class>
+	</character>
+	<character id="bar_svoboda_attack_commander">
+		<class>bar_svoboda_attack_commander</class>
+	</character>
+
+	<character id="bar_killer_ambush_tiran">
+		<class>bar_killer_ambush_tiran</class>
+	</character>
+	<character id="bar_crazy_veterans_lucky">
+		<class>bar_crazy_veterans_lucky</class>
+	</character>
+	<character id="bar_crazy_veterans">
+		<class>bar_crazy_veterans</class>
+	</character>
+
+	<character id="bar_stalker_freeman">
+		<class>bar_stalker_freeman</class>
+	</character>
+	
+	<!-- Yantar + X16 -->
+	
+	<!-- Military -->
+	
+	
+	<!-- Radar -->
+	
+	<!-- Pripyat -->
+	
+	<!-- Aes -->
+	
 </xml>
