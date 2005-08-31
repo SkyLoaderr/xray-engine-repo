@@ -216,7 +216,7 @@ void EScene::UnlockLevel(LPCSTR initial, LPCSTR map_name)
 
 void EScene::BackupLevel(LPCSTR initial, LPCSTR map_name)
 {
-    xr_string pp	= LevelPartPath(initial,map_name);
+    xr_string pp			= LevelPartPath(map_name);
     SceneToolsMapPairIt _I 	= Scene->FirstTools();
     SceneToolsMapPairIt _E 	= Scene->LastTools();
     for (; _I!=_E; _I++)
@@ -224,6 +224,7 @@ void EScene::BackupLevel(LPCSTR initial, LPCSTR map_name)
             xr_string pn 	= pp+_I->second->ClassName()+".part";
             EFS.BackupFile	(initial,pn.c_str());
         }
+    EFS.BackupFile			(initial,map_name);
 }
 
 void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)

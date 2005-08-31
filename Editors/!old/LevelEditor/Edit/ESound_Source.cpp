@@ -304,7 +304,7 @@ void ESoundSource::OnFrame()
     case stSimulate:{
 		m_Flags.set			(flSimulating,TRUE);
     	if ((fis_zero(m_ActiveTime.x)&&fis_zero(m_ActiveTime.y))||
-        	((g_pGamePersistent->Environment.fGameTime>m_ActiveTime.x)&&(g_pGamePersistent->Environment.fGameTime<m_ActiveTime.y))){
+        	((g_pGamePersistent->Environment.GetGameTime()>m_ActiveTime.x)&&(g_pGamePersistent->Environment.GetGameTime()<m_ActiveTime.y))){
             if (0==m_Source._feedback()){
             	if (fis_zero(m_RandomPause.x)&&fis_zero(m_RandomPause.y)){    
                     m_Source.play			(0,sm_Looped);
