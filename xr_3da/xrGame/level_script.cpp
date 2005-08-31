@@ -91,6 +91,16 @@ void set_weather	(LPCSTR weather_name, bool forced)
 	return			(g_pGamePersistent->Environment.SetWeather(weather_name,forced));
 }
 
+bool set_weather_fx	(LPCSTR weather_name)
+{
+	return			(g_pGamePersistent->Environment.SetWeatherFX(weather_name));
+}
+
+bool is_wfx_playing	()
+{
+	return			(g_pGamePersistent->Environment.IsWFXPlaying());
+}
+
 void set_time_factor(float time_factor)
 {
 	if (!OnServer())
@@ -371,6 +381,8 @@ void CLevel::script_register(lua_State *L)
 		
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather),
+		def("set_weather_fx",					set_weather_fx),
+		def("is_wfx_playing",					is_wfx_playing),
 
 		def("environment",						environment),
 		
