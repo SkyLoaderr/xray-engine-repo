@@ -12,6 +12,10 @@ function eva_state_mgr_direction:evaluate()
 		--printf("changed for position")
 	end
 
+	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
+		return true
+	end
+
 	if self.st.look_object ~= nil and
 	   level.object_by_id(self.st.look_object) ~= nil 
 	   -- and
@@ -24,12 +28,7 @@ function eva_state_mgr_direction:evaluate()
 		end		
 		--printf("changed for object")
 	end
-		
-
-	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
-		return true
-	end
-	
+			
 	if self.st.target_position == nil then
 		-- если текущая позиция нулевая
 		if self.st.current_direction == nil then
