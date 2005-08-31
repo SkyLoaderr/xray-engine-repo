@@ -22,6 +22,9 @@
     <info_portion id="pri_wave2_monolith4_dead"></info_portion>
     <info_portion id="pri_wave2_monolith5_dead"></info_portion>
     <info_portion id="pri_wave2_monolith6_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith7_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith8_dead"></info_portion>
+    <info_portion id="pri_wave2_monolith9_dead"></info_portion>
     <info_portion id="pri_wave2_end"></info_portion>
 
     <info_portion id="pri_wave3_start"></info_portion>
@@ -36,6 +39,9 @@
     <info_portion id="pri_wave4_monolith3_dead"></info_portion>
     <info_portion id="pri_wave4_monolith4_dead"></info_portion>
     <info_portion id="pri_wave4_monolith5_dead"></info_portion>
+    <info_portion id="pri_wave4_monolith6_dead"></info_portion>
+    <info_portion id="pri_wave4_monolith7_dead"></info_portion>
+    <info_portion id="pri_wave4_monolith8_dead"></info_portion>
     <info_portion id="pri_wave4_end"></info_portion>
 
     <info_portion id="pri_wave5_fake_start"></info_portion>
