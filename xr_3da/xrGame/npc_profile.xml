@@ -294,9 +294,58 @@
 	</character>
 
 	<!-- Escape -->
+	<character id="escape_trader">
+		<class>trader</class>
+	</character>
+	
+	<character id="escape_trader">
+		<class>trader</class>
+	</character>
+	
+	<character id="esc_wolf">
+		<class>esc_wolf</class>
+	</character>	
+
+	<character id="esc_fanat">
+		<class>esc_fanat</class>
+	</character>	
+	
+	<character id="esc_fox">
+		<class>esc_fox</class>
+	</character>
+	
+	<character id="esc_tutorial_wounded">
+		<class>esc_tutorial_wounded</class>
+	</character>
 	
 	<!-- Garbage -->
 	
+	<character id="gar_seriy">
+		<class>gar_seriy</class>
+	</character>
+
+	<character id="gar_dram_novice">
+		<class>gar_dram_novice</class>
+	</character>	
+	
+	<character id="gar_newbie_in_tonnel">
+		<class>gar_newbie_in_tonnel</class>
+	</character>
+	
+	<character id="gar_hellcar">
+		<class>gar_hellcar</class>
+	</character>
+	
+	<character id="gar_bandit_novice_wounded">
+		<class>gar_bandit_novice_wounded</class>
+	</character>
+	
+	<character id="gar_bandit_leader">
+		<class>gar_bandit_leader</class>
+	</character>
+	
+	
+		
 	<!-- Agroprom + undeground-->
 	
 	<!-- Darkvalley + X18 -->
