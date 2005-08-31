@@ -34,7 +34,7 @@
 	
 	<specific_character id="stalker_esc_fanat" team_default = "1">
 		<name>Сталкер "Фанат"</name>
-		<icon x="16" y="4"></icon>
+		<icon x="26" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Стал лидером лагеря новичков после Волка. Целеустремлен, агрессивен, пользуется среди новичков заслуженным авторитетом.</bio>
 
