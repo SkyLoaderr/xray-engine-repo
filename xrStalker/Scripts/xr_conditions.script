@@ -620,3 +620,6 @@ function agr_boars_nest_dead(actor, npc)		-- название функции
 		return (not g) or (g:get_population() == 0)
 end
 
+function is_wfx_playing (actor, npc)
+    return level.is_wfx_playing ()
+end
