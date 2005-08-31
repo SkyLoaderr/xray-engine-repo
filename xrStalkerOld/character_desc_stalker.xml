@@ -192,7 +192,7 @@
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
 	</specific_character>	
 	
-		<specific_character id="gar_newbie_in_tonnel" team_default = "1">
+	<specific_character id="gar_newbie_in_tonnel" team_default = "1">
 		<name>Неизвестный новичок</name>
 		<icon x="26" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
