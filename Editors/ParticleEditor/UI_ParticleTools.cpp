@@ -567,6 +567,7 @@ void CParticleTools::MouseMove(TShiftState Shift)
     case etaAdd: 	break;
     case etaMove:	m_Transform.c.add(m_MoveAmount); break;
     case etaRotate:{
+    	m_RotateVector.normalize_safe();
         Fmatrix mR;
         mR.rotation		(m_RotateVector,m_RotateAmount);
         m_Transform.mulB(mR);

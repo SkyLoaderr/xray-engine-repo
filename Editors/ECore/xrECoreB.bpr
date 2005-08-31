@@ -86,7 +86,8 @@
       Intermediate\xrHemisphere.obj Intermediate\DeviceScreenshot.obj 
       Intermediate\FSkinned.obj Intermediate\xrCDB_Collector.obj 
       Intermediate\perlin.obj Intermediate\guid_generator.obj 
-      Intermediate\xrTheora_Surface.obj Intermediate\xrTheora_Stream.obj"/>
+      Intermediate\xrTheora_Surface.obj Intermediate\xrTheora_Stream.obj 
+      Intermediate\Environment_render.obj Intermediate\Environment_misc.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -316,6 +317,8 @@
       <FILE FILENAME="Engine\guid_generator.cpp" FORMNAME="" UNITNAME="guid_generator.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrTheora_Surface.cpp" FORMNAME="" UNITNAME="xrTheora_Surface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrTheora_Stream.cpp" FORMNAME="" UNITNAME="xrTheora_Stream.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Environment_render.cpp" FORMNAME="" UNITNAME="Environment_render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Environment_misc.cpp" FORMNAME="" UNITNAME="Environment_misc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -404,7 +407,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\LevelEditor.exe
+HostApplication=x:\ParticleEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

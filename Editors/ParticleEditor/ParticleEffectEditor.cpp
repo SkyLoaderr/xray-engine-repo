@@ -208,6 +208,10 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 	    P=PHelper().CreateChoose(items,PrepareKey			(pref,"Sprite\\Shader"), 	   			&m_ShaderName,	smEShader);
         P->OnChangeEvent.bind	(this,&PS::CPEDef::OnShaderChange);
     	// frame
+        P=PHelper().CreateFlag32(items,PrepareKey			(pref,"Sprite\\Culling"),			 	&m_Flags, dfCulling);
+        P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
+        if (m_Flags.is(CPEDef::dfCulling))
+        	PHelper().CreateFlag32(items,PrepareKey			(pref,"Sprite\\Culling\\CCW"),			&m_Flags, dfCullCCW);
         P=PHelper().CreateFlag32(items,PrepareKey			(pref,"Sprite\\Frame"),		 		 	&m_Flags, dfFramed);
         P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
         if (m_Flags.is(dfFramed)){
@@ -230,10 +234,10 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfAlignToPath)){
 	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path\\Face Align"), 		&m_Flags, dfFaceAlign);
-	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path\\Deafult World Align"), &m_Flags, dfWorldAlign);
+	    PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path\\Default World Align"), &m_Flags, dfWorldAlign);
     	PHelper().CreateAngle3(items,PrepareKey	(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
     }
-	// velocity scale
+	// velocity scale                                                           
     P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Velocity Scale"),					&m_Flags, dfVelocityScale);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfVelocityScale))

@@ -232,6 +232,7 @@ public:
 	float					ed_to_time			;
 public:
     void					ED_Reload			();
+    float					GetGameTime			(){return fGameTime;}
 #endif
 };
 
