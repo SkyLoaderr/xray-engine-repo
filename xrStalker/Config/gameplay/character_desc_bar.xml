@@ -775,44 +775,5 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 	
-
-
-	<!-- unfixed -->
-	<specific_character id="rostok_barman" no_random = "1">
-		<name>Лоцман</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="1" y="4"></map_icon>
-		<bio>Не святой и не подлец, цену себе знает, за что пользуется уважением среди сталкеров. Ходят слухи, что прячется в Зоне от своего темного прошлого. После того как попал в аномалию, стал прихрамывать и решил сменить занятие. Обставил бар возле группировки Долга, который незаметно стал основным местом сбора для ветеранов Зоны. У бармена много связей как внутри Зоны, так и во внешнем мире.</bio>
-
-		<class>Rostok_barman</class>
-		<community>trader</community>
-		
-		<rank>70</rank>
-		<reputation>50</reputation>
-		<visual>actors\barman\barman</visual>
-					
-		<start_dialog>bar_bar_barmen_start</start_dialog>
-		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs_room</actor_dialog>
-		<actor_dialog>bar_bar_barman_ecolog_flash_done</actor_dialog>
-		<actor_dialog>bar_bar_barman_veterans_finish</actor_dialog>
-		<actor_dialog>bar_bar_barman_killer_ambush</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs_room_darklabdoc_done</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog>
-		<actor_dialog>bar_bar_barmen_about_psih</actor_dialog>
-		<actor_dialog>bar_bar_barmen_about_gorbun</actor_dialog>
-	</specific_character>
-
-
-
-
-
-
-
-
-
-
-
 	
 </xml>
