@@ -34,12 +34,19 @@ function action_zombie_shoot:initialize()
     self.object:set_path_evaluator      ()
     self.object:set_desired_direction   ()
 	self.object:set_detail_path_type    ( move.line )
+
+	self.last_state = nil
 end
 
 function action_zombie_shoot:set_state( state, be )
-	self.t.look_object   = be
-	self.t.look_position = be:position()
-	state_mgr.set_state( self.object, state, nil, nil, self.t )
+	if state ~= self.last_state then
+		self.t.look_object   = be
+		self.t.look_position = be:position()
+		state_mgr.set_state( self.object, state, nil, nil, self.t )
+
+		self.last_state = state
+		printf( "set state !!!!!!!!!!!" )
+	end
 end
 
 function action_zombie_shoot:execute()
@@ -53,11 +60,11 @@ function action_zombie_shoot:execute()
 		self.object:set_dest_level_vertex_id( be:level_vertex_id() )
 		self.object:set_desired_position    ( be:position() )
 
-		if self:can_shoot( be ) then
-			self:set_state( "patrol_fire", be )
-		else
+--		if self:can_shoot( be ) then
+--			self:set_state( "patrol_fire", be )
+--		else
 			self:set_state( "patrol",      be )
-		end
+--		end
     else
 --		self.object:set_dest_level_vertex_id( self.object:level_vertex_id() )
 --		self.object:set_desired_position    ( self.object:position() )
