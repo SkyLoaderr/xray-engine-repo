@@ -97,6 +97,48 @@ function load_job(sj, gname, type, squad, groups)
 			table.insert(sj, t)
 		end
 	end
+
+	if type == "rad_boars" then
+		local chimera_num = 6
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_boars", 
+				idle = 0,
+				prior = 5, state = {1}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_boars"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_boars", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_boars_territory"
+			}
+			table.insert(sj, t)
+		end
+	end
+
+	if type == "rad_fleshes" then
+		local chimera_num = 4
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_fleshes", 
+				idle = 0,
+				prior = 5, state = {1}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_fleshes"
+			}
+			table.insert(sj, t)
+		end
+
+		for i = 1, chimera_num do
+			t = { section = "logic@rad_fleshes", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "rad_fleshes_territory"
+			}
+			table.insert(sj, t)
+		end
+	end
 end
 
 function load_states(gname, type)
@@ -147,9 +189,44 @@ function load_states(gname, type)
 			end
 		end
 	end
+
+	if type == "rad_boars" then
+		return function(gulag)
+			local t = db.zone_by_name["rad_boars_territory"] 
+			local actor = db.actor
+
+			if t and actor then
+				if t:inside(actor:position()) then
+					return 0
+				else
+					return 1
+				end
+			else
+				return gulag.state
+			end
+		end
+	end
+
 	if type == "rad_chimeras" then
 		return function(gulag)
 			local t = db.zone_by_name["rad_chimeras_territory"] 
+			local actor = db.actor
+
+			if t and actor then
+				if t:inside(actor:position()) then
+					return 0
+				else
+					return 1
+				end
+			else
+				return gulag.state
+			end
+		end
+	end
+
+	if type == "rad_fleshes" then
+		return function(gulag)
+			local t = db.zone_by_name["rad_fleshes_territory"] 
 			local actor = db.actor
 
 			if t and actor then
@@ -175,12 +252,16 @@ end
 
 function checkMonster( npc_community, gulag_type )
 
-	if gulag_type == "rad_boars_migrate" then
+	if gulag_type == "rad_boars_migrate" or gulag_type == "rad_boars" then
 		return npc_community == "boar"
 	end
 
 	if gulag_type == "rad_chimeras" then
 		return npc_community == "chimera"
+	end
+
+	if gulag_type == "rad_fleshes" then
+		return npc_community == "flesh"
 	end
 
 	return false
