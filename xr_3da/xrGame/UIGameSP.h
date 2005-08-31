@@ -43,7 +43,8 @@ public:
 
 class CChangeLevelWnd :public CUIDialogWnd
 {
-	CUIMessageBox*		m_messageBox;
+	CUIMessageBox*			m_messageBox;
+	typedef CUIDialogWnd	inherited;
 public:
 	u32						m_game_vertex_id;
 	u32						m_level_vertex_id;

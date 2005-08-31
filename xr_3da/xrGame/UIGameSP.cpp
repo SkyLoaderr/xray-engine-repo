@@ -151,13 +151,11 @@ void CUIGameSP::ChangeLevel				(u32 game_vert_id, u32 level_vert_id, Fvector pos
 CChangeLevelWnd::CChangeLevelWnd		()
 {
 	m_messageBox			= xr_new<CUIMessageBox>();	m_messageBox->SetAutoDelete(true);
-	SetWndPos				(200.0f,200.0f);
-	SetWndSize				(Fvector2().set(300.0f,150.0f));
 	AttachChild				(m_messageBox);
-	m_messageBox->Init		("message_box_error");
-//	m_messageBox->AutoCenter();
-//	m_messageBox->SetStyle	(CUIMessageBox::MESSAGEBOX_YES_NO);
-	m_messageBox->SetText	("Leave current level and jump to another ?");
+	m_messageBox->Init		("message_box_change_level");
+	SetWndPos				(m_messageBox->GetWndPos());
+	m_messageBox->SetWndPos	(0.0f,0.0f);
+	SetWndSize				(m_messageBox->GetWndSize());
 }
 
 void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
@@ -172,11 +170,10 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			p.w_vec3		(m_position);
 			p.w_vec3		(m_angles);
 
-//			Level().Send	(m_net_packet,net_flags(TRUE));
-		}
-	}else{
-		if(msg==MESSAGE_BOX_NO_CLICKED){
+			Level().Send	(p,net_flags(TRUE));
+		}else
+		if(msg==MESSAGE_BOX_NO_CLICKED)
 			Game().StartStopMenu	(this, true);
-		}
-	}
+	}else
+		inherited::SendMessage(pWnd, msg, pData);
 }

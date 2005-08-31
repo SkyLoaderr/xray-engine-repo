@@ -17,6 +17,9 @@
 #include "level_navigation_graph.h"
 #include "game_level_cross_table.h"
 
+#include "HudManager.h"
+#include "UIGameSP.h"
+
 xr_vector<CLevelChanger*>	g_lchangers;
 
 CLevelChanger::~CLevelChanger	()
@@ -108,7 +111,10 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 		net_packet.w			(&m_level_vertex_id,sizeof(m_level_vertex_id));
 		net_packet.w_vec3		(m_position);
 		net_packet.w_vec3		(m_angles);
-		Level().Send			(net_packet,net_flags(TRUE));
+//		Level().Send			(net_packet,net_flags(TRUE));
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+
 	}
 }
 

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<message_box_question type="yes_no" x="200" y="250" width="510" height="206"> <!--alert-->
+	<message_box_change_level type="yes_no" x="200" y="250" width="510" height="206"> <!--alert-->
 		<texture>ui_frame_error</texture>
 		
 		<picture x="35" y="65" width="77" height="77">
@@ -8,7 +8,7 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">alarm</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Welcome to X-RAY level changer</text>
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
@@ -19,7 +19,7 @@
 			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >No</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
-	</message_box_question>
+	</message_box_change_level>
 
 	<message_box_error type="ok" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
