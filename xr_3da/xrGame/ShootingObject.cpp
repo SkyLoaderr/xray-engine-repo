@@ -288,7 +288,7 @@ void CShootingObject::StopFlameParticles	()
 
 void CShootingObject::UpdateFlameParticles	()
 {
-	if(m_sFlameParticlesCurrent.size())		return;
+	if(0==m_sFlameParticlesCurrent.size())		return;
 	if(!m_pFlameParticles)				return;
 
 	Fmatrix		pos; 
