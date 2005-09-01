@@ -183,7 +183,7 @@ end
 function trader_need_military_case(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
-	   actor:has_info("escape_stalker_done") and
+	   actor:has_info("esc_kill_bandits_quest_done") and
 	   actor:dont_has_info("agroprom_military_case")
 	then
 		return true
