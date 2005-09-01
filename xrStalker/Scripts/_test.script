@@ -61,7 +61,7 @@ end
 	ui:RemoveCustomMessage(msg_id)
 
 	ui:AddCustomMessage(msg_id,200,300,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,128,0,0),"default_text")
-	total = 150
+	total = 15
 while total>0 do	
 	local str_ = string.format("time remains %03d sec",total)
 	ui:CustomMessageOut(msg_id, str_, GetARGB(255,128,0,0))
@@ -69,6 +69,7 @@ while total>0 do
 	wait(300)
 	total = total-1
 end	
+	ui:RemoveCustomMessage(msg_id)
 	
 	
 end
