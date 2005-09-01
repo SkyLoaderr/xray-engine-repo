@@ -19,7 +19,7 @@ function HeliManager:Init()
    self.m_heliObject.m_min_mgun_dist = 10;
    self.m_heliObject.m_max_mgun_dist = 10000;
 --   self.m_heliObject:SetOnPointRangeDist(20)
-   level.map_add_object_spot(self.m_heliGO:id(),"heli_location","heli-hunter");
+--   level.map_add_object_spot(self.m_heliGO:id(),"heli_location","heli-hunter");
    self.m_b_round_dir = false
 end
 
