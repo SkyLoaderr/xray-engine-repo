@@ -13,20 +13,9 @@ local state_kamp_end = 8
 
 local gulags = {}
 
-function load_job(sj, gname, type, squad, groups)
---[[
-    ------Stalkers-------------------------------------------------------
-	if      type == "pri_followers"     then    load_job_followers      (sj, gname, type, squad, groups)
-	elseif  type == "pri_monolith_base" then    load_job_monolith_base  (sj, gname, type, squad, groups)
-    ------Monsters-------------------------------------------------------
-    --- Dogs
-	elseif  type == "pri_dogs_nest1"    then    load_job_dogs_nest1     (sj, gname, type, squad, groups)
-	end
-]]
-    local g = gulags[type]
-    if g then g[1](sj, gname, type, squad, groups) end
-end
-
+--------------------------------------------------------------------------
+-- Predicates
+--------------------------------------------------------------------------
 function f_predicate1(obj) 
 	return obj:profile_name() == "stalker_veteran"
 end
@@ -39,6 +28,14 @@ function f_predicate2(obj)
 	else
 	    return false
 	end
+end
+
+--------------------------------------------------------------------------
+-- Jobs
+--------------------------------------------------------------------------
+function load_job(sj, gname, type, squad, groups)
+    local g = gulags[type]
+    if g then g[1](sj, gname, type, squad, groups) end
 end
 
 function load_job_followers(sj, gname, type, squad, groups)
@@ -464,13 +461,33 @@ function load_job_followers(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 end
 
+function load_job_ambush7(sj, gname, type, squad, groups)
+    local i = 0
+    for i = 1, 7 do
+        --- state 0
+	    t = { section = "logic@" .. gname .. "_monolith" .. i .. "_hide", 
+		    idle = 0,
+		    prior = 1, state = {0}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_out_restr"
+	    }
+	    table.insert(sj, t)
+        --- state 1
+	    t = { section = "logic@" .. gname .. "_monolith" .. i, 
+		    idle = 0,
+		    prior = 1, state = {1}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_out_restr"
+	    }
+        table.insert(sj, t)
+    end
+end
+
 function load_job_monolith_base(sj, gname, type, squad, groups)
 end
 
 --- Dogs
 function load_job_dogs_nest1(sj, gname, type, squad, groups)
     local i = 0
-    for i = 0, 10 do
+    for i = 1, 10 do
         --- state 0
 	    t = { section = "logic@pri_dogs_nest1", 
 		    idle = 0,
@@ -489,15 +506,9 @@ function load_job_dogs_nest1(sj, gname, type, squad, groups)
 end
 
 --------------------------------------------------------------------------
+-- States
+--------------------------------------------------------------------------
 function load_states(gname, type)
---[[
-    --- Soldiers -------------------------------------------
-	if type == "pri_followers"          then    return check_state_followers
-	--- Monsters -------------------------------------------
-	--- Dogs
-	elseif type == "pri_dogs_nest1"     then    return check_state_dogs_nest1
-	end
-]]
     local g = gulags[type]
     if g then return g[2] end
 
@@ -508,7 +519,7 @@ function check_state_followers(gulag)
 	local state = gulag.state
 	local actor = db.actor
 	if state == state_kamp and actor:has_info("pri_followers_start") then
-		return state_wave1 --state_wave1
+		return state_wave6 --state_wave1
 	end
 	if state == state_wave1 and
 		actor:has_info("pri_wave1_monolith1_dead") and
@@ -586,6 +597,10 @@ function check_state_monolith_base(gulag)
     return 0
 end
 
+function check_state_ambush7(gulag)
+    return 0
+end
+
 function check_state_dogs_nest1(gulag)
 	local t = db.zone_by_name["pri_dogs_nest1_big_restr"] -- имя большого рестр.
 	if t and db.actor then
@@ -597,6 +612,36 @@ function check_state_dogs_nest1(gulag)
 	else
 		return gulag.state
 	end
+end
+
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+    local g = gulags[type]
+    if g then return g[4](gname, type) end
+
+	return nil
+end
+
+function load_ltx_ambush7(gname, type)
+    local i, res = 0, ""
+    for i = 1, 7 do
+        res = res.."[logic@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
+                   "active = walker@" .. gname .. "_monolith" .. i .. "_hide\n" ..
+
+                   "[walker@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
+                   "path_walk = monolith" .. i .. "_hide_walk\n" ..
+                   "path_look = monolith" .. i .. "_hide_look\n" ..
+
+                   "[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "active = walker@" .. gname .. "_monolith" .. i .. "\n" ..
+
+                   "[walker@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "path_walk = monolith" .. i .. "_walk\n" ..
+                   "path_look = monolith" .. i .. "_look\n"
+    end
+    return res
 end
 
 --------------------------------------------------------------------------
@@ -624,6 +669,7 @@ end
 
 --------------------------------------------------------------------------
 gulags.pri_followers        = {load_job_followers,      check_state_followers,      "stalker"}
+gulags.pri_ambush7          = {load_job_ambush7,        check_state_ambush7,        "monolith", load_ltx_ambush7}
 gulags.pri_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  "monolith"}
 gulags.pri_dogs_nest1       = {load_job_dogs_nest1,     check_state_dogs_nest1,     "dog"}
 
