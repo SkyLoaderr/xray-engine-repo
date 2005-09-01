@@ -988,10 +988,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1766,6 +1766,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\zone_mosquitobald.ltx">
+				</File>
+				<File
+					RelativePath=".\zone_nogravity.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\zone_radioactive.ltx">
