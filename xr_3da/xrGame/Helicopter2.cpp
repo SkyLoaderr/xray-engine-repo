@@ -290,8 +290,9 @@ void CHelicopter::DieHelicopter()
 
 	Fvector prev_pos = PositionStack.front().vPosition;
 	lin_vel.sub(XFORM().c,prev_pos);
-	lin_vel.div((Device.dwTimeGlobal-PositionStack.front().dwTime)/1000.0f);
-
+	if(Device.dwTimeGlobal != PositionStack.front().dwTime)
+		lin_vel.div((Device.dwTimeGlobal-PositionStack.front().dwTime)/1000.0f);
+	
 	lin_vel.mul(m_death_lin_vel_k);
 	PPhysicsShell()->set_LinearVel(lin_vel);
 	PPhysicsShell()->set_AngularVel(m_death_ang_vel);
