@@ -121,7 +121,7 @@ heli_mngr:Init()
    printf("------------HELI START----------------------")
 --heli_mngr:Start()
 
-    heli_mngr.m_heliObject:PrepareDie()
+    heli_mngr.m_heliObject:StartFlame()
     heli_mngr.m_heliObject:Die()
     heli_mngr.m_heliObject:Explode()
     heli_mngr.m_heliObject:TurnLighting(true)
