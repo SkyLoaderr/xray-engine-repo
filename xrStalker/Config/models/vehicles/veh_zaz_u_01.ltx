@@ -26,7 +26,7 @@ fuel_tank         		= 30.         	; L
 fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 10.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3900.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 3800.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.02
@@ -109,8 +109,8 @@ car_damage_particles2   = explosions\expl_car_smoke_big
 wheels_damage_particles1	= vehiclefx\exhaust_1
 wheels_damage_particles2	= vehiclefx\exhaust_1
 
-particle_bones1         = front_bamper;root;left_door,right_door
-particle_bones2         = root;kabina;kabina,front_bamper,
+particle_bones1         = front_bamper	;root;left_door,right_door
+particle_bones2         = root			;kabina;kabina,front_bamper,
 
 ;-------------------------------------------------------------------------------
 ;------ particle bones ---------------------------------------------------------
@@ -171,11 +171,11 @@ wound_immunity        	= 0.01
 radiation_immunity    	= 0.01
 telepatic_immunity    	= 0.01
 chemical_burn_immunity 	= 0.01
-explosion_immunity    	= 0.1
-fire_wound_immunity   	= 0.01
+explosion_immunity    	= 0.5
+fire_wound_immunity   	= 0.1
 
 ;-------------------------------------------------------------------------------
-;----------------explosion params-----------------------------------------------
+;------explosion params --------------------------------------------------------
 
 [explosion]
 blast					= 100
@@ -247,14 +247,12 @@ damping_factor          = 20		;
 spring_factor           = 0.1		;
 friction_factor         = 1.5		;
 
-;-------------------------------------------------------------------------------
-;------ End params -------------------------------------------------------------
-
 [collide]
 not_collide_parts = 1
 
-;--[destroyed part]---------------------------
-;---------------------------------------------
+;-------------------------------------------------------------------------------
+;------ destroyed part ---------------------------------------------------------
+
 [destroyed]
 physics\vehicles\Zaz\part\veh_zaz_u_01_part0
 ;physics\vehicles\Zaz\part\veh_zaz_u_01_part1
@@ -265,26 +263,22 @@ physics\vehicles\Zaz\part\veh_zaz_u_01_part0
 ;physics\vehicles\Zaz\part\veh_zaz_u_01_part6
 
 [autoremove_parts]
-time					  = 30
+time					 = 30
 
-;---------------------------------------------
+;-------------------------------------------------------------------------------
+;------ part particles ---------------------------------------------------------
 
-
-
-;---------------------------------------------
 [particles]
 destroy_particles        = explosions\explosion_barrel
 
+;-------------------------------------------------------------------------------
+;------ part sound -------------------------------------------------------------
 
-
-;---------------------------------------------
 [sound]
 break_sound              =  material\wood\wood_crash1_hl2
 
-
 ;-------------------------------------------------------------------------------
-;--- impulse_transition --------------------------------------------------------
-;-------------------------------------------------------------------------------
+;--- part impulse_transition ---------------------------------------------------
 
 [impulse_transition_to_parts]
 random_min               = 10.0    ; величина случайно направленного импульса пропорционально массе нового объекта
@@ -296,4 +290,4 @@ av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
 
 ;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
-;-------------------------------------------------------------------------------
+
