@@ -579,13 +579,7 @@ function check_state_followers(gulag)
 		return state_wave7
 	end
 	--if state == state_wave7 and
-    --    actor:has_info("pri_wave7_monolith1_dead") and
-    --    actor:has_info("pri_wave7_monolith2_dead") and
-    --    actor:has_info("pri_wave7_monolith3_dead") and
-    --    actor:has_info("pri_wave7_monolith4_dead") and
-    --    actor:has_info("pri_wave7_monolith5_dead") and
-    --    actor:has_info("pri_wave7_monolith6_dead") and
-    --    actor:has_info("pri_wave7_monolith7_dead")
+    --    xr_gulag.getGulagPopulation("pri_ambush7") == 0
     --then
     --    actor:give_info_portion("pri_wave7_end")
     --    return state_wave8
@@ -593,16 +587,17 @@ function check_state_followers(gulag)
     return state
 end
 
-function check_state_monolith_base(gulag)
-    return 0
-end
-
 function check_state_ambush7(gulag)
-	local t = db.zone_by_name["pri_ambush7_out_restr"] -- имя большого рестр.
-	if t and db.actor and t:inside(db.actor:position()) then
+	--local t = db.zone_by_name["pri_ambush7_out_restr"] -- имя большого рестр.
+	--if t and db.actor and t:inside(db.actor:position()) then
+	if db.actor:has_info("pri_kamaz_start") then
         return 1
 	end
 	return gulag.state
+end
+
+function check_state_monolith_base(gulag)
+    return 0
 end
 
 function check_state_dogs_nest1(gulag)

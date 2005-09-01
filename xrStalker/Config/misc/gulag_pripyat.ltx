@@ -213,14 +213,17 @@ path_walk           = wave7_leader_walk2
 path_look           = wave7_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
+on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start +pri_kamaz_start%, %+pri_kamaz_start%
 
 ;--- LEADER: WAVE8 ------------------------------------------------------------------------------
 [logic@pri_followers_leader_wave8]
-active              = kamp@pri_followers_leader_wave8
+active              = walker@pri_followers_leader_wave8_wait
 
-[kamp@pri_followers_leader_wave8]
-center_point        = kamp_end_point
+[walker@pri_followers_leader_wave8_wait]
+path_walk           = wave8_leader_walk1
+path_look           = wave8_leader_look1
+def_state_moving1   = assault
+def_state_moving2   = assault
 meet                = meet@def
 
 ;-------------------------------------------------------------------------------------------------
@@ -443,14 +446,17 @@ path_walk           = wave7_bomber_walk2
 path_look           = wave7_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
+on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start +pri_kamaz_start%, %+pri_kamaz_start%
 
 ;--- BOMBER: WAVE8 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave8]
-active              = kamp@pri_followers_bomber_wave8
+active              = walker@pri_followers_bomber_wave8_wait
 
-[kamp@pri_followers_bomber_wave8]
-center_point        = kamp_end_point
+[walker@pri_followers_bomber_wave8_wait]
+path_walk           = wave8_bomber_walk1
+path_look           = wave8_bomber_look1
+def_state_moving1   = assault
+def_state_moving2   = assault
 
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP1: KAMP ----------------------------------------------------------------------------------
@@ -622,14 +628,17 @@ path_walk           = wave7_stalker1_walk2
 path_look           = wave7_stalker1_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
+on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start +pri_kamaz_start%, %+pri_kamaz_start%
 
 ;--- NAP1: WAVE8 ------------------------------------------------------------------------------
 [logic@pri_followers_nap1_wave8]
-active              = kamp@pri_followers_nap1_wave8
+active              = walker@pri_followers_nap1_wave8_wait
 
-[kamp@pri_followers_nap1_wave8]
-center_point        = kamp_end_point
+[walker@pri_followers_nap1_wave8_wait]
+path_walk           = wave8_stalker1_walk1
+path_look           = wave8_stalker1_look1
+def_state_moving1   = assault
+def_state_moving2   = assault
 
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP2: KAMP ----------------------------------------------------------------------------------
@@ -801,14 +810,17 @@ path_walk           = wave7_stalker2_walk2
 path_look           = wave7_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
+on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start +pri_kamaz_start%, %+pri_kamaz_start%
 
 ;--- NAP2: WAVE8 ------------------------------------------------------------------------------
 [logic@pri_followers_nap2_wave8]
-active              = kamp@pri_followers_nap2_wave8
+active              = walker@pri_followers_nap2_wave8_wait
 
-[kamp@pri_followers_nap2_wave8]
-center_point        = kamp_end_point
+[walker@pri_followers_nap2_wave8_wait]
+path_walk           = wave8_stalker2_walk1
+path_look           = wave8_stalker2_look1
+def_state_moving1   = assault
+def_state_moving2   = assault
 
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP3: KAMP ----------------------------------------------------------------------------------
@@ -972,14 +984,17 @@ path_walk           = wave7_stalker3_walk2
 path_look           = wave7_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
+on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start +pri_kamaz_start%, %+pri_kamaz_start%
 
 ;--- NAP3: WAVE8 ------------------------------------------------------------------------------
 [logic@pri_followers_nap3_wave8]
-active              = kamp@pri_followers_nap3_wave8
+active              = walker@pri_followers_nap3_wave8_wait
 
-[kamp@pri_followers_nap3_wave8]
-center_point        = kamp_end_point
+[walker@pri_followers_nap3_wave8_wait]
+path_walk           = wave8_stalker3_walk1
+path_look           = wave8_stalker3_look1
+def_state_moving1   = assault
+def_state_moving2   = assault
 
 
 ;-------------------------------------------------------------------------------------------------
