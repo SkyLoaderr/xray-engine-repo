@@ -7,7 +7,7 @@ local state_wave4 = 4
 local state_wave5 = 5
 local state_wave6 = 6
 local state_wave7 = 7
-local state_kamp_end = 8
+local state_wave8 = 8
 
 --local load_job_followers, load_job_monolith_base, load_job_dogs_nest1
 
@@ -114,17 +114,17 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
-	--- state: kamp_end
+	--- state: wave8, priority: 3
 	t = { section = "logic@pri_followers_leader_wave8",
 		idle = 0,
-		prior = 2, state = { state_kamp_end },
+		prior = 3, state = { state_wave8 },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "",
+		in_rest = "", out_rest = "pri_followers_wave7_out_restr",
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
 	-----------------------------------------------------------------------
-	-- √–¿Õ¿“ŒÃ≈“◊»  - œ–»Œ–»“≈“ 3,2
+	-- √–¿Õ¿“ŒÃ≈“◊»  - œ–»Œ–»“≈“ 3
 	-----------------------------------------------------------------------
 	--- state: kamp
 	t = { section = "logic@pri_followers_bomber_kamp",
@@ -198,12 +198,12 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate2
 	}
 	table.insert(sj, t)
-	--- state: kamp_end
+	--- state: wave8, priority: 2
 	t = { section = "logic@pri_followers_bomber_wave8",
 		idle = 0,
-		prior = 3, state = { state_kamp_end },
+		prior = 2, state = { state_wave8 },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "",
+		in_rest = "", out_rest = "pri_followers_wave7_out_restr",
 		predicate = f_predicate2
 	}
 	table.insert(sj, t)
@@ -282,12 +282,12 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
-	--- state: kamp_end
+	--- state: wave8
 	t = { section = "logic@pri_followers_nap1_wave8",
 		idle = 0,
-		prior = 1, state = { state_kamp_end },
+		prior = 1, state = { state_wave8 },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "",
+		in_rest = "", out_rest = "pri_followers_wave7_out_restr",
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
@@ -366,12 +366,12 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
-	--- state: kamp_end
+	--- state: wave8
 	t = { section = "logic@pri_followers_nap2_wave8",
 		idle = 0,
-		prior = 1, state = { state_kamp_end },
+		prior = 1, state = { state_wave8 },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "",
+		in_rest = "", out_rest = "pri_followers_wave7_out_restr",
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
@@ -450,12 +450,12 @@ function load_job_followers(sj, gname, type, squad, groups)
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
-	--- state: kamp_end
+	--- state: wave8
 	t = { section = "logic@pri_followers_nap3_wave8",
 		idle = 0,
-		prior = 1, state = { state_kamp_end },
+		prior = 1, state = { state_wave8 },
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = "",
+		in_rest = "", out_rest = "pri_followers_wave7_out_restr",
 		predicate = f_predicate1
 	}
 	table.insert(sj, t)
@@ -588,7 +588,7 @@ function check_state_followers(gulag)
     --    actor:has_info("pri_wave7_monolith7_dead")
     --then
     --    actor:give_info_portion("pri_wave7_end")
-    --    return state_kamp_end
+    --    return state_wave8
     --end
     return state
 end
@@ -598,7 +598,11 @@ function check_state_monolith_base(gulag)
 end
 
 function check_state_ambush7(gulag)
-    return 0
+	local t = db.zone_by_name["pri_ambush7_out_restr"] -- ËÏˇ ·ÓÎ¸¯Ó„Ó ÂÒÚ.
+	if t and db.actor and t:inside(db.actor:position()) then
+        return 1
+	end
+	return gulag.state
 end
 
 function check_state_dogs_nest1(gulag)
