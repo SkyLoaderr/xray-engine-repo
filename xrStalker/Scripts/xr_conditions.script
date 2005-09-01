@@ -217,7 +217,12 @@ end
 
 -- true, если  в указанном гулаге народу меньше чем надо.
 function gulag_population_le(actor, npc, p)
-	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) <= (p[2]) )
+	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) <= p[2] )
+end
+
+-- true, если в указанном гулаге потери больше или равны заданным
+function gulag_casualities_ge(actor, npc, p)
+	return ( p[1] ~= nil and p[2] ~= nil ) and ( xr_gulag.getCasualities( p[1] ) >= p[2] )
 end
 
 -- Функции поддержки kamp

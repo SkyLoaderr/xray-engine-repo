@@ -534,6 +534,14 @@ function changeCasualities(fraction, delta)
 	end
 end
 
+function getCasualities(fraction)
+	if xr_gulag.fraction[fraction] ~= nil then
+		return xr_gulag.fraction[fraction]:getCasualities()
+	else
+		return 0
+	end
+end
+
 function checkStalker(npc_community, gulag_type)
     --printf ("CHECKSTALKER, COMMUNITY = %s, TYPE = %s", npc_community, gulag_type)
 	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" then
