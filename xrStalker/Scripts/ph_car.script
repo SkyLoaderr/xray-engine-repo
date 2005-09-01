@@ -509,7 +509,7 @@ function action_car:walk_arrival_callback(index)
 	local suggested_explode = self.path_walk_info[index]["explode"]
 	if suggested_explode == "true" then
 --		printf("action_car:walk_arrival_callback(): EXPLODE")
-		self.object:car_explode()
+		self:car_explode()
 		self.car:Action(CCar.eWpnActivate, 0)
 	end
 
@@ -923,6 +923,7 @@ function action_car:fast_update()
 	
 	if self.car:GetfHealth() <= 0 then
 	    printf("car <state>: killed.")
+	    self:car_explode()
 	    self:destroy_car()
 	    return true
 	end
