@@ -54,7 +54,8 @@ public:
 	CUIDialogWnd*		MainInputReceiver		();
 	virtual void		ReInitInventoryWnd		() = 0;
 
-			void		AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color, LPCSTR def_text );
+			void		AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color/*, LPCSTR def_text*/ );
+			void		AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color/*, LPCSTR def_text*/, float flicker );
 			void		CustomMessageOut		(LPCSTR id, LPCSTR msg, u32 color);
 			void		RemoveCustomMessage		(LPCSTR id);
 

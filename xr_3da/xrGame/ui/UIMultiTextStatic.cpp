@@ -113,6 +113,7 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 	}*/
 }
 
+#include "../string_table.h"
 
 void CUICaption::addCustomMessage(const shared_str& msg_name, float x, float y, float font_size, 
 								  CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str)
@@ -126,7 +127,8 @@ void CUICaption::addCustomMessage(const shared_str& msg_name, float x, float y, 
 	sp->effect.SetFont(pFont);
 	sp->effect.SetTextColor(color);
 	sp->effect.SetFontAlignment(al);
-	sp->SetText(def_str);
+
+	sp->str = *CStringTable()(def_str);
 
 	m_indices[msg_name] = m_vPhrases.size()-1;
 
@@ -153,7 +155,8 @@ void CUICaption::setCaption(const shared_str& msg_name, LPCSTR message_to_out, u
 {
 	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
 	SinglePhrase * sp = GetPhraseByIndex(m_indices[msg_name]);
-	sp->str = message_to_out;
+	sp->str = *CStringTable()(message_to_out);
+
 	if(replaceColor)
 		sp->effect.SetTextColor(color);
 }
