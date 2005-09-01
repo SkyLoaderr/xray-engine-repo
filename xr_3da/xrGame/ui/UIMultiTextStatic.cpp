@@ -20,6 +20,13 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::AddPhrase()
 	return &m_vPhrases.back();
 }
 
+void CUIMultiTextStatic::RemovePhraseByIndex(u32 idx)
+{
+	Phrases_it it = m_vPhrases.begin();
+	std::advance(it, idx);
+	m_vPhrases.erase(it);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMultiTextStatic::Draw()
@@ -123,6 +130,13 @@ void CUICaption::addCustomMessage(const shared_str& msg_name, float x, float y, 
 
 	m_indices[msg_name] = m_vPhrases.size()-1;
 
+}
+
+void CUICaption::removeCustomMessage(const shared_str& msg_name)
+{
+	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
+	RemovePhraseByIndex(m_indices[msg_name]);
+	m_indices.erase(msg_name);
 }
 
 EffectParams* CUICaption::customizeMessage(const shared_str& msg_name, const CUITextBanner::TextBannerStyles styleName)

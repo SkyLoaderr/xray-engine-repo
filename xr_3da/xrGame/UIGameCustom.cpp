@@ -85,6 +85,11 @@ void CUIGameCustom::CustomMessageOut(LPCSTR id, LPCSTR msg, u32 color)
 	GameCaptions()->setCaption(id,msg,color,true);
 }
 
+void CUIGameCustom::RemoveCustomMessage		(LPCSTR id)
+{
+	GameCaptions()->removeCustomMessage(id);
+}
+
 #include "script_space.h"
 using namespace luabind;
 
@@ -98,10 +103,11 @@ void CUIGameCustom::script_register(lua_State *L)
 	module(L)
 		[
 			class_< CUIGameCustom >("CUIGameCustom")
-			.def("AddDialogToRender", &CUIGameCustom::AddDialogToRender)
-			.def("RemoveDialogToRender", &CUIGameCustom::RemoveDialogToRender)
-			.def("AddCustomMessage",    &CUIGameCustom::AddCustomMessage)
-			.def("CustomMessageOut",    &CUIGameCustom::CustomMessageOut),
+			.def("AddDialogToRender",		&CUIGameCustom::AddDialogToRender)
+			.def("RemoveDialogToRender",	&CUIGameCustom::RemoveDialogToRender)
+			.def("AddCustomMessage",		&CUIGameCustom::AddCustomMessage)
+			.def("CustomMessageOut",		&CUIGameCustom::CustomMessageOut)
+			.def("RemoveCustomMessage",		&CUIGameCustom::RemoveCustomMessage),
 
 			def("get_hud",				&get_hud)
 		];

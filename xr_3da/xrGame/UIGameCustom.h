@@ -56,6 +56,7 @@ public:
 
 			void		AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color, LPCSTR def_text );
 			void		CustomMessageOut		(LPCSTR id, LPCSTR msg, u32 color);
+			void		RemoveCustomMessage		(LPCSTR id);
 
 	virtual	shared_str	shedule_Name			() const		{ return shared_str("CUIGameCustom"); };
 

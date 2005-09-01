@@ -45,8 +45,7 @@ public:
 	SinglePhrase * AddPhrase();
 	// Получить запись по номеру
 	SinglePhrase * GetPhraseByIndex(u32 idx);
-
-
+	void			RemovePhraseByIndex(u32 idx);
 };
 
 class CUICaption :protected CUIMultiTextStatic
@@ -58,6 +57,6 @@ public:
 	void				addCustomMessage(const shared_str& msg_name, float x, float y, float font_size, CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str="");
 	EffectParams*		customizeMessage(const shared_str& msg_name, const CUITextBanner::TextBannerStyles styleName);
 	void				setCaption(const shared_str& msg_name, LPCSTR message_to_out, u32 color=0, bool replaceColor=false);
-
+	void				removeCustomMessage(const shared_str& msg_name);
 };
 #endif	//UI_MULTITEXT_STATIC_H_
