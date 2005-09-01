@@ -37,6 +37,7 @@ CSoundRender_Core::CSoundRender_Core	()
     e_target.set_identity		();
     bListenerMoved				= FALSE;
     bReady						= FALSE;
+    bLocked						= FALSE;
 }
 
 CSoundRender_Core::~CSoundRender_Core()

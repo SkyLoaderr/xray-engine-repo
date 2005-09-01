@@ -22,6 +22,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	u32 it;
 
 	if (0==bReady)				return;
+    bLocked						= TRUE;
 
 	s_emitters_u	++;
 
@@ -116,6 +117,8 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 
 	// Events
 	update_events					();
+
+    bLocked							= FALSE;
 }
 
 void	CSoundRender_Core::update_events		()

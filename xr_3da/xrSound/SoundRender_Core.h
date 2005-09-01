@@ -9,6 +9,7 @@
 
 class CSoundRender_Core					: public CSound_manager_interface
 {
+    BOOL								bLocked;
 protected:
 	virtual void						_create_data			( ref_sound_data& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType); 
 	virtual void						_destroy_data			( ref_sound_data& S);
@@ -108,6 +109,7 @@ public:
 	void								i_stop					( CSoundRender_Emitter* E	);
 	void								i_rewind				( CSoundRender_Emitter* E	);
 	BOOL								i_allow_play			( CSoundRender_Emitter* E	);
+    virtual BOOL						i_locked 				(){return bLocked;}
 
 	virtual float						get_occlusion_to		( const Fvector& hear_pt, const Fvector& snd_pt, float dispersion=0.2f );
 	float								get_occlusion			( Fvector& P, float R, Fvector* occ );
