@@ -32,6 +32,7 @@
 #include "../control_direction_base.h"
 #include "../control_movement_base.h"
 #include "../control_path_builder_base.h"
+#include "../anomaly_detector.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -66,6 +67,10 @@ CBaseMonster::CBaseMonster()
 	
 	m_com_manager.add_ability		(ControlCom::eControlSequencer);
 	m_com_manager.add_ability		(ControlCom::eControlTripleAnimation);
+
+
+
+	m_anomaly_detector				= xr_new<CAnomalyDetector>(this);
 }
 
 
@@ -82,6 +87,8 @@ CBaseMonster::~CBaseMonster()
 	xr_delete(m_move_base);
 	xr_delete(m_path_base);
 	xr_delete(m_dir_base);
+
+	xr_delete(m_anomaly_detector);
 }
 
 void CBaseMonster::UpdateCL()
@@ -113,6 +120,8 @@ void CBaseMonster::shedule_Update(u32 dt)
 	control().update_schedule	();
 
 	Morale.update_schedule		(dt);
+
+	m_anomaly_detector->update_schedule();
 	
 	m_pPhysics_support->in_shedule_Update(dt);
 
@@ -229,6 +238,12 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 {
 	return		(inherited::feel_touch_on_contact(O));
+}
+
+BOOL CBaseMonster::feel_touch_contact(CObject *O)
+{
+	m_anomaly_detector->on_contact(O);
+	return inherited::feel_touch_contact(O);
 }
 
 void CBaseMonster::TranslateActionToPathParams()
@@ -400,3 +415,9 @@ void CBaseMonster::PlayParticles(const shared_str& name, const Fvector &position
 	ps->Play();
 }
 
+void CBaseMonster::on_restrictions_change()
+{
+	inherited::on_restrictions_change();
+
+	if (StateMan) StateMan->reinit();
+}

@@ -17,6 +17,11 @@ class CPseudoGigant : public CBaseMonster,
 		float period_number;
 	} step_effector;
 
+	SAttackEffector m_threaten_effector;
+	ref_sound		m_sound_threaten_hit;		// звук, который играется в голове у актера
+	ref_sound		m_sound_start_threaten;		// звук, который играется в голове у актера
+	
+	u32				m_time_last_threaten;
 
 public:
 					CPseudoGigant				();
@@ -28,7 +33,8 @@ public:
 	virtual bool	ability_earthquake	() {return true;}
 	virtual void	event_on_step		();
 
-	virtual bool	check_start_conditions(ControlCom::EControlType type);
+	virtual bool	check_start_conditions	(ControlCom::EControlType type);
+	virtual void	on_activate_control		(ControlCom::EControlType);
 
 	virtual	void	on_threaten_execute	();
 

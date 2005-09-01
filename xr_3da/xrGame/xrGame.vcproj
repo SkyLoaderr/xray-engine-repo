@@ -3109,6 +3109,16 @@
 								</Filter>
 							</Filter>
 						</Filter>
+						<Filter
+							Name="Anomaly Detector"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\anomaly_detector.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\anomaly_detector.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

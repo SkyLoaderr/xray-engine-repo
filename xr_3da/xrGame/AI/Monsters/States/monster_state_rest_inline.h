@@ -9,6 +9,7 @@
 #include "state_move_to_restrictor.h"
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
+#include "../anomaly_detector.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -53,7 +54,26 @@ void CStateMonsterRestAbstract::initialize()
 	inherited::initialize	();
 
 	time_last_fun			= 0;
+	object->anomaly_detector().activate();
 }
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterRestAbstract::finalize()
+{
+	inherited::finalize();
+	
+	object->anomaly_detector().deactivate();
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterRestAbstract::critical_finalize()
+{
+	inherited::critical_finalize();
+
+	object->anomaly_detector().deactivate();
+}
+
+
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestAbstract::execute()

@@ -1,11 +1,5 @@
 #include "stdafx.h"
 #include "pseudodog.h"
-#include "../ai_monster_effector.h"
-#include "../../../actor.h"
-#include "../../../ActorEffector.h"
-#include "../../stalker/ai_stalker.h"
-#include "../../../../CameraBase.h"
-#include "../../../xr_level_controller.h"
 #include "pseudodog_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../../../sound_player.h"
@@ -49,38 +43,8 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
 
-	// Load psi postprocess --------------------------------------------------------
-	LPCSTR ppi_section = pSettings->r_string(section, "psi_effector");
-	m_psi_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
-	m_psi_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
-	m_psi_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
-	m_psi_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
-	m_psi_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
-	m_psi_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
-	m_psi_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
-	VERIFY(!fis_zero(m_psi_effector.ppi.noise.fps));
-
-	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_psi_effector.ppi.color_base.r,	&m_psi_effector.ppi.color_base.g,	&m_psi_effector.ppi.color_base.b);
-	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_psi_effector.ppi.color_gray.r,	&m_psi_effector.ppi.color_gray.g,	&m_psi_effector.ppi.color_gray.b);
-	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_psi_effector.ppi.color_add.r,	&m_psi_effector.ppi.color_add.g,	&m_psi_effector.ppi.color_add.b);
-
-	m_psi_effector.time			= pSettings->r_float(ppi_section,"time");
-	m_psi_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
-	m_psi_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
-
-	m_psi_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
-	m_psi_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
-	m_psi_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
-	m_psi_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
-
-	// --------------------------------------------------------------------------------
-
 	m_anger_hunger_threshold	= pSettings->r_float(section, "anger_hunger_threshold");
 	m_anger_loud_threshold		= pSettings->r_float(section, "anger_loud_threshold");
-
-	::Sound->create(psy_effect_sound,TRUE, pSettings->r_string(section,"sound_psy_effect"), SOUND_TYPE_WORLD);
-
-	psy_effect_turn_angle		= angle_normalize(pSettings->r_float(section,"psy_effect_turn_angle"));
 
 	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
 	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
@@ -163,18 +127,6 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_PSI_ATTACK) == ASP_PSI_ATTACK) {
 		com_man().seq_run(anim().get_motion_id(eAnimAttackPsi));
-
-		CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
-		if (pA) {
-			pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_psi_effector.ce_time,m_psi_effector.ce_amplitude,m_psi_effector.ce_period_number,m_psi_effector.ce_power));
-			Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_psi_effector.ppi, m_psi_effector.time, m_psi_effector.time_attack, m_psi_effector.time_release));
-
-			if (pA->cam_Active()) {
-				pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(psy_effect_turn_angle)); 
-				pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(psy_effect_turn_angle)); 
-			}
-
-		}
 	}
 
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {

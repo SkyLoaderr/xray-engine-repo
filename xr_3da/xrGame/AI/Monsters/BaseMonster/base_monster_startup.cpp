@@ -15,7 +15,7 @@
 
 #include "../state_manager.h"
 #include "../controlled_entity.h"
-
+#include "../anomaly_detector.h"
 
 void CBaseMonster::Load(LPCSTR section)
 {
@@ -40,6 +40,8 @@ void CBaseMonster::Load(LPCSTR section)
 	settings_load					(section);
 
 	control().load					(section);
+
+	m_anomaly_detector->load		(section);
 }
 
 void CBaseMonster::reload	(LPCSTR section)
@@ -108,6 +110,9 @@ void CBaseMonster::reinit()
 	ignore_collision_hit			= false;
 
 	control().reinit				();
+
+	m_anomaly_detector->reinit		();
+
 
 #ifdef DEBUG
 	m_show_debug_info				= 0;

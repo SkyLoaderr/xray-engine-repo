@@ -8,17 +8,12 @@ class CAI_PseudoDog : public CBaseMonster {
 
 public:
 
-	SAttackEffector m_psi_effector;
-
 	float			m_anger_hunger_threshold;
 	float			m_anger_loud_threshold;
 
 	TTime			m_time_became_angry;
 
 	TTime			time_growling;			// время нахождения в состоянии пугания
-
-	ref_sound		psy_effect_sound;		// звук, который играется в голове у актера
-	float			psy_effect_turn_angle;
 
 public:
 					CAI_PseudoDog		();

@@ -275,6 +275,7 @@ void CControl_Manager::activate(ControlCom::EControlType type)
 {
 	m_control_elems[type]->set_active	();
 	check_active_com					(m_control_elems[type], eAdd);
+	m_object->on_activate_control		(type);
 }
 void CControl_Manager::deactivate(ControlCom::EControlType type)
 {

@@ -10,7 +10,7 @@ void CControlThreaten::reinit()
 	CControl_ComCustom<>::reinit();
 
 	CSkeletonAnimated *skel = smart_cast<CSkeletonAnimated*>(m_object->Visual());
-	m_man->animation().add_anim_event(skel->LL_MotionID("stand_kick_0"),0.8f,CControlAnimation::eAnimationCustom);
+	m_man->animation().add_anim_event(skel->LL_MotionID("stand_kick_0"),0.63f,CControlAnimation::eAnimationCustom);
 }
 
 void CControlThreaten::activate()

@@ -216,8 +216,6 @@ sound_growling			= monsters\biting\def_
 sound_psy_attack		= monsters\pseudodog\psy_attack_
 sound_die_in_anomaly	= monsters\pseudodog\pdog_death_
 
-sound_psy_effect		= monsters\pseudodog\psy_affect_0
-
 killer_clsids			= Z_MINCER,Z_GALANT
 
 
@@ -235,15 +233,6 @@ jump_min_distance			= 4.0
 jump_max_distance			= 7.0
 jump_max_angle				= 0.3
 
-; TODO: DELME
-jump_min_dist				= 3.0 
-jump_max_dist				= 4.0
-jump_factor				= 2.0 ;1.5			;(¢õü ñþû¹°õ, ªõü òv°õ ÿ¨vöþú)
-jump_delay				= 6000 ;3000	;3000	;4000	;6000	;(¢ð¸ªþªð ÿ¨vöúþò)
-jump_max_angle			= 0.3	;0.5	;1.0	;1.8
-jump_trace_dist			= 1.0
-
-
 DamagedThreshold		= 0.3
 
 material				= creatures\medium
@@ -255,7 +244,7 @@ squad_attack_algorithm	= 1
 
 attack_effector			= m_pseudodog_attack_effector
 damage					= m_pseudodog_damage
-psi_effector			= pseudodog_psi_effector
+
 	
 
 attack_params			= m_pseudodog_attack_params
@@ -266,37 +255,11 @@ LegsCount				= 4
 anger_hunger_threshold	= 0.1
 anger_loud_threshold	= 0.7
 
-psy_effect_turn_angle	= 1.0
+
 
 ;species of monster
 species					= pseudodog
 
-
-
-
-;-----------------------------------------------------------------------------------------
-; PSY Effector
-;-----------------------------------------------------------------------------------------
-[pseudodog_psi_effector]
-duality_h		= 0.1	;0.31
-duality_v		= 0.2	;0.31
-blur			= 0.01
-gray			= 0.5	;0.5
-noise_intensity = 1.0
-noise_grain		= 0.9
-noise_fps		= 30
-color_base		= 1.1,1.1,1	;0.1,0.15,0.4
-color_gray		= 1,1,1	;0.333,0.333,0.333
-color_add		= 0.2,0.2,0.1
-time			= 1.0		;1.5
-time_attack		= 0.3	;0.5		; fade in
-time_release	= 0.5		; fade out
-
-; camera effects
-ce_time				= 1.0	;1.5
-ce_amplitude		= -30.0
-ce_period_number	= 4.0
-ce_power			= 2 ;0.7
 
 [m_Pseudodog_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>

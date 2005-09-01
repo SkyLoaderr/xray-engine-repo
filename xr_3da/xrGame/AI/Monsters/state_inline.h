@@ -26,6 +26,8 @@ void CStateAbstract::reinit()
 {
 	for (STATE_MAP_IT it = substates.begin(); it != substates.end(); it++) 
 		it->second->reinit();
+
+	reset();
 }
 
 

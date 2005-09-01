@@ -32,11 +32,13 @@ class CJumping;
 class CControlledEntityBase;
 class CMovementManager;
 class IStateManagerBase;
+class CAnomalyDetector;
 
 class CControlAnimationBase;
 class CControlMovementBase;
 class CControlPathBuilderBase;
 class CControlDirectionBase;
+
 
 class CBaseMonster : public CCustomMonster, public CStepManager
 {
@@ -97,6 +99,7 @@ public:
 	virtual void			feel_sound_new					(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 	virtual BOOL			feel_touch_on_contact			(CObject* O);
+	virtual BOOL			feel_touch_contact				(CObject *);
 
 	virtual bool			useful							(const CItemManager *manager, const CGameObject *object) const;
 	virtual float			evaluate						(const CItemManager *manager, const CGameObject *object) const;
@@ -111,6 +114,8 @@ public:
 
 	virtual const SRotation	Orientation						() const					{return inherited::Orientation();}
 	virtual void			renderable_Render				()							{return inherited::renderable_Render();} 
+
+	virtual	void			on_restrictions_change			();
 
 	virtual	void			SetAttackEffector				();
 	
@@ -299,6 +304,11 @@ private:
 	bool					m_first_update_initialized;
 	bool					ignore_collision_hit;	
 	
+	CAnomalyDetector		*m_anomaly_detector;
+
+public:
+	CAnomalyDetector		&anomaly_detector	() {return (*m_anomaly_detector);}
+
 	// -----------------------------------------------------------------------------
 	//////////////////////////////////////////////////////////////////////////
 
@@ -314,6 +324,7 @@ public:
 	CControlManagerCustom	&com_man() {return m_com_manager;}
 
 	virtual bool			check_start_conditions	(ControlCom::EControlType){return true;}
+	virtual void			on_activate_control		(ControlCom::EControlType){}
 
 protected:
 	CControl_Manager		*m_control_manager;

@@ -1,5 +1,7 @@
+;=========================================================================================
+; Attack Animation Params
+;=========================================================================================
 [m_gigant_attack_params]
-
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)   |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,8 +13,10 @@ stand_attack_1 =	  	0.40,		50,	    200,        5.0, 2.5, 4.0,		 -0.6, 0.8, -0.6,
 stand_attack_2 =	  	0.35,		20,	    150,        0.5, 1.0, 5.0,		 -0.6, 0.8, -0.6, 0.8,					  3.2
 stand_attack_run_0=     0.5,		20,	    550,        0.5, 1.0, 5.0,		 -0.6, 0.6, -0.6, 0.6,					  4.2
 
+;=========================================================================================
+; Attack Effector
+;=========================================================================================
 [m_giant_attack_effector]
-
 duality_h		= 0.05;0.01
 duality_v		= 0.08;0.01
 blur			= 0.01
@@ -33,6 +37,9 @@ ce_amplitude		= 25.0;15.0
 ce_period_number	= 3.0 
 ce_power			= 3.0 ;0.7 ; power 
 
+;=========================================================================================
+; Step Params
+;=========================================================================================
 [m_gigant_step_params]
 ;------------------------------------------------------------------------
 ;	anim			Cycles| time1 | power1 | time2 | power2 |
@@ -44,6 +51,33 @@ stand_run_dmg_0		=	5,	   0.2,     1,	   0.6,    0.7,
 stand_steal_0		=	1,	   0.2,     1,	   0.5,   0.7,   
 
 
+;=========================================================================================
+; Threaten Effector
+;=========================================================================================
+[pseudogigant_threaten_effector]
+duality_h		= 0.1	;0.31
+duality_v		= 0.1	;0.31
+blur			= 0.01
+gray			= 0.3	;0.5
+noise_intensity = 1.0
+noise_grain		= 0.2
+noise_fps		= 30
+color_base		= 0.3,0.2,0.2	;0.1,0.15,0.4
+color_gray		= 0.333,0.333,0.333	;0.333,0.333,0.333
+color_add		= 0.0,0.0,0.0
+time			= 2.0		;1.5
+time_attack		= 0.1	;0.5		; fade in
+time_release	= 0.3		; fade out
+
+; camera effects
+ce_time				= 1.7	;1.5
+ce_amplitude		= 6.0
+ce_period_number	= 20.0
+ce_power			= 1.3 ;0.7
+
+;=========================================================================================
+; Base Definition
+;=========================================================================================
 [m_gigant_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
@@ -106,9 +140,9 @@ max_hear_dist		 = 80
 
 
 ; speed factors			linear | angular_real | angular_path | min |  max
-Velocity_Stand			= 0,		1.4,			1.4,		1,		1
+Velocity_Stand			= 0,		3.0,			3.0,		1,		1
 Velocity_WalkFwdNormal	= 1.25,		3.9,			3.9,		0.02,	2.0
-Velocity_RunFwdNormal	= 14.5,		2.0,			2.0,		0.16,	1	
+Velocity_RunFwdNormal	= 12.5,		2.0,			2.0,		0.16,	1	
 Velocity_WalkFwdDamaged	= 2.0,		3.0,			3.0,		0.5,	1.5	
 Velocity_RunFwdDamaged	= 1.6,  	4.0,			4.0,		0.2,	1
 Velocity_Drag			= 1.0,		3.0,			3.0,		1,		1
@@ -117,12 +151,12 @@ Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
 ; acceleration
 Accel_Generic		= 1.5
 Accel_Calm			= 1.5
-Accel_Aggressive	= 14.5;6.5
+Accel_Aggressive	= 10.5;6.5
 
-;=================================================================================
+;-----------------------------------------------------------------------
 ; Attack Distance Parameters
-;=================================================================================
-MinAttackDist		= 2.2	;0.5
+;-----------------------------------------------------------------------
+MinAttackDist		= 2.5	;0.5
 MaxAttackDist		= 3.9	;3.8
 
 ;-----------------------------------------------------------------------
@@ -133,10 +167,10 @@ as_step					= 0.5
 ;-----------------------------------------------------------------------
 ; Run Attack 
 ;-----------------------------------------------------------------------
-Run_Attack_Min_Dist		= 5.0
-Run_Attack_Max_Dist		= 7.0
+Run_Attack_Min_Dist		= 4.0
+Run_Attack_Max_Dist		= 6.0
 
-;=================================================================================
+;-----------------------------------------------------------------------
 
 
 transparency_threshold  = 0.25
@@ -148,25 +182,15 @@ Max_Satiety			= 0.9		;
 
 distance_to_corpse	= 1.2		; 
 
+selector_approach		= 20.0,1.0,1000.0,0.0,0.0, 1000.0,	10000.0,      
 
-;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
-;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
-selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+terrain					= 255,255,255,255,30,40
 
-selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
-selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
-;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_walk_around	=      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
+hit_type				= wound
 
-terrain				 = 255,255,255,255,30,40
-
-hit_type = wound
-
-
+;----------------------------------------------------------------------------------------
 ;entity condition
-
+;----------------------------------------------------------------------------------------
 satiety_v 			= 0.00001			;скорость уменьшения сытости со временем
 radiation_v 			= 0.00001 ;0.004	;скорость уменьшения радиации
 satiety_power_v 		= 0.001	;0.01		;увеличение силы при уменьшении сытости 
@@ -199,11 +223,13 @@ sleep_satiety 			= 1.0		;0.8
 sleep_radiation 		= 1.0	;1.1
 sleep_psy_health = 1.0
 
+;----------------------------------------------------------------------------------------
+
 eat_freq			=	5.0		; частота укусов в сек
 eat_slice			=	0.001	; увеличение сытости при 1 укусе
-eat_slice_weight		=	10.0	; уменьшение еды у трупа
+eat_slice_weight	=	10.0	; уменьшение еды у трупа
 
-
+;----------------------------------------------------------------------------------------
 
 ; Morale
 Morale_Hit_Quant				= 0.1
@@ -214,6 +240,9 @@ Morale_Stable_Speed				= 0.01
 Morale_Despondent_Threashold	= 0.5
 
 
+;----------------------------------------------------------------------------------------
+; Sounds
+;----------------------------------------------------------------------------------------
 sound_idle				= monsters\giant\giant_breath_   ; giant_idle_
 sound_eat				= monsters\boar\eat_
 sound_attack			= monsters\giant\giant_attack_
@@ -227,6 +256,9 @@ sound_steal				= monsters\biting\def_
 sound_panic				= monsters\boar\hit_
 sound_growling			= monsters\biting\def_
 sound_die_in_anomaly	= monsters\giant\giant_death_
+
+sound_threaten_hit		= device\door_stop
+sound_threaten_start	= monsters\giant\giant_attack_0
 
 killer_clsids			= Z_MINCER,Z_GALANT
 
@@ -244,14 +276,15 @@ squad_attack_algorithm	= 1
 attack_effector			= m_giant_attack_effector
 
 attack_params			= m_gigant_attack_params
-step_params			= m_gigant_step_params
+step_params				= m_gigant_step_params
 damage					= m_giant_damage
+threaten_effector		= pseudogigant_threaten_effector
+
 
 LegsCount			= 2
 
 ;species of monster
 species					= giant
-
 
 ;-----------------------------
 ; step effector
@@ -260,7 +293,25 @@ step_effector_time		=  0.5
 step_effector_amplitude		=  1.5
 step_effector_period_number	=  5.0
 
+;-----------------------------
+; jump parameters
+;-----------------------------
+jump_delay					= 6000 ;3000
+jump_factor					= 1.4
+jump_ground_trace_range		= 1.4
+jump_hit_trace_range		= 1.0
+jump_build_line_distance	= 4.0
+jump_min_distance			= 9.0 
+jump_max_distance			= 15.0
+jump_max_angle				= 0.3
 
+
+Anomaly_Detect_Radius			= 15.0
+Anomaly_Detect_Time_Remember	= 10000
+
+;=========================================================================================
+; Damage Params
+;=========================================================================================
 
 [m_giant_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>

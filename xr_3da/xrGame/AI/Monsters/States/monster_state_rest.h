@@ -18,6 +18,8 @@ public:
 
 	virtual	void		initialize				();
 	virtual	void		execute					();
+	virtual	void		finalize				();
+	virtual	void		critical_finalize		();
 };
 
 #include "monster_state_rest_inline.h"

@@ -8,7 +8,11 @@
 #include "../monster_velocity_space.h"
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
+#include "../ai_monster_effector.h"
+#include "../../../../CameraBase.h"
+#include "../../../xr_level_controller.h"
 
+const u32 pmt_threaten_delay = 30000;
 
 CPseudoGigant::CPseudoGigant()
 {
@@ -18,6 +22,7 @@ CPseudoGigant::CPseudoGigant()
 	
 	com_man().add_ability(ControlCom::eControlRunAttack);
 	com_man().add_ability(ControlCom::eControlThreaten);
+	//com_man().add_ability(ControlCom::eControlJump);
 }
 
 CPseudoGigant::~CPseudoGigant()
@@ -91,12 +96,45 @@ void CPseudoGigant::Load(LPCSTR section)
 	anim().accel_chain_test		();
 #endif
 
+
+	// Load psi postprocess --------------------------------------------------------
+	LPCSTR ppi_section = pSettings->r_string(section, "threaten_effector");
+	m_threaten_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
+	m_threaten_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
+	m_threaten_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+	m_threaten_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+	m_threaten_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	m_threaten_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	m_threaten_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+	VERIFY(!fis_zero(m_threaten_effector.ppi.noise.fps));
+
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_threaten_effector.ppi.color_base.r,	&m_threaten_effector.ppi.color_base.g,	&m_threaten_effector.ppi.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_threaten_effector.ppi.color_gray.r,	&m_threaten_effector.ppi.color_gray.g,	&m_threaten_effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_threaten_effector.ppi.color_add.r,	&m_threaten_effector.ppi.color_add.g,	&m_threaten_effector.ppi.color_add.b);
+
+	m_threaten_effector.time			= pSettings->r_float(ppi_section,"time");
+	m_threaten_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
+	m_threaten_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
+
+	m_threaten_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+	m_threaten_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+	m_threaten_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+	m_threaten_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+
+	// --------------------------------------------------------------------------------
+	
+
+	::Sound->create(m_sound_threaten_hit,TRUE, pSettings->r_string(section,"sound_threaten_hit"), SOUND_TYPE_WORLD);
+	::Sound->create(m_sound_start_threaten,TRUE, pSettings->r_string(section,"sound_threaten_start"), SOUND_TYPE_MONSTER_ATTACKING);
 }
 
 void CPseudoGigant::reinit()
 {
 	inherited::reinit();
-	
+
+	m_time_last_threaten = 0;
+
+	//com_man().load_jump_data("jump_attack_0", "jump_attack_1", "stand_run_fwd_0", u32(-1));
 }
 
 
@@ -128,12 +166,57 @@ bool CPseudoGigant::check_start_conditions(ControlCom::EControlType type)
 	if (type == ControlCom::eControlRunAttack)
 		return true;
 
+	if (type == ControlCom::eControlThreaten) {
+		if (m_time_last_threaten + pmt_threaten_delay > time()) return false;
+	}
+
 	return true;
+}
+
+void CPseudoGigant::on_activate_control(ControlCom::EControlType type)
+{
+	if (type == ControlCom::eControlThreaten) {
+		m_sound_start_threaten.play_at_pos(this,get_head_position(this));
+		m_time_last_threaten = time();
+	}
 }
 
 void CPseudoGigant::on_threaten_execute()
 {
-	int a = 0;
+	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
+	if (!pA) return;
+	
+	pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_threaten_effector.ce_time,m_threaten_effector.ce_amplitude,m_threaten_effector.ce_period_number,m_threaten_effector.ce_power));
+	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_threaten_effector.ppi, m_threaten_effector.time, m_threaten_effector.time_attack, m_threaten_effector.time_release));
+
+	if (pA->cam_Active()) {
+		pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(0.3f)); 
+		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f)); 
+	}
+
+	Fvector		pos;
+	pos.set		(Position());
+	pos.y		+= 0.1f;
+	m_sound_threaten_hit.play_at_pos(this,pos);
+	
+	pA->movement_control()->ApplyImpulse(Fvector().set(0.f,1.f,0.f), 20 * pA->movement_control()->GetMass());
+
+	// hit objects
+	xr_vector<CObject*> tpObjects;
+	Level().ObjectSpace.GetNearest(tpObjects,Position(), 15.f); 
+
+	for (u32 i=0;i<tpObjects.size();i++) {
+		CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		if (!obj || !obj->m_pPhysicsShell) continue;
+
+		Fvector dir;
+		Fvector pos;
+		pos.set(obj->Position());
+		pos.y += 2.f;
+		dir.sub(pos, Position());
+		dir.normalize();
+		obj->m_pPhysicsShell->applyImpulse(dir,20 * obj->m_pPhysicsShell->getMass());
+	}
 
 }
 
