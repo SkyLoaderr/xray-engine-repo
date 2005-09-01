@@ -103,11 +103,11 @@ driver_animation_type 	= 0	;тип анимаций актера для данной машины.
 
 [damage_particles]
 
-explosion_particles     = explosions\expl_car
+explosion_particles     = ;explosions\expl_car
 car_damage_particles1   = explosions\expl_car_smoke_small
 car_damage_particles2   = explosions\expl_car_smoke_big
-wheels_damage_particles1	= vehiclefx\exhaust_1
-wheels_damage_particles2	= vehiclefx\exhaust_1
+wheels_damage_particles1 = ;vehiclefx\exhaust_1
+wheels_damage_particles2 = ;vehiclefx\exhaust_1
 
 particle_bones1         = front_bamper	;root;left_door,right_door
 particle_bones2         = root			;kabina;kabina,front_bamper,
@@ -116,7 +116,7 @@ particle_bones2         = root			;kabina;kabina,front_bamper,
 ;------ particle bones ---------------------------------------------------------
 
 [particle_bones]
-root					=  0,-0.5,1
+root					=  0,0.5,1.5
 back_left_wheel   		=  0,0,0
 back_right_wheel  		=  0,0,0
 front_left_wheel  		=  0,0,0
@@ -269,13 +269,13 @@ time					 = 30
 ;------ part particles ---------------------------------------------------------
 
 [particles]
-destroy_particles        = explosions\explosion_veh_dist
+destroy_particles        = ;explosions\explosion_veh_dist
 
 ;-------------------------------------------------------------------------------
 ;------ part sound -------------------------------------------------------------
 
 [sound]
-break_sound              =  material\wood\wood_crash1_hl2
+break_sound              = ;material\wood\wood_crash1_hl2
 
 ;-------------------------------------------------------------------------------
 ;--- part impulse_transition ---------------------------------------------------
