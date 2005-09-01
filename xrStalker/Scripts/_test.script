@@ -1,4 +1,4 @@
-привет
+
 sss = "2andy{Scope+GrenadeLauncher+Silencer}, di_ma123{GrenadeLauncher}, oles, alexMX"
 local i = string.find(sss,";")
 if i~=nil then sss = string.sub(sss,0, i-1 ) end
@@ -42,5 +42,13 @@ for i in default_items do
 			" scope=",default_items[i].Scope,
 			" g_l=",default_items[i].GrenadeLauncher,
 			" silencer=",default_items[i].Silencer )
+end
+
+function main()
+	local ui = get_hud()
+	local msg_id = "script_some_message"
+	ui:AddCustomMessage(msg_id,0,0,0.03,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0),"")
+	ui:CustomMessageOut(msg_id, "hello world", GetARGB(255,255,0,0))
+	
 end
 
