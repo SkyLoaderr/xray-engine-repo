@@ -103,7 +103,7 @@ driver_animation_type 	= 0	;тип анимаций актера для данной машины.
 
 [damage_particles]
 
-explosion_particles     = 
+explosion_particles     = explosions\expl_vehichels
 car_damage_particles1   = explosions\expl_car_smoke_small
 car_damage_particles2   = explosions\expl_car_smoke_big
 wheels_damage_particles1 = vehiclefx\exhaust_1
@@ -123,10 +123,10 @@ front_bamper      		=  0,0,0
 ;------ damage items -----------------------------------------------------------
 
 [damage_items]
-back_left_wheel   		= 120
-back_right_wheel  		= 120
-front_left_wheel  		= 120
-front_right_wheel 		= 120
+back_left_wheel   		= 300
+back_right_wheel  		= 300
+front_left_wheel  		= 300
+front_right_wheel 		= 300
 left_door         		= 300
 front_door        		= 300
 back_door         		= 300
@@ -135,16 +135,16 @@ back_door         		= 300
 ;------ collisiondamage --------------------------------------------------------
 
 [collision_damage]
-root                  	= 0.0001
-front_bamper          	= 0.1
-kabina                	= 0.0001
-left_door             	= 0.0001
-front_door            	= 0.0001
-back_door             	= 0.0001
-back_left_wheel       	= 0.00001
-back_right_wheel      	= 0.00001
-front_left_wheel      	= 0.00001
-front_right_wheel     	= 0.00001
+root                  	= 0.001
+front_bamper          	= 0.001
+kabina                	= 0.001
+left_door             	= 0.001
+front_door            	= 0.001
+back_door             	= 0.001
+back_left_wheel       	= 0.0001
+back_right_wheel      	= 0.0001
+front_left_wheel      	= 0.0001
+front_right_wheel     	= 0.0001
 
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
@@ -165,7 +165,7 @@ radiation_immunity    	= 0.01
 telepatic_immunity    	= 0.01
 chemical_burn_immunity 	= 0.01
 explosion_immunity    	= 1.0
-fire_wound_immunity   	= 0.01
+fire_wound_immunity   	= 0.005
 
 ;-------------------------------------------------------------------------------
 ;------explosion params --------------------------------------------------------
@@ -182,7 +182,7 @@ hit_type_blast			= explosion
 hit_type_frag			= fire_wound
 up_throw_factor			= 0.5
 wm_size             	= 0.1
-explode_particles		= explosions\explosion_veh_dist
+explode_particles		= explosions\expl_vehichels
 light_color				= 0.6,0.5,0.3
 light_range				= 15.0
 light_time 				= 1.0
