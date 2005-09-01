@@ -8,6 +8,7 @@
 #include "ParticlesObject.h"
 #include "scope.h"
 #include "silencer.h"
+#include "GrenadeLauncher.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 #include "ActorEffector.h"
@@ -697,19 +698,25 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 
 bool CWeaponMagazined::CanAttach(PIItem pIItem)
 {
-	CScope* pScope = smart_cast<CScope*>(pIItem);
-	CSilencer* pSilencer = smart_cast<CSilencer*>(pIItem);
-	
-	if(pScope &&
-	   m_eScopeStatus == ALife::eAddonAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
-	   !xr_strcmp(*m_sScopeName, pIItem->object().cNameSect()))
+	CScope*				pScope				= smart_cast<CScope*>(pIItem);
+	CSilencer*			pSilencer			= smart_cast<CSilencer*>(pIItem);
+	CGrenadeLauncher*	pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>(pIItem);
+
+	if(			pScope &&
+				 m_eScopeStatus == ALife::eAddonAttachable &&
+				(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
+				(m_sScopeName == pIItem->object().cNameSect()) )
        return true;
-	else if(pSilencer &&
-	   m_eSilencerStatus == ALife::eAddonAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
-	   !xr_strcmp(*m_sSilencerName, pIItem->object().cNameSect()))
+	else if(	pSilencer &&
+				m_eSilencerStatus == ALife::eAddonAttachable &&
+				(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
+				(m_sSilencerName == pIItem->object().cNameSect()) )
        return true;
+	else if (	pGrenadeLauncher &&
+				m_eGrenadeLauncherStatus == ALife::eAddonAttachable &&
+				(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) == 0 &&
+				(m_sGrenadeLauncherName  == pIItem->object().cNameSect()) )
+		return true;
 	else
 		return inherited::CanAttach(pIItem);
 }
@@ -718,11 +725,15 @@ bool CWeaponMagazined::CanDetach(const char* item_section_name)
 {
 	if( m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
-	   xr_strcmp(*m_sScopeName, item_section_name))
+	   (m_sScopeName	== item_section_name))
        return true;
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
-	   xr_strcmp(*m_sSilencerName, item_section_name))
+	   (m_sSilencerName == item_section_name))
+       return true;
+	else if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
+	   (m_sGrenadeLauncherName == item_section_name))
        return true;
 	else
 		return inherited::CanDetach(item_section_name);
@@ -732,13 +743,14 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 {
 	bool result = false;
 
-	CScope* pScope = smart_cast<CScope*>(pIItem);
-	CSilencer* pSilencer = smart_cast<CSilencer*>(pIItem);
+	CScope*				pScope					= smart_cast<CScope*>(pIItem);
+	CSilencer*			pSilencer				= smart_cast<CSilencer*>(pIItem);
+	CGrenadeLauncher*	pGrenadeLauncher		= smart_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pScope &&
 	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
-	   !xr_strcmp(*m_sScopeName, pIItem->object().cNameSect()))
+	   (m_sScopeName == pIItem->object().cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonScope;
 		result = true;
@@ -746,9 +758,17 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 	else if(pSilencer &&
 	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
-	   !xr_strcmp(*m_sSilencerName, pIItem->object().cNameSect()))
+	   (m_sSilencerName == pIItem->object().cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
+		result = true;
+	}
+	else if(pGrenadeLauncher &&
+	   m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) == 0 &&
+	   (m_sGrenadeLauncherName == pIItem->object().cNameSect()))
+	{
+		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
 		result = true;
 	}
 
@@ -759,10 +779,6 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 			//уничтожить подсоединенную вещь из инвентаря
 			pIItem->Drop					();
 			pIItem->object().DestroyObject	();
-//			NET_Packet P;
-//			u_EventGen(P,GE_DESTROY,pIItem->object().ID());
-//			P.w_u16(u16(pIItem->object().ID()));
-//			u_EventSend(P);
 		};
 
 		UpdateAddonsVisibility();
@@ -777,9 +793,9 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 
 bool CWeaponMagazined::Detach(const char* item_section_name)
 {
-	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
-	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
-	   !xr_strcmp(*m_sScopeName, item_section_name))
+	if(		m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
+			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
+			(m_sScopeName == item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonScope;
 		
@@ -789,10 +805,20 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 		return CInventoryItemObject::Detach(item_section_name);
 	}
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
-	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
-	   !xr_strcmp(*m_sSilencerName, item_section_name))
+			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
+			(m_sSilencerName == item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonSilencer;
+
+		UpdateAddonsVisibility();
+		InitAddons();
+		return CInventoryItemObject::Detach(item_section_name);
+	}
+	else if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
+			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
+			(m_sGrenadeLauncherName == item_section_name))
+	{
+		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
 
 		UpdateAddonsVisibility();
 		InitAddons();
