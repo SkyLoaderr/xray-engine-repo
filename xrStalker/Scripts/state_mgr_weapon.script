@@ -14,15 +14,16 @@ function eva_state_mgr_weapon:evaluate()
 	if (weapon == nil) then
 		return true
 	end
-	if self.st.need_reweapon then
+--	if self.st.need_reweapon then
 		--printf("REWEAPON [%s]", self.object:name())
-		if self.st.do_reweapon == true then
-			self.st.need_reweapon = false
-			self.st.do_reweapon = false
-		else
-			return false
-		end
-	end
+		-- Проверяем в какое последнее состояние был произведен перевыбор оружия.
+--		if self.st.do_reweapon ==  then
+--			self.st.need_reweapon = false
+--			self.st.do_reweapon = false
+--		else
+--			return false
+--		end
+--	end
 	
 	if not isWeapon(self.object:best_weapon()) then
 --		printf("isWeapon = false")
@@ -147,8 +148,7 @@ function act_state_mgr_weapon_unstrapp:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_unstrapp:initialize()
 	action_base.initialize(self)
-	self.object:set_item(get_idle_state(self.st), self.object:best_weapon())
-	self.st.do_reweapon = true
+	self.object:set_item(get_idle_state(self.st.target_state), self.object:best_weapon())
 end
 function act_state_mgr_weapon_unstrapp:execute()
 	action_base.execute(self)
@@ -168,7 +168,6 @@ function act_state_mgr_weapon_strapp:initialize()
 	else
 		self.object:set_item(object.idle, nil)
 	end
-	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_strapp:execute()	
 	action_base.execute(self)
@@ -184,7 +183,6 @@ end
 function act_state_mgr_weapon_none:initialize()
 	action_base.initialize(self)
 	self.object:set_item(object.idle, nil)
-	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_none:execute()
 	action_base.execute(self)
@@ -199,8 +197,7 @@ function act_state_mgr_weapon_fire:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_fire:initialize()
 	action_base.initialize(self)
-	self.object:set_item(get_idle_state(self.st), self.object:best_weapon())
-	self.st.do_reweapon = true
+	self.object:set_item(get_idle_state(self.st.target_state), self.object:best_weapon())
 end
 function act_state_mgr_weapon_fire:execute()
 	action_base.execute(self)
@@ -217,7 +214,6 @@ end
 function act_state_mgr_weapon_drop:initialize()
 	action_base.initialize(self)
 	self.object:set_item(object.drop, self.object:best_weapon())
-	self.st.do_reweapon = true
 end
 function act_state_mgr_weapon_drop:execute()
 	action_base.execute(self)
@@ -226,9 +222,9 @@ function act_state_mgr_weapon_drop:finalize()
 	action_base.finalize(self)
 end
 
-function get_idle_state(st)
-	if state_lib.states[st.target_state].mental == anim.danger and
-	   state_lib.states[st.target_state].movement == move.stand 
+function get_idle_state(target_state)
+	if state_lib.states[target_state].mental == anim.danger and
+	   state_lib.states[target_state].movement == move.stand 
 	then
 		return object.aim1
 	else

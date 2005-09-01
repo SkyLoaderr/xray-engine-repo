@@ -240,6 +240,11 @@ function act_state_mgr_end:execute()
 			return				
 		end
 		return
+	elseif t == "unstrapped" then
+		if self.st.need_reweapon == true then
+			self.object:set_item(state_mgr_weapon.get_idle_state(self.st.target_state), self.object:best_weapon())
+			self.st.need_reweapon = false
+		end
 	end	
 end
 function act_state_mgr_end:finalize()
@@ -856,9 +861,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	if self.target_state ~= state_name then
 		self.target_state = state_name
 		--printf("SETING_REWEAPON [%s]", self.npc:name())
---		if not (self.npc:weapon_unstrapped() or self.npc:weapon_strapped()) then
-			self.need_reweapon = true
---		end
+		self.need_reweapon = true
 		switched = true
 	end
 
