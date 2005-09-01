@@ -47,7 +47,7 @@ end
 function main()
 	local ui = get_hud()
 	local msg_id = "script_some_message"
-	ui:AddCustomMessage(msg_id,0,0,0.03,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0),"")
+	ui:AddCustomMessage(msg_id,200,100,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0),"")
 	ui:CustomMessageOut(msg_id, "hello world", GetARGB(255,255,0,0))
 	
 end
