@@ -121,7 +121,7 @@ ph_mass			 			= 3
 ;addons
 scope_status				= 2
 silencer_status				= 2
-grenade_launcher_status		= 0
+grenade_launcher_status		= 2
 
 zoom_enabled				= true
 scope_zoom_factor	    	= 50
@@ -134,6 +134,10 @@ scope_y 					= -2
 silencer_name  				= wpn_addon_silencer
 silencer_x 					= 207
 silencer_y 					= 10
+
+grenade_launcher_name 		= wpn_addon_grenade_launcher_m203
+grenade_launcher_x 			= 117
+grenade_launcher_y 			= 29
 
 ;звуки
 snd_draw			= weapons\generic_draw
@@ -171,6 +175,8 @@ orientation      	        = 0, 0, 0
 position         	        = 0, 0, 0
 visual           	        = weapons\lr300\wpn_lr300_hud.ogf
 
+grenade_bone            	= grenade
+
 anim_idle			= idle
 anim_idle_aim		= idle_aim
 anim_reload			= reload
@@ -178,8 +184,54 @@ anim_draw			= draw
 anim_holster		= holster
 anim_shoot			= shoot
 
+;анимации с подключенным подствольником
+;(режим стрельбы из подствольника)
+;anim_idle_g					= idle_grenade
+;anim_idle_g_aim				= idle_w_gl_aim
+;anim_reload_g				= reload_grenade
+;anim_shoot_g				= shoot_grenade
+;anim_switch_grenade_on		= switch_on
+;anim_switch_grenade_off		= switch_off
+;anim_draw_g					= draw_grenade
+;anim_holster_g				= holster_grenade
+
+anim_idle_g					= idle_w_gl
+anim_idle_g_aim				= idle_w_gl_aim
+anim_reload_g				= reload_w_gl
+anim_shoot_g				= shoot1_w_gl
+anim_switch_grenade_on		= shoot1_w_gl
+anim_switch_grenade_off		= shoot1_w_gl
+anim_draw_g					= draw_w_gl
+anim_holster_g				= holster_w_gl
+
+
+;(режим обычной стрельбы)			  
+anim_idle_gl				= idle_w_gl
+anim_idle_gl_aim			= idle_w_gl_aim
+anim_reload_gl				= reload_w_gl
+anim_draw_gl				= draw_w_gl
+anim_holster_gl				= holster_w_gl
+anim_shoot_gl				= shoot1_w_gl
+
 ;смещения HUD для режима приближения
 zoom_offset			= -0.156700,-0.014800,0.000000
 zoom_rotate_x		= 0.011600
 zoom_rotate_y		= 0.035500
+;прячем перекрестие прицела в зуме
+zoom_hide_crosshair	= true
+
+;тоже самое, но для прицепленого подствольника
+;режим обычной стрельбы
+zoom_offset                     = -0.135500,0.010000,0.000000
+zoom_rotate_x           = -0.013900
+zoom_rotate_y           = -0.001800
+
+;режим подствольника
+grenade_zoom_offset				= -0.135500,0.010000,0.000000
+grenade_zoom_rotate_x			= -0.013900
+grenade_zoom_rotate_y			= -0.001800
+
+grenade_normal_zoom_offset		= -0.135500,0.010000,0.000000
+grenade_normal_zoom_rotate_x	= -0.013900
+grenade_normal_zoom_rotate_y	= -0.001800
 
