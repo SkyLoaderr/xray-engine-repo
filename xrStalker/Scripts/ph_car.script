@@ -199,6 +199,9 @@ function action_car:reset_scheme(loading)
 	                end
 	            end
 	        end
+	        --if self.target_obj then
+	        --    self.target_ph_shell = self.target_obj:get_physics_shell()
+	        --end
 	    end
 
 	    if self.st.on_target_vis then
@@ -1062,7 +1065,9 @@ function action_car:fast_update()
 	            printf("car <fire>: enemy is visible.")
 
 		        self.target_fire_pt = self.target_obj:position()
-		        self.target_fire_pt.y = self.target_fire_pt.y + 0.6 -- FAKE
+		        if xr_wounded.is_heavy_wounded_by_id(self.target_obj:id()) then
+		            self.target_fire_pt.y = self.target_fire_pt.y + 0.5 -- FAKE
+		        end
 		        self:rot_to_firepoint(self.target_fire_pt)
 
 	            if self.car:CanHit() then
