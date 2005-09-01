@@ -119,7 +119,12 @@ local heli_mngr = HeliManager()
    printf("------------HELI INIT----------------------")
 heli_mngr:Init()
    printf("------------HELI START----------------------")
-heli_mngr:Start()
+--heli_mngr:Start()
+
+    heli_mngr.m_heliObject:PrepareDie()
+    heli_mngr.m_heliObject:Die()
+    heli_mngr.m_heliObject:Explode()
+    heli_mngr.m_heliObject:TurnLighting(true)
 
 --		heli:heli_go_by_patrol_path( "heli_way_1" )
 end
