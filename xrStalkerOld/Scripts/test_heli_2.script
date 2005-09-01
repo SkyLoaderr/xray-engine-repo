@@ -35,7 +35,7 @@ function HeliManager:HeliOnHit(power, impulse, hit_type, hitter_id)
    if enemy == nil then 
       return
    end
-	self.m_heliObject:SetEnemy(enemy)
+--	self.m_heliObject:SetEnemy(enemy)
 --	self.m_heliObject:LookAtPoint(enemy:position(),true)
 
 --    self.m_heliObject:SetDestPosition(enemy:position())
@@ -113,7 +113,7 @@ function HeliManager:Start()
 end
 
 
-function  ___main()
+function  main()
 
 local heli_mngr = HeliManager()
    printf("------------HELI INIT----------------------")
@@ -128,7 +128,7 @@ function  main_()
 	db.actor:set_task_state(task.completed,"andy_task_1",0)
 end
 
-function  main()
+function  main__()
 --	local n = level.debug_object( "_niva" )
 --   level.map_add_object_spot(n:id(),"heli_location","niva_super_car");
 
