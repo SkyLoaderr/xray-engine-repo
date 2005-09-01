@@ -157,10 +157,6 @@
 		<class>Monolit_right_hand</class>
 		<specific_character>monolit_right_hand</specific_character>
 	</character>				
-	<character id="stalker_esc_wolf">
-		<class>stalker_esc_wolf</class>
-		<specific_character>stalker_esc_wolf</specific_character>
-	</character>				
 
 	<character id="stalker_esc_fanat">
 		<class>stalker_esc_fanat</class>
