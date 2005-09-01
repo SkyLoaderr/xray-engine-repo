@@ -10,8 +10,6 @@ public:
 									UIGame_custom_script		():inherited(){};
 	virtual void					SetClGame					(game_cl_GameState* g){inherited::SetClGame(g);};
 	virtual	void					Init						(){};
-			void					AddCustomMessage			(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color, LPCSTR def_text );
-			void					CustomMessageOut(LPCSTR id, LPCSTR msg, u32 color);
 	virtual void					ReInitInventoryWnd			() {};
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
