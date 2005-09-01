@@ -26,12 +26,12 @@ fuel_tank         		= 30.         	; L
 fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 10.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3700.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 3500.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.02
-rpm_increment_factor	= 0.025
-rpm_decrement_factor	= 0.025
+rpm_increment_factor	= 0.03
+rpm_decrement_factor	= 0.03
 m_power_neutral_factor	= 0.50
 ; additional engine parameters
 
@@ -135,16 +135,16 @@ back_door         		= 300
 ;------ collisiondamage --------------------------------------------------------
 
 [collision_damage]
-root                  	= 0.001
-front_bamper          	= 0.001
-kabina                	= 0.001
-left_door             	= 0.001
-front_door            	= 0.001
-back_door             	= 0.001
-back_left_wheel       	= 0.0001
-back_right_wheel      	= 0.0001
-front_left_wheel      	= 0.0001
-front_right_wheel     	= 0.0001
+root                  	= 0.0001
+front_bamper          	= 0.1
+kabina                	= 0.0001
+left_door             	= 0.0001
+front_door            	= 0.0001
+back_door             	= 0.0001
+back_left_wheel       	= 0.00001
+back_right_wheel      	= 0.00001
+front_left_wheel      	= 0.00001
+front_right_wheel     	= 0.00001
 
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
@@ -165,7 +165,7 @@ radiation_immunity    	= 0.01
 telepatic_immunity    	= 0.01
 chemical_burn_immunity 	= 0.01
 explosion_immunity    	= 1.0
-fire_wound_immunity   	= 0.06
+fire_wound_immunity   	= 0.01
 
 ;-------------------------------------------------------------------------------
 ;------explosion params --------------------------------------------------------
