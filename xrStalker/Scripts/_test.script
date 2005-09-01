@@ -49,7 +49,7 @@ function main()
 	local msg_id = "script_some_message"
 -- 1st define message params(position,size, font etc)	
 	ui:AddCustomMessage(msg_id,200,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0),"default_text")
-	local total = 20
+	local total = 10
 while total>0 do	
 	local str = string.format("time remains %02d sec",total)
 	ui:CustomMessageOut(msg_id, str, GetARGB(255,255,0,0))
@@ -57,6 +57,19 @@ while total>0 do
 	wait(1000)
 	total = total-1
 end	
+
+	ui:RemoveCustomMessage(msg_id)
+
+	ui:AddCustomMessage(msg_id,200,300,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,128,0,0),"default_text")
+	total = 150
+while total>0 do	
+	local str_ = string.format("time remains %03d sec",total)
+	ui:CustomMessageOut(msg_id, str_, GetARGB(255,128,0,0))
+	
+	wait(300)
+	total = total-1
+end	
+	
 	
 end
 
