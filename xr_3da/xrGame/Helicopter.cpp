@@ -471,6 +471,14 @@ void CHelicopter::save(NET_Packet &output_packet)
 	m_enemy.save	(output_packet);
 	output_packet.w_vec3(XFORM().c);
 	output_packet.w_float(m_barrel_dir_tolerance);
+	save_data		(m_use_rocket_on_attack, output_packet);
+	save_data		(m_use_mgun_on_attack, output_packet);
+	save_data		(m_min_rocket_dist, output_packet);
+	save_data		(m_max_rocket_dist, output_packet);
+	save_data		(m_min_mgun_dist, output_packet);
+	save_data		(m_max_mgun_dist, output_packet);
+	save_data		(m_time_between_rocket_attack, output_packet);
+	save_data		(m_syncronize_rocket, output_packet);
 }
 
 void CHelicopter::load(IReader &input_packet)
@@ -481,4 +489,14 @@ void CHelicopter::load(IReader &input_packet)
 	input_packet.r_fvector3		(XFORM().c);
 	m_barrel_dir_tolerance		= input_packet.r_float();
 	UseFireTrail				(m_enemy.bUseFireTrail);//force reloar disp params
+
+
+	load_data		(m_use_rocket_on_attack, input_packet);
+	load_data		(m_use_mgun_on_attack, input_packet);
+	load_data		(m_min_rocket_dist, input_packet);
+	load_data		(m_max_rocket_dist, input_packet);
+	load_data		(m_min_mgun_dist, input_packet);
+	load_data		(m_max_mgun_dist, input_packet);
+	load_data		(m_time_between_rocket_attack, input_packet);
+	load_data		(m_syncronize_rocket, input_packet);
 }

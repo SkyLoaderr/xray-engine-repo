@@ -320,6 +320,11 @@ void CUICarBodyWnd::Draw()
 
 void CUICarBodyWnd::Update()
 {
+
+	if(m_pOurObject->Position().distance_to(m_pOthersObject->Position()) > 3.0f){
+			GetHolder()->StartStopMenu(this,true);
+	}
+
 	//убрать объект drag&drop для уже использованной вещи
 	for(u32 i = 0; i <m_vDragDropItems.size(); ++i) 
 	{

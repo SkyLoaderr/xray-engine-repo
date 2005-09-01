@@ -60,35 +60,7 @@ public:
 protected:
 
 	CUITradeInternal*	m_uidata;
-/*	CUIStatic			UIStaticTop;
-	CUIStatic			UIStaticBottom;
 
-	CUIStatic			UIOurBagWnd;
-	CUIStatic			UIOthersBagWnd;
-	CUIDragDropList		UIOurBagList;
-	CUIDragDropList		UIOthersBagList;
-
-	CUIStatic			UIOurTradeWnd;
-	CUIStatic			UIOthersTradeWnd;
-	CUIMultiTextStatic	UIOurPriceCaption;
-	CUIMultiTextStatic	UIOthersPriceCaption;
-	CUIDragDropList		UIOurTradeList;
-	CUIDragDropList		UIOthersTradeList;
-
-	//кнопки
-	CUIButton			UIPerformTradeButton;
-	CUIButton			UIToTalkButton;
-
-	//информаци€ о персонажах 
-	CUIStatic			UIOurIcon;
-	CUIStatic			UIOthersIcon;
-	CUICharacterInfo	UICharacterInfoLeft;
-	CUICharacterInfo	UICharacterInfoRight;
-
-	//информаци€ о перетаскиваемом предмете
-	CUIFrameWindow		UIDescWnd;
-	CUIItemInfo			UIItemInfo;
-*/
 	bool				bStarted;
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем
@@ -118,12 +90,6 @@ protected:
 	void UpdateLists();
 
 	void FillList	(TIItemContainer& cont, CUIDragDropList& list, bool do_colorize);
-/*
-	//pop-up меню вызываемое по нажатию правой кнопки
-	CUIPropertiesBox UIPropertiesBox;
-	CUIStatic		UIDealMsg;
-	CUIButton		UIDealClose;
-*/
 	bool			m_bDealControlsVisible;
 
 	void SwitchDealControls(bool on);

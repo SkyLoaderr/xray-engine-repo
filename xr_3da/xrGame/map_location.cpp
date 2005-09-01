@@ -327,6 +327,27 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 					}
 				}
 			}
+			static bool bbb = false;
+			if(!bDone&&bbb){
+				Msg("Error. Path from actor to selected map spot does not contain level changer :(");
+				Msg("Path:");
+				xr_vector<u32>::iterator it			= path_.begin();
+				xr_vector<u32>::iterator it_e		= path_.end();
+				for(; it!=it_e;++it){
+//					Msg("%d-%s",(*it),ai().game_graph().vertex(*it));
+					Msg("[%d] level[%s]",(*it),*ai().game_graph().header().level(ai().game_graph().vertex(*it)->level_id()).name());
+				}
+				Msg("Available LevelChangers:");
+				xr_vector<CLevelChanger*>::iterator lit,lit_e;
+				lit_e							= g_lchangers.end();
+				for(lit=g_lchangers.begin();lit!=lit_e; ++lit){
+					GameGraph::_GRAPH_ID gid = (*lit)->ai_location().game_vertex_id();
+					Msg("[%d]",gid);
+					Msg("lch_name=%s",*ai().game_graph().header().level(ai().game_graph().vertex(gid)->level_id()).name());
+				}
+
+			
+			};
 			if(bDone){
 				Fvector2 position;
 				position.set			((*lit)->Position().x, (*lit)->Position().z);
