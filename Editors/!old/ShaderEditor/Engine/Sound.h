@@ -299,7 +299,7 @@ IC void	ref_sound::set_volume					( float vol )											{	VERIFY(!::Sound->i_l
 IC void	ref_sound::set_priority					( float p )												{	VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->set_priority(p);								}
 IC void	ref_sound::stop							( )														{	VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->stop(FALSE);									}
 IC void	ref_sound::stop_deffered				( )														{	VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->stop(TRUE);									}
-IC const CSound_params*	ref_sound::get_params	( )														{	if (_feedback())	return _feedback()->get_params(); else return NULL;			}
+IC const CSound_params*	ref_sound::get_params	( )														{	VERIFY(!::Sound->i_locked()); 	if (_feedback())	return _feedback()->get_params(); else return NULL;			}
 IC void	ref_sound::set_params					( CSound_params* p )									
 {	
 	VERIFY(!::Sound->i_locked()); 	
