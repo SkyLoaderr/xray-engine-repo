@@ -71,9 +71,9 @@ headlights  = f1
 
 [f1]
 bone               		= right_light
-color              		= 3.0,3.0,3.0,0.7 ;0.8,0.8,0.8,0.5
-range              		= 45
-cone_angle         		= 45
+color              		= 1.0,1.0,1.0,1.0
+range              		= 25
+cone_angle         		= 35
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
 glow_radius        		= 1.5
@@ -106,8 +106,8 @@ driver_animation_type 	= 0	;тип анимаций актера для данной машины.
 explosion_particles     = 
 car_damage_particles1   = explosions\expl_car_smoke_small
 car_damage_particles2   = explosions\expl_car_smoke_big
-wheels_damage_particles1 =
-wheels_damage_particles2 =
+wheels_damage_particles1 = vehiclefx\exhaust_1
+wheels_damage_particles2 = vehiclefx\exhaust_1
 
 particle_bones1         = front_bamper
 particle_bones2         = root
@@ -123,28 +123,28 @@ front_bamper      		=  0,0,0
 ;------ damage items -----------------------------------------------------------
 
 [damage_items]
-back_left_wheel   		= 5000
-back_right_wheel  		= 5000
-front_left_wheel  		= 5000
-front_right_wheel 		= 5000
-left_door         		= 2000
-front_door        		= 2000
-back_door         		= 2000
+back_left_wheel   		= 500
+back_right_wheel  		= 500
+front_left_wheel  		= 500
+front_right_wheel 		= 500
+left_door         		= 200
+front_door        		= 200
+back_door         		= 200
 
 ;-------------------------------------------------------------------------------
 ;------ collisiondamage --------------------------------------------------------
 
 [collision_damage]
-root                  	= 0.0001
-front_bamper          	= 0.0001
-kabina                	= 0.0001
-left_door             	= 0.0001
-front_door            	= 0.0001
-back_door             	= 0.0001
-back_left_wheel       	= 0.00001
-back_right_wheel      	= 0.00001
-front_left_wheel      	= 0.00001
-front_right_wheel     	= 0.00001
+root                  	= 0.001
+front_bamper          	= 0.001
+kabina                	= 0.001
+left_door             	= 0.001
+front_door            	= 0.001
+back_door             	= 0.001
+back_left_wheel       	= 0.0001
+back_right_wheel      	= 0.0001
+front_left_wheel      	= 0.0001
+front_right_wheel     	= 0.0001
 
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
@@ -164,8 +164,8 @@ wound_immunity        	= 0.01
 radiation_immunity    	= 0.01
 telepatic_immunity    	= 0.01
 chemical_burn_immunity 	= 0.01
-explosion_immunity    	= 0.5
-fire_wound_immunity   	= 0.1
+explosion_immunity    	= 1.0
+fire_wound_immunity   	= 0.06
 
 ;-------------------------------------------------------------------------------
 ;------explosion params --------------------------------------------------------
@@ -247,13 +247,12 @@ not_collide_parts = 1
 ;------ destroyed part ---------------------------------------------------------
 
 [destroyed]
-physics\vehicles\Zaz\part\veh_zaz_u_01_part0
-;physics\vehicles\Zaz\part\veh_zaz_u_01_part1
-;physics\vehicles\Zaz\part\veh_zaz_u_01_part2
-;physics\vehicles\Zaz\part\veh_zaz_u_01_part3
-;physics\vehicles\Zaz\part\veh_zaz_u_01_part4
-;physics\vehicles\Zaz\part\veh_zaz_u_01_part5
-;physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
 
 [autoremove_parts]
 time					 = 30
