@@ -166,4 +166,7 @@
 	</info_portion>
 	<info_portion id="esc_tutorial_secret_place_found"></info_portion>
 	
+	
+	<info_portion id="esc_zombie_rise"></info_portion>
+	
 </game_information_portions>
