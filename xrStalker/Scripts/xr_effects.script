@@ -1064,3 +1064,10 @@ end
 function start_small_regect (actor, npc)
     level.set_weather_fx ("surge_day")
 end
+
+
+function aes_grenade_explode (actor, npc)
+    local obj = level_object_by_sid (1101)
+    if obj == nil then return end
+    obj:explode (0)
+end
