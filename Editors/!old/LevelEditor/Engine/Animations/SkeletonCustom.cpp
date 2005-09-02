@@ -176,6 +176,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load	(N, data, dwFlags);
 
     pUserData		= 0;
+    m_lod			= 0;
     // loading lods
 	IReader* LD 	= data->open_chunk(OGF_S_LODS);
     if (LD){
