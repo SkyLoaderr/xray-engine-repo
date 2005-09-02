@@ -140,6 +140,8 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	friend class				CSkeletonX;
 public:
 	typedef xr_vector<std::pair<shared_str,u16> >	accel;
+public:
+	IRender_Visual*				m_lod;
 protected:
 	SkeletonWMVec				wallmarks;
 	u32							wm_frame;

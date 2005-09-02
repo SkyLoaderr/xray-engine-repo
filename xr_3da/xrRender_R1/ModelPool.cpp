@@ -450,7 +450,28 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     xr_vector<IRender_Visual*>::iterator I,E;
     switch (m_pVisual->Type){
     case MT_SKELETON_ANIM:
-    case MT_SKELETON_RIGID:
+    case MT_SKELETON_RIGID:{
+        if (_IsBoxVisible(m_pVisual,mTransform)){
+            CKinematics* pV		= dynamic_cast<CKinematics*>(m_pVisual); VERIFY(pV);
+            if (fis_zero(m_fLOD,EPS)&&pV->m_lod){
+		        if (_IsValidShader(pV->m_lod,priority,strictB2F)){
+	                RCache.set_Shader		(pV->m_lod->shader?pV->m_lod->shader:Device.m_WireShader);
+    	            RCache.set_xform_world	(mTransform);
+        	        pV->m_lod->Render		(1.f);
+                }
+            }else{
+                I = pV->children.begin		();
+                E = pV->children.end		();
+                for (; I!=E; I++){
+                    if (_IsValidShader(*I,priority,strictB2F)){
+                        RCache.set_Shader		((*I)->shader?(*I)->shader:Device.m_WireShader);
+                        RCache.set_xform_world	(mTransform);
+                        (*I)->Render		 	(m_fLOD);
+                    }
+                }
+            }
+        }
+    }break;
     case MT_HIERRARHY:{
         if (_IsBoxVisible(m_pVisual,mTransform)){
             FHierrarhyVisual* pV		= dynamic_cast<FHierrarhyVisual*>(m_pVisual); VERIFY(pV);

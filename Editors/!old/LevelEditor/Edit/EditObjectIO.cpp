@@ -88,6 +88,10 @@ void CEditableObject::Save(IWriter& F)
 	F.w_stringZ		(m_ClassScript);
 	F.close_chunk	();
 
+	F.open_chunk	(EOBJ_CHUNK_LODS);
+	F.w_stringZ		(m_LODs);
+	F.close_chunk	();
+
     F.w_chunk		(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));
 
 //    Log("1: ",F.tell());
@@ -199,6 +203,10 @@ bool CEditableObject::Load(IReader& F)
 
 		if (F.find_chunk	(EOBJ_CHUNK_CLASSSCRIPT)){
 			F.r_stringZ		(m_ClassScript);
+		}
+
+		if (F.find_chunk	(EOBJ_CHUNK_LODS)){
+			F.r_stringZ		(m_LODs);
 		}
 
 		// surfaces

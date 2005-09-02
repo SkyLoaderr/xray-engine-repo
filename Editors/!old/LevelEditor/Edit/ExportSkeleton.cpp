@@ -5,12 +5,14 @@
 #pragma hdrstop
 
 #include "ExportSkeleton.h"
+#include "ExportObjectOGF.h"
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "fmesh.h"
 #include "std_classes.h"
 #include "bone.h"
 #include "motion.h"
+#include "library.h"
 
 #include "MgcCont3DBox.h"         
 #include "MgcCont3DMinBox.h"         
@@ -769,6 +771,33 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     }
 
     pb->Inc		();
+
+	xr_string lods		= m_Source->GetLODs();
+    u32 lod_cnt			= _GetItemCount(lods.c_str());
+    if (lod_cnt&&bRes){
+        F.open_chunk	(OGF_S_LODS);
+        for (u32 k=0; k<lod_cnt; k++){
+        	xr_string 	tmp;
+        	CEditableObject* lod_src = Lib.CreateEditObject(_GetItem(lods.c_str(),k,tmp));
+            if (0==lod_src){
+            	Log		("! Invalid LOD name:",tmp.c_str());
+            	bRes	= false;
+                break;
+            }else{
+                CExportObjectOGF	E(lod_src);
+		        F.open_chunk		(k);
+                if (!E.ExportAsSimple(F)){
+                    Log		("! Invalid LOD object:",tmp.c_str());
+                    bRes	= false;
+                }
+		        F.close_chunk		();
+            	Lib.RemoveEditObject(lod_src);
+            }
+            if (false==bRes) break;
+        }
+        F.close_chunk	();
+    }
+    
     UI->ProgressEnd(pb);
 
     return bRes;

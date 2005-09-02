@@ -188,7 +188,8 @@ class ECORE_API CEditableObject{
     CSMotion*		m_ActiveSMotion;
 public:
     SAnimParams		m_SMParam;
-    shared_str			m_SMotionRefs;
+    shared_str		m_SMotionRefs;
+    shared_str		m_LODs;
 public:
 	// options
 	Flags32			m_Flags;
@@ -299,6 +300,7 @@ public:
 
 	IC xr_string&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}
+    IC LPCSTR		GetLODs					()	{return m_LODs.c_str();}
 
     // animation
     IC bool			IsSkeleton				()	{return !!m_Bones.size();}
@@ -470,6 +472,7 @@ public:
 #define EOBJ_CHUNK_DESC				0x0922
 #define EOBJ_CHUNK_BONEPARTS2		0x0923
 #define EOBJ_CHUNK_SMOTIONS2		0x0924
+#define EOBJ_CHUNK_LODS				0x0925
 //----------------------------------------------------
 
 

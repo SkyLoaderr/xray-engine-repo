@@ -8,6 +8,7 @@
 #include	"Render.h"
 
 int			psSkeletonUpdate	= 32;
+#define		BONE_LOD_0_NAME		"_lod_0"
 
 //////////////////////////////////////////////////////////////////////////
 // BoneInstance methods
@@ -120,7 +121,9 @@ CKinematics::~CKinematics	()
 {
 	IBoneInstances_Destroy	();
 	// wallmarks
-	ClearWallmarks	();
+	ClearWallmarks			();
+
+    ::Render->model_Delete	(m_lod);
 }
 
 void	CKinematics::IBoneInstances_Create()
@@ -173,12 +176,28 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load	(N, data, dwFlags);
 
     pUserData		= 0;
+    // loading lods
+	IReader* LD 	= data->open_chunk(OGF_S_LODS);
+    if (LD){
+        string256	name_load,short_name;
+        strcpy		(short_name,N);
+        if (strext(short_name)) *strext(short_name)=0;
+        // From stream
+        IReader* O 	= LD->open_chunk(0);
+        if (O){
+            strconcat		(name_load,short_name,":lod:1");
+            m_lod 			= ::Render->model_CreateChild(name_load,O);
+            O->close		();
+        }
+        LD->close	();
+    }
+
+#ifndef _EDITOR    
 	// User data
 	IReader* UD 	= data->open_chunk(OGF_S_USERDATA);
-#ifndef _EDITOR    
     pUserData		= UD?xr_new<CInifile>(UD,FS.get_path("$game_config$")->m_Path):0;
-#endif
     if (UD)			UD->close();
+#endif
 
 	// Globals
 	bone_map_N		= xr_new<accel>		();
@@ -323,7 +342,7 @@ void CKinematics::LL_Validate()
         u16 last_id					= 0;
         iBuildGroups    			(root,b_parts,0,last_id);
 
-        for (u16 g=0; g<groups.size(); ++g){
+        for (u16 g=0; g<(u16)groups.size(); ++g){
             xr_vector<u16>&	group	= groups[g];
             u16 bp_id				= b_parts[group[0]];
             for (u32 b=1; b<groups[g].size(); b++)
@@ -362,6 +381,9 @@ void CKinematics::Copy(IRender_Visual *P)
 		LL_GetChild(i)->SetParent(this);
 
 	CalculateBones_Invalidate	();
+
+    if (pFrom->m_lod)
+		m_lod 		= ::Render->model_Duplicate	(pFrom->m_lod);
 }
 
 void CKinematics::CalculateBones_Invalidate	()
@@ -405,6 +427,8 @@ void CKinematics::Release		()
 		CBoneData* &B = (*bones)[i];
 		xr_delete(B);
 	}
+    // release lods
+    if (m_lod)	m_lod->Release	();
 
 	// destroy shared data
     xr_delete(pUserData	);

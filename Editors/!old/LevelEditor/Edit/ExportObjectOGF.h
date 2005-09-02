@@ -125,6 +125,7 @@ class CExportObjectOGF
 
         // Progressive
 		void			AppendPart		(int apx_vertices, int apx_faces);
+        void			SavePart		(IWriter& F, CObjectOGFCollectorPacked* part);
         void 			Save			(IWriter& F, int& chunk_id);
 
         void			CalculateTB		()
@@ -166,6 +167,7 @@ public:
 			CExportObjectOGF	(CEditableObject* object);
 			~CExportObjectOGF	();
     bool    Export				(IWriter& F);
+    bool    ExportAsSimple		(IWriter& F);
     bool	ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn);
 };
 

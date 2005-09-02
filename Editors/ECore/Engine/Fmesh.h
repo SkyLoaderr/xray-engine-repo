@@ -44,6 +44,7 @@ enum OGF_Chuncks {
 	OGF_SWICONTAINER		= 20,	// * SlidingWindowItem record container
 	OGF_GCONTAINER			= 21,	// * both VB&IB
 	OGF_FASTPATH			= 22,	// * extended/fast geometry
+	OGF_S_LODS 				= 23,	// * For skeletons only (Ini-file)
     OGF_forcedword			= 0xFFFFFFFF         
 };							
 
