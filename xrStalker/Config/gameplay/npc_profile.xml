@@ -297,6 +297,25 @@
 		<class>esc_killer_specnaz</class>
 	</character>
 	
+	<character id="esc_bandit_novice">
+		<class>esc_bandit_novice</class>
+	</character>
+	
+	<character id="esc_stalker_novice">
+		<class>esc_stalker_novice</class>
+	</character>	
+	
+	<character id="esc_soldier_commander">
+		<class>esc_soldier_commander</class>
+	</character>
+
+	<character id="esc_soldier_regular">
+		<class>esc_soldier_regular</class>
+	</character>	
+	
+	<character id="esc_soldier_specnaz">
+		<class>esc_soldier_specnaz</class>
+	</character>
 	
 	<!-- Garbage -->
 	
