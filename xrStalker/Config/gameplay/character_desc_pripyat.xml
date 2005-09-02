@@ -1,5 +1,216 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+<!------------------------- MONOLITH ----------------------->
+<!-------------------------- REGULAR ----------------------->
+  <specific_character id="pri_monolith_regular_default1" team_default = "3">
+    <name>Сталкер группировки "Монолит"</name>
+    <icon x="4" y="2"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <class>pri_monolith_regular</class>
+    <community>monolith</community>
+
+
+    <rank>40</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_hood_9</visual>
+    <supplies>
+      [spawn] \n
+      wpn_fort \n
+      ammo_9x18_fmj = 1 \n
+      wpn_ak74 \n
+      ammo_5.45x39_ap = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+
+  <specific_character id="pri_monolith_regular_default2" team_default = "1">
+    <name>Сталкер группировки "Монолит"</name>
+    <icon x="4" y="2"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <class>pri_monolith_regular</class>
+    <community>monolith</community>
+
+
+    <rank>40</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_hood_9</visual>
+    <supplies>
+      [spawn] \n
+      wpn_pb \n
+      ammo_9x18_pmm = 1 \n
+      wpn_ak74u \n
+      ammo_5.45x39_ap = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+
+<!-------------------------- STALKER ----------------------->
+<!-------------------------- VETERAN ----------------------->
+	<specific_character id="pri_stalker_veteran_default1" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>pri_stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+
+	<specific_character id="pri_stalker_veteran_default2" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>pri_stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+
+	<specific_character id="pri_stalker_veteran_default3" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>pri_stalker_veteran</class>
+		<community>stalker</community>
+		
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+
+	<specific_character id="pri_stalker_veteran_default4" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>pri_stalker_veteran</class>
+		<community>stalker</community>
 	
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+
+	<specific_character id="pri_stalker_veteran_default5" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>pri_stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
 </xml>

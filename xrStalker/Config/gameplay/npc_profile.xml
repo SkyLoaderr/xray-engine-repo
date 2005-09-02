@@ -381,18 +381,54 @@
 
 
 	
-	<!-- Darkvalley + X18 -->
+<!-- Darkvalley + X18 -->
+	<!-- Bandits -->	
 	<character id="val_bandit_borov">
 		<class>val_bandit_borov</class>
 		<specific_character>val_bandit_borov</specific_character>
 	</character>
-	
-	<!-- X18 -->
+	<character id="val_bandit_novice">
+		<class>val_bandit_novice</class>
+	</character>
+	<character id="val_bandit_general">
+		<class>val_bandit_general</class>
+	</character>
+	<character id="val_bandit_veteran">
+		<class>val_bandit_veteran</class>
+	</character>
+
+	<!-- Dolg -->
+	<character id="val_dolg_regular">
+		<class>val_dolg_regular</class>
+	</character>
+
+	<!-- Monolit -->
+	<character id="val_monolith_regular">
+		<class>val_monolith_regular</class>
+	</character>
+
+    <!-- Soldier  -->
+	<character id="val_soldier_regular">
+		<class>val_soldier_regular</class>
+	</character>
+	<character id="val_soldier_specnaz">
+		<class>val_soldier_specnaz</class>
+	</character>
+
+	<!-- Stalker  -->	
+	<character id="val_stalker_novice">
+		<class>val_stalker_novice</class>
+	</character>
+	<character id="val_stalker_general">
+		<class>val_stalker_general</class>
+	</character>
+
+<!-- X18 -->
 	<character id="dar_stalker_explorer">
 		<class>dar_stalker_explorer</class>
 	</character>
 
-	<!-- Bar + Rostok -->
+<!-- Bar + Rostok -->
 	<character id="bar_barman">
 		<class>bar_barman</class>
 		<specific_character>bar_barman</specific_character>
@@ -557,10 +593,19 @@
 	</character>
 	
 	
-	<!-- Radar -->
+<!-- Radar -->
 	
-	<!-- Pripyat -->
+<!-- Pripyat -->
+	<!-- Monolit -->
+	<character id="pri_monolith_regular">
+		<class>pri_monolith_regular</class>
+	</character>
+
+	<!-- Stalker  -->	
+	<character id="pri_stalker_veteran">
+		<class>pri_stalker_veteran</class>
+	</character>
 	
-	<!-- Aes -->
+<!-- Aes -->
 	
 </xml>
