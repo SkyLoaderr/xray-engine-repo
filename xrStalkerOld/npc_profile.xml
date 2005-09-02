@@ -428,6 +428,9 @@
 		<class>bar_stalker_hunter</class>
 	</character>
 	<character id="bar_bar_drunk_dolg">
+	<character id="bar_stalker_freeman">
+		<class>bar_stalker_freeman</class>
+	</character>
 		<class>bar_stalker_drunk_dolg</class>
 	</character>
 	<character id="bar_bar_lisiy">
@@ -486,6 +489,72 @@
 	<!-- Yantar + X16 -->
 	
 	<!-- Military -->
+	<character id="mil_Svoboda_specnaz">
+		<class>mil_Svoboda_specnaz</class>
+	</character>
+	<character id="mil_Svoboda_regular">
+		<class>mil_Svoboda_regular</class>
+	</character>
+	<character id="mil_Svoboda_sniper">
+		<class>mil_Svoboda_sniper</class>
+	</character>
+	<character id="mil_Svoboda_stukach">
+		<class>mil_Svoboda_stukach</class>
+	</character>
+	<character id="mil_Svoboda_zoneguard">
+		<class>mil_Svoboda_zoneguard</class>
+	</character>
+	<character id="mil_Svoboda_bodyguard">
+		<class>mil_Svoboda_bodyguard</class>
+	</character>
+	<character id="mil_Svoboda_leader">
+		<class>mil_Svoboda_leader</class>
+	</character>
+	<character id="mil_Svoboda_trader">
+		<class>mil_Svoboda_trader</class>
+	</character>
+	<character id="mil_Svoboda_master_Max">
+		<class>mil_Svoboda_master_Max</class>
+	</character>
+	<character id="mil_Svoboda_master">
+		<class>mil_Svoboda_master</class>
+	</character>
+	<character id="mil_Svoboda_cook">
+		<class>mil_Svoboda_cook</class>
+	</character>
+	<character id="mil_Svoboda_blockpost_leader">
+		<class>mil_Svoboda_blockpost_leader</class>
+	</character>
+	<character id="mil_Svoboda_master_Ugrumiy">
+		<class>mil_Svoboda_master_Ugrumiy</class>
+	</character>
+	<character id="mil_Dolg_specnaz">
+		<class>mil_Dolg_specnaz</class>
+	</character>
+	<character id="mil_Dolg_specnaz_silence">
+		<class>mil_Dolg_specnaz_silence</class>
+	</character>
+	<character id="mil_Dolg_specnaz_cherep">
+		<class>mil_Dolg_specnaz_cherep</class>
+	</character>
+	<character id="mil_Killer_informator">
+		<class>mil_Killer_informator</class>
+	</character>
+	<character id="mil_Killer_specnaz">
+		<class>mil_Killer_specnaz</class>
+	</character>
+	<character id="mil_Stalker_master">
+		<class>mil_Stalker_master</class>
+	</character>
+	<character id="mil_Stalker_veteran">
+		<class>mil_Stalker_veteran</class>
+	</character>
+	<character id="mil_Svoboda_zombi_stalker">
+		<class>mil_Svoboda_zombi_stalker</class>
+	</character>
+	<character id="mil_Monolit_regular">
+		<class>mil_Monolit_regular</class>
+	</character>
 	
 	
 	<!-- Radar -->
