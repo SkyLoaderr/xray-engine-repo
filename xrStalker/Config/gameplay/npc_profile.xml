@@ -347,7 +347,25 @@
 		<class>gar_bandit_leader</class>
 	</character>
 	
-	
+	<character id="gar_bandit_novice">
+		<class>gar_bandit_novice</class>
+	</character>
+
+	<character id="gar_bandit_general">
+		<class>gar_bandit_general</class>
+	</character>
+
+	<character id="gar_stalker_general">
+		<class>gar_stalker_general</class>
+	</character>
+
+	<character id="gar_wounded_bandit">
+		<class>gar_wounded_bandit</class>
+	</character>
+
+	<character id="gar_dolg_blokpost">
+		<class>gar_dolg_blokpost</class>
+	</character>
 		
 	<!-- Agroprom + undeground-->
 	
