@@ -114,6 +114,7 @@
 	<info_portion id="esc_bandits_assault"></info_portion>
 	<info_portion id="escape_assault_finished"></info_portion>
 	<info_portion id="esc_bandit_see_actor"></info_portion>
+	<info_portion id="esc_assault_open_fire"></info_portion>
 	
 	
 	<!-- infoportions for raid -->
