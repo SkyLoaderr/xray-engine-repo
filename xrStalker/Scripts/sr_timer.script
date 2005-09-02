@@ -78,7 +78,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 		st.start_value = utils.cfg_get_number(ini, section, "start_value", obj, false, 0)
 	end
 	-- Вычитываем значения перехода.
-	st.on_value = xr_meet.parse_data(obj, utils.cfg_get_string(ini, section, "on_value", obj, false, ""))
+	st.on_value = parse_data(obj, utils.cfg_get_string(ini, section, "on_value", obj, false, ""))
 	st.last_value = {}
 	
 	local argb = parse_names(utils.cfg_get_string( ini, section, "argb", obj, false, "", "255,255,40,0"))
@@ -98,4 +98,28 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	st.ui:CustomMessageOut(st.caption_id, st.caption, st.color)
 	st.value_id = tostring(obj:id()).."value"
 	st.ui:AddCustomMessage(st.value_id,		910,15,30, st.font, CGameFont.alLeft, st.color)
+end
+
+function parse_data(npc,s)
+	local t = {}
+
+    if s then
+		for name in string.gfind( s, "(%|*%d+%|[^%|]+)%p*" ) do
+			local dat = {	dist = nil,
+							state = nil}	
+			
+			local t_pos = string.find( name, "|", 1, true )
+						
+			local dist = string.sub( name, 1, t_pos - 1 )
+			local state	= string.sub( name, t_pos + 1)
+			
+				
+			dat.dist = tonumber(dist)
+			if state then
+				dat.state = xr_logic.parse_condlist(npc, dist, state, state)
+			end
+			table.insert(t, dat)
+		end
+	end
+    return t
 end
