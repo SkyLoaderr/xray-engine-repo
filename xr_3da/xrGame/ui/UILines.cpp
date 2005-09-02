@@ -76,56 +76,31 @@ void CUILines::SetText(const char* text){
 		m_text = "";
 		Reset();
 	}
+	MoveCursorToEnd();
 }
 
 void CUILines::AddCharAtCursor(const char ch){
 	uFlags.set(flNeedReparse, TRUE);
-	m_text.insert(m_text.begin()+GetAbsCursorPos(),ch);
+	m_text.insert(m_text.begin()+m_iCursorPos,ch);
 	IncCursorPos();
 }
 
-int CUILines::GetAbsCursorPos(){
-	int abs_pos = 0;
-	if (uFlags.test(flComplexMode))
-		if (0 != m_cursor_pos.y)
-		{
-			int n = m_lines.size();
-			if (n>m_cursor_pos.y)
-				n = m_cursor_pos.y;
-			for (int i = 0; i<n; i++)
-				abs_pos += m_lines[i].GetSize();
-		}	
-	abs_pos += m_cursor_pos.x;
-	return abs_pos;
-}
-
-
 void CUILines::MoveCursorToEnd(){
-	const int sz = m_lines.size();
-	if (sz >0)
-	{
-		m_cursor_pos.y = sz - 1;
-		m_cursor_pos.x = m_lines[m_cursor_pos.y].GetSize();
-	}
-	else
-	{
-		m_cursor_pos.x = (int)m_text.size();
-	}
+	m_iCursorPos = m_text.size();
+	UpdateCursor();
 }
 
 void CUILines::DelChar(){
-	const int pos = GetAbsCursorPos();
 	const int sz = (int)m_text.size();
-	if (pos < sz)
+	if (m_iCursorPos < sz)
 	{
-        m_text.erase(m_text.begin()+pos);
+        m_text.erase(m_text.begin()+m_iCursorPos);
         uFlags.set(flNeedReparse, TRUE);
 	}
 }
 
 void CUILines::DelLeftChar(){
-	const int pos = GetAbsCursorPos();
-	if (pos>0)
+	if (m_iCursorPos>0)
 	{
 		DecCursorPos();
 		DelChar();
