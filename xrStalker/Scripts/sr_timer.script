@@ -35,17 +35,16 @@ function action_timer:update(delta)
 	self.st.ui:CustomMessageOut(self.st.value_id, str, self.st.color)
 
 	-- Определяем нужно ли куда то переходить.
---	if self.st.type == "dec" then
 	for k,v in self.st.on_value do
-		if value_time <= v.dist then
+		if (self.st.type == "dec" and value_time <= v.dist) or
+		   (self.st.type == "inc" and value_time >= v.dist)
+		then
 			if self.st.last_value[k] == nil then
 				-- Обработка значения.
 				xr_logic.switch_to_section(self.object, self.st, xr_logic.pick_section_from_condlist(db.actor, self.object, v.state))
 			end
 		end
 	end
---	else
---	end
 end
 function action_timer:deactivate(delta)
 	self.st.ui:RemoveCustomMessage(self.st.caption_id)
@@ -81,8 +80,6 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	-- Вычитываем значения перехода.
 	st.on_value = xr_meet.parse_data(obj, utils.cfg_get_string(ini, section, "on_value", obj, false, ""))
 	st.last_value = {}
-	-- DEBUG!!!
-	st.start_value = 10*1000
 	
 	local argb = parse_names(utils.cfg_get_string( ini, section, "argb", obj, false, "", "255,255,40,0"))
 	for k=1,4 do
