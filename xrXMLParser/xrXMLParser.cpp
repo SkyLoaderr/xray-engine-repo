@@ -466,7 +466,7 @@ LPCSTR CUIXml::CheckUniqueAttrib (XML_NODE* start_node,
 	{
 		LPCSTR attrib = ReadAttrib(start_node, tag_name, i, attrib_name, NULL);
 		
-		std::vector<shared_str>::iterator it = std::find(m_AttribValues.begin(), 
+		xr_vector<shared_str>::iterator it = std::find(m_AttribValues.begin(), 
 												 m_AttribValues.end(), attrib);
 
 		 if(m_AttribValues.end() != it) 

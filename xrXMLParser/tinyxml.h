@@ -306,6 +306,11 @@ protected:
 	}
 	static void ConvertUTF32ToUTF8( unsigned long input, char* output, int* length );
 
+/*
+public:
+	TiXmlBase( const TiXmlBase& );				// not implemented.
+	void operator=( const TiXmlBase& base );	// not allowed.
+*/
 private:
 	TiXmlBase( const TiXmlBase& );				// not implemented.
 	void operator=( const TiXmlBase& base );	// not allowed.
@@ -591,7 +596,11 @@ protected:
 
 	TiXmlNode*		prev;
 	TiXmlNode*		next;
-
+/*
+public:
+	TiXmlNode( const TiXmlNode& );				// not implemented.
+	void operator=( const TiXmlNode& base );	// not allowed.
+*/
 private:
 	TiXmlNode( const TiXmlNode& );				// not implemented.
 	void operator=( const TiXmlNode& base );	// not allowed.
@@ -1195,7 +1204,11 @@ protected :
 	#ifdef TIXML_USE_STL
 	    virtual void StreamIn( TIXML_ISTREAM * in, TIXML_STRING * tag );
 	#endif
-
+/*
+public:
+	TiXmlDocument( const TiXmlDocument& copy );
+	void operator=( const TiXmlDocument& copy );
+*/
 private:
 	TiXmlDocument( const TiXmlDocument& copy );
 	void operator=( const TiXmlDocument& copy );

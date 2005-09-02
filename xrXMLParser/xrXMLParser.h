@@ -140,8 +140,11 @@ protected:
 	XML_NODE* m_pLocalRoot;
 
 	//буфферный вектор для проверки уникальность аттрибутов
-	std::vector<shared_str> m_AttribValues;
+	xr_vector<shared_str> m_AttribValues;
 private:
+	CUIXml(const CUIXml& copy);
+	void operator=( const CUIXml& copy );
+
 	typedef TiXmlElement	XML_ELEM;
 	TiXmlDocument	m_Doc;
 };
