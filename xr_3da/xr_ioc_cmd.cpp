@@ -229,13 +229,12 @@ public:
 		LPCSTR	c_name		= (xr_strlen(args)>0)?args:Console->ConfigFile;
 		SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
 		IWriter* F			= FS.w_open(c_name);
-		R_ASSERT			(F);
-
-		CConsole::vecCMD_IT it;
-		for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
-			it->second->Save(F);
-
-		FS.w_close			(F);
+		if (F){
+			CConsole::vecCMD_IT it;
+			for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
+				it->second->Save(F);
+			FS.w_close			(F);
+		}
 	}
 };
 class CCC_LoadCFG : public IConsole_Command
