@@ -348,6 +348,8 @@ void CCustomZone::net_Destroy()
 
 	m_effector.Stop		();
 	//---------------------------------------------
+	OBJECT_INFO_VEC_IT i=m_ObjectInfoMap.begin(),e=m_ObjectInfoMap.end();
+	for(;e!=i;i++)exit_Zone(*i);
 	m_ObjectInfoMap.clear();	
 }
 void CCustomZone::net_Import(NET_Packet& P)
@@ -546,7 +548,7 @@ void CCustomZone::feel_touch_new	(CObject* O)
 		object_info.zone_ignore = true;
 	else
 		object_info.zone_ignore = false;
-
+	enter_Zone(object_info);
 	m_ObjectInfoMap.push_back(object_info);
 	
 	if (IsEnabled())
@@ -571,7 +573,10 @@ void CCustomZone::feel_touch_delete(CObject* O)
 
 	OBJECT_INFO_VEC_IT it = std::find(m_ObjectInfoMap.begin(),m_ObjectInfoMap.end(),pGameObject);
 	if(it!=m_ObjectInfoMap.end())
+	{	
+		exit_Zone(*it);
 		m_ObjectInfoMap.erase(it);
+	}
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) 
@@ -1271,6 +1276,7 @@ void CCustomZone::net_Relcase(CObject* O)
 	OBJECT_INFO_VEC_IT it = std::find(m_ObjectInfoMap.begin(),m_ObjectInfoMap.end(), GO);
 	if(it!=m_ObjectInfoMap.end()){
 		StopObjectIdleParticles(GO);
+		exit_Zone(*it);
 		m_ObjectInfoMap.erase(it);
 	}
 	if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);

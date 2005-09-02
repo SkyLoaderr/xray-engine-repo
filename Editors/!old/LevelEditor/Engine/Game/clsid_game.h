@@ -150,6 +150,7 @@
 #define CLSID_Z_BFUZZ				MK_CLSID('Z','_','B','F','U','Z','Z',' ')
 #define CLSID_Z_RUSTYH				MK_CLSID('Z','_','R','U','S','T','Y','H')
 #define CLSID_Z_AMEBA				MK_CLSID('Z','_','A','M','E','B','A',' ')
+#define CLSID_Z_NOGRAVITY			MK_CLSID('Z','_','N','O','G','R','A','V')
 #define CLSID_Z_FRYUP  				MK_CLSID('Z','_','F','R','Y','U','P ',' ')
 #define CLSID_Z_DEAD  				MK_CLSID('Z','_','D','E','A','D',' ',' ')
 #define CLSID_LEVEL_CHANGER			MK_CLSID('L','V','L','_','C','H','N','G')

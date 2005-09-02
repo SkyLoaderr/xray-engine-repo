@@ -7907,6 +7907,16 @@
 								RelativePath=".\AmebaZone.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="NoGravityZone"
+							Filter="">
+							<File
+								RelativePath=".\NoGravityZone.cpp">
+							</File>
+							<File
+								RelativePath=".\NoGravityZone.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="map"

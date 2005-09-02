@@ -129,7 +129,7 @@
 #	include "ZoneVisual.h"
 #	include "hairszone.h"
 #	include "amebazone.h"
-
+#	include "nogravityzone.h"
 //#	include "trigger.h"
 #	include "simpledetector.h"
 
@@ -325,6 +325,7 @@ void CObjectFactory::register_classes	()
 	ADD(CTorridZone				,CSE_ALifeTorridZone			,CLSID_Z_TORRID					,"torrid_zone");
 	ADD(CSpaceRestrictor		,CSE_ALifeSpaceRestrictor		,CLSID_SPACE_RESTRICTOR			,"space_restrictor");
 	ADD(CAmebaZone				,CSE_ALifeZoneVisual			,CLSID_Z_AMEBA					,"ameba_zone");
+	ADD(CNoGravityZone			,CSE_ALifeAnomalousZone			,CLSID_Z_NOGRAVITY				,"nogravity_zone");
 	// Detectors
 	ADD(CSimpleDetector			,CSE_ALifeItemDetector			,CLSID_DETECTOR_SIMPLE			,"device_detector_simple");
 
