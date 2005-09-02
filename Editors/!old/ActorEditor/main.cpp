@@ -67,7 +67,7 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
     FillChooseEvents		();
 
     // special case :(
-	frmMain->WindowState = fsStorage->ReadInteger("window_state",frmMain->WindowState);
+	frmMain->WindowState 	= (TWindowState)fsStorage->ReadInteger("window_state",frmMain->WindowState);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)

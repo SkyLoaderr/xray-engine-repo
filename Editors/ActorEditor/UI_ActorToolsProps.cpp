@@ -524,6 +524,7 @@ void CActorTools::FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem
     V->OnChangeEvent.bind			(this,&CActorTools::OnChangeTransform);
     V=PHelper().CreateCaption		(items, "Object\\Transform\\BBox Min",		shared_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(m_pEditObject->GetBox().min)));
     V=PHelper().CreateCaption		(items, "Object\\Transform\\BBox Max",		shared_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(m_pEditObject->GetBox().max)));
+    PHelper().CreateChoose			(items, "Object\\LOD\\Reference",  			&m_pEditObject->m_LODs, smObject);
     m_pEditObject->FillSummaryProps	("Object\\Summary",items);
 }
 //------------------------------------------------------------------------------
