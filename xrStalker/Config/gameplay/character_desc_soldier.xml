@@ -65,9 +65,7 @@
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
 
-		<team>Soldier_regular</team>
-		
-		<class>Soldier_regular</class>
+		<class>Soldier_commander</class>
 		<community>military</community>
 		
 		<rank>60</rank>
