@@ -230,9 +230,11 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	else if (0 == xr_strcmp(al, "t"))
 		pWnd->SetVTextAlignment(valTop);
 
+	pWnd->SetTextComplexMode(xml_doc.ReadAttribInt(*text_path, index, "complex_mode",1)?true:false);
+
 	// Text coordinates
-	float text_x = xml_doc.ReadAttribFlt(*text_path, index, "x", -1);
-	float text_y = xml_doc.ReadAttribFlt(*text_path, index, "y", -1);
+	float text_x = xml_doc.ReadAttribFlt(*text_path, index, "x", 0);
+	float text_y = xml_doc.ReadAttribFlt(*text_path, index, "y", 0);
 	shared_str text = xml_doc.Read(*text_path, index, NULL);
 
 	pWnd->SetTextX(text_x);
