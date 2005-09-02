@@ -180,7 +180,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
-<!---------------------------SVOBODA BODYGUARD---------------------->
+<!---------------------------SVOBODA LEADER---------------------->
 	<specific_character id="mil_Svoboda_leader">
 		<name>"Лукаш"</name>
 		<icon x="20" y="6"></icon>
@@ -638,15 +638,13 @@
                 <actor_dialog>esc_stalker_talk_level</actor_dialog>
         </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
-  <specific_character id="mil_Monolit_regular" team_default = "3">
+  <specific_character id="mil_Monolit_regular" team_default = "1">
     <name>Сталкер группировки "Монолит"</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
-    <team>Monolit_regular</team>
-
-    <class>mil_Monolit_regular</class>
+	<class>mil_Monolit_regular</class>
     <community>monolith</community>
 
 
