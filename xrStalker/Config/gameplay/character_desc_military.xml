@@ -181,7 +181,7 @@
 	</specific_character>
 	
 <!---------------------------SVOBODA LEADER---------------------->
-	<specific_character id="mil_Svoboda_leader">
+	<specific_character id="mil_Svoboda_leader" team_default = "1">
 		<name>"Лукаш"</name>
 		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
