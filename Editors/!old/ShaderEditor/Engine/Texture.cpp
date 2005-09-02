@@ -367,8 +367,9 @@ _BUMP:
 	*/
 _BUMP_from_base:
 	{
+		Msg			("! auto-generated bump map: %s",fname);
 		*strstr		(fname,"_bump")	= 0;
-		R_ASSERT	(FS.exist(fn,"$game_textures$",	fname,	".dds"));
+		R_ASSERT2	(FS.exist(fn,"$game_textures$",	fname,	".dds"),fname);
 
 		// Load   SYS-MEM-surface, bound to device restrictions
 		D3DXIMAGE_INFO			IMG;
