@@ -4,7 +4,7 @@
 <!---------------------------SVOBODA PROFILES----------------------->
 
 <!---------------------------SVOBODA SPECNAZ----------------------->
-	<specific_character id="svoboda_veteran_default1" team_default = "1">
+	<specific_character id="mil_svoboda_veteran_default" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -34,7 +34,7 @@
 	</specific_character>
 
 <!---------------------------SVOBODA REGULAR----------------------->
-	<specific_character id="svoboda_regular_default1" team_default = "1">
+	<specific_character id="mil_svoboda_regular_default1" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -64,7 +64,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA SNIPER---------------------->
-	<specific_character id="svoboda_sniper_default2" team_default = "1">
+	<specific_character id="mil_svoboda_sniper_default2" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
 		<icon x="10" y="2"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -93,7 +93,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
-	<specific_character id="svoboda_specnaz_stukach" team_default = "1">
+	<specific_character id="mil_svoboda_specnaz_stukach" team_default = "1">
 		<name>Павлик</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
@@ -122,7 +122,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA ZONEGUARD---------------------->
-	<specific_character id="svoboda_zoneguard" team_default = "1">
+	<specific_character id="mil_svoboda_zoneguard" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -151,7 +151,7 @@
 		<actor_dialog>mil_zoneguard_common2</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA BODYGUARD---------------------->
-	<specific_character id="svoboda_bodyguard1" team_default = "1">
+	<specific_character id="mil_svoboda_bodyguard1" team_default = "1">
 		<name>"Капец"</name>
 		<icon x="24" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -181,7 +181,7 @@
 	</specific_character>
 	
 <!---------------------------SVOBODA BODYGUARD---------------------->
-	<specific_character id="svoboda_leader">
+	<specific_character id="mil_svoboda_leader">
 		<name>"Лукаш"</name>
 		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -207,7 +207,7 @@
 	</specific_character>	
 
 <!---------------------------SVOBODA TRADER----------------------->
-	<specific_character id="svoboda_trader" team_default = "1">
+	<specific_character id="mil_svoboda_trader" team_default = "1">
 		<name>"Скряга"</name>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -236,7 +236,7 @@
 
 	</specific_character>
 <!---------------------------SVOBODA MASTER MAX----------------------->
-	<specific_character id="svoboda_master_max" team_default = "1">
+	<specific_character id="mil_svoboda_master_max" team_default = "1">
 		<name>"Макс"</name>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -268,7 +268,7 @@
 		<actor_dialog>mil_max_dialog_common3</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA MASTER----------------------->
-	<specific_character id="svoboda_master_default1" team_default = "1">
+	<specific_character id="mil_svoboda_master_default1" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -299,7 +299,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA COOK----------------------->
-	<specific_character id="svoboda_cook" team_default = "1">
+	<specific_character id="mil_svoboda_cook" team_default = "1">
 		<name>"Повар"</name>
 		
 		<icon x="4" y="3"></icon>
@@ -339,7 +339,7 @@
 
 	</specific_character>
 <!---------------------------SVOBODA BLOCKPOST LEADER---------------------->
-	<specific_character id="svoboda_blockpost_leader" team_default = "1">
+	<specific_character id="mil_svoboda_blockpost_leader" team_default = "1">
 		<name>"Кеп"</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
@@ -366,7 +366,7 @@
 		<actor_dialog>mil_freedom_commander_common2</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
-	<specific_character id="svoboda_master_ugrumiy" team_default = "1">
+	<specific_character id="mil_svoboda_master_ugrumiy" team_default = "1">
 		<name>"Угрюмый"</name>
 		
 		<icon x="12" y="0"></icon>
@@ -400,7 +400,7 @@
 	
 <!---------------------------DOLG PROFILES----------------------->
 <!---------------------------DOLG SPECNAZ---------------------->
-	<specific_character id="dolg_veteran_default1" team_default = "1">
+	<specific_character id="mil_dolg_veteran_default1" team_default = "1">
 		<name>Сталкер группировки "Долг"</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
@@ -427,7 +427,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
-	<specific_character id="dolg_veteran_silence" team_default = "1">
+	<specific_character id="mil_dolg_veteran_silence" team_default = "1">
 		<name>Сталкер группировки "Долг"</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
@@ -453,7 +453,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
-	<specific_character id="dolg_veteran_cherep" team_default = "1">
+	<specific_character id="mil_dolg_veteran_cherep" team_default = "1">
 		<name>"Череп"</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
@@ -485,7 +485,7 @@
 	
 <!---------------------------KILLERS PROFILES----------------------->
 <!---------------------------KILLER IHFORMATOR---------------------->
-	<specific_character id="killer_informator" team_default = "1">
+	<specific_character id="mil_killer_informator" team_default = "1">
 		<name>Ара</name>
 		<icon x="28" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
@@ -514,7 +514,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------KILLER SPECNAZ---------------------->
-	<specific_character id="killer_specnaz_default1" team_default = "1">
+	<specific_character id="mil_killer_specnaz_default1" team_default = "1">
 		<name>Неизвестный наемник</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
@@ -545,7 +545,7 @@
 	
 <!---------------------------NEUTRAL PROFILES----------------------->
 <!---------------------------STALKER MASTER----------------------->
-	<specific_character id="stalker_master_default1" team_default = "1">
+	<specific_character id="mil_stalker_master_default1" team_default = "1">
 		<name>Неизвестный мастер</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
@@ -577,7 +577,7 @@
 
 	</specific_character>
 <!---------------------------STALKER VETERAN---------------------->
-	<specific_character id="stalker_veteran_default1" team_default = "1">
+	<specific_character id="mil_stalker_veteran_default1" team_default = "1">
 		<name>Неизвестный ветеран</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
@@ -610,7 +610,7 @@
 	
 <!---------------------------SOME PROFILES----------------------->
 <!---------------------------SVOBODA CRAZY STALKER----------------------->
-        <specific_character id="svoboda_zombi_stalker" team_default = "1">
+        <specific_character id="mil_svoboda_zombi_stalker" team_default = "1">
                 <name>Сумасшедший cталкер группировки "Свобода"</name>
                 <icon x="12" y="0"></icon>
                 <map_icon x="5" y="0"></map_icon>
@@ -638,7 +638,7 @@
                 <actor_dialog>esc_stalker_talk_level</actor_dialog>
         </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
-  <specific_character id="monolit_regular_default1" team_default = "3">
+  <specific_character id="mil_monolit_regular_default1" team_default = "3">
     <name>Сталкер группировки "Монолит"</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
