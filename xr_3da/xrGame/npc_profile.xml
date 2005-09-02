@@ -357,10 +357,10 @@
 		
 <!-- Agroprom + undeground-->
 	<character id="agr_krot">
-		<class>stalker_agr_krot</class>
+		<class>agr_krot</class>
 	</character>	
 	<character id="agr_ratcatcher">
-		<class>stalker_agr_ratcatcher</class>
+		<class>agr_ratcatcher</class>
 	</character>	
 	<!-- stalkers -->
 	<character id="agr_stalker_general">
