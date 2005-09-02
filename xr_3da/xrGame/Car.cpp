@@ -353,7 +353,7 @@ void CCar::shedule_Update(u32 dt)
 	if(CPHDestroyable::Destroyed())CPHDestroyable::SheduleUpdate(dt);
 	else	CPHSkeleton::Update(dt);
 	
-	if(m_death_time!=u32(-1)&&GetfHealth()<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
+	if(m_death_time!=u32(-1)&&m_time_to_explode!=u32(-1)&&GetfHealth()<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
 	{
 		CarExplode();
 		

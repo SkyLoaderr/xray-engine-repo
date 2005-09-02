@@ -35,6 +35,8 @@ void CCar::script_register(lua_State *L)
 		.def("CurrentVel",		&CCar::CurrentVel)
 		.def("GetfHealth",		&CCar::GetfHealth)
 		.def("SetfHealth",		&CCar::SetfHealth)
+		.def("SetExplodeTime",	&CCar::SetExplodeTime)
+		.def("ExplodeTime",		&CCar::ExplodeTime)
 		.def(constructor<>())
 	];
 }

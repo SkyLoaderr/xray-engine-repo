@@ -566,9 +566,10 @@ public:
 	virtual u16				Initiator					();
 	// HUD
 	virtual void			OnHUDDraw					(CCustomHUD* hud);
-
-	CCameraBase*			Camera						(){return active_camera;}
-
+	
+	CCameraBase*			Camera						()			{return active_camera;}
+			void			SetExplodeTime				(u32 et)	{m_time_to_explode=et;}
+			u32				ExplodeTime					()			{return m_time_to_explode;}
 	// Inventory for the car	
 	CInventory*						GetInventory						(){return inventory;}
 		  void						VisualUpdate						(float fov=90.0f);
