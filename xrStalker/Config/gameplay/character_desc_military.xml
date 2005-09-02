@@ -1,5 +1,670 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+<!---------------------------SVOBODA PROFILES----------------------->
+
+<!---------------------------SVOBODA SPECNAZ----------------------->
+	<specific_character id="svoboda_veteran_default1" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_specnaz</team>
+		
+		<class>mil_Svoboda_specnaz</class>
+		<community>freedom</community>
+
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+<!---------------------------SVOBODA REGULAR----------------------->
+	<specific_character id="svoboda_regular_default1" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="22" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_regular</team>
+		
+		<class>mil_Svoboda_regular</class>
+		<community>freedom</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA SNIPER---------------------->
+	<specific_character id="svoboda_sniper_default2" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="10" y="2"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_sniper</team>
+		
+		<class>mil_Svoboda_sniper</class>
+		<community>freedom</community>
+
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_hood_91</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_svd \n
+			ammo_7.62x54_7h14 = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
+	<specific_character id="svoboda_specnaz_stukach" team_default = "1">
+		<name>Павлик</name>
+		<icon x="22" y="8"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_stukach</team>
+		
+		<class>mil_Svoboda_specnaz_stukach</class>
+		<community>freedom</community>
+
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA ZONEGUARD---------------------->
+	<specific_character id="svoboda_zoneguard" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_specnaz</team>
+		
+		<class>mil_Svoboda_zoneguard</class>
+		<community>freedom</community>
+
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>mil_zoneguard_common1</actor_dialog>
+		<actor_dialog>mil_zoneguard_common2</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA BODYGUARD---------------------->
+	<specific_character id="svoboda_bodyguard1" team_default = "1">
+		<name>"Капец"</name>
+		<icon x="24" y="12"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
+
+		<team>Svoboda_regular</team>
+		
+		<class>mil_Svoboda_bodyguard</class>
+		<community>freedom</community>
+		
+		<rank>80</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+<!---------------------------SVOBODA BODYGUARD---------------------->
+	<specific_character id="svoboda_leader">
+		<name>"Лукаш"</name>
+		<icon x="20" y="6"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Лидер группировки "Свобода".</bio>
+
+		<class>mil_Svoboda_leader</class>
+		<community>freedom</community>
+		
+		<rank>90</rank>
+		<reputation>-30</reputation>
+
+		<visual>actors\svoboda\stalker_sv_leader</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>	
+
+<!---------------------------SVOBODA TRADER----------------------->
+	<specific_character id="svoboda_trader" team_default = "1">
+		<name>"Скряга"</name>
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Известен своей жадностью и неуступчивостью, но говорят у него можно достать все что угодно.</bio>
+
+		<team>Svoboda_master</team>
+		
+		<class>mil_Svoboda_trader</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_balon_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ap = 1 \n
+			af_cristall
+		</supplies>
+			
+		<start_dialog>mil_trader_dialog</start_dialog>
+
+	</specific_character>
+<!---------------------------SVOBODA MASTER MAX----------------------->
+	<specific_character id="svoboda_master_max" team_default = "1">
+		<name>"Макс"</name>
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
+		Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_master</team>
+		
+		<class>mil_Svoboda_master_Max</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>mil_max_dialog</start_dialog>
+		<actor_dialog>mil_max_dialog_common2</actor_dialog>
+        <actor_dialog>mil_max_dialog_common1</actor_dialog>
+		<actor_dialog>mil_max_dialog_common3</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA MASTER----------------------->
+	<specific_character id="svoboda_master_default1" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Мастер группировки "Свобода"
+		Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_master</team>
+		
+		<class>mil_Svoboda_master</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA COOK----------------------->
+	<specific_character id="svoboda_cook" team_default = "1">
+		<name>"Повар"</name>
+		
+		<icon x="4" y="3"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Повар группировки "Свобода". Детальная информация отсутствует.</bio>
+		
+		<class>mil_Svoboda_cook</class>
+		<community>freedom</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_cook</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>mil_cook_common1</actor_dialog>
+		<actor_dialog>mil_cook_common2</actor_dialog>
+		<actor_dialog>mil_cook_common3</actor_dialog>
+		<actor_dialog>mil_cook_common4</actor_dialog>
+		<actor_dialog>mil_cook_common5</actor_dialog>
+		<actor_dialog>mil_cook_common6</actor_dialog>
+ 		<actor_dialog>mil_cook_drink_for_rg6_1</actor_dialog>
+        <actor_dialog>mil_cook_drink_for_rg6_2</actor_dialog>
+        <actor_dialog>mil_cook_drink_for_rg6_3</actor_dialog>
+        <actor_dialog>mil_cook_drunk_question_about_rg6_1</actor_dialog>
+        <actor_dialog>mil_cook_drunk_question_about_rg6_2</actor_dialog>
+        <actor_dialog>mil_cook_drunk_question_about_rg6_3</actor_dialog>
+
+	</specific_character>
+<!---------------------------SVOBODA BLOCKPOST LEADER---------------------->
+	<specific_character id="svoboda_blockpost_leader" team_default = "1">
+		<name>"Кеп"</name>
+		<icon x="22" y="8"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Командир Барьера. Человек, сплотивший вокруг себя людей, готовых гибнуть за общее дело.</bio>
+
+    	<team>Svoboda_master</team>
+		
+		<class>mil_Svoboda_blockpost_leader</class>
+		<community>freedom</community>
+
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 4 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ap = 4 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>mil_freedom_commander_common2</actor_dialog>
+	</specific_character>
+<!---------------------------SVOBODA MASTER UGRUMIY----------------------->
+	<specific_character id="svoboda_master_ugrumiy" team_default = "1">
+		<name>"Угрюмый"</name>
+		
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
+		Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_master</team>
+		
+		<class>mil_Svoboda_master_Ugrumiy</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+
+	
+<!---------------------------DOLG PROFILES----------------------->
+<!---------------------------DOLG SPECNAZ---------------------->
+	<specific_character id="dolg_veteran_default1" team_default = "1">
+		<name>Сталкер группировки "Долг"</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>mil_Dolg_specnaz</class>
+		<community>dolg</community>
+
+		<rank>70</rank>
+		<reputation>40</reputation>
+
+		<visual>actors\dolg\stalker_do_antigas</visual>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_val \n
+			ammo_9x39_sp5 = 1 \n
+#include "gameplay\character_items.xml"			
+		</supplies>		
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+<!---------------------------DOLG SPECNAZ SILENCE---------------------->
+	<specific_character id="dolg_veteran_silence" team_default = "1">
+		<name>Сталкер группировки "Долг"</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>mil_Dolg_specnaz_silence</class>
+		<community>dolg</community>
+
+		<rank>70</rank>
+		<reputation>40</reputation>
+
+		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_val \n
+			ammo_9x39_sp5 = 1 \n
+		</supplies>		
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>	
+<!---------------------------DOLG SPECNAZ CHEREP---------------------->
+	<specific_character id="dolg_veteran_cherep" team_default = "1">
+		<name>"Череп"</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<team>Dolg_specnaz</team>
+
+		<class>mil_Dolg_specnaz_cherep</class>
+		<community>dolg</community>
+
+		<rank>70</rank>
+		<reputation>40</reputation>
+
+		<visual>actors\dolg\stalker_do_antigas</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_hydro	= 1 \n
+			wpn_groza \n
+			ammo_9x39_sp5 = 2 \n
+			ammo_vog-25p = 2 \n
+		</supplies>		
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>	
+	
+	
+<!---------------------------KILLERS PROFILES----------------------->
+<!---------------------------KILLER IHFORMATOR---------------------->
+	<specific_character id="killer_informator" team_default = "1">
+		<name>Ара</name>
+		<icon x="28" y="14"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Известный на всю Зону информатор и осведомитель.</bio>
+
+		<team>Killer_specnaz</team>
+		
+		<class>mil_Killer_informator</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_informator</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+<!---------------------------KILLER SPECNAZ---------------------->
+	<specific_character id="killer_specnaz_default1" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="4" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+
+		<team>Killer_specnaz</team>
+		
+		<class>mil_Killer_specnaz</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_antigas</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+	
+<!---------------------------NEUTRAL PROFILES----------------------->
+<!---------------------------STALKER MASTER----------------------->
+	<specific_character id="stalker_master_default1" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="10" y="0"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+
+		<class>mil_Stalker_master</class>
+		<community>stalker</community>
+		
+		<rank>95</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 = 1, 1, 0, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+						
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+<!---------------------------STALKER VETERAN---------------------->
+	<specific_character id="stalker_veteran_default1" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>mil_Stalker_veteran</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+	
+<!---------------------------SOME PROFILES----------------------->
+<!---------------------------SVOBODA CRAZY STALKER----------------------->
+        <specific_character id="svoboda_zombi_stalker" team_default = "1">
+                <name>Сумасшедший cталкер группировки "Свобода"</name>
+                <icon x="12" y="0"></icon>
+                <map_icon x="5" y="0"></map_icon>
+                <bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+
+                <class>mil_Svoboda_zombi_stalker</class>
+                <community>bandit</community>
+
+
+                <rank>40</rank>
+                <reputation>0</reputation>
+
+                <visual>actors\stalker_zombi\stalker_zombie5</visual>
+                <supplies>
+                        [spawn] \n
+                        wpn_beretta \n
+                        ammo_9x19_pbp = 1 \n
+                        wpn_ak74 = 1, 1, 1, 0 \n
+                        ammo_5.45x39_ap = 1 \n
+                </supplies>
+
+                <start_dialog>hello_dialog</start_dialog>
+                <actor_dialog>general_pda_talk</actor_dialog>
+                <actor_dialog>esc_stalker_talk_level</actor_dialog>
+        </specific_character>
+<!---------------------------MONOLIT REGULAR----------------------->
+  <specific_character id="monolit_regular_default1" team_default = "3">
+    <name>Сталкер группировки "Монолит"</name>
+    <icon x="4" y="2"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <team>Monolit_regular</team>
+
+    <class>mil_Monolit_regular</class>
+    <community>monolith</community>
+
+
+    <rank>40</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_hood_9</visual>
+    <supplies>
+      [spawn] \n
+      wpn_fort \n
+      ammo_9x18_fmj = 1 \n
+      wpn_ak74 \n
+      ammo_5.45x39_ap = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
 	
 </xml>
