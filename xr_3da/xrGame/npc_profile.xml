@@ -355,7 +355,7 @@
 		<class>gar_dolg_blokpost</class>
 	</character>
 		
-	<!-- Agroprom + undeground-->
+<!-- Agroprom + undeground-->
 	<character id="agr_krot">
 		<class>stalker_agr_krot</class>
 	</character>	
@@ -594,6 +594,27 @@
 	
 	
 <!-- Radar -->
+	<character id="rad_monolit_regular">
+		<class>rad_Monolit_regular</class>
+	</character>
+	<character id="rad_monolit_sniper">
+		<class>rad_Monolit_sniper</class>
+	</character>
+	<character id="rad_monolit_specnaz">
+		<class>rad_Monolit_specnaz</class>
+	</character>
+	<character id="rad_monolit_master">
+		<class>rad_Monolit_master</class>
+	</character>
+	<character id="rad_monolit_rpg">
+		<class>rad_Monolit_rpg</class>
+	</character>
+	<character id="rad_zombied">
+		<class>rad_Zombied</class>
+	</character>
+	<character id="rad_zombied_veteran">
+		<class>rad_Zombied_veteran</class>
+	</character>
 	
 <!-- Pripyat -->
 	<!-- Monolit -->
