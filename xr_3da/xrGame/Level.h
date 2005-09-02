@@ -42,6 +42,17 @@ class CMapManager;
 class CLevel					: public IGame_Level, public IPureClient
 {
 private:
+	BOOL						m_bDemoPlayMode;	
+	DEF_DEQUE(DemoDeque, NET_Packet);
+	DemoDeque					m_aDemoData;
+
+	BOOL						m_bDemoSaveMode;
+	string1024					m_sDemoName;
+	
+	BOOL						m_bDemoStarted;	
+	void						UpdateDemo				();
+	void						DemoWriteData			(void* data, u32 size);
+private:
 #ifdef DEBUG
 	bool						m_bSynchronization;
 #endif
@@ -76,6 +87,8 @@ protected:
 	CStatGraph					*pStatGraph;
 	
 public:
+	BOOL						IsDemoPlay				()	{return (m_bDemoPlayMode && !m_bDemoSaveMode);};
+	BOOL						IsDemoSave				()	{return (m_bDemoSaveMode && !m_bDemoPlayMode);};
 	
 #ifdef DEBUG
 	// level debugger
@@ -92,6 +105,8 @@ public:
 	void						SetNumCrSteps			( u32 NumSteps );
 	static void __stdcall		PhisStepsCallback		( u32 Time0, u32 Time1 );
 	bool						In_NetCorrectionPrediction	() {return m_bIn_CrPr;};
+
+	virtual void				OnMessage				(void* data, u32 size);
 private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;

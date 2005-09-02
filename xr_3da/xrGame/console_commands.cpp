@@ -80,6 +80,7 @@ extern	BOOL	g_bCollectStatisticData ;
 extern	BOOL	g_bStatisticSaveAuto	;
 extern	BOOL	g_SV_Disable_Auth_Check	;
 extern	BOOL	g_bDebugDumpPhysicsStep	;
+extern	BOOL	g_bLeaveTDemo			;
 #ifdef DEBUG
 	extern	BOOL	g_SV_Force_Artefact_Spawn;
 #endif
@@ -2190,4 +2191,5 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,	"sv_artefact_spawn_force",		&g_SV_Force_Artefact_Spawn, 0, 1);
 #endif
+	CMD4(CCC_Integer,	"cl_leave_tdemo",		&g_bLeaveTDemo, 0, 1);
 }

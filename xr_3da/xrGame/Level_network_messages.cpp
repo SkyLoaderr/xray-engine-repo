@@ -10,6 +10,8 @@
 
 void CLevel::ClientReceive()
 {
+	UpdateDemo();
+
 	for (NET_Packet* P = net_msg_Retreive(); P; P=net_msg_Retreive())
 	{
 		u16			m_type;
@@ -277,3 +279,71 @@ void CLevel::ClientReceive()
 
 	if (!g_bDebugEvents) ProcessGameSpawns();
 }
+
+
+
+void				CLevel::OnMessage				(void* data, u32 size)
+{	
+	if (IsDemoPlay() ) 
+	{
+		if (m_bDemoStarted) return;
+		
+		if (!m_aDemoData.empty() && net_Syncronised)
+		{
+			NET_Packet *P = &(m_aDemoData.front());
+			timeServer_UserDelta(P->timeReceive - timeServer_Async());
+			m_bDemoStarted = TRUE;
+			Msg("! ------------- Demo Started ------------");
+			return;
+		}
+	};
+		
+	if (IsDemoSave() && net_Syncronised) 
+	{
+		DemoWriteData(data, size);
+	}	
+
+	IPureClient::OnMessage(data, size);	
+};
+
+void						CLevel::DemoWriteData			(void* data, u32 size)
+{
+	if (!IsDemoSave()) return;
+
+	FILE* fTDemo = fopen(m_sDemoName, "ab");
+	if (!fTDemo) return;
+
+	static u32 Count = 0;
+	static u32 TotalSize = 0;
+	u32 CurTime = timeServer_Async();
+//	Msg("   StoredTime - %d [%d, %d, %d]", CurTime, TimerAsync(device_timer), net_TimeDelta, net_TimeDelta_User);
+	fwrite(&(CurTime), sizeof(CurTime), 1, fTDemo); TotalSize += sizeof(CurTime);
+	fwrite(&(size), sizeof(size), 1, fTDemo);		TotalSize += sizeof(size);
+	if (size) fwrite((data), 1, size, fTDemo);		TotalSize += size;
+	fclose(fTDemo);
+	Count++;
+}
+
+void						CLevel::UpdateDemo				()
+{
+	if (!IsDemoPlay() || m_aDemoData.empty() || !m_bDemoStarted) return;
+	static u32 Pos = 0;
+	if (Pos >= m_aDemoData.size()) return;
+		
+	for (Pos; Pos < m_aDemoData.size(); Pos++)
+	{
+		u32 CurTime = timeServer_Async();
+		NET_Packet* P = &(m_aDemoData[Pos]);
+//		Msg("tS_A - %d; P->tR - %d", CurTime, P->timeReceive);
+		if (P->timeReceive <= CurTime) IPureClient::OnMessage(P->B.data, P->B.count);
+		else 
+		{			
+			break;
+		};
+	}
+
+	if (Pos >= m_aDemoData.size())
+	{
+		Msg("! ------------- Demo Ended ------------");
+	};	
+};

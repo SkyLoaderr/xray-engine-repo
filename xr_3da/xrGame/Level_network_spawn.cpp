@@ -64,7 +64,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{
 			SetEntity		(	O	);
 			SetControlEntity(	O	);
-			if (net_Syncronised)	net_Syncronize	();	// start sync-thread again
+//			if (net_Syncronised)	net_Syncronize	();	// start sync-thread again
 		}
 
 		if (0xffff != E->ID_Parent)	

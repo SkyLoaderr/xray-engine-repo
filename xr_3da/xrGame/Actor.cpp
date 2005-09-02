@@ -326,6 +326,9 @@ void CActor::Load	(LPCSTR section )
 	m_fClimbFactor				= pSettings->r_float(section,"climb_coef");
 	m_fSprintFactor				= pSettings->r_float(section,"sprint_koef");
 
+	m_fWalk_StrafeFactor		= READ_IF_EXISTS(pSettings, r_float, section, "walk_strafe_coef", 1.0f);
+	m_fRun_StrafeFactor			= READ_IF_EXISTS(pSettings, r_float, section, "run_strafe_coef", 1.0f);
+
 
 	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
 	m_PhysicMovementControl		->SetJumpUpVelocity(m_fJumpSpeed);

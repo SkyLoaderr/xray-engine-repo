@@ -140,9 +140,54 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwCL_PingLastSendTime = 0;
 	m_dwCL_PingDeltaSend = 1000;
 	m_dwRealPing = 0;
+	//---------------------------------------------------------	
+	m_sDemoName[0] = 0;
+	if (!strstr(Core.Params,"-tdemo "))
+	{
+		m_bDemoSaveMode = TRUE;
+		string1024 CName = "";
+		u32 CNameSize = 1024;
+		GetComputerName(CName, (DWORD*)&CNameSize);
+		SYSTEMTIME Time;
+		GetLocalTime(&Time);
+		sprintf(m_sDemoName, "logs\\xray_%s_%02d-%02d-%02d_%02d-%02d-%02d.tdemo", CName, Time.wMonth, Time.wDay, Time.wYear, Time.wHour, Time.wMinute, Time.wSecond);
+		Msg("Tech Demo would be stored in - %s", m_sDemoName);
+	};
+	//---------------------------------------------------------
+	m_bDemoPlayMode = FALSE;
+	m_aDemoData.clear();
+	if (strstr(Core.Params,"-tdemo ")) {
+		NET_Packet NewPacket;
+		string64				f_name;
+		sscanf					(strstr(Core.Params,"-tdemo ")+7,"%[^ ] ",f_name);
+		FILE* fTDemo = fopen(f_name, "rb");
+		if (fTDemo)
+		{
+			Msg("\n------- Loading Demo... ---------\n");
+			
+			while (!feof(fTDemo))
+			{
+				fread(&(NewPacket.timeReceive), sizeof(NewPacket.timeReceive), 1, fTDemo);
+				fread(&(NewPacket.B.count), sizeof(NewPacket.B.count), 1, fTDemo);
+				fread((NewPacket.B.data), 1, NewPacket.B.count, fTDemo);
+								
+				m_aDemoData.push_back(NewPacket);
+			}
+			fclose(fTDemo);
+			if (!m_aDemoData.empty()) 
+			{
+				m_bDemoPlayMode = TRUE;
+				m_bDemoSaveMode = FALSE;
+			};
+		}
+	}	
+	//---------------------------------------------------------
+	m_bDemoStarted		= FALSE;
 }
 
 extern CAI_Space *g_ai_space;
+
+BOOL	g_bLeaveTDemo = FALSE;
 
 CLevel::~CLevel()
 {
@@ -227,6 +272,12 @@ CLevel::~CLevel()
 	//-----------------------------------------------------------
 	xr_delete					(m_map_manager);
 	xr_delete					(m_pFogOfWarMngr);
+	//-----------------------------------------------------------
+	if (IsDemoSave() && !g_bLeaveTDemo)
+	{
+		DeleteFile(m_sDemoName);
+	};
+	m_aDemoData.clear();
 }
 
 void CLevel::PrefetchSound		(LPCSTR name)
@@ -284,7 +335,7 @@ void CLevel::ProcessGameEvents		()
 			u16 dest,type;
 			game_events->get	(dest,type,P);
 
-			// Msg				("--- event[%d] for [%d]",type,dest);
+//			Msg				("--- event[%d] for [%d]",type,dest);
 			CObject*	 O	= Objects.net_Find	(dest);
 			if (0==O)		{
 				Msg("* WARNING: c_EVENT[%d] : unknown dest",dest);
@@ -768,7 +819,7 @@ void CLevel::SetGameTime(ALife::_TIME_ID GameTime)
 bool CLevel::IsServer ()
 {
 //	return (!!Server);
-
+	if (IsDemoPlay()) return false;
 	if (!Server) return false;
 	return (Server->client_Count() != 0);
 
@@ -777,6 +828,7 @@ bool CLevel::IsServer ()
 bool CLevel::IsClient ()
 {
 //	return (!Server);
+	if (IsDemoPlay()) return true;
 	if (!Server) return true;
 	return (Server->client_Count() == 0);
 }

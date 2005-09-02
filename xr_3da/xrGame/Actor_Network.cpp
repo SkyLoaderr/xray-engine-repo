@@ -652,7 +652,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if (OnServer())
 	{
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
-	};
+	}
 	
 	// motions
 	m_bAnimTorsoPlayed			= false;
@@ -824,7 +824,11 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) )
 		g_actor = this;
-
+	
+	if (Level().IsDemoPlay())
+	{
+		setLocal(FALSE);
+	};
 	return					TRUE;
 }
 

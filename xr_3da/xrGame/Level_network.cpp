@@ -169,6 +169,9 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 		return FALSE		;
 	};
 
+	while (!net_Syncronised) {
+	};
+
 	//---------------------------------------------------------------------------
 	P.w_begin	(M_CLIENT_REQUEST_CONNECTION_DATA);
 	Send		(P);

@@ -441,7 +441,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-			if (HUD().GetUI())
+			if (Level().pHUD && HUD().GetUI())
 			{
 				HUD().GetUI()->ShowIndicators();
 			};
@@ -453,7 +453,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		};
 	default:
 		{
-			if (HUD().GetUI())
+			if (Level().pHUD && HUD().GetUI())
 			{
 				HUD().GetUI()->HideIndicators();
 			};
