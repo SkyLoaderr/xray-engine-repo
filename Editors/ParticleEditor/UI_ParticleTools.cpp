@@ -217,6 +217,13 @@ void CParticleTools::OnFrame()
 
 	if (m_Flags.is(flRefreshProps))
     	RealUpdateProperties();
+
+    if (m_Flags.is(flSelectEffect)){
+        m_PList->SelectItem	(sel_eff_name.c_str(),true,false,true);
+        m_Flags.set			(flSelectEffect,FALSE);
+        sel_eff_name		= "";
+    }
+
 /*
 	static Fvector pos={0.f,0.f,0.f};
     static Fvector vel={0.f,0.f,100.f};
@@ -508,7 +515,8 @@ void CParticleTools::StopCurrent(bool bFinishPlaying)
 
 void CParticleTools::SelectEffect(LPCSTR name)
 {
-	m_PList->SelectItem(name,true,false,true);
+	sel_eff_name 	= name;
+    m_Flags.set		(flSelectEffect,TRUE);
 }
 
 void CParticleTools::OnShowHint(AStringVec& SS)

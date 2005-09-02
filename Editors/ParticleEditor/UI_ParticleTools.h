@@ -70,9 +70,12 @@ public:
         flRemoveAction		= (1<<3),
         flAnimatedParent	= (1<<4),
         flAnimatedPath		= (1<<5),
+        flSelectEffect		= (1<<6)
     };
     Flags32				m_Flags;
 protected:
+	xr_string			sel_eff_name;
+
 	void __stdcall		OnChangeMotion		(PropValue* sender);
 	CObjectAnimator*	m_ParentAnimator;
 
