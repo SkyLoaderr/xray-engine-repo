@@ -118,7 +118,8 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 void CUICaption::addCustomMessage(const shared_str& msg_name, float x, float y, float font_size, 
 								  CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str)
 {
-	R_ASSERT2( (m_indices.find(msg_name) == m_indices.end()),"message already defined !!!" );
+//	R_ASSERT2( (m_indices.find(msg_name) == m_indices.end()),"message already defined !!!" );
+	R_ASSERT2( u32(-1)==findIndexOf_(msg_name),"message already defined !!!" );
 
 	SinglePhrase * sp = AddPhrase();
 	sp->outX = x;
@@ -129,23 +130,40 @@ void CUICaption::addCustomMessage(const shared_str& msg_name, float x, float y, 
 	sp->effect.SetFontAlignment(al);
 
 	sp->str = *CStringTable()(def_str);
+	sp->key = msg_name;
 
-	m_indices[msg_name] = m_vPhrases.size()-1;
+//	m_indices[msg_name] = m_vPhrases.size()-1;
 
+}
+
+u32 CUICaption::findIndexOf_(const shared_str& key_)
+{
+	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
+	{
+		if((*it).key==key_) return (u32)std::distance(m_vPhrases.begin(),it);
+	}
+	return u32(-1);
+}
+
+u32 CUICaption::findIndexOf(const shared_str& key_)
+{
+	u32 res = findIndexOf_(key_);
+	R_ASSERT3(res!=u32(-1),"cannot find msg ",*key_);
+	return res;
 }
 
 void CUICaption::removeCustomMessage(const shared_str& msg_name)
 {
-	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
-	RemovePhraseByIndex(m_indices[msg_name]);
-	m_indices.erase(msg_name);
+//	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
+	RemovePhraseByIndex(findIndexOf(msg_name));
+//	m_indices.erase(msg_name);
 }
 
 EffectParams* CUICaption::customizeMessage(const shared_str& msg_name, const CUITextBanner::TextBannerStyles styleName)
 {
-	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
+//	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
 	
-	SinglePhrase * sp = GetPhraseByIndex( m_indices[msg_name] );
+	SinglePhrase * sp = GetPhraseByIndex( findIndexOf(msg_name) );
 	sp->effect.PlayAnimation();
 	return sp->effect.SetStyleParams(styleName);
 	
@@ -153,8 +171,8 @@ EffectParams* CUICaption::customizeMessage(const shared_str& msg_name, const CUI
 
 void CUICaption::setCaption(const shared_str& msg_name, LPCSTR message_to_out, u32 color, bool replaceColor)
 {
-	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
-	SinglePhrase * sp = GetPhraseByIndex(m_indices[msg_name]);
+//	R_ASSERT2( (m_indices.find(msg_name) != m_indices.end()),"message not defined !!!" );
+	SinglePhrase * sp = GetPhraseByIndex(findIndexOf(msg_name));
 	sp->str = *CStringTable()(message_to_out);
 
 	if(replaceColor)

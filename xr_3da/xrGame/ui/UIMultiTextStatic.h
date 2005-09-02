@@ -31,6 +31,7 @@ public:
 
 		// Ctor		
 		SPh							();
+		shared_str					key;
 	} SinglePhrase;
 
 	typedef xr_vector<SinglePhrase>	Phrases;
@@ -51,7 +52,9 @@ public:
 class CUICaption :protected CUIMultiTextStatic
 {
 	typedef CUIMultiTextStatic inherited;
-	xr_map<shared_str,u32>		m_indices;
+//	xr_map<shared_str,u32>		m_indices;
+	u32					findIndexOf(const shared_str& key);
+	u32					findIndexOf_(const shared_str& key);
 public:
 	virtual void		Draw();
 	void				addCustomMessage(const shared_str& msg_name, float x, float y, float font_size, CGameFont *pFont, CGameFont::EAligment al, u32 color, LPCSTR def_str="");

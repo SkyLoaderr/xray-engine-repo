@@ -49,10 +49,12 @@ function main()
 	local msg_id = "script_some_message"
 -- 1st define message params(position,size, font etc)	
 	ui:AddCustomMessage(msg_id,200,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0))
+	ui:AddCustomMessage("fff",300,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0))
 	local total = 10
 while total>0 do	
 	local str = string.format("time remains %02d sec",total)
 	ui:CustomMessageOut(msg_id, str, GetARGB(255,255,0,0))
+	ui:CustomMessageOut("fff", "asdasdasdasdas", GetARGB(255,255,0,0))
 	--wait 1sec
 	wait(1000)
 	total = total-1
