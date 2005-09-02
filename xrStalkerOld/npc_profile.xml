@@ -362,9 +362,11 @@
 	<character id="agr_ratcatcher">
 		<class>stalker_agr_ratcatcher</class>
 	</character>	
+	<!-- stalkers -->
 	<character id="agr_stalker_general">
 		<class>agr_Stalker_general</class>
 	</character>
+	<!-- soldiers -->
 	<character id="agr_soldier_regular">
 		<class>agr_Soldier_regular</class>
 	</character>
@@ -594,6 +596,7 @@
 	
 	
 <!-- Radar -->
+	<!-- Monolith -->
 	<character id="rad_monolit_regular">
 		<class>rad_Monolit_regular</class>
 	</character>
@@ -609,6 +612,7 @@
 	<character id="rad_monolit_rpg">
 		<class>rad_Monolit_rpg</class>
 	</character>
+	<!-- Zombied -->
 	<character id="rad_zombied">
 		<class>rad_Zombied</class>
 	</character>
@@ -617,7 +621,7 @@
 	</character>
 	
 <!-- Pripyat -->
-	<!-- Monolit -->
+	<!-- Monolith -->
 	<character id="pri_monolith_regular">
 		<class>pri_monolith_regular</class>
 	</character>
