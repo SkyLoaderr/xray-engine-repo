@@ -50,6 +50,7 @@
 	<info_portion id="aes_actor_hunt"></info_portion>
 	<info_portion id="aes_uknown_sound"></info_portion>
 	<info_portion id="aes_grif_sound"></info_portion>
+	<info_portion id="aes_bridge_ambush_sound"></info_portion>
 
 </game_information_portions>
 
