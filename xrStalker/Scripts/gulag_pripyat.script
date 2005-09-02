@@ -16,11 +16,11 @@ local gulags = {}
 --------------------------------------------------------------------------
 -- Predicates
 --------------------------------------------------------------------------
-function f_predicate1(obj) 
+function f_predicate1(obj)
 	return obj:profile_name() == "pri_stalker_veteran"
 end
 
-function f_predicate2(obj) 
+function f_predicate2(obj)
     local t = obj:best_weapon()
     if t then
         printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
