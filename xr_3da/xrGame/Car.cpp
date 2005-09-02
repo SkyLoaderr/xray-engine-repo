@@ -1687,8 +1687,11 @@ void CCar::CarExplode()
 {
 
 	if(b_exploded) return;
+	if(m_car_weapon)m_car_weapon->Action(CCarWeapon::eWpnActivate,0);
+
 	b_exploded=true;
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
+
 	CActor* A=OwnerActor();
 	if(A)
 	{

@@ -228,6 +228,7 @@ bool CCar::isObjectVisible			(CScriptGameObject* O_)
 	
 	Fvector from_point;
 	Center(from_point);
+	from_point.y += 1.5f;
 	dir_to_object.sub(to_point,from_point).normalize_safe();
 	float ray_length = from_point.distance_to(to_point);
 
