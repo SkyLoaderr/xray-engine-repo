@@ -316,7 +316,15 @@ function heli_move:process_attack_params( path_info, index )
 		printf( "heli_move: not attacking" )
 		self.heliObject:ClearEnemy()
 
-	elseif target == "true" then
+		return
+	end
+
+	if self.a.rocket_delay then
+		printf( "set rocket delay = %d", self.a.rocket_delay )
+		self.heliObject.m_time_between_rocket_attack = self.a.rocket_delay
+	end
+
+	if target == "true" then
 		printf( "heli_move: attacking point!" )
 		self.heliObject:SetEnemy( self.patrol_look:point( self.look_index ) )
 
@@ -361,6 +369,7 @@ function set_scheme( npc, ini, scheme, section )
 	a.path_move       = utils.cfg_get_string( ini, section, "path_move",    npc, true,  ""   )
 	a.path_look       = utils.cfg_get_string( ini, section, "path_look",    npc, false, ""   )
 	a.engine_sound    = utils.cfg_get_bool  ( ini, section, "engine_sound", npc, false, true )
+	a.rocket_delay    = utils.cfg_get_number( ini, section, "rocket_delay", npc, false, nil  )
 
 	a.path_move_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	a.path_look_info = nil -- не загружены.
