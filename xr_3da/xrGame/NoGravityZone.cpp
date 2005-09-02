@@ -6,13 +6,14 @@
 void CNoGravityZone::enter_Zone(SZoneObjectInfo& io)
 {
 	inherited::enter_Zone(io);
-
+	switchGravity(io,false);
 
 }
 void CNoGravityZone::exit_Zone(SZoneObjectInfo& io)
 {
+	switchGravity(io,true);
 	inherited::exit_Zone(io);
-
+	
 }
 
 void CNoGravityZone::switchGravity(SZoneObjectInfo& io, bool val)
