@@ -383,8 +383,7 @@ void CKinematics::Copy(IRender_Visual *P)
 
 	CalculateBones_Invalidate	();
 
-    if (pFrom->m_lod)
-		m_lod 		= ::Render->model_Duplicate	(pFrom->m_lod);
+    m_lod 			= (pFrom->m_lod)?::Render->model_Duplicate	(pFrom->m_lod):0;
 }
 
 void CKinematics::CalculateBones_Invalidate	()
