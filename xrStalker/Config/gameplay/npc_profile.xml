@@ -619,6 +619,14 @@
 	<character id="rad_zombied_veteran">
 		<class>rad_Zombied_veteran</class>
 	</character>
+	<!-- Stalkers veterans, masters -->
+	<character id="rad_stalker_veteran">
+		<class>rad_Stalker_veteran</class>
+	</character>
+	<character id="rad_stalker_master">
+		<class>rad_Stalker_master</class>
+	</character>
+	
 	
 <!-- Pripyat -->
 	<!-- Monolith -->
