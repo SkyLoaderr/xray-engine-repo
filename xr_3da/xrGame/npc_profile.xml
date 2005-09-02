@@ -293,6 +293,11 @@
 		<class>esc_tutorial_wounded</class>
 	</character>
 	
+	<character id="esc_killer_specnaz">
+		<class>esc_killer_specnaz</class>
+	</character>
+	
+	
 	<!-- Garbage -->
 	
 	<character id="gar_seriy">
