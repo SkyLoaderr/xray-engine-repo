@@ -636,7 +636,7 @@
                 <start_dialog>hello_dialog</start_dialog>
                 <actor_dialog>general_pda_talk</actor_dialog>
                 <actor_dialog>esc_stalker_talk_level</actor_dialog>
-        </specific_character>
+        </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="monolit_regular_default1" team_default = "3">
     <name>Сталкер группировки "Монолит"</name>
