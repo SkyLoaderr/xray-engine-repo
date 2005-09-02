@@ -297,6 +297,10 @@
 		<class>esc_killer_specnaz</class>
 	</character>
 	
+	<character id="esc_killer_master">
+		<class>esc_killer_master</class>
+	</character>
+	
 	<character id="esc_bandit_novice">
 		<class>esc_bandit_novice</class>
 	</character>
