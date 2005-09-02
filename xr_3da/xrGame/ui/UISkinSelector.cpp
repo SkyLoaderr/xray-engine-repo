@@ -8,8 +8,6 @@
 #include "UIStatix.h"
 #include "../game_cl_deathmatch.h"
 
-const char * const	SKIN_SELECTOR_XML		= "skin_selector.xml";
-
 CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 {	
 	m_pBackground	= xr_new<CUIStatic>();	AttachChild(m_pBackground);
@@ -49,32 +47,33 @@ void CUISkinSelectorWnd::InitSkins(){
 }
 
 void CUISkinSelectorWnd::UpdateSkins(){
-
+	for (int i = 0; i<4; i++)
+	{
+		m_pImage[i]->InitTexture(m_skins[i + m_fristSkin].c_str());
+		m_pImage[i]->RescaleRelative2Rect(m_pImage[i]->GetStaticItem()->GetOriginalRect());
+	}
 }
 
 void CUISkinSelectorWnd::Init(const char* strSectionName)
 {
 	R_ASSERT(0 != strSectionName[0]);
 	m_strSection = strSectionName;
-	InitSkins();		
-
+	
 	CUIXml xml_doc;
-	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, SKIN_SELECTOR_XML);
+	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, "skin_selector.xml");
 	R_ASSERT2(xml_result, "xml file not found");
 
-	CUIXmlInit::InitWindow(xml_doc,"skin_selector",0,this);
+	CUIXmlInit::InitWindow(xml_doc,"skin_selector",				0,	this);
 	CUIXmlInit::InitStatic(xml_doc,"skin_selector:caption",		0,	m_pCaption);
 	CUIXmlInit::InitStatic(xml_doc,"skin_selector:background",	0,	m_pBackground);
 	CUIXmlInit::InitStatic(xml_doc,"skin_selector:image_frames",0,	m_pFrames);
 
+	InitSkins();
 	string64 buff;
 	for (int i = 0; i<4; i++)
 	{
 		sprintf(buff,"skin_selector:image_%d",i);
 		CUIXmlInit::InitStatic(xml_doc,buff,0,m_pImage[i]);
-		m_pImage[i]->SetStretchTexture(true);
-		m_pImage[i]->InitTexture(m_skins[i].c_str());
-		m_pImage[i]->RescaleRelative2Rect(m_pImage[i]->GetStaticItem()->GetOriginalRect());
 	}
 	UpdateSkins();
 }
@@ -112,22 +111,50 @@ bool CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 
 bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (dik >= DIK_1 && dik < DIK_4 + 2 && WINDOW_KEY_PRESSED == keyboard_action)
+	if (WINDOW_KEY_PRESSED != keyboard_action)
+		return false;
+
+	if (dik >= DIK_1 && dik < DIK_4 + 2)
 	{
 		m_iActiveIndex = dik - DIK_1;
 		OnBtnOK();
 		return true;
 	}
-	if (DIK_ESCAPE == dik && WINDOW_KEY_PRESSED == keyboard_action)
+	if (DIK_ESCAPE == dik)
 	{
 		OnBtnCancel();
 		return true;
 	}
+
+	if (DIK_LEFT == dik)
+	{
+		OnKeyLeft();
+		return true;
+	}
+	if (DIK_RIGHT == dik)
+	{
+		OnKeyRight();
+		return true;
+	}
+
 	return false;
 }
 
-void CUISkinSelectorWnd::Draw()
+void CUISkinSelectorWnd::OnKeyLeft()
+{	
+	if (m_fristSkin > 0)
+	{
+		m_fristSkin--;
+		UpdateSkins();
+	}
+}
+
+void CUISkinSelectorWnd::OnKeyRight()
 {
-	inherited::Draw();
+	if (m_fristSkin + 4 < (int)m_skins.size())
+	{
+		m_fristSkin++;
+		UpdateSkins();
+	}	
 }
 

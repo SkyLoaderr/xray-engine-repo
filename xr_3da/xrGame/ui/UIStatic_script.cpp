@@ -13,7 +13,6 @@ void CUIStatic::script_register(lua_State *L)
 
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
-//		.def("SetLines",			&CUIStatic::SetLines)
 		.def("GetText",				&CUIStatic::GetText)
 
 		.def("SetTextX",				&CUIStatic::SetTextX)
@@ -27,16 +26,10 @@ void CUIStatic::script_register(lua_State *L)
 		.def("Init",				(void(CUIStatic::*)(float,float,float,float))CUIStatic::Init )
 		.def("Init",				(void(CUIStatic::*)(LPCSTR,float,float,float,float))CUIStatic::Init )
 		.def("InitTexture",			&CUIStatic::InitTexture )
-//		.def("InitSharedTexture",	&CUIStatic::InitSharedTexture)
 		.def("SetTextureOffset",	&CUIStatic::SetTextureOffset )
 
 
 		.def("SetOriginalRect",		(void(CUIStatic::*)(float,float,float,float))&CUIStatic::SetOriginalRect)
-/*
-		.def("SetTextureScaleXY",	&CUIStatic::SetTextureScaleXY)
-		.def("GetTextureScaleX",	&CUIStatic::GetTextureScaleX)
-		.def("GetTextureScaleY",	&CUIStatic::GetTextureScaleY)
-*/
 		.def("SetStretchTexture",	&CUIStatic::SetStretchTexture)
 		.def("GetStretchTexture",	&CUIStatic::GetStretchTexture)
 
@@ -47,10 +40,5 @@ void CUIStatic::script_register(lua_State *L)
 		.def("ClipperOn",			&CUIStatic::ClipperOn)
 		.def("ClipperOff",			(void(CUIStatic::*)(void))CUIStatic::ClipperOff )
 		.def("GetClipperState",		&CUIStatic::GetClipperState)
-//		.def("",		&CUIStatic::)
-//		.def("",		&CUIStatic::)
-//		.def("",		&CUIStatic::)
-//		.def("",		&CUIStatic::)
-//		.def("",		&CUIStatic::)
 	];
 }

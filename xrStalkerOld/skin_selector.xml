@@ -6,7 +6,7 @@
 			<texture>ui_frame_mainDes</texture>
 		</background>
 		<caption x="42" y="4" width="330" height="32">
-			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">Team Selection</text>
+			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">Skin Selection</text>
 		</caption>
 		<image_frames x="53" y="45" width="664" height="273">
 			<texture>ui_TV_Skin</texture>

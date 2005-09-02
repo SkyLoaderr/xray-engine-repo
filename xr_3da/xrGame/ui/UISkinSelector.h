@@ -22,21 +22,23 @@ class CUISkinSelectorWnd: public CUIDialogWnd
 	typedef CUIDialogWnd inherited;
 public:	
 	CUISkinSelectorWnd(const char* strSectionName);
-//	CUISkinSelectorWnd();
 	~CUISkinSelectorWnd();
 	
 	virtual void	Init(const char* strSectionName);
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData = NULL);
 	virtual bool	OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
-	virtual void	Draw();
+//	virtual void	Draw();
 	// event handlers
-	virtual void	OnBtnOK();
-	virtual void	OnBtnCancel();
 
-	int				GetActiveIndex()		{ return m_iActiveIndex; } 	// Получаем индекс (0 <= Index < SKINS_COUNT) выбранного скина	
-//	int				SwitchSkin(const int idx);  // returns previous skin
+
+	int				GetActiveIndex()		{ return m_iActiveIndex + m_fristSkin; } 	
 protected:
+			void	OnBtnOK();
+			void	OnBtnCancel();
+			void	OnKeyLeft();
+			void	OnKeyRight();
+
 			void	InitSkins();
 			void	UpdateSkins();
 	CUIStatic*		m_pCaption;
@@ -44,14 +46,10 @@ protected:
 	CUIStatic*		m_pFrames;
 	CUIStatix*		m_pImage[4];
 	
-	shared_str		m_strSection;    // Запоминаем имя секции откуда читать инфу о скинах
+	shared_str		m_strSection;    
 	int				m_iActiveIndex;  
 	xr_vector<xr_string> m_skins;
 	int				m_fristSkin;
-//	CUIButton		UIOkBtn, UICancelBtn;
-//	void			DrawKBAccelerators();	// Отобразить подписи-клавиатурные акселераторы, для каждого скина
-	
-//	CUISkinWindow	m_vSkinWindows[SKINS_COUNT];	// Массив окошек со скинами
 };
 
 #endif

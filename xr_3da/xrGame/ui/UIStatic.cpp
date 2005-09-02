@@ -599,6 +599,7 @@ void CUIStatic::AdjustHeightToText(){
 }
 
 void CUIStatic::RescaleRelative2Rect(const Frect& r){
+	SetStretchTexture(true);
 	Frect my_r = m_xxxRect;
 	float h_rel = my_r.width()/r.width();
 	float v_rel = my_r.height()/r.height();

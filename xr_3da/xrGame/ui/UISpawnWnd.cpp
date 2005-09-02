@@ -50,16 +50,10 @@ void CUISpawnWnd::Init()
 	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_frames_tr",		0,	m_pFrames[1]);
 	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_frames_bottom",	0,	m_pFrames[2]);
 
-	Frect r;
-	r.set(0,0,256,256);
-
 	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_0",0,m_pImage1);
-	m_pImage1->SetStretchTexture(true);
-	m_pImage1->RescaleRelative2Rect(r);
+	m_pImage1->SetStretchTexture(true);	
 	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_1",0,m_pImage2);
 	m_pImage2->SetStretchTexture(true);
-	m_pImage2->RescaleRelative2Rect(r);
-
 	InitTeamLogo();
 }
 
@@ -68,8 +62,12 @@ void CUISpawnWnd::InitTeamLogo(){
 	R_ASSERT(pSettings->line_exist("team_logo", "team1"));
 	R_ASSERT(pSettings->line_exist("team_logo", "team2"));
 
+#pragma todo("Satan -> Satan : adopt to fixed texture size")
+
 	m_pImage1->InitTexture(pSettings->r_string("team_logo", "team1"));
+	m_pImage1->RescaleRelative2Rect(m_pImage1->GetStaticItem()->GetOriginalRect());
 	m_pImage2->InitTexture(pSettings->r_string("team_logo", "team2"));
+	m_pImage2->RescaleRelative2Rect(m_pImage2->GetStaticItem()->GetOriginalRect());
 }
 
 void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
@@ -91,7 +89,10 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if ((DIK_1 == dik || DIK_2 == dik ) && WINDOW_KEY_PRESSED == keyboard_action)
+	if (WINDOW_KEY_PRESSED != keyboard_action)
+		return false;
+
+	if (DIK_1 == dik || DIK_2 == dik)
 	{
 		Game().StartStopMenu(this,true);
 		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
@@ -101,8 +102,7 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 			dm->OnTeamSelect(1);
 		return true;
 	}
-
-	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
+	if (DIK_ESCAPE == dik)
 	{
 		Game().StartStopMenu(this,true);
 		return true;
