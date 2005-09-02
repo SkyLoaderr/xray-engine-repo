@@ -578,12 +578,12 @@ function check_state_followers(gulag)
 		actor:give_info_portion("pri_wave6_end")
 		return state_wave7
 	end
-	--if state == state_wave7 and
-    --    xr_gulag.getGulagPopulation("pri_ambush7") == 0
-    --then
-    --    actor:give_info_portion("pri_wave7_end")
-    --    return state_wave8
-    --end
+	if state == state_wave7 and
+        xr_gulag.getGulagPopulation("pri_ambush7") == 0
+    then
+        actor:give_info_portion("pri_wave7_end")
+        return state_wave8
+    end
     return state
 end
 
