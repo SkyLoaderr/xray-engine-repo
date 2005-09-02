@@ -576,13 +576,13 @@
 	</specific_character>
 
 <!------------------------- SPECNAZ ------------------------>
-	<specific_character id="val_stalker_specnaz_default1" team_default = "1">
+	<specific_character id="val_soldier_specnaz_default1" team_default = "1">
 		<name>Неизвестный военный</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
-		<class>val_stalker_specnaz</class>
+		<class>val_soldier_specnaz</class>
 		<community>military</community>
 		
 		<rank>80</rank>
@@ -604,13 +604,13 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-	<specific_character id="val_stalker_specnaz_default2" team_default = "1">
+	<specific_character id="val_soldier_specnaz_default2" team_default = "1">
 		<name>Неизвестный военный</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
-		<class>val_stalker_specnaz</class>
+		<class>val_soldier_specnaz</class>
 		<community>military</community>
 		
 		<rank>80</rank>
@@ -632,13 +632,13 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
-		<specific_character id="val_stalker_specnaz_default3" team_default = "1">
+		<specific_character id="val_soldier_specnaz_default3" team_default = "1">
 		<name>Неизвестный военный</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
-		<class>val_stalker_specnaz</class>
+		<class>val_soldier_specnaz</class>
 		<community>military</community>
 		
 		<rank>80</rank>
