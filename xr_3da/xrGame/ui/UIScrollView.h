@@ -9,7 +9,7 @@ class CUIScrollView :public CUIWindow, public CUIWndCallback
 {
 typedef CUIWindow	inherited;
 friend class CUIXmlInit; //for init
-enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),};
+enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),};
 protected:
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
@@ -31,8 +31,10 @@ public:
 			void	RemoveWindow		(CUIWindow* pWnd);
 			void	Clear				();
 			void	ScrollToBegin		();
+			void	ScrollToEnd			();
 			void	SetVertFlip			(bool val)							{m_flags.set(eVertFlip, val);}
 			bool	GetVertFlip			()									{return !!m_flags.test(eVertFlip);}
 			u32		GetSize				();
 	CUIWindow*		GetItem				(u32 idx);
+			void	SetFixedScrollBar	(bool b);
 };

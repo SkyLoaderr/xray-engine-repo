@@ -10,6 +10,7 @@ CUIScrollView::CUIScrollView()
 {
 	m_rightIdent		= 0.0f;
 	m_flags.zero		();
+	SetFixedScrollBar	(true);
 }
 
 CUIScrollView::~CUIScrollView()
@@ -112,6 +113,11 @@ void CUIScrollView::UpdateScroll		()
 	m_VScrollBar->SetScrollPos	(iFloor(-w_pos.y));
 }
 
+void CUIScrollView::SetFixedScrollBar	(bool b)
+{
+	m_flags.set(eFixedScrollBar,b);
+}
+
 void CUIScrollView::Draw				()
 {
 	if(m_flags.test	(eNeedRecalc) )
@@ -119,8 +125,10 @@ void CUIScrollView::Draw				()
 
 	Frect		visible_rect			= GetAbsoluteRect();
 	UI()->PushScissor					(visible_rect);
-//	if(GetHeight()<m_pad->GetHeight())	//fix it !!!
-	m_VScrollBar->Draw					();
+	
+	if(m_flags.test(eFixedScrollBar) || GetHeight()<m_pad->GetHeight())
+		m_VScrollBar->Draw					();
+
 	int iDone = 0;
 
 	for(	WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); 
@@ -176,8 +184,22 @@ bool CUIScrollView::OnMouse				(float x, float y, EUIMessages mouse_action)
 
 void CUIScrollView::ScrollToBegin		()
 {
-	m_pad->SetWndPos			(0.0f,0.0f);
-	UpdateScroll				();
+	if(m_flags.test	(eNeedRecalc) )
+		RecalcSize			();
+
+//	m_pad->SetWndPos			(0.0f,0.0f);
+//	UpdateScroll				();
+	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMinRange());
+	OnScrollV();
+}
+
+void CUIScrollView::ScrollToEnd			()
+{
+	if(m_flags.test	(eNeedRecalc) )
+		RecalcSize			();
+
+	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMaxRange());
+	OnScrollV();
 }
 
 void CUIScrollView::SetRightIndention	(float val)

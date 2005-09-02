@@ -1,10 +1,8 @@
-// UITalkWnd.cpp:  окошко для общения персонажей
-// 
-//////////////////////////////////////////////////////////////////////
-
-
 #include "stdafx.h"
 #include "UITalkWnd.h"
+
+#include "UITradeWnd.h"
+#include "UITalkDialogWnd.h"
 
 #include "../actor.h"
 #include "../HUDManager.h"
@@ -64,13 +62,15 @@ void CUITalkWnd::Init()
 
 	/////////////////////////
 	//Меню разговора
-	AttachChild(&UITalkDialogWnd);
-	UITalkDialogWnd.Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	UITalkDialogWnd = xr_new<CUITalkDialogWnd>();UITalkDialogWnd->SetAutoDelete(true);
+	AttachChild(UITalkDialogWnd);
+	UITalkDialogWnd->Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	/////////////////////////
 	//Меню торговли
-	AttachChild(&UITradeWnd);
-	UITradeWnd.Hide();
+	UITradeWnd = xr_new<CUITradeWnd>();UITradeWnd->SetAutoDelete(true);
+	AttachChild(UITradeWnd);
+	UITradeWnd->Hide();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,22 +87,21 @@ void CUITalkWnd::InitTalkDialog()
 	m_pOthersDialogManager = smart_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
 
 	//имена собеседников
-	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
-	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
-	UITalkDialogWnd.UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->CharacterInfo().Name());
-	UITalkDialogWnd.UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->CharacterInfo().Name());
+	UITalkDialogWnd->UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
+	UITalkDialogWnd->UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
+	UITalkDialogWnd->UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+	UITalkDialogWnd->UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->CharacterInfo().Name());
 	
-//	CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(m_pOthersInvOwner);
-//	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(m_pActor));
-
 	//очистить лог сообщений
-	UITalkDialogWnd.UIAnswersList.RemoveAll();
+	UITalkDialogWnd->ClearAll();
 
 	InitOthersStartDialog					();
-	UpdateQuestions							();
+//	UpdateQuestions							();
+	NeedUpdateQuestions						();
+	Update									();
 
-	UITalkDialogWnd.Show					();
-	UITradeWnd.Hide							();
+	UITalkDialogWnd->Show					();
+	UITradeWnd->Hide							();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -135,7 +134,7 @@ void CUITalkWnd::NeedUpdateQuestions()
 
 void CUITalkWnd::UpdateQuestions()
 {
-	UITalkDialogWnd.UIQuestionsList.RemoveAll();
+	UITalkDialogWnd->ClearQuestions();
 	R_ASSERT2(m_pOurInvOwner->GetPDA(), "PDA for character does not init yet");
 
 	//если нет активного диалога, то
@@ -147,7 +146,7 @@ void CUITalkWnd::UpdateQuestions()
 		{
 			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
 			if(phrase_dialog->GetDialogType(eDialogTypeActor))
-				AddQuestion(phrase_dialog->DialogCaption(), NULL, (int)i);
+				AddQuestion(phrase_dialog->DialogCaption(), (int)i);
 		}
 	}
 	else
@@ -174,36 +173,33 @@ void CUITalkWnd::UpdateQuestions()
 					it++)
 				{
 					CPhrase* phrase = *it;
-					AddQuestion(phrase->GetText(), NULL, (PHRASE_ID)phrase->GetIndex());
+					AddQuestion(phrase->GetText(), (PHRASE_ID)phrase->GetIndex());
 				}
 			}
 			else
 				UpdateQuestions();
 		}
 	}
+	m_bNeedToUpdateQuestions = false;
+
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if(pWnd == &UITalkDialogWnd && msg == TALK_DIALOG_TRADE_BUTTON_CLICKED)
+	if(pWnd == UITalkDialogWnd && msg == TALK_DIALOG_TRADE_BUTTON_CLICKED)
 	{
-//		UITalkDialogWnd.Hide();
-//
-//		UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
-//		UITradeWnd.Show();
-//		UITradeWnd.BringAllToTop();
 		SwitchToTrade();
 	}
-	else if(pWnd == &UITalkDialogWnd && msg == TALK_DIALOG_QUESTION_CLICKED)
+	else if(pWnd == UITalkDialogWnd && msg == TALK_DIALOG_QUESTION_CLICKED)
 	{
 		AskQuestion();
 	}
-	else if(pWnd == &UITradeWnd && msg == TRADE_WND_CLOSED)
+	else if(pWnd == UITradeWnd && msg == TRADE_WND_CLOSED)
 	{
-		UITalkDialogWnd.Show();
-		UITradeWnd.Hide();
+		UITalkDialogWnd->Show();
+		UITradeWnd->Hide();
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -229,7 +225,6 @@ void CUITalkWnd::Update()
 
 	if(m_bNeedToUpdateQuestions)
 	{
-		m_bNeedToUpdateQuestions = false;
 		UpdateQuestions();
 	}
 	inherited::Update();
@@ -257,7 +252,7 @@ void CUITalkWnd::Hide()
 	StopSnd						();
 
 	inherited::Hide				();
-	UITradeWnd.Hide				();
+	UITradeWnd->Hide				();
 	if(!m_pActor)				return;
 	
 	ToTopicMode					();
@@ -284,30 +279,30 @@ void  CUITalkWnd::ToTopicMode		()
 
 void CUITalkWnd::AskQuestion()
 {
-
+	if(m_bNeedToUpdateQuestions) return;//quick dblclick:(
 	//очистить лог сообщений
-	//UITalkDialogWnd.UIAnswersList.RemoveAll();
+	//UITalkDialogWnd->UIAnswersList.RemoveAll();
 	PHRASE_ID phrase_id;
 
 	//игрок выбрал тему разговора
 	if(TopicMode())
 	{
-		if ( (UITalkDialogWnd.m_iClickedQuestion < 0) ||
-			(UITalkDialogWnd.m_iClickedQuestion >= (int)m_pOurDialogManager->AvailableDialogs().size()) ) {
+		if ( (UITalkDialogWnd->m_iClickedQuestion < 0) ||
+			(UITalkDialogWnd->m_iClickedQuestion >= (int)m_pOurDialogManager->AvailableDialogs().size()) ) {
 
 			string128	s;
-			sprintf		(s,"ID = [%i] of selected question is out of range of available dialogs ",UITalkDialogWnd.m_iClickedQuestion);
+			sprintf		(s,"ID = [%i] of selected question is out of range of available dialogs ",UITalkDialogWnd->m_iClickedQuestion);
 			VERIFY2(FALSE, s);
 		}
 
-		m_pCurrentDialog = m_pOurDialogManager->AvailableDialogs()[UITalkDialogWnd.m_iClickedQuestion];
+		m_pCurrentDialog = m_pOurDialogManager->AvailableDialogs()[UITalkDialogWnd->m_iClickedQuestion];
 		
 		m_pOurDialogManager->InitDialog(m_pOthersDialogManager, m_pCurrentDialog);
 		phrase_id = START_PHRASE;
 	}
 	else
 	{
-		phrase_id = (PHRASE_ID)UITalkDialogWnd.m_iClickedQuestion;
+		phrase_id = (PHRASE_ID)UITalkDialogWnd->m_iClickedQuestion;
 	}
 
 	SayPhrase(phrase_id);
@@ -338,14 +333,15 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::AddQuestion(LPCSTR text, void* pData , int value)
+void CUITalkWnd::AddQuestion(LPCSTR text, int value)
 {
 	CUIString str(*CStringTable()(text));
 
-//	CUIStatic::PreprocessText(str.m_str, UITalkDialogWnd.UIQuestionsList.GetWidth() - MessageShift - 25,
-//							  UITalkDialogWnd.UIQuestionsList.GetFont());
-	UITalkDialogWnd.UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
-						UITalkDialogWnd.UIQuestionsList.GetFont(), pData, value);
+	UITalkDialogWnd->AddQuestion(str,value);
+/*
+	UITalkDialogWnd->UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd->UIQuestionsList.GetTextColor(), 
+						UITalkDialogWnd->UIQuestionsList.GetFont(), pData, value);
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -357,20 +353,21 @@ void CUITalkWnd::AddAnswer(LPCSTR text, const CUIString &SpeakerName)
 	PlaySnd			(text);
 	CUIString str(*CStringTable()(text));
 
-	// Делаем препроцессинг строки
-//	CUIStatic::PreprocessText(str.m_str, UITalkDialogWnd.UIAnswersList.GetWidth() - MessageShift - 25, // 20 means approximate scrollbar width value
-//							  UITalkDialogWnd.UIAnswersList.GetFont());
+	bool i_am = (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name()));
+	UITalkDialogWnd->AddAnswer(SpeakerName,str,i_am);
+/*
+	u32 cl = UITalkDialogWnd->UIAnswersList.GetTextColor();
+	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd->GetOurReplicsColor();
 
-	u32 cl = UITalkDialogWnd.UIAnswersList.GetTextColor();
-	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd.GetOurReplicsColor();
 
-	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(SpeakerName, 0, UITalkDialogWnd.GetHeaderColor(), UITalkDialogWnd.GetHeaderFont());
-	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, cl);
+	UITalkDialogWnd->UIAnswersList.AddParsedItem<CUIListItem>(SpeakerName, 0, UITalkDialogWnd->GetHeaderColor(), UITalkDialogWnd->GetHeaderFont());
+	UITalkDialogWnd->UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, cl);
 
 	CUIString Local;
 	Local.SetText(" ");
-	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(Local, 0, UITalkDialogWnd.UIAnswersList.GetTextColor());
-	UITalkDialogWnd.UIAnswersList.ScrollToEnd();
+	UITalkDialogWnd->UIAnswersList.AddParsedItem<CUIListItem>(Local, 0, UITalkDialogWnd->UIAnswersList.GetTextColor());
+	UITalkDialogWnd->UIAnswersList.ScrollToEnd();
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -379,12 +376,12 @@ void CUITalkWnd::SwitchToTrade()
 {
 	if(m_pOurInvOwner->IsTradeEnabled() && m_pOthersInvOwner->IsTradeEnabled() ){
 
-		UITalkDialogWnd.Hide		();
+		UITalkDialogWnd->Hide		();
 
-		UITradeWnd.InitTrade		(m_pOurInvOwner, m_pOthersInvOwner);
-		UITradeWnd.Show				();
-		UITradeWnd.StartTrade		();
-		UITradeWnd.BringAllToTop	();
+		UITradeWnd->InitTrade		(m_pOurInvOwner, m_pOthersInvOwner);
+		UITradeWnd->Show				();
+		UITradeWnd->StartTrade		();
+		UITradeWnd->BringAllToTop	();
 		StopSnd						();
 	}
 }
@@ -418,4 +415,9 @@ void CUITalkWnd::StopSnd()
 {
 	if(m_sound._feedback())
 		m_sound.stop();
+}
+
+void CUITalkWnd::AddIconedMessage(LPCSTR text, LPCSTR texture_name, Frect texture_rect)
+{
+	UITalkDialogWnd->AddIconedAnswer(text, texture_name, texture_rect);
 }

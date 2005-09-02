@@ -29,6 +29,7 @@
 #include "level_navigation_graph.h"
 #include "ui/UIMainIngameWnd.h"
 #include "ui/UItalkWnd.h"
+#include "ui/UITradeWnd.h"
 #include "inventory.h"
 #include "infoportion.h"
 
@@ -54,6 +55,20 @@ void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
 	if(HUD().GetUI())
 		HUD().GetUI()->UIMainIngameWnd->SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
 }
+
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2)
+{
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!pGameSP) return;
+
+	if(pGameSP->TalkMenu->IsShown())
+	{
+		pGameSP->TalkMenu->AddIconedMessage(*CStringTable()(news), texture_name,Frect().set(x1,y1,x2,y2));
+	}
+
+}
+
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay)
 {
 /*	CActor* pActor = smart_cast<CActor*>(&object());

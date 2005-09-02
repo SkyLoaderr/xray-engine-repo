@@ -130,6 +130,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("disable_info_portion",		&CScriptGameObject::DisableInfoPortion)
 		.def("give_game_news",				&CScriptGameObject::GiveGameNews)
 		.def("set_news_show_time",			&CScriptGameObject::SetNewsShowTime)
+		.def("give_talk_message",			&CScriptGameObject::AddIconedTalkMessage)
 		
 
 		.def("has_info",					&CScriptGameObject::HasInfo)

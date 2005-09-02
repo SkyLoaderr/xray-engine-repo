@@ -1234,5 +1234,10 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 
 	bool bVertFlip						= (1==xml_doc.ReadAttribInt	(path, index, "flip_vert", 0));
 	pWnd->SetVertFlip					(bVertFlip);
+
+	bool b = (1==xml_doc.ReadAttribInt(path, index, "always_show_scroll",1));
+
+	pWnd->SetFixedScrollBar(b);
+
 	return								true;
 }
