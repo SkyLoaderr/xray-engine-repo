@@ -25,19 +25,19 @@ damage              	= damage_bones
 
 fuel_tank         		= 250.         	; L
 fuel_consumption  		= 0.1		       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 25        	; horse_power (kW=hp*0.808) max power
+engine_power      		= 15        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 1500        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 1200.       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.002 ;0.001
-power_decrement_factor	= 0.01 ;0.01
-rpm_increment_factor	= 0.02 ;0.02
-rpm_decrement_factor	= 0.02 ;0.02
+power_increment_factor	= 0.002
+power_decrement_factor	= 0.01
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.02
 m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
 
-max_engine_rpm    		= 2000			; rpm (5000) rpm will never be more
+max_engine_rpm    		= 3000			; rpm (5000) rpm will never be more
 idling_engine_rpm		= 750       	; rpm (750) min rpm - starts from this rpm value
 
 ;-------------------------------------------------------------------------------
@@ -54,14 +54,14 @@ hand_break_torque 		= 0.06        	; сила торможения пробелом (по умолчанию = br
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
 
-main_gear_ratio    		= 20.0        	; Передаточное отношение
+main_gear_ratio    		= 15.0        	; Передаточное отношение
 auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 2.0, 1000,1450	
-N1                 		= 2.0, 1000,1450
-N2                 		= 1.0, 1000,1450
+R                  		= 1.0, 1000,2450	
+N1                 		= 1.0, 1000,2450
+;N2                 		= 1.0, 1000,2450
 ;N3                 		= 1.71, 2200,2850
 ;N4                 		= 1.00, 2200,2850
 
@@ -275,15 +275,15 @@ spring_factor           = 0.8		;
 friction_factor         = 1.4		;
 
 [back_left_wheel2]
-break_torque			= 0.030		; Сила тормозных колодок. (N*m
-hand_break_torque		= 0.030		; сила торможения пробелом (по умолчанию = break_torque)
+break_torque			= 0.060		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.060		; сила торможения пробелом (по умолчанию = break_torque))
 damping_factor          = 20		;
 spring_factor           = 0.8		;
 friction_factor         = 1.4		;
 
 [back_right_wheel2]
-break_torque			= 0.030		; Сила тормозных колодок. (N*m
-hand_break_torque		= 0.030		; сила торможения пробелом (по умолчанию = break_torque)
+break_torque			= 0.060		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.060		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 20		;
 spring_factor           = 0.8		;
 friction_factor         = 1.4		;
