@@ -51,7 +51,7 @@ function proceed()
 
 	
 	if	actor:dont_has_info("esc_tutorial_secret_place") and
-		actor:object("fox_flash") ~= nil
+		actor:object("tutorial_flash") ~= nil
 	then
 		actor:give_info_portion("esc_tutorial_secret_place")
 	end
