@@ -29,7 +29,7 @@
 		<actor_dialog>escape_trader_bandits_killed</actor_dialog>
 		<actor_dialog>escape_trader_need_artefacts</actor_dialog>
 		<actor_dialog>escape_trader_docs_labx18</actor_dialog>
-		
+		<actor_dialog>escape_trader_blokpost_case</actor_dialog>
 		
 	</specific_character>
 
