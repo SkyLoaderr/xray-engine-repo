@@ -176,7 +176,6 @@ function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	dialogs.relocate_item(second_speaker, case, "out")
 	dialogs.relocate_money(second_speaker, 2000, "in")
---	level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
 end
 
 --' Agroprom military case
