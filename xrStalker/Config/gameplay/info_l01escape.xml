@@ -113,8 +113,6 @@
 	<info_portion id="escape_factory_quest"></info_portion>
 	<info_portion id="esc_bandits_assault"></info_portion>
 	<info_portion id="escape_assault_finished"></info_portion>
-	<info_portion id="esc_bandit_see_actor"></info_portion>
-	<info_portion id="esc_assault_open_fire"></info_portion>
 	
 	
 	<!-- infoportions for raid -->
@@ -147,6 +145,7 @@
 	</info_portion>
 	<info_portion id="esc_kill_bandits_quest_kill"></info_portion>
 	<info_portion id="esc_kill_bandits_quest_done"></info_portion>
+	<info_portion id="esc_assault_start"></info_portion>
 	
 	
 	<!-- random artefacts -->
