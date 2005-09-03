@@ -670,5 +670,10 @@
 	<character id="aes_Soldier_sniper">
 		<class>aes_Soldier_sniper</class>
 	</character>
+	<character id="aes_Monolit_specnaz_rg6">
+		<class>aes_Monolit_specnaz_rg6</class>
+	</character>
+
+
 	
 </xml>
