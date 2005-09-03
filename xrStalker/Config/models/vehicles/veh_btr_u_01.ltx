@@ -25,14 +25,14 @@ damage              	= damage_bones
 
 fuel_tank         		= 250.         	; L
 fuel_consumption  		= 0.1		       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 15        	; horse_power (kW=hp*0.808) max power
+engine_power      		= 25        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 1500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 850.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 1200.       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.01
-power_decrement_factor	= 0.02
-rpm_increment_factor	= 0.01
-rpm_decrement_factor	= 0.01
+power_increment_factor	= 0.002
+power_decrement_factor	= 0.01
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.02
 m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
@@ -54,14 +54,14 @@ hand_break_torque 		= 0.06        	; сила торможения пробелом (по умолчанию = br
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
 
-main_gear_ratio    		= 15.0        	; Передаточное отношение
+main_gear_ratio    		= 20.0        	; Передаточное отношение
 auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 1.0, 1000,2450	
-N1                 		= 1.0, 1000,2450
-;N2                 		= 1.0, 1000,2450
+R                  		= 2.0, 1500,2450	
+N1                 		= 2.0, 1500,2450
+N2                 		= 1.0, 1500,2450
 ;N3                 		= 1.71, 2200,2850
 ;N4                 		= 1.00, 2200,2850
 
@@ -73,21 +73,21 @@ headlights         		= f1,f2
 
 [f1]
 bone               		= left_light
-color              		= 1.0,1.0,1.0,0.8 ;0.8,0.8,0.8,0.5
+color              		= 1.0,1.0,1.0,0.8
 range              		= 25
-cone_angle         		= 90
+cone_angle         		= 50
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
-glow_radius        		= 0.5
+glow_radius        		= 1.5
 
 [f2]
 bone               		= right_light
-color              		= 1.0,1.0,1.0,0.8 ;0.8,0.8,0.8,0.5
+color              		= 1.0,1.0,1.0,0.8
 range              		= 25
-cone_angle         		= 90
+cone_angle         		= 50
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
-glow_radius        		= 0.5
+glow_radius        		= 1.5
 
 [car_sound]
 snd_volume         		= 1.0
