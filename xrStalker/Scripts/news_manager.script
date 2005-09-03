@@ -138,20 +138,38 @@ function send_task(actor, type)
 	pda_task:play(db.actor, 0, sound_object.s2d)
 	if type == "new" then
 		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_new_task", "ui\\ui_icons_task", 150,100,50,50)
+		end
 	elseif type == "update" then
 		db.actor:give_game_news("general_update_task", "ui\\ui_icons_task", 250,100,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_update_task", "ui\\ui_icons_task", 250,100,50,50)
+		end
 	elseif type == "complete" then
 		db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", 350,100,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_complete_task", "ui\\ui_icons_task", 350,100,50,50)
+		end
 	elseif type == "fail" then
 		db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", 300,100,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_fail_task", "ui\\ui_icons_task", 300,100,50,50)
+		end
 	end	
 end
 function send_encyclopedy(type)
 	pda_task:play(db.actor, 0, sound_object.s2d)
 	if type == "encyclopedy" then
 		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", 350,150,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_new_encyclopedy", "ui\\ui_icons_task", 350,150,50,50)
+		end		
 	else
 		db.actor:give_game_news("general_new_diary", "ui\\ui_icons_task", 350,150,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_new_diary", "ui\\ui_icons_task", 350,150,50,50)
+		end		
 	end	
 end
 
@@ -160,8 +178,14 @@ function relocate_item(actor, type)
 	--' Играем дефолтный звук
 	if type == "in" then
 		db.actor:give_game_news("general_in_item", "ui\\ui_icons_task", 400,100,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_in_item", "ui\\ui_icons_task", 400,100,50,50)
+		end		
 	elseif type == "out" then
 		db.actor:give_game_news("general_out_item", "ui\\ui_icons_task", 400,100,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_out_item", "ui\\ui_icons_task", 400,100,50,50)
+		end		
 	end
 	
 end
@@ -170,8 +194,14 @@ function relocate_money(actor, type)
 	--' Играем дефолтный звук
 	if type == "in" then
 		db.actor:give_game_news("general_in_money", "ui\\ui_icons_task", 450,50,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_in_money", "ui\\ui_icons_task", 450,50,50,50)
+		end		
 	elseif type == "out" then
 		db.actor:give_game_news("general_out_money", "ui\\ui_icons_task", 450,50,50,50, 0)
+		if db.actor:is_talking() then
+			db.actor:give_talk_message("general_in_money", "ui\\ui_icons_task", 450,50,50,50)
+		end		
 	end
 	
 end
