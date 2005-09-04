@@ -540,6 +540,19 @@
 		<class>bar_Dolg_master</class>
 	</character>
 
+
+	<character id="bar_Stalker_novice">
+		<class>bar_Stalker_novice</class>
+	</character>
+
+	<character id="bar_Stalker_general">
+		<class>bar_Stalker_general</class>
+	</character>
+
+	<character id="bar_Stalker_veteran">
+		<class>bar_Stalker_veteran</class>
+	</character>
+
 	
 	<!-- Yantar + X16 -->
 	
