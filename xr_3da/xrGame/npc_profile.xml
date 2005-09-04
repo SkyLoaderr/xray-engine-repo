@@ -524,46 +524,21 @@
 		<class>bar_stalker_freeman</class>
 	</character>
 
-	<character id="bar_dolg_regular_default1">
-		<class>bar_Dolg_regular</class>
-	</character>
-	<character id="bar_dolg_regular_default2">
-		<class>bar_Dolg_regular</class>
-	</character>
-	<character id="bar_dolg_regular_default3">
+	<character id="bar_dolg_regular">
 		<class>bar_Dolg_regular</class>
 	</character>
 
-	<character id="bar_dolg_sniper_default1">
-		<class>bar_Dolg_sniper</class>
-	</character>
-	<character id="bar_dolg_sniper_default2">
-		<class>bar_Dolg_sniper</class>
-	</character>
-	<character id="bar_dolg_sniper_default3">
+	<character id="bar_dolg_sniper">
 		<class>bar_Dolg_sniper</class>
 	</character>
 
-	<character id="bar_dolg_veteran_default1">
-		<class>bar_Dolg_specnaz</class>
-	</character>
-	<character id="bar_dolg_veteran_default2">
-		<class>bar_Dolg_specnaz</class>
-	</character>
-	<character id="bar_dolg_veteran_default3">
-		<class>bar_Dolg_specnaz</class>
-	</character>
-	<character id="bar_dolg_veteran_default4">
+	<character id="bar_dolg_veteran">
 		<class>bar_Dolg_specnaz</class>
 	</character>
 
-	<character id="bar_dolg_master_default1">
+	<character id="bar_dolg_master">
 		<class>bar_Dolg_master</class>
 	</character>
-	<character id="bar_dolg_master_default2">
-		<class>bar_Dolg_master</class>
-	</character>
-
 
 	
 	<!-- Yantar + X16 -->
