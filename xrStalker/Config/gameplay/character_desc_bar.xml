@@ -1651,5 +1651,276 @@
 	</specific_character>
 
 
+<!---------------------------ECOLOG GUARD------------------------>
+	<specific_character id="bar_ecolog_guard_default1" team_default = "1">
+		<name>Неизвестный ученый</name>
+		<icon x="8" y="4"></icon>
+		<map_icon x="0" y="6"></map_icon>
+		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
+
+		<class>bar_Ecolog_guard</class>
+		<community>ecolog</community>
+
+		
+		<rank>80</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\nauchniy\nauchniy_0</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_fmj = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="bar_ecolog_guard_default2" team_default = "1">
+		<name>Неизвестный ученый</name>
+		<icon x="10" y="4"></icon>
+		<map_icon x="1" y="6"></map_icon>
+		<bio>Научный работник. Детальная информация отсутствует.</bio>
+		
+		<class>bar_ecolog_general</class>
+		<community>ecolog</community>
+		
+		<rank>80</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\nauchniy\nauchniy_0</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 = 1 \n
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+
+<!---------------------------KILLER REGULAR----------------------->
+	<specific_character id="bar_killer_regular_default1" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="18" y="4"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_regular</class>
+		<community>killer</community>
+					
+		<rank>40</rank>
+		<reputation>-30</reputation>
+
+		<visual>actors\killer\stalker_ki_head_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pmm = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="bar_killer_regular_default2" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="18" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_regular</class>
+		<community>killer</community>
+					
+		<rank>40</rank>
+		<reputation>-30</reputation>
+
+		<visual>actors\killer\stalker_ki_head_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pmm = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="bar_killer_regular_default3" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="18" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_regular</class>
+		<community>killer</community>
+					
+		<rank>40</rank>
+		<reputation>-30</reputation>
+
+		<visual>actors\killer\stalker_ki_head_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp = 1 \n
+			wpn_bm16 \n
+			ammo_12x76_zhekan = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+		
+<!---------------------------KILLER SNIPER---------------------->
+	<specific_character id="bar_killer_sniper_default1" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="28" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_sniper</class>
+		<community>killer</community>
+
+		<rank>50</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_mask</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_svu \n
+			ammo_7.62x54_ap = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	
+<!---------------------------KILLER SPECNAZ---------------------->
+	<specific_character id="bar_killer_specnaz_default1" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="4" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_specnaz</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_antigas</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="bar_killer_specnaz_default2" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="4" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_specnaz</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_antigas</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n
+			wpn_l85 = 1, 0, 0, 0 \n
+			ammo_5.56x45_ap = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="bar_killer_specnaz_default3" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="30" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_specnaz</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 = 1, 1, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="bar_killer_specnaz_default4" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="30" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		
+		<class>bar_Killer_specnaz</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 = 1, 1, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
 
 </xml>

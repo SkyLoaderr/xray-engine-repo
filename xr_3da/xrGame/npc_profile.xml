@@ -553,6 +553,22 @@
 		<class>bar_Stalker_veteran</class>
 	</character>
 
+	<character id="bar_ecolog_general">
+		<class>bar_ecolog_general</class>
+	</character>
+
+	<character id="bar_Killer_regular">
+		<class>bar_Killer_regular</class>
+	</character>
+
+	<character id="bar_Killer_sniper">
+		<class>bar_Killer_sniper</class>
+	</character>	
+	
+	<character id="bar_Killer_specnaz">
+		<class>bar_Killer_specnaz</class>
+	</character>
+
 	
 	<!-- Yantar + X16 -->
 	
