@@ -553,8 +553,8 @@
 		<class>bar_Stalker_veteran</class>
 	</character>
 
-	<character id="bar_ecolog_general">
-		<class>bar_ecolog_general</class>
+	<character id="bar_ecolog_guard">
+		<class>bar_ecolog_guard</class>
 	</character>
 
 	<character id="bar_Killer_regular">
