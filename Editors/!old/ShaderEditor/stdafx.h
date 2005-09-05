@@ -143,28 +143,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
 
-// external dependencies
-
-#ifndef _ECOREB
-#	pragma comment(lib,"xrECoreB.lib")
-#endif
-
-#pragma comment(lib,"xrEPropsB.lib")
-
-#pragma comment(lib,"xrCoreB.lib")
-#pragma comment(lib,"xrSoundB.lib")
-
-#pragma comment(lib,"dinputB.lib")
-#pragma comment(lib,"freeimageB.lib")
-//#pragma comment(lib,"d3d9.lib")
-#pragma comment(lib,"dxtB.lib")
-#pragma comment(lib,"xrProgressiveB.lib")
-#pragma comment(lib,"MagicFMDLLB.lib")
-#pragma comment(lib,"EToolsB.lib")
-#pragma comment(lib,"LWOB.lib")
-#pragma comment(lib,"xrHemisphereB.lib")
-#pragma comment(lib,"oggencB.lib")
-
 // path definition
 #define _server_root_		"$server_root$"
 #define _server_data_root_	"$server_data_root$"
