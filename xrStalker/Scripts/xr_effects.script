@@ -1069,5 +1069,11 @@ end
 function aes_grenade_explode (actor, npc)
     local obj = level_object_by_sid (1101)
     if obj == nil then return end
-    obj:explode (0)
+    local h = hit ();
+    h.power = 1000;
+    h.direction = vector():set (1, 0, 0);
+    h.impulse = 1;
+    h.draftsman = obj;
+    h.type = hit.chemical_burn;
+    obj:hit (h);
 end
