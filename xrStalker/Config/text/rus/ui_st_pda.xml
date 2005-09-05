@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 
 <string_table>
-	<string id="events">
-		<text>События</text>
+	<string id="pda_btn_quests">
+		<text>Квесты</text>
 	</string>
-	<string id="contacts">
+	<string id="pda_btn_contacts">
 		<text>Контакты</text>
 	</string>
-	<string id="map">
+	<string id="pda_btn_map">
 		<text>Карта</text>
 	</string>
-	<string id="encyclopedia">
+	<string id="pda_btn_encyclopedia">
 		<text>Энциклопедия</text>
 	</string>
-	<string id="statistics">
+	<string id="pda_btn_statistics">
 		<text>Статистика</text>
 	</string>
-	<string id="rankings">
+	<string id="pda_btn_ranking">
 		<text>Рейтинг</text>
-	</string>	
+	</string>
+    <string id="pda_btn_diary">
+        <text>Дневник</text>
+    </string>
+	<string id="level_changer_invitation">
+		<text>Перейти на следующий уровень ?</text>
+	</string>
 </string_table>
 

@@ -2,6 +2,7 @@
 #include "uigamecustom.h"
 #include "ui/UIDialogWnd.h"
 #include "net_utils.h"
+#include "game_graph_space.h"
 
 class CUIInventoryWnd;
 class CUITradeWnd;			
@@ -31,7 +32,7 @@ public:
 	void				StartCarBody			(CInventory* pOurInv,    CGameObject* pOurObject,
 												 CInventory* pOthersInv, CGameObject* pOthersObject);
 	virtual void		ReInitInventoryWnd		();
-	void				ChangeLevel				(u32 game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang);
+	void				ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang);
 
 	CUIInventoryWnd*	InventoryMenu;
 	CUITradeWnd*		TradeMenu;
@@ -41,12 +42,13 @@ public:
 	CChangeLevelWnd*	UIChangeLevelWnd;
 };
 
+
 class CChangeLevelWnd :public CUIDialogWnd
 {
 	CUIMessageBox*			m_messageBox;
 	typedef CUIDialogWnd	inherited;
 public:
-	u32						m_game_vertex_id;
+	GameGraph::_GRAPH_ID	m_game_vertex_id;
 	u32						m_level_vertex_id;
 	Fvector					m_position;
 	Fvector					m_angles;

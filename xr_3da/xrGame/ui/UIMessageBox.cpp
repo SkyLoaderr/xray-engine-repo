@@ -2,6 +2,7 @@
 #include "UIMessageBox.h"
 #include "UIXmlInit.h"
 #include "UI3tButton.h"
+#include "../string_table.h"
 
 CUIMessageBox::CUIMessageBox()
 {
@@ -195,6 +196,6 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 
 void CUIMessageBox::SetText(LPCSTR str)
 {
-	m_UIStaticText->SetText(str);
+	m_UIStaticText->SetText(*(CStringTable()(str)));
 }
 

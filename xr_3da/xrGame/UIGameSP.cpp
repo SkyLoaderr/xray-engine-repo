@@ -137,7 +137,7 @@ void CUIGameSP::ReInitInventoryWnd		()
 		InventoryMenu->InitInventory(); 
 };
 
-void CUIGameSP::ChangeLevel				(u32 game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
+void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
 {
 	UIChangeLevelWnd->m_game_vertex_id		= game_vert_id;
 	UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
