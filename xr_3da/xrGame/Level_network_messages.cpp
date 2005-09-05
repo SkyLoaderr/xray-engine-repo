@@ -288,7 +288,7 @@ void				CLevel::OnMessage				(void* data, u32 size)
 	{
 		if (m_bDemoStarted) return;
 		
-		if (!m_aDemoData.empty() && net_Syncronised)
+		if (!m_aDemoData.empty() && net_IsSyncronised())
 		{
 			NET_Packet *P = &(m_aDemoData.front());
 			timeServer_UserDelta(P->timeReceive - timeServer_Async());
@@ -298,7 +298,7 @@ void				CLevel::OnMessage				(void* data, u32 size)
 		}
 	};
 		
-	if (IsDemoSave() && net_Syncronised) 
+	if (IsDemoSave() && net_IsSyncronised()) 
 	{
 		DemoWriteData(data, size);
 	}	

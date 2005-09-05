@@ -169,7 +169,7 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 		return FALSE		;
 	};
 
-	while (!net_Syncronised) {
+	while (!net_IsSyncronised()) {
 	};
 
 	//---------------------------------------------------------------------------

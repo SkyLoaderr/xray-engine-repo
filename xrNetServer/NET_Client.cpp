@@ -706,3 +706,8 @@ void	IPureClient::ClearStatistic()
 {
 	net_Statistic.Clear();
 }
+
+BOOL	IPureClient::net_IsSyncronised()
+{
+	return net_Syncronised;
+}
