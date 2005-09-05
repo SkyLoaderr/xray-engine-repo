@@ -96,7 +96,7 @@
 			<text font="letterica18" r="255" g="232" b="208"/>
 		</content_text>
 		
-		<msg_icon x="0" y="0" width="32" height="32">
+		<msg_icon x="0" y="0" width="16" height="16">
 		</msg_icon>
 	</iconed_answer_item>
 
