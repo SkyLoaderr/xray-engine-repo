@@ -157,6 +157,8 @@
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
+		
+		<panic_threshold>0</panic_threshold>
 
 		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
@@ -696,6 +698,8 @@
 		
 		<rank>90</rank>
 		<reputation>-50</reputation>
+		
+		<panic_threshold>0</panic_threshold>
 
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
