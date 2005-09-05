@@ -57,6 +57,8 @@
 	<info_portion id="aes_timer_60000"></info_portion>
 	<info_portion id="aes_timer_120000"></info_portion>
 	<info_portion id="aes_timer_180000"></info_portion>
+	<info_portion id="aes_choper_patrol_sound"></info_portion>
+
 
 </game_information_portions>
 
