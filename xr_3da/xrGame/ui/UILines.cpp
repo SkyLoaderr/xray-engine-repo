@@ -86,7 +86,7 @@ void CUILines::AddCharAtCursor(const char ch){
 }
 
 void CUILines::MoveCursorToEnd(){
-	m_iCursorPos = m_text.size();
+	m_iCursorPos = (int)m_text.size();
 	UpdateCursor();
 }
 

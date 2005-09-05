@@ -76,7 +76,7 @@ void CControlPathBuilderBase::set_path_builder_params()
 
 void CControlPathBuilderBase::update_path_builder_state()
 {
-	u32 state_prev = m_state;
+//	u32 state_prev = m_state;
 	
 	m_state = eStatePathValid;
 

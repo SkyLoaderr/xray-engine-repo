@@ -36,6 +36,16 @@ bool SortStringsByAlphabetPred (const shared_str& s1, const shared_str& s2)
 	return (xr_strcmp(s1,s2)<0);
 };
 
+struct story_name_predicate {
+	IC	bool	operator()	(const xr_rtoken &_1, const xr_rtoken &_2) const
+	{
+		VERIFY	(_1.name.size());
+		VERIFY	(_2.name.size());
+
+		return	(xr_strcmp(_1.name,_2.name) < 0);
+	}
+};
+
 #ifdef XRSE_FACTORY_EXPORTS
 
 struct SFillPropData{
@@ -82,7 +92,9 @@ struct SFillPropData{
         R_ASSERT				(Ini->section_exist(section));
         for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
             story_names.push_back	(xr_rtoken(V,atoi(N)));
-		story_names.push_back	(xr_rtoken("NO STORY ID",ALife::_STORY_ID(-1)));
+
+		std::sort				(story_names.begin(),story_names.end(),story_name_predicate());
+		story_names.insert		(story_names.begin(),xr_rtoken("NO STORY ID",ALife::_STORY_ID(-1)));
 
 
 #ifndef AI_COMPILER
