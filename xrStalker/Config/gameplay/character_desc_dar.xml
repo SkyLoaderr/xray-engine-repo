@@ -26,7 +26,7 @@
 	
 	<specific_character id="dar_corpse_default1" team_default = "1">
 		<name>Неизвестно</name>
-		<icon x="8" y="0"></icon>
+		<icon x="0" y="8"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Нет информации.</bio>
 
@@ -46,7 +46,7 @@
 	
 	<specific_character id="dar_corpse_default2" team_default = "1">
 		<name>Неизвестно</name>
-		<icon x="8" y="0"></icon>
+		<icon x="0" y="8"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Нет информации.</bio>
 
@@ -66,7 +66,7 @@
 	
 	<specific_character id="dar_corpse_default3" team_default = "1">
 		<name>Неизвестно</name>
-		<icon x="8" y="0"></icon>
+		<icon x="0" y="8"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Нет информации.</bio>
 
@@ -86,7 +86,7 @@
 	
 		<specific_character id="dar_corpse_default4" team_default = "1">
 		<name>Неизвестно</name>
-		<icon x="8" y="0"></icon>
+		<icon x="0" y="8"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Нет информации.</bio>
 
