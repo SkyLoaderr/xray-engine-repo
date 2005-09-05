@@ -129,6 +129,9 @@
 	<character id="agr_soldier_sniper">
 		<class>agr_Soldier_sniper</class>
 	</character>
+	<character id="agr_bandit_general">
+		<class>agr_bandit_general</class>
+	</character>
 
 	
 <!-- Darkvalley + X18 -->
