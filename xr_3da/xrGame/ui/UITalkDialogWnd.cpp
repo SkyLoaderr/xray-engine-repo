@@ -266,5 +266,6 @@ void CUIAnswerItemIconed::Init		(LPCSTR text, LPCSTR texture_name, Frect texture
 	m_icon->GetUIStaticItem().SetOriginalRect(texture_rect.x1,texture_rect.y1,texture_rect.x2,texture_rect.y2);
 	m_icon->TextureAvailable		(true);
 	m_icon->TextureOn				();
+	m_icon->SetStretchTexture		(true);
 
 }
