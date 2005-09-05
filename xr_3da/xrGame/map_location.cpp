@@ -343,7 +343,8 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 				for(lit=g_lchangers.begin();lit!=lit_e; ++lit){
 					GameGraph::_GRAPH_ID gid = (*lit)->ai_location().game_vertex_id();
 					Msg("[%d]",gid);
-					Msg("lch_name=%s",*ai().game_graph().header().level(ai().game_graph().vertex(gid)->level_id()).name());
+					Fvector p = ai().game_graph().vertex(gid)->level_point();
+					Msg("lch_name=%s pos=%f %f %f",*ai().game_graph().header().level(ai().game_graph().vertex(gid)->level_id()).name(), p.x, p.y, p.z);
 				}
 
 			
