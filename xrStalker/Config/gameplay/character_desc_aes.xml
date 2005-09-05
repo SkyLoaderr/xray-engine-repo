@@ -37,8 +37,6 @@
     <map_icon x="3" y="0"></map_icon>
     <bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
 
-    <team>Monolit_specnaz</team>
-
     <class>aes_Monolit_specnaz</class>
     <community>monolith</community>
 
@@ -66,8 +64,6 @@
     <map_icon x="3" y="0"></map_icon>
     <bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
 
-    <team>Monolit_specnaz</team>
-
     <class>aes_Monolit_specnaz_rg6</class>
     <community>monolith</community>
 
@@ -79,8 +75,6 @@
       [spawn] \n
       wpn_colt1911 \n
       ammo_11.43x23_hydro  = 1 \n
-      wpn_rg-6 \n
-      ammo_vog-25p = 1 \n
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -94,8 +88,6 @@
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
-
-    <team>Monolit_sniper</team>
 
     <class>aes_Monolit_sniper</class>
     <community>monolith</community>
@@ -123,8 +115,6 @@
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
-    <team>Monolit_sniper</team>
-
     <class>aes_Monolit_sniper_gauss</class>
     <community>monolith</community>
 
@@ -150,8 +140,6 @@
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Хранитель группировки "Монолит". Лучше держаться от него подальше. Детальная информация отсутствует.</bio>
-
-    <team>Monolit_master</team>
 
     <class>aes_Monolit_master</class>
     <community>monolith</community>
