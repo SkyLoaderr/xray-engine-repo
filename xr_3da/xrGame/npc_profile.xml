@@ -430,6 +430,11 @@
 	<character id="pri_stalker_veteran">
 		<class>pri_stalker_veteran</class>
 	</character>
+
+	<character id="dar_corpse">
+		<class>dar_stalker_explorer</class>
+	</character>
+
 	
 <!-- Aes -->
 	<character id="aes_Monolit_rpg">
