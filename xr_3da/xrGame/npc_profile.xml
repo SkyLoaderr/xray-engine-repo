@@ -1,256 +1,6 @@
 ﻿<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
-	<!-- СТАРЫЕ ПРОФИЛЯ. Их необходимо переделать!!! -->
-
-	<!-- Stalker  -->	
-	<character id="stalker">
-		<class>Stalker_general</class>
-	</character>
-	<character id="stalker_novice">
-		<class>Stalker_novice</class>
-	</character>
-	<character id="stalker_general">
-		<class>Stalker_general</class>
-	</character>
-	<character id="stalker_veteran">
-		<class>Stalker_veteran</class>
-	</character>
-	<character id="stalker_master">
-		<class>Stalker_master</class>
-	</character>
-	<character id="stalker_sniper">
-		<class>Stalker_sniper</class>
-	</character>
-	<!-- Bandit  -->	
-	<character id="bandit">
-		<class>Bandit_general</class>
-	</character>
-	<character id="bandit_novice">
-		<class>Bandit_novice</class>
-	</character>
-	<character id="bandit_general">
-		<class>Bandit_general</class>
-	</character>
-	<character id="bandit_veteran">
-		<class>Bandit_veteran</class>
-	</character>
-	<character id="bandit_master">
-		<class>Bandit_master</class>
-	</character>
-
-<!-- Soldier  -->
-	<character id="soldier">
-		<class>Soldier_regular</class>
-	</character>
-	<character id="soldier_regular">
-		<class>Soldier_regular</class>
-	</character>
-	<character id="soldier_sniper">
-		<class>Soldier_sniper</class>
-	</character>
-	<character id="soldier_specnaz">
-		<class>Soldier_specnaz</class>
-	</character>
-	<character id="soldier_military">
-		<class>Soldier_military</class>
-	</character>
-	<!-- Dolg  -->
-	<character id="dolg">
-		<class>Dolg_regular</class>
-	</character>
-	<character id="dolg_regular">
-		<class>Dolg_regular</class>
-	</character>
-	<character id="dolg_sniper">
-		<class>Dolg_sniper</class>
-	</character>
-	<character id="dolg_specnaz">
-		<class>Dolg_specnaz</class>
-	</character>
-	<character id="dolg_master">
-		<class>Dolg_master</class>
-	</character>
-	<!-- Svoboda -->
-	<character id="svoboda">
-		<class>Svoboda_regular</class>
-	</character>
-	<character id="svoboda_regular">
-		<class>Svoboda_regular</class>
-	</character>
-	<character id="svoboda_sniper">
-		<class>Svoboda_sniper</class>
-	</character>
-	<character id="svoboda_specnaz">
-		<class>Svoboda_specnaz</class>
-	</character>
-	<character id="svoboda_master">
-		<class>Svoboda_master</class>
-	</character>
-	<!-- Monolit -->
-	<character id="monolit">
-		<class>Monolit_regular</class>
-	</character>
-	<character id="monolit_regular">
-		<class>Monolit_regular</class>
-	</character>
-	<character id="monolit_sniper">
-		<class>Monolit_sniper</class>
-	</character>
-	<character id="monolit_specnaz">
-		<class>Monolit_specnaz</class>
-	</character>
-	<character id="monolit_master">
-		<class>Monolit_master</class>
-	</character>
-	<character id="monolit_rpg">
-		<class>Monolit_rpg</class>
-	</character>
-	<!-- Zombied -->
-	<character id="zombied">
-		<class>Zombied</class>
-	</character>
-	<character id="zombied_veteran">
-		<class>Zombied_veteran</class>
-	</character>
-	<!-- Killer -->
-	<character id="killer">
-		<class>Killer_regular</class>
-	</character>
-	<character id="killer_regular">
-		<class>Killer_regular</class>
-	</character>
-	<character id="killer_sniper">
-		<class>Killer_sniper</class>
-	</character>
-	<character id="killer_specnaz">
-		<class>Killer_specnaz</class>
-	</character>
-	<character id="killer_master">
-		<class>Killer_master</class>
-	</character>
-	<!-- Ecolog -->
-	<character id="ecolog">
-		<class>Ecolog_general</class>
-	</character>
-	<character id="ecolog_guard">
-		<class>Ecolog_guard</class>
-	</character>
-
-	<character id="killer_leader">
-		<class>Killer_leader</class>
-		<specific_character>killer_leader</specific_character>
-	</character>
-	<character id="svoboda_leader">
-		<class>Svoboda_leader</class>
-		<specific_character>svoboda_leader</specific_character>
-	</character>
-	<character id="monolit_leader">
-		<class>Monolit_leader</class>
-		<specific_character>monolit_leader</specific_character>
-	</character>
-	<character id="monolit_left_hand">
-		<class>Monolit_left_hand</class>
-		<specific_character>monolit_left_hand</specific_character>
-	</character>
-	<character id="monolit_right_hand">
-		<class>Monolit_right_hand</class>
-		<specific_character>monolit_right_hand</specific_character>
-	</character>				
-
-	<character id="stalker_esc_fanat">
-		<class>stalker_esc_fanat</class>
-		<specific_character>stalker_esc_fanat</specific_character>
-	</character>	
-
-	<character id="stalker_esc_bariga">
-		<class>stalker_esc_bariga</class>
-		<specific_character>stalker_esc_bariga</specific_character>
-	</character>					
-	
-	<!-- Soldier  -->
-	<character id="soldier_commander">
-		<class>Soldier_commander</class>
-	</character>	
-	
-	<character id="stalker_escape_fox">
-		<class>stalker_esc_fox</class>
-	</character>	
-
-	<character id="stalker_escape_tutorial_wounded">
-		<class>stalker_esc_tutorial_wounded</class>
-	</character>	
-
-	<character id="stalker_garbage_seriy">
-		<class>stalker_gar_seriy</class>
-	</character>	
-
-	<!-- Drammoment Garbage Novice  -->
-	<character id="stalker_gar_dram_novice">
-		<class>stalker_gar_dram_novice</class>
-	</character>
-	
-	<character id="svoboda_bodyguard">
-		<class>svoboda_bodyguard</class>
-	</character>	
-
-	<character id="bandit_borov">
-		<class>Bandit_borov</class>
-	</character>
-
-
-	<character id="svoboda_master_max">
-		<class>Svoboda_master_Max</class>
-	</character>
-	<character id="svoboda_master_ugrumiy">
-		<class>Svoboda_master_Ugrumiy</class>
-	</character>
-	<character id="svoboda_blockpost_leader">
-		<class>Svoboda_blockpost_leader</class>
-	</character>
-	<character id="dolg_veteran_cherep">
-		<class>Dolg_specnaz_cherep</class>
-	</character>
-
-	<character id="svoboda_zombi_stalker">
-		<class>Svoboda_zombi_stalker</class>
-	</character>
-
-	<character id="dolg_veteran_silence">
-		<class>Dolg_specnaz_silence</class>
-	</character>
-	<character id="killer_specnaz_stukach">
-		<class>Killer_specnaz_stukach</class>
-	</character>
-	<character id="svoboda_specnaz_stukach">
-		<class>Svoboda_specnaz_stukach</class>
-	</character>
-	<character id="killer_informator">
-		<class>Killer_informator</class>
-	</character>
-	<character id="svoboda_cook">
-		<class>Svoboda_cook</class>
-	</character>
-	<character id="svoboda_trader">
-		<class>Svoboda_trader</class>
-	</character>
-	<character id="svoboda_zoneguard">
-		<class>Svoboda_zoneguard</class>
-	</character>
-
-	<character id="stalker_gar_hellcar">
-		<class>stalker_gar_hellcar</class>
-	</character>	
-
-	<!-- AES  -->
-	<character id="soldier_specnaz_aes">
-		<class>Soldier_specnaz_aes</class>
-	</character>
-	<character id="monolit_sniper_gauss">
-		<class>Monolit_sniper_gauss</class>
-	</character>
-
-
 	<!-- НОВЫЕ ПРОФИЛЯ -->
 	<character id="actor">
 		<class>Actor</class>
@@ -380,8 +130,6 @@
 		<class>agr_Soldier_sniper</class>
 	</character>
 
-
-
 	
 <!-- Darkvalley + X18 -->
 	<!-- Bandits -->	
@@ -466,10 +214,10 @@
 		<class>bar_stalker_hunter</class>
 	</character>
 	<character id="bar_bar_drunk_dolg">
+			<class>bar_stalker_drunk_dolg</class>
+	</character>
 	<character id="bar_stalker_freeman">
 		<class>bar_stalker_freeman</class>
-	</character>
-		<class>bar_stalker_drunk_dolg</class>
 	</character>
 	<character id="bar_bar_lisiy">
 		<class>bar_stalker_lisiy</class>
@@ -520,56 +268,41 @@
 		<class>bar_crazy_veterans</class>
 	</character>
 
-	<character id="bar_stalker_freeman">
-		<class>bar_stalker_freeman</class>
-	</character>
-
 	<character id="bar_dolg_regular">
 		<class>bar_Dolg_regular</class>
 	</character>
-
 	<character id="bar_dolg_sniper">
 		<class>bar_Dolg_sniper</class>
 	</character>
-
 	<character id="bar_dolg_veteran">
 		<class>bar_Dolg_specnaz</class>
 	</character>
-
 	<character id="bar_dolg_master">
 		<class>bar_Dolg_master</class>
 	</character>
 
-
 	<character id="bar_Stalker_novice">
 		<class>bar_Stalker_novice</class>
 	</character>
-
 	<character id="bar_Stalker_general">
 		<class>bar_Stalker_general</class>
 	</character>
-
 	<character id="bar_Stalker_veteran">
 		<class>bar_Stalker_veteran</class>
 	</character>
-
 	<character id="bar_ecolog_guard">
 		<class>bar_ecolog_guard</class>
 	</character>
-
 	<character id="bar_Killer_regular">
 		<class>bar_Killer_regular</class>
 	</character>
-
 	<character id="bar_Killer_sniper">
 		<class>bar_Killer_sniper</class>
 	</character>	
-	
 	<character id="bar_Killer_specnaz">
 		<class>bar_Killer_specnaz</class>
 	</character>
 
-	
 	<!-- Yantar + X16 -->
 	
 	<!-- Military -->
