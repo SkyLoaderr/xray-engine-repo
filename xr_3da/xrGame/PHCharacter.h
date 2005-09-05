@@ -103,6 +103,8 @@ virtual		void		Create								(dVector3 /**sizes/**/)										=0 ;
 virtual		void		Destroy								(void)														=0 ;
 virtual		void		SetBox								(const dVector3 &sizes)										=0 ;
 virtual		void		SetAcceleration						(Fvector accel)												=0 ;
+virtual		void		SetForcedPhysicsControl				(bool v){}
+virtual		bool		ForcedPhysicsControl				()															{return false;}
 virtual     void		SetCamDir							(const Fvector& cam_dir)									=0 ;
 virtual	const Fvector&	CamDir								()const														=0 ;
 virtual		Fvector		GetAcceleration						()															=0 ;

@@ -33,6 +33,8 @@ void				SetAirControlParam(float param){fAirControlParam=param;}
 void				SetActorRestrictorRadius(CPHCharacter::ERestrictionType rt, float r);
 void				SetRestrictionType(CPHCharacter::ERestrictionType rt){if(m_character)m_character->SetRestrictionType(rt);}
 void				SetActorMovable(bool v){if(m_character)m_character->SetActorMovable(v);}
+void				SetForcedPhysicsControl(bool v){if(m_character)m_character->SetForcedPhysicsControl(v);}
+bool				ForcedPhysicsControl(){return m_character&&m_character->ForcedPhysicsControl();}
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point
@@ -45,6 +47,7 @@ void				Jump(const Fvector &end_point, float time);
 float				Jump(const Fvector &end_point);
 bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
 ///
+bool				PhyssicsOnlyMode(){return m_character&& m_character->b_exist&&m_character->IsEnabled()&&(m_character->JumpState()||m_character->ForcedPhysicsControl());}
 void				GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point);	//returns vector of velocity of jump with minimal start speed
 																												//in min_vel and correspondent jump time in time
 float				JumpMinVelTime(const Fvector &end_point); // return time of jump with min start speed

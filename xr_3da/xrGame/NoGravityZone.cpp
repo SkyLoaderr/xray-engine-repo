@@ -49,11 +49,13 @@ void CNoGravityZone::switchGravity(SZoneObjectInfo& io, bool val)
 		CEntityAlive* ea=smart_cast<CEntityAlive*>(io.object);
 		CPHMovementControl*mc=ea->movement_control();
 		mc->SetApplyGravity(BOOL(val));
+		mc->SetForcedPhysicsControl(!val);
 		if(!val&&mc->Environment()==CPHMovementControl::peOnGround)
 		{
 			Fvector gn;
 			mc->GroundNormal(gn);
 			mc->ApplyImpulse(gn,mc->GetMass()*ph_world->Gravity()*fixed_step);
+			
 		}
 	}
 }
