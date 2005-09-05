@@ -124,13 +124,22 @@ path_walk           = wave3_leader_walk2
 path_look           = wave3_leader_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
-on_timer            = 2000 | walker@pri_followers_leader_wave3_fight
+on_timer            = 2000 | remark@pri_followers_leader_wave3_fight ;walker@pri_followers_leader_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
 [walker@pri_followers_leader_wave3_fight]
 path_walk           = wave3_leader_walk2
 path_look           = wave3_leader_look3
+on_timer            = 5000 | walker@pri_followers_leader_wave3
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+[remark@pri_followers_leader_wave3_fight]
+;no_move             = true
+;no_rotate           = true
+target              = 807
+anim                = assault_fire
 on_timer            = 5000 | walker@pri_followers_leader_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -542,13 +551,22 @@ path_walk           = wave3_stalker1_walk2
 path_look           = wave3_stalker1_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
-on_timer            = 2000 | walker@pri_followers_nap1_wave3_fight
+on_timer            = 2000 | remark@pri_followers_nap1_wave3_fight ;walker@pri_followers_nap1_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
 [walker@pri_followers_nap1_wave3_fight]
 path_walk           = wave3_stalker1_walk2
 path_look           = wave3_stalker1_look3
+on_timer            = 5000 | walker@pri_followers_nap1_wave3
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+[remark@pri_followers_nap1_wave3_fight]
+;no_move             = true
+;no_rotate           = true
+target              = 807
+anim                = assault_fire
 on_timer            = 5000 | walker@pri_followers_nap1_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -726,13 +744,22 @@ path_walk           = wave3_stalker2_walk2
 path_look           = wave3_stalker2_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
-on_timer            = 2000 | walker@pri_followers_nap2_wave3_fight
+on_timer            = 2000 | remark@pri_followers_nap2_wave3_fight ;walker@pri_followers_nap2_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
 [walker@pri_followers_nap2_wave3_fight]
 path_walk           = wave3_stalker2_walk2
 path_look           = wave3_stalker2_look3
+on_timer            = 5000 | walker@pri_followers_nap2_wave3
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+[remark@pri_followers_nap2_wave3_fight]
+;no_move             = true
+;no_rotate           = true
+target              = 807
+anim                = assault_fire
 on_timer            = 5000 | walker@pri_followers_nap2_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -1007,134 +1034,148 @@ def_state_moving2   = assault
 
 
 ;-------------------------------------------------------------------------------------------------
-;-- Followers
+;-- Ambush7
 ;-------------------------------------------------------------------------------------------------
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH1: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith1_hide]
-active = walker@pri_ambush7_monolith1_hide
+active              = walker@pri_ambush7_monolith1_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith1_hide]
-path_walk = monolith1_hide_walk
-path_look = monolith1_hide_look
+path_walk           = monolith1_hide_walk
+path_look           = monolith1_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH1: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith1]
-active = walker@pri_ambush7_monolith1
+active              = walker@pri_ambush7_monolith1
 
 [walker@pri_ambush7_monolith1]
-path_walk = monolith1_walk
-path_look = monolith1_look
+path_walk           = monolith1_walk
+path_look           = monolith1_look
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH2: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith2_hide]
-active = walker@pri_ambush7_monolith2_hide
+active              = walker@pri_ambush7_monolith2_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith2_hide]
-path_walk = monolith2_hide_walk
-path_look = monolith2_hide_look
+path_walk           = monolith2_hide_walk
+path_look           = monolith2_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH2: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith2]
-active = walker@pri_ambush7_monolith2
+active              = walker@pri_ambush7_monolith2
 
 [walker@pri_ambush7_monolith2]
-path_walk = monolith2_walk
-path_look = monolith2_look
+path_walk           = monolith2_walk
+path_look           = monolith2_look
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH3: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith3_hide]
-active = walker@pri_ambush7_monolith3_hide
+active              = walker@pri_ambush7_monolith3_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith3_hide]
-path_walk = monolith3_hide_walk
-path_look = monolith3_hide_look
+path_walk           = monolith3_hide_walk
+path_look           = monolith3_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH3: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith3]
-active = walker@pri_ambush7_monolith3
+active              = walker@pri_ambush7_monolith3
 
 [walker@pri_ambush7_monolith3]
-path_walk = monolith3_walk
-path_look = monolith3_look
+path_walk           = monolith3_walk
+path_look           = monolith3_look
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH4: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith4_hide]
-active = walker@pri_ambush7_monolith4_hide
+active              = walker@pri_ambush7_monolith4_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith4_hide]
-path_walk = monolith4_hide_walk
-path_look = monolith4_hide_look
+path_walk           = monolith4_hide_walk
+path_look           = monolith4_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH4: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith4]
-active = walker@pri_ambush7_monolith4
+active              = walker@pri_ambush7_monolith4
 
 [walker@pri_ambush7_monolith4]
-path_walk = monolith4_walk
-path_look = monolith4_look
+path_walk           = monolith4_walk
+path_look           = monolith4_look
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH5: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith5_hide]
-active = walker@pri_ambush7_monolith5_hide
+active              = walker@pri_ambush7_monolith5_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith5_hide]
-path_walk = monolith5_hide_walk
-path_look = monolith5_hide_look
+path_walk           = monolith5_hide_walk
+path_look           = monolith5_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH5: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith5]
-active = walker@pri_ambush7_monolith5
+active              = walker@pri_ambush7_monolith5
 
 [walker@pri_ambush7_monolith5]
-path_walk = monolith5_walk
-path_look = monolith5_look
+path_walk           = monolith5_walk
+path_look           = monolith5_look
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH6: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith6_hide]
-active = walker@pri_ambush7_monolith6_hide
+active              = walker@pri_ambush7_monolith6_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith6_hide]
-path_walk = monolith6_hide_walk
-path_look = monolith6_hide_look
+path_walk           = monolith6_hide_walk
+path_look           = monolith6_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH6: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith6]
-active = walker@pri_ambush7_monolith6
+active              = walker@pri_ambush7_monolith6
 
 [walker@pri_ambush7_monolith6]
-path_walk = monolith6_walk
-path_look = monolith6_look
+path_walk           = monolith6_walk
+path_look           = monolith6_look
 
 ;-------------------------------------------------------------------------------------------------
 ;--- MONOLITH7: HIDE -----------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_ambush7_monolith7_hide]
-active = walker@pri_ambush7_monolith7_hide
+active              = walker@pri_ambush7_monolith7_hide
+combat_ignore       = combat_ignore
 
 [walker@pri_ambush7_monolith7_hide]
-path_walk = monolith7_hide_walk
-path_look = monolith7_hide_look
+path_walk           = monolith7_hide_walk
+path_look           = monolith7_hide_look
+combat_ignore_cond  = always
 
 ;--- MONOLITH7: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith7]
-active = walker@pri_ambush7_monolith7
+active              = walker@pri_ambush7_monolith7
 
 [walker@pri_ambush7_monolith7]
-path_walk = monolith7_walk
-path_look = monolith7_look
+path_walk           = monolith7_walk
+path_look           = monolith7_look
 
 
 ;-------------------------------------------------------------------------------------------------
