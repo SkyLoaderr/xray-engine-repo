@@ -34,21 +34,6 @@ extern "C" {
 
 		ETOOLS_API int				ogg_enc			(const char* in_fn, const char* out_fn, float quality, void* comment, int comment_size);
 	};
-
-	#include <vorbis/vorbisfile.h>
-/*
-	ETOOLS_API		int				ov_clear		(OggVorbis_File *vf);
-	ETOOLS_API		vorbis_info*	ov_info			(OggVorbis_File *vf,int link);
-	ETOOLS_API		vorbis_comment*	ov_comment		(OggVorbis_File *vf,int link);
-	ETOOLS_API		int				ov_clear		(OggVorbis_File *vf);
-	ETOOLS_API		vorbis_info*	ov_info			(OggVorbis_File *vf,int link);
-	ETOOLS_API		vorbis_comment*	ov_comment		(OggVorbis_File *vf,int link);
-	ETOOLS_API		long			ov_read_float	(OggVorbis_File *vf,float ***pcm_channels,int samples, int *bitstream);
-	ETOOLS_API		ogg_int64_t		ov_pcm_tell		(OggVorbis_File *vf);
-	ETOOLS_API		int				ov_pcm_seek		(OggVorbis_File *vf,ogg_int64_t pos);
-	ETOOLS_API		int				ov_open_callbacks(void *datasource, OggVorbis_File *vf, char *initial, long ibytes, ov_callbacks callbacks);
-	ETOOLS_API		ogg_int64_t		ov_pcm_total	(OggVorbis_File *vf,int i);
-*/
 };
 
 #endif // EToolsH
