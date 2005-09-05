@@ -266,7 +266,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		}
 
 		if(ini->section_exist("damage_section"))	
-			CDamageManager::load_section("damage_section",ini);
+			CDamageManager::load_section(ini->r_string("damage_section","damage"),pSettings);
 
 		CParticlesPlayer::LoadParticles(pKinematics);
 	}
