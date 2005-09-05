@@ -61,5 +61,8 @@
 	
 	<info_portion id="rad_alarm">
 	</info_portion>
+	
+	<info_portion id="rad_after_antenna_turned_off">
+	</info_portion>
 
 </game_information_portions>
