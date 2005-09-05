@@ -83,4 +83,6 @@ public:
 	IC u32					timeServer_Delta		()	{ return net_TimeDelta; }
 	IC void					timeServer_UserDelta	(s32 d)						{ net_TimeDelta_User=d;	}
 	IC void					timeServer_Correct		(u32 sv_time, u32 cl_time);
+
+	BOOL					net_IsSyncronised		()	{ return net_Syncronised; };
 };
