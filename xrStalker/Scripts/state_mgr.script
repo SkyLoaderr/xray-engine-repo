@@ -6,7 +6,8 @@
 function printf()
 end
 
-aim_ratio = 5000/22500
+aim_ratio = 1000/30
+min_ratio = 1000
 
 --' Эвалуатор, который синхронизирует менеджер.
 --' Мы уже в безраличном состоянии idle или нет
@@ -211,6 +212,10 @@ function act_state_mgr_end:execute()
 			then
 				if t == "sniper_fire" then
 					sniper_aim = self.object:position():distance_to_sqr(look_object:position())*aim_ratio
+					if sniper_aim <= min_ratio then
+						self.object:set_item(object.fire1, self.object:best_weapon())
+						return
+					end					
 					self.object:set_item(object.fire1, self.object:best_weapon(), 1, sniper_aim)
 				else
 					self.object:set_item(object.fire1, self.object:best_weapon())
