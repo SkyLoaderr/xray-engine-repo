@@ -501,7 +501,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
 	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false)
 	
-	st.idle = 20*1000
+	st.idle = 60*1000
 	st.enemy_disp = 20
 	
 	if st.radius == nil then
