@@ -5,7 +5,7 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 -- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
-function printf() end
+--function printf() end
 
 local pi_2 = math.pi / 3 -- 60 degree
 
@@ -152,6 +152,7 @@ function action_car:reset_scheme(loading)
 	    else
 		    self.target_walk_pt = self:get_nearest_walkpoint()
 	    end
+	    printf("car <move>: target_walk_pt.1(%d)", self.target_walk_pt)
 
 	    if self:at_target_walkpoint() then
 		    self:walk_arrival_callback(self.target_walk_pt)
@@ -159,7 +160,7 @@ function action_car:reset_scheme(loading)
     	
 	    self:go_to_walkpoint(self.target_walk_pt)
 	else
-	    printf("car <state>: self.target_walk_pt = -2")
+	    printf("car <state>: target_walk_pt.2(-2)")
 	    self.target_walk_pt = -2
 	    self.state_moving = state_moving_stop
 	end
@@ -325,6 +326,7 @@ function action_car:save()
 	xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
 	xr_logic.pstor_store(self.object, "state_moving", self.state_moving)
 	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt) -- or -2)
+	printf("car <save>: target_walk_pt(%d)", self.target_walk_pt)
 end
 
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
@@ -371,9 +373,11 @@ function action_car:at_target_walkpoint()
 	
 	if not arrived then
 	    local diff_angle = angle_xz(self.object, self.path_walk:point(self.target_walk_pt))
-	    arrived = dist < 2 and diff_angle >= pi_2
+	    printf("car <move>: dist(%f), angle(%f).", dist, diff_angle)
+	    arrived = dist < 2 or diff_angle >= math.pi
 	    if arrived then
-	        printf("car <move>: at target pt by dist(%f) and angle(%f).", dist, diff_angle)
+	        --printf("car <move>: at target pt by dist(%f) and angle(%f).", dist, diff_angle)
+	        printf("car <move>: at target pt by dist and angle.")
 	    end
 	end
 	
@@ -427,7 +431,7 @@ function action_car:go_to_walkpoint(pt)
 	if pt == nil or pt < 0 then
 	    if self.state_cannon ~= state_cannon_stop then
 	        self:stop_car()
-		    self.state_moving = state_moving_stop
+		    self.state_moving = state_moving_end
 		end
 		printf("car <state>: pt < 0 or pt == nil")
 		return
@@ -440,7 +444,7 @@ function action_car:go_to_walkpoint(pt)
     if curVel < self.speed then
         accel = move.fwd
         printf("car <move>: forward")
-    elseif curVel > self.speed * 1.15 then
+    elseif curVel > self.speed * 1.15 or diff_angle >= math.pi then
         accel = move.back
         printf("car <move>: backward")
     end
@@ -608,10 +612,10 @@ function action_car:walk_arrival_callback(index)
 	    end
 	else
 	    printf("car <move>: stop moving.")
-	    --self.target_walk_pt = -2
+	    self.target_walk_pt = -2
 	    if self.state_moving ~= state_moving_stop and self.state_moving ~= state_moving_end then
 	        self:stop_car()
-	        self.state_moving = state_moving_stop
+	        self.state_moving = state_moving_end
 	    end
 	end
 end
@@ -710,6 +714,7 @@ function action_car:get_next_firepoint()
 	    return pt_idx, self.path_fire:point(self.fire_pt_arr[pt_idx])
 	end
 
+    self.state_firetarget = state_none
 	return pt_idx, nil
 end
 
@@ -859,6 +864,10 @@ function angle_xz(npc, target_pos)
 	dir1.y = 0
 	local dir2 = utils.vector_copy_by_val(target_pos):sub(npc:position())
 	dir2.y = 0
+	local dp = dir1:dotproduct(dir2)
+	if dp < 0 then
+	    return math.pi - yaw(dir1, dir2)
+	end
 	return yaw(dir1, dir2)
 end
 
@@ -948,7 +957,10 @@ function action_car:fast_update()
 	    printf("car <state>: average update = %f, time(%f)", self.fc_upd_avg, cur_time)
 	end
 
-	if self.state_moving == state_moving_end and self.state_cannon == state_cannon_stop then
+	if self.state_moving == state_moving_end and
+	   self.state_cannon == state_cannon_stop and
+	   self.state_firetarget == state_none
+	then
 		if xr_logic.mob_captured(self.object) and not self.object:action() then
 		    --printf("car <state>: stop fast updating. moving(%s) cannon(%s)", utils.to_str(self.state_moving), utils.to_str(self.state_cannon))
 			--xr_logic.mob_release(self.object)
@@ -963,8 +975,10 @@ function action_car:fast_update()
 		return false
 	end
 
-	if self.state_moving ~= state_moving_end and self.state_moving ~= state_moving_stop and 
-	   cur_time >= self.last_pos_time + self.min_car_explode_time then
+	if self.state_moving ~= state_moving_end and
+	   self.state_moving ~= state_moving_stop and 
+	   cur_time >= self.last_pos_time + self.min_car_explode_time
+	then
 	    printf("car <state>: moving(%s)", utils.to_str(self.state_moving))
 		if not self.last_pos then
 			self.last_pos = self.object:position()
@@ -976,7 +990,7 @@ function action_car:fast_update()
                 printf("car <move>: got stuck (%f < %f) - stop.", diff, self.min_delta_per_sec)
                 self:stop_car()
 				--self:car_explode()
-				self.state_moving = state_moving_stop
+				self.state_moving = state_moving_end
 				--return false
 			else
 			    self.last_pos = cur_pos
@@ -986,7 +1000,9 @@ function action_car:fast_update()
 	end
 	
 	printf("car <state>: check moving2 - [%d][%d]", self.state_moving, self.target_walk_pt)
-	if self.state_moving ~= state_moving_end and self.state_moving ~= state_none then
+	if self.state_moving ~= state_moving_end and
+	   self.state_moving ~= state_none
+	then
 	    printf("car <move>: try")
 	    if self.target_walk_pt >= 0 then
 	        if self:at_target_walkpoint() then
@@ -1065,8 +1081,12 @@ function action_car:fast_update()
 	            printf("car <fire>: enemy is visible.")
 
 		        self.target_fire_pt = self.target_obj:position()
-		        if xr_wounded.is_heavy_wounded_by_id(self.target_obj:id()) then
-		            self.target_fire_pt.y = self.target_fire_pt.y + 0.5 -- FAKE
+		        if self.target_obj ~= db.actor then
+		            if self.target_obj:target_body_state() == move.crouch then
+		                self.target_fire_pt.y = self.target_fire_pt.y + 0.2 -- FAKE
+		            elseif not xr_wounded.is_heavy_wounded_by_id(self.target_obj:id()) then
+		                self.target_fire_pt.y = self.target_fire_pt.y + 0.5 -- FAKE
+		            end
 		        end
 		        self:rot_to_firepoint(self.target_fire_pt)
 
@@ -1096,6 +1116,7 @@ function action_car:fast_update()
 	    end
 	end
 	
+	printf("car <state>: check moving3 - [%d][%d]", self.state_moving, self.target_walk_pt)
 	printf("car <state>: END FAST UPDATE ========================================================\n")
 	return false
 end
