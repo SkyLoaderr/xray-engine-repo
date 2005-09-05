@@ -164,3 +164,37 @@ namespace ETOOLS{
 		XRC.box_query(inv_parent, m_def, src);
 	}
 }
+
+ETOOLS_API	int				ov_clear		(OggVorbis_File *vf)
+{
+	return ::ov_clear(vf);
+}
+ETOOLS_API	vorbis_info*	ov_info			(OggVorbis_File *vf,int link)
+{
+	return ::ov_info(vf,link);
+}
+ETOOLS_API	vorbis_comment*	ov_comment		(OggVorbis_File *vf,int link)
+{
+	return ::ov_comment(vf,link);
+}
+ETOOLS_API	long			ov_read_float	(OggVorbis_File *vf,float ***pcm_channels,int samples, int *bitstream)
+{
+	return ::ov_read_float(vf,pcm_channels,samples,bitstream);
+}
+ETOOLS_API	ogg_int64_t ov_pcm_tell			(OggVorbis_File *vf)
+{
+	return ::ov_pcm_tell(vf);
+}
+ETOOLS_API	int ov_pcm_seek					(OggVorbis_File *vf,ogg_int64_t pos)
+{
+	return ::ov_pcm_seek(vf,pos);
+}
+ETOOLS_API	int ov_open_callbacks			(void *datasource, OggVorbis_File *vf, char *initial, long ibytes, ov_callbacks callbacks)
+{
+	return ::ov_open_callbacks(datasource, vf, initial, ibytes, callbacks);
+}
+ETOOLS_API	ogg_int64_t ov_pcm_total		(OggVorbis_File *vf,int i)
+{
+	return ::ov_pcm_total(vf,i);
+}
+
