@@ -640,8 +640,6 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 
-</xml>
-
 	<!---------------------------BANDIT general----------------------->
 	
 	<specific_character id="agr_bandit_general_default1" team_default = "1">
@@ -727,4 +725,5 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
-	
+
+</xml>	
