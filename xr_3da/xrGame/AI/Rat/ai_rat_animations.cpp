@@ -47,18 +47,20 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 	MotionID			tpGlobalAnimation;
 
 	if (!g_Alive()) {
-		for (int i=0 ;i<2; ++i)
+		for (int i=0 ;i<2; ++i) {
 			if (m_tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
-		if (!tpGlobalAnimation)
+		}
+		if (!tpGlobalAnimation) {
 			if (m_tpCurrentGlobalAnimation == m_tRatAnimations.tNormal.tGlobal.tpaIdle[1])
 				tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[0];
 			else
 				tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+		}
 	}
-	else
+	else {
 		if (m_bFiring)
 			tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		else
@@ -85,9 +87,11 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 //					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
 			}
-	
+	}
+
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation)
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation)) {
 		CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
