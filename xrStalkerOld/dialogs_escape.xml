@@ -748,61 +748,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_lager_leader_request">
-        <has_info>escape_lager_killers_die</has_info>
-        <has_info>escape_lager_help</has_info>
-        <dont_has_info>escape_lager_complete</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>escape_lager_leader_request_0</text>
-                <action>escape_dialog.give_reward_killers</action>
-                <give_info>escape_lager_complete</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>escape_lager_leader_request_1</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_lager_leader_give_quest">
-        <has_info>esc_return</has_info>
-        <dont_has_info>escape_lager_help</dont_has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>escape_lager_leader_give_quest_2</text>
-                <give_info>escape_lager_spawn_killers</give_info>
-                <next>22</next>
-            </phrase>
-            <phrase id="22">
-                <text>escape_lager_leader_give_quest_22</text>
-                <next>222</next>
-                <next>221</next>
-            </phrase>
-            <phrase id="222">
-                <text>escape_lager_leader_give_quest_222</text>
-                <give_info>escape_lager_help</give_info>
-                <next>2222</next>
-            </phrase>
-            <phrase id="2222">
-                <text>escape_lager_leader_give_quest_2222</text>
-            </phrase>
-            <phrase id="221">
-                <text>escape_lager_leader_give_quest_221</text>
-                <next>2212</next>
-            </phrase>
-            <phrase id="2212">
-                <text>escape_lager_leader_give_quest_2212</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_lager_leader_give_quest_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>escape_lager_leader_give_quest_1</text>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_jobs" priority="5">
         <has_info>esc_serious_talk</has_info>
         <phrase_list>
@@ -1447,6 +1392,60 @@
                 <text></text>
                 <has_info>escape_lager_complete</has_info>
                 <next>41</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_lager_leader_request">
+        <has_info>escape_lager_killers_die</has_info>
+        <has_info>escape_lager_help</has_info>
+        <dont_has_info>escape_lager_complete</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_lager_leader_request_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_lager_leader_request_0</text>
+                <action>escape_dialog.give_reward_killers</action>
+                <give_info>escape_lager_complete</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_lager_leader_give_quest">
+        <dont_has_info>escape_lager_help</dont_has_info>
+        <phrase_list>
+            <phrase id="2">
+                <text>escape_lager_leader_give_quest_2</text>
+                <give_info>escape_lager_spawn_killers</give_info>
+                <next>22</next>
+            </phrase>
+            <phrase id="22">
+                <text>escape_lager_leader_give_quest_22</text>
+                <next>222</next>
+                <next>221</next>
+            </phrase>
+            <phrase id="222">
+                <text>escape_lager_leader_give_quest_222</text>
+                <give_info>escape_lager_help</give_info>
+                <next>2222</next>
+            </phrase>
+            <phrase id="2222">
+                <text>escape_lager_leader_give_quest_2222</text>
+            </phrase>
+            <phrase id="221">
+                <text>escape_lager_leader_give_quest_221</text>
+                <next>2212</next>
+            </phrase>
+            <phrase id="2212">
+                <text>escape_lager_leader_give_quest_2212</text>
+            </phrase>
+            <phrase id="1">
+                <text>escape_lager_leader_give_quest_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_lager_leader_give_quest_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
