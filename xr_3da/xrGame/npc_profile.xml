@@ -303,6 +303,15 @@
 		<class>bar_Killer_specnaz</class>
 	</character>
 
+	<!-- Zombied -->
+	<character id="yan_zombied">
+		<class>yan_Zombied</class>
+	</character>
+	<character id="yan_zombied_veteran">
+		<class>yan_Zombied_veteran</class>
+	</character>
+
+
 	<!-- Yantar + X16 -->
 	
 	<!-- Military -->
