@@ -24,14 +24,14 @@ damage              	= damage_bones
 
 fuel_tank         		= 30.         	; L
 fuel_consumption  		= 4.43       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 30.         	; horse_power (kW=hp*0.808) max power
+engine_power      		= 15.         	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 5500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 1500.       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 4500.       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.02
-rpm_increment_factor	= 0.02
-rpm_decrement_factor	= 0.03
+rpm_increment_factor	= 0.05
+rpm_decrement_factor	= 0.05
 m_power_neutral_factor	= 0.70
 ; additional engine parameters
 
@@ -57,12 +57,12 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 3.500, 3500.000,7250.000	
-N1                 		= 2.000, 3500.000,7250.000
-N2                 		= 1.500, 3500.000,7250.000
-N3                 		= 1.000, 3500.000,7250.000
-N4                 		= 0.750, 3500.000,7250.000
-N5                 		= 0.500, 3500.000,7250.000
+R                  		= 3.500, 2500.000,3500.000
+N1                 		= 2.000, 2500.000,3500.000
+N2                 		= 1.500, 2500.000,3500.000
+N3                 		= 1.000, 2500.000,3500.000
+N4                 		= 0.750, 2500.000,3500.000
+N5                 		= 0.500, 2500.000,3500.000
 
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
