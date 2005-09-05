@@ -277,6 +277,7 @@ void CDemoRecord::IR_OnKeyboardPress	(int dik)
 			fLifeTime		= -1; 
 		}
 	}
+	if	(dik == DIK_PAUSE)		Device.Pause(!Device.Pause());
 }
 
 void CDemoRecord::IR_OnKeyboardHold	(int dik)
