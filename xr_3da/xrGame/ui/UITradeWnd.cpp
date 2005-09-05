@@ -302,6 +302,7 @@ void CUITradeWnd::Draw()
 }
 
 //////////////////////////////////////////////////////////////////////////
+extern void UpdateCameraDirection(CGameObject* pTo);
 
 void CUITradeWnd::Update()
 {
@@ -323,6 +324,7 @@ void CUITradeWnd::Update()
 	}
 
 	inherited::Update();
+	UpdateCameraDirection		(smart_cast<CGameObject*>(m_pOthersInvOwner));
 }
 
 //////////////////////////////////////////////////////////////////////////

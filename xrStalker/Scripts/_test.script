@@ -1,3 +1,7 @@
+function main()
+	db.actor:give_talk_message("general_new_task", "ui\\ui_icons_task", 150,100,50,50)
+end
+
 
 sss = "2andy{Scope+GrenadeLauncher+Silencer}, di_ma123{GrenadeLauncher}, oles, alexMX"
 local i = string.find(sss,";")
@@ -44,7 +48,7 @@ for i in default_items do
 			" silencer=",default_items[i].Silencer )
 end
 
-function main()
+function main_captions()
 	local ui = get_hud()
 	local msg_id = "script_some_message"
 -- 1st define message params(position,size, font etc)	
