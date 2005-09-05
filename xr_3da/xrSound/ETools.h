@@ -34,6 +34,8 @@ extern "C" {
 
 		ETOOLS_API int				ogg_enc			(const char* in_fn, const char* out_fn, float quality, void* comment, int comment_size);
 	};
+	class OggVorbis_File;
+	ETOOLS_API		int				ov_clear		(OggVorbis_File *vf);
 };
 
 #endif // EToolsH
