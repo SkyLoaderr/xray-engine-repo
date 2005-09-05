@@ -53,6 +53,10 @@
 	<info_portion id="aes_bridge_ambush_sound"></info_portion>
 	<info_portion id="aes_rpg_sound1"></info_portion>
 	<info_portion id="aes_rpg_sound2"></info_portion>
+	<info_portion id="aes_actor_dead"></info_portion>
+	<info_portion id="aes_timer_60000"></info_portion>
+	<info_portion id="aes_timer_120000"></info_portion>
+	<info_portion id="aes_timer_180000"></info_portion>
 
 </game_information_portions>
 
