@@ -598,7 +598,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 10, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
-			            	return obj:profile_name() == "killer_master"
+			            	return obj:profile_name() == "esc_killer_master"
 			            end
 		}
 		table.insert(sj, t)
