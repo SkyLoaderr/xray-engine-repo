@@ -9,7 +9,7 @@
 
 #ifdef __BORLANDC__
 #	pragma comment(lib,	"eaxB.lib"			)
-#	pragma comment(lib,	"vorbisfileB.lib"	)
+#	pragma comment(lib,	"x:\\vorbisfileB.lib"	)
 #	pragma comment(lib,	"xrCoreB.lib"		)
 #	pragma comment(lib,	"EToolsB.lib"		)
 #	pragma comment(lib,	"OpenAL32B.lib"		)
