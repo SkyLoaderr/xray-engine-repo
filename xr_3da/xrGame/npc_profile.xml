@@ -418,6 +418,10 @@
 	<character id="rad_stalker_master">
 		<class>rad_Stalker_master</class>
 	</character>
+	<!-- S.W.A.T. -->
+	<character id="rad_soldier_specnaz">
+		<class>rad_Stalker_master</class>
+	</character>	
 	
 	
 <!-- Pripyat -->
