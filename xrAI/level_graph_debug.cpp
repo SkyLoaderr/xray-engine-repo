@@ -93,6 +93,9 @@ void CLevelGraph::on_render4	()
 		//T.y+= 1.5f;
 		T.y+= 1.5f/10.f;
 		Device.mFullTransform.transform (S,T);
+		//out of screen
+		if (S.z < 0 || S.w < 0)												continue;
+		if (S.x < -1.f || S.x > 1.f || S.y<-1.f || S.x>1.f)					continue;
 		F->SetSizeI	(0.05f/_sqrt(_abs(S.w)));
 		F->SetColor(0xffffffff);
 		F->OutI(S.x,-S.y,"%d",i);
@@ -136,6 +139,9 @@ void CLevelGraph::on_render4	()
 				//T.y+= 1.5f;
 				T.y+= 1.5f;
 				Device.mFullTransform.transform (S,T);
+				//out of screen
+				if (S.z < 0 || S.w < 0)												continue;
+				if (S.x < -1.f || S.x > 1.f || S.y<-1.f || S.x>1.f)					continue;
 				F->SetSizeI	(0.1f/_sqrt(_abs(S.w)));
 				F->SetColor(0xffffffff);
 				F->OutI(S.x,-S.y,"%d",i);

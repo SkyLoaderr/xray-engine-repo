@@ -157,6 +157,8 @@ void CLevelGraph::on_render1()
 				Fvector4	S;
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
+				if (S.z < 0 || S.z < 0)												continue;
+				if (S.x < -1.f || S.x > 1.f || S.y<-1.f || S.x>1.f)					continue;
 				F->SetSizeI	(0.05f/_sqrt(_abs(S.w)));
 				F->SetColor	(0xffffffff);
 				F->OutI		(S.x,-S.y,"~%d",Nid);
