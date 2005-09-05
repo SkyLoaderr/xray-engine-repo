@@ -1,24 +1,9 @@
 #include "stdafx.h"
 #include "xrtheora_stream.h"
 
-/*
-#ifdef DEBUG
-#	ifdef MIXED
-#		pragma comment(lib,	"x:\\theora_static.lib")
-#	else
-#		pragma comment(lib,	"x:\\theora_static_d.lib")
-#	endif
-#else
-#	pragma comment(lib,	"x:\\theora_static.lib")
-#endif
-*/
-
 #ifdef _EDITOR
-#	pragma comment(lib,	"x:\\oggB.lib")
-#	pragma comment(lib,	"x:\\theoraB.lib") 
-#else
-#	pragma comment(lib,	"x:\\ogg.lib")
-#	pragma comment(lib,	"x:\\theora.lib") 
+//#	pragma comment(lib,	"x:\\oggB.lib")
+//#	pragma comment(lib,	"x:\\theoraB.lib") 
 #endif
 
 CTheoraStream::CTheoraStream()                        

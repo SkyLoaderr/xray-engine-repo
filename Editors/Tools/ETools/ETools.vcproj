@@ -54,9 +54,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="ogg_static.lib vorbis_static.lib vorbisenc_static.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="FALSE"
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="FALSE"
@@ -132,6 +134,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="vorbis_static.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -209,6 +212,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="vorbis_static.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -363,6 +367,55 @@
 			</File>
 			<File
 				RelativePath=".\quad.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="OGG encoder"
+			Filter="">
+			<File
+				RelativePath=".\audio.cpp">
+			</File>
+			<File
+				RelativePath=".\audio.h">
+			</File>
+			<File
+				RelativePath=".\encode.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\encode.h">
+			</File>
+			<File
+				RelativePath=".\ogg_enc.cpp">
+			</File>
+			<File
+				RelativePath=".\platform.cpp">
+			</File>
+			<File
+				RelativePath=".\platform.h">
+			</File>
+			<File
+				RelativePath=".\resample.cpp">
+			</File>
+			<File
+				RelativePath=".\resample.h">
 			</File>
 		</Filter>
 	</Files>

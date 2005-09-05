@@ -60,7 +60,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="msacm32.lib vfw32.lib"
+				AdditionalDependencies="msacm32.lib vfw32.lib ogg_static_d.lib theora_static_d.lib"
 				ShowProgress="0"
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="2"
@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="msacm32.lib vfw32.lib"
+				AdditionalDependencies="msacm32.lib vfw32.lib ogg_static.lib theora_static.lib"
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -229,7 +229,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="msacm32.lib vfw32.lib"
+				AdditionalDependencies="msacm32.lib vfw32.lib ogg_static.lib theora_static.lib"
 				OutputFile="x:\XR_3DA.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
