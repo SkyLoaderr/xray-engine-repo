@@ -106,11 +106,11 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 	CActor						*l_tpActor = smart_cast<CActor*>(tpObject);
 	if (l_tpActor) {
 		NET_Packet				net_packet;
-		net_packet.w_begin		(M_CHANGE_LEVEL);
-		net_packet.w			(&m_game_vertex_id,sizeof(m_game_vertex_id));
-		net_packet.w			(&m_level_vertex_id,sizeof(m_level_vertex_id));
-		net_packet.w_vec3		(m_position);
-		net_packet.w_vec3		(m_angles);
+//		net_packet.w_begin		(M_CHANGE_LEVEL);
+//		net_packet.w			(&m_game_vertex_id,sizeof(m_game_vertex_id));
+//		net_packet.w			(&m_level_vertex_id,sizeof(m_level_vertex_id));
+//		net_packet.w_vec3		(m_position);
+//		net_packet.w_vec3		(m_angles);
 //		Level().Send			(net_packet,net_flags(TRUE));
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
