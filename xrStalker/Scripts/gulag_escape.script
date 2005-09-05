@@ -31,7 +31,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 100, state = {0,2},
 			in_rest = "", out_rest = "escape_blockpost_zone",
 			predicate = function(obj) 
-			            	return obj:profile_name() == "soldier_commander"
+			            	return obj:profile_name() == "esc_soldier_commander"
 			            end
 		}
 		table.insert(sj, t)
