@@ -126,6 +126,7 @@ void CLevelSpawnConstructor::add_level_changer					(CSE_Abstract			*abstract)
 	CSE_ALifeLevelChanger	*level_changer = smart_cast<CSE_ALifeLevelChanger*>(abstract);
 	R_ASSERT				(level_changer);
 	m_game_spawn_constructor->add_level_changer	(level_changer);
+	m_level_changers.push_back	(level_changer);
 }
 
 void CLevelSpawnConstructor::add_free_object					(CSE_Abstract			*abstract)
@@ -316,6 +317,24 @@ void CLevelSpawnConstructor::correct_objects					()
 		}
 		m_spawns[i]->m_tGraphID		= (GameGraph::_GRAPH_ID)dwBest;
 		m_spawns[i]->m_fDistance	= fCurrentBestDistance;
+	}
+}
+
+void CLevelSpawnConstructor::correct_level_changers				()
+{
+	LEVEL_CHANGER_STORAGE::const_iterator	I = m_level_changers.begin();
+	LEVEL_CHANGER_STORAGE::const_iterator	E = m_level_changers.end();
+	for ( ; I != E; ++I) {
+		Fvector				position = (*I)->o_Position;
+		position.y			+= y_shift_correction;
+		(*I)->m_tNodeID		= level_graph().vertex(u32(-1),position);
+		VERIFY				(level_graph().valid_vertex_id((*I)->m_tNodeID));
+
+		u32					dwBest = cross_table().vertex((*I)->m_tNodeID).game_vertex_id();
+		VERIFY				(game_graph().vertex(dwBest)->level_id() == m_level.id());
+		(*I)->m_tGraphID	= (GameGraph::_GRAPH_ID)dwBest;
+
+		(*I)->m_fDistance	= cross_table().vertex((*I)->m_tNodeID).distance();
 	}
 }
 
@@ -545,6 +564,7 @@ void CLevelSpawnConstructor::Execute							()
 	
 	correct_objects						();
 	generate_artefact_spawn_positions	();
+	correct_level_changers				();
 	
 	xr_delete							(m_level_graph);
 	xr_delete							(m_cross_table);

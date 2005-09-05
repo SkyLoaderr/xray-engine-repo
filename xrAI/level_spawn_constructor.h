@@ -44,6 +44,7 @@ private:
 	CLevelNavigationGraph				*m_level_graph;
 	CGameLevelCrossTable				*m_cross_table;
 	CGraphEngine						*m_graph_engine;
+	LEVEL_CHANGER_STORAGE				m_level_changers;
 
 protected:
 			void						init								();
@@ -51,6 +52,7 @@ protected:
 			void						fill_spawn_groups					();
 			void						correct_objects						();
 			void						generate_artefact_spawn_positions	();
+			void						correct_level_changers				();
 			void						fill_level_changers					();
 			CSE_Abstract				*create_object						(IReader				*chunk);
 			void						add_graph_point						(CSE_Abstract			*abstract);
