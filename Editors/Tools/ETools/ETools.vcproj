@@ -54,7 +54,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="ogg.lib vorbis.lib vorbisenc.lib vorbisfile.lib"
+				AdditionalDependencies="ogg_static.lib vorbis_static.lib vorbisenc_static.lib vorbisfile_static.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="FALSE"
@@ -134,7 +134,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="ogg_d.lib vorbis_d.lib vorbisenc_d.lib vorbisfile_d.lib"
+				AdditionalDependencies="ogg_static_d.lib vorbis_static_d.lib vorbisenc_static.lib vorbisfile_static_d.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
