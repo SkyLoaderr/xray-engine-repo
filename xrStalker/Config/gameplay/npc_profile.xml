@@ -420,7 +420,7 @@
 	</character>
 	<!-- S.W.A.T. -->
 	<character id="rad_soldier_specnaz">
-		<class>rad_Stalker_master</class>
+		<class>rad_soldier_specnaz</class>
 	</character>	
 	
 	
