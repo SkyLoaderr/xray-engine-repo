@@ -51,7 +51,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
-				AdditionalDependencies="vorbisfile_static_d.lib ogg_static_d.lib"
+				AdditionalDependencies="vorbisfile_d.lib ogg_d.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -120,7 +120,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="vorbisfile_static.lib ogg_static.lib"
+				AdditionalDependencies="vorbisfile.lib ogg.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -190,7 +190,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="vorbisfile_static.lib ogg_static.lib"
+				AdditionalDependencies="vorbisfile.lib ogg.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
