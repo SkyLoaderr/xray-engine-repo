@@ -108,6 +108,9 @@
 					RelativePath=".\Config\creatures\actor.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\creatures\damages.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\creatures\game_relations.ltx">
 				</File>
 				<File
