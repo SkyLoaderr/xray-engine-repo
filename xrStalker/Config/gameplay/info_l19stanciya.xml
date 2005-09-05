@@ -59,6 +59,8 @@
 	<info_portion id="aes_timer_180000"></info_portion>
 	<info_portion id="aes_choper_patrol_sound"></info_portion>
 	<info_portion id="aes_choper_crush_sound"></info_portion>
+	<info_portion id="aes_sniper_desant_sound"></info_portion>
+	<info_portion id="aes_lun_desant_sound"></info_portion>
 
 
 
