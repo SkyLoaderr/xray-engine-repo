@@ -26,23 +26,44 @@ st_LevelOptions::st_LevelOptions()
 	Reset();
 }
 
-void st_LevelOptions::InitDefaultText()
-{
-	char deffilename[MAX_PATH];
-	int handle;
-	m_BOPText="";
-}
-
 void st_LevelOptions::Reset()
 {
-	m_FNLevelPath	= "level";
-    m_LevelPrefix	= "level_prefix";
+	m_FNLevelPath		= "level";
+    m_LevelPrefix		= "level_prefix";
+    m_LightHemiQuality	= 3;
+    m_LightSunQuality	= 3;
+	m_BOPText			= "";
+    m_BuildParams.Init	();
+    m_BuildParams.setHighQuality();
+}
 
-    InitDefaultText	();
+void st_LevelOptions::SetCustomQuality()
+{
+	m_BuildParams.m_quality	= ebqCustom;
+}
 
-    m_BuildParams.Init();
+void st_LevelOptions::SetDraftQuality()
+{
+    m_BuildParams.setDraftQuality();
+    m_LightHemiQuality	= 0;
+    m_LightSunQuality	= 0;
+}
+
+void st_LevelOptions::SetLowQuality()
+{
+    m_BuildParams.setLowQuality();
+    m_LightHemiQuality	= 1;
+    m_LightSunQuality	= 1;
+}
+
+void st_LevelOptions::SetHighQuality()
+{
+    m_BuildParams.setHighQuality();
+    m_LightHemiQuality	= 3;
+    m_LightSunQuality	= 3;
 }
 //------------------------------------------------------------------------------
+
 
 #define MAX_VISUALS 16384
 
@@ -423,11 +444,64 @@ void EScene::HighlightTexture(LPCSTR t_name, bool allow_ratio, u32 t_width, u32 
     UI->RedrawScene				();
 }
 
+xr_token		js_token	[ ]={
+	{ "1 - Low",			1	},
+	{ "4 - Medium",			4	},
+	{ "9 - High",			9	},
+	{ 0,					0 	}
+};
+
+void EScene::OnBuildControlClick	(PropValue* sender, bool& bModif, bool& bSafe)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: m_LevelOp.SetDraftQuality();	break;
+    case 1: m_LevelOp.SetLowQuality();		break;
+    case 2: m_LevelOp.SetHighQuality();		break;
+    case 3: m_LevelOp.SetCustomQuality();	break;
+	}
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
+}
+
+void EScene::OnRTFlagsChange	(PropValue* sender)
+{
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
+}
+
 void EScene::FillProp(LPCSTR pref, PropItemVec& items, ObjClassID cls_id)
 {
-	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Name"),				LTools->m_LastFileName.c_str());
-	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Created by"),		m_OwnerName.size()?m_OwnerName.c_str():"unknown");
-	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Created at"),		(m_CreateTime!=0)?Trim(AnsiString(ctime(&m_CreateTime))).c_str():"unknown");
+	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Name"),			LTools->m_LastFileName.c_str());
+	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Created by"),	m_OwnerName.size()?m_OwnerName.c_str():"unknown");
+	PHelper().CreateCaption		(items,PrepareKey(pref,"Scene\\Created at"),	(m_CreateTime!=0)?Trim(AnsiString(ctime(&m_CreateTime))).c_str():"unknown");
+    PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Name prefix"),	&m_LevelOp.m_LevelPrefix);
+
+    PropValue* V;
+    V=PHelper().CreateFlag32		(items,"Scene\\Build options",				&m_RTFlags, flRT_ShowBuildOptions);
+    V->OnChangeEvent.bind			(this,&EScene::OnRTFlagsChange);
+    if (m_RTFlags.is(flRT_ShowBuildOptions)){
+        PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Level path"),		&m_LevelOp.m_FNLevelPath);
+        PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Custom data"),	&m_LevelOp.m_BOPText);
+        // common
+        ButtonValue* B;
+        B=PHelper().CreateButton	(items,PrepareKey(pref,"Scene\\Build options\\Quality"), "Draft,Low,High,Custom",0);
+        B->OnBtnClickEvent.bind		(this,&EScene::OnBuildControlClick);
+
+        BOOL enabled				= (m_LevelOp.m_BuildParams.m_quality==ebqCustom);
+        V=PHelper().CreateU8		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Hemisphere quality [0-3]"),	&m_LevelOp.m_LightHemiQuality,	0,3);		V->Owner()->Enable(enabled);
+        V=PHelper().CreateU8		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Sun shadow quality [0-3]"),	&m_LevelOp.m_LightSunQuality,	0,3);       V->Owner()->Enable(enabled);
+
+        // Build Options
+        // Normals & optimization
+        V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Optimizing\\Normal smooth angle"), 	&m_LevelOp.m_BuildParams.m_sm_angle,					0.f,180.f);	V->Owner()->Enable(enabled);
+        V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Optimizing\\Weld distance (m)"),		&m_LevelOp.m_BuildParams.m_weld_distance,				0.f,1.f,0.001f,4);	V->Owner()->Enable(enabled);
+
+        // Light maps
+        V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Pixel per meter"),			&m_LevelOp.m_BuildParams.m_lm_pixels_per_meter,			0.f,20.f);	V->Owner()->Enable(enabled);
+        V=PHelper().CreateU32		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Error (LM collapsing)"), 	&m_LevelOp.m_BuildParams.m_lm_rms,						0,255);		V->Owner()->Enable(enabled);
+        V=PHelper().CreateU32		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Error (LM zero)"),			&m_LevelOp.m_BuildParams.m_lm_rms_zero,					0,255);		V->Owner()->Enable(enabled);
+        V=PHelper().CreateToken32	(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Jitter samples"),			&m_LevelOp.m_BuildParams.m_lm_jitter_samples, 			js_token);	V->Owner()->Enable(enabled);
+    }
+    
     // tools options
     if (OBJCLASS_DUMMY==cls_id){
         SceneToolsMapPairIt _I 			= FirstTools();

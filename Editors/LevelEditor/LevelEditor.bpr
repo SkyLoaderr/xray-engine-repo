@@ -16,16 +16,16 @@
       intermediate\FrameSpawn.obj intermediate\FrameWayPoint.obj 
       intermediate\leftbar.obj intermediate\ObjectList.obj 
       intermediate\previewimage.obj intermediate\PropertiesEObject.obj 
-      intermediate\SceneProperties.obj intermediate\Splash.obj 
-      intermediate\ui_leveltools.obj intermediate\UI_LevelMain.obj 
-      intermediate\WayPoint.obj intermediate\ESceneAIMapTools_Export.obj 
-      intermediate\Builder.obj intermediate\BuilderCF.obj 
-      intermediate\BuilderCore.obj intermediate\BuilderGame.obj 
-      intermediate\BuilderLTX.obj intermediate\BuilderOGF.obj 
-      intermediate\BuilderRemote.obj intermediate\Cursor3D.obj 
-      intermediate\Custom2DProjector.obj intermediate\ESceneDOTools.obj 
-      intermediate\EditObjectExportLWO.obj intermediate\ELight.obj 
-      intermediate\EParticlesObject.obj intermediate\ESceneAIMapTools.obj 
+      intermediate\Splash.obj intermediate\ui_leveltools.obj 
+      intermediate\UI_LevelMain.obj intermediate\WayPoint.obj 
+      intermediate\ESceneAIMapTools_Export.obj intermediate\Builder.obj 
+      intermediate\BuilderCF.obj intermediate\BuilderCore.obj 
+      intermediate\BuilderGame.obj intermediate\BuilderLTX.obj 
+      intermediate\BuilderOGF.obj intermediate\BuilderRemote.obj 
+      intermediate\Cursor3D.obj intermediate\Custom2DProjector.obj 
+      intermediate\ESceneDOTools.obj intermediate\EditObjectExportLWO.obj 
+      intermediate\ELight.obj intermediate\EParticlesObject.obj 
+      intermediate\ESceneAIMapTools.obj 
       intermediate\ESceneAIMapTools_Controls.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
@@ -86,8 +86,7 @@
       EditLibrary.dfm EditLightAnim.dfm FrameAIMap.dfm FrameDetObj.dfm 
       FrameGroup.dfm FrameLight.dfm FrameObject.dfm FramePortal.dfm FramePS.dfm 
       FrameSector.dfm FrameShape.dfm FrameSpawn.dfm FrameWayPoint.dfm 
-      leftbar.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm 
-      SceneProperties.dfm Splash.dfm"/>
+      leftbar.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -162,7 +161,6 @@
       <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ui_leveltools.cpp" FORMNAME="" UNITNAME="UI_LevelTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\UI_LevelMain.cpp" FORMNAME="" UNITNAME="UI_LevelMain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

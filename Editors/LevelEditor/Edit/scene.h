@@ -34,18 +34,25 @@ int __cdecl _CompareByDist( const void *a, const void *b)
 */
 
 struct st_LevelOptions{
-	shared_str	m_FNLevelPath;
-    shared_str	m_LevelPrefix;
-	shared_str 	m_BOPText;
+	shared_str		m_FNLevelPath;
+    shared_str		m_LevelPrefix;
+	shared_str 		m_BOPText;
+    
+    u8	 			m_LightHemiQuality;
+    u8 				m_LightSunQuality;
 
-    b_params	m_BuildParams;
+    b_params		m_BuildParams;
 
-    st_LevelOptions();
-    // routine
-	void 		Save			(IWriter&);
-	void 		Read			(IReader&);
-    void		Reset			();
-	void 		InitDefaultText	();
+    				st_LevelOptions	();
+
+    void			SetCustomQuality();
+    void			SetDraftQuality	();
+    void			SetLowQuality	();
+    void			SetHighQuality	();
+    
+	void 			Save			(IWriter&);
+	void 			Read			(IReader&);
+    void			Reset			();
 };
 
 class EScene
@@ -88,10 +95,14 @@ protected:
 	void			DestroySceneTools			();
 
     void 			FindObjectByNameCB			(LPCSTR new_name, bool& res){res=!!FindObjectByName(new_name,(CCustomObject*)0);}
+
+	void __stdcall 	OnBuildControlClick			(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall 	OnRTFlagsChange				(PropValue* sender);
 public:
 	enum{
-    	flRT_Unsaved 	= (1<<0),
-    	flRT_Modified 	= (1<<1),
+    	flRT_Unsaved 			= (1<<0),
+    	flRT_Modified 			= (1<<1),
+        flRT_ShowBuildOptions   = (1<<2),
     };
     Flags32			m_RTFlags;
 public:

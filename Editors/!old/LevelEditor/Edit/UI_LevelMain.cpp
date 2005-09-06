@@ -20,7 +20,6 @@
 #include "d3dutils.h"
 #include "EditLightAnim.h"
 #include "folderLib.h"
-#include "sceneproperties.h"
 #include "builder.h"
 #include "SoundManager_LE.h"
 #include "NumericVector.h"
@@ -471,9 +470,8 @@ CCommandVar CommandSceneHighlightTexture(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandOptions(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-        if (mrOk==frmScenePropertiesRun(&Scene->m_LevelOp.m_BuildParams,false)){
-            Scene->UndoSave();
-        }
+    	Scene->m_RTFlags.set	(EScene::flRT_ShowBuildOptions,TRUE);
+        ExecCommand				(COMMAND_SHOW_PROPERTIES);
 	    return 					TRUE;
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -484,9 +482,8 @@ CCommandVar CommandOptions(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandBuild(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-        if (frmScenePropertiesRun(&Scene->m_LevelOp.m_BuildParams,true)==mrOk){
+        if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to build level?"))
             return				Builder.Compile( );
-        }
     }else{
         ELog.DlgMsg( mtError, "Scene sharing violation" );
     }

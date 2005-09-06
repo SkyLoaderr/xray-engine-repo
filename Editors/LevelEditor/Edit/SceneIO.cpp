@@ -40,6 +40,7 @@
 #define CHUNK_LO_PREFIX 		0x7804
 #define CHUNK_LO_BP_VERSION		0x7849
 #define CHUNK_BUILD_PARAMS		0x7850
+#define CHUNK_LIGHT_QUALITY		0x7851
 //------------------------------------------------------------------------------------------------
 // Level Options
 //------------------------------------------------------------------------------------------------
@@ -66,6 +67,11 @@ void st_LevelOptions::Save( IWriter& F ){
 
     F.open_chunk( CHUNK_BUILD_PARAMS );
 	F.w			( &m_BuildParams, sizeof(m_BuildParams) );
+    F.close_chunk();
+
+    F.open_chunk( CHUNK_LIGHT_QUALITY );
+	F.w_u8		( m_LightHemiQuality );
+	F.w_u8		( m_LightSunQuality );
     F.close_chunk();
 }
 
@@ -96,6 +102,11 @@ void st_LevelOptions::Read(IReader& F)
     }else{
         ELog.DlgMsg	(mtError, "Skipping bad version of build params.");
     	m_BuildParams.Init();
+    }
+
+    if (F.find_chunk(CHUNK_LIGHT_QUALITY)){
+	    m_LightHemiQuality 	= F.r_u8( );
+	    m_LightSunQuality 	= F.r_u8( );
     }
 }
 

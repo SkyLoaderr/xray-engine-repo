@@ -26,8 +26,6 @@ void ESceneLightTools::Clear(bool bSpecific)
 {
 	inherited::Clear(bSpecific);
 
-    m_HemiQuality		= 1;
-    m_SunShadowQuality	= 1;
     m_SunShadowDir.set	(deg2rad(-25.f),deg2rad(292.f));
     
 	lcontrol_last_idx	= 0;
@@ -181,12 +179,10 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     ButtonValue*	B 	= 0;
     // hemisphere
-    PHelper().CreateU8		(items,	PrepareKey(pref,"Common\\Hemisphere\\Quality"),		 	&m_HemiQuality,		1,3);
 //.	PHelper().CreateRToken32(items, PrepareKey(pref,"Common\\Hemisphere\\Light Control"),	&m_HemiControl, 	&*lcontrols.begin(), lcontrols.size());
     
     // sun
     PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Sun Shadow\\Visible"),			&m_Flags,			flShowSun);
-    PHelper().CreateU8		(items,	PrepareKey(pref,"Common\\Sun Shadow\\Quality"),			&m_SunShadowQuality,1,2);
     PHelper().CreateAngle	(items,	PrepareKey(pref,"Common\\Sun Shadow\\Altitude"),			&m_SunShadowDir.x,	-PI_DIV_2,0);
     PHelper().CreateAngle	(items,	PrepareKey(pref,"Common\\Sun Shadow\\Longitude"),		&m_SunShadowDir.y,	0,PI_MUL_2);
     // light controls

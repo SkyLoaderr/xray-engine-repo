@@ -512,7 +512,7 @@ void SceneBuilder::BuildHemiLights(u8 quality, LPCSTR lcontrol)
         SHemiData		h_data;
         h_data.dest 	= &dest;
         h_data.T.light	= RL;
-        xrHemisphereBuild(3/*quality*/,2.f,hemi_callback,&h_data);   //. hack
+        xrHemisphereBuild(quality,2.f,hemi_callback,&h_data);   //. hack
         int control_ID	= BuildLightControl(lcontrol);
         for (BLIt it=dest.begin(); it!=dest.end(); it++){
             l_light_static.push_back(b_light_static());
@@ -521,43 +521,48 @@ void SceneBuilder::BuildHemiLights(u8 quality, LPCSTR lcontrol)
             sl.data			    = it->light;
             sl.data.mul			(it->energy);
         }
+    }else{
+        int control_ID	= BuildLightControl(lcontrol);
+        l_light_static.push_back(b_light_static());
+        b_light_static& sl	= l_light_static.back();
+        sl.controller_ID 	= control_ID;
+        sl.data			    = RL;
     }
 }
 BOOL SceneBuilder::BuildSun(u8 quality, Fvector2 dir)
 {
     int controller_ID		= BuildLightControl(LCONTROL_SUN);
     // static
-    {
-        // soft light
-        int samples;
-        switch(quality){
-        case 1: samples = 3; break;
-        case 2: samples = 4; break;
-        case 3: samples = 7; break;
-        default:
-            THROW2("Invalid case.");
-        }
+    // soft light
+    int samples;
+    switch(quality){
+    case 0: samples = 1; break;
+    case 1: samples = 3; break;
+    case 2: samples = 4; break;
+    case 3: samples = 7; break;
+    default:
+        THROW2("Invalid case.");
+    }
 
-        Fcolor color;		color.set(1.f,1.f,1.f,1.f);
-        float sample_energy	= 1.f/float(samples*samples);
-        color.mul_rgb		(sample_energy);
+    Fcolor color;		color.set(1.f,1.f,1.f,1.f);
+    float sample_energy	= 1.f/float(samples*samples);
+    color.mul_rgb		(sample_energy);
 
-        float disp			= deg2rad(3.f); // dispersion of sun
-        float da 			= disp/float(samples);
-        float mn_x  		= dir.x-disp/2;
-        float mn_y  		= dir.y-disp/2;
-        for (int x=0; x<samples; x++){
-            float x = mn_x+x*da;
-            for (int y=0; y<samples; y++){
-                float y = mn_y+y*da;
-                l_light_static.push_back(b_light_static());
-                b_light_static& sl	= l_light_static.back();
-                sl.controller_ID 	= controller_ID;
-                sl.data.type		= D3DLIGHT_DIRECTIONAL;
-                sl.data.position.set(0,0,0);
-                sl.data.diffuse.set	(color);
-                sl.data.direction.setHP(y,x);
-            }
+    float disp			= deg2rad(3.f); // dispersion of sun
+    float da 			= disp/float(samples);
+    float mn_x  		= dir.x-disp/2;
+    float mn_y  		= dir.y-disp/2;
+    for (int x=0; x<samples; x++){
+        float x = mn_x+x*da;
+        for (int y=0; y<samples; y++){
+            float y = mn_y+y*da;
+            l_light_static.push_back(b_light_static());
+            b_light_static& sl	= l_light_static.back();
+            sl.controller_ID 	= controller_ID;
+            sl.data.type		= D3DLIGHT_DIRECTIONAL;
+            sl.data.position.set(0,0,0);
+            sl.data.diffuse.set	(color);
+            sl.data.direction.setHP(y,x);
         }
     }
     // dynamic
@@ -827,8 +832,20 @@ int SceneBuilder::BuildMaterial(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name
     VERIFY(sector_num>=0);
     int mtl_idx;
 	VERIFY			(tx_cnt==1);
-    mtl.shader      = (u16)BuildShader		(esh_name);
-    mtl.shader_xrlc	= (u16)BuildShaderXRLC	(csh_name);
+    
+    if ((Scene->m_LevelOp.m_BuildParams.m_quality==ebqDraft)){
+        Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(csh_name);
+        if (c_sh->flags.bRendering){
+            mtl.shader      = (u16)BuildShader		("def_shaders\\def_vertex");
+            mtl.shader_xrlc	= (u16)BuildShaderXRLC	("def_shaders\\def_vertex");
+        }else{
+            mtl.shader      = (u16)BuildShader		(esh_name);
+            mtl.shader_xrlc	= (u16)BuildShaderXRLC	(csh_name);
+        }
+    }else{
+	    mtl.shader      = (u16)BuildShader		(esh_name);
+    	mtl.shader_xrlc	= (u16)BuildShaderXRLC	(csh_name);
+    }
     mtl.sector		= (u16)sector_num;
 	mtl.surfidx		= (u16)BuildTexture		(tx_name);
     if ((u16(-1)==mtl.shader)||(u16(-1)==mtl.shader_xrlc)||(u16(-1)==mtl.surfidx)) return -1;
@@ -909,11 +926,11 @@ BOOL SceneBuilder::CompileStatic()
 // make hemisphere
 	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT));
     LPCSTR h_control	= *lt->FindLightControl(lt->m_HemiControl)->name;
-	BuildHemiLights		(lt->m_HemiQuality,h_control);
+	BuildHemiLights		(Scene->m_LevelOp.m_LightHemiQuality,h_control);
     if (0!=strcmp(LCONTROL_HEMI,h_control))
-		BuildHemiLights	(lt->m_HemiQuality,LCONTROL_HEMI);
+		BuildHemiLights	(Scene->m_LevelOp.m_LightHemiQuality,LCONTROL_HEMI);
 // make sun
-	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
+	BuildSun			(Scene->m_LevelOp.m_LightSunQuality,lt->m_SunShadowDir);
 // parse scene
     SPBItem* pb = UI->ProgressStart(Scene->ObjCount(),"Parse scene objects...");
     t_it 				= Scene->FirstTools();

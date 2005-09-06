@@ -14,7 +14,7 @@ enum{
     CHUNK_LCONTROLS			= 0x1002ul,
     CHUNK_LCONTROLS_LAST	= 0x1003ul,
     CHUNK_FLAGS				= 0x1004ul,
-    CHUNK_HEMI				= 0x1005ul,
+//	CHUNK_HEMI				= 0x1005ul, // obsolette
     CHUNK_SUN_SHADOW		= 0x1006ul,
     CHUNK_HEMI2				= 0x1007ul,
 };
@@ -34,15 +34,8 @@ bool ESceneLightTools::Load(IReader& F)
     if (F.find_chunk(CHUNK_FLAGS))
     	m_Flags.assign		(F.r_u32());
 
-    if (F.find_chunk(CHUNK_HEMI)){
-     	m_HemiQuality		= F.r_u8();
-    }
-//.	if (F.find_chunk(CHUNK_HEMI2)){
-//.		m_HemiControl		= F.r_u32();
-//.	}
-
     if (F.find_chunk(CHUNK_SUN_SHADOW)){
-     	m_SunShadowQuality	= F.r_u8();
+     	F.r_u8				();
         F.r_fvector2		(m_SunShadowDir);
     }
     
@@ -74,16 +67,8 @@ void ESceneLightTools::Save(IWriter& F)
     F.w_u32			(m_Flags.get());
 	F.close_chunk	();
 
-	F.open_chunk	(CHUNK_HEMI);
-    F.w_u8			(m_HemiQuality);
-    F.close_chunk	();
-
-//.	F.open_chunk	(CHUNK_HEMI2);
-//.	F.w_u32			(m_HemiControl);
-//.	F.close_chunk	();
-
 	F.open_chunk	(CHUNK_SUN_SHADOW);
-    F.w_u8			(m_SunShadowQuality);
+    F.w_u8			(0);
     F.w_fvector2	(m_SunShadowDir);
     F.close_chunk	();
 

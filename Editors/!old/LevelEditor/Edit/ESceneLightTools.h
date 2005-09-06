@@ -26,10 +26,8 @@ protected:
     };
     Flags32				m_Flags;
 	// hemisphere
-	u8					m_HemiQuality;
     u32					m_HemiControl;
     // sun
-    u8					m_SunShadowQuality;
     Fvector2			m_SunShadowDir;
 
     // run time

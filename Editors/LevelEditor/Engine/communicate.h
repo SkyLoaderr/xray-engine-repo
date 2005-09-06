@@ -129,6 +129,14 @@ struct b_mu_reference
     u32					reserved	[8];
 };
 
+enum EBuildQuality{
+	ebqDraft			= 0,			
+	ebqLow,			
+	ebqHigh,
+	ebqCustom,
+    ebq_force_u32		= u32(-1)
+};
+
 struct b_params
 {
 	// Normals & optimization
@@ -137,18 +145,15 @@ struct b_params
 
 	// Light maps
 	float		m_lm_pixels_per_meter;	// LM - by default: 4 ppm
-	int			m_lm_jitter_samples;	// 1/4/9 - by default		- 4
+	u32			m_lm_jitter_samples;	// 1/4/9 - by default		- 4
 	u32			m_lm_rms_zero;			// RMS - after what the lightmap will be shrinked to ZERO pixels
 	u32			m_lm_rms;				// RMS - shrink and recalc
 
+    // build quality
+	u32			m_quality;
+
 	// Progressive
-	BOOL		m_bConvertProgressive;
-	float		m_pm_uv;				// UV weight				- 0.5
-	float		m_pm_pos;				// Position weight			- 1.f
-	float		m_pm_curv;				// Curvature weight			- 1.f
-	float		m_pm_borderH_angle;		// higher the angle - more critical borders - 150
-	float		m_pm_borderH_distance;	// higher the value (m) - less critical B	- 0.05f;
-	float		m_pm_heuristic;			// Stripify vs Progressive	- 0.85f;
+	float		reserved[6];
 
     void        Init					()
 	{
@@ -162,24 +167,23 @@ struct b_params
 		m_lm_rms_zero			= 4;
 		m_lm_rms				= 4;
 
-        // Progressive
-        m_bConvertProgressive   = FALSE;
-        m_pm_uv                 = 0.5f;
-        m_pm_pos			    = 1.f;
-        m_pm_curv			    = 1.f;
-		m_pm_borderH_angle		= 150.f;
-		m_pm_borderH_distance	= 0.04f;
-		m_pm_heuristic			= 0.85f;
+        setHighQuality			();
 	}
-	void		setDebug()
+	void		setDraftQuality()
 	{
-		m_bConvertProgressive	= FALSE;
+    	m_quality				= ebqDraft;
+		m_lm_pixels_per_meter	= 0.1;
+		m_lm_jitter_samples		= 1;
+	}
+	void		setLowQuality()
+	{
+    	m_quality				= ebqLow;
 		m_lm_pixels_per_meter	= 4;
 		m_lm_jitter_samples		= 4;
 	}
-	void		setRelease()
+	void		setHighQuality()
 	{
-		m_bConvertProgressive	= FALSE;
+    	m_quality				= ebqHigh;
 		m_lm_pixels_per_meter	= 14;
 		m_lm_jitter_samples		= 9;
 	}
