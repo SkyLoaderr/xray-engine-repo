@@ -528,10 +528,11 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		HUD().Font().pFontSmall->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
 		
 		strcpy(buf,"");
-		if (m_iCurWeaponHideState & (1<<0)) strcat(buf, "INVENTORY_MENU_OPEN ");
-		if (m_iCurWeaponHideState & (1<<1)) strcat(buf, "BUY_MENU_OPEN ");
-		if (m_iCurWeaponHideState & (1<<2)) strcat(buf, "DEACTIVATE_CURRENT_SLOT ");
-		if (m_iCurWeaponHideState & (1<<3)) strcat(buf, "SPRINT ");
+		if (m_iCurWeaponHideState & whs_INVENTORY_MENU		) strcat(buf, "INVENTORY_MENU ");
+		if (m_iCurWeaponHideState & whs_BUY_MENU			) strcat(buf, "BUY_MENU ");
+		if (m_iCurWeaponHideState & whs_ON_LEDDER			) strcat(buf, "ON_LEDDER ");
+		if (m_iCurWeaponHideState & whs_SPRINT				) strcat(buf, "SPRINT ");
+		if (m_iCurWeaponHideState & whs_CAR					) strcat(buf, "CAR ");
 		HUD().Font().pFontSmall->OutNext	("WeaponHideState:     [%s]",buf);
 
 		//-------------------------------------------------------

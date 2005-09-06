@@ -171,25 +171,34 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}break;
 			}
 		}break;
-	case GEG_PLAYER_BUYMENU_OPEN:
-	case GEG_PLAYER_INVENTORYMENU_OPEN:
-	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
-	case GEG_PLAYER_SPRINT_START:
+//	case GEG_PLAYER_INVENTORYMENU_OPEN:
+//	case GEG_PLAYER_BUYMENU_OPEN:	
+//	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
+//	case GEG_PLAYER_SPRINT_START:
+//	case GEG_PLAYER_ENTER_CAR:
+//		{
+//			if (OnServer())
+//			{
+//				m_iCurWeaponHideState |= 1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2);
+//			};
+//		}break;
+//	case GEG_PLAYER_INVENTORYMENU_CLOSE:
+//	case GEG_PLAYER_BUYMENU_CLOSE:	
+//	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
+//	case GEG_PLAYER_SPRINT_END:
+//	case GEG_PLAYER_EXIT_CAR:
+//		{
+//			if (OnServer())
+//			{
+//				m_iCurWeaponHideState &= ~(1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2));
+//			};
+//		}break;
+	case GEG_PLAYER_WEAPON_HIDE_STATE:
 		{
-			if (OnServer())
-			{
-				m_iCurWeaponHideState |= 1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2);
-			};
-		}break;
-	case GEG_PLAYER_BUYMENU_CLOSE:
-	case GEG_PLAYER_INVENTORYMENU_CLOSE:
-	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
-	case GEG_PLAYER_SPRINT_END:
-		{
-			if (OnServer())
-			{
-				m_iCurWeaponHideState &= ~(1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2));
-			};
+			u32 State = P.r_u32();
+			BOOL	Set = !!P.r_u8();
+			if (Set) m_iCurWeaponHideState |= State;
+			else m_iCurWeaponHideState &= ~(State);
 		}break;
 	case GE_MOVE_ACTOR:
 		{

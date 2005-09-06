@@ -942,6 +942,10 @@ void CActor::shedule_Update	(u32 DT)
 	if(m_holder || !getEnabled() || !Ready())
 	{
 		inherited::shedule_Update		(DT);
+		if (OnServer())
+		{
+			Check_Weapon_ShowHideState();
+		};	
 		return;
 	}
 

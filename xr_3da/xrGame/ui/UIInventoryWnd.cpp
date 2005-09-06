@@ -311,7 +311,8 @@ void CUIInventoryWnd::Show()
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
-        pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);//, false);
+///        pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);//, false);
+		pActor->SetWeaponHideState(whs_INVENTORY_MENU, TRUE);
 	}
 
 	//дать возможность скриптам определить, что актер зашел в меню
@@ -341,12 +342,8 @@ void CUIInventoryWnd::Hide()
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
-		pActor->RestoreHidedWeapon(GEG_PLAYER_INVENTORYMENU_CLOSE);
-		/*
-		NET_Packet	P;
-		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_CLOSE, pActor->ID());
-		pActor->u_EventSend(P);
-		*/
+//		pActor->RestoreHidedWeapon(GEG_PLAYER_INVENTORYMENU_CLOSE);		
+		pActor->SetWeaponHideState(whs_INVENTORY_MENU, FALSE);
 	}
 }
 

@@ -50,6 +50,10 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	//clear actor movement states 
 	mstate_wishful=0;
 	m_holderID=car->ID();
+
+//	HideCurrentWeapon(GEG_PLAYER_ENTER_CAR);
+	SetWeaponHideState(whs_CAR, TRUE);
+
 }
 
 void CActor::detach_Vehicle()
@@ -78,6 +82,9 @@ void CActor::detach_Vehicle()
 	V->PlayCycle		(m_anims->m_normal.m_torso_idle);
 	//mstate_wishful &=~mcAnyMove;
 	m_holderID=u16(-1);
+
+//	RestoreHidedWeapon(GEG_PLAYER_EXIT_CAR);
+	SetWeaponHideState(whs_CAR, FALSE);
 }
 
 bool CActor::use_Vehicle(CHolderCustom* object)

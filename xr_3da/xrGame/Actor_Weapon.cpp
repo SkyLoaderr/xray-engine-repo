@@ -108,13 +108,13 @@ BOOL CActor::g_State (SEntityState& state) const
 	return TRUE;
 }
 
-
+/*
 void		CActor::HideCurrentWeapon		(u32 Msg)//, bool only2handed)
 {
 	if (g_Alive() || this == Level().CurrentControlEntity())
 	{
 		NET_Packet	P;
-		u_EventGen(P, Msg/*GEG_PLAYER_DEACTIVATE_CURRENT_SLOT*/, ID());
+		u_EventGen(P, Msg, ID());
 		u_EventSend(P);
 	};
 };
@@ -124,7 +124,19 @@ void		CActor::RestoreHidedWeapon		(u32 Msg)
 	if (g_Alive() || this == Level().CurrentControlEntity())
 	{
 		NET_Packet	P;
-		u_EventGen(P, Msg/*GEG_PLAYER_RESTORE_CURRENT_SLOT*/, ID());
+		u_EventGen(P, Msg, ID());
+		u_EventSend(P);
+	};
+}
+*/
+void		CActor::SetWeaponHideState		(u32 State, BOOL	Set)
+{
+	if (g_Alive() && this == Level().CurrentControlEntity())
+	{
+		NET_Packet	P;
+		u_EventGen(P, GEG_PLAYER_WEAPON_HIDE_STATE, ID());
+		P.w_u32(State);
+		P.w_u8(u8(Set));
 		u_EventSend(P);
 	};
 }
@@ -137,8 +149,8 @@ void		CActor::Check_Weapon_ShowHideState	()
 		u32 InventorySlot = inventory().GetActiveSlot();
 		if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
 			inventory().m_slots[InventorySlot].m_pIItem &&
-			(!(m_iCurWeaponHideState&(1<<2)) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()) &&
-			(!(m_iCurWeaponHideState&(1<<3) && InventorySlot == KNIFE_SLOT))
+			(!(m_iCurWeaponHideState&whs_ON_LEDDER) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()) &&
+			(!(m_iCurWeaponHideState&whs_SPRINT && InventorySlot == KNIFE_SLOT))
 			)
 		{
 			if (inventory().Activate(NO_ACTIVE_SLOT))

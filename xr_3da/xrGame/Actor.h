@@ -666,8 +666,9 @@ protected:
 		void							Check_for_AutoPickUp	();
 		void							SelectBestWeapon	();
 public:
-		virtual void					HideCurrentWeapon		(u32 Msg);//, bool only2handed);
-		virtual	void					RestoreHidedWeapon		(u32 Msg);
+//		virtual void					HideCurrentWeapon		(u32 Msg);//, bool only2handed);
+//		virtual	void					RestoreHidedWeapon		(u32 Msg);
+		virtual	void					SetWeaponHideState		(u32 State, BOOL	Set);
 
 private:
 	CActorCondition				*m_entity_condition;

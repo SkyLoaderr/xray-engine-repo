@@ -127,14 +127,15 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	{
 		if ((mstate_real&mcClimb) != (mstate_old&mcClimb))
 		{
-			if (mstate_real&mcClimb)
-			{
-				HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
-			}
-			else
-			{
-				RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
-			};			
+			SetWeaponHideState(whs_ON_LEDDER, (mstate_real&mcClimb) != 0);
+//			if (mstate_real&mcClimb)
+//			{
+//				HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
+//			}
+//			else
+//			{
+//				RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
+//			};			
 		}
 		else
 		{
@@ -142,14 +143,15 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			{
 				 if ((mstate_real&mcAnyMove) != (mstate_old&mcAnyMove))
 				 {
-					 if (mstate_real&mcAnyMove)
-					 {
-						 HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
-					 }
-					 else
-					 {
-						 RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
-					 };
+					 SetWeaponHideState(whs_ON_LEDDER, (mstate_real&mcAnyMove) != 0);
+//					 if (mstate_real&mcAnyMove)
+//					 {
+//						 HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
+//					 }
+//					 else
+//					 {
+//						 RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
+//					 };
 				 }
 			}
 		}
