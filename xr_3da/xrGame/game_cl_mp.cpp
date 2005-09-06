@@ -855,3 +855,7 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 			HUD().GetUI()->UIMainIngameWnd->DisplayMoneyBonus(MoneyStr);
 	};	
 };
+
+void		game_cl_mp::OnMessageSelected		(u8 MenuID, u8 PhraseID)
+{
+};

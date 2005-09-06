@@ -125,6 +125,7 @@ public:
 	virtual		void				OnMoneyChanged			(NET_Packet& P);
 
 	virtual		void				OnSwitchPhase_InProgress();
+	virtual		void				OnMessageSelected		(u8 MenuID, u8 PhraseID);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
