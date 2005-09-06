@@ -854,7 +854,7 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 	};	
 };
 
-void		game_cl_mp::OnMessageSelected		(u8 MenuID, u8 PhraseID)
+void		game_cl_mp::OnMessageSelected		(CUISpeechMenu* pMenu, u8 PhraseID)
 {
 	Msg("Message %d", int(PhraseID));
 };

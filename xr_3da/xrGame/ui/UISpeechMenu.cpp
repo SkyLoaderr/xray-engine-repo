@@ -46,7 +46,7 @@ bool CUISpeechMenu::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
 
-	game->OnMessageSelected(0, static_cast<u8>(dik - DIK_1));
+	game->OnMessageSelected(this, static_cast<u8>(dik - DIK_1));
 
 
 	return true;
