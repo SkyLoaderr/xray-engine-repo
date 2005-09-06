@@ -4,7 +4,6 @@
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
-#include "controller_covers.h"
 
 class CControllerAnimation;
 class CControllerDirection;
@@ -75,6 +74,8 @@ public:
 
 	virtual void	TranslateActionToPathParams	();
 
+	virtual	bool	is_relation_enemy	(const CEntityAlive *tpEntityAlive) const;
+
 	//-------------------------------------------------------------------
 	// Controller ability
 			bool	HasUnderControl		() {return (!m_controlled_objects.empty());}
@@ -105,7 +106,6 @@ public:
 
 	void						draw_fire_particles();
 	
-	CControllerCoverEvaluator	*m_ce_best;
 	void						test_covers();
 
 

@@ -3119,6 +3119,16 @@
 								RelativePath=".\ai\Monsters\anomaly_detector.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Cover Manager"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\monster_cover_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_cover_manager.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -3625,12 +3635,6 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Controller\controller.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller_covers.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller_covers.h">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.cpp">

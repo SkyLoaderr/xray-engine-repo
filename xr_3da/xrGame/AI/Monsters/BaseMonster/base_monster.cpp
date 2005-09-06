@@ -33,6 +33,7 @@
 #include "../control_movement_base.h"
 #include "../control_path_builder_base.h"
 #include "../anomaly_detector.h"
+#include "../monster_cover_manager.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -69,8 +70,8 @@ CBaseMonster::CBaseMonster()
 	m_com_manager.add_ability		(ControlCom::eControlTripleAnimation);
 
 
-
 	m_anomaly_detector				= xr_new<CAnomalyDetector>(this);
+	CoverMan						= xr_new<CMonsterCoverManager>(this);
 }
 
 
@@ -89,6 +90,7 @@ CBaseMonster::~CBaseMonster()
 	xr_delete(m_dir_base);
 
 	xr_delete(m_anomaly_detector);
+	xr_delete(CoverMan);
 }
 
 void CBaseMonster::UpdateCL()

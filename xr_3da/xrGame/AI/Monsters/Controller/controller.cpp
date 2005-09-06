@@ -44,7 +44,6 @@ CController::CController()
 CController::~CController()
 {
 	xr_delete(StateMan);
-	xr_delete(m_ce_best);
 }
 
 void CController::Load(LPCSTR section)
@@ -141,9 +140,6 @@ void CController::Load(LPCSTR section)
 #ifdef DEBUG	
 	anim().accel_chain_test		();
 #endif
-
-
-	m_ce_best = xr_new<CControllerCoverEvaluator>(&control().path_builder().restrictions());
 
 	m_velocity_move_fwd.Load	(section, "Velocity_MoveFwd");
 	m_velocity_move_bkwd.Load	(section, "Velocity_MoveBkwd");
@@ -469,7 +465,12 @@ void CController::TranslateActionToPathParams()
 	custom_anim().set_path_params();
 }
 
-
+bool CController::is_relation_enemy(const CEntityAlive *tpEntityAlive) const
+{
+	if (xr_strcmp(*(tpEntityAlive->cNameSect()), "stalker_zombied") == 0) return false;
+	
+	return inherited::is_relation_enemy(tpEntityAlive);
+}
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CController::show_debug_info()

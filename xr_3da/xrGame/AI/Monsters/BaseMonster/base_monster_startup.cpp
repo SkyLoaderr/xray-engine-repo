@@ -16,6 +16,7 @@
 #include "../state_manager.h"
 #include "../controlled_entity.h"
 #include "../anomaly_detector.h"
+#include "../monster_cover_manager.h"
 
 void CBaseMonster::Load(LPCSTR section)
 {
@@ -42,6 +43,7 @@ void CBaseMonster::Load(LPCSTR section)
 	control().load					(section);
 
 	m_anomaly_detector->load		(section);
+	CoverMan->load					();
 }
 
 void CBaseMonster::reload	(LPCSTR section)

@@ -1,12 +1,10 @@
 #pragma once
 
 #include "../../../ai_space.h"
+#include "../monster_cover_manager.h"
 #include "../../../cover_point.h"
-#include "../../../cover_manager.h"
 #include "../../../level.h"
 #include "../../../level_debug.h"
-
-
 
 
 #define TEMPLATE_SPECIALIZATION template <\
@@ -77,9 +75,7 @@ void CStateControllerHideAbstract::select_target_point()
 	DBG().level_info(this).clear();
 #endif
 
-	object->m_ce_best->setup	(object->EnemyMan.get_enemy_position(),10.f,30.f);
-	CCoverPoint					*point = ai().cover_manager().best_cover(object->Position(),30.f,*object->m_ce_best);
-	//VERIFY(point);
+	CCoverPoint	*point = object->CoverMan->find_cover(object->EnemyMan.get_enemy_position(),10.f,30.f);
 	if (point) {
 		target.node					= point->level_vertex_id	();
 		target.position				= point->position			();

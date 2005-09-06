@@ -55,6 +55,7 @@ void CStateMonsterAttackAbstract::initialize()
 #define FIND_ENEMY_DELAY	6000
 
 
+
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackAbstract::execute()
 {

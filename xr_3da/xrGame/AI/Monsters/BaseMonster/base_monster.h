@@ -38,7 +38,7 @@ class CControlAnimationBase;
 class CControlMovementBase;
 class CControlPathBuilderBase;
 class CControlDirectionBase;
-
+class CMonsterCoverManager;
 
 class CBaseMonster : public CCustomMonster, public CStepManager
 {
@@ -241,6 +241,10 @@ public:
 
 	CMeleeChecker			MeleeChecker;
 	CMonsterMorale			Morale;
+
+	// -----------------------------------------------------------------------------
+
+	CMonsterCoverManager	*CoverMan;
 
 	// -----------------------------------------------------------------------------
 
