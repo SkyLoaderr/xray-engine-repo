@@ -52,7 +52,7 @@ public:
 class CUICaption :protected CUIMultiTextStatic
 {
 	typedef CUIMultiTextStatic inherited;
-//	xr_map<shared_str,u32>		m_indices;
+
 	u32					findIndexOf(const shared_str& key);
 	u32					findIndexOf_(const shared_str& key);
 public:

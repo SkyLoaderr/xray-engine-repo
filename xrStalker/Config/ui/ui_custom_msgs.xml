@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<header>
+
+<!--light_anim="warning_01"    stretch="1" 
+"header"
+"arial"
+"arial_14"
+
+"big"
+"normal"
+"medium"
+"small"
+
+"graffiti19"
+"graffiti22"
+"graffiti32"
+"graffiti50"
+
+"letterica16"
+"letterica18"
+"letterica25"
+-->
+
+	<hud_timer  x="850" y="15" width="600" height="64">
+		<text x="10" y="20" font="graffiti32" r="238" g="155" b="23" a="255">default_text</text>
+		<texture>ui\ui_mn_weapons</texture>
+	</hud_timer>
+
+
+
+</header>

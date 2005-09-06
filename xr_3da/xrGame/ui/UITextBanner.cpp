@@ -89,17 +89,14 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 	if(fontSize>0.0f)
 		m_pFont->SetSize(fontSize);
 
-	// ≈сли разрешение меньше базового, то корректируем положение вывода текста
-	if (x >= 1.0f && y >= 1.0f /* && Device.dwHeight < UI_BASE_HEIGHT */)
+	if (x >= 1.0f && y >= 1.0f)
 	{
 		x *= UI()->GetScaleX();
 		y *= UI()->GetScaleY();
-//		x *= static_cast<float>(Device.dwWidth) / UI_BASE_WIDTH;
-//		y *= static_cast<float>(Device.dwHeight) / UI_BASE_HEIGHT;
 	}
 	m_pFont->Out(x, y, buf.c_str());
-	if (m_bNewRenderMethod)
-		m_pFont->OnRender();
+//	if (m_bNewRenderMethod)
+//		m_pFont->OnRender();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

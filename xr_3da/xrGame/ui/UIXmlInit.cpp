@@ -49,6 +49,8 @@
 #define LETTERICA18_FONT_NAME	"letterica18"
 #define LETTERICA25_FONT_NAME	"letterica25"
 
+#define DI_FONT_NAME			"di"
+
 //////////////////////////////////////////////////////////////////////////
 
 const char * const		COLOR_DEFINITIONS					= "color_defs.xml";
@@ -649,6 +651,10 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		else if(!xr_strcmp(*font_name, LETTERICA25_FONT_NAME))
 		{
 			pFnt = UI()->Font()->pFontLetterica25;
+		}
+		else if(!xr_strcmp(*font_name, DI_FONT_NAME))
+		{
+			pFnt = UI()->Font()->pFontDI;
 		}
 	}
 	return true;

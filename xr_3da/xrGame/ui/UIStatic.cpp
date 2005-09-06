@@ -11,6 +11,7 @@
 #include "../HUDManager.h"
 #include "../../LightAnimLibrary.h"
 #include "uilines.h"
+#include "../string_table.h"
 
 const char * const	clDefault	= "default";
 #define CREATE_LINES if (!m_pLines) {m_pLines = xr_new<CUILines>(); m_pLines->SetTextAlignment(CGameFont::alLeft);}
@@ -618,4 +619,9 @@ void CUIStatic::RescaleRelative2Rect(const Frect& r){
 	my_r.x2 = my_r.x1 + w;
 	my_r.y2 = my_r.y1 + h;
 	SetWndRect(my_r);
+}
+
+void CUIStatic::SetTextST				(LPCSTR str_id)
+{
+	SetText					(*CStringTable()(str_id));
 }

@@ -80,6 +80,7 @@ public:
 
 	//IUITextControl
 	virtual void			SetText					(LPCSTR str);
+			void			SetTextST				(LPCSTR str_id);
 	virtual LPCSTR			GetText					();
 	virtual void			SetTextColor			(u32 color);
 	virtual u32				GetTextColor			();

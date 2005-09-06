@@ -4,6 +4,9 @@
 #include "level.h"
 #include "hudmanager.h"
 #include "ui/UIMultiTextStatic.h"
+#include "ui/UIXmlInit.h"
+#include "object_broker.h"
+#include "string_table.h"
 
 CUIGameCustom::CUIGameCustom()
 {
@@ -16,8 +19,9 @@ CUIGameCustom::CUIGameCustom()
 
 CUIGameCustom::~CUIGameCustom()
 {
-	xr_delete(m_pgameCaptions);
-	shedule_unregister();
+	delete_data				(m_pgameCaptions);
+	shedule_unregister		();
+	delete_data				(m_custom_statics);
 }
 
 
@@ -33,11 +37,18 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 
 void CUIGameCustom::OnFrame() 
 {
+	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.begin();
+	for(;it!=m_custom_statics.end();++it)
+		it->second->Update();
 }
 
 void CUIGameCustom::Render()
 {
 	GameCaptions()->Draw();
+	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.begin();
+	for(;it!=m_custom_statics.end();++it)
+		it->second->Draw();
+
 }
 
 bool CUIGameCustom::IR_OnKeyboardPress(int dik) 
@@ -96,6 +107,40 @@ void CUIGameCustom::RemoveCustomMessage		(LPCSTR id)
 	GameCaptions()->removeCustomMessage(id);
 }
 
+void CUIGameCustom::AddCustomStatic			(LPCSTR id)
+{
+	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.find(id);
+	if(it!=m_custom_statics.end())
+		RemoveCustomStatic	(id);
+
+	CUIXml uiXml;
+	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "ui_custom_msgs.xml");
+	R_ASSERT3						(xml_result, "xml file not found", "ui_custom_msgs.xml");
+	CUIXmlInit xml_init;
+	CUIStatic* s					= xr_new<CUIStatic>();
+	m_custom_statics[id]			= s;
+	xml_init.InitStatic				(uiXml, id, 0, s);
+}
+
+CUIStatic* CUIGameCustom::GetCustomStatic		(LPCSTR id)
+{
+	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.find(id);
+	if(it!=m_custom_statics.end()){
+		return it->second;
+	}
+	return NULL;
+}
+
+void CUIGameCustom::RemoveCustomStatic		(LPCSTR id)
+{
+	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.find(id);
+	if(it!=m_custom_statics.end()){
+		xr_delete(it->second);
+		m_custom_statics.erase(it);
+	}
+}
+
+
 #include "script_space.h"
 using namespace luabind;
 
@@ -114,7 +159,10 @@ void CUIGameCustom::script_register(lua_State *L)
 			.def("AddCustomMessage",		(void(CUIGameCustom::*)(LPCSTR, float, float, float, CGameFont*, u16, u32/*, LPCSTR*/))CUIGameCustom::AddCustomMessage)
 			.def("AddCustomMessage",		(void(CUIGameCustom::*)(LPCSTR, float, float, float, CGameFont*, u16, u32/*, LPCSTR*/, float))CUIGameCustom::AddCustomMessage)
 			.def("CustomMessageOut",		&CUIGameCustom::CustomMessageOut)
-			.def("RemoveCustomMessage",		&CUIGameCustom::RemoveCustomMessage),
-			def("get_hud",				&get_hud)
+			.def("RemoveCustomMessage",		&CUIGameCustom::RemoveCustomMessage)
+			.def("AddCustomStatic",			&CUIGameCustom::AddCustomStatic)
+			.def("RemoveCustomStatic",		&CUIGameCustom::RemoveCustomStatic)
+			.def("GetCustomStatic",			&CUIGameCustom::GetCustomStatic),
+			def("get_hud",					&get_hud)
 		];
 }
