@@ -10,6 +10,7 @@ active = walker@rad_patroler1
 [walker@rad_patroler1]
 path_walk = walk_0000
 path_look = look_0000
+danger=danger_condition
 
 
 [logic@rad_patroler2]
@@ -18,6 +19,7 @@ active = walker@rad_patroler2
 [walker@rad_patroler2]
 path_walk = walk_0001
 path_look = look_0000
+danger=danger_condition
 
 
 [logic@rad_patroler3]
@@ -26,6 +28,7 @@ active = walker@rad_patroler3
 [walker@rad_patroler3]
 path_walk = walk_0002
 path_look = look_0001
+danger=danger_condition
 
 
 [logic@rad_patroler4]
@@ -34,6 +37,7 @@ active = walker@rad_patroler4
 [walker@rad_patroler4]
 path_walk = walk_0003
 path_look = look_0001
+danger=danger_condition
 
 
 [logic@rad_patroler5]
@@ -42,6 +46,7 @@ active = walker@rad_patroler5
 [walker@rad_patroler5]
 path_walk = walk_0004
 path_look = look_0002
+danger=danger_condition
 
 
 [logic@rad_patroler6]
@@ -50,6 +55,7 @@ active = walker@rad_patroler6
 [walker@rad_patroler6]
 path_walk = walk_0005
 path_look = look_0003
+danger=danger_condition
 
 
 [logic@rad_patroler7]
@@ -58,6 +64,7 @@ active = walker@rad_patroler7
 [walker@rad_patroler7]
 path_walk = walk_0006
 path_look = look_0004
+danger=danger_condition
 
 
 [logic@rad_patroler8]
@@ -66,6 +73,7 @@ active = walker@rad_patroler8
 [walker@rad_patroler8]
 path_walk = walk_0007
 path_look = look_0005
+danger=danger_condition
 
 
 [logic@rad_patroler9]
@@ -74,6 +82,7 @@ active = walker@rad_patroler9
 [walker@rad_patroler9]
 path_walk = walk_0008
 path_look = look_0006
+danger=danger_condition
 
 
 [logic@rad_patroler10]
@@ -82,6 +91,7 @@ active = walker@rad_patroler10
 [walker@rad_patroler10]
 path_walk = walk_0009
 path_look = look_0006
+danger=danger_condition
 
 
 [logic@rad_patroler11]
@@ -90,6 +100,7 @@ active = walker@rad_patroler11
 [walker@rad_patroler11]
 path_walk = walk_0010
 path_look = look_0007
+danger=danger_condition
 
 
 [logic@rad_patroler12]
@@ -98,6 +109,7 @@ active = walker@rad_patroler12
 [walker@rad_patroler12]
 path_walk = walk_0011
 path_look = look_0007
+danger=danger_condition
 
 
 [logic@rad_patroler13]
@@ -106,6 +118,7 @@ active = walker@rad_patroler13
 [walker@rad_patroler13]
 path_walk = walk_0012
 path_look = look_0008
+danger=danger_condition
 
 
 [logic@rad_patroler14]
@@ -114,6 +127,7 @@ active = walker@rad_patroler14
 [walker@rad_patroler14]
 path_walk = walk_0013
 path_look = look_0008
+danger=danger_condition
 
 
 [logic@rad_patroler15]
@@ -122,6 +136,7 @@ active = walker@rad_patroler15
 [walker@rad_patroler15]
 path_walk = walk_0014
 path_look = look_0007
+danger=danger_condition
 
 
 [logic@rad_patroler16]
@@ -130,6 +145,7 @@ active = walker@rad_patroler16
 [walker@rad_patroler16]
 path_walk = walk_0017
 path_look = look_0011
+danger=danger_condition
 
 
 [logic@rad_patroler17]
@@ -138,6 +154,7 @@ active = walker@rad_patroler17
 [walker@rad_patroler17]
 path_walk = walk_0018
 path_look = look_0012
+danger=danger_condition
 
 
 [logic@rad_patroler18]
@@ -146,13 +163,18 @@ active = walker@rad_patroler18
 [walker@rad_patroler18]
 path_walk = walk_0019
 path_look = look_0013
-
+danger=danger_condition
 
 [logic@rad_alarm]
 active = walker@rad_alarm
 
 [walker@rad_alarm]
 path_walk = alarm_walk
+danger=danger_condition
+
+[danger_condition]
+danger_expiration_time = 60000
+danger_inertion_time =  90000
 
 ;-------------------------------------------------------------------------------------------------
 ;-- Мигрирующие кабаны
