@@ -1036,6 +1036,19 @@ function agr_krot_sos_1_2( actor, npc )
 end
 
 
+--------------------------------------------------------- 
+-- PRIPYAT
+--------------------------------------------------------- 
+function pri_zombied_in_combat_inc(actor, npc)
+    gulag_pripyat.zombied_in_combat = gulag_pripyat.zombied_in_combat + 1
+end
+
+function pri_zombied_in_combat_dec(actor, npc)
+    if gulag_pripyat.zombied_in_combat > 0 then
+        gulag_pripyat.zombied_in_combat = gulag_pripyat.zombied_in_combat - 1
+    end
+end
+
 -------------------------------------------------------------------------------------
 -- Функции для работы с вертолётами
 -------------------------------------------------------------------------------------
