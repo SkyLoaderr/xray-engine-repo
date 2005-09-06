@@ -116,6 +116,11 @@ void CUILines::Reset(){
 }
 
 void CUILines::ParseText(){
+	if (m_oldWidth != m_wndSize.x)
+	{
+		uFlags.set(flNeedReparse, TRUE);
+		m_oldWidth = m_wndSize.x;
+	}
 	if (!uFlags.test(flComplexMode) || !uFlags.test(flNeedReparse))
 		return;
 
@@ -194,15 +199,7 @@ void CUILines::Draw(float x, float y){
 	}
 	else
 	{
-		static float my_width = 0;
-
-		if (m_oldWidth != m_wndSize.x)
-		{
-			uFlags.set(flNeedReparse, TRUE);
-			m_oldWidth = m_wndSize.x;
-		}
-
-		if (uFlags.test(flNeedReparse))
+		//if (uFlags.test(flNeedReparse))
 			ParseText();
 
 		Fvector2 pos;

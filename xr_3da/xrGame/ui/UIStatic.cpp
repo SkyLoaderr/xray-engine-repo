@@ -595,8 +595,9 @@ void CUIStatic::OnFocusLost(){
 }
 
 void CUIStatic::AdjustHeightToText(){
-	m_pLines->SetWidth(GetWidth());
-	SetHeight		(m_pLines->GetVisibleHeight());
+	m_pLines->SetWidth		(GetWidth());
+	m_pLines->ParseText();
+	SetHeight				(m_pLines->GetVisibleHeight());
 }
 
 void CUIStatic::RescaleRelative2Rect(const Frect& r){
