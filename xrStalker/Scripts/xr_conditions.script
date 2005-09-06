@@ -499,7 +499,7 @@ function actor_wears_bandit_outfit(actor, npc)
 end
 
 ------------------------------------------------------------------------------------
--- Special functions for Dark Valley
+-- Special functions for Pripyat
 ------------------------------------------------------------------------------------
 function pri_zombied_is_in_combat(actor, npc)
     return gulag_pripyat.zombied_in_combat[npc:name()] ~= nil
