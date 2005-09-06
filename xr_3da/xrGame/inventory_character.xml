@@ -3,7 +3,7 @@
 <window>
 	<!-- NAME -->
 	<name_static x="30" y="35" width="240" height="18">
-		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
+		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23" complex_mode="0"/>
 	</name_static>
 
 	<!-- COMMUNITY -->

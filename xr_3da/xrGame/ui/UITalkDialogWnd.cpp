@@ -48,13 +48,13 @@ void CUITalkDialogWnd::Init(float x, float y, float width, float height)
 
 	//иконки с изображение нас и партнера по торговле
 	AttachChild(&UIOurIcon);
-	xml_init.InitStatic(*m_uiXml, "static_icon", 0, &UIOurIcon);
+	xml_init.InitStatic(*m_uiXml, "left_character_icon", 0, &UIOurIcon);
 	AttachChild(&UIOthersIcon);
-	xml_init.InitStatic(*m_uiXml, "static_icon", 1, &UIOthersIcon);
+	xml_init.InitStatic(*m_uiXml, "right_character_icon", 0, &UIOthersIcon);
 	UIOurIcon.AttachChild(&UICharacterInfoLeft);
-	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), TRADE_CHARACTER_XML);
+	UICharacterInfoLeft.Init(0.0f, 0.0f, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), TRADE_CHARACTER_XML);
 	UIOthersIcon.AttachChild(&UICharacterInfoRight);
-	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), TRADE_CHARACTER_XML);
+	UICharacterInfoRight.Init(0.0f, 0.0f, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), TRADE_CHARACTER_XML);
 
 	//основной фрейм диалога
 	AttachChild(&UIDialogFrame);
