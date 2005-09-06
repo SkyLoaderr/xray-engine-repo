@@ -227,13 +227,14 @@ public:
 	virtual void Execute(LPCSTR args) 
 	{
 		LPCSTR	c_name		= (xr_strlen(args)>0)?args:Console->ConfigFile;
-		SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
-		IWriter* F			= FS.w_open(c_name);
-		if (F){
-			CConsole::vecCMD_IT it;
-			for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
-				it->second->Save(F);
-			FS.w_close			(F);
+		if (SetFileAttributes(c_name,FILE_ATTRIBUTE_NORMAL)){
+			IWriter* F			= FS.w_open(c_name);
+			if (F){
+				CConsole::vecCMD_IT it;
+				for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
+					it->second->Save(F);
+				FS.w_close			(F);
+			}
 		}
 	}
 };
