@@ -221,8 +221,17 @@ bool CControlPathBuilder::valid_and_accessible(Fvector &pos, u32 node)
 	if (!accessible(pos)) {
 		Fvector		res_pos;
 		u32			level_vertex_id = restrictions().accessible_nearest(pos,res_pos);
-		VERIFY		(level_vertex_id == node);
+		
+		if (level_vertex_id != node) {
+			bool inside1 = ai().level_graph().inside(level_vertex_id, pos);
+			bool inside2 = ai().level_graph().inside(level_vertex_id, res_pos);
+			bool inside3 = ai().level_graph().inside(node, res_pos);
 
+			string128 st;
+			sprintf(st,"Validation failed! node_src[%u] node_found[%u] inside1[%u] inside2[%u] inside3[%u]", node, level_vertex_id, inside1,inside2,inside3);
+			VERIFY2(false, st);
+		}
+		
 		pos.set		(res_pos);
 	}
 
