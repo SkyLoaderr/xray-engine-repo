@@ -12,21 +12,18 @@ function eva_state_mgr_direction:evaluate()
 		--printf("changed for position")
 	end
 
-	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
-		return true
-	end
-
 	if self.st.look_object ~= nil and
 	   level.object_by_id(self.st.look_object) ~= nil 
-	   -- and
-	   -- self.object:see(level.object_by_id(self.st.look_object)) == true
 	then
 		self.st.target_position = level.object_by_id(self.st.look_object):position()
-		
-		if	self.st.is_current_object == false then
-			return false
-		end		
 		--printf("changed for object")
+		if self.st.current_object == self.st.look_object then
+			return true
+		end		
+	end
+
+	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
+		return true
 	end
 			
 	if self.st.target_position == nil then
@@ -93,10 +90,10 @@ function act_state_mgr_direction_turn:initialize()
 	if self.st.look_object ~= nil and
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then
-		self.st.is_current_object = true
+		self.st.current_object = self.st.look_object
 		self.object:set_sight(level.object_by_id(self.st.look_object),true)	
 	else
-		self.st.is_current_object = false
+		self.st.current_object = nil
 		self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)		
 	end
 	self.st.current_direction = self.st.target_position	
@@ -106,10 +103,10 @@ function act_state_mgr_direction_turn:execute()
 	if self.st.look_object ~= nil and
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then
-		self.st.is_current_object = true
+		self.st.current_object = self.st.look_object
 		self.object:set_sight(level.object_by_id(self.st.look_object),true)	
 	else
-		self.st.is_current_object = false
+		self.st.current_object = nil
 		self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)		
 	end
 end
@@ -125,7 +122,7 @@ end
 function act_state_mgr_direction_search:initialize()
 	action_base.initialize(self)
 	if self.st.no_rotate ~= true then
-		self.st.is_current_object = false
+		self.st.current_object = nil
 		local type = look.danger
 		if state_lib.states[self.st.target_state].direction then
 			type = state_lib.states[self.st.target_state].direction
@@ -149,10 +146,10 @@ function update_movement_direction(npc, st)
 		if st.look_object ~= nil and
 		   level.object_by_id(st.look_object) ~= nil 
 		then
-			st.is_current_object = true
+			st.current_object = st.look_object
 			npc:set_sight(level.object_by_id(st.look_object),true)	
 		else
-			st.is_current_object = false
+			st.current_object = nil
 			npc:set_sight(look.direction, vector():sub(st.target_position, npc:position()), true)
 		end
 	else
