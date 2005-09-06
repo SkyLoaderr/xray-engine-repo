@@ -17,6 +17,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "CustomZone.h"
 #include "game_base_kill_type.h"
+#include "ui/UISpeechMenu.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
@@ -37,6 +38,7 @@ game_cl_mp::game_cl_mp()
 	LoadSndMessages();
 	m_bJustRestarted = true;
 	m_pSndMessagesInPlay.clear();
+	m_pSpeechMenu = NULL;
 };
 
 game_cl_mp::~game_cl_mp()
@@ -65,22 +67,13 @@ game_cl_mp::~game_cl_mp()
 	
 	m_pSndMessagesInPlay.clear_and_free();
 	m_pSndMessages.clear_and_free();
+
+	xr_delete(m_pSpeechMenu);
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
 {
-	//pChatLog = xr_new<CUIChatLog>();
-	//pChatLog->Init();
-
-	//pGameLog = xr_new<CUIGameLog>();
-	//pGameLog->Init();
-
-
-	//pChatWnd = xr_new<CUIChatWnd>(pChatLog);
-	//pChatWnd->Init();
-	//pChatWnd->SetOwner(this);
-
-	//HUD().GetUI()->UIMainIngameWnd->SetMPChatLog(pChatWnd, pGameLog);
+	m_pSpeechMenu = xr_new<CUISpeechMenu>("test_speech_section");
 	HUD().GetUI()->m_pMessagesWnd->SetChatOwner(this);
 
 	return NULL;
@@ -107,6 +100,11 @@ bool	game_cl_mp::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
 
 bool	game_cl_mp::OnKeyboardPress			(int key)
 {
+	if (kJUMP == key)
+	{
+		StartStopMenu(m_pSpeechMenu, false);
+		return true;
+	}
 	if ( kJUMP == key || kWPN_FIRE == key )
 	{
 		bool b_need_to_send_ready = false;
@@ -858,4 +856,5 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 
 void		game_cl_mp::OnMessageSelected		(u8 MenuID, u8 PhraseID)
 {
+	Msg("Message %d", int(PhraseID));
 };

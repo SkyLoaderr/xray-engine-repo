@@ -11132,6 +11132,16 @@
 						RelativePath=".\ui\UICDkey.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="SpeechMenu"
+					Filter="">
+					<File
+						RelativePath=".\ui\UISpeechMenu.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISpeechMenu.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

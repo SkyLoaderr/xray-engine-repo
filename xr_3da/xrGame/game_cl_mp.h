@@ -5,9 +5,7 @@
 #include "game_cl_mp_snd_messages.h"
 #include "../Sound.h"
 
-class CUIChatWnd;
-class CUIChatLog;
-class CUIGameLog;
+class CUISpeechMenu;
 
 struct SND_Message{
 	ref_sound	pSound;
@@ -57,9 +55,7 @@ protected:
 	DEF_VECTOR(SNDMESSAGESINPLAY, SND_Message*);
 	SNDMESSAGESINPLAY				m_pSndMessagesInPlay;
 
-//	CUIChatWnd*						pChatWnd;
-//	CUIChatLog*						pChatLog;
-//	CUIGameLog*						pGameLog;
+	CUISpeechMenu*					m_pSpeechMenu;
 
 	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
