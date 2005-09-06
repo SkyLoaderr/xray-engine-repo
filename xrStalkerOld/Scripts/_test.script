@@ -1,4 +1,4 @@
-function main()
+function main000()
 	db.actor:give_talk_message("general_new_task", "ui\\ui_icons_task", 150,100,50,50)
 end
 
@@ -48,35 +48,25 @@ for i in default_items do
 			" silencer=",default_items[i].Silencer )
 end
 
-function main_captions()
+function main()
 	local ui = get_hud()
-	local msg_id = "script_some_message"
--- 1st define message params(position,size, font etc)	
-	ui:AddCustomMessage(msg_id,200,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0))
-	ui:AddCustomMessage("fff",300,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0))
-	local total = 10
-while total>0 do	
-	local str = string.format("time remains %02d sec",total)
-	ui:CustomMessageOut(msg_id, str, GetARGB(255,255,0,0))
-	ui:CustomMessageOut("fff", "asdasdasdasdas", GetARGB(255,255,0,0))
-	--wait 1sec
-	wait(1000)
-	total = total-1
-end	
+	local msg_id = "hud_timer"
+--	ui:AddCustomMessage(msg_id,200,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0))
+	ui:AddCustomStatic(msg_id)
+	local total = 5
 
-	ui:RemoveCustomMessage(msg_id)
+	while total>0 do	
+		local str = string.format("time remains %02d sec",total)
+--		ui:CustomMessageOut(msg_id, str, GetARGB(255,255,0,0))
+		local s = ui:GetCustomStatic(msg_id)
+		s:SetText(str)
+		--wait 1sec
+		wait(1000)
+		total = total-1
+	end	
 
-	ui:AddCustomMessage(msg_id,200,300,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,128,0,0))
-	total = 15
-while total>0 do	
-	local str_ = string.format("time remains %03d sec",total)
-	ui:CustomMessageOut(msg_id, str_, GetARGB(255,128,0,0))
-	
-	wait(300)
-	total = total-1
-end	
-	ui:RemoveCustomMessage(msg_id)
-	
+--	ui:RemoveCustomMessage(msg_id)
+	ui:RemoveCustomStatic(msg_id)
 	
 end
 
