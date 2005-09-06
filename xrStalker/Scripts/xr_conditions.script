@@ -498,6 +498,13 @@ function actor_wears_bandit_outfit(actor, npc)
 	return xr_conditions_impl.actor_has_object(actor, "bandit_outfit")
 end
 
+------------------------------------------------------------------------------------
+-- Special functions for Dark Valley
+------------------------------------------------------------------------------------
+function pri_zombied_is_in_combat(actor, npc)
+    return gulag_pripyat.zombied_in_combat[npc:name()] ~= nil
+end
+
 
 ------------------------------------------------------------------------------------
 -- Special functions for Escape

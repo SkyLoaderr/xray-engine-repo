@@ -1040,13 +1040,11 @@ end
 -- PRIPYAT
 --------------------------------------------------------- 
 function pri_zombied_in_combat_inc(actor, npc)
-    gulag_pripyat.zombied_in_combat = gulag_pripyat.zombied_in_combat + 1
+    gulag_pripyat.zombied_in_combat[npc:name()] = true
 end
 
 function pri_zombied_in_combat_dec(actor, npc)
-    if gulag_pripyat.zombied_in_combat > 0 then
-        gulag_pripyat.zombied_in_combat = gulag_pripyat.zombied_in_combat - 1
-    end
+    gulag_pripyat.zombied_in_combat[npc:name()] = nil
 end
 
 -------------------------------------------------------------------------------------
