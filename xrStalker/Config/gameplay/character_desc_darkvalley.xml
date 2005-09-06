@@ -1064,7 +1064,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\hero\stalker_monolith</visual>
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<supplies>
 			[spawn] \n
 		</supplies>
