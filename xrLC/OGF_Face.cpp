@@ -373,12 +373,16 @@ void OGF::MakeProgressive	(float metric_limit)
 	// for nv40 and up the better guess will probably be around 500
 	if (faces.size()<c_PM_FaceLimit)		return		;	
 
+//. AlexMX added for draft build mode
+	if (g_params.m_quality==ebqDraft)		return		;
+
 	progressive_cs.Enter	();
 
 	//////////////////////////////////////////////////////////////////////////
 	// NORMAL
 	vecOGF_V	_saved_vertices		=	vertices	;
 	vecOGF_F	_saved_faces		=	faces		;
+
 	{
 		// prepare progressive geom
 		VIPM_Init				();

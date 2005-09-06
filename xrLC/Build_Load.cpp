@@ -345,7 +345,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 	// Parameter block
 	CopyMemory(&g_params,&Params,sizeof(b_params));
-	g_params.m_bConvertProgressive	= FALSE;
 
 	// 
 	clMsg	("* sizes: V(%d),F(%d)",sizeof(Vertex),sizeof(Face));
