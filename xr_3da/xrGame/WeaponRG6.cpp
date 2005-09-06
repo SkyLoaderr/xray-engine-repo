@@ -8,6 +8,33 @@ CWeaponRG6::~CWeaponRG6()
 {
 }
 
+BOOL	CWeaponRG6::net_Spawn				(CSE_Abstract* DC)
+{
+	BOOL l_res = inheritedSG::net_Spawn(DC);
+	if (!l_res) return l_res;
+
+	if (iAmmoElapsed && !getCurrentRocket())
+	{
+		shared_str grenade_name = m_ammoTypes[0];
+		shared_str fake_grenade_name = pSettings->r_string(grenade_name, "fake_grenade_name");
+
+		if (fake_grenade_name.size())
+		{
+			int k=iAmmoElapsed;
+			while (k)
+			{
+				k--;
+				inheritedRL::SpawnRocket(*fake_grenade_name, this);
+			}
+		}
+//			inheritedRL::SpawnRocket(*fake_grenade_name, this);
+	}
+	
+
+	
+	return l_res;
+};
+
 void CWeaponRG6::Load(LPCSTR section)
 {
 	inheritedRL::Load(section);

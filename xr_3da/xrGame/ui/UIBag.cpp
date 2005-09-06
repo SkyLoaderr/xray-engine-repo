@@ -596,7 +596,7 @@ void CUIBag::InitWpnSectStorage()
 	WPN_SECT_NAMES		wpnOneType;
 	string16			wpnSection;
 	shared_str			iconName;
-	string256			wpnNames, wpnSingleName;
+	string1024			wpnNames, wpnSingleName;
 	// Номер секции с арморами
 	const int			armorSectionIndex = 5;
 

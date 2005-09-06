@@ -992,7 +992,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 			continue;
 		}
 
-		string256			wpnNames, wpnSingleName;
+		string1024			wpnNames, wpnSingleName;
 		// Читаем данные этого поля
 		std::strcpy(wpnNames, pSettings->r_string(caSection, wpnSection));
 		u32 count	= _GetItemCount(wpnNames);
