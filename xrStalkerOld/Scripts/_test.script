@@ -59,7 +59,10 @@ function main()
 		local str = string.format("time remains %02d sec",total)
 --		ui:CustomMessageOut(msg_id, str, GetARGB(255,255,0,0))
 		local s = ui:GetCustomStatic(msg_id)
-		s:SetText(str)
+		s:SetTextST("pda_btn_encyclopedia")
+		--or
+--		s:SetText(str)
+		
 		--wait 1sec
 		wait(1000)
 		total = total-1
