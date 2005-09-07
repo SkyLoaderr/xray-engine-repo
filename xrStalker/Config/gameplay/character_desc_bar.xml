@@ -29,7 +29,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_white_novice_1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -51,7 +51,7 @@
 	</specific_character>
 	
 	<specific_character id="bar_stalker_white_novice_2" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -73,7 +73,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_brown_novice_1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -95,7 +95,7 @@
 	</specific_character>
 	
 	<specific_character id="bar_stalker_brown_novice_2" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -117,7 +117,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_general_1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -139,7 +139,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_general_2" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -161,7 +161,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_dolg_1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -183,7 +183,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_bandit_1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -205,7 +205,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_killer_1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
@@ -708,7 +708,7 @@
 	</specific_character>
 
 	<specific_character id="bar_crazy_veterans_1" team_default = "1">
-		<name>Сталкер ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Неизвестный мародер.</bio>
@@ -730,7 +730,7 @@
 	</specific_character>
 	
 	<specific_character id="bar_crazy_veterans_2" team_default = "1">
-		<name>Сталкер ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Неизвестный мародер.</bio>
@@ -779,7 +779,7 @@
 
 <!---------------------------DOLG REGULAR----------------------->
 	<specific_character id="bar_dolg_regular_default1" team_default = "1">
-		<name>Cталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -811,7 +811,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_regular_default2" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -841,7 +841,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_regular_default3" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -874,7 +874,7 @@
 
 <!---------------------------DOLG SNIPER---------------------->
 	<specific_character id="bar_dolg_sniper_default1" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -902,7 +902,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_sniper_default2" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -930,7 +930,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_sniper_default3" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -959,7 +959,7 @@
 
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="bar_dolg_veteran_default1" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -986,7 +986,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_veteran_default2" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1015,7 +1015,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_veteran_default3" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1044,7 +1044,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_veteran_default4" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1072,7 +1072,7 @@
 	
 <!---------------------------DOLG MASTER----------------------->
 	<specific_character id="bar_dolg_master_default1" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
@@ -1099,7 +1099,7 @@
 	</specific_character>
 
 	<specific_character id="bar_dolg_master_default2" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
@@ -1129,7 +1129,7 @@
 
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="bar_stalker_novice_default1" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1154,7 +1154,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default2" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1179,7 +1179,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default3" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1206,7 +1206,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default4" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1231,7 +1231,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default5" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1256,7 +1256,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default6" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1283,7 +1283,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default9" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1308,7 +1308,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default10" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -1496,7 +1496,7 @@
 	
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="bar_stalker_veteran_default1" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1527,7 +1527,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_veteran_default2" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1558,7 +1558,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_veteran_default3" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1589,7 +1589,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_veteran_default4" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1620,7 +1620,7 @@
 	</specific_character>
 
 	<specific_character id="bar_stalker_veteran_default5" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1653,7 +1653,7 @@
 
 <!---------------------------ECOLOG GUARD------------------------>
 	<specific_character id="bar_ecolog_guard_default1" team_default = "1">
-		<name>Неизвестный ученый</name>
+		<name>GENERATE_NAME</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
@@ -1680,7 +1680,7 @@
 	</specific_character>
 
 	<specific_character id="bar_ecolog_guard_default2" team_default = "1">
-		<name>Неизвестный ученый</name>
+		<name>GENERATE_NAME</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="1" y="6"></map_icon>
 		<bio>Научный работник. Детальная информация отсутствует.</bio>
@@ -1708,7 +1708,7 @@
 
 <!---------------------------KILLER REGULAR----------------------->
 	<specific_character id="bar_killer_regular_default1" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="18" y="4"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
@@ -1735,7 +1735,7 @@
 	</specific_character>
 
 	<specific_character id="bar_killer_regular_default2" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="18" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
@@ -1762,7 +1762,7 @@
 	</specific_character>
 
 	<specific_character id="bar_killer_regular_default3" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="18" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
@@ -1790,7 +1790,7 @@
 		
 <!---------------------------KILLER SNIPER---------------------->
 	<specific_character id="bar_killer_sniper_default1" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
@@ -1818,7 +1818,7 @@
 	
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="bar_killer_specnaz_default1" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1844,7 +1844,7 @@
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default2" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1870,7 +1870,7 @@
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default3" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1897,7 +1897,7 @@
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default4" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
