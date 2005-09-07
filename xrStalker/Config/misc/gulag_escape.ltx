@@ -817,11 +817,13 @@ combat_ignore_cond = {-esc_open_killer_fire}
 def_state_moving = patrol
 on_signal = fire| remark@esc_killer_leader_raid
 
-[remark@esc_killer_leader_raid]
+[remark@esc_killer_leader_raid2]
 snd = gar_bandits_seryi
 anim = guard
-on_signal = sound_end| nil %+esc_open_killer_fire%
+on_signal = sound_end| remark@esc_killer_leader_raid2 %+esc_open_killer_fire%
 
+[remark@esc_killer_leader_raid2]
+anim = threat
 
 
 [logic@esc_killer1_raid]
