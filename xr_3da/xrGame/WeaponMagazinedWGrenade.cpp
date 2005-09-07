@@ -260,7 +260,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		else 
 			return;
 		
-		while (fTime<=0 && (IsWorking() || m_bFireSingleShot))
+		while (fTime<=0 && (iAmmoElapsed>0) && (IsWorking() || m_bFireSingleShot))
 		{
 
 			fTime			+=	fTimeToFire;
@@ -271,8 +271,12 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			// Ammo
 			if(Local()) 
 			{
+				VERIFY(m_magazine.size());
 				m_magazine.pop	();
 				--iAmmoElapsed;
+			
+				VERIFY((u32)iAmmoElapsed == m_magazine.size());
+
 				if(!iAmmoElapsed) 
 					OnMagazineEmpty();
 			}
