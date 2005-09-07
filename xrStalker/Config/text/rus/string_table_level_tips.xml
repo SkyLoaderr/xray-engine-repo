@@ -58,7 +58,7 @@
         <text>Получено новое задание.</text>
     </string>
     <string id="general_complete_task">
-        <text>Задание выплонено.</text>
+        <text>Задание выполнено.</text>
     </string>
     <string id="general_fail_task">
         <text>Задание провалено.</text>
