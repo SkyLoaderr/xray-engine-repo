@@ -41,10 +41,18 @@ enum fsSLS_Chunks		{
 	fsSLS_forcedword = u32(-1)
 };
 
+enum EBuildQuality{
+	ebqDraft			= 0,			
+	ebqHigh,
+	ebqCustom,
+	ebq_force_u16		= u16(-1)
+};
+
 #pragma pack(push,8)
 struct hdrLEVEL
 {
-	u32		XRLC_version;
+	u16		XRLC_version;
+	u16		XRLC_quality;
 };
 
 struct hdrCFORM
