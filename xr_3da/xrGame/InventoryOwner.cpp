@@ -121,6 +121,8 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 			dialog_manager->SetStartDialog(CharacterInfo().StartDialog());
 			dialog_manager->SetDefaultStartDialog(CharacterInfo().StartDialog());
 		}
+	
+		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = pTrader->m_character_name;
 	}
 	else
 	{
@@ -131,10 +133,9 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();
 
-//		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconX = pEntity->GetMapIconX();
-//		CharacterInfo().m_SpecificCharacter.data()->m_iMapIconY = pEntity->GetMapIconY();
 	}
 	
+
 	if(!pThis->Local())  return TRUE;
 
 

@@ -211,11 +211,12 @@ const DIALOG_ID_VECTOR&	CCharacterInfo::ActorDialogs	()	const
 
 void CCharacterInfo::load	(IReader& stream)
 {
-	stream.r_stringZ(m_StartDialog);
+	stream.r_stringZ	(m_StartDialog);
 }
+
 void CCharacterInfo::save	(NET_Packet& stream)
 {
-	stream.w_stringZ(m_StartDialog);
+	stream.w_stringZ	(m_StartDialog);
 }
 
 #endif

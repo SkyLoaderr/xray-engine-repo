@@ -173,6 +173,7 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_s32			(NO_RANK);
 	tNetPacket.w_s32			(NO_REPUTATION);
 #endif
+	save_data					(m_character_name, tNetPacket);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -223,6 +224,10 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if (m_wVersion > 86) {
 			tNetPacket.r_s32	(m_rank);
 			tNetPacket.r_s32	(m_reputation);
+		}
+
+		if (m_wVersion > 104) {
+			load_data					(m_character_name, tNetPacket);
 		}
 	}
 }
@@ -323,7 +328,7 @@ SPECIFIC_CHARACTER_ID CSE_ALifeTraderAbstract::specific_character()
 		return m_SpecificCharacter;
 	}
 }
-
+#include "string_table.h"
 void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_spec_char)
 {
 	R_ASSERT(new_spec_char.size());
@@ -373,6 +378,26 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 	if(NO_REPUTATION == m_reputation)
 		m_reputation = selected_char.Reputation();
 
+	m_character_name = selected_char.Name();
+	
+	if(1|| !stricmp(m_character_name.c_str(),"GENERATE_NAME") ){
+		//select name and lastname
+		static u32 name_cnt			= pSettings->r_u32("stalker_names","name_cnt");
+		static u32 last_name_cnt	= pSettings->r_u32("stalker_names","last_name_cnt");
+		
+		string512			S;
+		xr_string n			= "lname_";
+		n					+= itoa(::Random.randI(last_name_cnt),S,10);
+		m_character_name	= *(CStringTable()(n.c_str()));
+		m_character_name	+= " ";
+
+		n					= "name_";
+		n					+= itoa(::Random.randI(name_cnt),S,10);
+		m_character_name	+= *(CStringTable()(n.c_str()));
+
+
+	
+	}
 #else
 	//в редакторе специфический профиль оставляем не заполненым
 	m_SpecificCharacter = NULL;

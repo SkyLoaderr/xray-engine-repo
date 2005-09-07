@@ -121,6 +121,8 @@
 // 102 = CSE_ALifeAnomalousZone			appended m_owner_id
 // 103 = CSE_ALifeCustomZone			appended m_owner_id,removed from CSE_ALifeAnomalousZone
 // 104 = CSE_Visual						appended flags
+// 105 = CSE_ALifeTraderAbstract		added full name
+
 //------------------------------------------------------------------------------
 #define SPAWN_VERSION	u16(104)
 

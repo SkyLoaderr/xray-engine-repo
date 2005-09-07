@@ -40,6 +40,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	CHARACTER_COMMUNITY_INDEX		m_community_index;
 	CHARACTER_REPUTATION_VALUE		m_reputation;
 	CHARACTER_RANK_VALUE			m_rank;
+	xr_string						m_character_name;
 		
 #ifdef XRGAME_EXPORTS
 	//для работы с relation system
