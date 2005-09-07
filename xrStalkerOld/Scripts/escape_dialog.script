@@ -75,9 +75,9 @@ end
 function actor_has_something(first_speaker, second_speaker)
 	local actor = db.actor
 	if actor ~= nil and
-	   (actor:object("af_blood") ~= nil) or
-	   (actor:object("af_medusa") ~= nil) or
-	   (actor:object("af_vyvert") ~= nil)
+	   (actor:object("af_blood") ~= nil) and (actor:has_info("esc_artefact2_need") and actor:dont_has_info("esc_artefact2_have")) or
+	   (actor:object("af_medusa") ~= nil) and (actor:has_info("esc_artefact3_need") and actor:dont_has_info("esc_artefact3_have")) or
+	   (actor:object("af_vyvert") ~= nil) and (actor:has_info("esc_artefact1_need") and actor:dont_has_info("esc_artefact1_have"))
 	then
 		return true
 	else
