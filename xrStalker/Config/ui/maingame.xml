@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8" ?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
-	<speech_menu x="300" y="400" width="300" height="400">
+	<speech_menu x="300" y="400" width="300" height="400" item_height="15">
 	</speech_menu>
 	<!-- health -->
 	<static x="860" y="635" width="150" height="200" align="rb">
