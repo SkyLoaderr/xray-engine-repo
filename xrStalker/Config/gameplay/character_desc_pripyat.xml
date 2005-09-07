@@ -4,7 +4,7 @@
 <!------------------------- MONOLITH ----------------------->
 <!-------------------------- REGULAR ----------------------->
   <specific_character id="pri_monolith_regular_default1" team_default = "3">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -31,7 +31,7 @@
   </specific_character>
 
   <specific_character id="pri_monolith_regular_default2" team_default = "1">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -60,7 +60,7 @@
 <!-------------------------- STALKER ----------------------->
 <!-------------------------- VETERAN ----------------------->
 	<specific_character id="pri_stalker_veteran_default1" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -91,7 +91,7 @@
 	</specific_character>
 
 	<specific_character id="pri_stalker_veteran_default2" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -122,7 +122,7 @@
 	</specific_character>
 
 	<specific_character id="pri_stalker_veteran_default3" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -153,7 +153,7 @@
 	</specific_character>
 
 	<specific_character id="pri_stalker_veteran_default4" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -184,7 +184,7 @@
 	</specific_character>
 
 	<specific_character id="pri_stalker_veteran_default5" team_default = "1">
-		<name>Неизвестный ветеран</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
