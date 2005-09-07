@@ -57,8 +57,7 @@ function action_zombie_shoot:execute()
 	self.object:set_path_type           ( game_object.level_path )
 
 	if self.object:position():distance_to_sqr( be:position() ) > 9 then
-		self.object:set_dest_level_vertex_id( be:level_vertex_id() )
-		self.object:set_desired_position    ( be:position() )
+		utils.send_to_nearest_accessible_vertex( self.object, be:level_vertex_id() )
 
 		if self:can_shoot( be ) then
 			self:set_state( "patrol_fire", be )
@@ -66,9 +65,6 @@ function action_zombie_shoot:execute()
 			self:set_state( "patrol",      be )
 		end
     else
---		self.object:set_dest_level_vertex_id( self.object:level_vertex_id() )
---		self.object:set_desired_position    ( self.object:position() )
-
 		if self:can_shoot( be ) then
 			self:set_state( "guard_fire",  be )
 		else
