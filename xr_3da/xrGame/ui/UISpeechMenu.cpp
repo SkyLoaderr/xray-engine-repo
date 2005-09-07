@@ -51,6 +51,7 @@ bool CUISpeechMenu::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
 
+	Game().StartStopMenu(this,true);
 	game->OnMessageSelected(this, static_cast<u8>(dik - DIK_1));
 
 
