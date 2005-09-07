@@ -3,7 +3,7 @@
 <xml>
 <!---------------------------MONOLIT REGULAR with RPG----------------------->
 	<specific_character id="aes_Monolit_rpg" team_default = "1">
-		<name>Сталкер группировки "Монолит"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -32,7 +32,7 @@
 
 <!---------------------------MONOLIT SPECNAZ---------------------->
   <specific_character id="aes_Monolit_specnaz" team_default = "1">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -59,7 +59,7 @@
 
 <!---------------------------MONOLIT SPECNAZ RG6---------------------->
   <specific_character id="aes_Monolit_specnaz_rg6" team_default = "1">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -84,7 +84,7 @@
   
 <!---------------------------MONOLIT SNIPER---------------------->
   <specific_character id="aes_Monolit_sniper" team_default = "1">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -110,7 +110,7 @@
   </specific_character>
 <!---------------------------MONOLIT SNIPER GAUSS---------------------->
   <specific_character id="aes_Monolit_sniper_gauss" team_default = "1">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -136,7 +136,7 @@
   </specific_character>
 <!---------------------------MONOLIT MASTER----------------------->
   <specific_character id="aes_Monolit_master" team_default = "1">
-    <name>Сталкер группировки "Монолит"</name>
+    <name>GENERATE_NAME</name>
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Хранитель группировки "Монолит". Лучше держаться от него подальше. Детальная информация отсутствует.</bio>
@@ -165,7 +165,7 @@
 <!---------------------------SOLDIERS PROFILES----------------------->
 <!---------------------------SOLDIER COMMANDER----------------------->
 	<specific_character id="aes_Soldier_commander" team_default = "1">
-		<name>Командир</name>
+		<name>GENERATE_NAME</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -193,7 +193,7 @@
 	</specific_character>
 <!---------------------------SOLDIER MASTER----------------------->
 	<specific_character id="aes_Soldier_military" team_default = "1">
-		<name>Неизвестный солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio> Военный сталкер. Хорошо вооружен и очень опасен.
@@ -224,7 +224,7 @@
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ---------------------->
 	<specific_character id="aes_Soldier_specnaz" team_default = "1">
-		<name>Неизвестный военный</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -254,7 +254,7 @@
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ AES---------------------->
 	<specific_character id="aes_Soldier_specnaz_aes" team_default = "1">
-		<name>Неизвестный военный</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -281,7 +281,7 @@
 	</specific_character>
 <!---------------------------SOLDIER SNIPER---------------------->
 	<specific_character id="aes_Soldier_sniper" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
