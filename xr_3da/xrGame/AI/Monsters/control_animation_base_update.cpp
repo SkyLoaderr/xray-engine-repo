@@ -134,23 +134,13 @@ void CControlAnimationBase::SelectVelocities()
 			m_object->move().stop_accel();
 		}
 	}
-
+	
 	// финальная корректировка скорости анимации по физической скорости
 	if (b_moving) {
-		//Fvector temp_vec;
-		//m_object->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
-		//float  real_speed = temp_vec.magnitude();
-		
-		float  real_speed = m_object->m_PhysicMovementControl->GetVelocityActual();
-
-		if (!m_object->state_invisible) {
-			//Msg("Real Speed = [%f]",real_speed);
-		}
-
 		EMotionAnim new_anim;
 		float		a_speed;
 
-		if (accel_chain_get(real_speed, cur_anim_info().motion, new_anim, a_speed)) {
+		if (accel_chain_get(m_man->path_builder().speed(m_object->m_PhysicMovementControl), cur_anim_info().motion, new_anim, a_speed)) {
 			cur_anim_info().motion			= new_anim;
 			cur_anim_info().speed.target	= a_speed;
 		} else 
