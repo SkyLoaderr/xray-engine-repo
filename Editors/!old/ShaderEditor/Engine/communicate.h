@@ -1,6 +1,8 @@
 #ifndef _XR_COMM_
 #define _XR_COMM_
 
+#include "xrLevel.h"
+
 #pragma pack(push,4)
 
 const u32 XR_MAX_PORTAL_VERTS	= 6;
