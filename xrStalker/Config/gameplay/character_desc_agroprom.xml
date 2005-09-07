@@ -34,7 +34,7 @@
 	</specific_character>
 
 	<specific_character id="agr_ratcatcher" team_default = "1">
-		<name>Неизвестный солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="60" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Бывшый солдат. Сейчас дезертировал.</bio>
@@ -61,7 +61,7 @@
 	<!---------------------------STALKER GENERAL---------------------->
 
 	<specific_character id="agr_stalker_general_default1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -94,7 +94,7 @@
 	</specific_character>
 
 <specific_character id="agr_stalker_general_default2" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -126,7 +126,7 @@
 </specific_character>
 
 <specific_character id="agr_stalker_general_default3" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -158,7 +158,7 @@
 </specific_character>
 
 	<specific_character id="agr_stalker_general_default4" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -190,7 +190,7 @@
 	</specific_character>
 	
 	<specific_character id="agr_stalker_general_default5" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -225,7 +225,7 @@
 
 <!---------------------------SOLDIER PRIVATE----------------------->
 	<specific_character id="agr_soldier_regular_default1" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -255,7 +255,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default2" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -285,7 +285,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default3" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -315,7 +315,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default4" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
@@ -345,7 +345,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default5" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -377,7 +377,7 @@
 	<!---------------------------SOLDIER SPECNAZ---------------------->
 
 	<specific_character id="agr_soldier_specnaz_default1" team_default = "1">
-		<name>Неизвестный военный</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -407,7 +407,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_specnaz_default2" team_default = "1">
-		<name>Неизвестный военный</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -436,8 +436,8 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
-		<specific_character id="agr_soldier_specnaz_default3" team_default = "1">
-		<name>Неизвестный военный</name>
+	<specific_character id="agr_soldier_specnaz_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -469,7 +469,7 @@
 	<!---------------------------SOLDIER COMMANDER----------------------->
 	
 	<specific_character id="agr_soldier_commander1" team_default = "1">
-		<name>Командир</name>
+		<name>GENERATE_NAME</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -497,7 +497,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_commander2" team_default = "1">
-		<name>Командир</name>
+		<name>GENERATE_NAME</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -525,7 +525,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_commander3" team_default = "1">
-		<name>Командир</name>
+		<name>GENERATE_NAME</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -554,7 +554,7 @@
 
 <!---------------------------SOLDIER SNIPER---------------------->
 	<specific_character id="agr_soldier_sniper_default1" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -583,7 +583,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_sniper_default2" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -612,7 +612,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_sniper_default3" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -643,7 +643,7 @@
 	<!---------------------------BANDIT general----------------------->
 	
 	<specific_character id="agr_bandit_general_default1" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -671,7 +671,7 @@
 	</specific_character>
 
 	<specific_character id="agr_bandit_general_default2" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -699,7 +699,7 @@
 	</specific_character>
 
 	<specific_character id="agr_bandit_general_default3" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
