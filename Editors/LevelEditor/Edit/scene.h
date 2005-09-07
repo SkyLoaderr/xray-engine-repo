@@ -47,7 +47,6 @@ struct st_LevelOptions{
 
     void			SetCustomQuality();
     void			SetDraftQuality	();
-    void			SetLowQuality	();
     void			SetHighQuality	();
     
 	void 			Save			(IWriter&);

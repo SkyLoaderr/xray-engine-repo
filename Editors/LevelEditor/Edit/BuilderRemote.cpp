@@ -295,7 +295,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         CSurface* surf 		= sp_it->first;
-        int m_id			= BuildMaterial(surf,sect_num);
+        int m_id			= BuildMaterial(surf,sect_num,!object->IsMUStatic());
 		int gm_id			= surf->_GameMtl(); 
         if (m_id<0)			{ 
         	bResult = FALSE; 
@@ -822,18 +822,18 @@ int SceneBuilder::FindInMaterials(b_material* m)
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num)
+int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num, bool allow_draft)
 {
-	return BuildMaterial(surf->_ShaderName(),surf->_ShaderXRLCName(),surf->_Texture(),((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT),sector_num);
+	return BuildMaterial(surf->_ShaderName(),surf->_ShaderXRLCName(),surf->_Texture(),((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT),sector_num,allow_draft);
 }
-int SceneBuilder::BuildMaterial(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name, u32 tx_cnt, int sector_num)
+int SceneBuilder::BuildMaterial(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name, u32 tx_cnt, int sector_num, bool allow_draft)
 {
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
 	VERIFY			(tx_cnt==1);
     
-    if ((Scene->m_LevelOp.m_BuildParams.m_quality==ebqDraft)){
+    if (allow_draft&&(Scene->m_LevelOp.m_BuildParams.m_quality==ebqDraft)){
         Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(csh_name);
         if (c_sh->flags.bRendering){
             mtl.shader      = (u16)BuildShader		("def_shaders\\def_vertex");

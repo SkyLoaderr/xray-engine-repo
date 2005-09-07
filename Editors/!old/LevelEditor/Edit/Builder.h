@@ -104,8 +104,8 @@ public:
     int     BuildTexture    (LPCSTR name);
 
     int     FindInMaterials (b_material* m);
-	int 	BuildMaterial	(CSurface* surf, int sector_num);
-	int 	BuildMaterial	(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name, u32 tx_cnt, int sector_num);
+	int 	BuildMaterial	(CSurface* surf, int sector_num, bool allow_draft);
+	int 	BuildMaterial	(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name, u32 tx_cnt, int sector_num, bool allow_draft);
 
     BOOL	ParseStaticObjects	(ObjectList& lst, LPCSTR prefix=0);
 

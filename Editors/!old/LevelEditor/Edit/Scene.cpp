@@ -49,13 +49,6 @@ void st_LevelOptions::SetDraftQuality()
     m_LightSunQuality	= 0;
 }
 
-void st_LevelOptions::SetLowQuality()
-{
-    m_BuildParams.setLowQuality();
-    m_LightHemiQuality	= 1;
-    m_LightSunQuality	= 1;
-}
-
 void st_LevelOptions::SetHighQuality()
 {
     m_BuildParams.setHighQuality();
@@ -456,9 +449,8 @@ void EScene::OnBuildControlClick	(PropValue* sender, bool& bModif, bool& bSafe)
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_LevelOp.SetDraftQuality();	break;
-    case 1: m_LevelOp.SetLowQuality();		break;
-    case 2: m_LevelOp.SetHighQuality();		break;
-    case 3: m_LevelOp.SetCustomQuality();	break;
+    case 1: m_LevelOp.SetHighQuality();		break;
+    case 2: m_LevelOp.SetCustomQuality();	break;
 	}
     ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
@@ -483,7 +475,7 @@ void EScene::FillProp(LPCSTR pref, PropItemVec& items, ObjClassID cls_id)
         PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Custom data"),	&m_LevelOp.m_BOPText);
         // common
         ButtonValue* B;
-        B=PHelper().CreateButton	(items,PrepareKey(pref,"Scene\\Build options\\Quality"), "Draft,Low,High,Custom",0);
+        B=PHelper().CreateButton	(items,PrepareKey(pref,"Scene\\Build options\\Quality"), "Draft,High,Custom",0);
         B->OnBtnClickEvent.bind		(this,&EScene::OnBuildControlClick);
 
         BOOL enabled				= (m_LevelOp.m_BuildParams.m_quality==ebqCustom);

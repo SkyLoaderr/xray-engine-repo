@@ -757,7 +757,7 @@ bool ESceneWallmarkTools::ExportStatic(SceneBuilder* B)
         for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
             wallmark* W		= *w_it;
 		    int sect_num	= B->CalculateSector(W->bounds.P,W->bounds.R);
-	        int m_id		= B->BuildMaterial	(*slot->sh_name,COMPILER_SHADER,*slot->tx_name,1,sect_num);
+	        int m_id		= B->BuildMaterial	(*slot->sh_name,COMPILER_SHADER,*slot->tx_name,1,sect_num,false);
             u32 f_cnt 		= W->verts.size()/3;
             for (u32 f_it=0; f_it<f_cnt; f_it++,B->l_face_it++){
                 R_ASSERT(B->l_face_it<B->l_face_cnt);
