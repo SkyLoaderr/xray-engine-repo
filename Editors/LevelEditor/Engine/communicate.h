@@ -131,7 +131,6 @@ struct b_mu_reference
 
 enum EBuildQuality{
 	ebqDraft			= 0,			
-	ebqLow,			
 	ebqHigh,
 	ebqCustom,
     ebq_force_u32		= u32(-1)
@@ -162,8 +161,6 @@ struct b_params
         m_weld_distance         = 0.005f;
 
         // Light maps
-        m_lm_pixels_per_meter   = 14;
-		m_lm_jitter_samples		= 4;
 		m_lm_rms_zero			= 4;
 		m_lm_rms				= 4;
 
@@ -175,16 +172,10 @@ struct b_params
 		m_lm_pixels_per_meter	= 0.1;
 		m_lm_jitter_samples		= 1;
 	}
-	void		setLowQuality()
-	{
-    	m_quality				= ebqLow;
-		m_lm_pixels_per_meter	= 4;
-		m_lm_jitter_samples		= 4;
-	}
 	void		setHighQuality()
 	{
     	m_quality				= ebqHigh;
-		m_lm_pixels_per_meter	= 14;
+		m_lm_pixels_per_meter	= 10;
 		m_lm_jitter_samples		= 9;
 	}
 };
