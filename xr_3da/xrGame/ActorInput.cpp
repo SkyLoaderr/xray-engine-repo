@@ -19,13 +19,14 @@
 #include "UsableScriptObject.h"
 #include "clsid_game.h"
 #include "actorcondition.h"
+#include "actor_input_handler.h"
 
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
 	if (conditions().IsSleeping())	return;
 	if (IsTalking())	return;
-	if (IsControlled())	return;
+	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;
 	
 	switch (cmd)
 	{
@@ -188,7 +189,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 {
 	if (Remote())		return;
 	if (conditions().IsSleeping())	return;
-	if (IsControlled())	return;
+	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;
 
 	if (g_Alive())	
 	{
@@ -252,7 +253,7 @@ void CActor::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote() || !g_Alive())		return;
 	if (conditions().IsSleeping())				return;
-	if (IsControlled())				return;
+	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;
 	if (IsTalking())				return;
 
 	if(m_holder)
@@ -486,15 +487,29 @@ void	CActor::OnPrevWeaponSlot()
 
 float	CActor::GetLookFactor()
 {
-	if (!IsControlled()) m_controlled_mouse_scale_factor = 1.0f;
+	if (m_input_external_handler) 
+		return m_input_external_handler->mouse_scale_factor();
+
+	
+	float factor = 1.f;
 	//  [7/19/2005]
 	PIItem pItem = (inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 		inventory().ItemFromSlot(inventory().GetActiveSlot()) : NULL);
 	if (pItem)
 	{
-		m_controlled_mouse_scale_factor *= pItem->GetControlInertionFactor();
+		factor *= pItem->GetControlInertionFactor();
 	}
 	//  [7/19/2005]
-	VERIFY(!fis_zero(m_controlled_mouse_scale_factor));
-	return m_controlled_mouse_scale_factor;
+	VERIFY(!fis_zero(factor));
+	return factor;
 }
+
+void CActor::set_input_external_handler(CActorInputHandler *handler) 
+{
+	m_input_external_handler = handler;
+	if (handler) 
+		mstate_wishful = 0;
+}
+
+
+

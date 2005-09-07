@@ -188,9 +188,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_bHeavyBreathSndPlaying = false;
 
-	m_controlled_mouse_scale_factor	 = 10.f;
 	m_fSprintFactor					 = 4.f;
-	SetControlled					(false);
 	//-----------------------------------------------------------------------------------
 	hFriendlyIndicator.create				(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 
@@ -251,6 +249,8 @@ void CActor::reinit	()
 	material().reinit		();
 	m_pPhysics_support->in_Init		();
 	m_pUsableObject=NULL;
+	
+	set_input_external_handler	(0);
 }
 
 void CActor::reload	(LPCSTR section)

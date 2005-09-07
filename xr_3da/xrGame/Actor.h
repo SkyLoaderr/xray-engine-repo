@@ -58,6 +58,7 @@ class CActorFollowerMngr;
 class CGameTaskManager;
 
 class CCameraShotEffector;
+class CActorInputHandler;
 
 class	CActor: 
 	public CEntityAlive, 
@@ -634,14 +635,11 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// Controlled Routines
 	//////////////////////////////////////////////////////////////////////////
-public:	
-			bool			IsControlled			() const {return m_controlled;}
-			void			SetControlled			(bool b_controlled = true) {m_controlled = b_controlled; if (!m_controlled) m_controlled_mouse_scale_factor = 1.0f; else mstate_wishful = 0;}
-			void			SetMouseScaleFactor		(float value) {m_controlled_mouse_scale_factor = ((value > 0)? value : 1.0f); }
 
-private:
-			bool			m_controlled;
-			float			m_controlled_mouse_scale_factor;
+			void			set_input_external_handler			(CActorInputHandler *handler);
+			bool			input_external_handler_installed	() const {return (m_input_external_handler != 0);}
+private:	
+	CActorInputHandler		*m_input_external_handler;
 
 	/////////////////////////////////////////
 	// DEBUG INFO
