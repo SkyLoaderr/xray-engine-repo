@@ -1,181 +1,57 @@
-<string id="bar_resque_information">
-	<text>Спасти исследования профессора Круглова.</text>
+<string id="name_0">
+	<text>Андрей</text>
 </string>
-<string id="bar_resque_scientific_information">
-	<text>Необходимо любой ценой спасти исследования от рук "Свободы".</text>
+<string id="name_1">
+	<text>Антон</text>
 </string>
-<string id="bar_resque_scientific_information_get">
-	<text>Получить у профессора флешку с результатами исследований.</text>
+<string id="name_2">
+	<text>Богдан</text>
 </string>
-<string id="bar_resque_scientific_information_bring">
-	<text>Доставить флешку бармену.</text>
+<string id="name_3">
+	<text>Вениамин</text>
 </string>
-
-<string id="bar_kill_professor">
-	<text>Убить профессора Круглова.</text>
+<string id="name_4">
+	<text>Виталий</text>
 </string>
-<string id="bar_kill_professor_info">
-	<text>Помогите боевикам Свободы в охоте на профессора Круглова.</text>
+<string id="name_5">
+	<text>Вова</text>
 </string>
-<string id="bar_kill_professor_kill">
-	<text>Убить профессора Круглова</text>
+<string id="name_6">
+	<text>Дима</text>
 </string>
-<string id="bar_kill_professor_reward">
-	<text>Получить награду у осведомителя в баре</text>
+<string id="name_7">
+	<text>Иван</text>
 </string>
-
-
-
-	<string id="bar_hunter_rifle">
-	<text>Ружье охотника</text>
+<string id="name_8">
+	<text>Костя</text>
 </string>
-	<string id="bar_bring_hunter_rifle">
-	<text>Вернуть охотнику фамильное ружье</text>
+<string id="name_9">
+	<text>Леша</text>
 </string>
-	<string id="bar_hunter_find_rifle">
-	<text>Найти ружье, утерянное у домика кровососов</text>
+<string id="name_10">
+	<text>Олег</text>
 </string>
-	<string id="bar_hunter_return_rifle">
-	<text>Вернуть ружье охотнику</text>
+<string id="name_11">
+	<text>Олесь</text>
 </string>
-
-<string id="bar_dolg_community_quest">
-	<text>Вступление в группировку "Долг"</text>
+<string id="name_12">
+	<text>Рома</text>
 </string>
-<string id="bar_dolg_community_quest_recomendation">
-	<text>Получить рекомендацию капитана Иванцова</text>
+<string id="name_13">
+	<text>Руслан</text>
 </string>
-<string id="bar_dolg_community_quest_vernost">
-	<text>Доказать свою верность "Долгу"</text>
+<string id="name_14">
+	<text>Саша</text>
 </string>
-<string id="bar_dolg_community_quest_prisyaga">
-	<text>Принять присягу</text>
+<string id="name_15">
+	<text>Сергей</text>
 </string>
-
-
-<string id="bar_dolg_base_rules">
-	<text>Отметиться у начальника охраны Долга</text>
+<string id="name_16">
+	<text>Слава</text>
 </string>
-<string id="bar_dolg_base_rules_talk">
-	<text>Найти начальника охраны Долга и отметиться у него</text>
+<string id="name_17">
+	<text>Толик</text>
 </string>
-
-
-<string id="bar_dolg_test_quest">
-	<text>Проверка для вступления в Долг</text>
-</string>
-<string id="bar_dolg_find_document">
-	<text>Возмите архивные документы в заброшенном ангаре.</text>
-</string>
-<string id="bar_dolg_document_to_ivancov">
-	<text>Отнесите документы капитану Иванцову</text>
-</string>
-	
-	<string id="bar_dolg_rg6_quest">
-	<text>Задание для вступления в Долг</text>
-</string>
-	<string id="bar_dolg_bring_rg6">
-	<text>Добыть РГ-6 для генерала Воронина</text>
-</string>
-	<string id="bar_dolg_find_cook">
-	<text>Втереться в доверие к повару Свободы и узнать, где хранится РГ-6</text>
-</string>
-	<string id="bar_dolg_find_rg6">
-	<text>Проникнуть на территорию группировки Свободы, найти и выкрасть РГ-6</text>
-</string>
-	<string id="bar_dolg_return_rg6">
-	<text>Принести РГ-6 генералу Воронину</text>
-</string>
-
-
-<string id="bar_dolg_info_gain">
-	<text>Найти перехваченную информацию о лаборатории X18</text>
-</string>
-	<string id="bar_dolg_return_info">
-	<text>Вернуть информацию о лаборатории X18 генералу Воронину</text>
-</string>
-
-
-<string id="bar_dolg_svoboda_ambush_quest">
-	<text>Уничтожение боевиков Свободы на дикой территории</text>
-</string>
-	<string id="bar_dolg_kill_tiran">
-	<text>Уничтожить предводителя отряда Тирана. Снять с трупа нашивки Тирана, как доказательство его смерти</text>
-</string>
-	<string id="bar_dolg_svoboda_ambush_return">
-	<text>Вернуться к генералу Воронину с нашивками Тирана</text>
-</string>
-
-
-	<string id="bar_dolg_svoboda_leader_kill_quest">
-	<text>Уничтожение лидера группировки Свободы</text>
-</string>
-	<string id="mil_svoboda_leader_kill">
-	<text>На территории Военной базы найти и уничтожить лидера группировки Свобода. Снять с трупа нашивки Лидера, как доказательство его смерти</text>
-</string>
-	<string id="bar_dolg_svoboda_leader_kill_return">
-	<text>Вернуться к генералу Воронину с нашивками Лидера Свободы</text>
-</string>
-
-
-<string id="bar_crazy_veterans_quest">
-	<text>Уничтожить безумных ветеранов</text>
-</string>
-	<string id="bar_kill_veterans">
-	<text>Уничтожить лагерь сумасшедших ветеранов</text>
-</string>
-	<string id="bar_kill_crazy_veterans">
-	<text>Убить ветеранов и взять ПДА их лидера</text>
-</string>
-	<string id="bar_bring_pda_lucky">
-	<text>Принести этот ПДА бармену в качестве доказательства</text>
-</string>
-	
-<string id="secret_laboratory_documents">
-	<text>Добыть документы</text>
-</string>
-<string id="secret_documents_from_darklab">
-	<text>Принести документы из лаборатории X18</text>
-</string>
-<string id="get_darklab_key">
-	<text>Получить ключ от входа</text>
-</string>
-<string id="find_darklab_entrance">
-	<text>Найти вход в лабораторию</text>
-</string>
-<string id="find_secret_documents">
-	<text>Найти и забрать документы</text>
-</string>
-<string id="bring_secret_documents">
-	<text>Принести документу бармену</text>
-</string>
-
-
-
-<string id="x16_documents">
-	<text>Найти документы из лаборатории X16</text>
-</string>
-<string id="x16_yantar">
-	<text>Необходимо найти лабораторию X16 и достать в ней документы, 
-	касающиеся выжигателя мозгов.</text>
-</string>
-<string id="find_x16_location">
-	<text>Узнать у ученных местонахождение лаборатории X16</text>
-</string>
-<string id="find_x16_documents">
-	<text>Найти документы в лаборатории X16</text>
-</string>
-<string id="bring_x16_documents">
-	<text>Принести бармену</text>
-</string>
-
-	
-	<string id="deactivate_radar">
-	<text>Отключить радар</text>
-</string>
-	<string id="find_and_deactivate_radar">
-	<text>Найти и отключить радар</text>
-</string>
-	<string id="deactivate_radar_now">
-	<text>Отключить радар</text>
+<string id="name_18">
+	<text>Юра</text>
 </string>

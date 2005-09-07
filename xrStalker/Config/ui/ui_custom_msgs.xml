@@ -22,7 +22,7 @@
 -->
 
 	<hud_timer  x="880" y="15" width="120" height="40">
-		<text x="10" y="8" font="graffiti32" r="238" g="155" b="23" a="255" align="r"></text>
+		<text x="-10" y="8" font="graffiti32" r="238" g="155" b="23" a="255" align="r"></text>
 		<texture x="0" y="0" width="120" height="40">ui\ui_mn_weapons</texture>
 	</hud_timer>
 

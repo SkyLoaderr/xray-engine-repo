@@ -1334,7 +1334,7 @@
 
 <!---------------------------STALKER GENERAL---------------------->
 	<specific_character id="bar_stalker_general_default1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -1367,7 +1367,7 @@
 	</specific_character>
 
 <specific_character id="bar_stalker_general_default2" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -1399,7 +1399,7 @@
 </specific_character>
 
 <specific_character id="bar_stalker_general_default3" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -1431,7 +1431,7 @@
 </specific_character>
 
 	<specific_character id="bar_stalker_general_default4" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -1463,7 +1463,7 @@
 	</specific_character>
 	
 	<specific_character id="bar_stalker_general_default5" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
