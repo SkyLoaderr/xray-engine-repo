@@ -72,3 +72,8 @@ IC	bool CSoundPlayer::active_sound_type							(u32 synchro_mask) const
 
 	return				(false);
 }
+
+IC	void CSoundPlayer::sound_prefix									(const shared_str &sound_prefix)
+{
+	m_sound_prefix		= sound_prefix;
+}

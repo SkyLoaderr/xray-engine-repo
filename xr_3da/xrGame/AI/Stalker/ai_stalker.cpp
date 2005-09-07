@@ -91,6 +91,10 @@ void CAI_Stalker::reinit			()
 	animation().reinit				();
 	movement().reinit				();
 
+	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
+	sound().sound_prefix			(SpecificCharacter().sound_voice_prefix());
+	LoadSounds						(*cNameSect());
+
 	m_pPhysics_support->in_Init		();
 	
 	m_last_best_item_frame			= 0;
@@ -159,7 +163,7 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	sound().add						(pSettings->r_string(section,"sound_humming"),					100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskHumming),				eStalkerSoundHumming,				head_bone_name, 0);
 	sound().add						(pSettings->r_string(section,"sound_need_backup"),				100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskNeedBackup),			eStalkerSoundNeedBackup,			head_bone_name, xr_new<CStalkerSoundData>(this));
 	sound().add						(pSettings->r_string(section,"sound_running_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundRunningInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
-	sound().add						(pSettings->r_string(section,"sound_walking_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundWalkingInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
+//	sound().add						(pSettings->r_string(section,"sound_walking_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundWalkingInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -302,13 +306,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	if (!fis_zero(SpecificCharacter().panic_threshold()))
 		m_panic_threshold						= SpecificCharacter().panic_threshold();
-
-	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
-	LPCSTR snd_sound_sect = SpecificCharacter().SndConfigSect();
-	if (snd_sound_sect && pSettings->section_exist(snd_sound_sect))
-		LoadSounds	(snd_sound_sect);
-	else
-		LoadSounds	(*cNameSect());
 
 	sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection));
 
@@ -516,7 +513,7 @@ void CAI_Stalker::UpdateCL()
 				sound().play	(eStalkerSoundRunningInDanger);
 			}
 			else {
-				sound().play	(eStalkerSoundWalkingInDanger);
+//				sound().play	(eStalkerSoundWalkingInDanger);
 			}
 		}
 	}

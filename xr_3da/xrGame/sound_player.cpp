@@ -37,6 +37,7 @@ void CSoundPlayer::clear			()
 
 void CSoundPlayer::reinit			()
 {
+	m_sound_prefix					= "";
 }
 
 void CSoundPlayer::reload			(LPCSTR section)
@@ -92,9 +93,10 @@ u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max
 {
 	sounds.clear					();
 	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
-		string256					fn, s;
+		string256					fn, s, temp;
 		LPSTR						S = (LPSTR)&s;
-		_GetItem					(prefix,j,S);
+		_GetItem					(prefix,j,temp);
+		strconcat					(S,*m_sound_prefix,temp);
 		if (FS.exist(fn,"$game_sounds$",S,".ogg"))
 			sounds.push_back		(add(type,prefix,data));
 		for (u32 i=0; i<max_count; ++i){

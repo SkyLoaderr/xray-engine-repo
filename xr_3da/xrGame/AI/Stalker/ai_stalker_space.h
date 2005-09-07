@@ -29,7 +29,7 @@ namespace StalkerSpace {
 		eStalkerSoundFriendlyGrenadeAlarm,
 		eStalkerSoundNeedBackup,
 		eStalkerSoundRunningInDanger,
-		eStalkerSoundWalkingInDanger,
+//		eStalkerSoundWalkingInDanger,
 
 		eStalkerSoundScript,
 		eStalkerSoundDummy = u32(-1),

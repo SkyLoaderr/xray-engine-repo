@@ -102,6 +102,7 @@ private:
 	xr_vector<CSoundSingle>						m_playing_sounds;
 	u32											m_sound_mask;
 	CObject										*m_object;
+	shared_str									m_sound_prefix;
 
 			u32			load						(xr_vector<ref_sound*> &sounds, LPCSTR	prefix, u32 max_count, ESoundTypes type, CSound_UserDataPtr data);
 	IC		Fvector		compute_sound_point			(const CSoundSingle &sound);
@@ -128,6 +129,7 @@ public:
 			bool		need_bone_data				() const;
 	IC		const SOUND_COLLECTIONS &objects		() const;
 	IC		bool		active_sound_type			(u32 synchro_mask) const;
+	IC		void		sound_prefix				(const shared_str &sound_prefix);
 };
 
 #include "sound_player_inline.h"

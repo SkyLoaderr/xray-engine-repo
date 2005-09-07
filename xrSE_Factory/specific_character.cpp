@@ -161,7 +161,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	}
 
 	data()->m_sNpcConfigSect = uiXml.Read("npc_config", 0, "");
-	data()->m_sSndConfigSect = uiXml.Read("snd_config", 0, "");
+	data()->m_sound_voice_prefix = uiXml.Read("snd_config", 0, "");
 
 #endif
 
@@ -229,9 +229,9 @@ LPCSTR CSpecificCharacter::NpcConfigSect () const
 	return data()->m_sNpcConfigSect.c_str();
 }
 
-LPCSTR CSpecificCharacter::SndConfigSect () const 
+LPCSTR CSpecificCharacter::sound_voice_prefix () const 
 {
-	return data()->m_sSndConfigSect.c_str();
+	return data()->m_sound_voice_prefix.c_str();
 }
 
 float CSpecificCharacter::panic_threshold () const 

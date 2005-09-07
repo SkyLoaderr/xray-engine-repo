@@ -95,7 +95,7 @@ public:
 	CPersonalWeaponTypeFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
-		m_fMaxResultValue = 20.0;
+		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};

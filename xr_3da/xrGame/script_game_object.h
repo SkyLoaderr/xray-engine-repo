@@ -322,7 +322,7 @@ public:
 			//////////////////////////////////////////////////////////////////////////
 			Flags32				get_actor_relation_flags	()			const;
 			void 				set_actor_relation_flags	(Flags32);
-			LPCSTR				snd_character_profile_sect	()			const;
+			LPCSTR				sound_voice_prefix	()			const;
 
 			//////////////////////////////////////////////////////////////////////////
 			u32						memory_time		(const CScriptGameObject &lua_game_object);

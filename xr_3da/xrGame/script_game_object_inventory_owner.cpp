@@ -541,15 +541,15 @@ void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm, int squad, int group
 	entity->ChangeTeam(community.team(), squad, group);
 }
 
-LPCSTR CScriptGameObject::snd_character_profile_sect () const
+LPCSTR CScriptGameObject::sound_voice_prefix () const
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if (!pInventoryOwner) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"snd_character_profile_sect available only for InventoryOwner");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"sound_voice_prefix available only for InventoryOwner");
 		return NULL;
 	}
 
-	return pInventoryOwner->SpecificCharacter().SndConfigSect();
+	return pInventoryOwner->SpecificCharacter().sound_voice_prefix();
 }
 
 #include "GameTaskManager.h"

@@ -39,7 +39,7 @@ struct SSpecificCharacterData : CSharedResource
 	//имя секции конфигурации настроек NPC для персонажа
 	xr_string	m_sNpcConfigSect;
 	//имя секции конфигурации звука для NPC персонажа
-	xr_string	m_sSndConfigSect;
+	xr_string	m_sound_voice_prefix;
 
 	float		m_fPanic_threshold;
 #endif
@@ -129,10 +129,10 @@ public:
 	LPCSTR						Visual		() const ;
 
 #ifdef  XRGAME_EXPORTS
-	LPCSTR						SupplySpawn		() const ;
-	LPCSTR						NpcConfigSect   () const ;
-	LPCSTR						SndConfigSect   () const ;
-	float						panic_threshold () const ;
+	LPCSTR						SupplySpawn			() const ;
+	LPCSTR						NpcConfigSect		() const ;
+	LPCSTR						sound_voice_prefix	() const ;
+	float						panic_threshold		() const ;
 
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
 	int		TradeIconY	() const	 {return data()->m_iIconY;}
