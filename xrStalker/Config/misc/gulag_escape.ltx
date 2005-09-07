@@ -850,17 +850,43 @@ combat_ignore_cond = {-esc_open_killer_fire}
 def_state_moving = patrol
 
 
-[logic@esc_killer_leader_follower]
-active = follower@esc_killer_leader_follower
+[logic@esc_killer3_raid]
+active = walker@esc_killer3_raid
 on_hit = hit@killers
 on_death = death@killers
 combat_ignore = combat_ignore
 
-[follower@esc_killer_leader_follower]
-anim_walk = patrol
-anim_run = rush
-distance = 2
+[walker@esc_killer3_raid]
+path_walk = raid4_walk
+path_look = raid4_look
 combat_ignore_cond = {-esc_open_killer_fire}
+def_state_moving = patrol
+
+
+[logic@esc_killer4_raid]
+active = walker@esc_killer4_raid
+on_hit = hit@killers
+on_death = death@killers
+combat_ignore = combat_ignore
+
+[walker@esc_killer4_raid]
+path_walk = raid5_walk
+path_look = raid5_look
+combat_ignore_cond = {-esc_open_killer_fire}
+def_state_moving = patrol
+
+
+[logic@esc_killer5_raid]
+active = walker@esc_killer5_raid
+on_hit = hit@killers
+on_death = death@killers
+combat_ignore = combat_ignore
+
+[walker@esc_killer5_raid]
+path_walk = raid6_walk
+path_look = raid6_look
+combat_ignore_cond = {-esc_open_killer_fire}
+def_state_moving = patrol
 
 
 [logic@esc_killer1_follower]
