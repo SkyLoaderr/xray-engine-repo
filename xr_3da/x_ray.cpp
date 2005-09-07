@@ -128,7 +128,7 @@ void execUserScript				( )
 }
 void slowdownthread	( void* )
 {
-	Sleep	(30*1000);
+//	Sleep	(30*1000);
 	for (;;)	{
 		if (Device.Statistic.fFPS<30) Sleep(1);
 		if (Device.mt_bMustExit)	return;
@@ -357,7 +357,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			return 0;
 	};
 	Engine.External.Initialize	( );
-	CheckPrivilegySlowdown		( );
+//	CheckPrivilegySlowdown		( );
 	Startup	 					( );
 	Core._destroy				( );
 

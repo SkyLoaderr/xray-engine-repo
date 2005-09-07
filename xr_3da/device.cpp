@@ -54,6 +54,8 @@ void CRenderDevice::Clear	()
 		));
 }
 
+extern void CheckPrivilegySlowdown		( );
+
 void CRenderDevice::End		(void)
 {
 	VERIFY	(HW.pDevice);
@@ -70,6 +72,7 @@ void CRenderDevice::End		(void)
 		{
 			Memory.mem_compact		();
 			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
+			CheckPrivilegySlowdown ();
 		}
 	}
 
@@ -116,6 +119,7 @@ void CRenderDevice::PreCache	(u32 amount)
 	// Msg			("* PCACHE: start for %d...",amount);
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
 }
+
 
 void CRenderDevice::Run			()
 {
