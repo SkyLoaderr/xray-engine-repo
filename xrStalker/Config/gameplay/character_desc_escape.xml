@@ -121,7 +121,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>Толик</name>
 		<icon x="30" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Просто сталкер.</bio>
