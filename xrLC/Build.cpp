@@ -98,7 +98,9 @@ void CBuild::Run	(LPCSTR P)
 	string_path					lfn				;
 	IWriter* fs					= FS.w_open		(strconcat(lfn,path,"level."));
 	fs->open_chunk				(fsL_HEADER)	;
-	hdrLEVEL H;	H.XRLC_version	= XRCL_PRODUCTION_VERSION;
+	hdrLEVEL H;	
+	H.XRLC_version				= XRCL_PRODUCTION_VERSION;
+	H.XRLC_quality				= g_params.m_quality;
 	fs->w						(&H,sizeof(H));
 	fs->close_chunk				();
 

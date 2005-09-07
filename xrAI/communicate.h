@@ -129,13 +129,6 @@ struct b_mu_reference
     u32					reserved	[8];
 };
 
-enum EBuildQuality{
-	ebqDraft			= 0,			
-	ebqHigh,
-	ebqCustom,
-    ebq_force_u32		= u32(-1)
-};
-
 struct b_params
 {
 	// Normals & optimization
@@ -149,10 +142,11 @@ struct b_params
 	u32			m_lm_rms;				// RMS - shrink and recalc
 
     // build quality
-	u32			m_quality;
+	u16			m_quality;
+	u16			u_reserved;
 
 	// Progressive
-	float		reserved[6];
+	float		f_reserved[6];
 
     void        Init					()
 	{
