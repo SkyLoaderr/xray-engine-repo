@@ -55,7 +55,7 @@
 	
 	
 	<specific_character id="gar_newbie_in_tonnel" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="26" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -110,7 +110,7 @@
 	</specific_character>
 	
 	<specific_character id="gar_bandit_novice_wounded" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -162,7 +162,7 @@
 	
 		<!---------------------------BANDIT NOVICE----------------------->
 	<specific_character id="gar_bandit_novice_default1" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -188,7 +188,7 @@
 </specific_character>
 
 	<specific_character id="gar_bandit_novice_default2" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -216,7 +216,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_novice_default3" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -245,7 +245,7 @@
 	<!---------------------------BANDIT general----------------------->
 	
 	<specific_character id="gar_bandit_general_default1" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -273,7 +273,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_general_default2" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -301,7 +301,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_general_default3" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -334,7 +334,7 @@
 	<!---------------------------Stalker general----------------------->
 	
 	<specific_character id="gar_stalker_general_default1" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -367,7 +367,7 @@
 	</specific_character>
 
 <specific_character id="gar_stalker_general_default2" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -399,7 +399,7 @@
 </specific_character>
 
 <specific_character id="gar_stalker_general_default3" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -431,7 +431,7 @@
 </specific_character>
 
 	<specific_character id="gar_stalker_general_default4" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -463,7 +463,7 @@
 	</specific_character>
 	
 	<specific_character id="gar_stalker_general_default5" team_default = "1">
-		<name>Неизвестный сталкер</name>
+		<name>GENERATE_NAME</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -494,8 +494,8 @@
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
-		<specific_character id="gar_wounded_bandit" team_default = "1">
-		<name>Сталкер в костюме группировки "Свобода"</name>
+	<specific_character id="gar_wounded_bandit" team_default = "1">
+		<name>GENERATE_NAME</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -524,7 +524,7 @@
 	
 	<!---------------------------DOLG BLOKPOST----------------------->
 	<specific_character id="gar_dolg_blokpost_default1" team_default = "1">
-		<name>Cталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -556,7 +556,7 @@
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default2" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -586,7 +586,7 @@
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default3" team_default = "1">
-		<name>Сталкер группировки "Долг"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
