@@ -772,13 +772,12 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     pb->Inc		();
 
-	xr_string lods		= m_Source->GetLODs();
-    u32 lod_cnt			= _GetItemCount(lods.c_str());
+    u32 lod_cnt			= _GetItemCount(m_Source->GetLODs());
     if (lod_cnt&&bRes){
         F.open_chunk	(OGF_S_LODS);
         for (u32 k=0; k<lod_cnt; k++){
         	xr_string 	tmp;
-        	CEditableObject* lod_src = Lib.CreateEditObject(_GetItem(lods.c_str(),k,tmp));
+        	CEditableObject* lod_src = Lib.CreateEditObject(_GetItem(m_Source->GetLODs(),k,tmp));
             if (0==lod_src){
             	Log		("! Invalid LOD name:",tmp.c_str());
             	bRes	= false;
