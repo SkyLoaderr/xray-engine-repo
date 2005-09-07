@@ -4,8 +4,10 @@
 #include "xrXmlParser.h"
 #include "UIListItemAdv.h"
 #include "UIEditKeyBind.h"
+#include "../xr_level_controller.h"
 
-extern void GetActionBinding(LPCSTR action, char* dst_buff);
+//extern void GetActionBinding(LPCSTR action, char* dst_buff);
+//extern _keybind  keybind[];
 
 CUIKeyBinding::CUIKeyBinding(){
 	for (int i=0; i<3; i++)
@@ -59,21 +61,87 @@ void CUIKeyBinding::FillUpList(){
 			pItem->AddField(*command_id,m_header[0].GetWidth());
 
 			shared_str exe = xml_doc.ReadAttrib("command",j,"exe");
-//			string64 buff;
-//			ZeroMemory(buff,sizeof(buff));
-//			GetActionBinding(*exe, buff);
+
+#ifdef DEBUG
+			if (!::IsActionExist(*exe))
+			{
+				pItem->AddField("not exist. update data",m_header[1].GetWidth());
+				continue;
+			}
+#endif
 			
 			CUIEditKeyBind* pEditKB = xr_new<CUIEditKeyBind>();
 			pEditKB->Init(0,0,m_header[1].GetWidth(),m_list.GetItemHeight());
-//			pEditKB->SetText(buff);
 			pEditKB->Register(*exe,"key_binding");
 
 			pItem->AddWindow(pEditKB);
 			pItem->SetTextColor(m_dwItemColor);
 		}
-
 		xml_doc.SetLocalRoot(xml_doc.GetRoot());
+	}
+#ifdef DEBUG
+    CheckStructure(xml_doc);
+#endif
+}
 
+#ifdef DEBUG
+void CUIKeyBinding::CheckStructure(CUIXml& xml_doc){
+	bool first = true;
+	CUIListItemAdv*	pItem = false;
+	for (int i=0; true; i++)
+	{
+		if (keybind[i].name)
+		{
+			if (IsActionExist(keybind[i].name, xml_doc))
+				continue;
+			else
+			{
+				if (first)
+				{
+					pItem = xr_new<CUIListItemAdv>();
+					pItem->AddField("NEXT ITEMS NOT DESCRIBED IN COMMAND DESC LIST", m_header[0].GetWidth());
+					pItem->SetTextColor(m_dwGroupColor);
+					m_list.AddItem(pItem);
+					first = false;
+				}
 
+				pItem = xr_new<CUIListItemAdv>();
+				m_list.AddItem(pItem);
+				pItem->AddField(keybind[i].name,m_header[0].GetWidth());
+			}
+		}
+		else
+			break;				
 	}
 }
+
+bool CUIKeyBinding::IsActionExist(LPCSTR action, CUIXml& xml_doc){
+	bool ret = false;
+	int groupsCount = xml_doc.GetNodesNum("",0,"group");
+	if (0 == xr_strcmp(action,"brutal_porn"))
+	{
+		Msg("hello");
+	}
+
+	for (int i = 0; i<groupsCount; i++){
+		// add group items
+		int commandsCount = xml_doc.GetNodesNum("group",i,"command");
+		XML_NODE* tab_node = xml_doc.NavigateToNode("group",i);
+		xml_doc.SetLocalRoot(tab_node);
+
+		for (int j = 0; j<commandsCount; j++){
+			// first field of list item
+			shared_str command_id = xml_doc.ReadAttrib("command",j,"exe");
+			if (0 == xr_strcmp(action, *command_id))
+			{
+				ret = true;
+				break;
+			}
+		}
+		xml_doc.SetLocalRoot(xml_doc.GetRoot());
+		if (ret)
+			break;
+	}
+	return ret;
+}
+#endif

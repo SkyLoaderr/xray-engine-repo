@@ -11,6 +11,7 @@ CUIEditKeyBind::CUIEditKeyBind(){
 	m_pAnimation = xr_new<CUIColorAnimatorWrapper>("ui_map_area_anim");
 	m_pAnimation->Cyclic(true);
 	m_bChanged = false;
+	m_lines.SetTextComplexMode(false);
 }
 
 void CUIEditKeyBind::SetText(const char* text){

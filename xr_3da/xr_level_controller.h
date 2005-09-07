@@ -125,6 +125,7 @@ public:
 };
 void GetActionBinding(LPCSTR action, char* dst_buff);
 void GetActionBindingEx(LPCSTR action, char* dst_buff);
+bool IsActionExist(LPCSTR action);
 
 extern ConsoleBindCmds	bindConsoleCmds;
 

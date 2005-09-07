@@ -14,6 +14,10 @@ class CUIKeyBinding : public CUIWindow {
 public:
 	CUIKeyBinding();
 	void InitFromXml(CUIXml& xml_doc, LPCSTR path);
+#ifdef DEBUG
+	void CheckStructure(CUIXml& xml_doc);
+	bool IsActionExist(LPCSTR action, CUIXml& xml_doc);
+#endif
 protected:
 	void FillUpList();
 	CUILabel		m_header[3];

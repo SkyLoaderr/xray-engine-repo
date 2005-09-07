@@ -364,7 +364,19 @@ void GetActionBindingEx(LPCSTR action, char* dst_buff)
 			}
 		}
 	}
+}
 
+bool IsActionExist(LPCSTR action){
+    for (int i=0; true; i++)
+	{
+        if (keybind[i].name)
+		{
+			if (0 == xr_strcmp(action,keybind[i].name))
+				return true;
+		}
+		else
+			return false;
+	}
 }
 
 class CCC_BindConsoleCmd : public IConsole_Command

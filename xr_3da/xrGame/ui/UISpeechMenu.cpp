@@ -13,6 +13,9 @@ CUISpeechMenu::CUISpeechMenu(LPCSTR section_name){
 	CUIXml xml_doc;
 	xml_doc.Init(CONFIG_PATH, UI_PATH, "maingame.xml");
 	CUIXmlInit::InitWindow(xml_doc, "speech_menu",0,this);
+	float h = xml_doc.ReadAttribFlt("speech_menu",0,"item_height");
+	if (h)
+		m_pList->SetItemHeight(h);
     InitList(section_name);
 }
 
@@ -47,13 +50,14 @@ bool CUISpeechMenu::OnKeyboard(int dik, EUIMessages keyboard_action){
 	if (m_pList->GetItemsCount() < dik - DIK_1 + 1)
 		return false;
     if (dik < DIK_1 || dik > DIK_0)
-		return false;
+		return CUIDialogWnd::OnKeyboard(dik, keyboard_action);
 
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
 
 	Game().StartStopMenu(this,true);
 	game->OnMessageSelected(this, static_cast<u8>(dik - DIK_1));
 
+//	CUIDialogWnd::OnKeyboard(dik, keyboard_action);
 
 	return true;
 }
