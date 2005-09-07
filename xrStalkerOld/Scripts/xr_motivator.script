@@ -94,6 +94,11 @@ function motivator_binder:net_destroy()
 
 	db.storage[self.object:id()] = nil
 
+	self.object:set_patrol_extrapolate_callback(nil)
+	self.object:set_callback(callback.hit, nil)
+	self.object:set_callback(callback.death, nil)
+	self.object:set_callback(callback.use_object, nil)
+
 	object_binder.net_destroy(self)
 end
 
