@@ -105,7 +105,9 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 	
 	// save source SMF
 	string_path				fn;
-	SaveAsSMF				(strconcat(fn,pBuild->path,"build_cform_source.smf"),CL);
+	
+	if (g_params.m_quality!=ebqDraft)
+		SaveAsSMF			(strconcat(fn,pBuild->path,"build_cform_source.smf"),CL);
 
 	// Saving for AI/DO usage
 	if (bSaveForOtherCompilers)
@@ -128,7 +130,8 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 			cf.t[1].set			(cuv[1]);
 			cf.t[2].set			(cuv[2]);
 		}
-		SaveUVM					(strconcat(fn,pBuild->path,"build_cform_source.uvm"),rc_faces);
+		if (g_params.m_quality!=ebqDraft)
+			SaveUVM				(strconcat(fn,pBuild->path,"build_cform_source.uvm"),rc_faces);
 
 		MFS->open_chunk			(0);
 

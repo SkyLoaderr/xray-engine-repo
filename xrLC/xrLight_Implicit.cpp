@@ -157,6 +157,8 @@ public:
 #define	NUM_THREADS	8
 void CBuild::ImplicitLighting()
 {
+	if (g_params.m_quality==ebqDraft) return;
+
 	Implicit		calculator;
 	ImplicitHash	= xr_new<IHASH>	();
 	

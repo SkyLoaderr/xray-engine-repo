@@ -140,7 +140,8 @@ void CBuild::BuildCForm	()
 		mu_refs[ref]->export_cform_game(CL);
 
 	// Simplification
-	SimplifyCFORM	(CL);
+	if (g_params.m_quality!=ebqDraft)
+		SimplifyCFORM	(CL);
 
 	// bb?
 	BB.invalidate	();
