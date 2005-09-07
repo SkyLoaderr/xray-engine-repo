@@ -21,6 +21,28 @@
     <string id="pda_btn_diary">
         <text>Diary</text>
     </string>
+
+    <string id="pda_btn_news">
+        <text>News</text>
+    </string>
+    <string id="pda_btn_info">
+        <text>Info</text>
+    </string>
+    <string id="pda_btn_journal">
+        <text>Journal</text>
+    </string>
+    <string id="pda_btn_active">
+        <text>Active</text>
+    </string>
+    <string id="pda_btn_accomplished">
+        <text>Accomplished</text>
+    </string>
+    <string id="pda_btn_failed">
+        <text>Failed</text>
+    </string>
+    <string id="pda_btn_own">
+        <text>Own</text>
+    </string>
     
 	<string id="level_changer_invitation">
 		<text>Change level ?</text>

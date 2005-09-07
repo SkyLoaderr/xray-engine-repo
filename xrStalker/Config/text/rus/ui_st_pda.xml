@@ -22,6 +22,30 @@
     <string id="pda_btn_diary">
         <text>Дневник</text>
     </string>
+    <string id="pda_btn_news">
+        <text>Новости</text>
+    </string>
+    <string id="pda_btn_info">
+        <text>Инфо</text>
+    </string>
+    <string id="pda_btn_journal">
+        <text>Журнал</text>
+    </string>
+    <string id="pda_btn_active">
+        <text>Активные</text>
+    </string>
+    <string id="pda_btn_accomplished">
+        <text>Выполненные</text>
+    </string>
+    <string id="pda_btn_failed">
+        <text>Провал.</text>
+    </string>
+    <string id="pda_btn_own">
+        <text>Свои</text>
+    </string>
+
+
+
 	<string id="level_changer_invitation">
 		<text>Перейти на следующий уровень ?</text>
 	</string>
