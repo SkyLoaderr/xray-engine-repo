@@ -102,11 +102,11 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
 	if (enemy->CLS_ID != CLSID_OBJECT_ACTOR)		return false;
 	if (!object->EnemyMan.see_enemy_now())			return false;
-	if (object->CControlledActor::is_controlled())	return false;
+	if (object->CControlledActor::is_controlling())	return false;
 
 	const CActor *actor = smart_cast<const CActor *>(enemy);
 	VERIFY(actor);
-	if (actor && actor->IsControlled())				return false;
+	if (actor->input_external_handler_installed()) return false;
 
 	if (m_time_last_vampire + TIME_VAMPIRE_STATE_DELAY > Device.dwTimeGlobal) return false;
 
@@ -125,7 +125,7 @@ bool CStateBloodsuckerVampireAbstract::check_completion()
 	
 	// если актера уже контролит другой кровосос
 	if ((current_substate != eStateExecute) && 
-		object->CControlledActor::is_controlled())	return true;
+		object->CControlledActor::is_controlling())	return true;
 
 	return false;
 }

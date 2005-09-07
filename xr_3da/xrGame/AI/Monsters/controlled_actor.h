@@ -1,9 +1,9 @@
 #pragma once
 
-class CActor;
+#include "../../actor_input_handler.h"
 
-class CControlledActor {
-	CActor *m_actor;
+class CControlledActor : public CActorInputHandler {
+	typedef CActorInputHandler inherited;
 	
 	Fvector m_target_point;
 	
@@ -11,23 +11,19 @@ class CControlledActor {
 	bool	m_turned_pitch;
 
 public:
-	void	reinit				();
+	virtual void	reinit				();
+	virtual	float	mouse_scale_factor	(){return flt_max;}
+	virtual void	release				();
+	virtual bool	authorized			(int cmd);
 
-	// disable any input
-	void	take_control		();
-	// restore input
-	void	free_from_control	();
+			void	look_point			(const Fvector &point);
+			bool	is_turning			();
 
-	void	look_point			(const Fvector &point);
-	bool	is_turning			();
-
-	void	frame_update		();
-	bool	is_controlled		();
+			void	frame_update		();
+			bool	is_controlling		() {return m_actor != 0;}
 
 private:
-	void	reset				();
-	
-	void	update_turn			();
-	
+			void	reset				();
+			void	update_turn			();
 };	
 

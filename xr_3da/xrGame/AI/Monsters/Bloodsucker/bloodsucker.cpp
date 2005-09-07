@@ -27,7 +27,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 
 	m_alien_control.init_external							(this);
 
-	com_man().add_ability(ControlCom::eControlRunAttack);
+	//com_man().add_ability(ControlCom::eControlRunAttack);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()

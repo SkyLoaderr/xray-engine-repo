@@ -222,7 +222,7 @@ void CBloodsuckerAlien::activate()
 	CActor* pActor = smart_cast<CActor*> (source);
 	if (pActor) {
 		pActor->inventory().Items_SetCurrentEntityHud	(false);
-		pActor->SetControlled							(true);
+		m_object->CControlledActor::install				();
 		if (!m_object->EnemyMan.get_enemy())			m_object->EnemyMan.add_enemy(pActor);
 		
 		// Start effector
@@ -266,7 +266,7 @@ void CBloodsuckerAlien::deactivate()
 		CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 		if (pHudItem) pHudItem->OnStateSwitch(pHudItem->State());
 
-		pActor->SetControlled						(false);
+		m_object->CControlledActor::release			();
 	}
 
 	Engine.Sheduler.Unregister						(source);

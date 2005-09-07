@@ -27,6 +27,12 @@ void CControlAnimationBase::update()
 
 	SelectAnimation		();
 	SelectVelocities	();
+
+	// применить
+	if (prev_motion	!= cur_anim_info().motion) {
+		prev_motion	= cur_anim_info().motion;
+		select_animation();
+	}
 }
 
 
@@ -131,16 +137,15 @@ void CControlAnimationBase::SelectVelocities()
 
 	// финальная корректировка скорости анимации по физической скорости
 	if (b_moving) {
-		Fvector temp_vec;
-		m_object->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
-		static float prev_speed = 0.f;
-		float  real_speed = temp_vec.magnitude();
+		//Fvector temp_vec;
+		//m_object->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+		//float  real_speed = temp_vec.magnitude();
 		
-		if (fis_zero(real_speed) && (prev_speed > 0)) {
-//			int a = 10;
+		float  real_speed = m_object->m_PhysicMovementControl->GetVelocityActual();
+
+		if (!m_object->state_invisible) {
+			//Msg("Real Speed = [%f]",real_speed);
 		}
-		prev_speed = real_speed;
-		
 
 		EMotionAnim new_anim;
 		float		a_speed;
@@ -161,12 +166,6 @@ void CControlAnimationBase::SelectVelocities()
 
 	m_object->dir().set_heading_speed(item_it->second.velocity.velocity.angular_real);
 
-	// применить 
-	// если установленная анимация отличается от предыдущей - установить новую анимацию
-	if (prev_motion	!= cur_anim_info().motion) {
-		prev_motion	= cur_anim_info().motion;
-		select_animation();
-	}
 }
 
 #define VELOCITY_BOUNCE_THRESHOLD 1.5f

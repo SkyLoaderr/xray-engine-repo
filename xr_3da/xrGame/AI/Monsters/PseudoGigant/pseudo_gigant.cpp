@@ -23,6 +23,7 @@ CPseudoGigant::CPseudoGigant()
 	com_man().add_ability(ControlCom::eControlRunAttack);
 	com_man().add_ability(ControlCom::eControlThreaten);
 	//com_man().add_ability(ControlCom::eControlJump);
+	com_man().add_ability(ControlCom::eControlRotationJump);
 }
 
 CPseudoGigant::~CPseudoGigant()
@@ -135,6 +136,8 @@ void CPseudoGigant::reinit()
 	m_time_last_threaten = 0;
 
 	//com_man().load_jump_data("jump_attack_0", "jump_attack_1", "stand_run_fwd_0", u32(-1));
+	com_man().add_rotation_jump_data("1","2","3","4", PI_DIV_2);
+
 }
 
 
@@ -168,6 +171,11 @@ bool CPseudoGigant::check_start_conditions(ControlCom::EControlType type)
 
 	if (type == ControlCom::eControlThreaten) {
 		if (m_time_last_threaten + pmt_threaten_delay > time()) return false;
+	}
+
+	if (type == ControlCom::eControlRotationJump) {
+		EMonsterState state = StateMan->get_state_type();
+		if (!is_state(state, eStateAttack)) return false;
 	}
 
 	return true;
@@ -219,4 +227,5 @@ void CPseudoGigant::on_threaten_execute()
 	}
 
 }
+
 

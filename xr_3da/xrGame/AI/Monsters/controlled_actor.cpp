@@ -5,6 +5,7 @@
 #include "../../xr_level_controller.h"
 #include "../../level.h"
 #include "ai_monster_utils.h"
+#include "../../inventory.h"
 
 #define SPEED_MIN		0.5f 
 #define SPEED_MAX		4.f
@@ -13,28 +14,19 @@
 
 void CControlledActor::reinit()
 {
+	inherited::reinit();
 	reset();
 }
 
-void CControlledActor::take_control()
+void CControlledActor::release()
 {
-	m_actor = smart_cast<CActor*>	(Level().CurrentEntity());
-	
-	m_actor->SetControlled			(true);
-	m_actor->SetMouseScaleFactor	(flt_max);
-}
-
-void CControlledActor::free_from_control()
-{
-	if (!is_controlled())			return;
-
-	m_actor->SetControlled			(false);
-	reset							();
+	inherited::release();
+	reset();
 }
 
 void CControlledActor::frame_update()
 {
-	if (is_controlled()) {
+	if (is_controlling()) {
 		update_turn();
 	}
 }
@@ -94,18 +86,22 @@ void CControlledActor::update_turn()
 
 void CControlledActor::reset()
 {
-	m_actor				= 0;
 	m_turned_yaw		= false;
 	m_turned_pitch		= false;
-}
-
-bool CControlledActor::is_controlled()
-{
-	return (m_actor && m_actor->IsControlled());
 }
 
 bool CControlledActor::is_turning()
 {
 	return (!m_turned_yaw || !m_turned_pitch);
+}
+
+bool CControlledActor::authorized(int cmd)
+{
+	if (cmd == kWPN_1)		return true;
+	if (cmd == kWPN_FIRE) {
+		if (m_actor->inventory().GetActiveSlot() == 0) return true;
+	}
+
+	return false;
 }
 

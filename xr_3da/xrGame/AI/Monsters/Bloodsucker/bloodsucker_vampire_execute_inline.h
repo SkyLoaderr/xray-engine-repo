@@ -20,7 +20,7 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
 {
 	inherited::initialize					();
 
-	object->CControlledActor::take_control	();
+	object->CControlledActor::install		();
 
 	look_head				();
 
@@ -77,7 +77,7 @@ void CStateBloodsuckerVampireExecuteAbstract::finalize()
 {
 	inherited::finalize();
 
-	object->CControlledActor::free_from_control	();
+	object->CControlledActor::release			();
 	object->CInvisibility::manual_activate		();
 }
 
@@ -86,7 +86,7 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 
-	object->CControlledActor::free_from_control	();
+	object->CControlledActor::release			();
 	
 	// TODO: Find if need this line
 	//object->anim().TA_Deactivate				();
