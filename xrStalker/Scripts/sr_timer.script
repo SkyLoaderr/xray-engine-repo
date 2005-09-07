@@ -32,7 +32,8 @@ function action_timer:update(delta)
 	local minutes = math.floor(value_time/60000 - hours*60)
 	local seconds = math.floor(value_time/1000 - hours*3600 - minutes*60)
 	local str = tostring(hours)..":"..sr_timer.time2str(minutes)..":"..sr_timer.time2str(seconds)
-	self.st.ui:CustomMessageOut(self.st.value_id, str, self.st.color)
+
+	self.st.timer:SetTextST(str)
 
 	-- Определяем нужно ли куда то переходить.
 	for k,v in self.st.on_value do
@@ -47,8 +48,7 @@ function action_timer:update(delta)
 	end
 end
 function action_timer:deactivate(delta)
-	self.st.ui:RemoveCustomMessage(self.st.caption_id)
-	self.st.ui:RemoveCustomMessage(self.st.value_id)
+	self.st.ui:RemoveCustomStatic(self.st.timer_id)
 end
 
 function time2str(n)
@@ -66,7 +66,6 @@ end
 function set_scheme(obj, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
-	st.caption = utils.cfg_get_string( ini, section, "caption", obj, false, "", "")
 	st.type = utils.cfg_get_string( ini, section, "type", obj, false, "", "inc")
 	if st.type ~= "inc" and st.type ~= "dec" then
 		abort("ERROR: wrong sr_timer type. Section [%s], Restrictor [%s]", section, obj:name())
@@ -80,24 +79,11 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	-- Вычитываем значения перехода.
 	st.on_value = parse_data(obj, utils.cfg_get_string(ini, section, "on_value", obj, false, ""))
 	st.last_value = {}
-	
-	local argb = parse_names(utils.cfg_get_string( ini, section, "argb", obj, false, "", "255,255,40,0"))
-	for k=1,4 do
-		if argb[k] == nil then
-			argb[k] = 0
-		else
-			argb[k] = tonumber(argb[k])
-		end
-	end
-	st.color = GetARGB(argb[1],argb[2],argb[3],argb[4])
+	st.timer_id = utils.cfg_get_string( ini, section, "timer_id", obj, false, "", "hud_timer")
 		
 	st.ui = get_hud()
-	st.font = GetFontDI()
-	st.caption_id = tostring(obj:id()).."caption"
-	st.ui:AddCustomMessage(st.caption_id,	900,15,30,	st.font, CGameFont.alRight, st.color)
-	st.ui:CustomMessageOut(st.caption_id, st.caption, st.color)
-	st.value_id = tostring(obj:id()).."value"
-	st.ui:AddCustomMessage(st.value_id,		910,15,30, st.font, CGameFont.alLeft, st.color)
+	st.ui:AddCustomStatic(st.timer_id)
+	st.timer = st.ui:GetCustomStatic(st.timer_id)
 end
 
 function parse_data(npc,s)
