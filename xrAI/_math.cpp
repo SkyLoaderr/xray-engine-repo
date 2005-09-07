@@ -113,6 +113,7 @@ namespace FPU
 		_64r		= getFPUsw();	// 64, rounding
 
 		m24r		();
+		::Random.seed	( u32(CPU::GetCycleCount()%(1i64<<32i64)) );
 	}
 };
 #endif
