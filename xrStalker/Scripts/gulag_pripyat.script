@@ -9,7 +9,12 @@ local state_wave6 = 6
 local state_wave7 = 7
 local state_wave8 = 8
 
---local load_job_followers, load_job_monolith_base, load_job_dogs_nest1
+local state_zombied_wait  = 0
+local state_zombied_scene = 1
+local state_zombied_fight = 2
+local state_zombied_guard = 3
+
+zombied_in_combat = {}
 
 local gulags = {}
 
@@ -23,11 +28,23 @@ end
 function f_predicate2(obj)
     local t = obj:best_weapon()
     if t then
-        printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
+        --printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
 	    return obj:profile_name() == "pri_stalker_veteran" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --and t and t:animation_slot() == "4"
 	else
 	    return false
 	end
+end
+
+function f_predicate3(obj)
+	return obj:clsid() == clsid.controller_s
+end
+
+function f_predicate4(obj)
+    if obj:clsid() == clsid.script_stalker or obj:clsid() == clsid.stalker then
+        local prof = obj:profile_name()
+	    return prof == "pri_zombied" or prof == "pri_zombied_veteran"
+	end
+	return false
 end
 
 --------------------------------------------------------------------------
@@ -481,6 +498,90 @@ function load_job_ambush7(sj, gname, type, squad, groups)
     end
 end
 
+function load_job_zombied(sj, gname, type, squad, groups)
+    local i = 0
+    for i = 1, 3 do
+        --- state: wait
+	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_wait", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_wait},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_base_restr",
+		    predicate = f_predicate3
+	    }
+	    table.insert(sj, t)
+        --- state: scene
+	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_scene", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_scene},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_base_restr",
+		    predicate = f_predicate3
+	    }
+        table.insert(sj, t)
+        --- state: fight
+	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_fight", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_fight},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_base_restr",
+		    predicate = f_predicate3
+	    }
+        table.insert(sj, t)
+        --- state: guard
+	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_guard", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_guard},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_base_restr",
+		    predicate = f_predicate3
+	    }
+        table.insert(sj, t)
+    end
+    --local wait_jobs = {}
+    for i = 1, 7 do
+        --- state: wait
+	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_wait", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_wait},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_base_restr",
+		    predicate = f_predicate4
+	    }
+	    table.insert(sj, t)
+	    --table.insert(wait_jobs, t)
+        --- state: scene
+	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_scene", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_scene},
+		    squad = squad, group = groups[1],
+		    in_rest = gname .. "_base_restr", out_rest = "",
+		    predicate = f_predicate4
+	    }
+        table.insert(sj, t)
+        --- state: fight
+	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_fight", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_fight},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = "",
+		    predicate = f_predicate4
+	    }
+        table.insert(sj, t)
+        --- state: guard
+	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_guard", 
+		    idle = 0,
+		    prior = 1, state = {state_zombied_guard},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_base_restr",
+		    predicate = f_predicate4
+	    }
+        table.insert(sj, t)
+    end
+    --wait_jobs[1].dependent = "logic@" .. gname .. "_controller1_wait"
+    --wait_jobs[2].dependent = "logic@" .. gname .. "_controller1_wait"
+end
+
 function load_job_monolith_base(sj, gname, type, squad, groups)
 end
 
@@ -596,6 +697,31 @@ function check_state_ambush7(gulag)
 	return gulag.state
 end
 
+function check_state_zombied(gulag)
+	local state = gulag.state
+	local actor = db.actor
+    if actor:has_info("pri_zombied_scene_start") then
+        if actor:dont_has_info("pri_zombied_scene_end") then
+            return state_zombied_scene
+        --elseif actor:has_info("pri_zombied_actor_near1") or
+        --       actor:has_info("pri_zombied_actor_near2") or
+        --       actor:has_info("pri_zombied_actor_near3") or
+        --       actor:has_info("pri_zombied_actor_near4") or
+        --       actor:has_info("pri_zombied_actor_near5") or
+        --       actor:has_info("pri_zombied_actor_near6") or
+        --       actor:has_info("pri_zombied_actor_near7") or
+        --       actor:has_info("pri_zombied_actor_near8") or
+        --       actor:has_info("pri_zombied_actor_near9") or
+        --       actor:has_info("pri_zombied_actor_near10")
+        elseif table.getn(zombied_in_combat) > 0 then
+            return state_zombied_fight
+        else
+            return state_zombied_guard
+        end
+    end
+    return state
+end
+
 function check_state_monolith_base(gulag)
     return 0
 end
@@ -648,32 +774,37 @@ end
 
 --------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
---[[
-	if gulag_type == "pri_followers" then return npc_community == "stalker"
-	end
-]]
     local g = gulags[gulag_type]
-    if g then return npc_community == g[3] end
+    if g then
+        for i, v in pairs(g[3]) do
+            if npc_community == v then
+                return true
+            end
+        end
+    end
 
 	return false
 end
 
 function checkMonster(npc_community, gulag_type)
---[[
-    if gulag_type == "pri_dogs_nest1" then return npc_community == "dog"
-    end
-]]
     local g = gulags[gulag_type]
-    if g then return npc_community == g[3] end
+    if g then
+        for i, v in pairs(g[3]) do
+            if npc_community == v then
+                return true
+            end
+        end
+    end
 
     return false
 end
 
 --------------------------------------------------------------------------
-gulags.pri_followers        = {load_job_followers,      check_state_followers,      "stalker"}
-gulags.pri_ambush7          = {load_job_ambush7,        check_state_ambush7,        "monolith", load_ltx_ambush7}
-gulags.pri_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  "monolith"}
-gulags.pri_dogs_nest1       = {load_job_dogs_nest1,     check_state_dogs_nest1,     "dog"}
+gulags.pri_followers        = {load_job_followers,      check_state_followers,      {"stalker"}}
+gulags.pri_ambush7          = {load_job_ambush7,        check_state_ambush7,        {"monolith"}}
+gulags.pri_zombied          = {load_job_zombied,        check_state_zombied,        {"zombied", "controller"}}
+gulags.pri_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {"monolith"}}
+gulags.pri_dogs_nest1       = {load_job_dogs_nest1,     check_state_dogs_nest1,     {"dog"}}
 
 --printf("gulag <pri>: table -")
 --print_table(gulags)

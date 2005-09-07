@@ -139,7 +139,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_move             = true
 ;no_rotate           = true
 target              = 807
-anim                = assault_fire
+anim                = threat_fire
 on_timer            = 5000 | walker@pri_followers_leader_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -566,7 +566,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_move             = true
 ;no_rotate           = true
 target              = 807
-anim                = assault_fire
+anim                = threat_fire
 on_timer            = 5000 | walker@pri_followers_nap1_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -759,7 +759,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_move             = true
 ;no_rotate           = true
 target              = 807
-anim                = assault_fire
+anim                = threat_fire
 on_timer            = 5000 | walker@pri_followers_nap2_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -1179,12 +1179,302 @@ path_look           = monolith7_look
 
 
 ;-------------------------------------------------------------------------------------------------
-;--- Monsters ----------------------------------------------------------------------------------
+;--- Zombied
+;-------------------------------------------------------------------------------------------------
+
+;-------------------------------------------------------------------------------------------------
+;--- CONTROLLERS: COMMON -------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[pri_zombied_death]
+on_info                 = %=pri_zombied_in_combat_dec%
+
+[mob_camp@pri_zombied_controllers_wait]
+path_look               = controllers_look
+path_home               = controllers_home
+time_change_point       = 30000
+;home_min_radius         = 10
+;home_max_radius         = 20
+
+[mob_remark@pri_zombied_controllers_fight]
+anim                    = stand_idle_0, stand_idle_1, stand_idle_2, stand_idle_3
+on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%
+on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%
+
+[mob_camp@pri_zombied_controllers_guard]
+path_look               = controllers_look
+path_home               = controllers_home
+time_change_point       = 30000
+on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%
+on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%
+
+;-------------------------------------------------------------------------------------------------
+;--- CONTROLLER1: WAIT ---------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_controller1_wait]
+active                  = mob_camp@pri_zombied_controllers_wait
+
+;--- CONTROLLER1: SCENE --------------------------------------------------------------------------
+[logic@pri_zombied_controller1_scene]
+active                  = nil
+
+;--- CONTROLLER1: FIGHT --------------------------------------------------------------------------
+[logic@pri_zombied_controller1_fight]
+active                  = mob_remark@pri_zombied_controllers_fight
+mob_death               = pri_zombied_death
+
+;--- CONTROLLER1: GUARD --------------------------------------------------------------------------
+[logic@pri_zombied_controller1_guard]
+active                  = mob_camp@pri_zombied_controllers_guard
+mob_death               = pri_zombied_death
+
+;-------------------------------------------------------------------------------------------------
+;--- CONTROLLER2: WAIT ---------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_controller2_wait]
+active                  = mob_camp@pri_zombied_controllers_wait
+
+;--- CONTROLLER2: SCENE --------------------------------------------------------------------------
+[logic@pri_zombied_controller2_scene]
+active                  = nil
+
+;--- CONTROLLER2: FIGHT --------------------------------------------------------------------------
+[logic@pri_zombied_controller2_fight]
+active                  = mob_remark@pri_zombied_controllers_fight
+mob_death               = pri_zombied_death
+
+;--- CONTROLLER2: GUARD --------------------------------------------------------------------------
+[logic@pri_zombied_controller2_guard]
+active                  = mob_camp@pri_zombied_controllers_guard
+mob_death               = pri_zombied_death
+
+;-------------------------------------------------------------------------------------------------
+;--- CONTROLLER3: WAIT ---------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_controller3_wait]
+active                  = mob_camp@pri_zombied_controllers_wait
+
+;--- CONTROLLER3: SCENE --------------------------------------------------------------------------
+[logic@pri_zombied_controller3_scene]
+active                  = nil
+
+;--- CONTROLLER3: FIGHT --------------------------------------------------------------------------
+[logic@pri_zombied_controller3_fight]
+active                  = mob_remark@pri_zombied_controllers_fight
+mob_death               = pri_zombied_death
+
+;--- CONTROLLER3: GUARD --------------------------------------------------------------------------
+[logic@pri_zombied_controller3_guard]
+active                  = mob_camp@pri_zombied_controllers_guard
+mob_death               = pri_zombied_death
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIERS: COMMON ----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[combat_zombied]
+combat_type             = zombied
+
+[follower@pri_zombied_victim_wait]
+;leader                  = 810
+distance                = 2
+
+[remark@pri_zombied_soldiers]
+anim                    = wait
+on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%
+on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER1: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier1_wait]
+active                  = nil ;follower@pri_zombied_victim_wait
+on_combat               = combat_zombied
+
+;--- SOLDIER1: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier1_scene]
+active                  = walker@pri_zombied_soldier1_scene
+on_death                = victim1_death
+combat_ignore           = combat_ignore
+on_combat               = combat_zombied
+
+[victim1_death]
+on_info                 = {+pri_zombied_victim2_dead} %+pri_zombied_scene_end%, %+pri_zombied_victim1_dead%
+
+[walker@pri_zombied_soldier1_scene]
+path_walk               = victim1_walk
+path_look               = victim1_look
+on_signal               = arrived | nil %=psi_hit_npc(1)%
+combat_ignore_cond      = always
+
+;--- SOLDIER1: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier1_fight]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER1: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier1_guard]
+active                  = nil
+on_combat               = combat_zombied
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER2: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier2_wait]
+active                  = nil ;follower@pri_zombied_victim_wait
+on_combat               = combat_zombied
+
+;--- SOLDIER2: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier2_scene]
+active                  = walker@pri_zombied_soldier2_scene
+on_death                = victim2_death
+combat_ignore           = combat_ignore
+on_combat               = combat_zombied
+
+[victim2_death]
+on_info                 = {+pri_zombied_victim1_dead} %+pri_zombied_scene_end%, %+pri_zombied_victim2_dead%
+
+[walker@pri_zombied_soldier2_scene]
+path_walk               = victim2_walk
+path_look               = victim2_look
+on_signal               = arrived | nil %=psi_hit_npc(1)%
+combat_ignore_cond      = always
+
+;--- SOLDIER2: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier2_fight]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER2: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier2_guard]
+active                  = nil
+on_combat               = combat_zombied
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER3: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier3_wait]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER3: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier3_scene]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER3: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier3_fight]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;--- SOLDIER3: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier3_guard]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER4: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier4_wait]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER4: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier4_scene]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER4: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier4_fight]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;--- SOLDIER4: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier4_guard]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER5: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier5_wait]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER5: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier5_scene]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER5: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier5_fight]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;--- SOLDIER5: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier5_guard]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER6: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier6_wait]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER6: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier6_scene]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER6: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier6_fight]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;--- SOLDIER6: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier6_guard]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;-------------------------------------------------------------------------------------------------
+;--- SOLDIER7: WAIT ------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------
+[logic@pri_zombied_soldier7_wait]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER7: SCENE -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier7_scene]
+active                  = nil
+on_combat               = combat_zombied
+
+;--- SOLDIER7: FIGHT -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier7_fight]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+;--- SOLDIER7: GUARD -----------------------------------------------------------------------------
+[logic@pri_zombied_soldier7_guard]
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
+on_combat               = combat_zombied
+
+
+;-------------------------------------------------------------------------------------------------
+;--- Monsters ------------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 
 ;-------------------------------------------------------------------------------------------------
 ;--- Dogs ----------------------
 ;-------------------------------------------------------------------------------------------------
-
 [logic@pri_dogs_nest1]
 active = nil
