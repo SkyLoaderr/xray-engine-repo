@@ -380,7 +380,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 
 	m_character_name = selected_char.Name();
 	
-	if(1|| !stricmp(m_character_name.c_str(),"GENERATE_NAME") ){
+	if( !stricmp(m_character_name.c_str(),"GENERATE_NAME") ){
 		//select name and lastname
 		static u32 name_cnt			= pSettings->r_u32("stalker_names","name_cnt");
 		static u32 last_name_cnt	= pSettings->r_u32("stalker_names","last_name_cnt");
