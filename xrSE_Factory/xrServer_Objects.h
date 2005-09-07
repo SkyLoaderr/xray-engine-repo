@@ -124,7 +124,7 @@
 // 105 = CSE_ALifeTraderAbstract		added full name
 
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(104)
+#define SPAWN_VERSION	u16(105)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

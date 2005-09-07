@@ -133,6 +133,13 @@ struct CLoader {
 		stream.r_stringZ				(data);
 	}
 
+	IC	static void load_data(xr_string &data, M &stream, const P &p)
+	{
+		shared_str						S;
+		stream.r_stringZ				(S);
+		data							= *S;
+	}
+
 	template <typename T1, typename T2>
 	IC	static void load_data(std::pair<T1,T2> &data, M &stream, const P &p)
 	{

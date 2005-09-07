@@ -92,6 +92,11 @@ struct CSaver {
 		stream.w_stringZ				(data);
 	}
 
+	IC	static void save_data(const xr_string &data, M &stream, const P &p)
+	{
+		stream.w_stringZ				(data.c_str());
+	}
+
 	template <typename T1, typename T2>
 	IC	static void save_data(const std::pair<T1,T2> &data, M &stream, const P &p)
 	{
