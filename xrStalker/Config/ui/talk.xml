@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<!-- ICONS OF CHARACTERS -->	
-	<static_icon x="27" y="22" width="143" height="199">
-		<texture>ui\ui_trade_character</texture>
-	</static_icon>
-	<static_icon x="843" y="22" width="143" height="199">
-		<texture mirror="h" width="141" height="199">ui\ui_trade_character</texture>
-	</static_icon>
 
+	<left_character_icon x="27" y="22" width="143" height="199">
+		<texture>ui\ui_trade_character</texture>
+	</left_character_icon>
+	
+	<right_character_icon x="843" y="22" width="143" height="199">
+		<texture mirror="h" width="141" height="199">ui\ui_trade_character</texture>
+	</right_character_icon>
+	
 	<!-- BUTTONS -->
 	<button x="437" y="726" width="138" height="47" hR="0" hB="0" hG="0">
 		<texture>ui\ui_button_01</texture>
