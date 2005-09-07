@@ -121,7 +121,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Просто сталкер.</bio>
@@ -145,7 +145,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_killer_specnaz" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -176,7 +176,7 @@
 	
 	<!---------------------------BANDIT NOVICE----------------------->
 	<specific_character id="esc_bandit_novice_default1" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -204,7 +204,7 @@
 </specific_character>
 
 	<specific_character id="esc_bandit_novice_default2" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -234,7 +234,7 @@
 	</specific_character>
 
 	<specific_character id="esc_bandit_novice_default3" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -263,7 +263,7 @@
 	
 	
 	<specific_character id="esc_stalker_novice_default1" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -290,7 +290,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default2" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -317,7 +317,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default3" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -346,7 +346,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default4" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -373,7 +373,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default5" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -400,7 +400,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default6" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -429,7 +429,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default9" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -456,7 +456,7 @@
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default10" team_default = "1">
-		<name>Неизвестный новичок</name>
+		<name>GENERATE_NAME</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -484,7 +484,7 @@
 	
 	
 	<specific_character id="esc_soldier_commander" team_default = "1">
-		<name>Командир</name>
+		<name>GENERATE_NAME</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -512,7 +512,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -540,7 +540,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default2" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -568,7 +568,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default3" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -596,7 +596,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default4" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
@@ -624,7 +624,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default5" team_default = "1">
-		<name>Рядовой солдат</name>
+		<name>GENERATE_NAME</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -653,7 +653,7 @@
 	
 	
 	<specific_character id="esc_soldier_specnaz_default1" team_default = "1">
-		<name>Неизвестный военный</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -681,7 +681,7 @@
 	</specific_character>
 	
 		<specific_character id="esc_soldier_specnaz_default2" team_default = "1">
-		<name>Неизвестный военный</name>
+		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -709,7 +709,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_killer_master" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
