@@ -267,9 +267,9 @@ void	CWeaponMounted::detach_Actor		()
 	CHolderCustom::detach_Actor();
 	// disable actor rotate callback
 	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_x_bone);	
-	biX.set_callback		(bctDummy,0,0);
+	biX.reset_callback		();
 	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(rotate_y_bone);	
-	biY.set_callback		(bctDummy,0,0);
+	biY.reset_callback		();
 	// enable shell callback
 	m_pPhysicsShell->EnabledCallbacks(TRUE);
 	

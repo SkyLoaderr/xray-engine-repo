@@ -190,7 +190,7 @@ void	CCar::net_Destroy()
 	if(m_bone_steer!=BI_NONE)
 	{
 
-		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(bctDummy,0,0);
+		pKinematics->LL_GetBoneInstance(m_bone_steer).reset_callback();
 
 	}
 	inherited::net_Destroy();

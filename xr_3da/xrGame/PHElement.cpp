@@ -218,7 +218,7 @@ void		CPHElement::Deactivate()
 	CKinematics* K=m_shell->PKinematics();
 	if(K)
 	{
-		K->LL_GetBoneInstance(m_SelfID).set_callback(bctDummy,0,0);
+		K->LL_GetBoneInstance(m_SelfID).reset_callback();
 	}
 }
 

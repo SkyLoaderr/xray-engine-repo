@@ -914,10 +914,10 @@ void	CActor::ResetCallbacks()
 	u16 spine1_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	u16 head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(bctDummy,0,0);
-	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(bctDummy,0,0);
-	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(bctDummy,0,0);
-	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(bctDummy,0,0);
+	V->LL_GetBoneInstance(u16(spine0_bone)).reset_callback	();
+	V->LL_GetBoneInstance(u16(spine1_bone)).reset_callback	(bctDummy,0,0);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).reset_callback(bctDummy,0,0);
+	V->LL_GetBoneInstance(u16(head_bone)).reset_callback	(bctDummy,0,0);
 }
 
 void	CActor::OnChangeVisual()

@@ -128,9 +128,9 @@ void CCarWeapon::SetBoneCallbacks()
 void CCarWeapon::ResetBoneCallbacks()
 {
 	CBoneInstance& biX		= smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
-	biX.set_callback		(bctDummy,0,0);
+	biX.reset_callback		();
 	CBoneInstance& biY		= smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
-	biY.set_callback		(bctDummy,0,0);
+	biY.reset_callback		();
 
 //	m_object->PPhysicsShell()->EnabledCallbacks(TRUE);
 }
