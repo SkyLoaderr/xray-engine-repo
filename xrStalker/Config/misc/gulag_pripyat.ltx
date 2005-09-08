@@ -1277,6 +1277,10 @@ combat_type             = zombied
 ;leader                  = 810
 distance                = 2
 
+[remark@pri_zombied_soldier_wait]
+no_move                 = true
+anim                    = wait
+
 [remark@pri_zombied_soldiers]
 anim                    = wait
 on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%
@@ -1286,8 +1290,14 @@ on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%
 ;--- SOLDIER1: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_wait]
-active                  = nil ;follower@pri_zombied_victim_wait
+active                  = walker@pri_zombied_soldier1_wait
+combat_ignore           = combat_ignore
 on_combat               = combat_zombied
+
+[walker@pri_zombied_soldier1_wait]
+path_walk               = victim1_wait_walk
+path_look               = victim1_wait_look
+combat_ignore_cond      = always
 
 ;--- SOLDIER1: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_scene]
@@ -1319,8 +1329,14 @@ on_combat               = combat_zombied
 ;--- SOLDIER2: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_wait]
-active                  = nil ;follower@pri_zombied_victim_wait
+active                  = walker@pri_zombied_soldier2_wait
+combat_ignore           = combat_ignore
 on_combat               = combat_zombied
+
+[walker@pri_zombied_soldier2_wait]
+path_walk               = victim2_wait_walk
+path_look               = victim2_wait_look
+combat_ignore_cond      = always
 
 ;--- SOLDIER2: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_scene]
@@ -1352,7 +1368,7 @@ on_combat               = combat_zombied
 ;--- SOLDIER3: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier3_wait]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
 
 ;--- SOLDIER3: SCENE -----------------------------------------------------------------------------
@@ -1376,7 +1392,7 @@ on_combat               = combat_zombied
 ;--- SOLDIER4: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier4_wait]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
 
 ;--- SOLDIER4: SCENE -----------------------------------------------------------------------------
@@ -1400,7 +1416,7 @@ on_combat               = combat_zombied
 ;--- SOLDIER5: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier5_wait]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
 
 ;--- SOLDIER5: SCENE -----------------------------------------------------------------------------
@@ -1424,7 +1440,7 @@ on_combat               = combat_zombied
 ;--- SOLDIER6: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier6_wait]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
 
 ;--- SOLDIER6: SCENE -----------------------------------------------------------------------------
@@ -1448,7 +1464,7 @@ on_combat               = combat_zombied
 ;--- SOLDIER7: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier7_wait]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
 
 ;--- SOLDIER7: SCENE -----------------------------------------------------------------------------
