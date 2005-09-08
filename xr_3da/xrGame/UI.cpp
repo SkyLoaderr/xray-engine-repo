@@ -12,6 +12,7 @@
 #include "game_cl_base.h"
 #include "ui/UIMainIngameWnd.h"
 #include "ui/UIMessagesWindow.h"
+#include "ui/UIPdaWnd.h"
 
 #define MSGS_OFFS 510
 
@@ -105,9 +106,9 @@ void CUI::UIOnFrame()
 
 bool CUI::Render()
 {
-	if (pUIGame) pUIGame->Render	();
+	if (pUIGame) 
+		pUIGame->Render	();
 
-	//----------
 	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor)
 	{
@@ -117,25 +118,22 @@ bool CUI::Render()
 			UIMainIngameWnd->Draw();
 			m_pMessagesWnd->Draw();
 		}
-		else
-		{
-			m_pMessagesWnd->DrawPdaMessages();			
-//			UIMainIngameWnd->DrawPdaMessages();
+		else{
+			CUIGameSP* gSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if (gSP){
+				if (!gSP->PdaMenu->GetVisible())
+					m_pMessagesWnd->Draw();
+			}
+			else
+				m_pMessagesWnd->Draw();
+
 		}
-//render cursor only when it visible
-//		if(GetUICursor()->IsVisible())
-//            GetUICursor()->Render();
 	}
 	else
 		m_pMessagesWnd->Draw();
-
-	
-
 	DoRenderDialogs();
-	//render cursor only when it visible
 	if(GetUICursor()->IsVisible())
         GetUICursor()->Render();
-
 	return false;
 }
 bool	CUI::IR_OnMouseWheel			(int direction)

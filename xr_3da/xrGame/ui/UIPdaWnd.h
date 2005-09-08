@@ -72,7 +72,7 @@ public:
 
 	virtual void 			SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-//	virtual void 			Draw				();
+	virtual void 			Draw				();
 	virtual void 			Update				();
 	virtual void 			Show				();
 	virtual void 			Hide				();

@@ -29,6 +29,7 @@
 #include "UIActorInfo.h"
 #include "UIEventsWnd.h"
 #include "../object_broker.h"
+#include "UIMessagesWindow.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -329,4 +330,9 @@ void CUIPdaWnd::OnNewArticleAdded	()
 void CUIPdaWnd::OnContactsChanged	()
 {
 	UIPdaContactsWnd->Reload		();
+}
+
+void CUIPdaWnd::Draw(){
+	CUIDialogWnd::Draw();
+	HUD().GetUI()->m_pMessagesWnd->DrawPdaMessages();
 }
