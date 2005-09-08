@@ -44,8 +44,9 @@ CScriptIniFile *create_ini_file	(LPCSTR ini_string)
 		(CScriptIniFile*)
 		xr_new<CInifile>(
 			&IReader			(
-			(void*)ini_string,
-			xr_strlen(ini_string)
+				(void*)ini_string,
+				xr_strlen(ini_string)
+			)
 		)
 	);
 }
