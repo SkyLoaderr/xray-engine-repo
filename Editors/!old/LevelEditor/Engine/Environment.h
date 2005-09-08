@@ -28,7 +28,6 @@ public:
 	Fvector3			fog_color;
 	float				fog_density;
 	Fvector3			ambient;
-	Fvector3			lmap_color;
 	Fvector3			sky_color;		
 	Fvector3			hemi_color;
 
@@ -90,7 +89,6 @@ public:
     float				wind_direction;  
     
 	Fvector3			ambient		;
-	Fvector3			lmap_color	;
 	Fvector4			hemi_color	;	// w = R2 correction
 	Fvector3			sun_color	;
 	Fvector3			sun_dir		;

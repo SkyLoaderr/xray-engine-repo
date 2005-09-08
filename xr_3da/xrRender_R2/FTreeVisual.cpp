@@ -121,7 +121,6 @@ void FTreeVisual::Render	(float LOD)
 							xform_v.mul_43	(RCache.get_xform_view(),xform);
 							RCache.set_c	(m_xform_v,	xform_v);									// matrix
 #endif
-	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 	float	s				= ps_r__Tree_SBC;
 	RCache.set_c			(m_xform,	xform);														// matrix
 	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);									// consts/scale
@@ -131,8 +130,9 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_c_scale,	s*c_scale.rgb.x,	s*c_scale.rgb.y,	s*c_scale.rgb.z,	s*c_scale.hemi);	// scale
 	RCache.set_c			(c_c_bias,	s*c_bias.rgb.x,		s*c_bias.rgb.y,		s*c_bias.rgb.z,		s*c_bias.hemi);		// bias
 #else
-	RCache.set_c			(c_c_scale,	s*c_scale.rgb.x*desc.lmap_color.x,					s*c_scale.rgb.y*desc.lmap_color.y,					s*c_scale.rgb.z*desc.lmap_color.z,					s*c_scale.hemi);	// scale
-	RCache.set_c			(c_c_bias,	s*c_bias.rgb.x*desc.lmap_color.x + desc.ambient.x,	s*c_bias.rgb.y*desc.lmap_color.y + desc.ambient.y,	s*c_bias.rgb.z*desc.lmap_color.z+desc.ambient.z,	s*c_bias.hemi);		// bias
+	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
+	RCache.set_c			(c_c_scale,	s*c_scale.rgb.x,					s*c_scale.rgb.y,					s*c_scale.rgb.z,				s*c_scale.hemi);	// scale
+	RCache.set_c			(c_c_bias,	s*c_bias.rgb.x + desc.ambient.x,	s*c_bias.rgb.y + desc.ambient.y,	s*c_bias.rgb.z+desc.ambient.z,	s*c_bias.hemi);		// bias
 #endif
 	RCache.set_c			(c_c_sun,	s*c_scale.sun,  s*c_bias.sun,0,0);							// sun
 }

@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 void	CEnvModifier::load	(IReader* fs)
 {
+	Fvector			dummy;
 	fs->r_fvector3	(position);
 	radius			= fs->r_float	();
 	power			= fs->r_float	();
@@ -19,7 +20,7 @@ void	CEnvModifier::load	(IReader* fs)
 	fs->r_fvector3	(fog_color);
 	fog_density		= fs->r_float	();
 	fs->r_fvector3	(ambient);
-	fs->r_fvector3	(lmap_color);
+	fs->r_fvector3	(dummy);
 	hemi_color.set	(0,0,0);
 	sky_color.set	(0,0,0);
 }
@@ -33,7 +34,7 @@ float	CEnvModifier::sum	(CEnvModifier& M, Fvector3& view)
 	fog_color.mad		(M.fog_color,_power);
 	fog_density			+=	M.fog_density*_power;
 	ambient.mad			(M.ambient,_power);
-	lmap_color.mad		(M.lmap_color,_power);
+//	lmap_color.mad		(M.lmap_color,_power);
 	sky_color.mad		(M.sky_color,_power);
 	hemi_color.mad		(M.hemi_color,_power);
 	return				_power;
@@ -116,7 +117,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	wind_velocity			= pSettings->r_float	(S,"wind_velocity");
 	wind_direction			= deg2rad(pSettings->r_float(S,"wind_direction"));
 	ambient					= pSettings->r_fvector3	(S,"ambient");
-	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
+//	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
 	hemi_color				= pSettings->r_fvector4	(S,"hemi_color");
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
@@ -131,7 +132,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	C_CHECK					(fog_color	);
 	C_CHECK					(rain_color	);
 	C_CHECK					(ambient	);
-	C_CHECK					(lmap_color	);
+//	C_CHECK					(lmap_color	);
 	C_CHECK					(hemi_color	);
 	C_CHECK					(sun_color	);
 }
@@ -194,7 +195,7 @@ void CEnvDescriptorMixer::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescripto
 	// colors
 	sky_color.lerp			(A.sky_color,B.sky_color,f).add(M.sky_color).mul(_power);
 	ambient.lerp			(A.ambient,B.ambient,f).add(M.ambient).mul(_power);
-	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
+//	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
 	hemi_color.x			+= M.hemi_color.x;
 	hemi_color.y			+= M.hemi_color.y; 

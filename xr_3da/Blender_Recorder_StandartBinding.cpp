@@ -160,17 +160,6 @@ class cl_sun0_dir_e	: public R_constant_setup {
 };	static cl_sun0_dir_e		binder_sun0_dir_e;
 
 //
-class cl_lm_color	: public R_constant_setup {
-	u32			marker;
-	Fvector4	result;
-	virtual void setup	(R_constant* C)	{
-		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
-			result.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z,	0);
-		}
-		RCache.set_c	(C,result);
-	}
-};	static cl_lm_color		binder_lm_color;
 class cl_amb_color	: public R_constant_setup {
 	u32			marker;
 	Fvector4	result;

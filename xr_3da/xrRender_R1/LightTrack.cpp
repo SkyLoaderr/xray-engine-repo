@@ -237,12 +237,12 @@ void	CROS_impl::update	(IRenderable* O)
 			lacc.y		+=	lights[lit].color.g*a;
 			lacc.z		+=	lights[lit].color.b*a;
 		}
-		lacc.x		*= desc.lmap_color.x;
-		lacc.y		*= desc.lmap_color.y;
-		lacc.z		*= desc.lmap_color.z;
+//		lacc.x		*= desc.lmap_color.x;
+//		lacc.y		*= desc.lmap_color.y;
+//		lacc.z		*= desc.lmap_color.z;
 //		Msg				("- rgb[%f,%f,%f]",lacc.x,lacc.y,lacc.z);
 		accum.add		(lacc);
-	} else 			accum.mad	( desc.lmap_color,	 .1f );
+	} else 			accum.set	( .1f, .1f, .1f );
 	approximate				=	accum;
 
 	if (_object)		{ _object->setEnabled(_enabled); }
