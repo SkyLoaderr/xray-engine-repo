@@ -102,23 +102,11 @@ protected:
 	bool was_control				;
 	bool b_stop_control				;
 	bool b_depart_control			;
-
-
-
 	bool b_jump						;
 	bool b_jumping					;
-
 	bool b_clamb_jump				;
-
-
-
-
-
-
 	bool b_external_impulse;
 	bool b_death_pos;
-
-
 
 	dReal m_friction_factor;
 

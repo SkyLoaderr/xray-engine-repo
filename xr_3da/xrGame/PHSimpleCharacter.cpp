@@ -1369,6 +1369,7 @@ void CPHSimpleCharacter::DeathPosition(Fvector& deathPos)
 	else
 	{
 		deathPos.set(cast_fv(dBodyGetPosition(m_body)));
+		if(!_valid(deathPos))deathPos.set(m_safe_position);
 	}
 }
 void	CPHSimpleCharacter::	AddControlVel						(const Fvector& vel)
