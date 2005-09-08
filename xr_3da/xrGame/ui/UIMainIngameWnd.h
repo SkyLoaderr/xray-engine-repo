@@ -226,8 +226,7 @@ protected:
 	void				UpdateFlashingIcons();
 
 	// first - иконка, second - анимация
-	typedef				std::pair<CUIStatic*, CUIColorAnimatorWrapper> IconInfo;
-	DEF_MAP				(FlashingIcons, EFlashingIcons, IconInfo);
+	DEF_MAP				(FlashingIcons, EFlashingIcons, CUIStatic*);
 	FlashingIcons		m_FlashingIcons;
 
 	//для текущего активного актера и оружия
@@ -246,9 +245,6 @@ protected:
 	void				RenderQuickInfos();
 	// Просчитать анимационные параметры фейда для айтемов листа
 	void				FadeUpdate(CUIListWnd *pWnd);//, int fadeDuration);
-
-	// Мигалка для контактов
-	CUIColorAnimatorWrapper		UIContactsAnimation;
 
 private:
 	// Блок операций работы с текстурами-эффектами ударов когтей на экране(как в Doom 3)

@@ -128,8 +128,11 @@ void CGameTaskManager::SetTaskState(CGameTask* t, int objective_num, ETaskState 
 
 
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP) 
+	if(pGameSP) {
 		pGameSP->PdaMenu->UIEventsWnd->Reload();
+		HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+	}
+
 }
 
 void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskState state)

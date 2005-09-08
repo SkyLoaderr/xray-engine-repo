@@ -180,11 +180,21 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	InitMultiText(xml_doc, path, index, pWnd);
 	InitTexture	 (xml_doc, path, index, pWnd);
 
-	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
+	int flag = xml_doc.ReadAttribInt(path, index, "heading", 0);
 	pWnd->EnableHeading( (flag)?true:false);
 
-	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
-	pWnd->SetLightAnim(str_flag);
+	LPCSTR str_flag				= xml_doc.ReadAttrib(path, index, "light_anim",		"");
+	int flag_cyclic				= xml_doc.ReadAttribInt(path, index, "la_cyclic",	1);
+	int flag_text				= xml_doc.ReadAttribInt(path, index, "la_text",		1);
+	int flag_texture			= xml_doc.ReadAttribInt(path, index, "la_texture",	1);
+	int flag_alpha				= xml_doc.ReadAttribInt(path, index, "la_alpha",	0);
+
+	
+	pWnd->SetLightAnim(str_flag,	(flag_cyclic)?true:false, 
+									(flag_alpha)?true:false,
+									(flag_text)?true:false,
+									(flag_texture)?true:false
+									);
 	
 	return true;
 }
@@ -666,8 +676,8 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 	bool status = true;
 
 	status &= InitWindow(xml_doc, path, index, pWnd);
-	int tabsCount	= xml_doc.GetNodesNum(path, 0, "button");
-	int radio		= xml_doc.ReadAttribInt(path, 0, "radio");
+	int tabsCount	= xml_doc.GetNodesNum(path, index, "button");
+	int radio		= xml_doc.ReadAttribInt(path, index, "radio");
 
 	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
 	xml_doc.SetLocalRoot(tab_node);

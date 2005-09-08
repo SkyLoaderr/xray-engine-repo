@@ -67,16 +67,17 @@ public:
 
 
 	// own
-	void			SetLightAnim			(LPCSTR lanim);
-	virtual void	Init					(LPCSTR tex_name, float x, float y, float width, float height);	
-			void	InitEx					(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height);
+			void		SetLightAnim				(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor);
+			void		ResetAnimation				();
+	virtual void		Init						(LPCSTR tex_name, float x, float y, float width, float height);	
+			void		InitEx						(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height);
 
-	virtual void	DrawTexture				();
-	virtual void	DrawText				();
+	virtual void		DrawTexture					();
+	virtual void		DrawText					();
 
 
-	virtual void	OnFocusReceive			();
-	virtual void	OnFocusLost				();
+	virtual void		OnFocusReceive				();
+	virtual void		OnFocusLost					();
 
 	//IUITextControl
 	virtual void			SetText					(LPCSTR str);
@@ -165,6 +166,8 @@ protected:
 	bool m_bAvailableTexture;
 	bool m_bTextureEnable;
 	CUIStaticItem m_UIStaticItem;
+
+	Flags8		m_lanimFlags;
 	
 	float m_iTextOffsetX;
 	float m_iTextOffsetY;

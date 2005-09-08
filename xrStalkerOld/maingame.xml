@@ -22,7 +22,7 @@
 		<text font="normal" r="239" g="154" b="29" a="230"></text>
 	</static>	
 	<!-- pda online icon -->
-	<static x="1" y="187" width="200" height="32">
+	<static x="1" y="187" width="200" height="32" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
 		<texture>ui\ui_mg_back_pager</texture>
 		<text x="103" y="2" font="normal" r="239" g="154" b="29" a="230"></text>
 	</static>
@@ -137,7 +137,7 @@
 	
 	<!-- FLASHING ICONS INDICATORS -->
 	<flashing_icons>
-		<flashing_icon x="19" y="220" width="100" height="50" type="pda" period="500">
+		<flashing_icon x="13" y="210" width="80" height="40" type="pda" light_anim="ui_slow_blinking_alpha" stretch="1">
 			<texture x="300" y="650" width="100" height="50">ui\ui_icon_equipment</texture>
 		</flashing_icon>
 	</flashing_icons>

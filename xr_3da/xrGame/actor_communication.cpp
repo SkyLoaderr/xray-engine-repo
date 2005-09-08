@@ -371,15 +371,7 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 
 		if(pGameSP){ 
 			pGameSP->PdaMenu->OnContactsChanged();
-/*
-			u32 cn = GetPDA()->ActiveContactsNum();
-			if(cn>0){
-				string256 text_str;
-				sprintf(text_str, "%d", cn);
-				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(text_str);
-			}else
-				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
-*/
+//			HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
 		}
 	}
 }

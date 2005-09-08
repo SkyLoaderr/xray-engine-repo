@@ -30,6 +30,7 @@
 #include "UIEventsWnd.h"
 #include "../object_broker.h"
 #include "UIMessagesWindow.h"
+#include "UIMainIngameWnd.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -226,7 +227,6 @@ void CUIPdaWnd::Show()
 	InventoryUtilities::SendInfoToActor("ui_pda");
 
 	inherited::Show();
-//	m_pActiveDialog->Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -234,9 +234,10 @@ void CUIPdaWnd::Show()
 void CUIPdaWnd::Hide()
 {
 	inherited::Hide();
-//	m_pActiveDialog->Show(false);
 
 	InventoryUtilities::SendInfoToActor("ui_pda_hide");
+	HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, false);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -320,9 +321,6 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaTabs section)
 
 void CUIPdaWnd::OnNewArticleAdded	()
 {
-/*	if(UIDiaryWnd->IsShown() &&	UIDiaryWnd->UIActorDiaryWnd.IsShown())
-		UIDiaryWnd->ReloadArticles();
-*/
 	if(UIEncyclopediaWnd->IsShown())
 		UIEncyclopediaWnd->ReloadArticles();
 }
@@ -332,7 +330,8 @@ void CUIPdaWnd::OnContactsChanged	()
 	UIPdaContactsWnd->Reload		();
 }
 
-void CUIPdaWnd::Draw(){
+void CUIPdaWnd::Draw()
+{
 	CUIDialogWnd::Draw();
 	HUD().GetUI()->m_pMessagesWnd->DrawPdaMessages();
 }

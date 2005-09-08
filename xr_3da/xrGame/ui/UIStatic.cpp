@@ -15,6 +15,10 @@
 
 const char * const	clDefault	= "default";
 #define CREATE_LINES if (!m_pLines) {m_pLines = xr_new<CUILines>(); m_pLines->SetTextAlignment(CGameFont::alLeft);}
+#define LA_CYCLIC			(1<<0)
+#define LA_ONLYALPHA		(1<<1)
+#define LA_TEXTCOLOR		(1<<2)
+#define LA_TEXTURECOLOR		(1<<3)
 
 CUIStatic:: CUIStatic()
 {
@@ -43,6 +47,7 @@ CUIStatic:: CUIStatic()
 	m_lanim					= NULL;	
 	m_lainm_start_time		= -1.0f;
 	m_pLines				= NULL;
+	m_lanimFlags.zero		();
 }
 
 CUIStatic::~ CUIStatic()
@@ -50,12 +55,19 @@ CUIStatic::~ CUIStatic()
 	xr_delete(m_pLines);
 }
 
-void CUIStatic::SetLightAnim(LPCSTR lanim)
+void CUIStatic::SetLightAnim(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor)
 {
 	if(lanim && lanim[0]!=0)
 		m_lanim	= LALib.FindItem(lanim);
 	else
 		m_lanim	= NULL;
+	
+	m_lanimFlags.zero		();
+
+	m_lanimFlags.set		(LA_CYCLIC,			bCyclic);
+	m_lanimFlags.set		(LA_ONLYALPHA,		bOnlyAlpha);
+	m_lanimFlags.set		(LA_TEXTCOLOR,		bTextColor);
+	m_lanimFlags.set		(LA_TEXTURECOLOR,	bTextureColor);
 }
 
 void CUIStatic::Init(LPCSTR tex_name, float x, float y, float width, float height)
@@ -162,12 +174,31 @@ void CUIStatic::Update()
 	//update light animation if defined
 	if (m_lanim)
 	{
-		if(m_lainm_start_time<0.0f) m_lainm_start_time = Device.fTimeGlobal; 
-		int frame;
-		u32 clr					= m_lanim->CalculateRGB(Device.fTimeGlobal-m_lainm_start_time,frame);
-		SetColor				(clr);
-		SetTextColor			(clr);
+		if(m_lainm_start_time<0.0f)		ResetAnimation	();
+		if(m_lanimFlags.test(LA_CYCLIC) || Device.fTimeGlobal-m_lainm_start_time < m_lanim->Length_sec()){
+
+			int frame;
+			u32 clr					= m_lanim->CalculateRGB(Device.fTimeGlobal-m_lainm_start_time,frame);
+
+			if(m_lanimFlags.test(LA_TEXTURECOLOR))
+				if(m_lanimFlags.test(LA_ONLYALPHA))
+					SetColor				(subst_alpha(GetColor(), color_get_A(clr)));
+				else
+					SetColor				(clr);
+
+			if(m_lanimFlags.test(LA_TEXTCOLOR))
+				if(m_lanimFlags.test(LA_ONLYALPHA))
+					SetTextColor				(subst_alpha(GetTextColor(), color_get_A(clr)));
+				else
+					SetTextColor				(clr);
+			
+		}
 	}
+}
+
+void CUIStatic::ResetAnimation()
+{
+	m_lainm_start_time = Device.fTimeGlobal;
 }
 
 void CUIStatic::SetFont(CGameFont* pFont){
