@@ -20,6 +20,7 @@ CSoundPlayer::CSoundPlayer			(CObject *object)
 	VERIFY							(object);
 	m_object						= object;
 	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
+	m_sound_prefix					= "";
 }
 
 CSoundPlayer::~CSoundPlayer			()
@@ -37,13 +38,13 @@ void CSoundPlayer::clear			()
 
 void CSoundPlayer::reinit			()
 {
-	m_sound_prefix					= "";
 }
 
 void CSoundPlayer::reload			(LPCSTR section)
 {
 	VERIFY							(m_playing_sounds.empty());
 	clear							();
+	m_sound_prefix					= "";
 }
 
 void CSoundPlayer::unload			()
