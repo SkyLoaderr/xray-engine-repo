@@ -472,10 +472,13 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 }
 
 static	CTimer	phase_timer		;
+extern ENGINE_API BOOL g_appLoaded = FALSE;
+
 void CApplication::LoadBegin	()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference)	{
+		g_appLoaded				= FALSE;
 		phase_timer.Start	();
 		::Sound->set_volume (0.f);
 		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
@@ -492,6 +495,7 @@ void CApplication::LoadEnd		()
 	if (0==ll_dwReference)		{
 		::Sound->set_volume		(1.f);
 		Msg						("* phase time: %d ms",phase_timer.GetElapsed_ms());
+		g_appLoaded				= TRUE;
 	}
 }
 

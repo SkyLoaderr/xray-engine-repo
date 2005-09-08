@@ -21,7 +21,11 @@ void set_device_paused(CRenderDevice* d, bool b)
 {
 	Device.Pause(b);
 }
-
+extern ENGINE_API BOOL g_appLoaded;
+bool is_app_ready()
+{
+	return !!g_appLoaded;
+}
 void CScriptRenderDevice::script_register(lua_State *L)
 {
 	module(L)
@@ -42,6 +46,7 @@ void CScriptRenderDevice::script_register(lua_State *L)
 			.def("time_global",						&CRenderDevice::TimerAsync)
 			.def_readonly("precache_frame",			&CRenderDevice::dwPrecacheFrame)
 			.def("is_paused",						&is_device_paused)
-			.def("pause",							&set_device_paused)
+			.def("pause",							&set_device_paused),
+			def("app_ready",						&is_app_ready)
 	];
 }
