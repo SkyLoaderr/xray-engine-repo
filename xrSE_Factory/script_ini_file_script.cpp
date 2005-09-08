@@ -10,6 +10,7 @@
 #include "script_ini_file.h"
 #include "script_space.h"
 #include <luabind/out_value_policy.hpp>
+#include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
 
@@ -72,7 +73,7 @@ void CScriptIniFile::script_register(lua_State *L)
 			.def("r_vector",		&CScriptIniFile::r_fvector3)
 			.def("r_line",			&::r_line, out_value(_4) + out_value(_5)),
 
-		def("system_ini",			&get_system_ini)
+		def("system_ini",			&get_system_ini),
 		def("create_ini_file",		&create_ini_file,	adopt(result))
 	];
 }
