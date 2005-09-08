@@ -46,10 +46,10 @@
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
       [spawn] \n
-      wpn_colt1911 \n
-      ammo_11.43x23_hydro  = 1 \n
-      wpn_spas12 \n
-      ammo_12x76_dart = 1 \n
+	  wpn_beretta \n
+      ammo_9x19_pbp = 1 \n
+      wpn_groza = 1, scope launcher cond=0.9 \n
+      ammo_9x39_sp5 = 1 \n
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
