@@ -121,6 +121,8 @@
     <rank>50</rank>
     <reputation>0</reputation>
 
+	<panic_threshold>0.0</panic_threshold>
+
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
       [spawn] \n
