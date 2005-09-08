@@ -492,7 +492,8 @@ bool CRelationMapLocation::Update()
 		if(!pEnt || !pAct)	return false;
 		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
 		CSE_ALifeCreatureAbstract*		pCreature = smart_cast<CSE_ALifeCreatureAbstract*>(pEnt);
-		bAlive = pCreature->g_Alive		();
+		if(pCreature) //maybe trader ?
+			bAlive = pCreature->g_Alive		();
 	}else{
 		CInventoryOwner*			pEnt = NULL;
 		CInventoryOwner*			pAct = NULL;
