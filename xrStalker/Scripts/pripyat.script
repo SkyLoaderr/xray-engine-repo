@@ -5,20 +5,22 @@ local object_list		= {}
 local smart_terrains	= {}
 
 object_list["test1"] = {
-	"test1_dog1",
-	"test1_dog2",
-	"test1_dog3",
-	"test1_dog4",
-	"test1_dog5",
-	"test1_dog6",
-	"test1_dog7",
-	"test1_dog8"
+	"pri_controller1",
+	"pri_controller2",
+	"pri_controller3",
+	"pri_stalker_zombied1",
+	"pri_stalker_zombied2",
+	"pri_stalker_zombied3",
+	"pri_stalker_zombied4",
+	"pri_stalker_zombied5",
+	"pri_stalker_zombied6",
+	"pri_stalker_zombied7"
 }
 
 
 -- define smart terrains
 smart_terrains["test1"] = {
-	"dar_burer_ring"
+	"pri_zombied"
 }
 
 ------------------------------------------------------------------------------
