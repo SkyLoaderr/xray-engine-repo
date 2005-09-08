@@ -1,0 +1,38 @@
+-----------------------------------------------------------------------------------
+-- Test Definitions
+-----------------------------------------------------------------------------------
+local object_list		= {}
+local smart_terrains	= {}
+
+object_list["test1"] = {
+	"test1_dog1",
+	"test1_dog2",
+	"test1_dog3",
+	"test1_dog4",
+	"test1_dog5",
+	"test1_dog6",
+	"test1_dog7",
+	"test1_dog8"
+}
+
+
+-- define smart terrains
+smart_terrains["test1"] = {
+	"dar_burer_ring"
+}
+
+------------------------------------------------------------------------------
+-- Base Run function (load extern)
+------------------------------------------------------------------------------
+function r(index)
+	test_utils.setup_test(object_list, smart_terrains)
+	test_utils.run_test(index)
+end
+
+------------------------------------------------------------------------------
+-- Main function (called on level load)
+------------------------------------------------------------------------------
+function main()
+	test_utils.setup_test(object_list, smart_terrains)
+	test_utils.run_global()
+end
