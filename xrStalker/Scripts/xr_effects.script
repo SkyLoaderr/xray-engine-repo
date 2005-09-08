@@ -238,7 +238,7 @@ function psi_hit_npc(actor, npc,p)
 --[[
 	if p[1] then
 		npc.psy_health = p[1] * 0.01
-		printf( "psy h = %f", npc.psy_health )
+		printf("effects <psy>: h = %f", npc.psy_health)
 	end]]
 end
 
