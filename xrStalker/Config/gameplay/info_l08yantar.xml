@@ -1,1 +1,14 @@
 <?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+
+	<!-- Yantar zombied respawn -->
+	<info_portion id="yan_zombied_respawn_01"></info_portion>
+	<info_portion id="yan_zombied_respawn_02"></info_portion>
+	<info_portion id="yan_zombied_respawn_03"></info_portion>
+	<info_portion id="yan_zombied_respawn_04"></info_portion>
+	<info_portion id="yan_zombied_respawn_05"></info_portion>
+	<info_portion id="yan_zombied_respawn_06"></info_portion>
+	<info_portion id="yan_zombied_respawn_07"></info_portion>
+    
+</game_information_portions>
