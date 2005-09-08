@@ -212,7 +212,7 @@ void	CBlender_Compile::SetMapping	()
 	r_Constant				("L_sun_color",		&binder_sun0_color);
 	r_Constant				("L_sun_dir_w",		&binder_sun0_dir_w);
 	r_Constant				("L_sun_dir_e",		&binder_sun0_dir_e);
-	r_Constant				("L_lmap_color",	&binder_lm_color);
+//	r_Constant				("L_lmap_color",	&binder_lm_color);
 	r_Constant				("L_hemi_color",	&binder_hemi_color);
 	r_Constant				("L_ambient",		&binder_amb_color);
 
