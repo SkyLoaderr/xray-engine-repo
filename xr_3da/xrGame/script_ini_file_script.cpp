@@ -36,6 +36,21 @@ bool r_line(CScriptIniFile *self, LPCSTR S, int L,	xr_string &N, xr_string &V)
 	return			(true);
 }
 
+#pragma warning(push)
+#pragma warning(disable:4238)
+CScriptIniFile *create_ini_file	(LPCSTR ini_string)
+{
+	return			(
+		(CScriptIniFile*)
+		xr_new<CInifile>(
+			&IReader			(
+			(void*)ini_string,
+			xr_strlen(ini_string)
+		)
+	);
+}
+#pragma warning(pop)
+
 void CScriptIniFile::script_register(lua_State *L)
 {
 	module(L)
@@ -57,5 +72,6 @@ void CScriptIniFile::script_register(lua_State *L)
 			.def("r_line",			&::r_line, out_value(_4) + out_value(_5)),
 
 		def("system_ini",			&get_system_ini)
+		def("create_ini_file",		&create_ini_file,	adopt(result))
 	];
 }
