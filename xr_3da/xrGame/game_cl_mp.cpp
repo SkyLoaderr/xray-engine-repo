@@ -100,11 +100,11 @@ bool	game_cl_mp::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
 
 bool	game_cl_mp::OnKeyboardPress			(int key)
 {
-	if (kJUMP == key)
-	{
-		StartStopMenu(m_pSpeechMenu, false);
-		return true;
-	}
+//	if (kJUMP == key)
+//	{
+//		StartStopMenu(m_pSpeechMenu, false);
+//		return true;
+//	}
 	if ( kJUMP == key || kWPN_FIRE == key )
 	{
 		bool b_need_to_send_ready = false;
