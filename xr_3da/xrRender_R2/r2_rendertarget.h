@@ -176,7 +176,6 @@ public:
 	void						accum_reflected			(light* L);
 	void						phase_bloom				();
 	void						phase_luminance			();
-	void						phase_distortion		();
 	void						phase_combine			();
 	void						phase_pp				();
 

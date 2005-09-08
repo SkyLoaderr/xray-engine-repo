@@ -810,9 +810,6 @@
 				RelativePath="r2_rendertarget_phase_combine.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_phase_distortion.cpp">
-			</File>
-			<File
 				RelativePath=".\r2_rendertarget_phase_luminance.cpp">
 			</File>
 			<File
