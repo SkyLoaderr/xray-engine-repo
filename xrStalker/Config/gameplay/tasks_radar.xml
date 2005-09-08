@@ -1,4 +1,3 @@
-
 	<game_task id="rad_find_stalkers">
 		<title>rad_find_stalkers</title>
 		<objective>
@@ -27,4 +26,18 @@
 		</objective>
 	</game_task>
 
-
+	<game_task id="rad_get_to_aes">
+		<title>rad_get_to_aes</title>
+		<objective>
+			<text>rad_get_to_aes_0</text>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>rad_get_to_aes_1</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>rad_get_to_aes_2</text>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>

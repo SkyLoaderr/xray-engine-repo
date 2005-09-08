@@ -27,3 +27,13 @@
 	<string id="rad_find_treasurer_1">
 		<text>Вернуться к вожаку</text>
 	</string>
+
+	<string id="rad_get_to_aes">
+		<text>Добраться до ЧАЭС</text>
+	</string>
+	<string id="rad_get_to_aes_0">
+		<text>Пробиться в ЧАЭС</text>
+	</string>
+	<string id="rad_get_to_aes_1">
+		<text>Найти вход в саркофаг</text>
+	</string>
