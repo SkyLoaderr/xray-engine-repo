@@ -59,7 +59,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
 	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 	self.object:set_callback(callback.task_state, self.task_callback, self)
-	self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
+	--self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
