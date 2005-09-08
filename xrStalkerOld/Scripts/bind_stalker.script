@@ -59,6 +59,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
 	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 	self.object:set_callback(callback.task_state, self.task_callback, self)
+	self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
@@ -102,6 +103,12 @@ function actor_binder:task_callback(id_task, subtask, id_state)
 		news_manager.send_task(db.actor, "update")
 	end
 end
+
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:map_location_added_callback(spot_type_str, object_id)
+	news_manager.send_task(db.actor, "new")
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 local drop_location = nil
 function drop_item(item, who)
