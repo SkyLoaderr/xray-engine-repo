@@ -24,9 +24,9 @@ damage              	= damage_bones
 
 fuel_tank         		= 80         	; L
 fuel_consumption  		= 7		       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 30        	; horse_power (kW=hp*0.808) max power
+engine_power      		= 10        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3700       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 3400       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.02
 power_decrement_factor	= 0.2
@@ -72,21 +72,21 @@ headlights         		= f1,f2
 
 [f1]
 bone               		= left_light
-color              		= 0.6,0.6,0.6,0.5
+color              		= 1.0,1.0,1.0,1.0
 range              		= 25
-cone_angle         		= 80
+cone_angle         		= 35
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
-glow_radius        		= 0.5
+glow_radius        		= 1.5
 
 [f2]
 bone               		= right_light
-color              		= 0.6,0.6,0.6,0.6
+color              		= 1.0,1.0,1.0,1.0
 range              		= 25
-cone_angle         		= 80
+cone_angle         		= 35
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
-glow_radius        		= 0.5
+glow_radius        		= 1.5
 
 [car_sound]
 snd_volume         			= 1.0
@@ -95,8 +95,8 @@ engine_sound_start_dellay	= 0.5
 engine_start				= car\test_car_start
 engine_stop					= car\test_car_stop
 transmission_switch			= car\car_gearchange
-explosion_sound    			= weapons\heli_explosion
-relative_pos       			= 0.,0.5,1.5.
+explosion_sound    			= 
+relative_pos       			= 0.0,0.5,1.5.
 
 ;-------------------------------------------------------------------------------
 ;------ animations params ------------------------------------------------------
@@ -113,20 +113,21 @@ driver_animation_type 	= 0	;тип анимаций актера для данной машины.
 
 [damage_particles]
 
-explosion_particles     = explosions\expl_car
+explosion_particles     = explosions\expl_vehichels
 car_damage_particles1   = explosions\expl_car_smoke_small
 car_damage_particles2   = explosions\expl_car_smoke_big
-wheels_damage_particles1	= vehiclefx\exhaust_1
-wheels_damage_particles2	= vehiclefx\exhaust_1
+wheels_damage_particles1 = vehiclefx\exhaust_1
+wheels_damage_particles2 = vehiclefx\exhaust_1
 
-particle_bones1         = front_bamper;root;left_door,right_door
-particle_bones2         = root;kabina;kabina,front_bamper,
+particle_bones1         = front_bamper
+particle_bones2         = root
 
 ;-------------------------------------------------------------------------------
 ;------ particle bones ---------------------------------------------------------
 
 [particle_bones]
 root					=  0,-0.5,1
+front_bamper      		=  0,0,0
 
 ;-------------------------------------------------------------------------------
 ;------ damage items -----------------------------------------------------------
@@ -143,14 +144,14 @@ right_door        		= 2000
 ;------ collisiondamage --------------------------------------------------------
 
 [collision_damage]
-root                  	= 0.0001
-front_bamper          	= 0.0001
-left_door             	= 0.0001
-right_door             	= 0.0001
-back_left_wheel       	= 0.00001
-back_right_wheel      	= 0.00001
-front_left_wheel      	= 0.00001
-front_right_wheel     	= 0.00001
+root                  	= 0.001
+front_bamper          	= 0.001
+left_door             	= 0.001
+right_door             	= 0.001
+back_left_wheel       	= 0.0001
+back_right_wheel      	= 0.0001
+front_left_wheel      	= 0.0001
+front_right_wheel     	= 0.0001
 
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
@@ -163,14 +164,14 @@ front_right_wheel     	= 0.00001
 default       			= 1, -1, 0.1
 
 [immunities]
-burn_immunity         	= 0.5       ;коэффициенты иммунитета
+burn_immunity         	= 1.0       ;коэффициенты иммунитета
 strike_immunity       	= 0.01
 shock_immunity        	= 0.01
 wound_immunity        	= 0.01
 radiation_immunity    	= 0.01
 telepatic_immunity    	= 0.01
 chemical_burn_immunity 	= 0.01
-explosion_immunity    	= 0.1
+explosion_immunity    	= 1.0
 fire_wound_immunity   	= 0.01
 
 ;-------------------------------------------------------------------------------
@@ -210,8 +211,8 @@ period_number	    	=  50
 ;------ Others params ----------------------------------------------------------
 
 [air_resistance]
-linear_factor           = 500.f	;
-angular_factor          = 25500.f	;
+linear_factor           = 5.f		;
+angular_factor          = 500.f		;
 
 [wheels_params]
 damping_factor          = 0.5		;
@@ -245,6 +246,30 @@ hand_break_torque		= 0.025		; сила торможения пробелом (по умолчанию = break_tor
 damping_factor          = 1.5		;
 spring_factor           = 0.1		;
 friction_factor         = 1.6		;
+
+;-------------------------------------------------------------------------------
+;------ destroyed part ---------------------------------------------------------
+
+[destroyed]
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+
+[autoremove_parts]
+time					 = 30
+;-------------------------------------------------------------------------------
+;--- part impulse_transition ---------------------------------------------------
+
+[impulse_transition_to_parts]
+random_min               = 10.0    ; величина случайно направленного импульса пропорционально массе нового объекта
+random_hit_imp           = 1.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
+;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
+imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
+lv_transition_factor     = 0.5     ; коэффициент передачи линейной скорости
+av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
 
 ;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
