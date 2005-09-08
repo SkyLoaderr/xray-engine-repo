@@ -313,7 +313,7 @@ u32& CUIStatic::GetTextColorRef(){
 
 void CUIStatic::SetText(LPCSTR str)
 {
-	if (!str || 0 == str[0]) 
+	if (!str ) 
 		return;
 	CREATE_LINES;
 	m_pLines->SetText(str);

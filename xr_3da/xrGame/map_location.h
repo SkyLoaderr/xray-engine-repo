@@ -82,6 +82,11 @@ public:
 	virtual void			load							(IReader &stream);
 	virtual bool			CanBeSelected					()						{return true;}
 	virtual bool			CanBeUserRemoved				()						{return false;}
+
+#ifdef DEBUG
+	virtual void			Dump							(){};
+#endif
+
 };
 
 class CRelationMapLocation :public CMapLocation
@@ -94,6 +99,9 @@ public:
 							CRelationMapLocation			(const shared_str& type, u16 object_id, u16 pInvOwnerActorID, u16 pInvOwnerEntityID);
 	virtual					~CRelationMapLocation			();
 	virtual bool			Update							(); //returns actual
+#ifdef DEBUG
+	virtual void			Dump							();
+#endif
 };
 
 class CUserDefinedMapLocation :public CMapLocation
@@ -114,4 +122,7 @@ public:
 
 	virtual bool			CanBeSelected					()						{return true;}
 	virtual bool			CanBeUserRemoved				()						{return true;}
+#ifdef DEBUG
+	virtual void			Dump							();
+#endif
 };

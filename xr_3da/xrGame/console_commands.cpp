@@ -1531,6 +1531,23 @@ public:
 		if(A)
 			A->DumpInfo();
 	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"dumps all infoportions that actor have"); 
+	}
+};
+#include "map_manager.h"
+class CCC_DumpMap : public IConsole_Command {
+public:
+	CCC_DumpMap	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void	Execute				(LPCSTR args) {
+		Level().MapManager().Dump();
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"dumps all currentmap locations"); 
+	}
+
 };
 
 class CCC_DebugFonts : public IConsole_Command {
@@ -2131,6 +2148,8 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
 
 	CMD1(CCC_DumpInfos,				"dump_infos");
+	CMD1(CCC_DumpMap,				"dump_map");
+
 #endif
 
 	CMD1(CCC_KickPlayer,	"sv_kick"					);		

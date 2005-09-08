@@ -106,6 +106,7 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:map_location_added_callback(spot_type_str, object_id)
+	if device().precache_frame >1 then return end
 	news_manager.send_task(db.actor, "new")
 end
 

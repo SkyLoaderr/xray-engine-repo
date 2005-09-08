@@ -25,4 +25,7 @@ public:
 	void					RemoveMapLocation			(CMapLocation* ml);
 	CMapLocation*			GetMapLocation				(const shared_str& spot_type, u16 id);
 	void					DisableAllPointers			();
+#ifdef DEBUG
+	void					Dump						();
+#endif
 };

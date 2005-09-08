@@ -1,5 +1,13 @@
-function main000()
-	db.actor:give_talk_message("general_new_task", "ui\\ui_icons_task", 150,100,50,50)
+function main()
+   local m_heliGO = level.debug_object( "helicopter" )
+   local m_heliObject = m_heliGO:get_helicopter()
+   
+   if m_heliObject:isVisible(db.actor) then
+		printf("actor is visible")
+	else
+		printf("actor is not visible")
+	end
+   
 end
 
 

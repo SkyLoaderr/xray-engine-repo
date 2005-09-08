@@ -368,8 +368,19 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 
 	if( HUD().GetUI() ){
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP) 
+
+		if(pGameSP){ 
 			pGameSP->PdaMenu->OnContactsChanged();
+/*
+			u32 cn = GetPDA()->ActiveContactsNum();
+			if(cn>0){
+				string256 text_str;
+				sprintf(text_str, "%d", cn);
+				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(text_str);
+			}else
+				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
+*/
+		}
 	}
 }
 
@@ -383,12 +394,23 @@ void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 			ALife::ERelationType tt = (ALife::ERelationType)t;
 			Level().MapManager().RemoveMapLocation(RELATION_REGISTRY().GetSpotName(tt),	GO->ID());
 		}
+		Level().MapManager().RemoveMapLocation("deadbody_location",	GO->ID());
 	};
 
 	if( HUD().GetUI() ){
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP) 
+		if(pGameSP){
 			pGameSP->PdaMenu->OnContactsChanged();
+/*
+			u32 cn = GetPDA()->ActiveContactsNum();
+			if(cn>0){
+				string256 text_str;
+				sprintf(text_str, "%d", cn);
+				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(text_str);
+			}else
+				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
+*/
+		}
 	}
 
 }

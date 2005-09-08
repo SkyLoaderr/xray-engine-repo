@@ -463,6 +463,7 @@ CMapSpot* CMapLocation::GetSpotBorder(CMapSpot* sp)
 	return NULL;
 }
 
+
 CRelationMapLocation::CRelationMapLocation			(const shared_str& type, u16 object_id, u16 pInvOwnerActorID, u16 pInvOwnerEntityID)
 :CMapLocation(*type,object_id)
 {
@@ -477,6 +478,8 @@ CRelationMapLocation::~CRelationMapLocation			()
 bool CRelationMapLocation::Update()
 {
 	if (false==inherited::Update() ) return false;
+	
+	bool bAlive = true;
 
 	ALife::ERelationType relation = ALife::eRelationTypeFriend;
 
@@ -488,6 +491,8 @@ bool CRelationMapLocation::Update()
 		pAct = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerActorID,true));
 		if(!pEnt || !pAct)	return false;
 		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
+		CSE_ALifeCreatureAbstract*		pCreature = smart_cast<CSE_ALifeCreatureAbstract*>(pEnt);
+		bAlive = pCreature->g_Alive		();
 	}else{
 		CInventoryOwner*			pEnt = NULL;
 		CInventoryOwner*			pAct = NULL;
@@ -496,9 +501,16 @@ bool CRelationMapLocation::Update()
 		pAct = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_pInvOwnerActorID));
 		if(!pEnt || !pAct)	return false;
 		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
+		CEntityAlive* pEntAlive = smart_cast<CEntityAlive*>(pEnt);
+		bAlive = !!pEntAlive->g_Alive		();
 	}
+	shared_str sname;
 
-	const shared_str& sname = RELATION_REGISTRY().GetSpotName(relation);
+	if(bAlive==false)
+		sname = "deadbody_location";
+	else
+		sname = RELATION_REGISTRY().GetSpotName(relation);
+
 	if(m_curr_spot_name != sname){
 		LoadSpot(*sname, true);
 		m_curr_spot_name = sname;
@@ -506,6 +518,13 @@ bool CRelationMapLocation::Update()
 	return true;
 }
 
+#ifdef DEBUG
+void CRelationMapLocation::Dump							()
+{
+	inherited::Dump();
+	Msg("--CRelationMapLocation m_curr_spot_name=[%s]",*m_curr_spot_name);
+}
+#endif
 
 CUserDefinedMapLocation::CUserDefinedMapLocation		(LPCSTR type, u16 object_id)
 :inherited(type, object_id)
@@ -562,3 +581,10 @@ void CUserDefinedMapLocation::load				(IReader &stream)
 	m_position_global	= m_position;
 }
 
+#ifdef DEBUG
+void CUserDefinedMapLocation::Dump							()
+{
+	inherited::Dump();
+	Msg("--CUserDefinedMapLocation");
+}
+#endif

@@ -57,8 +57,8 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 				// _new _
 				if (!bDeny)
 				{
-					feel_touch_new			(O);
 					feel_touch.push_back	(O);
+					feel_touch_new			(O);
 				}
 			}
 		}
@@ -71,8 +71,8 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 		if (O->getDestroy() || !feel_touch_contact(O) || (std::find(n_begin,n_end,O) == n_end))	// Don't touch candidates for destroy
 		{
 			// _delete_
-			feel_touch_delete		(O);
 			feel_touch.erase		(feel_touch.begin()+d);
+			feel_touch_delete		(O);
 			d--;
 		}
 	}

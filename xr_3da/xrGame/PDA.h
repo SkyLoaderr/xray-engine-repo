@@ -63,7 +63,6 @@ public:
 	virtual bool IsOn() {return !m_bTurnedOff;}
 	virtual bool IsOff() {return m_bTurnedOff;}
 
-//	virtual void SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_id);
 	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_id);
 
 	virtual bool IsNewMessage(){return m_bNewMessage;}
@@ -72,17 +71,10 @@ public:
 	virtual bool NeedToAnswer(u32 pda_ID);
 	virtual bool WaitForReply(u32 pda_ID);
 
-	const xr_vector<CObject*>&	ActiveContacts				()	{return	feel_touch;}
-	void			ActiveContacts		(xr_vector<CPda*>& res);
-	CPda*		GetPdaFromOwner								(CObject* owner);
-	virtual u32 ActiveContactsNum() {return ActiveContacts().size();}
-
-	//список PDA в зоне достигаемости
-//	PDA_LIST m_PDAList;
-
-	//список только что вошедших и вышедших PDA из зоны
-//	PDA_LIST m_NewPDAList;
-//	PDA_LIST m_DeletedPDAList;
+			xr_vector<CObject*>				ActiveContacts			();
+			void							ActiveContacts			(xr_vector<CPda*>& res);
+			CPda*							GetPdaFromOwner			(CObject* owner);
+	virtual u32								ActiveContactsNum		()							{return ActiveContacts().size();}
 
 	//для ведения логов переговоров
 	//с другими PDA в зоне досягаемости
@@ -94,8 +86,6 @@ public:
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
-//	virtual void		SetInfoPortion (INFO_ID);
-//	virtual INFO_ID		GetInfoPortion ();
 
 	virtual LPCSTR		Name			();
 	virtual LPCSTR		NameComplex		();
@@ -114,8 +104,6 @@ protected:
 	//первый владелец PDA
 	u16									m_idOriginalOwner;
 	SPECIFIC_CHARACTER_ID				m_SpecificChracterOwner;
-	//присоединенный info portion
-	//	INFO_ID		m_InfoPortion;
 	//полное название PDA с именем владельца
 	xr_string							m_sFullName;
 

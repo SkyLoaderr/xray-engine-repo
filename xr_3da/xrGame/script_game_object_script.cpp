@@ -55,7 +55,8 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("on_item_take",			int(GameObject::eOnItemTake)),
 				value("on_item_drop",			int(GameObject::eOnItemDrop)),
 				value("script_animation",		int(GameObject::eScriptAnimation)),
-				value("task_state",				int(GameObject::eTaskStateChange))
+				value("task_state",				int(GameObject::eTaskStateChange)),
+				value("map_location_added",		int(GameObject::eMapLocationAdded))
 			]
 	];
 }

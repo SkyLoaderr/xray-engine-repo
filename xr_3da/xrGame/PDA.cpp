@@ -112,17 +112,6 @@ void CPda::feel_touch_new(CObject* O)
 	CInventoryOwner* pNewContactInvOwner	= smart_cast<CInventoryOwner*>(O);
 	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
 	pOwner->NewPdaContact					(pNewContactInvOwner);
-/*	
-	if(pInvOwner && pInvOwner->IsActivePDA() && this != pInvOwner->GetPDA()) 
-	{
-		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
-		if(std::find(m_PDAList.begin(), m_PDAList.end(), pInvOwner->GetPDA())==m_PDAList.end())
-			m_PDAList.push_back(pInvOwner->GetPDA());
-
-		m_NewPDAList.push_back(pInvOwner->GetPDA());
-		GetOriginalOwner()->NewPdaContact(pInvOwner);
-	}
-*/
 }
 
 void CPda::feel_touch_delete(CObject* O) 
@@ -130,43 +119,6 @@ void CPda::feel_touch_delete(CObject* O)
 	CInventoryOwner* pLostContactInvOwner	= smart_cast<CInventoryOwner*>(O);
 	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
 	pOwner->LostPdaContact					(pLostContactInvOwner);
-/*
-	if(pInvOwner) 
-	{
-		if(pInvOwner->GetPDA())
-		{
-			if(bDebug) HUD().outMessage(0xffffffff,cName(),"a PDA left radius of sight");
-			PDA_LIST_it it = std::find(m_PDAList.begin(), 
-										m_PDAList.end(), 
-										pInvOwner->GetPDA());
-			if(it !=m_PDAList.end())
-			m_PDAList.erase(it);
-
-			if (!pInvOwner->GetPDA()->getDestroy()) 
-			{
-				m_DeletedPDAList.push_back(pInvOwner->GetPDA());
-			}
-			GetOriginalOwner()->LostPdaContact(pInvOwner);
-		}
-		//для случая перехода PDA в offline
-		else
-		{
-			for(PDA_LIST_it it = m_PDAList.begin();	m_PDAList.end() != it; 	++it)
-			{
-				CPda* pPda = (*it);
-				if(O->ID() == pPda->GetOriginalOwnerID())
-				{
-					m_PDAList.erase(it);
-					if (!O->getDestroy()) {
-						m_DeletedPDAList.push_back(pPda);
-					}
-					GetOriginalOwner()->LostPdaContact(pPda->GetOriginalOwner());
-					break;
-				}
-			}
-		}
-	}
-*/
 }
 
 BOOL CPda::feel_touch_contact(CObject* O) 
@@ -178,7 +130,7 @@ BOOL CPda::feel_touch_contact(CObject* O)
 		pInvOwner->IsActivePDA())
 	{
 		CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
-		if(pEntityAlive && pEntityAlive->g_Alive() && !pEntityAlive->getDestroy())
+		if(pEntityAlive /*&& pEntityAlive->g_Alive()*/ && !pEntityAlive->getDestroy())
 			return TRUE;
 	}
 	
@@ -458,7 +410,22 @@ CPda* CPda::GetPdaFromOwner(CObject* owner)
 void CPda::ActiveContacts(xr_vector<CPda*>& res)
 {
 	res.clear				();
-	xr_vector<CObject*>::iterator it= feel_touch.begin();
-	for(;it!=feel_touch.end();++it)
+	xr_vector<CObject*>		v = ActiveContacts();
+	xr_vector<CObject*>::iterator it= v.begin();
+	for(;it!=v.end();++it)
 		res.push_back(GetPdaFromOwner(*it));
+}
+
+xr_vector<CObject*>	CPda::ActiveContacts			()							
+{
+	xr_vector<CObject*> res;
+
+	xr_vector<CObject*>::iterator it= feel_touch.begin();
+	for(;it!=feel_touch.end();++it){
+		CEntityAlive* pEA = smart_cast<CEntityAlive*>(*it);
+		if(!!pEA->g_Alive())
+			res.push_back(*it);
+	}
+
+	return	res;
 }

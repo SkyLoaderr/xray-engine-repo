@@ -811,6 +811,9 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_s16LastHittedElement = -1;
 	m_bWasHitted = false;
 
+	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) )
+		g_actor = this;
+
 	if (GameID() == GAME_SINGLE){
 		Level().MapManager().AddMapLocation("actor_location",ID());
 		Level().MapManager().AddMapLocation("actor_location_p",ID());
@@ -822,8 +825,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	spatial.type |=STYPE_REACTTOSOUND;
 	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
 
-	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) )
-		g_actor = this;
 	
 	if (Level().IsDemoPlay())
 	{

@@ -555,12 +555,17 @@ void CUIMainIngameWnd::Update()
 
 	if(!m_bShowHudInfo) return;
 
-	if (GameID() == GAME_SINGLE)
+
+	if (GameID() == GAME_SINGLE && !(Device.dwFrame%30) )
 	{
-		if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
+		if(m_pActor->GetPDA())
 		{
-			sprintf(text_str, "%d", m_pActor->GetPDA()->ActiveContactsNum());
-			UIPdaOnline.SetText(text_str);
+			u32 cn = m_pActor->GetPDA()->ActiveContactsNum();
+			if(cn>0){
+				sprintf(text_str, "%d", cn);
+				UIPdaOnline.SetText(text_str);
+			}else
+				UIPdaOnline.SetText("");
 		}
 		else
 		{
@@ -573,7 +578,6 @@ void CUIMainIngameWnd::Update()
 	if (pItem)
 	{
 		UIArmorBar.Show(true);
-//		UIArmorString.Show(true);
 		UIStaticArmor.Show(true);
 		UIArmorBar.SetProgressPos(static_cast<s16>(pItem->GetCondition() * 100));
 	}

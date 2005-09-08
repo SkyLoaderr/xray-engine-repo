@@ -18,6 +18,7 @@ namespace GameObject {
 		eInventoryInfo,
 		eArticleInfo,
 		eTaskStateChange,
+		eMapLocationAdded,
 
 		eUseObject,
 

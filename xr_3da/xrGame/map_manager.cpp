@@ -9,6 +9,8 @@
 #include "map_location.h"
 #include "GameTaskManager.h"
 #include "xrServer.h"
+#include "game_object_space.h"
+#include "script_callback_ex.h"
 
 struct FindLocationBySpotID{
 	shared_str	spot_id;
@@ -113,6 +115,7 @@ CMapLocation* CMapManager::AddMapLocation(const shared_str& spot_type, u16 id)
 		CMapLocation* l = xr_new<CMapLocation>(*key.spot_id, key.object_id);
 		Locations().push_back( SLocationKey(key.spot_id, key.object_id) );
 		Locations().back().location = l;
+		Actor()->callback(GameObject::eMapLocationAdded)(*spot_type, id);
 		return l;
 	}else
 		(*it).location->AddRef();
@@ -128,6 +131,10 @@ CMapLocation* CMapManager::AddRelationLocation(CInventoryOwner* pInvOwner)
 	CInventoryOwner* pActor = smart_cast<CInventoryOwner*>(Level().CurrentViewEntity());
 	relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, pActor);
 	shared_str sname = RELATION_REGISTRY().GetSpotName(relation);
+
+	CEntityAlive* pEntAlive = smart_cast<CEntityAlive*>(pInvOwner);
+	if( !pEntAlive->g_Alive() ) sname = "deadbody_location";
+
 
 	FindLocationBySpotID key(sname, pInvOwner->object_id());
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
@@ -249,3 +256,16 @@ void CheckUserLocation		(CMapLocation* ml)
 	Actor()->GameTaskManager().RemoveUserTask(ml);
 
 }
+#ifdef DEBUG
+void CMapManager::Dump						()
+{
+	Msg("begin of map_locations dump");
+	Locations_it it = Locations().begin();
+	for(; it!=Locations().end();++it){
+		Msg("spot_type=[%s] object_id=[%d]",*((*it).spot_type), (*it).object_id);
+		(*it).location->Dump();
+	}
+
+	Msg("end of map_locations dump");
+}
+#endif
