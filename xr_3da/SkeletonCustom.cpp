@@ -26,6 +26,14 @@ void		CBoneInstance::set_callback	(u32 Type, BoneCallback C, void* Param, BOOL o
 	Callback_overwrite	= overwrite;
 	Callback_type		= Type;
 }
+void		CBoneInstance::reset_callback()
+{
+	Callback			= 0; 
+	Callback_Param		= 0; 
+	Callback_overwrite	= FALSE;
+	Callback_type		= bctDummy;
+}
+
 void		CBoneInstance::set_param	(u32 idx, float data)
 {
 	VERIFY		(idx<MAX_BONE_PARAMS);
