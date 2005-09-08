@@ -323,6 +323,9 @@ void CUIPdaWnd::OnNewArticleAdded	()
 {
 	if(UIEncyclopediaWnd->IsShown())
 		UIEncyclopediaWnd->ReloadArticles();
+
+	HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+
 }
 
 void CUIPdaWnd::OnContactsChanged	()
