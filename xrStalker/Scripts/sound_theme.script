@@ -190,7 +190,7 @@ function load_sound(obj)
 	theme[obj:id()]["weather"].types["good"]		= load_sound_from_ltx(obj, "weather_good")
 
 	-- состояния тела
-	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle")
+	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle", 5, 10, 75)
 
 	theme[obj:id()]["sleep"]						= load_sound_from_ltx(obj, "state_sleep", 10, 15, 75)
 
@@ -238,6 +238,18 @@ function load_sound(obj)
 	theme[obj:id()]["talk_reject"]					= load_sound_from_ltx(obj, "talk_reject")
 	theme[obj:id()]["talk_abuse"]					= load_sound_from_ltx(obj, "talk_abuse")
 
+	-- реакции на юзание
+	theme[obj:id()]["use_yes_fight"]				= load_sound_from_ltx(obj, "use_yes_fight")
+	theme[obj:id()]["use_yes_sleep"]				= load_sound_from_ltx(obj, "use_yes_sleep")
+	theme[obj:id()]["use_yes_kamp"]					= load_sound_from_ltx(obj, "use_yes_kamp")
+	theme[obj:id()]["use_yes_default"]				= load_sound_from_ltx(obj, "use_yes_default")
+	theme[obj:id()]["use_no_fight"]					= load_sound_from_ltx(obj, "use_no_fight")
+	theme[obj:id()]["use_no_sleep"]					= load_sound_from_ltx(obj, "use_no_sleep")
+	theme[obj:id()]["use_no_weapon"]				= load_sound_from_ltx(obj, "use_no_weapon")
+	theme[obj:id()]["use_no_default"]				= load_sound_from_ltx(obj, "use_no_default")
+	theme[obj:id()]["use_abuse"]					= load_sound_from_ltx(obj, "use_abuse")
+	
+	
 	-- торговля
 	theme[obj:id()]["trade_yes"]					= load_sound_from_ltx(obj, "trade_yes")
 	theme[obj:id()]["trade_no"]						= load_sound_from_ltx(obj, "trade_no")
