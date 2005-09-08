@@ -207,7 +207,9 @@ bool CEditableMesh::LoadMesh(IReader& F){
 		RebuildVMaps();
 	}
 
-//	if (!m_CFModel) GenerateCFModel();
+    if (!EPrefs->object_flags.is(epoDeffLoadRB)) CreateRenderBuffers();
+    if (!EPrefs->object_flags.is(epoDeffLoadCF)) GenerateCFModel();
+
 	return true;
 }
 //----------------------------------------------------

@@ -37,13 +37,11 @@ static float		m_fSoftAngle;
 //----------------------------------------------------
 void CEditableMesh::GenerateCFModel()
 {
-	SPBItem* pb		= UI->ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
 	UnloadCForm		();
 	// Collect faces
 	CDB::Collector CL;
 	// double sided
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-    	pb->Inc		();
 		IntVec& face_lst = sp_it->second;
 		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
@@ -54,7 +52,6 @@ void CEditableMesh::GenerateCFModel()
 	}
 	m_CFModel 		= ETOOLS::create_model(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState.set	(LS_CF_MODEL,TRUE);
-    UI->ProgressEnd	(pb);
 }
 
 void CEditableMesh::RayQuery(SPickQuery& pinf)

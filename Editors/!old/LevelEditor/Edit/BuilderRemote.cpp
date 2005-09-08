@@ -522,11 +522,13 @@ void SceneBuilder::BuildHemiLights(u8 quality, LPCSTR lcontrol)
             sl.data.mul			(it->energy);
         }
     }else{
-        int control_ID	= BuildLightControl(lcontrol);
+        int control_ID		= BuildLightControl(lcontrol);
         l_light_static.push_back(b_light_static());
         b_light_static& sl	= l_light_static.back();
         sl.controller_ID 	= control_ID;
-        sl.data			    = RL;
+	    sl.data.type			= D3DLIGHT_DIRECTIONAL;
+    	sl.data.diffuse.set		(1.f,1.f,1.f,1.f);
+        sl.data.direction.set	(0.f,-1.f,0.f);
     }
 }
 BOOL SceneBuilder::BuildSun(u8 quality, Fvector2 dir)

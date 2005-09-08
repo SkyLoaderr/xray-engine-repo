@@ -17,6 +17,8 @@ enum{
     epoShowHint			= (1<<6),
     epoDrawLOD			= (1<<7),
     epoDiscardInstance	= (1<<8),
+    epoDeffLoadRB		= (1<<9),
+    epoDeffLoadCF		= (1<<10),
 };
 class ECORE_API CCustomPreferences
 {

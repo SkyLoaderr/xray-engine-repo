@@ -129,6 +129,8 @@ void CCustomPreferences::FillProp(PropItemVec& props)
     PHelper().CreateFlag32	(props,"Objects\\Show\\Pivot",					&object_flags, 	epoDrawPivot);
     PHelper().CreateFlag32	(props,"Objects\\Show\\Animation Path",			&object_flags, 	epoDrawAnimPath);
     PHelper().CreateFlag32	(props,"Objects\\Show\\LOD",					&object_flags, 	epoDrawLOD);
+    PHelper().CreateFlag32	(props,"Objects\\Loading\\Deffered Loading RB",	&object_flags, 	epoDeffLoadRB);
+    PHelper().CreateFlag32	(props,"Objects\\Loading\\Deffered Loading CF",	&object_flags, 	epoDeffLoadCF);
 
     PHelper().CreateU32		(props,"Scene\\Common\\Recent Count", 		    &scene_recent_count,0, 		25);
     PHelper().CreateU32		(props,"Scene\\Common\\Undo Level", 		    &scene_undo_level,	0, 		125);

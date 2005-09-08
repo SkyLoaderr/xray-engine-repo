@@ -368,7 +368,7 @@ void CExportSkeleton::SSplit::MakeProgressive()
     for (SkelVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++)
     	VIPM_AppendVertex(vert_it->O,vert_it->UV);
     for (SkelFaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
-    	VIPM_AppendFace(f_it->v[0],f_it->v[1],f_it->v[2]);
+    	VIPM_AppendFace(f_it->v[0],f_it->v[1],f_it->v[2]);       
 
     VIPM_Result* R = VIPM_Convert(u32(-1),1.f,1);
 
