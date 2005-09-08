@@ -230,14 +230,21 @@ BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
-	if (dwFrame!=Device.dwFrame)			BuildState();
+	if (dwFrame != Device.dwFrame)		BuildState	();
+	else	{
+		CKinematics*	K		=		PKinematics	(owner->Visual());
+		if (K->LL_VisibleBoneCount() != models.size())	{
+			// Model changed between ray-picks
+			dwFrame		=  Device.dwFrame-1	;
+			BuildState	()	;
+		}
+	}
 
-	BOOL bHIT = FALSE;
+	BOOL			bHIT	=	FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
 	{
-		if (!I->valid()){
-			continue;
-		}
+		if (!I->valid())						continue;
+
 		float range		= Q.range;
 		if (RAYvsOBB(I->IM,I->B,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)) 
 		{
@@ -354,9 +361,17 @@ BOOL CCF_Rigid::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
 	temp.transform_dir	(dD,Q.dir);
 
 	// 
-	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+	if (!bv_sphere.intersect(dS,dD))		return FALSE;
 
-	if (dwFrame!=Device.dwFrame)			BuildState();
+	if (dwFrame != Device.dwFrame)		BuildState	();
+	else	{
+		CKinematics*	K		=		PKinematics	(owner->Visual());
+		if (K->LL_VisibleBoneCount() != models.size())	{
+			// Model changed between ray-picks
+			dwFrame		=  Device.dwFrame-1	;
+			BuildState	()	;
+		}
+	}
 
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++){
