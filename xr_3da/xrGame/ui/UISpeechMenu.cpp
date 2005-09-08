@@ -7,6 +7,8 @@
 #include <dinput.h>
 #include "../level.h"
 #include "../string_table.h"
+#include "../MainUI.h"
+#include "../HUDManager.h"
 
 CUISpeechMenu::CUISpeechMenu(LPCSTR section_name){
 	m_pList = xr_new<CUIListWnd>();AttachChild(m_pList);m_pList->SetAutoDelete(true);
@@ -16,6 +18,10 @@ CUISpeechMenu::CUISpeechMenu(LPCSTR section_name){
 	float h = xml_doc.ReadAttribFlt("speech_menu",0,"item_height");
 	if (h)
 		m_pList->SetItemHeight(h);
+	// default text settings
+	m_text_color = 0xffffffff;
+	SetFont(UI()->Font()->pArialN21Russian);
+	CUIXmlInit::InitFont(xml_doc,"speech_menu:text",0,m_text_color,m_pFont);	
     InitList(section_name);
 }
 
@@ -26,6 +32,7 @@ void CUISpeechMenu::Init(float x, float y, float width, float height){
 
 void CUISpeechMenu::InitList(LPCSTR section_name){
 	R_ASSERT2(pSettings->section_exist(section_name), section_name);
+	CUIListItem* pItem = NULL;
 
 	string64 phrase;
 	string256 str;
@@ -39,7 +46,11 @@ void CUISpeechMenu::InitList(LPCSTR section_name){
             LPCSTR s = pSettings->r_string(section_name, phrase);
 			_GetItem(s,0,phrase);
 			sprintf(str, "%d. %s",i+1, *st(phrase));
-			m_pList->AddItem<CUIListItem>(str, 0, NULL, 0, -1);
+            pItem = xr_new<CUIListItem>();
+			pItem->SetFont(GetFont());
+			pItem->SetTextColor(m_text_color);
+			pItem->SetText(str);
+			m_pList->AddItem(pItem);
 		}
 		else
 			break;
@@ -48,7 +59,7 @@ void CUISpeechMenu::InitList(LPCSTR section_name){
 
 bool CUISpeechMenu::OnKeyboard(int dik, EUIMessages keyboard_action){
 	if (m_pList->GetItemsCount() < dik - DIK_1 + 1)
-		return false;
+		return CUIDialogWnd::OnKeyboard(dik, keyboard_action);
     if (dik < DIK_1 || dik > DIK_0)
 		return CUIDialogWnd::OnKeyboard(dik, keyboard_action);
 
