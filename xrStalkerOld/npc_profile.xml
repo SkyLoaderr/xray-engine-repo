@@ -439,6 +439,9 @@
 	</character>
 
 	<!-- Zombied -->
+	<character id="pri_zombied_suicide">
+		<class>pri_zombied_suicide</class>
+	</character>
 	<character id="pri_zombied">
 		<class>pri_zombied</class>
 	</character>

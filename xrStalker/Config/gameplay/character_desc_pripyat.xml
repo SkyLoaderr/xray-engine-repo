@@ -215,6 +215,31 @@
 	</specific_character>
 
 <!-------------------------- SOLDIER ----------------------->
+<!---------------------- ZOMBIED SUICIDE ------------------->
+	<specific_character id="pri_zombied_suicide_default1" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<class>pri_zombied_suicide</class>
+		<community>zombied</community>
+		
+		<rank>40</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_fmj = 2 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 <!-------------------------- ZOMBIED ----------------------->
 	<specific_character id="pri_zombied_default1" team_default = "1">
 		<name>Зомбированный сталкер</name>
