@@ -521,7 +521,7 @@ function animation:play_rnd(state, must_play)
 		if anima[r] ~= nil then
 			self.npc:add_animation(anima[r], true)
 			-- добавить рандомный звук
-			if self.mgr.synsound then
+			if self.mgr.synsound and self.npc:active_sound_count() == 0 then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
 				self.sound_played = true		   
 			end
