@@ -31,7 +31,7 @@ void		CBoneInstance::reset_callback()
 	Callback			= 0; 
 	Callback_Param		= 0; 
 	Callback_overwrite	= FALSE;
-	Callback_type		= bctDummy;
+	Callback_type		= 0;
 }
 
 void		CBoneInstance::set_param	(u32 idx, float data)
