@@ -1829,6 +1829,21 @@
 						RelativePath=".\Config\models\vehicles\veh_btr_u_01.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\vehicles\veh_kamaz_u_01.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\vehicles\veh_mi24_u_01.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\vehicles\veh_niva_u_01.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\vehicles\veh_tr13_u_01.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\vehicles\veh_uaz_u_01.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\models\vehicles\veh_zaz_u_01.ltx">
 					</File>
 					<File
