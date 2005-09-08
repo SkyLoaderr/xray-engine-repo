@@ -503,7 +503,8 @@ bool CRelationMapLocation::Update()
 		if(!pEnt || !pAct)	return false;
 		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
 		CEntityAlive* pEntAlive = smart_cast<CEntityAlive*>(pEnt);
-		bAlive = !!pEntAlive->g_Alive		();
+		if(pEntAlive)
+			bAlive = !!pEntAlive->g_Alive		();
 	}
 	shared_str sname;
 
