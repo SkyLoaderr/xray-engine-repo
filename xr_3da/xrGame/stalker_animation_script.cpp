@@ -19,6 +19,19 @@ void CStalkerAnimationManager::script_play_callback(CBlend *blend)
 	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY						(object);
 	CStalkerAnimationManager	&animation_manager = object->animation();
+
+#if 0
+	Msg							(
+		"%6d Script callback [%s]",
+		Device.dwTimeGlobal,
+		animation_manager.script_animations().empty()
+		?
+		"unknown"
+		:
+		animation_manager.m_skeleton_animated->LL_MotionDefName_dbg(animation_manager.script_animations().front().animation())
+	);
+#endif
+
 	if	(
 			animation_manager.script().animation() && 
 			!animation_manager.script_animations().empty() && 

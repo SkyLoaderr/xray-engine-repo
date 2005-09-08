@@ -38,24 +38,17 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 	if (!object().g_Alive())
 		return;
 
-//	Msg			("%s : Adding fiction hit by sound info from stalker %s",*object().cName(),*data->object().cName());
+//	Msg								("%s : Adding fiction hit by sound info from stalker %s",*object().cName(),*data->object().cName());
 
 	if (object().memory().enemy().selected())
 		return;
 
-	squad_mask_type									mask = object().agent_manager().member().mask(&object());
-	MemorySpace::CVisibleObject						*obj = object().memory().visual().visible_object(data->object().memory().enemy().selected());
-	bool											prev = obj ? obj->visible(mask) : false;
-	object().memory().visual().add_visible_object	(data->object().memory().enemy().selected(),.001f,true);
-	MemorySpace::CVisibleObject						*obj1 = object().memory().visual().visible_object(data->object().memory().enemy().selected());
-	obj1->visible									(mask,prev);
+	object().memory().make_object_visible_somewhen	(data->object().memory().enemy().selected());
 
 	const MemorySpace::CHitObject	*m = data->object().memory().hit().hit(data->object().memory().enemy().selected());
 	
 	if (!m)
 		return;
 
-	object().memory().hit().add						(*m);
-	
-//	object().agent_manager().member().register_in_combat(m_object);
+	object().memory().hit().add		(*m);
 }

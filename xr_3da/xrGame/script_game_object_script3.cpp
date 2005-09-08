@@ -247,5 +247,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		// monster jumper
 		.def("jump",						&CScriptGameObject::jump)
 
+		.def("make_object_visible_somewhen",&CScriptGameObject::make_object_visible_somewhen)
+
 	;return	(instance);
 }

@@ -102,6 +102,9 @@ void CStalkerAnimationManager::update						()
 			return;
 
 		if (!script_animations().empty()) {
+			if (object().callback(GameObject::eScriptAnimation))
+				m_skeleton_animated->UpdateTracks	();
+
 			global().reset		();
 #ifndef USE_HEAD_BONE_PART_FAKE
 			head().reset		();
@@ -119,6 +122,9 @@ void CStalkerAnimationManager::update						()
 			return;
 		}
 		
+		if (object().animation().setup_storage())
+			m_skeleton_animated->UpdateTracks	();
+
 		script().reset			();
 
 		const MotionID			&global_animation = assign_global_animation();

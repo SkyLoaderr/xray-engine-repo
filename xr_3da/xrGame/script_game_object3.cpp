@@ -715,3 +715,20 @@ bool CScriptGameObject::jump(CScriptGameObject *enemy)
 	}
 	return 			monster->jump(&enemy->object());
 }
+
+void CScriptGameObject::make_object_visible_somewhen	(CScriptGameObject *object)
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&this->object());
+	if (!stalker) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member make_object_visible_somewhen!");
+		return;
+	}
+
+	CEntityAlive	*entity_alive = smart_cast<CEntityAlive*>(object);
+	if (!entity_alive) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member make_object_visible_somewhen!");
+		return;
+	}
+
+	stalker->memory().make_object_visible_somewhen	(entity_alive);
+}

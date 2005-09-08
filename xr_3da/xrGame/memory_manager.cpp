@@ -24,15 +24,6 @@
 #include "level_navigation_graph.h"
 #include "profiler.h"
 
-#define STEALTH_MODE
-
-#ifdef STEALTH_MODE
-	const bool update_value = false;
-#else
-	const bool update_value = true;
-#endif // STEALTH_MODE
-
-
 CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSound_UserDataVisitor *visitor)
 {
 	VERIFY				(monster);
@@ -111,8 +102,8 @@ void CMemoryManager::update			(float time_delta)
 	if (visual().enabled())
 		update			(visual().objects(),true);
 
-	update				(sound().objects(),registered_in_combat ? true : update_value);
-	update				(hit().objects(),registered_in_combat ? true : update_value);
+	update				(sound().objects(),registered_in_combat ? true : false);
+	update				(hit().objects(),registered_in_combat ? true : false);
 	
 	enemy().update		();
 	item().update		();
@@ -254,4 +245,14 @@ void CMemoryManager::on_restrictions_change	()
 //	danger().on_restrictions_change	();
 //	enemy().on_restrictions_change	();
 	item().on_restrictions_change	();
+}
+
+void CMemoryManager::make_object_visible_somewhen	(const CEntityAlive *enemy)
+{
+	squad_mask_type				mask = stalker().agent_manager().member().mask(&stalker());
+	MemorySpace::CVisibleObject	*obj = visual().visible_object(enemy);
+	bool						prev = obj ? obj->visible(mask) : false;
+	visual().add_visible_object	(enemy,.001f,true);
+	MemorySpace::CVisibleObject	*obj1 = object().memory().visual().visible_object(enemy);
+	obj1->visible				(mask,prev);
 }

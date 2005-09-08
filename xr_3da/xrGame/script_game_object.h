@@ -485,6 +485,7 @@ public:
 			void				restore_max_ignore_monster_distance	();
 			float				max_ignore_monster_distance			() const;
 
+			void				make_object_visible_somewhen		(CScriptGameObject *object);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

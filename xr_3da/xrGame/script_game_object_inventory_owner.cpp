@@ -823,8 +823,6 @@ void  CScriptGameObject::HideWeapon			()
 	Actor()->inventory().setSlotsBlocked(true);
 }
 
-
-
 int	CScriptGameObject::animation_slot			() const
 {
 	CHudItem		*hud_item = smart_cast<CHudItem*>(&object());

@@ -59,6 +59,7 @@ public:
 			void				enable			(const CObject *object, bool enable);
 			CMemoryInfo			memory			(const CObject *object) const;
 			u32					memory_time		(const CObject *object) const;
+			void				make_object_visible_somewhen		(const CEntityAlive *enemy);
 
 public:
 	template <typename _predicate>
