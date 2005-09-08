@@ -373,7 +373,7 @@ BOOL CCF_Rigid::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
 		}
 	}
 
-	BOOL bHIT = FALSE;
+	BOOL bHIT	= FALSE		;
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++){
 		float range		= Q.range;
 		if (RAYvsOBB(I->IM,I->B,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)){
