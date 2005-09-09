@@ -1,3 +1,12 @@
+
+local pi_2 = 1.57079632679489661923
+local func_sinus = 0
+local func_cosinus = 1
+local func_linear = 2  
+
+--function printf () end
+
+
 ----------------
 class "RejectPP" (effector)
 ----------------
@@ -13,26 +22,370 @@ end
 ----------------
 
 
+
 ----------------
 class "Reject"
 ----------------
 function Reject:__init ()
 	self.pp = RejectPP ();
 	self.pp:start ();
+	self.base = 0.0
+	self.current_func = 0
+	self.time = 0.0
+	self.func_time = 0.0
+	self.fx_set = {}
+	
+	self:load_database ("scripts\\reject.ltx")
+
+	local v = self.fx_set.color_base[1].initial
+	self:set_next_function (0.0, self.fx_set.color_base)
+	self.pp.params.color_base			= color (v.x, v.y, v.z);		// max base color diff			[0.0-0.5]
+	
+	v = self.fx_set.color_gray[1].initial
+	self:set_next_function (0.0, self.fx_set.color_gray)
+	self.pp.params.color_gray			= color (v.x, v.y, v.z);	    // RGB							[0.0-1.0]
+	
+	v = self.fx_set.color_add[1].initial
+	self:set_next_function (0.0, self.fx_set.color_add)
+	self.pp.params.color_add 			= color (v.x, v.y, v.z);	    // RGB							[0.0-1.0]
+	
+	v = self.fx_set.gray[1].initial
+	self:set_next_function (0.0, self.fx_set.gray)
+	self.pp.params.gray					= v.x;						    // gray max intensity			[0.0-1.0]
+	
+	local hv = self.fx_set.duality_h[1].initial.x
+	self:set_next_function (0.0, self.fx_set.duality_h)
+	local vv = self.fx_set.duality_v[1].initial.x
+	self:set_next_function (0.0, self.fx_set.duality_v)
+	self.pp.params.dual					= duality (hv, vv);
+	
+	local ni = self.fx_set.noise_intensity[1].initial.x
+	self:set_next_function (0.0, self.fx_set.noise_intensity)
+	self.fx_set.noise_intensity[1].current_value = self.fx_set.noise_intensity[1].initial.x
+	
+	local ng = self.fx_set.noise_grain[1].initial.x
+	self:set_next_function (0.0, self.fx_set.noise_grain)
+	self.fx_set.noise_grain[1].current_value = self.fx_set.noise_grain[1].initial.x
+    
+    local nf = self.fx_set.noise_fps[1].initial.x
+	self:set_next_function (0.0, self.fx_set.noise_fps)
+	self.fx_set.noise_fps[1].current_value = self.fx_set.noise_fps[1].initial.x
+	
+	--printf ("Initial NI : %f, NG : %f, NF : %f", ni, ng, nf)
+	
+	self.pp.params.noise = noise (ni, ng, nf * 100.0);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
 end
 ----------------
 function Reject:__finalize ()
 	self.pp:finish ();
-end;
+    end
+----------------
+function Reject:sin_func (delta, params)
+    local v = pi_2 / params.time * delta * params.scale_factor
+    params.value = params.value + v
+    return math.sin (params.value)
+end
+----------------
+function Reject:cos_func (delta, params)
+    local v = pi_2 / params.time * delta * params.scale_factor
+    params.value = params.value + v
+    return math.cos (params.value)
+end
+----------------
+function Reject:linear_func (delta, params)
+    params.value = params.value + delta * params.scale_factor
+    return params.value
+end
+----------------
+function Reject:set_next_function (time, database)
+
+    if table.getn (database) < 2 then
+       printf ("Database size less then 2") 
+       return
+    end
+        
+    local t = 0.0
+    local current = database[1].current
+    if current ~= 1 then
+       t = database[1].current_value
+    end   
+    current = current + 1
+    if table.getn (database) < current then
+       return false
+    end    
+    database[1].current = current
+    database[current].time = database[current].time + time
+    database[current].value = database[current].init_value * pi_2
+    database[1].base_value = t
+    return true
+end
 ----------------
 function Reject:update (dt)
-	self.pp.params.color_base			= color(0.2,0.15,0.0);		// max base color diff			[0.0-0.5]
-	self.pp.params.color_gray			= color(0.33,0.33,0.33);	// RGB							[0.0-1.0]
-	self.pp.params.color_add 			= color(0.1,0.1,0.1);	    // RGB							[0.0-1.0]
-	self.pp.params.gray					= 0.5;						// gray max intensity			[0.0-1.0]
-	self.pp.params.dual					= duality (0.5,0.5);
-	self.pp.params.noise				= noise(0.9,0.3,30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+    local deltaf = dt * 0.001
+    self.time = self.time + deltaf
+    --update color base
+    local value = self:process_fx (deltaf, self.fx_set.color_base)
+	self.pp.params.color_base = color (value + self.fx_set.color_base[1].initial.x, value + self.fx_set.color_base[1].initial.y, value + self.fx_set.color_base[1].initial.z)
+    --update color gray
+	value = self:process_fx (deltaf, self.fx_set.color_gray)
+	self.pp.params.color_gray = color (value + self.fx_set.color_gray[1].initial.x, value + self.fx_set.color_gray[1].initial.y, value + self.fx_set.color_gray[1].initial.z)
+    --update color add
+	value = self:process_fx (deltaf, self.fx_set.color_add)
+	self.pp.params.color_add = color (value + self.fx_set.color_add[1].initial.x, value + self.fx_set.color_add[1].initial.y, value + self.fx_set.color_add[1].initial.z)
+    --update gray
+	self.pp.params.gray = self:process_fx (deltaf, self.fx_set.gray) + self.fx_set.gray[1].initial.x
+    --update duality
+    local hv = self:process_fx (deltaf, self.fx_set.duality_h)	
+    local vv = self:process_fx (deltaf, self.fx_set.duality_v)	
+	self.pp.params.dual = duality (hv + self.fx_set.duality_h[1].initial.x, vv + self.fx_set.duality_v[1].initial.x)
+	
+	local ni = self:process_fx (deltaf, self.fx_set.noise_intensity)
+    local ng = self:process_fx (deltaf, self.fx_set.noise_grain)
+    local nf = self:process_fx (deltaf, self.fx_set.noise_fps) * 100.0
+    --printf ("NI : %f, NG : %f, NF : %f", ni, ng, nf)
+    self.pp.params.noise = noise (ni, ng, nf)
 end
+----------------
+function Reject:process_fx (delta, params)
+    if table.getn (params) < 2 then
+       return params[1].current_value
+    end   
+    local func_name = params[params[1].current].func
+    
+    local v = 0.0
+    if func_name == "sinus" then
+       v = self:sin_func (delta, params[params[1].current])
+    elseif func_name == "cosinus" then
+           v = self:cos_func (delta, params[params[1].current]) 
+    elseif func_name == "linear" then
+           v = self:linear_func (delta, params[params[1].current]) 
+    else 
+           v = 0.0
+    end
+    
+    v = v * params[params[1].current].intensity + params[1].base_value
+    if v > 1.0 then v = 1.0 end
+    if v < -1.0 then v = -1.0 end
+    --printf ("Current time : %f, func time : %f", self.time, params[params[1].current].time)
+    if self.time > params[params[1].current].time then
+       if self:set_next_function (self.time, params) == false then
+          return params[1].current_value
+       end   
+    end
+    params[1].current_value = v
+    return v
+end
+----------------
+function Reject:parse_data (str)
+    local t = {}
+    local size = string.len (str)
+	local pos = 1
+    while true do
+          local start, finish = string.find (str, ",", pos)
+          if start == nil then start = size + 1 end
+		  local temp = string.sub (str, pos, start - 1)
+		  table.insert (t, temp)
+		  pos = start + 1
+		  if finish == nil then break end
+    end
+    return t
+end
+----------------
+function Reject:parse_initial_data (str)
+    local t = self:parse_data (str)
+    local size = table.getn (t)
+    local res = vector ():set (0, 0, 0)
+    if size >= 1 then res.x = tonumber (t[1]) end
+    if size >= 2 then res.y = tonumber (t[2]) end
+    if size >= 3 then res.y = tonumber (t[3]) end
+    return res
+end
+----------------
+function Reject:parse_fx_data (str, t)
+    local temp = self:parse_data (str)
+    if table.getn (temp) < 5 then 
+       return 
+    end
+    local ins = {}
+    ins.func = temp[1]
+    ins.time = tonumber (temp[2])
+    ins.scale_factor = tonumber (temp[3])
+    ins.init_value = tonumber (temp[4])
+    ins.intensity = tonumber (temp[5])
+    table.insert (t, ins)
+end
+----------------
+function Reject:load_database (ltx_name)
+    local ini = ini_file (ltx_name)
+    
+    self.fx_set = {}
+    local inivalue
+    
+    --load color base database
+    if ini:section_exist ("color_base") then
+       self.fx_set.color_base = {}
+       if ini:line_exist ("color_base", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("color_base", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.color_base, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("color_base", param) then
+              self:parse_fx_data (ini:r_string ("color_base", param), self.fx_set.color_base)
+           end 
+       end
+       
+    end
+    
+    --load color gray database
+    if ini:section_exist ("color_gray") then
+       self.fx_set.color_gray = {}
+       if ini:line_exist ("color_gray", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("color_gray", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.color_gray, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("color_gray", param) then
+              self:parse_fx_data (ini:r_string ("color_gray", param), self.fx_set.color_gray)
+           end 
+       end
+    end
+
+    --load color add database
+    if ini:section_exist ("color_add") then
+       self.fx_set.color_add = {}
+       if ini:line_exist ("color_add", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("color_add", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.color_add, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("color_add", param) then
+              self:parse_fx_data (ini:r_string ("color_add", param), self.fx_set.color_add)
+           end 
+       end
+    end
+    
+    --load gray database
+    if ini:section_exist ("gray") then
+       self.fx_set.gray = {}
+       if ini:line_exist ("gray", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("gray", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.gray, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("gray", param) then
+              self:parse_fx_data (ini:r_string ("gray", param), self.fx_set.gray)
+           end 
+       end
+    end
+    
+    --load duality horizontal
+    if ini:section_exist ("duality_h") then
+       self.fx_set.duality_h = {}
+       if ini:line_exist ("duality_h", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("duality_h", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.duality_h, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("duality_h", param) then
+              self:parse_fx_data (ini:r_string ("duality_h", param), self.fx_set.duality_h)
+           end 
+       end
+    end
+    
+    --load duality vertical
+    if ini:section_exist ("duality_v") then
+       self.fx_set.duality_v = {}
+       if ini:line_exist ("duality_v", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("duality_v", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.duality_v, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("duality_v", param) then
+              self:parse_fx_data (ini:r_string ("duality_v", param), self.fx_set.duality_v)
+           end 
+       end
+    end
+    
+    --load noise intensity
+    if ini:section_exist ("noise_intensity") then
+       self.fx_set.noise_intensity = {}
+       if ini:line_exist ("noise_intensity", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("noise_intensity", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.noise_intensity, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("noise_intensity", param) then
+              self:parse_fx_data (ini:r_string ("noise_intensity", param), self.fx_set.noise_intensity)
+           end 
+       end
+    end
+
+    --load noise grain
+    if ini:section_exist ("noise_grain") then
+       self.fx_set.noise_grain = {}
+       if ini:line_exist ("noise_grain", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("noise_grain", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.noise_grain, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("noise_grain", param) then
+              self:parse_fx_data (ini:r_string ("noise_grain", param), self.fx_set.noise_grain)
+           end 
+       end
+    end
+
+    --load noise fps
+    if ini:section_exist ("noise_fps") then
+       self.fx_set.noise_fps = {}
+       if ini:line_exist ("noise_fps", "initial") then
+          inivalue = self:parse_initial_data (ini:r_string ("noise_fps", "initial"))
+       else
+          inivalue = vector ():set (0, 0, 0)
+       end   
+       local ini_table = {initial = inivalue, current = 1, base_value = 0.0, func_time = 0.0, current_value = 0.0, value = 0}
+       table.insert (self.fx_set.noise_fps, ini_table)
+       for a = 1, 16, 1 do
+           param = string.format ("fx_set_%d", a)
+           if ini:line_exist ("noise_fps", param) then
+              self:parse_fx_data (ini:r_string ("noise_fps", param), self.fx_set.noise_fps)
+           end 
+       end
+    end
+    --print_table (self.fx_set)
+end
+
 ----------------
 g_Reject = Reject ();
 ----------------

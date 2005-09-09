@@ -8,3 +8,7 @@ function aes_segeant_kill (stalker, player)
     h.type = hit.strike
     player:hit (h)
 end
+
+function aes_set_mapspots (stalker, player)
+    level_tasks.add_location (1102, "crlc_mdl", "aes_sarcofag_hint")
+end
