@@ -123,7 +123,7 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 
 	-- если какая-то схема была до этого активна, деактивировать её
 	if st.active_section then
-		issue_event(npc, st, "deactivate")
+		issue_event(npc, st[st.active_scheme], "deactivate")
 	end
 
 	local actual_ini
