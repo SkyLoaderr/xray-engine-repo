@@ -17,7 +17,6 @@
 #include "ui/UIMainIngameWnd.h"
 #include "CustomZone.h"
 #include "game_base_kill_type.h"
-#include "ui/UISpeechMenu.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
@@ -38,7 +37,7 @@ game_cl_mp::game_cl_mp()
 	LoadSndMessages();
 	m_bJustRestarted = true;
 	m_pSndMessagesInPlay.clear();
-	m_pSpeechMenu = NULL;
+	m_aMessageMenus.clear();
 };
 
 game_cl_mp::~game_cl_mp()
@@ -68,12 +67,13 @@ game_cl_mp::~game_cl_mp()
 	m_pSndMessagesInPlay.clear_and_free();
 	m_pSndMessages.clear_and_free();
 
-	xr_delete(m_pSpeechMenu);
+//	xr_delete(m_pSpeechMenu);
+	DestroyMessagesMenus();
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
 {
-	m_pSpeechMenu = xr_new<CUISpeechMenu>("test_speech_section");
+//	m_pSpeechMenu = xr_new<CUISpeechMenu>("test_speech_section");
 	HUD().GetUI()->m_pMessagesWnd->SetChatOwner(this);
 
 	return NULL;
@@ -136,88 +136,74 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			return false;
 	};
 
-/*from actorinput.cpp
-	if ( (GAME_PHASE_PENDING == Game().phase) || !g_Alive() )
-	{
-		if (kWPN_FIRE == cmd)	
-		{
-			// Switch our "ready" status
-			NET_Packet			P;
-//			u_EventGen			(P,GEG_PLAYER_READY,ID());
-			u_EventGen		(P,GE_GAME_EVENT,ID()	);
-			P.w_u16(GAME_EVENT_PLAYER_READY);
-
-			u_EventSend			(P);
-		}
-		return;
-	}
-
-*/
-/*from spectator.cpp
-	if (kJUMP == cmd || kWPN_FIRE == cmd)
-	{
-		if ((GAME_PHASE_PENDING	== Game().phase && kWPN_FIRE == cmd) || 
-			(kJUMP == cmd && GAME_PHASE_INPROGRESS	== Game().phase && HUD().GetUI()->UIGame()->CanBeReady()))
-		{
-			NET_Packet			P;
-
-			u_EventGen		(P,GE_GAME_EVENT,ID()	);
-			P.w_u16(GAME_EVENT_PLAYER_READY);
-
-			u_EventSend			(P);
-			return;
-		}
-		else
-			return;
-	};
-*/
-
 	if( (Phase() != GAME_PHASE_INPROGRESS) && (kQUIT != key) && (kCONSOLE != key))
 		return true;
 
 	if (Phase() == GAME_PHASE_INPROGRESS)
 	{
-		if ((kCHAT == key || kCHAT_TEAM == key) /*&& pChatWnd*/)
+		switch (key)
 		{
-			shared_str prefix;
-
-			CUIChatWnd* pChatWnd = HUD().GetUI()->m_pMessagesWnd->GetChatWnd();
-
-			if (kCHAT_TEAM == key)
+		case kCHAT:
+		case kCHAT_TEAM:
 			{
-				prefix = "to team> ";
-				pChatWnd->TeamChat();
-			}
-			else
-			{
-				prefix = "to all> ";
-				pChatWnd->AllChat();
-			}
+				shared_str prefix;
 
-			pChatWnd->SetEditBoxPrefix(prefix);
+				CUIChatWnd* pChatWnd = HUD().GetUI()->m_pMessagesWnd->GetChatWnd();
 
-			StartStopMenu(pChatWnd, false);
-			if (!pChatWnd->IsShown() && xr_strlen(pChatWnd->UIEditBox.GetText()) > 0)
-			{
-				shared_str phrase = pChatWnd->UIEditBox.GetText();
-//				pChatWnd->Say(phrase);
-				(kCHAT == key) ? ChatSayAll(phrase) : ChatSayTeam(phrase);
-				pChatWnd->UIEditBox.SetText("");
-			}
-			return false;
-		}
+				if (kCHAT_TEAM == key)
+				{
+					prefix = "to team> ";
+					pChatWnd->TeamChat();
+				}
+				else
+				{
+					prefix = "to all> ";
+					pChatWnd->AllChat();
+				}
 
-		if (IsVoteEnabled() && IsVotingActive())
-		{
-			if (key == kVOTEYES)
+				pChatWnd->SetEditBoxPrefix(prefix);
+
+				StartStopMenu(pChatWnd, false);
+				if (!pChatWnd->IsShown() && xr_strlen(pChatWnd->UIEditBox.GetText()) > 0)
+				{
+					shared_str phrase = pChatWnd->UIEditBox.GetText();
+					//				pChatWnd->Say(phrase);
+					(kCHAT == key) ? ChatSayAll(phrase) : ChatSayTeam(phrase);
+					pChatWnd->UIEditBox.SetText("");
+				}
+				return false;
+			}break;
+		case kVOTEYES:
 			{
-				SendVoteYesMessage();
-			};
-			if (key == kVOTENO)
+				if (IsVoteEnabled() && IsVotingActive())
+					SendVoteYesMessage();
+			}break;
+		case kVOTENO:
 			{
-				SendVoteNoMessage();
-			};
-		}
+				if (IsVoteEnabled() && IsVotingActive())
+					SendVoteNoMessage();
+			}break;
+		case kSPEECH_MENU_0:
+		case kSPEECH_MENU_1:
+		case kSPEECH_MENU_2:
+		case kSPEECH_MENU_3:
+		case kSPEECH_MENU_4:
+		case kSPEECH_MENU_5:
+		case kSPEECH_MENU_6:
+		case kSPEECH_MENU_7:
+		case kSPEECH_MENU_8:
+		case kSPEECH_MENU_9:
+			{
+				if (!local_player || local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) break;
+
+				u32 MenuID = key - kSPEECH_MENU_0;
+				if (MenuID >= m_aMessageMenus.size()) break;
+				cl_MessageMenu* pCurMenu = &(m_aMessageMenus[MenuID]);
+				HideMessageMenus();
+				StartStopMenu(pCurMenu->m_pSpeechMenu, FALSE);
+				return true;
+			}break;
+		}		
 	}
 
 	return inherited::OnKeyboardPress(key);
@@ -276,6 +262,10 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			OnPlayerChangeName(P);
 		}break;
+	case GAME_EVENT_SPEECH_MESSAGE:
+		{
+			OnSpeechMessage(P);
+		}break;
 	case GAME_EVENT_PLAYERS_MONEY_CHANGED:
 		{
 			OnMoneyChanged(P);
@@ -320,9 +310,9 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	P->r_stringZ(PlayerName);
 	string256 ChatMsg;
 	P->r_stringZ(ChatMsg);
-	
-	Msg("%s : %s", PlayerName, ChatMsg);
-	
+#ifdef DEBUG
+	Msg("Chat: %s : %s", PlayerName, ChatMsg);
+#endif	
 	if (Level().CurrentViewEntity())
 		HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, PlayerName);
 };
@@ -352,6 +342,11 @@ void game_cl_mp::shedule_Update(u32 dt)
 					m_bJustRestarted = false;
 				};
 			}
+		}break;
+	case GAME_PHASE_INPROGRESS:
+		{
+			if (!local_player || local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+				HideMessageMenus();
 		}break;
 	default:
 		{
@@ -448,6 +443,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	case GAME_PHASE_PENDING:
 		{
 			m_bJustRestarted = true;
+			HideMessageMenus();
 		};
 	default:
 		{
@@ -455,6 +451,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 			{
 				HUD().GetUI()->HideIndicators();
 			};
+			HideMessageMenus();
 		}break;
 	}
 }
@@ -854,7 +851,3 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 	};	
 };
 
-void		game_cl_mp::OnMessageSelected		(CUISpeechMenu* pMenu, u8 PhraseID)
-{
-	Msg("Message %d", int(PhraseID));
-};

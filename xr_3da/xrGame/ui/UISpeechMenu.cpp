@@ -25,6 +25,12 @@ CUISpeechMenu::CUISpeechMenu(LPCSTR section_name){
     InitList(section_name);
 }
 
+CUISpeechMenu::~CUISpeechMenu()
+{
+	int x=0;
+	x=x;
+}
+
 void CUISpeechMenu::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
 	m_pList->Init(0,0,width,height);

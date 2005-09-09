@@ -8606,6 +8606,12 @@
 								RelativePath=".\game_cl_mp.h">
 							</File>
 							<File
+								RelativePath=".\game_cl_mp_messages_menu.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_mp_messages_menu.h">
+							</File>
+							<File
 								RelativePath=".\game_cl_mp_snd_messages.cpp">
 							</File>
 							<File

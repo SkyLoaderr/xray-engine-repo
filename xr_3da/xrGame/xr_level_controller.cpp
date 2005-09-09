@@ -105,6 +105,21 @@ _keybind  keybind[]		= {
 	{ "follower3",		kFOLLOWER3		},
 	{ "follower4",		kFOLLOWER4		},
 	{ "follower5",		kFOLLOWER5		},
+
+	{ "speech_menu_0",	kSPEECH_MENU_0	},
+	{ "speech_menu_1",	kSPEECH_MENU_1	},
+	{ "speech_menu_2",	kSPEECH_MENU_2	},
+	{ "speech_menu_3",	kSPEECH_MENU_3	},
+	{ "speech_menu_4",	kSPEECH_MENU_4	},
+	{ "speech_menu_5",	kSPEECH_MENU_5	},
+	{ "speech_menu_6",	kSPEECH_MENU_6	},
+	{ "speech_menu_7",	kSPEECH_MENU_7	},
+	{ "speech_menu_8",	kSPEECH_MENU_8	},
+	{ "speech_menu_9",	kSPEECH_MENU_9	},
+
+	{ "insult_msg",		kINSULT_MSG		},
+	{ "insult_jesture",	kINSULT_JESTURE	},
+
 	{ NULL, 			0				}
 };
 

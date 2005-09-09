@@ -191,6 +191,8 @@ enum EGameMessages {  //game_cl <----> game_sv messages
 	GAME_EVENT_PLAYER_AUTH,
 	GAME_EVENT_PLAYER_NAME,
 
+	GAME_EVENT_SPEECH_MESSAGE,
+
 	//-----------------------------------------
 	GAME_EVENT_PLAYERS_MONEY_CHANGED,
 	//-----------------------------------------

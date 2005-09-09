@@ -21,6 +21,8 @@
 #define	TEAM1_MENU		"artefacthunt_team1"
 #define	TEAM2_MENU		"artefacthunt_team2"
 
+#define MESSAGE_MENUS	"ahunt_messages_menu"
+
 #include "game_cl_artefacthunt_snd_msg.h"
 
 game_cl_ArtefactHunt::game_cl_ArtefactHunt()
@@ -282,6 +284,8 @@ CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
 	pInventoryMenu = xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
+	//-----------------------------------------------------------
+	LoadMessagesMenu(MESSAGE_MENUS);
 	//-----------------------------------------------------------
 	return m_game_ui;
 }

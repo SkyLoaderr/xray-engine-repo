@@ -67,6 +67,8 @@ protected:
 	virtual	void		OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 
 	virtual	void		OnSwitchPhase_InProgress();
+
+	virtual		u8		GetTeamCount			() { return 2; };
 };
 
 IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)

@@ -142,7 +142,8 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwRealPing = 0;
 	//---------------------------------------------------------	
 	m_sDemoName[0] = 0;
-	if (!strstr(Core.Params,"-tdemo "))
+	m_bDemoSaveMode = FALSE;
+	if (!strstr(Core.Params,"-tdemo ") && strstr(Core.Params,"-tdw "))
 	{
 		m_bDemoSaveMode = TRUE;
 		string1024 CName = "";

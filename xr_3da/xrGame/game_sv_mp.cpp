@@ -173,6 +173,10 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 		{
 			OnPlayerChangeName(P, sender);
 		}break;
+	case GAME_EVENT_SPEECH_MESSAGE:
+		{
+			OnPlayerSpeechMessage(P, sender);
+		}break;
 	default:
 		inherited::OnEvent(P, type, time, sender);
 	};//switch
@@ -852,6 +856,34 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 	signal_Syncronize();
 };
 
+void		game_sv_mp::OnPlayerSpeechMessage	(NET_Packet& P, ClientID sender)
+{
+	xrClientData*	pClient	= (xrClientData*)m_server->ID_to_client	(sender);
+
+	if (!pClient || !pClient->net_Ready) return;
+	game_PlayerState* ps = pClient->ps;
+	if (!ps) return;
+
+	if (pClient->owner)
+	{
+		NET_Packet			NP;
+		GenerateGameMessage(NP);
+		NP.w_u32(GAME_EVENT_SPEECH_MESSAGE);
+		NP.w_u16(ps->GameID);
+		NP.w_u8(P.r_u8());
+		NP.w_u8(P.r_u8());
+		NP.w_u8(P.r_u8());		
+		//---------------------------------------------------		
+		u32	cnt = get_players_count();	
+		for(u32 it=0; it<cnt; it++)	
+		{
+			xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+			game_PlayerState* ps	= l_pC->ps;
+			if (!l_pC || !l_pC->net_Ready || !ps) continue;
+			m_server->SendTo(l_pC->ID, NP, net_flags(TRUE, TRUE, TRUE));
+		};
+	};
+};
 void	game_sv_mp::LoadRanks	()
 {
 	m_aRanks.clear();

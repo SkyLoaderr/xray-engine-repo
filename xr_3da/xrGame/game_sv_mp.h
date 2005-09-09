@@ -88,6 +88,7 @@ public:
 	virtual		void				OnVoteNo				(ClientID sender);
 	virtual		void				OnVoteStop				();
 	virtual		void				OnPlayerChangeName		(NET_Packet& P, ClientID sender);
+	virtual		void				OnPlayerSpeechMessage	(NET_Packet& P, ClientID sender);
 	
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();

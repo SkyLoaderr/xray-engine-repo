@@ -17,6 +17,8 @@
 #define	TEAM1_MENU		"teamdeathmatch_team1"
 #define	TEAM2_MENU		"teamdeathmatch_team2"
 
+#define MESSAGE_MENUS	"tdm_messages_menu"
+
 #include "game_cl_teamdeathmatch_snd_messages.h"
 
 game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
@@ -161,6 +163,8 @@ CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 	pInventoryMenu = xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
+	//-----------------------------------------------------------
+	LoadMessagesMenu(MESSAGE_MENUS);
 	//-----------------------------------------------------------
 	return m_game_ui;
 }

@@ -4,6 +4,7 @@
 #include "script_export_space.h"
 #include "game_cl_mp_snd_messages.h"
 #include "../Sound.h"
+#include "ui/UISpeechMenu.h"
 
 class CUISpeechMenu;
 
@@ -42,6 +43,51 @@ struct cl_TeamStruct
 
 DEF_DEQUE(CL_TEAM_DATA_LIST, cl_TeamStruct);
 
+struct cl_Message_Sound
+{
+	ref_sound	mSound_Voice;
+	ref_sound	mSound_Radio;
+	/*
+	~cl_Message_Sound()
+	{
+		if (mSound_Voice._feedback()) mSound_Voice.stop();
+		mSound_Voice.destroy();
+		if (mSound_Radio._feedback()) mSound_Radio.stop();
+		mSound_Radio.destroy();
+	};
+	*/
+};
+
+DEF_VECTOR	(TEAMSOUND, cl_Message_Sound);
+
+struct cl_Menu_Message {
+	shared_str		pMessage;	
+	DEF_VECTOR	(SOUND_VARIANTS, TEAMSOUND);
+	SOUND_VARIANTS		aVariants;
+};
+
+struct cl_MessageMenu
+{
+	CUISpeechMenu*		m_pSpeechMenu;
+	DEF_VECTOR	(MENUMESSAGES, cl_Menu_Message);
+	MENUMESSAGES		m_aMessages;	
+
+	bool operator == (CUISpeechMenu* pMenu){return pMenu == m_pSpeechMenu;}
+	/*
+	cl_MessageMenu()
+	{
+		m_pSpeechMenu = NULL;
+		m_aMessages.clear();
+	};
+
+	~cl_MessageMenu()
+	{
+		if (m_pSpeechMenu)	xr_delete(m_pSpeechMenu);
+		m_aMessages.clear();
+	};
+	*/
+};
+
 class game_cl_mp :public game_cl_GameState
 {
 	typedef game_cl_GameState	inherited;
@@ -55,7 +101,7 @@ protected:
 	DEF_VECTOR(SNDMESSAGESINPLAY, SND_Message*);
 	SNDMESSAGESINPLAY				m_pSndMessagesInPlay;
 
-	CUISpeechMenu*					m_pSpeechMenu;
+///	CUISpeechMenu*					m_pSpeechMenu;	
 
 	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
@@ -112,6 +158,7 @@ public:
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);
 	virtual		void				OnPlayerChangeName		(NET_Packet& P);
+	
 
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 	virtual		void				net_import_update		(NET_Packet& P);
@@ -121,7 +168,12 @@ public:
 	virtual		void				OnMoneyChanged			(NET_Packet& P);
 
 	virtual		void				OnSwitchPhase_InProgress();
-	virtual		void				OnMessageSelected		(CUISpeechMenu* pMenu, u8 PhraseID);
+
+	virtual		u8					GetTeamCount			() { return 0; };
+	virtual		s16					ModifyTeam				(s16 Team)	{return Team;};
+	
+//-------------------------------------------------------------------------------------------------
+#include "game_cl_mp_messages_menu.h"
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -12,6 +12,10 @@
 		<mini_map  spot="mp_friend_mini_spot"></mini_map>
 	</mp_friend_location>
 	
+	<mp_friend_radio_location hint="friend_radio" ttl="3">
+		<mini_map  spot="mp_friend_radio_mini_spot" pointer="mp_af_friend_mini_pointer"></mini_map>
+	</mp_friend_radio_location>
+						
 	<mp_af_neutral_location hint="af_neutral">
 		<mini_map  spot="mp_af_neutral_mini_spot" pointer="mp_af_neutral_mini_pointer"></mini_map>
 	</mp_af_neutral_location>
@@ -45,7 +49,12 @@
 	<mp_friend_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
 		<texture r="0" g="255" b="0">ui\hud_map_point</texture>
 	</mp_friend_mini_spot>
-		
+	
+	<mp_friend_radio_mini_spot width="13" height="13" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
+		<!--texture r="0" g="255" b="0">ui\hud_map_point</texture-->
+		<texture x="525" y="904" width="32" height="32">ui\ui_common</texture>
+	</mp_friend_radio_mini_spot>
+	
 	<mp_af_friend_mini_spot width="8" height="8" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
 		<texture r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture>
 		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>

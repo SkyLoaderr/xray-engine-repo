@@ -116,6 +116,8 @@ public:
 	virtual		void				OnTeamChanged			();
 
 	virtual		void				OnSwitchPhase_InProgress();
+
+	virtual		u8					GetTeamCount			() { return 1; };
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
