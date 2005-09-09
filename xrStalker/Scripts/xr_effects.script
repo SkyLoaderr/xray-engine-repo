@@ -1088,3 +1088,27 @@ function aes_grenade_explode (actor, npc)
     h.type = hit.chemical_burn;
     obj:hit (h);
 end
+----------------------------------------------------------------------
+function impulse_npc(actor, npc)
+--
+	-- TODO: реагировать только на смерть от пули (last hit = пул€)
+	-- TODO: сделать общей схемой с настройкой через пути
+	local actor_pos = utils.vector_copy_by_val(actor:position())
+	local npc_pos = npc:position()
+
+	if actor_pos.y >= npc_pos.y - 3.0 then
+		-- ≈сли игрок несущественно ниже, или выше - не давать толчек
+		return
+	end
+
+	printf("_bp: test_hit_in_actor_dir")
+	local h = hit()
+	h.power = 100
+	actor_pos.y = npc_pos.y + 1.0
+	h.direction = actor_pos:sub(npc_pos)
+	h.bone = "bip01_spine1"
+	h.draftsman = npc 
+	h.impulse = 8000
+	h.type = hit.wound
+	npc:hit(h)
+end
