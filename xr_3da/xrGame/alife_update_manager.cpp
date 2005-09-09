@@ -90,8 +90,8 @@ void CALifeUpdateManager::shedule_Update	(u32 dt)
 
 void CALifeUpdateManager::set_process_time	(int microseconds)
 {
-	graph().set_process_time		(u64(float(microseconds) - float(microseconds)*update_monster_factor())*CPU::cycles_per_microsec);
-	scheduled().set_process_time	(u64(float(microseconds)*update_monster_factor())*CPU::cycles_per_microsec);
+	graph().set_process_time		(float(microseconds) - float(microseconds)*update_monster_factor()/1000000.f);
+	scheduled().set_process_time	(float(microseconds)*update_monster_factor()/1000000.f);
 }
 
 void CALifeUpdateManager::init_ef_storage() const

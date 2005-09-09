@@ -750,9 +750,6 @@ public:
 		}
 #endif
 
-#ifdef DEBUG
-		u64						start, finish;
-#endif
 		string_path				S,S1;
 		S[0]					= 0;
 		sscanf					(args ,"%s",S);
