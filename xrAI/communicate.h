@@ -165,7 +165,7 @@ struct b_params
 	void		setDraftQuality()
 	{
     	m_quality				= ebqDraft;
-		m_lm_pixels_per_meter	= 0.1;
+		m_lm_pixels_per_meter	= 0.1f;
 		m_lm_jitter_samples		= 1;
 	}
 	void		setHighQuality()

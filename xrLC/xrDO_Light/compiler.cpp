@@ -328,9 +328,9 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	t_start			= CPU::GetCycleCount();
+	t_start			= CPU::GetCLK();
 	DB.ray_query	(&RCAST_Model,P,D,r);
-	t_time			+=	CPU::GetCycleCount()-t_start-CPU::cycles_overhead;
+	t_time			+=	CPU::GetCLK()-t_start-CPU::clk_overhead;
 	t_count			+=	1;
 	
 	// 3. Analyze
@@ -670,7 +670,7 @@ public:
 				DS.c_g				= DS.w_qclr	(amount.rgb.y,15);
 				DS.c_b				= DS.w_qclr	(amount.rgb.z,15);
 				thProgress			= float(_z-Nstart)/float(Nend-Nstart);
-				thPerformance		= float(double(t_count)/double(t_time*CPU::cycles2seconds))/1000.f;
+				thPerformance		= float(double(t_count)/double(t_time*CPU::clk_to_seconds))/1000.f;
 			}
 		}
 	}
