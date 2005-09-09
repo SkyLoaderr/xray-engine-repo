@@ -118,6 +118,14 @@ function generic_scheme_overrides(npc)
 function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_name)
 	--printf("DEBUG: enable_scripts: npc:name()=%s", npc:name())
 
+	local npc_id = npc:id()
+	local st     = db.storage[npc_id]
+
+	-- если кака€-то схема была до этого активна, деактивировать еЄ
+	if st.active_section then
+		issue_event(npc, st, "deactivate")
+	end
+
 	local actual_ini
 	local actual_ini_filename
 	if not ini:section_exist(section_logic) then
@@ -155,8 +163,6 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 	-- ¬ключаем все общие схемы (раненный, коллбек на попадание и т.д.):
 	enable_generic_schemes(actual_ini, npc, stype, section_logic)
 
-	local npc_id = npc:id()
-	local st = db.storage[npc_id]
 	st.active_section = nil
 	st.active_scheme = nil
 	if gulag_name then
@@ -464,7 +470,7 @@ end
 function issue_event(npc, st, event_fn, ...)
 	--printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
 	if not st.actions then
-		local global_st = db.storage[npc:id()]
+--		local global_st = db.storage[npc:id()]
 --		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
 --			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
