@@ -25,12 +25,12 @@ fuel_tank         		= 250.         	; L
 fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 50        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 2500       	; on this rpm engine torque reaches maximum
 
-power_increment_factor	= 0.002 ;0.001
-power_decrement_factor	= 0.01 ;0.01
-rpm_increment_factor	= 0.02 ;0.02
-rpm_decrement_factor	= 0.02 ;0.02
+power_increment_factor	= 0.005
+power_decrement_factor	= 0.05
+rpm_increment_factor	= 0.05
+rpm_decrement_factor	= 0.05
 m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
@@ -41,22 +41,18 @@ idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
 ;-------------------------------------------------------------------------------
 ;------ Adjustment a wheel -----------------------------------------------------
 
-reference_radius		= 0.65			; Радиус колеса, используемый при просчёте двигателя
+reference_radius		= 0.56			; Радиус колеса, используемый при просчёте двигателя
 axle_friction     		= 0.0001       	; Ослабление скорости в неетральной позиции. (N*m)
 steering_speed    		= 0.5         	; Время поворота рулевого колеса, в максимум. rps (1)
 steering_torque   		= 900000.    	; Сила гидроусилителя руля. (N*m)
 break_torque			= 0.060			; Сила тормозных колодок. (N*m
 hand_break_torque		= 0.060			; сила торможения пробелом (по умолчанию = break_torque)
-break_time        		= 1.0 
+break_time        		= 1.0         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
 
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
-;R                  = 6.02, 740,  3000 ; shift down/ shift up. (rpm, необходимое для переключения)
-;N1                 = 6.38, 740,  1500
-;N2                 = 3.29, 1200, 2000
-;N3                 = 2.04, 1700, 2800
 
-main_gear_ratio    		= 12.63         ; Передаточное отношение
+main_gear_ratio    		= 10.63         ; Передаточное отношение
 auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
@@ -64,9 +60,8 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 R                  		= 3.73, 2500,3850	;2100,2850
 N1                 		= 3.73, 2500,3850
 N2                 		= 2.29, 2500,3850
-N3                 		= 1.39, 2500,3850
-
-
+;N3                 		= 1.39, 2500,3850
+;N4                 		= 0.96, 2500,3850
 
 ;-------------------------------------------------------------------------------
 ;------ Rest Adjustment --------------------------------------------------------
