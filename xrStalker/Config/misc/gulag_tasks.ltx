@@ -41,11 +41,19 @@ active = nil
 ;-------------------------------------------------------------------------------------------------
 ;-- test1
 ;-------------------------------------------------------------------------------------------------
-[logic@test1_sleeper]
-active = sleeper@test1
+[logic@test1_sleeper1]
+active = sleeper1@test1
 
-[sleeper@test1]
+[sleeper1@test1]
 path_main = sleep_1
+
+
+[logic@test1_sleeper2]
+active = sleeper2@test1
+
+[sleeper2@test1]
+path_main = sleep_2
+
 
 ;-------------------------------------------------------------------------------------------------
 ;-- test_restr_changer
