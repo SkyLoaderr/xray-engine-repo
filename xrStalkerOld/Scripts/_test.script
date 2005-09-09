@@ -1,12 +1,7 @@
 function main()
-   local m_heliGO = level.debug_object( "helicopter" )
-   local m_heliObject = m_heliGO:get_helicopter()
-   
-   if m_heliObject:isVisible(db.actor) then
-		printf("actor is visible")
-	else
-		printf("actor is not visible")
-	end
+
+	local info = "tutorial_artefact_start" 
+	db.actor:give_info_portion(info) 
    
 end
 
@@ -56,7 +51,7 @@ for i in default_items do
 			" silencer=",default_items[i].Silencer )
 end
 
-function main()
+function _main()
 	local ui = get_hud()
 	local msg_id = "hud_timer"
 --	ui:AddCustomMessage(msg_id,200,200,30,GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0))
