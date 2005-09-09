@@ -113,14 +113,14 @@ driver_animation_type 	= 0	;тип анимаций актера для данной машины.
 
 [damage_particles]
 
-explosion_particles     = explosions\expl_heli
+explosion_particles     = explosions\expl_vehichels
 car_damage_particles1   = explosions\expl_car_smoke_small
 car_damage_particles2   = explosions\expl_car_smoke_big
-wheels_damage_particles1	= vehiclefx\exhaust_1
-wheels_damage_particles2	= vehiclefx\exhaust_1
+wheels_damage_particles1 = vehiclefx\exhaust_1
+wheels_damage_particles2 = vehiclefx\exhaust_1
 
-particle_bones1                 = kabina; root;left_door,right_door
-particle_bones2                 = root ;kabina
+particle_bones1                 = kabina
+particle_bones2                 = root
 
 ;-------------------------------------------------------------------------------
 ;------ particle bones ---------------------------------------------------------
@@ -194,17 +194,17 @@ blast					= 100
 blast_r					= 15
 blast_impulse			= 350
 frags		        	= 15
-frags_r					= 20
-frag_hit				= 45
-frag_hit_impulse		= 250
+frags_r					= 30
+frag_hit				= 50
+frag_hit_impulse		= 350
 hit_type_blast			= explosion
 hit_type_frag			= fire_wound
-up_throw_factor			= 1.4
+up_throw_factor			= 0.25
 wm_size             	= 0.1
 explode_particles		= explosions\expl_car
 light_color				= 0.6,0.5,0.3
 light_range				= 15.0
-light_time 				= 1.0
+light_time 				= 0.5
 
 ;трассы от осколков
 fragment_speed				= 76
@@ -215,9 +215,9 @@ explode_duration    		= 50			;подолжительность взрыва (с)
 snd_explode 			= weapons\heli_explosion
 
 [explode_effector]
-time					=  0.75 ; 0.5
-amplitude				=  5.0; 3.5
-period_number	    	=  50 ; 11.0
+time					=  0.75
+amplitude				=  5.0
+period_number	    	=  50
 
 ;-------------------------------------------------------------------------------
 ;------ Others params ----------------------------------------------------------
@@ -299,4 +299,30 @@ max_gun_speed   = 2.5
 wpn_section     = stationary_mgun
 
 ;-------------------------------------------------------------------------------
+;------ destroyed part ---------------------------------------------------------
+
+[destroyed]
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+
+[autoremove_parts]
+time					 = 30
+
+;-------------------------------------------------------------------------------
+;--- part impulse_transition ---------------------------------------------------
+
+[impulse_transition_to_parts]
+random_min               = 10.0    ; величина случайно направленного импульса пропорционально массе нового объекта
+random_hit_imp           = 1.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
+;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
+imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
+lv_transition_factor     = 0.5     ; коэффициент передачи линейной скорости
+av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
+
+;-------------------------------------------------------------------------------
 ;------ End params -------------------------------------------------------------
+
