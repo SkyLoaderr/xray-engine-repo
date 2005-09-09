@@ -24,15 +24,8 @@ enum	{
 	NETFLAG_DBG_DUMPSIZE		= (1<<1),
 };
 
-IC u32 TimeGlobal(CTimer* timer)
-{
-	u64	qTime	= timer->GetElapsed_clk();
-	return		u32((qTime*u64(1000))/CPU::cycles_per_second);
-}
-IC u32 TimerAsync				(CTimer* timer) 
-{
-	return TimeGlobal	(timer);
-}
+IC u32 TimeGlobal	(CTimer* timer)	{ return timer->GetElapsed_ms();	}
+IC u32 TimerAsync	(CTimer* timer) { return TimeGlobal	(timer);		}
 
 class XRNETSERVER_API IClientStatistic
 {

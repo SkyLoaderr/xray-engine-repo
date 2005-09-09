@@ -472,7 +472,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 }
 
 static	CTimer	phase_timer		;
-extern ENGINE_API BOOL g_appLoaded = FALSE;
+extern	ENGINE_API BOOL			g_appLoaded = FALSE;
 
 void CApplication::LoadBegin	()
 {
@@ -551,11 +551,6 @@ void CApplication::LoadSwitch	()
 
 void CApplication::OnFrame	( )
 {
-	/*
-	CTimer	T;
-	T.Start	();
-	while	(T.GetElapsed_ms()<10);
-	*/
 	Engine.Event.OnFrame			();
 	g_SpatialSpace->update			();
 	g_SpatialSpacePhysic->update	();

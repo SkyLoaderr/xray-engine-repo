@@ -230,9 +230,9 @@ void CSheduler::ProcessStep			()
 #endif
 
 		// 
-		if (CPU::GetCycleCount() > cycles_limit)	{
+		if (CPU::QPC() > cycles_limit)		{
 			// we have maxed out the load - increase heap
-			psShedulerTarget	+= (psShedulerReaction * 3);
+			psShedulerTarget	+=			(psShedulerReaction * 3);
 			break;
 		}
 	}
@@ -260,8 +260,8 @@ void CSheduler::Update				()
 {
 	// Initialize
 	Device.Statistic.Sheduler.Begin	();
-	cycles_start					= CPU::GetCycleCount			();
-	cycles_limit					= CPU::cycles_per_milisec * u64	(iCeil(psShedulerCurrent)) + cycles_start;
+	cycles_start					= CPU::QPC			();
+	cycles_limit					= CPU::qpc_freq * u64 (iCeil(psShedulerCurrent)) / 1000i64 + cycles_start;
 	internal_Registration			();
 	g_bSheduleInProgress			= TRUE;
 

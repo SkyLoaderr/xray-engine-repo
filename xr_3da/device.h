@@ -122,17 +122,9 @@ public:
 
 	// Mode control
 	void DumpFlags							();
-	IC CTimer_paused* GetTimerGlobal		()	{ return &TimerGlobal;}
-	u32	 TimerAsync							()
-	{
-		u64	qTime		= TimerGlobal.GetElapsed_clk();
-		return u32((qTime*u64(1000))/CPU::cycles_per_second);
-	}
-	u32	 TimerAsyncMM						(void)
-	{
-		return u32((TimerMM.GetElapsed_clk()*u64(1000))/CPU::cycles_per_second) +Timer_MM_Delta;
-//		return TimerAsync()+Timer_MM_Delta;
-	}
+	IC CTimer_paused* GetTimerGlobal		()	{ return &TimerGlobal;								}
+	u32	 TimerAsync							()	{ return TimerGlobal.GetElapsed_ms();				}
+	u32	 TimerAsyncMM						()	{ return TimerMM.GetElapsed_ms() +	Timer_MM_Delta; }
 
 	// Creation & Destroying
 	void Create								(void);

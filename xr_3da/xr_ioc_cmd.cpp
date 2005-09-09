@@ -179,8 +179,8 @@ public:
 void 			crashthread			( void* )
 {
 	Sleep		(1000);
-	Msg			("! crash thread activated");
-	u64			clk		= CPU::GetCycleCount();
+	Msg			("! crash thread activated")	;
+	u64			clk		= CPU::GetCLK		()	;
 	CRandom		rndg;
 	rndg.seed	(s32(clk));
 	for (;;)	{

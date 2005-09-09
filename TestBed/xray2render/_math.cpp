@@ -113,24 +113,27 @@ namespace FPU
 		_64r		= getFPUsw();	// 64, rounding
 
 		m24r		();
-		::Random.seed	( u32(CPU::GetCycleCount()%(1i64<<32i64)) );
+		::Random.seed	( u32(CPU::GetCLK()%(1i64<<32i64)) );
 	}
 };
 #endif
 
 namespace CPU 
 {
-	XRCORE_API u64				cycles_per_second;
-	XRCORE_API u64				cycles_per_milisec;
-	XRCORE_API u64				cycles_per_microsec;
-	XRCORE_API u64				cycles_overhead;
-	XRCORE_API float			cycles2seconds;
-	XRCORE_API float			cycles2milisec;
-	XRCORE_API float			cycles2microsec;
+	XRCORE_API u64				clk_per_second	;
+	XRCORE_API u64				clk_per_milisec	;
+	XRCORE_API u64				clk_per_microsec;
+	XRCORE_API u64				clk_overhead	;
+	XRCORE_API float			clk_to_seconds	;
+	XRCORE_API float			clk_to_milisec	;
+	XRCORE_API float			clk_to_microsec	;
+	XRCORE_API u64				qpc_freq			;
+	XRCORE_API u64				qpc_overhead		;
+
 	XRCORE_API _processor_info	ID;
 
 #ifdef M_BORLAND
-	u64	__fastcall GetCycleCount(void)
+	u64	__fastcall GetCLK		(void)
 	{
 		_asm    db 0x0F;
 		_asm    db 0x31;
@@ -155,35 +158,44 @@ namespace CPU
 		// Detect Freq
 		dwTest	= timeGetTime();
 		do { dwStart = timeGetTime(); } while (dwTest==dwStart);
-		start	= GetCycleCount();
+		start	= GetCLK();
 		while (timeGetTime()-dwStart<1000) ;
-		end		= GetCycleCount();
-		cycles_per_second = end-start;
+		end		= GetCLK();
+		clk_per_second = end-start;
 
-		// Detect Overhead
-		cycles_overhead = 0;
+		// Detect RDTSC Overhead
+		clk_overhead = 0;
 		u64 dummy		= 0;
-		for (int i=0; i<64; i++)
-		{
-			start			=	GetCycleCount();
-			cycles_overhead	+=	GetCycleCount()-start-dummy;
+		for (int i=0; i<256; i++)	{
+			start			=	GetCLK();
+			clk_overhead	+=	GetCLK()-start-dummy;
 		}
-		cycles_overhead		/=	64;
+		clk_overhead		/=	256;
+
+		// Detect QPC Overhead
+		QueryPerformanceFrequency	((PLARGE_INTEGER)&qpc_freq)	;
+		qpc_overhead	= 0;
+		for (int i=0; i<256; i++)	{
+			start			=	QPC();
+			qpc_overhead	+=	QPC()-start-dummy;
+		}
+		qpc_overhead		/=	256;
+
 		SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
-		cycles_per_second	-=	cycles_overhead;
-		cycles_per_milisec	=	cycles_per_second/1000;
-		cycles_per_microsec	=	cycles_per_milisec/1000;
+		clk_per_second	-=	clk_overhead;
+		clk_per_milisec	=	clk_per_second/1000;
+		clk_per_microsec	=	clk_per_milisec/1000;
 
 		_control87	( _PC_64,   MCW_PC );
-		_control87	( _RC_CHOP, MCW_RC );
+//		_control87	( _RC_CHOP, MCW_RC );
 		double a,b;
-		a = 1;		b = double(cycles_per_second);
-		cycles2seconds = float(double(a/b));
-		a = 1000;	b = double(cycles_per_second);
-		cycles2milisec = float(double(a/b));
-		a = 1000000;b = double(cycles_per_second);
-		cycles2microsec = float(double(a/b));
+		a = 1;		b = double(clk_per_second);
+		clk_to_seconds = float(double(a/b));
+		a = 1000;	b = double(clk_per_second);
+		clk_to_milisec = float(double(a/b));
+		a = 1000000;b = double(clk_per_second);
+		clk_to_microsec = float(double(a/b));
 	}
 };
 
@@ -193,8 +205,8 @@ void _initialize_cpu	(void)
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %.2f mhz, %d-clk 'rdtsc'",
 		CPU::ID.v_name,CPU::ID.model_name,
 		CPU::ID.family,CPU::ID.model,CPU::ID.stepping,
-		float(CPU::cycles_per_second/u64(1000000)),
-		u32(CPU::cycles_overhead)
+		float(CPU::clk_per_second/u64(1000000)),
+		u32(CPU::clk_overhead)
 		);
 
 	if (strstr(Core.Params,"-x86"))		{
