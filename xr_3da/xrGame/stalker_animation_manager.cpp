@@ -101,10 +101,10 @@ void CStalkerAnimationManager::update						()
 		if (!object().g_Alive())
 			return;
 
-		if (!script_animations().empty()) {
-			if (object().callback(GameObject::eScriptAnimation))
-				m_skeleton_animated->UpdateTracks	();
+		if (!script_animations().empty() && object().callback(GameObject::eScriptAnimation))
+			m_skeleton_animated->UpdateTracks	();
 
+		if (!script_animations().empty()) {
 			global().reset		();
 #ifndef USE_HEAD_BONE_PART_FAKE
 			head().reset		();
