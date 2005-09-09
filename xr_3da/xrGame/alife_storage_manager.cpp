@@ -89,7 +89,8 @@ void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 
 bool CALifeStorageManager::load	(LPCSTR save_name)
 {
-	u64							start = CPU::QPC();
+	CTimer						timer;
+	timer.Start					();
 	string256					save;
 	strcpy						(save,m_save_name);
 	if (!save_name) {
@@ -132,8 +133,7 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 
 	VERIFY						(graph().actor());
 	
-	u64							finish = CPU::QPC();
-	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,float(finish - start)*CPU::cycles2seconds);
+	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,timer.GetElapsed_sec());
 	return						(true);
 }
 
