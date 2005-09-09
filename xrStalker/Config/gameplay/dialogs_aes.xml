@@ -119,19 +119,18 @@
                 <text>aes_sergeant_diallog_1007</text>
                 <next>1008</next>
             </phrase>
-            <phrase id="0">
-                <text>aes_sergeant_diallog_1001</text>
-                <next>1002</next>
-                <next>1003</next>
-            </phrase>
             <phrase id="1031">
                 <text>aes_sergeant_diallog_1031</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
                 <action>dialogs.break_dialog</action>
             </phrase>
+            <phrase id="0">
+                <text>aes_sergeant_diallog_1001</text>
+                <next>1002</next>
+                <next>1003</next>
+            </phrase>
             <phrase id="1030">
                 <text>aes_sergeant_diallog_1030</text>
-                <action>dialogs_aes.aes_set_mapspots</action>
                 <next>1031</next>
             </phrase>
         </phrase_list>
