@@ -438,6 +438,11 @@
 		<class>pri_stalker_veteran</class>
 	</character>
 
+	<!-- Soldier -->
+	<character id="pri_soldier_suicide">
+		<class>pri_soldier_suicide</class>
+	</character>
+
 	<!-- Zombied -->
 	<character id="pri_zombied_suicide">
 		<class>pri_zombied_suicide</class>
