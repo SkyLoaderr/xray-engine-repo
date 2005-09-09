@@ -33,7 +33,7 @@ xrGUID generate_guid()
 #endif
 	STATIC_CHECK	(sizeof(result) >= sizeof(u64),GUID_must_have_size_greater_or_equal_to_the_long_long);
 	ZeroMemory		(&result,sizeof(result));
-	u64				temp = CPU::GetCycleCount();
+	u64				temp = CPU::GetCLK();
 	Memory.mem_copy	(&result,&temp,sizeof(temp));
 	return			(result);
 }

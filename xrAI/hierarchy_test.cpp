@@ -180,7 +180,7 @@ enough:
 	global_count				+= (u32(i1 - table.begin()) - i)*(j2 - j);
 }
 
-u64							s,f;
+CTimer							timer;
 
 IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector_graph)
 {
@@ -211,8 +211,8 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 				min_x				= cur_x;
 		}
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("MinMax time %f",CPU::cycles2seconds*float(f - s));
+	
+	Msg							("MinMax time %f",timer.GetElapsed_sec());
 
 	// allocating memory
 	VERTEX_VECTOR2				table;
@@ -226,8 +226,8 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 		for ( ; I != E; ++I)
 			(*I).resize				(size_x);
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Allocate time %f",CPU::cycles2seconds*float(f - s));
+	
+	Msg							("Allocate time %f",timer.GetElapsed_sec());
 
 	{
 		u32									cur_x, cur_z;
@@ -241,8 +241,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			table[cur_z][cur_x].push_back	(v);
 		}
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Fill time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Fill time %f",timer.GetElapsed_sec());
 
 	u32							group_id = 0;
 	{
@@ -262,8 +261,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			}
 		}
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Recursive fill time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Recursive fill time %f",timer.GetElapsed_sec());
 
 	{
 		VERTEX_VECTOR2::iterator	I = table.begin() + min_z, B = table.begin();
@@ -280,8 +278,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			}
 		}
 	}
-	f								= CPU::GetCycleCount();
-	Msg								("Check marks time %f",CPU::cycles2seconds*float(f - s));
+	Msg								("Check marks time %f",timer.GetElapsed_sec());
 
 	Msg								("Group ID : %d (%d vertices)",group_id,sector_graph.vertex_count());
 
@@ -320,8 +317,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			while (usage);
 		}
 	}
-	f								= CPU::GetCycleCount();
-	Msg								("Fill edges time %f",CPU::cycles2seconds*float(f - s));
+	Msg								("Fill edges time %f",timer.GetElapsed_sec());
 
 	Msg								("Sector Graph : %d vertices, %d edges",sector_graph.vertex_count(),sector_graph.edge_count());
 
@@ -348,8 +344,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 		}
 	}
 
-	f								= CPU::GetCycleCount();
-	Msg								("Check edges time %f",CPU::cycles2seconds*float(f - s));
+	Msg								("Check edges time %f",timer.GetElapsed_sec());
 }
 
 #define TEST_COUNT 1
@@ -452,15 +447,12 @@ void test_hierarchy		(LPCSTR name)
 	Sleep						(1);
 #endif
 
-	s							= CPU::GetCycleCount();
+	timer.Start					();
 	for (u32 i=0; i<TEST_COUNT; ++i) {
 		build_convex_hierarchy	(*level_graph,*sector_graph);
-		f						= CPU::GetCycleCount();
-		Msg						("Destroy time %f",CPU::cycles2seconds*float(f - s));
+		Msg						("Destroy time %f",timer.GetElapsed_sec());
 	}
-	f							= CPU::GetCycleCount();
-
-	Msg							("Total time %f (%d test(s) : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
+	Msg							("Total time %f (%d test(s) : %f)",timer.GetElapsed_sec(),TEST_COUNT,1000.f*timer.GetElapsed_ms()/float(TEST_COUNT));
 
 	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
 
@@ -470,8 +462,7 @@ void test_hierarchy		(LPCSTR name)
 	CMemoryWriter				stream;
 	save_data					(sector_graph,stream);
 	stream.save_to				("x:\\sector_graph.dat");
-	f							= CPU::GetCycleCount();
-	Msg							("Save time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Save time %f",timer.GetElapsed_sec());
 
 	CSectorGraph				*test0;
 #if 0
@@ -483,16 +474,14 @@ void test_hierarchy		(LPCSTR name)
 		load_data				(test0,*reader);
 		FS.r_close				(reader);
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Load1 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Load1 time %f",timer.GetElapsed_sec());
 
 	{
 		IReader					*reader = FS.r_open("x:\\sector_graph.dat");
 		load_data				(test0,*reader);
 		FS.r_close				(reader);
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Load1 cached time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Load1 cached time %f",timer.GetElapsed_sec());
 
 #if 0
 	{
@@ -500,50 +489,41 @@ void test_hierarchy		(LPCSTR name)
 		load_data				(test1,*reader);
 		FS.r_close				(reader);
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Load2 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Load2 time %f",timer.GetElapsed_sec());
 
 	{
 		IReader					*reader = FS.r_open("x:\\sector_graph.dat.save");
 		load_data				(test1,*reader);
 		FS.r_close				(reader);
 	}
-	f							= CPU::GetCycleCount();
-	Msg							("Load2 cached time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Load2 cached time %f",timer.GetElapsed_sec());
 #endif
 
 	Msg							("sector_graph and loaded graph are %s",equal(sector_graph,test0) ? "EQUAL" : "NOT EQUAL");
-	f							= CPU::GetCycleCount();
-	Msg							("Compare1 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Compare1 time %f",timer.GetElapsed_sec());
 
 #if 0
 	Msg							("sector_graph and old loaded graph are %s",equal(sector_graph,test1) ? "EQUAL" : "NOT EQUAL");
-	f							= CPU::GetCycleCount();
-	Msg							("Compare2 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Compare2 time %f",timer.GetElapsed_sec());
 	
 	Msg							("new loaded graph and old loaded graph are %s",equal(test0,test1) ? "EQUAL" : "NOT EQUAL");
-	f							= CPU::GetCycleCount();
-	Msg							("Compare3 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Compare3 time %f",timer.GetElapsed_sec());
 #endif
 	
 	xr_delete					(test0);
-	f							= CPU::GetCycleCount();
-	Msg							("Destroy1 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Destroy1 time %f",timer.GetElapsed_sec());
 	
 #if 0
 	xr_delete					(test1);
-	f							= CPU::GetCycleCount();
-	Msg							("Destroy2 time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Destroy2 time %f",timer.GetElapsed_sec());
 #endif
 #endif
 	
 	xr_delete					(level_graph);
-	f							= CPU::GetCycleCount();
-	Msg							("Destroy level graph time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Destroy level graph time %f",timer.GetElapsed_sec());
 	
 	xr_delete					(sector_graph);
-	f							= CPU::GetCycleCount();
-	Msg							("Destroy sector graph time %f",CPU::cycles2seconds*float(f - s));
+	Msg							("Destroy sector graph time %f",timer.GetElapsed_sec());
 
 	xr_delete					(level_navigation_graph);
 

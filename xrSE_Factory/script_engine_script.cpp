@@ -97,14 +97,11 @@ void prefetch_module(LPCSTR file_name)
 }
 
 struct profile_timer_script {
-	u64							m_start_time;
-	u64							m_accumulated;
+	CStatTimer					m_timer;
 	int							m_recurse_mark;
 	
 	IC								profile_timer_script	()
 	{
-		m_start_time			= 0;
-		m_accumulated			= 0;
 		m_recurse_mark			= 0;
 	}
 
@@ -115,21 +112,14 @@ struct profile_timer_script {
 
 	IC		profile_timer_script&	operator=				(const profile_timer_script &profile_timer)
 	{
-//		THROW					(!profile_timer.m_start_time);
-//		THROW					(!profile_timer.m_recurse_mark);
-		m_start_time			= profile_timer.m_start_time;
-		m_accumulated			= profile_timer.m_accumulated;
+		m_timer					= profile_timer.m_timer;
 		m_recurse_mark			= profile_timer.m_recurse_mark;
 		return					(*this);
 	}
 
 	IC		bool					operator<				(const profile_timer_script &profile_timer) const
 	{
-//		THROW					(!profile_timer.m_start_time);
-//		THROW					(!profile_timer.m_recurse_mark);
-//		THROW					(!m_start_time);
-//		THROW					(!m_recurse_mark);
-		return					(m_accumulated < profile_timer.m_accumulated);
+		return					(m_timer.GetElapsed_ticks() < profile_timer.m_timer.GetElapsed_ticks());
 	}
 
 	IC		void					start					()
@@ -140,43 +130,37 @@ struct profile_timer_script {
 		}
 
 		++m_recurse_mark;
-		THROW					(!m_start_time);
-		m_start_time			= CPU::GetCycleCount();
+		m_timer.Begin			();
 	}
 
 	IC		void					stop					()
 	{
-		u64						temp = CPU::GetCycleCount();
-		
 		THROW					(m_recurse_mark);
 		--m_recurse_mark;
-		
-		THROW					(temp > m_start_time);
-		THROW					(m_start_time);
 		
 		if (m_recurse_mark)
 			return;
 		
-		m_accumulated			+= temp - m_start_time - CPU::cycles_overhead;
-		m_start_time			= 0;
+		m_timer.End				();
 	}
 
 	IC		float					time					() const
 	{
-		return					((float(m_accumulated)*CPU::cycles2microsec));
+		return					(float(m_timer.GetElapsed_sec())*1000000.f);
 	}
 };
 
 IC	profile_timer_script	operator+	(const profile_timer_script &portion0, const profile_timer_script &portion1)
 {
 	profile_timer_script	result;
-	result.m_accumulated	= portion0.m_accumulated + portion1.m_accumulated;
+	result.m_timer.accum	= portion0.m_timer.accum + portion1.m_timer.accum;
+	result.m_timer.count	= portion0.m_timer.count + portion1.m_timer.count;
 	return					(result);
 }
 
-IC	std::ostream& operator<<(std::ostream &stream, profile_timer_script &portion)
+IC	std::ostream& operator<<(std::ostream &stream, profile_timer_script &timer)
 {
-	stream					<< (float(portion.m_accumulated)*CPU::cycles2microsec);
+	stream					<< timer.time();
 	return					(stream);
 }
 

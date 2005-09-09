@@ -76,16 +76,16 @@ public:
 	ICF void	Begin			()		{	count++; T.Start();				}
 	ICF void	End				()		{	accum += T.GetElapsed_ticks();	}
 
-	ICF u64		GetElapsed_ticks()		{	return accum;					}
+	ICF u64		GetElapsed_ticks()const	{	return accum;					}
 
-	IC	u32		GetElapsed_ms	()		{	return u32(GetElapsed_ticks()*u64(1000)/CPU::qpc_freq );	}
-	IC	float	GetElapsed_sec	()		{
+	IC	u32		GetElapsed_ms	()const	{	return u32(GetElapsed_ticks()*u64(1000)/CPU::qpc_freq );	}
+	IC	float	GetElapsed_sec	()const	{
 		FPU::m64r	()			;
 		float		_result		=		float(double(GetElapsed_ticks())/double(CPU::qpc_freq )	)	;
 		FPU::m24r	()			;
 		return		_result		;
 	}
-	ICF float	GetFrame_sec	()		{	return result; }
+	ICF float	GetFrame_sec	()const	{	return result; }
 };
 
 #endif // FTimerH

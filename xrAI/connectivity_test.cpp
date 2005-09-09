@@ -84,9 +84,9 @@ void connectivity_test	(LPCSTR level_name)
 	CSectorGraph			sectors;
 	CAlgorithm				*algorithm = xr_new<CAlgorithm>((N+2)*(M+2));
 	CPathManager			path_manager;
+	CTimer					timer;
 	u32						start_node, dest_node;
 	xr_vector<u32>			path;
-	u64						start, finish;
 	start_node				= index(0,0);
 	dest_node				= index(N-1,M-1);
 	sector_vertex			s(index(0,0),index(N-1,M-1));
@@ -110,18 +110,16 @@ void connectivity_test	(LPCSTR level_name)
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 
 	Sleep					(1);
-	
-	start					= CPU::GetCycleCount();
+
+	timer.Start				();
 
 	bool					result = algorithm->find(path_manager);
 
-	finish					= CPU::GetCycleCount();
-	
+	Msg						("time : %12.6f",timer.GetElapsed_ms());
+	Msg						("search %s, %d vertices searched",result ? "succeded" : "failed",algorithm->data_storage().get_visited_node_count());
+
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
-
-	Msg						("time : %12.6f",float(s64(finish - start))*CPU::cycles2milisec);
-	Msg						("search %s, %d vertices searched",result ? "succeded" : "failed",algorithm->data_storage().get_visited_node_count());
 
 	xr_delete				(graph);
 	xr_delete				(algorithm);
