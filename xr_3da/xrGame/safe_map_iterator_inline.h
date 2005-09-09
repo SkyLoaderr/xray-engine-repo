@@ -25,8 +25,7 @@ IC	CSSafeMapIterator::CSafeMapIterator			()
 {
 	m_cycle_count			= _cycle_type(-1);
 	m_first_update			= use_first_update;
-	m_start_time			= 0;
-	m_max_process_time		= 0;
+	m_max_process_time		= 0.f;
 	update_next				();
 }
 
