@@ -157,23 +157,23 @@ front_right_wheel     = 0.00001
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
 
-[damage_bones]           ;аналогично секции в актере, но без анимаций
-;bone_name            = <hit_scale>,<-1>,<wound_scale>
-;<hit_scale> - коэфф. изменения хита (уменьшения здоровья)
-;<wound_scale> - коэфф. изменения величины открытой раны - незадействован
-;-1 - must be -1
-default               = 1, -1, 0.0
+[damage_bones]          ;аналогично секции в актере, но без анимаций
+;bone_name     			= <hit_scale>,<-1>,<wound_scale>
+;<hit_scale> 			- коэфф. изменения хита (уменьшения здоровья)
+;<wound_scale> 			- коэфф. изменения величины открытой раны - незадействован
+
+default       			= 1, -1, 0.1
 
 [immunities]
-burn_immunity         = 0.5             ;коэффициенты иммунитета
-strike_immunity       = 0.01
-shock_immunity        = 0.01
-wound_immunity        = 0.01
-radiation_immunity    = 0.01
-telepatic_immunity    = 0.01
-chemical_burn_immunity = 0.01
-explosion_immunity    = 0.1
-fire_wound_immunity   = 0.01
+burn_immunity         	= 1.0       ;коэффициенты иммунитета
+strike_immunity       	= 0.01
+shock_immunity        	= 0.01
+wound_immunity        	= 0.01
+radiation_immunity    	= 0.01
+telepatic_immunity    	= 0.01
+chemical_burn_immunity 	= 0.01
+explosion_immunity    	= 1.0
+fire_wound_immunity   	= 0.02
 
 ;-------------------------------------------------------------------------------
 ;----------------explosion params-----------------------------------------------

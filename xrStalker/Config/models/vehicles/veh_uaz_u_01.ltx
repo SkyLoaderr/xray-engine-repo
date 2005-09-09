@@ -144,14 +144,15 @@ right_door        		= 2000
 ;------ collisiondamage --------------------------------------------------------
 
 [collision_damage]
-root                  	= 0.001
-front_bamper          	= 0.001
-left_door             	= 0.001
-right_door             	= 0.001
-back_left_wheel       	= 0.0001
-back_right_wheel      	= 0.0001
-front_left_wheel      	= 0.0001
-front_right_wheel     	= 0.0001
+root					= 0.0001
+front_bamper			= 0.001
+left_door				= 0.0001
+right_door				= 0.0001
+back_door				= 0.0001
+back_left_wheel			= 0.00001
+back_right_wheel		= 0.00001
+front_left_wheel		= 0.00001
+front_right_wheel		= 0.00001
 
 ;-------------------------------------------------------------------------------
 ;------ damage bones -----------------------------------------------------------
@@ -172,7 +173,7 @@ radiation_immunity    	= 0.01
 telepatic_immunity    	= 0.01
 chemical_burn_immunity 	= 0.01
 explosion_immunity    	= 1.0
-fire_wound_immunity   	= 0.01
+fire_wound_immunity   	= 0.02
 
 ;-------------------------------------------------------------------------------
 ;----------------explosion params-----------------------------------------------
@@ -260,6 +261,7 @@ physics\vehicles\Zaz\part\veh_zaz_u_01_part6
 
 [autoremove_parts]
 time					 = 30
+
 ;-------------------------------------------------------------------------------
 ;--- part impulse_transition ---------------------------------------------------
 
