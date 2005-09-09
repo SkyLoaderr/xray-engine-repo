@@ -29,8 +29,8 @@ max_torque_rpm    		= 2500       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.005
 power_decrement_factor	= 0.05
-rpm_increment_factor	= 0.05
-rpm_decrement_factor	= 0.05
+rpm_increment_factor	= 0.04
+rpm_decrement_factor	= 0.04
 m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
@@ -41,7 +41,7 @@ idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
 ;-------------------------------------------------------------------------------
 ;------ Adjustment a wheel -----------------------------------------------------
 
-reference_radius		= 0.56			; Радиус колеса, используемый при просчёте двигателя
+reference_radius		= 0.88			; Радиус колеса, используемый при просчёте двигателя
 axle_friction     		= 0.0001       	; Ослабление скорости в неетральной позиции. (N*m)
 steering_speed    		= 0.5         	; Время поворота рулевого колеса, в максимум. rps (1)
 steering_torque   		= 900000.    	; Сила гидроусилителя руля. (N*m)
@@ -108,27 +108,21 @@ driver_animation_type = 0  ;тип анимаций актера для данной машины.
 
 [damage_particles]
 
-explosion_particles             = explosions\expl_car
-car_damage_particles1           = explosions\expl_car_smoke_small
-car_damage_particles2           = explosions\expl_car_smoke_big
-wheels_damage_particles1        = vehiclefx\exhaust_1
-wheels_damage_particles2        = vehiclefx\exhaust_1
+explosion_particles     = explosions\expl_vehichels
+car_damage_particles1   = explosions\expl_car_smoke_small
+car_damage_particles2   = explosions\expl_car_smoke_big
+wheels_damage_particles1 = vehiclefx\exhaust_1
+wheels_damage_particles2 = vehiclefx\exhaust_1
 
-particle_bones1                 = kabina; root;left_door,right_door
-particle_bones2                 = root ;kabina
+particle_bones1                 = kabina
+particle_bones2                 = root
 
 ;-------------------------------------------------------------------------------
 ;------ particle bones ---------------------------------------------------------
 
 [particle_bones]
 root                  =  0.5,-0.5,1
-back_left_wheel       =  0,0,0
-back_right_wheel      =  0,0,0
-front_left_wheel      =  0,0,0
-front_right_wheel     =  0,0,0
 kabina                =  0.5,-0.5,1
-left_door             =  0,0,0
-right_door            =  0,0,0
 
 ;-------------------------------------------------------------------------------
 ;------ damage items -----------------------------------------------------------
@@ -249,4 +243,29 @@ spring_factor           = 0.1		;
 friction_factor         = 1.6		;
 
 ;-------------------------------------------------------------------------------
-;------ End params ------------------------------------------------------------- 
+;------ destroyed part ---------------------------------------------------------
+
+[destroyed]
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+
+[autoremove_parts]
+time					 = 30
+
+;-------------------------------------------------------------------------------
+;--- part impulse_transition ---------------------------------------------------
+
+[impulse_transition_to_parts]
+random_min               = 10.0    ; величина случайно направленного импульса пропорционально массе нового объекта
+random_hit_imp           = 1.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
+;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
+imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
+lv_transition_factor     = 0.5     ; коэффициент передачи линейной скорости
+av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
+
+;-------------------------------------------------------------------------------
+;------ End params -------------------------------------------------------------
