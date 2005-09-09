@@ -66,7 +66,7 @@ protected:
 	TERRAIN_REGISTRY					m_terrain[GameGraph::LOCATION_TYPE_COUNT][GameGraph::LOCATION_COUNT];	
 	CALifeLevelRegistry					*m_level;
 	CSE_ALifeCreatureActor				*m_actor;
-	u64									m_process_time;
+	float								m_process_time;
 	xr_vector<CSE_ALifeDynamicObject*>	m_temp;
 
 protected:

@@ -119,7 +119,7 @@ IC	u32 CSSafeMapIterator::update				(const _update_predicate &predicate)
 		return			(0);
 
 	start_timer			();
-	m_cycle_count		= m_start_time;
+	m_cycle_count		= m_timer.qwStartTime;
 	_iterator			I = next();
 	VERIFY				(I != m_objects.end());
 	for (u32 i=0; (I != m_objects.end()) && !time_over() && predicate(I,m_cycle_count,true); ++i) {
