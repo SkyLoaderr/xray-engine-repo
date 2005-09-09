@@ -72,6 +72,7 @@
 	<info_portion id="aes_choper_down_3"></info_portion>
 	<info_portion id="aes_enter_battle_sound"></info_portion>
 	<info_portion id="aes_commander_out_sound"></info_portion>
+	<info_portion id="aes_sniper_out_sound"></info_portion>
 
 	
 	<info_portion id="aes_arrive_to"></info_portion>
