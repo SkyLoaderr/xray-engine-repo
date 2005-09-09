@@ -63,7 +63,7 @@ IC	void CALifeGraphRegistry::assign	(CSE_ALifeMonsterAbstract *monster)
 		}
 }
 
-IC	void CALifeGraphRegistry::set_process_time	(const u64 &process_time)
+IC	void CALifeGraphRegistry::set_process_time	(const float &process_time)
 {
 	m_process_time				= process_time;
 	if (m_level)
