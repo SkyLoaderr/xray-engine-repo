@@ -54,10 +54,6 @@
                 <text>aes_sergeant_diallog_1029</text>
                 <next>1030</next>
             </phrase>
-            <phrase id="1030">
-                <text>aes_sergeant_diallog_1030</text>
-                <next>1031</next>
-            </phrase>
             <phrase id="1012">
                 <text>aes_sergeant_diallog_1012</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
@@ -65,11 +61,6 @@
             </phrase>
             <phrase id="1015">
                 <text>aes_sergeant_diallog_1015</text>
-                <action>dialogs_aes.aes_segeant_kill</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="1031">
-                <text>aes_sergeant_diallog_1031</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
                 <action>dialogs.break_dialog</action>
             </phrase>
@@ -116,11 +107,6 @@
                 <text>aes_sergeant_diallog_1004</text>
                 <next>1005</next>
             </phrase>
-            <phrase id="0">
-                <text>aes_sergeant_diallog_1001</text>
-                <next>1002</next>
-                <next>1003</next>
-            </phrase>
             <phrase id="1005">
                 <text>aes_sergeant_diallog_1005</text>
                 <next>1006</next>
@@ -132,6 +118,21 @@
             <phrase id="1007">
                 <text>aes_sergeant_diallog_1007</text>
                 <next>1008</next>
+            </phrase>
+            <phrase id="0">
+                <text>aes_sergeant_diallog_1001</text>
+                <next>1002</next>
+                <next>1003</next>
+            </phrase>
+            <phrase id="1031">
+                <text>aes_sergeant_diallog_1031</text>
+                <action>dialogs_aes.aes_segeant_kill</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1030">
+                <text>aes_sergeant_diallog_1030</text>
+                <action>dialogs_aes.aes_set_mapspots</action>
+                <next>1031</next>
             </phrase>
         </phrase_list>
     </dialog>
