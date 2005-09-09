@@ -23,14 +23,14 @@ damage              	= damage_bones
 
 fuel_tank         		= 250.         	; L
 fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 20        	; horse_power (kW=hp*0.808) max power
+engine_power      		= 10        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
 max_torque_rpm    		= 2500       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.1
-rpm_increment_factor	= 0.02
-rpm_decrement_factor	= 0.04
+rpm_increment_factor	= 0.01
+rpm_decrement_factor	= 0.02
 m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
@@ -52,7 +52,7 @@ break_time        		= 1.0         	; время нарастания силы торможения до максиму
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
 
-main_gear_ratio    		= 10.63         ; Передаточное отношение
+main_gear_ratio    		= 8.63         ; Передаточное отношение
 auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
