@@ -19,8 +19,8 @@
 
 struct CProfileResultPortion {
 	LPCSTR			m_timer_id;
-	u64				m_start;
-	u64				m_stop;
+	CTimer			m_timer;
+	u64				m_time;
 };
 
 struct CProfilePortion : public CProfileResultPortion {

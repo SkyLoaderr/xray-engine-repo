@@ -25,7 +25,7 @@ public:
 
 		IC				CSoundCollection		()
 		{
-			seed								(u32(CPU::GetCycleCount() & 0xffffffff));
+			seed								(u32(CPU::QPC() & 0xffffffff));
 		}
 
 						~CSoundCollection		()

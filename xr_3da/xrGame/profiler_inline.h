@@ -10,25 +10,25 @@
 
 IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)
 {
-	m_timer_id						= timer_id;
-	m_start							= CPU::GetCycleCount();
+	m_timer_id							= timer_id;
+	m_timer.Start						();
 }
 
 IC	CProfilePortion::~CProfilePortion	()
 {
-	m_stop							= CPU::GetCycleCount();
+	m_time								= m_timer.GetElapsed_ticks();
 	if (psAI_Flags.test(aiStats) && psDeviceFlags.test(rsStatistic))
 		profiler().add_profile_portion	(*this);
 }
 
 IC	void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
 {
-	m_section.Enter					();
-	m_portions.push_back			(profile_portion);
-	m_section.Leave					();
+	m_section.Enter						();
+	m_portions.push_back				(profile_portion);
+	m_section.Leave						();
 }
 
-IC	CProfiler&	profiler()
+IC	CProfiler&	profiler				()
 {
 	return			(*g_profiler);
 }

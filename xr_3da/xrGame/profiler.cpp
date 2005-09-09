@@ -61,7 +61,7 @@ IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_si
 void CProfiler::setup_timer	(LPCSTR timer_id, u64 timer_time)
 {
 	string256	m_temp;
-	float						_time = float(timer_time)*CPU::cycles2milisec;
+	float						_time = float(timer_time)*1000.f/CPU::qpc_freq;
 	TIMERS::iterator			i = m_timers.find(timer_id);
 	if (i == m_timers.end()) {
 		strcpy					(m_temp,timer_id);
@@ -108,7 +108,7 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 				timer_time		= 0;
 				J				= I;
 			}
-			timer_time			+= (*I).m_stop - (*I).m_start;
+			timer_time			+= (*I).m_time;
 		}
 		setup_timer				((*J).m_timer_id,timer_time);
 
