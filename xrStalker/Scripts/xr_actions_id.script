@@ -25,6 +25,7 @@ stohe_bobik_base			= stohe_actions + 80
 stohe_camper_base			= stohe_actions + 90
 assistance					= stohe_actions + 100
 death						= stohe_actions + 110
+abuse_base					= stohe_actions + 120
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024

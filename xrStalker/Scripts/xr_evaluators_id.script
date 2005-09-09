@@ -25,7 +25,7 @@ stohe_camper_base       = id_start + 1080
 assistance              = id_start + 1090
 death                   = id_start + 1100
 script_combat           = id_start + 1110
-
+abuse_base				= id_start + 1120
 
 sidor_patrol_base_property          = id_start + 2000
 sidor_wounded_base                  = id_start + 2010
