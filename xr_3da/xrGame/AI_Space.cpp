@@ -58,7 +58,8 @@ void CAI_Space::load				(LPCSTR level_name)
 #ifdef DEBUG
 	Memory.mem_compact		();
 	u32						mem_usage = Memory.mem_usage();
-	u64						start = CPU::GetCycleCount();
+	CTimer					timer;
+	timer.Start				();
 #endif
 
 	m_level_graph			= xr_new<CLevelNavigationGraph>();
@@ -86,8 +87,7 @@ void CAI_Space::load				(LPCSTR level_name)
 	m_cover_manager->compute_static_cover	();
 
 #ifdef DEBUG
-	u64						finish = CPU::GetCycleCount();
-	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",float(finish - start)*CPU::cycles2seconds,float(Memory.mem_usage() - mem_usage)/1048576.0);
+	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",timer.GetElapsed_sec()*1000.f,float(Memory.mem_usage() - mem_usage)/1048576.0);
 #endif
 }
 

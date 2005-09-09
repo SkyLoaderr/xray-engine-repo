@@ -80,7 +80,7 @@ void CMovementManager::Load			(LPCSTR section)
 
 void CMovementManager::reinit		()
 {
-	m_time_work						= .3f;
+	m_time_work						= .0003f;
 	m_speed							= 0.f;
 	m_path_type						= ePathTypeNoPath;
 	m_path_state					= ePathStateDummy;

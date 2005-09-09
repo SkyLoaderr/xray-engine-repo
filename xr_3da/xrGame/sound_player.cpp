@@ -19,7 +19,7 @@ CSoundPlayer::CSoundPlayer			(CObject *object)
 {
 	VERIFY							(object);
 	m_object						= object;
-	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
+	seed							(u32(CPU::QPC() & 0xffffffff));
 	m_sound_prefix					= "";
 }
 

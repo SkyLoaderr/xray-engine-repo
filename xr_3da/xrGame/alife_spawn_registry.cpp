@@ -16,7 +16,7 @@
 CALifeSpawnRegistry::CALifeSpawnRegistry	(LPCSTR section)
 {
 	m_spawn_name				= "";
-	seed						(u32(CPU::GetCycleCount() & 0xffffffff));
+	seed						(u32(CPU::QPC() & 0xffffffff));
 }
 
 CALifeSpawnRegistry::~CALifeSpawnRegistry	()

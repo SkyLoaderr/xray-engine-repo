@@ -45,7 +45,7 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_news						= 0;
 	m_story_objects				= 0;
 	m_registry_container		= 0;
-	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
+	random().seed						(u32(CPU::QPC() & 0xffffffff));
 }
 
 CALifeSimulatorBase::~CALifeSimulatorBase	()

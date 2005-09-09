@@ -507,10 +507,6 @@ void game_sv_GameState::Update		()
 
 game_sv_GameState::game_sv_GameState()
 {
-/*	m_qwStartProcessorTime		= CPU::GetCycleCount();
-	m_qwStartGameTime			= 12*60*60*1000;
-	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
-*/
 	m_server					= Level().Server;
 
 	m_event_queue = xr_new<GameEventQueue>();
@@ -534,29 +530,7 @@ game_sv_GameState::~game_sv_GameState()
 	//-------------------------------------------------------
 	ConsoleCommands_Clear();
 }
-/*
-ALife::_TIME_ID game_sv_GameState::GetGameTime()
-{
-	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(CPU::GetCycleCount() - m_qwStartProcessorTime)*CPU::cycles2milisec));
-}
 
-float game_sv_GameState::GetGameTimeFactor()
-{
-	return			(m_fTimeFactor);
-}
-
-void game_sv_GameState::SetGameTimeFactor (const float fTimeFactor)
-{
-	m_qwStartGameTime			= GetGameTime();
-	m_qwStartProcessorTime		= CPU::GetCycleCount();
-	m_fTimeFactor				= fTimeFactor;
-}
-
-void game_sv_GameState::SetGameTime (ALife::_TIME_ID GameTime)
-{
-	m_qwStartGameTime			= GameTime;
-}
-*/
 bool game_sv_GameState::change_level (NET_Packet &net_packet, ClientID sender)
 {
 	return						(true);

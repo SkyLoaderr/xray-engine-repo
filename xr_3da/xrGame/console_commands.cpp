@@ -345,11 +345,10 @@ public:
 						Msg("! invalid vertex number (%d)!",_min(id1,id2));
 					else {
 						Sleep				(1);
-						u64 t1x = CPU::GetCycleCount();
-						//						float fValue = ai().m_tpAStar->ffFindMinimalPath(id1,id2);
-						u64 t2x = CPU::GetCycleCount();
-						t2x -= t1x;
-						//						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,ai().m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
+						CTimer				timer;
+						timer.Start			();
+//						float				fValue = ai().m_tpAStar->ffFindMinimalPath(id1,id2);
+//						Msg					("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,ai().m_tpAStar->m_tpaNodes.size(),timer.GetElapsed_ticks(),timer.GetElapsed_ms()*1000.f);
 					}
 			else
 				Msg("! not enough parameters!");
@@ -759,7 +758,8 @@ public:
 		sscanf					(args ,"%s",S);
 		
 #ifdef DEBUG
-		start					= CPU::GetCycleCount();
+		CTimer					timer;
+		timer.Start				();
 #endif
 		if (!xr_strlen(S)) {
 			strconcat			(S,Core.UserName,"_","quicksave");
@@ -777,27 +777,19 @@ public:
 			Level().Send		(net_packet,net_flags(TRUE));
 		}
 #ifdef DEBUG
-		finish					= CPU::GetCycleCount();
-#endif
-
-#ifdef DEBUG
-		Msg						("Game save overhead  : %f milliseconds",CPU::cycles2milisec*(finish - start));
+		Msg						("Game save overhead  : %f milliseconds",timer.GetElapsed_sec()*1000.f);
 #endif
 
 		strcat					(S,".dds");
 		FS.update_path			(S1,"$game_saves$",S);
 		
 #ifdef DEBUG
-		start					= CPU::GetCycleCount();
+		timer.Start				();
 #endif
 		UI()->Screenshot		(IRender_interface::SM_FOR_GAMESAVE,S1);
-//		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
-#ifdef DEBUG
-		finish					= CPU::GetCycleCount();
-#endif
 
 #ifdef DEBUG
-		Msg						("Screenshot overhead : %f milliseconds",CPU::cycles2milisec*(finish - start));
+		Msg						("Screenshot overhead : %f milliseconds",timer.GetElapsed_sec()*1000.f);
 #endif
 	}
 };
