@@ -126,6 +126,7 @@ function Reject:update (dt)
     --update color base
     local value = self:process_fx (deltaf, self.fx_set.color_base)
 	self.pp.params.color_base = color (value + self.fx_set.color_base[1].initial.x, value + self.fx_set.color_base[1].initial.y, value + self.fx_set.color_base[1].initial.z)
+	printf ("Current value = %f, time = %f", value, self.time)
     --update color gray
 	value = self:process_fx (deltaf, self.fx_set.color_gray)
 	self.pp.params.color_gray = color (value + self.fx_set.color_gray[1].initial.x, value + self.fx_set.color_gray[1].initial.y, value + self.fx_set.color_gray[1].initial.z)
