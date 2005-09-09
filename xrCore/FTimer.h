@@ -27,9 +27,9 @@ protected:
 public:
 				CTimer			()		: qwStartTime(0),qwPausedTime(0),qwPauseAccum(0),bPause(FALSE)		{ }
 	IC	void	Start			()		{	if(bPause) return;	qwStartTime = CPU::QPC()-qwPauseAccum;		}
-	ICF u64		GetElapsed_ticks()		{	if(bPause) return	qwPausedTime; else return CPU::QPC()-qwStartTime-CPU::qpc_overhead-qwPauseAccum; }
-	IC	u32		GetElapsed_ms	()		{	return u32(GetElapsed_ticks()*u64(1000)/CPU::qpc_freq );	}
-	IC	float	GetElapsed_sec	()		{
+	ICF u64		GetElapsed_ticks()const	{	if(bPause) return	qwPausedTime; else return CPU::QPC()-qwStartTime-CPU::qpc_overhead-qwPauseAccum; }
+	IC	u32		GetElapsed_ms	()const	{	return u32(GetElapsed_ticks()*u64(1000)/CPU::qpc_freq );	}
+	IC	float	GetElapsed_sec	()const	{
 		FPU::m64r	()			;
 		float		_result		=		float(double(GetElapsed_ticks())/double(CPU::qpc_freq )	)	;
 		FPU::m24r	()			;
@@ -46,7 +46,7 @@ class XRCORE_API CTimer_paused  : public CTimer		{
 public:
 	CTimer_paused				()		{ g_pauseMngr.Register(this);	}
 	~CTimer_paused				()		{ g_pauseMngr.UnRegister(this);	}
-	IC BOOL		Paused			()		{ return bPause;				}
+	IC BOOL		Paused			()const	{ return bPause;				}
 	IC void		Pause			(BOOL b){
 		if(bPause==b)			return	;
 

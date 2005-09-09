@@ -21,12 +21,12 @@ IC	void CMovementManager::set_path_type(EPathType path_type)
 
 IC	void CMovementManager::time_start()
 {
-	m_start_time			= CPU::GetCycleCount();
+	m_timer.Start			();
 }
 
 IC	bool CMovementManager::time_over() const
 {
-	return					(!m_build_at_once && (CPU::GetCycleCount() - m_start_time >= m_time_work));
+	return					(!m_build_at_once && (m_timer.GetElapsed_ms() >= m_time_work));
 }
 
 IC	void CMovementManager::enable_movement(bool enabled)

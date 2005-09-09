@@ -156,8 +156,8 @@ private:
 	EPathType				m_path_type;
 	bool					m_path_actuality;
 	bool					m_enabled;
-	u64						m_start_time;
-	u64						m_time_work;
+	CTimer					m_timer;
+	float					m_time_work;
 	float					m_old_desirable_speed;
 	bool					m_selector_path_usage;
 	u32						m_refresh_rate;
