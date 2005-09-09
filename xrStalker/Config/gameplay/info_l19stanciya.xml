@@ -67,6 +67,9 @@
 	<info_portion id="aes_rpg_sound3"></info_portion>
 	<info_portion id="aes_road_sound1"></info_portion>
 	<info_portion id="aes_road_sound2"></info_portion>
+	
+	<info_portion id="aes_arrive_to"></info_portion>
+	<info_portion id="aes_found_sarcofag"></info_portion>
 
 
 
