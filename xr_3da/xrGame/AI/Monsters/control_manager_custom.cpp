@@ -306,7 +306,8 @@ void CControlManagerCustom::check_attack_jump()
 	if (!m_object->EnemyMan.get_enemy())	return;
 	if (m_object->GetScriptControl())		return;
 	if (!m_object->check_start_conditions(ControlCom::eControlJump)) return;
-
+	if (!m_object->EnemyMan.see_enemy_now())return;
+	
 	CEntityAlive *target = const_cast<CEntityAlive*>(m_object->EnemyMan.get_enemy());
 	if (!m_jump->can_jump(target)) return;
 

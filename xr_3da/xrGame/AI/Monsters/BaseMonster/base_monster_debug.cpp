@@ -42,7 +42,7 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 	DBG().text(this).add_item("-----------   MEMORY   ----------------", x, y+=delta_y, delimiter_color);
 
 	if (EnemyMan.get_enemy()) {
-		sprintf(text, "Current Enemy = [%s] Time Seen [%u]", *EnemyMan.get_enemy()->cName(), EnemyMan.get_enemy_time_last_seen());
+		sprintf(text, "Current Enemy = [%s] Time Seen [%u] see now[%u]", *EnemyMan.get_enemy()->cName(), EnemyMan.get_enemy_time_last_seen(), EnemyMan.see_enemy_now());
 	} else 
 		sprintf(text, "Current Enemy = [NONE]");
 

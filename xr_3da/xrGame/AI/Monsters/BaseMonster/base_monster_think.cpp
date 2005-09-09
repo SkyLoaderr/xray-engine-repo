@@ -57,11 +57,15 @@ void CBaseMonster::update_fsm()
 
 void CBaseMonster::post_fsm_update()
 {
+	if (!EnemyMan.get_enemy()) return;
+	
 	EMonsterState state = StateMan->get_state_type();
+
 
 	// Look at enemy while running
 	m_bRunTurnLeft = m_bRunTurnRight = false;
 	
+
 	if (is_state(state, eStateAttack) && control().path_builder().is_moving_on_path()) {
 
 		float	dir_yaw = control().path_builder().detail().direction().getH();
