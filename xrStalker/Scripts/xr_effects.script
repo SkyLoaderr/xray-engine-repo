@@ -1041,10 +1041,12 @@ end
 --------------------------------------------------------- 
 function pri_zombied_in_combat_inc(actor, npc)
     gulag_pripyat.zombied_in_combat[npc:name()] = true
+    --printf("gulag <state>: pri_zombied(%s) inc.", npc:name())
 end
 
 function pri_zombied_in_combat_dec(actor, npc)
     gulag_pripyat.zombied_in_combat[npc:name()] = nil
+    --printf("gulag <state>: pri_zombied(%s) dec.", npc:name())
 end
 
 -------------------------------------------------------------------------------------
