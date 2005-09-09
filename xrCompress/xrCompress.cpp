@@ -21,8 +21,7 @@ CMemoryWriter			fs_desc;
 
 u32						bytesSRC=0,bytesDST=0;
 u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
-CTimer					t_compress;
-u64						t_compress_total;
+CStatTimer				t_compress;
 u8*						c_heap	= NULL;
 
 
@@ -162,7 +161,7 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 			if (0!=c_size_real){
 				u32 c_size_max		=	rtc_csize		(src->length());
 				u8*	c_data			=	xr_alloc<u8>	(c_size_max);
-				t_compress.Start	();
+				t_compress.Begin	();
 				{
 					// c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
 					c_size_compressed	= c_size_max;
@@ -172,7 +171,7 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 						R_ASSERT(LZO_E_OK == lzo1x_999_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
 					}
 				}
-				t_compress_total	+=	t_compress.GetElapsed_clk();
+				t_compress.End		();
 
 				if ((c_size_compressed+16) >= c_size_real)
 				{
@@ -269,7 +268,7 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
 			((dwTimeEnd-dwTimeStart)/1000)%60,
-			float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
+			float((float(bytesDST)/float(1024*1024))/(t_compress.GetElapsed_sec()))
 			);
 		Msg			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
 			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
@@ -277,7 +276,7 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
 			((dwTimeEnd-dwTimeStart)/1000)%60,
-			float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
+			float((float(bytesDST)/float(1024*1024))/(t_compress.GetElapsed_sec()))
 			);
 	} else {
 		Msg			("ERROR: folder not found.");
@@ -319,7 +318,7 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 	xr_vector<char*> fl_list;
 	CInifile::Sect& sect	= ltx.r_section("config");
 	for (CInifile::SectIt s_it=sect.begin(); s_it!=sect.end(); s_it++){
-		bool bRecurse	= CInifile::IsBOOL(s_it->second.c_str());
+		BOOL bRecurse	= CInifile::IsBOOL(s_it->second.c_str());
 		u32 mask		= bRecurse?FS_ListFiles:FS_ListFiles|FS_RootOnly;
 
 		string_path path;
