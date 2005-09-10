@@ -790,8 +790,8 @@ end
 
 function stop_play_sound(obj)
 	if obj:alive() == true then
-		obj:set_sound_mask (-1)
-		obj:set_sound_mask (0)
+		obj:set_sound_mask(-1)
+		obj:set_sound_mask(0)
 	end
 end
 

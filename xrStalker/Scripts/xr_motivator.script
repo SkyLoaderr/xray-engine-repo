@@ -212,8 +212,6 @@ function motivator_binder:update(delta)
 	--' Апдейт саундменеджера
 	if self.object:alive() then
 		xr_sound.update(self.object)
-	else
-		stop_play_sound(self.object)
 	end
 
 	self.object:info_clear()
