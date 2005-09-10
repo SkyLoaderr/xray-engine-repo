@@ -583,6 +583,7 @@ function animation:set_anim_callback(a)
 	self.clb_settings.d = a.d
 	self.clb_settings.s = a.s
 	self.clb_settings.sh = a.sh
+	self.clb_settings.f = a.f
 	return true 
 end
 --' коллбек на особые действия
@@ -622,6 +623,11 @@ function animation:anim_callback()
 			self.npc:hit(h)
 		end
 		self.clb_settings.sh = nil
+		if self.clb_settings.f ~= nil then
+			-- Запуск функции
+			self.clb_settings.f(self.npc)
+		end
+		self.clb_settings.f = nil
 	end
 	return true 
 end

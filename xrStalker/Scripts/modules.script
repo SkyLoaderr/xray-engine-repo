@@ -13,29 +13,25 @@ stype_restrictor = 4
 ----------------------------------------------------------------------
 -- Загрузка модулей сталкеров:
 ----------------------------------------------------------------------
-load_scheme("xr_danger",	  "danger",        stype_stalker)
+load_scheme("xr_danger",	  "danger",      stype_stalker)
+load_scheme("xr_abuse",		  "abuse",       stype_stalker)
 load_scheme("xr_walker",      "walker",      stype_stalker)
 load_scheme("xr_remark",      "remark",      stype_stalker)
 load_scheme("xr_sleeper",     "sleeper",     stype_stalker)
 load_scheme("xr_kamp",        "kamp",        stype_stalker)
 load_scheme("xr_camper",      "camper",      stype_stalker)
 load_scheme("xr_meet",		  "meet",        stype_stalker)
---load_scheme("xr_follower",    "follower",    stype_stalker)
 load_scheme("xr_test",        "test",        stype_stalker)
 load_scheme("xr_heli_hunter", "heli_hunter", stype_stalker)
---load_scheme("xr_zoneguard",   "zoneguard",   stype_stalker)
-load_scheme("xr_attendant",   "follower",   stype_stalker)
---load_scheme("xr_commander",   "commander",   stype_stalker)
+load_scheme("xr_attendant",   "follower",    stype_stalker)
 load_scheme("xr_combat",      "combat",      stype_stalker)
 load_scheme("xr_death",	      "death",       stype_stalker)
-load_scheme("xr_use",	      "use",       stype_stalker)
+load_scheme("xr_use",	      "use",         stype_stalker)
 load_scheme("xr_hit",	      "hit",         stype_stalker)
 load_scheme("xr_wounded",     "wounded",     stype_stalker)
 load_scheme("xr_rest",        "rest",        stype_stalker)
 load_scheme("xr_meet",        "actor_dialogs",stype_stalker)
 load_scheme("xr_combat_ignore", "combat_ignore", stype_stalker)
-load_scheme("xr_punch",       "punch",       stype_stalker)
-load_scheme("xr_companion",   "companion",   stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:

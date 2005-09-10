@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------
---	Схема встречи двух сталкеров
+--	Схема реакции сталкеров на надоедания игрока
 --	автор: Диденко Руслан (Stohe)
 --	TODO:
 ----------------------------------------------------------------------------------------------------------------------
@@ -7,290 +7,77 @@
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
---' Возвращает есть ли у нас контакт с другим сталкером
-class "evaluator_contact" (property_evaluator)
-function evaluator_contact:__init(name, storage) super (nil, name)
+--' Нужно ли пнуть кого то в лицо
+class "evaluator_abuse" (property_evaluator)
+function evaluator_abuse:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-function evaluator_contact:evaluate()
-	if self.a.meet_set ~= true then return false end
-	
-	if db.actor then
-		if xr_wounded.is_wounded(self.object) then
-			return false
-		end
-
-		self.a.meet_manager:update()
-
-		if self.mgr == nil then
-			self.mgr = self.object:motivation_action_manager()
-		end
-		if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
-			return false
-		end
-		return self.a.meet_manager.state ~= "nil"
-	else
-		return false
-	end
+function evaluator_abuse:evaluate()
+	return self.a.abuse_manager:update()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
---' Приглашение к тороговле
-class "action_meet_wait" (action_base)
-function action_meet_wait:__init (npc_name,action_name, storage, char_ini) super (nil, action_name)
-	self.char_ini = char_ini
+--' Удар в лицо
+class "action_abuse_hit" (action_base)
+function action_abuse_hit:__init (npc_name,action_name, storage, char_ini) super (nil, action_name)
 	self.a = storage
 end
-function action_meet_wait:initialize()
+function action_abuse_hit:initialize()
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
-	-- кешируемые данные
-	self.sound = "nil"
+
+	state_mgr.set_state(self.object, "punch", nil, nil, {look_object = db.actor}, {animation = true})
 end
-function action_meet_wait:execute ()
+function action_abuse_hit:execute ()
 	action_base.execute(self)
-	local meet_manager = self.a.meet_manager
-	
-	local victim = nil	
-	if meet_manager.victim == "actor" then
-		victim = db.actor
-	elseif meet_manager.victim == "nil" then
-		victim = nil
-	else
-		local sim = alife()
-		if sim then
-			victim = sim:story_object(victim)
-		end
-	end
-	
-	local synsound = nil
-	if meet_manager.state == "true" then
-		local h = hit()
-		h.power = 0
-		h.direction = self.object:direction()
-		h.bone = "bip01_spine"
-		h.draftsman = db.actor
-		h.impulse = 0
-		h.type = hit.wound
-		self.object:hit(h)
-		self.object:set_relation(game_object.enemy, db.actor)		
-	else
-		-- является ли текущий звук синхронным для текущего стейта
-		for k,v in self.a.syndata do
-			if v.state == meet_manager.state and
-			   v.sound == meet_manager.sound
-			then
-				synsound = meet_manager.sound
-			end
-		end
-		
-		if meet_manager.emerg_state == true then
-			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, {animation = true}, synsound)
-		else
-			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, nil, synsound)
-		end
-	end
-
-	if synsound == nil then
-		-- нужно отыграть фоновый
-		if self.sound ~= meet_manager.sound then
-			self.sound = meet_manager.sound
-			if self.sound == "nil" then
-				xr_sound.set_sound(self.object, nil)
-			else
-				xr_sound.set_sound(self.object, meet_manager.sound)
-			end
-		end
-	else
-		-- нужно зарубить фоновый
-		if self.sound ~= nil then
-			self.sound = "nil"
-			xr_sound.set_sound(self.object, nil)
-		end
-	end
-
-	local tt = db.storage[self.object:id()]
-	if tt.active_scheme then
-		if db.actor then
-			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
-				return
-			end
-		end
-	end
 end
-function action_meet_wait:finalize ()
+function action_abuse_hit:finalize ()
 	action_base.finalize(self)
-	xr_sound.set_sound(self.object, nil)
 end
 
-class "Cmeet_manager"
-function Cmeet_manager:__init(npc, storage)
+class "CAbuseManager"
+function CAbuseManager:__init(npc, storage)
 	self.npc = npc
 	self.a = storage
-	self.emerg_state = false
-	self.startdialog = nil
+	self.abuse_rate = 1
+	self.abuse_value = 0
+	self.abuse_threshold = 5
+	self.last_update = nil
 end
-function Cmeet_manager:update()
-	-- стартовый диалог
-	if self.a.meet_dialog ~= nil then			
-		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_dialog)
-		if self.startdialog ~= tmp then
-			self.startdialog = tmp
-			printf("*DIALOGS %s* SET [%s]", self.npc:name(), utils.to_str(tmp))
-			if tmp == nil or tmp == "nil" then
-				-- восстановление начального
-				printf("RESTORE")
-				self.npc:restore_default_start_dialog()
-			else
-				printf("SET")
-				-- установка нового
-				self.npc:set_start_dialog(tmp)				
-			end
-		end
+function CAbuseManager:SetAbuseRate(rate)
+	self.abuse_rate = rate
+end
+function CAbuseManager:abused()
+	return self.abuse_value >= self.abuse_threshold
+end
+function CAbuseManager:update()
+	if self.last_update == nil then
+		self.last_update = time_global()
 	end
-			
-	self:process_use()
-	if self.a.precond == "visibility" and not self.npc:see(db.actor) then
-		self.state = "nil"
-		self.sound = "nil"
-		return
+	if self.abuse_value > 0 then
+		self.abuse_value = self.abuse_value - (time_global() - self.last_update)*0.00005
+	else
+		self.abuse_value = 0
 	end
-	if self.a.precond == "usability" and not self.npc:is_talking() then
-		self.state = "nil"
-		self.sound = "nil"
-		return
-	end
-	
-	self.dist = self.npc:position():distance_to(db.actor:position())
-	self.victim = self:process_victim()
+	self.last_update = time_global()
 
-	self.state_zone,self.sound_zone = self:process_zone()
-	if self.state_zone ~= "nil" then
-		if self.victim == "nil" then
-			self.victim = "actor"
-		end
-		self.state,self.sound = self.state_zone,self.sound_zone
-	else
-		self.state,self.sound = self:process_meet()
-	end
-	-- Если актер говорит, и говорит не с нами, то мы не должны говорить звуков.
-	if db.actor:is_talking() and not self.npc:is_talking() then
-		self.sound = "nil"
-	end
---	printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
-end
-function Cmeet_manager:process_zone()
-	if self.a.zone == nil then return "nil","nil" end
-	local key
-	key = self:get_key_from_zone(self.a.zone)
-	if key ~= nil then
-		local r1,r2
-		if self.a.zone[key].state then
-			r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.zone[key].state)
-			self.emerg_state = true
-		end
-		if self.a.zone[key].sound then
-			r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.zone[key].sound)
-		end
-		return tostring(r1), tostring(r2)
-	end
-	return "nil","nil"
-end
-function Cmeet_manager:process_meet()
-	local key
-	if isWeapon(db.actor:active_item())	then
-		key = self:get_key_from_distance(self.a.meet_state_wpn)
-		if key ~= nil then
-			local r1,r2
-			if self.a.meet_state_wpn[key].state then
-				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].state)
-				self.emerg_state = true
-			end
-			if self.a.meet_state_wpn[key].sound then
-				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].sound)
-			end
-			return tostring(r1), tostring(r2)
-		end	
-	else
-		key = self:get_key_from_distance(self.a.meet_state)
-		if key ~= nil then
-			local r1,r2
-			if self.a.meet_state[key].state then
-				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].state)
-				self.emerg_state = false
-			end
-			if self.a.meet_state[key].sound then
-				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].sound)
-			end
-			return tostring(r1), tostring(r2)
-		end	
-	end
-	return "nil","nil"
-end
-function Cmeet_manager:process_victim()
-	local key
-	if isWeapon(db.actor:active_item())	then
-		key = self:get_key_from_distance(self.a.victim_wpn)
-		if key ~= nil then
-			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.victim_wpn[key].state))
-		end	
-	else
-		key = self:get_key_from_distance(self.a.victim)
-		if key ~= nil then
-			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.victim[key].state))
-		end	
-	end
-	return "nil"
-end
-function Cmeet_manager:get_key_from_distance(t)
-	local key
-	for k,v in t do
-		if v.dist >= self.dist then 
-			key = k 
-		else
-			return key
-		end		
-	end
-	return key
-end
-function Cmeet_manager:get_key_from_zone(t)
-	for k,v in t do
-		if utils.npc_in_zone(db.actor, db.zone_by_name[v.zone]) then 
-			return k 
-		end		
-	end
-	return nil
-end
-function Cmeet_manager:process_use()
-	-- проверка по дистанции
-	local is_talking = self.npc:is_talking()
-	if is_talking and self.npc:position():distance_to_sqr(db.actor:position()) > 9 then
-		self.npc:stop_talk()
+	--printf("*ABUSE* %s [%s]", self.npc:name(), self.abuse_value)
+	if self:abused() then
+		return true
 	end
 	
-	local t
-	if isWeapon(db.actor:active_item())	then
-		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use_wpn)
-	else
-		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use)
-	end	
-	if t == "true" then
-		self.npc:enable_talk()
-	elseif t == "false" then
-		self.npc:disable_talk()
-		if is_talking then
-			self.npc:stop_talk()
-		end
-	elseif t == "self" then
-		if not is_talking then
-			db.actor:run_talk_dialog(self.npc)
-		end
-	end
+	return false
+end
+function CAbuseManager:addAbuse(value)
+	self.abuse_value = self.abuse_value + value*self.abuse_rate
+end
+function CAbuseManager:clearAbuse()
+	self.abuse_value = 0
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -302,31 +89,28 @@ function add_to_binder(object, char_ini, scheme, section, st)
 
 	local manager = object:motivation_action_manager()
 
-	properties["event"] 		= xr_evaluators_id.reaction
-	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1
-	properties["wounded"]		= xr_evaluators_id.sidor_wounded_base
-	properties["danger"]		= xr_evaluators_id.danger
-	
-	operators["contact"]		= xr_actions_id.stohe_meet_base + 1
+	properties["abuse"]		= xr_evaluators_id.abuse_base
+	properties["wounded"]	= xr_evaluators_id.sidor_wounded_base
+	properties["danger"]	= xr_evaluators_id.danger
+
+	operators["abuse"]		= xr_actions_id.abuse_base
 
 	-- Evaluators
-	manager:add_evaluator (properties["contact"], 		evaluator_contact("meet_contact", st))
+	manager:add_evaluator (properties["abuse"], 		evaluator_abuse("evaluator_abuse", st))
 	
 	-- Actions
-	local action = action_meet_wait (object:name(),"action_process_meet", st, char_ini)
+	local action = action_abuse_hit(object:name(),"action_abuse_hit", st, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["danger"],		true))
-	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["wounded"], 		false))
-	action:add_effect (world_property(properties["contact"], 			false))
-	action:add_effect (world_property(stalker_ids.property_danger,		false))
-	manager:add_action (operators["contact"], action)
+	action:add_precondition		(world_property(properties["abuse"],		true))
+	action:add_effect (world_property(properties["abuse"], false))
+	manager:add_action (operators["abuse"], action)
 
 	action = manager:action (xr_actions_id.alife)	
-	action:add_precondition		(world_property(properties["contact"],		false))
+	action:add_precondition		(world_property(properties["abuse"],		false))
 	
-	st.meet_manager = Cmeet_manager(object, st)
+	st.abuse_manager = CAbuseManager(object, st)
 end
 
 
@@ -334,300 +118,23 @@ end
 ------------
 -- Вызывается только в начале на чтении логики, создает экшены, эвалуаторы и производит
 -- первичную настройку.
-function set_meet(npc, ini, scheme, section)
+function set_abuse(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 end
--- Вызывается на переключении на новую секцию. Производит вычитывание настроек из текущей секции.
-function reset_meet(npc, scheme, st, section)
-	local meet_section
---	printf("[%s]", utils.to_str(st.section_logic))
-	if scheme == nil or scheme == "nil" then
-		meet_section = utils.cfg_get_string(st.ini, st.section_logic, "meet", npc, false, "")
-	else
-		meet_section = utils.cfg_get_string(st.ini, section, "meet", npc, false, "")
-	end
-	if meet_section == "default_meet" then
-		if scheme == "kamp" then
-			init_meet(npc, st.ini, nil, st.meet, scheme)
-		else
-			init_meet(npc, st.ini, nil, st.meet, nil)
-		end
-	else
-		init_meet(npc, st.ini, meet_section, st.meet, scheme)
-	end
-end
--- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
-function init_meet(npc, ini, section, st, scheme)
-	printf("MEET SECTION [%s][%s]", tostring(section), tostring(scheme))
-
-	if tostring(section) == st.meet_section and
-	   tostring(section) ~= "nil" 
-	then
-		return
-	end
-	
-	st.meet_section = utils.tostring(section)
-	
-	if tostring(section) == "nil" then
-		-- Загружаем дефолты!
-		local npc_community = npc:character_community()
-		if tostring(scheme) == "nil" then
-			st.meet_state		= parse_data(npc, "30|hello@hail|20|wait@state")
-			st.meet_state_wpn	= parse_data(npc, "30|backoff@threat_weap")
-			st.victim			= parse_data(npc, "30|actor")
-			st.victim_wpn		= parse_data(npc, "30|actor")
-			st.use				= xr_logic.parse_condlist(npc, section, "use", "true")
-			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
-			st.syndata			= parse_syn_data(npc, "hello@hail|backoff@threat_weap")
-			st.precond			= "visibility"
-		elseif tostring(scheme) == "kamp" then
-			st.meet_state		= parse_data(npc, "2|wait")
-			st.meet_state_wpn	= parse_data(npc, "")
-			st.victim			= parse_data(npc, "2|actor")
-			st.victim_wpn		= parse_data(npc, "")
-			st.use				= xr_logic.parse_condlist(npc, section, "use", "{=_kamp_talk}true,false")
-			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
-			st.syndata			= parse_syn_data(npc, "")
-			st.precond			= "usability"
-		elseif npc_community == "military" or
-			   npc_community == "monolith" or
-			   npc_community == "killer" or
-			   npc_community == "bandit" or
-			   npc_community == "zombied" then
-			st.meet_state		= parse_data(npc, "")
-			st.meet_state_wpn	= parse_data(npc, "")
-			st.victim			= parse_data(npc, "")
-			st.victim_wpn		= parse_data(npc, "")
-			st.use				= xr_logic.parse_condlist(npc, section, "use", "false")
-			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
-			st.syndata			= parse_syn_data(npc, "")
-		else
-			st.meet_state		= parse_data(npc, "")
-			st.meet_state_wpn	= parse_data(npc, "")
-			st.victim			= parse_data(npc, "")
-			st.victim_wpn		= parse_data(npc, "")
-			st.use				= xr_logic.parse_condlist(npc, section, "use", "false")
-			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
-			st.syndata			= parse_syn_data(npc, "")
-			st.precond			= "visibility"
-		end		
-	else
-		st.meet_state		= parse_data(npc, utils.cfg_get_string(ini, section, "meet_state", npc, false, ""))
-		st.meet_state_wpn	= parse_data(npc, utils.cfg_get_string(ini, section, "meet_state_wpn", npc, false, ""))
-		st.victim			= parse_data(npc, utils.cfg_get_string(ini, section, "victim", npc, false, ""))
-		st.victim_wpn		= parse_data(npc, utils.cfg_get_string(ini, section, "victim_wpn", npc, false, ""))
-		local tmp = utils.cfg_get_string(ini, section, "use", npc, false, "")
-		if tmp then
-			st.use			= xr_logic.parse_condlist(npc, section, "use", tmp)
-		else
-			st.use			= xr_logic.parse_condlist(npc, section, "use", "")
-		end
-		tmp = utils.cfg_get_string(ini, section, "use_wpn", npc, false, "")
-		if tmp then
-			st.use_wpn		= xr_logic.parse_condlist(npc, section, "use_wpn", tmp)
-		else
-			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "")
-		end
-		tmp = utils.cfg_get_string(ini, section, "meet_dialog", npc, false, "")
-		if tmp then
-			st.meet_dialog	= xr_logic.parse_condlist(npc, section, "meet_dialog", tmp)
-		else
-			st.meet_dialog	= xr_logic.parse_condlist(npc, section, "meet_dialog", "")
-		end
-		st.zone				= parse_zone_data(npc, utils.cfg_get_string(ini, section, "zone", npc, false, ""))
-		st.syndata			= parse_syn_data(npc, utils.cfg_get_string(ini, section, "synpairs", npc, false, ""))
-		st.precond			= "visibility"
-	end
-	--print_table(st)
-
-	-- флажок, что функция хотя бы раз вызывалась
-	st.meet_set = true
+-- Вызывается при переключении на новую секцию. Производит вычитывание настроек из текущей секции.
+function reset_abuse(npc, scheme, st, section)
 end
 
-function parse_data(npc,s)
-	local t = {}
 
-    if s then
-		for name in string.gfind( s, "(%|*%d+%|[^%|]+)%p*" ) do
---			printf("[%s]", utils.to_str(name))
-			local dat = {	dist = nil,
-							state = nil,
-							sound = nil}	
-			
-			local t_pos = string.find( name, "|", 1, true )
-			local s_pos = string.find( name, "@", 1, true )
-						
-			local dist = string.sub( name, 1, t_pos - 1 )
-			local state
-			local sound
-			
-			if s_pos then
-				state	= string.sub( name, t_pos + 1, 
-											s_pos - 1 )
-				sound	= string.sub( name, s_pos + 1)
-			else
-				state	= string.sub( name, t_pos + 1)
-			end
-		
---			printf("	[%s]=[%s][%s]", utils.to_str(dist), utils.to_str(state), utils.to_str(sound))
-			
-			dat.dist = tonumber(dist)
-			if state then
-				dat.state = xr_logic.parse_condlist(npc, dist, state, state)
-			end
-			if sound then
-				dat.sound = xr_logic.parse_condlist(npc, dist, sound, sound)
-			end
-			table.insert(t, dat)
-		end
-	end
-    return t
-end
-function parse_zone_data(npc,s)
---	printf("parse_zone_data [%s]", utils.to_str(s))
-	local t = {}
-
-    if s then
-		for name in string.gfind( s, "(%|*[^%|]+%|[^%|]+)%p*" ) do
---			printf("[%s]", utils.to_str(name))
-			local dat = {	zone = nil,
-							state = nil,
-							sound = nil}			
-
-			local t_pos = string.find( name, "|", 1, true )
-			local s_pos = string.find( name, "@", 1, true )
-						
-			local zone = string.sub( name, 1, t_pos - 1 )
-			local state
-			local sound
-			
-			if s_pos then
-				state	= string.sub( name, t_pos + 1, 
-											s_pos - 1 )
-				sound	= string.sub( name, s_pos + 1)
-			else
-				state	= string.sub( name, t_pos + 1)
-			end
-		
---			printf("	[%s]=[%s][%s]", utils.to_str(zone), utils.to_str(state), utils.to_str(sound))
-			
-			dat.zone = zone
-			if state then
-				dat.state = xr_logic.parse_condlist(npc, zone, state, state)
-			end
-			if sound then
-				dat.sound = xr_logic.parse_condlist(npc, zone, sound, sound)
-			end
-			table.insert(t, dat)
-		end
-	end
-
-    return t
-end
-function parse_syn_data(npc,s)
---	printf("parse_syn_data [%s]", utils.to_str(s))
-	local t = {}
-    if s then
-		for name in string.gfind( s, "(%|*[^%|]+%|*)%p*" ) do
-			local dat = {	zone = nil,
-							state = nil,
-							sound = nil}			
---			printf("[%s]", utils.to_str(name))
-
-			local t_pos = string.find( name, "@", 1, true )
-			local s_pos = string.find( name, "|", 1, true )
-
-			local state = string.sub( name, 1, t_pos - 1 )
-			local sound
-			if s_pos then
-				sound = string.sub( name, t_pos + 1, s_pos -1)
-			else
-				sound = string.sub( name, t_pos + 1)
-			end
-			
-			dat.state = state
-			dat.sound = sound
-			table.insert(t, dat)
-		end
-	end
-
-    return t
-end
-
--- ДИАЛОГИ ПОКА НЕ ТРОГАЕМ!!!
---' Считывание доступных диалогов игрока.
-function set_actor_dialogs(npc, ini, name, dialog_section)
---	printf("*ACTOR_DIALOGS*")
-	if dialog_section == nil then return end
-	printf("*ACTOR_DIALOGS*: set_actor_dialogs: npc_name='%s' section='%s'", npc:name(), dialog_section)
-	
-	local actor_dialogs_string = utils.cfg_get_string(ini, dialog_section, "id", npc, false, "")
-	if actor_dialogs_string ~= nil then
-		printf("*ACTOR_DIALOGS*: actor_dialogs=%s", actor_dialogs_string)
-		--' Создаем в массиве запись где будут храниться считанные диалоги.
-		db.storage[npc:id()].actor_dialogs = parse_names(actor_dialogs_string)
-	else
-		printf("*ACTOR_DIALOGS*: actor_dialogs=nil")
-	end
-	
-	local actor_disable = utils.cfg_get_string(ini, dialog_section, "disable", npc, false, "")
-	if actor_disable ~= nil then
-		printf("*ACTOR_DIALOGS*: actor_disable=%s", actor_disable)
-		--' Создаем в массиве запись где будут храниться считанные диалоги.
-		db.storage[npc:id()].actor_disable = parse_names(actor_disable)
-	else
-		printf("*ACTOR_DIALOGS*: actor_disable=nil")
+function add_abuse(npc, value)
+	local t = db.storage[npc:id()].abuse
+	if t then
+		t.abuse_manager:addAbuse(value)
 	end
 end
---' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
-function dialog_manager_reset(npc, stype)
-	if stype == modules.stype_mobile then
-		printf("*DIALOGS*: dialog_manager_reset: npc:name='%s'", npc:name())
-		--' Смена стартового диалога
-		local overrides = xr_logic.generic_scheme_overrides(npc)
-		if overrides ~= nil then
-			if overrides.meet_dialog then
-				printf("*DIALOGS_MOB*: Set start dialog %s", overrides.meet_dialog)
-				npc:set_start_dialog(overrides.meet_dialog)
-			else
-				printf("*DIALOGS_MOB*: Restore start dialog")
-				npc:restore_default_start_dialog()
-			end
-		else
-			printf("*DIALOGS_MOB*: SCHEME HAS NO OVERRIDES: Restore start dialog")
-			npc:restore_default_start_dialog()
-		end
+function clear_abuse(npc)
+	local t = db.storage[npc:id()].abuse
+	if t then
+		t.abuse_manager:clearAbuse()
 	end
-end
-function disable_scheme(npc, scheme)
-	db.storage[npc:id()].actor_dialogs = nil
-	db.storage[npc:id()].actor_disable = nil
-end
-
---- Находится ли чувак в данный момент в состоянии мита
-function is_meet(npc)
-	local manager = npc:motivation_action_manager()
-	if manager and manager:initialized() then
-		local id = manager:current_action_id()
-		if id == xr_actions_id.stohe_meet_base + 1 then
-			return true
-		end
-	end
-	return false
-end
--- Функция проверяет не мешает ли персонажу говорить с нами оружие
-function cannot_talk_by_weapon(npc)
-	local st = db.storage[npc:id()].meet
-	if st then
-		if not isWeapon(db.actor:active_item())	then			
-			return false
-		end		
-		if st.use_wpn then
-			local t = xr_logic.pick_section_from_condlist(db.actor, npc, st.use_wpn)
-			if t == "false" then
-				return true
-			end
-		end
-	end
-	return false
 end

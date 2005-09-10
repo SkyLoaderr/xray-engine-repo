@@ -22,10 +22,6 @@ end
 function notify_on_use(victim, who)
 	printf("NOTIFY [%s] used by [%s]", victim:name(), who:name())
 	
-	if victim:active_sound_count() ~= 0 then
-		return
-	end
-
 	-- Если мы мертвы - на юзание не реагировать
 	if not victim:alive() then
 		return
@@ -33,6 +29,9 @@ function notify_on_use(victim, who)
 	
 	-- Согласны ли мы говорить при этом юзании или нет.
 	if victim:is_talk_enabled() == true then
+		if victim:active_sound_count() ~= 0 then
+			return
+		end
 		-- Мы согласны говорить
 		if victim:best_enemy() ~= nil then
 			-- Во время боя
@@ -56,6 +55,10 @@ function notify_on_use(victim, who)
 			xr_sound.set_sound_play(victim, "use_yes_default")
 		end
 	else
+		xr_abuse.add_abuse(victim, 1)
+		if victim:active_sound_count() ~= 0 then
+			return
+		end
 		-- Мы не согласны говорить
 		if victim:best_enemy() ~= nil and victim:relation(db.actor) ~= game_object.enemy then
 			-- Во время боя
