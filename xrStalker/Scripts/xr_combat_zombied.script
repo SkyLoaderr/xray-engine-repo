@@ -135,7 +135,7 @@ function action_zombie_go_to_danger:execute()
 	local bd  = self.object:best_danger()
 	local bdo = bd:object()
 
-	if bdo then
+	if bdo and bd:type() ~= danger_object.grenade then
 		if not self.bdo_id or self.bdo_id ~= bdo:id() then
 			self.bdo_id      = bdo:id()
 			self.bdo_vert_id = bdo:level_vertex_id()
