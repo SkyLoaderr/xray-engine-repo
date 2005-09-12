@@ -1120,3 +1120,10 @@ function impulse_npc(actor, npc)
 	h.type = hit.wound
 	npc:hit(h)
 end
+
+
+function aes_kill_actor (actor, npc)
+    if actor ~= nil then 
+       actor:kill (actor)
+    end   
+end
