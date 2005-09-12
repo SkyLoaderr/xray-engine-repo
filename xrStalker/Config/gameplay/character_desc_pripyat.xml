@@ -278,7 +278,7 @@
 		<rank>40</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
