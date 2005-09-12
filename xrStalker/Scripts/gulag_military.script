@@ -1124,3 +1124,19 @@ function load_job_fneutral (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 end
+
+function checkStalker(npc_community, gulag_type)
+	if gulag_type == "mil_fneutral" then
+	   return npc_community == "stalker"
+	end       
+	
+	if gulag_type == "mil_freedom" then
+	   return npc_community == "freedom"
+	end
+	
+	if gulag_type == "mil_fblockpost" then
+	   return npc_community == "freedom"
+	end   
+	
+	return false
+end

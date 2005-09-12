@@ -548,34 +548,6 @@ function checkStalker(npc_community, gulag_type)
 		return true
 	end
 
-	if gulag_type == "esc_blokpost" then
-		return npc_community == "military"
-	end
-	
-	if gulag_type == "bar_evil_veterans" then
-	   return npc_community == "bandit"
-	end    
-
-	if gulag_type == "esc_lager" then
-		return npc_community == "stranger"
-	end
-
-	if gulag_type == "esc_fabrika_bandit" then
-		return npc_community == "bandit"
-	end
-
-	if gulag_type == "mil_fneutral" then
-	   return npc_community == "stalker"
-	end       
-	
-	if gulag_type == "mil_freedom" then
-	   return npc_community == "freedom"
-	end
-	
-	if gulag_type == "mil_fblockpost" then
-	   return npc_community == "freedom"
-	end   
-	
 	if gulag_type == "campers" or
 	   gulag_type == "walkers" or
 	   gulag_type == "rest" or
@@ -590,25 +562,27 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_garbage.checkStalker(npc_community, gulag_type) then
 		return true
 	end
+	if gulag_agroprom.checkStalker(npc_community, gulag_type) then
+		return true
+	end
 	if gulag_dark_valley.checkStalker(npc_community, gulag_type) then
 		return true
 	end
 	if gulag_labx18.checkStalker(npc_community, gulag_type) then
 		return true
 	end
-
 	if gulag_bar.checkStalker(npc_community, gulag_type) then
 		return true
 	end
-
+	if gulag_military.checkStalker(npc_community, gulag_type) then
+		return true
+	end
 	if gulag_radar.checkStalker(npc_community, gulag_type) then
 		return true
 	end
-
-	if gulag_agroprom.checkStalker(npc_community, gulag_type) then
+	if gulag_yantar.checkStalker(npc_community, gulag_type) then
 		return true
 	end
-
 	if gulag_pripyat.checkStalker(npc_community, gulag_type) then
 		return true
 	end
@@ -627,32 +601,31 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_garbage.checkMonster(npc_community, gulag_type) then
 		return true
     end
+   	if gulag_agroprom.checkMonster(npc_community, gulag_type) then
+		return true
+    end
 	if gulag_dark_valley.checkMonster(npc_community, gulag_type) then
 		return true
 	end
 	if gulag_labx18.checkMonster(npc_community, gulag_type) then
 		return true
 	end
-
 	if gulag_bar.checkMonster(npc_community, gulag_type) then
 		return true
 	end
-
 	if gulag_military.checkMonster(npc_community, gulag_type) then
 		return true
     end
-
-   	if gulag_agroprom.checkMonster(npc_community, gulag_type) then
+	if gulag_yantar.checkMonster(npc_community, gulag_type) then
 		return true
     end
-
+   	if gulag_radar.checkMonster(npc_community, gulag_type) then
+		return true
+    end
    	if gulag_pripyat.checkMonster(npc_community, gulag_type) then
 		return true
     end
 
-   	if gulag_radar.checkMonster(npc_community, gulag_type) then
-		return true
-    end
 
 	return false
 end

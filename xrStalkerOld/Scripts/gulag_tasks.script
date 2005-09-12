@@ -26,28 +26,6 @@ function loadJob(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "test_sr"
 		}
 		table.insert(sj, t)
-
---[[		t = { section = "logic@esc_blockpost_patrol1",
-			idle = 4 * 1000 * 60 * 60,
-			prior = 8, state = {0,1}, squad = squad, group = groups[2],
-			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-			            	return obj:profile_name() == "soldier_military"
-			            end
-		}
-		table.insert(sj, t)		
-		t = { section = "logic@esc_blockpost_follower1",
-			idle = 4 * 1000 * 60 * 60,
-			prior = 7, state = {0,1}, squad = squad, group = groups[2],
-			in_rest = "", out_rest = "",
-			dependent = "logic@esc_blockpost_patrol1"
-		}
-		table.insert(sj, t)		
-		t = { section = "logic@esc_blockpost_sleeper1",
-			prior = 0, state = {0,1}, squad = squad, group = groups[2],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)]]
 	end
 
 	if type == "test1" then
@@ -208,42 +186,38 @@ function loadStates(gname, type)
 	if f then
 		return f
 	end
-
 	f = gulag_garbage.load_states(gname, type)
 	if f then
 		return f
 	end
-
-	f = gulag_dark_valley.load_states(gname, type)
-	if f then
-		return f
-	end
-
-	f = gulag_labx18.load_states(gname, type)
-	if f then
-		return f
-	end
-
-	f = gulag_bar.load_states(gname, type)
-	if f then
-		return f
-	end
-
-	f = gulag_military.load_states(gname, type)
-	if f then
-		return f
-	end
-
-	f = gulag_radar.load_states(gname, type)
-	if f then
-		return f
-	end
-
 	f = gulag_agroprom.load_states(gname, type)
 	if f then
 		return f
 	end
-
+	f = gulag_dark_valley.load_states(gname, type)
+	if f then
+		return f
+	end
+	f = gulag_labx18.load_states(gname, type)
+	if f then
+		return f
+	end
+	f = gulag_bar.load_states(gname, type)
+	if f then
+		return f
+	end
+	f = gulag_military.load_states(gname, type)
+	if f then
+		return f
+	end
+	f = gulag_yantar.load_states(gname, type)
+	if f then
+		return f
+	end
+	f = gulag_radar.load_states(gname, type)
+	if f then
+		return f
+	end
 	f = gulag_pripyat.load_states(gname, type)
 	if f then
 		return f
