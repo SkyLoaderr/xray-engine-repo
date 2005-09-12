@@ -33,7 +33,6 @@ end
 -- Проверяет отсеивается ли денжер по настройкам зоны.
 -- Если возвращает true, то денжер отсеивается и его проверять не следует.
 function check_danger_position(position)
-	printf("CHECK DANGER POSITION")
 	local key = 0
 	local t = 0
 	for key in sr_danger.territory do
