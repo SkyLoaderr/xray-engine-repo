@@ -714,6 +714,10 @@ function remove_gulag( self, disable )
 	self.disabled = disable
 	--------
 
+	if not self.gulag then
+		return
+	end
+
 	o = true
 	-- освободить всех, кто ещё жив в гулаге
 	for id, v in self.gulag.Object do
