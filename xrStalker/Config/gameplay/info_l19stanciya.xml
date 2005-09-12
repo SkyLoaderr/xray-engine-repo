@@ -73,6 +73,7 @@
 	<info_portion id="aes_enter_battle_sound"></info_portion>
 	<info_portion id="aes_commander_out_sound"></info_portion>
 	<info_portion id="aes_sniper_out_sound"></info_portion>
+	<info_portion id="aes_actor_ambush5"></info_portion>
 
 	
 	<info_portion id="aes_arrive_to"></info_portion>
