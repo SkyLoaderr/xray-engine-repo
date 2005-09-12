@@ -41,11 +41,6 @@ function save_dialog:FillList()
 	end
 end
 
-
-function save_dialog:SetClGame  (game_cl)
-   self.m_game_cl = game_cl
-end
-
 function save_dialog:InitControls()
 	self:Init(0,0,1024,768)
 	
@@ -56,10 +51,11 @@ function save_dialog:InitControls()
 	xml:ParseFile("ui_mm_save_dlg.xml")
 	
 	local ctrl
-	local form
 	
-	xml:InitStatic("background",			self)	
+	xml:InitStatic("background",				self)	
 	self.form = xml:InitStatic("form",			self)
+	
+	xml:InitStatic("form:caption",				self.form)
 	
 	ctrl = xml:InitEditBox("form:edit", 		self.form)
 	self:Register(ctrl, "edit_filename")
@@ -75,11 +71,6 @@ function save_dialog:InitControls()
 	
 	ctrl = xml:Init3tButton("form:btn_cancel",	self.form)
 	self:Register(ctrl, "button_cancel")	
-	
-	self.stub = CUIWindow()
-	self.stub:Init(0,0,1024,768)
-	self.stub:Show(false)
-	self:AttachChild(self.stub)
 	
 	self.message_box = CUIMessageBoxEx()
 	self:Register(self.message_box,"message_box")

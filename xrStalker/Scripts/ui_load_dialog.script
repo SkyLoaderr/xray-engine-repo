@@ -13,11 +13,9 @@ function main()
 	end
 end
 
-class "load_dialog" (ui_base_dialog.base_dialog)
+class "load_dialog" (CUIScriptWnd)
 
 function load_dialog:__init() super()
-   self:SetFont(GetFontMedium()) --set base font for dialog.
-   
    self:InitControls()
    self:InitCallBacks()
    self:FillList()
@@ -25,10 +23,6 @@ end
 
 function load_dialog:__finalize()
 
-end
-
-function load_dialog:SetClGame  (game_cl)
-   self.m_game_cl = game_cl
 end
 
 function load_dialog:FillList()
@@ -50,7 +44,7 @@ function load_dialog:FillList()
 end
 
 function load_dialog:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Load Game")
+--[[	ui_base_dialog.base_dialog.InitControls(self, "Load Game")
 	
 	----- DATA ----	
 	local info_rect       = {x = self.left_align_x/2, 
@@ -75,8 +69,48 @@ function load_dialog:InitControls()
 							 width = list_rect_f.width - list_ind*2,
 							 height = list_rect_f.height - list_ind*2}
 							 
+	]]
 	
+	self:Init(0,0,1024,768)
 	
+	self.list_file_font = GetFontMedium()
+	self.list_date_font = GetFontMedium()
+	
+	local xml = CScriptXmlInit()
+	local ctrl
+	xml:ParseFile("ui_mm_load_dlg.xml")
+	
+	xml:InitStatic("background",				self)	
+
+	self.form = xml:InitStatic("form",			self)
+	
+	xml:InitStatic("form:caption",				self.form)
+	
+	ctrl = xml:InitStatic("form:picture",		self.form)
+	ctrl:SetWindowName("static_pict")	
+	
+	xml:InitStatic("form:file_info",			self.form)
+	
+	xml:InitFrame("form:list_frame",			self.form)
+
+	ctrl = xml:InitList("form:list", 			self.form)
+	ctrl:ShowSelectedItem(true)
+	self:Register(ctrl, "list_window")
+		
+	ctrl = xml:Init3tButton("form:btn_load",	self.form)	
+	self:Register(ctrl, "button_load")
+	
+	ctrl = xml:Init3tButton("form:btn_delete",	self.form)	
+	self:Register(ctrl, "button_delete")
+	ctrl:Enable(false)
+	
+	ctrl = xml:Init3tButton("form:btn_cancel",	self.form)
+	self:Register(ctrl, "button_back")	
+	
+	self.message_box = CUIMessageBoxEx()
+	self:Register(self.message_box,"message_box")
+	
+--[[
 	----- CODE -------
 	self.bkg:InitTexture("ui\\ui_static_mm_back_02")	
 	self.main_frame:SetWndPos(415,168)
@@ -147,6 +181,8 @@ function load_dialog:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
+	
+	]]
 end
 
 function load_dialog:InitCallBacks()
