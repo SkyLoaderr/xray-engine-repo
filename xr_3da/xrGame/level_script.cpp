@@ -360,6 +360,15 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 	iterate_sounds				(prefix,max_count,temp);
 }
 
+#include "actoreffector.h"
+#include "ai/monsters/ai_monster_effector.h"
+void actor_impact(float time, float amp, float periods, float power)
+{
+	Actor()->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(time, amp, periods, power));
+//	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(db().m_attack_effector.ppi, db().m_attack_effector.time, db().m_attack_effector.time_attack, db().m_attack_effector.time_release));
+	
+}
+
 void CLevel::script_register(lua_State *L)
 {
 	class_<CEnvDescriptor>("CEnvDescriptor")
@@ -431,6 +440,7 @@ void CLevel::script_register(lua_State *L)
 
 		def("iterate_sounds",					&iterate_sounds1),
 		def("iterate_sounds",					&iterate_sounds2),
-		def("physics_world",					&physics_world)
+		def("physics_world",					&physics_world),
+		def("actor_impact",						&actor_impact)
 	];
 }

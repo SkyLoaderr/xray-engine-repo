@@ -1,5 +1,5 @@
 #pragma	once
-
+/*
 #include "../../../../effector.h"
 #include "../../../../cameramanager.h"
 
@@ -18,3 +18,4 @@ public:
 	virtual	BOOL	Process						(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 
+*/
