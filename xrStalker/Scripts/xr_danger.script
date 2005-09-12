@@ -28,147 +28,126 @@ function evaluator_danger:evaluate()
 		self.mgr = self.object:motivation_action_manager()
 	end
 
-	-- проверка на активную схему
-	local active_scheme = db.storage[self.object:id()].active_scheme
-	printf("DANGER [%s] active scheme [%s]", self.object:name(), tostring(active_scheme))
-	if active_scheme == nil then
-		if self.mgr:evaluator(xr_evaluators_id.sidor_wounded_base):evaluate() then
-			printf("DANGER [%s] [TRUE] alive wounded", self.object:name())
-			return true
-		end
-		if self.mgr:evaluator(xr_evaluators_id.stohe_meet_base + 1):evaluate() then
-			printf("DANGER [%s] [TRUE] alive meet", self.object:name())
-			return true
-		end
-		printf("DANGER [%s] [FALSE] alive", self.object:name())
-		return false		
-	end
-
 	local best_danger = self.object:best_danger()
 	local best_danger_name = "ricochet"
+	local active_scheme = db.storage[self.object:id()].active_scheme	
 	if best_danger and best_danger:object() then
 		best_danger_name = best_danger:object():name()
 	end
-	
+
 	-- проверка на денжер.
 	if best_danger == nil then
-		printf("DANGER [%s] [TRUE] no danger", self.object:name())
-		return true
+		printf("DANGER [%s] [FALSE] no danger", self.object:name())
+		return false
 	end
 
 	-- Проверка, не находится ли данжер в списке запрещенных.
 	local bd_type = best_danger:type()	
 	if bd_type == danger_object.grenade then
 		if self.a.ignore_types["grenade"] == true then
-			printf("DANGER [%s] [TRUE] ignore grenade", self.object:name())
-			return true			
+			printf("DANGER [%s] [FALSE] ignore grenade", self.object:name())
+			return false		
 		end
 	elseif bd_type == danger_object.entity_corpse then
 		if self.a.ignore_types["corpse"] == true then
-			printf("DANGER [%s] [TRUE] ignore corpse", self.object:name())
-			return true			
+			printf("DANGER [%s] [FALSE] ignore corpse", self.object:name())
+			return false
 		end
 	elseif bd_type == danger_object.entity_attacked or
 		   bd_type == danger_object.attacked then
 		if self.a.ignore_types["hit"] == true then
-			printf("DANGER [%s] [TRUE] ignore hit", self.object:name())
-			return true			
+			printf("DANGER [%s] [FALSE] ignore hit", self.object:name())
+			return false
 		end	
 	elseif bd_type == danger_object.enemy_sound or
 	       bd_type == danger_object.attack_sound then
 		if self.a.ignore_types["sound"] == true then
-			printf("DANGER [%s] [TRUE] ignore sound", self.object:name())
-			return true			
+			printf("DANGER [%s] [FALSE] ignore sound", self.object:name())
+			return false
 		end	
 	end
-    
-	
-	db.storage[self.object:id()].enemy = best_danger:object()
-	
+
 	-- отсеиваем по настройке combat_ignore/danger
+	db.storage[self.object:id()].enemy = best_danger:object()
 	local overrides = xr_logic.generic_scheme_overrides(self.object)
 	if overrides and
 	   overrides.combat_ignore and
 	   active_scheme ~= nil and
 	   xr_logic.pick_section_from_condlist(db.actor, self.object, overrides.combat_ignore.condlist ) ~= nil
 	then
-		printf("DANGER [%s]->[%s] [TRUE] ignore_danger", self.object:name(), best_danger_name)
-		return true
+		printf("DANGER [%s]->[%s] [FALSE] ignore_danger", self.object:name(), best_danger_name)
+		return false
 	end
 
-
-
-	if self.object:best_enemy() then
-		printf("DANGER [%s]->[%s] [TRUE] enemy", self.object:name(), best_danger_name)
-		return true
-	end
-	
 	-- инерция возврата. Только не для кемпера.
 	if self.danger_time and
 	   time_global() - self.danger_time < self.a.danger_inertion_time then
-	   printf("DANGER [%s]->[%s] [FALSE] inertion time", self.object:name(), best_danger_name)
-	   return false
+	   printf("DANGER [%s]->[%s] [TRUE] inertion time", self.object:name(), best_danger_name)
+	   return true
 	end
-
+	
+	-- Денжер слишком устарел
 	if time_global() - best_danger:time() >= self.a.danger_expiration_time then
-		printf("DANGER [%s]->[%s] [TRUE] extra time", self.object:name(), best_danger_name)
-		return true
+		printf("DANGER [%s]->[%s] [FALSE] extra time", self.object:name(), best_danger_name)
+		return false
 	end
 
 	-- Отсеиваем по дистанции
-	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
+	local danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
 	if danger_distance_sqr > self.a.ignore_distance then
-		printf("DANGER [%s]->[%s] [TRUE] extra dist [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
-		return true
+		printf("DANGER [%s]->[%s] [FALSE] extra dist [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
+		return false
 	end
 	if bd_type == danger_object.grenade then
 		if danger_distance_sqr > self.a.ignore_distance_grenade then
-			printf("DANGER [%s]->[%s] [TRUE] extra dist grenade [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
-			return true
+			printf("DANGER [%s]->[%s] [FALSE] extra dist grenade [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
+			return false
 		end
 	elseif bd_type == danger_object.entity_corpse then
 		if danger_distance_sqr > self.a.ignore_distance_corpse then
-			printf("DANGER [%s]->[%s] [TRUE] extra dist corpse [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
-			return true
+			printf("DANGER [%s]->[%s] [FALSE] extra dist corpse [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
+			return false
 		end
 	elseif bd_type == danger_object.entity_attacked or
 	       bd_type == danger_object.attacked then
 		if danger_distance_sqr > self.a.ignore_distance_hit then
-			printf("DANGER [%s]->[%s] [TRUE] extra dist hit [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
-			return true
+			printf("DANGER [%s]->[%s] [FALSE] extra dist hit [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
+			return false
 		end
 	elseif bd_type == danger_object.enemy_sound or
 	       bd_type == danger_object.attack_sound then
 		if danger_distance_sqr > self.a.ignore_distance_sound then
-			printf("DANGER [%s]->[%s] [TRUE] extra dist sound [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
-			return true
+			printf("DANGER [%s]->[%s] [FALSE] extra dist sound [%s]", self.object:name(), best_danger_name, danger_distance_sqr)
+			return false
 		end
 	end
-	
+
 	-- Отсеиваем по зоне
 	if sr_danger.check_danger_position(best_danger:position()) then
-		printf("DANGER [%s]->[%s] [TRUE] nodanger_zone", self.object:name(), best_danger_name)
-		return true
+		printf("DANGER [%s]->[%s] [FALSE] nodanger_zone", self.object:name(), best_danger_name)
+		return false
 	end
-		
+
+	-- Отсеиваем тяжелораненным
 	if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
-		printf("DANGER [%s]->[%s] [TRUE] heavy_wounded", self.object:name(), best_danger_name)
-		return true
+		printf("DANGER [%s]->[%s] [FALSE] heavy_wounded", self.object:name(), best_danger_name)
+		return false
 	end
-	
+
+	-- Денжер для снайпера
 	if active_scheme == "camper" then
 		if best_danger:type() == danger_object.grenade then
 			self.danger_time = time_global()
-			printf("DANGER [%s]->[%s] [FALSE] camper, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
-			return false
-		else
-			return true	
+			printf("DANGER [%s]->[%s] [TRUE] camper, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
+			return true
 		end
+		return false
 	else
 		self.danger_time = time_global()
-		printf("DANGER [%s]->[%s] [FALSE] other, type [%s], dist [%s]", self.object:name(), best_danger_name, tostring(bd_type), tostring(danger_distance_sqr))
-		return false
+		printf("DANGER [%s]->[%s] [TRUE] other, type [%s], dist [%s]", self.object:name(), best_danger_name, tostring(bd_type), tostring(danger_distance_sqr))
+		return true
 	end
+
 	printf("DANGER [%s]->[%s] [FALSE] default", self.object:name(), best_danger_name)
 	return false
 end
@@ -183,13 +162,8 @@ function add_to_binder(object, ini, scheme, section, storage)
 		
 	   	local manager = object:motivation_action_manager()
 
-		properties["danger"]	= xr_evaluators_id.danger
-		
-		manager:add_evaluator (properties["danger"], this.evaluator_danger("script_danger", storage))
-
-		action = manager:action (stalker_ids.action_danger_planner)
-		action:add_precondition (world_property(properties["danger"],	false))
-		action:add_effect		(world_property(properties["danger"],	true))
+		manager:remove_evaluator(stalker_ids.property_danger)
+		manager:add_evaluator(stalker_ids.property_danger, this.evaluator_danger("danger", storage))
 end
 function set_danger(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)

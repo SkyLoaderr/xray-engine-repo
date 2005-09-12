@@ -495,6 +495,9 @@
 					RelativePath=".\Config\misc\gulag_tasks.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_yantar.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\items.ltx">
 				</File>
 				<File
@@ -979,10 +982,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -2539,6 +2542,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_radar.script">
+						</File>
+						<File
+							RelativePath=".\scripts\gulag_yantar.script">
 						</File>
 					</Filter>
 					<Filter

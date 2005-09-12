@@ -305,7 +305,6 @@ function add_to_binder(object, char_ini, scheme, section, st)
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1
 	properties["wounded"]		= xr_evaluators_id.sidor_wounded_base
-	properties["danger"]		= xr_evaluators_id.danger
 	properties["abuse"]			= xr_evaluators_id.abuse_base
 	
 	operators["contact"]		= xr_actions_id.stohe_meet_base + 1
@@ -317,12 +316,11 @@ function add_to_binder(object, char_ini, scheme, section, st)
 	local action = action_meet_wait (object:name(),"action_process_meet", st, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["danger"],		true))
+	action:add_precondition		(world_property(stalker_ids.property_danger,false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["wounded"], 		false))
 	action:add_precondition		(world_property(properties["abuse"],		false))
 	action:add_effect (world_property(properties["contact"], 			false))
-	action:add_effect (world_property(stalker_ids.property_danger,		false))
 	manager:add_action (operators["contact"], action)
 
 	action = manager:action (xr_actions_id.alife)	
