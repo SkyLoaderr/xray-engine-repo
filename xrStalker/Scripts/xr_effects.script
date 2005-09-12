@@ -1096,6 +1096,12 @@ function aes_grenade_explode (actor, npc)
     h.type = hit.chemical_burn;
     obj:hit (h);
 end
+
+function aes_kill_actor (actor, npc)
+    if actor ~= nil then 
+       actor:kill (actor)
+    end   
+end
 ----------------------------------------------------------------------
 function impulse_npc(actor, npc)
 --
@@ -1122,8 +1128,3 @@ function impulse_npc(actor, npc)
 end
 
 
-function aes_kill_actor (actor, npc)
-    if actor ~= nil then 
-       actor:kill (actor)
-    end   
-end
