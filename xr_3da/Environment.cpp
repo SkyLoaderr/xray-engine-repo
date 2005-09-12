@@ -12,6 +12,8 @@
 
 #include "xr_input.h"
 
+#include "resourcemanager.h"
+
 #ifndef _EDITOR
 	#include "IGame_Level.h"
 #endif
@@ -61,6 +63,9 @@ CEnvironment::CEnvironment	()
 	PerlinNoise1D			= xr_new<CPerlinNoise1D>(Random.randI(0,0xFFFF));
 	PerlinNoise1D->SetOctaves(2);
 	PerlinNoise1D->SetAmplitude(2.5f);
+
+	tsky0					= Device.Resources->_CreateTexture("$user$sky0");
+	tsky1					= Device.Resources->_CreateTexture("$user$sky1");
 }
 CEnvironment::~CEnvironment	()
 {
@@ -313,7 +318,16 @@ void CEnvironment::OnFrame()
 			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(2,tonemap));								//. hack
 			CurrentEnv.clouds_r_textures.push_back	(mk_pair(2,tonemap));								//. hack
 		}
+		
 	}
+
+	//. Setup skybox textures, somewhat ugly
+	IDirect3DBaseTexture9*	e0	= CurrentEnv.sky_r_textures[0].second->surface_get();
+	IDirect3DBaseTexture9*	e1	= CurrentEnv.sky_r_textures[1].second->surface_get();
+	tsky0->surface_set		(e0);	_RELEASE(e0);
+	tsky1->surface_set		(e1);	_RELEASE(e1);
+
+	//
 	wind_strength_factor				= 0.f;
 	if (!fis_zero(wind_gust_factor,EPS_L)){
 		PerlinNoise1D->SetFrequency		(wind_gust_factor*MAX_NOISE_FREQ);

@@ -114,7 +114,7 @@ public:
 	}
 };
 
-class ENGINE_API	CEnvDescriptorMixer: public CEnvDescriptor{
+class ENGINE_API		CEnvDescriptorMixer: public CEnvDescriptor{
 public:
 	STextureList		sky_r_textures;		
 	STextureList		sky_r_textures_env;	
@@ -190,6 +190,7 @@ public:
 
 	float					fTimeFactor;
 	ref_texture				tonemap;
+	ref_texture				tsky0,tsky1;
 
     void					SelectEnvs			(float gt);
 
