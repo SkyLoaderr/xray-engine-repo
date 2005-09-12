@@ -1,6 +1,75 @@
 ;-------------------------------------------------------------------------------------------------
 ;-- GARBAGE BANDITS
 ;-------------------------------------------------------------------------------------------------
+
+
+[logic@sv1_pt1]
+active = walker@sv1_pt1
+
+[walker@sv1_pt1]
+path_walk = walk1
+
+[logic@sv1_pt2]
+active = walker@sv1_pt2
+
+[walker@sv1_pt2]
+path_walk = walk2
+
+[logic@sv1_pt3]
+active = walker@sv1_pt3
+
+[walker@sv1_pt3]
+path_walk = walk1
+
+[logic@sv1_pt4]
+active = walker@sv1_pt4
+
+[walker@sv1_pt4]
+path_walk = walk2
+
+
+
+
+[logic@dolga_camp1]
+active = kamp@dolga_camp1
+
+[kamp@dolga_camp1]
+center_point = fire1
+
+[logic@dolga_lider]
+active = walker@dolga_lider
+
+[walker@dolga_lider]
+path_walk = walk_4
+
+[logic@dolga_post1]
+active = walker@dolga_post1
+
+[walker@dolga_post1]
+path_walk = walk_1
+path_look = look_1
+
+
+[logic@dolga_post2]
+active = walker@dolga_post2
+
+
+[walker@dolga_post2]
+path_walk = walk_2
+path_look = look_2
+
+
+
+[logic@dolga_post3]
+active = walker@dolga_post3
+
+
+[walker@dolga_post3]
+path_walk = walk_3
+path_look = look_3    
+
+
+
 [logic@gar_bandit_agr_camper1]
 active = camper@gar_bandit_agr_camper1
 
