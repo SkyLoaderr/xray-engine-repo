@@ -5,87 +5,87 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "yantar_zombies" then
 		t = { section = "logic@yantar_zombies_kamp1",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[2],
+			prior = 9, state = {1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp1",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[2],
+			prior = 9, state = {1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp1",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[2],
+			prior = 9, state = {1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp1",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[2],
+			prior = 5, state = {1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp1",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[2],
+			prior = 5, state = {1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp1",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[2],
+			prior = 5, state = {1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 
 		t = { section = "logic@yantar_zombies_kamp2",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[3],
+			prior = 9, state = {1}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp2",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[3],
+			prior = 9, state = {1}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp2",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[3],
+			prior = 9, state = {1}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp2",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[3],
+			prior = 5, state = {1}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp2",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[3],
+			prior = 5, state = {1}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp2",
 			idle = 0, timeout = math.random(10,20)*60*1000,
-			prior = 5, state = {1,2,3}, squad = squad, group = groups[3],
+			prior = 5, state = {1}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 
 		t = { section = "logic@yantar_zombies_kamp3",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[4],
+			prior = 9, state = {1}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@yantar_zombies_kamp3",
 			idle = 0,
-			prior = 9, state = {1,2,3}, squad = squad, group = groups[4],
+			prior = 9, state = {1}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
@@ -145,7 +145,7 @@ end
 function load_states(gname, type)
     if type == "yantar_zombies" then
 		return function(gulag)
-			return 0
+			return 1
 		end
     end
 
