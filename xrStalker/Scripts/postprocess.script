@@ -34,8 +34,9 @@ function Reject:__init ()
 	self.time = 0.0
 	self.func_time = 0.0
 	self.fx_set = {}
+	self.total_time = 0.0
 	
-	self:load_database ("scripts\\reject.ltx")
+	self:load_database ("scripts\\postprocess.ltx")
 
 	local v = self.fx_set.color_base[1].initial
 	self:set_next_function (0.0, self.fx_set.color_base)
@@ -55,8 +56,10 @@ function Reject:__init ()
 	
 	local hv = self.fx_set.duality_h[1].initial.x
 	self:set_next_function (0.0, self.fx_set.duality_h)
+	self.fx_set.duality_h[1].current_value = hv
 	local vv = self.fx_set.duality_v[1].initial.x
 	self:set_next_function (0.0, self.fx_set.duality_v)
+	self.fx_set.duality_v[1].current_value = vv
 	self.pp.params.dual					= duality (hv, vv);
 	
 	local ni = self.fx_set.noise_intensity[1].initial.x
@@ -145,6 +148,9 @@ function Reject:update (dt)
     local nf = self:process_fx (deltaf, self.fx_set.noise_fps) * 100.0
     --printf ("NI : %f, NG : %f, NF : %f", ni, ng, nf)
     self.pp.params.noise = noise (ni, ng, nf)
+    
+    return self.time >= self.total_time
+    
 end
 ----------------
 function Reject:process_fx (delta, params)
@@ -205,7 +211,7 @@ end
 function Reject:parse_fx_data (str, t)
     local temp = self:parse_data (str)
     if table.getn (temp) < 5 then 
-       return 
+       return 0.0
     end
     local ins = {}
     ins.func = temp[1]
@@ -214,6 +220,7 @@ function Reject:parse_fx_data (str, t)
     ins.init_value = tonumber (temp[4])
     ins.intensity = tonumber (temp[5])
     table.insert (t, ins)
+    return ins.time
 end
 ----------------
 function Reject:load_database (ltx_name)
@@ -222,6 +229,7 @@ function Reject:load_database (ltx_name)
     self.fx_set = {}
     local inivalue
     
+    local c_time = 0.0
     --load color base database
     if ini:section_exist ("color_base") then
        self.fx_set.color_base = {}
@@ -235,11 +243,13 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("color_base", param) then
-              self:parse_fx_data (ini:r_string ("color_base", param), self.fx_set.color_base)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("color_base", param), self.fx_set.color_base)
            end 
        end
-       
     end
+    
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
     
     --load color gray database
     if ini:section_exist ("color_gray") then
@@ -254,11 +264,14 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("color_gray", param) then
-              self:parse_fx_data (ini:r_string ("color_gray", param), self.fx_set.color_gray)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("color_gray", param), self.fx_set.color_gray)
            end 
        end
     end
 
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
+    
     --load color add database
     if ini:section_exist ("color_add") then
        self.fx_set.color_add = {}
@@ -272,10 +285,13 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("color_add", param) then
-              self:parse_fx_data (ini:r_string ("color_add", param), self.fx_set.color_add)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("color_add", param), self.fx_set.color_add)
            end 
        end
     end
+
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
     
     --load gray database
     if ini:section_exist ("gray") then
@@ -290,10 +306,13 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("gray", param) then
-              self:parse_fx_data (ini:r_string ("gray", param), self.fx_set.gray)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("gray", param), self.fx_set.gray)
            end 
        end
     end
+    
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
     
     --load duality horizontal
     if ini:section_exist ("duality_h") then
@@ -308,11 +327,14 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("duality_h", param) then
-              self:parse_fx_data (ini:r_string ("duality_h", param), self.fx_set.duality_h)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("duality_h", param), self.fx_set.duality_h)
            end 
        end
     end
     
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
+
     --load duality vertical
     if ini:section_exist ("duality_v") then
        self.fx_set.duality_v = {}
@@ -326,11 +348,14 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("duality_v", param) then
-              self:parse_fx_data (ini:r_string ("duality_v", param), self.fx_set.duality_v)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("duality_v", param), self.fx_set.duality_v)
            end 
        end
     end
     
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
+
     --load noise intensity
     if ini:section_exist ("noise_intensity") then
        self.fx_set.noise_intensity = {}
@@ -344,11 +369,14 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("noise_intensity", param) then
-              self:parse_fx_data (ini:r_string ("noise_intensity", param), self.fx_set.noise_intensity)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("noise_intensity", param), self.fx_set.noise_intensity)
            end 
        end
     end
 
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
+    
     --load noise grain
     if ini:section_exist ("noise_grain") then
        self.fx_set.noise_grain = {}
@@ -362,11 +390,14 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("noise_grain", param) then
-              self:parse_fx_data (ini:r_string ("noise_grain", param), self.fx_set.noise_grain)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("noise_grain", param), self.fx_set.noise_grain)
            end 
        end
     end
 
+    if c_time > self.total_time then self.total_time = c_time end
+    c_time = 0.0
+    
     --load noise fps
     if ini:section_exist ("noise_fps") then
        self.fx_set.noise_fps = {}
@@ -380,10 +411,12 @@ function Reject:load_database (ltx_name)
        for a = 1, 16, 1 do
            param = string.format ("fx_set_%d", a)
            if ini:line_exist ("noise_fps", param) then
-              self:parse_fx_data (ini:r_string ("noise_fps", param), self.fx_set.noise_fps)
+              c_time = c_time + self:parse_fx_data (ini:r_string ("noise_fps", param), self.fx_set.noise_fps)
            end 
        end
     end
+    
+    if c_time > self.total_time then self.total_time = c_time end
     --print_table (self.fx_set)
 end
 
@@ -396,6 +429,9 @@ function main ()
 			wait ();
 			local dt = time_global () - prev_time;
 			prev_time = time_global();
-			g_Reject:update (dt);
+			if g_Reject:update (dt) == true then
+			   break
+			end    
 	end
+	g_Reject = nil
 end
