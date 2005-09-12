@@ -979,10 +979,10 @@
 						RelativePath=".\Config\text\eng\ui_st_inventory.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1175,6 +1175,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_mm_opt.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_videoplayer.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\zone_map.xml">

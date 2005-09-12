@@ -17,6 +17,7 @@
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
 #include "../encyclopedia_article.h"
+#include "UIVideoPlayerWnd.h"
 
 CUIDiaryWnd::CUIDiaryWnd()
 {
@@ -28,7 +29,8 @@ CUIDiaryWnd::~CUIDiaryWnd()
 	delete_data(m_UINewsWnd);
 	delete_data(m_SrcListWnd);
 	delete_data(m_DescrView);
-	delete_data					(m_ArticlesDB);
+	delete_data(m_ArticlesDB);
+	delete_data(m_videoWnd);
 }
 
 void CUIDiaryWnd::Show(bool status)
@@ -101,6 +103,10 @@ void CUIDiaryWnd::Init()
 
 	m_DescrView						= xr_new<CUIScrollView>(); m_DescrView->SetAutoDelete(false);
 	xml_init.InitScrollView			(uiXml, "main_wnd:right_frame:work_area:scroll_view", 0, m_DescrView);
+
+	m_videoWnd						= xr_new<CUIVideoPlayerWnd>();
+	m_videoWnd->Init				(&uiXml,"video_player");
+
 }
 
 void	CUIDiaryWnd::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
@@ -122,7 +128,8 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 			UnloadJournalTab	();
 			break;
 		case eInfo:
-			UnloadJournalTab	();
+//			UnloadJournalTab	();
+			UnloadInfoTab	();
 			break;
 		case eNews:
 			UnloadNewsTab	();
@@ -136,7 +143,8 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 			LoadJournalTab	(ARTICLE_DATA::eJournalArticle);
 			break;
 		case eInfo:
-			LoadJournalTab	(ARTICLE_DATA::eInfoArticle);
+//			LoadJournalTab	(ARTICLE_DATA::eInfoArticle);
+			LoadInfoTab		();
 			break;
 		case eNews:
 			LoadNewsTab	();
@@ -201,11 +209,16 @@ void CUIDiaryWnd::LoadJournalTab			(ARTICLE_DATA::EArticleType _type)
 
 void CUIDiaryWnd::UnloadInfoTab		()
 {
+	m_UIRightWnd->DetachChild	(m_videoWnd);
+	m_videoWnd->Show			(false);
 }
 
 void CUIDiaryWnd::LoadInfoTab			()
 {
+	m_UIRightWnd->AttachChild	(m_videoWnd);
+	m_videoWnd->Show			(true);
 }
+
 
 void CUIDiaryWnd::UnloadNewsTab		()
 {

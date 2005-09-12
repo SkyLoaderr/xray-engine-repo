@@ -10819,6 +10819,16 @@
 						RelativePath=".\ui\UISubLine.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="VideoPlayer"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIVideoPlayerWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIVideoPlayerWnd.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="HUD"

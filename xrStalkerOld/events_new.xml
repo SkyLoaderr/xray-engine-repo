@@ -179,6 +179,8 @@
 	
 	
 	</main_wnd>
-	
+
+
+#include "ui\ui_videoplayer.xml"
 </window>
 
