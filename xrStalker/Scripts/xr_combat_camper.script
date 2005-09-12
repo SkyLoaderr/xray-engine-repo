@@ -52,6 +52,8 @@ function action_shoot:initialize()
 	action_base.initialize( self )
 
 	state_mgr.set_state( self.object, "hide_fire", nil, nil, { look_object = self.object:best_enemy() } )
+
+	self.st.camper_combat_action = true
 end
 
 function action_shoot:execute()
@@ -60,6 +62,8 @@ end
 
 function action_shoot:finalize()
 	action_base.finalize( self )
+
+	self.st.camper_combat_action = false
 end
 
 --------------------------------------------------------------------------------------------------------------
@@ -71,6 +75,8 @@ end
 
 function action_look_around:initialize()
 	action_base.initialize( self )
+
+	self.st.camper_combat_action = true
 
 	self:reset()
 end
@@ -113,11 +119,13 @@ function action_look_around:finalize()
 	action_base.finalize( self )
 
 	self.st.last_seen_pos = nil
+
+	self.st.camper_combat_action = false
 end
 
 -- Внимание: вызывается во всех actions
 function action_look_around:hit_callback( obj, amount, local_direction, who, bone_index )
-	if who == nil then
+	if who == nil or not self.st.camper_combat_action then
 		return
 	end
 
@@ -155,4 +163,6 @@ function add_to_binder( npc, ini, st, planner )
 
 	-- подписываем один, работает во всех!
 	xr_logic.subscribe_action_for_events( npc, st, action )
+
+	st.camper_combat_action = false
 end
