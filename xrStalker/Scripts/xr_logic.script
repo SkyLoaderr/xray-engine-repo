@@ -10,7 +10,7 @@
 -- ФУНКЦИИ, КОТОРЫЕ РАЗРЕШЕНО ВЫЗЫВАТЬ ИЗ ДРУГИХ СКРИПТОВ
 ----------------------------------------------------------------------------------------------------
 	Активация схем производится с помощью функций:
-	
+
 function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs, trade, hit)
 Предназначение:
 	активирует заданную схему, используется схемой гулаг. Тип скрипта определяется автоматически по имени секции.
@@ -20,7 +20,7 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dial
 	section - имя секции, которая должна быть активирована
 	gulag_name - имя гулага, которое будет добавлено спереди к именам путей
 	death, combat, actor_dialogs, trade, hit - имена секций, задающих поведение при смерти и в бою
-	
+
 function assign_storage_and_bind(npc, ini, scheme, section)
 Предназначение:
 	Вызывает функцию add_to_binder схемы, а также создает (если его еще нет) и возвращает ссылку на storage
@@ -63,7 +63,7 @@ function parse_condlist(npc, section, field, src)
 ----------------------------------------------------------------------------------------------------
 -- ПРИВАТНЫЕ ФУНКЦИИ
 ----------------------------------------------------------------------------------------------------
-		
+
 function activate_by_section(npc, ini, section, loading)
 Предназначение:
 	Активирует указанную секцию. Если в данный момент какая-либо секция уже активирована, сообщает об ошибке.
@@ -78,16 +78,16 @@ function abort_syntax_error_in_cond(npc, section, field)
 	Сообщает о синтаксической ошибке в условиях переключения схем секции section и поля field, и останавливает
 	игру.
 
-function parse_infop(rslt, str) 
+function parse_infop(rslt, str)
 Предназначение:
 	Распарсивает условия вида " +infop1 =func -infop2 " и т.д. (все не перечислены) в таблицу.
-	
+
 function cfg_get_number_and_condlist(ini, section, field, npc)
 function cfg_get_string_and_condlist(ini, section, field, npc)
 function cfg_get_condlist(ini, section, field, npc)
 Предназначение:
 	Считывает из customdata различные условия переключения схем.
-	
+
 function add_condition(lst, at, cond)
 Предназначение:
 	Добавляет условие в список условий переключения схем.
@@ -100,7 +100,7 @@ function generic_scheme_overrides(npc)
 Предназначение:
 	Возвращает ссылку на настройки схем общего поведения, актуальные для работающей в данный момент схемы,
 	либо nil, если ни одна из секций не активна, либо настройки не заданы.
-	
+
 --]]
 
 --[[
@@ -227,12 +227,10 @@ end
 function enable_generic_schemes(ini, npc, stype, section)
 	if stype == modules.stype_stalker then
 		xr_danger.set_danger(npc, ini, "danger", "danger")
-		
+
 		local combat_section = utils.cfg_get_string(ini, section, "on_combat", npc, false, "")
-		if combat_section then
-			xr_combat.set_combat_checker(npc, ini, "combat", combat_section)
-		end
-		
+		xr_combat.set_combat_checker(npc, ini, "combat", combat_section)
+
 		local use_section = utils.cfg_get_string(ini, section, "on_use", npc, false, "")
 		if use_section then
 			xr_use.set_use_checker(npc, ini, "use", use_section)
@@ -251,7 +249,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 		if actor_dialogs_section then
 			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", actor_dialogs_section)
 		end
-		
+
 		local wounded_section = utils.cfg_get_string (ini, section, "wounded", npc, false, "")
 		xr_wounded.set_wounded (npc, ini, "wounded", wounded_section)
 
@@ -280,7 +278,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 		if combat_section then
 			mob_combat.set_scheme(npc, ini, "mob_combat", combat_section)
 		end
-	
+
 		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
 		if death_section then
 			mob_death.set_scheme(npc, ini, "mob_death", death_section)
@@ -392,9 +390,9 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 		xr_wounded.reset_wounded(npc, scheme, st, section)
 		xr_death.reset_death(npc, scheme, st, section)
 		xr_danger.reset_danger(npc, scheme, st, section)
-		stalker_generic.reset_threshold(npc, scheme, st, section)		
+		stalker_generic.reset_threshold(npc, scheme, st, section)
 		stalker_generic.reset_show_spot(npc, scheme, st, section)
-		
+
 	elseif st.stype == modules.stype_mobile then
 		--printf("_bp: disabling talk")
 		--npc:disable_talk() -- теперь делается в dialog_manager_reset
@@ -422,13 +420,13 @@ end
 function assign_storage_and_bind(npc, ini, scheme, section)
 	local npc_id = npc:id()
 	local st
-	
+
 	if not db.storage[npc_id][scheme] then
 		db.storage[npc_id][scheme] = {}
 		st = db.storage[npc_id][scheme]
 
 		st["npc"] = npc
-		
+
 		-- Схема стартует впервые - прибиндить
 		--printf("DEBUG: assign_storage_and_bind: bind scheme: '%s'", scheme)
 		_G[schemes[scheme]].add_to_binder(npc, ini, scheme, section, st)
@@ -449,7 +447,7 @@ function subscribe_action_for_events(npc, storage, new_action)
 	if not storage.actions then
 		storage.actions = {}
 	end
-	
+
 	storage.actions[new_action] = true
 end
 
@@ -457,7 +455,7 @@ function unsubscribe_action_from_events(npc, storage, new_action)
 	if not storage.actions then
 		storage.actions = {}
 	end
-	
+
 	storage.actions[new_action] = nil
 end
 
@@ -596,10 +594,10 @@ function switch_to_section(npc, st, section)
 	if active_section == section then
 		return false
 	end
-	
+
 	-- call scheme::finalize()
 	issue_event(npc, st, "deactivate")
-	
+
 	db.storage[npc:id()].active_section = nil
 	db.storage[npc:id()].active_scheme = nil
 	activate_by_section(npc, st.ini, section, false)
@@ -660,7 +658,7 @@ function try_switch_to_another_section(npc, st, actor)
 			if time_global() >= db.storage[npc_id].activation_time + c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
-			
+
 		-- GAMETIME added by Stohe.
 		elseif c.name == "on_game_timer" or c.name == "on_game_timer2" then
 			if  game.get_game_time():diffSec(db.storage[npc_id].activation_game_time) >= c.v1 then
@@ -727,7 +725,7 @@ end
 -- На входе имеем пустой массив и строку вида "  +infop1  -infop2 +infop3 ... "
 -- Заполнить массив:
 -- { "infop_name" = true/false }.
-function parse_infop1(rslt, str) 
+function parse_infop1(rslt, str)
 	--printf("_bp: parse_infop: %s", utils.to_str(str))
 	if str then
 		local infop_name, sign
@@ -765,7 +763,7 @@ function parse_func_params(str)
 	return lst
 end
 
-function parse_infop(rslt, str) 
+function parse_infop(rslt, str)
 	--printf("_bp: parse_infop1: %s", utils.to_str(str))
 	if str then
 		local infop_name, sign
@@ -832,7 +830,7 @@ function parse_condlist(npc, section, field, src)
 		lst[n] = {}
 		--printf("_bp: iter %d: fld = %s", n, fld)
 
-		-- Выделяем список infoportions для проверки:	
+		-- Выделяем список infoportions для проверки:
 		at, to, infop_check_lst = string.find(fld, "{%s*(.*)%s*}")
 		if infop_check_lst then
 			--printf("_bp: infop_check_lst: [%s]", infop_check_lst)
@@ -845,7 +843,7 @@ function parse_condlist(npc, section, field, src)
 		end
 		--printf("_bp: remainings: %s", remainings)
 
-		-- Выделяем список infoportions для установки из remainings:	
+		-- Выделяем список infoportions для установки из remainings:
 		at, to, infop_set_lst = string.find(remainings, "%%%s*(.*)%s*%%")
 		if infop_set_lst then
 			-- Выделяем оставшуюся часть поля, т.е. имя секции:
@@ -861,11 +859,11 @@ function parse_condlist(npc, section, field, src)
 		if not newsect then
 			abort_syntax_error_in_cond(npc, section, field)
 		end
-		
+
 		-- Имя секции теперь можно сохранить:
 		lst[n].section = newsect
 
-		-- Теперь нужно распарсить infoportions в строке infop_check_lst и 
+		-- Теперь нужно распарсить infoportions в строке infop_check_lst и
 		-- заполнить массив infop_check: { "infop_name" = true/false }.
 		-- На входе имеем строку вида "  +infop1  -infop2 +infop3 ... "
 		lst[n].infop_check = {}
@@ -1012,7 +1010,7 @@ function cfg_get_overrides(ini, section, npc)
 	local tmp			= utils.cfg_get_string(ini, section, "heli_hunter", npc, false, "")
 	if tmp then
 		l.heli_hunter	= xr_logic.parse_condlist(npc, section, "heli_hunter", tmp)
-	end	
+	end
 
 	l.wounded_enabled   = utils.cfg_get_bool(ini, section, "wounded_enabled", npc, false)
 	l.combat_ignore     = cfg_get_condlist(ini, section, "combat_ignore_cond", npc)
@@ -1081,7 +1079,7 @@ end
 function save_logic(obj, packet)
 	local npc_id = obj:id()
 	local cur_tm = time_global()
-	
+
 	local activation_time = db.storage[npc_id].activation_time
 	if not activation_time then
 		activation_time = 0
@@ -1095,7 +1093,7 @@ end
 function load_logic(obj, reader)
 	local npc_id = obj:id()
 	local cur_tm = time_global()
-	
+
 	db.storage[npc_id].activation_time = reader:r_s32() + cur_tm
 
 	-- GAMETIME added by Stohe.
@@ -1154,21 +1152,21 @@ function pstor_save_all(obj, packet)
 	for k, v in pairs(pstor) do
 		ctr = ctr + 1
 	end
-	packet:w_u32(ctr)	
-		
+	packet:w_u32(ctr)
+
 	for k, v in pairs(pstor) do
 		printf("_bp: pstor_save_all: saving [%s]='%s'", utils.to_str(k), utils.to_str(v))
- 		packet:w_stringZ(k)	
+ 		packet:w_stringZ(k)
 		local tv = type(v)
 		if tv == "number" then
 			packet:w_u8(pstor_number)
-	 		packet:w_float(v)	
+	 		packet:w_float(v)
 	 	elseif tv == "string" then
 			packet:w_u8(pstor_string)
-	 		packet:w_stringZ(v)	
+	 		packet:w_stringZ(v)
 	 	elseif tv == "boolean" then
 			packet:w_u8(pstor_boolean)
-	 		packet:w_bool(v)	
+	 		packet:w_bool(v)
 		else
 			abort("xr_logic: pstor_save_all: not registered type '%s' encountered", tv)
 		end
@@ -1183,7 +1181,7 @@ function pstor_load_all(obj, reader)
 		db.storage[npc_id].pstor = pstor
 	end
 	local ctr = reader:r_u32()
-	
+
 	for i = 1, ctr do
 		local varname = reader:r_stringZ()
 		local tn = reader:r_u8()
@@ -1202,7 +1200,7 @@ end
 
 function save_obj(obj, packet)
 	printf("save_obj: obj:name()='%s'", obj:name())
-	
+
 	local npc_id = obj:id()
 	local st = db.storage[npc_id]
 
@@ -1223,7 +1221,7 @@ function save_obj(obj, packet)
 	else
 		packet:w_stringZ("")
 	end
-	
+
 	if st.active_section then
 		packet:w_stringZ(st.active_section)
 	else
@@ -1235,7 +1233,7 @@ function save_obj(obj, packet)
 	--else
 	--	packet:w_stringZ("")
 	--end
-	
+
 	if st.gulag_name then
 		packet:w_stringZ(st.gulag_name)
 	else
@@ -1243,13 +1241,13 @@ function save_obj(obj, packet)
 	end
 
 	--packet:w_s32(st.stype)
-	
+
 	save_logic(obj, packet)
 
 	if st.active_scheme then
 		issue_event(obj, db.storage[npc_id][st.active_scheme], "save")
 	end
-	
+
 	pstor_save_all(obj, packet)
 end
 
@@ -1257,7 +1255,7 @@ function load_obj(obj, reader)
 	printf("load_obj: obj:name()='%s'", obj:name())
 	local npc_id = obj:id()
 	local st = db.storage[npc_id]
-	
+
 	local ini_filename = reader:r_stringZ()
 	if ini_filename == "" then
 		ini_filename = nil
@@ -1279,12 +1277,12 @@ function load_obj(obj, reader)
 	--if active_scheme == "" then
 	--	active_scheme = nil
 	--end
-	
+
 	local gulag_name = reader:r_stringZ()
 	if gulag_name == "" then
 		gulag_name = nil
 	end
-	
+
 	--local stype = reader:r_s32()
 
 	st.loaded_ini_filename = ini_filename
@@ -1299,7 +1297,7 @@ function load_obj(obj, reader)
 	printf("load_obj: active_section='%s'", utils.to_str(st.loaded_active_section))
 	--printf("load_obj: active_scheme='%s'", utils.to_str(st.loaded_active_scheme))
 	printf("load_obj: gulag_name='%s'", utils.to_str(st.loaded_gulag_name))
-	
+
 	load_logic(obj, reader)
 
 	pstor_load_all(obj, reader)
@@ -1324,4 +1322,3 @@ function initialize_obj(obj, st, loaded, actor, stype)
 		--end
 	end
 end
-

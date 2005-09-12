@@ -1,10 +1,21 @@
 --[[------------------------------------------------------------------------------------------------------------------
-Переключение боя
+Переключение боевых схем
 --------------------------------------------------------------------------------------------------------------------]]
+
+
+function set_combat_type( npc, actor, t )
+	-- это нужно для функций в xr_conditions.script
+	db.storage[npc:id()].enemy = npc:best_enemy()
+
+	local script_combat_type = xr_logic.pick_section_from_condlist( actor, npc, t.combat_type.condlist )
+	db.storage[npc:id()].script_combat_type = script_combat_type
+
+	return script_combat_type ~= nil
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Эвалуатор переключения между скриптовым и движковым боем
--- true - engine combat, false - script combat
+-- false - engine combat, true - script combat
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_check_combat" (property_evaluator)
 
@@ -12,7 +23,7 @@ function evaluator_check_combat:__init(name, storage) super (nil, name)
 	self.st = storage
 end
 
-function evaluator_check_combat:evaluate ()
+function evaluator_check_combat:evaluate()
 	if self.st.enabled and self.object:best_enemy() then
 		local actor = db.actor
 		if not actor then
@@ -29,30 +40,20 @@ function evaluator_check_combat:evaluate ()
 			if not xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 				-- взять из overrides, иначе из секции on_combat
 				if overrides and overrides.combat_type then
-					return self:set_combat_type( actor, overrides )
+					return set_combat_type( self.object, actor, overrides )
 				else
 --					db.storage[self.object:id()].script_combat_type = nil
 --					return false
-					return self.st.combat_type ~=nil and self:set_combat_type( actor, self.st )
+					return self.st.combat_type ~= nil and set_combat_type( self.object, actor, self.st )
 				end
 			end
 		else
 			-- если нет активной секции, то тип боя взять из секции on_combat
-			return self.st.combat_type ~=nil and self:set_combat_type( actor, self.st )
+			return self.st.combat_type ~= nil and set_combat_type( self.object, actor, self.st )
 		end
 	end
 
 	return false
-end
-
-function evaluator_check_combat:set_combat_type( actor, t )
-	-- это нужно для функций в xr_conditions.script
-	db.storage[self.object:id()].enemy = self.object:best_enemy()
-
-	local script_combat_type = xr_logic.pick_section_from_condlist( actor, self.object, t.combat_type.condlist )
-	db.storage[self.object:id()].script_combat_type = script_combat_type
-
-	return script_combat_type ~= nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -100,11 +101,22 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 function set_combat_checker(npc, ini, scheme, section)
-	local st   = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.logic   = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
-	st.enabled = true
+	local is_zombied = npc:section() == "stalker_zombied"
 
-	st.combat_type = xr_logic.cfg_get_condlist(ini, section, "combat_type", npc)
+	if section or is_zombied then
+		local st      = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+		st.logic      = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
+		st.enabled    = true
+
+		st.combat_type = xr_logic.cfg_get_condlist(ini, section, "combat_type", npc)
+
+		-- зомбированные сражаются по умолчанию на зомбированной боевой схеме
+		if not st.combat_type and is_zombied then
+			st.combat_type = { condlist = xr_logic.parse_condlist(npc, section, "", "zombied") }
+		end
+
+		set_combat_type( npc, db.actor, st )
+	end
 end
 
 function disable_scheme(npc, scheme)

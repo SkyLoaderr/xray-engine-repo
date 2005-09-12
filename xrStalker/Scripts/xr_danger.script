@@ -3,8 +3,8 @@
 --'	автор: Диденко Руслан (Stohe)
 --'	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-function printf()
-end
+--function printf()
+--end
 
 local def_ignore_distance			= 150
 local def_ignore_distance_grenade	= 15
@@ -18,10 +18,12 @@ local def_danger_inertion_time		= 10000
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
 ----------------------------------------------------------------------------------------------------------------------
---' Условие завершения скрипта
+-- true - есть danger, false - нет danger
 class "evaluator_danger" (property_evaluator)
-function evaluator_danger:__init(name, storage) super (nil, name)
+function evaluator_danger:__init(name, storage, npc) super (nil, name)
 	self.a = storage
+
+	self.is_zombied = npc:section() == "stalker_zombied"
 end
 function evaluator_danger:evaluate()
 	if self.mgr == nil then
@@ -33,6 +35,13 @@ function evaluator_danger:evaluate()
 	local active_scheme = db.storage[self.object:id()].active_scheme	
 	if best_danger and best_danger:object() then
 		best_danger_name = best_danger:object():name()
+
+--		if self.is_zombied then
+--			printf( "let danger object be enemy" )
+--			self.object:make_object_visible_somewhen( best_danger:object() )
+
+--			return true
+--		end
 	end
 
 	-- проверка на денжер.
@@ -163,7 +172,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 	   	local manager = object:motivation_action_manager()
 
 		manager:remove_evaluator(stalker_ids.property_danger)
-		manager:add_evaluator(stalker_ids.property_danger, this.evaluator_danger("danger", storage))
+		manager:add_evaluator(stalker_ids.property_danger, this.evaluator_danger("danger", storage, object))
 end
 function set_danger(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
