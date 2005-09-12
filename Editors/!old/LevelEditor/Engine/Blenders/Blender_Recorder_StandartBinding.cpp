@@ -165,7 +165,7 @@ class cl_amb_color	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
+			CEnvDescriptorMixer&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 			result.set				(desc.ambient.x, desc.ambient.y, desc.ambient.z, desc.weight);
 		}
 		RCache.set_c	(C,result);
