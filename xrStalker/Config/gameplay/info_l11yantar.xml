@@ -1,4 +1,8 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
     <info_portion id="yantar_attack_start"></info_portion>
+	<info_portion id="set_heli_enemy_actor"></info_portion>
+	<info_portion id="yantar_heli_1_die"></info_portion>
+	<info_portion id="yantar_heli_2_die"></info_portion>
+	<info_portion id="yantar_heli_3_die"></info_portion>
 </game_information_portions>
