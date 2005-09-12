@@ -146,7 +146,6 @@ void CControlPathBuilderBase::find_node()
 
 	if (ai().level_graph().valid_vertex_id(m_target_found.node) && m_man->path_builder().accessible(m_target_found.node)) {
 		// корректировка позиции
-		m_target_found.position.y = ai().level_graph().vertex_plane_y(m_target_found.node);
 		m_man->path_builder().fix_position(Fvector().set(m_target_found.position), m_target_found.node, m_target_found.position);
 		return;
 	}
@@ -156,7 +155,6 @@ void CControlPathBuilderBase::find_node()
 		m_target_found.node = ai().level_graph().vertex_id(m_target_found.position);
 		if (ai().level_graph().valid_vertex_id(m_target_found.node) && m_man->path_builder().accessible(m_target_found.node)) {
 			// корректировка позиции
-			m_target_found.position.y = ai().level_graph().vertex_plane_y(m_target_found.node);
 			m_man->path_builder().fix_position(Fvector().set(m_target_found.position), m_target_found.node, m_target_found.position);
 			return;
 		}
