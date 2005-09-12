@@ -107,6 +107,17 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 		OnMouse(cPos.x, cPos.y , WINDOW_MOUSE_MOVE);
 	}
 
+	if( !StopAnyMove() && g_pGameLevel ){
+		CObject* O = Level().CurrentEntity();
+		if( O ){
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+			if (!IR)
+				return			(false);
+
+			IR->IR_OnMouseMove(dx,dy);
+		}
+	};
+
 	return true;
 }
 

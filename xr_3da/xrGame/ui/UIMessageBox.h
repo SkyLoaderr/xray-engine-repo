@@ -19,6 +19,7 @@ public:
 				E_MESSAGEBOX_STYLE;
 
 			void Init				(LPCSTR box_template);
+			void Clear();
 	virtual void SetText			(LPCSTR str);
 
 	virtual bool OnMouse			(float x, float y, EUIMessages mouse_action);

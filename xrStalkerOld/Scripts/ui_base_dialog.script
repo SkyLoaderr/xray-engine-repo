@@ -123,9 +123,13 @@ function base_dialog:InitControls(caption)
 			  self.screen.y, 
 			  self.screen.width, 
 			  self.screen.height)
-	
+			  
+	self.bkg = CUIStatic()
+	self.bkg:SetAutoDelete(true)
+	self.bkg:Init(0,0,1024,768)
+	self:AttachChild(self.bkg)
 	-- MAIN FRAME WINDOW
-	local static =  CUIStatic()
+--[[	local static =  CUIStatic()
 	static:SetAutoDelete(true)
 	static:SetWindowName("static")
 	static:Init("ui\\ui_options_menu_static", self.main_rect.x + self.main_rect.x_ind, 
@@ -133,10 +137,12 @@ function base_dialog:InitControls(caption)
 											  self.main_rect.width,
 											  self.main_rect.height)
 	self:AttachChild(static)
-	
+	]]
 	self.main_frame = CUIStatic()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
+	self.main_frame:InitTexture("ui\\ui_options_menu_static")
+	self.main_frame:SetTextureOffset(self.main_rect.x_ind,self.main_rect.y_ind)
 	self.main_frame:Init(self.main_rect.x, 
 						 self.main_rect.y, 
 						 self.main_rect.width, 
@@ -158,21 +164,22 @@ function base_dialog:InitControls(caption)
 	self.main_frame:AttachChild(self.txt_caption)		
 	
 	-- Message Box --
---[[
-self.message_box = CUIMessageBox()
+
+	self.message_box = CUIMessageBox()
 	self.message_box:SetAutoDelete(true)
 	self.message_box:SetWindowName("message_box")
-	self.message_box:SetFont(GetFontLetterica25())
-	self.message_box:Init("ui\\ui_frame_dialog",self.message_rect.x, 
-										 self.message_rect.y, 
-										 self.message_rect.width, 
-										 self.message_rect.height)
-	self.message_box:SetStyle(0)	
-	self.message_box:Hide()
-	self:Register(self.message_box)
-	self.main_frame:AttachChild(self.message_box)
-	self.message_box:AutoCenter()
-	]]
+	self:AttachChild(self.message_box)	
+--	self.message_box:SetFont(GetFontLetterica25())
+--	self.message_box:Init("ui\\ui_frame_dialog",self.message_rect.x, 
+--										 self.message_rect.y, 
+--										 self.message_rect.width, 
+--										 self.message_rect.height)
+--	self.message_box:SetStyle(0)	
+--	self.message_box:Hide()
+--	self:Register(self.message_box)
+
+--	self.message_box:AutoCenter()
+
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	
 end

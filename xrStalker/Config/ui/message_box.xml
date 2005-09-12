@@ -2,6 +2,7 @@
 <window>
 	<message_box_change_level type="yes_no" x="200" y="250" width="510" height="206"> <!--alert-->
 		<texture>ui_frame_error</texture>
+		<texture_offset x="-29" y="-19"/>
 		
 		<picture x="35" y="65" width="77" height="77">
 			<texture>ui_frame_error_sign_alarm</texture>
@@ -37,6 +38,44 @@
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_error>
+	
+	<message_box_empty_file_name type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>		
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_red</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">The file name is empty</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >OK</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</message_box_empty_file_name>
+	
+	<message_box_file_already_exist type="yes_no" x="200" y="250" width="510" height="206">		
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_red</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">The file with this name already exist. Do you want to overwrite it?</text>
+		</message_text>
+		
+		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Yes</text>
+			<texture>ui_button_ordinary</texture>
+		</button_yes>
+		<button_no x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >No</text>
+			<texture>ui_button_ordinary</texture>
+		</button_no>
+	</message_box_file_already_exist>
 
 
 </window>

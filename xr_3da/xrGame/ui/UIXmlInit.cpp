@@ -176,9 +176,10 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	InitWindow(xml_doc, path, index, pWnd);
-	InitMultiText(xml_doc, path, index, pWnd);
-	InitTexture	 (xml_doc, path, index, pWnd);
+	InitWindow			(xml_doc, path, index, pWnd);
+	InitMultiText		(xml_doc, path, index, pWnd);
+	InitTexture			(xml_doc, path, index, pWnd);
+	InitTextureOffset	(xml_doc,path,index,pWnd);
 
 	int flag = xml_doc.ReadAttribInt(path, index, "heading", 0);
 	pWnd->EnableHeading( (flag)?true:false);

@@ -10344,6 +10344,12 @@
 					<File
 						RelativePath=".\ui\UIMessageBox_script.cpp">
 					</File>
+					<File
+						RelativePath=".\ui\UIMessageBoxEx.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMessageBoxEx.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="PropertiesBox"

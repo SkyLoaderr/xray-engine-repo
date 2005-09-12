@@ -14,10 +14,20 @@ CUIMessageBox::CUIMessageBox()
 }
 
 CUIMessageBox::~CUIMessageBox()
-{}
+{
+	Reset();
+}
 
 #define BUTTON_UP_OFFSET 75
 #define BUTTON_WIDTH 140
+
+void CUIMessageBox::Clear(){
+	xr_delete(m_UIButtonYesOk);
+	xr_delete(m_UIButtonNo);
+	xr_delete(m_UIButtonCancel);
+	xr_delete(m_UIStaticPicture);
+	xr_delete(m_UIStaticText);
+}
 
 bool CUIMessageBox::OnMouse(float x, float y, EUIMessages mouse_action)
 {
@@ -26,6 +36,7 @@ bool CUIMessageBox::OnMouse(float x, float y, EUIMessages mouse_action)
 
 void CUIMessageBox::Init	(LPCSTR box_template)
 {
+	Clear();
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init	(CONFIG_PATH, UI_PATH, "message_box.xml");
 	R_ASSERT3						(xml_result, "xml file not found", "message_box.xml");
@@ -52,42 +63,48 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 	};
 
 	strconcat								(str,box_template,":picture");
-	m_UIStaticPicture						= xr_new<CUIStatic>();m_UIStaticPicture->SetAutoDelete(true);AttachChild(m_UIStaticPicture);
+	m_UIStaticPicture						= xr_new<CUIStatic>();AttachChild(m_UIStaticPicture);
 	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticPicture);
 
 	strconcat								(str,box_template,":message_text");
-	m_UIStaticText							= xr_new<CUIStatic>();m_UIStaticText->SetAutoDelete(true);AttachChild(m_UIStaticText);
+	m_UIStaticText							= xr_new<CUIStatic>();AttachChild(m_UIStaticText);
 	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticText);
 
 	switch (m_eMessageBoxStyle){
 
 		case MESSAGEBOX_OK:{
 			strconcat							(str,box_template,":button_ok");
-			m_UIButtonYesOk						= xr_new<CUI3tButton>();m_UIButtonYesOk->SetAutoDelete(true);AttachChild(m_UIButtonYesOk);
+			m_UIButtonYesOk						= xr_new<CUI3tButton>();
+			AttachChild							(m_UIButtonYesOk);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonYesOk);
 		}break;
 
 		case MESSAGEBOX_YES_NO:{
 			strconcat							(str,box_template,":button_yes");
-			m_UIButtonYesOk						= xr_new<CUI3tButton>();m_UIButtonYesOk->SetAutoDelete(true);AttachChild(m_UIButtonYesOk);
+			m_UIButtonYesOk						= xr_new<CUI3tButton>();
+			AttachChild							(m_UIButtonYesOk);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonYesOk);
 
 			strconcat							(str,box_template,":button_no");
-			m_UIButtonNo						= xr_new<CUI3tButton>();m_UIButtonNo->SetAutoDelete(true);AttachChild(m_UIButtonNo);
+			m_UIButtonNo						= xr_new<CUI3tButton>();
+			AttachChild							(m_UIButtonNo);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonNo);
 		}break;
 
 		case MESSAGEBOX_YES_NO_CANCEL:{
 			strconcat							(str,box_template,":button_yes");
-			m_UIButtonYesOk						= xr_new<CUI3tButton>();m_UIButtonYesOk->SetAutoDelete(true);AttachChild(m_UIButtonYesOk);
+			m_UIButtonYesOk						= xr_new<CUI3tButton>();
+			AttachChild							(m_UIButtonYesOk);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonYesOk);
 
 			strconcat							(str,box_template,":button_no");
-			m_UIButtonNo						= xr_new<CUI3tButton>();m_UIButtonNo->SetAutoDelete(true);AttachChild(m_UIButtonNo);
+			m_UIButtonNo						= xr_new<CUI3tButton>();
+			AttachChild							(m_UIButtonNo);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonNo);
 
 			strconcat							(str,box_template,":button_cancel");
-			m_UIButtonCancel					= xr_new<CUI3tButton>();m_UIButtonCancel->SetAutoDelete(true);AttachChild(m_UIButtonCancel);
+			m_UIButtonCancel					= xr_new<CUI3tButton>();
+			AttachChild							(m_UIButtonCancel);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonCancel);
 		}break;
 	};
@@ -131,6 +148,7 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		};
 	};
 	inherited::SendMessage(pWnd, msg, pData);
+	
 }
 /*
 void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)

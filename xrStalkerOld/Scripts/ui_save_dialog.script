@@ -14,11 +14,9 @@ function main()
 	
 end
 
-class "save_dialog" (ui_base_dialog.base_dialog)
+class "save_dialog" (CUIScriptWnd)
 
 function save_dialog:__init() super()		
-	self:SetFont(GetFontMedium()) 
-	
 	self:InitControls()
 	self:InitCallBacks()
 	self:FillList()
@@ -47,87 +45,44 @@ end
 function save_dialog:SetClGame  (game_cl)
    self.m_game_cl = game_cl
 end
+
 function save_dialog:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Save Game")
+	self:Init(0,0,1024,768)
 	
-	----- DATA ----	
-	local edit_rect       = {x = self.left_align_x,
-						     y = self.top_align_y,
-						     width =  257,
-						     height = 23}
+	self.list_file_font = GetFontMedium()
+	self.list_date_font = GetFontMedium()
+	
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_mm_save_dlg.xml")
+	
+	local ctrl
+	local form
+	
+	xml:InitStatic("background",			self)	
+	self.form = xml:InitStatic("form",			self)
+	
+	ctrl = xml:InitEditBox("form:edit", 		self.form)
+	self:Register(ctrl, "edit_filename")
+	
+	xml:InitFrame("form:list_frame",			self.form)
+
+	ctrl = xml:InitList("form:list", 			self.form)
+	ctrl:ShowSelectedItem(true)
+	self:Register(ctrl, "list_window")
 		
-	local list_rect_f     = {x = self.left_align_x,
-						     y = edit_rect.y + edit_rect.height + self.indent,
-						     width = 0,
-						     height = 0}
-	list_rect_f.width  = self.main_rect.width  - self.indent*2*2
-	list_rect_f.height = self.main_rect.height - self.indent*2 - list_rect_f.y - self.indent
+	ctrl = xml:Init3tButton("form:btn_save",	self.form)	
+	self:Register(ctrl, "button_ok")
 	
-	local list_ind = 10
-	local list_rect       = {x = list_rect_f.x + list_ind,
-							 y = list_rect_f.y + list_ind,
-							 width = list_rect_f.width - list_ind*2,
-							 height = list_rect_f.height - list_ind*2}
-			
-	----- CODE -------
+	ctrl = xml:Init3tButton("form:btn_cancel",	self.form)
+	self:Register(ctrl, "button_cancel")	
 	
-	-- EDIT box --
-	local frame_edit = CUIFrameLineWnd()  
-	frame_edit:SetAutoDelete(true)
-	frame_edit:Init("ui_string_06", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height, true)
-	self.main_frame:AttachChild(frame_edit)
+	self.stub = CUIWindow()
+	self.stub:Init(0,0,1024,768)
+	self.stub:Show(false)
+	self:AttachChild(self.stub)
 	
-	
-	local edit_filename = CUIEditBox()
-	edit_filename:SetAutoDelete(true)
-	edit_filename:SetFont(self.edit_font)
-	edit_filename:SetWindowName("edit_filename")	
-	edit_filename:Init(edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
-	self.main_frame:AttachChild(edit_filename)
-
-
-	------------LIST-----------------
-    local txt_list   = CUIFrameWindow()  --background for ListView
-    txt_list:SetAutoDelete(true)
-    txt_list:Init(self.texture_list_frame, list_rect_f.x, list_rect_f.y, list_rect_f.width, list_rect_f.height)    
-    self.main_frame:AttachChild(txt_list) 
-
-
-
-    local list_wnd = CUIListWnd()
-    list_wnd:SetAutoDelete(true)
-    list_wnd:SetWindowName("list_window")
-	list_wnd:ShowSelectedItem(true)
-	list_wnd:SetItemHeight(20)
-    list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)    
-    list_wnd:EnableScrollBar(true)	
-	self:Register(list_wnd)
-    self.main_frame:AttachChild(list_wnd)
-	
-	
-	-- SAVE button
-    local btn   = CUI3tButton()
-	btn:SetAutoDelete(true) 
-	btn:SetWindowName("button_ok")	
-	btn:Init(self.btn_left.texture, self.btn_left.x, self.btn_left.y, self.btn_left.width, self.btn_left.height)
-    btn:SetText("Save")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
-
-	-- 
-	btn = CUI3tButton()
-    btn:SetAutoDelete(true)
-    btn:SetWindowName("button_cancel")	
-	btn:Init(self.btn_right.texture, self.btn_right.x, self.btn_right.y, self.btn_right.width, self.btn_right.height) 	
-	btn:SetText("Back")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
+	self.message_box = CUIMessageBoxEx()
+	self:Register(self.message_box,"message_box")
 end
 
 function save_dialog:InitCallBacks()
@@ -135,10 +90,7 @@ function save_dialog:InitCallBacks()
 	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED, 			self.OnButton_ok_clicked,		self)
 	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED, 			self.OnButton_cancel_clicked,	self)
 	// message box buttons
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_OK_CLICKED,		self.OnMsgOk,					self)
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self.OnMsgCancel,				self)
 	self:AddCallback("message_box", ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,					self)
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_NO_CLICKED,		self.OnMsgNo,					self)
 	// list box click
 	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			self.OnListItemClicked,			self)
 end
@@ -153,33 +105,8 @@ function save_dialog:OnListItemClicked()
 	edit_box:SetText(item_text)
 end
 
-function save_dialog:OnMsgOk()
-	local msg_box = self:GetMessageBox("message_box")
-	local main_frame = self:GetFrameWindow("main_frame")
-	main_frame:Enable(true)
-	msg_box:Hide()
-end
-
-function save_dialog:OnMsgCancel()
-	local msg_box = self:GetMessageBox("message_box")
-	local main_frame = self:GetFrameWindow("main_frame")
-	main_frame:Enable(true)
-	msg_box:Hide()
-end
-
 function save_dialog:OnMsgYes()
-	local msg_box = self:GetMessageBox("message_box")
-	local main_frame = self:GetFrameWindow("main_frame")
-	main_frame:Enable(true)
-	msg_box:Hide()
 	self:SaveFile(self.new_save)
-end
-
-function save_dialog:OnMsgNo()
-	local msg_box = self:GetMessageBox("message_box")
-	local main_frame = self:GetFrameWindow("main_frame")
-	main_frame:Enable(true)
-	msg_box:Hide()
 end
 
 function save_dialog:OnButton_ok_clicked()
@@ -193,10 +120,8 @@ function save_dialog:OnButton_ok_clicked()
 	
 	// check for empty name
 	if string.len(self.new_save) == 0 then
---		message_box:SetStyle(CUIMessageBox.STYLE_OK)		
---		message_box:SetText("The file name is empty. Please enter valid name!")
---		main_frame:Enable(false)
---		message_box:Show()
+		self.message_box:Init("message_box_empty_file_name")		
+		self:GetHolder():start_stop_menu(self.message_box, true)
 		return
 	end
 	
@@ -206,18 +131,15 @@ function save_dialog:OnButton_ok_clicked()
 	local file_struct = f:exist("$game_saves$", self.new_save .. ".sav" )
 
 	if file_struct ~= nil then
---		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
---		message_box:SetText("The file with this name already exist. Do you want to overwrite it?")
---		message_box:Show()
---		self.main_frame:Enable(false)
---		flist:Free()	
---		return
+		self.message_box:Init("message_box_file_already_exist")
+		self:GetHolder():start_stop_menu(self.message_box, true)
+		
+		--self.stub:Show(true)
+		flist:Free()	
+		return
 	end
 	flist:Free()	
-	
-	local console = get_console()
-	console:execute("save " .. self.new_save)
-	
+	self:SaveFile(self.new_save)
 	self:GetHolder():start_stop_menu(self, true)
 
 end
@@ -254,6 +176,9 @@ function save_dialog:AddItemToList(file_name, date_time)
 end
 
 function save_dialog:SaveFile(fileName)
-	return
+	if nil~= fileName then
+		local console = get_console()
+		console:execute("save " .. fileName)
+	end
 end
 

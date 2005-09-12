@@ -78,6 +78,8 @@ function load_dialog:InitControls()
 	
 	
 	----- CODE -------
+	self.bkg:InitTexture("ui\\ui_static_mm_back_02")	
+	self.main_frame:SetWndPos(415,168)
 	
 	-- INFO box --
 	

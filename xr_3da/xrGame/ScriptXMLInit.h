@@ -37,8 +37,9 @@ public:
 	void ParseShTexInfo	(LPCSTR xml_file);
 	void FreeShTexInfo	();
 	void InitWindow		(LPCSTR path, int index, CUIWindow* pWnd);
-	void InitList		(LPCSTR path, int index, CUIListWnd* pWnd);
+	//void InitList		(LPCSTR path, int index, CUIListWnd* pWnd);
 
+	CUIListWnd*			InitList(LPCSTR path, CUIWindow* parent);
 	CUIFrameWindow*		InitFrame(LPCSTR path, CUIWindow* parent);
 	CUIFrameLineWnd*	InitFrameLine(LPCSTR path, CUIWindow* parent);
 	CUILabel*			InitLabel(LPCSTR path, CUIWindow* parent);

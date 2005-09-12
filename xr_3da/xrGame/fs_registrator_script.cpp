@@ -151,7 +151,7 @@ void fs_registrator::script_register(lua_State *L)
 			.def_readonly("m_Add",						&FS_Path::m_Add)
 			.def_readonly("m_DefExt",					&FS_Path::m_DefExt)
 			.def_readonly("m_FilterCaption",			&FS_Path::m_FilterCaption),
-
+*/
 		class_<CLocatorAPI::file>("fs_file")
 			.def_readonly("name",						&CLocatorAPI::file::name)
 			.def_readonly("vfs",						&CLocatorAPI::file::vfs)
@@ -159,7 +159,8 @@ void fs_registrator::script_register(lua_State *L)
 			.def_readonly("size_real",					&CLocatorAPI::file::size_real)
 			.def_readonly("size_compressed",			&CLocatorAPI::file::size_compressed)
 			.def_readonly("modif",						&CLocatorAPI::file::modif),
-*/
+
+
 		class_<CLocatorAPI>("FS")
 			.enum_("FS_sort_mode")
 			[
@@ -192,8 +193,8 @@ void fs_registrator::script_register(lua_State *L)
 			.def("file_length",							&CLocatorAPI::file_length)
 			.def("file_copy",							&CLocatorAPI::file_copy)
 
-//			.def("exist",								(const CLocatorAPI::file*	(CLocatorAPI::*)(LPCSTR)) (CLocatorAPI::exist))
-//			.def("exist",								(const CLocatorAPI::file*	(CLocatorAPI::*)(LPCSTR, LPCSTR)) (CLocatorAPI::exist))
+			.def("exist",								(const CLocatorAPI::file*	(CLocatorAPI::*)(LPCSTR)) (CLocatorAPI::exist))
+			.def("exist",								(const CLocatorAPI::file*	(CLocatorAPI::*)(LPCSTR, LPCSTR)) (CLocatorAPI::exist))
 
 			.def("get_file_age",						&CLocatorAPI::get_file_age)
 			.def("get_file_age_str",					&get_file_age_str)

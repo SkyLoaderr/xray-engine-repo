@@ -162,8 +162,16 @@ CUI3tButton* CScriptXmlInit::Init3tButton(LPCSTR path, CUIWindow* parent){
 	return pWnd;	
 }
 
-void CScriptXmlInit::InitList(LPCSTR path, int index, CUIListWnd* pWnd){
-	CUIXmlInit::InitListWnd(m_xml, path, index, pWnd);
+//void CScriptXmlInit::InitList(LPCSTR path, int index, CUIListWnd* pWnd){
+//	CUIXmlInit::InitListWnd(m_xml, path, index, pWnd);
+//}
+
+CUIListWnd* CScriptXmlInit::InitList(LPCSTR path, CUIWindow* parent){
+	CUIListWnd* pWnd = xr_new<CUIListWnd>();
+	CUIXmlInit::InitListWnd(m_xml, path, 0, pWnd);
+	pWnd->SetAutoDelete(true);
+	parent->AttachChild(pWnd);
+	return pWnd;
 }
 
 //void CScriptXmlInit::InitTab(LPCSTR path, int index, CUITabControl* pWnd){
