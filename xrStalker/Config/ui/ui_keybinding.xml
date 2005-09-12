@@ -55,11 +55,8 @@
 		<command id="screen shot"					exe="screenshot"/>
 		<command id="quit"							exe="quit"/>
 		<command id="console"						exe="console"/>
-		<command id="follower 1"					exe="follower1"/>
-		<command id="follower 2"					exe="follower2"/>
-		<command id="follower 3"					exe="follower3"/>
-		<command id="follower 4"					exe="follower4"/>
-		<command id="follower 5"					exe="follower5"/>
+		<command id="turn engine"					exe="turn_engine"/>
+		<command id="repair"						exe="repair"/>
 	</group>
 	<group name="multiplayer">
 		<command id="scores"						exe="scores"/>
@@ -70,5 +67,7 @@
 		<command id="select team menu"				exe="team_menu"/>
 		<command id="vote yes"						exe="vote_yes"/>
 		<command id="vote no"						exe="vote_no"/>
+		<command id="Speech menu (Group)"			exe="speech_menu_0"/>
+		<command id="Speech menu (Personal)"		exe="speech_menu_1"/>
 	</group>
 </keybingidg>
