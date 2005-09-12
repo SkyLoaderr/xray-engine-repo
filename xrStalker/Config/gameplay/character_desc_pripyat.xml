@@ -240,8 +240,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-<!-------------------------- SOLDIER ----------------------->
-<!---------------------- ZOMBIED SUICIDE ------------------->
+<!---------------------- ZOMBIED ----------------------------->
 	<specific_character id="pri_zombied_suicide_default1" team_default = "1">
 		<name>Зомбированный сталкер</name>
 		<icon x="20" y="10"></icon>
@@ -254,7 +253,7 @@
 		<rank>40</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
