@@ -9,8 +9,8 @@
 		<texture>ui\ui_options_menu_static</texture>
 		<texture_offset x="-29" y="-19"/>
 		
-		<caption x="" y="" width="" height="" complex_mode="">
-			<text>Save Game</text>
+		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
+			<text font="letterica25" r="215" g="195" b="170">Save Game</text>
 		</caption>
 		
 		<edit x="36" y="36" width="257" height="23">
@@ -26,12 +26,24 @@
 				
 		<btn_save x="36" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_left</texture>
-			<text font="letterica25">Save</text>
+			<text font="letterica25" r="215" g="195" b="170">Save</text>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="255" g="255" b="200"/>
+			</text_color>
 		</btn_save>
 		
 		<btn_cancel x="338" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_right</texture>			
-			<text font="letterica25">Cancel</text>
+			<text font="letterica25" r="215" g="195" b="170">Cancel</text>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="255" g="255" b="200"/>
+			</text_color>
 		</btn_cancel>		
 	</form>
 
