@@ -45,6 +45,17 @@ function heli_health_le(actor, obj, p)
     return p[1] and obj:get_helicopter():GetfHealth() < p[1]
 end
 
+-- видит ли вертолёт npc (по story id)
+function heli_see_npc(actor, obj, p)
+	if p[1] then
+		local o = level_object_by_sid( p[1] )
+
+		return o ~= nil and obj:get_helicopter():isVisible( o )
+	else
+		return false
+	end
+end
+
 -- Проверка на принадлежность врага к одной из групп
 -- (можно задавать несколько через двоеточие)
 function enemy_group(actor, npc, p)
@@ -259,11 +270,10 @@ function see_actor(actor, npc)
 	return npc:see(actor)
 end
 
--- видит ли геликоптер актера
-function heli_see_actor(actor,obj)
-	return  obj:get_helicopter():isVisible(actor)
+-- видит ли вертолёт актера
+function heli_see_actor(actor, obj)
+	return obj:get_helicopter():isVisible(actor)
 end
-
 
 function actor_enemy(actor, npc)
 	local t = db.storage[npc:id()].death
