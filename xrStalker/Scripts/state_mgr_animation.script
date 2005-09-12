@@ -1,5 +1,5 @@
-function printf()
-end
+--function printf()
+--end
 
 local anima=0
 
@@ -162,12 +162,8 @@ function animation:__init(npc, mgr)
 						binocular_a	= {mode = "detach", done = true}}
 	}
 	
-	self.clb_settings = {
-		cnt = 0,
-		a = nil,
-		d = nil,
-		s = nil
-	}
+	self.clb_settings = {}
+	self.clb_cnt = 0
 end
 --' установка нового состояния
 function animation:set_state(id, reset)
@@ -575,60 +571,68 @@ function animation:callback_process()
 		return ret
 end
 --' настройка колбека на особые действия
-function animation:set_anim_callback(a)
-	print_table(a)
-	self.clb_settings.cnt = self.npc:animation_count()
-	printf("a_count [%s]", self.clb_settings.cnt)
-	self.clb_settings.a = a.a
-	self.clb_settings.d = a.d
-	self.clb_settings.s = a.s
-	self.clb_settings.sh = a.sh
-	self.clb_settings.f = a.f
+function animation:set_anim_callback(value)
+	print_table(value)
+	self.clb_cnt = self.npc:animation_count()
+	
+	printf("a_count [%s]", self.clb_cnt)
+	self.clb_settings[self.clb_cnt] = {
+		a = value.a,
+		d = value.d,
+		s = value.s,
+		sh = value.sh,
+		f = value.f
+	}
 	return true 
 end
 --' коллбек на особые действия
 function animation:anim_callback()
-	printf("anim callback [%s] of [%s]", self.clb_settings.cnt, self.npc:animation_count())
-	self.clb_settings.cnt = self.clb_settings.cnt - 1
-	if self.clb_settings.cnt == 0 then
-		if self.clb_settings.a ~= nil and
-		   self.states.attach_items[self.clb_settings.a] ~= nil 
-		then
-			printf("item [%s] attach", utils.to_str(self.clb_settings.a))	
-			self.states.attach_items[self.clb_settings.a].mode = "attach"
-			self.states.attach_items[self.clb_settings.a].done = false
-		end
-		self.clb_settings.a = nil
-		if self.clb_settings.d ~= nil and
-		   self.states.attach_items[self.clb_settings.d] ~= nil 
-		then
-			printf("item [%s] detach", utils.to_str(self.clb_settings.d))	
-			self.states.attach_items[self.clb_settings.d].mode = "detach"
-			self.states.attach_items[self.clb_settings.d].done = false
-		end
-		self.clb_settings.d = nil
-		if self.clb_settings.s ~= nil then
-			xr_sound.set_sound_play(self.npc, self.clb_settings.s)
-		end
-		self.clb_settings.s = nil
-		if self.clb_settings.sh ~= nil then
-			-- наносим хит себе.
-			local h = hit()
-			h.power = self.clb_settings.sh
-			h.direction = vector_rotate_y(self.npc:direction(), 90)
-			h.bone = "bip01_head"
-			h.draftsman = self.npc
-			h.impulse = 200
-			h.type = hit.wound
-			self.npc:hit(h)
-		end
-		self.clb_settings.sh = nil
-		if self.clb_settings.f ~= nil then
-			-- Запуск функции
-			self.clb_settings.f(self.npc)
-		end
-		self.clb_settings.f = nil
+	printf("anim callback [%s] of [%s]", self.clb_cnt, self.npc:animation_count())
+	-- Высчитываем по какому ключу нужно брать действия
+	local t = self.clb_settings[self.clb_cnt - self.npc:animation_count()]
+	if t == nil then
+		return true
 	end
+	
+	if t.a ~= nil and
+		self.states.attach_items[t.a] ~= nil 
+	then
+		printf("item [%s] attach", utils.to_str(t.a))	
+		self.states.attach_items[t.a].mode = "attach"
+		self.states.attach_items[t.a].done = false
+	end
+	t.a = nil
+	if t.d ~= nil and
+		self.states.attach_items[t.d] ~= nil 
+	then
+		printf("item [%s] detach", utils.to_str(t.d))	
+		self.states.attach_items[t.d].mode = "detach"
+		self.states.attach_items[t.d].done = false
+	end
+	t.d = nil
+	if t.s ~= nil then
+		xr_sound.set_sound_play(self.npc, t.s)
+	end
+	t.s = nil
+	if t.sh ~= nil then
+		-- наносим хит себе.
+		local h = hit()
+		h.power = t.sh
+		h.direction = vector_rotate_y(self.npc:direction(), 90)
+		h.bone = "bip01_head"
+		h.draftsman = self.npc
+		h.impulse = 200
+		h.type = hit.wound
+		self.npc:hit(h)
+	end
+	t.sh = nil
+	if t.f ~= nil then
+		-- Запуск функции
+		printf("called function [%s]", tostring(t.f))
+		t.f(self.npc)
+	end
+	t.f = nil
+
 	return true 
 end
 --' в каком состоянии мы находимся

@@ -386,9 +386,9 @@ states = {
 				animation = "suicide",
 				reset = true
 			},
-	punch = {	weapon = "strapped",
+	punch = {	weapon = nil,
 				movement = move.stand,
-				mental = anim.free,
+				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "punch",

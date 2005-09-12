@@ -9,8 +9,6 @@ class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:__init (obj) super(obj)
 	self.bCheckStart = false
-	
-	self.delayed_sleep_callback_start_tm = time_global()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_spawn(data)
@@ -33,7 +31,7 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.article_info, nil)
 	self.object:set_callback(callback.on_item_take, nil)
 	self.object:set_callback(callback.on_item_drop, nil)
-	self.object:set_callback(callback.actor_sleep, nil)
+	--self.object:set_callback(callback.actor_sleep, nil)
 	self.object:set_callback(callback.task_state, nil)
 
 	db.storage[self.object:id()] = nil
@@ -57,7 +55,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.article_info, self.article_callback, self)
 	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
 	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
-	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
+	--self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 	self.object:set_callback(callback.task_state, self.task_callback, self)
 	--self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
 end
@@ -86,10 +84,6 @@ function actor_binder:inventory_callback(npc, info_id)
 	level_tasks.proceed(self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function actor_binder:sleep_callback()
-	self.delayed_sleep_callback_start_tm = time_global() + 1500
-end
-----------------------------------------------------------------------------------------------------------------------
 function actor_binder:task_callback(id_task, subtask, id_state)
 	if subtask == 0 then
 		if id_state == task.fail then
@@ -109,69 +103,23 @@ function actor_binder:map_location_added_callback(spot_type_str, object_id)
 	if (false==app_ready()) or (device().precache_frame>1) then return end
 	news_manager.send_task(db.actor, "new")
 end
-
-----------------------------------------------------------------------------------------------------------------------
-local drop_location = nil
-function drop_item(item, who)
-	printf("_bp: drop_item")
-	who:drop_item(item, drop_location)
-end
-
-function actor_binder:delayed_sleep_callback()
-	self.delayed_sleep_callback_start_tm = nil
-
-	printf("*SLEEP CALLBACK*")
-	if self.st.punch and self.st.punch.enabled then
-		self.object:set_actor_position(self.st.punch.dest_walk)
-		self.object:set_actor_direction(self.st.punch.dest_look.y)
-		
-		if self.st.punch.dump_inventory_pos then
-			printf("_bp: dump_inventory_pos")
-			drop_location = self.st.punch.dump_inventory_pos
-			self.object:inventory_for_each(drop_item)
-			self.st.punch.dump_inventory_pos = nil
-		end
-		
-		if self.st.punch.disable_input_tm then
-			printf("_bp: disable_input")
-			level.disable_input()
-			self.st.enable_input_tm = time_global() + self.st.punch.disable_input_tm
-			self.st.punch.disable_input_tm = nil
-		end
-
-		if self.st.punch.info then
-			for k, v in self.st.punch.info do
-				if self.object:dont_has_info(v) then
-					self.object:give_info_portion(v)
-				end
-			end
-		end
-	
-		self.st.punch.enabled = false
-	end
-end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
 	object_binder.update(self, delta)
 
 	local time = time_global()
-
-	if self.delayed_sleep_callback_start_tm and time >= self.delayed_sleep_callback_start_tm then
-		self:delayed_sleep_callback()
-	end
-
-	if self.st.enable_input_tm and time >= self.st.enable_input_tm then
-		level.enable_input()
-		self.st.enable_input_tm = nil
-	end
-
 	--' Проверка потери жизни
 --[[
 	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
 	lasthealth = self.object.health
 	lasttime = game.time()
 ]]
-
+	if self.st.disable_input_time ~= nil and
+	   time_global() - self.st.disable_input_time >= 3000 
+	then
+		level.enable_input()
+		self.st.disable_input_time = nil
+	end
 	-- обновление рестрикторов, которые под логикой, срабатывает через интервалы времени
 	if self.next_restrictors_update_time < time then
 		bind_restrictor.actor_update(delta)
