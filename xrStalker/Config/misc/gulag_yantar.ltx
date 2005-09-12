@@ -1,104 +1,28 @@
 ;*****************************************************************
-; Bar visitor
+; Yantar zombies
 ;*****************************************************************
-[logic@bar_visitors_kamp1]
-active = kamp@bar_visitors_kamp1
+[logic@yantar_zombies_kamp1]
+active = kamp@yantar_zombies_kamp1
 
-[kamp@bar_visitors_kamp1]
+[kamp@yantar_zombies_kamp1]
 center_point = kamp_1
 
 
-[logic@bar_visitors_kamp2]
-active = kamp@bar_visitors_kamp2
+[logic@yantar_zombies_kamp2]
+active = kamp@yantar_zombies_kamp2
 
-[kamp@bar_visitors_kamp2]
+[kamp@yantar_zombies_kamp2]
 center_point = kamp_2
 
 
-[logic@bar_visitors_kamp3]
-active = kamp@bar_visitors_kamp3
+[logic@yantar_zombies_kamp3]
+active = kamp@yantar_zombies_kamp3
 
-[kamp@bar_visitors_kamp3]
+[kamp@yantar_zombies_kamp3]
 center_point = kamp_3
 
+[logic@yantar_zombies_walker]
+active = walker@yantar_zombies_walker
 
-[logic@bar_visitors_kamp4]
-active = kamp@bar_visitors_kamp4
-
-[kamp@bar_visitors_kamp4]
-center_point = kamp_4
-
-[logic@bar_visitors_walker]
-active = walker@bar_visitors_walker
-
-[walker@bar_visitors_walker]
-path_walk = walker_walk
-meet = meet@bar_visitors_walker
-
-[meet@bar_visitors_walker]
-meet_state 		= 3| guard@talk_hello
-meet_state_wpn 	= 3| guard@talk_hello
-victim 			= 3| actor
-victim_wpn 		= 3| actor
-use = true
-use_wpn = true
-
-
-[logic@bar_visitors_arena_1]
-active = walker@@bar_visitors_arena_1
-
-[walker@@bar_visitors_arena_1]
-path_walk = arena_walk_1
-path_look = arena_look_1
-
-[logic@bar_visitors_arena_2]
-active = walker@@bar_visitors_arena_2
-
-[walker@@bar_visitors_arena_2]
-path_walk = arena_walk_2
-path_look = arena_look_2
-
-[logic@bar_visitors_arena_3]
-active = walker@@bar_visitors_arena_3
-
-[walker@@bar_visitors_arena_3]
-path_walk = arena_walk_3
-path_look = arena_look_3
-
-[logic@bar_visitors_arena_4]
-active = walker@@bar_visitors_arena_4
-
-[walker@@bar_visitors_arena_4]
-path_walk = arena_walk_4
-path_look = arena_look_4
-
-[logic@bar_visitors_arena_5]
-active = walker@@bar_visitors_arena_5
-
-[walker@@bar_visitors_arena_5]
-path_walk = arena_walk_5
-path_look = arena_look_5
-
-[logic@bar_visitors_arena_6]
-active = walker@@bar_visitors_arena_6
-
-[walker@@bar_visitors_arena_6]
-path_walk = arena_walk_6
-path_look = arena_look_6
-
-[logic@bar_visitors_arena_7]
-active = walker@@bar_visitors_arena_7
-
-[walker@@bar_visitors_arena_7]
-path_walk = arena_walk_7
-path_look = arena_look_7
-
-[logic@bar_visitors_arena_8]
-active = walker@@bar_visitors_arena_8
-
-[walker@@bar_visitors_arena_8]
-path_walk = arena_walk_8
-path_look = arena_look_8
-
-
-		
+[walker@yantar_zombies_walker]
+path_walk = walker_walk	
