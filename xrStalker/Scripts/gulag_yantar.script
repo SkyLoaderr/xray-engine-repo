@@ -108,6 +108,70 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)		    
 
+		t = { section = "logic@yantar_zombies_kamp3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp3",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp3",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp3",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2}, squad = squad, group = groups[4],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+		t = { section = "logic@yantar_zombies_kamp4",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[5],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp4",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[5],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp4",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2}, squad = squad, group = groups[5],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp4",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2}, squad = squad, group = groups[5],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yantar_zombies_kamp4",
+			idle = 0, timeout = math.random(10,20)*60*1000,
+			prior = 5, state = {1,2}, squad = squad, group = groups[5],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+
+
 		t = { section = "logic@yantar_zombies_walker",
 			idle = 0, timeout = math.random(10,20)*60*1000,
 			prior = 7, state = {1}, squad = squad, group = groups[1],
