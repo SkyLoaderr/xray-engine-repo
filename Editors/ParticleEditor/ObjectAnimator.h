@@ -38,7 +38,7 @@ public:
 	IC BOOL				IsPlaying		(){return m_MParam.bPlay;}
 
     IC const Fmatrix&	XFORM			(){return m_XFORM;}
-	
+	float				GetLength		();
 	// Update
 	void				Update			(float dt);
     void				DrawPath		();

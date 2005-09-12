@@ -117,6 +117,13 @@ void CObjectAnimator::Stop()
 	m_MParam.Stop		();
 }
 
+float CObjectAnimator::GetLength		()
+{
+	if(!m_Current) return 0.0f;
+	float res = m_Current->Length()/m_Current->FPS();
+	return res; 
+}
+
 #ifdef _EDITOR
 
 #include "d3dutils.h"
