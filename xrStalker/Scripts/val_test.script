@@ -1,0 +1,40 @@
+-----------------------------------------------------------------------------------
+-- Test Definitions
+-----------------------------------------------------------------------------------
+local object_list		= {}
+local smart_terrains	= {}
+
+object_list["test1"] = {
+	"pri_controller1",
+	"pri_controller2",
+	"pri_controller3",
+	"pri_stalker_zombied1",
+	"pri_stalker_zombied2",
+	"pri_stalker_zombied3",
+	"pri_stalker_zombied4",
+	"pri_stalker_zombied5",
+	"pri_stalker_zombied6",
+	"pri_stalker_zombied7"
+}
+
+
+-- define smart terrains
+smart_terrains["test1"] = {
+	"pri_zombied"
+}
+
+------------------------------------------------------------------------------
+-- Base Run function (load extern)
+------------------------------------------------------------------------------
+function r(index)
+	test_utils.setup_test(object_list, smart_terrains)
+	test_utils.run_test(index)
+end
+
+------------------------------------------------------------------------------
+-- Main function (called on level load)
+------------------------------------------------------------------------------
+function main()
+	test_utils.setup_test(object_list, smart_terrains)
+	test_utils.run_global()
+end
