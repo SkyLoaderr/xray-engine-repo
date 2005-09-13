@@ -39,7 +39,7 @@
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
-		<class>Bandit_novice</class>
+		<class>val_bandit_novice</class>
 		<community>bandit</community>
 		
 		<rank>0</rank>
