@@ -5,10 +5,10 @@ on_hit = hit
 combat_ignore = combat_ignore
 
 [combat]
-on_info = {=see_actor} walker@leave %+val_tunnel_plr_detected%
+on_info = {-val_tunnel_plr_detected =see_actor} %+val_tunnel_plr_detected%
 
 [hit]
-on_info = {=hit_by_actor} walker@leave %+val_tunnel_plr_detected%
+on_info = {-val_tunnel_plr_detected =hit_by_actor} %+val_tunnel_plr_detected%
 
 [combat_ignore]
 
