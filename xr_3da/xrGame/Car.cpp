@@ -1006,9 +1006,6 @@ void CCar::UpdatePower()
 	e=m_driving_wheels.end();
 	for(;i!=e;++i)
 		i->UpdatePower();
-	
-	if(brp)
-		HandBreak();
 }
 
 void CCar::SteerRight()
@@ -1637,16 +1634,20 @@ void CCar::PhDataUpdate(dReal step)
 		LimitWheels();
 		UpdateFuel(step);
 
-		if(bkp)
-		{
-			UpdateBack();
-		}
+	
 		//if(fwp)
 		{	
 			UpdatePower();
 			if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
 		}
-	
+
+		if(bkp)
+		{
+			UpdateBack();
+		}
+
+		if(brp)
+			HandBreak();
 //////////////////////////////////////////////////////////
 	for (int k=0; k<(int)m_doors_update.size(); ++k){
 		SDoor* D = m_doors_update[k];
