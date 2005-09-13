@@ -43,45 +43,55 @@ void CUIDialogWnd::Hide()
 bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 {
 	if(!IsEnabled()) return false;
-			
+
 	//mouse click
-	if(dik==MOUSE_1)
+	if(dik==MOUSE_1 || dik==MOUSE_2)
 	{
 		Fvector2 cp = GetUICursor()->GetPos();
-		OnMouse(cp.x,cp.y,
-                WINDOW_LBUTTON_DOWN);
-		return true;
-	}
-	else if(dik==MOUSE_2)
-	{
-		Fvector2 cp = GetUICursor()->GetPos();
-		OnMouse(cp.x,cp.y,
-                WINDOW_RBUTTON_DOWN);
-		return true;
+		if (OnMouse(cp.x,cp.y, dik==MOUSE_1? WINDOW_LBUTTON_DOWN : WINDOW_RBUTTON_DOWN))
+            return true;
 	}
 
-	
-	return 	OnKeyboard(dik,	WINDOW_KEY_PRESSED);
+	if (OnKeyboard(dik,	WINDOW_KEY_PRESSED))
+		return true;
+
+	if( !StopAnyMove() && g_pGameLevel ){
+		CObject* O = Level().CurrentEntity();
+		if( O ){
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+			if (!IR)
+				return			(false);
+			IR->IR_OnKeyboardPress(key_binding[dik]);
+		}
+	}
+	return false;
 }
 
 bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 {
 	if(!IsEnabled()) return false;
 	
-
 	//mouse click
 	if(dik==MOUSE_1 || dik==MOUSE_2)
 	{
 		Fvector2 cp = GetUICursor()->GetPos();
-		if(dik==MOUSE_1)
-			OnMouse(cp.x,   cp.y,	WINDOW_LBUTTON_UP);
-		else
-			OnMouse(cp.x,   cp.y,	WINDOW_RBUTTON_UP);
-
-		return true;
+		if (OnMouse(cp.x, cp.y, dik==MOUSE_1 ? WINDOW_LBUTTON_UP : WINDOW_RBUTTON_UP))
+            return true;
 	}
 
-	return 	OnKeyboard(dik,	WINDOW_KEY_RELEASED);
+	if (OnKeyboard(dik,	WINDOW_KEY_RELEASED))
+		return true;
+
+	if( !StopAnyMove() && g_pGameLevel ){
+		CObject* O = Level().CurrentEntity();
+		if( O ){
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+			if (!IR)
+				return			(false);
+			IR->IR_OnKeyboardRelease(key_binding[dik]);
+		}
+	}
+	return false;
 }
 
 bool CUIDialogWnd::IR_OnMouseWheel (int direction)
@@ -106,8 +116,7 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 		Fvector2 cPos = GetUICursor()->GetPos();
 		OnMouse(cPos.x, cPos.y , WINDOW_MOUSE_MOVE);
 	}
-
-	if( !StopAnyMove() && g_pGameLevel ){
+	else if( !StopAnyMove() && g_pGameLevel ){
 		CObject* O = Level().CurrentEntity();
 		if( O ){
 			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
@@ -126,20 +135,20 @@ bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	if (inherited::OnKeyboard(dik, keyboard_action) )
 		return true;
 
-	if( !StopAnyMove() && g_pGameLevel ){
-		CObject* O = Level().CurrentEntity();
-		if( O ){
-			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
-			if (!IR)
-				return			(false);
+	//if( !StopAnyMove() && g_pGameLevel ){
+	//	CObject* O = Level().CurrentEntity();
+	//	if( O ){
+	//		IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+	//		if (!IR)
+	//			return			(false);
 
-			if(keyboard_action==WINDOW_KEY_PRESSED)
-					IR->IR_OnKeyboardPress(key_binding[dik]);
-			else	
-					IR->IR_OnKeyboardRelease(key_binding[dik]);
-		
-		//	return true;
-		}
-	};
+	//		if(keyboard_action==WINDOW_KEY_PRESSED)
+ //               IR->IR_OnKeyboardPress(key_binding[dik]);
+	//		else
+ //               IR->IR_OnKeyboardRelease(key_binding[dik]);
+	//	
+	//	//	return true;
+	//	}
+	//};
 	return false;
 }
