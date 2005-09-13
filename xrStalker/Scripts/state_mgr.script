@@ -211,7 +211,7 @@ function act_state_mgr_end:execute()
 				look_object:alive() == true
 			then
 				if t == "sniper_fire" then
-					sniper_aim = self.object:position():distance_to_sqr(look_object:position())*aim_ratio
+					sniper_aim = self.object:position():distance_to(look_object:position())*aim_ratio
 					if sniper_aim <= min_ratio then
 						self.object:set_item(object.fire1, self.object:best_weapon())
 						return
