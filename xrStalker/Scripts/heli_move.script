@@ -20,7 +20,6 @@ function heli_move:__init( obj, storage )
 	self.object     = obj
 	self.heliObject = obj:get_helicopter()
 	self.a          = storage
-	self.a.signals  = {}
 	self.combat_mgr = db.storage[obj:id()].combat
 
 	self.default_velocity = utils.cfg_get_number( bind_heli.get_heli_ltx(), "helicopter", "velocity", self.object, true )
@@ -28,6 +27,8 @@ end
 
 function heli_move:reset_scheme( loading )
 	printf("heli_move: reset_scheme: %s", self.object:name())
+
+	self.a.signals = {}
 
 	self.heliObject:TurnEngineSound( self.a.engine_sound )
 
