@@ -109,6 +109,9 @@ function actor_punch(npc)
 	db.storage[db.actor:id()].disable_input_time = time_global()
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+
+	local ce = path_cam_effector("punch_effector.anm")
+	level.add_cam_effector(ce)	
 end
 -- забывание обиды
 function clearAbuse(npc)

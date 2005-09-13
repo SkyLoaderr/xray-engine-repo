@@ -1108,7 +1108,7 @@ function path_cam_effector:__init(str_path) super(cam_effector_type.eCEHit, 10, 
 	self.fLifeTime				= self.animator:GetLengthSec()
 	printf("path length=%f",	self.fLifeTime)
 end
-function path_cam_effector:Process (pos,dir,norm)
+function path_cam_effector:Process(pos,dir,norm)
 	self.fLifeTime 	= self.fLifeTime - device().f_time_delta
 	if self.fLifeTime<0 then return false end
 	
