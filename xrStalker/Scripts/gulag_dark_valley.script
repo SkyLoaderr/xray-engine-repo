@@ -37,15 +37,15 @@ function load_job(sj, gname, type, squad, groups)
 end
 
 function lb_predicate1(obj) 
-	return obj:profile_name() == "bandit_borov"
+	return obj:profile_name() == "val_bandit_borov"
 end
 
 function lb_predicate2(obj) 
-	return obj:profile_name() == "bandit_veteran"
+	return obj:profile_name() == "val_bandit_veteran"
 end
 
 function lb_predicate3(obj) 
-	return obj:profile_name() == "bandit_general"
+	return obj:profile_name() == "val_bandit_general"
 end
 
 function load_job_lager_bandits(sj, gname, type, squad, groups)
@@ -980,7 +980,7 @@ end
 
 function mb_predicate(obj)
     local pname = obj:profile_name()
-	return pname == "monolit_regular"
+	return pname == "val_monolit_regular"
 end
 
 function load_job_monolith_base(sj, gname, type, squad, groups)
@@ -1329,7 +1329,7 @@ end
 
 function ws_predicate(obj)
     local pname = obj:profile_name()
-	return pname == "soldier_regular" or pname == "soldier_specnaz"
+	return pname == "val_soldier_regular" or pname == "val_soldier_specnaz"
 end
 
 function load_job_war_soldiers(sj, gname, type, squad, groups)
