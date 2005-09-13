@@ -46,7 +46,7 @@ protected:
 			void				fill_enemies	(const xr_vector<T> &objects, const _predicate &predicate) const;
 
 public:
-								CMemoryManager	(CCustomMonster *object, CSound_UserDataVisitor *visitor);
+								CMemoryManager	(CEntityAlive *entity_alive, CSound_UserDataVisitor *visitor);
 	virtual						~CMemoryManager	();
 	virtual	void				Load			(LPCSTR section);
 	virtual	void				reinit			();

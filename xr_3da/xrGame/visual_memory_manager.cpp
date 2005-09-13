@@ -20,6 +20,9 @@
 #include "agent_member_manager.h"
 #include "ai_space.h"
 #include "profiler.h"
+#include "actor.h"
+#include "../camerabase.h"
+#include "gamepersistent.h"
 
 #ifdef DEBUG
 #	include "memory_manager.h"
@@ -67,17 +70,23 @@ struct CNotYetVisibleObjectPredicate{
 	}
 };
 
-CVisualMemoryManager::CVisualMemoryManager		(CCustomMonster *object, CAI_Stalker *stalker)
+CVisualMemoryManager::CVisualMemoryManager		(CCustomMonster *object, CAI_Stalker *stalker, CActor *actor)
 {
-	VERIFY				(object);
+	VERIFY				(!!object || !!actor);
+	VERIFY				(!object || !actor);
 	m_object			= object;
 	m_stalker			= stalker;
+	m_actor				= actor;
 	m_max_object_count	= 1;
 	m_enabled			= true;
+	if (m_actor)
+		m_objects		= xr_new<VISIBLES>();
 }
 
 CVisualMemoryManager::~CVisualMemoryManager		()
 {
+	if (m_actor)
+		xr_delete		(m_objects);
 }
 
 void CVisualMemoryManager::Load					(LPCSTR section)
@@ -86,7 +95,12 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 
 void CVisualMemoryManager::reinit					()
 {
-	m_objects							= 0;
+	if (!m_actor)
+		m_objects						= 0;
+	else {
+		VERIFY							(m_objects);
+		m_objects->clear				();
+	}
 
 	m_visible_objects.clear				();
 	m_visible_objects.reserve			(100);
@@ -139,12 +153,27 @@ void CVisualMemoryManager::enable		(const CObject *object, bool enable)
 
 float CVisualMemoryManager::object_visible_distance(const CGameObject *game_object, float &object_distance) const
 {
-	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), temp, eye_direction;
-	Fmatrix								&eye_matrix = smart_cast<CKinematics*>(m_object->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
+	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), eye_direction;
+	Fmatrix								eye_matrix;
 
-	eye_matrix.transform_tiny			(temp,eye_position);
-	m_object->XFORM().transform_tiny	(eye_position,temp);
-	eye_direction.setHP					(-m_stalker->movement().m_head.current.yaw, -m_stalker->movement().m_head.current.pitch);
+	if (m_stalker) {
+		eye_matrix						= 
+			smart_cast<CKinematics*>(
+				m_object->Visual()
+			)
+			->LL_GetTransform		(
+				u16(m_stalker->eye_bone)
+			);
+
+		Fvector							temp;
+		eye_matrix.transform_tiny		(temp,eye_position);
+		m_object->XFORM().transform_tiny(eye_position,temp);
+		eye_direction.setHP				(-m_stalker->movement().m_head.current.yaw, -m_stalker->movement().m_head.current.pitch);
+	}
+	else {
+		Fvector							temp;
+		m_actor->cam_Active()->Get		(eye_position,eye_direction,temp);
+	}
 
 	Fvector								object_direction;
 	game_object->Center					(object_direction);
@@ -153,7 +182,12 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	object_direction.normalize_safe		();
 	
 	float								object_range, object_fov;
-	m_stalker->update_range_fov			(object_range,object_fov,m_stalker->eye_range,deg2rad(m_stalker->eye_fov));
+	if (m_stalker)
+		m_stalker->update_range_fov		(object_range,object_fov,m_stalker->eye_range,deg2rad(m_stalker->eye_fov));
+	else {
+		object_fov						= m_actor->cam_Active()->f_fov;
+		object_range					= g_pGamePersistent->Environment.CurrentEnv.far_plane;
+	}
 
 	float								fov = object_fov*.5f;
 	float								cos_alpha = eye_direction.dotproduct(object_direction);
@@ -246,7 +280,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	if (game_object->getDestroy())
 		return					(false);
 
-	if (!m_stalker)
+	if (!m_stalker && !m_actor)
 		return					(true);
 
 	float						object_distance, distance = object_visible_distance(game_object,object_distance);

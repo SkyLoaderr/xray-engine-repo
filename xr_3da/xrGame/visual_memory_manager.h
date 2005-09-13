@@ -11,8 +11,9 @@
 #include "visual_memory_params.h"
 #include "memory_space.h"
 
-class	CCustomMonster;
-class	CAI_Stalker;
+class CCustomMonster;
+class CAI_Stalker;
+class CActor;
 
 class CVisualMemoryManager {
 #ifdef DEBUG
@@ -28,6 +29,7 @@ public:
 private:
 	CCustomMonster		*m_object;
 	CAI_Stalker			*m_stalker;
+	CActor				*m_actor;
 
 private:
 	RAW_VISIBLES		m_visible_objects;
@@ -60,7 +62,7 @@ protected:
 			CNotYetVisibleObject *not_yet_visible_object	(const CGameObject *game_object);
 
 public:
-					CVisualMemoryManager	(CCustomMonster *object, CAI_Stalker *stalker);
+					CVisualMemoryManager	(CCustomMonster *object, CAI_Stalker *stalker, CActor *actor);
 	virtual			~CVisualMemoryManager	();
 	virtual	void	Load					(LPCSTR section);
 	virtual	void	reinit					();
