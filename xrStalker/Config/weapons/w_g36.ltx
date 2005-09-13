@@ -1,8 +1,11 @@
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[wpn_sig550]
+;;;;;;;;;;;;;;               G36                      ;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_g36]
 GroupControlSection		= spawn_group
 discovery_dependency	= 
-$spawn              	= "weapons\sig550"		; option for Level Editor
+$spawn              	= "weapons\g36"		; option for Level Editor
 $npc					= on				; option for Level Editor
 $prefetch 				= 8
 scheduled				= off				; option for ALife Simulator
@@ -38,19 +41,19 @@ single_handed			= 0
 slot 					= 2		; // secondary
 animation_slot			= 2		; type of the animation that will be used
 
-inv_name	        	= SIG-550
-inv_name_short			= SIG-550
+inv_name	        	= G36
+inv_name_short			= G36
 inv_weight				= 5
 
 inv_grid_width			= 5
 inv_grid_height			= 2
-inv_grid_x				= 5
-inv_grid_y				= 7
+inv_grid_x				= 0
+inv_grid_y				= 10
 
-kill_msg_x			= 80
-kill_msg_y			= 59
-kill_msg_width		= 87
-kill_msg_height		= 24
+kill_msg_x			= 157
+kill_msg_y			= 29
+kill_msg_width		= 78
+kill_msg_height		= 31
 
 immunities_sect			= weapon
 
@@ -98,7 +101,7 @@ bullet_speed				= 900			;начальная скорость пули
 rpm                      	= 700
 ; end ttc
 
-hud                      	= wpn_sig550_hud
+hud                      	= wpn_g36_hud
 normal                   	= 0, 1, 0
 
 ;----------------------------------------------------------
@@ -113,7 +116,7 @@ strap_bone0					= bip01_spine2
 strap_bone1					= bip01_spine1
 
 startup_ammo   		        = 90
-visual         		        = weapons\sig550\wpn_sig550.ogf
+visual         		        = weapons\g36\wpn_g36.ogf
 	
 light_color					= 0.6,0.5,0.3
 light_range					= 5
@@ -125,7 +128,7 @@ ph_mass						= 4
 ;cost						= 2100
 
 ;addons
-scope_status				= 2
+scope_status				= 1
 silencer_status				= 2
 grenade_launcher_status		= 2
 
@@ -134,11 +137,11 @@ scope_zoom_factor	    	= 50						; fov for zoom mode
 
 ;zoom_enabled				= true
 ;scope_zoom_factor	    	= 15		;SUSAT 4X
-;scope_texture				= wpn\wpn_crosshair_l85
+scope_texture				= wpn\wpn_crosshair_l85
 
-scope_name 					= wpn_addon_scope_susat
-scope_x 					= 78
-scope_y 					= 0
+;scope_name 					= wpn_addon_scope_susat
+;scope_x 					= 78
+;scope_y 					= 0
 silencer_name  				= wpn_addon_silencer
 silencer_x 					= 222
 silencer_y 					= 16
@@ -175,7 +178,7 @@ silencer_light_var_range	= 0.5
 silencer_light_time 		= 0.2
 
  
-[wpn_sig550_hud]
+[wpn_g36_hud]
 
 shell_point     	   	 	= 0.15, 0.0, -0.05
 shell_dir			     	= 0.0, 1.0, 0.0
@@ -185,30 +188,30 @@ fire_point2              	= 0.30, 0.00, 0.05
 fire_bone               	= wpn_body
 orientation             	= 0, 0, 0
 position                	= 0, 0, 0
-visual                  	= weapons\sig550\wpn_sig550_hud.ogf
+visual                  	= weapons\g36\wpn_g36_hud.ogf
 
 grenade_bone            	= grenade
 
 anim_idle				= idle
-anim_idle_aim			= idle_aim
+anim_idle_aim			= idle
 anim_reload				= reload
 anim_draw				= draw
-anim_holster			= holster
+anim_holster			= shoot
 anim_shoot				= shoot
 			
 ;анимации с подключенным подствольником
 ;(режим стрельбы из подствольника)
 anim_idle_g					= idle_grenade
-anim_idle_g_aim				= idle_w_gl_aim
+anim_idle_g_aim				= idle_grenade
 anim_reload_g				= reload_grenade
 anim_shoot_g				= shoot_grenade
 anim_switch_grenade_on		= switch_on
 anim_switch_grenade_off		= switch_off
-anim_draw_g					= draw_grenade
-anim_holster_g				= holster_grenade
+anim_draw_g					= switch_on
+anim_holster_g				= switch_off
 ;(режим обычной стрельбы)			  
 anim_idle_gl				= idle_w_gl
-anim_idle_gl_aim			= idle_w_gl_aim
+anim_idle_gl_aim			= idle_w_gl
 anim_reload_gl				= reload_w_gl
 anim_draw_gl				= draw_w_gl
 anim_holster_gl				= holster_w_gl
@@ -236,5 +239,4 @@ grenade_normal_zoom_offset		= -0.135500,0.010000,0.000000
 grenade_normal_zoom_rotate_x	= -0.013900
 grenade_normal_zoom_rotate_y	= -0.001800
 
-
-
+ 
