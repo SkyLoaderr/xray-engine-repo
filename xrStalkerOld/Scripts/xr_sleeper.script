@@ -145,10 +145,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	local operators    = {}
   	local properties  = {}
 
-	sounds["sleep"] 	= xr_sounds_id.stohe_kamp_base + 1
-
-	npc:add_sound("script_replics\\soldier_1\\idle\\soldier_sleep_", 20, snd_type.talk, 2, 1, sounds["sleep"])
-
   	local manager = npc:motivation_action_manager()
 
   	properties["need_sleeper"]   	= xr_evaluators_id.zmey_sleeper_base + 1
