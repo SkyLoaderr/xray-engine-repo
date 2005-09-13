@@ -123,7 +123,7 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 
 			msg.w_int(DMSG_EVAL_WATCH);
 			msg.w_string(res);
-			msg.w_int((int)lParam);
+			msg.w_string((const char*)wParam);
 			SendMessageToIde(msg);
 		 }break;
 
