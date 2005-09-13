@@ -115,7 +115,9 @@ function set_combat_checker(npc, ini, scheme, section)
 			st.combat_type = { condlist = xr_logic.parse_condlist(npc, section, "", "zombied") }
 		end
 
-		set_combat_type( npc, db.actor, st )
+		if st.combat_type then
+			set_combat_type( npc, db.actor, st )
+		end
 	end
 end
 
