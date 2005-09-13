@@ -178,7 +178,12 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_Geometry			(g_aa_AA);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
+	RCache.set_Stencil		(FALSE);
 
+	//	if FP16-BLEND !not! supported - draw flares here, overwise they are already in the bloom target
+	if (!RImplementation.fp16_blend)	g_pGamePersistent->Environment.RenderFlares	();	// lens-flares
+
+	//	PP-if required
 	if (PP_Complex)		{
 		phase_pp		();
 	}

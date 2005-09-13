@@ -312,7 +312,8 @@ void CRenderTarget::phase_bloom	()
 	}
 
 	// we are left here with bloom-target setup as primary one
-	g_pGamePersistent->Environment.RenderFlares	();				// lens-flares
+	// for FP16-BLEND capable HW we can blend flares into smaller target, because they are smooth
+	if (RImplementation.fp16_blend)		g_pGamePersistent->Environment.RenderFlares	();	// lens-flares
 
 	// re-enable z-buffer
 	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,	TRUE				));
