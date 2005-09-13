@@ -2,6 +2,8 @@
 --end
 
 local anima=0
+local tmp_table = {}
+local k,v = 0,0
 
 --' Анимации персонажа
 --' мы уже находимся в необходимом состоянии?
@@ -573,66 +575,57 @@ end
 --' настройка колбека на особые действия
 function animation:set_anim_callback(value)
 	print_table(value)
-	self.clb_cnt = self.npc:animation_count()
-	
-	printf("a_count [%s]", self.clb_cnt)
-	self.clb_settings[self.clb_cnt] = {
+	tmp_table = {
 		a = value.a,
 		d = value.d,
 		s = value.s,
 		sh = value.sh,
 		f = value.f
 	}
+	table.insert(self.clb_settings, tmp_table)
 	return true 
 end
 --' коллбек на особые действия
 function animation:anim_callback()
-	printf("anim callback [%s] of [%s]", self.clb_cnt, self.npc:animation_count())
-	-- Высчитываем по какому ключу нужно брать действия
-	local t = self.clb_settings[self.clb_cnt - self.npc:animation_count()]
-	if t == nil then
-		return true
+	printf("anim callback [%s]", self.npc:animation_count())
+	-- Проходим по таблице, из 1 позиции вычитываем действий. Остальные просто сдвигаем
+	v = self.clb_settings[1]
+	if v ~= nil then
+		-- Производим действия находящиеся на 1 позиции
+		if v.a ~= nil and
+			self.states.attach_items[v.a] ~= nil 
+		then
+			printf("item [%s] attach", utils.to_str(v.a))
+			self.states.attach_items[v.a].mode = "attach"
+			self.states.attach_items[v.a].done = false
+		end
+		if v.d ~= nil and
+			self.states.attach_items[v.d] ~= nil 
+		then
+			printf("item [%s] detach", utils.to_str(v.d))	
+			self.states.attach_items[v.d].mode = "detach"
+			self.states.attach_items[v.d].done = false
+		end
+		if v.s ~= nil then
+			xr_sound.set_sound_play(self.npc, v.s)
+		end
+		if v.sh ~= nil then
+			-- наносим хит себе.
+			local h = hit()
+			h.power = v.sh
+			h.direction = vector_rotate_y(self.npc:direction(), 90)
+			h.draftsman = self.npc
+			h.impulse = 200
+			h.type = hit.wound
+			self.npc:hit(h)
+		end
+		if v.f ~= nil then
+			-- Запуск функции
+			printf("called function [%s]", tostring(v.f))
+			v.f(self.npc)
+		end
+		table.remove(self.clb_settings, 1)
 	end
-	
-	if t.a ~= nil and
-		self.states.attach_items[t.a] ~= nil 
-	then
-		printf("item [%s] attach", utils.to_str(t.a))	
-		self.states.attach_items[t.a].mode = "attach"
-		self.states.attach_items[t.a].done = false
-	end
-	t.a = nil
-	if t.d ~= nil and
-		self.states.attach_items[t.d] ~= nil 
-	then
-		printf("item [%s] detach", utils.to_str(t.d))	
-		self.states.attach_items[t.d].mode = "detach"
-		self.states.attach_items[t.d].done = false
-	end
-	t.d = nil
-	if t.s ~= nil then
-		xr_sound.set_sound_play(self.npc, t.s)
-	end
-	t.s = nil
-	if t.sh ~= nil then
-		-- наносим хит себе.
-		local h = hit()
-		h.power = t.sh
-		h.direction = vector_rotate_y(self.npc:direction(), 90)
-		h.bone = "bip01_head"
-		h.draftsman = self.npc
-		h.impulse = 200
-		h.type = hit.wound
-		self.npc:hit(h)
-	end
-	t.sh = nil
-	if t.f ~= nil then
-		-- Запуск функции
-		printf("called function [%s]", tostring(t.f))
-		t.f(self.npc)
-	end
-	t.f = nil
-
 	return true 
 end
 --' в каком состоянии мы находимся
