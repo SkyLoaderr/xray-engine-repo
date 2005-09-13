@@ -76,7 +76,7 @@ void CCallStack::Clear()
 
 void CCallStack::Add(const char *szDesc, const char *szFile, int nLine)
 {
-	((CScintillaView*)GetView(0))->Write(CString(szDesc)+"\n");
+	((CScintillaView*)GetView(0))->Write(CString(szDesc));
 
 	m_files.Add(szFile);
 	m_lines.Add(nLine);

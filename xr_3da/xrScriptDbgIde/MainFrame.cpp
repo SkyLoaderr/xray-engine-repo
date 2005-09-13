@@ -488,7 +488,7 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 				return 0;
 		}
 
-			m_wndWatches.SetResult((int)lParam, (LPSTR)wParam);
+			m_wndWatches.SetResult((LPCSTR)lParam, (LPCSTR)wParam);
 		break;
 
 	case DMSG_GET_BREAKPOINTS:
@@ -865,11 +865,11 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 	
 	case DMSG_EVAL_WATCH:{
 			char str[2048];str[0]=0;
-			int i;
+			char str2[2048];str2[0]=0;
 			
 			msg.r_string(str);
-			msg.r_int(i);
-			SendMessage(DMSG_EVAL_WATCH,(WPARAM)(str),(LPARAM)(i));
+			msg.r_string(str2);
+			SendMessage(DMSG_EVAL_WATCH,(WPARAM)(str),(LPARAM)(str2));
 		}break;
 
 	default:

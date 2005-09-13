@@ -81,7 +81,7 @@ void CWatchBar::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CWatchBar::SetResult(int iItem, LPSTR str)
+void CWatchBar::SetResult(LPCSTR watch, LPCSTR str)
 {
-	m_watches.SetResult(iItem, str);
+	m_watches.SetResult(watch, str);
 }

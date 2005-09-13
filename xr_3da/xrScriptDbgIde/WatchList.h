@@ -36,7 +36,7 @@ public:
 	void UpdateRow(int iItem);
 	void AddEditItem(LVITEM& item);
 	int AddEmptyRow();
-	void SetResult(int iItem, LPSTR str);
+	void SetResult(LPCSTR watch, LPCSTR str);
 
 	virtual ~CWatchList();
 

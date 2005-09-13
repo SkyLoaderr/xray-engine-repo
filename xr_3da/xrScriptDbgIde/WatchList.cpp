@@ -137,15 +137,18 @@ void CWatchList::Redraw()
 
 	CMainFrame* pFrame = g_mainFrame;
 	for ( int i=0; i<m_exps.GetSize(); ++i )
-//		SetItemText(i, 1, pFrame->GetDebugger()->Eval(m_exps[i]));
-	pFrame->EvalWatch(m_exps[i],i);
+		pFrame->EvalWatch(m_exps[i],i);
 
 }
-void CWatchList::SetResult(int iItem, LPSTR str)
+void CWatchList::SetResult(LPCSTR watch, LPCSTR str)
 {
 	if (!m_bEvalEnabled)
 		return;
-	SetItemText(iItem, 1, str);
+	int cnt = GetItemCount();
+	for(int i=0;i<cnt;++i){
+		if(GetItemText(i,0)==watch)
+			SetItemText(i, 1, str);
+	}
 }
 
 void CWatchList::AddWatch(CString& str)
