@@ -1,62 +1,55 @@
 [logic]
-active = ph_idle@wait
- 
-[ph_idle@wait]
-on_info         = {+pri_wave3_start -pri_wave2_end} ph_car@kill_actor, {+pri_wave3_start} ph_car@main
+active = heli_move1
 
-[ph_car@kill_actor]
-path_walk       = pri_wave3_btr_walk
-target          = actor
-on_signal       = arrived | %+pri_wave3_btr_arrived%
-on_info         = {+pri_wave2_end} ph_car@main, {+pri_wave3_bomber_on_position} ph_idle@wait_bomber
-;headlights      = on
- 
-[ph_car@main]
-path_walk       = pri_wave3_btr_walk
-path_fire       = pri_wave3_btr_look
-fire_repeat     = inf
-auto_fire       = true
-on_signal       = arrived | %+pri_wave3_btr_arrived%
-on_info         = {+pri_wave3_bomber_on_position} ph_idle@wait_bomber, {+pri_bomber_dead +pri_wave3_btr_arrived} ph_car@fire_stay, {+pri_bomber_dead} ph_car@fire
-on_death_info   = pri_wave3_btr_dead
-on_target_vis   = actor | ph_car@fight_actor1
-;headlights      = on
+[heli_move1]
+path_move = pri_heli4_wait_path
+on_info = {+pri_helicopters_start} heli_move2
+engine_sound = false
 
-[ph_car@fight_actor1]
-;path_walk       = pri_wave3_btr_walk
-target          = actor
-on_target_nvis  = actor | ph_car@main
-;on_signal       = arrived | %+pri_wave3_btr_arrived%
-on_info         = {+pri_wave3_bomber_on_position} ph_idle@wait_bomber, {+pri_bomber_dead +pri_wave3_btr_arrived} ph_car@fire_stay, {+pri_bomber_dead} ph_car@fire
-on_death_info   = pri_wave3_btr_dead
+[heli_move2]
+path_move = pri_heli4_go_path
+invulnerable = true
+immortal = true
+combat_ignore = true
+on_signal = arrived | %+pri_followers_start%
+on_signal2 = wait | heli_move@wait_stadium
 
-[ph_idle@wait_bomber]
-on_timer        = 1000 | ph_car@kill_bomber
+[heli_move@wait_stadium]
+path_move = pri_heli4_wait_stadium_path
+engine_sound = false
+on_info = {+pri_stadium_scene_start} heli_move@hunt_gigant1
 
-[ph_car@kill_bomber]
-target          = 806
-on_info         = {+pri_bomber_dead +pri_wave3_btr_arrived} ph_car@fire_stay, {+pri_bomber_dead} ph_car@fire
-on_death_info   = pri_wave3_btr_dead
+[heli_move@hunt_gigants]
+path_move = pri_heli4_hunt_path
+on_info = {=is_alive(815) =heli_see_npc(815)} heli_move@hunt_gigant1, {=is_alive(816) =heli_see_npc(816)} heli_move@hunt_gigant2
+on_info2 = {=is_alive(817) =heli_see_npc(817)} heli_move@hunt_gigant3, {=is_alive(818) =heli_see_npc(818)} heli_move@hunt_gigant4, {=is_alive(819) =heli_see_npc(819)} heli_move@hunt_gigant5
+on_info3 = {=is_dead_all(815:816:817:818:819)} heli_move@go_away
 
-[ph_car@fire_stay]
-path_fire       = pri_wave3_btr_look
-fire_repeat     = inf
-auto_fire       = true
-on_target_vis   = actor | ph_car@fight_actor2
-on_death_info   = pri_wave3_btr_dead
-;headlights      = on
+[heli_move@hunt_gigant1]
+path_move = pri_heli4_hunt_path
+combat_enemy = 815
+rocket_delay = 700
+on_info = {=is_dead(815)} heli_move@hunt_gigants, {!heli_see_npc(815)} heli_move@hunt_gigants
 
-[ph_car@fire]
-path_walk       = pri_wave3_btr_walk
-path_fire       = pri_wave3_btr_look
-fire_repeat     = inf
-auto_fire       = true
-on_target_vis   = actor | ph_car@fight_actor2
-on_death_info   = pri_wave3_btr_dead
-on_signal       = arrived | %+pri_wave3_btr_arrived%
-;headlights      = on
+[heli_move@hunt_gigant2]
+path_move = pri_heli4_hunt_path
+combat_enemy = 816
+on_info = {=is_dead(816)} heli_move@hunt_gigants, {!heli_see_npc(816)} heli_move@hunt_gigants
 
-[ph_car@fight_actor2]
-target          = actor
-on_target_nvis  = actor | {+pri_wave3_btr_arrived} ph_car@fire_stay, ph_car@fire
-on_death_info   = pri_wave3_btr_dead
+[heli_move@hunt_gigant3]
+path_move = pri_heli4_hunt_path
+combat_enemy = 817
+on_info = {=is_dead(817)} heli_move@hunt_gigants, {!heli_see_npc(817)} heli_move@hunt_gigants
+
+[heli_move@hunt_gigant4]
+path_move = pri_heli4_hunt_path
+combat_enemy = 818
+on_info = {=is_dead(818)} heli_move@hunt_gigants, {!heli_see_npc(818)} heli_move@hunt_gigants
+
+[heli_move@hunt_gigant5]
+path_move = pri_heli4_hunt_path
+combat_enemy = 819
+on_info = {=is_dead(819)} heli_move@hunt_gigants, {!heli_see_npc(819)} heli_move@hunt_gigants
+
+[heli_move@go_away]
+path_move = pri_heli4_leave_path
