@@ -360,7 +360,8 @@ void CLevel::IR_OnMouseHold(int btn)
 {	IR_OnKeyboardHold(mouse_button_2_key[btn]);}
 void CLevel::IR_OnMouseMove( int dx, int dy )
 {
-	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy)) return;
+	if(g_bDisableAllInput)						return;
+	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))	return;
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnMouseMove					(dx,dy);
