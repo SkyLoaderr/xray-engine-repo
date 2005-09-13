@@ -13,6 +13,14 @@
 #include <luabind/out_value_policy.hpp>
 
 using namespace luabind;
+void get_matrix_hpb(Fmatrix* self, float* h, float* p, float* b)
+{
+	self->getHPB	(*h, *p, *b);
+}
+void matrix_transform (Fmatrix* self, Fvector* v)
+{
+	self->transform (*v);
+}
 
 void CScriptFmatrix::script_register(lua_State *L)
 {
@@ -87,14 +95,14 @@ void CScriptFmatrix::script_register(lua_State *L)
 //			.def("transform_dir",				(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::transform_dir),																					out_value(_2))
 //			.def("transform_dir",				(void	   (Fmatrix::*)(Fvector &, const Fvector &) const)(Fmatrix::transform_dir),																	out_value(_2))
 //			.def("transform",					(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::transform),																						out_value(_2))
-//			.def("transform",					(void	   (Fmatrix::*)(Fvector &, const Fvector &) const)(Fmatrix::transform),																		out_value(_2))
+			.def("transform",					&matrix_transform)
 			.def("setHPB",						&Fmatrix::setHPB,																										return_reference_to(_1))
 //			.def("setXYZ",						(Fmatrix & (Fmatrix::*)(Fvector &))(Fmatrix::setXYZ),																	return_reference_to(_1)	+	out_value(_2))
 			.def("setXYZ",						(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::setXYZ),															return_reference_to(_1))	 
 //			.def("setXYZi",						(Fmatrix & (Fmatrix::*)(Fvector &))(Fmatrix::setXYZi),																	return_reference_to(_1) +	out_value(_2))
 			.def("setXYZi",						(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::setXYZi),														return_reference_to(_1))
 //			.def("getHPB",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getHPB),																							out_value(_2))
-//			.def("getHPB",						(void	   (Fmatrix::*)(float &, float &, float &) const)(Fmatrix::getHPB))
+			.def("getHPB",						&get_matrix_hpb)
 //			.def("getXYZ",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getXYZ),																							out_value(_2))
 //			.def("getXYZ",						(void	   (Fmatrix::*)(float &, float &, float &) const)(Fmatrix::getXYZ))
 //			.def("getXYZi",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getXYZi),																						out_value(_2))

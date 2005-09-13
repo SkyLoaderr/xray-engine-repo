@@ -19,8 +19,13 @@ function dump_matrix(mm, text)
 	printf("i %f %f %f", mm.i.x, mm.i.y, mm.i.z)
 	printf("j %f %f %f", mm.j.x, mm.j.y, mm.j.z)
 	printf("k %f %f %f", mm.k.x, mm.k.y, mm.k.z)
-	printf("k %f %f %f", mm.k.x, mm.k.y, mm.k.z)
-	printf("c %f %f %f", mm.k.x, mm.k.y, mm.k.z)
+	printf("c %f %f %f", mm.c.x, mm.c.y, mm.c.z)
+
+end
+
+function dump_vector(v, text)
+	printf("%s",text)
+	printf("%f %f %f", v.x, v.y, v.z)
 
 end
 
@@ -36,7 +41,6 @@ function some_cam_effector:Process (pos,dir,norm)
 	Mdef.k				= vector():set(dir)
 	Mdef.i:crossproduct	(norm,dir)
 	Mdef.c				= vector():set(pos)
---	dump_matrix(Mdef,"Mdef")
 	
 	local period_all 	= self.period_number 	* math.pi*2.0
 	local cur_amp		= self.max_amp 			* (math.pi/180.0) * time_left_perc
@@ -50,16 +54,50 @@ function some_cam_effector:Process (pos,dir,norm)
 	R:setHPB			(dangle.x,dangle.y,dangle.z)
 	local mR			= matrix()
 	mR:mul				(Mdef, R)
---	dump_matrix			(mR,"mR")
+
 	dir:set				(mR.k)
 	norm:set			(mR.j)
 	return true
 end
 
+class "path_cam_effector" (cam_effector)
+
+function path_cam_effector:__init(str_path) super(cam_effector_type.eCEHit, 10, false)
+	self.animator 				= object_animator()
+	self.animator:Load			(str_path)
+	self.animator:Play			(false)
+	self.fLifeTime				= self.animator:GetLengthSec()
+	printf("path length=%f",	self.fLifeTime)
+end
+
+function path_cam_effector:Process (pos,dir,norm)
+	self.fLifeTime 	= self.fLifeTime - device().f_time_delta
+	if self.fLifeTime<0 then return false 	end
+	
+	local m = matrix			()
+	self.animator:Update 		(device().f_time_delta)
+	self.animator:xform 		(m)
+
+	local Mdef 			= matrix	()
+	Mdef:identity		()
+	Mdef.j				= vector():set(norm)
+	Mdef.k				= vector():set(dir)
+	Mdef.i:crossproduct	(norm,dir)
+	Mdef.c				= vector():set(pos)
+	
+	local mr 			= matrix()
+	mr:mul				(m,Mdef)
+	dir:set				(mr.k)
+	norm:set			(mr.j)
+	
+	
+	return true;
+end
 
 function main()
 
-local ce = _test.some_cam_effector(1.3,7.0,10.0,5.0)
+local ce = _test.path_cam_effector("effector_test.anm")
+--local ce = _test.some_cam_effector(1.3,7.0,10.0,5.0)
 level.add_cam_effector(ce)
 --level.actor_impact (1.3,7,10,5)
 
@@ -67,6 +105,10 @@ level.add_cam_effector(ce)
 --	db.actor:give_info_portion(info) 
    
 end
+
+-- dir.x dir.y dir.z dir.x==d.x
+-- d.x d.y d.z
+-- m.k.x m.k.y m.k.z
 
 
 
