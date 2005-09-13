@@ -310,6 +310,9 @@
 		<class>bar_Killer_specnaz</class>
 	</character>
 
+
+	<!-- Yantar + X16 -->
+
 	<!-- Zombied -->
 	<character id="yan_zombied">
 		<class>yan_Zombied</class>
@@ -317,9 +320,10 @@
 	<character id="yan_zombied_veteran">
 		<class>yan_Zombied_veteran</class>
 	</character>
+	<character id="yan_Ecolog">
+		<class>yan_Ecolog</class>
+	</character>
 
-
-	<!-- Yantar + X16 -->
 	
 	<!-- Military -->
 	<character id="mil_Svoboda_specnaz">
