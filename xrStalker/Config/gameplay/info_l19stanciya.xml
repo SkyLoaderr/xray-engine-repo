@@ -78,7 +78,9 @@
 	
 	<info_portion id="aes_arrive_to"></info_portion>
 	<info_portion id="aes_found_sarcofag"></info_portion>
-
+	<info_portion id="aes_get_soldier_map">
+		<article>aes_soldier_info</article>
+	</info_portion>
 
 
 </game_information_portions>
