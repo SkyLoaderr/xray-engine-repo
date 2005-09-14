@@ -5,7 +5,7 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 -- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
---function printf() end
+function printf() end
 
 local pi_2 = math.pi / 3 -- 60 degree
 
@@ -61,6 +61,8 @@ function action_car:reset_scheme(loading)
 	end
 
 	self.car = self.object:get_car()
+	self.car:SetExplodeTime(-1)
+
 	if self.car:HasWeapon() then
 	  printf("car <fire>: car has weapon.")
 	  self.car:Action(CCar.eWpnActivate,1)
@@ -1078,10 +1080,10 @@ function action_car:fast_update()
 	        end
 	    elseif self.state_firetarget == state_firetarget_enemy then
 	        if self.target_obj:alive() and self.car:IsObjectVisible(self.target_obj) then
-	            printf("car <fire>: enemy is visible.")
+	            printf("car <fire>: enemy(%s) is visible.", self.target_obj:name())
 
 		        self.target_fire_pt = self.target_obj:position()
-		        if self.target_obj ~= db.actor then
+		        if self.target_obj:id() ~= db.actor:id() then
 		            if self.target_obj:target_body_state() == move.crouch then
 		                self.target_fire_pt.y = self.target_fire_pt.y + 0.2 -- FAKE
 		            elseif not xr_wounded.is_heavy_wounded_by_id(self.target_obj:id()) then
