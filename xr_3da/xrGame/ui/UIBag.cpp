@@ -217,7 +217,7 @@ void CUIBag::UpdateBuyPossibility(){
 	int money = GetMoneyAmount();
 	bool flag;
 
-	for (int i = GROUP_2; i<GROUP_34; i++)
+	for (int i = GROUP_2; i<=GROUP_34; i++)
 	{
 		if (GROUP_BOXES == i)
 			continue;
