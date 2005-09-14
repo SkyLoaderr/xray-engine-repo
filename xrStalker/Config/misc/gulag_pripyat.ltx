@@ -243,12 +243,19 @@ meet                = meet@def
 [death@bomber]
 on_info = %+pri_bomber_dead%
 
-[logic@pri_followers_bomber_kamp]
-active              = kamp@pri_followers_bomber_kamp ;%-pri_bomber_dead%
+[logic@pri_followers_bomber_wait]
+active              = walker@pri_followers_bomber_wait ;kamp@pri_followers_bomber_wait ;%-pri_bomber_dead%
 ;on_death            = death@bomber
 combat_ignore       = combat_ignore
 
-[kamp@pri_followers_bomber_kamp]
+[walker@pri_followers_bomber_wait]
+path_walk           = wait_bomber_walk
+path_walk           = wait_bomber_look
+meet                = meet@def
+;on_info             = {+pri_helicopters_start} remark@pri_followers_bomber_look_for_heli
+combat_ignore_cond  = always
+
+[kamp@pri_followers_bomber_wait]
 center_point        = kamp_point
 meet                = meet@def
 on_info             = {+pri_helicopters_start} remark@pri_followers_bomber_look_for_heli
@@ -473,11 +480,18 @@ def_state_moving2   = assault
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP1: KAMP ----------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
-[logic@pri_followers_nap1_kamp]
-active              = kamp@pri_followers_nap1_kamp
+[logic@pri_followers_nap1_wait]
+active              = walker@pri_followers_nap1_wait ;kamp@pri_followers_nap1_wait
 combat_ignore       = combat_ignore
 
-[kamp@pri_followers_nap1_kamp]
+[walker@pri_followers_nap1_wait]
+path_walk           = wait_stalker1_walk
+path_walk           = wait_stalker1_look
+meet                = meet@def
+;on_info             = {+pri_helicopters_start} remark@pri_followers_stalker1_look_for_heli
+combat_ignore_cond  = always
+
+[kamp@pri_followers_nap1_wait]
 center_point        = kamp_point
 meet                = meet@def
 ;combat_ignore_cond  = always
@@ -666,11 +680,18 @@ def_state_moving2   = assault
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP2: KAMP ----------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
-[logic@pri_followers_nap2_kamp]
-active = kamp@pri_followers_nap2_kamp
+[logic@pri_followers_nap2_wait]
+active              = walker@pri_followers_nap2_wait ;kamp@pri_followers_nap2_wait
 combat_ignore       = combat_ignore
 
-[kamp@pri_followers_nap2_kamp]
+[walker@pri_followers_nap2_wait]
+path_walk           = wait_stalker2_walk
+path_walk           = wait_stalker2_look
+meet                = meet@def
+;on_info             = {+pri_helicopters_start} remark@pri_followers_stalker2_look_for_heli
+combat_ignore_cond  = always
+
+[kamp@pri_followers_nap2_wait]
 center_point        = kamp_point
 meet                = meet@def
 ;combat_ignore_cond  = always
@@ -859,11 +880,18 @@ def_state_moving2   = assault
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP3: KAMP ----------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
-[logic@pri_followers_nap3_kamp]
-active              = kamp@pri_followers_nap3_kamp
+[logic@pri_followers_nap3_wait]
+active              = walker@pri_followers_nap3_wait ;kamp@pri_followers_nap3_wait
 combat_ignore       = combat_ignore
 
-[kamp@pri_followers_nap3_kamp]
+[walker@pri_followers_nap3_wait]
+path_walk           = wait_stalker3_walk
+path_walk           = wait_stalker3_look
+meet                = meet@def
+;on_info             = {+pri_helicopters_start} remark@pri_followers_stalker3_look_for_heli
+combat_ignore_cond  = always
+
+[kamp@pri_followers_nap3_wait]
 center_point        = kamp_point
 meet                = meet@def
 ;combat_ignore_cond  = always
@@ -1189,11 +1217,11 @@ path_look           = monolith7_look
 on_info                 = %=pri_zombied_in_combat_dec%
 
 [mob_camp@pri_zombied_controllers_wait]
-path_look               = controllers_look
-path_home               = controllers_home
+path_look               = controllers_wait_look
+path_home               = controllers_wait_home
 time_change_point       = 30000
-;home_min_radius         = 10
-;home_max_radius         = 20
+home_min_radius         = 1
+home_max_radius         = 2
 
 [mob_remark@pri_zombied_controllers_fight]
 anim                    = stand_idle_0, stand_idle_1, stand_idle_2, stand_idle_3
@@ -1215,7 +1243,7 @@ active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER1: SCENE --------------------------------------------------------------------------
 [logic@pri_zombied_controller1_scene]
-active                  = nil
+active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER1: FIGHT --------------------------------------------------------------------------
 [logic@pri_zombied_controller1_fight]
@@ -1235,7 +1263,7 @@ active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER2: SCENE --------------------------------------------------------------------------
 [logic@pri_zombied_controller2_scene]
-active                  = nil
+active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER2: FIGHT --------------------------------------------------------------------------
 [logic@pri_zombied_controller2_fight]
@@ -1255,7 +1283,7 @@ active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER3: SCENE --------------------------------------------------------------------------
 [logic@pri_zombied_controller3_scene]
-active                  = nil
+active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER3: FIGHT --------------------------------------------------------------------------
 [logic@pri_zombied_controller3_fight]
@@ -1273,13 +1301,20 @@ mob_death               = pri_zombied_death
 [combat_zombied]
 combat_type             = zombied
 
+[danger_small_dist]
+ignore_distance = 1
+
+[danger_middle_dist]
+ignore_distance = 15
+
 [follower@pri_zombied_victim_wait]
 ;leader                  = 810
 distance                = 2
 
 [remark@pri_zombied_soldier_wait]
-no_move                 = true
+;no_move                 = true
 anim                    = wait
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 [remark@pri_zombied_soldiers]
 anim                    = wait
@@ -1290,78 +1325,52 @@ on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%
 ;--- SOLDIER1: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_wait]
-active                  = walker@pri_zombied_soldier1_wait
-combat_ignore           = combat_ignore
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
-
-[walker@pri_zombied_soldier1_wait]
-path_walk               = victim1_wait_walk
-path_look               = victim1_wait_look
-combat_ignore_cond      = always
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER1: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_scene]
-active                  = walker@pri_zombied_soldier1_scene
-on_death                = victim1_death
-combat_ignore           = combat_ignore
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
-
-[victim1_death]
-on_info                 = {+pri_zombied_victim2_dead} %+pri_zombied_scene_end%, %+pri_zombied_victim1_dead%
-
-[walker@pri_zombied_soldier1_scene]
-path_walk               = victim1_walk
-path_look               = victim1_look
-on_signal               = arrived | nil %=psi_hit_npc(1)%
-combat_ignore_cond      = always
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER1: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_fight]
-active                  = nil
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
 on_combat               = combat_zombied
 
 ;--- SOLDIER1: GUARD -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_guard]
-active                  = nil
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
 on_combat               = combat_zombied
 
 ;-------------------------------------------------------------------------------------------------
 ;--- SOLDIER2: WAIT ------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_wait]
-active                  = walker@pri_zombied_soldier2_wait
-combat_ignore           = combat_ignore
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
-
-[walker@pri_zombied_soldier2_wait]
-path_walk               = victim2_wait_walk
-path_look               = victim2_wait_look
-combat_ignore_cond      = always
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER2: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_scene]
-active                  = walker@pri_zombied_soldier2_scene
-on_death                = victim2_death
-combat_ignore           = combat_ignore
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
-
-[victim2_death]
-on_info                 = {+pri_zombied_victim1_dead} %+pri_zombied_scene_end%, %+pri_zombied_victim2_dead%
-
-[walker@pri_zombied_soldier2_scene]
-path_walk               = victim2_walk
-path_look               = victim2_look
-on_signal               = arrived | nil %=psi_hit_npc(1)%
-combat_ignore_cond      = always
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER2: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_fight]
-active                  = nil
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
 on_combat               = combat_zombied
 
 ;--- SOLDIER2: GUARD -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_guard]
-active                  = nil
+active                  = remark@pri_zombied_soldiers
+on_death                = pri_zombied_death
 on_combat               = combat_zombied
 
 ;-------------------------------------------------------------------------------------------------
@@ -1370,11 +1379,13 @@ on_combat               = combat_zombied
 [logic@pri_zombied_soldier3_wait]
 active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER3: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier3_scene]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER3: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier3_fight]
@@ -1394,11 +1405,13 @@ on_combat               = combat_zombied
 [logic@pri_zombied_soldier4_wait]
 active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER4: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier4_scene]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER4: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier4_fight]
@@ -1418,11 +1431,13 @@ on_combat               = combat_zombied
 [logic@pri_zombied_soldier5_wait]
 active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER5: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier5_scene]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER5: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier5_fight]
@@ -1442,11 +1457,13 @@ on_combat               = combat_zombied
 [logic@pri_zombied_soldier6_wait]
 active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER6: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier6_scene]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER6: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier6_fight]
@@ -1466,11 +1483,13 @@ on_combat               = combat_zombied
 [logic@pri_zombied_soldier7_wait]
 active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER7: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier7_scene]
-active                  = nil
+active                  = remark@pri_zombied_soldier_wait
 on_combat               = combat_zombied
+combat_ignore           = combat_ignore
 
 ;--- SOLDIER7: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier7_fight]
@@ -1486,11 +1505,126 @@ on_combat               = combat_zombied
 
 
 ;-------------------------------------------------------------------------------------------------
+;--- Monolith
+;-------------------------------------------------------------------------------------------------
+
+;--- SOLDIER1 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker1"]
+active = walker@pri_monolith_stalker1
+
+[walker@pri_monolith_stalker1]
+path_walk = patrol1_walk
+path_look = patrol1_look
+
+;--- SOLDIER2 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker2"]
+active = walker@pri_monolith_stalker2
+
+[walker@pri_monolith_stalker2]
+path_walk = patrol2_walk
+path_look = patrol2_look
+
+;--- SOLDIER3 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker3"]
+active = walker@pri_monolith_stalker3
+
+[walker@pri_monolith_stalker3]
+path_walk = patrol3_walk
+path_look = patrol3_look
+
+;--- SOLDIER4 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker4"]
+active = walker@pri_monolith_stalker4
+
+[walker@pri_monolith_stalker4]
+path_walk = patrol4_walk
+path_look = patrol4_look
+
+;--- SOLDIER5 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker5"]
+active = walker@pri_monolith_stalker5
+
+[walker@pri_monolith_stalker5]
+path_walk = patrol5_walk
+path_look = patrol5_look
+
+;--- SOLDIER6 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker6"]
+active = walker@pri_monolith_stalker6
+
+[walker@pri_monolith_stalker6]
+path_walk = patrol6_walk
+path_look = patrol6_look
+
+;--- SOLDIER7 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker7"]
+active = walker@pri_monolith_stalker7
+
+[walker@pri_monolith_stalker7]
+path_walk = patrol7_walk
+path_look = patrol7_look
+
+;--- SOLDIER8 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker8"]
+active = walker@pri_monolith_stalker8
+
+[walker@pri_monolith_stalker8]
+path_walk = patrol8_walk
+path_look = patrol8_look
+
+;--- SOLDIER9 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker9"]
+active = walker@pri_monolith_stalker9
+
+[walker@pri_monolith_stalker9]
+path_walk = patrol9_walk
+path_look = patrol9_look
+
+;--- SOLDIER10 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker10"]
+active = walker@pri_monolith_stalker10
+
+[walker@pri_monolith_stalker10]
+path_walk = patrol10_walk
+path_look = patrol10_look
+
+;--- SOLDIER11 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker11"]
+active = walker@pri_monolith_stalker11
+
+[walker@pri_monolith_stalker11]
+path_walk = patrol11_walk
+path_look = patrol11_look
+
+;--- SOLDIER12 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker12"]
+active = walker@pri_monolith_stalker12
+
+[walker@pri_monolith_stalker12]
+path_walk = patrol12_walk
+path_look = patrol12_look
+
+;--- SOLDIER13 ------------------------------------------------------------------------------------
+[logic@pri_monolith_stalker13"]
+active = walker@pri_monolith_stalker13
+
+[walker@pri_monolith_stalker13]
+path_walk = patrol13_walk
+path_look = patrol13_look
+
+
+;-------------------------------------------------------------------------------------------------
 ;--- Monsters ------------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 
 ;-------------------------------------------------------------------------------------------------
-;--- Dogs ----------------------
+;--- Dogs
 ;-------------------------------------------------------------------------------------------------
 [logic@pri_dogs_nest1]
+active = nil
+
+;-------------------------------------------------------------------------------------------------
+;--- Stadium
+;-------------------------------------------------------------------------------------------------
+[logic@pri_stadium_gigant]
 active = nil
