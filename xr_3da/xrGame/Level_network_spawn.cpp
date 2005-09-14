@@ -39,7 +39,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 //	CTimer		T(false);
 
 #ifdef DEBUG
-	Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
+//	Msg					("* CLIENT: Spawn: %s, ID=%d", *E->s_name, E->ID);
 #endif
 
 	// Optimization for single-player only	- minimize traffic between client and server

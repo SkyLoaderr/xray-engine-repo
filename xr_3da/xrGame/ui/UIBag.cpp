@@ -773,7 +773,7 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 		{
 			pItem->GetParent()->DetachChild(pItem);
 			m_vCopyList.remove(pItem);
-			Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - SUCCESS", pDDItem->GetSectionName());
+//			Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - SUCCESS", pDDItem->GetSectionName());
 
 #ifdef DEBUG
 			DRAG_DROP_LIST ddList_2 = pDDItem->GetOwner()->GetDragDropItemsList();

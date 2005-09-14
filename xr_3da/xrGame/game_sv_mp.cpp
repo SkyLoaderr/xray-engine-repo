@@ -838,7 +838,7 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 		};
 		//---------------------------------------------------
 		pClient->owner->set_name_replace(NewName);
-		pClient->owner->set_name(NewName);
+//		pClient->owner->set_name(NewName);
 		if (strstr(pClient->Name.c_str(), "name="))
 		{
 			string1024 tmpName = "";
