@@ -275,10 +275,20 @@ void CRender::add_leafs_Dynamic	(IRender_Visual *pVisual)
 			// Add all children, doesn't perform any tests
 			CKinematics * pV			= (CKinematics*)pVisual;
 			pV->CalculateBones			(TRUE);
-			pV->CalculateWallmarks		();	//. bug
-			I = pV->children.begin		();
-			E = pV->children.end		();
-			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+			pV->CalculateWallmarks		();		//. bug?
+			BOOL	_use_lod			= FALSE	;
+			if (pV->m_lod)				{
+				float		D;
+				float		ssa		=		CalcSSA			(D,pV->vis.sphere.P,pV);
+				if (ssa<r_ssaLOD_A)	_use_lod	= TRUE		;
+			}
+			if (_use_lod)				{
+				add_leafs_Dynamic			(pV->m_lod)		;
+			} else {
+				I = pV->children.begin		();
+				E = pV->children.end		();
+				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+			}
 		}
 		return;
 	default:
@@ -330,7 +340,7 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			pV->CalculateBones		(TRUE);
 			I = pV->children.begin	();
 			E = pV->children.end	();
-			for (; I!=E; I++)	add_leafs_Static	(*I);
+			for (; I!=E; I++)		add_leafs_Static	(*I);
 		}
 		return;
 	case MT_LOD:
@@ -426,6 +436,21 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			// Add all children, doesn't perform any tests
 			CKinematics * pV			= (CKinematics*)pVisual;
 			pV->CalculateBones			(TRUE);
+			//pV->CalculateWallmarks		();		//. bug?
+			BOOL	_use_lod			= FALSE	;
+			if (pV->m_lod)				{
+				float		D;
+				float		ssa		=		CalcSSA			(D,pV->vis.sphere.P,pV);
+				if (ssa<r_ssaLOD_A)	_use_lod	= TRUE		;
+			}
+			if (_use_lod)				{
+				add_leafs_Dynamic			(pV->m_lod)		;
+			} else {
+				I = pV->children.begin		();
+				E = pV->children.end		();
+				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+			}
+			/*
 			I = pV->children.begin		();
 			E = pV->children.end		();
 			if (fcvPartial==VIS) {
@@ -433,6 +458,7 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			} else {
 				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 			}
+			*/
 		}
 		break;
 	default:
