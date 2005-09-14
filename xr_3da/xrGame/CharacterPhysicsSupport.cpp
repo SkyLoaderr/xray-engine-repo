@@ -339,6 +339,8 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	}
 	CKinematics* K=smart_cast<CKinematics*>(m_EntityAlife.Visual());
 //////////////////////this needs to evaluate object box//////////////////////////////////////////////////////
+	for(u16 I=K->LL_BoneCount()-1;I!=u16(-1);--I)K->LL_GetBoneInstance(I).reset_callback();
+
 	K->CalculateBones_Invalidate();
 	K->CalculateBones	();
 ////////////////////////////////////////////////////////////////////////////
