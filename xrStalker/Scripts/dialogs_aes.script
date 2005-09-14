@@ -7,6 +7,7 @@ function aes_segeant_kill (stalker, player)
     h.draftsman = stalker
     h.type = hit.strike
     player:hit (h)
+    db.actor:give_info_portion ("aes_get_soldier_map")
 end
 
 function aes_set_mapspots (stalker, player)
