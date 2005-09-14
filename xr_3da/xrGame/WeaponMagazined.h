@@ -76,8 +76,7 @@ protected:
 	bool			TryReload		();
 protected:
 	virtual void	ReloadMagazine	();
-	virtual void	UnloadMagazine	();
-	virtual	void	ApplySilencerKoeffs	();
+			void	ApplySilencerKoeffs	();
 
 	virtual void	state_Fire		(float dt);
 	virtual void	state_MagEmpty	(float dt);
@@ -112,6 +111,7 @@ public:
 	virtual bool	Action			(s32 cmd, u32 flags);
 	virtual void	onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd);
 	bool			IsAmmoAvailable	();
+			void	UnloadMagazine	();
 
 
 	//////////////////////////////////////////////

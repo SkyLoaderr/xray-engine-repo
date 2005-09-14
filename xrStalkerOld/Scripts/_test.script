@@ -137,3 +137,23 @@ function _main()
 	
 end
 
+function f1()
+	return f2()+3
+end
+
+function f2()
+	return f3()+2
+end
+
+function f3()
+	return f4()+1
+end
+
+function f4()
+	return 44
+end
+
+function main____()
+	local d = f1()
+	local fff = 8
+end

@@ -2,6 +2,7 @@
 #include "UIInventoryWnd.h"
 #include "../level.h"
 #include "../WeaponAmmo.h"
+#include "../WeaponMagazined.h"
 #include "../inventoryowner.h"
 #include "../game_base_space.h"
 #include "UIInventoryUtilities.h"
@@ -20,6 +21,7 @@
 #include "../actor.h"
 #include "UIMainIngameWnd.h"
 #include "../Artifact.h"
+#include "../xr_level_controller.h"
 
 using namespace InventoryUtilities;
 
@@ -83,6 +85,26 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		{
 			UIPropertiesBox.AddItem("Detach silencer",  NULL, INVENTORY_DETACH_SILENCER_ADDON);
 		}
+		if(smart_cast<CWeaponMagazined*>(pWeapon))
+		{
+/*			if(pWeapon->GetAmmoElapsed()!=pWeapon->GetAmmoMagSize())
+				if(	m_pInv->GetAny(*pWeapon->m_ammoTypes[pWeapon->m_ammoType] ) )
+					UIPropertiesBox.AddItem("Reload magazine",  NULL, INVENTORY_RELOAD_MAGAZINE);
+				else{
+					for(u32 i = 0; i < pWeapon->m_ammoTypes.size(); ++i) 
+						if( m_pInv->GetAny(*pWeapon->m_ammoTypes[i]) ){
+							UIPropertiesBox.AddItem("Reload magazine",  NULL, INVENTORY_RELOAD_MAGAZINE);
+							break;						
+						}
+				
+				}
+*/
+			if(	pWeapon->GetAmmoElapsed() )
+					UIPropertiesBox.AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+
+		}
+
+
 	}
 	
 	//присоединение аддонов к активному слоту (2 или 3)
@@ -289,6 +311,12 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				break;
 			case INVENTORY_ACTIVATE_ARTEFACT_ACTION:
 				(smart_cast<CArtefact*>(m_pCurrentItem))->ActivateArtefact();
+			case INVENTORY_RELOAD_MAGAZINE:
+				(smart_cast<CWeapon*>(m_pCurrentItem))->Action(kWPN_RELOAD, CMD_START);
+
+			case INVENTORY_UNLOAD_MAGAZINE:
+				(smart_cast<CWeaponMagazined*>(m_pCurrentItem))->UnloadMagazine();
+				break;
 			}
 		}
 	}
@@ -740,4 +768,3 @@ bool CUIInventoryWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (result) SendEvent_Item2Belt(pInvItem);
 	return result;
 }
-
