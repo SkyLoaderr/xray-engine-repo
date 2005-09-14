@@ -548,7 +548,7 @@ void CCar::detach_Actor()
 
 bool CCar::attach_Actor(CGameObject* actor)
 {
-	if(Owner()) return false;
+	if(Owner()||CPHDestroyable::Destroyed()) return false;
 	CHolderCustom::attach_Actor(actor);
 
 	CKinematics* K	= smart_cast<CKinematics*>(Visual());

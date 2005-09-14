@@ -39,7 +39,7 @@
 #include "GameTaskManager.h"
 
 #include "game_base_kill_type.h"
-
+#include "holder_custom.h"
 int			g_cl_InterpolationType		= 0;
 u32			g_cl_InterpolationMaxPoints = 0;
 int			g_dwInputUpdateDelta		= 20;
@@ -878,6 +878,21 @@ void CActor::net_Destroy	()
 
 void CActor::net_Relcase	(CObject* O)
 {
+	
+ 	VERIFY(O);
+	CGameObject* GO = smart_cast<CGameObject*>(O);
+	if(GO&&m_pObjectWeLookingAt==GO){
+		m_pObjectWeLookingAt=NULL;
+	}
+	CHolderCustom* HC=smart_cast<CHolderCustom*>(GO);
+	if(HC&&HC==m_pVehicleWeLookingAt){
+		m_pVehicleWeLookingAt=NULL;
+	}
+	if(HC&&HC==m_holder)
+	{
+		m_holder->detach_Actor();
+		m_holder=NULL;
+	}
 	inherited::net_Relcase	(O);
 }
 

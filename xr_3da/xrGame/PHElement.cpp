@@ -204,7 +204,7 @@ void		CPHElement::Start()
 
 void		CPHElement::Deactivate()
 {
-	if(!bActive) return;
+	VERIFY(bActive);
 	if(push_untill)
 	{
 		push_untill-=Device.dwTimeGlobal;
@@ -293,12 +293,13 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 }
 CPHElement::~CPHElement	()
 {
-	Deactivate();
+	if(bActive)Deactivate();
 	DeleteFracturesHolder();
 
 }
 
 void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
+	VERIFY(!bActive);
 	mXFORM.set(transform);
 	Start();
 	SetTransform(transform);
