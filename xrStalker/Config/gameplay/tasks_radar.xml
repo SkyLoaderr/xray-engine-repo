@@ -43,7 +43,7 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="aes_sarcofag_hint">crlc_mdl</map_location_type>
 			<infoportion_complete>aes_found_sarcofag</infoportion_complete>
-			<object_story_id> dffffff</object_story_id>
+			<object_story_id>aes_sarcofag</object_story_id>
 			<map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>
