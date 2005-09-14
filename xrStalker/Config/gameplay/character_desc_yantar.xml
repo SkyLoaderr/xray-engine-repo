@@ -118,7 +118,6 @@
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
 		<supplies>
 			[spawn] \n
-			medkit \n
 			wpn_bm16 \n
 			ammo_12x70_buck = 1 \n
 		</supplies>
