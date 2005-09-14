@@ -1154,7 +1154,7 @@ end
 
 function yan_heli_set_friend_actor(actor, npc)
     local st = db.storage[npc:id()]
-    if not st.combat.enemy_id and actor:alive() then
+    if st.combat.enemy_id and actor:alive() then
         st.combat.enemy_id = nil
     end 
 end
