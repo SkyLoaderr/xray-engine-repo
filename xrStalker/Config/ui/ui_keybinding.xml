@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <keybingidg>
-	<group name="change direction">
-		<command id="left"							exe="left"/>
-		<command id="right"							exe="right"/>
-		<command id="up"							exe="up"/>
-		<command id="down"							exe="down"/>
+	<group name="kb_grp_direction">
+		<command id="kb_left"						exe="left"/>
+		<command id="kb_right"						exe="right"/>
+		<command id="kb_up"							exe="up"/>
+		<command id="kb_down"						exe="down"/>
 	</group>
-	<group name="movement">
-		<command id="forward"						exe="forward"/>
-		<command id="backward"						exe="back"/>
-		<command id="left strafe"					exe="lstrafe"/>
-		<command id="right strafe"					exe="rstrafe"/>
-		<command id="jump"							exe="jump"/>
-		<command id="crouch"						exe="crouch"/>
-		<command id="crouch toggle"					exe="crouch_toggle"/>
-		<command id="change always run"				exe="accel"/>
-		<command id="sprint"						exe="sprint_toggle"/>		
-		<command id="left look out"					exe="llookout"/>
-		<command id="right look out"				exe="rlookout"/>		
+	<group name="kb_grp_movement">
+		<command id="kb_forward"					exe="forward"/>
+		<command id="kb_backward"					exe="back"/>
+		<command id="kb_left_strafe"				exe="lstrafe"/>
+		<command id="kb_right_strafe"				exe="rstrafe"/>
+		<command id="kb_jump"						exe="jump"/>
+		<command id="kb_crouch"						exe="crouch"/>
+		<command id="kb_crouch_toggle"				exe="crouch_toggle"/>
+		<command id="kb_always_run"					exe="accel"/>
+		<command id="kb_sprint"						exe="sprint_toggle"/>		
+		<command id="kb_left_lookout"				exe="llookout"/>
+		<command id="kb_right_lookout"				exe="rlookout"/>		
 	</group>
-	<group name="weapons">
-		<command id="weapon 1"						exe="wpn_1"/>
-		<command id="weapon 2"						exe="wpn_2"/>
-		<command id="weapon 3"						exe="wpn_3"/>
-		<command id="weapon 4"						exe="wpn_4"/>
-		<command id="weapon 5"						exe="wpn_5"/>
-		<command id="weapon 6"						exe="wpn_6"/>
-		<command id="weapon 7"						exe="wpn_7"/>
-		<command id="weapon 8"						exe="wpn_8"/>
-		<command id="weapon 9"						exe="wpn_9"/>
-		<command id="next weapon of this type"		exe="wpn_next"/>
-		<command id="previous weapon of this type"	exe="wpn_prev"/>
-		<command id="select weapon of netx slot"	exe="next_slot"/>
-		<command id="select weapon of prev slot"	exe="prev_slot"/>
-		<command id="fire"							exe="wpn_fire"/>
-		<command id="zoom"							exe="wpn_zoom"/>
-		<command id="reload"						exe="wpn_reload"/>
-		<command id="func(rename me)"				exe="wpn_func"/>
+	<group name="kb_grp_weapons">
+		<command id="kb_weapon1"					exe="wpn_1"/>
+		<command id="kb_weapon2"					exe="wpn_2"/>
+		<command id="kb_weapon3"					exe="wpn_3"/>
+		<command id="kb_weapon4"					exe="wpn_4"/>
+		<command id="kb_weapon5"					exe="wpn_5"/>
+		<command id="kb_weapon6"					exe="wpn_6"/>
+		<command id="kb_weapon7"					exe="wpn_7"/>
+		<command id="kb_weapon8"					exe="wpn_8"/>
+		<command id="kb_weapon9"					exe="wpn_9"/>
+		<command id="kb_wpn_next"					exe="wpn_next"/>
+		<command id="kb_wpn_prev"					exe="wpn_prev"/>
+		<command id="kb_next_slot"					exe="next_slot"/>
+		<command id="kb_prev_slot"					exe="prev_slot"/>
+		<command id="kb_fire"						exe="wpn_fire"/>
+		<command id="kb_zoom"						exe="wpn_zoom"/>
+		<command id="kb_reload"						exe="wpn_reload"/>
+		<command id="kb_func"						exe="wpn_func"/>
 	</group>
-	<group name="inventory">
-		<command id="show inventory"				exe="inventory"/>
-		<command id="show PDA"						exe="pda"/>
-		<command id="show Active Jobs in PDA"		exe="active_jobs"/>
-		<command id="show Map in PDA"				exe="map"/>
-		<command id="show Contacts in PDA"			exe="contacts"/>
-		<command id="torch"							exe="torch"/>
-		<command id="night vision"					exe="night_vision"/>
-		<command id="binoculars"					exe="binoculars"/>
-		<command id="drop"							exe="drop"/>		
+	<group name="kb_grp_inventory">
+		<command id="kb_inventory"					exe="inventory"/>
+		<command id="kb_pda"						exe="pda"/>
+		<command id="kb_active_jobs"				exe="active_jobs"/>
+		<command id="kb_map"						exe="map"/>
+		<command id="kb_contacts"					exe="contacts"/>
+		<command id="kb_torch"						exe="torch"/>
+		<command id="kb_night_vision"				exe="night_vision"/>
+		<command id="kb_binoculars"					exe="binoculars"/>
+		<command id="kb_drop"						exe="drop"/>		
 	</group>
-	<group name="common">
-		<command id="pause"							exe="pause"/>
-		<command id="use"							exe="use"/>			
-		<command id="screen shot"					exe="screenshot"/>
-		<command id="quit"							exe="quit"/>
-		<command id="console"						exe="console"/>
-		<command id="turn engine"					exe="turn_engine"/>
-		<command id="repair"						exe="repair"/>
+	<group name="kb_grp_common">
+		<command id="kb_pause"						exe="pause"/>
+		<command id="kb_use"						exe="use"/>			
+		<command id="kb_screenshot"					exe="screenshot"/>
+		<command id="kb_quit"						exe="quit"/>
+		<command id="kb_console"					exe="console"/>
+		<command id="kb_turn_engine"				exe="turn_engine"/>
+		<command id="kb_repair"						exe="repair"/>
 	</group>
-	<group name="multiplayer">
-		<command id="scores"						exe="scores"/>
-		<command id="chat"							exe="chat"/>
-		<command id="team chat"						exe="chat_team"/>
-		<command id="buy menu"						exe="buy_menu"/>
-		<command id="select skin menu"				exe="skin_menu"/>
-		<command id="select team menu"				exe="team_menu"/>
-		<command id="vote yes"						exe="vote_yes"/>
-		<command id="vote no"						exe="vote_no"/>
-		<command id="Speech menu (Group)"			exe="speech_menu_0"/>
-		<command id="Speech menu (Personal)"		exe="speech_menu_1"/>
+	<group name="kb_grp_multiplayer">
+		<command id="kb_scores"						exe="scores"/>
+		<command id="kb_chat"						exe="chat"/>
+		<command id="kb_chat_team"					exe="chat_team"/>
+		<command id="kb_buy_menu"					exe="buy_menu"/>
+		<command id="kb_skin_menu"					exe="skin_menu"/>
+		<command id="kb_team_menu"					exe="team_menu"/>
+		<command id="kb_vote_yes"					exe="vote_yes"/>
+		<command id="kb_vote_no"					exe="vote_no"/>
+		<command id="speech_menu_group"				exe="speech_menu_0"/>
+		<command id="speech_menu_personal"			exe="speech_menu_1"/>
 	</group>
 </keybingidg>

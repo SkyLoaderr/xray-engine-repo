@@ -5,6 +5,7 @@
 #include "UIListItemAdv.h"
 #include "UIEditKeyBind.h"
 #include "../xr_level_controller.h"
+#include "../string_table.h"
 
 //extern void GetActionBinding(LPCSTR action, char* dst_buff);
 //extern _keybind  keybind[];
@@ -34,6 +35,7 @@ void CUIKeyBinding::InitFromXml(CUIXml& xml_doc, LPCSTR path){
 
 void CUIKeyBinding::FillUpList(){
 	CUIXml xml_doc;
+	CStringTable st;
 	xml_doc.Init(CONFIG_PATH, UI_PATH, "ui_keybinding.xml");
 
 	int groupsCount = xml_doc.GetNodesNum("",0,"group");
@@ -44,7 +46,7 @@ void CUIKeyBinding::FillUpList(){
 		R_ASSERT(xr_strlen(grp_name));
 
 		CUIListItemAdv*	pItem = xr_new<CUIListItemAdv>();
-		pItem->AddField(*grp_name, m_header[0].GetWidth());
+		pItem->AddField(*st(*grp_name), m_header[0].GetWidth());
 		pItem->SetTextColor(m_dwGroupColor);
 		m_list.AddItem(pItem);
 
@@ -58,7 +60,7 @@ void CUIKeyBinding::FillUpList(){
 			shared_str command_id = xml_doc.ReadAttrib("command",j,"id");
 			pItem = xr_new<CUIListItemAdv>();
 			m_list.AddItem(pItem);
-			pItem->AddField(*command_id,m_header[0].GetWidth());
+			pItem->AddField(*st(*command_id),m_header[0].GetWidth());
 
 			shared_str exe = xml_doc.ReadAttrib("command",j,"exe");
 
