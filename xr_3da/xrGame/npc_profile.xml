@@ -320,6 +320,9 @@
 	<character id="yan_zombied_veteran">
 		<class>yan_Zombied_veteran</class>
 	</character>
+	<character id="yan_zombied_master">
+		<class>yan_Zombied_master</class>
+	</character>
 	<character id="yan_Ecolog">
 		<class>yan_Ecolog</class>
 	</character>
