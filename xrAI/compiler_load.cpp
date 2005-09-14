@@ -262,6 +262,10 @@ void xrLoad(LPCSTR name, bool draft_mode)
 				R_Light		RL;
 				F->r		(&temp,sizeof(temp));
 				Flight&		L = temp.data;
+				if (_abs(L.range) > 10000.f) {
+					Msg		("! BAD light range : %f",L.range);
+					L.range	= L.range > 0.f ? 10000.f : -10000.f;
+				}
 
 				// type
 				if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
@@ -275,6 +279,7 @@ void xrLoad(LPCSTR name, bool draft_mode)
 				RL.attenuation0			=	L.attenuation0;
 				RL.attenuation1			=	L.attenuation1;
 				RL.attenuation2			=	L.attenuation2;
+
 				RL.amount				=	L.diffuse.magnitude_rgb	();
 				RL.tri[0].set			(0,0,0);
 				RL.tri[1].set			(0,0,0);
