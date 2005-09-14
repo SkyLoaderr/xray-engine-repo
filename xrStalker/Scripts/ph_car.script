@@ -61,7 +61,7 @@ function action_car:reset_scheme(loading)
 	end
 
 	self.car = self.object:get_car()
-	self.car:SetExplodeTime(-1)
+	self.car:SetExplodeTime(0) -- (-1)
 
 	if self.car:HasWeapon() then
 	  printf("car <fire>: car has weapon.")
@@ -518,7 +518,8 @@ function action_car:walk_arrival_callback(index)
 	local suggested_explode = self.path_walk_info[index]["explode"]
 	if suggested_explode == "true" then
 --		printf("action_car:walk_arrival_callback(): EXPLODE")
-		self:car_explode()
+		--self:car_explode()
+		self.object.health = 0
 		self.car:Action(CCar.eWpnActivate, 0)
 	end
 
@@ -937,7 +938,7 @@ function action_car:fast_update()
 	
 	if self.car:GetfHealth() <= 0 then
 	    printf("car <state>: killed.")
-	    self:car_explode()
+	    --self:car_explode()
 	    self:destroy_car()
 	    return true
 	end
