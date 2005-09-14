@@ -5,16 +5,22 @@
 #include "xrmessages.h"
 #include "game_cl_base.h"
 #include "PHCommander.h"
+#include "net_queue.h"
 
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
-	if (Server)					Server->SLS_Clear	();
+	
+	if (OnServer())					Server->SLS_Clear	();
+	
+	if (OnClient()) ClearAllObjects();
+
 	for (int i=0; i<6; ++i) {
 		ClientReceive			();
 		ProcessGameEvents		();
 		Objects.Update			();
 	}
+
 	
 	IGame_Level::net_Stop		();
 	IPureClient::Disconnect		();
@@ -211,4 +217,54 @@ void			CLevel::SendPingMessage				()
 	P.w_u32			(m_dwCL_PingLastSendTime);
 	P.w_u32			(m_dwRealPing);
 	Send	(P, net_flags(FALSE));
+};
+
+void			CLevel::ClearAllObjects				()
+{
+	u32 CLObjNum = Level().Objects.o_count();
+
+	bool ParentFound = true;
+	
+	while (ParentFound)
+	{	
+		ParentFound = false;
+		for (u32 i=0; i<CLObjNum; i++)
+		{
+			CObject* pObj = Level().Objects.o_get_by_iterator(i);
+			if (!pObj->H_Parent()) continue;
+			//-----------------------------------------------------------
+			NET_Packet			GEN;
+			GEN.w_begin			(M_EVENT);
+			//---------------------------------------------		
+			GEN.w_u32			(Level().timeServer());
+			GEN.w_u16			(GE_OWNERSHIP_REJECT);
+			GEN.w_u16			(pObj->H_Parent()->ID());
+			GEN.w_u16			(u16(pObj->ID()));
+			game_events->insert	(GEN);
+			//-------------------------------------------------------------
+			ParentFound = true;
+			//-------------------------------------------------------------
+			Msg ("Rejection of %s[%d] from %s[%d]", *(pObj->cNameSect()), pObj->ID(), *(pObj->H_Parent()->cNameSect()), pObj->H_Parent()->ID());
+		};
+		ProcessGameEvents();
+	};
+
+	for (u32 i=0; i<CLObjNum; i++)
+	{
+		CObject* pObj = Level().Objects.o_get_by_iterator(i);
+		R_ASSERT(pObj->H_Parent()==NULL);
+		//-----------------------------------------------------------
+		NET_Packet			GEN;
+		GEN.w_begin			(M_EVENT);
+		//---------------------------------------------		
+		GEN.w_u32			(Level().timeServer());
+		GEN.w_u16			(GE_DESTROY);
+		GEN.w_u16			(u16(pObj->ID()));
+		game_events->insert	(GEN);
+		//-------------------------------------------------------------
+		ParentFound = true;
+		//-------------------------------------------------------------
+		Msg ("Destruction of %s[%d]", *(pObj->cNameSect()), pObj->ID());
+	};
+	ProcessGameEvents();
 };

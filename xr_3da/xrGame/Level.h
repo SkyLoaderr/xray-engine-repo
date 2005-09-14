@@ -52,6 +52,8 @@ private:
 	BOOL						m_bDemoStarted;	
 	void						UpdateDemo				();
 	void						DemoWriteData			(void* data, u32 size);
+
+	void						ClearAllObjects			();
 private:
 #ifdef DEBUG
 	bool						m_bSynchronization;
