@@ -29,3 +29,23 @@
 <string id="aes_lun">
 	<text>Лунь</text>
 </string>
+
+<string id="aes_sova">
+	<text>Сова</text>
+</string>
+
+<string id="aes_kvartet">
+	<text>Квартет</text>
+</string>
+
+<string id="aes_btr1">
+	<text>Броненосец 1</text>
+</string>
+
+<string id="aes_btr2">
+	<text>Броненосец 2</text>
+</string>
+
+<string id="aes_btr3">
+	<text>Броненосец 3</text>
+</string>
