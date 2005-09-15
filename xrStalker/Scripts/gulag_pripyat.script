@@ -648,7 +648,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 1, state = {0},
 		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_restr",
+		    in_rest = "", out_rest = "",
 		    predicate = f_predicate5
 	    }
 	    table.insert(sj, t)

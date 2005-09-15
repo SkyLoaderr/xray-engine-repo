@@ -17,17 +17,20 @@ on_signal2      = wait | heli_move@wait_stadium
 [heli_move@wait_stadium]
 path_move       = pri_heli4_wait_stadium_path
 engine_sound    = false
+combat_ignore   = true
 on_info         = {+pri_stadium_scene_start} heli_move@hunt_gigants
 
 [heli_move@hunt_gigants]
 path_move       = pri_heli4_hunt_path
 path_look       = pri_heli4_hunt_look
 rocket_delay    = 700
+combat_ignore   = true
 on_signal       = arrived | heli_move@go_away %+pri_stadium_scene_end%
 
 [heli_move@go_away]
 path_move       = pri_heli4_leave_path
 on_signal       = arrived | heli_move@go_away_silent
+combat_ignore   = true
 
 [heli_move@go_away_silent]
 path_move       = pri_heli4_leave_path
