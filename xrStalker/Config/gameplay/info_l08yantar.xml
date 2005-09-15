@@ -10,5 +10,15 @@
 	<info_portion id="yan_zombied_respawn_05"></info_portion>
 	<info_portion id="yan_zombied_respawn_06"></info_portion>
 	<info_portion id="yan_zombied_respawn_07"></info_portion>
+	
+
+	<!-- Yantar zombied after braindead -->
+	<info_portion id="yantar_attack_start"></info_portion>
+	<info_portion id="set_heli_enemy_actor"></info_portion>
+	<info_portion id="yantar_heli_1_die"></info_portion>
+	<info_portion id="yantar_heli_2_die"></info_portion>
+	<info_portion id="yantar_heli_3_die"></info_portion>
+	<info_portion id="yan_spawn_zombies_1"></info_portion>
+	<info_portion id="yan_spawn_zombies_2"></info_portion>
     
 </game_information_portions>
