@@ -110,12 +110,13 @@ void CHelicopter::UpdateHeliParticles	()
 
 	}
 }
-void CHelicopter::Explode ()
+void CHelicopter::ExplodeHelicopter ()
 {
 	if(m_pParticle){
 		m_pParticle->Stop();
 		CParticlesObject::Destroy(m_pParticle);
 	}
+/*
 	m_pParticle = CParticlesObject::Create(*m_explode_particle,FALSE);
 
 	Fvector zero_vector;
@@ -126,8 +127,13 @@ void CHelicopter::Explode ()
 	m_explodeSound.set_position(XFORM().c);
 
 	m_pParticle->Play();
+*/
 	if(CPHDestroyable::CanDestroy())
 		CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
+
+	CExplosive::SetInitiator(ID());
+	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
+
 	m_exploded = true;
 }
 

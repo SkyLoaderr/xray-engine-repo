@@ -85,7 +85,7 @@ void CHelicopter::script_register(lua_State *L)
 
 				.def("Die",									&CHelicopter::DieHelicopter)
 				.def("StartFlame",							&CHelicopter::StartFlame)
-				.def("Explode",								&CHelicopter::Explode)
+				.def("Explode",								&CHelicopter::ExplodeHelicopter)
 
 				.def("isVisible",							&CHelicopter::isVisible)
 

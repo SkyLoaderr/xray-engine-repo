@@ -130,10 +130,10 @@ void CHelicopter::Load(LPCSTR section)
 
 //lighting & sounds
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
-	m_explode_particle					= pSettings->r_string(section,"explode_particle");
+//	m_explode_particle					= pSettings->r_string(section,"explode_particle");
 
-	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
-	m_explodeSound.create				(TRUE,*expl_snd);
+//	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
+//	m_explodeSound.create				(TRUE,*expl_snd);
 
 	m_light_range						= pSettings->r_float(section,"light_range");
 	m_light_brightness					= pSettings->r_float(section,"light_brightness");
@@ -192,6 +192,9 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 
 	m_smoke_bone 			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","smoke_bone"));
 	m_light_bone 			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","light_bone"));
+
+	CExplosive::Load		(pUserData,"explosion");
+	CExplosive::SetInitiator(ID());
 	
 	LPCSTR s = pUserData->r_string("helicopter_definition","hit_section");
 
@@ -265,6 +268,7 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 void CHelicopter::net_Destroy()
 {
 	inherited::net_Destroy				();
+	CExplosive::net_Destroy				();
 	CShootingObject::Light_Destroy		();
 	CShootingObject::StopFlameParticles	();
 	CPHSkeleton::RespawnInit			();
@@ -388,6 +392,7 @@ void CHelicopter::MoveStep()
 void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
+	CExplosive::UpdateCL();
 	if(PPhysicsShell() && (state() == CHelicopter::eDead) ){
 
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());

@@ -113,7 +113,7 @@ function HeliManager:Start()
 end
 
 
-function  main____________()
+function  main()
 
 local heli_mngr = HeliManager()
    printf("------------HELI INIT----------------------")
@@ -121,10 +121,10 @@ heli_mngr:Init()
    printf("------------HELI START----------------------")
 --heli_mngr:Start()
 
-    heli_mngr.m_heliObject:StartFlame()
+--    heli_mngr.m_heliObject:StartFlame()
     heli_mngr.m_heliObject:Die()
     heli_mngr.m_heliObject:Explode()
-    heli_mngr.m_heliObject:TurnLighting(true)
+--    heli_mngr.m_heliObject:TurnLighting(true)
 
 --		heli:heli_go_by_patrol_path( "heli_way_1" )
 end
@@ -133,7 +133,7 @@ function  main_()
 	db.actor:set_task_state(task.completed,"andy_task_1",0)
 end
 
-function  main()
+function  main____()
 --	local n = level.debug_object( "_niva" )
 --   level.map_add_object_spot(n:id(),"heli_location","niva_super_car");
 

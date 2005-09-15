@@ -13,6 +13,8 @@
 #include "patrol_path.h"
 #include "intrusive_ptr.h"
 #include "PHDestroyable.h"
+#include "Explosive.h"
+
 class CScriptGameObject;
 class CLAItem;
 class CHelicopterMovManager;
@@ -131,7 +133,8 @@ class CHelicopter : 	public CEntity,
 						public CRocketLauncher,
 						public CPHSkeleton,
 						public CPHDestroyable,
-						public CHitImmunity
+						public CHitImmunity,
+						public CExplosive
 					#ifdef DEBUG
 						,public pureRender
 					#endif
@@ -213,19 +216,19 @@ protected:
 
 // sound, light, particles...
 	ref_sound						m_engineSound;
-	ref_sound						m_explodeSound;
+//	ref_sound						m_explodeSound;
 	ref_light						m_light_render;
 	CLAItem*						m_lanim;
 	u16								m_light_bone, m_smoke_bone;
 	float							m_light_range, m_light_brightness;
 	Fcolor							m_light_color;
-	shared_str						m_smoke_particle, m_explode_particle;
+	shared_str						m_smoke_particle;//, m_explode_particle;
 	CParticlesObject*				m_pParticle;
 	Fmatrix							m_particleXFORM;
 
 	void							StartFlame					();
 	void							UpdateHeliParticles			();
-	void							Explode						();
+	void							ExplodeHelicopter			();
 	void							DieHelicopter				();
 	void							TurnLighting				(bool bOn);
 	void							TurnEngineSound				(bool bOn);
@@ -284,9 +287,10 @@ public:
 	virtual void					HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
 	virtual void					HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
 	
-	virtual const Fmatrix&			get_ParticlesXFORM	();
-	virtual const Fvector&			get_CurrentFirePoint();
+	virtual const Fmatrix&			get_ParticlesXFORM			();
+	virtual const Fvector&			get_CurrentFirePoint		();
 
+	virtual CGameObject				*cast_game_object			()	{return this;}
 
 
 public:
