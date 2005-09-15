@@ -388,7 +388,7 @@
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\dolg</visual>
+		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
