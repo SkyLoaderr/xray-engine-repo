@@ -97,44 +97,44 @@ CWound* CActorCondition::ConditionHit(CObject* who, float hit_power, ALife::EHit
 //weight - "удельный" вес от 0..1
 void CActorCondition::ConditionJump(float weight)
 {
-	float power = m_fJumpPower;
-	power += m_fJumpWeightPower*weight*(weight>1.f?m_fOverweightJumpK:1.f);
-	m_fPower -= HitPowerEffect(power);
+	float power			=	m_fJumpPower;
+	power				+=	m_fJumpWeightPower*weight*(weight>1.f?m_fOverweightJumpK:1.f);
+	m_fPower			-=	HitPowerEffect(power);
 }
 void CActorCondition::ConditionWalk(float weight, bool accel, bool sprint)
 {	
-	float delta_time = float(m_iDeltaTime)/1000.f;
-	float power = m_fWalkPower;
-	power += m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
-	power *= delta_time*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
-	m_fPower -= HitPowerEffect(power);
+	float delta_time	=	float(m_iDeltaTime)/1000.f;
+	float power			=	m_fWalkPower;
+	power				+=	m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
+	power				*=	delta_time*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
+	m_fPower			-=	HitPowerEffect(power);
 }
 
 void CActorCondition::ConditionStand(float weight)
 {	
-	float delta_time = float(m_iDeltaTime)/1000.f;
-	float power = m_fStandPower;
-	power *= delta_time;
-	m_fPower -= power;
+	float delta_time	= float(m_iDeltaTime)/1000.f;
+	float power			= m_fStandPower;
+	power				*= delta_time;
+	m_fPower			-= power;
 }
 
 
 bool CActorCondition::IsCantWalk() const
 {
 	if(m_fPower< m_fCantWalkPowerBegin)
-		m_bCantWalk = true;
+		m_bCantWalk		= true;
 	else if(m_fPower > m_fCantWalkPowerEnd)
-		m_bCantWalk = false;
-	return m_bCantWalk;
+		m_bCantWalk		= false;
+	return				m_bCantWalk;
 }
 
 bool CActorCondition::IsCantSprint() const
 {
 	if(m_fPower< m_fCantSprintPowerBegin)
-		m_bCantSprint = true;
+		m_bCantSprint	= true;
 	else if(m_fPower > m_fCantSprintPowerEnd)
-		m_bCantSprint = false;
-	return m_bCantSprint;
+		m_bCantSprint	= false;
+	return				m_bCantSprint;
 }
 
 bool CActorCondition::IsLimping() const

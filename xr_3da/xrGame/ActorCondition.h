@@ -34,8 +34,8 @@ public:
 	virtual void		UpdateCondition		();
 
 	// sleeping
-	virtual EActorSleep	CanSleepHere		();
-	virtual EActorSleep	GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
+	EActorSleep			CanSleepHere		();
+	EActorSleep			GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
 	virtual void		Awoke				();
 
 	// хромание при потере сил и здоровья

@@ -109,69 +109,69 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 
 	//скорости изменения характеристик состояния
 	//в секунду
-	m_fV_Satiety = pSettings->r_float(section,"satiety_v");		
-	m_fV_Radiation = pSettings->r_float(section,"radiation_v");	
-	m_fV_SatietyPower = pSettings->r_float(section,"satiety_power_v");
-	m_fV_SatietyHealth = pSettings->r_float(section,"satiety_health_v");
-	m_fSatietyCritical = pSettings->r_float(section,"satiety_critical");
+	m_fV_Satiety			= pSettings->r_float(section,"satiety_v");		
+	m_fV_Radiation			= pSettings->r_float(section,"radiation_v");	
+	m_fV_SatietyPower		= pSettings->r_float(section,"satiety_power_v");
+	m_fV_SatietyHealth		= pSettings->r_float(section,"satiety_health_v");
+	m_fSatietyCritical		= pSettings->r_float(section,"satiety_critical");
 
-	m_fV_PsyHealth	= pSettings->r_float(section,"psy_health_v");	
+	m_fV_PsyHealth			= pSettings->r_float(section,"psy_health_v");	
 
-	m_fV_RadiationHealth = pSettings->r_float(section,"radiation_health_v");
-	m_fV_Bleeding = pSettings->r_float(section,"bleeding_v");
-	m_fV_WoundIncarnation = pSettings->r_float(section,"wound_incarnation_v");
-	m_fMinWoundSize = pSettings->r_float(section,"min_wound_size");
-	m_fV_EntityMorale = pSettings->r_float(section,"morale_v");
+	m_fV_RadiationHealth	= pSettings->r_float(section,"radiation_health_v");
+	m_fV_Bleeding			= pSettings->r_float(section,"bleeding_v");
+	m_fV_WoundIncarnation	= pSettings->r_float(section,"wound_incarnation_v");
+	m_fMinWoundSize			= pSettings->r_float(section,"min_wound_size");
+	m_fV_EntityMorale		= pSettings->r_float(section,"morale_v");
 	
-	m_fHealthHitPart = pSettings->r_float(section,"health_hit_part");
-	m_fPowerHitPart = pSettings->r_float(section,"power_hit_part");
+	m_fHealthHitPart		= pSettings->r_float(section,"health_hit_part");
+	m_fPowerHitPart			= pSettings->r_float(section,"power_hit_part");
 	
 
-	m_fK_SleepHealth = pSettings->r_float(section,"sleep_health");
-	m_fK_SleepPower = pSettings->r_float(section,"sleep_power");
-	m_fK_SleepSatiety = pSettings->r_float(section,"sleep_satiety");	
-	m_fK_SleepRadiation = pSettings->r_float(section,"sleep_radiation");
-	m_fK_SleepPsyHealth = pSettings->r_float(section,"sleep_psy_health");
+	m_fK_SleepHealth		= pSettings->r_float(section,"sleep_health");
+	m_fK_SleepPower			= pSettings->r_float(section,"sleep_power");
+	m_fK_SleepSatiety		= pSettings->r_float(section,"sleep_satiety");	
+	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
+	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
 
-	m_use_limping_state = !!(READ_IF_EXISTS(pSettings,r_bool,section,"use_limping_state",FALSE));
-	m_limping_threshold	= READ_IF_EXISTS(pSettings,r_float,section,"limping_threshold",.5f);
+	m_use_limping_state		= !!(READ_IF_EXISTS(pSettings,r_bool,section,"use_limping_state",FALSE));
+	m_limping_threshold		= READ_IF_EXISTS(pSettings,r_float,section,"limping_threshold",.5f);
 }
 
 void CEntityCondition::reinit	()
 {
-	m_iLastTimeCalled = 0;
-	m_bTimeValid = false;
+	m_iLastTimeCalled		= 0;
+	m_bTimeValid			= false;
 
-	m_fHealthMax = MAX_HEALTH;
-	m_fPowerMax = MAX_POWER;
-	m_fSatietyMax = MAX_SATIETY;
-	m_fRadiationMax = MAX_RADIATION;
-	m_fPsyHealthMax = MAX_PSY_HEALTH;
+	m_fHealthMax			= MAX_HEALTH;
+	m_fPowerMax				= MAX_POWER;
+	m_fSatietyMax			= MAX_SATIETY;
+	m_fRadiationMax			= MAX_RADIATION;
+	m_fPsyHealthMax			= MAX_PSY_HEALTH;
 
-	m_fCircumspection = m_fCircumspectionMax = 1.f;
-	m_fEntityMorale =  m_fEntityMoraleMax = 1.f;
+	m_fCircumspection		= m_fCircumspectionMax = 1.f;
+	m_fEntityMorale			=  m_fEntityMoraleMax = 1.f;
 
-	m_fHealth  = MAX_HEALTH;
-	m_fPower  = MAX_POWER;
-	m_fSatiety = MAX_SATIETY;
-	m_fRadiation  = 0;
-	m_fPsyHealth  = MAX_PSY_HEALTH;
+	m_fHealth				= MAX_HEALTH;
+	m_fPower				= MAX_POWER;
+	m_fSatiety				= MAX_SATIETY;
+	m_fRadiation			= 0;
+	m_fPsyHealth			= MAX_PSY_HEALTH;
 
-	m_fDeltaHealth = 0;
-	m_fDeltaPower = 0;
-	m_fDeltaSatiety = 0;
-	m_fDeltaRadiation = 0;
-	m_fDeltaCircumspection = 0;
-	m_fDeltaEntityMorale = 0;
-	m_fDeltaPsyHealth = 0;
+	m_fDeltaHealth			= 0;
+	m_fDeltaPower			= 0;
+	m_fDeltaSatiety			= 0;
+	m_fDeltaRadiation		= 0;
+	m_fDeltaCircumspection	= 0;
+	m_fDeltaEntityMorale	= 0;
+	m_fDeltaPsyHealth		= 0;
 
 
-	m_fHealthLost = 0.f;
-	m_pWho = NULL;
+	m_fHealthLost			= 0.f;
+	m_pWho					= NULL;
 
-	ClearWounds();
+	ClearWounds				();
 
-	Awoke();
+	Awoke					();
 }
 
 void CEntityCondition::ChangeHealth(float value)
@@ -213,19 +213,19 @@ void CEntityCondition::ChangeBleeding(float percent)
 	//затянуть раны
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
-		(*it)->Incarnation(percent, m_fMinWoundSize);
-		if(0 == (*it)->TotalSize())
-			(*it)->SetDestroy(true);
+		(*it)->Incarnation			(percent, m_fMinWoundSize);
+		if(0 == (*it)->TotalSize	())
+			(*it)->SetDestroy		(true);
 	}
 }
 bool RemoveWoundPred(CWound* pWound)
 {
 	if(pWound->GetDestroy())
 	{
-		xr_delete(pWound);
-		return true;
+		xr_delete		(pWound);
+		return			true;
 	}
-	return false;
+	return				false;
 }
 
 void  CEntityCondition::UpdateWounds		()
@@ -242,36 +242,37 @@ void CEntityCondition::UpdateConditionTime()
 	if(m_bTimeValid)
 	{
 		if (cur_time > m_iLastTimeCalled)
-			m_iDeltaTime = cur_time - m_iLastTimeCalled;
+			m_iDeltaTime		= cur_time - m_iLastTimeCalled;
 		else 
-			m_iDeltaTime = 0;
+			m_iDeltaTime		= 0;
 	}
 	else
 	{
-		m_iDeltaTime = 0;
-		m_bTimeValid = true;
+		m_iDeltaTime			= 0;
+		m_bTimeValid			= true;
 
-		m_fDeltaHealth = 0;
-		m_fDeltaPower = 0;
-		m_fDeltaSatiety = 0;
-		m_fDeltaRadiation = 0;
-		m_fDeltaCircumspection = 0;
-		m_fDeltaEntityMorale = 0;
+		m_fDeltaHealth			= 0;
+		m_fDeltaPower			= 0;
+		m_fDeltaSatiety			= 0;
+		m_fDeltaRadiation		= 0;
+		m_fDeltaCircumspection	= 0;
+		m_fDeltaEntityMorale	= 0;
 
 	}
 
-	m_iLastTimeCalled = cur_time;
+	m_iLastTimeCalled			= cur_time;
 }
 
 //вычисление параметров с ходом игрового времени
 void CEntityCondition::UpdateCondition()
 {
-	if(GetHealth()<=0) return;
+	if(GetHealth()<=0)			return;
 	//-----------------------------------------
-	bool CriticalHealth = false;
+	bool CriticalHealth			= false;
+
 	if (m_fDeltaHealth+m_fHealth <= 0)
 	{
-		CriticalHealth = true;
+		CriticalHealth			= true;
 		m_object->OnCriticalHitHealthLoss();
 	}
 	else
@@ -279,18 +280,17 @@ void CEntityCondition::UpdateCondition()
 		if (m_fDeltaHealth<0) m_object->OnHitHealthLoss(m_fHealth+m_fDeltaHealth);
 	}
 	//-----------------------------------------
-	UpdateHealth();
+	UpdateHealth				();
 	//-----------------------------------------
 	if (!CriticalHealth && m_fDeltaHealth+m_fHealth <= 0)
 	{
-		CriticalHealth = true;
+		CriticalHealth			= true;
 		m_object->OnCriticalWoundHealthLoss();
 	};
 	//-----------------------------------------
-	UpdatePower();
-	UpdateSatiety();
-	//-----------------------------------------
-	UpdateRadiation();
+	UpdatePower					();
+	UpdateSatiety				();
+	UpdateRadiation				();
 	//-----------------------------------------
 	if (!CriticalHealth && m_fDeltaHealth+m_fHealth <= 0)
 	{
@@ -298,37 +298,34 @@ void CEntityCondition::UpdateCondition()
 		m_object->OnCriticalRadiationHealthLoss();
 	};
 	//-----------------------------------------
-	UpdatePsyHealth();
+	UpdatePsyHealth				();
 
-	UpdateCircumspection();
-	UpdateEntityMorale();
+	UpdateCircumspection		();
+	UpdateEntityMorale			();
 
-	m_fHealth		+= (OnClient())?0:m_fDeltaHealth;
-	m_fPower		+= m_fDeltaPower;
-	m_fSatiety		+= m_fDeltaSatiety;
-	m_fRadiation	+= m_fDeltaRadiation;
-	m_fPsyHealth	+= m_fDeltaPsyHealth;
+	m_fHealth					+= (OnClient())?0:m_fDeltaHealth;
+	m_fPower					+= m_fDeltaPower;
+	m_fSatiety					+= m_fDeltaSatiety;
+	m_fRadiation				+= m_fDeltaRadiation;
+	m_fPsyHealth				+= m_fDeltaPsyHealth;
+	m_fCircumspection			+= m_fDeltaCircumspection;
+	m_fEntityMorale				+= m_fDeltaEntityMorale;
 
-	m_fCircumspection	+= m_fDeltaCircumspection;
-	m_fEntityMorale		+= m_fDeltaEntityMorale;
+	m_fDeltaHealth				= 0;
+	m_fDeltaPower				= 0;
+	m_fDeltaSatiety				= 0;
+	m_fDeltaRadiation			= 0;
+	m_fDeltaPsyHealth			= 0;
+	m_fDeltaCircumspection		= 0;
+	m_fDeltaEntityMorale		= 0;
 
-	m_fDeltaHealth = 0;
-	m_fDeltaPower = 0;
-	m_fDeltaSatiety = 0;
-	m_fDeltaRadiation = 0;
-	m_fDeltaPsyHealth = 0;
-
-	m_fDeltaCircumspection = 0;
-	m_fDeltaEntityMorale = 0;
-
-	clamp(m_fHealth, MIN_HEALTH, m_fHealthMax);
-	
-	clamp(m_fPower,0.0f,m_fPowerMax);
-	clamp(m_fRadiation,0.0f,m_fRadiationMax);
-	clamp(m_fSatiety,0.0f,m_fSatietyMax);
-	clamp(m_fCircumspection,0.0f,m_fCircumspectionMax);
-	clamp(m_fEntityMorale,0.0f,m_fEntityMoraleMax);
-	clamp(m_fPsyHealth, 0.0f, m_fPsyHealthMax);
+	clamp						(m_fHealth,			MIN_HEALTH, m_fHealthMax);
+	clamp						(m_fPower,			0.0f,		m_fPowerMax);
+	clamp						(m_fRadiation,		0.0f,		m_fRadiationMax);
+	clamp						(m_fSatiety,		0.0f,		m_fSatietyMax);
+	clamp						(m_fCircumspection,	0.0f,		m_fCircumspectionMax);
+	clamp						(m_fEntityMorale,	0.0f,		m_fEntityMoraleMax);
+	clamp						(m_fPsyHealth,		0.0f,		m_fPsyHealthMax);
 }
 
 
@@ -336,11 +333,9 @@ void CEntityCondition::Sleep(float hours)
 {
 	if(GetHealth()<=0) return;
 
-	//u64 cur_time = Level().GetGameTime();
-
 	//час здорового сна
 	float time_to_sleep = hours*60*60*1000;
-//	m_iDeltaTime = hours*60*60*1000;
+
 	//десять секунд
 	m_iDeltaTime = 1000*10;
 
@@ -348,65 +343,66 @@ void CEntityCondition::Sleep(float hours)
 
 	for(float time=0; time<time_to_sleep; time += m_iDeltaTime)
 	{
-		UpdateHealth();
-		UpdatePower();
-		UpdateSatiety();
-		UpdateRadiation();
-		UpdatePsyHealth();
+		UpdateHealth			();
+		UpdatePower				();
+		UpdateSatiety			();
+		UpdateRadiation			();
+		UpdatePsyHealth			();
 
-		m_fHealth += m_fDeltaHealth;
-		m_fPower += m_fDeltaPower;
-		m_fSatiety += m_fDeltaSatiety;
-		m_fRadiation +=  m_fDeltaRadiation;
-		m_fPsyHealth += m_fDeltaPsyHealth;
+		m_fHealth				+= m_fDeltaHealth;
+		m_fPower				+= m_fDeltaPower;
+		m_fSatiety				+= m_fDeltaSatiety;
+		m_fRadiation			+=  m_fDeltaRadiation;
+		m_fPsyHealth			+= m_fDeltaPsyHealth;
 
-		m_fDeltaHealth		= 0;
-		m_fDeltaPower		= 0;
-		m_fDeltaSatiety		= 0;
-		m_fDeltaRadiation	= 0;
-		m_fDeltaPsyHealth	= 0;
+		m_fDeltaHealth			= 0;
+		m_fDeltaPower			= 0;
+		m_fDeltaSatiety			= 0;
+		m_fDeltaRadiation		= 0;
+		m_fDeltaPsyHealth		= 0;
 
-		//
-		clamp(m_fHealth, MIN_HEALTH, m_fHealthMax);
-		
-		clamp(m_fPower,0.0f,m_fPowerMax);
-		clamp(m_fRadiation,0.0f,m_fRadiationMax);
-		clamp(m_fSatiety,0.0f,m_fSatietyMax);
-		clamp(m_fPsyHealth, 0.0f, m_fPsyHealthMax);
+		clamp					(m_fHealth,		MIN_HEALTH, m_fHealthMax);
+		clamp					(m_fPower,		0.0f,		m_fPowerMax);
+		clamp					(m_fRadiation,	0.0f,		m_fRadiationMax);
+		clamp					(m_fSatiety,	0.0f,		m_fSatietyMax);
+		clamp					(m_fPsyHealth,	0.0f,		m_fPsyHealthMax);
 	}
 
-	Awoke();
+	Awoke						();
 }
 
 float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_type, s16 element)
 {
-    CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_object);
-	if(!pInvOwner) return hit_power;
+    CInventoryOwner* pInvOwner		= smart_cast<CInventoryOwner*>(m_object);
+	if(!pInvOwner)					return hit_power;
 
-	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
-	if(!pOutfit) return hit_power;
-	float new_hit_power = hit_power;
+	CCustomOutfit* pOutfit			= (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+	if(!pOutfit)					return hit_power;
+
+	float new_hit_power				= hit_power;
+
 	if (hit_type == ALife::eHitTypeFireWound && GameID() != GAME_SINGLE)
-		new_hit_power = pOutfit->HitThruArmour(hit_power, element);
+		new_hit_power				= pOutfit->HitThruArmour(hit_power, element);
 	else
-		new_hit_power *= pOutfit->GetHitTypeProtection(hit_type,element);
+		new_hit_power				*= pOutfit->GetHitTypeProtection(hit_type,element);
 	
 	//увеличить изношенность костюма
-	pOutfit->Hit(hit_power, hit_type);
+	pOutfit->Hit					(hit_power, hit_type);
 
-	return new_hit_power;
+	return							new_hit_power;
 }
 
 float CEntityCondition::HitPowerEffect(float power_loss)
 {
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_object);
-	if(!pInvOwner) return power_loss;
+	CInventoryOwner* pInvOwner		 = smart_cast<CInventoryOwner*>(m_object);
+	if(!pInvOwner)					 return power_loss;
 
-	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
-	if(!pOutfit) return power_loss;
-	float new_power_loss = power_loss*pOutfit->GetPowerLoss();
+	CCustomOutfit* pOutfit			= (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+	if(!pOutfit)					return power_loss;
 
-	return new_power_loss;
+	float new_power_loss			= power_loss*pOutfit->GetPowerLoss();
+
+	return							new_power_loss;
 }
 
 CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u16 element)
@@ -501,12 +497,10 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 
 float CEntityCondition::BleedingSpeed()
 {
-	float bleeding_speed =0;
+	float bleeding_speed		=0;
 
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
-	{
-		bleeding_speed += (*it)->TotalSize();
-	}
+		bleeding_speed			+= (*it)->TotalSize();
 	
 	
 	return (m_WoundVector.empty() ? 0.f : bleeding_speed / m_WoundVector.size());
@@ -599,18 +593,18 @@ void CEntityCondition::UpdateEntityMorale()
 
 void CEntityCondition::GoSleep()
 {
-	m_bIsSleeping = true;
+	m_bIsSleeping				= true;
 
-	m_fCurrentSleepHealth =  m_fK_SleepHealth;
-	m_fCurrentSleepPower =  m_fK_SleepPower;
-	m_fCurrentSleepSatiety =  m_fK_SleepSatiety;
-	m_fCurrentSleepRadiation =  m_fK_SleepRadiation;
-	m_fCurrentSleepPsyHealth =  m_fK_SleepPsyHealth;
+	m_fCurrentSleepHealth		=  m_fK_SleepHealth;
+	m_fCurrentSleepPower		=  m_fK_SleepPower;
+	m_fCurrentSleepSatiety		=  m_fK_SleepSatiety;
+	m_fCurrentSleepRadiation	=  m_fK_SleepRadiation;
+	m_fCurrentSleepPsyHealth	=  m_fK_SleepPsyHealth;
 }
 
 void CEntityCondition::Awoke()
 {
-	m_bIsSleeping = false;
+	m_bIsSleeping				= false;
 
 	m_fCurrentSleepHealth		=  1.0f;
 	m_fCurrentSleepPower		=  1.0f;

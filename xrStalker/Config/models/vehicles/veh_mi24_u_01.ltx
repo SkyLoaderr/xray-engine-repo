@@ -20,3 +20,42 @@ korpus1				= 0.02
 
 [on_death_mode]
 scale_bone = front_propeller2,back_propeller2
+
+;-------------------------------------------------------------------------------
+;------ destroyed part ---------------------------------------------------------
+
+[destroyed]
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+physics\vehicles\Zaz\part\veh_zaz_u_01_part1
+physics\vehicles\Zaz\part\veh_zaz_u_01_part2
+physics\vehicles\Zaz\part\veh_zaz_u_01_part3
+physics\vehicles\Zaz\part\veh_zaz_u_01_part4
+physics\vehicles\Zaz\part\veh_zaz_u_01_part5
+physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+
+[autoremove_parts]
+time					 = 30
+
+;-------------------------------------------------------------------------------
+;--- part impulse_transition ---------------------------------------------------
+
+[impulse_transition_to_parts]
+random_min               = 10.0    ; величина случайно направленного импульса пропорционально массе нового объекта
+random_hit_imp           = 1.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
+;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
+imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
+lv_transition_factor     = 0.5     ; коэффициент передачи линейной скорости
+av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
+
+;-------------------------------------------------------------------------------
