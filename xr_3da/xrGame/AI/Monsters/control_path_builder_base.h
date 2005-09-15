@@ -114,6 +114,7 @@ public:
 	// -------------------------------------------------------------------
 	// Set methods
 		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
+		void		set_target_point		(u32 node);
 		void		set_retreat_from_point	(const Fvector &position);
 
 	IC	void		set_rebuild_time		(u32 time);

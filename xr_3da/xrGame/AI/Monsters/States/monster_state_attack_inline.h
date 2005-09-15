@@ -6,6 +6,7 @@
 #include "state_hide_from_point.h"
 #include "monster_state_find_enemy.h"
 #include "monster_state_steal.h"
+#include "monster_state_attack_camp.h"
 
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
@@ -25,6 +26,7 @@ CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj) : inherited(obj)
 	add_state	(eStateAttack_RunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
 	add_state	(eStateAttack_FindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
 	add_state	(eStateAttack_Steal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
+	add_state	(eStateAttackCamp,			xr_new<CStateMonsterAttackCamp<_Object> >		(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -36,6 +38,7 @@ CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj, state_ptr state_r
 	add_state	(eStateAttack_RunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
 	add_state	(eStateAttack_FindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
 	add_state	(eStateAttack_Steal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
+	add_state	(eStateAttackCamp,			xr_new<CStateMonsterAttackCamp<_Object> >		(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -63,6 +66,9 @@ void CStateMonsterAttackAbstract::execute()
 	
 	if (check_steal_state()) {
 		select_state	(eStateAttack_Steal);
+		selected		= true;
+	} else if (check_camp_state()) {
+		select_state	(eStateAttackCamp);
 		selected		= true;
 	} else if (check_find_enemy_state()) {
 		select_state	(eStateAttack_FindEnemy);
@@ -111,6 +117,17 @@ bool CStateMonsterAttackAbstract::check_steal_state()
 		if (get_state(eStateAttack_Steal)->check_start_conditions())	return true;
 	} else if (prev_substate == eStateAttack_Steal) {
 		if (!get_state(eStateAttack_Steal)->check_completion())		return true;
+	}
+	return false;
+}
+
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackAbstract::check_camp_state()
+{
+	if (prev_substate == u32(-1)) {
+		if (get_state(eStateAttackCamp)->check_start_conditions())	return true;
+	} else if (prev_substate == eStateAttackCamp) {
+		if (!get_state(eStateAttackCamp)->check_completion())		return true;
 	}
 	return false;
 }

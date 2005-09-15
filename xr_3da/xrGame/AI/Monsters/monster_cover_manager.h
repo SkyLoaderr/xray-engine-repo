@@ -12,6 +12,8 @@ public:
 				CMonsterCoverManager	(CBaseMonster *monster);
 
 	void		load					();
-	// найти лучший ковер к относительно "position"
+	// найти лучший ковер относительно "position"
 	CCoverPoint *find_cover				(const Fvector &position, float min_pos_distance, float	max_pos_distance, float deviation = 0.f);
+
+	void		less_cover_direction	(Fvector &dir);
 };

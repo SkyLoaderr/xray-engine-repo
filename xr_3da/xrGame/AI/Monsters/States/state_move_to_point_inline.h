@@ -40,7 +40,9 @@ bool CStateMonsterMoveToPointAbstract::check_completion()
 		if (time_state_started + data.action.time_out < Device.dwTimeGlobal) return true;
 	} 
 	
-	if (object->Position().distance_to_xz(data.point) < data.completion_dist) return true;
+	if (object->control().path_builder().is_path_end(data.completion_dist) &&
+		data.point.distance_to_xz(object->Position()) < ai().level_graph().header().cell_size()) return true;
+
 	return false;
 }
 
@@ -87,7 +89,9 @@ bool CStateMonsterMoveToPointExAbstract::check_completion()
 		if (time_state_started + data.action.time_out < Device.dwTimeGlobal) return true;
 	} 
 
-	if (object->Position().distance_to_xz(data.point) < data.completion_dist) return true;
+	if (object->control().path_builder().is_path_end(data.completion_dist) &&
+		data.point.distance_to_xz(object->Position()) < ai().level_graph().header().cell_size()) return true;
+		
 	return false;
 }
 

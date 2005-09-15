@@ -24,6 +24,14 @@ public:
 			float	trace				(const Fvector &dir);
 
 			bool	trace_geometry		(const Fvector &d, float &range);
+private:
+#ifdef _DEBUG	
+	virtual void	debug_on_key		(int key);
+#endif
+
+public:
+		u32		m_target_node;
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

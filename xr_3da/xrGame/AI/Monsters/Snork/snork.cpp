@@ -8,9 +8,19 @@
 #include "../../../sound_player.h"
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
-#include "../../../level_debug.h"
-
 #include "../../../PHMovementControl.h"
+
+#ifdef _DEBUG
+#	include <dinput.h>
+#	include "../../../actor.h"
+#	include "../../../ai_object_location.h"
+#	include "../../../level_debug.h"
+#	include "../../../cover_point.h"
+#	include "../monster_cover_manager.h"
+#endif
+
+
+
 
 CSnork::CSnork() 
 {
@@ -88,6 +98,9 @@ void CSnork::reinit()
 	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 	
 	com_man().load_jump_data("stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", MonsterMovement::eSnorkVelocityParamsJump);
+
+	// TODO: remove this
+	m_target_node = 0;
 }
 
 void CSnork::UpdateCL()
@@ -100,6 +113,25 @@ void CSnork::UpdateCL()
 	
 	//find_geometry	();
 	//////////////////////////////////////////////////////////////////////////
+	
+#ifdef _DEBUG
+	// test 
+	CObject *obj = Level().CurrentEntity();
+	if (!obj) return;
+	CCoverPoint *point = CoverMan->find_cover(obj->Position(), 10.f, 30.f);
+	
+	DBG().level_info(this).clear();
+	if (point) {
+		DBG().level_info(this).add_item	(point->position(),COLOR_RED);
+		
+		Fvector pos;
+		pos.set(Position());
+		pos.y+=5.f;
+
+		DBG().level_info(this).add_item	(Position(),pos,COLOR_GREEN);
+	}
+#endif
+
 }
 
 #define TRACE_RANGE 30.f
@@ -227,4 +259,16 @@ bool CSnork::jump(CObject *enemy)
 	
 	return false;
 }
+#ifdef _DEBUG
+void CSnork::debug_on_key(int key)
+{
+	CActor *actor = smart_cast<CActor *>(Level().CurrentEntity());
+	if (!actor) return;
+
+	switch (key){
+	case DIK_1:
+		m_target_node = actor->ai_location().level_vertex_id();
+	}
+}
+#endif
 

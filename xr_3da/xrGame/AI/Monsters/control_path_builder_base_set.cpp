@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "control_path_builder_base.h"
 #include "BaseMonster/base_monster.h"
+#include "../../level_navigation_graph.h"
+#include "../../ai_space.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Method: prepare_builder
@@ -42,6 +44,11 @@ void CControlPathBuilderBase::set_target_point(const Fvector &position, u32 node
 	m_target_type		= eMoveToTarget;
 
 	set_level_path_type	();
+}
+
+void CControlPathBuilderBase::set_target_point(u32 node)
+{
+	set_target_point(ai().level_graph().vertex_position(node),node);
 }
 
 void CControlPathBuilderBase::set_retreat_from_point(const Fvector &position)

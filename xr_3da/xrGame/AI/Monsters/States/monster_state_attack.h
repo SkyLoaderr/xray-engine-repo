@@ -25,6 +25,7 @@ private:
 			bool		check_find_enemy_state	();
 			bool		check_run_away_state	();
 			bool		check_run_attack_state	();
+			bool		check_camp_state		();
 };
 
 #include "monster_state_attack_inline.h"

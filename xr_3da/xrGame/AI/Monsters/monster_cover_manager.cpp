@@ -10,6 +10,7 @@
 #include "../../level.h"
 #include "../../level_debug.h"
 #include "../../cover_manager.h"
+#include "../../ai_object_location.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CControllerCoverEvaluator
@@ -168,4 +169,58 @@ CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &position, float min
 	return				point;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Find Less Cover Direction (e.g. look at the most open place)
+//////////////////////////////////////////////////////////////////////////
+
+#define ANGLE_DISP					PI_DIV_2
+#define ANGLE_DISP_STEP				deg(10)
+#define TRACE_STATIC_DIST			3.f
+
+void CMonsterCoverManager::less_cover_direction(Fvector &dir)
+{
+	float angle				= ai().level_graph().vertex_cover_angle(m_object->ai_location().level_vertex_id(),deg(10), CLevelGraph::PredicateWorstCover());
+
+	m_object->setEnabled	(false);
+	collide::rq_result		l_rq;
+
+	float angle_from		= angle_normalize(angle - ANGLE_DISP);
+	float angle_to			= angle_normalize(angle + ANGLE_DISP);
+
+	Fvector					trace_from;
+	m_object->Center		(trace_from);
+	Fvector					direction;
+
+	// trace discretely left
+	for (float ang = angle; angle_difference(ang, angle) < ANGLE_DISP; ang = angle_normalize(ang - ANGLE_DISP_STEP)) {
+
+		direction.setHP	(ang, 0.f);
+
+		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq)) {
+			if ((l_rq.range < TRACE_STATIC_DIST)) {
+				angle_from = ang;
+				break;
+			}
+		}
+	}
+
+	// trace discretely right
+	for (float ang = angle; angle_difference(ang, angle) < ANGLE_DISP; ang = angle_normalize(ang + ANGLE_DISP_STEP)) {
+
+		direction.setHP	(ang, 0.f);
+
+		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq)) {
+			if ((l_rq.range < TRACE_STATIC_DIST)) {
+				angle_to = ang;
+				break;
+			}
+		}
+	}
+
+	m_object->setEnabled(true);
+
+	angle		= angle_normalize(angle_from + angle_difference(angle_from,angle_to) / 2);
+	dir.setHP	(angle,0.f);
+}
+//////////////////////////////////////////////////////////////////////////
 

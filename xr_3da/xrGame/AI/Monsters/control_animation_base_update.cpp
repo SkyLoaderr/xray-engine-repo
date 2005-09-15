@@ -14,7 +14,7 @@
 
 void CControlAnimationBase::update_frame()
 {
-	update				();
+	update();
 
 	// raise event on velocity bounce
 	CheckVelocityBounce	();

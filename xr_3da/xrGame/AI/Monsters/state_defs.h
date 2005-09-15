@@ -44,6 +44,11 @@ enum EMonsterState {
 	eStateAttack_ControlFire		= eStateAttack | 12,
 	eStateAttack_HideInCoverLite	= eStateAttack | 13,
 
+	eStateAttackCamp				= eStateAttack | 14,
+	eStateAttackCamp_Hide			= eStateAttack | 15,
+	eStateAttackCamp_Camp			= eStateAttack | 16,
+	eStateAttackCamp_StealOut		= eStateAttack | 17,
+
 	// -------------------------------------------------------------
 
 	eStatePanic						= eGlobalState << 4,

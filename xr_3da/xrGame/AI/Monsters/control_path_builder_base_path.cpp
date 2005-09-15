@@ -37,7 +37,8 @@ bool CControlPathBuilderBase::target_point_need_update()
 	} else if ((m_state & eStateNoPath) == eStateNoPath) {
 		return true;
 	} else if ((m_state & eStatePathEnd) == eStatePathEnd) {
-		return true; // физический конец пути
+		if (m_target_set.node != m_object->ai_location().level_vertex_id())
+			return true; // физический конец пути
 	}
 
 	return false;

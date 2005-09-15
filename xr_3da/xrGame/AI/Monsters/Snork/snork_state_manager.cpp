@@ -18,6 +18,8 @@
 #include "../states/monster_state_hitted.h"
 #include "../states/state_look_point.h"
 #include "../states/state_test_look_actor.h"
+#include "../states/state_test_state.h"
+
 #include "../../../entitycondition.h"
 
 CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
@@ -30,7 +32,7 @@ CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CSnork> >	(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CSnork> >				(obj));
 
-	add_state(eStateFindEnemy,			xr_new<CStateMonsterTurnAwayFromActor<CSnork> >			(obj));
+	add_state(eStateFindEnemy,			xr_new<CStateMonsterTestCover<CSnork> >			(obj));
 	//add_state(eStateFakeDeath,			xr_new<CStateMonsterLookActor<CSnork> >			(obj));
 }
 
@@ -60,7 +62,7 @@ void CStateManagerSnork::execute()
 		else			state_id = eStateRest;
 	}
 
-//	state_id = eStateFindEnemy;
+	//state_id = eStateFindEnemy;
 
 	select_state(state_id); 
 

@@ -70,13 +70,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		)
 	{
 		m_speed			= 0.f;
+		
 
-		// Физика устанавливает позицию в соответствии с нулевой скоростью 
-		//if(!movement_control->JumpState())
-		//{
-		//	Fvector velocity={0.f,0.f,0.f};
-		//	movement_control->SetVelocity		(velocity);
-		//}
 		DBG_PH_MOVE_CONDITIONS( if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)){movement_control->SetPosition(dest_position);movement_control->DisableCharacter();})
 		if(movement_control->IsCharacterEnabled()) {
 			movement_control->Calculate(detail().path(),0.f,detail().m_current_travel_point,precision);
@@ -168,8 +163,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	Fvector velocity					=	dir_to_target;
 	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
 	velocity.mul						(desirable_speed);//*1.25f
-	//if(!movement_control->PhyssicsOnlyMode())
-				//movement_control->SetVelocity		(velocity);
+	if(!movement_control->PhyssicsOnlyMode())
+		movement_control->SetVelocity		(velocity);
 
 	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
 		
@@ -193,12 +188,23 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		// проверка на хит
 		apply_collision_hit						(movement_control);
 	}
-	
+		
+
 	// установить скорость
 	float	real_motion	= motion.magnitude() + desirable_dist - dist;
 	float	real_speed	= real_motion / time_delta;
 	
 	m_speed				= 0.5f * desirable_speed + 0.5f * real_speed;
+	
+
+	// Физика устанавливает позицию в соответствии с нулевой скоростью 
+	if (detail().completed(dest_position,true)) {
+		if(!movement_control->PhyssicsOnlyMode()) {
+			Fvector velocity				= {0.f,0.f,0.f};
+			movement_control->SetVelocity	(velocity);
+			m_speed							= 0.f;
+		}
+	}
 	
 	Device.Statistic.Physics.End	();
 

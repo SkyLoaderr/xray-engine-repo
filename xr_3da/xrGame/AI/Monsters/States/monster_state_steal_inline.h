@@ -9,7 +9,9 @@
 #define CStateMonsterStealAbstract CStateMonsterSteal<_Object>
 
 #define STEAL_MIN_DISTANCE		4.f
+#define STEAL_MAX_DISTANCE		15.f
 #define STEAL_MAX_PATH_ANGLE	PI_DIV_6
+
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterStealAbstract::CStateMonsterSteal(_Object *obj) : inherited(obj)
@@ -26,12 +28,12 @@ void CStateMonsterStealAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterStealAbstract::execute()
 {
-	object->set_action							(ACT_STEAL);
+	object->set_action						(ACT_STEAL);
 	object->anim().accel_activate			(eAT_Calm);
-	object->anim().accel_set_braking			(false);
+	object->anim().accel_set_braking		(false);
 	object->path().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
 	object->path().set_generic_parameters	();
-	object->set_state_sound						(MonsterSpace::eMonsterSoundSteal);
+	object->set_state_sound					(MonsterSpace::eMonsterSoundSteal);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -80,7 +82,8 @@ bool CStateMonsterStealAbstract::check_conditions()
 	
 	// check distance to enemy
 	float dist = object->MeleeChecker.distance_to_enemy(object->EnemyMan.get_enemy());
-	if (dist < STEAL_MIN_DISTANCE)										return false;
+	if (dist < STEAL_MIN_DISTANCE)								return false;
+	else if (dist > STEAL_MAX_DISTANCE)							return false;
 
 	return true;
 }

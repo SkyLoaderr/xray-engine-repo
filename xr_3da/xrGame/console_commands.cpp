@@ -1539,6 +1539,33 @@ public:
 
 };
 
+#include "alife_graph_registry.h"
+class CCC_DumpCreatures : public IConsole_Command {
+public:
+	CCC_DumpCreatures	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void	Execute				(LPCSTR args) {
+		
+		typedef CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeDynamicObject>::_REGISTRY::const_iterator const_iterator;
+
+		const_iterator I = ai().alife().graph().level().objects().begin();
+		const_iterator E = ai().alife().graph().level().objects().end();
+		for ( ; I != E; ++I) {
+			CSE_ALifeCreatureAbstract *obj = smart_cast<CSE_ALifeCreatureAbstract *>(I->second);
+			if (obj) {
+				Msg("\"%s\",",obj->name_replace());
+			}
+		}		
+
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"dumps all creature names"); 
+	}
+
+};
+
+
+
 class CCC_DebugFonts : public IConsole_Command {
 public:
 	CCC_DebugFonts (LPCSTR N) : IConsole_Command(N) {bEmptyArgsHandled = true; }
@@ -2138,6 +2165,7 @@ void CCC_RegisterCommands()
 
 	CMD1(CCC_DumpInfos,				"dump_infos");
 	CMD1(CCC_DumpMap,				"dump_map");
+	CMD1(CCC_DumpCreatures,			"dump_creatures");
 
 #endif
 
