@@ -229,7 +229,7 @@ void CControlPathBuilder::fix_position(const Fvector &pos, u32 node, Fvector &re
 	VERIFY(accessible(node));
 
 	res_pos.set	(pos);
-	res_pos.y	= ai().level_graph().vertex_plane_y(node);
+	res_pos.y	= ai().level_graph().vertex_plane_y(node,res_pos.x,res_pos.z);
 
 	if (!accessible(res_pos)) {
 		u32	level_vertex_id = restrictions().accessible_nearest(Fvector().set(res_pos),res_pos);
