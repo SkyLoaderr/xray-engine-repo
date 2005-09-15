@@ -1,51 +1,51 @@
 <string id="aes_sarcofag_hint">
-	<text>Р’С…РѕРґ РІ СЃР°СЂРєРѕС„Р°Рі</text>
+        <text>Вход в саркофаг</text>
 </string>
 
 <string id="aes_sokol">
-	<text>РЎРѕРєРѕР»</text>
+        <text>Сокол</text>
 </string>
 
 <string id="aes_korshun">
-	<text>РљРѕСЂС€СѓРЅ</text>
+        <text>Коршун</text>
 </string>
 
 <string id="aes_yastreb">
-	<text>РЇСЃС‚СЂРµР±</text>
+        <text>Ястреб</text>
 </string>
 
 <string id="aes_sapsan">
-	<text>РЎР°РїСЃР°РЅ</text>
+        <text>Сапсан</text>
 </string>
 
 <string id="aes_pustelga">
-	<text>РџСѓСЃС‚РµР»СЊРіР°</text>
+        <text>Пустельга</text>
 </string>
 
 <string id="aes_grif">
-	<text>Р“СЂРёС„</text>
+        <text>Гриф</text>
 </string>
 
 <string id="aes_lun">
-	<text>Р›СѓРЅСЊ</text>
+        <text>Лунь</text>
 </string>
 
 <string id="aes_sova">
-	<text>РЎРѕРІР°</text>
+        <text>Сова</text>
 </string>
 
 <string id="aes_kvartet">
-	<text>РљРІР°СЂС‚РµС‚</text>
+        <text>Квартет</text>
 </string>
 
 <string id="aes_btr1">
-	<text>Р‘СЂРѕРЅРµРЅРѕСЃРµС† 1</text>
+        <text>Броненосец 1</text>
 </string>
 
 <string id="aes_btr2">
-	<text>Р‘СЂРѕРЅРµРЅРѕСЃРµС† 2</text>
+        <text>Броненосец 2</text>
 </string>
 
 <string id="aes_btr3">
-	<text>Р‘СЂРѕРЅРµРЅРѕСЃРµС† 3</text>
+        <text>Броненосец 3</text>
 </string>
