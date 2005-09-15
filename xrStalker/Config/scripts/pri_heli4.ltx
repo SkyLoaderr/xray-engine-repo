@@ -1,29 +1,39 @@
 [logic]
-active = heli_move1
+active          = heli_move1
 
 [heli_move1]
-path_move = pri_heli4_wait_path
-on_info = {+pri_helicopters_start} heli_move2
-engine_sound = false
+path_move       = pri_heli4_wait_path
+on_info         = {+pri_helicopters_start} heli_move2
+engine_sound    = false
 
 [heli_move2]
-path_move = pri_heli4_go_path
-invulnerable = true
-immortal = true
-combat_ignore = true
-on_signal = arrived | %+pri_followers_start%
-on_signal2 = wait | heli_move@wait_stadium
+path_move       = pri_heli4_go_path
+invulnerable    = true
+immortal        = true
+combat_ignore   = true
+on_signal       = arrived | %+pri_followers_start%
+on_signal2      = wait | heli_move@wait_stadium
 
 [heli_move@wait_stadium]
-path_move = pri_heli4_wait_stadium_path
-engine_sound = false
-on_info = {+pri_stadium_scene_start} heli_move@hunt_gigants
+path_move       = pri_heli4_wait_stadium_path
+engine_sound    = false
+on_info         = {+pri_stadium_scene_start} heli_move@hunt_gigants
 
 [heli_move@hunt_gigants]
-path_move = pri_heli4_hunt_path
-path_look = pri_heli4_hunt_look
-on_signal = arrived | heli_move@go_away %+pri_stadium_scene_end%
+path_move       = pri_heli4_hunt_path
+path_look       = pri_heli4_hunt_look
+rocket_delay    = 700
+on_signal       = arrived | heli_move@go_away %+pri_stadium_scene_end%
 
+[heli_move@go_away]
+path_move       = pri_heli4_leave_path
+on_signal       = arrived | heli_move@go_away_silent
+
+[heli_move@go_away_silent]
+path_move       = pri_heli4_leave_path
+engine_sound    = false
+
+;--- Old -------------------------------------------------------------------------------------------------
 [heli_move@hunt_gigants_old]
 path_move = pri_heli4_hunt_path
 on_info = {=is_alive(815) =heli_see_npc(815)} heli_move@hunt_gigant1, {=is_alive(816) =heli_see_npc(816)} heli_move@hunt_gigant2
@@ -59,11 +69,3 @@ path_move = pri_heli4_hunt_path
 combat_enemy = 819
 rocket_delay = 700
 on_info = {=is_dead(819)} heli_move@hunt_gigants, {!heli_see_npc(819)} heli_move@hunt_gigants
-
-[heli_move@go_away]
-path_move = pri_heli4_leave_path
-on_signal = arrived | heli_move@go_away_silent
-
-[heli_move@go_away_silent]
-path_move = pri_heli4_leave_path
-engine_sound = false
