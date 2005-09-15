@@ -363,7 +363,7 @@
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\stalker_exoskeleton</visual>
+		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
