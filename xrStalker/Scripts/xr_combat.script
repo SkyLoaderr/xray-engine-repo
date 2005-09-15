@@ -8,6 +8,11 @@ function set_combat_type( npc, actor, t )
 	db.storage[npc:id()].enemy = npc:best_enemy()
 
 	local script_combat_type = xr_logic.pick_section_from_condlist( actor, npc, t.combat_type.condlist )
+
+	if script_combat_type == "nil" then
+		script_combat_type = nil
+	end
+
 	db.storage[npc:id()].script_combat_type = script_combat_type
 
 	return script_combat_type ~= nil
