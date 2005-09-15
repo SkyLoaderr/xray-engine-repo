@@ -1,4 +1,5 @@
-	<string id="aes_military_task">
+	<?xml version="1.0" encoding="windows-1251" ?>
+<string id="aes_military_task">
 		<text>Штурм</text>
 	</string>
 	
