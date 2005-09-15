@@ -24,6 +24,7 @@
 #include "text\rus\string_table_tasks_military.xml"
 #include "text\rus\string_table_tasks_radar.xml"
 #include "text\rus\string_table_tasks_garbage.xml"
+#include "text\rus\string_table_tasks_aes.xml"
 
 #include "text\rus\string_table_mapspots_agroprom.xml"
 #include "text\rus\string_table_mapspots_bar.xml"
