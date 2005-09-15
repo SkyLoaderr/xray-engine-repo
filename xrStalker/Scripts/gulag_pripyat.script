@@ -752,9 +752,9 @@ function check_state_followers(gulag)
 		actor:has_info("pri_wave4_monolith3_dead") and
 		actor:has_info("pri_wave4_monolith4_dead") and
 		actor:has_info("pri_wave4_monolith5_dead") --and
-		--actor:has_info("pri_wave4_monolith6_dead") and
+		actor:has_info("pri_wave4_monolith6_dead") and
 		--actor:has_info("pri_wave4_monolith7_dead") and
-		--actor:has_info("pri_wave4_monolith8_dead")
+		actor:has_info("pri_wave4_monolith8_dead")
 	then
 		actor:give_info_portion("pri_wave4_end")
 		return state_wave5
