@@ -4581,7 +4581,7 @@
 					</File>
 					<File
 						RelativePath=".\ai_object_location_inline.h">
-					</File>
+					</File>
 				</Filter>
 				<Filter
 					Name="Pathfinding"
@@ -6404,6 +6404,19 @@
 						<File
 							RelativePath="ActorVehicle.cpp">
 						</File>
+						<Filter
+							Name="memory"
+							Filter="">
+							<File
+								RelativePath=".\actor_memory.cpp">
+							</File>
+							<File
+								RelativePath=".\actor_memory.h">
+							</File>
+							<File
+								RelativePath=".\actor_memory_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="actor_demo"

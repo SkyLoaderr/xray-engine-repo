@@ -60,6 +60,8 @@ class CGameTaskManager;
 class CCameraShotEffector;
 class CActorInputHandler;
 
+class CActorMemory;
+
 class	CActor: 
 	public CEntityAlive, 
 	public IInputReceiver,
@@ -712,6 +714,12 @@ public:
 			Fvector				weapon_recoil_delta_angle		();
 protected:
 	virtual	void				update_camera					(CCameraShotEffector* effector);
+
+private:
+	CActorMemory				*m_memory;
+
+public:
+	IC		CActorMemory		&memory							() const {VERIFY(m_memory); return(*m_memory); };
 };
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

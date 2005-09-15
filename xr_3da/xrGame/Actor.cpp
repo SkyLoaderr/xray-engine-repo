@@ -80,6 +80,8 @@
 #include "GameTaskManager.h"
 #include "EffectorShotX.h"
 
+#include "actor_memory.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -202,11 +204,14 @@ CActor::CActor() : CEntityAlive()
 	m_pLastHittingWeapon	= NULL;
 	m_game_task_manager		= NULL;
 	//-----------------------------------------------------------------------------------
+	m_memory				= xr_new<CActorMemory>(this);
 }
 
 
 CActor::~CActor()
 {
+	xr_delete				(m_memory);
+
 	dbgmp_light.destroy		();	//.
 
 	xr_delete				(contacts_registry);
@@ -248,7 +253,8 @@ void CActor::reinit	()
 	CInventoryOwner::reinit	();
 	material().reinit		();
 	m_pPhysics_support->in_Init		();
-	m_pUsableObject=NULL;
+	m_pUsableObject					=NULL;
+	memory().reinit			();
 	
 	set_input_external_handler	(0);
 }
@@ -259,6 +265,7 @@ void CActor::reload	(LPCSTR section)
 	CInventoryOwner::reload	(section);
 	material().reload		(section);
 	CStepManager::reload	(section);
+	memory().reload			(section);
 }
 
 void CActor::Load	(LPCSTR section )
@@ -267,6 +274,7 @@ void CActor::Load	(LPCSTR section )
 	inherited::Load			(section);
 	material().Load			(section);
 	CInventoryOwner::Load	(section);
+	memory().Load			(section);
 
 	//////////////////////////////////////////////////////////////////////////
 	ISpatial*		self			=	smart_cast<ISpatial*> (this);

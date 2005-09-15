@@ -37,9 +37,10 @@
 #include "gamepersistent.h"
 #include "game_object_space.h"
 #include "GameTaskManager.h"
-
 #include "game_base_kill_type.h"
 #include "holder_custom.h"
+#include "actor_memory.h"
+
 int			g_cl_InterpolationType		= 0;
 u32			g_cl_InterpolationMaxPoints = 0;
 int			g_dwInputUpdateDelta		= 20;
@@ -894,6 +895,8 @@ void CActor::net_Relcase	(CObject* O)
 		m_holder=NULL;
 	}
 	inherited::net_Relcase	(O);
+
+	memory().remove_links	(O);
 }
 
 BOOL	CActor::net_Relevant		()				// relevant for export to server

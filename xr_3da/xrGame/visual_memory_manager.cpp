@@ -23,6 +23,7 @@
 #include "actor.h"
 #include "../camerabase.h"
 #include "gamepersistent.h"
+#include "actor_memory.h"
 
 #ifdef DEBUG
 #	include "memory_manager.h"
@@ -108,7 +109,8 @@ void CVisualMemoryManager::reinit					()
 	m_not_yet_visible_objects.clear		();
 	m_not_yet_visible_objects.reserve	(100);
 
-	m_object->feel_vision_clear			();
+	if (m_object)
+		m_object->feel_vision_clear		();
 }
 
 void CVisualMemoryManager::reload				(LPCSTR section)
@@ -120,7 +122,7 @@ void CVisualMemoryManager::reload				(LPCSTR section)
 		m_danger.Load	(pSettings->r_string(section,"vision_danger_section"),true);
 	}
 	else
-		m_free.Load		(section,false);
+		m_free.Load		(section,!!m_actor);
 }
 
 IC	const CVisionParameters &CVisualMemoryManager::current_state() const
@@ -185,7 +187,7 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	if (m_stalker)
 		m_stalker->update_range_fov		(object_range,object_fov,m_stalker->eye_range,deg2rad(m_stalker->eye_fov));
 	else {
-		object_fov						= m_actor->cam_Active()->f_fov;
+		object_fov						= deg2rad(m_actor->cam_Active()->f_fov);
 		object_range					= g_pGamePersistent->Environment.CurrentEnv.far_plane;
 	}
 
@@ -375,7 +377,10 @@ void CVisualMemoryManager::update				(float time_delta)
 	squad_mask_type						mask = this->mask();
 	VERIFY								(m_objects);
 	m_visible_objects.clear				();
-	m_object->feel_vision_get			(m_visible_objects);
+	if (m_object)
+		m_object->feel_vision_get		(m_visible_objects);
+	else
+		m_actor->memory().feel_vision_get(m_visible_objects);
 
 	{
 		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
