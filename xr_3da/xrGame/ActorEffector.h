@@ -70,6 +70,6 @@ public:
 	SndShockEffector	();
 	~SndShockEffector	();
 	bool Active			();
-	void Start			(int snd_length);
+	void Start			(int snd_length, float power);
 	void Update			();
 };

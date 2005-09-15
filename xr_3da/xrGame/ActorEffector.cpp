@@ -167,14 +167,23 @@ void CActorEffector::ApplyDevice ()
 class CShockPPEffector : public CEffectorPP {
 	typedef CEffectorPP inherited;	
 	SndShockEffector * m_shockEff;
+	float m_end_time;
 public:
-	CShockPPEffector		(float life_time, SndShockEffector * eff):CEffectorPP(cefppHit,life_time),m_shockEff(eff){};
+	CShockPPEffector		(float life_time, SndShockEffector * eff):CEffectorPP(cefppHit,life_time),m_shockEff(eff){
+		m_end_time = Device.fTimeGlobal + fLifeTime;
+	};
 	virtual	BOOL	Process					(SPPInfo& pp){
 		inherited::Process(pp);
 		pp = pp_identity;
-		float dk				= (float(m_shockEff->m_snd_length-m_shockEff->m_cur_length)/float(m_shockEff->m_snd_length));
-		pp.duality.h			= 0.1f*_sin(Device.fTimeGlobal)*dk;
-		pp.duality.v			= 0.1f*_cos(Device.fTimeGlobal)*dk;
+//		float dk				= (float(m_shockEff->m_snd_length-m_shockEff->m_cur_length)/float(m_shockEff->m_snd_length));
+		float tt				= Device.fTimeGlobal;
+		float dk				= (m_end_time-tt)/fLifeTime;
+
+//		pp.duality.h			= 0.1f*_sin(Device.fTimeGlobal)*dk;
+//		pp.duality.v			= 0.1f*_cos(Device.fTimeGlobal)*dk;
+
+		pp.duality.h			= (fLifeTime*0.1f/6.0f)*_sin(Device.fTimeGlobal)*dk;
+		pp.duality.v			= (fLifeTime*0.1f/6.0f)*_cos(Device.fTimeGlobal)*dk;
 		return TRUE;
 	}
 };
@@ -200,7 +209,7 @@ bool SndShockEffector::Active()
 	return (m_cur_length<=m_snd_length);
 }
 
-void SndShockEffector::Start(int snd_length)
+void SndShockEffector::Start(int snd_length, float power)
 {
 	m_snd_length = snd_length;
 
@@ -213,7 +222,9 @@ void SndShockEffector::Start(int snd_length)
 	m_cur_length		= 0;
 	psSoundVEffects		= m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
 	psSoundVMusic		= m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
-	Level().Cameras.AddEffector(xr_new<CShockPPEffector>(float(snd_length)/1000.0f,this));
+	
+	static float		xxx = 6.0f/150.0f; //6sec on max power(150)
+	Level().Cameras.AddEffector(xr_new<CShockPPEffector>(power*xxx,this));
 }
 
 void SndShockEffector::Update()
@@ -225,6 +236,6 @@ void SndShockEffector::Update()
 		psSoundVEffects		= y*(m_stored_eff_volume-m_stored_eff_volume*SND_MIN_VOLUME_FACTOR)+m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
 		psSoundVMusic		= y*(m_stored_music_volume-m_stored_music_volume*SND_MIN_VOLUME_FACTOR)+m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
 	}
-//	if(!Device.dwFrame%100)
+//	if(!(Device.dwFrame%100))
 //		Msg("--Update. Cur Volume=%f", psSoundVEffects);
 }
