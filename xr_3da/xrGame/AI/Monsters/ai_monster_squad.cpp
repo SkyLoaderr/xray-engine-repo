@@ -2,6 +2,15 @@
 #include "ai_monster_squad.h"
 #include "../../entity.h"
 
+CMonsterSquad::CMonsterSquad() : leader(0) 
+{
+	m_locked_covers.reserve(20);
+}
+
+CMonsterSquad::~CMonsterSquad() 
+{
+}
+
 void CMonsterSquad::RegisterMember(CEntity *pE)
 {
 	// Добавить цель
@@ -34,6 +43,9 @@ void CMonsterSquad::RemoveMember(CEntity *pE)
 		if (m_goals.empty()) leader = 0;
 		else leader = m_goals.begin()->first;
 	}
+
+	// усли последний элемент, очистить залоченные каверы
+	if (m_goals.empty()) m_locked_covers.clear();
 }
 
 bool CMonsterSquad::SquadActive()
@@ -133,3 +145,26 @@ void CMonsterSquad::remove_links(CObject *O)
 		}
 	}
 }
+
+
+bool CMonsterSquad::is_locked_cover(u32 node)
+{
+	NODES_VECTOR_IT it = find(m_locked_covers.begin(), m_locked_covers.end(), node);	
+	if (it == m_locked_covers.end()) return false;
+
+	return true;
+}
+
+void CMonsterSquad::lock_cover(u32 node)
+{
+	m_locked_covers.push_back(node);
+}
+
+void CMonsterSquad::unlock_cover(u32 node)
+{
+	NODES_VECTOR_IT it = find(m_locked_covers.begin(), m_locked_covers.end(), node);
+	if (it != m_locked_covers.end())
+		m_locked_covers.erase(it);
+}
+
+

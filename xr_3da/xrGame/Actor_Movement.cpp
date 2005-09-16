@@ -520,6 +520,7 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 }
 
 
+
 bool	isActorAccelerated			(u32 mstate, bool ZoomMode) 
 {
 	bool res = false;
@@ -599,4 +600,10 @@ void CActor::StopAnyMove()
 {
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
+}
+
+
+bool CActor::is_jump()
+{
+	return (mstate_real & (mcJump|mcFall|mcLanding|mcLanding2));
 }

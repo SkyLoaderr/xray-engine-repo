@@ -66,12 +66,13 @@ class CMonsterSquad {
 	// карта комманд членов группы (обновляется со стороны squad manager)
 	MEMBER_COMMAND_MAP	m_commands;
 
-
+	DEFINE_VECTOR	(u32, NODES_VECTOR, NODES_VECTOR_IT);
+	NODES_VECTOR	m_locked_covers;
 
 public:
 	
-				CMonsterSquad		() : leader(0) {}
-				~CMonsterSquad		() {}
+				CMonsterSquad		();
+				~CMonsterSquad		();
 
 	// -----------------------------------------------------------------
 
@@ -143,6 +144,15 @@ public:
 	void			ProcessIdle				();
 	void			Idle_AssignAction		(ENTITY_VEC &members);
 
+	////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//  Covers
+	//////////////////////////////////////////////////////////////////////////////////////
+	bool			is_locked_cover			(u32 node);
+	void			lock_cover				(u32 node);
+	void			unlock_cover			(u32 node);
 	////////////////////////////////////////////////////////////////////////////////////////
 
 };

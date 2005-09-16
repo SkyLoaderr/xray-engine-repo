@@ -11,6 +11,8 @@
 #include "../../level_debug.h"
 #include "../../cover_manager.h"
 #include "../../ai_object_location.h"
+#include "ai_monster_squad.h"
+#include "ai_monster_squad_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CControllerCoverEvaluator
@@ -24,6 +26,8 @@ class CCoverEvaluator : public CCoverEvaluatorBase {
 	float				m_deviation;
 	float				m_best_distance;
 
+	CBaseMonster		*m_object;
+
 public:
 				CCoverEvaluator	(CRestrictedObject *object);
 
@@ -31,7 +35,7 @@ public:
 	void		initialize		(const Fvector &start_position);
 
 	// manual setup
-	void		setup			(const Fvector &position, float min_pos_distance, float	max_pos_distance, float deviation = 0.f);
+	void		setup			(CBaseMonster *object, const Fvector &position, float min_pos_distance, float	max_pos_distance, float deviation = 0.f);
 
 	void		evaluate		(CCoverPoint *cover_point, float weight);
 };
@@ -43,11 +47,19 @@ public:
 	// setup internals here
 				CCoverPredicate				();
 	// called from cover_manager for every cover (for suitable cover)
-	bool		operator()					(CCoverPoint *cover) const;
+	bool		operator()					(CCoverPoint *cover) const 
+	{
+		return true;
+	}
 	// must return a value that is transfered to cover evaluator
-	float		weight						(CCoverPoint *cover) const;
+	float		weight						(CCoverPoint *cover) const
+	{
+		return 1.f;
+	}
 
-	void		finalize					(CCoverPoint *cover) const;
+	void		finalize					(CCoverPoint *cover) const
+	{
+	}
 };
 
 
@@ -65,9 +77,11 @@ CCoverEvaluator::CCoverEvaluator(CRestrictedObject *object) : inherited(object)
 	m_current_distance		= flt_max;
 }
 
-void CCoverEvaluator::setup(const Fvector &position, float min_pos_distance, float max_pos_distance, float deviation)
+void CCoverEvaluator::setup(CBaseMonster *object, const Fvector &position, float min_pos_distance, float max_pos_distance, float deviation)
 {
 	inherited::setup();
+
+	m_object				= object;
 
 	m_dest_position			= position;
 
@@ -97,6 +111,8 @@ void CCoverEvaluator::evaluate(CCoverPoint *cover_point, float weight)
 #ifdef DEBUG
 	//DBG().level_info(this).add_item(cover_point->position(), D3DCOLOR_XRGB(0,255,0));
 #endif
+	CMonsterSquad *squad = monster_squad().get_squad(m_object);
+	if (squad->is_locked_cover(cover_point->level_vertex_id())) return;
 
 	if (fis_zero(weight))
 		return;
@@ -128,25 +144,6 @@ void CCoverEvaluator::evaluate(CCoverPoint *cover_point, float weight)
 	m_best_value			= value;
 }
 
-//////////////////////////////////////////////////////////////////////////
-// CCoverPredicate Implementation
-//////////////////////////////////////////////////////////////////////////
-
-
-bool CCoverPredicate::operator()				(CCoverPoint *cover) const
-{
-	return				(true);
-}
-
-float CCoverPredicate::weight					(CCoverPoint *cover) const
-{
-	return				(1.f);
-}
-
-void CCoverPredicate::finalize				(CCoverPoint *cover) const
-{
-}
-
 
 //=============================================================================
 // Cover Manager
@@ -163,7 +160,7 @@ void CMonsterCoverManager::load()
 
 CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &position, float min_pos_distance, float max_pos_distance, float deviation)
 {
-	m_ce_best->setup	(position,min_pos_distance,max_pos_distance,deviation);
+	m_ce_best->setup	(m_object, position,min_pos_distance,max_pos_distance,deviation);
 	CCoverPoint			*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_ce_best);
 	
 	return				point;

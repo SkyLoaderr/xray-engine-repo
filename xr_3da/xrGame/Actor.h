@@ -437,6 +437,8 @@ public:
 	bool					CanSprint				();
 	bool					CanRun					();
 	void					StopAnyMove				();
+
+	bool					is_jump					();		
 protected:
 	u32						mstate_wishful;
 	u32						mstate_old;

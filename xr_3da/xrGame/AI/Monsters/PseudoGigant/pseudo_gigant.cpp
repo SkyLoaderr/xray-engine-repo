@@ -191,24 +191,6 @@ void CPseudoGigant::on_activate_control(ControlCom::EControlType type)
 
 void CPseudoGigant::on_threaten_execute()
 {
-	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
-	if (!pA) return;
-	
-	pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_threaten_effector.ce_time,m_threaten_effector.ce_amplitude,m_threaten_effector.ce_period_number,m_threaten_effector.ce_power));
-	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_threaten_effector.ppi, m_threaten_effector.time, m_threaten_effector.time_attack, m_threaten_effector.time_release));
-
-	if (pA->cam_Active()) {
-		pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(0.3f)); 
-		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f)); 
-	}
-
-	Fvector		pos;
-	pos.set		(Position());
-	pos.y		+= 0.1f;
-	m_sound_threaten_hit.play_at_pos(this,pos);
-	
-	pA->movement_control()->ApplyImpulse(Fvector().set(0.f,1.f,0.f), 20 * pA->movement_control()->GetMass());
-
 	// hit objects
 	xr_vector<CObject*> tpObjects;
 	Level().ObjectSpace.GetNearest(tpObjects,Position(), 15.f); 
@@ -226,6 +208,24 @@ void CPseudoGigant::on_threaten_execute()
 		obj->m_pPhysicsShell->applyImpulse(dir,20 * obj->m_pPhysicsShell->getMass());
 	}
 
+	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
+	if (!pA) return;
+	if (pA->is_jump()) return;
+
+	pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_threaten_effector.ce_time,m_threaten_effector.ce_amplitude,m_threaten_effector.ce_period_number,m_threaten_effector.ce_power));
+	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_threaten_effector.ppi, m_threaten_effector.time, m_threaten_effector.time_attack, m_threaten_effector.time_release));
+
+	if (pA->cam_Active()) {
+		pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(0.3f)); 
+		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f)); 
+	}
+
+	Fvector		pos;
+	pos.set		(Position());
+	pos.y		+= 0.1f;
+	m_sound_threaten_hit.play_at_pos(this,pos);
+	
+	pA->movement_control()->ApplyImpulse(Fvector().set(0.f,1.f,0.f), 20 * pA->movement_control()->GetMass());
 }
 
 

@@ -21,6 +21,31 @@ CStateMonsterAttackCampAbstract::CStateMonsterAttackCamp(_Object *obj) : inherit
 	add_state	(eStateAttackCamp_StealOut,	xr_new<CStateMonsterAttackCampStealOut<_Object> >(obj));
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateMonsterAttackCampAbstract::initialize()
+{
+	inherited::initialize();
+
+	CMonsterSquad *squad = monster_squad().get_squad(object);
+	squad->lock_cover(m_target_node);
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterAttackCampAbstract::finalize()
+{
+	inherited::finalize();
+	CMonsterSquad *squad = monster_squad().get_squad(object);
+	squad->unlock_cover(m_target_node);
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterAttackCampAbstract::critical_finalize()
+{
+	inherited::critical_finalize();
+
+	CMonsterSquad *squad = monster_squad().get_squad(object);
+	squad->unlock_cover(m_target_node);
+}
 
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackCampAbstract::check_completion()
