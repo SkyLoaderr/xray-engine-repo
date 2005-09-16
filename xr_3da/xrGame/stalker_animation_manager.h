@@ -83,6 +83,7 @@ protected:
 			MotionID		weapon_animation				(u32 slot, const EBodyState &body_state) const;
 			MotionID		missile_animation				(u32 slot, const EBodyState &body_state) const;
 			bool			strapped						() const;
+			bool			standing						() const;
 
 protected:
 			void			assign_bone_callbacks			();

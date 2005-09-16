@@ -167,3 +167,8 @@ void CStalkerAnimationManager::update						()
 		throw;
 	}
 }
+
+bool CStalkerAnimationManager::standing					() const
+{
+	return						((object().movement().speed(object().m_PhysicMovementControl) < EPS_L) || (eMovementTypeStand == object().movement().movement_type()));
+}

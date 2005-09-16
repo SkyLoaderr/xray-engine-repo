@@ -35,7 +35,7 @@ MotionID CStalkerAnimationManager::assign_legs_animation	()
 	object().sight().GetDirectionAngles	(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
 
-	if ((object().movement().speed(object().m_PhysicMovementControl) < EPS_L) || (eMovementTypeStand == object().movement().movement_type())) {
+	if (standing()) {
 		// standing
 		if (angle_difference(object().movement().body_orientation().current.yaw,object().movement().body_orientation().target.yaw) <= EPS_L)
 			return			(m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) || (object().movement().body_state() == eBodyStateCrouch) ? 1 : 0]);
