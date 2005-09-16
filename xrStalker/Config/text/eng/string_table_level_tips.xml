@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+<!-- ПРИ ЛОКАЛИЗАЦИИ НЕ ЗАБЫТЬ ИЗМЕНИТЬ ПУТЬ -->
 #include "text\eng\string_table_tips_escape.xml"
 #include "text\eng\string_table_tips_garbage.xml"
 #include "text\eng\string_table_tips_agroprom.xml"
@@ -14,6 +15,7 @@
 #include "text\eng\stable_storyline_info_bar.xml"
 #include "text\eng\stable_storyline_info_military.xml"
 #include "text\eng\stable_storyline_info_radar.xml"
+#include "text\eng\stable_storyline_info_aes.xml"
 
 #include "text\eng\string_table_tasks_escape.xml"
 #include "text\eng\string_table_tasks_agroprom.xml"
@@ -22,6 +24,7 @@
 #include "text\eng\string_table_tasks_military.xml"
 #include "text\eng\string_table_tasks_radar.xml"
 #include "text\eng\string_table_tasks_garbage.xml"
+#include "text\eng\string_table_tasks_aes.xml"
 
 #include "text\eng\string_table_mapspots_agroprom.xml"
 #include "text\eng\string_table_mapspots_bar.xml"
@@ -30,6 +33,11 @@
 #include "text\eng\string_table_mapspots_escape.xml"
 #include "text\eng\string_table_mapspots_military.xml"
 #include "text\eng\string_table_mapspots_radar.xml"
+#include "text\eng\string_table_mapspots_aes.xml"
+
+#include "text\rus\stable_generate_fnames.xml"
+#include "text\rus\stable_generate_snames.xml"
+
     <string id="car_use">
         <text>Open door ($$ACTION_USE$$)</text>
     </string>

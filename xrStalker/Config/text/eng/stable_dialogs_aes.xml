@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="aes_sergeant_diallog_0">
         <text>d1</text>
@@ -7,99 +7,105 @@
         <text>d2</text>
     </string>
     <string id="aes_sergeant_diallog_1001">
-        <text>Помоги... Помоги...</text>
+        <text>Help... Help...</text>
     </string>
     <string id="aes_sergeant_diallog_1002">
-        <text>Опа... Да, служивый, покромсало тебя знатно...</text>
+        <text>Whoa... Yeah, Mr. Soldier, I see you've been damaged so far...</text>
     </string>
     <string id="aes_sergeant_diallog_1003">
-        <text>Хрен тебе, скотина!</text>
+        <text>Screw you, scoundrel!</text>
     </string>
     <string id="aes_sergeant_diallog_1004">
-        <text>Ты этот... монолитовец? Я слы... шал... так вас полкан называл...</text>
+        <text>Are you the... hum... monolithian? I've he-e-ard... colonel called you so..</text>
     </string>
     <string id="aes_sergeant_diallog_1005">
-        <text>Был бы я один из них, ты б уже не разговаривал... Меченый я, сталкер. А вот ты что за чудо в перьях?</text>
+        <text>If I were one of them, you would have no chance to talk now... Branded one I am, stalker. And what kind of nut are you?</text>
     </string>
     <string id="aes_sergeant_diallog_1006">
-        <text>Я... сержант... Василь Невезучий...</text>
+        <text>Me... corporal... Johnny Luckless...</text>
     </string>
     <string id="aes_sergeant_diallog_1007">
-        <text>Да уж, заметно.</text>
+        <text>Yeah, well I see that.</text>
     </string>
     <string id="aes_sergeant_diallog_1008">
-        <text>Кто... кто из наших ещё выжил?</text>
+        <text>Who... who else has survived?</text>
     </string>
     <string id="aes_sergeant_diallog_1009">
-        <text>Не похоже. Чёрт, врача бы сюда. Аптечкой, брат, тебе не поможешь.</text>
+        <text>Not likely. Damn, I should have a medical aid from the doctor not from the medikit. </text>
     </string>
     <string id="aes_sergeant_diallog_1010">
-        <text>Видно, и мне... пора... с товарищами...</text>
+        <text>Apparently, it's my time to go... with comrades</text>
     </string>
     <string id="aes_sergeant_diallog_1011">
-        <text>Вот это уж не торопись. И так все там будем.</text>
+        <text>Hush for a while. Sooner or later we'll all be there.</text>
     </string>
     <string id="aes_sergeant_diallog_1012">
-        <text>Ну так я тебя не задерживаю.</text>
+        <text>Well, I'm not holding you back.</text>
     </string>
     <string id="aes_sergeant_diallog_1013">
-        <text>Спасибо, мужик... Полкан говорил... вы тут все твари, на людей не похожи... кх... кх... а ты нормальный...</text>
+        <text>Thanks, man... Colonel told...that you all had to be some kind of inhuman brutes here... kh... whilst you seem to be pretty adequate...</text>
     </string>
     <string id="aes_sergeant_diallog_1014">
-        <text>Уродов-то здесь хватает. Ты мне скажи, кто это вас так разделал?</text>
+        <text>You surely can find some brutes here. Tell me more, who did it to you?</text>
     </string>
     <string id="aes_sergeant_diallog_1015">
-        <text>Нет, дружище. Что я нормальный - это тебе показалось. Счас я тебя зажарю и съем... хотя даже жарить не буду.</text>
+        <text>No, my friend. I'm not really adequate - it just looks to be so. I'm going to fry you and eat... in fact, forget the fry stuff.</text>
     </string>
     <string id="aes_sergeant_diallog_1016">
-        <text>Как детей малых... кх... кх.... Там разведка радиохимическая... впереди шла на вертушках... понадеялись на них... а их за пять секунд... А потом колонну нашу... зажали... и тоже... за пару минут... отдуплили... Только я... успел двоим... бошки посносил...</text>
+        <text>Like total newbies... hem... There was a radiochemical reconnaissance... conducted by the copters... they had too much confidence in those ones... and \nwhere obliterated in a jiffy... And then you column was blocked up... and as well was screwed... Only I made it.. to... knock a couple of foes off...</text>
     </string>
     <string id="aes_sergeant_diallog_1017">
-        <text>Вояки... Быстро вы тут появились! Радар вроде только-только отключился.</text>
+        <text>Fighting-cocks.. It took a few seconds for you to appear here! The radar has just shut down.</text>
     </string>
     <string id="aes_sergeant_diallog_1018">
-        <text>Мы месяц тут... в двух шагах, на самой границе зоны парились... в полной готовности... Бой... бой еще идет?..</text>
+        <text>A month here... two steps from here, on the border of the zone we were... fully prepared.. Battle.. the battle still there?..</text>
     </string>
     <string id="aes_sergeant_diallog_1019">
-        <text>Есть такое дело. Расшумелся кто-то не на шутку.</text>
+        <text>This is the case in point. Someone was really noisy there.</text>
     </string>
     <string id="aes_sergeant_diallog_1020">
-        <text>Может, кто из наших живой... закрепиться смог... У нас... задача была - захватить дорогу к Сарко... кх... кх... Саркофагу... если что, ждать подкреплений...</text>
+        <text>Maybe someone of us, alive... could settle there... We had... a task - to capture the path to Sarco... hk... khe... Sarcophagus... if something happens - must wait  \nfor reinforcements..</text>
     </string>
     <string id="aes_sergeant_diallog_1021">
-        <text>Подкреплений?</text>
+        <text>Reinforcements?</text>
     </string>
     <string id="aes_sergeant_diallog_1022">
-        <text>Батя... полкан наш говорил - отпора почти не будет... звери... уродов пара...</text>
+        <text>Our pop... colonel told that there should be merely no rebuff there... just beasts... few monstrosities...</text>
     </string>
     <string id="aes_sergeant_diallog_1023">
-        <text>Так что за подкрепления?</text>
+        <text>So what's with the reinforcements?</text>
     </string>
     <string id="aes_sergeant_diallog_1024">
-        <text>Там спецназ... тоже: мы облажались, они начнут... Я думал, постреляем... кх... немного... а тут война... Не ходи прямо по дороге...</text>
+        <text>There is the task force... as well, once we have failed, they'll begin... I though we'll make a skirmish there... keh... a bit... and the battle here... Don't walk \nstraight the road...</text>
     </string>
     <string id="aes_sergeant_diallog_1025">
-        <text>Вася! Что ты там про спецназ?.. Смотри на меня! Глаза не закрывай, ну!..</text>
+        <text>Goofy! What was it about the task force?... Look at me! Don't close your eyes, well!</text>
     </string>
     <string id="aes_sergeant_diallog_1026">
-        <text>А-а, больно!.. А-а-а... домой меня... без вертушек тут хрен прорвёшься....</text>
+        <text>A-a-a, it hurts!.. Oh, take me home... no chance to break through without the copters...</text>
     </string>
     <string id="aes_sergeant_diallog_1027">
-        <text>Сержант!..</text>
+        <text>Sergeant?</text>
     </string>
     <string id="aes_sergeant_diallog_1028">
-        <text>Так точно... сержант Невезучий Счастливенко... У противника... минимум три пулеметных точки, несколько снайперов... Мужик, ты не ходи... не ходи туда... кх... кх...</text>
+        <text>Yes... sergeant Luck Lessy... The enemy has minimum three machine-gun dots, several snipers... Man, you'd better not.. don't go there... keh..</text>
     </string>
     <string id="aes_sergeant_diallog_1029">
-        <text>Ну ещё чуток, сержант! Когда? Когда спецназ пойдёт?..</text>
+        <text>Few more seconds, sergeant! When a hell... When this cursed task force arrives?</text>
     </string>
     <string id="aes_sergeant_diallog_1030">
-        <text>А?.. Сталкер... спецназ... нас раздолбали, он... сейчас...</text>
+        <text>Huh?.. Stalker... task force... we were knocked out, it... now....</text>
     </string>
     <string id="aes_sergeant_diallog_1031">
-        <text>Сейчас? Ёханый бабай...</text>
+        <text>Now? Oh my gosh...</text>
     </string>
     <string id="aes_sergeant_diallog_1032">
-        <text>Ты кто такой ?</text>
+        <text>Who are you?</text>
+    </string>
+    <string id="aes_sergeant_diallog_1033">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_sergeant_diallog_1035">
+        <text>This string was added automatically</text>
     </string>
 </string_table>
