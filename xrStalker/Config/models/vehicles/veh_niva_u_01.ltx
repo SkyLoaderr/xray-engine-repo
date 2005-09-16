@@ -22,16 +22,16 @@ exhausts				= exhausts                                                          
 ;------ Factory parameters of Engine -------------------------------------------
 
 fuel_tank         		= 80         	; L
-fuel_consumption  		= 7		       	; L / (100k R); liters per 100 000 rotations
-engine_power      		= 10        	; horse_power (kW=hp*0.808) max power
+fuel_consumption  		= 1		       	; L / (100k R); liters per 100 000 rotations
+engine_power      		= 8	        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 4000        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 2500       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 3000       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.02
 power_decrement_factor	= 0.1
 rpm_increment_factor	= 0.1
-rpm_decrement_factor	= 0.2
-m_power_neutral_factor	= 0.5
+rpm_decrement_factor	= 0.3
+m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
 
@@ -42,12 +42,12 @@ idling_engine_rpm		= 850       	; rpm (750) min rpm - starts from this rpm value
 ;------ Adjustment a wheel -----------------------------------------------------
 
 reference_radius  		= 0.38			; Радиус колеса, используемый при просчёте двигателя
-axle_friction     		= 0.01      	; Ослабление скорости в неетральной позиции. (N*m)
+axle_friction     		= 0.1	      	; Ослабление скорости в неетральной позиции. (N*m)
 steering_speed    		= 1.0         	; Время поворота рулевого колеса, в максимум. rps (1)
 steering_torque   		= 900		   	; Сила гидроусилителя руля. (N*m)
-break_torque      		= 0.0        	; Сила тормозных колодок. (N*m)
-break_time        		= 0.5         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
-hand_break_torque 		= 0.0        	; сила торможения пробелом (по умолчанию = break_torque)
+break_torque      		= 0.012        	; Сила тормозных колодок. (N*m)
+break_time        		= 1.0         	; время нарастания силы торможения до максимума, при подтормаживании (стрелка назад)
+hand_break_torque 		= 0.012        	; сила торможения пробелом (по умолчанию = break_torque)
 
 ;-------------------------------------------------------------------------------
 ;------ Gearbox ----------------------------------------------------------------
@@ -73,7 +73,7 @@ headlights         		= f1,f2
 bone               		= left_light
 color              		= 1.0,1.0,1.0,1.0
 range              		= 25
-cone_angle         		= 35
+cone_angle         		= 60
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
 glow_radius        		= 1.5
@@ -82,7 +82,7 @@ glow_radius        		= 1.5
 bone               		= right_light
 color              		= 1.0,1.0,1.0,1.0
 range              		= 25
-cone_angle         		= 35
+cone_angle         		= 60
 spot_texture       		= lights\lights_blamplight
 glow_texture       		= glow\glow_Yellow
 glow_radius        		= 1.5
@@ -218,35 +218,35 @@ angular_factor          = 250.f		;
 [wheels_params]
 damping_factor          = 10		;
 spring_factor           = 1			;
-friction_factor         = 1.2		;
+friction_factor         = 1.0		;
 
 [front_left_wheel]
-break_torque			= 0.015		; Сила тормозных колодок. (N*m
-hand_break_torque		= 0.01		; сила торможения пробелом (по умолчанию = break_torque)
+break_torque			= 0.012		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.012		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1			;
-friction_factor         = 1.1		;
+friction_factor         = 0.9		;
 
 [front_right_wheel]
-break_torque			= 0.015		; Сила тормозных колодок. (N*m
-hand_break_torque		= 0.01		; сила торможения пробелом (по умолчанию = break_torque)
+break_torque			= 0.012		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.012		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1			;
-friction_factor         = 1.1		;
+friction_factor         = 0.9		;
 
 [back_left_wheel]
-break_torque			= 0.015		; Сила тормозных колодок. (N*m
-hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_torque)
+break_torque			= 0.012		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.012		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1			;
-friction_factor         = 1.2		;
+friction_factor         = 1.0		;
 
 [back_right_wheel]
-break_torque			= 0.015		; Сила тормозных колодок. (N*m
-hand_break_torque		= 0.015		; сила торможения пробелом (по умолчанию = break_torque)
+break_torque			= 0.012		; Сила тормозных колодок. (N*m
+hand_break_torque		= 0.012		; сила торможения пробелом (по умолчанию = break_torque)
 damping_factor          = 10		;
 spring_factor           = 1			;
-friction_factor         = 1.2		;
+friction_factor         = 1.0		;
 
 [collide]
 not_collide_parts		= 1
