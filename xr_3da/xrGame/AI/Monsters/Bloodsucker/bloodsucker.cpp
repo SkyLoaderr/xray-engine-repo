@@ -18,9 +18,10 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
-#ifdef _DEBUG
-#	include <dinput.h>
+#ifdef DEBUG
+#include <dinput.h>
 #endif
+
 
 
 CAI_Bloodsucker::CAI_Bloodsucker()
