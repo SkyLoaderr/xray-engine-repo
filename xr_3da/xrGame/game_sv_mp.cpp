@@ -783,7 +783,10 @@ void	game_sv_mp::OnPlayerHitted			(NET_Packet P)
 	game_PlayerState* PSHitted		=	get_eid			(id_hitted);
 	if (PSHitted == PSHitter) return;
 	if (!PSHitted || !CheckTeams() || PSHitted->team != PSHitter->team)
-		Player_AddExperience(PSHitter, dHealth);
+	{
+		Rank_Struct* pCurRank = &(m_aRanks[PSHitter->rank]);
+		Player_AddExperience(PSHitter, dHealth*pCurRank->m_aRankDiff_ExpBonus[PSHitted->rank]);
+	};
 };
 	
 void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 KillerID, u16 WeaponID, SPECIAL_KILL_TYPE SpecialKill)
@@ -887,6 +890,15 @@ void		game_sv_mp::OnPlayerSpeechMessage	(NET_Packet& P, ClientID sender)
 void	game_sv_mp::LoadRanks	()
 {
 	m_aRanks.clear();
+	int NumRanks = 0;
+	while(1)
+	{
+		string256 RankSect;
+		sprintf(RankSect, "rank_%d",NumRanks);
+		if (!pSettings->section_exist(RankSect)) break;
+		NumRanks++;
+	};
+
 	for (int i=0; ; i++)
 	{
 		string256 RankSect;
@@ -896,6 +908,17 @@ void	game_sv_mp::LoadRanks	()
 		
 		NewRank.m_sTitle = pSettings->r_string(RankSect, "rank_name");
 		NewRank.m_iBonusMoney = READ_IF_EXISTS(pSettings, r_s32, RankSect, "rank_aquire_money", 0);
+		shared_str RDEB_str = pSettings->r_string(RankSect, "rank_diff_exp_bonus");
+		int RDEB_Count = _GetItemCount(RDEB_str.c_str());
+		for (int r=0; r<RDEB_Count; r++)
+		{
+			string16						temp;
+			float f = 1.0f;
+			if (r <= NumRanks)
+				f = float(atof(_GetItem(RDEB_str.c_str(), r, temp)));
+			NewRank.m_aRankDiff_ExpBonus.push_back(f);
+		};
+
 		shared_str sTerms = pSettings->r_string(RankSect, "rank_exp");
 		int TermsCount = _GetItemCount(sTerms.c_str());
 		R_ASSERT2((TermsCount != 0 && TermsCount <= MAX_TERMS), "Error Number of Terms for Rank");
