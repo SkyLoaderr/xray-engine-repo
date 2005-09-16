@@ -233,6 +233,7 @@ end
 ----------------
 function main ()
     local process = PostProcess (ini_file ("scripts\\postprocess.ltx"))
+    level.set_weather_fx ("surge_day")
 	local prev_time	= time_global ()
 	while 1 do
 			wait ();
