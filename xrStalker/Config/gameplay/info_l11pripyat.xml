@@ -9,6 +9,7 @@
 
     <info_portion id="pri_wave1_start"></info_portion>
     <info_portion id="pri_wave1_hide"></info_portion>
+    <info_portion id="pri_wave1_monolith1_on_position"></info_portion>
     <info_portion id="pri_wave1_monolith1_dead"></info_portion>
     <info_portion id="pri_wave1_monolith2_dead"></info_portion>
     <info_portion id="pri_wave1_monolith3_dead"></info_portion>
