@@ -58,6 +58,38 @@
   </specific_character>
 
 <!-------------------------- STALKER ----------------------->
+<!------------------------- FOLLOWERS ---------------------->
+	<specific_character id="pri_followers_stalker1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>pri_followers</class>
+		<community>stalker</community>
+			
+		<rank>70</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x70_buck = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+
+	</specific_character>
+
 <!-------------------------- VETERAN ----------------------->
 	<specific_character id="pri_stalker_veteran_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
