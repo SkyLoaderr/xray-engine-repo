@@ -43,5 +43,5 @@ protected :
 	Fcolor						m_frame_color;
 	float						m_rotating_speed;
 	void	Load				(const shared_str& section);
-
+	ref_sound					m_snd_found;
 };
