@@ -127,6 +127,8 @@ void CPseudoGigant::Load(LPCSTR section)
 
 	::Sound->create(m_sound_threaten_hit,TRUE, pSettings->r_string(section,"sound_threaten_hit"), SOUND_TYPE_WORLD);
 	::Sound->create(m_sound_start_threaten,TRUE, pSettings->r_string(section,"sound_threaten_start"), SOUND_TYPE_MONSTER_ATTACKING);
+
+	m_kick_damage = pSettings->r_float(section,"HugeKick_Damage");
 }
 
 void CPseudoGigant::reinit()
@@ -225,7 +227,18 @@ void CPseudoGigant::on_threaten_execute()
 		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f)); 
 	}
 
-	pA->movement_control()->ApplyImpulse(Fvector().set(0.f,1.f,0.f), 20 * pA->movement_control()->GetMass());
+	NET_Packet	l_P;
+	u_EventGen	(l_P,GE_HIT, pA->ID());
+	l_P.w_u16	(ID());
+	l_P.w_u16	(ID());
+	l_P.w_dir	(Fvector().set(0.f,1.f,0.f));
+	l_P.w_float	(m_kick_damage);
+	l_P.w_s16	(smart_cast<CKinematics*>(pA->Visual())->LL_GetBoneRoot());
+	l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
+	l_P.w_float	(20 * pA->movement_control()->GetMass());
+	l_P.w_u16	( u16(ALife::eHitTypeWound) );
+	u_EventSend	(l_P);	
+
 }
 
 

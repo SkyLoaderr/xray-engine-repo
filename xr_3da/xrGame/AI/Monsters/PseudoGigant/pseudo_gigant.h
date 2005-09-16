@@ -23,6 +23,8 @@ class CPseudoGigant : public CBaseMonster,
 	
 	u32				m_time_last_threaten;
 
+	float			m_kick_damage;
+		
 public:
 					CPseudoGigant				();
 	virtual			~CPseudoGigant				();	
