@@ -4,12 +4,15 @@
 #include "ui\UIFrameWindow.h"
 #include "ui.h"
 #include "entity_alive.h"
+#include "visual_memory_manager.h"
+#include "actor.h"
+#include "actor_memory.h"
 
 #define RECT_SIZE	16
 
 struct FindVisObjByObject{
-	CObject*			O;
-	FindVisObjByObject(CObject* o):O(o){}
+	const CObject*			O;
+	FindVisObjByObject(const CObject* o):O(o){}
 	bool operator () (const SBinocVisibleObj& vis){
 		return (O==vis.m_object);
 	}
@@ -135,21 +138,33 @@ CBinocularsVision::~CBinocularsVision()
 
 void CBinocularsVision::Update()
 {
+/*
 	CFrustum F;
 	F.CreateFromMatrix						(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	xr_vector<ISpatial*>					R;
 	g_SpatialSpace->q_frustum				(R,0,STYPE_VISIBLEFORAI,F); //
+*/
+
+	const CVisualMemoryManager::VISIBLES& vVisibles = Actor()->memory().visual().objects();
 
 	VIS_OBJECTS_IT	it = m_active_objects.begin();
 	for(;it!=m_active_objects.end();++it)
 		(*it).m_flags.set					(flVisObjNotValid, TRUE) ;
 
-	for (u32 o_it=0; o_it<R.size(); o_it++)
+//	for (u32 o_it=0; o_it<R.size(); o_it++)
+
+	CVisualMemoryManager::VISIBLES::const_iterator v_it = vVisibles.begin();
+	for (; v_it!=vVisibles.end(); ++v_it)
 	{
-		CObject*	object_					= smart_cast<CObject*>(R[o_it]);
+//		CObject*	object_					= smart_cast<CObject*>(R[o_it]);
+		const CObject*	_object_			= (*v_it).m_object;
+		if (!Actor()->memory().visual().visible_now(smart_cast<const CGameObject*>(_object_)))
+			continue;
+
+		CObject* object_ = const_cast<CObject*>(_object_);
 		
-		if(!object_ || !object_->Visual())				continue;
-		if(!(object_->spatial.type&STYPE_RENDERABLE))	continue;
+//		if(!object_ || !object_->Visual())				continue;
+//		if(!(object_->spatial.type&STYPE_RENDERABLE))	continue;
 
 		CEntityAlive*	EA = smart_cast<CEntityAlive*>(object_);
 		if(!EA || !EA->g_Alive())						continue;
