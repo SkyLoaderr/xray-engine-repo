@@ -207,8 +207,12 @@ void CScriptEngine::load_common_scripts()
 		string256		I;
 		for (u32 i=0; i<n; ++i) {
 			process_file(_GetItem(caScriptString,i,I));
-			if (object("_G",strcat(I,"_initialize"),LUA_TFUNCTION))
-				lua_dostring(lua(),strcat(I,"()"));
+			if (object("_G",strcat(I,"_initialize"),LUA_TFUNCTION)) {
+//				lua_dostring(lua(),strcat(I,"()"));
+				functor<void>	f;
+				R_ASSERT		(functor(I,f));
+				f				();
+			}
 		}
 	}
 
