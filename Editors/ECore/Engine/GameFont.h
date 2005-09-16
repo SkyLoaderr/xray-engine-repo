@@ -78,6 +78,7 @@ public:
 	float					SizeOf			(LPCSTR s, float size);
 	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
 	IC float				SizeOfRel		(LPCSTR s){return SizeOf(s)*1024.0f/Device.dwWidth;}
+	IC float				SizeOfRel		(char s){return SizeOf(s)*1024.0f/Device.dwWidth;}
 	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y;}
 	IC float				CurrentHeightRel(){return CurrentHeight()*768.0f/Device.dwHeight;}
 	void					OutSetI			(float x, float y);
