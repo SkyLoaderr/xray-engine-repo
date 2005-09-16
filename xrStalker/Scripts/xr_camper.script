@@ -48,8 +48,13 @@ function evaluator_close_combat:evaluate()
 		return false
 	end
 
+	-- ≈сли видим гранату - автоматом отпускаем в close_combat (возвращаем true)
+	if self.mgr:evaluator(stalker_ids.property_danger):evaluate() then
+		return true
+	end
+
 	if self.object:best_enemy() == nil then
-		return self.close_combat
+		return self.close_combat  -- “ут возможно нужно просто устанавливать FALSE и возвращать FALSE
 	end
 
 	if self.close_combat == false then
