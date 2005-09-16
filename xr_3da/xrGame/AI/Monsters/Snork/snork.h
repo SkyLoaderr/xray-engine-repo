@@ -18,6 +18,7 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual bool	jump				(CObject *enemy);
 	virtual bool	ability_jump_over_physics	() {return true;}
+	virtual bool	ability_distant_feel		() {return true;}
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
 			
 			bool	find_geometry		(Fvector &dir);

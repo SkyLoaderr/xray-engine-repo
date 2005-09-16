@@ -7,6 +7,7 @@ public:
 	virtual void	reinit				();
 	
 	virtual void	install				();
+	virtual void	install				(CActor *);
 	virtual void	release				();
 
 	virtual bool	authorized			(int cmd){return true;}

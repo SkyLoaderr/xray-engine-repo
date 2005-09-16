@@ -84,6 +84,7 @@ public:
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
+			void			debug_on_key			(int key);
 #endif
 
 

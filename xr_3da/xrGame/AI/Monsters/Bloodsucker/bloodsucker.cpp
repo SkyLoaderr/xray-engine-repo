@@ -18,6 +18,10 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
+#ifdef _DEBUG
+#	include <dinput.h>
+#endif
+
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -319,7 +323,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 		GamePersistent().ps_needtoplay.push_back(ps);
 	}
 
-	//UpdateCamera();
+	UpdateCamera();
 }
 
 void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
@@ -418,7 +422,21 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 
 	return CBaseMonster::SDebugInfo();
 }
+
+void CAI_Bloodsucker::debug_on_key(int key)
+{
+	switch (key){
+	case DIK_MINUS:
+		m_alien_control.deactivate();
+		break;
+	case DIK_EQUALS:
+		m_alien_control.activate();
+		break;
+	}
+}
 #endif
+
+
 
 
 

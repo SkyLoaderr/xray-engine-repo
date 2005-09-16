@@ -25,14 +25,15 @@ CStateMonsterAttackCampAbstract::CStateMonsterAttackCamp(_Object *obj) : inherit
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackCampAbstract::check_completion()
 {
-	if (current_substate == eStateAttackCamp_Camp) {
-		return get_state_current()->check_completion();
-	}
-
 	if (current_substate == eStateAttackCamp_StealOut) {
 		return get_state_current()->check_completion();
 	}
-	
+
+	if (current_substate == eStateAttackCamp_Camp) {
+		if (object->EnemyMan.see_enemy_now()) return true;
+		if (object->HitMemory.get_last_hit_time() > get_state_current()->time_started()) return true;
+	}
+
 	if (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) < 5.f) return true;
 
 	return false;
@@ -43,6 +44,8 @@ bool CStateMonsterAttackCampAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackCampAbstract::check_start_conditions()
 {
+	if (!object->ability_distant_feel()) return false;
+
 	// check enemy
 	if (!object->EnemyMan.get_enemy()) return false;
 	
@@ -64,7 +67,7 @@ bool CStateMonsterAttackCampAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackCampAbstract::reselect_state()
 {
-	if (current_substate == u32(-1)) {
+	if (prev_substate == u32(-1)) {
 		select_state(eStateAttackCamp_Hide);
 		return;
 	}
@@ -116,10 +119,12 @@ void CStateMonsterAttackCampAbstract::setup_substates()
 
 		SStateDataLookToPoint	data;
 		
-		object->CoverMan->less_cover_direction(data.point);
+		Fvector dir;
+		object->CoverMan->less_cover_direction(dir);
 		
-		data.action.action		= ACT_RUN;
-		data.action.time_out	= 4000;		// do not use time out
+		data.point.mad			(object->Position(),dir,10.f);
+		data.action.action		= ACT_STAND_IDLE;
+		data.action.time_out	= 10000;		// do not use time out
 		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.face_delay			= 0;
@@ -132,6 +137,7 @@ void CStateMonsterAttackCampAbstract::setup_substates()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackCampAbstract::check_force_state()
 {
+	
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -22,7 +22,7 @@
 #include "ui/UIDialogWnd.h"
 #include "clsid_game.h"
 
-#ifdef _DEBUG
+#ifdef DEBUG
 #	include "ai/monsters/BaseMonster/base_monster.h"
 #endif
 
@@ -314,7 +314,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}
 
 
-	#ifdef _DEBUG
+	#ifdef DEBUG
 		CObject *obj = Level().Objects.FindObjectByName("monster");
 		if (obj) {
 			CBaseMonster *monster = smart_cast<CBaseMonster *>(obj);

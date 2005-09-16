@@ -30,6 +30,7 @@ public:
 
 			void		fill_data_with			(void *ptr_src, u32 size);
 
+			u32			time_started			(){return time_state_started;}
 protected:
 			void 		select_state			(u32 new_state_id);	
 			void		add_state				(u32 state_id, CSState *s);

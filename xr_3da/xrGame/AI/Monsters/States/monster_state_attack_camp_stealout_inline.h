@@ -36,9 +36,10 @@ bool CStateMonsterAttackCampStealOutAbstract::check_completion()
 	if (object->EnemyMan.get_my_vertex_enemy_last_seen() == u32(-1)) return true;
 	if (object->EnemyMan.see_enemy_now()) return true;
 	if (object->HitMemory.get_last_hit_time() > time_state_started) return true;
-	if (object->control().path_builder().is_path_end(0.1f)) return true;
 	if (time_state_started + STATE_EXECUTE_TIME < time()) return true;
-
+	
+	Fvector pos = ai().level_graph().vertex_position(object->EnemyMan.get_my_vertex_enemy_last_seen());
+	if ((object->Position().distance_to(pos) < 2.f) && object->control().path_builder().is_path_end(0.f)) return true;
 
 	return false;
 }
@@ -48,7 +49,7 @@ bool CStateMonsterAttackCampStealOutAbstract::check_start_conditions()
 {
 	if (object->EnemyMan.get_my_vertex_enemy_last_seen() == u32(-1)) return false;
 	if (object->EnemyMan.see_enemy_now()) return false;
-	return false;
+	return true;	
 }
 
 #undef TEMPLATE_SPECIALIZATION

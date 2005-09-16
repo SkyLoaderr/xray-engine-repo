@@ -222,7 +222,7 @@ void CBloodsuckerAlien::activate()
 	CActor* pActor = smart_cast<CActor*> (source);
 	if (pActor) {
 		pActor->inventory().Items_SetCurrentEntityHud	(false);
-		m_object->CControlledActor::install				();
+		m_object->CControlledActor::install				(pActor);
 		if (!m_object->EnemyMan.get_enemy())			m_object->EnemyMan.add_enemy(pActor);
 		
 		// Start effector
