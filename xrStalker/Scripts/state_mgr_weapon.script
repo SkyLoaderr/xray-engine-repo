@@ -14,16 +14,6 @@ function eva_state_mgr_weapon:evaluate()
 	if (weapon == nil) then
 		return true
 	end
---	if self.st.need_reweapon then
-		--printf("REWEAPON [%s]", self.object:name())
-		-- Проверяем в какое последнее состояние был произведен перевыбор оружия.
---		if self.st.do_reweapon ==  then
---			self.st.need_reweapon = false
---			self.st.do_reweapon = false
---		else
---			return false
---		end
---	end
 	
 	if not isWeapon(self.object:best_weapon()) then
 --		printf("isWeapon = false")
@@ -224,7 +214,8 @@ end
 
 function get_idle_state(target_state)
 	if state_lib.states[target_state].mental == anim.danger and
-	   state_lib.states[target_state].movement == move.stand 
+	   state_lib.states[target_state].movement == move.stand and
+	   state_lib.states[target_state].animation == nil
 	then
 		return object.aim1
 	else

@@ -3,10 +3,10 @@
 --	автор: ƒиденко –услан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-function printf()
-end
+--function printf()
+--end
 
-aim_ratio = 1000/30
+aim_ratio = 1000/20
 min_ratio = 1000
 
 --' Ёвалуатор, который синхронизирует менеджер.
@@ -245,11 +245,6 @@ function act_state_mgr_end:execute()
 			return				
 		end
 		return
-	elseif t == "unstrapped" then
-		if self.st.need_reweapon == true then
-			self.object:set_item(state_mgr_weapon.get_idle_state(self.st.target_state), self.object:best_weapon())
-			self.st.need_reweapon = false
-		end
 	end	
 end
 function act_state_mgr_end:finalize()
@@ -864,9 +859,18 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 
 	local switched = false	
 	if self.target_state ~= state_name then
-		self.target_state = state_name
-		--printf("SETING_REWEAPON [%s]", self.npc:name())
-		self.need_reweapon = true
+
+		-- ≈сли мы переключаемс€ из стрел€ющего состо€ни€ в нестрел€ющее - необходимо сразу же прекратить стрельбу
+		if (state_lib.states[self.target_state].weapon == "fire" or
+		   state_lib.states[self.target_state].weapon == "sniper_fire") and 
+		   (state_lib.states[state_name].weapon ~= "fire" and
+		   state_lib.states[state_name].weapon ~= "sniper_fire")		
+		then		
+			self.npc:set_item(state_mgr_weapon.get_idle_state(state_name), self.npc:best_weapon())
+			printf("stop shooting")
+		end
+
+		self.target_state = state_name	
 		switched = true
 	end
 
