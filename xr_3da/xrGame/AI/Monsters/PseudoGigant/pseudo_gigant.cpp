@@ -208,6 +208,11 @@ void CPseudoGigant::on_threaten_execute()
 		obj->m_pPhysicsShell->applyImpulse(dir,20 * obj->m_pPhysicsShell->getMass());
 	}
 
+	Fvector		pos;
+	pos.set		(Position());
+	pos.y		+= 0.1f;
+	m_sound_threaten_hit.play_at_pos(this,pos);
+
 	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
 	if (!pA) return;
 	if (pA->is_jump()) return;
@@ -220,11 +225,6 @@ void CPseudoGigant::on_threaten_execute()
 		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f)); 
 	}
 
-	Fvector		pos;
-	pos.set		(Position());
-	pos.y		+= 0.1f;
-	m_sound_threaten_hit.play_at_pos(this,pos);
-	
 	pA->movement_control()->ApplyImpulse(Fvector().set(0.f,1.f,0.f), 20 * pA->movement_control()->GetMass());
 }
 
