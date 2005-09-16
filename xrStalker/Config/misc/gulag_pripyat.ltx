@@ -32,12 +32,24 @@ hp_fight        = 0|false
 hp_cover        = 0|false
 
 ;--------------------------------------------------------------------------
-; отключенная реакция на звук
+; отключенная реакция на звук, тела и хит
 ;--------------------------------------------------------------------------
 [danger@ignore]
 ignore_danger_sound     = 1
 ignore_danger_corpse    = 1
 ignore_danger_hit       = 1
+
+;--------------------------------------------------------------------------
+; отключенная реакция на звук
+;--------------------------------------------------------------------------
+[danger@sound_small]
+ignore_danger_sound     = 20
+
+;--------------------------------------------------------------------------
+; отключенная реакция на звук
+;--------------------------------------------------------------------------
+[danger@sound_middle]
+ignore_danger_sound     = 40
 
 ;-------------------------------------------------------------------------------------------------
 ;-- Followers
@@ -1522,27 +1534,30 @@ on_combat               = combat_zombied
 
 ;--- SOLDIER1 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier1]
-active = walker@pri_monolith_soldier1
+active                  = walker@pri_monolith_soldier1
 
 [walker@pri_monolith_soldier1]
-path_walk = patrol1_walk
-path_look = patrol1_look
+path_walk               = patrol1_walk
+path_look               = patrol1_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER2 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier2]
-active = walker@pri_monolith_soldier2
+active                  = walker@pri_monolith_soldier2
 
 [walker@pri_monolith_soldier2]
-path_walk = patrol2_walk
-path_look = patrol2_look
+path_walk               = patrol2_walk
+path_look               = patrol2_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER3 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier3]
-active = walker@pri_monolith_soldier3
+active                  = walker@pri_monolith_soldier3
 
 [walker@pri_monolith_soldier3]
-path_walk = patrol3_walk
-path_look = patrol3_look
+path_walk               = patrol3_walk
+path_look               = patrol3_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER4 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier4]
@@ -1554,11 +1569,12 @@ path_look = patrol4_look
 
 ;--- SOLDIER5 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier5]
-active = walker@pri_monolith_soldier5
+active                  = walker@pri_monolith_soldier5
 
 [walker@pri_monolith_soldier5]
-path_walk = patrol5_walk
-path_look = patrol5_look
+path_walk               = patrol5_walk
+path_look               = patrol5_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER6 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier6]
@@ -1570,67 +1586,75 @@ path_look = patrol6_look
 
 ;--- SOLDIER7 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier7]
-active = walker@pri_monolith_soldier7
+active                  = walker@pri_monolith_soldier7
 
 [walker@pri_monolith_soldier7]
-path_walk = patrol7_walk
-path_look = patrol7_look
+path_walk               = patrol7_walk
+path_look               = patrol7_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER8 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier8]
-active = walker@pri_monolith_soldier8
+active                  = walker@pri_monolith_soldier8
 
 [walker@pri_monolith_soldier8]
-path_walk = patrol8_walk
-path_look = patrol8_look
+path_walk               = patrol8_walk
+path_look               = patrol8_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER9 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier9]
-active = walker@pri_monolith_soldier9
+active                  = walker@pri_monolith_soldier9
 
 [walker@pri_monolith_soldier9]
-path_walk = patrol9_walk
-path_look = patrol9_look
+path_walk               = patrol9_walk
+path_look               = patrol9_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER10 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier10]
-active = walker@pri_monolith_soldier10
+active                  = walker@pri_monolith_soldier10
 
 [walker@pri_monolith_soldier10]
-path_walk = patrol10_walk
-path_look = patrol10_look
+path_walk               = patrol10_walk
+path_look               = patrol10_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER11 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier11]
-active = walker@pri_monolith_soldier11
+active                  = walker@pri_monolith_soldier11
 
 [walker@pri_monolith_soldier11]
-path_walk = patrol11_walk
-path_look = patrol11_look
+path_walk               = patrol11_walk
+path_look               = patrol11_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER12 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier12]
-active = walker@pri_monolith_soldier12
+active                  = walker@pri_monolith_soldier12
 
 [walker@pri_monolith_soldier12]
-path_walk = patrol12_walk
-path_look = patrol12_look
+path_walk               = patrol12_walk
+path_look               = patrol12_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER13 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier13]
-active = walker@pri_monolith_soldier13
+active                  = walker@pri_monolith_soldier13
 
 [walker@pri_monolith_soldier13]
-path_walk = patrol13_walk
-path_look = patrol13_look
+path_walk               = patrol13_walk
+path_look               = patrol13_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER14 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier14]
-active = walker@pri_monolith_soldier14
+active                  = walker@pri_monolith_soldier14
 
 [walker@pri_monolith_soldier14]
-path_walk = patrol14_walk
-path_look = patrol14_look
+path_walk               = patrol14_walk
+path_look               = patrol14_look
+danger                  = danger@sound_small
 
 
 ;-------------------------------------------------------------------------------------------------
