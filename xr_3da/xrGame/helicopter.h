@@ -291,6 +291,7 @@ public:
 	virtual const Fvector&			get_CurrentFirePoint		();
 
 	virtual CGameObject				*cast_game_object			()	{return this;}
+	virtual CExplosive				*cast_explosive				()	{return this;}
 
 
 public:
