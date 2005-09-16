@@ -368,7 +368,7 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_bomber_wave3_fire]
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
-on_timer            = 5000 | walker@pri_followers_bomber_wave3_die
+on_timer            = 2700 | walker@pri_followers_bomber_wave3_die
 on_signal           = arrived | %+pri_wave3_bomber_on_position%
 wounded             = wounded@ignore
 danger              = danger@ignore
@@ -1100,6 +1100,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith1_hide_walk
 path_look           = monolith1_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH1: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith1]
@@ -1120,6 +1121,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith2_hide_walk
 path_look           = monolith2_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH2: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith2]
@@ -1140,6 +1142,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith3_hide_walk
 path_look           = monolith3_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH3: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith3]
@@ -1160,6 +1163,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith4_hide_walk
 path_look           = monolith4_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH4: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith4]
@@ -1180,6 +1184,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith5_hide_walk
 path_look           = monolith5_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH5: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith5]
@@ -1200,6 +1205,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith6_hide_walk
 path_look           = monolith6_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH6: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith6]
@@ -1220,6 +1226,7 @@ combat_ignore       = combat_ignore
 path_walk           = monolith7_hide_walk
 path_look           = monolith7_hide_look
 combat_ignore_cond  = always
+show_spot           = false
 
 ;--- MONOLITH7: FIGHT ----------------------------------------------------------------------------
 [logic@pri_ambush7_monolith7]
@@ -1331,19 +1338,17 @@ ignore_distance = 1
 [danger_middle_dist]
 ignore_distance = 15
 
-[follower@pri_zombied_victim_wait]
-;leader                  = 810
-distance                = 2
-
 [remark@pri_zombied_soldier_wait]
 ;no_move                 = true
 anim                    = wait
 combat_ignore_cond      = {=check_fighting(813:814)}
+show_spot               = false
 
 [remark@pri_zombied_soldiers]
 anim                    = wait
 on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%
 on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%
+show_spot               = false
 
 ;-------------------------------------------------------------------------------------------------
 ;--- SOLDIER1: WAIT ------------------------------------------------------------------------------
@@ -1561,11 +1566,12 @@ danger                  = danger@sound_small
 
 ;--- SOLDIER4 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier4]
-active = walker@pri_monolith_soldier4
+active                  = walker@pri_monolith_soldier4
 
 [walker@pri_monolith_soldier4]
-path_walk = patrol4_walk
-path_look = patrol4_look
+path_walk               = patrol4_walk
+path_look               = patrol4_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER5 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier5]
@@ -1578,11 +1584,12 @@ danger                  = danger@sound_small
 
 ;--- SOLDIER6 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier6]
-active = walker@pri_monolith_soldier6
+active                  = walker@pri_monolith_soldier6
 
 [walker@pri_monolith_soldier6]
-path_walk = patrol6_walk
-path_look = patrol6_look
+path_walk               = patrol6_walk
+path_look               = patrol6_look
+danger                  = danger@sound_small
 
 ;--- SOLDIER7 ------------------------------------------------------------------------------------
 [logic@pri_monolith_soldier7]
