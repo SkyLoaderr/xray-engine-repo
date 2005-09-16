@@ -8,6 +8,7 @@ struct Rank_Struct
 {
 	shared_str		m_sTitle;
 	int				m_iTerms[MAX_TERMS];
+	int				m_iBonusMoney;
 
 	Rank_Struct () {ZeroMemory(this, sizeof(*this));};
 };
@@ -57,6 +58,10 @@ protected:
 				void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
 	virtual		bool				GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID);
 	virtual		bool				GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName);
+
+	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
+	virtual		void				Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill = 0);
+
 
 public:
 									game_sv_mp				();

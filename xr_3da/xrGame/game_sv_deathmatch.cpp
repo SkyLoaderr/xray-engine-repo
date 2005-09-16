@@ -1637,36 +1637,6 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 	SetPlayersDefItems(ps_who);
 }
 
-void	game_sv_Deathmatch::Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill)
-{
-	if (!ps) return;
-	//-----------------------------
-	if (MoneyAmount) ps->m_aBonusMoney.push_back(Bonus_Money_Struct(MoneyAmount, u8(Reason & 0xff), Kill));
-	//-----------------------------
-	Player_AddMoney(ps, MoneyAmount);
-	//-----------------------------
-	ps->money_added -= MoneyAmount;
-}
-void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
-{
-	if (!ps) return;
-	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
-
-	s64 TotalMoney = ps->money_for_round;
-
-	TotalMoney	+= MoneyAmount;
-	ps->money_added += MoneyAmount;
-	
-	if (TotalMoney<pTeam->m_iM_Min) 
-		TotalMoney = pTeam->m_iM_Min;
-	if (TotalMoney > 32767)
-		TotalMoney = 32767;
-
-	ps->money_for_round = s32(TotalMoney);
-	//---------------------------------------
-	Game().m_WeaponUsageStatistic.OnPlayerAddMoney(ps, MoneyAmount);
-};
-
 void	game_sv_Deathmatch::check_Player_for_Invincibility	(game_PlayerState* ps)
 {
 	if (!ps) return;

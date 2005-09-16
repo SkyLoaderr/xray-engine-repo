@@ -826,6 +826,7 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 		TotalBonusMoney += BonusMoney;
 		//---------------------------------------------------------
 		shared_str BName = "";
+		string256 tmp;
 		switch (BonusReason)
 		{
 		case SKT_HEADSHOT: BName = "headshot"; break;
@@ -833,12 +834,13 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 		case SKT_KNIFEKILL: BName = "knife_kill"; break;
 		case SKT_PDA: BName = "pda_taken"; break;
 		case SKT_KIR: BName.sprintf("%d_kill_in_row", BonusKills); break;
+		case SKT_NEWRANK:BName = "new_rank"; break;
 		};
 		shared_str BStr = READ_IF_EXISTS(pSettings, r_string, "mp_bonus_money", BName.c_str(), "");
-		if (!BStr.size()) continue;
-		string256 tmp;
+		if (!BStr.size()) continue;			
 		_GetItem(BStr.c_str(), 1, tmp);
 		if (BonusReason == SKT_KIR) sprintf(tmp, "%s Kill", tmp);
+
 		BonusStr.sprintf("%s%s +%d%s", BonusStr.c_str(), tmp, BonusMoney, (i == NumBonuses-1) ? "" : "; ");		
 	};
 	if (TotalBonusMoney != 0)

@@ -895,6 +895,7 @@ void	game_sv_mp::LoadRanks	()
 		Rank_Struct NewRank; 
 		
 		NewRank.m_sTitle = pSettings->r_string(RankSect, "rank_name");
+		NewRank.m_iBonusMoney = READ_IF_EXISTS(pSettings, r_s32, RankSect, "rank_aquire_money", 0);
 		shared_str sTerms = pSettings->r_string(RankSect, "rank_exp");
 		int TermsCount = _GetItemCount(sTerms.c_str());
 		R_ASSERT2((TermsCount != 0 && TermsCount <= MAX_TERMS), "Error Number of Terms for Rank");
@@ -942,7 +943,9 @@ void	game_sv_mp::Player_Rank_Up		(game_PlayerState* ps)
 
 	if (ps->rank==m_aRanks.size()-1) return;
 	
+	
 	ps->rank++;
+	Player_AddBonusMoney(ps, m_aRanks[ps->rank].m_iBonusMoney, SKT_NEWRANK);
 	Player_ExperienceFin(ps);
 };
 
@@ -1003,4 +1006,34 @@ bool	game_sv_mp::GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWp
 	if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) return false;
 	*pRes = &(*pWpnI);
 	return true;
+};
+
+void	game_sv_mp::Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill)
+{
+	if (!ps) return;
+	//-----------------------------
+	if (MoneyAmount) ps->m_aBonusMoney.push_back(Bonus_Money_Struct(MoneyAmount, u8(Reason & 0xff), Kill));
+	//-----------------------------
+	Player_AddMoney(ps, MoneyAmount);
+	//-----------------------------
+	ps->money_added -= MoneyAmount;
+}
+void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
+{
+	if (!ps) return;
+	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
+
+	s64 TotalMoney = ps->money_for_round;
+
+	TotalMoney	+= MoneyAmount;
+	ps->money_added += MoneyAmount;
+
+	if (TotalMoney<pTeam->m_iM_Min) 
+		TotalMoney = pTeam->m_iM_Min;
+	if (TotalMoney > 32767)
+		TotalMoney = 32767;
+
+	ps->money_for_round = s32(TotalMoney);
+	//---------------------------------------
+	Game().m_WeaponUsageStatistic.OnPlayerAddMoney(ps, MoneyAmount);
 };
