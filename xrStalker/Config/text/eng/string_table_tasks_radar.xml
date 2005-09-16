@@ -25,3 +25,12 @@
     <string id="rad_find_treasurer_1">
         <text>Вернуться к вожаку</text>
     </string>
+    <string id="rad_get_to_aes">
+        <text>Find Monolit</text>
+    </string>
+    <string id="rad_get_to_aes_0">
+        <text>Get to the CHAES</text>
+    </string>
+    <string id="rad_get_to_aes_1">
+        <text>Find entrance to the sarcofag</text>
+    </string>
