@@ -1,4 +1,4 @@
-	<article id="aes_soldier_info" name = "Aes map" group="rad_get_to_aes/2" article_type = "task">
+	<article id="aes_soldier_info" name = "Aes map" group="aes_military_task" article_type = "task">
         <texture x="700" y="600" width="370" height="300">ui\ui_icon_photo</texture>
         <text>aes_soldier_info</text>
 	</article>
