@@ -26,6 +26,11 @@ ICF	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C)+EPS;
 	return	R/distSQ;
 }
+ICF	float	CalcSSA				(float& distSQ, Fvector& C, float R)
+{
+	distSQ	= Device.vCameraPosition.distance_to_sqr(C)+EPS;
+	return	R/distSQ;
+}
 
 void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center)
 {
@@ -278,8 +283,9 @@ void CRender::add_leafs_Dynamic	(IRender_Visual *pVisual)
 			pV->CalculateWallmarks		();		//. bug?
 			BOOL	_use_lod			= FALSE	;
 			if (pV->m_lod)				{
-				float		D;
-				float		ssa		=		CalcSSA			(D,pV->vis.sphere.P,pV);
+				Fvector							Tpos;	float		D;
+				val_pTransform->transform_tiny	(Tpos, pV->vis.sphere.P);
+				float		ssa		=	CalcSSA	(D,Tpos,pV->vis.sphere.R/2.f);	// assume dynamics never consume full sphere
 				if (ssa<r_ssaLOD_A)	_use_lod	= TRUE		;
 			}
 			if (_use_lod)				{
@@ -439,8 +445,9 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			//pV->CalculateWallmarks		();		//. bug?
 			BOOL	_use_lod			= FALSE	;
 			if (pV->m_lod)				{
-				float		D;
-				float		ssa		=		CalcSSA			(D,pV->vis.sphere.P,pV);
+				Fvector							Tpos;	float		D;
+				val_pTransform->transform_tiny	(Tpos, pV->vis.sphere.P);
+				float		ssa		=	CalcSSA	(D,Tpos,pV->vis.sphere.R/2.f);	// assume dynamics never consume full sphere
 				if (ssa<r_ssaLOD_A)	_use_lod	= TRUE		;
 			}
 			if (_use_lod)				{
