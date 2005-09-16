@@ -4,6 +4,7 @@ end
 
 lasthealth  = 0
 lasttime	= 0
+post_process = nil
 ----------------------------------------------------------------------------------------------------------------------
 class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
@@ -127,6 +128,13 @@ function actor_binder:update(delta)
 		self.next_restrictors_update_time = time + 200
 	end
 
+	-- обновление постпроцессов
+	if this.post_process ~= nil then
+		if this.post_process:update(delta * 0.001) == true then	
+			this.post_process = nil
+		end  		
+	end
+	
  	if self.bCheckStart then
 		printf("SET DEFAULT INFOS")		
 

@@ -1132,6 +1132,13 @@ function path_cam_effector:Process(pos,dir,norm)
 end
 
 
+function set_postprocess(name_ini_file)
+	bind_stalker.post_process = postprocess.PostProcess(ini_file(name_ini_file))
+end
+function remove_postprocess()
+	bind_stalker.post_process = nil
+end
+
 --prefetch("news_manager")   
 --prefetch("xr_effects")   
 --profiler.setup_hook	()

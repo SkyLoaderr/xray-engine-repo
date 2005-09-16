@@ -13,7 +13,6 @@ camp_storage  = {}
 story_by_id	  = {}
 smart_terrain_by_id = {}
 
-
 function add_obj( obj )
 end
 
