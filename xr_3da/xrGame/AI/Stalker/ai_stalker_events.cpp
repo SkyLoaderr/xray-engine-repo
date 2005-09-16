@@ -70,7 +70,9 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject		*O = Level().Objects.net_Find(id);
 
-			R_ASSERT	(O);
+#pragma todo("Dima to Oles : how can this happen?")
+			if (!O)
+				break;
 
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) {
 				O->H_SetParent	(0);
