@@ -222,7 +222,9 @@ bool CUIInventoryWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 		}
 	}
 
-	return CUIWindow::OnMouse(x, y, mouse_action);
+	CUIWindow::OnMouse(x, y, mouse_action);
+
+	return true; // always true, because StopAnyMove() == false;
 }
 
 void CUIInventoryWnd::Draw()
