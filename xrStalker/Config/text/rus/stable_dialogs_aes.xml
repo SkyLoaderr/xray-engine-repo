@@ -100,6 +100,15 @@
         <text>Сейчас? Ёханый бабай...</text>
     </string>
     <string id="aes_sergeant_diallog_1032">
-        <text>Ты кто такой ?</text>
+        <text>Кх... А тебя... чего сюда принесло.... кх....</text>
+    </string>
+    <string id="aes_sergeant_diallog_1033">
+        <text>Хочу до Монолита добраться, а тут вы...</text>
+    </string>
+    <string id="aes_sergeant_diallog_1034">
+        <text>Я бы... тоже хотел глянуть... но, видно не судьба... Возьми мой ПДА.... кх... там план захвата саркофага...\nВсе наши группы... указаны... Может тебе повезет.... прорваться.... и Монолит исполнит.... твое желание...</text>
+    </string>
+    <string id="aes_sergeant_diallog_1035">
+        <text>Спасибо.</text>
     </string>
 </string_table>
