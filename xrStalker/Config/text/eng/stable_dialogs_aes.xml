@@ -103,9 +103,12 @@
         <text>Who are you?</text>
     </string>
     <string id="aes_sergeant_diallog_1033">
-        <text>This string was added automatically</text>
+        <text>I want to get to the Monolit.</text>
+    </string>
+    <string id="aes_sergeant_diallog_1034">
+        <text>I wish...I could see it ither...but ia guess...it is not my fate...Here, take my PDA...there is a plan to capture the \nsarcophagus...all our groups...are indicated on it...you can be lucky...to breake throught...in that case...the Monolith \nwill make your wish come true...</text>
     </string>
     <string id="aes_sergeant_diallog_1035">
-        <text>This string was added automatically</text>
+        <text>Thanks</text>
     </string>
 </string_table>
