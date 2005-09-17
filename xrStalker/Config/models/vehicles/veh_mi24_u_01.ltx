@@ -26,12 +26,15 @@ scale_bone = front_propeller2,back_propeller2
 ;------ destroyed part ---------------------------------------------------------
 
 [destroyed]
-physics\vehicles\Zaz\part\veh_zaz_u_01_part1
-physics\vehicles\Zaz\part\veh_zaz_u_01_part2
-physics\vehicles\Zaz\part\veh_zaz_u_01_part3
-physics\vehicles\Zaz\part\veh_zaz_u_01_part4
-physics\vehicles\Zaz\part\veh_zaz_u_01_part5
-physics\vehicles\Zaz\part\veh_zaz_u_01_part6
+physics\vehicles\mi24\part\veh_mi24_part1
+physics\vehicles\mi24\part\veh_mi24_part2
+physics\vehicles\mi24\part\veh_mi24_part3
+physics\vehicles\mi24\part\veh_mi24_part4
+physics\vehicles\mi24\part\veh_mi24_part5
+physics\vehicles\mi24\part\veh_mi24_part6
+physics\vehicles\mi24\part\veh_mi24_part7
+physics\vehicles\mi24\part\veh_mi24_part8
+physics\vehicles\mi24\part\veh_mi24_part9
 
 [autoremove_parts]
 time					 = 10
@@ -40,7 +43,7 @@ time					 = 10
 ;--- part impulse_transition ---------------------------------------------------
 
 [impulse_transition_to_parts]
-random_min               = 20.0    ; величина случайно направленного импульса пропорционально массе нового объекта
+random_min               = 30.0    ; величина случайно направленного импульса пропорционально массе нового объекта
 random_hit_imp           = 1.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
 ;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
 imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
