@@ -132,7 +132,7 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	if type == "rad_pseudodogs" then
-		local chimera_num = 9
+		local chimera_num = 6
 		for i = 1, chimera_num do
 			t = { section = "logic@rad_pseudodogs", 
 				idle = 0,
