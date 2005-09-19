@@ -200,8 +200,8 @@ CActor::CActor() : CEntityAlive()
 	m_anims = xr_new<SActorMotions>();
 	m_vehicle_anims = xr_new<SActorVehicleAnims>();
 	m_entity_condition		= NULL;
-	m_iLastHitterID			= -1;
-	m_iLastHittingWeaponID	= -1;
+	m_iLastHitterID			= u16(-1);
+	m_iLastHittingWeaponID	= u16(-1);
 	m_game_task_manager		= NULL;
 	//-----------------------------------------------------------------------------------
 	m_memory				= xr_new<CActorMemory>(this);
@@ -438,10 +438,43 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 #endif
 
+	bool bPlaySound = true;
+	if (!g_Alive()) bPlaySound = false;
+
+	if (GameID() != GAME_SINGLE)
+	{
+		game_PlayerState* ps = Game().GetPlayerByGameID(ID());
+		if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+		{
+			bPlaySound = false;
+			if (Device.dwFrame != last_hit_frame &&
+				element != -1)
+			{		
+				// вычислить позицию и направленность партикла
+				Fmatrix pos; 
+
+				CParticlesPlayer::MakeXFORM(this,element,dir,position_in_bone_space,pos);
+
+				// установить particles
+				CParticlesObject* ps = NULL;
+
+				if (eacFirstEye == cam_active && this == Level().CurrentEntity())
+					ps = CParticlesObject::Create(invincibility_fire_shield_1st,TRUE);
+				else
+					ps = CParticlesObject::Create(invincibility_fire_shield_3rd,TRUE);
+
+				ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+				GamePersistent().ps_needtoplay.push_back(ps);
+			};
+		};
+		 
+
+		last_hit_frame = Device.dwFrame;
+	};
+
 	if( !sndHit[hit_type].empty() && (ALife::eHitTypeTelepatic != hit_type)){
 		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
-		bool bPlaySound = true;
-		
+
 		if(ALife::eHitTypeExplosion == hit_type)
 		{
 			if (this == Level().CurrentControlEntity())
@@ -455,35 +488,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 			else
 				bPlaySound = false;
 		}
-		if (bPlaySound) S.play_at_pos(this, Position());
-	}
-
-
-	if (GameID() != GAME_SINGLE)
-	{
-		game_PlayerState* ps = Game().GetPlayerByGameID(ID());
-		if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE) && Device.dwFrame != last_hit_frame &&
-			element != -1)
-		{		
-			// вычислить позицию и направленность партикла
-			Fmatrix pos; 
-			
-			CParticlesPlayer::MakeXFORM(this,element,dir,position_in_bone_space,pos);
-
-			// установить particles
-			CParticlesObject* ps = NULL;
-
-			if (eacFirstEye == cam_active && this == Level().CurrentEntity())
-				ps = CParticlesObject::Create(invincibility_fire_shield_1st,TRUE);
-			else
-				ps = CParticlesObject::Create(invincibility_fire_shield_3rd,TRUE);
-
-			ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-			GamePersistent().ps_needtoplay.push_back(ps);
+		if (bPlaySound) 
+		{
+			S.play_at_pos(this, Position());
 		};
-
-		last_hit_frame = Device.dwFrame;
-	};
+	}
 
 	
 	//slow actor, only when he gets hit
