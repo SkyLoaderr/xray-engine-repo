@@ -286,23 +286,28 @@ void CEntity::renderable_Render()
 	inherited::renderable_Render		();
 }
 
-void CEntity::KillEntity(CObject* who)
+void CEntity::KillEntity(u16 whoID)
 {
-	VERIFY			(who);
-	if (who && (who->ID() != ID())) {
+	if (whoID && (whoID != ID())) {
 		VERIFY		(m_killer_id == ALife::_OBJECT_ID(-1));
-		m_killer_id	= who->ID();
+		m_killer_id	= whoID;
 	}
 
 	if (!getDestroy()){
 		NET_Packet		P;
 		u_EventGen		(P,GE_DIE,ID());
-		P.w_u16			(u16(who->ID()));
+		P.w_u16			(u16(whoID));
 		P.w_u32			(0);
 		if (OnServer())
 			u_EventSend	(P);
 		set_death_time	();
 	}
+};
+
+void CEntity::KillEntity(CObject* who)
+{
+	VERIFY			(who);
+	if (who) KillEntity(who->ID());	
 }
 
 void CEntity::reinit			()

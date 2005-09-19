@@ -200,8 +200,8 @@ CActor::CActor() : CEntityAlive()
 	m_anims = xr_new<SActorMotions>();
 	m_vehicle_anims = xr_new<SActorVehicleAnims>();
 	m_entity_condition		= NULL;
-	m_pLastHitter			= NULL;
-	m_pLastHittingWeapon	= NULL;
+	m_iLastHitterID			= -1;
+	m_iLastHittingWeaponID	= -1;
 	m_game_task_manager		= NULL;
 	//-----------------------------------------------------------------------------------
 	m_memory				= xr_new<CActorMemory>(this);
@@ -496,7 +496,9 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		hit_slowmo = 0.f;
 	//---------------------------------------------------------------
 	if (Level().CurrentViewEntity() == this){
-		HitSector(m_pLastHitter, m_pLastHittingWeapon);
+		CObject* pLastHitter = Level().Objects.net_Find(m_iLastHitterID);
+		CObject* pLastHittingWeapon = Level().Objects.net_Find(m_iLastHittingWeaponID);
+		HitSector(pLastHitter, pLastHittingWeapon);
 	};
 
 	if (mstate_real & mcSprint && Level().CurrentControlEntity() == this)

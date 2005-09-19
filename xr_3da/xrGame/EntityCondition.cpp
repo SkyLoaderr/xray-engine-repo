@@ -72,6 +72,7 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
+	m_iWhoID = 0;
 
 	m_WoundVector.clear();
 
@@ -168,6 +169,7 @@ void CEntityCondition::reinit	()
 
 	m_fHealthLost			= 0.f;
 	m_pWho					= NULL;
+	m_iWhoID				= NULL;
 
 	ClearWounds				();
 
@@ -442,6 +444,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 {
 	//кто нанес последний хит
 	m_pWho = who;
+	m_iWhoID = (NULL != who) ? who->ID() : 0;
 
 	//нормализуем силу удара
 	hit_power = hit_power/100.f;

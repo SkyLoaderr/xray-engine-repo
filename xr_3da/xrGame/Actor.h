@@ -686,8 +686,10 @@ public:
 	virtual bool				use_center_to_aim			() const;
 
 protected:
-	CObject*					m_pLastHitter;
-	CObject*					m_pLastHittingWeapon;
+//	CObject*					m_pLastHitter;
+	u16							m_iLastHitterID;
+//	CObject*					m_pLastHittingWeapon;
+	u16							m_iLastHittingWeaponID;
 	s16							m_s16LastHittedElement;
 	float						m_fLastHealth;
 	bool						m_bWasHitted;

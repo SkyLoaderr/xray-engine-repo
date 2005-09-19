@@ -75,6 +75,7 @@ public:
 	float					BleedingSpeed			();
 
 	CObject*				GetWhoHitLastTime		() {return m_pWho;}
+	u16						GetWhoHitLastTimeID		() {return m_iWhoID;}
 protected:
 	void					UpdateHealth			();
 	void					UpdatePower				();
@@ -191,6 +192,7 @@ protected:
 	float m_fHealthLost;
 	//кто нанес последний хит
 	CObject* m_pWho;
+	u16		m_iWhoID;
 
 
 	//для отслеживания времени 

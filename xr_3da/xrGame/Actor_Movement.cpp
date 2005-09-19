@@ -605,5 +605,5 @@ void CActor::StopAnyMove()
 
 bool CActor::is_jump()
 {
-	return (mstate_real & (mcJump|mcFall|mcLanding|mcLanding2));
+	return (mstate_real & (mcJump|mcFall|mcLanding|mcLanding2)) == 0;
 }

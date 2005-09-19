@@ -162,6 +162,11 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			if (game->Type() != GAME_SINGLE)
 				Msg				("* [%2d] is [%s:%s]", id_dest, *e_dest->s_name, e_dest->name_replace());
 			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	);	// кто убил
+			if (!e_src) 
+			{
+				xrClientData*	C = (xrClientData*)	game->get_client(id_src);
+				if (C) e_src = C->owner;
+			};
 			VERIFY				(e_src);
 			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
 			if (game->Type() != GAME_SINGLE)

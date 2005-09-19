@@ -124,6 +124,7 @@ public:
 
 	virtual void			Die					(CObject* who);
 	virtual void			KillEntity			(CObject* who);
+	virtual void			KillEntity			(u16 whoID);
 		
 	// Events
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);

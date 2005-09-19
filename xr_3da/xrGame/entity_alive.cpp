@@ -217,7 +217,7 @@ void CEntityAlive::shedule_Update(u32 dt)
 	{
 		if(conditions().GetWhoHitLastTime()) {
 //			Msg			("%6d : KillEntity from CEntityAlive (using who hit last time) for object %s",Device.dwTimeGlobal,*cName());
-			KillEntity(conditions().GetWhoHitLastTime());
+			KillEntity(conditions().GetWhoHitLastTimeID());
 		}
 		else {
 //			Msg			("%6d : KillEntity from CEntityAlive for object %s",Device.dwTimeGlobal,*cName());
@@ -306,10 +306,13 @@ void CEntityAlive::Die	(CObject* who)
 	const CGameObject *who_object = smart_cast<const CGameObject*>(who);
 	callback(GameObject::eDeath)(lua_game_object(), who_object ? who_object->lua_game_object() : 0);
 
-	NET_Packet		P;
-	u_EventGen		(P,GE_ASSIGN_KILLER,ID());
-	P.w_u16			(u16(who->ID()));
-	if (GameID() == GAME_SINGLE) u_EventSend		(P);
+	if (GameID() == GAME_SINGLE) 
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_ASSIGN_KILLER,ID());
+		P.w_u16			(u16(who->ID()));
+		u_EventSend		(P);
+	}
 
 	// disable react to sound
 	ISpatial* self	= smart_cast<ISpatial*> (this);
