@@ -32,7 +32,7 @@ function action_sound2d:update (delta)
     local actor = db.actor
     
     if self.playing == false then
-       self.snd_obj:play_at_pos (actor, vector ():set (0, 0, 0), self.st.delay, sound_object.s2d)
+       self.snd_obj:play_at_pos (actor, vector ():set (0, 0, 0), self.st.delay / 1000.0, sound_object.s2d)
        self.playing = true
        return
     end
@@ -55,7 +55,6 @@ end
 
 ----------------------
 function add_to_binder( npc, ini, scheme, section, storage )
-	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
 
 	local new_action = action_sound2d (npc, storage)
 
