@@ -224,6 +224,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;--- LEADER: WAVE4 ------------------------------------------------------------------------------
 [logic@pri_followers_leader_wave4]
 active              = {+pri_wave4_start} walker@pri_followers_leader_wave4, walker@pri_followers_leader_wave4_wait
+combat_ignore       = combat_ignore
 
 [walker@pri_followers_leader_wave4_wait]
 path_walk           = wave4_leader_walk1
@@ -233,6 +234,7 @@ def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_leader_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_leader_wave4
+combat_ignore_cond  = {=check_fighting(820:821)}
 
 [walker@pri_followers_leader_wave4]
 path_walk           = wave4_leader_walk2
@@ -470,7 +472,7 @@ def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_bomber_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_bomber_wave4
-;combat_ignore_cond  = {!check_fighting(804:805)} ;always
+combat_ignore_cond  = {=check_fighting(820:821)}
 
 [walker@pri_followers_bomber_wave4]
 path_walk           = wave4_bomber_walk2
@@ -673,6 +675,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;--- NAP1: WAVE4 --------------------------------------------------------------------------------
 [logic@pri_followers_nap1_wave4]
 active              = {+pri_wave4_start} walker@pri_followers_nap1_wave4, walker@pri_followers_nap1_wave4_wait
+combat_ignore       = combat_ignore
 
 [walker@pri_followers_nap1_wave4_wait]
 path_walk           = wave4_stalker1_walk1
@@ -682,6 +685,7 @@ def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_nap1_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_nap1_wave4
+combat_ignore_cond  = {=check_fighting(820:821)}
 
 [walker@pri_followers_nap1_wave4]
 path_walk           = wave4_stalker1_walk2
@@ -876,6 +880,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;--- NAP2: WAVE4 --------------------------------------------------------------------------------
 [logic@pri_followers_nap2_wave4]
 active              = {+pri_wave4_start} walker@pri_followers_nap2_wave4, walker@pri_followers_nap2_wave4_wait
+combat_ignore       = combat_ignore
 
 [walker@pri_followers_nap2_wave4_wait]
 path_walk           = wave4_stalker2_walk1
@@ -885,6 +890,7 @@ def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_nap2_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_nap2_wave4
+combat_ignore_cond  = {=check_fighting(820:821)}
 
 [walker@pri_followers_nap2_wave4]
 path_walk           = wave4_stalker2_walk2
@@ -1062,6 +1068,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;--- NAP3: WAVE4 --------------------------------------------------------------------------------
 [logic@pri_followers_nap3_wave4]
 active              = {+pri_wave4_start} walker@pri_followers_nap3_wave4, walker@pri_followers_nap3_wave4_wait
+combat_ignore       = combat_ignore
 
 [walker@pri_followers_nap3_wave4_wait]
 path_walk           = wave4_stalker3_walk1
@@ -1071,6 +1078,7 @@ def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_nap3_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_nap3_wave4
+combat_ignore_cond  = {=check_fighting(820:821)}
 
 [walker@pri_followers_nap3_wave4]
 path_walk           = wave4_stalker3_walk2
