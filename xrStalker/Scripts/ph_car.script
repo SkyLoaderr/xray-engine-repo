@@ -1128,6 +1128,10 @@ function action_car:car_explode()
 	self.object:explode(time_global())
 end
 
+function action_car:deactivate()
+	self:destroy_car()
+end
+
 ---------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
 --	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
