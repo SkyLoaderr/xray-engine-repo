@@ -383,7 +383,6 @@ function load_sound(obj)
 	-- Pripyat
 	theme[obj:id()]["pri_followers_leader"]         = load_sound_from_ltx(obj, "pri_followers_leader")
 	theme[obj:id()]["pri_followers_btr_phrase1"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase1")
-	theme[obj:id()]["pri_followers_btr_phrase2"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase2")
 	theme[obj:id()]["pri_followers_btr_phrase3"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase3")
 	theme[obj:id()]["pri_followers_btr_phrase4"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase4")
 

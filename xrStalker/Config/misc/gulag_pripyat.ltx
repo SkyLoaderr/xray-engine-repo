@@ -131,11 +131,65 @@ on_info             = {+pri_wave3_start} walker@pri_followers_leader_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
+;--- phrase: Бтр, в укрытие
+[remark@pri_followers_leader_wave3_phrase1]
+no_move             = true
+no_rotate           = true
+anim                = hide
+snd                 = pri_followers_btr_phrase1
+on_info             = {+pri_wave3_btr_dead} remark@pri_followers_leader_wave3_phrase2
+on_signal           = sound_end | {+pri_bomber_dead} walker@pri_followers_leader_wave3, walker@pri_followers_leader_wave3_bomber_alive
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+[walker@pri_followers_leader_wave3_bomber_alive]
+path_walk           = wave3_leader_walk2
+path_look           = wave3_leader_look2
+def_state_moving1   = sprint
+def_state_moving2   = sprint
+on_info             = {+pri_bomber_dead} remark@pri_followers_leader_wave3_phrase3
+on_timer            = 2000 | remark@pri_followers_leader_wave3_fight_bomber_alive
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+[remark@pri_followers_leader_wave3_fight_bomber_alive]
+;no_move             = true
+;no_rotate           = true
+target              = 807
+anim                = threat_fire
+on_info             = {+pri_bomber_dead} remark@pri_followers_leader_wave3_phrase3
+on_timer            = 5000 | walker@pri_followers_leader_wave3_bomber_alive
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+;--- phrase: Не-е-т! Сашка!!!
+[remark@pri_followers_leader_wave3_phrase3]
+no_move             = true
+no_rotate           = true
+anim                = hide
+snd                 = pri_followers_btr_phrase3
+on_info             = {+pri_wave3_btr_dead} remark@pri_followers_leader_wave3_phrase2
+on_signal           = sound_end | remark@pri_followers_leader_wave3_phrase4
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+;--- phrase: Меченый, хватай ракетницу, вынеси эту падлу. Мы отвлечем его.
+[remark@pri_followers_leader_wave3_phrase4]
+no_move             = true
+no_rotate           = true
+anim                = hide
+snd                 = pri_followers_btr_phrase4
+on_info             = {+pri_wave3_btr_dead} remark@pri_followers_leader_wave3_phrase2
+on_signal           = sound_end | walker@pri_followers_leader_wave3
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
 [walker@pri_followers_leader_wave3]
 path_walk           = wave3_leader_walk2
 path_look           = wave3_leader_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+on_info             = {+pri_wave3_btr_dead} remark@pri_followers_leader_wave3_phrase2
 on_timer            = 2000 | remark@pri_followers_leader_wave3_fight ;walker@pri_followers_leader_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -143,6 +197,7 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_leader_wave3_fight]
 path_walk           = wave3_leader_walk2
 path_look           = wave3_leader_look3
+on_info             = {+pri_wave3_btr_dead} remark@pri_followers_leader_wave3_phrase2
 on_timer            = 5000 | walker@pri_followers_leader_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -152,7 +207,17 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_rotate           = true
 target              = 807
 anim                = threat_fire
+on_info             = {+pri_wave3_btr_dead} remark@pri_followers_leader_wave3_phrase2
 on_timer            = 5000 | walker@pri_followers_leader_wave3
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+;--- phrase: Ха-а! Отлично! (подбили БТР)
+[remark@pri_followers_leader_wave3_phrase2]
+no_move             = true
+no_rotate           = true
+anim                = threat
+snd                 = pri_followers_btr_phrase1
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
@@ -385,7 +450,9 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_bomber_wave3_die]
 path_walk           = wave3_bomber_walk4
 path_look           = wave3_bomber_look4
-wounded             = wounded@ignore
+def_state_moving1   = sprint
+def_state_moving2   = sprint
+;wounded             = wounded@ignore
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
