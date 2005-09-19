@@ -17,16 +17,16 @@
         <text>Отнести артефакт торговцу.</text>
     </string>
     <string id="tutorial_help_wounded">
-        <text>Помочь раненому.</text>
+        <text>Помочь сталкерам, попавшим в беду.</text>
     </string>
     <string id="tutorial_help_wounded_0">
-        <text>Взять у раненого флешку и принести ее торговцу.</text>
+        <text>Помочь сталкерам, попавшим в беду.</text>
     </string>
     <string id="tutorial_help_wounded_1">
-        <text>Помочь раненому и взять у него флешку с информацией.</text>
+        <text>Встретить сталкеров и взять у них флешку с информацией.</text>
     </string>
     <string id="tutorial_help_wounded_2">
-        <text>Принести флешку торговцу.</text>
+        <text>Принести информацию торговцу.</text>
     </string>
      <string id="esc_help_wounded_from_raid">
         <text>Помочь раненому Лису.</text>
