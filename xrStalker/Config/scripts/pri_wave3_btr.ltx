@@ -35,7 +35,7 @@ on_timer        = 1000 | ph_car@kill_bomber
 
 [ph_car@kill_bomber]
 target          = 806
-on_info         = {+pri_bomber_dead +pri_wave3_btr_arrived} ph_car@fire_stay, {+pri_bomber_dead} ph_car@fire
+on_info         = {+pri_bomber_dead} nil ;{+pri_bomber_dead +pri_wave3_btr_arrived} ph_car@fire_stay, {+pri_bomber_dead} ph_car@fire
 on_death_info   = pri_wave3_btr_dead
 
 [ph_car@fire_stay]
