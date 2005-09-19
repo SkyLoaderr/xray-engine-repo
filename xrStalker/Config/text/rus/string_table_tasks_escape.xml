@@ -91,7 +91,9 @@
     <string id="esc_bandits_on_factory_2">
         <text>Отчитаться перед торговцем.</text>
     </string>
-
+	<string id="esc_bandits_on_factory_3">
+        <text>Поговорить с Волком, чтобы он выделил для атаки на фабрику своих людей.</text>
+    </string>
     <string id="esc_af_blood">
         <text>Найти артефакт "кровь камня".</text>
     </string>
