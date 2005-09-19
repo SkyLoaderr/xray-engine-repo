@@ -62,14 +62,31 @@ float CUILine::GetLength(CGameFont* pFont){
 	float length = 0.0f;
 	int size = m_subLines.size();
 	for (int i=0; i< size; i++)
+        length += m_subLines[i].GetLength(pFont);
+
+    return length;	
+}
+
+int CUILine::GetTextLength(){
+	int n = 0;
+	for (u32 i=0; i < m_subLines.size(); i++){
+		n += m_subLines[i].m_text.length();
+	}
+	return n;
+}
+
+float CUILine::GetVisibleLength(CGameFont* pFont){
+	float length = 0.0f;
+	int size = m_subLines.size();
+	for (int i=0; i< size; i++)
 	{
 		if (i == size - 1)
 			length += m_subLines[i].GetVisibleLength(pFont);
 		else
-            length += m_subLines[i].GetLength(pFont);
+			length += m_subLines[i].GetLength(pFont);
 	}
 
-    return length;	
+	return length;	
 }
 
 void CUILine::Draw(CGameFont* pFont, float x, float y) const{
@@ -119,26 +136,34 @@ void CUILine::DrawCursor(CGameFont* pFont, float x, float y, u32 color){
 	UI()->OutText(pFont, scr_rect, x, y,  "|");
 }
 
-CUILine* CUILine::CutByLength(CGameFont* pFont, float length){
+CUILine* CUILine::CutByLength(CGameFont* pFont, float length, BOOL cut_word){
 	R_ASSERT(GetLength(pFont) > 0);
 	// if first sub line is void then delete it
-	if (0 == m_subLines[0].GetLength(pFont)) 
-		m_subLines.erase(m_subLines.begin());
+//	if (0 == m_subLines[0].GetLength(pFont)) 
+//		m_subLines.erase(m_subLines.begin());
 
 	Position pos;
 	InitPos(pos);
 
-    if (!pos.word_2.exist())
-		return Cut2Pos(pos);
-
 	float len2w1 = GetLength_inclusiveWord_1(pos, pFont);
+
+    if (!pos.word_2.exist())
+	{
+		if (cut_word && len2w1 > length)
+			return CutWord(pFont, length);		
+		else
+			return Cut2Pos(pos);
+	}
+
+	
 	float len2w2 = GetLength_inclusiveWord_2(pos, pFont);
 
 	if (len2w1 > length)
 	{
-		// cut part of word
-//		R_ASSERT(false);
-		return Cut2Pos(pos);  // !!!DANGER!!! STUB
+		if (cut_word)
+            return CutWord(pFont, length);		
+		else
+            return Cut2Pos(pos);
 	}
 	else if (len2w1 <= length && len2w2 > length)
 	{
@@ -162,18 +187,29 @@ CUILine* CUILine::CutByLength(CGameFont* pFont, float length){
 
 bool CUILine::GetWord(Word& w, const xr_string& text, int begin) const{
 
-	if (text.size() == 0)
+	if (text.empty())
 		return false;
 
 	StrSize first, last, lastsp/*last space*/;
 
 	first  = text.find_first_not_of(' ', begin);
 
-	if (npos == first)
-		return false;
-
 	last   = text.find_first_of(' ', first);
 	lastsp = text.find_first_not_of(' ', last);
+
+	if (npos == lastsp && npos == first) // maybe we have string only with spaces
+	{
+		first = text.find_first_of(' ',begin);
+		last  = text.find_last_of(' ',begin);
+		if (npos == first) //suxxx it is empty string
+			return false;
+
+		w.pos		= (int)first;
+		w.len		= (int)(last - first + 1);
+		w.len_full	= w.len;
+		return true;
+	}
+	
 
 	if (npos == lastsp)
 		lastsp = last;
@@ -296,6 +332,27 @@ CUILine* CUILine::Cut2Pos(Position& pos, bool to_first){
         m_subLines.erase(m_subLines.begin());
 
     return m_tmpLine;
+}
+
+CUILine* CUILine::CutWord(CGameFont* pFont, float length){
+	xr_delete(m_tmpLine);
+	m_tmpLine = xr_new<CUILine>();
+
+	float len = 0;
+
+	for (u32 i= 0; i<m_subLines[0].m_text.length(); i++){
+		len += pFont->SizeOfRel(m_subLines[0].m_text[i]);
+
+		if (len>length){
+			m_tmpLine->AddSubLine(m_subLines[0].Cut2Pos((i?i:1)-1));
+			return m_tmpLine;
+		}
+	}
+
+	R_ASSERT2(false, "meaningless call of CUILine::CutWord() ):");
+
+	return NULL;
+
 }
 
 float  CUILine::GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont) const{

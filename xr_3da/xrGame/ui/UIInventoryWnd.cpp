@@ -224,7 +224,7 @@ bool CUIInventoryWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 
 	CUIWindow::OnMouse(x, y, mouse_action);
 
-	return true; // always true, because StopAnyMove() == false;
+	return true; // always returns true, because ::StopAnyMove() == true;
 }
 
 void CUIInventoryWnd::Draw()
@@ -649,26 +649,5 @@ bool CUIInventoryWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 	if( inherited::OnKeyboard(dik,keyboard_action) )return true;
 
-/*
-	if(keyboard_action==WINDOW_KEY_PRESSED || keyboard_action==WINDOW_KEY_RELEASED){
-
-		if( (key_binding[dik]==kINVENTORY||key_binding[dik]==kQUIT)&&keyboard_action==WINDOW_KEY_PRESSED){
-			GetHolder()->StartStopMenu(this,true);
-			return true;
-		}
-
-		CObject* O = Level().CurrentEntity();
-		if( O ){
-			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
-
-			if(keyboard_action==WINDOW_KEY_PRESSED)
-					IR->IR_OnKeyboardPress(key_binding[dik]);
-			else	
-					IR->IR_OnKeyboardRelease(key_binding[dik]);
-		
-			return true;
-		}
-	}
-*/
 	return false;
 }

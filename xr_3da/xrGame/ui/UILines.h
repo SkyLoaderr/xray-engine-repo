@@ -38,11 +38,16 @@ public:
 			void			AddCharAtCursor(const char ch);
 			void			DelChar();
 			void			DelLeftChar();
+			float			GetDrawCursorPos();
 			void			MoveCursorToEnd();
+			bool			MoveCursorUp();
+			bool			MoveCursorDown();
 
 			void			SetTextComplexMode(bool mode = true);
-			bool			GetTextComplexMode();
+			bool			GetTextComplexMode() const;
 			void			SetPasswordMode(bool mode = true);
+			void			SetColoringMode(bool mode);
+			void			SetCutWordsMode(bool mode);
 
     // IUISimpleWindow methods
 	virtual void			Init(float x, float y, float width, float height);
@@ -68,7 +73,6 @@ IC			void			SetWndSize_inline(const Fvector2& wnd_size);
 			void			DecCursorPos();
 protected:
 			void			UpdateCursor();
-		float	GetDrawCursorPos();
 				// %c<255,255,255,255>
 		u32		GetColorFromText(const xr_string& str)									const;
 		float	GetIndentByAlign(float length)											const;
@@ -92,9 +96,11 @@ protected:
 	CGameFont*		m_pFont;
 
 	enum {
-		flNeedReparse = 8,
+		flNeedReparse = 1,
 		flComplexMode = 2,
-		flPasswordMode = 4
+		flPasswordMode = 4,
+		flColoringMode = 8,
+		flCutWordsMode = 16
 	};	
 private:
 	Flags32			uFlags;
