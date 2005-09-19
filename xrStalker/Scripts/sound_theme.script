@@ -386,9 +386,6 @@ function load_sound(obj)
 	theme[obj:id()]["pri_followers_btr_phrase2"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase2")
 	theme[obj:id()]["pri_followers_btr_phrase3"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase3")
 	theme[obj:id()]["pri_followers_btr_phrase4"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase4")
-	theme[obj:id()]["pri_heli_phrase"]              = load_sound_from_ltx(obj, "pri_heli_phrase")
-	theme[obj:id()]["pri_followers_fight"]          = load_sound_from_ltx(obj, "pri_followers_fight")
-	theme[obj:id()]["pri_followers_kill"]           = load_sound_from_ltx(obj, "pri_followers_kill")
 
 	-- Agroprom
 	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")
