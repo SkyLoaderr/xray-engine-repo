@@ -567,7 +567,7 @@ function load_job_zombied(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 1, state = {state_zombied_wait},
 		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_small_restr",
+		    in_rest = "", out_rest = gname .. "_base_restr",
 		    predicate = f_predicate3
 	    }
 	    table.insert(sj, t)

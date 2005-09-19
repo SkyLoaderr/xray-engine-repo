@@ -73,7 +73,7 @@ on_info             = {+pri_helicopters_start} remark@pri_followers_leader_look_
 no_move             = true
 target              = 801
 anim                = guard
-snd                 = pri_followers_leader
+;snd                 = pri_followers_leader
 
 ;--- LEADER: WAVE1 ------------------------------------------------------------------------------
 [logic@pri_followers_leader_wave1]
@@ -1315,8 +1315,8 @@ path_look           = monolith7_look
 on_info                 = %=pri_zombied_in_combat_dec%
 
 [mob_camp@pri_zombied_controllers_wait]
-path_look               = controllers_wait_look
-path_home               = controllers_wait_home
+path_look               = controllers_look ;controllers_wait_look
+path_home               = controllers_home ;controllers_wait_home
 time_change_point       = 30000
 home_min_radius         = 1
 home_max_radius         = 2
