@@ -1435,9 +1435,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER1: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier1_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier1_scene]
+path_walk               = scene_walk1
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER1: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier1_fight]
@@ -1461,9 +1466,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER2: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier2_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier2_scene]
+path_walk               = scene_walk2
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER2: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier2_fight]
@@ -1487,9 +1497,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER3: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier3_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier3_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier3_scene]
+path_walk               = scene_walk3
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER3: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier3_fight]
@@ -1513,9 +1528,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER4: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier4_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier4_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier4_scene]
+path_walk               = scene_walk4
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER4: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier4_fight]
@@ -1539,9 +1559,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER5: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier5_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier5_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier5_scene]
+path_walk               = scene_walk5
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER5: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier5_fight]
@@ -1565,9 +1590,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER6: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier6_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier6_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier6_scene]
+path_walk               = scene_walk6
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER6: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier6_fight]
@@ -1591,9 +1621,14 @@ combat_ignore           = combat_ignore
 
 ;--- SOLDIER7: SCENE -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier7_scene]
-active                  = remark@pri_zombied_soldier_wait
+active                  = walker@pri_zombied_soldier7_scene
 on_combat               = combat_zombied
 combat_ignore           = combat_ignore
+
+[walker@pri_zombied_soldier7_scene]
+path_walk               = scene_walk7
+on_signal               = arrived | nil
+combat_ignore_cond      = {=check_fighting(813:814)}
 
 ;--- SOLDIER7: FIGHT -----------------------------------------------------------------------------
 [logic@pri_zombied_soldier7_fight]
