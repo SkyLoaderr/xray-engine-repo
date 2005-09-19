@@ -94,7 +94,7 @@
 	
 	<specific_character id="esc_fox" team_default = "1">
 		<name>Сталкер "Лис"</name>
-		<icon x="16" y="10"></icon>
+		<icon x="24" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Старый прожженый зоной одиночка.</bio>
 
