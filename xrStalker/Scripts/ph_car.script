@@ -1086,9 +1086,9 @@ function action_car:fast_update()
 		        self.target_fire_pt = self.target_obj:position()
 		        if self.target_obj:id() ~= db.actor:id() then
 		            if self.target_obj:target_body_state() == move.crouch then
-		                self.target_fire_pt.y = self.target_fire_pt.y + 0.4 -- FAKE
+		                self.target_fire_pt.y = self.target_fire_pt.y + 0.3 -- FAKE
 		            elseif not xr_wounded.is_heavy_wounded_by_id(self.target_obj:id()) then
-		                self.target_fire_pt.y = self.target_fire_pt.y + 0.7 -- FAKE
+		                self.target_fire_pt.y = self.target_fire_pt.y + 0.6 -- FAKE
 		            end
 		        end
 		        self:rot_to_firepoint(self.target_fire_pt)
