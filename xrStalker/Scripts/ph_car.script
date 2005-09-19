@@ -1132,7 +1132,7 @@ function action_car:deactivate()
 	self:destroy_car()
 end
 
-function mob_camp:net_destroy()
+function action_car:net_destroy()
 	self:destroy_car()
 end
 
