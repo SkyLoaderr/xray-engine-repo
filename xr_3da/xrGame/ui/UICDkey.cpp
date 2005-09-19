@@ -16,14 +16,11 @@ CUICDkey::~CUICDkey(){
 }
 
 void CUICDkey::Draw(){
-	//CUIFrameLineWnd::Draw();
-
 	Frect rect = GetAbsoluteRect();
 	float outX, outY;
 	Frect scr_rect;
 	scr_rect.set(0,0,1024,768);
 
-//	static string32 buf;
 	outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
 	outX = 0;
 	m_lines.m_pFont->SetColor(m_lines.GetTextColor());
@@ -33,28 +30,17 @@ void CUICDkey::Draw(){
 	if(m_bInputFocus)
 	{	
 		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
-//		xr_string tmp_str;
-//		tmp_str.assign(m_lines.m_text.begin(), m_lines.m_text.begin()+m_iCursorPos);
 		outX = m_lines.GetDrawCursorPos();
-		outX += m_lines.m_pFont->SizeOfRel("-")*(_min(iFloor(m_lines.m_cursor_pos.x/4.0f),3));
-		//}
-//		m_animation.Update();
-//		m_lines.m_pFont->SetColor(subst_alpha(m_cursorColor, color_get_A(m_animation.GetColor())));
+		outX += m_lines.m_pFont->SizeOfRel("-")*(_min(iFloor(m_lines.m_iCursorPos/4.0f),3));
 
 		CUILine::DrawCursor(m_lines.m_pFont, rect.left+outX, rect.top+outY, m_lines.GetTextColor());
-
-		//UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, rect.top+outY,  "|");
-
-		//GetFont()->OnRender();
 	}
 }
 
 LPCSTR CUICDkey::AddHyphens(LPCSTR c){
 	static string32 buf;
 
-	int sz = xr_strlen(c);//		(int)m_lines.m_text.length();
-//	const char* text = m_lines.m_text.c_str();
-
+	int sz = xr_strlen(c);
 	int j = 0; 
 
 	for (int i = 1; i<=3; i++)

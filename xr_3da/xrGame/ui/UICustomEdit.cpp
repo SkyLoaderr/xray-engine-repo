@@ -32,6 +32,8 @@ CUICustomEdit::CUICustomEdit()
 	m_bHoldWaitMode = false;
    
 	m_lines.SetVTextAlignment(valCenter);
+	m_lines.SetColoringMode(false);
+	m_lines.SetCutWordsMode(true);
 	SetText("");
 	m_textPos.set(3,0);
 	m_bNumbersOnly = false;
@@ -144,6 +146,12 @@ bool CUICustomEdit::KeyPressed(int dik)
 	case DIK_RIGHT:
 	case DIKEYBOARD_RIGHT:
 		m_lines.IncCursorPos();		
+		break;
+	case DIK_UP:
+		m_lines.MoveCursorUp();
+		break;
+	case DIK_DOWN:
+		m_lines.MoveCursorDown();
 		break;
 	case DIK_LSHIFT:
 	case DIK_RSHIFT:
