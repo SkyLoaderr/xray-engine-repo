@@ -32,7 +32,7 @@ public:
 			void	SetFloatNumbers	(bool status);
 			void	SetPasswordMode	(bool mode = true);			
 			void	SetDbClickMode	(bool mode = true)	{m_bFocusByDbClick = mode;}
-			void	SetCursorColor	(u32 color)			{m_cursorColor = color;}
+			void	SetCursorColor	(u32 color)			{m_lines.SetCursorColor(color);}
 			
 			void	SetLightAnim			(LPCSTR lanim);
 
@@ -57,7 +57,7 @@ protected:
 	int m_iKeyPressAndHold;
 	bool m_bHoldWaitMode;
 
-	u32	m_cursorColor;
+//	u32	m_cursorColor;
 
 	CLAItem*				m_lanim;
 };

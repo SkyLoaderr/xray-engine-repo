@@ -22,6 +22,7 @@ CUILines::CUILines()
 	m_eTextAlign = CGameFont::alLeft;
 	m_eVTextAlign = valTop;
 	m_dwTextColor = 0xffffffff;
+	m_dwCursorColor = 0xAAFFFF00;
 
 	m_bShowMe = true;
 	m_wndPos.x = 0;
@@ -295,7 +296,7 @@ void CUILines::DrawCursor(float x, float y){
 	{
 		text_pos.x = x + GetIndentByAlign(0);		
 		text_pos.y = y + GetVIndentByAlign();
-		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwCursorColor);
 		return;
 	}
 	
@@ -314,7 +315,7 @@ void CUILines::DrawCursor(float x, float y){
 
 		m_text[m_iCursorPos] = tmp;
 		
-		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwCursorColor);
 	}
 	else
 	{
@@ -322,7 +323,7 @@ void CUILines::DrawCursor(float x, float y){
 		{
 			text_pos.x = x + GetIndentByAlign(0);		
 			text_pos.y = y + GetVIndentByAlign();
-			CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+			CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwCursorColor);
 			return;
 		}
 
@@ -333,7 +334,7 @@ void CUILines::DrawCursor(float x, float y){
 		float height	= m_pFont->CurrentHeightRel();
 		text_pos.y		+= (height + m_interval)*m_cursor_pos.y;
 		text_pos.x		= x + GetIndentByAlign(m_lines[m_cursor_pos.y].GetLength(m_pFont));
-		m_lines[m_cursor_pos.y].DrawCursor(m_cursor_pos.x, m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
+		m_lines[m_cursor_pos.y].DrawCursor(m_cursor_pos.x, m_pFont, text_pos.x, text_pos.y, m_dwCursorColor);
 	}	
 }
 

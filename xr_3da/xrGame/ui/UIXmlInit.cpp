@@ -764,7 +764,9 @@ bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEd
 	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:e"),index))
 		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	
 	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:d"),index))
-		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	 
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:cursor"),index))
+		pWnd->SetCursorColor(GetARGB(xml_doc,foo,index));
 
 	if (xml_doc.ReadAttribInt(path,index,"db_click",0))
 		pWnd->SetDbClickMode();

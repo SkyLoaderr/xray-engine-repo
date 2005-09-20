@@ -43,8 +43,6 @@ CUICustomEdit::CUICustomEdit()
 
 	m_textColor[0]=color_argb(255,235,219,185);
 	m_textColor[1]=color_argb(255,100,100,100);
-
-	m_cursorColor = 0xAAFFFF00;
 }
 
 CUICustomEdit::~CUICustomEdit()

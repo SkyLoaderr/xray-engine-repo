@@ -35,6 +35,7 @@ public:
 			EVTextAlignment GetVTextAlignment()							{return m_eVTextAlign;}
 
 	// additional
+			void			SetCursorColor(u32 color)					{m_dwCursorColor = color;}
 			void			AddCharAtCursor(const char ch);
 			void			DelChar();
 			void			DelLeftChar();
@@ -93,6 +94,7 @@ protected:
 	ETextAlignment	m_eTextAlign;
 	EVTextAlignment	m_eVTextAlign;
 	u32				m_dwTextColor;
+	u32				m_dwCursorColor;
 
 	CGameFont*		m_pFont;
 
