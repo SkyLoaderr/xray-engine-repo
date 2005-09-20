@@ -144,21 +144,21 @@ function heli_binder:check_health()
 			heli_snd.play_snd( self.st, heli_snd.snd_down, 4 )
 		end
 	elseif not heli.m_exploded then
-		-- вертолёт должен взорваться, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
+		-- вертолёт должен взорваться, если высота меньше 3 м или он замедлил падение (меньше 1 м за 1 с)
 		local altitude = heli:GetRealAltitude()
 
 		if altitude < 3.0 then
---			printf( "heli: explode" )
+			printf( "heli: explode" )
 			self.heliObject:Explode()
 
 			heli_snd.stop_snd( self.st )
 		end
 
 		if self.st.alt_check_time < time_global() then
-			self.st.alt_check_time = time_global() + 500
+			self.st.alt_check_time = time_global() + 1000
 
 			if self.st.last_alt - altitude < 1 then
---				printf( "heli: explode (hanged)" )
+				printf( "heli: explode (hanged)" )
 				heli:Explode()
 
 				heli_snd.stop_snd( self.st )
@@ -173,14 +173,21 @@ end
 function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
 	printf( "heli_binder: hit callback" )
 
-	if not self.st.combat.enemy_id then
-		self.st.combat.enemy_id = enemy_id
+	local enemy        = level.object_by_id( enemy_id )
+	local enemy_cls_id = get_clsid( enemy )
+
+	-- если обидчик актёр или сталкер, то сделать его своим врагом
+	if enemy_cls_id == clsid.actor or enemy_cls_id == clsid.script_stalker then
+		if not self.st.combat.enemy_id then
+			self.st.combat.enemy_id = enemy_id
+		end
+
+		if self.st.hit then
+			xr_logic.issue_event( self.object, self.st.hit, "hit_callback", self.object, power, nil, enemy, nil )
+		end
 	end
 
-	if self.st.hit then
-		xr_logic.issue_event( self.object, self.st.hit, "hit_callback", self.object, power, nil, level.object_by_id( enemy_id ), nil )
-	end
-
+	-- пилоты ругаются по рации
 	if self.last_hit_snd_timeout < time_global() then
 		heli_snd.play_snd( self.st, heli_snd.snd_hit, 2 )
 		self.last_hit_snd_timeout = time_global() + math.random( 4000, 8000 )
