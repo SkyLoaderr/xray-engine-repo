@@ -387,13 +387,13 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 		static u32 last_name_cnt	= pSettings->r_u32("stalker_names","last_name_cnt");
 		
 		string512			S;
-		xr_string n			= "lname_";
-		n					+= itoa(::Random.randI(last_name_cnt),S,10);
+		xr_string n			= "name_";
+		n					+= itoa(::Random.randI(name_cnt),S,10);
 		m_character_name	= *(CStringTable()(n.c_str()));
 		m_character_name	+= " ";
 
-		n					= "name_";
-		n					+= itoa(::Random.randI(name_cnt),S,10);
+		n					= "lname_";
+		n					+= itoa(::Random.randI(last_name_cnt),S,10);
 		m_character_name	+= *(CStringTable()(n.c_str()));
 
 

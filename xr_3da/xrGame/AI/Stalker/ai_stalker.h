@@ -43,6 +43,7 @@ class CSightManager;
 class CStalkerMovementManager;
 class CStalkerSoundDataVisitor;
 class CWeaponShotEffector;
+struct SBoneProtections;
 
 template <
 	typename _action_type,
@@ -87,6 +88,7 @@ private:
 private:
 	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
 	CALifeTask						*m_current_alife_task;
+	SBoneProtections*				m_boneHitProtection;
 
 	// weapon dispersion
 private:

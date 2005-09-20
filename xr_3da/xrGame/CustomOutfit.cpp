@@ -12,74 +12,8 @@
 #include "Actor.h"
 #include "game_cl_base.h"
 #include "Level.h"
+#include "BoneProtections.h"
 
-
-struct SBoneProtections{
-	struct BoneProtection {
-		float		koeff;
-		float		armour;
-	};
-	typedef xr_map<s16,BoneProtection>		storage_type;
-	typedef storage_type::iterator	storage_it;
-						SBoneProtections	()								{m_default.koeff = 1.0f; m_default.armour = 0;}
-	BoneProtection		m_default;
-	storage_type		m_bones_koeff;
-	void				reload				(const shared_str& outfit_section, CKinematics* kinematics);
-	float				getBoneProtection	(s16 bone_id);
-	float				getBoneArmour		(s16 bone_id);
-};
-
-float SBoneProtections::getBoneProtection	(s16 bone_id)
-{
-	storage_it it = m_bones_koeff.find(bone_id);
-	if( it != m_bones_koeff.end() )
-		return it->second.koeff;
-	else
-		return m_default.koeff;
-}
-
-float SBoneProtections::getBoneArmour	(s16 bone_id)
-{
-	storage_it it = m_bones_koeff.find(bone_id);
-	if( it != m_bones_koeff.end() )
-		return it->second.armour;
-	else
-		return m_default.armour;
-}
-
-void SBoneProtections::reload(const shared_str& outfit_section, CKinematics* kinematics)
-{
-	VERIFY(kinematics);
-	m_bones_koeff.clear();
-
-
-	if(!pSettings->line_exist(outfit_section,"bones_koeff_protection")) return;
-	LPCSTR bone_sect = pSettings->r_string(outfit_section,"bones_koeff_protection");
-
-	CInifile::Sect	&protections = pSettings->r_section(bone_sect);
-	for (CInifile::SectIt i=protections.begin(); protections.end() != i; ++i) {
-//		float k = (float)atof( *(*i).second );
-		string256 buffer;
-		float Koeff = (float)atof( _GetItem(*(*i).second, 0, buffer) );
-		float Armour = (float)atof( _GetItem(*(*i).second, 1, buffer) );
-		
-		BoneProtection	BP;
-		BP.koeff = Koeff;
-		BP.armour = Armour;
-
-		if (!xr_strcmp(*(*i).first,"default"))
-		{
-			m_default = BP;
-		}
-		else 
-		{
-			s16	bone_id				= kinematics->LL_BoneID(i->first);
-			R_ASSERT2				(BI_NONE != bone_id, *(*i).first);			
-			m_bones_koeff.insert(mk_pair(bone_id,BP));
-		}
-	}
-
-}
 
 CCustomOutfit::CCustomOutfit()
 {
@@ -234,7 +168,11 @@ void	CCustomOutfit::OnMoveToSlot		()
 
 				pActor->ChangeVisual(NewVisual);
 			}
-			m_boneProtection->reload( cNameSect(), smart_cast<CKinematics*>(pActor->Visual()) );
+			if(pSettings->line_exist(cNameSect(),"bones_koeff_protection")){
+				m_boneProtection->reload( pSettings->r_string(cNameSect(),"bones_koeff_protection"), smart_cast<CKinematics*>(pActor->Visual()) );
+			
+			};
+
 		}
 	}
 };

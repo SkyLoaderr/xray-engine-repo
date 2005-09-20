@@ -54,6 +54,7 @@
 #include "../../effectorshot.h"
 #include "../../visual_memory_manager.h"
 #include "../../enemy_manager.h"
+#include "../../BoneProtections.h"
 
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
@@ -70,6 +71,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_movement_manager				= 0;
 	m_demo_mode						= false;
 	m_group_behaviour				= true;
+	m_boneHitProtection				= NULL;
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -137,6 +139,7 @@ void CAI_Stalker::reinit			()
 	m_pick_frame_id					= 0;
 
 	m_weapon_shot_random_seed		= s32(Level().timeServer_Async());
+
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)
@@ -284,6 +287,11 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 			LPCSTR imm_sect = ini->r_string("immunities", "immunities_sect");
 			conditions().InitImmunities(imm_sect,pSettings);
 		}
+
+		if(ini->line_exist("bone_protection","bones_protection_sect")){
+			m_boneHitProtection			= xr_new<SBoneProtections>();
+			m_boneHitProtection->reload	(ini->r_string("bone_protection","bones_protection_sect"), pKinematics );
+		}
 	}
 
 	//вычислить иммунета в зависимости от ранга
@@ -339,6 +347,8 @@ void CAI_Stalker::net_Destroy()
 	xr_delete							(m_ce_safe);
 	xr_delete							(m_ce_ambush);
 	xr_delete							(m_ce_best_by_time);
+	xr_delete							(m_boneHitProtection);
+
 }
 
 void CAI_Stalker::net_Save			(NET_Packet& P)
@@ -545,6 +555,11 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 {
 	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
 	P *= m_fRankImmunity;
+	if(m_boneHitProtection && hit_type == ALife::eHitTypeFireWound){
+		float BoneArmour = m_boneHitProtection->getBoneArmour(element);	
+		P	= P - BoneArmour/100.0f;
+		clamp	(P, 0.0f, _abs(P));
+	}
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 //	inherited::Hit(0.05f,dir,who,element,p_in_object_space,impulse,hit_type);
 }

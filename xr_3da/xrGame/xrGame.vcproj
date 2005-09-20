@@ -7674,6 +7674,12 @@
 							Name="Outfit"
 							Filter="">
 							<File
+								RelativePath=".\BoneProtections.cpp">
+							</File>
+							<File
+								RelativePath=".\BoneProtections.h">
+							</File>
+							<File
 								RelativePath=".\CustomOutfit.cpp">
 							</File>
 							<File
