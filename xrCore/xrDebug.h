@@ -6,7 +6,7 @@ typedef	void		crashhandler	(void);
 class XRCORE_API	xrDebug
 {
 private:
-	crashhandler	handler	;
+	crashhandler*	handler	;
 	void			backend			(const char* reason, const char* file, int line);
 
 public:
