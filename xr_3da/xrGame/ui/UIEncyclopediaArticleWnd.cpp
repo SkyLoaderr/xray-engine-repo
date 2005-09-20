@@ -40,18 +40,20 @@ void CUIEncyclopediaArticleWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 void CUIEncyclopediaArticleWnd::SetArticle(CEncyclopediaArticle* article)
 {
-	m_UIImage->SetShader			(article->data()->image.GetShader());
-	m_UIImage->SetOriginalRect		(article->data()->image.GetStaticItem()->GetOriginalRect());
-	m_UIImage->SetWndSize			(article->data()->image.GetWndSize());
-	float img_x						= (GetWidth()-m_UIImage->GetWidth())/2.0f;
-	img_x							= _max(0.0f, img_x);
-	m_UIImage->SetWndPos			(img_x ,m_UIImage->GetWndPos().y);
+	if( article->data()->image.TextureAvailable() ){
+		m_UIImage->SetShader			(article->data()->image.GetShader());
+		m_UIImage->SetOriginalRect		(article->data()->image.GetStaticItem()->GetOriginalRect());
+		m_UIImage->SetWndSize			(article->data()->image.GetWndSize());
+
+		float img_x						= (GetWidth()-m_UIImage->GetWidth())/2.0f;
+		img_x							= _max(0.0f, img_x);
+		m_UIImage->SetWndPos			(img_x ,m_UIImage->GetWndPos().y);
+	};
+
 	
 	m_UIText->SetWndPos				(m_UIText->GetWndPos().x, m_UIImage->GetWndPos().y + m_UIImage->GetHeight());
 	m_UIText->SetText				(*CStringTable()(article->data()->text.c_str()));
-//.	Msg("---before m_UIText height=%f",m_UIText->GetWndSize().y);
 	m_UIText->AdjustHeightToText	();
-//.	Msg("---after m_UIText height=%f",m_UIText->GetWndSize().y);
 
 	SetHeight						(	m_UIImage->GetWndPos().y + m_UIImage->GetHeight()+
 										m_UIText->GetHeight());

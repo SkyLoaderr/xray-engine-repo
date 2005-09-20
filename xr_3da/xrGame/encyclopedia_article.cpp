@@ -92,32 +92,36 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	}
 	else 
 	{
-		uiXml.SetLocalRoot(pNode);
-		xml_init.InitTexture(uiXml, "", 0, &data()->image);
-		uiXml.SetLocalRoot(uiXml.GetRoot());
+		if( uiXml.NavigateToNode(pNode,"texture",0) ){
+			uiXml.SetLocalRoot(pNode);
+			xml_init.InitTexture(uiXml, "", 0, &data()->image);
+			uiXml.SetLocalRoot(uiXml.GetRoot());
+		}
 	}
 
-	Frect r = data()->image.GetUIStaticItem().GetOriginalRect();
-	data()->image.SetAutoDelete(false);
+	if(data()->image.TextureAvailable() ){
+		Frect r = data()->image.GetUIStaticItem().GetOriginalRect();
+		data()->image.SetAutoDelete(false);
 
-	const int minSize = 65;
+		const int minSize = 65;
 
-	// Сначала устанавливаем если надо минимально допустимые размеры иконки
-	if (r.width() < minSize)
-	{
-		float dx = minSize - r.width();
-		r.x2 += dx;
-		data()->image.SetTextureOffset(dx / 2, data()->image.GetTextureOffeset()[1]);
-	}
+		// Сначала устанавливаем если надо минимально допустимые размеры иконки
+		if (r.width() < minSize)
+		{
+			float dx = minSize - r.width();
+			r.x2 += dx;
+			data()->image.SetTextureOffset(dx / 2, data()->image.GetTextureOffeset()[1]);
+		}
 
-	if (r.height() < minSize)
-	{
-		float dy = minSize - r.height();
-		r.y2 += dy;
-		data()->image.SetTextureOffset(data()->image.GetTextureOffeset()[0], dy / 2);
-	}
+		if (r.height() < minSize)
+		{
+			float dy = minSize - r.height();
+			r.y2 += dy;
+			data()->image.SetTextureOffset(data()->image.GetTextureOffeset()[0], dy / 2);
+		}
 
-	data()->image.SetWndRect(0, 0, r.width(), r.height());
+		data()->image.SetWndRect(0, 0, r.width(), r.height());
+	};
 
 	// Тип статьи
 	xr_string atricle_type = uiXml.ReadAttrib(pNode, "article_type", "encyclopedia");

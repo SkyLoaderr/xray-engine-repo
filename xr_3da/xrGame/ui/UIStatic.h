@@ -64,6 +64,7 @@ public:
 			void		TextureOn					()							{ m_bTextureEnable = true; }
 			void		TextureOff					()							{ m_bTextureEnable = false; }
 			void		TextureAvailable			(bool value)				{ m_bAvailableTexture = value; }
+			bool		TextureAvailable			()							{ return m_bAvailableTexture;}
 
 
 	// own
