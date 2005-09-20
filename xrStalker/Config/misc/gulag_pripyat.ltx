@@ -1260,9 +1260,22 @@ on_info                 = %=pri_zombied_in_combat_dec%
 [mob_camp@pri_zombied_controllers_wait]
 path_look               = controllers_look ;controllers_wait_look
 path_home               = controllers_home ;controllers_wait_home
-time_change_point       = 30000
+time_change_point       = 10000
 home_min_radius         = 1
 home_max_radius         = 2
+
+[mob_camp@pri_zombied_controllers_scene1]
+path_look               = controllers_look
+path_home               = controllers_home
+time_change_point       = 5000
+home_min_radius         = 1
+home_max_radius         = 2
+on_timer                = 5000 | mob_camp@pri_zombied_controllers_scene2
+
+[mob_camp@pri_zombied_controllers_scene2]
+path_look               = controllers_look
+path_home               = controllers_home
+time_change_point       = 5000
 
 [mob_remark@pri_zombied_controllers_fight]
 anim                    = stand_idle_0, stand_idle_1, stand_idle_2, stand_idle_3
@@ -1284,7 +1297,7 @@ active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER1: SCENE --------------------------------------------------------------------------
 [logic@pri_zombied_controller1_scene]
-active                  = mob_camp@pri_zombied_controllers_wait
+active                  = mob_camp@pri_zombied_controllers_scene1
 
 ;--- CONTROLLER1: FIGHT --------------------------------------------------------------------------
 [logic@pri_zombied_controller1_fight]
@@ -1304,7 +1317,7 @@ active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER2: SCENE --------------------------------------------------------------------------
 [logic@pri_zombied_controller2_scene]
-active                  = mob_camp@pri_zombied_controllers_wait
+active                  = mob_camp@pri_zombied_controllers_scene1
 
 ;--- CONTROLLER2: FIGHT --------------------------------------------------------------------------
 [logic@pri_zombied_controller2_fight]
@@ -1324,7 +1337,7 @@ active                  = mob_camp@pri_zombied_controllers_wait
 
 ;--- CONTROLLER3: SCENE --------------------------------------------------------------------------
 [logic@pri_zombied_controller3_scene]
-active                  = mob_camp@pri_zombied_controllers_wait
+active                  = mob_camp@pri_zombied_controllers_scene1
 
 ;--- CONTROLLER3: FIGHT --------------------------------------------------------------------------
 [logic@pri_zombied_controller3_fight]
