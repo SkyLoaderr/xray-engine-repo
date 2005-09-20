@@ -104,6 +104,18 @@ function load_job_base (sj, gname, type, squad, groups)
 		            end
 		}
 	table.insert(sj, t)		
+	
+	t = { section = "logic@mil_freedom_walker7",
+		idle = 0,
+		prior = 1, state = {0, 3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+    	predicate = function (obj)
+	                    return obj:profile_name () == "mil_Svoboda_engineer"
+	                end
+     	}
+	table.insert(sj, t)
+	------
 	-- мужик у костра 1
     t = {section = "logic@mil_freedom_stalker1",
 		idle = 0,
@@ -289,18 +301,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 1, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
-	}
-	table.insert(sj, t)
-	------
-	t = { section = "logic@mil_freedom_walker7",
-		idle = 0,
-		prior = 1, state = {0, 3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-    	predicate = function (obj)
-	                    return obj:profile_name () == "mil_Svoboda_engineer"
-	                end
-
 	}
 	table.insert(sj, t)
 	------
