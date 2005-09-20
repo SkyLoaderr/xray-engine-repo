@@ -171,3 +171,13 @@ function set_actor_enemy_for (sid)
     end    
     npc:set_relation (game_object.enemy, db.actor)
 end
+
+function transfer_scope (npc, actor)
+    local scope = npc:object ("wpn_addon_scope")
+    if scope ~= nil then
+       dialogs.relocate_item (npc, scope, "in") 
+       dialogs.relocate_item (npc, actor:object ("vodka"), "out")
+    else   
+       printf ("SCREW DON'T HAVE A SCOPE")    
+    end   
+end
