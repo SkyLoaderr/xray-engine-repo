@@ -304,15 +304,15 @@ void CUILines::DrawCursor(float x, float y){
 		text_pos.x = x + GetIndentByAlign(m_pFont->SizeOfRel(m_text.c_str()));		
 		text_pos.y = y + GetVIndentByAlign();
 		
-		char tmp = m_text[m_cursor_pos.x];
-		m_text[m_cursor_pos.x] = 0;
+		char tmp = m_text[m_iCursorPos];
+		m_text[m_iCursorPos] = 0;
 
 		if (uFlags.test(flPasswordMode))
 			text_pos.x += m_pFont->SizeOfRel("*")*xr_strlen(m_text.c_str());
 		else
 			text_pos.x += iFloor(m_pFont->SizeOfRel(m_text.c_str()));
 
-		m_text[m_cursor_pos.x] = tmp;
+		m_text[m_iCursorPos] = tmp;
 		
 		CUILine::DrawCursor(m_pFont, text_pos.x, text_pos.y, m_dwTextColor);
 	}

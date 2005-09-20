@@ -34,17 +34,29 @@ CUICustomEdit::CUICustomEdit()
 	m_lines.SetVTextAlignment(valCenter);
 	m_lines.SetColoringMode(false);
 	m_lines.SetCutWordsMode(true);
+	m_lines.SetUseNewLineMode(false);
 	SetText("");
 	m_textPos.set(3,0);
 	m_bNumbersOnly = false;
 	m_bFloatNumbers = false;
 	m_bFocusByDbClick = false;
 
+	m_textColor[0]=color_argb(255,235,219,185);
+	m_textColor[1]=color_argb(255,100,100,100);
+
 	m_cursorColor = 0xAAFFFF00;
 }
 
 CUICustomEdit::~CUICustomEdit()
 {
+}
+
+void CUICustomEdit::SetTextColor(u32 color){
+	m_textColor[0] = color;
+}
+
+void CUICustomEdit::SetTextColorD(u32 color){
+	m_textColor[1] = color;
 }
 
 void CUICustomEdit::Init(float x, float y, float width, float height){
@@ -319,6 +331,9 @@ void CUICustomEdit::Update()
 		else
 			last_time = cur_time;
 	}
+
+	m_lines.SetTextColor(m_textColor[IsEnabled()?0:1]);
+
 	CUIWindow::Update();
 }
 
@@ -342,10 +357,6 @@ const char* CUICustomEdit::GetText(){
 
 void CUICustomEdit::Enable(bool status){
 	CUIWindow::Enable(status);
-	if (!status)
-		m_lines.SetTextColor(color_argb(255,100,100,100));
-	else
-		m_lines.SetTextColor(color_argb(255,235,219,185));
 }
 
 void CUICustomEdit::SetNumbersOnly(bool status){

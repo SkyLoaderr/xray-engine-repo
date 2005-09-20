@@ -760,6 +760,12 @@ bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEd
 	InitTexture(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 
+	string256 foo;
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:e"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:d"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	 
+
 	if (xml_doc.ReadAttribInt(path,index,"db_click",0))
 		pWnd->SetDbClickMode();
 
@@ -1058,35 +1064,48 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 
 bool CUIXmlInit::InitMultiText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pWnd){
 	InitText(xml_doc, path, index, pWnd);
-
 	string256 sText;
-	// attention!! order of character is very impartant
-	char* last_char = "edth";
-	bool pathIsVoid = 0 == xr_strcmp(path, "");
 
-	u32 a, r, g, b;
+	if (xml_doc.NavigateToNode(strconcat(sText,path,":text_color:e"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,sText,index),CUIStatic::E4States::E);
 
-	if (pathIsVoid)
-		strcpy(sText, "text_color:e");
-	else
-		strconcat(sText, path, ":text_color:e");
+	if (xml_doc.NavigateToNode(strconcat(sText,path,":text_color:d"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,sText,index),CUIStatic::E4States::D);
 
-	int last_symbol = xr_strlen(sText) - 1;
+	if (xml_doc.NavigateToNode(strconcat(sText,path,":text_color:t"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,sText,index),CUIStatic::E4States::T);
 
-	for (int i = 1; i <= 4; i++)
-	{
-		if (xml_doc.NavigateToNode(sText, index))
-		{
-			a = xml_doc.ReadAttribInt(sText, index, "a", 255);
-			r = xml_doc.ReadAttribInt(sText, index, "r", 255);
-			g = xml_doc.ReadAttribInt(sText, index, "g", 255);
-			b = xml_doc.ReadAttribInt(sText, index, "b", 255);
+	if (xml_doc.NavigateToNode(strconcat(sText,path,":text_color:h"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,sText,index),CUIStatic::E4States::H);
 
-			pWnd->SetTextColor(color_argb(a, r, g, b),(CUIStatic::E4States)(i - 1));
-		}
 
-		sText[last_symbol] = last_char[i];
-	}
+	//// attention!! order of character is very impartant
+	//char* last_char = "edth";
+	//bool pathIsVoid = 0 == xr_strcmp(path, "");
+
+	//u32 a, r, g, b;
+
+	//if (pathIsVoid)
+	//	strcpy(sText, "text_color:e");
+	//else
+	//	strconcat(sText, path, ":text_color:e");
+
+	//int last_symbol = xr_strlen(sText) - 1;
+
+	//for (int i = 1; i <= 4; i++)
+	//{
+	//	if (xml_doc.NavigateToNode(sText, index))
+	//	{
+	//		a = xml_doc.ReadAttribInt(sText, index, "a", 255);
+	//		r = xml_doc.ReadAttribInt(sText, index, "r", 255);
+	//		g = xml_doc.ReadAttribInt(sText, index, "g", 255);
+	//		b = xml_doc.ReadAttribInt(sText, index, "b", 255);
+
+	//		pWnd->SetTextColor(color_argb(a, r, g, b),(CUIStatic::E4States)(i - 1));
+	//	}
+
+	//	sText[last_symbol] = last_char[i];
+	//}
 	
 	return true;
 }
@@ -1233,7 +1252,7 @@ bool CUIXmlInit::InitArtefactPanel(CUIXml &xml_doc, const char* path, int index,
 ////////////////////////////////////////////////////////////////////////////////
 
 u32 CUIXmlInit::GetARGB(CUIXml& xml_doc, const char* path, int index){
-	u32 a = xml_doc.ReadAttribInt(path, index, "a");
+	u32 a = xml_doc.ReadAttribInt(path, index, "a",255);
 	u32 r = xml_doc.ReadAttribInt(path, index, "r");
 	u32 g = xml_doc.ReadAttribInt(path, index, "g");
 	u32 b = xml_doc.ReadAttribInt(path, index, "b");

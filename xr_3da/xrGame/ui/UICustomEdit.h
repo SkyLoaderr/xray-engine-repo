@@ -7,9 +7,11 @@ class CUICustomEdit : public CUIWindow, public CUILinesOwner {
 public:
 	CUICustomEdit();
 	virtual ~CUICustomEdit();
-	// IUITextControl : public IUIFontControl{
+	// CUILinesOwner
 	virtual void			SetFont(CGameFont* pFont)					{CUILinesOwner::SetFont(pFont);}
 	virtual CGameFont*		GetFont()									{return CUILinesOwner::GetFont();}
+	virtual void			SetTextColor(u32 color);
+	virtual void			SetTextColorD(u32 color);
 
 	virtual void	Init			(float x, float y, float width, float height);
 	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData = NULL);
@@ -24,11 +26,13 @@ public:
 			void	CaptureFocus	(bool bCapture) { m_bInputFocus = bCapture; }
 	virtual	void	SetText			(LPCSTR str);
 	virtual const char* GetText();
+
 	virtual void	Enable			(bool status);
 			void	SetNumbersOnly	(bool status);
 			void	SetFloatNumbers	(bool status);
-			void	SetPasswordMode	(bool mode = true);
-			void	SetDbClickMode	(bool mode = true) {m_bFocusByDbClick = mode;}
+			void	SetPasswordMode	(bool mode = true);			
+			void	SetDbClickMode	(bool mode = true)	{m_bFocusByDbClick = mode;}
+			void	SetCursorColor	(u32 color)			{m_cursorColor = color;}
 			
 			void	SetLightAnim			(LPCSTR lanim);
 
@@ -47,14 +51,12 @@ protected:
 	bool m_bFloatNumbers;
 	bool m_bFocusByDbClick;
 
+	u32 m_textColor[2];
+
 	//DIK клавиши, кот. нажата и удерживается, 0 если такой нет
 	int m_iKeyPressAndHold;
 	bool m_bHoldWaitMode;
 
-//	//положение текущее курсора при наборе текста
-//	u32 m_iCursorPos;
-
-//	static CUIColorAnimatorWrapper m_animation;
 	u32	m_cursorColor;
 
 	CLAItem*				m_lanim;
