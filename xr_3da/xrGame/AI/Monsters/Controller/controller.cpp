@@ -255,7 +255,7 @@ void CController::reinit()
 
 void CController::control_hit()
 {
-	PsyHit						(EnemyMan.get_enemy(), 30.f);
+	Hit_Psy						(const_cast<CEntityAlive*>(EnemyMan.get_enemy()), 30.f);
 	
 	// start postprocess
 	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));

@@ -4,7 +4,7 @@
 #include "../../../ai_sounds.h"
 #include "../../../xrmessages.h"
 #include "../../../net_utils.h"
-#include "../../../CustomMonster.h"
+#include "../BaseMonster/base_monster.h"
 
 CPsyAuraController::CPsyAuraController()
 {
@@ -62,17 +62,8 @@ void CPsyAuraController::schedule_update()
 			hit_dir.sub			(get_object()->Position(), (*it)->Position());
 			hit_dir.normalize	();
 
-			NET_Packet					P;
-			get_object()->u_EventGen	(P,GE_HIT, (*it)->ID());
-			P.w_u16						((*it)->ID());
-			P.w_u16						((*it)->ID());
-			P.w_dir						(hit_dir);
-			P.w_float					(power_down_vel * power_percent);
-			P.w_s16						(BI_NONE);
-			P.w_vec3					(Fvector().set(0.f,0.f,0.f));
-			P.w_float					(0.f);
-			P.w_u16						(u16(ALife::eHitTypeTelepatic));
-			get_object()->u_EventSend	(P);
+			get_object()->Hit_Psy	((*it), power_down_vel * power_percent);
+			get_object()->Hit_Wound	((*it), power_down_vel * power_percent, hit_dir, 0.f);
 		}
 	}
 }

@@ -170,7 +170,7 @@ void CBaseMonster::SetAttackEffector()
 	}
 }
 
-void CBaseMonster::PsyHit(const CGameObject *object, float value) 
+void CBaseMonster::Hit_Psy(CObject *object, float value) 
 {
 	NET_Packet		P;
 	
@@ -184,4 +184,19 @@ void CBaseMonster::PsyHit(const CGameObject *object, float value)
 	P.w_float		(0.f);									
 	P.w_u16			(u16(ALife::eHitTypeTelepatic));
 	u_EventSend		(P);
+}
+
+void CBaseMonster::Hit_Wound(CObject *object, float value, const Fvector &dir, float impulse) 
+{
+	NET_Packet	P;
+	u_EventGen	(P,GE_HIT, object->ID());
+	P.w_u16		(ID());
+	P.w_u16		(ID());
+	P.w_dir		(dir);
+	P.w_float	(value);
+	P.w_s16		(smart_cast<CKinematics*>(object->Visual())->LL_GetBoneRoot());
+	P.w_vec3	(Fvector().set(0.f,0.f,0.f));
+	P.w_float	(impulse);
+	P.w_u16		(u16(ALife::eHitTypeWound));
+	u_EventSend	(P);
 }
