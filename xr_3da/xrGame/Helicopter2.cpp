@@ -9,6 +9,7 @@
 #include "clsid_game.h"
 #include "script_callback_ex.h"
 #include "ai/stalker/ai_stalker.h"
+#include "CustomZone.h"
 
 bool CHelicopter::isObjectVisible			(CObject* O)
 {
@@ -240,6 +241,10 @@ if(state() == CHelicopter::eDead ) return;
 if(who==this)
 	return;
 
+/*	if(smart_cast<CCustomZone*>(who)){
+		Log("customZone");
+	}*/
+
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end() && hit_type==ALife::eHitTypeFireWound) {
 		float curHealth = GetfHealth();
@@ -258,8 +263,11 @@ if(who==this)
 		if (bDebug)	Log("----Helicopter::Hit(). health=",h);
 #endif
 	};
-	
-	if (who&&((who->CLS_ID==CLSID_OBJECT_ACTOR)||(smart_cast<CAI_Stalker*>(who)))  ){
+	if (who&&
+			( who->CLS_ID==CLSID_OBJECT_ACTOR	||
+			  smart_cast<CAI_Stalker*>(who)		||
+			  smart_cast<CCustomZone*>(who) )
+		){
 		callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,who->ID());
 	}
 

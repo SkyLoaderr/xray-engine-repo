@@ -63,6 +63,10 @@ CInventoryItem::~CInventoryItem()
 #ifdef DEBUG
 	LastVisPos.clear();
 #endif
+	if(m_pInventory){
+		VERIFY(std::find(m_pInventory->m_all.begin(), m_pInventory->m_all.end(), this)==m_pInventory->m_all.end() );
+	}
+
 }
 
 void CInventoryItem::Load(LPCSTR section) 
@@ -387,8 +391,12 @@ BOOL CInventoryItem::net_Spawn			(CSE_Abstract* DC)
 
 void CInventoryItem::net_Destroy		()
 {
+	if(m_pInventory){
+		VERIFY(std::find(m_pInventory->m_all.begin(), m_pInventory->m_all.end(), this)==m_pInventory->m_all.end() );
+	}
+
 	//инвентарь которому мы принадлежали
-	m_pInventory = NULL;
+//.	m_pInventory = NULL;
 }
 
 void CInventoryItem::net_Import			(NET_Packet& P) 

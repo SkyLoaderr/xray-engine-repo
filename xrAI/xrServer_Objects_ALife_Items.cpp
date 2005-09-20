@@ -454,6 +454,16 @@ void CSE_ALifeItemAmmo::FillProps			(LPCSTR pref, PropItemVec& values) {
 	PHelper().CreateU16			(values, PrepareKey(pref, *s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
 
+bool CSE_ALifeItemAmmo::can_switch_online	() const
+{
+	return inherited::can_switch_online();
+}
+
+bool CSE_ALifeItemAmmo::can_switch_offline	() const
+{
+	return ( inherited::can_switch_offline() && a_elapsed!=0 );
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////

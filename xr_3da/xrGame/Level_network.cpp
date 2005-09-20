@@ -241,6 +241,7 @@ void			CLevel::ClearAllObjects				()
 			GEN.w_u16			(pObj->H_Parent()->ID());
 			GEN.w_u16			(u16(pObj->ID()));
 			game_events->insert	(GEN);
+			if (g_bDebugEvents)	ProcessGameEvents();
 			//-------------------------------------------------------------
 			ParentFound = true;
 			//-------------------------------------------------------------
@@ -261,6 +262,7 @@ void			CLevel::ClearAllObjects				()
 		GEN.w_u16			(GE_DESTROY);
 		GEN.w_u16			(u16(pObj->ID()));
 		game_events->insert	(GEN);
+		if (g_bDebugEvents)	ProcessGameEvents();
 		//-------------------------------------------------------------
 		ParentFound = true;
 		//-------------------------------------------------------------
