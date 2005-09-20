@@ -36,7 +36,7 @@ entrance_sound		= anomaly\anomaly_gravy_hit1								;при попадании объекта в ано
 
 awaking_time		= 50;100
 blowout_time		= 500	
-accamulate_time		= 10 ;200
+accamulate_time		= 1000 ;10;200
 
 blowout_light_time		= 200
 blowout_explosion_time	= 200
@@ -88,7 +88,7 @@ blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowou
 
 [zone_mosquito_bald_weak]:zone_mosquito_bald
 $spawn 			= "zones\mosquito bald_weak"
-awaking_time		= 50;100
+awaking_time		= 80;100
 blowout_time		= 500	
 accamulate_time		= 100 ;200
 
@@ -97,6 +97,12 @@ effective_radius	= 0.65
 actor_blowout_radius_percent= 0.6
 
 artefacts		= af_medusa,0.25, af_cristall_flower, 0.15,af_night_star, 0.01
+
+accamulate_time		= 2000 ;10;200
+
+ignore_nonalive		= false
+ignore_small		= false
+ignore_artefacts	= true
 
 blowout_wind_power			= 0.2
 
@@ -113,6 +119,11 @@ actor_blowout_radius_percent= 0.8
 
 artefacts		= af_medusa,0.5, af_cristall_flower, 0.2,af_night_star, 0.05
 
+accamulate_time		= 1500 ;10;200
+ignore_nonalive		= false
+ignore_small		= false
+ignore_artefacts	= true
+
 blowout_wind_power			= 0.5
 
 
@@ -127,6 +138,8 @@ effective_radius	= 0.8
 actor_blowout_radius_percent= 0.85
 
 artefacts		= af_medusa,0.6, af_cristall_flower, 0.3,af_night_star, 0.1
+
+accamulate_time		= 1000 ;10;200
 
 blowout_wind_power			= 1
 
@@ -343,7 +356,7 @@ disable_time		= 50	;время игнорирования неживого объекта в зоне (-1 если не нужн
 disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 1000	;время отключения idle партиклов
 
-awaking_time		= 10
+awaking_time		= 100
 blowout_time		= 1000	
 accamulate_time		= 1000
 
