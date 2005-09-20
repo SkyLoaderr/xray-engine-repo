@@ -27,11 +27,12 @@ CUILines::CUILines()
 	m_wndPos.x = 0;
 	m_wndPos.y = 0;
 	uFlags.zero();
-	uFlags.set(flNeedReparse,	FALSE);
-	uFlags.set(flComplexMode,	TRUE);
-	uFlags.set(flPasswordMode,	FALSE);
-	uFlags.set(flColoringMode,	TRUE);
-	uFlags.set(flCutWordsMode,	FALSE);	
+	uFlags.set(flNeedReparse,		FALSE);
+	uFlags.set(flComplexMode,		TRUE);
+	uFlags.set(flPasswordMode,		FALSE);
+	uFlags.set(flColoringMode,		TRUE);
+	uFlags.set(flCutWordsMode,		FALSE);
+	uFlags.set(flRecognizeNewLine,	TRUE);
 	m_pFont = UI()->Font()->pFontLetterica16Russian;
 	m_cursor_pos.set(0,0);
 	m_iCursorPos = 0;
@@ -63,6 +64,10 @@ void CUILines::SetColoringMode(bool mode){
 
 void CUILines::SetCutWordsMode(bool mode){
 	uFlags.set(flCutWordsMode, mode);
+}
+
+void CUILines::SetUseNewLineMode(bool mode){
+	uFlags.set(flRecognizeNewLine, mode);	
 }
 
 void CUILines::Init(float x, float y, float width, float heigt){	
@@ -182,6 +187,9 @@ void CUILines::ParseText(){
 		line->AddSubLine(&subline);
 	}
 
+	if (uFlags.test(flRecognizeNewLine))
+		line->ProcessNewLines(); // process "\n"
+
 	while (line->GetLength(m_pFont) > 0)
 		m_lines.push_back(*line->CutByLength(m_pFont, m_wndSize.x, uFlags.test(flCutWordsMode)));
 
@@ -270,7 +278,10 @@ void CUILines::Draw(float x, float y){
 }
 
 void CUILines::DrawCursor(float x, float y){
+
 	R_ASSERT2(!uFlags.test(flColoringMode),"can't Draw Cursor in coloring mode");
+	R_ASSERT2(!uFlags.test(flRecognizeNewLine),"can't Draw Cursor in coloring mode");
+
 	int sz = (int)m_lines.size();
 	int lnsz = (int)m_text.size();
 

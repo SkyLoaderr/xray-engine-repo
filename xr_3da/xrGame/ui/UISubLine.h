@@ -27,4 +27,5 @@ const CUISubLine*	Cut2Pos(int i);
 	xr_string	m_text;
 	u32			m_color;
 	CUISubLine* m_pTempLine;
+	bool		m_last_in_line;
 };

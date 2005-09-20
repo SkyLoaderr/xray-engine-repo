@@ -58,6 +58,24 @@ void CUILine::Clear(){
 	m_subLines.clear();
 }
 
+void CUILine::ProcessNewLines(){
+	for (u32 i=0; i < m_subLines.size(); i++){
+		StrSize pos = m_subLines[i].m_text.find("\\n");
+		if (pos != npos)
+		{
+			CUISubLine sbLine;
+			if (pos)
+                sbLine = *m_subLines[i].Cut2Pos((int)pos-1);
+			sbLine.m_last_in_line = true;
+			m_subLines.insert(m_subLines.begin()+i, sbLine);
+			m_subLines[i+1].m_text.erase(0,2);
+			if (m_subLines[i+1].m_text.empty()){
+				m_subLines.erase(m_subLines.begin()+i+1);
+			}
+		}
+	}
+}
+
 float CUILine::GetLength(CGameFont* pFont){
 	float length = 0.0f;
 	int size = m_subLines.size();
@@ -70,7 +88,7 @@ float CUILine::GetLength(CGameFont* pFont){
 int CUILine::GetTextLength(){
 	int n = 0;
 	for (u32 i=0; i < m_subLines.size(); i++){
-		n += m_subLines[i].m_text.length();
+		n += (int)m_subLines[i].m_text.length();
 	}
 	return n;
 }
@@ -136,6 +154,13 @@ void CUILine::DrawCursor(CGameFont* pFont, float x, float y, u32 color){
 	UI()->OutText(pFont, scr_rect, x, y,  "|");
 }
 
+CUILine* CUILine::GetEmptyLine(){
+	xr_delete(m_tmpLine);
+	m_tmpLine = xr_new<CUILine>();
+
+    return m_tmpLine;
+}
+
 CUILine* CUILine::CutByLength(CGameFont* pFont, float length, BOOL cut_word){
 	R_ASSERT(GetLength(pFont) > 0);
 	// if first sub line is void then delete it
@@ -144,6 +169,12 @@ CUILine* CUILine::CutByLength(CGameFont* pFont, float length, BOOL cut_word){
 
 	Position pos;
 	InitPos(pos);
+
+	if (!pos.word_1.exist() && m_subLines[0].m_last_in_line) // void string
+	{
+		m_subLines.erase(m_subLines.begin());
+		return GetEmptyLine();
+	}
 
 	float len2w1 = GetLength_inclusiveWord_1(pos, pFont);
 
@@ -251,10 +282,6 @@ bool CUILine::InitPos(Position& pos) const{
 	else if (m_subLines.size() > 1 && GetWord(w, m_subLines[1].m_text, 0))
 		pos.word_2 = w;
 
-	// find "\n"
-
-
-
 	return true;
 }
 
@@ -319,9 +346,17 @@ CUILine* CUILine::Cut2Pos(Position& pos, bool to_first){
 	else
 		last = pos.curr_subline;
 
-
 	for (int i = 0; i<= last; i++)
+	{
 		m_tmpLine->AddSubLine(&m_subLines[i]);
+
+		if (m_subLines[i].m_last_in_line) // check if this subline must be last in line
+		{
+			for (int j = 0; j<= i; j++)
+				m_subLines.erase(m_subLines.begin());
+			return m_tmpLine;
+		}
+	}
 
 	if (to_first)
 		m_tmpLine->AddSubLine(m_subLines[last + 1].Cut2Pos(pos.word_1.last_space()));

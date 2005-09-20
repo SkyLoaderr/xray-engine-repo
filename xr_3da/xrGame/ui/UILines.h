@@ -48,6 +48,7 @@ public:
 			void			SetPasswordMode(bool mode = true);
 			void			SetColoringMode(bool mode);
 			void			SetCutWordsMode(bool mode);
+			void			SetUseNewLineMode(bool mode);
 
     // IUISimpleWindow methods
 	virtual void			Init(float x, float y, float width, float height);
@@ -96,11 +97,12 @@ protected:
 	CGameFont*		m_pFont;
 
 	enum {
-		flNeedReparse = 1,
-		flComplexMode = 2,
-		flPasswordMode = 4,
-		flColoringMode = 8,
-		flCutWordsMode = 16
+		flNeedReparse		= 1,
+		flComplexMode		= 2,
+		flPasswordMode		= 4,
+		flColoringMode		= 8,
+		flCutWordsMode		= 16,
+		flRecognizeNewLine	= 32
 	};	
 private:
 	Flags32			uFlags;

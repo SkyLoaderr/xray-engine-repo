@@ -13,6 +13,7 @@
 
 CUISubLine::CUISubLine(const CUISubLine& other){
 	m_color = other.m_color;
+	m_last_in_line = other.m_last_in_line;
 	m_text = other.m_text;
 	m_pTempLine = NULL;
 }
@@ -20,6 +21,7 @@ CUISubLine::CUISubLine(const CUISubLine& other){
 CUISubLine& CUISubLine::operator=(const CUISubLine& other){
 	m_color = other.m_color;
 	m_text = other.m_text;
+	m_last_in_line = other.m_last_in_line;
 	m_pTempLine = NULL;
 	return (*this);
 }
@@ -27,6 +29,7 @@ CUISubLine& CUISubLine::operator=(const CUISubLine& other){
 CUISubLine::CUISubLine(){
 	m_color = 0;
 	m_pTempLine = NULL;
+	m_last_in_line = false;
 }
 
 CUISubLine::~CUISubLine(){
@@ -34,7 +37,7 @@ CUISubLine::~CUISubLine(){
 }
 
 const CUISubLine* CUISubLine::Cut2Pos(int i){
-	R_ASSERT2( (u32)i < m_text.size(), "CUISubLine::Cut2Pos - invalid parameter");
+	R_ASSERT2(i < (int)m_text.size(), "CUISubLine::Cut2Pos - invalid parameter");
 
 	xr_delete(m_pTempLine);
 	m_pTempLine = xr_new<CUISubLine>();

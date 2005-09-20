@@ -28,6 +28,7 @@ public:
 	Word word_1;
 	Word word_2;
     u32  curr_subline;
+	u32  slash_n_size() { return 2;}
 IC	bool is_separated()	{ return 0 == word_2.pos; }
 };
 
@@ -43,6 +44,7 @@ CUILine& operator=(const CUILine& other);
 	void AddSubLine(const char* str, u32 color);
 	void AddSubLine(const CUISubLine* subLine);
 	void Clear();
+	void ProcessNewLines();
 	float GetLength(CGameFont* pFont);
 	int   GetTextLength();
 	float GetVisibleLength(CGameFont* pFont);
@@ -57,6 +59,7 @@ protected:
 	bool	GetWord(Word& w, const xr_string& text, int begin)				const;
 CUILine*	Cut2Pos(Position& pos, bool to_first = true);
 CUILine*	CutWord(CGameFont* pFont, float length);
+CUILine*	GetEmptyLine();
 	float	GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont)		const;
 	float	GetLength_inclusiveWord_2(Position& pos, CGameFont* pFont)		const;
 	bool	InitPos(Position& pos)											const;
