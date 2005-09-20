@@ -243,23 +243,6 @@ function actor_has_documents (actor, npc)
 	end
 end
 
-function actor_give_docs_x18 (actor, npc)
-	local obj = actor:object("dar_document4")
-	dialogs.relocate_item(npc, obj, "out")
-	actor:disable_info_portion("esc_return")
-end
-
-
-function reward_docs_x18_small (actor, npc)
-	dialogs.relocate_money(npc, 1000, "in")
-end
-
-function reward_docs_x18_normal (actor, npc)
-	dialogs.relocate_money(npc, 2000, "in")
-end
-
-
-
 --' Wolf has a job
 function wolf_dont_has_job(first_speaker, second_speaker)
     if wolf_need_dynamite(first_speaker, second_speaker) == false

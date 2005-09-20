@@ -614,39 +614,36 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@esc_killer3_raid",
+		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
-		}
-		table.insert(sj, t)		
-		t = { section = "logic@esc_killer4_raid",
-			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_killer5_raid",
-			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
+			dependent = "logic@esc_killer1_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			dependent = "logic@esc_killer1_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "",
+			dependent = "logic@esc_killer2_raid"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer2_follower",
+			idle = 0,
+			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			dependent = "logic@esc_killer2_raid"
 		}
 		table.insert(sj, t)
 		
+		
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
@@ -745,6 +742,54 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 		
+		t = { section = "logic@esc_killer_kamp_wait",
+			idle = 0,
+			prior = 5, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_wait",
+			idle = 0,
+			prior = 5, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_wait",
+			idle = 0,
+			prior = 5, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_wait",
+			idle = 0,
+			prior = 5, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_wait",
+			idle = 0,
+			prior = 5, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_guard1",
+			idle = 0,
+			prior = 8, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_guard2",
+			idle = 0,
+			prior = 8, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_guard3",
+			idle = 0,
+			prior = 8, state = {3}, squad = squad, group = groups[13],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 	end
 	
 	
@@ -1230,13 +1275,14 @@ function load_states(gname, type)
 			if not actor then
 				return gulag.state
 			end
-		
-			if actor:has_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") <= 0 then
-				return 2 -- kamp
+			if actor:has_info("escape_lager_spawn_killers") and actor:dont_has_info("esc_killers_raid") then
+				return 3 -- wait
+			elseif actor:has_info("esc_killers_raid") and actor:dont_has_info("esc_open_killer_fire") then
+				return 0 -- raid
 			elseif actor:has_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") > 0 then
 				return 1 -- fight
-			else
-				return 0 -- raid
+			elseif actor:has_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") <= 0 then
+				return 2 -- kamp				
 			end
 		end
 	end

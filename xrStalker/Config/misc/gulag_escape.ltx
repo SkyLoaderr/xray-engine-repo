@@ -656,13 +656,11 @@ path_walk = day_walk4
 path_look = day_look4
 
 
-
 [logic@esc_fabrika_bandit_kamp]
 active = kamp@esc_fabrika_bandit
 
 [kamp@esc_fabrika_bandit]
 center_point = camp_center
-
 
 
 [camper@esc_fabrika_bandit_walker1]
@@ -815,15 +813,14 @@ path_walk = raid1_walk
 path_look = raid1_look
 combat_ignore_cond = {-esc_open_killer_fire}
 def_state_moving = patrol
-on_signal = fire| remark@esc_killer_leader_raid2 %+esc_open_killer_fire%
+on_signal = fires| remark@esc_killer_leader_raid %=esc_direction_fire%
 
 [remark@esc_killer_leader_raid]
 snd = gar_bandits_seryi
 anim = guard
-on_signal = sound_end| remark@esc_killer_leader_raid2 %+esc_open_killer_fire%
+on_timer = 5000| nil %+esc_open_lager_fire%
+combat_ignore_cond = {-esc_open_killer_fire}
 
-[remark@esc_killer_leader_raid2]
-anim = threat
 
 
 [logic@esc_killer1_raid]
@@ -927,6 +924,37 @@ active = kamp@esc_killer_kamp
 [kamp@esc_killer_kamp]
 center_point = kamp
 
+
+
+[logic@esc_killer_kamp_wait]
+active = kamp@esc_killer_kamp_wait
+
+[kamp@esc_killer_kamp_wait]
+center_point = kamp_wait
+
+
+[logic@esc_killer_kamp_guard1]
+active = camper@esc_killer_kamp_guard1
+
+[camper@esc_killer_kamp_guard1]
+path_walk = kamp_guard_walk1
+path_look = kamp_guard_look1
+
+
+[logic@esc_killer_kamp_guard2]
+active = camper@esc_killer_kamp_guard2
+
+[camper@esc_killer_kamp_guard2]
+path_walk = kamp_guard_walk2
+path_look = kamp_guard_look2
+
+
+[logic@esc_killer_kamp_guard3]
+active = camper@esc_killer_kamp_guard3
+
+[camper@esc_killer_kamp_guard3]
+path_walk = kamp_guard_walk3
+path_look = kamp_guard_look3
 
 ;------------------------------
 ;------- Dogs to fox ----------

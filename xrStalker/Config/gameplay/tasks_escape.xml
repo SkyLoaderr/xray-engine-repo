@@ -150,6 +150,13 @@
 			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
 		</objective>
 		<objective>
+			<text>esc_bandits_on_factory_3</text>
+			<icon x="0" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="volk">green_location</map_location_type>
+			<object_story_id>Escape_novice_lager_volk</object_story_id>
+			<infoportion_complete>escape_dynamite_start</infoportion_complete>
+		</objective>
+		<objective>
 			<text>esc_bandits_on_factory_1</text>
 			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="factory_bandits">green_location</map_location_type>
