@@ -159,7 +159,9 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	string256		str;
 	if(m_icons[eUIName]){
 //		strcpy						(str,pCharInfo->Name());
-		m_icons[eUIName]->SetText	(pCharInfo->Name());
+		CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_ownerID));
+
+		m_icons[eUIName]->SetText	(IO->Name());
 	}
 
 	CStringTable	stbl;

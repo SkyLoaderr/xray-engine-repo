@@ -161,7 +161,8 @@ public:
 	CHARACTER_REPUTATION_VALUE		Reputation	() const;
 
 protected:
-	CCharacterInfo*		m_pCharacterInfo;
+	CCharacterInfo*			m_pCharacterInfo;
+	xr_string				m_game_name;
 
 public:
 	virtual void			renderable_Render		();

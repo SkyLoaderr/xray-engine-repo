@@ -216,7 +216,7 @@ void CActor::PickupInfoDraw(CObject* object)
 		draw_str = item->NameComplex();
 		shift.set(0,0,0);
 	}else if(inventory_owner){
-		draw_str = inventory_owner->CharacterInfo().Name();
+		draw_str = inventory_owner->Name();
 		shift.set(0,1.2f,0);
 	}
 

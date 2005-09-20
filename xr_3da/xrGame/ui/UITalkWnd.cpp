@@ -90,8 +90,8 @@ void CUITalkWnd::InitTalkDialog()
 	//имена собеседников
 	UITalkDialogWnd->UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
 	UITalkDialogWnd->UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
-	UITalkDialogWnd->UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->CharacterInfo().Name());
-	UITalkDialogWnd->UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->CharacterInfo().Name());
+	UITalkDialogWnd->UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->Name());
+	UITalkDialogWnd->UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->Name());
 	
 	//очистить лог сообщений
 	UITalkDialogWnd->ClearAll();
@@ -118,7 +118,7 @@ void CUITalkWnd::InitOthersStartDialog()
 		//сказать фразу
 		CUIString speaker_name;
 		CStringTable stbl;
-		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+		speaker_name.SetText(m_pOthersInvOwner->Name());
 		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), speaker_name);
 		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
 
@@ -339,7 +339,7 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 {
 	//сказать фразу
 	CUIString speaker_name;
-	speaker_name.SetText(m_pOurInvOwner->CharacterInfo().Name());
+	speaker_name.SetText(m_pOurInvOwner->Name());
 
 	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), speaker_name);
 	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
@@ -347,7 +347,7 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 	//добавить ответ собеседника в список, если он что-то сказал
 	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
 	{
-		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+		speaker_name.SetText(m_pOthersInvOwner->Name());
 		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), speaker_name);
 	}
 
@@ -377,7 +377,7 @@ void CUITalkWnd::AddAnswer(LPCSTR text, const CUIString &SpeakerName)
 	PlaySnd			(text);
 	CUIString str(*CStringTable()(text));
 
-	bool i_am = (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name()));
+	bool i_am = (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->Name()));
 	UITalkDialogWnd->AddAnswer(SpeakerName,str,i_am);
 /*
 	u32 cl = UITalkDialogWnd->UIAnswersList.GetTextColor();

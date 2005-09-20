@@ -122,13 +122,16 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 			dialog_manager->SetDefaultStartDialog(CharacterInfo().StartDialog());
 		}
 	
-		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = pTrader->m_character_name;
+//		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = pTrader->m_character_name;
+		m_game_name			= pTrader->m_character_name;
 	}
 	else
 	{
-		CharacterInfo().m_SpecificCharacter.Load(DEFAULT_PROFILE);
-		CharacterInfo().InitSpecificCharacter (DEFAULT_PROFILE);
+		CharacterInfo().m_SpecificCharacter.Load		(DEFAULT_PROFILE);
+		CharacterInfo().InitSpecificCharacter			(DEFAULT_PROFILE);
 		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
+		m_game_name												= (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
+
 		CEntity* pEntity = smart_cast<CEntity*>(pThis); VERIFY(pEntity);
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();
@@ -159,6 +162,7 @@ void	CInventoryOwner::save	(NET_Packet &output_packet)
 		output_packet.w_u8((u8)inventory().GetActiveSlot());
 
 	CharacterInfo().save(output_packet);
+	save_data	(m_game_name, output_packet);
 }
 void	CInventoryOwner::load	(IReader &input_packet)
 {
@@ -169,6 +173,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 		inventory().SetActiveSlot(active_slot);
 
 	CharacterInfo().load(input_packet);
+	load_data		(m_game_name, input_packet);
 }
 
 
@@ -367,7 +372,8 @@ void CInventoryOwner::spawn_supplies		()
 //игровое имя 
 LPCSTR	CInventoryOwner::Name () const
 {
-	return CharacterInfo().Name();
+//	return CharacterInfo().Name();
+	return m_game_name.c_str();
 }
 
 

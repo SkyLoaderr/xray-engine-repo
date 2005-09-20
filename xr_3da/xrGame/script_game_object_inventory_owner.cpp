@@ -449,7 +449,7 @@ LPCSTR CScriptGameObject::CharacterName			()
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterName available only for InventoryOwner");
 		return NULL;
 	}
-	return pInventoryOwner->CharacterInfo().Name();
+	return pInventoryOwner->Name();
 }
 int CScriptGameObject::CharacterRank			()
 {

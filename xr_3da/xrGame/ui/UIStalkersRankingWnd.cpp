@@ -155,9 +155,10 @@ void CUIStalkersRankingWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	if (UIStalkersList == pWnd && LIST_ITEM_CLICKED == msg)
 	{
 		UICharacterWindow->Show(true);
-		CCharacterInfo &charInfo = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData())->CharacterInfo();
-		UICharacterInfo->InitCharacter(&charInfo);
-		UICharIconHeader->UITitleText.SetText(charInfo.Name());
+//		CCharacterInfo &charInfo = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData())->CharacterInfo();
+		CInventoryOwner* IO = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData());
+		UICharacterInfo->InitCharacter(IO);
+		UICharIconHeader->UITitleText.SetText(IO->Name());
 	}
 }
 
