@@ -78,6 +78,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	// Log
 	Msg					("***STOP*** file '%s', line %d.\n***Reason***: %s",file,line,reason);
 	FlushLog			();
+	if (handler)		handler	();
 
 	// Call the dialog
 	dlgExpr		= reason;	
@@ -312,6 +313,7 @@ namespace std{
 
     void	xrDebug::_initialize		()
     {
+		handler							= 0;
         _set_new_mode					(1);					// gen exception if can't allocate memory
         _set_new_handler				(_out_of_memory	);		// exception-handler for 'out of memory' condition
 		std::set_terminate				(_terminate);
