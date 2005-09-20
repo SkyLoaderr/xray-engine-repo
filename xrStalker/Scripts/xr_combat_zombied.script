@@ -85,7 +85,6 @@ function action_zombie_shoot:can_shoot( be )
 		-- повёрнут к врагу с погрешностью
 		local ang_cos = ( (v1.x*v2.x) + (v1.z*v2.z) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z) * math.sqrt(v2.x*v2.x + v2.z*v2.z) )
 
-		self.object:info_clear()
 		self.object:info_add( tostring( math.deg( math.acos( ang_cos ) ) ) )
 
 		return ang_cos > turn_threshold_cos
