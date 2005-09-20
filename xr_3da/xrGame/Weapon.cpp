@@ -483,6 +483,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 
 	u16 ammo_elapsed = 0;
 	P.r_u16					(ammo_elapsed);
+
 	u8 NewAddonState;
 //	P.r_u8					(m_flagsAddOnState);
 	P.r_u8					(NewAddonState);
@@ -504,7 +505,8 @@ void CWeapon::net_Import	(NET_Packet& P)
 	};
 
 	m_ammoType = ammoType;
-	SetAmmoElapsed(int(ammo_elapsed));
+	if (STATE != eFire && STATE != eFire2)
+		SetAmmoElapsed(int(ammo_elapsed));
 
 	/*
 	if (iAmmoElapsed && m_magazine.empty())

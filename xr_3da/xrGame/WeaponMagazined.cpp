@@ -447,7 +447,7 @@ void CWeaponMagazined::UpdateCL			()
 			else
 			{
 				fTime			-=	dt;
-				if (fTime<0)	fTime = 0;
+//				if (fTime<0)	fTime = 0;
 			}
 
 			break;
@@ -491,6 +491,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 		m_vStartDir = d;
 	};
 		
+	u32 NumShots = 0;
 	VERIFY(!m_magazine.empty());
 	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
 	{
@@ -506,7 +507,10 @@ void CWeaponMagazined::state_Fire	(float dt)
 			FireTrace		(p1,d);
 		else
 			FireTrace		(m_vStartPos, m_vStartDir);
+
+		NumShots++;
 	}
+	Msg("- Shots fired %d, %d", NumShots, m_iShotNum);
 	
 	if(m_iShotNum == m_iQueueSize)
 		m_bStopedAfterQueueFired = true;
