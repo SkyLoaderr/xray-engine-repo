@@ -53,6 +53,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+	
 
 <!---------------------------ZOMBIED----------------------->
 	<specific_character id="yan_zombied_default1" team_default = "1">
@@ -212,6 +213,30 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	<!----------------glavniy ucheniy-------------->
+	<specific_character id="yan_general_ecolog" team_default = "1">
+		<name>Главный ученый</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>ученый</bio>
+
+		<class>yan_general_ecolog</class>
+		<community>stalker</community>
+		
+		<rank>60</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\ucheniy\ucheniy_2</visual>
 		<supplies>
 			[spawn] \n
 			wpn_mp5 \n

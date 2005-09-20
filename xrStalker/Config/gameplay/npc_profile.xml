@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<!-- НОВЫЕ ПРОФИЛЯ -->
@@ -328,6 +328,11 @@
 	</character>
 	<character id="yan_Ecolog">
 		<class>yan_Ecolog</class>
+	</character>
+	<!-------------glavniy ucheniy----------->
+	<character id="yan_general_ecolog">
+		<class>yan_general_ecolog</class>
+		<specific_character>yan_general_ecolog</specific_character>
 	</character>
 
 	
