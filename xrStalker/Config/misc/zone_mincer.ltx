@@ -57,7 +57,7 @@ idle_light					= off
 
 awaking_time				= 50
 blowout_time				= 10000	
-accamulate_time				= 100
+accamulate_time				= 2000
 
 blowout_particles_time		= 50
 blowout_sound_time  		= 100
@@ -65,7 +65,7 @@ blowout_light_time			= 5988
 blowout_explosion_time		= 5999
 
 ;параметры телекинеза дл€ зоны
-throw_in_impulse				= 800;4000						;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
+throw_in_impulse				= 600;4000						;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
 throw_out_impulse				= 1500;	1000					;сила выбрасывани€ взрывом
 throw_in_impulse_alive			= 4000;800; 250;200 800			;сила импульса вт€гивани€ дл€ живых
 throw_in_atten					= 2; 1.2	;3					;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
@@ -101,7 +101,7 @@ $spawn 						= "zones\mincer zone_weak"
 hit_impulse_scale			= 0.1	
 effective_radius			= 0.75
 
-throw_in_impulse			= 500	;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
+throw_in_impulse			= 400	;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
 throw_out_impulse				= 1500			;сила выбрасывани€ взрывом
 throw_in_impulse_alive			= 4000;800; 250;200 800	;сила импульса вт€гивани€ дл€ живых
 throw_in_atten					= 2; 1.2	;3;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
@@ -116,14 +116,14 @@ BirthProbability			= 0.1
 
 awaking_time				= 50
 blowout_time				= 10000	
-accamulate_time				= 100
+accamulate_time				= 4000
 
 [zone_mincer_average]:zone_mincer
 $spawn 						= "zones\mincer zone_average"
 hit_impulse_scale			= 0.1	
 effective_radius			= 0.85
 
-throw_in_impulse			= 700	;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
+throw_in_impulse			= 600	;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
 throw_out_impulse				= 1500			;сила выбрасывани€ взрывом
 throw_in_impulse_alive			= 4000;800; 250;200 800	;сила импульса вт€гивани€ дл€ живых
 throw_in_atten					= 2; 1.2	;3;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
@@ -137,7 +137,7 @@ artefacts					= af_blood,0.5, af_mincer_meat, 0.2,af_soul, 0.05
 
 awaking_time				= 50
 blowout_time				= 10000	
-accamulate_time				= 50
+accamulate_time				= 1000
 
 [zone_mincer_strong]:zone_mincer
 $spawn 						= "zones\mincer zone_strong"
@@ -158,4 +158,4 @@ artefacts					= af_blood,0.6, af_mincer_meat, 0.3,af_soul, 0.1
 
 awaking_time				= 25
 blowout_time				= 10000	
-accamulate_time				= 10
+accamulate_time				= 500
