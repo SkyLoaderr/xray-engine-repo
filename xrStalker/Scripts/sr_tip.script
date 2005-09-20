@@ -12,6 +12,7 @@ end
 function action_tip:reset_scheme()
 	--printf("_bp: sr_idle: action_tip:reset_scheme: self.object:name()='%s'", self.object:name())
 	self.st.tips_sended = false
+	self.st.signals = {}
 end
 
 function action_tip:update(delta)
@@ -39,6 +40,7 @@ function action_tip:update(delta)
 				  news_manager.send_news( actor, self.st.info, self.st.timeout, self.st.showtime )
 			   end
 			   if self.st.single == true then
+			      self.st.signals["tip_sended"] = true  
 			      self.st.tips_sended = true
 			   end     
 			end   
