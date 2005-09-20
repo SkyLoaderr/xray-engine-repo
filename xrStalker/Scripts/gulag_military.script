@@ -568,7 +568,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (obj)
-		                     return obj:profile_name () == "mil_Svoboda_master_max"
+		                     return obj:profile_name () == "mil_Svoboda_master_Max"
 		            end
 		}
 	table.insert(sj, t)		
