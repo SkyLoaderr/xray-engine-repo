@@ -465,6 +465,14 @@ states = {
 				animstate = "wounded_heavy",
 				animation = nil
 			},
+	wounded_zombie = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				direction = look.cur_dir,
+				animstate = "wounded",
+				animation = "wounded_zombie"
+			},
 	help_me = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.danger,
