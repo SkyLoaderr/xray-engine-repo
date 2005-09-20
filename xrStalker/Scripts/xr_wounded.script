@@ -138,8 +138,12 @@ function action_wounded:execute ()
 			self.object:eat(self.object:object("medkit"))
 		elseif self.object:object("bandage") ~= nil then
 			self.object:eat(self.object:object("bandage"))
-		end   		
-		state_mgr.set_state(self.object, wound_manager.state, nil, nil, {look_object = victim}, nil, synsound)
+		end
+		local emerg = nil
+		if wound_manager.state == "psy_shoot" then
+			emerg = {animation_nout = true}
+		end
+		state_mgr.set_state(self.object, wound_manager.state, nil, nil, {look_object = victim}, emerg, synsound)
 	end
 
 	if synsound == nil then
