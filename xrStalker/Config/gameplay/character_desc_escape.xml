@@ -18,6 +18,11 @@
 		<rank>70</rank>
 		<reputation>65</reputation>
 		
+		<supplies>
+			[spawn] \n
+			wpn_knife \n
+		</supplies>
+		
 		<start_dialog>escape_trader_start_dialog</start_dialog>	
 		<actor_dialog>escape_trader_talk_level</actor_dialog>
 		<actor_dialog>escape_trader_talk_info</actor_dialog>
