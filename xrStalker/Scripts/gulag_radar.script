@@ -3,7 +3,7 @@ local t = {}
 function load_job(sj, gname, type, squad, groups)
 	--' Radar antena
 	if type == "rad_antena" then
-		for i = 1, 15 do
+		for i = 1, 12 do
 			t = { section = "logic@rad_patroler"..i,
 				idle = 0,
 				prior = 5, state = {0},
