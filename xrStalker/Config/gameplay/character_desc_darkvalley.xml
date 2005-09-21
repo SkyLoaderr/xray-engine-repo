@@ -433,7 +433,7 @@
     <rank>40</rank>
     <reputation>0</reputation>
 
-    <visual>actors\monolit\stalker_mo_hood_1</visual>
+    <visual>actors\monolit\stalker_mo_head_1</visual>
     <snd_config>characters_voice\human_02\</snd_config>
     <supplies>
       [spawn] \n

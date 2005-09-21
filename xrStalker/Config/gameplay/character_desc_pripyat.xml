@@ -17,6 +17,7 @@
     <reputation>0</reputation>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
+    <snd_config>characters_voice\human_03\</snd_config>
     <supplies>
       [spawn] \n
       wpn_fort \n
@@ -43,7 +44,8 @@
     <rank>40</rank>
     <reputation>0</reputation>
 
-    <visual>actors\monolit\stalker_mo_hood_1</visual>
+    <visual>actors\monolit\stalker_mo_head_1</visual>
+    <snd_config>characters_voice\human_02\</snd_config>
     <supplies>
       [spawn] \n
       wpn_pb \n
@@ -72,6 +74,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -104,6 +107,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -135,6 +139,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -166,6 +171,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -198,7 +204,8 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -224,6 +231,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -248,6 +256,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -275,6 +284,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
