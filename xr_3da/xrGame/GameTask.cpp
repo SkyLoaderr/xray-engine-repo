@@ -120,7 +120,7 @@ void CGameTask::Load(const TASK_ID& id)
 		bool b1,b2;
 		b1								= (0==objective.map_location.size());
 		b2								= (NULL==object_story_id);
-		VERIFY3							(b1==b2,"incorrect task objective definition for: ",*objective.description);
+		VERIFY3							(b1==b2,"check [map_location_type] and [object_story_id] fields in objective definition for: ",*objective.description);
 		
 		objective.object_id				= u16(-1);
 		objective.map_hint				= g_gameTaskXml.ReadAttrib(l_root, "map_location_type", 0, "hint", NULL);
