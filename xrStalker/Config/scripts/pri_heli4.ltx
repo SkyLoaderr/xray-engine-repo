@@ -5,14 +5,29 @@ active          = heli_move1
 path_move       = pri_heli4_wait_path
 on_info         = {+pri_helicopters_start} heli_move2
 engine_sound    = false
+immortal        = true
+combat_ignore   = true
 
 [heli_move2]
 path_move       = pri_heli4_go_path
 invulnerable    = true
 immortal        = true
 combat_ignore   = true
-on_signal       = arrived | %+pri_followers_start%
-on_signal2      = wait | heli_move@wait_stadium
+on_signal       = arrived | %+pri_followers_heli_look%
+on_signal2      = wait | heli_move3
+
+[heli_move3]
+path_move       = pri_heli4_wait2_path
+immortal        = true
+combat_ignore   = true
+on_info         = {+pri_helicopters2_start} heli_move4
+engine_sound    = false
+ 
+[heli_move4]
+path_move       = pri_heli4_go2_path
+immortal        = true
+combat_ignore   = true
+on_signal       = arrived | heli_move@wait_stadium
 
 [heli_move@wait_stadium]
 path_move       = pri_heli4_wait_stadium_path
