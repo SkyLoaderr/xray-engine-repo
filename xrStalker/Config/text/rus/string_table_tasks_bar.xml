@@ -170,12 +170,12 @@
 </string>
 
 	
-	<string id="deactivate_radar">
-	<text>Отключить радар</text>
+<string id="descr_deactivate_radar">
+	<text>Отключить выжигатель мозгов</text>
 </string>
-	<string id="find_and_deactivate_radar">
-	<text>Найти и отключить радар</text>
+<string id="find_and_deactivate_radar">
+	<text>Найти бункер управления</text>
 </string>
-	<string id="deactivate_radar_now">
-	<text>Отключить радар</text>
+<string id="deactivate_radar_now">
+	<text>Отключить оборудование</text>
 </string>

@@ -296,9 +296,13 @@
 	<game_task id="bar_radar_deactivate">
 		<title>descr_deactivate_radar</title>
 		<objective>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
 			<text>find_and_deactivate_radar</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<article>bar_radar_deactivate</article>
+			<map_location_type hint="find_and_deactivate_radar">green_location</map_location_type>
+            <object_story_id>rad_antenna</object_story_id>
 		</objective>
 		<objective>
 			<text>deactivate_radar_now</text>
