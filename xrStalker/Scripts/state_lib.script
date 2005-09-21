@@ -465,7 +465,7 @@ states = {
 				animstate = "wounded_heavy",
 				animation = nil
 			},
-	wounded_zombie = {	weapon = "strapped",
+	wounded_zombie = {	weapon = "drop",
 				movement = move.stand,
 				mental = anim.danger,
 				bodystate = move.crouch,
