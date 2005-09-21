@@ -2022,6 +2022,9 @@
 					RelativePath=".\Scripts\andy_test.script">
 				</File>
 				<File
+					RelativePath=".\mil_test.script">
+				</File>
+				<File
 					RelativePath=".\scripts\monster_test.script">
 				</File>
 				<File
