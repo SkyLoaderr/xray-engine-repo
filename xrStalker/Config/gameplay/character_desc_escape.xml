@@ -50,7 +50,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\neytral\stalker_neytral_balon_1</visual>
+		<visual>neytral\stalker_neytral_balon_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -81,7 +81,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
+		<visual>neytral\stalker_neytral_rukzak_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -99,7 +99,7 @@
 	
 	<specific_character id="esc_fox" team_default = "1">
 		<name>Сталкер "Лис"</name>
-		<icon x="24" y="4"></icon>
+		<icon x="16" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Старый прожженый зоной одиночка.</bio>
 
@@ -109,7 +109,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_balon_4</visual>
+		<visual>neytral\stalker_neytral_balon_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -137,7 +137,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\novice\green_stalker_1</visual>
+		<visual>novice\green_stalker_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -152,7 +152,7 @@
 	
 	<specific_character id="esc_killer_specnaz" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 
@@ -166,7 +166,7 @@
 		
 		<panic_threshold>0</panic_threshold>
 
-		<visual>actors\killer\stalker_ki_antigas</visual>
+		<visual>killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -195,7 +195,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\bandit\stalker_bandit_3</visual>
+		<visual>bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -211,7 +211,7 @@
 
 	<specific_character id="esc_bandit_novice_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="4"></icon>
+		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -223,7 +223,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\bandit\stalker_bandit_4</visual>
+		<visual>bandit\stalker_bandit_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -241,7 +241,7 @@
 
 	<specific_character id="esc_bandit_novice_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="4"></icon>
+		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -253,7 +253,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\bandit\stalker_bandit_8</visual>
+		<visual>bandit\stalker_bandit_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -270,7 +270,7 @@
 	
 	<specific_character id="esc_stalker_novice_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -282,7 +282,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_1</visual>
+		<visual>novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -297,7 +297,7 @@
 
 	<specific_character id="esc_stalker_novice_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -309,7 +309,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_2</visual>
+		<visual>novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -324,7 +324,7 @@
 
 	<specific_character id="esc_stalker_novice_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -336,7 +336,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_3</visual>
+		<visual>novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -353,7 +353,7 @@
 
 	<specific_character id="esc_stalker_novice_default4" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -365,7 +365,7 @@
 
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_4</visual>
+		<visual>novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -380,7 +380,7 @@
 
 	<specific_character id="esc_stalker_novice_default5" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -392,7 +392,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_5</visual>
+		<visual>novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -407,7 +407,7 @@
 
 	<specific_character id="esc_stalker_novice_default6" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="30" y="10"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -419,7 +419,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_6</visual>
+		<visual>novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -436,7 +436,7 @@
 
 	<specific_character id="esc_stalker_novice_default9" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="0" y="2"></icon>
+		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -448,7 +448,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_9</visual>
+		<visual>novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -475,7 +475,34 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>actors\novice\green_stalker_10</visual>
+		<visual>novice\green_stalker_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="esc_ranger" team_default = "1">
+		<name>Петруха</name>
+		<icon x="22" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Пользуется особым расположением Волка, который его частенько отправляет на важные задания.</bio>
+
+		<class>esc_ranger</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+		
+		<panic_threshold>0.2</panic_threshold>
+
+		<visual>novice\green_stalker_8</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -491,7 +518,7 @@
 	
 	<specific_character id="esc_soldier_commander" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="6" y="2"></icon>
+		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
 
@@ -501,7 +528,7 @@
 		<rank>60</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_beret_3</visual>		
+		<visual>soldier\soldier_beret_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -529,7 +556,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana</visual>		
+		<visual>soldier\soldier_obichniy</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -557,7 +584,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_1</visual>		
+		<visual>soldier\soldier_bandana_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -585,7 +612,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_2</visual>		
+		<visual>soldier\soldier_bandana_2</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -613,7 +640,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_3</visual>		
+		<visual>soldier\soldier_bandana_3</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -641,7 +668,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_4</visual>		
+		<visual>soldier\soldier_bandana_4</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -670,7 +697,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<visual>soldier\soldier_spetsnaz</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -698,7 +725,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_antigas</visual>		
+		<visual>soldier\soldier_spetsnaz</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -714,9 +741,10 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
+	
 	<specific_character id="esc_killer_master" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="30" y="6"></icon>
+		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
 
@@ -729,7 +757,7 @@
 		
 		<panic_threshold>0</panic_threshold>
 
-		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<visual>killer\stalker_ki_antigas</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
