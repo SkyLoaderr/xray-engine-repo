@@ -953,7 +953,7 @@
 	<!-- X18 -->
 	<specific_character id="dar_stalker_explorer" team_default = "1">
 		<name>Джек</name>
-		<icon x="8" y="0"></icon>
+		<icon x="30" y="8"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Опытный сталкер. Держит ухо востро. </bio>
 
@@ -963,7 +963,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\novice\green_stalker_7</visual>
+		<visual>neytral\stalker_neytral_rukzak_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
