@@ -238,8 +238,7 @@
 
 		<visual>actors\ucheniy\ucheniy_2</visual>
 					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>yantar_general_ucheniy_talk_start</actor_dialog>
+		<start_dialog>yantar_general_ucheniy_talk_start</start_dialog>
 		<actor_dialog>yantar_general_ucheniy_talk_end</actor_dialog>
 	</specific_character>
 
