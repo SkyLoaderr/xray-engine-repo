@@ -600,13 +600,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_cook_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text>mil_cook_dialog_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_guard_arsenal_dialog">
         <phrase_list>
             <phrase id="2003">
@@ -1517,46 +1510,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_zoneguard_common1">
-        <has_info>mil_freedom_rg6_task</has_info>
-        <dont_has_info>mil_cook_question_already</dont_has_info>
-        <phrase_list>
-            <phrase id="4">
-                <text>mil_zoneguard_common1_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_zoneguard_common1_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="7">
-                <text>mil_zoneguard_common1_7</text>
-            </phrase>
-            <phrase id="1">
-                <text>mil_zoneguard_common1_1</text>
-                <action>dialogs_military.mil_remove_base_spot</action>
-                <next>2</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_zoneguard_common1_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_zoneguard_common1_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_zoneguard_common1_6</text>
-                <action>dialogs_military.mil_cook_subtask_completed</action>
-                <give_info>mil_cook_question_already</give_info>
-                <next>7</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_zoneguard_common1_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_zoneguard_common2">
         <dont_has_info>mil_lukash_question_already</dont_has_info>
         <phrase_list>
@@ -1586,30 +1539,6 @@
         <phrase_list>
             <phrase id="0">
                 <text>mil_hunter_after_dialog_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_cook_drunk_question_about_rg6_3">
-        <has_info>mil_freedom_cook_drink_3</has_info>
-        <has_info>mil_freedom_rg6_task</has_info>
-        <dont_has_info>mil_freedom_cook_rg6_3</dont_has_info>
-        <dont_has_info>mil_freedom_cook_rg6_4</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>mil_cook_drunk_question_about_rg6_3_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>mil_cook_drunk_question_about_rg6_3_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_cook_drunk_question_about_rg6_3_2</text>
-                <action>dialogs_military.actor_punch</action>
-                <action>dialogs_military.set_cook_subtask2_complete</action>
-                <give_info>mil_freedom_cook_rg6_1</give_info>
-                <give_info>mil_freedom_cook_rg6_4</give_info>
-                <give_info>mil_freedom_cook_rg6_ask</give_info>
             </phrase>
         </phrase_list>
     </dialog>
@@ -2395,35 +2324,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_bodyguard_dialog">
-        <phrase_list>
-            <phrase id="7">
-                <text>mil_bodyguard_dialog_7</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>mil_lukash_guard_talked</give_info>
-            </phrase>
-            <phrase id="1">
-                <text>mil_bodyguard_dialog_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_bodyguard_dialog_2</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_bodyguard_dialog_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_bodyguard_dialog_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_bodyguard_dialog_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_trader_dialog">
         <phrase_list>
             <phrase id="1006">
@@ -2451,7 +2351,7 @@
                 <next>1003</next>
             </phrase>
             <phrase id="1000">
-                <text></text>
+                <text />
                 <has_info>mil_miser_task_complete</has_info>
                 <next>2001</next>
             </phrase>
@@ -2469,7 +2369,7 @@
                 <give_info>mil_miser_task_failed</give_info>
             </phrase>
             <phrase id="6000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_controller_dead</dont_has_info>
                 <dont_has_info>mil_miser_task_failed</dont_has_info>
                 <has_info>mil_miser_task</has_info>
@@ -2477,7 +2377,7 @@
                 <next>6001</next>
             </phrase>
             <phrase id="5000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_controller_dead</dont_has_info>
                 <dont_has_info>mil_miser_task_failed</dont_has_info>
                 <dont_has_info>mil_hunt_ready</dont_has_info>
@@ -2503,7 +2403,7 @@
                 <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="4000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_miser_task_complete</dont_has_info>
                 <has_info>mil_miser_task</has_info>
                 <has_info>mil_controller_dead</has_info>
@@ -2612,7 +2512,7 @@
                 <next>3311</next>
             </phrase>
             <phrase id="3000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_miser_task</dont_has_info>
                 <dont_has_info>mil_miser_task_complete</dont_has_info>
                 <next>3001</next>
@@ -2650,12 +2550,12 @@
                 <text>mil_trader_dialog_3401</text>
             </phrase>
             <phrase id="2000">
-                <text></text>
+                <text />
                 <has_info>mil_miser_task_failed</has_info>
                 <next>2001</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>2000</next>
                 <next>3000</next>
                 <next>4000</next>
@@ -2727,7 +2627,7 @@
                 <next>1201</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>2</next>
             </phrase>
@@ -2736,7 +2636,7 @@
                 <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <dont_has_info>mil_screw_talk</dont_has_info>
                 <next>1000</next>
             </phrase>
@@ -2744,6 +2644,104 @@
                 <text>mil_screw_dialog_2</text>
                 <has_info>mil_screw_talk</has_info>
                 <next>2000</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_bodyguard_dialog">
+        <phrase_list>
+            <phrase id="7">
+                <text>mil_bodyguard_dialog_7</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_lukash_guard_talked</give_info>
+            </phrase>
+            <phrase id="1">
+                <text>mil_bodyguard_dialog_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_bodyguard_dialog_2</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_bodyguard_dialog_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_bodyguard_dialog_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_zoneguard_common1">
+        <has_info>mil_freedom_rg6_task</has_info>
+        <dont_has_info>mil_cook_question_already</dont_has_info>
+        <phrase_list>
+            <phrase id="4">
+                <text>mil_zoneguard_common1_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_zoneguard_common1_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="7">
+                <text>mil_zoneguard_common1_7</text>
+            </phrase>
+            <phrase id="1">
+                <text>mil_zoneguard_common1_1</text>
+                <action>dialogs_military.mil_remove_base_spot</action>
+                <next>2</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_zoneguard_common1_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_zoneguard_common1_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_zoneguard_common1_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_zoneguard_common1_6</text>
+                <give_info>mil_cook_question_already</give_info>
+                <next>7</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_cook_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>mil_cook_dialog_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_cook_drunk_question_about_rg6_3">
+        <has_info>mil_freedom_cook_drink_3</has_info>
+        <has_info>mil_freedom_rg6_task</has_info>
+        <dont_has_info>mil_freedom_cook_rg6_3</dont_has_info>
+        <dont_has_info>mil_freedom_cook_rg6_4</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>mil_cook_drunk_question_about_rg6_3_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_cook_drunk_question_about_rg6_3_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_cook_drunk_question_about_rg6_3_2</text>
+                <action>dialogs_military.actor_punch</action>
+                <give_info>mil_freedom_cook_rg6_1</give_info>
+                <give_info>mil_freedom_cook_rg6_4</give_info>
+                <give_info>mil_freedom_cook_rg6_ask</give_info>
             </phrase>
         </phrase_list>
     </dialog>
