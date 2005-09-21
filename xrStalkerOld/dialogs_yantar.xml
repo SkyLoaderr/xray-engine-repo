@@ -2,16 +2,16 @@
 <game_dialogs>
     <dialog id="yantar_general_ucheniy_talk_start">
         <phrase_list>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
+            <phrase id="1">
+                <text>yantar_general_ucheniy_talk_start_1</text>
             </phrase>
             <phrase id="2">
                 <text>yantar_general_ucheniy_talk_start_2</text>
             </phrase>
-            <phrase id="1">
-                <text>yantar_general_ucheniy_talk_start_1</text>
+            <phrase id="0">
+                <text>yantar_general_ucheniy_talk_start_0</text>
+                <next>1</next>
+                <next>2</next>
             </phrase>
         </phrase_list>
     </dialog>
