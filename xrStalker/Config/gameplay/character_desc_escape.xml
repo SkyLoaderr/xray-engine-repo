@@ -50,7 +50,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>neytral\stalker_neytral_balon_1</visual>
+		<visual>actors\neytral\stalker_neytral_balon_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -81,7 +81,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
  
-		<visual>neytral\stalker_neytral_rukzak_3</visual>
+		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -109,7 +109,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>neytral\stalker_neytral_balon_4</visual>
+		<visual>actors\neytral\stalker_neytral_balon_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -137,7 +137,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 
-		<visual>novice\green_stalker_1</visual>
+		<visual>actors\novice\green_stalker_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -166,7 +166,7 @@
 		
 		<panic_threshold>0</panic_threshold>
 
-		<visual>killer\stalker_ki_head_1</visual>
+		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -195,7 +195,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>bandit\stalker_bandit_3</visual>
+		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -223,7 +223,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>bandit\stalker_bandit_4</visual>
+		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -253,7 +253,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>bandit\stalker_bandit_5</visual>
+		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -282,7 +282,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_2</visual>
+		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -309,7 +309,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_2</visual>
+		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -336,7 +336,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_3</visual>
+		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -365,7 +365,7 @@
 
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_3</visual>
+		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -392,7 +392,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_4</visual>
+		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -419,7 +419,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_4</visual>
+		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -448,7 +448,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_5</visual>
+		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -475,7 +475,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_5</visual>
+		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -502,7 +502,7 @@
 		
 		<panic_threshold>0.2</panic_threshold>
 
-		<visual>novice\green_stalker_8</visual>
+		<visual>actors\novice\green_stalker_8</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -528,7 +528,7 @@
 		<rank>60</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_beret_1</visual>		
+		<visual>actors\soldier\soldier_beret_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -556,7 +556,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_obichniy</visual>		
+		<visual>actors\soldier\soldier_obichniy</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -584,7 +584,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_bandana_1</visual>		
+		<visual>actors\soldier\soldier_bandana_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -612,7 +612,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_bandana_2</visual>		
+		<visual>actors\soldier\soldier_bandana_2</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -640,7 +640,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_bandana_3</visual>		
+		<visual>actors\soldier\soldier_bandana_3</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -668,7 +668,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_bandana_4</visual>		
+		<visual>actors\soldier\soldier_bandana_4</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -697,7 +697,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -725,7 +725,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -757,7 +757,7 @@
 		
 		<panic_threshold>0</panic_threshold>
 
-		<visual>killer\stalker_ki_antigas</visual>
+		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
