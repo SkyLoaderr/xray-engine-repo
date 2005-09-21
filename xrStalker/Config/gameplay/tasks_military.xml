@@ -252,6 +252,7 @@
             <object_story_id>Mil_Cook</object_story_id>
             <map_location_hidden>1</map_location_hidden>
             <infoportion_complete>mil_freedom_cook_rg6_ask</infoportion_complete>
+            <infoportion_set_complete>mil_cook_question_already</infoportion_set_complete>
             <function_fail>mil_tasks.fail_rg6_task</function_fail>
 		</objective>
 		<objective>
