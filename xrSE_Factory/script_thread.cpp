@@ -111,18 +111,18 @@ bool CScriptThread::update()
 			m_active		= false;
 		}
 		else {
-//			if (!(lua()->ci->state & CI_YIELD)) {
-//				m_active	= false;
-//				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",*m_script_name);
-//			}
-//			else 
+			if (!(lua()->ci->state & CI_YIELD)) {
+				m_active	= false;
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",*m_script_name);
+			}
+			else 
 			{
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
-				if(false || !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
+				if(!ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
 #	endif
 				{
-					VERIFY		(m_current_stack_level);
+					VERIFY2		(m_current_stack_level,*script_name());
 					--m_current_stack_level;
 				}
 #endif
