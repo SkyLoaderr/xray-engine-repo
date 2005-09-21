@@ -93,6 +93,10 @@ void CAI_Stalker::reinit			()
 	animation().reinit				();
 	movement().reinit				();
 
+	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
+	sound().sound_prefix			(SpecificCharacter().sound_voice_prefix());
+	LoadSounds						(*cNameSect());
+
 	m_pPhysics_support->in_Init		();
 	
 	m_last_best_item_frame			= 0;
@@ -230,10 +234,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	if (!CObjectHandler::net_Spawn(DC) || !inherited::net_Spawn(DC))
 		return						(FALSE);
-
-	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
-	sound().sound_prefix			(SpecificCharacter().sound_voice_prefix());
-	LoadSounds						(*cNameSect());
 
 	m_pPhysics_support->in_NetSpawn	(e);
 	
