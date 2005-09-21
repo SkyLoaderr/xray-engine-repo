@@ -245,6 +245,8 @@ function act_state_mgr_end:execute()
 			return				
 		end
 		return
+	elseif t == "unstrapped" then
+		self.object:set_item(state_mgr_weapon.get_idle_state(self.st.target_state), self.object:best_weapon())
 	end	
 end
 function act_state_mgr_end:finalize()
