@@ -1,5 +1,30 @@
-<?xml version='1.0' encoding="windows-1251"?>
-
+<?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-
+    <dialog id="yantar_general_ucheniy_talk_end">
+        <has_info>yantar_attack_start</has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>yantar_general_ucheniy_talk_end_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>yantar_general_ucheniy_talk_end_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="yantar_general_ucheniy_talk_start">
+        <phrase_list>
+            <phrase id="1">
+                <text>yantar_general_ucheniy_talk_start_1</text>
+            </phrase>
+            <phrase id="2">
+                <text>yantar_general_ucheniy_talk_start_2</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>
