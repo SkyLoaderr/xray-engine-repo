@@ -2,12 +2,14 @@
 
 #include "space_restrictor.h"
 #include "../feel_touch.h"
-#include "zone_effector.h"
-#include "PhysicsShellHolder.h"
+//#include "zone_effector.h"
+//#include "PhysicsShellHolder.h"
 
 class CActor;
 class CLAItem;
 class CArtefact;
+class CParticlesObject;
+class CZoneEffector;
 
 #define SMALL_OBJECT_RADIUS 0.6f
 
@@ -27,7 +29,7 @@ struct SZoneObjectInfo
 	//игнорирование объекта в зоне
 	bool					zone_ignore;
 	//присоединенные партиклы
-	PARTICLES_PTR_VECTOR	particles_vector;
+	xr_vector<CParticlesObject*>	particles_vector;
 	//время прибывания в зоне
 	u32						time_in_zone;
 	//количество раз, сколько зона воздействовала на объект
@@ -47,7 +49,7 @@ private:
     typedef	CSpaceRestrictor inherited;
 
 public:
-	CZoneEffector		m_effector;
+	CZoneEffector*		m_effector;
 
 public:
 
@@ -86,6 +88,16 @@ public:
 
 	virtual CCustomZone	*cast_custom_zone				()							{return this;}
 
+	//различные состояния в которых может находиться зона
+	typedef enum {
+		eZoneStateIdle = 0,		//состояние зоны, когда внутри нее нет активных объектов
+		eZoneStateAwaking,		//пробуждение зоны (объект попал в зону)
+		eZoneStateBlowout,		//выброс
+        eZoneStateAccumulate,	//накапливание энергии, после выброса
+		eZoneStateDisabled,
+		eZoneStateMax
+	} EZoneState;
+
 protected:
 	enum EZoneFlags{
 		eIgnoreNonAlive			=(1<<0),
@@ -117,15 +129,6 @@ protected:
 	ALife::EHitType		m_eHitTypeBlowout;
 
 	
-	//различные состояния в которых может находиться зона
-	typedef enum {
-		eZoneStateIdle = 0,		//состояние зоны, когда внутри нее нет активных объектов
-		eZoneStateAwaking,		//пробуждение зоны (объект попал в зону)
-		eZoneStateBlowout,		//выброс
-        eZoneStateAccumulate,	//накапливание энергии, после выброса
-		eZoneStateDisabled,
-		eZoneStateMax
-	} EZoneState;
 
 	EZoneState			m_eZoneState;
 
@@ -155,6 +158,7 @@ public:
 	virtual		bool		IsEnabled					()	{return m_eZoneState != eZoneStateDisabled; };
 	virtual		void		ZoneEnable					();	
 	virtual		void		ZoneDisable					();
+	EZoneState				ZoneState					() {return m_eZoneState;}
 protected:
 
 
@@ -168,7 +172,7 @@ protected:
 
 	u32						m_dwDeltaTime;
 	u32						m_dwPeriod;
-	bool					m_bZoneReady;
+//	bool					m_bZoneReady;
 	//если в зоне есть не disabled объекты
 	bool					m_bZoneActive;
 
@@ -209,6 +213,8 @@ protected:
 	shared_str				m_sIdleParticles;
 	//выброс зоны
 	shared_str				m_sBlowoutParticles;
+	shared_str				m_sAccumParticles;
+	shared_str				m_sAwakingParticles;
 
 
 	//появление большого и мальнекого объекта в зоне
@@ -222,6 +228,8 @@ protected:
 	shared_str				m_sIdleObjectParticlesBig;
 
 	ref_sound				m_idle_sound;
+	ref_sound				m_awaking_sound;
+	ref_sound				m_accum_sound;
 	ref_sound				m_blowout_sound;
 	ref_sound				m_hit_sound;
 	ref_sound				m_entrance_sound;
@@ -281,18 +289,18 @@ protected:
 
 
 	//для визуализации зоны
-	virtual		void		PlayIdleParticles			();
-	virtual		void		StopIdleParticles			();
+				void		PlayIdleParticles			();
+				void		StopIdleParticles			();
+				void		PlayAccumParticles			();
+				void		PlayAwakingParticles		();
+				void		PlayBlowoutParticles		();
+				void		PlayEntranceParticles		(CGameObject* pObject);
+				void		PlayBulletParticles			(Fvector& pos );
 
-	virtual		void		PlayBlowoutParticles		();
-	
-	virtual		void		PlayEntranceParticles		(CGameObject* pObject);
-	virtual		void		PlayBulletParticles			(Fvector& pos );
+				void		PlayHitParticles			(CGameObject* pObject);
 
-	virtual		void		PlayHitParticles			(CGameObject* pObject);
-
-	virtual		void		PlayObjectIdleParticles		(CGameObject* pObject);
-	virtual		void		StopObjectIdleParticles		(CGameObject* pObject);
+				void		PlayObjectIdleParticles		(CGameObject* pObject);
+				void		StopObjectIdleParticles		(CGameObject* pObject);
 
 	virtual		bool		EnableEffector				() {return false;}
 

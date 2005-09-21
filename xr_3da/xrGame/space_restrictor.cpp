@@ -13,6 +13,7 @@
 #include "space_restriction_manager.h"
 #include "restriction_space.h"
 #include "ai_space.h"
+#include "CustomZone.h"
 
 CSpaceRestrictor::~CSpaceRestrictor	()
 {
@@ -331,6 +332,18 @@ void CSpaceRestrictor::OnRender	()
 		HUD().Font().pFontMedium->SetColor	(0xffff0000);
 		HUD().Font().pFontMedium->OutSet	(x, y-=delta_height);
 		HUD().Font().pFontMedium->OutNext	( Name() );
+		CCustomZone* z = smart_cast<CCustomZone*>(this);
+		if(z){
+			string64 str;
+			switch (z->ZoneState()){
+				case CCustomZone::eZoneStateIdle:		strcpy(str,"IDLE"); break;
+				case CCustomZone::eZoneStateAwaking:	strcpy(str,"AWAKING"); break;
+				case CCustomZone::eZoneStateBlowout:	strcpy(str,"BLOWOUT"); break;
+				case CCustomZone::eZoneStateAccumulate: strcpy(str,"ACCUMULATE"); break;
+				case CCustomZone::eZoneStateDisabled:	strcpy(str,"DISABLED"); break;
+			};
+			HUD().Font().pFontMedium->OutNext	( str );
+		}
 	}
 
 

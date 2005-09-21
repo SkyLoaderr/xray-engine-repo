@@ -3,6 +3,7 @@
 #include "hudmanager.h"
 #include "level.h"
 #include "xrmessages.h"
+#include "../bone.h"
 
 
 CRadioactiveZone::CRadioactiveZone(void) 

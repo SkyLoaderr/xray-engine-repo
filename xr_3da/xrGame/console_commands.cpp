@@ -33,6 +33,7 @@
 #include "date_time.h"
 #include "mt_config.h"
 #include "ui/UIOptConCom.h"
+#include "zone_effector.h"
 
 #ifdef DEBUG
 #	include "PHDebug.h"
@@ -1612,7 +1613,7 @@ public:
 
 		float value;
 		sscanf(param3 ,"%f",&value);
-		p_zone->m_effector.SetParam(type,value);
+		p_zone->m_effector->SetParam(type,value);
 	}
 };
 

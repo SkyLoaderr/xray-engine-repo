@@ -14,6 +14,7 @@
 #include "artifact.h"
 #include "ai_object_location.h"
 #include "../skeletoncustom.h"
+#include "zone_effector.h"
 
 //////////////////////////////////////////////////////////////////////////
 #define PREFETCHED_ARTEFACTS_NUM 4	//количество предварительно проспавненых артефактов
@@ -28,7 +29,7 @@ CCustomZone::CCustomZone(void)
 	m_fAttenuation				= 1.f;
 	m_dwPeriod					= 1100;
 	m_fEffectiveRadius			= 0.75f;
-	m_bZoneReady				= false;
+//	m_bZoneReady				= false;
 	m_bZoneActive				= false;
 	m_eHitTypeBlowout			= ALife::eHitTypeWound;
 	m_pLocalActor				= NULL;
@@ -51,15 +52,21 @@ CCustomZone::CCustomZone(void)
 	m_fDistanceToCurEntity		= flt_max;
 	m_ef_weapon_type			= u32(-1);
 	m_owner_id					= u32(-1);
+
+	m_effector					= xr_new<CZoneEffector>();
 }
 
 CCustomZone::~CCustomZone(void) 
 {	
 	m_idle_sound.destroy		();
+	m_accum_sound.destroy		();
+	m_awaking_sound.destroy		();
 	m_blowout_sound.destroy		();
 	m_hit_sound.destroy			();
 	m_entrance_sound.destroy	();
 	m_ArtefactBornSound.destroy	();
+
+	xr_delete					(m_effector);
 }
 
 void CCustomZone::Load(LPCSTR section) 
@@ -98,11 +105,23 @@ void CCustomZone::Load(LPCSTR section)
 		m_idle_sound.create(TRUE, sound_str, st_SourceType);
 	}
 	
+	if(pSettings->line_exist(section,"accum_sound")) 
+	{
+		sound_str = pSettings->r_string(section,"accum_sound");
+		m_accum_sound.create(TRUE, sound_str, st_SourceType);
+	}
+	if(pSettings->line_exist(section,"awake_sound")) 
+	{
+		sound_str = pSettings->r_string(section,"awake_sound");
+		m_awaking_sound.create(TRUE, sound_str, st_SourceType);
+	}
+	
 	if(pSettings->line_exist(section,"blowout_sound")) 
 	{
 		sound_str = pSettings->r_string(section,"blowout_sound");
 		m_blowout_sound.create(TRUE, sound_str, st_SourceType);
 	}
+	
 	
 	if(pSettings->line_exist(section,"hit_sound")) 
 	{
@@ -122,6 +141,12 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"blowout_particles")) 
 		m_sBlowoutParticles = pSettings->r_string(section,"blowout_particles");
 
+	if(pSettings->line_exist(section,"accum_particles")) 
+		m_sAccumParticles = pSettings->r_string(section,"accum_particles");
+
+	if(pSettings->line_exist(section,"awake_particles")) 
+		m_sAwakingParticles = pSettings->r_string(section,"awake_particles");
+	
 
 	if(pSettings->line_exist(section,"entrance_small_particles")) 
 		m_sEntranceParticlesSmall = pSettings->r_string(section,"entrance_small_particles");
@@ -139,7 +164,7 @@ void CCustomZone::Load(LPCSTR section)
 		m_sIdleObjectParticlesSmall = pSettings->r_string(section,"idle_small_particles");
 
 	if(pSettings->line_exist(section,"postprocess")) 
-		m_effector.Load(pSettings->r_string(section,"postprocess"));
+		m_effector->Load(pSettings->r_string(section,"postprocess"));
 
 
 
@@ -318,7 +343,7 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_eZoneState				= eZoneStateIdle;
 	m_iPreviousStateTime		= m_iStateTime = 0;
 
-	m_effector.SetRadius		(CFORM()->getSphere().R);
+	m_effector->SetRadius		(CFORM()->getSphere().R);
 
 	m_dwLastTimeMoved			= Device.dwTimeGlobal;
 	m_vPrevPos.set				(Position());
@@ -346,12 +371,13 @@ void CCustomZone::net_Destroy()
 
 	CParticlesObject::Destroy(m_pIdleParticles);
 
-	m_effector.Stop		();
+	m_effector->Stop		();
 	//---------------------------------------------
 	OBJECT_INFO_VEC_IT i=m_ObjectInfoMap.begin(),e=m_ObjectInfoMap.end();
 	for(;e!=i;i++)exit_Zone(*i);
 	m_ObjectInfoMap.clear();	
 }
+
 void CCustomZone::net_Import(NET_Packet& P)
 {
 	inherited::net_Import(P);
@@ -406,7 +432,7 @@ void CCustomZone::UpdateWorkload	(u32 dt)
 {
 	if (!IsEnabled())		{
 		if (EnableEffector())
-			m_effector.Stop();
+			m_effector->Stop();
 		return;
 	};
 
@@ -439,14 +465,14 @@ void CCustomZone::UpdateWorkload	(u32 dt)
 
 	if(m_dwDeltaTime > m_dwPeriod)		{
 		m_dwDeltaTime	= m_dwPeriod;
-		m_bZoneReady	= true;
+//		m_bZoneReady	= true;
 	}
 
 	if (Level().CurrentEntity()) {
 		m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
 
 		if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
-			m_effector.Update(m_fDistanceToCurEntity);
+			m_effector->Update(m_fDistanceToCurEntity);
 	}
 
 	if(m_pLight && m_pLight->get_active())
@@ -1049,12 +1075,25 @@ void CCustomZone::OnOwnershipTake(u16 id)
 
 	m_SpawnedArtefacts.push_back(artefact);
 }
+
 void CCustomZone::OnStateSwitch	(EZoneState new_state)
 {
 	if (eZoneStateDisabled == new_state)
 		Disable();
 	else
 		Enable();
+
+	if(m_eZoneState==eZoneStateIdle)
+		StopIdleParticles();
+
+	if(new_state==eZoneStateIdle)
+		PlayIdleParticles();
+
+	if(new_state==eZoneStateAccumulate)
+		PlayAccumParticles();
+
+	if(new_state==eZoneStateAwaking)
+		PlayAwakingParticles();
 
 	m_eZoneState			= new_state;
 	m_iPreviousStateTime	= m_iStateTime = 0;
@@ -1282,4 +1321,30 @@ void CCustomZone::net_Relcase(CObject* O)
 	if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
 
 	inherited::net_Relcase(O);
+}
+
+void CCustomZone::PlayAccumParticles()
+{
+	if(m_sAccumParticles.size()){
+		CParticlesObject* pParticles;
+		pParticles	= CParticlesObject::Create(*m_sAccumParticles,TRUE);
+		pParticles->UpdateParent(XFORM(),zero_vel);
+		pParticles->Play();
+	}
+
+	if(m_accum_sound._handle())
+		m_accum_sound.play_at_pos	(this, Position());
+}
+
+void CCustomZone::PlayAwakingParticles()
+{
+	if(m_sAwakingParticles.size()){
+		CParticlesObject* pParticles;
+		pParticles	= CParticlesObject::Create(*m_sAwakingParticles,TRUE);
+		pParticles->UpdateParent(XFORM(),zero_vel);
+		pParticles->Play();
+	}
+
+	if(m_awaking_sound._handle())
+		m_awaking_sound.play_at_pos	(this, Position());
 }

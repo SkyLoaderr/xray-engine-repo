@@ -5,6 +5,7 @@
 #include "HairsZone.h"
 #include "hudmanager.h"
 #include "level.h"
+#include "PhysicsShellHolder.h"
 
 
 bool CHairsZone::BlowoutState()
