@@ -5,7 +5,7 @@
 <!---------------------------- BOROV ------------------------>
 	<specific_character id="val_bandit_borov" team_default = "1">
 		<name>Боров</name>
-		<icon x="26" y="14"></icon>
+		<icon x="30" y="12"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Лидер бандитов.</bio>
 
@@ -61,7 +61,7 @@
 
 	<specific_character id="val_bandit_novice_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="4"></icon>
+		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -89,7 +89,7 @@
 
 	<specific_character id="val_bandit_novice_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="4"></icon>
+		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -144,7 +144,7 @@
 
 	<specific_character id="val_bandit_general_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="4"></icon>
+		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -172,7 +172,7 @@
 
 	<specific_character id="val_bandit_general_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="4"></icon>
+		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 				
@@ -211,7 +211,7 @@
 		<rank>70</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -229,7 +229,7 @@
 
 	<specific_character id="val_bandit_veteran_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="22" y="14"></icon>
+		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -257,7 +257,7 @@
 
 	<specific_character id="val_bandit_veteran_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="22" y="14"></icon>
+		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
@@ -349,7 +349,7 @@
 
 	<specific_character id="val_dolg_regular_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="28" y="4"></icon>
+		<icon x="16" y="8"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
@@ -359,7 +359,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<supplies>
 			[spawn] \n
             wpn_fort \n
@@ -381,7 +381,7 @@
 <!-------------------------- REGULAR ----------------------->
   <specific_character id="val_monolith_regular_default1" team_default = "3">
     <name>GENERATE_NAME</name>
-    <icon x="4" y="2"></icon>
+    <icon x="6" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -408,7 +408,7 @@
 
   <specific_character id="val_monolith_regular_default2" team_default = "1">
     <name>GENERATE_NAME</name>
-    <icon x="4" y="2"></icon>
+    <icon x="24" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -419,7 +419,7 @@
     <rank>40</rank>
     <reputation>0</reputation>
 
-    <visual>actors\monolit\stalker_mo_hood_9</visual>
+    <visual>actors\monolit\stalker_mo_hood_1</visual>
     <supplies>
       [spawn] \n
       wpn_pb \n
@@ -475,7 +475,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_1</visual>		
+		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -493,7 +493,7 @@
 
 	<specific_character id="val_soldier_regular_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="12" y="2"></icon>
+		<icon x="18" y="14"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
@@ -503,7 +503,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_2</visual>		
+		<visual>actors\soldier\soldier_mask</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -531,41 +531,13 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_3</visual>		
+		<visual>actors\soldier\soldier_obichniy</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
-			device_torch \n
-#include "gameplay\character_items.xml"
-		</supplies>		
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="val_soldier_regular_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
-		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
-
-		<class>val_soldier_regular</class>
-		<community>military</community>
-		
-		<rank>30</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\soldier\soldier_bandana_4</visual>		
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
@@ -632,9 +604,9 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
-		<specific_character id="val_soldier_specnaz_default3" team_default = "1">
+    <specific_character id="val_soldier_specnaz_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="14" y="2"></icon>
+		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
@@ -644,7 +616,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_antigas</visual>		
+		<visual>actors\soldier\stalker_militari_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -662,34 +634,9 @@
 
 <!-------------------------- STALKER ----------------------->
 <!-------------------------- NOVICE ------------------------>
-	<specific_character id="val_stalker_novice_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
-
-		<class>val_stalker_novice</class>
-		<community>stranger</community>
-		
-		<rank>20</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\novice\green_stalker_1</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
-			device_torch \n
-		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
 	<specific_character id="val_stalker_novice_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -714,7 +661,7 @@
 
 	<specific_character id="val_stalker_novice_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -741,7 +688,7 @@
 
 	<specific_character id="val_stalker_novice_default4" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -766,7 +713,7 @@
 
 	<specific_character id="val_stalker_novice_default5" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="2"></icon>
+		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -791,7 +738,7 @@
 
 	<specific_character id="val_stalker_novice_default6" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="30" y="10"></icon>
+		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
@@ -809,31 +756,6 @@
 			device_torch \n
 			wpn_toz34 \n
 			ammo_12x70_buck \n			
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="val_stalker_novice_default9" team_default = "1">
-		<name>GENERATE_NAME</name>
-		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
-
-		<class>val_stalker_novice</class>
-		<community>stranger</community>
-		
-		<rank>20</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\novice\green_stalker_9</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
-			device_torch \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -902,7 +824,7 @@
 
 <specific_character id="val_stalker_general_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="2" y="2"></icon>
+		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
@@ -934,7 +856,7 @@
 
 <specific_character id="val_stalker_general_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="2" y="2"></icon>
+		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
@@ -966,7 +888,7 @@
 
 	<specific_character id="val_stalker_general_default4" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="2" y="2"></icon>
+		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
@@ -998,7 +920,7 @@
 	
 	<specific_character id="val_stalker_general_default5" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="2" y="2"></icon>
+		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
