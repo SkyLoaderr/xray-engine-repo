@@ -4,99 +4,6 @@ function load_job(sj, gname, type, squad, groups)
 --'--------------------------------------------------------------------------	
 --' GARBAGE
 --'--------------------------------------------------------------------------	
-	if type == "sv1" then
-	t = { section = "logic@sv1_pt1",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-		
-	t = { section = "logic@sv1_pt2",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-		
-		t = { section = "logic@sv1_pt3",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-		
-		t = { section = "logic@sv1_pt4",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-	end	
-	
-	if type == "dolga" then
-		t = { section = "logic@dolga_lider",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "",
-				predicate = function(obj) 
-        					return obj:profile_name() == "bar_dolg_veteran"
-        				end
-		}
-		table.insert(sj, t)		
-
-	     t = { section = "logic@dolga_post1",
-			idle = 0,
-			prior = 4, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-
-         t = { section = "logic@dolga_post2",
-			idle = 0,
-			prior = 4, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-	
-	     t = { section = "logic@dolga_post3",
-			idle = 0,
-			prior = 4, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-
-	
-	t = { section = "logic@dolga_camp1",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
-	
-	t = { section = "logic@dolga_camp1",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		
-		t = { section = "logic@dolga_camp1",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		
-		t = { section = "logic@dolga_camp1",
-			idle = 0,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-	end
-	
-	
 	
 	--' Hellcar's_group
 	if type == "gar_hellcar_group" then
@@ -1617,27 +1524,7 @@ function load_states(gname, type)
 		end
 	end
 	
-	if type == "dolga" then
-		return function(gulag)
-			if db.actor:has_info("gar_seryi_ceitnot")   
-			then
-				return 1
-			else
-				return 0
-				end
-				if getGulagPopulation("sv1") == 0 
-		    then
-			    return 0
-			   end
-			end
-	      end
 	
-	
-	if type == "sv1" then
-		return function(gulag)
-				return 0
-		end
-	end
 	
 	
 	
@@ -1686,13 +1573,7 @@ end
 
 function checkStalker(npc_community, gulag_type)
 
-	if gulag_type == "dolga" then
-		return npc_community == "dolg"
-	end
 	
-	if gulag_type == "sv1" then
-		return npc_community == "freedom"
-	end
 	
 	if gulag_type == "gar_hellcar_group" then
 		return npc_community == "stalker"
