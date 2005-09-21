@@ -7,6 +7,7 @@
 #include "gameplay\tasks_military.xml"
 #include "gameplay\tasks_darkvalley.xml"
 #include "gameplay\tasks_radar.xml"
+#include "gameplay\tasks_aes.xml"
 
 	<game_task id="task1">
 		<title>Task 1. What a shame! It's failed!</title>
