@@ -353,55 +353,55 @@ function load_job(sj, gname, type, squad, groups)
 		
 		t = { section = "logic@esc_lager_defend1",
 			idle = 0,
-			prior = 10, state = {2},
+			prior = 15, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend2",
 			idle = 0,
-			prior = 10, state = {2},
+			prior = 14, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend3",
 			idle = 0,
-			prior = 9, state = {2},
+			prior = 13, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend4",
 			idle = 0,
-			prior = 9, state = {2},
+			prior = 12, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend5",
 			idle = 0,
-			prior = 8, state = {2},
+			prior = 11, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend6",
 			idle = 0,
-			prior = 8, state = {2},
+			prior = 10, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend7",
 			idle = 0,
-			prior = 7, state = {2},
+			prior = 9, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend8",
 			idle = 0,
-			prior = 7, state = {2},
+			prior = 8, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend9",
 			idle = 0,
-			prior = 6, state = {2},
+			prior = 7, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -419,7 +419,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_defend12",
 			idle = 0,
-			prior = 15, state = {2},
+			prior = 20, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj) 
         					return obj:profile_name() == "esc_fanat"			           
@@ -775,19 +775,28 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer_kamp_guard1",
 			idle = 0,
 			prior = 8, state = {3}, squad = squad, group = groups[13],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+				predicate = function(obj) 
+			            	return obj:profile_name() == "esc_killer_specnaz"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_guard2",
 			idle = 0,
 			prior = 8, state = {3}, squad = squad, group = groups[13],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+				predicate = function(obj) 
+			            	return obj:profile_name() == "esc_killer_specnaz"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_guard3",
 			idle = 0,
 			prior = 8, state = {3}, squad = squad, group = groups[13],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+				predicate = function(obj) 
+			            	return obj:profile_name() == "esc_killer_specnaz"
+			            end
 		}
 		table.insert(sj, t)
 	end
