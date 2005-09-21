@@ -2,15 +2,17 @@
 -- ќбщие функции
 -- ----------------------------------------------------------------------------------------------------
 
--- ƒать сталкеру небольшой пинок. Ќапример чтоб скинуть его с возвышени€.
--- параметры: actor, npc, p[direction,bone,power,impulse,reverse=false]
--- direction - если строка, то считаетс€, что это им€ пути и в сторону
--- первой точки производитс€ толчек. ≈сли же это число, то оно
--- рассматриваетс€ как story_id персонажа от которого должен поступить хит.
--- bone - строка. »м€ кости, по которой наноситс€ удар.
--- power - сила удара
--- impulse - импульс
--- reverse (true/false) - изменение направлени€ удара. по умолчанию false
+--[[
+ƒать сталкеру небольшой пинок. Ќапример чтоб скинуть его с возвышени€.
+параметры: actor, npc, p[direction,bone,power,impulse,reverse=false]
+    1. direction - если строка, то считаетс€, что это им€ пути и в сторону
+        первой точки производитс€ толчек. ≈сли же это число, то оно
+        рассматриваетс€ как story_id персонажа от которого должен поступить хит.
+    2. bone - строка. »м€ кости, по которой наноситс€ удар.
+    3. power - сила удара
+    4. impulse - импульс
+    5. reverse (true/false) - изменение направлени€ удара. по умолчанию false
+--]]
 function hit_npc(actor, npc, p)
     --printf("_bp: TEST HIT")
     --print_table(p)
@@ -42,10 +44,43 @@ function hit_npc(actor, npc, p)
 	npc:hit(h)
 end
 
--- ƒать сталкеру небольшой пинок после смерти. јналогично предыдущему, только направление хита теперь
--- вычисл€етс€ через убийцу. ѕоэтому параметра direction нет.
--- параметры: actor, npc, p[bone,power,impulse]
--- FIXME: killer:position() isn't working
+--[[
+ƒать обьекту, заданному story_id, хит.
+параметры: actor, npc, p[sid,bone,power,impulse,hit_src=npc:position()]
+    1. sid - story_id обьекта, по которому наноситс€ хит.
+    2. bone - строка. »м€ кости, по которой наноситс€ удар.
+    3. power - сила удара
+    4. impulse - импульс
+    5. hit_src - точка (waypoint), из которой по объекту наноситс€ хит.
+        ≈сли не задано, то беретс€ позици€ обьекта, из которого была вызвана
+        данна€ функци€.
+--]]
+function hit_obj(actor, npc, p)
+	local h = hit()
+	local obj = level_object_by_sid(p[1])
+
+	h:bone(p[2])
+	h.power = p[3]
+	h.impulse = p[4]
+
+	--h.direction = vector(0, -1, 0)	
+	if p[5] then
+	    h.direction = utils.vector_copy_by_val(patrol(p[5]):point(0)):sub(obj:position())
+	else
+	    h.direction = utils.vector_copy_by_val(npc:position()):sub(obj:position())
+	end
+
+	h.draftsman = npc --nil --obj
+	h.type = hit.wound
+	obj:hit(h)
+end
+
+--[[
+ƒать сталкеру небольшой пинок после смерти. јналогично предыдущему, только направление хита теперь
+вычисл€етс€ через убийцу. ѕоэтому параметра direction нет.
+параметры: actor, npc, p[bone,power,impulse]
+FIXME: killer:position() isn't working
+--]]
 function hit_by_killer(actor, npc, p)
 	if not npc then return end
 	local t = db.storage[npc:id()].death
