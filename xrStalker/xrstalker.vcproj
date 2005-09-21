@@ -755,6 +755,9 @@
 					<Filter
 						Name="l06_yantar"
 						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_yantar.xml">
+						</File>
 					</Filter>
 					<Filter
 						Name="l07_military"
@@ -1012,10 +1015,10 @@
 						RelativePath=".\Config\text\eng\ui_st_keybinding.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
