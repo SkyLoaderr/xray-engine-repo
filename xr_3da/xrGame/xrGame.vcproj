@@ -4581,7 +4581,7 @@
 					</File>
 					<File
 						RelativePath=".\ai_object_location_inline.h">
-					</File>
+					</File>
 				</Filter>
 				<Filter
 					Name="Pathfinding"
@@ -6145,6 +6145,12 @@
 					</File>
 					<File
 						RelativePath="Level_network.cpp">
+					</File>
+					<File
+						RelativePath=".\Level_network_Demo.cpp">
+					</File>
+					<File
+						RelativePath=".\Level_network_Demo.h">
 					</File>
 					<File
 						RelativePath="Level_network_messages.cpp">

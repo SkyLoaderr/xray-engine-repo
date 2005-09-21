@@ -12,6 +12,7 @@
 #include "../StatGraph.h"
 #include "xrMessages.h"
 #include "alife_space.h"
+#include "xrDebug.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -41,18 +42,9 @@ class CMapManager;
 
 class CLevel					: public IGame_Level, public IPureClient
 {
+#include "Level_network_Demo.h"
+
 private:
-	BOOL						m_bDemoPlayMode;	
-	DEF_DEQUE(DemoDeque, NET_Packet);
-	DemoDeque					m_aDemoData;
-
-	BOOL						m_bDemoSaveMode;
-	string1024					m_sDemoName;
-	
-	BOOL						m_bDemoStarted;	
-	void						UpdateDemo				();
-	void						DemoWriteData			(void* data, u32 size);
-
 	void						ClearAllObjects			();
 private:
 #ifdef DEBUG
