@@ -129,9 +129,9 @@ function actor_binder:update(delta)
 	end
 
 	-- обновление постпроцессов
-	if this.post_process ~= nil then
-		if this.post_process:update(delta * 0.001) == true then	
-			this.post_process = nil
+	if post_process ~= nil then
+		if post_process:update(delta * 0.001) == true then	
+			post_process = nil
 		end  		
 	end
 	
