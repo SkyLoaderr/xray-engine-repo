@@ -8,6 +8,7 @@
 #include "gameplay\tasks_darkvalley.xml"
 #include "gameplay\tasks_radar.xml"
 #include "gameplay\tasks_aes.xml"
+#include "gameplay\tasks_yantar.xml"
 
 
 	<game_task id="task1">
