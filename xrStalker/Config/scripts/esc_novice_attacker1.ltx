@@ -16,7 +16,7 @@ on_info = %+esc_assault_start%
 path_walk = escape_btr_path1
 path_look = escape_btr_look1
 on_info = {+esc_bandits_start} walker@to_kamp
-on_info2 = {+esc_bandits_assault} walker
+;on_info2 = {+esc_bandits_assault} walker
 meet = meet@attacker
 
 [walker@to_kamp]
@@ -26,7 +26,7 @@ on_signal = bandits_assault | remark@kamp
 
 [remark@kamp]
 anim = guard
-snd = esc_assault_factory
+snd = gar_bandits_seryi
 on_signal = sound_end | walker %+esc_bandits_assault%
 
 [walker]
