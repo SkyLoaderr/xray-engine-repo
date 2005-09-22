@@ -362,8 +362,9 @@ function load_states(gname, type)
 	end
 
 	if type == "freedom_vs_duty" then
-		return function(gulag)
-			return 0
+		return	function(gulag)
+					return 0
+				end
 	end
 end
 
