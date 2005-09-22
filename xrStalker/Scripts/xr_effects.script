@@ -139,9 +139,8 @@ function actor_punch(npc)
 	local active_item = db.actor:active_item()
 	if active_item then
 		db.actor:drop_item(active_item)
-	end
-	level.disable_input()
-	db.storage[db.actor:id()].disable_input_time = time_global()
+	end	
+	set_inactivate_input_time(15000)
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 
