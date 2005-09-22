@@ -26,12 +26,10 @@ void SBoneProtections::reload(const shared_str& bone_sect, CKinematics* kinemati
 	m_bones_koeff.clear();
 
 
-//	if(!pSettings->line_exist(outfit_section,"bones_koeff_protection")) return;
-//	LPCSTR bone_sect = pSettings->r_string(outfit_section,"bones_koeff_protection");
+	m_default = 0.0f;
 
 	CInifile::Sect	&protections = pSettings->r_section(bone_sect);
 	for (CInifile::SectIt i=protections.begin(); protections.end() != i; ++i) {
-//		float k = (float)atof( *(*i).second );
 		string256 buffer;
 		float Koeff = (float)atof( _GetItem(*(*i).second, 0, buffer) );
 		float Armour = (float)atof( _GetItem(*(*i).second, 1, buffer) );
