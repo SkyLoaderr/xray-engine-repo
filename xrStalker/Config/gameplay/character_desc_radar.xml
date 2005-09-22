@@ -1054,7 +1054,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA REGULAR----------------------->
-	<specific_character id="mil_Svoboda_regular" team_default = "1">
+	<specific_character id="rad_Svoboda_regular" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
@@ -1084,7 +1084,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------DOLG REGULAR----------------------->
-	<specific_character id="bar_dolg_regular_default1" team_default = "1">
+	<specific_character id="rad_dolg_regular_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
@@ -1117,7 +1117,7 @@
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
 
-	<specific_character id="bar_dolg_regular_default2" team_default = "1">
+	<specific_character id="rad_dolg_regular_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
@@ -1148,7 +1148,7 @@
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
 
-	<specific_character id="bar_dolg_regular_default3" team_default = "1">
+	<specific_character id="rad_dolg_regular_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
