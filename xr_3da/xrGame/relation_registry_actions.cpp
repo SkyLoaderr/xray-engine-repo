@@ -129,7 +129,8 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 				//сталкер при нападении на членов своей же группировки отношени€ не мен€ют
 				//(считаетс€, что такое нападение всегда случайно)
-				bool stalker_attack_team_mate = stalker_from && (stalker_from->Community() == stalker->Community());
+				// change relation only for pairs actor->stalker, do not use pairs stalker->stalker
+				bool stalker_attack_team_mate = stalker && stalker_from /*&& (stalker_from->Community() == stalker->Community())*/;
 				if (delta_goodwill && !stalker_attack_team_mate) {
 #ifdef DEFAULT_HIT_BEHAVIOUR
 					//изменить отношение ко всем членам атакованой группы (если така€ есть)
