@@ -880,9 +880,9 @@
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
-		<team>bar_Dolg_regular</team>
+
 		
-		<class>Dolg_regular</class>
+		<class>bar_Dolg_regular</class>
 		<community>dolg</community>
 		
 		<rank>40</rank>
