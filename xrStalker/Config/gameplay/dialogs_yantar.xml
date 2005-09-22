@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="yantar_general_ucheniy_talk_start">
-        <phrase_list>
-            <phrase id="2">
-                <text>yantar_general_ucheniy_talk_start_2</text>
-            </phrase>
-            <phrase id="0">
-                <text>yantar_general_ucheniy_talk_start_0</text>
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="1">
-                <text>yantar_general_ucheniy_talk_start_1</text>
-                <give_info>yan_kill_brain_task_start</give_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="yantar_general_ucheniy_talk_end">
         <has_info>yantar_attack_start</has_info>
         <phrase_list>
@@ -27,6 +11,23 @@
                 <text>yantar_general_ucheniy_talk_end_1</text>
                 <give_info>yan_kill_brain_done</give_info>
                 <give_info>yan_find_scientist_done</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="yantar_general_ucheniy_talk_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>yantar_general_ucheniy_talk_start_0</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="1">
+                <text>yantar_general_ucheniy_talk_start_1</text>
+                <give_info>yan_kill_brain_task_start</give_info>
+            </phrase>
+            <phrase id="2">
+                <text>yantar_general_ucheniy_talk_start_2</text>
+                <give_info>yan_find_scientist_start</give_info>
             </phrase>
         </phrase_list>
     </dialog>
