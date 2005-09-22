@@ -1030,10 +1030,10 @@
 						RelativePath=".\Config\text\eng\ui_st_keybinding.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -2271,9 +2271,6 @@
 				Name="GP"
 				Filter="">
 				<File
-					RelativePath=".\Scripts\level_psy_antenna.script">
-				</File>
-				<File
 					RelativePath=".\Scripts\level_weathers.script">
 				</File>
 				<File
@@ -2430,6 +2427,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\sr_particle.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\sr_psy_antenna.script">
 						</File>
 						<File
 							RelativePath=".\Scripts\sr_sound.script">
@@ -2688,6 +2688,9 @@
 					</File>
 					<File
 						RelativePath=".\scripts\level_news.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\level_psy_antenna.script">
 					</File>
 					<File
 						RelativePath=".\scripts\xr_assistance.script">

@@ -1,0 +1,214 @@
+--[[------------------------------------------------------------------------------------------------
+Зоны пси-излучения. Отыгрывают постпроцесс и фантомов по настройкам из custom_data
+--------------------------------------------------------------------------------------------------]]
+
+----------------------------------------------------------------------------------------------------
+-- Класс, отвечающий за постпроцесс и фантомов
+----------------------------------------------------------------------------------------------------
+
+class "PsyAntennaPP" (effector)
+function PsyAntennaPP:__init() super(1001,10000000)
+	self.params							= effector_params();
+end
+function PsyAntennaPP:process(pp)
+	pp:assign		(self.params);
+    effector.process(self,pp);
+    return          true;
+end
+
+class "PsyAntenna"
+function PsyAntenna:__init				()
+// ----------------------------------------------------------------------------------------
+// settings
+// ----------------------------------------------------------------------------------------
+// phantom gen
+// ----------------------------------------------------------------------------------------
+	self.phantom_max 					= 0 //8 //10	// max phantoms
+	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
+	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
+	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
+	// antenna
+	self.hit_amplitude					= 1.0;	// размер хита = self.hit_amplitude*self.power_factor.a*self.intensity
+	// pause time [from]=to
+	self.idle_time						= {};
+	self.idle_time[20]					= 21;
+// ----------------------------------------------------------------------------------------
+// postprocess
+// ----------------------------------------------------------------------------------------
+	self.base_amplitude					= color(0.2,0.15,0.0);		// max base color diff			[0.0-0.5]
+	self.gray_amplitude					= 0.5;						// gray max intensity			[0.0-1.0]
+	self.add_factor						= 0.1;	//0.3				// factor * color_animator(RGB)	[0.0-1.0]
+	self.dual_amplitude					= 0.075 //0.05				// H&V same						[0.0-0.2]
+	self.gray_color						= color(0.33,0.33,0.33);	// RGB							[0.0-1.0]
+	self.noise_var						= noise(0.9,0.3,30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+// ----------------------------------------------------------------------------------------
+// class variables initialize
+	self.power_factor					= fcolor();
+	self.power_factor:set				(0,0,0,0);
+	self.eff_time						= 0;
+	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
+	self.hit_time						= 0;
+	self.intensity						= 0;
+	self.pp 							= PsyAntennaPP();
+	self.pp:start						();
+end
+function PsyAntenna:__finalize			()
+	self.pp:finish 						();
+end;
+
+function PsyAntenna:construct			()
+end
+
+--function PsyAntenna:load				(F)
+--	self.phase 							= F:r_u32();
+--end
+--function PsyAntenna:save				(F)
+--	F:r_u32								(self.phase);
+--end
+
+function PsyAntenna:update_postprocess	()
+	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity,0.5+self.base_amplitude.g*self.intensity,0.5+self.base_amplitude.b*self.intensity);
+	self.pp.params.color_gray			= color(self.gray_color.r,self.gray_color.g,self.gray_color.b);
+	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor,self.power_factor.g*self.add_factor,self.power_factor.b*self.add_factor);
+	self.pp.params.gray					= self.gray_amplitude*self.intensity;
+--	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a,self.dual_amplitude*self.power_factor.a);
+//	self.pp.params.noise				= self.noise_var;
+end
+function PsyAntenna:update_psy_hit		(dt)
+	local d_time						= time_global()-self.hit_time;
+	if d_time>200 and self.power_factor.a>0.01 then
+		self.hit_time					= time_global();
+		local psy_hit 					= hit();
+		psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.intensity;
+		psy_hit.direction 				= vector():set( 0, 0, 0 );
+		psy_hit.impulse 				= 0;
+		psy_hit.draftsman 				= db.actor; 
+		psy_hit.type 					= hit.telepatic;
+		db.actor:hit					(psy_hit);
+	end;
+end
+function PsyAntenna:generate_phantoms 	()
+	if self.power_factor.a>0.1 then
+		if math.random()<self.phantom_spawn_probability then
+			if phantom_manager:phantom_count()<self.phantom_max then
+				local yaw	 			= math.pi*2.0*math.random();
+				local radius 			= self.phantom_spawn_radius*(math.random()/2.0+0.5);
+				local height 			= self.phantom_spawn_height*math.random();
+				local a_pos 			= db.actor:position();
+				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z);
+				phantom_manager.spawn_phantom(pos);
+			end;
+		end;
+	end;
+end
+
+function PsyAntenna:switch_to_phase		(ph)
+	self.phase							= ph;
+	self.eff_time		 				= 0;
+end
+function PsyAntenna:phase_working		()
+	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001));
+	self:generate_phantoms 			();
+end
+function PsyAntenna:update				(dt)
+	self.eff_time						= self.eff_time + dt;
+	self:phase_working					();
+	if (self.intensity<0.0)				then self.intensity=0.0; end;
+	if (self.intensity>1.0)				then self.intensity=1.0; end;
+	self:update_postprocess 			();
+	self:update_psy_hit					(dt);
+end
+
+
+----------------------------------------------------------------------------------------------------
+-- логическая схема для space restrictor
+----------------------------------------------------------------------------------------------------
+
+
+local state_nowhere = 0 -- схема только что включилась
+local state_inside  = 1 -- актер внутри
+local state_outside = 2 -- актер снаружи
+
+psy_antenna = false
+
+
+class "action_psy_antenna"
+
+function action_psy_antenna:__init( obj, storage )
+	self.object = obj
+	self.st     = storage
+	self.state  = state_nowhere -- еще не ясно, в зоне он, или нет
+end
+
+function action_psy_antenna:reset_scheme()
+	if self.state == state_inside then
+		self:zone_leave()
+	end
+
+	self.state = state_nowhere
+	
+	self:switch_state(db.actor)
+end
+
+function action_psy_antenna:update( delta )
+	local actor = db.actor
+
+	if xr_logic.try_switch_to_another_section( self.object, self.st, actor ) then
+		return
+	end	
+
+	self:switch_state( actor )
+
+end
+
+function action_psy_antenna:switch_state( actor )
+	local state = self.state
+	
+	if state == state_outside or state == state_nowhere then
+		if self.object:inside( actor:position() ) then
+			self:zone_enter()
+			return
+		end
+	end
+	
+	if state == state_inside or state == state_nowhere then
+		if not self.object:inside( actor:position() ) then
+			self:zone_leave()
+			return
+		end
+	end
+end
+
+function action_psy_antenna:zone_enter()
+	self.state = state_inside
+
+	psy_antenna.intensity = psy_antenna.intensity + self.st.intensity
+end
+
+function action_psy_antenna:zone_leave()
+	self.state = state_outside
+
+	psy_antenna.intensity = psy_antenna.intensity - self.st.intensity
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+
+	if not sr_psy_antenna.psy_antenna then
+		sr_psy_antenna.psy_antenna = PsyAntenna()
+		sr_psy_antenna.psy_antenna:construct()
+	end
+
+	local new_action = action_psy_antenna(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.intensity = utils.cfg_get_number( ini, section, "intensity", npc, true ) * 0.01
+end
