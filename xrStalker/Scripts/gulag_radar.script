@@ -192,7 +192,7 @@ function load_job(sj, gname, type, squad, groups)
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
 				in_rest = "", out_rest = "",
-				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_regular"
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_master"
 							end
 			}
 			table.insert(sj, t)
@@ -201,12 +201,95 @@ function load_job(sj, gname, type, squad, groups)
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
 				in_rest = "", out_rest = "",
-				predicate = function(obj) return obj:profile_name() == "rad_dolg_regular"
+				predicate = function(obj) return obj:profile_name() == "rad_Dolg_specnaz"
+							end
+			}
+			table.insert(sj, t)
+--------------------------------------------------------------------
+			t = { section = "logic@rad_svoboda1", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_master"
 							end
 			}
 			table.insert(sj, t)
 
-			
+			t = { section = "logic@rad_dolg1", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Dolg_specnaz"
+							end
+			}
+			table.insert(sj, t)			
+			t = { section = "logic@rad_svoboda2", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_master"
+							end
+			}
+			table.insert(sj, t)
+
+			t = { section = "logic@rad_dolg2", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Dolg_specnaz"
+							end
+			}
+			table.insert(sj, t)			t = { section = "logic@rad_svoboda3", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_master"
+							end
+			}
+			table.insert(sj, t)
+
+			t = { section = "logic@rad_dolg3", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Dolg_specnaz"
+							end
+			}
+			table.insert(sj, t)			t = { section = "logic@rad_svoboda4", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_master"
+							end
+			}
+			table.insert(sj, t)
+
+			t = { section = "logic@rad_dolg4", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Dolg_specnaz"
+							end
+			}
+			table.insert(sj, t)
+			t = { section = "logic@rad_svoboda5", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_master"
+							end
+			}
+			table.insert(sj, t)
+
+			t = { section = "logic@rad_dolg5", 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = "",
+				predicate = function(obj) return obj:profile_name() == "rad_Dolg_specnaz"
+							end
+			}
+			table.insert(sj, t)
+---------------------------------------------------------------------			
 	end
 
 end

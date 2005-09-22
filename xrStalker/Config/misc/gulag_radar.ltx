@@ -180,17 +180,130 @@ active = nil
 ;--------Свобода
 [logic@rad_svoboda]
 active = walker@rad_svoboda
+combat_ignore=combat_ignore
 
 [walker@rad_svoboda]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
 path_walk = way_svoboda
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[walker1@rad_svoboda]
+path_walk = way_dolg
+path_look = way_look
+
+
+[logic@rad_svoboda1]
+active = walker@rad_svoboda1
+combat_ignore=combat_ignore
+
+[walker@rad_svoboda1]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_svoboda_0000
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[logic@rad_svoboda2]
+active = walker@rad_svoboda2
+combat_ignore=combat_ignore
+
+[walker@rad_svoboda2]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_svoboda_0001
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[logic@rad_svoboda3]
+active = walker@rad_svoboda3
+combat_ignore=combat_ignore
+
+[walker@rad_svoboda3]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_svoboda_0002
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+
+[logic@rad_svoboda4]
+active = walker@rad_svoboda4
+combat_ignore=combat_ignore
+
+[walker@rad_svoboda4]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_svoboda_0003
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[logic@rad_svoboda5]
+active = walker@rad_svoboda5
+combat_ignore=combat_ignore
+
+[walker@rad_svoboda5]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_svoboda_0004
 path_look = way_look
 on_info = {+rad_start_svoboda_vs_dolg} nil
 
 ;--------Долг
 [logic@rad_dolg]
 active = walker@rad_dolg
+combat_ignore=combat_ignore
 
 [walker@rad_dolg]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
 path_walk = way_dolg
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[walker1@rad_dolg]
+path_walk = way_dolg
+path_look = way_look
+
+[logic@rad_dolg1]
+active = walker@rad_dolg1
+combat_ignore=combat_ignore
+
+[walker@rad_dolg1]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_dolg_0000
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+[logic@rad_dolg2]
+active = walker@rad_dolg2
+combat_ignore=combat_ignore
+
+[walker@rad_dolg2]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_dolg_0001
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[logic@rad_dolg3]
+active = walker@rad_dolg3
+combat_ignore=combat_ignore
+
+[walker@rad_dolg3]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_dolg_0002
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[logic@rad_dolg4]
+active = walker@rad_dolg4
+combat_ignore=combat_ignore
+
+[walker@rad_dolg4]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_dolg_0003
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
+
+[logic@rad_dolg5]
+active = walker@rad_dolg5
+combat_ignore=combat_ignore
+
+[walker@rad_dolg5]
+combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
+path_walk = way_dolg_0004
 path_look = way_look
 on_info = {+rad_start_svoboda_vs_dolg} nil
