@@ -59,4 +59,5 @@ function register(object_factory)
 	cs_register	(object_factory, "CZombie",         "se_monster.se_monster",	"SM_ZOMBI",	"zombie_s")
 	cs_register	(object_factory, "CSnork",          "se_monster.se_monster",	"SM_SNORK",	"snork_s")
 	cs_register	(object_factory, "CTushkano",       "se_monster.se_monster",	"SM_TUSHK",	"tushkano_s")
+	cs_register	(object_factory, "PsyDog",          "se_monster.se_monster",	"SM_DOG_P", "psy_dog")
 end
