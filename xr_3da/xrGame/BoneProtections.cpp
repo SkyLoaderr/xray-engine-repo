@@ -26,7 +26,8 @@ void SBoneProtections::reload(const shared_str& bone_sect, CKinematics* kinemati
 	m_bones_koeff.clear();
 
 
-	m_default = 0.0f;
+	m_default.koeff		= 0.0f;
+	m_default.armour	= 0.0f;
 
 	CInifile::Sect	&protections = pSettings->r_section(bone_sect);
 	for (CInifile::SectIt i=protections.begin(); protections.end() != i; ++i) {
