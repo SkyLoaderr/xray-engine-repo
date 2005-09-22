@@ -1657,189 +1657,157 @@ on_combat               = combat_zombied
 ;-------------------------------------------------------------------------------------------------
 
 ;--- SOLDIER1 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier1]
-active                  = walker@pri_monolith_soldier1
+[logic@pri_monolith_patrol1]
+active                  = walker@pri_monolith_patrol1
 
-[walker@pri_monolith_soldier1]
+[walker@pri_monolith_patrol1]
 path_walk               = patrol1_walk
 path_look               = patrol1_look
 danger                  = danger@sound_small
 
-;--- SOLDIER2 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier2]
-active                  = walker@pri_monolith_soldier2
-
-[walker@pri_monolith_soldier2]
-path_walk               = patrol2_walk
-path_look               = patrol2_look
-danger                  = danger@sound_small
-
 ;--- SOLDIER3 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier3]
-active                  = walker@pri_monolith_soldier3
+[logic@pri_monolith_patrol3]
+active                  = walker@pri_monolith_patrol3
 
-[walker@pri_monolith_soldier3]
+[walker@pri_monolith_patrol3]
 path_walk               = patrol3_walk
 path_look               = patrol3_look
 danger                  = danger@sound_small
 
 ;--- SOLDIER4 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier4]
-active                  = walker@pri_monolith_soldier4
+[logic@pri_monolith_patrol4]
+active                  = walker@pri_monolith_patrol4
 
-[walker@pri_monolith_soldier4]
+[walker@pri_monolith_patrol4]
 path_walk               = patrol4_walk
 path_look               = patrol4_look
 danger                  = danger@sound_small
 
 ;--- SOLDIER5 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier5]
-active                  = walker@pri_monolith_soldier5
+[logic@pri_monolith_patrol5]
+active                  = walker@pri_monolith_patrol5
 
-[walker@pri_monolith_soldier5]
+[walker@pri_monolith_patrol5]
 path_walk               = patrol5_walk
 path_look               = patrol5_look
 danger                  = danger@sound_small
 
 ;--- SOLDIER6 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier6]
-active                  = walker@pri_monolith_soldier6
+[logic@pri_monolith_patrol6]
+active                  = walker@pri_monolith_patrol6
 
-[walker@pri_monolith_soldier6]
+[walker@pri_monolith_patrol6]
 path_walk               = patrol6_walk
 path_look               = patrol6_look
 danger                  = danger@sound_small
 
 ;--- SOLDIER7 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier7]
-active                  = walker@pri_monolith_soldier7
+[logic@pri_monolith_patrol7]
+active                  = walker@pri_monolith_patrol7
 
-[walker@pri_monolith_soldier7]
+[walker@pri_monolith_patrol7]
 path_walk               = patrol7_walk
 path_look               = patrol7_look
 danger                  = danger@sound_small
 
 ;--- SOLDIER8 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier8]
-active                  = walker@pri_monolith_soldier8
+[logic@pri_monolith_patrol8]
+active                  = walker@pri_monolith_patrol8
 
-[walker@pri_monolith_soldier8]
+[walker@pri_monolith_patrol8]
 path_walk               = patrol8_walk
 path_look               = patrol8_look
 danger                  = danger@sound_small
 
-;--- SOLDIER9 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier9]
-active                  = walker@pri_monolith_soldier9
-
-[walker@pri_monolith_soldier9]
-path_walk               = patrol9_walk
-path_look               = patrol9_look
-danger                  = danger@sound_small
-
 ;--- SOLDIER10 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier10]
-active                  = walker@pri_monolith_soldier10
+[logic@pri_monolith_patrol10]
+active                  = walker@pri_monolith_patrol10
 
-[walker@pri_monolith_soldier10]
+[walker@pri_monolith_patrol10]
 path_walk               = patrol10_walk
 path_look               = patrol10_look
 danger                  = danger@sound_small
 
-;--- SOLDIER11 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier11]
-active                  = walker@pri_monolith_soldier11
+;--- FOLLOWER1 ------------------------------------------------------------------------------------
+[logic@pri_monolith_follower1]
+active                  = nil
 
-[walker@pri_monolith_soldier11]
+;--- FOLLOWER2 ------------------------------------------------------------------------------------
+[logic@pri_monolith_follower2]
+active                  = nil
+
+;--- CAMPER_RPG -----------------------------------------------------------------------------------
+[logic@pri_monolith_stalker_rpg]
+active                  = camper@pri_monolith_stalker_rpg
+
+[camper@pri_monolith_stalker_rpg]
 path_walk               = patrol11_walk
 path_look               = patrol11_look
+no_retreat              = true
+radius                  = 5
 danger                  = danger@sound_small
 
-;--- SOLDIER12 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier12]
-active                  = walker@pri_monolith_soldier12
+;--- CAMPER_SVD -----------------------------------------------------------------------------------
+[logic@pri_monolith_stalker_svd]
+active                  = camper@pri_monolith_stalker_svd
 
-[walker@pri_monolith_soldier12]
+[camper@pri_monolith_stalker_svd]
 path_walk               = patrol12_walk
 path_look               = patrol12_look
+no_retreat              = true
+radius                  = 5
 danger                  = danger@sound_small
 
-;--- SOLDIER13 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier13]
-active                  = walker@pri_monolith_soldier13
+;--- MACHINE_GUN ----------------------------------------------------------------------------------
+[logic@pri_monolith_stalker_machine_gun]
+active                  = camper@pri_monolith_stalker_machine_gun
 
-[walker@pri_monolith_soldier13]
-path_walk               = patrol13_walk
-path_look               = patrol13_look
-danger                  = danger@sound_small
-
-;--- SOLDIER14 ------------------------------------------------------------------------------------
-[logic@pri_monolith_soldier14]
-active                  = walker@pri_monolith_soldier14
-
-[walker@pri_monolith_soldier14]
+[camper@pri_monolith_stalker_machine_gun]
 path_walk               = patrol14_walk
 path_look               = patrol14_look
+no_retreat              = true
+radius                  = 5
 danger                  = danger@sound_small
 
-;--- KAMP1:COMMON ---------------------------------------------------------------------------------
+;--- KAMP1 ----------------------------------------------------------------------------------------
+[logic@pri_monolith_kamp1_soldier]
+active                  = kamp@pri_monolith_kamp1_soldier
+
 [kamp@pri_monolith_kamp1_soldier]
 center_point            = kamp1
 danger                  = danger@sound_small
 
-;--- SOLDIER1 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp1_soldier1]
-active                  = kamp@pri_monolith_kamp1_soldier
+;--- KAMP2 ----------------------------------------------------------------------------------------
+[logic@pri_monolith_kamp2_soldier]
+active                  = kamp@pri_monolith_kamp2_soldier
 
-;--- SOLDIER2 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp1_soldier2]
-active                  = kamp@pri_monolith_kamp1_soldier
-
-;--- SOLDIER3 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp1_soldier3]
-active                  = kamp@pri_monolith_kamp1_soldier
-
-;--- KAMP2:COMMON ---------------------------------------------------------------------------------
 [kamp@pri_monolith_kamp2_soldier]
 center_point            = kamp2
 danger                  = danger@sound_small
 
-;--- SOLDIER1 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp2_soldier1]
-active                  = kamp@pri_monolith_kamp2_soldier
+;--- KAMP3 ----------------------------------------------------------------------------------------
+[logic@pri_monolith_kamp3_soldier]
+active                  = kamp@pri_monolith_kamp3_soldier
 
-;--- SOLDIER2 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp2_soldier2]
-active                  = kamp@pri_monolith_kamp2_soldier
-
-;--- SOLDIER3 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp2_soldier3]
-active                  = kamp@pri_monolith_kamp2_soldier
-
-;--- SOLDIER4 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp2_soldier4]
-active                  = kamp@pri_monolith_kamp2_soldier
-
-;--- KAMP3:COMMON ---------------------------------------------------------------------------------
 [kamp@pri_monolith_kamp3_soldier]
 center_point            = kamp3
 danger                  = danger@sound_small
 
-;--- SOLDIER1 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp3_soldier1]
-active                  = kamp@pri_monolith_kamp3_soldier
+;--- KAMP4 ----------------------------------------------------------------------------------------
+[logic@pri_monolith_kamp4_soldier]
+active                  = kamp@pri_monolith_kamp4_soldier
 
-;--- SOLDIER2 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp3_soldier2]
-active                  = kamp@pri_monolith_kamp3_soldier
+[kamp@pri_monolith_kamp4_soldier]
+center_point            = kamp4
+danger                  = danger@sound_small
 
-;--- SOLDIER3 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp3_soldier3]
-active                  = kamp@pri_monolith_kamp3_soldier
+;--- KAMP5 ----------------------------------------------------------------------------------------
+[logic@pri_monolith_kamp5_soldier]
+active                  = kamp@pri_monolith_kamp5_soldier
 
-;--- SOLDIER4 -------------------------------------------------------------------------------------
-[logic@pri_monolith_kamp3_soldier4]
-active                  = kamp@pri_monolith_kamp3_soldier
+[kamp@pri_monolith_kamp5_soldier]
+center_point            = kamp5
+danger                  = danger@sound_small
 
 
 ;-------------------------------------------------------------------------------------------------

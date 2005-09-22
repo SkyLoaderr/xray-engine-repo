@@ -30,7 +30,7 @@ local gulags = {}
 -- Predicates
 --------------------------------------------------------------------------
 function f_predicate1(obj)
-	return obj:profile_name() == "pri_stalker_veteran"
+	return obj:profile_name() == "pri_followers"
 end
 
 function f_predicate2(obj)
@@ -65,6 +65,41 @@ end
 
 function f_predicate5(obj)
 	return obj:profile_name() == "pri_monolith_regular"
+end
+
+function f_predicate6(obj)
+	return obj:profile_name() == "pri_monolith_specnaz"
+end
+
+function f_predicate7(obj)
+	return obj:profile_name() == "pri_monolith_exo"
+end
+
+function f_predicate8(obj)
+    local t = obj:best_weapon()
+    if t then
+	    return obj:profile_name() == "pri_monolith_specnaz" and string.find(t:name(), "^wpn_rpg7")
+	else
+	    return false
+	end
+end
+
+function f_predicate9(obj)
+    local t = obj:best_weapon()
+    if t then
+	    return obj:profile_name() == "pri_monolith_specnaz" and string.find(t:name(), "^wpn_svd")
+	else
+	    return false
+	end
+end
+
+function f_predicate10(obj)
+    local t = obj:best_weapon()
+    if t then
+	    return obj:profile_name() == "pri_monolith_exo" and string.find(t:name(), "^wpn_rpg7")
+	else
+	    return false
+	end
 end
 
 --------------------------------------------------------------------------
@@ -641,27 +676,87 @@ function load_job_zombied(sj, gname, type, squad, groups)
 end
 
 function load_job_monolith(sj, gname, type, squad, groups)
-    local i, j, v = 0, 0, 0
-    for i = 1, 14 do
+    local i, j, v, prior, pred
+
+    -- walkers
+    prior = {6, 7, 8, 12, 12, 6, 5, 6}
+    for i, v in {1, 3, 4, 5, 6, 7, 8, 10} do
         --- state: main
-	    t = { section = "logic@" .. gname .. "_soldier" .. i, 
+	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
 		    idle = 0,
-		    prior = 1, state = {0},
+		    prior = prior[i], state = {0},
 		    squad = squad, group = groups[1],
 		    in_rest = "", out_rest = "",
-		    predicate = f_predicate5
+		    predicate = f_predicate6
 	    }
 	    table.insert(sj, t)
 	end
-	for i, v in {3, 4, 4} do
+
+	-- followers
+    for i = 1, 2 do
+        --- state: main
+	    t = { section = "logic@" .. gname .. "_follower" .. i, 
+		    idle = 0,
+		    prior = 4, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = "",
+		    predicate = f_predicate6
+	    }
+	    table.insert(sj, t)
+    end
+
+	-- specnaz camper rpg
+    --- state: main
+	t = { section = "logic@" .. gname .. "_stalker_rpg", 
+		idle = 0,
+		prior = 5, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = f_predicate8
+	}
+	table.insert(sj, t)
+
+	-- specnaz camper svd
+    --- state: main
+	t = { section = "logic@" .. gname .. "_stalker_svd", 
+		idle = 0,
+		prior = 5, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = f_predicate9
+	}
+	table.insert(sj, t)
+
+	-- exo camper machine-gun
+    --- state: main
+	t = { section = "logic@" .. gname .. "_stalker_machine_gun", 
+		idle = 0,
+		prior = 5, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = f_predicate10
+	}
+	table.insert(sj, t)
+
+    -- kamps
+    prior = {{11, 11, 11, 3}, {10, 10, 10, 2}, {11, 11, 11}, {9, 9, 9}, {13, 13, 1}}
+    pred = {{f_predicate6, f_predicate6, f_predicate6, f_predicate6},
+            {f_predicate6, f_predicate6, f_predicate6, f_predicate6},
+            {f_predicate7, f_predicate7, f_predicate7},
+            {f_predicate6, f_predicate6, f_predicate6},
+            {f_predicate7, f_predicate7, f_predicate6}}
+    local pr, pd
+	for i, v in {4, 4, 3, 3, 3} do
+	    pr = prior[i]
+	    pd = pred[i]
 	    for j = 1, v do
             --- state: main
-	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier" .. j, 
+	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier", 
 		        idle = 0,
-		        prior = 1, state = {0},
+		        prior = pr[j], state = {0},
 		        squad = squad, group = groups[1],
 		        in_rest = "", out_rest = "",
-		        predicate = f_predicate5
+		        predicate = pd[j]
 	        }
 	        table.insert(sj, t)
 	    end
@@ -860,7 +955,7 @@ end
 --------------------------------------------------------------------------
 -- Dynamic ltx
 --------------------------------------------------------------------------
-function load_ltx(gname, type)
+function load_ltx1(gname, type)
     local g = gulags[type]
     if g then return g[4](gname, type) end
 
