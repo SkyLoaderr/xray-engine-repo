@@ -447,6 +447,14 @@
 	<character id="rad_soldier_specnaz">
 		<class>rad_soldier_specnaz</class>
 	</character>	
+	<!-- Dolg -->
+	<character id="rad_dolg_regular">
+		<class>rad_Dolg_regular</class>
+	</character>	
+	<!-- Svoboda -->
+	<character id="rad_Svoboda_regular">
+		<class>rad_Svoboda_regular</class>
+	</character>
 	
 	
 <!-- Pripyat -->
