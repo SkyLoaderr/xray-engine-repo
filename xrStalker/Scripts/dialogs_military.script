@@ -90,15 +90,8 @@ function have_a_vodka (stalker, player)
 end
 
 function actor_punch (first_speaker, second_speaker)
-    local actor_id = db.actor:id ()
-	db.storage[actor_id].punch = {}
-	local st = db.storage[actor_id].punch
-	st.dest_walk = patrol("mil_actor_path"):point(0)
-	st.dest_look = utils.vector_copy_by_val ( patrol("mil_actor_path"):point(1)):sub(st.dest_walk)
-	st.info = {}-- "val_prisoner_plr_captured", "val_prisoner_door_unlocked",  "val_prisoner_door_unlocked_demo" }
-	--db.storage[second_speaker:id()].punch.enabled = true
-	xr_punch.put_actor_to_sleep_instantly ()
 	dialogs.break_dialog (first_speaker, second_speaker, 0)
+    set_sleep_relocate(patrol ("mil_actor_path"):point(0), patrol ("mil_actor_path"):point(1), 60)
 end
 
 function send_ammo_for_AK (actor, npc)
