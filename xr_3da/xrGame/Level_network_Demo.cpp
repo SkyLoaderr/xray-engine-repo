@@ -40,6 +40,7 @@ void						CLevel::Demo_StoreData			(void* data, u32 size)
 
 void						CLevel::Demo_DumpData()
 {
+	if (!m_sDemoName[0]) return;
 	FILE* fTDemo = fopen(m_sDemoName, "ab");
 	if (fTDemo)
 	{
