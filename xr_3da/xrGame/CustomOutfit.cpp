@@ -66,15 +66,7 @@ void CCustomOutfit::Load(LPCSTR section)
 	if (pSettings->line_exist(section, "power_loss"))
 		m_fPowerLoss = pSettings->r_float(section, "power_loss");
 	else
-		m_fPowerLoss = 1.0f;
-	//  [8/3/2005]
-	m_fHitFrac = 0.1f;
-	//  [8/3/2005]
-	//  [9/22/2005]
-	if(pSettings->line_exist(section,"bones_koeff_protection")){
-		m_fHitFrac = READ_IF_EXISTS(pSettings, r_float, pSettings->r_string(section,"bones_koeff_protection"), "hit_fraction",	0.1f);
-	};
-	//  [9/22/2005]
+		m_fPowerLoss = 1.0f;	
 }
 
 void CCustomOutfit::net_Destroy() 
@@ -140,7 +132,7 @@ float	CCustomOutfit::HitThruArmour(float hit_power, s16 element)
 {
 	float BoneArmour = m_boneProtection->getBoneArmour(element)*GetCondition();	
 	float NewHitPower = hit_power - BoneArmour/100.0f;
-	if (NewHitPower < hit_power*m_fHitFrac) return hit_power*m_fHitFrac;
+	if (NewHitPower < hit_power*m_boneProtection->m_fHitFrac) return hit_power*m_boneProtection->m_fHitFrac;
 	return NewHitPower;
 };
 
