@@ -24,6 +24,7 @@
                 <text>yantar_general_ucheniy_talk_start_0</text>
                 <next>1</next>
                 <next>2</next>
+                <next>3</next>
             </phrase>
             <phrase id="1">
                 <text>yantar_general_ucheniy_talk_start_1</text>
@@ -34,6 +35,15 @@
                 <text>yantar_general_ucheniy_talk_start_2</text>
                 <dont_has_info>yan_find_scientist_start</dont_has_info>
                 <give_info>yan_find_scientist_start</give_info>
+            </phrase>
+            <phrase id="3">
+                <text>yantar_general_ucheniy_talk_start_3</text>
+                <has_info>yan_kill_brain_task_start</has_info>
+                <has_info>yan_find_scientist_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>yantar_general_ucheniy_talk_start_31</text>
             </phrase>
         </phrase_list>
     </dialog>
