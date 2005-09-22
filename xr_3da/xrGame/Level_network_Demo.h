@@ -28,4 +28,7 @@ public:
 	void						CallOldCrashHandler		();
 	void						WriteStoredDemo			();
 
+	BOOL						IsDemoPlay				()	{return (m_bDemoPlayMode && !m_bDemoSaveMode);};
+	BOOL						IsDemoSave				()	{return (m_bDemoSaveMode && !m_bDemoPlayMode && IsClient());};
+
 private:

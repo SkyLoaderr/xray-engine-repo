@@ -95,7 +95,6 @@ BOOL	g_bLeaveTDemo = FALSE;
 
 void						CLevel::Demo_Clear				()
 {
-	if (!IsDemoSave()) return;
 	WriteStoredDemo();
 	m_bDemoSaveMode = FALSE;
 	xr_free(m_pStoredDemoData);

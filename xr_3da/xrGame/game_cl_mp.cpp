@@ -715,7 +715,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	}
 	std::strcat(PlayerText, Text);
 
-	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
+	if (HUD().GetUI() && HUD().GetUI()->m_pMessagesWnd)
+		HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
 };
 
 void	game_cl_mp::OnPlayerChangeName		(NET_Packet& P)

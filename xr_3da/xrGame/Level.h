@@ -81,8 +81,6 @@ protected:
 	CStatGraph					*pStatGraph;
 	
 public:
-	BOOL						IsDemoPlay				()	{return (m_bDemoPlayMode && !m_bDemoSaveMode);};
-	BOOL						IsDemoSave				()	{return (m_bDemoSaveMode && !m_bDemoPlayMode);};
 	
 #ifdef DEBUG
 	// level debugger
