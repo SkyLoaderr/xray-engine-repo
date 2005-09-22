@@ -84,7 +84,7 @@ public:
 	//относительный размер силы (от 0 до 1)
 	virtual		float	RelativePower					(float dist);
 	//абсолютный размер
-	virtual		float	Power							(float dist);
+				float	Power							(float dist);
 
 	virtual CCustomZone	*cast_custom_zone				()							{return this;}
 
@@ -108,6 +108,7 @@ protected:
 		eBlowoutLight			=(1<<5),
 		eIdleLight				=(1<<6),
 		eSpawnBlowoutArtefacts	=(1<<7),
+		eUseOnOffTime			=(1<<8),
 	};
 	u32					m_owner_id;		//if created from artefact
 	Flags32				m_zone_flags;
@@ -137,6 +138,9 @@ protected:
 	int					m_iStateTime;
 	int					m_iPreviousStateTime;
 	
+	int					m_TimeToDisable;
+	int					m_TimeToEnable;
+
 	//массив с временами, сколько каждое состояние должно 
 	//длиться (если 0, то мгновенно -1 - бесконечность, 
 	//-2 - вообще не должно вызываться)
@@ -152,12 +156,12 @@ protected:
 	virtual		bool		BlowoutState				();
 	virtual		bool		AccumulateState				();
 
-	virtual		bool		Enable						();
-	virtual		bool		Disable						();
+				bool		Enable						();
+				bool		Disable						();
 public:
-	virtual		bool		IsEnabled					()	{return m_eZoneState != eZoneStateDisabled; };
-	virtual		void		ZoneEnable					();	
-	virtual		void		ZoneDisable					();
+				bool		IsEnabled					()	{return m_eZoneState != eZoneStateDisabled; };
+				void		ZoneEnable					();	
+				void		ZoneDisable					();
 	EZoneState				ZoneState					() {return m_eZoneState;}
 protected:
 
@@ -322,11 +326,11 @@ protected:
 
 	//рождение артефакта в зоне, во время ее срабатывания
 	//и присоединение его к зоне
-	virtual			void	BornArtefact				();
+					void	BornArtefact				();
 	//выброс артефактов из зоны
-	virtual			void	ThrowOutArtefact			(CArtefact* pArtefact);
+					void	ThrowOutArtefact			(CArtefact* pArtefact);
 	
-	virtual			void	PrefetchArtefacts			();
+					void	PrefetchArtefacts			();
 
 protected:
 	DEFINE_VECTOR(CArtefact*, ARTEFACT_VECTOR, ARTEFACT_VECTOR_IT);

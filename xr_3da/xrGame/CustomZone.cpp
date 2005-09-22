@@ -84,6 +84,11 @@ void CCustomZone::Load(LPCSTR section)
 	m_zone_flags.set(eIgnoreSmall,		pSettings->r_bool(section,	"ignore_small"));
 	m_zone_flags.set(eIgnoreArtefact,	pSettings->r_bool(section,	"ignore_artefacts"));
 	m_zone_flags.set(eVisibleByDetector,pSettings->r_bool(section,	"visible_by_detector"));
+	
+
+	m_TimeToDisable						= READ_IF_EXISTS(pSettings,r_s32,section,"enabled_time",-1);
+	m_TimeToEnable						= READ_IF_EXISTS(pSettings,r_s32,section,"disabled_time",-1);
+	m_zone_flags.set					(eUseOnOffTime,	(m_TimeToDisable>0)&&(m_TimeToEnable>0) );
 
 
 	//загрузить времена для зоны
@@ -430,6 +435,9 @@ bool CCustomZone::AccumulateState()
 
 void CCustomZone::UpdateWorkload	(u32 dt)
 {
+	m_iPreviousStateTime	= m_iStateTime;
+	m_iStateTime			+= (int)dt;
+
 	if (!IsEnabled())		{
 		if (EnableEffector())
 			m_effector->Stop();
@@ -438,8 +446,6 @@ void CCustomZone::UpdateWorkload	(u32 dt)
 
 	UpdateIdleLight			();
 
-	m_iPreviousStateTime	= m_iStateTime;
-	m_iStateTime			+= (int)dt;
 	switch(m_eZoneState)
 	{
 	case eZoneStateIdle:
@@ -540,6 +546,23 @@ void CCustomZone::shedule_Update(u32 dt)
 	if (cam_distance > FASTMODE_DISTANCE)	o_switch_2_slow	();
 	else									o_switch_2_fast	();
 	if (!o_fastmode)		UpdateWorkload	(dt);
+
+	if(m_zone_flags.test(eUseOnOffTime)){
+		if( (eZoneStateDisabled==m_eZoneState) && m_TimeToEnable<m_iStateTime ){
+			//switch to idle	
+			NET_Packet P;
+			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
+			P.w_u8			(u8(eZoneStateIdle));
+			u_EventSend		(P);
+		}else
+		if( (eZoneStateIdle==m_eZoneState) && (m_TimeToDisable<m_iStateTime) ){
+			//switch to disable	
+			NET_Packet P;
+			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
+			P.w_u8			(u8(eZoneStateDisabled));
+			u_EventSend		(P);
+		}
+	};
 }
 
 void CCustomZone::feel_touch_new	(CObject* O) 
@@ -657,6 +680,7 @@ void CCustomZone::PlayIdleParticles()
 			m_pIdleParticles = CParticlesObject::Create(*m_sIdleParticles,FALSE);
 			m_pIdleParticles->UpdateParent(XFORM(),zero_vel);
 		}
+		m_pIdleParticles->UpdateParent(XFORM(),zero_vel);
 		m_pIdleParticles->Play();
 	}
 
@@ -1117,7 +1141,7 @@ bool CCustomZone::Enable()
 {
 	if (IsEnabled()) return false;
 
-	PlayIdleParticles();
+//	PlayIdleParticles();
 
 	for(OBJECT_INFO_VEC_IT it = m_ObjectInfoMap.begin(); 
 		m_ObjectInfoMap.end() != it; ++it) 
@@ -1134,7 +1158,7 @@ bool CCustomZone::Disable()
 {
 	if (!IsEnabled()) return false;
 
-	StopIdleParticles();
+//	StopIdleParticles();
 
 	for(OBJECT_INFO_VEC_IT it = m_ObjectInfoMap.begin(); 
 		m_ObjectInfoMap.end() != it; ++it) 

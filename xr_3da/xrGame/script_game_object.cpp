@@ -346,10 +346,21 @@ float CScriptGameObject::GetCondition	() const
 {
 	CInventoryItem		*inventory_item = smart_cast<CInventoryItem*>(&object());
 	if (!inventory_item) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptEntity : cannot access class member Cost!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptEntity : cannot access class member GetCondition!");
 		return			(false);
 	}
 	return				(inventory_item->GetCondition());
+}
+
+void CScriptGameObject::SetCondition	(float val)
+{
+	CInventoryItem		*inventory_item = smart_cast<CInventoryItem*>(&object());
+	if (!inventory_item) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptEntity : cannot access class member SetCondition!");
+		return;
+	}
+	val					-= inventory_item->GetCondition();
+	inventory_item->ChangeCondition			(val);
 }
 
 void CScriptGameObject::eat				(CScriptGameObject *item)

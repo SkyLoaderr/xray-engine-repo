@@ -110,6 +110,7 @@ public:
 	// CInventoryItem
 			u32					Cost				() const;
 			float				GetCondition		() const;
+			void				SetCondition		(float val);
 
 	// CEntity
 	_DECLARE_FUNCTION10	(DeathTime	,	u32		);

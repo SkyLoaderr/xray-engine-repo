@@ -85,6 +85,8 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("parent",						&CScriptGameObject::Parent)
 		.def("mass",						&CScriptGameObject::Mass)
 		.def("cost",						&CScriptGameObject::Cost)
+		.def("condition",					&CScriptGameObject::GetCondition)
+		.def("set_condition",				&CScriptGameObject::SetCondition)
 		.def("death_time",					&CScriptGameObject::DeathTime)
 		.def("armor",						&CScriptGameObject::Armor)
 		.def("max_health",					&CScriptGameObject::MaxHealth)
