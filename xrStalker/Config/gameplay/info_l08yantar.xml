@@ -4,6 +4,9 @@
 	<info_portion id="yan_kill_brain_task_start">
 		<task>yan_kill_brain_task</task>
 	</info_portion>
+	<info_portion id="yan_find_scientist_start">
+		<task>yan_find_scientist</task>
+	</info_portion>
 	<info_portion id="yan_kill_brain_done"></info_portion>
 	<info_portion id="yan_find_scientist_done"></info_portion>
 	<!-- Yantar zombied respawn -->
