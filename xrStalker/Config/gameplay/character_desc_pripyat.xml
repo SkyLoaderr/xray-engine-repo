@@ -3,7 +3,7 @@
 <xml>
 <!------------------------- MONOLITH ----------------------->
 <!-------------------------- REGULAR ----------------------->
-  <specific_character id="pri_monolith_regular_default1" team_default = "3">
+  <specific_character id="pri_monolith_regular_default1" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="24" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -60,7 +60,7 @@
   </specific_character>
 
 <!-------------------------- SPECNAZ ----------------------->
-  <specific_character id="pri_monolith_specnaz_default1" team_default = "3">
+  <specific_character id="pri_monolith_specnaz_default1" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="6" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -117,7 +117,7 @@
   </specific_character>
 
 <!---------------------------- EXO ------------------------->
-  <specific_character id="pri_monolith_exo_default1" team_default = "3">
+  <specific_character id="pri_monolith_exo_default1" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
