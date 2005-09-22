@@ -463,6 +463,14 @@
 		<class>pri_monolith_regular</class>
 	</character>
 
+	<character id="pri_monolith_specnaz">
+		<class>pri_monolith_specnaz</class>
+	</character>
+
+	<character id="pri_monolith_exo">
+		<class>pri_monolith_exo</class>
+	</character>
+
 	<!-- Followers -->	
 	<character id="pri_followers">
 		<class>pri_followers</class>
