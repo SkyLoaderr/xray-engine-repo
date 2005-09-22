@@ -374,6 +374,7 @@ function checkStalker(npc_community, gulag_type)
 	
 	if gulag_type == "freedom_vs_duty" then
 		return true
+	end
 
 	return false
 end
