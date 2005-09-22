@@ -3342,6 +3342,16 @@
 								RelativePath=".\ai\Monsters\Pseudodog\pseudodog_script.cpp">
 							</File>
 						</Filter>
+						<Filter
+							Name="DogPsy"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\psy_dog.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\psy_dog.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Burer"

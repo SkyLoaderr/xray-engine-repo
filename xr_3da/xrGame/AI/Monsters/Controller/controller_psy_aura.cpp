@@ -63,7 +63,7 @@ void CPsyAuraController::schedule_update()
 			hit_dir.normalize	();
 
 			get_object()->Hit_Psy	((*it), power_down_vel * power_percent);
-			get_object()->Hit_Wound	((*it), power_down_vel * power_percent, hit_dir, 0.f);
+			//get_object()->Hit_Wound	((*it), power_down_vel * power_percent, hit_dir, 0.f);
 		}
 	}
 }
@@ -103,7 +103,8 @@ void CPsyAuraController::frame_update()
 BOOL CPsyAuraController::feel_touch_contact(CObject* O)
 {
 	// реагировать только на актера и на монстров
-	if ((O != get_object()) && (smart_cast<CActor*>(O) || smart_cast<CCustomMonster*>(O))) return TRUE;
+	CCustomMonster *monster = smart_cast<CCustomMonster*>(O);
+	if ((O != get_object()) && (smart_cast<CActor*>(O) || (monster && monster->g_Alive()))) return TRUE;
 	
 	return FALSE;
 }

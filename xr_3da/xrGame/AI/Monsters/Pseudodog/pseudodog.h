@@ -32,6 +32,11 @@ public:
 
 	virtual bool	jump						(CObject *enemy);
 
+private:
+#ifdef _DEBUG	
+	virtual void	debug_on_key		(int key);
+#endif
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

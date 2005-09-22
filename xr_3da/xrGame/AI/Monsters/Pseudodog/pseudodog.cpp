@@ -9,7 +9,16 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
-
+#ifdef _DEBUG
+#	include <dinput.h>
+#	include "../../../ai_object_location.h"
+#	include "../../../level_debug.h"
+#	include "../../../level_navigation_graph.h"
+#	include "../../../ai_space.h"
+#	include "../../../alife_simulator.h"
+#	include "../../../xrServer_Object_Base.h"
+#	include "../../../xrserver.h"
+#endif
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
@@ -114,6 +123,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 
 }
 
+
 void CAI_PseudoDog::reload(LPCSTR section)
 {
 	inherited::reload		(section);
@@ -146,13 +156,10 @@ bool CAI_PseudoDog::jump(CObject *enemy)
 }
 
 
-//void CAI_PseudoDog::play_effect_sound()
-//{
-//	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
-//	if (!pA) return;
-//	
-//	Fvector pos = pA->Position();
-//	pos.y += 1.5f;
-//	::Sound->play_at_pos(psy_effect_sound,pA,pos);
-//}
+#ifdef _DEBUG
+void CAI_PseudoDog::debug_on_key(int key)
+{
+}
+#endif
+
 
