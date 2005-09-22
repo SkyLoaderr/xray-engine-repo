@@ -192,7 +192,7 @@ function load_job(sj, gname, type, squad, groups)
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
 				in_rest = "", out_rest = "",
-				predicate = function(obj) return obj:profile_name() = "rad_Svoboda_regular"
+				predicate = function(obj) return obj:profile_name() == "rad_Svoboda_regular"
 							end
 			}
 			table.insert(sj, t)
@@ -201,7 +201,7 @@ function load_job(sj, gname, type, squad, groups)
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
 				in_rest = "", out_rest = "",
-				predicate = function(obj) return obj:profile_name() = "rad_dolg_regular"
+				predicate = function(obj) return obj:profile_name() == "rad_dolg_regular"
 							end
 			}
 			table.insert(sj, t)
