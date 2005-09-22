@@ -21,6 +21,8 @@
 #include "object_broker.h"
 #include "string_table.h"
 #include "level_changer.h"
+#include "actor_memory.h"
+#include "visual_memory_manager.h"
 
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {
@@ -481,7 +483,7 @@ bool CRelationMapLocation::Update()
 	
 	bool bAlive = true;
 
-	ALife::ERelationType relation = ALife::eRelationTypeFriend;
+	m_last_relation = ALife::eRelationTypeFriend;
 
 	if(ai().get_alife())		
 	{
@@ -490,7 +492,7 @@ bool CRelationMapLocation::Update()
 		pEnt = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerEntityID,true));
 		pAct = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerActorID,true));
 		if(!pEnt || !pAct)	return false;
-		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
+		m_last_relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
 		CSE_ALifeCreatureAbstract*		pCreature = smart_cast<CSE_ALifeCreatureAbstract*>(pEnt);
 		if(pCreature) //maybe trader ?
 			bAlive = pCreature->g_Alive		();
@@ -501,7 +503,7 @@ bool CRelationMapLocation::Update()
 		pEnt = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_pInvOwnerEntityID));
 		pAct = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_pInvOwnerActorID));
 		if(!pEnt || !pAct)	return false;
-		relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
+		m_last_relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
 		CEntityAlive* pEntAlive = smart_cast<CEntityAlive*>(pEnt);
 		if(pEntAlive)
 			bAlive = !!pEntAlive->g_Alive		();
@@ -511,13 +513,39 @@ bool CRelationMapLocation::Update()
 	if(bAlive==false)
 		sname = "deadbody_location";
 	else
-		sname = RELATION_REGISTRY().GetSpotName(relation);
+		sname = RELATION_REGISTRY().GetSpotName(m_last_relation);
 
 	if(m_curr_spot_name != sname){
 		LoadSpot(*sname, true);
 		m_curr_spot_name = sname;
 	}
 	return true;
+}
+
+bool CRelationMapLocation::IsVisible	()
+{
+	bool res = true;
+	if(m_last_relation==ALife::eRelationTypeEnemy || m_last_relation==ALife::eRelationTypeWorstEnemy){
+
+		CObject* _object_ = Level().Objects.net_Find(m_pInvOwnerEntityID);
+		if(_object_)
+			res =  Actor()->memory().visual().visible_now(smart_cast<const CGameObject*>(_object_));
+		else
+			res = false;
+	}
+	return res;
+}
+
+void CRelationMapLocation::UpdateMiniMap(CUICustomMap* map)
+{
+	if(IsVisible())
+		inherited::UpdateMiniMap		(map);
+}
+
+void CRelationMapLocation::UpdateLevelMap(CUICustomMap* map)
+{
+	if(IsVisible())
+		inherited::UpdateMiniMap		(map);
 }
 
 #ifdef DEBUG

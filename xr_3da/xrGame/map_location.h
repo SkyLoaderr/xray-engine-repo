@@ -1,6 +1,7 @@
 
 #pragma once
 #include "object_interfaces.h"
+#include "alife_space.h"
 
 class CMapSpot;
 class CMiniMapSpot;
@@ -62,8 +63,8 @@ public:
 	void					EnableSpot						()					{m_flags.set(eSpotEnabled,TRUE);};
 	void					DisableSpot						()					{m_flags.set(eSpotEnabled,FALSE);};
 	bool					IsUserDefined					() const			{return !!m_flags.test(eUserDefined);}
-	void					UpdateMiniMap					(CUICustomMap* map);
-	void					UpdateLevelMap					(CUICustomMap* map);
+	virtual void			UpdateMiniMap					(CUICustomMap* map);
+	virtual void			UpdateLevelMap					(CUICustomMap* map);
 
 	virtual Fvector2		Position						();
 	virtual Fvector2		Direction						();
@@ -95,10 +96,17 @@ class CRelationMapLocation :public CMapLocation
 	shared_str				m_curr_spot_name;
 	u16						m_pInvOwnerEntityID;
 	u16						m_pInvOwnerActorID;
+	ALife::ERelationType	m_last_relation;
+protected:
+	bool					IsVisible							();
 public:
 							CRelationMapLocation			(const shared_str& type, u16 object_id, u16 pInvOwnerActorID, u16 pInvOwnerEntityID);
 	virtual					~CRelationMapLocation			();
 	virtual bool			Update							(); //returns actual
+
+	virtual void			UpdateMiniMap					(CUICustomMap* map);
+	virtual void			UpdateLevelMap					(CUICustomMap* map);
+
 #ifdef DEBUG
 	virtual void			Dump							();
 #endif
