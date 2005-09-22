@@ -1,8 +1,11 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
-	
-	
+	<info_portion id="yan_kill_brain_task_start">
+		<task>yan_kill_brain_task</task>
+	</info_portion>
+	<info_portion id="yan_kill_brain_done"></info_portion>
+	<info_portion id="yan_find_scientist_done"></info_portion>
 	<!-- Yantar zombied respawn -->
 	<info_portion id="yan_zombied_respawn_01"></info_portion>
 	<info_portion id="yan_zombied_respawn_02"></info_portion>
