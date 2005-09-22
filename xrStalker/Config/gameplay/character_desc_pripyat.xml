@@ -5,11 +5,68 @@
 <!-------------------------- REGULAR ----------------------->
   <specific_character id="pri_monolith_regular_default1" team_default = "3">
     <name>GENERATE_NAME</name>
-    <icon x="6" y="2"></icon>
+    <icon x="24" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
     <class>pri_monolith_regular</class>
+    <community>monolith</community>
+
+
+    <rank>40</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_head_1</visual>
+    <snd_config>characters_voice\human_02\</snd_config>
+    <supplies>
+      [spawn] \n
+      wpn_fort \n
+      ammo_9x18_fmj = 1 \n
+      wpn_ak74 \n
+      ammo_5.45x39_ap = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+
+  <specific_character id="pri_monolith_regular_default2" team_default = "1">
+    <name>GENERATE_NAME</name>
+    <icon x="22" y="10"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <class>pri_monolith_regular</class>
+    <community>monolith</community>
+
+
+    <rank>40</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_mask</visual>
+    <snd_config>characters_voice\human_02\</snd_config>
+    <supplies>
+      [spawn] \n
+      wpn_pb \n
+      ammo_9x18_pmm = 1 \n
+      wpn_ak74u \n
+      ammo_5.45x39_ap = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+
+<!-------------------------- SPECNAZ ----------------------->
+  <specific_character id="pri_monolith_specnaz_default1" team_default = "3">
+    <name>GENERATE_NAME</name>
+    <icon x="6" y="2"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <class>pri_monolith_specnaz</class>
     <community>monolith</community>
 
 
@@ -31,26 +88,55 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 
-  <specific_character id="pri_monolith_regular_default2" team_default = "1">
+  <specific_character id="pri_monolith_specnaz_default2" team_default = "1">
     <name>GENERATE_NAME</name>
-    <icon x="24" y="10"></icon>
+    <icon x="0" y="4"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
-    <class>pri_monolith_regular</class>
+    <class>pri_monolith_specnaz</class>
     <community>monolith</community>
 
 
     <rank>40</rank>
     <reputation>0</reputation>
 
-    <visual>actors\monolit\stalker_mo_head_1</visual>
-    <snd_config>characters_voice\human_02\</snd_config>
+    <visual>actors\monolit\stalker_mo_nauchniy</visual>
+    <snd_config>characters_voice\human_03\</snd_config>
     <supplies>
       [spawn] \n
       wpn_pb \n
       ammo_9x18_pmm = 1 \n
       wpn_ak74u \n
+      ammo_5.45x39_ap = 1 \n
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+
+<!---------------------------- EXO ------------------------->
+  <specific_character id="pri_monolith_exo_default1" team_default = "3">
+    <name>GENERATE_NAME</name>
+    <icon x="28" y="8"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+    <class>pri_monolith_exo</class>
+    <community>monolith</community>
+
+
+    <rank>40</rank>
+    <reputation>0</reputation>
+
+    <visual>actors\monolit\stalker_mo_exo</visual>
+    <snd_config>characters_voice\human_03\</snd_config>
+    <supplies>
+      [spawn] \n
+      wpn_fort \n
+      ammo_9x18_fmj = 1 \n
+      wpn_ak74 \n
       ammo_5.45x39_ap = 1 \n
     </supplies>
 					
