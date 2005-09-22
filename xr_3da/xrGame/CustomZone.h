@@ -138,8 +138,8 @@ protected:
 	int					m_iStateTime;
 	int					m_iPreviousStateTime;
 	
-	int					m_TimeToDisable;
-	int					m_TimeToEnable;
+	u32					m_TimeToDisable;
+	u32					m_TimeToEnable;
 
 	//массив с временами, сколько каждое состояние должно 
 	//длиться (если 0, то мгновенно -1 - бесконечность, 

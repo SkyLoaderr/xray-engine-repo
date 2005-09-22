@@ -86,9 +86,6 @@ void CCustomZone::Load(LPCSTR section)
 	m_zone_flags.set(eVisibleByDetector,pSettings->r_bool(section,	"visible_by_detector"));
 	
 
-	m_TimeToDisable						= READ_IF_EXISTS(pSettings,r_s32,section,"enabled_time",-1);
-	m_TimeToEnable						= READ_IF_EXISTS(pSettings,r_s32,section,"disabled_time",-1);
-	m_zone_flags.set					(eUseOnOffTime,	(m_TimeToDisable>0)&&(m_TimeToEnable>0) );
 
 
 	//загрузить времена для зоны
@@ -324,6 +321,9 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	if (GameID() != GAME_SINGLE)
 		m_zone_flags.set(eSpawnBlowoutArtefacts,	FALSE);
 
+	m_TimeToDisable				= Z->m_enabled_time*1000;
+	m_TimeToEnable				= Z->m_disabled_time*1000;
+	m_zone_flags.set			(eUseOnOffTime,	(m_TimeToDisable!=0)&&(m_TimeToEnable!=0) );
 
 	//добавить источники света
 	if ( m_zone_flags.test(eIdleLight) ){
@@ -548,14 +548,14 @@ void CCustomZone::shedule_Update(u32 dt)
 	if (!o_fastmode)		UpdateWorkload	(dt);
 
 	if(m_zone_flags.test(eUseOnOffTime)){
-		if( (eZoneStateDisabled==m_eZoneState) && m_TimeToEnable<m_iStateTime ){
+		if( (eZoneStateDisabled==m_eZoneState) && (int)m_TimeToEnable<m_iStateTime ){
 			//switch to idle	
 			NET_Packet P;
 			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
 			P.w_u8			(u8(eZoneStateIdle));
 			u_EventSend		(P);
 		}else
-		if( (eZoneStateIdle==m_eZoneState) && (m_TimeToDisable<m_iStateTime) ){
+		if( (eZoneStateIdle==m_eZoneState) && ((int)m_TimeToDisable<m_iStateTime) ){
 			//switch to disable	
 			NET_Packet P;
 			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
