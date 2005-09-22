@@ -1,6 +1,5 @@
 local t, k, v
-local level_gulags = {gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
-                      gulag_military, gulag_military, gulag_radar, gulag_yantar, gulag_pripyat}
+local level_gulags = xr_gulag.level_gulags
 
 function loadJob(sj, gname, type, squad, groups)
 	if type == "test" then
