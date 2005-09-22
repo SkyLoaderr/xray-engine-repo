@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="yantar_general_ucheniy_talk_end_0">
-        <text>ну как??</text>
-    </string>
     <string id="yantar_general_ucheniy_talk_end_1">
-        <text>Все готово!!!</text>
+        <text>???????</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_end_11">
+        <text>done!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_0">
         <text>Че тебе надо???</text>
