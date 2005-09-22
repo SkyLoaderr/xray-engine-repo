@@ -68,8 +68,13 @@ void CCustomOutfit::Load(LPCSTR section)
 	else
 		m_fPowerLoss = 1.0f;
 	//  [8/3/2005]
-	m_fHitFrac = READ_IF_EXISTS(pSettings, r_float, section, "hit_fraction",	0.1f);
+	m_fHitFrac = 0.1f;
 	//  [8/3/2005]
+	//  [9/22/2005]
+	if(pSettings->line_exist(section,"bones_koeff_protection")){
+		m_fHitFrac = READ_IF_EXISTS(pSettings, r_float, pSettings->r_string(section,"bones_koeff_protection"), "hit_fraction",	0.1f);
+	};
+	//  [9/22/2005]
 }
 
 void CCustomOutfit::net_Destroy() 
@@ -170,9 +175,8 @@ void	CCustomOutfit::OnMoveToSlot		()
 			}
 			if(pSettings->line_exist(cNameSect(),"bones_koeff_protection")){
 				m_boneProtection->reload( pSettings->r_string(cNameSect(),"bones_koeff_protection"), smart_cast<CKinematics*>(pActor->Visual()) );
-			
-			};
 
+			};
 		}
 	}
 };
