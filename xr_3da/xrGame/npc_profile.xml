@@ -455,6 +455,11 @@
 		<class>pri_monolith_regular</class>
 	</character>
 
+	<!-- Followers -->	
+	<character id="pri_followers">
+		<class>pri_followers</class>
+	</character>
+
 	<!-- Stalker  -->	
 	<character id="pri_stalker_veteran">
 		<class>pri_stalker_veteran</class>
