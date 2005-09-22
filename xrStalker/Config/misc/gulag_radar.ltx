@@ -179,8 +179,18 @@ active = nil
 
 ;--------Свобода
 [logic@rad_svoboda]
-active = nil
+active = walker@rad_svoboda
+
+[walker@rad_svoboda]
+path_walk = way_svoboda
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
 
 ;--------Долг
 [logic@rad_dolg]
-active = nil
+active = walker@rad_dolg
+
+[walker@rad_dolg]
+path_walk = way_dolg
+path_look = way_look
+on_info = {+rad_start_svoboda_vs_dolg} nil
