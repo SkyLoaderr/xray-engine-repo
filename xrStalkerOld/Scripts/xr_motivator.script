@@ -94,12 +94,16 @@ function motivator_binder:net_destroy()
 
 	db.storage[self.object:id()] = nil
 
+	self:clear_callbacks()
+
+	object_binder.net_destroy(self)
+end
+
+function motivator_binder:clear_callbacks()
 	self.object:set_patrol_extrapolate_callback(nil)
 	self.object:set_callback(callback.hit, nil)
 	self.object:set_callback(callback.death, nil)
 	self.object:set_callback(callback.use_object, nil)
-
-	object_binder.net_destroy(self)
 end
 
 function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_index)
@@ -132,6 +136,8 @@ function motivator_binder:death_callback(victim, who)
 	end
 	sr_territory.issue_event(self.object, "death_callback", victim, who)
 	self:stalker_death_impulse(victim, who)
+
+	self:clear_callbacks()
 end
 
 function motivator_binder:use_callback(obj, who)
