@@ -720,8 +720,8 @@ void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Power"),			&m_maxPower,0.f,1000.f);
 	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Attenuation"),	&m_attn,0.f,100.f);
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"Period"),		&m_period,20,10000);
-	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"Enabled time (sec)"),	&m_enabled_time,0,100000);
-	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"Disabled time (sec)"),	&m_disabled_time,0,100000);
+	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Enabled time (sec)"),	&m_enabled_time,0,100000);
+	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Disabled time (sec)"),	&m_disabled_time,0,100000);
 
 	
 }
