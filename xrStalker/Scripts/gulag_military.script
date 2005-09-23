@@ -1129,6 +1129,13 @@ function load_job_fneutral (sj, gname, type, squad, groups)
 	table.insert(sj, t)		
 end
 
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+	return nil
+end
+
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "mil_fneutral" then
 	   return npc_community == "stalker"

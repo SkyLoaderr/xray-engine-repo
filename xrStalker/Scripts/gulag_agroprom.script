@@ -705,6 +705,13 @@ function load_states( gname, type )
 	return nil
 end
 
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+	return nil
+end
+
 function checkStalker( npc_community, gulag_type )
 	if gulag_type == "agr_nii" or gulag_type == "agr_factory_assault" or gulag_type == "agr_factory_hold" then
 		return npc_community == "military"

@@ -78,7 +78,7 @@ end
 function f_predicate8(obj)
     local t = obj:best_weapon()
     if t then
-	    return obj:profile_name() == "pri_monolith_specnaz" and string.find(t:name(), "^wpn_rpg7")
+	    return obj:profile_name() == "pri_monolith_specnaz" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
 	else
 	    return false
 	end
@@ -87,7 +87,7 @@ end
 function f_predicate9(obj)
     local t = obj:best_weapon()
     if t then
-	    return obj:profile_name() == "pri_monolith_specnaz" and string.find(t:name(), "^wpn_svd")
+	    return obj:profile_name() == "pri_monolith_specnaz" and string.sub(t:name(), 1, 7) == "wpn_svd" --string.find(t:name(), "^wpn_svd")
 	else
 	    return false
 	end
@@ -96,7 +96,7 @@ end
 function f_predicate10(obj)
     local t = obj:best_weapon()
     if t then
-	    return obj:profile_name() == "pri_monolith_exo" and string.find(t:name(), "^wpn_rpg7")
+	    return obj:profile_name() == "pri_monolith_exo" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
 	else
 	    return false
 	end
@@ -709,7 +709,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
     --- state: main
 	t = { section = "logic@" .. gname .. "_stalker_rpg", 
 		idle = 0,
-		prior = 13, state = {0},
+		prior = 14, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		predicate = f_predicate8
@@ -720,7 +720,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
     --- state: main
 	t = { section = "logic@" .. gname .. "_stalker_svd", 
 		idle = 0,
-		prior = 13, state = {0},
+		prior = 14, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		predicate = f_predicate9
@@ -731,7 +731,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
     --- state: main
 	t = { section = "logic@" .. gname .. "_stalker_machine_gun", 
 		idle = 0,
-		prior = 13, state = {0},
+		prior = 14, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		predicate = f_predicate10
@@ -830,8 +830,8 @@ function check_state_followers(gulag)
 	if state == state_wave1 and
 		actor:has_info("pri_wave1_monolith1_dead") and
 		actor:has_info("pri_wave1_monolith2_dead") and
-		actor:has_info("pri_wave1_monolith3_dead") and
-		actor:has_info("pri_wave1_monolith4_dead")
+		actor:has_info("pri_wave1_monolith3_dead") --and
+		--actor:has_info("pri_wave1_monolith4_dead")
 	then
 		actor:give_info_portion("pri_wave1_end")
 		return state_wave2
@@ -839,9 +839,9 @@ function check_state_followers(gulag)
 	if state == state_wave2 and
 		actor:has_info("pri_wave2_monolith1_dead") and
 		actor:has_info("pri_wave2_monolith2_dead") and
-		actor:has_info("pri_wave2_monolith3_dead") and
+		--actor:has_info("pri_wave2_monolith3_dead") and
 		actor:has_info("pri_wave2_monolith4_dead") and
-		actor:has_info("pri_wave2_monolith5_dead") and
+		--actor:has_info("pri_wave2_monolith5_dead") and
 		actor:has_info("pri_wave2_monolith6_dead") --and
 		--actor:has_info("pri_wave2_monolith7_dead") and
 		--actor:has_info("pri_wave2_monolith8_dead") and
@@ -858,9 +858,9 @@ function check_state_followers(gulag)
 		actor:has_info("pri_wave4_monolith1_dead") and
 		actor:has_info("pri_wave4_monolith2_dead") and
 		actor:has_info("pri_wave4_monolith3_dead") and
-		actor:has_info("pri_wave4_monolith4_dead") and
+		--actor:has_info("pri_wave4_monolith4_dead") and
 		actor:has_info("pri_wave4_monolith5_dead") and
-		actor:has_info("pri_wave4_monolith6_dead") and
+		--actor:has_info("pri_wave4_monolith6_dead") and
 		--actor:has_info("pri_wave4_monolith7_dead") and
 		actor:has_info("pri_wave4_monolith8_dead")
 	then
@@ -955,9 +955,9 @@ end
 --------------------------------------------------------------------------
 -- Dynamic ltx
 --------------------------------------------------------------------------
-function load_ltx1(gname, type)
+function load_ltx(gname, type)
     local g = gulags[type]
-    if g then return g[4](gname, type) end
+    if g and g[4] then return g[4](gname, type) end
 
 	return nil
 end
@@ -974,6 +974,7 @@ function load_ltx_ambush7(gname, type)
                    "path_walk = monolith" .. i .. "_hide_walk\n" ..
                    "path_look = monolith" .. i .. "_hide_look\n" ..
                    "combat_ignore_cond = always" ..
+                   "show_spot = false" ..
 
                    "[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
                    "active = walker@" .. gname .. "_monolith" .. i .. "\n" ..
@@ -1004,7 +1005,7 @@ function load_ltx_dogs_nest1(gname, type)
 end
 
 function load_ltx_stadium(gname, type)
-    return ""
+    return "[logic@pri_stadium_gigant]\nactive = nil\n"
 end
 
 --------------------------------------------------------------------------
@@ -1034,13 +1035,14 @@ function checkMonster(npc_community, gulag_type)
     return false
 end
 
---------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+--                         -- job_func          -- check_state func     -- communities              -- dynamic ltx func
 gulags.pri_followers    = {load_job_followers,  check_state_followers,  {"stalker"}}
 gulags.pri_ambush7      = {load_job_ambush7,    check_state_ambush7,    {"monolith"},               load_ltx_ambush7}
 gulags.pri_zombied      = {load_job_zombied,    check_state_zombied,    {"zombied", "military", "controller"}}
-gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"},               load_ltx_monolith}
-gulags.pri_dogs_nest1   = {load_job_dogs_nest1, check_state_dogs_nest1, {"dog"},                    load_ltx_dogs_nest1}
-gulags.pri_stadium      = {load_job_stadium,    check_state_stadium,    {"pseudo_gigant"}} --,          load_ltx_stadium}
+gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"}} --,               load_ltx_monolith}
+gulags.pri_dogs_nest1   = {load_job_dogs_nest1, check_state_dogs_nest1, {"dog"}} --,                    load_ltx_dogs_nest1}
+gulags.pri_stadium      = {load_job_stadium,    check_state_stadium,    {"pseudo_gigant"},          load_ltx_stadium}
 
 --printf("gulag <pri>: table -")
 --print_table(gulags)

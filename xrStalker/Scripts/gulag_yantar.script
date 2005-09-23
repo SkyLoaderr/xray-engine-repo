@@ -217,6 +217,13 @@ end
 
 
 
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+	return nil
+end
+
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "yantar_zombies" then
 		return npc_community == "zombied"
