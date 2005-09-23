@@ -557,8 +557,10 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 	P *= m_fRankImmunity;
 	if(m_boneHitProtection && hit_type == ALife::eHitTypeFireWound){
 		float BoneArmour = m_boneHitProtection->getBoneArmour(element);	
-		P	= P - BoneArmour/100.0f;
-		clamp	(P, 0.0f, _abs(P));
+		float NewHitPower = P - BoneArmour/100.0f;
+		if (NewHitPower < P*m_boneHitProtection->m_fHitFrac) P = P*m_boneHitProtection->m_fHitFrac;
+		else
+			P = NewHitPower;
 	}
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 //	inherited::Hit(0.05f,dir,who,element,p_in_object_space,impulse,hit_type);
