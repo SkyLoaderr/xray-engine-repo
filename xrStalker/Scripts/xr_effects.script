@@ -1124,7 +1124,7 @@ function heli_set_enemy_actor(actor, npc)
 end
 
 function heli_clear_enemy(actor, npc)
-    db.storage[npc:id()].combat.enemy_id = nil
+    db.storage[npc:id()].combat:forget_enemy()
 end
 
 function heli_start_flame(actor, npc)
