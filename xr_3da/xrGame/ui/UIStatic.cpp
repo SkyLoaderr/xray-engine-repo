@@ -646,8 +646,8 @@ void CUIStatic::RescaleRelative2Rect(const Frect& r){
 		w = r.width()*v_rel;
 		h = r.height()*v_rel;
 	}
-	my_r.x1 += (GetWidth() - w)/2;
-	my_r.y1 += (GetHeight() - h)/2;
+	my_r.x1 += (m_xxxRect.width() - w)/2;
+	my_r.y1 += (m_xxxRect.height() - h)/2;
 	my_r.x2 = my_r.x1 + w;
 	my_r.y2 = my_r.y1 + h;
 	SetWndRect(my_r);

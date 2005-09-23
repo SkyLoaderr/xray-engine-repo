@@ -46,7 +46,7 @@ public:
 
 class IUIMultiTextureOwner{
 public:
-	virtual ~IUIMultiTextureOwner() {}
+	virtual ~IUIMultiTextureOwner() {}	
 	virtual void		InitTexture(const char* texture)								= 0;
 	virtual bool		GetTextureAvailability()										= 0;
 	virtual void		SetTextureVisible(bool vis)										= 0;
@@ -65,7 +65,8 @@ protected:
 };
 
 class IUISingleTextureOwner : public CUIMultiTextureOwner, public IUISimpleTextureControl{
-public:
+public:	
+	virtual void		InitTextureEx(const char* texture, const char* shader)			= 0;
 	virtual void		SetStretchTexture(bool stretch)									= 0;
 	virtual bool		GetStretchTexture()												= 0;	
 };

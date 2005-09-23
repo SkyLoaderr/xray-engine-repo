@@ -895,42 +895,46 @@ bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index
 }
 
 bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUIMultiTextureOwner* pWnd){
-	string256 buf;
-	strconcat(buf, path, ":texture");
+	string256 buf;	
 	shared_str texture;
 
+	strconcat(buf, path, ":texture");
 	if (xml_doc.NavigateToNode(buf))
-        texture = xml_doc.Read(buf, index, NULL);
+		texture = xml_doc.Read(buf, index, NULL);
 
-	if (texture.size())
+	if (!!texture)
 	{
         pWnd->InitTexture(*texture);
 		return true;
 	}
-	else
-	{
 
-		strconcat(buf, path, ":base_texture");
-
-		if (xml_doc.NavigateToNode(buf))
-			texture = xml_doc.Read(buf, index, NULL);
-
-		if (texture.size())
-		{
-			pWnd->InitTexture(*texture);
-			return true;
-		}
-	}
 	return false;
 }
 
 bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd){
-	InitTexture(xml_doc, path, index, (IUIMultiTextureOwner*)pWnd);
-
-	bool stretch_flag = xml_doc.ReadAttribInt(path, index, "stretch") ? true : false;
-	pWnd->SetStretchTexture(stretch_flag);
-
 	string256 buf;
+	//shared_str texture;
+	//shared_str shader;
+
+	//strconcat(buf, path, ":shader");
+	//if (xml_doc.NavigateToNode(buf))
+	//	shader = xml_doc.Read(buf, index, NULL);
+	//strconcat(buf, path, ":texture");
+	//if (xml_doc.NavigateToNode(buf))
+	//	texture = xml_doc.Read(buf, index, NULL);
+
+	//if (!!texture)
+	//{
+	//	if (!!shader)
+	//		pWnd->InitTextureEx(*texture,*shader);
+	//	else
+	//		pWnd->InitTexture(*texture);
+	//	return true;
+	//}
+
+	
+	InitTexture(xml_doc, path, index, (IUIMultiTextureOwner*)pWnd);
+	
 	strconcat(buf, path, ":texture");
 
 	Frect rect;
@@ -951,7 +955,8 @@ bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISi
 	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorHorisontal);
 	//else if (0 == xr_strcmp(mirrorM, "both"))
 	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorBoth);
-
+	bool stretch_flag = xml_doc.ReadAttribInt(path, index, "stretch") ? true : false;
+	pWnd->SetStretchTexture(stretch_flag);
 
 	pWnd->SetTextureColor(color_rgba(r, g, b, a));
 
@@ -959,39 +964,6 @@ bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISi
 		pWnd->SetOriginalRect(rect);
 
 	return true;
-}
-
-bool CUIXmlInit::InitSharedTexture(CUIXml& xml_doc, const char* t_id, CUIStatic* pWnd){
-	R_ASSERT2(false,"don't call this function");
-	xr_string fname = xml_doc.Read("file_name", 0);
-
-	if (fname.empty())
-		return false;
-
-	int nodes = xml_doc.GetNodesNum("",0,"texture");
-
-	xr_string id;
-
-	for (int i = 0; i<nodes; i++)
-	{
-        id = xml_doc.ReadAttrib("texture", i, "id");
-		if (0 == xr_strcmp(id.c_str(), t_id))
-		{
-			float x		= xml_doc.ReadAttribFlt("texture", i, "x");
-			float y		= xml_doc.ReadAttribFlt("texture", i, "y");
-			float width	= xml_doc.ReadAttribFlt("texture", i, "width", -1);
-			float height	= xml_doc.ReadAttribFlt("texture", i, "height", -1);
-
-			if (-1 == width || -1 == height)
-                return false;
-
-			pWnd->InitTexture(fname.c_str());
-			pWnd->SetOriginalRect(x, y, width, height);
-
-			return true;
-		}
-	}
-	return false;
 }
 
 bool CUIXmlInit::InitTextureOffset(CUIXml &xml_doc, LPCSTR path, int index, CUIStatic* pWnd){
@@ -1080,35 +1052,6 @@ bool CUIXmlInit::InitMultiText(CUIXml& xml_doc, LPCSTR path, int index, CUIStati
 	if (xml_doc.NavigateToNode(strconcat(sText,path,":text_color:h"),index))
 		pWnd->SetTextColor(GetARGB(xml_doc,sText,index),CUIStatic::E4States::H);
 
-
-	//// attention!! order of character is very impartant
-	//char* last_char = "edth";
-	//bool pathIsVoid = 0 == xr_strcmp(path, "");
-
-	//u32 a, r, g, b;
-
-	//if (pathIsVoid)
-	//	strcpy(sText, "text_color:e");
-	//else
-	//	strconcat(sText, path, ":text_color:e");
-
-	//int last_symbol = xr_strlen(sText) - 1;
-
-	//for (int i = 1; i <= 4; i++)
-	//{
-	//	if (xml_doc.NavigateToNode(sText, index))
-	//	{
-	//		a = xml_doc.ReadAttribInt(sText, index, "a", 255);
-	//		r = xml_doc.ReadAttribInt(sText, index, "r", 255);
-	//		g = xml_doc.ReadAttribInt(sText, index, "g", 255);
-	//		b = xml_doc.ReadAttribInt(sText, index, "b", 255);
-
-	//		pWnd->SetTextColor(color_argb(a, r, g, b),(CUIStatic::E4States)(i - 1));
-	//	}
-
-	//	sText[last_symbol] = last_char[i];
-	//}
-	
 	return true;
 }
 

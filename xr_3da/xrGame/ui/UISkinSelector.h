@@ -16,6 +16,8 @@ const u32			SKIN_TEX_WIDTH			= 128;
 
 class CUIStatic;
 class CUIStatix;
+class CUI3tButton;
+class CUIAnimatedStatic;
 
 class CUISkinSelectorWnd: public CUIDialogWnd
 {
@@ -45,8 +47,11 @@ protected:
 	CUIStatic*		m_pBackground;
 	CUIStatic*		m_pFrames;
 	CUIStatix*		m_pImage[4];
+	CUI3tButton*	m_pButtons[2];
+	CUIAnimatedStatic* m_pAnims[2];
 	
-	shared_str		m_strSection;    
+	shared_str		m_strSection;
+	shared_str		m_shader;
 	int				m_iActiveIndex;  
 	xr_vector<xr_string> m_skins;
 	int				m_fristSkin;

@@ -2,6 +2,7 @@
 <window>
 <!-- WINDOW FOR CHOOSING SKINS -->
 	<skin_selector x="144" y="115" width="749" height="543">
+		<!--skin_shader>hud\set</skin_shader-->
 		<background x="0" y="0" width="749" height="543">
 			<texture>ui_frame_mainDes</texture>
 		</background>
@@ -10,17 +11,46 @@
 		</caption>
 		<image_frames x="53" y="45" width="664" height="273">
 			<texture>ui_TV_Skin</texture>
+			
+			<a_static_1 x="12" y="61" width="12" height="128"
+				frames			= "17"
+				duration		= "1000"
+				columns			= "17"
+				frame_width		= "12"
+				frame_height	= "128"
+				cyclic			= "0"
+				autoplay		= "0">
+				<texture>ui\ui_mp_skin_select_anim</texture>
+			</a_static_1>
+			
+			<a_static_2 x="641" y="61" width="12" height="128"
+				frames			= "17"
+				duration		= "1000"
+				columns			= "17"
+				frame_width		= "12"
+				frame_height	= "128"
+				cyclic			= "0"
+				autoplay		= "0">
+				<texture>ui\ui_mp_skin_select_anim</texture>
+			</a_static_2>
+			
+			<btn_left x="0" y="17" width="33" height="218">
+				<texture>ui_TV_Skin_button_l</texture>								
+			</btn_left>
+			<btn_right x="632" y="17" width="33" height="218">
+				<texture>ui_TV_Skin_button_r</texture>							
+			</btn_right>
 		</image_frames>
-		<image_0 x="90" y="72" width="107" height="193">			
+		<image_0 x="94" y="64" width="125" height="215">			
 			<text font="graffiti32" align="r" vert_align="t">1</text>
 		</image_0>
-		<image_1 x="250" y="72" width="107" height="193">			
+		<image_1 x="246" y="64" width="125" height="215">			
 			<text font="graffiti32" align="r" vert_align="t">2</text>
 		</image_1>
-		<image_2 x="404" y="72" width="107" height="193">			
+		<image_2 x="398" y="64" width="125" height="215">			
 			<text font="graffiti32" align="r" vert_align="t">3</text>
 		</image_2>
-		<image_3 x="564" y="72" width="107" height="193">			
+		<image_3 x="550" y="64" width="125" height="215">			
 			<text font="graffiti32" align="r" vert_align="t">4</text>
 		</image_3>		
 	</skin_selector>

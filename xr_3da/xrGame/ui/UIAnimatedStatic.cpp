@@ -21,7 +21,8 @@ CUIAnimatedStatic::CUIAnimatedStatic()
 		m_uFrameWidth			(0),
 		m_uFrameHeight			(0),
 		m_uCurFrame				(0xffffffff),
-		m_bPlaying				(false)
+		m_bPlaying				(false),
+		m_prevTime				(0)
 {
 	m_pos.set(0,0);
 	ClipperOn();
@@ -47,14 +48,13 @@ void CUIAnimatedStatic::Update()
 	}
 
 	// Прибавляем время кадра
-	static u32 aa = 0;
-	m_uTimeElapsed += Device.dwTimeGlobal - aa;
-	aa = Device.dwTimeGlobal;
+	m_uTimeElapsed += Device.TimerAsyncMM() - m_prevTime;
+	m_prevTime = Device.TimerAsyncMM();
 
 	// Если анимация закончилась
 	if (m_uTimeElapsed > m_uAnimationDuration)
 	{
-		Rewind(m_uAnimationDuration - m_uAnimationDuration);
+		//Rewind(m_uAnimationDuration - m_uAnimationDuration);
 		if (!m_bCyclic)
 			Stop();
 	}
@@ -62,11 +62,11 @@ void CUIAnimatedStatic::Update()
 	// Теперь вычисляем кадры в зависимости от времени
 	u32 curFrame = m_uTimeElapsed / oneFrameDuration;
 
-	if (curFrame != m_uCurFrame)
-	{
+//	if (curFrame != m_uCurFrame)
+//	{
 		m_uCurFrame = curFrame;
 		SetFrame(m_uCurFrame);
-	}
+//	}
 }
 
 //////////////////////////////////////////////////////////////////////////

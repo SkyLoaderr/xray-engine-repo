@@ -120,6 +120,7 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_pUICursor);
 	xr_delete						(m_pFontManager);
 	g_pGamePersistent->m_pMainUI	= NULL;
+	CUITextureMaster::WriteLog();
 }
 
 void CMainUI::ReadTextureInfo(){

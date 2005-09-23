@@ -14,7 +14,11 @@
 #include "xrXmlParser.h"
 
 CUITextureMaster::shared_textures	CUITextureMaster::m_shTex;
+u32									CUITextureMaster::m_time = 0;
 
+void CUITextureMaster::WriteLog(){
+	Msg("UI texture manager work time is %d ms", m_time);
+}
 void CUITextureMaster::ParseShTexInfo(LPCSTR xml_file){
 	if (!xml_file)
 		return;
@@ -50,11 +54,52 @@ void CUITextureMaster::FreeShTexInfo(){
 #endif
 }
 
-bool CUITextureMaster::IsSh(const xr_string& texture_name){
-	return xr_string::npos == texture_name.find("\\");
+bool CUITextureMaster::IsSh(const char* texture_name){
+	return strstr(texture_name,"\\") ? false : true;
 }
 
-void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc){
+//void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextureControl* tc){
+//	if (IsSh(texture_name))
+//	{
+//		shared_textures_it	sht_it;
+//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+//		{
+//			regions_it reg_it = (*sht_it).second.find(texture_name);
+//			if (reg_it != (*sht_it).second.end())
+//			{				
+//				tc->CreateShader((*sht_it).first.c_str());	// texture file name
+//				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+//				return;
+//			}
+//		}
+//	}
+//	tc->CreateShader(texture_name.c_str());
+//}
+//
+//void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* shader_name,	IUISimpleTextureControl* tc){
+//	if (IsSh(texture_name))
+//	{
+//		shared_textures_it	sht_it;
+//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
+//		{
+//			regions_it reg_it = (*sht_it).second.find(texture_name);
+//			if (reg_it != (*sht_it).second.end())
+//			{				
+//				tc->CreateShader((*sht_it).first.c_str(), shader_name);	// texture file name
+//				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+//				return;
+//			}
+//		}
+//	}
+//	tc->CreateShader(texture_name.c_str(), shader_name);
+//}
+
+void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
+#ifdef DEBUG
+	CTimer T;
+	T.Start();
+#endif
+	xr_string tx = texture_name;
 	if (IsSh(texture_name))
 	{
 		shared_textures_it	sht_it;
@@ -65,16 +110,27 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name,	IUISimpleTextu
 			{				
 				tc->CreateShader((*sht_it).first.c_str());	// texture file name
 				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+#ifdef DEBUG
+				m_time += T.GetElapsed_ms();
+#endif
 				return;
 			}
 		}
 	}
-	tc->CreateShader(texture_name.c_str());
+	tc->CreateShader(texture_name);
+#ifdef DEBUG
+	m_time += T.GetElapsed_ms();
+#endif
 }
 
-void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* shader_name,	IUISimpleTextureControl* tc){
+void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc){
+#ifdef DEBUG
+	CTimer T;
+	T.Start();
+#endif	
 	if (IsSh(texture_name))
 	{
+//		xr_string tx = texture_name;
 		shared_textures_it	sht_it;
 		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
 		{
@@ -83,26 +139,17 @@ void CUITextureMaster::InitTexture(const xr_string& texture_name, const char* sh
 			{				
 				tc->CreateShader((*sht_it).first.c_str(), shader_name);	// texture file name
 				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
+#ifdef DEBUG
+				m_time += T.GetElapsed_ms();
+#endif
 				return;
 			}
 		}
 	}
-	tc->CreateShader(texture_name.c_str(), shader_name);
-}
-
-void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureControl* tc){
-//	static int full_time = 0;
-//	CTimer T;
-//	T.Start();
-	xr_string tx = texture_name;
-	InitTexture(tx, tc);
-//	full_time +=T.GetElapsed_ms();
-//	Msg("----InitTexture[%d]__full_time[%d]",T.GetElapsed_ms(), full_time);
-}
-
-void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc){
-	xr_string tx = texture_name;
-	InitTexture(tx, shader_name, tc);
+	tc->CreateShader(texture_name, shader_name);
+#ifdef DEBUG
+	m_time += T.GetElapsed_ms();
+#endif
 }
 
 float CUITextureMaster::GetTextureHeight(const char* texture_name){

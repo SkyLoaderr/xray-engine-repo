@@ -73,17 +73,12 @@ public:
 //	static bool InitTexture				(CUIXml& xml_doc, const char* path,	int index, CUIStatic *pWnd);	
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUIMultiTextureOwner* pWnd);
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd);
-	static bool InitSharedTexture		(CUIXml& xml_doc, const char* path, CUIStatic *pWnd);
 	static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
 	static Frect GetFRect				(CUIXml& xml_doc, const char* path, int index);
 
-
-
-	//static void	SetTexture				(const xr_string& texture_name, CUIStatic* pWnd);
-	//static void SetTexture				(const xr_string& texture_name, CUIStaticItem* si);
 protected:
 
 public:

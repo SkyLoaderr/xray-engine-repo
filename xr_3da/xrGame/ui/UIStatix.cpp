@@ -17,7 +17,7 @@ void CUIStatix::Update(){
 	if (m_bCursorOverWindow)
 	{
 		m_anim->Update();
-		SetColor(subst_alpha(0xffffffff, color_get_A(m_anim->GetColor())));
+		SetColor(0xff9F3406);
 	}	
 }
 

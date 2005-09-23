@@ -28,6 +28,8 @@ class CUIAnimatedStatic: public CUIStatic
 
 	Fvector2 m_pos;
 
+	u32		m_prevTime;
+
 	// Инициализация первого кадра
 	// Params:	frameNum	- номер кадра: [0..m_uFrameCount)
 	void SetFrame(const u32 frameNum);
@@ -41,7 +43,7 @@ public:
 	void SetAnimationDuration(u32 animDur)				{ m_uAnimationDuration = animDur; m_bParamsChanged = true; }
 	void SetFrameDimentions(u32 frameW, u32 frameH)		{ m_uFrameHeight = frameH; m_uFrameWidth = frameW; m_bParamsChanged = true; }
 	// Управление
-	void Play()											{ m_bPlaying = true; }
+	void Play()											{ m_bPlaying = true; m_prevTime = Device.TimerAsyncMM();}
 	void Stop()											{ m_bPlaying = false; }
 	void Rewind(u32 delta = 0)							{ m_uCurFrame = 0xffffffff; m_uTimeElapsed = delta; }
 	// Флаг-признак циклического проигрывания
