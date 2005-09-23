@@ -171,7 +171,7 @@ bool CRestrictions::GetPermission(LPCSTR item, bool& last){
             ret &= true;
 	}
 
-	Msg("mp_buymenu: GetPermission(%s,%d) == %d",item,last,ret);
+//	Msg("mp_buymenu: GetPermission(%s,%d) == %d",item,last,ret);
 
 	return ret;
 }
@@ -180,7 +180,7 @@ bool CRestrictions::Try(RESTR_N& r, bool& last){
 	if (r.cur_val < r.max_val)
 	{
 		r.cur_val++;
-		Msg("mp_buymenu: ++, cur_val=%d, max_val=%d", r.cur_val,r.max_val);
+//		Msg("mp_buymenu: ++, cur_val=%d, max_val=%d", r.cur_val,r.max_val);
 		last &= r.cur_val == r.max_val;
 		return true;
 	}
@@ -205,7 +205,7 @@ void CRestrictions::Return(LPCSTR item){
 		if (r.cur_val >= 0)
 			r.cur_val--;
 
-		Msg("mp_buymenu: %s --, cur_val=%d, max_val=%d",item, r.cur_val,r.max_val);
+//		Msg("mp_buymenu: %s --, cur_val=%d, max_val=%d",item, r.cur_val,r.max_val);
 	}
 	else
 	{
@@ -217,11 +217,11 @@ void CRestrictions::Return(LPCSTR item){
 			if (r.cur_val >= 0)
 				r.cur_val--;
 
-			Msg("mp_buymenu: %s --, cur_val=%d, max_val=%d",item, r.cur_val,r.max_val);
+//			Msg("mp_buymenu: %s --, cur_val=%d, max_val=%d",item, r.cur_val,r.max_val);
 		}
 
 	}
-	Msg("Return(%s)",item);
+//	Msg("Return(%s)",item);
 	return;
 }
 
