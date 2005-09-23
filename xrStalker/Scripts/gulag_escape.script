@@ -1310,6 +1310,13 @@ function load_states(gname, type)
 	
 end
 
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+	return nil
+end
+
 function checkStalker(npc_community, gulag_type)
 
 	if gulag_type == "esc_bridge" then
