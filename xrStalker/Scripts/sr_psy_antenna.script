@@ -39,8 +39,8 @@ function PsyAntenna:__init				()
 	self.gray_amplitude					= 0.5;						// gray max intensity			[0.0-1.0]
 	self.add_factor						= 0.1;	//0.3				// factor * color_animator(RGB)	[0.0-1.0]
 	self.dual_amplitude					= 0.075 //0.05				// H&V same						[0.0-0.2]
-	self.gray_color						= color(0.33,0.33,0.33);	// RGB							[0.0-1.0]
-	self.noise_var						= noise(0.9,0.3,30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+	self.gray_color						= color(0.33, 0.33, 0.33);	// RGB							[0.0-1.0]
+	self.noise_var						= noise(0.9, 0.3, 30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
 // ----------------------------------------------------------------------------------------
 // class variables initialize
 	self.power_factor					= fcolor();
@@ -48,9 +48,9 @@ function PsyAntenna:__init				()
 	self.eff_time						= 0;
 	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
 	self.hit_time						= 0;
-	self.intensity						= 0;	// текущая интенсивность
-	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
-	self.intensity_inertion				= 0.1;	// скорость изменения интенсивности ед/секунду
+	self.intensity						= 1;	// текущая интенсивность
+	self.intensity_base					= 1;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
+	self.intensity_inertion				= 0.3 //0.1;	// скорость изменения интенсивности ед/секунду
 	self.pp 							= PsyAntennaPP();
 	self.pp:start						();
 end
@@ -69,12 +69,12 @@ end
 --end
 
 function PsyAntenna:update_postprocess	()
-	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity, 0.5+self.base_amplitude.g*self.intensity, 0.5+self.base_amplitude.b*self.intensity);
-	self.pp.params.color_gray			= color(self.gray_color.r, self.gray_color.g, self.gray_color.b);
+--	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity, 0.5+self.base_amplitude.g*self.intensity, 0.5+self.base_amplitude.b*self.intensity);
+--	self.pp.params.color_gray			= color(self.gray_color.r, self.gray_color.g, self.gray_color.b);
 	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity);
 	self.pp.params.gray					= self.gray_amplitude*self.intensity;
-	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
-//	self.pp.params.noise				= self.noise_var;
+--	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
+	self.pp.params.noise				= self.noise_var;
 end
 function PsyAntenna:update_psy_hit		(dt)
 	local d_time						= time_global()-self.hit_time;
