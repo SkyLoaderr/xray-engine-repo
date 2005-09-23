@@ -407,6 +407,12 @@ function military_dolg_dead (actor, npc)
     
 end
 
+function mil_patrol_death_check (actor, npc)
+    if actor:has_info ("mil_patrol_man1_dead") and actor:has_info ("mil_patrol_man2_dead") and actor:has_info ("mil_patrol_man3_dead") then
+       actor:give_info_portion ("mil_patrol_dead") 
+    end
+end
+
 function mil_cook_dead (actor, npc)
     --level_tasks.set_task_state (task.fail, "mil_freedom_rg6_task", 2)
 end
