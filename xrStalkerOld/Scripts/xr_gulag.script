@@ -31,6 +31,8 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.restrictors = {}
 
 	self.ObjectJob = {}
+	
+	self.localLtx = gulag_tasks.loadLtx(name, type) or gulag_tasks_ltx
 
 	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
@@ -312,9 +314,13 @@ function fract:setJob(npc, job, jobN)
 	--' Спейс рестрикторы
 	self:set_restrictions(job.object, job.out_rest, job.in_rest)
 
-	xr_logic.configure_schemes(npc, gulag_tasks_ltx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
-	local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
-	xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect, false)
+	--xr_logic.configure_schemes(npc, gulag_tasks_ltx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
+	--local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
+	--xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect, false)
+
+	xr_logic.configure_schemes(npc, self.localLtx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
+	local sect = xr_logic.determine_section_to_activate(npc, self.localLtx, job.section, db.actor)
+	xr_logic.activate_by_section(npc, self.localLtx, sect, false)
 
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
@@ -558,7 +564,6 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
---[[
 	if gulag_escape.checkStalker(npc_community, gulag_type) then
 		return true
 	end
@@ -589,13 +594,14 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_pripyat.checkStalker(npc_community, gulag_type) then
 		return true
 	end
---]]
 
+--[[
     for i, v in level_gulags do
 	    if v.checkStalker(npc_community, gulag_type) then
 		    return true
 	    end
     end
+--]]
 
 	return false
 end
@@ -604,7 +610,7 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_type == "test_mob" then
 		return true
 	end
---[[
+
 	if gulag_escape.checkMonster(npc_community, gulag_type) then
 		return true
     end
@@ -635,12 +641,13 @@ function checkMonster(npc_community, gulag_type)
    	if gulag_pripyat.checkMonster(npc_community, gulag_type) then
 		return true
     end
---]]
+--[[
     for i, v in level_gulags do
 	    if v.checkMonster(npc_community, gulag_type) then
 		    return true
 	    end
     end
+--]]
 
 	return false
 end
