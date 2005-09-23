@@ -339,6 +339,11 @@
 		<class>yan_general_ecolog</class>
 		<specific_character>yan_general_ecolog</specific_character>
 	</character>
+	<!-------------rescue_ecolog----------->
+	<character id="yan_ecolog_help">
+		<class>yan_ecolog_help</class>
+		<specific_character>yan_ecolog_help</specific_character>
+	</character>
 
 	
 	<!-- Military -->
