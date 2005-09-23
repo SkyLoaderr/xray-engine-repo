@@ -27,4 +27,7 @@
     <string id="yantar_help_scientist_1">
         <text>go_1</text>
     </string>
+    <string id="yantar_help_scientist_2">
+        <text>сначала поговори с главным!</text>
+    </string>
 </string_table>
