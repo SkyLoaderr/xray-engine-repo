@@ -177,6 +177,7 @@ void CUIEventsWnd::Show					(bool status)
 	m_UITaskInfoWnd->Show	(status);
 
 	ReloadList				(status == false);
+
 }
 
 bool CUIEventsWnd::Filter(CGameTask* t)

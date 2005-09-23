@@ -128,11 +128,8 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 void CUIEncyclopediaWnd::Draw()
 {
-	inherited::Draw();
-}
-
-void CUIEncyclopediaWnd::ReloadArticles()
-{
+	
+if(	m_flags.test(eNeedReload )){
 	if(Actor()->encyclopedia_registry->registry().objects_ptr() && Actor()->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
 	{
 		ARTICLE_VECTOR::const_iterator it = Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
@@ -146,15 +143,23 @@ void CUIEncyclopediaWnd::ReloadArticles()
 		}
 		prevArticlesCount = Actor()->encyclopedia_registry->registry().objects_ptr()->size();
 	}
+	
+	m_flags.set(eNeedReload, FALSE);
+	}
+
+	inherited::Draw();
+}
+
+void CUIEncyclopediaWnd::ReloadArticles()
+{
+	m_flags.set(eNeedReload, TRUE);
 }
 
 
 void CUIEncyclopediaWnd::Show(bool status)
 {
 	if (status)
-	{
 		ReloadArticles();
-	}
 
 	inherited::Show(status);
 }
@@ -192,30 +197,6 @@ shared_str CUIEncyclopediaWnd::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		article_info->Init			("encyclopedia_item.xml","encyclopedia_wnd:objective_item");
 		article_info->SetArticle	(m_ArticlesDB[pTVItem->GetValue()]);
 		UIInfoList->AddWindow		(article_info);
-
-/*
-		// Image
-		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
-		img.SetWndPos(0, 0);
-		Frect r = pInfoList->GetAbsoluteRect();
-
-		img.SetClipRect(r);
-		AdjustImagePos(img);
-		pInfoList->AttachChild(&img);
-		
-		if( UIImgMask.GetParent() )
-			UIImgMask.GetParent()->DetachChild(&UIImgMask);
-
-		img.SetMask(&UIImgMask);
-
-		// Добавляем текст
-		CUIString str;
-		str.SetText(*CStringTable()(m_ArticlesDB[pTVItem->GetValue()]->data()->text.c_str()));
-		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
-
-*/
-		// Запоминаем текущий эдемент
-//		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 
 		// Пометим как прочитанную
 		if (!pTVItem->IsArticleReaded())

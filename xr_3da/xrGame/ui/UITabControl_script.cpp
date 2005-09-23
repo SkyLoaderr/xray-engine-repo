@@ -21,21 +21,13 @@ void CUITabControl::script_register(lua_State *L)
 		.def("GetActiveIndex",			&CUITabControl::GetActiveIndex)
 		.def("GetTabsCount",			&CUITabControl::GetTabsCount)
 		.def("SetNewActiveTab",			&CUITabControl::SetNewActiveTab)
-		.def("SetActiveTextColor",		&CUITabControl::SetActiveTextColor)
-		.def("GetActiveTextColor",		&CUITabControl::GetActiveTextColor)
-		.def("SetGlobalTextColor",		&CUITabControl::SetGlobalTextColor)
-		.def("GetGloablTextColor",		&CUITabControl::GetGloablTextColor)
-		.def("SetActiveButtonColor",	&CUITabControl::SetActiveButtonColor)
-		.def("GetActiveButtonColor",	&CUITabControl::GetActiveButtonColor)
-		.def("SetGlobalButtonColor",	&CUITabControl::SetGlobalButtonColor)
-		.def("GetGlobalButtonColor",	&CUITabControl::GetGlobalButtonColor)
 		.def("GetButtonByIndex",		&CUITabControl::GetButtonByIndex),
 
 		class_<CUITabButton, CUIButton>("CUITabButton")
-		.def(					constructor<>())		
-		.def("AssociateWindow",     &CUITabButton::AssociateWindow)
-		.def("GetAssociatedWindow", &CUITabButton::GetAssociatedWindow)
-		.def("ShowAssociatedWindow",&CUITabButton::ShowAssociatedWindow)
+		.def(							constructor<>())		
+		.def("AssociateWindow",			&CUITabButton::AssociateWindow)
+		.def("GetAssociatedWindow",		&CUITabButton::GetAssociatedWindow)
+		.def("ShowAssociatedWindow",	&CUITabButton::ShowAssociatedWindow)
 	];
 
 }

@@ -82,32 +82,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
-
-/*	case kQUIT:
-		if( MainInputReceiver() )//m_pUserMenu)
-		{
-			m_game->StartStopMenu(MainInputReceiver(), true);
-			return true;
-		}break;
-*/
 	}
-	
-/*	
-	//временно! пока, по убыванию сил до критического
-	//уровня персонаж не засыпает, а просто переходит
-	//в меню инвенторя
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->g_Alive() && !pActor->conditions().GetPower())
-	{
-			if( MainInputReceiver() == NULL)
-			{
-				//start the inventory menu
-				m_game->StartStopMenu(&InventoryMenu,true);
-				return true;
-			}
-	}
-	*/
-
 	return false;
 }
 

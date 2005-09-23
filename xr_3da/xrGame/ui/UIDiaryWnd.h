@@ -28,7 +28,7 @@ protected:
 	EDiaryFilter		m_currFilter;
 
 	CUINewsWnd*			m_UINewsWnd;
-	CUIVideoPlayerWnd*	m_videoWnd;
+//	CUIVideoPlayerWnd*	m_videoWnd;
 
 	CUIWindow*			m_UILeftWnd;
 	CUIWindow*			m_UIRightWnd;
@@ -44,6 +44,8 @@ protected:
 	u32					m_uTreeRootColor;
 	CGameFont*			m_pTreeItemFont;
 	u32					m_uTreeItemColor;
+
+	CUIStatic*			m_updatedSectionImage;
 
 	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
 	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
@@ -63,6 +65,7 @@ public:
 	virtual				~CUIDiaryWnd			();
 
 	virtual void		SendMessage				(CUIWindow* pWnd, s16 msg, void* pData);
+	virtual	void		Draw					();
 
 			void		Init					();
 			void		AddNews					();

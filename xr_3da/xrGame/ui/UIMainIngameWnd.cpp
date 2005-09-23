@@ -1322,7 +1322,7 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
+void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA &news)
 {
 	if (g_bNewsDisable) return;
 
@@ -1460,20 +1460,12 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::SetFlashIconState(EFlashingIcons type, bool enable)
+void CUIMainIngameWnd::SetFlashIconState_(EFlashingIcons type, bool enable)
 {
 	// ¬ключаем анимацию требуемой иконки
 	FlashingIcons_it icon = m_FlashingIcons.find(type);
 	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashing icon with this type not existed");
-
-	if(!enable)
-	{
-		icon->second->Show(false);
-	}
-	else
-	{
-		icon->second->Show(true);
-	}
+	icon->second->Show(enable);
 }
 
 //////////////////////////////////////////////////////////////////////////

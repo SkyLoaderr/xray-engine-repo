@@ -8,80 +8,72 @@
 #pragma once
 
 #include "uiwindow.h"
-#include "UITabButton.h"
+//#include "UITabButton.h"
 #include "../script_export_space.h"
 #include "UIOptionsItem.h"
+
+class CUITabButton;
+class CUIButton;
 
 DEF_VECTOR (TABS_VECTOR, CUITabButton*)
 
 class CUITabControl: public CUIWindow, public CUIOptionsItem {
-	typedef CUIWindow inherited;
+	typedef				CUIWindow inherited;
 public:
-	CUITabControl();
-	virtual ~CUITabControl();
+						CUITabControl				();
+	virtual				~CUITabControl				();
 
 	// options itme
-	virtual void SetCurrentValue();
-	virtual void SaveValue();
+	virtual void		SetCurrentValue				();
+	virtual void		SaveValue					();
 
-	virtual void Init(float x, float y, float width, float height);
-	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	virtual void OnTabChange(int iCur, int iPrev);
-	virtual void OnStaticFocusReceive(CUIWindow* pWnd);
-	virtual void OnStaticFocusLost(CUIWindow* pWnd);
-	virtual void Update();
+	virtual void		Init						(float x, float y, float width, float height);
+	virtual bool		OnKeyboard					(int dik, EUIMessages keyboard_action);
+	virtual void		OnTabChange					(int iCur, int iPrev);
+	virtual void		OnStaticFocusReceive		(CUIWindow* pWnd);
+	virtual void		OnStaticFocusLost			(CUIWindow* pWnd);
 
 	// Добавление кнопки-закладки в список закладок контрола
-	bool AddItem(const char *pItemName, const char *pTexName, float x, float y, float width, float height);
-	bool AddItem(CUITabButton *pButton);
+	bool				AddItem						(const char *pItemName, const char *pTexName, float x, float y, float width, float height);
+	bool				AddItem						(CUITabButton *pButton);
 
-	void RemoveItem(const u32 Index);
-	void RemoveAll();
+	void				RemoveItem					(const u32 Index);
+	void				RemoveAll					();
 
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void		SendMessage					(CUIWindow *pWnd, s16 msg, void *pData);
 
-			int  GetActiveIndex		()						{ return m_iPushedIndex; }
-			int  GetPrevActiveIndex	()						{ return m_iPrevPushedIndex; }
-			void SetNewActiveTab	(const int iNewTab);	
-	const	int  GetTabsCount		() const				{ return m_TabsArr.size(); }
+			int			GetActiveIndex				()								{ return m_iPushedIndex; }
+			int			GetPrevActiveIndex			()								{ return m_iPrevPushedIndex; }
+			void		SetNewActiveTab				(const int iNewTab);	
+	const	int			GetTabsCount				() const						{ return m_TabsArr.size(); }
 	
 	// Режим клавилатурных акселераторов (вкл/выкл)
-	bool GetAcceleratorsMode() const			{ return m_bAcceleratorsEnable; }
-	void SetAcceleratorsMode(bool bEnable)		{ m_bAcceleratorsEnable = bEnable; }
+	bool				GetAcceleratorsMode			() const						{ return m_bAcceleratorsEnable; }
+	void				SetAcceleratorsMode			(bool bEnable)					{ m_bAcceleratorsEnable = bEnable; }
 
-	// Цвета
-	void SetActiveTextColor(u32 cl)				{ m_cActiveTextColor = cl; m_bChangeColors = true; }
-	u32 GetActiveTextColor() const 				{ return m_cActiveTextColor; }
-	void SetGlobalTextColor(u32 cl)				{ m_cGlobalTextColor = cl; m_bChangeColors = true; }
-	u32 GetGloablTextColor() const 				{ return m_cGlobalTextColor; }
 
-	void SetActiveButtonColor(u32 cl)			{ m_cActiveButtonColor = cl; m_bChangeColors = true; }
-	u32 GetActiveButtonColor() const 			{ return m_cActiveButtonColor; }
-	void SetGlobalButtonColor(u32 cl)			{ m_cGlobalButtonColor = cl; m_bChangeColors = true; }
-	u32 GetGlobalButtonColor() const 			{ return m_cGlobalButtonColor; }
-
-	TABS_VECTOR *		GetButtonsVector()		{ return &m_TabsArr; }
-	CUIButton*			GetButtonByIndex(int i)	{ R_ASSERT(i>=0 && i<(int)m_TabsArr.size()); return m_TabsArr[i];}
-	const shared_str	GetCommandName(int i)	{ return (GetButtonByIndex(i))->WindowName();};
+	TABS_VECTOR *		GetButtonsVector			()								{ return &m_TabsArr; }
+	CUIButton*			GetButtonByIndex			(int i);
+	const shared_str	GetCommandName				(int i);
+	CUIButton*			GetButtonByCommand			(const shared_str& n);	
 protected:
 	// Список кнопок - переключателей закладок
-	TABS_VECTOR		m_TabsArr;
+	TABS_VECTOR			m_TabsArr;
 
 	// Текущая нажатая кнопка. -1 - ни одна, 0 - первая, 1 - вторая, и т.д.
-	int				m_iPushedIndex;
-	int				m_iPrevPushedIndex;
+	int					m_iPushedIndex;
+	int					m_iPrevPushedIndex;
 
 	// Цвет неактивных элементов
-	u32				m_cGlobalTextColor;
-	u32				m_cGlobalButtonColor;
+	u32					m_cGlobalTextColor;
+	u32					m_cGlobalButtonColor;
 
 	// Цвет надписи на активном элементе
-	u32				m_cActiveTextColor;
-	u32				m_cActiveButtonColor;
+	u32					m_cActiveTextColor;
+	u32					m_cActiveButtonColor;
 
 	// Разрешаем/запрещаем клавиатурные акселераторы
-	bool			m_bAcceleratorsEnable;
-	bool			m_bChangeColors;
+	bool				m_bAcceleratorsEnable;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

@@ -17,7 +17,10 @@
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
 #include "../encyclopedia_article.h"
-#include "UIVideoPlayerWnd.h"
+//#include "UIVideoPlayerWnd.h"
+#include "UIPdaAux.h"
+
+extern u32			g_pda_info_state;
 
 CUIDiaryWnd::CUIDiaryWnd()
 {
@@ -30,7 +33,8 @@ CUIDiaryWnd::~CUIDiaryWnd()
 	delete_data(m_SrcListWnd);
 	delete_data(m_DescrView);
 	delete_data(m_ArticlesDB);
-	delete_data(m_videoWnd);
+	delete_data(m_updatedSectionImage);
+//	delete_data(m_videoWnd);
 }
 
 void CUIDiaryWnd::Show(bool status)
@@ -104,8 +108,11 @@ void CUIDiaryWnd::Init()
 	m_DescrView						= xr_new<CUIScrollView>(); m_DescrView->SetAutoDelete(false);
 	xml_init.InitScrollView			(uiXml, "main_wnd:right_frame:work_area:scroll_view", 0, m_DescrView);
 
-	m_videoWnd						= xr_new<CUIVideoPlayerWnd>();
-	m_videoWnd->Init				(&uiXml,"video_player");
+	m_updatedSectionImage			= xr_new<CUIStatic>();
+	xml_init.InitStatic				(uiXml, "updated_section_static", 0, m_updatedSectionImage);
+
+//	m_videoWnd						= xr_new<CUIVideoPlayerWnd>();
+//	m_videoWnd->Init				(&uiXml,"video_player");
 
 }
 
@@ -128,7 +135,6 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 			UnloadJournalTab	();
 			break;
 		case eInfo:
-//			UnloadJournalTab	();
 			UnloadInfoTab	();
 			break;
 		case eNews:
@@ -143,7 +149,6 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 			LoadJournalTab	(ARTICLE_DATA::eJournalArticle);
 			break;
 		case eInfo:
-//			LoadJournalTab	(ARTICLE_DATA::eInfoArticle);
 			LoadInfoTab		();
 			break;
 		case eNews:
@@ -154,7 +159,7 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 
 void CUIDiaryWnd::AddNews	()
 {
-	m_UINewsWnd->AddNews		();
+	m_UINewsWnd->AddNews	();
 }
 
 void CUIDiaryWnd::MarkNewsAsRead (bool status)
@@ -188,8 +193,6 @@ void CUIDiaryWnd::LoadJournalTab			(ARTICLE_DATA::EArticleType _type)
 		ARTICLE_VECTOR::const_iterator it = Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
 		for(; it != Actor()->encyclopedia_registry->registry().objects_ptr()->end(); it++)
 		{
-//.			if (ARTICLE_DATA::eJournalArticle == it->article_type)
-
 			if (_type == it->article_type)
 				
 			{
@@ -204,32 +207,37 @@ void CUIDiaryWnd::LoadJournalTab			(ARTICLE_DATA::EArticleType _type)
 			}
 		}
 	}
+	g_pda_info_state	&=	!pda_section::journal;
 
 }
 
-void CUIDiaryWnd::UnloadInfoTab		()
+void CUIDiaryWnd::UnloadInfoTab	()
 {
-	m_UIRightWnd->DetachChild	(m_videoWnd);
-	m_videoWnd->Show			(false);
+//	m_UIRightWnd->DetachChild	(m_videoWnd);
+//	m_videoWnd->Show			(false);
+	UnloadJournalTab	();
 }
 
-void CUIDiaryWnd::LoadInfoTab			()
+void CUIDiaryWnd::LoadInfoTab	()
 {
-	m_UIRightWnd->AttachChild	(m_videoWnd);
-	m_videoWnd->Show			(true);
+//	m_UIRightWnd->AttachChild	(m_videoWnd);
+//	m_videoWnd->Show			(true);
+	LoadJournalTab				(ARTICLE_DATA::eInfoArticle);
+	g_pda_info_state			&= ~pda_section::info;
 }
 
 
-void CUIDiaryWnd::UnloadNewsTab		()
+void CUIDiaryWnd::UnloadNewsTab	()
 {
 	m_UIRightWnd->DetachChild	(m_UINewsWnd);
 	m_UINewsWnd->Show			(false);
 }
 
-void CUIDiaryWnd::LoadNewsTab			()
+void CUIDiaryWnd::LoadNewsTab	()
 {
 	m_UIRightWnd->AttachChild	(m_UINewsWnd);
 	m_UINewsWnd->Show			(true);
+	g_pda_info_state			&= ~pda_section::news;
 }
 
 void CUIDiaryWnd::OnSrcListItemClicked	(CUIWindow* w,void* p)
@@ -243,4 +251,30 @@ void CUIDiaryWnd::OnSrcListItemClicked	(CUIWindow* w,void* p)
 		article_info->SetArticle	(m_ArticlesDB[pSelItem->GetValue()]);
 		m_DescrView->AddWindow		(article_info);
 	}
+}
+
+void CUIDiaryWnd::Draw					()
+{
+	inherited::Draw	();
+
+	Frect r;
+	if(g_pda_info_state&pda_section::news){
+		r = m_FilterTab->GetButtonByIndex		(eNews)->GetAbsoluteRect();
+		m_updatedSectionImage->SetWndPos		(r.lt);
+		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
+		m_updatedSectionImage->Draw				();
+	}
+	if(g_pda_info_state&pda_section::info){
+		r = m_FilterTab->GetButtonByIndex		(eInfo)->GetAbsoluteRect();
+		m_updatedSectionImage->SetWndPos		(r.lt);
+		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
+		m_updatedSectionImage->Draw				();
+	}
+	if(g_pda_info_state&pda_section::journal){
+		r = m_FilterTab->GetButtonByIndex		(eJournal)->GetAbsoluteRect();
+		m_updatedSectionImage->SetWndPos		(r.lt);
+		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
+		m_updatedSectionImage->Draw				();
+	}
+
 }

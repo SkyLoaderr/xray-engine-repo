@@ -70,5 +70,8 @@
 			</text_color>
 		</button>
 	</tab>
-
+	
+	<updated_section_static x="0" y="0" width="10" height="10" stretch="1">
+		<_texture a="128" >ui_button_ordinary_e</_texture>
+	</updated_section_static>
 </window>

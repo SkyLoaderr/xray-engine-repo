@@ -111,7 +111,7 @@ void CUIActorInfoWnd::Show(bool status)
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if (pActor)
 	{
-		UICharacterInfo->InitCharacter(&pActor->CharacterInfo());
+		UICharacterInfo->InitCharacter(pActor);
 		UICharIconHeader->UITitleText.SetText(UICharacterInfo->UIName().GetText());
 	}
 }

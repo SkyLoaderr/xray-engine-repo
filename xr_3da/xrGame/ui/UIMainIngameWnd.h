@@ -211,13 +211,13 @@ public:
 	};
 	
 	// Вкл/выкл мигающую иконку
-	void SetFlashIconState(EFlashingIcons type, bool enable);
+	void SetFlashIconState_(EFlashingIcons type, bool enable);
 
 	//
 	void AnimateContacts();
 
 	// Обработчик события получения новости
-	void OnNewsReceived	(GAME_NEWS_DATA &news);
+	void ReceiveNews	(GAME_NEWS_DATA &news);
 	
 protected:
 

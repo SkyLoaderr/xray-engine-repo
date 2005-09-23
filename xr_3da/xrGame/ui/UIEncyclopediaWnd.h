@@ -6,8 +6,7 @@
 //  Encyclopedia window
 //=============================================================================
 
-#ifndef UI_ENCYCLOPEDIA_WND_H_
-#define UI_ENCYCLOPEDIA_WND_H_
+#pragma once
 
 #include "UIWindow.h"
 #include "../encyclopedia_article_defs.h"
@@ -26,22 +25,23 @@ class CUIEncyclopediaWnd: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
-
-	shared_str m_InfosHeaderStr;
+	enum {eNeedReload=(1<<0),};
+	Flags16				m_flags;
+	shared_str			m_InfosHeaderStr;
 public:
-						CUIEncyclopediaWnd();
-	virtual				~CUIEncyclopediaWnd();
+						CUIEncyclopediaWnd			();
+	virtual				~CUIEncyclopediaWnd			();
 
-	virtual void		Init();
-	virtual void		Show(bool status);
-	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
-	virtual void		Draw();
+	virtual void		Init						();
+	virtual void		Show						(bool status);
+	virtual void		SendMessage					(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	virtual void		Draw						();
 
-	void				AddArticle(ARTICLE_ID, bool bReaded);
-	void				DeleteArticles();
-	bool				HasArticle(ARTICLE_ID);
+	void				AddArticle					(ARTICLE_ID, bool bReaded);
+	void				DeleteArticles				();
+	bool				HasArticle					(ARTICLE_ID);
 
-	void				ReloadArticles	();
+	void				ReloadArticles				();
 protected:
 	u32					prevArticlesCount;
 	// Элементы графического оформления
@@ -61,12 +61,8 @@ protected:
 	CGameFont*				m_pTreeItemFont;
 	u32						m_uTreeItemColor;
 
-	// Data lists
 	CUIListWnd*				UIIdxList;
 	CUIScrollView*			UIInfoList;
-//	CUIEncyclopediaCore*	UIInfo;
 
 	shared_str				SetCurrentArtice(CUITreeViewItem *pTVItem);
 };
-
-#endif	//UI_ENCYCLOPEDIA_WND_H_

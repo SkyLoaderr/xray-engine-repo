@@ -11,8 +11,7 @@ CUITabControl::CUITabControl()
 	  m_cActiveTextColor	(0xFFFFFFFF),
 	  m_cActiveButtonColor	(0xFFFFFFFF),
 	  m_cGlobalButtonColor	(0xFFFFFFFF),
-	  m_bAcceleratorsEnable	(true),
-	  m_bChangeColors		(false)
+	  m_bAcceleratorsEnable	(true)
 {
 
 }
@@ -23,9 +22,10 @@ CUITabControl::~CUITabControl()
 }
 
 void CUITabControl::SetCurrentValue(){
-	int ival, imin, imax;
-	GetOptIntegerValue(ival, imin, imax);
-	SetNewActiveTab(ival);
+	int		ival, imin, imax;
+
+	GetOptIntegerValue		(ival, imin, imax);
+	SetNewActiveTab			(ival);
 }
 
 void CUITabControl::SaveValue(){
@@ -36,41 +36,36 @@ void CUITabControl::SaveValue(){
 bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, float x, float y, float width, float height)
 {
 	CUITabButton *pNewButton = xr_new<CUITabButton>();
-	if (!pNewButton) return false;
+	if (!pNewButton)			return false;
 
-	pNewButton->Init(pTexName, x, y, width, height);
-	pNewButton->SetText(pItemName);
-	pNewButton->SetTextColor(m_cGlobalTextColor);
-	pNewButton->GetUIStaticItem().SetColor(m_cGlobalButtonColor);
+	pNewButton->Init			(pTexName, x, y, width, height);
+	pNewButton->SetText			(pItemName);
+	pNewButton->SetTextColor	(m_cGlobalTextColor);
+	pNewButton->GetUIStaticItem	().SetColor(m_cGlobalButtonColor);
 
-	return AddItem(pNewButton);
+	return AddItem				(pNewButton);
 }
 
 bool CUITabControl::AddItem(CUITabButton *pButton)
 {
-	pButton->Show(true);
-	pButton->Enable(true);
-	pButton->SetButtonAsSwitch(true);
+	pButton->Show				(true);
+	pButton->Enable				(true);
+	pButton->SetButtonAsSwitch	(true);
 
 	// Нажимаем кнопку по умолчанию
 	if (m_iPushedIndex == static_cast<int>(m_TabsArr.size() - 1))
         m_TabsArr[m_iPushedIndex]->SendMessage(m_TabsArr[m_iPushedIndex], TAB_CHANGED, NULL);
 
-	//{
-	//	m_TabsArr[m_iPushedIndex]->OnMouse(1, 1, WINDOW_LBUTTON_DOWN);
-	//	SetCapture(m_TabsArr[m_iPushedIndex], false);
-	//}
-
-	AttachChild(pButton);
-	m_TabsArr.push_back(pButton);
-	return true;
+	AttachChild					(pButton);
+	m_TabsArr.push_back			(pButton);
+	return						true;
 }
 
 // Удаление элемента по индексу. Индексы начинаются с Index
 void CUITabControl::RemoveItem(u32 Index)
 {
-	R_ASSERT(m_TabsArr.size() > Index);
-	DetachChild(m_TabsArr[Index]);
+	R_ASSERT					(m_TabsArr.size() > Index);
+	DetachChild					(m_TabsArr[Index]);
 
 	// Меняем значение заданного элемента, и последнего элемента.
 	// Так как у нас хранятся указатели операция будет проходить быстро.
@@ -113,30 +108,7 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
 	}
-	//else if (BUTTON_CLICKED == msg)
-	//{
-	//	// если нажали на активную кнопку, то ничего не делать.
-	//	TABS_VECTOR::value_type pushedItem = smart_cast<TABS_VECTOR::value_type>(pWnd);
-	//	if (!pushedItem) return;
 
-	//	if (msg != BUTTON_CLICKED		||
-	//		m_iPushedIndex > -1						&&
-	//		pushedItem == m_TabsArr[m_iPushedIndex])
-	//		return;
-
-	//	for (u32 i = 0; i < m_TabsArr.size(); ++i)
-	//	{
-	//		if (m_TabsArr[i] == pWnd)
-	//		{
-	//			int iPrevPushedIndex = m_iPushedIndex;
-	//			m_iPushedIndex = i;
-	//			m_TabsArr[iPrevPushedIndex]->SetButtonMode(CUIButton::BUTTON_NORMAL);
-	//			m_TabsArr[iPrevPushedIndex]->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
-	//			GetMessageTarget()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
-	//			break;
-	//		}
-	//	}
-	//}
 	else if (STATIC_FOCUS_RECEIVED	== msg	||
 			 STATIC_FOCUS_LOST		== msg)
 	{
@@ -159,17 +131,17 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 }
 
 void CUITabControl::OnStaticFocusReceive(CUIWindow* pWnd){
-	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, static_cast<void*>(pWnd));
+	GetMessageTarget()->SendMessage			(this, STATIC_FOCUS_RECEIVED, static_cast<void*>(pWnd));
 }
 
 void CUITabControl::OnStaticFocusLost(CUIWindow* pWnd){
-	GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, static_cast<void*>(pWnd));
+	GetMessageTarget()->SendMessage			(this, STATIC_FOCUS_LOST, static_cast<void*>(pWnd));
 }
 
 void CUITabControl::OnTabChange(int iCur, int iPrev){
-	m_TabsArr[iPrev]->SendMessage(m_TabsArr[iCur], TAB_CHANGED, NULL);
-	m_TabsArr [iCur]->SendMessage(m_TabsArr[iCur], TAB_CHANGED, NULL);	
-	GetMessageTarget()->SendMessage(this, TAB_CHANGED, NULL);
+	m_TabsArr[iPrev]->SendMessage			(m_TabsArr[iCur], TAB_CHANGED, NULL);
+	m_TabsArr [iCur]->SendMessage			(m_TabsArr[iCur], TAB_CHANGED, NULL);	
+	GetMessageTarget()->SendMessage			(this, TAB_CHANGED, NULL);
 }
 
 void CUITabControl::Init(float x, float y, float width, float height)
@@ -203,24 +175,23 @@ bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
 	return false;
 }
 
-void CUITabControl::Update()
+
+CUIButton* CUITabControl::GetButtonByIndex	(int i)							
+{ 
+	R_ASSERT(i>=0 && i<(int)m_TabsArr.size()); 
+	return m_TabsArr[i];
+}
+
+const shared_str CUITabControl::GetCommandName	(int i)							
+{ 
+	return (GetButtonByIndex(i))->WindowName();
+};
+
+CUIButton* CUITabControl::GetButtonByCommand			(const shared_str& n)
 {
-	if (m_bChangeColors)
-	{
-		m_bChangeColors = false;
+	for(u32 i = 0; i<m_TabsArr.size(); ++i)
+		if(m_TabsArr[i]->WindowName() == n)
+			return m_TabsArr[i];
 
-		for (u32 i = 0; i < m_TabsArr.size(); ++i)
-			if (i == static_cast<u32>(m_iPushedIndex))
-			{
-				m_TabsArr[i]->SetTextColor(m_cActiveTextColor);
-				m_TabsArr[i]->GetUIStaticItem().SetColor(m_cActiveButtonColor);
-			}
-			else
-			{
-				m_TabsArr[i]->SetTextColor(m_cGlobalTextColor);
-				m_TabsArr[i]->GetUIStaticItem().SetColor(m_cGlobalButtonColor);
-			}
-	}
-
-	inherited::Update();
+	return NULL;
 }

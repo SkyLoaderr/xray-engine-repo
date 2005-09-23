@@ -90,14 +90,21 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 		n = *(article.data()->name);
 		callback(GameObject::eArticleInfo)(lua_game_object(), g, n);
 
+		if( HUD().GetUI() ){
+			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			pda_section::part p = pda_section::encyclopedia;
+			switch (article.data()->articleType){
+				case ARTICLE_DATA::eEncyclopediaArticle:	p = pda_section::encyclopedia;	break;
+				case ARTICLE_DATA::eJournalArticle:			p = pda_section::journal;		break;
+				case ARTICLE_DATA::eInfoArticle:			p = pda_section::info;			break;
+				case ARTICLE_DATA::eTaskArticle:			p = pda_section::quests;		break;
+				default: NODEFAULT;
+			};
+			pGameSP->PdaMenu->PdaContentsChanged			(p);
+		}
+
 	}
 
-	if( HUD().GetUI() ){
-
-		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP) 
-			pGameSP->PdaMenu->OnNewArticleAdded();
-	}
 }
 
 
@@ -134,23 +141,11 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	news_data.receive_time = Level().GetGameTime();
 	news_vector.push_back(news_data);
 
-	if(HUD().GetUI())
-		HUD().GetUI()->UIMainIngameWnd->OnNewsReceived(news_data);
-
-	if( HUD().GetUI() ){
+	if(HUD().GetUI()){
+		HUD().GetUI()->UIMainIngameWnd->ReceiveNews(news_data);
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
-		{
-			if(pGameSP->PdaMenu->UIDiaryWnd->IsShown() &&
-				pGameSP->PdaMenu->UIDiaryWnd->IsShown())
-//				pGameSP->PdaMenu->UIDiaryWnd->UINewsWnd.IsShown())
-			{
-				pGameSP->PdaMenu->UIDiaryWnd->AddNews();
-				pGameSP->PdaMenu->UIDiaryWnd->MarkNewsAsRead(true);
-			}
-			else
-				pGameSP->PdaMenu->UIDiaryWnd->MarkNewsAsRead(false);
-		}
+			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::news);
 	}
 }
 
@@ -163,7 +158,6 @@ bool CActor::OnReceiveInfo(INFO_ID info_id) const
 	CInfoPortion info_portion;
 	info_portion.Load(info_id);
 
-//	AddMapLocationsFromInfo	(&info_portion);
 	AddEncyclopediaArticle	(&info_portion);
 	AddGameTask				(&info_portion);
 
@@ -364,15 +358,13 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 		
 	HUD().GetUI()->UIMainIngameWnd->AnimateContacts();
 
-	Level().MapManager().AddRelationLocation( pInvOwner );
+	Level().MapManager().AddRelationLocation		( pInvOwner );
 
 	if( HUD().GetUI() ){
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 
-		if(pGameSP){ 
-			pGameSP->PdaMenu->OnContactsChanged();
-//			HUD().GetUI()->UIMainIngameWnd->SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
-		}
+		if(pGameSP)
+			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::contacts);
 	}
 }
 
@@ -392,16 +384,7 @@ void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 	if( HUD().GetUI() ){
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP){
-			pGameSP->PdaMenu->OnContactsChanged();
-/*
-			u32 cn = GetPDA()->ActiveContactsNum();
-			if(cn>0){
-				string256 text_str;
-				sprintf(text_str, "%d", cn);
-				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(text_str);
-			}else
-				HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
-*/
+			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::contacts);
 		}
 	}
 

@@ -180,6 +180,9 @@
 	
 	</main_wnd>
 
+	<updated_section_static x="0" y="0" width="10" height="10" stretch="1">
+		<texture a="128" >ui_button_ordinary_e</texture>
+	</updated_section_static>
 
 #include "ui\ui_videoplayer.xml"
 </window>

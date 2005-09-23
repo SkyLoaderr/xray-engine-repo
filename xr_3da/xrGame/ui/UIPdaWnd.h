@@ -14,20 +14,14 @@ class CUIButton;
 class CUITabControl;
 class CUIStatic;
 class CUIMapWnd;
-//class CUIPdaCommunication;
 class CUIEncyclopediaWnd;
 class CUIDiaryWnd;
 class CUIActorInfoWnd;
 class CUIStalkersRankingWnd;
 class CUIEventsWnd;
 class CUIPdaContactsWnd;
-//////////////////////////////////////////////////////////////////////////
 
-extern const char * const PDA_XML;
-
-///////////////////////////////////////
-// Подложка и основные кнопки PDA
-///////////////////////////////////////
+ 
 
 class CUIPdaWnd: public CUIDialogWnd
 {
@@ -45,11 +39,12 @@ protected:
 	CUITabControl*			UITabControl;
 
 	// Установить игровое время
-	void					UpdateDateTime		();
-
+	void					UpdateDateTime					();
+	void					DrawUpdatedSections				();
 protected:
 	// Бэкграунд
 	CUIStatic*				UIMainPdaFrame;
+	CUIStatic*				m_updatedSectionImage;
 
 	// Текущий активный диалог
 	CUIWindow*				m_pActiveDialog;
@@ -57,13 +52,13 @@ protected:
 public:
 	// Поддиалоги PDA
 	CUIMapWnd*				UIMapWnd;
-//	CUIPdaCommunication*	UIPdaCommunication;
 	CUIPdaContactsWnd*		UIPdaContactsWnd;
 	CUIEncyclopediaWnd*		UIEncyclopediaWnd;
 	CUIDiaryWnd*			UIDiaryWnd;
 	CUIActorInfoWnd*		UIActorInfo;
 	CUIStalkersRankingWnd*	UIStalkersRanking;
 	CUIEventsWnd*			UIEventsWnd;
+
 public:
 							CUIPdaWnd			();
 	virtual					~CUIPdaWnd			();
@@ -77,9 +72,9 @@ public:
 	virtual void 			Show				();
 	virtual void 			Hide				();
 	virtual bool			OnMouse				(float x, float y, EUIMessages mouse_action) {CUIDialogWnd::OnMouse(x,y,mouse_action);return true;} //always true because StopAnyMove() == false
-			void			OnNewArticleAdded	();
-			void			OnContactsChanged	();
 	
 	void					SetActiveSubdialog	(EPdaTabs section);
 	virtual bool			StopAnyMove			(){return false;}
+
+			void			PdaContentsChanged	(pda_section::part type);
 };

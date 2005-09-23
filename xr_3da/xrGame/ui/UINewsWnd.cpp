@@ -96,11 +96,8 @@ void CUINewsWnd::AddNewsItem(const shared_str &text)
 	itm->Init	(NEWS_XML,"news_item");
 	itm->SetText(text);
 	UIScrollWnd->AddWindow(itm);
-//	UIListWnd.AddParsedItem<CUIListItem>(str, 0, UIListWnd.GetTextColor());
-//	UIListWnd.AddItem<CUIListItem>("");
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void CUINewsWnd::Show(bool status)
 {
@@ -109,4 +106,5 @@ void CUINewsWnd::Show(bool status)
 	else
 		InventoryUtilities::SendInfoToActor("ui_pda_news_hide");
 	inherited::Show(status);
+
 }

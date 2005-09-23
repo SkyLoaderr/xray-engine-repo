@@ -6,23 +6,8 @@
 //  Некоторые определения которые общие для всех диалогов ПДА
 //=============================================================================
 
-#ifndef UI_PDA_AUX_H_
-#define UI_PDA_AUX_H_
-
 #pragma once
 
-//////////////////////////////////////////////////////////////////////////
-
-/*
-// Разделы ПДА на которые можно сылаться извне для принудительного открытия
-enum EPdaSections
-{
-	epsActiveJobs	= 0,
-	epsMap,
-	epsContacts,
-	epsEncyclopedia,
-	epsDiaryArticle
-};*/
 enum EPdaTabs
 {
 	eptQuests			= 0,
@@ -38,4 +23,19 @@ enum EPdaTabs
 
 extern const char * const ALL_PDA_HEADER_PREFIX;
 
-#endif	//UI_PDA_AUX_H_
+namespace pda_section{
+	enum part{
+		quests			=(1<<8),
+		map				=(1<<9),
+		diary			=(1<<10),
+		contacts		=(1<<11),
+		ranking			=(1<<12),
+		statistics		=(1<<13),
+		encyclopedia	=(1<<14),
+
+		news			=diary|(1<<1),
+		info			=diary|(1<<2),
+		journal			=diary|(1<<3),
+
+	};
+};
