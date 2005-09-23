@@ -305,10 +305,6 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-shell_point		 	= 0.0, 0.133, 0.06
-shell_dir		 	= 0.0, 0.0, 0.4
-shell_particles	 		= weapons\generic_shells
-
 hit_power                	= 101
 hit_impulse		 	= 120
 hit_type 			= fire_wound
@@ -391,10 +387,6 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-shell_point		 	= 0.05, 0.148, 0.053
-shell_dir		 	= 0.0, 0.0, 0.4
-shell_particles	 		= weapons\generic_shells
-
 hit_power                	= 34
 hit_impulse		 	= 77
 hit_type 			= fire_wound
@@ -592,6 +584,7 @@ silencer_bullet_speed	 	= 600
 $spawn              	= ""
 silencer_name  			= mp_wpn_addon_silencer
 scope_name 					= mp_wpn_addon_scope_susat
+
 fire_dispersion_base		= 0.18 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 control_inertion_factor		= 1.2f
 
@@ -711,7 +704,6 @@ rpm              	        = 260
 [mp_wpn_pm]:wpn_pm
 $spawn              		= ""
 silencer_name  			= mp_wpn_addon_silencer
-silencer_hit_power       	= 30
 
 fire_dispersion_base		= 0.4 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
@@ -877,7 +869,6 @@ cam_max_angle			= 90.0	;максимальный угол отдачи
 cam_max_angle_horz		= 30.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz		= 6.0	;(degree) size of step camera moved in horizontal position while shooting
 
-
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
 condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
@@ -889,7 +880,6 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-
 hit_power        		= 111
 hit_impulse      		= 210
 hit_type 			= fire_wound
@@ -928,10 +918,6 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-shell_point		 	= 0.0, 0.129, 0.192	
-shell_dir		 	= 0.0, 0.0, 0.4
-shell_particles	 		= weapons\generic_shells
-
 hit_power               	= 235
 hit_impulse		 	= 245
 hit_type 			= fire_wound
@@ -971,10 +957,6 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-shell_point		 	= 0.0, 0.128, 0.0
-shell_dir		 	= 0.0, 0.0, 0.4
-shell_particles	 		= weapons\generic_shells
-
 hit_power               	= 214
 hit_impulse	        	= 224
 hit_type 			= fire_wound

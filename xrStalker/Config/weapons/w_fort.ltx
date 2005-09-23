@@ -53,18 +53,20 @@ immunities_sect				= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.15  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base		= 0.37  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
-cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 7		;максимальный угол отдачи
-cam_max_angle_horz			= 10.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz			= 1.5	;(degree) size of step camera moved in horizontal position while shooting
+cam_relax_speed         	= 0.7	;скорость возврата в исходное положение
+cam_dispersion          	= 0.35	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 20.0	;максимальный угол отдачи
+cam_max_angle_horz		= 10.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.7	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.003	    ;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
+condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
 direction                	= 0, 0, 1
@@ -73,19 +75,32 @@ fire_point               	= 0.0, 0.148, 0.157
 flame_particles		   		= weapons\generic_weapon03
 smoke_particles		   		= weapons\generic_shoot_00
 rpm_empty_click 	 		= 200
-; ttc
+
 shell_point		 			= 0.05, 0.148, 0.053
 shell_dir		 			= 0.0, 0.0, 0.4
 shell_particles	 			= weapons\generic_shells
 
-hit_power                	= 35
-hit_impulse		 		 	= 77
-hit_type = fire_wound
+PDM_disp_base 			= 1.0
+PDM_disp_vel_factor 		= 0.6
+PDM_disp_accel_factor 		= 0.6
+PDM_crouch	 		= 1.0
+PDM_crouch_no_acc 		= 1.0
 
-fire_distance            	= 100
-bullet_speed			 	= 320			;начальная скорость пули
+; ttc
+hit_power                	= 34
+hit_impulse		 	= 77
+hit_type 			= fire_wound
+
+fire_distance            	= 1000
+bullet_speed			= 300	;начальная скорость пули
 rpm                      	= 300
 ; end ttc
+
+silencer_hit_power       	= 31
+silencer_hit_impulse	 	= 60
+silencer_fire_distance   	= 100
+silencer_bullet_speed	 	= 220
+
 hud                      	= wpn_FORT_hud
 normal                   	= 0, 1, 0
 position                 	= -0.021, -0.10, 0.0
@@ -136,10 +151,6 @@ silencer_y 					= -17
 ;params when silencer is attached 
 ;similar to corresponding params without prefix silencer_
 
-silencer_hit_power       	= 35
-silencer_hit_impulse	 	= 60
-silencer_fire_distance   	= 100
-silencer_bullet_speed	 	= 220
 ;silencer_flame_particles 	= weapons\generic_weapon01
 silencer_smoke_particles 	= weapons\generic_shoot_00
 snd_silncer_shot			= weapons\w_ak74_shot1 

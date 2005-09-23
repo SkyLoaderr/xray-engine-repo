@@ -56,19 +56,21 @@ immunities_sect			= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base			= 0.065 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base		= 0.18	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+control_inertion_factor		= 1.05f
 
 ;отдача
-cam_relax_speed         		= 3.8		;скорость возврата в исходное положение
-cam_dispersion          		= 0.92		;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle					= 8			;максимальный угол отдачи
-cam_max_angle_horz				= 9.0		;(degree) maximum shot horizontal degree 
-cam_step_angle_horz				= 1.0		;(degree) size of step camera moved in horizontal position while shooting
-control_inertion_factor	= 1.1f
+cam_relax_speed         	= 0.3	;скорость возврата в исходное положение
+cam_dispersion          	= 0.3	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion_inc		= 0.12	;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac		= 0.75	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 20.0	;максимальный угол отдачи
+cam_max_angle_horz		= 9.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.85	;(degree) size of step camera moved in horizontal position while shooting
 
-fire_dispersion_condition_factor = 5		;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 			= 0.003	    ;вероятность осечки при максимальном износе 
-condition_shot_dec 				= 0.00003	;увеличение износа при каждом выстреле
+fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
+condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
 direction               = 0, 0, 1
@@ -83,20 +85,30 @@ grenade_flame_particles = weapons\generic_weapon01
 shell_point				= 0.0, 0.194, 0.04
 shell_dir				= 0.0, 0.0, 0.4
 shell_particles			= weapons\generic_shells
-
 rpm_empty_click 		= 200
 
+PDM_disp_base 			= 1.0
+PDM_disp_vel_factor 		= 1.1
+PDM_disp_accel_factor 		= 1.1
+PDM_crouch	 		= 1.0
+PDM_crouch_no_acc 		= 1.0
+
 ; ttc
-hit_power               = 68
-hit_impulse		 		= 120
-hit_type = fire_wound
+hit_power               	= 107
+hit_impulse		 	= 154
+hit_type 			= fire_wound
 
-fire_distance           = 330
-bullet_speed			= 500			;начальная скорость пули
-rpm                     = 750
+fire_distance           	= 1000
+bullet_speed			= 310	;начальная скорость пули
+rpm                    		= 750
 
-grenade_vel				= 76
+grenade_vel			= 76
 ; end ttc
+
+silencer_hit_power       	= 55
+silencer_hit_impulse	 	= 120
+silencer_fire_distance   	= 250
+silencer_bullet_speed	 	= 280
 
 hud                     = wpn_groza_hud
 normal                  = 0, 1, 0
@@ -152,11 +164,6 @@ snd_switch			= weapons\groza_switch, 1.0, 0.45
 
 ;params when silencer is attached 
 ;similar to corresponding params without prefix silencer_
-
-silencer_hit_power       	= 45
-silencer_hit_impulse	 	= 120
-silencer_fire_distance   	= 250
-silencer_bullet_speed	 	= 600
 
 ;silencer_flame_particles 	= weapons\generic_weapon01
 silencer_smoke_particles 	= weapons\generic_shoot_00

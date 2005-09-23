@@ -57,23 +57,25 @@ immunities_sect			= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.03 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base		= 0.13	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+control_inertion_factor		= 1.4f
 
 ;отдача
-cam_relax_speed        		= 3.0		;скорость возврата в исходное положение
-cam_dispersion         		= 0.825		;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 8			;максимальный угол отдачи
-cam_max_angle_horz			= 9.0		;(degree) maximum shot horizontal degree 
-cam_step_angle_horz			= 1.0		;(degree) size of step camera moved in horizontal position while shooting
-control_inertion_factor	= 1.16f
+cam_relax_speed        		= 0.25	;скорость возврата в исходное положение
+cam_dispersion         		= 0.25	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion_inc		= 0.1	;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 20.0	;максимальный угол отдачи
+cam_max_angle_horz		= 6.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.4	;(degree) size of step camera moved in horizontal position while shooting
+
 ;;;destroy it
 cam_horz_prob				= 0.35	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
 cam_horz_factor				= 2.0	;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
 
-
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.003	    ;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.0001	;увеличение износа при каждом выстреле
+misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
+condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
 
 direction              		=  0, 0, 1
 fire_point             		=  0.0, 0.097, 0.639
@@ -89,14 +91,20 @@ shell_particles	 			= weapons\generic_shells
 
 rpm_empty_click 	 		= 200
 
-; ttc
-hit_power                	= 57
-hit_impulse		 			= 110
-hit_type 					= fire_wound 	
+PDM_disp_base 			= 1.0
+PDM_disp_vel_factor 		= 1.45
+PDM_disp_accel_factor 		= 1.45
+PDM_crouch	 		= 1.0
+PDM_crouch_no_acc 		= 1.0
 
-fire_distance            	= 480
-bullet_speed				= 900			;начальная скорость пули
-rpm                      	= 700
+; ttc
+hit_power        		= 95;104
+hit_impulse		 	= 140
+hit_type 			= fire_wound
+
+fire_distance           	= 1000
+bullet_speed			= 970	;начальная скорость пули
+rpm                     	= 700
 ; end ttc
 
 hud                      	= wpn_sig550_hud

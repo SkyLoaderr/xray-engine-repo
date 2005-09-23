@@ -52,30 +52,44 @@ immunities_sect				= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.1 		;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base		= 0.24	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
-cam_relax_speed         	= 5		;скорость возврата в исходное положение
-cam_dispersion          	= 1.5		;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 8			;максимальный угол отдачи
-cam_max_angle_horz			= 10.0		;(degree) maximum shot horizontal degree 
-cam_step_angle_horz			= 1.5		;(degree) size of step camera moved in horizontal position while shooting
+cam_relax_speed         	= 1.2	;скорость возврата в исходное положение
+cam_dispersion          	= 0.6	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion_inc		= 0.0	;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 20.0	;максимальный угол отдачи
+cam_max_angle_horz		= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.4	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.003	    ;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
+condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
+
+rpm_empty_click 	 		= 200
+
+PDM_disp_base 			= 1.0
+PDM_disp_vel_factor 		= 0.75
+PDM_disp_accel_factor 		= 0.75
+PDM_crouch	 		= 1.0
+PDM_crouch_no_acc 		= 1.0
 
 ;-----------------------------------------------------------------------------------
 ; ttc
-hit_power                	= 60;50
-hit_impulse		 		 	= 105.5
-hit_type = fire_wound	
+hit_power                	= 50
+hit_impulse		 	= 105.5
+hit_type 			= fire_wound	
 
-fire_distance            	= 150
-bullet_speed		 	 	= 280		
-rpm                      	= 300
-rpm_empty_click 	 		= 200
+fire_distance            	= 1000
+bullet_speed		 	= 280		
+rpm                      	= 270
 ; end ttc
+
+silencer_hit_power       	= 45
+silencer_hit_impulse	 	= 90
+silencer_fire_distance   	= 100
+silencer_bullet_speed	 	= 240
 
 ;-----------------------------------------------------------------------------------
 hud                      	= wpn_sig220_hud

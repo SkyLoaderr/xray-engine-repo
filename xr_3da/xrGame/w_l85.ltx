@@ -57,25 +57,28 @@ immunities_sect			= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.025  	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base		= 0.25; 0.16	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+control_inertion_factor		= 1.35f
 
 ;отдача
-cam_relax_speed        		= 3.0	    ;скорость возврата в исходное положение
-cam_dispersion         		= 1.3		;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 9			;максимальный угол отдачи
-cam_max_angle_horz			= 9.0		;(degree) maximum shot horizontal degree 
-cam_step_angle_horz			= 1.0		;(degree) size of step camera moved in horizontal position while shooting
-control_inertion_factor	= 1.13f
+cam_relax_speed        		= 0.5	;скорость возврата в исходное положение
+cam_dispersion         		= 0.5	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion_inc		= 0.1	;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle			= 20.0	;максимальный угол отдачи
+cam_max_angle_horz		= 10.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz		= 0.55	;(degree) size of step camera moved in horizontal position while shooting
+
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.001	    ;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+misfire_probability 		= 0.001	;вероятность осечки при максимальном износе 
+condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 ;parent dispersion modifiers
-PDM_disp_base					= 1.0
-PDM_disp_vel_factor				= 1.0
-PDM_disp_accel_factor			= 1.0
-PDM_disp_crouch					= 1.0
-PDM_disp_crouch_no_acc			= 1.0
+PDM_disp_base 			= 1.0
+PDM_disp_vel_factor 		= 1.4
+PDM_disp_accel_factor 		= 1.4
+PDM_crouch	 		= 1.0
+PDM_crouch_no_acc 		= 1.0
 
 direction              		=  0, 0, 1
 fire_point             		=  0.0, 0.186, 0.435
@@ -92,14 +95,19 @@ shell_particles	 			= weapons\generic_shells
 rpm_empty_click 	 		= 200
 
 ; ttc
-hit_power                	= 55
-hit_impulse		 			= 100
-hit_type 					= fire_wound 	
+hit_power                	= 103
+hit_impulse		 	= 140
+hit_type 			= fire_wound 	
 
-fire_distance            	= 480
-bullet_speed				= 950			;начальная скорость пули
+fire_distance            	= 1000
+bullet_speed			= 950	;начальная скорость пули
 rpm                      	= 650
 ; end ttc
+
+silencer_hit_power       	= 45
+silencer_hit_impulse	 	= 120
+silencer_fire_distance   	= 250
+silencer_bullet_speed	 	= 600
 
 hud                      	= wpn_l85_hud
 normal                   	= 0, 1, 0
@@ -157,11 +165,6 @@ snd_switch					= weapons\groza_switch, 1.0, 0.5
 
 
 ;настройки для глушителя
-silencer_hit_power       	= 40
-silencer_hit_impulse	 	= 120
-silencer_fire_distance   	= 250
-silencer_bullet_speed	 	= 600
-
 ;silencer_flame_particles 	= weapons\generic_weapon01
 silencer_smoke_particles 	= weapons\generic_shoot_00
 
