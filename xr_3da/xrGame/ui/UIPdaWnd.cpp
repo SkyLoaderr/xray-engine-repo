@@ -296,6 +296,7 @@ void CUIPdaWnd::PdaContentsChanged	(pda_section::part type)
 void CUIPdaWnd::DrawUpdatedSections				()
 {
 	Frect r;
+	m_updatedSectionImage->Update				();
 	if(g_pda_info_state&pda_section::quests){
 		r = UITabControl->GetButtonByIndex		(eptQuests)->GetAbsoluteRect();
 		m_updatedSectionImage->SetWndPos		(r.lt);

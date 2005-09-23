@@ -258,6 +258,8 @@ void CUIDiaryWnd::Draw					()
 	inherited::Draw	();
 
 	Frect r;
+	m_updatedSectionImage->Update				();
+
 	if(g_pda_info_state&pda_section::news){
 		r = m_FilterTab->GetButtonByIndex		(eNews)->GetAbsoluteRect();
 		m_updatedSectionImage->SetWndPos		(r.lt);
