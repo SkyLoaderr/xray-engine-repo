@@ -48,7 +48,9 @@ function PsyAntenna:__init				()
 	self.eff_time						= 0;
 	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
 	self.hit_time						= 0;
-	self.intensity						= 0;
+	self.intensity						= 0;	// текущая интенсивность
+	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
+	self.intensity_inertion				= 0.1;	// скорость изменения интенсивности ед/секунду
 	self.pp 							= PsyAntennaPP();
 	self.pp:start						();
 end
@@ -67,11 +69,11 @@ end
 --end
 
 function PsyAntenna:update_postprocess	()
-	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity,0.5+self.base_amplitude.g*self.intensity,0.5+self.base_amplitude.b*self.intensity);
-	self.pp.params.color_gray			= color(self.gray_color.r,self.gray_color.g,self.gray_color.b);
-	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor,self.power_factor.g*self.add_factor,self.power_factor.b*self.add_factor);
+	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity, 0.5+self.base_amplitude.g*self.intensity, 0.5+self.base_amplitude.b*self.intensity);
+	self.pp.params.color_gray			= color(self.gray_color.r, self.gray_color.g, self.gray_color.b);
+	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity);
 	self.pp.params.gray					= self.gray_amplitude*self.intensity;
---	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a,self.dual_amplitude*self.power_factor.a);
+	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
 //	self.pp.params.noise				= self.noise_var;
 end
 function PsyAntenna:update_psy_hit		(dt)
@@ -102,21 +104,30 @@ function PsyAntenna:generate_phantoms 	()
 	end;
 end
 
-function PsyAntenna:switch_to_phase		(ph)
-	self.phase							= ph;
-	self.eff_time		 				= 0;
-end
-function PsyAntenna:phase_working		()
+function PsyAntenna:update			(dt)
+	self.eff_time					= self.eff_time + dt;
+
+	if math.abs( self.intensity_base - self.intensity ) >= self.intensity_inertion then
+		local di = self.intensity_inertion * dt * 0.001
+
+		if self.intensity > self.intensity_base then
+			self.intensity = self.intensity - di
+		else
+			self.intensity = self.intensity + di
+		end
+	else
+		self.intensity = self.intensity_base
+	end
+
+	if (self.intensity<0.0)			then self.intensity=0.0; end;
+	if (self.intensity>1.0)			then self.intensity=1.0; end;
+
+	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
+
 	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001));
 	self:generate_phantoms 			();
-end
-function PsyAntenna:update				(dt)
-	self.eff_time						= self.eff_time + dt;
-	self:phase_working					();
-	if (self.intensity<0.0)				then self.intensity=0.0; end;
-	if (self.intensity>1.0)				then self.intensity=1.0; end;
-	self:update_postprocess 			();
-	self:update_psy_hit					(dt);
+	self:update_postprocess 		();
+	self:update_psy_hit				(dt);
 end
 
 
@@ -125,7 +136,6 @@ end
 ----------------------------------------------------------------------------------------------------
 
 
-local state_nowhere = 0 -- схема только что включилась
 local state_inside  = 1 -- актер внутри
 local state_outside = 2 -- актер снаружи
 
@@ -137,7 +147,7 @@ class "action_psy_antenna"
 function action_psy_antenna:__init( obj, storage )
 	self.object = obj
 	self.st     = storage
-	self.state  = state_nowhere -- еще не ясно, в зоне он, или нет
+	self.state  = state_outside -- еще не ясно, в зоне он, или нет
 end
 
 function action_psy_antenna:reset_scheme()
@@ -145,7 +155,7 @@ function action_psy_antenna:reset_scheme()
 		self:zone_leave()
 	end
 
-	self.state = state_nowhere
+	self.state = state_outside
 	
 	self:switch_state(db.actor)
 end
@@ -164,14 +174,14 @@ end
 function action_psy_antenna:switch_state( actor )
 	local state = self.state
 	
-	if state == state_outside or state == state_nowhere then
+	if state == state_outside then
 		if self.object:inside( actor:position() ) then
 			self:zone_enter()
 			return
 		end
 	end
 	
-	if state == state_inside or state == state_nowhere then
+	if state == state_inside then
 		if not self.object:inside( actor:position() ) then
 			self:zone_leave()
 			return
@@ -182,13 +192,13 @@ end
 function action_psy_antenna:zone_enter()
 	self.state = state_inside
 
-	psy_antenna.intensity = psy_antenna.intensity + self.st.intensity
+	psy_antenna.intensity_base = psy_antenna.intensity_base + self.st.intensity
 end
 
 function action_psy_antenna:zone_leave()
 	self.state = state_outside
 
-	psy_antenna.intensity = psy_antenna.intensity - self.st.intensity
+	psy_antenna.intensity_base = psy_antenna.intensity_base - self.st.intensity
 end
 
 ---------------------------------------------------------------------------------------------------------------------
