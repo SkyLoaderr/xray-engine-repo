@@ -354,14 +354,14 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 //	if (OnClient())
 	//------------------------------------------------
 	{
-		unaffected_r_torso.yaw		= N.o_torso.yaw;
-		unaffected_r_torso.pitch	= N.o_torso.pitch;
-		unaffected_r_torso.roll		= N.o_torso.roll;
-
 		if (OnServer() || Remote())
 		{
-			cam_Active()->yaw	= -N.o_torso.yaw;
-			cam_Active()->pitch = N.o_torso.pitch;
+			unaffected_r_torso.yaw		= N.o_torso.yaw;
+			unaffected_r_torso.pitch	= N.o_torso.pitch;
+			unaffected_r_torso.roll		= N.o_torso.roll;
+
+//			cam_Active()->yaw	= -N.o_torso.yaw;
+//			cam_Active()->pitch = N.o_torso.pitch;
 		};
 	};
 
