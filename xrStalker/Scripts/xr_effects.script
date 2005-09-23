@@ -139,8 +139,9 @@ function actor_punch(npc)
 	local active_item = db.actor:active_item()
 	if active_item then
 		db.actor:drop_item(active_item)
-	end	
-	set_inactivate_input_time(15000)
+	end
+	level.disable_input()
+	db.storage[db.actor:id()].disable_input_time = time_global()
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 
@@ -217,14 +218,6 @@ end
 function gar_direction_fire(actor, npc)
 	if actor:has_info("gar_hellcar_help") then
 		news_manager.send_tip(actor, "gar_direction_fire", 0, "stalker", 0)
-	end
-end
-
-
-function esc_wolf_thanks(actor, npc)
-	if actor:dont_has_info("esc_path_to_lager") then
-		news_manager.send_tip(actor, "esc_wolf_thanks", 0, "stalker", 0)
-		actor:give_info_portion("esc_path_to_lager")
 	end
 end
 
@@ -412,12 +405,6 @@ function military_dolg_dead (actor, npc)
 --       end        
     end   
     
-end
-
-function mil_patrol_death_check (actor, npc)
-    if actor:has_info ("mil_patrol_man1_dead") and actor:has_info ("mil_patrol_man2_dead") and actor:has_info ("mil_patrol_man3_dead") then
-       actor:give_info_portion ("mil_patrol_dead") 
-    end
 end
 
 function mil_cook_dead (actor, npc)
@@ -1136,6 +1123,10 @@ function heli_set_enemy_actor(actor, npc)
     end 
 end
 
+function heli_clear_enemy(actor, npc)
+    db.storage[npc:id()].combat.enemy_id = nil
+end
+
 function heli_start_flame(actor, npc)
 	bind_heli.heli_start_flame( npc )
 end
@@ -1177,21 +1168,3 @@ function aes_kill_actor (actor, npc)
     end   
 end
 
-
--------------------------------------------------------------------------------------
--- ‘ункции дл€ работы с вертолЄтами на янтаре
--------------------------------------------------------------------------------------
-
-function yan_heli_set_enemy_actor(actor, npc)
-    local st = db.storage[npc:id()]
-    if not st.combat.enemy_id and actor:alive() then
-        st.combat.enemy_id = actor:id()
-    end 
-end
-
-function yan_heli_set_friend_actor(actor, npc)
-    local st = db.storage[npc:id()]
-    if st.combat.enemy_id and actor:alive() then
-        st.combat.enemy_id = nil
-    end 
-end
