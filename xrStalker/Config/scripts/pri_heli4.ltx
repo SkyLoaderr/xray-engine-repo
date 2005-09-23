@@ -2,21 +2,6 @@
 active          = heli_move1
 
 [heli_move1]
-path_move       = pri_heli4_wait_path
-on_info         = {+pri_helicopters_start} heli_move2
-engine_sound    = false
-immortal        = true
-combat_ignore   = true
-
-[heli_move2]
-path_move       = pri_heli4_go_path
-invulnerable    = true
-immortal        = true
-combat_ignore   = true
-on_signal       = arrived | %+pri_followers_heli_look%
-on_signal2      = next | heli_move3
-
-[heli_move3]
 path_move       = pri_heli4_wait2_path
 immortal        = true
 combat_ignore   = true
