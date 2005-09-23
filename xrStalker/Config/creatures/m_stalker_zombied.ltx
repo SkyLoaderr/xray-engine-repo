@@ -20,68 +20,6 @@ velocity_factor		     	= 0.5
 luminocity_factor			= 0.5;0				; фактор освещения (только для Актёра)
 transparency_threshold	 	= 0.4
 
-[stalker_zombied_damage]
-default						= 1.0, -1, 1.0
-
-bip01_pelvis 				= 0.3, 10, 0.3
-bip01_spine 		 		= 0.3, 10, 0.8
-bip01_spine1 		 		= 0.4, 0, 0.8
-bip01_neck 			 		= 1.0, 0, 1.0
-bip01_head 			 		= 3.0, 0, 1.0
-eyelid_1 			 		= 3.0, 0, 1.0
-eye_left 			 		= 3.0, 0, 1.0
-eye_right 			 		= 3.0, 0, 1.0
-jaw_1 		 		 		= 1.0, 0, 1.0
-
-bip01_l_clavicle	 		= 0.1, 4, 0.7
-bip01_l_upperarm	 		= 0.1, 4, 0.6
-bip01_l_forearm	 	 		= 0.1, 4, 0.5
-bip01_l_hand	 	 		= 0.05, 4, 0.2
-bip01_l_finger0	 	 		= 0.02, 4, 0.1
-bip01_l_finger01	 		= 0.02, 4, 0.1
-bip01_l_finger02	 		= 0.02, 4, 0.1
-bip01_l_finger1	 	 		= 0.02, 4, 0.1
-bip01_l_finger11	 		= 0.02, 4, 0.1
-bip01_l_finger12	 		= 0.02, 4, 0.1
-bip01_l_finger2	 	 		= 0.02, 4, 0.1
-bip01_l_finger21	 		= 0.02, 4, 0.1
-bip01_l_finger22	 		= 0.02, 4, 0.1
-
-bip01_r_clavicle	 		= 0.1, 2, 0.7
-bip01_r_upperarm	 		= 0.1, 2, 0.6
-bip01_r_forearm	 	 		= 0.1, 2, 0.5
-bip01_r_hand	 	 		= 0.05, 2, 0.2
-bip01_r_finger0	 	 		= 0.02, 2, 0.1
-bip01_r_finger01	 		= 0.02, 2, 0.1
-bip01_r_finger02	 		= 0.02, 2, 0.1
-bip01_r_finger1	 	 		= 0.02, 2, 0.1
-bip01_r_finger11	 		= 0.02, 2, 0.1
-bip01_r_finger12	 		= 0.02, 2, 0.1
-bip01_r_finger2	 	 		= 0.02, 2, 0.1
-bip01_r_finger21	 		= 0.02, 2, 0.1
-bip01_r_finger22	 		= 0.02, 2, 0.1
-
-bip01_l_thigh	 	 		= 0.15, 8, 0.5
-bip01_l_calf	 	 		= 0.1, 8, 0.4
-bip01_l_foot	 	 		= 0.05, 8, 0.3
-bip01_l_toe0	 	 		= 0.02, 8, 0.2
-bip01_r_thigh	 	 		= 0.15, 6, 0.5
-bip01_r_calf	 	 		= 0.1, 6, 0.4
-bip01_r_foot	 	 		= 0.05, 6, 0.3
-bip01_r_toe0	 	 		= 0.02, 6, 0.2
-  
-[stalker_zombied_immunities]
-burn_immunity 				= 0.8				;коэффициенты иммунитета 
-strike_immunity 			= 1.0
-shock_immunity 				= 1.0
-wound_immunity				= 0.5
-radiation_immunity 			= 0.0
-telepatic_immunity 			= 1.0
-chemical_burn_immunity 		= 1.0
-explosion_immunity 			= 1.0
-fire_wound_immunity  		= 0.5
-wound_2_immunity  			= 0.5
-
 [stalker_zombied_condition]
 satiety_v					= 0.00001				;скорость уменьшения сытости со временем
 radiation_v					= 0.0001				;скорость уменьшения радиации
@@ -115,8 +53,6 @@ $spawn							= "stalkers\stalker_zombied"	; option for Level Editor
 attachable_items				= device_torch,attachable_item
 
 ;---SECTIONS----------------------------------------------------------
-damage							= stalker_zombied_damage
-immunities_sect					= stalker_zombied_immunities
 condition_sect					= stalker_zombied_condition
 ;---VISIBILITY--------------------------------------------------------
 vision_danger_section			= stalker_zombied_vision_danger
