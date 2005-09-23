@@ -7,7 +7,7 @@ fraction = {}
 
 local i, v
 level_gulags = {gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
-                gulag_military, gulag_military, gulag_radar, gulag_yantar, gulag_pripyat}
+                gulag_military, gulag_radar, gulag_yantar, gulag_pripyat}
 
 local gulag_tasks_file_name = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx       = ini_file( gulag_tasks_file_name )
@@ -564,6 +564,7 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
+--[[
 	if gulag_escape.checkStalker(npc_community, gulag_type) then
 		return true
 	end
@@ -594,14 +595,13 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_pripyat.checkStalker(npc_community, gulag_type) then
 		return true
 	end
+--]]
 
---[[
     for i, v in level_gulags do
 	    if v.checkStalker(npc_community, gulag_type) then
 		    return true
 	    end
     end
---]]
 
 	return false
 end
@@ -611,6 +611,7 @@ function checkMonster(npc_community, gulag_type)
 		return true
 	end
 
+--[[
 	if gulag_escape.checkMonster(npc_community, gulag_type) then
 		return true
     end
@@ -641,13 +642,13 @@ function checkMonster(npc_community, gulag_type)
    	if gulag_pripyat.checkMonster(npc_community, gulag_type) then
 		return true
     end
---[[
+--]]
+
     for i, v in level_gulags do
 	    if v.checkMonster(npc_community, gulag_type) then
 		    return true
 	    end
     end
---]]
 
 	return false
 end

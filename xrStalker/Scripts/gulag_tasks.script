@@ -118,6 +118,7 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 
+--[[
 	gulag_escape.load_job     (sj, gname, type, squad, groups)
 	gulag_garbage.load_job    (sj, gname, type, squad, groups)
 	gulag_agroprom.load_job   (sj, gname, type, squad, groups)
@@ -129,11 +130,10 @@ function loadJob(sj, gname, type, squad, groups)
 	gulag_radar.load_job      (sj, gname, type, squad, groups)
 	gulag_yantar.load_job     (sj, gname, type, squad, groups)
 	gulag_pripyat.load_job    (sj, gname, type, squad, groups)
---[[
+--]]
     for k, v in level_gulags do
         v.load_job(sj, gname, type, squad, groups)
     end
---]]
 end
 
 function loadStates(gname, type)
@@ -189,6 +189,7 @@ function loadStates(gname, type)
 
 	local f
 
+--[[
 	f = gulag_escape.load_states(gname, type)
 	if f then
 		return f
@@ -229,15 +230,14 @@ function loadStates(gname, type)
 	if f then
 		return f
 	end
+--]]
     
---[[
     for k, v in level_gulags do
 	    f = v.load_states(gname, type)
 	    if f then
 		    return f
 	    end
     end
---]]
 
 	abort("ERROR: unrecognized gulag's type '%s'", type)
 end
