@@ -15,7 +15,7 @@ CUIMessageBox::CUIMessageBox()
 
 CUIMessageBox::~CUIMessageBox()
 {
-	Reset();
+	Clear();
 }
 
 #define BUTTON_UP_OFFSET 75
