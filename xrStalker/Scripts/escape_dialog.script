@@ -338,6 +338,11 @@ function give_wounded_flash(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 250, "in")
 end
 
+function give_knife_to_actor(first_speaker, second_speaker)
+	local knife = second_speaker:object("wpn_knife")
+	dialogs.relocate_item(second_speaker, knife, "in")
+end
+
 --' Escape bandits factory
 function give_factory_reward_trader(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 500, "in")

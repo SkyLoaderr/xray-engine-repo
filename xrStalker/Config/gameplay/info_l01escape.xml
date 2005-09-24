@@ -29,6 +29,7 @@
 	</info_portion>
 	<info_portion id="esc_first_novice_dead"></info_portion>
 	<info_portion id="esc_second_novice_dead"></info_portion>
+	<info_portion id="esc_heli_attack"></info_portion>
 	<info_portion id="tutorial_wounded_must_spawn"></info_portion>
 	<info_portion id="tutorial_wounded_give_info"></info_portion>
 	<info_portion id="tutorial_wounded_help"></info_portion>
@@ -85,7 +86,9 @@
 	<info_portion id="esc_open_killer_fire"></info_portion>
 	<info_portion id="esc_open_lager_fire"></info_portion>
 	<info_portion id="esc_fanat_die"></info_portion>
-
+	<info_portion id="esc_path_to_lager"></info_portion>
+	<info_portion id="esc_lager_destroyed"></info_portion>
+	
 	<!-- Порядок фраз торговца -->
 	<info_portion id="esc_trader_talked_about_zone"></info_portion>
 	<info_portion id="esc_trader_talked_about_me"></info_portion>

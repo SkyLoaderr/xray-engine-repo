@@ -226,6 +226,7 @@
 			<text>esc_defend_lager_from_killers_0</text>
 			<icon x="400" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<function_complete>escape_tasks.task_lager_complete</function_complete>
+			<infoportion_fail>esc_lager_destroyed</infoportion_fail>
 		</objective>
 		<objective>
 			<text>esc_defend_lager_from_killers_1</text>
