@@ -292,6 +292,14 @@ void CUIPdaWnd::PdaContentsChanged	(pda_section::part type)
 		UIPdaContactsWnd->Reload		();
 	}
 }
+void draw_sign		(CUIStatic* s, Frect& r)
+{
+	Fvector2 pos;
+	pos					= r.lt;
+	pos.y				+= r.height()/2.0f;
+	s->SetWndPos		(pos);
+	s->Draw				();
+}
 
 void CUIPdaWnd::DrawUpdatedSections				()
 {
@@ -299,45 +307,31 @@ void CUIPdaWnd::DrawUpdatedSections				()
 	m_updatedSectionImage->Update				();
 	if(g_pda_info_state&pda_section::quests){
 		r = UITabControl->GetButtonByIndex		(eptQuests)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::map){
 		r = UITabControl->GetButtonByIndex		(eptMap)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::diary){
 		r = UITabControl->GetButtonByIndex		(eptDiary)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::contacts){
 		r = UITabControl->GetButtonByIndex		(eptContacts)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::ranking){
 		r = UITabControl->GetButtonByIndex		(eptRanking)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::statistics){
 		r = UITabControl->GetButtonByIndex		(eptActorStatistic)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::encyclopedia){
 		r = UITabControl->GetButtonByIndex		(eptEncyclopedia)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	
 }

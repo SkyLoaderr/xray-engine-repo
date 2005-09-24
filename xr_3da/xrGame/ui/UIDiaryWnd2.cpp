@@ -252,7 +252,7 @@ void CUIDiaryWnd::OnSrcListItemClicked	(CUIWindow* w,void* p)
 		m_DescrView->AddWindow		(article_info);
 	}
 }
-
+extern void draw_sign		(CUIStatic* s, Frect& r);
 void CUIDiaryWnd::Draw					()
 {
 	inherited::Draw	();
@@ -262,21 +262,15 @@ void CUIDiaryWnd::Draw					()
 
 	if(g_pda_info_state&pda_section::news){
 		r = m_FilterTab->GetButtonByIndex		(eNews)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::info){
 		r = m_FilterTab->GetButtonByIndex		(eInfo)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::journal){
 		r = m_FilterTab->GetButtonByIndex		(eJournal)->GetAbsoluteRect();
-		m_updatedSectionImage->SetWndPos		(r.lt);
-		m_updatedSectionImage->SetWndSize		(Fvector2().set(r.width(),r.height()));
-		m_updatedSectionImage->Draw				();
+		draw_sign								(m_updatedSectionImage, r);
 	}
 
 }
