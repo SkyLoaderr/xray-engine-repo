@@ -825,12 +825,13 @@ path_walk = raid1_walk
 path_look = raid1_look
 combat_ignore_cond = {-esc_open_killer_fire}
 def_state_moving = patrol
+team = killers
 on_signal = fires| remark@esc_killer_leader_raid %=esc_direction_fire%
 
 [remark@esc_killer_leader_raid]
 snd = gar_bandits_seryi
 anim = guard
-on_timer = 5000| nil %+esc_open_lager_fire +esc_open_killer_fire%
+on_timer = 5000| nil %+esc_open_lager_fire%
 combat_ignore_cond = {-esc_open_killer_fire}
 
 
@@ -844,6 +845,7 @@ combat_ignore = combat_ignore
 [walker@esc_killer1_raid]
 path_walk = raid2_walk
 path_look = raid2_look
+team = killers
 combat_ignore_cond = {-esc_open_killer_fire}
 def_state_moving = patrol
 on_signal = fires| remark@esc_killer_wait1
@@ -862,6 +864,7 @@ combat_ignore = combat_ignore
 [walker@esc_killer2_raid]
 path_walk = raid3_walk
 path_look = raid3_look
+team = killers
 combat_ignore_cond = {-esc_open_killer_fire}
 def_state_moving = patrol
 on_signal = fires| remark@esc_killer_wait2
