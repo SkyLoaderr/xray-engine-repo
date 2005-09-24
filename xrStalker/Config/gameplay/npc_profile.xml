@@ -110,6 +110,10 @@
 		<class>gar_dolg_blokpost</class>
 	</character>
 		
+	<character id="gar_dolg_blokpost_commander">
+		<class>gar_dolg_blokpost</class>
+	</character>
+		
 <!-- Agroprom + undeground-->
 	<character id="agr_krot">
 		<class>agr_krot</class>
