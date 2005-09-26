@@ -122,7 +122,7 @@ function action_fight_far:initialize()
 	self.object:set_detail_path_type    ( move.line )
 	self.object:set_path_type           ( game_object.level_path )
 
-	state_mgr.set_state( self.object, "assault_fire", nil, nil, { look_object = be } )
+	state_mgr.set_state( self.object, "assault_fire", nil, nil, { look_object = self.object:best_enemy() } )
 end
 
 function action_fight_far:execute()
