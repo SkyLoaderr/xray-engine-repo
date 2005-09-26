@@ -666,6 +666,51 @@ inv_grid_x			= 7
 inv_grid_y			= 18
 cost				= 0
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Yantar
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[good_psy_hat]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\good_psy_hat"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_merger.ogf
+radius				= 1
+;script_binding		= stalker.object_init
+description         = item_quest_case_02
+inv_name			= Good Psy-Hat
+inv_name_short		= Psy-Hat
+inv_weight			= 3	;0.2
+can_trade			= off
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 8
+inv_grid_y			= 18
+cost				= 1000
+
+[bad_psy_hat]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\bad_psy_hat"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_merger.ogf
+radius				= 1
+;script_binding		= stalker.object_init
+description         = item_quest_case_02
+inv_name			= Bad Psy-Hat
+inv_name_short		= Psy-Hat
+inv_weight			= 3	;0.2
+can_trade			= off
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 8
+inv_grid_y			= 18
+cost				= 1000
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Military
