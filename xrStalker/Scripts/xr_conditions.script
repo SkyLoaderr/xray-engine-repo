@@ -236,6 +236,13 @@ function gulag_casualities_ge(actor, npc, p)
 	return ( p[1] ~= nil and p[2] ~= nil ) and ( xr_gulag.getCasualities( p[1] ) >= p[2] )
 end
 
+-- true, если у актёра в инвентаре есть указанный предмет
+-- false, если нету, либо не задана секция предмета
+function actor_has_item(actor, npc, p)
+	return p[1] ~= nil and actor:object( p[1] ) ~= nil
+end
+
+
 -- Функции поддержки kamp
 function _kamp_talk(actor, npc)
 	if xr_kamp.kamp_stalkers[npc:id()] then
