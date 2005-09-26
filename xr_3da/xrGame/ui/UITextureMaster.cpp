@@ -14,7 +14,9 @@
 #include "xrXmlParser.h"
 
 CUITextureMaster::shared_textures	CUITextureMaster::m_shTex;
+#ifdef DEBUG
 u32									CUITextureMaster::m_time = 0;
+#endif
 
 void CUITextureMaster::WriteLog(){
 	Msg("UI texture manager work time is %d ms", m_time);
