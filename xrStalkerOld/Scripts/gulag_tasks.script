@@ -248,7 +248,7 @@ function loadLtx(name, type)
 	    l = v.load_ltx(name, type)
 	    if l ~= nil then
 	        local ini = create_ini_file(l)
-	        printf("gulag <ltx>:\n%s", l)
+	        --printf("gulag <ltx>:\n%s", l)
 	        return ini
 	    end
     end
