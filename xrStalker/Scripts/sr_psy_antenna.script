@@ -44,7 +44,7 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // sound
 // ----------------------------------------------------------------------------------------
-	self.sound_obj						= sound_object( "ambient\\random\\rnd_disgusting" )
+	self.sound_obj						= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1]] )
 	self.sound_obj:play					(db.actor, 0, sound_object.s2d + sound_object.looped);
 // ----------------------------------------------------------------------------------------
 // class variables initialize
