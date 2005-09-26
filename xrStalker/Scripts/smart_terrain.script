@@ -43,7 +43,7 @@ local monster_classes
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
 if (version.isLua51) then
-	dostring("printf = function (fmt,...) log(string.format(fmt,...))	end")
+	loadstring("printf = function (fmt,...) log(string.format(fmt,...))	end")()
 else
 	printf = function (fmt,...) log(string.format(fmt,unpack(arg))) end
 end
