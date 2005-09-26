@@ -1186,3 +1186,7 @@ end
 function yan_actor_sleep (actor, npc)
 		set_sleep_relocate(patrol ("yan_actor_sleep"):point(0), patrol ("yan_actor_sleep"):point(1), 180)
 end
+
+function yan_sleep_not_relocate (actor, npc)
+		db.actor:actor_sleep(0, 180)
+end
