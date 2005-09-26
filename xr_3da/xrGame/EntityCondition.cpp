@@ -23,75 +23,75 @@
 
 CEntityCondition::CEntityCondition(CEntityAlive *object)
 {
-	VERIFY		(object);
-	m_object	= object;
+	VERIFY				(object);
+	m_object			= object;
 	m_use_limping_state = false;
-	m_iLastTimeCalled = 0;
-	m_bTimeValid = false;
+	m_iLastTimeCalled	= 0;
+	m_bTimeValid		= false;
 
-	m_fHealthMax = MAX_HEALTH;
-	m_fPowerMax = MAX_POWER;
-	m_fSatietyMax = MAX_SATIETY;
-	m_fRadiationMax = MAX_RADIATION;
-	m_fPsyHealthMax = MAX_PSY_HEALTH;
+	m_fHealthMax		= MAX_HEALTH;
+	m_fPowerMax			= MAX_POWER;
+	m_fSatietyMax		= MAX_SATIETY;
+	m_fRadiationMax		= MAX_RADIATION;
+	m_fPsyHealthMax		= MAX_PSY_HEALTH;
 
-	m_fCircumspection = m_fCircumspectionMax = 1.f;
-	m_fEntityMorale =  m_fEntityMoraleMax = 1.f;
+	m_fCircumspection	= m_fCircumspectionMax = 1.f;
+	m_fEntityMorale		=  m_fEntityMoraleMax = 1.f;
 	m_fV_Circumspection =  0.01f;
-	m_fV_EntityMorale = 0.01f;
-	m_fV_PsyHealth	= 0.01f;
+	m_fV_EntityMorale	= 0.01f;
+	m_fV_PsyHealth		= 0.01f;
 
 
-	m_fHealth		= MAX_HEALTH;
-	m_fPower		= MAX_POWER;
-	m_fSatiety		= MAX_SATIETY;
-	m_fRadiation	= 0;
-	m_fPsyHealth	= MAX_PSY_HEALTH;
+	m_fHealth			= MAX_HEALTH;
+	m_fPower			= MAX_POWER;
+	m_fSatiety			= MAX_SATIETY;
+	m_fRadiation		= 0;
+	m_fPsyHealth		= MAX_PSY_HEALTH;
 
-	m_fV_SatietyHealth = 0.001f;
-	m_fV_SatietyPower = 0.01f;
-	m_fV_Satiety = 0.004f;
+	m_fV_SatietyHealth	= 0.001f;
+	m_fV_SatietyPower	= 0.01f;
+	m_fV_Satiety		= 0.004f;
 
 	m_fV_RadiationHealth = 0.006f;
-	m_fV_Radiation = 0.004f;
+	m_fV_Radiation		= 0.004f;
 
-	m_fV_Bleeding = 0.09f;
-	m_fV_WoundIncarnation = 0.001f;
-	m_fMinWoundSize = 0.00001f;
+	m_fV_Bleeding			= 0.09f;
+	m_fV_WoundIncarnation	= 0.001f;
+	m_fMinWoundSize			= 0.00001f;
 
 	
-	m_fHealthHitPart = 1.0f;
-	m_fPowerHitPart = 0.5f;
+	m_fHealthHitPart		= 1.0f;
+	m_fPowerHitPart			= 0.5f;
 
-	m_fDeltaHealth = 0;
-	m_fDeltaPower = 0;
-	m_fDeltaSatiety = 0;
-	m_fDeltaRadiation = 0;
-	m_fDeltaPsyHealth = 0;
+	m_fDeltaHealth			= 0;
+	m_fDeltaPower			= 0;
+	m_fDeltaSatiety			= 0;
+	m_fDeltaRadiation		= 0;
+	m_fDeltaPsyHealth		= 0;
 
 
-	m_fHealthLost = 0.f;
-	m_pWho = NULL;
-	m_iWhoID = 0;
+	m_fHealthLost			= 0.f;
+	m_pWho					= NULL;
+	m_iWhoID				= 0;
 
-	m_WoundVector.clear();
+	m_WoundVector.clear		();
 
-	Awoke();
+	Awoke					();
 	/*
 	m_fK_SleepHealth = 1.0f;
 	m_fK_SleepPower = 1.0f;
 	m_fK_SleepSatiety = 1.0f;	
 	m_fK_SleepRadiation = 1.0f;*/
 
-	m_fHitBoneScale = 1.f;
-	m_fWoundBoneScale = 1.f;
+	m_fHitBoneScale			= 1.f;
+	m_fWoundBoneScale		= 1.f;
 
-	m_bIsBleeding = false;
+	m_bIsBleeding			= false;
 }
 
 CEntityCondition::~CEntityCondition(void)
 {
-	ClearWounds();
+	ClearWounds				();
 }
 
 void CEntityCondition::ClearWounds()

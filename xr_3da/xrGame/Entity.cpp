@@ -91,9 +91,7 @@ float CEntity::CalcCondition(float hit)
 	// If Local() - perform some logic
 	if (Local() && g_Alive()) {
 		SetfHealth			(GetfHealth()-lost_health);
-//		fEntityHealth		-=	lost_health; 
 		SetfHealth			((GetfHealth()<-1000)?-1000:GetfHealth());
-//		fEntityHealth		=	fEntityHealth<-1000?-1000:fEntityHealth;
 		fArmor				-=	lost_armor;
 	}
 

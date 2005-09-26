@@ -35,9 +35,6 @@ protected:
 
 	virtual float			GetfHealth			() const			{ return fHealth; }
 	virtual float			SetfHealth			(float value)		{fHealth = value; return value;}
-//	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
-
-//	virtual float& GetEntityHealth() { return fHealth; }
 	
 	float				fMAX_Health;
 	float				fArmor,		fMAX_Armor;
