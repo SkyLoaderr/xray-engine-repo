@@ -628,7 +628,7 @@ bool ESceneAIMapTools::GenerateMap(bool bFromSelectedOnly)
 CTimer tm;
 tm.Start();
         BuildNodes			(bFromSelectedOnly);
-tm.Stop();
+tm.GetElapsed_sec();
         Scene->unlock		();
 //.        Log("-test time: ",	g_tm.GetElapsed_sec());
 		Log("-building time: ",tm.GetElapsed_sec());

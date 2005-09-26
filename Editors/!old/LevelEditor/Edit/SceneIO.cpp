@@ -347,7 +347,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 	if (!bUndo){ 
     	if (bSaveMain)	EFS.LockFile(0,full_name.c_str(),false);
     	m_RTFlags.set	(flRT_Unsaved,FALSE);
-    	Msg				("Saving time: %3.2f sec",T.Stop());
+    	Msg				("Saving time: %3.2f sec",T.GetElapsed_sec());
     }
 }
 //--------------------------------------------------------------------------------------------------
@@ -523,7 +523,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
             UpdateSnapList();
         }
         
-        Msg("EScene: %d objects loaded, %3.2f sec", ObjCount(), T.Stop() );
+        Msg("EScene: %d objects loaded, %3.2f sec", ObjCount(), T.GetElapsed_sec() );
 
     	UI->UpdateScene(true); 
 
