@@ -1,6 +1,3 @@
--- log("LUA version:".._VERSION)
-isLua51	= (nil ~= _VERSION) and (string.find(_VERSION,"Lua 5.1",1,true) ~= nil)
-
 schemes = {} -- соответствие схем модулям
 stypes = {} -- типы схем
 
@@ -16,7 +13,7 @@ end
 ----------------------------------------------------------------------
 
 
-if (isLua51) then
+if (version.isLua51) then
 	function printf(fmt,...)
 		log(string.format(fmt,...))
 	end
@@ -406,7 +403,7 @@ end
 
 class "script_object"
 
-if (isLua51) then
+if (version.isLua51) then
 	function script_object:__init(name,script,...)
 		self.action         = action(nil,...)
 		self.object_name    = name
@@ -461,7 +458,7 @@ debug_script_name = ""
 
 -- Tvводит в лог строчку, если script_name == debug_script_name
 -- Lспользуется для отрадки сценариев
-if (isLua51) then
+if (version.isLua51) then
 	function debug_log(script_name, fmt, ...)
 		if debug_script_name == script_name then
 			log(string.format(fmt, ...))
