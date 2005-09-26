@@ -545,7 +545,7 @@ void CRelationMapLocation::UpdateMiniMap(CUICustomMap* map)
 void CRelationMapLocation::UpdateLevelMap(CUICustomMap* map)
 {
 	if(IsVisible())
-		inherited::UpdateMiniMap		(map);
+		inherited::UpdateLevelMap		(map);
 }
 
 #ifdef DEBUG

@@ -199,11 +199,16 @@ void CInput::MouseUpdate( )
 			if ( od[i].dwData & 0x80 )	{ mouseState[1] = TRUE;				cbStack.back()->IR_OnMousePress(1);		}
 			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.back()->IR_OnMouseRelease(1);	}
 			break;
+		case DIMOFS_BUTTON2:
+			if ( od[i].dwData & 0x80 )	{ mouseState[2] = TRUE;				cbStack.back()->IR_OnMousePress(2);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[2] = FALSE;			cbStack.back()->IR_OnMouseRelease(2);	}
+			break;
 		}
 	}
 
 	if (mouseState[0]) 		cbStack.back()->IR_OnMouseHold(0);
 	if (mouseState[1])		cbStack.back()->IR_OnMouseHold(1);
+	if (mouseState[2])		cbStack.back()->IR_OnMouseHold(2);
 
 	if ( dwElements ){
 		if (offs[0] || offs[1]) cbStack.back()->IR_OnMouseMove	( offs[0], offs[1] );
