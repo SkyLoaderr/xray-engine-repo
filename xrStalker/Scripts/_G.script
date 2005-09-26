@@ -14,8 +14,15 @@ end
 
 ----------------------------------------------------------------------
 
-function printf(fmt,...)
-    log(string.format(fmt,unpack(arg)))
+
+if (string.find(_VERSION,"Lua 5.1",1,true) ~= nil) then
+	function printf(fmt,...)
+		log(string.format(fmt,...))
+	end
+else
+	function printf(fmt,...)
+		log(string.format(fmt,unpack(arg)))
+	end
 end
 
 ----------------------------------------------------------------------
