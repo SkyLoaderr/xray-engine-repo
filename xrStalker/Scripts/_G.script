@@ -450,14 +450,7 @@ debug_script_name = ""
 -- Tvводит в лог строчку, если script_name == debug_script_name
 -- Lспользуется для отрадки сценариев
 if (version.isLua51) then
-	dostring("
-		debug_log = function (script_name, fmt, ...)
-			if debug_script_name == script_name then
-				log(string.format(fmt, ...))
-			--    flush()
-			end
-		end"
-	)
+	dostring("debug_log = function (script_name, fmt, ...)	if debug_script_name == script_name then	log(string.format(fmt, ...))	--    flush()			end		end")
 else
 	function debug_log(script_name, fmt, ...)
 		if debug_script_name == script_name then
