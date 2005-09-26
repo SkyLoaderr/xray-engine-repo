@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
+    <dialog id="yantar_general_ucheniy_talk_end">
+        <has_info>yantar_attack_start</has_info>
+        <phrase_list>
+            <phrase id="11">
+                <text>yantar_general_ucheniy_talk_end_11</text>
+                <give_info>yan_kill_brain_done</give_info>
+                <give_info>yan_find_scientist_done</give_info>
+            </phrase>
+            <phrase id="1">
+                <text>yantar_general_ucheniy_talk_end_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text>yantar_general_ucheniy_talk_end_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="yantar_general_ucheniy_talk_start">
         <phrase_list>
             <phrase id="2">
@@ -26,40 +44,8 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="yantar_general_ucheniy_talk_end">
-        <has_info>yantar_attack_start</has_info>
-        <phrase_list>
-            <phrase id="11">
-                <text>yantar_general_ucheniy_talk_end_11</text>
-                <give_info>yan_kill_brain_done</give_info>
-                <give_info>yan_find_scientist_done</give_info>
-            </phrase>
-            <phrase id="1">
-                <text>yantar_general_ucheniy_talk_end_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="0">
-                <text>yantar_general_ucheniy_talk_end_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="yantar_help_scientist">
         <phrase_list>
-            <phrase id="0">
-                <text>yantar_help_scientist_0</text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>yantar_help_scientist_6</text>
-                <action>xr_effects.yan_actor_sleep</action>
-                <has_info>yan_scientist_point_to_4</has_info>
-            </phrase>
             <phrase id="5">
                 <text>yantar_help_scientist_5</text>
                 <dont_has_info>yan_scientist_point_to_4</dont_has_info>
@@ -90,6 +76,21 @@
                 <dont_has_info>yan_scientist_point_to_1</dont_has_info>
                 <give_info>yan_scientist_point_to_1</give_info>
                 <has_info>yan_find_scientist_start</has_info>
+            </phrase>
+            <phrase id="0">
+                <text>yantar_help_scientist_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>yantar_help_scientist_6</text>
+                <action>xr_effects.yan_actor_sleep</action>
+                <action>dialogs.break_dialog</action>
+                <has_info>yan_scientist_point_to_4</has_info>
             </phrase>
         </phrase_list>
     </dialog>
