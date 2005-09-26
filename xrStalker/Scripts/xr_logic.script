@@ -474,7 +474,7 @@ function issue_event(npc, st, event_fn, ...)
 		if is_active and action_ptr[event_fn] then
 			--printf("DEBUG: event issued")
 			if (version.isLua51) then	action_ptr[event_fn](action_ptr, ...)
-			else				action_ptr[event_fn](action_ptr, unpack(arg))
+			else						action_ptr[event_fn](action_ptr, unpack(arg))
 			end
 			activation_count = activation_count + 1
 		end
