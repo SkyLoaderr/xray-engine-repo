@@ -139,7 +139,7 @@
         <text>Счастливо оставаться.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_0">
-        <text>Да вроде бы жив.</text>
+        <text>Что скажешь, старик?</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_1">
         <text>Когда у меня появится свободное время, я с удовольствием помогу тебе в твоем деле. Такие люди как ты, просто так не ходят. Кроме того я достаточно много знаю, могу поделиться информацией.</text>
@@ -214,7 +214,7 @@
         <text>Ладно.</text>
     </string>
     <string id="gar_hellcar_start_31">
-        <text>Спасибо, друг, ты помог нам. Как ты?</text>
+        <text>Спасибо, друг, ты помог нам.</text>
     </string>
     <string id="gar_hellcar_start_41">
         <text>Дело еще не сделано, болтать будем потом.</text>
