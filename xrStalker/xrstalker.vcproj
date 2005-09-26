@@ -655,6 +655,9 @@
 						RelativePath=".\Config\text\rus\ui_st_keybinding.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\ui_st_pda.xml">
 					</File>
 					<Filter
@@ -1031,9 +1034,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_keybinding.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
