@@ -220,7 +220,7 @@ void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, 
 	ObjectHit(bullet, end_point, R, target_material, hit_normal);
 }
 
-
+extern float gCheckHitK;
 void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material)
 {
 	//только для динамических объектов
@@ -292,7 +292,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 		P.w_u16			(bullet->parent_id);
 		P.w_u16			(bullet->weapon_id);
 		P.w_dir			(original_dir);
-		P.w_float		(power);
+		P.w_float		(gCheckHitK*power);
 		P.w_s16			((s16)R.element);
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
