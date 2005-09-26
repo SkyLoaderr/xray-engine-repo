@@ -1,5 +1,5 @@
 -- log("LUA version:".._VERSION)
-isLua51	= (string.find(_VERSION,"Lua 5.1",1,true) ~= nil)
+isLua51	= (nil ~= _VERSION) and (string.find(_VERSION,"Lua 5.1",1,true) ~= nil)
 
 schemes = {} -- соответствие схем модулям
 stypes = {} -- типы схем
