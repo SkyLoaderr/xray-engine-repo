@@ -14,9 +14,9 @@ end
 
 
 if (version.isLua51) then
-	printf = function (fmt,...) log(string.format(fmt,...))			end
+	_G["printf"] = function (fmt,...) log(string.format(fmt,...))			end
 else
-	printf = function (fmt,...) log(string.format(fmt,unpack(arg))) end
+	_G["printf"] = function (fmt,...) log(string.format(fmt,unpack(arg))) end
 end
 
 ----------------------------------------------------------------------
