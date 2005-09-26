@@ -247,6 +247,7 @@ function loadLtx(name, type)
     for k, v in level_gulags do
 	    l = v.load_ltx(name, type)
 	    if l ~= nil then
+	        printf("gulag <ltx>:\n%s", l)
 	        return create_ini_file(l)
 	    end
     end
