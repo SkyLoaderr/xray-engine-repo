@@ -39,4 +39,7 @@
     <string id="yantar_help_scientist_5">
         <text>go_4</text>
     </string>
+    <string id="yantar_help_scientist_6">
+        <text>text in default</text>
+    </string>
 </string_table>
