@@ -23,7 +23,7 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // phantom gen
 // ----------------------------------------------------------------------------------------
-	self.phantom_max 					= 8 //10	// max phantoms
+	self.phantom_max 					= 0 //8 //10	// max phantoms
 	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
@@ -48,9 +48,9 @@ function PsyAntenna:__init				()
 	self.eff_time						= 0;
 	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
 	self.hit_time						= 0;
-	self.intensity						= 1;	// текущая интенсивность
-	self.intensity_base					= 1;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
-	self.intensity_inertion				= 0.3 //0.1;	// скорость изменения интенсивности ед/секунду
+	self.intensity						= 0;	// текущая интенсивность
+	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
+	self.intensity_inertion				= 0.3;	// скорость изменения интенсивности ед/секунду
 	self.pp 							= PsyAntennaPP();
 	self.pp:start						();
 end
@@ -75,7 +75,9 @@ function PsyAntenna:update_postprocess	()
 	self.pp.params.gray					= self.gray_amplitude*self.intensity;
 --	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
 	self.pp.params.noise				= self.noise_var;
+	self.pp.params.noise.intensity		= self.noise_var.intensity * self.intensity;
 end
+
 function PsyAntenna:update_psy_hit		(dt)
 	local d_time						= time_global()-self.hit_time;
 	if d_time>200 and self.power_factor.a>0.01 then
@@ -122,7 +124,7 @@ function PsyAntenna:update			(dt)
 	if (self.intensity<0.0)			then self.intensity=0.0; end;
 	if (self.intensity>1.0)			then self.intensity=1.0; end;
 
---	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
+	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
 
 	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001));
 	self:generate_phantoms 			();
