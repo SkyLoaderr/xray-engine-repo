@@ -6,6 +6,7 @@
 <!---------------------------SVOBODA SPECNAZ----------------------->
 	<specific_character id="mil_Svoboda_specnaz" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -38,6 +39,7 @@
 <!---------------------------SVOBODA ENGINEER----------------------->
 	<specific_character id="mil_Svoboda_engineer" team_default = "1">
 		<name>Шуруп</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="22" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Известный в Зоне механик. Может из трактора собрать танк. </bio>
@@ -71,6 +73,7 @@
 <!---------------------------SVOBODA REGULAR----------------------->
 	<specific_character id="mil_Svoboda_regular" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="28" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -103,6 +106,7 @@
 <!---------------------------SVOBODA SNIPER---------------------->
 	<specific_character id="mil_Svoboda_sniper" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="28" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -134,6 +138,7 @@
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
 	<specific_character id="mil_Svoboda_stukach" team_default = "1">
 		<name>Павлик</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="30" y="10"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -165,6 +170,7 @@
 <!---------------------------SVOBODA ZONEGUARD---------------------->
 	<specific_character id="mil_Svoboda_zoneguard" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -196,6 +202,7 @@
 <!---------------------------SVOBODA BODYGUARD---------------------->
 	<specific_character id="mil_Svoboda_bodyguard" team_default = "1">
 		<name>"Капец"</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
@@ -228,6 +235,7 @@
 <!---------------------------SVOBODA LEADER---------------------->
 	<specific_character id="mil_Svoboda_leader" team_default = "1">
 		<name>"Лукаш"</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="18" y="10"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Лидер группировки "Свобода".</bio>
@@ -256,6 +264,7 @@
 <!---------------------------SVOBODA TRADER----------------------->
 	<specific_character id="mil_Svoboda_trader" team_default = "1">
 		<name>"Скряга"</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="22" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Известен своей жадностью и неуступчивостью, но говорят у него можно достать все что угодно.</bio>
@@ -286,6 +295,7 @@
 <!---------------------------SVOBODA MASTER MAX----------------------->
 	<specific_character id="mil_Svoboda_master_Max" team_default = "1">
 		<name>"Макс"</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
@@ -320,6 +330,7 @@
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="mil_Svoboda_master" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
@@ -352,6 +363,7 @@
 <!---------------------------SVOBODA COOK----------------------->
 	<specific_character id="mil_Svoboda_cook" team_default = "1">
 		<name>"Повар"</name>		
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="22" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Повар группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -393,6 +405,7 @@
 <!---------------------------SVOBODA BLOCKPOST LEADER---------------------->
 	<specific_character id="mil_Svoboda_blockpost_leader" team_default = "1">
 		<name>"Кеп"</name>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="30" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Командир Барьера. Человек, сплотивший вокруг себя людей, готовых гибнуть за общее дело.</bio>
@@ -422,6 +435,7 @@
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
 	<specific_character id="mil_Svoboda_master_Ugrumiy" team_default = "1">
 		<name>"Угрюмый"</name>		
+		<snd_config>characters_voice\human_01\</snd_config>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
@@ -456,6 +470,7 @@
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="mil_Dolg_specnaz" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -485,6 +500,7 @@
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
 	<specific_character id="mil_Dolg_specnaz_silence" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -513,6 +529,7 @@
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
 	<specific_character id="mil_Dolg_specnaz_cherep" team_default = "1">
 		<name>"Череп"</name>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -547,6 +564,7 @@
 <!---------------------------KILLER IHFORMATOR---------------------->
 	<specific_character id="mil_Killer_informator" team_default = "1">
 		<name>Ара</name>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<icon x="28" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Известный на всю Зону информатор и осведомитель.</bio>
@@ -611,6 +629,7 @@
 <!---------------------------STALKER MASTER----------------------->
 	<specific_character id="mil_Stalker_master" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -645,6 +664,7 @@
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="mil_Stalker_veteran" team_default = "1">
 		<name>GENERATE_NAME</name>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -680,6 +700,7 @@
 <!---------------------------SVOBODA CRAZY STALKER----------------------->
         <specific_character id="mil_Svoboda_zombi_stalker" team_default = "1">
                 <name>Сумасшедший cталкер группировки "Свобода"</name>
+				<snd_config>characters_voice\human_01\</snd_config>
                 <icon x="8" y="0"></icon>
                 <map_icon x="5" y="0"></map_icon>
                 <bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -709,6 +730,7 @@
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
     <name>GENERATE_NAME</name>
+	<snd_config>characters_voice\human_03\</snd_config>
     <icon x="6" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
