@@ -11,6 +11,8 @@ CPhantom::CPhantom()
 	fASpeed				= 1.7f;
 	vHP.set				(0,0);
 	fContactHit			= 0.f;
+	m_CurState			= stInvalid;
+	m_TgtState			= stInvalid;
 }
 
 CPhantom::~CPhantom()
@@ -67,7 +69,7 @@ BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 		u_EventSend		(P);
 	}
 
-	m_State			= stBirth; // initial state (changed on load method in inherited::)
+	SwitchToState		(stBirth);			// initial state (changed on load method in inherited::)
 
 	// inherited
 	if (!inherited::net_Spawn(DC)) return FALSE;
@@ -97,14 +99,12 @@ BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 	VERIFY(K->LL_GetMotionDef(m_state_data[stShoot].motion)->flags&esmStopAtEnd);
 
 	// set state
-	EState new_state= m_State;
-	m_State			= stInvalid;
-	SwitchToState	(new_state);
+	SwitchToState_internal(m_TgtState);
 
-	setVisible		(m_State>stIdle?TRUE:FALSE);
+	setVisible		(m_CurState>stIdle?TRUE:FALSE);
 	setEnabled		(TRUE);
 
-	return	TRUE;
+	return			TRUE;
 }
 void CPhantom::net_Destroy	()
 {
@@ -121,25 +121,25 @@ void CPhantom::net_Destroy	()
 void __stdcall CPhantom::animation_end_callback(CBlend* B)
 {
 	CPhantom *phantom				= (CPhantom*)B->CallbackParam;
-	switch (phantom->m_State){
+	switch (phantom->m_CurState){
 	case stBirth:	phantom->SwitchToState(stFly);	break;
 	case stContact:	phantom->SwitchToState(stIdle);	break;
 	case stShoot:	phantom->SwitchToState(stIdle);	break;
 	}
 }
 //---------------------------------------------------------------------
-void CPhantom::SwitchToState(EState new_state)
+void CPhantom::SwitchToState_internal(EState new_state)
 {
-	if (new_state!=m_State){
+	if (new_state!=m_CurState){
 		CSkeletonAnimated *K	= smart_cast<CSkeletonAnimated*>(Visual());
 		Fmatrix	xform			= XFORM_center	();
 		UpdateEvent				= 0;
 		// after event
-		switch (m_State){
+		switch (m_CurState){
 		case stBirth:		break;
 		case stFly:			break;
 		case stContact:{
-			SStateData& sdata	= m_state_data[m_State];
+			SStateData& sdata	= m_state_data[m_CurState];
 			PlayParticles		(sdata.particles.c_str(),FALSE,xform);
 			Fvector vE,vP;
 			m_enemy->Center		(vE);
@@ -150,7 +150,7 @@ void CPhantom::SwitchToState(EState new_state)
 			}
 			}break;
 		case stShoot:{
-			SStateData& sdata	= m_state_data[m_State];
+			SStateData& sdata	= m_state_data[m_CurState];
 			PlayParticles		(sdata.particles.c_str(),FALSE,xform);
 		}break;
 		case stIdle:		break;
@@ -185,13 +185,13 @@ void CPhantom::SwitchToState(EState new_state)
 		}break;
 		case stIdle:{
 			// stop fly effects
-			SStateData& sdata	= m_state_data[m_State];
+			SStateData& sdata	= m_state_data[m_CurState];
 			sdata.sound.stop	();
 			CParticlesObject::Destroy(m_fly_particles);
 			DestroyObject		();
 		}break;
 		}
-		m_State				= new_state;
+		m_CurState				= new_state;
 	}
 }
 void CPhantom::OnFlyState()
@@ -241,12 +241,13 @@ void CPhantom::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if (!UpdateEvent.empty()) UpdateEvent();
+	if (!UpdateEvent.empty())	UpdateEvent();
+	if (m_TgtState!=m_CurState)	SwitchToState_internal(m_TgtState);
 }
 //---------------------------------------------------------------------
 void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if (m_State==stFly)	SwitchToState(stShoot);
+	if (m_TgtState==stFly)	SwitchToState(stShoot);
 	if (g_Alive()){
 		SetfHealth		(-1.f);
 		inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
@@ -307,11 +308,11 @@ void CPhantom::PsyHit(const CObject *object, float value)
 // Core events
 void CPhantom::save(NET_Packet &output_packet)
 {
-	output_packet.w_s32	(s32(m_State));
+	output_packet.w_s32	(s32(m_CurState));
 }
 void CPhantom::load(IReader &input_packet)
 {
-	m_State				= EState(input_packet.r_s32());
+	SwitchToState	(EState(input_packet.r_s32()));
 }
 void CPhantom::net_Export	(NET_Packet& P)					// export to server
 {

@@ -19,9 +19,11 @@ private:
 		stShoot			= 3,
 		stCount
 	};
-	EState				m_State;
+	EState				m_CurState;
+	EState				m_TgtState;
 
-	void				SwitchToState				(EState new_state);
+	void				SwitchToState_internal		(EState new_state);
+	void				SwitchToState				(EState new_state){m_TgtState=new_state;}
 	void __stdcall		OnFlyState					();
 	void __stdcall		OnDeadState					();
 
