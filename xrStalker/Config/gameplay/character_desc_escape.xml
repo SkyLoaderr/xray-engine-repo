@@ -49,6 +49,8 @@
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
  
 		<visual>actors\neytral\stalker_neytral_balon_1</visual>
 		<supplies>
@@ -80,6 +82,8 @@
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
  
 		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
 		<supplies>
@@ -108,6 +112,8 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_balon_4</visual>
 		<supplies>
@@ -136,6 +142,8 @@
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\novice\green_stalker_1</visual>
 		<supplies>
@@ -163,6 +171,8 @@
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -193,6 +203,8 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_01\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
@@ -220,6 +232,8 @@
 		
 		<rank>0</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -251,6 +265,8 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_02\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
@@ -280,6 +296,8 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_01\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\novice\green_stalker_2</visual>
@@ -307,6 +325,8 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_01\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\novice\green_stalker_2</visual>
@@ -333,6 +353,8 @@
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -362,6 +384,8 @@
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<panic_threshold>0.2</panic_threshold>
 
@@ -390,6 +414,8 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_01\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\novice\green_stalker_4</visual>
@@ -416,6 +442,8 @@
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -446,6 +474,8 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_01\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\novice\green_stalker_5</visual>
@@ -472,6 +502,8 @@
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -500,6 +532,8 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
+		<snd_config>characters_voice\human_02\</snd_config>
+		
 		<panic_threshold>0.2</panic_threshold>
 
 		<visual>actors\novice\green_stalker_8</visual>
@@ -527,6 +561,8 @@
 		
 		<rank>60</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\soldier\soldier_beret_1</visual>		
 		<supplies>
@@ -555,6 +591,8 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<supplies>
@@ -583,6 +621,8 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\soldier\soldier_bandana_1</visual>		
 		<supplies>
@@ -611,6 +651,8 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\soldier\soldier_bandana_2</visual>		
 		<supplies>
@@ -639,6 +681,8 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\soldier\soldier_bandana_3</visual>		
 		<supplies>
@@ -667,6 +711,8 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\soldier\soldier_bandana_4</visual>		
 		<supplies>
@@ -696,6 +742,8 @@
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
@@ -724,6 +772,8 @@
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
@@ -750,10 +800,11 @@
 
 		<class>esc_killer_master</class>
 		<community>killer</community>
-
 		
 		<rank>90</rank>
 		<reputation>-50</reputation>
+	
+		<snd_config>characters_voice\human_02\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
