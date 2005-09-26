@@ -400,14 +400,7 @@ end
 class "script_object"
 
 if (version.isLua51) then
-	dostring("/
-		script_object.__init = function (self,name,script,...)/
-			self.action         = action(nil,...)/
-			self.object_name    = name/
-			self.script_name    = script/
-			self.object         = nil/
-		end"
-	)
+	dostring("script_object.__init = function (self,name,script,...)	self.action         = action(nil,...)	self.object_name    = name	self.script_name    = script	self.object         = nil	end")
 else
 	function script_object:__init(name,script,...)
 		self.action         = action(nil,unpack(arg))
