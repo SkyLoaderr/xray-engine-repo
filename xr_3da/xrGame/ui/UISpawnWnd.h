@@ -10,6 +10,7 @@
 
 class CUIStatix;
 class CUIStatic;
+class CUIScrollView;
 
 //typedef	void (*ButtonClickCallback) (int);
 
@@ -40,6 +41,7 @@ protected:
 	CUIStatic*		m_pCaption;
 	CUIStatic*		m_pBackground;
 	CUIStatic*		m_pFrames[3];
+	CUIScrollView*	m_pTextDesc;
 	CUIStatix*		m_pImage1;
 	CUIStatix*		m_pImage2;
 };
