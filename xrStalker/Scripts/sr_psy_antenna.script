@@ -52,6 +52,7 @@ function PsyAntenna:__init				()
 	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
 	self.intensity_inertion				= 0.3;	// скорость изменения интенсивности ед/секунду
 	self.pp 							= PsyAntennaPP();
+	self.pp.params.noise				= noise();
 	self.pp:start						();
 end
 function PsyAntenna:__finalize			()
@@ -74,8 +75,7 @@ function PsyAntenna:update_postprocess	()
 	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity);
 	self.pp.params.gray					= self.gray_amplitude*self.intensity;
 --	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
-	self.pp.params.noise				= self.noise_var;
-	self.pp.params.noise.intensity		= self.noise_var.intensity * self.intensity;
+	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
 end
 
 function PsyAntenna:update_psy_hit		(dt)
