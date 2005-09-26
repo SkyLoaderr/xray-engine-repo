@@ -28,7 +28,7 @@ function PsyAntenna:__init				()
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
 	// antenna
-	self.hit_amplitude					= 1.0;	// размер хита = self.hit_amplitude*self.power_factor.a*self.intensity
+	self.hit_amplitude					= 1.0;	// размер хита = self.hit_amplitude*self.power_factor.a*self.hit_intensity
 	// pause time [from]=to
 	self.idle_time						= {};
 	self.idle_time[20]					= 21;
@@ -42,7 +42,13 @@ function PsyAntenna:__init				()
 	self.gray_color						= color(0.33, 0.33, 0.33);	// RGB							[0.0-1.0]
 	self.noise_var						= noise(0.9, 0.3, 30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
 // ----------------------------------------------------------------------------------------
+// sound
+// ----------------------------------------------------------------------------------------
+	self.sound_obj						= sound_object( "ambient\\random\\rnd_disgusting" )
+	self.sound_obj:play					(db.actor, 0, sound_object.s2d + sound_object.looped);
+// ----------------------------------------------------------------------------------------
 // class variables initialize
+// ----------------------------------------------------------------------------------------
 	self.power_factor					= fcolor();
 	self.power_factor:set				(0,0,0,0);
 	self.eff_time						= 0;
@@ -51,6 +57,7 @@ function PsyAntenna:__init				()
 	self.intensity						= 0;	// текущая интенсивность
 	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
 	self.intensity_inertion				= 0.3;	// скорость изменения интенсивности ед/секунду
+	self.hit_intensity					= 0;	// текущая интенсивность
 	self.pp 							= PsyAntennaPP();
 	self.pp.params.noise				= noise();
 	self.pp:start						();
@@ -83,7 +90,7 @@ function PsyAntenna:update_psy_hit		(dt)
 	if d_time>200 and self.power_factor.a>0.01 then
 		self.hit_time					= time_global();
 		local psy_hit 					= hit();
-		psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.intensity;
+		psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.hit_intensity;
 		psy_hit.direction 				= vector():set( 0, 0, 0 );
 		psy_hit.impulse 				= 0;
 		psy_hit.draftsman 				= db.actor; 
@@ -125,6 +132,8 @@ function PsyAntenna:update			(dt)
 	if (self.intensity>1.0)			then self.intensity=1.0; end;
 
 	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
+
+	self.sound_obj.volume = self.intensity
 
 	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001));
 	self:generate_phantoms 			();
@@ -195,12 +204,14 @@ function action_psy_antenna:zone_enter()
 	self.state = state_inside
 
 	psy_antenna.intensity_base = psy_antenna.intensity_base + self.st.intensity
+	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  + self.st.hit_intensity
 end
 
 function action_psy_antenna:zone_leave()
 	self.state = state_outside
 
 	psy_antenna.intensity_base = psy_antenna.intensity_base - self.st.intensity
+	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  - self.st.hit_intensity
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -222,5 +233,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.intensity = utils.cfg_get_number( ini, section, "intensity", npc, true ) * 0.01
+	st.intensity     = utils.cfg_get_number( ini, section, "eff_intensity", npc, true ) * 0.01
+	st.hit_intensity = utils.cfg_get_number( ini, section, "hit_intensity", npc, false, st.intensity ) * 0.01
 end
