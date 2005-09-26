@@ -170,11 +170,20 @@ CUILine* CUILine::CutByLength(CGameFont* pFont, float length, BOOL cut_word){
 	Position pos;
 	InitPos(pos);
 
-	if (!pos.word_1.exist() && m_subLines[0].m_last_in_line) // void string
+	if (!pos.word_1.exist()) // void string
 	{
-		m_subLines.erase(m_subLines.begin());
-		return GetEmptyLine();
+		if (m_subLines[0].m_last_in_line)
+		{
+			m_subLines.erase(m_subLines.begin());
+			return GetEmptyLine();
+		}
+		else
+		{
+			m_subLines.erase(m_subLines.begin());
+			InitPos(pos);
+		}
 	}
+
 
 	float len2w1 = GetLength_inclusiveWord_1(pos, pFont);
 
