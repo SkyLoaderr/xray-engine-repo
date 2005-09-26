@@ -33,5 +33,8 @@
 	<info_portion id="yan_spawn_zombies_1"></info_portion>
 	<info_portion id="yan_spawn_zombies_2"></info_portion>
 	<info_portion id="yan_actor_talk_ucheniy"></info_portion>
+
+	<!-- Yantar Tunnel start -->
+	<info_portion id="yantar_tunnel_start"></info_portion>
     
 </game_information_portions>
