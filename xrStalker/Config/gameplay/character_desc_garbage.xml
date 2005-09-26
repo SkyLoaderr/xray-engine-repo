@@ -662,7 +662,7 @@
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Офицер группировки "Долг". Детальная информация отсутствует.</bio>
 		
-		<class>gar_dolg_blokpost</class>
+		<class>gar_dolg_blokpost_commander</class>
 		<community>dolg</community>
 		
 		<rank>40</rank>
