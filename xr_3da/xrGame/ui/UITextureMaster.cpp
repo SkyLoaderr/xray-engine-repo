@@ -19,7 +19,9 @@ u32									CUITextureMaster::m_time = 0;
 #endif
 
 void CUITextureMaster::WriteLog(){
+#ifdef DEBUG
 	Msg("UI texture manager work time is %d ms", m_time);
+#endif
 }
 void CUITextureMaster::ParseShTexInfo(LPCSTR xml_file){
 	if (!xml_file)
