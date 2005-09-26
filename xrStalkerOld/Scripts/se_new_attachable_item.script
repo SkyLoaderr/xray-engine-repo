@@ -1,6 +1,6 @@
-function printf(fmt,...)
-    log(string.format(fmt,unpack(arg)))
-end
+--function printf(fmt,...)
+--    log(string.format(fmt,unpack(arg)))
+--end
 
 class "CSE_NewAttachableItem"				(cse_alife_item)
 

@@ -1,4 +1,5 @@
-log("LUA version:".._VERSION)
+-- log("LUA version:".._VERSION)
+isLua51	= (string.find(_VERSION,"Lua 5.1",1,true) ~= nil)
 
 schemes = {} -- соответствие схем модулям
 stypes = {} -- типы схем
@@ -15,7 +16,7 @@ end
 ----------------------------------------------------------------------
 
 
-if (string.find(_VERSION,"Lua 5.1",1,true) ~= nil) then
+if (isLua51) then
 	function printf(fmt,...)
 		log(string.format(fmt,...))
 	end
@@ -405,11 +406,20 @@ end
 
 class "script_object"
 
-function script_object:__init(name,script,...)
-    self.action         = action(nil,unpack(arg))
-    self.object_name    = name
-    self.script_name    = script
-    self.object         = nil
+if (isLua51) then
+	function script_object:__init(name,script,...)
+		self.action         = action(nil,...)
+		self.object_name    = name
+		self.script_name    = script
+		self.object         = nil
+	end
+else
+	function script_object:__init(name,script,...)
+		self.action         = action(nil,unpack(arg))
+		self.object_name    = name
+		self.script_name    = script
+		self.object         = nil
+	end
 end
 
 function script_object:update()
@@ -451,11 +461,20 @@ debug_script_name = ""
 
 -- Tvводит в лог строчку, если script_name == debug_script_name
 -- Lспользуется для отрадки сценариев
-function debug_log(script_name, fmt, ...)
-  if debug_script_name == script_name then
-    log(string.format(fmt, unpack(arg)))
---    flush()
-  end
+if (isLua51) then
+	function debug_log(script_name, fmt, ...)
+		if debug_script_name == script_name then
+			log(string.format(fmt, ...))
+		--    flush()
+		end
+	end
+else
+	function debug_log(script_name, fmt, ...)
+		if debug_script_name == script_name then
+			log(string.format(fmt, unpack(arg)))
+		--    flush()
+		end
+	end
 end
 
 -- +сли в даннvй момент вvполняется какое-то действие, прерvвает его и отклічает скриптовvй режим
