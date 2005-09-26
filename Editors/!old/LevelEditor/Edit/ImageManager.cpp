@@ -728,7 +728,7 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
 		SPBItem* PB		= UI->ProgressStart(1.f,"Cube Map: scale image...");
         CTimer T; T.Start();
         ETOOLS::SimplifyCubeMap	(data.begin(),w,h,sm_data.begin(),sm_w,sm_h,16.f,pb_callback,PB);
-        T.Stop			();
+        float tm_scm	= T.GetElapsed_sec();
 		UI->ProgressEnd	(PB);
         // write texture
         xr_string out_name;
@@ -742,7 +742,7 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
         tp.flags.zero	();
 		if (!MakeGameTexture(out_name.c_str(),&*sm_data.begin(),tp))
         	return FALSE;
-        ELog.DlgMsg(mtInformation,"Smaller cubemap successfylly created [%3.2f sec].",T.Get());
+        ELog.DlgMsg(mtInformation,"Smaller cubemap successfylly created [%3.2f sec].",tm_scm);
         return TRUE;
     }else{
         ELog.Msg(mtError,"Can't load texture '%s'.",src_name);

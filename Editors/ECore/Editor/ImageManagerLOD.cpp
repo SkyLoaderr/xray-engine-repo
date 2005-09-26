@@ -353,7 +353,7 @@ TT.Start();
                         }
                     }
                 }
-tN+=TT.Stop();
+tN+=TT.GetElapsed_sec();
 ///.			Fvector4 cC			= {0,0,0,0};
 ///.			for (Fvector4It c_it=c_vec.begin(); c_it!=c_vec.end(); c_it++)
 ///.				cC.add			(*c_it);
@@ -385,14 +385,14 @@ TT1.Start();
                         start.mad		(Fvector().set(pt_it->x,pt_it->y,pt_it->z),it->light.direction,-dR);
                         PQ.prepare_rq	(start,it->light.direction,dR,CDB::OPT_CULL);
                         OBJECT->RayQuery		(PQ);
-tR+=TT1.Stop();                             
+tR+=TT1.GetElapsed_sec();                             
                         float ray_transp= 1.f;
                         if (PQ.r_count()){
                             for (s32 k=0; k<PQ.r_count(); k++){
                                 u32 	a,uC;
 TT1.Start();
                                 if (!GetPointColor(PQ.r_begin()+k,a,uC)) continue;
-tT+=TT1.Stop();
+tT+=TT1.GetElapsed_sec();
                                 ray_transp		*= (1.f - float(a)/255.f);
 								if (fis_zero(ray_transp,EPS_L)) break;
                             }
@@ -402,7 +402,7 @@ tT+=TT1.Stop();
                     avg_transp					/= simple_hemi.size();
                     res_transp					= res_transp*(1.f-pt_it->w)+avg_transp*pt_it->w;
                 }
-tH+=TT.Stop();
+tH+=TT.GetElapsed_sec();
 				u8 h 				= (u8)iFloor	(res_transp*255.f);
 				tgt_h				= color_rgba(h,h,h,color_get_A(tgt_c));
             }
