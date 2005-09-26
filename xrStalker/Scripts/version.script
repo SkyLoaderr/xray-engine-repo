@@ -1,2 +1,2 @@
--- log("LUA version:".._VERSION)
+log(_VERSION)
 isLua51	= (nil ~= _VERSION) and (string.find(_VERSION,"Lua 5.1",1,true) ~= nil)
