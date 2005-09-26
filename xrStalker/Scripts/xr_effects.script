@@ -1180,4 +1180,9 @@ function aes_kill_actor (actor, npc)
        actor:kill (actor)
     end   
 end
-
+-------------------------------------------------------------------------------------
+-- Функции для Янтаря
+----------------------------------------------------------------------------------
+function yan_actor_sleep (actor, npc)
+	set_sleep_relocate(patrol ("yan_actor_sleep"):point(0), patrol ("yan_actor_sleep"):point(1), 180)
+end
