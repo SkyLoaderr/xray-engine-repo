@@ -1184,5 +1184,6 @@ end
 -- Функции для Янтаря
 ----------------------------------------------------------------------------------
 function yan_actor_sleep (actor, npc)
+	dialogs.break_dialog (first_speaker, second_speaker, 0)
 	set_sleep_relocate(patrol ("yan_actor_sleep"):point(0), patrol ("yan_actor_sleep"):point(1), 180)
 end
