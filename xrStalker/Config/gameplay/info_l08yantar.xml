@@ -36,5 +36,6 @@
 
 	<!-- Yantar Tunnel start -->
 	<info_portion id="yantar_tunnel_start"></info_portion>
+	<info_portion id="yantar_tunnel_finish"></info_portion>
     
 </game_information_portions>
