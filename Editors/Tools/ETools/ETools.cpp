@@ -143,10 +143,14 @@ namespace ETOOLS{
 	}
 
 	ETOOLS_API CDB::COLLIDER*get_collider	(){return XRC.collider();}
-	ETOOLS_API CDB::MODEL*	create_model	(CDB::Collector* CL)
+	ETOOLS_API CDB::MODEL*	create_model_cl	(CDB::Collector* CL)
+	{
+		return				create_model(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
+	}
+	ETOOLS_API CDB::MODEL*	create_model	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
 	{
 		CDB::MODEL* M		= xr_new<CDB::MODEL> ();
-		M->build			(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
+		M->build			(V, Vcnt, T, Tcnt);
 		return M;
 	}
 	ETOOLS_API void			destroy_model	(CDB::MODEL*& M)
