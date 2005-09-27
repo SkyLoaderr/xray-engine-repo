@@ -10,7 +10,7 @@ function prefetch_sounds()
 	
 	for k,v in pairs(sound_theme.ph_snd_themes) do
 --		printf("prefetch [%s]", tostring(k))
-		for kk,vv in v do
+		for kk,vv in pairs(v) do
 --			printf("file [%s]", tostring(vv))
 			level.prefetch_sound(vv)
 		end
@@ -18,10 +18,10 @@ function prefetch_sounds()
 
 	printf("Prefetching stalker sounds")
 	for t,p in pairs(sound_theme.theme) do
-		for k,v in p do
+		for k,v in pairs(p) do
 			local name = tostring(k)
 			if v.types then
-				for kk,vv in v.types do
+				for kk,vv in pairs(v.types) do
 					prefetch_section(sound_theme.snd_ini, name.."_"..tostring(kk))
 				end
 			else
