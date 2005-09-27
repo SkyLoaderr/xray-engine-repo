@@ -125,6 +125,23 @@ namespace ETOOLS{
 		return true;
 	}
 
+	ETOOLS_API CDB::Collector*			create_collector		()
+	{
+		return							xr_new<CDB::Collector>	();
+	}
+	ETOOLS_API void						destroy_collector		(CDB::Collector*& M)
+	{
+		xr_delete						(M);
+	}
+	ETOOLS_API CDB::CollectorPacked*	create_collector_p		(const Fbox &bb, int apx_vertices, int apx_faces)
+	{
+		return							xr_new<CDB::CollectorPacked> (bb, apx_vertices, apx_faces);
+	}
+	ETOOLS_API void						destroy_collector		(CDB::CollectorPacked*& M)
+	{
+		xr_delete						(M);
+	}
+
 	ETOOLS_API CDB::COLLIDER*get_collider	(){return XRC.collider();}
 	ETOOLS_API CDB::MODEL*	create_model	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
 	{
