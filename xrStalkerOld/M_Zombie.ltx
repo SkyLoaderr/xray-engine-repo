@@ -277,3 +277,23 @@ panic_threshold		= 0.2
 $spawn				= "monsters\zombie\zombie_03_strong"
 visual				= monsters\zombi\zombi_trup
 panic_threshold		= 0.05	
+
+[zombie_immortal]:m_zombie_e
+$spawn				= "monsters\zombie\zombie_immortal"
+visual				= monsters\zombi\zombi_trup
+panic_threshold		= 0.05	
+
+FakeDeathCount					= 10		; max count of fake death
+StartFakeDeathHealthThreshold	= 0.8
+
+health_hit_part 		= 0.01		;0.8			;процент хита, уходящий на отнимание здоровья
+
+burn_immunity			= 0.01						;коэффициенты иммунитета 
+strike_immunity			= 0.01
+shock_immunity			= 0.01
+wound_immunity			= 0.01;1
+radiation_immunity		= 0.0	;0.5
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.01
+explosion_immunity		= 0.05
+fire_wound_immunity		= 0.01;0.5
