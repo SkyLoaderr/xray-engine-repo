@@ -133,20 +133,20 @@ namespace ETOOLS{
 	{
 		xr_delete						(M);
 	}
-	ETOOLS_API CDB::CollectorPacked*	create_collector_p		(const Fbox &bb, int apx_vertices, int apx_faces)
+	ETOOLS_API void						collector_add_face_d	(CDB::Collector* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy)
 	{
-		return							xr_new<CDB::CollectorPacked> (bb, apx_vertices, apx_faces);
+		CL->add_face_D					(v0,v1,v2,dummy);
 	}
-	ETOOLS_API void						destroy_collector_p		(CDB::CollectorPacked*& M)
+	ETOOLS_API void						collector_add_face_pd	(CDB::Collector* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy)
 	{
-		xr_delete						(M);
+		CL->add_face_packed_D			(v0,v1,v2,dummy);
 	}
 
 	ETOOLS_API CDB::COLLIDER*get_collider	(){return XRC.collider();}
-	ETOOLS_API CDB::MODEL*	create_model	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
+	ETOOLS_API CDB::MODEL*	create_model	(CDB::Collector* CL)
 	{
 		CDB::MODEL* M		= xr_new<CDB::MODEL> ();
-		M->build			(V,Vcnt,T,Tcnt);
+		M->build			(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
 		return M;
 	}
 	ETOOLS_API void			destroy_model	(CDB::MODEL*& M)
