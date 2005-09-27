@@ -10,6 +10,10 @@
 #include "control_direction_base.h"
 #include "control_movement_base.h"
 #include "control_path_builder_base.h"
+#include "monster_velocity_space.h"
+#include "../../ai_space.h"
+#include "../../level_navigation_graph.h"
+#include "../../ai_object_location.h"
 
 #ifdef DEBUG
 #include "../../level_debug.h"
@@ -70,11 +74,16 @@ void CControlJump::on_release()
 	m_man->unsubscribe	(this, ControlCom::eventAnimationStart);
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
+
 void CControlJump::start_jump(const Fvector &point)
 {
 	m_blend_speed						= -1.f;
 	m_target_position					= point;
 
+	// set direction
 	m_object->dir().set_heading_speed	(3.f);
 	m_object->dir().face_target			(point);
 
@@ -84,6 +93,7 @@ void CControlJump::start_jump(const Fvector &point)
 	ctrl_dir->heading.target_angle	= m_man->direction().angle_to_target(point);
 
 
+	// initialize internals
 	m_velocity_bounced					= false;
 	m_object_hitted						= false;
 
@@ -94,6 +104,31 @@ void CControlJump::start_jump(const Fvector &point)
 
 	m_object->set_ignore_collision_hit	(true);
 
+	//////////////////////////////////////////////////////////////////////////
+	// Check prepare animation
+	//////////////////////////////////////////////////////////////////////////
+	if (check_prepare_in_move()) {
+		
+		// get animation time
+		float time			= m_man->animation().motion_time(m_data.pool[0], m_object->Visual());
+		// set acceleration and velocity
+		SVelocityParam &vel	= m_object->move().get_velocity(m_data.velocity_mask_prepare);
+		float dist = time * vel.velocity.linear;
+
+		Fvector target_point;
+		target_point.mad(m_object->Position(), m_object->Direction(), dist);
+
+		if (!m_man->build_path_line(this, target_point, u32(-1), m_data.velocity_mask_prepare | MonsterMovement::eVelocityParameterStand)) stop();
+		else { 
+			// Set Velocity from path
+			SControlPathBuilderData		*ctrl_path = (SControlPathBuilderData*)m_man->data(this, ControlCom::eControlPath); 
+			VERIFY						(ctrl_path);
+			ctrl_path->enable			= true;
+			m_man->lock					(this, ControlCom::eControlPath);
+		}
+	}
+
+	// set animation
 	m_anim_state_current				= m_data.skip_prepare ? eStateGlide : eStatePrepare;
 	m_anim_state_prev					= m_data.skip_prepare ? eStatePrepare : eStateNone;
 	select_next_anim_state				();
@@ -151,7 +186,7 @@ void CControlJump::build_line()
 	Fvector target_position;
 	target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
 
-	if (!m_man->build_path_line(this, target_position, u32(-1), m_data.velocity_mask)) stop();
+	if (!m_man->build_path_line(this, target_position, u32(-1), m_data.velocity_mask_ground | MonsterMovement::eVelocityParameterStand)) stop();
 	else { 
 		// Set Velocity from path
 		SControlPathBuilderData		*ctrl_path = (SControlPathBuilderData*)m_man->data(this, ControlCom::eControlPath); 
@@ -200,7 +235,7 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 		if ((event_data->m_ratio < 0) && !m_velocity_bounced && (m_jump_time != 0)) {
  			if (is_on_the_ground()) {
 				m_velocity_bounced	= true;
-				if (m_data.velocity_mask != u32(-1)) build_line();
+				if (m_data.velocity_mask_ground != u32(-1)) build_line();
 				else stop();
 				
 			} else {
@@ -299,44 +334,46 @@ bool CControlJump::can_jump(CObject *target)
 
 Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 {
-//	float velocity = 
-		m_object->movement_control()->GetVelocityActual();
-	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
-//	float prediction_dist = jump_time * velocity;
+	return pos;
 
-	CEntityAlive *entity = smart_cast<CEntityAlive*>(obj);
-
-	Fvector					dir;
-	dir.set					(entity->movement_control()->GetVelocity());
-	float speed				= dir.magnitude();
-	dir.normalize_safe		();
-
-	Fvector					prediction_pos;
-	//prediction_pos.mad		(pos, dir, prediction_dist);
-	prediction_pos.mad		(pos, dir, speed * jump_time / 2);
-
-	//// проверить prediction_pos на дистанцию и угол
-	//float dist = m_object->Position().distance_to(prediction_pos);
-	//if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
-
-	//// получить вектор направления и его мир угол
-	//float		dir_yaw, dir_pitch;
-
-	//dir.sub		(prediction_pos, m_object->Position());
-	//dir.getHP	(dir_yaw, dir_pitch);
-
-	//// проверка на angle и на dist
-	//float yaw_current, yaw_target;
-	//m_object->control().direction().get_heading(yaw_current, yaw_target);
-	//if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
-	
-#ifdef DEBUG
-	DBG().level_info(this).clear	();
-	DBG().level_info(this).add_item	(pos, 0.35f, D3DCOLOR_XRGB(0,0,255));
-	DBG().level_info(this).add_item	(prediction_pos, 0.35f, D3DCOLOR_XRGB(255,0,0));
-#endif
-
-	return prediction_pos;
+////	float velocity = 
+//		m_object->movement_control()->GetVelocityActual();
+//	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
+////	float prediction_dist = jump_time * velocity;
+//
+//	CEntityAlive *entity = smart_cast<CEntityAlive*>(obj);
+//
+//	Fvector					dir;
+//	dir.set					(entity->movement_control()->GetVelocity());
+//	float speed				= dir.magnitude();
+//	dir.normalize_safe		();
+//
+//	Fvector					prediction_pos;
+//	//prediction_pos.mad		(pos, dir, prediction_dist);
+//	prediction_pos.mad		(pos, dir, speed * jump_time / 2);
+//
+//	//// проверить prediction_pos на дистанцию и угол
+//	//float dist = m_object->Position().distance_to(prediction_pos);
+//	//if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
+//
+//	//// получить вектор направления и его мир угол
+//	//float		dir_yaw, dir_pitch;
+//
+//	//dir.sub		(prediction_pos, m_object->Position());
+//	//dir.getHP	(dir_yaw, dir_pitch);
+//
+//	//// проверка на angle и на dist
+//	//float yaw_current, yaw_target;
+//	//m_object->control().direction().get_heading(yaw_current, yaw_target);
+//	//if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
+//	
+//#ifdef DEBUG
+//	DBG().level_info(this).clear	();
+//	DBG().level_info(this).add_item	(pos, 0.35f, D3DCOLOR_XRGB(0,0,255));
+//	DBG().level_info(this).add_item	(prediction_pos, 0.35f, D3DCOLOR_XRGB(255,0,0));
+//#endif
+//
+//	return prediction_pos;
 }
 //////////////////////////////////////////////////////////////////////////
 //
@@ -381,3 +418,31 @@ void CControlJump::on_start_jump()
 	m_time_started		= Device.dwTimeGlobal;
 	m_time_next_allowed	= m_time_started + m_delay_after_jump;
 }
+
+bool CControlJump::check_prepare_in_move()
+{
+	if (!m_data.prepare_in_move) return false;
+	if (m_data.skip_prepare) return false;
+	if (m_data.velocity_mask_prepare == u32(-1)) return false;
+
+	// get animation time
+	float time			= m_man->animation().motion_time(m_data.pool[0], m_object->Visual());
+	// set acceleration and velocity
+	SVelocityParam &vel	= m_object->move().get_velocity(m_data.velocity_mask_prepare);
+	float dist = time * vel.velocity.linear;
+
+	// check nodes in direction
+	Fvector target_point;
+	target_point.mad(m_object->Position(), m_object->Direction(), dist);
+	
+	if (!m_man->path_builder().accessible(target_point)) return false;
+	// нода в прямой видимости?
+	m_man->path_builder().restrictions().add_border(m_object->Position(), target_point);
+	u32 node = ai().level_graph().check_position_in_direction(m_object->ai_location().level_vertex_id(),m_object->Position(),target_point);
+	m_man->path_builder().restrictions().remove_border();
+
+	if (!ai().level_graph().valid_vertex_id(node) || !m_man->path_builder().accessible(node)) return false;
+
+	return true;
+}
+

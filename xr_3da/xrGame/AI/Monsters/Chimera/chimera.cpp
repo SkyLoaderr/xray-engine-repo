@@ -107,8 +107,6 @@ void CChimera::Load(LPCSTR section)
 	//*****************************************************************************
 
 	m_fsVelocityWalkUpper.Load	(section, "Velocity_Walk_Upper");
-	m_fsVelocityJumpOne.Load	(section, "Velocity_Jump_Stand");
-	m_fsVelocityJumpTwo.Load	(section, "Velocity_Jump_Forward");
 }
 
 void CChimera::reinit()
@@ -117,10 +115,9 @@ void CChimera::reinit()
 	b_upper_state					= false;
 
 	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterUpperWalkFwd,	CDetailPathManager::STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real));
-	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpOne,			CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
-	movement().detail().add_velocity(MonsterMovement::eChimeraVelocityParameterJumpTwo,			CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
+	move().load_velocity(*cNameSect(), "Velocity_JumpGround",MonsterMovement::eChimeraVelocityParameterJumpGround);
 
-	com_man().load_jump_data("jump_attack_0", "jump_attack_1", "jump_attack_2", MonsterMovement::eChimeraVelocityParamsJump);
+	com_man().load_jump_data("jump_attack_0", "jump_attack_1", "jump_attack_2", u32(-1), MonsterMovement::eChimeraVelocityParameterJumpGround);
 }
 
 void CChimera::SetTurnAnimation(bool turn_left)

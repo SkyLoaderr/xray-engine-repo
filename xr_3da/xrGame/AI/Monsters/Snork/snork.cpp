@@ -86,18 +86,14 @@ void CSnork::Load(LPCSTR section)
 	anim().accel_chain_test		();
 #endif
 
-	m_fsVelocityJumpOne.Load(section, "Velocity_Jump_Stand");
-	m_fsVelocityJumpTwo.Load(section, "Velocity_Jump_Forward");
 }
 
 void CSnork::reinit()
 {
 	inherited::reinit	();
 	
-	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
-	movement().detail().add_velocity(MonsterMovement::eSnorkVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
-	
-	com_man().load_jump_data("stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", MonsterMovement::eSnorkVelocityParamsJump);
+	move().load_velocity(*cNameSect(), "Velocity_JumpGround",MonsterMovement::eSnorkVelocityParameterJumpGround);
+	com_man().load_jump_data("stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", u32(-1), MonsterMovement::eSnorkVelocityParameterJumpGround);
 
 	// TODO: remove this
 	m_target_node = 0;

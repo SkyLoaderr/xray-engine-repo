@@ -5,8 +5,8 @@
 class CSnork :	public CBaseMonster {
 	typedef		CBaseMonster		inherited;
 
-	SVelocityParam	m_fsVelocityJumpOne;
-	SVelocityParam	m_fsVelocityJumpTwo;
+	SVelocityParam	m_fsVelocityJumpPrepare;
+	SVelocityParam	m_fsVelocityJumpGround;
 
 public:
 					CSnork				();

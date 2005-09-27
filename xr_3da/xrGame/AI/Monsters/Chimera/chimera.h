@@ -9,8 +9,7 @@ class CChimera : public CBaseMonster {
 
 	
 	SVelocityParam		m_fsVelocityWalkUpper;
-	SVelocityParam		m_fsVelocityJumpOne;
-	SVelocityParam		m_fsVelocityJumpTwo;
+	SVelocityParam		m_fsVelocityJumpGround;
 	SVelocityParam		m_fsVelocityRunAttack;
 
 public:

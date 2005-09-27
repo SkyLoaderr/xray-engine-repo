@@ -2,11 +2,49 @@
 #include "control_combase.h"
 #include "../../../SkeletonAnimated.h"
 
+//struct SControlJumpData : public ControlCom::IComData {
+//	CObject					*target_object;
+// 	Fvector					target_position;
+//	
+//	enum EPrepareFlags {
+//		ePrepareSkip	= u8(1) << 0,
+//		ePrepareInMove	= u8(1) << 1,
+//	};
+//
+//	enum EGlideFlags{
+//		eGlidePlayAnimOnce = u8(1) << 0,
+//	};
+//
+//	enum EGroundFlags {
+//		eGroundSkip = u8(1) << 0,
+//	};
+//	
+//	struct	{
+//		MotionID	motion;
+//		flags8		flags;
+//		u32			velocity_mask;
+//	} state_prepare;
+//
+//	struct	{
+//		MotionID	motion;
+//		flags8		flags;
+//	} state_glide;
+//
+//	struct	{
+//		MotionID	motion;
+//		flags8		flags;
+//		u32			velocity_mask;
+//	} state_ground;
+//
+//};
+
 struct SControlJumpData : public ControlCom::IComData {
 	CObject					*target_object;
-	u32						velocity_mask;
+	u32						velocity_mask_prepare;
+	u32						velocity_mask_ground;
 	Fvector					target_position;
 	bool					skip_prepare;
+	bool					prepare_in_move;
 	bool					play_glide_once;
 	MotionID				pool[3];
 };
@@ -67,8 +105,6 @@ public:
 	// stop/break jump and all of jumping states
 	virtual void	stop					();
 
-			void	disable_bounce			() {m_enable_bounce = false;}
-
 SControlJumpData	&setup_data				() {return m_data;}
 
 private:	
@@ -95,4 +131,7 @@ private:
 			void	select_next_anim_state	();
 			void	play_selected			();
 			void	on_start_jump			();
+
+			bool	check_prepare_in_move	();
+
 };

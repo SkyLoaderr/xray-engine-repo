@@ -24,7 +24,10 @@ class CPseudoGigant : public CBaseMonster,
 	u32				m_time_last_threaten;
 
 	float			m_kick_damage;
-		
+	
+	SVelocityParam	m_fsVelocityJumpPrepare;
+	SVelocityParam	m_fsVelocityJumpGround;
+
 public:
 					CPseudoGigant				();
 	virtual			~CPseudoGigant				();	
@@ -39,6 +42,8 @@ public:
 	virtual void	on_activate_control		(ControlCom::EControlType);
 
 	virtual	void	on_threaten_execute	();
+
+	virtual void	HitEntityInJump		(const CEntity *pEntity);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

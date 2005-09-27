@@ -602,7 +602,10 @@ void CCustomMonster::OnRender()
 		}
 	}
 	{
-		Fvector				P1 = ai().level_graph().vertex_position(movement().level_dest_vertex_id());
+		u32					node = movement().level_dest_vertex_id();
+		if (node == u32(-1)) node = 0;
+
+		Fvector				P1 = ai().level_graph().vertex_position(node);
 		P1.y				+= 1.f;
 		RCache.dbg_DrawAABB	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
 	}

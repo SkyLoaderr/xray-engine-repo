@@ -11,6 +11,8 @@
 #include "../ai_monster_effector.h"
 #include "../../../../CameraBase.h"
 #include "../../../xr_level_controller.h"
+#include "../../../detail_path_manager_space.h"
+#include "../../../detail_path_manager.h"
 
 const u32 pmt_threaten_delay = 30000;
 
@@ -22,7 +24,7 @@ CPseudoGigant::CPseudoGigant()
 	
 	com_man().add_ability(ControlCom::eControlRunAttack);
 	com_man().add_ability(ControlCom::eControlThreaten);
-	//com_man().add_ability(ControlCom::eControlJump);
+	com_man().add_ability(ControlCom::eControlJump);
 	com_man().add_ability(ControlCom::eControlRotationJump);
 }
 
@@ -137,9 +139,11 @@ void CPseudoGigant::reinit()
 
 	m_time_last_threaten = 0;
 
-	//com_man().load_jump_data("jump_attack_0", "jump_attack_1", "stand_run_fwd_0", u32(-1));
+	move().load_velocity(*cNameSect(), "Velocity_JumpPrepare",MonsterMovement::eGiantVelocityParameterJumpPrepare);
+	move().load_velocity(*cNameSect(), "Velocity_JumpGround",MonsterMovement::eGiantVelocityParameterJumpGround);
+	
+	com_man().load_jump_data("jump_attack_0", "jump_attack_1", "jump_attack_2", MonsterMovement::eGiantVelocityParameterJumpPrepare, MonsterMovement::eGiantVelocityParameterJumpGround);
 	com_man().add_rotation_jump_data("1","2","3","4", PI_DIV_2);
-
 }
 
 
@@ -241,4 +245,8 @@ void CPseudoGigant::on_threaten_execute()
 
 }
 
-
+void CPseudoGigant::HitEntityInJump		(const CEntity *pEntity) 
+{
+	SAAParam &params	= anim().AA_GetParams("jump_attack_1");
+	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
+}

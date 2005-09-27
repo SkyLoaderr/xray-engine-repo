@@ -221,6 +221,7 @@ void CControlManagerCustom::seq_run(MotionID motion)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Jumping
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void CControlManagerCustom::jump(CObject *obj, const SControlJumpData &ta)
 {
 	if (!m_man->check_start_conditions(ControlCom::eControlJump)) 
@@ -234,7 +235,8 @@ void CControlManagerCustom::jump(CObject *obj, const SControlJumpData &ta)
 	VERIFY				(ctrl_data);
 
 	ctrl_data->target_object	= obj;
-	ctrl_data->velocity_mask	= ta.velocity_mask;
+	ctrl_data->velocity_mask_prepare	= ta.velocity_mask_prepare;
+	ctrl_data->velocity_mask_ground	= ta.velocity_mask_ground;
 	ctrl_data->target_position	= obj->Position();
 	ctrl_data->skip_prepare		= ta.skip_prepare;
 	ctrl_data->play_glide_once	= ta.play_glide_once;
@@ -245,7 +247,7 @@ void CControlManagerCustom::jump(CObject *obj, const SControlJumpData &ta)
 	m_man->activate		(ControlCom::eControlJump);
 }
 
-void CControlManagerCustom::load_jump_data(LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask)
+void CControlManagerCustom::load_jump_data(LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask_prepare, u32 vel_mask_ground)
 {
 	// Load triple animations
 	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
@@ -254,7 +256,9 @@ void CControlManagerCustom::load_jump_data(LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 
 	m_jump->setup_data().pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(m_jump->setup_data().pool[2]);
 	m_jump->setup_data().skip_prepare	= false;
 	m_jump->setup_data().play_glide_once = true;
-	m_jump->setup_data().velocity_mask	= vel_mask;
+	m_jump->setup_data().velocity_mask_prepare	= vel_mask_prepare;
+	m_jump->setup_data().velocity_mask_ground	= vel_mask_ground;
+	m_jump->setup_data().prepare_in_move = (vel_mask_prepare != u32(-1)) ? true : false;
 }
 
 void CControlManagerCustom::jump(const SControlJumpData &ta)
@@ -270,7 +274,8 @@ void CControlManagerCustom::jump(const SControlJumpData &ta)
 	VERIFY				(ctrl_data);
 
 	ctrl_data->target_object	= ta.target_object;
-	ctrl_data->velocity_mask	= ta.velocity_mask;
+	ctrl_data->velocity_mask_prepare	= ta.velocity_mask_prepare;
+	ctrl_data->velocity_mask_ground		= ta.velocity_mask_ground;
 	ctrl_data->target_position	= ta.target_position;
 	ctrl_data->skip_prepare		= ta.skip_prepare;
 	ctrl_data->play_glide_once	= ta.play_glide_once;
@@ -280,6 +285,24 @@ void CControlManagerCustom::jump(const SControlJumpData &ta)
 
 	m_man->activate		(ControlCom::eControlJump);
 }
+
+void CControlManagerCustom::jump(const Fvector &position)
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlJump)) 
+		return;
+
+	m_man->capture		(this, ControlCom::eControlJump);
+
+	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
+	VERIFY				(ctrl_data);
+
+	ctrl_data->target_object	= 0;
+	ctrl_data->target_position	= position;
+	ctrl_data->skip_prepare		= true;
+
+	m_man->activate		(ControlCom::eControlJump);
+}
+
 
 bool CControlManagerCustom::script_jump(CObject *obj)
 {
@@ -301,6 +324,7 @@ bool CControlManagerCustom::script_jump(CObject *obj)
 
 //////////////////////////////////////////////////////////////////////////
 // Services
+//////////////////////////////////////////////////////////////////////////
 void CControlManagerCustom::check_attack_jump()
 {
 	if (!m_object->EnemyMan.get_enemy())	return;
