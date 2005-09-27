@@ -320,12 +320,13 @@ path_look           = wave1_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 on_info             = {+pri_followers_heli_look} remark@pri_followers_bomber_wave1
-combat_ignore_cond  = {!check_fighting(808)} ;always
+combat_ignore_cond  = always ;{!check_fighting(808)}
 
 [remark@pri_followers_bomber_wave1]
 no_move             = true
 anim                = assault
 on_timer            = 5000 | walker@pri_followers_bomber_wave1_cont
+combat_ignore_cond  = always ;{!check_fighting(808)}
 
 [walker@pri_followers_bomber_wave1_cont]
 path_walk           = wave1_bomber_walk1
@@ -333,6 +334,7 @@ path_look           = wave1_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
+combat_ignore_cond  = always ;{!check_fighting(808)}
 
 ;--- BOMBER: WAVE2 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave2]
@@ -348,7 +350,7 @@ def_state_moving2   = assault
 team                = followers
 on_signal           = syn | walker@pri_followers_bomber_wave2
 on_info             = {+pri_wave2_start} walker@pri_followers_bomber_wave2
-combat_ignore_cond  = {!check_fighting(804:805)} ;always
+combat_ignore_cond  = always ;{!check_fighting(804:805)}
 
 [walker@pri_followers_bomber_wave2]
 path_walk           = wave2_bomber_walk2
@@ -356,7 +358,7 @@ path_look           = wave2_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
-combat_ignore_cond  = {!check_fighting(804:805)} ;always
+combat_ignore_cond  = always ;{!check_fighting(804:805)}
 
 ;--- BOMBER: WAVE3 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave3]
@@ -395,7 +397,7 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_bomber_wave3_fire]
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
-on_timer            = 2700 | walker@pri_followers_bomber_wave3_die
+on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:1000:2000)%
 on_signal           = arrived | %+pri_wave3_bomber_on_position%
 wounded             = wounded@ignore
 danger              = danger@ignore
@@ -1659,74 +1661,90 @@ on_combat               = combat_zombied
 ;--- SOLDIER1 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol1]
 active                  = walker@pri_monolith_patrol1
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol1]
 path_walk               = patrol1_walk
 path_look               = patrol1_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER3 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol3]
 active                  = walker@pri_monolith_patrol3
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol3]
 path_walk               = patrol3_walk
 path_look               = patrol3_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER4 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol4]
 active                  = walker@pri_monolith_patrol4
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol4]
 path_walk               = patrol4_walk
 path_look               = patrol4_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER5 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol5]
 active                  = walker@pri_monolith_patrol5
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol5]
 path_walk               = patrol5_walk
 path_look               = patrol5_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER6 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol6]
 active                  = walker@pri_monolith_patrol6
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol6]
 path_walk               = patrol6_walk
 path_look               = patrol6_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER7 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol7]
 active                  = walker@pri_monolith_patrol7
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol7]
 path_walk               = patrol7_walk
 path_look               = patrol7_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER8 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol8]
 active                  = walker@pri_monolith_patrol8
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol8]
 path_walk               = patrol8_walk
 path_look               = patrol8_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- SOLDIER10 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol10]
 active                  = walker@pri_monolith_patrol10
+combat_ignore           = combat_ignore
 
 [walker@pri_monolith_patrol10]
 path_walk               = patrol10_walk
 path_look               = patrol10_look
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- FOLLOWER1 ------------------------------------------------------------------------------------
 [logic@pri_monolith_follower1]
@@ -1739,6 +1757,7 @@ active                  = nil
 ;--- CAMPER_RPG -----------------------------------------------------------------------------------
 [logic@pri_monolith_stalker_rpg]
 active                  = camper@pri_monolith_stalker_rpg
+combat_ignore           = combat_ignore
 
 [camper@pri_monolith_stalker_rpg]
 path_walk               = patrol11_walk
@@ -1746,10 +1765,12 @@ path_look               = patrol11_look
 no_retreat              = true
 radius                  = 5
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- CAMPER_SVD -----------------------------------------------------------------------------------
 [logic@pri_monolith_stalker_svd]
 active                  = camper@pri_monolith_stalker_svd
+combat_ignore           = combat_ignore
 
 [camper@pri_monolith_stalker_svd]
 path_walk               = patrol12_walk
@@ -1757,10 +1778,12 @@ path_look               = patrol12_look
 no_retreat              = true
 radius                  = 5
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- MACHINE_GUN ----------------------------------------------------------------------------------
 [logic@pri_monolith_stalker_machine_gun]
 active                  = camper@pri_monolith_stalker_machine_gun
+combat_ignore           = combat_ignore
 
 [camper@pri_monolith_stalker_machine_gun]
 path_walk               = patrol14_walk
@@ -1768,46 +1791,57 @@ path_look               = patrol14_look
 no_retreat              = true
 radius                  = 5
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- KAMP1 ----------------------------------------------------------------------------------------
 [logic@pri_monolith_kamp1_soldier]
 active                  = kamp@pri_monolith_kamp1_soldier
+combat_ignore           = combat_ignore
 
 [kamp@pri_monolith_kamp1_soldier]
 center_point            = kamp1
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- KAMP2 ----------------------------------------------------------------------------------------
 [logic@pri_monolith_kamp2_soldier]
 active                  = kamp@pri_monolith_kamp2_soldier
+combat_ignore           = combat_ignore
 
 [kamp@pri_monolith_kamp2_soldier]
 center_point            = kamp2
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- KAMP3 ----------------------------------------------------------------------------------------
 [logic@pri_monolith_kamp3_soldier]
 active                  = kamp@pri_monolith_kamp3_soldier
+combat_ignore           = combat_ignore
 
 [kamp@pri_monolith_kamp3_soldier]
 center_point            = kamp3
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- KAMP4 ----------------------------------------------------------------------------------------
 [logic@pri_monolith_kamp4_soldier]
 active                  = kamp@pri_monolith_kamp4_soldier
+combat_ignore           = combat_ignore
 
 [kamp@pri_monolith_kamp4_soldier]
 center_point            = kamp4
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 ;--- KAMP5 ----------------------------------------------------------------------------------------
 [logic@pri_monolith_kamp5_soldier]
 active                  = kamp@pri_monolith_kamp5_soldier
+combat_ignore           = combat_ignore
 
 [kamp@pri_monolith_kamp5_soldier]
 center_point            = kamp5
 danger                  = danger@sound_small
+combat_ignore_cond      = {=fighting_actor}
 
 
 ;-------------------------------------------------------------------------------------------------
