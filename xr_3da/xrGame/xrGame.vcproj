@@ -10627,16 +10627,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="String"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIString.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIString.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="TabControl"
 					Filter="">
 					<File

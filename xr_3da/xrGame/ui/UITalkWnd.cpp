@@ -116,10 +116,10 @@ void CUITalkWnd::InitOthersStartDialog()
 		m_pOthersDialogManager->InitDialog(m_pOurDialogManager, m_pCurrentDialog);
 		
 		//сказать фразу
-		CUIString speaker_name;
+//		CUIString speaker_name;
 		CStringTable stbl;
-		speaker_name.SetText(m_pOthersInvOwner->Name());
-		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), speaker_name);
+//		speaker_name.SetText(m_pOthersInvOwner->Name());
+		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), m_pOthersInvOwner->Name());
 		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
 
 		//если диалог завершился, перейти в режим выбора темы
@@ -338,17 +338,17 @@ void CUITalkWnd::AskQuestion()
 void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 {
 	//сказать фразу
-	CUIString speaker_name;
-	speaker_name.SetText(m_pOurInvOwner->Name());
+//	CUIString speaker_name;
+//	speaker_name.SetText(m_pOurInvOwner->Name());
 
-	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), speaker_name);
+	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), m_pOurInvOwner->Name());
 	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
 
 	//добавить ответ собеседника в список, если он что-то сказал
 	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
 	{
-		speaker_name.SetText(m_pOthersInvOwner->Name());
-		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), speaker_name);
+//		speaker_name.SetText(m_pOthersInvOwner->Name());
+		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), m_pOurInvOwner->Name());
 	}
 
 	//если диалог завершился, перейти в режим выбора темы
@@ -359,9 +359,9 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 void CUITalkWnd::AddQuestion(LPCSTR text, int value)
 {
-	CUIString str(*CStringTable()(text));
+//	CUIString str(*CStringTable()(text));
 
-	UITalkDialogWnd->AddQuestion(str,value);
+	UITalkDialogWnd->AddQuestion(*CStringTable()(text),value);
 /*
 	UITalkDialogWnd->UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd->UIQuestionsList.GetTextColor(), 
 						UITalkDialogWnd->UIQuestionsList.GetFont(), pData, value);
@@ -370,15 +370,15 @@ void CUITalkWnd::AddQuestion(LPCSTR text, int value)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::AddAnswer(LPCSTR text, const CUIString &SpeakerName)
+void CUITalkWnd::AddAnswer(LPCSTR text, const char* SpeakerName)
 {
 	//для пустой фразы вообще ничего не выводим
 	if(xr_strlen(text) == 0) return;
 	PlaySnd			(text);
-	CUIString str(*CStringTable()(text));
+//	CUIString str(*CStringTable()(text));
 
-	bool i_am = (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->Name()));
-	UITalkDialogWnd->AddAnswer(SpeakerName,str,i_am);
+	bool i_am = (0 == xr_strcmp(SpeakerName, m_pOurInvOwner->Name()));
+	UITalkDialogWnd->AddAnswer(SpeakerName,*CStringTable()(text),i_am);
 /*
 	u32 cl = UITalkDialogWnd->UIAnswersList.GetTextColor();
 	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd->GetOurReplicsColor();

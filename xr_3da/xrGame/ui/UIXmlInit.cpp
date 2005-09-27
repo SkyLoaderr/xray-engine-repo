@@ -54,15 +54,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 const char * const		COLOR_DEFINITIONS					= "color_defs.xml";
-
 CUIXmlInit::ColorDefs		*CUIXmlInit::m_pColorDefs			= NULL;
-//CUIXmlInit::shared_textures	CUIXmlInit::m_shTex;
 
 //////////////////////////////////////////////////////////////////////////
 
 CUIXmlInit::CUIXmlInit()
 {
-	// Init colors
 	InitColorDefs();
 }
 
@@ -105,14 +102,12 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 	strconcat(buf,path,":font");
 	InitFont(xml_doc, buf, index, cl, LocalFont);
 	if (LocalFont)
-	{
 		pWnd->SetFont(LocalFont);
-//		pWnd->SetTextColor(cl);
-	}
+
 	strconcat(buf,path,":window_name");
-	if(xml_doc.NavigateToNode(buf,index)){
+	if(xml_doc.NavigateToNode(buf,index))
 		pWnd->SetWindowName( xml_doc.Read(buf, index, NULL) );
-	}
+
 	return true;
 }
 
@@ -216,25 +211,6 @@ bool CUIXmlInit::InitSpin(CUIXml& xml_doc, const char* path, int index, CUICusto
 
 bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pWnd){
 	InitText(xml_doc,path,index,(IUITextControl*)pWnd);
-//	string256 buf;
-//	shared_str text_path = strconcat(buf,path,":text");
-	//u32 color;
-	//CGameFont *pTmpFont = NULL;
-	//InitFont(xml_doc, *text_path, index, color, pTmpFont);
-	//if (pTmpFont)
-	//{
- //       pWnd->SetTextColor(color);		
-	//	pWnd->SetFont(pTmpFont);
-	//}
-	//// Load font alignment
-	//shared_str al = xml_doc.ReadAttrib(*text_path, index, "align", "");
-	//if (0 == xr_strcmp(al, "c"))
-	//	pWnd->SetTextAlignment(CGameFont::alCenter);
-	//else if (0 == xr_strcmp(al, "r"))
-	//	pWnd->SetTextAlignment(CGameFont::alRight);
-	//else if (0 == xr_strcmp(al, "l"))
-	//	pWnd->SetTextAlignment(CGameFont::alLeft);
-
 	shared_str al = xml_doc.ReadAttrib(path, index, "vert_align", "");
 	if (0 == xr_strcmp(al, "c"))
 		pWnd->SetVTextAlignment(valCenter);
@@ -251,18 +227,11 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 	pWnd->SetTextX(text_x);
 	pWnd->SetTextY(text_y);
 
-//    shared_str text = xml_doc.Read(path, index, NULL);
-//	CStringTable st;
-//	if (!!text)
-//	pWnd->SetText(*st(*text));
-
 	return true;
 }
 
 
 bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextControl* pWnd){
-//	string256 buf;
-//	shared_str text_path = strconcat(buf,path,":text");
 	u32 color;
 	CGameFont *pTmpFont = NULL;
 	InitFont(xml_doc, path, index, color, pTmpFont);
@@ -278,11 +247,10 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 	else if (0 == xr_strcmp(al, "l"))
 		pWnd->SetTextAlignment(CGameFont::alLeft);
 
-	// Text coordinates
 	shared_str text = xml_doc.Read(path, index, NULL);
-
 	CStringTable st;
 	pWnd->SetText(*st(*text));
+
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -742,8 +710,6 @@ bool CUIXmlInit::InitLabel(CUIXml& xml_doc, const char* path, int index, CUILabe
 	strconcat(buf,path,":text");
 	InitText(xml_doc, buf, index, (IUITextControl*)pWnd);
 
-	
-//	shared_str text_path = strconcat(buf,path,":text");
 	float text_x = xml_doc.ReadAttribFlt(buf, index, "x", 0);
 	float text_y = xml_doc.ReadAttribFlt(buf, index, "y", 0);
 
@@ -795,9 +761,6 @@ bool CUIXmlInit::InitTextBanner(CUIXml &xml_doc, const char *path, int index, CU
 	conformityTable["none"]		= CUITextBanner::tbsNone;
 	conformityTable["fade"]		= CUITextBanner::tbsFade;
 	conformityTable["flicker"]	= CUITextBanner::tbsFlicker;
-
-//	XML_NODE *tab_node = xml_doc.NavigateToNode(path, index);
-//	xml_doc.SetLocalRoot(tab_node);
 
 	int animationsCount = xml_doc.GetNodesNum(path, index, "animation");
 
@@ -915,28 +878,7 @@ bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUIMu
 
 bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd){
 	string256 buf;
-	//shared_str texture;
-	//shared_str shader;
-
-	//strconcat(buf, path, ":shader");
-	//if (xml_doc.NavigateToNode(buf))
-	//	shader = xml_doc.Read(buf, index, NULL);
-	//strconcat(buf, path, ":texture");
-	//if (xml_doc.NavigateToNode(buf))
-	//	texture = xml_doc.Read(buf, index, NULL);
-
-	//if (!!texture)
-	//{
-	//	if (!!shader)
-	//		pWnd->InitTextureEx(*texture,*shader);
-	//	else
-	//		pWnd->InitTexture(*texture);
-	//	return true;
-	//}
-
-	
 	InitTexture(xml_doc, path, index, (IUIMultiTextureOwner*)pWnd);
-	
 	strconcat(buf, path, ":texture");
 
 	Frect rect;
@@ -949,14 +891,7 @@ bool CUIXmlInit::InitTexture(CUIXml& xml_doc, const char* path, int index, IUISi
 	int	r			= xml_doc.ReadAttribInt(buf, index, "r", 255);
 	int	g			= xml_doc.ReadAttribInt(buf, index, "g", 255);
 	int	b			= xml_doc.ReadAttribInt(buf, index, "b", 255);
-//	shared_str mirrorM = xml_doc.ReadAttrib(buf, index, "mirror", "none");
 
-	//if (0 == xr_strcmp(mirrorM, "v"))
-	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorVertical);
-	//else if (0 == xr_strcmp(mirrorM, "h"))
-	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorHorisontal);
-	//else if (0 == xr_strcmp(mirrorM, "both"))
-	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorBoth);
 	bool stretch_flag = xml_doc.ReadAttribInt(path, index, "stretch") ? true : false;
 	pWnd->SetStretchTexture(stretch_flag);
 
@@ -1236,7 +1171,7 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 	{
 		newStatic = xr_new<CUIStatic>();
 		InitText(xml_doc, "text", i, newStatic);
-		newStatic->SetWidth(pWnd->GetWidth() - SCROLLBAR_WIDTH );
+		newStatic->SetWidth(pWnd->GetDesiredChildWidth());
 		newStatic->AdjustHeightToText();
 		pWnd->AddWindow(newStatic);
 	}

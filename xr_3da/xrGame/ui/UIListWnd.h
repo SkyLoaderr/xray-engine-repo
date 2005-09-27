@@ -46,13 +46,13 @@ public:
 	bool AddItem			(const char*  str, const float shift = 0.0f, void* pData = NULL,
 							 int value = 0, int insertBeforeIdx = -1);
 
-	virtual bool AddText_script (LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
+//	virtual bool AddText_script (LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
 	virtual bool AddItem_script(CUIListItem* item);
 
-	template <class Element>
-	bool AddParsedItem		(const CUIString &str, const float shift,
-							 const u32 &MsgColor, CGameFont* pFont = NULL,
-							 void* pData = NULL, int value = 0, int insertBeforeIdx = -1);
+	//template <class Element>
+	//bool AddParsedItem		(const CUIString &str, const float shift,
+	//						 const u32 &MsgColor, CGameFont* pFont = NULL,
+	//						 void* pData = NULL, int value = 0, int insertBeforeIdx = -1);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Добавить элемент в лист
@@ -138,8 +138,8 @@ public:
 	// ширину надписи в пискелях
 	// Возвращаем вектор уникальных идентификаторов для интерактивных элементов в строке, которые нам 
 	// будут посылаться в поле pData при нажатии на интерактивный элемент
-	xr_vector<int> AddInteractiveItem(const char *str2, const float shift = 0.0f,
-		const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
+	//xr_vector<int> AddInteractiveItem(const char *str2, const float shift = 0.0f,
+	//	const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
 
 	void	SetNewRenderMethod	(bool value)	{ m_bNewRenderMethod = value; }
 	int		GetListPosition		() const		{ return m_iFirstShownIndex; }

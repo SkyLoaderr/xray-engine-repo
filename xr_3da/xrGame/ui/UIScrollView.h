@@ -37,4 +37,5 @@ public:
 			u32		GetSize				();
 	CUIWindow*		GetItem				(u32 idx);
 			void	SetFixedScrollBar	(bool b);
+			float	GetDesiredChildWidth();
 };

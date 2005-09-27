@@ -19,7 +19,8 @@ using namespace InventoryUtilities;
 
 #include "uistatic.h"
 //#include "UIFrameWindow.h"
-#include "UIListWnd.h"
+//#include "UIListWnd.h"
+#include "UIScrollView.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -136,8 +137,8 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 
 	if (xml_doc->NavigateToNode("biography_list", 0))
 	{
-		pUIBio = xr_new<CUIListWnd>();pUIBio->SetAutoDelete(true);
-		xml_init.InitListWnd(*xml_doc, "biography_list", 0, pUIBio);
+		pUIBio = xr_new<CUIScrollView>();pUIBio->SetAutoDelete(true);
+		xml_init.InitScrollView(*xml_doc, "biography_list", 0, pUIBio);
 		AttachChild(pUIBio);
 	}
 }
@@ -229,12 +230,17 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	// Bio
 	if (pUIBio && pUIBio->IsEnabled())
 	{
-		pUIBio->RemoveAll();
-		static CUIString str;
+		pUIBio->Clear();
+//		static CUIString str;
 		if (pCharInfo->Bio())
 		{
-			str.SetText(pCharInfo->Bio());
-			pUIBio->AddParsedItem<CUIListItem>(str, 0.0f, pUIBio->GetTextColor(), pUIBio->GetFont());
+			//str.SetText(pCharInfo->Bio());
+			CUIStatic* pItem = xr_new<CUIStatic>();
+			pItem->SetWidth(pUIBio->GetDesiredChildWidth());
+			pItem->SetText(pCharInfo->Bio());
+			pItem->AdjustHeightToText();
+			pUIBio->AddWindow(pItem);
+				//AddParsedItem<CUIListItem>(str, 0.0f, pUIBio->GetTextColor(), pUIBio->GetFont());
 		}
 	}
 }

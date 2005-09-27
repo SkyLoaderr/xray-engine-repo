@@ -17,7 +17,7 @@ public:
 	virtual ~CUIListWndEx();
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	CUIListItemEx*	GetExItem(int index);
-	virtual bool	AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
+//	virtual bool	AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
 	
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 

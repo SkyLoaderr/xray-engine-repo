@@ -145,7 +145,7 @@ void CUITalkDialogWnd::ClearQuestions()
 }
 
 
-void CUITalkDialogWnd::AddQuestion(const CUIString &str, int value)
+void CUITalkDialogWnd::AddQuestion(const char* str, int value)
 {
 	CUIQuestionItem* itm			= xr_new<CUIQuestionItem>(m_uiXml,"question_item");
 	itm->Init						(value, str);
@@ -154,7 +154,7 @@ void CUITalkDialogWnd::AddQuestion(const CUIString &str, int value)
 	Register						(itm);
 }
 
-void CUITalkDialogWnd::AddAnswer(const CUIString &SpeakerName, const CUIString &str, bool bActor)
+void CUITalkDialogWnd::AddAnswer(const char* SpeakerName, const char* str, bool bActor)
 {
 	CUIAnswerItem* itm				= xr_new<CUIAnswerItem>(m_uiXml,bActor?"actor_answer_item":"other_answer_item");
 	itm->Init						(str, SpeakerName);

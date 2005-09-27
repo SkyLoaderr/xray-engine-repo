@@ -62,10 +62,10 @@ void CUIItemInfo::Init(float x, float y, float width, float height, const char* 
 		UICondProgresBar.Enable(false);
 	}
 	AttachChild(&UIDesc);
-	xml_init.InitListWnd(uiXml, "descr_list", 0, &UIDesc);
-	UIDesc.EnableScrollBar(true);
-	UIDesc.ActivateList(false);
-	UIDesc.SetRightIndention(5 * UI()->GetScaleX());
+	xml_init.InitScrollView(uiXml, "descr_list", 0, &UIDesc);
+//	UIDesc.EnableScrollBar(true);
+//	UIDesc.ActivateList(false);
+//	UIDesc.SetRightIndention(5 * UI()->GetScaleX());
 
 	if (uiXml.NavigateToNode("image_static", 0))
 	{	
@@ -101,12 +101,16 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		UICondProgresBar.SetProgressPos	( s16(iFloor(cond*100.0f+1.0f-EPS)) );
 		
 
-		UIDesc.RemoveAll();
-		// Добавляем текст
-		CUIString str2;
-		str2.SetText(*pInvItem->ItemDescription());
+		UIDesc.Clear();
+//		CUIString str2;
+//		str2.SetText(*pInvItem->ItemDescription());
 //		CUIStatic::PreprocessText(str2.m_str, UIDesc.GetItemWidth() - 5, UIDesc.GetFont());
-		UIDesc.AddParsedItem<CUIListItem>(str2, 0, UIDesc.GetTextColor());
+		CUIStatic* pItem = xr_new<CUIStatic>();
+		pItem->SetWidth(UIDesc.GetDesiredChildWidth());
+		pItem->SetText(*pInvItem->ItemDescription());
+		pItem->AdjustHeightToText();
+//		pItem->SetTextColor(UIDesc.GetTextColor());
+		UIDesc.AddWindow(pItem);
 
 		// Загружаем картинку
 		UIItemImage.SetShader(InventoryUtilities::GetEquipmentIconsShader());
@@ -131,7 +135,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		UIWeight.SetText		(NULL);
 		UICost.SetText			(NULL);
 		UICondition.SetText		(NULL);
-		UIDesc.RemoveAll		();
+		UIDesc.Clear();
 		UIItemImage.TextureOff	();
 		UICondProgresBar.Show	(false);
 	}

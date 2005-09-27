@@ -6,6 +6,7 @@
 #include "uistatic.h"
 #include "UIListWnd.h"
 #include "UIProgressBar.h"
+#include "UIScrollView.h"
 
 #pragma once
 
@@ -34,7 +35,7 @@ public:
 	CUIStatic	UIWeight;
 	CUIStatic	UICost;
 	CUIStatic	UICondition;
-	CUIListWnd	UIDesc;
+	CUIScrollView	UIDesc;
 	CUIProgressBar	UICondProgresBar;
 
 	//для изображения предмета крупным планом

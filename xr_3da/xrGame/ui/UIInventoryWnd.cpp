@@ -51,14 +51,13 @@ const char * const INVENTORY_CHARACTER_XML	= "inventory_character.xml";
 CUIInventoryWnd::CUIInventoryWnd()
 {
 	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
-	Hide();
-
-	SetCurrentItem(NULL);
+	Hide();	
 
 	m_pCurrentDragDropItem = NULL;
 	m_pItemToUpgrade = NULL;
 
 	Init();
+	SetCurrentItem(NULL);
 
 	SetFont(HUD().Font().pFontMedium);
 }

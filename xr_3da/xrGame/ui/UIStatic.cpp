@@ -420,103 +420,103 @@ u32 CUIStatic::GetTextAlign_script(){
 	return static_cast<u32>(m_pLines->GetTextAlignment());
 }
 
-void CUIStatic::PreprocessText(STRING &str, float width, CGameFont *pFont)
-{
-#pragma todo("Satan->Satan : bad function")
-	R_ASSERT(false);
-	// Codde guards
-	R_ASSERT(pFont);
-	if (str.empty()) return;
-
-	STRING		processedStr, word, tmp;
-	processedStr.reserve(str.size());
-
-	const char	delimSpace		= ' ';
-	const char	delimTab		= '\t';
-	STRING_IT	it				= str.begin();
-	float		lineWidth		= 0;
-
-	bool		delimiterBegin	= false;
-
-	// »дем по словам и считаем их длину
-	while (str.end() != it)
-	{
-		if (lineWidth < width)
-		{
-			if (delimSpace == *it || delimTab == *it)
-			{
-				if (!delimiterBegin)
-				{
-					delimiterBegin = true;
-					processedStr.insert(processedStr.end(), word.begin(), word.end());
-					word.clear();
-				}
-			}
-			else
-			{
-				if (delimiterBegin)
-				{
-					delimiterBegin = false;
-				}
-			}
-
-			if ('\\' == *it && 'n' == *(it + 1))
-			{
-				lineWidth = 0;
-			}
-
-			if ('%' == *it && 'c' == *(it + 1))
-			{
-				// Try default color first
-				if (strstr(&*(it + 2), clDefault) == &*(it + 2))
-				{
-					lineWidth -= pFont->SizeOf("%c");
-					lineWidth -= pFont->SizeOf(clDefault);
-				}
-				else
-				{
-					// Try predefined colors
-					for (CUIXmlInit::ColorDefs::const_iterator it2 = CUIXmlInit::GetColorDefs()->begin(); it2 != CUIXmlInit::GetColorDefs()->end(); ++it2)
-					{
-						if (strstr(&*(it + 2), *it2->first) == &*(it + 2))
-						{
-							lineWidth -= pFont->SizeOf("%c");
-							lineWidth -= pFont->SizeOf(*it2->first);
-							break;
-						}
-					}
-				}
-			}
-
-			word.push_back(*it);
-			lineWidth += pFont->SizeOf(*it++);
-		}
-		else
-		{
-			processedStr.push_back('\\');
-			processedStr.push_back('n');
-
-			// Remove leading spaces
-			tmp.clear();
-
-			STRING_IT it = word.begin();
-			for (; it != word.end(); ++it)
-			{
-				if (delimSpace == *it || delimTab == *it)
-					break;
-			}
-
-			tmp.assign(++it, word.end());
-			word.swap(tmp);
-			word.push_back(0);
-			lineWidth = pFont->SizeOf(&word.front());
-			word.pop_back();
-		}
-	}
-	processedStr.insert(processedStr.end(), word.begin(), word.end());
-	processedStr.push_back(0);
-    processedStr.swap(str);
-}
+//void CUIStatic::PreprocessText(STRING &str, float width, CGameFont *pFont)
+//{
+//#pragma todo("Satan->Satan : bad function")
+//	R_ASSERT(false);
+//	// Codde guards
+//	R_ASSERT(pFont);
+//	if (str.empty()) return;
+//
+//	STRING		processedStr, word, tmp;
+//	processedStr.reserve(str.size());
+//
+//	const char	delimSpace		= ' ';
+//	const char	delimTab		= '\t';
+//	STRING_IT	it				= str.begin();
+//	float		lineWidth		= 0;
+//
+//	bool		delimiterBegin	= false;
+//
+//	// »дем по словам и считаем их длину
+//	while (str.end() != it)
+//	{
+//		if (lineWidth < width)
+//		{
+//			if (delimSpace == *it || delimTab == *it)
+//			{
+//				if (!delimiterBegin)
+//				{
+//					delimiterBegin = true;
+//					processedStr.insert(processedStr.end(), word.begin(), word.end());
+//					word.clear();
+//				}
+//			}
+//			else
+//			{
+//				if (delimiterBegin)
+//				{
+//					delimiterBegin = false;
+//				}
+//			}
+//
+//			if ('\\' == *it && 'n' == *(it + 1))
+//			{
+//				lineWidth = 0;
+//			}
+//
+//			if ('%' == *it && 'c' == *(it + 1))
+//			{
+//				// Try default color first
+//				if (strstr(&*(it + 2), clDefault) == &*(it + 2))
+//				{
+//					lineWidth -= pFont->SizeOf("%c");
+//					lineWidth -= pFont->SizeOf(clDefault);
+//				}
+//				else
+//				{
+//					// Try predefined colors
+//					for (CUIXmlInit::ColorDefs::const_iterator it2 = CUIXmlInit::GetColorDefs()->begin(); it2 != CUIXmlInit::GetColorDefs()->end(); ++it2)
+//					{
+//						if (strstr(&*(it + 2), *it2->first) == &*(it + 2))
+//						{
+//							lineWidth -= pFont->SizeOf("%c");
+//							lineWidth -= pFont->SizeOf(*it2->first);
+//							break;
+//						}
+//					}
+//				}
+//			}
+//
+//			word.push_back(*it);
+//			lineWidth += pFont->SizeOf(*it++);
+//		}
+//		else
+//		{
+//			processedStr.push_back('\\');
+//			processedStr.push_back('n');
+//
+//			// Remove leading spaces
+//			tmp.clear();
+//
+//			STRING_IT it = word.begin();
+//			for (; it != word.end(); ++it)
+//			{
+//				if (delimSpace == *it || delimTab == *it)
+//					break;
+//			}
+//
+//			tmp.assign(++it, word.end());
+//			word.swap(tmp);
+//			word.push_back(0);
+//			lineWidth = pFont->SizeOf(&word.front());
+//			word.pop_back();
+//		}
+//	}
+//	processedStr.insert(processedStr.end(), word.begin(), word.end());
+//	processedStr.push_back(0);
+//    processedStr.swap(str);
+//}
 
 
 void CUIStatic::Elipsis(const Frect &rect, EElipsisPosition elipsisPos)
@@ -544,76 +544,76 @@ void CUIStatic::SetClipRect(Frect r)
 	m_ClipRect = r;
 }
 
-void CUIStatic::Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
-{
-	if (eepNone == elipsisPos) return;
-
-	R_ASSERT(pFont);
-	R_ASSERT(!str.empty());
-
-	// Quick check
-	if (pFont->SizeOf(&str.front()) <= rect.right - rect.left) return;
-
-	// Applying elipsis cut
-	int length = 0, elipsisWidth = static_cast<int>(pFont->SizeOf("..."));
-	STRING_IT cutPos = str.begin(), left, right;
-	bool moveLeft;
-
-	// Depend elipsis position
-	switch (elipsisPos)
-	{
-	case eepBegin:
-		for (STRING::reverse_iterator it = str.rbegin(); it != str.rend(); ++it)
-		{
-			length = length + static_cast<int>(pFont->SizeOf(*it));
-			if (length > rect.right - rect.left - elipsisWidth)
-			{
-				STRING tmp;
-				tmp.assign(++it.base(), str.end());
-				str.swap(tmp);
-				str.insert(str.end(), 0);
-				cutPos = str.begin();
-				break;
-			}
-		}
-		break;
-	case eepEnd:
-		for (STRING_IT it = str.begin(); it != str.end(); ++it)
-		{
-			length = length + static_cast<int>(pFont->SizeOf(*it));
-			if (length > rect.right - rect.left - elipsisWidth)
-			{
-				*it = 0;
-				str.resize(std::distance(str.begin(), it));
-				cutPos = str.end();
-				break;
-			}
-		}
-		break;
-	case eepCenter:
-		left = str.begin();
-		right = str.end() - 1;
-		moveLeft = true;
-		while (length < rect.right - rect.left - elipsisWidth && left <= right)
-		{
-			moveLeft ?	length = length + static_cast<int>(pFont->SizeOf(*left++)):
-		length = length + static_cast<int>(pFont->SizeOf(*right--));
-		moveLeft = !moveLeft;
-		}
-
-		// Cut center
-		if (--left < ++right)
-		{
-			str.erase(left, right);
-			cutPos = str.begin() + std::distance(str.begin(), str.end()) / 2;
-		}
-		break;
-	default:
-		NODEFAULT;
-	}
-
-	str.insert(cutPos, 3, '.');
-}
+//void CUIStatic::Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
+//{
+//	if (eepNone == elipsisPos) return;
+//
+//	R_ASSERT(pFont);
+//	R_ASSERT(!str.empty());
+//
+//	// Quick check
+//	if (pFont->SizeOf(&str.front()) <= rect.right - rect.left) return;
+//
+//	// Applying elipsis cut
+//	int length = 0, elipsisWidth = static_cast<int>(pFont->SizeOf("..."));
+//	STRING_IT cutPos = str.begin(), left, right;
+//	bool moveLeft;
+//
+//	// Depend elipsis position
+//	switch (elipsisPos)
+//	{
+//	case eepBegin:
+//		for (STRING::reverse_iterator it = str.rbegin(); it != str.rend(); ++it)
+//		{
+//			length = length + static_cast<int>(pFont->SizeOf(*it));
+//			if (length > rect.right - rect.left - elipsisWidth)
+//			{
+//				STRING tmp;
+//				tmp.assign(++it.base(), str.end());
+//				str.swap(tmp);
+//				str.insert(str.end(), 0);
+//				cutPos = str.begin();
+//				break;
+//			}
+//		}
+//		break;
+//	case eepEnd:
+//		for (STRING_IT it = str.begin(); it != str.end(); ++it)
+//		{
+//			length = length + static_cast<int>(pFont->SizeOf(*it));
+//			if (length > rect.right - rect.left - elipsisWidth)
+//			{
+//				*it = 0;
+//				str.resize(std::distance(str.begin(), it));
+//				cutPos = str.end();
+//				break;
+//			}
+//		}
+//		break;
+//	case eepCenter:
+//		left = str.begin();
+//		right = str.end() - 1;
+//		moveLeft = true;
+//		while (length < rect.right - rect.left - elipsisWidth && left <= right)
+//		{
+//			moveLeft ?	length = length + static_cast<int>(pFont->SizeOf(*left++)):
+//		length = length + static_cast<int>(pFont->SizeOf(*right--));
+//		moveLeft = !moveLeft;
+//		}
+//
+//		// Cut center
+//		if (--left < ++right)
+//		{
+//			str.erase(left, right);
+//			cutPos = str.begin() + std::distance(str.begin(), str.end()) / 2;
+//		}
+//		break;
+//	default:
+//		NODEFAULT;
+//	}
+//
+//	str.insert(cutPos, 3, '.');
+//}
 
 void CUIStatic::OnFocusReceive(){
 	if (GetMessageTarget())

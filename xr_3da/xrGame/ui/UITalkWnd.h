@@ -63,7 +63,7 @@ protected:
 
 	// Функции добавления строк в листы вопросов и ответов
 	void				AddQuestion(LPCSTR text, int value = 0);
-	void				AddAnswer(LPCSTR text, const CUIString &SpeakerName);
+	void				AddAnswer(LPCSTR text, const char* SpeakerName);
 
 	//для режима торговли
 	CUITradeWnd*			UITradeWnd;

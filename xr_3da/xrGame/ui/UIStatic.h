@@ -128,7 +128,7 @@ public:
 
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
-	static void PreprocessText				(STRING &str, float width, CGameFont *pFont);
+//	static void PreprocessText				(STRING &str, float width, CGameFont *pFont);
 	enum EElipsisPosition
 	{
 		eepNone,
@@ -190,7 +190,7 @@ private:
 	Frect	m_xxxRect; // need by RescaleRelative2Rect(Frect& r). it is initializes only once in Init(x,y,width,height)
 
 public:
-	static void Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
+//	static void Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

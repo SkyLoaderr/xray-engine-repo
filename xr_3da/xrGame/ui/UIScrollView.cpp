@@ -220,3 +220,6 @@ CUIWindow* CUIScrollView::GetItem		(u32 idx)
 	return (*it);
 }
 
+float CUIScrollView::GetDesiredChildWidth(){
+	return GetWidth() - SCROLLBAR_WIDTH;
+}

@@ -61,8 +61,8 @@ public:
 	CUICharacterInfo	UICharacterInfoLeft;
 	CUICharacterInfo	UICharacterInfoRight;
 
-	void				AddQuestion(const CUIString &str, int value);
-	void				AddAnswer(const CUIString &SpeakerName, const CUIString &str, bool bActor);
+	void				AddQuestion(const char* str, int value);
+	void				AddAnswer(const char* SpeakerName, const char* str, bool bActor);
 	void				AddIconedAnswer(LPCSTR text, LPCSTR texture_name, Frect texture_rect);
 	void				ClearAll();
 	void				ClearQuestions();

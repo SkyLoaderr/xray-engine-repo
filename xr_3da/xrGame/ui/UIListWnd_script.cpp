@@ -10,18 +10,18 @@
 
 using namespace luabind;
 
-bool CUIListWnd::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doParse)
-{
-	CUIString			s;
-	float shift_ = float(shift);
-	s.SetText(str);
-	if(doParse){
-		CUIStatic::PreprocessText(s.m_str,GetWidth()-shift-5,pFont);
-	}
-
-	return AddParsedItem<CUIListItem>(s, shift_, color, pFont);
-
-}
+//bool CUIListWnd::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doParse)
+//{
+//	CUIString			s;
+//	float shift_ = float(shift);
+//	s.SetText(str);
+//	if(doParse){
+//		CUIStatic::PreprocessText(s.m_str,GetWidth()-shift-5,pFont);
+//	}
+//
+//	return AddParsedItem<CUIListItem>(s, shift_, color, pFont);
+//
+//}
 
 bool CUIListWnd::AddItem_script(CUIListItem* item){
 	return AddItem(item, -1);
@@ -35,7 +35,7 @@ void CUIListWnd::script_register(lua_State *L)
 
 		class_<CUIListWnd, CUIWindow>("CUIListWnd")
 		.def(							constructor<>())
-		.def("AddText",					&CUIListWnd::AddText_script)
+//		.def("AddText",					&CUIListWnd::AddText_script)
 		.def("AddItem",                 &CUIListWnd::AddItem_script, adopt(_2))
 		.def("RemoveItem",				&CUIListWnd::RemoveItem)
 		.def("RemoveAll",				&CUIListWnd::RemoveAll)

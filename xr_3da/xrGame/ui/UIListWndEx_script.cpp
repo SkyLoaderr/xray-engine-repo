@@ -14,27 +14,27 @@
 
 using namespace luabind;
 
-bool CUIListWndEx::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doParse)
-{
-	CUIString			s;
-	s.SetText(str);
-	if(doParse){
-		CUIStatic::PreprocessText(s.m_str,GetWidth()-shift-5,pFont);
-	}
-	float shift_ = float(shift);
-	return AddParsedItem<CUIListItemEx>(s, shift_, color, pFont);
-
-}
+//bool CUIListWndEx::AddText_script(LPCSTR str, int shift, u32 color, CGameFont* pFont,bool doParse)
+//{
+//	CUIString			s;
+//	s.SetText(str);
+//	if(doParse){
+//		CUIStatic::PreprocessText(s.m_str,GetWidth()-shift-5,pFont);
+//	}
+//	float shift_ = float(shift);
+//	return AddParsedItem<CUIListItemEx>(s, shift_, color, pFont);
+//
+//}
 
 void CUIListWndEx::script_register(lua_State *L)
 {
 
 	module(L)
 		[
-			class_<CUIListWndEx, CUIListWnd>("CUIListWndEx")
-			.def(							constructor<>())
-			.def("AddText",					&CUIListWndEx::AddText_script)
-			.def("GetExItem",				&CUIListWndEx::GetExItem),
+//			class_<CUIListWndEx, CUIListWnd>("CUIListWndEx")
+//			.def(							constructor<>())
+//			.def("AddText",					&CUIListWndEx::AddText_script)
+//			.def("GetExItem",				&CUIListWndEx::GetExItem),
 			
 			class_<CUIListItemEx, CUIListItem>("CUIListItemEx")
 			.def(							constructor<>())
