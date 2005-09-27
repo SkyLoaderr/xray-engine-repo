@@ -362,7 +362,7 @@ void CControlManagerCustom::check_attack_jump()
 	if (!m_jump->can_jump(target)) return;
 
 	if (m_man->check_start_conditions(ControlCom::eControlJump)) {
-		
+
 		m_jump->setup_data().flags.set			(SControlJumpData::ePrepareSkip, false);
 		m_jump->setup_data().target_object		= target;
 		m_jump->setup_data().target_position	= target->Position();

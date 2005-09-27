@@ -17,21 +17,21 @@ struct SControlJumpData : public ControlCom::IComData {
 	
 	flags32					flags;
 
-	struct	{
+	struct	_prepare{
 		MotionID	motion;
 	} state_prepare;
 
-	struct	{
+	struct	_prepare_in_move{
 		MotionID	motion;
 		u32			velocity_mask;
 	} state_prepare_in_move;
 
 
-	struct	{
+	struct	_glide{
 		MotionID	motion;
 	} state_glide;
 
-	struct	{
+	struct	_ground{
 		MotionID	motion;
 		u32			velocity_mask;
 	} state_ground;
