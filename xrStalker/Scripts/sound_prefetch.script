@@ -8,7 +8,7 @@ function prefetch_sounds()
 
 	prefetch("news_manager") 
 	
-	for k,v in sound_theme.ph_snd_themes do
+	for k,v in pairs(sound_theme.ph_snd_themes) do
 --		printf("prefetch [%s]", tostring(k))
 		for kk,vv in v do
 --			printf("file [%s]", tostring(vv))
@@ -17,7 +17,7 @@ function prefetch_sounds()
 	end
 
 	printf("Prefetching stalker sounds")
-	for t,p in sound_theme.theme do
+	for t,p in pairs(sound_theme.theme) do
 		for k,v in p do
 			local name = tostring(k)
 			if v.types then
