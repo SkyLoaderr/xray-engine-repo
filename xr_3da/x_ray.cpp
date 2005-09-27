@@ -549,6 +549,11 @@ void CApplication::LoadSwitch	()
 	else						ll_hLogo = ll_hLogo1;
 }
 
+void CApplication::SetLoadLogo			(ref_shader NewLoadLogo)
+{
+	ll_hLogo = NewLoadLogo;
+};
+
 void CApplication::OnFrame	( )
 {
 	Engine.Event.OnFrame			();

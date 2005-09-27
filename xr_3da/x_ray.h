@@ -43,6 +43,7 @@ public:
 	void					LoadBegin			();
 	void					LoadEnd				();
 	void					LoadTitle			(char* S, char *S2=NULL);
+	void					SetLoadLogo			(ref_shader NewLoadLogo);
 	void					LoadSwitch			();
 
 	virtual	void			OnEvent				(EVENT E, u64 P1, u64 P2);

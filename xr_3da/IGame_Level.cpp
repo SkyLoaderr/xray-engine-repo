@@ -55,7 +55,7 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	if (!FS.exist(temp, "$level$", "level.ltx"))
 		Debug.fatal	("Can't find level configuration file '%s'.",temp);
 	pLevel						= xr_new<CInifile>	( temp );
-
+	
 	// Open
 	pApp->LoadTitle				("Opening stream...");
 	IReader* LL_Stream			= FS.r_open	("$level$","level");
@@ -70,6 +70,13 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	pApp->LoadTitle				("Loading CFORM...");
 	ObjectSpace.Load			();
 	pApp->LoadSwitch			();
+
+	ref_shader tmp_ll_hLogo;
+	if (FS.exist(temp, "$level$", "ll_logo.dds"))
+	{
+		tmp_ll_hLogo.create	("font","ll_logo");
+		pApp->SetLoadLogo(tmp_ll_hLogo);
+	}
 
 	// HUD + Environment
 	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
