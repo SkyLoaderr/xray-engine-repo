@@ -44,8 +44,16 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 	CUIXmlInit xml_init;
 
 	string512 str;
-	strcpy		(str,box_template);
 
+	strconcat								(str,box_template,":picture");
+	m_UIStaticPicture						= xr_new<CUIStatic>();AttachChild(m_UIStaticPicture);
+	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticPicture);
+
+	strconcat								(str,box_template,":message_text");
+	m_UIStaticText							= xr_new<CUIStatic>();AttachChild(m_UIStaticText);
+	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticText);
+
+	strcpy		(str,box_template);
 	xml_init.InitStatic						(uiXml, str, 0, this);
 
 	LPCSTR _type							= uiXml.ReadAttrib(str,0,"type",NULL);
@@ -61,14 +69,6 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 	if(0==stricmp(_type,"yes_no_cancel")){
 		m_eMessageBoxStyle	= MESSAGEBOX_YES_NO_CANCEL;
 	};
-
-	strconcat								(str,box_template,":picture");
-	m_UIStaticPicture						= xr_new<CUIStatic>();AttachChild(m_UIStaticPicture);
-	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticPicture);
-
-	strconcat								(str,box_template,":message_text");
-	m_UIStaticText							= xr_new<CUIStatic>();AttachChild(m_UIStaticText);
-	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticText);
 
 	switch (m_eMessageBoxStyle){
 
