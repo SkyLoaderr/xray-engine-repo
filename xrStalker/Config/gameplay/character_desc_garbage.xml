@@ -61,7 +61,7 @@
 	<specific_character id="gar_newbie_in_tonnel" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="26" y="2"></icon>
-		<map_icon x="22" y="0"></map_icon>
+		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>gar_newbie_in_tonnel</class>
@@ -120,7 +120,7 @@
 	<specific_character id="gar_bandit_novice_wounded" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
-		<map_icon x="3" y="2"></map_icon>
+		<map_icon x="0" y="0"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		
@@ -147,7 +147,7 @@
 	<specific_character id="gar_bandit_leader" team_default = "1">
 		<name>Предводитель бандитов</name>
 		<icon x="22" y="14"></icon>
-		<map_icon x="3" y="2"></map_icon>
+		<map_icon x="0" y="0"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>gar_bandit_leader</class>
@@ -176,7 +176,7 @@
 	<specific_character id="gar_bandit_novice_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="14" y="4"></icon>
-		<map_icon x="3" y="2"></map_icon>
+		<map_icon x="0" y="0"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 	
 		<class>gar_bandit_novice</class>
@@ -204,7 +204,7 @@
 	<specific_character id="gar_bandit_novice_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="28" y="2"></icon>
-		<map_icon x="3" y="2"></map_icon>
+		<map_icon x="0" y="0"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>gar_bandit_novice</class>
@@ -233,7 +233,7 @@
 
 	<specific_character id="gar_bandit_novice_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="24" y="5"></icon>
+		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
