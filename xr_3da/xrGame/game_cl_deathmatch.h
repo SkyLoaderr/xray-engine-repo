@@ -26,6 +26,8 @@ public :
 	bool							m_bDamageBlockIndicators;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
 	u32								m_u32ForceRespawn;
+
+	u32								m_cl_dwWarmUp_Time;
 	string64						WinnerName;
 
 	virtual		CUIGameCustom*		createGameUI			();

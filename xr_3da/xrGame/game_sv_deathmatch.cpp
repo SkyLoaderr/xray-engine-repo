@@ -39,6 +39,9 @@ game_sv_Deathmatch::game_sv_Deathmatch()
 	//-------------------------------
 	m_vFreeRPoints.clear();
 	m_dwLastRPoint = u32(-1);
+	//-------------------------------
+	m_dwWarmUp_MaxTime = 0;
+	m_dwWarmUp_CurTime = 0;
 };
 
 game_sv_Deathmatch::~game_sv_Deathmatch()
@@ -108,6 +111,16 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		teams[i].num_targets	= 0;
 	};
 
+	///////////////////////////////////////////	
+	m_dwWarmUp_CurTime = 0;
+	if (!m_bFastRestart)
+	{
+		if (m_dwWarmUp_MaxTime != 0)
+		{
+			m_dwWarmUp_CurTime = Level().timeServer()+m_dwWarmUp_MaxTime;
+		}
+	}
+	//////////////////////////////////////////
 	inherited::OnRoundStart	();
 
 	//-------------------------------------
@@ -135,7 +148,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 		if (ps->Skip) continue;
 	}
-	///////////////////////////////////////////	
+	
 }
 
 void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
@@ -374,6 +387,8 @@ void	game_sv_Deathmatch::Update					()
 					if (GameDM) GameDM->SetSpectrModeMsgCaption(Text);
 				};
 			};
+
+			check_for_WarmUp();
 		}
 		break;
 	case GAME_PHASE_PENDING:
@@ -1335,6 +1350,7 @@ void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, ClientID id_to)
 	P.w_s32			(timelimit);
 //	P.w_u32			(damageblocklimit);
 	P.w_u32			(m_u32ForceRespawn);
+	P.w_u32			(m_dwWarmUp_CurTime);
 	P.w_u8			(u8(m_bDamageBlockIndicators));
 	// Teams
 	P.w_u16			(u16(teams.size()));
@@ -1853,6 +1869,8 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 		m_dwSM_SwitchDelta =  get_option_i(*options,"spectr",0)*1000;
 		if (m_dwSM_SwitchDelta<1000) m_dwSM_SwitchDelta = 1000;
 	};
+	//-------------------------------------------------------------------------
+	m_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",0);
 };
 
 static bool g_bConsoleCommandsCreated_DM = false;
@@ -1874,6 +1892,8 @@ void game_sv_Deathmatch::ConsoleCommands_Create	()
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	CMD_ADD(CCC_SV_Int,"sv_pda_hunt", (int*)&m_bPDAHunt, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
 	//-------------------------------------
+	CMD_ADD(CCC_SV_Int,"sv_warm_up", (int*)&m_dwWarmUp_MaxTime, 0, 3600000,g_bConsoleCommandsCreated_DM,Cmnd);
+	//-------------------------------------
 	g_bConsoleCommandsCreated_DM = true;
 };
 
@@ -1890,7 +1910,8 @@ void game_sv_Deathmatch::ConsoleCommands_Clear	()
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	CMD_CLEAR("sv_anomalies_enabled");
 	CMD_CLEAR("sv_anomalies_length");
-
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	CMD_CLEAR("sv_warm_up");
 };
 //-----------------------------------------------------------------------------
 void game_sv_Deathmatch::OnPlayerFire (ClientID id_who, NET_Packet &P)
@@ -1952,3 +1973,14 @@ void game_sv_Deathmatch::OnRender				()
 };
 #endif
 //  [7/5/2005]
+
+void		game_sv_Deathmatch::check_for_WarmUp()
+{
+	if (m_dwWarmUp_MaxTime == 0) return;
+	if (m_dwWarmUp_CurTime == 0) return;
+	if (m_dwWarmUp_CurTime < Level().timeServer())
+	{
+		m_dwWarmUp_CurTime == 0;
+		Console->Execute("g_restart_fast");
+	};
+};

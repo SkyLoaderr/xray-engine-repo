@@ -383,21 +383,23 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 
 				string256 S;
 				
-				if (dReinforcementTime != 0 && Level().CurrentViewEntity())
+				if (dReinforcementTime != 0 && Level().CurrentViewEntity() && m_cl_dwWarmUp_Time == 0)
 				{
 					u32 CurTime = Level().timeServer();
 					u32 dTime;
 					if (s32(CurTime) > dReinforcementTime) dTime = 0;
 					else dTime = iCeil(float(dReinforcementTime - CurTime) / 1000);
-
-					sprintf(S,		"Next reinforcement will arrive at . . .%d", dTime);
-					 
+					
+					string64 tmp;
+					_itoa(dTime, tmp, 10);
+					strconcat(S, "Next reinforcement will arrive at . . .", tmp);
+					
+					m_game_ui->SetReinforcementCaption(S);
+/*
 					CActor* pActor = NULL;
 					if (Level().CurrentViewEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
 						pActor = smart_cast<CActor*>(Level().CurrentViewEntity());
 
-					m_game_ui->SetReinforcementCaption(S);
-					/*
 					if (Level().CurrentViewEntity()->CLS_ID == CLSID_SPECTATOR || 
 						(pActor && !pActor->g_Alive()))
 							m_game_ui->SetReinforcementCaption(S);

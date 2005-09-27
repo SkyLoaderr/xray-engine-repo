@@ -184,7 +184,7 @@ void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 			CSE_Abstract* pOwner	= xrCData->owner;
 			CSE_Spectator* pS		= smart_cast<CSE_Spectator*>(pOwner);
 
-			if (pS && m_iReinforcementTime != 0) 
+			if (pS && m_iReinforcementTime != 0 && (m_dwWarmUp_CurTime ==0)) 
 			{
 				return;
 			}
@@ -772,6 +772,7 @@ void	game_sv_ArtefactHunt::Update			()
 		{
 			CheckRPUnblock();
 			//---------------------------------------------------
+			if (m_dwWarmUp_CurTime != 0) break;
 			if (m_iReinforcementTime > 0)
 			{
 				u32 CurTime = Level().timeServer();

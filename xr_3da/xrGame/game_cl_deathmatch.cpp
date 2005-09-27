@@ -49,6 +49,8 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	Actor_Spawn_Effect = "";
 
 	LoadSndMessages();
+	//----------------------------------------------------------------
+	m_cl_dwWarmUp_Time = 0;
 }
 
 void game_cl_Deathmatch::Init ()
@@ -105,6 +107,7 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	P.r_s32			(timelimit);
 //	P.r_u32			(damageblocklimit);
 	m_u32ForceRespawn = P.r_u32();
+	m_cl_dwWarmUp_Time = P.r_u32();
 	m_bDamageBlockIndicators = !!P.r_u8();
 	// Teams
 	// Teams
@@ -385,6 +388,29 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				m_game_ui->SetSpectatorMsgCaption("");
 				m_game_ui->SetPressJumpMsgCaption("");
 				m_game_ui->SetPressBuyMsgCaption("");
+				m_game_ui->SetWarmUpCaption("");
+
+				if (m_cl_dwWarmUp_Time > Level().timeServer())
+				{
+					u32 TimeRemains = m_cl_dwWarmUp_Time - Level().timeServer();
+					string64 S;
+					ConvertTime2String(&S, TimeRemains);
+					string1024 tmpStr = "";
+					if (TimeRemains > 10000)
+						strconcat(tmpStr, "Time To Start: ", S);
+					else
+					{
+						if (TimeRemains < 1000)
+							strconcat(tmpStr, "GO!", "");
+						else
+						{
+							_itoa(TimeRemains/1000, S, 10);
+							strconcat(tmpStr, "Ready ... ", S);
+						}
+					};
+					
+					m_game_ui->SetWarmUpCaption(tmpStr);
+				}
 
 				if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR)
 				{

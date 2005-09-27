@@ -55,6 +55,9 @@ CUIGameDM::CUIGameDM()
 	GameCaptions()->addCustomMessage(m_force_respawn_time_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_frags_and_place_caption =	"frags_and_place";
 	GameCaptions()->addCustomMessage(m_frags_and_place_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
+	
+	m_warm_up_caption =	"warm_up";
+	GameCaptions()->addCustomMessage(m_warm_up_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.05f), HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
 	//-----------------------------------------------------------------------
 	m_vote_caption0 = "votecaption0";
 	m_vote_caption1 = "votecaption1";
@@ -197,6 +200,11 @@ void CUIGameDM::SetForceRespawnTimeCaption(LPCSTR str)
 void CUIGameDM::SetFragsAndPlaceCaption(LPCSTR str)
 {
 	GameCaptions()->setCaption(m_frags_and_place_caption, str, FRAGS_AND_PLACE_COLOR, true);
+}
+
+void CUIGameDM::SetWarmUpCaption				(LPCSTR str)
+{
+	GameCaptions()->setCaption(m_warm_up_caption, str, FRAGS_AND_PLACE_COLOR, true);
 }
 
 void CUIGameDM::SetVoteMessage					(LPCSTR str)

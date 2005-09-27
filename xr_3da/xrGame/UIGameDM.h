@@ -51,6 +51,8 @@ protected:
 	shared_str					m_round_result_caption;		
 	shared_str					m_force_respawn_time_caption;
 	shared_str					m_frags_and_place_caption;
+	shared_str					m_warm_up_caption;
+
 
 	virtual	void					ClearLists				();
 
@@ -71,6 +73,7 @@ public:
 			void					SetRoundResultCaption			(LPCSTR str);
 			void					SetForceRespawnTimeCaption		(LPCSTR str);
 			void					SetFragsAndPlaceCaption			(LPCSTR str);
+			void					SetWarmUpCaption				(LPCSTR str);
 
 			void					SetVoteMessage					(LPCSTR str);
 			void					SetVoteTimeResultMsg			(LPCSTR str);

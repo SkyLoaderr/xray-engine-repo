@@ -86,6 +86,8 @@ protected:
 	virtual		bool				checkForRoundStart		();
 	virtual		bool				checkForRoundEnd		();
 	virtual		bool				check_for_Anomalies		();
+	virtual		void				check_for_WarmUp		();
+
 				void				Send_Anomaly_States		(ClientID id_who);
 				void				Send_EventPack_for_AnomalySet	(u32 AnomalySet, u8 Event);
 
@@ -103,6 +105,10 @@ protected:
 	virtual		void				check_Player_for_Invincibility	(game_PlayerState* ps);
 
 	virtual		void				Check_ForClearRun		(game_PlayerState* ps);
+
+
+	u32								m_dwWarmUp_MaxTime;
+	u32								m_dwWarmUp_CurTime;
 public:
 									game_sv_Deathmatch		();
 									~game_sv_Deathmatch		();
