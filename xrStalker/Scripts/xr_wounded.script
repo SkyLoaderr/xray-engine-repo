@@ -126,7 +126,7 @@ function action_wounded:execute ()
 		self.object:hit(h)		
 	else
 		-- является ли текущий звук синхронным для текущего стейта
-		for k,v in self.a.syndata do
+		for k,v in pairs(self.a.syndata) do
 			if v.state == wound_manager.state and
 			   v.sound == wound_manager.sound
 			then
@@ -283,7 +283,7 @@ function Cwound_manager:process_psy_wound(hp)
 end
 function Cwound_manager:get_key_from_distance(t, hp)
 	local key
-	for k,v in t do
+	for k,v in pairs(t) do
 		if v.dist >= hp then 
 			key = k 
 		else
