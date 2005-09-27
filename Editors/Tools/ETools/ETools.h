@@ -22,7 +22,7 @@ extern "C" {
 		ETOOLS_API CDB::Collector*		create_collector	();
 		ETOOLS_API void					destroy_collector	(CDB::Collector*&);
 		ETOOLS_API void					collector_add_face_d(CDB::Collector* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy);
-		ETOOLS_API void					collector_add_face_pd(CDB::Collector* CL,const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy);
+		ETOOLS_API void					collector_add_face_pd(CDB::Collector* CL,const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy, float eps = EPS);
 
 		ETOOLS_API CDB::COLLIDER*		get_collider		();
 		ETOOLS_API CDB::MODEL*			create_model		(CDB::Collector*);

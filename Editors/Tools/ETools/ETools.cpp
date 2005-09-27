@@ -137,9 +137,9 @@ namespace ETOOLS{
 	{
 		CL->add_face_D					(v0,v1,v2,dummy);
 	}
-	ETOOLS_API void						collector_add_face_pd	(CDB::Collector* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy)
+	ETOOLS_API void						collector_add_face_pd	(CDB::Collector* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy, float eps)
 	{
-		CL->add_face_packed_D			(v0,v1,v2,dummy);
+		CL->add_face_packed_D			(v0,v1,v2,dummy,eps);
 	}
 
 	ETOOLS_API CDB::COLLIDER*get_collider	(){return XRC.collider();}
