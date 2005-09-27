@@ -127,10 +127,10 @@ void CObjectScript::script_register		(lua_State *L)
 
 			.def("use",					&CGameObject::use,	&CGameObjectWrapper::use_static)
 
-			.def("setVisible",			&CGameObject::setVisible)
+//			.def("setVisible",			&CGameObject::setVisible)
 			.def("getVisible",			&CGameObject::getVisible)
 			.def("getEnabled",			&CGameObject::getEnabled)
-			.def("setEnabled",			&CGameObject::setEnabled)
+//			.def("setEnabled",			&CGameObject::setEnabled)
 
 //		,class_<CPhysicsShellHolder,CGameObject>("CPhysicsShellHolder")
 //			.def(constructor<>())

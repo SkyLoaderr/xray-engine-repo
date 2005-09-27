@@ -379,7 +379,8 @@ void SArtefactActivation::PhDataUpdate(dReal step)
 	if (m_cur_activation_state==eFlying) {
 		Fvector dir; 
 		dir.set(0, -1.f, 0);
-		m_af->setEnabled(false);
+		BOOL			enabled = m_af->getEnabled();
+		m_af->setEnabled(FALSE);
 		
 		if(Level().ObjectSpace.RayTest(m_af->Position(), dir, 1.0f, collide::rqtBoth) )
 		{
@@ -387,7 +388,7 @@ void SArtefactActivation::PhDataUpdate(dReal step)
 
 			m_af->m_pPhysicsShell->applyGravityAccel(dir);
 		}
-		m_af->setEnabled(true);
+		m_af->setEnabled(enabled);
 	}
 
 }

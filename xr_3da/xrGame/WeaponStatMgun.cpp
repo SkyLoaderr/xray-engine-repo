@@ -114,8 +114,8 @@ BOOL CWeaponStatMgun::net_Spawn(CSE_Abstract* DC)
 	inheritedShooting::Light_Create();
 
 	processing_activate		();
-	setVisible				(true);
-	setEnabled				(true);
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
 	return					TRUE;
 }
 

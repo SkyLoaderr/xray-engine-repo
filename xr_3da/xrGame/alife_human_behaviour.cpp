@@ -19,14 +19,15 @@ using namespace ALife;
 
 void CSE_ALifeHumanAbstract::update			()
 {
-	VERIFY				(need_update(this));
-	VERIFY				(check_inventory_consistency());
+	VERIFY					(need_update(this));
+	VERIFY					(check_inventory_consistency());
 	if (!bfActive())
 		return;
-	m_dwTotalMoney		= u32(-1);
-	R_ASSERT3			(!m_bOnline,"Can't update online object ",name_replace());
+
+	m_dwTotalMoney			= u32(-1);
+	R_ASSERT3				(!m_bOnline,"Can't update online object ",name_replace());
 	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
-	bool				bOk;
+	bool					bOk;
 	do {
 		switch (m_tTaskState) {
 			case eTaskStateChooseTask : {
@@ -141,7 +142,7 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 {
 	// go to customer to get something to accomplish task
 	if (m_tpPath.empty()) {
-		ai().graph_engine().search(ai().game_graph(),m_tGraphID,ai().alife().objects().object(ai().alife().tasks().task(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,GraphEngineSpace::CBaseParameters());
+		ai().graph_engine().search	(ai().game_graph(),m_tGraphID,ai().alife().objects().object(ai().alife().tasks().task(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,GraphEngineSpace::CBaseParameters());
 		m_dwCurNode					= 0;
 		m_tNextGraphID				= m_tGraphID;
 		m_fCurSpeed					= m_fGoingSpeed;
@@ -150,7 +151,7 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 		m_tpPath.clear();
 		m_dwCurNode = 0;
 		if (int(m_dwCurTaskID) > 0) {
-			CALifeTask			*l_tpTask = ai().alife().tasks().task(m_dwCurTaskID);
+			CALifeTask				*l_tpTask = ai().alife().tasks().task(m_dwCurTaskID);
 			CSE_ALifeTrader			*l_tpTrader = smart_cast<CSE_ALifeTrader*>(ai().alife().objects().object(l_tpTask->m_tCustomerID));
 			if (l_tpTrader)
 				alife().communicate_with_customer(this,l_tpTrader);

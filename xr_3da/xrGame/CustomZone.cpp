@@ -341,7 +341,7 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 		m_pLight = NULL;
 
 	shedule_register			();
-	setEnabled					(true);
+	setEnabled					(TRUE);
 
 	PlayIdleParticles			();
 

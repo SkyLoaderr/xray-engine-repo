@@ -23,6 +23,8 @@
 class CSE_ALifeItemWeapon;
 class CSE_ALifeDynamicObject;
 class CSE_ALifeObject;
+class CALifeSmartTerrainTask;
+class CALifeMonsterAbstract;
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
@@ -288,10 +290,15 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual float					detect_probability			();
 	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);
 #ifdef XRGAME_EXPORTS
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon			(ALife::EHitType		&tHitType,			float		&fHitPower);
-	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive					();
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon			(ALife::EHitType		&tHitType,			float		&fHitPower);
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector			();
+	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);
+	// additional functionality
+	virtual bool					enabled						(CSE_ALifeMonsterAbstract *object) const {return false;};
+	virtual void					register_npc				(CSE_ALifeMonsterAbstract *object) {};
+	virtual void					unregister_npc				(CSE_ALifeMonsterAbstract *object) {};
+	virtual	CALifeSmartTerrainTask	*task						(CSE_ALifeMonsterAbstract *object) {return 0;};
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeSmartZone)

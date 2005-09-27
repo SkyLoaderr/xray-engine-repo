@@ -100,11 +100,12 @@ BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
 			dir.div	(range);
 			BOOL item_en		= item->getEnabled();
 			item->setEnabled	(FALSE);
+			BOOL				enabled = Level().CurrentEntity()->getEnabled();
 			Level().CurrentEntity()->setEnabled(FALSE);
 			collide::ray_defs	RD	(from, dir, range, 0, collide::rqtBoth);
 			collide::rq_results	RQR	;
 			Level().ObjectSpace.RayQuery		(RQR,RD, info_trace_callback, &bOverlaped);
-			Level().CurrentEntity()->setEnabled	(TRUE);
+			Level().CurrentEntity()->setEnabled	(enabled);
 			item->setEnabled	(item_en);
 		}
 	}
@@ -150,13 +151,13 @@ void	CActor::PickupModeUpdate_COD	()
 	CFrustum frustum;
 	frustum.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 
-	BOOL Enabled = getEnabled();
-	setEnabled(FALSE);
+	BOOL		Enabled = getEnabled();
+	setEnabled	(FALSE);
 	//---------------------------------------------------------------------------
 	xr_vector<ISpatial*>	ISpatialResult;
 	g_SpatialSpace->q_frustum(ISpatialResult, 0, STYPE_COLLIDEABLE, frustum);
 	//---------------------------------------------------------------------------
-	setEnabled(Enabled);
+	setEnabled	(Enabled);
 
 	float maxlen = 1000.0f;
 	CInventoryItem* pNearestItem = NULL;

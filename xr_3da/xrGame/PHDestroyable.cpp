@@ -116,16 +116,16 @@ void CPHDestroyable::PhysicallyRemoveSelf()
 
 	}
 
-	obj->setVisible(false);
-	obj->setEnabled(false);
+	obj->setVisible(FALSE);
+	obj->setEnabled(FALSE);
 }
 
 void CPHDestroyable::PhysicallyRemovePart(CPHDestroyableNotificate *dn)
 {
 	CPhysicsShellHolder		*sh		=	dn		->PPhysicsShellHolder		()		;	
 	CPhysicsShell			*s		=	sh		->PPhysicsShell				()		;
-							sh					->setVisible				(false)	;
-							sh					->setEnabled				(false)	;
+							sh					->setVisible				(FALSE)	;
+							sh					->setEnabled				(FALSE)	;
 							s					->Disable					()		;
 							s					->DisableCollision			()		;
 }

@@ -112,22 +112,25 @@ void CHUDCursor::CursorOnFrame ()
 	// Render cursor
 /*
 	if(Level().CurrentEntity()){
-		Level().CurrentEntity()->setEnabled(false);
+		BOOL			enabled = Level().CurrentEntity()->getEnabled()
+		Level().CurrentEntity()->setEnabled(FALSE);
 		if (Level().ObjectSpace.RayPick( p1, dir, RQ.range, collide::rqtBoth, RQ ))
 			RQ.range	= RQ.range<NEAR_LIM?NEAR_LIM:RQ.range;
-		Level().CurrentEntity()->setEnabled(true);
+		Level().CurrentEntity()->setEnabled(enabled);
 	}
 */
 	if(Level().CurrentEntity()){
 		RQ.O			= 0; 
 		RQ.range		= g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
 		RQ.element		= -1;
-		Level().CurrentEntity()->setEnabled(false);
+		
+		BOOL			enabled = Level().CurrentEntity()->getEnabled();
+		Level().CurrentEntity()->setEnabled(FALSE);
 		collide::ray_defs RD(p1, dir, RQ.range, 0, collide::rqtBoth);
 		collide::rq_results	RQR;
 		if(Level().ObjectSpace.RayQuery(RQR,RD, pick_trace_callback, &RQ))
 			clamp		(RQ.range,NEAR_LIM,RQ.range);
-		Level().CurrentEntity()->setEnabled(true);
+		Level().CurrentEntity()->setEnabled(enabled);
 	}
 
 }

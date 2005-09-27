@@ -152,11 +152,12 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			Fvector pos	= Device.vCameraPosition;
 			Fvector dir = Device.vCameraDirection;
 
-			Level().CurrentControlEntity()->setEnabled(false);
+			BOOL				enabled = Level().CurrentControlEntity()->getEnabled();
+			Level().CurrentControlEntity()->setEnabled(FALSE);
 			collide::rq_result result;
 			BOOL reach_wall = Level().ObjectSpace.RayPick(pos, dir, 100.0f, 
 				collide::rqtBoth, result) && !result.O;
-			Level().CurrentControlEntity()->setEnabled(true);			
+			Level().CurrentControlEntity()->setEnabled(enabled);			
 			////////////////////////////////////
 			if (!reach_wall || result.range < 1) break;
 

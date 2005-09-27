@@ -212,7 +212,7 @@ void CAI_Stalker::Die				(CObject* who)
 
 void CAI_Stalker::Load				(LPCSTR section)
 { 
-	setEnabled						(false);
+//	setEnabled						(FALSE);
 	
 	CCustomMonster::Load			(section);
 	CObjectHandler::Load			(section);
@@ -262,7 +262,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 		);
 	}
 
-	setEnabled						(true);
+	setEnabled						(TRUE);
 
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);

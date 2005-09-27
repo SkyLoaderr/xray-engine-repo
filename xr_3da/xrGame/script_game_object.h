@@ -99,9 +99,9 @@ public:
 	_DECLARE_FUNCTION10	(Mass		,	float		);
 	_DECLARE_FUNCTION10	(ID			,	u32			);
 	_DECLARE_FUNCTION10	(getVisible	,	BOOL		);
-	_DECLARE_FUNCTION11	(setVisible	,	void, BOOL	);
+//	_DECLARE_FUNCTION11	(setVisible	,	void, BOOL	);
 	_DECLARE_FUNCTION10	(getEnabled	,	BOOL		);
-	_DECLARE_FUNCTION11	(setEnabled	,	void, BOOL	);
+//	_DECLARE_FUNCTION11	(setEnabled	,	void, BOOL	);
 	_DECLARE_FUNCTION10	(story_id	,	ALife::_STORY_ID);
 	
 			LPCSTR				Name				() const;

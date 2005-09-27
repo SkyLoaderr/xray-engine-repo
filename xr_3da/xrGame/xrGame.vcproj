@@ -1899,6 +1899,19 @@
 								RelativePath=".\alife_task_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="smart_terrain_task"
+							Filter="">
+							<File
+								RelativePath=".\alife_smart_terrain_task.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_smart_terrain_task.h">
+							</File>
+							<File
+								RelativePath=".\alife_smart_terrain_task_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="registries"
@@ -2025,6 +2038,19 @@
 							</File>
 							<File
 								RelativePath=".\alife_schedule_registry_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="smart_terrain_registry"
+							Filter="">
+							<File
+								RelativePath=".\alife_smart_terrain_registry.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_smart_terrain_registry.h">
+							</File>
+							<File
+								RelativePath=".\alife_smart_terrain_registry_inline.h">
 							</File>
 						</Filter>
 						<Filter

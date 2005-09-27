@@ -27,14 +27,17 @@ float CMeleeChecker::distance_to_enemy(const CEntity *enemy)
 	collide::ray_defs		r_query	(global_transform.c, dir, MAX_TRACE_ENEMY_RANGE, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, collide::rqtObject);
 	collide::rq_results		r_res;
 
-	m_object->setEnabled	(false);
+	BOOL					enabled = m_object->getEnabled();
+	m_object->setEnabled	(FALSE);
 	
-	if (enemy->CFORM()->_RayQuery(r_query, r_res)) 
-		if (r_res.r_begin()->O) dist = r_res.r_begin()->range;
+	if (enemy->CFORM()->_RayQuery(r_query, r_res)) {
+		if (r_res.r_begin()->O)
+			dist			= r_res.r_begin()->range;
+	}
 	
-	m_object->setEnabled	(true);		
+	m_object->setEnabled	(enabled);		
 
-	return dist;
+	return					(dist);
 }
 
 void CMeleeChecker::on_hit_attempt(bool hit_success) 

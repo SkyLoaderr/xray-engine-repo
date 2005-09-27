@@ -453,8 +453,8 @@ void CAI_Rat::OnH_A_Chield		()
 
 void CAI_Rat::OnH_B_Chield		()
 {
-	setVisible					(false);
-	setEnabled					(false);
+	setVisible					(FALSE);
+	setEnabled					(FALSE);
 
 	if (m_pPhysicsShell)
 		m_pPhysicsShell->Deactivate	();
@@ -470,8 +470,8 @@ void CAI_Rat::OnH_B_Independent	()
 	if (!Useful())
 		return;
 
-	setVisible					(true);
-	setEnabled					(true);
+	setVisible					(TRUE);
+	setEnabled					(TRUE);
 
 	if (m_pPhysicsShell)
 		activate_physic_shell	();

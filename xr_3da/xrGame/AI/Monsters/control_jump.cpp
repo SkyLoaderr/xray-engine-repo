@@ -166,15 +166,16 @@ bool CControlJump::is_landing()
 	Fvector trace_from;
 	m_object->Center(trace_from);
 
-	m_object->setEnabled(false);
-	collide::rq_result	l_rq;
+	BOOL					enabled = m_object->getEnabled();
+	m_object->setEnabled	(FALSE);
+	collide::rq_result		l_rq;
 
 	bool on_the_ground = false;
 	if (Level().ObjectSpace.RayPick(trace_from, direction, m_trace_ground_range, collide::rqtStatic, l_rq)) {
 		if (l_rq.range < m_trace_ground_range) on_the_ground = true;
 	}
 
-	m_object->setEnabled(true);			
+	m_object->setEnabled	(enabled);			
 
 	if (!on_the_ground) return false;
 
@@ -269,7 +270,8 @@ void CControlJump::hit_test()
 	Fvector trace_from;
 	m_object->Center(trace_from);
 
-	m_object->setEnabled(false);
+	BOOL					enabled = m_object->getEnabled();
+	m_object->setEnabled	(FALSE);
 	collide::rq_result	l_rq;
 
 	if (Level().ObjectSpace.RayPick(trace_from, m_object->Direction(), m_hit_trace_range, collide::rqtObject, l_rq)) {
@@ -279,7 +281,7 @@ void CControlJump::hit_test()
 		}
 	}
 
-	m_object->setEnabled(true);			
+	m_object->setEnabled	(enabled);			
 	return;
 }
 
@@ -287,8 +289,9 @@ bool CControlJump::is_on_the_ground()
 {
 	bool ret_val = false;
 
-	m_object->setEnabled(false);
-	collide::rq_result	l_rq;
+	BOOL					enabled = m_object->getEnabled();
+	m_object->setEnabled	(FALSE);
+	collide::rq_result		l_rq;
 
 	Fvector			trace_from;
 	m_object->Center(trace_from);
@@ -304,7 +307,7 @@ bool CControlJump::is_on_the_ground()
 		}
 	}
 
-	m_object->setEnabled(true);
+	m_object->setEnabled	(enabled);
 
 	return ret_val;
 }

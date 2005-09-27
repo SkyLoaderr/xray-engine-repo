@@ -240,8 +240,8 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 	CShootingObject::Light_Create	();
 
 
-	setVisible						(true);
-	setEnabled						(true);
+	setVisible						(TRUE);
+	setEnabled						(TRUE);
 
 
 

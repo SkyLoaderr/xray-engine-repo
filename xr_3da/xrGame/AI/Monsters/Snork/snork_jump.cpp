@@ -159,7 +159,8 @@
 //{
 //	float ret_val = flt_max;
 //	
-//	m_object->setEnabled(false);
+//	BOOL				enabled = m_object->getEnabled();
+//	m_object->setEnabled(FALSE);
 //	collide::rq_result	l_rq;
 //
 //	Fvector			trace_from;
@@ -171,7 +172,7 @@
 //		if ((l_rq.range < trace_dist)) ret_val = l_rq.range;
 //	}
 //
-//	m_object->setEnabled(true);
+//	m_object->setEnabled(enabled);
 //
 //	return ret_val;
 //}

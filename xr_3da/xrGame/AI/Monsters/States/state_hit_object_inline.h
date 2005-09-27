@@ -42,11 +42,12 @@ bool CStateMonsterHitObjectAbstract::check_start_conditions()
 	target									= 0;
 	
 	// получить физ. объекты в радиусе
-	object->setEnabled						(false);
-	xr_vector<CObject*> nearest_objects		;
+	BOOL									enabled = object().getEnabled();
+	object->setEnabled						(FALSE);
+	xr_vector<CObject*>						nearest_objects;
 	Level().ObjectSpace.GetNearest			(nearest_objects,object->Position(), object->Radius() - 0.5f); 
 	//xr_vector<CObject*> &nearest_objects	= Level().ObjectSpace.q_nearest; 
-	object->setEnabled						(true);
+	object->setEnabled						(enabled);
 	
 	xr_vector<CObject*>::iterator B = nearest_objects.begin();
 	xr_vector<CObject*>::iterator E = nearest_objects.end();

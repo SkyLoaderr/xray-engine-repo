@@ -1684,6 +1684,7 @@ void CCar::OnBeforeExplosion()
 {
 	setEnabled(FALSE);
 }
+
 void CCar::CarExplode()
 {
 

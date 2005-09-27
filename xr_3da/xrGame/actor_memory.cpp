@@ -83,6 +83,9 @@ void CActorMemory::shedule_Update			(u32 dt)
 	if (!object().g_Alive())
 		return;
 
+	if (!object().Local())
+		return;
+
 	switch (m_state) {
 		case 0 : {
 			m_state							= 1;

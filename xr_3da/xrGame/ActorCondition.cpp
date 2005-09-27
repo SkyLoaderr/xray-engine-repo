@@ -219,10 +219,17 @@ EActorSleep CActorCondition::CanSleepHere()
 	pos.set(object().Position());
 	pos.y += 0.1f;
 	dir.set(0, -1.f, 0);
-	object().setEnabled(FALSE);
-	BOOL result = Level().ObjectSpace.RayPick(pos, dir, 0.3f, 
-				  collide::rqtBoth, RQ);
-	object().setEnabled(TRUE);
+	BOOL				enabled = object().getEnabled();
+	object().setEnabled	(FALSE);
+	BOOL				result = 
+		Level().ObjectSpace.RayPick(
+			pos,
+			dir,
+			0.3f, 
+			collide::rqtBoth,
+			RQ
+		);
+	object().setEnabled(enabled);
 	
 	//актер стоит на динамическом объекте или вообще падает - 
 	//спать нельзя
@@ -243,11 +250,12 @@ EActorSleep CActorCondition::CanSleepHere()
 /*	if (!Level().autosave_manager().ready_for_autosave())
 		return easEnemies;
 */
-	object().setEnabled(false);
+	BOOL				_enabled = object().getEnabled();
+	object().setEnabled	(FALSE);
 	xr_vector<CObject*> NearestList;	// = Level().ObjectSpace.q_nearest; 
 	Level().ObjectSpace.GetNearest	(NearestList, pos, ENEMIES_RADIUS); 
 	//xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
-	object().setEnabled(true);
+	object().setEnabled	(_enabled);
 
 	for(xr_vector<CObject*>::iterator it = NearestList.begin();
 									NearestList.end() != it;

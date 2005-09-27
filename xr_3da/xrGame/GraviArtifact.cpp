@@ -57,7 +57,8 @@ void CGraviArtefact::UpdateCLChild()
 			Fvector dir; 
 			dir.set(0, -1.f, 0);
 			collide::rq_result RQ;
-			setEnabled(false);
+			BOOL		enabled = getEnabled();
+			setEnabled	(FALSE);
 			
 			//проверить высоту артифакта
 			if(Level().ObjectSpace.RayPick(Position(), dir, m_fJumpHeight, collide::rqtBoth, RQ)) 
@@ -67,7 +68,7 @@ void CGraviArtefact::UpdateCLChild()
 											  30.f * Device.fTimeDelta * 
 											  m_pPhysicsShell->getMass());
 			}
-			setEnabled(true);
+			setEnabled	(enabled);
 		}
 	} else 
 		if(H_Parent()) 

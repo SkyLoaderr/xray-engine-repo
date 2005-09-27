@@ -89,8 +89,8 @@ void CEatableItem::OnH_B_Independent()
 {
 	if(!Useful()) 
 	{
-		object().setVisible(false);
-		object().setEnabled(false);
+		object().setVisible(FALSE);
+		object().setEnabled(FALSE);
 		if (m_physic_item)
 			m_physic_item->m_ready_to_destroy	= true;
 	}

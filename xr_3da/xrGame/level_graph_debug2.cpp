@@ -323,10 +323,11 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &vertex_path, u32 vertex_id
 
 void CLevelGraph::draw_dynamic_obstacles() const
 {
-//	Level().CurrentEntity()->setEnabled	(false);
+//	BOOL								enabled = Level().CurrentEntity()->getEnabled();
+//	Level().CurrentEntity()->setEnabled	(FALSE);
 //	Level().ObjectSpace.GetNearest		(m_start_point,100.f); 
 //	xr_vector<CObject*>					&tpNearestList = Level().ObjectSpace.q_nearest; 
-//	Level().CurrentEntity()->setEnabled	(true);
+//	Level().CurrentEntity()->setEnabled	(enabled);
 //
 //	{
 //		xr_vector<CObject*>::iterator		I = tpNearestList.begin();

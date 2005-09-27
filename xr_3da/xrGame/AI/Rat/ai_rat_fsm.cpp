@@ -125,7 +125,7 @@ void CAI_Rat::Death()
 			m_previous_query_time = Device.dwTimeGlobal;
 		setVisible(false);
 		if (Device.dwTimeGlobal - m_previous_query_time > 10000) {
-//			setEnabled(false);
+//			setEnabled			(FALSE);
 //			NET_Packet			P;
 //			u_EventGen			(P,GE_DESTROY,ID());
 //			u_EventSend			(P);

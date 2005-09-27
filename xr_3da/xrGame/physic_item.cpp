@@ -58,8 +58,8 @@ void CPhysicItem::OnH_B_Independent	()
 	if (m_ready_to_destroy)
 		return;
 
-	setVisible					(true);
-	setEnabled					(true);
+	setVisible					(TRUE);
+	setEnabled					(TRUE);
 
 	if (m_pPhysicsShell)
 		activate_physic_shell	();
@@ -69,8 +69,8 @@ void CPhysicItem::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
 
-	setVisible					(false);
-	setEnabled					(false);
+	setVisible					(FALSE);
+	setEnabled					(FALSE);
 
 	if (m_pPhysicsShell)
 		m_pPhysicsShell->Deactivate	();
@@ -85,8 +85,8 @@ BOOL CPhysicItem::net_Spawn			(CSE_Abstract* DC)
 	if (0xffff == abstract->ID_Parent)
 		setup_physic_shell	();
 
-	setVisible				(true);
-	setEnabled				(true);
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
 
 	return					(TRUE);
 }

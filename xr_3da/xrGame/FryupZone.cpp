@@ -44,8 +44,8 @@ void CFryupZone::OnRender()
 //		XFORM().transform_tiny		(P,CFORM()->getSphere().P);
 //		Sound->play_at_pos			(m_ambient,this, Position(), true);
 //
-//		//	setVisible(true);
-//		setEnabled(true);
+//		//	setVisible(TRUE);
+//		setEnabled(TRUE);
 //
 //		CParticlesObject* pStaticPG; s32 l_c = (int)m_effects.size();
 //		Fmatrix l_m; l_m.set(renderable.xform);

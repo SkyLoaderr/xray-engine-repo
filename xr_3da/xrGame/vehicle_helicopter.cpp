@@ -67,8 +67,8 @@ BOOL CVehicleHelicopter::net_Spawn			(CSE_Abstract* DC)
 	m_engine_sound.create(TRUE,*heli->engine_sound);
 	m_engine_sound.play_at_pos(0,XFORM().c,sm_Looped);
 
-	setVisible			(true);
-	setEnabled			(true);
+	setVisible			(TRUE);
+	setEnabled			(TRUE);
 
 	return				(TRUE);
 }

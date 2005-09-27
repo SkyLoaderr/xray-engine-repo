@@ -26,6 +26,7 @@ class CALifeAnomalyRegistry;
 class CALifeOrganizationRegistry;
 class CALifeNewsRegistry;
 class CALifeStoryRegistry;
+class CALifeSmartTerrainRegistry;
 class CALifeRegistryContainer;
 
 class CSE_Abstract;
@@ -50,6 +51,7 @@ protected:
 	CALifeOrganizationRegistry					*m_organizations;
 	CALifeNewsRegistry							*m_news;
 	CALifeStoryRegistry							*m_story_objects;
+	CALifeSmartTerrainRegistry					*m_smart_terrains;
 	CALifeRegistryContainer						*m_registry_container;
 	CRandom32									m_random;
 	bool										m_initialized;
@@ -70,6 +72,8 @@ protected:
 	IC		CALifeOrganizationRegistry			&organizations				();
 	IC		CALifeNewsRegistry					&news						();
 	IC		CALifeStoryRegistry					&story_objects				();
+	IC		CALifeSmartTerrainRegistry			&smart_terrains				();
+
 public:
 	IC		CALifeGraphRegistry					&graph						();
 	IC		CALifeTimeManager					&time_manager				();
@@ -92,6 +96,7 @@ public:
 	IC		const CALifeOrganizationRegistry	&organizations				() const;
 	IC		const CALifeNewsRegistry			&news						() const;
 	IC		const CALifeStoryRegistry			&story_objects				() const;
+	IC		const CALifeSmartTerrainRegistry	&smart_terrains				() const;
 	IC		CRandom32							&random						();
 	IC		xrServer							&server						() const;
 	IC		const CALifeTimeManager				&time_manager				() const;

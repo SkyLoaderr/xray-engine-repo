@@ -65,8 +65,8 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 			value("no_path",				int(MovementManager::ePathTypeNoPath))
 		]
 		
-		.property("visible",				&CScriptGameObject::getVisible,			&CScriptGameObject::setVisible)
-		.property("enabled",				&CScriptGameObject::getEnabled,			&CScriptGameObject::setEnabled)
+//		.property("visible",				&CScriptGameObject::getVisible,			&CScriptGameObject::setVisible)
+//		.property("enabled",				&CScriptGameObject::getEnabled,			&CScriptGameObject::setEnabled)
 		.property("health",					&CScriptGameObject::GetHealth,			&CScriptGameObject::SetHealth)
 		.property("psy_health",				&CScriptGameObject::GetPsyHealth,		&CScriptGameObject::SetPsyHealth)
 		.property("power",					&CScriptGameObject::GetPower,			&CScriptGameObject::SetPower)

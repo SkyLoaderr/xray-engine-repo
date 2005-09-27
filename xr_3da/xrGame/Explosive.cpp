@@ -200,6 +200,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 	}
 #endif
 
+	BOOL		enabled = blasted_obj->getEnabled();
 	blasted_obj->setEnabled(FALSE);
 	for(u16 i=0;i<TEST_RAYS_PER_OBJECT;++i)
 	{
@@ -213,7 +214,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 		float mag=l_dir.magnitude();
 		if(fis_zero(mag)) 
 		{
-			blasted_obj->setEnabled(TRUE);return 1.f;
+			blasted_obj->setEnabled(enabled);return 1.f;
 		}
 		l_dir.mul(1.f/mag);
 #ifdef DEBUG
@@ -231,7 +232,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 		effect+=l_S/max_s*TestPassEffect(l_source_p,l_dir,mag,expl_radius,storage);
 
 	}
-	blasted_obj->setEnabled(TRUE);
+	blasted_obj->setEnabled(enabled);
 	return effect/TEST_RAYS_PER_OBJECT;
 	
 }
@@ -459,8 +460,8 @@ void CExplosive::OnAfterExplosion()
 }
 void CExplosive::OnBeforeExplosion()
 {
-	cast_game_object()->setVisible(false);
-	cast_game_object()->setEnabled(false);
+	cast_game_object()->setVisible(FALSE);
+	cast_game_object()->setEnabled(FALSE);
 //	Msg("---------CExplosive OnBeforeExplosion setVisible(false) [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
 
 }

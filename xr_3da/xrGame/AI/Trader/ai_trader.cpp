@@ -36,7 +36,7 @@ CAI_Trader::~CAI_Trader()
 
 void CAI_Trader::Load(LPCSTR section)
 {
-	setEnabled						(false);
+//	setEnabled						(FALSE);
 	inherited::Load					(section);
 
 	//fHealth							= pSettings->r_float	(section,"Health");

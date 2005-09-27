@@ -422,8 +422,8 @@ void	CActor::net_Import_Base_proceed		( )
 {
 	if (g_Alive())
 	{
-		setVisible				(!HUDview	());
-		setEnabled					(TRUE);
+		setVisible				((BOOL)!HUDview	());
+		setEnabled				(TRUE);
 	};
 	//---------------------------------------------
 		
@@ -1722,7 +1722,7 @@ void	CActor::Check_for_AutoPickUp()
 	if (!g_Alive()) return;
 
 	BOOL Enabled = getEnabled();
-	setEnabled(false);
+	setEnabled(FALSE);
 	/*
 	Fvector         bc,bd;
 	Fbox            xf;

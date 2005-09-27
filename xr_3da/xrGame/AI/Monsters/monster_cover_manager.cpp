@@ -178,7 +178,8 @@ void CMonsterCoverManager::less_cover_direction(Fvector &dir)
 {
 	float angle				= ai().level_graph().vertex_cover_angle(m_object->ai_location().level_vertex_id(),deg(10), CLevelGraph::PredicateWorstCover());
 
-	m_object->setEnabled	(false);
+	BOOL					enabled = m_object->getEnabled();
+	m_object->setEnabled	(FALSE);
 	collide::rq_result		l_rq;
 
 	float angle_from		= angle_normalize(angle - ANGLE_DISP);
@@ -214,7 +215,7 @@ void CMonsterCoverManager::less_cover_direction(Fvector &dir)
 		}
 	}
 
-	m_object->setEnabled(true);
+	m_object->setEnabled		(enabled);
 
 	angle		= angle_normalize(angle_from + angle_difference(angle_from,angle_to) / 2);
 	dir.setHP	(angle,0.f);

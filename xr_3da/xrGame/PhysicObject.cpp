@@ -37,8 +37,8 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 	}
 
 	CPHSkeleton::Spawn(e);
-	setVisible(true);
-	setEnabled(true);
+	setVisible(TRUE);
+	setEnabled(TRUE);
 	if(!PPhysicsShell()->isBreakable()&&!CScriptBinder::object()&&!CPHSkeleton::IsRemoving())SheduleUnregister();
 	return TRUE;
 }

@@ -15,12 +15,13 @@
 #include "alife_event_registry.h"
 #include "alife_task_registry.h"
 #include "alife_graph_registry.h"
-#include "alife_trader_registry.h" 
+#include "alife_trader_registry.h"
 #include "alife_schedule_registry.h"
 #include "alife_anomaly_registry.h"
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
 #include "alife_story_registry.h"
+#include "alife_smart_terrain_registry.h"
 #include "alife_registry_container.h"
 #include "xrserver.h"
 #include "level_navigation_graph.h"
@@ -44,6 +45,7 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_organizations				= 0;
 	m_news						= 0;
 	m_story_objects				= 0;
+	m_smart_terrains			= 0;
 	m_registry_container		= 0;
 	random().seed						(u32(CPU::QPC() & 0xffffffff));
 }
@@ -68,6 +70,7 @@ void CALifeSimulatorBase::unload			()
 	xr_delete					(m_organizations);
 	xr_delete					(m_news);
 	xr_delete					(m_story_objects);
+	xr_delete					(m_smart_terrains);
 	xr_delete					(m_registry_container);
 	m_initialized				= false;
 }
@@ -87,6 +90,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_traders					= xr_new<CALifeTraderRegistry>		();
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
 	m_story_objects				= xr_new<CALifeStoryRegistry>		();
+	m_smart_terrains			= xr_new<CALifeSmartTerrainRegistry>();
 	m_registry_container		= xr_new<CALifeRegistryContainer>	();
 	m_initialized				= true;
 }
@@ -295,9 +299,6 @@ void CALifeSimulatorBase::assign_death_position(CSE_ALifeCreatureAbstract *tpALi
 		}
 	}
 
-//	if (tGraphID == 1524) {
-//		Msg									("generating death position");
-//	}
 	CGameGraph::const_spawn_iterator		i, e;
 	ai().game_graph().begin_spawn			(tGraphID,i,e);
 	VERIFY									(e == i + ai().game_graph().vertex(tGraphID)->death_point_count());

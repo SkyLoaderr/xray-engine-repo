@@ -75,7 +75,7 @@ BOOL CTeamBaseZone::net_Spawn	(CSE_Abstract* DC)
 		l_pShape->ComputeBounds	();
 		Fvector					P;
 		XFORM().transform_tiny	(P,CFORM()->getSphere().P);
-		setEnabled				(true);
+		setEnabled				(TRUE);
 	}
 
 	if (GameID() != GAME_SINGLE)

@@ -143,8 +143,8 @@ BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 		TurnOff					();	// -> and here is disable :)
 	}
 	
-	setVisible					(!!Visual());
-	setEnabled					(!!collidable.model);
+	setVisible					((BOOL)!!Visual());
+	setEnabled					((BOOL)!!collidable.model);
 
 	return						(TRUE);
 }

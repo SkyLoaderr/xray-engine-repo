@@ -25,8 +25,8 @@ BOOL CPhysicsSkeletonObject::net_Spawn(CSE_Abstract* DC)
 	xr_delete(collidable.model);
 	collidable.model = xr_new<CCF_Skeleton>(this);
 	CPHSkeleton::Spawn(e);
-	setVisible(true);
-	setEnabled(true);
+	setVisible(TRUE);
+	setEnabled(TRUE);
 	if(!PPhysicsShell()->isBreakable())shedule_unregister();
 	return TRUE;
 }

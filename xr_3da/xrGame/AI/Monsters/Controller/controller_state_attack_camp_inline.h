@@ -19,15 +19,16 @@ void CStateControlCampAbstract::initialize()
 
 	float angle			= ai().level_graph().vertex_cover_angle(object->ai_location().level_vertex_id(),deg(10), CLevelGraph::PredicateWorstCover());
 	
-	object->setEnabled(false);
+	BOOL				enabled = object->getEnabled();
+	object->setEnabled	(FALSE);
 	collide::rq_result	l_rq;
 
 	m_angle_from		= angle_normalize(angle - ANGLE_DISP);
 	m_angle_to			= angle_normalize(angle + ANGLE_DISP);
 
-	Fvector			trace_from;
-	object->Center	(trace_from);
-	Fvector			direction;
+	Fvector				trace_from;
+	object->Center		(trace_from);
+	Fvector				direction;
 
 	// trace discretely left
 	for (float ang = angle; angle_difference(ang, angle) < ANGLE_DISP; ang = angle_normalize(ang - ANGLE_DISP_STEP)) {
@@ -55,7 +56,7 @@ void CStateControlCampAbstract::initialize()
 		}
 	}
 
-	object->setEnabled(true);
+	object->setEnabled	(enabled);
 	
 	m_time_next_updated	= 0;
 

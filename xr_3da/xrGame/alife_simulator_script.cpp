@@ -13,6 +13,7 @@
 #include "alife_object_registry.h"
 #include "alife_story_registry.h"
 #include "script_engine.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
 using namespace luabind;
 
@@ -91,6 +92,16 @@ void generate_story_ids	(STORY_PAIRS &result)
     xr_delete				(Ini);
 }
 
+void kill_entity0			(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster, const GameGraph::_GRAPH_ID &game_vertex_id)
+{
+	alife->kill_entity		(monster,game_vertex_id,0);
+}
+
+void kill_entity1			(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster)
+{
+	alife->kill_entity		(monster,monster->m_tGraphID,0);
+}
+
 void CALifeSimulator::script_register(lua_State *L)
 {
 	module(L)
@@ -102,7 +113,10 @@ void CALifeSimulator::script_register(lua_State *L)
 			.def("story_object",			(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_STORY_ID))(alife_story_object))
 			.def("set_switch_online",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_switch_online))
 			.def("set_switch_offline",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_switch_offline))
-			.def("set_interactive",			(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_interactive)),
+			.def("set_interactive",			(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_interactive))
+			.def("kill_entity",				&CALifeSimulator::kill_entity)
+			.def("kill_entity",				&kill_entity0)
+			.def("kill_entity",				&kill_entity1),
 
 		def("alife",						&alife)
 	];
@@ -119,4 +133,3 @@ void CALifeSimulator::script_register(lua_State *L)
 
 	luabind::module				(L)[instance];
 }
-

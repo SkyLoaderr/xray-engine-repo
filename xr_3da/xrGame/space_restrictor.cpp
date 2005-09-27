@@ -64,8 +64,8 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 		return						(FALSE);
 
 	shedule_unregister				();
-	setEnabled						(false);
-	setVisible						(false);
+	setEnabled						(FALSE);
+	setVisible						(FALSE);
 
 	if (!ai().get_level_graph() || (RestrictionSpace::ERestrictorTypes(se_shape->m_space_restrictor_type) == RestrictionSpace::eRestrictorTypeNone))
 		return						(TRUE);

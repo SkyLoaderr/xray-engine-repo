@@ -9,6 +9,7 @@
 #pragma once
 
 #include "alife_simulator_base.h"
+#include "game_graph_space.h"
 
 class CALifeCombatManager : public virtual CALifeSimulatorBase, CRandom {
 protected:
@@ -39,6 +40,7 @@ public:
 	IC		ALife::ECombatType		combat_type					() const;
 			ALife::ERelationType	relation_type				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract*tpALifeMonsterAbstract2) const;
 			ALife::ECombatAction	choose_combat_action		(int						iCombatGroupIndex);
+			void					kill_entity					(CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract,	const GameGraph::_GRAPH_ID &l_tGraphID,					CSE_ALifeSchedulable *schedulable);
 };
 
 #include "alife_combat_manager_inline.h"

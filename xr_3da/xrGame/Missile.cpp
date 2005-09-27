@@ -296,8 +296,8 @@ u32 CMissile::State(u32 state)
 	case MS_HIDDEN:
 		{
 			m_bPending = false;
-			setVisible(false);
-			setEnabled(false);
+			setVisible(FALSE);
+			setEnabled(FALSE);
 		
 			MSG1("Missile hidden");
 		} break;

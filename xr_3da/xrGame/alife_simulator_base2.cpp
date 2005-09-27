@@ -16,6 +16,7 @@
 #include "alife_story_registry.h"
 #include "alife_schedule_registry.h"
 #include "alife_trader_registry.h"
+#include "alife_smart_terrain_registry.h"
 
 using namespace ALife;
 
@@ -28,6 +29,7 @@ void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool 
 	traders().add						(object);
 	scheduled().add						(object);
 	story_objects().add					(object->m_story_id,object);
+	smart_terrains().add				(object);
 
 	setup_simulator						(object);
 	

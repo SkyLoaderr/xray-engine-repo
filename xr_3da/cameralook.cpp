@@ -47,9 +47,10 @@ void CCameraLook::Update(Fvector& point, Fvector& /**noise_dangle/**/)
 
 	float				covariance = VIEWPORT_NEAR*6.f;
 	vDir.invert			(vDirection);
-	parent->setEnabled	(false);
+	BOOL				enabled = parent->getEnabled();
+	parent->setEnabled	(FALSE);
 	g_pGameLevel->ObjectSpace.RayPick( point, vDir, dist+covariance, collide::rqtBoth, R);
-	parent->setEnabled	(true);
+	parent->setEnabled	(enabled);
 
 	// позиционируем
 	float d				= psCamSlideInert*prev_d+(1.f-psCamSlideInert)*(R.range-covariance);

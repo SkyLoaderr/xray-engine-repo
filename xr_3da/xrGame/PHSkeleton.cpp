@@ -334,8 +334,8 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 	newPhysicsShell->set_PhysicsRefObject(O);
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
-	O->setVisible(true);
-	O->setEnabled(true);
+	O->setVisible(TRUE);
+	O->setEnabled(TRUE);
 
 
 	SO->CopySpawnInit		();

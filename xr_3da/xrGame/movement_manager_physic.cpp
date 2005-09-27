@@ -150,11 +150,12 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	Device.Statistic.Physics.Begin	();
 
 	// получить физ. объекты в радиусе
-	object().setEnabled(false);
-	xr_vector<CObject*> tpNearestList	;
+	BOOL								enabled = object().getEnabled();
+	object().setEnabled					(FALSE);
+	xr_vector<CObject*>					tpNearestList	;
 	Level().ObjectSpace.GetNearest		(tpNearestList,dest_position,DISTANCE_PHISICS_ENABLE_CHARACTERS + (movement_control->IsCharacterEnabled() ? 0.5f : 0.f)); 
 //	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
-	object().setEnabled(true);
+	object().setEnabled					(enabled);
 
 	// установить позицию
 	motion.mul			(dir_to_target, dist / dist_to_target);

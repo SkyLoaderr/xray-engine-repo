@@ -23,7 +23,11 @@ void	CCar::cam_Update			(float dt, float fov)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);
-	if(Owner())	Owner()->setEnabled(false);
+	bool							owner = !!Owner();
+	BOOL							enabled = owner ? Owner()->getEnabled() : FALSE;
+	if (owner)
+		Owner()->setEnabled			(FALSE);
+
 	XFORM().transform_tiny			(P,m_camera_position);
 
 	switch(active_camera->tag) {
@@ -39,7 +43,8 @@ void	CCar::cam_Update			(float dt, float fov)
 	active_camera->Update			(P,Da);
 	Level().Cameras.Update			(active_camera);
 
-	if(Owner())	Owner()->setEnabled	(true);
+	if (owner)
+		Owner()->setEnabled			(enabled);
 }
 
 void	CCar::OnCameraChange		(int type)

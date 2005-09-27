@@ -104,6 +104,13 @@ IC	const CALifeStoryRegistry			&CALifeSimulatorBase::story_objects			() const
 	return						(*m_story_objects);
 }
 
+IC	const CALifeSmartTerrainRegistry	&CALifeSimulatorBase::smart_terrains		() const
+{
+	VERIFY						(initialized());
+	VERIFY						(m_smart_terrains);
+	return						(*m_smart_terrains);
+}
+
 IC	CALifeSimulatorHeader				&CALifeSimulatorBase::header				()
 {
 	VERIFY						(initialized());
@@ -193,6 +200,13 @@ IC	CALifeStoryRegistry					&CALifeSimulatorBase::story_objects			()
 	VERIFY						(initialized());
 	VERIFY						(m_story_objects);
 	return						(*m_story_objects);
+}
+
+IC	CALifeSmartTerrainRegistry			&CALifeSimulatorBase::smart_terrains		()
+{
+	VERIFY						(initialized());
+	VERIFY						(m_smart_terrains);
+	return						(*m_smart_terrains);
 }
 
 IC	CALifeRegistryContainer		&CALifeSimulatorBase::registry						() const
