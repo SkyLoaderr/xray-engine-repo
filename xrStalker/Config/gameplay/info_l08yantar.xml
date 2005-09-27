@@ -8,6 +8,7 @@
 		<task>yan_find_scientist</task>
 	</info_portion>
 	<info_portion id="yan_scientist_die"></info_portion>
+	<info_portion id="yan_bunker_door_1_open"></info_portion>
 	<info_portion id="yan_actor_must_sleep"></info_portion>
 	<info_portion id="yan_kill_brain_done"></info_portion>
 	<info_portion id="yan_find_scientist_done"></info_portion>
