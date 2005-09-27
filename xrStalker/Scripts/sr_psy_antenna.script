@@ -39,13 +39,15 @@ function PsyAntenna:__init				()
 	self.gray_amplitude					= 0.5;						// gray max intensity			[0.0-1.0]
 	self.add_factor						= 0.1;	//0.3				// factor * color_animator(RGB)	[0.0-1.0]
 	self.dual_amplitude					= 0.075 //0.05				// H&V same						[0.0-0.2]
-	self.gray_color						= color(0.33, 0.33, 0.33);	// RGB							[0.0-1.0]
-	self.noise_var						= noise(0.9, 0.3, 30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+	self.gray_color						= color(0.5, 0.5, 0.1);	// RGB							[0.0-1.0]
+	self.noise_var						= noise(1.0, 0.3, 30) //noise(0.9, 0.3, 30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
 // ----------------------------------------------------------------------------------------
 // sound
 // ----------------------------------------------------------------------------------------
-	self.sound_obj						= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1]] )
-	self.sound_obj:play					(db.actor, 0, sound_object.s2d + sound_object.looped);
+	self.sound_obj_left					= sound_object( [[ambient\sp1]] )
+	self.sound_obj_right				= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1]] )
+	self.sound_obj_left:play_at_pos		(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d + sound_object.looped);
+	self.sound_obj_right:play_at_pos	(db.actor, vector():set( 1, 0, 1), 0, sound_object.s2d + sound_object.looped);
 // ----------------------------------------------------------------------------------------
 // class variables initialize
 // ----------------------------------------------------------------------------------------
@@ -61,6 +63,14 @@ function PsyAntenna:__init				()
 	self.pp 							= PsyAntennaPP();
 	self.pp.params.noise				= noise();
 	self.pp:start						();
+
+
+
+	self.cb    = color(0.7, 0.7, 0.5)
+	self.cg    = color(0.5, 0.5, 0.1);
+	self.ca    = color(0, 0, 0);
+	self.gray  = 1
+	self.noise = noise(1.0, 0.3, 30)
 end
 function PsyAntenna:__finalize			()
 	self.pp:finish 						();
@@ -78,11 +88,19 @@ end
 
 function PsyAntenna:update_postprocess	()
 --	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity, 0.5+self.base_amplitude.g*self.intensity, 0.5+self.base_amplitude.b*self.intensity);
+--	self.pp.params.color_base			= color(0.7, 0.7, 0.5)
 --	self.pp.params.color_gray			= color(self.gray_color.r, self.gray_color.g, self.gray_color.b);
-	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity);
-	self.pp.params.gray					= self.gray_amplitude*self.intensity;
+--	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity);
+--	self.pp.params.gray					= self.gray_amplitude*self.intensity;
+--	self.pp.params.gray					= 1
 --	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
-	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
+--	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
+
+	self.pp.params.color_base = self.cb
+	self.pp.params.color_gray = self.cg
+	self.pp.params.color_add  = self.ca
+	self.pp.params.gray       = self.gray
+	self.pp.params.noise      = self.noise
 end
 
 function PsyAntenna:update_psy_hit		(dt)
@@ -133,7 +151,8 @@ function PsyAntenna:update			(dt)
 
 	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
 
-	self.sound_obj.volume = self.intensity
+	self.sound_obj_left.volume  = self.intensity
+	self.sound_obj_right.volume = self.intensity
 
 	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001));
 	self:generate_phantoms 			();
