@@ -1017,7 +1017,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 				case 0:
 					// Если денег на аддон хватает
 					pItem = GetAddonByID(m_pCurrentDragDropItem, static_cast<CUIDragDropItemMP::AddonIDs>(i));
-					if (pItem->GetCost() <= GetMoneyAmount() && pItem->IsDragDropEnabled())
+					if (pItem && pItem->GetCost() <= GetMoneyAmount() && pItem->IsDragDropEnabled())
 					{
 						if (!this->UIBagWnd.IsItemInBag(pItem))
 							break;
@@ -1604,7 +1604,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 		UIItemInfo.UIName.SetText			("");
 		UIItemInfo.UIWeight.SetText			("");
 		UIItemInfo.UIItemImage.TextureOff	();
-		UIItemInfo.UIDesc.RemoveAll			();
+		UIItemInfo.UIDesc.Clear			();
 		if (pDDItemMP)
 		{
 			CStringTable stbl;
@@ -1634,9 +1634,14 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
 			{
-				CUIString str;
-				str.SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
-				UIItemInfo.UIDesc.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
+//				CUIString str;
+//				str.SetText();
+				CUIStatic* pItem = xr_new<CUIStatic>();
+				pItem->SetWidth(UIItemInfo.UIDesc.GetDesiredChildWidth());
+				pItem->SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
+				pItem->AdjustHeightToText();
+				UIItemInfo.UIDesc.AddWindow(pItem);
+					//.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
 			}
 		}
 	}
