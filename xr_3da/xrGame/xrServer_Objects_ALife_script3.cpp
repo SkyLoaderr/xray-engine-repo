@@ -10,7 +10,10 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "script_space.h"
 #include "xrServer_script_macroses.h"
-#include "alife_smart_terrain_task.h"
+
+#ifdef XRGAME_EXPORTS
+#	include "alife_smart_terrain_task.h"
+#endif
 
 using namespace luabind;
 
