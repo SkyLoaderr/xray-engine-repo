@@ -10,6 +10,7 @@
 #include "cl_collector.h"
 #include "ui_main.h"
 #include "pick_defs.h"
+#include "ETools.h"
 
 /*
 void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, U32Vec& fl){
@@ -39,18 +40,19 @@ void CEditableMesh::GenerateCFModel()
 {
 	UnloadCForm		();
 	// Collect faces
-	CDB::Collector CL;
+	CDB::Collector* CL = ETOOLS::create_collector();
 	// double sided
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
 		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
-			CL.add_face_D(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], *it);
+            ETOOLS::collector_add_face_d(CL,m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], *it);
 			if (sp_it->first->m_Flags.is(CSurface::sf2Sided))
-				CL.add_face_D(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], *it);
+				ETOOLS::collector_add_face_d(CL,m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], *it);
 		}
 	}
-	m_CFModel 		= ETOOLS::create_model(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+	m_CFModel 		= ETOOLS::create_model(CL);
+	ETOOLS::destroy_collector(CL);
 	m_LoadState.set	(LS_CF_MODEL,TRUE);
 }
 

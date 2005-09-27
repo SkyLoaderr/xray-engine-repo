@@ -14,6 +14,7 @@
 #include "ImageEditor.h"
 #include "SoundEditor.h"
 #include "ChoseForm.h"
+#include "ETools.h"
 
 TUI* 	UI			= 0;
 

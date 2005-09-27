@@ -8,6 +8,7 @@
 #include "ui_main.h"
 #include "xrHemisphere.h"
 #include "xrImage_Resampler.h"
+#include "ETools.h"
 /*
 IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)
 {

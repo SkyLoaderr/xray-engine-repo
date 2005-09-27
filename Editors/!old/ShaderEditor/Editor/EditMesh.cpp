@@ -8,6 +8,9 @@
 #include "EditMesh.h"
 #include "EditObject.h"
 #include "Bone.h"
+#ifdef _EDITOR
+#	include "ETools.h"
+#endif
 
 CEditableMesh::~CEditableMesh(){
 	Clear();
