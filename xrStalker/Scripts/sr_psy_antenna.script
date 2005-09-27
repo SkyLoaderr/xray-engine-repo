@@ -97,16 +97,17 @@ function PsyAntenna:update_postprocess	()
 --	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
 --	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
 
---[[	self.pp.params.color_base			= color( 0.5+self.base_color.r*self.intensity, 0.5+self.base_color.g*self.intensity, 0.5+self.base_color.b*self.intensity )
+	self.pp.params.color_base			= color( 0.5+self.base_color.r*self.intensity, 0.5+self.base_color.g*self.intensity, 0.5+self.base_color.b*self.intensity )
 	self.pp.params.color_gray			= self.gray_color
 	self.pp.params.gray					= self.gray_amplitude*self.intensity;
 	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
-]]
-	self.pp.params.color_base = self.cb
+
+--[[	self.pp.params.color_base = self.cb
 	self.pp.params.color_gray = self.cg
 	self.pp.params.color_add  = self.ca
 	self.pp.params.gray       = self.gray
 	self.pp.params.noise      = self.noise
+]]
 end
 
 function PsyAntenna:update_psy_hit		(dt)
