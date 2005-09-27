@@ -379,14 +379,14 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 	self.arhive = {}
 
 	-- удал€ть обработанные устаревшие раздражители
-	for k,v in self.used do
+	for k,v in pairs(self.used) do
 		if game.time() - v >= self.time_memory then
 			self.used[k] = nil
 		end
 	end
 
 	-- удал€ть из self.hear звуки старше x секунд
-	for k,v in self.hear do
+	for k,v in pairs(self.hear) do
 		if (game.time() - v) > 2*self.time_reaction then
 			self.used[k] = nil
 		end
@@ -493,7 +493,7 @@ function events:isRuled(obj)
 
 	local tt = db.storage[self.npc:id()].reactions.rules
 
-	for k,v in tt do
+	for k,v in pairs(tt) do
 		if v == "no_item" then
 			if self:type(obj) == "item" then
 				return true
@@ -507,7 +507,7 @@ function events:ruleExist(rule)
 
 	local tt = db.storage[self.npc:id()].reactions.rules
 
-	for k,v in tt do
+	for k,v in pairs(tt) do
 		if v == rule then
 			return true
 		end
@@ -517,7 +517,7 @@ end
 function events:get_event(tt)  -- ¬ыдает наиболее приоритетный раздражитель
 	local prior = nil
 
-	for key,value in self.arhive do
+	for key,value in pairs(self.arhive) do
 		local cc = false
 
 		-- ѕровер€ем есть ли у нас лучший
@@ -666,17 +666,17 @@ function events:removeCorpse(npc)
 	end
 end
 function events:isEvents()
-	for key,value in self.arhive do
+	for key,value in pairs(self.arhive) do
 		local exst = false
 		if value.object_type == "corpse" then
-			for k,v in self.corpse do
+			for k,v in pairs(self.corpse) do
 				if key == k then
 					exst = true
 					break
 				end
 			end
 		else
-			for k,v in self.used do
+			for k,v in pairs(self.used) do
 				if key == k then
 					exst = true
 					break
@@ -736,7 +736,7 @@ function events:printid(key)
 	end
 
        	-- watched print
-	for k,v in self.watch do
+	for k,v in pairs(self.watch) do
 		if key == v then
 			printf("watched")
 			break
@@ -746,7 +746,7 @@ function events:printid(key)
 end
 function events:print()
 	local i = 0	
-	for key,value in self.arhive do
+	for key,value in pairs(self.arhive) do
 		if i == 0 then
 			printf("--------------------------------------------------------------")
 			printf("Print Start")
@@ -944,12 +944,12 @@ function reset_rules(obj)
 end
 function remove_rule(obj, rule)
 	local tt = {}
-	for k,v in db.storage[obj:id()].reactions.rules do
+	for k,v in pairs(db.storage[obj:id()].reactions.rules) do
 		if v == rule then
 			table.insert(tt, k)
 		end
 	end
-	for k,v in tt do
+	for k,v in pairs(tt) do
 		table.remove(db.storage[obj:id()].reactions.rules, v)
 	end
 end

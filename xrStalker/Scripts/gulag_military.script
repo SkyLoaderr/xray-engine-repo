@@ -703,7 +703,7 @@ function check_state (gulag)
 end
 
 function check_enemy (gulag)
-    for k,v in gulag.Object do
+    for k,v in pairs(gulag.Object) do
         if v:best_enemy () ~= nil and v:story_id () ~= 710 then 
            return true
         end
@@ -712,7 +712,7 @@ function check_enemy (gulag)
 end
 
 function is_actor_enemy (gulag)
-    for k,v in gulag.Object do
+    for k,v in pairs(gulag.Object) do
         local e = v:best_enemy ()
         if e ~= nil and e:id () == db.actor:id () then
            return true 
@@ -1150,7 +1150,7 @@ function checkStalker(npc_community, gulag_type)
 	
 	if gulag_type == "mil_fblockpost" then
 	   return npc_community == "freedom"
-	end   
+	enk,v in pairs(gulag.Object)d   
 	
 	if gulag_type == "mil_village" then
 	   return npc_community == "freedom" 

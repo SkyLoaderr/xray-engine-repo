@@ -367,11 +367,11 @@ function body_state:set_state(id)
 		if lazy == true and
 		   astate.lazy ~= nil 
 		then
-			for k,v in astate.lazy do
+			for k,v in pairs(astate.lazy) do
 				self.npc:add_animation(v,true)
 			end		
 		else
-			for k,v in astate.nrm do
+			for k,v in pairs(astate.nrm) do
 				self.npc:add_animation(v,true)
 			end
 		end				

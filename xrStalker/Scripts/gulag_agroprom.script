@@ -499,7 +499,7 @@ function load_states( gname, type )
 			if actor:has_info( "agr_nii_sniper_alarm" ) then
 				alarm = true
 			else
-				for k, v in gulag.Object do
+				for k, v in pairs(gulag.Object) do
 					be = v:best_enemy()
 					if be and be:id() == actor:id() then
 						alarm = true
@@ -565,7 +565,7 @@ function load_states( gname, type )
 			end
 
 			if gulag.state == 0 then
---				for k, v in gulag.Object do
+--				for k, v in pairs(gulag.Object) do
 --					if v:best_enemy() then
 --						return 1
 --					end
@@ -615,7 +615,7 @@ function load_states( gname, type )
 					h.impulse   = 1
 					h.type      = hit.wound
 
-					for k, v in gulag.Object do
+					for k, v in pairs(gulag.Object) do
 						v:hit( h )
 					end
 

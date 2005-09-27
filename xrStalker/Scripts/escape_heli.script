@@ -231,7 +231,7 @@ function update()
 		-- если прошло время
 --[[		if attack_end < game.get_game_time() and not actor_is_victim then
 			-- убить всех живых
-			for i, npc in newbies do
+			for i, npc in pairs(newbies) do
 				npc:kill( heli_mgr.heli )
 			end
 

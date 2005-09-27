@@ -121,7 +121,7 @@ end
 function get_random_news()
 	local actor = db.actor
 	local avail = {}
-	for k,v in news do
+	for k,v in pairs(news) do
 		--' Взять еще незаюзанные ньюсы
 		if v.begin == nil then
 			table.insert(avail, k)

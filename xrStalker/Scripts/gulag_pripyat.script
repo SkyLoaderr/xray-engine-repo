@@ -18,7 +18,7 @@ zombied_in_combat = {}
 
 function is_zombied_in_combat()
     local k, v = 0, 0
-    for k,v in zombied_in_combat do
+    for k,v in pairs(zombied_in_combat) do
         return true
     end
     return false

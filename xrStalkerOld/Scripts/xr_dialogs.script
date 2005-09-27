@@ -67,7 +67,7 @@ end
 function dialog_mgr:finalize()
 	if self.team then
 		-- убрать сталкера из списка
-		for i, v in self.a.npcs do
+		for i, v in pairs(self.a.npcs) do
 			if v:id() == self.object:id() then
 				table.remove( self.a.npcs, i )
 				break
@@ -155,7 +155,7 @@ function dialog_mgr:new_phrase()
 	-- если диалог уже был начат (т.е. есть текущий говорящий)
 	if self.a.cur_npc then
 		-- выбрать того, кто ответит. он должен быть недалеко от предыдущего говорящего
-		for i, v in self.a.npcs do
+		for i, v in pairs(self.a.npcs) do
 			if v:id() ~= self.a.cur_npc:id() and self.a.cur_npc:position():distance_to_sqr( v:position() ) <= dist_max then
 				table.insert( avail, v )
 			end
@@ -175,7 +175,7 @@ function dialog_mgr:new_phrase()
 		-- посмотреть, может ли кто-то потенциально продолжить диалог
 		local flg
 
-		for i, v in self.a.npcs do
+		for i, v in pairs(self.a.npcs) do
 			if v:id() ~= self.a.cur_npc:id() and self.a.cur_npc:position():distance_to_sqr( v:position() ) <= dist_max then
 				flg = true
 				break

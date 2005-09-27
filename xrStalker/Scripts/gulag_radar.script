@@ -305,7 +305,7 @@ function load_states(gname, type)
 			local be
 			local alarm = false
 
-			for k, v in gulag.Object do
+			for k, v in pairs(gulag.Object) do
 				be = v:best_enemy()
 				if be and be:id() == actor:id() then
 					alarm = true
