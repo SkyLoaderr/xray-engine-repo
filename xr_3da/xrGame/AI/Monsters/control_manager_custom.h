@@ -58,7 +58,7 @@ public:
 	void		jump					(CObject *obj, const SControlJumpData &ta);
 	void		jump					(const SControlJumpData &ta);
 	void		jump					(const Fvector &position);
-	void		load_jump_data			(LPCSTR s1, LPCSTR s2, LPCSTR s3, u32 vel_mask_prepare, u32 vel_mask_ground);
+	void		load_jump_data			(LPCSTR s1, LPCSTR s2, LPCSTR s3, LPCSTR s4, u32 vel_mask_prepare, u32 vel_mask_ground, u32 flags);
 	
 	bool		script_jump				(CObject *obj);
 

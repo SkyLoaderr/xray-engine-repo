@@ -64,4 +64,4 @@ bool CStateChimeraThreatenStealAbstract::check_start_conditions()
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateChimeraThreatenStealAbstract
-
+#undef MIN_DISTANCE_TO_ENEMY

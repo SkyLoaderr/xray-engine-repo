@@ -2,51 +2,39 @@
 #include "control_combase.h"
 #include "../../../SkeletonAnimated.h"
 
-//struct SControlJumpData : public ControlCom::IComData {
-//	CObject					*target_object;
-// 	Fvector					target_position;
-//	
-//	enum EPrepareFlags {
-//		ePrepareSkip	= u8(1) << 0,
-//		ePrepareInMove	= u8(1) << 1,
-//	};
-//
-//	enum EGlideFlags{
-//		eGlidePlayAnimOnce = u8(1) << 0,
-//	};
-//
-//	enum EGroundFlags {
-//		eGroundSkip = u8(1) << 0,
-//	};
-//	
-//	struct	{
-//		MotionID	motion;
-//		flags8		flags;
-//		u32			velocity_mask;
-//	} state_prepare;
-//
-//	struct	{
-//		MotionID	motion;
-//		flags8		flags;
-//	} state_glide;
-//
-//	struct	{
-//		MotionID	motion;
-//		flags8		flags;
-//		u32			velocity_mask;
-//	} state_ground;
-//
-//};
-
 struct SControlJumpData : public ControlCom::IComData {
 	CObject					*target_object;
-	u32						velocity_mask_prepare;
-	u32						velocity_mask_ground;
-	Fvector					target_position;
-	bool					skip_prepare;
-	bool					prepare_in_move;
-	bool					play_glide_once;
-	MotionID				pool[3];
+ 	Fvector					target_position;
+
+	enum EFlags {	
+		eEnablePredictPosition		= u32(1) << 0,
+		ePrepareSkip				= u32(1) << 1,	// do not use prepare state
+		ePrepareInMove				= u32(1) << 2,
+		eGlideOnPrepareFailed		= u32(1) << 3,  // if not set then cannot start jump
+		eGlidePlayAnimOnce			= u32(1) << 4,
+		eGroundSkip					= u32(1) << 5,
+	};
+	
+	flags32					flags;
+
+	struct	{
+		MotionID	motion;
+	} state_prepare;
+
+	struct	{
+		MotionID	motion;
+		u32			velocity_mask;
+	} state_prepare_in_move;
+
+
+	struct	{
+		MotionID	motion;
+	} state_glide;
+
+	struct	{
+		MotionID	motion;
+		u32			velocity_mask;
+	} state_ground;
 };
 
 class CControlJump : public CControl_ComCustom<SControlJumpData> {
@@ -54,10 +42,12 @@ class CControlJump : public CControl_ComCustom<SControlJumpData> {
 
 	enum EStateAnimJump {
 		eStatePrepare,
+		eStatePrepareInMove,
 		eStateGlide,
 		eStateGround,
 		eStateNone
 	};
+
 
 	// loadable parameters
 	u32				m_delay_after_jump;
@@ -71,16 +61,15 @@ class CControlJump : public CControl_ComCustom<SControlJumpData> {
 
 	// run-time params
 	u32				m_time_next_allowed;
-	u32				m_time_started;
-	float			m_jump_time;
-	float			m_blend_speed;
-	Fvector			m_target_position;
+	u32				m_time_started;			// time jump started
+	float			m_jump_time;			// physical-counted time of jump
+	float			m_blend_speed;			// current anim blend speed
+	Fvector			m_target_position;		// save target position for internal needs
 
 
 	// state flags
 	bool			m_object_hitted;
 	bool			m_velocity_bounced;
-	bool			m_use_prediction;
 	bool			m_enable_bounce;
 
 	// animation
@@ -110,11 +99,9 @@ SControlJumpData	&setup_data				() {return m_data;}
 private:	
 			// service routines		
 			// build path after jump 
-			void	build_line			();
+			void	grounding			();
 			// get target position according to object center point
 			Fvector get_target			(CObject *obj);
-			// finalize jump
-			void	pointbreak			();
 			// check for hit object
 			void	hit_test			();
 
@@ -129,9 +116,12 @@ private:
 
 			// animation control method
 			void	select_next_anim_state	();
-			void	play_selected			();
-			void	on_start_jump			();
 
-			bool	check_prepare_in_move	();
-
+	IC		bool	is_flag					(SControlJumpData::EFlags flag);
 };
+
+
+IC bool CControlJump::is_flag(SControlJumpData::EFlags flag) 
+{
+	return (m_data.flags.is(flag) == TRUE);
+}

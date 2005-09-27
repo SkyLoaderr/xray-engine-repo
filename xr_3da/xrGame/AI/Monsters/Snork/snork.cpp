@@ -93,7 +93,7 @@ void CSnork::reinit()
 	inherited::reinit	();
 	
 	move().load_velocity(*cNameSect(), "Velocity_JumpGround",MonsterMovement::eSnorkVelocityParameterJumpGround);
-	com_man().load_jump_data("stand_attack_2_0", "stand_attack_2_1", "stand_somersault_0", u32(-1), MonsterMovement::eSnorkVelocityParameterJumpGround);
+	com_man().load_jump_data("stand_attack_2_0",0, "stand_attack_2_1", "stand_somersault_0", u32(-1), MonsterMovement::eSnorkVelocityParameterJumpGround,0);
 
 	// TODO: remove this
 	m_target_node = 0;

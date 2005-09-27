@@ -167,4 +167,4 @@ void CStateMonsterAttackCampAbstract::check_force_state()
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterAttackCampAbstract
-
+#undef MIN_DISTANCE_TO_ENEMY
