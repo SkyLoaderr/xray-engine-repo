@@ -712,13 +712,13 @@
         <text>Ну, вот и все. Тварь подохла. Мы возвращаемся на базу.</text>
     </string>
     <string id="mil_hunter_dialog_1">
-        <text>Вам можно значит, а мне нельзя?</text>
+        <text>Меня Скряга к вам отправил, спросить, не нужны ли вам свежие памперсы?</text>
     </string>
     <string id="mil_hunter_dialog_101">
         <text>А тебя то сталкер как в это гиблое место занесло, уноси лучше ноги пока не поздно.</text>
     </string>
     <string id="mil_hunter_dialog_2">
-        <text>Думаешь, мы тут по своей воле? Лукаш подонок, нас сюда отправил, говорит бойцы в деревне пропадают, мол надо выяснить. Вот сам бы пошел и выяснил.</text>
+        <text>Памперсы... Шутник, однако.</text>
     </string>
     <string id="mil_hunter_dialog_201">
         <text>Ну, брат, ты вчера и учудил...</text>
@@ -732,23 +732,47 @@
     <string id="mil_hunter_dialog_204">
         <text>А вы тут чего сидите ?</text>
     </string>
+    <string id="mil_hunter_dialog_205">
+        <text>Пришли артефактов поискать, да двое наших где-то там полегли. Тварь какая-то, видать, с Радара пролезла.</text>
+    </string>
     <string id="mil_hunter_dialog_3">
-        <text>А что здесь происходит?</text>
+        <text>Именно. Он говорит, что вы тут застряли и вам не улыбается поход в деревню. Что-то случилось?</text>
+    </string>
+    <string id="mil_hunter_dialog_301">
+        <text>Как успехи?</text>
+    </string>
+    <string id="mil_hunter_dialog_302">
+        <text>Нормально. Завалил я тварь.</text>
+    </string>
+    <string id="mil_hunter_dialog_303">
+        <text>И на что она похожа ?</text>
+    </string>
+    <string id="mil_hunter_dialog_304">
+        <text>На странного мужика в каком-то рванье, пойдете - увидите. На мозги действует, сука. Кстати, ваши возле водокачки лежат и похоже они застрелились сами.</text>
+    </string>
+    <string id="mil_hunter_dialog_305">
+        <text>Эх, как все плохо... Спасибо, брат.</text>
+    </string>
+    <string id="mil_hunter_dialog_306">
+        <text>Не за что...</text>
     </string>
     <string id="mil_hunter_dialog_4">
-        <text>Да хрен его знает. Завелась какая-то тварь, или несколько. Вот мы и пришли сюда.\n</text>
+        <text>Да хрен его знает. Завелась какая-то тварь, или несколько. Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать не охота.\n</text>
+    </string>
+    <string id="mil_hunter_dialog_401">
+        <text>Что ты бродишь тут, как привидение?</text>
+    </string>
+    <string id="mil_hunter_dialog_402">
+        <text>Да так - осматриваюсь.</text>
     </string>
     <string id="mil_hunter_dialog_5">
         <text>То есть, вы сами не в курсе ?</text>
     </string>
     <string id="mil_hunter_dialog_6">
-        <text>То то и оно. Если найдем, то половина чучела тебе!!</text>
+        <text>То то и оно. Ну, а раз ты со Скрягой договорился, то иди в деревню, смотри... Адрес оставь, мы похоронку тебе отправим, если что...</text>
     </string>
     <string id="mil_hunter_dialog_7">
-        <text>Большая охота!! Обожаю! Ведите!</text>
-    </string>
-    <string id="mil_hunter_dialog_8">
-        <text>Та ну вас на хрен, я боюсь.</text>
+        <text>Обойдешься. Ладно, пошел я зверей ваших ловить.</text>
     </string>
     <string id="mil_hunter_dialog_80">
         <text>Как хочешь...</text>

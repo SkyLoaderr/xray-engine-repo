@@ -19,6 +19,10 @@ function load_job (sj, gname, type, squad, groups)
        this.load_job_fneutral (sj, gname, type, squad, groups)
        return
     end   
+    if type == "mil_village" then
+       this.load_job_village (sj, gname, type, squad, groups)
+       return
+    end    
 end
 
 function load_job_base (sj, gname, type, squad, groups)
@@ -665,6 +669,8 @@ function load_states (gname, type)
        return this.check_fblockpost_state
     elseif type == "mil_fneutral" then  
        return this.check_blockpost_state
+    elseif type == "mil_village" then
+       return this.check_village_state    
     end    
     return nil    
 end
@@ -972,10 +978,8 @@ end
 
 
 
+
 function check_fblockpost_state (gulag)
----    if db.actor:has_info ("mil_headquarter_attack") then
---       return 3
---    end    
     if db.actor:has_info ("mil_fblockpost_alarm") then
        return 2 
     elseif utils.is_day () == true then
@@ -993,7 +997,6 @@ function check_blockpost_state (gulag)
     end          
     return 1
 end
-
 
 
 
@@ -1149,5 +1152,86 @@ function checkStalker(npc_community, gulag_type)
 	   return npc_community == "freedom"
 	end   
 	
+	if gulag_type == "mil_village" then
+	   return npc_community == "freedom" 
+	end
+	
 	return false
+end
+
+
+
+function load_job_village (sj, gname, type, squad, groups)
+    local t
+    --Угрюмый
+    t = {section = "logic@mil_village_ugrumy",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "mil_Svoboda_master_Ugrumiy"
+		            end
+		}
+	table.insert(sj, t)		
+    --Спецназовец
+    t = {section = "logic@mil_village_soldier1",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "mil_Svoboda_specnaz"
+		            end
+		}
+	table.insert(sj, t)		
+    --Рядовой
+    t = {section = "logic@mil_village_soldier2",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "mil_Svoboda_regular"
+		            end
+		}
+	table.insert(sj, t)		
+    --Угрюмый
+    t = {section = "logic@mil_village_ugrumy_search",
+		idle = 0,
+		prior = 1, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "mil_Svoboda_master_Ugrumiy"
+		            end
+		}
+	table.insert(sj, t)		
+    --Спецназовец
+    t = {section = "logic@mil_village_specnaz_search",
+		idle = 0,
+		prior = 1, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "mil_Svoboda_specnaz"
+		            end
+		}
+	table.insert(sj, t)		
+    --Рядовой
+    t = {section = "logic@mil_village_regular_search",
+		idle = 0,
+		prior = 1, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (obj)
+		                     return obj:profile_name () == "mil_Svoboda_regular"
+		            end
+		}
+	table.insert(sj, t)		
+end
+
+function check_village_state (gulag)
+    if db.actor:has_info ("mil_after_hunt_talked") then return 1 end
+    return 0    
 end

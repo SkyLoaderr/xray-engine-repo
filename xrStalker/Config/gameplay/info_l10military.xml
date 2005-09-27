@@ -263,6 +263,7 @@
 	<info_portion id="mil_miser_task_complete"></info_portion>
 	<info_portion id="mil_miser_task_failed"></info_portion>
 	<info_portion id="mil_ugrumy_found"></info_portion>
+	<info_portion id="mil_after_hunt_talked"></info_portion>
 
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
@@ -282,6 +283,8 @@
 	</info_portion>
 	
 	<info_portion id="mil_screw_talk"></info_portion>
+	
+	<info_portion id="mil_actor_in_kamp_zone"></info_portion>
 	
 	
 </game_information_portions>
