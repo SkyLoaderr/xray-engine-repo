@@ -155,6 +155,8 @@ public:
 extern		ENGINE_API		CRenderDevice		Device;
 extern		ENGINE_API		bool				g_bBenchmark;
 
+typedef fastdelegate::FastDelegate0<bool>		LOADING_EVENT;
+extern	ENGINE_API xr_list<LOADING_EVENT>		g_loading_events;
 
 #include	"R_Backend_Runtime.h"
 

@@ -13,6 +13,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			u16 fActive	= LOWORD(wParam);
 			BOOL fMinimized = (BOOL) HIWORD(wParam);
 			Device.bActive	= (fActive!=WA_INACTIVE) && (!fMinimized);
+			Log("Device.bActive=",Device.bActive?"true":"false");
 			if (Device.bActive)	{
 				Device.seqAppActivate.Process	(rp_AppActivate);
 				if (!strstr(Core.Params, "-dedicated")) 

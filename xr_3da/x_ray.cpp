@@ -440,9 +440,10 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		R_ASSERT	(0!=g_pGamePersistent);
 		g_pGameLevel				= (IGame_Level*)NEW_INSTANCE(CLSID_GAME_LEVEL);
 		g_pGamePersistent->Start	(op_server);
-		BOOL		result			= g_pGameLevel->net_Start(op_server,op_client);
+		g_pGameLevel->net_Start(op_server,op_client);
 		xr_free		(op_server);
 		xr_free		(op_client);
+/*
 		if (result)	{
 			// start any console command
 			if (strstr(Core.Params,"-$")) {
@@ -456,6 +457,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			DEL_INSTANCE	(g_pGameLevel);
 			Console->Execute("main_menu on");
 		}
+*/
 	} else if (E==eDisconnect) {
 		if (g_pGameLevel) {
 			Console->Hide			();
@@ -485,6 +487,8 @@ void CApplication::LoadBegin	()
 		ll_hLogo1.create	("font","ui\\ui_logo");
 		ll_hLogo2.create	("font","ui\\ui_logo_nv");
 		ll_hLogo			= ll_hLogo2;
+		load_stage			= 0;
+
 		CheckCopyProtection	();
 	}
 }
@@ -498,16 +502,12 @@ void CApplication::LoadEnd		()
 		g_appLoaded				= TRUE;
 	}
 }
-
-void CApplication::LoadTitle	(char *S, char *S2)
+void CApplication::LoadDraw		()
 {
-	VERIFY(ll_dwReference);
-
 	Device.dwFrame				+= 1;
-	Device.Begin				();
 
-	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
-	Log							(S,S2);
+
+	if(!Device.Begin () )		return;
 
 	if	(g_pGamePersistent->bDedicatedServer)	{
 		Console->OnRender			();
@@ -533,14 +533,40 @@ void CApplication::LoadTitle	(char *S, char *S2)
 		pFontSystem->Clear			();
 		pFontSystem->SetColor		(color_rgba(192,192,192,255));
 		pFontSystem->SetAligment	(CGameFont::alCenter);
-		char *F = "%s";
-		if (S2) F="%s%s";
-		pFontSystem->OutI			(0.f,0.93f,F,S,S2);
+		pFontSystem->OutI			(0.f,0.93f,app_title);
 		pFontSystem->OnRender		();
+		// Draw Progress
+
+		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
+		pv->set						(EPS_S+30.0f,				float(_h+EPS_S)-30.0f,	0+EPS_S, 1, C, 0, 1);	pv++;
+		pv->set						(EPS_S+30.0f,				float(_h+EPS_S)-50.0f,	0+EPS_S, 1, C, 0, 0);	pv++;
+		pv->set						(float(_w+EPS_S)-30.0f,		float(_h+EPS_S)-30.0f,	0+EPS_S, 1, C, 1, 1);	pv++;
+		pv->set						(float(_w+EPS_S)-30.0f,		float(_h+EPS_S)-50.0f,	0+EPS_S, 1, C, 1, 0);	pv++;
+		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
+
+		RCache.set_Shader			(sh_progress);
+		RCache.set_Geometry			(ll_hGeom);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
 	}
 
 	Device.End					();
 	CheckCopyProtection			();
+}
+
+void CApplication::LoadTitle	(char *S, char *S2)
+{
+	load_stage++;
+	VERIFY						(ll_dwReference);
+	sprintf						(app_title,S,S2);
+	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
+	Log							(app_title);
+	
+	string_path					tex;
+	sprintf						(tex,"%s%d","ui\\ui_start_progress",load_stage);
+	sh_progress.create			("hud\\default",tex);
+
+	LoadDraw					();
 }
 
 void CApplication::LoadSwitch	()

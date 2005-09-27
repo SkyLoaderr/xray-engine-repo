@@ -13,8 +13,13 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
+#include "x_ray.h"
+
 ENGINE_API CRenderDevice Device;
 ENGINE_API BOOL g_bRendering = FALSE; 
+
+BOOL g_bLoaded = FALSE;
+
 BOOL CRenderDevice::Begin	()
 {
 	HW.Validate		();
@@ -120,10 +125,12 @@ void CRenderDevice::PreCache	(u32 amount)
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
 }
 
+ENGINE_API xr_list<LOADING_EVENT>			g_loading_events;
 
 void CRenderDevice::Run			()
 {
-    MSG				msg;
+	g_bLoaded		= FALSE;
+	MSG				msg;
     BOOL			bGotMsg;
 	Log				("Starting engine...");
 	thread_name		("X-RAY Primary thread");
@@ -162,7 +169,13 @@ void CRenderDevice::Run			()
         else
         {
 			if (bReady) {
-				FrameMove						( );
+				if(g_loading_events.size()){
+					if( g_loading_events.front()() )
+						g_loading_events.pop_front();
+					pApp->LoadDraw				();
+					continue;
+				}else
+					FrameMove						( );
 
 				// Precache
 				if (dwPrecacheFrame)
@@ -232,6 +245,7 @@ void CRenderDevice::Run			()
 	DeleteCriticalSection	(&mt_csLeave);
 }
 
+void ProcessLoading(RP_FUNC *f);
 void CRenderDevice::FrameMove()
 {
 	dwFrame			++;
@@ -259,8 +273,28 @@ void CRenderDevice::FrameMove()
 
 	// Frame move
 	Statistic.EngineTOTAL.Begin	();
-	seqFrame.Process			(rp_Frame);
+	if(!g_bLoaded) 
+		ProcessLoading				(rp_Frame);
+	else
+		seqFrame.Process			(rp_Frame);
 	Statistic.EngineTOTAL.End	();
+}
+
+void ProcessLoading(RP_FUNC *f)
+{
+	static u32 processed_idx			= 0;
+	u32 tm = Device.TimerAsyncMM		();
+
+	xr_vector<_REG_INFO>& R		= Device.seqFrame.R;
+    if (R.empty())				return;
+
+	for (; processed_idx<R.size(); processed_idx++)	{
+		f(R[processed_idx].Object);
+		if	(Device.TimerAsyncMM() > tm+50) return;
+	}
+
+	g_bLoaded				= TRUE;
+	processed_idx			= 0;
 }
 
 void	CRenderDevice::Pause							(BOOL bOn)

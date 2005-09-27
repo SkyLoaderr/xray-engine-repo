@@ -1,9 +1,3 @@
-// Entity.h: interface for the CEntity class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)
-#define AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_
 #pragma once
 
 
@@ -37,15 +31,8 @@ protected:
 	virtual float			SetfHealth			(float value)		{fHealth = value; return value;}
 	
 	float				fMAX_Health;
-	float				fArmor,		fMAX_Armor;
 	float				m_fMaxHealthValue;
 
-	//icon position (используется при торговле и обыске трупов)
-	int m_iTradeIconX;
-	int m_iTradeIconY;
-	//иконки для карты
-//	int m_iMapIconX;
-//	int m_iMapIconY;
 
 	//время через которое мертвое тело убирется с уровня
 	ALife::_TIME_ID			m_dwBodyRemoveTime;	
@@ -94,16 +81,15 @@ public:
 	bool					IsFocused			()const;
 	bool					IsMyCamera			()const;
 
-	float					g_Armor				()const	{ return fArmor;	}
 	virtual float			g_Health			()const	{ return GetfHealth();}
 	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
 
-	virtual BOOL			g_Alive				()const	{ return GetfHealth()>0; }
+	/*virtual*/ BOOL		g_Alive				()const	{ return GetfHealth()>0; }
 	virtual BOOL			g_State				(SEntityState&) const	{return FALSE;}
 	
-	virtual bool			AlreadyDie()			{return  0!=GetLevelDeathTime()?true:false;}
-	virtual ALife::_TIME_ID	GetGameDeathTime()const	{return m_game_death_time;}
-	virtual u32				GetLevelDeathTime()const{return m_level_death_time;}
+			bool			AlreadyDie			()			{return  0!=GetLevelDeathTime()?true:false;}
+			ALife::_TIME_ID	GetGameDeathTime	()const		{return m_game_death_time;}
+			u32				GetLevelDeathTime	()const		{return m_level_death_time;}
 	
 	virtual float			CalcCondition		(float hit);
 
@@ -111,29 +97,20 @@ public:
 	int						g_Squad				()const	{ return id_Squad;	}
 	int						g_Group				()const	{ return id_Group;	}
 
-	// misc
-	virtual CWeaponList*	GetItemList			()	{ return 0;			}
-
 	// Health calculations
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 
 	virtual void			Die					(CObject* who);
-	virtual void			KillEntity			(CObject* who);
-	virtual void			KillEntity			(u16 whoID);
+			void			KillEntity			(CObject* who);
+			void			KillEntity			(u16 whoID);
 		
 	// Events
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
 	virtual void			g_fireParams		(const CHudItem*, Fvector &, Fvector &){}; 
-
-	//icon
-	virtual int GetTradeIconX() const {return m_iTradeIconX;}
-	virtual int GetTradeIconY() const {return m_iTradeIconY;}
-//	virtual int GetMapIconX()   const {return m_iMapIconX;}
-//	virtual int GetMapIconY()	const {return m_iMapIconY;}
 
 	//time of entity death
 	u32						m_level_death_time;
@@ -148,5 +125,3 @@ private:
 public:
 	IC		u16				killer_id			() const {return m_killer_id;};
 };
-
-#endif // AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_

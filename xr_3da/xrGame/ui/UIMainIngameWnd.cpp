@@ -729,8 +729,7 @@ void CUIMainIngameWnd::Update()
 	UIZoneMap->SetHeading			(-h);
 		
 	// health&armor
-	//	UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
-	UIHealthBar.SetProgressPos((s16)m_pActor->g_Health());
+	UIHealthBar.SetProgressPos((s16)m_pActor->GetfHealth());
 	UIMotionIcon.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
 	
 	

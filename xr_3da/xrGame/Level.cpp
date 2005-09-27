@@ -171,6 +171,7 @@ extern CAI_Space *g_ai_space;
 
 CLevel::~CLevel()
 {
+//	g_pGameLevel		= NULL;
 	Msg					("- Destroying level");
 
 	Engine.Event.Handler_Detach(eEntitySpawn,	this);

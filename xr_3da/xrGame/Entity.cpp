@@ -30,10 +30,6 @@
 CEntity::CEntity()
 {
 	fMAX_Health			= MAX_HEALTH;
-	fMAX_Armor			= MAX_ARMOR;
-
-	m_iTradeIconX		= m_iTradeIconY = 0;
-//	m_iMapIconX			= m_iMapIconY = 0;
 }
 
 CEntity::~CEntity()
@@ -74,28 +70,13 @@ void CEntity::Die(CObject* who)
 //обновление состояния
 float CEntity::CalcCondition(float hit)
 {
-	// Calc amount (correct only on local player)
-	float	lost_health,		lost_armor;
-
-	if (fArmor>0)
-	{
-		lost_health		=	(fMAX_Armor-fArmor)/fMAX_Armor*hit;
-		lost_armor		=	(hit*9.f)/10.f;
-	} 
-	else 
-	{
-		lost_health		=	hit;
-		lost_armor		=	0;
-	}
 
 	// If Local() - perform some logic
 	if (Local() && g_Alive()) {
-		SetfHealth			(GetfHealth()-lost_health);
+		SetfHealth			(GetfHealth()-hit);
 		SetfHealth			((GetfHealth()<-1000)?-1000:GetfHealth());
-		fArmor				-=	lost_armor;
 	}
-
-	return lost_health;
+	return hit;
 }
 
 
@@ -227,7 +208,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		SetfHealth				(100.f);
 //		fEntityHealth		= 100.f;
 
-	fArmor					= 0;
+//	fArmor					= 0;
 
 	// Register
 	if (GetfHealth() > 0.f) {
@@ -239,30 +220,12 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		m_game_death_time		= Level().GetGameTime();
 	}
 	
-	//Engine.Sheduler.Unregister	(this);
-	//Engine.Sheduler.Register		(this);
-
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = NULL;
 
 	if(pKinematics) ini = pKinematics->LL_UserData();
 	if(ini)
 	{
-		if(ini->section_exist("icon"))
-		{
-			m_iTradeIconX = ini->r_u32("icon","icon_x");
-			m_iTradeIconY = ini->r_u32("icon","icon_y");
-
-//			m_iMapIconX = ini->r_u32("icon","map_icon_x");
-//			m_iMapIconY = ini->r_u32("icon","map_icon_y");
-		}
-		else
-		{
-			m_iTradeIconX = m_iTradeIconY = 0;
-//			m_iMapIconX = 1;
-//			m_iMapIconY = 4;
-		}
-
 		if(ini->section_exist("damage_section"))	
 			CDamageManager::load_section(ini->r_string("damage_section","damage"),pSettings);
 

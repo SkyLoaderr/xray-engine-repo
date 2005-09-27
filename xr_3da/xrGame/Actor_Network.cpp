@@ -76,7 +76,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	//CSE_ALifeCreatureAbstract
 	u8					flags = 0;
-	P.w_float_q16		(g_Health(),-500,1000);
+	P.w_float_q16		(GetfHealth(),-500,1000);
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
 	Fvector				p = Position();
@@ -102,7 +102,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_sdir			(NET_SavedAccel);
 	Fvector				v = m_PhysicMovementControl->GetVelocity();
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
-	P.w_float_q16		(fArmor,-500,1000);
+//	P.w_float_q16		(fArmor,-500,1000);
 	P.w_float_q16		(g_Radiation(),-500,1000);
 
 	P.w_u8				(u8(inventory().GetActiveSlot()));
@@ -373,13 +373,13 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
-	float				fRArmor, fRRadiation;
-	P.r_float_q16		(fRArmor,-500,1000);
+	float				/*fRArmor, */fRRadiation;
+//	P.r_float_q16		(fRArmor,-500,1000);
 	P.r_float_q16		(fRRadiation,-500,1000);
 	//----------- for E3 -----------------------------
 	if (OnClient())		
 	{
-		fArmor = fRArmor;
+//		fArmor = fRArmor;
 		SetfRadiation(fRRadiation);
 	};
 	//------------------------------------------------
@@ -771,22 +771,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	//--------------------------------------------------------------
 	m_iCurWeaponHideState = 0;
 	inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
-	//--------------------------------------------------------------
-/*
-	//добавить отметки на карте, которые актер помнит в info_portions
-	if(m_known_info_registry->registry().objects_ptr())
-	{
-		Level().RemoveMapLocations();
-		const KNOWN_INFO_VECTOR& know_info = *m_known_info_registry->registry().objects_ptr();
-		for(KNOWN_INFO_VECTOR::const_iterator it = know_info.begin();
-					know_info.end() != it; it++)
-		{
-			CInfoPortion info_portion;
-			info_portion.Load((*it).id);
-			AddMapLocationsFromInfo(&info_portion);
-		}
-	}
-*/
+
 
 	//-------------------------------------
 	m_States.empty();
@@ -1007,7 +992,7 @@ void ACTOR_DEFS::net_update::lerp(ACTOR_DEFS::net_update& A, ACTOR_DEFS::net_upd
 	mstate			= (f<0.5f)?A.mstate:B.mstate;
 	weapon			= (f<0.5f)?A.weapon:B.weapon;
 	fHealth			= invf*A.fHealth+f*B.fHealth;
-	fArmor			= invf*A.fArmor+f*B.fArmor;
+//	fArmor			= invf*A.fArmor+f*B.fArmor;
 	weapon			= (f<0.5f)?A.weapon:B.weapon;
 }
 

@@ -114,7 +114,7 @@ public:
 
 	// CEntity
 	_DECLARE_FUNCTION10	(DeathTime	,	u32		);
-	_DECLARE_FUNCTION10	(Armor		,	float	);
+//	_DECLARE_FUNCTION10	(Armor		,	float	);
 	_DECLARE_FUNCTION10	(MaxHealth	,	float	);
 	_DECLARE_FUNCTION10	(Accuracy	,	float	);
 	_DECLARE_FUNCTION10	(Team		,	int		);

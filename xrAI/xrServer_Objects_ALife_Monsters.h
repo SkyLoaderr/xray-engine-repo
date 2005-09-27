@@ -296,7 +296,7 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	u16								mstate;
 	Fvector							accel;
 	Fvector							velocity;
-	float							fArmor;
+//	float							fArmor;
 	float							fRadiation;
 	u8								weapon;
 	///////////////////////////////////////////

@@ -97,7 +97,6 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
 		if(!pTrader) return FALSE;
 
-//		R_ASSERT(NO_PROFILE != pTrader->character_profile());
 		R_ASSERT( pTrader->character_profile().size() );
 
 		//синхронизируем параметры персонажа с серверным объектом
@@ -117,25 +116,17 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
 		if( dialog_manager && !dialog_manager->GetStartDialog().size() )
 		{
-//			PHRASE_DIALOG_ID dialog_id = CPhraseDialog::IndexToId(CharacterInfo().StartDialog());
 			dialog_manager->SetStartDialog(CharacterInfo().StartDialog());
 			dialog_manager->SetDefaultStartDialog(CharacterInfo().StartDialog());
 		}
-	
-//		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = pTrader->m_character_name;
 		m_game_name			= pTrader->m_character_name;
 	}
 	else
 	{
-		CharacterInfo().m_SpecificCharacter.Load		(DEFAULT_PROFILE);
-		CharacterInfo().InitSpecificCharacter			(DEFAULT_PROFILE);
+		CharacterInfo().m_SpecificCharacter.Load					(DEFAULT_PROFILE);
+		CharacterInfo().InitSpecificCharacter						(DEFAULT_PROFILE);
 		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
 		m_game_name												= (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
-
-		CEntity* pEntity = smart_cast<CEntity*>(pThis); VERIFY(pEntity);
-		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
-		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();
-
 	}
 	
 

@@ -147,7 +147,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	eye_range				= pSettings->r_float(section,"eye_range");
 
 	// Health & Armor
-	fArmor					= 0;
+//	fArmor					= 0;
 
 	// Msg				("! cmonster size: %d",sizeof(*this));
 }

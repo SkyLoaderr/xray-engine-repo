@@ -1311,7 +1311,7 @@ CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCre
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
 	m_u16NumItems				= 0;
-	fArmor						= 0.f;
+//	fArmor						= 0.f;
 	fRadiation					= 0.f;
 	accel.set					(0.f,0.f,0.f);
 	velocity.set				(0.f,0.f,0.f);
@@ -1395,7 +1395,7 @@ void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 	tNetPacket.r_u16			(mstate		);
 	tNetPacket.r_sdir			(accel		);
 	tNetPacket.r_sdir			(velocity	);
-	tNetPacket.r_float_q16		(fArmor,	-500,1000);
+//	tNetPacket.r_float_q16		(fArmor,	-500,1000);
 	tNetPacket.r_float_q16		(fRadiation,	-500,1000);
 	tNetPacket.r_u8				(weapon		);
 	////////////////////////////////////////////////////
@@ -1437,7 +1437,7 @@ void CSE_ALifeCreatureActor::UPDATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(mstate		);
 	tNetPacket.w_sdir			(accel		);
 	tNetPacket.w_sdir			(velocity	);
-	tNetPacket.w_float_q16		(fArmor,	-500,1000);
+//	tNetPacket.w_float_q16		(fArmor,	-500,1000);
 	tNetPacket.w_float_q16		(fRadiation,	-500,1000);
 	tNetPacket.w_u8				(weapon		);
 	////////////////////////////////////////////////////

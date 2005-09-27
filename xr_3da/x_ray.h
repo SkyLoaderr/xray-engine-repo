@@ -15,12 +15,16 @@ class ENGINE_API CApplication	:
 		char*				folder;
 		char*				name;
 	};
-	
+	string256				app_title;
 private:
 	ref_shader				ll_hLogo;
 	ref_shader				ll_hLogo1;
 	ref_shader				ll_hLogo2;
 	ref_geom				ll_hGeom;
+
+	ref_shader				sh_progress;
+	int						load_stage;
+
 	u32						ll_dwReference;
 private:
 	EVENT					eQuit;
@@ -45,6 +49,7 @@ public:
 	void					LoadTitle			(char* S, char *S2=NULL);
 	void					SetLoadLogo			(ref_shader NewLoadLogo);
 	void					LoadSwitch			();
+	void					LoadDraw			();
 
 	virtual	void			OnEvent				(EVENT E, u64 P1, u64 P2);
 

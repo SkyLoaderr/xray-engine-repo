@@ -150,8 +150,28 @@ private:
 	// preload sounds registry
 	DEFINE_MAP					(shared_str,ref_sound,SoundRegistryMap,SoundRegistryMapIt);
 	SoundRegistryMap			sound_registry;
+
 public:
 	void						PrefetchSound (LPCSTR name);
+
+protected:
+	BOOL						net_start_result_total;
+	BOOL						connected_to_server;
+
+	bool	xr_stdcall			net_start1				();
+	bool	xr_stdcall			net_start2				();
+	bool	xr_stdcall			net_start3				();
+	bool	xr_stdcall			net_start4				();
+	bool	xr_stdcall			net_start5				();
+	bool	xr_stdcall			net_start6				();
+
+	bool	xr_stdcall			net_start_client1				();
+	bool	xr_stdcall			net_start_client2				();
+	bool	xr_stdcall			net_start_client3				();
+	bool	xr_stdcall			net_start_client4				();
+	bool	xr_stdcall			net_start_client5				();
+	bool	xr_stdcall			net_start_client6				();
+
 public:
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;
