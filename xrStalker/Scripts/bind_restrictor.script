@@ -9,7 +9,7 @@ Space restrictor binder
 local updatable_binders = {}    -- биндеры, которые требуют обновлений (update)
 
 function actor_update(delta)
-	for i, v in updatable_binders do
+	for i, v in pairs(updatable_binders) do
 		v:actor_update(delta)
 	end
 end
