@@ -2395,6 +2395,9 @@
 							RelativePath=".\scripts\xr_kamp.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\xr_patrol.script">
+						</File>
+						<File
 							RelativePath=".\scripts\xr_remark.script">
 						</File>
 						<File
