@@ -156,6 +156,10 @@ namespace ETOOLS{
 	}
 
 	ETOOLS_API CDB::COLLIDER*get_collider	(){return XRC.collider();}
+	ETOOLS_API CDB::MODEL*	create_model_clp(CDB::CollectorPacked* CL)
+	{
+		return				create_model(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
+	}
 	ETOOLS_API CDB::MODEL*	create_model_cl	(CDB::Collector* CL)
 	{
 		return				create_model(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());

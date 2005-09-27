@@ -29,6 +29,7 @@ extern "C" {
 
 		ETOOLS_API CDB::COLLIDER*		get_collider		();
 		ETOOLS_API CDB::MODEL*			create_model_cl		(CDB::Collector*);
+		ETOOLS_API CDB::MODEL*			create_model_clp	(CDB::CollectorPacked*);
 		ETOOLS_API CDB::MODEL*			create_model		(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
 		ETOOLS_API void					destroy_model		(CDB::MODEL*&);
 		ETOOLS_API CDB::RESULT*			r_begin				();
