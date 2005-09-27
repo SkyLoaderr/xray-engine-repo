@@ -81,7 +81,7 @@ function action_meet_wait:execute ()
 		self.object:set_relation(game_object.enemy, db.actor)		
 	else
 		-- является ли текущий звук синхронным для текущего стейта
-		for k,v in self.a.syndata do
+		for k,v in pairs(self.a.syndata) do
 			if v.state == meet_manager.state and
 			   v.sound == meet_manager.sound
 			then
@@ -249,7 +249,7 @@ function Cmeet_manager:process_victim()
 end
 function Cmeet_manager:get_key_from_distance(t)
 	local key
-	for k,v in t do
+	for k,v in pairs(t) do
 		if v.dist >= self.dist then 
 			key = k 
 		else
@@ -259,7 +259,7 @@ function Cmeet_manager:get_key_from_distance(t)
 	return key
 end
 function Cmeet_manager:get_key_from_zone(t)
-	for k,v in t do
+	for k,v in pairs(t) do
 		if utils.npc_in_zone(db.actor, db.zone_by_name[v.zone]) then 
 			return k 
 		end		
