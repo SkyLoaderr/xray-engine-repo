@@ -91,7 +91,7 @@ function dialog_allowed(object, victim, id)
 		printf("*DIALOGS*: dialog_allowed: nil")
 	end
 	if db.storage[victim:id()].actor_dialogs ~= nil then
-		for k,v in db.storage[victim:id()].actor_dialogs do
+		for k,v in pairs(db.storage[victim:id()].actor_dialogs) do
 			if v == id then return true end
 		end
 	end
@@ -104,7 +104,7 @@ function dialog_not_disable(object, victim, id)
 		printf("*DIALOGS*: dialog_disable:nil")
 	end
 	if db.storage[victim:id()].actor_disable ~= nil then
-		for k,v in db.storage[victim:id()].actor_disable do
+		for k,v in pairs(db.storage[victim:id()].actor_disable) do
 			if v == id then return false end
 		end
 	end

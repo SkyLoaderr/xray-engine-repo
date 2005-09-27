@@ -145,7 +145,7 @@ end
 function se_smart_terrain:print()
 	printf( "NPCs:" )
 	if self.npcs then
-		for id, v in self.npcs do
+		for id, v in pairs(self.npcs) do
 			printf( "    %d", id )
 		end
 	end
@@ -166,13 +166,13 @@ function se_smart_terrain:STATE_Write( packet )
 	-- список npc
 	n = 0
 	if self.npcs then
-		for id, v in self.npcs do
+		for id, v in pairs(self.npcs) do
 			n = n + 1
 		end
 
 		packet:w_u8( n )
 
-		for id, v in self.npcs do
+		for id, v in pairs(self.npcs) do
 			packet:w_u16  ( id )
 			packet:w_u8   ( v.group )
 			packet:w_u8   ( v.squad )
@@ -201,7 +201,7 @@ function se_smart_terrain:STATE_Write( packet )
 
 			print_table( self.Job )
 
-			for i, v in self.Job do
+			for i, v in pairs(self.Job) do
 				packet:w_u32( v )
 --				printf( "job i=%d", i )
 			end
@@ -341,7 +341,7 @@ end
 
 function se_smart_terrain:get_population()
 	n = 0
-	for k, v in self.npcs do
+	for k, v in pairs(self.npcs) do
 		n = n + 1
 	end
 
@@ -357,7 +357,7 @@ function se_smart_terrain:calculate()
 
 	sim = alife()
 
-	for id, v in self.npcs do
+	for id, v in pairs(self.npcs) do
 		o = cast_alife_object_to_creature( sim:object( id ) )
 
 		if not o:alive() then
@@ -397,13 +397,13 @@ function cl_smart_terrain:__init( se_obj )
 		self.gulag.casualities = se_obj.casualities or self.gulag.casualities
 
 		-- восстановить npc с должностями
-		for id, v in self.npcs do
+		for id, v in pairs(self.npcs) do
 			self.gulag:loadObject( id, v.jobN )
 		end
 
 		-- восстановить параметры должностей, которые требуют сохранения
 		if se_obj.Job then
-			for i, v in se_obj.Job do
+			for i, v in pairs(se_obj.Job) do
 				if v > 0 then
 					self.gulag.Job[i].begin = v
 				end
@@ -437,19 +437,19 @@ function cl_smart_terrain:save()
 
 		o.Job         = {}
 
-		for id, u in self.npcs do
+		for id, u in pairs(self.npcs) do
 			u.jobN = nil
 		end
 
 		-- запомнить сохраняемые параметры работ
-		for i, v in self.gulag.Job do
+		for i, v in pairs(self.gulag.Job) do
 			table.insert( o.Job, v.begin or 0 )
 
 			-- для npc, занятого на этой работе, запомнить номер работы
 			if v.object then
 				o_id = v.object:id()
 
-				for id, u in self.npcs do
+				for id, u in pairs(self.npcs) do
 					if id == o_id then
 						u.jobN = i
 						break
@@ -677,7 +677,7 @@ end
 function create_gulag( self )
 	-- выбор гулагов, которые могут быть созданы
 	local avail = {}
-	for i, v in self.gulags do
+	for i, v in pairs(self.gulags) do
 		if is_gulag_available( v ) then
 			table.insert( avail, i )
 		end
@@ -722,7 +722,7 @@ function remove_gulag( self, disable )
 
 	o = true
 	-- освободить всех, кто ещё жив в гулаге
-	for id, v in self.gulag.Object do
+	for id, v in pairs(self.gulag.Object) do
 		o = free_npc( self, id ) and o
 	end
 
@@ -814,7 +814,7 @@ function update( self )
 
 				-- проверять, не собрался ли кто-то к этому времени уже уходить
 				sn = 0
-				for id, v in self.gulag.Object do
+				for id, v in pairs(self.gulag.Object) do
 					if self.npcs[id].stay_end < game.get_game_time() then
 						-- попытка освободить npc. если неудачно, то он всё ещё числится
 						if not free_npc( self, id ) then

@@ -96,14 +96,14 @@ end
 function object_spawner:update()	
 	--printf("!!%s!! %s", self.name, game.get_game_time():diffSec(self.timer))
 	if game.get_game_time():diffSec(self.timer) > self.idle then
-		for k,v in self.list do
+		for k,v in pairs(self.list) do
 			self:check_spawn(v.id)
 		end		
 		self.timer = game.get_game_time()
 	end
 end
 function object_spawner:destroy()	
-	for k,v in self.list do
+	for k,v in pairs(self.list) do
 		self:restore(k)
 		self.list[k] = nil
 	end
@@ -133,7 +133,7 @@ end
 local spawn_list = {}
 -----------------------------
 function add_to_spawn_list (s_object)
-	for k,v in spawn_list do
+	for k,v in pairs(spawn_list) do
 		if v.id == s_object.id then 
 		   return 
         end

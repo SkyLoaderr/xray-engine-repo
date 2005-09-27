@@ -999,7 +999,7 @@ function print_table(table, subs)
   else
     sub = ""
   end
-  for k,v in table do
+  for k,v in pairs(table) do
     if type(v) == "table" then
       printf(sub.."%s:", tostring(k))
       print_table(v, sub.."    ")
