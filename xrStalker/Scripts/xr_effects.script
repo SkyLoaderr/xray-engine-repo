@@ -971,7 +971,7 @@ function val_suicide_kill_self(actor, npc)
 	end
 
 	--[[
-	snd_obj = sound_object([[ambient\random\rnd_fallscream]])
+	snd_obj = sound_object("ambient\\random\\rnd_fallscream")
 	if snd_obj ~= nil then
 		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
 	end
