@@ -1870,7 +1870,7 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 		if (m_dwSM_SwitchDelta<1000) m_dwSM_SwitchDelta = 1000;
 	};
 	//-------------------------------------------------------------------------
-	m_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",0);
+	m_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",0) * 1000;
 };
 
 static bool g_bConsoleCommandsCreated_DM = false;
