@@ -13,7 +13,7 @@ function get_nearest_heli(npc_position, attack_dist_sqr)
 
 	local heli = nil
 
-	for k,v in db.heli do
+	for k,v in pairs(db.heli) do
 		if v:position():distance_to_sqr(npc_position) <= attack_dist_sqr and
 		   (heli == nil or
 		   v:position():distance_to_sqr(npc_position) < heli:position():distance_to_sqr(npc_position))

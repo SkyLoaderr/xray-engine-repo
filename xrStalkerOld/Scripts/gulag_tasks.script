@@ -131,7 +131,7 @@ function loadJob(sj, gname, type, squad, groups)
 	gulag_yantar.load_job     (sj, gname, type, squad, groups)
 	gulag_pripyat.load_job    (sj, gname, type, squad, groups)
 --]]
-    for k, v in level_gulags do
+    for k, v in pairs(level_gulags) do
         v.load_job(sj, gname, type, squad, groups)
     end
 end
@@ -232,7 +232,7 @@ function loadStates(gname, type)
 	end
 --]]
     
-    for k, v in level_gulags do
+    for k, v in pairs(level_gulags) do
 	    f = v.load_states(gname, type)
 	    if f then
 		    return f
@@ -244,7 +244,7 @@ end
 
 function loadLtx(name, type)
     local l
-    for k, v in level_gulags do
+    for k, v in pairs(level_gulags) do
 	    l = v.load_ltx(name, type)
 	    if l ~= nil then
 	        local ini = create_ini_file(l)

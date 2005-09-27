@@ -83,7 +83,7 @@ function fract:removeObject( npc_id, npc )
 end
 
 function fract:all_spawned()
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		-- если есть ещё хоть один не породившийся
 		if v == true then
 			return false
@@ -99,7 +99,7 @@ function fract:calculate()
 	end
 
 	--' Изменение потерь в лагере
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		if not v:alive() then
 			self:changeCasualities(1)
 --			self.Object[k]    = nil
@@ -108,7 +108,7 @@ function fract:calculate()
 	end
 
 	--' Обнуление работ с несуществующими персонажами
---	for k,v in self.Job do
+--	for k,v in pairs(self.Job) do
 --		if v.object ~= nil and self.Object[v.object:id()] == nil then
 --			v.object = nil				
 --		end
@@ -130,7 +130,7 @@ function fract:changeState(state)
 end
 
 function fract:availState(st, state)
-	for k,v in st do
+	for k,v in pairs(st) do
 		if v == state then return true end
 	end
 	return false
@@ -144,7 +144,7 @@ function fract:availJob(job)
 		local jd = job.dependent
 
 		if jd then
-	   		for i, v in self.Job do
+	   		for i, v in pairs(self.Job) do
 	   			if v.section == jd then
 	   				return v.object ~= nil
 	   			end
@@ -163,7 +163,7 @@ function fract:availCurrent(job)
 		local jd = job.dependent
 
 		if jd then
-	   		for i, v in self.Job do
+	   		for i, v in pairs(self.Job) do
 	   			if v.section == jd then
 	   				return v.object ~= nil
 	   			end
@@ -183,13 +183,13 @@ function fract:updateJob()
 	end
 
 	-- освобождение npc с работ, не существующих в данном состоянии
---	for k,v in self.Job do
+--	for k,v in pairs(self.Job) do
 --		if not self:availState(v.state, self.state) then
 --			v.object = nil
 --		end
 --	end
 	local jobN
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		jobN = self.ObjectJob[k]
 		if jobN then
 			if not self:availState(self.Job[jobN].state, self.state) or
@@ -203,7 +203,7 @@ function fract:updateJob()
 	-- переназначение работ
 	jobN = 1
 
-	for k,v in self.Job do
+	for k,v in pairs(self.Job) do
 --		printf( "   %s", v.section )
 
 		-- проверка на доступность работы при текущем стейте
@@ -212,7 +212,7 @@ function fract:updateJob()
 			if v.object == nil and self:availJob(v) then
 				-- назначить на работу свободного человека
 				local f = false
-				for kk,vv in self.Object do
+				for kk,vv in pairs(self.Object) do
 					if ((v.predicate == nil or v.predicate(vv) == true) and self:getJob(vv) == nil) then
 						self:setJob(vv, v, jobN)
 						f = true
@@ -248,11 +248,11 @@ end
 function fract:print()
 	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self:get_capacity(), self:get_population())
 	printf("Resources:")
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		printf("id: %d name: %s", k, v:name())
 	end
 	printf("Jobs:")
-	for k,v in self.Job do
+	for k,v in pairs(self.Job) do
 		printf("section: %s, prior %d", v.section, v.prior)
 		if v.object ~= nil then
 			printf("    ObjID: %d", v.object:id())
@@ -264,14 +264,14 @@ end
 
 function fract:get_capacity()
 	i = {}
-	for k,v in self.Job do
-		for kk,vv in v.state do
+	for k,v in pairs(self.Job) do
+		for kk,vv in pairs(v.state) do
 			if i[vv] == nil then i[vv] = 0 end
 			i[vv] = i[vv] + 1
 		end
 	end
 	t = 0
-	for k,v in i do
+	for k,v in pairs(i) do
 		if t == 0 then 
 			t = v 
 		else
@@ -283,7 +283,7 @@ end
 
 function fract:get_population()
 	i = 0
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		-- если npc родился, то посчитать его только живым
 		-- если ещё не родился, посчитать в любом случае
 		if v == true or v:alive() then
@@ -417,7 +417,7 @@ function fract:npcExists(npc)
 end
 
 function fract:idNPCOnJob(job_name)
-	for k,v in self.Job do
+	for k,v in pairs(self.Job) do
 		if v.section == job_name then
 			if v.object ~= nil then
 				return v.object:id()
@@ -436,19 +436,19 @@ function fract:changeCasualities(delta)
 end
 
 function fract:set_relation (relation, object)
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		v:set_relation (relation, object)
 	end
 end
 
 function fract:set_goodwill (goodwill, object)
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 		v:set_community_goodwill (goodwill, object)
 	end
 end
 
 function fract:get_member ()
-	for k,v in self.Object do
+	for k,v in pairs(self.Object) do
 	    if v:alive () == true then
 	       return v
 	    end
@@ -471,7 +471,7 @@ function destroyGulag(name)
 end
 
 function isUnderFraction(npc)
-	for k,v in fraction do
+	for k,v in pairs(fraction) do
 		if v:npcExists(npc) == true then
 			return k
 		end		
@@ -497,11 +497,11 @@ function setGulagEnemy(name, victim)
 --		h.draftsman = victim
 --		h.impulse = 0
 --		h.type = hit.wound
---		for k,v in xr_gulag.fraction[name].Object do
+--		for k,v in pairs(xr_gulag.fraction[name].Object) do
 --			h.direction = v:direction()
 --			v:hit(h)								
 --		end
-		for k,v in xr_gulag.fraction[name].Object do
+		for k,v in pairs(xr_gulag.fraction[name].Object) do
 			v:set_relation(game_object.enemy, victim)
 		end
 	end
@@ -597,7 +597,7 @@ function checkStalker(npc_community, gulag_type)
 	end
 --]]
 
-    for i, v in level_gulags do
+    for i, v in pairs(level_gulags) do
 	    if v.checkStalker(npc_community, gulag_type) then
 		    return true
 	    end
@@ -644,7 +644,7 @@ function checkMonster(npc_community, gulag_type)
     end
 --]]
 
-    for i, v in level_gulags do
+    for i, v in pairs(level_gulags) do
 	    if v.checkMonster(npc_community, gulag_type) then
 		    return true
 	    end

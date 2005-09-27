@@ -7,10 +7,10 @@ function set_npc_info(npc, ini, scheme, section)
 	local in_info	= get_infos_from_data(npc, utils.cfg_get_string(ini, section, "in", npc, false, ""))
 	local out_info	= get_infos_from_data(npc, utils.cfg_get_string(ini, section, "out", npc, false, ""))
 
-	for k,v in in_info do
+	for k,v in pairs(in_info) do
 		npc:give_info_portion(v)
 	end
-	for k,v in out_info do
+	for k,v in pairs(out_info) do
 		npc:disable_info_portion(v)
 	end
 end

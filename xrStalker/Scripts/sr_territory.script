@@ -72,12 +72,12 @@ if (version.isLua51) then
 else
 	function issue_event(npc, type, ...)
 		if type == "hit_callback" then
-			for k,v in territory do
+			for k,v in pairs(territory) do
 				v.hit_callback(v, unpack(arg))
 			end
 		end
 		if type == "death_callback" then
-			for k,v in territory do
+			for k,v in pairs(territory) do
 				v.death_callback(v, unpack(arg))
 			end
 		end

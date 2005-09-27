@@ -73,7 +73,7 @@ local pos_obj    = 2
 -- включить в dest все элементы из src. Таблицы индексированы
 function table_include( dest, src )
 	if dest and src then
-		for i, v in src do
+		for i, v in pairs(src) do
 			table.insert( dest, v )
 		end
 	end
@@ -262,7 +262,7 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 	if ini:line_exist( section, "type" ) then
 		local t = parse_names( ini:r_string( section, "type" ) )
 
-		for i, v in t do
+		for i, v in pairs(t) do
 --			if v == "random" then
 --				st.pos_type = pos_random
 --			end

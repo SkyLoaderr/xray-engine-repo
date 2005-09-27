@@ -92,7 +92,7 @@ function is_gulag_in_test(gulag_name, test_name)
 	if smart_terrains[test_name] == nil then 
 		return false 
 	end
-	for index, cur_gulag_name in smart_terrains[test_name] do
+	for index, cur_gulag_name in pairs(smart_terrains[test_name]) do
 		if gulag_name == cur_gulag_name then
 			return true
 		end
@@ -116,7 +116,7 @@ function remove_gulags_except(test_name)
 	end
 	
 	-- remove
-	for k, v in db.smart_terrain_by_id do
+	for k, v in pairs(db.smart_terrain_by_id) do
 		if (is_gulag_in_test(v:name(), test_name) == false) then
 			smart_terrain.remove_gulag(v,true)
 		end

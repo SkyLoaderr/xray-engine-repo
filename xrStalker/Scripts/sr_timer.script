@@ -36,7 +36,7 @@ function action_timer:update(delta)
 	self.st.timer:SetTextST(str)
 
 	-- Определяем нужно ли куда то переходить.
-	for k,v in self.st.on_value do
+	for k,v in pairs(self.st.on_value) do
 		if (self.st.type == "dec" and value_time <= v.dist) or
 		   (self.st.type == "inc" and value_time >= v.dist)
 		then

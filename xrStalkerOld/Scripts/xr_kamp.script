@@ -146,7 +146,7 @@ function CKampManager:__init(path)
 		   self.patrol:flag(k,2)
 		then
 			-- отметить сектор как занятый
-			for key,value in self.position do
+			for key,value in pairs(self.position) do
 				dir = vector():sub(level.vertex_position(self.patrol:level_vertex_id(k)), level.vertex_position(self.center))
 				if value.dir then
 					yaw = yaw_degree(dir, value.dir)
@@ -242,7 +242,7 @@ function CKampManager:selectPosition(npc_id)
 	-- создаем список доступных позиций
 	--printf("KAMP. [%s] called select position", npc_id)
 	local free = {}
-	for k,v in self.position do
+	for k,v in pairs(self.position) do
 		if v.used == nil then
 			table.insert(free, k)
 		end
@@ -309,7 +309,7 @@ function CKampManager:proceedState(npc)
 			self.director = npc_id
 			self.kamp_state = "story"
 			self.begin = time_global()
-			for kk,vv in self.npc do
+			for kk,vv in pairs(self.npc) do
 				vv.new = true
 			end		
 			return
@@ -320,7 +320,7 @@ function CKampManager:proceedState(npc)
 	-- Определяются допустимые в данный момент переходы.
 	local temp = {}
 	local max_rnd = 0
-	for k,v in self.trans_kamp[self.kamp_state] do		
+	for k,v in pairs(self.trans_kamp[self.kamp_state]) do		
 		-- Определяются допустимые состояния для лагеря.
 		if self.kamp_states[k] == true then
 			temp[k] = v
@@ -332,7 +332,7 @@ function CKampManager:proceedState(npc)
 		abort("NO STATE AVAIL [%s]", self.kamp_name)
 	end
 	local p = math.random(0,max_rnd)
-	for k,v in temp do
+	for k,v in pairs(temp) do
 		p = p - v
 		if p <= 0 then
 			printf("Selected [%s]", k)
@@ -358,7 +358,7 @@ function CKampManager:proceedState(npc)
 					self.timeout["post_story"].min = math.random(dep.min, dep.max)*1000
 				end
 			end
-			for kk,vv in self.npc do
+			for kk,vv in pairs(self.npc) do
 				vv.new = true
 			end
 			return
@@ -386,7 +386,7 @@ function CKampManager:proceedRole(npc, director)
 		end
 		-- Выбирать новое состояние только раз в какое то время.
 		local temp = {}
-		for k,v in states do
+		for k,v in pairs(states) do
 			if self.npc[npc_id].states[v] == true then
 				table.insert(temp, v)
 			end
