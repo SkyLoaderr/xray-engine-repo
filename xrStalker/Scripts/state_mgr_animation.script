@@ -196,7 +196,7 @@ function animation:set_state(id, reset)
 				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
 				if anima then
 					if type(anima) == "table" then
-						for k,v in anima do
+						for k,v in pairs(anima) do
 							if type(v) == "table" and v.d ~= nil then
 								local obj = self.npc:object(v.d)
 								if obj then
@@ -229,7 +229,7 @@ function animation:set_state(id, reset)
 				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
 				if anima then
 					if type(anima) == "table" then
-						for k,v in anima do
+						for k,v in pairs(anima) do
 							if type(v) == "table" then
 								printf("set_a_c out old")
 								self:set_anim_callback(v)
@@ -250,7 +250,7 @@ function animation:set_state(id, reset)
 		if self.animations[id].into ~= nil then
 			anima = self:anim_for_slot(wpn_slot,self.animations[id].into)
 			if type(anima) == "table" then
-				for k,v in anima do
+				for k,v in pairs(anima) do
 					if type(v) == "table" then
 						printf("set_a_c in new")
 						self:set_anim_callback(v)
@@ -308,7 +308,7 @@ function animation:update()
 	end	
 
 	-- ÀÒÒÀ× ÄÅÒÀ× ÎÁÚÅÊÒÎÂ
-	for k,v in self.states.attach_items do
+	for k,v in pairs(self.states.attach_items) do
 --		printf("Trying to attach [%s]", tostring(k))
 		if v.done == false then
 --			printf("proceed [%s]", tostring(k))
