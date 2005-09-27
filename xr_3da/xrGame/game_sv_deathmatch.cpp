@@ -1980,7 +1980,7 @@ void		game_sv_Deathmatch::check_for_WarmUp()
 	if (m_dwWarmUp_CurTime == 0) return;
 	if (m_dwWarmUp_CurTime < Level().timeServer())
 	{
-		m_dwWarmUp_CurTime == 0;
+		m_dwWarmUp_CurTime = 0;
 		Console->Execute("g_restart_fast");
 	};
 };
