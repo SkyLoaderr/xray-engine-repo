@@ -137,7 +137,7 @@ namespace ETOOLS{
 	{
 		return							xr_new<CDB::CollectorPacked> (bb, apx_vertices, apx_faces);
 	}
-	ETOOLS_API void						destroy_collector		(CDB::CollectorPacked*& M)
+	ETOOLS_API void						destroy_collector_p		(CDB::CollectorPacked*& M)
 	{
 		xr_delete						(M);
 	}
