@@ -142,6 +142,19 @@ namespace ETOOLS{
 		CL->add_face_packed_D			(v0,v1,v2,dummy,eps);
 	}
 
+	ETOOLS_API CDB::CollectorPacked*	create_collectorp		(const Fbox &bb, int apx_vertices, int apx_faces)
+	{
+		return							xr_new<CDB::CollectorPacked>	(bb, apx_vertices, apx_faces);
+	}
+	ETOOLS_API void						destroy_collectorp		(CDB::CollectorPacked*& M)
+	{
+		xr_delete						(M);
+	}
+	ETOOLS_API void						collectorp_add_face_d	(CDB::CollectorPacked* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy)
+	{
+		CL->add_face_D					(v0,v1,v2,dummy);
+	}
+
 	ETOOLS_API CDB::COLLIDER*get_collider	(){return XRC.collider();}
 	ETOOLS_API CDB::MODEL*	create_model_cl	(CDB::Collector* CL)
 	{

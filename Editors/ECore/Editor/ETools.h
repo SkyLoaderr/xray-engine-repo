@@ -23,6 +23,9 @@ extern "C" {
 		ETOOLS_API void					destroy_collector	(CDB::Collector*&);
 		ETOOLS_API void					collector_add_face_d(CDB::Collector* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy);
 		ETOOLS_API void					collector_add_face_pd(CDB::Collector* CL,const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy, float eps = EPS);
+		ETOOLS_API CDB::CollectorPacked*create_collectorp	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
+		ETOOLS_API void					destroy_collectorp	(CDB::CollectorPacked*&);
+		ETOOLS_API void					collectorp_add_face_d(CDB::CollectorPacked* CL, const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy);
 
 		ETOOLS_API CDB::COLLIDER*		get_collider		();
 		ETOOLS_API CDB::MODEL*			create_model_cl		(CDB::Collector*);
