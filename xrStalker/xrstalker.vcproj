@@ -1936,21 +1936,74 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="creatures"
-					Filter="">
-					<Filter
-						Name="capture"
-						Filter="">
-						<File
-							RelativePath=".\config\models\capture\c_dog.ltx">
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
 					Name="weapons"
 					Filter="">
 					<File
 						RelativePath=".\config\models\weapons\mounted_wpn_pkm.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="capture"
+					Filter="">
+					<File
+						RelativePath=".\Config\models\capture\armor_helmet_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\c_dog.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\exo_helmet_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\gilet_antigas_damage_low.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\gilet_antigas_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\gilet_mask_damage_low.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\gilet_mask_damage_no.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_antigas_damage_low.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_antigas_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_helmet_damage_low.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_helmet_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_kupol_damage_high.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_kupol_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_mask_damage_low.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kombez_mask_damage_no.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kurtka_antigas_damage_low.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kurtka_kupol_damage_high.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\kurtka_mask_damage_no.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\plasch_mask_damage_no.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\models\capture\zombied_damage_med.ltx">
 					</File>
 				</Filter>
 			</Filter>
