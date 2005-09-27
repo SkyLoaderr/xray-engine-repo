@@ -50,7 +50,8 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(can_switch_offline,bool)\
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(interactive,		bool)
 
-#define INHERIT_ZONE \
+#ifdef XRGAME_EXPORTS
+#	define INHERIT_ZONE \
 	INHERIT_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
@@ -59,6 +60,13 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_METHOD_V1		(unregister_npc,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_1			(task,CALifeSmartTerrainTask*,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(detect_probability,float)
+#else
+#	define INHERIT_ZONE \
+	INHERIT_ALIFE\
+	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
+	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
+	DEFINE_LUA_WRAPPER_METHOD_1			(enabled,bool,CSE_ALifeMonsterAbstract*)
+#endif
 
 #define INHERIT_CREATURE \
 	INHERIT_ALIFE\
