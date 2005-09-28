@@ -271,6 +271,16 @@
 	<info_portion id="mil_hunter_after_dialog"></info_portion>
 
 
+    <info_portion id="mil_village_bloodsucker1"></info_portion>
+    <info_portion id="mil_village_bloodsucker2"></info_portion>
+    <info_portion id="mil_village_bloodsucker3"></info_portion>
+    <info_portion id="mil_village_bloodsucker4"></info_portion>
+    <info_portion id="mil_village_bloodsucker5"></info_portion>
+    <info_portion id="mil_village_bloodsucker6"></info_portion>
+    <info_portion id="mil_village_bloodsucker7"></info_portion>
+    <info_portion id="mil_village_bloodsucker8"></info_portion>
+    <info_portion id="mil_village_bloodsucker9"></info_portion>
+
 	<!-- Отметки на карте мест -->
 	<info_portion id="mil_barier_locator"></info_portion>
 
