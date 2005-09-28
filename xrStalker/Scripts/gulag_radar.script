@@ -465,8 +465,9 @@ end
 -- Dynamic ltx
 --------------------------------------------------------------------------
 function load_ltx(gname, type)
-    local g = gulags[type]
-    if g and g[4] then return g[4](gname, type) end
+	if type == "rad_antena" then
+		return load_ltx_antenna_patrol(gname, type)
+	end
 
 	return nil
 end
@@ -536,4 +537,3 @@ function checkMonster( npc_community, gulag_type )
 end
 -------------------------------------------------------------------------------------------------------------------------
 --                         -- job_func          -- check_state func     -- communities              -- dynamic ltx func
-gulags.rad_antenna_patrol      = {load_job_antenna_patrol,    check_state_antenna_patrol, {"monolith"},   load_ltx_antenna_patrol}
