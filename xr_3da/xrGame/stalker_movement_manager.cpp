@@ -20,7 +20,11 @@
 #include "entitycondition.h"
 #include "ai_object_location.h"
 
-#include "level.h"
+//#define TRY_COORDINATED_MOVEMENT
+
+#ifdef TRY_COORDINATED_MOVEMENT
+#	include "level.h"
+#endif
 
 using namespace StalkerMovement;
 
@@ -341,7 +345,7 @@ void CStalkerMovementManager::setup_velocities		()
 	else {
 		detail().set_try_min_time		(true);
 		detail().set_desirable_mask		(velocity_mask | eVelocityStanding);
-		detail().set_velocity_mask	(
+		detail().set_velocity_mask		(
 			velocity_mask | 
 			eVelocityWalk | 
 			eVelocityStanding
@@ -505,8 +509,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 	if (movement_type() != eMovementTypeStand)
 		update_path				();
 
-
-	if (false)
+#ifdef TRY_COORDINATED_MOVEMENT
 	{
 		typedef xr_vector<CObject*>			OBJECTS;
 		typedef xr_vector<CAI_Stalker*>		AGENTS;
@@ -555,6 +558,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 			}
 		}
 	}
+#endif
 
 	parse_velocity_mask			();
 }
