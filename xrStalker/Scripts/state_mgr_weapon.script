@@ -240,3 +240,7 @@ function strappable_weapon(obj)
     elseif id == clsid.wpn_groza then return true
     else return false end
 end
+
+function get_queue_params(npc, target)
+	return 3, 1000
+end

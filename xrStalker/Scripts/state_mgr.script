@@ -218,7 +218,7 @@ function act_state_mgr_end:execute()
 					end					
 					self.object:set_item(object.fire1, self.object:best_weapon(), 1, sniper_aim)
 				else
-					self.object:set_item(object.fire1, self.object:best_weapon())
+					self.object:set_item(object.fire1, self.object:best_weapon(), state_mgr_weapon.get_queue_params(self.object, look_object))
 				end
 				return
 			else
@@ -233,7 +233,7 @@ function act_state_mgr_end:execute()
 			if t == "sniper_fire" then
 				self.object:set_item(object.fire1, self.object:best_weapon(), 1, sniper_aim)
 			else
-				self.object:set_item(object.fire1, self.object:best_weapon())
+				self.object:set_item(object.fire1, self.object:best_weapon(), state_mgr_weapon.get_queue_params(self.object, nil))
 			end
 			return
 		else
