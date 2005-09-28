@@ -1708,16 +1708,10 @@ void	CActor::Check_for_AutoPickUp()
 
 	BOOL Enabled = getEnabled();
 	setEnabled(FALSE);
-	/*
-	Fvector         bc,bd;
-	Fbox            xf;
-	Fmatrix M = XFORM();
-	M.translate_add(m_AutoPickUp_AABB_Offset);
-	xf.xform        (m_AutoPickUp_AABB,M);
-	xf.get_CD       (bc,bd);
-	*/
-
+	
 	Fvector bc; bc.add(Position(), m_AutoPickUp_AABB_Offset);
+	Fbox APU_Box;
+	APU_Box.set(Fvector().sub(bc, m_AutoPickUp_AABB), Fvector().add(bc, m_AutoPickUp_AABB));
 
 	xr_vector<ISpatial*>	ISpatialResult;
 	g_SpatialSpace->q_box   (ISpatialResult,0,STYPE_COLLIDEABLE,bc,m_AutoPickUp_AABB);
@@ -1731,10 +1725,13 @@ void	CActor::Check_for_AutoPickUp()
 		CGrenade*	pGrenade	= smart_cast<CGrenade*> (pIItem);
 		if (pGrenade) continue;
 
-		NET_Packet P;
-		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
-		P.w_u16(pIItem->object().ID());
-		u_EventSend(P);
+		if (APU_Box.Pick(pIItem->object().Position(), pIItem->object().Position()))
+		{
+			NET_Packet P;
+			u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
+			P.w_u16(pIItem->object().ID());
+			u_EventSend(P);
+		}		
 	}
 
 	setEnabled(Enabled);

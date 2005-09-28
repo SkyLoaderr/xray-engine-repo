@@ -27,7 +27,7 @@ void SBoneProtections::reload(const shared_str& bone_sect, CKinematics* kinemati
 
 	m_fHitFrac = READ_IF_EXISTS(pSettings, r_float, bone_sect, "hit_fraction",	0.1f);
 
-	m_default.koeff		= 0.0f;
+	m_default.koeff		= 1.0f;
 	m_default.armour	= 0.0f;
 
 	CInifile::Sect	&protections = pSettings->r_section(bone_sect);
@@ -40,12 +40,15 @@ void SBoneProtections::reload(const shared_str& bone_sect, CKinematics* kinemati
 		BP.koeff = Koeff;
 		BP.armour = Armour;
 
+
 		if (!xr_strcmp(*(*i).first,"default"))
 		{
 			m_default = BP;
 		}
 		else 
 		{
+			if (!xr_strcmp(*(*i).first,"hit_fraction")) continue;
+
 			s16	bone_id				= kinematics->LL_BoneID(i->first);
 			R_ASSERT2				(BI_NONE != bone_id, *(*i).first);			
 			m_bones_koeff.insert(mk_pair(bone_id,BP));
