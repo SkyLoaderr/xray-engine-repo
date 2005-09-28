@@ -81,6 +81,7 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "ptr" then
 	   return npc_community == "military"
 	end
+	return false
 end
 function checkMonster(npc_community, gulag_type)
 end
