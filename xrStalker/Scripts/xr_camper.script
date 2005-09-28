@@ -487,8 +487,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
 	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
-	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
-	st.danger_radius = utils.cfg_get_number(ini, section, "danger_radius", npc, false)
+	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false, 20)
+	st.danger_radius = utils.cfg_get_number(ini, section, "danger_radius", npc, false, 5)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving1 = st.suggested_state.moving
@@ -497,20 +497,13 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
-	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false)
+	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false, 60000)
 	
-	st.idle = 60*1000
+	-- Время забывания врага
+	st.idle = utils.cfg_get_number(ini, section, "enemy_idle", npc, false, 60000)
+	
 	st.enemy_disp = 20
 	
-	if st.radius == nil then
-		st.radius = 20
-	end
-	if st.danger_radius == nil then
-		st.danger_radius = 5
-	end
-	if st.scantime_free == nil then
-		st.scantime_free = 60000
-	end
 	st.scandelta = 30
 	st.timedelta = 4000
 	st.time_scan_delta = st.timedelta/st.scandelta
