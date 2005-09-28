@@ -158,6 +158,10 @@ public:
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);
 	virtual		void				OnPlayerChangeName		(NET_Packet& P);
+
+	virtual		void				OnSpectatorSelect		() {}
+	virtual		void				OnSkinMenuBack			() {}
+	virtual		void				OnTeamMenuBack			() {}
 	
 
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	

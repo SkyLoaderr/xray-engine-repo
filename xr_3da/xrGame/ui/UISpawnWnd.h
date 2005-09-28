@@ -10,9 +10,15 @@
 
 class CUIStatix;
 class CUIStatic;
+class CUI3tButton;
 class CUIScrollView;
 
 //typedef	void (*ButtonClickCallback) (int);
+typedef enum{
+	TEAM_MENU_BACK = 0,
+    TEAM_MENU_SPECTATOR,
+	TEAM_MENU_AUTOSELECT
+} ETEAMMENU_BTN;
 
 class CUISpawnWnd: public CUIDialogWnd
 {
@@ -25,6 +31,7 @@ public:
 	virtual void Init();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+			void SetVisibleForBtn(ETEAMMENU_BTN btn, bool state);
 
 protected:
 			void InitTeamLogo();
@@ -44,6 +51,9 @@ protected:
 	CUIScrollView*	m_pTextDesc;
 	CUIStatix*		m_pImage1;
 	CUIStatix*		m_pImage2;
+	CUI3tButton*	m_pBtnAutoSelect;
+	CUI3tButton*	m_pBtnSpectator;
+	CUI3tButton*	m_pBtnBack;
 };
 
 #endif

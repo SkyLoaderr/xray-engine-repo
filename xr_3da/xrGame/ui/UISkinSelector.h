@@ -19,6 +19,12 @@ class CUIStatix;
 class CUI3tButton;
 class CUIAnimatedStatic;
 
+typedef enum{
+	SKIN_MENU_BACK = 0,
+    SKIN_MENU_SPECTATOR,
+	SKIN_MENU_AUTOSELECT
+} ESKINMENU_BTN;
+
 class CUISkinSelectorWnd: public CUIDialogWnd
 {
 	typedef CUIDialogWnd inherited;
@@ -30,11 +36,12 @@ public:
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData = NULL);
 	virtual bool	OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
+			void	SetVisibleForBtn(ESKINMENU_BTN btn, bool state);
 //	virtual void	Draw();
 	// event handlers
 
 
-	int				GetActiveIndex()		{ return m_iActiveIndex + m_fristSkin; } 	
+	int				GetActiveIndex();
 protected:
 			void	OnBtnOK();
 			void	OnBtnCancel();
@@ -49,6 +56,9 @@ protected:
 	CUIStatix*		m_pImage[4];
 	CUI3tButton*	m_pButtons[2];
 	CUIAnimatedStatic* m_pAnims[2];
+	CUI3tButton*	m_pBtnAutoSelect;
+	CUI3tButton*	m_pBtnSpectator;
+	CUI3tButton*	m_pBtnBack;
 	
 	shared_str		m_strSection;
 	shared_str		m_shader;

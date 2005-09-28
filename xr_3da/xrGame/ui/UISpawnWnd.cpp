@@ -8,6 +8,7 @@
 #include "../game_cl_teamdeathmatch.h"
 #include "UIStatix.h"
 #include "UIScrollView.h"
+#include "UI3tButton.h"
 
 CUISpawnWnd::CUISpawnWnd()
 //	: m_bDual(false),
@@ -23,6 +24,11 @@ CUISpawnWnd::CUISpawnWnd()
 	m_pFrames[2]	= xr_new<CUIStatic>();	AttachChild(m_pFrames[2]);
 
 	m_pTextDesc		= xr_new<CUIScrollView>();	AttachChild(m_pTextDesc);
+
+	m_pBtnAutoSelect= xr_new<CUI3tButton>();	AttachChild(m_pBtnAutoSelect);
+	m_pBtnSpectator	= xr_new<CUI3tButton>();	AttachChild(m_pBtnSpectator);
+	m_pBtnBack		= xr_new<CUI3tButton>();	AttachChild(m_pBtnBack);
+	
 	Init();
 	
 }
@@ -37,6 +43,9 @@ CUISpawnWnd::~CUISpawnWnd()
 	xr_delete(m_pImage1);
 	xr_delete(m_pImage2);
 	xr_delete(m_pTextDesc);
+	xr_delete(m_pBtnAutoSelect);
+	xr_delete(m_pBtnSpectator);
+	xr_delete(m_pBtnBack);	
 }
 
 
@@ -60,6 +69,10 @@ void CUISpawnWnd::Init()
 	CUIXmlInit::InitStatic(xml_doc,"team_selector:image_1",0,m_pImage2);
 	m_pImage2->SetStretchTexture(true);
 	InitTeamLogo();
+
+	CUIXmlInit::Init3tButton(xml_doc,"team_selector:btn_spectator",	0,m_pBtnSpectator);
+	CUIXmlInit::Init3tButton(xml_doc,"team_selector:btn_autoselect",0,m_pBtnAutoSelect);
+	CUIXmlInit::Init3tButton(xml_doc,"team_selector:btn_back",		0,m_pBtnBack);
 }
 
 void CUISpawnWnd::InitTeamLogo(){
@@ -83,8 +96,14 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
 		if (pWnd == m_pImage1)
 			dm->OnTeamSelect(0);
-		else
-			dm->OnTeamSelect(1);		
+		else if (pWnd == m_pImage2)
+			dm->OnTeamSelect(1);
+		else if (pWnd == m_pBtnAutoSelect)
+			dm->OnTeamSelect(-1);
+		else if (pWnd == m_pBtnSpectator)
+			dm->OnSpectatorSelect();
+		else if (pWnd == m_pBtnBack)
+			dm->OnTeamMenuBack();
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -115,3 +134,15 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 	return inherited::OnKeyboard(dik, keyboard_action);
 }
+
+void CUISpawnWnd::SetVisibleForBtn(ETEAMMENU_BTN btn, bool state){
+	switch (btn)
+	{
+	case 	TEAM_MENU_BACK:			this->m_pBtnBack->SetVisible(state);		break;
+	case	TEAM_MENU_SPECTATOR:	this->m_pBtnSpectator->SetVisible(state);	break;		
+	case	TEAM_MENU_AUTOSELECT:	this->m_pBtnAutoSelect->SetVisible(state);	break;
+	default:
+		R_ASSERT2(false,"invalid btn ID");	
+	}
+}
+

@@ -10998,12 +10998,6 @@
 						RelativePath=".\ui\UISkinSelector.h">
 					</File>
 					<File
-						RelativePath=".\ui\UISkinWindow.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UISkinWindow.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIStatix.cpp">
 					</File>
 					<File

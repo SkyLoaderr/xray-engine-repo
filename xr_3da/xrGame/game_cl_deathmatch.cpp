@@ -171,17 +171,30 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
+
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P, GE_GAME_EVENT, l_pPlayer->ID()	);
 	P.w_u16(GAME_EVENT_PLAYER_CHANGE_SKIN);
 
-	P.w_u8			((u8)pCurSkinMenu->GetActiveIndex());
+#pragma todo("SATAN -> MAD_MAX: select skin you like if (-1 == pCurSkinMenu->GetActiveIndex()) :)")
+
+	// stub here
+	if (-1 == pCurSkinMenu->GetActiveIndex())
+		P.w_u8	(0);
+	else
+    	P.w_u8	((u8)pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
 	m_bSkinSelected = TRUE;
 
+	// second stub here
 	if (pCurBuyMenu) 
-		pCurBuyMenu->SetSkin((u8)pCurSkinMenu->GetActiveIndex());
+	{
+		if (-1 == pCurSkinMenu->GetActiveIndex())
+			pCurBuyMenu->SetSkin(0);
+		else
+            pCurBuyMenu->SetSkin((u8)pCurSkinMenu->GetActiveIndex());
+	}
 };
 
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
