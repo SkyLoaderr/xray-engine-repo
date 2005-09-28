@@ -344,9 +344,6 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 		VERIFY						(ctrl_data);
 		
 		if ((m_anim_state_current == eStateGlide) && (m_anim_state_prev == eStateGlide)) {
-			VERIFY				(m_man->animation().current_blend());
-			ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal / m_jump_time);
-
 			//---------------------------------------------------------------------------------
 			// start jump here
 			//---------------------------------------------------------------------------------
@@ -370,6 +367,8 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 			ctrl_data_dir->heading.target_speed		= angle_difference(cur_yaw,target_yaw)/ m_jump_time;
 			ctrl_data_dir->linear_dependency		= false;
 			//---------------------------------------------------------------------------------
+
+			ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal / m_jump_time);
 
 		} else 
 			ctrl_data->speed	= -1.f;
