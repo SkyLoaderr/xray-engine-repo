@@ -1,10 +1,69 @@
 local t = {}
 
 function load_job(sj, gname, type, squad, groups)
+
+
+if type == "kem1" then
+		t = { section = "logic@kem1_camper1",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+
+       t = { section = "logic@kem1_camper2",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+	   t = { section = "logic@kem1_camper1",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+       end
+       
+       if type == "ptr" then
+		t = { section = "logic@ptr_patrol1",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+
+       t = { section = "logic@ptr_patrol2",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+       end
+       
+       
+       
 end
 
+
+
 function load_states(gname, type)
+
+if type == "kem1" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "ptr" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
 end
+
+
+
+
+
+
+
 
 --------------------------------------------------------------------------
 -- Dynamic ltx
@@ -14,7 +73,14 @@ function load_ltx(gname, type)
 end
 
 function checkStalker(npc_community, gulag_type)
-end
 
+	if gulag_type == "kem1" then
+	   return npc_community == "military"
+	end
+	
+	if gulag_type == "ptr" then
+	   return npc_community == "military"
+	end
+end
 function checkMonster(npc_community, gulag_type)
 end
