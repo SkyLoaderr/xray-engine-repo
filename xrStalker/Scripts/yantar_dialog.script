@@ -1,0 +1,6 @@
+function yantar_give_bad_psy_helmet(first_speaker, second_speaker)
+	local bad_helmet = first_speaker:object("bad_psy_helmet")
+	if bad_helmet then
+		dialogs.relocate_item(second_speaker, bad_helmet, "out")
+	end
+end
