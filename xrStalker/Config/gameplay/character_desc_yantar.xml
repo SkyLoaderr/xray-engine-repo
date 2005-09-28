@@ -17,7 +17,13 @@
 
 		<visual>actors\ucheniy\ucheniy_2</visual>
 		<snd_config>characters_voice\human_01\</snd_config>					
-
+		<supplies>
+			[spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_fmj = 1 \n
+			bad_psy_helmet \n
+			good_psy_helmet \n
+		</supplies>
 		<start_dialog>yantar_general_ucheniy_talk_start</start_dialog>
 		<actor_dialog>yantar_general_ucheniy_talk_end</actor_dialog>
 	</specific_character>
