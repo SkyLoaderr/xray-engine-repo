@@ -47,4 +47,9 @@
     <string id="esc_wolf_thanks">
         <text>Меченый, теперь тебе проход в лагерь открыт. Подоходи, пообщаемся.</text>
     </string> 
-    
+    <string id="esc_direction_fire">
+        <text>Не дергаемся, атакуем строго по моей команде.</text>
+    </string> 
+    <string id="esc_fanat_victory">
+        <text>Победа!!! Все кто жив - подойти ко мне. Меченый - ходи сюда, говорить будем.</text>
+    </string> 

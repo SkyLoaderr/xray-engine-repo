@@ -314,6 +314,29 @@ use_wpn		= false
 syndata		= hello@hail|backoff@threat_weap
 
 
+;fanat
+[logic]
+active = walker@esc_lager_fanat
+
+[walker@esc_lager_fanat]
+path_walk = wolf_walk
+path_look = wolf_look
+meet = meet@wolf
+on_actor_dist_le = 5 | {-escape_lager_help} remark@esc_fanat_need_help
+
+[remark@esc_fanat_need_help]
+anim = hello
+snd = esc_fanat_dialog
+on_signal = sound_end| remark@esc_lager_fanat_wait
+meet = meet@wolf
+
+[remark@esc_lager_fanat_wait]
+anim = guard
+on_timer = 7000| walker@esc_lager_fanat
+meet = meet@wolf
+
+
+
 ;охранники
 [esc_lager_actor_dialogs]
 id = escape_lager_access
@@ -597,15 +620,21 @@ on_info = {=gulag_population_le(esc_lager:6)} nil
 
 
 [logic@esc_lager_defend12]
-active = walker@esc_lager_defend12
+active = remark@esc_lager_defend12
 combat_ignore = combat_ignore
 on_hit = hit@lager
 on_death = death@fanat
+
+[remark@esc_lager_defend12]
+anim = guard
+snd = esc_fanat_ready
+on_signal = sound_end| walker@esc_lager_defend12
 
 [walker@esc_lager_defend12]
 path_walk = defend12_walk
 path_look = defend12_look
 combat_ignore_cond = {-esc_open_lager_fire}
+
 
 
 [combat_ignore]
@@ -829,9 +858,9 @@ team = killers
 on_signal = fires| remark@esc_killer_leader_raid %=esc_direction_fire%
 
 [remark@esc_killer_leader_raid]
-snd = gar_bandits_seryi
+snd = esc_lager_killer
 anim = guard
-on_timer = 5000| nil %+esc_open_lager_fire%
+on_timer = 15000| nil %+esc_open_lager_fire%
 combat_ignore_cond = {-esc_open_killer_fire}
 
 

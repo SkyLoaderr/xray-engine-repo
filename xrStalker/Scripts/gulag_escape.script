@@ -294,7 +294,18 @@ function load_job(sj, gname, type, squad, groups)
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
-        					return obj:profile_name() == "esc_wolf" or obj:profile_name() == "esc_fanat"			           
+        					return obj:profile_name() == "esc_wolf"			           
+						end
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@esc_lager_fanat",
+			idle = 0,
+			prior = 16, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			predicate = function(obj) 
+        					return obj:profile_name() == "esc_fanat"			           
 						end
 		}
 		table.insert(sj, t)

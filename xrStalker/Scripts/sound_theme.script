@@ -344,7 +344,21 @@ function load_sound(obj)
 	-- Escape
 	theme[obj:id()]["esc_tolik_help"]		= load_sound_from_ltx(obj, "esc_tolik_help")
 	theme[obj:id()]["esc_guard_camp"]		= load_sound_from_ltx(obj, "esc_guard_camp")
-	
+	theme[obj:id()]["esc_factory_raid"]		= load_sound_from_ltx(obj, "esc_factory_raid")
+	theme[obj:id()]["esc_factory_attack"]	= load_sound_from_ltx(obj, "esc_factory_attack")
+	theme[obj:id()]["esc_factory_victory"]	= load_sound_from_ltx(obj, "esc_factory_victory")
+	theme[obj:id()]["esc_fox_alert"]		= load_sound_from_ltx(obj, "esc_fox_alert")	
+	theme[obj:id()]["esc_tolik_to_wolf"]	= load_sound_from_ltx(obj, "esc_tolik_to_wolf")
+	theme[obj:id()]["esc_tolik_to_lager"]	= load_sound_from_ltx(obj, "esc_tolik_to_lager")
+	theme[obj:id()]["esc_tolik_thanks"]		= load_sound_from_ltx(obj, "esc_tolik_thanks")	
+	theme[obj:id()]["esc_wolf_thanks"]		= load_sound_from_ltx(obj, "esc_wolf_thanks")	
+	theme[obj:id()]["esc_lager_killer"]		= load_sound_from_ltx(obj, "esc_lager_killer")	
+	theme[obj:id()]["esc_fanat_dialog"]		= load_sound_from_ltx(obj, "esc_fanat_dialog")
+	theme[obj:id()]["esc_fanat_ready"]		= load_sound_from_ltx(obj, "esc_fanat_ready")	
+	theme[obj:id()]["esc_direction_fire"]	= load_sound_from_ltx(obj, "esc_direction_fire")	
+		
+		
+		
 	-- Garbage DramMoment
 	theme[obj:id()]["gar_dm_bandit_backoff1"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff1", 5, 8, 100)
 	theme[obj:id()]["gar_dm_bandit_backoff2"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff2", 5, 8, 100)
