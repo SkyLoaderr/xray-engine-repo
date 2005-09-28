@@ -1740,13 +1740,15 @@ void	CActor::Check_for_AutoPickUp()
 	setEnabled(Enabled);
 }
 
-void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element)
+void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element, Fvector Pos, Fvector Dir)
 {
 	m_iLastHitterID = (who!= NULL) ? who->ID() : u16(-1);
 	m_iLastHittingWeaponID = (weapon != NULL) ? weapon->ID() : u16(-1);
 	m_s16LastHittedElement = element;
 	m_fLastHealth = g_Health();
 	m_bWasHitted = true;
+	m_vLastHitDir = Dir;
+	m_vLastHitPos = Pos;
 };
 
 void				CActor::OnHitHealthLoss					(float NewHealth)
@@ -1767,6 +1769,7 @@ void				CActor::OnHitHealthLoss					(float NewHealth)
 		u_EventSend(P);
 	}	
 };
+
 
 void				CActor::OnCriticalHitHealthLoss			()
 {
@@ -1802,7 +1805,17 @@ void				CActor::OnCriticalHitHealthLoss			()
 		{
 			CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(pLastHittingWeapon);
 			if (pWeaponMagazined)
+			{
 				SpecialHit = SKT_HEADSHOT;
+				//-------------------------------
+				NET_Packet P;
+				u_EventGen(P, GEG_PLAYER_PLAY_HEADSHOT_PARTICLE, ID());
+				P.w_s16(m_s16LastHittedElement);
+				P.w_dir(m_vLastHitDir);
+				P.w_vec3(m_vLastHitPos);
+				u_EventSend(P);
+				//-------------------------------
+			}
 		}
 		else
 		{
@@ -1835,6 +1848,25 @@ void				CActor::OnCriticalHitHealthLoss			()
 	//-------------------------------------------
 	if (GameID() != GAME_SINGLE)
 		Game().m_WeaponUsageStatistic.OnBullet_Check_Result(true);
+};
+
+void				CActor::OnPlayHeadShotParticle (NET_Packet P)
+{
+	Fvector	HitDir, HitPos;
+	s16	element = P.r_s16();	
+	P.r_dir(HitDir);	HitDir.invert();
+	P.r_vec3(HitPos);
+	//-----------------------------------
+	if (!m_sHeadShotParticle.size()) return;
+	Fmatrix pos; 	
+	CParticlesPlayer::MakeXFORM(this,element,HitDir,HitPos,pos);
+	// установить particles
+	CParticlesObject* ps = NULL;
+	
+	ps = CParticlesObject::Create(m_sHeadShotParticle.c_str(),TRUE);
+
+	ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+	GamePersistent().ps_needtoplay.push_back(ps);
 };
 
 void				CActor::OnCriticalWoundHealthLoss		() 
@@ -1897,3 +1929,4 @@ bool				CActor::InventoryAllowSprint			()
 	}
 	return true;
 };
+

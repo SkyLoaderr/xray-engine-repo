@@ -243,5 +243,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			VERIFY			(id==GO->ID());
 			use_Holder		(NULL);
 		}break;
+	case GEG_PLAYER_PLAY_HEADSHOT_PARTICLE:
+		{
+			OnPlayHeadShotParticle(P);
+		}break;
 	}
 }

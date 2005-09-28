@@ -165,7 +165,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			//-------------------------------------------------------
 
 			if (power>0)
-				SetHitInfo(Hitter, Weapon, element);
+				SetHitInfo(Hitter, Weapon, element, position_in_bone_space, dir);
 			Hit				(power,dir,Hitter,element,
 							position_in_bone_space, impulse, (ALife::EHitType)hit_type);
 			//---------------------------------------------------------------------------

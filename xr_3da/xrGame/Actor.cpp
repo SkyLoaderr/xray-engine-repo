@@ -419,6 +419,8 @@ void CActor::Load	(LPCSTR section )
 	m_sDeadCharacterUseAction		= string_table("dead_character_use");
 	m_sCarCharacterUseAction		= string_table("car_character_use");
 	m_sInventoryItemUseAction		= string_table("inventory_item_use");
+	//---------------------------------------------------------------------
+	m_sHeadShotParticle	= READ_IF_EXISTS(pSettings,r_string,section,"HeadShotParticle",0);
 
 }
 
@@ -785,7 +787,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
 				const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
 				Fvector hdir;di->HitDir(hdir);
-				SetHitInfo(this, NULL, 0);
+				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
 				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
 				if(!g_Alive())
 					m_PhysicMovementControl->GetDeathPosition(Position());

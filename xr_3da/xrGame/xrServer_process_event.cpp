@@ -289,6 +289,12 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			SendBroadcast		(clientID,P,MODE);
 //			VERIFY				(verify_entities());
 		}break;
+	case GEG_PLAYER_PLAY_HEADSHOT_PARTICLE:
+		{
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast		(clientID,P,MODE);
+			//			VERIFY				(verify_entities());
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

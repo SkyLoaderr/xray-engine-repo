@@ -176,6 +176,8 @@ public:
 	virtual void OnItemDrop		(CInventoryItem *inventory_item);
 	virtual void OnItemDropUpdate ();
 
+	virtual	void OnPlayHeadShotParticle (NET_Packet P);
+
 	/////////////////////////////////////////////////////////////////
 	// condition and hits
 	virtual void						Die				(CObject* who);
@@ -655,6 +657,7 @@ protected:
 
 		LPCSTR					invincibility_fire_shield_3rd;
 		LPCSTR					invincibility_fire_shield_1st;
+		shared_str				m_sHeadShotParticle;
 		u32						last_hit_frame;
 #ifdef DEBUG
 		friend class CLevelGraph;
@@ -691,13 +694,15 @@ protected:
 //	CObject*					m_pLastHittingWeapon;
 	u16							m_iLastHittingWeaponID;
 	s16							m_s16LastHittedElement;
+	Fvector						m_vLastHitDir;
+	Fvector						m_vLastHitPos;
 	float						m_fLastHealth;
 	bool						m_bWasHitted;
 	bool						m_bWasBackStabbed;
 
 	virtual		bool			Check_for_BackStab_Bone			(u16 element);
 public:
-	virtual void				SetHitInfo						(CObject* who, CObject* weapon, s16 element);
+	virtual void				SetHitInfo						(CObject* who, CObject* weapon, s16 element, Fvector Pos, Fvector Dir);
 
 	virtual	void				OnHitHealthLoss					(float NewHealth);	
 	virtual	void				OnCriticalHitHealthLoss			();

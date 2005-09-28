@@ -137,6 +137,7 @@ enum {
 	GEG_PLAYER_ATTACH_HOLDER,
 	GEG_PLAYER_DETACH_HOLDER,
 
+	GEG_PLAYER_PLAY_HEADSHOT_PARTICLE,
 	//-------------------------------------
 	GE_HIT_STATISTIC,
 	//-------------------------------------
