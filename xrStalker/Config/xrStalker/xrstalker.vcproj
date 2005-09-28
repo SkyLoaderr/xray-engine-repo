@@ -454,6 +454,9 @@
 						RelativePath=".\Config\gameplay\character_desc_general.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\character_desc_kishka.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\character_desc_military.xml">
 					</File>
 					<File
@@ -493,6 +496,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_garbage.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\gulag_kishka.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_labx18.ltx">
@@ -2665,6 +2671,9 @@
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_garbage.script">
+						</File>
+						<File
+							RelativePath=".\scripts\gulag_kishka.script">
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_labx18.script">
