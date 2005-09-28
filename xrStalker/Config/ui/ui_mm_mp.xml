@@ -289,6 +289,7 @@
 			<text font="letterica16" r="215" g="195" b="170" x="10">Weather Options</text>
 		</cap_weather_options>
 		
+				
 		<cap_freeze_time x="22" y="270" width="143" height="23">
 			<text font="letterica16" r="215" g="195" b="170">Freeze Time</text>
 		</cap_freeze_time>
@@ -317,6 +318,9 @@
 		<cap_anomaly_time x="269" y="300" width="143" height="23">
 			<text font="letterica16" r="215" g="195" b="170">Anomaly Time (min.)</text>
 		</cap_anomaly_time>
+		<cap_warm_up_time x="269" y="325" width="143" height="23">
+			<text font="letterica16" r="215" g="195" b="170">WarmUp Time (sec)</text>
+		</cap_warm_up_time>
 		<cap_starting_weather x="519" y="40" width="112" height="23">
 			<text font="letterica16" r="215" g="195" b="170">Starting Weather</text>
 		</cap_starting_weather>
@@ -410,6 +414,10 @@
 			<options_item entry="net_srv_anomalytime" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_d</texture>
 		</edit_anomaly_time>
+		<edit_warm_up_time x="423" y="325" width="45" height="23" numonly="1">
+			<options_item entry="net_srv_warmuptime" group="mm_mp_server"/>
+			<texture>ui_linetextSmall_d</texture>
+		</edit_warm_up_time>
 		
 		<edit_rate_of_change x="671" y="65" width="45" height="23" numonly="1" float="1">
 			<text font="letterica16" r="235" g="219" b="185"></text>

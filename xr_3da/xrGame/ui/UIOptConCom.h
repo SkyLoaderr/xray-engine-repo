@@ -45,6 +45,7 @@ protected:
 	int			m_iNetArtefactStay;
 	int			m_iNetArtefactDelay;
 	int			m_iNetAnomalyTime;
+	int			m_iNetWarmUpTime;
 	int			m_iNetWeatherRate;
 	int			m_iNetRespawnCur;
 

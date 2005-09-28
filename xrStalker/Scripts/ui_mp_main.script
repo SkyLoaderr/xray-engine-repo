@@ -297,6 +297,11 @@ function mp_main:GatherServerData()
 			cmdstr = cmdstr .. "/anslen=" .. tmp
 		end
 	end
+	-- warm up time ---------------------------------------------------------------------
+	tmp = self.edit_warm_up_time:GetText()
+	if string.len(tmp) > 0 then
+		cmdstr = cmdstr .. "/warmup=" .. tmp
+	end
 	-- rate of weather change -----------------------------------------------------------
 	tmp = self.edit_rate_of_change:GetText()
 	if string.len(tmp) > 0 then

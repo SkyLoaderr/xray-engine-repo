@@ -67,6 +67,8 @@ void CUIOptConCom::Init(){
 	CMD4(CCC_Integer,	"net_srv_artefactdelay",		&m_iNetArtefactDelay,	0, 100);
 	m_iNetAnomalyTime = 5;
 	CMD4(CCC_Integer,	"net_srv_anomalytime",			&m_iNetAnomalyTime,		1, 100);
+	m_iNetWarmUpTime = 60;
+	CMD4(CCC_Integer,	"net_srv_warmuptime",			&m_iNetWarmUpTime,		0, 3600000);
 	m_iNetWeatherRate = 1;
 	CMD4(CCC_Integer,	"net_weather_rateofchange",		&m_iNetWeatherRate,		0, 100);
 	CMD4(CCC_Integer,	"net_respawn_cur",				&m_iNetRespawnCur,		0, 2);
