@@ -200,9 +200,11 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 
 	// Initialize variables
 	if(E) {
-		SetfHealth				(E->fHealth);
+		SetfHealth			(E->fHealth);
 //		fEntityHealth		= E->fHealth;
 		m_killer_id			= E->m_killer_id;
+		if (m_killer_id == ID())
+			m_killer_id		= ALife::_OBJECT_ID(-1);
 	}
 	else
 		SetfHealth				(100.f);
@@ -250,8 +252,8 @@ void CEntity::renderable_Render()
 void CEntity::KillEntity(u16 whoID)
 {
 	if (whoID && (whoID != ID())) {
-		VERIFY		(m_killer_id == ALife::_OBJECT_ID(-1));
-		m_killer_id	= whoID;
+		VERIFY			(m_killer_id == ALife::_OBJECT_ID(-1));
+		m_killer_id		= whoID;
 	}
 
 	if (!getDestroy()){
