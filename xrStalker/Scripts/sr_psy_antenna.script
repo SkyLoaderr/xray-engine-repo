@@ -28,7 +28,7 @@ function PsyAntenna:__init				()
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
 	// antenna
-	self.hit_amplitude					= 300.0;	// размер хита = self.hit_amplitude*self.hit_intensity
+	self.hit_amplitude					= 10.0;	// размер хита = self.hit_amplitude*self.hit_intensity
 	// pause time [from]=to
 	self.idle_time						= {};
 	self.idle_time[20]					= 21;
@@ -125,7 +125,7 @@ function PsyAntenna:update_psy_hit		(dt)
 		printf( "hit power=%f", psy_hit.power )
 	end;
 
-	if db.actor.psy_health < 0.01 then
+	if db.actor.psy_health < 0.01 and db.actor:alive() then
 		db.actor:kill( db.actor )
 	end
 end
@@ -147,7 +147,7 @@ end
 function PsyAntenna:update			(dt)
 	self.eff_time					= self.eff_time + dt;
 
-	if math.abs( self.intensity_base - self.intensity ) >= self.intensity_inertion then
+	if math.abs( self.intensity_base - self.intensity ) >= self.intensity_inertion * dt * 0.001 then
 		local di = self.intensity_inertion * dt * 0.001
 
 		if self.intensity > self.intensity_base then
