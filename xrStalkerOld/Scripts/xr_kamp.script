@@ -91,6 +91,7 @@ function action_wait:initialize()
 	self.object:set_desired_direction()
 	
 	xr_sound.set_sound_play(self.object, "talk_hello")
+	kamps[self.a.center_point]:increasePops(self.object)
 end
 function action_wait:activate_scheme()
 end
@@ -108,6 +109,7 @@ function action_wait:execute()
 	xr_sound.set_sound(self.object, sound)
 end
 function action_wait:finalize()
+	kamps[self.a.center_point]:decreasePops(self.object)
 	action_base.finalize (self)
 end
 function action_wait:deactivate()
@@ -590,16 +592,19 @@ function CKampManager:addNpc(npc)
 							stand_wait = true, sit = true, sit_ass = true, sit_knee = true, declarate = true,
 							eat_kolbasa = false, eat_vodka = false, eat_bread = false,
 							play_harmonica = false, play_guitar = false, play_joke = false, play_story = false}}
-	self:selectPosition(npc:id())
-	self.population = self.population + 1
+	self:selectPosition(npc:id())	
 end
 function CKampManager:removeNpc(npc)
 	printf("KAMP [%s] remove npc", npc:name())
 	self.position[self.npc[npc:id()].position].used = nil
-	self.npc[npc:id()] = nil
+	self.npc[npc:id()] = nil	
+end
+function CKampManager:increasePops(npc)
+	self.population = self.population + 1
+end
+function CKampManager:decreasePops(npc)
 	self.population = self.population - 1
 end
-
 ----------------------------------------------------------------------------------------------------------------------
 --Kamp binder
 ----------------------------------------------------------------------------------------------------------------------
