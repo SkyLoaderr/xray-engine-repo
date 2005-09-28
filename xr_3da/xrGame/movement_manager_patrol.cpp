@@ -40,8 +40,8 @@ void CMovementManager::process_patrol_path()
 
 				m_path_state		= ePathStateBuildLevelPath;
 				
-				if (time_over())
-					break;
+//				if (time_over())
+//					break;
 			}
 			case ePathStateBuildLevelPath : {
 				if (can_use_distributed_compuations(mtLevelPath)) {

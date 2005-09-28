@@ -45,8 +45,8 @@ void CMovementManager::process_game_path()
 
 				m_path_state	= ePathStateBuildGamePath;
 
-				if (time_over())
-					break;
+//				if (time_over())
+//					break;
 			}
 			case ePathStateBuildGamePath : {
 				game_path().build_path(object().ai_location().game_vertex_id(),game_dest_vertex_id());
@@ -56,8 +56,8 @@ void CMovementManager::process_game_path()
 				
 				m_path_state	= ePathStateContinueGamePath;
 				
-				if (time_over())
-					break;
+//				if (time_over())
+//					break;
 			}
 			case ePathStateContinueGamePath : {
 				game_path().select_intermediate_vertex();
@@ -71,8 +71,8 @@ void CMovementManager::process_game_path()
 				
 				m_path_state		= ePathStateBuildLevelPath;
 				
-				if (time_over())
-					break;
+//				if (time_over())
+//					break;
 			}
 			case ePathStateBuildLevelPath : {
 				u32	dest_level_vertex_id = ai().game_graph().vertex(
