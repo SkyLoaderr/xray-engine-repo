@@ -1150,7 +1150,7 @@ function checkStalker(npc_community, gulag_type)
 	
 	if gulag_type == "mil_fblockpost" then
 	   return npc_community == "freedom"
-	enk,v in pairs(gulag.Object)d   
+	end   
 	
 	if gulag_type == "mil_village" then
 	   return npc_community == "freedom" 
