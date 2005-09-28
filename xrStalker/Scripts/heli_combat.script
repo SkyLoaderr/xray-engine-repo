@@ -15,7 +15,6 @@
 	- долго не видит = ракета
 	- разнести обновление видимости
 	- сохранение дополнить
-	- задание врага в custom data
 	- отступление
 	- вынести настройки в ltx
 --------------------------------------------------------------------------------------------------]]
@@ -266,6 +265,7 @@ function heli_combat:update_combat_type( see_enemy )
 
 	printf( "heli_combat: combat type: current=%d delayed=%d", self.combat_type, ct )
 
+	-- инерция переключния
 	if ct ~= self.combat_type then
 		if self.change_combat_type_time then
 			if self.change_combat_type_time < time_global() and self.change_combat_type_allowed then
@@ -498,11 +498,10 @@ function heli_combat:flyby_update_flight( see_enemy )
 		if not self.state_initialized then
 			local p = self:flyby_calc_best_attack_dist_point()
 			self.heliObject:SetDestPosition( p )
---			self.heliObject:LookAtPoint( dummy_vector, false )
 
 			self.heliObject:ClearEnemy()
 
-			self.change_combat_type_allowed = true
+			self.change_combat_type_allowed = false
 
 			self.state_initialized  = true
 		end
@@ -512,7 +511,7 @@ function heli_combat:flyby_update_flight( see_enemy )
 			self.heliObject:SetEnemy( self.enemy )
 			self.heliObject:UseFireTrail( true )
 
-			self.change_combat_type_allowed = false
+			self.change_combat_type_allowed = true
 
 			self.state_initialized = true
 		end
