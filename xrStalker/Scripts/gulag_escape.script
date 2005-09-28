@@ -298,7 +298,7 @@ function load_job(sj, gname, type, squad, groups)
 						end
 		}
 		table.insert(sj, t)
-		
+		-- Фанат
 		t = { section = "logic@esc_lager_fanat",
 			idle = 0,
 			prior = 16, state = {0,1},
