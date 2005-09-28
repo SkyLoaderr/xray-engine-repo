@@ -22,4 +22,5 @@ void CVisionParameters::Load	(LPCSTR section, bool not_a_stalker)
 	m_decrease_value			= pSettings->r_float(section,"decrease_value");
 	m_velocity_factor			= pSettings->r_float(section,"velocity_factor");
 	m_luminocity_factor			= pSettings->r_float(section,"luminocity_factor");
+	m_still_visible_time		= READ_IF_EXISTS(pSettings,r_u32,section,"still_visible_time",0);
 }

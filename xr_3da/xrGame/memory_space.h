@@ -43,7 +43,7 @@ namespace MemorySpace {
 	struct CNotYetVisibleObject {
 		const CGameObject			*m_object;
 		float						m_value;
-		bool						m_updated;
+		u32							m_update_time;
 		u32							m_prev_time;
 	};
 

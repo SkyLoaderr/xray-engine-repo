@@ -295,25 +295,25 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 			if (object->m_value < 0.f)
 				object->m_value	= 0.f;
 			else
-				object->m_updated = true;
+				object->m_update_time	= Device.dwTimeGlobal;
 			return				(object->m_value >= current_state().m_visibility_threshold);
 		}
 		return					(false);
 	}
 
 	if (!object) {
-		CNotYetVisibleObject	new_object;
-		new_object.m_object		= game_object;
-		new_object.m_prev_time	= 0;
-		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object),object_luminocity(game_object));
-		clamp					(new_object.m_value,0.f,current_state().m_visibility_threshold + EPS_L);
-		new_object.m_updated	= true;
-		new_object.m_prev_time	= get_prev_time(game_object);
-		add_not_yet_visible_object(new_object);
-		return					(new_object.m_value >= current_state().m_visibility_threshold);
+		CNotYetVisibleObject		new_object;
+		new_object.m_object			= game_object;
+		new_object.m_prev_time		= 0;
+		new_object.m_value			= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object),object_luminocity(game_object));
+		clamp						(new_object.m_value,0.f,current_state().m_visibility_threshold + EPS_L);
+		new_object.m_update_time	= Device.dwTimeGlobal;
+		new_object.m_prev_time		= get_prev_time(game_object);
+		add_not_yet_visible_object	(new_object);
+		return						(new_object.m_value >= current_state().m_visibility_threshold);
 	}
 
-	object->m_updated			= true;
+	object->m_update_time		= Device.dwTimeGlobal;
 	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object),object_luminocity(game_object));
 	clamp						(object->m_value,0.f,current_state().m_visibility_threshold + EPS_L);
 	object->m_prev_time			= get_prev_time(game_object);
@@ -389,12 +389,14 @@ void CVisualMemoryManager::update				(float time_delta)
 			(*I).visible				(mask,false);
 	}
 
+	/**
 	{
 		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
 		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
 		for ( ; I != E; ++I)
 			(*I).m_updated				= false;
 	}
+	/**/
 
 	{
 		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
@@ -407,7 +409,7 @@ void CVisualMemoryManager::update				(float time_delta)
 		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
 		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
 		for ( ; I != E; ++I)
-			if (!(*I).m_updated)
+			if (((*I).m_update_time + current_state().m_still_visible_time) < Device.dwTimeGlobal)
 				(*I).m_value			= 0.f;
 	}
 
