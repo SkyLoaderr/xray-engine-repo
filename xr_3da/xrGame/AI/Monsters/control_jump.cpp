@@ -245,7 +245,7 @@ void CControlJump::update_frame()
 bool CControlJump::is_on_the_ground()
 {
 	if (m_time_started == 0) return false;
-	if (m_time_started + (m_jump_time*1000)/2 > time()) return false;
+	if (m_time_started + (m_jump_time*1000) > time()) return false;
 
 	Fvector direction;
 	direction.set(0.f, -1.f, 0.f);
@@ -359,7 +359,7 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 			ctrl_data_dir->linear_dependency		= false;
 			//---------------------------------------------------------------------------------
 
-			ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal / m_jump_time);
+			ctrl_data->speed	= (m_man->animation().current_blend()->timeTotal/ m_man->animation().current_blend()->speed / m_jump_time);
 
 		} else 
 			ctrl_data->speed	= -1.f;
@@ -382,13 +382,41 @@ void CControlJump::hit_test()
 
 	if (Level().ObjectSpace.RayPick(trace_from, m_object->Direction(), m_hit_trace_range, collide::rqtObject, l_rq)) {
 		if ((l_rq.O == m_data.target_object) && (l_rq.range < m_hit_trace_range)) {
-			m_object->HitEntityInJump(smart_cast<CEntity*>(m_data.target_object));
 			m_object_hitted = true;
 		}
 	}
 
-	m_object->setEnabled	(enabled);			
-	return;
+	m_object->setEnabled	(enabled);	
+
+	if (!m_object_hitted && m_data.target_object) {
+		
+		m_object_hitted = true;
+		// определить дистанцию до врага
+		Fvector d;
+		d.sub(m_data.target_object->Position(),m_object->Position());
+		if (d.magnitude() > m_hit_trace_range) m_object_hitted = false;
+
+		// проверка на  Field-Of-Hit
+		float my_h,my_p;
+		float h,p;
+
+		m_object->Direction().getHP(my_h,my_p);
+		d.getHP(h,p);
+
+		float from	= angle_normalize(my_h - PI_DIV_6);
+		float to	= angle_normalize(my_h + PI_DIV_6);
+
+		if (!is_angle_between(h, from, to)) m_object_hitted = false;
+
+		from	= angle_normalize(my_p - PI_DIV_6);
+		to		= angle_normalize(my_p + PI_DIV_6);
+
+		if (!is_angle_between(p, from, to)) m_object_hitted = false;
+
+	} 
+
+	if (m_object_hitted) 
+		m_object->HitEntityInJump(smart_cast<CEntity*>(m_data.target_object));
 }
 
 bool CControlJump::can_jump(CObject *target)
@@ -457,37 +485,39 @@ Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 {
 	return pos;
 
-////	float velocity = 
-//		m_object->movement_control()->GetVelocityActual();
-//	float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
-////	float prediction_dist = jump_time * velocity;
-//
-//	CEntityAlive *entity = smart_cast<CEntityAlive*>(obj);
-//
-//	Fvector					dir;
-//	dir.set					(entity->movement_control()->GetVelocity());
-//	float speed				= dir.magnitude();
-//	dir.normalize_safe		();
-//
-//	Fvector					prediction_pos;
-//	//prediction_pos.mad		(pos, dir, prediction_dist);
-//	prediction_pos.mad		(pos, dir, speed * jump_time / 2);
-//
-//	//// проверить prediction_pos на дистанцию и угол
-//	//float dist = m_object->Position().distance_to(prediction_pos);
-//	//if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
-//
-//	//// получить вектор направления и его мир угол
-//	//float		dir_yaw, dir_pitch;
-//
-//	//dir.sub		(prediction_pos, m_object->Position());
-//	//dir.getHP	(dir_yaw, dir_pitch);
-//
-//	//// проверка на angle и на dist
-//	//float yaw_current, yaw_target;
-//	//m_object->control().direction().get_heading(yaw_current, yaw_target);
-//	//if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
-//	
+	//CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(obj);
+	//VERIFY(entity_alive);
+	//
+	//float velocity = entity_alive->movement_control()->GetVelocityActual();
+	//float jump_time = m_object->movement_control()->JumpMinVelTime(pos);
+	//float prediction_dist = jump_time * velocity;
+
+	//
+
+	//Fvector					dir;
+	//dir.set					(entity->movement_control()->GetVelocity());
+	//float speed				= dir.magnitude();
+	//dir.normalize_safe		();
+
+	//Fvector					prediction_pos;
+	////prediction_pos.mad		(pos, dir, prediction_dist);
+	//prediction_pos.mad		(pos, dir, speed * jump_time / 2);
+
+	//// проверить prediction_pos на дистанцию и угол
+	//float dist = m_object->Position().distance_to(prediction_pos);
+	//if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
+
+	//// получить вектор направления и его мир угол
+	//float		dir_yaw, dir_pitch;
+
+	//dir.sub		(prediction_pos, m_object->Position());
+	//dir.getHP	(dir_yaw, dir_pitch);
+
+	//// проверка на angle и на dist
+	//float yaw_current, yaw_target;
+	//m_object->control().direction().get_heading(yaw_current, yaw_target);
+	//if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
+	
 //#ifdef DEBUG
 //	DBG().level_info(this).clear	();
 //	DBG().level_info(this).add_item	(pos, 0.35f, D3DCOLOR_XRGB(0,0,255));

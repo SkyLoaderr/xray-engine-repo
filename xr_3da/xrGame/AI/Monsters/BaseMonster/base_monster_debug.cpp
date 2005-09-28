@@ -6,6 +6,7 @@
 #include "../../../ai_debug.h"
 #include "../state_defs.h"
 #include "../state_manager.h"
+#include "../../../phmovementcontrol.h"
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
@@ -198,6 +199,13 @@ void CBaseMonster::debug_fsm()
 	DBG().object_info(this,this).remove_item (u32(1));
 	DBG().object_info(this,this).add_item	 (*cName(), D3DCOLOR_XRGB(255,0,0), 0);
 	DBG().object_info(this,this).add_item	 (st, D3DCOLOR_XRGB(255,0,0), 1);
+
+	CEntityAlive *entity = smart_cast<CEntityAlive *>(Level().CurrentEntity());
+	if (entity && entity->movement_control()) {
+		sprintf(st,"VELOCITY [%f,%f,%f] Value[%f]",VPUSH(entity->movement_control()->GetVelocity()),entity->movement_control()->GetVelocityActual());
+		DBG().text(this).clear();
+		DBG().text(this).add_item(st,200,100,COLOR_GREEN,100);
+	}
 }
 
 
