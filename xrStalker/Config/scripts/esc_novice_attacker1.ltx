@@ -46,8 +46,13 @@ on_signal = sound_end| walker@fight %+esc_assault_start%
 [walker@fight]
 path_walk = esc_assault_final1
 path_look = esc_assault_final1_look
-on_info = {+esc_kill_bandits_quest_kill}walker2
+on_info = {+esc_kill_bandits_quest_kill}remark@victory
 def_state_moving3 = assault
+
+[remark@victory]
+anim = hello
+snd = esc_factory_victory
+on_signal = sound_end| walker2
 
 [walker2]
 path_walk = escape_factory_return_path
