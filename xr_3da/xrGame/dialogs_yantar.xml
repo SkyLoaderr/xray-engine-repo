@@ -18,32 +18,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="yantar_general_ucheniy_talk_start">
-        <phrase_list>
-            <phrase id="0">
-                <text>yantar_general_ucheniy_talk_start_0</text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="2">
-                <text>yantar_general_ucheniy_talk_start_2</text>
-                <dont_has_info>yan_find_scientist_start</dont_has_info>
-                <give_info>yan_find_scientist_start</give_info>
-            </phrase>
-            <phrase id="3">
-                <text>yantar_general_ucheniy_talk_start_3</text>
-                <has_info>yan_kill_brain_task_start</has_info>
-                <has_info>yan_find_scientist_start</has_info>
-            </phrase>
-            <phrase id="1">
-                <text>yantar_general_ucheniy_talk_start_1</text>
-                <action>yantar_dialog.yantar_give_bad_psy_helmet</action>
-                <dont_has_info>yan_kill_brain_task_start</dont_has_info>
-                <give_info>yan_kill_brain_task_start</give_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="yantar_help_scientist">
         <phrase_list>
             <phrase id="5">
@@ -90,6 +64,42 @@
                 <text>yantar_help_scientist_1</text>
                 <dont_has_info>yan_scientist_point_to_1</dont_has_info>
                 <has_info>yan_find_scientist_start</has_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="yantar_general_ucheniy_talk_start">
+        <phrase_list>
+            <phrase id="2">
+                <text>yantar_general_ucheniy_talk_start_2</text>
+                <dont_has_info>yan_find_scientist_start</dont_has_info>
+                <give_info>yan_find_scientist_start</give_info>
+            </phrase>
+            <phrase id="0">
+                <text>yantar_general_ucheniy_talk_start_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="3">
+                <text>yantar_general_ucheniy_talk_start_3</text>
+                <has_info>yan_kill_brain_task_start</has_info>
+                <has_info>yan_find_scientist_start</has_info>
+            </phrase>
+            <phrase id="4">
+                <text>yantar_general_ucheniy_talk_start_4</text>
+                <action>yantar_dialog.yantar_give_good_psy_helmet</action>
+                <dont_has_info>yan_kill_brain_task_start</dont_has_info>
+                <give_info>yan_kill_brain_task_start</give_info>
+                <has_info>yan_scientist_die</has_info>
+            </phrase>
+            <phrase id="1">
+                <text>yantar_general_ucheniy_talk_start_1</text>
+                <action>yantar_dialog.yantar_give_bad_psy_helmet</action>
+                <dont_has_info>yan_kill_brain_task_start</dont_has_info>
+                <dont_has_info>yan_scientist_die</dont_has_info>
+                <give_info>yan_kill_brain_task_start</give_info>
+                <has_info>yan_find_scientist_done</has_info>
             </phrase>
         </phrase_list>
     </dialog>
