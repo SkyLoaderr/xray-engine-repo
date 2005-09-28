@@ -84,4 +84,10 @@
     <string id="ui_inv_heavy_weapons">
         <text>ׂÿזוכמו</text>
     </string>
+    <string id="cant_sleep_near_enemies">
+		<text>cant sleep near enemies</text>
+    </string>
+    <string id="cant_sleep_not_on_solid_ground">
+		<text>cant sleep not on solid ground</text>
+    </string>
 </string_table>
