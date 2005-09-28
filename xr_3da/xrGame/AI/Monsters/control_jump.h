@@ -70,7 +70,6 @@ class CControlJump : public CControl_ComCustom<SControlJumpData> {
 	// state flags
 	bool			m_object_hitted;
 	bool			m_velocity_bounced;
-	bool			m_enable_bounce;
 
 	// animation
 	EStateAnimJump	m_anim_state_prev;
@@ -106,7 +105,6 @@ private:
 			void	hit_test			();
 
 			// check current jump state		
-			bool	is_landing			();	
 			bool	is_on_the_ground	();
 
 			// position prediction

@@ -88,7 +88,6 @@ void CControlJump::start_jump(const Fvector &point)
 	// initialize internals
 	m_velocity_bounced					= false;
 	m_object_hitted						= false;
-	m_enable_bounce						= true;
 
 	m_target_position					= point;
 	m_blend_speed						= -1.f;
@@ -237,22 +236,13 @@ void CControlJump::update_frame()
 	}
 	
 	// check if we landed
-	if (is_landing()) {
-		if (is_flag(SControlJumpData::eGroundSkip) || !m_data.state_ground.motion.valid() || (m_data.state_ground.velocity_mask == u32(-1))) {
-			stop();
-			return;
-		} else {
-			m_time_started				= 0;
-			m_anim_state_current		= eStateGround;
-			select_next_anim_state		();
-		}
-	}
+	if (is_on_the_ground()) grounding();
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Trace ground to check if we have already landed
 //////////////////////////////////////////////////////////////////////////
-bool CControlJump::is_landing()
+bool CControlJump::is_on_the_ground()
 {
 	if (m_time_started == 0) return false;
 	if (m_time_started + (m_jump_time*1000)/2 > time()) return false;
@@ -279,7 +269,7 @@ bool CControlJump::is_landing()
 
 void CControlJump::grounding()
 {
-	if ((m_data.state_ground.velocity_mask == u32(-1)) || is_flag(SControlJumpData::eGroundSkip)) {
+	if ((m_data.state_ground.velocity_mask == u32(-1)) || is_flag(SControlJumpData::eGroundSkip) || !m_data.state_ground.motion.valid()) {
 		stop();
 		return;
 	}
@@ -296,6 +286,11 @@ void CControlJump::grounding()
 
 		// lock dir
 		m_man->dir_stop				(this);
+
+		m_time_started				= 0;
+		m_jump_time					= 0;
+		m_anim_state_current		= eStateGround;
+		select_next_anim_state		();
 	}
 }
 
@@ -329,11 +324,7 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
  			if (is_on_the_ground()) {
 				m_velocity_bounced	= true;
 				grounding();
-			} else {
-				if (!m_enable_bounce) {
-					m_enable_bounce = true;
-				} else stop();
-			}
+			} else stop();
 		}
 	} else if (type == ControlCom::eventAnimationEnd) {
 		select_next_anim_state();
@@ -398,33 +389,6 @@ void CControlJump::hit_test()
 
 	m_object->setEnabled	(enabled);			
 	return;
-}
-
-bool CControlJump::is_on_the_ground()
-{
-	bool ret_val = false;
-
-	BOOL					enabled = m_object->getEnabled();
-	m_object->setEnabled	(FALSE);
-	collide::rq_result		l_rq;
-
-	Fvector			trace_from;
-	m_object->Center(trace_from);
-
-	Fvector			trace_dir;
-	trace_dir.set	(0,-1.f,0);
-
-	float			trace_dist = m_object->Radius() + m_trace_ground_range;
-
-	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, trace_dist, collide::rqtStatic, l_rq)) {
-		if ((l_rq.range < trace_dist)) {
-			ret_val = true;
-		}
-	}
-
-	m_object->setEnabled	(enabled);
-
-	return ret_val;
 }
 
 bool CControlJump::can_jump(CObject *target)
