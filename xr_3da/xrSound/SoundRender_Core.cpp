@@ -151,7 +151,6 @@ void CSoundRender_Core::set_geometry_som(IReader* I)
 	IReader* geom	= I->open_chunk(1); 
 	VERIFY2			(geom,"Corrupted SOM file");
 	// Load tris and merge them
-	CDB::Collector	CL;
 	struct SOM_poly{
 		Fvector3	v1;
 		Fvector3	v2;
@@ -159,6 +158,20 @@ void CSoundRender_Core::set_geometry_som(IReader* I)
 		u32			b2sided;
 		float		occ;
 	};
+	// Create AABB-tree
+#ifdef _EDITOR    
+	CDB::Collector*	CL			= ETOOLS::create_collector();
+	while (!geom->eof()){
+		SOM_poly				P;
+		geom->r					(&P,sizeof(P));
+        ETOOLS::collector_add_face_pd		(CL,P.v1,P.v2,P.v3,*(u32*)&P.occ,0.01f);
+		if (P.b2sided)
+			ETOOLS::collector_add_face_pd	(CL,P.v3,P.v2,P.v1,*(u32*)&P.occ,0.01f);
+	}
+	geom_SOM					= ETOOLS::create_model_cl(CL);
+    ETOOLS::destroy_collector	(CL);
+#else
+	CDB::Collector				CL;			
 	while (!geom->eof()){
 		SOM_poly				P;
 		geom->r					(&P,sizeof(P));
@@ -166,10 +179,6 @@ void CSoundRender_Core::set_geometry_som(IReader* I)
 		if (P.b2sided)
 			CL.add_face_packed_D(P.v3,P.v2,P.v1,*(u32*)&P.occ,0.01f);
 	}
-	// Create AABB-tree
-#ifdef _EDITOR    
-	geom_SOM			= ETOOLS::create_model(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
-#else
 	geom_SOM			= xr_new<CDB::MODEL> ();
 	geom_SOM->build		(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
 #endif
