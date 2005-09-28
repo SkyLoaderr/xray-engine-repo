@@ -10,7 +10,7 @@
 
 IC	bool CMovementManager::actual() const
 {
-	return				(m_path_actuality);
+	return					(m_path_actuality);
 }
 
 IC	void CMovementManager::set_path_type(EPathType path_type)
@@ -72,28 +72,28 @@ IC	void CMovementManager::set_desirable_speed		(float speed)
 
 IC	void CMovementManager::set_body_orientation(const CBoneRotation &orientation)
 {
-	m_body				= orientation;
+	m_body					= orientation;
 }
 
 IC	const CMovementManager::CBoneRotation &CMovementManager::body_orientation() const
 {
-	return				(m_body);
+	return					(m_body);
 }
 
 IC	void CMovementManager::set_refresh_rate		(u32 refresh_rate)
 {
-	m_refresh_rate		= refresh_rate;
+	m_refresh_rate			= refresh_rate;
 }
 
 IC	u32	 CMovementManager::refresh_rate			() const
 {
-	return				(m_refresh_rate);
+	return					(m_refresh_rate);
 }
 
 template <typename T>
 IC	bool CMovementManager::accessible			(T position_or_vertex_id, float radius) const
 {
-	return				(restrictions().accessible(position_or_vertex_id,radius));
+	return					(restrictions().accessible(position_or_vertex_id,radius));
 }
 
 IC	void CMovementManager::extrapolate_path		(bool value)
