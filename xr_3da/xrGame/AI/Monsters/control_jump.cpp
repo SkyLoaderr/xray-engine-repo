@@ -238,9 +238,14 @@ void CControlJump::update_frame()
 	
 	// check if we landed
 	if (is_landing()) {
-		m_time_started				= 0;
-		m_anim_state_current		= eStateGround;
-		select_next_anim_state		();
+		if (is_flag(SControlJumpData::eGroundSkip) || !m_data.state_ground.motion.valid() || (m_data.state_ground.velocity_mask == u32(-1))) {
+			stop();
+			return;
+		} else {
+			m_time_started				= 0;
+			m_anim_state_current		= eStateGround;
+			select_next_anim_state		();
+		}
 	}
 }
 
@@ -257,7 +262,6 @@ bool CControlJump::is_landing()
 	Fvector trace_from;
 	m_object->Center(trace_from);
 
-	BOOL					enabled = m_object->getEnabled();
 	m_object->setEnabled	(FALSE);
 	collide::rq_result		l_rq;
 
