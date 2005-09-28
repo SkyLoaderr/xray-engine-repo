@@ -202,13 +202,35 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		    
-		
+	end
+	-- Yantar scientist
+	if type == "yan_scientist" then
+		t = { section = "logic@scientist_out_rest",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = "yantar_bunker_space_restrictor"
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@scientist_not_in_rest",
+			idle = 0,
+			prior = 9, state = {2}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
 	end
 end
 
 function load_states(gname, type)
     if type == "yantar_zombies" then
 		return function(gulag)
+			return 1
+		end
+    end
+    if type == "yan_scientist" then
+		return function(gulag)
+			if db.actor:has_info("yan_scientist_gulag_state_2") then 
+				return 2
+			end
 			return 1
 		end
     end
@@ -228,7 +250,11 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "yantar_zombies" then
 		return npc_community == "zombied"
 	end
+	if gulag_type == "yan_scientist" then
+		return npc_community == "ecolog"
+	end
 end
+
 
 function checkMonster(npc_community, gulag_type)
 end

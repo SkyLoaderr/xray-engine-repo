@@ -32,3 +32,76 @@ active = walker@yantar_zombies_walker
 
 [walker@yantar_zombies_walker]
 path_walk = walker_walk	
+
+;****************************************************
+;Yantar scientist
+;***************************************************
+
+
+[logic@scientist_out_rest]
+active = walker@scientist_1
+on_death = death@scientist
+combat_ignore = combat_ignore
+meet = meet@scientist
+
+[walker@scientist_1]
+path_walk = bunker_walk
+combat_ignore_cond = always
+meet = meet@scientist
+on_info = {+yan_scientist_point_to_1} walker@door_2
+
+[walker@door_2]
+path_walk = walk_door_2
+on_signal = door_2 |  %+yan_scientist_door_2_open +yan_scientist_gulag_state_2%
+combat_ignore_cond = always
+
+[logic@scientist_not_in_rest]
+active = walker@door_1
+on_death = death@scientist
+combat_ignore = combat_ignore
+meet = meet@scientist
+
+[walker@door_1]
+path_walk = walk_door_1
+on_signal = door_1 | walker@scientist_2 %+yan_scientist_door_1_open -yan_scientist_door_2_open%
+combat_ignore_cond = always
+
+[walker@scientist_2]
+path_walk = help_walk
+path_look =help_look
+combat_ignore_cond = always
+on_signal = doors_close | %-yan_bunker_door_1_close -yan_scientist_door_1_open%
+meet = meet@scientist
+on_info = {+yan_scientist_point_to_2} walker@scientist_3
+
+[walker@scientist_3]
+path_walk =help_walk_1
+path_look =help_look_1
+combat_ignore_cond = always
+meet = meet@scientist
+on_info = {+yan_scientist_point_to_3} walker@scientist_4
+
+[walker@scientist_4]
+path_walk =help_walk_2
+path_look = help_look_2
+combat_ignore_cond = always
+meet = meet@scientist
+on_info = {+yan_scientist_point_to_4} walker@scientist_5
+
+[walker@5]
+path_walk = help_walk_3
+path_look = help_look_3
+combat_ignore_cond = always
+meet = meet@scientist
+
+[meet@scientist]
+meet_state 		= 2| hello@talk_hello
+meet_state_wpn 	        = 2| hello@talk_hello
+victim 			= 5 | actor
+victim_wpn 		= 5 | actor
+use                     = true
+use_wpn                 = true
+
+[death@scientist]
+on_info = %+yan_scientist_die%
+
