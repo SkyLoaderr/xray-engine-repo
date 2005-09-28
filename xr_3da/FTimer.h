@@ -30,9 +30,13 @@ public:
 	ICF u64		GetElapsed_ticks()const	{	if(bPause) return	qwPausedTime; else return CPU::QPC()-qwStartTime-CPU::qpc_overhead-qwPauseAccum; }
 	IC	u32		GetElapsed_ms	()const	{	return u32(GetElapsed_ticks()*u64(1000)/CPU::qpc_freq );	}
 	IC	float	GetElapsed_sec	()const	{
+#ifndef _EDITOR
 		FPU::m64r	()			;
+#endif        
 		float		_result		=		float(double(GetElapsed_ticks())/double(CPU::qpc_freq )	)	;
+#ifndef _EDITOR
 		FPU::m24r	()			;
+#endif
 		return		_result		;
 	}
 	IC	void	Dump			()
@@ -80,9 +84,13 @@ public:
 
 	IC	u32		GetElapsed_ms	()const	{	return u32(GetElapsed_ticks()*u64(1000)/CPU::qpc_freq );	}
 	IC	float	GetElapsed_sec	()const	{
+#ifndef _EDITOR
 		FPU::m64r	()			;
+#endif        
 		float		_result		=		float(double(GetElapsed_ticks())/double(CPU::qpc_freq )	)	;
+#ifndef _EDITOR
 		FPU::m24r	()			;
+#endif
 		return		_result		;
 	}
 	ICF float	GetFrame_sec	()const	{	return result; }
