@@ -28,7 +28,7 @@ function PsyAntenna:__init				()
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
 	// antenna
-	self.hit_amplitude					= 100.0;	// размер хита = self.hit_amplitude*self.hit_intensity
+	self.hit_amplitude					= 3.0;	// размер хита = self.hit_amplitude*self.hit_intensity
 	// pause time [from]=to
 	self.idle_time						= {};
 	self.idle_time[20]					= 21;
