@@ -113,7 +113,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_balon_4</visual>
 		<supplies>
