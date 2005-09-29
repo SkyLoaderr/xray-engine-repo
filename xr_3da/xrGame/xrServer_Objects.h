@@ -123,9 +123,10 @@
 // 104 = CSE_Visual						appended flags
 // 105 = CSE_ALifeTraderAbstract		added full name
 // 106 = CSE_ALifeCustomZone			enabled\disabled time
+// 107 = CSE_ALifeCustomZone			enabled\disabled time extended
 
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(106)
+#define SPAWN_VERSION	u16(107)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

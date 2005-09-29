@@ -140,6 +140,8 @@ protected:
 	
 	u32					m_TimeToDisable;
 	u32					m_TimeToEnable;
+	u32					m_TimeShift;
+	u32					m_StartTime;
 
 	//массив с временами, сколько каждое состояние должно 
 	//длиться (если 0, то мгновенно -1 - бесконечность, 
@@ -158,6 +160,7 @@ protected:
 
 				bool		Enable						();
 				bool		Disable						();
+				void		UpdateOnOffState			();
 public:
 				bool		IsEnabled					()	{return m_eZoneState != eZoneStateDisabled; };
 				void		ZoneEnable					();	

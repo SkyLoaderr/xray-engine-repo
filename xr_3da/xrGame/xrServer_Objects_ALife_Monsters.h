@@ -128,7 +128,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCustomZone,CSE_ALifeSpaceRestrictor)
 	u32								m_owner_id;
 	u32								m_enabled_time;
 	u32								m_disabled_time;
-	
+	u32								m_start_time_shift;
+
 									CSE_ALifeCustomZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeCustomZone	();
 SERVER_ENTITY_DECLARE_END

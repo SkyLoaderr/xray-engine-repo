@@ -650,6 +650,7 @@ CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeSpaceRest
 
 	m_enabled_time				= 0;
 	m_disabled_time				= 0;
+	m_start_time_shift			= 0;
 
 }
 
@@ -675,6 +676,9 @@ void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u32		(m_enabled_time);
 		tNetPacket.r_u32		(m_disabled_time);
 	}
+	if (m_wVersion > 106) {
+		tNetPacket.r_u32		(m_start_time_shift);
+	}
 
 }
 
@@ -688,6 +692,7 @@ void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_u32			(m_owner_id);
 	tNetPacket.w_u32			(m_enabled_time);
 	tNetPacket.w_u32			(m_disabled_time);
+	tNetPacket.w_u32			(m_start_time_shift);
 }
 
 void CSE_ALifeCustomZone::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -717,11 +722,12 @@ void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref,items);
-	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Power"),			&m_maxPower,0.f,1000.f);
-	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Attenuation"),	&m_attn,0.f,100.f);
-	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"Period"),		&m_period,20,10000);
-	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Enabled time (sec)"),	&m_enabled_time,0,100000);
-	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Disabled time (sec)"),	&m_disabled_time,0,100000);
+	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Power"),							&m_maxPower,0.f,1000.f);
+	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Attenuation"),						&m_attn,0.f,100.f);
+	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"Period"),							&m_period,20,10000);
+	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Shift time (sec)"),	&m_start_time_shift,0,100000);
+	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Enabled time (sec)"),	&m_enabled_time,	0,100000);
+	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Disabled time (sec)"),	&m_disabled_time,	0,100000);
 
 	
 }

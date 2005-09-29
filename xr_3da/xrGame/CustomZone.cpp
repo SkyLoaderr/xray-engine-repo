@@ -323,6 +323,8 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 
 	m_TimeToDisable				= Z->m_enabled_time*1000;
 	m_TimeToEnable				= Z->m_disabled_time*1000;
+	m_TimeShift					= Z->m_start_time_shift*1000;
+	m_StartTime					= Device.dwTimeGlobal;
 	m_zone_flags.set			(eUseOnOffTime,	(m_TimeToDisable!=0)&&(m_TimeToEnable!=0) );
 
 	//добавить источники света
@@ -397,6 +399,8 @@ void CCustomZone::net_Export(NET_Packet& P)
 
 bool CCustomZone::IdleState()
 {
+	UpdateOnOffState	();
+
 	return false;
 }
 
@@ -547,22 +551,7 @@ void CCustomZone::shedule_Update(u32 dt)
 	else									o_switch_2_fast	();
 	if (!o_fastmode)		UpdateWorkload	(dt);
 
-	if(m_zone_flags.test(eUseOnOffTime)){
-		if( (eZoneStateDisabled==m_eZoneState) && (int)m_TimeToEnable<m_iStateTime ){
-			//switch to idle	
-			NET_Packet P;
-			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
-			P.w_u8			(u8(eZoneStateIdle));
-			u_EventSend		(P);
-		}else
-		if( (eZoneStateIdle==m_eZoneState) && ((int)m_TimeToDisable<m_iStateTime) ){
-			//switch to disable	
-			NET_Packet P;
-			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
-			P.w_u8			(u8(eZoneStateDisabled));
-			u_EventSend		(P);
-		}
-	};
+	UpdateOnOffState	();
 }
 
 void CCustomZone::feel_touch_new	(CObject* O) 
@@ -1371,4 +1360,37 @@ void CCustomZone::PlayAwakingParticles()
 
 	if(m_awaking_sound._handle())
 		m_awaking_sound.play_at_pos	(this, Position());
+}
+
+void CCustomZone::UpdateOnOffState	()
+{
+	if(!m_zone_flags.test(eUseOnOffTime)) return;
+	
+	bool dest_state;
+	u32 t = (Device.dwTimeGlobal-m_StartTime) % (m_TimeToEnable+m_TimeToDisable);
+	t		+= m_TimeShift;
+	if	(t < m_TimeToEnable) 
+		dest_state=true;
+	else
+	if	(t >(m_TimeToEnable+m_TimeToDisable) ) 
+		dest_state=true;
+	else{
+		dest_state=false;
+		VERIFY(t<(m_TimeToEnable+m_TimeToDisable));
+	}
+
+	if( (eZoneStateDisabled==m_eZoneState) && dest_state){
+			//switch to idle	
+			NET_Packet P;
+			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
+			P.w_u8			(u8(eZoneStateIdle));
+			u_EventSend		(P);
+		}else
+	if( (eZoneStateIdle==m_eZoneState) && !dest_state){
+			//switch to disable	
+			NET_Packet P;
+			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
+			P.w_u8			(u8(eZoneStateDisabled));
+			u_EventSend		(P);
+		}
 }
