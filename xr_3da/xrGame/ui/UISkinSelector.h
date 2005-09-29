@@ -37,9 +37,7 @@ public:
 	virtual bool	OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
 			void	SetVisibleForBtn(ESKINMENU_BTN btn, bool state);
-//	virtual void	Draw();
-	// event handlers
-
+			void	SetCurSkin(int skin);
 
 	int				GetActiveIndex();
 protected:

@@ -32,7 +32,7 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 	m_pBtnBack		= xr_new<CUI3tButton>();	AttachChild(m_pBtnBack);
 
 	m_fristSkin = 0;
-	Init(strSectionName);
+	Init(strSectionName);	
 }
 
 CUISkinSelectorWnd::~CUISkinSelectorWnd()
@@ -74,6 +74,11 @@ void CUISkinSelectorWnd::UpdateSkins(){
 		else
 			m_pImage[i]->InitTexture(m_skins[i + m_fristSkin].c_str());
 		m_pImage[i]->RescaleRelative2Rect(m_pImage[i]->GetStaticItem()->GetOriginalRect());
+
+		if (m_iActiveIndex - m_fristSkin == i)
+			m_pImage[i]->SetSelectedState(true);
+		else
+			m_pImage[i]->SetSelectedState(false);
 	}
 
 	m_pButtons[0]->Enable(m_fristSkin > 0);
@@ -247,4 +252,12 @@ void CUISkinSelectorWnd::SetVisibleForBtn(ESKINMENU_BTN btn, bool state){
 	default:
 		R_ASSERT2(false,"invalid btn ID");	
 	}
+}
+
+void CUISkinSelectorWnd::SetCurSkin(int skin){
+	R_ASSERT2(skin>= -1 && skin + m_fristSkin <= (int)m_skins.size(), "invalid skin index");
+
+	m_iActiveIndex = skin;
+
+	UpdateSkins();
 }
