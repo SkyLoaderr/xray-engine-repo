@@ -558,7 +558,7 @@ void CCustomZone::feel_touch_new	(CObject* O)
 {
 	
 #ifdef DEBUG
-	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
+	if(bDebug) HUD().outMessage(0xffffffff,*O->cName(),"entering a zone.");
 #endif
 	if(smart_cast<CActor*>(O) && O == Level().CurrentEntity())
 					m_pLocalActor	= smart_cast<CActor*>(O);
