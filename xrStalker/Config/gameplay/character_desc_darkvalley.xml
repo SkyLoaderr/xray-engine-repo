@@ -1056,7 +1056,7 @@
 		
 		<snd_config>characters_voice\human_02\</snd_config>
  
-		<visual>neytral\stalker_neytral_rukzak_5</visual>
+		<visual>actors\neytral\stalker_neytral_rukzak_5</visual>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
