@@ -6,7 +6,7 @@
 --function printf()
 --end
 
-aim_ratio = 1000/25
+aim_ratio = 1000/40
 min_ratio = 1000
 
 --' Эвалуатор, который синхронизирует менеджер.
