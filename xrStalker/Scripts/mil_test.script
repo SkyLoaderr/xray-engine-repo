@@ -153,26 +153,27 @@ object_list["test2"] = {
     "mil_m_controller_e"
 }
 
--- Controller Test
---object_list["test3"] = {
---	"mil_bloodsucker_mil_0000",
---	"mil_bloodsucker_mil_0001",
---	"mil_bloodsucker_mil_0002",
---	"mil_bloodsucker_mil_0003",
---	"mil_bloodsucker_mil_0004",
---	"mil_bloodsucker_mil_0005",
---	"mil_bloodsucker_mil_0006",
---	"mil_bloodsucker_mil_0007"
---}
-
---object_list["test4"] = {
---    "mil_bloodsucker_mil"
---}
 
 object_list["test3"] = {
+	"mil_bloodsucker_mil_0000",
+	"mil_bloodsucker_mil_0001",
+	"mil_bloodsucker_mil_0002",
+	"mil_bloodsucker_mil_0003",
+	"mil_bloodsucker_mil_0004",
+	"mil_bloodsucker_mil_0005",
+	"mil_bloodsucker_mil_0006",
+	"mil_bloodsucker_mil_0007"
+}
+
+object_list["test4"] = {
+    "mil_bloodsucker_mil"
+}
+
+object_list["test5"] = {
     "mil_stalker0023",
     "mil_stalker0024",
-    "mil_stalker0025"
+    "mil_stalker0025",
+	"mil_bloodsucker_mil_0008"
 }
 
 ------------------------------------------------------------------------------
@@ -184,24 +185,9 @@ function r(index)
        db.actor:give_info_portion ("mil_controller_ready") 
     end
 
-    if (index == 3) then
+    if (index == 5) then
        	db.actor:give_info_portion ("mil_hunt_ready") 
-
---		db.actor:give_info_portion ("mil_village_bloodsucker1") 
---		db.actor:give_info_portion ("mil_village_bloodsucker2") 
---		db.actor:give_info_portion ("mil_village_bloodsucker3") 
---		db.actor:give_info_portion ("mil_village_bloodsucker4") 
---		db.actor:give_info_portion ("mil_village_bloodsucker5") 
---		db.actor:give_info_portion ("mil_village_bloodsucker6") 
---		db.actor:give_info_portion ("mil_village_bloodsucker7") 
---		db.actor:give_info_portion ("mil_village_bloodsucker8") 
---		db.actor:give_info_portion ("mil_village_bloodsucker9") 
-
     end
---    
---    if (index == 4) then
---       	db.actor:give_info_portion ("mil_hunt_ready") 
---	end
 
 	test_utils.setup_test(object_list, smart_terrains)
 	test_utils.run_test(index)
