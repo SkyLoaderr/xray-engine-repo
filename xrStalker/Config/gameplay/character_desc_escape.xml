@@ -298,7 +298,7 @@
 		
 		<snd_config>characters_voice\human_01\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -327,7 +327,7 @@
 		
 		<snd_config>characters_voice\human_01\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -356,7 +356,7 @@
 		
 		<snd_config>characters_voice\human_02\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -387,7 +387,7 @@
 		
 		<snd_config>characters_voice\human_01\</snd_config>
 
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -416,7 +416,7 @@
 		
 		<snd_config>characters_voice\human_01\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -445,7 +445,7 @@
 		
 		<snd_config>characters_voice\human_02\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -476,7 +476,7 @@
 		
 		<snd_config>characters_voice\human_01\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -505,7 +505,7 @@
 		
 		<snd_config>characters_voice\human_02\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -534,7 +534,7 @@
 		
 		<snd_config>characters_voice\human_01\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
+		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\novice\green_stalker_8</visual>
 		<supplies>
