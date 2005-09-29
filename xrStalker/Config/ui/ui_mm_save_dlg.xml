@@ -10,7 +10,7 @@
 		<texture_offset x="-29" y="-19"/>
 		
 		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
-			<text font="letterica25" r="215" g="195" b="170">Save Game</text>
+			<text font="letterica25" r="215" g="195" b="170">ui_mm_save_game</text>
 		</caption>
 		
 		<edit x="36" y="36" width="257" height="23">
@@ -26,7 +26,7 @@
 				
 		<btn_save x="36" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_left</texture>
-			<text font="letterica25" r="215" g="195" b="170">Save</text>
+			<text font="letterica25" r="215" g="195" b="170">ui_mm_save</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				
@@ -37,7 +37,7 @@
 		
 		<btn_cancel x="338" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_right</texture>			
-			<text font="letterica25" r="215" g="195" b="170">Cancel</text>
+			<text font="letterica25" r="215" g="195" b="170">ui_mm_cancel</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				

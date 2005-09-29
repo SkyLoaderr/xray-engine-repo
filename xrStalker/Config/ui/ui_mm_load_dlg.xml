@@ -10,7 +10,7 @@
 		<texture_offset x="-29" y="-19"/>
 		
 		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
-			<text font="letterica25" r="215" g="195" b="170">Load Game</text>
+			<text font="letterica25" r="215" g="195" b="170">ui_mm_load_game</text>
 		</caption>
 		
 		<picture x="76" y="52" width="128" height="128"/>
@@ -27,7 +27,7 @@
 				
 		<btn_load x="36" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_left</texture>
-			<text font="letterica25">Load</text>
+			<text font="letterica25">ui_mm_load</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				
@@ -38,7 +38,7 @@
 		
 		<btn_delete x="187" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_center</texture>
-			<text font="letterica25">Delete</text>
+			<text font="letterica25">ui_mm_delete</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				
@@ -49,7 +49,7 @@
 		
 		<btn_cancel x="338" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_right</texture>			
-			<text font="letterica25">Back</text>
+			<text font="letterica25">ui_mm_cancel</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				

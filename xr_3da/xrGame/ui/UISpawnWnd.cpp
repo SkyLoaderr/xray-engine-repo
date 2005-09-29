@@ -11,8 +11,7 @@
 #include "UI3tButton.h"
 
 CUISpawnWnd::CUISpawnWnd()
-//	: m_bDual(false),
-//	  m_iResult(-1)
+	:  m_iCurTeam(0)
 {	
 	m_pBackground	= xr_new<CUIStatic>();	AttachChild(m_pBackground);	
 	m_pCaption		= xr_new<CUIStatic>();	AttachChild(m_pCaption);	
@@ -29,8 +28,7 @@ CUISpawnWnd::CUISpawnWnd()
 	m_pBtnSpectator	= xr_new<CUI3tButton>();	AttachChild(m_pBtnSpectator);
 	m_pBtnBack		= xr_new<CUI3tButton>();	AttachChild(m_pBtnBack);
 	
-	Init();
-	
+	Init();	
 }
 
 CUISpawnWnd::~CUISpawnWnd()
@@ -144,5 +142,13 @@ void CUISpawnWnd::SetVisibleForBtn(ETEAMMENU_BTN btn, bool state){
 	default:
 		R_ASSERT2(false,"invalid btn ID");	
 	}
+}
+
+void CUISpawnWnd::SetCurTeam(int team){
+	R_ASSERT2(team >= -1 && team <= 1, "Invalid team number");
+
+    m_iCurTeam = team;
+	m_pImage1->SetSelectedState(0 == team ? true : false);
+	m_pImage2->SetSelectedState(1 == team ? true : false);
 }
 

@@ -1,7 +1,3 @@
-
-#ifndef UISPAWNWND_H_
-#define UISPAWNWND_H_
-
 #pragma once
 
 #include "UIDialogWnd.h"
@@ -32,6 +28,7 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 			void SetVisibleForBtn(ETEAMMENU_BTN btn, bool state);
+			void SetCurTeam(int team);
 
 protected:
 			void InitTeamLogo();
@@ -54,6 +51,6 @@ protected:
 	CUI3tButton*	m_pBtnAutoSelect;
 	CUI3tButton*	m_pBtnSpectator;
 	CUI3tButton*	m_pBtnBack;
-};
 
-#endif
+	int		m_iCurTeam;
+};
