@@ -14,6 +14,8 @@ float	psSoundRolloff			= 0.75f;
 u32		psSoundFreq				= 0;
 u32		psSoundModel			= 0;
 float	psSoundVEffects			= 1.0f;
+float	psSoundVFactor			= 1.0f;
+
 float	psSoundVMusic			= 0.7f;
 int		psSoundCacheSizeMB		= 16;
 

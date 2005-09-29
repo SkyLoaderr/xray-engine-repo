@@ -32,6 +32,7 @@ class	XRSOUND_API					CSound_environment;
 XRSOUND_API extern u32				psSoundFreq				;
 XRSOUND_API extern u32				psSoundModel			;
 XRSOUND_API extern float			psSoundVEffects			;
+XRSOUND_API extern float			psSoundVFactor			;
 XRSOUND_API extern float			psSoundVMusic			;
 XRSOUND_API extern float			psSoundRolloff			;
 XRSOUND_API extern float			psSoundOcclusionScale	;
