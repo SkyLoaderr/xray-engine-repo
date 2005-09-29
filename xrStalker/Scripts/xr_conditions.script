@@ -657,5 +657,5 @@ end
 -- Special for Radar
 -------------------------------------------------------------------------------------
 function rad_pass_time(actor, npc)
-    return level.get_time_hours() >= 7 and level.get_time_hours() < 8
+    return level.get_time_hours() >= 10 and level.get_time_hours() < 11
 end
