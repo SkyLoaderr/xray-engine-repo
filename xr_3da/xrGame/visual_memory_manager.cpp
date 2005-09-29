@@ -367,74 +367,6 @@ void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_obje
 			m_objects->push_back(visible_object);
 }
 
-void CVisualMemoryManager::update				(float time_delta)
-{
-	START_PROFILE("AI/Memory Manager/visuals/update")
-
-	if (!enabled())
-		return;
-
-	squad_mask_type						mask = this->mask();
-	VERIFY								(m_objects);
-	m_visible_objects.clear				();
-	if (m_object)
-		m_object->feel_vision_get		(m_visible_objects);
-	else
-		m_actor->memory().feel_vision_get(m_visible_objects);
-
-	{
-		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
-		xr_vector<CVisibleObject>::iterator	E = m_objects->end();
-		for ( ; I != E; ++I)
-			(*I).visible				(mask,false);
-	}
-
-	/**
-	{
-		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
-		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
-		for ( ; I != E; ++I)
-			(*I).m_updated				= false;
-	}
-	/**/
-
-	{
-		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
-		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
-		for ( ; I != E; ++I)
-			add_visible_object			(*I,time_delta);
-	}
-
-	{
-		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
-		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
-		for ( ; I != E; ++I)
-			if (((*I).m_update_time + current_state().m_still_visible_time) < Device.dwTimeGlobal)
-				(*I).m_value			= 0.f;
-	}
-
-	// verifying if object is online
-	{
-		xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflinePredicate());
-		m_objects->erase					(J,m_objects->end());
-	}
-
-	// verifying if object is online
-	{
-		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
-		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
-	}
-#if 0//def DEBUG
-	if (m_stalker) {
-		CAgentMemberManager::MEMBER_STORAGE::const_iterator	I = m_stalker->agent_manager().member().members().begin();
-		CAgentMemberManager::MEMBER_STORAGE::const_iterator	E = m_stalker->agent_manager().member().members().end();
-		for ( ; I != E; ++I)
-			(*I)->object().memory().visual().check_visibles();
-	}
-#endif
-	STOP_PROFILE
-}
-
 #ifdef DEBUG
 void CVisualMemoryManager::check_visibles	() const
 {
@@ -540,4 +472,66 @@ IC	squad_mask_type CVisualMemoryManager::mask			() const
 	if (!m_stalker)
 		return					(squad_mask_type(-1));
 	return						(m_stalker->agent_manager().member().mask(m_stalker));
+}
+
+void CVisualMemoryManager::update				(float time_delta)
+{
+	START_PROFILE("AI/Memory Manager/visuals/update")
+
+	if (!enabled())
+		return;
+
+	squad_mask_type						mask = this->mask();
+	VERIFY								(m_objects);
+	m_visible_objects.clear				();
+	if (m_object)
+		m_object->feel_vision_get		(m_visible_objects);
+	else
+		m_actor->memory().feel_vision_get(m_visible_objects);
+
+	{
+		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
+		xr_vector<CVisibleObject>::iterator	E = m_objects->end();
+		for ( ; I != E; ++I)
+			if ((*I).m_level_time + current_state().m_still_visible_time < Device.dwTimeGlobal)
+				(*I).visible			(mask,false);
+	}
+
+	{
+		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
+		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
+		for ( ; I != E; ++I)
+			add_visible_object			(*I,time_delta);
+	}
+
+	{
+		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
+		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
+		for ( ; I != E; ++I)
+			if ((*I).m_update_time < Device.dwTimeGlobal)
+				(*I).m_value			= 0.f;
+	}
+
+	// verifying if object is online
+	{
+		xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflinePredicate());
+		m_objects->erase					(J,m_objects->end());
+	}
+
+	// verifying if object is online
+	{
+		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
+		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
+	}
+
+#if 0//def DEBUG
+	if (m_stalker) {
+		CAgentMemberManager::MEMBER_STORAGE::const_iterator	I = m_stalker->agent_manager().member().members().begin();
+		CAgentMemberManager::MEMBER_STORAGE::const_iterator	E = m_stalker->agent_manager().member().members().end();
+		for ( ; I != E; ++I)
+			(*I)->object().memory().visual().check_visibles();
+	}
+#endif
+
+	STOP_PROFILE
 }
