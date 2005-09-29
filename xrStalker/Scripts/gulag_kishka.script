@@ -36,8 +36,71 @@ if type == "kem1" then
 		}
        end
        
+       if type == "ptr2" then
+		t = { section = "logic@ptr2_patrol1",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+
+       t = { section = "logic@ptr2_patrol2",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+       end
        
-       
+       if type == "ptr3" then
+		t = { section = "logic@ptr3_patrol1",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+
+       t = { section = "logic@ptr3_patrol2",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+       end
+      
+       if type == "kabkamp" then
+		t = { section = "logic@kabkamp_kab1",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		t = { section = "logic@kabkamp_kab2",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		t = { section = "logic@kabkamp_kab3",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		t = { section = "logic@kabkamp_kab4",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		t = { section = "logic@kabkamp_kab5",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		t = { section = "logic@kabkamp_kab6",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		t = { section = "logic@kabkamp_kab7",
+			idle = 0,
+			prior = 1, state = 0,
+			in_rest = "", out_rest = ""
+		}
+		end
 end
 
 
@@ -55,7 +118,21 @@ if type == "kem1" then
 			return 0
 		end
 	end
-	
+	if type == "ptr2" then
+		return function(gulag)
+			return 0
+		end
+	end
+	if type == "ptr3" then
+		return function(gulag)
+			return 0
+		end
+	end
+	if type == "kabkamp" then
+		return function(gulag)
+			return 0
+		end
+	end
 end
 
 
@@ -81,7 +158,19 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "ptr" then
 	   return npc_community == "military"
 	end
+	if gulag_type == "ptr2" then
+	   return npc_community == "military"
+	end
+	if gulag_type == "ptr3" then
+	   return npc_community == "military"
+	end
+	
 	return false
 end
 function checkMonster(npc_community, gulag_type)
+if gulag_type == "gar_boars_nest" then
+			return npc_community == "boar"
+		end
+		return false
+	
 end
