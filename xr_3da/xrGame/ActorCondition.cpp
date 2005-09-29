@@ -17,18 +17,18 @@
 CActorCondition::CActorCondition(CActor *object) :
 	inherited	(object)
 {
-	VERIFY		(object);
-	m_object	= object;
-	m_fJumpPower = 0.f;
-	m_fStandPower = 0.f;
-	m_fWalkPower = 0.f;
-	m_fJumpWeightPower = 0.f;
-	m_fWalkWeightPower = 0.f;
-	m_fOverweightWalkK = 0.f;
-	m_fOverweightJumpK = 0.f;
-	m_fAccelK = 0.f;
-	m_fSprintK = 0.f;
-	m_bLimping  = false;
+	m_fJumpPower				= 0.f;
+	m_fStandPower				= 0.f;
+	m_fWalkPower				= 0.f;
+	m_fJumpWeightPower			= 0.f;
+	m_fWalkWeightPower			= 0.f;
+	m_fOverweightWalkK			= 0.f;
+	m_fOverweightJumpK			= 0.f;
+	m_fAccelK					= 0.f;
+	m_fSprintK					= 0.f;
+
+	VERIFY						(object);
+	m_object					= object;
 }
 
 CActorCondition::~CActorCondition(void)
@@ -39,33 +39,42 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 {
 	inherited::LoadCondition(entity_section);
 
-	LPCSTR				section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
-	m_fJumpPower		= pSettings->r_float(section,"jump_power");
-	m_fStandPower		= pSettings->r_float(section,"stand_power");
-	m_fWalkPower		= pSettings->r_float(section,"walk_power");
-	m_fJumpWeightPower	= pSettings->r_float(section,"jump_weight_power");
-	m_fWalkWeightPower	= pSettings->r_float(section,"walk_weight_power");
-	m_fOverweightWalkK	= pSettings->r_float(section,"overweight_walk_k");
-	m_fOverweightJumpK	= pSettings->r_float(section,"overweight_jump_k");
-	m_fAccelK			= pSettings->r_float(section,"accel_k");
-	m_fSprintK			= pSettings->r_float(section,"sprint_k");
+	LPCSTR						section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
+	m_fJumpPower				= pSettings->r_float(section,"jump_power");
+	m_fStandPower				= pSettings->r_float(section,"stand_power");
+	m_fWalkPower				= pSettings->r_float(section,"walk_power");
+	m_fJumpWeightPower			= pSettings->r_float(section,"jump_weight_power");
+	m_fWalkWeightPower			= pSettings->r_float(section,"walk_weight_power");
+	m_fOverweightWalkK			= pSettings->r_float(section,"overweight_walk_k");
+	m_fOverweightJumpK			= pSettings->r_float(section,"overweight_jump_k");
+	m_fAccelK					= pSettings->r_float(section,"accel_k");
+	m_fSprintK					= pSettings->r_float(section,"sprint_k");
 
 	//порог силы и здоровья меньше которого актер начинает хромать
-	m_fLimpingHealthBegin	= pSettings->r_float(section,	"limping_health_begin");
-	m_fLimpingHealthEnd		= pSettings->r_float(section,	"limping_health_end");
-	R_ASSERT(m_fLimpingHealthBegin<m_fLimpingHealthEnd);
+	m_fLimpingHealthBegin		= pSettings->r_float(section,	"limping_health_begin");
+	m_fLimpingHealthEnd			= pSettings->r_float(section,	"limping_health_end");
+	R_ASSERT					(m_fLimpingHealthBegin<m_fLimpingHealthEnd);
 
-	m_fLimpingPowerBegin	= pSettings->r_float(section,	"limping_power_begin");
-	m_fLimpingPowerEnd		= pSettings->r_float(section,	"limping_power_end");
-	R_ASSERT(m_fLimpingPowerBegin<m_fLimpingPowerEnd);
+	m_fLimpingPowerBegin		= pSettings->r_float(section,	"limping_power_begin");
+	m_fLimpingPowerEnd			= pSettings->r_float(section,	"limping_power_end");
+	R_ASSERT					(m_fLimpingPowerBegin<m_fLimpingPowerEnd);
 
-	m_fCantWalkPowerBegin	= pSettings->r_float(section,	"cant_walk_power_begin");
-	m_fCantWalkPowerEnd		= pSettings->r_float(section,	"cant_walk_power_end");
-	R_ASSERT(m_fCantWalkPowerBegin<m_fCantWalkPowerEnd);
+	m_fCantWalkPowerBegin		= pSettings->r_float(section,	"cant_walk_power_begin");
+	m_fCantWalkPowerEnd			= pSettings->r_float(section,	"cant_walk_power_end");
+	R_ASSERT					(m_fCantWalkPowerBegin<m_fCantWalkPowerEnd);
 
-	m_fCantSprintPowerBegin	= pSettings->r_float(section,	"cant_sprint_power_begin");
+	m_fCantSprintPowerBegin		= pSettings->r_float(section,	"cant_sprint_power_begin");
 	m_fCantSprintPowerEnd		= pSettings->r_float(section,	"cant_sprint_power_end");
-	R_ASSERT(m_fCantSprintPowerBegin<m_fCantSprintPowerEnd);
+	R_ASSERT					(m_fCantSprintPowerBegin<m_fCantSprintPowerEnd);
+
+	m_fPowerLeakSpeed			= READ_IF_EXISTS(pSettings,r_float,section,"max_power_leak_speed",0.0f);
+
+
+	m_fK_SleepHealth		= pSettings->r_float(section,"sleep_health");
+	m_fK_SleepPower			= pSettings->r_float(section,"sleep_power");
+	m_fK_SleepSatiety		= pSettings->r_float(section,"sleep_satiety");	
+	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
+	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
 
 }
 
@@ -73,10 +82,9 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 //вычисление параметров с ходом времени
 void CActorCondition::UpdateCondition()
 {
-	if (GodMode())/*(psActorFlags.test(AF_GODMODE))*/ return;
-	if (!object().g_Alive()) return;
+	if (GodMode())				return;
+	if (!object().g_Alive())	return;
 	
-//	if (object().Remote()) return;
 
 	if ((object().mstate_real&mcAnyMove)) {
 		ConditionWalk(object().inventory().TotalWeight()/object().inventory().GetMaxWeight(), isActorAccelerated(object().mstate_real,object().IsZoomAimingMode()), (object().mstate_real&mcSprint) != 0);
@@ -85,6 +93,12 @@ void CActorCondition::UpdateCondition()
 		ConditionStand(object().inventory().TotalWeight()/object().inventory().GetMaxWeight());
 	};
 	
+	if( !IsSleeping() && GameID()==GAME_SINGLE ){
+		// update power_leak
+		float delta_time = float(m_iDeltaTime)/1000.f;
+		SetMaxPower		(GetMaxPower()-m_fPowerLeakSpeed*delta_time);
+	}
+
 	inherited::UpdateCondition();
 }
 
@@ -145,6 +159,7 @@ bool CActorCondition::IsLimping() const
 		m_bLimping = false;
 	return m_bLimping;
 }
+extern bool g_bShowHudInfo;
 
 EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 {
@@ -154,7 +169,10 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 	if(easCanSleep != result) 
 		return result;
 
-	inherited::GoSleep		();
+	g_bShowHudInfo				= false;
+	m_bIsSleeping				= true;
+
+	ProcessSleep				(sleep_time);// change conditions
 
 	//остановить актера, если он двигался
 	object().mstate_wishful	&=		~mcAnyMove;
@@ -182,7 +200,7 @@ void CActorCondition::Awoke()
 {
 	if(!IsSleeping()) return;
 
-	CEntityCondition::Awoke();
+	m_bIsSleeping				= false;
 
 	Level().Server->game->SetGameTimeFactor(object().m_fOldTimeFactor);
 
@@ -191,8 +209,6 @@ void CActorCondition::Awoke()
 		P.w_begin		(M_SWITCH_DISTANCE);
 		P.w_float		(object().m_fOldOnlineRadius);
 		Level().Send	(P,net_flags(TRUE,TRUE));
-
-//		ai().alife().set_switch_distance	(m_fOldOnlineRadius);
 	}
 
 
@@ -205,6 +221,7 @@ void CActorCondition::Awoke()
 		object().m_pSleepEffectorPP = NULL;
 	}
 
+	g_bShowHudInfo			= true;
 	
 }
 
@@ -235,21 +252,7 @@ EActorSleep CActorCondition::CanSleepHere()
 	//спать нельзя
 	if(!result || RQ.O)	
 		return easNotSolidGround;
-/*	
-	//проверка на твердость материала на котором мы стоим 
-	else
-	{
-		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
-		u16 hit_material_idx	= pTri->material;
-		SGameMtl* mtl	= GMLib.GetMaterialByIdx(hit_material_idx);
-		if(mtl->fPHSpring < MIN_SPRING_TO_SLEEP) 
-			return easNotSolidGround;
-	}*/
 
-	//проверить нет ли в радиусе врагов
-/*	if (!Level().autosave_manager().ready_for_autosave())
-		return easEnemies;
-*/
 	BOOL				_enabled = object().getEnabled();
 	object().setEnabled	(FALSE);
 	xr_vector<CObject*> NearestList;	// = Level().ObjectSpace.q_nearest; 
@@ -267,4 +270,60 @@ EActorSleep CActorCondition::CanSleepHere()
 	}
 
 	return easCanSleep;
+}
+
+void CActorCondition::save(NET_Packet &output_packet)
+{
+	inherited::save		(output_packet);
+}
+
+void CActorCondition::load(IReader &input_packet)
+{
+	inherited::load		(input_packet);
+}
+
+void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)
+{
+	if(GetHealth()<=0) return;
+
+	//десять секунд
+	m_iDeltaTime = 1000*10;
+
+	for(float time=0; time<sleep_time; time += m_iDeltaTime)
+	{
+		UpdateHealth			();
+		UpdatePower				();
+		UpdateSatiety			(m_fK_SleepSatiety);
+		UpdateRadiation			(m_fK_SleepRadiation);
+		UpdatePsyHealth			(m_fK_SleepPsyHealth);
+
+		m_fHealth				+= m_fDeltaHealth;
+		m_fPower				+= m_fDeltaPower;
+		m_fSatiety				+= m_fDeltaSatiety;
+		m_fRadiation			+=  m_fDeltaRadiation;
+		m_fPsyHealth			+= m_fDeltaPsyHealth;
+
+		SetMaxPower				(m_fPowerMax+m_fDeltaPower);
+
+		m_fDeltaHealth			= 0;
+		m_fDeltaPower			= 0;
+		m_fDeltaSatiety			= 0;
+		m_fDeltaRadiation		= 0;
+		m_fDeltaPsyHealth		= 0;
+		
+
+		clamp					(m_fHealth,		0.0f,		m_fHealthMax);
+		clamp					(m_fPower,		0.0f,		m_fPowerMax);
+		clamp					(m_fRadiation,	0.0f,		m_fRadiationMax);
+		clamp					(m_fSatiety,	0.0f,		m_fSatietyMax);
+		clamp					(m_fPsyHealth,	0.0f,		m_fPsyHealthMax);
+	}
+
+}
+
+void CActorCondition::reinit	()
+{
+	inherited::reinit	();
+	m_bLimping					= false;
+	m_bIsSleeping				= false;
 }

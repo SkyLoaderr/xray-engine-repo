@@ -60,6 +60,7 @@ using namespace InventoryUtilities;
 int			g_bHudAdjustMode			= 0;
 float		g_fHudAdjustValue			= 0.0f;
 int			g_bNewsDisable				= 0;
+bool		g_bShowHudInfo				= true;;
 
 const u32	g_clWhite					= 0xffffffff;
 
@@ -99,7 +100,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_pWeapon					= NULL;
 	m_pItem						= NULL;
 
-	m_bShowHudInfo				= true;
+	g_bShowHudInfo				= true;
 	m_bShowHudCrosshair			= false;
 	// Quick infos
 	fuzzyShowInfo				= 0.f;
@@ -432,7 +433,7 @@ void CUIMainIngameWnd::Draw()
 	
 //	if(!scope_mode)
 //	{
-		if(m_bShowHudInfo)
+		if(g_bShowHudInfo)
 		{
 			CUIWindow::Draw();
 			UIZoneMap->Render();			
@@ -546,7 +547,7 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if(!m_bShowHudInfo) return;
+	if(!g_bShowHudInfo) return;
 
 
 	if (GameID() == GAME_SINGLE && !(Device.dwFrame%30) )
@@ -1221,11 +1222,11 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 
 void CUIMainIngameWnd::HideAll()
 {
-	m_bShowHudInfo = false;
+	g_bShowHudInfo = false;
 }
 void CUIMainIngameWnd::ShowAll()
 {
-	m_bShowHudInfo = true;
+	g_bShowHudInfo = true;
 }
 
 

@@ -25,8 +25,8 @@
 
 using namespace InventoryUtilities;
 
-#define CANT_SLEEP_ENEMIES "cant sleep near enemies"
-#define CANT_SLEEP_GROUND "cant sleep not on solid ground"
+#define CANT_SLEEP_ENEMIES "cant_sleep_near_enemies"
+#define CANT_SLEEP_GROUND "cant_sleep_not_on_solid_ground"
 
 void CUIInventoryWnd::ActivatePropertiesBox()
 {

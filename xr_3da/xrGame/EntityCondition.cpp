@@ -76,12 +76,6 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 
 	m_WoundVector.clear		();
 
-	Awoke					();
-	/*
-	m_fK_SleepHealth = 1.0f;
-	m_fK_SleepPower = 1.0f;
-	m_fK_SleepSatiety = 1.0f;	
-	m_fK_SleepRadiation = 1.0f;*/
 
 	m_fHitBoneScale			= 1.f;
 	m_fWoundBoneScale		= 1.f;
@@ -128,11 +122,6 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 	m_fPowerHitPart			= pSettings->r_float(section,"power_hit_part");
 	
 
-	m_fK_SleepHealth		= pSettings->r_float(section,"sleep_health");
-	m_fK_SleepPower			= pSettings->r_float(section,"sleep_power");
-	m_fK_SleepSatiety		= pSettings->r_float(section,"sleep_satiety");	
-	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
-	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
 
 	m_use_limping_state		= !!(READ_IF_EXISTS(pSettings,r_bool,section,"use_limping_state",FALSE));
 	m_limping_threshold		= READ_IF_EXISTS(pSettings,r_float,section,"limping_threshold",.5f);
@@ -173,7 +162,6 @@ void CEntityCondition::reinit	()
 
 	ClearWounds				();
 
-	Awoke					();
 }
 
 void CEntityCondition::ChangeHealth(float value)
@@ -331,47 +319,6 @@ void CEntityCondition::UpdateCondition()
 }
 
 
-void CEntityCondition::Sleep(float hours)
-{
-	if(GetHealth()<=0) return;
-
-	//час здорового сна
-	float time_to_sleep = hours*60*60*1000;
-
-	//десять секунд
-	m_iDeltaTime = 1000*10;
-
-	GoSleep();
-
-	for(float time=0; time<time_to_sleep; time += m_iDeltaTime)
-	{
-		UpdateHealth			();
-		UpdatePower				();
-		UpdateSatiety			();
-		UpdateRadiation			();
-		UpdatePsyHealth			();
-
-		m_fHealth				+= m_fDeltaHealth;
-		m_fPower				+= m_fDeltaPower;
-		m_fSatiety				+= m_fDeltaSatiety;
-		m_fRadiation			+=  m_fDeltaRadiation;
-		m_fPsyHealth			+= m_fDeltaPsyHealth;
-
-		m_fDeltaHealth			= 0;
-		m_fDeltaPower			= 0;
-		m_fDeltaSatiety			= 0;
-		m_fDeltaRadiation		= 0;
-		m_fDeltaPsyHealth		= 0;
-
-		clamp					(m_fHealth,		MIN_HEALTH, m_fHealthMax);
-		clamp					(m_fPower,		0.0f,		m_fPowerMax);
-		clamp					(m_fRadiation,	0.0f,		m_fRadiationMax);
-		clamp					(m_fSatiety,	0.0f,		m_fSatietyMax);
-		clamp					(m_fPsyHealth,	0.0f,		m_fPsyHealthMax);
-	}
-
-	Awoke						();
-}
 
 float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_type, s16 element)
 {
@@ -520,38 +467,40 @@ float CEntityCondition::BleedingSpeed()
 
 void CEntityCondition::UpdateHealth()
 {
-	float delta_time = float(m_iDeltaTime)/1000.f;
+	float delta_time			= float(m_iDeltaTime)/1000.f;
 	
-	float bleeding_speed = BleedingSpeed() * delta_time * m_fV_Bleeding;
-	m_bIsBleeding = fis_zero(bleeding_speed)?false:true;
-	m_fDeltaHealth -= bleeding_speed;
-	VERIFY(_valid(m_fDeltaHealth));
-	ChangeBleeding(m_fV_WoundIncarnation * delta_time);
+	float bleeding_speed		= BleedingSpeed() * delta_time * m_fV_Bleeding;
+	m_bIsBleeding				= fis_zero(bleeding_speed)?false:true;
+	m_fDeltaHealth				-= bleeding_speed;
+	VERIFY						(_valid(m_fDeltaHealth));
+	ChangeBleeding				(m_fV_WoundIncarnation * delta_time);
 }
+
 void CEntityCondition::UpdatePower()
 {
 }
 
-void CEntityCondition::UpdatePsyHealth()
+void CEntityCondition::UpdatePsyHealth(float k)
 {
 	if(m_fPsyHealth>0)
 	{
-		m_fDeltaPsyHealth += m_fV_PsyHealth*m_fCurrentSleepPsyHealth*m_iDeltaTime/1000;
+		m_fDeltaPsyHealth += m_fV_PsyHealth*k*m_iDeltaTime/1000;
 	}
 }
 
 
-void CEntityCondition::UpdateSatiety()
+void CEntityCondition::UpdateSatiety(float k)
 {
 	if (GameID() != GAME_SINGLE) return;
 
-	float sleep_k = 1.f;
+//	float sleep_k = 1.f;
 	if(m_fSatiety>0)
 	{
-		m_fDeltaSatiety -= m_fV_Satiety*
-					  m_fCurrentSleepSatiety*
-					  m_iDeltaTime/1000;
-		sleep_k = m_fCurrentSleepHealth;
+		m_fDeltaSatiety -=	m_fV_Satiety*
+							k*
+							m_iDeltaTime/1000;
+
+//		sleep_k = m_fCurrentSleepHealth;
 	}
 		
 	//сытость увеличивает здоровье только если нет открытых ран
@@ -559,25 +508,27 @@ void CEntityCondition::UpdateSatiety()
 	{
 		m_fDeltaHealth += m_fV_SatietyHealth*
 					(m_fSatiety>m_fSatietyCritical?1.f:-1.f)*
-					sleep_k*m_iDeltaTime/1000;
+//					sleep_k*
+					m_iDeltaTime/1000;
 	}
 
 	//коэффициенты уменьшения восстановления силы от сытоти и радиации
-	float radiation_power_k = 1.f;/*_abs(m_fRadiationMax - m_fRadiation)/m_fRadiationMax*/
-	float satiety_power_k = 1.f;/*_abs(m_fSatiety/m_fSatietyMax)*/
+	float radiation_power_k		= 1.f;
+	float satiety_power_k		= 1.f;
 			
 	m_fDeltaPower += m_fV_SatietyPower*
 				radiation_power_k*
 				satiety_power_k*
-				m_fCurrentSleepPower*
+//				m_fCurrentSleepPower*
 				m_iDeltaTime/1000;
 }
-void CEntityCondition::UpdateRadiation()
+
+void CEntityCondition::UpdateRadiation(float k)
 {
 	if(m_fRadiation>0)
 	{
 		m_fDeltaRadiation -= m_fV_Radiation*
-							m_fCurrentSleepRadiation*
+							k*
 							m_iDeltaTime/1000;
 
 		m_fDeltaHealth -= m_fV_RadiationHealth*m_fRadiation*m_iDeltaTime/1000;
@@ -602,27 +553,6 @@ void CEntityCondition::UpdateEntityMorale()
 }
 
 
-void CEntityCondition::GoSleep()
-{
-	m_bIsSleeping				= true;
-
-	m_fCurrentSleepHealth		=  m_fK_SleepHealth;
-	m_fCurrentSleepPower		=  m_fK_SleepPower;
-	m_fCurrentSleepSatiety		=  m_fK_SleepSatiety;
-	m_fCurrentSleepRadiation	=  m_fK_SleepRadiation;
-	m_fCurrentSleepPsyHealth	=  m_fK_SleepPsyHealth;
-}
-
-void CEntityCondition::Awoke()
-{
-	m_bIsSleeping				= false;
-
-	m_fCurrentSleepHealth		=  1.0f;
-	m_fCurrentSleepPower		=  1.0f;
-	m_fCurrentSleepSatiety		=  1.0f;
-	m_fCurrentSleepRadiation	=  1.0f;
-	m_fCurrentSleepPsyHealth	=  1.0f;
-}
 
 bool CEntityCondition::IsLimping() const
 {
@@ -647,16 +577,10 @@ void CEntityCondition::save	(NET_Packet &output_packet)
 
 		output_packet.w_u8				((u8)m_WoundVector.size());
 		for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; it++)
-		{
 			(*it)->save(output_packet);
-		}
-
-#ifdef _DEBUG
-		Msg("[%s] wounds saved %d", *m_object->cName(), m_WoundVector.size());
-#endif
-
 	}
 }
+
 void CEntityCondition::load	(IReader &input_packet)
 {
 	m_bTimeValid = false;
@@ -675,18 +599,11 @@ void CEntityCondition::load	(IReader &input_packet)
 		ClearWounds();
 		m_WoundVector.resize(input_packet.r_u8());
 		if(!m_WoundVector.empty())
-		{
 			for(u32 i=0; i<m_WoundVector.size(); i++)
 			{
 				CWound* pWound = xr_new<CWound>(BI_NONE);
 				pWound->load(input_packet);
 				m_WoundVector[i] = pWound;
 			}
-		}
-#ifdef _DEBUG
-		Msg("[%s] wounds loaded %d", *m_object->cName(), m_WoundVector.size());
-#endif
-
-
 	}
 }

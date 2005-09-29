@@ -932,36 +932,14 @@ bool CInventory::Eat(PIItem pIItem)
 
 	CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(m_pOwner);
 	if(!entity_alive) return false;
-
-	entity_alive->conditions().ChangeHealth(pItemToEat->m_fHealthInfluence);
-	entity_alive->conditions().ChangePower(pItemToEat->m_fPowerInfluence);
-	entity_alive->conditions().ChangeSatiety(pItemToEat->m_fSatietyInfluence);
-	entity_alive->conditions().ChangeRadiation(pItemToEat->m_fRadiationInfluence);
-	entity_alive->conditions().ChangeBleeding(pItemToEat->m_fWoundsHealPerc);
 	
+	pItemToEat->UseBy		(entity_alive);
 
-	//уменьшить количество порций
-	if(pItemToEat->m_iPortionsNum > 0)
-		--(pItemToEat->m_iPortionsNum);
-	else
-		pItemToEat->m_iPortionsNum = 0;
-
-
-	if(pItemToEat->m_iPortionsNum == 0)
+	if(pItemToEat->Empty() )
 	{
-		//убрать вещь из инвентаря
 		pIItem->Drop();
-/*		NET_Packet P;
-		CGameObject::u_EventGen(P,GE_OWNERSHIP_REJECT,pIItem->ID());
-		P.w_u16(u16(pIItem->ID()));
-		CGameObject::u_EventSend(P);
-		//		Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-*/
 		return false;
 	}
-
-
-
 	return true;
 }
 

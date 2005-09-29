@@ -1,9 +1,6 @@
 // ActorCondition.h: класс состояния игрока
 //
-//////////////////////////////////////////////////////////////////////
- 
-#ifndef _ACTOR_CONDITION_H_
-#define _ACTOR_CONDITION_H_
+
 #pragma once
 
 #include "EntityCondition.h"
@@ -29,14 +26,19 @@ public:
 	virtual				~CActorCondition	(void);
 
 	virtual void		LoadCondition		(LPCSTR section);
+	virtual void		reinit				();
 
 	virtual CWound*		ConditionHit		(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void		UpdateCondition		();
 
+
+	void				ProcessSleep			(ALife::_TIME_ID sleep_time);
+	bool				IsSleeping				() {return m_bIsSleeping;}
+
 	// sleeping
 	EActorSleep			CanSleepHere		();
 	EActorSleep			GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
-	virtual void		Awoke				();
+			void		Awoke				();
 
 	// хромание при потере сил и здоровья
 	virtual	bool		IsLimping			() const;
@@ -53,10 +55,13 @@ public:
 		VERIFY			(m_object);
 		return			(*m_object);
 	}
+	virtual void			save					(NET_Packet &output_packet);
+	virtual void			load					(IReader &input_packet);
 
 protected:
 	float m_fAlcohol;
 
+	float m_fPowerLeakSpeed;
 	//силы расходуемые на прыжки и бег
 	//(при максимальном весе)
 	float m_fJumpPower;
@@ -68,6 +73,16 @@ protected:
 	float m_fOverweightJumpK;
 	float m_fAccelK;
 	float m_fSprintK;
+
+
+	//состояние сна
+	bool m_bIsSleeping;
+	//коэффициенты скоростей изменения параметров во время сна
+	float m_fK_SleepHealth;
+	float m_fK_SleepPower;
+	float m_fK_SleepSatiety;
+	float m_fK_SleepRadiation;
+	float m_fK_SleepPsyHealth;
 
 protected:
 	mutable bool m_bLimping;
@@ -86,5 +101,3 @@ protected:
 	float m_fLimpingHealthBegin;
 	float m_fLimpingHealthEnd;
 };
-
-#endif //_ACTOR_CONDITION_H_

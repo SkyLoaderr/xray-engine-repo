@@ -12,10 +12,9 @@
 #include "net_utils.h"
 #include "physic_item.h"
 #include "Level.h"
+#include "entity_alive.h"
+#include "EntityCondition.h"
 
-///////////////////////////////////////////
-// CEatableItem class 
-///////////////////////////////////////////
 
 CEatableItem::CEatableItem()
 {
@@ -43,15 +42,16 @@ void CEatableItem::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	m_fHealthInfluence = pSettings->r_float(section, "eat_health");
-	m_fPowerInfluence = pSettings->r_float(section, "eat_power");
-	m_fSatietyInfluence = pSettings->r_float(section, "eat_satiety");
-	m_fRadiationInfluence = pSettings->r_float(section, "eat_radiation");
-	m_fWoundsHealPerc	= pSettings->r_float(section, "wounds_heal_perc");
-	clamp(m_fWoundsHealPerc, 0.f, 1.f);
+	m_fHealthInfluence			= pSettings->r_float(section, "eat_health");
+	m_fPowerInfluence			= pSettings->r_float(section, "eat_power");
+	m_fSatietyInfluence			= pSettings->r_float(section, "eat_satiety");
+	m_fRadiationInfluence		= pSettings->r_float(section, "eat_radiation");
+	m_fWoundsHealPerc			= pSettings->r_float(section, "wounds_heal_perc");
+	clamp						(m_fWoundsHealPerc, 0.f, 1.f);
 	
-	m_iStartPortionsNum = pSettings->r_s32(section, "eat_portions_num");
-	VERIFY(m_iPortionsNum<10000);
+	m_iStartPortionsNum			= pSettings->r_s32	(section, "eat_portions_num");
+	m_fMaxPowerUpInfluence		= READ_IF_EXISTS	(pSettings,r_float,section,"eat_max_power",0.0f);
+	VERIFY						(m_iPortionsNum<10000);
 }
 
 BOOL CEatableItem::net_Spawn				(CSE_Abstract* DC)
@@ -78,10 +78,6 @@ void CEatableItem::OnH_A_Independent()
 	inherited::OnH_A_Independent();
 	if(!Useful()) {
 		if (object().Local() && OnServer())	object().DestroyObject	();
-//		NET_Packet		P;
-//		object().u_EventGen		(P,GE_DESTROY,object().ID());
-//		//Msg				("ge_destroy: [%d] - %s",ID(),*cName());
-//		if (object().Local() && OnServer())	object().u_EventSend	(P);
 	}	
 }
 
@@ -95,4 +91,23 @@ void CEatableItem::OnH_B_Independent()
 			m_physic_item->m_ready_to_destroy	= true;
 	}
 	inherited::OnH_B_Independent();
+}
+
+void CEatableItem::UseBy (CEntityAlive* entity_alive)
+{
+	entity_alive->conditions().ChangeHealth		(m_fHealthInfluence);
+	entity_alive->conditions().ChangePower		(m_fPowerInfluence);
+	entity_alive->conditions().ChangeSatiety	(m_fSatietyInfluence);
+	entity_alive->conditions().ChangeRadiation	(m_fRadiationInfluence);
+	entity_alive->conditions().ChangeBleeding	(m_fWoundsHealPerc);
+	
+	entity_alive->conditions().SetMaxPower( entity_alive->conditions().GetMaxPower()+m_fMaxPowerUpInfluence );
+	
+	//уменьшить количество порций
+	if(m_iPortionsNum > 0)
+		--(m_iPortionsNum);
+	else
+		m_iPortionsNum = 0;
+
+
 }

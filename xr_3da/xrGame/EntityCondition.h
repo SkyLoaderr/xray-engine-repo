@@ -50,6 +50,8 @@ public:
 	void 					ChangePsyHealth			(float value);
 
 	void 					MaxPower				()					{m_fPower = m_fPowerMax;};
+	void					SetMaxPower				(float val)			{m_fPowerMax = val; clamp(m_fPowerMax,0.0f,1.0f);};
+	float					GetMaxPower				() const			{return m_fPowerMax;};
 
 	void 					ChangeBleeding			(float percent);
 
@@ -64,12 +66,6 @@ public:
 	void					UpdateConditionTime		();
 	void					SetConditionDeltaTime	(u64 DeltaTime) { m_iDeltaTime = DeltaTime; };
 
-	//временно! сон часов
-	void					Sleep					(float hours);
-	
-	void					GoSleep					();
-	virtual void			Awoke					();
-	bool					IsSleeping				() {return m_bIsSleeping;}
 	
 	//скорость потери крови из всех открытых ран 
 	float					BleedingSpeed			();
@@ -79,9 +75,9 @@ public:
 protected:
 	void					UpdateHealth			();
 	void					UpdatePower				();
-	void					UpdateSatiety			();
-	void					UpdateRadiation			();
-	void					UpdatePsyHealth			();
+	void					UpdateSatiety			(float k=1.0f);
+	void					UpdateRadiation			(float k=1.0f);
+	void					UpdatePsyHealth			(float k=1.0f);
 
 	void					UpdateCircumspection	();
 	void					UpdateEntityMorale		();
@@ -143,19 +139,6 @@ protected:
 	float m_fV_Circumspection;
 	float m_fV_EntityMorale;
 
-	//коэффициенты скоростей изменения параметров во время сна
-	float m_fK_SleepHealth;
-	float m_fK_SleepPower;
-	float m_fK_SleepSatiety;
-	float m_fK_SleepRadiation;
-	float m_fK_SleepPsyHealth;
-
-	//текущие состояния
-	float m_fCurrentSleepHealth;
-	float m_fCurrentSleepPower;
-	float m_fCurrentSleepSatiety;
-	float m_fCurrentSleepRadiation;
-	float m_fCurrentSleepPsyHealth;
 
 
 	//скорости восстановления здоровья и силы
@@ -184,8 +167,6 @@ protected:
 	float m_fHealthHitPart;
 	float m_fPowerHitPart;
 
-	//состояние сна
-	bool m_bIsSleeping;
 
 
 	//потеря здоровья от последнего хита

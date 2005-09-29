@@ -95,15 +95,17 @@ void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); R_ASSERT(pIItem);
 	CEatableItem* pEatableItem = smart_cast<CEatableItem*>(pIItem); R_ASSERT(pEatableItem);
 
-	if (pEatableItem->m_iPortionsNum > 1)
+	if (pEatableItem->PortionsNum() > 1)
 	{
 		Frect rect = pItem->GetAbsoluteRect();
 
 		pItem->GetFont()->SetColor(0xffffffff);
-		if(pEatableItem->m_iPortionsNum>0)
-			UI()->OutText(pItem->GetFont(), pItem->GetSelfClipRect(), float(rect.left), 
-			float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
-			"%d",	pEatableItem->m_iPortionsNum);
+		UI()->OutText(	pItem->GetFont(), 
+						pItem->GetSelfClipRect(), 
+						rect.left, 
+						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
+						"%d",	pEatableItem->PortionsNum());
+
 		pItem->GetFont()->OnRender();
 	}
 }

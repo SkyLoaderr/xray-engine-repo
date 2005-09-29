@@ -95,7 +95,6 @@ public:
 protected:
 	void HideAll();
 	void ShowAll();
-	bool m_bShowHudInfo;
 	bool m_bShowHudCrosshair;
 	
 	CUIStatic			UIStaticDiskIO;
