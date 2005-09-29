@@ -15,7 +15,7 @@
 		<mini_map  spot="deadbody_mini_spot"></mini_map>
 	</deadbody_location>
 
-	<enemy_mini_spot width="3" height="3" alignment="c" light_anim="ui_minimap_enemy">
+	<enemy_mini_spot width="3" height="3" alignment="c" _light_anim="ui_minimap_enemy">
 		<texture r="255" g="0" b="0">ui\hud_map_point</texture>
 	</enemy_mini_spot>
 	
