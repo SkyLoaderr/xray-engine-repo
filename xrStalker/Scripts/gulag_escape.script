@@ -606,7 +606,7 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "esc_killers" then
 		t = { section = "logic@esc_killer_leader_raid",
 			idle = 0,
-			prior = 10, state = {0}, squad = squad, group = groups[0],
+			prior = 10, state = {0}, squad = squad, group = groups[18],
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
 			            	return obj:profile_name() == "esc_killer_master"
@@ -615,40 +615,40 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer1_raid",
 			idle = 0,
-			prior = 8, state = {0}, squad = squad, group = groups[0],
+			prior = 8, state = {0}, squad = squad, group = groups[19],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_raid",
 			idle = 0,
-			prior = 8, state = {0}, squad = squad, group = groups[0],
+			prior = 8, state = {0}, squad = squad, group = groups[20],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
-			prior = 7, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[19],
 			in_rest = "", out_rest = "",
 			dependent = "logic@esc_killer1_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
-			prior = 7, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[19],
 			in_rest = "", out_rest = "",
 			dependent = "logic@esc_killer1_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
-			prior = 7, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[20],
 			in_rest = "", out_rest = "",
 			dependent = "logic@esc_killer2_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
-			prior = 7, state = {0}, squad = squad, group = groups[0],
+			prior = 7, state = {0}, squad = squad, group = groups[20],
 			in_rest = "", out_rest = "",
 			dependent = "logic@esc_killer2_raid"
 		}
@@ -1233,7 +1233,7 @@ function load_states(gname, type)
 
 	if type == "esc_bridge" then
 		return function(gulag)
-			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
+			if ( level.get_time_hours() >= 7 and level.get_time_hours() <= 22 ) and actor:has_info("esc_kill_bandits_quest_done") then
 				return 0  -- день
 			else
 				return 1  -- ночь
