@@ -306,6 +306,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -335,6 +336,7 @@
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -366,6 +368,7 @@
 			device_torch \n
 			wpn_toz34 \n
 			ammo_12x70_buck \n
+#include "gameplay\character_items.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -395,6 +398,7 @@
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n		
+#include "gameplay\character_items.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -424,6 +428,7 @@
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -454,7 +459,8 @@
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 			wpn_toz34 \n
-			ammo_12x70_buck \n			
+			ammo_12x70_buck \n		
+#include "gameplay\character_items.xml"	
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -484,6 +490,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -513,6 +520,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
