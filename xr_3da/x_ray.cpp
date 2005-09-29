@@ -487,6 +487,7 @@ void CApplication::LoadBegin	()
 		ll_hLogo1.create	("font","ui\\ui_logo");
 		ll_hLogo2.create	("font","ui\\ui_logo_nv");
 		ll_hLogo			= ll_hLogo2;
+		sh_progress.create	("hud\\default","ui\\ui_load_progress_bar");
 		load_stage			= 0;
 
 		CheckCopyProtection	();
@@ -538,10 +539,21 @@ void CApplication::LoadDraw		()
 		// Draw Progress
 
 		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
-		pv->set						(EPS_S+30.0f,				float(_h+EPS_S)-30.0f,	0+EPS_S, 1, C, 0, 1);	pv++;
-		pv->set						(EPS_S+30.0f,				float(_h+EPS_S)-50.0f,	0+EPS_S, 1, C, 0, 0);	pv++;
-		pv->set						(float(_w+EPS_S)-30.0f,		float(_h+EPS_S)-30.0f,	0+EPS_S, 1, C, 1, 1);	pv++;
-		pv->set						(float(_w+EPS_S)-30.0f,		float(_h+EPS_S)-50.0f,	0+EPS_S, 1, C, 1, 0);	pv++;
+
+		Fvector2 pic_sz;			pic_sz.set(1024.0f,32.0f);
+		Fvector2 lt;				lt.set( (_w-pic_sz.x/2.0f)/2.0f,	700.0f);		//lt pos
+		Fvector2 rb;				rb.set( lt.x+pic_sz.x/2.0f,			lt.y+pic_sz.y); //rb pos
+
+		float	cnt					= 32.0f/2.0f;
+		float	uv_base				= 1/32.0f;
+		
+		
+		float pos					= cnt - float(load_stage);
+
+		pv->set						(lt.x,						rb.y,			0+EPS_S,1,C, uv_base*pos,		1);	pv++;
+		pv->set						(lt.x,						lt.y,			0+EPS_S,1,C, uv_base*pos,		0);	pv++;
+		pv->set						(rb.x,						rb.y,			0+EPS_S,1,C, uv_base*(pos+cnt),	1);	pv++;
+		pv->set						(rb.x,						lt.y,			0+EPS_S,1,C, uv_base*(pos+cnt),	0);	pv++;
 		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
 
 		RCache.set_Shader			(sh_progress);
@@ -562,9 +574,8 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
 	Log							(app_title);
 	
-	string_path					tex;
-	sprintf						(tex,"%s%d","ui\\ui_start_progress",load_stage);
-	sh_progress.create			("hud\\default",tex);
+//	string_path					tex;
+//	sprintf						(tex,"%s%d","ui\\ui_start_progress",load_stage);
 
 	LoadDraw					();
 }
