@@ -135,6 +135,13 @@ object_list["test1"] = {
 
 -- define smart terrains
 smart_terrains["test1"] = {
+	"esc_blokpost",
+	"esc_bridge",
+	"esc_dogs_to_fox",
+	"esc_fabrika_bandit",
+	"esc_killers",
+	"esc_lager",
+	"esc_specnaz"
 }
 
 object_list["test2"] = {
