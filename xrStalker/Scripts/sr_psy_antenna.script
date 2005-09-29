@@ -210,6 +210,14 @@ function action_psy_antenna:reset_scheme()
 	self:switch_state(db.actor)
 end
 
+function action_psy_antenna:deactivate()
+--	printf( "sr_psy_antenna: deactivate: obj=%s", self.object:name() )
+
+	if self.state == state_inside then
+		self:zone_leave()
+	end
+end
+
 function action_psy_antenna:update( delta )
 	local actor = db.actor
 
