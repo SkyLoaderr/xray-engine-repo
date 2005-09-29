@@ -45,4 +45,10 @@
     <string id="yantar_help_scientist_6">
         <text>opa!</text>
     </string>
+    <string id="yantar_wounded_scientist_0">
+        <text>AAAAAAAAA!!!!!</text>
+    </string>
+    <string id="yantar_wounded_scientist_1">
+        <text>Go!!!!!!!</text>
+    </string>
 </string_table>
