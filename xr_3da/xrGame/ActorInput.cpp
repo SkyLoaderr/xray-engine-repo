@@ -26,11 +26,13 @@ float gCheckHitK = 1.0f;
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
-	if(cmd == kEXT_14)
-		gCheckHitK = 3.0f;
-	if(cmd == kEXT_13)
-		gCheckHitK = 8.0f;
 
+	if(GameID()!=GAME_DEATHMATCH){
+		if(cmd == kEXT_14)
+			gCheckHitK = 3.0f;
+		if(cmd == kEXT_13)
+			gCheckHitK = 8.0f;
+	}
 	if (conditions().IsSleeping())	return;
 	if (IsTalking())	return;
 	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;
@@ -195,10 +197,12 @@ void CActor::IR_OnMouseWheel(int direction)
 void CActor::IR_OnKeyboardRelease(int cmd)
 {
 	if (Remote())		return;
-	if(cmd == kEXT_14)
-		gCheckHitK = 1.0f;
-	if(cmd == kEXT_13)
-		gCheckHitK = 1.0f;
+	if(GameID()!=GAME_DEATHMATCH){
+		if(cmd == kEXT_14)
+			gCheckHitK = 1.0f;
+		if(cmd == kEXT_13)
+			gCheckHitK = 1.0f;
+	}
 
 	if (conditions().IsSleeping())	return;
 	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;

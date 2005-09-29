@@ -60,12 +60,12 @@ void CLevel::IR_OnKeyboardPress	(int key)
 	{
 		if (g_bEnableMPL)	{
 			// turn off
-			Console->Execute("r1_dlights_clip 30");
-			g_bEnableMPL	= FALSE	;
+//			Console->Execute("r1_dlights_clip 30");
+//			g_bEnableMPL	= FALSE	;
 		} else {
 			// turn on
-			Console->Execute("r1_dlights_clip 150");
-			g_bEnableMPL	= TRUE	;
+//			Console->Execute("r1_dlights_clip 150");
+//			g_bEnableMPL	= TRUE	;
 		}
 	}
 	//. dbgmp end
