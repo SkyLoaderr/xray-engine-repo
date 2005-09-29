@@ -77,12 +77,12 @@ weathers				= default
 anomalies_texture_rect	= 0,128,128,128    ;texture coords: left,top,width,height
 anomalies_tex_rect	= 0,128,128,128    ;texture coords: left,top,width,height
 
-[L01_escape]
+[l01_escape]
 texture         = ui\ui_escape
 ;texture_global  = ui\ui_global_map_spot
 bound_rect      = -493.863,-908.157, 478.423,1050.880
 global_rect		= 256.0,833.0,332.927765,988.0
-weathers		= default
+
 
 [L02_garbage]
 texture         = map\map_garbage
@@ -276,6 +276,8 @@ bound_rect      = -68.894,-68.894, 68.894,68.894
 texture         = ui\ui_escape
 global_rect		= 0.0,0.0,	500.0,1000.0
 bound_rect      = -493.863,-908.157, 478.423,1050.880
+weathers		= default
+music_tracks    = l01_escape_musics
 
 [zmey_escape]
 texture         = ui\ui_escape
@@ -1723,7 +1725,10 @@ level163
   20002        = "test_searchlight1"
   20003        = "test_searchlight2"
   
-
+[l01_escape_musics]
+music\amb07					= 21,24,   1.0,   10,30	
+music\07_mutation 			= 0, 0,    0.5,   10, 30
+music\amb03		    		= 10, 20,    0.7,   10, 15
 
 [l02_garbage_musics]
 music\04_cold_freezing_out 	= 0, 10,    0.5,   10, 30
