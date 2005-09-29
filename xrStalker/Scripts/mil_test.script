@@ -172,8 +172,8 @@ object_list["test4"] = {
 object_list["test5"] = {
     "mil_stalker0023",
     "mil_stalker0024",
-    "mil_stalker0025",
-	"mil_bloodsucker_mil_0008"
+    "mil_stalker0025"
+--	"mil_bloodsucker_mil_0008"
 }
 
 ------------------------------------------------------------------------------
