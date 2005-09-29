@@ -375,6 +375,18 @@ void add_cam_effector(CCameraEffector* e)
 {
 	Actor()->EffectorManager().AddEffector(e);
 }
+		
+float get_snd_volume()
+{
+	return psSoundVFactor;
+}
+
+void set_snd_volume(float v)
+{
+	psSoundVFactor = v;
+	clamp(psSoundVFactor,0.0f,1.0f);
+}
+
 
 void CLevel::script_register(lua_State *L)
 {
@@ -448,6 +460,8 @@ void CLevel::script_register(lua_State *L)
 		def("iterate_sounds",					&iterate_sounds1),
 		def("iterate_sounds",					&iterate_sounds2),
 		def("physics_world",					&physics_world),
+		def("get_snd_volume",					&get_snd_volume),
+		def("set_snd_volume",					&set_snd_volume),
 //		def("actor_impact",						&actor_impact),
 		def("add_cam_effector",					&add_cam_effector,adopt(_1) )
 	];

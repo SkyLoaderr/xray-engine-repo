@@ -193,14 +193,12 @@ public:
 SndShockEffector::SndShockEffector	()
 {
 	m_cur_length			= 0;
-	m_stored_eff_volume		= -1.0f;
-	m_stored_music_volume	= -1.0f;
+	m_stored_volume			= -1.0f;
 }
 
 SndShockEffector::~SndShockEffector	()
 {
-	psSoundVEffects		= m_stored_eff_volume;
-	psSoundVMusic		= m_stored_music_volume;
+	psSoundVFactor		= m_stored_volume;
 	Level().Cameras.RemoveEffector(cefppHit);
 }
 
@@ -213,15 +211,12 @@ void SndShockEffector::Start(int snd_length, float power)
 {
 	m_snd_length = snd_length;
 
-	if( m_stored_eff_volume<0.0f )
-		m_stored_eff_volume = psSoundVEffects;
+	if( m_stored_volume<0.0f )
+		m_stored_volume = psSoundVFactor;
 	
-	if( m_stored_music_volume<0.0f )
-		m_stored_music_volume = psSoundVMusic;
 
 	m_cur_length		= 0;
-	psSoundVEffects		= m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
-	psSoundVMusic		= m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
+	psSoundVFactor		= m_stored_volume*SND_MIN_VOLUME_FACTOR;
 	
 	static float		xxx = 6.0f/150.0f; //6sec on max power(150)
 	Level().Cameras.AddEffector(xr_new<CShockPPEffector>(power*xxx,this));
@@ -233,9 +228,6 @@ void SndShockEffector::Update()
 	float x				= float(m_cur_length)/m_snd_length;
 	float y				= 2.f*x-1;
 	if (y>0.f){
-		psSoundVEffects		= y*(m_stored_eff_volume-m_stored_eff_volume*SND_MIN_VOLUME_FACTOR)+m_stored_eff_volume*SND_MIN_VOLUME_FACTOR;
-		psSoundVMusic		= y*(m_stored_music_volume-m_stored_music_volume*SND_MIN_VOLUME_FACTOR)+m_stored_music_volume*SND_MIN_VOLUME_FACTOR;
+		psSoundVFactor	= y*(m_stored_volume-m_stored_volume*SND_MIN_VOLUME_FACTOR)+m_stored_volume*SND_MIN_VOLUME_FACTOR;
 	}
-//	if(!(Device.dwFrame%100))
-//		Msg("--Update. Cur Volume=%f", psSoundVEffects);
 }
