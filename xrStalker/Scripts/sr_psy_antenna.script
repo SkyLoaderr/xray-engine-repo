@@ -52,7 +52,7 @@ function PsyAntenna:__init				()
 	self.hit_time						= 0;
 	self.intensity						= 0;	// текущая интенсивность
 	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
-	self.intensity_inertion				= 0.3;	// скорость изменения интенсивности ед/секунду
+	self.intensity_inertion				= 0.1;	// скорость изменения интенсивности ед/секунду
 	self.hit_intensity					= 0;	// текущая интенсивность
 	self.pp 							= PsyAntennaPP();
 	self.pp.params.noise				= noise();
@@ -116,13 +116,20 @@ function PsyAntenna:update_psy_hit		(dt)
 		self.hit_time					= time_global();
 		local psy_hit 					= hit();
 --		psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.hit_intensity;
-		psy_hit.power 					= self.hit_amplitude*self.hit_intensity;
+
+		if self.hit_intensity > 0 then
+			psy_hit.power 				= self.hit_amplitude*self.hit_intensity;
+		else
+			psy_hit.power 				= 0
+		end
+
 		psy_hit.direction 				= vector():set( 0, 0, 0 );
 		psy_hit.impulse 				= 0;
 		psy_hit.draftsman 				= db.actor; 
 		psy_hit.type 					= hit.telepatic;
 		db.actor:hit					(psy_hit);
-		printf( "hit power=%f", psy_hit.power )
+
+--		printf( "hit power=%f", psy_hit.power )
 	end;
 
 	if db.actor.psy_health < 0.01 and db.actor:alive() then
