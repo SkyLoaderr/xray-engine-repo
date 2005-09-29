@@ -37,7 +37,10 @@ function actor_binder:net_destroy()
 	--self.object:set_callback(callback.actor_sleep, nil)
 	self.object:set_callback(callback.task_state, nil)
 
-	sr_psy_antenna.psy_antenna = false
+	if sr_psy_antenna.psy_antenna then
+		sr_psy_antenna.psy_antenna:destroy()
+		sr_psy_antenna.psy_antenna = false
+	end
 
 	object_binder.net_destroy(self)
 end

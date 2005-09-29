@@ -52,7 +52,7 @@ function PsyAntenna:__init				()
 	self.hit_time						= 0;
 	self.intensity						= 0;	// текущая интенсивность
 	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
-	self.intensity_inertion				= 0.1;	// скорость изменения интенсивности ед/секунду
+	self.intensity_inertion				= 0.05;	// скорость изменения интенсивности ед/секунду
 	self.hit_intensity					= 0;	// текущая интенсивность
 	self.pp 							= PsyAntennaPP();
 	self.pp.params.noise				= noise();
@@ -74,7 +74,7 @@ function PsyAntenna:__init				()
 	self.sound_obj_right.volume			= self.intensity
 end
 
-function PsyAntenna:__finalize			()
+function PsyAntenna:destroy				()
 	self.pp:finish 						();
 end;
 
@@ -114,28 +114,27 @@ function PsyAntenna:update_psy_hit		(dt)
 	local d_time						= time_global()-self.hit_time;
 	if d_time > 1000 then --and self.power_factor.a>0.01 then
 		self.hit_time					= time_global();
-		local psy_hit 					= hit();
---		psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.hit_intensity;
 
-		if self.hit_intensity > 0 then
-			psy_hit.power 				= self.hit_amplitude*self.hit_intensity;
-		else
-			psy_hit.power 				= 0
+		local power						= self.hit_amplitude*self.hit_intensity;
+		if power > 0 then
+			local psy_hit 					= hit();
+--			psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.hit_intensity;
+			psy_hit.power 					= power
+			psy_hit.direction 				= vector():set( 0, 0, 0 );
+			psy_hit.impulse 				= 0;
+			psy_hit.draftsman 				= db.actor;
+			psy_hit.type 					= hit.telepatic;
+			db.actor:hit					(psy_hit);
+
+--			printf( "hit power=%f", psy_hit.power )
+
+			if db.actor.psy_health < 0.01 and db.actor:alive() then
+				db.actor:kill( db.actor )
+			end
 		end
-
-		psy_hit.direction 				= vector():set( 0, 0, 0 );
-		psy_hit.impulse 				= 0;
-		psy_hit.draftsman 				= db.actor; 
-		psy_hit.type 					= hit.telepatic;
-		db.actor:hit					(psy_hit);
-
---		printf( "hit power=%f", psy_hit.power )
-	end;
-
-	if db.actor.psy_health < 0.01 and db.actor:alive() then
-		db.actor:kill( db.actor )
 	end
 end
+
 function PsyAntenna:generate_phantoms 	()
 --	if self.power_factor.a>0.1 then
 		if math.random()<self.phantom_spawn_probability then
@@ -207,7 +206,7 @@ function action_psy_antenna:reset_scheme()
 	end
 
 	self.state = state_outside
-	
+
 	self:switch_state(db.actor)
 end
 
@@ -216,7 +215,7 @@ function action_psy_antenna:update( delta )
 
 	if xr_logic.try_switch_to_another_section( self.object, self.st, actor ) then
 		return
-	end	
+	end
 
 	self:switch_state( actor )
 
@@ -224,14 +223,14 @@ end
 
 function action_psy_antenna:switch_state( actor )
 	local state = self.state
-	
+
 	if state == state_outside then
 		if self.object:inside( actor:position() ) then
 			self:zone_enter()
 			return
 		end
 	end
-	
+
 	if state == state_inside then
 		if not self.object:inside( actor:position() ) then
 			self:zone_leave()
