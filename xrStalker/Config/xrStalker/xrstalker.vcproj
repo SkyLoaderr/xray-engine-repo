@@ -2521,6 +2521,9 @@
 							RelativePath=".\Scripts\sr_sound2d.script">
 						</File>
 						<File
+							RelativePath=".\scripts\sr_teleport.script">
+						</File>
+						<File
 							RelativePath=".\scripts\sr_territory.script">
 						</File>
 						<File
