@@ -57,14 +57,15 @@ function PatrolManager:__init (path_name)
     patrols[path_name] = self
 end
 -----------------------
-function PatrolManager:add_npc (npc)
+function PatrolManager:add_npc (npc, leader)
     --validate npc
     if npc == nil or npc:alive () == false or self.npc_list[npc:id ()] ~= nil then 
        return 
     end
     -- if this npc first in command then set him as commander
     self.npc_list[npc:id ()] = {soldier = npc, dir = vector ():set (1, 0, 0), dist = 0}
-    if table.getn (self.npc_list) == 1 then
+    
+    if table.getn (self.npc_list) == 1 or leader == true then
        self.commander_id = npc:id ()
     end    
     self:reset_positions ()
@@ -457,5 +458,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
     if patrols[st.path_name] == nil then
        patrols[st.path_name] = PatrolManager (st.path_name)
 	end
-	patrols[st.path_name]:add_npc (npc)
+	patrols[st.path_name]:add_npc (npc, utils.cfg_get_bool (ini, section, "commander", npc, false, false))
 end
