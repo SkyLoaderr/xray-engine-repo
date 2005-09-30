@@ -239,7 +239,7 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 	if (pTmpFont)
 		pWnd->SetFont(pTmpFont);	
 	// Load font alignment
-	shared_str al = xml_doc.ReadAttrib(path, index, "align", "l");
+	shared_str al = xml_doc.ReadAttrib(path, index, "align");
 	if (0 == xr_strcmp(al, "c"))
 		pWnd->SetTextAlignment(CGameFont::alCenter);
 	else if (0 == xr_strcmp(al, "r"))

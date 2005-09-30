@@ -9,6 +9,7 @@
 #include "../hudmanager.h"
 #include "../level.h"
 #include "../game_cl_teamdeathmatch.h"
+#include <dinput.h>
 
 CUIMapDesc::CUIMapDesc(){
 	m_pBackground	= xr_new<CUIStatic>();		AttachChild(m_pBackground);	
@@ -88,8 +89,8 @@ void CUIMapDesc::Init(){
 void CUIMapDesc::SendMessage(CUIWindow* pWnd,s16 msg, void* pData){
 	if (BUTTON_CLICKED == msg)
 	{
-		Game().StartStopMenu(this,true);
 		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		dm->StartStopMenu(this,true);
 		if (pWnd == m_pBtnSpectator)
 			dm->OnSpectatorSelect();
 		else if (pWnd == m_pBtnNext)
@@ -97,6 +98,28 @@ void CUIMapDesc::SendMessage(CUIWindow* pWnd,s16 msg, void* pData){
 	}
 
 }
+
+bool CUIMapDesc::OnKeyboard(int dik, EUIMessages keyboard_action){
+	if (WINDOW_KEY_RELEASED == keyboard_action) 
+		return true;
+
+	game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+
+	switch (dik){
+		case DIK_ESCAPE:
+#pragma todo("SATAN -> CRAZY_MAX : please free me from this intolerable emptiness :) ")
+			return true;
+			break;
+		case DIK_RETURN:
+			dm->StartStopMenu(this,true);
+			dm->OnMapInfoAccept();
+			return true;
+			break;
+	}
+
+    return false;
+}
+
 
 
 

@@ -464,6 +464,8 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 		R_ASSERT(!pDDItemMP->m_additionalInfo.empty());
 
 		this_inventory->UIOutfitIcon.InitTexture(pDDItemMP->m_additionalInfo.c_str());
+//		this_inventory->m_current_skin = pDDItemMP->m_additionalInfo.c_str();
+//		this_inventory->UpdateOutfit();
 
 //		xr_vector<float>::iterator it = pDDItemMP->m_fAdditionalInfo.begin();
 /*		this_inventory->UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
@@ -865,14 +867,15 @@ void CUIBuyWeaponWnd::Update()
 
 	// Ecли в слоте с костюмом армор показывается, то спрятать его.
 	static bool flag = true;
+
+	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
+		flag = true;
+
 	if (flag && UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
 	{
 		UpdateOutfit();
 		flag = false;
 	}
-
-	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
-		flag = true;
 
 	CUIWindow::Update();
 }

@@ -12,6 +12,7 @@ public:
 	~CUIMapDesc();
 
     virtual void SendMessage(CUIWindow* pWnd, s16 msg, void *pData = 0);
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 
 private:
 	void	Init();

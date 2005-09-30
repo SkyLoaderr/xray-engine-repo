@@ -199,21 +199,21 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		OnBtnOK();
 		return true;
 	}
-	if (DIK_ESCAPE == dik)
-	{
-		OnBtnCancel();
-		return true;
-	}
 
-	if (DIK_LEFT == dik)
-	{
-		OnKeyLeft();
-		return true;
-	}
-	if (DIK_RIGHT == dik)
-	{
-		OnKeyRight();
-		return true;
+	switch (dik){
+		case DIK_ESCAPE:
+#pragma todo("Satan -> MAD_MAX : please make something brutal ;) ")
+			return true;
+		case DIK_RETURN:	// do autoselect
+			m_iActiveIndex = -1;
+			OnBtnOK();
+			return true;
+		case DIK_LEFT:
+			OnKeyLeft();
+			return true;
+		case DIK_RIGHT:
+			OnKeyRight();
+			return true;
 	}
 
 	return false;
@@ -262,3 +262,5 @@ void CUISkinSelectorWnd::SetCurSkin(int skin){
 
 	UpdateSkins();
 }
+
+

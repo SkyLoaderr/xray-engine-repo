@@ -115,20 +115,26 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_PRESSED != keyboard_action)
 		return false;
-
+	game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+	
 	if (DIK_1 == dik || DIK_2 == dik)
 	{
-		Game().StartStopMenu(this,true);
-		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		dm->StartStopMenu(this,true);
+		
 		if (DIK_1 == dik)
 			dm->OnTeamSelect(0);
 		else
 			dm->OnTeamSelect(1);
 		return true;
 	}
-	if (DIK_ESCAPE == dik)
+	switch (dik)
 	{
-		Game().StartStopMenu(this,true);
+	case DIK_ESCAPE:
+#pragma todo("SATAN -> MAD_MAX : surprise me! ")
+		return true;
+	case DIK_RETURN:
+		dm->StartStopMenu(this,true);
+		dm->OnTeamSelect(-1);
 		return true;
 	}
 
