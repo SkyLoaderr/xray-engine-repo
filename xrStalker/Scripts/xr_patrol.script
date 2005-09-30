@@ -146,11 +146,11 @@ function PatrolManager:get_npc_command (npc)    -- get command for NPC
     -- в зависимости от типа перемещения будем менять целевую аи ноду
     local d
     if self.current_state == patrol_move or self.current_state == patrol_hide or self.current_state == patrol_stop then
-       d = 1
-    elseif self.current_state == patrol_run then
-       d = 1.5
-    else
        d = 2
+    elseif self.current_state == patrol_run then
+       d = 2.5
+    else
+       d = 3
     end   
             
     --теперь аи ноду относительно командора ордена рыцарей храма
@@ -282,7 +282,7 @@ function action_commander:execute()
     elseif self.cur_state == patrol_sprint then
           state_mgr.set_state (self.object, "sprint")
     elseif self.cur_state == patrol_run then
-	      state_mgr.set_state (self.object, "run")
+	      state_mgr.set_state (self.object, "assault")
     elseif self.cur_state == patrol_stop then
 	      state_mgr.set_state (self.object, "idle")
     end   
@@ -337,8 +337,13 @@ function action_patrol:execute ()
 	end	
 	
 	self.l_vid, self.dir, self.cur_state, reset = patrols[self.st.path_name]:get_npc_command (self.object)
-	
-    self.l_vid = utils.send_to_nearest_accessible_vertex (self.object, self.l_vid)	
+
+	if self.l_vid == self.object:level_vertex_id () then
+	   utils.send_to_nearest_accessible_vertex (self.object, level.vertex_in_direction (self.l_vid, self.object:direction (), 1))
+    else	   
+       self.l_vid = utils.send_to_nearest_accessible_vertex (self.object, self.l_vid)	 
+	end
+    
 	self.object:set_desired_direction (self.dir)
 	self.object:set_path_type (game_object.level_path)
 	
@@ -348,12 +353,8 @@ function action_patrol:execute ()
 	    
 	--перемещаемся по пути
 	if self.on_point == false then  -- если позиция не была еще достигнута, то подбежим к ней
-	   self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 2
-	   if self.cur_state == patrol_run or self.cur_state == patrol_sprint then
-           state_mgr.set_state(self.object, "sprint")	-- если команда бежать, то бежим еще быстрее
-       else   
-           state_mgr.set_state(self.object, "run")       -- просто подбегаем
-	   end   	
+	   self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 3
+       state_mgr.set_state(self.object, "assault")       -- просто подбегаем
 	else
 	   if self.cur_state == patrol_move then
 	      state_mgr.set_state (self.object, "patrol")
@@ -362,13 +363,14 @@ function action_patrol:execute ()
 	   elseif self.cur_state == patrol_sprint then
 	      state_mgr.set_state (self.object, "sprint")
 	   elseif self.cur_state == patrol_run then
-	      state_mgr.set_state (self.object, "run")
+	      state_mgr.set_state (self.object, "assault")
 	   elseif self.cur_state == patrol_stop then
 	      state_mgr.set_state (self.object, "idle")
 	   end   
-       self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 5
-	end       
-	--printf ("SOLDIER %s - TARGET STATE = %s", self.object:name (), state_mgr.get_state (self.object))
+       self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 8
+	end
+	
+	
 end
 ----------------------
 function action_patrol:finalize ()
