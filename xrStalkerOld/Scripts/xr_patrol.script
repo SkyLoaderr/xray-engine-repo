@@ -51,7 +51,7 @@ function PatrolManager:__init (path_name)
     self.npc_list = {}
     self.current_state = patrol_stop
     self.commander_id = -1
-    self.formation = "around"
+    self.formation = "back"
     self.commander_lid = -1
     self.commander_dir = vector ():set (0, 0, 1)
     patrols[path_name] = self
@@ -102,6 +102,17 @@ function PatrolManager:get_capacity ()
     -- else - remove patrol manager
     patrols[self.path_name] = nil
     return 0    
+end
+-----------------------
+function PatrolManager:set_formation (formation)
+    if formation == nil then
+       abort ("Invalid formation (nil) for PatrolManager[%s]", self.path_name)
+    end
+    if formation ~= "around" and formation ~= "back" and formation ~= "line" then
+       abort ("Invalid formation (%s) for PatrolManager[%s]", formation, self.path_name)
+    end
+    self.formation = formation
+    self:reset_positions ()   
 end
 -----------------------
 function PatrolManager:get_npc_command (npc)    -- get command for NPC
@@ -251,6 +262,7 @@ function action_commander:reset_scheme()
 	else
 		self.move_mgr:continue()
 	end
+	patrols[self.st.path_walk]:set_formation (self.st.formation)
 	self.was_reset = true
 end
 ----------------------
@@ -426,6 +438,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_name = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_walk = st.path_name
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
+	st.formation = utils.cfg_get_string(ini, section, "formation", npc, false, gulag_name)
+	if st.formation == nil then
+	   st.formation = "back"
+	end    
 
 	st.suggested_state = {}
 	st.suggested_state.standing = utils.cfg_get_string(ini, section, "def_state_standing", npc, false, "")
