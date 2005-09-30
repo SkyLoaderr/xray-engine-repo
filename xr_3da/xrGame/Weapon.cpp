@@ -959,6 +959,7 @@ void CWeapon::UpdateHUDAddonsVisibility()
 
 	if(ScopeAttachable()){
 		bone_id = pHudVisual->LL_BoneID(wpn_scope);
+		VERIFY2(bone_id!=BI_NONE,"there are no scope bone.");
 		if(IsScopeAttached()){
 			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
 				pHudVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
@@ -969,6 +970,7 @@ void CWeapon::UpdateHUDAddonsVisibility()
 	}
 	if(SilencerAttachable()){
 		bone_id = pHudVisual->LL_BoneID(wpn_silencer);
+		VERIFY2(bone_id!=BI_NONE,"there are no silencer bone.");
 		if(IsSilencerAttached()){
 			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
 				pHudVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
@@ -982,6 +984,7 @@ void CWeapon::UpdateHUDAddonsVisibility()
 		if(bone_id==BI_NONE)
 			bone_id = pHudVisual->LL_BoneID(wpn_launcher);
 
+		VERIFY2(bone_id!=BI_NONE,"there are no grenade launcher bone.");
 		if(IsGrenadeLauncherAttached()){
 			if(FALSE==pHudVisual->LL_GetBoneVisible		(bone_id))
 				pHudVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
