@@ -485,7 +485,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	P *= m_HitTypeK[hit_type]*hitScale;
 	
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	if(GetfHealth()<=0.f)
+	if(GetfHealth()<=0.f&&who->ID()!=ID())
 	{
 		CExplosive::SetInitiator(who->ID());
 		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
@@ -661,7 +661,7 @@ void CCar::ParseDefinitions()
 	CInifile* ini = pKinematics->LL_UserData();
 	R_ASSERT2(ini,"Car has no description !!! See ActorEditor Object - UserData");
 	CExplosive::Load(ini,"explosion");
-	CExplosive::SetInitiator(ID());
+	//CExplosive::SetInitiator(ID());
 	m_camera_position			= ini->r_fvector3("car_definition","camera_pos");
 	///////////////////////////car definition///////////////////////////////////////////////////
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
