@@ -508,8 +508,7 @@ function move_mgr:turn_end_callback()
 				self.object:name(), self.path_look)
 		end
 
-		if self.move_cb_info.func(self.move_cb_info.obj, this.arrival_after_rotation,
-		   self.retval_after_rotation, self.path_walk_info[self.last_index].flags)
+		if self.move_cb_info.func(self.move_cb_info.obj, this.arrival_after_rotation, self.retval_after_rotation, self.last_index)
 		then
 			-- Callback решил перехватить управление перемещением, не восстанавливаем таймер
 			return
@@ -594,7 +593,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_walk)
 		end
-		if self.move_cb_info.func(self.move_cb_info.obj, this.arrival_before_rotation, retv_num, self.path_walk_info[index].flags) then
+		if self.move_cb_info.func(self.move_cb_info.obj, this.arrival_before_rotation, retv_num, index) then
 			return
 		end
 	end
