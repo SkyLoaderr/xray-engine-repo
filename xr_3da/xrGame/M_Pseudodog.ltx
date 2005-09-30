@@ -319,6 +319,21 @@ fire_wound_immunity = 0.04	;0.15
 ;---------------------------------------------------------------------------------
 ;-- PSY DOG
 ;---------------------------------------------------------------------------------
+[psy_dog_aura_effector]
+duality_h		= 0.02
+duality_v		= 0.02
+blur			= 0.4
+gray			= 0.5
+noise_intensity = 0.6
+noise_grain		= 2
+noise_fps		= 25
+color_base		= 0.8,0.8,0.8
+color_gray		= 0.6,0.6,0.6
+color_add		= 0.00,0.02,0.07
+radius_min		= 0.01
+radius_max		= 0.2
+
+
 [psy_dog]:m_pseudodog_e
 $spawn				= "monsters\psy_dog\psy_dog"
 visual				= monsters\pseudodog\pseudodog_grey
@@ -329,9 +344,9 @@ class                = SM_DOG_P
 ;---------------------------------------------------------------------------------
 
 ;=========================================================================================
-; Threaten Effector
+; Appear Effector
 ;=========================================================================================
-[psy_dog_appear_effector]
+[psy_dog_phantom_appear_effector]
 duality_h		= 0.01	;0.31
 duality_v		= 0.01	;0.31
 blur			= 0.01
@@ -351,6 +366,8 @@ ce_time				= 0.2	;1.5
 ce_amplitude		= 1.0
 ce_period_number	= 2.0
 ce_power			= 0.3 ;0.7
+
+
 ;=========================================================================================
 ; Base Definition
 ;=========================================================================================
@@ -359,5 +376,7 @@ $spawn				= "monsters\psy_dog\psy_dog_phantom"
 visual				= monsters\pseudodog\pseudodog_grey
 class               = SM_DOG_F
 
-appear_effector		= psy_dog_appear_effector
+appear_effector		= psy_dog_phantom_appear_effector
+particles_appear	= anomaly2\bloodsucker_shield
+particles_disappear	= anomaly2\bloodsucker_shield
 ;=========================================================================================
