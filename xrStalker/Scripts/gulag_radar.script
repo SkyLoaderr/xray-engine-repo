@@ -489,10 +489,20 @@ function load_ltx_antenna_patrol(gname, type)
         res = res.."[logic@" .. gname .. "_kamper" .. i .. "]\n" ..
                    "active = kamp@" .. gname .. "_kamper" .. i .. "\n" ..
 
-
                    "[kamp@" .. gname .. "_kamper" .. i .. "]\n" ..
                    "center_point = kamp\n"
     end
+		res = res.."[logic@rad_alarm]\n"..
+				"active = walker@rad_alarm\n"..
+
+				"[walker@rad_alarm]\n"..
+				"path_walk = alarm_walk\n"..
+				"danger=danger_condition\n"..
+
+				"[danger_condition]\n"..
+				"danger_expiration_time = 60000\n"..
+				"danger_inertion_time =  90000\n"..
+
     return res
 end
 --------------------------------------------------------------------------
