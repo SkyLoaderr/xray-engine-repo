@@ -21,6 +21,7 @@
 
 	<info_portion id="esc_kill_gunslinger">
 		<task>storyline_eliminate_gunslinger</task>
+		<article>storyline_gunslinger</article>
 	</info_portion>
 
 	
