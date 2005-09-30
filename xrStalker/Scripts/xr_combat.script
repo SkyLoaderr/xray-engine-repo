@@ -15,7 +15,6 @@ function set_combat_type( npc, actor, t )
 
 	if script_combat_type == "monolith" then
 		script_combat_type = nil
-		return false
 	end
 
 	db.storage[npc:id()].script_combat_type = script_combat_type
