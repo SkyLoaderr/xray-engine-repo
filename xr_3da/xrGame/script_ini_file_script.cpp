@@ -47,7 +47,8 @@ CScriptIniFile *create_ini_file	(LPCSTR ini_string)
 			&IReader			(
 				(void*)ini_string,
 				xr_strlen(ini_string)
-			)
+			),
+			FS.get_path("$game_config$")->m_Path
 		)
 	);
 }

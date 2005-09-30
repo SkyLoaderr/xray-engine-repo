@@ -139,7 +139,8 @@ CInifile &CSE_Abstract::spawn_ini			()
 			&IReader			(
 				(void*)(*(m_ini_string)),
 				m_ini_string.size()
-			)
+			),
+			FS.get_path("$game_config$")->m_Path
 		);
 #pragma warning(pop)
 	return						(*m_ini_file);
