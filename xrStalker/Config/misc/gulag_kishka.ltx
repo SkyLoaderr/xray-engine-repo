@@ -20,79 +20,54 @@ path_walk = w3
 path_look = see3
 
 [logic@ptr2_patrol1]
-active = walker@ptr1_patrol1
+active = walker@ptr2_patrol1
 
 [walker@ptr2_patrol1]
-path_walk = w1
+path_walk = wp2
 
 [logic@ptr2_patrol2]
-active = walker@ptr_patrol1
+active = walker@ptr2_patrol2
 
 [walker@ptr2_patrol2]
-path_walk = w1
+path_walk = wp2
 
 [logic@ptr3_patrol1]
 active = walker@ptr3_patrol1
 
 [walker@ptr3_patrol1]
-path_walk = w1
+path_walk = wp3
 
 [logic@ptr3_patrol2]
 active = walker@ptr3_patrol2
 
 [walker@ptr3_patrol2]
-path_walk = w1
+path_walk = wp3
 
 [logic@ptr_patrol1]
-active = walker@ptr_patrol1
+active = camper@ptr_patrol1
 
-[walker@ptr_patrol1]
-path_walk = w1
+[camper@ptr_patrol1]
+path_walk = wp1
+path_look = see1
 
 [logic@ptr_patrol2]
-active = walker@ptr_patrol2
+active = camper@ptr_patrol2
 
-[walker@ptr_patrol2]
-path_walk = wp1
+[camper@ptr_patrol2]
+path_walk = wp2
+path_look = see2
 
-[logic@kabkamp_kab1]
-active = mob_walker@kabkamp_kaban1
+[logic@ds_snp1_sniper1]
+active = camper@ds_snp1_sniper1
 
-[mob_walker@kabkamp_kaban1]
-path_walk = w1
+[camper@ds_snp1_sniper1]
+path_walk = ws1
+path_look = see1
+sniper = true
 
-[logic@kabkamp_kab2]
-active = mob_walker@kabkamp_kaban2
 
-[mob_walker@kabkamp_kaban2]
-path_walk = w2
 
-[logic@kabkamp_kab3]
-active = mob_walker@kabkamp_kaban3
 
-[mob_walker@kabkamp_kaban3]
-path_walk = w3
+[logic@ds_boars_nest]
+active = nil
 
-[logic@kabkamp_kab4]
-active = mob_walker@kabkamp_kaban4
-
-[mob_walker@kabkamp_kaban4]
-path_walk = w4
-
-[logic@kabkamp_kab5]
-active = mob_walker@kabkamp_kaban5
-
-[mob_walker@kabkamp_kaban5]
-path_walk = w5
-
-[logic@kabkamp_kab6]
-active = mob_walker@kabkamp_kaban6
-
-[mob_walker@kabkamp_kaban6]
-path_walk = w6
-
-[logic@kabkamp_kab7]
-active = mob_walker@kabkamp_kaban7
-
-[mob_walker@kabkamp_kaban7]
-path_walk = w7
