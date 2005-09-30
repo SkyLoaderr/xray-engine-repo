@@ -469,6 +469,11 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	}*/
 
 	//if(||) P=0.f;
+	if(Initiator()==u16(-1)&&hit_type==ALife::eHitTypeStrike)
+	{
+		P=0.f;
+	}
+
 	if(GetfHealth()>0.f)
 	{
 		CExplosive::SetInitiator(who->ID());
