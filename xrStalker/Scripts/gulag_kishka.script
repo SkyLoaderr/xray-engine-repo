@@ -6,101 +6,174 @@ function load_job(sj, gname, type, squad, groups)
 if type == "kem1" then
 		t = { section = "logic@kem1_camper1",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
-
+       table.insert(sj, t)	
        t = { section = "logic@kem1_camper2",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
-	   t = { section = "logic@kem1_camper1",
+		table.insert(sj, t)	
+	   t = { section = "logic@kem1_camper3",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
        end
        
        if type == "ptr" then
 		t = { section = "logic@ptr_patrol1",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
 
        t = { section = "logic@ptr_patrol2",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
        end
        
        if type == "ptr2" then
 		t = { section = "logic@ptr2_patrol1",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
 
        t = { section = "logic@ptr2_patrol2",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
        end
        
        if type == "ptr3" then
 		t = { section = "logic@ptr3_patrol1",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
 
        t = { section = "logic@ptr3_patrol2",
 			idle = 0,
-			prior = 1, state = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)	
        end
+       
+       if type == "ptr4" then
+		t = { section = "logic@ds_ptr4_patrol1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+
+       t = { section = "logic@ds_ptr4_patrol2",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+       end
+       
+       if type == "ds_snp1" then
+		t = { section = "logic@ds_snp1_sniper1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+      end
       
-       if type == "kabkamp" then
-		t = { section = "logic@kabkamp_kab1",
+      
+       if type == "ds_boars_nest" then
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_tusniyak"
 		}
-		t = { section = "logic@kabkamp_kab2",
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_tusniyak"
 		}
-		t = { section = "logic@kabkamp_kab3",
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_tusniyak"
 		}
-		t = { section = "logic@kabkamp_kab4",
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_tusniyak"
 		}
-		t = { section = "logic@kabkamp_kab5",
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_tusniyak"
 		}
-		t = { section = "logic@kabkamp_kab6",
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_tusniyak"
 		}
-		t = { section = "logic@kabkamp_kab7",
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
-			prior = 1, state = 0,
-			in_rest = "", out_rest = ""
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
 		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
 		end
+		
+	
 end
 
 
@@ -128,9 +201,43 @@ if type == "kem1" then
 			return 0
 		end
 	end
-	if type == "kabkamp" then
+	
+	if type == "ds_ptr4" then
 		return function(gulag)
 			return 0
+		end
+	end
+	
+	if type == "ds_snp1" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "ds_boars_nest" then        
+		return function(gulag)
+			local t = db.zone_by_name["ds_boars_territory"]
+			if t and db.actor then
+				if gulag.state ~= 2 then
+					if t:inside(db.actor:position()) then
+						return 1
+					else
+						if gulag:get_population() >= 5 then
+							return 2
+						else
+							return 0
+						end
+					end
+				else
+					if gulag:get_population() >= 3 then
+						return 2
+					else
+						return 0
+					end
+				end
+			else
+				return gulag.state
+			end
 		end
 	end
 end
@@ -155,6 +262,14 @@ function checkStalker(npc_community, gulag_type)
 	   return npc_community == "military"
 	end
 	
+	if gulag_type == "ds_ptr4" then
+	   return npc_community == "military"
+	end
+	
+	if gulag_type == "ds_snp1" then
+	   return npc_community == "military"
+	end
+	
 	if gulag_type == "ptr" then
 	   return npc_community == "military"
 	end
@@ -168,9 +283,9 @@ function checkStalker(npc_community, gulag_type)
 	return false
 end
 function checkMonster(npc_community, gulag_type)
-if gulag_type == "gar_boars_nest" then
+	if gulag_type == "ds_boars_nest" then
 			return npc_community == "boar"
-		end
-		return false
+	end
+	return false
 	
 end
