@@ -501,7 +501,7 @@ function load_ltx_antenna_patrol(gname, type)
 
 				"[danger_condition]\n"..
 				"danger_expiration_time = 60000\n"..
-				"danger_inertion_time =  90000\n"..
+				"danger_inertion_time =  90000\n"
 
     return res
 end
