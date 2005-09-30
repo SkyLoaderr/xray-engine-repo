@@ -1372,7 +1372,7 @@ void CCustomZone::UpdateOnOffState	()
 	if	(t < m_TimeToEnable) 
 		dest_state=true;
 	else
-	if	(t >(m_TimeToEnable+m_TimeToDisable) ) 
+	if	(t >=(m_TimeToEnable+m_TimeToDisable) ) 
 		dest_state=true;
 	else{
 		dest_state=false;
