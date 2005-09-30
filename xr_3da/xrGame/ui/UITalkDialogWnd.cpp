@@ -234,6 +234,7 @@ CUIAnswerItem::CUIAnswerItem			(CUIXml* xml_doc, LPCSTR path)
 
 	strconcat						(str,path,":name_caption");
 	xml_init.InitStatic				(*xml_doc, str, 0, m_name);
+	SetAutoDelete					(true);
 }
 
 void CUIAnswerItem::Init			(LPCSTR text, LPCSTR name)
