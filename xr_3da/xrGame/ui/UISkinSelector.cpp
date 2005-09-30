@@ -12,6 +12,7 @@
 
 CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 {	
+	m_iActiveIndex = -1;
 	m_pBackground	= xr_new<CUIStatic>();	AttachChild(m_pBackground);
 	m_pCaption		= xr_new<CUIStatic>();	AttachChild(m_pCaption);
 

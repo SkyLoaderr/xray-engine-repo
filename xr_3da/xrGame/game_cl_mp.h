@@ -162,6 +162,7 @@ public:
 	virtual		void				OnSpectatorSelect		() {}
 	virtual		void				OnSkinMenuBack			() {}
 	virtual		void				OnTeamMenuBack			() {}
+	virtual		void				OnMapInfoAccept			() {}
 	
 
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	

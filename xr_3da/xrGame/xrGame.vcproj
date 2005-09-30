@@ -11159,6 +11159,16 @@
 						RelativePath=".\ui\UISpeechMenu.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="MapDesc"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIMapDesc.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMapDesc.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>
