@@ -539,11 +539,18 @@ void CApplication::LoadDraw		()
 		// Draw Progress
 
 		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
+		float bw					= 1024.0f;
+		float bh					= 768.0f;
+
+		Fvector2					k; k.set(float(_w)/bw, float(_h)/bh);
 
 		Fvector2 pic_sz;			pic_sz.set(1024.0f,32.0f);
-		Fvector2 lt;				lt.set( (_w-pic_sz.x/2.0f)/2.0f,	700.0f);		//lt pos
+		
+		Fvector2 lt;				lt.set( (bw-pic_sz.x/2.0f)/2.0f,	bh-70.0f);		//lt pos
 		Fvector2 rb;				rb.set( lt.x+pic_sz.x/2.0f,			lt.y+pic_sz.y); //rb pos
 
+		lt.mul						(k);
+		rb.mul						(k);
 		float	cnt					= 32.0f/2.0f;
 		float	uv_base				= 1/32.0f;
 		
