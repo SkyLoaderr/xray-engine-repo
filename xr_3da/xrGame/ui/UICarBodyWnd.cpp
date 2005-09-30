@@ -472,25 +472,19 @@ void CUICarBodyWnd::EnableAll()
 	UIOthersBagWnd.Enable(true);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
 	const float offset = -10.0f;
 
 	UIItemInfo.InitItem(m_pCurrentItem);
-	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
-	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
-	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UIWeight,		offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICost,		offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICondition,	offset);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::TakeAll()
 {
-//	CTimer T;
-//	T.Start();
 	for (DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin();
 		 it != UIOthersBagList.GetDragDropItemsList().end();)
 	{

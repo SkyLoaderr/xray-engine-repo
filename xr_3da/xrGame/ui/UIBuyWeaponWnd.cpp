@@ -19,6 +19,7 @@
 #include "../actor.h"
 #include "../inventory.h"
 #include "UITextureMaster.h"
+#include "UIScrollView.h"
 
 using namespace InventoryUtilities;
 
@@ -29,22 +30,19 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 		: UIBagWnd(BagProc)
 {
 	m_StrSectionName		= strSectionName;
-	Hide();
+	Hide					();
 
-	m_pCurrentDragDropItem = NULL;
-	m_iMoneyAmount = 10000;
+	m_pCurrentDragDropItem	= NULL;
+	m_iMoneyAmount			= 10000;
 
-//	m_iIconTextureY	= 0;
-//	m_iIconTextureX	= 0;
+	SetFont					(HUD().Font().pFontMedium);
 
-	SetFont(HUD().Font().pFontMedium);
-
-	m_bIgnoreMoney	= false;
+	m_bIgnoreMoney			= false;
 
 	// Инициализируем вещи
-	Init(strSectionName, strPricesSection);
+	Init					(strSectionName, strPricesSection);
 
-	Hide();
+	Hide					();
 }
 
 CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
@@ -1601,25 +1599,25 @@ bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) con
 void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 {
 	{
-		UIItemInfo.UIName.SetText			("");
-		UIItemInfo.UIWeight.SetText			("");
-		UIItemInfo.UIItemImage.TextureOff	();
-		UIItemInfo.UIDesc.Clear			();
+		UIItemInfo.UIName->SetText			("");
+		UIItemInfo.UIWeight->SetText			("");
+		UIItemInfo.UIItemImage->TextureOff	();
+		UIItemInfo.UIDesc->Clear			();
 		if (pDDItemMP)
 		{
 			CStringTable stbl;
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_name"))
-				UIItemInfo.UIName.SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
+				UIItemInfo.UIName->SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
 
-			UIItemInfo.UIItemImage.SetShader(pDDItemMP->GetUIStaticItem().GetShader());
+			UIItemInfo.UIItemImage->SetShader(pDDItemMP->GetUIStaticItem().GetShader());
 			Frect o_r = pDDItemMP->GetUIStaticItem().GetOriginalRect();
 			Frect v_r = pDDItemMP->GetUIStaticItem().GetRect();
-			UIItemInfo.UIItemImage.GetUIStaticItem().SetOriginalRect(o_r.x1, o_r.y1, o_r.width(), o_r.height());
-			UIItemInfo.UIItemImage.GetUIStaticItem().SetRect(v_r);
-			UIItemInfo.UIItemImage.SetStretchTexture(true);
-			UIItemInfo.UIItemImage.SetWidth	(_min(v_r.width(),UIItemInfo.UIItemImageSize.x));
-			UIItemInfo.UIItemImage.SetHeight(_min(v_r.height(),UIItemInfo.UIItemImageSize.y));
-			UIItemInfo.UIItemImage.TextureOn();
+			UIItemInfo.UIItemImage->GetUIStaticItem().SetOriginalRect(o_r.x1, o_r.y1, o_r.width(), o_r.height());
+			UIItemInfo.UIItemImage->GetUIStaticItem().SetRect(v_r);
+			UIItemInfo.UIItemImage->SetStretchTexture(true);
+			UIItemInfo.UIItemImage->SetWidth	(_min(v_r.width(),UIItemInfo.UIItemImageSize.x));
+			UIItemInfo.UIItemImage->SetHeight(_min(v_r.height(),UIItemInfo.UIItemImageSize.y));
+			UIItemInfo.UIItemImage->TextureOn();
 
 			
 			if (pDDItemMP->m_iRank>=0 && pDDItemMP->m_iRank<=4)
@@ -1637,10 +1635,10 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 //				CUIString str;
 //				str.SetText();
 				CUIStatic* pItem = xr_new<CUIStatic>();
-				pItem->SetWidth(UIItemInfo.UIDesc.GetDesiredChildWidth());
+				pItem->SetWidth(UIItemInfo.UIDesc->GetDesiredChildWidth());
 				pItem->SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
 				pItem->AdjustHeightToText();
-				UIItemInfo.UIDesc.AddWindow(pItem);
+				UIItemInfo.UIDesc->AddWindow(pItem);
 					//.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
 			}
 		}
