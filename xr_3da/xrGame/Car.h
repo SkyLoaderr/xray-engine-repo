@@ -534,7 +534,7 @@ public:
 	virtual void			net_Import					(NET_Packet& P);				// import from server
 	virtual BOOL			net_Relevant				()	{ return getLocal(); };		// relevant for export to server
 	virtual BOOL			UsedAI_Locations			();
-
+	virtual	void			net_Relcase					(CObject* O );
 	// Input
 	virtual void			OnMouseMove					(int x, int y);
 	virtual void			OnKeyboardPress				(int dik);

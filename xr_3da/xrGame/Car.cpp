@@ -469,6 +469,10 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	}*/
 
 	//if(||) P=0.f;
+	if(GetfHealth()>0.f)
+	{
+		CExplosive::SetInitiator(who->ID());
+	}
 	WheelHit(P,element,hit_type);
 	DoorHit(P,element,hit_type);
 	float hitScale=1.f,woundScale=1.f;
@@ -1891,4 +1895,9 @@ void CCar::GetRayExplosionSourcePos(Fvector &pos)
 	pos.random_point(l_d);
 	XFORM().transform_tiny(pos);
 	pos.add(l_c);
+}
+void CCar::net_Relcase(CObject* O)
+{
+	CExplosive::net_Relcase(O);
+	inherited::net_Relcase(O);
 }

@@ -18,7 +18,8 @@ public:
 	
 	virtual BOOL net_Spawn(CSE_Abstract* DC);
 	virtual void net_Destroy();
-	
+	virtual void net_Relcase(CObject* O );
+
 	virtual void OnH_B_Independent();
 	virtual void OnH_A_Independent();
 	virtual void OnH_A_Chield();

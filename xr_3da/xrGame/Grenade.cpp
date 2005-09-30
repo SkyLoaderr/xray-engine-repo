@@ -385,3 +385,9 @@ BOOL CGrenade::UsedAI_Locations		()
 #pragma todo("Dima to Yura : It crashes, because on net_Spawn object doesn't use AI locations, but on net_Destroy it does use them")
 	return TRUE;//m_dwDestroyTime == 0xffffffff;
 }
+
+void CGrenade::net_Relcase(CObject* O )
+{
+	CExplosive::net_Relcase(O);
+	inherited::net_Relcase(O);
+}

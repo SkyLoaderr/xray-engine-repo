@@ -27,7 +27,7 @@ public:
 	virtual void				Load(CInifile *ini,LPCSTR section);
 
 	virtual void 				net_Destroy		();
-
+	virtual void				net_Relcase		(CObject* O);
 	virtual void 				UpdateCL();
 
 //	virtual void 				feel_touch_new(CObject* O);

@@ -654,3 +654,8 @@ void CExplosive::ActivateExplosionBox(const Fvector &size,Fvector &in_out_pos)
 	activation_shape.Destroy();
 	if(self_shell&&self_shell->bActive)self_shell->EnableCollision();
 }
+void CExplosive::net_Relcase(CObject* O)
+{
+	if(O->ID()==m_iCurrentParentID)
+						m_iCurrentParentID=u16(-1);
+}
