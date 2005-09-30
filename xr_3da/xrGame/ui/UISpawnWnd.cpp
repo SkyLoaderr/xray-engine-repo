@@ -10,7 +10,7 @@
 #include "UIScrollView.h"
 #include "UI3tButton.h"
 
-#include "UIMapDesc.h"
+//#include "UIMapDesc.h"
 
 CUISpawnWnd::CUISpawnWnd()
 	:  m_iCurTeam(0)
@@ -103,11 +103,7 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		else if (pWnd == m_pBtnSpectator)
 			dm->OnSpectatorSelect();
 		else if (pWnd == m_pBtnBack)
-		{
 			dm->OnTeamMenuBack();
-			CUIMapDesc* md = xr_new<CUIMapDesc>();
-			Game().StartStopMenu(md,true);
-		}
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
