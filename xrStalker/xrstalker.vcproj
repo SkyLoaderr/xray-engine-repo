@@ -1525,6 +1525,9 @@
 					RelativePath=".\config\scripts\postprocess.ltx">
 				</File>
 				<File
+					RelativePath=".\config\scripts\teleport.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\test_hit_in_actor_dir1.ltx">
 				</File>
 				<File
