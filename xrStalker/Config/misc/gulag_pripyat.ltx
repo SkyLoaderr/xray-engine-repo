@@ -390,15 +390,24 @@ combat_ignore_cond  = {!fighting_actor}
 path_walk           = wave3_bomber_walk3
 def_state_moving1   = assault
 def_state_moving2   = assault
-on_signal           = arrived | walker@pri_followers_bomber_wave3_fire
+on_signal           = arrived | remark@pri_followers_bomber_wave3_fire %+pri_wave3_bomber_on_position% ;walker@pri_followers_bomber_wave3_fire
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
 [walker@pri_followers_bomber_wave3_fire]
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
-on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:1000:2000)%
+on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:600:2000)%
 on_signal           = arrived | %+pri_wave3_bomber_on_position%
+wounded             = wounded@ignore
+danger              = danger@ignore
+combat_ignore_cond  = {!fighting_actor}
+
+[remark@pri_followers_bomber_wave3_fire]
+no_move             = true
+anim                = hide_fire
+target              = 807
+on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:600:2000)%
 wounded             = wounded@ignore
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
