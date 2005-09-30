@@ -2,7 +2,8 @@
 #include "WeaponBinocularsVision.h"
 #include "WeaponBinoculars.h"
 #include "ui\UIFrameWindow.h"
-#include "ui.h"
+//#include "ui.h"
+#include "MainUI.h"
 #include "entity_alive.h"
 #include "visual_memory_manager.h"
 #include "actor.h"
@@ -30,10 +31,6 @@ void SBinocVisibleObj::create_default(u32 color)
 	m_rt.SetOriginalRect(RECT_SIZE,	0,			RECT_SIZE,	RECT_SIZE);
 	m_rb.SetOriginalRect(RECT_SIZE,	RECT_SIZE,	RECT_SIZE,	RECT_SIZE);
 
-/*	m_lt.SetAlignment	(waCenter);
-	m_lb.SetAlignment	(waCenter);
-	m_rt.SetAlignment	(waCenter);
-	m_rb.SetAlignment	(waCenter);*/
 
 	u32 clr			= subst_alpha(color,128);
 	m_lt.SetColor	(clr);
@@ -54,50 +51,41 @@ void SBinocVisibleObj::Draw()
 	m_lb.Draw			();
 	m_rt.Draw			();
 	m_rb.Draw			();
-/*
-		Fbox		b = m_object->Visual()->vis.box;
-		b.xform		(m_object->XFORM());
-		Fvector		cd,hd;
-		b.get_CD	(cd,hd);
-		Fmatrix M;
-		M			= Fidentity;
-		M.translate_add(cd);
-		RCache.dbg_DrawOBB(M,hd,0xFFFFFFFF);
-*/
 }
 
 void SBinocVisibleObj::Update()
 {
-	m_flags.set		(flVisObjNotValid,TRUE);
+	m_flags.set		(	flVisObjNotValid,TRUE);
 
-	Fbox		b = m_object->Visual()->vis.box;
+	Fbox		b		= m_object->Visual()->vis.box;
 
-	Fmatrix		xform;
-	xform.mul	(Device.mFullTransform,m_object->XFORM());
-	Fvector2	mn={flt_max,flt_max},mx={flt_min,flt_min};
+	Fmatrix				xform;
+	xform.mul			(Device.mFullTransform,m_object->XFORM());
+	Fvector2	mn		={flt_max,flt_max},mx={flt_min,flt_min};
+
 	for (u32 k=0; k<8; ++k){
 		Fvector p;
 		b.getpoint		(k,p);
 		xform.transform	(p);
-		mn.x	= _min(mn.x,p.x);
-		mn.y	= _min(mn.y,p.y);
-		mx.x	= _max(mx.x,p.x);
-		mx.y	= _max(mx.y,p.y);
+		mn.x			= _min(mn.x,p.x);
+		mn.y			= _min(mn.y,p.y);
+		mx.x			= _max(mx.x,p.x);
+		mx.y			= _max(mx.y,p.y);
 	}
 	static Frect screen_rect={-1.0f, -1.0f, 1.0f, 1.0f};
 
-	Frect new_rect;
-	new_rect.lt = mn;
-	new_rect.rb = mx;
+	Frect				new_rect;
+	new_rect.lt			= mn;
+	new_rect.rb			= mx;
 
 	if( FALSE == screen_rect.intersected(new_rect) ) return;
 	if( new_rect.in(screen_rect.lt) && new_rect.in(screen_rect.rb) ) return;
 	
 	std::swap	(mn.y,mx.y);
-	mn.x		= (1.f + mn.x)/2.f * (Device.dwWidth);
-	mx.x		= (1.f + mx.x)/2.f * (Device.dwWidth);
-	mn.y		= (1.f - mn.y)/2.f * (Device.dwHeight);
-	mx.y		= (1.f - mx.y)/2.f * (Device.dwHeight);
+	mn.x		= (1.f + mn.x)/2.f * UI_BASE_WIDTH;
+	mx.x		= (1.f + mx.x)/2.f * UI_BASE_WIDTH;
+	mn.y		= (1.f - mn.y)/2.f * UI_BASE_HEIGHT;
+	mx.y		= (1.f - mx.y)/2.f * UI_BASE_HEIGHT;
 
 	if (m_flags.is(flTargetLocked)){
 		cur_rect.lt.set	(mn);
