@@ -202,8 +202,8 @@ function animation:set_state(id, reset)
 								if obj then
 									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
 									obj:enable_attachable_item(false)
-									if obj:section_name() == "binocular_a" or
-									   obj:section_name() == "hand_radio"
+									if obj:section() == "binocular_a" or
+									   obj:section() == "hand_radio"
 									then
 										printf("droped [%s] for [%s]", obj:name(), self.npc:name())
 										self.npc:drop_item(obj)--, self.npc:position()) !!!FIXED !!!
