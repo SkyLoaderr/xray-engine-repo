@@ -474,7 +474,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 		P=0.f;
 	}
 
-	if(GetfHealth()>0.f)
+	if(GetfHealth()>0.f&&who->ID()!=ID())
 	{
 		CExplosive::SetInitiator(who->ID());
 	}
