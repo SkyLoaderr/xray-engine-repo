@@ -28,7 +28,8 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 		&IReader				(
 			(void*)(ini_string),
 			xr_strlen(ini_string)
-		)
+		),
+		FS.get_path("$game_config$")->m_Path
 	);
 #pragma warning(pop)
 
