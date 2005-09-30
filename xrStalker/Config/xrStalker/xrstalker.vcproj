@@ -756,6 +756,9 @@
 							RelativePath=".\Config\text\rus\stable_dialogs_yantar.xml">
 						</File>
 						<File
+							RelativePath=".\config\text\rus\stable_storyline_info_yantar.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_mapspots_yantar.xml">
 						</File>
 						<File
