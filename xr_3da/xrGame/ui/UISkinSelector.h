@@ -62,7 +62,7 @@ protected:
 	shared_str		m_shader;
 	int				m_iActiveIndex;  
 	xr_vector<xr_string> m_skins;
-	int				m_fristSkin;
+	int				m_firstSkin;
 };
 
 #endif

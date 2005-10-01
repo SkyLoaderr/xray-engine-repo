@@ -41,4 +41,6 @@ void CUIStatix::OnMouseDown(bool left_button /* = true */){
 
 void CUIStatix::SetSelectedState(bool state){
 	m_bSelected = state;
+	if (!state)
+		OnFocusLost();
 }

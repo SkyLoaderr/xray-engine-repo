@@ -32,7 +32,7 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 	m_pBtnSpectator	= xr_new<CUI3tButton>();	AttachChild(m_pBtnSpectator);
 	m_pBtnBack		= xr_new<CUI3tButton>();	AttachChild(m_pBtnBack);
 
-	m_fristSkin = 0;
+	m_firstSkin = 0;
 	Init(strSectionName);	
 }
 
@@ -71,19 +71,25 @@ void CUISkinSelectorWnd::UpdateSkins(){
 	for (int i = 0; i<4; i++)
 	{
 		if (!!m_shader)
-            m_pImage[i]->InitTextureEx(m_skins[i + m_fristSkin].c_str(), *m_shader);
+            m_pImage[i]->InitTextureEx(m_skins[i + m_firstSkin].c_str(), *m_shader);
 		else
-			m_pImage[i]->InitTexture(m_skins[i + m_fristSkin].c_str());
+			m_pImage[i]->InitTexture(m_skins[i + m_firstSkin].c_str());
 		m_pImage[i]->RescaleRelative2Rect(m_pImage[i]->GetStaticItem()->GetOriginalRect());
 
-		if (m_iActiveIndex - m_fristSkin == i)
+		if (m_iActiveIndex - m_firstSkin == i)
 			m_pImage[i]->SetSelectedState(true);
 		else
 			m_pImage[i]->SetSelectedState(false);
+
+		string16 buf;
+		if (m_firstSkin + i < 10)
+			m_pImage[i]->SetText(itoa((m_firstSkin + 1 + i)%10,buf,10));
+		else
+			m_pImage[i]->SetText("");
 	}
 
-	m_pButtons[0]->Enable(m_fristSkin > 0);
-	m_pButtons[1]->Enable(m_fristSkin + 4 < (int)m_skins.size());
+	m_pButtons[0]->Enable(m_firstSkin > 0);
+	m_pButtons[1]->Enable(m_firstSkin + 4 < (int)m_skins.size());
 }
 
 void CUISkinSelectorWnd::Init(const char* strSectionName)
@@ -221,18 +227,18 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 void CUISkinSelectorWnd::OnKeyLeft()
 {	
-	if (m_fristSkin > 0)
+	if (m_firstSkin > 0)
 	{
-		m_fristSkin--;
+		m_firstSkin--;
 		UpdateSkins();
 	}
 }
 
 void CUISkinSelectorWnd::OnKeyRight()
 {
-	if (m_fristSkin + 4 < (int)m_skins.size())
+	if (m_firstSkin + 4 < (int)m_skins.size())
 	{
-		m_fristSkin++;
+		m_firstSkin++;
 		UpdateSkins();
 	}	
 }
@@ -241,7 +247,7 @@ int	CUISkinSelectorWnd::GetActiveIndex(){
 	if (-1 == m_iActiveIndex)
 		return -1;
 	else
-        return m_iActiveIndex + m_fristSkin; 
+        return m_iActiveIndex + m_firstSkin; 
 } 	
 
 void CUISkinSelectorWnd::SetVisibleForBtn(ESKINMENU_BTN btn, bool state){
@@ -256,10 +262,22 @@ void CUISkinSelectorWnd::SetVisibleForBtn(ESKINMENU_BTN btn, bool state){
 }
 
 void CUISkinSelectorWnd::SetCurSkin(int skin){
-	R_ASSERT2(skin>= -1 && skin + m_fristSkin <= (int)m_skins.size(), "invalid skin index");
+	R_ASSERT2(skin>= -1 && skin + m_firstSkin <= (int)m_skins.size(), "invalid skin index");
 
 	m_iActiveIndex = skin;
 
+	if (m_iActiveIndex< m_firstSkin || m_iActiveIndex > m_firstSkin + 4)
+	{
+		for (int i = 0; i<4; i++)
+		{
+			if (m_iActiveIndex - i <= (int)m_skins.size() - 4)
+			{
+				m_firstSkin += m_iActiveIndex - i;
+				break;
+			}
+		}
+		R_ASSERT2(false,"impossible behavior - something wrong");
+	}
 	UpdateSkins();
 }
 
