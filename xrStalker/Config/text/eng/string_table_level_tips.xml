@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
-<!-- ПРИ ЛОКАЛИЗАЦИИ НЕ ЗАБЫТЬ ИЗМЕНИТЬ ПУТЬ -->
 #include "text\eng\string_table_tips_escape.xml"
 #include "text\eng\string_table_tips_garbage.xml"
 #include "text\eng\string_table_tips_agroprom.xml"
 #include "text\eng\string_table_tips_darkvalley.xml"
 #include "text\eng\string_table_tips_bar-rostok.xml"
 #include "text\eng\string_table_tips_military.xml"
+#include "text\eng\string_table_tips_yantar.xml"
+
 
 #include "text\eng\stable_storyline_info_escape.xml"
 #include "text\eng\stable_storyline_info_garbage.xml"
@@ -16,6 +17,8 @@
 #include "text\eng\stable_storyline_info_military.xml"
 #include "text\eng\stable_storyline_info_radar.xml"
 #include "text\eng\stable_storyline_info_aes.xml"
+#include "text\eng\stable_storyline_info_yantar.xml"
+
 
 #include "text\eng\string_table_tasks_escape.xml"
 #include "text\eng\string_table_tasks_agroprom.xml"
@@ -25,6 +28,8 @@
 #include "text\eng\string_table_tasks_radar.xml"
 #include "text\eng\string_table_tasks_garbage.xml"
 #include "text\eng\string_table_tasks_aes.xml"
+#include "text\eng\string_table_tasks_yantar.xml"
+
 
 #include "text\eng\string_table_mapspots_agroprom.xml"
 #include "text\eng\string_table_mapspots_bar.xml"
@@ -34,11 +39,13 @@
 #include "text\eng\string_table_mapspots_military.xml"
 #include "text\eng\string_table_mapspots_radar.xml"
 #include "text\eng\string_table_mapspots_aes.xml"
+#include "text\eng\string_table_mapspots_yantar.xml"
+
 
 #include "text\rus\stable_generate_fnames.xml"
 #include "text\rus\stable_generate_snames.xml"
 
-    <string id="car_use">
+ <string id="car_use">
         <text>Open door ($$ACTION_USE$$)</text>
     </string>
     <string id="character_use">
@@ -54,7 +61,7 @@
         <text>Task fail.</text>
     </string>
     <string id="general_help">
-        <text>Срочно нужна аптечка, помираю!!!</text>
+        <text>HELP!!! I need medkit!!!</text>
     </string>
     <string id="general_in_item">
         <text>Recieve item.</text>
@@ -110,5 +117,6 @@
     </string>    
     <string id="to_military">
         <text>To warehouse</text>
-    </string>        
+    </string>
+    
 </string_table>

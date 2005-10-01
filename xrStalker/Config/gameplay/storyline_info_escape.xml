@@ -1,6 +1,6 @@
     <article id="storyline_gunslinger" name="Gunslinger" group="Diary">
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
-        <text>enc_social_stalker-clans_gunslinger-clan</text>
+        <text>gunslinger_clan_cache</text>
     </article>
 
     <article id="storyline_fox_flash_info" name="Fox Flash" group="Diary">

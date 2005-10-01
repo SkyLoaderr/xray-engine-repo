@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+    <string id="agr_nii_security_plan_flash">
+        <text>A flash memory card of soldier from Agroprom RI</text>
+    </string>
     <string id="item test1">
         <text>This is a ITEM test string</text>
     </string>
@@ -7,18 +10,18 @@
         <text>This is a another ITEM test string</text>
     </string>
     <string id="item_gunslinger_flash">
-        <text>Флешка из тайника Стрелка</text>
+        <text>A flash memory card from Gunslinger's stash</text>
     </string>
     <string id="item_krot_flash">
-        <text>Флешка Крота с информацией о тайнике Стрелка</text>
+        <text>The Mole's flash memory card with the information on Gunslinger's stash</text>
     </string>
     <string id="item_pri_lom_ak74">
-        <text>Личный автомат сталкера по кличке Лом</text>
+        <text>Personal submachine gun of stalker nicknamed Crowbar</text>
     </string>
     <string id="item_quest_case_02">
-        <text>Документы из лагеря военных на НИИ Агропром</text>
+        <text>Documents from the military camp at Agroprom RI.</text>
     </string>
     <string id="item_scientist_flash">
-        <text>Флешка мёртвого учёного найденного в лесу</text>
+        <text>A flash memory card from the dead scientist found in forest</text>
     </string>
 </string_table>

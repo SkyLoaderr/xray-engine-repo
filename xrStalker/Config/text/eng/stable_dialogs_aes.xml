@@ -64,7 +64,7 @@
         <text>This is the case in point. Someone was really noisy there.</text>
     </string>
     <string id="aes_sergeant_diallog_1020">
-        <text>Maybe someone of us, alive... could settle there... We had... a task - to capture the path to Sarco... hk... khe... Sarcophagus... if something happens - must wait  \nfor reinforcements..</text>
+        <text>Maybe someone of us, alive... could settle there... We had... a task - to capture the path to Sarco... hk... khe... \nSarcophagus... if something happens - must wait for reinforcements..</text>
     </string>
     <string id="aes_sergeant_diallog_1021">
         <text>Reinforcements?</text>
@@ -100,7 +100,7 @@
         <text>Now? Oh my gosh...</text>
     </string>
     <string id="aes_sergeant_diallog_1032">
-        <text>Who are you?</text>
+        <text>Kh... And you... what have brought you here... kh...</text>
     </string>
     <string id="aes_sergeant_diallog_1033">
         <text>I want to get to the Monolit.</text>
