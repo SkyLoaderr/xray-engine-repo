@@ -927,6 +927,9 @@
 							RelativePath=".\Config\text\eng\stable_dialogs_uni.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_dialogs_yantar.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_aes.xml">
 						</File>
 						<File
@@ -955,6 +958,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_to_diary.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\stable_storyline_info_yantar.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_artefacts.xml">
@@ -1011,6 +1017,9 @@
 							RelativePath=".\Config\text\eng\string_table_mapspots_radar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_mapspots_yantar.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_news.xml">
 						</File>
 						<File
@@ -1041,6 +1050,9 @@
 							RelativePath=".\Config\text\eng\string_table_tasks_radar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_tasks_yantar.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_tips.xml">
 						</File>
 						<File
@@ -1060,6 +1072,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_tips_military.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\string_table_tips_yantar.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_ui.xml">
