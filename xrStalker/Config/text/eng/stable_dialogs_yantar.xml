@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+    <string id="yantar_general_ucheniy_talk_end_0">
+        <text>kjhfg</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_end_1">
+        <text>???????</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_end_11">
+        <text>OOOOOOOK!</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_0">
+        <text>Че тебе надо???</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_1">
+        <text>Мозг!</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_2">
+        <text>Ученый!</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_3">
+        <text>more quests???</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_4">
+        <text>text in default</text>
+    </string>
+    <string id="yantar_help_scientist_0">
+        <text>Help me!!!!</text>
+    </string>
+    <string id="yantar_help_scientist_1">
+        <text>go_1</text>
+    </string>
+    <string id="yantar_help_scientist_2">
+        <text>сначала поговори с главным!</text>
+    </string>
+    <string id="yantar_help_scientist_3">
+        <text>go_2</text>
+    </string>
+    <string id="yantar_help_scientist_4">
+        <text>go_3</text>
+    </string>
+    <string id="yantar_help_scientist_5">
+        <text>go_4</text>
+    </string>
+    <string id="yantar_help_scientist_6">
+        <text>opa!</text>
+    </string>
+    <string id="yantar_wounded_scientist_0">
+        <text>AAAAAAAAA!!!!!</text>
+    </string>
+    <string id="yantar_wounded_scientist_1">
+        <text>Go!!!!!!!</text>
+    </string>
+</string_table>
