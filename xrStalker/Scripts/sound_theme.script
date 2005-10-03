@@ -250,6 +250,10 @@ function load_sound(obj)
 	theme[obj:id()]["use_abuse"]					= load_sound_from_ltx(obj, "use_abuse")
 	
 	
+	-- бой
+	theme[obj:id()]["fight_attack"]					= load_sound_from_ltx(obj, "fight_attack")
+	theme[obj:id()]["fight_search"]					= load_sound_from_ltx(obj, "fight_search")
+	
 	-- торговля
 	theme[obj:id()]["trade_yes"]					= load_sound_from_ltx(obj, "trade_yes")
 	theme[obj:id()]["trade_no"]						= load_sound_from_ltx(obj, "trade_no")
