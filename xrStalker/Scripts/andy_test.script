@@ -2,12 +2,9 @@
 function main()
 
 	level.disable_input()
-
 	local wnd_id 			= "sleep_001"
 	ui:AddCustomStatic		(wnd_id)
-
 	wait(10000)
-
 	level.enable_input		()
 	ui:RemoveCustomStatic	(wnd_id)
 
