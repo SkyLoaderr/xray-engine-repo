@@ -89,15 +89,12 @@ void CScriptProcess::update()
 		fflush							(stderr);
 	}
 
-#ifndef USE_JIT
-#ifdef _DEBUG
 #if defined(_DEBUG) && !defined(USE_JIT)
 	try {
 		lua_setgcthreshold	(ai().script_engine().lua(),0);
 	}
 	catch(...) {
 	}
-#endif
 #endif
 }
 
