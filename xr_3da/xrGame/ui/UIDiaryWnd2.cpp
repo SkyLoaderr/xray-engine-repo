@@ -17,7 +17,7 @@
 #include "../actor.h"
 #include "../alife_registry_wrappers.h"
 #include "../encyclopedia_article.h"
-//#include "UIVideoPlayerWnd.h"
+#include "UIVideoPlayerWnd.h"
 #include "UIPdaAux.h"
 
 extern u32			g_pda_info_state;
@@ -34,7 +34,7 @@ CUIDiaryWnd::~CUIDiaryWnd()
 	delete_data(m_DescrView);
 	delete_data(m_ArticlesDB);
 	delete_data(m_updatedSectionImage);
-//	delete_data(m_videoWnd);
+	delete_data(m_videoWnd);
 }
 
 void CUIDiaryWnd::Show(bool status)
@@ -111,8 +111,8 @@ void CUIDiaryWnd::Init()
 	m_updatedSectionImage			= xr_new<CUIStatic>();
 	xml_init.InitStatic				(uiXml, "updated_section_static", 0, m_updatedSectionImage);
 
-//	m_videoWnd						= xr_new<CUIVideoPlayerWnd>();
-//	m_videoWnd->Init				(&uiXml,"video_player");
+	m_videoWnd						= xr_new<CUIVideoPlayerWnd>();
+	m_videoWnd->Init				(&uiXml,"video_player");
 
 }
 
@@ -213,16 +213,16 @@ void CUIDiaryWnd::LoadJournalTab			(ARTICLE_DATA::EArticleType _type)
 
 void CUIDiaryWnd::UnloadInfoTab	()
 {
-//	m_UIRightWnd->DetachChild	(m_videoWnd);
-//	m_videoWnd->Show			(false);
-	UnloadJournalTab	();
+	m_UIRightWnd->DetachChild	(m_videoWnd);
+	m_videoWnd->Hide			();
+//	UnloadJournalTab	();
 }
 
 void CUIDiaryWnd::LoadInfoTab	()
 {
-//	m_UIRightWnd->AttachChild	(m_videoWnd);
-//	m_videoWnd->Show			(true);
-	LoadJournalTab				(ARTICLE_DATA::eInfoArticle);
+	m_UIRightWnd->AttachChild	(m_videoWnd);
+	m_videoWnd->Show			();
+//	LoadJournalTab				(ARTICLE_DATA::eInfoArticle);
 	g_pda_info_state			&= ~pda_section::info;
 }
 

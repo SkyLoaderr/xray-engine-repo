@@ -1,26 +1,29 @@
 #pragma once
-#include "UIWindow.h"
+#include "UIDialogWnd.h"
 #include "UIWndCallback.h"
 
 class CUITabControl;
 class CUIStatic;
 class CUIXml;
 
-class CUIVideoPlayerWnd :public CUIWindow, public CUIWndCallback
+class CUIVideoPlayerWnd :public CUIDialogWnd, public CUIWndCallback
 {
-	typedef CUIWindow inherited;
+	typedef CUIDialogWnd inherited;
 	CUITabControl*	m_tabControl;
 	CUIStatic*		m_surface;
-	Flags8			m_flags;
-	enum			{eAutoPlay =(1<<0),ePlaying=(1<<1),};
-	ref_texture		m_texture;
+protected:
 	ref_sound		m_sound;
+	ref_texture		m_texture;
+	shared_str		m_fn;
+	Flags8			m_flags;
+	enum			{eAutoPlay =(1<<0),ePlaying=(1<<1),eStarted=(1<<2)};
 private:
 	void			OnBtnPlayClicked		();
 	void			OnBtnPauseClicked		();
 	void			OnTabChanged			(CUIWindow* pWnd, void* pData);
 public:
 	void			Init					(CUIXml* doc, LPCSTR start_from);
+	void			Init					(LPCSTR name);
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData);
 	void			SetFile					(LPCSTR fn);
 
@@ -28,4 +31,13 @@ public:
 	virtual void	Update					();
 			void	Play					();
 			void	Stop					();
+			bool	IsPlaying				();
+};
+
+class CUIActorSleepVideoPlayer : public CUIVideoPlayerWnd
+{
+public:
+			void	Activate				();
+			void	DeActivate				();
+	virtual bool	NeedCursor				() const {return false;}
 };

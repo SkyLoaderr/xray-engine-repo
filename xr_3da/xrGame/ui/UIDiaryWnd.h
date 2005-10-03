@@ -28,7 +28,7 @@ protected:
 	EDiaryFilter		m_currFilter;
 
 	CUINewsWnd*			m_UINewsWnd;
-//	CUIVideoPlayerWnd*	m_videoWnd;
+	CUIVideoPlayerWnd*	m_videoWnd;
 
 	CUIWindow*			m_UILeftWnd;
 	CUIWindow*			m_UIRightWnd;

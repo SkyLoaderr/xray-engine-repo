@@ -5,10 +5,21 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include "UIXmlInit.h"
+#include "../level.h"
+#include "../hudmanager.h"
 
 void CUIVideoPlayerWnd::SendMessage	(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	CUIWndCallback::OnEvent			(pWnd, msg, pData);
+}
+
+void CUIVideoPlayerWnd::Init	(LPCSTR file_name)
+{
+	CUIXml uiXml;
+	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "video_templ.xml");
+	R_ASSERT3						(xml_result, "xml file not found", "video_templ.xml");
+	Init							(&uiXml,"video_player");
+	SetFile							(file_name);
 }
 
 void CUIVideoPlayerWnd::Init			(CUIXml* doc, LPCSTR start_from)
@@ -40,11 +51,18 @@ void CUIVideoPlayerWnd::Init			(CUIXml* doc, LPCSTR start_from)
 
 void CUIVideoPlayerWnd::SetFile		(LPCSTR fn)
 {
+	m_fn = fn;
 	if(fn && fn[0]){
 		VERIFY(!m_surface->GetShader());
 		m_surface->InitTexture			(fn);
 
 		::Sound->create(m_sound, true, fn);
+
+		if(m_flags.test(eAutoPlay))
+			Play	();
+		else
+			Stop	();
+
 	}
 }
 
@@ -54,11 +72,6 @@ void CUIVideoPlayerWnd::Draw		()
 	if(!m_texture && m_surface->GetShader()){
 		RCache.set_Shader		(m_surface->GetShader());
 		m_texture = RCache.get_ActiveTexture		(0);
-
-		if(m_flags.test(eAutoPlay))
-			Play	();
-		else
-			Stop	();
 	}
 }
 
@@ -66,11 +79,13 @@ void CUIVideoPlayerWnd::Update	()
 {
 	inherited::Update	();
 
-	if(m_flags.test(ePlaying) && m_texture && !m_texture->video_IsPlaying()){
+	if(m_flags.test(ePlaying) && !m_flags.test(eStarted) && m_texture && !m_texture->video_IsPlaying()){
 		m_texture->video_Play		(TRUE);
+		m_flags.set					(eStarted,TRUE);
 	};
 	if(!m_flags.test(ePlaying) && m_texture && m_texture->video_IsPlaying()){
 		m_texture->video_Stop		();
+		m_flags.set					(eStarted,FALSE);
 	};
 }
 
@@ -96,4 +111,19 @@ void CUIVideoPlayerWnd::Stop	()
 	m_flags.set(ePlaying, FALSE);
 	if (m_sound._handle())
         m_sound.stop();
+}
+
+bool CUIVideoPlayerWnd::IsPlaying	()
+{
+	return m_texture && m_texture->video_IsPlaying();
+}
+
+void CUIActorSleepVideoPlayer::Activate	()
+{
+	HUD().GetUI()->StartStopMenu(this,true);
+}
+
+void CUIActorSleepVideoPlayer::DeActivate	()
+{
+	HUD().GetUI()->StartStopMenu(this,true);
 }
