@@ -1613,7 +1613,7 @@ public:
 
 		float value;
 		sscanf(param3 ,"%f",&value);
-		p_zone->m_effector.SetParam(type,value);
+		p_zone->m_effector->SetParam	(type,value);
 	}
 };
 

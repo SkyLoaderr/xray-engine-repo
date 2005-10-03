@@ -12,6 +12,7 @@
 #include "../StatGraph.h"
 #include "xrMessages.h"
 #include "alife_space.h"
+#include "xrDebug.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -78,9 +79,6 @@ protected:
 	CStatGraph					*pStatGraph;
 	
 public:
-	BOOL						IsDemoPlay				()	{return (m_bDemoPlayMode && !m_bDemoSaveMode);};
-	BOOL						IsDemoSave				()	{return (m_bDemoSaveMode && !m_bDemoPlayMode);};
-	
 #ifdef DEBUG
 	// level debugger
 	CLevelDebug					*m_level_debug;
