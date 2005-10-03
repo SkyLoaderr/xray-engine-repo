@@ -1368,7 +1368,6 @@ void CCustomZone::UpdateOnOffState	()
 	
 	bool dest_state;
 	u32 t = (Device.dwTimeGlobal-m_StartTime+m_TimeShift) % (m_TimeToEnable+m_TimeToDisable);
-//	t		+= m_TimeShift;
 	if	(t < m_TimeToEnable) 
 		dest_state=true;
 	else
