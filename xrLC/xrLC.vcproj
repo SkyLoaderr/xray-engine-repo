@@ -416,12 +416,6 @@
 				</File>
 				<File
 					RelativePath="NVMeshMender.cpp">
-					<FileConfiguration
-						Name="Mixed|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							CallingConvention="2"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="NVMeshMender.h">
