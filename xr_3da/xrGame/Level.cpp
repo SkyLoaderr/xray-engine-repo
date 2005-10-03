@@ -252,11 +252,8 @@ CLevel::~CLevel()
 	xr_delete					(m_map_manager);
 	xr_delete					(m_pFogOfWarMngr);
 	//-----------------------------------------------------------
-	if (IsDemoSave() && !g_bLeaveTDemo)
-	{
-		DeleteFile(m_sDemoName);
-	};
-	m_aDemoData.clear();
+	Demo_Clear					();
+	m_aDemoData.clear			();
 }
 
 void CLevel::PrefetchSound		(LPCSTR name)
