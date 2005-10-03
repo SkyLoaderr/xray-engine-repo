@@ -3377,6 +3377,12 @@
 							<File
 								RelativePath=".\ai\Monsters\Pseudodog\psy_dog.h">
 							</File>
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\psy_dog_aura.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\psy_dog_aura.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -5989,6 +5995,12 @@
 					<Filter
 						Name="Custom"
 						Filter="">
+						<File
+							RelativePath=".\pp_effector_custom.cpp">
+						</File>
+						<File
+							RelativePath=".\pp_effector_custom.h">
+						</File>
 						<Filter
 							Name="Postprocess"
 							Filter="">

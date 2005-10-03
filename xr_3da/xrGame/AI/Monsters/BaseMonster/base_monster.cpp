@@ -423,3 +423,29 @@ void CBaseMonster::on_restrictions_change()
 
 	if (StateMan) StateMan->reinit();
 }
+
+void CBaseMonster::load_effector(LPCSTR section, LPCSTR line, SAttackEffector &effector)
+{
+	LPCSTR ppi_section = pSettings->r_string(section, line);
+	effector.ppi.duality.h			= pSettings->r_float(ppi_section,"duality_h");
+	effector.ppi.duality.v			= pSettings->r_float(ppi_section,"duality_v");
+	effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+	effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+	effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	effector.ppi.noise.fps			= pSettings->r_float(ppi_section,"noise_fps");
+	VERIFY(!fis_zero(effector.ppi.noise.fps));
+
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &effector.ppi.color_base.r,	&effector.ppi.color_base.g,	&effector.ppi.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &effector.ppi.color_gray.r,	&effector.ppi.color_gray.g,	&effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &effector.ppi.color_add.r,	&effector.ppi.color_add.g,	&effector.ppi.color_add.b);
+
+	effector.time				= pSettings->r_float(ppi_section,"time");
+	effector.time_attack		= pSettings->r_float(ppi_section,"time_attack");
+	effector.time_release		= pSettings->r_float(ppi_section,"time_release");
+
+	effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+	effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+	effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+	effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+}

@@ -8,6 +8,12 @@ class CPsyDog : public CAI_PseudoDog {
 	typedef CAI_PseudoDog inherited;
 
 	friend class CPsyDogPhantom;
+
+	// эффектор у актера при нахождении в поле
+	//CPPEffectorDistance	m_aura_effector;
+
+	// enemy transfered from phantom
+	CActor *m_enemy;
 public:
 						CPsyDog				();
 		virtual			~CPsyDog			();
@@ -20,6 +26,8 @@ public:
 		virtual void	Die					(CObject* who);
 
 		virtual void	Think				();
+//				void	on_phantom_appear	();
+		
 private:
 				bool	spawn_phantom		();
 				void	delete_phantom		(CPsyDogPhantom*);
@@ -52,6 +60,9 @@ class CPsyDogPhantom : public CAI_PseudoDog {
 	}m_state;
 
 	SAttackEffector m_appear_effector;
+
+	LPCSTR			m_particles_appear;
+	LPCSTR			m_particles_disappear;
 
 public:
 					CPsyDogPhantom		();

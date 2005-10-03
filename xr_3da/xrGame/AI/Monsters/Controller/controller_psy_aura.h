@@ -41,7 +41,7 @@ public:
 	virtual void	feel_touch_new			(CObject* O);
 	virtual void	feel_touch_delete		(CObject* O);
 
-			bool	effector_active			() {return m_effector.IsActive();}
+			bool	effector_active			() {return m_effector.active();}
 
 			void	on_relcase				(CObject *O);
 

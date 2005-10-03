@@ -1,54 +1,22 @@
 #pragma once
-
-#include "../effectorPP.h"
-#include "../cameramanager.h"
-
-//////////////////////////////////////////////////////////////////////////
-// CPPEffectDistance
-//////////////////////////////////////////////////////////////////////////
-class CPPEffectDistance : public CEffectorPP {
-	typedef CEffectorPP inherited;
-
-	SPPInfo		state;
-	float		factor;
-
-public:
-					CPPEffectDistance	(const SPPInfo &ppi);
-	virtual			~CPPEffectDistance	();
-
-			void	Update				(float new_factor) {factor = new_factor;}
-			void	Destroy				();
-
-protected:
-	virtual	BOOL	Process				(SPPInfo& pp);
-
-};
+#include "pp_effector_custom.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CPPEffectorDistance
 //////////////////////////////////////////////////////////////////////////
+class CPPEffectorDistance : public CPPEffectorCustom {
+	typedef CPPEffectorCustom inherited;
 
-class CPPEffectorDistance {
-	SPPInfo			state;
-	float			r_min_perc;		// min_radius (percents [0..1])
-	float			r_max_perc;		// max_radius (percents [0..1])
-	float			radius;
-
-	CPPEffectDistance *p_effector;
-
+	float			m_r_min_perc;		// min_radius (percents [0..1])
+	float			m_r_max_perc;		// max_radius (percents [0..1])
+	float			m_radius;
+	float			m_dist;
 public:
-				CPPEffectorDistance		();
-	virtual 	~CPPEffectorDistance	();
+	virtual void	load					(LPCSTR section);	
+	IC		void	set_radius				(float r) {m_radius = r;}
+	IC		void	set_current_dist		(float dist) {m_dist = dist;}
 
-			void	Load				(LPCSTR section);
-			void	SetRadius			(float r) {radius = r;}
-			void	Update				(float dist);
-
-			bool	IsActive			() {return (p_effector != 0);}
-
-private:
-			void	Activate			();
+	virtual bool	check_completion		();
+	virtual bool	check_start_conditions	();
+	virtual void	update_factor			();
 };
-
-
-

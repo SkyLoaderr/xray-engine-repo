@@ -1,0 +1,16 @@
+#pragma once
+//////////////////////////////////////////////////////////////////////////
+// Effector controlling class
+//////////////////////////////////////////////////////////////////////////
+//class CPsyDogAura {
+//	CPsyDog		*m_object;
+//	CActor		*m_actor;
+//public:
+//			CPsyDogAura		(CPsyDog *dog) : m_object(dog){}
+//
+//	void	load			(LPCSTR section);
+//	void	reinit			();
+//
+//	bool	active			();
+//};
+

@@ -25,6 +25,8 @@ CPsyDog::~CPsyDog()
 void CPsyDog::Load(LPCSTR section)
 {
 	inherited::Load(section);
+
+	//m_aura_effector.Load("psy_dog_aura_effector");
 }
 
 BOOL CPsyDog::net_Spawn(CSE_Abstract *dc)
@@ -36,6 +38,8 @@ BOOL CPsyDog::net_Spawn(CSE_Abstract *dc)
 void CPsyDog::reinit()
 {
 	inherited::reinit();
+	
+	m_enemy = 0;
 }
 void CPsyDog::reload(LPCSTR section)
 {
@@ -157,33 +161,11 @@ BOOL CPsyDogPhantom::net_Spawn(CSE_Abstract *dc)
 	
 	// Load psi postprocess --------------------------------------------------------
 	
-
-	LPCSTR ppi_section = pSettings->r_string(cNameSect(), "appear_effector");
-	m_appear_effector.ppi.duality.h			= pSettings->r_float(ppi_section,"duality_h");
-	m_appear_effector.ppi.duality.v			= pSettings->r_float(ppi_section,"duality_v");
-	m_appear_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
-	m_appear_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
-	m_appear_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
-	m_appear_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
-	m_appear_effector.ppi.noise.fps			= pSettings->r_float(ppi_section,"noise_fps");
-	VERIFY(!fis_zero(m_appear_effector.ppi.noise.fps));
-
-	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_appear_effector.ppi.color_base.r,	&m_appear_effector.ppi.color_base.g,	&m_appear_effector.ppi.color_base.b);
-	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_appear_effector.ppi.color_gray.r,	&m_appear_effector.ppi.color_gray.g,	&m_appear_effector.ppi.color_gray.b);
-	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_appear_effector.ppi.color_add.r,	&m_appear_effector.ppi.color_add.g,	&m_appear_effector.ppi.color_add.b);
-
-	m_appear_effector.time				= pSettings->r_float(ppi_section,"time");
-	m_appear_effector.time_attack		= pSettings->r_float(ppi_section,"time_attack");
-	m_appear_effector.time_release		= pSettings->r_float(ppi_section,"time_release");
-
-	m_appear_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
-	m_appear_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
-	m_appear_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
-	m_appear_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
-
+	load_effector(*cNameSect(), "appear_effector",m_appear_effector);
+	
 	// --------------------------------------------------------------------------------
-
-
+	m_particles_appear		= pSettings->r_string(*cNameSect(), "particles_appear");
+	m_particles_disappear	= pSettings->r_string(*cNameSect(), "particles_disappear");
 
 	return (TRUE);
 }
@@ -218,7 +200,7 @@ void CPsyDogPhantom::Think()
 	setVisible		(TRUE);
 	setEnabled		(TRUE);
 
-	CParticlesPlayer::StartParticles("anomaly2\\bloodsucker_shield",Fvector().set(0.0f,0.1f,0.0f),ID());
+	CParticlesPlayer::StartParticles(m_particles_appear,Fvector().set(0.0f,0.1f,0.0f),ID());
 
 	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
 	if (!pA) return;
@@ -242,6 +224,10 @@ void CPsyDogPhantom::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_
 }
 void CPsyDogPhantom::net_Destroy()
 {
+	Fvector center;
+	Center(center);
+	PlayParticles(m_particles_disappear,center,Fvector().set(0.f,1.f,0.f));
+	
 	if (m_parent) m_parent->delete_phantom(this);
 	inherited::net_Destroy();
 }

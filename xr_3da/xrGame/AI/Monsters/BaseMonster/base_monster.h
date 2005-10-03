@@ -269,6 +269,7 @@ public:
 	void			Hit_Psy							(CObject *object, float value);
 	void			Hit_Wound						(CObject *object, float value, const Fvector &dir, float impulse);
 	void			PlayParticles					(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove = TRUE);
+	void			load_effector					(LPCSTR section, LPCSTR line, SAttackEffector &effector);
 
 	// --------------------------------------------------------------------------------------
 	// Kill From Here

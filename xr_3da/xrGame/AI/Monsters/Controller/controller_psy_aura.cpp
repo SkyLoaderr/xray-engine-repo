@@ -11,7 +11,7 @@ CPsyAuraController::CPsyAuraController()
 	set_radius(30.f);
 	set_auto_activate();
 	set_auto_deactivate();
-	m_effector.SetRadius(get_radius());
+	m_effector.set_radius(get_radius());
 }
 
 CPsyAuraController::~CPsyAuraController()
@@ -22,7 +22,7 @@ void CPsyAuraController::reload(LPCSTR section)
 {
 	inherited::reload(section, "PsyAura_");
 	
-	m_effector.Load(pSettings->r_string(section,"PsyAura_Postprocess_Section"));
+	m_effector.load(pSettings->r_string(section,"PsyAura_Postprocess_Section"));
 	::Sound->create(m_sound,TRUE, pSettings->r_string(section,"PsyAura_HeadSound"), SOUND_TYPE_WORLD);
 
 	power_down_vel = pSettings->r_float(section,"PsyAura_Power_Down_Velocity");
@@ -75,7 +75,8 @@ void CPsyAuraController::frame_update()
 	if (is_active()) {
 		if (m_actor) {
 			
-			m_effector.Update(m_current_radius);
+			m_effector.set_current_dist(m_current_radius);
+			m_effector.update();
 
 			if (m_current_radius < m_actor->Position().distance_to(get_object()->Position())) 
 				m_current_radius += Device.fTimeDelta * 1.2f;
@@ -87,14 +88,18 @@ void CPsyAuraController::frame_update()
 	} else {
 		// реализация плавного увядания, если энергия поля закончилась, а актер находится в радиусе
 		if (m_actor) {
-			m_effector.Update(m_current_radius);
+			m_effector.set_current_dist(m_current_radius);
+			m_effector.update();
+
 			m_current_radius += Device.fTimeDelta * 1.2f;
 			b_updated = true;
 		}
 	}
 
-	if (!b_updated) 
-		m_effector.Update(get_radius() + 1.f);
+	if (!b_updated) { 
+		m_effector.set_current_dist(get_radius() + 1.f);
+		m_effector.update();
+	}
 }
 
 
@@ -104,7 +109,8 @@ BOOL CPsyAuraController::feel_touch_contact(CObject* O)
 {
 	// реагировать только на актера и на монстров
 	CCustomMonster *monster = smart_cast<CCustomMonster*>(O);
-	if ((O != get_object()) && (smart_cast<CActor*>(O) || (monster && monster->g_Alive()))) return TRUE;
+	if ((O != get_object()) && 
+		(smart_cast<CActor*>(O) || (monster && monster->g_Alive() && get_object()->EnemyMan.is_enemy(monster)))) return TRUE;
 	
 	return FALSE;
 }
