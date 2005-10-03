@@ -447,6 +447,37 @@
 				RelativePath=".\luabind\wrapper_base.cpp">
 			</File>
 		</Filter>
+		<Filter
+			Name="etc"
+			Filter="">
+			<File
+				RelativePath=".\dynasm\dasm_proto.h">
+			</File>
+			<File
+				RelativePath=".\dynasm\dasm_x86.h">
+			</File>
+			<File
+				RelativePath=".\dynasm\dasm_x86.lua">
+			</File>
+			<File
+				RelativePath=".\jitlib\dump.lua">
+			</File>
+			<File
+				RelativePath=".\jitlib\dumphints.lua">
+			</File>
+			<File
+				RelativePath=".\dynasm\dynasm.lua">
+			</File>
+			<File
+				RelativePath=".\jitlib\opt.lua">
+			</File>
+			<File
+				RelativePath=".\jitlib\opt_lib.lua">
+			</File>
+			<File
+				RelativePath=".\jitlib\trace.lua">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\StdAfx.cpp">
 		</File>
