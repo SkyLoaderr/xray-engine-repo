@@ -176,7 +176,10 @@ function PatrolManager:set_command (npc, command, formation)
        abort ("NPC %s is not commander in PatrolManager[%s]", npc:name (), self.path_name) 
     end   
     self.current_state = command
-    self.formation = formation
+    if self.formation ~= formation then
+       self.formation = formation
+       self:set_formation (formation)
+    end   
     self.commander_lid = npc:level_vertex_id ()
     self.commander_dir = npc:direction ()
 end
@@ -299,12 +302,17 @@ function action_commander:death_callback()
 	patrols[self.st.path_name]:remove_npc (self.object)
 end
 ----------------------
-function action_commander:callback (mode, number)
+function action_commander:callback (mode, number, index)
     if number < patrol_move or number > patrol_stop then
        return
     end
     self.cur_state = number
-    patrols[self.st.path_walk]:set_command (self.object, self.cur_state, "line")
+    if self.st.path_walk_info[index]["f"] ~= nil then
+       self.st.formation = self.st.path_walk_info[index]["f"]
+       printf ("CHANGE FORMATION TO %s", self.st.formation)
+    end   
+
+    patrols[self.st.path_walk]:set_command (self.object, self.cur_state, self.st.formation)
 end
 
 
@@ -354,8 +362,13 @@ function action_patrol:execute ()
 	    
 	--перемещаемся по пути
 	if self.on_point == false then  -- если позиция не была еще достигнута, то подбежим к ней
-	   self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 3
-       state_mgr.set_state(self.object, "assault")       -- просто подбегаем
+	   local dist = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) 
+	   self.on_point = dist < 3
+	   if dist < 2 then
+          state_mgr.set_state(self.object, "patrol")       
+       else
+          state_mgr.set_state(self.object, "assault")       -- просто подбегаем  
+       end   
 	else
 	   if self.cur_state == patrol_move then
 	      state_mgr.set_state (self.object, "patrol")
@@ -368,7 +381,7 @@ function action_patrol:execute ()
 	   elseif self.cur_state == patrol_stop then
 	      state_mgr.set_state (self.object, "idle")
 	   end   
-       self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 8
+       self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 5
 	end
 	
 	
