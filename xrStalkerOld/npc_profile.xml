@@ -313,7 +313,10 @@
 		<class>bar_Killer_regular</class>
 	</character>
 	<character id="bar_Killer_sniper">
-		<class>bar_Killer_sniper</class>
+		<class>bar_Killer_sniper_on_enter</class>
+	</character>
+	<character id="bar_Killer_sniper_on_enter">
+		<class>bar_Killer_sniper_on_enter</class>
 	</character>	
 	<character id="bar_Killer_specnaz">
 		<class>bar_Killer_specnaz</class>
