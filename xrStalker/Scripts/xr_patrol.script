@@ -49,7 +49,7 @@ class "PatrolManager"
 function PatrolManager:__init (path_name)
     self.path_name = path_name
     self.npc_list = {}
-    self.current_state = patrol_stop
+    self.current_state = "patrol"
     self.commander_id = -1
     self.formation = "back"
     self.commander_lid = -1
@@ -62,12 +62,16 @@ function PatrolManager:add_npc (npc, leader)
     if npc == nil or npc:alive () == false or self.npc_list[npc:id ()] ~= nil then 
        return 
     end
+    
     -- if this npc first in command then set him as commander
     self.npc_list[npc:id ()] = {soldier = npc, dir = vector ():set (1, 0, 0), dist = 0}
     
+    -- если мужик первый или считается лидером, то установим, как лидера    
     if table.getn (self.npc_list) == 1 or leader == true then
        self.commander_id = npc:id ()
     end    
+    
+    
     self:reset_positions ()
 end
 -----------------------
@@ -84,13 +88,18 @@ function PatrolManager:reset_positions ()
     local form_ = formations[self.formation]
     local index = 1
     for key, data in self.npc_list do
+        --установим командора, если это еще не сделано 
         if self.commander_id == -1 and index == 1 then
            self.commander_id = data.soldier:id ()
         end
+        -- пересчитаем позиции
         if self.commander_id ~= self.npc_list[key].soldier:id () then
-           self.npc_list[key].dir = form_[index].dir
-           self.npc_list[key].dist = form_[index].dist
-           self.npc_list[key].vertex_id = -1
+           --if self.npc_list[key].accepted == false then
+              self.npc_list[key].dir = form_[index].dir
+              self.npc_list[key].dist = form_[index].dist
+              self.npc_list[key].vertex_id = -1
+              self.npc_list[key].accepted = true
+           --end   
            index = index + 1
         end   
     end    
@@ -146,13 +155,13 @@ function PatrolManager:get_npc_command (npc)    -- get command for NPC
     dir_s = vector_rotate_y (dir_s, utils.angle_diff (dir, vector ():set (0, 0, 1)))
     -- в зависимости от типа перемещения будем менять целевую аи ноду
     local d
-    if self.current_state == patrol_move or self.current_state == patrol_hide or self.current_state == patrol_stop then
+    --if self.current_state == patrol_move or self.current_state == patrol_hide or self.current_state == patrol_stop then
        d = 2
-    elseif self.current_state == patrol_run then
-       d = 2.5
-    else
-       d = 3
-    end   
+    --elseif self.current_state == patrol_run then
+       --d = 2.5
+    --else
+       --d = 3
+    --end   
             
     --теперь аи ноду относительно командора ордена рыцарей храма
     local vertex = level.vertex_in_direction (level.vertex_in_direction (vertex_id, dir_s, dist_s), dir, d)
@@ -173,7 +182,7 @@ function PatrolManager:set_command (npc, command, formation)
        abort ("NPC commander possible dead in PatrolManager[%s]", self.path_name)
     end    
     if npc:id () ~= self.commander_id then
-       abort ("NPC %s is not commander in PatrolManager[%s]", npc:name (), self.path_name) 
+       return --abort ("NPC %s is not commander in PatrolManager[%s]", npc:name (), self.path_name) 
     end   
     self.current_state = command
     if self.formation ~= formation then
@@ -234,7 +243,7 @@ function action_commander:__init (npc_name, action_name, storage) super(nil, act
 	self.st = storage
 	self.move_mgr = move_mgr.move_mgr (storage.npc)
 	self.was_reset = false
-	self.cur_state = 0
+	self.cur_state = "patrol"
 end
 ----------------------
 function action_commander:initialize()
@@ -266,7 +275,8 @@ function action_commander:reset_scheme()
 	else
 		self.move_mgr:continue()
 	end
-	patrols[self.st.path_walk]:set_formation (self.st.formation)
+    patrols[self.st.path_walk]:set_command (self.object, self.cur_state, self.st.formation)
+	
 	self.was_reset = true
 end
 ----------------------
@@ -279,23 +289,20 @@ function action_commander:execute()
 	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
        return
     end
-    if self.cur_state == patrol_move then
-          state_mgr.set_state (self.object, "patrol")
-    elseif self.cur_state == patrol_hide then
-	      state_mgr.set_state (self.object, "sneak")
-    elseif self.cur_state == patrol_sprint then
-          state_mgr.set_state (self.object, "sprint")
-    elseif self.cur_state == patrol_run then
-	      state_mgr.set_state (self.object, "assault")
-    elseif self.cur_state == patrol_stop then
-	      state_mgr.set_state (self.object, "idle")
-    end   
-    
+    patrols[self.st.path_walk]:set_command (self.object, state_mgr.get_state (self.object), self.st.formation)
 end
 ----------------------
 function action_commander:finalize ()
-	self.move_mgr:finalize()
-	action_base.finalize(self)
+    if self.object:alive () == true then
+       printf ("ACTION_COMMANDER:FINALIZE CALLED")
+	   patrols[self.st.path_walk]:set_command (self.object, "guard", self.st.formation)
+	   self.move_mgr:finalize()
+	end   
+    action_base.finalize(self)
+end
+----------------------
+function action_commander:deactivate ()
+    patrols[self.st.path_name]:remove_npc (self.object)    
 end
 ----------------------
 function action_commander:death_callback()
@@ -303,16 +310,16 @@ function action_commander:death_callback()
 end
 ----------------------
 function action_commander:callback (mode, number, index)
-    if number < patrol_move or number > patrol_stop then
-       return
-    end
-    self.cur_state = number
-    if self.st.path_walk_info[index]["f"] ~= nil then
-       self.st.formation = self.st.path_walk_info[index]["f"]
-       printf ("CHANGE FORMATION TO %s", self.st.formation)
+    if number == 0 then
+       self.st.formation = "line"
+    elseif number == 1 then
+       self.st.formation = "around" 
+    elseif number == 1 then 
+       self.st.formation = "back"  
     end   
-
-    patrols[self.st.path_walk]:set_command (self.object, self.cur_state, self.st.formation)
+    --if self.st.path_walk_info[index]["f"] ~= nil then
+       --self.st.formation = self.st.path_walk_info[index]["f"]
+    --end   
 end
 
 
@@ -370,17 +377,7 @@ function action_patrol:execute ()
           state_mgr.set_state(self.object, "assault")       -- просто подбегаем  
        end   
 	else
-	   if self.cur_state == patrol_move then
-	      state_mgr.set_state (self.object, "patrol")
-	   elseif self.cur_state == patrol_hide then
-	      state_mgr.set_state (self.object, "sneak")
-	   elseif self.cur_state == patrol_sprint then
-	      state_mgr.set_state (self.object, "sprint")
-	   elseif self.cur_state == patrol_run then
-	      state_mgr.set_state (self.object, "assault")
-	   elseif self.cur_state == patrol_stop then
-	      state_mgr.set_state (self.object, "idle")
-	   end   
+	   state_mgr.set_state (self.object, self.cur_state) 
        self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 5
 	end
 	
@@ -457,6 +454,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.formation = utils.cfg_get_string(ini, section, "formation", npc, false, gulag_name)
 	if st.formation == nil then
 	   st.formation = "back"
+	end    
+	st.move_type = utils.cfg_get_string(ini, section, "move_type", npc, false, gulag_name)
+	if st.move_type == nil then
+	   st.move_type = "patrol"
 	end    
 
 	st.suggested_state = {}
