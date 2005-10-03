@@ -480,6 +480,20 @@ states = {
 				animstate = "wounded",
 				animation = "help_me"
 			},
+	trans_0 = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "trans_0"
+			},
+	trans_1 = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "trans_1"
+			},
 
 	-- ѕси раненый
 	psy_pain = {weapon = "drop",
