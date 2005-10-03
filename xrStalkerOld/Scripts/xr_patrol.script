@@ -451,11 +451,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_name = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_walk = st.path_name
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
-	st.formation = utils.cfg_get_string(ini, section, "formation", npc, false, gulag_name)
+	st.formation = utils.cfg_get_string(ini, section, "formation", npc, false, "")
 	if st.formation == nil then
 	   st.formation = "back"
 	end    
-	st.move_type = utils.cfg_get_string(ini, section, "move_type", npc, false, gulag_name)
+	st.move_type = utils.cfg_get_string(ini, section, "move_type", npc, false, "")
 	if st.move_type == nil then
 	   st.move_type = "patrol"
 	end    
