@@ -143,7 +143,7 @@ void print_class						(lua_State *L, luabind::detail::class_rep *crep)
 		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	E = constants.end();
 		for ( ; I != E; ++I)
 #ifndef USE_NATIVE_LUA_STRINGS
-			Msg		("    const %s = %d;",j(*I).first,(*I).second);
+			Msg		("    const %s = %d;",(*I).first,(*I).second);
 #else
 			Msg		("    const %s = %d;",getstr((*I).first.m_object),(*I).second);
 #endif

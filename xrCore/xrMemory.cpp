@@ -174,7 +174,7 @@ void	xrMemory::mem_statistic	()
 }
 
 // xr_strdup
-char* __stdcall xr_strdup	(const char* string)
+char*			xr_strdup		(const char* string)
 {	
 	VERIFY	(string);
 	u32		len			= u32(xr_strlen(string))+1;
@@ -183,7 +183,7 @@ char* __stdcall xr_strdup	(const char* string)
 	return	memory;
 }
 
-XRCORE_API		BOOL	__stdcall is_stack_ptr		( void* _ptr)
+XRCORE_API		BOOL			is_stack_ptr		( void* _ptr)
 {
 	int			local_value		= 0;
 	void*		ptr_refsound	= _ptr;

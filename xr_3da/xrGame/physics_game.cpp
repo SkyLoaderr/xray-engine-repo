@@ -77,7 +77,7 @@ public:
 
 
 template<class Pars>
-void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
+void  TContactShotMark(CDB::TRI* T,dContactGeom* c)
 {
 	dBodyID b=dGeomGetBody(c->g1);
 	dxGeomUserData* data;

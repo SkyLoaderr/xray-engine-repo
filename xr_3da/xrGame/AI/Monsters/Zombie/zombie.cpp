@@ -93,7 +93,7 @@ void CZombie::reload(LPCSTR section)
 }
 
 
-void __stdcall CZombie::BoneCallback(CBoneInstance *B)
+void CZombie::BoneCallback(CBoneInstance *B)
 {
 	CZombie*	this_class = static_cast<CZombie*>(B->Callback_Param);
 

@@ -348,7 +348,7 @@ u16			CPHShell::get_JointsNumber				()
 {
 	return u16(joints.size());
 }
-void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
+void  CPHShell:: BonesCallback				(CBoneInstance* B){
 	///CPHElement*	E			= smart_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
 	CPHElement*	E			= cast_PHElement(B->Callback_Param);
@@ -356,7 +356,7 @@ void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 }
 
 
-void __stdcall CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
+void  CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
 	///CPHElement*	E			= smart_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
 	CPHElement*	E			= cast_PHElement(B->Callback_Param);

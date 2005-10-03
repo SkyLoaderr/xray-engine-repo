@@ -57,7 +57,7 @@ void CAI_Crow::SSound::Unload		()
 		::Sound->destroy	(m_Sounds[i]);
 }
 
-void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
+void cb_OnHitEndPlaying			(CBlend* B)
 {
 	((CAI_Crow*)B->CallbackParam)->OnHitEndPlaying(B);
 }

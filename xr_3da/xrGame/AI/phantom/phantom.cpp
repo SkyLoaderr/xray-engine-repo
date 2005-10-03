@@ -118,7 +118,7 @@ void CPhantom::net_Destroy	()
 
 //---------------------------------------------------------------------
 // Animation Callbacks
-void __stdcall CPhantom::animation_end_callback(CBlend* B)
+void CPhantom::animation_end_callback(CBlend* B)
 {
 	CPhantom *phantom				= (CPhantom*)B->CallbackParam;
 	switch (phantom->m_CurState){

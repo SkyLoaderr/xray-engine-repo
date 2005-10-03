@@ -51,6 +51,10 @@ CScriptStorage::CScriptStorage		()
 #ifdef DEBUG
 	luaopen_debug			(lua());
 #endif
+#ifdef USE_JIT
+	luaopen_jit				(lua());
+	luaJIT_setmode			(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_ON);
+#endif
 }
 
 CScriptStorage::~CScriptStorage		()
@@ -290,7 +294,17 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 		if( ai().script_engine().debugger() )
 		errFuncId = ai().script_engine().debugger()->PrepareLua(lua());
 #endif
-		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId); //new_Andy
+		if (0)	//.
+		{
+	        for (int i=0; lua_type(lua(), -i-1); i++)
+                Msg	("%2d : %s",-i-1,lua_typename(lua(), lua_type(lua(), -i-1)));
+		}
+
+		// because that's the first and the only call of the main chunk - there is no point to compile it
+		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_OFF);				// Oles
+		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId);	//new_Andy
+		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_ON);				// Oles
+
 #ifdef USE_DEBUGGER
 		if( ai().script_engine().debugger() )
 			ai().script_engine().debugger()->UnPrepareLua(lua(),errFuncId);

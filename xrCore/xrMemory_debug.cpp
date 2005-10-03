@@ -81,6 +81,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 	{
 		debug_info_update	=	0;
 		debug_info.erase	(std::remove_if(debug_info.begin(),debug_info.end(),pred_mdbg),debug_info.end());
+		dbg_check			();
 	}
 
 	debug_mode				= TRUE;

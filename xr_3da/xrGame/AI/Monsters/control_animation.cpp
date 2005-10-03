@@ -40,17 +40,17 @@ void CControlAnimation::update_frame()
 	check_events	(m_data.legs);
 }
 
-static void __stdcall global_animation_end_callback(CBlend* B)
+static void  global_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
 	controller->m_global_animation_end = true;
 }
-static void __stdcall legs_animation_end_callback(CBlend* B)
+static void  legs_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
 	controller->m_legs_animation_end = true;
 }
-static void __stdcall torso_animation_end_callback(CBlend* B)
+static void  torso_animation_end_callback(CBlend* B)
 {
 	CControlAnimation *controller = (CControlAnimation *)B->CallbackParam;
 	controller->m_torso_animation_end = true;

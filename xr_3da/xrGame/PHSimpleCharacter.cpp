@@ -80,7 +80,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 }
 
 
-void __stdcall TestPathCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+void TestPathCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	do_colide=false;
 }

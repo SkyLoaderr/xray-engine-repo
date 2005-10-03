@@ -43,11 +43,11 @@ IC void	 MulSprDmp(float &cfm,float	&erp,float mul_spring,float mul_damping)
 	cfm*=factor;
 	erp*=(factor*mul_spring);
 }
-typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
-typedef	void __stdcall  ObjectContactCallbackFun(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+typedef void 	ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
+typedef	void	ObjectContactCallbackFun(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 
 
-typedef void __stdcall  BoneCallbackFun(CBoneInstance* B);
+typedef void	BoneCallbackFun(CBoneInstance* B);
 
 
 ObjectContactCallbackFun PushOutCallback;
@@ -55,6 +55,6 @@ ObjectContactCallbackFun PushOutCallback1;
 extern ContactCallbackFun *ContactShotMark;
 extern ContactCallbackFun *CharacterContactShotMark;
 
-typedef	void	__stdcall	PhysicsStepTimeCallback(u32	step_start,u32	step_end);
+typedef	void	PhysicsStepTimeCallback		(u32	step_start,u32	step_end);
 extern			PhysicsStepTimeCallback		*physics_step_time_callback;
 #endif  //PHYSICS_COMMON_H

@@ -11,14 +11,14 @@
 #include "xr_level_controller.h"
 #include "game_object_space.h"
 
-void __stdcall	CWeaponStatMgun::BoneCallbackX		(CBoneInstance *B)
+void 	CWeaponStatMgun::BoneCallbackX		(CBoneInstance *B)
 {
 	CWeaponStatMgun	*P = static_cast<CWeaponStatMgun*>(B->Callback_Param);
 	Fmatrix rX;		rX.rotateX		(P->m_cur_x_rot);
 	B->mTransform.mulB(rX);
 }
 
-void __stdcall	CWeaponStatMgun::BoneCallbackY		(CBoneInstance *B)
+void 	CWeaponStatMgun::BoneCallbackY		(CBoneInstance *B)
 {
 	CWeaponStatMgun	*P = static_cast<CWeaponStatMgun*>(B->Callback_Param);
 	Fmatrix rY;		rY.rotateY		(P->m_cur_y_rot);

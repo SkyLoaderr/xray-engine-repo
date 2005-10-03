@@ -11,16 +11,19 @@
 #pragma warning(pop)
 
 // Lua
+extern "C"	{
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
+#include "luajit.h"
+};
 #pragma comment(lib,"x:/xrLUA.lib")
 
 // Lua-bind
 #pragma warning(disable:4995)
 #pragma warning(disable:4530)
 #pragma warning(disable:4244)
-#include "luabind/luabind.hpp"
+#include <luabind/luabind.hpp>
 #include "luabind/adopt_policy.hpp"
 #include "luabind/dependency_policy.hpp"
 #include "luabind/return_reference_to_policy.hpp"
@@ -36,7 +39,7 @@ string4096 g_ca_stdout;
 
 // I need this because we have to exclude option /EHsc (exception handling) from the project
 namespace boost {
-	void __stdcall throw_exception(const exception &A)
+	void throw_exception(const exception &A)
 	{
 		Debug.fatal("Boost exception raised %s",A.what());
 	}
@@ -1670,7 +1673,11 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 		PROPERTIES::const_iterator	I = properties.begin();
 		PROPERTIES::const_iterator	E = properties.end();
 		for ( ; I != E; ++I)
+#ifndef USE_NATIVE_LUA_STRINGS
+			printf	("    property %s;\n",(*I).first);
+#else
 			printf	("    property %s;\n",getstr((*I).first.m_object));
+#endif // USE_NATIVE_LUA_STRINGS
 		if (!properties.empty())
 			printf		("    \n");
 	}
@@ -1943,6 +1950,73 @@ extern void broker_test();
 extern void test_id_generator();
 extern void profiler_test();
 
+static int traceback (lua_State *L)	{ return 1; }
+
+static int docall (lua_State *L, int narg, int clear) {
+  int status,i;
+  int base = lua_gettop(L) - narg;  /* function index */
+  lua_pushcfunction(L, traceback);  /* push traceback function */
+  lua_insert(L, base);  /* put it under chunk and args */
+	//signal(SIGINT, laction);
+	//.
+	if (1)	//.
+	{
+		for (i=0; lua_type(L, -i-1); i++)
+			printf	("\n%2d : %s",-i-1,lua_typename(L, lua_type(L, -i-1)));
+	}
+  status = lua_pcall(L, narg, (clear ? 0 : LUA_MULTRET), base);
+  // signal(SIGINT, SIG_DFL);
+  lua_remove(L, base);  /* remove traceback function */
+  return status;
+}
+
+void		test_luajit	()	{
+	lua_State				*L = lua_open();
+
+	if (!L) {
+		lua_error			(L);
+		return;
+	}
+
+	luaL_openlibs			(L);						/* open libraries */
+	int			err = luaL_dofile	(L,"x:\\test_jit.lua");		
+	LPCSTR		eS	= lua_tostring	(L,-1);
+	/*
+	luaopen_base			(L);
+	luaopen_string			(L);
+	luaopen_math			(L);
+	luaopen_table			(L);
+	luaopen_debug			(L);
+	luaopen_jit				(L);
+	*/
+	// luaJIT_setmode			(L,LUAJIT_MODE_ENGINE,LUAJIT_MODE_OFF);
+	
+	// luabind::open		(L);
+
+	//----------------------------------------------------------------------------
+	/*
+    int			narg			= 0;
+    lua_setglobal				(L, "arg");
+	int			err				= luaL_loadfile	(L,"x:\\test_jit.lua");
+	*/
+				// lua_insert	(L, -(narg+1));
+				// err			= docall		(L,narg,0);
+
+	/*
+	int				start			= lua_gettop(L);
+	LPCSTR			caScriptName	= "test_jit";
+	string256		l_caLuaFileName	;
+	IReader			*l_tpFileReader = FS.r_open("x:\\test_jit.lua");
+	R_ASSERT		(l_tpFileReader);
+	strconcat		(l_caLuaFileName,"@",caScriptName);
+	int err		=	luaL_loadbuffer	(L,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),caScriptName);
+	FS.r_close		(l_tpFileReader);
+	*/
+	//----------------------------------------------------------------------------
+	//int			l_iErrorCode	= lua_pcall	(L,0,0,0);
+	//LPCSTR		S				= lua_tostring(L,-1);
+};
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test_id_generator();
@@ -1956,10 +2030,11 @@ int __cdecl main(int argc, char* argv[])
 //	test_smart_container();
 //	callback_test::callback_test();
 //	slipch_test();
-	profiler_test();
+//	profiler_test();
+	Core._initialize	("lua-test",NULL);
+	test_luajit			();
 	return 0;
 
-	Core._initialize				("lua-test",NULL);
 	printf	("xrLuaCompiler v0.1\n");
 //	if (argc < 2) {
 //		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
@@ -2071,7 +2146,7 @@ int __cdecl main(int argc, char* argv[])
 //			]
 	];
 
-	lua_dofile		(L,"x:\\bug10.script");
+//.	lua_dofile		(L,"x:\\bug10.script");
 
 	if (xr_strlen(g_ca_stdout)) {
 		printf		("\n%s\n",g_ca_stdout);
@@ -2200,7 +2275,7 @@ int __cdecl main(int argc, char* argv[])
 //	CLuabindClass<0>	*p = object_cast<CLuabindClass<0>*>(my_class(),adopt(result));
 
 //	delete			(g_custom);
-	lua_setgcthreshold	(L,0);
+//.	lua_setgcthreshold	(L,0);
 	lua_close			(L);
 
 //	check if we are yielded
@@ -2522,7 +2597,7 @@ void bug_test	()
 	xr_vector<LPCSTR>::const_iterator	I = files.begin();
 	xr_vector<LPCSTR>::const_iterator	E = files.end();
 	for ( ; I != E; ++I) {
-		lua_dofile			(L,*I);
+//.		lua_dofile			(L,*I);
 		if (g_callback) {
 			if (g_object)
 //				result1		= luabind::call_member<int>(*g_object,*g_callback,"member_call");
@@ -2641,7 +2716,7 @@ void bug_test0()
 		def("foo_manager_singleton",	&foo_manager_singleton)
 	];
 
-	lua_dofile				(L,"x:/test_virtual_function_call.script");
+//.	lua_dofile				(L,"x:/test_virtual_function_call.script");
 
 	foo_manager_singleton()->update	();
 

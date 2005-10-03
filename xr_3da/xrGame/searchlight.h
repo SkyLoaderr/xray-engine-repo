@@ -7,8 +7,8 @@ class CLAItem;
 class CProjector: public CScriptObject {
 	typedef	CScriptObject		inherited;
 
-	friend void __stdcall BoneCallbackX(CBoneInstance *B);
-	friend void __stdcall BoneCallbackY(CBoneInstance *B);
+	friend void		BoneCallbackX(CBoneInstance *B);
+	friend void		BoneCallbackY(CBoneInstance *B);
 
 	float			fBrightness;
 	CLAItem*		lanim;
@@ -49,8 +49,8 @@ private:
 			void	TurnOff			();
 	
 	// Rotation routines
-	static void __stdcall  BoneCallbackX(CBoneInstance *B);
-	static void __stdcall  BoneCallbackY(CBoneInstance *B);
+	static void		BoneCallbackX(CBoneInstance *B);
+	static void		BoneCallbackY(CBoneInstance *B);
 
 	void			SetTarget		(const Fvector &target_pos);
 	

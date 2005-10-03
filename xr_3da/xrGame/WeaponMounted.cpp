@@ -18,7 +18,7 @@
 
 //----------------------------------------------------------------------------------------
 
-void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
+void CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 {
 	CWeaponMounted	*P = static_cast<CWeaponMounted*>(B->Callback_Param);
 
@@ -28,7 +28,7 @@ void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 	}
 }
 
-void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
+void CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 {
 	CWeaponMounted	*P = static_cast<CWeaponMounted*>(B->Callback_Param);
 

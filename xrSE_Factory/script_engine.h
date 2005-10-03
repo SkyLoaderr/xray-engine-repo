@@ -11,8 +11,10 @@
 #include "script_storage.h"
 #include "script_export_space.h"
 #include "script_space_forward.h"
-#include <lua.h>
-
+extern "C" {
+	#include <lua.h>
+	#include "luajit.h"
+};
 //#define DBG_DISABLE_SCRIPTS
 
 namespace ScriptEngine {

@@ -15,7 +15,7 @@ class CAI_Bloodsucker : public CBaseMonster,
 	typedef		CBaseMonster	inherited;
 	
 	
-	static	void __stdcall	BoneCallback			(CBoneInstance *B);
+	static	void			BoneCallback			(CBoneInstance *B);
 			void			vfAssignBones			();
 			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
 

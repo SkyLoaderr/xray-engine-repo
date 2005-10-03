@@ -22,5 +22,5 @@ private:
 	{
 		return std::find_if(m_controled_bones.begin(),m_controled_bones.end(),SFind(id));
 	}
-	static	void __stdcall				CollisionCallback			(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	;
+	static	void 						CollisionCallback			(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	;
 };

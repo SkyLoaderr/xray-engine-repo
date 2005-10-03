@@ -30,7 +30,7 @@ public:
 	const MonsterSpace::SBoneRotation &get_head_orientation() const {return m_head_orient;}
 
 private:
-	static	void __stdcall	bone_callback			(CBoneInstance *B);
+	static	void			bone_callback			(CBoneInstance *B);
 
 	void					assign_bones			();
 	void					update_head_orientation	();

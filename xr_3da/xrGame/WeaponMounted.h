@@ -28,8 +28,8 @@ private:
 	Fvector					fire_pos, fire_dir;
 	Fmatrix					fire_bone_xform;
 	Fvector2				m_dAngle;
-	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
-	static void __stdcall	BoneCallbackY		(CBoneInstance *B);
+	static void 			BoneCallbackX		(CBoneInstance *B);
+	static void				BoneCallbackY		(CBoneInstance *B);
 public:
 							CWeaponMounted		();
 	virtual					~CWeaponMounted		();

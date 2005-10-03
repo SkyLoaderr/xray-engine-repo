@@ -8,7 +8,7 @@
 #include <sys\stat.h>
 #include <share.h>
 
-void* __stdcall FileDownload	(LPCSTR fn, u32* pdwSize=NULL);
+void*			FileDownload	(LPCSTR fn, u32* pdwSize=NULL);
 void			FileCompress	(const char *fn, const char* sign, void* data, u32 size);
 void * 			FileDecompress	(const char *fn, const char* sign, u32* size=NULL);
 

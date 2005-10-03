@@ -24,11 +24,11 @@ public:
 	Fmatrix					m_object_in_root;
 	CPHShell								();							
 	virtual ~CPHShell						();
-	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
-	virtual void	applyHit				(const Fvector& pos, const Fvector& dir, float val,const u16 id,ALife::EHitType hit_type);
+	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
+	virtual void			applyHit				(const Fvector& pos, const Fvector& dir, float val,const u16 id,ALife::EHitType hit_type);
 
-	static void __stdcall	BonesCallback				(CBoneInstance* B);
-	static void __stdcall	StataticRootBonesCallBack	(CBoneInstance* B);
+	static void 			BonesCallback				(CBoneInstance* B);
+	static void 			StataticRootBonesCallBack	(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual BoneCallbackFun* GetStaticObjectBonesCallback()	{return StataticRootBonesCallBack;}
 	virtual	void			add_Element				(CPhysicsElement* E);

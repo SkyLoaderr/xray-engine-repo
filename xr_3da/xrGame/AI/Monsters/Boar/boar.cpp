@@ -95,7 +95,7 @@ void CAI_Boar::Load(LPCSTR section)
 
 }
 
-void __stdcall CAI_Boar::BoneCallback(CBoneInstance *B)
+void  CAI_Boar::BoneCallback(CBoneInstance *B)
 {
 	CAI_Boar	*P = static_cast<CAI_Boar*>(B->Callback_Param);
 

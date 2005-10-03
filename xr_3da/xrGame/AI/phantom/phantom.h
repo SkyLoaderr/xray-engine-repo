@@ -39,7 +39,7 @@ private:
 	SStateData			m_state_data[stCount];
 private:
 	CParticlesObject*	m_fly_particles;
-	static void	__stdcall animation_end_callback	(CBlend* B);
+	static void			animation_end_callback	(CBlend* B);
 private:
 	CObject*			m_enemy;
 
