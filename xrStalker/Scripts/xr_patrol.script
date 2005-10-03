@@ -332,7 +332,7 @@ function action_patrol:__init (npc_name, action_name, storage) super (nil, actio
 	self.l_vid = -1
 	self.dist = 0
 	self.dir = vector ():set (0, 0, 1)
-	self.cur_state = patrol_move
+	self.cur_state = "patrol"
 	self.on_point = false
 end
 ----------------------
