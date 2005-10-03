@@ -115,6 +115,7 @@ void CBaseMonster::reinit()
 
 	m_anomaly_detector->reinit		();
 
+	m_skip_transfer_enemy			= false;
 
 #ifdef DEBUG
 	m_show_debug_info				= 0;

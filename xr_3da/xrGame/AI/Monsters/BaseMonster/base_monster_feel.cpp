@@ -114,7 +114,7 @@ BOOL  CBaseMonster::feel_vision_isRelevant(CObject* O)
 		if (!EnemyMan.is_enemy(entity)) {
 			// если видит друга - проверить наличие у него врагов
 			CBaseMonster *monster = smart_cast<CBaseMonster *>(entity);
-			if (monster) EnemyMan.transfer_enemy(monster);
+			if (monster && !m_skip_transfer_enemy) EnemyMan.transfer_enemy(monster);
 			return FALSE;
 		}
 	}

@@ -86,3 +86,12 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 	return			(ret_val);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// CBaseMonster
+void CScriptGameObject::skip_transfer_enemy(bool val)
+{
+	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
+	if (monster) monster->skip_transfer_enemy(val);
+}
+
+

@@ -152,6 +152,8 @@ public:
 
 	virtual bool			jump							(CObject *enemy) {return false;}
 
+	bool					m_skip_transfer_enemy;			
+	IC		void			skip_transfer_enemy				(bool value){m_skip_transfer_enemy = value;}
 	//----------------------------------------------------------------------------------
 
 	virtual void			SetTurnAnimation				(bool turn_left);

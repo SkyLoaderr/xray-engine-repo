@@ -185,6 +185,8 @@ public:
 			void				set_manual_invisibility (bool val);
 			bool				get_manual_invisibility ();
 
+	// CBaseMonster
+			void				skip_transfer_enemy		(bool val);
 
 			template <typename T>
 			IC		T	*motivation_action_manager();

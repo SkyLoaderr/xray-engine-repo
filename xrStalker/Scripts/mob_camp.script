@@ -71,6 +71,10 @@ function mob_camp:reset_scheme()
 	
 	self.prev_enemy			= false
 	
+	-- check enemy transfering
+	if self.st.skip_transfer_enemy then
+		self.object:skip_transfer_enemy(true)
+	end
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -284,12 +288,14 @@ function mob_camp:deactivate()
 	if self.home_path then
 		db.camp_storage[self.st.home_point][self.cur_point_index+1] = false
 	end
+	self.object:skip_transfer_enemy(false)
 end
 
 function mob_camp:net_destroy()
 	if self.home_path then
 		db.camp_storage[self.st.home_point][self.cur_point_index+1] = false
 	end
+	self.object:skip_transfer_enemy(false)
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -319,6 +325,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	storage.time_change_point	= utils.cfg_get_number(ini, section, "time_change_point",	npc, false, 10000)
 	storage.home_min_radius		= utils.cfg_get_number(ini, section, "home_min_radius",		npc, false, 30)
 	storage.home_max_radius		= utils.cfg_get_number(ini, section, "home_max_radius",		npc, false, 40)
+	 
 	
 	-- check min and max radius
 	if	storage.home_min_radius > storage.home_max_radius then
@@ -330,6 +337,13 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		_G.abort("Mob_Camp : object '%s': unable to find look_point '%s' on the map",
 					npc:name(), storage.look_point)
 	end
+
+	-- load transfer enemy flag ()
+	if	ini:line_exist( section, "skip_transfer_enemy") then
+		storage.skip_transfer_enemy = true
+	else 
+		storage.skip_transfer_enemy = false
+	end 
 	
 end
 

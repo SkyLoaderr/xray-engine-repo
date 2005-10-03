@@ -169,6 +169,9 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("get_invisible",				&CScriptGameObject::get_invisible)
 		.def("get_manual_invisibility",		&CScriptGameObject::get_manual_invisibility)
 
+		// base monster
+		.def("skip_transfer_enemy",			&CScriptGameObject::skip_transfer_enemy)
+
 		.def("can_script_capture",			&CScriptGameObject::can_script_capture)
 
 		// inventory owner
