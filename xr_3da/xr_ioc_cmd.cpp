@@ -67,7 +67,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		Memory.mem_statistic				();
 		Msg	("* ----- lua VM storage -----"	);
-		Msg ("- %d bytes",u32(lua_memusage()));
+		Msg ("- %d bytes",0/*u32(lua_memusage())*/);
 		Msg	("* ----- string storage -----"	);
 		g_pStringContainer->dump			();
 		Msg	("* ----- shared memory -----"	);
@@ -102,7 +102,7 @@ public:
 		size_t  w_free, w_reserved, w_committed;
 		vminfo	(&w_free, &w_reserved, &w_committed);
 		u32		_total			= Memory.mem_usage	();
-		u32		_lua			= u32 (lua_memusage());
+		u32		_lua			= 0; // u32 (lua_memusage());
 		u32		_eco_strings	= g_pStringContainer->stat_economy			();
 		u32		_eco_smem		= g_pSharedMemoryContainer->stat_economy	();
 		u32	m_base,c_base,m_lmaps,c_lmaps;

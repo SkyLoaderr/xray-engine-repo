@@ -70,7 +70,7 @@
 	// release: no error checking, no exceptions
 	#define LUABIND_NO_EXCEPTIONS
 	#define BOOST_THROW_EXCEPTION_HPP_INCLUDED
-	namespace boost {	ENGINE_API	void __stdcall throw_exception(const std::exception &A);	};
+	namespace boost {	ENGINE_API	void throw_exception(const std::exception &A);	};
 #endif
 #define LUABIND_DONT_COPY_STRINGS
 

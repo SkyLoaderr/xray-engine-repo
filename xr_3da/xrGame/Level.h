@@ -12,7 +12,6 @@
 #include "../StatGraph.h"
 #include "xrMessages.h"
 #include "alife_space.h"
-#include "xrDebug.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -42,9 +41,18 @@ class CMapManager;
 
 class CLevel					: public IGame_Level, public IPureClient
 {
-#include "Level_network_Demo.h"
-
 private:
+	BOOL						m_bDemoPlayMode;	
+	DEF_DEQUE(DemoDeque, NET_Packet);
+	DemoDeque					m_aDemoData;
+
+	BOOL						m_bDemoSaveMode;
+	string1024					m_sDemoName;
+	
+	BOOL						m_bDemoStarted;	
+	void						UpdateDemo				();
+	void						DemoWriteData			(void* data, u32 size);
+
 	void						ClearAllObjects			();
 private:
 #ifdef DEBUG
@@ -81,6 +89,8 @@ protected:
 	CStatGraph					*pStatGraph;
 	
 public:
+	BOOL						IsDemoPlay				()	{return (m_bDemoPlayMode && !m_bDemoSaveMode);};
+	BOOL						IsDemoSave				()	{return (m_bDemoSaveMode && !m_bDemoPlayMode);};
 	
 #ifdef DEBUG
 	// level debugger
@@ -95,7 +105,7 @@ public:
 	void						ReculcInterpolationSteps();
 	u32							GetNumCrSteps			() const	{return m_dwNumSteps; };
 	void						SetNumCrSteps			( u32 NumSteps );
-	static void __stdcall		PhisStepsCallback		( u32 Time0, u32 Time1 );
+	static void 				PhisStepsCallback		( u32 Time0, u32 Time1 );
 	bool						In_NetCorrectionPrediction	() {return m_bIn_CrPr;};
 
 	virtual void				OnMessage				(void* data, u32 size);

@@ -34,7 +34,7 @@ static const float r_shoulder_factor	= 0.2f;
 static const float r_head_factor		= 0.2f;
 
 
-void __stdcall CActor::Spin0Callback(CBoneInstance* B)
+void  CActor::Spin0Callback(CBoneInstance* B)
 {
 	CActor*	A			= static_cast<CActor*>(B->Callback_Param);	VERIFY	(A);
 
@@ -47,7 +47,7 @@ void __stdcall CActor::Spin0Callback(CBoneInstance* B)
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
 }
-void __stdcall CActor::Spin1Callback(CBoneInstance* B)
+void  CActor::Spin1Callback(CBoneInstance* B)
 {
 	CActor*	A			= static_cast<CActor*>(B->Callback_Param);	VERIFY	(A);
 
@@ -60,7 +60,7 @@ void __stdcall CActor::Spin1Callback(CBoneInstance* B)
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
 }
-void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
+void  CActor::ShoulderCallback(CBoneInstance* B)
 {
 	CActor*	A			= static_cast<CActor*>(B->Callback_Param);	VERIFY	(A);
 	Fmatrix				spin;
@@ -72,7 +72,7 @@ void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
 }
-void __stdcall CActor::HeadCallback(CBoneInstance* B)
+void  CActor::HeadCallback(CBoneInstance* B)
 {
 	CActor*	A			= static_cast<CActor*>(B->Callback_Param);	VERIFY	(A);
 	Fmatrix				spin;
@@ -85,7 +85,7 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	B->mTransform.c		= c;
 }
 
-void __stdcall CActor::VehicleHeadCallback(CBoneInstance* B)
+void  CActor::VehicleHeadCallback(CBoneInstance* B)
 {
 	CActor*	A			= static_cast<CActor*>(B->Callback_Param);	VERIFY	(A);
 	Fmatrix				spin;

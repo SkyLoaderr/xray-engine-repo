@@ -63,7 +63,7 @@ private:
 	void			ProcessDamage		();
 	void			SendDestroy			();
 	void			enable_notificate	();
-static 	void __stdcall ObjectContactCallback(bool& /**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
+	static 	void	ObjectContactCallback(bool& /**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 };
 
 #endif //BreakableObjectH

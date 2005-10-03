@@ -9,7 +9,7 @@ class CSkeletonAnimated;
 class CBlend;
 
 // callback
-typedef void (__stdcall * PlayCallback)		(CBlend*		P);
+typedef void	( * PlayCallback)		(CBlend*		P);
 
 const	u32		MAX_PARTS			=	4;
 const	f32		SAMPLE_FPS			=	30.f;

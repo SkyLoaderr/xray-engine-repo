@@ -106,7 +106,7 @@ static const __int64 _msgn_		=	0x8000000080000000;
 //; Uses:     mm0-mm3
 //; Comment:
 //;   Compute acos(x) using MMX and 3DNow! instructions.Scalar version.
-//;   © by Oles™
+//;   © by Oles™	©
 //;   © by ManOwaR™
 //;******************************************************************************
 __declspec(naked)	void alt_acos(void)

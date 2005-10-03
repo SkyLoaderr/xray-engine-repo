@@ -314,11 +314,11 @@ public:
 	// callback на анимации модели актера
 	void					SetCallbacks		();
 	void					ResetCallbacks		();
-	static void	__stdcall	Spin0Callback		(CBoneInstance*);
-	static void	__stdcall	Spin1Callback		(CBoneInstance*);
-	static void	__stdcall	ShoulderCallback	(CBoneInstance*);
-	static void	__stdcall	HeadCallback		(CBoneInstance*);
-	static void __stdcall	VehicleHeadCallback	(CBoneInstance*);
+	static void				Spin0Callback		(CBoneInstance*);
+	static void				Spin1Callback		(CBoneInstance*);
+	static void				ShoulderCallback	(CBoneInstance*);
+	static void				HeadCallback		(CBoneInstance*);
+	static void				VehicleHeadCallback	(CBoneInstance*);
 
 	virtual const SRotation	Orientation			()	const	{ return r_torso; };
 	SRotation				&Orientation		()			 { return r_torso; };

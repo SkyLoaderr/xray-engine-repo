@@ -180,8 +180,8 @@ public:
 
 	Fmatrix							m_left_rocket_bone_xform, m_right_rocket_bone_xform;
 
-	static void __stdcall			BoneMGunCallbackX		(CBoneInstance *B);
-	static void __stdcall			BoneMGunCallbackY		(CBoneInstance *B);
+	static void 					BoneMGunCallbackX		(CBoneInstance *B);
+	static void						BoneMGunCallbackY		(CBoneInstance *B);
 	void							startRocket(u16 idx);
 
 	//CShootingObject

@@ -106,7 +106,7 @@ void CCar::reload		(LPCSTR section)
 }
 
 
-void __stdcall  CCar::cb_Steer(CBoneInstance* B)
+void CCar::cb_Steer			(CBoneInstance* B)
 {
 	CCar*	C			= static_cast<CCar*>(B->Callback_Param);
 	Fmatrix m;

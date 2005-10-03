@@ -141,33 +141,54 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwCL_PingDeltaSend = 1000;
 	m_dwRealPing = 0;
 	//---------------------------------------------------------	
-	m_sDemoName[0] = 0;	
-	//---------------------------------------------------------
+	m_sDemoName[0] = 0;
 	m_bDemoSaveMode = FALSE;
-	m_dwStoredDemoDataSize = 0;
-	m_pStoredDemoData = NULL;
-
-	m_pOldCrashHandler = NULL;
-
-	if (!strstr(Core.Params,"-tdemo "))
-	{		
-		Demo_PrepareToStore();
+	if (!strstr(Core.Params,"-tdemo ") && strstr(Core.Params,"-tdw "))
+	{
+		m_bDemoSaveMode = TRUE;
+		string1024 CName = "";
+		u32 CNameSize = 1024;
+		GetComputerName(CName, (DWORD*)&CNameSize);
+		SYSTEMTIME Time;
+		GetLocalTime(&Time);
+		sprintf(m_sDemoName, "logs\\xray_%s_%02d-%02d-%02d_%02d-%02d-%02d.tdemo", CName, Time.wMonth, Time.wDay, Time.wYear, Time.wHour, Time.wMinute, Time.wSecond);
+		Msg("Tech Demo would be stored in - %s", m_sDemoName);
 	};
 	//---------------------------------------------------------
 	m_bDemoPlayMode = FALSE;
 	m_aDemoData.clear();
-	m_bDemoStarted	= FALSE;
-
-	if (strstr(Core.Params,"-tdemo ")) {		
-		string1024				f_name;
+	if (strstr(Core.Params,"-tdemo ")) {
+		NET_Packet NewPacket;
+		string64				f_name;
 		sscanf					(strstr(Core.Params,"-tdemo ")+7,"%[^ ] ",f_name);
-		
-		Demo_Load	(f_name);		
+		FILE* fTDemo = fopen(f_name, "rb");
+		if (fTDemo)
+		{
+			Msg("\n------- Loading Demo... ---------\n");
+			
+			while (!feof(fTDemo))
+			{
+				fread(&(NewPacket.timeReceive), sizeof(NewPacket.timeReceive), 1, fTDemo);
+				fread(&(NewPacket.B.count), sizeof(NewPacket.B.count), 1, fTDemo);
+				fread((NewPacket.B.data), 1, NewPacket.B.count, fTDemo);
+								
+				m_aDemoData.push_back(NewPacket);
+			}
+			fclose(fTDemo);
+			if (!m_aDemoData.empty()) 
+			{
+				m_bDemoPlayMode = TRUE;
+				m_bDemoSaveMode = FALSE;
+			};
+		}
 	}	
-	//---------------------------------------------------------	
+	//---------------------------------------------------------
+	m_bDemoStarted		= FALSE;
 }
 
 extern CAI_Space *g_ai_space;
+
+BOOL	g_bLeaveTDemo = FALSE;
 
 CLevel::~CLevel()
 {
@@ -254,7 +275,10 @@ CLevel::~CLevel()
 	xr_delete					(m_map_manager);
 	xr_delete					(m_pFogOfWarMngr);
 	//-----------------------------------------------------------
-	Demo_Clear();
+	if (IsDemoSave() && !g_bLeaveTDemo)
+	{
+		DeleteFile(m_sDemoName);
+	};
 	m_aDemoData.clear();
 }
 
@@ -364,6 +388,11 @@ void CLevel::ProcessGameEvents		()
 
 void CLevel::OnFrame	()
 {
+	// commit events from bullet manager from prev-frame
+	Device.Statistic.TEST0.Begin		();
+	BulletManager().CommitRenderSet		();
+	Device.Statistic.TEST0.End			();
+
 	// Client receive
 	if (net_isDisconnected())	
 	{
@@ -457,7 +486,7 @@ void CLevel::OnFrame	()
 
 	//просчитать полет пуль
 	Device.Statistic.TEST0.Begin		();
-	BulletManager().Update				();
+	BulletManager().CommitRenderSet		();
 	Device.Statistic.TEST0.End			();
 
 	// update static sounds
@@ -689,12 +718,12 @@ void		CLevel::ReculcInterpolationSteps ()
 	if (lvInterpSteps < 3)	lvInterpSteps = 3;
 };
 
-bool				CLevel::InterpolationDisabled	()
+bool		CLevel::InterpolationDisabled	()
 {
 	return g_cl_lvInterp < 0; 
 };
 
-void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
+void 		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 {
 	if (GameID() == GAME_SINGLE)	return;
 

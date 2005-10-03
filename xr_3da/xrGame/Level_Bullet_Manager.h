@@ -11,94 +11,91 @@
 //структура, описывающая пулю и ее свойства в полете
 struct SBullet
 {
-	enum EBulletFlags {
-		RICOCHET_FLAG				= u16(1 << 0),	//пуля срикошетила
-		PARTICLES_FLAG				= u16(1 << 1),
-		LIFE_TIME_FLAG				= u16(1 << 2),
-		TRACER_FLAG					= u16(1 << 3),
-		RICOCHET_ENABLED_FLAG		= u16(1 << 4),	//разрешить рикошет
-		EXPLOSIVE_FLAG				= u16(1 << 5),
-	};
+	u32				frame_num			;			//номер кадра на котором была запущена пуля
+	union			{
+		struct			{
+			u16			ricochet_was	: 1	;			//пуля срикошетила
+			u16			explosive		: 1	;			//special explosive mode for particles
+			u16			allow_tracer	: 1	;
+			u16			allow_ricochet	: 1	;			//разрешить рикошет
+			u16			allow_sendhit	: 1	;			//statistics
+		};
+		u16				_storage			;
+	}				flags				;
+	u16				bullet_material_idx	;
 
-	//номер кадра на котором была запущена пуля
-	u32				frame_num;
-	Flags16			flags;
-	//текущая позиция
-	Fvector			pos;
-	//смещения рендера трассы относительно текущей позиции
-	//(в процентах от текущей длины)
+	Fvector			pos					;			//текущая позиция
+	//смещения рендера трассы относительно текущей позиции (в процентах от текущей длины)
 	//задается случайно на инициализации
 	//чтоб трассы разных пуль не рисовались в одном месте
-	float			render_offset;
-	//текущая скорость
-	Fvector			dir;
-	float			speed;
-	//ID персонажа который иницировал действие
-	u16				parent_id;
-	bool			m_bSendHit;
-	//ID оружия из которого была выпущены пуля
-	u16				weapon_id;
-	//для отладки
-	//предыдущая позиция
-	Fvector			prev_pos;
-	//дистанция которую пуля пролетела
-	float			fly_dist;
+	float			render_offset		;
+	Fvector			dir					;			
+	float			speed				;			//текущая скорость
+	
+	u16				parent_id			;			//ID персонажа который иницировал действие
+	u16				weapon_id			;			//ID оружия из которого была выпущены пуля
+	
+	Fvector			prev_pos			;			//для отладки предыдущая позиция
+	float			fly_dist			;			//дистанция которую пуля пролетела
+
 	//коэфициенты и параметры патрона
-	float			hit_power;
-	float			hit_impulse;
-	float			max_speed;
-	float			max_dist;
-	float			dist_k;
-	float			hit_k;
-	float			impulse_k;
-	float			pierce_k;
-	float			wallmark_size;
-	//максимальная длина трассера для данной пули
-	float			tracer_max_length;
-	u16				bullet_material_idx;
+	float			hit_power			;			// power*cartridge
+	float			hit_impulse			;			// impulse*cartridge
+	float			max_speed			;			// maxspeed*cartridge
+	float			max_dist			;			// maxdist*cartridge
+	float			pierce				;
+	float			wallmark_size		;
+	
+	float			tracer_max_length	;			//максимальная длина трассера для данной пули
+	
 	//тип наносимого хита
-	ALife::EHitType hit_type;
+	ALife::EHitType hit_type			;
 	//---------------------------------
-	u32				m_dwID;
-	ref_sound		m_whine_snd;
-	ref_sound		m_mtl_snd;
+	u32				m_dwID				;
+	ref_sound		m_whine_snd			;
+	ref_sound		m_mtl_snd			;
 	bool			operator	==		(u32 ID){return	ID == m_dwID;}
 public:
 					SBullet				();
 					~SBullet			();
 
-	void			Init				(const Fvector& position,
-										const Fvector& direction,
-										float start_speed,
-										float power,
-										float impulse,
-										u16	sender_id,
-										u16 sendersweapon_id,
+	void			Init				(const	Fvector& position,
+										const	Fvector& direction,
+										float	start_speed,
+										float	power,
+										float	impulse,
+										u16		sender_id,
+										u16		sendersweapon_id,
 										ALife::EHitType e_hit_type,
-										float maximum_distance,
-										const CCartridge& cartridge,
-										bool SendHit, 
-										float tracer_length);
+										float	maximum_distance,
+										const	CCartridge& cartridge,
+										bool	SendHit, 
+										float	tracer_length);
 };
-
-
 
 class CLevel;
 
-
-
 class CBulletManager
 {
-	friend CLevel;
+	DEFINE_VECTOR			(ref_sound,SoundVec,SoundVecIt);
+	DEFINE_VECTOR			(SBullet,BulletVec,BulletVecIt);
+	friend	CLevel;
+	struct	_event			{
+		BOOL				dynamic		;
+		SBullet				bullet		;
+		Fvector				end_point	;
+		collide::rq_result	R			;
+		u16					tgt_material;
+	};
 protected:
-	DEFINE_VECTOR(ref_sound,SoundVec,SoundVecIt);
-	SoundVec				m_WhineSounds;
-	RStringVec				m_ExplodeParticles;
-	DEFINE_VECTOR(SBullet,BulletVec,BulletVecIt);
+	SoundVec				m_WhineSounds		;
+	RStringVec				m_ExplodeParticles	;
 
 	//список пуль находящихся в данный момент на уровне
-	xrCriticalSection		m_Lock		;
-	BulletVec				m_Bullets	;
+	xrCriticalSection		m_Lock				;
+	BulletVec				m_Bullets			;	// working set, locked
+	BulletVec				m_BulletsRendered	;	// copy for rendering
+	xr_vector<_event>		m_Events			;	
 
 	//остаток времени, который не был учтен на предыдущем кадре
 	u32						m_dwTimeRemainder;
@@ -133,14 +130,18 @@ protected:
 	void					PlayWhineSound		(SBullet* bullet, CObject* object, const Fvector& pos);
 	void					PlayExplodePS		(const Fmatrix& xf);
 	//функция обработки хитов объектов
-	static BOOL __stdcall	test_callback		(CObject* object, LPVOID params);
-	static BOOL __stdcall	firetrace_callback	(collide::rq_result& result, LPVOID params);
+	static BOOL 			test_callback		(CObject* object, LPVOID params);
+	static BOOL				firetrace_callback	(collide::rq_result& result, LPVOID params);
+
+	// Deffer event
+	void					RegisterEvent		(BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material);
+	
 	//попадание по динамическому объекту
-	void					DynamicObjectHit	(SBullet* bullet, const Fvector& end_point, 
-												collide::rq_result& R, 	u16 target_material);
+	void					DynamicObjectHit	(_event& E);
+	
 	//попадание по статическому объекту
-	void					StaticObjectHit		(SBullet* bullet, const Fvector& end_point, 
-												collide::rq_result& R, u16 target_material);
+	void					StaticObjectHit		(_event& E);
+
 	//попадание по любому объекту, на выходе - импульс и сила переданные пулей объекту
 	std::pair<float, float> ObjectHit			(SBullet* bullet, const Fvector& end_point, 
 												collide::rq_result& R, u16 target_material, const Fvector& hit_normal);
@@ -154,6 +155,7 @@ protected:
 	//скорость и положение с учетом гравитации и ветра
 	//возвращаем true если пуля продолжает полет
 	bool					CalcBullet			(collide::rq_results & rq_storage, xr_vector<ISpatial*>& rq_spatial, SBullet* bullet, u32 delta_time);
+	void 		__stdcall	UpdateWorkload		();
 public:
 							CBulletManager		();
 	virtual					~CBulletManager		();
@@ -166,6 +168,8 @@ public:
 												ALife::EHitType e_hit_type, float maximum_distance, 
 												const CCartridge& cartridge, bool SendHit, 
 												float tracer_length = flt_max);
-	void 					Update				();
+
+	void					CommitEvents		();	// @ the start of frame
+	void					CommitRenderSet		();	// @ the end of frame
 	void 					Render				();
 };

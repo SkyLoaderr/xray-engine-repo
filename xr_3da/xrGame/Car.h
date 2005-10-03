@@ -60,8 +60,8 @@ class CCar :
 	
 	
 	
-	static BONE_P_MAP bone_map; //interface for PhysicsShell
-	static	void __stdcall				ActorObstacleCallback		(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+	static	BONE_P_MAP					bone_map;					//interface for PhysicsShell
+	static	void 						ActorObstacleCallback		(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 	virtual void						PhDataUpdate				(dReal step)			;
 	virtual void						PhTune						(dReal step)			;
 /////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ class CCar :
 	virtual	float						Health						()						{return GetfHealth();}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
-	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return static_cast<CPHCollisionDamageReceiver*>(this);}
+	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver	()						{return static_cast<CPHCollisionDamageReceiver*>(this);}
 
 ////////////////////////////////////////////////////////////////////////
 	CCarDamageParticles					m_damage_particles;
@@ -138,14 +138,14 @@ public:
 		CCar								*car				;
 		struct			SWheelCollisionParams
 		{
-			float						spring_factor		;
-			float						damping_factor		;
-			float						mu_factor			;
-			SWheelCollisionParams				();
+			float							spring_factor		;
+			float							damping_factor		;
+			float							mu_factor			;
+			SWheelCollisionParams			();
 		}									collision_params	;
 
 	IC	static	void			applywheelCollisionParams				(const dxGeomUserData *ud,bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
-		static	void __stdcall  WheellCollisionCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)							;
+		static	void			WheellCollisionCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)							;
 				
 				void 			Init									();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
 				void			Load									(LPCSTR section);
@@ -493,7 +493,7 @@ IC	size_t				CurrentTransmission					(){return m_current_transmission_num;}
 
 	bool					HUDview						( ) { return IsFocused(); }
 
-	static void __stdcall	cb_Steer					(CBoneInstance* B);
+	static void				cb_Steer					(CBoneInstance* B);
 	virtual void Hit									(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void PHHit									(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
 			bool WheelHit								(float P,s16 element,ALife::EHitType hit_type);

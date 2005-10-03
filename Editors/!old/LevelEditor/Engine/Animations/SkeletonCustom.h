@@ -20,8 +20,8 @@ typedef xr_vector<CBoneData*>		vecBones;
 typedef vecBones::iterator			vecBonesIt;
 
 // callback
-typedef void (__stdcall * BoneCallback)		(CBoneInstance* P);
-typedef void (__stdcall * UpdateCallback)	(CKinematics*	P);
+typedef void (* BoneCallback)		(CBoneInstance* P);
+typedef void (* UpdateCallback)		(CKinematics*	P);
 
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)

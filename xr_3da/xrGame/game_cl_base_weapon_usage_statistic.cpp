@@ -265,7 +265,7 @@ void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridg
 {
 	if (!CollectData()) return;
 
-	if (!pBullet || !pBullet->m_bSendHit) return;
+	if (!pBullet || !pBullet->flags.allow_sendhit) return;
 	CObject					*object_weapon = Level().Objects.net_Find(pBullet->weapon_id);
 	if (!object_weapon) return;
 	CObject					*object_parent = Level().Objects.net_Find(pBullet->parent_id);
@@ -295,7 +295,7 @@ static u32 HitChecksRespondReceivedTrue = 0;
 */
 void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s16 element, Fvector HitLocation)
 {
-	if (!pBullet || !pBullet->m_bSendHit) return;
+	if (!pBullet || !pBullet->flags.allow_sendhit) return;
 	ABULLETS_it BulletIt;
 	if (!FindBullet(pBullet->m_dwID, BulletIt)) return;
 	//-----------------------------------------------------
@@ -330,11 +330,11 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 }
 void				WeaponUsageStatistic::OnBullet_Remove		(SBullet* pBullet)
 {
-	if (!pBullet || !pBullet->m_bSendHit) return;
-	ABULLETS_it BulletIt;
-	if (!FindBullet(pBullet->m_dwID, BulletIt)) return;
+	if (!pBullet || !pBullet->flags.allow_sendhit)	return;
+	ABULLETS_it		BulletIt;
+	if (!FindBullet(pBullet->m_dwID, BulletIt))		return;
 	BulletIt->Removed = true;
-	RemoveBullet(BulletIt);
+	RemoveBullet	(BulletIt);
 }
 
 void				WeaponUsageStatistic::OnBullet_Check_Request	(s16 iBoneID, NET_Packet* P)
