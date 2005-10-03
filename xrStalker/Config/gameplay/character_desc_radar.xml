@@ -4,7 +4,7 @@
 <!---------------------------MONOLIT REGULAR----------------------->
 	<specific_character id="rad_monolit_regular_default1" team_default = "3">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -14,7 +14,8 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -22,13 +23,13 @@
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="rad_monolit_regular_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -38,7 +39,8 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<visual>actors\monolit\stalker_mo_mask</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -46,14 +48,14 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 <!---------------------------MONOLIT SNIPER---------------------->
 	<specific_character id="rad_monolit_sniper_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -63,7 +65,8 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<visual>actors\monolit\stalker_mo_mask</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -71,13 +74,13 @@
 			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="rad_monolit_sniper_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -88,6 +91,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -95,14 +99,14 @@
 			wpn_svd \n
 			ammo_7.62x54_7h14 = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 <!---------------------------MONOLIT SPECNAZ---------------------->
 	<specific_character id="rad_monolit_specnaz_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
 
@@ -113,6 +117,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -126,7 +131,7 @@
 
 	<specific_character id="rad_monolit_specnaz_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="22" y="10"></icon>
+		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
 
@@ -136,7 +141,8 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_mask</visual>
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -145,13 +151,13 @@
 			ammo_5.56x45_ap = 1 \n
 			ammo_m209 = 2 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="rad_monolit_specnaz_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="22" y="10"></icon>
+		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
 
@@ -161,7 +167,8 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_mask</visual>
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -169,13 +176,13 @@
 			wpn_vintorez \n
 			ammo_9x39_ap = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="rad_monolit_specnaz_default4" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="28" y="8"></icon>
+		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
 
@@ -185,7 +192,8 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_exo</visual>
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -193,7 +201,7 @@
 			wpn_sig550\n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
- 					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
@@ -211,6 +219,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_exo</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -218,7 +227,7 @@
 			wpn_vintorez \n
 			ammo_9x39_sp5 = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
@@ -235,6 +244,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_nauchniy</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
@@ -243,14 +253,14 @@
 			ammo_5.56x45_ap = 1 \n
 			ammo_m209 = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 <!---------------------------MONOLIT REGULAR with RPG----------------------->
 	<specific_character id="rad_monolit_rpg_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -261,6 +271,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_head1</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -268,13 +279,13 @@
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="rad_monolit_rpg_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="4" y="2"></icon>
+		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
@@ -284,7 +295,8 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\monolit\stalker_mo_head2</visual>
+		<visual>actors\monolit\stalker_mo_mask</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -292,30 +304,29 @@
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
-	
 
-	
-	
+
+
+
 <!---------------------------ZOMBIED----------------------->
 	<specific_character id="rad_zombied_default1" team_default = "1">
 		<name>Зомбированный сталкер</name>
-		<icon x="20" y="10"></icon>
+		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-		
+
 		<rank>40</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -323,7 +334,7 @@
 			wpn_toz34 \n
 			ammo_12x70_buck = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -335,15 +346,14 @@
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-	
+
 		<rank>40</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -351,7 +361,7 @@
 			wpn_toz34 \n
 			ammo_12x70_buck = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -363,15 +373,14 @@
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-		
+
 		<rank>40</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -379,7 +388,7 @@
 			wpn_bm16 \n
 			ammo_12x70_buck = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -391,15 +400,14 @@
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-		
+
 		<rank>40</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -407,7 +415,7 @@
 			wpn_bm16 \n
 			ammo_12x70_buck = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -419,15 +427,14 @@
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -435,7 +442,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -447,15 +454,14 @@
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-	
+
 		<rank>60</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\stalker_zombi\stalker_zombie7</visual>
+		<visual>actors\stalker_zombi\stalker_zombie6</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -463,7 +469,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -475,15 +481,14 @@
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\stalker_zombie8</visual>
+		<visual>actors\stalker_zombi\stalker_zombie7</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -491,7 +496,34 @@
 			wpn_mp5 \n
 			ammo_9x19_fmj = 1 \n
 		</supplies>
-			
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="rad_zombied_default8" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<class>rad_Zombied</class>
+		<community>zombied</community>
+
+		<rank>60</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie8</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -500,19 +532,18 @@
 <!---------------------------ZOMBIED VETERANS----------------------->
 	<specific_character id="rad_zombied_veteran_default1" team_default = "1">
 		<name>Зомбированный сталкер</name>
-		<icon x="20" y="10"></icon>
+		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\stalker_zombie2</visual>
+		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -520,7 +551,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -528,19 +559,18 @@
 
 	<specific_character id="rad_zombied_veteran_default2" team_default = "1">
 		<name>Зомбированный сталкер</name>
-		<icon x="20" y="10"></icon>
+		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\stalker_zombie3</visual>
+		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -549,7 +579,7 @@
 			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -557,19 +587,18 @@
 
 	<specific_character id="rad_zombied_veteran_default3" team_default = "1">
 		<name>Зомбированный сталкер</name>
-		<icon x="20" y="10"></icon>
+		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\stalker_zombie4</visual>
+		<visual>actors\stalker_zombi\stalker_zombie3</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -578,7 +607,7 @@
 			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -586,19 +615,18 @@
 
 	<specific_character id="rad_zombied_veteran_default4" team_default = "1">
 		<name>Зомбированный сталкер</name>
-		<icon x="20" y="10"></icon>
+		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -607,7 +635,7 @@
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -615,19 +643,18 @@
 
 	<specific_character id="rad_zombied_veteran_default5" team_default = "1">
 		<name>Зомбированный сталкер</name>
-		<icon x="20" y="10"></icon>
+		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
-		<team>Zombied</team>
-		
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
-		
+
 		<rank>60</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -636,7 +663,7 @@
 			ammo_12x70_buck = 1 \n
 			device_torch \n
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -653,11 +680,12 @@
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
-			
+
 		<rank>70</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -667,7 +695,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -678,17 +706,18 @@
 
 	<specific_character id="rad_stalker_veteran_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="2" y="2"></icon>
+		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
-			
+
 		<rank>70</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -698,7 +727,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -709,17 +738,18 @@
 
 	<specific_character id="rad_stalker_veteran_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="8"></icon>
+		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
-		
+
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -729,7 +759,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -740,17 +770,18 @@
 
 	<specific_character id="rad_stalker_veteran_default4" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="8"></icon>
+		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
-	
+
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -760,7 +791,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -771,17 +802,18 @@
 
 	<specific_character id="rad_stalker_veteran_default5" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="20" y="8"></icon>
+		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
-			
+
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -791,7 +823,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -810,11 +842,12 @@
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
-		
+
 		<rank>95</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -824,7 +857,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-						
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -842,11 +875,12 @@
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
-		
+
 		<rank>95</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -856,7 +890,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
@@ -874,11 +908,12 @@
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
-		
+
 		<rank>95</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -906,11 +941,12 @@
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
-				
+
 		<rank>95</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
@@ -920,14 +956,14 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
-	</specific_character>	
+	</specific_character>
 
 	<specific_character id="rad_stalker_master_default5" team_default = "1">
 		<name>GENERATE_NAME</name>
@@ -938,11 +974,12 @@
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
-		
+
 		<rank>95</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
@@ -952,16 +989,16 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
-	</specific_character>	
-	
-	
+	</specific_character>
+
+
 	<!---------------------------SOLDIER SPECNAZ---------------------->
 
 	<specific_character id="rad_soldier_specnaz_default1" team_default = "1">
@@ -971,14 +1008,15 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<team>Soldier_specnaz</team>
-		
+
 		<class>rad_soldier_specnaz</class>
 		<community>military</community>
-		
+
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -987,8 +1025,8 @@
 			ammo_9x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
-		</supplies>		
-					
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -1001,14 +1039,15 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<team>Soldier_specnaz</team>
-		
+
 		<class>rad_soldier_specnaz</class>
 		<community>military</community>
-		
+
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -1017,13 +1056,13 @@
 			ammo_9x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
-		</supplies>		
-					
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
-	
+
 	<specific_character id="rad_soldier_specnaz_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
@@ -1031,14 +1070,15 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<team>Soldier_specnaz</team>
-		
+
 		<class>rad_soldier_specnaz</class>
 		<community>military</community>
-		
+
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_antigas</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -1047,43 +1087,47 @@
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
-		</supplies>		
-					
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
 <!---------------------------SVOBODA MASTER----------------------->
+
 	<specific_character id="rad_Svoboda_master" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="12" y="0"></icon>
+		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
 		Детальная информация отсутствует.</bio>
 
 		<team>Svoboda_master</team>
-		
+
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community>
 
-		
+
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_fn2000 \n
 			ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_items.xml"
 		</supplies>
-			
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="rad_dolg_veteran_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
@@ -1105,9 +1149,9 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
-#include "gameplay\character_items.xml"			
-		</supplies>		
-			
+#include "gameplay\character_items.xml"
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -1135,9 +1179,9 @@
 			ammo_9x39_pab9 = 1 \n
 			ammo_9x39_sp5 = 1 \n
 			ammo_vog-25 = 2 \n
-#include "gameplay\character_items.xml"			
-		</supplies>		
-			
+#include "gameplay\character_items.xml"
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -1165,9 +1209,9 @@
 			ammo_9x39_ap = 1 \n
 			ammo_9x39_sp5 = 1 \n
 			ammo_vog-25p = 2 \n
-#include "gameplay\character_items.xml"			
-		</supplies>		
-			
+#include "gameplay\character_items.xml"
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
@@ -1193,13 +1237,13 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
-#include "gameplay\character_items.xml"			
-		</supplies>		
-			
+#include "gameplay\character_items.xml"
+		</supplies>
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
-	
-	
+
+
 </xml>
