@@ -417,3 +417,13 @@ function is_heavy_wounded_by_id(npc_id)
 	end
 	return false
 end
+function is_psy_wounded_by_id(npc_id)
+	if db.storage[npc_id].wounded ~= nil then
+		return db.storage[npc_id].wounded.wound_manager.state == "psy_pain" or
+			   db.storage[npc_id].wounded.wound_manager.state == "psy_armed" or
+			   db.storage[npc_id].wounded.wound_manager.state == "psy_shoot" or
+			   db.storage[npc_id].wounded.wound_manager.state == "psycho_pain" or
+			   db.storage[npc_id].wounded.wound_manager.state == "psycho_shoot"		
+	end
+	return false
+end

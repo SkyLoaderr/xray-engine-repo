@@ -137,9 +137,15 @@ function evaluator_danger:evaluate()
 		return false
 	end
 
-	-- Отсеиваем тяжелораненным
+	-- Отсеиваем тяжелораненых
 	if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
 		printf("DANGER [%s]->[%s] [FALSE] heavy_wounded", self.object:name(), best_danger_name)
+		return false
+	end
+
+	-- Отсеиваем психораненых
+	if xr_wounded.is_psy_wounded_by_id(self.object:id()) then
+		printf("DANGER [%s]->[%s] [FALSE] psy_wounded", self.object:name(), best_danger_name)
 		return false
 	end
 
