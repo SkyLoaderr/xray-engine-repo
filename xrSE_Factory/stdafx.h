@@ -21,7 +21,7 @@
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
 
-namespace boost {void __stdcall throw_exception(const std::exception &A);};
+namespace boost {void throw_exception(const std::exception &A);};
 
 #include "smart_cast.h"
 
