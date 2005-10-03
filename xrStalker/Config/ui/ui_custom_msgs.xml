@@ -26,6 +26,9 @@
 		<texture x="0" y="0" width="120" height="40">ui\ui_mn_weapons</texture>
 	</hud_timer>
 
+	<sleep_001  x="20" y="20" width="984" height="728">
+		<texture x="0" y="0" width="984" height="728">car\trabantnoise</texture>
+	</sleep_001>
 
 
 </header>
