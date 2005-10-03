@@ -263,6 +263,8 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 }
 #endif
 
+//bool g_OnlyForTest = false;
+
 u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
 {
 	if (!valid_vertex_position(v3d(finish_position)))
@@ -295,6 +297,9 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
+//				if (g_OnlyForTest)
+//					Msg		("box(min[%f][%f],max[%f][%f]),start[%f][%f],dir[%f][%f]",box.min.x,box.min.y,box.max.x,box.max.y,start.x,start.y,dir.x,dir.y);
+
 				if (/**box.contains(dest) && /**inside(next_vertex_id,dest)/**/dest_xz == v->position().xz()) {
 					TIMER_STOP(CheckPositionInDirection)
 					return	(is_accessible(next_vertex_id) ? next_vertex_id : u32(-1));

@@ -482,7 +482,7 @@ IC	bool	CLevelGraph::create_straight_path	(u32 start_vertex_id, const Fvector2 &
 				temp.add		(box.min,box.max);
 				temp.mul		(.5f);
 				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
-				if (dist > cur_sqr)
+				if ((dist > cur_sqr) && (dest_xz != v->position().xz()))
 					continue;
 
 				if (!is_accessible(next_vertex_id))

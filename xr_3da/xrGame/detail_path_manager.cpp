@@ -102,6 +102,9 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 			xr_vector<STravelParamsIndex>::const_iterator	E = m_start_params.end();
 			for ( ; I != E; ++I)
 				Msg					("[%d] : [%f][%f]",(*I).index,(*I).linear_velocity,(*I).angular_velocity);
+
+//			for (;;)
+//				build_smooth_path(level_path,intermediate_index);
 #endif
 		}
 

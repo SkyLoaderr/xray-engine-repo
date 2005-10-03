@@ -276,6 +276,8 @@ bool CDetailPathManager::build_line_trajectory(
 		}
 		return			(true);
 	}
+
+//	VERIFY				(ai().level_graph().check_position_in_direction(vertex_id,start.point,dest.point));
 	return				(path ? ai().level_graph().create_straight_path<false>(vertex_id,start.point,dest.point,*path,t,false,false) : ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(vertex_id,start.point,dest.point)));
 }
 
