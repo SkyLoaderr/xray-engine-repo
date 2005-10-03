@@ -33,6 +33,7 @@
 #include "date_time.h"
 #include "mt_config.h"
 #include "ui/UIOptConCom.h"
+#include "zone_effector.h"
 
 #ifdef DEBUG
 #	include "PHDebug.h"
