@@ -1279,6 +1279,9 @@
 					RelativePath=".\Config\ui\ui_videoplayer.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\video_templ.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\zone_map.xml">
 				</File>
 				<Filter
