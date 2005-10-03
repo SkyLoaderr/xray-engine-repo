@@ -209,6 +209,7 @@ function action_patrol:execute()
 					state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
 				end
 			end
+			xr_sound.set_sound(self.object, "fight_attack")
 			self.enemy_position = self.enemy:position()
 			-- Занести место поиска врага в scan_table
 			if self.a.sniper == true then
@@ -236,6 +237,7 @@ function action_patrol:execute()
 			end
 
 		else
+			xr_sound.set_sound(self.object, "fight_search")
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
 				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
@@ -255,6 +257,7 @@ function action_patrol:execute()
 						state_mgr.set_state(self.object, "hide", nil, nil, position)
 					end
 				else
+					printf("not on place[%s]", self.object:name())
 					-- идем дальше
 					self.move_mgr:continue()
 					self.move_mgr:update()
