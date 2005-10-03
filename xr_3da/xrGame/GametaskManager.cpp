@@ -187,10 +187,13 @@ void CGameTaskManager::UpdateActiveTask				()
 	}
 	// highlight new spot pointer
 	if(false==bHasSpotPointer){
-		it			= GameTasks().begin();
+//		it			= GameTasks().begin();
 		bool bDone=false;
-		for( ;(it!=it_e)&&(!bDone); ++it ){
-			CGameTask* t		= (*it).game_task;
+		GameTasks::reverse_iterator rit = GameTasks().rbegin();
+		GameTasks::reverse_iterator rit_e = GameTasks().rend();
+
+		for( ;(rit!=rit_e)&&(!bDone); ++rit ){
+			CGameTask* t		= (*rit).game_task;
 			if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
 			for(u32 i=0; (i<t->m_Objectives.size())&&(!bDone) ;++i){
 				
