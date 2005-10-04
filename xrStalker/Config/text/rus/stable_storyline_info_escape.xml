@@ -7,3 +7,6 @@
     <string id="tutorial_secret_place">
 		<text>Я оставил на заброшенной ферме небольшой тайник. Там немного еды, патроны. Нести уже не могу, силы на исходе. Не уверен, смогу ли я добраться до лагеря.</text>
     </string>
+	<string id="storyline_gunslinger">
+		<text>Убить Стрелка.</text>
+	</string>
