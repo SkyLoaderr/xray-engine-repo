@@ -8,8 +8,9 @@ function WeatherManager:__init()
 	local weather = utils.cfg_get_string(ini_file("game.ltx"), level.name(), "weathers", db.actor, false, "", "default")
 	if weather == "default" then
 		-- сетим дефолтовую погоду
+		self.weather_list = xr_logic.parse_condlist(db.actor, level.name(), "weather", "default")
 		level.set_weather("default",true)
-		printf("WEATHER: 'default'")
+		printf("WEATHER: 'default'")		
 		return
 	end
 	self.weather_list = xr_logic.parse_condlist(db.actor, level.name(), "weather", weather)
