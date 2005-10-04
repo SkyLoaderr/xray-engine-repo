@@ -436,6 +436,9 @@
 						RelativePath=".\Config\gameplay\character_desc_aes.xml">
 					</File>
 					<File
+						RelativePath=".\config\gameplay\character_desc_aes2.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\character_desc_agroprom.xml">
 					</File>
 					<File
