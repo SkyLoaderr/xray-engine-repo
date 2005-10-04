@@ -216,7 +216,7 @@ end
 sound_prefetch.prefetch_sounds()
 
 function can_sleep_callback()
-	return true
+return true
 end
 
 function sleep_video_name_callback()
