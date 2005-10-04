@@ -123,7 +123,7 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
         EnvsMapIt it		= WeatherCycles.find(name);
         R_ASSERT3			(it!=WeatherCycles.end(),"Invalid weather name.",*name);
 		CurrentCycleName	= it->first;
-		if (forced)			{Invalidate();}
+		if (forced)			{Invalidate();SelectEnvs(fGameTime);}
 		if (!bWFX){
 			CurrentWeather		= &it->second;
 			CurrentWeatherName	= it->first;
