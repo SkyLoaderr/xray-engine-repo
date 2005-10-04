@@ -252,14 +252,12 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_walker3",
 			idle = 0,
 			prior = 8, state = {0, 1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_walker4",
 			idle = 0,
-			prior = 8, state = {0, 1},
-			squad = squad, group = groups[1],
+			prior = 8, state = {0, 1},			
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -289,7 +287,6 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_volk",
 			idle = 0,
 			prior = 16, state = {0,1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
         					return obj:profile_name() == "esc_wolf"			           
@@ -300,7 +297,6 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_fanat",
 			idle = 0,
 			prior = 16, state = {0,1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			predicate = function(obj) 
         					return obj:profile_name() == "esc_fanat"			           
@@ -312,21 +308,18 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_sleeper1",
 			idle = 0,
 			prior = 3, state = {1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper2",
 			idle = 0,
 			prior = 3, state = {1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper3",
 			idle = 0,
 			prior = 3, state = {1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -334,28 +327,24 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_sleeper4",
 			idle = 0,
 			prior = 0, state = {0,1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper5",
 			idle = 0,
 			prior = 0, state = {0,1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper6",
 			idle = 0,
 			prior = 0, state = {0,1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper7",
 			idle = 0,
 			prior = 0, state = {0,1},
-			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
