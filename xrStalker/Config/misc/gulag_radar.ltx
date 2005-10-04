@@ -173,3 +173,65 @@ combat_ignore_cond = {-rad_start_svoboda_vs_dolg}
 path_walk = way_dolg_0004
 path_look = way_look
 on_info = {+rad_start_svoboda_vs_dolg} nil
+
+----------------кулак на входе-----------------
+
+[logic@rad_entrance_binocular0]
+active = walker@rad_entrance_binocular0
+on_combat = combat
+
+[walker@rad_entrance_binocular0]
+path_walk = binocular0_walk
+path_look = look
+danger=danger_condition
+
+
+[logic@rad_entrance_binocular1]
+active = walker@rad_entrance_binocular1
+on_combat = combat
+
+[walker@rad_entrance_binocular1]
+path_walk = binocular1_walk
+path_look = look
+danger=danger_condition
+
+
+[logic@rad_entrance_kamp]
+active = kamp@rad_entrance_kamp
+on_combat = combat
+
+[kamp@rad_entrance_kamp]
+center_point = kamp
+
+
+[logic@rad_entrance_walker1]
+active = walker@rad_entrance_walker1
+on_combat = combat
+
+[walker@rad_entrance_walker1]
+path_walk = walker1
+path_look = look
+danger=danger_condition
+
+
+[logic@rad_entrance_walker2]
+active = walker@rad_entrance_walker2
+on_combat = combat
+
+[walker@rad_entrance_walker2]
+path_walk = walker2
+path_look = look
+danger=danger_condition
+
+
+[logic@rad_entrance_walker3]
+active = walker@rad_entrance_walker3
+on_combat = combat
+
+[walker@rad_entrance_walker3]
+path_walk = walker3
+path_look = look
+danger=danger_condition
+
+[combat]
+combat_type = monolith

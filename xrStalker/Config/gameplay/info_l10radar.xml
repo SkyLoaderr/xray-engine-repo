@@ -74,6 +74,9 @@
 	<info_portion id="rad_pre_drop_barrel3">
 	</info_portion>		
 
+	<info_portion id="rad_pre_drop_barrel4">
+	</info_portion>		
+
 	<info_portion id="rad_drop_barrel1">
 	</info_portion>	
 	
@@ -82,4 +85,10 @@
 	
 	<info_portion id="rad_drop_barrel3">
 	</info_portion>
+	
+	<info_portion id="rad_drop_barrel4">
+	</info_portion>	
+	
+	<info_portion id="rad_drop_barrel5">
+	</info_portion>	
 </game_information_portions>
