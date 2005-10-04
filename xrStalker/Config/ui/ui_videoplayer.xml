@@ -1,5 +1,5 @@
 
-<video_player x="10" y="10" width="300" height="300" auto_play="0" file_="car\trabantnoise" file="car\Movie-003_Rats_OutPut-010">
+<video_player x="10" y="10" width="300" height="300" auto_play="0" file="car\trabantnoise" file_="car\Movie-003_Rats_OutPut-010">
 	<surface x="0" y="0" width="300" height="280" stretch="1"/>
 
 	<buttons_tab x="0" y="280" width="300" height="20">
