@@ -35,6 +35,73 @@ end
 local gulags = {}
 
 --------------------------------------------------------------------------
+-- General
+--------------------------------------------------------------------------
+function load_job(sj, gname, type, squad, groups)
+    local g = gulags[type]
+    if g then
+        g[1](sj, gname, type, squad, groups)
+    end
+end
+
+function load_states(gname, type)
+    local g = gulags[type]
+
+    if g then
+        return g[2]
+    end
+
+	return nil
+end
+	    
+function load_ltx(gname, type)
+    local g = gulags[type]
+    if g and g[4] then
+        return g[4](gname, type)
+    end
+
+	return nil
+end
+
+local function checkCommon(npc_community, g)
+    --if g then
+    local n, i, v = 0
+    for i, v in pairs(g[3]) do
+        if npc_community == v then
+            return true
+        end
+        n = n + 1
+    end
+    if n > 0 then
+        return false
+    else -- empty communities list
+        return true
+    end
+    --end
+
+	--return false
+end
+
+function checkStalker(npc_community, gulag_type)
+    local g = gulags[gulag_type]
+    if g then
+        return checkCommon(npc_community, g)
+    end
+
+	return false
+end
+
+function checkMonster(npc_community, gulag_type)
+    local g = gulags[gulag_type]
+    if g then
+        return checkCommon(npc_community, g)
+    end
+
+    return false
+end
+
+
+--------------------------------------------------------------------------
 -- Predicates
 --------------------------------------------------------------------------
 function f_predicate1(obj)
@@ -111,15 +178,13 @@ function f_predicate10(obj)
 end
 
 --------------------------------------------------------------------------
--- Jobs
+-- Gulags
 --------------------------------------------------------------------------
-function load_job(sj, gname, type, squad, groups)
-    local g = gulags[type]
-    if g then
-        g[1](sj, gname, type, squad, groups)
-    end
-end
 
+--------------------------------------------------------------------------
+-- Followers
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_followers(sj, gname, type, squad, groups)
 --[[
     local i, j = 0, 0
@@ -570,6 +635,83 @@ function load_job_followers(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 end
 
+-- States ----------------------------------------------------------------
+function check_state_followers(gulag)
+	local state = gulag.state
+	local actor = db.actor
+	if state == state_wait and actor:has_info("pri_followers_start") then
+		return state_wave1
+	end
+	if state == state_wave1 and
+		actor:has_info("pri_wave1_monolith1_dead") and
+		actor:has_info("pri_wave1_monolith2_dead") and
+		actor:has_info("pri_wave1_monolith3_dead") --and
+		--actor:has_info("pri_wave1_monolith4_dead")
+	then
+		actor:give_info_portion("pri_wave1_end")
+		return state_wave2
+	end
+	if state == state_wave2 and
+		actor:has_info("pri_wave2_monolith1_dead") and
+		actor:has_info("pri_wave2_monolith2_dead") and
+		--actor:has_info("pri_wave2_monolith3_dead") and
+		actor:has_info("pri_wave2_monolith4_dead") and
+		--actor:has_info("pri_wave2_monolith5_dead") and
+		actor:has_info("pri_wave2_monolith6_dead") --and
+		--actor:has_info("pri_wave2_monolith7_dead") and
+		--actor:has_info("pri_wave2_monolith8_dead") and
+		--actor:has_info("pri_wave2_monolith9_dead")
+	then
+		actor:give_info_portion("pri_wave2_end")
+		return state_wave3
+	end
+	if state == state_wave3 and actor:has_info("pri_wave3_btr_dead") then
+		actor:give_info_portion("pri_wave3_end")
+		return state_wave4
+	end
+	if state == state_wave4 and
+		actor:has_info("pri_wave4_monolith1_dead") and
+		actor:has_info("pri_wave4_monolith2_dead") and
+		actor:has_info("pri_wave4_monolith3_dead") and
+		--actor:has_info("pri_wave4_monolith4_dead") and
+		actor:has_info("pri_wave4_monolith5_dead") and
+		--actor:has_info("pri_wave4_monolith6_dead") and
+		--actor:has_info("pri_wave4_monolith7_dead") and
+		actor:has_info("pri_wave4_monolith8_dead")
+	then
+		actor:give_info_portion("pri_wave4_end")
+		return state_wave5
+	end
+	if state == state_wave5 and
+		actor:has_info("pri_wave5_monolith1_dead") and
+		actor:has_info("pri_wave5_monolith2_dead") and
+		actor:has_info("pri_wave5_monolith3_dead") and
+		actor:has_info("pri_wave5_monolith4_dead")
+	then
+		actor:give_info_portion("pri_wave5_end")
+		return state_wave6
+	end
+	if state == state_wave6 and
+		--actor:has_info("pri_wave6_monolith1_dead") and
+		actor:has_info("pri_wave6_monolith2_dead") and
+		actor:has_info("pri_wave6_monolith3_dead")
+	then
+		actor:give_info_portion("pri_wave6_end")
+		return state_wave7
+	end
+	if state == state_wave7 and
+        xr_gulag.getGulagPopulation("pri_ambush7") == 0
+    then
+        actor:give_info_portion("pri_wave7_end")
+        return state_wave8
+    end
+    return state
+end
+
+--------------------------------------------------------------------------
+-- Ambush7
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_ambush7(sj, gname, type, squad, groups)
     local i = 0
     for i = 1, 7 do
@@ -590,6 +732,44 @@ function load_job_ambush7(sj, gname, type, squad, groups)
     end
 end
 
+-- States ----------------------------------------------------------------
+function check_state_ambush7(gulag)
+	if db.actor:has_info("pri_wave7_start") then
+        return 1
+    else
+	    return 0
+	end
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_ambush7(gname, type)
+    local i, res = 0, ""
+    
+    for i = 1, 7 do
+        res = res.."[logic@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
+                   "active = walker@" .. gname .. "_monolith" .. i .. "_hide\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
+                   "path_walk = monolith" .. i .. "_hide_walk\n" ..
+                   "path_look = monolith" .. i .. "_hide_look\n" ..
+                   "combat_ignore_cond = always\n" ..
+                   "show_spot = false\n" ..
+
+                   "[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "active = walker@" .. gname .. "_monolith" .. i .. "\n" ..
+
+                   "[walker@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "path_walk = monolith" .. i .. "_walk\n" ..
+                   "path_look = monolith" .. i .. "_look\n"
+    end
+    return res
+end
+
+--------------------------------------------------------------------------
+-- Zombied
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_zombied(sj, gname, type, squad, groups)
     local i, j = 0, 0
     local states_str = {"wait", "scene", "fight", "guard"}
@@ -685,12 +865,38 @@ function load_job_zombied(sj, gname, type, squad, groups)
     end
 end
 
+-- States ----------------------------------------------------------------
+function check_state_zombied(gulag)
+	local state = gulag.state
+	local actor = db.actor
+    if actor:has_info("pri_zombied_scene_start") then
+        if actor:dont_has_info("pri_zombied_scene_end") then
+            return state_zombied_scene
+        elseif is_zombied_in_combat() then --table.getn(zombied_in_combat) > 0 then
+            if state_zombied_fight ~= state then
+                printf("gulag <state>: pri_zombied - fight")
+            end
+            return state_zombied_fight
+        else
+            if state_zombied_guard ~= state then
+                printf("gulag <state>: pri_zombied - guard")
+            end
+            return state_zombied_guard
+        end
+    end
+    return state
+end
+
+--------------------------------------------------------------------------
+-- Monolith
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_monolith(sj, gname, type, squad, groups)
     local i, j, v, prior, pred
 
     -- walkers
-    prior = {6, 7, 8, 12, 12, 6, 5, 6}
-    for i, v in {1, 3, 4, 5, 6, 7, 8, 10} do
+    prior = {6, 7, 8, 12, 12, 5}
+    for i, v in {1, 3, 4, 5, 6, 8} do
         --- state: main
 	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
 		    idle = 0,
@@ -703,18 +909,35 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	end
 
 	-- followers
+    prior = {6, 6, 4, 4}
     for i = 1, 2 do
-        --- state: main
-	    t = { section = "logic@" .. gname .. "_follower" .. i, 
-		    idle = 0,
-		    prior = 4, state = {0},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = "",
-		    predicate = f_predicate6
-	    }
-	    table.insert(sj, t)
+        for j = 1, 2 do
+            --- state: main
+	        t = { section = "logic@" .. gname .. "_group_patrol" .. i, 
+		        idle = 0,
+		        prior = prior[i + 2 * (j - 1)], state = {0},
+		        squad = squad, group = groups[1],
+		        in_rest = "", out_rest = "",
+		        predicate = f_predicate6
+	        }
+	        table.insert(sj, t)
+	    end
     end
 
+	pred = {f_predicate8, f_predicate9, f_predicate10}
+	for i, v in {"rpg", "svd", "machine_gun"} do
+        --- state: main
+	    t = { section = "logic@" .. gname .. "_stalker_" .. v, 
+		    idle = 0,
+		    prior = 14, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = "",
+		    predicate = pred[i]
+	    }
+	    table.insert(sj, t)
+	end
+
+--[[
 	-- specnaz camper rpg
     --- state: main
 	t = { section = "logic@" .. gname .. "_stalker_rpg", 
@@ -747,6 +970,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 		predicate = f_predicate10
 	}
 	table.insert(sj, t)
+--]]
 
     -- kamps
     prior = {{11, 11, 11, 3}, {10, 10, 10, 2}, {11, 11, 11}, {9, 9, 9}, {13, 13, 1}}
@@ -773,7 +997,75 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	end
 end
 
---- Dogs
+-- States ----------------------------------------------------------------
+function check_state_monolith(gulag)
+    return 0
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_monolith(gname, type)
+    local i, v, res = 0, 0, ""
+    local id
+    
+    res = "[danger@sound_small]\nignore_danger_sound = 20\n"
+
+    for i, v in {1, 3, 4, 5, 6, 8} do
+        res = res.."[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
+                   "active = walker@" .. gname .. "_patrol" .. v .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_patrol" .. v .. "]\n" ..
+                   "path_walk = patrol" .. v .. "_walk\n" ..
+                   "path_look = patrol" .. v .. "_look\n" ..
+                   "danger = danger@sound_small\n" ..
+                   "combat_ignore_cond = {=fighting_actor}\n"
+    end
+
+    for i, v in {7, 10} do
+        res = res.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
+                   "active = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
+                   
+                   "[patrol@" .. gname .. "_group_patrol" .. i .. "]\n" ..
+                   "path_walk = patrol" .. v .. "_walk\n" ..
+                   "path_look = patrol" .. v .. "_look\n" ..
+                   "formation = line\n"
+    end
+
+    id = {11, 12, 14}
+	for i, v in {"rpg", "svd", "machine_gun"} do
+	    res = res.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
+                   "active = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                   
+                   "[camper@" .. gname .. "_stalker_" .. v .. "]\n" ..
+                   "path_walk = patrol" .. id[i] .. "_walk\n" ..
+                   "path_look = patrol" .. id[i] .. "_look\n" ..
+                   "no_retreat = true\n" ..
+                   "radius = 5\n" ..
+                   "def_state_campering = threat\n" ..
+                   "def_state_campering_fire = threat_fire\n" ..
+                   "danger = danger@sound_small\n" ..
+                   "combat_ignore_cond = {=fighting_actor}\n"
+	end
+
+	for i = 1, 5 do
+	    res = res.."[logic@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
+                   "active = kamp@" .. gname .. "_kamp" .. i .. "_soldier\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                   
+                   "[kamp@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
+                   "center_point = kamp" .. i .. "\n" ..
+                   "danger = danger@sound_small\n" ..
+                   "combat_ignore_cond = {=fighting_actor}\n"
+	end
+
+    return res
+end
+
+--------------------------------------------------------------------------
+-- Dogs
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_dogs_nest1(sj, gname, type, squad, groups)
     local i = 0
     for i = 1, 10 do
@@ -794,6 +1086,29 @@ function load_job_dogs_nest1(sj, gname, type, squad, groups)
    end
 end
 
+-- States ----------------------------------------------------------------
+function check_state_dogs_nest1(gulag)
+	local t = db.zone_by_name["pri_dogs_nest1_big_restr"] -- имя большого рестр.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
+		else
+			return 0
+		end
+	else
+		return gulag.state
+	end
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_dogs_nest1(gname, type)
+    return "[logic@pri_dogs_nest1]\nactive = nil\n"
+end
+
+--------------------------------------------------------------------------
+-- Stadium
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_stadium(sj, gname, type, squad, groups)
     local i = 0
     for i = 1, 10 do
@@ -821,7 +1136,30 @@ function load_job_stadium(sj, gname, type, squad, groups)
    end
 end
 
---- Monster on spring
+-- States ----------------------------------------------------------------
+function check_state_stadium(gulag)
+	--local state = gulag.state
+	local actor = db.actor
+	if actor:has_info("pri_stadium_scene_start") then
+	    if actor:has_info("pri_stadium_scene_end") then
+	        return 2
+	    else
+	        return 1
+	    end
+	else
+	    return 0
+	end
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_stadium(gname, type)
+    return "[logic@pri_stadium_gigant]\nactive = nil\n"
+end
+
+--------------------------------------------------------------------------
+-- Monster on spring
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
 function load_job_mob_spring(sj, gname, type, squad, groups)
     local i = 0
     for i = 1, mob_spring_count do
@@ -842,150 +1180,7 @@ function load_job_mob_spring(sj, gname, type, squad, groups)
    end
 end
 
---------------------------------------------------------------------------
--- States
---------------------------------------------------------------------------
-function load_states(gname, type)
-    local g = gulags[type]
-
-    if g then
-        return g[2]
-    end
-
-	return nil
-end
-	    
-function check_state_followers(gulag)
-	local state = gulag.state
-	local actor = db.actor
-	if state == state_wait and actor:has_info("pri_followers_start") then
-		return state_wave1
-	end
-	if state == state_wave1 and
-		actor:has_info("pri_wave1_monolith1_dead") and
-		actor:has_info("pri_wave1_monolith2_dead") and
-		actor:has_info("pri_wave1_monolith3_dead") --and
-		--actor:has_info("pri_wave1_monolith4_dead")
-	then
-		actor:give_info_portion("pri_wave1_end")
-		return state_wave2
-	end
-	if state == state_wave2 and
-		actor:has_info("pri_wave2_monolith1_dead") and
-		actor:has_info("pri_wave2_monolith2_dead") and
-		--actor:has_info("pri_wave2_monolith3_dead") and
-		actor:has_info("pri_wave2_monolith4_dead") and
-		--actor:has_info("pri_wave2_monolith5_dead") and
-		actor:has_info("pri_wave2_monolith6_dead") --and
-		--actor:has_info("pri_wave2_monolith7_dead") and
-		--actor:has_info("pri_wave2_monolith8_dead") and
-		--actor:has_info("pri_wave2_monolith9_dead")
-	then
-		actor:give_info_portion("pri_wave2_end")
-		return state_wave3
-	end
-	if state == state_wave3 and actor:has_info("pri_wave3_btr_dead") then
-		actor:give_info_portion("pri_wave3_end")
-		return state_wave4
-	end
-	if state == state_wave4 and
-		actor:has_info("pri_wave4_monolith1_dead") and
-		actor:has_info("pri_wave4_monolith2_dead") and
-		actor:has_info("pri_wave4_monolith3_dead") and
-		--actor:has_info("pri_wave4_monolith4_dead") and
-		actor:has_info("pri_wave4_monolith5_dead") and
-		--actor:has_info("pri_wave4_monolith6_dead") and
-		--actor:has_info("pri_wave4_monolith7_dead") and
-		actor:has_info("pri_wave4_monolith8_dead")
-	then
-		actor:give_info_portion("pri_wave4_end")
-		return state_wave5
-	end
-	if state == state_wave5 and
-		actor:has_info("pri_wave5_monolith1_dead") and
-		actor:has_info("pri_wave5_monolith2_dead") and
-		actor:has_info("pri_wave5_monolith3_dead") and
-		actor:has_info("pri_wave5_monolith4_dead")
-	then
-		actor:give_info_portion("pri_wave5_end")
-		return state_wave6
-	end
-	if state == state_wave6 and
-		--actor:has_info("pri_wave6_monolith1_dead") and
-		actor:has_info("pri_wave6_monolith2_dead") and
-		actor:has_info("pri_wave6_monolith3_dead")
-	then
-		actor:give_info_portion("pri_wave6_end")
-		return state_wave7
-	end
-	if state == state_wave7 and
-        xr_gulag.getGulagPopulation("pri_ambush7") == 0
-    then
-        actor:give_info_portion("pri_wave7_end")
-        return state_wave8
-    end
-    return state
-end
-
-function check_state_ambush7(gulag)
-	if db.actor:has_info("pri_wave7_start") then
-        return 1
-	end
-	return gulag.state
-end
-
-function check_state_zombied(gulag)
-	local state = gulag.state
-	local actor = db.actor
-    if actor:has_info("pri_zombied_scene_start") then
-        if actor:dont_has_info("pri_zombied_scene_end") then
-            return state_zombied_scene
-        elseif is_zombied_in_combat() then --table.getn(zombied_in_combat) > 0 then
-            if state_zombied_fight ~= state then
-                printf("gulag <state>: pri_zombied - fight")
-            end
-            return state_zombied_fight
-        else
-            if state_zombied_guard ~= state then
-                printf("gulag <state>: pri_zombied - guard")
-            end
-            return state_zombied_guard
-        end
-    end
-    return state
-end
-
-function check_state_monolith(gulag)
-    return 0
-end
-
-function check_state_dogs_nest1(gulag)
-	local t = db.zone_by_name["pri_dogs_nest1_big_restr"] -- имя большого рестр.
-	if t and db.actor then
-		if t:inside(db.actor:position()) then
-			return 1
-		else
-			return 0
-		end
-	else
-		return gulag.state
-	end
-end
-
-function check_state_stadium(gulag)
-	--local state = gulag.state
-	local actor = db.actor
-	if actor:has_info("pri_stadium_scene_start") then
-	    if actor:has_info("pri_stadium_scene_end") then
-	        return 2
-	    else
-	        return 1
-	    end
-	else
-	    return 0
-	end
-end
-
+-- States ----------------------------------------------------------------
 function check_state_mob_spring(gulag)
 	local t = db.zone_by_name[gulag.name .. "_big_restr"] -- имя большого рестр.
 	if t and db.actor then
@@ -999,112 +1194,17 @@ function check_state_mob_spring(gulag)
 	end
 end
 
---------------------------------------------------------------------------
--- Dynamic ltx
---------------------------------------------------------------------------
-function load_ltx(gname, type)
-    local g = gulags[type]
-    if g and g[4] then
-        return g[4](gname, type)
-    end
-
-	return nil
-end
-
-function load_ltx_ambush7(gname, type)
-    local i, res = 0, ""
-    
-    for i = 1, 7 do
-        res = res.."[logic@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
-                   "active = walker@" .. gname .. "_monolith" .. i .. "_hide\n" ..
-                   "combat_ignore = combat_ignore\n" ..
-
-                   "[walker@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
-                   "path_walk = monolith" .. i .. "_hide_walk\n" ..
-                   "path_look = monolith" .. i .. "_hide_look\n" ..
-                   "combat_ignore_cond = always\n" ..
-                   "show_spot = false\n" ..
-
-                   "[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
-                   "active = walker@" .. gname .. "_monolith" .. i .. "\n" ..
-
-                   "[walker@" .. gname .. "_monolith" .. i .. "]\n" ..
-                   "path_walk = monolith" .. i .. "_walk\n" ..
-                   "path_look = monolith" .. i .. "_look\n"
-    end
-    return res
-end
-
-function load_ltx_monolith(gname, type)
-    local i, res = 0, ""
-    
-    for i = 1, 20 do
-        res = res.."[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
-                   "active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
-
-                   "[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
-                   "path_walk = patrol" .. i .. "_walk\n" ..
-                   "path_look = patrol" .. i .. "_look\n"
-    end
-    return res
-end
-
-function load_ltx_dogs_nest1(gname, type)
-    return "[logic@pri_dogs_nest1]\nactive = nil\n"
-end
-
-function load_ltx_stadium(gname, type)
-    return "[logic@pri_stadium_gigant]\nactive = nil\n"
-end
-
+-- Dynamic ltx -----------------------------------------------------------
 function load_ltx_mob_spring(gname, type)
     return "[logic@pri_mob_spring]\nactive = nil\n"
-end
-
---------------------------------------------------------------------------
-local function checkCommon(npc_community, g)
-    --if g then
-    local n, i, v = 0
-    for i, v in pairs(g[3]) do
-        if npc_community == v then
-            return true
-        end
-        n = n + 1
-    end
-    if n > 0 then
-        return false
-    else -- empty communities list
-        return true
-    end
-    --end
-
-	--return false
-end
-
-function checkStalker(npc_community, gulag_type)
-    local g = gulags[gulag_type]
-    if g then
-        return checkCommon(npc_community, g)
-    end
-
-	return false
-end
-
-function checkMonster(npc_community, gulag_type)
-    local g = gulags[gulag_type]
-    if g then
-        return checkCommon(npc_community, g)
-    end
-
-    return false
 end
 
 -------------------------------------------------------------------------------------------------------------------------
 --                         -- job_func          -- check_state func     -- communities              -- dynamic ltx func
 gulags.pri_followers    = {load_job_followers,  check_state_followers,  {"stalker"}}
-gulags.pri_ambush7      = {load_job_ambush7,    check_state_ambush7,    {"monolith"}} --,               load_ltx_ambush7}
+gulags.pri_ambush7      = {load_job_ambush7,    check_state_ambush7,    {"monolith"},               load_ltx_ambush7}
 gulags.pri_zombied      = {load_job_zombied,    check_state_zombied,    {"zombied", "military", "controller"}}
-gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"}} --,               load_ltx_monolith}
+gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"},               load_ltx_monolith}
 gulags.pri_dogs_nest1   = {load_job_dogs_nest1, check_state_dogs_nest1, {"dog"},                    load_ltx_dogs_nest1}
 gulags.pri_stadium      = {load_job_stadium,    check_state_stadium,    {"pseudo_gigant"},          load_ltx_stadium}
 gulags.pri_mob_spring   = {load_job_mob_spring, check_state_mob_spring, {},                         load_ltx_mob_spring}

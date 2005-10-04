@@ -1722,17 +1722,6 @@ path_look               = patrol6_look
 danger                  = danger@sound_small
 combat_ignore_cond      = {=fighting_actor}
 
-;--- SOLDIER7 ------------------------------------------------------------------------------------
-[logic@pri_monolith_patrol7]
-active                  = walker@pri_monolith_patrol7
-combat_ignore           = combat_ignore
-
-[walker@pri_monolith_patrol7]
-path_walk               = patrol7_walk
-path_look               = patrol7_look
-danger                  = danger@sound_small
-combat_ignore_cond      = {=fighting_actor}
-
 ;--- SOLDIER8 ------------------------------------------------------------------------------------
 [logic@pri_monolith_patrol8]
 active                  = walker@pri_monolith_patrol8
@@ -1744,24 +1733,23 @@ path_look               = patrol8_look
 danger                  = danger@sound_small
 combat_ignore_cond      = {=fighting_actor}
 
-;--- SOLDIER10 ------------------------------------------------------------------------------------
-[logic@pri_monolith_patrol10]
-active                  = walker@pri_monolith_patrol10
-combat_ignore           = combat_ignore
-
-[walker@pri_monolith_patrol10]
-path_walk               = patrol10_walk
-path_look               = patrol10_look
-danger                  = danger@sound_small
-combat_ignore_cond      = {=fighting_actor}
-
 ;--- FOLLOWER1 ------------------------------------------------------------------------------------
-[logic@pri_monolith_follower1]
-active                  = nil
+[logic@pri_monolith_group_patrol1]
+active                  = patrol@pri_monolith_group_patrol1
+
+[patrol@pri_monolith_group_patrol1]
+path_walk               = patrol7_walk
+path_look               = patrol7_look
+formation               = line
 
 ;--- FOLLOWER2 ------------------------------------------------------------------------------------
-[logic@pri_monolith_follower2]
-active                  = nil
+[logic@pri_monolith_group_patrol2]
+active                  = patrol@pri_monolith_group_patrol2
+
+[patrol@pri_monolith_group_patrol2]
+path_walk               = patrol10_walk
+path_look               = patrol10_look
+formation               = line
 
 ;--- CAMPER_RPG -----------------------------------------------------------------------------------
 [logic@pri_monolith_stalker_rpg]
@@ -1773,6 +1761,8 @@ path_walk               = patrol11_walk
 path_look               = patrol11_look
 no_retreat              = true
 radius                  = 5
+def_state_campering     = threat
+def_state_campering_fire= threat_fire
 danger                  = danger@sound_small
 combat_ignore_cond      = {=fighting_actor}
 
@@ -1786,6 +1776,8 @@ path_walk               = patrol12_walk
 path_look               = patrol12_look
 no_retreat              = true
 radius                  = 5
+def_state_campering     = threat
+def_state_campering_fire= threat_fire
 danger                  = danger@sound_small
 combat_ignore_cond      = {=fighting_actor}
 
@@ -1799,6 +1791,8 @@ path_walk               = patrol14_walk
 path_look               = patrol14_look
 no_retreat              = true
 radius                  = 5
+def_state_campering     = threat
+def_state_campering_fire= threat_fire
 danger                  = danger@sound_small
 combat_ignore_cond      = {=fighting_actor}
 
