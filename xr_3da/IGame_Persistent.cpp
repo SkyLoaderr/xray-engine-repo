@@ -118,8 +118,6 @@ void IGame_Persistent::OnGameEnd	()
 
 void IGame_Persistent::OnFrame		()
 {
-	if(!g_pGameLevel)				return;
-	if(!g_pGameLevel->bReady)		return;
 
 	Environment.OnFrame				();
 #ifndef _EDITOR

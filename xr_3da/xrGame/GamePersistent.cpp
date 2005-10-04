@@ -201,6 +201,9 @@ void CGamePersistent::WeathersUpdate()
 
 void CGamePersistent::OnFrame	()
 {
+	if(!g_pGameLevel)				return;
+	if(!g_pGameLevel->bReady)		return;
+
 	__super::OnFrame			();
 
 	Engine.Sheduler.Update		();
