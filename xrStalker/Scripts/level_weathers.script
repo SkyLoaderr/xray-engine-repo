@@ -1,84 +1,50 @@
 class "WeatherManager"
-
 function WeatherManager:__init()
-	self.weather_list		= {};
-	self.weather_idx		= 1;
-	self.level_name			= "";
-	self.current_day 		= 0;
---	printf					("WeatherManager:WeatherManager()");
+	--printf					("WeatherManager:WeatherManager()")
+	self.weather_change_day = 0
+	self.update_time = 0
+	self.update_level = ""
+	-- «агрузить кондлист с погодой.
+	local weather = utils.cfg_get_string(ini_file("game.ltx"), level.name(), "weathers", db.actor, false, "", "default")
+	if weather == "default" then
+		-- сетим дефолтовую погоду
+		level.set_weather("default",true)
+		printf("WEATHER: 'default'")
+		return
+	end
+	self.weather_list = xr_logic.parse_condlist(db.actor, level.name(), "weather", weather)
+	self:select_weather(true)
 end
 
-g_WeatherManager 			= WeatherManager();
-
-function WeatherManager:__finalize()
---	printf					("WeatherManager:~WeatherManager()");
-end
-
-function WeatherManager:construct()
-	-- проверить соответствие уровн€ текущему (если нет сбросить индекс погоды)
-	if (self.level_name~=level.name()) then
-		self.level_name		= level.name();
-		self.weather_idx	= 1;
-	end
-	-- заполнить список погод
-	local game_ltx			= ini_file("game.ltx");
-	if game_ltx:line_exist(self.level_name,"weathers") == true then
-		local tmp			= game_ltx:r_string(self.level_name,"weathers");
-		if tmp ~= nil then
-			for itm in string.gfind(tmp, '[^, ]+') do 
-				table.insert	(self.weather_list,itm);
-			end
-		end
-	end
-	-- установить текущий день
-	self.current_day		= level.get_time_days();
-	return table.getn		(self.weather_list)~=0;
+function WeatherManager:select_weather(now)
+	self.weather_change_day = level.get_time_days()
+	self.update_level = level.name()
+	local weather = xr_logic.pick_section_from_condlist(db.actor, db.actor, self.weather_list)
+	printf("WEATHER: '%s'", weather)
+	level.set_weather(weather,now);
 end
 
 function WeatherManager:load(F)
-	self.level_name 		= F:r_stringZ();
-	self.weather_idx 		= F:r_u32();
+	self.update_level 		= F:r_stringZ();
+	self.update_time 		= F:r_u32();
 end
 
 function WeatherManager:save(F)
-	F:r_stringZ				(self.level_name);
-	F:r_u32					(self.weather_idx);
-end
-
-function WeatherManager:set_weather(idx,forced)
-	self.weather_idx 		= idx;
-	local weather_name		= self.weather_list[self.weather_idx];
-	level.set_weather		(weather_name,forced);
-	printf					("WEATHER: '%s' (%s)",weather_name,level.get_weather());
-end
-
-function WeatherManager:select_weather()
-	printf					("DAY: %d",self.current_day)
-	local w_idx 			= self.weather_idx+1;
-	if w_idx>table.getn(self.weather_list) then
-		w_idx				= 1;
-	end
-	self:set_weather 		(w_idx,false);
+	F:r_stringZ				(self.update_level);
+	F:r_u32					(self.update_time);
 end
 
 function WeatherManager:update()
-	local level_day			= level.get_time_days();
-	-- change day
-	if self.current_day~=level_day then
-		self.current_day	= level_day;
-		self:select_weather	();
-	end
-end
-
-function main()
-	if true==g_WeatherManager:construct() then
-		g_WeatherManager:set_weather	(g_WeatherManager.weather_idx,true);
-		while 1 do
-			wait			(1000);
-			g_WeatherManager:update	();
+	if self.update_time <= time_global() then
+		printf("weather_update day [%s]", level.get_time_days())
+		
+		if self.update_level ~= level.name() then
+			self:select_weather(true)
 		end
-	else
-		level.set_weather	("default",true);
-		printf				("WEATHER: 'default'");
+		
+		if self.weather_change_day ~= level.get_time_days() then
+			self:select_weather(false)
+		end
+		self.update_time = self.update_time + 10000
 	end
 end
