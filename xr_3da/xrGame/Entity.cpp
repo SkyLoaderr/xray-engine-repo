@@ -213,7 +213,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 //	fArmor					= 0;
 
 	// Register
-	if (GetfHealth() > 0.f) {
+	if (g_Alive()) {
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
 		++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
 	}
