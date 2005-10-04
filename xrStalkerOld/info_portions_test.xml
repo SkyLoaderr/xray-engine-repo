@@ -144,5 +144,9 @@
 		</location>
 	</info_portion>
 	
+	<info_portion id="test_andy_info">
+		<task_>andy_task_1</task_>
+	  <task>andy_task_2</task>
+	</info_portion>
 
 </game_information_portions>

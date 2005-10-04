@@ -125,9 +125,9 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	if(!Actor()) return;
 
 	GameTasks& tasks = Actor()->GameTaskManager().GameTasks();
-	GameTasks::iterator it =  tasks.begin();
+	GameTasks::reverse_iterator it =  tasks.rbegin();
 	CGameTask* task = NULL;
-	for(;it!=tasks.end();++it){
+	for(;it!=tasks.rend();++it){
 		task = (*it).game_task;
 		R_ASSERT(task);
 		R_ASSERT(task->m_Objectives.size() > 0);

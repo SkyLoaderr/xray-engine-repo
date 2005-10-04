@@ -233,7 +233,7 @@ void CTheoraSurface::DecompressFrame(u32* data)
 				int R	= clampr(( 298 * C           + 409 * E + 128) >> 8,0,255);
 				int G	= clampr(( 298 * C - 100 * D - 208 * E + 128) >> 8,0,255);
 				int B	= clampr(( 298 * C + 516 * D           + 128) >> 8,0,255);
-				data[pos++] = color_rgba(R,G,B,0);
+				data[pos++] = color_rgba(R,G,B,255);
 			}
 		}
 	}

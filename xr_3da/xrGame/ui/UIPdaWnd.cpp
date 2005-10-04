@@ -276,7 +276,7 @@ void CUIPdaWnd::Draw()
 void CUIPdaWnd::PdaContentsChanged	(pda_section::part type)
 {
 	 g_pda_info_state |= type;
-	HUD().GetUI()->UIMainIngameWnd->SetFlashIconState_(CUIMainIngameWnd::efiPdaTask, true);
+//	HUD().GetUI()->UIMainIngameWnd->SetFlashIconState_(CUIMainIngameWnd::efiPdaTask, true);
 
 	if(type==pda_section::encyclopedia){
 		UIEncyclopediaWnd->ReloadArticles	();
