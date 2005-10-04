@@ -16,13 +16,20 @@ F// xrCompress.cpp : Defines the entry point for the console application.
 
 extern int ProcessDifference();
 
-IWriter*				fs=0;
+IWriter*				fs				= 0;
 CMemoryWriter			fs_desc;
 
-u32						bytesSRC=0,bytesDST=0;
-u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
+u32						bytesSRC		= 0;
+u32						bytesDST		= 0;
+u32						filesTOTAL		= 0;
+u32						filesSKIP		= 0;
+u32						filesVFS		= 0;
+u32						filesALIAS		= 0;
 CStatTimer				t_compress;
-u8*						c_heap	= NULL;
+u8*						c_heap			= NULL;
+u32						dwTimeStart		= 0;
+
+const u32				XRP_MAX_SIZE	= 1024*1024*1024; // bytes
 
 
 
@@ -124,6 +131,12 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 	string256		fn;				strconcat(fn,base,"\\",path);
 
 	IReader*		src				=	FS.r_open	(fn);
+	if (0==src){
+		filesSKIP	++;
+		printf		(" - CAN'T OPEN");
+		Msg			("%-80s   - CAN'T OPEN",path);
+		return;
+	}
 	bytesSRC						+=	src->length	();
 	u32			c_crc32				=	crc32		(src->pointer(),src->length());
 	u32			c_ptr				=	0;
@@ -228,14 +241,57 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 	FS.r_close	(src);
 }
 
-void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_list, BOOL bFast)
+void	OpenPack			(LPCSTR tgt_folder, int num)
 {
-	if (!list->empty()){
+	VERIFY			(0==fs);
+
+	string_path		fname;
+	string128		s_num;
+	strconcat		(fname,tgt_folder,".xrp_#",itoa(num,s_num,10));
+	unlink			(fname);
+	fs				= FS.w_open	(fname);
+	fs_desc.clear	();
+	dwTimeStart		= timeGetTime();
+	fs->open_chunk	(0);
+}
+
+void	ClosePack			()
+{
+	fs->close_chunk	(); 
+	// save list
+	bytesDST		= fs->tell	();
+	fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
+	FS.w_close		(fs);
+	u32	dwTimeEnd	= timeGetTime();
+	printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
+		filesTOTAL,filesSKIP,filesVFS,filesALIAS,
+		bytesDST/1024,bytesSRC/1024,
+		100.f*float(bytesDST)/float(bytesSRC),
+		((dwTimeEnd-dwTimeStart)/1000)/60,
+		((dwTimeEnd-dwTimeStart)/1000)%60,
+		float((float(bytesDST)/float(1024*1024))/(t_compress.GetElapsed_sec()))
+		);
+	Msg			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
+		filesTOTAL,filesSKIP,filesVFS,filesALIAS,
+		bytesDST/1024,bytesSRC/1024,
+		100.f*float(bytesDST)/float(bytesSRC),
+		((dwTimeEnd-dwTimeStart)/1000)/60,
+		((dwTimeEnd-dwTimeStart)/1000)%60,
+		float((float(bytesDST)/float(1024*1024))/(t_compress.GetElapsed_sec()))
+		);
+}
+
+void CompressList(LPCSTR in_name, xr_vector<char*>* list, xr_vector<char*>* fl_list, BOOL bFast)
+{
+	if (!list->empty() && in_name && in_name[0]){
 		string256		caption;
-		u32				dwTimeStart	= timeGetTime();
-		string256		fname;
-		strconcat		(fname,tgt_name,".xrp");
-		unlink			(fname);
+
+		VERIFY			('\\'!=in_name[xr_strlen(in_name)-1]);
+		string_path		tgt_folder;
+		_splitpath		(in_name,0,0,tgt_folder,0);
+
+		int pack_num	= 0;
+		OpenPack		(tgt_folder,pack_num++);
 
 		for (u32 it=0; it<fl_list->size(); it++){
 			fs_desc.w_stringZ	((*fl_list)[it]);
@@ -244,40 +300,23 @@ void CompressList(LPCSTR tgt_name, xr_vector<char*>* list, xr_vector<char*>* fl_
 			fs_desc.w_u32		(0		);
 		}
 
-		fs				= FS.w_open	(fname);
-		fs->open_chunk	(0);
-		//***main process***: BEGIN
 		c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
+		//***main process***: BEGIN
 		for (u32 it=0; it<list->size(); it++){
 			sprintf		(caption,"Compress files: %d/%d - %d%%",it,list->size(),(it*100)/list->size());
 			SetWindowText(GetConsoleWindow(),caption);
-			Compress	((*list)[it],tgt_name,bFast);
+			if (fs->tell()>XRP_MAX_SIZE){
+				ClosePack		();
+				OpenPack		(tgt_folder,pack_num++);
+			}
+			Compress	((*list)[it],in_name,bFast);
 		}
-		xr_free			(c_heap);
 		fs->close_chunk	();
+
+		xr_free			(c_heap);
 		//***main process***: END
 
-		// save list
-		bytesDST		= fs->tell	();
-		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
-		FS.w_close		(fs);
-		u32	dwTimeEnd	= timeGetTime();
-		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
-			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
-			bytesDST/1024,bytesSRC/1024,
-			100.f*float(bytesDST)/float(bytesSRC),
-			((dwTimeEnd-dwTimeStart)/1000)/60,
-			((dwTimeEnd-dwTimeStart)/1000)%60,
-			float((float(bytesDST)/float(1024*1024))/(t_compress.GetElapsed_sec()))
-			);
-		Msg			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
-			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
-			bytesDST/1024,bytesSRC/1024,
-			100.f*float(bytesDST)/float(bytesSRC),
-			((dwTimeEnd-dwTimeStart)/1000)/60,
-			((dwTimeEnd-dwTimeStart)/1000)%60,
-			float((float(bytesDST)/float(1024*1024))/(t_compress.GetElapsed_sec()))
-			);
+		ClosePack		();
 	} else {
 		Msg			("ERROR: folder not found.");
 	}
@@ -301,17 +340,25 @@ void ProcessNormal(LPCSTR tgt_name, BOOL bFast)
 void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 {
 	xr_string		ltx_name;
-	LPCSTR ltx_fn	= strstr(params,".ltx");				VERIFY(ltx_fn!=0);
-	string_path		fn;
+	LPCSTR ltx_nm	= strstr(params,".ltx");				VERIFY(ltx_nm!=0);
+	string_path		ltx_fn;
 	string_path		tmp;
-	strncpy			(tmp,params,ltx_fn-params); tmp[ltx_fn-params]=0;
+	strncpy			(tmp,params,ltx_nm-params); tmp[ltx_nm-params]=0;
 	_Trim			(tmp);
 	strcat			(tmp,".ltx");
-	strcpy			(fn,tmp);
-	if (!FS.exist(fn)||!FS.exist(fn,"$app_root$",tmp)) 
-		Debug.fatal	("ERROR: Can't find ltx file: '%s'",fn);
+	strcpy			(ltx_fn,tmp);
 
-	CInifile ltx	(fn);
+	// append ltx path (if exist)
+	string_path		fn,dr,di;
+	_splitpath		(ltx_fn,dr,di,0,0);
+	strconcat		(fn,dr,di);  
+	if (0!=fn[0])
+		FS.append_path	("ltx_path",fn,0,false);
+	
+	if (!FS.exist(ltx_fn)&&!FS.exist(ltx_fn,"$app_root$",tmp)) 
+		Debug.fatal	("ERROR: Can't find ltx file: '%s'",ltx_fn);
+
+	CInifile ltx	(ltx_fn);
 	printf			("Processing LTX...\n");
 
 	xr_vector<char*> list;
@@ -378,7 +425,7 @@ int __cdecl main	(int argc, char* argv[])
 			printf("ERROR: u must pass folder name as parameter.\n");
 			printf("-diff /? option to get information about creating difference.\n");
 			printf("-fast - fast compression.\n");
-			printf("-ltx file_name.ltx - pathes to compress.\n");
+			printf("	 file_name.ltx - pathes to compress.\n");
 			printf("\n");
 			printf("LTX format:\n");
 			printf("	[config]\n");
