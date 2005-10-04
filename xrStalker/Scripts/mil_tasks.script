@@ -324,3 +324,10 @@ function miser_task_failed (task_id, subtask)
     end
     return false     
 end
+
+
+function sniper_task_fail (task_id, subtask)
+    if db.actor:has_info ("mil_dolg_dead") or db.actor:has_info ("mil_dolg_collected") then
+       return true
+    return false    
+end
