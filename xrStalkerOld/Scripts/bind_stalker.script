@@ -1,3 +1,4 @@
+
 function init    (obj)
 	xr_motivator.AddToMotivator(obj)
 end
@@ -214,6 +215,14 @@ end
 --старт префетча звуков
 sound_prefetch.prefetch_sounds()
 
+function can_sleep_callback()
+	return true
+end
+
+function sleep_video_name_callback()
+	return "car\\trabantnoise"
+end
+
 // this is test for section iteration
 /**
 local function test_section_iteration(file_name, section_name)
@@ -233,3 +242,5 @@ end
 
 test_section_iteration("system.ltx","space_restrictor")
 /**/
+
+
