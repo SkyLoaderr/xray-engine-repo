@@ -18,13 +18,10 @@ class	CCustomObject;
 #endif
 
 #pragma pack( push,1 )
-enum EVMType{
-	vmtUV=0,
-    vmtWeight,
-    vmt_force_byte = 0xff
-};
+const u8	vmtUV		= 0;
+const u8	vmtWeight	= 1;
 
-struct ECORE_API st_WB{
+struct ECORE_API st_WB{                       
 	int 	bone;
 	float 	weight;
 			st_WB	():bone(-1),weight(0){;}
@@ -68,7 +65,7 @@ DEFINE_VECTOR(st_VertexWB,VWBVec,VWBIt);
 
 struct ECORE_API st_VMapPt{
 	int				vmap_index;	// ссылка на мапу
-	int				index;		// индекс в мапе на uv
+	int				index;		// индекс в V-мапе на uv/w
 	st_VMapPt(){vmap_index=-1;index=-1;}
 };
 // uv's
@@ -76,13 +73,16 @@ class ECORE_API st_VMap{
     FloatVec    	vm;			// u,v - координаты или weight
 public:
 	shared_str		name;		// vertex uv map name
-    u8				dim;
-    EVMType			type;
-	u8				polymap;
+    struct{
+        u8			type	:2;
+        u8			polymap	:1;
+        u8			dim		:2;
+        u8			reserved:3;
+    };
 	IntVec			vindices;
 	IntVec			pindices;
 public:
-	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, bool pm=false)
+	st_VMap			(LPCSTR nm=0, u8 t=vmtUV, bool pm=false)
     {
 		type		= t;
 		polymap		= pm;
@@ -108,8 +108,12 @@ public:
 	IC void			appendPI	(int pi)				{VERIFY(polymap); pindices.push_back(pi);}
     IC void			copyfrom	(float* src, int cnt)	{resize(cnt); CopyMemory(&*vm.begin(),src,cnt*dim*4);}
 };
-DEFINE_SVECTOR		(st_VMapPt,8,VMapPtSVec,VMapPtIt);
-DEFINE_VECTOR		(VMapPtSVec,VMRefsVec,VMRefsIt);
+
+struct st_VMapPtLst{
+	u8				count;
+	st_VMapPt*		pts;
+};
+DEFINE_VECTOR		(st_VMapPtLst,VMRefsVec,VMRefsIt);
 
 struct ECORE_API st_SVert{
 	Fvector			offs;
@@ -122,7 +126,7 @@ struct ECORE_API st_SVert{
 // faces
 struct ECORE_API st_FaceVert{
 	int 			pindex;		// point index in PointList
-    int				vmref;		// vm index
+    int				vmref;		// vm-ref index 
 };
 struct ECORE_API st_Face{
     st_FaceVert		pv[3];		// face vertices (P->P...)
@@ -138,9 +142,7 @@ struct ECORE_API st_MeshOptions{
 
 DEFINE_VECTOR		(IntVec,AdjVec,AdjIt);
 DEFINE_VECTOR		(st_VMap*,VMapVec,VMapIt);
-DEFINE_VECTOR		(st_Face,FaceVec,FaceIt);
 DEFINE_MAP			(CSurface*,IntVec,SurfFaces,SurfFacesPairIt);
-DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
 
 //refs
 struct st_RenderBuffer;
@@ -174,20 +176,20 @@ class ECORE_API CEditableMesh {
 
     CEditableObject*	m_Parent;
 
-#ifdef _EDITOR
-    CDB::MODEL*		m_CFModel;
-	RBMap			m_RenderBuffers;
-#endif
-
     void            GenerateCFModel		();
-    void 			GenerateFNormals	();
-    void 			GeneratePNormals	();
-    void            GenerateSVertices	();
+	void 			GenerateRenderBuffers();
     void			UnloadCForm     	();
-    void			UnloadFNormals   	();
-    void			UnloadPNormals   	();
-    void			UnloadSVertices  	();
-
+	void 			UnloadRenderBuffers	();
+public:
+    void 			GenerateFNormals	();
+    void 			GenerateVNormals	();
+    void            GenerateSVertices	();
+	void 			GenerateAdjacency	();
+    void			UnloadFNormals   	(bool force=false);
+    void			UnloadVNormals   	(bool force=false);
+    void			UnloadSVertices  	(bool force=false);
+    void			UnloadAdjacency  	(bool force=false);
+private:
     // internal variables
 	enum{
 		flVisible	= (1<<0),
@@ -197,37 +199,39 @@ class ECORE_API CEditableMesh {
 	Flags8			m_Flags;
 public:
 	st_MeshOptions	m_Ops;
-
-    enum{
-        LS_CF_MODEL = (1<<0),
-        LS_RBUFFERS	= (1<<1),
-        LS_FNORMALS = (1<<2),
-        LS_PNORMALS = (1<<3),
-		LS_SVERTICES= (1<<4),
-    };
-    Flags32			m_LoadState;
 protected:
 	Fbox			m_Box;
 
-    FvectorVec	    m_Points;	// |
-    AdjVec		    m_Adjs;     // + some array size!!!
+	int				m_FNormalsRefs;
+	int				m_VNormalsRefs;
+	int				m_AdjsRefs;
+	int				m_SVertRefs;
+
+    u32				m_VertCount;
+    u32				m_FaceCount;
+    
+    Fvector*	    m_Verts;	// |
+    AdjVec*			m_Adjs;    	// + some array size!!!
+	u32*			m_SGs;		// |
+    Fvector*		m_FNormals;	// |
+    Fvector*		m_VNormals;	// | *3
+    st_SVert*		m_SVertices;// | *3
+    st_Face*	    m_Faces;    // + some array size!!!
     SurfFaces	    m_SurfFaces;
-	U32Vec			m_SGs;		// |
-    FvectorVec	    m_FNormals;	// |
-    FvectorVec	    m_PNormals;	// | *3
-    SVertVec	    m_SVertices;// | *3
-    FaceVec		    m_Faces;    // + some array size!!!
     VMapVec		    m_VMaps;
     VMRefsVec	    m_VMRefs;
 
-	void 			CreateRenderBuffers		();
+#ifdef _EDITOR
+    CDB::MODEL*		m_CFModel;
+	RBMap*			m_RenderBuffers;
+#endif
+
 	void 			FillRenderBuffer		(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);
 
 	void 			RecurseTri				(int id);
 
 
 	// mesh optimize routine
-	bool 			UpdateAdjacency			();
 	bool 			OptimizeFace			(st_Face& face);
 public:
 	void			RecomputeBBox			();
@@ -252,16 +256,18 @@ public:
 	void            CloneFrom				(CEditableMesh *source);
 	void            Transform				(const Fmatrix& parent);
 
-	IC CEditableObject*	Parent				(){ return m_Parent;}
-    IC FaceVec&		GetFaces				(){ return m_Faces;}
-	IC U32Vec&		GetSGs					(){ return m_SGs;}
-    IC FvectorVec&	GetPoints				(){ return m_Points;}
-	IC VMapVec&		GetVMaps				(){ return m_VMaps;}
-	IC VMRefsVec&	GetVMRefs				(){ return m_VMRefs;}
-    IC FvectorVec&	GetFNormals				(){ if (!m_LoadState.is(CEditableMesh::LS_FNORMALS)) GenerateFNormals(); return m_FNormals;}
-    IC FvectorVec&	GetPNormals				(){ if (!m_LoadState.is(CEditableMesh::LS_PNORMALS)) GeneratePNormals(); return m_PNormals;}
-    IC SVertVec&	GetSVertices			(){ if (!m_LoadState.is(CEditableMesh::LS_SVERTICES))GenerateSVertices();return m_SVertices;}
-	IC SurfFaces&	GetSurfFaces			(){ return m_SurfFaces;}
+	IC CEditableObject*	Parent				(){ return m_Parent;	}
+    IC u32			GetFCount				(){ return m_FaceCount;	}
+    IC st_Face*		GetFaces				(){ return m_Faces;		}
+	IC u32*			GetSGs					(){ return m_SGs;		}
+    IC Fvector*		GetVerts				(){ return m_Verts;		}
+    IC u32			GetVCount				(){ return m_VertCount;	}
+	IC VMapVec&		GetVMaps				(){ return m_VMaps;		}
+	IC VMRefsVec&	GetVMRefs				(){ return m_VMRefs;	}
+	IC SurfFaces&	GetSurfFaces			(){ return m_SurfFaces;	}
+    IC Fvector*		GetFNormals				(){ VERIFY(0!=m_FNormals); return m_FNormals;	}
+    IC Fvector*		GetVNormals				(){ VERIFY(0!=m_VNormals); return m_VNormals;	}
+    IC st_SVert*	GetSVertices			(){ VERIFY(0!=m_SVertices);return m_SVertices;	}
 	    
     // pick routine
 	bool            RayPick					(float& dist, const Fvector& start, const Fvector& dir, const Fmatrix& inv_parent, SRayPickInfo* pinf = NULL);
@@ -285,7 +291,7 @@ public:
 
     // statistics methods
     int 			GetFaceCount			(bool bMatch2Sided=true);
-	int 			GetVertexCount			(){return m_Points.size();}
+	int 			GetVertexCount			(){return m_VertCount;}
     int 			GetSurfFaceCount		(CSurface* surf, bool bMatch2Sided=true);
     float			CalculateSurfaceArea	(CSurface* surf, bool bMatch2Sided);
     float			CalculateSurfacePixelArea(CSurface* surf, bool bMatch2Sided);
@@ -307,11 +313,8 @@ public:
 
 	int				FindSimilarUV			(st_VMap* vmap, Fvector2& _uv);
 	int				FindSimilarWeight		(st_VMap* vmap, float _w);
-	int				FindVMapByName			(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap);
+	int				FindVMapByName			(VMapVec& vmaps, const char* name, u8 t, bool polymap);
 	void			RebuildVMaps			();
-
-    // device dependent routine
-	void 			ClearRenderBuffers		();
 
     bool			Validate				();
 };

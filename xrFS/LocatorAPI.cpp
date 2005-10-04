@@ -242,6 +242,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 	bNoRecurse		= TRUE;
 	string_path		buf;
 	IReader* F		= 0;
+	// append working folder
 	Recurse			("");
 	// append application path
 	if (m_Flags.is(flScanAppRoot)){

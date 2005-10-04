@@ -284,8 +284,6 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     bool bProgress 	= M_BASE.size()>1;
     
     // lock rescanning
-//..    FS.lock_rescan	();
-    
     int m_age		= time(NULL);
 
     // sync assoc
@@ -374,8 +372,6 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     xr_delete			(ltx_ini);
     
     if (bProgress) 	UI->ProgressEnd(pb);
-    // lock rescanning
-//..    FS.unlock_rescan	();
 }
 /*
 void CImageManager::ChangeFileAgeTo(FS_FileSet* tgt_map, int age)

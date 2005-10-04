@@ -214,9 +214,6 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     if (sync_game) 	FS.file_list(M_GAME,_game_sounds_,FS_ListFiles|FS_ClampExt,"*.ogg");
 
     bool bProgress = M_BASE.size()>1;
-
-    // lock rescanning
-//..    FS.lock_rescan	();
     
     int m_age					= time(NULL);
     
@@ -278,8 +275,6 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         }
     }
     if (bProgress) UI->ProgressEnd(pb);
-    // lock rescanning
-//..    FS.unlock_rescan	();
 }
 
 void CSoundManager::CleanupSounds()
@@ -294,9 +289,6 @@ void CSoundManager::CleanupSounds()
     FS.file_list	(M_THUM,_sounds_,		FS_ListFiles|FS_ClampExt,"*.thm");
     FS.file_list	(M_GAME,_game_sounds_,	FS_ListFiles|FS_ClampExt,"*.ogg");
 
-    // lock rescanning
-//..    FS.lock_rescan	();
-    
     FS_FileSetIt it;
 	FS_FileSetIt _E;
     // check source exist
@@ -339,8 +331,6 @@ void CSoundManager::CleanupSounds()
         pb->Inc					();
     }
     UI->ProgressEnd				(pb);
-    // unlock rescanning
-//..    FS.unlock_rescan			();
 }
 
 /*

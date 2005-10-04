@@ -15,14 +15,28 @@
 #define F_LIM (10000)
 #define V_LIM (F_LIM*3)
 //----------------------------------------------------
-void CEditableMesh::CreateRenderBuffers()
+void CEditableMesh::GenerateRenderBuffers()
 {
-    if (m_LoadState.is(LS_RBUFFERS)) return;
+//    CTimer T;
+//    T.Start();
+/*
+    CMemoryWriter 	F;
+    m_Parent->PrepareOGF(F,false,this);
+	IReader R		(F.pointer(), F.size());
+	m_Visual 		= ::Render->Models->Create(GetName(),&R);
+//    Log				("Time: ",T.GetElapsed_sec());
+//	string_path fn;
+//	strconcat		(fn,"_alexmx_\\",GetName(),".ogf");
+//	FS.update_path	(fn,_import_,fn);
+//	F.save_to		(fn);
+	return;
+*/
+    if (m_RenderBuffers) return;
+    m_RenderBuffers		= xr_new<RBMap>();
 
-    if (!m_LoadState.is(LS_PNORMALS)) GeneratePNormals();
-    R_ASSERT2(m_RenderBuffers.empty(),"Render buffer already exist.");
+    GenerateVNormals	();
 
-    VERIFY(m_PNormals.size());
+    VERIFY				(m_VNormals);
 
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
@@ -55,47 +69,48 @@ void CEditableMesh::CreateRenderBuffers()
             v_cnt				-= V_LIM;
             start_face			+= (_S->m_Flags.is(CSurface::sf2Sided))?rb.dwNumVertex/6:rb.dwNumVertex/3;
         }while(v_cnt>0);
-        if (num_verts>0) m_RenderBuffers.insert(mk_pair(_S,rb_vec));
+        if (num_verts>0) m_RenderBuffers->insert(mk_pair(_S,rb_vec));
     }
-    UnloadPNormals();
-    m_LoadState.set(LS_RBUFFERS,TRUE);
+    UnloadVNormals();
 }
 //----------------------------------------------------
 
-void CEditableMesh::ClearRenderBuffers()
+void CEditableMesh::UnloadRenderBuffers()
 {
-    for (RBMapPairIt rbmp_it=m_RenderBuffers.begin(); rbmp_it!=m_RenderBuffers.end(); rbmp_it++){
-        for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++)
-            if (rb_it->pGeom){
-                _RELEASE		(rb_it->pGeom->vb);
-                _RELEASE		(rb_it->pGeom->ib);
-                rb_it->pGeom.destroy();
-            }
+	if (m_RenderBuffers){
+        for (RBMapPairIt rbmp_it=m_RenderBuffers->begin(); rbmp_it!=m_RenderBuffers->end(); rbmp_it++){
+            for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++)
+                if (rb_it->pGeom){
+                    _RELEASE		(rb_it->pGeom->vb);
+                    _RELEASE		(rb_it->pGeom->ib);
+                    rb_it->pGeom.destroy();
+                }
+        }
+        xr_delete					(m_RenderBuffers);
     }
-    m_RenderBuffers.clear();
-    m_LoadState.set(LS_RBUFFERS,FALSE);
 }
 //----------------------------------------------------
 
-void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data){
-	LPBYTE data = src_data;
-    u32 dwFVF = surf->_FVF();
-	u32 dwTexCnt = ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data)
+{
+	LPBYTE data 		= src_data;
+    u32 dwFVF 			= surf->_FVF();
+	u32 dwTexCnt 		= ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
     for (int fl_i=start_face; fl_i<start_face+num_face; fl_i++){
-        u32 f_index = face_lst[fl_i];
-        VERIFY(f_index<m_Faces.size());
-    	st_Face& face = m_Faces[f_index];
+        u32 f_index 	= face_lst[fl_i];
+        VERIFY			(f_index<m_FaceCount);
+    	st_Face& face 	= m_Faces[f_index];
         for (int k=0; k<3; k++){
             st_FaceVert& fv = face.pv[k];
             u32 norm_id = f_index*3+k;//fv.pindex;
-	        VERIFY2(norm_id<m_PNormals.size(),"Normal index out of range.");
-            VERIFY2(fv.pindex<(int)m_Points.size(),"Point index out of range.");
-            Fvector& PN = m_PNormals[norm_id];
-			Fvector& V 	= m_Points[fv.pindex];
+	        VERIFY2(norm_id<m_FaceCount*3,"Normal index out of range.");
+            VERIFY2(fv.pindex<(int)m_VertCount,"Point index out of range.");
+            Fvector& PN = m_VNormals[norm_id];
+			Fvector& V 	= m_Verts[fv.pindex];
             int sz;
             if (dwFVF&D3DFVF_XYZ){
                 sz=sizeof(Fvector);
-                VERIFY2(fv.pindex<int(m_Points.size()),"- Face index out of range.");
+                VERIFY2(fv.pindex<int(m_VertCount),"- Face index out of range.");
                 CopyMemory(data,&V,sz);
                 data+=sz;
             }
@@ -104,19 +119,19 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
                 CopyMemory(data,&PN,sz);
                 data+=sz;
             }
-            sz=sizeof(Fvector2);
-            int offs = 0;
+            sz			= sizeof(Fvector2);
+            int offs 	= 0;
             for (int t=0; t<(int)dwTexCnt; t++){
-                VERIFY2((t+offs)<(int)m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
-            	st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref][t+offs];
+                VERIFY2((t+offs)<(int)m_VMRefs[fv.vmref].count,"- VMap layer index out of range");
+            	st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref].pts[t+offs];
                 if (m_VMaps[vm_pt.vmap_index]->type!=vmtUV){
                 	offs++;
                     t--;
                     continue;
                 }
-                VERIFY2(vm_pt.vmap_index<int(m_VMaps.size()),"- VMap index out of range");
+                VERIFY2	(vm_pt.vmap_index<int(m_VMaps.size()),"- VMap index out of range");
 				st_VMap* vmap		= m_VMaps[vm_pt.vmap_index];
-                VERIFY2(vm_pt.index<vmap->size(),"- VMap point index out of range");
+                VERIFY2	(vm_pt.index<vmap->size(),"- VMap point index out of range");
                 CopyMemory(data,&vmap->getUV(vm_pt.index),sz); data+=sz;
 //                Msg("%3.2f, %3.2f",vmap->getUV(vm_pt.index).x,vmap->getUV(vm_pt.index).y);
             }
@@ -124,12 +139,12 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
         if (surf->m_Flags.is(CSurface::sf2Sided)){
             for (int k=2; k>=0; k--){
                 st_FaceVert& fv = face.pv[k];
-	            Fvector& PN = m_PNormals[f_index*3+k];
+	            Fvector& PN = m_VNormals[f_index*3+k];
                 int sz;
                 if (dwFVF&D3DFVF_XYZ){
                     sz=sizeof(Fvector);
-	                VERIFY2(fv.pindex<int(m_Points.size()),"- Face index out of range.");
-                    CopyMemory(data,&m_Points[fv.pindex],sz);
+	                VERIFY2(fv.pindex<int(m_VertCount),"- Face index out of range.");
+                    CopyMemory(data,&m_Verts[fv.pindex],sz);
                     data+=sz;
                 }
                 if (dwFVF&D3DFVF_NORMAL){
@@ -141,8 +156,8 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
                 sz=sizeof(Fvector2);
 				int offs = 0;
                 for (int t=0; t<(int)dwTexCnt; t++){
-	                VERIFY2((t+offs)<(int)m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
-                    st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref][t];
+	                VERIFY2((t+offs)<(int)m_VMRefs[fv.vmref].count,"- VMap layer index out of range");
+                    st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref].pts[t];
                     if (m_VMaps[vm_pt.vmap_index]->type!=vmtUV){
                         offs++;
                         t--;
@@ -162,16 +177,16 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
 //----------------------------------------------------
 void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
 {
-    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
-	// visibility test
-	if (!m_Flags.is(flVisible)) return;
-	// frustum test
+    if (0==m_RenderBuffers) GenerateRenderBuffers();
+    // visibility test
+    if (!m_Flags.is(flVisible)) return;
+    // frustum test
     Fbox bb; bb.set(m_Box);
     bb.xform(parent);
-	if (!::Render->occ_visible(bb)) return;
+    if (!::Render->occ_visible(bb)) return;
     // render
-    RBMapPairIt rb_pair = m_RenderBuffers.find(S);
-    if (rb_pair!=m_RenderBuffers.end()){
+    RBMapPairIt rb_pair = m_RenderBuffers->find(S);
+    if (rb_pair!=m_RenderBuffers->end()){
         RBVector& rb_vec = rb_pair->second;
         for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
             Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
@@ -198,7 +213,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, Int
     	Device.SetShader(Device.m_SelectionShader);
     for (IntIt dw_it=fl.begin(); dw_it!=fl.end(); dw_it++){
         st_Face& face = m_Faces[*dw_it];
-        for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[face.pv[k].pindex]);
+        for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Verts[face.pv[k].pindex]);
 		if (RB_cnt==MAX_VERT_COUNT){
         	DU.DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
 			RB_cnt = 0;
@@ -213,7 +228,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, Int
 
 void CEditableMesh::RenderSelection(const Fmatrix& parent, CSurface* s, u32 color)
 {
-    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
+    if (0==m_RenderBuffers) GenerateRenderBuffers();
 //	if (!m_Visible) return;
     Fbox bb; bb.set(m_Box);
     bb.xform(parent);
@@ -225,7 +240,7 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, CSurface* s, u32 colo
         if (sp_it!=m_SurfFaces.end()) RenderList(parent,color,false,sp_it->second);
     }else{
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
-        for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
+        for (RBMapPairIt p_it=m_RenderBuffers->begin(); p_it!=m_RenderBuffers->end(); p_it++){
             RBVector& rb_vec = p_it->second;
             for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
                 Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
@@ -237,7 +252,7 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, CSurface* s, u32 colo
 
 void CEditableMesh::RenderEdge(const Fmatrix& parent, CSurface* s, u32 color)
 {
-    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
+    if (0==m_RenderBuffers) GenerateRenderBuffers();
 //	if (!m_Visible) return;
 	RCache.set_xform_world(parent);
 	Device.SetShader(Device.m_WireShader);
@@ -250,7 +265,7 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, CSurface* s, u32 color)
         if (sp_it!=m_SurfFaces.end()) RenderList(parent,color,true,sp_it->second);
     }else{
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
-        for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
+        for (RBMapPairIt p_it=m_RenderBuffers->begin(); p_it!=m_RenderBuffers->end(); p_it++){
             RBVector& rb_vec = p_it->second;
             for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
                 Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
@@ -271,9 +286,9 @@ struct svertRender
 };
 void CEditableMesh::RenderSkeleton(const Fmatrix&, CSurface* S)
 {
-    if (!m_LoadState.is(CEditableMesh::LS_SVERTICES)) GenerateSVertices();
+    if (0==m_SVertices)	GenerateSVertices();
 
-	R_ASSERT2(!m_SVertices.empty(),"SVertices empty!");
+	R_ASSERT2(m_SVertices,"SVertices empty!");
 	SurfFacesPairIt sp_it 	= m_SurfFaces.find(S); R_ASSERT(sp_it!=m_SurfFaces.end());
     IntVec& face_lst 		= sp_it->second;
 	_VertexStream*	Stream	= &RCache.Vertex;

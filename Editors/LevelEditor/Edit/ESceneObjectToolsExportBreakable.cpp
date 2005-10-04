@@ -23,6 +23,7 @@ static bool s_draw_dbg = false;
 IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtractor* extractor, u32 game_mtl_mask, BOOL ignore_shader)
 {
 	bool bResult 			= true;
+    mesh->GenerateVNormals	();
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->GetSurfFaces().begin(); sp_it!=mesh->GetSurfFaces().end(); sp_it++){
 		IntVec& face_lst 	= sp_it->second;
@@ -56,24 +57,25 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
             }
         }
 
-        st_Face*	faces 	= mesh->GetFaces();
-        Fvector*	pn	 	= mesh->GetPNormals();
-        Fvector*	pts 	= mesh->GetVerts();
+        st_Face*	faces 	= mesh->GetFaces();        	VERIFY(faces);
+        Fvector*	vn	 	= mesh->GetVNormals();		VERIFY(vn);
+        Fvector*	pts 	= mesh->GetVerts();			VERIFY(pts);
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face 	= faces[*f_it];
             Fvector 		v[3],n[3];
             parent.transform_tiny	(v[0],pts[face.pv[0].pindex]);
             parent.transform_tiny	(v[1],pts[face.pv[1].pindex]);
             parent.transform_tiny	(v[2],pts[face.pv[2].pindex]);
-            parent.transform_dir	(n[0],pn[*f_it*3+0]); n[0].normalize();
-            parent.transform_dir	(n[1],pn[*f_it*3+1]); n[1].normalize();
-            parent.transform_dir	(n[2],pn[*f_it*3+2]); n[2].normalize();
+            parent.transform_dir	(n[0],vn[*f_it*3+0]); n[0].normalize();
+            parent.transform_dir	(n[1],vn[*f_it*3+1]); n[1].normalize();
+            parent.transform_dir	(n[2],vn[*f_it*3+2]); n[2].normalize();
             const Fvector2*	uv[3];
             mesh->GetFaceTC			(*f_it,uv);
             extractor->AppendFace	(surf,v,n,uv);
         }
         if (!bResult) break;
     }
+    mesh->UnloadVNormals	();
     return bResult;
 }
 

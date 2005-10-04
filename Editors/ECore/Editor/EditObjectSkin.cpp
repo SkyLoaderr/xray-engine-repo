@@ -375,11 +375,10 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
     for(EditMeshIt mesh_it=FirstMesh();mesh_it!=LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
-        if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-		FaceVec& _faces		= MESH->GetFaces();
-        for (FaceIt f_it=_faces.begin(); f_it!=_faces.end(); f_it++){
+        MESH->GenerateSVertices();
+        for (u32 f_id=0; f_id!=MESH->GetFCount(); f_id++){
             for (int k=0; k<3; k++){
-                st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
+                st_SVert& 		sv = MESH->m_SVertices[f_id*3+k];
                 FvectorVec& P 	= bone_points[sv.bone0];
                 bool bFound		= false;
                 Fvector p;
@@ -393,6 +392,7 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
 //		        if (sv.bone1!=BI_NONE) bone_points[sv.bone1].push_back(sv.offs1);
             }
         }
+        MESH->UnloadSVertices();
     }
 
     BoneVec& lst 	= m_Bones;    

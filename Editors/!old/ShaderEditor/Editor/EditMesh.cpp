@@ -15,7 +15,7 @@
 CEditableMesh::~CEditableMesh(){
 	Clear();
 #ifdef _EDITOR
-    R_ASSERT2(m_RenderBuffers.empty(),"Render buffer still referenced.");
+    R_ASSERT2(0==m_RenderBuffers,"Render buffer still referenced.");
 #endif
 }
 
@@ -24,110 +24,115 @@ void CEditableMesh::Construct()
 	m_Box.set		(0,0,0,0,0,0);
 	m_Flags.assign	(flVisible);
     m_Name			= "";
-    m_LoadState.zero();
 #ifdef _EDITOR
-    m_CFModel		= 0;
+    m_CFModel		= 0;         
 #endif
+	m_Verts			= 0;
+    m_SGs			= 0;
+    m_Adjs			= 0;
+    m_Faces			= 0;
+    m_FNormals		= 0;
+    m_VNormals		= 0;
+    m_SVertices		= 0;
+    m_RenderBuffers	= 0;
+	m_FNormalsRefs	= 0;
+	m_VNormalsRefs	= 0;
+	m_AdjsRefs		= 0;
+	m_SVertRefs		= 0;
 }
 
 void CEditableMesh::Clear()           
 {
 #ifdef _EDITOR
-	ClearRenderBuffers	();
+	UnloadRenderBuffers	();
 #endif
-	m_Points.clear 		();
-    m_Adjs.clear		();
-	m_Faces.clear		();
+    UnloadAdjacency		();
+    UnloadCForm			();
+    UnloadFNormals		();
+    UnloadVNormals		();
+    UnloadSVertices		();
+
+	VERIFY				(m_FNormalsRefs==0 && m_VNormalsRefs==0 && m_AdjsRefs==0 && m_SVertRefs==0);
+
+    xr_free				(m_Verts);
+    xr_free				(m_Faces);
 	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++)
-		xr_delete(*vm_it);
+		xr_delete		(*vm_it);
     m_VMaps.clear		();
     m_SurfFaces.clear	();
     m_VMRefs.clear		();
-    UnloadCForm			();
-    UnloadFNormals		();
-    UnloadPNormals		();
 }
 
 void CEditableMesh::UnloadCForm     ()
 {
-	if (!m_LoadState.is(LS_CF_MODEL)) return;
 #ifdef _EDITOR
-	ETOOLS::destroy_model(m_CFModel);
+	ETOOLS::destroy_model			(m_CFModel);
 #endif
-    m_LoadState.set(LS_CF_MODEL,FALSE);
 }
 
-void CEditableMesh::UnloadFNormals   ()
+void CEditableMesh::UnloadFNormals  (bool force)
 {
-	if (!m_LoadState.is(LS_FNORMALS)) return;
-	m_FNormals.clear	();
-    m_LoadState.set(LS_FNORMALS,FALSE);
+	m_FNormalsRefs--;
+	if (force||m_FNormalsRefs<=0) 	{ xr_free(m_FNormals); m_FNormalsRefs=0; }
 }
-
-void CEditableMesh::UnloadPNormals   ()
+void CEditableMesh::UnloadVNormals  (bool force)
 {
-	if (!m_LoadState.is(LS_PNORMALS)) return;
-	m_PNormals.clear	();
-    m_LoadState.set(LS_PNORMALS,FALSE);
+	m_VNormalsRefs--;
+    if (force||m_VNormalsRefs<=0) 		{ xr_free(m_VNormals); m_VNormalsRefs=0; }
 }
-
-void CEditableMesh::UnloadSVertices	 ()
+void CEditableMesh::UnloadSVertices	(bool force)
 {
-	if (!m_LoadState.is(LS_SVERTICES)) return;
-	m_SVertices.clear	();
-    m_LoadState.set(LS_SVERTICES,FALSE);
+	m_SVertRefs--;
+    if (force||m_SVertRefs<=0) 		{ xr_free(m_SVertices); m_SVertRefs=0; }
+}
+void CEditableMesh::UnloadAdjacency	(bool force)
+{
+	m_AdjsRefs--;
+    if (force||m_AdjsRefs<=0) 		{ xr_delete(m_Adjs); m_AdjsRefs=0; }
 }
 
 void CEditableMesh::RecomputeBBox()
 {
-	if( m_Points.empty() ){
+	if( 0==m_VertCount ){
 		m_Box.set(0,0,0, 0,0,0);
 		return;
     }
-	m_Box.set( m_Points[0], m_Points[0] );
-	for(FvectorIt pt=m_Points.begin()+1; pt!=m_Points.end(); pt++)
-		m_Box.modify(*pt);
+	m_Box.set( m_Verts[0], m_Verts[0] );
+	for(u32 k=1; k<m_VertCount; k++)
+		m_Box.modify(m_Verts[k]);
 }
 
 void CEditableMesh::GenerateFNormals()
 {
-    m_FNormals.resize	(m_Faces.size());
+	m_FNormalsRefs++;
+    if (m_FNormals)		return;
+	m_FNormals			= xr_alloc<Fvector>(m_FaceCount);
+
     // face normals
-	FaceIt 		f_it	= m_Faces.begin();
-	FvectorIt 	fn_it	= m_FNormals.begin();
-    for (f_it; f_it!=m_Faces.end(); f_it++, fn_it++ ){
-        fn_it->mknormal(	m_Points[f_it->pv[0].pindex],
-                			m_Points[f_it->pv[1].pindex],
-                            m_Points[f_it->pv[2].pindex]);
-    }
-/*
-    for (int i=0; i<m_Faces.size(); i++){
-    	st_Face& F = m_Faces[i];
-        Fvector& N = m_FNormals[i];
-        N.mknormal(	m_Points[F.pv[0].pindex],
-        			m_Points[F.pv[1].pindex],
-                    m_Points[F.pv[2].pindex]);
-    }
-*/
-    m_LoadState.set(LS_FNORMALS,TRUE);
+	for (u32 k=0; k<m_FaceCount; k++)
+        m_FNormals[k].mknormal(	m_Verts[m_Faces[k].pv[0].pindex], m_Verts[m_Faces[k].pv[1].pindex], m_Verts[m_Faces[k].pv[2].pindex]);
 }
 
-void CEditableMesh::GeneratePNormals()
+void CEditableMesh::GenerateVNormals()
 {
-	if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
+	m_VNormalsRefs++;
+    if (m_VNormals)		return;
+	m_VNormals			= xr_alloc<Fvector>(m_FaceCount*3);
 
-    VERIFY(m_SGs.size()==m_Faces.size());
+	// gen req    
+	GenerateFNormals	();
+	GenerateAdjacency	();
+
 	// vertex normals
-    m_PNormals.resize	(m_Faces.size()*3);
 	if (m_Flags.is(flSGMask)){
-		for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
+		for (u32 f_i=0; f_i<m_FaceCount; f_i++ ){
 			u32 sg			= m_SGs[f_i];
 			Fvector& FN 	= m_FNormals[f_i];
 			for (int k=0; k<3; k++){
-				Fvector& N 	= m_PNormals[f_i*3+k];
+				Fvector& N 	= m_VNormals[f_i*3+k];
 				if (sg){
 					N.set		(0,0,0);
-					IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+					IntVec& a_lst=(*m_Adjs)[m_Faces[f_i].pv[k].pindex];
 					VERIFY(a_lst.size());
 					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
 						if (sg&m_SGs[*i_it]) N.add	(m_FNormals[*i_it]);
@@ -135,7 +140,7 @@ void CEditableMesh::GeneratePNormals()
                     if (len>EPS_S){
 	                    N.div	(len);
                     }else{
-                    	Msg		("!Invalid smooth group found (MAX type). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Points[m_Faces[f_i].pv[k].pindex]));
+                    	Msg		("!Invalid smooth group found (MAX type). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Verts[m_Faces[f_i].pv[k].pindex]));
                         N.set	(m_FNormals[a_lst.front()]);
                     }
 				}else{
@@ -144,14 +149,14 @@ void CEditableMesh::GeneratePNormals()
 			}
 		}
 	}else{
-		for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
+		for (u32 f_i=0; f_i<m_FaceCount; f_i++ ){
 			u32 sg			= m_SGs[f_i];
 //			Fvector& FN 	= m_FNormals[f_i];
 			for (int k=0; k<3; k++){
-				Fvector& N 	= m_PNormals[f_i*3+k];
+				Fvector& N 	= m_VNormals[f_i*3+k];
 				if (sg!=-1){
 					N.set		(0,0,0);
-					IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+					IntVec& a_lst=(*m_Adjs)[m_Faces[f_i].pv[k].pindex];
 					VERIFY		(a_lst.size());
 					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
 						if (sg != m_SGs[*i_it]) continue;
@@ -161,12 +166,12 @@ void CEditableMesh::GeneratePNormals()
                     if (len>EPS_S){
 	                    N.div	(len);
                     }else{
-                    	Msg		("!Invalid smooth group found (Maya type). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Points[m_Faces[f_i].pv[k].pindex]));
+                    	Msg		("!Invalid smooth group found (Maya type). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Verts[m_Faces[f_i].pv[k].pindex]));
                         N.set	(m_FNormals[a_lst.front()]);
                     }
 				}else{
 					N.set		(0,0,0);
-					IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+					IntVec& a_lst=(*m_Adjs)[m_Faces[f_i].pv[k].pindex];
 					VERIFY(a_lst.size());
 					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
 						N.add	(m_FNormals[*i_it]);
@@ -174,50 +179,53 @@ void CEditableMesh::GeneratePNormals()
                     if (len>EPS_S){
 	                    N.div	(len);
                     }else{
-                    	Msg		("!Invalid smooth group found (No smooth). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Points[m_Faces[f_i].pv[k].pindex]));
+                    	Msg		("!Invalid smooth group found (No smooth). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Verts[m_Faces[f_i].pv[k].pindex]));
                         N.set	(m_FNormals[a_lst.front()]);
                     }
 				}
 			}
 		}
 	}
-    m_LoadState.set(LS_PNORMALS,TRUE);
+    UnloadFNormals		();
+    UnloadAdjacency		();
 }
 
 void CEditableMesh::GenerateSVertices()
 {
-	if (!m_Parent->IsSkeleton()) return;
+	if (!m_Parent->IsSkeleton())return;
 
-    CSMotion* active_motion=m_Parent->ResetSAnimation();
+    m_SVertRefs++;
+    if (m_SVertices)	return;
+	m_SVertices			= xr_alloc<st_SVert>(m_FaceCount*3);
+
+//	CSMotion* active_motion=m_Parent->ResetSAnimation();
     m_Parent->CalculateAnimation(0);
-	m_SVertices.resize(m_Faces.size()*3);
 
     // generate normals
-    if (!m_LoadState.is(CEditableMesh::LS_FNORMALS)) GenerateFNormals();
-    if (!m_LoadState.is(CEditableMesh::LS_PNORMALS)) GeneratePNormals();
+	GenerateFNormals	();
+	GenerateVNormals	();
 
-    for (FaceIt f_it = m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-        st_Face& F = *f_it;
+    for (u32 f_id=0; f_id<m_FaceCount; f_id++){
+        st_Face& F 		= m_Faces[f_id];
         for (int k=0; k<3; k++){
-	    	st_SVert& SV			= m_SVertices[(f_it-m_Faces.begin())*3+k];
-	    	Fvector&  N				= m_PNormals[(f_it-m_Faces.begin())*3+k];
+	    	st_SVert& SV			= m_SVertices[f_id*3+k];
+	    	Fvector&  N				= m_VNormals[f_id*3+k];
             st_FaceVert& fv 		= F.pv[k];
-	    	Fvector&  P 			= m_Points[fv.pindex];
-            VMapPtSVec& vmpt_lst 	= m_VMRefs[fv.vmref];
+	    	Fvector&  P 			= m_Verts[fv.pindex];
+            st_VMapPtLst& vmpt_lst 	= m_VMRefs[fv.vmref];
             st_VertexWB		wb;
-            for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
-                st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
+            for (u8 vmpt_id=0; vmpt_id!=vmpt_lst.count; vmpt_id++){
+                st_VMap& VM = *m_VMaps[vmpt_lst.pts[vmpt_id].vmap_index];
                 if (VM.type==vmtWeight){
-                    wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name.c_str()),VM.getW(vmpt_it->index)));
+                    wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name.c_str()),VM.getW(vmpt_lst.pts[vmpt_id].index)));
                     if (wb.back().bone<=-1){
-                        ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",*VM.name);
-                        m_SVertices.clear();
+                        ELog.DlgMsg	(mtError,"Can't find bone assigned to weight map %s",*VM.name);
                         Debug.fatal("Editor crashed.");
                         return;
                     }
                 }else if(VM.type==vmtUV){	
 //                 	R_ASSERT2(!uv,"More than 1 uv per vertex found.");
-                    SV.uv.set(VM.getUV(vmpt_it->index));
+                    SV.uv.set(VM.getUV(vmpt_lst.pts[vmpt_id].index));
                 }
             }
             wb.normalize_weights(2);
@@ -246,14 +254,26 @@ void CEditableMesh::GenerateSVertices()
         }
 	}
 
-    m_LoadState.set(LS_SVERTICES,TRUE);
     // restore active motion
-    m_Parent->SetActiveSMotion(active_motion);
+	UnloadFNormals	();
+	UnloadVNormals	();
+}
+
+void CEditableMesh::GenerateAdjacency()
+{
+	m_AdjsRefs++;
+    if (m_Adjs)		return;
+	m_Adjs			= xr_new<AdjVec>();
+	VERIFY			(m_Faces);
+    m_Adjs->resize	(m_VertCount);
+//.	Log				(".. Update adjacency");
+	for (u32 f_id=0; f_id<m_FaceCount; f_id++)
+		for (int k=0; k<3; k++) (*m_Adjs)[m_Faces[f_id].pv[k].pindex].push_back(f_id);
 }
 
 CSurface*	CEditableMesh::GetSurfaceByFaceID(u32 fid)
 {
-	R_ASSERT(fid<m_Faces.size());
+	R_ASSERT(fid<m_FaceCount);
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         IntIt f_it = std::lower_bound(face_lst.begin(),face_lst.end(),fid);
@@ -265,20 +285,20 @@ CSurface*	CEditableMesh::GetSurfaceByFaceID(u32 fid)
 
 void CEditableMesh::GetFaceTC(u32 fid, const Fvector2* tc[3])
 {
-	R_ASSERT(fid<m_Faces.size());
+	R_ASSERT(fid<m_FaceCount);
 	st_Face& F = m_Faces[fid];
     for (int k=0; k<3; k++){
-	    st_VMapPt& vmr = m_VMRefs[F.pv[k].vmref][0];
+	    st_VMapPt& vmr = m_VMRefs[F.pv[k].vmref].pts[0];
     	tc[k] = &(m_VMaps[vmr.vmap_index]->getUV(vmr.index));
     }
 }
 
 void CEditableMesh::GetFacePT(u32 fid, const Fvector* pt[3])
 {
-	R_ASSERT(fid<m_Faces.size());
+	R_ASSERT(fid<m_FaceCount);
 	st_Face& F = m_Faces[fid];
     for (int k=0; k<3; k++)
-    	pt[k] = &m_Points[F.pv[k].pindex];
+    	pt[k] = &m_Verts[F.pv[k].pindex];
 }
 
 int CEditableMesh::GetFaceCount(bool bMatch2Sided){
@@ -303,8 +323,8 @@ float CEditableMesh::CalculateSurfaceArea	(CSurface* surf, bool bMatch2Sided)
     for (int k=0; k<int(pol_lst.size()); k++){
         st_Face& F		= m_Faces[pol_lst[k]];
         Fvector 		c,e01,e02;
-        e01.sub			(m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex]);
-        e02.sub			(m_Points[F.pv[2].pindex],m_Points[F.pv[0].pindex]);
+        e01.sub			(m_Verts[F.pv[1].pindex],m_Verts[F.pv[0].pindex]);
+        e02.sub			(m_Verts[F.pv[2].pindex],m_Verts[F.pv[0].pindex]);
         area			+= c.crossproduct(e01,e02).magnitude()/2.f;
     }
     if (bMatch2Sided&&sp_it->first->m_Flags.is(CSurface::sf2Sided)) area*=2;
@@ -353,9 +373,9 @@ void CEditableMesh::DumpAdjacency(){
 }
 //----------------------------------------------------------------------------
 
-int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap)
+int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, u8 t, bool polymap)
 {
-	for (VMapIt vm_it=vmaps.begin(); vm_it!=vmaps.end(); vm_it++){
+	for (VMapIt vm_it=vmaps.begin(); vm_it!=vmaps.end(); vm_it++){               
 		if (((*vm_it)->type==t)&&(stricmp((*vm_it)->name.c_str(),name)==0)&&(polymap==(*vm_it)->polymap)) return vm_it-vmaps.begin();
 	}
 	return -1;

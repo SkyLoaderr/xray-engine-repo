@@ -9,7 +9,7 @@
 
 //------------------------------------------------------------------------------
 #define DETOBJ_CHUNK_VERSION		0x1000
-#define DETOBJ_CHUNK_REFERENCE 		0x0101
+#define DETOBJ_CHUNK_REFERENCE 		0x0101                               
 #define DETOBJ_CHUNK_SCALE_LIMITS	0x0102
 #define DETOBJ_CHUNK_DENSITY_FACTOR	0x0103
 #define DETOBJ_CHUNK_FLAGS			0x0104
@@ -139,13 +139,12 @@ bool EDetail::Update	(LPCSTR name)
     // fill vertices
     bv_bb.invalidate();
     u32 idx			= 0;
-    for (FaceIt f_it=M->GetFaces().begin(); f_it!=M->GetFaces().end(); f_it++){
+    for (u32 f_id=0; f_id<M->GetFCount(); f_id++){
+        st_Face& F 	= M->GetFaces()[f_id];
     	u16 ind[3];
     	for (int k=0; k<3; k++,idx++){
-        	st_Face& F 	= *f_it;
-            Fvector& P  = M->GetPoints()[F.pv[k].pindex];
-            
-            st_VMapPt& vm=M->GetVMRefs()[F.pv[k].vmref][0];
+            Fvector& P  = M->GetVerts()[F.pv[k].pindex];
+            st_VMapPt&vm= M->GetVMRefs()[F.pv[k].vmref].pts[0];
             Fvector2& uv= M->GetVMaps()[vm.vmap_index]->getUV(vm.index);
         	ind[k]		= _AddVert	(P,uv.x,uv.y);
 	        bv_bb.modify(vertices[ind[k]].P);

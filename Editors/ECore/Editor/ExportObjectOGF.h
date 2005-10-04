@@ -9,6 +9,7 @@ const int clpOGFMX = 48, clpOGFMY=16, clpOGFMZ=48;
 //---------------------------------------------------------------------------
 // refs
 class CEditableObject;
+class CEditableMesh;
 class CSurface;
 class CInifile;
 
@@ -162,11 +163,12 @@ class CExportObjectOGF
             m_Box.merge				((*it)->m_Box);
         }
     }
-    bool    Prepare				();
+    bool    PrepareMESH			(CEditableMesh* mesh);
+    bool    Prepare				(bool gen_tb, CEditableMesh* mesh);
 public:
 			CExportObjectOGF	(CEditableObject* object);
 			~CExportObjectOGF	();
-    bool    Export				(IWriter& F);
+    bool    Export				(IWriter& F, bool gen_tb=true, CEditableMesh* mesh=NULL);
     bool    ExportAsSimple		(IWriter& F);
     bool	ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn);
 };

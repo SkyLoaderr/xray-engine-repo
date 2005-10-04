@@ -40,7 +40,6 @@ CEditableObject::CEditableObject(LPCSTR name)
     m_ObjectVersion	= 0;
 
 #ifdef _EDITOR
-    m_Visual		= 0;
     vs_SkeletonGeom	= 0;
 #endif
 	m_Box.invalidate();

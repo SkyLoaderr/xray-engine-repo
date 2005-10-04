@@ -153,7 +153,7 @@ public:
 CCubeMapHelper cm;
 extern "C"{
 	namespace ETOOLS{
-		ETOOLS_API void SimplifyCubeMap	(u32* src_data, u32 src_width, u32 src_height, u32* dst_data, u32 dst_width, u32 dst_height, float sample_factor, pb_callback cb, void* pb_data)
+		ETOOLS_API void  __stdcall SimplifyCubeMap	(u32* src_data, u32 src_width, u32 src_height, u32* dst_data, u32 dst_width, u32 dst_height, float sample_factor, pb_callback cb, void* pb_data)
 		{
 			cm.scale_map(src_data, src_width, src_height, dst_data, dst_width, dst_height, sample_factor, cb, pb_data);
 		}

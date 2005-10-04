@@ -219,11 +219,9 @@ ESoundThumbnail* TfrmSoundLib::FindUsedTHM(LPCSTR name)
 
 void TfrmSoundLib::SaveUsedTHM()
 {
-//..	FS.lock_rescan	();
     int m_age 		= time(NULL);
 	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
 		(*t_it)->Save(m_age,0);
-//..	FS.unlock_rescan();
 }
 //---------------------------------------------------------------------------
 

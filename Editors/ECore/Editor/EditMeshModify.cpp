@@ -11,14 +11,16 @@
 void CEditableMesh::Transform(const Fmatrix& parent)
 {
 	// transform position
-	for(FvectorIt pt=m_Points.begin(); pt!=m_Points.end(); pt++)
-		parent.transform_tiny(*pt);
+	for(u32 k=0; k<m_VertCount; k++)
+		parent.transform_tiny(m_Verts[k]);
     // RecomputeBBox
-	RecomputeBBox();
+	RecomputeBBox	();
     // update normals & cform
-    UnloadFNormals();
-    UnloadPNormals();
-    UnloadCForm();
+    UnloadRenderBuffers	();
+    UnloadFNormals	(true);
+    UnloadVNormals	(true);
+    UnloadSVertices	(true);
+    UnloadCForm		();
 }
 //----------------------------------------------------
 
@@ -45,6 +47,8 @@ int CEditableMesh::FindSimilarWeight(st_VMap* vmap, float _w)
 
 void CEditableMesh::RebuildVMaps()
 {
+/*
+//.
 //.	Log			("Rebuilding VMaps...");
 	IntVec		m_PointVMap;
 	m_PointVMap.resize(m_Points.size(),-1);
@@ -68,14 +72,14 @@ void CEditableMesh::RebuildVMaps()
 							vm_idx=nVMaps.size()-1;
 						}
 						st_VMap* nVMap=nVMaps[vm_idx];
-/*
-						int uv_idx = FindSimilarUV(nVMap,vmap->getUV(pt_it->index));
-						if (uv_idx==-1){
-							uv_idx	= nVMap->size();
-							nVMap->appendUV(vmap->getUV(pt_it->index));
-							nVMap->appendVI(F.pv[k].pindex);
-						}
-*/
+
+//						int uv_idx = FindSimilarUV(nVMap,vmap->getUV(pt_it->index));
+//						if (uv_idx==-1){
+//							uv_idx	= nVMap->size();
+//							nVMap->appendUV(vmap->getUV(pt_it->index));
+//							nVMap->appendVI(F.pv[k].pindex);
+//						}
+
 						nVMap->appendUV(vmap->getUV(pt_it->index));
 						nVMap->appendVI(F.pv[k].pindex);
 						n_pt_it->index = nVMap->size()-1;
@@ -88,16 +92,16 @@ void CEditableMesh::RebuildVMaps()
 							vm_idx=nVMaps.size()-1;
 						}
 						st_VMap* nVMapPM=nVMaps[vm_idx];
-/*
-						int uv_idx = FindSimilarUV(nVMapPM,vmap->getUV(pt_it->index));
-						if (uv_idx==-1){
-							uv_idx	= nVMapPM->size();
-							nVMapPM->appendUV(vmap->getUV(pt_it->index));
-							nVMapPM->appendVI(F.pv[k].pindex);
-							nVMapPM->appendPI(f_it-m_Faces.begin());
-						}
-						n_pt_it->index = uv_idx;
-*/
+
+//						int uv_idx = FindSimilarUV(nVMapPM,vmap->getUV(pt_it->index));
+//						if (uv_idx==-1){
+//							uv_idx	= nVMapPM->size();
+//							nVMapPM->appendUV(vmap->getUV(pt_it->index));
+//							nVMapPM->appendVI(F.pv[k].pindex);
+//							nVMapPM->appendPI(f_it-m_Faces.begin());
+//						}
+//						n_pt_it->index = uv_idx;
+
 						nVMapPM->appendUV(vmap->getUV(pt_it->index));
 						nVMapPM->appendVI(F.pv[k].pindex);
 						nVMapPM->appendPI(f_it-m_Faces.begin());
@@ -128,17 +132,7 @@ void CEditableMesh::RebuildVMaps()
 	m_VMaps=nVMaps;
 	m_VMRefs.clear();
 	m_VMRefs = nVMRefs;
-}
-
-bool CEditableMesh::UpdateAdjacency()
-{
-	if (m_Faces.empty()) return false;
-    Log				(".. Update adjacency");
-    m_Adjs.clear	();
-    m_Adjs.resize	(m_Points.size());
-	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
-		for (int k=0; k<3; k++) m_Adjs[f_it->pv[k].pindex].push_back(f_it-m_Faces.begin());
-	return true;
+*/
 }
 
 #define MX 25
@@ -155,7 +149,7 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 	int k;
 
 	for (k=0; k<3; k++){
-    	points[k].set(m_Points[face.pv[k].pindex]);
+    	points[k].set(m_Verts[face.pv[k].pindex]);
 		mface[k] = -1;
     }
 
@@ -217,10 +211,12 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 void CEditableMesh::Optimize(BOOL NoOpt)
 {
 	if (!NoOpt){
+    	UnloadRenderBuffers	();
         UnloadCForm     	();
-        UnloadFNormals   	();
-        UnloadPNormals   	();
-       	UnloadSVertices  	();
+        UnloadFNormals   	(true);
+        UnloadVNormals   	(true);
+       	UnloadSVertices  	(true);
+       	UnloadAdjacency		(true);
     	
 		// clear static data
 		for (int x=0; x<MX+1; x++)
@@ -236,45 +232,56 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 		VMeps.z = (VMeps.z<EPS_L)?VMeps.z:EPS_L;
 
 		m_NewPoints.clear();
-		m_NewPoints.reserve(m_Points.size());
+		m_NewPoints.reserve(m_VertCount);
 
 		Msg("Optimize...");
 		Msg(".. Merge points");
 
-		IntVec mark_for_del;
-		mark_for_del.clear();
-		for (u32 k=0; k<m_Faces.size(); k++){
-    		if (!OptimizeFace(m_Faces[k]))
-				mark_for_del.push_back(k);
+		boolVec 	faces_mark		(m_FaceCount,false);
+        int			i_del_face 		= 0;
+		for (u32 k=0; k<m_FaceCount; k++){
+    		if (!OptimizeFace(m_Faces[k])){
+				faces_mark[k]		= true;
+                i_del_face			= 0;
+            }
 		}
 
-		m_Points.clear();
-		m_Points = m_NewPoints;
-		if (mark_for_del.size()>0){
-			std::sort	(mark_for_del.begin(),mark_for_del.end());
-			std::reverse(mark_for_del.begin(),mark_for_del.end());
-			// delete degenerate faces
-			for (IntIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++){
-				m_Faces.erase	(m_Faces.begin()+(*i_it));
-                m_SGs.erase		(m_SGs.begin()+(*i_it));
+        m_VertCount		= m_NewPoints.size();
+        xr_free			(m_Verts);
+        m_Verts			= xr_alloc<Fvector>(m_VertCount);
+		Memory.mem_copy	(m_Verts,&*m_NewPoints.begin(),m_NewPoints.size()*sizeof(Fvector));
+
+		if (i_del_face){
+	        st_Face* 	old_faces 	= m_Faces;
+	        u32* 		old_sg 		= m_SGs;
+
+            m_Faces		= xr_alloc<st_Face>	(m_FaceCount-i_del_face);
+            m_SGs		= xr_alloc<u32>		(m_FaceCount-i_del_face);
+            
+            u32 new_dk	= 0;
+            for (u32 dk=0; dk<m_FaceCount; dk++){
+            	if (faces_mark[dk]){
+                    for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
+                        IntVec& 	pol_lst = plp_it->second;
+                        for (int k=0; k<int(pol_lst.size()); k++){
+                            int& f = pol_lst[k];
+                            if (f>(int)dk){ f--;
+                            }else if (f==(int)dk){
+                                pol_lst.erase(pol_lst.begin()+k);
+                                k--;
+                            }
+                        }
+                    }
+                	continue;
+                }
+                new_dk++;
+            	m_Faces[new_dk]	= old_faces[dk];
+            	m_SGs[new_dk]	= old_sg[dk];
             }
-			// delete degenerate faces refs
-			for (IntIt m_d=mark_for_del.begin(); m_d!=mark_for_del.end(); m_d++){
-				for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
-					IntVec& 	pol_lst = plp_it->second;
-					for (int k=0; k<int(pol_lst.size()); k++){
-						int& f = pol_lst[k];
-						if (f>*m_d){ f--;
-						}else if (f==*m_d){
-							pol_lst.erase(pol_lst.begin()+k);
-							k--;
-						}
-					}
-				}
-			}
+            m_FaceCount	= m_FaceCount-i_del_face;
+            xr_free		(old_faces);
+            xr_free		(old_sg);
 		}
 	}
-    UpdateAdjacency();
-    VERIFY(m_SGs.size()==m_Faces.size());
 }
 

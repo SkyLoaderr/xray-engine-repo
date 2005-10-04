@@ -164,7 +164,6 @@ class ECORE_API CEditableObject{
 	friend class MeshExpUtility;
 
 #ifdef _EDITOR
-    IRender_Visual*	m_Visual;
 	ref_geom 		vs_SkeletonGeom;
 #endif
 // desc
@@ -414,9 +413,9 @@ public:
     bool			PrepareSVDefs			(IWriter& F);
     bool			PrepareSkeletonOGF		(IWriter& F);
     // rigid
-    bool			PrepareRigidOGF			(IWriter& F);
+    bool			PrepareRigidOGF			(IWriter& F, bool gen_tb=true, CEditableMesh* mesh=NULL);
 	// ogf
-    bool			PrepareOGF				(IWriter& F);
+    bool			PrepareOGF				(IWriter& F, bool gen_tb=true, CEditableMesh* mesh=NULL);
 	bool			ExportOGF				(LPCSTR fname);
     // omf
     bool			PrepareOMF				(IWriter& F);

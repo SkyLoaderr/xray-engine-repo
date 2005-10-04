@@ -97,17 +97,13 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     if (EPrefs->object_flags.is(epoDrawLOD)&&(m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim))){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
-/*		//?
-
-		Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
-/*/
-		RCache.set_xform_world	(parent);
-	    if (m_Flags.is(eoHOM)){
-        	if ((1==priority)&&(false==strictB2F)) 	RenderEdge		(parent,0,0,0x40B64646);
-        	if ((2==priority)&&(true==strictB2F))	RenderSelection	(parent,0,0,0xA0FFFFFF);
+        RCache.set_xform_world	(parent);
+        if (m_Flags.is(eoHOM)){
+            if ((1==priority)&&(false==strictB2F)) 	RenderEdge		(parent,0,0,0x40B64646);
+            if ((2==priority)&&(true==strictB2F))	RenderSelection	(parent,0,0,0xA0FFFFFF);
         }else if (m_Flags.is(eoSoundOccluder)){
-        	if ((1==priority)&&(false==strictB2F))	RenderEdge		(parent,0,0,0xFF000000);
-        	if ((2==priority)&&(true==strictB2F))	RenderSelection	(parent,0,0,0xA00000FF);
+            if ((1==priority)&&(false==strictB2F))	RenderEdge		(parent,0,0,0xFF000000);
+            if ((2==priority)&&(true==strictB2F))	RenderSelection	(parent,0,0,0xA00000FF);
         }else{
             if(psDeviceFlags.is(rsEdgedFaces)&&(1==priority)&&(false==strictB2F))
                 RenderEdge(parent);
@@ -116,13 +112,11 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
                     Device.SetShader((*s_it)->_Shader());
                     for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                        if (IsSkeleton()) 	(*_M)->RenderSkeleton(parent,*s_it);
-                        else				
-                        (*_M)->Render(parent,*s_it);
+                        if (IsSkeleton()) 	(*_M)->RenderSkeleton	(parent,*s_it);
+                        else				(*_M)->Render			(parent,*s_it);
                 }
             }
         }
-//*/
     }
 }
 
@@ -256,13 +250,6 @@ void CEditableObject::DefferedLoadRP()
     // skeleton
 	if (IsSkeleton())
 		vs_SkeletonGeom.create(FVF_SV,RCache.Vertex.Buffer(),RCache.Index.Buffer());
-/*    
-    CMemoryWriter 	F;
-    PrepareOGF		(F);
-	IReader R		(F.pointer(), F.size());
-    m_Visual 		= Device.Models.Create(&R);
-    //..
-/*/
 
 //*/
 	// создать LOD shader
@@ -281,7 +268,7 @@ void CEditableObject::DefferedUnloadRP()
 	vs_SkeletonGeom.destroy();
     // удалить буфера
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-    	if (*_M) (*_M)->ClearRenderBuffers();
+    	if (*_M) (*_M)->GenerateRenderBuffers();
 	// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
         (*s_it)->OnDeviceDestroy();
@@ -289,26 +276,27 @@ void CEditableObject::DefferedUnloadRP()
     m_LODShader.destroy();
     m_LoadState.set(LS_RBUFFERS,FALSE);
 }
-void CEditableObject::EvictObject(){
-	EditMeshIt m = m_Meshes.begin();
-	for(;m!=m_Meshes.end();m++){
-    	(*m)->UnloadCForm();
-    	(*m)->UnloadPNormals();
-        (*m)->UnloadSVertices();
-        (*m)->UnloadFNormals();
-    }
-    DefferedUnloadRP	();
-}
-
-bool CEditableObject::PrepareOGF(IWriter& F)
+void CEditableObject::EvictObject()
 {
-	return IsSkeleton()?PrepareSkeletonOGF(F):PrepareRigidOGF(F);
+	EditMeshIt m 				= m_Meshes.begin();
+	for(;m!=m_Meshes.end();m++){
+    	(*m)->UnloadCForm		();
+    	(*m)->UnloadVNormals	(true);
+        (*m)->UnloadSVertices	(true);
+        (*m)->UnloadFNormals	(true);
+    }
+    DefferedUnloadRP			();
 }
 
-bool CEditableObject::PrepareRigidOGF(IWriter& F)
+bool CEditableObject::PrepareOGF(IWriter& F, bool gen_tb, CEditableMesh* mesh)
+{
+	return IsSkeleton()?PrepareSkeletonOGF(F):PrepareRigidOGF(F,gen_tb,mesh);
+}
+
+bool CEditableObject::PrepareRigidOGF(IWriter& F, bool gen_tb, CEditableMesh* mesh)
 {
     CExportObjectOGF E(this);
-    return E.Export(F);
+    return E.Export(F,gen_tb,mesh);
 }
 
 bool CEditableObject::PrepareSVGeometry(IWriter& F)

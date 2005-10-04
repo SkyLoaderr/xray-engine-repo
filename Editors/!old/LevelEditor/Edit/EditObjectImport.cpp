@@ -27,7 +27,8 @@ bool CompareFunc(const st_VMapPt& vm0, const st_VMapPt& vm1){
 	return vm0.vmap_index<vm1.vmap_index;
 };
 
-bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
+bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
+{
 	lwObject *I=0;
 //	UI->SetStatus("Importing...");
 //	UI->ProgressStart(100,"Read file:");
@@ -217,26 +218,25 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     // points
 //					UI->ProgressStart(Ilr->point.count,"Fill points:");
                     {
-                        MESH->m_Points.resize(Ilr->point.count);
-                        MESH->m_Adjs.resize(Ilr->point.count);
+                    	MESH->m_VertCount	= Ilr->point.count;
+                        MESH->m_Verts 		= xr_alloc<Fvector>(MESH->m_VertCount);
 	                    int id = Ilr->polygon.count/50;
 	                    if (id==0) id = 1;
                         for (int i=0; i<Ilr->point.count; i++){
 //	                    	if ((i%id)==0) UI->ProgressUpdate(i);
                             st_lwPoint& Ipt = Ilr->point.pt[i];
-                            Fvector& Mpt	= MESH->m_Points[i];
-                            IntVec& a_lst	= MESH->m_Adjs[i];
+                            Fvector& Mpt	= MESH->m_Verts[i];
                             Mpt.set			(Ipt.pos);
-                            copy			(Ipt.pol,Ipt.pol+Ipt.npols,inserter(a_lst,a_lst.begin()));
-                            std::sort		(a_lst.begin(),a_lst.end());
                         }
                     }
                     if (!bResult) break;
                     // polygons
 //					UI->ProgressStart(Ilr->polygon.count,"Fill polygons:");
-                    MESH->m_Faces.resize(Ilr->polygon.count);
-					MESH->m_SGs.resize(Ilr->polygon.count,-1);
-                    MESH->m_VMRefs.reserve(Ilr->polygon.count*3);
+					MESH->m_FaceCount		= Ilr->polygon.count;
+                    MESH->m_Faces			= xr_alloc<st_Face>(MESH->m_FaceCount);
+					MESH->m_SGs				= xr_alloc<u32>(MESH->m_FaceCount);
+				    Memory.mem_fill32		(MESH->m_SGs,u32(-1),MESH->m_FaceCount);
+                    MESH->m_VMRefs.reserve	(Ilr->polygon.count*3);
                     IntVec surf_ids;
                     surf_ids.resize(Ilr->polygon.count);
                     int id = Ilr->polygon.count/50;
@@ -255,8 +255,8 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             st_FaceVert&  	Mpv=Mpol.pv[pv_i];
                             Mpv.pindex		=Ipv.index;
 
-							MESH->m_VMRefs.push_back(VMapPtSVec());
-							VMapPtSVec&	vm_lst = MESH->m_VMRefs.back();
+							MESH->m_VMRefs.push_back(st_VMapPtLst());
+							st_VMapPtLst&	vm_lst = MESH->m_VMRefs.back();
 							Mpv.vmref 		= MESH->m_VMRefs.size()-1;
 
 							// parse uv-map
@@ -272,10 +272,17 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             AStringVec names;
 							if (vmpl_cnt){
                             	// берем из poly
-    							for (int vm_i=0; vm_i<vmpl_cnt; vm_i++){
-									if (Ipv.vm[vm_i].vmap->type!=ID_TXUV) continue;
-									vm_lst.push_back(st_VMapPt());
-									st_VMapPt& pt	= vm_lst.back();
+                                vm_lst.count = 0;
+                                {
+                                    for (int vm_i=0; vm_i<vmpl_cnt; vm_i++){
+                                        if (Ipv.vm[vm_i].vmap->type!=ID_TXUV) continue;
+                                        vm_lst.count++;
+                                    }
+                                }
+                                vm_lst.pts			= xr_alloc<st_VMapPt>(vm_lst.count);
+                                for (int vm_i=0,vm_ii=0; vm_i<vmpl_cnt; vm_i++){
+                                    if (Ipv.vm[vm_i].vmap->type!=ID_TXUV) continue;
+									st_VMapPt& pt	= vm_lst.pts[vm_ii++];
         							pt.vmap_index	= VMIndices[Ipv.vm[vm_i].vmap];// номер моей VMap
                                     names.push_back	(Ipv.vm[vm_i].vmap->name);
             						pt.index 		= Ipv.vm[vm_i].index;
@@ -283,24 +290,37 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 							}
                             if (vmpt_cnt){
                             	// берем из points
-                                for (int vm_i=0; vm_i<vmpt_cnt; vm_i++){
+                                vm_lst.count = 0;
+                                {
+                                    for (int vm_i=0; vm_i<vmpt_cnt; vm_i++){
+                                        if (Ipt.vm[vm_i].vmap->type!=ID_TXUV) continue;
+                                        if (std::find(names.begin(),names.end(),Ipt.vm[vm_i].vmap->name)!=names.end()) continue;
+                                        vm_lst.count++;
+                                    }
+                                }
+                                for (int vm_i=0,vm_ii=0; vm_i<vmpt_cnt; vm_i++){
 									if (Ipt.vm[vm_i].vmap->type!=ID_TXUV) continue;
                                     if (std::find(names.begin(),names.end(),Ipt.vm[vm_i].vmap->name)!=names.end()) continue;
-									vm_lst.push_back(st_VMapPt());
-									st_VMapPt& pt	= vm_lst.back();
+									st_VMapPt& pt	= vm_lst.pts[vm_ii++];
 									pt.vmap_index	= VMIndices[Ipt.vm[vm_i].vmap]; // номер моей VMap
 									pt.index 		= Ipt.vm[vm_i].index;
                                 }
 							}
 
-                            std::sort(vm_lst.begin(),vm_lst.end(),CompareFunc);
+                            std::sort(&vm_lst.pts[0],&vm_lst.pts[vm_lst.count],CompareFunc);
 
 							// parse weight-map
-                            int vm_cnt		=Ipt.nvmaps;
-                            for (int vm_i=0; vm_i<vm_cnt; vm_i++){
+                            int vm_cnt			= Ipt.nvmaps;
+                            vm_lst.count = 0;
+                            {
+                                for (int vm_i=0; vm_i<vm_cnt; vm_i++){
+                                    if (Ipt.vm[vm_i].vmap->type!=ID_WGHT) continue;
+                                    vm_lst.count++;
+                                }
+                            }
+                            for (int vm_i=0,vm_ii=0; vm_i<vm_cnt; vm_i++){
 								if (Ipt.vm[vm_i].vmap->type!=ID_WGHT) continue;
-								vm_lst.push_back(st_VMapPt());
-								st_VMapPt& pt	= vm_lst.back();
+                                st_VMapPt& pt	= vm_lst.pts[vm_ii++];
         	                    pt.vmap_index	= VMIndices[Ipt.vm[vm_i].vmap]; // номер моей VMap
             	                pt.index 		= Ipt.vm[vm_i].index;
                             }
@@ -310,11 +330,9 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         surf_ids[i]			= Ipol.surf->alpha_mode;
                     }
                     if (!bResult) break;
-					int p_idx=0;
-                    for (FaceIt pl_it=MESH->m_Faces.begin(); pl_it!=MESH->m_Faces.end(); pl_it++){
-						MESH->m_SurfFaces[m_Surfaces[surf_ids[p_idx]]].push_back(p_idx);
-                        p_idx++;
-                    }
+                    for (u32 pl_id=0; pl_id<MESH->GetFCount(); pl_id++)
+						MESH->m_SurfFaces[m_Surfaces[surf_ids[pl_id]]].push_back(pl_id);
+                        
                     if (!bResult) break;
                     k++;
                     //MESH->DumpAdjacency();

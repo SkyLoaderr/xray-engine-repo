@@ -245,6 +245,7 @@ class XRCORE_API xrCore
 public:
 	string64	ApplicationName;
 	string_path	ApplicationPath;
+	string_path	WorkingPath;
 	string64	UserName;
 	string64	CompName;
 	string512	Params;

@@ -77,8 +77,8 @@ CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &_bb, int apx_vert
 {
 	Fbox bb;		bb.set(_bb); bb.grow(EPS_L);
     // Params
-    m_VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
-    m_VMmin.set		(bb.min);
+    m_VMscale.set	(bb.max.x-bb.min.x+EPS, bb.max.y-bb.min.y+EPS, bb.max.z-bb.min.z+EPS);
+    m_VMmin.set		(bb.min).sub(EPS);
     m_VMeps.set		(m_VMscale.x/clpSMX/2,m_VMscale.y/clpSMY/2,m_VMscale.z/clpSMZ/2);
     m_VMeps.x		= (m_VMeps.x<EPS_L)?m_VMeps.x:EPS_L;
     m_VMeps.y		= (m_VMeps.y<EPS_L)?m_VMeps.y:EPS_L;
@@ -584,7 +584,9 @@ bool CExportSkeleton::PrepareGeometry()
     	if (!bRes)		break;
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
-        if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
+        MESH->GenerateVNormals();
+        MESH->GenerateFNormals();
+        MESH->GenerateSVertices();
         pb->Inc		();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
@@ -655,7 +657,7 @@ bool CExportSkeleton::PrepareGeometry()
         }
         // mesh fin
         MESH->UnloadSVertices();
-        MESH->UnloadPNormals();
+        MESH->UnloadVNormals();
         MESH->UnloadFNormals();
         pb->Inc		();
     }
