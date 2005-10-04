@@ -55,14 +55,14 @@ bool CEditableObject::ExportLWO(LPCSTR fname)
 			F->close_chunk();
 			// points
 			F->open_chunk(ID_PNTS);
-				for (FvectorIt point_it=MESH->m_Points.begin(); point_it!=MESH->m_Points.end(); point_it++)
-					F->w_vector(*point_it);
+				for (u32 point_id=0; point_id<MESH->GetVCount(); point_id++)
+					F->w_vector(MESH->GetVerts()[point_id]);
 			F->close_chunk();
 			// polygons
 			F->open_chunk(ID_POLS);
 				F->w_u32(ID_FACE);
-				for (FaceIt f_it=MESH->m_Faces.begin(); f_it!=MESH->m_Faces.end(); f_it++)
-					F->w_face3(f_it->pv[0].pindex,f_it->pv[1].pindex,f_it->pv[2].pindex);
+				for (u32 f_id=0; f_id<MESH->GetFCount(); f_id++)
+					F->w_face3(MESH->GetFaces()[f_id].pv[0].pindex,MESH->GetFaces()[f_id].pv[1].pindex,MESH->GetFaces()[f_id].pv[2].pindex);
 			F->close_chunk();
 			// surf<->face
 			F->open_chunk(ID_PTAG);

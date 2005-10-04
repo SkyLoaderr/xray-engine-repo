@@ -12,6 +12,7 @@
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "leftbar.h"
+#include "ETools.h"
 
 static SPickQuery	PQ;
 
@@ -573,55 +574,66 @@ bool ESceneAIMapTools::GenerateMap(bool bFromSelectedOnly)
             return false;
         }
 
-        // prepare collision model
-        u32 avg_face_cnt = 0;
-        u32 avg_vert_cnt = 0;
-        u32 mesh_cnt	 = 0;
-        {
+        if (!m_Flags.is(flSlowCalculate)){
+            // evict resources
+            ExecCommand				(COMMAND_EVICT_OBJECTS);
+            ExecCommand				(COMMAND_EVICT_TEXTURES);
+        
+            // prepare collision model
+            u32 avg_face_cnt 		= 0;
+            u32 avg_vert_cnt 		= 0;
+            u32 mesh_cnt		 	= 0;
+            Fbox snap_bb;			
+            {
+                snap_bb.invalidate	();
+                for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
+                    CSceneObject* 	S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
+                    avg_face_cnt	+= S->GetFaceCount();
+                    avg_vert_cnt	+= S->GetVertexCount();
+                    mesh_cnt	   	+= S->Meshes()->size();
+                    Fbox 			bb;
+                    S->GetBox		(bb);
+                    snap_bb.merge	(bb);
+                }
+            }
+
+            SPBItem* pb = UI->ProgressStart(mesh_cnt,"Prepare collision model...");
+
+            CDB::Collector* CL		= ETOOLS::create_collector();
+            Fvector verts[3];
             for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
                 CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
-                avg_face_cnt		+= S->GetFaceCount();
-                avg_vert_cnt		+= S->GetVertexCount();
-                mesh_cnt			+= S->Meshes()->size();
-            }
-    	}
-
-        SPBItem* pb = UI->ProgressStart(mesh_cnt,"Prepare collision model...");
-
-        CDB::Collector* CL = xr_new<CDB::Collector>();
-		Fvector verts[3];
-        for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
-        	CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
-            CEditableObject*    E = S->GetReference(); VERIFY(E);
-            EditMeshVec& 		_meshes = E->Meshes();
-            for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
-		        pb->Inc(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->GetName()).c_str());
-            	SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
-                for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
-                	CSurface* surf		= sp_it->first;
-                    // test passable
-//.			        SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
-//.					if (mtl->Flags.is(SGameMtl::flPassable))continue;
-                    Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
-                    if (!c_sh->flags.bCollision) 			continue;
-                    // collect tris
-                    IntVec& face_lst 	= sp_it->second;
-                    for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
-			        	E->GetFaceWorld	(S->_Transform(),*m_it,*it,verts);
-						CL->add_face_D(verts[0],verts[1],verts[2], *it);
-                        if (surf->m_Flags.is(CSurface::sf2Sided))
-							CL->add_face_D(verts[2],verts[1],verts[0], *it);
+                CEditableObject*    E = S->GetReference(); VERIFY(E);
+                EditMeshVec& 		_meshes = E->Meshes();
+                for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
+                    pb->Inc(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->GetName()).c_str());
+                    SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
+                    for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
+                        CSurface* surf		= sp_it->first;
+                        // test passable
+    //.			        SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+    //.					if (mtl->Flags.is(SGameMtl::flPassable))continue;
+                        Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
+                        if (!c_sh->flags.bCollision) 			continue;
+                        // collect tris
+                        IntVec& face_lst 	= sp_it->second;
+                        for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
+                            E->GetFaceWorld	(S->_Transform(),*m_it,*it,verts);
+                            ETOOLS::collector_add_face_d(CL,verts[0],verts[1],verts[2], *it);
+                            if (surf->m_Flags.is(CSurface::sf2Sided))
+                                ETOOLS::collector_add_face_d(CL,verts[2],verts[1],verts[0], *it);
+                        }
                     }
                 }
             }
-        }
         
-        UI->ProgressEnd(pb);
+            UI->ProgressEnd(pb);
 
-        UI->SetStatus		("Building collision model...");
-        // create CFModel
-		m_CFModel 			= ETOOLS::create_model(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
-		xr_delete			(CL);        
+            UI->SetStatus		("Building collision model...");
+            // create CFModel
+            m_CFModel 			= ETOOLS::create_model_cl(CL);
+            ETOOLS::destroy_collector(CL);        
+    	}
         
         // building
         Scene->lock			();

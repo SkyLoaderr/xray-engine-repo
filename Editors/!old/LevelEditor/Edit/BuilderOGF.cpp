@@ -36,7 +36,7 @@ bool SceneBuilder::BuildHOMModel()
                     for (IntIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
                         st_Face& face = (*m_it)->m_Faces[*i_it];
                         for (int k=0; k<3; k++){
-                            parent.transform_tiny(v,(*m_it)->m_Points[face.pv[k].pindex]);
+                            parent.transform_tiny(v,(*m_it)->m_Verts[face.pv[k].pindex]);
                             F.w_fvector3	(v);
                         }
                         F.w_u32(b2Sided);
@@ -91,7 +91,7 @@ bool SceneBuilder::BuildSOMModel()
                     for (IntIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
                         st_Face& face 	= (*m_it)->m_Faces[*i_it];
                         for (int k=0; k<3; k++){
-                            parent.transform_tiny(v,(*m_it)->m_Points[face.pv[k].pindex]);
+                            parent.transform_tiny(v,(*m_it)->m_Verts[face.pv[k].pindex]);
                             F.w_fvector3(v);
                         }
                         F.w_u32			(b2Sided);

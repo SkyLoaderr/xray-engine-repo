@@ -513,12 +513,10 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
         for (SItemIt s_it=S->sector_items.begin();s_it!=S->sector_items.end();s_it++){
         	if (s_it->object->IsMUStatic()) continue;
             s_it->GetTransform(T);
-            FvectorVec& m_verts=s_it->mesh->m_Points;
-            FaceIt _S=s_it->mesh->m_Faces.begin();
-            FaceIt _E=s_it->mesh->m_Faces.end();
-            for (FaceIt f_it=_S; f_it!=_E; f_it++){
+            Fvector* m_verts=s_it->mesh->m_Verts;
+            for (u32 f_id=0; f_id<s_it->mesh->GetFCount(); f_id++){
                 Fvector v0, v1, v2;
-                st_Face& P=*f_it;
+                st_Face& P=s_it->mesh->GetFaces()[f_id];
                 T.transform_tiny(v0,m_verts[P.pv[0].pindex]);
                 T.transform_tiny(v1,m_verts[P.pv[1].pindex]);
                 T.transform_tiny(v2,m_verts[P.pv[2].pindex]);

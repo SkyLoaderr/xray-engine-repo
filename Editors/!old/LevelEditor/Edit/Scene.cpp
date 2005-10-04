@@ -468,31 +468,27 @@ void EScene::FillProp(LPCSTR pref, PropItemVec& items, ObjClassID cls_id)
     PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Name prefix"),	&m_LevelOp.m_LevelPrefix);
 
     PropValue* V;
-    V=PHelper().CreateFlag32		(items,"Scene\\Build options",				&m_RTFlags, flRT_ShowBuildOptions);
-    V->OnChangeEvent.bind			(this,&EScene::OnRTFlagsChange);
-    if (m_RTFlags.is(flRT_ShowBuildOptions)){
-        PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Level path"),		&m_LevelOp.m_FNLevelPath);
-        PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Custom data"),	&m_LevelOp.m_BOPText);
-        // common
-        ButtonValue* B;
-        B=PHelper().CreateButton	(items,PrepareKey(pref,"Scene\\Build options\\Quality"), "Draft,High,Custom",0);
-        B->OnBtnClickEvent.bind		(this,&EScene::OnBuildControlClick);
+    PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Level path"),		&m_LevelOp.m_FNLevelPath);
+    PHelper().CreateRText		(items,PrepareKey(pref,"Scene\\Build options\\Custom data"),	&m_LevelOp.m_BOPText);
+    // common
+    ButtonValue* B;
+    B=PHelper().CreateButton	(items,PrepareKey(pref,"Scene\\Build options\\Quality"), "Draft,High,Custom",0);
+    B->OnBtnClickEvent.bind		(this,&EScene::OnBuildControlClick);
 
-        BOOL enabled				= (m_LevelOp.m_BuildParams.m_quality==ebqCustom);
-        V=PHelper().CreateU8		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Hemisphere quality [0-3]"),	&m_LevelOp.m_LightHemiQuality,	0,3);		V->Owner()->Enable(enabled);
-        V=PHelper().CreateU8		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Sun shadow quality [0-3]"),	&m_LevelOp.m_LightSunQuality,	0,3);       V->Owner()->Enable(enabled);
+    BOOL enabled				= (m_LevelOp.m_BuildParams.m_quality==ebqCustom);
+    V=PHelper().CreateU8		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Hemisphere quality [0-3]"),	&m_LevelOp.m_LightHemiQuality,	0,3);		V->Owner()->Enable(enabled);
+    V=PHelper().CreateU8		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Sun shadow quality [0-3]"),	&m_LevelOp.m_LightSunQuality,	0,3);       V->Owner()->Enable(enabled);
 
-        // Build Options
-        // Normals & optimization
-        V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Optimizing\\Normal smooth angle"), 	&m_LevelOp.m_BuildParams.m_sm_angle,					0.f,180.f);	V->Owner()->Enable(enabled);
-        V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Optimizing\\Weld distance (m)"),		&m_LevelOp.m_BuildParams.m_weld_distance,				0.f,1.f,0.001f,4);	V->Owner()->Enable(enabled);
+    // Build Options
+    // Normals & optimization
+    V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Optimizing\\Normal smooth angle"), 	&m_LevelOp.m_BuildParams.m_sm_angle,					0.f,180.f);	V->Owner()->Enable(enabled);
+    V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Optimizing\\Weld distance (m)"),		&m_LevelOp.m_BuildParams.m_weld_distance,				0.f,1.f,0.001f,4);	V->Owner()->Enable(enabled);
 
-        // Light maps
-        V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Pixel per meter"),			&m_LevelOp.m_BuildParams.m_lm_pixels_per_meter,			0.f,20.f);	V->Owner()->Enable(enabled);
-        V=PHelper().CreateU32		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Error (LM collapsing)"), 	&m_LevelOp.m_BuildParams.m_lm_rms,						0,255);		V->Owner()->Enable(enabled);
-        V=PHelper().CreateU32		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Error (LM zero)"),			&m_LevelOp.m_BuildParams.m_lm_rms_zero,					0,255);		V->Owner()->Enable(enabled);
-        V=PHelper().CreateToken32	(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Jitter samples"),			&m_LevelOp.m_BuildParams.m_lm_jitter_samples, 			js_token);	V->Owner()->Enable(enabled);
-    }
+    // Light maps
+    V=PHelper().CreateFloat		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Pixel per meter"),			&m_LevelOp.m_BuildParams.m_lm_pixels_per_meter,			0.f,20.f);	V->Owner()->Enable(enabled);
+    V=PHelper().CreateU32		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Error (LM collapsing)"), 	&m_LevelOp.m_BuildParams.m_lm_rms,						0,255);		V->Owner()->Enable(enabled);
+    V=PHelper().CreateU32		(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Error (LM zero)"),			&m_LevelOp.m_BuildParams.m_lm_rms_zero,					0,255);		V->Owner()->Enable(enabled);
+    V=PHelper().CreateToken32	(items,PrepareKey(pref,"Scene\\Build options\\Lighting\\Jitter samples"),			&m_LevelOp.m_BuildParams.m_lm_jitter_samples, 			js_token);	V->Owner()->Enable(enabled);
     
     // tools options
     if (OBJCLASS_DUMMY==cls_id){

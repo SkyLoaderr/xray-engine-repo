@@ -54,7 +54,7 @@ bool CLevelTools::OnCreate()
     Scene->OnCreate	();
     // change target to Object
     ExecCommand		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
-	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,TOnModifiedEvent(this,&CLevelTools::OnPropsModified),0,TOnCloseEvent(this,&CLevelTools::OnPropsClose));
+	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,TOnModifiedEvent(this,&CLevelTools::OnPropsModified),0,TOnCloseEvent(this,&CLevelTools::OnPropsClose),TProperties::plItemFolders|TProperties::plFolderStore|TProperties::plNoClearStore|TProperties::plFullExpand);
     pObjectListForm = TfrmObjectList::CreateForm();
     return true;
 }

@@ -230,6 +230,7 @@ CEditableObject* CSceneObject::UpdateReference()
 {
 	Lib.RemoveEditObject(m_pReference);
 	m_pReference	= (m_ReferenceName.size())?Lib.CreateEditObject(*m_ReferenceName):0;
+    UpdateTransform	();
     return m_pReference;
 }
 

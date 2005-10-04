@@ -216,7 +216,7 @@ void TfraBottomBar::RedrawBar()
     	    paStatus->Repaint		();
         }
         // progress
-    	int val = (int)((p/m)*100);
+    	int val = fis_zero(m)?0:(int)((p/m)*100);
         if (val!=cgProgress->Progress){
 			cgProgress->Progress	= val;
 	        cgProgress->Repaint	();

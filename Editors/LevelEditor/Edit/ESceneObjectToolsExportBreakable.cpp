@@ -56,9 +56,9 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
             }
         }
 
-        FaceVec&	faces 	= mesh->GetFaces();
-        FvectorVec&	pn	 	= mesh->GetPNormals();
-        FvectorVec&	pts 	= mesh->GetPoints();
+        st_Face*	faces 	= mesh->GetFaces();
+        Fvector*	pn	 	= mesh->GetPNormals();
+        Fvector*	pts 	= mesh->GetVerts();
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face 	= faces[*f_it];
             Fvector 		v[3],n[3];

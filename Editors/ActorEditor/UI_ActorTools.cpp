@@ -511,23 +511,23 @@ bool CActorTools::ExportCPP(LPCSTR name)
         IWriter* W 				= FS.w_open(name);
         for (EditMeshIt m_it=meshes.begin(); m_it!=meshes.end(); m_it++){
 	    	CEditableMesh* mesh = *m_it;
-            FaceVec& faces		= mesh->GetFaces();
-            FvectorVec& verts	= mesh->GetPoints();
+            st_Face* faces		= mesh->GetFaces();
+            Fvector* verts		= mesh->GetVerts();
             sprintf				(tmp,"MESH %s {",mesh->GetName());
             W->w_string			(tmp);
-            sprintf				(tmp,"\tVERTEX_COUNT %d",verts.size());
+            sprintf				(tmp,"\tVERTEX_COUNT %d",mesh->GetVCount());
             W->w_string			(tmp);
-            sprintf				(tmp,"\tFACE_COUNT %d",faces.size());
+            sprintf				(tmp,"\tFACE_COUNT %d",mesh->GetFCount());
             W->w_string			(tmp);
             W->w_string			("\tconst Fvector vertices[VERTEX_COUNT] = {");
-			for (FvectorIt v_it=verts.begin(); v_it!=verts.end(); v_it++){
-    	        sprintf			(tmp,"\t\t{% 3.6f,\t% 3.6f,\t% 3.6f},",v_it->x,v_it->y,v_it->z);
+			for (u32 v_id=0; v_id<mesh->GetVCount(); v_id++){
+    	        sprintf			(tmp,"\t\t{% 3.6f,\t% 3.6f,\t% 3.6f},",VPUSH(verts[v_id]));
 	            W->w_string		(tmp);
             }
             W->w_string			("\t}");
             W->w_string			("\tconst u16 faces[FACE_COUNT*3] = {");
-			for (FaceIt f_it=faces.begin(); f_it!=faces.end(); f_it++){
-    	        sprintf			(tmp,"\t\t%-d,\t\t%-d,\t\t%-d,",f_it->pv[0].pindex,f_it->pv[1].pindex,f_it->pv[2].pindex);
+			for (u32 f_id=0; f_id<mesh->GetFCount(); f_id++){
+    	        sprintf			(tmp,"\t\t%-d,\t\t%-d,\t\t%-d,",faces[f_id].pv[0].pindex,faces[f_id].pv[1].pindex,faces[f_id].pv[2].pindex);
 	            W->w_string		(tmp);
             }
             W->w_string			("\t}");

@@ -470,7 +470,6 @@ CCommandVar CommandSceneHighlightTexture(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandOptions(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-    	Scene->m_RTFlags.set	(EScene::flRT_ShowBuildOptions,TRUE);
         ExecCommand				(COMMAND_SHOW_PROPERTIES);
 	    return 					TRUE;
     } else {

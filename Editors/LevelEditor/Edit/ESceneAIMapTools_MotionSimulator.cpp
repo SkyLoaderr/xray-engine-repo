@@ -6,6 +6,7 @@
 #include "ESceneAIMapTools.h"
 #include "editobject.h"
 #include "editmesh.h"
+#include "ETools.h"
 
 struct cl_tri 
 {

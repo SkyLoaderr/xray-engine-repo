@@ -269,26 +269,28 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     point_offs = vert_it;  // save offset
 
     // fill vertices
-	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++){
+	for (u32 pt_id=0; pt_id<mesh->GetVCount(); pt_id++){
     	R_ASSERT(vert_it<vert_cnt);
-    	parent.transform_tiny(verts[vert_it++],*pt_it);
+    	parent.transform_tiny(verts[vert_it++],mesh->m_Verts[pt_id]);
     }
 
     if (object->IsDynamic()){
 	    // update mesh
-	    if (!mesh->m_LoadState.is(CEditableMesh::LS_FNORMALS)) mesh->GenerateFNormals();
+	    mesh->GenerateFNormals();
+	    mesh->GenerateAdjacency();
 		Fvector N;
-        for(FvectorIt pt=mesh->m_Points.begin();pt!=mesh->m_Points.end();pt++){
+		for (u32 pt=0; pt<mesh->GetVCount(); pt++){
             N.set(0,0,0);
-            IntVec& a_lst = mesh->m_Adjs[pt-mesh->m_Points.begin()];
+            IntVec& a_lst = (*mesh->m_Adjs)[pt];
             VERIFY(a_lst.size());
             for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
-                N.add(mesh->m_FNormals[*i_it]);
+                N.add((*mesh->m_FNormals)[*i_it]);
             N.normalize_safe();
             parent.transform_dir(N);
             l_vnormals.push_back(N);
         }
 	    // unload mesh normals
+	    mesh->UnloadAdjacency();
 	    mesh->UnloadFNormals();
     }
     // fill faces
@@ -334,9 +336,9 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         u32 dwInvalidFaces 	= 0;
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
-            float _a		= CalcArea(mesh->m_Points[face.pv[0].pindex],mesh->m_Points[face.pv[1].pindex],mesh->m_Points[face.pv[2].pindex]);
+            float _a		= CalcArea(mesh->m_Verts[face.pv[0].pindex],mesh->m_Verts[face.pv[1].pindex],mesh->m_Verts[face.pv[2].pindex]);
 	    	if (!_valid(_a) || (_a<EPS)){
-            	Tools->m_DebugDraw.AppendWireFace(mesh->m_Points[face.pv[0].pindex],mesh->m_Points[face.pv[1].pindex],mesh->m_Points[face.pv[2].pindex]);
+            	Tools->m_DebugDraw.AppendWireFace(mesh->m_Verts[face.pv[0].pindex],mesh->m_Verts[face.pv[1].pindex],mesh->m_Verts[face.pv[2].pindex]);
             	dwInvalidFaces++;
                 continue;
             }
@@ -353,7 +355,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                     // uv maps
                     int offs = 0;
                     for (u32 t=0; t<dwTexCnt; t++){
-                        st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref][t];
+                        st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref].pts[t];
                         st_VMap& vmap		= *mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
                             offs++;
@@ -377,7 +379,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                     // uv maps
                     int offs = 0;
                     for (u32 t=0; t<dwTexCnt; t++){
-                        st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref][t];
+                        st_VMapPt& vm_pt 	= mesh->m_VMRefs[fv.vmref].pts[t];
                         st_VMap& vmap		= *mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
                             offs++;
@@ -408,8 +410,8 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj)
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
     	if (!BuildMesh(T,O,*M,sect_num,l_verts,l_vert_cnt,l_vert_it,l_faces,l_face_cnt,l_face_it)) return FALSE;
         // fill DI vertices
-        for (FvectorIt pt_it=(*M)->m_Points.begin(); pt_it!=(*M)->m_Points.end(); pt_it++){
-        	Fvector v; T.transform_tiny(v,*pt_it);
+        for (u32 pt_id=0; pt_id<(*M)->GetVCount(); pt_id++){
+        	Fvector v; T.transform_tiny(v,(*M)->m_Verts[pt_id]);
             l_scene_stat->add_svert(v);
         }
     }

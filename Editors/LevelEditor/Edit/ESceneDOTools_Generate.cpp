@@ -18,6 +18,7 @@
 #include "Texture.h"
 #include "bottombar.h"
 #include "ImageManager.h"
+#include "ETools.h"
 
 static Fvector down_vec	={0.f,-1.f,0.f};
 static Fvector left_vec	={-1.f,0.f,0.f};

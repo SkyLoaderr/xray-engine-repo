@@ -101,7 +101,6 @@ public:
 	enum{
     	flRT_Unsaved 			= (1<<0),
     	flRT_Modified 			= (1<<1),
-        flRT_ShowBuildOptions   = (1<<2),
     };
     Flags32			m_RTFlags;
 public:

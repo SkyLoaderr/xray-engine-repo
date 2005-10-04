@@ -54,7 +54,6 @@ public:
 	int							l_face_cnt, l_face_it;
     b_vertex*		        	l_verts;
     b_face*  		        	l_faces;
-    SVertVec					l_svertices;
     xr_vector<b_mu_model>		l_mu_models;
     xr_vector<b_mu_reference>	l_mu_refs;
     xr_vector<e_b_lod>			l_lods;
