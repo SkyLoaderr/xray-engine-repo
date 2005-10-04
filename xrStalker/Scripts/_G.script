@@ -713,6 +713,7 @@ function is_object_online (object_id)
     if obj == nil then return false end
     return obj.online
 end
+
 function get_clsid(npc)
     if npc == nil then return nil end
 
@@ -1047,8 +1048,8 @@ function get_actor_id()
 	return level.actor():id()
 end 
 -------------------------------------------------------------------------------------------
-function IsMonster (object)
-    local id = get_clsid (object)
+function IsMonster (object, class_id)
+    local id = class_id or get_clsid (object)
     if id == clsid.boar_s or
        id == clsid.bloodsucker_s or 
        id == clsid.dog_s or 
@@ -1067,8 +1068,8 @@ function IsMonster (object)
     return false
 end
 -------------------------------------------------------------------------------------------
-function IsStalker (object)
-    local id = get_clsid (object)
+function IsStalker (object, class_id)
+    local id = class_id or get_clsid (object)
     if id == clsid.actor or id == clsid.soldier or id == clsid.script_stalker then 
        return true 
     end
