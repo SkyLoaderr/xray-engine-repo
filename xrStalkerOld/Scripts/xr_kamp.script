@@ -473,6 +473,8 @@ function CKampManager:updateNpc(npc)
 			else
 				state = "trans_1"
 			end
+		elseif npc:character_community() == "zombied" then
+			state = "trans_zombied"
 		else
 			local t = math.mod(npc_id, 3)
 			if t == 0 then
@@ -485,13 +487,16 @@ function CKampManager:updateNpc(npc)
 		end
 		xr_kamp.kamp_stalkers[npc_id] = false
 	elseif state == "trans" then
-		local t = math.mod(npc_id, 2)
-		if t == 0 then
-			state = "trans_0"
-		else
-			state = "trans_1"
+		if npc:character_community() == "monolith" then
+			local t = math.mod(npc_id, 2)
+			if t == 0 then
+				state = "trans_0"
+			else
+				state = "trans_1"
+			end
+		elseif npc:character_community() == "zombied" then
+			state = "trans_zombied"
 		end
-	
 		xr_kamp.kamp_stalkers[npc_id] = false
 	else
 		xr_kamp.kamp_stalkers[npc_id] = true
@@ -537,7 +542,9 @@ end
 function CKampManager:checkNpcAbility(npc)
 	local npc_id = npc:id()
 	
-	if npc:character_community() ~= "monolith" then
+	if npc:character_community() ~= "monolith" and
+	   npc:character_community() ~= "zombied"
+	then
 		-- есть колбасу
 		if npc:object("kolbasa_a") then
 			self.npc[npc_id].states["eat_kolbasa"] = true
@@ -612,7 +619,9 @@ function CKampManager:addNpc(npc)
 		return
 	end
 	
-	if npc:character_community() == "monolith" then
+	if npc:character_community() == "monolith" or
+	   npc:character_community() == "zombied"
+	then
 		self.npc[npc:id()] = {name = npc:name(), position = nil, current = nil, speak = 0, states = {
 								stand_wait = false, sit = false, sit_ass = false, sit_knee = false, declarate = true,
 								eat_kolbasa = false, eat_vodka = false, eat_bread = false, trans = true,

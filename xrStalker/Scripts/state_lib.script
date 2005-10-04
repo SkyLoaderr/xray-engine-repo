@@ -494,6 +494,13 @@ states = {
 				animstate = "stand",
 				animation = "trans_1"
 			},
+	trans_zombied = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "trans_zombied"
+			},
 
 	-- ѕси раненый
 	psy_pain = {weapon = "drop",
