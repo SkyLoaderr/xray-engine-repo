@@ -305,22 +305,6 @@ function give_dynamite(first_speaker, second_speaker)
 --	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
 
-function assault_ready(first_speaker, second_speaker)
-	return db.actor:has_info("assault_have_vodka")
-end
-function assault_dont_ready(first_speaker, second_speaker)
-	return db.actor:dont_has_info("assault_have_vodka")
-end
-function assault_actor_have_vodka(first_speaker, second_speaker)
-	return second_speaker:object("vodka") ~= nil
-end
-function assault_actor_dont_have_vodka(first_speaker, second_speaker)
-	return not this.assault_actor_have_vodka(first_speaker, second_speaker)
-end
-function transfer_vodka_to_assault(first_speaker, second_speaker)
-	local obj = first_speaker:object("vodka")
-	dialogs.relocate_item(second_speaker, obj, "out")
-end
 
 --' Escape Wounded's flash
 function wounded_give_flash(first_speaker, second_speaker)
