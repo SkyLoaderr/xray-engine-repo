@@ -386,12 +386,12 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
 {
 	//bool				first_time = !!g_Alive(); 
-	bool				first_time = !PPhysicsShell(); 
+//	bool				first_time = !PPhysicsShell(); 
 	SetfHealth			(0);
-	set_death_time		()	;
+	//set_death_time		()	;
 	if (eDeathDead!=st_current) 
 	{	
-		if (first_time)	Die			(who);
+//		if (first_time)	Die			(who);
 		st_target		= eDeathFall;
 	}
 	else smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
