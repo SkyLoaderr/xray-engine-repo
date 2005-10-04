@@ -5,7 +5,7 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 -- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
---function printf() end
+function printf() end
 
 local pi_2 = math.pi / 3 -- 60 degree
 
@@ -1126,6 +1126,17 @@ end
 
 function action_car:car_explode()
 	self.object:explode(time_global())
+end
+
+function action_car:net_destroy()
+	--self:destroy_car()
+	if xr_logic.mob_captured(self.object) then
+	    xr_logic.mob_release(self.object)
+	    if self.st.on_death_info ~= nil then
+	        db.actor:give_info_portion(self.st.on_death_info)
+	        printf("car <death>: give info")
+	    end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------
