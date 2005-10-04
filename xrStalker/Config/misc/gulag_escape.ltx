@@ -238,6 +238,7 @@ distance = 2
 ; Волк
 [logic@esc_lager_volk]
 active = walker@esc_lager_volk_walker1
+on_death = death@wolf
 
 [walker@esc_lager_volk_walker1]
 path_walk = wolf_walk
@@ -312,6 +313,9 @@ victim_wpn		= 15|actor
 use			= true
 use_wpn		= false
 syndata		= hello@hail|backoff@threat_weap
+
+[death@wolf]
+on_info = %+esc_wolf_dead%
 
 
 ;Fanat
