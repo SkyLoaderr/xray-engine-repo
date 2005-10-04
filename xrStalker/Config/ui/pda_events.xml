@@ -52,7 +52,7 @@
 				</filter_tab>						
 			</left_frame_header>
 
-			<list x="0" y="45" width="336" height="416" right_ident="10"/>
+			<list x="0" y="45" width="336" height="416" right_ident="10" flip_vert="1"/>
 		</left_frame>
 	
 		<right_frame x="352" y="0" width="409" height="475">
