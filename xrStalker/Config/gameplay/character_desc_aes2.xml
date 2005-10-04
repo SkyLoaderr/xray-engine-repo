@@ -2,7 +2,7 @@
 
 <xml>
 <!---------------------------MONOLIT REGULAR with RPG----------------------->
-	<specific_character id="aes_Monolit_rpg" team_default = "1">
+	<specific_character id="aes2_Monolit_rpg" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
@@ -35,7 +35,7 @@
 	</specific_character>
 
 <!---------------------------MONOLIT SPECNAZ---------------------->
-  <specific_character id="aes_Monolit_specnaz" team_default = "1">
+  <specific_character id="aes2_Monolit_specnaz" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -66,7 +66,7 @@
   </specific_character>
 
 <!---------------------------MONOLIT SPECNAZ RG6---------------------->
-  <specific_character id="aes_Monolit_specnaz_rg6" team_default = "1">
+  <specific_character id="aes2_Monolit_specnaz_rg6" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -93,7 +93,7 @@
   </specific_character>
   
 <!---------------------------MONOLIT SNIPER---------------------->
-  <specific_character id="aes_Monolit_sniper" team_default = "1">
+  <specific_character id="aes2_Monolit_sniper" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="24" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -123,7 +123,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 <!---------------------------MONOLIT SNIPER GAUSS---------------------->
-  <specific_character id="aes_Monolit_sniper_gauss" team_default = "1">
+  <specific_character id="aes2_Monolit_sniper_gauss" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="24" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -153,7 +153,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 <!---------------------------MONOLIT MASTER----------------------->
-  <specific_character id="aes_Monolit_master" team_default = "1">
+  <specific_character id="aes2_Monolit_master" team_default = "1">
     <name>GENERATE_NAME</name>
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
@@ -186,7 +186,7 @@
 	
 <!---------------------------SOLDIERS PROFILES----------------------->
 <!---------------------------SOLDIER COMMANDER----------------------->
-	<specific_character id="aes_Soldier_commander" team_default = "1">
+	<specific_character id="aes2_Soldier_commander" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
@@ -218,7 +218,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SOLDIER MASTER----------------------->
-	<specific_character id="aes_Soldier_military" team_default = "1">
+	<specific_character id="aes2_Soldier_military" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
@@ -253,7 +253,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ---------------------->
-	<specific_character id="aes_Soldier_specnaz" team_default = "1">
+	<specific_character id="aes2_Soldier_specnaz" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="12" y="4"></map_icon>
@@ -287,7 +287,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ AES---------------------->
-	<specific_character id="aes_Soldier_specnaz_aes" team_default = "1">
+	<specific_character id="aes2_Soldier_specnaz_aes" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
@@ -318,7 +318,7 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 <!---------------------------SOLDIER SNIPER---------------------->
-	<specific_character id="aes_Soldier_sniper" team_default = "1">
+	<specific_character id="aes2_Soldier_sniper" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="1" y="2"></map_icon>
