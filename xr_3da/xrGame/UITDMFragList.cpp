@@ -34,6 +34,10 @@ void	CUITDMFragList::UpdateItemsList ()
 	{
 		game_PlayerState* P = I->second;
 		if (!P || P->team != m_CurTeam) continue;
+		if (Game().Phase() == GAME_PHASE_INPROGRESS)
+		{
+			if (P->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
+		}		
 
 		items.push_back(I->second);
 	};

@@ -33,6 +33,7 @@ public:
 	// Events	
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 
+	virtual		void				OnPlayerSelectTeam		(NET_Packet& P, ClientID sender);
 	virtual		void				OnPlayerChangeTeam		(ClientID id_who, s16 team);
 	virtual		KILL_RES			GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim);
 	virtual		bool				OnKillResult			(KILL_RES KillResult, game_PlayerState* pKiller, game_PlayerState* pVictim);

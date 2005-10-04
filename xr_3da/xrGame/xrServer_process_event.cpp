@@ -35,7 +35,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			u16		game_event_type;
 			P.r_u16(game_event_type);
 			game->AddDelayedEvent(P,game_event_type,timestamp,sender);
-		}
+		}break;
 	case GE_INFO_TRANSFER:{
 		ClientID clientID;clientID.setBroadcast();
 		SendBroadcast			(clientID,P,MODE);

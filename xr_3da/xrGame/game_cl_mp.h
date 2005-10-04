@@ -102,6 +102,7 @@ protected:
 	SNDMESSAGESINPLAY				m_pSndMessagesInPlay;
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
+	BOOL							m_bSpectatorSelected;
 
 	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
@@ -159,10 +160,19 @@ public:
 	virtual		void				OnVoteEnd				(NET_Packet& P);
 	virtual		void				OnPlayerChangeName		(NET_Packet& P);
 
-	virtual		void				OnSpectatorSelect		() {}
-	virtual		void				OnSkinMenuBack			() {}
-	virtual		void				OnTeamMenuBack			() {}
-	virtual		void				OnMapInfoAccept			() {}
+	virtual		void				OnSpectatorSelect		();
+	virtual		void				OnSkinMenuBack			() {};
+	virtual		void				OnTeamMenuBack			() {};
+	virtual		void				OnTeamMenu_Cancel		() {};
+	virtual		void				OnMapInfoAccept			() {};
+	virtual		void				OnSkinMenu_Ok			() {};
+	virtual		void				OnSkinMenu_Cancel		() {};
+	
+
+	virtual		void				OnGameMenuRespond				(NET_Packet& P);
+	virtual		void				OnGameMenuRespond_Spectator		(NET_Packet& P) {};
+	virtual		void				OnGameMenuRespond_ChangeTeam	(NET_Packet& P) {};
+	virtual		void				OnGameMenuRespond_ChangeSkin	(NET_Packet& P) {};
 	
 
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	

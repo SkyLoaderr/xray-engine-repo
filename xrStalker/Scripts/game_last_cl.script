@@ -92,7 +92,7 @@ function game_cl_LastStanding:GetMapEntities(ent_container)
    for it=0,players_count-1 do
        local ps_who = self:GetPlayerByOrderID(it)
         if  (ps_who:testFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)==false) and 
-            (ps_who:testFlag(game_player_flags.GAME_PLAYER_FLAG_CS_SPECTATOR)==false) then
+            (ps_who:testFlag(game_player_flags.GAME_PLAYER_FLAG_SPECTATOR)==false) then
 
             local game_object = self:GetObjectByGameID(ps_who.GameID)
             if game_object ~=nil then

@@ -13,10 +13,13 @@
 #include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
 #include "ui/UIInventoryWnd.h"
+#include "ui/UIMapDesc.h"
 #include "dinput.h"
 #include "gamepersistent.h"
 
 #include "game_cl_deathmatch_snd_messages.h"
+#include "game_base_menu_events.h"
+
 
 #define	TEAM0_MENU		"deathmatch_team0"
 
@@ -33,11 +36,11 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	pSkinMenuTeam0	= NULL;
 	pCurSkinMenu	= NULL;
 
+	pMapDesc		= NULL;
+
 	m_bBuyEnabled	= TRUE;
 
-	m_bSkinSelected	= FALSE;
-
-	m_bSkinSelected	= FALSE;
+	m_bSkinSelected	= FALSE;	
 
 	m_game_ui		= NULL;
 	
@@ -51,6 +54,10 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	LoadSndMessages();
 	//----------------------------------------------------------------
 	m_cl_dwWarmUp_Time = 0;
+	//----------------------------------------------------------------
+	m_bMenuCalledFromReady = FALSE;
+	//----------------------------------------------------------------
+	m_bFirstRun = TRUE;
 }
 
 void game_cl_Deathmatch::Init ()
@@ -69,6 +76,8 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pInventoryMenu);
 	//---------------------------------------	
 	xr_delete(pPdaMenu);
+	//---------------------------------------
+	xr_delete(pMapDesc);
 	//---------------------------------------
 	PresetItemsTeam0.clear();
 	PlayerDefItems.clear();
@@ -95,6 +104,8 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	pInventoryMenu	= xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
+	//-----------------------------------------------------------
+	pMapDesc = xr_new<CUIMapDesc>();
 	//-----------------------------------------------------------
 	return m_game_ui;
 }
@@ -164,6 +175,17 @@ CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu			(s16 Team)
 	return pMenu;
 };
 
+void game_cl_Deathmatch::OnMapInfoAccept			()
+{
+	if (CanCallSkinMenu())
+		StartStopMenu(pCurSkinMenu, true);
+};
+
+void game_cl_Deathmatch::OnSkinMenuBack			()
+{
+	StartStopMenu(pMapDesc, true);
+};
+
 void game_cl_Deathmatch::OnSkinMenu_Ok			()
 {
 	CObject *l_pObj = Level().CurrentEntity();
@@ -171,18 +193,16 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
-
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P, GE_GAME_EVENT, l_pPlayer->ID()	);
-	P.w_u16(GAME_EVENT_PLAYER_CHANGE_SKIN);
+//	P.w_u16(GAME_EVENT_PLAYER_CHANGE_SKIN);
+	P.w_u16(GAME_EVENT_PLAYER_GAME_MENU);
+	P.w_u8(PLAYER_CHANGE_SKIN);
+
 
 #pragma todo("SATAN -> MAD_MAX: select skin you like if (-1 == pCurSkinMenu->GetActiveIndex()) :)")
-
-	// stub here
-	if (-1 == pCurSkinMenu->GetActiveIndex())
-		P.w_u8	(0);
-	else
-    	P.w_u8	((u8)pCurSkinMenu->GetActiveIndex());
+	
+    P.w_s8	((u8)pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
 	m_bSkinSelected = TRUE;
@@ -195,15 +215,36 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 		else
             pCurBuyMenu->SetSkin((u8)pCurSkinMenu->GetActiveIndex());
 	}
+	//---------------------------
+	/*
+	if (m_bMenuCalledFromReady)
+	{
+		OnKeyboardPress(kJUMP);
+	}
+	*/
+};
+
+void game_cl_Deathmatch::OnSkinMenu_Cancel		()
+{
+	if (!m_bSkinSelected && !m_bSpectatorSelected)
+	{
+		if (CanCallSkinMenu() && !pCurSkinMenu->IsShown())
+		{
+			StartStopMenu(pCurSkinMenu, true);
+			return;
+		}
+	}
+	m_bMenuCalledFromReady = FALSE;
 };
 
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
 {
-	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;	
 	if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
 	{
 		return FALSE;
 	};
+	if (!m_bSkinSelected || m_bSpectatorSelected) return FALSE;
 	if (pCurSkinMenu && pCurSkinMenu->IsShown())
 	{
 		return FALSE;
@@ -212,6 +253,7 @@ BOOL game_cl_Deathmatch::CanCallBuyMenu			()
 	{
 		return FALSE;
 	};
+	pCurBuyMenu->SetSkin(u8(local_player->skin));
 	return m_bBuyEnabled;
 };
 
@@ -226,6 +268,8 @@ BOOL game_cl_Deathmatch::CanCallSkinMenu			()
 	{
 		return FALSE;
 	};
+
+	pCurSkinMenu->SetCurSkin(local_player->skin);
 	return TRUE;
 };
 
@@ -263,6 +307,8 @@ bool game_cl_Deathmatch::CanBeReady				()
 {
 	if (!local_player) return false;
 
+	m_bMenuCalledFromReady = TRUE;
+
 	SetCurrentSkinMenu();
 
 	SetCurrentBuyMenu();
@@ -290,8 +336,16 @@ bool game_cl_Deathmatch::CanBeReady				()
 		return false;
 	};
 
+	m_bMenuCalledFromReady = FALSE;
 	OnBuyMenu_Ok();
 	return true;
+};
+
+void	game_cl_Deathmatch::OnSpectatorSelect		()
+{
+	m_bMenuCalledFromReady = FALSE;
+	m_bSkinSelected = FALSE;
+	inherited::OnSpectatorSelect();
 };
 
 
@@ -391,6 +445,12 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 			
 			if(local_player)
 			{
+				if (m_bFirstRun)
+				{
+					m_bFirstRun = FALSE;
+					StartStopMenu(pMapDesc, TRUE);
+				};
+
 				if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 				{
 					shared_str MoneyStr;
@@ -427,7 +487,10 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 				if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR)
 				{
-					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && !(pCurSkinMenu && pCurSkinMenu->IsShown()))
+					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && 
+						!(pCurSkinMenu && pCurSkinMenu->IsShown()) &&
+						!(pMapDesc && pMapDesc->IsShown())
+						)
 					{
 						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
 						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
@@ -472,27 +535,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						m_game_ui->SetForceRespawnTimeCaption(FullS);
 					};
 				};
-
-				//-----------------------------------------------------
-				/*
-				if (Level().CurrentViewEntity())
-				{
-					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
-					int Place = GetPlayersPlace(ps);
-					if (m_game_ui && Place > 0)
-					{				
-						string128 FragsStr;
-
-						if (Place < 33)
-							sprintf(FragsStr, "You are on %s place, with %d frags", places[Place-1], ps->kills);
-						else
-							sprintf(FragsStr, "You have %d frags", ps->kills);
-
-						m_game_ui->SetFragsAndPlaceCaption(FragsStr);
-					};
-				};
-				*/
-				//-----------------------------------------------------
+		//-----------------------------------------------------
 				if (fraglimit)
 				{
 					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
@@ -507,6 +550,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
 					if (ps) HUD().GetUI()->UIMainIngameWnd->SetRank(int(ps->rank));
 				}
+				//-----------------------------------------------------------------------
 			};
 		}break;
 	case GAME_PHASE_PENDING:
@@ -778,7 +822,6 @@ void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	case GAME_PHASE_INPROGRESS:
 		{
 			WinnerName[0] = 0;
-			
 		}break;
 	case GAME_PHASE_PLAYER_SCORES:
 		{
@@ -815,3 +858,18 @@ void				game_cl_Deathmatch::LoadPlayerDefItems			(char* TeamName, CUIBuyWeaponWn
 	LoadTeamDefaultPresetItems(TeamName, pBuyMenu, &PlayerDefItems);
 };
 
+void				game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin	(NET_Packet& P)
+{
+	s8 NewSkin = P.r_s8();
+	local_player->skin = NewSkin;
+	SetCurrentSkinMenu();
+	if (pCurSkinMenu) pCurSkinMenu->SetCurSkin(local_player->skin);
+	SetCurrentBuyMenu();
+	if (pCurBuyMenu) pCurBuyMenu->SetSkin(local_player->skin);	
+	m_bSpectatorSelected = FALSE;
+	
+	if (m_bMenuCalledFromReady)
+	{
+		OnKeyboardPress(kJUMP);
+	}
+};

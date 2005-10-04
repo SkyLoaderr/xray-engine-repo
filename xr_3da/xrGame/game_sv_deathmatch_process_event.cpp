@@ -9,21 +9,15 @@ void	game_sv_Deathmatch::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID se
 	switch	(type)
 	{
 
-
+/*
 	case GAME_EVENT_PLAYER_CHANGE_SKIN: //dm only
 		{
 			xrClientData *l_pC = m_server->ID_to_client(sender);
-			u8 l_skin;
-			P.r_u8(l_skin);
+			s8 l_skin;
+			P.r_s8(l_skin);
 			OnPlayerChangeSkin(l_pC->ID, l_skin);
-
-/*			game_event e; e.create();
-			e.w->w_u32( l_pC->ID );
-			e.w->w_u8(P.r_u8());//skin
-			m_event_registry.AddEvent(eGamePropertyHavePlayerChangeSkin,e);*/
-
 		}break;
-
+*/
 	case GAME_EVENT_PLAYER_KILL: //dm only  (g_kill)
 		{
 			u16 ID = P.r_u16();

@@ -495,7 +495,7 @@ C++ class game_phases {
 };
 
 C++ class game_player_flags {
-    const GAME_PLAYER_FLAG_CS_SPECTATOR = 8;
+    const GAME_PLAYER_FLAG_SPECTATOR = 8;
     const GAME_PLAYER_FLAG_LOCAL = 1;
     const GAME_PLAYER_FLAG_READY = 2;
     const GAME_PLAYER_FLAG_SCRIPT_BEGINS_FROM = 16;

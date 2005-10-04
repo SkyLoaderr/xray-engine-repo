@@ -7,6 +7,7 @@ class CUIDialogWnd;
 class CUIGameDM;
 class CUIPdaWnd;
 class CUIInventoryWnd;
+class CUIMapDesc;
 
 class game_cl_Deathmatch :public game_cl_mp
 {
@@ -29,7 +30,7 @@ public :
 
 	u32								m_cl_dwWarmUp_Time;
 	string64						WinnerName;
-
+	
 	virtual		CUIGameCustom*		createGameUI			();
 	virtual		void				net_import_state	(NET_Packet& P);
 	virtual		void				Init					();
@@ -53,10 +54,15 @@ protected:
 	CUISkinSelectorWnd*				pSkinMenuTeam0;
 	CUISkinSelectorWnd*				pCurSkinMenu;
 	CUIInventoryWnd*				pInventoryMenu;
+
+	CUIMapDesc*						pMapDesc;
 	//-------------------------------------------------
 	CUIPdaWnd*						pPdaMenu;
-	//-------------------------------------------------
+	//-------------------------------------------------	
+	BOOL							m_bFirstRun;
+	BOOL							m_bMenuCalledFromReady;
 	BOOL							m_bSkinSelected;
+	
 	BOOL							m_bBuyEnabled;
 	s32								m_iCurrentPlayersMoney;
 
@@ -96,9 +102,16 @@ public:
 	virtual	void					SetCurrentBuyMenu		();
 	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };
 
+	virtual	void					OnSpectatorSelect		();
+
+	virtual	void					OnMapInfoAccept			();
+	virtual		void				OnSkinMenuBack			();
 	virtual void					OnBuyMenu_Ok			();
 	virtual	void					OnBuyMenu_DefaultItems	();
 	virtual void					OnSkinMenu_Ok			();
+	virtual		void				OnSkinMenu_Cancel		();
+
+	virtual		void				OnGameMenuRespond_ChangeSkin	(NET_Packet& P);
 
 	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
 	virtual CUIDialogWnd*			GetSkinWnd				()	{ return (CUIDialogWnd*) pCurSkinMenu; };

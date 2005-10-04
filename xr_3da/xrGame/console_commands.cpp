@@ -169,7 +169,7 @@ public:
 		strcpy(I,"saving statistic data"); 
 	}
 };
-
+/*
 class CCC_Team : public IConsole_Command {
 public:
 	CCC_Team(LPCSTR N) : IConsole_Command(N)  { };
@@ -197,7 +197,7 @@ public:
 		strcpy(I,"change team"); 
 	}
 };
-
+*/
 class CCC_Kill : public IConsole_Command {
 public:
 	CCC_Kill(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -1963,7 +1963,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Restart,			"g_restart"				);
 	CMD1(CCC_RestartFast,		"g_restart_fast"		);
 	CMD1(CCC_Money,				"g_money"				);
-	CMD1(CCC_Team,				"g_change_team"			);
+//	CMD1(CCC_Team,				"g_change_team"			);
 	CMD1(CCC_Kill,				"g_kill"				);
 	CMD3(CCC_Mask,				"g_backrun",			&psActorFlags,	AF_RUN_BACKWARD);
 

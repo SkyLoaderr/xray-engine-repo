@@ -13,6 +13,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
+#include "ui/UIMapDesc.h"
 #include "xr_level_controller.h"
 #include "Artifact.h"
 #include "map_location.h"
@@ -285,6 +286,8 @@ CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
 	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
 	//-----------------------------------------------------------
+	pMapDesc = xr_new<CUIMapDesc>();
+	//-----------------------------------------------------------
 	LoadMessagesMenu(MESSAGE_MENUS);
 	//-----------------------------------------------------------
 	return m_game_ui;
@@ -498,6 +501,8 @@ BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
 bool game_cl_ArtefactHunt::CanBeReady				()
 {
 	if (!local_player) return false;
+	m_bMenuCalledFromReady = TRUE;
+
 	SetCurrentSkinMenu();
 	SetCurrentBuyMenu();
 
@@ -511,6 +516,7 @@ bool game_cl_ArtefactHunt::CanBeReady				()
 	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
 		ClearBuyMenu();
 
+	m_bMenuCalledFromReady = FALSE;
 	return true;
 };
 

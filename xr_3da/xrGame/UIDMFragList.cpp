@@ -43,7 +43,15 @@ void	CUIDMFragList::UpdateItemsList ()
 
 	// create temporary map (sort by kills)
 	items.clear			();
-	for (;I!=E;++I)		items.push_back(I->second);
+	for (;I!=E;++I)		
+	{
+		game_PlayerState* PS = (game_PlayerState*) I->second;
+		if (Game().Phase() == GAME_PHASE_INPROGRESS)
+		{
+			if (PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
+		}		
+		items.push_back(I->second);
+	};
 	std::sort			(items.begin(),items.end(),DM_Compare_Players);
 }
 

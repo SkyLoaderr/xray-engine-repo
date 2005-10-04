@@ -181,6 +181,8 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUISkinSelectorWnd::OnBtnCancel(){
     Game().StartStopMenu(this,true);
+	game_cl_mp* mp = smart_cast<game_cl_mp*>(&(Game()));
+	mp->OnSkinMenu_Cancel();
 }
 
 void CUISkinSelectorWnd::OnBtnOK(){
@@ -209,6 +211,7 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	switch (dik){
 		case DIK_ESCAPE:
 #pragma todo("Satan -> MAD_MAX : please make something brutal ;) ")
+			OnBtnCancel();
 			return true;
 		case DIK_RETURN:	// do autoselect
 			m_iActiveIndex = -1;
@@ -262,11 +265,11 @@ void CUISkinSelectorWnd::SetVisibleForBtn(ESKINMENU_BTN btn, bool state){
 }
 
 void CUISkinSelectorWnd::SetCurSkin(int skin){
-	R_ASSERT2(skin>= -1 && skin + m_firstSkin <= (int)m_skins.size(), "invalid skin index");
+	R_ASSERT2(skin>= -1 && skin <= (int)m_skins.size(), "invalid skin index");
 
 	m_iActiveIndex = skin;
 
-	if (m_iActiveIndex< m_firstSkin || m_iActiveIndex > m_firstSkin + 4)
+	if (m_iActiveIndex != -1 && (m_iActiveIndex< m_firstSkin || m_iActiveIndex > m_firstSkin + 4))
 	{
 		for (int i = 0; i<4; i++)
 		{

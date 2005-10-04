@@ -89,7 +89,7 @@ void CUIMapDesc::Init(){
 void CUIMapDesc::SendMessage(CUIWindow* pWnd,s16 msg, void* pData){
 	if (BUTTON_CLICKED == msg)
 	{
-		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		game_cl_mp * dm = smart_cast<game_cl_mp *>(&(Game()));
 		dm->StartStopMenu(this,true);
 		if (pWnd == m_pBtnSpectator)
 			dm->OnSpectatorSelect();
@@ -103,7 +103,7 @@ bool CUIMapDesc::OnKeyboard(int dik, EUIMessages keyboard_action){
 	if (WINDOW_KEY_RELEASED == keyboard_action) 
 		return true;
 
-	game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+	game_cl_mp * dm = smart_cast<game_cl_mp *>(&(Game()));
 
 	switch (dik){
 		case DIK_ESCAPE:

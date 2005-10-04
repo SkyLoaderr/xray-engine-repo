@@ -177,6 +177,11 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 		{
 			OnPlayerSpeechMessage(P, sender);
 		}break;
+	case GAME_EVENT_PLAYER_GAME_MENU:
+		{
+			OnPlayerGameMenu(P, sender);
+//			OnPlayerSelectSpectator(P, sender);
+		}break;
 	default:
 		inherited::OnEvent(P, type, time, sender);
 	};//switch
@@ -302,7 +307,7 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 		if (pS)
 		{
 			Fvector Pos, Angle;
-			ps_who->setFlag(GAME_PLAYER_FLAG_CS_SPECTATOR);
+//			ps_who->setFlag(GAME_PLAYER_FLAG_CS_SPECTATOR);
 			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E, ps_who);
 			else
 			{
@@ -887,6 +892,47 @@ void		game_sv_mp::OnPlayerSpeechMessage	(NET_Packet& P, ClientID sender)
 		};
 	};
 };
+
+void		game_sv_mp::OnPlayerGameMenu(NET_Packet& P, ClientID sender)
+{
+	u8 SubEvent = P.r_u8();
+	switch (SubEvent)
+	{
+	case PLAYER_SELECT_SPECTATOR:
+		{
+			OnPlayerSelectSpectator(P, sender);
+		}break;
+	case PLAYER_CHANGE_TEAM:
+		{
+			OnPlayerSelectTeam(P, sender);
+		}break;
+	case PLAYER_CHANGE_SKIN:
+		{
+			OnPlayerSelectSkin(P, sender);
+		}break;
+	}
+}
+void		game_sv_mp::OnPlayerSelectSpectator(NET_Packet& P, ClientID sender)
+{
+	xrClientData*	pClient	= (xrClientData*)m_server->ID_to_client	(sender);
+
+	if (!pClient || !pClient->net_Ready) return;
+	game_PlayerState* ps = pClient->ps;
+	if (!ps) return;
+	
+	KillPlayer(sender, ps->GameID);
+	ps->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
+	//-------------------------------------------
+	if (pClient->owner)
+	{
+		CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pClient->owner);
+		if (pA)
+		{
+			SpawnPlayer(sender, "spectator");
+		};
+	}
+}
+
 void	game_sv_mp::LoadRanks	()
 {
 	m_aRanks.clear();

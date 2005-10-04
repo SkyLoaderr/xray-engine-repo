@@ -582,6 +582,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps->Skip) break;
 			if (!(ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))) break;
+			if (ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) break;
 			xrClientData* xrSCData	=	(xrClientData*)m_server->GetServerClient();
 			if (xrSCData && xrSCData->ID == id && m_bSpectatorMode) 
 			{
@@ -598,7 +599,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 //					return;
 				}
 			}
-			//------------------------------------------------------------
+			//------------------------------------------------------------			
 			RespawnPlayer(id, false);
 			pOwner = xrCData->owner;
 			CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pOwner);
@@ -1372,11 +1373,34 @@ int game_sv_Deathmatch::GetTeamScore(u32 idx)
 	VERIFY( (idx>=0) && (idx<teams.size()) );
 	return teams[idx].score;
 }
-void game_sv_Deathmatch::OnPlayerChangeSkin(ClientID id_who, u8 skin) 
+
+void game_sv_Deathmatch::OnPlayerSelectSkin		(NET_Packet& P, ClientID sender)
+{
+	xrClientData *l_pC = m_server->ID_to_client(sender);
+	s8 l_skin;
+	P.r_s8(l_skin);
+	OnPlayerChangeSkin(l_pC->ID, l_skin);
+	//---------------------------------------
+	signal_Syncronize();
+	//---------------------------------------
+	NET_Packet Px;
+	GenerateGameMessage(Px);
+	Px.w_u32(GAME_EVENT_PLAYER_GAME_MENU_RESPOND);
+	Px.w_u8(PLAYER_CHANGE_SKIN);
+	Px.w_s8(l_pC->ps->skin);
+	m_server->SendTo(sender,Px,net_flags(TRUE,TRUE));
+};
+
+void game_sv_Deathmatch::OnPlayerChangeSkin(ClientID id_who, s8 skin) 
 {
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if (!ps_who) return;
 	ps_who->skin = skin;
+	ps_who->resetFlag(GAME_PLAYER_FLAG_SPECTATOR);
+	if (skin == -1)
+	{
+		ps_who->skin = u8(::Random.randI((int)TeamList[ps_who->team].aSkins.size()));
+	}
 
 	KillPlayer(id_who, ps_who->GameID);
 }
@@ -1628,6 +1652,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 	ps_who->clear();
 //	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
+	ps_who->skin				=	-1;
+	ps_who->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
 	
 	ps_who->Skip = false;
 	SpawnPlayer(id_who, "spectator");
@@ -1711,6 +1737,7 @@ void	game_sv_Deathmatch::check_ForceRespawn		()
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC->net_Ready || ps->Skip) continue;
 		if (!ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+		if (!ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
 		u32 CurTime = Device.dwTimeGlobal;
 		if (ps->DeathTime + m_u32ForceRespawn < CurTime)
 		{

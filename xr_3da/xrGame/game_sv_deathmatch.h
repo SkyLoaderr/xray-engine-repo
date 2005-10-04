@@ -143,9 +143,10 @@ public:
 	virtual		void				Victim_Exp				(game_PlayerState* pVictim);
 	virtual		bool				CheckTeams				() { return false; };
 	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
-				void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
 	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
-
+	
+	virtual		void				OnPlayerSelectSkin		(NET_Packet& P, ClientID sender);
+	virtual		void				OnPlayerChangeSkin		(ClientID id_who, s8 skin);
 	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();

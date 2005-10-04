@@ -17,6 +17,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "CustomZone.h"
 #include "game_base_kill_type.h"
+#include "game_base_menu_events.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
@@ -38,6 +39,8 @@ game_cl_mp::game_cl_mp()
 	m_bJustRestarted = true;
 	m_pSndMessagesInPlay.clear();
 	m_aMessageMenus.clear();
+
+	m_bSpectatorSelected = FALSE;
 };
 
 game_cl_mp::~game_cl_mp()
@@ -270,6 +273,10 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			OnMoneyChanged(P);
 		}break;
+	case GAME_EVENT_PLAYER_GAME_MENU_RESPOND:
+		{
+			OnGameMenuRespond(P);
+		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
@@ -434,11 +441,13 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
+			m_bSpectatorSelected = FALSE;
+
 			if (Level().pHUD && HUD().GetUI())
 			{
 				HUD().GetUI()->ShowIndicators();
 			};
-			OnSwitchPhase_InProgress();
+			OnSwitchPhase_InProgress();			
 		}break;
 	case GAME_PHASE_PENDING:
 		{
@@ -854,3 +863,39 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 	};	
 };
 
+void	game_cl_mp::OnSpectatorSelect		()
+{
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = smart_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P, GE_GAME_EVENT, l_pPlayer->ID()	);
+//	P.w_u16(GAME_EVENT_PLAYER_SELECT_SPECTATOR);
+	P.w_u16(GAME_EVENT_PLAYER_GAME_MENU);
+	P.w_u8(PLAYER_SELECT_SPECTATOR);
+	l_pPlayer->u_EventSend		(P);
+
+	m_bSpectatorSelected = TRUE;	
+};
+
+void	game_cl_mp::OnGameMenuRespond		(NET_Packet& P)
+{
+	u8 Respond = P.r_u8();
+	switch (Respond)
+	{
+	case PLAYER_SELECT_SPECTATOR:
+		{
+			OnGameMenuRespond_Spectator(P);
+		}break;
+	case PLAYER_CHANGE_TEAM:
+		{
+			OnGameMenuRespond_ChangeTeam(P);
+		}break;
+	case PLAYER_CHANGE_SKIN:
+		{
+			OnGameMenuRespond_ChangeSkin(P);
+		}break;
+	}
+};

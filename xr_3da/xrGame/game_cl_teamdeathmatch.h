@@ -29,9 +29,17 @@ public :
 	virtual	BOOL					CanCallTeamSelectMenu	();
 
 
+	virtual	void					OnSpectatorSelect		();
+	virtual		void				OnSkinMenuBack			();
+	virtual		void				OnTeamMenuBack			();
+	virtual		void				OnMapInfoAccept			();
+
+	virtual		void				OnGameMenuRespond_ChangeTeam	(NET_Packet& P);
+
 	virtual			void				OnTeamSelect			(int Result);
 	virtual			char*				getTeamSection			(int Team);
 	virtual			void				OnTeamChanged			();
+	virtual			void				OnTeamMenu_Cancel		();
 
 	virtual			void				Set_ShowPlayerNames		(bool Show) {m_bShowPlayersNames = Show;};
 	virtual			bool				Get_ShowPlayerNames		() {return m_bShowPlayersNames;};
@@ -52,7 +60,7 @@ protected:
 	BOOL				m_bTeamSelected;
 	bool				m_bShowPlayersNames;
 
-	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
+	virtual s16			ModifyTeam			(s16 Team)	{return (Team != -1) ? Team-1 : Team;};
 
 	virtual bool		CanBeReady			();
 	virtual	void		SetCurrentBuyMenu	();

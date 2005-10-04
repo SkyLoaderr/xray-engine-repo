@@ -32,7 +32,7 @@ u8 game_sv_TeamDeathmatch::AutoTeam()
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC->net_Ready) continue;
-		if (ps->Skip) continue;
+		if (ps->Skip || ps->team == 0) continue;
 		if(ps->team>=1) ++(l_teams[ps->team-1]);
 	}
 	return (l_teams[0]>l_teams[1])?2:1;
@@ -108,7 +108,7 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(ClientID id_who)
 
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	LPCSTR	options				=	get_name_id	(id_who);
-	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
+	ps_who->team				=	u8(get_option_i(options,"team",0));
 
 
 	if (ps_who->Skip) return;
@@ -131,27 +131,54 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(ClientID id_who)
 	SetPlayersDefItems(ps_who);
 }
 
+void game_sv_TeamDeathmatch::OnPlayerSelectTeam		(NET_Packet& P, ClientID sender)
+{
+	xrClientData *l_pC = m_server->ID_to_client(sender);
+	s16 l_team; 
+	P.r_s16(l_team);
+	OnPlayerChangeTeam(l_pC->ID, l_team);
+	//-------------------------------------------------
+};
+
 void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team) 
 {
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	if (!team) team				= AutoTeam();
-	if (!ps_who || ps_who->team == team) return;
+	if (!ps_who) return;
+	if (!team) 
+	{
+		team				= AutoTeam();
+	};
+//-----------------------------------------------------
+	NET_Packet Px;
+	GenerateGameMessage(Px);
+	Px.w_u32(GAME_EVENT_PLAYER_GAME_MENU_RESPOND);
+	Px.w_u8(PLAYER_CHANGE_TEAM);
+	Px.w_s16(team);
+	m_server->SendTo(id_who,Px,net_flags(TRUE,TRUE));
+	//-----------------------------------------------------
+	if (ps_who->team == team) return;
 	
+	s16 OldTeam = ps_who->team;
+	ps_who->team = team;
+	if (OldTeam == 0) Money_SetStart(id_who);
+
 	KillPlayer(id_who, ps_who->GameID);
 /////////////////////////////////////////////////////////
 	//Send Switch team message
 	NET_Packet			P;
 //	P.w_begin			(M_GAMEMESSAGE);
 	GenerateGameMessage (P);
-	P.w_u32				(GAME_EVENT_PLAYER_CHANGE_TEAM);
+	P.w_u32				(PLAYER_CHANGE_TEAM);
 	P.w_u16				(ps_who->GameID);
 	P.w_u16				(ps_who->team);
 	P.w_u16				(team);
 	u_EventSend(P);
 /////////////////////////////////////////////////////////
-	ps_who->team = team;
+	
+
 	
 	SetPlayersDefItems(ps_who);
+	
 }
 
 void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA)

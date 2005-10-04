@@ -93,17 +93,17 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if (BUTTON_CLICKED == msg)
 	{
 		Game().StartStopMenu(this,true);
-		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		game_cl_TeamDeathmatch * tdm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
 		if (pWnd == m_pImage1)
-			dm->OnTeamSelect(0);
+			tdm->OnTeamSelect(0);
 		else if (pWnd == m_pImage2)
-			dm->OnTeamSelect(1);
+			tdm->OnTeamSelect(1);
 		else if (pWnd == m_pBtnAutoSelect)
-			dm->OnTeamSelect(-1);
+			tdm->OnTeamSelect(-1);
 		else if (pWnd == m_pBtnSpectator)
-			dm->OnSpectatorSelect();
+			tdm->OnSpectatorSelect();
 		else if (pWnd == m_pBtnBack)
-			dm->OnTeamMenuBack();
+			tdm->OnTeamMenuBack();
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -131,6 +131,7 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	{
 	case DIK_ESCAPE:
 #pragma todo("SATAN -> MAD_MAX : surprise me! ")
+		dm->OnTeamMenu_Cancel();
 		return true;
 	case DIK_RETURN:
 		dm->StartStopMenu(this,true);

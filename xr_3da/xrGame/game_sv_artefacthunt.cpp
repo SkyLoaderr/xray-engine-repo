@@ -976,7 +976,7 @@ void				game_sv_ArtefactHunt::RespawnAllNotAlivePlayers()
 
 		if (!l_pC->net_Ready || ps->Skip) continue;
 
-		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) )
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) && !ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR) )
 		{
 			RespawnPlayer(l_pC->ID, true);
 			SpawnWeaponsForActor(l_pC->owner, ps);

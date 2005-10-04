@@ -2,6 +2,7 @@
 #include "game_sv_base.h"
 #include "game_sv_mp_team.h"
 #include "game_base_kill_type.h"
+#include "game_base_menu_events.h"
 
 #define MAX_TERMS  2
 struct Rank_Struct
@@ -101,6 +102,11 @@ public:
 	virtual		void				OnVoteStop				();
 	virtual		void				OnPlayerChangeName		(NET_Packet& P, ClientID sender);
 	virtual		void				OnPlayerSpeechMessage	(NET_Packet& P, ClientID sender);
+	virtual		void				OnPlayerGameMenu		(NET_Packet& P, ClientID sender);
+	
+	virtual		void				OnPlayerSelectSpectator	(NET_Packet& P, ClientID sender);
+	virtual		void				OnPlayerSelectTeam		(NET_Packet& P, ClientID sender) {};
+	virtual		void				OnPlayerSelectSkin		(NET_Packet& P, ClientID sender) {};
 	
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();
