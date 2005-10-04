@@ -1228,9 +1228,6 @@
 					RelativePath=".\Config\ui\skin_selector.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\sleep_dialog.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\sleep_dialog_new.xml">
 				</File>
 				<File
