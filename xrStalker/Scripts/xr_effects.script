@@ -136,6 +136,10 @@ end
 
 -- постпроцесс и влияние удара в морду
 function actor_punch(npc)
+	if db.actor:position():distance_to_sqr(npc:position()) > 2.25 then
+		return
+	end
+
 	local active_item = db.actor:active_item()
 	if active_item then
 		db.actor:drop_item(active_item)
@@ -147,6 +151,8 @@ function actor_punch(npc)
 
 	local ce = path_cam_effector("punch_effector.anm")
 	level.add_cam_effector(ce)	
+	
+	
 end
 -- забывание обиды
 function clearAbuse(npc)
