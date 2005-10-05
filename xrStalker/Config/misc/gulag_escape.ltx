@@ -252,7 +252,6 @@ on_info = {+esc_return =is_alive(006)} nil %=kill%
 snd = esc_volk_greet1
 on_info  = {=talking} remark@esc_lager_volk_remark3
 on_signal = sound_end | remark@esc_lager_volk_wait1
-meet = meet@wolf
 no_move = true
 on_info2 = {+esc_return =is_alive(006)} nil %=kill%
 
@@ -261,7 +260,6 @@ snd = esc_volk_greet1
 on_actor_dist_ge = 5 | walker@esc_lager_volk_walker2
 on_info  = {=talking} remark@esc_lager_volk_remark3
 on_timer = 5000 | remark@esc_lager_volk_remark2
-meet = meet@wolf
 no_move = true
 on_info2 = {+esc_return =is_alive(006)} nil %=kill%
 
@@ -277,7 +275,6 @@ anim = wait
 snd = esc_volk_greet2
 on_info  = {=talking} remark@esc_lager_volk_remark3
 on_signal = sound_end | remark@esc_lager_volk_wait2
-meet = meet@wolf
 no_move = true
 on_info2 = {+esc_return =is_alive(006)} nil %=kill%
 
@@ -287,7 +284,6 @@ snd = esc_volk_greet2
 on_actor_dist_ge = 5 | walker@esc_lager_volk_walker3
 on_timer = 5000 | remark@esc_lager_volk_remark3
 on_info  = {=talking} remark@esc_lager_volk_remark3
-meet = meet@wolf
 no_move = true
 on_info2 = {+esc_return =is_alive(006)} nil %=kill%
 
@@ -301,7 +297,6 @@ on_info = {+esc_return =is_alive(006)} nil %=kill%
 [remark@esc_lager_volk_remark3]
 anim = wait
 on_actor_dist_ge = 5 | walker@esc_lager_volk_walker3
-meet = meet@wolf
 no_move = true
 on_info = {+esc_return =is_alive(006)} nil %=kill%
 
