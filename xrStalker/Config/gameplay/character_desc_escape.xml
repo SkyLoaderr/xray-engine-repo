@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-		<specific_character id="escape_trader" no_random = "1">
+	<specific_character id="escape_trader" no_random = "1">
 		<name>Сидорович</name>
 		<icon x="2" y="0"></icon>
 		<map_icon x="6" y="0"></map_icon>
@@ -35,7 +35,7 @@
 		<actor_dialog>escape_trader_need_artefacts</actor_dialog>
 		<actor_dialog>escape_trader_docs_labx18</actor_dialog>
 		<actor_dialog>escape_trader_blokpost_case</actor_dialog>
-		
+		<actor_dialog>escape_trader_help_wounded</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_wolf" team_default = "1">
