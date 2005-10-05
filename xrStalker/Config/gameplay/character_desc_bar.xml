@@ -663,7 +663,7 @@
 		<bio>Один из полевых командиров "Свободы". Командир отряда боевиков, которые именуют себя "псами". Анархист, презирает любые законы, кроме законов силы.</bio>
 
 		<class>bar_svoboda_attack_commander</class>
-		<community>freedom</community>
+		<community>killer</community>
 	
 		<rank>90</rank>
 		<panic_threshold>0.1</panic_threshold>
