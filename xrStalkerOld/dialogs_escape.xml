@@ -1367,57 +1367,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_fox_flame_dialog">
-        <has_info>escape_stalker_dog_die</has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_fox_flame_dialog_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="111">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_fox_flame_dialog_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_fox_flame_dialog_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="211">
-                <text>escape_fox_flame_dialog_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>escape_fox_flame_dialog_2111</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text></text>
-                <next>111</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_fox_flame_dialog_3</text>
-                <give_info>garbage_meetstalker_start</give_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_fox_flame_dialog_31</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="10">
-                <text>escape_fox_flame_dialog_10</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_fox_flame_dialog_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_fox_hello_dialog">
         <phrase_list>
             <phrase id="13">
@@ -1453,13 +1402,6 @@
                 <has_info>escape_fox_heal</has_info>
                 <next>2</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-            </phrase>
             <phrase id="2">
                 <text>escape_fox_hello_dialog_2</text>
             </phrase>
@@ -1474,6 +1416,13 @@
                 <text>escape_fox_hello_dialog_5</text>
                 <next>55</next>
                 <next>56</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1490,6 +1439,57 @@
             <phrase id="1">
                 <text>escape_fox_flash_dialog_1</text>
                 <action>escape_dialog.give_flash_to_actor</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_fox_flame_dialog">
+        <has_info>escape_stalker_dog_die</has_info>
+        <phrase_list>
+            <phrase id="21">
+                <text>escape_fox_flame_dialog_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>escape_fox_flame_dialog_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>escape_fox_flame_dialog_2111</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_fox_flame_dialog_31</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="10">
+                <text>escape_fox_flame_dialog_10</text>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>escape_fox_flame_dialog_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_fox_flame_dialog_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_fox_flame_dialog_3</text>
+                <give_info>garbage_meetstalker_start</give_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_fox_flame_dialog_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
