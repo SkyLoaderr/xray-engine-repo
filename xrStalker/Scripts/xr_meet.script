@@ -406,7 +406,7 @@ function init_meet(npc, ini, section, st, scheme)
 			st.meet_state_wpn	= parse_data(npc, "")
 			st.victim			= parse_data(npc, "")
 			st.victim_wpn		= parse_data(npc, "")
-			st.use				= xr_logic.parse_condlist(npc, section, "use", "false")
+			st.use				= xr_logic.parse_condlist(npc, section, "use", "true")
 			st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
 			st.syndata			= parse_syn_data(npc, "")
 			st.precond			= "visibility"
