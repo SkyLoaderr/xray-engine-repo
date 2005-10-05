@@ -22,28 +22,27 @@ class CUIListWnd;
 
 class CUIMessagesWindow : public CUIWindow {
 public:
-	CUIMessagesWindow();
-	~CUIMessagesWindow();
+						CUIMessagesWindow				();
+	virtual				~CUIMessagesWindow				();
 
-	void DrawPdaMessages();
+	void				DrawPdaMessages					();
 
-	void AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
-	void AddPdaMessage(LPCSTR message, int iId, int iDelay);
-	void AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay);
-	void AddPersonalPdaMessage(CInventoryOwner* pSender, LPCSTR message, int iId, int iDelay);
-	bool SetDelayForPdaMessage(int iValue, int iDelay);
+	void				AddPdaMessage					(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
+	void				AddPdaMessage					(LPCSTR message, int iId, int iDelay);
+	void				AddIconedPdaMessage				(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay);
+	bool				SetDelayForPdaMessage			(int iValue, int iDelay);
 
-	void AddLogMessage(const shared_str& msg);
-	void AddLogMessage(KillMessageStruct& msg);
-	void AddChatMessage(shared_str msg, shared_str author);
-	void SetChatOwner(game_cl_GameState* owner);
-	CUIChatWnd* GetChatWnd() {return m_pChatWnd;}
+	void				AddLogMessage					(const shared_str& msg);
+	void				AddLogMessage					(KillMessageStruct& msg);
+	void				AddChatMessage					(shared_str msg, shared_str author);
+	void				SetChatOwner					(game_cl_GameState* owner);
+	CUIChatWnd*			GetChatWnd						() {return m_pChatWnd;}
 
-	virtual void Update();
+	virtual void		Update();
 
 
 protected:
-CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
+CUIPdaMsgListItem*		AddMessageToList				(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
 	
 	virtual void Init(float x, float y, float width, float height);
 

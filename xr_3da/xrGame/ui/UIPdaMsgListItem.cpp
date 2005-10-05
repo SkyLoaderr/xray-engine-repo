@@ -37,36 +37,27 @@ void CUIPdaMsgListItem::SetFont(CGameFont* pFont){
 
 void CUIPdaMsgListItem::Init(float x, float y, float width, float height)
 {
-	inherited::Init(x, y, width, height);
+	inherited::Init			(x, y, width, height);
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH,PDA_MSG_MAINGAME_CHAR);
-	R_ASSERT2(xml_result, "xml file not found");
+	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH,PDA_MSG_MAINGAME_CHAR);
+	R_ASSERT2				(xml_result, "xml file not found");
 
-	CUIXmlInit xml_init;
-	AttachChild(&UIIcon);
-	xml_init.InitStatic(uiXml, "icon_static", 0, &UIIcon);
-	y = (height - UIIcon.GetHeight())/2;
-	UIIcon.SetWndPos(UIIcon.GetWndPos().x , y);
-	UIIcon.ClipperOn();
+	CUIXmlInit				xml_init;
+	AttachChild				(&UIIcon);
+	xml_init.InitStatic		(uiXml, "icon_static", 0, &UIIcon);
+//	UIIcon.ClipperOn();
 
 	AttachChild(&UIName);
-	if(uiXml.NavigateToNode("name_static",0))
-		xml_init.InitStatic(uiXml, "name_static", 0, &UIName);
+	if(uiXml.NavigateToNode	("name_static",0))
+		xml_init.InitStatic	(uiXml, "name_static", 0, &UIName);
 	else
 	{
-		UIName.Show(false);
-		UIName.Enable(false);
+		UIName.Show			(false);
+		UIName.Enable		(false);
 	}
-//	y = (height - (int)UIName.GetFont()->CurrentHeight())/2;
-//	UIName.SetTextPos(UIName.GetTextX(), y);		
-
-	AttachChild(&UIMsgText);
-	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);	
-	UIMsgText.SetWidth(width - UIIcon.GetWidth());
-	UIMsgText.SetWndPos(UIMsgText.GetWndPos().x, UIIcon.GetWndPos().y);
-	//y = (height - (int)UIMsgText.GetFont()->CurrentHeight())/2;
-	//UIMsgText.SetTextPos(UIMsgText.GetTextX(), y);
+	AttachChild				(&UIMsgText);
+	xml_init.InitStatic		(uiXml, "text_static", 0, &UIMsgText);	
 }
 
 void CUIPdaMsgListItem::SetDelay(int iDelay){
@@ -74,17 +65,17 @@ void CUIPdaMsgListItem::SetDelay(int iDelay){
 }
 
 void CUIPdaMsgListItem::SetTextColor(u32 color){
-	UIMsgText.SetTextColor(color);
+	UIMsgText.SetTextColor	(color);
 }
 
 void CUIPdaMsgListItem::Update()
 {
-	inherited::Update();
+	inherited::Update		();
 }
 
 void CUIPdaMsgListItem::Draw()
 {
-	inherited::Draw();
+	inherited::Draw			();
 }
 
 void CUIPdaMsgListItem::InitCharacter(CInventoryOwner* pInvOwner)

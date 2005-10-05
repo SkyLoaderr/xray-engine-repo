@@ -1248,13 +1248,6 @@ void CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR message, int iId, int iDelay)
-{
-	HUD().GetUI()->m_pMessagesWnd->AddPersonalPdaMessage(pSender, message, iId, iDelay);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay)
 {
 	HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(textureName, originalRect, message, iId, iDelay);

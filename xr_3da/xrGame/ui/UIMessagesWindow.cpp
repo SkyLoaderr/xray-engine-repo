@@ -129,21 +129,15 @@ CUIPdaMsgListItem* CUIMessagesWindow::AddMessageToList(LPCSTR message, CUIListWn
 	return pItem;
 }
 
-void CUIMessagesWindow::AddPersonalPdaMessage(CInventoryOwner* pSender, LPCSTR message, int iId, int iDelay){
-	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iId, iDelay);
-	if (pItem)	
-		pItem->InitCharacter(pSender);
-}
-
 void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay){
 	
 	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iId, iDelay);
 	if (pItem)
 	{
-		pItem->UIIcon.InitTexture(textureName);
-		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.SetWndPos(originalRect.right, pItem->UIMsgText.GetWndPos().y);
-		pItem->UIMsgText.SetVTextAlignment(valTop);
+		pItem->UIIcon.InitTexture			(textureName);
+		pItem->UIIcon.SetOriginalRect		(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+//		pItem->UIMsgText.SetWndPos			(originalRect.x2, pItem->UIMsgText.GetWndPos().y);
+		pItem->UIMsgText.SetVTextAlignment	(valTop);
 	}
 }
 
@@ -159,14 +153,14 @@ void CUIMessagesWindow::SetChatOwner(game_cl_GameState* owner){
 }
 
 void CUIMessagesWindow::DrawPdaMessages(){
-	Frect tmp = m_pGameLog->GetWndRect();
-	m_pGameLog->SetWndPos(m_ListPos2.x1, m_ListPos2.y1);m_pGameLog->SetWidth(m_ListPos2.width());
-	m_pGameLog->SetWidth(m_ListPos2.height());
-	m_pGameLog->Draw();
+	Frect tmp = m_pGameLog->GetWndRect		();
+	m_pGameLog->SetWndPos					(m_ListPos2.x1, m_ListPos2.y1);m_pGameLog->SetWidth(m_ListPos2.width());
+	m_pGameLog->SetWidth					(m_ListPos2.height());
+	m_pGameLog->Draw						();
 
-	m_pGameLog->SetWndPos(tmp.x1, tmp.y1);
-	m_pGameLog->SetWidth(tmp.width());
-	m_pGameLog->SetWidth(tmp.height());
+	m_pGameLog->SetWndPos					(tmp.x1, tmp.y1);
+	m_pGameLog->SetWidth					(tmp.width());
+	m_pGameLog->SetWidth					(tmp.height());
 }
 void CUIMessagesWindow::Update()
 {

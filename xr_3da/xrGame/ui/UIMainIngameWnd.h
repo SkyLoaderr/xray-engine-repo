@@ -81,7 +81,6 @@ public:
 
 	bool SetDelayForPdaMessage          (int iValue, int iDelay);
 	void AddGameMessage	(LPCSTR message, int iId = -1, int iDelay = 0);
-	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage, int iId = -1, int iDelay = 0);
 	void AddIconedGameMessage			(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId = -1, int iDelay = 0);
 protected:
 	CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
