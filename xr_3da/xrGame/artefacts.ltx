@@ -6,16 +6,19 @@
 ;Артефакты, которые при активизации создают аномальные зоны
 ;формат: {секция_артефакта} = {секция_зоны},Radius,Power
 [artefact_spawn_zones]
-af_medusa = zone_gravi_zone, 5.0, 30.0
+af_night_star = zone_mosquito_bald_weak, 5.0, 50.0
+af_gold_fish = zone_gravi_zone_weak, 5.0, 50.0
+af_cristall = torrid_zone, 5.0, 50.0
+af_soul = zone_mincer_weak, 5, 50.0
 
 [af_activation_common]
 ;----------------------------------------------------------------------------------------------------------------------------------------
-;format:						time(sec),	sound_name,		light_R,G,B,	light_range,	particle_name,						af_animation_name
+;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
 ;----------------------------------------------------------------------------------------------------------------------------------------
-starting					=	2.0,		anomaly\gravi_blowout2,	2.0, 1.0, 0.5,	5.0,			"explosions\campfire_boar_grill",	"idle"
-flying						=	5.0,		heart\8,				1.0, 2.0, 0.5,	5.0,			"ghoul\snow_effect",				"idle"
-idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 2.5,	5.0,			"explosions\campfire_boar_grill",	"idle"				
-spawning					=	0.5,		"",						1.0, 1.0, 0.5,	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
+starting					=	2.0,		anomaly\gravi_blowout2,	2.0, 1.0, 0.5,  	5.0,			"explosions\campfire_boar_grill",	"idle"
+flying						=	5.0,		heart\8,				1.0, 2.0, 0.5,  	5.0,			"ghoul\snow_effect",				"idle"
+idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 2.5,  	5.0,			"explosions\campfire_boar_grill",	"idle"				
+spawning					=	0.5,		"",						1.0, 1.0, 0.5,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
 
 
 ; Артефакты для аномалии "Комариная плешь"
@@ -68,7 +71,7 @@ power_restore_speed			= 0.0
 bleeding_restore_speed		= 0.0
 hit_absorbation_sect		= af_medusa_absorbation
 
-artefact_activation_seq		= af_activation_common
+;artefact_activation_seq		= af_activation_common
 
 [af_medusa_absorbation]
 burn_immunity = 1.0				;коэффициенты иммунитета 
@@ -181,6 +184,8 @@ trail_light_range = 3.0
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
+
+artefact_activation_seq		= af_activation_common
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
@@ -367,6 +372,8 @@ trail_light_range = 2.0
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
+artefact_activation_seq		= af_activation_common
+
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
 radiation_restore_speed = 0.002
@@ -551,6 +558,8 @@ trail_light_range = 3.0
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
+artefact_activation_seq		= af_activation_common
+
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.000			
 radiation_restore_speed = 0.000
@@ -729,6 +738,8 @@ lights_enabled = false
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
+
+artefact_activation_seq		= af_activation_common
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.01			
@@ -914,6 +925,8 @@ trail_light_range = 1.0
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
+
+artefact_activation_seq		= af_activation_common
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
