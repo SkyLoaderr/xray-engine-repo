@@ -312,9 +312,10 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				break;
 			case INVENTORY_ACTIVATE_ARTEFACT_ACTION:
 				(smart_cast<CArtefact*>(m_pCurrentItem))->ActivateArtefact();
+				break;
 			case INVENTORY_RELOAD_MAGAZINE:
 				(smart_cast<CWeapon*>(m_pCurrentItem))->Action(kWPN_RELOAD, CMD_START);
-
+				break;
 			case INVENTORY_UNLOAD_MAGAZINE:
 				(smart_cast<CWeaponMagazined*>(m_pCurrentItem))->UnloadMagazine();
 				break;
