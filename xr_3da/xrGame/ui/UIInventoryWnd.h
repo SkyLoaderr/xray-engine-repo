@@ -18,18 +18,15 @@ class CInventory;
 
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
-#include "UISleepWnd.h"
 
 #include "UIOutfitInfo.h"
 #include "UIItemInfo.h"
-
 #include "UITimeWnd.h"
 
-//////////////////////////////////////////////////////////////////////////
 
 class CArtefact;
+class CUISleepWnd;
 
-//////////////////////////////////////////////////////////////////////////
 
 class CUIInventoryWnd: public CUIDialogWnd
 {
@@ -82,7 +79,7 @@ protected:
 	CUIFrameWindow		UIPersonalWnd;
 
 	// Подокошко сна
-	CUISleepWnd			UISleepWnd;
+	CUISleepWnd*			UISleepWnd;
 	
 	// Кнопка выброса активного предмета
 	CUIButton			UIDropButton;

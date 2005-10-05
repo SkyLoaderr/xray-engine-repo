@@ -4,12 +4,18 @@
 #pragma once
 
 #include "EntityCondition.h"
+//#include "script_callback_ex.h"
+
+template <typename _return_type>
+class CScriptCallbackEx;
+
 
 namespace ACTOR_DEFS {
 	enum EActorSleep;
 };
 
 class CActor;
+class CUIActorSleepVideoPlayer;
 
 class CActorCondition: public CEntityCondition {
 private:
@@ -19,8 +25,9 @@ public:
 	typedef ACTOR_DEFS::EActorSleep EActorSleep;
 
 private:
-	CActor				*m_object;
-
+	CActor*						m_object;
+	CScriptCallbackEx<bool>*	m_can_sleep_callback;
+	CScriptCallbackEx<LPCSTR>*	m_get_sleep_video_name_callback;
 public:
 						CActorCondition		(CActor *object);
 	virtual				~CActorCondition	(void);
@@ -58,6 +65,8 @@ public:
 	virtual void			save					(NET_Packet &output_packet);
 	virtual void			load					(IReader &input_packet);
 
+	CUIActorSleepVideoPlayer*	m_actor_sleep_wnd;
+
 protected:
 	float m_fAlcohol;
 
@@ -84,7 +93,6 @@ protected:
 	float m_fK_SleepRadiation;
 	float m_fK_SleepPsyHealth;
 
-protected:
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;
 	mutable bool m_bCantSprint;

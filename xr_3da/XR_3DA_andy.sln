@@ -3,7 +3,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XR_3DA", "XR_3DA.vcproj", "
 	ProjectSection(ProjectDependencies) = postProject
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5} = {CCCA7859-EB86-493E-9B53-C4235F45B3C5}
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97} = {94A1C366-3D19-48E6-8170-4ADC2E70DF97}
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450} = {F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5} = {A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
@@ -22,7 +21,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGame", "xrGame\xrGame.vcp
 		{435BAC9A-B225-457D-AB40-C9BD0CC8838C} = {435BAC9A-B225-457D-AB40-C9BD0CC8838C}
 		{2578C6D8-660D-48AE-9322-7422F8664F06} = {2578C6D8-660D-48AE-9322-7422F8664F06}
 		{CA0649DD-D089-423A-981C-46B57A884EB9} = {CA0649DD-D089-423A-981C-46B57A884EB9}
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450} = {F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5} = {A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
@@ -62,11 +60,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrRender_R2", "xrRender_R2\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrXMLParser", "..\xrXMLParser\xrXMLParser.vcproj", "{94A1C366-3D19-48E6-8170-4ADC2E70DF98}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA", "..\xrLUA\xrLUA.vcproj", "{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
@@ -128,9 +121,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ren_translit", "..\test\ren
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA_JIT", "..\xrLUA_JIT\xrLUA_JIT.vcproj", "{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGameSpy", "xrGame\xrGameSpy\xrGameSpy.vcproj", "{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 23
+		SccNumberOfProjects = 24
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -170,58 +172,62 @@ Global
 		SccProjectName9 = \u0022$/xrXMLParser\u0022,\u0020MGLAAAAA
 		SccLocalPath9 = ..\\xrXMLParser
 		CanCheckoutShared = true
-		SccProjectUniqueName10 = ..\\xrLUA\\xrLUA.vcproj
-		SccProjectName10 = \u0022$/xrLUA\u0022,\u0020LCMAAAAA
-		SccLocalPath10 = ..\\xrLUA
+		SccProjectUniqueName10 = ..\\xrParticles\\xrParticles.vcproj
+		SccProjectName10 = \u0022$/xrParticles\u0022,\u0020IRQAAAAA
+		SccLocalPath10 = ..\\xrParticles
 		CanCheckoutShared = true
-		SccProjectUniqueName11 = ..\\xrParticles\\xrParticles.vcproj
-		SccProjectName11 = \u0022$/xrParticles\u0022,\u0020IRQAAAAA
-		SccLocalPath11 = ..\\xrParticles
+		SccProjectUniqueName11 = ..\\xrNetServer\\xrNetServer.vcproj
+		SccProjectName11 = \u0022$/xrNetServer\u0022,\u0020CDRAAAAA
+		SccLocalPath11 = ..\\xrNetServer
 		CanCheckoutShared = true
-		SccProjectUniqueName12 = ..\\xrNetServer\\xrNetServer.vcproj
-		SccProjectName12 = \u0022$/xrNetServer\u0022,\u0020CDRAAAAA
-		SccLocalPath12 = ..\\xrNetServer
+		SccProjectUniqueName12 = ..\\xrSE_Factory\\xrSE_Factory.vcproj
+		SccProjectName12 = \u0022$/xrSE_Factory\u0022,\u0020XWTAAAAA
+		SccLocalPath12 = ..\\xrSE_Factory
 		CanCheckoutShared = true
-		SccProjectUniqueName13 = ..\\xrSE_Factory\\xrSE_Factory.vcproj
-		SccProjectName13 = \u0022$/xrSE_Factory\u0022,\u0020XWTAAAAA
-		SccLocalPath13 = ..\\xrSE_Factory
+		SccProjectUniqueName13 = ..\\xrCompress\\xrCompress.vcproj
+		SccProjectName13 = \u0022$/xrCompress\u0022,\u0020CIFAAAAA
+		SccLocalPath13 = ..\\xrCompress
 		CanCheckoutShared = true
-		SccProjectUniqueName14 = ..\\xrCompress\\xrCompress.vcproj
-		SccProjectName14 = \u0022$/xrCompress\u0022,\u0020CIFAAAAA
-		SccLocalPath14 = ..\\xrCompress
+		SccProjectUniqueName14 = ..\\xrODE\\contrib\\msvc7\\ode_default\\default.vcproj
+		SccProjectName14 = \u0022$/xrODE\u0022,\u0020AJPAAAAA
+		SccLocalPath14 = ..\\xrODE
 		CanCheckoutShared = true
-		SccProjectUniqueName15 = ..\\xrODE\\contrib\\msvc7\\ode_default\\default.vcproj
-		SccProjectName15 = \u0022$/xrODE\u0022,\u0020AJPAAAAA
-		SccLocalPath15 = ..\\xrODE
+		SccProjectFilePathRelativizedFromConnection14 = contrib\\msvc7\\ode_default\\
+		SccProjectUniqueName15 = xrScriptDbgIde\\xrScriptDebudIde.vcproj
+		SccLocalPath15 = .
 		CanCheckoutShared = true
-		SccProjectFilePathRelativizedFromConnection15 = contrib\\msvc7\\ode_default\\
-		SccProjectUniqueName16 = xrScriptDbgIde\\xrScriptDebudIde.vcproj
-		SccLocalPath16 = .
+		SccProjectFilePathRelativizedFromConnection15 = xrScriptDbgIde\\
+		SccProjectUniqueName16 = ..\\cjLib\\CJ60Lib.vcproj
+		SccProjectName16 = \u0022$/CJ60Lib\u0022,\u0020LNWAAAAA
+		SccLocalPath16 = ..\\cjLib
 		CanCheckoutShared = true
-		SccProjectFilePathRelativizedFromConnection16 = xrScriptDbgIde\\
-		SccProjectUniqueName17 = ..\\cjLib\\CJ60Lib.vcproj
-		SccProjectName17 = \u0022$/CJ60Lib\u0022,\u0020LNWAAAAA
-		SccLocalPath17 = ..\\cjLib
+		SccProjectUniqueName17 = ..\\scintilla\\SciLexer.vcproj
+		SccProjectName17 = \u0022$/SciLexer\u0022,\u0020NHWAAAAA
+		SccLocalPath17 = ..\\scintilla
 		CanCheckoutShared = true
-		SccProjectUniqueName18 = ..\\scintilla\\SciLexer.vcproj
-		SccProjectName18 = \u0022$/SciLexer\u0022,\u0020NHWAAAAA
-		SccLocalPath18 = ..\\scintilla
+		SccProjectUniqueName18 = ..\\xrLauncher\\xrLauncher.vcproj
+		SccProjectName18 = \u0022$/xrLauncher\u0022,\u0020RHXAAAAA
+		SccLocalPath18 = ..\\xrLauncher
 		CanCheckoutShared = true
-		SccProjectUniqueName19 = ..\\xrLauncher\\xrLauncher.vcproj
-		SccProjectName19 = \u0022$/xrLauncher\u0022,\u0020RHXAAAAA
-		SccLocalPath19 = ..\\xrLauncher
+		SccProjectUniqueName19 = ..\\xrUpdate\\xrUpdate.vcproj
+		SccProjectName19 = \u0022$/xrUpdate\u0022,\u0020QUYAAAAA
+		SccLocalPath19 = ..\\xrUpdate
 		CanCheckoutShared = true
-		SccProjectUniqueName20 = ..\\xrUpdate\\xrUpdate.vcproj
-		SccProjectName20 = \u0022$/xrUpdate\u0022,\u0020QUYAAAAA
-		SccLocalPath20 = ..\\xrUpdate
+		SccProjectUniqueName20 = X:\\GAMEDATA\\xrstalker.vcproj
+		SccProjectName20 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
+		SccLocalPath20 = X:\\GAMEDATA
 		CanCheckoutShared = true
-		SccProjectUniqueName21 = X:\\GAMEDATA\\xrstalker.vcproj
-		SccProjectName21 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
-		SccLocalPath21 = X:\\GAMEDATA
+		SccProjectUniqueName21 = xrD3D9-Null\\xrD3D9-Null.vcproj
+		SccProjectName21 = \u0022$/xr_3da/xrGame/xrD3D9-Null\u0022,\u0020LWBBAAAA
+		SccLocalPath21 = xrD3D9-Null
 		CanCheckoutShared = true
-		SccProjectUniqueName22 = xrD3D9-Null\\xrD3D9-Null.vcproj
-		SccProjectName22 = \u0022$/xr_3da/xrGame/xrD3D9-Null\u0022,\u0020LWBBAAAA
-		SccLocalPath22 = xrD3D9-Null
+		SccProjectUniqueName22 = ..\\xrLUA_JIT\\xrLUA_JIT.vcproj
+		SccProjectName22 = \u0022$/xrLUA_JIT\u0022,\u0020KGFBAAAA
+		SccLocalPath22 = ..\\xrLUA_JIT
+		CanCheckoutShared = true
+		SccProjectUniqueName23 = xrGame\\xrGameSpy\\xrGameSpy.vcproj
+		SccProjectName23 = \u0022$/xr_3da/xrGame/xrGameSpy\u0022,\u0020MRDBAAAA
+		SccLocalPath23 = xrGame\\xrGameSpy
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -231,8 +237,8 @@ Global
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Mixed|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.ActiveCfg = Debug|Win32
@@ -303,14 +309,6 @@ Global
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Mixed.Build.0 = Mixed|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Release.ActiveCfg = Release|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Release.Build.0 = Release|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Debug.ActiveCfg = Mixed|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Debug.Build.0 = Mixed|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Mixed.ActiveCfg = Mixed|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Mixed.Build.0 = Mixed|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.ActiveCfg = Release|Win32
-		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.Build.0 = Release|Win32
 		{1BF75FEB-87DD-486C-880B-227987D191C2}.Debug.ActiveCfg = Mixed|Win32
 		{1BF75FEB-87DD-486C-880B-227987D191C2}.Debug.Build.0 = Mixed|Win32
 		{1BF75FEB-87DD-486C-880B-227987D191C2}.DebugNoExceptions.ActiveCfg = Debug|Win32
@@ -408,6 +406,22 @@ Global
 		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Mixed.Build.0 = Debug|Win32
 		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Release.ActiveCfg = Release|Win32
 		{1C6AF5D3-2901-4EB8-BE5D-E25729F6B3F9}.Release.Build.0 = Release|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.Debug.ActiveCfg = Mixed|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.Debug.Build.0 = Mixed|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.DebugNoExceptions.Build.0 = Debug|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.Mixed.ActiveCfg = Mixed|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.Mixed.Build.0 = Mixed|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.Release.ActiveCfg = Release|Win32
+		{9ACE5473-6D68-4B96-AC42-B39EABA0FE1F}.Release.Build.0 = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Debug.ActiveCfg = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Debug.Build.0 = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.DebugNoExceptions.Build.0 = Debug|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Mixed.ActiveCfg = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Mixed.Build.0 = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.ActiveCfg = Release|Win32
+		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		..\..\XR_3DA.vsd = ..\..\XR_3DA.vsd

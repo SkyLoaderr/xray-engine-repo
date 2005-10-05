@@ -7,6 +7,7 @@
 #include "UIXmlInit.h"
 #include "../level.h"
 #include "../hudmanager.h"
+#include "../dinput.h"
 
 void CUIVideoPlayerWnd::SendMessage	(CUIWindow* pWnd, s16 msg, void* pData)
 {
@@ -44,9 +45,11 @@ void CUIVideoPlayerWnd::Init			(CUIXml* doc, LPCSTR start_from)
 	Register						(m_tabControl);
     AddCallback						("buttons_tab",TAB_CHANGED,boost::bind(&CUIVideoPlayerWnd::OnTabChanged,this,_1,_2));
 
-	int flag						=doc->ReadAttribInt(start_from, 0, "auto_play", 0);
-	m_flags.set						(eAutoPlay, flag?true:false);
+	int flag						=doc->ReadAttribInt(start_from, 0, "looped", 0);
+	m_flags.set						(eLooped, flag?true:false);
+	
 	SetFile							( doc->ReadAttrib(start_from, 0, "file", 0) );
+	Hide							();
 }
 
 void CUIVideoPlayerWnd::SetFile		(LPCSTR fn)
@@ -56,13 +59,8 @@ void CUIVideoPlayerWnd::SetFile		(LPCSTR fn)
 		VERIFY(!m_surface->GetShader());
 		m_surface->InitTexture			(fn);
 
-		::Sound->create(m_sound, true, fn);
-
-		if(m_flags.test(eAutoPlay))
-			Play	();
-		else
-			Stop	();
-
+		if(FS.exist("$game_sounds$",fn))
+			::Sound->create(m_sound, true, fn);
 	}
 }
 
@@ -70,8 +68,9 @@ void CUIVideoPlayerWnd::Draw		()
 {
 	inherited::Draw	();
 	if(!m_texture && m_surface->GetShader()){
-		RCache.set_Shader		(m_surface->GetShader());
+		RCache.set_Shader							(m_surface->GetShader());
 		m_texture = RCache.get_ActiveTexture		(0);
+		m_texture->video_Stop						();
 	}
 }
 
@@ -79,13 +78,13 @@ void CUIVideoPlayerWnd::Update	()
 {
 	inherited::Update	();
 
-	if(m_flags.test(ePlaying) && !m_flags.test(eStarted) && m_texture && !m_texture->video_IsPlaying()){
-		m_texture->video_Play		(TRUE);
-		m_flags.set					(eStarted,TRUE);
+	if(m_flags.test(ePlaying) && m_texture && !m_texture->video_IsPlaying()){
+		m_texture->video_Play		(m_flags.test(eLooped));
+		m_flags.set					(ePlaying,FALSE);
 	};
-	if(!m_flags.test(ePlaying) && m_texture && m_texture->video_IsPlaying()){
+	if(m_flags.test(eStoping) && m_texture && m_texture->video_IsPlaying()){
 		m_texture->video_Stop		();
-		m_flags.set					(eStarted,FALSE);
+		m_flags.set					(eStoping,FALSE);
 	};
 }
 
@@ -101,16 +100,26 @@ void CUIVideoPlayerWnd::OnTabChanged			(CUIWindow* pWnd, void* pData)
 
 void CUIVideoPlayerWnd::Play	()
 {
-	m_flags.set(ePlaying, TRUE);
 	if (m_sound._handle())
         m_sound.play(NULL, sm_2D);
+
+	if(m_texture){
+		if(!m_texture->video_IsPlaying())
+			m_texture->video_Play		(m_flags.test(eLooped));
+	}else
+		m_flags.set(ePlaying, TRUE);//deffered
 }
 
 void CUIVideoPlayerWnd::Stop	()
 {
-	m_flags.set(ePlaying, FALSE);
 	if (m_sound._handle())
         m_sound.stop();
+
+	if(m_texture){
+		if(m_texture->video_IsPlaying())
+			m_texture->video_Stop		();
+	}else
+		m_flags.set(eStoping, TRUE);//deffered
 }
 
 bool CUIVideoPlayerWnd::IsPlaying	()
@@ -120,10 +129,25 @@ bool CUIVideoPlayerWnd::IsPlaying	()
 
 void CUIActorSleepVideoPlayer::Activate	()
 {
-	HUD().GetUI()->StartStopMenu(this,true);
+	if(!IsShown())
+		HUD().GetUI()->StartStopMenu	(this,true);
 }
 
 void CUIActorSleepVideoPlayer::DeActivate	()
 {
-	HUD().GetUI()->StartStopMenu(this,true);
+	if(IsShown()){
+		Stop							();
+		HUD().GetUI()->StartStopMenu	(this,true);
+	}
+}
+
+bool CUIActorSleepVideoPlayer::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if(keyboard_action==WINDOW_KEY_PRESSED){
+		if(dik==DIK_ESCAPE){
+			DeActivate	();
+			return true;
+		}
+	}
+	return inherited::OnKeyboard(dik, keyboard_action);
 }

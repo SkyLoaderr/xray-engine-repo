@@ -57,7 +57,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	}
 
 	if (!g_Alive()) return;
-
+/*
 	switch(cmd){
 		case kFOLLOWER1:
 		case kFOLLOWER2:
@@ -66,7 +66,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		case kFOLLOWER5:
 			SendCmdToFollowers(cmd);	break;
 	};
-
+*/
 	if(m_holder && kUSE != cmd)
 	{
 		m_holder->OnKeyboardPress			(cmd);

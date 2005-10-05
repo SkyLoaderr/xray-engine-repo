@@ -22,6 +22,7 @@
 #include "UIMainIngameWnd.h"
 #include "../Artifact.h"
 #include "../xr_level_controller.h"
+#include "UISleepWnd.h"
 
 using namespace InventoryUtilities;
 
@@ -328,7 +329,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //	{
 //		StopArtefactMerger();
 //	}
-	else if(pWnd == &UISleepWnd && msg == SLEEP_WND_PERFORM_BUTTON_CLICKED)
+	else if(pWnd == UISleepWnd && msg == SLEEP_WND_PERFORM_BUTTON_CLICKED)
 	{
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;

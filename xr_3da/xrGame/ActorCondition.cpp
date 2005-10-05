@@ -11,8 +11,11 @@
 #include "script_callback_ex.h"
 #include "script_game_object.h"
 #include "game_object_space.h"
+#include "ui\UIVideoPlayerWnd.h"
+#include "script_callback_ex.h"
 
 #define ENEMIES_RADIUS				20.f
+
 
 CActorCondition::CActorCondition(CActor *object) :
 	inherited	(object)
@@ -29,10 +32,16 @@ CActorCondition::CActorCondition(CActor *object) :
 
 	VERIFY						(object);
 	m_object					= object;
+	m_actor_sleep_wnd			= NULL;
+	m_can_sleep_callback		= NULL;
+	m_get_sleep_video_name_callback	= NULL;
 }
 
 CActorCondition::~CActorCondition(void)
 {
+	xr_delete					(m_actor_sleep_wnd);
+	xr_delete					(m_can_sleep_callback);
+	xr_delete					(m_get_sleep_video_name_callback);
 }
 
 void CActorCondition::LoadCondition(LPCSTR entity_section)
@@ -75,6 +84,23 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fK_SleepSatiety		= pSettings->r_float(section,"sleep_satiety");	
 	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
 	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
+
+	LPCSTR cb_name			= READ_IF_EXISTS(pSettings,r_string,section,"can_sleep_callback","");
+
+	if(xr_strlen(cb_name)){
+		m_can_sleep_callback		= xr_new<CScriptCallbackEx<bool> >();
+		luabind::functor<bool>		f;
+		R_ASSERT					(ai().script_engine().functor<bool>(cb_name,f));
+		m_can_sleep_callback->set	(f);
+	}
+	cb_name					= READ_IF_EXISTS(pSettings,r_string,section,"sleep_video_name_callback","");
+
+	if(xr_strlen(cb_name)){
+		m_get_sleep_video_name_callback		= xr_new<CScriptCallbackEx<LPCSTR> >();
+		luabind::functor<LPCSTR>			fl;
+		R_ASSERT							(ai().script_engine().functor<LPCSTR>(cb_name,fl));
+		m_get_sleep_video_name_callback->set(fl);
+	}
 
 }
 
@@ -178,6 +204,7 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 	object().mstate_wishful	&=		~mcAnyMove;
 	object().mstate_real	&=		~mcAnyMove;
 
+
 	//поставить будильник
 	object().m_dwWakeUpTime = Level().GetGameTime() + sleep_time;
 
@@ -193,33 +220,35 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 
 	m_object->callback(GameObject::eActorSleep)( m_object->lua_game_object() );
 
+
+	m_actor_sleep_wnd			= xr_new<CUIActorSleepVideoPlayer>();
+	m_actor_sleep_wnd->Init		( (*m_get_sleep_video_name_callback)() );
+//	m_actor_sleep_wnd->Init		("car\\Movie-003_Rats_OutPut-010");
+
 	return easCanSleep;
 }
 
 void CActorCondition::Awoke()
 {
-	if(!IsSleeping()) return;
+	if(!IsSleeping())		return;
 
-	m_bIsSleeping				= false;
+	m_bIsSleeping			= false;
 
-	Level().Server->game->SetGameTimeFactor(object().m_fOldTimeFactor);
-
-	if ((GameID() == GAME_SINGLE)  &&ai().get_alife()) {
+	if ( ai().get_alife() ) {
 		NET_Packet		P;
 		P.w_begin		(M_SWITCH_DISTANCE);
 		P.w_float		(object().m_fOldOnlineRadius);
 		Level().Send	(P,net_flags(TRUE,TRUE));
 	}
 
+	m_actor_sleep_wnd->DeActivate	();
+	xr_delete						(m_actor_sleep_wnd);
 
 	VERIFY(m_object == smart_cast<CActor*>(Level().CurrentEntity()));
 	VERIFY(object().m_pSleepEffectorPP);
 
-	if(object().m_pSleepEffectorPP)
-	{
-		object().m_pSleepEffectorPP->m_eSleepState = CSleepEffectorPP::AWAKING;
-		object().m_pSleepEffectorPP = NULL;
-	}
+	object().m_pSleepEffectorPP->m_eSleepState = CSleepEffectorPP::AWAKING;
+	object().m_pSleepEffectorPP = NULL;
 
 	g_bShowHudInfo			= true;
 	
@@ -228,6 +257,13 @@ void CActorCondition::Awoke()
 //проверка можем ли мы спать на этом месте
 EActorSleep CActorCondition::CanSleepHere()
 {
+	if( m_can_sleep_callback && *m_can_sleep_callback){
+		if( (*m_can_sleep_callback)() )
+			return easCanSleep;
+		else
+			return easNotSolidGround;
+	}
+
 	if(0 != object().mstate_real) return easNotSolidGround;
 
 	collide::rq_result RQ;

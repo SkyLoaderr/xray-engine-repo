@@ -58,6 +58,8 @@ BOOL CSleepEffectorPP::Process(SPPInfo& pp)
 
 	clamp(factor,0.01f, 1.0f);
 
+	if(m_eSleepState==SLEEPING) return TRUE;
+		
 	SPPInfo	def;
 
 	pp.duality.h		= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			

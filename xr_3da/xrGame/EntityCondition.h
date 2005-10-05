@@ -11,7 +11,7 @@ class NET_Packet;
 class CEntityAlive;
 
 #include "hit_immunity.h"
-#include "../bone.h"
+//#include "../bone.h"
 
 class CEntityCondition: public CHitImmunity
 {
@@ -59,7 +59,7 @@ public:
 	void 					ChangeEntityMorale		(float value);
 
 	//hit_power задается от 0 до 100 (сложилось исторически)
-	virtual CWound*			ConditionHit			(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = BI_NONE);
+	virtual CWound*			ConditionHit			(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = u16(-1));
 	//обновления состояния с течением времени
 	virtual void			UpdateCondition			();
 	void					UpdateWounds			();

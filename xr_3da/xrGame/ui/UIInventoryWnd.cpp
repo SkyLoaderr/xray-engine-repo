@@ -35,6 +35,8 @@ using namespace InventoryUtilities;
 #include "../entitycondition.h"
 
 #include "../game_cl_base.h"
+#include "UISleepWnd.h"
+#include "../ActorCondition.h"
 
 #define MAX_ITEMS	70
 
@@ -139,11 +141,11 @@ void CUIInventoryWnd::Init()
 
 	if (GameID() == GAME_SINGLE)
 	{
-		AttachChild(&UISleepWnd);
-		xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
-		UISleepWnd.Init();
+		UISleepWnd				= xr_new<CUISleepWnd>();UISleepWnd->SetAutoDelete(true);
+		UISleepWnd->Init		();
+		xml_init.InitStatic		(uiXml, "sleep_window", 0, UISleepWnd);
+		AttachChild				(UISleepWnd);
 	}
-//	UISleepWnd.SetText(*string_table("rest"));
 
 	//Списки Drag&Drop
 	AttachChild(&UIBeltList);
@@ -315,6 +317,9 @@ void CUIInventoryWnd::Show()
 ///        pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);//, false);
 		pActor->SetWeaponHideState(whs_INVENTORY_MENU, TRUE);
 	}
+
+//	if(UISleepWnd)
+//		UISleepWnd->Show( Actor()->conditions().CanSleepHere()==easCanSleep );
 
 	//дать возможность скриптам определить, что актер зашел в меню
 	SendInfoToActor("ui_inventory");

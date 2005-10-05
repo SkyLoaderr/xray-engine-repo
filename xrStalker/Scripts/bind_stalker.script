@@ -220,7 +220,7 @@ return true
 end
 
 function sleep_video_name_callback()
-	return "car\\trabantnoise"
+	return "sleep\\Movie-003_Rats_OutPut-010"
 end
 
 // this is test for section iteration

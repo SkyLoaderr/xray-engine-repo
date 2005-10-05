@@ -16,7 +16,7 @@ protected:
 	ref_texture		m_texture;
 	shared_str		m_fn;
 	Flags8			m_flags;
-	enum			{eAutoPlay =(1<<0),ePlaying=(1<<1),eStarted=(1<<2)};
+	enum			{eStoping=(1<<0),ePlaying=(1<<1),eLooped=(1<<2)};
 private:
 	void			OnBtnPlayClicked		();
 	void			OnBtnPauseClicked		();
@@ -36,8 +36,10 @@ public:
 
 class CUIActorSleepVideoPlayer : public CUIVideoPlayerWnd
 {
+	typedef CUIVideoPlayerWnd inherited;
 public:
 			void	Activate				();
 			void	DeActivate				();
 	virtual bool	NeedCursor				() const {return false;}
+	virtual bool OnKeyboard					(int dik, EUIMessages keyboard_action);
 };
