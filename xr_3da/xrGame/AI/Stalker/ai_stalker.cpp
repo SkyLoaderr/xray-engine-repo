@@ -491,8 +491,26 @@ void CAI_Stalker::update_object_handler	()
 	}
 }
 
+struct bug_tracker {
+	CCustomMonster		*m_object;
+
+	bug_tracker		(CCustomMonster *object)
+	{
+		VERIFY					(object);
+		m_object				= object;
+	}
+
+	~bug_tracker	()
+	{
+		VERIFY2					(m_object->getEnabled(), *m_object->cName());
+	}
+};
+
 void CAI_Stalker::UpdateCL()
 {
+	VERIFY2						(getEnabled(), *cName());
+	bug_tracker					bug_tracker(this);
+
 //	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
 //		Msg				("[%6d][CL][%s]",Device.dwTimeGlobal,*cName());
 	if (g_Alive()) {
@@ -580,6 +598,8 @@ CPHDestroyable*		CAI_Stalker::		ph_destroyable	()
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
+	VERIFY2						(getEnabled(), *cName());
+	bug_tracker					bug_tracker(this);
 //	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
 //		Msg				("[%6d][SH][%s]",Device.dwTimeGlobal,*cName());
 	// Queue shrink

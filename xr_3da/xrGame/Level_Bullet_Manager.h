@@ -35,7 +35,6 @@ struct SBullet
 	u16				parent_id			;			//ID персонажа который иницировал действие
 	u16				weapon_id			;			//ID оружия из которого была выпущены пуля
 	
-	Fvector			prev_pos			;			//для отладки предыдущая позиция
 	float			fly_dist			;			//дистанция которую пуля пролетела
 
 	//коэфициенты и параметры патрона
@@ -77,13 +76,16 @@ class CLevel;
 
 class CBulletManager
 {
-	DEFINE_VECTOR			(ref_sound,SoundVec,SoundVecIt);
-	DEFINE_VECTOR			(SBullet,BulletVec,BulletVecIt);
+	DEFINE_VECTOR						(ref_sound,SoundVec,SoundVecIt);
+	DEFINE_VECTOR						(SBullet,BulletVec,BulletVecIt);
+	typedef std::pair<float,float>		_hit		;
 	friend	CLevel;
 	struct	_event			{
 		BOOL				dynamic		;
+		_hit				result		;
 		SBullet				bullet		;
-		Fvector				end_point	;
+		Fvector				normal		;
+		Fvector				point		;
 		collide::rq_result	R			;
 		u16					tgt_material;
 	};
@@ -143,12 +145,12 @@ protected:
 	void					StaticObjectHit		(_event& E);
 
 	//попадание по любому объекту, на выходе - импульс и сила переданные пулей объекту
-	std::pair<float, float> ObjectHit			(SBullet* bullet, const Fvector& end_point, 
-												collide::rq_result& R, u16 target_material, const Fvector& hit_normal);
+	_hit					ObjectHit			(SBullet* bullet, const Fvector& end_point, 
+												collide::rq_result& R, u16 target_material, Fvector& hit_normal);
 	//отметка на пораженном объекте
 	void					FireShotmark		(SBullet* bullet, const Fvector& vDir, 
-												const Fvector &vEnd, collide::rq_result& R,  u16 target_material,
-												Fvector& vNormal, bool ShowMark = true);
+												const Fvector &vEnd,    collide::rq_result& R,  u16 target_material,
+												const Fvector& vNormal, bool ShowMark = true);
 	//просчет полета пули за некоторый промежуток времени
 	//принимается что на этом участке пуля движется прямолинейно
 	//и равномерно, а после просчета также изменяется текущая

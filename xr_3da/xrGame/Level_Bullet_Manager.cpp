@@ -39,7 +39,7 @@ void SBullet::Init(const Fvector& position,
 				   float tracer_length)
 {
 	flags._storage		= 0;
-	pos					= position;
+	pos 				= position;
 	speed = max_speed	= starting_speed;
 	VERIFY				(speed>0);
 
@@ -65,9 +65,9 @@ void SBullet::Init(const Fvector& position,
 	bullet_material_idx = cartridge.bullet_material_idx;
 	VERIFY			(u16(-1)!=bullet_material_idx);
 
-	flags.allow_tracer					= cartridge.m_flags.test(CCartridge::cfTracer);
-	flags.allow_ricochet				= cartridge.m_flags.test(CCartridge::cfRicochet);
-	flags.explosive						= cartridge.m_flags.test(CCartridge::cfExplosive);
+	flags.allow_tracer					= !!cartridge.m_flags.test(CCartridge::cfTracer);
+	flags.allow_ricochet				= !!cartridge.m_flags.test(CCartridge::cfRicochet);
+	flags.explosive						= !!cartridge.m_flags.test(CCartridge::cfExplosive);
 	render_offset = ::Random.randF		(0.5f,1.5f);
 }
 
@@ -232,7 +232,6 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 
 	if(!bullet->flags.ricochet_was)	{
 		//изменить положение пули
-		bullet->prev_pos = bullet->pos;
 		bullet->pos.mad(bullet->pos, cur_dir, range);
 		bullet->fly_dist += range;
 
@@ -319,7 +318,7 @@ void CBulletManager::Render	()
 		if(!bullet->flags.allow_tracer)	continue;
 
 		Fvector			dist;
-		dist.sub		(bullet->prev_pos,bullet->pos);
+		dist.mul		(bullet->dir,- bullet->speed*float(m_dwStepTime)/1000.f);
 		float length	= dist.magnitude();
 
 		if(length<m_fTracerLengthMin)
@@ -393,13 +392,14 @@ void CBulletManager::CommitEvents			()	// @ the start of frame
 	m_Events.clear_and_reserve	()	;
 }
 
-void CBulletManager::RegisterEvent			(BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material)
+void CBulletManager::RegisterEvent			(BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 tgt_material)
 {
 	m_Events.push_back	(_event())		;
 	_event&	E		= m_Events.back()	;
 	E.dynamic		= _dynamic			;
+	E.result		= ObjectHit			(bullet,end_point,R,tgt_material,E.normal);
 	E.bullet		= *bullet			;
-	E.end_point		= end_point			;
+	E.point			= end_point			;
 	E.R				= R					;
-	E.tgt_material	= target_material	;
+	E.tgt_material	= tgt_material		;
 }

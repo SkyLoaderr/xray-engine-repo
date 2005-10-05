@@ -349,7 +349,7 @@ void CCustomMonster::update_sound_player()
 
 void CCustomMonster::UpdateCL	()
 { 
-	inherited::UpdateCL					();
+	inherited::UpdateCL			();
 
 	CScriptEntity::process_sound_callbacks();
 
@@ -369,7 +369,7 @@ void CCustomMonster::UpdateCL	()
 
 	if	(NET.empty())	return;
 
-	m_dwCurrentTime	= Device.dwTimeGlobal;
+	m_dwCurrentTime		= Device.dwTimeGlobal;
 
 	// distinguish interpolation/extrapolation
 	u32	dwTime			= Level().timeServer()-NET_Latency;

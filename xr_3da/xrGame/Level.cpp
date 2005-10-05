@@ -364,7 +364,7 @@ void CLevel::OnFrame	()
 {
 	// commit events from bullet manager from prev-frame
 	Device.Statistic.TEST0.Begin		();
-	BulletManager().CommitRenderSet		();
+	BulletManager().CommitEvents		();
 	Device.Statistic.TEST0.End			();
 
 	// Client receive

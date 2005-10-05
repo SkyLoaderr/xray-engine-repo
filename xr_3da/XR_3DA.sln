@@ -266,13 +266,13 @@ Global
 		SccProjectName25 = \u0022$/xrLUA/LUA_TEST\u0022,\u0020NCMAAAAA
 		SccLocalPath25 = ..\\xrLUA\\LUA_TEST
 		CanCheckoutShared = true
-		SccProjectUniqueName26 = X:\\gamedata\\xrstalker.vcproj
-		SccProjectName26 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
-		SccLocalPath26 = X:\\gamedata
+		SccProjectUniqueName26 = ..\\xrLUA_JIT\\xrLUA_JIT.vcproj
+		SccProjectName26 = \u0022$/xrLUA_JIT\u0022,\u0020KGFBAAAA
+		SccLocalPath26 = ..\\xrLUA_JIT
 		CanCheckoutShared = true
-		SccProjectUniqueName27 = ..\\xrLUA_JIT\\xrLUA_JIT.vcproj
-		SccProjectName27 = \u0022$/xrLUA_JIT\u0022,\u0020KGFBAAAA
-		SccLocalPath27 = ..\\xrLUA_JIT
+		SccProjectUniqueName27 = X:\\gamedata\\xrstalker.vcproj
+		SccProjectName27 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
+		SccLocalPath27 = X:\\gamedata
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -299,8 +299,8 @@ Global
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Debug.ActiveCfg = Debug|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Debug.Build.0 = Debug|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.DebugNoExceptions.ActiveCfg = Debug|Win32
-		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.ActiveCfg = Mixed|Win32
-		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.Build.0 = Mixed|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.ActiveCfg = Debug|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.Build.0 = Debug|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Release.ActiveCfg = Release|Win32
 		{200652A6-043E-4634-8837-87983B3BD5E0}.Release.Build.0 = Release|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Debug.ActiveCfg = Debug|Win32
