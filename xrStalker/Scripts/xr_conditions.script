@@ -23,6 +23,11 @@ function actor_dead(actor, npc)
 	return false
 end
 
+function see_npc(actor, npc, p)
+    local npc1 = level_object_by_sid(p[1])
+    return npc and npc1 and npc:see(npc1)
+end
+
 -- проверка того что дистанция до обьекта <= заданной
 -- параметры: [sid,dist]
 function distance_to_obj_le(actor, npc, p)
