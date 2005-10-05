@@ -47,7 +47,7 @@ function action_go_position:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	
-	self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id())
+	self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id(), self.a.radius)
 end
 function action_go_position:execute ()
 	action_base.execute (self)
@@ -58,7 +58,7 @@ function action_go_position:execute ()
 		end
 	end	
 	if self.a.pos_vertex == nil then
-		self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id())
+		self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id(), self.a.radius)
 	end
 		
 	if not self.object:accessible(self.a.pos_vertex) then
@@ -261,7 +261,7 @@ function CKampManager:selectPosition(npc_id)
 	--printf("KAMP [%s] position table", npc_id)
 	print_table(self.position)
 end
-function CKampManager:getDestVertex(npc_id)
+function CKampManager:getDestVertex(npc_id, radius)
 	--printf("get dest Vertex called [%s]", npc_id)
 	if self.npc[npc_id].position == nil then
 		abort("get dest Vertex: nil [%s]", npc_id)
@@ -274,7 +274,7 @@ function CKampManager:getDestVertex(npc_id)
 		return position.vertex
 	end
 	-- высчитываем вертех по направлению
-   	local pp = level.vertex_in_direction(self.center, self.position[self.npc[npc_id].position].dir, 2)
+   	local pp = level.vertex_in_direction(self.center, self.position[self.npc[npc_id].position].dir, radius)
    	pp = level.vertex_in_direction(pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
 	--printf("vertex selected [%s]", npc_id)   	
 	return pp		
@@ -698,6 +698,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
     
 	st.center_point = utils.cfg_get_string(ini, section, "center_point", npc, true,  gulag_name)
+	st.radius		= utils.cfg_get_number(ini, section, "radius", npc, false, 2)
+	
 	if kamps[st.center_point] == nil then
 		kamps[st.center_point] = CKampManager(st.center_point)
 	end
