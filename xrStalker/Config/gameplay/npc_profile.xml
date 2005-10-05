@@ -60,6 +60,10 @@
 		<class>esc_soldier_regular</class>
 	</character>	
 	
+	<character id="esc_soldier_blokpost">
+		<class>esc_soldier_blokpost</class>
+	</character>
+	
 	<character id="esc_soldier_specnaz">
 		<class>esc_soldier_specnaz</class>
 	</character>
