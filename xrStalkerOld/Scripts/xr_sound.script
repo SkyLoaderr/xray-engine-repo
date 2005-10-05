@@ -33,15 +33,19 @@ function get_sound(path, tt, npc)
 end
 -- Формирование ключа персонажа
 function get_key(npc)
-	local group = npc:group()
 	local key
-	if group == 0 then
-		key = utils.to_str(npc:id())
+
+	-- формирование ключа
+	local overrides = xr_logic.generic_scheme_overrides(npc)
+	if overrides and
+	   overrides.soundgroup 
+	then
+		key = overrides.soundgroup
 	else
-		local team = npc:team()
-		local squad = npc:squad()
-		key = utils.to_str(team).."_"..utils.to_str(squad).."_"..utils.to_str(group)
+		key = utils.to_str(npc:id())
 	end
+	
+	-- апдейт таблиц :) не менять!
 	if xr_sound.key_by_id[npc:id()] ~= key then
 		if xr_sound.group_idle[xr_sound.key_by_id[npc:id()]] ~= nil	then
 		   xr_sound.group_idle[xr_sound.key_by_id[npc:id()]].num_in_group = xr_sound.group_idle[xr_sound.key_by_id[npc:id()]].num_in_group - 1
