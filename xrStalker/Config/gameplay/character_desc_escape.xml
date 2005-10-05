@@ -760,8 +760,8 @@
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
-			wpn_val \n
-			ammo_9x39_ap = 1 \n
+			wpn_ak74 =1, silencer \n
+			ammo_5.45x39_fmj \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
@@ -790,8 +790,8 @@
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
-			wpn_abakan = 1, scope launcher cond=0.9 \n
-	    	ammo_5.45x39_ap = 1 \n
+			wpn_ak74 =1, silencer \n
+			ammo_5.45x39_fmj \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
