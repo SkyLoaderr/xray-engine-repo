@@ -452,6 +452,9 @@ protected:
 	//для подсчета в GetAmmoCurrent
 	mutable int				iAmmoCurrent;
 	mutable u32				m_dwAmmoCurrentCalcFrame;	//кадр на котором просчитали кол-во патронов
+	//  [10/5/2005]
+	bool					m_bAmmoWasSpawned;
+	//  [10/5/2005]
 
 	virtual bool 			IsNecessaryItem	    (CInventoryItem* item);
 

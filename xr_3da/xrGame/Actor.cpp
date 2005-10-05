@@ -1382,8 +1382,8 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemTake(inventory_item);
 	if (OnClient()) return;
 
-//	if (GameID()!=GAME_SINGLE)
-//			SpawnAmmoForWeapon(inventory_item);
+	if (GameID()==GAME_ARTEFACTHUNT)
+			SpawnAmmoForWeapon(inventory_item);
 }
 
 void CActor::OnItemDrop			(CInventoryItem *inventory_item)
@@ -1404,7 +1404,7 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 			RemoveAmmoForWeapon(inventory_item);
 		}break;
 	};
-	*/
+*/	
 }
 
 
@@ -1514,6 +1514,7 @@ float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 
 void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 {
+	if (OnClient()) return;
 	if (!pIItem) return;
 
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
@@ -1526,6 +1527,7 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 
 void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 {
+	if (OnClient()) return;
 	if (!pIItem) return;
 
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
