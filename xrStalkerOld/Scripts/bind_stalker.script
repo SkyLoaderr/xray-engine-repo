@@ -11,10 +11,12 @@ class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:__init (obj) super(obj)
 	self.bCheckStart = false
+	self.weather_manager = level_weathers.WeatherManager()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_spawn(data)
-	
+	printf("actor net spawn")		
+
 	self.bCheckStart = true
 
 	if object_binder.net_spawn(self,data) == false then
@@ -22,8 +24,8 @@ function actor_binder:net_spawn(data)
 	end
 
 	db.add_actor(self.object)
-
-	self.weather_manager = level_weathers.WeatherManager()
+	
+	self.weather_manager:reset()
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------

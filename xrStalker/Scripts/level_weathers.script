@@ -4,6 +4,10 @@ function WeatherManager:__init()
 	self.weather_change_day = 0
 	self.update_time = 0
 	self.update_level = ""
+end
+
+function WeatherManager:reset()
+	--printf					("WeatherManager:WeatherManager():Reset()")
 	-- Загрузить кондлист с погодой.
 	local weather = utils.cfg_get_string(ini_file("game.ltx"), level.name(), "weathers", db.actor, false, "", "default")
 	if weather == "default" then
@@ -32,8 +36,8 @@ function WeatherManager:load(F)
 end
 
 function WeatherManager:save(F)
-	F:r_stringZ				(self.update_level);
-	F:r_u32					(self.update_time);
+	F:w_stringZ				(self.update_level);
+	F:w_u32					(self.update_time);
 end
 
 function WeatherManager:update()
