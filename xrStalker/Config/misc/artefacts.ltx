@@ -24,37 +24,37 @@ af_electra_moonlight = zone_witches_galantine, 8, 100.0
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
 ;----------------------------------------------------------------------------------------------------------------------------------------
-starting					=	5.0,		anomaly\gravi_blowout2,	0.5, 1.0, 1.5,  	5.0,			"anomaly2\artefact_gravi_blast_start",	"idle"
-flying						=	2.0,		heart\8,				0.8, 1.0, 1.2,  	3.0,			"anomaly2\artefact\artefact_gravi",				"idle"
-idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 1,    	0.0,			"anomaly2\artefact_gravi_blast_finished",	"idle"				
-spawning					=	0.5,		"",						0.9, 1.1, 1.01,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
+starting					=	5.0,		anomaly\gravi_idle00,	0.5, 1.0, 1.5,  	5.0,			"anomaly2\artefact_gravi_blast_start",	"idle"
+flying						=	2.0,		anomaly\gravi_idle01,	0.8, 1.0, 1.2,  	3.0,			"anomaly2\artefact\artefact_gravi",				"idle"
+idle_before_spawning		=	5.0,		anomaly\gravi_blowout5,	1.0, 1.0, 1,    	0.0,			"anomaly2\artefact_gravi_blast_finished",	"idle"				
+spawning					=	1,  		anomaly\gravity_entrance,	0.9, 1.1, 1.01,  	0.0,		"",		"idle"
 
 [af_activation_bold]
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
 ;----------------------------------------------------------------------------------------------------------------------------------------
-starting					=	5.0,		anomaly\gravi_blowout2,	0.8, 1.5, 0.9,  	5.0,			"anomaly2\artefact_bold_blast_start",	"idle"
-flying						=	2.0,		heart\8,				0.8, 0.9, 0.8,  	2.0,			"anomaly2\artefact\artefact_zharka",				"idle"
-idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.1, 1.0,  	0.0,			"anomaly2\artefact_bold_blast_finished",	"idle"				
-spawning					=	0.5,		"",						1.0, 1.0, 0.5,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
+starting					=	5.0,		anomaly\gravi_idle00,	0.8, 1.5, 0.9,  	5.0,			"anomaly2\artefact_bold_blast_start",	"idle"
+flying						=	2.0,		anomaly\gravi_idle01,	0.8, 0.9, 0.8,  	2.0,			"anomaly2\artefact\artefact_zharka",				"idle"
+idle_before_spawning		=	2.0,		anomaly\gravity_entrance,1.0, 1.1, 1.0,  	0.0,			"anomaly2\artefact_bold_blast_finished",	"idle"				
+spawning					=	0.5,		anomaly\pux_blast,  	1.0, 1.0, 0.5,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
 
 [af_activation_mincer]
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
 ;----------------------------------------------------------------------------------------------------------------------------------------
-starting					=	5.0,		anomaly\gravi_blowout2,	0.5, 1.0, 1.5,  	5.0,			"anomaly2\artefact_gravi_blast_start",	"idle"
-flying						=	2.0,		heart\8,				0.8, 1.0, 1.2,  	3.0,			"anomaly2\artefact\artefact_mincer",				"idle"
-idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 1.0,  	0.0,			"anomaly2\artefact_gravi_blast_finished",	"idle"				
-spawning					=	0.5,		"",						1.0, 1.0, 0.5,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
+starting					=	5.0,		anomaly\gravi_idle00,	0.5, 1.0, 1.5,  	5.0,			"anomaly2\artefact_gravi_blast_start",	"idle"
+flying						=	2.0,		anomaly\gravi_idle01,	0.8, 1.0, 1.2,  	3.0,			"anomaly2\artefact\artefact_mincer",				"idle"
+idle_before_spawning		=	5.0,		anomaly\gravi_blowout2,	1.0, 1.0, 1.0,  	0.0,			"anomaly2\artefact_gravi_blast_finished",	"idle"				
+spawning					=	0.0,		"",						1.0, 1.0, 0.5,  	0.0,			"",		"idle"
 
 [af_activation_electra]
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
 ;----------------------------------------------------------------------------------------------------------------------------------------
-starting					=	5.0,		anomaly\gravi_blowout2,	0.8, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_start",	"idle"
-flying						=	2.0,		heart\8,				1.0, 1.0, 1.0,  	5.0,			"anomaly2\artefact\artefact_electra",				"idle"
+starting					=	5.0,		anomaly\bfuzz_blowout,	0.8, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_start",	"idle"
+flying						=	2.0,		anomaly\electra_idle1,	1.0, 1.0, 1.0,  	5.0,			"anomaly2\artefact\artefact_electra",				"idle"
 idle_before_spawning		=	0.0,		"",	                	1.0, 1.0, 2.5,  	0,		    	"",	"idle"				
-spawning					=	2,		    "",						1.0, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_finished",		"idle"
+spawning					=	2,		    "anomaly\pux_blast",	1.0, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_finished",		"idle"
 
 ; Артефакты для аномалии "Комариная плешь"
 
