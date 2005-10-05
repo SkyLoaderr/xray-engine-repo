@@ -318,6 +318,9 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_fAttenuation				= Z->m_attn;
 	m_dwPeriod					= Z->m_period;
 	m_owner_id					= Z->m_owner_id;
+	if(m_owner_id != u32(-1))
+		m_ttl					= Device.dwTimeGlobal + 40000;// 40 sec
+
 	if (GameID() != GAME_SINGLE)
 		m_zone_flags.set(eSpawnBlowoutArtefacts,	FALSE);
 
@@ -552,6 +555,11 @@ void CCustomZone::shedule_Update(u32 dt)
 	if (!o_fastmode)		UpdateWorkload	(dt);
 
 	UpdateOnOffState	();
+
+	if(m_owner_id != u32(-1)){
+		if(Local() && Device.dwTimeGlobal > m_ttl)
+			DestroyObject ();
+	}
 }
 
 void CCustomZone::feel_touch_new	(CObject* O) 
