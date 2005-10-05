@@ -65,9 +65,9 @@ function hit_obj(actor, npc, p)
 
 	--h.direction = vector(0, -1, 0)	
 	if p[5] then
-	    h.direction = utils.vector_copy_by_val(patrol(p[5]):point(0)):sub(obj:position())
+	    h.direction = vector():sub(patrol(p[5]):point(0), obj:position())
 	else
-	    h.direction = utils.vector_copy_by_val(npc:position()):sub(obj:position())
+	    h.direction = vector():sub(npc:position(), obj:position())
 	end
 
 	h.draftsman = npc --nil --obj
