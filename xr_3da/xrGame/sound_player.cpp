@@ -98,13 +98,19 @@ u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max
 		LPSTR						S = (LPSTR)&s;
 		_GetItem					(prefix,j,temp);
 		strconcat					(S,*m_sound_prefix,temp);
-		if (FS.exist(fn,"$game_sounds$",S,".ogg"))
-			sounds.push_back		(add(type,S,data));
+		if (FS.exist(fn,"$game_sounds$",S,".ogg")) {
+			ref_sound				*temp = add(type,S,data);
+			if (temp)
+				sounds.push_back	(temp);
+		}
 		for (u32 i=0; i<max_count; ++i){
 			string256				name;
 			sprintf					(name,"%s%d",S,i);
-			if (FS.exist(fn,"$game_sounds$",name,".ogg"))
-				sounds.push_back	(add(type,name,data));
+			if (FS.exist(fn,"$game_sounds$",name,".ogg")) {
+				ref_sound			*temp = add(type,name,data);
+				if (temp)
+					sounds.push_back(temp);
+			}
 		}
 	}
 #ifdef DEBUG
