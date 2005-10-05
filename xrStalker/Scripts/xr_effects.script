@@ -247,7 +247,7 @@ end
 
 function esc_wolf_thanks(actor, npc)
 	if actor:dont_has_info("esc_wolf_thanks_complete") then
-		news_manager.send_tip(actor, "esc_wolf_thanks", 0, "stalker", 0)
+		news_manager.send_tip(actor, "esc_wolf_thanks", 0, "wolf", 0)
 		actor:give_info_portion("esc_path_to_lager")
 		actor:give_info_portion("esc_wolf_thanks_complete")
 	end

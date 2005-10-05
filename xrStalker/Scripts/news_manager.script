@@ -68,7 +68,8 @@ tips_icons = {
 	arena    = { 350, 150 },
 	stalker  = { 100, 150 },
 	krot     = { 200,  50 },
-	barman   = { 400,  50 }
+	barman   = { 400,  50 },
+	wolf	 = { 0, 50}
 }
 
 function send_news(actor, news_id, timeout, showtime)
