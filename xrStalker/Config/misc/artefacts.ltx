@@ -6,20 +6,55 @@
 ;Артефакты, которые при активизации создают аномальные зоны
 ;формат: {секция_артефакта} = {секция_зоны},Radius,Power
 [artefact_spawn_zones]
-af_night_star = zone_mosquito_bald_weak, 5.0, 50.0
-af_gold_fish = zone_gravi_zone_weak, 5.0, 50.0
+af_medusa = zone_mosquito_bald_weak, 3.0, 30.0
+af_cristall_flower = zone_mosquito_bald_weak, 5.0, 50.0
+af_night_star = zone_mosquito_bald_weak, 8.0, 100.0
+af_vyvert = zone_gravi_zone_weak, 3.0, 30.0
+af_gravi = zone_gravi_zone_weak, 5.0, 50.0
+af_gold_fish = zone_gravi_zone_weak, 8.0, 100.0
 af_cristall = torrid_zone, 5.0, 50.0
-af_soul = zone_mincer_weak, 5, 50.0
+af_blood = zone_mincer_weak, 3, 30.0
+af_mincer_meat = zone_mincer_weak, 5, 50.0
+af_soul = zone_mincer_weak, 8, 100.0
+af_electra_sparkler = zone_witches_galantine, 3, 30.0
+af_electra_flash = zone_witches_galantine, 5, 50.0
+af_electra_moonlight = zone_witches_galantine, 8, 100.0
 
-[af_activation_common]
+[af_activation_gravi]
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
 ;----------------------------------------------------------------------------------------------------------------------------------------
-starting					=	2.0,		anomaly\gravi_blowout2,	2.0, 1.0, 0.5,  	5.0,			"explosions\campfire_boar_grill",	"idle"
-flying						=	5.0,		heart\8,				1.0, 2.0, 0.5,  	5.0,			"ghoul\snow_effect",				"idle"
-idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 2.5,  	5.0,			"explosions\campfire_boar_grill",	"idle"				
+starting					=	5.0,		anomaly\gravi_blowout2,	0.5, 1.0, 1.5,  	5.0,			"anomaly2\artefact_gravi_blast_start",	"idle"
+flying						=	2.0,		heart\8,				0.8, 1.0, 1.2,  	3.0,			"anomaly2\artefact\artefact_gravi",				"idle"
+idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 1,    	0.0,			"anomaly2\artefact_gravi_blast_finished",	"idle"				
+spawning					=	0.5,		"",						0.9, 1.1, 1.01,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
+
+[af_activation_bold]
+;----------------------------------------------------------------------------------------------------------------------------------------
+;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
+;----------------------------------------------------------------------------------------------------------------------------------------
+starting					=	5.0,		anomaly\gravi_blowout2,	0.8, 1.5, 0.9,  	5.0,			"anomaly2\artefact_bold_blast_start",	"idle"
+flying						=	2.0,		heart\8,				0.8, 0.9, 0.8,  	2.0,			"anomaly2\artefact\artefact_zharka",				"idle"
+idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.1, 1.0,  	0.0,			"anomaly2\artefact_bold_blast_finished",	"idle"				
 spawning					=	0.5,		"",						1.0, 1.0, 0.5,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
 
+[af_activation_mincer]
+;----------------------------------------------------------------------------------------------------------------------------------------
+;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
+;----------------------------------------------------------------------------------------------------------------------------------------
+starting					=	5.0,		anomaly\gravi_blowout2,	0.5, 1.0, 1.5,  	5.0,			"anomaly2\artefact_gravi_blast_start",	"idle"
+flying						=	2.0,		heart\8,				0.8, 1.0, 1.2,  	3.0,			"anomaly2\artefact\artefact_mincer",				"idle"
+idle_before_spawning		=	2.0,		anomaly\pux_blast,		1.0, 1.0, 1.0,  	0.0,			"anomaly2\artefact_gravi_blast_finished",	"idle"				
+spawning					=	0.5,		"",						1.0, 1.0, 0.5,  	5.0,			"anomaly2\gravi_anomaly_00",		"idle"
+
+[af_activation_electra]
+;----------------------------------------------------------------------------------------------------------------------------------------
+;format:						time(sec),	sound_name,	         	light_R,G,B,  	light_range,    	particle_name,						af_animation_name
+;----------------------------------------------------------------------------------------------------------------------------------------
+starting					=	5.0,		anomaly\gravi_blowout2,	0.8, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_start",	"idle"
+flying						=	2.0,		heart\8,				1.0, 1.0, 1.0,  	5.0,			"anomaly2\artefact\artefact_electra",				"idle"
+idle_before_spawning		=	0.0,		"",	                	1.0, 1.0, 2.5,  	0,		    	"",	"idle"				
+spawning					=	2,		    "",						1.0, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_finished",		"idle"
 
 ; Артефакты для аномалии "Комариная плешь"
 
@@ -71,7 +106,7 @@ power_restore_speed			= 0.0
 bleeding_restore_speed		= 0.0
 hit_absorbation_sect		= af_medusa_absorbation
 
-;artefact_activation_seq		= af_activation_common
+artefact_activation_seq		= af_activation_bold
 
 [af_medusa_absorbation]
 burn_immunity = 1.0				;коэффициенты иммунитета 
@@ -124,6 +159,8 @@ trail_light_range = 0.5
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
+
+artefact_activation_seq		= af_activation_bold
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
@@ -185,7 +222,7 @@ trail_light_range = 3.0
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
-artefact_activation_seq		= af_activation_common
+artefact_activation_seq		= af_activation_bold
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
@@ -250,6 +287,8 @@ lights_enabled = false	;true			;???? ??????
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
+artefact_activation_seq		= af_activation_gravi
+
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
 radiation_restore_speed = 0.001
@@ -310,7 +349,7 @@ trail_light_range = 0.5
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
-
+artefact_activation_seq		= af_activation_gravi
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
 radiation_restore_speed = 0.0015
@@ -372,7 +411,7 @@ trail_light_range = 2.0
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
-artefact_activation_seq		= af_activation_common
+artefact_activation_seq		= af_activation_gravi
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
@@ -558,7 +597,7 @@ trail_light_range = 3.0
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
-artefact_activation_seq		= af_activation_common
+artefact_activation_seq		= af_activation_mincer
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.000			
@@ -620,7 +659,7 @@ lights_enabled = false	;true			;???? ??????
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
-
+artefact_activation_seq		= af_activation_mincer
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.001			
 radiation_restore_speed = 0.000
@@ -679,7 +718,7 @@ lights_enabled = false	;true			;???? ??????
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
-
+artefact_activation_seq		= af_activation_mincer
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0015			
 radiation_restore_speed = 0.000
@@ -739,7 +778,7 @@ lights_enabled = false
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
-artefact_activation_seq		= af_activation_common
+artefact_activation_seq		= af_activation_mincer
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.01			
@@ -803,7 +842,7 @@ trail_light_range = 0.50
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
-
+artefact_activation_seq		= af_activation_electra
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
 radiation_restore_speed = 0.000
@@ -864,7 +903,7 @@ trail_light_range = 2.5
 
 ;влияние артефакта на поясе у актера
 actor_properties = on
-
+artefact_activation_seq		= af_activation_electra
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
 radiation_restore_speed = 0.0005
@@ -926,7 +965,7 @@ trail_light_range = 1.0
 ;влияние артефакта на поясе у актера
 actor_properties = on
 
-artefact_activation_seq		= af_activation_common
+artefact_activation_seq		= af_activation_electra
 
 ;скорости увеличения (уменьшения) 
 health_restore_speed = 0.0			
