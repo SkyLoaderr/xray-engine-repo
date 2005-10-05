@@ -17,8 +17,8 @@ CActorMemory::CActorMemory					(CActor *actor)
 {
 	m_visual								= xr_new<CVisualMemoryManager>((CCustomMonster*)0,(CAI_Stalker*)0,actor);
 	m_actor									= actor;
-	shedule.t_min							= 500;
-	shedule.t_max							= 1000;
+	shedule.t_min							= _max(READ_IF_EXISTS(pSettings,r_u32,actor->cNameSect(),"memory_update_time",50),1);
+	shedule.t_max							= shedule.t_min;
 	shedule_register						();
 	m_state									= 0;
 }
@@ -45,7 +45,7 @@ float CActorMemory::feel_vision_mtl_transp	(CObject* O, u32 element)
 
 float CActorMemory::shedule_Scale			()
 {
-	return						(.5f);
+	return									(0.f);
 }
 
 void CActorMemory::eye_pp_s01				()
