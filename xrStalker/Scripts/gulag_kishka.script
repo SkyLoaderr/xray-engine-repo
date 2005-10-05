@@ -3,20 +3,20 @@ local t = {}
 function load_job(sj, gname, type, squad, groups)
 
 
-if type == "kem1" then
-		t = { section = "logic@kem1_camper1",
+if type == "ds_kem1" then
+		t = { section = "logic@ds_kem1_camper1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
        table.insert(sj, t)	
-       t = { section = "logic@kem1_camper2",
+       t = { section = "logic@ds_kem1_camper2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
-	   t = { section = "logic@kem1_camper3",
+	   t = { section = "logic@ds_kem1_camper3",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -24,15 +24,15 @@ if type == "kem1" then
 		table.insert(sj, t)	
        end
        
-       if type == "ptr" then
-		t = { section = "logic@ptr_patrol1",
+       if type == "ds_ptr" then
+		t = { section = "logic@ds_ptr_patrol1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 
-       t = { section = "logic@ptr_patrol2",
+       t = { section = "logic@ds_ptr_patrol2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -41,14 +41,14 @@ if type == "kem1" then
        end
        
        if type == "ptr2" then
-		t = { section = "logic@ptr2_patrol1",
+		t = { section = "logic@ds_ptr2_patrol1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 
-       t = { section = "logic@ptr2_patrol2",
+       t = { section = "logic@ds_ptr2_patrol2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -56,15 +56,15 @@ if type == "kem1" then
 		table.insert(sj, t)	
        end
        
-       if type == "ptr3" then
-		t = { section = "logic@ptr3_patrol1",
+       if type == "ds_ptr3" then
+		t = { section = "logic@ds_ptr3_patrol1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 
-       t = { section = "logic@ptr3_patrol2",
+       t = { section = "logic@ds_ptr3_patrol2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -72,7 +72,7 @@ if type == "kem1" then
 		table.insert(sj, t)	
        end
        
-       if type == "ptr4" then
+       if type == "ds_ptr4" then
 		t = { section = "logic@ds_ptr4_patrol1",
 			idle = 0,
 			prior = 1, state = {0},
@@ -180,23 +180,23 @@ end
 
 function load_states(gname, type)
 
-if type == "kem1" then
+if type == "ds_kem1" then
 		return function(gulag)
 			return 0
 		end
 	end
 	
-	if type == "ptr" then
+	if type == "ds_ptr" then
 		return function(gulag)
 			return 0
 		end
 	end
-	if type == "ptr2" then
+	if type == "ds_ptr2" then
 		return function(gulag)
 			return 0
 		end
 	end
-	if type == "ptr3" then
+	if type == "ds_ptr3" then
 		return function(gulag)
 			return 0
 		end
@@ -258,7 +258,7 @@ end
 
 function checkStalker(npc_community, gulag_type)
 
-	if gulag_type == "kem1" then
+	if gulag_type == "ds_kem1" then
 	   return npc_community == "military"
 	end
 	
@@ -270,13 +270,13 @@ function checkStalker(npc_community, gulag_type)
 	   return npc_community == "military"
 	end
 	
-	if gulag_type == "ptr" then
+	if gulag_type == "ds_ptr" then
 	   return npc_community == "military"
 	end
-	if gulag_type == "ptr2" then
+	if gulag_type == "ds_ptr2" then
 	   return npc_community == "military"
 	end
-	if gulag_type == "ptr3" then
+	if gulag_type == "ds_ptr3" then
 	   return npc_community == "military"
 	end
 	
