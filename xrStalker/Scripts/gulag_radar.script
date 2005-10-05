@@ -390,12 +390,15 @@ function load_states(gname, type)
 		return function(gulag)
 			local actor = db.actor
 			if not actor then
-					return gulag.state
-
-					elseif	gulag.state == 0 and game.get_game_time():diffSec( gulag.stateBegin ) > 600 then return 1
-					elseif	gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 150 then return 2
-					elseif	gulag.state == 2 and game.get_game_time():diffSec( gulag.stateBegin ) > 200 then return 0
-					else	return gulag.state
+				return gulag.state
+			elseif gulag.state == 0 and game.get_game_time():diffSec( gulag.stateBegin ) > 600 then
+				return 1
+			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 150 then
+				return 2
+			elseif gulag.state == 2 and game.get_game_time():diffSec( gulag.stateBegin ) > 200 then
+				return 0
+			else
+				return gulag.state
 			end
 
 		end
