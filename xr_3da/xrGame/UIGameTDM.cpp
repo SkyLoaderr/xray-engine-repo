@@ -93,7 +93,9 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 		{
 			if (m_game)
 			{
-				m_game->Set_ShowPlayerNames(true);
+//by andy
+//				m_game->Set_ShowPlayerNames(true);
+				m_game->Set_ShowPlayerNames( !m_game->Get_ShowPlayerNames() );
 				return true;
 			};
 		}break;
@@ -109,7 +111,7 @@ bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 			{
 				if (m_game)
 				{
-					m_game->Set_ShowPlayerNames(false);
+//					m_game->Set_ShowPlayerNames(false);
 					return true;
 				};
 			}break;
