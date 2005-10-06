@@ -110,8 +110,6 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 
 	m_level_sound_manager		= xr_new<CLevelSoundManager>();
 
-	m_patrol_path_storage		= xr_new<CPatrolPathStorage>();
-
 	m_space_restriction_manager = xr_new<CSpaceRestrictionManager>();
 
 	m_seniority_hierarchy_holder= xr_new<CSeniorityHierarchyHolder>();
@@ -170,39 +168,38 @@ extern CAI_Space *g_ai_space;
 CLevel::~CLevel()
 {
 //	g_pGameLevel		= NULL;
-	Msg					("- Destroying level");
+	Msg							("- Destroying level");
 
-	Engine.Event.Handler_Detach(eEntitySpawn,	this);
+	Engine.Event.Handler_Detach	(eEntitySpawn,	this);
 
-	Engine.Event.Handler_Detach(eEnvironment,	this);
-	Engine.Event.Handler_Detach(eChangeTrack,	this);
-	Engine.Event.Handler_Detach(eDemoPlay,		this);
-	Engine.Event.Handler_Detach(eChangeRP,		this);
+	Engine.Event.Handler_Detach	(eEnvironment,	this);
+	Engine.Event.Handler_Detach	(eChangeTrack,	this);
+	Engine.Event.Handler_Detach	(eDemoPlay,		this);
+	Engine.Event.Handler_Detach	(eChangeRP,		this);
 
 	if (ph_world)
 	{
-		ph_world->Destroy	();
-		xr_delete			(ph_world);
+		ph_world->Destroy		();
+		xr_delete				(ph_world);
 	}
 
 	// destroy PSs
 	for (POIt p_it=m_StaticParticles.begin(); m_StaticParticles.end()!=p_it; ++p_it)
 		CParticlesObject::Destroy(*p_it);
-	m_StaticParticles.clear ();
+	m_StaticParticles.clear		();
 
 	// Unload sounds
 	// unload prefetched sounds
-	sound_registry.clear	();
+	sound_registry.clear		();
+
 	// unload static sounds
 	for (u32 i=0; i<static_Sounds.size(); ++i){
 		static_Sounds[i]->destroy();
-		xr_delete			(static_Sounds[i]);
+		xr_delete				(static_Sounds[i]);
 	}
-	static_Sounds.clear		();
+	static_Sounds.clear			();
 
-	xr_delete				(m_level_sound_manager);
-
-	xr_delete					(m_patrol_path_storage);
+	xr_delete					(m_level_sound_manager);
 
 	xr_delete					(m_space_restriction_manager);
 
