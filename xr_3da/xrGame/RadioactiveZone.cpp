@@ -93,7 +93,7 @@ void CRadioactiveZone::UpdateWorkload					(u32	dt)
 				l_P.w_dir	(Fvector().set(0,0,0));
 				float dist = (*it).object->Position().distance_to(pos);
 				float power = Power(dist);
-				Msg("Zone Dist %f, Radiation Power %f, ", dist, power);
+///				Msg("Zone Dist %f, Radiation Power %f, ", dist, power);
 				l_P.w_float	(power/1000*dt);
 				l_P.w_s16	(BI_NONE);
 				l_P.w_vec3	(Fvector().set(0,0,0));
