@@ -574,7 +574,7 @@
 
 		<panic_threshold>0.1</panic_threshold>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -638,7 +638,7 @@
 		
 		<snd_config>characters_voice\human_02\</snd_config>
 
-		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<supplies>
 			[spawn] \n
             wpn_fort \n
