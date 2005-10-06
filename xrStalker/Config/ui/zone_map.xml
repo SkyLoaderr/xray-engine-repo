@@ -3,7 +3,7 @@
 <window>
 	<minimap>
 	<background x="9" y="6" width="177" height="185"> 
-		<texture>ui\ui_mg_back_map</texture>
+		<texture x="0" y="0" width="177" height="185">ui\ui_mg_back_map</texture>
 		<level_frame x="11" y="17" width="163" height="157">
 		</level_frame>
 	</background>
