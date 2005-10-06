@@ -91,21 +91,21 @@ end
 
 -- r_nums
 -- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
-if (version.isLua51)	then
-	loadstring("function r_nums( spawn_ini, section, line, ... )		local arg = {...}		if spawn_ini:line_exist( section, line ) then			local t = parse_nums( spawn_ini:r_string( section, line ) )			local n = table.getn( t )			if n == 0 then return unpack( arg ) end			while table.getn( t ) < arg.n do table.insert( t, t[n] ) end			return unpack( t )		else			return unpack( arg )		end	end	"
-	) ()
-else
-	function r_nums( spawn_ini, section, line, ... )
-		if spawn_ini:line_exist( section, line ) then
-			local t = parse_nums( spawn_ini:r_string( section, line ) )
-			local n = table.getn( t )
-			if n == 0 then return unpack( arg ) end
-			while table.getn( t ) < arg.n do table.insert( t, t[n] ) end
-			return unpack( t )
-		else
-			return unpack( arg )
-		end
-	end
+function r_nums(spawn_ini, section, line, ...)
+	local arg = {...}		
+	if spawn_ini:line_exist(section, line) then
+		local t = parse_nums(spawn_ini:r_string(section, line))
+		local n = table.getn(t)
+		if n == 0 then 
+			return unpack(arg) 
+		end			
+		while table.getn(t) < table.getn(arg) do 
+			table.insert(t,t[n]) 
+		end			
+		return unpack(t)
+	else
+		return unpack(arg)		
+	end	
 end
 
 ----------------------------------------------------------------------------------------------------------------------
