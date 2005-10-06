@@ -237,6 +237,7 @@ end
 function check_state_followers(gulag)
 	local state = gulag.state
 	local actor = db.actor
+    --printf("gulag <state>: prip followers check state(%d).", state)
 	if state == state_wait and actor:has_info("pri_followers_start") then
 		return state_wave1
 	end
@@ -621,7 +622,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 
     -- walkers
     prior = {6, 7, 8, 12, 12, 5}
-    for i, v in {1, 3, 4, 5, 6, 8} do
+    for i, v in pairs({1, 3, 4, 5, 6, 8}) do
         --- state: main
 	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
 		    idle = 0,
@@ -650,7 +651,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
     end
 
 	pred = {f_predicate8, f_predicate9, f_predicate10}
-	for i, v in {"rpg", "svd", "machine_gun"} do
+	for i, v in pairs({"rpg", "svd", "machine_gun"}) do
         --- state: main
 	    t = { section = "logic@" .. gname .. "_stalker_" .. v, 
 		    idle = 0,
@@ -670,7 +671,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
             {f_predicate6, f_predicate6, f_predicate6},
             {f_predicate7, f_predicate7, f_predicate6}}
     local pr, pd
-	for i, v in {4, 4, 3, 3, 3} do
+	for i, v in pairs({4, 4, 3, 3, 3}) do
 	    pr = prior[i]
 	    pd = pred[i]
 	    for j = 1, v do
@@ -700,7 +701,7 @@ function load_ltx_monolith(gname, type)
     res = "[danger@sound_small]\nignore_danger_sound = 20\n"
 
     -- alone patrol soldiers
-    for i, v in {1, 3, 4, 5, 6, 8} do
+    for i, v in pairs({1, 3, 4, 5, 6, 8}) do
         res = res.."[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
                    "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
@@ -713,7 +714,7 @@ function load_ltx_monolith(gname, type)
     end
 
     -- group patrol soldiers
-    for i, v in {7, 10} do
+    for i, v in pairs({7, 10}) do
         res = res.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
                    "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
                    
@@ -721,12 +722,13 @@ function load_ltx_monolith(gname, type)
                    "path_walk           = patrol" .. v .. "_walk\n" ..
                    "path_look           = patrol" .. v .. "_look\n" ..
                    "formation           = line\n" ..
+                   "soundgroup          = " .. gname .."_group_patrol" .. i .. "\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n"
     end
 
     -- rpg, svd, machine-gun
     id = {11, 12, 14}
-	for i, v in {"rpg", "svd", "machine_gun"} do
+	for i, v in pairs({"rpg", "svd", "machine_gun"}) do
 	    res = res.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
                    "active              = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
@@ -754,6 +756,7 @@ function load_ltx_monolith(gname, type)
                    "[kamp@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
                    "danger              = danger@sound_small\n" ..
+                   "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n"
 	end
 
