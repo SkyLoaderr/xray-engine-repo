@@ -19,8 +19,9 @@
 using namespace luabind;
 
 typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
-extern	LPCSTR GAME_CONFIG;
-LPCSTR	_INVALID_STORY_ID = "INVALID_STORY_ID";
+extern											LPCSTR GAME_CONFIG;
+LPCSTR											_INVALID_STORY_ID	= "INVALID_STORY_ID";
+STORY_PAIRS										story_ids;
 
 CALifeSimulator *alife			()
 {
@@ -147,7 +148,6 @@ void CALifeSimulator::script_register(lua_State *L)
 		def("alife",						&alife)
 	];
 
-	STORY_PAIRS					story_ids;
 	generate_story_ids			(story_ids);
 
 	luabind::class_<class_exporter<CALifeSimulator> >	instance("story_ids");

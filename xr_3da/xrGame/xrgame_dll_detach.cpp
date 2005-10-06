@@ -21,12 +21,14 @@
 
 #include "profiler.h"
 
-
+typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
+extern STORY_PAIRS								story_ids;
 
 extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();
 extern void release_smart_cast_stats				();
 extern void dump_list_wnd							();
+
 void clean_game_globals()
 {
 	// xml parser options
@@ -39,6 +41,7 @@ void clean_game_globals()
 	// destroy monster squad global var
 	xr_delete										(g_monster_squad);
 
+	story_ids.clear									();
 
 	InventoryUtilities::DestroyShaders				();
 
