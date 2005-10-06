@@ -279,7 +279,7 @@ void CUISkinSelectorWnd::SetCurSkin(int skin){
 				break;
 			}
 		}
-		R_ASSERT2(false,"impossible behavior - something wrong");
+///		R_ASSERT2(false,"impossible behavior - something wrong");
 	}
 	UpdateSkins();
 }
