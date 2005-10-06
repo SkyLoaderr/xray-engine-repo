@@ -91,4 +91,7 @@
 	
 	<info_portion id="rad_drop_barrel5">
 	</info_portion>	
+	
+	<info_portion id="rad_start_ambush_after_tramplin">
+	</info_portion>		
 </game_information_portions>
