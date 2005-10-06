@@ -740,6 +740,9 @@ function load_ltx_monolith(gname, type)
                    "def_state_campering_fire    = threat_fire\n" ..
                    "danger                      = danger@sound_small\n" ..
                    "combat_ignore_cond          = {!fighting_actor}\n"
+        if i <= 3 then
+            res = res.."sniper = true\n"
+        end
 	end
 
     -- kamps
