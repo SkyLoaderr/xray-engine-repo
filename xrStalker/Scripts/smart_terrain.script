@@ -42,10 +42,8 @@ local monster_classes
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
-if (version.isLua51) then
-	loadstring("printf = function (fmt,...) log(string.format(fmt,...))	end")()
-else
-	printf = function (fmt,...) log(string.format(fmt,unpack(arg))) end
+printf = function (fmt,...) 
+	log(string.format(fmt,...))	
 end
 
 -- парсит строку вида "ааа, ббб, ввв..." в таблицу { "ааа", "ббб", "ввв", ... }

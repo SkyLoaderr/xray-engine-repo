@@ -462,30 +462,23 @@ function unsubscribe_action_from_events(npc, storage, new_action)
 end
 
 -- st - storage активной схемы
-if (version.isLua51) then
-	loadstring("		function issue_event(npc, st, event_fn, ...)			if not st.actions then				return			end			local activation_count = 0			for action_ptr, is_active in pairs(st.actions) do				if is_active and action_ptr[event_fn] then					action_ptr[event_fn](action_ptr, ...)					activation_count = activation_count + 1				end			end			if activation_count == 0 and event_fn == \"activate_scheme\" then				abort(\"xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'\",					db.storage[npc:id()].active_scheme)			end		end"	)()
-else						
-	function issue_event(npc, st, event_fn, ...)
-		--printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
-		if not st.actions then
-	--		local global_st = db.storage[npc:id()]
-	--		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
-	--			"subscribed for events", global_st.active_scheme, global_st.active_section)
-			return
-		end
-		local activation_count = 0
-		for action_ptr, is_active in pairs(st.actions) do
-			if is_active and action_ptr[event_fn] then
-				--printf("DEBUG: event issued")
-				action_ptr[event_fn](action_ptr, ...)
-				activation_count = activation_count + 1
-			end
-		end
-		if activation_count == 0 and event_fn == "activate_scheme" then
-			abort("xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'",
-				db.storage[npc:id()].active_scheme)
-		end
-	end
+function issue_event(npc, st, event_fn, ...)
+	if not st.actions then				
+		return			
+	end			
+	local activation_count = 0
+	local action_ptr, is_active = 0, 0
+	for action_ptr, is_active in pairs(st.actions) do
+		if is_active and action_ptr[event_fn] then
+			action_ptr[event_fn](action_ptr, ...)
+			activation_count = activation_count + 1
+		end			
+	end			
+	if activation_count == 0 and 
+		event_fn == "activate_scheme" 
+	then				
+		abort("xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'", db.storage[npc:id()].active_scheme)
+	end		
 end
 
 function pick_section_from_condlist(actor, npc, condlist)

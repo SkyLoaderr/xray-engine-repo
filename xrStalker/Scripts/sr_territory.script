@@ -61,25 +61,16 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	end
 end
 
-if (version.isLua51) then
-	loadstring(
-		string.format(
-			"	issue_event = function (npc, type, ...)		if type == \"hit_callback\" then				for k,v in pairs(%s.territory) do					v.hit_callback(v, ...)				end			end			if type == \"death_callback\" then				for k,v in pairs(%s.territory) do					v.death_callback(v, ...)				end			end		end",
-			script_name(),
-			script_name()
-		)
-	)()
-else
-	function issue_event(npc, type, ...)
-		if type == "hit_callback" then
-			for k,v in pairs(territory) do
-				v.hit_callback(v, unpack(arg))
-			end
+function issue_event(npc, type, ...)
+	local arg = {...}
+	if type == "hit_callback" then
+		for k,v in pairs(territory) do
+			v.hit_callback(v, unpack(arg))
 		end
-		if type == "death_callback" then
-			for k,v in pairs(territory) do
-				v.death_callback(v, unpack(arg))
-			end
+	end
+	if type == "death_callback" then
+		for k,v in pairs(territory) do
+			v.death_callback(v, unpack(arg))
 		end
 	end
 end
