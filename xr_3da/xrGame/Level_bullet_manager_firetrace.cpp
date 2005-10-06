@@ -192,7 +192,7 @@ NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.siz
 
 void CBulletManager::StaticObjectHit	(CBulletManager::_event& E)
 {
-	Fvector hit_normal;
+//	Fvector hit_normal;
 	FireShotmark(&E.bullet, E.bullet.dir,	E.point, E.R, E.tgt_material, E.normal);
 //	ObjectHit	(&E.bullet,					E.point, E.R, E.tgt_material, hit_normal);
 }
@@ -215,7 +215,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	}
 	
 	//визуальное обозначение попадание на объекте
-	Fvector			hit_normal;
+//	Fvector			hit_normal;
 	FireShotmark	(&E.bullet, E.bullet.dir, E.point, E.R, E.tgt_material, E.normal, NeedShootmark);
 	
 	Fvector original_dir = E.bullet.dir;

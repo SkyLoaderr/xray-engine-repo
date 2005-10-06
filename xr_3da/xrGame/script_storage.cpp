@@ -241,21 +241,23 @@ setfenv(1, this) \
 		LPSTR			script = (LPSTR)xr_malloc((str_len + tSize)*sizeof(char));
 		strcpy			(script,insert);
 		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
-		try {
+//		try 
+		{
 			l_iErrorCode= luaL_loadbuffer(L,script,tSize + str_len,caScriptName);
 		}
-		catch(...) {
-			l_iErrorCode= LUA_ERRSYNTAX;
-		}
+//		catch(...) {
+//			l_iErrorCode= LUA_ERRSYNTAX;
+//		}
 		xr_free			(script);
 	}
 	else {
-		try {
+//		try
+		{
 			l_iErrorCode= luaL_loadbuffer(L,caBuffer,tSize,caScriptName);
 		}
-		catch(...) {
-			l_iErrorCode= LUA_ERRSYNTAX;
-		}
+//		catch(...) {
+//			l_iErrorCode= LUA_ERRSYNTAX;
+//		}
 	}
 
 	if (l_iErrorCode) {
