@@ -26,10 +26,10 @@ void CSE_ALifeHumanAbstract::update			()
 
 	R_ASSERT3				(!m_bOnline,"Can't update online object ",name_replace());
 
-	if (m_flags.test(flUseSmartTerrains) && process_smart_terrain_task()) {
-		m_tTimeID			= ai().alife().time_manager().game_time();
-		return;
-	}
+//	if (m_flags.test(flUseSmartTerrains) && process_smart_terrain_task()) {
+//		m_tTimeID			= ai().alife().time_manager().game_time();
+//		return;
+//	}
 
 	m_dwTotalMoney			= u32(-1);
 	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;

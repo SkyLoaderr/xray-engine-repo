@@ -1720,6 +1720,9 @@
 							RelativePath=".\alife_human_misc.cpp">
 						</File>
 						<File
+							RelativePath=".\alife_human_smart_terrain.cpp">
+						</File>
+						<File
 							RelativePath=".\alife_monster.cpp">
 						</File>
 						<File
