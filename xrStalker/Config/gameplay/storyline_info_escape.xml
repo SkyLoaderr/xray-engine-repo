@@ -12,3 +12,7 @@
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>tutorial_secret_place</text>
     </article>
+    
+    <article id="esc_kolyan_lost" name="flash bandits" group="info">
+        <text>esc_kolyan_lost</text>
+    </article>
