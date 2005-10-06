@@ -219,8 +219,9 @@ sound_prefetch.prefetch_sounds()
 
 function can_sleep_callback()
 		-- function must return "can_sleep" to allow actor sleeping, otherwise return string_table identifier that describes  reason
-		return "can_sleep" -- registered keyword
-end
+--		return "can_sleep" -- registered keyword
+		return "cant_sleep_not_on_solid_ground"
+end	
 
 function sleep_video_name_callback()
 	-- function returns video file name or empty string
