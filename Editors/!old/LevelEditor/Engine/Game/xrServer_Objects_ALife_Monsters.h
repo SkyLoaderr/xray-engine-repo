@@ -444,6 +444,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual bool					natural_detector		() const {return false;}
 #ifdef XRGAME_EXPORTS
 	virtual	void					update					();
+			bool					process_smart_terrain_task	();
 			// FSM
 			void					vfChooseTask			();
 			void					vfHealthCare			();
@@ -463,7 +464,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfEnoughMoneyToTreat	();
 			bool					bfEnoughTimeToTreat		();
 			bool					bfEnoughEquipmentToGo	();
-			bool					bfDistanceToTraderIsDanger();
+			bool					bfDistanceToTraderIsDanger	();
 			bool					bfEnoughMoneyToEquip	();
 			// miscellanious
 			bool					bfCheckIfTaskCompleted	(ALife::_TASK_ID		task_id, ALife::OBJECT_IT &I);

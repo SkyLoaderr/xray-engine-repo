@@ -14,6 +14,7 @@
 #include "alife_story_registry.h"
 #include "script_engine.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "restriction_space.h"
 
 using namespace luabind;
 
@@ -102,6 +103,26 @@ void kill_entity1			(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster)
 	alife->kill_entity		(monster,monster->m_tGraphID,0);
 }
 
+void add_in_restriction		(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster, ALife::_OBJECT_ID id)
+{
+	alife->add_restriction	(monster->ID,id,RestrictionSpace::eRestrictorTypeIn);
+}
+
+void add_out_restriction	(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster, ALife::_OBJECT_ID id)
+{
+	alife->add_restriction	(monster->ID,id,RestrictionSpace::eRestrictorTypeOut);
+}
+
+void remove_in_restriction	(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster, ALife::_OBJECT_ID id)
+{
+	alife->remove_restriction	(monster->ID,id,RestrictionSpace::eRestrictorTypeIn);
+}
+
+void remove_out_restriction	(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster, ALife::_OBJECT_ID id)
+{
+	alife->remove_restriction	(monster->ID,id,RestrictionSpace::eRestrictorTypeOut);
+}
+
 void CALifeSimulator::script_register(lua_State *L)
 {
 	module(L)
@@ -116,7 +137,12 @@ void CALifeSimulator::script_register(lua_State *L)
 			.def("set_interactive",			(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(CALifeSimulator::set_interactive))
 			.def("kill_entity",				&CALifeSimulator::kill_entity)
 			.def("kill_entity",				&kill_entity0)
-			.def("kill_entity",				&kill_entity1),
+			.def("kill_entity",				&kill_entity1)
+			.def("add_in_restriction",		&add_in_restriction)
+			.def("add_out_restriction",		&add_out_restriction)
+			.def("remove_in_restriction",	&remove_in_restriction)
+			.def("remove_out_restriction",	&remove_out_restriction)
+			.def("remove_all_restrictions",	&CALifeSimulator::remove_all_restrictions),
 
 		def("alife",						&alife)
 	];

@@ -8,7 +8,6 @@
 #include "script_engine_space.h"
 #include "level.h"
 #include "game_cl_base.h"
-#include "patrol_path_storage.h"
 #include "../x_ray.h"
 #include "gamemtllib.h"
 #include "PhysicsCommon.h"
@@ -46,10 +45,9 @@ BOOL CLevel::Load_GameSpecific_Before()
 	if (g_pGamePersistent->GameType() == GAME_SINGLE && !ai().get_alife() && FS.exist(fn_game,"$level$","level.ai"))
 		ai().load						(net_SessionName());
 
-	if (FS.exist(fn_game, "$level$", "level.game")) {
+	if (!ai().get_alife() && FS.exist(fn_game, "$level$", "level.game")) {
 		IReader							*stream = FS.r_open		(fn_game);
-		VERIFY							(m_patrol_path_storage);
-		m_patrol_path_storage->load		(*stream);
+		ai().patrol_path_storage_raw	(*stream);
 		FS.r_close						(stream);
 	}
 

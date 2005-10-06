@@ -12,7 +12,7 @@
 #include "patrol_point.h"
 #include "intrusive_ptr.h"
 
-class CPatrolPath : public CGraphAbstract<CPatrolPoint,float,u32> {
+class CPatrolPath : public CGraphAbstractSerialize<CPatrolPoint,float,u32> {
 private:
 	struct CAlwaysTrueEvaluator {
 		IC	bool	operator()	(const Fvector &position) const
@@ -30,9 +30,9 @@ public:
 #endif
 
 public:
-							CPatrolPath		(shared_str name);
+							CPatrolPath		(shared_str name = "");
 	virtual					~CPatrolPath	();
-			CPatrolPath		&load_path		(IReader &stream);
+			CPatrolPath		&load_raw		(const CLevelGraph *level_graph, const CGameLevelCrossTable *cross, const CGameGraph *game_graph, IReader &stream);
 	IC		const CVertex	*point			(shared_str name) const;
 	template <typename T>
 	IC		const CVertex	*point			(const Fvector &position, const T &evaluator) const;

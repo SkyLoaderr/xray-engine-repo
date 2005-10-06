@@ -24,8 +24,14 @@ void CSE_ALifeHumanAbstract::update			()
 	if (!bfActive())
 		return;
 
-	m_dwTotalMoney			= u32(-1);
 	R_ASSERT3				(!m_bOnline,"Can't update online object ",name_replace());
+
+	if (m_flags.test(flUseSmartTerrains) && process_smart_terrain_task()) {
+		m_tTimeID			= ai().alife().time_manager().game_time();
+		return;
+	}
+
+	m_dwTotalMoney			= u32(-1);
 	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool					bOk;
 	do {
@@ -65,6 +71,7 @@ void CSE_ALifeHumanAbstract::update			()
 		vfCheckForDeletedEvents	();
 	}
 	while (bOk && bfActive() && (ai().alife().graph().actor()->o_Position.distance_to(o_Position) > ai().alife().online_distance()));
+
 	m_tTimeID					= ai().alife().time_manager().game_time();
 }
 

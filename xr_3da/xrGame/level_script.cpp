@@ -182,7 +182,7 @@ u16 map_has_object_spot(u16 id, LPCSTR spot_type)
 
 bool patrol_path_exists(LPCSTR patrol_path)
 {
-	return		(!!Level().patrol_paths().path(patrol_path,true));
+	return		(!!ai().patrol_paths().path(patrol_path,true));
 }
 
 LPCSTR get_name()

@@ -86,6 +86,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 		flGroupBehaviour	= u32(1) << 8,
 		flCanSave			= u32(1) << 9,
 		flVisibleForMap		= u32(1) << 10,
+		flUseSmartTerrains	= u32(1) << 11,
 	};
 
 public:

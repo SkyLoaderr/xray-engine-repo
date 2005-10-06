@@ -17,7 +17,7 @@ CPatrolPathStorage::~CPatrolPathStorage		()
 	delete_data					(m_registry);
 }
 
-void CPatrolPathStorage::load				(IReader &stream)
+void CPatrolPathStorage::load_raw			(const CLevelGraph *level_graph, const CGameLevelCrossTable *cross, const CGameGraph *game_graph, IReader &stream)
 {
 	IReader						*chunk = stream.open_chunk(WAY_PATROLPATH_CHUNK);
 
@@ -32,8 +32,75 @@ void CPatrolPathStorage::load				(IReader &stream)
 
 		shared_str				patrol_name;
 		sub_chunk->r_stringZ	(patrol_name);
-		m_registry.insert		(std::make_pair(patrol_name,&xr_new<CPatrolPath>(patrol_name)->load_path(*sub_chunk)));
+		const_iterator			I = m_registry.find(patrol_name);
+		VERIFY3					(I == m_registry.end(),"Duplicated patrol path found",*patrol_name);
+		m_registry.insert		(
+			std::make_pair(
+				patrol_name,
+				&xr_new<CPatrolPath>(
+					patrol_name
+				)->load_raw(
+					level_graph,
+					cross,
+					game_graph,
+					*sub_chunk
+				)
+			)
+		);
 	}
 	
 	chunk->close				();
+}
+
+void CPatrolPathStorage::load				(IReader &stream)
+{
+	IReader						*chunk;
+
+	chunk						= stream.open_chunk(0);
+	u32							size = chunk->r_u32();
+	chunk->close				();
+
+	m_registry.clear			();
+
+	PATROL_REGISTRY::value_type	pair;
+
+	chunk						= stream.open_chunk(1);
+	for (u32 i=0; i<size; ++i) {
+		IReader					*chunk1;
+
+		chunk1					= chunk->open_chunk(0);
+        load_data				(pair.first,*chunk1);
+		chunk1->close			();
+
+		chunk1					= chunk->open_chunk(1);
+        load_data				(pair.second,*chunk1);
+		chunk1->close			();
+
+		m_registry.insert		(pair);
+	}
+
+	chunk->close				();
+}
+
+void CPatrolPathStorage::save				(IWriter &stream)
+{
+	stream.open_chunk			(0);
+	stream.w_u32				(m_registry.size());
+	stream.close_chunk			();
+
+	stream.open_chunk			(1);
+
+	PATROL_REGISTRY::iterator	I = m_registry.begin();
+	PATROL_REGISTRY::iterator	E = m_registry.end();
+	for ( ; I != E; ++I) {
+		stream.open_chunk		(0);
+        save_data				((*I).first,stream);
+		stream.close_chunk		();
+
+		stream.open_chunk		(1);
+        save_data				((*I).second,stream);
+		stream.close_chunk		();
+	}
+
+	stream.close_chunk			();
 }

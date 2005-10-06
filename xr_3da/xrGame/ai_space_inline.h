@@ -81,13 +81,19 @@ IC	CScriptEngine				&CAI_Space::script_engine			() const
 	return			(*m_script_engine);
 }
 
-IC	CMovementCoordinator		&CAI_Space::movement_coordinator	() const
+IC	const CPatrolPathStorage &CAI_Space::patrol_paths				() const
+{
+	VERIFY			(m_patrol_path_storage);
+	return			(*m_patrol_path_storage);
+}
+
+IC	CMovementCoordinator &CAI_Space::movement_coordinator			() const
 {
 	VERIFY			(m_movement_coordinator);
 	return			(*m_movement_coordinator);
 }
 
-IC	CAI_Space					&ai									()
+IC	CAI_Space &ai													()
 {
 	if (!g_ai_space)
 		g_ai_space	= xr_new<CAI_Space>();

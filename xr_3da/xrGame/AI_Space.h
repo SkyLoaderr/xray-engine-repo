@@ -8,20 +8,22 @@
 
 #pragma once
 
-class	CGameGraph;
-class	CGameLevelCrossTable;
-class	CLevelNavigationGraph;
-class	CGraphEngine;
-class	CEF_Storage;
-class	CALifeSimulator;
-class	CCoverManager;
-class	CScriptEngine;
-class	CMovementCoordinator;
+class CGameGraph;
+class CGameLevelCrossTable;
+class CLevelNavigationGraph;
+class CGraphEngine;
+class CEF_Storage;
+class CALifeSimulator;
+class CCoverManager;
+class CScriptEngine;
+class CPatrolPathStorage;
+class CMovementCoordinator;
 
 class CAI_Space {
 private:
 	friend class CALifeSimulator;
 	friend class CALifeGraphRegistry;
+	friend class CALifeSpawnRegistry;
 	friend class CLevel;
 
 private:
@@ -33,12 +35,15 @@ private:
 	CALifeSimulator						*m_alife_simulator;
 	CCoverManager						*m_cover_manager;
 	CScriptEngine						*m_script_engine;
+	CPatrolPathStorage					*m_patrol_path_storage;
 	CMovementCoordinator				*m_movement_coordinator;
 
 private:
-			void						load			(LPCSTR				level_name);
-			void						unload			(bool reload = false);
-	IC		void						set_alife		(CALifeSimulator *alife_simulator);
+			void						load					(LPCSTR level_name);
+			void						unload					(bool reload = false);
+			void						patrol_path_storage_raw	(IReader &stream);
+			void						patrol_path_storage		(IReader &stream);
+	IC		void						set_alife				(CALifeSimulator *alife_simulator);
 
 public:
 										CAI_Space				();
@@ -49,6 +54,7 @@ public:
 	IC		const CLevelNavigationGraph	*get_level_graph		() const;
 	IC		const CGameLevelCrossTable	&cross_table			() const;
 	IC		const CGameLevelCrossTable	*get_cross_table		() const;
+	IC		const CPatrolPathStorage	&patrol_paths			() const;
 	IC		CEF_Storage					&ef_storage				() const;
 	IC		CGraphEngine				&graph_engine			() const;
 	IC		const CALifeSimulator		&alife					() const;
@@ -58,7 +64,7 @@ public:
 	IC		CMovementCoordinator		&movement_coordinator	() const;
 
 #ifdef DEBUG
-			void						validate		(const u32			level_id) const;
+			void						validate				(const u32			level_id) const;
 #endif
 };
 

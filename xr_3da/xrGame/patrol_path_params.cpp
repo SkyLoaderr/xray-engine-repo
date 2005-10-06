@@ -14,7 +14,7 @@
 CPatrolPathParams::CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathManager::EPatrolStartType tPatrolPathStart, const PatrolPathManager::EPatrolRouteType tPatrolPathStop, bool bRandom, u32 index)
 {
 	m_path_name			= caPatrolPathToGo;
-	m_path				= Level().patrol_paths().path(m_path_name,true);
+	m_path				= ai().patrol_paths().path(m_path_name,true);
 	
 	THROW3				(m_path,"There is no patrol path",caPatrolPathToGo);
 	
@@ -51,6 +51,12 @@ u32	CPatrolPathParams::level_vertex_id	(u32 index) const
 	return				(m_path->vertex(index)->data().level_vertex_id());
 }
 
+GameGraph::_GRAPH_ID CPatrolPathParams::game_vertex_id	(u32 index) const
+{
+	VERIFY				(m_path->vertex(index));
+	return				(m_path->vertex(index)->data().game_vertex_id());
+}
+
 u32	CPatrolPathParams::point			(LPCSTR name) const
 {
 	if (m_path->point(name))
@@ -85,6 +91,6 @@ bool CPatrolPathParams::terminal (u32 index) const
 {
 	VERIFY				(m_path->vertex(index));
 
-	return (m_path->vertex(index)->edges().size() == 0);
+	return				(m_path->vertex(index)->edges().size() == 0);
 }
 

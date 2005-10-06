@@ -20,7 +20,6 @@ class	xrServer;
 class	game_cl_GameState;
 class	NET_Queue_Event;
 class	CSE_Abstract;
-class	CPatrolPathStorage;
 class	CSpaceRestrictionManager;
 class	CSeniorityHierarchyHolder;
 class	CClientSpawnManager;
@@ -53,8 +52,6 @@ protected:
 	
 	CLevelSoundManager			*m_level_sound_manager;
 
-	// patrol path storage
-	CPatrolPathStorage			*m_patrol_path_storage;
 	// movement restriction manager
 	CSpaceRestrictionManager	*m_space_restriction_manager;
 	// seniority hierarchy holder
@@ -280,12 +277,6 @@ protected:
 	CBulletManager*		m_pBulletManager;
 public:
 	IC CBulletManager&	BulletManager() {return	*m_pBulletManager;}
-
-	IC		const CPatrolPathStorage &patrol_paths		() const
-	{
-		VERIFY				(m_patrol_path_storage);
-		return				(*m_patrol_path_storage);
-	}
 
 	//by Mad Max 
 			bool			IsServer					();

@@ -16,6 +16,7 @@
 #include "cover_manager.h"
 #include "cover_point.h"
 #include "script_engine.h"
+#include "patrol_path_storage.h"
 #include "movement_coordinator.h"
 
 CAI_Space *g_ai_space = 0;
@@ -31,6 +32,7 @@ CAI_Space::CAI_Space				()
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
+	m_patrol_path_storage	= xr_new<CPatrolPathStorage>();
 
 	extern string4096		g_ca_stdout;
 	setvbuf					(stderr,g_ca_stdout,_IOFBF,sizeof(g_ca_stdout));
@@ -39,13 +41,17 @@ CAI_Space::CAI_Space				()
 CAI_Space::~CAI_Space				()
 {
 	unload					();
+	
+	xr_delete				(m_patrol_path_storage);
 	xr_delete				(m_ef_storage);
 	xr_delete				(m_game_graph);
+	
 	try {
 		xr_delete			(m_script_engine);
 	}
 	catch(...) {
 	}
+
 	xr_delete				(m_cover_manager);
 	xr_delete				(m_graph_engine);
 	xr_delete				(m_movement_coordinator);
@@ -132,3 +138,17 @@ void CAI_Space::validate			(const u32 level_id) const
 //	Msg						("* Graph corresponds to the cross table");
 }
 #endif
+
+void CAI_Space::patrol_path_storage_raw	(IReader &stream)
+{
+	xr_delete						(m_patrol_path_storage);
+	m_patrol_path_storage			= xr_new<CPatrolPathStorage>();
+	m_patrol_path_storage->load_raw	(&level_graph(),&cross_table(),&game_graph(),stream);
+}
+
+void CAI_Space::patrol_path_storage		(IReader &stream)
+{
+	xr_delete						(m_patrol_path_storage);
+	m_patrol_path_storage			= xr_new<CPatrolPathStorage>();
+	m_patrol_path_storage->load		(stream);
+}

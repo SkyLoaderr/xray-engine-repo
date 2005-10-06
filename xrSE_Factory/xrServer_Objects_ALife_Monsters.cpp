@@ -2001,6 +2001,7 @@ void CSE_ALifeHumanAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
   	inherited1::FillProps		(pref,items);
   	inherited2::FillProps		(pref,items);
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Group behaviour"),			&m_flags,			flGroupBehaviour);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Use smart terrain tasks"),	&m_flags,			flUseSmartTerrains);
 }
 
 //////////////////////////////////////////////////////////////////////////
