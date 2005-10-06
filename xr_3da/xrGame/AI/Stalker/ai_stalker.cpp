@@ -502,13 +502,13 @@ struct bug_tracker {
 
 	~bug_tracker	()
 	{
-		VERIFY2					(m_object->getEnabled(), *m_object->cName());
+		VERIFY2					(m_object->PPhysicsShell()||m_object->getEnabled(), *m_object->cName());
 	}
 };
 
 void CAI_Stalker::UpdateCL()
 {
-	VERIFY2						(getEnabled(), *cName());
+	VERIFY2						(PPhysicsShell()||getEnabled(), *cName());
 	bug_tracker					bug_tracker(this);
 
 //	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
@@ -598,7 +598,7 @@ CPHDestroyable*		CAI_Stalker::		ph_destroyable	()
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
-	VERIFY2						(getEnabled(), *cName());
+	VERIFY2						(getEnabled()||PPhysicsShell(), *cName());
 	bug_tracker					bug_tracker(this);
 //	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
 //		Msg				("[%6d][SH][%s]",Device.dwTimeGlobal,*cName());
