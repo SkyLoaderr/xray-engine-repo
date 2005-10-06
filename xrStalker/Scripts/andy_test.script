@@ -5,8 +5,11 @@ function main()
 	
 --	wait(10000)
 
-	db.actor:give_info_portion("test_andy_info")
-	
+--	db.actor:give_info_portion("test_andy_info")
+
+    for i,j in pairs(story_ids) do
+		printf("story_ids : %s = %d", i,j)
+    end
 end
 
 
