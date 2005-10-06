@@ -124,7 +124,10 @@
 	<info_portion id="esc_bandits_assault"></info_portion>
 	<info_portion id="esc_bandits_start"></info_portion>
 	<info_portion id="escape_assault_finished"></info_portion>
-	
+	<info_portion id="esc_kolyan_lost">
+		<article>esc_kolyan_lost</article>
+	</info_portion>
+	<info_portion id="esc_kolyan_found"></info_portion>
 	
 	<!-- infoportions for raid -->
 	<info_portion id="esc_raid1_start"></info_portion>
