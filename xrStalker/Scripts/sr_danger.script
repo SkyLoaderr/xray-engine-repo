@@ -33,9 +33,9 @@ end
 -- Проверяет отсеивается ли денжер по настройкам зоны.
 -- Если возвращает true, то денжер отсеивается и его проверять не следует.
 function check_danger_position(position)
-	local key = 0
+	local key,value = 0,0
 	local t = 0
-	for key in sr_danger.territory do
+	for key,value in pairs(sr_danger.territory) do
 		t = db.zone_by_name[key]
 		if t then
 			if t:inside(position) then
