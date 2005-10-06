@@ -87,7 +87,7 @@ end
 function PatrolManager:reset_positions ()
     local form_ = formations[self.formation]
     local index = 1
-    for key, data in self.npc_list do
+    for key, data in pairs(self.npc_list) do
         --установим командора, если это еще не сделано 
         if self.commander_id == -1 and index == 1 then
            self.commander_id = data.soldier:id ()
