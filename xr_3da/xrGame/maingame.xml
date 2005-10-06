@@ -93,6 +93,12 @@
 	<invincible_static x="10" y="630" width="50" height="50" stretch="1">
 		<texture>ui\ui_skull</texture>
 	</invincible_static>
+	
+	
+	<can_sleep_static x="60" y="630" width="50" height="50" stretch="1">
+		<texture>ui\ui_mn_fatigue_hard</texture>
+	</can_sleep_static>
+	
 	<!-- MONEY INDICATORS. MP ONLY -->
 	<money_mt_static x="860" y="10" width="200" height="200">
 		<text x="85" y="4" font="small" r="255" g="255" b="255" a="130">money</text>
