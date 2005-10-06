@@ -4,15 +4,12 @@
 #pragma once
 
 #include "EntityCondition.h"
-//#include "script_callback_ex.h"
+#include "actor_defs.h"
 
 template <typename _return_type>
 class CScriptCallbackEx;
 
 
-namespace ACTOR_DEFS {
-	enum EActorSleep;
-};
 
 class CActor;
 class CUIActorSleepVideoPlayer;
@@ -21,12 +18,9 @@ class CActorCondition: public CEntityCondition {
 private:
 	typedef CEntityCondition inherited;
 
-public:
-	typedef ACTOR_DEFS::EActorSleep EActorSleep;
-
 private:
 	CActor*						m_object;
-	CScriptCallbackEx<bool>*	m_can_sleep_callback;
+	CScriptCallbackEx<LPCSTR>*	m_can_sleep_callback;
 	CScriptCallbackEx<LPCSTR>*	m_get_sleep_video_name_callback;
 public:
 						CActorCondition		(CActor *object);
@@ -43,9 +37,10 @@ public:
 	bool				IsSleeping				() {return m_bIsSleeping;}
 
 	// sleeping
-	EActorSleep			CanSleepHere		();
-	EActorSleep			GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
-			void		Awoke				();
+	bool				AllowSleep					();
+	ACTOR_DEFS::EActorSleep		CanSleepHere		();
+	ACTOR_DEFS::EActorSleep		GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
+			void				Awoke				();
 
 	// хромание при потере сил и здоровья
 	virtual	bool		IsLimping			() const;

@@ -99,9 +99,7 @@ protected:
 	CUIStatic			UIStaticDiskIO;
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
-	CUIStatic			UIStaticMapBack;
 	CUIStatic			UIStaticBattery;
-	CUIStatic			UIStaticPower;    // delete me ! :P
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
 	CUIButton			UIStaticQuickHelp;
@@ -117,16 +115,9 @@ protected:
 
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
-	//список входящих сообщений PDA
-//	CUIListWnd			UIPdaMsgListWnd2;	
-//	CUIListWnd			UIPdaMsgListWnd2; // We will draw this list if MainInGameWnd is hided
 	// Список входящих информационных сообщений
 	CUIListWnd			UIInfoMessages;
 	
-	//интервал показывания сообщения
-//	int					m_dwMaxShowTime;
-//	int					m_iInfosShowTime;
-
 	//изображение оружия
 	CUIStatic			UIWeaponBack;
 	CUIStatic			UIWeaponSignAmmo;
@@ -145,19 +136,15 @@ protected:
 	CUSTOM_TEXTURE_VECTOR m_CustomTextures;	
 public:
 	// Изменить индикатор текущего количества денег
-	void ChangeTotalMoneyIndicator(shared_str newMoneyString);
+	void				ChangeTotalMoneyIndicator(shared_str newMoneyString);
 	// Показать (с анимацией) помледнте заработанные/отняные денежки
-	void DisplayMoneyChange(shared_str deltaMoney);
-	void DisplayMoneyBonus(shared_str bonus);
-	CUIStatic*	GetPDAOnline	() { return &UIPdaOnline; };
-	void	UpdateTeamsScore	(int t1, int t2);
-	void	SetRank				(int rank);
+	void				DisplayMoneyChange		(shared_str deltaMoney);
+	void				DisplayMoneyBonus		(shared_str bonus);
+	CUIStatic*			GetPDAOnline			() { return &UIPdaOnline; };
+	void				UpdateTeamsScore		(int t1, int t2);
+	void				SetRank					(int rank);
 protected:
 
-	// Надписи armor & health
-//	CUIStatic			UIHealthString;
-//	CUIStatic			UIArmorString;
-	//CUIDragDropItem	UIWeaponIcon;
 
 	// 5 статиков для отображения иконок:
 	// - сломанного оружия
@@ -171,6 +158,7 @@ protected:
 	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIFatigueIcon;
 	CUIStatic			UIInvincibleIcon;
+	CUIStatic			UISleepIcon;
 	CUIWindow*			m_pMPChatWnd;
 	CUIWindow*			m_pMPLogWnd;
 public:	
@@ -188,18 +176,19 @@ public:
 		ewiStarvation,
 		ewiFatigue,
 		ewiInvincible,
+		ewiSleep,
 	};
 
-	void SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog);
+	void				SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog);
 
 	// Задаем цвет соответствующей иконке
-	void SetWarningIconColor(EWarningIcons icon, const u32 cl);
-	void TurnOffWarningIcon(EWarningIcons icon);
+	void				SetWarningIconColor(EWarningIcons icon, const u32 cl);
+	void				TurnOffWarningIcon(EWarningIcons icon);
 
 	// Пороги изменения цвета индикаторов, загружаемые из system.ltx
-	typedef xr_map<EWarningIcons, xr_vector<float> >	Thresholds;
-	typedef Thresholds::iterator						Thresholds_it;
-	Thresholds	m_Thresholds;
+	typedef				xr_map<EWarningIcons, xr_vector<float> >	Thresholds;
+	typedef				Thresholds::iterator						Thresholds_it;
+	Thresholds			m_Thresholds;
 
 	// Енум перечисления возможных мигающих иконок
 	enum EFlashingIcons
@@ -209,13 +198,13 @@ public:
 	};
 	
 	// Вкл/выкл мигающую иконку
-	void SetFlashIconState_(EFlashingIcons type, bool enable);
+	void				SetFlashIconState_(EFlashingIcons type, bool enable);
 
 	//
-	void AnimateContacts();
+	void				AnimateContacts();
 
 	// Обработчик события получения новости
-	void ReceiveNews	(GAME_NEWS_DATA &news);
+	void				ReceiveNews	(GAME_NEWS_DATA &news);
 	
 protected:
 

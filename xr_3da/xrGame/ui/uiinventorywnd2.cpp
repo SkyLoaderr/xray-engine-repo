@@ -26,8 +26,6 @@
 
 using namespace InventoryUtilities;
 
-#define CANT_SLEEP_ENEMIES "cant_sleep_near_enemies"
-#define CANT_SLEEP_GROUND "cant_sleep_not_on_solid_ground"
 
 void CUIInventoryWnd::ActivatePropertiesBox()
 {
@@ -322,27 +320,18 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
 	}
-	//сообщения от ArtifactMerger
-//	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED)
-//	{
-//	}
-//	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED)
-//	{
-//		StopArtefactMerger();
-//	}
 	else if(pWnd == UISleepWnd && msg == SLEEP_WND_PERFORM_BUTTON_CLICKED)
 	{
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 		
-//		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-//		if(!pGameSP) return;
 		if(GameID() != GAME_SINGLE)
 			return;
 
 		ACTOR_DEFS::EActorSleep result = pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
 		LPCSTR sleep_msg = NULL;
-		switch(result)
+		sleep_msg = *CStringTable()(result);
+/*		switch(result)
 		{
 		case easEnemies:
 			sleep_msg = *CStringTable()(CANT_SLEEP_ENEMIES);
@@ -351,7 +340,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			sleep_msg = *CStringTable()(CANT_SLEEP_GROUND);
 			break;
 		}
-
+*/
 		if(sleep_msg)
 			HUD().GetUI()->UIMainIngameWnd->AddInfoMessage(sleep_msg);
 

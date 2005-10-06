@@ -246,6 +246,9 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
 
+	AttachChild(&UISleepIcon);
+	xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
+
 	shared_str warningStrings[6] = 
 	{	
 		"jammed",
@@ -565,6 +568,12 @@ void CUIMainIngameWnd::Update()
 		{
 			UIPdaOnline.SetText("");
 		}
+
+		if(m_pActor->conditions().AllowSleep())
+			SetWarningIconColor	(ewiSleep,0xffffffff);
+		else
+			SetWarningIconColor	(ewiSleep,0x00ffffff);
+
 	};
 
 	// Armor indicator stuff
@@ -1337,7 +1346,16 @@ void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA &news)
 }
 
 //////////////////////////////////////////////////////////////////////////
+void SetColor(CUIStatic* s, const u32 cl)
+{
+	int bOn = (cl>>24);
+	if(bOn){
+		s->Show		(true); 
+		s->SetColor		(cl);
+	}else 
+		s->Show		(false);
 
+}
 void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 {
 	bool bMagicFlag = true;
@@ -1348,22 +1366,26 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiAll:
 		bMagicFlag = false;
 	case ewiWeaponJammed:
-		UIWeaponJammedIcon.SetColor(cl);
+		SetColor		(&UIWeaponJammedIcon, cl);
 		if (bMagicFlag) break;
 	case ewiRadiation:
-		UIRadiaitionIcon.SetColor(cl);
+		SetColor		(&UIRadiaitionIcon, cl);
 		if (bMagicFlag) break;
 	case ewiWound:
-		UIWoundIcon.SetColor(cl);
+		SetColor		(&UIWoundIcon, cl);
 		if (bMagicFlag) break;
 	case ewiStarvation:
-		UIStarvationIcon.SetColor(cl);
+		SetColor		(&UIStarvationIcon, cl);
 		if (bMagicFlag) break;
 	case ewiFatigue:
-		UIFatigueIcon.SetColor(cl);
+		SetColor		(&UIFatigueIcon, cl);
 		if (bMagicFlag) break;
 	case ewiInvincible:
-		UIInvincibleIcon.SetColor(cl);
+		SetColor		(&UIInvincibleIcon, cl);
+		if (bMagicFlag) break;
+		break;
+	case ewiSleep:
+		SetColor		(&UISleepIcon, cl);
 		break;
 	default:
 		R_ASSERT(!"Unknown warning icon type");

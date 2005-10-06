@@ -88,9 +88,9 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	LPCSTR cb_name			= READ_IF_EXISTS(pSettings,r_string,section,"can_sleep_callback","");
 
 	if(xr_strlen(cb_name)){
-		m_can_sleep_callback		= xr_new<CScriptCallbackEx<bool> >();
-		luabind::functor<bool>		f;
-		R_ASSERT					(ai().script_engine().functor<bool>(cb_name,f));
+		m_can_sleep_callback		= xr_new<CScriptCallbackEx<LPCSTR> >();
+		luabind::functor<LPCSTR>		f;
+		R_ASSERT					(ai().script_engine().functor<LPCSTR>(cb_name,f));
 		m_can_sleep_callback->set	(f);
 	}
 	cb_name					= READ_IF_EXISTS(pSettings,r_string,section,"sleep_video_name_callback","");
@@ -187,13 +187,19 @@ bool CActorCondition::IsLimping() const
 }
 extern bool g_bShowHudInfo;
 
+bool CActorCondition::AllowSleep ()
+{
+	EActorSleep result		= CanSleepHere		();
+	return( !stricmp(ACTOR_DEFS::easCanSleepResult, result)  );
+}
+
 EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 {
-	if (IsSleeping()) return easCanSleep;
+	if (IsSleeping()) return ACTOR_DEFS::easCanSleepResult;
 
-	EActorSleep result = without_check?easCanSleep:CanSleepHere();
-	if(easCanSleep != result) 
-		return result;
+	EActorSleep result = without_check?ACTOR_DEFS::easCanSleepResult : CanSleepHere();
+	if( 0 != stricmp(ACTOR_DEFS::easCanSleepResult, result)  ) 
+			return result;
 
 	g_bShowHudInfo				= false;
 	m_bIsSleeping				= true;
@@ -225,7 +231,7 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 	m_actor_sleep_wnd->Init		( (*m_get_sleep_video_name_callback)() );
 //	m_actor_sleep_wnd->Init		("car\\Movie-003_Rats_OutPut-010");
 
-	return easCanSleep;
+	return ACTOR_DEFS::easCanSleepResult;
 }
 
 void CActorCondition::Awoke()
@@ -257,14 +263,11 @@ void CActorCondition::Awoke()
 //проверка можем ли мы спать на этом месте
 EActorSleep CActorCondition::CanSleepHere()
 {
-	if( m_can_sleep_callback && *m_can_sleep_callback){
-		if( (*m_can_sleep_callback)() )
-			return easCanSleep;
-		else
-			return easNotSolidGround;
-	}
-
-	if(0 != object().mstate_real) return easNotSolidGround;
+	if( m_can_sleep_callback && *m_can_sleep_callback)
+		return (*m_can_sleep_callback)();
+	
+	R_ASSERT		(0);
+	if(0 != object().mstate_real) return "cant_sleep_not_on_solid_ground";
 
 	collide::rq_result RQ;
 
@@ -287,7 +290,7 @@ EActorSleep CActorCondition::CanSleepHere()
 	//актер стоит на динамическом объекте или вообще падает - 
 	//спать нельзя
 	if(!result || RQ.O)	
-		return easNotSolidGround;
+		return "cant_sleep_not_on_solid_ground";
 
 	BOOL				_enabled = object().getEnabled();
 	object().setEnabled	(FALSE);
@@ -302,10 +305,10 @@ EActorSleep CActorCondition::CanSleepHere()
 	{
 		CEntityAlive* entity = smart_cast<CEntityAlive*>(*it);
 		if(entity && entity->g_Alive() && entity->is_relation_enemy(m_object))
-			return easEnemies;
+			return "cant_sleep_near_enemies";
 	}
 
-	return easCanSleep;
+	return easCanSleepResult;
 }
 
 void CActorCondition::save(NET_Packet &output_packet)

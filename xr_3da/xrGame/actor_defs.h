@@ -59,6 +59,9 @@ enum EActorAction
 	eaaSearchCorpse,
 };
 
+typedef const char*		EActorSleep;
+extern EActorSleep		easCanSleepResult;
+/*
 //результат функции GoSleep у актера
 enum EActorSleep
 {
@@ -66,7 +69,7 @@ enum EActorSleep
 	easNotSolidGround,
 	easEnemies		
 };
-
+*/
 
 //---------------------------------------------
 // ввод с клавиатуры и мыши
