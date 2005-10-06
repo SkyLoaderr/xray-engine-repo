@@ -54,10 +54,10 @@
 		<visual>actors\neytral\stalker_neytral_balon_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
+			wpn_fort \n
+			ammo_9x18_fmj \n
 			af_medusa \n
-			wpn_ak74 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			stalker_outfit \n
@@ -87,8 +87,8 @@
 		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
+			wpn_fort \n
+			ammo_9x18_fmj \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
@@ -117,9 +117,9 @@
 		<visual>actors\neytral\stalker_neytral_balon_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
-			wpn_ak74 \n
+			wpn_fort \n
+			ammo_9x18_fmj \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			fox_flash \n
@@ -179,10 +179,10 @@
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
+			wpn_fort \n
 			ammo_9x19_pbp = 1 \n
 			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
+			ammo_5.45x39_pbp \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -240,7 +240,7 @@
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
+			wpn_pb \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
 			wpn_toz34 \n
@@ -283,6 +283,8 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
+	
+	<!---------------------------STALKER NOVICE----------------------->
 	
 	<specific_character id="esc_stalker_novice_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
@@ -333,7 +335,7 @@
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
+			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -366,7 +368,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-			wpn_toz34 \n
+			wpn_bm16 \n
 			ammo_12x70_buck \n
 #include "gameplay\character_items.xml"
 		</supplies>
@@ -395,7 +397,7 @@
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n		
 #include "gameplay\character_items.xml"
@@ -425,7 +427,7 @@
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
+			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -455,10 +457,10 @@
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-			wpn_toz34 \n
+			wpn_bm16 \n
 			ammo_12x70_buck \n		
 #include "gameplay\character_items.xml"	
 		</supplies>
@@ -517,7 +519,7 @@
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -527,6 +529,7 @@
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+	
 	
 	<specific_character id="esc_ranger" team_default = "1">
 		<name>Петруха</name>
@@ -576,8 +579,8 @@
 		<visual>actors\soldier\soldier_beret_1</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
@@ -606,10 +609,10 @@
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
@@ -636,8 +639,8 @@
 		<visual>actors\soldier\soldier_bandana_1</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
@@ -666,9 +669,9 @@
 		<visual>actors\soldier\soldier_bandana_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -696,10 +699,10 @@
 		<visual>actors\soldier\soldier_bandana_3</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
@@ -726,9 +729,9 @@
 		<visual>actors\soldier\soldier_bandana_4</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -756,10 +759,10 @@
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
@@ -786,10 +789,10 @@
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
@@ -816,10 +819,10 @@
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
@@ -846,10 +849,10 @@
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 =1, silencer \n
-			ammo_5.45x39_fmj \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74, silencer \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
@@ -876,10 +879,10 @@
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 =1, silencer \n
-			ammo_5.45x39_fmj \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74, silencer \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
@@ -909,10 +912,10 @@
 		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 		</supplies>
 					
