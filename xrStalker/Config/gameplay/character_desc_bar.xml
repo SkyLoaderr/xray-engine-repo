@@ -643,7 +643,7 @@
 		<rank>70</rank>
 		<reputation>90</reputation>
 
-		<visual>actors\nauchniy\nauchniy_1</visual>
+		<visual>actors\ecolog\stalker_ecolog</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -669,7 +669,7 @@
 		<panic_threshold>0.1</panic_threshold>
 		<reputation>40</reputation>
 
-		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<visual>actors\killer\stalker_ki_head_5</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -748,7 +748,7 @@
 		<rank>60</rank>
 		<reputation>-40</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -771,7 +771,7 @@
 		<rank>60</rank>
 		<reputation>-40</reputation>
 
-		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1727,7 +1727,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\nauchniy\nauchniy_0</visual>
+		<visual>actors\ecolog\stalker_ecolog_military</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1754,7 +1754,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\nauchniy\nauchniy_0</visual>
+		<visual>actors\ecolog\stalker_ecolog_military</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1783,7 +1783,7 @@
 		<rank>40</rank>
 		<reputation>-30</reputation>
 
-		<visual>actors\killer\stalker_ki_head_3</visual>
+		<visual>actors\killer\stalker_ki_head_1</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1811,7 +1811,7 @@
 		<rank>40</rank>
 		<reputation>-30</reputation>
 
-		<visual>actors\killer\stalker_ki_head_4</visual>
+		<visual>actors\killer\stalker_ki_mask</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1839,7 +1839,7 @@
 		<rank>40</rank>
 		<reputation>-30</reputation>
 
-		<visual>actors\killer\stalker_ki_head_5</visual>
+		<visual>actors\killer\stalker_ki_head_1</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1922,7 +1922,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\killer\stalker_ki_antigas</visual>
+		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1949,7 +1949,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\killer\stalker_ki_antigas</visual>
+		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1976,7 +1976,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -2004,7 +2004,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
