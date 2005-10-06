@@ -22,15 +22,15 @@ damage              	= damage_bones
 ;------ Factory parameters of Engine -------------------------------------------
 
 fuel_tank         		= 250.         	; L
-fuel_consumption  		= 8		       	; L / (100k R); liters per 100 000 rotations
+fuel_consumption  		= 25		       	; L / (100k R); liters per 100 000 rotations
 engine_power      		= 10        	; horse_power (kW=hp*0.808) max power
 max_power_rpm     		= 3500        	; (nominal rpm ) on this rpm value engine power reaches maximum
-max_torque_rpm    		= 2500       	; on this rpm engine torque reaches maximum
+max_torque_rpm    		= 2000       	; on this rpm engine torque reaches maximum
 
 power_increment_factor	= 0.01
 power_decrement_factor	= 0.1
-rpm_increment_factor	= 0.01
-rpm_decrement_factor	= 0.02
+rpm_increment_factor	= 0.02
+rpm_decrement_factor	= 0.04
 m_power_neutral_factor	= 0.75
 
 ; additional engine parameters
@@ -57,7 +57,7 @@ auto_transmission  		= on            ; Автоматическая коробка (on/off)
 
 [transmission_gear_ratio]
 										; shift down/ shift up. (rpm, необходимое для переключения)
-R                  		= 6.73, 2500,3850	;2100,2850
+R                  		= 6.73, 2500,3850
 N1                 		= 6.73, 2500,3850
 N2                 		= 4.29, 2500,3850
 
