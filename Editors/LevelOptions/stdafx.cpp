@@ -20,7 +20,6 @@
 #pragma comment(lib,"MagicFMDLLB.lib")
 #pragma comment(lib,"EToolsB.lib")
 #pragma comment(lib,"LWOB.lib")
-#pragma comment(lib,"xrHemisphereB.lib")
 
 #pragma comment(lib,"oggB.lib")
 #pragma comment(lib,"theoraB.lib")
