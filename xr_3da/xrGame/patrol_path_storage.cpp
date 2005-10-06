@@ -67,15 +67,21 @@ void CPatrolPathStorage::load				(IReader &stream)
 	chunk						= stream.open_chunk(1);
 	for (u32 i=0; i<size; ++i) {
 		IReader					*chunk1;
+		chunk1					= chunk->open_chunk(i);
 
-		chunk1					= chunk->open_chunk(0);
-        load_data				(pair.first,*chunk1);
+		IReader					*chunk2;
+		chunk2					= chunk1->open_chunk(0);
+        load_data				(pair.first,*chunk2);
+		chunk2->close			();
+
+		chunk2					= chunk1->open_chunk(1);
+        load_data				(pair.second,*chunk2);
+		chunk2->close			();
+
 		chunk1->close			();
 
-		chunk1					= chunk->open_chunk(1);
-        load_data				(pair.second,*chunk1);
-		chunk1->close			();
-
+		const_iterator			I = m_registry.find(pair.first);
+		VERIFY3					(I == m_registry.end(),"Duplicated patrol path found ",pair.first);
 		m_registry.insert		(pair);
 	}
 
@@ -92,13 +98,17 @@ void CPatrolPathStorage::save				(IWriter &stream)
 
 	PATROL_REGISTRY::iterator	I = m_registry.begin();
 	PATROL_REGISTRY::iterator	E = m_registry.end();
-	for ( ; I != E; ++I) {
+	for (int i=0; I != E; ++I, ++i) {
+		stream.open_chunk		(i);
+
 		stream.open_chunk		(0);
         save_data				((*I).first,stream);
 		stream.close_chunk		();
 
 		stream.open_chunk		(1);
         save_data				((*I).second,stream);
+		stream.close_chunk		();
+
 		stream.close_chunk		();
 	}
 
