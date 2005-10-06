@@ -2542,6 +2542,9 @@
 							RelativePath=".\Scripts\sr_particle.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\sr_postprocess.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\sr_psy_antenna.script">
 						</File>
 						<File
