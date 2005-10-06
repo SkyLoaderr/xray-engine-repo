@@ -479,12 +479,12 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_lr300 \n
-			ammo_5.56x45_ap \n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -503,7 +503,7 @@
 		<rank>99</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<visual>actors\dolg\stalker_do_komandir</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -534,7 +534,7 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<visual>actors\dolg\stalker_do_balon_3</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -562,7 +562,7 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<visual>actors\dolg\stalker_do_balon_5</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -589,7 +589,7 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<visual>actors\dolg\stalker_do_balon_1</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -616,7 +616,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<visual>actors\dolg\stalker_do_antigas</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -824,7 +824,7 @@
 
 		<panic_threshold>0.1</panic_threshold>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_mask</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -888,7 +888,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -920,7 +920,7 @@
 		<rank>50</rank>
 		<reputation>20</reputation>
 
-		<visual>actors\dolg\stalker_do_balon_80</visual>
+		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -949,7 +949,7 @@
 		<rank>50</rank>
 		<reputation>20</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1008,7 +1008,7 @@
 		<rank>70</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1036,7 +1036,7 @@
 		<rank>70</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1066,7 +1066,7 @@
 		<rank>70</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1096,7 +1096,7 @@
 		<rank>70</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1628,7 +1628,7 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1660,7 +1660,7 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
