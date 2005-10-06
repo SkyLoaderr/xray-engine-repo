@@ -114,14 +114,16 @@ bool CScriptThread::update()
 			m_active		= false;
 		}
 		else {
-			/*
-			if (!(lua()->ci->state & CI_YIELD)) {
+			/**/
+//			if (!(lua()->ci->state & CI_YIELD))
+			if (!m_current_stack_level)
+			{
 				m_active	= false;
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",*m_script_name);
 			}
 			else 
 			{
-			*/
+			/**/
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
 				if(!ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
@@ -132,7 +134,7 @@ bool CScriptThread::update()
 				}
 #endif
 				VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
-			// }
+			}
 		}
 		
 		ai().script_engine().current_thread	(0);
