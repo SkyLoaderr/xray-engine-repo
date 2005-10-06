@@ -1595,6 +1595,49 @@
 						RelativePath=".\server_entity_wrapper_inline.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="patrol_paths"
+					Filter="">
+					<Filter
+						Name="patrol_path"
+						Filter="">
+						<File
+							RelativePath=".\patrol_path.cpp">
+						</File>
+						<File
+							RelativePath=".\patrol_path.h">
+						</File>
+						<File
+							RelativePath=".\patrol_path_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="patrol_path_storage"
+						Filter="">
+						<File
+							RelativePath=".\patrol_path_storage.cpp">
+						</File>
+						<File
+							RelativePath=".\patrol_path_storage.h">
+						</File>
+						<File
+							RelativePath=".\patrol_path_storage_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="patrol_point"
+						Filter="">
+						<File
+							RelativePath=".\patrol_point.cpp">
+						</File>
+						<File
+							RelativePath=".\patrol_point.h">
+						</File>
+						<File
+							RelativePath=".\patrol_point_inline.h">
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Verify"

@@ -14,6 +14,7 @@
 #include "xrai.h"
 #include "server_entity_wrapper.h"
 #include "graph_engine.h"
+#include "patrol_path_storage.h"
 
 extern LPCSTR GAME_CONFIG;
 
@@ -33,6 +34,7 @@ CGameSpawnConstructor::~CGameSpawnConstructor	()
 	delete_data		(m_spawn_graph);
 	xr_delete		(m_game_graph);
 	xr_delete		(m_game_info);
+	xr_delete		(m_patrol_path_storage);
 }
 
 IC	shared_str CGameSpawnConstructor::actor_level_name()
@@ -62,6 +64,9 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 	// init ini file
 	m_game_info							= xr_new<CInifile>(INI_FILE);
 	R_ASSERT							(m_game_info->section_exist("levels"));
+
+	// init patrol path storage
+	m_patrol_path_storage				= xr_new<CPatrolPathStorage>();
 
 	// init game graph
 	string256							game_graph_name;
@@ -157,7 +162,7 @@ void CGameSpawnConstructor::verify_level_changers	()
 	VERIFY2									(m_level_changers.empty(),"Some of the level changers setup incorrectly");
 }
 
-void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
+void CGameSpawnConstructor::save_spawn				(LPCSTR name, LPCSTR output)
 {
 	CMemoryWriter					stream;
 
@@ -181,6 +186,10 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 
 	stream.open_chunk				(2);
 	save_data						(m_level_points,stream);
+	stream.close_chunk				();
+
+	stream.open_chunk				(3);
+	save_data						(m_patrol_path_storage,stream);
 	stream.close_chunk				();
 
 	stream.save_to					(*spawn_name(output));

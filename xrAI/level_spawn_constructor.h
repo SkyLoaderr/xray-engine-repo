@@ -21,6 +21,7 @@ class CSE_ALifeObject;
 class CSE_ALifeGraphPoint;
 class CSE_SpawnGroup;
 class CSE_ALifeAnomalousZone;
+class CPatrolPathStorage;
 
 class CLevelSpawnConstructor : public CThread {
 public:

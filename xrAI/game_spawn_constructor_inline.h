@@ -64,6 +64,12 @@ IC	CGameSpawnConstructor::LEVEL_CHANGER_STORAGE &CGameSpawnConstructor::level_ch
 	return						(m_level_changers);
 }
 
+IC	CPatrolPathStorage &CGameSpawnConstructor::patrol_path_storage	() const
+{
+	VERIFY						(m_patrol_path_storage);
+	return						(*m_patrol_path_storage);
+}
+
 IC	void CGameSpawnConstructor::process_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns)
 {
 	std::sort								(spawns.begin(),spawns.end());

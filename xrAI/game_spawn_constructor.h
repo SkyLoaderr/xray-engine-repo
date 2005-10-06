@@ -20,6 +20,7 @@
 class CSE_Abstract;
 class CLevelSpawnConstructor;
 class CSE_ALifeCreatureAbstract;
+class CPatrolPathStorage;
 
 class CGameSpawnConstructor {
 	friend class CSpawnMerger;
@@ -58,6 +59,7 @@ private:
 private:
 	CGameGraph						*m_game_graph;
 	SPAWN_GRAPH						*m_spawn_graph;
+	CPatrolPathStorage				*m_patrol_path_storage;
 	CInifile						*m_game_info;
 	CSE_ALifeCreatureAbstract		*m_actor;
 
@@ -89,6 +91,7 @@ public:
 	IC		void					add_edge				(ALife::_SPAWN_ID id0, ALife::_SPAWN_ID id1, float weight);
 	IC		u32						level_point_count		() const;
 	IC		LEVEL_CHANGER_STORAGE	&level_changers			();
+	IC		CPatrolPathStorage		&patrol_path_storage	() const;
 };
 
 #include "game_spawn_constructor_inline.h"

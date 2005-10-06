@@ -17,6 +17,7 @@
 #include "clsid_game.h"
 #include "game_base_space.h"
 #include "game_spawn_constructor.h"
+#include "patrol_path_storage.h"
 
 #define IGNORE_ZERO_SPAWN_POSITIONS
 
@@ -75,6 +76,16 @@ void CLevelSpawnConstructor::init								()
 	// loading cross table 
 	strcat					(file_name,CROSS_TABLE_NAME);
 	m_cross_table			= xr_new<CGameLevelCrossTable>(file_name);
+
+	// loading patrol paths
+	FS.update_path			(file_name,"$game_levels$",*m_level.name());
+	strcat					(file_name,"\\level.game");
+	if (FS.exist(file_name)) {
+		IReader				*stream	= FS.r_open(file_name);
+		VERIFY				(stream);
+		m_game_spawn_constructor->patrol_path_storage().load_raw(&level_graph(),&cross_table(),&game_graph(),*stream);
+		FS.r_close			(stream);
+	}
 }
 
 CSE_Abstract *CLevelSpawnConstructor::create_object						(IReader *chunk)
