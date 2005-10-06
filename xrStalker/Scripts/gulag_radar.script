@@ -684,7 +684,7 @@ function load_ltx_far_road_ambush(gname, type)
 
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
-					"danger_inertion_time =  90000\n" ..
+					"danger_inertion_time =  90000\n"
 	end
 	return res
 end
@@ -706,7 +706,7 @@ function load_ltx_far_road_btr_ambush(gname, type)
 
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
-					"danger_inertion_time =  90000\n" ..
+					"danger_inertion_time =  90000\n"
 	end
 	return res
 end

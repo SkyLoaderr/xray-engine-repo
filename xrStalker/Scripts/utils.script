@@ -340,6 +340,8 @@ function path_parse_waypoints(pathname)
 end
 
 function path_parse_waypoints_from_arglist(pathname, num_points, ...)
+	local arg = {...}
+
 	if not pathname then
 		return nil
 	end
