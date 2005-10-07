@@ -275,8 +275,7 @@ void CUIPdaWnd::Draw()
 
 void CUIPdaWnd::PdaContentsChanged	(pda_section::part type)
 {
-	 g_pda_info_state |= type;
-//	HUD().GetUI()->UIMainIngameWnd->SetFlashIconState_(CUIMainIngameWnd::efiPdaTask, true);
+	bool b = true;
 
 	if(type==pda_section::encyclopedia){
 		UIEncyclopediaWnd->ReloadArticles	();
@@ -290,7 +289,14 @@ void CUIPdaWnd::PdaContentsChanged	(pda_section::part type)
 	}else
 	if(type==pda_section::contacts){
 		UIPdaContactsWnd->Reload		();
+		b = false;
 	}
+
+	if(b){
+		g_pda_info_state |= type;
+		HUD().GetUI()->UIMainIngameWnd->SetFlashIconState_(CUIMainIngameWnd::efiPdaTask, true);
+	}
+
 }
 void draw_sign		(CUIStatic* s, Frect& r)
 {
