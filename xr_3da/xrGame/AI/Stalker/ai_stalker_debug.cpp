@@ -57,14 +57,9 @@ void try_change_current_entity()
 	CFrustum							frustum;
 	frustum.CreateFromMatrix			(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 
-	BOOL								Enabled = Level().CurrentEntity()->getEnabled();
-	Level().CurrentEntity()->setEnabled	(FALSE);
-	
 	typedef xr_vector<ISpatial*>		OBJECTS;
 	OBJECTS								ISpatialResult;
 	g_SpatialSpace->q_frustum			(ISpatialResult, 0, STYPE_COLLIDEABLE, frustum);
-	
-	Level().CurrentEntity()->setEnabled	(Enabled);
 
 	float								maxlen = 1000.0f;
 	CAI_Stalker*						nearest_agent = 0;
@@ -73,8 +68,9 @@ void try_change_current_entity()
 	OBJECTS::const_iterator				E = ISpatialResult.end();
 	for ( ; I != E; ++I) {
 		CAI_Stalker						*current = smart_cast<CAI_Stalker*>(*I);
-		if (!current)
-			continue;
+		if (!current)					continue;
+		if (Level().CurrentEntity()==current) continue;
+
 		Fvector							A, B, tmp; 
 		current->Center					(A);
 

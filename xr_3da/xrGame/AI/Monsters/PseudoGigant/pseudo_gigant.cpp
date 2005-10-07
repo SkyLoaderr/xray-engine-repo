@@ -204,7 +204,7 @@ void CPseudoGigant::on_threaten_execute()
 {
 	// hit objects
 	xr_vector<CObject*> tpObjects;
-	Level().ObjectSpace.GetNearest(tpObjects,Position(), 15.f); 
+	Level().ObjectSpace.GetNearest(tpObjects,Position(), 15.f, NULL); 
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);

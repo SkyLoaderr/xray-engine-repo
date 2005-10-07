@@ -212,8 +212,6 @@ void CAI_Stalker::Die				(CObject* who)
 
 void CAI_Stalker::Load				(LPCSTR section)
 { 
-//	setEnabled						(FALSE);
-	
 	CCustomMonster::Load			(section);
 	CObjectHandler::Load			(section);
 	sight().Load					(section);

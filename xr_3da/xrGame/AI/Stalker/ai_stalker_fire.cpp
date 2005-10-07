@@ -410,14 +410,7 @@ void CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &dire
 //	VERIFY							(getEnabled());
 	collide::ray_defs				ray_defs(position,direction,distance,0,collide::rqtBoth);
 	ray_query_param					params(this,memory().visual().transparency_threshold(),distance);
-	BOOL							enabled = getEnabled();
-	if (enabled)
-		setEnabled					(FALSE);
-
-	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params);
-
-	if (enabled)
-		setEnabled					(enabled);
+	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params,NULL,this);
 	m_can_kill_enemy				= m_can_kill_enemy  || params.m_can_kill_enemy;
 	m_can_kill_member				= m_can_kill_member || params.m_can_kill_member;
 	m_pick_distance					= _max(m_pick_distance,params.m_pick_distance);

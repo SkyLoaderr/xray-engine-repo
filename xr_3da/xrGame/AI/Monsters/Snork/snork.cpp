@@ -136,8 +136,6 @@ float CSnork::trace(const Fvector &dir)
 {
 	float ret_val = flt_max;
 
-	BOOL		enabled = getEnabled();
-	setEnabled	(FALSE);
 	collide::rq_result	l_rq;
 
 	Fvector		trace_from;
@@ -145,12 +143,10 @@ float CSnork::trace(const Fvector &dir)
 
 	float		trace_dist = Radius() + TRACE_RANGE;
 
-	if (Level().ObjectSpace.RayPick(trace_from, dir, trace_dist, collide::rqtStatic, l_rq)) {
+	if (Level().ObjectSpace.RayPick(trace_from, dir, trace_dist, collide::rqtStatic, l_rq, this)) {
 		if ((l_rq.range < trace_dist))
 			ret_val = l_rq.range;
 	}
-
-	setEnabled	(enabled);
 	
 	return		ret_val;
 }
