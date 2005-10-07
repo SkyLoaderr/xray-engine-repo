@@ -324,8 +324,8 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	if (GameID() != GAME_SINGLE)
 		m_zone_flags.set(eSpawnBlowoutArtefacts,	FALSE);
 
-	m_TimeToDisable				= Z->m_enabled_time*1000;
-	m_TimeToEnable				= Z->m_disabled_time*1000;
+	m_TimeToDisable				= Z->m_disabled_time*1000;
+	m_TimeToEnable				= Z->m_enabled_time*1000;
 	m_TimeShift					= Z->m_start_time_shift*1000;
 	m_StartTime					= Device.dwTimeGlobal;
 	m_zone_flags.set			(eUseOnOffTime,	(m_TimeToDisable!=0)&&(m_TimeToEnable!=0) );

@@ -53,3 +53,10 @@ void CUIWndCallback::AddCallback(LPCSTR control_id, s16 event, const void_functi
 	c->m_event			= event;
 }
 
+void CUIWndCallback::AddCallback(const shared_str& control_id, s16 event, const void_function &f)
+{
+	SCallbackInfo* c	= NewCallback ();
+	c->m_cpp_callback	= f;
+	c->m_controlName	= control_id;
+	c->m_event			= event;
+}

@@ -8,8 +8,10 @@
 #include <boost/bind.hpp>
 #include "UIEventsWnd.h"
 #include "UIEditBox.h"
-#include "../map_location.h"
 #include "UIInventoryUtilities.h"
+#include "../map_location.h"
+#include "../map_manager.h"
+#include "../level.h"
 
 CUITaskItem::CUITaskItem			(CUIEventsWnd* w)
 :m_GameTask			(NULL),
@@ -296,11 +298,13 @@ void CUITaskSubItem::MarkSelected (bool b)
 CUIUserTaskItem::CUIUserTaskItem(CUIEventsWnd* w)
 :inherited(w)
 {
+	m_edtWnd = NULL;
 	Init();
 }
 
 CUIUserTaskItem::~CUIUserTaskItem			()
 {
+	delete_data	(m_edtWnd);
 }
 
 void  CUIUserTaskItem::Init					()
@@ -311,30 +315,44 @@ void  CUIUserTaskItem::Init					()
 	R_ASSERT3						(xml_result, "xml file not found", "job_item.xml");
 
 	m_image							= xr_new<CUIStatic>();		m_image->SetAutoDelete(true);				AttachChild(m_image);
-	m_descriptionStatic				= xr_new<CUIEditBox>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
-	m_descriptionStatic->			SetWindowName("m_descriptionStatic");
-	Register						(m_descriptionStatic);
-	AddCallback						("m_descriptionStatic",EDIT_TEXT_CHANGED,boost::bind(&CUIUserTaskItem::OnDescriptionChanged,this));
+
+	m_descriptionStatic				= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
+
+	m_captionStatic					= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);	AttachChild(m_captionStatic);
+	
 
 	m_showLocationBtn				= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);
 	m_showLocationBtn->				SetWindowName("m_showLocationBtn");
 	Register						(m_showLocationBtn);
-	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
+	AddCallback						(m_showLocationBtn->WindowName(),BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
 
 	m_showPointerBtn				= xr_new<CUI3tButton>();	m_showPointerBtn->SetAutoDelete(true);		AttachChild(m_showPointerBtn);
 	m_showPointerBtn->				SetWindowName("m_showPointerBtn");
 	Register						(m_showPointerBtn);
-	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowLocationClicked,this));
-	AddCallback						("m_showPointerBtn",BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowPointerClicked,this));
+	AddCallback						(m_showPointerBtn->WindowName(),BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnShowPointerClicked,this));
+
+
+	m_editTextBtn					= xr_new<CUI3tButton>();	m_editTextBtn->SetAutoDelete(true);		AttachChild(m_editTextBtn);
+	m_editTextBtn->					SetWindowName("m_editTextBtn");
+	Register						(m_editTextBtn);
+	AddCallback						(m_editTextBtn->WindowName(), BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnEditTextClicked,this));
+
+	m_removeBtn						= xr_new<CUI3tButton>();	m_removeBtn->SetAutoDelete(true);		AttachChild(m_removeBtn);
+	m_removeBtn->					SetWindowName("m_removeBtn");
+	Register						(m_removeBtn);
+	AddCallback						(m_removeBtn->WindowName(), BUTTON_CLICKED,boost::bind(&CUIUserTaskItem::OnRemoveClicked,this));
 
 
 	CUIXmlInit xml_init;
 	xml_init.InitWindow				(uiXml,"task_user_item",0,this);
 
 	xml_init.InitStatic				(uiXml,"task_user_item:image",0,m_image);
-	xml_init.InitEditBox			(uiXml,"task_user_item:description",0,m_descriptionStatic);
+	xml_init.InitStatic				(uiXml,"task_user_item:description",0,m_descriptionStatic);
+	xml_init.InitStatic				(uiXml,"task_user_item:caption",0,m_captionStatic);
 	xml_init.Init3tButton			(uiXml,"task_user_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton			(uiXml,"task_user_item:show_pointer_btn",0,m_showPointerBtn);
+	xml_init.Init3tButton			(uiXml,"task_user_item:edit_text_btn",0,m_editTextBtn);
+	xml_init.Init3tButton			(uiXml,"task_user_item:remove_btn",0,m_removeBtn);
 
 }
 
@@ -365,9 +383,15 @@ void CUIUserTaskItem::SetGameTask				(CGameTask* gt, int obj_idx)
 	m_image->ClipperOn			();
 	m_image->SetStretchTexture	(true);
 
+	m_captionStatic->SetText					(*stbl(gt->m_Title));
 	m_descriptionStatic->SetText				(*stbl(obj->description));
+	m_descriptionStatic->AdjustHeightToText		();
+/*
 	float h = _max(	m_image->GetWndPos().y+m_image->GetHeight(),
 					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
+*/
+	float h = m_descriptionStatic->GetWndPos().y + m_descriptionStatic->GetHeight() + 10.0f;
+
 	SetHeight									(h);
 
 }
@@ -391,4 +415,97 @@ void CUIUserTaskItem::MarkSelected				(bool b)
 void CUIUserTaskItem::OnDescriptionChanged		()
 {
 	Objective()->description = m_descriptionStatic->GetText();
+}
+
+void CUIUserTaskItem::OnEditTextClicked		()
+{
+	delete_data			(m_edtWnd);
+	m_edtWnd			= xr_new<CUIUserTaskEditWnd>();
+	m_edtWnd->Start		(this);
+}
+
+void CUIUserTaskItem::OnRemoveClicked		()
+{
+	Level().MapManager().RemoveMapLocation(Objective()->HasMapLocation());
+}
+
+
+CUIUserTaskEditWnd::CUIUserTaskEditWnd		()
+{
+	m_userTask = NULL;
+	Init();
+}
+
+void CUIUserTaskEditWnd::SendMessage		(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	CUIWndCallback::OnEvent(pWnd, msg, pData);
+}
+
+void CUIUserTaskEditWnd::Start				(CUIUserTaskItem* itm)
+{
+	VERIFY(!m_userTask);
+
+	CStringTable stbl;
+
+	m_userTask = itm;
+	m_editCaption->SetText			(*stbl(m_userTask->GameTask()->m_Title));
+	m_editDescription->SetText		(*stbl(m_userTask->Objective()->description));
+	HUD().GetUI()->StartStopMenu	(this,true);
+}
+
+void CUIUserTaskEditWnd::OnOk			()
+{
+	m_userTask->GameTask()->m_Title			= m_editCaption->GetText();
+	m_userTask->Objective()->description	= m_editDescription->GetText();
+	m_userTask->m_EventsWnd->Reload();
+
+	GetHolder()->StartStopMenu				(this, false);
+	m_userTask = NULL;
+}
+
+void CUIUserTaskEditWnd::OnCancel				()
+{
+	GetHolder()->StartStopMenu(this, false);
+	m_userTask = NULL;
+}
+
+void CUIUserTaskEditWnd::Init					()
+{
+	Hide					();
+	CUIXml uiXml;
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
+	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
+
+	m_background		= xr_new<CUIFrameWindow>();		m_background->SetAutoDelete(true);
+	AttachChild			(m_background);
+	
+	m_background_1		= xr_new<CUIFrameWindow>();		m_background_1->SetAutoDelete(true);
+	m_background->AttachChild(m_background_1);
+	m_background_2		= xr_new<CUIFrameWindow>();		m_background_2->SetAutoDelete(true);
+	m_background->AttachChild(m_background_2);
+
+	m_btnOk				= xr_new<CUI3tButton>();	m_btnOk->SetAutoDelete(true);		m_background->AttachChild(m_btnOk);
+	m_btnOk->SetWindowName("m_btnOk");
+	Register			(m_btnOk);
+	AddCallback			(m_btnOk->WindowName(),BUTTON_CLICKED,boost::bind(&CUIUserTaskEditWnd::OnOk,this));
+
+	m_btnCancel			= xr_new<CUI3tButton>();	m_btnCancel->SetAutoDelete(true);	m_background->AttachChild(m_btnCancel);
+	m_btnCancel->SetWindowName("m_btnCancel");
+	Register			(m_btnCancel);
+	AddCallback			(m_btnCancel->WindowName(),BUTTON_CLICKED,boost::bind(&CUIUserTaskEditWnd::OnCancel,this));
+
+	m_editCaption		= xr_new<CUIEditBox>();		m_editCaption->SetAutoDelete(true);		m_background_1->AttachChild(m_editCaption);
+	m_editDescription	= xr_new<CUIEditBox>();		m_editDescription->SetAutoDelete(true); m_background_2->AttachChild(m_editDescription);
+
+
+	CUIXmlInit xml_init;
+	xml_init.InitWindow				(uiXml,"edit_user_item",0,								this);
+	xml_init.InitFrameWindow		(uiXml,"edit_user_item:background",0,					m_background);
+	xml_init.InitFrameWindow		(uiXml,"edit_user_item:background:background_1",0,		m_background_1);
+	xml_init.InitFrameWindow		(uiXml,"edit_user_item:background:background_2",0,		m_background_2);
+	xml_init.Init3tButton			(uiXml,"edit_user_item:background:ok_btn",0,			m_btnOk);
+	xml_init.Init3tButton			(uiXml,"edit_user_item:background:cancel_btn",0,		m_btnCancel);
+	xml_init.InitEditBox			(uiXml,"edit_user_item:background:edit_caption",0,		m_editCaption);
+	xml_init.InitEditBox			(uiXml,"edit_user_item:background:edit_description",0,	m_editDescription);
+
 }

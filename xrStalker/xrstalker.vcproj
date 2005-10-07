@@ -1183,9 +1183,6 @@
 					RelativePath=".\Config\ui\maingame_pda_msg.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\map.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\map_desc.xml">
 				</File>
 				<File

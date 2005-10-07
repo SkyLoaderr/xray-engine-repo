@@ -1,4 +1,5 @@
 #pragma once
+#include "UIDialogWnd.h"
 #include "UIListItem.h"
 #include "UIWndCallback.h"
 
@@ -13,7 +14,6 @@ class CUITaskItem :public CUIListItem, public CUIWndCallback
 {
 	typedef		CUIListItem	inherited;
 protected:
-	CUIEventsWnd*	m_EventsWnd;
 	CGameTask*		m_GameTask;
 	int				m_TaskObjectiveIdx;
 	void			OnClick					();
@@ -29,6 +29,8 @@ public:
 	CGameTask*		GameTask				()	{return m_GameTask;}
 	int				ObjectiveIdx			()	{return m_TaskObjectiveIdx;}
 	SGameTaskObjective*	Objective			();
+
+	CUIEventsWnd*	m_EventsWnd;
 };
 
 class CUITaskRootItem :public CUITaskItem
@@ -40,8 +42,6 @@ protected:
 	CUIStatic*		m_captionTime;
 	CUI3tButton*	m_showLocationBtn;
 	CUI3tButton*	m_switchDescriptionBtn;
-//	u32				m_defTextColor;
-//	u32				m_defColor;
 	bool			m_curr_descr_mode;
 	void			Init					();
 public:	
@@ -59,8 +59,6 @@ public:
 class CUITaskSubItem :public CUITaskItem
 {
 	typedef			CUITaskItem	inherited;
-//	u32				m_defTextColor;
-//	u32				m_defColor;
 	u32				m_active_color;
 	u32				m_failed_color;
 	u32				m_accomplished_color;
@@ -83,16 +81,19 @@ public:
 	virtual bool	OnDbClick				();
 };
 
+class CUIUserTaskEditWnd;
 class CUIUserTaskItem :public CUITaskItem
 {
 	typedef			CUITaskItem	inherited;
-//	u32				m_defTextColor;
 protected:
 	CUI3tButton*	m_showPointerBtn;
 	CUI3tButton*	m_showLocationBtn;
-	CUIEditBox*		m_descriptionStatic;
+	CUI3tButton*	m_editTextBtn;
+	CUI3tButton*	m_removeBtn;
+	CUIStatic*		m_captionStatic;
+	CUIStatic*		m_descriptionStatic;
 	CUIStatic*		m_image;
-
+	CUIUserTaskEditWnd* m_edtWnd;
 	void			Init					();
 
 public:	
@@ -103,6 +104,30 @@ public:
 			void	OnShowLocationClicked	();
 			void	OnShowPointerClicked	();
 			void	OnDescriptionChanged	();
+			void	OnEditTextClicked		();
+			void	OnRemoveClicked			();
+
 	virtual bool	OnDbClick				()	{return true;};
 	virtual void	MarkSelected			(bool b);
+};
+
+class CUIUserTaskEditWnd : public CUIDialogWnd, public CUIWndCallback
+{
+	CUIUserTaskItem*		m_userTask;
+	CUI3tButton*			m_btnOk;
+	CUI3tButton*			m_btnCancel;
+	CUIFrameWindow*			m_background;
+	CUIFrameWindow*			m_background_1;
+	CUIFrameWindow*			m_background_2;
+
+	CUIEditBox*				m_editCaption;
+	CUIEditBox*				m_editDescription;
+protected:
+			void			OnOk					();
+			void			OnCancel				();
+			void			Init					();
+public:
+							CUIUserTaskEditWnd		();
+	virtual void			SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+			void			Start					(CUIUserTaskItem* itm);
 };
