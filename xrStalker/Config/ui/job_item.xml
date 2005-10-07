@@ -5,11 +5,11 @@
 		<image x="8" y="16" width="45" height="45"/>
 		
 		<caption x="60" y="16" width="200" height="18">
-			<text x="0" y="0" font="letterica18"></text>
+			<text align="l" x="0" y="0" font="letterica18"></text>
 		</caption>
 
-		<caption_time x="30" y="46" width="200" height="18">
-			<text x="0" y="0" font="medium" r="150" g="150" b="180" a="255"></text>
+		<caption_time x="60" y="46" width="200" height="18">
+			<text align="l" x="0" y="0" font="medium" r="150" g="150" b="180" a="255"></text>
 		</caption_time>
 
 		<switch_description_btn x="272" y="16" width="20" height="20" check_mode="1">
@@ -26,7 +26,7 @@
 		<state_image x="8" y="10" width="11" height="11"/>
 
 		<description x="25" y="8" width="250" height="16">
-			<text x="0" y="0" font="letterica16" r="255" g="255" b="255" a="255"></text>
+			<text align="l" x="0" y="0" font="letterica16" r="255" g="255" b="255" a="255"></text>
 			<text_colors>
 				<accomplished	r="150" g="150" b="180" a="255"/>
 				<failed			r="150" g="150" b="180" a="255"/>
