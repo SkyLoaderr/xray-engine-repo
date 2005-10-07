@@ -45,48 +45,6 @@
     <string id="escape_factory_assault_hello_41">
         <text>≈ще не всех положили. »щем этих уродов и валим их!</text>
     </string>
-    <string id="escape_factory_assault_talk_21">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_assault_talk_22">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_11">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_112">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_1121">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_11211">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_112111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_1121111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_11212">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_112121">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_1121211">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_113">
-        <text>empty text</text>
-    </string>
-    <string id="escape_factory_attackers_12">
-        <text>empty text</text>
-    </string>
     <string id="escape_fox_flame_dialog_0">
         <text>я к тебе не просто так пришел, а по остро интересующему мен€ вопросу.</text>
     </string>
@@ -398,30 +356,6 @@
     </string>
     <string id="escape_trader_done_blockpost_box_2">
         <text>ј вот это ты молодец, спасибо. ¬прочем знаю, "спасибом" сыт не будешь...“а-аак, 3000 или нет, 2000 тугриков и мы в рассчете.  стати, как только военные обнаружат пропажу, тут такой кипеж начнетс€. “ак что вали отсюда подобру-поздорову на крейсерской скорости.</text>
-    </string>
-    <string id="escape_trader_done_gift_2">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_21">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_211">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_2111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_21111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_211111">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_21112">
-        <text>empty text</text>
-    </string>
-    <string id="escape_trader_done_gift_211121">
-        <text>empty text</text>
     </string>
     <string id="escape_trader_done_tutorial_artefact_0">
         <text>Ќу что, держи мой "первый" артефакт.</text>
