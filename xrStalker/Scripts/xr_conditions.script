@@ -524,6 +524,9 @@ end
 -- Special functions for Pripyat
 ------------------------------------------------------------------------------------
 function pri_zombied_is_in_combat(actor, npc)
+    --local res = gulag_pripyat.zombied_in_combat[npc:name()] ~= nil
+    --printf("cond <pri>: zombied in combat (%s)", if_then_else(res, "true", "false"))
+    --return res
     return gulag_pripyat.zombied_in_combat[npc:name()] ~= nil
 end
 
