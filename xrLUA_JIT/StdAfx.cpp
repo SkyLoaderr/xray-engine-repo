@@ -3,4 +3,4 @@
 
 #include "stdafx.h"
 
-namespace boost {	void __stdcall throw_exception(const std::exception &A) {};	};
+namespace boost {	void  throw_exception(const std::exception &A) {};	};
