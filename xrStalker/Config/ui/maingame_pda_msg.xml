@@ -4,12 +4,6 @@
 	<!-- ICON -->
 	<icon_static x="0" y="0" width="35" height="35" stretch="1"></icon_static>
 
-	<!-- NAME 
-	<name_static x="70" y="0" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="128" b="64"></text>
-	</name_static>
-	-->
-
 	<!-- MSG TEXT -->
 	<text_static x="40" y="15" width="460" height="35">
 		<text x="5" y="0" font="letterica16" r="255" g="255" b="255"></text>
