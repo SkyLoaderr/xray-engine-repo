@@ -66,7 +66,7 @@ static		void				GetRaySourcePos(CExplosive	*exp_obj,const Fvector &expl_centre,F
 
 			void				ExplodeWaveProcessObject(collide::rq_results& storage,CPhysicsShellHolder*sh);
 			void				ExplodeWaveProcess();
-static		float				TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,float range,float ef_radius,collide::rq_results& storage);
+static		float				TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,float range,float ef_radius,collide::rq_results& storage, CObject* blasted_obj);
 			
 protected:
 
@@ -111,8 +111,7 @@ protected:
 	//////////////////////////////////////////////
 	//для разлета осколков
 	float				m_fFragmentSpeed;
-	float				m_fFragmentTracerMaxLength;
-
+	
 	//звуки
 	ref_sound			sndExplode;
 	ESoundTypes			m_eSoundExplode;

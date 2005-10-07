@@ -284,12 +284,6 @@ void CLensFlare::OnFrame(int id)
 		fBlend = fBlend + BLEND_INC_SPEED * Device.fTimeDelta;
 #else
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
-	BOOL		o_enable	= FALSE;
-	if (o_main)
-	{
-		o_enable		=	o_main->getEnabled();
-		o_main->setEnabled	(FALSE);
-	}
 	STranspParam TP			(this,Device.vCameraPosition,vSunDir,1000.f,EPS_L);
 	collide::ray_defs RD	(TP.P,TP.D,TP.f,0,collide::rqtBoth);
 	if (m_ray_cache.result&&m_ray_cache.similar(TP.P,TP.D,TP.f)){
@@ -302,20 +296,14 @@ void CLensFlare::OnFrame(int id)
 		}else{
 			// cache outdated. real query.
 			collide::rq_results		r_dest;
-			if (g_pGameLevel->ObjectSpace.RayQuery	(r_dest,RD,material_callback,&TP))
+			if (g_pGameLevel->ObjectSpace.RayQuery	(r_dest,RD,material_callback,&TP,NULL,o_main))
 				m_ray_cache.result = FALSE			;
 		}
 	}
 	blend_lerp(fBlend,TP.vis,BLEND_DEC_SPEED,Device.fTimeDelta);
 
-//	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f, collide::rqtBoth, &m_ray_cache) )
 #endif
 	clamp( fBlend, 0.0f, 1.0f );
-
-#ifdef _EDITOR
-#else
-	if (o_main)				o_main->setEnabled	(o_enable);
-#endif
 
 	// gradient
 	if (m_Current->m_Flags.is(CLensFlareDescriptor::flGradient))

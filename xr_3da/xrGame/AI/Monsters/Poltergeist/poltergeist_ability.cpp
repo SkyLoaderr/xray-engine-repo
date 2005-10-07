@@ -12,7 +12,7 @@
 void CPoltergeist::PhysicalImpulse	(const Fvector &position)
 {
 	xr_vector<CObject*> tpObjects	;
-	Level().ObjectSpace.GetNearest	(tpObjects,position, IMPULSE_RADIUS); 
+	Level().ObjectSpace.GetNearest	(tpObjects,position, IMPULSE_RADIUS, NULL); 
 	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 	if (tpObjects.empty())			return;
 	
@@ -39,7 +39,7 @@ void CPoltergeist::StrangeSounds(const Fvector &position)
 		dir.random_dir();
 
 		collide::rq_result	l_rq;
-		if (Level().ObjectSpace.RayPick(position, dir, TRACE_DISTANCE, collide::rqtStatic, l_rq)) {
+		if (Level().ObjectSpace.RayPick(position, dir, TRACE_DISTANCE, collide::rqtStatic, l_rq, NULL)) {
 			if (l_rq.range < TRACE_DISTANCE) {
 
 				// Получить пару материалов

@@ -102,7 +102,6 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 
 	//трассы для разлета осколков
 	m_fFragmentSpeed			= ini->r_float	(section,"fragment_speed"				);
-	m_fFragmentTracerMaxLength	= ini->r_float	(section,"fragment_tracer_max_length"	);
 
 	LPCSTR	snd_name		= ini->r_string(section,"snd_explode");
 	sndExplode.create		(TRUE,snd_name, m_eSoundExplode);
@@ -200,11 +199,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 	}
 #endif
 
-	BOOL		enabled = blasted_obj->getEnabled();
-	blasted_obj->setEnabled(FALSE);
-	for(u16 i=0;i<TEST_RAYS_PER_OBJECT;++i)
-	{
-		
+	for(u16 i=0;i<TEST_RAYS_PER_OBJECT;++i){
 		Fvector l_source_p,l_end_p;
 		l_end_p.random_point(l_d);
 		l_end_p.add(l_c);
@@ -212,10 +207,9 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 		GetRaySourcePos(exp_obj,expl_centre,l_source_p);
 		Fvector l_dir; l_dir.sub(l_end_p,l_source_p);
 		float mag=l_dir.magnitude();
-		if(fis_zero(mag)) 
-		{
-			blasted_obj->setEnabled(enabled);return 1.f;
-		}
+		
+		if(fis_zero(mag)) return 1.f;
+
 		l_dir.mul(1.f/mag);
 #ifdef DEBUG
 			if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
@@ -229,14 +223,13 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 	
 		float l_S=effective_volume*(_abs(l_dir.dotproduct(obj_xform.i))/l_d.x+_abs(l_dir.dotproduct(obj_xform.j))/l_d.y+_abs(l_dir.dotproduct(obj_xform.k))/l_d.z);
 
-		effect+=l_S/max_s*TestPassEffect(l_source_p,l_dir,mag,expl_radius,storage);
+		effect+=l_S/max_s*TestPassEffect(l_source_p,l_dir,mag,expl_radius,storage,blasted_obj);
 
 	}
-	blasted_obj->setEnabled(enabled);
 	return effect/TEST_RAYS_PER_OBJECT;
 	
 }
-float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,float range,float ef_radius,collide::rq_results& storage)
+float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,float range,float ef_radius,collide::rq_results& storage, CObject* blasted_obj)
 {
 	float sq_ef_radius=ef_radius*ef_radius;
 	float dist_factor	=		sq_ef_radius/(range*range*(exp_dist_extinction_factor-1.f)+sq_ef_radius);
@@ -251,7 +244,7 @@ float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,flo
 #else
 		SExpQParams			ep;
 #endif
-		g_pGameLevel->ObjectSpace.RayQuery(storage,RD,grenade_hit_callback,&ep);
+		g_pGameLevel->ObjectSpace.RayQuery(storage,RD,grenade_hit_callback,&ep,NULL,blasted_obj);
 		shoot_factor=ep.shoot_factor;
 
 	
@@ -330,11 +323,12 @@ void CExplosive::Explode()
 		cartridge.m_kPierce					= 1.f;
 		cartridge.fWallmarkSize				= m_fCurrentWallmarkSize;
 		cartridge.bullet_material_idx		= GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+		cartridge.m_flags.set				(CCartridge::cfTracer,FALSE);
 
 		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, m_fFragmentSpeed,
 											m_fCurrentHitPower, m_fCurrentHitImpulse, Initiator(),
 											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, 
-											cartridge, SendHits, m_fFragmentTracerMaxLength );
+											cartridge, SendHits );
 	}	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (cast_game_object()->Remote()) return;
@@ -520,7 +514,7 @@ void CExplosive::FindNormal(Fvector& normal)
 	cast_game_object()->Center(pos);
 
 	BOOL result = Level().ObjectSpace.RayPick(pos, dir, cast_game_object()->Radius(), 
-											 collide::rqtBoth, RQ);
+											 collide::rqtBoth, RQ, NULL);
 	if(!result || RQ.O)
 		normal.set(0,1,0);
 	//если лежим на статике

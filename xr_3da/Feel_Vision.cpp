@@ -199,7 +199,7 @@ namespace Feel {
 //						Log("cache 1");
 					}else{
 						// cache outdated. real query.
-						if (g_pGameLevel->ObjectSpace.RayQuery	(RQR, RD, feel_vision_callback, &feel_params))	{
+						if (g_pGameLevel->ObjectSpace.RayQuery	(RQR, RD, feel_vision_callback, &feel_params, NULL, NULL))	{
 							I->Cache_vis	= feel_params.vis	;
 							I->Cache.set	(P,D,f,TRUE	)		;
 						}else{
@@ -220,24 +220,6 @@ namespace Feel {
 					I->fuzzy				+=	fuzzy_update_vis*dt;
 					clamp					(I->fuzzy,-.5f,1.f);
 				}
-/*
-				if (g_pGameLevel->ObjectSpace.RayTest(P,D,f,collide::rqtStatic,&I->Cache)) 
-				{
-					// callback and multiple ray-tests
-
-					// INVISIBLE, choose next point
-					I->fuzzy				-=	fuzzy_update_novis*dt;
-					clamp					(I->fuzzy,-.5f,1.f);
-					I->cp_LP.random_dir		();
-					I->cp_LP.mul			(.7f);
-				}
-				else 
-				{
-					// VISIBLE
-					I->fuzzy				+=	fuzzy_update_vis*dt;
-					clamp					(I->fuzzy,-.5f,1.f);
-				}
-*/
 			}
 			else {
 				// VISIBLE, 'cause near

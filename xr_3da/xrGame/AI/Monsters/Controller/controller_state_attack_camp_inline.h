@@ -19,8 +19,6 @@ void CStateControlCampAbstract::initialize()
 
 	float angle			= ai().level_graph().vertex_cover_angle(object->ai_location().level_vertex_id(),deg(10), CLevelGraph::PredicateWorstCover());
 	
-	BOOL				enabled = object->getEnabled();
-	object->setEnabled	(FALSE);
 	collide::rq_result	l_rq;
 
 	m_angle_from		= angle_normalize(angle - ANGLE_DISP);
@@ -35,7 +33,7 @@ void CStateControlCampAbstract::initialize()
 		
 		direction.setHP	(ang, 0.f);
 		
-		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq)) {
+		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq, object)) {
 			if ((l_rq.range < TRACE_STATIC_DIST)) {
 				m_angle_from = ang;
 				break;
@@ -48,15 +46,13 @@ void CStateControlCampAbstract::initialize()
 		
 		direction.setHP	(ang, 0.f);
 
-		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq)) {
+		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq, object)) {
 			if ((l_rq.range < TRACE_STATIC_DIST)) {
 				m_angle_to = ang;
 				break;
 			}
 		}
 	}
-
-	object->setEnabled	(enabled);
 	
 	m_time_next_updated	= 0;
 

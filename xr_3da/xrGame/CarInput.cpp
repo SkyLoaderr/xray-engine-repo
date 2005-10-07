@@ -233,7 +233,7 @@ bool CCar::isObjectVisible			(CScriptGameObject* O_)
 	float ray_length = from_point.distance_to(to_point);
 
 
-	BOOL res = Level().ObjectSpace.RayTest(from_point, dir_to_object, ray_length, collide::rqtStatic);
+	BOOL res = Level().ObjectSpace.RayTest(from_point, dir_to_object, ray_length, collide::rqtStatic, NULL, NULL);
 		
 	return (0==res);
 }

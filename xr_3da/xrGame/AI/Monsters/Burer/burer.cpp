@@ -185,7 +185,7 @@ void CBurer::UpdateGraviObject()
 	float trace_dist = float(m_gravi_step);
 
 	collide::rq_result	l_rq;
-	if (Level().ObjectSpace.RayPick(new_pos, dir, trace_dist, collide::rqtBoth, l_rq)) {
+	if (Level().ObjectSpace.RayPick(new_pos, dir, trace_dist, collide::rqtBoth, l_rq, NULL)) {
 		const CObject *enemy = smart_cast<const CObject *>(m_gravi_object.enemy);
 		if ((l_rq.O == enemy) && (l_rq.range < trace_dist)) {
 			
@@ -235,7 +235,7 @@ void CBurer::UpdateGraviObject()
 	
 	// hit objects
 	xr_vector<CObject*> tpObjects	;
-	Level().ObjectSpace.GetNearest	(tpObjects,m_gravi_object.cur_pos, m_gravi_radius); 
+	Level().ObjectSpace.GetNearest	(tpObjects,m_gravi_object.cur_pos, m_gravi_radius, NULL); 
 	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {

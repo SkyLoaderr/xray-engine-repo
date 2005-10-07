@@ -178,8 +178,6 @@ void CMonsterCoverManager::less_cover_direction(Fvector &dir)
 {
 	float angle				= ai().level_graph().vertex_cover_angle(m_object->ai_location().level_vertex_id(),deg(10), CLevelGraph::PredicateWorstCover());
 
-	BOOL					enabled = m_object->getEnabled();
-	m_object->setEnabled	(FALSE);
 	collide::rq_result		l_rq;
 
 	float angle_from		= angle_normalize(angle - ANGLE_DISP);
@@ -194,7 +192,7 @@ void CMonsterCoverManager::less_cover_direction(Fvector &dir)
 
 		direction.setHP	(ang, 0.f);
 
-		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq)) {
+		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq,m_object)) {
 			if ((l_rq.range < TRACE_STATIC_DIST)) {
 				angle_from = ang;
 				break;
@@ -207,15 +205,13 @@ void CMonsterCoverManager::less_cover_direction(Fvector &dir)
 
 		direction.setHP	(ang, 0.f);
 
-		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq)) {
+		if (Level().ObjectSpace.RayPick(trace_from, direction, TRACE_STATIC_DIST, collide::rqtStatic, l_rq,m_object)) {
 			if ((l_rq.range < TRACE_STATIC_DIST)) {
 				angle_to = ang;
 				break;
 			}
 		}
 	}
-
-	m_object->setEnabled		(enabled);
 
 	angle		= angle_normalize(angle_from + angle_difference(angle_from,angle_to) / 2);
 	dir.setHP	(angle,0.f);

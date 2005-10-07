@@ -24,9 +24,6 @@ void	CCar::cam_Update			(float dt, float fov)
 	Fvector							P,Da;
 	Da.set							(0,0,0);
 	bool							owner = !!Owner();
-	BOOL							enabled = owner ? Owner()->getEnabled() : FALSE;
-	if (owner)
-		Owner()->setEnabled			(FALSE);
 
 	XFORM().transform_tiny			(P,m_camera_position);
 
@@ -34,7 +31,7 @@ void	CCar::cam_Update			(float dt, float fov)
 	case ectFirst:
 		// rotate head
 		if(OwnerActor()) OwnerActor()->Orientation().yaw	= -active_camera->yaw;
-		if(OwnerActor()) OwnerActor()->Orientation().pitch= -active_camera->pitch;
+		if(OwnerActor()) OwnerActor()->Orientation().pitch	= -active_camera->pitch;
 		break;
 	case ectChase:					break;
 	case ectFree:					break;
@@ -42,9 +39,6 @@ void	CCar::cam_Update			(float dt, float fov)
 	active_camera->f_fov			= fov;
 	active_camera->Update			(P,Da);
 	Level().Cameras.Update			(active_camera);
-
-	if (owner)
-		Owner()->setEnabled			(enabled);
 }
 
 void	CCar::OnCameraChange		(int type)

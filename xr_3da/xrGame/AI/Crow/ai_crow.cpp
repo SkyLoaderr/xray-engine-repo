@@ -126,8 +126,6 @@ BOOL CAI_Crow::net_Spawn		(CSE_Abstract* DC)
 {
 	BOOL R		= inherited::net_Spawn	(DC);
 	setVisible	(TRUE);
-	
-	//by Dandy 7.09.03 otherwise we can't hit the crow
 	setEnabled	(TRUE);
 
 	// animations

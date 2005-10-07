@@ -537,7 +537,8 @@ IC	float current_cover					(CAI_Stalker *object)
 		direction,
 		10.f,
 		collide::rqtStatic,
-		ray_query_result
+		ray_query_result,
+		NULL
 	);
 
 	if (!result)

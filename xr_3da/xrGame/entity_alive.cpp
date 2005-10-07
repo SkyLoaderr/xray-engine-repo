@@ -388,8 +388,6 @@ void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_p
 									  float trace_dist, float wallmark_size,
 									  SHADER_VECTOR& wallmarks_vector)
 {
-	BOOL				enabled = getEnabled();
-	setEnabled			(FALSE);
 	collide::rq_result	result;
 	BOOL				reach_wall = 
 		Level().ObjectSpace.RayPick(
@@ -397,12 +395,11 @@ void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_p
 			dir,
 			trace_dist, 
 			collide::rqtBoth,
-			result
+			result,
+			this
 		)
 		&&
 		!result.O;
-
-	setEnabled			(enabled);
 
 	//если кровь долетела до статического объекта
 	if(reach_wall)

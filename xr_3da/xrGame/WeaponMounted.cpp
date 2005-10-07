@@ -218,9 +218,6 @@ void	CWeaponMounted::cam_Update			(float dt, float fov)
 	Fvector							P,Da;
 	Da.set							(0,0,0);
 	bool							owner = !!Owner();
-	BOOL							enabled = owner ? Owner()->getEnabled() : FALSE;
-	if (owner)
-		Owner()->setEnabled			(FALSE);
 
 	CKinematics* K					= smart_cast<CKinematics*>(Visual());
 	K->CalculateBones_Invalidate	();
@@ -235,9 +232,6 @@ void	CWeaponMounted::cam_Update			(float dt, float fov)
 	}
 	Camera()->Update					(P,Da);
 	Level().Cameras.Update				(Camera());
-
-	if (owner)
-		Owner()->setEnabled			(enabled);
 }
 
 bool	CWeaponMounted::Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)

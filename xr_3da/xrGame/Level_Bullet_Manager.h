@@ -25,10 +25,6 @@ struct SBullet
 	u16				bullet_material_idx	;
 
 	Fvector			pos					;			//текущая позиция
-	//смещения рендера трассы относительно текущей позиции (в процентах от текущей длины)
-	//задается случайно на инициализации
-	//чтоб трассы разных пуль не рисовались в одном месте
-	float			render_offset		;
 	Fvector			dir					;			
 	float			speed				;			//текущая скорость
 	
@@ -44,8 +40,6 @@ struct SBullet
 	float			max_dist			;			// maxdist*cartridge
 	float			pierce				;
 	float			wallmark_size		;
-	
-	float			tracer_max_length	;			//максимальная длина трассера для данной пули
 	
 	//тип наносимого хита
 	ALife::EHitType hit_type			;
@@ -68,8 +62,7 @@ public:
 										ALife::EHitType e_hit_type,
 										float	maximum_distance,
 										const	CCartridge& cartridge,
-										bool	SendHit, 
-										float	tracer_length);
+										bool	SendHit);
 };
 
 class CLevel;
@@ -122,12 +115,8 @@ protected:
 
 	//параметры отрисовки трассеров
 	float					m_fTracerWidth;
-	float 					m_fTracerLength;
+	float 					m_fTracerLengthMax;
 	float 					m_fTracerLengthMin;
-	float 					m_fLengthToWidthRatio;
-	//границы в которых изменяется размер трассера (как его видит актер)
-	float 					m_fMinViewDist;
-	float 					m_fMaxViewDist;
 protected:
 	void					PlayWhineSound		(SBullet* bullet, CObject* object, const Fvector& pos);
 	void					PlayExplodePS		(const Fmatrix& xf);
@@ -168,8 +157,7 @@ public:
 												float starting_speed, float power, float impulse, 
 												u16	sender_id, u16 sendersweapon_id,
 												ALife::EHitType e_hit_type, float maximum_distance, 
-												const CCartridge& cartridge, bool SendHit, 
-												float tracer_length = flt_max);
+												const CCartridge& cartridge, bool SendHit);
 
 	void					CommitEvents		();	// @ the start of frame
 	void					CommitRenderSet		();	// @ the end of frame

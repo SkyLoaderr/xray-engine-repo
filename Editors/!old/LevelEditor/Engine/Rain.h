@@ -75,7 +75,6 @@ private:
 
 	// Some methods
 	void							Born			(Item& dest, float radius);
-//	BOOL							RayTest			(Item& dest, float height, Collide::rq_target tgt);
 	void							Hit				(Fvector& pos);
 	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range, collide::rq_target tgt);
 	void							RenewItem		(Item& dest, float height, BOOL bHit);

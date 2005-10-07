@@ -98,7 +98,7 @@ void CPoltergeist::UpdateFlame()
 			// Test hit
 			collide::rq_result rq;
 			
-			if (Level().ObjectSpace.RayPick(element->position, element->target_dir, m_flame_length, collide::rqtBoth, rq)) {
+			if (Level().ObjectSpace.RayPick(element->position, element->target_dir, m_flame_length, collide::rqtBoth, rq, NULL)) {
 				if ((rq.O == element->target_object) && (rq.range < m_flame_length)) {
 
 					NET_Packet		P;

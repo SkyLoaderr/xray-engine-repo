@@ -21,7 +21,7 @@ bool CTrade::CanTrade()
 
 	xr_vector<CObject*>		q_nearest;			// = Level().ObjectSpace.q_nearest; 
 
-	Level().ObjectSpace.GetNearest	(q_nearest,pThis.base->Position(),2.f);
+	Level().ObjectSpace.GetNearest	(q_nearest,pThis.base->Position(),2.f, NULL);
 	if (!q_nearest.empty()) 
 	{
 		for (u32 i=0, n = q_nearest.size(); i<n; ++i) 

@@ -35,8 +35,7 @@ void SBullet::Init(const Fvector& position,
 				   ALife::EHitType e_hit_type,
 				   float maximum_distance,
 				   const CCartridge& cartridge,
-				   bool SendHit,
-				   float tracer_length)
+				   bool SendHit)
 {
 	flags._storage		= 0;
 	pos 				= position;
@@ -60,15 +59,12 @@ void SBullet::Init(const Fvector& position,
 	pierce				= cartridge.m_kPierce;
 	wallmark_size		= cartridge.fWallmarkSize;
 
-	tracer_max_length	= tracer_length;
-
 	bullet_material_idx = cartridge.bullet_material_idx;
 	VERIFY			(u16(-1)!=bullet_material_idx);
 
 	flags.allow_tracer					= !!cartridge.m_flags.test(CCartridge::cfTracer);
 	flags.allow_ricochet				= !!cartridge.m_flags.test(CCartridge::cfRicochet);
 	flags.explosive						= !!cartridge.m_flags.test(CCartridge::cfExplosive);
-	render_offset = ::Random.randF		(0.5f,1.5f);
 }
 
 //////////////////////////////////////////////////////////
@@ -91,12 +87,8 @@ CBulletManager::~CBulletManager()
 void CBulletManager::Load		()
 {
 	m_fTracerWidth			= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_width");
-	m_fTracerLength			= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_max");
+	m_fTracerLengthMax		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_max");
 	m_fTracerLengthMin		= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_min");
-	m_fLengthToWidthRatio	= pSettings->r_float(BULLET_MANAGER_SECTION, "tracer_length_to_width_ratio");
-
-	m_fMinViewDist			= pSettings->r_float(BULLET_MANAGER_SECTION, "min_view_dist");
-	m_fMaxViewDist			= pSettings->r_float(BULLET_MANAGER_SECTION, "max_view_dist");
 
 	m_fGravityConst			= pSettings->r_float(BULLET_MANAGER_SECTION, "gravity_const");
 	m_fAirResistanceK		= pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
@@ -154,8 +146,7 @@ void CBulletManager::AddBullet(const Fvector& position,
 							   ALife::EHitType e_hit_type,
 							   float maximum_distance,
 							   const CCartridge& cartridge,
-							   bool SendHit,
-							   float tracer_length)
+							   bool SendHit)
 {
 	m_Lock.Enter	();
 	VERIFY		(u16(-1)!=cartridge.bullet_material_idx);
@@ -163,7 +154,7 @@ void CBulletManager::AddBullet(const Fvector& position,
 //	u32 OwnerID = sender_id;
 	m_Bullets.push_back(SBullet());
 	SBullet& bullet		= m_Bullets.back();
-	bullet.Init			(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit, tracer_length);
+	bullet.Init			(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit);
 	bullet.frame_num	= Device.dwFrame;
 	if (SendHit && GameID() != GAME_SINGLE)
 		Game().m_WeaponUsageStatistic.OnBullet_Fire(&bullet, cartridge);
@@ -226,7 +217,7 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 	bullet->flags.ricochet_was		= 0;
 	collide::ray_defs RD			(bullet->pos, bullet->dir, range, 0, collide::rqtBoth);
 	BOOL result						= FALSE;
-	result							= Level().ObjectSpace.RayQuery(rq_storage, RD, firetrace_callback, bullet, test_callback);
+	result							= Level().ObjectSpace.RayQuery(rq_storage, RD, firetrace_callback, bullet, test_callback, NULL);
 	if (result) range				= (rq_storage.r_begin()+rq_storage.r_count()-1)->range;
 	range		= _max				(EPS_L,range);
 
@@ -281,6 +272,27 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 	BOOL g_bDrawBulletHit = FALSE;
 #endif
 
+float SqrDistancePointToSegment(const Fvector& pt, const Fvector& orig, const Fvector& dir)
+{
+	Fvector diff;	diff.sub(pt,orig);
+	float fT		= diff.dotproduct(dir);
+
+	if ( fT <= 0.0f ){
+		fT = 0.0f;
+	}else{
+		float fSqrLen= dir.square_magnitude();
+		if ( fT >= fSqrLen ){
+			fT = 1.0f;
+			diff.sub(dir);
+		}else{
+			fT /= fSqrLen;
+			diff.sub(Fvector().mul(dir,fT));
+		}
+	}
+
+	return diff.square_magnitude();
+}
+
 void CBulletManager::Render	()
 {
 #ifdef DEBUG
@@ -304,14 +316,10 @@ void CBulletManager::Render	()
 	u32	vOffset			=	0	;
 	u32 bullet_num		=	m_BulletsRendered.size();
 
-	
-
 	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullet_num*8,
 										tracers.sh_Geom->vb_stride,
 										vOffset);
 	FVF::V	*start		=	verts;
-
-
 
 	for(BulletVecIt it = m_BulletsRendered.begin(); it!=m_BulletsRendered.end(); it++){
 		SBullet* bullet					= &(*it);
@@ -321,41 +329,17 @@ void CBulletManager::Render	()
 		dist.mul		(bullet->dir,- bullet->speed*float(m_dwStepTime)/1000.f);
 		float length	= dist.magnitude();
 
-		if(length<m_fTracerLengthMin)
-			continue;
+		if(length<m_fTracerLengthMin) continue;
 
-		//вычислить максимально допустимую длину трассера
-		//выбираем между общими настройками и настройками пули
-		//(по умолчанию в пуле такая равна flt_max),
-		float max_length = _min(m_fTracerLength, bullet->tracer_max_length);
-		if(length>max_length)
-			length = max_length;
+		dist.div			(length);
 
-		//изменить размер трассера в зависимости от расстояния до камеры
-		Fvector to_camera;
-		to_camera.sub(bullet->pos,Device.vCameraPosition);
-		float dist_to_camera = to_camera.magnitude();
+		if(length>m_fTracerLengthMax)
+			length			= m_fTracerLengthMax;
 
-		if(dist_to_camera<m_fMinViewDist)		length = m_fTracerLengthMin;
-		else if(dist_to_camera<m_fMaxViewDist){
-			float length_max = m_fTracerLengthMin + 
-							  (max_length - m_fTracerLengthMin)*
-							  (dist_to_camera-m_fMinViewDist)/
-							  (m_fMaxViewDist-m_fMinViewDist);
-
-			if(length>length_max)				length = length_max;
-		}
-
-		float width;
-		if(length>(m_fTracerWidth*m_fLengthToWidthRatio))
-			width = m_fTracerWidth;
-		else 
-			width = length/m_fLengthToWidthRatio;
-
-		dist.normalize			();
+		float width			= m_fTracerWidth;
 
 		Fvector center;
-		center.mad				(bullet->pos, dist,  -length*bullet->render_offset);
+		center.mad				(bullet->pos, dist,  -length);
 		tracers.Render			(verts, center, dist, length, width);
 	}
 
