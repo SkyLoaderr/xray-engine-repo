@@ -120,6 +120,7 @@
 			<text>esc_dinamit_to_volk_0</text>
 			<icon x="300" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>escape_dynamite_done</infoportion_complete>
+			<infoportion_fail>esc_wolf_dead</infoportion_fail>
 		</objective>
 		<objective>
 			<text>esc_dinamit_to_volk_1</text>
