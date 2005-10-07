@@ -1706,9 +1706,6 @@ void	CActor::Check_for_AutoPickUp()
 	if (Level().CurrentControlEntity() != this) return;
 	if (!g_Alive()) return;
 
-	BOOL Enabled = getEnabled();
-	setEnabled(FALSE);
-	
 	Fvector bc; bc.add(Position(), m_AutoPickUp_AABB_Offset);
 	Fbox APU_Box;
 	APU_Box.set(Fvector().sub(bc, m_AutoPickUp_AABB), Fvector().add(bc, m_AutoPickUp_AABB));
@@ -1733,8 +1730,6 @@ void	CActor::Check_for_AutoPickUp()
 			u_EventSend(P);
 		}		
 	}
-
-	setEnabled(Enabled);
 }
 
 void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element, Fvector Pos, Fvector Dir)

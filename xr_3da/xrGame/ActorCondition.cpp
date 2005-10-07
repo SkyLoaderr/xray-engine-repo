@@ -275,29 +275,23 @@ EActorSleep CActorCondition::CanSleepHere()
 	pos.set(object().Position());
 	pos.y += 0.1f;
 	dir.set(0, -1.f, 0);
-	BOOL				enabled = object().getEnabled();
-	object().setEnabled	(FALSE);
 	BOOL				result = 
 		Level().ObjectSpace.RayPick(
 			pos,
 			dir,
 			0.3f, 
 			collide::rqtBoth,
-			RQ
+			RQ,
+			&object()
 		);
-	object().setEnabled(enabled);
 	
 	//актер стоит на динамическом объекте или вообще падает - 
 	//спать нельзя
 	if(!result || RQ.O)	
 		return "cant_sleep_not_on_solid_ground";
 
-	BOOL				_enabled = object().getEnabled();
-	object().setEnabled	(FALSE);
 	xr_vector<CObject*> NearestList;	// = Level().ObjectSpace.q_nearest; 
-	Level().ObjectSpace.GetNearest	(NearestList, pos, ENEMIES_RADIUS); 
-	//xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
-	object().setEnabled	(_enabled);
+	Level().ObjectSpace.GetNearest	(NearestList, pos, ENEMIES_RADIUS, &object()); 
 
 	for(xr_vector<CObject*>::iterator it = NearestList.begin();
 									NearestList.end() != it;

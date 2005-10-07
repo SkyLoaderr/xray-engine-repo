@@ -561,7 +561,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							IReader*	_src;
 							if (desc.size_real<256*1024)	_src = xr_new<CFileReader>			(fname);
 							else							_src = xr_new<CVirtualFileReader>	(fname);
-							IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
+							IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache,false);
 							_dst->w				(_src->pointer(),_src->length());
 							xr_delete			(_dst);
 							xr_delete			(_src);
@@ -672,7 +672,19 @@ IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 	string_path	fname;
 	xr_strlwr(strcpy(fname,_fname));//,".$");
 	if (path&&path[0]) update_path(fname,path,fname);
-    CFileWriter* W 	= xr_new<CFileWriter>(fname); 
+    CFileWriter* W 	= xr_new<CFileWriter>(fname,false); 
+#ifdef _EDITOR
+	if (!W->valid()) xr_delete(W);
+#endif    
+	return W;
+}
+
+IWriter* CLocatorAPI::w_open_ex	(LPCSTR path, LPCSTR _fname)
+{
+	string_path	fname;
+	xr_strlwr(strcpy(fname,_fname));//,".$");
+	if (path&&path[0]) update_path(fname,path,fname);
+	CFileWriter* W 	= xr_new<CFileWriter>(fname,true); 
 #ifdef _EDITOR
 	if (!W->valid()) xr_delete(W);
 #endif    

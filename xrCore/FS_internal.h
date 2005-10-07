@@ -17,37 +17,39 @@ class CFileWriter : public IWriter
 private:
 	FILE*			hf;
 public:
-	CFileWriter		(const char *name)
+	CFileWriter		(const char *name, bool exclusive)
 	{
 		R_ASSERT	(name && name[0]);
 		fName		= name;
 		VerifyPath	(*fName);
-//		int handle	= _sopen(*fName,_O_WRONLY|_O_TRUNC|_O_CREAT|_O_BINARY,SH_DENYWR);
+        if (exclusive){
+    		int handle	= _sopen(*fName,_O_WRONLY|_O_TRUNC|_O_CREAT|_O_BINARY,SH_DENYWR);
 #ifdef _EDITOR
-//		if (handle==-1)
-//			Msg		("!Can't create file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
+    		if (handle==-1)
+    			Msg	("!Can't create file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
 #endif
-//		hf			= _fdopen(handle,"wb");
-		hf			= fopen(*fName,"wb");
+    		hf		= _fdopen(handle,"wb");
+        }else{
+			hf			= fopen(*fName,"wb");
 #ifdef _EDITOR
-		if (hf==0)
-			Msg		("!Can't write file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
+			if (hf==0)
+				Msg		("!Can't write file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
 #else
-		R_ASSERT3	(hf, "Can't write file. File may be open or in use.", *fName );
+			R_ASSERT3	(hf, "Can't write file. File may be open or in use.", *fName );
 #endif
+		}
 	}
 
 	virtual 		~CFileWriter()
 	{
 		if (0!=hf){	
         	fclose				(hf);
-/*        	// release RO attrib
+        	// release RO attrib
 	        DWORD dwAttr 		= GetFileAttributes(*fName);
 	        if ((dwAttr != -1)&&(dwAttr&FILE_ATTRIBUTE_READONLY)){
                 dwAttr 			&=~ FILE_ATTRIBUTE_READONLY;
                 SetFileAttributes(*fName, dwAttr);
             }
-*/
         }
 	}
     bool 			valid		() {return (0!=hf);}

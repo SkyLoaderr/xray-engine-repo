@@ -172,10 +172,10 @@ void CBlackGraviArtefact::GraviStrike()
 						
 		if(impulse > .001f) 
 		{
-			BOOL		enabled = getEnabled();
-			setEnabled	(FALSE);
+//?			BOOL		enabled = getEnabled();
+//?			setEnabled	(FALSE);
 			impulse		*= CExplosive::ExplosionEffect	(rq_storage,NULL,pGameObject, Position(),m_fRadius);
-			setEnabled	(enabled);
+//?			setEnabled	(enabled);
 		}
 
 		float hit_power		;

@@ -82,6 +82,8 @@ public:
 
 	IWriter*					w_open			(LPCSTR initial, LPCSTR N);
 	IC IWriter*					w_open			(LPCSTR N){return w_open(0,N);}
+	IWriter*					w_open_ex		(LPCSTR initial, LPCSTR N);
+	IC IWriter*					w_open_ex		(LPCSTR N){return w_open_ex(0,N);}
 	void						w_close			(IWriter* &S);
 
 	const file*					exist			(LPCSTR N);

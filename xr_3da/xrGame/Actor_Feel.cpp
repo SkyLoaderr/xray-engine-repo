@@ -76,9 +76,13 @@ void CActor::PickupModeOff()
 ICF static BOOL info_trace_callback(collide::rq_result& result, LPVOID params)
 {
 	BOOL& bOverlaped	= *(BOOL*)params;
-	if(result.O){	
-		bOverlaped		= TRUE;
-		return			FALSE;
+	if(result.O){
+		if (Level().CurrentEntity()!=result.O){	
+			bOverlaped		= TRUE;
+			return			FALSE;
+		}else{
+			return			TRUE;
+		}
 	}else{
 		//получить треугольник и узнать его материал
 		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
@@ -98,15 +102,9 @@ BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
 	if (range>0.25f){
 		if (frustum.testSphere_dirty(to,item->Radius())){
 			dir.div	(range);
-			BOOL item_en		= item->getEnabled();
-			item->setEnabled	(FALSE);
-			BOOL				enabled = Level().CurrentEntity()->getEnabled();
-			Level().CurrentEntity()->setEnabled(FALSE);
 			collide::ray_defs	RD	(from, dir, range, 0, collide::rqtBoth);
 			collide::rq_results	RQR	;
-			Level().ObjectSpace.RayQuery		(RQR,RD, info_trace_callback, &bOverlaped);
-			Level().CurrentEntity()->setEnabled	(enabled);
-			item->setEnabled	(item_en);
+			Level().ObjectSpace.RayQuery		(RQR,RD, info_trace_callback, &bOverlaped, NULL, item);
 		}
 	}
 	return !bOverlaped;
@@ -151,13 +149,10 @@ void	CActor::PickupModeUpdate_COD	()
 	CFrustum frustum;
 	frustum.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 
-	BOOL		Enabled = getEnabled();
-	setEnabled	(FALSE);
 	//---------------------------------------------------------------------------
 	xr_vector<ISpatial*>	ISpatialResult;
 	g_SpatialSpace->q_frustum(ISpatialResult, 0, STYPE_COLLIDEABLE, frustum);
 	//---------------------------------------------------------------------------
-	setEnabled	(Enabled);
 
 	float maxlen = 1000.0f;
 	CInventoryItem* pNearestItem = NULL;

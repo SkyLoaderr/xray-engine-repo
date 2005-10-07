@@ -213,7 +213,7 @@ bool	CInifile::save_as( LPCSTR new_fname )
         fName			= xr_strdup(new_fname);
     }
     R_ASSERT			(fName&&fName[0]);
-    IWriter* F			= FS.w_open(fName);
+    IWriter* F			= FS.w_open_ex(fName);
     if (F){
         string512		temp,val;
         for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++){

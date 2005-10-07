@@ -207,11 +207,6 @@ void CGlowManager::render_sw		()
 {
 	// 0. save main view and disable
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
-	BOOL		o_enable	= FALSE;
-	if (o_main){
-		o_enable		=	o_main->getEnabled();
-		o_main->setEnabled	(FALSE);
-	}
 
 	// 1. Test some number of glows
 	Fvector &start	= Device.vCameraPosition;
@@ -225,12 +220,9 @@ void CGlowManager::render_sw		()
 		dir.sub		(G.spatial.center,start); float range = dir.magnitude();
 		if (range>EPS_S)	{
 			dir.div		(range);
-			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,collide::rqtBoth,&G.RayCache);
+			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,collide::rqtBoth,&G.RayCache,o_main);
 		}
 	}
-
-	// 1.5 restore main view
-	if (o_main)				o_main->setEnabled	(o_enable);
 
 	// 2. Render selected
 	render_selected			();
