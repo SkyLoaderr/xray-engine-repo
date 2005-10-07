@@ -23,6 +23,7 @@
 
 //расстояния не пролетев которого пуля не трогает того кто ее пустил
 #define PARENT_IGNORE_DIST		3.f
+extern float gCheckHitK;
 
 //test callback функция 
 //  object - object for testing
@@ -289,7 +290,6 @@ FvectorVec g_hit[3];
 #endif
 
 extern void random_dir	(Fvector& tgt_dir, const Fvector& src_dir, float dispersion);
-extern float gCheckHitK;
 
 std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvector& end_point, 
 									collide::rq_result& R, u16 target_material, 
