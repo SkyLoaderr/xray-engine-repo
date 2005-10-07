@@ -121,10 +121,6 @@ void IGame_Persistent::OnFrame		()
 
 	Environment.OnFrame				();
 #ifndef _EDITOR
-	if(Device.dwFrame ==50){
-		if(!g_pGameLevel)
-			Console->Execute("main_menu on");
-	}
 
 	Device.Statistic.Particles_starting	= ps_needtoplay.size	();
 	Device.Statistic.Particles_active	= ps_active.size		();

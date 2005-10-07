@@ -187,7 +187,7 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 4, &UIPdaOnline);
 	if (GameID() != GAME_SINGLE)
 	{
-//		UIPdaOnline.Show(false);
+		UISleepIcon.Show(false);
 	}
 
 	// Для информационных сообщений

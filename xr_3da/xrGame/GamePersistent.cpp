@@ -198,9 +198,13 @@ void CGamePersistent::WeathersUpdate()
 			CParticlesObject::Destroy(ambient_particles);
 	}
 }
-
+bool b_flag = false;
 void CGamePersistent::OnFrame	()
 {
+	if(!b_flag && !g_pGameLevel && Device.dwFrame > 100){
+			b_flag = true;
+			Console->Execute("main_menu on");
+	}
 	if(!g_pGameLevel)				return;
 	if(!g_pGameLevel->bReady)		return;
 
