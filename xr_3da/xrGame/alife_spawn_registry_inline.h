@@ -16,6 +16,7 @@ IC	const CALifeSpawnHeader &CALifeSpawnRegistry::header	() const
 IC	void CALifeSpawnRegistry::assign_artefact_position		(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object) const
 {
 	object->m_tGraphID		= anomaly->m_tGraphID;
+	VERIFY3					(anomaly->m_wArtefactSpawnCount,"Anomaly is outside of the AI-map but is used for artefact generation : ",anomaly->name_replace());
 	u32						index = anomaly->m_dwStartIndex + anomaly->randI(anomaly->m_wArtefactSpawnCount);
 	object->o_Position		= m_artefact_spawn_positions[index].level_point();
 	object->m_tNodeID		= m_artefact_spawn_positions[index].level_vertex_id();
