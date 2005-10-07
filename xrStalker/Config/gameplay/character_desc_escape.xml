@@ -374,7 +374,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>	
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default4" team_default = "1">
@@ -404,7 +403,6 @@
 
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default5" team_default = "1">
@@ -466,7 +464,6 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default9" team_default = "1">
