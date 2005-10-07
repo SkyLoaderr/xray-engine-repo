@@ -9,12 +9,6 @@
     <string id="mil_bodyguard_dialog_2">
         <text>And how vital is it?</text>
     </string>
-    <string id="mil_bodyguard_dialog_3">
-        <text>You can pass, but don't think to draw your weapon - or you'll lose your thinking cap.</text>
-    </string>
-    <string id="mil_bodyguard_dialog_4">
-        <text>Thanks.</text>
-    </string>
     <string id="mil_bodyguard_dialog_5">
         <text>Duty detachment at the farmstead near the base. Is it vital enough?</text>
     </string>
@@ -717,9 +711,6 @@
     <string id="mil_hunter_after_dialog_0">
         <text>Well that's it. The beast is dead. We're returning to the base.</text>
     </string>
-    <string id="mil_hunter_dialog_0">
-        <text>And how did you, stalker, trapped into this place, take yourself out of here quickly until it's too late.</text>
-    </string>
     <string id="mil_hunter_dialog_1">
         <text>Oh, so you can stay, and I can't?</text>
     </string>
@@ -741,11 +732,38 @@
     <string id="mil_hunter_dialog_204">
         <text>Why are you sitting here?</text>
     </string>
+    <string id="mil_hunter_dialog_205">
+        <text>This string was added automatically</text>
+    </string>
     <string id="mil_hunter_dialog_3">
         <text>And what is happening here?</text>
     </string>
+    <string id="mil_hunter_dialog_301">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_hunter_dialog_302">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_hunter_dialog_303">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_hunter_dialog_304">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_hunter_dialog_305">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_hunter_dialog_306">
+        <text>This string was added automatically</text>
+    </string>
     <string id="mil_hunter_dialog_4">
         <text>A hell knows. Some beast appeared here, or even several of them. That's how we got here.\n</text>
+    </string>
+    <string id="mil_hunter_dialog_401">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_hunter_dialog_402">
+        <text>This string was added automatically</text>
     </string>
     <string id="mil_hunter_dialog_5">
         <text>So you don't even know yourself?</text>
@@ -755,9 +773,6 @@
     </string>
     <string id="mil_hunter_dialog_7">
         <text>Big hunt!!! I love it! Lead the way!</text>
-    </string>
-    <string id="mil_hunter_dialog_8">
-        <text>Well give me another, I'm scared.</text>
     </string>
     <string id="mil_hunter_dialog_80">
         <text>As you like...</text>
@@ -857,9 +872,6 @@
     </string>
     <string id="mil_leader_start_dialog_7004">
         <text>OK. I'm gone.</text>
-    </string>
-    <string id="mil_leader_start_dialog_7005">
-        <text>Okay. But if you leave till the end of the battle, don't even attempt to show yourself on the base...</text>
     </string>
     <string id="mil_leader_start_dialog_7006">
         <text>Get on with it...</text>
@@ -1149,8 +1161,50 @@
     <string id="mil_patrol_dialog2_9">
         <text>Eee....i'd better be going.</text>
     </string>
-    <string id="mil_trader_dialog_0">
-        <text>Well, what have you brought ?</text>
+    <string id="mil_screw_dialog_1000">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1001">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1002">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1003">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1004">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1005">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1006">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1100">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1101">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1102">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1200">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1201">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_1202">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_screw_dialog_2000">
+        <text>This string was added automatically</text>
     </string>
     <string id="mil_trader_dialog_1001">
         <text>What do you need?</text>

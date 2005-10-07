@@ -1,61 +1,60 @@
-
-    <string id="tips_esc_trader_how_to_talk">
-        <text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите '$$ACTION_USE$$'.</text>
+    <string id="esc_direction_fire">
+        <text>This string was added automatically</text>
     </string>
-    <string id="tips_esc_trader_activate_pda">
-        <text>Для того, чтобы активировать PDA, нажмите '$$ACTION_ACTIVE_JOBS$$'.</text>
+    <string id="esc_fanat_victory">
+        <text>Victory!!! Everyone alive - come to me. Branded One, come here, let's talk.</text>
     </string>
-    <string id="tips_esc_trader_activate_map">
-        <text>Для того, чтобы активировать карту, нажмите '$$ACTION_MAP$$'.</text>
+    <string id="esc_return_dv">
+        <text>Great, Branded One, I'm glad that you're alive, and moreover you've visited us at our campfire. Drop in, we'll have a chat. A new business is at hand.</text>
     </string>
-    <string id="tips_esc_trader_quest_1">
-        <text>Найдите артефакт в месте, отмеченном на карте, и принесите торговцу.</text>
+    <string id="esc_tutorial_end">
+        <text>Great, you've coped with the task. Lets assume, that the "take-off-landing" course is passed.</text>
     </string>
-    <string id="tutorial_trader_search_corpses">
-        <text>Обыщи трупы, там может быть что-нибудь полезное.</text>
+    <string id="esc_wolf_thanks">
+        <text>Branded One, now the passage to the camp is opened. Come to me, we'll have a chat.</text>
     </string>
-    <string id="tutorial_trader_give_medikit">
-        <text>Дай аптечку этому придурку.</text>
-    </string>
-    <string id="tips_esc_trader_about_pda">
-        <text>Нажми Contact ($$ACTION_CONTACTS$$). В контактах и на минимапе на лицевом визоре ты видишь людей в радиусе 250 метров с включенными ПДА. Там указывается их отношение к тебе. Будь внимателен если там появляются враги. Впрочем бандиты и гы-ыы, мутанты не включают обычно ПДА так, что будь внимателен в Зоне.</text>
-    </string>
-    <string id="tips_esc_trader_about_anomalies">
-        <text>Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
-    </string>
-    <string id="tutorial_flash_anomaly_alarm">
-        <text>Меченый, смотри внимательней. В следующий раз на ее месте можешь быть ты!</text>
-    </string>
-    <string id="tutorial_trader_look_vagon">
-        <text>Меченый!!! Черт с ним, с артефактом, позднее занесешь. Беги к вагончику у дороги, там моим людям помощь нужна! Додумались, придурки вертолет обстрелять. Координаты я тебе скинул.</text>
-    </string>
-    <string id="escape_stalker_killed">
-        <text>Ну, Меченый, зря ты так. Так или иначе, проверку ты прошел, а вот с Волком и его бригадой теперь сам разбирайся как знаешь. Вообщем я тебя жду, дело есть.</text>
+    <string id="escape_fox_quest">
+        <text>Listen, Branded One, Fox is blocked nearby you by the mutants. Help him, he knows something about Gunslinger, the information could be useful for you.</text>
     </string>
     <string id="escape_stalker_death">
-        <text>Облажался ты, Меченый. Хоть в этом и нет твоей вины, но ребята погибли. В зоне часто так бывает. Так или иначе - проверку ты прошел. Возвращайся, поговорим по существу.</text>
+        <text>You've lost you chance Branded One. Though there is no your guilt in it, but the guys are dead. It often happens in the Zone. Somehow or other you've \npassed the check-up. Return to me, we'll talk to the point.</text>
     </string>
     <string id="escape_stalker_helped">
-        <text>Молодец, Меченый. Если так будешь продолжать, то заведешь много друзей. Зайди ко мне, поговорим по-деловому.</text>
+        <text>Well done, Branded One. If you can continue to act so, you may acquire many friends. Drop in and we'll talk in a business manner.</text>
+    </string>
+    <string id="escape_stalker_killed">
+        <text>Well, Branded One, why so. Somehow or other, you've passed the check-up, but deal with Wolf and his brigants on your own. Well, I'm waiting for you, got \nsome business.</text>
     </string>
     <string id="info_esc_give_agroprom_task">
-        <text>Меченый. Военные раскопали кое что в НИИ "Агропром". А в этом заинтересован я, да и ты наверное тоже. Нужно достать информацию и отнести бармену в бар сталкеров. Действуй.</text>
-    </string>   
-    <string id="escape_fox_quest">
-        <text>Слушай, Меченый, недалеко от тебя одного сталкера, Лиса, мутанты зажали. Помоги ему, он про Стрелка кое-что знает, да и поговорить с ним полезно тебе будет.</text>
-    </string>   
-    <string id="esc_wolf_thanks">
-        <text>Меченый, теперь тебе проход в лагерь открыт. Подоходи, пообщаемся.</text>
-    </string> 
-    <string id="esc_direction_fire">
-        <text>Не дергаемся, атакуем строго по моей команде.</text>
-    </string> 
-    <string id="esc_fanat_victory">
-        <text>Победа!!! Все кто жив - подойти ко мне. Меченый - ходи сюда, говорить будем.</text>
-    </string> 
-    <string id="esc_return_dv">
-        <text>Здорово, Меченый, рад что ты жив, да еще и заглянул к нам на огонек. Заскочи, поболтаем. Очередное дельце наклевывается.</text>
-    </string> 
-    <string id="esc_tutorial_end">
-        <text>Отлично, задание выполнил. Будем считать, что курсы "взлет-посадка" ты прошел.</text>
+        <text>Branded One. MIlitaries have unveiled something at Agroprom RI. And I'm interested in it, and perhaps you are as well. The information must be delivered to \nBarman to the stalkers' bar. Go.</text>
+    </string>
+    <string id="tips_esc_trader_about_anomalies">
+        <text>Be wary! You're near the anomalies. Use bolts in order to define their borders.</text>
+    </string>
+    <string id="tips_esc_trader_about_pda">
+        <text>Press Contact  ($$ACTION_CONTACTS$$). In Contact and on the minimap on the facial visor you see people in the radius of 250 meters with PDA turned on. \nThere you can see their attitude to you. Be careful if enemies appear there. However bandits and hehe mutants don't turn PDAs on, so stay cautious in the \nZone.</text>
+    </string>
+    <string id="tips_esc_trader_activate_map">
+        <text>In order to activate the map, press '$$ACTION_MAP$$'.</text>
+    </string>
+    <string id="tips_esc_trader_activate_pda">
+        <text>In order to activate PDA, press '$$ACTION_ACTIVE_JOBS$$'.</text>
+    </string>
+    <string id="tips_esc_trader_how_to_talk">
+        <text>In order to speak to someone, aim him and press '$$ACTION_USE$$'.</text>
+    </string>
+    <string id="tips_esc_trader_quest_1">
+        <text>Find the artifact on the place marked on the map and bring it to the Trader.</text>
+    </string>
+    <string id="tutorial_flash_anomaly_alarm">
+        <text>Branded One, be careful. Or next time it can be you!</text>
+    </string>
+    <string id="tutorial_trader_give_medikit">
+        <text>Give the medikit to that jerk.</text>
+    </string>
+    <string id="tutorial_trader_look_vagon">
+        <text>Branded One!!! Damn that artifact, you can bring it later. Run to the cabin, people there need your help! Idiots have managed to start shooting at the copter. I've \nsent you the coordinates.</text>
+    </string>
+    <string id="tutorial_trader_search_corpses">
+        <text>Search the corpses, there can be something useful.</text>
     </string>

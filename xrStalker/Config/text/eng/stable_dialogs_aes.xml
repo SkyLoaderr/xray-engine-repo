@@ -10,7 +10,7 @@
         <text>Help... Help...</text>
     </string>
     <string id="aes_sergeant_diallog_1002">
-        <text>Whoa... Yeah, Mr. Soldier, I see you've been damaged so far...</text>
+        <text>Whoa... Yeah, Mr. Soldier, I see you've been damaged fair much...</text>
     </string>
     <string id="aes_sergeant_diallog_1003">
         <text>Screw you, scoundrel!</text>
@@ -19,7 +19,7 @@
         <text>Are you the... hum... monolithian? I've he-e-ard... colonel called you so..</text>
     </string>
     <string id="aes_sergeant_diallog_1005">
-        <text>If I were one of them, you would have no chance to talk now... Branded one I am, stalker. And what kind of nut are you?</text>
+        <text>If I were one of them, you would have no chance to talk now... I am Branded one, stalker. And what kind of nut are you?</text>
     </string>
     <string id="aes_sergeant_diallog_1006">
         <text>Me... corporal... Johnny Luckless...</text>
@@ -34,7 +34,7 @@
         <text>Not likely. Damn, I should have a medical aid from the doctor not from the medikit. </text>
     </string>
     <string id="aes_sergeant_diallog_1010">
-        <text>Apparently, it's my time to go... with comrades</text>
+        <text>Apparently, it's my time to go... with comrades...</text>
     </string>
     <string id="aes_sergeant_diallog_1011">
         <text>Hush for a while. Sooner or later we'll all be there.</text>
@@ -46,13 +46,13 @@
         <text>Thanks, man... Colonel told...that you all had to be some kind of inhuman brutes here... kh... whilst you seem to be pretty adequate...</text>
     </string>
     <string id="aes_sergeant_diallog_1014">
-        <text>You surely can find some brutes here. Tell me more, who did it to you?</text>
+        <text>You certainly can find some brutes here. Tell me more, who did it to you?</text>
     </string>
     <string id="aes_sergeant_diallog_1015">
         <text>No, my friend. I'm not really adequate - it just looks to be so. I'm going to fry you and eat... in fact, forget the fry stuff.</text>
     </string>
     <string id="aes_sergeant_diallog_1016">
-        <text>Like total newbies... hem... There was a radiochemical reconnaissance... conducted by the copters... they had too much confidence in those ones... and \nwhere obliterated in a jiffy... And then you column was blocked up... and as well was screwed... Only I made it.. to... knock a couple of foes off...</text>
+        <text>Like total newbies... hem... There was a radiochemical reconnaissance... conducted by the copters... they had too much confidence in those ones... and \nwhere obliterated in a jiffy... And then you column was blocked up... and as well was screwed... Only I made it.. to... knock a couple of foes off..</text>
     </string>
     <string id="aes_sergeant_diallog_1017">
         <text>Fighting-cocks.. It took a few seconds for you to appear here! The radar has just shut down.</text>
@@ -64,7 +64,7 @@
         <text>This is the case in point. Someone was really noisy there.</text>
     </string>
     <string id="aes_sergeant_diallog_1020">
-        <text>Maybe someone of us, alive... could settle there... We had... a task - to capture the path to Sarco... hk... khe... \nSarcophagus... if something happens - must wait for reinforcements..</text>
+        <text>Maybe someone of us, alive... could settle there... We had... a task - to capture the path to Sarco... hk... khe... Sarcophagus... if something happens - we must \nwait for reinforcements..</text>
     </string>
     <string id="aes_sergeant_diallog_1021">
         <text>Reinforcements?</text>
@@ -76,7 +76,7 @@
         <text>So what's with the reinforcements?</text>
     </string>
     <string id="aes_sergeant_diallog_1024">
-        <text>There is the task force... as well, once we have failed, they'll begin... I though we'll make a skirmish there... keh... a bit... and the battle here... Don't walk \nstraight the road...</text>
+        <text>There is the task force... as well, once we have failed, they'll begin... I though we'll make a skirmish there... keh... a bit... and the battle broke out here... Don't \nwalk straight the road...</text>
     </string>
     <string id="aes_sergeant_diallog_1025">
         <text>Goofy! What was it about the task force?... Look at me! Don't close your eyes, well!</text>
@@ -103,12 +103,12 @@
         <text>Kh... And you... what have brought you here... kh...</text>
     </string>
     <string id="aes_sergeant_diallog_1033">
-        <text>I want to get to the Monolit.</text>
+        <text>I wanted to get to the Monolith, but there you are...</text>
     </string>
     <string id="aes_sergeant_diallog_1034">
-        <text>I wish...I could see it ither...but ia guess...it is not my fate...Here, take my PDA...there is a plan to capture the \nsarcophagus...all our groups...are indicated on it...you can be lucky...to breake throught...in that case...the Monolith \nwill make your wish come true...</text>
+        <text>I would... also like to glance at it... but, apparently it's not my fate... take my PDA... keh... there is a sarcophagus assault plan...\nAll our groupings... are indicated ... Perhaps, you will be lucky ... to break through... and Monolith will... grant your wish...</text>
     </string>
     <string id="aes_sergeant_diallog_1035">
-        <text>Thanks</text>
+        <text>Thanks.</text>
     </string>
 </string_table>

@@ -4,7 +4,7 @@
         <text>See you!</text>
     </string>
     <string id="actor_help_wounded_0">
-        <text>WhatТs up?</text>
+        <text>How are you?</text>
     </string>
     <string id="actor_help_wounded_1">
         <text>CanТt you see IТm off color? Need medicine kit or at least bandage.</text>
@@ -13,7 +13,7 @@
         <text>Take the kit.</text>
     </string>
     <string id="actor_help_wounded_111">
-        <text>Thanks, bro, IТll consider this.</text>
+        <text>Thanks, bro, IТll remember this.</text>
     </string>
     <string id="actor_help_wounded_12">
         <text>Take the bandage.</text>
@@ -22,49 +22,49 @@
         <text>Sorry, IТm all out.</text>
     </string>
     <string id="actor_help_wounded_131">
-        <text>Hiking without medicines? Catch infection and die?</text>
+        <text>Hiking without medicines? You may catch some infection, and you even won't be able to heal yourself.</text>
     </string>
     <string id="actor_help_wounded_14">
-        <text>Heh, why so bad? Sorry, I wonТt give you mine, otherwise IТll stay quite out.</text>
+        <text>Oh, get on with it, will ya? Sorry, but you won't have mine ones, otherwise I'll be all out.</text>
     </string>
     <string id="actor_help_wounded_141">
         <text>You choose, but donТt think it does an honor for you.</text>
     </string>
     <string id="companion_hire_dialog_0">
-        <text>Ќе желаешь составить мне компанию?</text>
+        <text>Don't you with to accompany me?</text>
     </string>
     <string id="companion_hire_dialog_1">
-        <text>ќтчего бы и не составить. я согласен.</text>
+        <text>Why not. I agree.</text>
     </string>
     <string id="companion_hire_dialog_2">
-        <text>»звини, у мен€ другие планы.</text>
+        <text>Sorry, I have another things to do.</text>
     </string>
     <string id="companion_management_dialog_0">
-        <text>—лушай команду.</text>
+        <text>Listen to my command.</text>
     </string>
     <string id="companion_management_dialog_1">
-        <text>я слушаю.</text>
+        <text>I hear you.</text>
     </string>
     <string id="companion_management_dialog_11">
-        <text>—ледуй за мной.</text>
+        <text>Follow me.</text>
     </string>
     <string id="companion_management_dialog_13">
-        <text>—ледуй за мной и не атакуй врагов первым.</text>
+        <text>Follow me and don't attack enemies first.</text>
     </string>
     <string id="companion_management_dialog_14">
-        <text>∆ди здесь.</text>
+        <text>Wait here.</text>
     </string>
     <string id="companion_management_dialog_16">
-        <text>∆ди здесь и не атакуй врагов первым.</text>
+        <text>Wait here and don't attack enemies first.</text>
     </string>
     <string id="companion_management_dialog_17">
-        <text>я пропил все твои деньги...</text>
+        <text>I've drunk away all your money...</text>
     </string>
     <string id="companion_release_dialog_0">
-        <text>—пасибо за сотрудничество. “ы свободен.</text>
+        <text>Thanks for cooperation. Dismissed.</text>
     </string>
     <string id="companion_release_dialog_1">
-        <text>» тебе спасибо. ”дачи.</text>
+        <text>Thanks to you too. Good luck.</text>
     </string>
     <string id="hello_dialog_0">
         <text>Hi!</text>

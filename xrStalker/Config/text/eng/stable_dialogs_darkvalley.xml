@@ -57,9 +57,6 @@
     <string id="val_escort_captive_dialog_211">
         <text>Don't even mention. I just helped a good guy.</text>
     </string>
-    <string id="val_escort_captive_dialog_22">
-        <text>Я тут подумываю скоро сваливать отседова, так что если есть че спросить - спрашивай.</text>
-    </string>
     <string id="val_escort_captive_dialog_221">
         <text>Never mind. Bye.</text>
     </string>
@@ -170,9 +167,6 @@
     </string>
     <string id="val_escort_nap1_dialog_31">
         <text>My friend died. But you tried to help nevertheless. I stick to my words, so here's your award.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_311">
-        <text>Пока.</text>
     </string>
     <string id="val_escort_nap1_dialog_41">
         <text>I'm all ears.</text>

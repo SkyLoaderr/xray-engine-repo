@@ -6,20 +6,13 @@
 #include "text\eng\string_table_tips_darkvalley.xml"
 #include "text\eng\string_table_tips_bar-rostok.xml"
 #include "text\eng\string_table_tips_military.xml"
-#include "text\eng\string_table_tips_yantar.xml"
-
-
 #include "text\eng\stable_storyline_info_escape.xml"
 #include "text\eng\stable_storyline_info_garbage.xml"
 #include "text\eng\stable_storyline_info_agroprom.xml"
 #include "text\eng\stable_storyline_info_darkvalley.xml"
-#include "text\eng\stable_storyline_info_bar.xml"
+#include "text\eng\stable_storyline_info_bar-rostok.xml"
 #include "text\eng\stable_storyline_info_military.xml"
 #include "text\eng\stable_storyline_info_radar.xml"
-#include "text\eng\stable_storyline_info_aes.xml"
-#include "text\eng\stable_storyline_info_yantar.xml"
-
-
 #include "text\eng\string_table_tasks_escape.xml"
 #include "text\eng\string_table_tasks_agroprom.xml"
 #include "text\eng\string_table_tasks_darkvalley.xml"
@@ -27,96 +20,76 @@
 #include "text\eng\string_table_tasks_military.xml"
 #include "text\eng\string_table_tasks_radar.xml"
 #include "text\eng\string_table_tasks_garbage.xml"
-#include "text\eng\string_table_tasks_aes.xml"
-#include "text\eng\string_table_tasks_yantar.xml"
-
-
-#include "text\eng\string_table_mapspots_agroprom.xml"
-#include "text\eng\string_table_mapspots_bar.xml"
-#include "text\eng\string_table_mapspots_darkvalley.xml"
-#include "text\eng\string_table_mapspots_garbage.xml"
-#include "text\eng\string_table_mapspots_escape.xml"
-#include "text\eng\string_table_mapspots_military.xml"
-#include "text\eng\string_table_mapspots_radar.xml"
-#include "text\eng\string_table_mapspots_aes.xml"
-#include "text\eng\string_table_mapspots_yantar.xml"
-
-
-#include "text\rus\stable_generate_fnames.xml"
-#include "text\rus\stable_generate_snames.xml"
-
- <string id="car_use">
-        <text>Open door ($$ACTION_USE$$)</text>
+    <string id="car_use">
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
     </string>
     <string id="character_use">
-        <text>Talk ($$ACTION_USE$$)</text>
+        <text>Говорить ($$ACTION_USE$$)</text>
     </string>
     <string id="dead_character_use">
-        <text>Search corpse ($$ACTION_USE$$)</text>
+        <text>Обыскать труп ($$ACTION_USE$$)</text>
     </string>
     <string id="general_complete_task">
-        <text>Task complete.</text>
+        <text>Задание выплонено.</text>
     </string>
     <string id="general_fail_task">
-        <text>Task fail.</text>
+        <text>Задание провалено.</text>
     </string>
     <string id="general_help">
-        <text>HELP!!! I need medkit!!!</text>
+        <text>Срочно нужна аптечка, помираю!!!</text>
     </string>
     <string id="general_in_item">
-        <text>Recieve item.</text>
+        <text>Получен предмет.</text>
     </string>
     <string id="general_in_money">
-        <text>Recieve money.</text>
+        <text>Получены деньги.</text>
     </string>
     <string id="general_new_diary">
-        <text>New diary article.</text>
+        <text>Новая запись в дневнике.</text>
     </string>
     <string id="general_new_encyclopedy">
-        <text>New encyclopedy article.</text>
+        <text>Новая статья в энциклопедии.</text>
     </string>
     <string id="general_new_task">
-        <text>New task.</text>
+        <text>Получено новое задание.</text>
     </string>
     <string id="general_out_item">
-        <text>Lost item.</text>
+        <text>Потерян предмет.</text>
     </string>
     <string id="general_out_money">
-        <text>Lost money.</text>
+        <text>Потеряны деньги.</text>
     </string>
     <string id="general_update_task">
-        <text>Task update.</text>
+        <text>Задание обновлено.</text>
     </string>
     <string id="inventory_item_use">
-        <text>Take item ($$ACTION_USE$$)</text>
+        <text>Поднять предмет ($$ACTION_USE$$)</text>
     </string>
     <string id="physic_shell_use">
-        <text>Move item ()</text>
+        <text>Двигать объект ()</text>
     </string>
-    
-    <string id="to_escape">
-        <text>To kordon</text>
-    </string>    
-    <string id="to_garbage">
-        <text>To garbage</text>
-    </string>    
     <string id="to_agroprom">
-        <text>To "Agroprom"</text>
-    </string>    
+        <text>To Agroprom</text>
+    </string>
     <string id="to_agroprom_underground">
-        <text>To catacombs</text>
-    </string>    
-    <string id="to_darkvalley">
-        <text>To dark valley</text>
-    </string>    
+        <text>This string was added automatically</text>
+    </string>
     <string id="to_bar">
         <text>To bar</text>
-    </string>    
-    <string id="to_rostok">
-        <text>To "Rostok"</text>
-    </string>    
-    <string id="to_military">
-        <text>To warehouse</text>
     </string>
-    
+    <string id="to_darkvalley">
+        <text>To dark valley</text>
+    </string>
+    <string id="to_escape">
+        <text>To cordon</text>
+    </string>
+    <string id="to_garbage">
+        <text>To garbage</text>
+    </string>
+    <string id="to_military">
+        <text>To storages</text>
+    </string>
+    <string id="to_rostok">
+        <text>To Rostok</text>
+    </string>
 </string_table>

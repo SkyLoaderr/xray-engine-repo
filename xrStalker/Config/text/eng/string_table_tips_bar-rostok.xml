@@ -70,6 +70,12 @@
     <string id="bar_ecolog_crush_start_heli">
         <text>Well okay Wolfhound that's it. The military copter is comming here. Now they'll crush you like dummies!</text>
     </string>
+    <string id="bar_ecolog_escape">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="bar_ecolog_hit">
+        <text>This string was added automatically</text>
+    </string>
     <string id="bar_ecolog_spam_1">
         <text>You'll live well without it, jackal. Finish your school first and then pose demands.</text>
     </string>
@@ -90,6 +96,9 @@
     </string>
     <string id="bar_freedom_attack_spy">
         <text>Branded one. You, son of a bitch, will pay for that setup-trap.</text>
+    </string>
+    <string id="bar_freedom_chase">
+        <text>This string was added automatically</text>
     </string>
     <string id="bar_freedom_spam_1">
         <text>Listen, bookworm. Either you give me the results or leave here inside the plastic bag.</text>

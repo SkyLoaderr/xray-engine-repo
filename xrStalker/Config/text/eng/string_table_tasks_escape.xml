@@ -1,143 +1,135 @@
-    <string id="storyline_escape_eliminate_gunslinger">
-        <text>Убить Стрелка.</text>
-    </string>
-    <string id="storyline_escape_find_gunslinger">
-        <text>Найти Стрелка.</text>
-    </string>
-    <string id="tutorial_find_artefact">
-        <text>Найти артефакт.</text>
-    </string>
-    <string id="tutorial_find_artefact_0">
-        <text>Найти свой первый артефакт.</text>
-    </string>
-    <string id="tutorial_find_artefact_1">
-        <text>Найти первый артефакт.</text>
-    </string>
-    <string id="tutorial_find_artefact_2">
-        <text>Отнести артефакт торговцу.</text>
-    </string>
-    <string id="tutorial_help_wounded">
-        <text>Забрать информацию у разведчиков торговца.</text>
-    </string>
-    <string id="tutorial_help_wounded_0">
-        <text>Забрать информацию у разведчиков торговца.</text>
-    </string>
-    <string id="tutorial_help_wounded_1">
-        <text>Встретить сталкеров и взять у них флешку с информацией.</text>
-    </string>
-    <string id="tutorial_help_wounded_2">
-        <text>Принести информацию торговцу.</text>
-    </string>
-     <string id="esc_help_wounded_from_raid">
-        <text>Помочь раненому Лису.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid_0">
-        <text>Оказать помощь раненому сталкеру.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid_1">
-        <text>Помочь Лису отбиться от мутантов.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid_2">
-        <text>Получить у него важную информацию о Стрелке.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader">
-        <text>Украсть ящик с блокпоста.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader_0">
-        <text>Украсть у командира блокпоста ящик с важными документами.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader_1">
-        <text>Украсть ящик с блокпоста. Желательно сделать это, не поднимая тревоги.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader_2">
-        <text>Принести ящик торговцу.</text>
-    </string>
-    <string id="esc_dinamit_to_volk">
-        <text>Достать динамит для Волка.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_0">
-        <text>Необходимо забрать динамит у бандитов на фабрике и доставить его Волку.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_1">
-        <text>Встретиться с людьми Волка.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_2">
-        <text>Найти динамит на фабрике.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_3">
-        <text>Принести динамит Волку.</text>
-    </string>
-    <string id="garbage_meet_stalker">
-        <text>Встретиться на свалке со сталкером.</text>
-    </string>
-    <string id="garbage_meet_stalker_0">
-        <text>Встретиться с Серым на свалке.</text>
-    </string>
-    <string id="esc_wounded_to_trader_gift">
-        <text>Доставить пакет торговцу.</text>
-    </string>
-    <string id="esc_wounded_to_trader_gift_0">
-        <text>Доставить пакет торговцу. Он сможет тебе помочь.</text>
-    </string>
-    <string id="esc_bandits_on_factory">
-        <text>Выбить бандитов с фабрики.</text>
-    </string>
-    <string id="esc_bandits_on_factory_0">
-        <text>Уничтожить бандитов засевших на фабрике.</text>
-    </string>
-    <string id="esc_bandits_on_factory_1">
-        <text>Убить всех бандитов на фабрике.</text>
-    </string>
-    <string id="esc_bandits_on_factory_2">
-        <text>Отчитаться перед торговцем.</text>
-    </string>
-	<string id="esc_bandits_on_factory_3">
-        <text>Поговорить с Волком, чтобы он выделил для атаки на фабрику своих людей.</text>
-    </string>
     <string id="esc_af_blood">
-        <text>Найти артефакт "кровь камня".</text>
+        <text>Find "Stone Blood" artifact.</text>
     </string>
     <string id="esc_af_blood_0">
-        <text>Найти артефакт "кровь камня".</text>
+        <text>Find "Stone Blood" artifact.</text>
     </string>
     <string id="esc_af_blood_1">
-        <text>Найти артефакт "кровь камня" и принести его торговцу.</text>
+        <text>Find "Stone Blood" artifact and fetch it to the Trader.</text>
     </string>
-    
-    <string id="esc_af_vyvert">
-        <text>Найти артефакт "выверт".</text>
-    </string>
-    <string id="esc_af_vyvert_0">
-        <text>Найти артефакт "выверт".</text>
-    </string>
-    <string id="esc_af_vyvert_1">
-        <text>Найти артефакт "выверт" и принести его торговцу.</text>
-    </string>
-    
     <string id="esc_af_medusa">
-        <text>Найти артефакт "medusa".</text>
+        <text>Find "Jellyfish" artifact.</text>
     </string>
     <string id="esc_af_medusa_0">
-        <text>Найти артефакт "medusa".</text>
+        <text>Find "Jellyfish" artifact.</text>
     </string>
     <string id="esc_af_medusa_1">
-        <text>Найти артефакт "medusa" и принести его торговцу.</text>
+        <text>Find "Jellyfish" artifact and fetch it to the Trader.</text>
     </string>
- 
-     <string id="esc_defend_lager_from_killers">
-        <text>Защитить лагерь новичков от наемников.</text>
-    </string>       
-        
+    <string id="esc_af_vyvert">
+        <text>Find "Twist" artifact.\n</text>
+    </string>
+    <string id="esc_af_vyvert_0">
+        <text>Find "Twist" artifact.</text>
+    </string>
+    <string id="esc_af_vyvert_1">
+        <text>Find "Twist" artifact and fetch it to the Trader.</text>
+    </string>
+    <string id="esc_bandits_on_factory">
+        <text>Beat out bandits from the factory.</text>
+    </string>
+    <string id="esc_bandits_on_factory_0">
+        <text>Eliminate bandits hidden at the factory.</text>
+    </string>
+    <string id="esc_bandits_on_factory_1">
+        <text>Eliminate all the bandits at the factory.</text>
+    </string>
+    <string id="esc_bandits_on_factory_2">
+        <text>Report to the Trader.</text>
+    </string>
+    <string id="esc_bandits_on_factory_3">
+        <text>Talk to Wolf, so he could take his own people for the attack.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader">
+        <text>Steal the case from the army post.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader_0">
+        <text>Steal the case with important documenta from the commander of the army post.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader_1">
+        <text>Steal the case from the army post. It's better to be done without causing alarm.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader_2">
+        <text>Bring the case to the Trader.</text>
+    </string>
+    <string id="esc_defend_lager_from_killers">
+        <text>Defend the novices camp from the mercenaries.</text>
+    </string>
     <string id="esc_defend_lager_from_killers_0">
-        <text>Защитить лагерь новичков от наемников.</text>
-	</string>       
-
+        <text>Defend the novices camp from the mercenaries.</text>
+    </string>
     <string id="esc_defend_lager_from_killers_1">
-        <text>Уничтожить отряд наемников.</text>
-	</string>
-	
+        <text>Eliminate the detachment of the mercenaries.</text>
+    </string>
     <string id="esc_defend_lager_from_killers_2">
-        <text>Поговорить с командиром новичков.</text>
-	</string>	    
-    
-                
+        <text>Talk to the novices commander.</text>
+    </string>
+    <string id="esc_dinamit_to_volk">
+        <text>Bring dynamite to Wolf.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_0">
+        <text>It's necessary to take the dynamite from the bandits at the factory and bring it to Wolf.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_1">
+        <text>Meet Wolf's people.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_2">
+        <text>Find the dynamite at the factory.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_3">
+        <text>Bring dynamite to Wolf.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid">
+        <text>Help the wounded Fox.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid_0">
+        <text>Provide help to the wounded stalker.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid_1">
+        <text>Help Fox ward off mutants.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid_2">
+        <text>Receive an important information from him about the Gunslinger.</text>
+    </string>
+    <string id="esc_wounded_to_trader_gift">
+        <text>Deliver the parcel to the Trader.</text>
+    </string>
+    <string id="esc_wounded_to_trader_gift_0">
+        <text>Deliver the parcel to the Trader. He could help you.</text>
+    </string>
+    <string id="garbage_meet_stalker">
+        <text>Meet the stalker at the garbage.</text>
+    </string>
+    <string id="garbage_meet_stalker_0">
+        <text>Meet Grey on Garbage.</text>
+    </string>
+    <string id="storyline_escape_eliminate_gunslinger">
+        <text>Kill the Gunslinger.</text>
+    </string>
+    <string id="storyline_escape_find_gunslinger">
+        <text>Find the Gunslinger.</text>
+    </string>
+    <string id="tutorial_find_artefact">
+        <text>Find the artifact.</text>
+    </string>
+    <string id="tutorial_find_artefact_0">
+        <text>Find your first artifact.</text>
+    </string>
+    <string id="tutorial_find_artefact_1">
+        <text>Find first artifact.</text>
+    </string>
+    <string id="tutorial_find_artefact_2">
+        <text>Bring the artifact to the Trader.</text>
+    </string>
+    <string id="tutorial_help_wounded">
+        <text>Take the information from the scount of the Trader.</text>
+    </string>
+    <string id="tutorial_help_wounded_0">
+        <text>Take the information from the scouts of the trader.</text>
+    </string>
+    <string id="tutorial_help_wounded_1">
+        <text>Meet stalkers and take flash-drive with the information from them.</text>
+    </string>
+    <string id="tutorial_help_wounded_2">
+        <text>Deliver the information to the Trader.</text>
+    </string>

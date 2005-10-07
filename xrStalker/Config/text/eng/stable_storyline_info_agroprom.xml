@@ -1,6 +1,3 @@
-    <string id="AgropromSecurityShedule">
-        <text>Folder with the patrols schedule</text>
-    </string>
     <string id="agr_krot_secret_info">
         <text>Get down the spiral stairs to the room with columns. Walk through the room and approach the exit, find yourself in the large room with the pipes on the ceiling, proceed to the second exit, enter the pipe and turn left. In the end you'll find the path to the right. From the small room you move straight to the exit and turn right. Search for the hole in the wall, near the inscription "Warning! High voltage!". This is the entrance to Gunslinger's cache.</text>
     </string>
@@ -24,9 +21,6 @@
     </string>
     <string id="agr_nii_security_shedule_name">
         <text>Patrol schedule</text>
-    </string>
-    <string id="agr_rats_n_solders_text">
-        <text>военных донимают крысы, которые лезут из коллекторов (подсказка на то, что на территорию можно пройти по канализации). Провинившихся военных отправляют в коллекторы.</text>
     </string>
     <string id="agr_rats_n_soldiers_text">
         <text>militaries are harassed by rats, which come from the collectors. Delinquent militaries are dispatched to the collectors.</text>
