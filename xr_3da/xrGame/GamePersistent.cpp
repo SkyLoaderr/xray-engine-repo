@@ -201,7 +201,7 @@ void CGamePersistent::WeathersUpdate()
 bool b_flag = false;
 void CGamePersistent::OnFrame	()
 {
-	if(!b_flag && !g_pGameLevel && Device.dwFrame > 100){
+	if(!b_flag && !g_pGameLevel && (Device.dwFrame>100) && (Device.dwFrame<200)  ){
 			b_flag = true;
 			Console->Execute("main_menu on");
 	}
