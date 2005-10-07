@@ -182,7 +182,7 @@
 			wpn_fort \n
 			ammo_9x19_pbp = 1 \n
 			wpn_ak74 \n
-			ammo_5.45x39_pbp \n
+			ammo_5.45x39_fmj \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
