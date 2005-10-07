@@ -108,7 +108,7 @@ object_list["test1"] = {
     "pri_monolith_balcony_sniper2",
     "pri_wave4_monolith8",
 
-    "pri_snork_strong_0000",
+   -- "pri_snork_strong_0000",
     "pri_snork_strong_0001",
     "pri_snork_strong_0002",
     "pri_snork_strong_0003",
@@ -155,7 +155,7 @@ smart_terrains["test1"] = {
 
 ------------------------------------------------------------------------------
 object_list["test2"] = {
-    "pri_snork_strong"
+    --"pri_snork_strong"
 }
 
 smart_terrains["test2"] = {
