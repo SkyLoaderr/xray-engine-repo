@@ -1520,8 +1520,8 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
-	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny( *(pWM->m_ammoTypes[0]) ));
-	if (!pAmmo) 
+///	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny( *(pWM->m_ammoTypes[0]) ));
+//	if (!pAmmo) 
 		pWM->SpawnAmmo(0xffffffff, NULL, ID());
 };
 
