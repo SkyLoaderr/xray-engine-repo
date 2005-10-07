@@ -10,6 +10,7 @@
 #include "patrol_point.h"
 #include "level_graph.h"
 #include "level_navigation_graph.h"
+#include "object_broker.h"
 
 #ifdef XRGAME_EXPORTS
 #	include "ai_space.h"
@@ -96,7 +97,9 @@ void CPatrolPoint::load										(IReader &stream)
 	load_data			(m_level_vertex_id,stream);
 	load_data			(m_game_vertex_id,stream);
 
+#ifdef DEBUG
 	m_initialized		= true;
+#endif
 }
 
 void CPatrolPoint::save										(IWriter &stream)
