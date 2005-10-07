@@ -26,6 +26,15 @@ bool CPPEffectorDistance::check_start_conditions()
 
 void CPPEffectorDistance::update_factor()
 {
-	m_factor = (m_radius * m_r_max_perc - m_dist) / (m_radius * m_r_max_perc - m_radius * m_r_min_perc);
-	clamp(m_factor,0.01f,1.0f);
+	float factor;
+	factor = (m_radius * m_r_max_perc - m_dist) / (m_radius * m_r_max_perc - m_radius * m_r_min_perc);
+	clamp(factor,0.01f,1.0f);
+
+	m_effector->set_factor(factor);
+}
+
+
+CPPEffectorControlled *CPPEffectorDistance::create_effector()
+{
+	return xr_new<CPPEffectorControlled>(this,m_state);
 }

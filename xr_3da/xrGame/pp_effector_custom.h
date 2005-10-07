@@ -1,48 +1,67 @@
 #pragma once
-
 #include "../effectorPP.h"
-#include "../cameramanager.h"
 
-class CPPEffectCustom : public CEffectorPP {
+//////////////////////////////////////////////////////////////////////////
+
+class CPPEffectorCustom : public CEffectorPP {
 	typedef CEffectorPP inherited;
-
-	SPPInfo		m_state;
-	float		m_factor;
-
 public:
-					CPPEffectCustom		(const SPPInfo &ppi, EEffectorPPType type);
-	virtual			~CPPEffectCustom	();
-
-			void	update				(float new_factor) {m_factor = new_factor;}
-			void	destroy				();
+					CPPEffectorCustom	(const SPPInfo &ppi, bool one_instance = false, bool destroy_from_engine = true);
+	EEffectorPPType	get_type			(){return m_type;}
 
 protected:
 	virtual	BOOL	Process				(SPPInfo& pp);
 
+	// update factor; if return FALSE - destroy
+	virtual BOOL	update				(){return TRUE;}
+
+private:
+	SPPInfo			m_state;
+	EEffectorPPType	m_type;
+protected:
+	float			m_factor;
 };
 
-class CPPEffectorCustom {
+//////////////////////////////////////////////////////////////////////////
+
+class CPPEffectorController;
+
+class CPPEffectorControlled : public CPPEffectorCustom {
+	typedef CPPEffectorCustom inherited;
+
+	CPPEffectorController	*m_controller;
 public:
-				CPPEffectorCustom	();
-	virtual 	~CPPEffectorCustom	();
+					CPPEffectorControlled	(CPPEffectorController *controller, const SPPInfo &ppi, bool one_instance = false, bool destroy_from_engine = true);
+	virtual BOOL	update					();
+	IC		void	set_factor				(float value){m_factor = value;}
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+
+class CPPEffectorController {
+public:
+				CPPEffectorController		();
+	virtual 	~CPPEffectorController		();
 
 	virtual void	load					(LPCSTR section);
-	virtual void	update					(); 
+	virtual void	frame_update			(); 
 	
 	virtual bool	active					() {return (m_effector != 0);}
 
 	virtual bool	check_completion		() = 0;
 	virtual bool	check_start_conditions	() = 0;
 	virtual void	update_factor			() = 0;
-
-	virtual	void	activate				();
-	virtual	void	deactivate				();
+	
+	// factory method
+	virtual CPPEffectorControlled *create_effector	() = 0;
 
 protected:
-	float			m_factor;
+			void	activate				();
+			void	deactivate				();
 
-private:
-	SPPInfo			m_state;
-	CPPEffectCustom	*m_effector;
+protected:
+	SPPInfo					m_state;
+	CPPEffectorControlled	*m_effector;
 };
 

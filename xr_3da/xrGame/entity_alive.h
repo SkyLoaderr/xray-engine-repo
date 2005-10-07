@@ -153,7 +153,7 @@ protected:
 public:
 	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
 	virtual	bool				 is_relation_enemy	(const CEntityAlive *tpEntityAlive) const;	
-protected:	
+public:	
 	MONSTER_COMMUNITY*		monster_community;
 
 private:

@@ -76,7 +76,7 @@ void CPsyAuraController::frame_update()
 		if (m_actor) {
 			
 			m_effector.set_current_dist(m_current_radius);
-			m_effector.update();
+			//m_effector.update();
 
 			if (m_current_radius < m_actor->Position().distance_to(get_object()->Position())) 
 				m_current_radius += Device.fTimeDelta * 1.2f;
@@ -89,7 +89,7 @@ void CPsyAuraController::frame_update()
 		// реализация плавного увядания, если энергия поля закончилась, а актер находится в радиусе
 		if (m_actor) {
 			m_effector.set_current_dist(m_current_radius);
-			m_effector.update();
+			//m_effector.update();
 
 			m_current_radius += Device.fTimeDelta * 1.2f;
 			b_updated = true;
@@ -98,7 +98,7 @@ void CPsyAuraController::frame_update()
 
 	if (!b_updated) { 
 		m_effector.set_current_dist(get_radius() + 1.f);
-		m_effector.update();
+		//m_effector.update();
 	}
 }
 

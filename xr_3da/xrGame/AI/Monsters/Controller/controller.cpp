@@ -30,6 +30,11 @@
 #include "../../../level_navigation_graph.h"
 #include "../../../ai_object_location.h"
 
+#include "../../../monster_community.h"
+#include "../../../character_community.h"
+#include "../../../InventoryOwner.h"
+#include "../../../character_info.h"
+
 const u32	_pmt_psy_attack_delay		= 2000;
 const float	_pmt_psy_attack_min_angle	= deg(5);
 
@@ -144,6 +149,31 @@ void CController::Load(LPCSTR section)
 	m_velocity_move_fwd.Load	(section, "Velocity_MoveFwd");
 	m_velocity_move_bkwd.Load	(section, "Velocity_MoveBkwd");
 
+	load_friend_community_overrides(section);
+}
+
+void CController::load_friend_community_overrides(LPCSTR section)
+{
+	LPCSTR src = pSettings->r_string(section,"Friend_Community_Overrides");
+	
+	// parse src
+	int item_count = _GetItemCount(src);
+	m_friend_community_overrides.resize(item_count);
+	for (int i=0; i<item_count; i++) {
+		string128	st;
+		_GetItem	(src,i,st);
+		m_friend_community_overrides[i] = st;
+	}
+	
+}
+
+bool CController::is_community_friend_overrides(const CEntityAlive *entity_alive) const
+{
+	const CInventoryOwner	*IO = smart_cast<const CInventoryOwner*>(entity_alive);
+	if (!IO) return false;
+	
+	xr_vector<shared_str>::const_iterator it = find(m_friend_community_overrides.begin(),m_friend_community_overrides.end(),IO->CharacterInfo().Community().id());
+	return (it != m_friend_community_overrides.end());
 }
 
 BOOL CController::net_Spawn(CSE_Abstract *DC)
@@ -467,8 +497,10 @@ void CController::TranslateActionToPathParams()
 
 bool CController::is_relation_enemy(const CEntityAlive *tpEntityAlive) const
 {
+	//	MONSTER_COMMUNITY_ID
 	if (xr_strcmp(*(tpEntityAlive->cNameSect()), "stalker_zombied") == 0) return false;
-	
+	if (is_community_friend_overrides(tpEntityAlive)) return false;
+
 	return inherited::is_relation_enemy(tpEntityAlive);
 }
 
