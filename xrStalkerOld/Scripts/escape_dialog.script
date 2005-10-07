@@ -324,7 +324,9 @@ end
 
 function give_knife_to_actor(first_speaker, second_speaker)
 	local knife = second_speaker:object("wpn_knife")
-	dialogs.relocate_item(second_speaker, knife, "in")
+	if knife ~= nil then
+		dialogs.relocate_item(second_speaker, knife, "in")
+	end
 end
 
 function path_to_lager(actor, npc)
