@@ -29,9 +29,9 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if(GameID()!=GAME_DEATHMATCH){
 		if(cmd == kEXT_14)
-			gCheckHitK = 3.0f;
+			gCheckHitK = 2.0f;
 		if(cmd == kEXT_13)
-			gCheckHitK = 8.0f;
+			gCheckHitK = 4.0f;
 	}
 	if (conditions().IsSleeping())	return;
 	if (IsTalking())	return;

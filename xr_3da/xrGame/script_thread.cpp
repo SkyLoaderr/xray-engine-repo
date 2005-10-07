@@ -114,6 +114,7 @@ bool CScriptThread::update()
 			m_active		= false;
 		}
 		else {
+#ifdef DEBUG
 			/**/
 //			if (!(lua()->ci->state & CI_YIELD))
 			if (!m_current_stack_level)
@@ -122,8 +123,10 @@ bool CScriptThread::update()
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",*m_script_name);
 			}
 			else 
+#endif
 			{
 			/**/
+
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
 				if(!ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 

@@ -269,7 +269,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		P.w_u16			(E.bullet.parent_id);
 		P.w_u16			(E.bullet.weapon_id);
 		P.w_dir			(original_dir);
-		P.w_float		(power);
+		P.w_float		(power*gCheckHitK);
 		P.w_s16			((s16)E.R.element);
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
@@ -289,6 +289,7 @@ FvectorVec g_hit[3];
 #endif
 
 extern void random_dir	(Fvector& tgt_dir, const Fvector& src_dir, float dispersion);
+extern float gCheckHitK;
 
 std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvector& end_point, 
 									collide::rq_result& R, u16 target_material, 
