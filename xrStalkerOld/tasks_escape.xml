@@ -44,7 +44,7 @@
 		<title>tutorial_help_wounded</title>
 		<objective>
 			<text>tutorial_help_wounded_0</text>
-			<icon x="250" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<article>tutorial_wounded_help</article>
 			<infoportion_complete>esc_serious_talk</infoportion_complete>
 		</objective>
