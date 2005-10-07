@@ -388,45 +388,6 @@ function load_job_zombied(sj, gname, type, squad, groups)
 	        }
 	        table.insert(sj, t)
         end
-
---[[
-        --- state: wait
-	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_wait", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_wait},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = f_predicate3
-	    }
-	    table.insert(sj, t)
-        --- state: scene
-	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_scene", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_scene},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = f_predicate3
-	    }
-        table.insert(sj, t)
-        --- state: fight
-	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_fight", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_fight},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = f_predicate3
-	    }
-        table.insert(sj, t)
-        --- state: guard
-	    t = { section = "logic@" .. gname .. "_controller" .. i .. "_guard", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_guard},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = f_predicate3
-	    }
-        table.insert(sj, t)
---]]
     end
 
     -- out restrictors for the each state of zombied stalkers
@@ -443,45 +404,6 @@ function load_job_zombied(sj, gname, type, squad, groups)
 	        }
 	        table.insert(sj, t)
         end
-
---[[
-        --- state: wait
-	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_wait", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_wait},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = f_predicate4
-	    }
-	    table.insert(sj, t)
-        --- state: scene
-	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_scene", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_scene},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_big_restr",
-		    predicate = f_predicate4
-	    }
-        table.insert(sj, t)
-        --- state: fight
-	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_fight", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_fight},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = "",
-		    predicate = f_predicate4
-	    }
-        table.insert(sj, t)
-        --- state: guard
-	    t = { section = "logic@" .. gname .. "_soldier" .. i .. "_guard", 
-		    idle = 0,
-		    prior = 1, state = {state_zombied_guard},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = f_predicate4
-	    }
-        table.insert(sj, t)
---]]
     end
 end
 
@@ -565,23 +487,23 @@ function load_ltx_zombied(gname, type)
     res = res .. "[combat_zombied]\n" ..
                  "combat_type           = zombied\n" ..
 
-                 "[danger_small_dist]\n" ..
-                 "ignore_distance       = 1\n" ..
-
-                 "[danger_middle_dist]\n" ..
-                 "ignore_distance       = 15\n" ..
+                 "[danger@zombied]\n" ..
+                 "ignore_danger_corpse  = 1\n" ..
+                 "ignore_danger_hit     = 1\n" ..
 
                  "[remark@" .. gname .. "_soldier_wait]\n" ..
                  ";no_move               = true\n" ..
-                 "anim                  = wait\n" ..
+                 "anim                  = hide\n" ..
                  "combat_ignore_cond    = {=check_fighting(813:814)}\n" ..
                  "show_spot             = false\n" ..
+                 "danger                = danger@zombied\n" ..
 
                  "[remark@" .. gname .. "_soldiers]\n" ..
-                 "anim                  = wait\n" ..
+                 "anim                  = threat\n" ..
                  "on_actor_dist_le_nvis = 25 | %=pri_zombied_in_combat_inc%\n" ..
                  "on_actor_dist_ge_nvis = 40 | %=pri_zombied_in_combat_dec%\n" ..
-                 "show_spot             = false\n"
+                 "show_spot             = false\n" ..
+                 "danger                = danger@zombied\n"
 
     for i = 1, 7 do
         res = res.."[logic@" .. gname .. "_soldier" .. i .. "_wait]\n" ..
@@ -598,6 +520,7 @@ function load_ltx_zombied(gname, type)
                    "path_walk           = scene_walk" .. i .. "\n" ..
                    "on_signal           = arrived | nil\n" ..
                    "combat_ignore_cond  = {=check_fighting(813:814)}\n" ..
+                   "danger              = danger@zombied\n" ..
 
                    "[logic@" .. gname .. "_soldier" .. i .. "_fight]\n" ..
                    "active              = remark@" .. gname .. "_soldiers\n" ..
