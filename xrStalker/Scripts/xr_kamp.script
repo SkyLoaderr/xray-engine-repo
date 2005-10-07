@@ -120,6 +120,10 @@ function action_wait:death_callback()
 	printf("KAMP DEACTIVATE CALLED")
 	kamps[self.a.center_point]:removeNpc(self.object)
 end
+function action_wait:net_destroy()
+	printf("KAMP DEACTIVATE CALLED")
+	kamps[self.a.center_point]:removeNpc(self.object)
+end
 
 
 class "CKampManager"
