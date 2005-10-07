@@ -56,8 +56,8 @@
       [spawn] \n
 	  wpn_beretta \n
       ammo_9x19_pbp = 1 \n
-      wpn_groza = 1, scope launcher cond=0.9 \n
-      ammo_9x39_sp5 = 1 \n
+      wpn_fn2000 = 1 \n
+      ammo_5.56x45_ap = 1 \n
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -173,8 +173,8 @@
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>
       [spawn] \n
-      wpn_usp \n
-      ammo_11.43x23_hydro = 1 \n
+      wpn_colt1911 \n
+      ammo_11.43x23_fmj = 1 \n
       wpn_g36 \n
       ammo_5.56x45_ss190 = 1 \n
     </supplies>
@@ -205,10 +205,10 @@
 		<visual>actors\soldier\soldier_beret_5</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_colt1911 \n
+			ammo_11.43x23_fmj = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
@@ -240,10 +240,10 @@
 		<visual>actors\militari\stalker_militari_antigas_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_groza = 1, scope launcher cond=0.9 \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_fmj = 1 \n
+			wpn_g36 = 1 \n
+			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
@@ -274,8 +274,8 @@
 		<visual>actors\soldier\soldier_antigas</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
+			wpn_usp \n
+			ammo_11.43x23_hydro = 1 \n
 			wpn_abakan = 1, scope launcher cond=0.9 \n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
@@ -308,9 +308,9 @@
 		<visual>actors\militari\stalker_militari_antigas_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_abakan = 1, scope launcher cond=0.9 \n
+			wpn_usp \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_g36 = 1 \n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>		
