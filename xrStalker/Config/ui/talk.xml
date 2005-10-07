@@ -70,14 +70,14 @@
 		</content_text>
 	</actor_answer_item>
 
-	<iconed_answer_item x="0" y="0" width="557" height="0" min_height="42" bottom_footer="10">
+	<iconed_answer_item x="0" y="0" width="557" height="0" min_height="40" bottom_footer="10">
 		<name_caption x="0" y="0" width="0" height="0"/>
 		
-		<content_text x="80" y="16" width="520" height="10">
+		<content_text x="80" y="8" width="520" height="10">
 			<text font="graffiti22" r="255" g="255" b="255"/>
 		</content_text>
 		
-		<msg_icon x="20" y="0" width="50" height="50">
+		<msg_icon x="20" y="0" width="35" height="35">
 		</msg_icon>
 	</iconed_answer_item>
 
