@@ -270,7 +270,7 @@ end
 --' WOLF
 function has_novice_access(actor, npc)
 	if db.actor then
-		return db.actor:has_info("tutorial_wounded_help") or db.actor:has_info("tutorial_wounded_death")
+		return db.actor:has_info("esc_path_lo_lager")
 	end
 	return false
 end
@@ -286,6 +286,14 @@ end
 function not_need_wolf_greet(actor, npc)
 	return not this.need_wolf_greet(actor, npc)
 end
+
+function wolf_speak(actor, npc)
+	if db.actor then
+		return db.actor:has_info("tutorial_wounded_death") or (db.actor:has_info("tutorial_wounded_help") and db.actor:has_info("tutorial_wounded_volk_greet"))
+	end
+	return false
+end
+
 
 --' Escape dynamite for Wolf
 function transfer_wolf_ammo_to_actor(first_speaker, second_speaker)
