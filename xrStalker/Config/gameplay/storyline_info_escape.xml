@@ -13,6 +13,16 @@
         <text>tutorial_secret_place</text>
     </article>
     
-    <article id="esc_kolyan_lost" name="flash bandits" group="info">
+    <article id="esc_kolyan_lost" name="flash bandits" group="Diary">
         <text>esc_kolyan_lost</text>
+    </article>
+    
+    <article id="tutorial_artefact" name="tutorial_artefact_name" group="Diary">
+		<texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+        <text>tutorial_artefact_find</text>
+    </article>
+    
+    <article id="tutorial_wounded_help" name="tutorial_wounded_name" group="Diary">
+		<texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+        <text>tutorial_wounded_text</text>
     </article>
