@@ -357,7 +357,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -447,7 +447,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -508,7 +508,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
