@@ -39,36 +39,6 @@
     <string id="escape_factory_assault_attack_now_0">
         <text>Тогда вперед. Час настал.</text>
     </string>
-    <string id="escape_factory_assault_hello_121">
-        <text>Ну что? Мы готовы к бою.</text>
-    </string>
-    <string id="escape_factory_assault_hello_2">
-        <text>А ты, сталкер, откуда нарисовался?</text>
-    </string>
-    <string id="escape_factory_assault_hello_22">
-        <text>Я тут от Волка нарисовался. Он вам тут привет из преисподней передает. Если ты в курсе о чем я?</text>
-    </string>
-    <string id="escape_factory_assault_hello_222">
-        <text>В курсе...И что надо?</text>
-    </string>
-    <string id="escape_factory_assault_hello_2222">
-        <text>Волк послал меня вам в поддержку. Атаковать бандюков будем.</text>
-    </string>
-    <string id="escape_factory_assault_hello_22222">
-        <text>Прямо сейчас?</text>
-    </string>
-    <string id="escape_factory_assault_hello_222222">
-        <text>Да. Поднимай своих.</text>
-    </string>
-    <string id="escape_factory_assault_hello_222223">
-        <text>Чуть позже. Я скажу когда.</text>
-    </string>
-    <string id="escape_factory_assault_hello_31">
-        <text>Настрелялись вдоволь. Надеюсь, Волк будет доволен.</text>
-    </string>
-    <string id="escape_factory_assault_hello_41">
-        <text>Еще не всех положили. Ищем этих уродов и валим их!</text>
-    </string>
     <string id="escape_factory_assault_start_2">
         <text>А ты, сталкер, откуда нарисовался?</text>
     </string>
