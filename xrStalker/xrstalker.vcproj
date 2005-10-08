@@ -1231,6 +1231,12 @@
 					RelativePath=".\Config\ui\spawn.xml">
 				</File>
 				<File
+					RelativePath=".\Config\text\eng\stable_generate_fnames.xml">
+				</File>
+				<File
+					RelativePath=".\Config\text\eng\stable_generate_snames.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\stalkers_ranking.xml">
 				</File>
 				<File
