@@ -20,9 +20,9 @@
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
-			ammo_9x19_pbp \n
-			wpn_lr300 \n
-			ammo_5.56x45_ss190 \n
+			ammo_9x19_pbp = 2 \n
+			wpn_ak74 = 1, scope\n
+			ammo_5.45x39_ap \n
 			device_torch \n
 			medkit = 2 \n
 			krot_flash \n
@@ -50,10 +50,10 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_pmm = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 		</supplies>
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
@@ -80,18 +80,16 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_pmm = 1 \n
-			wpn_bm16 \n
-			ammo_12x76_zhekan = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1\n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 
 	</specific_character>
@@ -121,11 +119,9 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 </specific_character>
 
@@ -145,20 +141,18 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			wpn_mp5 \n
-			ammo_9x19_fmj = 1 \n
+			ammo_9x19_pbp = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 </specific_character>
 
@@ -178,8 +172,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_fmj = 1 \n
+			wpn_colt1911 \n
+			ammo_11.43x23_fmj = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
@@ -187,11 +181,9 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
@@ -211,20 +203,18 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_fort \n
 			ammo_9x18_pbp \n
-			wpn_ak74 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 
@@ -244,20 +234,18 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
+			wpn_colt1911 \n
+			ammo_11.43x23_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_level</actor_dialog>
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
@@ -269,8 +257,6 @@
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
-		<team>Soldier_regular</team>
-		
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
 		
@@ -281,17 +267,16 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default2" team_default = "1">
@@ -300,8 +285,6 @@
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
-		<team>Soldier_regular</team>
-		
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
 		
@@ -312,8 +295,8 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
@@ -322,7 +305,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default3" team_default = "1">
@@ -331,8 +313,6 @@
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
-		<team>Soldier_regular</team>
-		
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
 		
@@ -343,9 +323,9 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -353,7 +333,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default4" team_default = "1">
@@ -362,8 +341,6 @@
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
 
-		<team>Soldier_regular</team>
-		
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
 		
@@ -374,17 +351,16 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_regular_default5" team_default = "1">
@@ -393,8 +369,6 @@
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
-		<team>Soldier_regular</team>
-		
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
 		
@@ -405,9 +379,9 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -415,7 +389,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<!---------------------------SOLDIER SPECNAZ---------------------->
@@ -426,8 +399,6 @@
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
-		<team>Soldier_specnaz</team>
-		
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community>
 		
@@ -438,17 +409,16 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_vintorez \n
-			ammo_9x39_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_specnaz_default2" team_default = "1">
@@ -457,8 +427,6 @@
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
-		<team>Soldier_specnaz</team>
-		
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community>
 		
@@ -469,51 +437,19 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_val \n
-			ammo_9x39_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-	
-	<specific_character id="agr_soldier_specnaz_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
-		<icon x="14" y="2"></icon>
-		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
-
-		<team>Soldier_specnaz</team>
-		
-		<class>agr_Soldier_specnaz</class>
-		<community>military</community>
-		
-		<rank>80</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\soldier\soldier_spetsnaz</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_abakan = 1, scope launcher cond=0.9 \n
-	    	ammo_5.45x39_ap = 1 \n
-			device_torch \n
-#include "gameplay\character_items.xml"
-		</supplies>		
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-	<!---------------------------SOLDIER COMMANDER----------------------->
+	<!--------------------------- SOLDIER COMMANDERS ----------------------->
 	
 	<specific_character id="agr_soldier_commander1" team_default = "1">
 		<name>GENERATE_NAME</name>
@@ -531,8 +467,8 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
@@ -541,7 +477,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_commander2" team_default = "1">
@@ -560,7 +495,7 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
@@ -570,7 +505,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------SOLDIER SNIPER---------------------->
@@ -591,9 +525,8 @@
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
-			ammo_9x18_pbp = 1 \n
-			wpn_addon_scope \n
-			wpn_ak74 \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -601,7 +534,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_sniper_default2" team_default = "1">
@@ -621,9 +553,8 @@
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
-			ammo_9x18_pbp = 1 \n
-			wpn_addon_scope \n
-			wpn_ak74 \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -631,7 +562,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_soldier_sniper_default3" team_default = "1">
@@ -651,9 +581,8 @@
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
-			ammo_9x18_pbp = 1 \n
-			wpn_addon_scope \n
-			wpn_ak74 \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
@@ -661,7 +590,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 
 	<!---------------------------BANDIT general----------------------->
@@ -683,16 +611,15 @@
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_fmj = 1 \n
 			wpn_toz34 \n
-			ammo_12x76_dart = 1 \n
+			ammo_12x70_buck = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_bandit_general_default2" team_default = "1">
@@ -711,17 +638,16 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 0, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_bandit_general_default3" team_default = "1">
@@ -740,17 +666,16 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_colt1911 \n
-			ammo_11.43x23_hydro	= 1 \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
 			wpn_mp5 \n
-			ammo_9x19_pbp = 1 \n
+			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 </xml>
