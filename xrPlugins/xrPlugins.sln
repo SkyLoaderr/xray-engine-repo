@@ -3,9 +3,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader80", "lw\LW_Shader
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayExport_45", "Maya\Maya_Export45.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayExport_50", "Maya\Maya_Export50.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672650}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayExport_60", "Maya\Maya_Export601.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672660}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 5
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {45B6111F-5675-49F6-AE2C-E9EF1814B22E}
@@ -13,6 +25,18 @@ Global
 		SccLocalPath1 = .
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection1 = lw\\
+		SccProjectUniqueName2 = Maya\\Maya_Export45.vcproj
+		SccProjectName2 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath2 = Maya
+		CanCheckoutShared = true
+		SccProjectUniqueName3 = Maya\\Maya_Export50.vcproj
+		SccProjectName3 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath3 = Maya
+		CanCheckoutShared = true
+		SccProjectUniqueName4 = Maya\\Maya_Export601.vcproj
+		SccProjectName4 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath4 = Maya
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -23,6 +47,18 @@ Global
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Debug.Build.0 = Debug|Win32
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Release.ActiveCfg = Release|Win32
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

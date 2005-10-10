@@ -46,7 +46,7 @@
 				OutputFile="Export\maTranslator.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="r:\xrcore\lib;R:\sdk\maya\ver-4.5\lib"
+				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-4.5\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="Export\ReleaseDebug/maTranslator.pdb"
 				SubSystem="2"
