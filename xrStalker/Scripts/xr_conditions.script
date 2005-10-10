@@ -536,6 +536,17 @@ function pri_followers_can_hear(actor, npc)
            actor:dont_has_info("pri_followers_actor_leave")
 end
 
+function pri_monolith_combat_ignore(actor, npc)
+	local enemy = db.storage[npc:id()].enemy
+
+	if enemy and enemy:alive() then
+        local g = xr_gulag.isUnderFraction(enemy)
+        return g and (g == "pri_snork_nest1" or g == "pri_snork_nest2")
+    else
+        return false
+    end
+end
+
 
 ------------------------------------------------------------------------------------
 -- Special functions for Escape
