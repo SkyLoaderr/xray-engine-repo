@@ -175,8 +175,8 @@ BOOL MeshExpUtility::BuildObject(CEditableObject*& exp_obj, LPCSTR m_ExportName)
 			if(m_ObjectFlipFaces)		submesh->FlipFaces();
 			submesh->RecomputeBBox();
 			// append mesh
-			strcpy(submesh->GetName(),it->pNode->GetName());
-			exp_obj->m_Meshes.push_back(submesh);
+			submesh->SetName			(it->pNode->GetName());
+			exp_obj->m_Meshes.push_back	(submesh);
 		}else{
 			ELog.Msg(mtError,"! can't convert", it->pNode->GetName());
 			xr_delete(submesh);

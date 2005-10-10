@@ -15,8 +15,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="r:\3dsmax6\plugins"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
@@ -24,13 +24,13 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/LD "
 				Optimization="0"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="0"
 				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\3dsmax\ver-6.0\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_MAX_MATERIAL;_MAX_PLUGIN"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile=".\Debug/GameMaterial.pch"
+				PrecompiledHeaderFile="Intermediate\Debug\$(ProjectName)/stdafx.pch"
 				AssemblerListingLocation="Intermediate\Debug\$(ProjectName)/"
 				ObjectFile="Intermediate\Debug\$(ProjectName)/"
 				ProgramDataBaseFileName="Intermediate\Debug\$(ProjectName)/"
@@ -44,17 +44,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Winmm.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib"
+				AdditionalDependencies="Winmm.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib xrcored.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dlt"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\3dsmax\ver-6.0\lib"
-				ModuleDefinitionFile=".\GameMaterial.def"
+				ModuleDefinitionFile="Material\GameMaterial.def"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/GameMaterial.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
 				SubSystem="2"
 				BaseAddress="0x3e0e0000"
-				ImportLibrary=".\Debug/GameMaterial.lib"/>
+				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -85,8 +85,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="r:\3dsmax6\plugins"
-			IntermediateDirectory=".\Release"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
@@ -94,15 +94,15 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/LD "
 				InlineFunctionExpansion="1"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="0"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_MAX_MATERIAL;_MAX_PLUGIN"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Release/GameMaterial.pch"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderFile="Intermediate\Release\$(ProjectName)/stdafx.pch"
 				AssemblerListingLocation="Intermediate\Release\$(ProjectName)/"
 				ObjectFile="Intermediate\Release\$(ProjectName)/"
 				ProgramDataBaseFileName="Intermediate\Release\$(ProjectName)/"
@@ -115,17 +115,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="Winmm.lib comctl32.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib"
+				AdditionalDependencies="Winmm.lib comctl32.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib xrcore.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dlt"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\3dsmax\ver-6.0\lib"
 				ModuleDefinitionFile=".\GameMaterial.def"
-				ProgramDatabaseFile=".\Release/GameMaterial.pdb"
+				ProgramDatabaseFile=" "
 				SubSystem="2"
 				SetChecksum="TRUE"
 				BaseAddress="0x3e0e0000"
-				ImportLibrary=".\Release/GameMaterial.lib"/>
+				ImportLibrary="Intermediate\Release\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"

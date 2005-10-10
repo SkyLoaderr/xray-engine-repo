@@ -12,10 +12,11 @@
 #include "GameMaterial.h"
 //----------------------------------------------------
 void CEditableMesh::FlipFaces(){
-	for(FaceIt f = m_Faces.begin(); f!=m_Faces.end(); f++){
-		st_FaceVert v = f->pv[0];
-		f->pv[0] = f->pv[2];
-		f->pv[2] = v;
+	VERIFY(m_Faces);
+	for(u32 f = 0; f<GetFCount(); f++){
+		st_FaceVert v = m_Faces[f].pv[0];
+		m_Faces[f].pv[0] = m_Faces[f].pv[2];
+		m_Faces[f].pv[2] = v;
 	}
 }
 //----------------------------------------------------------------------------
@@ -70,30 +71,29 @@ bool CEditableMesh::Convert( INode *node )
 	obj->mesh.buildRenderNormals();
 
 	// vertices
-	int v_cnt = obj->mesh.getNumVerts();
-	m_Points.resize(v_cnt);
-	m_Adjs.resize(v_cnt);
-	for (int v_i=0; v_i<v_cnt; v_i++){
+	m_VertCount = obj->mesh.getNumVerts();
+	m_Verts = xr_alloc<Fvector>(m_VertCount);
+	for (int v_i=0; v_i<m_VertCount; v_i++){
 		Point3* p = obj->mesh.verts+v_i;
-		m_Points[v_i].set(p->x,p->y,p->z);
+		m_Verts[v_i].set(p->x,p->y,p->z);
 	}
 
 	// set smooth group MAX type
 	m_Flags.set(flSGMask,TRUE);
 
 	// faces
-	int f_cnt = obj->mesh.getNumFaces();
-	m_Faces.resize(f_cnt);
-	m_SGs.resize(f_cnt);
+	m_FaceCount	= obj->mesh.getNumFaces();
+	m_Faces		= xr_alloc<st_Face>	(m_FaceCount);
+	m_SGs		= xr_alloc<u32>		(m_FaceCount);
 
-	m_VMRefs.reserve(f_cnt*3);
+	m_VMRefs.reserve(m_FaceCount*3);
 	if (0==obj->mesh.mapFaces(1)){
 		bResult = false;
 		ELog.Msg(mtError,"'%s' hasn't UV mapping!", node->GetName());
 	}
 	if (bResult){
 		CSurface* surf=0;
-		for (int f_i=0; f_i<f_cnt; f_i++){
+		for (int f_i=0; f_i<m_FaceCount; f_i++){
 			Face*	vf = obj->mesh.faces+f_i;
 			TVFace* tf = obj->mesh.mapFaces(1) + f_i;
 			if (!tf){
@@ -104,13 +104,13 @@ bool CEditableMesh::Convert( INode *node )
 			m_SGs[f_i]					= vf->getSmGroup();
 			for (int k=0; k<3; k++){
 				m_Faces[f_i].pv[k].pindex = vf->v[k];
-				m_VMRefs.push_back(VMapPtSVec());
-				VMapPtSVec&	vm_vec = m_VMRefs.back();
-				DWORD vm_cnt = 1;
-				vm_vec.resize(vm_cnt);
-				for (DWORD vm_i=0; vm_i<vm_cnt; vm_i++){
-					vm_vec[vm_i].vmap_index	= 0;
-					vm_vec[vm_i].index 		= tf->t[k];
+				m_VMRefs.push_back(st_VMapPtLst());
+				st_VMapPtLst&	vm_lst = m_VMRefs.back();
+				vm_lst.count	= 1;
+				vm_lst.pts		= xr_alloc<st_VMapPt>(vm_lst.count);
+				for (DWORD vm_i=0; vm_i<vm_lst.count; vm_i++){
+					vm_lst.pts[vm_i].vmap_index	= 0;
+					vm_lst.pts[vm_i].index 		= tf->t[k];
 				}
 				m_Faces[f_i].pv[k].vmref	= m_VMRefs.size()-1;
 				if (!bResult) break;
@@ -152,7 +152,7 @@ bool CEditableMesh::Convert( INode *node )
 
 	if (bResult ){
 		ELog.Msg(mtInformation,"Model '%s' contains: %d points, %d faces",
-			node->GetName(), m_Points.size(), m_Faces.size());
+			node->GetName(), m_VertCount, m_FaceCount);
 	}
 
 	if (bResult){
@@ -170,9 +170,9 @@ bool CEditableMesh::Convert( INode *node )
 
 bool CEditableMesh::Convert(CExporter* E)
 {
-	bool bResult=true;
+	bool bResult		= true;
 
-	strcpy(m_Name,E->m_MeshNode->GetName());
+	m_Name				= E->m_MeshNode->GetName();
 
 	// maps
 	// Weight maps 
@@ -186,8 +186,9 @@ bool CEditableMesh::Convert(CExporter* E)
 
 	// points
 	{
-		m_Points.resize(E->m_ExpVertices.size());
-		FvectorIt p_it=m_Points.begin();
+		m_VertCount		= E->m_ExpVertices.size();
+		m_Verts			= xr_alloc<Fvector>(m_VertCount);
+		Fvector* p_it	= m_Verts;
 		for (ExpVertIt ev_it=E->m_ExpVertices.begin(); ev_it!=E->m_ExpVertices.end(); ev_it++,p_it++){
 			p_it->set		((*ev_it)->P);
 			VM_UV->appendUV	((*ev_it)->uv.x,(*ev_it)->uv.y);
@@ -198,31 +199,32 @@ bool CEditableMesh::Convert(CExporter* E)
 		// set smooth group MAX type
 		m_Flags.set(flSGMask,TRUE);
 		// reserve space for faces and references
-		m_Faces.reserve		(E->m_ExpFaces.size());
-		m_SGs.reserve		(E->m_ExpFaces.size());
-		m_VMRefs.resize		(E->m_ExpVertices.size());
+		m_FaceCount		= E->m_ExpFaces.size();
+		m_Faces			= xr_alloc<st_Face>	(m_FaceCount);
+		m_SGs			= xr_alloc<u32>		(m_FaceCount);
+		m_VMRefs.resize	(m_FaceCount);
 
 		int f_id=0;
 		for (ExpFaceIt ef_it=E->m_ExpFaces.begin(); ef_it!=E->m_ExpFaces.end(); ef_it++,f_id++){
 			// FACES
-			m_Faces.push_back	(st_Face());
-			m_SGs.push_back		((*ef_it)->sm_group);
-			st_Face& F		= m_Faces.back();
+			m_SGs[f_id]		= (*ef_it)->sm_group;
+			st_Face& F		= m_Faces[f_id];
 			for (int k=0; k<3; k++){
 				int v_idx			= (*ef_it)->v[k];
 				st_FaceVert& vt		= F.pv[k];
 				st_VERT* V			= E->m_ExpVertices[v_idx];
 				vt.pindex			= v_idx;
-				VMapPtSVec&	vm_vec	= m_VMRefs[vt.pindex];
-				vm_vec.resize(V->data.size()+1);
-				vm_vec[0].vmap_index= VM_UV_idx;
-				vm_vec[0].index 	= vt.pindex;
+				st_VMapPtLst& vm_lst= m_VMRefs[vt.pindex];
+				vm_lst.count		= V->data.size()+1;
+				vm_lst.pts			= xr_alloc<st_VMapPt>(vm_lst.count);
+				vm_lst.pts[0].vmap_index= VM_UV_idx;
+				vm_lst.pts[0].index 	= vt.pindex;
 				for (VDIt vd_it=V->data.begin(); vd_it!=V->data.end(); vd_it++){
 					DWORD idx		= vd_it-V->data.begin()+1;
 					st_VMap* vm		= m_VMaps[vd_it->bone];
 					vm->appendW		(vd_it->weight);
-					vm_vec[idx].vmap_index= vd_it->bone;
-					vm_vec[idx].index 	= vm->size()-1;
+					vm_lst.pts[idx].vmap_index	= vd_it->bone;
+					vm_lst.pts[idx].index 		= vm->size()-1;
 				}
 				vt.vmref			= vt.pindex;
 			}
