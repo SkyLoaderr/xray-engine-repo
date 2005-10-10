@@ -1,0 +1,265 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Unknown language: 0x22, 0x1 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_UKR)
+#ifdef _WIN32
+LANGUAGE 0x22, 0x1
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP2             BITMAP  DISCARDABLE     "bitmap2.bmp"
+#endif    // Unknown language: 0x22, 0x1 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 172, 76
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,60,55,50,14
+    CTEXT           "OGF File Exporter\nVersion 1.3\nOles Shishkovtsov, Alex Maximchuk\nCopyright 2000, 3D Group",
+                    IDC_STATIC,10,13,151,36
+    GROUPBOX        "",IDC_STATIC,7,7,158,44
+END
+
+IDD_OGFEXPORT_DLG DIALOGEX 0, 0, 366, 258
+STYLE DS_ABSALIGN | DS_MODALFRAME | DS_SETFOREGROUND | DS_NOFAILCREATE | 
+    DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_NOPARENTNOTIFY | WS_EX_CONTROLPARENT
+CAPTION 
+"Open Graphics Format Export - designed for ""XRay"" engine by Oles Shishkovtsov & Alex Maximchuk"
+
+FONT 8, "Comic Sans MS"
+BEGIN
+    DEFPUSHBUTTON   "Export",IDC_RUN,5,180,110,15
+    CONTROL         "Multi Pass (no Multi-Texturing)",IDC_MP,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | BS_FLAT | 
+                    WS_DISABLED | WS_TABSTOP,124,55,236,10
+    CONTROL         "Export material from MAX material (otherwise default is used)",
+                    IDC_MATERIAL,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    BS_VCENTER | BS_FLAT | WS_TABSTOP,124,67,236,10
+    CONTROL         "Include per-vertex color information in vertices",
+                    IDC_VC,"Button",BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | 
+                    BS_FLAT | WS_TABSTOP,124,115,236,10
+    LTEXT           "Single texture shader",IDC_STATIC,235,145,67,8
+    LTEXT           "MT Stage 0",IDC_STATIC,235,166,38,8
+    LTEXT           "MT Stage 1",IDC_STATIC,300,166,38,8
+    GROUPBOX        "Export properties",IDC_STATIC,120,5,245,125
+    GROUPBOX        "Shaders",IDC_STATIC,230,135,135,77
+    CONTROL         106,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE,6,7,
+                    97,37,WS_EX_DLGMODALFRAME
+    CONTROL         "Specular highlights (slows down engine rendering)",
+                    IDC_SPECULAR,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    BS_VCENTER | BS_FLAT | WS_TABSTOP,124,91,236,10
+    CONTROL         "Slider1",IDC_POWER,"msctls_trackbar32",TBS_AUTOTICKS | 
+                    WS_TABSTOP,124,184,95,15
+    CONTROL         "Low",IDC_STATIC,"Static",SS_SIMPLE | WS_GROUP,123,199,
+                    14,8
+    CONTROL         "High",IDC_STATIC,"Static",SS_SIMPLE | WS_GROUP,203,199,
+                    16,8
+    CONTROL         "Sharpness",IDC_STATIC,"Static",SS_SIMPLE | WS_GROUP,154,
+                    174,34,8
+    CONTROL         "Slider1",IDC_BRIGHTNESS,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,125,153,95,15
+    CONTROL         "Low",IDC_STATIC,"Static",SS_SIMPLE | WS_GROUP,124,168,
+                    14,8
+    CONTROL         "High",IDC_STATIC,"Static",SS_SIMPLE | WS_GROUP,204,168,
+                    16,8
+    CONTROL         "Brightness",IDC_STATIC,"Static",SS_SIMPLE | WS_GROUP,
+                    155,143,34,8
+    CONTROL         "Has transparency (set if texture has alpha channel)",
+                    IDC_ALPHA,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    BS_VCENTER | BS_FLAT | WS_TABSTOP,124,103,236,10
+    CONTROL         "Visual can be lighted",IDC_LIGHT,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | BS_FLAT | 
+                    WS_TABSTOP,124,79,236,10
+    CONTROL         "Build and attach ""Shadow Form""",IDC_LINK_SF,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | BS_FLAT | 
+                    WS_TABSTOP,124,15,236,10
+    GROUPBOX        "Specular",IDC_STATIC,120,135,105,77
+    CONTROL         "",IDC_SHADER,"CustEdit",WS_TABSTOP,235,155,125,8
+    CONTROL         "",IDC_SHADERMT2,"CustEdit",WS_TABSTOP,300,176,60,8
+    CONTROL         "",IDC_SHADERMT1,"CustEdit",WS_TABSTOP,235,176,60,8
+    GROUPBOX        "Selection List",IDC_STATIC,5,49,110,81
+    CONTROL         "Build ""Collision Form""",IDC_CFORM,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | BS_FLAT | 
+                    WS_TABSTOP,124,27,236,10
+    LTEXT           "MP Stage 0",IDC_STATIC,235,187,38,8,WS_DISABLED
+    LTEXT           "MP Stage 1",IDC_STATIC,300,187,38,8,WS_DISABLED
+    CONTROL         "",IDC_SHADERMT3,"CustEdit",WS_DISABLED | WS_TABSTOP,300,
+                    197,60,8
+    CONTROL         "",IDC_SHADERMT4,"CustEdit",WS_DISABLED | WS_TABSTOP,235,
+                    197,60,8
+    PUSHBUTTON      "Close",IDC_CLOSE,5,195,110,15
+    LISTBOX         IDC_PROCESS,1,213,364,44,NOT LBS_NOTIFY | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_SELECTIONLIST,8,58,104,69,NOT LBS_NOTIFY | LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | NOT WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Visual Type",IDC_STATIC,5,135,110,45
+    CONTROL         "Standart",IDC_R_Standart,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,10,145,42,10
+    CONTROL         "Progressive",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT | WS_DISABLED,10,155,50,10
+    CONTROL         "Hierrarhy",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT | WS_DISABLED,10,165,45,10
+    CONTROL         "Shotmark",IDC_R_Shotmark,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,65,145,44,10
+    CONTROL         "Skeleton",IDC_R_Skeleton,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT | WS_DISABLED,65,155,42,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,0,0,0
+ PRODUCTVERSION 3,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Kinetix, a division of Autodesk, Inc.\0"
+            VALUE "FileVersion", "3.0.0.0\0"
+            VALUE "InternalName", "asciiexp\0"
+            VALUE "LegalCopyright", "Copyright © 1998 Autodesk Inc.\0"
+            VALUE "OriginalFilename", "asciiexp.dle\0"
+            VALUE "ProductName", "3D Studio MAX\0"
+            VALUE "ProductVersion", "3.0.0.0\0"
+            VALUE "FileDescription", "ASCII file exporter (plugin)\0"
+            VALUE "Comments", "TECH: christer.janson\0"
+            VALUE "LegalTrademarks", "The following are registered trademarks of Autodesk, Inc.: 3D Studio MAX.  The following are trademarks of Autodesk, Inc.: Kinetix, Kinetix(logo), BIPED, Physique, Character Studio, MAX DWG, DWG Unplugged, Heidi, FLI, FLC, DXF.\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_OGFEXPORT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OGFEXP              "OGFExp"
+    IDS_CATEGORY            "Standard"
+    IDS_EXTENSION1          "OGF"
+    IDS_LONGDESC            "3D Studio MAX OGF Scene Exporter"
+    IDS_SHORTDESC           "OGF Object Export"
+    IDS_COPYRIGHT           "Copyright (c) 1997 by Kinetix"
+    IDS_PROGRESS_MSG        "Exporting file..."
+    IDS_VERSIONSTRING       "OGFExport Version"
+    IDS_LIBDESCRIPTION      "OGF file exporter"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
