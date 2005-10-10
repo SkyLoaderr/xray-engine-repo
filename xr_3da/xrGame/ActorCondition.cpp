@@ -29,6 +29,7 @@ CActorCondition::CActorCondition(CActor *object) :
 	m_fOverweightJumpK			= 0.f;
 	m_fAccelK					= 0.f;
 	m_fSprintK					= 0.f;
+	m_fAlcohol					= 0.f;
 
 	VERIFY						(object);
 	m_object					= object;
@@ -85,6 +86,8 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
 	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
 
+	m_fV_Alcohol				= pSettings->r_float(section,"alcohol_v");
+
 	LPCSTR cb_name			= READ_IF_EXISTS(pSettings,r_string,section,"can_sleep_callback","");
 
 	if(xr_strlen(cb_name)){
@@ -124,6 +127,9 @@ void CActorCondition::UpdateCondition()
 		float delta_time = float(m_iDeltaTime)/1000.f;
 		SetMaxPower		(GetMaxPower()-m_fPowerLeakSpeed*delta_time);
 	}
+
+	m_fAlcohol		+= m_fV_Alcohol*(m_iDeltaTime/1000);
+	clamp			(m_fAlcohol,			0.0f,		1.0f);
 
 	inherited::UpdateCondition();
 }
@@ -307,12 +313,14 @@ EActorSleep CActorCondition::CanSleepHere()
 
 void CActorCondition::save(NET_Packet &output_packet)
 {
-	inherited::save		(output_packet);
+	inherited::save					(output_packet);
+	output_packet.w_float_q8		(m_fAlcohol,0.f,1.f);
 }
 
 void CActorCondition::load(IReader &input_packet)
 {
 	inherited::load		(input_packet);
+	m_fAlcohol			= input_packet.r_float_q8(0.f,1.f);
 }
 
 void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)

@@ -65,6 +65,8 @@ public:
 protected:
 	float m_fAlcohol;
 
+	float m_fV_Alcohol;
+
 	float m_fPowerLeakSpeed;
 	//силы расходуемые на прыжки и бег
 	//(при максимальном весе)
