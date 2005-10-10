@@ -29,7 +29,9 @@
 	<info_portion id="esc_second_novice_dead"></info_portion>
 	<info_portion id="esc_heli_attack"></info_portion>
 	<info_portion id="tutorial_wounded_must_spawn"></info_portion>
-	<info_portion id="tutorial_wounded_give_info"></info_portion>
+	<info_portion id="tutorial_wounded_give_info">
+		<article>storyline_fox_flash_info</article>
+	</info_portion>
 	<info_portion id="tutorial_wounded_help"></info_portion>
 	<info_portion id="tutorial_wounded_die"></info_portion>
 	<info_portion id="tutorial_wounded_death"></info_portion>
@@ -49,7 +51,7 @@
 		<task>esc_help_wounded_from_raid</task>
 	</info_portion>
 	<info_portion id="escape_stalker_give">	
-		<article>storyline_fox_flash_info</article>
+		<article>storyline_seryi_info</article>
 	</info_portion>	
 	<info_portion id="escape_stalker_done"></info_portion>
 	<info_portion id="esc_dogs_return"></info_portion>
