@@ -46,10 +46,21 @@ l10_radar_ai
 ;l03u_agroprom_r
 ;l13_generators_und
 ;l04_darkvalley_ai2
-;ai_test
 ;$debug$\_light2_
 l12_stancia
 l12_stancia_1ch_proba
+ai_test
+ai_test2
+
+[ai_test]
+texture					= ui\ui_map_ai_test
+bound_rect				= -150.000, -100.000, 52.927, 50.000
+global_rect				= 156.0,833.0,220.0,988.0
+
+[ai_test2]
+texture					= ui\ui_map_ai_test
+bound_rect				= -150.000, -100.000, 52.927, 50.000
+global_rect				= 359.0,833.0,423.0,988.0
 
 [global_map]
 texture			= ui\ui_global_map
@@ -67,15 +78,6 @@ bound_rect      = -150.000, -100.000, 52.927, 50.000
 global_rect		= 156.0,833.0,220.0,988.0
 weathers		= default
 music_tracks	= level_music_tracks
-
-[ai_test]
-texture					= ui\ui_map_ai_test
-bound_rect				= -150.000, -100.000, 52.927, 50.000
-global_rect				= 156.0,833.0,220.0,988.0
-weathers				= default
-;anomalies_texture		= ui\ui_map_ai_test_anomalies
-anomalies_texture_rect	= 0,128,128,128    ;texture coords: left,top,width,height
-anomalies_tex_rect	= 0,128,128,128    ;texture coords: left,top,width,height
 
 [l01_escape]
 texture         = map\map_escape
@@ -713,16 +715,13 @@ level165
   name          = ai_test
   caption       = "ai_test"
   offset        = -300.0,     200.0,    300.0
-  level_map     = ui\ui_map_military
-  ui_map_coords = 700,      1800,     100,     400
-  ui_map_dims   = -443.66,  196.33,  -131.66,  508.33
   id            = 26
 
 [level27]
-  name    = ai_test2
-  caption = "ai_test2"
+  name			= ai_test2
+  caption		= "ai_test2"
   offset        = 300.0,     200.0,    300.0
-  id  = 27
+  id			= 27
 
 [level29]
   name    = jim_dark
