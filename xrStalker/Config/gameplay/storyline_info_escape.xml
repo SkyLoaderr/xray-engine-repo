@@ -13,7 +13,6 @@
     </article>
 
 	<article id="tutorial_secret_place" name="flash_dead_stalker" group="Diary">
-        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>tutorial_secret_place</text>
     </article>
     
@@ -21,12 +20,30 @@
         <text>esc_kolyan_lost</text>
     </article>
     
-    <article id="tutorial_artefact" name="tutorial_artefact_name" group="Diary">
-		<texture x="50" y="150" width="50" height="50">ui\ui_icons_task</texture>
+    <article id="tutorial_artefact" name="tutorial_find_artefact" article_type="task" group="tutorial_find_artefact">
         <text>tutorial_artefact_find</text>
     </article>
     
-    <article id="tutorial_wounded_help" name="tutorial_wounded_name" group="Diary">
-		<texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+    <article id="tutorial_wounded_help" name="tutorial_help_wounded" article_type="task" group="tutorial_help_wounded">
         <text>tutorial_wounded_text</text>
     </article>
+    
+    <article id="esc_blokpost_case" name="esc_blockpost_case_to_trader" article_type="task" group="esc_blockpost_case_to_trader">
+        <text>blokpost_case_text</text>
+    </article>
+    
+    <article id="esc_volk_dynamite" name="esc_dinamit_to_volk" article_type="task" group="esc_dinamit_to_volk">
+        <text>factory_dynamit_text</text>
+    </article>    
+    
+    <article id="defend_novice" name="esc_defend_lager" article_type="task" group="esc_defend_lager">
+        <text>defend_lager_text</text>
+    </article> 
+    
+    <article id="kill_factory_bandits" name="esc_bandits_factory" article_type="task" group="esc_bandits_factory">
+        <text>factory_trader_text</text>
+    </article> 
+    
+    <article id="meet_seryi_start" name="garbage_meet_stalker" article_type="task" group="garbage_meet_stalker">
+        <text>meet_seryi_text</text>
+    </article> 
