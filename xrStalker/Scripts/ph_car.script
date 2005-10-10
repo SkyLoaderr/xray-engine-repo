@@ -1130,7 +1130,7 @@ end
 
 function action_car:net_destroy()
 	--self:destroy_car()
-	if xr_logic.mob_captured(self.object) then
+	if self.object and xr_logic.mob_captured(self.object) then
 	    xr_logic.mob_release(self.object)
 	    if self.st.on_death_info ~= nil then
 	        db.actor:give_info_portion(self.st.on_death_info)
