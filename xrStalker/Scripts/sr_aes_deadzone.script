@@ -117,7 +117,7 @@ function action_postprocess:update_hit		(delta)
     if time_global () - self.hit_time < 1000 then
        return 
     end    
-    printf ("HIT POWER = %f", self.hit_power)
+    --printf ("HIT POWER = %f", self.hit_power)
     self.hit_time = time_global ();
     local h = hit ();
     h.power = self.hit_power
