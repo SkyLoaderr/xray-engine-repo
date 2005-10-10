@@ -74,11 +74,9 @@ BOOL CPPEffectorControlled::update()
 	return TRUE;
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 CPPEffectorController::CPPEffectorController() 
 {
-	m_effector  = 0;
 }
 
 CPPEffectorController::~CPPEffectorController()
@@ -89,21 +87,6 @@ CPPEffectorController::~CPPEffectorController()
 	}
 }
 
-void CPPEffectorController::load(LPCSTR section)
-{
-	m_state.duality.h			= pSettings->r_float(section,"duality_h");
-	m_state.duality.v			= pSettings->r_float(section,"duality_v");
-	m_state.gray				= pSettings->r_float(section,"gray");
-	m_state.blur				= pSettings->r_float(section,"blur");
-	m_state.noise.intensity		= pSettings->r_float(section,"noise_intensity");
-	m_state.noise.grain			= pSettings->r_float(section,"noise_grain");
-	m_state.noise.fps			= pSettings->r_float(section,"noise_fps");
-	VERIFY(!fis_zero(m_state.noise.fps));
-
-	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &m_state.color_base.r, &m_state.color_base.g, &m_state.color_base.b);
-	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &m_state.color_gray.r, &m_state.color_gray.g, &m_state.color_gray.b);
-	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &m_state.color_add.r,	&m_state.color_add.g,	 &m_state.color_add.b);
-}
 
 void CPPEffectorController::activate()
 {	

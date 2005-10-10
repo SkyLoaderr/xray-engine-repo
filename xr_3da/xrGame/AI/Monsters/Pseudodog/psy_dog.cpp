@@ -13,20 +13,23 @@
 #include "../../../actor.h"
 #include "../ai_monster_effector.h"
 #include "../../../ActorEffector.h"
+#include "psy_dog_aura.h"
 
 
 CPsyDog::CPsyDog()
 {
+	m_aura = xr_new<CPsyDogAura>(this);
 }
 CPsyDog::~CPsyDog()
 {
+	xr_delete(m_aura);
 }
 
 void CPsyDog::Load(LPCSTR section)
 {
 	inherited::Load(section);
-
-	//m_aura_effector.Load("psy_dog_aura_effector");
+	
+	m_aura->load(pSettings->r_string(section,"aura_effector"));
 }
 
 BOOL CPsyDog::net_Spawn(CSE_Abstract *dc)
@@ -37,8 +40,9 @@ BOOL CPsyDog::net_Spawn(CSE_Abstract *dc)
 }
 void CPsyDog::reinit()
 {
-	inherited::reinit();
-	
+	inherited::reinit	();
+	m_aura->reinit		();
+
 	m_enemy = 0;
 }
 void CPsyDog::reload(LPCSTR section)
@@ -89,6 +93,8 @@ void CPsyDog::Think()
 	
 	if ((m_storage.size() < 3) && (time_last_change + 5000 < time()))
 		if (spawn_phantom()) time_last_change = time();
+
+	m_aura->update_schedule();
 }
 
 void CPsyDog::delete_all_phantoms()
@@ -124,6 +130,8 @@ void CPsyDog::Die(CObject* who)
 {
 	delete_all_phantoms();
 	inherited::Die(who);
+	
+	m_aura->on_death();
 }
 
 
