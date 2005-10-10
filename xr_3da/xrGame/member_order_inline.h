@@ -15,7 +15,7 @@ IC	CMemberOrder::CMemberOrder					(CAI_Stalker *object) :
 	m_action		(0.f,0)
 {
 	VERIFY					(m_object);
-	m_enemies.reserve		(16);
+//	m_enemies.reserve		(16);
 	m_cover					= 0;
 	m_detour				= false;
 }

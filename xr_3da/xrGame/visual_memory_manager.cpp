@@ -104,10 +104,10 @@ void CVisualMemoryManager::reinit					()
 	}
 
 	m_visible_objects.clear				();
-	m_visible_objects.reserve			(100);
+//	m_visible_objects.reserve			(100);
 
 	m_not_yet_visible_objects.clear		();
-	m_not_yet_visible_objects.reserve	(100);
+//	m_not_yet_visible_objects.reserve	(100);
 
 	if (m_object)
 		m_object->feel_vision_clear		();

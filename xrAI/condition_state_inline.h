@@ -14,7 +14,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CConditionStateAbstract::CConditionState	()
 {
-	m_conditions.reserve	(32);
+//	m_conditions.reserve	(32);
 	m_hash					= 0;
 }
 

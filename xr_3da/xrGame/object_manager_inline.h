@@ -17,7 +17,7 @@
 TEMPLATE_SPECIALIZATION
 CAbstractObjectManager::CObjectManager				()
 {
-	m_objects.reserve		(100);
+//	m_objects.reserve		(100);
 }
 
 TEMPLATE_SPECIALIZATION

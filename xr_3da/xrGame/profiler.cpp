@@ -34,7 +34,7 @@ IC	u32 compute_string_length(LPCSTR str)
 
 CProfiler::CProfiler		()
 {
-	m_portions.reserve			(1000);
+//	m_portions.reserve			(1000);
 	m_actual					= true;
 }
 

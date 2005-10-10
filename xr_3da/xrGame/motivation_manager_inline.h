@@ -32,8 +32,8 @@ TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::init				()
 {
 	m_graph					= xr_new<CSGraphAbstract>();
-	m_edges.reserve			(16);
-	m_actions.reserve		(100);
+//	m_edges.reserve			(16);
+//	m_actions.reserve		(100);
 	m_selected_id			= u32(-1);
 	m_actuality				= false;
 	m_object				= 0;
