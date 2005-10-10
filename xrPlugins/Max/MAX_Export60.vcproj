@@ -518,9 +518,6 @@
 					RelativePath="Export\lwchunks.h">
 				</File>
 				<File
-					RelativePath="Export\SceneClassList.h">
-				</File>
-				<File
 					RelativePath="Export\Shader_xrLC.h">
 				</File>
 			</Filter>
