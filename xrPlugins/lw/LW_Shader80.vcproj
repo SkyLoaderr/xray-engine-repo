@@ -153,6 +153,12 @@
 		<Filter
 			Name="Kernel"
 			Filter="">
+			<File
+				RelativePath=".\shader\stdafx.cpp">
+			</File>
+			<File
+				RelativePath=".\shader\stdafx.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Shared Files"
@@ -160,6 +166,12 @@
 			<Filter
 				Name="Engine"
 				Filter="">
+				<File
+					RelativePath=".\shader\GameMtlLib.cpp">
+				</File>
+				<File
+					RelativePath=".\shader\GameMtlLib.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="Editor"
@@ -168,18 +180,18 @@
 			<Filter
 				Name="Plugins"
 				Filter="">
+				<File
+					RelativePath=".\shader\BlenderListLoader.cpp">
+				</File>
+				<File
+					RelativePath=".\shader\BlenderListLoader.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Shader"
 			Filter="">
 		</Filter>
-		<File
-			RelativePath=".\shader\BlenderListLoader.cpp">
-		</File>
-		<File
-			RelativePath=".\shader\BlenderListLoader.h">
-		</File>
 		<File
 			RelativePath=".\shader\blotch.c">
 		</File>
@@ -188,12 +200,6 @@
 		</File>
 		<File
 			RelativePath=".\shader\ELog.h">
-		</File>
-		<File
-			RelativePath=".\shader\GameMtlLib.cpp">
-		</File>
-		<File
-			RelativePath=".\shader\GameMtlLib.h">
 		</File>
 		<File
 			RelativePath=".\shader\LW_Shader.cpp">
@@ -212,12 +218,6 @@
 		</File>
 		<File
 			RelativePath=".\shader\Shader_xrLC.h">
-		</File>
-		<File
-			RelativePath=".\shader\stdafx.cpp">
-		</File>
-		<File
-			RelativePath=".\shader\stdafx.h">
 		</File>
 	</Files>
 	<Globals>
