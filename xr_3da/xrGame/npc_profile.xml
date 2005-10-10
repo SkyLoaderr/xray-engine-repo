@@ -475,6 +475,10 @@
 	
 <!-- Pripyat -->
 	<!-- Monolith -->
+	<character id="pri_monolith_ambush">
+		<class>pri_monolith_ambush</class>
+	</character>
+
 	<character id="pri_monolith_regular">
 		<class>pri_monolith_regular</class>
 	</character>
@@ -487,14 +491,14 @@
 		<class>pri_monolith_exo</class>
 	</character>
 
+	<character id="pri_monolith_leader">
+		<class>pri_monolith_leader</class>
+		<specific_character>pri_monolith_leader</specific_character>
+	</character>
+
 	<!-- Followers -->	
 	<character id="pri_followers">
 		<class>pri_followers</class>
-	</character>
-
-	<!-- Stalker  -->	
-	<character id="pri_stalker_veteran">
-		<class>pri_stalker_veteran</class>
 	</character>
 
 	<!-- Soldier -->
