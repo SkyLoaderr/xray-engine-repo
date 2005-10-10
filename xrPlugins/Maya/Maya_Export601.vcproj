@@ -81,8 +81,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Export\bin"
-			IntermediateDirectory="Export\Debug"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
@@ -94,10 +94,10 @@
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="Export\Debug/maTranslator.pch"
-				AssemblerListingLocation="Export\Debug/"
-				ObjectFile="Export\Debug/"
-				ProgramDataBaseFileName="Export\Debug/"
+				PrecompiledHeaderFile="Intermediate\Debug\$(ProjectName)/stdafx.pch"
+				AssemblerListingLocation="Intermediate\Debug\$(ProjectName)/"
+				ObjectFile="Intermediate\Debug\$(ProjectName)/"
+				ProgramDataBaseFileName="Intermediate\Debug\$(ProjectName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -115,9 +115,9 @@
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-6.0\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="Export\Debug/maTranslator.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
 				SubSystem="2"
-				ImportLibrary="Export\Debug/maTranslator.lib"/>
+				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -148,8 +148,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Export\bin"
-			IntermediateDirectory="Export\Release"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
@@ -164,10 +164,10 @@
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="Export\Release/maTranslator.pch"
-				AssemblerListingLocation="Export\Release/"
-				ObjectFile="Export\Release/"
-				ProgramDataBaseFileName="Export\Release/"
+				PrecompiledHeaderFile="Intermediate\Release\$(ProjectName)/stdafx.pch"
+				AssemblerListingLocation="Intermediate\Release\$(ProjectName)/"
+				ObjectFile="Intermediate\Release\$(ProjectName)/"
+				ProgramDataBaseFileName="Intermediate\Release\$(ProjectName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -181,9 +181,9 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-6.0\lib"
-				ProgramDatabaseFile="Export\Release/maTranslator.pdb"
+				ProgramDatabaseFile=""
 				SubSystem="2"
-				ImportLibrary="Export\Release/maTranslator.lib"/>
+				ImportLibrary="Intermediate\Release\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"

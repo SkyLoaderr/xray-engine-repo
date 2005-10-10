@@ -81,23 +81,23 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Material\bin"
-			IntermediateDirectory="Material\Debug"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-5.0\include"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-4.5\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="Material\Debug/maTranslator.pch"
-				AssemblerListingLocation="Material\Debug/"
-				ObjectFile="Material\Debug/"
-				ProgramDataBaseFileName="Material\Debug/"
+				PrecompiledHeaderFile="Intermediate\Debug\$(ProjectName)/stdafx.pch"
+				AssemblerListingLocation="Intermediate\Debug\$(ProjectName)/"
+				ObjectFile="Intermediate\Debug\$(ProjectName)/"
+				ProgramDataBaseFileName="Intermediate\Debug\$(ProjectName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -115,9 +115,9 @@
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="Material\Debug/maTranslator.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
 				SubSystem="2"
-				ImportLibrary="Material\Debug/maTranslator.lib"/>
+				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -148,15 +148,15 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Material\bin"
-			IntermediateDirectory="Material\Release"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-5.0\include"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-4.5\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -164,10 +164,10 @@
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="Material\Release/maTranslator.pch"
-				AssemblerListingLocation="Material\Release/"
-				ObjectFile="Material\Release/"
-				ProgramDataBaseFileName="Material\Release/"
+				PrecompiledHeaderFile="Intermediate\Release\$(ProjectName)/stdafx.pch"
+				AssemblerListingLocation="Intermediate\Release\$(ProjectName)/"
+				ObjectFile="Intermediate\Release\$(ProjectName)/"
+				ProgramDataBaseFileName="Intermediate\Release\$(ProjectName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -176,14 +176,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /export:initializePlugin /export:uninitializePlugin"
-				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib OpenMayaRender.lib OpenMayaUI.lib glu32.lib opengl32.lib xrcorer.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib OpenMayaRender.lib OpenMayaUI.lib glu32.lib opengl32.lib xrcore.lib"
 				OutputFile="$(OutDir)/$(ProjectName).mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
-				ProgramDatabaseFile="Material\Release/maTranslator.pdb"
+				ProgramDatabaseFile=""
 				SubSystem="2"
-				ImportLibrary="Material\Release/maTranslator.lib"/>
+				ImportLibrary="Intermediate\Release\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"

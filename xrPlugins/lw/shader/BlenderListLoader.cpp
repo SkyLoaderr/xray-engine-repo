@@ -27,11 +27,11 @@ int LoadBlenderList(LPSTRVec& lst)
 
 	IReader* fs			= R->open_chunk(3); R_ASSERT(fs);
 
-	string256			buf;
+	xr_string			buf;
 	lst.resize			(fs->r_u32());
 	for (LPSTRIt it=lst.begin(); it!=lst.end(); it++){
 		fs->r_stringZ	(buf); 
-		*it=xr_strdup	(buf);
+		*it=xr_strdup	(buf.c_str());
 	}
 	fs->close();
 	std::sort			(lst.begin(), lst.end(), str_pred);
