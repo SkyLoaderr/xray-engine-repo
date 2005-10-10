@@ -458,24 +458,26 @@ bool CActor::g_LadderOrient()
 void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {
 	// capture camera into torso (only for FirstEye & LookAt cameras)
-	if (eacFreeLook!=cam_active){
+	if (eacFreeLook!=cam_active)
+	{
 		r_torso.yaw		=	cam_Active()->GetWorldYaw	();
 		r_torso.pitch	=	cam_Active()->GetWorldPitch	();
-
-		unaffected_r_torso.yaw		= r_torso.yaw;
-		unaffected_r_torso.pitch	= r_torso.pitch;
-		unaffected_r_torso.roll		= r_torso.roll;
+	}
+	else
+	{
+		r_torso.yaw		=	cam_FirstEye()->GetWorldYaw	();
+		r_torso.pitch	=	cam_FirstEye()->GetWorldPitch	();
 	}
 
-//	CWeapon *pWeapon = smart_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-//		inventory().ItemFromSlot(inventory().GetActiveSlot())/*inventory().m_slots[inventory().GetActiveSlot()].m_pIItem*/ : NULL);
+	unaffected_r_torso.yaw		= r_torso.yaw;
+	unaffected_r_torso.pitch	= r_torso.pitch;
+	unaffected_r_torso.roll		= r_torso.roll;
 
-//	if(pWeapon){
-		Fvector			dangle;
-		dangle			= weapon_recoil_delta_angle();
-		r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
-		r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
-//	}
+
+//	Fvector			dangle;
+//	dangle			= weapon_recoil_delta_angle();
+//	r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
+//	r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
 
 	// если есть движение - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
