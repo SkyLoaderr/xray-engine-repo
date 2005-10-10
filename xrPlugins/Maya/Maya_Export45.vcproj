@@ -23,7 +23,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="w:\!core;R:\sdk\maya\ver-4.5\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -46,7 +46,7 @@
 				OutputFile="Export\maTranslator.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="w:\!exe;R:\sdk\maya\ver-4.5\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="Export\ReleaseDebug/maTranslator.pdb"
 				SubSystem="2"
@@ -89,7 +89,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya45"
+				AdditionalIncludeDirectories="w:\!core;R:\sdk\maya\ver-4.5\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_Export;_MAYA_PLUGIN"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -113,7 +113,7 @@
 				OutputFile="$(OutDir)/$(ProjectName)d.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="R:\lib\xrcore;R:\lib\maya45"
+				AdditionalLibraryDirectories="w:\!exe;R:\sdk\maya\ver-4.5\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="Export\Debug/maTranslator.pdb"
 				SubSystem="2"
@@ -156,7 +156,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya45"
+				AdditionalIncludeDirectories="w:\!core;R:\sdk\maya\ver-4.5\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN;_Export;_MAYA_PLUGIN"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -179,7 +179,7 @@
 				OutputFile="$(OutDir)/$(ProjectName).mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="R:\lib\maya45;R:\lib\xrcore"
+				AdditionalLibraryDirectories="w:\!exe;R:\sdk\maya\ver-4.5\lib"
 				ProgramDatabaseFile="Export\Release/maTranslator.pdb"
 				SubSystem="2"
 				ImportLibrary="Export\Release/maTranslator.lib"/>
