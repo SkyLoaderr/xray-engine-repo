@@ -65,7 +65,7 @@ static bool ParseObjectMotion(LWItemID object, int& obj_cnt){
 	return true;
 }
 
-void ReplaceSpaceAndLowerCase(ref_str& s)
+void ReplaceSpaceAndLowerCase(shared_str& s)
 {
 	if (*s){
 		char* _s	= xr_strdup(*s);

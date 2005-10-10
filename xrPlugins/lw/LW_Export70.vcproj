@@ -15,8 +15,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Release\$(ProjectName)/"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -24,17 +24,19 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\lw\ver-7.0\include"
 				PreprocessorDefinitions="NDEBUG;_X86_;_WIN32;WIN32;_WINDOWS;_USRDLL;_LW_PLUGIN;_LW_EXPORT"
 				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/envelope.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				PrecompiledHeaderFile="Intermediate\Release\$(ProjectName)/stdafx.pch"
+				AssemblerListingLocation="Intermediate\Release\$(ProjectName)/"
+				ObjectFile="Intermediate\Release\$(ProjectName)/"
+				ProgramDataBaseFileName="Intermediate\Release\$(ProjectName)/"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"/>
@@ -43,13 +45,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="R:\Plugins\XRayExport.p"
+				AdditionalDependencies="odbc32.lib odbccp32.lib  xrcore.lib lib\lw_server.lib"
+				OutputFile="$(OutDir)/$(ProjectName).p"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ModuleDefinitionFile=".\serv.def"
-				ProgramDatabaseFile=".\Release/XRayExport.pdb"
-				ImportLibrary=".\Release/XRayExport.lib"/>
+				AdditionalLibraryDirectories="r:\sdk\xrcore\lib"
+				ModuleDefinitionFile="Server\serv.def"
+				ProgramDatabaseFile=""
+				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -80,8 +83,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory="bin"
+			IntermediateDirectory="Intermediate\Debug\$(ProjectName)/"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -89,16 +92,17 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\lw\ver-7.0\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;_X86_;_WIN32;WIN32;_WINDOWS;_USRDLL;_LW_PLUGIN;_LW_EXPORT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/envelope.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
+				PrecompiledHeaderFile="Intermediate\Debug\$(ProjectName)/stdafx.pch"
+				AssemblerListingLocation="Intermediate\Debug\$(ProjectName)/"
+				ObjectFile="Intermediate\Debug\$(ProjectName)/"
+				ProgramDataBaseFileName="Intermediate\Debug\$(ProjectName)/"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
@@ -109,14 +113,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="d3dx.lib odbc32.lib odbccp32.lib"
-				OutputFile="R:\Plugins\XRayExport.p"
+				AdditionalDependencies="d3dx.lib odbc32.lib odbccp32.lib xrcored.lib lib\lw_serverd.lib"
+				OutputFile="$(OutDir)/$(ProjectName)d.p"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				ModuleDefinitionFile=".\serv.def"
+				AdditionalLibraryDirectories="r:\sdk\xrcore\lib"
+				ModuleDefinitionFile="Server\serv.def"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/XRayExport.pdb"
-				ImportLibrary=".\Debug/XRayExport.lib"/>
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
+				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -258,6 +263,25 @@
 				</File>
 				<File
 					RelativePath="Export\SceneObject.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Server"
+				Filter="">
+				<File
+					RelativePath=".\Server\servmain.c">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>

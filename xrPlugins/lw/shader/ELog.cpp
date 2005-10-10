@@ -23,7 +23,7 @@
 #ifdef _LW_EXPORT
 	#include <lwhost.h>
 	extern "C" LWMessageFuncs	*g_msg;
-	void __stdcall ELogCallback(LPCSTR txt)
+	void ELogCallback(LPCSTR txt)
 	{
 //		g_msg->info(string,0);
 	}
