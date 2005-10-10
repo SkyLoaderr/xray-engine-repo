@@ -35,10 +35,14 @@ using std::string;
 #include "istdplug.h"
 #include "iparamb2.h"
 #include "iparamm2.h"
-#include "phyexp.h"
-#include "bipexp.h"
 #include "stdmat.h"
 #include "UTILAPI.H"
+
+// CS SDK
+#ifdef _MAX_EXPORT
+#	include "phyexp.h"
+#	include "bipexp.h"
+#endif
 
 #include <d3d9types.h>
 
