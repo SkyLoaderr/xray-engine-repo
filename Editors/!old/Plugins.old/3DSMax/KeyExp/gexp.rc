@@ -1,0 +1,246 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "3dseres.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "3dseres.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+#ifdef NFOEXP
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "WildTangent, Inc.\0"
+            VALUE "FileDescription", "nfoexp\0"
+            VALUE "FileVersion", "2.0\0"
+            VALUE "InternalName", "NFOexp\0"
+            VALUE "LegalCopyright", "Copyright © 1999 WildTangent, Inc.\0"
+            VALUE "OriginalFilename", "NFOexp.dle\0"
+            VALUE "ProductName", "NFOexp\0"
+            VALUE "ProductVersion", "2.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif
+
+#ifdef KEYEXP
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "WildTangent, Inc.\0"
+            VALUE "FileDescription", "keyexp\0"
+            VALUE "FileVersion", "2.0\0"
+            VALUE "InternalName", "KEYexp\0"
+            VALUE "LegalCopyright", "Copyright © 1999 WildTangent, Inc.\0"
+            VALUE "OriginalFilename", "KEYexp.dle\0"
+            VALUE "ProductName", "KEYexp\0"
+            VALUE "ProductVersion", "2.1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif // KEYEXP
+
+#ifdef BVHEXP
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "WildTangent, Inc.\0"
+            VALUE "FileDescription", "bvhexp\0"
+            VALUE "FileVersion", "1.0\0"
+            VALUE "InternalName", "BVHexp\0"
+            VALUE "LegalCopyright", "Copyright © 1999 WildTangent, Inc.\0"
+            VALUE "OriginalFilename", "BVHexp.dle\0"
+            VALUE "ProductName", "BVHexp\0"
+            VALUE "ProductVersion", "1.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif // BVHEXP
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+#ifdef NFOEXP
+    IDS_TH_EXP				"NFOEXP"
+#endif
+#ifdef KEYEXP
+    IDS_TH_EXP				"KEYEXP"
+#endif
+#ifdef BVHEXP
+    IDS_TH_EXP				"BVHEXP"
+#endif
+    IDS_TH_SCENEEXPORT      "Scene Export"
+#ifdef NFOEXP
+    IDS_TH_EXPORTDLL		".NFO File Export DLL"
+#endif
+#ifdef KEYEXP
+    IDS_TH_EXPORTDLL		".KEY File Export DLL"
+#endif
+#ifdef BVHEXP
+    IDS_TH_EXPORTDLL		".BVH File Export DLL"
+#endif
+    IDS_TH_NODATATOEXPORT   "No data to export"
+    IDS_TH_CANTCREATE       "Can't create output file"
+    IDS_TH_WRITEERROR       "Write error on file"
+    IDS_OBJ_TOO_LARGE       "Object %s is to large to export"
+    IDS_EXPORT_ERROR        "Export Error"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NFO_EXT				"NFO"
+    IDS_KEY_EXT				"KEY"
+    IDS_BVH_EXT				"BVH"
+#ifdef NFOEXP
+    IDS_TH_CLASS            "NFO File"
+    IDS_TH_SCENEFILE		"Eclipse iNFO file"
+    IDS_TH_MESH				"Eclipse iNFO"
+#endif
+#ifdef KEYEXP
+    IDS_TH_CLASS            "KEY File"
+    IDS_TH_SCENEFILE		"Eclipse Motion KEY file"
+    IDS_TH_MESH				"Eclipse KEY"
+#endif
+#ifdef BVHEXP
+    IDS_TH_CLASS            "BVH File"
+    IDS_TH_SCENEFILE		"Eclipse BVH file"
+    IDS_TH_MESH				"Eclipse BVH"
+#endif
+    IDS_TH_AUTHOR           "Stephen Balkum"
+    IDS_TH_COPYRIGHT_ECLIPSE 
+                            "Copyright 1999, WildTangent, Inc.; All Rights Reserved."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
