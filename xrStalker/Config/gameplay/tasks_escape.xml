@@ -20,7 +20,6 @@
 		<objective>
 			<text>tutorial_find_artefact_0</text>
 			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<article>tutorial_artefact</article>
 			<infoportion_complete>tutorial_artefact_done</infoportion_complete>
 		</objective>
 		<objective>
@@ -44,7 +43,6 @@
 		<objective>
 			<text>tutorial_help_wounded_0</text>
 			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<article>tutorial_wounded_help</article>
 			<infoportion_complete>esc_serious_talk</infoportion_complete>
 		</objective>
 		<objective>
@@ -69,7 +67,6 @@
 		<objective>
 			<text>esc_help_wounded_from_raid_0</text>
 			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<article>storyline_fox_flash_info</article>
 			<infoportion_complete>escape_stalker_done</infoportion_complete>
 		</objective>
 		<objective>
@@ -127,6 +124,7 @@
 			<map_location_type hint="wolfs_rangers">green_location</map_location_type>
 			<object_story_id>Escape_bridge_stalkers</object_story_id>
 			<infoportion_complete>escape_factory_assault_say_hello</infoportion_complete>			
+			<infoportion_fail>esc_petruha_die</infoportion_fail>
 		</objective>		
 		<objective>
 			<text>esc_dinamit_to_volk_2</text>
