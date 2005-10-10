@@ -716,7 +716,7 @@ function load_ltx_far_road_btr_ambush(gname, type)
 					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
 					"path_walk = walker" .. i .. "_walk\n" ..
 					"path_look = walker" .. i .. "_look\n" ..
-					"danger=danger_condition@" .. gname .. "\n" 
+					"danger=danger_condition@" .. gname .. "\n" ..
 					"combat_ignore_cond = {!see_actor -rad_start_far_road_btr_ambush}\n" ..
 					"on_info = {=see_actor -rad_start_far_road_btr_ambush} %+rad_start_far_road_btr_ambush% \n" 
 
