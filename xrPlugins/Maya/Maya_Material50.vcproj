@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="xrayMaya_Material_50"
-	ProjectGUID="{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}"
+	ProjectGUID="{B0ED3CE1-1417-46EF-AE39-59BCFF672050}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
@@ -16,23 +16,23 @@
 		<Configuration
 			Name="ReleaseDebug|Win32"
 			OutputDirectory="r:\maya60"
-			IntermediateDirectory="..\Maya_Material\ReleaseDebug"
+			IntermediateDirectory="Material\ReleaseDebug"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="...\Maya_Material\...\Maya_Material\include"
+				AdditionalIncludeDirectories=".Material\.Material\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
-				PrecompiledHeaderFile="..\Maya_Material\ReleaseDebug/maTranslator.pch"
-				AssemblerListingLocation="..\Maya_Material\ReleaseDebug/"
-				ObjectFile="..\Maya_Material\ReleaseDebug/"
-				ProgramDataBaseFileName="..\Maya_Material\ReleaseDebug/"
+				PrecompiledHeaderFile="Material\ReleaseDebug/maTranslator.pch"
+				AssemblerListingLocation="Material\ReleaseDebug/"
+				ObjectFile="Material\ReleaseDebug/"
+				ProgramDataBaseFileName="Material\ReleaseDebug/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="3"
@@ -43,21 +43,21 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib"
-				OutputFile="..\Maya_Material\maTranslator.mll"
+				OutputFile="Material\maTranslator.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="...\Maya_Material\...\Maya_Material\lib"
+				AdditionalLibraryDirectories=".Material\.Material\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="..\Maya_Material\ReleaseDebug/maTranslator.pdb"
+				ProgramDatabaseFile="Material\ReleaseDebug/maTranslator.pdb"
 				SubSystem="2"
-				ImportLibrary="..\Maya_Material\ReleaseDebug/maTranslator.lib"/>
+				ImportLibrary="Material\ReleaseDebug/maTranslator.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="..\Maya_Material\ReleaseDebug/maTranslator.tlb"/>
+				TypeLibraryName="Material\ReleaseDebug/maTranslator.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -81,23 +81,23 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\Maya_Material\bin"
-			IntermediateDirectory="..\Maya_Material\Debug"
+			OutputDirectory="Material\bin"
+			IntermediateDirectory="Material\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya50"
+				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya45"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="..\Maya_Material\Debug/maTranslator.pch"
-				AssemblerListingLocation="..\Maya_Material\Debug/"
-				ObjectFile="..\Maya_Material\Debug/"
-				ProgramDataBaseFileName="..\Maya_Material\Debug/"
+				PrecompiledHeaderFile="Material\Debug/maTranslator.pch"
+				AssemblerListingLocation="Material\Debug/"
+				ObjectFile="Material\Debug/"
+				ProgramDataBaseFileName="Material\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -113,18 +113,18 @@
 				OutputFile="$(OutDir)/$(ProjectName)d.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="R:\lib\xrcore;R:\lib\maya50"
+				AdditionalLibraryDirectories="R:\lib\xrcore;R:\lib\maya45"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="..\Maya_Material\Debug/maTranslator.pdb"
+				ProgramDatabaseFile="Material\Debug/maTranslator.pdb"
 				SubSystem="2"
-				ImportLibrary="..\Maya_Material\Debug/maTranslator.lib"/>
+				ImportLibrary="Material\Debug/maTranslator.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="..\Maya_Material\Debug/maTranslator.tlb"/>
+				TypeLibraryName="Material\Debug/maTranslator.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -148,25 +148,25 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\Maya_Material\bin"
-			IntermediateDirectory="..\Maya_Material\Release"
+			OutputDirectory="Material\bin"
+			IntermediateDirectory="Material\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya50"
+				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya45"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="..\Maya_Material\Release/maTranslator.pch"
-				AssemblerListingLocation="..\Maya_Material\Release/"
-				ObjectFile="..\Maya_Material\Release/"
-				ProgramDataBaseFileName="..\Maya_Material\Release/"
+				PrecompiledHeaderFile="Material\Release/maTranslator.pch"
+				AssemblerListingLocation="Material\Release/"
+				ObjectFile="Material\Release/"
+				ProgramDataBaseFileName="Material\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -179,17 +179,17 @@
 				OutputFile="$(OutDir)/$(ProjectName).mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="R:\lib\xrcore;R:\lib\maya50"
-				ProgramDatabaseFile="..\Maya_Material\Release/maTranslator.pdb"
+				AdditionalLibraryDirectories="R:\lib\xrcore;R:\lib\maya45"
+				ProgramDatabaseFile="Material\Release/maTranslator.pdb"
 				SubSystem="2"
-				ImportLibrary="..\Maya_Material\Release/maTranslator.lib"/>
+				ImportLibrary="Material\Release/maTranslator.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="..\Maya_Material\Release/maTranslator.tlb"/>
+				TypeLibraryName="Material\Release/maTranslator.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -219,7 +219,7 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath="..\Maya_Material\stdafx.cpp">
+				RelativePath="Material\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -234,7 +234,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Maya_Material\Stdafx.h">
+				RelativePath="Material\Stdafx.h">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -249,10 +249,10 @@
 				Name="Engine"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Material\GameMtlLib.cpp">
+					RelativePath="Material\GameMtlLib.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Material\GameMtlLib.h">
+					RelativePath="Material\GameMtlLib.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -260,7 +260,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Material\Shader_xrLC.h">
+					RelativePath="Material\Shader_xrLC.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -272,10 +272,10 @@
 				Name="Editor"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Material\ELog.cpp">
+					RelativePath="Material\ELog.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Material\ELog.h">
+					RelativePath="Material\ELog.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -283,7 +283,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Material\SceneClassList.h">
+					RelativePath="Material\SceneClassList.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -295,10 +295,10 @@
 				Name="Plugins"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Material\BlenderListLoader.cpp">
+					RelativePath="Material\BlenderListLoader.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Material\BlenderListLoader.h">
+					RelativePath="Material\BlenderListLoader.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -311,16 +311,16 @@
 			Name="Shader"
 			Filter="">
 			<File
-				RelativePath="..\Maya_Material\AElambertShaderTemplate.mel">
+				RelativePath="Material\AElambertShaderTemplate.mel">
 			</File>
 			<File
-				RelativePath="..\Maya_Material\AEXRayMtlTemplate.mel">
+				RelativePath="Material\AEXRayMtlTemplate.mel">
 			</File>
 			<File
-				RelativePath="..\Maya_Material\crc16.cpp">
+				RelativePath="Material\crc16.cpp">
 			</File>
 			<File
-				RelativePath="..\Maya_Material\lambertShader.cpp">
+				RelativePath="Material\lambertShader.cpp">
 			</File>
 		</Filter>
 	</Files>

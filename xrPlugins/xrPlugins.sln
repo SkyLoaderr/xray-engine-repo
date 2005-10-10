@@ -15,9 +15,29 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayExport_60", "Maya\Maya_
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayExport_70", "Maya\Maya_Export70.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672670}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayMaya_Material_45", "Maya\Maya_Material45.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayMaya_Material_50", "Maya\Maya_Material50.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672050}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayMaya_Material_60", "Maya\Maya_Material601.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672060}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrayMaya_Material_70", "Maya\Maya_Material70.vcproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672070}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 9
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {45B6111F-5675-49F6-AE2C-E9EF1814B22E}
@@ -37,28 +57,83 @@ Global
 		SccProjectName4 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
 		SccLocalPath4 = Maya
 		CanCheckoutShared = true
+		SccProjectUniqueName5 = Maya\\Maya_Export70.vcproj
+		SccProjectName5 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath5 = Maya
+		CanCheckoutShared = true
+		SccProjectUniqueName6 = Maya\\Maya_Material45.vcproj
+		SccProjectName6 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath6 = Maya
+		CanCheckoutShared = true
+		SccProjectUniqueName7 = Maya\\Maya_Material50.vcproj
+		SccProjectName7 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath7 = Maya
+		CanCheckoutShared = true
+		SccProjectUniqueName8 = Maya\\Maya_Material601.vcproj
+		SccProjectName8 = \u0022$/xrPlugins/Maya\u0022,\u0020XSFBAAAA
+		SccLocalPath8 = Maya
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
+		ReleaseDebug = ReleaseDebug
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Debug.ActiveCfg = Debug|Win32
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Debug.Build.0 = Debug|Win32
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Release.ActiveCfg = Release|Win32
 		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.Release.Build.0 = Release|Win32
+		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.ReleaseDebug.ActiveCfg = Release|Win32
+		{39EE310B-4F1D-4716-A39F-4AB844DB3621}.ReleaseDebug.Build.0 = Release|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Debug.ActiveCfg = Debug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Debug.Build.0 = Debug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Release.ActiveCfg = Release|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Debug.ActiveCfg = Debug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Debug.Build.0 = Debug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Release.ActiveCfg = Release|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672650}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Debug.ActiveCfg = Debug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Debug.Build.0 = Debug|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Release.ActiveCfg = Release|Win32
 		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672660}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672670}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672670}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672670}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672670}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672670}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672670}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672050}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672050}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672050}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672050}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672050}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672050}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672060}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672060}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672060}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672060}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672060}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672060}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672070}.Debug.ActiveCfg = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672070}.Debug.Build.0 = Debug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672070}.Release.ActiveCfg = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672070}.Release.Build.0 = Release|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672070}.ReleaseDebug.ActiveCfg = ReleaseDebug|Win32
+		{B0ED3CE1-1417-46EF-AE39-59BCFF672070}.ReleaseDebug.Build.0 = ReleaseDebug|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

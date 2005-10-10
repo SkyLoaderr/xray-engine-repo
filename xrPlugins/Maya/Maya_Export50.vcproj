@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="xrayMaya_Export_50"
-	ProjectGUID="{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}"
+	Name="xrayExport_50"
+	ProjectGUID="{B0ED3CE1-1417-46EF-AE39-59BCFF672650}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
@@ -16,23 +16,23 @@
 		<Configuration
 			Name="ReleaseDebug|Win32"
 			OutputDirectory="r:\maya60"
-			IntermediateDirectory="..\Maya_Export\ReleaseDebug"
+			IntermediateDirectory="..\Export\ReleaseDebug"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="...\Maya_Export\...\Maya_Export\include"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-5.0\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
-				PrecompiledHeaderFile="..\Maya_Export\ReleaseDebug/maTranslator.pch"
-				AssemblerListingLocation="..\Maya_Export\ReleaseDebug/"
-				ObjectFile="..\Maya_Export\ReleaseDebug/"
-				ProgramDataBaseFileName="..\Maya_Export\ReleaseDebug/"
+				PrecompiledHeaderFile="..\Export\ReleaseDebug/maTranslator.pch"
+				AssemblerListingLocation="Export\ReleaseDebug/"
+				ObjectFile="Export\ReleaseDebug/"
+				ProgramDataBaseFileName="Export\ReleaseDebug/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="3"
@@ -43,21 +43,21 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib"
-				OutputFile="..\Maya_Export\maTranslator.mll"
+				OutputFile="Export\maTranslator.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="...\Maya_Export\...\Maya_Export\lib"
+				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="..\Maya_Export\ReleaseDebug/maTranslator.pdb"
+				ProgramDatabaseFile="Export\ReleaseDebug/maTranslator.pdb"
 				SubSystem="2"
-				ImportLibrary="..\Maya_Export\ReleaseDebug/maTranslator.lib"/>
+				ImportLibrary="Export\ReleaseDebug/maTranslator.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="..\Maya_Export\ReleaseDebug/maTranslator.tlb"/>
+				TypeLibraryName="Export\ReleaseDebug/maTranslator.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -81,23 +81,23 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\Maya_Export\bin"
-			IntermediateDirectory="..\Maya_Export\Debug"
+			OutputDirectory="Export\bin"
+			IntermediateDirectory="Export\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya50"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-5.0\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_EXPORT;_MAYA_PLUGIN"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="..\Maya_Export\Debug/maTranslator.pch"
-				AssemblerListingLocation="..\Maya_Export\Debug/"
-				ObjectFile="..\Maya_Export\Debug/"
-				ProgramDataBaseFileName="..\Maya_Export\Debug/"
+				PrecompiledHeaderFile="Export\Debug/maTranslator.pch"
+				AssemblerListingLocation="Export\Debug/"
+				ObjectFile="Export\Debug/"
+				ProgramDataBaseFileName="Export\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -113,18 +113,18 @@
 				OutputFile="$(OutDir)/$(ProjectName)d.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="R:\lib\xrcore;R:\lib\maya50"
+				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="..\Maya_Export\Debug/maTranslator.pdb"
+				ProgramDatabaseFile="Export\Debug/maTranslator.pdb"
 				SubSystem="2"
-				ImportLibrary="..\Maya_Export\Debug/maTranslator.lib"/>
+				ImportLibrary="Export\Debug/maTranslator.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="..\Maya_Export\Debug/maTranslator.tlb"/>
+				TypeLibraryName="Export\Debug/maTranslator.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -148,25 +148,26 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\Maya_Export\bin"
-			IntermediateDirectory="..\Maya_Export\Release"
+			OutputDirectory="Export\bin"
+			IntermediateDirectory="Export\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;U:\!core&quot;;R:\include\maya50"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-5.0\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_EXPORT;_MAYA_PLUGIN"
 				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="..\Maya_Export\Release/maTranslator.pch"
-				AssemblerListingLocation="..\Maya_Export\Release/"
-				ObjectFile="..\Maya_Export\Release/"
-				ProgramDataBaseFileName="..\Maya_Export\Release/"
+				PrecompiledHeaderFile="Export\Release/maTranslator.pch"
+				AssemblerListingLocation="Export\Release/"
+				ObjectFile="Export\Release/"
+				ProgramDataBaseFileName="Export\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -179,17 +180,17 @@
 				OutputFile="$(OutDir)/$(ProjectName).mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="R:\lib\maya50;R:\lib\xrcore"
-				ProgramDatabaseFile="..\Maya_Export\Release/maTranslator.pdb"
+				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
+				ProgramDatabaseFile="Export\Release/maTranslator.pdb"
 				SubSystem="2"
-				ImportLibrary="..\Maya_Export\Release/maTranslator.lib"/>
+				ImportLibrary="Export\Release/maTranslator.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="..\Maya_Export\Release/maTranslator.tlb"/>
+				TypeLibraryName="Export\Release/maTranslator.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -219,7 +220,7 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath="..\Maya_Export\stdafx.cpp">
+				RelativePath="Export\stdafx.cpp">
 				<FileConfiguration
 					Name="ReleaseDebug|Win32">
 					<Tool
@@ -240,10 +241,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Maya_Export\Stdafx.h">
+				RelativePath="Export\Stdafx.h">
 			</File>
 			<File
-				RelativePath="..\Maya_Export\XRayExport.cpp">
+				RelativePath="Export\XRayExport.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -253,65 +254,62 @@
 				Name="Engine"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Export\bone.cpp">
+					RelativePath="Export\bone.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\bone.h">
+					RelativePath="Export\bone.h">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\Envelope.cpp">
+					RelativePath="Export\Envelope.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\envelope.h">
+					RelativePath="Export\envelope.h">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\Fmesh.h">
+					RelativePath="Export\Fmesh.h">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\interp.cpp">
+					RelativePath="Export\interp.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\motion.cpp">
+					RelativePath="Export\motion.cpp">
 				</File>
 			</Filter>
 			<Filter
 				Name="Editor"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Export\EditMesh.cpp">
+					RelativePath="Export\EditMesh.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditMesh.h">
+					RelativePath="Export\EditMesh.h">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditMeshIO.cpp">
+					RelativePath="Export\EditMeshIO.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditMeshModify.cpp">
+					RelativePath="Export\EditMeshModify.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditObject.cpp">
+					RelativePath="Export\EditObject.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditObject.h">
+					RelativePath="Export\EditObject.h">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditObjectIO.cpp">
+					RelativePath="Export\EditObjectIO.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\EditObjectMotions.cpp">
+					RelativePath="Export\EditObjectMotions.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\ELog.cpp">
+					RelativePath="Export\ELog.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\ELog.h">
+					RelativePath="Export\ELog.h">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\motion.h">
-				</File>
-				<File
-					RelativePath="..\Maya_Export\SceneClassList.h">
+					RelativePath="Export\motion.h">
 				</File>
 			</Filter>
 		</Filter>
@@ -319,19 +317,19 @@
 			Name="Export"
 			Filter="">
 			<File
-				RelativePath="..\Maya_Export\ExportDefines.cpp">
+				RelativePath="Export\ExportDefines.cpp">
 			</File>
 			<File
-				RelativePath="..\Maya_Export\ExportDefines.h">
+				RelativePath="Export\ExportDefines.h">
 			</File>
 			<Filter
 				Name="Skin"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Export\SmdBone.cpp">
+					RelativePath="Export\SmdBone.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\SmdBone.h">
+					RelativePath="Export\SmdBone.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -344,10 +342,10 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Export\SmdMaya.cpp">
+					RelativePath="Export\SmdMaya.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\SmdMaya.h">
+					RelativePath="Export\SmdMaya.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -355,10 +353,10 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Export\SmdTriangle.cpp">
+					RelativePath="Export\SmdTriangle.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\SmdTriangle.h">
+					RelativePath="Export\SmdTriangle.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -371,17 +369,17 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Export\xraySkinExportOptions.mel">
+					RelativePath="Export\xraySkinExportOptions.mel">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\xraySkinMotionExportOptions.mel">
+					RelativePath="Export\xraySkinMotionExportOptions.mel">
 				</File>
 			</Filter>
 			<Filter
 				Name="Object"
 				Filter="">
 				<File
-					RelativePath="..\Maya_Export\maTranslator.cpp">
+					RelativePath="Export\maTranslator.cpp">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -390,7 +388,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Export\maTranslator.h">
+					RelativePath="Export\maTranslator.h">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
@@ -398,10 +396,10 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\Maya_Export\MayaExport.cpp">
+					RelativePath="Export\MayaExport.cpp">
 				</File>
 				<File
-					RelativePath="..\Maya_Export\xrayObjectExportOptions.mel">
+					RelativePath="Export\xrayObjectExportOptions.mel">
 				</File>
 			</Filter>
 		</Filter>
