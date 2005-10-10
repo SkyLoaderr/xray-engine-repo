@@ -381,28 +381,28 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath=".\MeshExpPlugin.cpp">
+				RelativePath="Export\MeshExpPlugin.cpp">
 			</File>
 			<File
-				RelativePath=".\MeshExpUtility.cpp">
+				RelativePath="Export\MeshExpUtility.cpp">
 			</File>
 			<File
-				RelativePath=".\MeshExpUtility.h">
+				RelativePath="Export\MeshExpUtility.h">
 			</File>
 			<File
-				RelativePath=".\MeshExpUtility.rc">
+				RelativePath="Export\MeshExpUtility.rc">
 			</File>
 			<File
-				RelativePath=".\MeshExpUtility.rh">
+				RelativePath="Export\MeshExpUtility.rh">
 			</File>
 			<File
-				RelativePath="NetDeviceLog.cpp">
+				RelativePath="Export\NetDeviceLog.cpp">
 			</File>
 			<File
-				RelativePath="NetDeviceLog.h">
+				RelativePath="Export\NetDeviceLog.h">
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp">
+				RelativePath="Export\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -435,10 +435,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Stdafx.h">
+				RelativePath="Export\Stdafx.h">
 			</File>
 			<File
-				RelativePath=".\Utility.def">
+				RelativePath="Export\Utility.def">
 			</File>
 		</Filter>
 		<Filter
@@ -448,93 +448,93 @@
 				Name="Engine"
 				Filter="">
 				<File
-					RelativePath="bone.cpp">
+					RelativePath="Export\bone.cpp">
 				</File>
 				<File
-					RelativePath="bone.h">
+					RelativePath="Export\bone.h">
 				</File>
 				<File
-					RelativePath="Envelope.cpp">
+					RelativePath="Export\Envelope.cpp">
 				</File>
 				<File
-					RelativePath="envelope.h">
+					RelativePath="Export\envelope.h">
 				</File>
 				<File
-					RelativePath=".\Fmesh.h">
+					RelativePath="Export\Fmesh.h">
 				</File>
 				<File
-					RelativePath="interp.cpp">
+					RelativePath="Export\interp.cpp">
 				</File>
 				<File
-					RelativePath="motion.cpp">
+					RelativePath="Export\motion.cpp">
 				</File>
 				<File
-					RelativePath="motion.h">
+					RelativePath="Export\motion.h">
 				</File>
 				<File
-					RelativePath="xrCPU_Pipe.h">
+					RelativePath="Export\xrCPU_Pipe.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="Editor"
 				Filter="">
 				<File
-					RelativePath="EditMesh.cpp">
+					RelativePath="Export\EditMesh.cpp">
 				</File>
 				<File
-					RelativePath="EditMesh.h">
+					RelativePath="Export\EditMesh.h">
 				</File>
 				<File
-					RelativePath="EditMeshIO.cpp">
+					RelativePath="Export\EditMeshIO.cpp">
 				</File>
 				<File
-					RelativePath="EditMeshModify.cpp">
+					RelativePath="Export\EditMeshModify.cpp">
 				</File>
 				<File
-					RelativePath="EditObject.cpp">
+					RelativePath="Export\EditObject.cpp">
 				</File>
 				<File
-					RelativePath="EditObject.h">
+					RelativePath="Export\EditObject.h">
 				</File>
 				<File
-					RelativePath="EditObjectIO.cpp">
+					RelativePath="Export\EditObjectIO.cpp">
 				</File>
 				<File
-					RelativePath="EditObjectMotions.cpp">
+					RelativePath="Export\EditObjectMotions.cpp">
 				</File>
 				<File
-					RelativePath="ELog.cpp">
+					RelativePath="Export\ELog.cpp">
 				</File>
 				<File
-					RelativePath="ELog.h">
+					RelativePath="Export\ELog.h">
 				</File>
 				<File
-					RelativePath="FS2.CPP">
+					RelativePath="Export\FS2.CPP">
 				</File>
 				<File
-					RelativePath="FS2.H">
+					RelativePath="Export\FS2.H">
 				</File>
 				<File
-					RelativePath="lwchunks.h">
+					RelativePath="Export\lwchunks.h">
 				</File>
 				<File
-					RelativePath="SceneClassList.h">
+					RelativePath="Export\SceneClassList.h">
 				</File>
 				<File
-					RelativePath="Shader_xrLC.h">
+					RelativePath="Export\Shader_xrLC.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="Material"
 				Filter="">
 				<File
-					RelativePath="GameMaterial.h">
+					RelativePath="Export\GameMaterial.h">
 				</File>
 				<File
-					RelativePath="TexMaps.h">
+					RelativePath="Export\TexMaps.h">
 				</File>
 				<File
-					RelativePath="XRayMtlRes.h">
+					RelativePath="Export\XRayMtlRes.h">
 				</File>
 			</Filter>
 		</Filter>
@@ -542,54 +542,54 @@
 			Name="Export Object"
 			Filter="">
 			<File
-				RelativePath=".\EditMeshExportMAX.cpp">
+				RelativePath="Export\EditMeshExportMAX.cpp">
 			</File>
 			<File
-				RelativePath=".\EditObjectExportLWO.cpp">
+				RelativePath="Export\EditObjectExportLWO.cpp">
 			</File>
 			<File
-				RelativePath=".\EditObjectExportMAX.cpp">
+				RelativePath="Export\EditObjectExportMAX.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Export Skin"
 			Filter="">
 			<File
-				RelativePath="BoneDef.cpp">
+				RelativePath="Export\BoneDef.cpp">
 			</File>
 			<File
-				RelativePath="BoneDef.h">
+				RelativePath="Export\BoneDef.h">
 			</File>
 			<File
-				RelativePath=".\Exporter.cpp">
+				RelativePath="Export\Exporter.cpp">
 			</File>
 			<File
-				RelativePath=".\Exporter.h">
+				RelativePath="Export\Exporter.h">
 			</File>
 			<File
-				RelativePath="ExporterMotion.cpp">
+				RelativePath="Export\ExporterMotion.cpp">
 			</File>
 			<File
-				RelativePath="ExporterSkin.cpp">
+				RelativePath="Export\ExporterSkin.cpp">
 			</File>
 			<File
-				RelativePath=".\Face.h">
+				RelativePath="Export\Face.h">
 			</File>
 			<File
-				RelativePath=".\Helper.cpp">
+				RelativePath="Export\Helper.cpp">
 			</File>
 			<File
-				RelativePath=".\Helper.h">
+				RelativePath="Export\Helper.h">
 			</File>
 			<File
-				RelativePath=".\Vert.h">
+				RelativePath="Export\Vert.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Export Skin Keys"
 			Filter="">
 			<File
-				RelativePath=".\ExportKeys.cpp">
+				RelativePath="Export\ExportKeys.cpp">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
