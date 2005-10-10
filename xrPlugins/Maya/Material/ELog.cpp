@@ -39,7 +39,7 @@
 	}
 #endif
 #ifdef _MAYA_PLUGIN
-	void __stdcall ELogCallback(LPCSTR txt)
+	void ELogCallback(LPCSTR txt)
 	{
  		if (0!=txt[0]){
 			if (txt[0]=='!')std::cerr << "XR-Error: " << txt+1 << "\n";
