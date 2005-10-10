@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib  xrcored.lib lib\lw_serverd.lib"
 				OutputFile="R:\plugins\xr_shader.p"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -83,7 +83,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
+			OutputDirectory="bin"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -113,12 +113,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="R:\plugins\xr_shader.p"
+				AdditionalDependencies="odbc32.lib odbccp32.lib xrcored.lib lib\lw_serverd.lib"
+				OutputFile="$(OutDir)/$(ProjectName)d.p"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\lw\ver-7.0\lib"
-				ModuleDefinitionFile=".\serv.def"
+				ModuleDefinitionFile="Server\serv.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/xr_shader.pdb"
 				ImportLibrary=".\Debug/xr_shader.lib"/>
@@ -188,10 +188,28 @@
 				<File
 					RelativePath=".\shader\GameMtlLib.h">
 				</File>
+				<File
+					RelativePath=".\shader\Shader_xrLC.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="Editor"
 				Filter="">
+				<File
+					RelativePath=".\shader\ELog.cpp">
+				</File>
+				<File
+					RelativePath=".\shader\ELog.h">
+				</File>
+				<File
+					RelativePath=".\shader\LW_Shader.cpp">
+				</File>
+				<File
+					RelativePath=".\shader\LW_Shader.h">
+				</File>
+				<File
+					RelativePath=".\shader\LW_ShaderDef.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="Plugins"
@@ -203,62 +221,48 @@
 					RelativePath=".\shader\BlenderListLoader.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Server"
+				Filter="">
+				<File
+					RelativePath=".\Server\servmain.c">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Shader"
 			Filter="">
+			<File
+				RelativePath=".\shader\blotch.c">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\shader\resource.h">
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\shader\blotch.c">
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\shader\ELog.cpp">
-		</File>
-		<File
-			RelativePath=".\shader\ELog.h">
-		</File>
-		<File
-			RelativePath=".\shader\LW_Shader.cpp">
-		</File>
-		<File
-			RelativePath=".\shader\LW_Shader.h">
-		</File>
-		<File
-			RelativePath=".\shader\LW_ShaderDef.h">
-		</File>
-		<File
-			RelativePath=".\shader\resource.h">
-		</File>
-		<File
-			RelativePath=".\shader\servmain.c">
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="0"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\shader\Shader_xrLC.h">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
