@@ -34,6 +34,7 @@
 #include "mt_config.h"
 #include "ui/UIOptConCom.h"
 #include "zone_effector.h"
+#include "GameTask.h"
 
 #ifdef DEBUG
 #	include "PHDebug.h"
@@ -1967,6 +1968,8 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Kill,				"g_kill"				);
 	CMD3(CCC_Mask,				"g_backrun",			&psActorFlags,	AF_RUN_BACKWARD);
 
+	CMD3(CCC_Mask,				"g_gametask_auto_activate",&CGameTask::m_game_task_flags,CGameTask::eForceNewTaskActivation);
+	
 	// alife
 	CMD1(CCC_ALifePath,			"al_path"				);		// build path
 	CMD1(CCC_ALifeSave,			"save"					);		// save game

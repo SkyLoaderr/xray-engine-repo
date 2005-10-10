@@ -75,7 +75,9 @@ public:
 	OBJECTIVE_VECTOR		m_Objectives;
 	ALife::_TIME_ID			m_ReceiveTime;
 	ALife::_TIME_ID			m_FinishTime;
-	
+
+	enum		{eForceNewTaskActivation =(1<<0),};
+	static		Flags32		m_game_task_flags;
 };
 
 void ChangeStateCallback	(shared_str& task_id, int obj_id, ETaskState state);

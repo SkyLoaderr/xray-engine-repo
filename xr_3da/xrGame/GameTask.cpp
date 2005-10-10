@@ -23,6 +23,8 @@
 ALife::_STORY_ID	story_id		(LPCSTR story_id);
 u16					storyId2GameId	(ALife::_STORY_ID);
 
+
+
 using namespace luabind;
 
 ALife::_STORY_ID	story_id	(LPCSTR story_id)
@@ -60,6 +62,8 @@ u16 storyId2GameId	(ALife::_STORY_ID id)
 
 CUIXml	g_gameTaskXml;
 bool	g_gameTaskXmlInited = false;
+
+Flags32	 CGameTask::m_game_task_flags;
 
 CGameTask::CGameTask(const TASK_ID& id)
 {
@@ -200,22 +204,6 @@ void CGameTask::Load(const TASK_ID& id)
 		g_gameTaskXml.SetLocalRoot		(task_node);
 	}
 	g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.GetRoot());
-/*
-//perform consistency check
-	SGameTaskObjective& root_obj		= Objective(0);
-	bool b_root_compl					= root_obj.m_completeInfos.size()	|| root_obj.m_complete_lua_functions.size();
-	bool b_root_fail					= root_obj.m_failInfos.size()		|| root_obj.m_fail_lua_functions.size();
-	VERIFY3								(b_root_compl==b_root_fail,*m_ID,"incorrect task definition");
-	
-	for(u32 i = 0; i<m_Objectives.size(); ++i)
-	{
-		SGameTaskObjective& sub_obj			= Objective(i);
-		bool b_compl						= sub_obj.m_completeInfos.size()	|| sub_obj.m_complete_lua_functions.size();
-		bool b_fail							= sub_obj.m_failInfos.size()		|| sub_obj.m_fail_lua_functions.size();
-		VERIFY3								(b_compl==b_fail,*m_ID,"incorrect task objective definition");
-		VERIFY3								((b_compl==b_root_compl)&&(b_root_fail==b_fail),*m_ID,"incorrect task objective definition");
-	}
-*/
 }
 
 bool CGameTask::HighlightedSpotOnMap(int objective_id)
