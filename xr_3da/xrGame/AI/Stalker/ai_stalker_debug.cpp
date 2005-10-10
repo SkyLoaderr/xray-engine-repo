@@ -453,7 +453,25 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		}
 		default : NODEFAULT;
 	}
-	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s",indent,indent,movement_type);
+	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s (current)",indent,indent,movement_type);
+
+										movement_type = "invalid";
+	switch (movement().target_movement_type()) {
+		case MonsterSpace::eMovementTypeStand : {
+			movement_type				= "stand";
+			break;
+		}
+		case MonsterSpace::eMovementTypeWalk : {
+			movement_type				= "walk";
+			break;
+		}
+		case MonsterSpace::eMovementTypeRun : {
+			movement_type				= "run";
+			break;
+		}
+		default : NODEFAULT;
+	}
+	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s (target)",indent,indent,movement_type);
 
 	LPCSTR						path_type = "invalid";
 	switch (movement().path_type()) {
@@ -697,18 +715,14 @@ void CAI_Stalker::OnRender			()
 		if (!memory().enemy().selected() || !memory().visual().visible_now(memory().enemy().selected()))
 			return;
 
-//		if (g_mt_config.test(mtAiVision)) {
-			xr_vector<CObject*>		objects;
-			feel_vision_get			(objects);
-			if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
-				Fvector				position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
-				RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
-				return;
-			}
-//		}
+		xr_vector<CObject*>		objects;
+		feel_vision_get			(objects);
+		if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
+			Fvector				position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
+			RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+			return;
+		}
 
-//		Fvector					position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
-//		RCache.dbg_DrawAABB		(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
 		return;
 	}
 
