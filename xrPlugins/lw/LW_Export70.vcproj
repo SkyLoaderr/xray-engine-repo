@@ -257,9 +257,6 @@
 					RelativePath="Export\LW_ShaderDef.h">
 				</File>
 				<File
-					RelativePath="Export\SceneClassList.h">
-				</File>
-				<File
 					RelativePath="Export\SceneObject.h">
 				</File>
 			</Filter>
