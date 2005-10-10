@@ -645,6 +645,7 @@ function load_ltx_monolith(gname, type)
     for i, v in pairs({7, 10}) do
         res = res.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
                    "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
                    
                    "[patrol@" .. gname .. "_group_patrol" .. i .. "]\n" ..
                    "path_walk           = patrol" .. v .. "_walk\n" ..
