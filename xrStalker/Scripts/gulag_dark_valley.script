@@ -979,8 +979,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 end
 
 function mb_predicate(obj)
-    local pname = obj:profile_name()
-	return pname == "val_monolit_regular"
+    return obj:profile_name() == "val_monolith_regular"
 end
 
 function load_job_monolith_base(sj, gname, type, squad, groups)
