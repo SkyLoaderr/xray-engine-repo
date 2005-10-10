@@ -73,7 +73,7 @@ CCar::CCar(void)
 	m_break_time=1.;
 	m_breaks_to_back_rate=1.f;
 	m_death_time=u32(-1);
-	m_time_to_explode=5000;
+	m_time_to_explode=0;
 	b_exploded=false;
 	m_car_weapon=NULL;
 	m_power_neutral_factor=0.25f;
@@ -153,8 +153,8 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 		CPHDestroyable::Load(pUserData,"destroyed");
 	if(pUserData->section_exist("mounted_weapon_definition"))
 		m_car_weapon = xr_new<CCarWeapon>(this);
-
 	return							(CScriptEntity::net_Spawn(DC) && R);
+	
 }
 
 void CCar::ActorObstacleCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	
@@ -193,8 +193,8 @@ void	CCar::net_Destroy()
 		pKinematics->LL_GetBoneInstance(m_bone_steer).reset_callback();
 
 	}
-	inherited::net_Destroy();
 	CScriptEntity::net_Destroy();
+	inherited::net_Destroy();
 	CExplosive::net_Destroy();
 	if(m_pPhysicsShell)
 	{
@@ -382,8 +382,12 @@ void CCar::UpdateCL				( )
 	inherited::UpdateCL();
 	CExplosive::UpdateCL();
 	if(m_car_weapon)m_car_weapon->UpdateCL();
+	ASCUpdate			();
 	if(Owner()) return;
 	UpdateEx			(DEFAULT_FOV);
+	if (GetScriptControl())
+			ProcessScripts();
+
 }
 
  void CCar::VisualUpdate(float fov)
@@ -945,7 +949,8 @@ void CCar::Drive()
 
 void CCar::StartEngine()
 {
-	if(m_fuel<EPS) return;
+	
+	if(m_fuel<EPS||b_engine_on) return;
 	PlayExhausts();
 	m_car_sound->Start();
 	b_engine_on=true;
@@ -954,8 +959,11 @@ void CCar::StartEngine()
 }
 void CCar::StopEngine()
 {
-	m_car_sound->Stop();
-	StopExhausts();
+	if(!b_engine_on) return;
+	//m_car_sound->Stop();
+	//StopExhausts();
+	AscCall(ascSndStall);
+	AscCall(ascExhoustStop);
 	NeutralDrive();//set zero speed
 	b_engine_on=false;
 	UpdatePower();//set engine friction;
@@ -964,8 +972,10 @@ void CCar::StopEngine()
 
 void CCar::Stall()
 {
-	m_car_sound->Stall();
-	StopExhausts();
+	//m_car_sound->Stall();
+	//StopExhausts();
+	AscCall(ascSndStall);
+	AscCall(ascExhoustStop);
 	NeutralDrive();//set zero speed
 	b_engine_on=false;
 	UpdatePower();//set engine friction;
@@ -1228,7 +1238,8 @@ void CCar::Transmission(size_t num)
 	{
 		if(CurrentTransmission()!=num)
 		{
-			m_car_sound					->TransmissionSwitch()		;
+			//m_car_sound					->TransmissionSwitch()		;
+			AscCall(ascSndTransmission)								;
 			m_current_transmission_num	=num						;
 			m_current_gear_ratio		=m_gear_ratious[num][0]		;
 			b_transmission_switching	=true						;
@@ -1326,7 +1337,7 @@ void CCar::UpdateBack()
 
 void CCar::PlayExhausts()
 {
-	if(b_engine_on) return;
+
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
@@ -1337,7 +1348,7 @@ void CCar::PlayExhausts()
 
 void CCar::StopExhausts()
 {
-	if(!b_engine_on) return;
+
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
@@ -1636,9 +1647,6 @@ void CCar::ResetScriptData(void	*P)
 
 void CCar::PhDataUpdate(dReal step)
 {
-	if (GetScriptControl())
-			ProcessScripts();
-
 		if(m_repairing)Revert();
 		LimitWheels();
 		UpdateFuel(step);
@@ -1905,4 +1913,29 @@ void CCar::net_Relcase(CObject* O)
 {
 	CExplosive::net_Relcase(O);
 	inherited::net_Relcase(O);
+}
+void CCar::ASCUpdate()
+{
+	for(u16 i=0;i<cAsCallsnum;++i)
+	{
+		EAsyncCalls c=EAsyncCalls(1<<i);
+		if(async_calls.test(u16(c)))ASCUpdate(c);
+	}
+
+}
+
+void CCar::ASCUpdate(EAsyncCalls c)
+{
+	async_calls.set(u16(c),FALSE);
+	switch(c) {
+	case ascSndTransmission:m_car_sound->TransmissionSwitch();break;
+	case ascSndStall:m_car_sound->Stop();break;
+	case ascExhoustStop:StopExhausts();break;
+	default: NODEFAULT;
+	}
+}
+
+void CCar::AscCall(EAsyncCalls c)
+{
+	async_calls.set(u16(c),TRUE);
 }

@@ -10,6 +10,8 @@
 #include "PHDestroyable.h"
 #include "Car.h"
 #include "../skeletoncustom.h"
+#include "PHWorld.h"
+extern CPHWorld*	ph_world;
 
 SCarLight::SCarLight()
 {
@@ -70,11 +72,13 @@ void SCarLight::ParseDefinitions(LPCSTR section)
 
 void SCarLight::Switch()
 {
+	VERIFY(!ph_world->Processing());
 	if(isOn())TurnOff();
 	else	  TurnOn();
 }
 void SCarLight::TurnOn()
 {
+	VERIFY(!ph_world->Processing());
 	if(isOn()) return;
 	CKinematics* K=smart_cast<CKinematics*>(m_holder->PCar()->Visual());
 	K->LL_SetBoneVisible(bone_id,TRUE,TRUE);
@@ -87,6 +91,7 @@ void SCarLight::TurnOn()
 }
 void SCarLight::TurnOff()
 {
+	VERIFY(!ph_world->Processing());
 	if(!isOn()) return;
  	glow_render ->set_active(false);
 	light_render->set_active(false);
@@ -101,6 +106,7 @@ bool SCarLight::isOn()
 
 void SCarLight::Update()
 {
+	VERIFY(!ph_world->Processing());
 	if(!isOn()) return;
 	CCar* pcar=m_holder->PCar();
 	CBoneInstance& BI = smart_cast<CKinematics*>(pcar->Visual())->LL_GetBoneInstance(bone_id);
@@ -144,6 +150,7 @@ void CCarLights::ParseDefinitions()
 
 void CCarLights::Update()
 {
+	VERIFY(!ph_world->Processing());
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Update();
 }
@@ -151,6 +158,7 @@ void CCarLights::Update()
 void CCarLights::SwitchHeadLights()
 {
 	
+	VERIFY(!ph_world->Processing());
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Switch();
 	

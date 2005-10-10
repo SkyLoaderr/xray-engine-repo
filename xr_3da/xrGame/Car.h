@@ -57,9 +57,21 @@ class CCar :
 	void 					DbgCreatePlots		()				;
 	void 					DBgClearPlots		()				;
 #endif
-	
-	
-	
+////////////////////////////////////////////////////////////////////	
+	Flags16						async_calls						;
+static	const u16				cAsCallsnum						=3;
+	enum EAsyncCalls
+	{
+		ascSndTransmission			=			1<<0,
+		ascSndStall					=			1<<1,
+		ascExhoustStop				=			1<<2,
+		ascLast 					=			1<<cAsCallsnum
+	};
+	void					ASCUpdate			()				;
+	void					ASCUpdate			(EAsyncCalls c)	;
+	void					AscCall				(EAsyncCalls c)	;
+
+////////////////////////////////////////////////////////////////////////
 	static	BONE_P_MAP					bone_map;					//interface for PhysicsShell
 	static	void 						ActorObstacleCallback		(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 	virtual void						PhDataUpdate				(dReal step)			;
@@ -319,6 +331,7 @@ virtual void ApplyDamage(u16 level);
 		ref_sound					snd_engine_start					;
 		ref_sound					snd_engine_stop						;
 		ref_sound					snd_transmission					;
+
 		enum ESoundState
 		{
 			sndOff,

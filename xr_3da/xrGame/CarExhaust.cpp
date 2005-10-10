@@ -9,15 +9,19 @@
 #include "PHDestroyable.h"
 #include "car.h"
 #include "../skeletoncustom.h"
+#include "PHWorld.h"
+extern CPHWorld*	ph_world;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()
 {
+	
 	CParticlesObject::Destroy(p_pgobject);
 }
 
 void CCar::SExhaust::Init()
 {
+	VERIFY(!ph_world->Processing());
 	pelement=(bone_map.find(bone_id))->second.element;
 	CKinematics* K=smart_cast<CKinematics*>(pcar->Visual());
 	CBoneData&	bone_data=K->LL_GetData(u16(bone_id));
@@ -36,6 +40,7 @@ void CCar::SExhaust::Init()
 
 void CCar::SExhaust::Update()
 {
+	VERIFY(!ph_world->Processing());
 	Fmatrix global_transform;
 	pelement->InterpolateGlobalTransform(&global_transform);
 	global_transform.mulB(transform);
@@ -56,11 +61,13 @@ void CCar::SExhaust::Clear()
 
 void CCar::SExhaust::Play()
 {
+	VERIFY(!ph_world->Processing());
 	p_pgobject->Play();
 	Update();
 }
 
 void CCar::SExhaust::Stop()
 {
+	VERIFY(!ph_world->Processing());
 	p_pgobject->Stop();
 }

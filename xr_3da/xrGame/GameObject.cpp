@@ -614,6 +614,7 @@ void CGameObject::remove_visual_callback	(visual_callback *callback)
 
 void CGameObject::SetKinematicsCallback		(bool set)
 {
+	if(!Visual())	return;
 	if (set)
 		smart_cast<CKinematics*>(Visual())->Callback(VisualCallback,this);
 	else
