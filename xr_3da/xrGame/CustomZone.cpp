@@ -503,14 +503,16 @@ void CCustomZone::UpdateCL		()
 void CCustomZone::shedule_Update(u32 dt)
 {
 	m_bZoneActive			= false;
-	const Fsphere& s		= CFORM()->getSphere();
-	Fvector					P;
-	XFORM().transform_tiny	(P,s.P);
 
-	// update
-	feel_touch_update		(P,s.R);
 	if (IsEnabled())
 	{
+		const Fsphere& s		= CFORM()->getSphere();
+		Fvector					P;
+		XFORM().transform_tiny	(P,s.P);
+
+		// update
+		feel_touch_update		(P,s.R);
+
 		//пройтись по всем объектам в зоне
 		//и проверить их состояние
 		for(OBJECT_INFO_VEC_IT it = m_ObjectInfoMap.begin(); 
@@ -540,19 +542,20 @@ void CCustomZone::shedule_Update(u32 dt)
 			if(info.zone_ignore == false) 
 				m_bZoneActive = true;
 		}
+
+		//в зону попал объект, разбудить ее
+		if(m_bZoneActive && eZoneStateIdle ==  m_eZoneState)
+			SwitchZoneState(eZoneStateAwaking);
+		inherited::shedule_Update(dt);
+
+		//////////////////////////////////////////////////////////////////////////
+		// check "fast-mode" border
+		float	cam_distance	= Device.vCameraPosition.distance_to(P)-s.R;
+		if (cam_distance > FASTMODE_DISTANCE)	o_switch_2_slow	();
+		else									o_switch_2_fast	();
+		if (!o_fastmode)		UpdateWorkload	(dt);
+
 	};
-
-	//в зону попал объект, разбудить ее
-	if(m_bZoneActive && eZoneStateIdle ==  m_eZoneState)
-		SwitchZoneState(eZoneStateAwaking);
-	inherited::shedule_Update(dt);
-
-	//////////////////////////////////////////////////////////////////////////
-	// check "fast-mode" border
-	float	cam_distance	= Device.vCameraPosition.distance_to(P)-s.R;
-	if (cam_distance > FASTMODE_DISTANCE)	o_switch_2_slow	();
-	else									o_switch_2_fast	();
-	if (!o_fastmode)		UpdateWorkload	(dt);
 
 	UpdateOnOffState	();
 
@@ -1335,13 +1338,17 @@ void CCustomZone::net_Relcase(CObject* O)
 	CGameObject* GO = smart_cast<CGameObject*>(O);
 	OBJECT_INFO_VEC_IT it = std::find(m_ObjectInfoMap.begin(),m_ObjectInfoMap.end(), GO);
 	if(it!=m_ObjectInfoMap.end()){
-		StopObjectIdleParticles(GO);
 		exit_Zone(*it);
 		m_ObjectInfoMap.erase(it);
 	}
 	if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
 
 	inherited::net_Relcase(O);
+}
+
+void CCustomZone::exit_Zone	(SZoneObjectInfo& io)
+{
+	StopObjectIdleParticles(io.object);
 }
 
 void CCustomZone::PlayAccumParticles()
@@ -1387,17 +1394,36 @@ void CCustomZone::UpdateOnOffState	()
 	}
 
 	if( (eZoneStateDisabled==m_eZoneState) && dest_state){
-			//switch to idle	
-			NET_Packet P;
-			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
-			P.w_u8			(u8(eZoneStateIdle));
-			u_EventSend		(P);
+			GoEnabledState		();
 		}else
 	if( (eZoneStateIdle==m_eZoneState) && !dest_state){
-			//switch to disable	
-			NET_Packet P;
-			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
-			P.w_u8			(u8(eZoneStateDisabled));
-			u_EventSend		(P);
+			GoDisabledState			();
 		}
+}
+
+void CCustomZone::GoDisabledState()
+{
+	//switch to disable	
+	NET_Packet P;
+	u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
+	P.w_u8			(u8(eZoneStateDisabled));
+	u_EventSend		(P);
+
+	OBJECT_INFO_VEC_IT it		= m_ObjectInfoMap.begin();
+	OBJECT_INFO_VEC_IT it_e		= m_ObjectInfoMap.end();
+
+	for(;it!=it_e;++it)
+		exit_Zone(*it);
+	
+	m_ObjectInfoMap.clear		();
+	feel_touch.clear			();
+}
+
+void CCustomZone::GoEnabledState()
+{
+		//switch to idle	
+		NET_Packet P;
+		u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID());
+		P.w_u8			(u8(eZoneStateIdle));
+		u_EventSend		(P);
 }
