@@ -673,20 +673,31 @@ function load_ltx_far_road_ambush(gname, type)
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
 					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
+					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
+					"on_hit=hit_death@" .. gname .. "\n" ..
+					"on_death=hit_death@" .. gname .. "\n" ..
 
 					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
 					"path_walk = walker" .. i .. "_walk\n" ..
 					"path_look = walker" .. i .. "_look\n" ..
+
+					"combat_ignore_cond = {!see_actor -rad_start_far_road_ambush}\n" ..
+					"on_info = {=see_actor -rad_start_far_road_ambush} %+rad_start_far_road_ambush% \n" ..
+
 					"danger=danger_condition@" .. gname .. "\n" 
 	end
 
-	res = res ..	"[danger_condition@" .. gname .. "]\n" ..
+	res = res ..	"[hit_death@" .. gname .. "]\n" ..
+					"on_info = %+rad_start_far_road_ambush% \n" ..
+
+					"[combat@" .. gname .. "]\n" ..
+					"combat_type = monolith\n" ..
+
+					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
 
-					"[combat@" .. gname .. "]\n" ..
-					"combat_type = monolith\n" 
-
+					"[combat_ignore@" .. gname .. "]\n" 
 
 	return res
 end
@@ -697,22 +708,31 @@ function load_ltx_far_road_btr_ambush(gname, type)
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
 					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
-
+					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
+					"on_hit=hit_death@" .. gname .. "\n" ..
+					"on_death=hit_death@" .. gname .. "\n" ..
 
 
 					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
 					"path_walk = walker" .. i .. "_walk\n" ..
 					"path_look = walker" .. i .. "_look\n" ..
 					"danger=danger_condition@" .. gname .. "\n" 
+					"combat_ignore_cond = {!see_actor -rad_start_far_road_btr_ambush}\n" ..
+					"on_info = {=see_actor -rad_start_far_road_btr_ambush} %+rad_start_far_road_btr_ambush% \n" 
 
 	end
 
-	res = res ..	"[combat@" .. gname .. "]\n" ..
+	res = res ..	"[hit_death@" .. gname .. "]\n" ..
+					"on_info = %+rad_start_far_road_btr_ambush% \n" ..
+
+					"[combat@" .. gname .. "]\n" ..
 					"combat_type = monolith\n" ..
 
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
-					"danger_inertion_time =  90000\n"
+					"danger_inertion_time =  90000\n" ..
+
+					"[combat_ignore@" .. gname .. "]\n" 
 	return res
 end
 --------------------------------------------------------------------------

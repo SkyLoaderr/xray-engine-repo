@@ -94,4 +94,14 @@
 	
 	<info_portion id="rad_start_ambush_after_tramplin">
 	</info_portion>		
+	
+	<info_portion id="rad_start_far_road_ambush">
+	</info_portion>		
+	
+	<info_portion id="rad_start_far_road_btr_ambush">
+	</info_portion>		
+	
 </game_information_portions>
+
+
+rad_start_far_road_ambush
