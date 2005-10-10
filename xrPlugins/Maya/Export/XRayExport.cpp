@@ -40,10 +40,11 @@ void uninitialize(void*)
 	Core._destroy();
 }
 
+#include "ELog.h"
 MStatus initializePlugin( MObject obj )
 {
 	INIT_OBJ = obj;
-	Core._initialize("XRayMayaPlugin",ELogCallback,FALSE);
+	Core._initialize("XRayMayaPlugin",0,FALSE);
 	FS._initialize	(CLocatorAPI::flScanAppRoot);
 	R_ASSERT2(0!=Memory.mem_fill,"Incorrect xrCore.dll version.");
 

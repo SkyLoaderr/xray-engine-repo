@@ -16,11 +16,13 @@ void CEditableMesh::Transform(const Fmatrix& parent)
     // RecomputeBBox
 	RecomputeBBox	();
     // update normals & cform
-    UnloadRenderBuffers	();
+#ifdef _EDITOR
+	UnloadRenderBuffers	();
+	UnloadCForm		();
+#endif
     UnloadFNormals	(true);
     UnloadVNormals	(true);
     UnloadSVertices	(true);
-    UnloadCForm		();
 }
 //----------------------------------------------------
 
@@ -211,8 +213,10 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 void CEditableMesh::Optimize(BOOL NoOpt)
 {
 	if (!NoOpt){
+#ifdef _EDITOR
     	UnloadRenderBuffers	();
-        UnloadCForm     	();
+		UnloadCForm     	();
+#endif
         UnloadFNormals   	(true);
         UnloadVNormals   	(true);
        	UnloadSVertices  	(true);
@@ -237,7 +241,8 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 		Msg("Optimize...");
 		Msg(".. Merge points");
 
-		boolVec 	faces_mark		(m_FaceCount,false);
+		boolVec 	faces_mark;
+		faces_mark.resize(m_FaceCount,false);
         int			i_del_face 		= 0;
 		for (u32 k=0; k<m_FaceCount; k++){
     		if (!OptimizeFace(m_Faces[k])){

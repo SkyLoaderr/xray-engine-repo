@@ -295,12 +295,17 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 
 	// write faces
 	{
+		DEFINE_VECTOR(st_Face,FaceVec,FaceIt);
+
 		VMapVec& _vmaps			= MESH->GetVMaps();
-		FvectorVec&	_points		= MESH->GetPoints();
 		SurfFaces& _surf_faces	= MESH->GetSurfFaces();
-		FaceVec& _faces			= MESH->GetFaces();
-		U32Vec& _sgs			= MESH->GetSGs();
 		VMRefsVec& _vmrefs		= MESH->GetVMRefs();
+		
+		// temp variables
+		FvectorVec	_points;
+		FaceVec _faces;
+		U32Vec _sgs;
+
 		int f_cnt				= fnMesh.numPolygons();
 
 		_sgs.reserve	(f_cnt);
@@ -406,11 +411,12 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 
 					f_it.pv[2-vtx].pindex	= AppendVertex(_points,rgpt[vtx]);
 					f_it.pv[2-vtx].vmref	= _vmrefs.size();
-					_vmrefs.push_back		(VMapPtSVec());
-					VMapPtSVec&	vm_vec		= _vmrefs.back();
-					vm_vec.resize			(1);
-					vm_vec[0].vmap_index	= 0;
-					vm_vec[0].index 		= AppendUV(_vmaps.back(),uv);
+					_vmrefs.push_back		(st_VMapPtLst());
+					st_VMapPtLst& vm_lst	= _vmrefs.back();
+					vm_lst.count			= 1;
+					vm_lst.pts				= xr_alloc<st_VMapPt>(vm_lst.count);
+					vm_lst.pts[0].vmap_index= 0;
+					vm_lst.pts[0].index 	= AppendUV(_vmaps.back(),uv);
 				}
 				// out face material
 				int iTexture	= texMap[meshPoly.index()];
@@ -430,6 +436,16 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 			return MS::kFailure;
 		}
 		{
+			// copy from temp
+			MESH->m_VertCount	= _points.size();
+			MESH->m_FaceCount	= _faces.size();
+			MESH->m_Verts		= xr_alloc<Fvector>(MESH->m_VertCount);
+			Memory.mem_copy		(MESH->m_Verts,&*_points.begin(),MESH->m_VertCount*sizeof(Fvector));
+			MESH->m_Faces		= xr_alloc<st_Face>(MESH->m_FaceCount);
+			Memory.mem_copy		(MESH->m_Faces,&*_faces.begin(),MESH->m_FaceCount*sizeof(st_Face));
+			MESH->m_SGs			= xr_alloc<u32>(MESH->m_FaceCount);
+			Memory.mem_copy		(MESH->m_SGs,&*_sgs.begin(),MESH->m_FaceCount*sizeof(u32));
+
 			MESH->RecomputeBBox	();
 		}
 	}

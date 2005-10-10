@@ -205,6 +205,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
 		RebuildVMaps();
 	}
 
+#ifdef _EDITOR
     if (!EPrefs->object_flags.is(epoDeffLoadRB)){
         GenerateFNormals	();
         GenerateAdjacency	();
@@ -215,7 +216,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
 	    UnloadVNormals		();
     }
     if (!EPrefs->object_flags.is(epoDeffLoadCF)) GenerateCFModel();       
-
+#endif
 	return true;
 }
 //----------------------------------------------------

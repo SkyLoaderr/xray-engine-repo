@@ -171,6 +171,8 @@ class ECORE_API CEditableMesh {
     friend class CExportObjectOGF;
     friend class TfrmEditLibrary;
 	friend class CExporter;
+	friend class CXRayObjectExport;
+	friend class CXRaySkinExport;
 
 	shared_str			m_Name;
 
@@ -179,7 +181,9 @@ class ECORE_API CEditableMesh {
     void            GenerateCFModel		();
 	void 			GenerateRenderBuffers();
     void			UnloadCForm     	();
+#ifdef _EDITOR
 	void 			UnloadRenderBuffers	();
+#endif
 public:
     void 			GenerateFNormals	();
     void 			GenerateVNormals	();

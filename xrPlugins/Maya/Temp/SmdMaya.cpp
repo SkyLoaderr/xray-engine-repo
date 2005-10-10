@@ -244,12 +244,14 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 	MESH->SetName			("skin");
 	OBJECT->Meshes().push_back(MESH);
 	// IMPORT MESH
-	FvectorVec&	_points		= MESH->GetPoints();
 	SurfFaces&	_surf_faces	= MESH->GetSurfFaces();
-	FaceVec&	_faces		= MESH->GetFaces();
-	U32Vec&		_sgs		= MESH->GetSGs();
 	VMRefsVec&	_vmrefs		= MESH->GetVMRefs();
 	VMapVec&	_vmaps		= MESH->GetVMaps();
+	Fvector*	_points		= MESH->GetVerts();
+	// temp variables
+	DEFINE_VECTOR(st_Face,FaceVec,FaceIt);
+	FaceVec		_faces;
+	U32Vec		_sgs;
 	// maps
 	// Weight maps 
 	_vmaps.resize			(m_boneList.size()+1);
@@ -261,8 +263,9 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 	VM_UV					= xr_new<st_VMap>("texture",vmtUV,false);
 	// Write out the vertex table
 	{
-		_points.resize		(m_vertList.size());
-		FvectorIt pt_it		= _points.begin();
+		MESH->m_VertCount	= m_vertList.size();
+		MESH->m_Verts		= xr_alloc<Fvector>(MESH->m_VertCount);
+		Fvector* pt_it		= _points;
 		for (SmdVertIt it=m_vertList.begin(); it!=m_vertList.end(); it++,pt_it++){
 			// convert from internal units to the current ui units
 			MDistance dst_x	((*it)->pos.x);
@@ -292,16 +295,17 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 				st_FaceVert& vt		= F.pv[k];
 				SmdVertex* V		= m_vertList[v_idx];
 				vt.pindex			= v_idx;
-				VMapPtSVec&	vm_vec	= _vmrefs[vt.pindex];
-				vm_vec.resize		(V->influence.size()+1);
-				vm_vec[0].vmap_index= VM_UV_idx;
-				vm_vec[0].index 	= vt.pindex;
+				st_VMapPtLst& vm_lst= _vmrefs[vt.pindex];
+				vm_lst.count		= V->influence.size()+1;
+				vm_lst.pts			= xr_alloc<st_VMapPt>(vm_lst.count);
+				vm_lst.pts[0].vmap_index= VM_UV_idx;
+				vm_lst.pts[0].index 	= vt.pindex;
 				for (WBIt vd_it=V->influence.begin(); vd_it!=V->influence.end(); vd_it++){
 					u32 idx			= vd_it-V->influence.begin()+1;
 					st_VMap* vm		= _vmaps[vd_it->bone];
 					vm->appendW		(vd_it->weight);
-					vm_vec[idx].vmap_index= vd_it->bone;
-					vm_vec[idx].index 	= vm->size()-1;
+					vm_lst.pts[idx].vmap_index	= vd_it->bone;
+					vm_lst.pts[idx].index 		= vm->size()-1;
 				}
 				vt.vmref			= vt.pindex;
 			}
@@ -310,6 +314,15 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 			if (!surf)	return MStatus::kFailure;	
 			_surf_faces[surf].push_back(f_id);
 		}
+	}
+
+	// copy from temp
+	{
+		MESH->m_FaceCount	= _faces.size();
+		MESH->m_Faces		= xr_alloc<st_Face>(MESH->m_FaceCount);
+		Memory.mem_copy		(MESH->m_Faces,&*_faces.begin(),MESH->m_FaceCount*sizeof(st_Face));
+		MESH->m_SGs			= xr_alloc<u32>(MESH->m_FaceCount);
+		Memory.mem_copy		(MESH->m_SGs,&*_sgs.begin(),MESH->m_FaceCount*sizeof(u32));
 	}
 
 	// BONES

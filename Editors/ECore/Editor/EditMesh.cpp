@@ -34,7 +34,9 @@ void CEditableMesh::Construct()
     m_FNormals		= 0;
     m_VNormals		= 0;
     m_SVertices		= 0;
+#ifdef _EDITOR
     m_RenderBuffers	= 0;
+#endif
 	m_FNormalsRefs	= 0;
 	m_VNormalsRefs	= 0;
 	m_AdjsRefs		= 0;
