@@ -212,27 +212,27 @@ BirthProbability = af_dummy_glassbeads,0.25
 
 idle_particles		= anomaly2\teleport_idle
 blowout_particles	= anomaly2\teleport 
-tearing_particles	= ;anomaly2\body_tear_00
-torn_particles      = ;anomaly2\body_tear_01
+tearing_particles	= anomaly2\teleport_tear
+torn_particles      = anomaly2\teleport_tear
 
 hit_small_particles			= hit_fx\hit_metal_02
-hit_big_particles			= anomaly2\gravity_damage_02_blood2
-idle_small_particles		= anomaly2\gravity_damage_01_smoke
-idle_big_particles			= anomaly2\gravity_damage_02_smoke
-entrance_small_particles	= anomaly2\gravi_anomaly_shield_00
-entrance_big_particles		= anomaly2\gravi_anomaly_00;
+hit_big_particles			= anomaly2\teleport_damage
+idle_small_particles		= anomaly2\teleport_damage_smoke_00
+idle_big_particles			= anomaly2\teleport_damage_smoke_00
+entrance_small_particles	= anomaly2\teleport_damage
+entrance_big_particles		= anomaly2\teleport_damage
 
 tele_particles_small		= anomaly2\gravity_damage_01_smoke	;anomaly2\gravity_damage_01_smoke
 tele_particles_big			= anomaly2\gravity_damage_02_smoke	
 
 
 idle_sound			= anomaly\gravi_rumble1;  gravi_idle01							;посто€нный звук
-blowout_sound		= anomaly\gravi_blowout6; anomaly_gravy_blast01	;во врем€ выброса(удара) в центре аномалии	
+blowout_sound		= anomaly\gravi_blowout4; anomaly_gravy_blast01	;во врем€ выброса(удара) в центре аномалии	
 hit_sound			= anomaly\anomaly_gravy_hit1						;на персонаже, когда тот получает хит
-body_tearing_sound	= anomaly\anomaly_body_tear_1						;звук разрывани€ трупа
-entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
+body_tearing_sound	= anomaly\gravity_entrance					;звук разрывани€ трупа
+entrance_sound		= anomaly\gravi_idle01							;при попадании объекта в аномалию
 
-hit_type		    = radiarion
+hit_type		    = radiation
 hit_impulse_scale	= 0.5;0.5;0.1			;соотношение физического импульса и силы хита
 effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 
@@ -241,7 +241,7 @@ disable_time_small	= 500		;врем€ игнорировани€ маленького неживого объекта в зон
 disable_idle_time	= 100;-1	;врем€ отключени€ idle партиклов
 
 ignore_nonalive		= false
-ignore_small		= true
+ignore_small		= false
 ignore_artefacts	= true
 
 blowout_light		= on
@@ -281,7 +281,7 @@ blowout_wind		= on
 
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 3500
-blowout_wind_time_end		= 3999; 2499
+blowout_wind_time_end		= 3500; 2499
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
