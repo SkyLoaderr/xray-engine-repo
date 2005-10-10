@@ -373,22 +373,22 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath=".\DllEntry.cpp">
+				RelativePath="Material\DllEntry.cpp">
 			</File>
 			<File
-				RelativePath=".\GameMaterial.cpp">
+				RelativePath="Material\GameMaterial.cpp">
 			</File>
 			<File
-				RelativePath=".\GameMaterial.def">
+				RelativePath="Material\GameMaterial.def">
 			</File>
 			<File
-				RelativePath=".\GameMaterial.h">
+				RelativePath="Material\GameMaterial.h">
 			</File>
 			<File
-				RelativePath=".\GameMaterial.rc">
+				RelativePath="Material\GameMaterial.rc">
 			</File>
 			<File
-				RelativePath="stdafx.cpp">
+				RelativePath="Material\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -403,16 +403,16 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="Stdafx.h">
+				RelativePath="Material\Stdafx.h">
 			</File>
 			<File
-				RelativePath="TexMaps.cpp">
+				RelativePath="Material\TexMaps.cpp">
 			</File>
 			<File
-				RelativePath="TexMaps.h">
+				RelativePath="Material\TexMaps.h">
 			</File>
 			<File
-				RelativePath="XRayMtlRes.h">
+				RelativePath="Material\XRayMtlRes.h">
 			</File>
 		</Filter>
 		<Filter
@@ -420,37 +420,37 @@
 			<Filter
 				Name="Engine">
 				<File
-					RelativePath="GameMtlLib.cpp">
+					RelativePath="Material\GameMtlLib.cpp">
 				</File>
 				<File
-					RelativePath="GameMtlLib.h">
+					RelativePath="Material\GameMtlLib.h">
 				</File>
 				<File
-					RelativePath="Shader_xrLC.h">
+					RelativePath="Material\Shader_xrLC.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="Editor"
 				Filter="">
 				<File
-					RelativePath="BlenderListLoader.cpp">
+					RelativePath="Material\BlenderListLoader.cpp">
 				</File>
 				<File
-					RelativePath="BlenderListLoader.h">
+					RelativePath="Material\BlenderListLoader.h">
 				</File>
 				<File
-					RelativePath="ELog.cpp">
+					RelativePath="Material\ELog.cpp">
 				</File>
 				<File
-					RelativePath="ELog.h">
+					RelativePath="Material\ELog.h">
 				</File>
 			</Filter>
 		</Filter>
 		<File
-			RelativePath="dmtlbut.bmp">
+			RelativePath="Material\dmtlbut.bmp">
 		</File>
 		<File
-			RelativePath="dmtlmsk.bmp">
+			RelativePath="Material\dmtlmsk.bmp">
 		</File>
 	</Files>
 	<Globals>
