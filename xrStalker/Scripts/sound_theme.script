@@ -91,6 +91,9 @@ ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\human_01\scenario\gar
 										[[characters_voice\human_01\scenario\garbage\grey_bandit_3]],
 										[[characters_voice\human_01\scenario\garbage\grey_bandit_4]],
 										[[characters_voice\human_01\scenario\garbage\grey_bandit_5]]}
+ph_snd_themes["radar_drone"] = {"ambient\\radar_1"}
+ph_snd_themes["radar_thunder"] = {"ambient\\radar_2"}
+ph_snd_themes["radar_sparks"] = {"ambient\\radarsparks_1"}
 										
 										
 function select_sound_from_ltx(obj, section, ltx)
@@ -505,10 +508,7 @@ function load_sound(obj)
 
   	-- radar monolith
 	theme[obj:id()]["monolith_mumble"]			= load_sound_from_ltx(obj, "military_radio", 0, 0, 100)
-	-- radar antenna
-	theme[obj:id()]["radar_drone"]			= load_sound_from_ltx(obj, "radar_drone", 0, 0, 100)	
-	theme[obj:id()]["radar_sparks"]			= load_sound_from_ltx(obj, "radar_sparks", 0, 0, 100)	  
-	theme[obj:id()]["radar_thunder"]			= load_sound_from_ltx(obj, "radar_thunder", 0, 0, 100)	
+
 	-- делаем заготовку в db.sound
 	db.sound[obj:id()] = {}
 	
