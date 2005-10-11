@@ -862,7 +862,7 @@
 						Name="l10_radar"
 						Filter="">
 						<File
-							RelativePath=".\string_table_tips_radar.xml">
+							RelativePath=".\Config\text\rus\string_table_tips_radar.xml">
 						</File>
 					</Filter>
 				</Filter>
