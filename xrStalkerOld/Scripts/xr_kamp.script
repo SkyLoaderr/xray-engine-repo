@@ -47,7 +47,7 @@ function action_go_position:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	
-	self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id(), self.a.radius)
+	self.a.pos_vertex = nil
 end
 function action_go_position:execute ()
 	action_base.execute (self)
@@ -57,22 +57,24 @@ function action_go_position:execute ()
 			return
 		end
 	end	
-	if self.a.pos_vertex == nil then
-		self.a.pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id(), self.a.radius)
-	end
-		
-	if not self.object:accessible(self.a.pos_vertex) then
-		printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest", self.object:name())
-		local ttp = vector():set(0,0,0)
-		self.a.pos_vertex = self.object:accessible_nearest(level.vertex_position(self.a.pos_vertex), ttp)
-	end
 	
-	self.a.pp = patrol(self.a.center_point):level_vertex_id(0)
-	self.a.pp = level.vertex_in_direction(self.a.pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
-	self.object:set_dest_level_vertex_id(self.a.pos_vertex)
-	self.object:set_desired_direction(vector():sub(level.vertex_position(self.a.pp),level.vertex_position(self.a.pos_vertex)))
-	self.object:set_path_type(game_object.level_path)
-	state_mgr.set_state(self.object, self.a.def_state_moving)
+	local tmp_pos_vertex = kamps[self.a.center_point]:getDestVertex(self.object:id(), self.a.radius)
+	if self.a.pos_vertex ~= tmp_pos_vertex then
+		self.a.pos_vertex = tmp_pos_vertex
+		
+		if not self.object:accessible(self.a.pos_vertex) then
+			printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest", self.object:name())
+			local ttp = vector():set(0,0,0)
+			self.a.pos_vertex = self.object:accessible_nearest(level.vertex_position(self.a.pos_vertex), ttp)
+		end
+		
+		self.a.pp = patrol(self.a.center_point):level_vertex_id(0)
+		self.a.pp = level.vertex_in_direction(self.a.pp, vector():set(math.random(-1,1), 0, math.random(-1,1)), math.random(0,0.5))
+		self.object:set_dest_level_vertex_id(self.a.pos_vertex)
+		self.object:set_desired_direction(vector():sub(level.vertex_position(self.a.pp),level.vertex_position(self.a.pos_vertex)))
+		self.object:set_path_type(game_object.level_path)
+		state_mgr.set_state(self.object, self.a.def_state_moving)
+	end
 end
 function action_go_position:finalize ()
 	action_base.finalize (self)
