@@ -1209,3 +1209,7 @@ end
 function yan_sleep_not_relocate (actor, npc)
 		db.actor:actor_sleep(0, 180)
 end
+-----------------------------radar
+function rad_sos_spam(actor, npc)
+	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)
+end
