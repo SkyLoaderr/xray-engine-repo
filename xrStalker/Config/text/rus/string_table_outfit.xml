@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="outfit_bandit">
+    <string id="bandit_outfit_name">
+        <text>Обмундирование бандита</text>
+    </string>
+    <string id="bandit_outfit_description">
         <text>Традиционная одежда бандита - кожанная курка со вшитыми кевларовыми элементами. Слегка усиливает противопулевую и осколочную защиту. Не защищает от пси-влияния.</text>
     </string>
+    
     <string id="outfit_soldier">
         <text>Стандартный комплект снаряжения солдата - легкий армейский бронежилет. Достаточно эффективно защищает от пистолетных пуль и осколков. Не защищает от пси-влияния.</text>
     </string>
