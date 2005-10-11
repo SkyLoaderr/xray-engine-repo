@@ -53,6 +53,12 @@ public:
 			const u32					&level_vertex_id	() const;
 			const GameGraph::_GRAPH_ID	&game_vertex_id		() const;
 #endif
+
+#ifdef DEBUG
+public:
+	IC		void						path				(const CPatrolPath *path);
+#endif
+
 };
 
 #include "patrol_point_inline.h"

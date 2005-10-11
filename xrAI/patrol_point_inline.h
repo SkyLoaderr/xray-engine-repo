@@ -43,3 +43,12 @@ IC	const GameGraph::_GRAPH_ID &CPatrolPoint::game_vertex_id	(const CLevelGraph *
 #endif
 	return				(m_game_vertex_id);
 }
+
+#ifdef DEBUG
+IC	void CPatrolPoint::path										(const CPatrolPath *path)
+{
+	VERIFY				(path);
+	VERIFY				(!m_path);
+	m_path				= path;
+}
+#endif

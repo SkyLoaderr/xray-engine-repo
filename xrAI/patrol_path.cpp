@@ -39,3 +39,14 @@ CPatrolPath	&CPatrolPath::load_raw	(const CLevelGraph *level_graph, const CGameL
 CPatrolPath::~CPatrolPath	()
 {
 }
+
+#ifdef DEBUG
+void CPatrolPath::load		(IReader &stream)
+{
+	inherited::load	(stream);
+	vertex_iterator	I = vertices().begin();
+	vertex_iterator	E = vertices().end();
+	for ( ; I != E; ++I)
+		(*I).second->data().path	(this);
+}
+#endif

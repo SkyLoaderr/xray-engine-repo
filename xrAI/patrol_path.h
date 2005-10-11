@@ -22,7 +22,7 @@ private:
 	};
 
 protected:
-	typedef CGraphAbstract<CPatrolPoint,float,u32> inherited;
+	typedef CGraphAbstractSerialize<CPatrolPoint,float,u32> inherited;
 
 public:
 #ifdef DEBUG
@@ -37,6 +37,11 @@ public:
 	template <typename T>
 	IC		const CVertex	*point			(const Fvector &position, const T &evaluator) const;
 	IC		const CVertex	*point			(const Fvector &position) const;
+
+#ifdef DEBUG
+public:
+	virtual void			load			(IReader &stream);
+#endif
 };
 
 #include "patrol_path_inline.h"
