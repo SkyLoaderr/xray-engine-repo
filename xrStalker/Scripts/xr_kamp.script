@@ -72,7 +72,7 @@ function action_go_position:execute ()
 	self.object:set_dest_level_vertex_id(self.a.pos_vertex)
 	self.object:set_desired_direction(vector():sub(level.vertex_position(self.a.pp),level.vertex_position(self.a.pos_vertex)))
 	self.object:set_path_type(game_object.level_path)
-	state_mgr.set_state(self.object, "walk")	
+	state_mgr.set_state(self.object, self.a.def_state_moving)
 end
 function action_go_position:finalize ()
 	action_base.finalize (self)
@@ -709,6 +709,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 	kamps[st.center_point]:addNpc(npc)
 	st.pos_vertex = nil
+
+	st.def_state_moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "", "walk")
 end
 
 
