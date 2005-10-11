@@ -1199,6 +1199,16 @@ function aes_kill_actor (actor, npc)
        actor:kill (actor)
     end   
 end
+
+
+-- постпроцесс и влияние удара в морду
+function aes_eartshake (npc)
+	--local snd_obj = sound_object([[affects\hit_fist]])
+	--snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+	local ce = path_cam_effector("camera_effects\\earthquake.anm")
+	level.add_cam_effector(ce)	
+end
+
 -------------------------------------------------------------------------------------
 -- Функции для Янтаря
 ----------------------------------------------------------------------------------
@@ -1213,3 +1223,5 @@ end
 function rad_sos_spam(actor, npc)
 	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)
 end
+
+
