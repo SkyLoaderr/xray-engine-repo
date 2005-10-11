@@ -242,10 +242,17 @@ distance = 2
 active = walker@esc_lager_volk_walker1
 on_death = death@wolf
 
+
+
+
+
+
+
+
+
 [walker@esc_lager_volk_walker1]
 path_walk = wolf_walk
 path_look = wolf_look
-;meet_dialog = escape_lager_volk_hello
 on_actor_dist_le = 5 | {+tutorial_wounded_help -tutorial_wounded_die} remark@esc_lager_volk_remark1
 meet = meet@wolf
 on_info = {+esc_return =is_alive(006)} nil %=kill%
@@ -1021,4 +1028,11 @@ active = nil
 ;------------------------------
 
 [logic@esc_dogs_swarm]
+active = nil
+
+;------------------------------
+;-----Boars Dogs rush ---------
+;------------------------------
+
+[logic@esc_boars_dogs]
 active = nil
