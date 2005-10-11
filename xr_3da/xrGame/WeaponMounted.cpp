@@ -217,7 +217,6 @@ void	CWeaponMounted::cam_Update			(float dt, float fov)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);
-	bool							owner = !!Owner();
 
 	CKinematics* K					= smart_cast<CKinematics*>(Visual());
 	K->CalculateBones_Invalidate	();
