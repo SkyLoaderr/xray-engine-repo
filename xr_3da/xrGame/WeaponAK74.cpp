@@ -4,6 +4,7 @@
 
 CWeaponAK74::CWeaponAK74(LPCSTR name, ESoundTypes eSoundType) : CWeaponMagazinedWGrenade(name, eSoundType)
 {
+/*
 	Msg("sizeof %s = %d","CWeaponAmmo", sizeof(CWeaponAmmo));
 	Msg("sizeof %s = %d","CInventoryItemObject", sizeof(CInventoryItemObject));
 	Msg("sizeof %s = %d","CInventoryItem", sizeof(CInventoryItem));
@@ -13,7 +14,7 @@ CWeaponAK74::CWeaponAK74(LPCSTR name, ESoundTypes eSoundType) : CWeaponMagazined
 
 	Msg("sizeof %s = %d","CGameObject", sizeof(CGameObject));
 	Msg("sizeof %s = %d","CParticlesPlayer", sizeof(CParticlesPlayer));
-
+*/
 }
 
 
