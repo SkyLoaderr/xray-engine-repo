@@ -4,10 +4,13 @@ full_scale_icon_x	= 0			;иконка сталкера в без костюма в полный рост
 full_scale_icon_y	= 11
 
 
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ БАНДИТА
+;---------------------------------------------------------------------------------------------
 [bandit_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\bandit"
+$spawn 			= "outfit\bandit_outfit"
 ;$prefetch 		= 32
 class			= EQU_STLK
 cform           = skeleton
@@ -39,259 +42,27 @@ chemical_burn_immunity = 0.05
 explosion_immunity = 0.05
 fire_wound_immunity  = 0.05
 
--- NO RESISTANCE
-burn_immunity 				= 1.0
-strike_immunity 			= 1.0
-shock_immunity 				= 1.0
-wound_immunity				= 1.0
-radiation_immunity 			= 1.0
-telepatic_immunity 			= 1.0
-chemical_burn_immunity 		= 1.0
-explosion_immunity 			= 1.0
-fire_wound_immunity  		= 1.0
+; NO RESISTANCE
+burn_protection 				= 1.0
+strike_protection 			= 1.0
+shock_protection 				= 1.0
+wound_protection				= 1.0
+radiation_protection 			= 1.0
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 1.0
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
 bones_koeff_protection = kurtka_mask_damage
 
 
-[soldier_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\soldier"
-;$prefetch 		= 32
-class			= EQU_STLK
-cform           = skeleton
-visual          = equipments\soldier_suit
-actor_visual	= actors\hero\stalker_soldier.ogf
-
-ef_equipment_type	= 3
-
-inv_name			= "Army Outfit"
-inv_name_short		= "Army Outfit"
-description			= outfit_soldier
-inv_weight			= 4.0
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 18
-cost				= 800
-slot				= 6
-full_scale_icon_x	= 6		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
-
-burn_immunity = 0.045				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.045
-shock_immunity = 0.045
-wound_immunity = 0.045		
-radiation_immunity = 0.045
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.045
-explosion_immunity = 0.045
-fire_wound_immunity  = 0.045
-
-burn_protection = 0.8			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.9
-shock_protection = 0.9
-wound_protection = 0.95		
-radiation_protection = 0.9
-telepatic_protection = 0.9
-chemical_burn_protection = 0.9
-explosion_protection = 0.8
-fire_wound_protection  = 0.85
-
-bones_koeff_protection = soldier_outfit_bones
-
-[soldier_outfit_bones]
-
-bip01_pelvis 		 = 0.2
-bip01_spine 		 = 0.35
-bip01_spine1 		 = 0.35
-bip01_neck 		 = 0.1
-bip01_head 		 = 0.0
-eyelid_1 		 = 0.0
-eye_left 		 = 0.0
-eye_right 		 = 0.0
-jaw_1 		 	 = 0.0
-
-bip01_l_clavicle	 = 0.1
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.0
-
-bip01_r_clavicle	 = 0.1
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.0
-
-bip01_l_thigh	 	 = 0.1
-bip01_l_calf	 	 = 0.05
-bip01_l_foot	 	 = 0.02
-
-bip01_r_thigh	 	 = 0.1
-bip01_r_calf	 	 = 0.05
-bip01_r_foot	 	 = 0.02
-
-[stalker_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\stalker"
-;$prefetch 		= 32
-class			= EQU_STLK
-cform           = skeleton
-visual          = equipments\stalker_suit
-actor_visual	= actors\hero\stalker_hood.ogf
-
-ef_equipment_type	= 3
-
-inv_name			= "Stalker Outfit"
-inv_name_short		= "Stalker Outfit"
-description			= outfit_stalker
-inv_weight			= 5.0
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 6
-inv_grid_y			= 15
-cost				= 1200
-slot				= 6
-full_scale_icon_x	= 14			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
-
-burn_immunity = 0.04				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.04
-shock_immunity = 0.04
-wound_immunity = 0.04		
-radiation_immunity = 0.04
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.04
-explosion_immunity = 0.04
-fire_wound_immunity  = 0.04
-
-burn_protection = 0.5			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.9
-shock_protection = 0.9
-wound_protection = 0.9		
-radiation_protection = 0.3
-telepatic_protection = 0.9
-chemical_burn_protection = 0.9
-explosion_protection = 1.0
-fire_wound_protection  = 0.8
-
-power_loss = 0.87
-
-bones_koeff_protection = stalker_outfit_bones
-
-[stalker_outfit_bones]
-
-bip01_pelvis 		 = 0.2
-bip01_spine 		 = 0.35
-bip01_spine1 		 = 0.35
-bip01_neck 			 = 0.0
-bip01_head 			 = 0.0
-eyelid_1 			 = 0.0
-eye_left 			 = 0.0
-eye_right 			 = 0.0
-jaw_1 		 		 = 0.0
-
-bip01_l_clavicle	 = 0.1
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.0
-
-bip01_r_clavicle	 = 0.1
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.0
-
-bip01_l_thigh	 	 = 0.1
-bip01_l_calf	 	 = 0.05
-bip01_l_foot	 	 = 0.02
-
-bip01_r_thigh	 	 = 0.1
-bip01_r_calf	 	 = 0.05
-bip01_r_foot	 	 = 0.02
-
-[svoboda_light_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\svoboda_light"
-;$prefetch 		= 32
-class			= EQU_STLK
-cform           = skeleton
-visual          = equipments\svoboda_light_suit
-actor_visual	= actors\hero\stalker_svoboda_light.ogf
-
-ef_equipment_type	= 3
-
-inv_name			= "Forest Skin"
-inv_name_short		= "Forest Skin"
-description			= outfit_svoboda_light
-inv_weight			= 3.0
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 12
-inv_grid_y			= 13
-cost				= 1500
-slot				= 6
-full_scale_icon_x	= 10			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
-
-burn_immunity = 0.04				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.04
-shock_immunity = 0.04
-wound_immunity = 0.04		
-radiation_immunity = 0.04
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.04
-explosion_immunity = 0.04
-fire_wound_immunity  = 0.04
-
-burn_protection = 0.5			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.9
-shock_protection = 0.7
-wound_protection = 0.9		
-radiation_protection = 0.3
-telepatic_protection = 0.9
-chemical_burn_protection = 0.8
-explosion_protection = 1.0
-fire_wound_protection  = 0.8
-
-power_loss = 0.77
-
-bones_koeff_protection = svobodalight_outfit_bones
-
-[svobodalight_outfit_bones]
-
-bip01_pelvis 		 = 0.1
-bip01_spine 		 = 0.325
-bip01_spine1 		 = 0.325
-bip01_neck 			 = 0.0
-bip01_head 			 = 0.0
-eyelid_1 			 = 0.0
-eye_left 			 = 0.0
-eye_right 			 = 0.0
-jaw_1 		 		 = 0.0
-
-bip01_l_clavicle	 = 0.1
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.0
-
-bip01_r_clavicle	 = 0.1
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.0
-
-bip01_l_thigh	 	 = 0.1
-bip01_l_calf	 	 = 0.05
-bip01_l_foot	 	 = 0.02
-
-bip01_r_thigh	 	 = 0.1
-bip01_r_calf	 	 = 0.05
-bip01_r_foot	 	 = 0.02
-
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ НАЕМНИКА
+;---------------------------------------------------------------------------------------------
 [killer_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\killer"
+$spawn 			= "outfit\killer_outfit"
 ;$prefetch 		= 32
 class			= EQU_MLTR
 cform           = skeleton
@@ -323,209 +94,27 @@ chemical_burn_immunity = 0.04
 explosion_immunity = 0.04
 fire_wound_immunity  = 0.04
 
-burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
-wound_protection = 0.8		
-radiation_protection = 0.5
-telepatic_protection = 0.8
-chemical_burn_protection = 0.8
-explosion_protection = 0.8
-fire_wound_protection  = 0.8
+; LOW RESISTANCE
+burn_protection 				= 0.8
+strike_protection 			= 1.0
+shock_protection 				= 0.8
+wound_protection				= 1.0
+radiation_protection 			= 0.8
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.8
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
-bones_koeff_protection = killer_outfit_bones
-
-[killer_outfit_bones]
-
-bip01_pelvis 		 = 0.1
-bip01_spine 		 = 0.375
-bip01_spine1 		 = 0.375
-bip01_neck 			 = 0.1
-bip01_head 			 = 0.1
-eyelid_1 			 = 0.1
-eye_left 			 = 0.1
-eye_right 			 = 0.1
-jaw_1 		 		 = 0.1
-
-bip01_l_clavicle	 = 0.1
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.0
-
-bip01_r_clavicle	 = 0.1
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.0
-
-bip01_l_thigh	 	 = 0.1
-bip01_l_calf	 	 = 0.05
-bip01_l_foot	 	 = 0.02
-
-bip01_r_thigh	 	 = 0.1
-bip01_r_calf	 	 = 0.05
-bip01_r_foot	 	 = 0.02
+bones_koeff_protection = gilet_mask_damage
 
 
-
-[svoboda_heavy_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\svoboda_heavy"
-;$prefetch 		= 32
-class			= EQU_STLK
-cform           = skeleton
-visual          = equipments\svoboda_heavy_suit
-actor_visual	= actors\hero\stalker_svoboda_light.ogf
-
-ef_equipment_type	= 3
-
-inv_name			= "Armour of Freedom"
-inv_name_short		= "Armour of Freedom"
-description			= outfit_svoboda_heavy
-inv_weight			= 8.0
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 8
-inv_grid_y			= 15
-cost				= 4200
-slot				= 6
-full_scale_icon_x	= 2			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
-
-burn_immunity = 0.035				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.035
-shock_immunity = 0.035
-wound_immunity = 0.035		
-radiation_immunity = 0.035
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.035
-explosion_immunity = 0.035
-fire_wound_immunity  = 0.035
-
-burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
-wound_protection = 0.8		
-radiation_protection = 0.3
-telepatic_protection = 0.8
-chemical_burn_protection = 0.8
-explosion_protection = 0.8
-fire_wound_protection  = 0.75
-
-bones_koeff_protection = svobodaheavy_outfit_bones
-
-[svobodaheavy_outfit_bones]
-
-bip01_pelvis 		 = 0.2
-bip01_spine 		 = 0.4
-bip01_spine1 		 = 0.4
-bip01_neck 			 = 0.1
-bip01_head 			 = 0.1
-eyelid_1 			 = 0.0
-eye_left 			 = 0.0
-eye_right 			 = 0.0
-jaw_1 		 		 = 0.0
-
-bip01_l_clavicle	 = 0.15
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.0
-
-bip01_r_clavicle	 = 0.15
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.0
-
-bip01_l_thigh	 	 = 0.15
-bip01_l_calf	 	 = 0.05
-bip01_l_foot	 	 = 0.02
-
-bip01_r_thigh	 	 = 0.15
-bip01_r_calf	 	 = 0.05
-bip01_r_foot	 	 = 0.02
-
-
-[dolg_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\dolg"
-;$prefetch 		= 32
-class			= EQU_STLK
-cform           = skeleton
-visual          = equipments\dolg_suit
-actor_visual	= actors\hero\stalker_dolg.ogf
-
-ef_equipment_type	= 3
-
-inv_name			= "Black Shell"
-inv_name_short		= "Black Shell"
-description			= outfit_dolg
-inv_weight			= 5.0
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 12
-inv_grid_y			= 16
-cost				= 2200
-slot				= 6
-full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
-
-burn_immunity = 0.035				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.035
-shock_immunity = 0.035
-wound_immunity = 0.035		
-radiation_immunity = 0.035
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.035
-explosion_immunity = 0.035
-fire_wound_immunity  = 0.035
-
-burn_protection = 0.7			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
-wound_protection = 0.4		
-radiation_protection = 0.5
-telepatic_protection = 0.8
-chemical_burn_protection = 0.8
-explosion_protection = 0.8
-fire_wound_protection  = 0.8
-
-bones_koeff_protection = dolg_outfit_bones
-
-[dolg_outfit_bones]
-
-bip01_pelvis 		 = 0.2
-bip01_spine 		 = 0.4
-bip01_spine1 		 = 0.4
-bip01_neck 			 = 0.0
-bip01_head 			 = 0.0
-eyelid_1 			 = 0.0
-eye_left 			 = 0.0
-eye_right 			 = 0.0
-jaw_1 		 		 = 0.0
-
-bip01_l_clavicle	 = 0.15
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.5
-
-bip01_r_clavicle	 = 0.15
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.5
-
-bip01_l_thigh	 	 = 0.15
-bip01_l_calf	 	 = 0.5
-bip01_l_foot	 	 = 0.2
-
-bip01_r_thigh	 	 = 0.15
-bip01_r_calf	 	 = 0.5
-bip01_r_foot	 	 = 0.2
-
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ МОНОЛИТОВЦА
+;---------------------------------------------------------------------------------------------
 [monolit_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\monolit"
+$spawn 			= "outfit\monolit_outfit"
 ;$prefetch 		= 32
 class			= EQU_STLK
 cform           = skeleton
@@ -557,53 +146,79 @@ chemical_burn_immunity = 0.035
 explosion_immunity = 0.035
 fire_wound_immunity  = 0.035
 
-burn_protection = 0.7			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
-wound_protection = 0.6		
-radiation_protection = 0.1
-telepatic_protection = 0.5
-chemical_burn_protection = 0.4
-explosion_protection = 0.8
-fire_wound_protection  = 0.7
+; LOW RESISTANCE
+burn_protection 				= 0.8
+strike_protection 			= 1.0
+shock_protection 				= 0.8
+wound_protection				= 1.0
+radiation_protection 			= 0.8
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.8
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
-bones_koeff_protection = monolith_outfit_bones
-
-[monolith_outfit_bones]
-
-bip01_pelvis 		 = 0.2
-bip01_spine 		 = 0.5
-bip01_spine1 		 = 0.5
-bip01_neck 			 = 0.1
-bip01_head 			 = 0.0
-eyelid_1 			 = 0.0
-eye_left 			 = 0.0
-eye_right 			 = 0.0
-jaw_1 		 		 = 0.0
-
-bip01_l_clavicle	 = 0.15
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.5
-
-bip01_r_clavicle	 = 0.15
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.5
-
-bip01_l_thigh	 	 = 0.15
-bip01_l_calf	 	 = 0.5
-bip01_l_foot	 	 = 0.2
-
-bip01_r_thigh	 	 = 0.15
-bip01_r_calf	 	 = 0.5
-bip01_r_foot	 	 = 0.2
+bones_koeff_protection = kombez_mask_damage
 
 
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ ОБЫЧНОГО СОЛДАТА
+;---------------------------------------------------------------------------------------------
+[soldier_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\soldier_outfit"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipments\soldier_suit
+actor_visual	= actors\hero\stalker_soldier.ogf
+
+ef_equipment_type	= 3
+
+inv_name			= "Army Outfit"
+inv_name_short		= "Army Outfit"
+description			= outfit_soldier
+inv_weight			= 4.0
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 18
+cost				= 800
+slot				= 6
+full_scale_icon_x	= 6		;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 6
+
+burn_immunity = 0.045				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.045
+shock_immunity = 0.045
+wound_immunity = 0.045		
+radiation_immunity = 0.045
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.045
+explosion_immunity = 0.045
+fire_wound_immunity  = 0.045
+
+; NO RESISTANCE
+burn_protection 				= 1.0
+strike_protection 			= 1.0
+shock_protection 				= 1.0
+wound_protection				= 1.0
+radiation_protection 			= 1.0
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 1.0
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection = gilet_mask_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ ВОЕННОГО СПЕЦНАЗА
+;---------------------------------------------------------------------------------------------
 [specops_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\specops"
+$spawn 			= "outfit\specops_outfit"
 ;$prefetch 		= 32
 class			= EQU_STLK
 cform           = skeleton
@@ -635,72 +250,152 @@ chemical_burn_immunity = 0.03
 explosion_immunity = 0.03
 fire_wound_immunity  = 0.03
 
-burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
-wound_protection = 0.8		
-radiation_protection = 0.6
-telepatic_protection = 0.8
-chemical_burn_protection = 0.8
-explosion_protection = 0.8
-fire_wound_protection  = 0.65
+; LOW RESISTANCE
+burn_protection 				= 0.8
+strike_protection 			= 1.0
+shock_protection 				= 0.8
+wound_protection				= 1.0
+radiation_protection 			= 0.8
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.8
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
-bones_koeff_protection = specops_outfit_bones
+bones_koeff_protection = kombez_helmet_damage
 
-[specops_outfit_bones]
 
-bip01_pelvis 		 = 0.2
-bip01_spine 		 = 0.75
-bip01_spine1 		 = 0.75
-bip01_neck 			 = 0.7
-bip01_head 			 = 0.7
-eyelid_1 			 = 0.5
-eye_left 			 = 0.5
-eye_right 			 = 0.5
-jaw_1 		 		 = 0.0
-
-bip01_l_clavicle	 = 0.25
-bip01_l_upperarm	 = 0.25
-bip01_l_forearm	 	 = 0.15
-bip01_l_hand	 	 = 0.5
-
-bip01_r_clavicle	 = 0.25
-bip01_r_upperarm	 = 0.25
-bip01_r_forearm	 	 = 0.15
-bip01_r_hand	 	 = 0.5
-
-bip01_l_thigh	 	 = 0.25
-bip01_l_calf	 	 = 0.5
-bip01_l_foot	 	 = 0.2
-
-bip01_r_thigh	 	 = 0.25
-bip01_r_calf	 	 = 0.5
-bip01_r_foot	 	 = 0.2
-
-[protection_outfit]
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ МИЛИТАРИ
+;---------------------------------------------------------------------------------------------
+[military_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\protection"
-$prefetch 		= 32
-class			= EQU_SCIE
+$spawn 			= "outfit\military_outfit"
+;$prefetch 		= 32
+class			= EQU_MLTR
 cform           = skeleton
-visual          = equipments\scientist_suit.ogf	
-actor_visual	= actors\hero\stalker_chemical.ogf
+visual          = equipments\stalker_comander_suit
+actor_visual	= actors\hero\stalker_commander.ogf	
 
-ef_equipment_type	= 2
+ef_equipment_type	= 4
 
-inv_name			= "SSP-98M Outfit"
-inv_name_short		= "SSP-98M Outfit"
-description			= outfit_protection
-inv_weight			= 6.5
+inv_name			= "SKAT-9M"
+inv_name_short		= "SKAT-9M"
+description			= outfit_military_commander
+inv_weight			= 10.0
 slot				= 6
 inv_grid_width		= 2
 inv_grid_height		= 3
-inv_grid_x			= 14
-inv_grid_y			= 16
-cost				= 5500
-full_scale_icon_x	= 12			;иконка сталкера в костюме в полный рост
+inv_grid_x			= 18
+inv_grid_y			= 17
+cost				= 12000
+full_scale_icon_x	= 10		;иконка сталкера в костюме в полный рост
 full_scale_icon_y	= 6
+
+burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.02	;1.0
+shock_immunity = 0.02
+wound_immunity = 0.025		
+radiation_immunity = 0.01
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.1
+explosion_immunity = 0.023
+fire_wound_immunity  = 0.02
+
+; MEDIUM RESISTANCE
+burn_protection 				= 0.5
+strike_protection 			= 1.0
+shock_protection 				= 0.5
+wound_protection				= 1.0
+radiation_protection 			= 0.5
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.5
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection =	armor_helmet_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		КОСТЮМ НЕЙТРАЛЬНОГО СТАЛКЕРА
+;---------------------------------------------------------------------------------------------
+[stalker_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\stalker_outfit"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipments\stalker_suit
+actor_visual	= actors\hero\stalker_hood.ogf
+
+ef_equipment_type	= 3
+
+inv_name			= "Stalker Outfit"
+inv_name_short		= "Stalker Outfit"
+description			= outfit_stalker
+inv_weight			= 5.0
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 6
+inv_grid_y			= 15
+cost				= 1200
+slot				= 6
+full_scale_icon_x	= 14			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
+
+burn_immunity = 0.04				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.04
+shock_immunity = 0.04
+wound_immunity = 0.04		
+radiation_immunity = 0.04
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.04
+explosion_immunity = 0.04
+fire_wound_immunity  = 0.04
+
+; LOW RESISTANCE
+burn_protection 				= 0.8
+strike_protection 			= 1.0
+shock_protection 				= 0.8
+wound_protection				= 1.0
+radiation_protection 			= 0.8
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.8
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+power_loss = 0.87
+bones_koeff_protection = gilet_mask_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		НАУЧНЫЙ КОСТЮМ НЕЙТРАЛЬНОГО СТАЛКЕРА
+;---------------------------------------------------------------------------------------------
+[scientific_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\scientific_outfit"
+$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipments\stalker_scient_suit	
+actor_visual	= actors\hero\stalker_scien.ogf
+
+ef_equipment_type	= 2
+
+inv_name			= "SEVA suit"
+inv_name_short		= "SEVA suit"
+description			= outfit_scientific
+inv_weight			= 12
+slot				= 6
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 16
+inv_grid_y			= 13
+cost				= 15000
+full_scale_icon_x	= 12			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
 
 burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
 strike_immunity = 0.02	;1.0
@@ -709,104 +404,30 @@ wound_immunity = 0.025
 radiation_immunity = 0.01
 telepatic_immunity = 0.01
 chemical_burn_immunity = 0.01
-explosion_immunity = 0.02
-fire_wound_immunity  = 0.023
+explosion_immunity = 0.023
+fire_wound_immunity  = 0.02
 
-burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.6	;0.9
-shock_protection = 0.4
-wound_protection = 0.8		
-radiation_protection = 0.1
-telepatic_protection = 0.3
-chemical_burn_protection = 0.3
-explosion_protection = 0.8
-fire_wound_protection  = 0.8
+; MEDIUM RESISTANCE
+burn_protection 				= 0.5
+strike_protection 			= 1.0
+shock_protection 				= 0.5
+wound_protection				= 1.0
+radiation_protection 			= 0.5
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.5
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
-bones_koeff_protection = protect_outfit_bones
-
-[protect_outfit_bones]
-
-bip01_pelvis 		 = 0.5
-bip01_spine 		 = 0.375
-bip01_spine1 		 = 0.375
-bip01_neck 			 = 0.5
-bip01_head 			 = 0.5
-eyelid_1 			 = 0.5
-eye_left 			 = 0.5
-eye_right 			 = 0.5
-jaw_1 		 		 = 0.5
-
-bip01_l_clavicle	 = 0.1
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.5
-
-bip01_r_clavicle	 = 0.1
-bip01_r_upperarm	 = 0.5
-bip01_r_forearm	 	 = 0.5
-bip01_r_hand	 	 = 0.5
-
-bip01_l_thigh	 	 = 0.1
-bip01_l_calf	 	 = 0.5
-bip01_l_foot	 	 = 0.2
-
-bip01_r_thigh	 	 = 0.1
-bip01_r_calf	 	 = 0.5
-bip01_r_foot	 	 = 0.2
+bones_koeff_protection = kombez_kupol_damage
 
 
-
-[ecolog_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\ecolog"
-$prefetch 		= 32
-class			= EQU_SCIE
-cform           = skeleton
-visual          = equipments\ecolog_suit.ogf	
-actor_visual	= actors\hero\stalker_ecolog.ogf
-
-ef_equipment_type	= 2
-
-inv_name			= "SSP-99M Outfit"
-inv_name_short		= "SSP-99M Outfit"
-description			= outfit_ecolog
-inv_weight			= 6.0
-slot				= 6
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 18
-inv_grid_y			= 13
-cost				= 6000
-full_scale_icon_x	= 14			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
-
-burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.02	;1.0
-shock_immunity = 0.02
-wound_immunity = 0.025		
-radiation_immunity = 0.01
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.021
-explosion_immunity = 0.02
-fire_wound_immunity  = 0.023
-
-burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.6	;0.9
-shock_protection = 0.3
-wound_protection = 0.8		
-radiation_protection = 0.1
-telepatic_protection = 0.3
-chemical_burn_protection = 0.3
-explosion_protection = 0.8
-fire_wound_protection  = 0.8
-
-bones_koeff_protection = protect_outfit_bones
-
+;---------------------------------------------------------------------------------------------
+;		ЭКЗОСКЕЛЕТ НЕЙТРАЛЬНОГО СТАЛКЕРА
+;---------------------------------------------------------------------------------------------
 [exo_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\exo"
+$spawn 			= "outfit\exo_outfit"
 $prefetch 		= 32
 class			= EQU_EXO
 cform           = skeleton
@@ -838,52 +459,344 @@ chemical_burn_immunity = 0.01
 explosion_immunity = 0.023
 fire_wound_immunity  = 0.023
 
-burn_protection = 0.3		;коэффициенты защиты костюма персонажем 
-strike_protection = 0.7
-shock_protection = 0.5
-wound_protection = 0.5		
-radiation_protection = 0.3
-telepatic_protection = 0.6
-chemical_burn_protection = 0.5
-explosion_protection = 0.8
-fire_wound_protection  = 0.55
-
-bones_koeff_protection = exo_outfit_bones
+; MEDIUM RESISTANCE
+burn_protection 				= 0.5
+strike_protection 			= 1.0
+shock_protection 				= 0.5
+wound_protection				= 1.0
+radiation_protection 			= 0.5
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.5
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
 ;запрещение режима Sprint для Актера
 sprint_allowed			= false
-hit_fraction		= 0.1
-[exo_outfit_bones]
-
-bip01_pelvis 		 = 0.7, 70
-bip01_spine 		 = 0.7, 80
-bip01_spine1 		 = 0.7, 75
-bip01_neck 		 = 0.8, 50
-bip01_head 		 = 0.8, 45
-eyelid_1 		 = 0.8, 25
-eye_left 		 = 0.8, 25
-eye_right 		 = 0.8, 25
-jaw_1 		 	 = 0.8, 25
-
-bip01_l_clavicle	 = 0.7, 80
-bip01_l_upperarm	 = 0.7, 40
-bip01_l_forearm	 	 = 0.7, 10
-bip01_l_hand	 	 = 0.3, 5
-
-bip01_r_clavicle	 = 0.7, 80
-bip01_r_upperarm	 = 0.7, 40
-bip01_r_forearm	 	 = 0.7, 10
-bip01_r_hand	 	 = 0.3, 5
-
-bip01_l_thigh	 	 = 0.7, 50
-bip01_l_calf	 	 = 0.7, 20
-bip01_l_foot	 	 = 0.3, 10
-
-bip01_r_thigh	 	 = 0.7, 50
-bip01_r_calf	 	 = 0.7, 20
-bip01_r_foot	 	 = 0.3, 10
+bones_koeff_protection = exo_helmet_damage
 
 
+;---------------------------------------------------------------------------------------------
+;		ЛЕГКИЙ КОСТЮМ СВОБОДЫ
+;---------------------------------------------------------------------------------------------
+[svoboda_light_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\svoboda_light_outfit"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipments\svoboda_light_suit
+actor_visual	= actors\hero\stalker_svoboda_light.ogf
+
+ef_equipment_type	= 3
+
+inv_name			= "Forest Skin"
+inv_name_short		= "Forest Skin"
+description			= outfit_svoboda_light
+inv_weight			= 3.0
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 12
+inv_grid_y			= 13
+cost				= 1500
+slot				= 6
+full_scale_icon_x	= 10			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
+
+burn_immunity = 0.04				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.04
+shock_immunity = 0.04
+wound_immunity = 0.04		
+radiation_immunity = 0.04
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.04
+explosion_immunity = 0.04
+fire_wound_immunity  = 0.04
+
+; LOW RESISTANCE
+burn_protection 				= 0.8
+strike_protection 			= 1.0
+shock_protection 				= 0.8
+wound_protection				= 1.0
+radiation_protection 			= 0.8
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.8
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+power_loss = 0.77
+bones_koeff_protection = gilet_mask_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		ТЯЖЕЛЫЙ КОСТЮМ СВОБОДЫ
+;---------------------------------------------------------------------------------------------
+[svoboda_heavy_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\svoboda_heavy_outfit"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipments\svoboda_heavy_suit
+actor_visual	= actors\hero\stalker_svoboda_light.ogf
+
+ef_equipment_type	= 3
+
+inv_name			= "Armour of Freedom"
+inv_name_short		= "Armour of Freedom"
+description			= outfit_svoboda_heavy
+inv_weight			= 8.0
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 8
+inv_grid_y			= 15
+cost				= 4200
+slot				= 6
+full_scale_icon_x	= 2			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 6
+
+burn_immunity = 0.035				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.035
+shock_immunity = 0.035
+wound_immunity = 0.035		
+radiation_immunity = 0.035
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.035
+explosion_immunity = 0.035
+fire_wound_immunity  = 0.035
+
+; MEDIUM RESISTANCE
+burn_protection 				= 0.5
+strike_protection 			= 1.0
+shock_protection 				= 0.5
+wound_protection				= 1.0
+radiation_protection 			= 0.5
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.5
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection = kombez_antigas_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		ОБЫЧНЫЙ КОСТЮМ ДОЛГА
+;---------------------------------------------------------------------------------------------
+[dolg_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\dolg_outfit"
+;$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipments\dolg_suit
+actor_visual	= actors\hero\stalker_dolg.ogf
+
+ef_equipment_type	= 3
+
+inv_name			= "Black Shell"
+inv_name_short		= "Black Shell"
+description			= outfit_dolg
+inv_weight			= 5.0
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 12
+inv_grid_y			= 16
+cost				= 2200
+slot				= 6
+full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
+
+burn_immunity = 0.035				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.035
+shock_immunity = 0.035
+wound_immunity = 0.035		
+radiation_immunity = 0.035
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.035
+explosion_immunity = 0.035
+fire_wound_immunity  = 0.035
+
+; LOW RESISTANCE
+burn_protection 				= 0.8
+strike_protection 			= 1.0
+shock_protection 				= 0.8
+wound_protection				= 1.0
+radiation_protection 			= 0.8
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.8
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection = kombez_mask_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		НАУЧНЫЙ КОСТЮМ ДОЛГА
+;---------------------------------------------------------------------------------------------
+[dolg_scientific_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\dolg_scientific_outfit"
+$prefetch 		= 32
+class			= EQU_STLK
+cform           = skeleton
+visual          = equipments\stalker_dolg_nauchniy_suit
+actor_visual	= actors\dolg\stalker_do_nauchniy.ogf	
+
+ef_equipment_type	= 4
+
+inv_name			= "SKAT-9"
+inv_name_short		= "SKAT-9"
+description			= outfit_military_stalker
+inv_weight			= 10.0
+slot				= 6
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 16
+inv_grid_y			= 16
+cost				= 8000
+full_scale_icon_x	= 8		;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 6
+
+burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.02	;1.0
+shock_immunity = 0.02
+wound_immunity = 0.025		
+radiation_immunity = 0.01
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.1
+explosion_immunity = 0.023
+fire_wound_immunity  = 0.023
+
+; MEDIUM RESISTANCE
+burn_protection 				= 0.5
+strike_protection 			= 1.0
+shock_protection 				= 0.5
+wound_protection				= 1.0
+radiation_protection 			= 0.5
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.5
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection = kombez_kupol_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		ОБЫЧНЫЙ КОСТЮМ УЧЕННОГО
+;---------------------------------------------------------------------------------------------
+[ecolog_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\ecolog_outfit"
+$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipments\ecolog_suit.ogf	
+actor_visual	= actors\hero\stalker_ecolog.ogf
+
+ef_equipment_type	= 2
+
+inv_name			= "SSP-99M Outfit"
+inv_name_short		= "SSP-99M Outfit"
+description			= outfit_ecolog
+inv_weight			= 6.0
+slot				= 6
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 18
+inv_grid_y			= 13
+cost				= 6000
+full_scale_icon_x	= 14			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 6
+
+burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.02	;1.0
+shock_immunity = 0.02
+wound_immunity = 0.025		
+radiation_immunity = 0.01
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.021
+explosion_immunity = 0.02
+fire_wound_immunity  = 0.023
+
+; HIGH RESISTANCE
+burn_protection 				= 0.1
+strike_protection 			= 1.0
+shock_protection 				= 0.1
+wound_protection				= 1.0
+radiation_protection 			= 0.1
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.1
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection = kurtka_kupol_damage
+
+
+;---------------------------------------------------------------------------------------------
+;		УКРЕПЛЕННЫЙ КОСТЮМ УЧЕННОГО
+;---------------------------------------------------------------------------------------------
+[protection_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\protection_outfit"
+$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipments\scientist_suit.ogf	
+actor_visual	= actors\hero\stalker_chemical.ogf
+
+ef_equipment_type	= 2
+
+inv_name			= "SSP-98M Outfit"
+inv_name_short		= "SSP-98M Outfit"
+description			= outfit_protection
+inv_weight			= 6.5
+slot				= 6
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 14
+inv_grid_y			= 16
+cost				= 5500
+full_scale_icon_x	= 12			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 6
+
+burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.02	;1.0
+shock_immunity = 0.02
+wound_immunity = 0.025		
+radiation_immunity = 0.01
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.01
+explosion_immunity = 0.02
+fire_wound_immunity  = 0.023
+
+; HIGH RESISTANCE
+burn_protection 				= 0.1
+strike_protection 			= 1.0
+shock_protection 				= 0.1
+wound_protection				= 1.0
+radiation_protection 			= 0.1
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 0.1
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
+
+bones_koeff_protection = kombez_kupol_damage
+
+
+
+
+
+
+
+
+;---------------------------------------------------------------------------------------------
+;		УСТАРЕВШИЕ КОСТЮМЫ! НЕ ЮЗАТЬ
+;---------------------------------------------------------------------------------------------
 [military_stalker_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -919,54 +832,24 @@ chemical_burn_immunity = 0.1
 explosion_immunity = 0.023
 fire_wound_immunity  = 0.023
 
-burn_protection = 0.6			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.6
-shock_protection = 0.8
-wound_protection = 0.8		
-radiation_protection = 0.5
-telepatic_protection = 0.6
-chemical_burn_protection = 0.6
-explosion_protection = 0.6
-fire_wound_protection  = 0.5
+; NO RESISTANCE
+burn_protection 				= 1.0
+strike_protection 			= 1.0
+shock_protection 				= 1.0
+wound_protection				= 1.0
+radiation_protection 			= 1.0
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 1.0
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
-bones_koeff_protection = military_outfit_bones
-hit_fraction		= 0.15
-[military_outfit_bones]
+bones_koeff_protection = kurtka_mask_damage
 
-bip01_pelvis 		 = 0.55, 55
-bip01_spine 		 = 0.55, 70
-bip01_spine1 		 = 0.55, 65
-bip01_neck 		 = 0.7, 35
-bip01_head 		 = 0.7, 45
-eyelid_1 		 = 0.7, 25
-eye_left 		 = 0.7, 25
-eye_right 		 = 0.7, 25
-jaw_1 		 	 = 0.7, 40
-
-bip01_l_clavicle	 = 0.55, 55
-bip01_l_upperarm	 = 0.55, 10
-bip01_l_forearm	 	 = 0.55, 10
-bip01_l_hand	 	 = 0.25, 5
-
-bip01_r_clavicle	 = 0.55, 55
-bip01_r_upperarm	 = 0.55, 10
-bip01_r_forearm	 	 = 0.55, 10
-bip01_r_hand	 	 = 0.25, 5
-
-bip01_l_thigh	 	 = 0.55, 35
-bip01_l_calf	 	 = 0.55, 20
-bip01_l_foot	 	 = 0.25, 5
-
-bip01_r_thigh	 	 = 0.55, 35
-bip01_r_calf	 	 = 0.55, 20
-bip01_r_foot	 	 = 0.25, 5
-
-power_loss = 0.67
 
 [military_commander_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\commander"
+$spawn 			= "outfit\obsolete\commander"
 ;$prefetch 		= 32
 class			= EQU_MLTR
 cform           = skeleton
@@ -998,125 +881,15 @@ chemical_burn_immunity = 0.1
 explosion_immunity = 0.023
 fire_wound_immunity  = 0.02
 
-burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
-wound_protection = 0.8		
-radiation_protection = 0.5
-telepatic_protection = 0.2
-chemical_burn_protection = 0.6
-explosion_protection = 0.6
-fire_wound_protection  = 0.45
+; NO RESISTANCE
+burn_protection 				= 1.0
+strike_protection 			= 1.0
+shock_protection 				= 1.0
+wound_protection				= 1.0
+radiation_protection 			= 1.0
+telepatic_protection 			= 1.0
+chemical_burn_protection 		= 1.0
+explosion_protection 			= 1.0
+fire_wound_protection  		= 1.0
 
-bones_koeff_protection =commander_outfit_bones
-
-[commander_outfit_bones]
-
-bip01_pelvis 		 = 0.55
-bip01_spine 		 = 0.55
-bip01_spine1 		 = 0.55
-bip01_neck 			 = 0.35
-bip01_head 			 = 0.7
-eyelid_1 			 = 0.7
-eye_left 			 = 0.7
-eye_right 			 = 0.7
-jaw_1 		 		 = 0.5
-
-bip01_l_clavicle	 = 0.5
-bip01_l_upperarm	 = 0.5
-bip01_l_forearm	 	 = 0.5
-bip01_l_hand	 	 = 0.5
-
-bip01_r_clavicle	 = 0.5
-bip01_r_upperarm	 = 0.5
-bip01_r_forearm	 	 = 0.5
-bip01_r_hand	 	 = 0.5
-
-bip01_l_thigh	 	 = 0.5
-bip01_l_calf	 	 = 0.5
-bip01_l_foot	 	 = 0.2
-
-bip01_r_thigh	 	 = 0.5
-bip01_r_calf	 	 = 0.5
-bip01_r_foot	 	 = 0.2
-
-
-
-[scientific_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\scientific"
-$prefetch 		= 32
-class			= EQU_SCIE
-cform           = skeleton
-visual          = equipments\stalker_scient_suit	
-actor_visual	= actors\hero\stalker_scien.ogf
-
-ef_equipment_type	= 2
-
-inv_name			= "SEVA suit"
-inv_name_short		= "SEVA suit"
-description			= outfit_scientific
-inv_weight			= 12
-slot				= 6
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 16
-inv_grid_y			= 13
-cost				= 15000
-full_scale_icon_x	= 12			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
-
-burn_immunity = 0.02				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.02	;1.0
-shock_immunity = 0.02
-wound_immunity = 0.025		
-radiation_immunity = 0.01
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.01
-explosion_immunity = 0.023
-fire_wound_immunity  = 0.02
-
-burn_protection = 0.8			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.6	
-shock_protection = 0.3
-wound_protection = 0.8		
-radiation_protection = 0.9
-telepatic_protection = 0.1
-chemical_burn_protection = 0.3
-explosion_protection = 0.2
-fire_wound_protection  = 0.6
-
-bones_koeff_protection =scien_outfit_bones
-
-[scien_outfit_bones]
-hit_fraction		= 0.2
-
-bip01_pelvis 		 = 0.3, 20
-bip01_spine 		 = 0.3, 25
-bip01_spine1 		 = 0.3, 35
-bip01_neck 		 = 0.5, 10
-bip01_head 		 = 0.75, 15
-eyelid_1 		 = 0.75, 15
-eye_left 		 = 0.75, 15
-eye_right 		 = 0.75, 15
-jaw_1 		 	 = 0.75, 15
-
-
-bip01_l_clavicle	 = 0.3, 20;0.5
-bip01_l_upperarm	 = 0.3, 10;0.5
-bip01_l_forearm	 	 = 0.15, 10;0.5
-bip01_l_hand	 	 = 0.15, 5;0.5
-
-bip01_r_clavicle	 = 0.3, 20;0.5
-bip01_r_upperarm	 = 0.3, 10;0.5
-bip01_r_forearm	 	 = 0.15, 10;0.5
-bip01_r_hand	 	 = 0.15, 5;0.5
-
-bip01_l_thigh	 	 = 0.15, 10 ;0.5
-bip01_l_calf	 	 = 0.15, 5 ;0.5
-bip01_l_foot	 	 = 0.15, 5;0.5
-
-bip01_r_thigh	 	 = 0.15, 10 ;0.5
-bip01_r_calf	 	 = 0.15, 5 ;0.5
-bip01_r_foot	 	 = 0.15, 5;0.5
+bones_koeff_protection =	kurtka_mask_damage
