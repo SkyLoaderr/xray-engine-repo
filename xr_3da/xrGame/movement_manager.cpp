@@ -315,7 +315,7 @@ bool CMovementManager::distance_to_destination_greater	(const float &distance_to
 
 void CMovementManager::verify_detail_path		()
 {
-	if (detail().path().empty() || detail().completed(detail().dest_position()))
+	if (detail().path().empty() || !detail().actual() || detail().completed(detail().dest_position()))
 		return;
 
 	if (restrictions().out_restrictions().size())
