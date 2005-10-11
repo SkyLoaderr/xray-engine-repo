@@ -162,11 +162,11 @@ bool CSE_ALifeTraderAbstract::check_inventory_consistency	()
 		mass					+= item->m_fMass;
 	}
 
-	VERIFY2						(fis_zero(m_fCumulativeItemMass - mass,EPS_L),base()->name_replace());
+	R_ASSERT2					(fis_zero(m_fCumulativeItemMass - mass,EPS_L),base()->name_replace());
 	if (!fis_zero(m_fCumulativeItemMass - mass,EPS_L))
 		return					(false);
 
-	VERIFY2						(m_iCumulativeItemVolume == volume,base()->name_replace());
+	R_ASSERT2					(m_iCumulativeItemVolume == volume,base()->name_replace());
 	if (m_iCumulativeItemVolume != volume)
 		return					(false);
 
