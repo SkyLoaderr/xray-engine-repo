@@ -55,6 +55,7 @@ CScriptStorage::CScriptStorage		()
 	luaopen_jit				(lua());
 	luaJIT_setmode			(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_ON);
 #endif
+	luaopen_coco			(lua());
 }
 
 CScriptStorage::~CScriptStorage		()
