@@ -67,9 +67,9 @@ void CEditableMesh::RebuildVMaps()
 		st_Face& F=m_Faces[f_id];
 		for (int k=0; k<3; k++){
 			u32 pts_cnt			= m_VMRefs[F.pv[k].vmref].count;
-			st_VMapPt* n_pt_it	= nVMRefs[F.pv[k].vmref].pts;
-			st_VMapPt* o_pt_it	= m_VMRefs[F.pv[k].vmref].pts;
-			for (u32 pt_id=0; pt_id<pts_cnt; o_pt_it++,n_pt_it++){
+			for (u32 pt_id=0; pt_id<pts_cnt; pt_id++){
+                st_VMapPt* n_pt_it	= &nVMRefs[F.pv[k].vmref].pts[pt_id];
+                st_VMapPt* o_pt_it	= &m_VMRefs[F.pv[k].vmref].pts[pt_id];
 				st_VMap* vmap=m_VMaps[o_pt_it->vmap_index];
 				switch (vmap->type){
 				case vmtUV:{
