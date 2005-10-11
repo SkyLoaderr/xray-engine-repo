@@ -242,71 +242,24 @@ distance = 2
 active = walker@esc_lager_volk_walker1
 on_death = death@wolf
 
-
-
-
-
-
-
-
-
 [walker@esc_lager_volk_walker1]
 path_walk = wolf_walk
 path_look = wolf_look
-on_actor_dist_le = 5 | {+tutorial_wounded_help -tutorial_wounded_die} remark@esc_lager_volk_remark1
 meet = meet@wolf
 on_info = {+esc_return =is_alive(006)} nil %=kill%
-
-[remark@esc_lager_volk_remark1]
-snd = esc_volk_greet1
-on_info  = {=talking} remark@esc_lager_volk_remark3
-on_signal = sound_end | remark@esc_lager_volk_wait1
-no_move = true
-on_info2 = {+esc_return =is_alive(006)} nil %=kill%
-
-[remark@esc_lager_volk_wait1]
-snd = esc_volk_greet1
-on_actor_dist_ge = 5 | walker@esc_lager_volk_walker2
-on_info  = {=talking} remark@esc_lager_volk_remark3
-on_timer = 5000 | remark@esc_lager_volk_remark2
-no_move = true
-on_info2 = {+esc_return =is_alive(006)} nil %=kill%
-
-[walker@esc_lager_volk_walker2]
-path_walk = wolf_walk
-path_look = wolf_look
-on_actor_dist_le = 5 | {-tutorial_wounded_die} remark@esc_lager_volk_remark2, walker@esc_lager_volk_walker1
-meet = meet@wolf
-on_info = {+esc_return =is_alive(006)} nil %=kill%
-
-[remark@esc_lager_volk_remark2]
-anim = wait
-snd = esc_volk_greet2
-on_info  = {=talking} remark@esc_lager_volk_remark3
-on_signal = sound_end | remark@esc_lager_volk_wait2
-no_move = true
-on_info2 = {+esc_return =is_alive(006)} nil %=kill%
+on_info2 = {+esc_wolf_say} remark@esc_lager_volk_wait2
 
 [remark@esc_lager_volk_wait2]
 anim = wait
 snd = esc_volk_greet2
-on_actor_dist_ge = 5 | walker@esc_lager_volk_walker3
-on_timer = 5000 | remark@esc_lager_volk_remark3
-on_info  = {=talking} remark@esc_lager_volk_remark3
-no_move = true
-on_info2 = {+esc_return =is_alive(006)} nil %=kill%
+on_signal = sound_end| walker@esc_lager_volk_walker3
+on_info = {+esc_return =is_alive(006)} nil %=kill%
+meet = meet@wolf
 
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
 path_look = wolf_look
-on_actor_dist_le = 5 | remark@esc_lager_volk_remark3
 meet = meet@wolf
-on_info = {+esc_return =is_alive(006)} nil %=kill%
-
-[remark@esc_lager_volk_remark3]
-anim = wait
-on_actor_dist_ge = 5 | walker@esc_lager_volk_walker3
-no_move = true
 on_info = {+esc_return =is_alive(006)} nil %=kill%
 
 [meet@wolf]
@@ -320,7 +273,6 @@ syndata		= hello@hail|backoff@threat_weap
 
 [death@wolf]
 on_info = %+esc_wolf_dead%
-
 
 ;Fanat
 [logic@esc_lager_fanat]
