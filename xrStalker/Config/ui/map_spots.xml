@@ -143,7 +143,7 @@
 		<texture x="728" y="571" width="31" height="31">ui\ui_common</texture>
 	</level_changer_spot_mini>
 
-	<debug_stalker hint="invalid hint" no_offline="0">
+	<debug_stalker hint="invalid hint">
 		<level_map spot="debug_stalker_spot"></level_map>
 	</debug_stalker>
 	
