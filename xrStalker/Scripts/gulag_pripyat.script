@@ -626,7 +626,7 @@ function load_ltx_monolith(gname, type)
     local id
     
     res = "[danger@monolith]\n" ..
-          "ignore_danger_sound = 100\n"
+          "ignore_danger_sound = 150\n"
 
     -- alone patrol soldiers
     for i, v in pairs({1, 3, 4, 5, 6, 8}) do
@@ -638,7 +638,7 @@ function load_ltx_monolith(gname, type)
                    "path_walk           = patrol" .. v .. "_walk\n" ..
                    "path_look           = patrol" .. v .. "_look\n" ..
                    "danger              = danger@monolith\n" ..
-                   "combat_ignore_cond  = {!fighting_actor}\n"
+                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
     end
 
     -- group patrol soldiers 7, 10 (9, 13)
@@ -653,7 +653,7 @@ function load_ltx_monolith(gname, type)
                    "formation           = line\n" ..
                    "soundgroup          = " .. gname .."_group_patrol" .. i .. "\n" ..
                    "danger              = danger@monolith\n" ..
-                   "combat_ignore_cond  = {!fighting_actor}\n"
+                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
     end
 
     -- rpg, svd, machine-gun
@@ -671,7 +671,7 @@ function load_ltx_monolith(gname, type)
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_fire\n" ..
                    "danger                      = danger@monolith\n" ..
-                   "combat_ignore_cond          = {!fighting_actor}\n"
+                   "combat_ignore_cond          = {=pri_monolith_combat_ignore}\n"
         if i <= 3 then
             res = res.."sniper = true\n"
         end
@@ -687,7 +687,8 @@ function load_ltx_monolith(gname, type)
                    "center_point        = kamp" .. i .. "\n" ..
                    "danger              = danger@monolith\n" ..
                    "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
-                   "combat_ignore_cond  = {!fighting_actor}\n"
+                   "def_state_moving    = run\n" ..
+                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 	end
 
     return res
