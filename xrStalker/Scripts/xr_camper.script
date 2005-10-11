@@ -489,8 +489,12 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
-	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
 	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
+	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
+	if st.sniper == true and st.no_retreat == true then
+		_G.abort("ERROR: Section [%s]. No_retreat not available for SNIPER.", section)
+	end
+	
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false, 20)
 	st.danger_radius = utils.cfg_get_number(ini, section, "danger_radius", npc, false, 5)
 	st.suggested_state = {}
