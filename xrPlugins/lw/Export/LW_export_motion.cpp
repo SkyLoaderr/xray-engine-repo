@@ -27,7 +27,7 @@ extern "C" {
 void __cdecl SaveObjectMotion(GlobalFunc *global)
 {
 	Core._initialize("XRayPlugin",ELogCallback,FALSE);
-	FS._initialize	(CLocatorAPI::flScanAppRoot);
+	FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
 	// get bone ID
 	LWItemID		object;
 	bool bErr		= false;
