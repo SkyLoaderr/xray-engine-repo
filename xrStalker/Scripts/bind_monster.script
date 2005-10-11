@@ -37,6 +37,7 @@ function generic_object_binder:reinit()
 	self.st = db.storage[self.object:id()]
 
 	self.object:set_callback(callback.patrol_path_in_point, self.waypoint_callback, self)
+	self.object:set_callback(callback.hit,					self.hit_callback,		self)
 end
 
 function generic_object_binder:update(delta)
@@ -71,6 +72,10 @@ function generic_object_binder:waypoint_callback(obj, action_type, index)
 	end
 end
 
+function generic_object_binder:hit_callback(obj, amount, local_direction, who, bone_index)
+	printf("HIT_CALLBACK: [%s] amount[%s]", obj:name(), amount)
+end
+
 function generic_object_binder:net_spawn(data)
 	if not object_binder.net_spawn(self, data) then
 		return false
@@ -83,6 +88,7 @@ end
 
 function generic_object_binder:net_destroy()
 	self.object:set_callback(callback.patrol_path_in_point, nil)
+	self.object:set_callback(callback.hit, nil)
 
 	local st = db.storage[self.object:id()]
 	if st.active_scheme then
