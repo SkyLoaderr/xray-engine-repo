@@ -261,17 +261,17 @@ public:
 	void            Transform				(const Fmatrix& parent);
 
 	IC CEditableObject*	Parent				(){ return m_Parent;	}
-    IC u32			GetFCount				(){ return m_FaceCount;	}
-    IC st_Face*		GetFaces				(){ return m_Faces;		}
-	IC u32*			GetSGs					(){ return m_SGs;		}
-    IC Fvector*		GetVerts				(){ return m_Verts;		}
-    IC u32			GetVCount				(){ return m_VertCount;	}
-	IC VMapVec&		GetVMaps				(){ return m_VMaps;		}
-	IC VMRefsVec&	GetVMRefs				(){ return m_VMRefs;	}
-	IC SurfFaces&	GetSurfFaces			(){ return m_SurfFaces;	}
-    IC Fvector*		GetFNormals				(){ VERIFY(0!=m_FNormals); return m_FNormals;	}
-    IC Fvector*		GetVNormals				(){ VERIFY(0!=m_VNormals); return m_VNormals;	}
-    IC st_SVert*	GetSVertices			(){ VERIFY(0!=m_SVertices);return m_SVertices;	}
+    IC u32				GetFCount			(){ return m_FaceCount;	}
+    IC const st_Face*	GetFaces			(){ return m_Faces;		}
+	IC const u32*		GetSGs				(){ return m_SGs;		}
+    IC const Fvector*	GetVerts			(){ return m_Verts;		}
+    IC u32				GetVCount			(){ return m_VertCount;	}
+	IC const VMapVec&	GetVMaps			(){ return m_VMaps;		}
+	IC const VMRefsVec&	GetVMRefs			(){ return m_VMRefs;	}
+	IC const SurfFaces&	GetSurfFaces		(){ return m_SurfFaces;	}
+    IC const Fvector*	GetFNormals			(){ VERIFY(0!=m_FNormals); return m_FNormals;	}
+    IC const Fvector*	GetVNormals			(){ VERIFY(0!=m_VNormals); return m_VNormals;	}
+    IC const st_SVert*	GetSVertices		(){ VERIFY(0!=m_SVertices);return m_SVertices;	}
 	    
     // pick routine
 	bool            RayPick					(float& dist, const Fvector& start, const Fvector& dir, const Fmatrix& inv_parent, SRayPickInfo* pinf = NULL);

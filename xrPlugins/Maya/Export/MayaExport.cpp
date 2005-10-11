@@ -287,7 +287,7 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 	}
 	// Reserve uv table
 	{
-		VMapVec& _vmaps	= MESH->GetVMaps();
+		VMapVec& _vmaps	= MESH->m_VMaps;
 		_vmaps.resize	(1);
 		st_VMap*& VM	= _vmaps.back();
 		VM				= xr_new<st_VMap>("Texture",vmtUV,false);
@@ -297,9 +297,9 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 	{
 		DEFINE_VECTOR(st_Face,FaceVec,FaceIt);
 
-		VMapVec& _vmaps			= MESH->GetVMaps();
-		SurfFaces& _surf_faces	= MESH->GetSurfFaces();
-		VMRefsVec& _vmrefs		= MESH->GetVMRefs();
+		VMapVec& _vmaps			= MESH->m_VMaps;
+		SurfFaces& _surf_faces	= MESH->m_SurfFaces;
+		VMRefsVec& _vmrefs		= MESH->m_VMRefs;
 		
 		// temp variables
 		FvectorVec	_points;
@@ -329,7 +329,7 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 			// between object-relative vertex indices and face-relative
 			// vertex indices
 			ptMap.clear();
-			for (int i=0; i<meshPoly.polygonVertexCount(); i++)
+			for (u32 i=0; i<meshPoly.polygonVertexCount(); i++)
 				ptMap.insert (PtLookupMap::value_type(meshPoly.vertexIndex(i), i) );
 
 			// verify polygon zero area
@@ -430,11 +430,6 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 				_surf_faces[surf].push_back(_faces.size()-1);
 			}
 		}
-		if ((MESH->GetVertexCount()<4)||(MESH->GetFaceCount()<2))
-		{
-			Log		("!Invalid mesh: '%s'. Faces<2 or Verts<4",MESH->GetName());
-			return MS::kFailure;
-		}
 		{
 			// copy from temp
 			MESH->m_VertCount	= _points.size();
@@ -447,6 +442,11 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 			Memory.mem_copy		(MESH->m_SGs,&*_sgs.begin(),MESH->m_FaceCount*sizeof(u32));
 
 			MESH->RecomputeBBox	();
+		}
+		if ((MESH->GetVertexCount()<4)||(MESH->GetFaceCount()<2))
+		{
+			Log		("!Invalid mesh: '%s'. Faces<2 or Verts<4",MESH->GetName());
+			return MS::kFailure;
 		}
 	}
 	return stat;

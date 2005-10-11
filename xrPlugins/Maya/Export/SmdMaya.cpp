@@ -244,14 +244,13 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 	MESH->SetName			("skin");
 	OBJECT->Meshes().push_back(MESH);
 	// IMPORT MESH
-	SurfFaces&	_surf_faces	= MESH->GetSurfFaces();
-	VMRefsVec&	_vmrefs		= MESH->GetVMRefs();
-	VMapVec&	_vmaps		= MESH->GetVMaps();
-	Fvector*	_points		= MESH->GetVerts();
+	SurfFaces&	_surf_faces	= MESH->m_SurfFaces;
+	VMRefsVec&	_vmrefs		= MESH->m_VMRefs;
+	VMapVec&	_vmaps		= MESH->m_VMaps;
+	Fvector*&	_points		= MESH->m_Verts;
 	// temp variables
-	DEFINE_VECTOR(st_Face,FaceVec,FaceIt);
-	FaceVec		_faces;
-	U32Vec		_sgs;
+	st_Face*&	_faces		= MESH->m_Faces;
+	u32*&		_sgs		= MESH->m_SGs;
 	// maps
 	// Weight maps 
 	_vmaps.resize			(m_boneList.size()+1);
@@ -279,17 +278,17 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 	// faces
 	{
 		// reserve space for faces and references
-		_sgs.reserve		(m_triList.size());
-		_faces.reserve		(m_triList.size());
+		MESH->m_FaceCount	= m_triList.size();
+		_sgs				= xr_alloc<u32>(MESH->m_FaceCount);
+		_faces				= xr_alloc<st_Face>(MESH->m_FaceCount);
 		_vmrefs.resize		(m_vertList.size());
 
 		int f_id			= 0;
 		CSurface* surf		= 0;
 		for (SmdTriIt it=m_triList.begin(); it!=m_triList.end(); it++,f_id++){
 			// FACES
-			_faces.push_back(st_Face());
-			_sgs.push_back	((*it)->sm_group);
-			st_Face& F				= _faces.back();
+			_sgs[f_id]				= ((*it)->sm_group);
+			st_Face& F				= _faces[f_id];
 			for (int k=0; k<3; k++){
 				int v_idx			= (*it)->v[k];
 				st_FaceVert& vt		= F.pv[k];
@@ -314,15 +313,6 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 			if (!surf)	return MStatus::kFailure;	
 			_surf_faces[surf].push_back(f_id);
 		}
-	}
-
-	// copy from temp
-	{
-		MESH->m_FaceCount	= _faces.size();
-		MESH->m_Faces		= xr_alloc<st_Face>(MESH->m_FaceCount);
-		Memory.mem_copy		(MESH->m_Faces,&*_faces.begin(),MESH->m_FaceCount*sizeof(st_Face));
-		MESH->m_SGs			= xr_alloc<u32>(MESH->m_FaceCount);
-		Memory.mem_copy		(MESH->m_SGs,&*_sgs.begin(),MESH->m_FaceCount*sizeof(u32));
 	}
 
 	// BONES
