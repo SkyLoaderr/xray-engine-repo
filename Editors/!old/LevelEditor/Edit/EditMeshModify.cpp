@@ -49,23 +49,31 @@ int CEditableMesh::FindSimilarWeight(st_VMap* vmap, float _w)
 
 void CEditableMesh::RebuildVMaps()
 {
-/*
-//.
 //.	Log			("Rebuilding VMaps...");
-	IntVec		m_PointVMap;
-	m_PointVMap.resize(m_Points.size(),-1);
+	IntVec		m_VertVMap;
+	m_VertVMap.resize(m_VertCount,-1);
 	VMapVec		nVMaps;
-	VMRefsVec	nVMRefs = m_VMRefs;
-	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-		st_Face& F=*f_it;
+	VMRefsVec	nVMRefs;
+	// refs copy to new
+	{
+		nVMRefs.resize(m_VMRefs.size());
+		for (VMRefsIt o_it=m_VMRefs.begin(),n_it=nVMRefs.begin(); o_it!=m_VMRefs.end(); o_it++,n_it++){
+			n_it->count	= o_it->count;
+			n_it->pts	= xr_alloc<st_VMapPt>(n_it->count);
+		}
+	}
+
+	for (u32 f_id=0; f_id<m_FaceCount; f_id++){
+		st_Face& F=m_Faces[f_id];
 		for (int k=0; k<3; k++){
-			VMapPtSVec& pts=m_VMRefs[F.pv[k].vmref];
-			VMapPtIt n_pt_it=nVMRefs[F.pv[k].vmref].begin();
-			for (VMapPtIt pt_it=pts.begin(); pt_it!=pts.end(); pt_it++,n_pt_it++){
-				st_VMap* vmap=m_VMaps[pt_it->vmap_index];
+			u32 pts_cnt			= m_VMRefs[F.pv[k].vmref].count;
+			st_VMapPt* n_pt_it	= nVMRefs[F.pv[k].vmref].pts;
+			st_VMapPt* o_pt_it	= m_VMRefs[F.pv[k].vmref].pts;
+			for (u32 pt_id=0; pt_id<pts_cnt; o_pt_it++,n_pt_it++){
+				st_VMap* vmap=m_VMaps[o_pt_it->vmap_index];
 				switch (vmap->type){
 				case vmtUV:{
-					int& pm=m_PointVMap[F.pv[k].pindex];
+					int& pm=m_VertVMap[F.pv[k].pindex];
 					if (-1==pm){ // point map
 						pm=F.pv[k].vmref;
 						int vm_idx=FindVMapByName(nVMaps,vmap->name.c_str(),vmap->type,false);
@@ -82,7 +90,7 @@ void CEditableMesh::RebuildVMaps()
 //							nVMap->appendVI(F.pv[k].pindex);
 //						}
 
-						nVMap->appendUV(vmap->getUV(pt_it->index));
+						nVMap->appendUV(vmap->getUV(o_pt_it->index));
 						nVMap->appendVI(F.pv[k].pindex);
 						n_pt_it->index = nVMap->size()-1;
 						n_pt_it->vmap_index=vm_idx;
@@ -104,9 +112,9 @@ void CEditableMesh::RebuildVMaps()
 //						}
 //						n_pt_it->index = uv_idx;
 
-						nVMapPM->appendUV(vmap->getUV(pt_it->index));
+						nVMapPM->appendUV(vmap->getUV(o_pt_it->index));
 						nVMapPM->appendVI(F.pv[k].pindex);
-						nVMapPM->appendPI(f_it-m_Faces.begin());
+						nVMapPM->appendPI(f_id);
 						n_pt_it->index = nVMapPM->size()-1;
 						n_pt_it->vmap_index=vm_idx;
 					}
@@ -118,9 +126,9 @@ void CEditableMesh::RebuildVMaps()
 						vm_idx=nVMaps.size()-1;
 					}
 					st_VMap* nWMap=nVMaps[vm_idx];
-					nWMap->appendW(vmap->getW(pt_it->index));
-					nWMap->appendVI(F.pv[k].pindex);
-					n_pt_it->index = nWMap->size()-1;
+					nWMap->appendW	(vmap->getW(o_pt_it->index));
+					nWMap->appendVI	(F.pv[k].pindex);
+					n_pt_it->index	= nWMap->size()-1;
 					n_pt_it->vmap_index=vm_idx;
 				}break;
 				}
@@ -132,9 +140,11 @@ void CEditableMesh::RebuildVMaps()
 
 	m_VMaps.clear();
 	m_VMaps=nVMaps;
+	// clear refs
+	for (VMRefsIt ref_it=m_VMRefs.begin(); ref_it!=m_VMRefs.end(); ref_it++)
+		xr_free			(ref_it->pts);
 	m_VMRefs.clear();
 	m_VMRefs = nVMRefs;
-*/
 }
 
 #define MX 25

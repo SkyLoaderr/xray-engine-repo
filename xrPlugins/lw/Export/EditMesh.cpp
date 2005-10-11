@@ -62,6 +62,8 @@ void CEditableMesh::Clear()
 		xr_delete		(*vm_it);
     m_VMaps.clear		();
     m_SurfFaces.clear	();
+	for (VMRefsIt ref_it=m_VMRefs.begin(); ref_it!=m_VMRefs.end(); ref_it++)
+		xr_free			(ref_it->pts);
     m_VMRefs.clear		();
 }
 
