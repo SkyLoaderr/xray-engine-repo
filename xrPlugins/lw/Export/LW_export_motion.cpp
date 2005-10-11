@@ -22,6 +22,19 @@ extern "C"	HostDisplayInfo *g_hdi;
 
 static COMotion* m_Motion;
 
+void SelectedCount(LWItemType type, int& sel_obj_count, LWItemID& last_sel_obj)
+{
+	LWItemID	object;
+	object		= g_iteminfo->first( type, NULL );
+	while ( object ) {
+		if(g_intinfo->itemFlags(object)&LWITEMF_SELECTED){
+			last_sel_obj	= object;
+			sel_obj_count++;
+		}
+		object	= g_iteminfo->next( object );
+	}
+}
+
 extern "C" {
 //-----------------------------------------------------------------------------------------
 void __cdecl SaveObjectMotion(GlobalFunc *global)
@@ -29,31 +42,35 @@ void __cdecl SaveObjectMotion(GlobalFunc *global)
 	Core._initialize("XRayPlugin",ELogCallback,FALSE);
 	FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
 	// get bone ID
-	LWItemID		object;
 	bool bErr		= false;
 	
-	string1024 buf="";
-	string64 name;
+	string_path buf	= "";
 
-	EFS.GetSaveName("$omotion$",buf,sizeof(buf));
-
+	EFS.GetSaveName	("$omotion$",buf,sizeof(buf));
 	if (buf[0]){
-		object		= g_iteminfo->first( LWI_OBJECT, NULL );
-		while ( object ) {
-			if(g_intinfo->itemFlags(object)&LWITEMF_SELECTED){
-				int obj_cnt = 0;
-				_splitpath( buf, 0, 0, name, 0 );
-				m_Motion	= xr_new<COMotion>();
-				m_Motion->SetName(name);
-				m_Motion->ParseObjectMotion(object);
-				m_Motion->SetParam(g_intinfo->previewStart, g_intinfo->previewEnd, (float)g_lwsi->framesPerSecond);
-				m_Motion->SaveMotion(buf);
-				g_msg->info	("Export successful.",buf);
-				xr_delete(m_Motion);
-				break;
-			}
-			object = g_iteminfo->next( object );
+		int sel_obj_cnt	= 0;
+		LWItemID sel_object;
+
+		SelectedCount	(LWI_OBJECT,sel_obj_cnt,sel_object);
+		SelectedCount	(LWI_CAMERA,sel_obj_cnt,sel_object);
+		SelectedCount	(LWI_BONE,	sel_obj_cnt,sel_object);
+		SelectedCount	(LWI_LIGHT,	sel_obj_cnt,sel_object);
+
+		if (sel_obj_cnt==1){
+			string_path					name;
+			_splitpath					(buf, 0, 0, name, 0);
+			m_Motion					= xr_new<COMotion>();
+			m_Motion->SetName			(name);
+			m_Motion->ParseObjectMotion	(sel_object);
+			m_Motion->SetParam			(g_intinfo->previewStart, g_intinfo->previewEnd, (float)g_lwsi->framesPerSecond);
+			m_Motion->SaveMotion		(buf);
+			g_msg->info					("Export motion successful.",g_iteminfo->name(sel_object));
+			xr_delete					(m_Motion);
+		}else{
+			g_msg->error				("Select one object and try again.",NULL);
 		}
+	}else{
+		g_msg->error("Export failed. Empty name.",NULL);
 	}
 }
 };
