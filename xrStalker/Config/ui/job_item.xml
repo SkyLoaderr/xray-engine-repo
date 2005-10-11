@@ -78,17 +78,13 @@
 		<background x="412" y="284" width="300" height="200">
 			<texture>ui_icons_PDA_dialog</texture>
 			
-			<background_1 x="10" y="10" width="275" height="20">
-				<texture>ui_icons_PDA_dialog_frame</texture>
-			</background_1>
-			<edit_caption x="0" y="0" width="190" height="20">
+			<edit_caption x="10" y="10" width="275" height="20">
+				<texture>ui_icons_PDA_dialog_line</texture>
 				<text x="0" y="0" font="letterica18"></text>
 			</edit_caption>
 	
-			<background_2 x="10" y="35" width="275" height="130">
+			<edit_description x="10" y="35" width="275" height="130">
 				<texture>ui_icons_PDA_dialog_frame</texture>
-			</background_2>
-			<edit_description x="0" y="0" width="190" height="150">
 				<text x="0" y="0" font="letterica18"></text>
 			</edit_description>
 			
