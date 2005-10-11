@@ -2791,6 +2791,9 @@
 						RelativePath=".\scripts\news_manager.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\slowdown.script">
+					</File>
+					<File
 						RelativePath=".\scripts\utils.script">
 					</File>
 				</Filter>
