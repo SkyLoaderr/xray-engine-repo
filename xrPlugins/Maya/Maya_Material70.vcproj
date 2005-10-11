@@ -43,7 +43,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib"
-				OutputFile="Material\maTranslator.mll"
+				OutputFile="$(OutDir)/xrayMaya_material.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-7.0\lib"
@@ -81,7 +81,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\debug\ver-7.0"
 			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -89,7 +89,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-4.5\include"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-7.0\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -110,12 +110,12 @@
 				AdditionalOptions="/MACHINE:I386 /export:initializePlugin /export:uninitializePlugin
 "
 				AdditionalDependencies="xrcored.lib odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib OpenMayaRender.lib OpenMayaUI.lib glu32.lib opengl32.lib "
-				OutputFile="$(OutDir)/$(ProjectName)d.mll"
+				OutputFile="$(OutDir)/xrayMaya_material.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-7.0\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
+				ProgramDatabaseFile="$(OutDir)/xrayMaya_material.pdb"
 				SubSystem="2"
 				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
@@ -148,7 +148,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\release\ver-7.0"
 			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -156,7 +156,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-4.5\include"
+				AdditionalIncludeDirectories="r:\sdk\xrcore\include;R:\sdk\maya\ver-7.0\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -177,7 +177,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /export:initializePlugin /export:uninitializePlugin"
 				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib OpenMayaRender.lib OpenMayaUI.lib glu32.lib opengl32.lib xrcore.lib"
-				OutputFile="$(OutDir)/$(ProjectName).mll"
+				OutputFile="$(OutDir)/xrayMaya_material.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-7.0\lib"

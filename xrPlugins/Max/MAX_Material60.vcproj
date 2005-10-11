@@ -15,7 +15,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\debug\ver-6.0"
 			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -45,13 +45,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="Winmm.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib xrcored.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dlt"
+				OutputFile="$(OutDir)/xray_material.dlt"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\3dsmax\ver-6.0\lib"
 				ModuleDefinitionFile="Material\GameMaterial.def"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
+				ProgramDatabaseFile="$(OutDir)/xray_material.pdb"
 				SubSystem="2"
 				BaseAddress="0x3e0e0000"
 				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
@@ -85,7 +85,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\release\ver-6.0"
 			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -117,7 +117,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="Winmm.lib comctl32.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib xrcore.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dlt"
+				OutputFile="$(OutDir)/xray_material.dlt"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\3dsmax\ver-6.0\lib"
@@ -157,7 +157,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug6|Win32"
-			OutputDirectory="$(ConfigurationName)"
+			OutputDirectory="bin\ver-6.0"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -187,7 +187,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="Winmm.lib comctl32.lib bmm.lib core.lib geom.lib gfx.lib mesh.lib maxutil.lib maxscrpt.lib manipsys.lib paramblk2.lib"
-				OutputFile="R:\3dsmax6\plugins\XRayMtl.dlt"
+				OutputFile="$(OutDir)/xray_material.dlt"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories=""

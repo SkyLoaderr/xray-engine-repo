@@ -43,7 +43,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib"
-				OutputFile="Export\maTranslator.mll"
+				OutputFile="$(OutDir)/xrayMaya_export.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
@@ -81,7 +81,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\debug\ver-5.0"
 			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -110,12 +110,12 @@
 				AdditionalOptions="/MACHINE:I386 /export:initializePlugin /export:uninitializePlugin
 "
 				AdditionalDependencies="xrcored.lib odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib OpenMayaAnim.lib"
-				OutputFile="$(OutDir)/$(ProjectName)d.mll"
+				OutputFile="$(OutDir)/xrayMaya_export.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
+				ProgramDatabaseFile="$(OutDir)/xrayMaya_export.pdb"
 				SubSystem="2"
 				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
@@ -148,7 +148,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\release\ver-5.0"
 			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -177,7 +177,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /export:initializePlugin /export:uninitializePlugin"
 				AdditionalDependencies="xrcored.lib odbc32.lib odbccp32.lib Foundation.lib OpenMaya.lib OpenMayaAnim.lib"
-				OutputFile="$(OutDir)/$(ProjectName).mll"
+				OutputFile="$(OutDir)/xrayMaya_export.mll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib;R:\sdk\maya\ver-5.0\lib"

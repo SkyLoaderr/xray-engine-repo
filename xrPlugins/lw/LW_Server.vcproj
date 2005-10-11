@@ -67,7 +67,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="lib"
-			IntermediateDirectory="Intermediate\Debug\$(ProjectName)/"
+			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"

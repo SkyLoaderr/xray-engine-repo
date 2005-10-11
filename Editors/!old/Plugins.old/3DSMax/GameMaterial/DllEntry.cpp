@@ -19,7 +19,7 @@ BOOL WINAPI DllMain(HINSTANCE   hinstDLL,
 	{
 		controlsInit = TRUE;
 		Core._initialize("XRayPlugin",0,FALSE);
-		FS._initialize	(CLocatorAPI::flScanAppRoot);
+		FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
 		FPU::m64r	(); // нужно чтобы макс не сбрасывал контрольки в 0
 		InitCustomControls(hInstance);	// Initialize MAX's custom controls
 		InitCommonControls();			// Initialize Win95 controls

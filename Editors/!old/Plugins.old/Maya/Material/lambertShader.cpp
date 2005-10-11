@@ -1010,7 +1010,7 @@ MStatus initializePlugin( MObject obj )
 	const MString	UserClassify( "shader/surface" );
 
 	Core._initialize("XRayMayaPlugin",ELogCallback,FALSE);
-	FS._initialize	(CLocatorAPI::flScanAppRoot);
+	FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
 	R_ASSERT2(0!=Memory.mem_fill,"Incorrect xrCore.dll version.");
 
 	MString command( "if( `window -exists createRenderNodeWindow` ) {refreshCreateRenderNodeWindow(\"" );

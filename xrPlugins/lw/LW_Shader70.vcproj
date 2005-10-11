@@ -15,7 +15,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="bin"
+			OutputDirectory="bin\release\ver-7.0"
 			IntermediateDirectory="Intermediate\Release\$(ProjectName)/"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -47,7 +47,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib  xrcored.lib lib\lw_serverd.lib"
-				OutputFile="$(OutDir)/$(ProjectName).p"
+				OutputFile="$(OutDir)/xray_shader.p"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib"
@@ -84,8 +84,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin"
-			IntermediateDirectory="Intermediate\Debug\$(ProjectName)/"
+			OutputDirectory="bin\debug\ver-7.0"
+			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -115,13 +115,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib xrcored.lib lib\lw_serverd.lib"
-				OutputFile="$(OutDir)/$(ProjectName)d.p"
+				OutputFile="$(OutDir)/xray_shader.p"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="r:\sdk\xrcore\lib"
 				ModuleDefinitionFile="Server\serv.def"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(ProjectName)d.pdb"
+				ProgramDatabaseFile="$(OutDir)/xray_shader.pdb"
 				ImportLibrary="Intermediate\Debug\$(ProjectName)\project.lib"/>
 			<Tool
 				Name="VCMIDLTool"
