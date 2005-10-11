@@ -4,7 +4,6 @@ full_scale_icon_x	= 0			;иконка сталкера в без костюма в полный рост
 full_scale_icon_y	= 11
 
 
-
 [bandit_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -40,53 +39,18 @@ chemical_burn_immunity = 0.05
 explosion_immunity = 0.05
 fire_wound_immunity  = 0.05
 
-burn_protection = 0.9			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.9
-shock_protection = 0.9
-wound_protection = 0.95		
-radiation_protection = 0.9
-telepatic_protection = 0.9
-chemical_burn_protection = 0.9
-explosion_protection = 1.0
-fire_wound_protection  = 0.95
+-- NO RESISTANCE
+burn_immunity 				= 1.0
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
 
-bones_koeff_protection = bandit_outfit_bones
-
-;доп. коэффициенты по костям, которые будут домножаться на базовый коэфф
-;например
-;если сила хита = 10, тип хита=fire_wound_protection, кость=bip01_pelvis
-;результирующий хит, который нанесется = 10 * (1 - 0.95*0.3) = 10*(1-0.285) = 10*0.715=7.15
-
-[bandit_outfit_bones]
-default			 = 1.0
-
-bip01_pelvis 		 = 0.1
-bip01_spine 		 = 0.3
-bip01_spine1 		 = 0.3
-bip01_neck 		 = 0.0
-bip01_head 		 = 0.0
-eyelid_1 		 = 0.0
-eye_left 		 = 0.0
-eye_right 		 = 0.0
-jaw_1 		 	 = 0.0
-
-bip01_l_clavicle	 = 0.1
-bip01_l_upperarm	 = 0.05
-bip01_l_forearm	 	 = 0.05
-bip01_l_hand	 	 = 0.0
-
-bip01_r_clavicle	 = 0.1
-bip01_r_upperarm	 = 0.05
-bip01_r_forearm	 	 = 0.05
-bip01_r_hand	 	 = 0.0
-
-bip01_l_thigh	 	 = 0.1
-bip01_l_calf	 	 = 0.05
-bip01_l_foot	 	 = 0.02
-
-bip01_r_thigh	 	 = 0.1
-bip01_r_calf	 	 = 0.05
-bip01_r_foot	 	 = 0.02
+bones_koeff_protection = kurtka_mask_damage
 
 
 [soldier_outfit]
@@ -923,7 +887,7 @@ bip01_r_foot	 	 = 0.3, 10
 [military_stalker_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\military_stalker"
+$spawn 			= "outfit\obsolete\military_stalker"
 $prefetch 		= 32
 class			= EQU_MLTR
 cform           = skeleton
