@@ -38,7 +38,6 @@ void CUIWndCallback::OnEvent(CUIWindow* pWnd, s16 msg, void* pData)
 		(*it)->m_cpp_callback(pWnd, pData);
 }
 
-
 SCallbackInfo*	CUIWndCallback::NewCallback ()
 {
 	m_callbacks.push_back( xr_new<SCallbackInfo>() );

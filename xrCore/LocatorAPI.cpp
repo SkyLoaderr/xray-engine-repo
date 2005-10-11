@@ -578,7 +578,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 			}
 		}
 #endif
-		if (desc.size_real<256*1024)	R = xr_new<CFileReader>			(fname);
+		if (desc.size_real<16*1024)		R = xr_new<CFileReader>			(fname);
 		else							R = xr_new<CVirtualFileReader>	(fname);
 	} else {
 		// Archived one

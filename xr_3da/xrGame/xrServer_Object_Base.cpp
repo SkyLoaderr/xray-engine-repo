@@ -79,7 +79,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	s_RP						= 0xFE;			// Use supplied coords
 	s_flags.assign				(0);
 	s_name						= caSection;
-	s_name_replace				= xr_strdup("");
+	s_name_replace				= 0;			//xr_strdup("");
 	o_Angle.set					(0.f,0.f,0.f);
 	o_Position.set				(0.f,0.f,0.f);
 	m_bALifeControl				= false;

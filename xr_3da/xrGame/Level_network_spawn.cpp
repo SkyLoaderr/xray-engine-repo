@@ -128,12 +128,28 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 		return				(abstract);
 }
 
+#ifdef DEBUG
+XRCORE_API	BOOL	g_bMEMO;
+#endif
+
 void	CLevel::ProcessGameSpawns	()
 {
 	while (!game_spawn_queue.empty())
 	{
-		g_sv_Spawn					(game_spawn_queue.front());
-		F_entity_Destroy			(game_spawn_queue.front());
+		CSE_Abstract*	E			= game_spawn_queue.front();
+
+#ifdef DEBUG
+		u32				E_mem;
+		if (g_bMEMO)	{
+			E_mem = Memory.mem_usage();	
+			Memory.stat_calls = 0;
+		}
+#endif
+		g_sv_Spawn					(E);
+#ifdef DEBUG
+		if (g_bMEMO)	Msg			("* %20s : %d bytes, %d ops", *E->s_name,Memory.mem_usage()-E_mem, Memory.stat_calls );
+#endif
+		F_entity_Destroy			(E);
 		game_spawn_queue.pop_front	();
 	}
 }

@@ -103,13 +103,13 @@ void	xrMemory::mem_free		(void* P)
 extern BOOL	g_bDbgFillMemory	;
 void*	xrMemory::mem_realloc	(void* P, size_t size)
 {
+	stat_calls++;
+	if (0==P)					return mem_alloc(size);
+
 #ifdef DEBUG
 	if(g_globalCheckAddr==P)
 		__asm int 3;
 #endif
-
-	stat_calls++;
-	if (0==P)					return mem_alloc(size);
 
 #ifdef DEBUG
 	if (mem_initialized)		debug_cs.Enter		();

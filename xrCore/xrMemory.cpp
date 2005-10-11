@@ -25,6 +25,8 @@ xrMemory::xrMemory()
 	mem_fill32	= xrMemFill32_x86;
 }
 
+XRCORE_API	BOOL	g_bMEMO		= FALSE;
+
 void	xrMemory::_initialize	(BOOL bDebug)
 {
 #ifdef DEBUG
@@ -58,7 +60,12 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	}
 #endif    
 
+#ifdef DEBUG
+	if (0==strstr(Core.Params,"-memo"))	mem_initialized				= TRUE;
+	else								g_bMEMO						= TRUE;
+#else
 	mem_initialized				= TRUE;
+#endif
 	g_pStringContainer			= xr_new<str_container>		();
 	g_pSharedMemoryContainer	= xr_new<smem_container>	();
 }

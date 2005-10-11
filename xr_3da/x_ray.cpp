@@ -153,9 +153,13 @@ void CheckPrivilegySlowdown		( )
 
 void Startup					( )
 {
+	Msg				("strt-A: %d",Memory.mem_usage()/1024);
 	execUserScript	();
+	Msg				("strt-B: %d",Memory.mem_usage()/1024);
 	InitInput		();
+	Msg				("strt-C: %d",Memory.mem_usage()/1024);
 	InitSound		();
+	Msg				("strt-D: %d",Memory.mem_usage()/1024);
 
 	// ...command line for auto start
 	{
@@ -169,11 +173,17 @@ void Startup					( )
 
 	// Initialize APP
 	Device.Create				( );
+	Msg				("strt-E: %d",Memory.mem_usage()/1024);
 	LALib.OnCreate				( );
+	Msg				("strt-F: %d",Memory.mem_usage()/1024);
 	pApp						= xr_new<CApplication>	();
+	Msg				("strt-G: %d",Memory.mem_usage()/1024);
 	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
+	Msg				("strt-H: %d",Memory.mem_usage()/1024);
 	g_SpatialSpace				= xr_new<ISpatial_DB>	();
+	Msg				("strt-J: %d",Memory.mem_usage()/1024);
 	g_SpatialSpacePhysic		= xr_new<ISpatial_DB>	();
+	Msg				("strt-K: %d",Memory.mem_usage()/1024);
 	
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
@@ -181,6 +191,7 @@ void Startup					( )
 
 	// Main cycle
 	CheckCopyProtection			( );
+	Msg				("strt-L: %d",Memory.mem_usage()/1024);
 	Device.Run					( );
 
 	// Destroy APP
@@ -358,6 +369,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	};
 	Engine.External.Initialize	( );
 //	CheckPrivilegySlowdown		( );
+	Console->Execute			("stat_memory");
 	Startup	 					( );
 	Core._destroy				( );
 
@@ -500,6 +512,8 @@ void CApplication::LoadEnd		()
 	if (0==ll_dwReference)		{
 		::Sound->set_volume		(1.f);
 		Msg						("* phase time: %d ms",phase_timer.GetElapsed_ms());
+		Msg						("* phase cmem: %d K", Memory.mem_usage()/1024);
+		Console->Execute		("stat_memory");
 		g_appLoaded				= TRUE;
 	}
 }
@@ -579,6 +593,8 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	VERIFY						(ll_dwReference);
 	sprintf						(app_title,S,S2);
 	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
+	Msg							("* phase cmem: %d K", Memory.mem_usage()/1024);
+	Console->Execute			("stat_memory");
 	Log							(app_title);
 	
 //	string_path					tex;

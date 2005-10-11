@@ -105,8 +105,8 @@ public:
 		u32		_lua			= 0; // u32 (lua_memusage());
 		u32		_eco_strings	= g_pStringContainer->stat_economy			();
 		u32		_eco_smem		= g_pSharedMemoryContainer->stat_economy	();
-		u32	m_base,c_base,m_lmaps,c_lmaps;
-		Device.Resources->_GetMemoryUsage	(m_base,c_base,m_lmaps,c_lmaps);
+		u32	m_base=0,c_base=0,m_lmaps=0,c_lmaps=0;
+		if (Device.Resources)	Device.Resources->_GetMemoryUsage	(m_base,c_base,m_lmaps,c_lmaps);
 		Msg		("* [win32]: free[%d K], reserved[%d K], committed[%d K]",w_free/1024,w_reserved/1024,w_committed/1024);
 		Msg		("* [ D3D ]: textures[%d K]", (m_base+m_lmaps)/1024);
 		Msg		("* [x-ray]: total[%d K], lua[%d K]",_total/1024,_lua/(1024*1024));

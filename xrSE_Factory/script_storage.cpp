@@ -31,6 +31,17 @@
 #	include "script_debugger.h"
 #endif
 
+static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
+  (void)ud;
+  (void)osize;
+  if (nsize == 0) {
+    xr_free	(ptr);
+    return	NULL;
+  }
+  else
+    return xr_realloc		(ptr, nsize);
+}
+
 CScriptStorage::CScriptStorage		()
 {
 	m_current_thread		= 0;
@@ -38,7 +49,7 @@ CScriptStorage::CScriptStorage		()
 	m_stack_is_ready		= false;
 #endif
 	m_virtual_machine		= 0;
-	m_virtual_machine		= lua_open();
+	m_virtual_machine		= lua_newstate(lua_alloc, NULL);
 	if (!m_virtual_machine) {
 		Msg					("! ERROR : Cannot initialize script virtual machine!");
 		return;
