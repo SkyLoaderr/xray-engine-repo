@@ -22,14 +22,15 @@ public:
 	{
 		CParticlesObject*	ps;
 		//Fvector				dir;
-		Fmatrix				x_form;
+		//Fmatrix				x_form;
+		Fvector				angles;
 		u16					sender_id;	//id - объекта, который запустил партиклы
-		int					life_time;	//время жизни партикла (-1) - бесконечно
+		u32					life_time;	//время жизни партикла (-1) - бесконечно
 		
-		int					cur_time;	//текущее время существования партикла
-		bool				auto_stop;	//автоматическая остановка партиклов, когда закончится время
+		//int					cur_time;	//текущее время существования партикла
+		//bool				auto_stop;	//автоматическая остановка партиклов, когда закончится время
 	};
-	DEFINE_LIST				(SParticlesInfo,ParticlesInfoList,ParticlesInfoListIt);
+	DEFINE_VECTOR			(SParticlesInfo,ParticlesInfoList,ParticlesInfoListIt);
 
 	//структура для косточки с списком запущенных партиклов
 	struct SBoneInfo
@@ -82,7 +83,7 @@ public:
 
 	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
 	void					StopParticles			(const shared_str& particles_name, u16 bone_id=BI_NONE);
-	void					AutoStopParticles		(const shared_str& ps_name, u16 bone_id);
+	void					AutoStopParticles		(const shared_str& ps_name, u16 bone_id,u32 life_time);
 
 	static void				MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
 	static void				GetBonePos				(CObject* pObject, u16 bone_id, const Fvector& offset, Fvector& result);

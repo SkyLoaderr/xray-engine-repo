@@ -82,8 +82,12 @@ void CPhysicObject::CreatePhysicsShell(CSE_Abstract* e)
 {
 	CSE_ALifeObjectPhysic	*po	= smart_cast<CSE_ALifeObjectPhysic*>(e);
 	CreateBody(po);
-	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate();
-	smart_cast<CKinematics*>(Visual())->CalculateBones	();
+	CKinematics* K=smart_cast<CKinematics*>(Visual());
+	if(K)
+	{
+		K->CalculateBones_Invalidate();
+		K->CalculateBones	();
+	}
 }
 
 void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
