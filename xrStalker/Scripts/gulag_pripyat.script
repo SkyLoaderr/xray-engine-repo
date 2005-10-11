@@ -666,7 +666,7 @@ function load_ltx_monolith(gname, type)
                    "[camper@" .. gname .. "_stalker_" .. v .. "]\n" ..
                    "path_walk                   = patrol" .. id[i] .. "_walk\n" ..
                    "path_look                   = patrol" .. id[i] .. "_look\n" ..
-                   "no_retreat                  = true\n" ..
+                   --"no_retreat                  = true\n" ..
                    "radius                      = 5\n" ..
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_fire\n" ..
