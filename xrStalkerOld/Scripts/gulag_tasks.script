@@ -50,6 +50,13 @@ function loadJob(sj, gname, type, squad, groups)
 			prior = 0, state = {0},
 			in_rest = "", out_rest = ""
 		}
+		table.insert(sj, t)
+		t = { section = "logic@test2_kamp1",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 	end
 
 	if type == "test_mob" then
@@ -126,19 +133,6 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 
---[[
-	gulag_escape.load_job     (sj, gname, type, squad, groups)
-	gulag_garbage.load_job    (sj, gname, type, squad, groups)
-	gulag_agroprom.load_job   (sj, gname, type, squad, groups)
-	gulag_dark_valley.load_job(sj, gname, type, squad, groups)
-	gulag_labx18.load_job     (sj, gname, type, squad, groups)
-	gulag_bar.load_job        (sj, gname, type, squad, groups)
-	gulag_military.load_job   (sj, gname, type, squad, groups)
-	gulag_military.load_tubes_job (sj, gname, type, squad, groups)
-	gulag_radar.load_job      (sj, gname, type, squad, groups)
-	gulag_yantar.load_job     (sj, gname, type, squad, groups)
-	gulag_pripyat.load_job    (sj, gname, type, squad, groups)
---]]
     for k, v in pairs(level_gulags) do
         v.load_job(sj, gname, type, squad, groups)
     end
@@ -197,49 +191,6 @@ function loadStates(gname, type)
 
 	local f
 
---[[
-	f = gulag_escape.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_garbage.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_agroprom.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_dark_valley.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_labx18.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_bar.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_military.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_yantar.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_radar.load_states(gname, type)
-	if f then
-		return f
-	end
-	f = gulag_pripyat.load_states(gname, type)
-	if f then
-		return f
-	end
---]]
-    
     for k, v in pairs(level_gulags) do
 	    f = v.load_states(gname, type)
 	    if f then

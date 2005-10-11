@@ -117,6 +117,9 @@ end
 function actor_binder:update(delta)
 	object_binder.update(self, delta)
 
+	-- DEBUG slowdown
+--	slowdown.update()
+
 	local time = time_global()
 
 	-- апдейт погоды
