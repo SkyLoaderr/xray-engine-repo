@@ -648,21 +648,21 @@ void CUIMainIngameWnd::Update()
 					shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
 
 					//properties used by inventory menu
-					int m_iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
-					int m_iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
+					int iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
+					int iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
 
-					int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
-					int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
+					int iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
+					int iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
 
-					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(m_iXPos * INV_GRID_WIDTH),
-																	float(m_iYPos * INV_GRID_HEIGHT),
-																	float(m_iGridWidth * INV_GRID_WIDTH),
-																	float(m_iGridHeight * INV_GRID_HEIGHT));
+					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(iXPos * INV_GRID_WIDTH),
+																	float(iYPos * INV_GRID_HEIGHT),
+																	float(iGridWidth * INV_GRID_WIDTH),
+																	float(iGridHeight * INV_GRID_HEIGHT));
 					UIWeaponIcon.SetStretchTexture(true);
 
 					// now perform only width scale for ammo, which (W)size >2
 					// all others ammo (1x1, 1x2) will be not scaled (original picture)
-					float w = ((m_iGridWidth>2)?1.6f:m_iGridWidth)*INV_GRID_WIDTH*0.9f;
+					float w = ((iGridWidth>2)?1.6f:iGridWidth)*INV_GRID_WIDTH*0.9f;
 					float h = INV_GRID_HEIGHT*0.9f;//1 cell
 					UIWeaponIcon.SetWidth(w);
 					UIWeaponIcon.SetHeight(h);

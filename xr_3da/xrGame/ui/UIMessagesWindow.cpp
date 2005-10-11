@@ -10,7 +10,6 @@
 
 #include "UIMessagesWindow.h"
 #include "../level.h"
-#include "../game_base_space.h"
 #include "UIGameLog.h"
 #include "xrXmlParser.h"
 #include "UIXmlInit.h"
@@ -49,7 +48,7 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 	m_pGameLog = xr_new<CUIGameLog>();m_pGameLog->SetAutoDelete(true);
 	m_pGameLog->Show(true);
 	AttachChild(m_pGameLog);
-	if (GameID() == GAME_SINGLE)
+	if ( IsGameTypeSingle() )
 	{
 		CUIXmlInit::InitListWnd(xml, "sp_log_list", 0, m_pGameLog);
 		m_ListPos2 = CUIXmlInit::GetFRect(xml, "sp_log_list2", 0);

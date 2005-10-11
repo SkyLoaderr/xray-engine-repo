@@ -29,13 +29,9 @@ CInventoryItem::CInventoryItem()
 	m_weight			= 100.f;
 	m_slot				= NO_ACTIVE_SLOT;
 	m_flags.set			(Fbelt,FALSE);
-//	m_belt				= false;
 	m_flags.set			(Fdrop,FALSE);
-//	m_drop				= false;
 	m_flags.set			(Fruck,TRUE);
-//	m_ruck				= true;
 	m_flags.set			(FRuckDefault,TRUE);
-//	m_bRuckDefault		= true;
 	m_pInventory		= NULL;
 
 	m_flags.set			(FCanTake,TRUE);
@@ -43,11 +39,10 @@ CInventoryItem::CInventoryItem()
 	m_flags.set			(FUsingCondition,FALSE);
 	m_fCondition		= 1.0f;
 
-	m_iGridWidth		= 1;
-	m_iGridHeight		= 1;
-
-	m_iXPos				= 0;
-	m_iYPos				= 0;
+//	m_iGridWidth		= 1;
+//	m_iGridHeight		= 1;
+//	m_iXPos				= 0;
+//	m_iYPos				= 0;
 
 	m_name = m_nameShort = NULL;
 
@@ -84,21 +79,14 @@ void CInventoryItem::Load(LPCSTR section)
 	R_ASSERT			(m_weight>=0.f);
 
 	m_cost				= pSettings->r_u32(section, "cost");
-
+/*
 	//properties used by inventory menu
 	m_iGridWidth		= pSettings->r_u32(section, "inv_grid_width");
 	m_iGridHeight		= pSettings->r_u32(section, "inv_grid_height");
 
 	m_iXPos				= pSettings->r_u32(section, "inv_grid_x");
 	m_iYPos				= pSettings->r_u32(section, "inv_grid_y");
-	//-----------------------------------------------------------------
-	m_iKillMsgXPos		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_x", 0);
-	m_iKillMsgYPos		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_y", 0);
-
-	m_iKillMsgWidth		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_width", 0);
-	m_iKillMsgHeight	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_height", 0);
-
-	//-----------------------------------------------------------------
+*/
 	m_slot				= READ_IF_EXISTS(pSettings,r_u32,section,"slot", NO_ACTIVE_SLOT);
 
 
@@ -991,4 +979,42 @@ bool	CInventoryItem::CanTrade() const
 		res = inventory_owner().AllowItemToTrade(this,m_eItemPlace);
 
 	return (res && m_flags.test(FCanTrade));
+}
+
+float CInventoryItem::GetKillMsgXPos		() const 
+{
+	return READ_IF_EXISTS(pSettings,r_float,m_object->cNameSect(),"kill_msg_x", 0.0f);
+}
+
+float CInventoryItem::GetKillMsgYPos		() const 
+{
+	return READ_IF_EXISTS(pSettings,r_float,m_object->cNameSect(),"kill_msg_y", 0.0f);
+}
+
+float CInventoryItem::GetKillMsgWidth		() const 
+{
+	return READ_IF_EXISTS(pSettings,r_float,m_object->cNameSect(),"kill_msg_width", 0.0f);
+}
+
+float CInventoryItem::GetKillMsgHeight	() const 
+{
+	return READ_IF_EXISTS(pSettings,r_float,m_object->cNameSect(),"kill_msg_height", 0.0f);
+}
+
+int  CInventoryItem::GetGridWidth			() const 
+{
+	return pSettings->r_u32(m_object->cNameSect(), "inv_grid_width");
+}
+
+int  CInventoryItem::GetGridHeight			() const 
+{
+	return pSettings->r_u32(m_object->cNameSect(), "inv_grid_height");
+}
+int  CInventoryItem::GetXPos				() const 
+{
+	return pSettings->r_u32(m_object->cNameSect(), "inv_grid_x");
+}
+int  CInventoryItem::GetYPos				() const 
+{
+	return pSettings->r_u32(m_object->cNameSect(), "inv_grid_y");
 }

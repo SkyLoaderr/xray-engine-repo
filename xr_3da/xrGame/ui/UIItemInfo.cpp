@@ -111,18 +111,17 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		// Загружаем картинку
 		UIItemImage->SetShader(InventoryUtilities::GetEquipmentIconsShader());
 
-		int m_iGridWidth	= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_width");
-		int m_iGridHeight	= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_height");
+		int iGridWidth		= pInvItem->GetGridWidth();
+		int iGridHeight		= pInvItem->GetGridHeight();
+		int iXPos			= pInvItem->GetXPos();
+		int iYPos			= pInvItem->GetYPos();
 
-		int m_iXPos			= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_x");
-		int m_iYPos			= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_y");
-
-		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(m_iXPos*INV_GRID_WIDTH), float(m_iYPos*INV_GRID_HEIGHT),
-														float(m_iGridWidth*INV_GRID_WIDTH),	float(m_iGridHeight*INV_GRID_HEIGHT));
+		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(iXPos*INV_GRID_WIDTH), float(iYPos*INV_GRID_HEIGHT),
+														float(iGridWidth*INV_GRID_WIDTH),	float(iGridHeight*INV_GRID_HEIGHT));
 		UIItemImage->TextureOn	();
 		UIItemImage->ClipperOn	();
 		UIItemImage->SetStretchTexture(true);
-		Frect v_r				= {0.0f, 0.0f, float(m_iGridWidth*INV_GRID_WIDTH),	float(m_iGridHeight*INV_GRID_HEIGHT)};
+		Frect v_r				= {0.0f, 0.0f, float(iGridWidth*INV_GRID_WIDTH),	float(iGridHeight*INV_GRID_HEIGHT)};
 		UIItemImage->GetUIStaticItem().SetRect(v_r);
 		UIItemImage->SetWidth	(_min(v_r.width(),	UIItemImageSize.x));
 		UIItemImage->SetHeight	(_min(v_r.height(),	UIItemImageSize.y));

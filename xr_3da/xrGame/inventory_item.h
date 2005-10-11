@@ -32,15 +32,15 @@ class CEatableItem;
 
 class CInventoryItem : public CHitImmunity {
 protected:
-	enum EIIFlags{				Fdrop=(1<<0),
-								FCanTake=(1<<1),
-								FCanTrade=(1<<2),
-								Fbelt=(1<<3),
-								Fruck=(1<<4),
-								FRuckDefault=(1<<5),
-								FUsingCondition	=(1<<6),
-								FAllowSprint	=(1<<7),
-								Fuseful_for_NPC	=(1<<8),
+	enum EIIFlags{				Fdrop				=(1<<0),
+								FCanTake			=(1<<1),
+								FCanTrade			=(1<<2),
+								Fbelt				=(1<<3),
+								Fruck				=(1<<4),
+								FRuckDefault		=(1<<5),
+								FUsingCondition		=(1<<6),
+								FAllowSprint		=(1<<7),
+								Fuseful_for_NPC		=(1<<8),
 	};
 
 	Flags32						m_flags;
@@ -109,13 +109,11 @@ public:
 			float				Weight				() const	{ return m_weight;}		
 
 public:
-	// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	CInventory*					m_pInventory;
 	shared_str					m_name;
 	shared_str					m_nameShort;
 	shared_str					m_nameComplex;
-//	bool						m_drop;
-	//текущее положение вещи в инвентаре
+
 	EItemPlace					m_eItemPlace;
 
 
@@ -123,18 +121,16 @@ public:
 	virtual void				OnMoveToBelt		() {};
 	virtual void				OnMoveToRuck		() {};
 					
-	virtual int					GetGridWidth		() const {return m_iGridWidth;}
-	virtual int					GetGridHeight		() const {return m_iGridHeight;}
-	virtual int					GetXPos				() const {return m_iXPos;}
-	virtual int					GetYPos				() const {return m_iYPos;}
-
+			int					GetGridWidth		() const ;//{return m_iGridWidth;}
+			int					GetGridHeight		() const ;//{return m_iGridHeight;}
+			int					GetXPos				() const ;//{return m_iXPos;}
+			int					GetYPos				() const ;//{return m_iYPos;}
 	//---------------------------------------------------------------------
-	virtual	int					GetKillMsgXPos		() const {return m_iKillMsgXPos; }
-	virtual	int					GetKillMsgYPos		() const {return m_iKillMsgYPos; }
-	virtual	int					GetKillMsgWidth		() const {return m_iKillMsgWidth; }
-	virtual	int					GetKillMsgHeight	() const {return m_iKillMsgHeight; }
+			float				GetKillMsgXPos		() const ;
+			float				GetKillMsgYPos		() const ;
+			float				GetKillMsgWidth		() const ;
+			float				GetKillMsgHeight	() const ;
 	//---------------------------------------------------------------------
-
 			float				GetCondition		() const					{return m_fCondition;}
 			void				ChangeCondition		(float fDeltaCondition);
 
@@ -151,17 +147,8 @@ public:
 	virtual bool 				IsNecessaryItem	    (CInventoryItem* item)		{return false;};
 protected:
 
-	//вещь можно подобрать
-//	bool						m_bCanTake;
-	//вещью можно торговать
-//	bool						m_bCanTrade;
-
 	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
 	u32							m_slot;
-	// Может ли объект быть на поясе или в рюкзаке
-//	bool						m_belt, m_ruck;			
-//	bool						m_bRuckDefault;
-
 	// цена по умолчанию
 	u32							m_cost;
 	// вес объекта (без подсоединненых вещей)
@@ -170,26 +157,18 @@ protected:
 	//состояние вещи, 1.0 - полностью работоспособная
 	// 0 - испорченная
 	float						m_fCondition;
-	//флаг использования состояния для вещи
-//	bool						m_bUsingCondition;
 
-	int							m_iGridWidth;							//ширина в сетке инвенторя
-	int							m_iGridHeight;							//высота в сетке инвенторя
-	int 						m_iXPos;								//позиция X в сетке инвенторя
-	int 						m_iYPos;								//позиция Y в сетке инвенторя
-	//-----------------------------------------------------------------------------------------------
-	int							m_iKillMsgXPos;
-	int							m_iKillMsgYPos;
-	int							m_iKillMsgWidth;
-	int							m_iKillMsgHeight;
-	//-----------------------------------------------------------------------------------------------
+//	int							m_iGridWidth;							//ширина в сетке инвенторя
+//	int							m_iGridHeight;							//высота в сетке инвенторя
+//	int 						m_iXPos;								//позиция X в сетке инвенторя
+//	int 						m_iYPos;								//позиция Y в сетке инвенторя
+
 	// Тектс описания вещи
 	shared_str					m_Description;
 
 	ALife::_TIME_ID				m_dwItemRemoveTime;
 	ALife::_TIME_ID				m_dwItemIndependencyTime;
 
-//	bool						m_bAllowSprint;
 	float						m_fControlInertionFactor;
 
 	////////// network //////////////////////////////////////////////////
@@ -259,13 +238,10 @@ protected:
 
 	void						CalculateInterpolationParams();
 
-//protected:
-//	bool						m_useful_for_NPC;
-
 public:
-	IC		int					GetVolume				() const;
-	IC		int					GetHeight				() const;
-	IC		int					GetWidth				() const;
+//	IC		int					GetVolume				() const;
+//	IC		int					GetHeight				() const;
+//	IC		int					GetWidth				() const;
 	virtual BOOL				net_Spawn				(CSE_Abstract* DC);
 	virtual void				net_Destroy				();
 	virtual void				renderable_Render		();
@@ -301,13 +277,13 @@ private:
 public:
 	virtual CInventoryItem		*cast_inventory_item		()	{return this;}
 	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return 0;}
-	virtual CEatableItem		*cast_eatable_item	()	{return 0;}
-	virtual CWeapon				*cast_weapon		()	{return 0;}
-	virtual CFoodItem			*cast_food_item		()	{return 0;}
-	virtual CMissile			*cast_missile		()	{return 0;}
-	virtual CHudItem			*cast_hud_item		()	{return 0;}
-	virtual CWeaponAmmo			*cast_weapon_ammo	()	{return 0;}
-	virtual CGameObject			*cast_game_object	()  {return 0;};
+	virtual CEatableItem		*cast_eatable_item			()	{return 0;}
+	virtual CWeapon				*cast_weapon				()	{return 0;}
+	virtual CFoodItem			*cast_food_item				()	{return 0;}
+	virtual CMissile			*cast_missile				()	{return 0;}
+	virtual CHudItem			*cast_hud_item				()	{return 0;}
+	virtual CWeaponAmmo			*cast_weapon_ammo			()	{return 0;}
+	virtual CGameObject			*cast_game_object			()  {return 0;};
 
 
 };

@@ -9,7 +9,7 @@
 #include "eatable_item.h"
 #include "script_engine.h"
 #include "xrmessages.h"
-#include "game_cl_base.h"
+//#include "game_cl_base.h"
 #include "xr_level_controller.h"
 #include "level.h"
 #include "ai_space.h"
@@ -17,13 +17,11 @@
 
 using namespace InventoryUtilities;
 
-// CInventorySlot class //////////////////////////////////////////////////////////////////////////
-
 CInventorySlot::CInventorySlot() 
 {
-	m_pIItem = NULL;
-	m_bCanBeActivated = true;
-	m_bUsable = true;
+	m_pIItem				= NULL;
+	m_bCanBeActivated		= true;
+	m_bUsable				= true;
 }
 
 CInventorySlot::~CInventorySlot() 
@@ -38,9 +36,9 @@ CInventory::CInventory()
 {
 	m_fTakeDist = pSettings->r_float("inventory","take_dist"); // 2.f;
 	m_fMaxWeight = pSettings->r_float("inventory","max_weight"); // 40.f;
-	m_iMaxRuck = pSettings->r_s32("inventory","max_ruck"); // 50;
+//	m_iMaxRuck = pSettings->r_s32("inventory","max_ruck"); // 50;
 	m_iMaxBelt = pSettings->r_s32("inventory","max_belt"); // 18;
-	//if (Game().type != GAME_SINGLE) m_iMaxBelt+=2;
+	if ( !IsGameTypeSingle() ) m_iMaxBelt+=2;
 	
 	u32 l_slotsNum = pSettings->r_s32("inventory","slots"); // 7;			// 6 слотов оружия и слот одежды/защиты.
 	m_slots.resize(l_slotsNum);
@@ -89,7 +87,7 @@ void CInventory::Clear()
 	m_dwModifyFrame = Device.dwFrame;
 
 	//for multiplayer modes
-	if (GameID() != GAME_SINGLE) m_iMaxBelt+=2;
+//	if (GameID() != GAME_SINGLE) m_iMaxBelt+=2;
 	
 	m_all.clear();
 	m_ruck.clear();
@@ -388,14 +386,14 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	VERIFY(pIItem);
 	
 #ifdef _DEBUG
-	if (GameID() == GAME_SINGLE && bDebug)
+	if (IsGameTypeSingle() && bDebug)
 		Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		
-	if (GameID() != GAME_SINGLE)
-	{
+////	if (GameID() != GAME_SINGLE)
+///	{
 ///		bNotActivate = true;
-	}
+///	}
 
 	if(!CanPutInSlot(pIItem)) 
 	{
@@ -1054,31 +1052,6 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 }
 
 
-u32 CInventory::RuckWidth() const
-{
-	return RUCK_WIDTH;
-}
-
-u32 CInventory::RuckHeight() const
-{
-	return RUCK_HEIGHT;
-}
-
-u32 CInventory::GetMaxVolume() const
-{
-	return RUCK_WIDTH*RUCK_HEIGHT + BeltWidth();
-}
-
-u32 CInventory::TotalVolume() const
-{
-	u32 total_volume = 0;
-
-	for(TIItemContainer::const_iterator it = m_all.begin(); m_all.end() != it; ++it)
-		total_volume += (*it)->GetVolume();
-
-	return total_volume;
-}
-
 u32  CInventory::BeltWidth() const
 {
 	return m_iMaxBelt;
@@ -1133,7 +1106,7 @@ void  CInventory::AddAvailableItems(TIItemContainer& items_container, bool for_t
 
 bool CInventory::isBeautifulForActiveSlot	(CInventoryItem *pIItem)
 {
-	if (GameID() != GAME_SINGLE) return (true);
+	if (!IsGameTypeSingle()) return (true);
 	TISlotArr::iterator it =  m_slots.begin();
 	for( ; it!=m_slots.end(); ++it) {
 		if ((*it).m_pIItem && (*it).m_pIItem->IsNecessaryItem(pIItem))

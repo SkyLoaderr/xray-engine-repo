@@ -138,16 +138,12 @@ public:
 	float				GetMaxWeight				() const				{return m_fMaxWeight;}
 	void				SetMaxWeight				(float weight)			{m_fMaxWeight = weight;}
 
-	u32					GetMaxRuck					() const				{return m_iMaxRuck;}
-	void				SetMaxRuck					(u32 max_ruck)			{m_iMaxRuck = max_ruck;}
-	u32					GetMaxBelt					() const				{return m_iMaxBelt;}
+//	u32					GetMaxRuck					() const				{return m_iMaxRuck;}
+//	void				SetMaxRuck					(u32 max_ruck)			{m_iMaxRuck = max_ruck;}
+//	u32					GetMaxBelt					() const				{return m_iMaxBelt;}
 
-	u32					RuckWidth					() const;
-	u32					RuckHeight					() const;
 	u32					BeltWidth					() const;
 	
-	u32					TotalVolume					() const;
-	u32					GetMaxVolume				() const;
 
 	inline	CInventoryOwner*GetOwner				() const				{ return m_pOwner; }
 	
@@ -186,7 +182,7 @@ protected:
 	float m_fTotalWeight;
 
 	// Максимальное кол-во объектов в рюкзаке и 
-	u32 m_iMaxRuck;
+//	u32 m_iMaxRuck;
 	//на поясе
 	u32 m_iMaxBelt;	
 	// Максимальное расстояние на котором можно подобрать объект
