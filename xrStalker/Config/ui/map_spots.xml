@@ -147,8 +147,14 @@
 		<level_map spot="debug_stalker_spot"></level_map>
 	</debug_stalker>
 	
+	<!--
 	<debug_stalker_spot x="0" y="0" width="60" height="60" alignment="c">
 		<texture x="730" y="394" width="60" height="60" r=128>ui\ui_common</texture>
 	</debug_stalker_spot>	
+	-->
 
+	<debug_stalker_spot height="3" alignment="c"> 
+		<texture r="50" g="255" b="0">ui\hud_map_point</texture>
+	</debug_stalker_spot>
+	
 </map_spots>
