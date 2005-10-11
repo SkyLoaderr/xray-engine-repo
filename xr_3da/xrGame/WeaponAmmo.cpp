@@ -23,33 +23,33 @@ CCartridge::CCartridge()
 
 void CCartridge::Load(LPCSTR section) 
 {
-	m_ammoSect = section;
-	m_kDist = pSettings->r_float(section, "k_dist");
-	m_kDisp = pSettings->r_float(section, "k_disp");
-	m_kHit = pSettings->r_float(section, "k_hit");
-	m_kImpulse = pSettings->r_float(section, "k_impulse");
-	m_kPierce = pSettings->r_float(section, "k_pierce");
-	m_flags.set(cfTracer, pSettings->r_bool(section, "tracer"));
-	m_buckShot = pSettings->r_s32(section, "buck_shot");
-	m_impair = pSettings->r_float(section, "impair");
-	fWallmarkSize = pSettings->r_float(section, "wm_size");
+	m_ammoSect				= section;
+	m_kDist					= pSettings->r_float(section, "k_dist");
+	m_kDisp					= pSettings->r_float(section, "k_disp");
+	m_kHit					= pSettings->r_float(section, "k_hit");
+	m_kImpulse				= pSettings->r_float(section, "k_impulse");
+	m_kPierce				= pSettings->r_float(section, "k_pierce");
+	m_flags.set				(cfTracer, pSettings->r_bool(section, "tracer"));
+	m_buckShot				= pSettings->r_s32(section, "buck_shot");
+	m_impair				= pSettings->r_float(section, "impair");
+	fWallmarkSize			= pSettings->r_float(section, "wm_size");
 
-	m_flags.set(cfCanBeUnlimited | cfRicochet, TRUE);
+	m_flags.set				(cfCanBeUnlimited | cfRicochet, TRUE);
 	if(pSettings->line_exist(section,"can_be_unlimited"))
 		m_flags.set(cfCanBeUnlimited, pSettings->r_bool(section, "can_be_unlimited"));
 
 	if(pSettings->line_exist(section,"explosive"))
-		m_flags.set(cfExplosive, pSettings->r_bool(section, "explosive"));
+		m_flags.set			(cfExplosive, pSettings->r_bool(section, "explosive"));
 
-	bullet_material_idx =  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+	bullet_material_idx		=  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	VERIFY	(u16(-1)!=bullet_material_idx);
 	VERIFY	(fWallmarkSize>0);
 }
 
 CWeaponAmmo::CWeaponAmmo(void) 
 {
-	m_weight = .2f;
-	m_belt = true;
+	m_weight				= .2f;
+	m_flags.set				(Fbelt, TRUE);
 }
 
 CWeaponAmmo::~CWeaponAmmo(void)
@@ -58,76 +58,58 @@ CWeaponAmmo::~CWeaponAmmo(void)
 
 void CWeaponAmmo::Load(LPCSTR section) 
 {
-	// verify class
-	LPCSTR Class = pSettings->r_string(section,"class");
-	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==CLS_ID);
+	inherited::Load			(section);
 
-	inherited::Load(section);
+	m_kDist					= pSettings->r_float(section, "k_dist");
+	m_kDisp					= pSettings->r_float(section, "k_disp");
+	m_kHit					= pSettings->r_float(section, "k_hit");
+	m_kImpulse				= pSettings->r_float(section, "k_impulse");
+	m_kPierce				= pSettings->r_float(section, "k_pierce");
+	m_tracer				= !!pSettings->r_bool(section, "tracer");
+	m_buckShot				= pSettings->r_s32(section, "buck_shot");
+	m_impair				= pSettings->r_float(section, "impair");
+	fWallmarkSize			= pSettings->r_float(section,"wm_size");
+	R_ASSERT				(fWallmarkSize>0);
 
-	m_kDist = pSettings->r_float(section, "k_dist");
-	m_kDisp = pSettings->r_float(section, "k_disp");
-	m_kHit = pSettings->r_float(section, "k_hit");
-	m_kImpulse = pSettings->r_float(section, "k_impulse");
-	m_kPierce = pSettings->r_float(section, "k_pierce");
-	m_tracer = !!pSettings->r_bool(section, "tracer");
-	m_buckShot = pSettings->r_s32(section, "buck_shot");
-	m_impair = pSettings->r_float(section, "impair");
-	fWallmarkSize = pSettings->r_float(section,"wm_size");
-	R_ASSERT(fWallmarkSize>0);
-
-	m_boxSize = (u16)pSettings->r_s32(section, "box_size");
-	m_boxCurr = m_boxSize;	
+	m_boxSize				= (u16)pSettings->r_s32(section, "box_size");
+	m_boxCurr				= m_boxSize;	
 }
 
 BOOL CWeaponAmmo::net_Spawn(CSE_Abstract* DC) 
 {
-	BOOL bResult = inherited::net_Spawn	(DC);
-	CSE_Abstract					*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeItemAmmo					*l_pW	= smart_cast<CSE_ALifeItemAmmo*>(e);
-	m_boxCurr = l_pW->a_elapsed;
+	BOOL bResult			= inherited::net_Spawn	(DC);
+	CSE_Abstract	*e		= (CSE_Abstract*)(DC);
+	CSE_ALifeItemAmmo* l_pW	= smart_cast<CSE_ALifeItemAmmo*>(e);
+	m_boxCurr				= l_pW->a_elapsed;
 	
 	if(m_boxCurr > m_boxSize)
-		l_pW->a_elapsed = m_boxCurr = m_boxSize;
+		l_pW->a_elapsed		= m_boxCurr = m_boxSize;
 
-	return bResult;
+	return					bResult;
 }
 
 void CWeaponAmmo::net_Destroy() 
 {
-	inherited::net_Destroy();
+	inherited::net_Destroy	();
 }
 
 void CWeaponAmmo::OnH_B_Chield() 
 {
-	inherited::OnH_B_Chield		();
+	inherited::OnH_B_Chield	();
 }
 
 void CWeaponAmmo::OnH_B_Independent() 
 {
 	if(!Useful()) {
 		
-		//Msg				("ge_destroy: [%d] - %s",ID(),*cName());
 		if (Local()){
 			DestroyObject	();
-//			NET_Packet		P;
-//			u_EventGen		(P,GE_DESTROY,ID());
-//			u_EventSend	(P);
 		}
 		m_ready_to_destroy	= true;
 	}
 	inherited::OnH_B_Independent();
 }
 
-/*
-const char* CWeaponAmmo::Name() 
-{
-	if(m_name) strcpy(m_tmpName, m_name); else m_tmpName[0] = 0;
-	char l_tmp[20]; sprintf(l_tmp, " %d/%d", m_boxCurr, m_boxSize);
-	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
-	return m_tmpName;
-}
-*/
 
 bool CWeaponAmmo::Useful() const
 {
@@ -195,16 +177,16 @@ void CWeaponAmmo::UpdateCL()
 
 void CWeaponAmmo::net_Export(NET_Packet& P) 
 {
-	inherited::net_Export(P);
+	inherited::net_Export	(P);
 	
-	P.w_u16(m_boxCurr);
+	P.w_u16					(m_boxCurr);
 }
 
 void CWeaponAmmo::net_Import(NET_Packet& P) 
 {
-	inherited::net_Import(P);
+	inherited::net_Import	(P);
 
-	P.r_u16(m_boxCurr);
+	P.r_u16					(m_boxCurr);
 }
 
 CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) const

@@ -8,6 +8,7 @@ class CUIStatic;
 class CUIButton;
 struct SGameTaskObjective;
 class CUIEventsWnd;
+class CUIEditBoxEx;
 class CUIEditBox;
 
 class CUITaskItem :public CUIListItem, public CUIWndCallback
@@ -117,11 +118,9 @@ class CUIUserTaskEditWnd : public CUIDialogWnd, public CUIWndCallback
 	CUI3tButton*			m_btnOk;
 	CUI3tButton*			m_btnCancel;
 	CUIFrameWindow*			m_background;
-	CUIFrameWindow*			m_background_1;
-	CUIFrameWindow*			m_background_2;
 
-	CUIEditBox*				m_editCaption;
-	CUIEditBox*				m_editDescription;
+	CUIEditBox*			m_editCaption;
+	CUIEditBoxEx*			m_editDescription;
 protected:
 			void			OnOk					();
 			void			OnCancel				();

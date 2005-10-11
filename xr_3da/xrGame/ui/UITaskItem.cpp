@@ -7,6 +7,7 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include "UIEventsWnd.h"
+#include "UIEditBoxEx.h"
 #include "UIEditBox.h"
 #include "UIInventoryUtilities.h"
 #include "../map_location.h"
@@ -384,16 +385,15 @@ void CUIUserTaskItem::SetGameTask				(CGameTask* gt, int obj_idx)
 	m_image->SetStretchTexture	(true);
 
 	m_captionStatic->SetText					(*stbl(gt->m_Title));
+	m_captionStatic->AdjustHeightToText			();
+
 	m_descriptionStatic->SetText				(*stbl(obj->description));
 	m_descriptionStatic->AdjustHeightToText		();
-/*
+
 	float h = _max(	m_image->GetWndPos().y+m_image->GetHeight(),
 					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
-*/
-	float h = m_descriptionStatic->GetWndPos().y + m_descriptionStatic->GetHeight() + 10.0f;
 
-	SetHeight									(h);
-
+	SetHeight									(h+10.0f);
 }
 
 void CUIUserTaskItem::OnShowPointerClicked	()
@@ -479,11 +479,6 @@ void CUIUserTaskEditWnd::Init					()
 	m_background		= xr_new<CUIFrameWindow>();		m_background->SetAutoDelete(true);
 	AttachChild			(m_background);
 	
-	m_background_1		= xr_new<CUIFrameWindow>();		m_background_1->SetAutoDelete(true);
-	m_background->AttachChild(m_background_1);
-	m_background_2		= xr_new<CUIFrameWindow>();		m_background_2->SetAutoDelete(true);
-	m_background->AttachChild(m_background_2);
-
 	m_btnOk				= xr_new<CUI3tButton>();	m_btnOk->SetAutoDelete(true);		m_background->AttachChild(m_btnOk);
 	m_btnOk->SetWindowName("m_btnOk");
 	Register			(m_btnOk);
@@ -494,18 +489,16 @@ void CUIUserTaskEditWnd::Init					()
 	Register			(m_btnCancel);
 	AddCallback			(m_btnCancel->WindowName(),BUTTON_CLICKED,boost::bind(&CUIUserTaskEditWnd::OnCancel,this));
 
-	m_editCaption		= xr_new<CUIEditBox>();		m_editCaption->SetAutoDelete(true);		m_background_1->AttachChild(m_editCaption);
-	m_editDescription	= xr_new<CUIEditBox>();		m_editDescription->SetAutoDelete(true); m_background_2->AttachChild(m_editDescription);
+	m_editCaption		= xr_new<CUIEditBox>();			m_editCaption->SetAutoDelete(true);		m_background->AttachChild(m_editCaption);
+	m_editDescription	= xr_new<CUIEditBoxEx>();		m_editDescription->SetAutoDelete(true); m_background->AttachChild(m_editDescription);
 
 
 	CUIXmlInit xml_init;
 	xml_init.InitWindow				(uiXml,"edit_user_item",0,								this);
 	xml_init.InitFrameWindow		(uiXml,"edit_user_item:background",0,					m_background);
-	xml_init.InitFrameWindow		(uiXml,"edit_user_item:background:background_1",0,		m_background_1);
-	xml_init.InitFrameWindow		(uiXml,"edit_user_item:background:background_2",0,		m_background_2);
 	xml_init.Init3tButton			(uiXml,"edit_user_item:background:ok_btn",0,			m_btnOk);
 	xml_init.Init3tButton			(uiXml,"edit_user_item:background:cancel_btn",0,		m_btnCancel);
 	xml_init.InitEditBox			(uiXml,"edit_user_item:background:edit_caption",0,		m_editCaption);
-	xml_init.InitEditBox			(uiXml,"edit_user_item:background:edit_description",0,	m_editDescription);
+	xml_init.InitEditBoxEx			(uiXml,"edit_user_item:background:edit_description",0,	m_editDescription);
 
 }

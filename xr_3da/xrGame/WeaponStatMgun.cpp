@@ -10,6 +10,7 @@
 #include "camerafirsteye.h"
 #include "xr_level_controller.h"
 #include "game_object_space.h"
+#include "level.h"
 
 void 	CWeaponStatMgun::BoneCallbackX		(CBoneInstance *B)
 {

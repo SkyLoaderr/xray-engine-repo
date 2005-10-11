@@ -23,6 +23,7 @@
 //#include "UIFrameLineWnd.h"
 #include "UILabel.h"
 #include "UIEditBox.h"
+#include "UIEditBoxEx.h"
 #include "UITextBanner.h"
 #include "UIMultiTextStatic.h"
 #include "UIAnimatedStatic.h"
@@ -724,7 +725,45 @@ bool CUIXmlInit::InitLabel(CUIXml& xml_doc, const char* path, int index, CUILabe
 	return true;
 }
 
+bool CUIXmlInit::InitCustomEdit(CUIXml& xml_doc, const char* path, int index, CUICustomEdit* pWnd){
+	InitWindow(xml_doc, path, index, pWnd);
+
+	string256 foo;	
+	InitText(xml_doc, strconcat(foo,path,":text"), index, (IUITextControl*)pWnd);
+	
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:e"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:d"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:cursor"),index))
+		pWnd->SetCursorColor(GetARGB(xml_doc,foo,index));
+
+	if (xml_doc.ReadAttribInt(path,index,"db_click",0))
+		pWnd->SetDbClickMode();
+
+	if (xml_doc.ReadAttribInt(path,index,"numonly",0))
+	{
+        pWnd->SetNumbersOnly(true);
+		if (xml_doc.ReadAttribInt(path,index,"float",0))
+			pWnd->SetFloatNumbers(true);
+	}
+	if (xml_doc.ReadAttribInt(path, index, "password",0))
+		pWnd->SetPasswordMode();
+
+	return true;
+
+}
+bool CUIXmlInit::InitEditBoxEx(CUIXml& xml_doc, const char* path, int index, CUIEditBoxEx* pWnd){
+	InitCustomEdit(xml_doc, path, index, pWnd);
+	InitTexture(xml_doc, path, index, pWnd);
+	return true;
+}
+
 bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEditBox* pWnd){
+	InitCustomEdit(xml_doc, path, index, pWnd);
+	InitTexture(xml_doc, path, index, pWnd);
+	InitOptionsItem(xml_doc, path, index, pWnd);
+/*
 	InitWindow(xml_doc, path, index, pWnd);
 	InitTexture(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
@@ -750,7 +789,7 @@ bool CUIXmlInit::InitEditBox(CUIXml& xml_doc, const char* path, int index, CUIEd
 	}
 	if (xml_doc.ReadAttribInt(path, index, "password",0))
 		pWnd->SetPasswordMode();
-
+*/
 	return true;
 }
 
