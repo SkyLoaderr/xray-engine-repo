@@ -139,7 +139,7 @@ void	CLevel::ProcessGameSpawns	()
 		CSE_Abstract*	E			= game_spawn_queue.front();
 
 #ifdef DEBUG
-		u32				E_mem;
+		u32							E_mem = 0;
 		if (g_bMEMO)	{
 			E_mem = Memory.mem_usage();	
 			Memory.stat_calls = 0;
