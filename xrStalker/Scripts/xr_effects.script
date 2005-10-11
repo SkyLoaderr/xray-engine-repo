@@ -1207,6 +1207,7 @@ function aes_earthshake (npc)
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 	local ce = path_cam_effector("camera_effects\\earthquake.anm")
 	level.add_cam_effector(ce)	
+    set_postprocess ("scripts\\earthshake.ltx")
 end
 
 -------------------------------------------------------------------------------------
