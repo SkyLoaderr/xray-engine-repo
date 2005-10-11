@@ -42,6 +42,7 @@
 	<info_portion id="tutorial_wounded_end"></info_portion>
 	<info_portion id="tutorial_end"></info_portion>
 	<info_portion id="tutorial_wounded_volk_greet"></info_portion>
+	<info_portion id="esc_wolf_say"></info_portion>
 	<info_portion id="esc_serious_talk"></info_portion>
 
 	<!-- Fox -->
