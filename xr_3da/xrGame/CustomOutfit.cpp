@@ -19,13 +19,12 @@ CCustomOutfit::CCustomOutfit()
 {
 	m_slot = OUTFIT_SLOT;
 
-	m_bUsingCondition = true;
+	m_flags.set(FUsingCondition, TRUE);
 
 	m_HitTypeProtection.resize(ALife::eHitTypeMax);
 	for(int i=0; i<ALife::eHitTypeMax; i++)
-	{
 		m_HitTypeProtection[i] = 1.0f;
-	}
+
 	m_boneProtection = xr_new<SBoneProtections>();
 }
 
@@ -111,7 +110,6 @@ void CCustomOutfit::Hit(float P, Fvector &dir,
 
 void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
 {
-	if(!m_bUsingCondition) return;
 	hit_power *= m_HitTypeK[hit_type];
 	ChangeCondition(-hit_power);
 }

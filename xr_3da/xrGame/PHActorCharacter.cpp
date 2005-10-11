@@ -7,6 +7,8 @@
 #include "ai/stalker/ai_stalker.h"
 #include "Actor.h"
 #include "GameMtlLib.h"
+#include "level.h"
+
 //const float JUMP_HIGHT=0.5;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
@@ -35,7 +37,7 @@ void CPHActorCharacter::Create(dVector3 sizes)
 {
 	if(b_exist) return;
 	inherited::Create(sizes);
-	if(GameID()!=GAME_SINGLE)
+	if(!IsGameTypeSingle())
 	{
 		ClearRestrictors();
 	}
@@ -227,7 +229,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 	bool b_restrictor=(r!=end(m_restrictors));
 	if((material_1&&material_1->Flags.test(SGameMtl::flActorObstacle))||(material_2&&material_2->Flags.test(SGameMtl::flActorObstacle)))
 		do_collide=true;
-	if(GameID()==GAME_SINGLE)
+	if(IsGameTypeSingle())
 	{
 	
 		if(b_restrictor)

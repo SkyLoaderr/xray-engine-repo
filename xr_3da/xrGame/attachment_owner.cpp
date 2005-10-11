@@ -219,7 +219,7 @@ CAttachableItem* CAttachmentOwner::attachedItem			(shared_str& section) const
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I)
-		if (!xr_strcmp((*I)->cNameSect(), section) && !(*I)->m_drop)
+		if (!xr_strcmp((*I)->cNameSect(), section) && !(*I)->GetDrop())
 			return		(*I);
 
 	return				NULL;

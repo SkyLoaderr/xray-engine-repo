@@ -22,24 +22,21 @@
 
 CPda::CPda(void)						
 {										
-	m_fRadius = 10.0f;
-
 	//специальный слот для PDA
-	m_slot = PDA_SLOT;
+	m_slot					= PDA_SLOT;
 	//или в рюкзак, если чужой PDA	
-	m_ruck = true;
+	m_flags.set				(Fruck, TRUE);
 
 	m_idOriginalOwner		= 0xffff;
 	m_SpecificChracterOwner = NULL;
-//	m_InfoPortion			= NULL;
 
 
 	m_bPassiveMode = false;
 	
 	//включим, только когда присоединим к первому владельцу
-	TurnOff();
+	TurnOff					();
 
-	m_bNewMessage = false;
+	m_bNewMessage			= false;
 }
 
 CPda::~CPda(void) 
@@ -339,47 +336,6 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 
 	inherited::OnEvent(P,type);
 }
-
-bool CPda::NeedToAnswer(u32 pda_ID)
-{
-	if(m_mapPdaLog.find(pda_ID) == m_mapPdaLog.end()) 
-		return false;
-
-	if(m_mapPdaLog[pda_ID].front().receive	&&
-		m_mapPdaLog[pda_ID].front().question)
-		return true;
-	else
-		return false;
-}
-
-//если последнее сообщение было наше и это 
-//был вопрос, то ждем ответа
-bool CPda::WaitForReply(u32 pda_ID)
-{
-	if(m_mapPdaLog.find(pda_ID) == m_mapPdaLog.end()) 
-		return false;
-
-	if(!m_mapPdaLog[pda_ID].front().receive	&&
-		m_mapPdaLog[pda_ID].front().question)
-		return true;
-	else
-		return false;
-
-}
-
-/*
-void		CPda::SetInfoPortion (INFO_ID info)
-{
-	CSE_Abstract* e_entity		= Level().Server->game->get_entity_from_eid	(ID()); VERIFY(e_entity);
-	CSE_ALifeItemPDA* pda		= smart_cast<CSE_ALifeItemPDA*>(e_entity);
-	if(!pda) return;
-	pda->m_info_portion = info;
-	m_InfoPortion = info;
-}
-INFO_ID	CPda::GetInfoPortion ()
-{
-	return m_InfoPortion;
-}*/
 
 
 LPCSTR		CPda::Name				()

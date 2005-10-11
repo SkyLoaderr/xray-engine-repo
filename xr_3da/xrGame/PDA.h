@@ -65,11 +65,6 @@ public:
 
 	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_id);
 
-	virtual bool IsNewMessage(){return m_bNewMessage;}
-	virtual void NoNewMessage(){m_bNewMessage = false;}
-
-	virtual bool NeedToAnswer(u32 pda_ID);
-	virtual bool WaitForReply(u32 pda_ID);
 
 			xr_vector<CObject*>				ActiveContacts			();
 			void							ActiveContacts			(xr_vector<CPda*>& res);

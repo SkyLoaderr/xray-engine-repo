@@ -816,6 +816,11 @@ u32	GameID()
 	return Game().Type();
 }
 
+bool	IsGameTypeSingle()
+{
+	return (GameID()==GAME_SINGLE);
+}
+
 #ifdef DEBUG_PRECISE_PATH
 #include "path_manager_level_precise.h"
 #include "graph_engine.h"

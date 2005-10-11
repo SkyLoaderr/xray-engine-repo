@@ -24,7 +24,7 @@ static const Fvector	TORCH_OFFSET			= {-0.2f,+0.1f,-0.3f};
 CTorch::CTorch(void) 
 {
 	m_weight					= .5f;
-	m_belt						= true;
+	m_flags.set					(Fbelt, TRUE);
 	light_render				= ::Render->light_create();
 	light_render->set_type		(IRender_Light::SPOT);
 	light_render->set_shadow	(true);

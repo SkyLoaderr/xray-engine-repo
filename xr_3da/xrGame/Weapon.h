@@ -1,15 +1,9 @@
 // Weapon.h: interface for the CWeapon class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)
-#define AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_
 #pragma once
 
 #include "PhysicsShell.h"
 #include "weaponammo.h"
 #include "UIStaticItem.h"
-#include "ParticlesObject.h"
 #include "PHShellCreator.h"
 
 #include "ShootingObject.h"
@@ -24,13 +18,11 @@ class ENGINE_API CMotionDef;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeItemWeaponAmmo;
 class CWeaponMagazined;
+class CParticlesObject;
 
 class CWeapon : public CHudItemObject,
 				public CShootingObject
 {
-//////////////////////////////////////////////////////////////////////////
-//  General
-//////////////////////////////////////////////////////////////////////////
 private:
 	typedef CHudItemObject inherited;
 
@@ -43,10 +35,10 @@ public:
 
 	virtual BOOL			net_Spawn			(CSE_Abstract* DC);
 	virtual void			net_Destroy			();
-	virtual void			net_Export			(NET_Packet& P);	// export to server
-	virtual void			net_Import			(NET_Packet& P);	// import from server
-	virtual CWeapon			*cast_weapon			()		 {return this;}
-	virtual CWeaponMagazined*cast_weapon_magazined	()		 {return 0;}
+	virtual void			net_Export			(NET_Packet& P);
+	virtual void			net_Import			(NET_Packet& P);
+	virtual CWeapon			*cast_weapon			()					{return this;}
+	virtual CWeaponMagazined*cast_weapon_magazined	()					{return 0;}
 
 
 	//serialization
@@ -121,7 +113,6 @@ public:
 //////////////////////////////////////////////////////////////////////////
 public:
 	virtual bool			Action(s32 cmd, u32 flags);
-//	virtual LPCSTR			Name();
 
 //////////////////////////////////////////////////////////////////////////
 //  Weapon state
@@ -262,15 +253,6 @@ public:
 			bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
 
 			void			LoadZoomOffset		(LPCSTR section, LPCSTR prefix);
-
-//////////////////////////////////////////////////////////////////////////
-//  Weapon generic logic
-//////////////////////////////////////////////////////////////////////////
-
-
-//////////////////////////////////////////////////////////////////////////
-//  Position and oritentation
-//////////////////////////////////////////////////////////////////////////
 
 public:
     virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
@@ -470,8 +452,8 @@ public:
 	CCartridge				m_DefaultCartridge;
 	float					m_fCurrentCartirdgeDisp;
 
-	IC	bool				unlimited_ammo() { return (GameID()!=GAME_ARTEFACTHUNT) && psActorFlags.test(AF_UNLIMITEDAMMO) && m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); };
-	IC	bool				can_be_strapped	() const {return m_can_be_strapped;};
+		bool				unlimited_ammo				();
+	IC	bool				can_be_strapped				() const {return m_can_be_strapped;};
 
 protected:
 	u32						m_ef_main_weapon_type;
@@ -489,5 +471,3 @@ protected:
 public:
 	virtual	void			modify_holder_params		(float &range, float &fov) const;
 };
-
-#endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

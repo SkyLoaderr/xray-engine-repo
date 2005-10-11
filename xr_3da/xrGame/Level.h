@@ -300,6 +300,8 @@ add_to_type_list(CLevel)
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return *Level().game;					}
 	u32					GameID();
+
+
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
 
 #ifdef DEBUG
@@ -349,6 +351,8 @@ IC CPHCommander & CLevel::ph_commander_scripts()
 //by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}
 IC bool					OnClient()	{ return Level().IsClient();				}
+
+	bool				IsGameTypeSingle();
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;

@@ -114,10 +114,10 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	VERIFY(pIItem->m_pInventory==NULL);
 	VERIFY(CanTakeItem(pIItem));
 	
-	pIItem->m_pInventory = this;
-	pIItem->m_drop = false;
+	pIItem->m_pInventory	= this;
+	pIItem->SetDrop			(FALSE);
 
-	m_all.push_back(pIItem);
+	m_all.push_back			(pIItem);
 
 	if(!strict_placement)
 		pIItem->m_eItemPlace = eItemPlaceUndefined;
@@ -722,9 +722,9 @@ void CInventory::Update()
 		{
 			PIItem pIItem = *it;
 			R_ASSERT(pIItem);			
-			if(pIItem->m_drop)
+			if( pIItem->GetDrop() )
 			{
-				pIItem->m_drop = false;
+				pIItem->SetDrop(FALSE);
 				if(pIItem->object().H_Parent())	{
 					NET_Packet P;
 					pIItem->object().u_EventGen(P, GE_OWNERSHIP_REJECT, 
@@ -743,8 +743,8 @@ void CInventory::Update()
 	for(i=0; i<(int)m_slots.size(); ++i)	{
 		PIItem pIItem = m_slots[i].m_pIItem;
 
-		if(pIItem && pIItem->m_drop)	{
-			pIItem->m_drop = false;			 
+		if(pIItem && pIItem->GetDrop())	{
+			pIItem->SetDrop		(FALSE);			 
 			
 			if(pIItem->object().H_Parent())
 			{

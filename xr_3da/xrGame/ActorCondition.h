@@ -19,40 +19,40 @@ private:
 	typedef CEntityCondition inherited;
 
 private:
-	CActor*						m_object;
-	CScriptCallbackEx<LPCSTR>*	m_can_sleep_callback;
-	CScriptCallbackEx<LPCSTR>*	m_get_sleep_video_name_callback;
+	CActor*											m_object;
+	CScriptCallbackEx<LPCSTR>*						m_can_sleep_callback;
+	CScriptCallbackEx<LPCSTR>*						m_get_sleep_video_name_callback;
 public:
-						CActorCondition		(CActor *object);
-	virtual				~CActorCondition	(void);
+						CActorCondition				(CActor *object);
+	virtual				~CActorCondition			(void);
 
-	virtual void		LoadCondition		(LPCSTR section);
-	virtual void		reinit				();
+	virtual void		LoadCondition				(LPCSTR section);
+	virtual void		reinit						();
 
-	virtual CWound*		ConditionHit		(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
-	virtual void		UpdateCondition		();
+	virtual CWound*		ConditionHit				(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual void		UpdateCondition				();
 
 
-	void				ProcessSleep			(ALife::_TIME_ID sleep_time);
-	bool				IsSleeping				() {return m_bIsSleeping;}
+	void				ProcessSleep				(ALife::_TIME_ID sleep_time);
+	bool				IsSleeping					() {return m_bIsSleeping;}
 
 	// sleeping
-	bool				AllowSleep					();
+	bool						AllowSleep			();
 	ACTOR_DEFS::EActorSleep		CanSleepHere		();
 	ACTOR_DEFS::EActorSleep		GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
 			void				Awoke				();
 
 	// хромание при потере сил и здоровья
-	virtual	bool		IsLimping			() const;
-	virtual bool		IsCantWalk			() const;
-	virtual bool		IsCantSprint		() const;
+	virtual	bool		IsLimping					() const;
+	virtual bool		IsCantWalk					() const;
+	virtual bool		IsCantSprint				() const;
 
-			void		ConditionJump		(float weight);
-			void		ConditionWalk		(float weight, bool accel, bool sprint);
-			void		ConditionStand		(float weight);
+			void		ConditionJump				(float weight);
+			void		ConditionWalk				(float weight, bool accel, bool sprint);
+			void		ConditionStand				(float weight);
 
 public:
-	IC		CActor		&object				() const
+	IC		CActor		&object						() const
 	{
 		VERIFY			(m_object);
 		return			(*m_object);

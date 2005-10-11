@@ -9,7 +9,7 @@
 #include "inventory.h"
 #include "weapon.h"
 #include "map_manager.h"
-
+#include "level.h"
 
 
 static const float VEL_MAX		= 10.f;
@@ -182,7 +182,7 @@ static	u16 BestWeaponSlots [] = {
 };
 void CActor::SelectBestWeapon	()
 {
-	if (GameID() == GAME_SINGLE) return;
+	if ( IsGameTypeSingle() ) return;
 	for (int i=0; i<4; i++)
 	{
 		if (inventory().m_slots[BestWeaponSlots[i]].m_pIItem)

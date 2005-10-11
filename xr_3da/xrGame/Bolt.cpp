@@ -6,11 +6,10 @@
 
 CBolt::CBolt(void) 
 {
-	//m_belt = true;
-	m_weight = .1f;
-	m_slot = BOLT_SLOT;
-	m_ruck = false;
-	m_thrower_id=u16(-1);
+	m_weight					= .1f;
+	m_slot						= BOLT_SLOT;
+	m_flags.set					(Fruck, FALSE);
+	m_thrower_id				=u16(-1);
 }
 
 CBolt::~CBolt(void) 

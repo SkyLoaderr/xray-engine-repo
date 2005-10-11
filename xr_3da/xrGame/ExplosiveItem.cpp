@@ -20,7 +20,7 @@ void CExplosiveItem::Load(LPCSTR section)
 {
 	inherited::Load							(section);
 	CExplosive::Load						(section);
-	m_bUsingCondition						= true;
+	m_flags.set								(FUsingCondition, TRUE);
 }
 
 void CExplosiveItem::net_Destroy()

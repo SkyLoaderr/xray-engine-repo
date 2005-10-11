@@ -20,42 +20,43 @@
 #include "string_table.h"
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
-//#include "HUDManager.h"
-//#include "UIGameCustom.h"
 
 #define ITEM_REMOVE_TIME		30000
 
 CInventoryItem::CInventoryItem() 
 {
 
-	m_weight = 100.f;
-	m_slot = NO_ACTIVE_SLOT;
-	m_belt = false;
-	m_pInventory = NULL;
-	m_drop = false;
-	m_ruck = true;
-	m_bRuckDefault = true;
+	m_weight			= 100.f;
+	m_slot				= NO_ACTIVE_SLOT;
+	m_flags.set			(Fbelt,FALSE);
+//	m_belt				= false;
+	m_flags.set			(Fdrop,FALSE);
+//	m_drop				= false;
+	m_flags.set			(Fruck,TRUE);
+//	m_ruck				= true;
+	m_flags.set			(FRuckDefault,TRUE);
+//	m_bRuckDefault		= true;
+	m_pInventory		= NULL;
 
-	m_bCanTake = true;
-	m_bCanTrade = true;
+	m_flags.set			(FCanTake,TRUE);
+	m_flags.set			(FCanTrade,TRUE);
+	m_flags.set			(FUsingCondition,FALSE);
+	m_fCondition		= 1.0f;
 
-	m_fCondition = 1.0f;
-	m_bUsingCondition = false;
+	m_iGridWidth		= 1;
+	m_iGridHeight		= 1;
 
-	m_iGridWidth	= 1;
-	m_iGridHeight	= 1;
+	m_iXPos				= 0;
+	m_iYPos				= 0;
 
-	m_iXPos = 0;
-	m_iYPos = 0;
-	////////////////////////////////////	
 	m_name = m_nameShort = NULL;
+
+	m_eItemPlace		= eItemPlaceUndefined;
+	m_Description		= "";
 
 #ifdef DEBUG
 	LastVisPos.clear();
 #endif
-	m_eItemPlace = eItemPlaceUndefined;
-	m_Description = "";
-
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -73,78 +74,53 @@ void CInventoryItem::Load(LPCSTR section)
 {
 	CHitImmunity::LoadImmunities	(section);
 
-	ISpatial*		self				=	smart_cast<ISpatial*> (this);
-	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
+	ISpatial*			self				=	smart_cast<ISpatial*> (this);
+	if (self)			self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 
-	m_name = pSettings->r_string_wb(section, "inv_name");
-	m_nameShort = pSettings->r_string_wb(section, "inv_name_short");
-	NameComplex();
-	m_weight = pSettings->r_float(section, "inv_weight");
-	R_ASSERT(m_weight>=0.f);
+	m_name				= pSettings->r_string_wb(section, "inv_name");
+	m_nameShort			= pSettings->r_string_wb(section, "inv_name_short");
+	NameComplex			();
+	m_weight			= pSettings->r_float(section, "inv_weight");
+	R_ASSERT			(m_weight>=0.f);
 
-	m_cost = pSettings->r_u32(section, "cost");
+	m_cost				= pSettings->r_u32(section, "cost");
 
 	//properties used by inventory menu
-	m_iGridWidth	= pSettings->r_u32(section, "inv_grid_width");
-	m_iGridHeight	= pSettings->r_u32(section, "inv_grid_height");
+	m_iGridWidth		= pSettings->r_u32(section, "inv_grid_width");
+	m_iGridHeight		= pSettings->r_u32(section, "inv_grid_height");
 
-	m_iXPos			= pSettings->r_u32(section, "inv_grid_x");
-	m_iYPos			= pSettings->r_u32(section, "inv_grid_y");
+	m_iXPos				= pSettings->r_u32(section, "inv_grid_x");
+	m_iYPos				= pSettings->r_u32(section, "inv_grid_y");
 	//-----------------------------------------------------------------
-	m_iKillMsgXPos	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_x", 0);
-	m_iKillMsgYPos	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_y", 0);
+	m_iKillMsgXPos		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_x", 0);
+	m_iKillMsgYPos		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_y", 0);
 
 	m_iKillMsgWidth		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_width", 0);
 	m_iKillMsgHeight	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_height", 0);
 
 	//-----------------------------------------------------------------
+	m_slot				= READ_IF_EXISTS(pSettings,r_u32,section,"slot", NO_ACTIVE_SLOT);
 
-	if(pSettings->line_exist(section, "slot"))
-		m_slot = pSettings->r_u32(section, "slot");
-	else
-		m_slot = NO_ACTIVE_SLOT;
 
 	// Description
-	if (pSettings->line_exist(section, "description"))
-		m_Description = CStringTable()(pSettings->r_string(section, "description"));
+	if ( pSettings->line_exist(section, "description") )
+		m_Description = CStringTable()( pSettings->r_string(section, "description") );
 
-	if(pSettings->line_exist(section, "belt"))
-		m_belt = !!pSettings->r_bool(section, "belt");
+	m_flags.set(Fbelt,			READ_IF_EXISTS(pSettings, r_bool, section, "belt",				FALSE));
+	m_flags.set(FRuckDefault,	READ_IF_EXISTS(pSettings, r_bool, section, "default_to_ruck",	TRUE));
+
+	m_flags.set(FCanTake,		READ_IF_EXISTS(pSettings, r_bool, section, "can_take",			TRUE));
+	m_flags.set(FCanTrade,		READ_IF_EXISTS(pSettings, r_bool, section, "can_trade",			TRUE));
 
 
-	if(pSettings->line_exist(section, "can_take"))
-		m_bCanTake = !!pSettings->r_bool(section, "can_take");
-	else
-		m_bCanTake = true;
 
-	if(pSettings->line_exist(section, "can_trade"))
-		m_bCanTrade = !!pSettings->r_bool(section, "can_trade");
-	else
-		m_bCanTrade = true;
-
-	if(pSettings->line_exist(section, "default_to_ruck"))
-		m_bRuckDefault = !!pSettings->r_bool(section, "default_to_ruck");
-
-	//////////////////////////////////////
 	//время убирания объекта с уровня
-	if(pSettings->line_exist(section,"item_remove_time"))
-		m_dwItemRemoveTime = pSettings->r_u32(section,"item_remove_time");
-	else
-		m_dwItemRemoveTime = ITEM_REMOVE_TIME;
-	//////////////////////////////////////
-	//  [6/14/2005]
-	if (pSettings->line_exist(section, "sprint_allowed"))
-		m_bAllowSprint = pSettings->r_bool(section, "sprint_allowed") == 1;
-	else
-		m_bAllowSprint = true;
-	//  [6/14/2005]
-	//  [7/19/2005]
-	if (pSettings->line_exist(section, "control_inertion_factor"))
-		m_fControlInertionFactor = pSettings->r_float(section, "control_inertion_factor");
-	else
-		m_fControlInertionFactor = 1.0f;
- 	//  [7/19/2005]
+	m_dwItemRemoveTime			= READ_IF_EXISTS(pSettings, r_u32, section,"item_remove_time",			ITEM_REMOVE_TIME);
+
+	m_flags.set(FAllowSprint,	READ_IF_EXISTS	(pSettings, r_bool, section,"sprint_allowed",			TRUE));
+	m_fControlInertionFactor	= READ_IF_EXISTS(pSettings, r_float,section,"control_inertion_factor",	1.0f);
 }
+
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)
 {
@@ -158,7 +134,7 @@ void CInventoryItem::Hit(float P, Fvector &dir,
 						 float impulse, 
 						 ALife::EHitType hit_type)
 {
-	if(!m_bUsingCondition) return;
+	if( !m_flags.test(FUsingCondition) ) return;
 
 	float hit_power = P/100.f;
 	hit_power *= m_HitTypeK[hit_type];
@@ -189,7 +165,7 @@ LPCSTR CInventoryItem::NameComplex()
 			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], l_subName);
 	}*/
 
-	if(m_bUsingCondition){
+	if( m_flags.test(FUsingCondition) ){
 		string32		cond;
 		if(GetCondition()<0.33)		strcpy		(cond,	"[poor]");
 		else if(GetCondition()<0.66)strcpy		(cond,	"[bad]"	);
@@ -223,7 +199,7 @@ void CInventoryItem::Deactivate()
 
 void CInventoryItem::Drop() 
 {
-	if(m_pInventory) m_drop = true;
+	if(m_pInventory) m_flags.set(Fdrop, TRUE);
 }
 
 s32 CInventoryItem::Sort(PIItem /**pIItem/**/) 
@@ -253,8 +229,8 @@ void CInventoryItem::OnH_B_Independent	()
 
 void CInventoryItem::OnH_A_Independent	()
 {
-	m_dwItemIndependencyTime = Level().timeServer();
-	m_eItemPlace = eItemPlaceUndefined;	
+	m_dwItemIndependencyTime	= Level().timeServer();
+	m_eItemPlace				= eItemPlaceUndefined;	
 }
 
 void CInventoryItem::OnH_B_Chield		()
@@ -362,31 +338,29 @@ bool CInventoryItem::Detach(const char* item_section_name)
 /////////// network ///////////////////////////////
 BOOL CInventoryItem::net_Spawn			(CSE_Abstract* DC)
 {
-	VERIFY(!m_pInventory);
+	VERIFY							(!m_pInventory);
 
-	m_bInInterpolation = false;
-	m_bInterpolate	= false;
+	m_bInInterpolation				= false;
+	m_bInterpolate					= false;
 
-	m_useful_for_NPC				= true;
+	m_flags.set						(Fuseful_for_NPC, TRUE);
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(e);
 	if (alife_object)	{
-		m_useful_for_NPC				= !!alife_object->m_flags.test(CSE_ALifeObject::flUsefulForAI);
+		m_flags.set(Fuseful_for_NPC, alife_object->m_flags.test(CSE_ALifeObject::flUsefulForAI));
 	}
 
 	CSE_ALifeInventoryItem			*pSE_InventoryItem = smart_cast<CSE_ALifeInventoryItem*>(e);
-	if (!pSE_InventoryItem) return TRUE;
+	if (!pSE_InventoryItem)			return TRUE;
 
 	//!!!
 	m_fCondition = pSE_InventoryItem->m_fCondition;
 	if (GameID() != GAME_SINGLE)
-	{
 		object().processing_activate();
-	}
 
-	m_dwItemIndependencyTime = 0;
+	m_dwItemIndependencyTime		= 0;
 
-	return		TRUE;
+	return							TRUE;
 }
 
 void CInventoryItem::net_Destroy		()
@@ -1013,8 +987,8 @@ bool	CInventoryItem::CanTrade() const
 {
 	bool res = true;
 #pragma todo("Dima to Andy : why CInventoryItem::CanTrade can be called for the item, which doesn't have owner?")
-	if(m_pInventory){
+	if(m_pInventory)
 		res = inventory_owner().AllowItemToTrade(this,m_eItemPlace);
-	}
-	return (res&&m_bCanTrade);
+
+	return (res && m_flags.test(FCanTrade));
 }

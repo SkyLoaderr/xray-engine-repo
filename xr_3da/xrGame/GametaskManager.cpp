@@ -75,7 +75,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 			ml->SetSerializable			(true);
 		}
 	}
-	if	(CGameTask::m_game_task_flags.test(CGameTask::eForceNewTaskActivation)){
+	if	(id != "user_task" && CGameTask::m_game_task_flags.test(CGameTask::eForceNewTaskActivation)){
 		t->HighlightSpotOnMap(1, true);
 	}
 

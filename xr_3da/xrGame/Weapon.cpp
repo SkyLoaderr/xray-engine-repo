@@ -678,17 +678,17 @@ void CWeapon::SetDefaults()
 	bWorking2			= false;
 	m_bPending			= false;
 
-	m_bUsingCondition = true;
-	bMisfire = false;
-	m_flagsAddOnState = 0;
-	m_bZoomMode = false;
+	m_flags.set			(FUsingCondition, TRUE);
+	bMisfire			= false;
+	m_flagsAddOnState	= 0;
+	m_bZoomMode			= false;
 }
 
 void CWeapon::UpdatePosition(const Fmatrix& trans)
 {
-	Position().set	(trans.c);
-	XFORM().mul		(trans,m_strapped_mode ? m_StrapOffset : m_Offset);
-	VERIFY			(!fis_zero(DET(renderable.xform)));
+	Position().set		(trans.c);
+	XFORM().mul			(trans,m_strapped_mode ? m_StrapOffset : m_Offset);
+	VERIFY				(!fis_zero(DET(renderable.xform)));
 }
 
 
@@ -1378,4 +1378,11 @@ void CWeapon::OnDrawUI()
 		}
 	}
 }
+
+bool CWeapon::unlimited_ammo() 
+{ 
+	return (GameID()!=GAME_ARTEFACTHUNT) && 
+			psActorFlags.test(AF_UNLIMITEDAMMO) && 
+			m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); 
+};
 

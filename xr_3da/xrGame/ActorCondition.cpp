@@ -16,6 +16,12 @@
 
 #define ENEMIES_RADIUS				20.f
 
+BOOL	GodMode	()	
+{ 
+	if (GameID() == GAME_SINGLE) 
+		return psActorFlags.test(AF_GODMODE); 
+	return FALSE;	
+}
 
 CActorCondition::CActorCondition(CActor *object) :
 	inherited	(object)

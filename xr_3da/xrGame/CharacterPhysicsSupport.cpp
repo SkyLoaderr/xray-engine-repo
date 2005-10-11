@@ -11,6 +11,7 @@
 #include "CustomZone.h"
 #include "Extendedgeom.h"
 #include "Physics.h"
+#include "level.h"
 
 #include "PHActivationShape.h"
 const float default_hinge_friction = 5.f;
@@ -391,7 +392,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	m_eState=esDead;
 	b_skeleton_in_shell=true;
 	
-	if(GameID()==GAME_SINGLE)
+	if(IsGameTypeSingle())
 	{
 		m_pPhysicsShell->SetPrefereExactIntegration	();//use exact integration for ragdolls in single
 	}

@@ -21,8 +21,8 @@ ZONE_INFO::~ZONE_INFO	()
 
 CCustomDetector::CCustomDetector(void) 
 {
-	m_bWorking = false;
-	m_belt = true;
+	m_bWorking					= false;
+	m_flags.set					(Fbelt, TRUE);
 }
 
 CCustomDetector::~CCustomDetector(void) 

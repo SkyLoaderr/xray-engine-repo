@@ -31,199 +31,192 @@ class NET_Packet;
 class CEatableItem;
 
 class CInventoryItem : public CHitImmunity {
-private:
-	CPhysicsShellHolder	*m_object;
+protected:
+	enum EIIFlags{				Fdrop=(1<<0),
+								FCanTake=(1<<1),
+								FCanTrade=(1<<2),
+								Fbelt=(1<<3),
+								Fruck=(1<<4),
+								FRuckDefault=(1<<5),
+								FUsingCondition	=(1<<6),
+								FAllowSprint	=(1<<7),
+								Fuseful_for_NPC	=(1<<8),
+	};
+
+	Flags32						m_flags;
+public:
+								CInventoryItem		();
+	virtual						~CInventoryItem		();
 
 public:
-					CInventoryItem		();
-	virtual			~CInventoryItem		();
+	virtual void				Load				(LPCSTR section);
 
-public:
-	virtual CInventoryItem		*cast_inventory_item		()	{return this;}
-	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return 0;}
-	virtual CEatableItem	*cast_eatable_item	()	{return 0;}
-	virtual CWeapon			*cast_weapon		()	{return 0;}
-	virtual CFoodItem		*cast_food_item		()	{return 0;}
-	virtual CMissile		*cast_missile		()	{return 0;}
-	virtual CHudItem		*cast_hud_item		()	{return 0;}
-	virtual CWeaponAmmo		*cast_weapon_ammo	()	{return 0;}
-	virtual CGameObject		*cast_game_object	()  {return 0;};
-
-public:
-	virtual void	Load				(LPCSTR section);
-
-	virtual LPCSTR	Name				();
-	virtual LPCSTR	NameShort			();
-	virtual LPCSTR	NameComplex			();
-	shared_str		ItemDescription		() { return m_Description; }
+	virtual LPCSTR				Name				();
+	virtual LPCSTR				NameShort			();
+	virtual LPCSTR				NameComplex			();
+	shared_str					ItemDescription		() { return m_Description; }
 
 	
-	virtual void	OnEvent				(NET_Packet& P, u16 type);
+	virtual void				OnEvent				(NET_Packet& P, u16 type);
 	
-	virtual bool	Useful				() const;									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Attach				(PIItem pIItem) {return false;}
-	virtual bool	Detach				(PIItem pIItem) {return false;}
+	virtual bool				Useful				() const;									// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool				Attach				(PIItem pIItem) {return false;}
+	virtual bool				Detach				(PIItem pIItem) {return false;}
 	//при детаче спаунится новая вещь при заданно названии секции
-	virtual bool	Detach				(const char* item_section_name);
-	//проверяет может ли элемент быть присоединен
-	//не производя самого действия
-	virtual bool	CanAttach			(PIItem pIItem) {return false;}
-	virtual bool	CanDetach			(LPCSTR item_section_name) {return false;}
+	virtual bool				Detach				(const char* item_section_name);
+	virtual bool				CanAttach			(PIItem pIItem) {return false;}
+	virtual bool				CanDetach			(LPCSTR item_section_name) {return false;}
 
 	virtual EHandDependence		HandDependence		()	const	{return hd1Hand;};
 	virtual bool				IsSingleHanded		()	const	{return true;};	
-	virtual bool	Activate			();									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual void	Deactivate			();								// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Action				(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
+	virtual bool				Activate			();									// !!! Переопределить. (см. в Inventory.cpp)
+	virtual void				Deactivate			();								// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool				Action				(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
 
 	// вещь спрятано в инвентаре
-	virtual bool	IsHidden		()	const	{return true;}
+	virtual bool				IsHidden			()	const	{return true;}
 	//вещь убирается в инвентарь
-	virtual bool	IsHiding		()	const	{return false;}
-	//вызывается при завершении анимации
-	virtual void	OnAnimationEnd	()		{}
+	virtual bool				IsHiding			()	const	{return false;}
+
+	virtual void				OnAnimationEnd		()		{}
 	
-	virtual s32		Sort				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Merge				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
+	virtual s32					Sort				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool				Merge				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
 
-	virtual void	OnH_B_Chield		();
-	virtual void	OnH_A_Chield		();
-    virtual void	OnH_B_Independent	();
-	virtual void	OnH_A_Independent	();
+	virtual void				OnH_B_Chield		();
+	virtual void				OnH_A_Chield		();
+    virtual void				OnH_B_Independent	();
+	virtual void				OnH_A_Independent	();
 
-	virtual void	save				(NET_Packet &output_packet);
-	virtual void	load				(IReader &input_packet);
-	virtual BOOL	net_SaveRelevant	()								{return TRUE;}
+	virtual void				save				(NET_Packet &output_packet);
+	virtual void				load				(IReader &input_packet);
+	virtual BOOL				net_SaveRelevant	()								{return TRUE;}
 
 
-	virtual void	UpdateCL			();
+	virtual void				UpdateCL			();
 
-	virtual	void	Hit					(	float P, Fvector &dir,	
-											CObject* who, s16 element,
-											Fvector position_in_object_space, 
-											float impulse, 
-											ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void				Hit					(	float P, Fvector &dir,	
+														CObject* who, s16 element,
+														Fvector position_in_object_space, 
+														float impulse, 
+														ALife::EHitType hit_type = ALife::eHitTypeWound);
 
-			void	Drop				();										// Если объект в инвенторе, то он будет выброшен
+			void				Drop				();		// Если объект в инвенторе, то он будет выброшен
+			BOOL				GetDrop				() const	{ return m_flags.test(Fdrop);}
+			void				SetDrop				(BOOL val)	{ m_flags.set(Fdrop, val);}
 
-			u32		Cost				() const	{ return m_cost; }
-			float	Weight				() const	{ return m_weight;}		
+			u32					Cost				() const	{ return m_cost; }
+			float				Weight				() const	{ return m_weight;}		
 
 public:
 	// Указатель на инвентарь. Всегда полезно знать где находишься :)
-	CInventory*		m_pInventory;
-	shared_str		m_name;
-	shared_str		m_nameShort;
-	shared_str		m_nameComplex;
-	bool			m_drop;
+	CInventory*					m_pInventory;
+	shared_str					m_name;
+	shared_str					m_nameShort;
+	shared_str					m_nameComplex;
+//	bool						m_drop;
 	//текущее положение вещи в инвентаре
-	EItemPlace		m_eItemPlace;
+	EItemPlace					m_eItemPlace;
 
 
-	virtual void	OnMoveToSlot		() {};
-	virtual void	OnMoveToBelt		() {};
-	virtual void	OnMoveToRuck		() {};
-
-	virtual int		GetGridWidth		() const {return m_iGridWidth;}
-	virtual int		GetGridHeight		() const {return m_iGridHeight;}
-	virtual int		GetXPos				() const {return m_iXPos;}
-	virtual int		GetYPos				() const {return m_iYPos;}
+	virtual void				OnMoveToSlot		() {};
+	virtual void				OnMoveToBelt		() {};
+	virtual void				OnMoveToRuck		() {};
+					
+	virtual int					GetGridWidth		() const {return m_iGridWidth;}
+	virtual int					GetGridHeight		() const {return m_iGridHeight;}
+	virtual int					GetXPos				() const {return m_iXPos;}
+	virtual int					GetYPos				() const {return m_iYPos;}
 
 	//---------------------------------------------------------------------
-	virtual	int		GetKillMsgXPos		() const {return m_iKillMsgXPos; }
-	virtual	int		GetKillMsgYPos		() const {return m_iKillMsgYPos; }
-	virtual	int		GetKillMsgWidth		() const {return m_iKillMsgWidth; }
-	virtual	int		GetKillMsgHeight	() const {return m_iKillMsgHeight; }
+	virtual	int					GetKillMsgXPos		() const {return m_iKillMsgXPos; }
+	virtual	int					GetKillMsgYPos		() const {return m_iKillMsgYPos; }
+	virtual	int					GetKillMsgWidth		() const {return m_iKillMsgWidth; }
+	virtual	int					GetKillMsgHeight	() const {return m_iKillMsgHeight; }
 	//---------------------------------------------------------------------
 
-			float	GetCondition		()  const {return m_fCondition;}
-			void	ChangeCondition		(float fDeltaCondition);
+			float				GetCondition		() const					{return m_fCondition;}
+			void				ChangeCondition		(float fDeltaCondition);
 
-	virtual u32		GetSlot				()  const {return m_slot;}
-			void	SetSlot				(u32 slot) {m_slot = slot;}
+	virtual u32					GetSlot				()  const					{return m_slot;}
 
-			bool	Belt				() {return m_belt;}
-			void	Belt				(bool on_belt) {m_belt = on_belt;}
-			bool	Ruck				() {return m_ruck;}
-			void	Ruck				(bool on_ruck) {m_ruck = on_ruck;}
-			bool	RuckDefault			() {return m_bRuckDefault;}
+			bool				Belt				()							{return !!m_flags.test(Fbelt);}
+			void				Belt				(bool on_belt)				{m_flags.set(Fbelt,on_belt);}
+			bool				Ruck				()							{return !!m_flags.test(Fruck);}
+			void				Ruck				(bool on_ruck)				{m_flags.set(Fruck,on_ruck);}
+			bool				RuckDefault			()							{return !!m_flags.test(FRuckDefault);}
 			
-	virtual bool	CanTake				() const {return m_bCanTake;}
-			bool	CanTrade			() const;
-	virtual bool 	IsNecessaryItem	    (CInventoryItem* item)   {return false;};
+	virtual bool				CanTake				() const					{return !!m_flags.test(FCanTake);}
+			bool				CanTrade			() const;
+	virtual bool 				IsNecessaryItem	    (CInventoryItem* item)		{return false;};
 protected:
 
 	//вещь можно подобрать
-	bool			m_bCanTake;
+//	bool						m_bCanTake;
 	//вещью можно торговать
-	bool			m_bCanTrade;
+//	bool						m_bCanTrade;
 
 	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
-	u32				m_slot;
+	u32							m_slot;
 	// Может ли объект быть на поясе или в рюкзаке
-	bool			m_belt, m_ruck;			
-	bool			m_bRuckDefault;
+//	bool						m_belt, m_ruck;			
+//	bool						m_bRuckDefault;
 
 	// цена по умолчанию
-	u32				m_cost;
+	u32							m_cost;
 	// вес объекта (без подсоединненых вещей)
-	float			m_weight;
+	float						m_weight;
 	
 	//состояние вещи, 1.0 - полностью работоспособная
 	// 0 - испорченная
-	float			m_fCondition;
+	float						m_fCondition;
 	//флаг использования состояния для вещи
-	bool			m_bUsingCondition;
+//	bool						m_bUsingCondition;
 
-	int				m_iGridWidth;										//ширина в сетке инвенторя
-	int				m_iGridHeight;										//высота в сетке инвенторя
-
-	int 			m_iXPos;											//позиция X в сетке инвенторя
-	int 			m_iYPos;											//позиция Y в сетке инвенторя
+	int							m_iGridWidth;							//ширина в сетке инвенторя
+	int							m_iGridHeight;							//высота в сетке инвенторя
+	int 						m_iXPos;								//позиция X в сетке инвенторя
+	int 						m_iYPos;								//позиция Y в сетке инвенторя
 	//-----------------------------------------------------------------------------------------------
-	int				m_iKillMsgXPos;
-	int				m_iKillMsgYPos;
-
-	int				m_iKillMsgWidth;
-	int				m_iKillMsgHeight;
+	int							m_iKillMsgXPos;
+	int							m_iKillMsgYPos;
+	int							m_iKillMsgWidth;
+	int							m_iKillMsgHeight;
 	//-----------------------------------------------------------------------------------------------
 	// Тектс описания вещи
-	shared_str			m_Description;
+	shared_str					m_Description;
 
-	ALife::_TIME_ID			m_dwItemRemoveTime;
-	ALife::_TIME_ID			m_dwItemIndependencyTime;
+	ALife::_TIME_ID				m_dwItemRemoveTime;
+	ALife::_TIME_ID				m_dwItemIndependencyTime;
 
-	//  [6/14/2005]
-	bool	m_bAllowSprint;
-	//  [6/14/2005]
-	//  [7/19/2005]
-	float	m_fControlInertionFactor;
-	//  [7/19/2005]
+//	bool						m_bAllowSprint;
+	float						m_fControlInertionFactor;
+
 	////////// network //////////////////////////////////////////////////
 public:
-	virtual void	make_Interpolation	();
-	virtual void	PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
-	virtual void	PH_I_CrPr			(); // actions & operations after correction before prediction steps
+	virtual void				make_Interpolation	();
+	virtual void				PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
+	virtual void				PH_I_CrPr			(); // actions & operations after correction before prediction steps
 #ifdef DEBUG
-	virtual void	PH_Ch_CrPr			(); // 
+	virtual void				PH_Ch_CrPr			(); // 
 #endif
-	virtual void	PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
+	virtual void				PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
 
-	virtual void	net_Import			(NET_Packet& P);					// import from server
-	virtual void	net_Export			(NET_Packet& P);					// export to server
+	virtual void				net_Import			(NET_Packet& P);					// import from server
+	virtual void				net_Export			(NET_Packet& P);					// export to server
 
-	virtual void	activate_physic_shell	();
+	virtual void				activate_physic_shell();
 
-	virtual bool			NeedToDestroyObject	() const;
-	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
+	virtual bool				NeedToDestroyObject	() const;
+	virtual ALife::_TIME_ID		TimePassedAfterIndependant() const;
 
 	//  [6/14/2005]
-	virtual	bool	IsSprintAllowed		() const {return m_bAllowSprint;} ;
+	virtual	bool				IsSprintAllowed		() const		{return !!m_flags.test(FAllowSprint);} ;
 	//  [6/14/2005]
-	virtual	float	GetControlInertionFactor	() const {return m_fControlInertionFactor;};
+	virtual	float				GetControlInertionFactor() const	{return m_fControlInertionFactor;};
 
 protected:
-	virtual void	UpdateXForm	();
+	virtual void				UpdateXForm	();
 
 protected:
 	struct net_update_IItem {
@@ -264,48 +257,59 @@ protected:
 	u32				m_dwIEndTime			;
 	u32				m_dwILastUpdateTime		;
 
-	void			CalculateInterpolationParams();
+	void						CalculateInterpolationParams();
 
-protected:
-	bool			m_useful_for_NPC;
+//protected:
+//	bool						m_useful_for_NPC;
 
 public:
-	IC		int		GetVolume				() const;
-	IC		int		GetHeight				() const;
-	IC		int		GetWidth				() const;
-	virtual BOOL	net_Spawn				(CSE_Abstract* DC);
-	virtual void	net_Destroy				();
-	virtual void	renderable_Render		();
-	virtual void	reload					(LPCSTR section);
-	virtual void	reinit					();
-	virtual bool	can_kill				() const;
-	virtual CInventoryItem *can_kill		(CInventory *inventory) const;
-	virtual const CInventoryItem *can_kill	(const xr_vector<const CGameObject*> &items) const;
-	virtual CInventoryItem *can_make_killing(const CInventory *inventory) const;
-	virtual bool	ready_to_kill			() const;
-	IC		bool	useful_for_NPC			() const;
+	IC		int					GetVolume				() const;
+	IC		int					GetHeight				() const;
+	IC		int					GetWidth				() const;
+	virtual BOOL				net_Spawn				(CSE_Abstract* DC);
+	virtual void				net_Destroy				();
+	virtual void				renderable_Render		();
+	virtual void				reload					(LPCSTR section);
+	virtual void				reinit					();
+	virtual bool				can_kill				() const;
+	virtual CInventoryItem*		can_kill				(CInventory *inventory) const;
+	virtual const CInventoryItem*can_kill				(const xr_vector<const CGameObject*> &items) const;
+	virtual CInventoryItem*		can_make_killing		(const CInventory *inventory) const;
+	virtual bool				ready_to_kill			() const;
+	IC		bool				useful_for_NPC			() const;
 #ifdef DEBUG
-	virtual void			OnRender		();
+	virtual void				OnRender					();
 #endif
 
 public:
-	virtual DLL_Pure		*_construct		();
-	IC		CPhysicsShellHolder	&object		() const
-	{
-		VERIFY		(m_object);
-		return		(*m_object);
-	}
-	virtual void			on_activate_physic_shell() = 0;
+	virtual DLL_Pure*			_construct					();
+	IC	CPhysicsShellHolder&	object						() const{ VERIFY		(m_object); return		(*m_object);}
+	virtual void				on_activate_physic_shell	() = 0;
 
 protected:
-	float			m_holder_range_modifier;
-	float			m_holder_fov_modifier;
+	float						m_holder_range_modifier;
+	float						m_holder_fov_modifier;
 
 public:
-	virtual	void			modify_holder_params	(float &range, float &fov) const;
+	virtual	void				modify_holder_params		(float &range, float &fov) const;
 
 protected:
-	IC		CInventoryOwner	&inventory_owner		() const;
+	IC	CInventoryOwner&		inventory_owner				() const;
+
+private:
+	CPhysicsShellHolder*		m_object;
+public:
+	virtual CInventoryItem		*cast_inventory_item		()	{return this;}
+	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return 0;}
+	virtual CEatableItem		*cast_eatable_item	()	{return 0;}
+	virtual CWeapon				*cast_weapon		()	{return 0;}
+	virtual CFoodItem			*cast_food_item		()	{return 0;}
+	virtual CMissile			*cast_missile		()	{return 0;}
+	virtual CHudItem			*cast_hud_item		()	{return 0;}
+	virtual CWeaponAmmo			*cast_weapon_ammo	()	{return 0;}
+	virtual CGameObject			*cast_game_object	()  {return 0;};
+
+
 };
 
 #include "inventory_item_inline.h"
