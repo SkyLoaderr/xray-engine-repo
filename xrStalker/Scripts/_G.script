@@ -460,14 +460,14 @@ end
 
 function random_choice(...)
     local arg = {...}
-    local r = math.random(1, arg.n)
+    local r = math.random(1, table.getn(arg))
     return arg[r]
 end
 
 function new_action(...)
     local arg = {...}
     local act = entity_action()
-    for i = 1, arg.n do
+    for i = 1, table.getn(arg) do
         act:set_action(arg[i])
     end
     return act;
