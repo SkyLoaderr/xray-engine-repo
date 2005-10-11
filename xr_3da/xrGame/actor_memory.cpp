@@ -12,6 +12,7 @@
 #include "actor.h"
 #include "../camerabase.h"
 #include "gamepersistent.h"
+#include "level.h"
 
 CActorMemory::CActorMemory					(CActor *actor)
 {

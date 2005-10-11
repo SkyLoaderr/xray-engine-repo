@@ -11,6 +11,7 @@
 #include "../StatGraph.h"
 #include "PHDebug.h"
 #endif
+#include "alife_space.h"
 #include "hit.h"
 #include "PHDestroyable.h"
 #include "Car.h"
@@ -1417,7 +1418,7 @@ void CActor::OnItemDropUpdate ()
 	TIItemContainer::iterator					I = inventory().m_all.begin();
 	TIItemContainer::iterator					E = inventory().m_all.end();
 	for ( ; I != E; ++I)
-		if(!(*I)->m_drop && !attached(*I))
+		if(!(*I)->GetDrop() && !attached(*I))
 			attach(*I);
 }
 
