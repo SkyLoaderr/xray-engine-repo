@@ -8,6 +8,7 @@
 #include "text\rus\string_table_tips_bar-rostok.xml"
 #include "text\rus\string_table_tips_military.xml"
 #include "text\rus\string_table_tips_yantar.xml"
+#include "text\rus\string_table_tips_radar.xml"
 
 
 #include "text\rus\stable_storyline_info_escape.xml"
