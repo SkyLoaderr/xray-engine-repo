@@ -1,7 +1,6 @@
-function process_tasks ()
+function proceed()
     local actor = db.actor
-    
-    
+
     if actor:has_info ("mil_lukash_dead") and 
        actor:has_info ("mil_sniper_dead") and
        actor:has_info ("mil_dolg_mission_complete") and 

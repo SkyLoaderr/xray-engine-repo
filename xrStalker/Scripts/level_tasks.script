@@ -1,47 +1,24 @@
+local level_scripts = {
+	escape_tasks,
+	garbage_tasks,
+	agroprom_tasks,
+	darkvalley_tasks,
+	bar_rostok_tasks,
+    mil_tasks,
+	radar_tasks
+}
+
 function proceed()
-	local actor = db.actor
-
-	escape_tasks.proceed()
-
-	garbage_tasks.proceed()	
-	
-	agroprom_tasks.proceed()
-	
-	darkvalley_tasks.proceed()
-
-	bar_rostok_tasks.proceed()	
-
-    mil_tasks.process_tasks()	
-
-	radar_tasks.proceed()	
+	for k, v in pairs( level_scripts ) do
+		v:proceed()
+	end
 end
 
 function process_info_portion(info_id)
-
-	if escape_tasks.process_info_portion(info_id) then
-		return
-
-	elseif garbage_tasks.process_info_portion(info_id) then
-		return
-	
-	-- Agroprom
-	elseif agroprom_tasks.process_info_portion(info_id) then
-		return
-
-	-- DARK VALLEY
-	elseif darkvalley_tasks.process_info_portion(info_id) then
-		return
-
-	-- BAR ROSTOK
-	elseif bar_rostok_tasks.process_info_portion(info_id) then
-		return
-
-	-- military	
-	elseif mil_tasks.process_info_portion(info_id) then
-		return
-
-	elseif radar_tasks.process_info_portion(info_id) then
-		return
+	for k, v in pairs( level_scripts ) do
+		if v:process_info_portion(info_id) then
+			return
+		end
 	end
 end
 
