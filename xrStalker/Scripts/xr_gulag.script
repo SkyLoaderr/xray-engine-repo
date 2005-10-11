@@ -564,39 +564,6 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
---[[
-	if gulag_escape.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_garbage.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_agroprom.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_dark_valley.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_labx18.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_bar.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_military.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_radar.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_yantar.checkStalker(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_pripyat.checkStalker(npc_community, gulag_type) then
-		return true
-	end
---]]
-
     for i, v in pairs(level_gulags) do
 	    if v.checkStalker(npc_community, gulag_type) then
 		    return true
@@ -610,39 +577,6 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_type == "test_mob" then
 		return true
 	end
-
---[[
-	if gulag_escape.checkMonster(npc_community, gulag_type) then
-		return true
-    end
-	if gulag_garbage.checkMonster(npc_community, gulag_type) then
-		return true
-    end
-   	if gulag_agroprom.checkMonster(npc_community, gulag_type) then
-		return true
-    end
-	if gulag_dark_valley.checkMonster(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_labx18.checkMonster(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_bar.checkMonster(npc_community, gulag_type) then
-		return true
-	end
-	if gulag_military.checkMonster(npc_community, gulag_type) then
-		return true
-    end
-	if gulag_yantar.checkMonster(npc_community, gulag_type) then
-		return true
-    end
-   	if gulag_radar.checkMonster(npc_community, gulag_type) then
-		return true
-    end
-   	if gulag_pripyat.checkMonster(npc_community, gulag_type) then
-		return true
-    end
---]]
 
     for i, v in pairs(level_gulags) do
 	    if v.checkMonster(npc_community, gulag_type) then
