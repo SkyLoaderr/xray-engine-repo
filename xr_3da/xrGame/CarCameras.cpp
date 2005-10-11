@@ -4,6 +4,7 @@
 #include "ode_include.h"
 #include "../StatGraph.h"
 #include "PHDebug.h"
+#include "phworld.h"
 #endif
 #include "alife_space.h"
 #include "hit.h"
@@ -21,9 +22,10 @@ bool CCar::HUDView() const
 
 void	CCar::cam_Update			(float dt, float fov)
 {
+	VERIFY(!ph_world->Processing());
 	Fvector							P,Da;
 	Da.set							(0,0,0);
-	bool							owner = !!Owner();
+	//bool							owner = !!Owner();
 
 	XFORM().transform_tiny			(P,m_camera_position);
 

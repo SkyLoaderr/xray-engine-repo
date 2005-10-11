@@ -256,7 +256,7 @@ void CExplosive::Explode()
 {
 	VERIFY(0xffff != Initiator());
 	VERIFY(m_bReadyToExplode);
-
+	VERIFY(!ph_world->Processing());
 	m_bExploding = true;
 	cast_game_object()->processing_activate();
 
@@ -410,7 +410,7 @@ void CExplosive::UpdateCL()
 	//VERIFY(!this->getDestroy());
 
 	if(!m_bExploding) return; 
-
+	VERIFY(!ph_world->Processing());
 	//время вышло, убираем объект взрывчатки
 	if(m_fExplodeDuration < 0.f&&m_blasted_objects.empty()) 
 	{
@@ -530,7 +530,7 @@ void CExplosive::FindNormal(Fvector& normal)
 void CExplosive::StartLight	()
 {
 	VERIFY(m_pLight);
-
+	VERIFY(!ph_world->Processing());
 	if(m_fLightTime>0)
 	{
 		m_pLight->set_color(m_LightColor.r, m_LightColor.g, m_LightColor.b);
@@ -542,6 +542,7 @@ void CExplosive::StartLight	()
 void CExplosive::StopLight	()
 {
 	VERIFY(m_pLight);
+	VERIFY(!ph_world->Processing());
 	m_pLight->set_active(false);
 }
 void CExplosive::GetRaySourcePos(CExplosive*exp_obj,const	Fvector	&expl_center,Fvector	&p)
@@ -652,4 +653,9 @@ void CExplosive::net_Relcase(CObject* O)
 {
 	if(O->ID()==m_iCurrentParentID)
 						m_iCurrentParentID=u16(-1);
+	BLASTED_OBJECTS_I I=std::find(m_blasted_objects.begin(),m_blasted_objects.end(),smart_cast<CPhysicsShellHolder*>(O));
+	if(m_blasted_objects.end()!=I)
+	{
+		m_blasted_objects.erase(I);
+	}
 }

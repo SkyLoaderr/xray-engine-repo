@@ -31,8 +31,9 @@ public:
 	virtual void 				UpdateCL();
 
 //	virtual void 				feel_touch_new(CObject* O);
-
+private:
 	virtual void 				Explode();
+public:
 	virtual void 				ExplodeParams	(const Fvector& pos, const Fvector& dir);
 
 	static float 				ExplosionEffect	(collide::rq_results& storage,CExplosive*exp_obj,CPhysicsShellHolder*blasted_obj,  const Fvector &expl_centre, const float expl_radius);

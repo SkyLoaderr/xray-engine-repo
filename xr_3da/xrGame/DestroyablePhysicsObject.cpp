@@ -12,6 +12,10 @@
 #include "script_callback_ex.h"
 #include "script_game_object.h"
 #include "PhysicsShell.h"
+#ifdef DEBUG
+#include "PHWorld.h"
+extern CPHWorld			*ph_world;
+#endif
 CDestroyablePhysicsObject ::CDestroyablePhysicsObject()
 {
 	m_fHealth=100.f;
@@ -86,6 +90,7 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 }
 void CDestroyablePhysicsObject::Destroy()
 {
+	VERIFY(!ph_world->Processing());
 	CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	if(m_destroy_sound._handle())
 	{

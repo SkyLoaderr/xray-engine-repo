@@ -16,6 +16,9 @@
 #include "PHCollideValidator.h"
 #include "PHShell.h"
 #include "MathUtils.h"
+#ifdef DEBUG
+#include "PHWorld.h"
+#endif
 /*
 [impulse_transition_to_parts]
 random_min              =1       ; х массу объекта = величина случайно направленного импульса 
@@ -312,6 +315,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 {
 	VERIFY(m_depended_objects);
+	VERIFY(!ph_world->Processing());
 	m_depended_objects--;
 	PhysicallyRemovePart(dn);
 	m_notificate_objects.push_back(dn);
