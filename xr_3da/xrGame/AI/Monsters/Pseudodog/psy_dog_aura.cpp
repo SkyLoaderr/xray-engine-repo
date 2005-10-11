@@ -58,7 +58,6 @@ void CPsyDogAura::update_schedule()
 {
 	if (!m_object->g_Alive()) return;
 
-	m_time_actor_saw_phantom	= 0;
 	m_time_phantom_saw_actor	= 0;
 
 	// check memory of actor and check memory of phantoms
@@ -67,9 +66,8 @@ void CPsyDogAura::update_schedule()
 	for ( ; I != E; ++I) {
 		const CGameObject *obj = (*I).m_object;
 		if (smart_cast<const CPsyDogPhantom *>(obj)) {
-			m_time_actor_saw_phantom = time();
-			//if (m_actor->memory().visual().visible_now(obj))
-				
+			if (m_actor->memory().visual().visible_now(obj))
+				m_time_actor_saw_phantom = time();
 		}
 	}
 
@@ -92,7 +90,7 @@ void CPsyDogAura::update_schedule()
 		if (m_time_phantom_saw_actor == time()) break;
 	}
 
-	bool need_be_active = (m_time_actor_saw_phantom	!= 0) || (m_time_phantom_saw_actor != 0);
+	bool need_be_active = (m_time_actor_saw_phantom	+ 2000 > time()) || (m_time_phantom_saw_actor != 0);
 	if (active()) {
 		if (!need_be_active) {
 			m_effector->switch_off	();
