@@ -3,59 +3,59 @@
 ;;;;;;;;;;;;;;               G36                      ;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_g36]
-GroupControlSection		= spawn_group
-discovery_dependency	= 
-$spawn              	= "weapons\g36"		; option for Level Editor
-$npc					= on				; option for Level Editor
-$prefetch 				= 8
-scheduled				= off				; option for ALife Simulator
-cform               	= skeleton
-class               	= W_AK74
-min_radius          	= 30
-max_radius          	= 100
-description				= enc_weapons1_wpn-sig550
+GroupControlSection			= spawn_group
+discovery_dependency		= 
+$spawn              		= "weapons\g36"		; option for Level Editor
+$npc						= on				; option for Level Editor
+$prefetch 					= 8
+scheduled					= off				; option for ALife Simulator
+cform               		= skeleton
+class               		= W_AK74
+min_radius          		= 30
+max_radius          		= 100
+description					= enc_weapons1_wpn-sig550
 	
-ef_main_weapon_type		= 2
-ef_weapon_type			= 6
+ef_main_weapon_type			= 2
+ef_weapon_type				= 6
 
 ;-----------------------------------------------------------------------------------
-holder_range_modifier	= 1.85            ; во сколько раз увеличивается eye_range 
-holder_fov_modifier		= 1              ; во сколько раз увеличивается eye_fov
+holder_range_modifier		= 1.85            ; во сколько раз увеличивается eye_range 
+holder_fov_modifier			= 1              ; во сколько раз увеличивается eye_fov
 ;-----------------------------------------------------------------------------------
 
-cost					= 350
-weapon_class			= assault_rifle	; Type of the weapon
+cost						= 350
+weapon_class				= assault_rifle	; Type of the weapon
 	
-ammo_limit				= 210
-ammo_current			= 180
-ammo_elapsed			= 30
+ammo_limit					= 210
+ammo_current				= 180
+ammo_elapsed				= 30
 	
-ammo_mag_size			= 30
-ammo_class				= ammo_5.56x45_ss190, ammo_5.56x45_ap
-grenade_class			= ammo_m209
-fire_modes				= 1, -1
+ammo_mag_size				= 30
+ammo_class					= ammo_5.56x45_ss190, ammo_5.56x45_ap
+grenade_class				= ammo_m209
+fire_modes					= 1, -1
 
-hand_dependence			= 1
-single_handed			= 0	
+hand_dependence				= 1
+single_handed				= 0	
 
-slot 					= 2		; // secondary
-animation_slot			= 2		; type of the animation that will be used
+slot 						= 2		; // secondary
+animation_slot				= 2		; type of the animation that will be used
 
-inv_name	        	= G36
-inv_name_short			= G36
-inv_weight				= 5
+inv_name	        		= G36
+inv_name_short				= G36
+inv_weight					= 5
 
-inv_grid_width			= 5
-inv_grid_height			= 2
-inv_grid_x				= 0
-inv_grid_y				= 10
+inv_grid_width				= 5
+inv_grid_height				= 2
+inv_grid_x					= 0
+inv_grid_y					= 10
 
-kill_msg_x			= 157
-kill_msg_y			= 29
-kill_msg_width		= 78
-kill_msg_height		= 31
+kill_msg_x					= 157
+kill_msg_y					= 29
+kill_msg_width				= 78
+kill_msg_height				= 31
 
-immunities_sect			= weapon
+immunities_sect				= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
@@ -65,16 +65,16 @@ control_inertion_factor		= 1.15f
 ;отдача
 cam_relax_speed         	= 3.8;0.2	;скорость возврата в исходное положение
 cam_dispersion          	= 0.2	;увеличения угла (в градусах) с каждым выстрелом
-cam_dispersion_inc		= 0.07	;увеличениe cam_dispersion с каждым выстрелом
-cam_dispertion_frac		= 0.95	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
-cam_max_angle			= 20.0	;максимальный угол отдачи
-cam_max_angle_horz		= 9.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz		= 0.5	;(degree) size of step camera moved in horizontal position while shooting
+cam_dispersion_inc			= 0.07	;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac			= 0.95	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle				= 20.0	;максимальный угол отдачи
+cam_max_angle_horz			= 9.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz			= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
-condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
-
+condition_shot_dec 			= 0.00003 ;увеличение износа при каждом выстреле
+;-----------------------------------------------------------------------------------
 direction              		=  0, 0, 1
 fire_point             		=  0.0, 0.21, 0.58
 fire_point2            		=  0.0, 0.21, 0.71
@@ -89,26 +89,26 @@ shell_particles	 			= weapons\generic_shells
 
 rpm_empty_click 	 		= 200
 
-PDM_disp_base 			= 1.25
+PDM_disp_base 				= 1.25
 PDM_disp_vel_factor 		= 1.05
 PDM_disp_accel_factor 		= 1.05
-PDM_crouch	 		= 1.0
-PDM_crouch_no_acc 		= 1.0
+PDM_crouch	 				= 1.0
+PDM_crouch_no_acc 			= 1.0
 
 ; ttc
 hit_power                	= 147
-hit_impulse		        = 105
-hit_type 			= fire_wound
+hit_impulse		        	= 105
+hit_type 					= fire_wound
 
 fire_distance            	= 400
-bullet_speed			= 925	;начальная скорость пули
+bullet_speed				= 925	;начальная скорость пули
 rpm                      	= 850
 ; end ttc
 
 hud                      	= wpn_g36_hud
 normal                   	= 0, 1, 0
 
-;----------------------------------------------------------
+;-----------------------------------------------------------------------------------
 position         	        = -0.026, -0.132, 0.0
 orientation      	        = 0, 0, 0
 
@@ -187,7 +187,7 @@ silencer_light_time 		= 0.2
 shell_point     	   	 	= 0.15, 0.0, -0.05
 shell_dir			     	= 0.0, 1.0, 0.0
 
-fire_point			= -0.000000,0.062000,0.134000
+fire_point					= -0.000000,0.062000,0.134000
 fire_point2              	= 0.30, 0.00, 0.05
 fire_bone               	= wpn_body
 orientation             	= 0, 0, 0
@@ -196,12 +196,12 @@ visual                  	= weapons\g36\wpn_g36_hud.ogf
 
 grenade_bone            	= grenade
 
-anim_idle				= idle
-anim_idle_aim			= idle
-anim_reload				= reload
-anim_draw				= draw
-anim_holster			= shoot
-anim_shoot				= shoot
+anim_idle					= idle
+anim_idle_aim				= idle
+anim_reload					= reload
+anim_draw					= draw
+anim_holster				= shoot
+anim_shoot					= shoot
 			
 ;анимации с подключенным подствольником
 ;(режим стрельбы из подствольника)
@@ -231,8 +231,8 @@ zoom_hide_crosshair	= true
 ;тоже самое, но для прицепленого подствольника
 ;режим обычной стрельбы
 zoom_offset                     = -0.135500,0.010000,0.000000
-zoom_rotate_x           = -0.013900
-zoom_rotate_y           = -0.001800
+zoom_rotate_x           		= -0.013900
+zoom_rotate_y           		= -0.001800
 
 ;режим подствольника
 grenade_zoom_offset				= -0.135500,0.010000,0.000000
