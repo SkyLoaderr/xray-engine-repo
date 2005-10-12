@@ -19,6 +19,7 @@ function action_sleep:reset_scheme()
 	--printf("_bp: sr_idle: action_no_weapon:reset_scheme: self.object:name()='%s'", self.object:name())
 	
 	self.state = state_nowhere -- it's undefined wheather actor in zone or not
+	self.cond = self.st.cond
 	
 	self:switch_state(db.actor)
 end
@@ -42,29 +43,20 @@ end
 function action_sleep:switch_state(actor)
 	local state = self.state
 	
-	if state == state_outside or state == state_nowhere then
-		if self.object:inside(actor:position()) then
-			self:zone_enter()
-			return
-		end
-	end
-	
-	if state == state_inside or state == state_nowhere then
-		if not self.object:inside( actor:position() ) then
-			self:zone_leave()
-			return
-		end
+	if self.object:inside(actor:position()) then
+	    if self.cond then
+	        local cs = xr_logic.pick_section_from_condlist(db.actor, self.object, self.cond.condlist)
+	        db.can_sleep = (cs == "true" or cs == "")
+	    else
+	        db.can_sleep = true
+	    end
+	else
+	    db.can_sleep = false
 	end
 end
 
-function action_sleep:zone_enter()
-	self.state = state_inside
-	db.can_sleep = true
-end
-
-function action_sleep:zone_leave()
-	self.state = state_outside
-	db.can_sleep = false
+function action_sleep:deactivate()
+    db.can_sleep = false
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -80,4 +72,6 @@ end
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	
+	st.cond = xr_logic.cfg_get_condlist(ini, section, "cond", npc)
 end
