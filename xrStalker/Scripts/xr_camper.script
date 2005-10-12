@@ -172,11 +172,15 @@ function action_patrol:execute()
 	else
 		self.a.enemy_id = nil
 		self.enemy = nil
+		if self.a.mem_enemy ~= nil then
+			self.a.mem_enemy = nil
+			self.move_mgr:continue()
+		end		
 	end
 	
 	--забывание врага по времени.	
 	if self.a.mem_enemy ~= nil then
-		printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
+		--printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 		if time_global()- self.a.mem_enemy > self.a.idle then
 			if self.enemy ~= nil then
 				printf ("DISABLE ENEMY : %s", self.enemy:name ())
@@ -195,7 +199,7 @@ function action_patrol:execute()
 	if self.enemy ~= nil then
 		if self.object:see(self.enemy) == true then
 			-- отстрел врага
-			printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
+			--printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
 			if self.a.sniper == true then
 				if self.a.suggested_state.campering_fire then
 					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
@@ -246,7 +250,7 @@ function action_patrol:execute()
 			else				
 				-- если норетрит или мы на месте - ныкаться, иначе идти на точку				
 				if self:on_place() then 
-					printf("on place[%s]", self.object:name())
+					--printf("on place[%s]", self.object:name())
 					local position
 					if self.position then
 						position = {look_position = self.position}
@@ -257,7 +261,7 @@ function action_patrol:execute()
 						state_mgr.set_state(self.object, "hide", nil, nil, position)
 					end
 				else
-					printf("not on place[%s]", self.object:name())
+					--printf("not on place[%s]", self.object:name())
 					-- идем дальше
 					self.move_mgr:continue()
 					self.move_mgr:update()
@@ -304,6 +308,7 @@ function action_patrol:execute()
 		end
 	else
 		-- Перемещение по move_mgr
+		--printf("camper [%s] update move mgr", self.object:name())
 		self.move_mgr:update()
 	end		
 		
