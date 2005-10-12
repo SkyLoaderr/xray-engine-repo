@@ -217,6 +217,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     }
     if (!EPrefs->object_flags.is(epoDeffLoadCF)) GenerateCFModel();       
 #endif
+
 	return true;
 }
 //----------------------------------------------------

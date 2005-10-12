@@ -290,7 +290,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 	xr_string 	ltx_nm;
     FS.update_path	(ltx_nm,_game_textures_,"textures.ltx");
     EFS.BackupFile	(_game_textures_,"textures.ltx",FALSE,50);
-	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, FALSE);
+	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(),FALSE,TRUE,FALSE);
     
 	SPBItem* pb=0;
     if (bProgress) pb = UI->ProgressStart(M_BASE.size(),"Synchronize textures...");
@@ -368,7 +368,10 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
         }
     }
 
-    if (!ltx_ini->save_as(ltx_nm.c_str()))	Log("!Can't save ini file:",ltx_nm.c_str());
+    bool res			= false;
+    int cnt				= 0;
+    while ((false==(res=ltx_ini->save_as()))&&(cnt++<10)){Sleep(1000);}
+    if (false==res)		Log("!Can't save ini file:",ltx_nm.c_str());
     xr_delete			(ltx_ini);
     
     if (bProgress) 	UI->ProgressEnd(pb);
@@ -657,11 +660,15 @@ void CImageManager::RemoveTexture(LPCSTR fname, EItemType type, bool& res)
             // assoc
             xr_string ltx_nm;
             FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");
-            CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
-            ltx_ini->remove_line("association", base_name.c_str());
-            ltx_ini->remove_line("specification", base_name.c_str());
+            CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(),FALSE,TRUE,FALSE);
+            ltx_ini->remove_line("association", 	base_name.c_str());
+            ltx_ini->remove_line("specification", 	base_name.c_str());
+
+            res 				= false;
+            int cnt				= 0;
+            while ((false==(res=ltx_ini->save_as()))&&(cnt++<10)){Sleep(1000);}
+            if (false==res)		Log("!Can't save ini file:",ltx_nm.c_str());
             xr_delete			(ltx_ini);
-            res 				= true;
             return;
         }
     }
