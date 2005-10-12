@@ -47,3 +47,7 @@
     <article id="meet_seryi_start" name="garbage_meet_stalker" article_type="task" group="garbage_meet_stalker">
         <text>meet_seryi_text</text>
     </article> 
+    
+    <article id="esc_fox_help" name="esc_help_wounded_from_raid" article_type="task" group="esc_help_wounded_from_raid">
+        <text>help_to_fox</text>
+    </article> 
