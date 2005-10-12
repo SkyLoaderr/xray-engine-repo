@@ -97,6 +97,7 @@ function action_postprocess:update_params ()
 	self.pp.params.color_gray			= color (self.gray_color.r + self.intensity, self.gray_color.g + self.intensity, self.gray_color.b +  self.intensity)--color (0.5 + self.base_color.r * self.intensity, 0.5 + self.base_color.g * self.intensity, 0.5 + self.base_color.b * self.intensity)
 	self.pp.params.gray					= self.gray_amplitude * self.intensity;
 	self.pp.params.noise				= noise (self.noise_var.intensity * self.intensity, self.noise_var.grain, self.noise_var.fps);
+	self.pp.params.dual                 = duality (0.01 * self.intensity, 0.01 * self.intensity);
 end
 -------------------
 function action_postprocess:update (delta)
