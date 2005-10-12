@@ -67,6 +67,14 @@
     #endif
 #endif
 
+#ifdef XRCORE_STATIC
+#	define NO_FS_SCAN
+#endif
+
+#ifdef _EDITOR
+#	define NO_FS_SCAN
+#endif
+
 // inline control - redefine to use compiler's heuristics ONLY
 // it seems "IC" is misused in many places which cause code-bloat
 // ...and VC7.1 really don't miss opportunities for inline :)
@@ -159,10 +167,14 @@
 #pragma warning (disable : 4100 )		// unreferenced formal parameter
 
 // Our headers
-#ifdef XRCORE_EXPORTS
-#define XRCORE_API __declspec(dllexport)
+#ifdef XRCORE_STATIC
+#	define XRCORE_API
 #else
-#define XRCORE_API __declspec(dllimport)
+#	ifdef XRCORE_EXPORTS
+#		define XRCORE_API __declspec(dllexport)
+#	else
+#		define XRCORE_API __declspec(dllimport)
+#	endif
 #endif
 
 #include "xrDebug.h"
@@ -218,7 +230,7 @@ DEFINE_VECTOR	(xr_rtoken,RTokenVec,RTokenVecIt);
 #include "log.h"
 #include "xr_trims.h"
 #include "xr_ini.h"
-#ifdef _EDITOR
+#ifdef NO_FS_SCAN
 #	include "ELocatorAPI.h"
 #else
 #	include "LocatorAPI.h"

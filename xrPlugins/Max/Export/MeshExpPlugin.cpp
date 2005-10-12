@@ -35,7 +35,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,ULONG fdwReason,LPVOID lpvReserved)
 	if ( !controlsInit ) {
 		controlsInit = TRUE;
 		Core._initialize("XRayPlugin",ELogCallback,FALSE);
-		FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
+		FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"xray_path.ltx");
 		FPU::m64r	(); // нужно чтобы макс не сбрасывал контрольки в 0
 		InitCustomControls(hInstance);
 		InitCommonControls();

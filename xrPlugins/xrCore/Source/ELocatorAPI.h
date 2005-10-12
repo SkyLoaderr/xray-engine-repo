@@ -63,8 +63,8 @@ public:
 	void 						file_rename			(LPCSTR src, LPCSTR dest,bool bOwerwrite=true);
     int							file_length			(LPCSTR src);
 
-    u32  						get_file_age		(LPCSTR nm);
-    void 						set_file_age		(LPCSTR nm, u32 age);
+    time_t 						get_file_age		(LPCSTR nm);
+    void 						set_file_age		(LPCSTR nm, time_t age);
 
     BOOL						path_exist			(LPCSTR path);
     FS_Path*					get_path			(LPCSTR path);

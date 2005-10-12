@@ -8,7 +8,7 @@ extern "C" {
 	void __cdecl LoadShaders()
 	{
 		Core._initialize("XRayPlugin",0,FALSE);
-		FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
+		FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"xray_path.ltx");
 		LPSTRVec lst;
 		ENShaders.count=LoadBlenderList(lst);
 		for (LPSTRIt b_it=lst.begin(); b_it!=lst.end(); b_it++)

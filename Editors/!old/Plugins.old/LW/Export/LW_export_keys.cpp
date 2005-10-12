@@ -82,7 +82,7 @@ extern "C" {
 void __cdecl SaveSkeletonMotion(GlobalFunc *global)
 {
 	Core._initialize("XRayPlugin",ELogCallback,FALSE);
-	FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"fs.ltx");
+	FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"xray_path.ltx");
 	// get bone ID
 	LWItemID		object;
 	bool bErr		= true;

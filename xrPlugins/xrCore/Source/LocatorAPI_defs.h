@@ -36,9 +36,9 @@ public:
 };
 
 #ifdef _EDITOR
-namespace std{
-	struct 				_finddata_t;
-};
+	namespace std{
+		struct 			_finddata_t;
+	};
 #	define _FINDDATA_T	std::_finddata_t
 #else
 	struct 				_finddata_t;
@@ -46,7 +46,7 @@ namespace std{
 #endif
 
 struct XRCORE_API FS_File{
-	enum{
+	enum{ 
 		flSubDir= (1<<0),
 		flVFS	= (1<<1),
 	};

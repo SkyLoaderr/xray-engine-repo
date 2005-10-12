@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="xrCore"
+	Name="xrCoreStatic"
 	ProjectGUID="{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}"
 	RootNamespace="xrCoreStatic"
 	SccProjectName="SAK"
@@ -17,9 +17,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="x:\"
-			IntermediateDirectory=".\Debug"
-			ConfigurationType="2"
+			OutputDirectory="lib"
+			IntermediateDirectory="Intermediate\Debug"
+			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -28,7 +28,7 @@
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS;XRCORE_STATIC"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="TRUE"
@@ -38,8 +38,8 @@
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				AssemblerListingLocation="Debug\"
-				ObjectFile="Debug\"
+				AssemblerListingLocation="$(IntDir)/"
+				ObjectFile="$(IntDir)/"
 				ProgramDataBaseFileName="$(IntDir)/"
 				BrowseInformation="0"
 				WarningLevel="4"
@@ -49,19 +49,8 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLinkerTool"
-				IgnoreImportLibrary="TRUE"
-				OutputFile="$(OutDir)/xrCore.dll"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="TRUE"
-				MapFileName="x:\xrCore.map"
-				MapExports="FALSE"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="0"/>
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/$(ProjectName)D.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -77,17 +66,15 @@
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="x:\"
-			IntermediateDirectory="Release"
-			ConfigurationType="2"
+			OutputDirectory="lib"
+			IntermediateDirectory="Intermediate\Release"
+			ConfigurationType="4"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE">
 			<Tool
@@ -101,7 +88,7 @@
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS;XRCORE_STATIC"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
@@ -117,17 +104,7 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrCore.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="FALSE"
-				SubSystem="0"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="0"/>
+				Name="VCLibrarianTool"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -142,8 +119,6 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
 			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
@@ -291,16 +266,16 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath=".\FTimer.cpp">
+				RelativePath="source\FTimer.cpp">
 			</File>
 			<File
-				RelativePath="FTimer.h">
+				RelativePath="source\FTimer.h">
 			</File>
 			<File
-				RelativePath="resource.h">
+				RelativePath="source\resource.h">
 			</File>
 			<File
-				RelativePath="stdafx.cpp">
+				RelativePath="source\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -328,154 +303,154 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="stdafx.h">
+				RelativePath="source\stdafx.h">
 			</File>
 			<File
-				RelativePath="xrCore.cpp">
+				RelativePath="source\xrCore.cpp">
 			</File>
 			<File
-				RelativePath="xrCore.h">
+				RelativePath="source\xrCore.h">
 			</File>
 			<File
-				RelativePath="xrCore.rc">
+				RelativePath="source\xrCore.rc">
 			</File>
 			<File
-				RelativePath=".\xrCore_platform.h">
+				RelativePath="source\xrCore_platform.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Math"
 			Filter="">
 			<File
-				RelativePath="_bitwise.h">
+				RelativePath="source\_bitwise.h">
 			</File>
 			<File
-				RelativePath="_color.h">
+				RelativePath="source\_color.h">
 			</File>
 			<File
-				RelativePath="_compressed_normal.cpp">
+				RelativePath="source\_compressed_normal.cpp">
 			</File>
 			<File
-				RelativePath="_compressed_normal.h">
+				RelativePath="source\_compressed_normal.h">
 			</File>
 			<File
-				RelativePath=".\_cylinder.h">
+				RelativePath="source\_cylinder.h">
 			</File>
 			<File
-				RelativePath="_fbox.h">
+				RelativePath="source\_fbox.h">
 			</File>
 			<File
-				RelativePath="_fbox2.h">
+				RelativePath="source\_fbox2.h">
 			</File>
 			<File
-				RelativePath="_flags.h">
+				RelativePath="source\_flags.h">
 			</File>
 			<File
-				RelativePath="_math.cpp">
+				RelativePath="source\_math.cpp">
 			</File>
 			<File
-				RelativePath="_math.h">
+				RelativePath="source\_math.h">
 			</File>
 			<File
-				RelativePath="_matrix.h">
+				RelativePath="source\_matrix.h">
 			</File>
 			<File
-				RelativePath="_matrix33.h">
+				RelativePath="source\_matrix33.h">
 			</File>
 			<File
-				RelativePath="_obb.h">
+				RelativePath="source\_obb.h">
 			</File>
 			<File
-				RelativePath="_plane.h">
+				RelativePath="source\_plane.h">
 			</File>
 			<File
-				RelativePath=".\_plane2.h">
+				RelativePath="source\_plane2.h">
 			</File>
 			<File
-				RelativePath="_quaternion.h">
+				RelativePath="source\_quaternion.h">
 			</File>
 			<File
-				RelativePath="_random.h">
+				RelativePath="source\_random.h">
 			</File>
 			<File
-				RelativePath="_rect.h">
+				RelativePath="source\_rect.h">
 			</File>
 			<File
-				RelativePath="_sphere.cpp">
+				RelativePath="source\_sphere.cpp">
 			</File>
 			<File
-				RelativePath="_sphere.h">
+				RelativePath="source\_sphere.h">
 			</File>
 			<File
-				RelativePath="_types.h">
+				RelativePath="source\_types.h">
 			</File>
 			<File
-				RelativePath="_vector2.h">
+				RelativePath="source\_vector2.h">
 			</File>
 			<File
-				RelativePath="_vector3d.h">
+				RelativePath="source\_vector3d.h">
 			</File>
 			<File
-				RelativePath="_vector4.h">
+				RelativePath="source\_vector4.h">
 			</File>
 			<File
-				RelativePath="vector.h">
+				RelativePath="source\vector.h">
 			</File>
 			<Filter
 				Name="CPU"
 				Filter="">
 				<File
-					RelativePath="cpuid.cpp">
+					RelativePath="source\cpuid.cpp">
 				</File>
 				<File
-					RelativePath="cpuid.h">
+					RelativePath="source\cpuid.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="STLext"
 				Filter="">
 				<File
-					RelativePath="FixedMap.h">
+					RelativePath="source\FixedMap.h">
 				</File>
 				<File
-					RelativePath="FixedSet.h">
+					RelativePath="source\FixedSet.h">
 				</File>
 				<File
-					RelativePath="FixedVector.h">
+					RelativePath="source\FixedVector.h">
 				</File>
 				<File
-					RelativePath="xrPool.h">
+					RelativePath="source\xrPool.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="Extensions"
 				Filter="">
 				<File
-					RelativePath=".\_std_extensions.cpp">
+					RelativePath="source\_std_extensions.cpp">
 				</File>
 				<File
-					RelativePath="_std_extensions.h">
+					RelativePath="source\_std_extensions.h">
 				</File>
 				<File
-					RelativePath="_stl_extensions.h">
+					RelativePath="source\_stl_extensions.h">
 				</File>
 				<File
-					RelativePath=".\_type_traits.h">
+					RelativePath="source\_type_traits.h">
 				</File>
 				<File
-					RelativePath="clsid.cpp">
+					RelativePath="source\clsid.cpp">
 				</File>
 				<File
-					RelativePath="clsid.h">
+					RelativePath="source\clsid.h">
 				</File>
 				<File
-					RelativePath=".\fastdelegate.h">
+					RelativePath="source\fastdelegate.h">
 				</File>
 				<File
-					RelativePath="xr_trims.cpp">
+					RelativePath="source\xr_trims.cpp">
 				</File>
 				<File
-					RelativePath="xr_trims.h">
+					RelativePath="source\xr_trims.h">
 				</File>
 			</Filter>
 		</Filter>
@@ -483,10 +458,16 @@
 			Name="FS"
 			Filter="">
 			<File
-				RelativePath="FileSystem.cpp">
+				RelativePath=".\source\ELocatorAPI.cpp">
 			</File>
 			<File
-				RelativePath="FileSystem.h">
+				RelativePath=".\source\ELocatorAPI.h">
+			</File>
+			<File
+				RelativePath="source\FileSystem.cpp">
+			</File>
+			<File
+				RelativePath="source\FileSystem.h">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -499,128 +480,65 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="FileSystem_borland.cpp">
+				RelativePath="source\FileSystem_borland.cpp">
 			</File>
 			<File
-				RelativePath="FS.cpp">
+				RelativePath="source\FS.cpp">
 			</File>
 			<File
-				RelativePath="FS.h">
+				RelativePath="source\FS.h">
 			</File>
 			<File
-				RelativePath="FS_internal.h">
+				RelativePath="source\FS_internal.h">
 			</File>
 			<File
-				RelativePath="LocatorAPI.cpp">
+				RelativePath="source\LocatorAPI_defs.cpp">
 			</File>
 			<File
-				RelativePath="LocatorAPI.h">
+				RelativePath="source\LocatorAPI_defs.h">
 			</File>
 			<File
-				RelativePath=".\LocatorAPI_auth.cpp">
+				RelativePath="source\log.cpp">
 			</File>
 			<File
-				RelativePath=".\LocatorAPI_defs.cpp">
+				RelativePath="source\log.h">
 			</File>
 			<File
-				RelativePath=".\LocatorAPI_defs.h">
+				RelativePath="source\Xr_ini.cpp">
 			</File>
 			<File
-				RelativePath=".\LocatorAPI_Notifications.cpp">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNoExceptions|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\LocatorAPI_Notifications.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNoExceptions|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="log.cpp">
-			</File>
-			<File
-				RelativePath="log.h">
-			</File>
-			<File
-				RelativePath="Xr_ini.cpp">
-			</File>
-			<File
-				RelativePath="xr_ini.h">
+				RelativePath="source\xr_ini.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Memory manager"
 			Filter="">
 			<File
-				RelativePath="xrMemory.cpp">
+				RelativePath="source\xrMemory.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory.h">
+				RelativePath="source\xrMemory.h">
 			</File>
 			<File
-				RelativePath="xrMemory_align.cpp">
+				RelativePath="source\xrMemory_align.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_align.h">
+				RelativePath="source\xrMemory_align.h">
 			</File>
 			<File
-				RelativePath=".\xrMemory_debug.cpp">
+				RelativePath="source\xrMemory_debug.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_POOL.cpp">
+				RelativePath="source\xrMemory_POOL.cpp">
 			</File>
 			<File
-				RelativePath="xrMEMORY_POOL.h">
+				RelativePath="source\xrMEMORY_POOL.h">
 			</File>
 			<File
-				RelativePath="xrMemory_pso.h">
+				RelativePath="source\xrMemory_pso.h">
 			</File>
 			<File
-				RelativePath="xrMemory_pso_Copy.cpp">
+				RelativePath="source\xrMemory_pso_Copy.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -635,7 +553,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xrMemory_pso_Fill.cpp">
+				RelativePath="source\xrMemory_pso_Fill.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -650,7 +568,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xrMemory_pso_Fill32.cpp">
+				RelativePath="source\xrMemory_pso_Fill32.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -665,48 +583,48 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="xrMemory_subst_borland.cpp">
+				RelativePath="source\xrMemory_subst_borland.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_subst_borland.h">
+				RelativePath="source\xrMemory_subst_borland.h">
 			</File>
 			<File
-				RelativePath="xrMemory_subst_msvc.cpp">
+				RelativePath="source\xrMemory_subst_msvc.cpp">
 			</File>
 			<File
-				RelativePath="xrMemory_subst_msvc.h">
+				RelativePath="source\xrMemory_subst_msvc.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Debug core"
 			Filter="">
 			<File
-				RelativePath="xrDebug.cpp">
+				RelativePath="source\xrDebug.cpp">
 			</File>
 			<File
-				RelativePath="xrDebug.h">
+				RelativePath="source\xrDebug.h">
 			</File>
 			<File
-				RelativePath="xrDebug_macros.h">
+				RelativePath="source\xrDebug_macros.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Compression"
 			Filter="">
 			<File
-				RelativePath="LzHuf.cpp">
+				RelativePath="source\LzHuf.cpp">
 			</File>
 			<File
-				RelativePath="lzhuf.h">
+				RelativePath="source\lzhuf.h">
 			</File>
 			<File
-				RelativePath=".\rt_compressor.cpp">
+				RelativePath="source\rt_compressor.cpp">
 			</File>
 			<File
-				RelativePath=".\rt_compressor.h">
+				RelativePath="source\rt_compressor.h">
 			</File>
 			<File
-				RelativePath=".\rt_lzo.cpp">
+				RelativePath="source\rt_lzo.cpp">
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
@@ -715,45 +633,45 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rt_lzo.h">
+				RelativePath="source\rt_lzo.h">
 			</File>
 			<File
-				RelativePath=".\rt_lzo_config.h">
+				RelativePath="source\rt_lzo_config.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="shared memory/string library"
 			Filter="">
 			<File
-				RelativePath=".\crc32.cpp">
+				RelativePath="source\crc32.cpp">
 			</File>
 			<File
-				RelativePath=".\xr_resource.h">
+				RelativePath="source\xr_resource.h">
 			</File>
 			<File
-				RelativePath=".\xr_shared.cpp">
+				RelativePath="source\xr_shared.cpp">
 			</File>
 			<File
-				RelativePath=".\xr_shared.h">
+				RelativePath="source\xr_shared.h">
 			</File>
 			<File
-				RelativePath=".\xrsharedmem.cpp">
+				RelativePath="source\xrsharedmem.cpp">
 			</File>
 			<File
-				RelativePath=".\xrsharedmem.h">
+				RelativePath="source\xrsharedmem.h">
 			</File>
 			<File
-				RelativePath=".\xrstring.cpp">
+				RelativePath="source\xrstring.cpp">
 			</File>
 			<File
-				RelativePath=".\xrstring.h">
+				RelativePath="source\xrstring.h">
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\xrSyncronize.cpp">
+			RelativePath="source\xrSyncronize.cpp">
 		</File>
 		<File
-			RelativePath="xrSyncronize.h">
+			RelativePath="source\xrSyncronize.h">
 		</File>
 	</Files>
 	<Globals>

@@ -207,13 +207,13 @@ void Recurse(LPCSTR path, bool root_only, TOnFind on_find_cb, void* data)
 
 struct file_list_cb_data
 {
-	u32 		base_len;
+	size_t 		base_len;
     u32 		flags;
     SStringVec* masks;
     FS_FileSet* dest;
 };
 
-void file_list_cb(_finddata_t& entry, void* data)
+void __stdcall file_list_cb(_finddata_t& entry, void* data)
 {
 	file_list_cb_data*	D		= (file_list_cb_data*)data;
 
@@ -261,7 +261,7 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
     data.masks		= masks.empty()?0:&masks;
     data.dest		= &dest;
 
-    Recurse			(fpath.c_str(),flags&FS_RootOnly,file_list_cb,&data);
+    Recurse			(fpath.c_str(),!!(flags&FS_RootOnly),file_list_cb,&data);
 	return dest.size();
 }
 
@@ -388,7 +388,7 @@ struct dir_delete_cb_data
     BOOL			remove_files;
 };
 
-void dir_delete_cb(_finddata_t& entry, void* data)
+void __stdcall dir_delete_cb(_finddata_t& entry, void* data)
 {
 	dir_delete_cb_data*	D		= (dir_delete_cb_data*)data;
 
@@ -487,13 +487,13 @@ void CLocatorAPI::update_path(xr_string& dest, LPCSTR initial, LPCSTR src)
     return get_path(initial)->_update(dest,src);
 }
 
-u32 CLocatorAPI::get_file_age(LPCSTR nm)
+time_t CLocatorAPI::get_file_age(LPCSTR nm)
 {
 	FS_File F;
     return (file_find(nm,F))?F.time_write:-1;
 }
 
-void CLocatorAPI::set_file_age(LPCSTR nm, u32 age)
+void CLocatorAPI::set_file_age(LPCSTR nm, time_t age)
 {
     // set file
     _utimbuf	tm;
