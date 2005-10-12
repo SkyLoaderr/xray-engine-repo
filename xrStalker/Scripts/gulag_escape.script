@@ -519,7 +519,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_bridge_post2",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 10, state = {0},
 			in_rest = "", out_rest = "escape_bridge_zone"
 		}
 		table.insert(sj, t)
@@ -531,7 +531,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_bridge_post4",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 10, state = {0},
 			in_rest = "", out_rest = "escape_bridge_zone"
 		}
 		table.insert(sj, t)
@@ -1573,7 +1573,8 @@ function load_states(gname, type)
 	if type == "esc_bridge" then
 		return function(gulag)
 			if db.actor ~= nil then
-				if ( level.get_time_hours() >= 7 and level.get_time_hours() <= 22 ) and db.actor:has_info("esc_kill_bandits_quest_done") then
+--'				if ( level.get_time_hours() >= 7 and level.get_time_hours() <= 22 ) and db.actor:has_info("esc_kill_bandits_quest_done") then
+				if ( level.get_time_hours() >= 7 and level.get_time_hours() <= 22 ) then
 					return 0  -- день
 				else
 					return 1  -- ночь
