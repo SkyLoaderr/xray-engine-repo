@@ -1161,6 +1161,4 @@ function set_sleep_relocate(point, look, timeout)
 	db.actor:actor_sleep(0, timeout)	
 end
 
---prefetch("news_manager")   
---prefetch("xr_effects")   
 --profiler.setup_hook	()
