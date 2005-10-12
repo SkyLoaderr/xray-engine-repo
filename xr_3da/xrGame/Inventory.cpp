@@ -921,6 +921,9 @@ CInventoryItem *CInventory::get_object_by_id(ALife::_OBJECT_ID tObjectID)
 }
 
 //скушать предмет 
+#include "game_object_space.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 bool CInventory::Eat(PIItem pIItem)
 {
 	//устанаовить съедобна ли вещь
@@ -931,6 +934,9 @@ bool CInventory::Eat(PIItem pIItem)
 	if(!entity_alive) return false;
 	
 	pItemToEat->UseBy		(entity_alive);
+
+	if(Actor()->m_inventory == this)
+		Actor()->callback(GameObject::eUseObject)((smart_cast<CGameObject*>(pIItem))->lua_game_object());
 
 	if(pItemToEat->Empty() )
 	{
