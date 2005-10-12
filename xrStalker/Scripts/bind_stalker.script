@@ -26,12 +26,12 @@ function actor_binder:net_spawn(data)
 	db.add_actor(self.object)
 	
 	self.weather_manager:reset()
-	game_stats.initialize ()
+	--game_stats.initialize ()
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_destroy()
-    game_stats.shutdown ()
+    --game_stats.shutdown ()
 	db.del_actor(self.object)
 
     sr_light.clean_up ()
@@ -223,9 +223,12 @@ end
 sound_prefetch.prefetch_sounds()
 
 function can_sleep_callback()
-		-- function must return "can_sleep" to allow actor sleeping, otherwise return string_table identifier that describes  reason
---		return "can_sleep" -- registered keyword
-		return "cant_sleep_not_on_solid_ground"
+    -- function must return "can_sleep" to allow actor sleeping, otherwise return string_table identifier that describes  reason
+    if db.can_sleep then
+        return "can_sleep" -- registered keyword
+    else
+        return "cant_sleep_not_on_solid_ground"
+    end
 end	
 
 function sleep_video_name_callback()

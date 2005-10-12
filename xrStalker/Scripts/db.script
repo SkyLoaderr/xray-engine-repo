@@ -3,15 +3,16 @@
 Чугай Саша
 --------------------------------------------------------------------------------------------------]]
 
-zone_by_name  = {}
-sl_by_name    = {}
-storage       = {}
-sound		  = {}
-actor         = nil
-heli		  = {}
-camp_storage  = {}
-story_by_id	  = {}
+zone_by_name        = {}
+sl_by_name          = {}
+storage             = {}
+sound               = {}
+actor               = nil
+heli                = {}
+camp_storage        = {}
+story_by_id	        = {}
 smart_terrain_by_id = {}
+can_sleep           = false
 
 function add_obj( obj )
 end
