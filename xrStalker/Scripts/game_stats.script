@@ -1,0 +1,34 @@
+
+----------------------------------------------------------
+local   old_time        =   0       --need for update filter
+local   stats           =   {}      --information table
+local   filter_time     =   1000    --filter time
+local   additional_time =   0
+
+--constants
+local   actor_position  =   0
+----------------------------------------------------------
+function initialize ()
+    printf ("GAME STATS START AT LEVEL [%s]", level.name ())
+    stats = {}
+end
+----------------------------------------------------------
+function shutdown   ()
+    local l_name = level.name ()
+    for a = 1, table.getn (stats), 1 do
+        if stats[a].id == actor_position then
+           printf ("[stats][%s][%s][%d][%f,%f,%f]", l_name, stats[a].time, stats[a].id, stats[a].position.x, stats[a].position.y, stats[a].position.z)
+        end
+    end
+    stats = {}
+end
+----------------------------------------------------------
+function update     (delta, actor)
+    additional_time = additional_time + delta
+    if additional_time < filter_time then
+       return
+    end
+    additional_time = 0
+    local t = {time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds), id = actor_position, position = actor:position ()}
+    table.insert (stats, t)
+end

@@ -1535,6 +1535,9 @@
 					RelativePath=".\Config\scripts\dummy.ltx">
 				</File>
 				<File
+					RelativePath=".\config\scripts\earthshake.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\esc_trader.ltx">
 				</File>
 				<File
@@ -3067,6 +3070,9 @@
 				Filter="">
 				<File
 					RelativePath=".\scripts\_G.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\game_stats.script">
 				</File>
 				<File
 					RelativePath=".\scripts\lua_help.script">
