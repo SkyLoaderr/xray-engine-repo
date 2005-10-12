@@ -584,9 +584,9 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
@@ -614,9 +614,9 @@
 #include "gameplay\character_items.xml"
 		</supplies>	
 					
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default2" team_default = "1">
@@ -644,9 +644,9 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default3" team_default = "1">
@@ -674,9 +674,9 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default4" team_default = "1">
@@ -704,9 +704,9 @@
 #include "gameplay\character_items.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default5" team_default = "1">
@@ -734,9 +734,9 @@
 #include "gameplay\character_items.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blokpost_default1" team_default = "1">
