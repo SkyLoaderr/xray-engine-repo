@@ -2561,6 +2561,9 @@
 							RelativePath=".\Scripts\sr_psy_antenna.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\sr_sleep.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\sr_sound.script">
 						</File>
 						<File
