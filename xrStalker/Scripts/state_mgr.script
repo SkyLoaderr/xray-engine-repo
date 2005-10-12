@@ -198,6 +198,7 @@ function act_state_mgr_end:execute()
 		return
 	end
 	if t == "fire" or t == "sniper_fire" then
+		--printf("[%s] shooting", self.object:name())
 		local sniper_aim = 3000
 		if self.st.look_object ~= nil then
 			local look_object = level.object_by_id(self.st.look_object)
@@ -246,6 +247,7 @@ function act_state_mgr_end:execute()
 		end
 		return
 	elseif t == "unstrapped" then
+		--printf("[%s] not shooting", self.object:name())
 		self.object:set_item(state_mgr_weapon.get_idle_state(self.st.target_state), self.object:best_weapon())
 	end	
 end
@@ -870,7 +872,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		   state_lib.states[state_name].weapon ~= "sniper_fire")		
 		then		
 			self.npc:set_item(state_mgr_weapon.get_idle_state(state_name), self.npc:best_weapon())
-			printf("stop shooting")
+			--printf("[%s] stop shooting", self.npc:name())
 		end
 
 		self.target_state = state_name	
