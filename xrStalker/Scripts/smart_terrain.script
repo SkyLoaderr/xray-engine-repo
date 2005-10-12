@@ -297,7 +297,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 	end
 
 --	printf( "after read" )
-	self:print()
+--	self:print()
 end
 
 function se_smart_terrain:FillProps( pref, items )
@@ -458,7 +458,7 @@ function cl_smart_terrain:save()
 		o.gparams = nil
 	end
 
-	o:print()
+--	o:print()
 --	printf( "//smart terrain client save" )
 end
 
