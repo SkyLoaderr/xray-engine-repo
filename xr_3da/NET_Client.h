@@ -67,7 +67,7 @@ public:
 	LPCSTR					net_SessionName			()	{ return *(net_Hosts.front().dpSessionName); }
 
 	// receive
-	IC NET_Packet*			net_msg_Retreive		()	{ return net_Queue.Retreive();	}
+	IC virtual	NET_Packet*			net_msg_Retreive		()	{ return net_Queue.Retreive();	}
 	IC void					net_msg_Release			()	{ net_Queue.Release();			}
 
 	// send
