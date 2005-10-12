@@ -47,7 +47,6 @@ void AddOne				(const char *split)
 
 void Log				(const char *s) 
 {
-	if 		(no_log) return;
 	int		i,j;
 	char	split[1024];
 

@@ -76,24 +76,31 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	CS.Enter			();
 
 	// Log
-	Msg					("***STOP*** file '%s', line %d.\n***Reason***: %s",file,line,reason);
+	string1024			tmp;
+	sprintf				(tmp,"***STOP*** file '%s', line %d.\n***Reason***: %s",file,line,reason);
+	Msg					(tmp);
 	FlushLog			();
 	if (handler)		handler	();
 
 	// Call the dialog
-	dlgExpr		= reason;	
-	dlgFile		= file;
-	sprintf		(dlgLine,"%d",line);
-	INT_PTR res	= DialogBox
+	dlgExpr				= reason;	
+	dlgFile				= file;
+	sprintf				(dlgLine,"%d",line);
+	INT_PTR res			= -1;
+#ifdef XRCORE_STATIC
+	MessageBox			(NULL,tmp,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
+#else
+	res	= DialogBox
 		(
-		GetModuleHandle(MODULE_NAME),
+		GetModuleHandle(NULL),
 		MAKEINTRESOURCE(IDD_STOP),
 		NULL,
 		DialogProc 
 		);
-
+#endif
 	switch (res) 
 	{
+	case -1:
 	case IDC_STOP:
 		if (bException)		TerminateProcess(GetCurrentProcess(),3);
 		else				RaiseException	(0, 0, 0, NULL);

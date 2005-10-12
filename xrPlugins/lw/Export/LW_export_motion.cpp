@@ -43,7 +43,7 @@ void __cdecl SaveObjectMotion(GlobalFunc *global)
 	FS._initialize	(CLocatorAPI::flScanAppRoot,NULL,"xray_path.ltx");
 	// get bone ID
 	bool bErr		= false;
-	
+
 	string_path buf	= "";
 
 	EFS.GetSaveName	("$omotion$",buf,sizeof(buf));

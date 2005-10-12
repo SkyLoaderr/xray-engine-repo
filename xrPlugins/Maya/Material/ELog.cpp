@@ -25,7 +25,15 @@
 	extern "C" LWMessageFuncs	*g_msg;
 	void ELogCallback(LPCSTR txt)
 	{
-//		g_msg->info(string,0);
+		if (0==txt[0])	return;
+		bool bDlg 		= ('#'==txt[0])||((0!=txt[1])&&('#'==txt[1]));
+		if (bDlg){
+			int mt		= ('!'==txt[0])||((0!=txt[1])&&('!'==txt[1]))?1:0;
+			if (('!'==txt[0])||('#'==txt[0])) txt++;
+			if (('!'==txt[0])||('#'==txt[0])) txt++;
+			if (mt==1)	g_msg->error(txt,0);
+			else		g_msg->info(txt,0);
+		}
 	}
 #endif
 #ifdef _MAX_EXPORT
