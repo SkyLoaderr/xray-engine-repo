@@ -1137,21 +1137,21 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
-<!---------------------------DOLG SPECNAZ---------------------->
-	<specific_character id="rad_dolg_veteran_default1" team_default = "1">
+<!---------------------------DOLG MASTER---------------------->
+	<specific_character id="rad_dolg_master_default1" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<class>rad_Dolg_specnaz</class>
+		<class>rad_Dolg_master</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
+		<rank>90</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1165,20 +1165,20 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
-	<specific_character id="rad_dolg_veteran_default2" team_default = "1">
+	<specific_character id="rad_dolg_master_default2" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<class>rad_Dolg_specnaz</class>
+		<class>rad_Dolg_master</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
+		<rank>90</rank>
 		<reputation>40</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1194,20 +1194,20 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
-	<specific_character id="rad_dolg_veteran_default3" team_default = "1">
+	<specific_character id="rad_dolg_master_default3" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<class>rad_Dolg_specnaz</class>
+		<class>rad_Dolg_master</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
+		<rank>90</rank>
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1223,20 +1223,20 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
-	<specific_character id="rad_dolg_veteran_default4" team_default = "1">
+	<specific_character id="rad_dolg_master_default4" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<class>rad_Dolg_specnaz</class>
+		<class>rad_Dolg_master</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
+		<rank>90</rank>
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
