@@ -68,8 +68,8 @@ LPCSTR GAME_NEWS_DATA::FullText()
 	if(news_id == NOT_SIMULATION_NEWS)
 	{
 		THROW(news_text != NO_STRING);
-		THROW(xr_strlen(*CStringTable()((STRING_INDEX)news_text))<sizeof(newsPhrase));
-		strcpy(newsPhrase, *CStringTable()((STRING_INDEX)news_text)) ;
+		THROW(xr_strlen(*CStringTable().translate((STRING_INDEX)news_text))<sizeof(newsPhrase));
+		strcpy(newsPhrase, *CStringTable().translate((STRING_INDEX)news_text)) ;
 	}
 	else
 	{
@@ -80,7 +80,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
 		if (ai().game_graph().header().levels().find(game_vertex->level_id()) != ai().game_graph().header().levels().end())
 		{
-			strconcat	(locationName,*CStringTable()(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()), " ");
+			strconcat	(locationName,*CStringTable().translate(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()), " ");
 		}
 
 		// Substitute placeholders with real names
@@ -135,6 +135,6 @@ void GAME_NEWS_DATA::LoadNewsTemplates()
 {
 	if(!m_NewsTemplates.empty()) return;
 
-	m_NewsTemplates[ALife::eNewsTypeKill].str = CStringTable()(NEWS_TYPE_KILL);
-	m_NewsTemplates[ALife::eNewsTypeRetreat].str = CStringTable()(NEWS_TYPE_RETREAT);
+	m_NewsTemplates[ALife::eNewsTypeKill].str = CStringTable().translate(NEWS_TYPE_KILL);
+	m_NewsTemplates[ALife::eNewsTypeRetreat].str = CStringTable().translate(NEWS_TYPE_RETREAT);
 }

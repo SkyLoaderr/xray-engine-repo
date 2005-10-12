@@ -26,7 +26,6 @@ public:
 	float	GetGrenadeVel() {return m_fGrenadeVel;}
 
 protected:
-	bool m_bForPistol;
 	//стартовая скорость вылета подствольной гранаты
 	float m_fGrenadeVel;
 };

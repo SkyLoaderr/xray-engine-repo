@@ -4,14 +4,14 @@
 		<text font="letterica25" r="155" g="255" b="155"/>		
 	</speech_menu>
 	<!-- health -->
-	<static x="860" y="635" width="150" height="200" align="rb">
-		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">health</text>
+	<static x="860" y="635" width="150" height="200">
+		<text x="70" y="2"  align="l" font="letterica16" r="255" g="255" b="255" a="130">health</text>
 		<texture>ui\ui_mn_health</texture>
 	</static>
 	<!-- WEAPON -->
-	<static x="860" y="685" width="200" height="100" align="rb">
-		<text x="0" y="4" font="small" r="255" g="255" b="255" a="130"></text>
-		<texture>ui\ui_mn_weapons</texture>
+	<static x="860" y="685" width="160" height="64">
+		<text complex_mode="0" align="l" x="70" y="0" font="letterica16" r="255" g="255" b="255" a="130"></text>
+		<texture x="0" y="0" width="160" hwight="64">ui\ui_mn_weapons</texture>
 	</static>
 	<!-- ammo name -->
 	<static x="82" y="22" width="85" height="30">

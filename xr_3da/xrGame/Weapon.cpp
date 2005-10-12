@@ -432,7 +432,7 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	}
 
 	
-	Light_Create		();
+//	Light_Create		();
 
 	UpdateAddonsVisibility();
 	InitAddons();
@@ -599,6 +599,7 @@ void CWeapon::OnH_A_Independent	()
 {
 	m_dwWeaponIndependencyTime = Level().timeServer();
 	inherited::OnH_A_Independent();
+	Light_Destroy				();
 };
 
 void CWeapon::OnH_A_Chield		()

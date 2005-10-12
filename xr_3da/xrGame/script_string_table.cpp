@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
+/*
 #include "script_string_table.h"
 #include "string_table.h"
 
@@ -31,3 +31,4 @@ LPCSTR CScriptStringTable::get_by_index	(int str_index) const
 {
 	return *shared_str((*m_pStringTable)(STRING_INDEX(str_index)));
 }
+*/

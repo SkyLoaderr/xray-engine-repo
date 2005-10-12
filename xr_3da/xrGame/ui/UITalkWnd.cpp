@@ -361,7 +361,7 @@ void CUITalkWnd::AddQuestion(LPCSTR text, int value)
 {
 //	CUIString str(*CStringTable()(text));
 
-	UITalkDialogWnd->AddQuestion(*CStringTable()(text),value);
+	UITalkDialogWnd->AddQuestion(*CStringTable().translate(text),value);
 /*
 	UITalkDialogWnd->UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd->UIQuestionsList.GetTextColor(), 
 						UITalkDialogWnd->UIQuestionsList.GetFont(), pData, value);
@@ -378,7 +378,7 @@ void CUITalkWnd::AddAnswer(LPCSTR text, const char* SpeakerName)
 //	CUIString str(*CStringTable()(text));
 
 	bool i_am = (0 == xr_strcmp(SpeakerName, m_pOurInvOwner->Name()));
-	UITalkDialogWnd->AddAnswer(SpeakerName,*CStringTable()(text),i_am);
+	UITalkDialogWnd->AddAnswer(SpeakerName,*CStringTable().translate(text),i_am);
 /*
 	u32 cl = UITalkDialogWnd->UIAnswersList.GetTextColor();
 	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd->GetOurReplicsColor();

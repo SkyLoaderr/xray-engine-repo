@@ -214,6 +214,6 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 
 void CUIMessageBox::SetText(LPCSTR str)
 {
-	m_UIStaticText->SetText(*(CStringTable()(str)));
+	m_UIStaticText->SetText(*(CStringTable().translate(str)));
 }
 

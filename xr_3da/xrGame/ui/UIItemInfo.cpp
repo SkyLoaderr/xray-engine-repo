@@ -87,14 +87,14 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		sprintf(str, "%s", pInvItem->Name());
 		UIName->SetText(str);
 
-		sprintf(str, "%s%s: %%c<default>%3.2f", fieldsCaptionColor, *stbl("weight"), pInvItem->Weight());
+		sprintf(str, "%s%s: %%c<default>%3.2f", fieldsCaptionColor, *stbl.translate("weight"), pInvItem->Weight());
 		UIWeight->SetText(str);
 
-		sprintf(str, "%s%s: %%c<default>%d", fieldsCaptionColor, *stbl("base cost"), pInvItem->Cost());
+		sprintf(str, "%s%s: %%c<default>%d", fieldsCaptionColor, *stbl.translate("base cost"), pInvItem->Cost());
 		UICost->SetText(str);
 		
 		float cond = pInvItem->GetCondition();
-		sprintf(str, "%s%s: %%c<default>%3.2f", fieldsCaptionColor, *stbl("condition"), cond);
+		sprintf(str, "%s%s: %%c<default>%3.2f", fieldsCaptionColor, *stbl.translate("condition"), cond);
 		UICondition->SetText					(str);
 		if(UICondProgresBar){
 			UICondProgresBar->Show				(true);

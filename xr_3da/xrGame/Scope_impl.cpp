@@ -7,7 +7,7 @@
 #include "stdafx.h"
 
 #include "scope.h"
-#include "PhysicsShell.h"
+//#include "PhysicsShell.h"
 
 CScope::CScope	()
 {

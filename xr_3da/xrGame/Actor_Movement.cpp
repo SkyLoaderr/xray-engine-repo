@@ -586,7 +586,7 @@ bool	CActor::CanMove				()
 
 		if(mstate_wishful&mcAnyMove && Device.fTimeGlobal - m_fSignTime > SHOW_CANT_WALK_TIME)
 		{
-			HUD().GetUI()->UIMainIngameWnd->AddInfoMessage(*CStringTable()(CANT_WALK));
+			HUD().GetUI()->UIMainIngameWnd->AddInfoMessage(*CStringTable().translate(CANT_WALK));
 			m_fSignTime = Device.fTimeGlobal;
 		}
 		return false;

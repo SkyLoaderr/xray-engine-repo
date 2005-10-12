@@ -272,9 +272,9 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	//ѕроверка на попадание мыши в окно,
 	//происходит в обратном пор€дке, чем рисование окон
 	//(последние в списке имеют высший приоритет)
-	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
-	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
+	for(; it!=m_ChildWndList.rend(); ++it)
 	{
 		Frect wndRect = (*it)->GetWndRect();
 		if (wndRect.in(cursor_pos) )
@@ -296,9 +296,9 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 }
 
 bool CUIWindow::HasChildMouseHandler(){
-	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
-	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
+	for( ; it!=m_ChildWndList.rend(); ++it)
 	{
 		if ((*it)->m_bClickable)
 		{
@@ -384,9 +384,9 @@ bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 		if(result) return true;
 	}
 
-	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
-	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
+	for(; it!=m_ChildWndList.rend(); ++it)
 	{
 		if((*it)->IsEnabled())
 		{
@@ -435,9 +435,9 @@ CUIWindow* CUIWindow::GetCurrentMouseHandler(){
 
 CUIWindow* CUIWindow::GetChildMouseHandler(){
 	CUIWindow* pWndResult;
-	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
-	for(u32 i=0; i<m_ChildWndList.size(); ++i, ++it)
+	for(; it!=m_ChildWndList.rend(); ++it)
 	{
 		Frect wndRect = (*it)->GetWndRect();
 		// very strange code.... i can't understand difference between

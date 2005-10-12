@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 // script_string_table.h :	экспорт таблицы строк в скрипты
 //////////////////////////////////////////////////////////////////////////
-
+/*
 #pragma once
 
 #include "alife_space.h"
@@ -27,3 +27,4 @@ public:
 add_to_type_list(CScriptStringTable)
 #undef script_type_list
 #define script_type_list save_type_list(CScriptStringTable)
+*/

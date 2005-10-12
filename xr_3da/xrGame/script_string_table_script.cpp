@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+/*
 #include "script_string_table.h"
 #include "script_space.h"
 
@@ -19,3 +20,4 @@ void CScriptStringTable::script_register(lua_State *L)
 			.def("get_by_index",		&CScriptStringTable::get_by_index)
 		];
 }
+*/

@@ -138,14 +138,6 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIStaticHealth);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticHealth);
-//	UIStaticHealth.SetWndPos(500, 500);
-//	UIStaticHealth.InitTexture("ui\\ui_debug_red_n_black");
-		//.InitSharedTexture("ui_texture.xml", "riffle", true);
-		//SetShader(UI()->GetShader("ui\\ui_debug_red_n_black"));		
-//	UIStaticHealth.SetStretchTexture(true);
-//	UIStaticHealth.m_lines.SetWndRect(UIStaticHealth.GetAbsoluteRect());
-//	UIStaticHealth.m_lines.SetTextColor(color_argb(255,0,255,0));
-//	UIStaticHealth.m_lines.SetText("%c<255,255,255,255>white %c<default>green1 green2 green3 green4 green5 %c<red>red text %c<default>green6 green7 green8888 last_green");
 
 	AttachChild(&UIStaticArmor);
 	xml_init.InitStatic(uiXml, "static", 5, &UIStaticArmor);
@@ -544,9 +536,9 @@ void CUIMainIngameWnd::Update()
 	m_pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!m_pActor) 
 	{
-		m_pItem = NULL;
-		m_pWeapon = NULL;
-		CUIWindow::Update();
+		m_pItem					= NULL;
+		m_pWeapon				= NULL;
+		CUIWindow::Update		();
 		return;
 	}
 
@@ -587,72 +579,58 @@ void CUIMainIngameWnd::Update()
 	else
 	{
 		UIArmorBar.Show(false);
-//		UIArmorString.Show(false);
 		UIStaticArmor.Show(false);
 	}
 
-	if(m_pActor->inventory().GetActiveSlot() < m_pActor->inventory().m_slots.size()) 
+	if(m_pActor->inventory().GetActiveSlot() != NO_ACTIVE_SLOT) 
 	{
-		PIItem item =  m_pActor->inventory().ItemFromSlot(m_pActor->inventory().GetActiveSlot());
-		CWeapon* pWeapon = smart_cast<CWeapon*>(item); 
-		CMissile* pMissile = smart_cast<CMissile*>(item); 
-		CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(pWeapon);
+		PIItem item							=  m_pActor->inventory().ItemFromSlot(m_pActor->inventory().GetActiveSlot());
+		CWeapon* pWeapon					= smart_cast<CWeapon*>(item); 
+		CMissile* pMissile					= smart_cast<CMissile*>(item); 
+		CWeaponMagazined* pWeaponMagazined	= smart_cast<CWeaponMagazined*>(pWeapon);
 		
-		bool active_item_changed = false;
+		bool active_item_changed			= false;
 		// Remember last used ammo types, and if this type doesn't changed 
 		// then no need to update info
 		static u32			prevAmmoID		= static_cast<u32>(-1);
 		static u32			prevState		= static_cast<u32>(-1);
-		if((item && m_pItem != item) || 
-			(pWeapon && (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) ))
+		if(pWeapon &&	((item && m_pItem != item) || 
+						 (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) ))
 		{
-			m_pItem = item;
-			prevState = 
-			active_item_changed = true;
+			m_pItem							= item;
+			prevState						= pWeapon->State();
+			active_item_changed				= true;
 		};		
 
 		if(pMissile && active_item_changed)
 		{
-			UIWeaponIcon.Show(false);
-			UIWeaponSignAmmo.Show(false);
-
-			UIWeaponBack.SetText(m_pItem->NameShort());
-			UIWeaponBack.SetTextX(		(UIWeaponBack.GetAbsoluteRect().right - 
-										UIWeaponBack.GetAbsoluteRect().left) * 0.5f - 
-										UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2.0f);
-
+			UIWeaponIcon.Show				(false);
+			UIWeaponSignAmmo.Show			(false);
+			UIWeaponBack.SetText			(m_pItem->NameShort());
 		}
 		else if(pWeapon)
 		{
 
 			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
 			{
-				m_pWeapon = pWeapon;
-				prevState = pWeapon->State();
+				m_pWeapon					= pWeapon;
+				prevState					= pWeapon->State();
 
 				if(m_pWeapon->ShowAmmo())
 				{
-					//if (xr_strcmp(m_pWeapon->NameShort(), "knife") != 0)
-					if (pWeaponMagazined)
-					{
-						UIWeaponIcon.Show(true);
-					}
-					else
-					{
-						UIWeaponIcon.Show(false);
-					}
+					UIWeaponIcon.Show		(NULL!=pWeaponMagazined);
 
-					UIWeaponSignAmmo.Show(true);
+					UIWeaponSignAmmo.Show	(true);
 
-					prevAmmoID			= m_pWeapon->m_ammoType;
+					prevAmmoID				= m_pWeapon->m_ammoType;
 					shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
 
 					//properties used by inventory menu
-					int iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
-					int iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
+					int iGridWidth			= pSettings->r_u32(sect_name, "inv_grid_width");
+					int iGridHeight			= pSettings->r_u32(sect_name, "inv_grid_height");
 
-					int iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
-					int iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
+					int iXPos				= pSettings->r_u32(sect_name, "inv_grid_x");
+					int iYPos				= pSettings->r_u32(sect_name, "inv_grid_y");
 
 					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(iXPos * INV_GRID_WIDTH),
 																	float(iYPos * INV_GRID_HEIGHT),
@@ -669,81 +647,61 @@ void CUIMainIngameWnd::Update()
 				}
 				else
 				{
-					UIWeaponIcon.Show(false);
-					UIWeaponSignAmmo.Show(false);
+					UIWeaponIcon.Show			(false);
+					UIWeaponSignAmmo.Show		(false);
 				}
 			}
 
-//			shared_str sItemName = m_pItem->NameShort();
 			string256 sItemName;
 			strcpy(sItemName, m_pItem->NameShort());			
 			
 			if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
-			{
 				strcat(sItemName, pWeaponMagazined->GetCurrentFireModeStr());
-				/*
-				int FireMode = pWeaponMagazined->GetCurrentFireMode();
-				switch (FireMode)
-				{
-				case -1:
-						sItemName.sprintf("%s (A)", m_pItem->NameShort());
-						break;
-				default:
-					sItemName.sprintf("%s (%d)", m_pItem->NameShort(), FireMode);
-					break;
-				};	
-				*/
-			}			
 
-			UIWeaponBack.SetText(sItemName);
-			UIWeaponBack.SetTextX(((UIWeaponBack.GetAbsoluteRect().right - 
-				UIWeaponBack.GetAbsoluteRect().left) * 0.5f - 
-				UIWeaponIcon.GetFont()->SizeOf(m_pItem->NameShort()) / 2.0f));
+			UIWeaponBack.SetText	(sItemName);
 
+			int	AE					= m_pWeapon->GetAmmoElapsed();
+			int	AC					= m_pWeapon->GetAmmoCurrent();
 
-			int	AE = m_pWeapon->GetAmmoElapsed();
-			int	AC = m_pWeapon->GetAmmoCurrent();
 			if((AE>=0)&&(AC>=0))
 			{
 				if (!m_pWeapon->unlimited_ammo())
-					sprintf(text_str, "%d/%d",AE,AC - AE);
+					sprintf			(text_str, "%d/%d",AE,AC - AE);
 				else
-					sprintf(text_str, "%d/--",AE);
+					sprintf			(text_str, "%d/--",AE);
+
 				UIWeaponSignAmmo.SetText(text_str);
 			}
 		}
 	} 
 	else
 	{
-		m_pWeapon = NULL;
-		UIWeaponBack.SetText("");
+		m_pWeapon					= NULL;
+		UIWeaponBack.SetText		("");
 	}
 
 
 	//сбросить индикаторы
 	if(!m_pWeapon)
 	{
-		UIWeaponSignAmmo.SetText("");
-		UIWeaponIcon.Show(false);
+		UIWeaponSignAmmo.SetText	("");
+		UIWeaponIcon.Show			(false);
 	}
     
 
-	//if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
-
-
     // radar
-	UIZoneMap->UpdateRadar(Device.vCameraPosition);
+	UIZoneMap->UpdateRadar			(Device.vCameraPosition);
 	// viewport
 	float h,p;
 	Device.vCameraDirection.getHP	(h,p);
 	UIZoneMap->SetHeading			(-h);
 		
 	// health&armor
-	UIHealthBar.SetProgressPos((s16)m_pActor->GetfHealth());
-	UIMotionIcon.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
+	UIHealthBar.SetProgressPos		((s16)m_pActor->GetfHealth());
+	UIMotionIcon.SetProgressPos		(s16(m_pActor->conditions().GetPower()*100));
 	
 	
-	EWarningIcons i = ewiWeaponJammed;
+	EWarningIcons i					= ewiWeaponJammed;
 		
 	while (i <= ewiInvincible)
 	{

@@ -96,7 +96,7 @@ void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INF
 	{
 		CInfoPortion info_portion;
 		info_portion.Load(info_id);
-		pItem->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
+		pItem->UIMsgText.SetText(*CStringTable().translate(info_portion.GetText()));
 	}
 	else
 	{

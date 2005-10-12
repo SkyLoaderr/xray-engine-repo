@@ -330,7 +330,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 		ACTOR_DEFS::EActorSleep result = pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
 		LPCSTR sleep_msg = NULL;
-		sleep_msg = *CStringTable()(result);
+		sleep_msg = *CStringTable().translate(result);
 /*		switch(result)
 		{
 		case easEnemies:

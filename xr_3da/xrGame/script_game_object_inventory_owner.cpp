@@ -64,7 +64,7 @@ void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name
 
 	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu->AddIconedMessage(*CStringTable()(news), texture_name,Frect().set(x1,y1,x2,y2));
+		pGameSP->TalkMenu->AddIconedMessage(*CStringTable().translate(news), texture_name,Frect().set(x1,y1,x2,y2));
 	}
 
 }

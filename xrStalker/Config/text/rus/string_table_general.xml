@@ -1,27 +1,23 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <!-- таблица строк общего назначения -->
 <string_table>
-	<string id="test1">
-		<text>This is a GENERAL test string</text>
+	<string id="health">
+		<text>Здоровье</text>
 	</string>
 	<string id="test2">
 		<text>This is a another GENERAL test string</text>
 	</string>
 	<string id="Weapons">
-		<text>Weapons</text>
-		<text ln="rus">Оружие</text>
+		<text>Оружие</text>
 	</string>
 	<string id="Machineguns">
-		<text>Machineguns</text>
-		<text ln="rus">Автоматы</text>
+		<text>Автоматы</text>
 	</string>
 	<string id="AK-74">
-		<text>AK-74</text>
-		<text ln="rus">АК-74</text>
+		<text>АК-74</text>
 	</string>
 	<string id="AK-74_info">
-		<text>AK-74 info</text>
-		<text ln="rus">АК-74 инфо</text>
+		<text>АК-74 инфо</text>
 	</string>
 
 	<string id="ak_74_desc">
@@ -39,16 +35,13 @@
 		<text ln="rus">%credAK-74 %cblueописание на %cdefaultрусском бла бла бла</text>
 	</string>
 	<string id="escape_blockpost_case">
-		<text>Case from blockpost</text>
-		<text ln="rus">Ящик с блокпоста.</text>
+		<text>Ящик с блокпоста.</text>
 	</string>
 	<string id="alife_news_kill">
-		<text>%s kill %s</text>
-		<text ln="rus">%s убил %s</text>
+		<text>%s убил %s</text>
 	</string>
 	<string id="alife_news_retreat">
-		<text>%s retreat from battlefield</text>
-		<text ln="rus">%s отступил с места боя</text>
+		<text>%s отступил с места боя</text>
 	</string>
 </string_table>
 

@@ -112,7 +112,7 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	m_taskImage->ClipperOn			();
 	m_taskImage->SetStretchTexture	(true);
 
-	m_captionStatic->SetText		(*stbl(m_GameTask->m_Title));
+	m_captionStatic->SetText		(*stbl.translate(m_GameTask->m_Title));
 	m_captionStatic->AdjustHeightToText	();
 	
 	xr_string	txt ="Time: ";
@@ -232,7 +232,7 @@ void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)
 	CStringTable		stbl;
 	SGameTaskObjective	*obj = &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
 
-	m_descriptionStatic->SetText				(*stbl(obj->description));
+	m_descriptionStatic->SetText				(*stbl.translate(obj->description));
 	m_descriptionStatic->AdjustHeightToText		();
 	float h = _max(	m_showPointerBtn->GetWndPos().y+m_showPointerBtn->GetHeight(),
 					m_descriptionStatic->GetWndPos().y+ m_descriptionStatic->GetHeight());
@@ -384,10 +384,10 @@ void CUIUserTaskItem::SetGameTask				(CGameTask* gt, int obj_idx)
 	m_image->ClipperOn			();
 	m_image->SetStretchTexture	(true);
 
-	m_captionStatic->SetText					(*stbl(gt->m_Title));
+	m_captionStatic->SetText					(*stbl.translate(gt->m_Title));
 	m_captionStatic->AdjustHeightToText			();
 
-	m_descriptionStatic->SetText				(*stbl(obj->description));
+	m_descriptionStatic->SetText				(*stbl.translate(obj->description));
 	m_descriptionStatic->AdjustHeightToText		();
 
 	float h = _max(	m_image->GetWndPos().y+m_image->GetHeight(),
@@ -448,8 +448,8 @@ void CUIUserTaskEditWnd::Start				(CUIUserTaskItem* itm)
 	CStringTable stbl;
 
 	m_userTask = itm;
-	m_editCaption->SetText			(*stbl(m_userTask->GameTask()->m_Title));
-	m_editDescription->SetText		(*stbl(m_userTask->Objective()->description));
+	m_editCaption->SetText			(*stbl.translate(m_userTask->GameTask()->m_Title));
+	m_editDescription->SetText		(*stbl.translate(m_userTask->Objective()->description));
 	HUD().GetUI()->StartStopMenu	(this,true);
 }
 

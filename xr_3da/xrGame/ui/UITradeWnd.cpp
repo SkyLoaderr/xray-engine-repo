@@ -216,7 +216,7 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 
 	m_pInvOwner = pOur;
 	m_pOthersInvOwner = pOthers;
-	m_uidata->UIOthersPriceCaption.GetPhraseByIndex(0)->SetText(*CStringTable()("Opponent Items"));
+	m_uidata->UIOthersPriceCaption.GetPhraseByIndex(0)->SetText(*CStringTable().translate("Opponent Items"));
 
 	m_uidata->UICharacterInfoLeft.InitCharacter(m_pInvOwner);
 	m_uidata->UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
@@ -540,11 +540,11 @@ void CUITradeWnd::PerformTrade()
 
 	if(our_money<0) 
 	{
-		m_uidata->UIDealMsg.SetText(*stbl("You don't have enought money!"));
+		m_uidata->UIDealMsg.SetText(*stbl.translate("You don't have enought money!"));
 	} 
 	else if(others_money<0) 
 	{
-		m_uidata->UIDealMsg.SetText(*stbl("Your opponent doesn't have enought money!"));
+		m_uidata->UIDealMsg.SetText(*stbl.translate("Your opponent doesn't have enought money!"));
 	}
 	//денег хватает, продать вещи
 	else if(m_iOurTradePrice>0 || m_iOthersTradePrice>0)

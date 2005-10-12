@@ -51,7 +51,7 @@ void CUISpeechMenu::InitList(LPCSTR section_name){
 			
             LPCSTR s = pSettings->r_string(section_name, phrase);
 			_GetItem(s,0,phrase);
-			sprintf(str, "%d. %s",i+1, *st(phrase));
+			sprintf(str, "%d. %s",i+1, *st.translate(phrase));
             pItem = xr_new<CUIListItem>();
 			pItem->SetFont(GetFont());
 			pItem->SetTextColor(m_text_color);

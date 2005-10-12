@@ -250,7 +250,7 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 
 	shared_str text = xml_doc.Read(path, index, NULL);
 	CStringTable st;
-	pWnd->SetText(*st(*text));
+	pWnd->SetText(*st.translate(*text));
 
 	return true;
 }
@@ -864,7 +864,7 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 
 		CStringTable st;
 
-		p->str =  st(xml_doc.Read(ph, i));
+		p->str =  st.translate(xml_doc.Read(ph, i));
 	}
 
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());

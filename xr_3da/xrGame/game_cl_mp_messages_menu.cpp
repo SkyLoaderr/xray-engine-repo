@@ -156,7 +156,7 @@ void				game_cl_mp::OnSpeechMessage			(NET_Packet& P)
 	{
 		CStringTable st;
 		if (HUD().GetUI())
-			HUD().GetUI()->m_pMessagesWnd->AddChatMessage(*st(*(pMMessage->pMessage)), ps->getName());
+			HUD().GetUI()->m_pMessagesWnd->AddChatMessage(*st.translate(*(pMMessage->pMessage)), ps->getName());
 
 		if (!Level().MapManager().HasMapLocation(FRIEND_RADION_LOCATION, ps->GameID))
 		{

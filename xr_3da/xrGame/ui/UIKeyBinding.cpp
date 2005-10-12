@@ -46,7 +46,7 @@ void CUIKeyBinding::FillUpList(){
 		R_ASSERT(xr_strlen(grp_name));
 
 		CUIListItemAdv*	pItem = xr_new<CUIListItemAdv>();
-		pItem->AddField(*st(*grp_name), m_header[0].GetWidth());
+		pItem->AddField(*st.translate(grp_name), m_header[0].GetWidth());
 		pItem->SetTextColor(m_dwGroupColor);
 		m_list.AddItem(pItem);
 
@@ -60,7 +60,7 @@ void CUIKeyBinding::FillUpList(){
 			shared_str command_id = xml_doc.ReadAttrib("command",j,"id");
 			pItem = xr_new<CUIListItemAdv>();
 			m_list.AddItem(pItem);
-			pItem->AddField(*st(*command_id),m_header[0].GetWidth());
+			pItem->AddField(*st.translate(command_id),m_header[0].GetWidth());
 
 			shared_str exe = xml_doc.ReadAttrib("command",j,"exe");
 

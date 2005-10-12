@@ -264,32 +264,32 @@ void CServerList::InitHeader(){
 	CStringTable st;
 
 	m_header[0].SetWidth(m_itemInfo.size.icon);
-	m_header[0].SetText(*st("icon"));
+	m_header[0].SetText(*st.translate("icon"));
 	pos.x += m_itemInfo.size.icon;
 	m_separator[0].SetWndPos(pos.x,y);
 	m_header[1].SetWidth(m_itemInfo.size.server);
 	m_header[1].SetWndPos(pos);
-	m_header[1].SetText(*st("server name"));
+	m_header[1].SetText(*st.translate("server name"));
 	pos.x += m_itemInfo.size.server;
 	m_separator[1].SetWndPos(pos.x,y);
 	m_header[2].SetWidth(m_itemInfo.size.map);
 	m_header[2].SetWndPos(pos);
-	m_header[2].SetText(*st("map"));
+	m_header[2].SetText(*st.translate("map"));
 	pos.x += m_itemInfo.size.map;
 	m_separator[2].SetWndPos(pos.x,y);
 	m_header[3].SetWidth(m_itemInfo.size.game);
 	m_header[3].SetWndPos(pos);
-	m_header[3].SetText(*st("game type"));
+	m_header[3].SetText(*st.translate("game type"));
 	pos.x += m_itemInfo.size.game;
 	m_separator[3].SetWndPos(pos.x,y);
 	m_header[4].SetWidth(m_itemInfo.size.players);
 	m_header[4].SetWndPos(pos);
-	m_header[4].SetText(*st("players"));
+	m_header[4].SetText(*st.translate("players"));
 	pos.x += m_itemInfo.size.players;
 	m_separator[4].SetWndPos(pos.x,y);
 	m_header[5].SetWidth(m_itemInfo.size.ping);
 	m_header[5].SetWndPos(pos);
-	m_header[5].SetText(*st("ping"));
+	m_header[5].SetText(*st.translate("ping"));
 }
 
 void	CServerList::RefreshGameSpyList	(bool Local){

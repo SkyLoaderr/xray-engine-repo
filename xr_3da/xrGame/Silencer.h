@@ -23,6 +23,4 @@ public:
 	virtual void UpdateCL			();
 	virtual void renderable_Render	();
 
-protected:
-	bool m_bForPistol;
 };

@@ -123,6 +123,8 @@ void CShootingObject::LoadLights		(LPCSTR section, LPCSTR prefix)
 
 void CShootingObject::Light_Start	()
 {
+	if(!light_render)		Light_Create();
+
 	if (Device.dwFrame	!= light_frame)
 	{
 		light_frame					= Device.dwFrame;
@@ -318,7 +320,7 @@ void CShootingObject::UpdateLight()
 
 void CShootingObject::StopLight			()
 {
-	light_render->set_active(false);
+	if(light_render)light_render->set_active(false);
 }
 
 void CShootingObject::RenderLight()

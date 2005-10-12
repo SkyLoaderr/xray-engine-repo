@@ -544,77 +544,6 @@ void CUIStatic::SetClipRect(Frect r)
 	m_ClipRect = r;
 }
 
-//void CUIStatic::Elipsis(STRING &str, const Frect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
-//{
-//	if (eepNone == elipsisPos) return;
-//
-//	R_ASSERT(pFont);
-//	R_ASSERT(!str.empty());
-//
-//	// Quick check
-//	if (pFont->SizeOf(&str.front()) <= rect.right - rect.left) return;
-//
-//	// Applying elipsis cut
-//	int length = 0, elipsisWidth = static_cast<int>(pFont->SizeOf("..."));
-//	STRING_IT cutPos = str.begin(), left, right;
-//	bool moveLeft;
-//
-//	// Depend elipsis position
-//	switch (elipsisPos)
-//	{
-//	case eepBegin:
-//		for (STRING::reverse_iterator it = str.rbegin(); it != str.rend(); ++it)
-//		{
-//			length = length + static_cast<int>(pFont->SizeOf(*it));
-//			if (length > rect.right - rect.left - elipsisWidth)
-//			{
-//				STRING tmp;
-//				tmp.assign(++it.base(), str.end());
-//				str.swap(tmp);
-//				str.insert(str.end(), 0);
-//				cutPos = str.begin();
-//				break;
-//			}
-//		}
-//		break;
-//	case eepEnd:
-//		for (STRING_IT it = str.begin(); it != str.end(); ++it)
-//		{
-//			length = length + static_cast<int>(pFont->SizeOf(*it));
-//			if (length > rect.right - rect.left - elipsisWidth)
-//			{
-//				*it = 0;
-//				str.resize(std::distance(str.begin(), it));
-//				cutPos = str.end();
-//				break;
-//			}
-//		}
-//		break;
-//	case eepCenter:
-//		left = str.begin();
-//		right = str.end() - 1;
-//		moveLeft = true;
-//		while (length < rect.right - rect.left - elipsisWidth && left <= right)
-//		{
-//			moveLeft ?	length = length + static_cast<int>(pFont->SizeOf(*left++)):
-//		length = length + static_cast<int>(pFont->SizeOf(*right--));
-//		moveLeft = !moveLeft;
-//		}
-//
-//		// Cut center
-//		if (--left < ++right)
-//		{
-//			str.erase(left, right);
-//			cutPos = str.begin() + std::distance(str.begin(), str.end()) / 2;
-//		}
-//		break;
-//	default:
-//		NODEFAULT;
-//	}
-//
-//	str.insert(cutPos, 3, '.');
-//}
-
 void CUIStatic::OnFocusReceive(){
 	if (GetMessageTarget())
         GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
@@ -655,5 +584,5 @@ void CUIStatic::RescaleRelative2Rect(const Frect& r){
 
 void CUIStatic::SetTextST				(LPCSTR str_id)
 {
-	SetText					(*CStringTable()(str_id));
+	SetText					(*CStringTable().translate(str_id));
 }

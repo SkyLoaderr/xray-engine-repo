@@ -430,7 +430,7 @@ void CMapLocation::SetHint	(const shared_str& hint)
 LPCSTR CMapLocation::GetHint	()					
 {
 	CStringTable	stbl;
-	return *stbl	(m_hint);
+	return *stbl.translate(m_hint);
 };
 
 CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)

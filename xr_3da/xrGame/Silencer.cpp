@@ -6,11 +6,10 @@
 #include "stdafx.h"
 
 #include "silencer.h"
-#include "PhysicsShell.h"
+//#include "PhysicsShell.h"
 
 CSilencer::CSilencer()
 {
-	m_bForPistol = false;
 }
 
 CSilencer::~CSilencer() 

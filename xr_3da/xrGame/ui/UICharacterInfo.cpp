@@ -170,7 +170,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	float offset;
 
 #ifdef _DEBUG
-	sprintf(str, "%s,%d", *stbl(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
+	sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
 #else
 	sprintf(str, "%s", *stbl(GetRankAsText(pCharInfo->Rank().value())));
 #endif
@@ -189,9 +189,9 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 
 
 #ifdef _DEBUG
-	sprintf(str, "%s,%d", *stbl(GetReputationAsText(pCharInfo->Reputation().value())), pCharInfo->Reputation().value());
+	sprintf(str, "%s,%d", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())), pCharInfo->Reputation().value());
 #else
-	sprintf(str, "%s", *stbl(GetReputationAsText(pCharInfo->Reputation().value())));
+	sprintf(str, "%s", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())));
 #endif
 	if (m_bInfoAutoAdjust)
 	{
@@ -206,7 +206,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	if(m_icons[eUIReputation])
 		m_icons[eUIReputation]->SetText(str);
 
-	sprintf(str, "%s", *CStringTable()(pCharInfo->Community().id()));
+	sprintf(str, "%s", *CStringTable().translate(pCharInfo->Community().id()));
 	if (m_bInfoAutoAdjust)
 	{
 		if (m_icons[eUICommunityCaption] && 
@@ -280,7 +280,7 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 
 	string256		str;
 #ifdef _DEBUG
-	sprintf(str, "%s,%d", *stbl(GetGoodwillAsText(goodwill)), goodwill);
+	sprintf(str, "%s,%d", *stbl.translate(GetGoodwillAsText(goodwill)), goodwill);
 #else
 	sprintf(str, "%s", *stbl(GetGoodwillAsText(goodwill)));
 #endif

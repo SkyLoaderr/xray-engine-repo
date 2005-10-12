@@ -72,8 +72,12 @@ void CInventoryItem::Load(LPCSTR section)
 	ISpatial*			self				=	smart_cast<ISpatial*> (this);
 	if (self)			self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 
-	m_name				= pSettings->r_string_wb(section, "inv_name");
-	m_nameShort			= pSettings->r_string_wb(section, "inv_name_short");
+	m_name				= CStringTable().translate( pSettings->r_string(section, "inv_name") );
+	m_nameShort			= CStringTable().translate( pSettings->r_string(section, "inv_name_short"));
+
+//	m_name				= pSettings->r_string_wb(section, "inv_name");
+//	m_nameShort			= pSettings->r_string_wb(section, "inv_name_short");
+
 	NameComplex			();
 	m_weight			= pSettings->r_float(section, "inv_weight");
 	R_ASSERT			(m_weight>=0.f);
@@ -92,7 +96,7 @@ void CInventoryItem::Load(LPCSTR section)
 
 	// Description
 	if ( pSettings->line_exist(section, "description") )
-		m_Description = CStringTable()( pSettings->r_string(section, "description") );
+		m_Description = CStringTable().translate( pSettings->r_string(section, "description") );
 
 	m_flags.set(Fbelt,			READ_IF_EXISTS(pSettings, r_bool, section, "belt",				FALSE));
 	m_flags.set(FRuckDefault,	READ_IF_EXISTS(pSettings, r_bool, section, "default_to_ruck",	TRUE));

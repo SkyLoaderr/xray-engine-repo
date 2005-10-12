@@ -174,8 +174,8 @@ void CHUDCursor::Render()
 
 					if(our_inv_owner && others_inv_owner){
 						CStringTable	strtbl		;
-						sprintf			(name_buf, "%s, %s", *strtbl(others_inv_owner->CharacterInfo().Community().id()), 
-							*strtbl(others_inv_owner->Name()));
+						sprintf			(name_buf, "%s, %s", *strtbl.translate(others_inv_owner->CharacterInfo().Community().id()), 
+							*strtbl.translate(others_inv_owner->Name()));
 						object_name		= name_buf	;
 
 						switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))

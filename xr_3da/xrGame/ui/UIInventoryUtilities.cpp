@@ -384,7 +384,7 @@ void InventoryUtilities::UpdateWeight(CUIStatic &wnd, bool withPrefix)
 
 	if (withPrefix)
 	{
-		sprintf(prefix, "%%c<default>%s ", *CStringTable()("ui_inv_weight"));
+		sprintf(prefix, "%%c<default>%s ", *CStringTable().translate("ui_inv_weight"));
 	}
 	else
 	{
