@@ -511,8 +511,8 @@ bool CActorTools::ExportCPP(LPCSTR name)
         IWriter* W 				= FS.w_open(name);
         for (EditMeshIt m_it=meshes.begin(); m_it!=meshes.end(); m_it++){
 	    	CEditableMesh* mesh = *m_it;
-            st_Face* faces		= mesh->GetFaces();
-            Fvector* verts		= mesh->GetVerts();
+            const st_Face* faces= mesh->GetFaces();
+            const Fvector* verts= mesh->GetVerts();
             sprintf				(tmp,"MESH %s {",mesh->GetName());
             W->w_string			(tmp);
             sprintf				(tmp,"\tVERTEX_COUNT %d",mesh->GetVCount());
