@@ -22,13 +22,14 @@ void CPhysicsShellHolder::net_Destroy()
 	CParticlesPlayer::net_DestroyParticles		();
 	inherited::net_Destroy						();
 	b_sheduled									=	false;
+	deactivate_physics_shell						();
 	xr_delete									(m_pPhysicsShell);
 }
 BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
 	BOOL ret=inherited::net_Spawn(DC);
 	b_sheduled				=	true;
-	create_physic_shell			();
+	//create_physic_shell			();
 	CParticlesPlayer::net_SpawnParticles		();
 	return ret;
 }
@@ -47,6 +48,7 @@ void	CPhysicsShellHolder::Hit(float P, Fvector &dir, CObject* who, s16 element,
 
 void CPhysicsShellHolder::create_physic_shell	()
 {
+	VERIFY(!m_pPhysicsShell);
 	IPhysicShellCreator *shell_creator = smart_cast<IPhysicShellCreator*>(this);
 	if (shell_creator)
 		shell_creator->CreatePhysicsShell();
@@ -60,6 +62,9 @@ void CPhysicsShellHolder::init			()
 
 void CPhysicsShellHolder::activate_physic_shell()
 {
+	VERIFY						(!m_pPhysicsShell);
+	create_physic_shell			();
+
 	Fvector						l_fw, l_up;
 	l_fw.set					(XFORM().k);
 	l_up.set					(XFORM().j);
@@ -80,9 +85,17 @@ void CPhysicsShellHolder::activate_physic_shell()
 
 void CPhysicsShellHolder::setup_physic_shell	()
 {
+	VERIFY						(!m_pPhysicsShell);
+	create_physic_shell			();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
 }
 
+void CPhysicsShellHolder::deactivate_physics_shell()
+{
+	if (m_pPhysicsShell)
+		m_pPhysicsShell->Deactivate	();
+	xr_delete(m_pPhysicsShell);
+}
 void CPhysicsShellHolder::PHSetMaterial(u16 m)
 {
 	if(m_pPhysicsShell)

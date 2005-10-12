@@ -37,20 +37,21 @@ private:
 	CPhysicsShell						*m_physics_skeleton																																	;
 	CPHMovementControl					&m_PhysicMovementControl																															;
 	CPHSoundPlayer						m_ph_sound_player;
-//skeleton
+//skeleton modell(!share?)
 	float								skel_airr_lin_factor																																;
 	float								skel_airr_ang_factor																																;
 	float								hinge_force_factor1																																	;
 	float								skel_fatal_impulse_factor																															;
 	int									skel_ddelay																																			;
+/////////////////////////////////////////////////
 	bool								b_death_anim_on																																		;
 	bool								b_skeleton_in_shell																																	;
 ///////////////////////////////////////////////////////////////////////////
-	float								m_saved_impulse																																		;
+/*	float								m_saved_impulse																																		;
 	Fvector								m_saved_hit_position																																;
 	Fvector								m_saved_hit_dir																																		;
 	s16									m_saved_element																																		;
-	ALife::EHitType						m_saved_hit_type																																	;
+	ALife::EHitType						m_saved_hit_type			*/																														;
 ///////////////////////////////////////////////////////////////////////////
 	float								m_shot_up_factor																																	;
 	float								m_after_death_velocity_factor																														;

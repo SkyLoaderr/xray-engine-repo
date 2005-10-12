@@ -61,7 +61,7 @@ void CPhysicItem::OnH_B_Independent	()
 	setVisible					(TRUE);
 	setEnabled					(TRUE);
 
-	if (m_pPhysicsShell)
+	//if (m_pPhysicsShell)
 		activate_physic_shell	();
 }
 
@@ -72,8 +72,7 @@ void CPhysicItem::OnH_B_Chield		()
 	setVisible					(FALSE);
 	setEnabled					(FALSE);
 
-	if (m_pPhysicsShell)
-		m_pPhysicsShell->Deactivate	();
+	inherited::deactivate_physics_shell();
 }
 
 BOOL CPhysicItem::net_Spawn			(CSE_Abstract* DC)
@@ -94,9 +93,7 @@ BOOL CPhysicItem::net_Spawn			(CSE_Abstract* DC)
 void CPhysicItem::net_Destroy		()
 {
 	inherited::net_Destroy	();
-	if (m_pPhysicsShell)
-		m_pPhysicsShell->Deactivate	();
-	xr_delete				(m_pPhysicsShell);
+
 }
 
 void CPhysicItem::UpdateCL()

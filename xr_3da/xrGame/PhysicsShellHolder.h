@@ -70,6 +70,7 @@ public:
 	virtual void			create_physic_shell		();
 	virtual void			activate_physic_shell	();
 	virtual void			setup_physic_shell		();
+	virtual void			deactivate_physics_shell ();
 
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Spawn			(CSE_Abstract*	DC);

@@ -95,6 +95,8 @@ BOOL CMissile::net_Spawn(CSE_Abstract* DC)
 
 	CSE_Abstract						*abstract = (CSE_Abstract*)DC;
 	if (abstract->ID_Parent==0xffff) {
+		VERIFY(!m_pPhysicsShell);
+		create_physic_shell();
 		m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
 
 	}
@@ -668,7 +670,8 @@ void CMissile::activate_physic_shell()
 		EA->PMovement()->GetCharacterVelocity(parent_vel);
 		l_vel.add(parent_vel);
 	}
-
+	VERIFY(!m_pPhysicsShell);
+	create_physic_shell();
 	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
 	//m_pPhysicsShell->AddTracedGeom();
 	m_pPhysicsShell->SetAllGeomTraced();

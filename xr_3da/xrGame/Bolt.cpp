@@ -85,6 +85,8 @@ void CBolt::Destroy()
 
 void CBolt::OnH_B_Independent()
 {
+	//VERIFY(!m_pPhysicsShell);
+	//create_physic_shell();
 	inherited::OnH_B_Independent();
 	m_pPhysicsShell->SetAirResistance(.0001f);
 }

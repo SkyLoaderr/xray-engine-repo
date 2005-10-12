@@ -41,7 +41,7 @@ m_eType=atype;
 m_eState=esAlive;
 b_death_anim_on					= false;
 m_pPhysicsShell					= NULL;
-m_saved_impulse					= 0.f;
+//m_saved_impulse					= 0.f;
 m_physics_skeleton				= NULL;
 b_skeleton_in_shell				= false;
 m_shot_up_factor				=0.f;
@@ -194,11 +194,11 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
 	{
-		m_saved_impulse=impulse* (hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
-		m_saved_element=element;
-		m_saved_hit_type=hit_type;
-		m_saved_hit_dir.set(dir);
-		m_saved_hit_position.set(p_in_object_space);
+		//m_saved_impulse=impulse* (hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
+		//m_saved_element=element;
+		//m_saved_hit_type=hit_type;
+		//m_saved_hit_dir.set(dir);
+		//m_saved_hit_position.set(p_in_object_space);
 
 		if(!is_killing&&m_EntityAlife.g_Alive())
 			m_PhysicMovementControl.ApplyHit(dir,impulse,hit_type);
@@ -209,12 +209,12 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
 				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
-			else{
-				m_saved_hit_dir.set(dir);
+//			else{
+	/*			m_saved_hit_dir.set(dir);
 				m_saved_impulse=impulse*(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 				m_saved_element=element;
-				m_saved_hit_position.set(p_in_object_space);
-			}
+				m_saved_hit_position.set(p_in_object_space);*/
+//			}
 		}
 	}
 }
@@ -282,6 +282,9 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	R_ASSERT2(!pShell,"pShell already initialized!!");
 	if (!m_EntityAlife.Visual())
 		return;
+#ifdef DEBUG
+	CTimer t;t.Start();
+#endif	
 	pShell		= P_create_Shell();
 	pShell->preBuild_FromKinematics(smart_cast<CKinematics*>(m_EntityAlife.Visual()));
 	pShell->mXFORM.set(mXFORM);
@@ -295,7 +298,9 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell->set_DisableParams(disable_params);
 
 	pShell->Build();
-
+#ifdef DEBUG	
+	Msg("shell for %s created in %d ms",*m_EntityAlife.cName(),t.GetElapsed_ms());
+#endif
 }
 void CCharacterPhysicsSupport::CreateSkeleton()
 {
