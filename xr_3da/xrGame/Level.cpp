@@ -145,7 +145,7 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwStoredDemoDataSize = 0;
 	m_pStoredDemoData = NULL;
 	m_pOldCrashHandler = NULL;
-	if (!strstr(Core.Params,"-tdemo "))
+	if (!strstr(Core.Params,"-tdemo ") && !strstr(Core.Params,"-tdemof "))
 	{		
 		Demo_PrepareToStore();
 	};
@@ -154,9 +154,18 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_aDemoData.clear();
 	m_bDemoStarted	= FALSE;
 
-	if (strstr(Core.Params,"-tdemo ")) {		
+	if (strstr(Core.Params,"-tdemo ") || strstr(Core.Params,"-tdemof ")) {		
 		string1024				f_name;
-		sscanf					(strstr(Core.Params,"-tdemo ")+7,"%[^ ] ",f_name);
+		if (strstr(Core.Params,"-tdemo "))
+		{
+			sscanf					(strstr(Core.Params,"-tdemo ")+7,"%[^ ] ",f_name);
+			m_bDemoPlayByFrame = FALSE;
+		}
+		else
+		{
+			sscanf					(strstr(Core.Params,"-tdemof ")+8,"%[^ ] ",f_name);
+			m_bDemoPlayByFrame = TRUE;
+		};
 		
 		Demo_Load	(f_name);		
 	}	

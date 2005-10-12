@@ -862,6 +862,12 @@ void				game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin	(NET_Packet& P)
 {
 	s8 NewSkin = P.r_s8();
 	local_player->skin = NewSkin;
+	
+	if (pCurSkinMenu && pCurSkinMenu->IsShown())
+		StartStopMenu(pCurSkinMenu, true);
+	if (pMapDesc && pMapDesc->IsShown())
+		StartStopMenu(pMapDesc, TRUE);
+
 	SetCurrentSkinMenu();
 	if (pCurSkinMenu) pCurSkinMenu->SetCurSkin(local_player->skin);
 	SetCurrentBuyMenu();

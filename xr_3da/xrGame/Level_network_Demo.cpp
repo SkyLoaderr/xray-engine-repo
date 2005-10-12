@@ -3,11 +3,11 @@
 
 #define DEMO_DATA_SIZE	65536
 
-void						CLevel::Demo_StoreData			(void* data, u32 size)
+void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
 {
 	if (!IsDemoSave()) return;
 
-	DemoCS.Enter();
+//	DemoCS.Enter();
 
 	u32 CurTime = timeServer_Async();
 	u32 TotalSize = sizeof(CurTime) + sizeof(size) + size;
@@ -18,11 +18,26 @@ void						CLevel::Demo_StoreData			(void* data, u32 size)
 		Demo_DumpData();
 	};
 
-	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &CurTime, 4); m_dwStoredDemoDataSize += 4;
-	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &size, 4); m_dwStoredDemoDataSize += 4;
-	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size); m_dwStoredDemoDataSize += size;
+	DEMO_CHUNK	Chunk = DataType;
+	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &Chunk, 4); m_dwStoredDemoDataSize += 4;
+	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &m_dwCurDemoFrame, 4); m_dwStoredDemoDataSize += 4;
+	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &CurTime, 4); m_dwStoredDemoDataSize += 4;	
+	switch (DataType)
+	{
+	case DATA_FRAME:
+		{
+			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size); m_dwStoredDemoDataSize += size;
+		}break;
+	case DATA_PACKET:
+		{
+			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &size, 4); m_dwStoredDemoDataSize += 4;
+			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size); m_dwStoredDemoDataSize += size;
+		}break;
+	}
+	
+	
+//	DemoCS.Leave();
 
-	DemoCS.Leave();
 	/*
 	FILE* fTDemo = fopen(m_sDemoName, "ab");
 	if (!fTDemo) return;
@@ -76,7 +91,8 @@ void						CLevel::Demo_PrepareToStore			()
 	//---------------------------------------------------------------
 	m_dwStoredDemoDataSize = 0;
 	m_pStoredDemoData = (u8*) xr_malloc(DEMO_DATA_SIZE);
-
+	//---------------------------------------------------------------
+	m_dwCurDemoFrame = 0;
 };
 
 void						CLevel::CallOldCrashHandler			()
@@ -86,8 +102,13 @@ void						CLevel::CallOldCrashHandler			()
 };
 
 void						CLevel::WriteStoredDemo			()
-{
-	DemoCS.Enter();
+{	
+	if (!DemoCS.TryEnter()) 
+	{
+		Msg("! Unable to Write Stored Demo!");
+		return;
+	};
+	
 	Demo_DumpData();
 	DemoCS.Leave();
 };
@@ -116,16 +137,29 @@ void						CLevel::Demo_Load				(LPCSTR DemoName)
 	FILE* fTDemo = fopen(DemoFileName, "rb");
 	if (fTDemo)
 	{
-		NET_Packet NewPacket;
+//		NET_Packet NewPacket;
+		DemoDataStruct NewData;
 		Msg("\n------- Loading Demo... ---------\n");
 
 		while (!feof(fTDemo))
 		{
-			fread(&(NewPacket.timeReceive), sizeof(NewPacket.timeReceive), 1, fTDemo);
-			fread(&(NewPacket.B.count), sizeof(NewPacket.B.count), 1, fTDemo);
-			fread((NewPacket.B.data), 1, NewPacket.B.count, fTDemo);
+			fread(&(NewData.m_dwDataType), sizeof(NewData.m_dwDataType), 1, fTDemo);
+			fread(&(NewData.m_dwFrame), sizeof(NewData.m_dwFrame), 1, fTDemo);
+			fread(&(NewData.m_dwTimeReceive), sizeof(NewData.m_dwTimeReceive), 1, fTDemo);
+			switch (NewData.m_dwDataType)
+			{
+			case DATA_FRAME:
+				{
+					fread(&(NewData.FrameTime), 1, sizeof(NewData.FrameTime), fTDemo);
+				}break;
+			case DATA_PACKET:
+				{
+					fread(&(NewData.Packet.B.count), sizeof(NewData.Packet.B.count), 1, fTDemo);
+					fread((NewData.Packet.B.data), 1, NewData.Packet.B.count, fTDemo);
+				}break;
+			};			
 
-			m_aDemoData.push_back(NewPacket);
+			m_aDemoData.push_back(NewData);
 		}
 		fclose(fTDemo);
 		if (!m_aDemoData.empty()) 
@@ -133,6 +167,7 @@ void						CLevel::Demo_Load				(LPCSTR DemoName)
 			m_bDemoPlayMode = TRUE;
 			m_bDemoSaveMode = FALSE;
 		};
+		m_dwCurDemoFrame = 0;
 	}
 }
 
@@ -140,23 +175,73 @@ void						CLevel::Demo_Update				()
 {
 	if (!IsDemoPlay() || m_aDemoData.empty() || !m_bDemoStarted) return;
 	static u32 Pos = 0;
-	if (Pos >= m_aDemoData.size()) return;
+	if (Pos >= m_aDemoData.size()) return;	
 
 	for (Pos; Pos < m_aDemoData.size(); Pos++)
 	{
 		u32 CurTime = timeServer_Async();
-		NET_Packet* P = &(m_aDemoData[Pos]);
-		//		Msg("tS_A - %d; P->tR - %d", CurTime, P->timeReceive);
-		if (P->timeReceive <= CurTime) IPureClient::OnMessage(P->B.data, P->B.count);
-		else 
-		{			
-			break;
-		};
+		DemoDataStruct* P = &(m_aDemoData[Pos]);
+		if (!m_bDemoPlayByFrame)
+		{
+			if (P->m_dwDataType != DATA_PACKET) continue;
+			if (P->m_dwTimeReceive <= CurTime) IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+			else 
+			{			
+				break;
+			};
+		}
+		else
+		{
+			if (P->m_dwFrame != m_dwCurDemoFrame) break;
+			switch (P->m_dwDataType)
+			{
+			case DATA_FRAME:
+				{
+					Device.dwTimeDelta		= P->FrameTime.dwTimeDelta;
+					Device.dwTimeGlobal		= P->FrameTime.dwTimeGlobal;
+//					CurFrameTime.dwTimeServer		= Level().timeServer();
+//					CurFrameTime.dwTimeServer_Delta = Level().timeServer_Delta();
+					Device.fTimeDelta		= P->FrameTime.fTimeDelta;
+					Device.fTimeGlobal		= P->FrameTime.fTimeGlobal;
+
+				}break;
+			case DATA_PACKET:
+				{
+					IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+				}break;
+			}
+		}
 	}
+
+//	m_dwCurDemoFrame++;
 
 	if (Pos >= m_aDemoData.size())
 	{
 		Msg("! ------------- Demo Ended ------------");
 	};	
+};
+
+void						CLevel::Demo_StartFrame			()
+{
+	if (!IsDemoSave() || !net_IsSyncronised()) return;
+
+	DemoCS.Enter();
+
+	DemoFrameTime CurFrameTime;
+	CurFrameTime.dwTimeDelta = Device.dwTimeDelta;
+	CurFrameTime.dwTimeGlobal = Device.dwTimeGlobal;
+	CurFrameTime.dwTimeServer = Level().timeServer();
+	CurFrameTime.dwTimeServer_Delta = Level().timeServer_Delta();
+	CurFrameTime.fTimeDelta = Device.fTimeDelta;
+	CurFrameTime.fTimeGlobal= Device.fTimeGlobal;
+
+	Demo_StoreData(&CurFrameTime, sizeof(CurFrameTime), DATA_FRAME);
+
+	DemoCS.Leave();
+};
+
+void						CLevel::Demo_EndFrame			()
+{
+	m_dwCurDemoFrame++;	
 };
 

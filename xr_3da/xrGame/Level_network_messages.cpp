@@ -10,8 +10,11 @@
 
 void CLevel::ClientReceive()
 {
-	Demo_Update();
 
+	Demo_StartFrame();
+
+	Demo_Update();
+    
 	for (NET_Packet* P = net_msg_Retreive(); P; P=net_msg_Retreive())
 	{
 		u16			m_type;
@@ -276,7 +279,7 @@ void CLevel::ClientReceive()
 		}
 
 		net_msg_Release();
-	}
+	}	
 
 	if (!g_bDebugEvents) ProcessGameSpawns();
 }
@@ -285,25 +288,50 @@ void CLevel::ClientReceive()
 
 void				CLevel::OnMessage				(void* data, u32 size)
 {	
+	DemoCS.Enter();
+
 	if (IsDemoPlay() ) 
 	{
-		if (m_bDemoStarted) return;
+		if (m_bDemoStarted) 
+		{
+			DemoCS.Leave();
+			return;
+		}
 		
 		if (!m_aDemoData.empty() && net_IsSyncronised())
 		{
-			NET_Packet *P = &(m_aDemoData.front());
-			timeServer_UserDelta(P->timeReceive - timeServer_Async());
+//			NET_Packet *P = &(m_aDemoData.front());
+			DemoDataStruct *P = &(m_aDemoData.front());
+			timeServer_UserDelta(P->m_dwTimeReceive - timeServer_Async());
 			m_bDemoStarted = TRUE;
 			Msg("! ------------- Demo Started ------------");
+			m_dwCurDemoFrame = P->m_dwFrame;
+			DemoCS.Leave();
 			return;
 		}
-	};
-		
+	};	
+
 	if (IsDemoSave() && net_IsSyncronised()) 
 	{
-		Demo_StoreData(data, size);
+		Demo_StoreData(data, size, DATA_PACKET);
 	}	
 
 	IPureClient::OnMessage(data, size);	
+
+	DemoCS.Leave();
 };
+
+NET_Packet*				CLevel::net_msg_Retreive		()
+{
+	NET_Packet* P = NULL;
+
+	DemoCS.Enter();
+
+	P = IPureClient::net_msg_Retreive();
+	if (!P) Demo_EndFrame();
+
+	DemoCS.Leave();
+
+	return P;
+}
 
