@@ -4,7 +4,7 @@
 	Version="7.10"
 	Name="xrCore"
 	ProjectGUID="{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}"
-	RootNamespace="xrCore"
+	RootNamespace="xrCoreStatic"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
