@@ -358,3 +358,13 @@ end
 function give_reward_killers(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 2500, "in")
 end
+
+
+--' Soldiers on bridge
+function has_soldiers_bribe(actor, npc)
+	return actor:money() >= 500
+end
+
+function give_soldiers_bribe(actor, npc)
+	dialogs.relocate_money(npc, 500, "out")	
+end
