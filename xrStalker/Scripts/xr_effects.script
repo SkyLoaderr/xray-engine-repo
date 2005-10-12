@@ -253,6 +253,10 @@ function esc_wolf_thanks(actor, npc)
 	end
 end
 
+function esc_lager_hate_actor(actor, npc)
+	xr_gulag.setGulagNeutral("esc_lager", db.actor)
+end
+
 function gar_hellcar_victory(actor, npc)
 	if actor:has_info("gar_hellcar_help") then
 		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
