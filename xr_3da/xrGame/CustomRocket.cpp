@@ -94,7 +94,8 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 void CCustomRocket::activate_physic_shell	()
 {
 	VERIFY(H_Parent());
-
+	VERIFY(!m_pPhysicsShell);
+	create_physic_shell();
 	if( m_pPhysicsShell->bActive )
 		return;
 	VERIFY2(_valid(m_LaunchXForm),"CCustomRocket::activate_physic_shell. Invalid m_LaunchXForm!");
@@ -112,6 +113,7 @@ void CCustomRocket::activate_physic_shell	()
 
 void CCustomRocket::create_physic_shell	()
 {
+	VERIFY(!m_pPhysicsShell);
 	Fobb								obb;
 	Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
 	obb.m_rotate.identity				();

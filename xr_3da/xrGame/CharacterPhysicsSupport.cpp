@@ -111,7 +111,7 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 
 void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 {
-	if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
+	//if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
 
 	if(m_EntityAlife.g_Alive())
 	{
@@ -335,6 +335,7 @@ Fvector velocity;
 }
 void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 {
+	if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
 	if(m_eType==etActor)
 	{
 		CActor* A=smart_cast<CActor*>(&m_EntityAlife);
@@ -410,11 +411,12 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 {
 	
 	if(!m_physics_skeleton&&!m_pPhysicsShell) return;
-	if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
-	xr_delete(m_physics_skeleton) ;
-	CreateSkeleton(m_physics_skeleton);
+
 	if(m_pPhysicsShell)
 	{
+		if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
+		xr_delete(m_physics_skeleton) ;
+		CreateSkeleton(m_physics_skeleton);
 		xr_delete(m_pPhysicsShell);
 		ActivateShell(NULL);
 	}
