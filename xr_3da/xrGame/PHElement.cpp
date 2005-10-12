@@ -94,8 +94,17 @@ void CPHElement::			build	(){
 	dBodyDisable(m_body);
 	//dBodySetFiniteRotationMode(m_body,1);
 	//dBodySetFiniteRotationAxis(m_body,0,0,0);
-	VERIFY2(dMass_valide(&m_mass)&&m_mass.mass>0.f,"Element has bad mass");
-	dBodySetMass(m_body,&m_mass);
+	VERIFY2(dMass_valide(&m_mass),"Element has bad mass");
+	if(m_geoms.empty())
+	{
+		Fix();
+	}
+	else
+	{
+		VERIFY2(m_mass.mass>0.f,"Element has bad mass");
+		dBodySetMass(m_body,&m_mass);
+	}
+	
 
 
 	m_inverse_local_transform.identity();
@@ -115,7 +124,7 @@ void CPHElement::RunSimulation()
 	if(m_group)
 		dSpaceAdd(m_shell->dSpace(),(dGeomID)m_group);
 	else
-		(*m_geoms.begin())->add_to_space(m_shell->dSpace());
+		if(!m_geoms.empty())(*m_geoms.begin())->add_to_space(m_shell->dSpace());
 	if(!m_body->world) 
 	{
 		//dWorldAddBody(phWorld, m_body);
