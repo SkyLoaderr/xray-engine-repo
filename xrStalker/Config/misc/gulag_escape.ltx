@@ -729,6 +729,9 @@ path_look = day_night_sniper_look
 
 [logic@esc_bridge_post1]
 active = walker@esc_bridge_post1
+combat_ignore = combat_ignore@esc_bridge
+on_hit = hit@soldier
+on_death = death@soldier
 
 [walker@esc_bridge_post1]
 path_walk = post1_walk
@@ -737,14 +740,21 @@ path_look = post1_look
 
 [logic@esc_bridge_post2]
 active = walker@esc_bridge_post2
+combat_ignore = combat_ignore@esc_bridge
+on_hit = hit@soldier
+on_death = death@soldier
 
 [walker@esc_bridge_post2]
 path_walk = post2_walk
 path_look = post2_look
+meet = meet@sold_zoneguard
 
 
 [logic@esc_bridge_post3]
 active = walker@esc_bridge_post3
+combat_ignore = combat_ignore@esc_bridge
+on_hit = hit@soldier
+on_death = death@soldier
 
 [walker@esc_bridge_post3]
 path_walk = post3_walk
@@ -753,14 +763,21 @@ path_look = post3_look
 
 [logic@esc_bridge_post4]
 active = walker@esc_bridge_post4
+combat_ignore = combat_ignore@esc_bridge
+on_hit = hit@soldier
+on_death = death@soldier
 
 [walker@esc_bridge_post4]
 path_walk = post4_walk
 path_look = post4_look
+meet = meet@sold_zoneguard
 
 
 [logic@esc_bridge_post5]
 active = walker@esc_bridge_post5
+on_hit = hit@soldier
+on_death = death@soldier
+combat_ignore = combat_ignore@esc_bridge
 
 [walker@esc_bridge_post5]
 path_walk = post5_walk
@@ -805,6 +822,26 @@ active = walker@esc_bridge_patrol
 [walker@esc_bridge_patrol]
 path_walk = patrol_walk
 path_look = patrol_look
+
+
+[meet@sold_zoneguard]
+meet_state 		= 20| {+esc_bridge_pass_on} wait, threat@ {+esc_bridge_pass_on} talk_hello, threat_back
+meet_state_wpn 	= 20| {+esc_bridge_pass_on} wait, threat@ {+esc_bridge_pass_on} talk_hello, threat_back
+victim 			= 20| actor
+victim_wpn 		= 20| actor
+use			= true
+use_wpn		= true
+zone			= esc_bridge_kill_zone|{-esc_bridge_pass_on} threat@ {-esc_path_to_lager} esc_guard_camp| esc_lager_guard_kill_zone| {-esc_path_to_lager} true@ {-esc_path_to_lager} talk_abuse
+meet_dialog		= esc_bridge_soldiers_start
+
+[combat_ignore@esc_bridge]
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor}
+
+[hit@soldier]
+on_info = {=hit_by_actor} %+esc_bridge_pass_fire%
+
+[death@soldier]
+on_info = {=hit_by_actor} %+esc_bridge_pass_fire%
 
 ;-------------------------------
 ;---------- Killers ------------
