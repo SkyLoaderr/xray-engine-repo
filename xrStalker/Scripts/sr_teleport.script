@@ -44,9 +44,10 @@ function action_teleport:update(delta)
 				p = p - v.prob
 				if p <= 0 then
 					-- телепорт в выбранную точку
+					printf("teleporting to [%s] look [%s]", v.point, v.look)
 					db.actor:set_actor_position(patrol(v.point):point(0))
-					local dir = patrol(v.point):point(0):sub(patrol(v.look):point(1))
-					db.actor:set_actor_direction(dir:getH())
+					local dir = patrol(v.look):point(0):sub(patrol(v.point):point(0))
+					db.actor:set_actor_direction(-dir:getH())
 					local snd_obj = sound_object([[affects\tinnitus3a]])
 					snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)					
 					break
