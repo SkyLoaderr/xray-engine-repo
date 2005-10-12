@@ -99,7 +99,7 @@ public:
 	virtual const Fbox&					BoundingBox			()			const;
 	
 	IC IRender_Sector*					Sector				()					{ return H_Root()->spatial.sector;	}
-	IC IRender_ObjectSpecific*			ROS					()					{ return renderable.ROS;			}
+	IC IRender_ObjectSpecific*			ROS					()					{ return renderable_ROS();			}
 	virtual BOOL						renderable_ShadowGenerate	()			{ return TRUE;						}
 	virtual BOOL						renderable_ShadowReceive	()			{ return TRUE;						}
 

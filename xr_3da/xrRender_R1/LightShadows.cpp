@@ -86,7 +86,7 @@ void CLightShadows::set_object	(IRenderable* O)
 	if (0==O)	current		= 0;
 	else 
 	{
-		if (!O->renderable_ShadowGenerate()	|| RImplementation.val_bHUD || ((CROS_impl*)O->renderable.ROS)->shadow_gen_frame==Device.dwFrame)
+		if (!O->renderable_ShadowGenerate()	|| RImplementation.val_bHUD || ((CROS_impl*)O->renderable_ROS())->shadow_gen_frame==Device.dwFrame)
 		{
 			current		= 0;
 			return;
@@ -103,7 +103,7 @@ void CLightShadows::set_object	(IRenderable* O)
 		
 		if (current)
 		{
-			((CROS_impl*)O->renderable.ROS)->shadow_gen_frame	=	Device.dwFrame;
+			((CROS_impl*)O->renderable_ROS())->shadow_gen_frame	=	Device.dwFrame;
 
 			// alloc
 			caster*	cs		= NULL;
@@ -192,7 +192,7 @@ void CLightShadows::calculate	()
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
-		CROS_impl* LT			= (CROS_impl*)C.O->renderable.ROS;
+		CROS_impl* LT			= (CROS_impl*)C.O->renderable_ROS();
 		xr_vector<CROS_impl::Light>& lights = LT->lights;
 		
 		// iterate on lights

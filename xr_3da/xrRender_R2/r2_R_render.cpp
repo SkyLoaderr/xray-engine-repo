@@ -99,7 +99,7 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 					if (o_it==uID_LTRACK)	{
 						// track lighting environment
 						// VERIFY					(renderable->renderable.ROS);
-						CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
+						CROS_impl*		T = (CROS_impl*)renderable->renderable_ROS	();
 						if (T)			T->update	(renderable);
 					}
 					set_Object						(renderable);

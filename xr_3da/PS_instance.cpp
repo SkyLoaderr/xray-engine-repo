@@ -10,12 +10,11 @@
 CPS_Instance::CPS_Instance			()		: ISpatial(g_SpatialSpace)
 {
 	g_pGamePersistent->ps_active.insert		(this);
+	renderable.pROS_Allowed					= FALSE;
 
 	m_iLifeTime								= int_max;
 	m_bAutoRemove							= TRUE;
 	m_bDead									= FALSE;
-
-	::Render->ros_destroy					(renderable.ROS);	//. particles doesn't need ROS
 }
 extern ENGINE_API BOOL						g_bRendering; 
 
@@ -33,6 +32,8 @@ CPS_Instance::~CPS_Instance					()
 //----------------------------------------------------
 void CPS_Instance::shedule_Update	(u32 dt)
 {
+	if (renderable.pROS)			::Render->ros_destroy	(renderable.pROS);	//. particles doesn't need ROS
+
 	ISheduled::shedule_Update		(dt);
 	m_iLifeTime						-= dt;
 

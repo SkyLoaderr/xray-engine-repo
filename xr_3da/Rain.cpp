@@ -123,8 +123,8 @@ void	CEffect_Rain::OnFrame	()
 	float	hemi_factor			= 1.f;
 #ifndef _EDITOR
 	CObject* E 					= g_pGameLevel->CurrentViewEntity();
-	if (E&&E->renderable.ROS)
-		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable.ROS->get_luminocity_hemi()),0.2f));
+	if (E&&E->renderable_ROS())
+		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable_ROS()->get_luminocity_hemi()),0.2f));
 #endif
 
 	switch (state)

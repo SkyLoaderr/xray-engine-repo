@@ -202,8 +202,8 @@ void					CRender::set_Object				(IRenderable*		O )
 void					CRender::apply_object			(IRenderable*		O )
 {
 	if (0==O)			return	;
-	if (PHASE_NORMAL==phase	&& O->renderable.ROS)	{
-		CROS_impl& LT		= *((CROS_impl*)O->renderable.ROS);
+	if (PHASE_NORMAL==phase	&& O->renderable_ROS())		{
+		CROS_impl& LT		= *((CROS_impl*)O->renderable.pROS);
 		float o_hemi		= 0.5f*LT.get_hemi						();
 		float o_sun			= 0.5f*LT.get_sun						();
 		RCache.set_c		(c_ldynamic_props,o_sun,o_sun,o_sun,o_hemi);
@@ -390,9 +390,9 @@ void CRender::Calculate				()
 							if (!bVisible)					break;	// exit loop on frustums
 
 							// rendering
-							if (o_it==uID_LTRACK && renderable->renderable.ROS)	{
+							if (o_it==uID_LTRACK && renderable->renderable_ROS())	{
 								// track lighting environment
-								CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
+								CROS_impl*		T = (CROS_impl*)renderable->renderable_ROS();
 								T->update			(renderable);
 							}
 							set_Object						(renderable);
