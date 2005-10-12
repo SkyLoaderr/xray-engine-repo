@@ -254,7 +254,8 @@ void CGrenade::UpdateCL()
 	
 	CExplosive::UpdateCL();	
 	////////////////////////////////////
-	make_Interpolation();
+	if(!IsGameTypeSingle())
+		make_Interpolation();
 }
 
 void CGrenade::shedule_Update(u32 dt)

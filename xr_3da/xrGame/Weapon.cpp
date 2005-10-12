@@ -645,7 +645,8 @@ void CWeapon::UpdateCL		()
 	UpdateFlameParticles	();
 	UpdateFlameParticles2	();
 
-	make_Interpolation		();
+	if(!IsGameTypeSingle())
+		make_Interpolation		();
 	
 	VERIFY(smart_cast<CKinematics*>(Visual()));
 }

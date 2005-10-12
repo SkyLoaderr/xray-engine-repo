@@ -30,6 +30,8 @@ class CPhysicsShellHolder;
 class NET_Packet;
 class CEatableItem;
 
+struct net_updateData;
+
 class CInventoryItem : public CHitImmunity {
 protected:
 	enum EIIFlags{				Fdrop				=(1<<0),
@@ -41,9 +43,11 @@ protected:
 								FUsingCondition		=(1<<6),
 								FAllowSprint		=(1<<7),
 								Fuseful_for_NPC		=(1<<8),
+								FInInterpolation	=(1<<9),
+								FInInterpolate		=(1<<10),
 	};
 
-	Flags32						m_flags;
+	Flags16						m_flags;
 public:
 								CInventoryItem		();
 	virtual						~CInventoryItem		();
@@ -158,11 +162,6 @@ protected:
 	// 0 - испорченная
 	float						m_fCondition;
 
-//	int							m_iGridWidth;							//ширина в сетке инвенторя
-//	int							m_iGridHeight;							//высота в сетке инвенторя
-//	int 						m_iXPos;								//позиция X в сетке инвенторя
-//	int 						m_iYPos;								//позиция Y в сетке инвенторя
-
 	// Тектс описания вещи
 	shared_str					m_Description;
 
@@ -184,27 +183,24 @@ public:
 	virtual void				net_Import			(NET_Packet& P);					// import from server
 	virtual void				net_Export			(NET_Packet& P);					// export to server
 
-	virtual void				activate_physic_shell();
+	virtual void				activate_physic_shell		();
 
-	virtual bool				NeedToDestroyObject	() const;
-	virtual ALife::_TIME_ID		TimePassedAfterIndependant() const;
+	virtual bool				NeedToDestroyObject			() const;
+	virtual ALife::_TIME_ID		TimePassedAfterIndependant	() const;
 
-	//  [6/14/2005]
-	virtual	bool				IsSprintAllowed		() const		{return !!m_flags.test(FAllowSprint);} ;
-	//  [6/14/2005]
-	virtual	float				GetControlInertionFactor() const	{return m_fControlInertionFactor;};
+	virtual	bool				IsSprintAllowed				() const		{return !!m_flags.test(FAllowSprint);} ;
+
+	virtual	float				GetControlInertionFactor(	) const			{return m_fControlInertionFactor;};
 
 protected:
 	virtual void				UpdateXForm	();
 
 protected:
-	struct net_update_IItem {
-		u32					dwTimeStamp;
-		SPHNetState			State;
-	};
+/*
+	struct net_update_IItem {	u32					dwTimeStamp;
+								SPHNetState			State;};
 
 	xr_deque<net_update_IItem>	NET_IItem;
-	/////////////////////////////////////////////
 	/// spline coeff /////////////////////
 	float			SCoeff[3][4];
 
@@ -235,13 +231,13 @@ protected:
 	u32				m_dwIStartTime			;
 	u32				m_dwIEndTime			;
 	u32				m_dwILastUpdateTime		;
+*/
 
+	net_updateData*				m_net_updateData;
+	net_updateData*				NetSync						();
 	void						CalculateInterpolationParams();
 
 public:
-//	IC		int					GetVolume				() const;
-//	IC		int					GetHeight				() const;
-//	IC		int					GetWidth				() const;
 	virtual BOOL				net_Spawn				(CSE_Abstract* DC);
 	virtual void				net_Destroy				();
 	virtual void				renderable_Render		();

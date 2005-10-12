@@ -8,7 +8,7 @@
 #include "level_bullet_manager.h"
 #include "ai_space.h"
 #include "gamemtllib.h"
-#include "net_utils.h"
+#include "level.h"
 
 CCartridge::CCartridge() 
 {
@@ -170,7 +170,10 @@ void CWeaponAmmo::UpdateCL()
 	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL	();
 	VERIFY2								(_valid(renderable.xform),*cName());
-	make_Interpolation	();
+	
+	if(!IsGameTypeSingle())
+		make_Interpolation	();
+
 	VERIFY2								(_valid(renderable.xform),*cName());
 
 }
