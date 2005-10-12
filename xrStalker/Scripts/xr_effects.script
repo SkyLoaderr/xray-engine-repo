@@ -253,7 +253,7 @@ function esc_wolf_thanks(actor, npc)
 	end
 end
 
-function esc_lager_hate_actor(actor, npc)
+function esc_lager_forgive_actor(actor, npc)
 	xr_gulag.setGulagNeutral("esc_lager", db.actor)
 end
 

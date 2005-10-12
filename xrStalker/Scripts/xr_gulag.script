@@ -491,18 +491,18 @@ function setGulagEnemy(name, victim)
 		abort("setGulagEnemy: victim == nil")
 	end
 	if xr_gulag.fraction[name] ~= nil then
---		local h = hit()
---		h.power = 0
---		h.bone = "bip01_spine"
---		h.draftsman = victim
---		h.impulse = 0
---		h.type = hit.wound
---		for k,v in pairs(xr_gulag.fraction[name].Object) do
---			h.direction = v:direction()
---			v:hit(h)								
---		end
 		for k,v in pairs(xr_gulag.fraction[name].Object) do
 			v:set_relation(game_object.enemy, victim)
+		end
+	end
+end
+function setGulagNeutral(name, victim)
+	if not victim then
+		abort("setGulagNeutral: victim == nil")
+	end
+	if xr_gulag.fraction[name] ~= nil then
+		for k,v in pairs(xr_gulag.fraction[name].Object) do
+			v:set_relation(game_object.neutral, victim)
 		end
 	end
 end
