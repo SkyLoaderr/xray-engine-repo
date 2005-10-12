@@ -7,7 +7,21 @@ class "se_stalker"	(cse_alife_human_stalker)
 --------------------
 function se_stalker:__init (section) super (section)
 	self.ini = nil
+	self.ini_initialized = false
+
 	self.spawner_present = false
+
+	self.smart_terrain_conditions = nil
+	self.smart_terrain_conditions_initialized = false
+end
+--------------------
+function se_stalker:get_ini()
+	if not self.ini_initialized then
+		self.ini             = self:spawn_ini ()
+		self.ini_initialized = true
+
+		self.spawner_present = self.ini:section_exist ("spawner")
+	end
 end
 --------------------
 function se_stalker:can_switch_offline ()
@@ -23,10 +37,7 @@ function se_stalker:can_switch_online ()
 		return true
 	end
 
-	if self.ini == nil then
-		self.ini = self:spawn_ini ()
-		self.spawner_present = self.ini:section_exist ("spawner")
-	end
+	self:get_ini()
 
 	if self.ini == nil or self.spawner_present == false	then
 		return cse_alife_human_stalker.can_switch_online (self)
@@ -69,4 +80,47 @@ function se_stalker:STATE_Read (packet, size)
 	if self.script_version >= 2 then
 		self.under_smart_terrain = packet:r_bool()
 	end
+end
+--------------------
+function se_stalker:read_smart_terrain_conditions()
+	if self.ini and self.ini:section_exist( smart_section ) then
+		local conds = {}
+		local line, str
+		local accepts = false
+
+		for i = 0, 5 do
+			if i == 0 then
+				line = "s"
+			else
+				line = "s"..i
+			end
+
+			if self.ini:line_exist( smart_section, line ) then
+				str = self.ini:r_string( smart_section, line )
+
+				table.insert( cond, xr_logic.parse_condlist(self, smart_section, line, str) )
+			else
+				break
+			end
+		end
+
+		if i > 0 then
+			return conds
+		else
+			return nil
+		end
+	else
+		return nil
+	end
+end
+--------------------
+function se_stalker:get_smart_terrain_conditions()
+	self:get_ini()
+
+	if not self.smart_terrain_conditions_initialized then
+		self.smart_terrain_conditions             = self:read_smart_terrain_conditions()
+		self.smart_terrain_conditions_initialized = true
+	end
+
+	return self.smart_terrain_conditions
 end
