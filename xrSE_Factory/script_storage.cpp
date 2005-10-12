@@ -63,10 +63,11 @@ CScriptStorage::CScriptStorage		()
 	luaopen_debug			(lua());
 #endif
 #ifdef USE_JIT
+	m_jit					= (0==strstr(Core.Params,"-nojit"));
 	luaopen_jit				(lua());
-	luaJIT_setmode			(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_ON);
-#endif
+	luaJIT_setmode			(lua(),LUAJIT_MODE_ENGINE,m_jit?LUAJIT_MODE_ON:LUAJIT_MODE_OFF);
 	luaopen_coco			(lua());
+#endif
 }
 
 CScriptStorage::~CScriptStorage		()
@@ -315,9 +316,9 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 		}
 
 		// because that's the first and the only call of the main chunk - there is no point to compile it
-		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_OFF);				// Oles
-		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId);	//new_Andy
-		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_ON);				// Oles
+		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_OFF);							// Oles
+		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId);				// new_Andy
+		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE, m_jit?LUAJIT_MODE_ON:LUAJIT_MODE_OFF);	// Oles
 
 #ifdef USE_DEBUGGER
 		if( ai().script_engine().debugger() )

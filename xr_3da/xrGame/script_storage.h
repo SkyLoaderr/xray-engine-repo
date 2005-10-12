@@ -24,12 +24,13 @@ using namespace ScriptStorage;
 
 class CScriptStorage {
 private:
-	lua_State					*m_virtual_machine;
-	CScriptThread				*m_current_thread;
+	lua_State					*m_virtual_machine	;
+	CScriptThread				*m_current_thread	;
+	BOOL						m_jit				;
 
 #ifdef DEBUG
 public:
-	bool						m_stack_is_ready;
+	bool						m_stack_is_ready	;
 #endif
 
 protected:
