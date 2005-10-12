@@ -29,7 +29,7 @@ path_walk = agr_krot_hold_walk
 path_look = agr_krot_hold_look
 meet = meet@wait_after_hold
 combat_ignore_cond = always
-on_actor_dist_le = 5 | %+agr_factory_spawn_spetsnaz% remark@thank
+on_actor_dist_le = 5 | %+agr_factory_spawn_spetsnaz +agr_krot_met% remark@thank
 
 [meet@wait_after_hold]
 meet_state     = 10 | hello@talk_hello

@@ -15,6 +15,8 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
 
+		<panic_threshold>0.1</panic_threshold>
+
 		<visual>actors\neytral\stalker_neytral_rukzak_4</visual>
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>

@@ -78,6 +78,8 @@
 	<info_portion id="agr_help_krot_done">
 		<disable>agr_help_krot_start</disable>
 	</info_portion>
+	<info_portion id="agr_krot_met">
+	</info_portion>
 
 	<info_portion id="agr_factory_spawn_spetsnaz">
 	</info_portion>
