@@ -4211,84 +4211,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_ecolog_crush_professor_give_info_dp">
-        <has_info>bar_rescue_research_done</has_info>
-        <phrase_list>
-            <phrase id="121111">
-                <text>bar_ecolog_crush_professor_give_info_dp_121111</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="121211">
-                <text>bar_ecolog_crush_professor_give_info_dp_121211</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_ecolog_crush_professor_give_info_dp_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="1112">
-                <text>bar_ecolog_crush_professor_give_info_dp_1112</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="12">
-                <text>bar_ecolog_crush_professor_give_info_dp_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="12121">
-                <text>bar_ecolog_crush_professor_give_info_dp_12121</text>
-                <next>121211</next>
-            </phrase>
-            <phrase id="1211">
-                <text>bar_ecolog_crush_professor_give_info_dp_1211</text>
-                <next>12111</next>
-            </phrase>
-            <phrase id="131">
-                <text>bar_ecolog_crush_professor_give_info_dp_131</text>
-                <next>1311</next>
-            </phrase>
-            <phrase id="1311">
-                <text>bar_ecolog_crush_professor_give_info_dp_1311</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="14">
-                <text>bar_ecolog_crush_professor_give_info_dp_14</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="13">
-                <text>bar_ecolog_crush_professor_give_info_dp_13</text>
-                <has_info>bar_get_research_gain</has_info>
-                <next>131</next>
-            </phrase>
-            <phrase id="1212">
-                <text>bar_ecolog_crush_professor_give_info_dp_1212</text>
-                <next>12121</next>
-            </phrase>
-            <phrase id="12111">
-                <text>bar_ecolog_crush_professor_give_info_dp_12111</text>
-                <next>121111</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_ecolog_crush_professor_give_info_dp_121</text>
-                <next>1211</next>
-                <next>1212</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_ecolog_crush_professor_give_info_dp_111</text>
-                <next>1112</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_ecolog_crush_professor_give_info_dp_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_ecolog_crush_professor_give_info_dp_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_arena_manager_game">
         <dont_has_info>bar_arena_start</dont_has_info>
         <phrase_list>
@@ -4530,6 +4452,84 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_ecolog_crush_professor_give_info_dp">
+        <has_info>bar_rescue_research_done</has_info>
+        <phrase_list>
+            <phrase id="121111">
+                <text>bar_ecolog_crush_professor_give_info_dp_121111</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="121211">
+                <text>bar_ecolog_crush_professor_give_info_dp_121211</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_ecolog_crush_professor_give_info_dp_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1112">
+                <text>bar_ecolog_crush_professor_give_info_dp_1112</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="12">
+                <text>bar_ecolog_crush_professor_give_info_dp_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="12121">
+                <text>bar_ecolog_crush_professor_give_info_dp_12121</text>
+                <next>121211</next>
+            </phrase>
+            <phrase id="1211">
+                <text>bar_ecolog_crush_professor_give_info_dp_1211</text>
+                <next>12111</next>
+            </phrase>
+            <phrase id="131">
+                <text>bar_ecolog_crush_professor_give_info_dp_131</text>
+                <next>1311</next>
+            </phrase>
+            <phrase id="1311">
+                <text>bar_ecolog_crush_professor_give_info_dp_1311</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="14">
+                <text>bar_ecolog_crush_professor_give_info_dp_14</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="13">
+                <text>bar_ecolog_crush_professor_give_info_dp_13</text>
+                <has_info>bar_get_research_gain</has_info>
+                <next>131</next>
+            </phrase>
+            <phrase id="1212">
+                <text>bar_ecolog_crush_professor_give_info_dp_1212</text>
+                <next>12121</next>
+            </phrase>
+            <phrase id="12111">
+                <text>bar_ecolog_crush_professor_give_info_dp_12111</text>
+                <next>121111</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_ecolog_crush_professor_give_info_dp_121</text>
+                <next>1211</next>
+                <next>1212</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_ecolog_crush_professor_give_info_dp_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_ecolog_crush_professor_give_info_dp_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_ecolog_crush_professor_give_info_dp_111</text>
+                <next>1112</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_ecolog_crush_professor_start">
         <phrase_list>
             <phrase id="1121">
@@ -4547,9 +4547,6 @@
             <phrase id="6131">
                 <text>bar_ecolog_crush_professor_start_6131</text>
             </phrase>
-            <phrase id="1111">
-                <text>bar_ecolog_crush_professor_start_1111</text>
-            </phrase>
             <phrase id="112">
                 <text>bar_ecolog_crush_professor_start_112</text>
                 <next>1121</next>
@@ -4562,11 +4559,6 @@
             <phrase id="712">
                 <text>bar_ecolog_crush_professor_start_712</text>
                 <give_info>bar_go_through_anomaly</give_info>
-            </phrase>
-            <phrase id="51">
-                <text>bar_ecolog_crush_professor_start_51</text>
-                <next>511</next>
-                <next>512</next>
             </phrase>
             <phrase id="5111">
                 <text>bar_ecolog_crush_professor_start_5111</text>
@@ -4590,22 +4582,10 @@
                 <text>bar_ecolog_crush_professor_start_711</text>
                 <give_info>bar_go_through_anomaly</give_info>
             </phrase>
-            <phrase id="6">
-                <text></text>
-                <dont_has_info>bar_bandits_dead</dont_has_info>
-                <has_info>bar_rescue_research_chasing_end</has_info>
-                <has_info>bar_bandits_alive</has_info>
-                <next>61</next>
-            </phrase>
             <phrase id="612">
                 <text>bar_ecolog_crush_professor_start_612</text>
                 <give_info>bar_bandits_dead</give_info>
                 <next>6121</next>
-            </phrase>
-            <phrase id="512">
-                <text>bar_ecolog_crush_professor_start_512</text>
-                <give_info>bar_rescue_research_chasing_end</give_info>
-                <next>5121</next>
             </phrase>
             <phrase id="21">
                 <text>bar_ecolog_crush_professor_start_21</text>
@@ -4615,43 +4595,6 @@
                 <dont_has_info>bar_rescue_research_done</dont_has_info>
                 <has_info>bar_fire_anomaly_forward</has_info>
                 <next>71</next>
-            </phrase>
-            <phrase id="4">
-                <text></text>
-                <has_info>bar_rescue_research_done</has_info>
-                <has_info>bar_rescue_research_start</has_info>
-                <has_info>bar_rescue_research_reward</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_ecolog_crush_professor_start_31</text>
-                <action>bar_dialogs.professor_for_resque</action>
-            </phrase>
-            <phrase id="41">
-                <text>bar_ecolog_crush_professor_start_41</text>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <dont_has_info>bar_rescue_research_reward</dont_has_info>
-                <give_info>bar_rescue_research_reward</give_info>
-                <has_info>bar_rescue_research_done</has_info>
-                <has_info>bar_rescue_research_start</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="511">
-                <text>bar_ecolog_crush_professor_start_511</text>
-                <next>5111</next>
-            </phrase>
-            <phrase id="5">
-                <text></text>
-                <dont_has_info>bar_rescue_research_chasing_end</dont_has_info>
-                <has_info>bar_rescue_research_chasing_start</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>bar_rescue_research_start</dont_has_info>
-                <next>11</next>
             </phrase>
             <phrase id="11">
                 <text>bar_ecolog_crush_professor_start_11</text>
@@ -4666,6 +4609,63 @@
                 <next>5</next>
                 <next>6</next>
                 <next>7</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <dont_has_info>bar_rescue_research_reward</dont_has_info>
+                <give_info>bar_rescue_research_reward</give_info>
+                <has_info>bar_rescue_research_done</has_info>
+                <has_info>bar_rescue_research_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_ecolog_crush_professor_start_31</text>
+                <action>bar_dialogs.professor_for_resque</action>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <has_info>bar_rescue_research_done</has_info>
+                <has_info>bar_rescue_research_start</has_info>
+                <has_info>bar_rescue_research_reward</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_ecolog_crush_professor_start_41</text>
+            </phrase>
+            <phrase id="5">
+                <text></text>
+                <dont_has_info>bar_rescue_research_chasing_end</dont_has_info>
+                <has_info>bar_rescue_research_chasing_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>bar_ecolog_crush_professor_start_51</text>
+                <next>511</next>
+                <next>512</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_ecolog_crush_professor_start_511</text>
+                <next>5111</next>
+            </phrase>
+            <phrase id="512">
+                <text>bar_ecolog_crush_professor_start_512</text>
+                <give_info>bar_rescue_research_chasing_end</give_info>
+                <next>5121</next>
+            </phrase>
+            <phrase id="6">
+                <text></text>
+                <dont_has_info>bar_bandits_dead</dont_has_info>
+                <has_info>bar_rescue_research_chasing_end</has_info>
+                <has_info>bar_bandits_alive</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>bar_kruglov_follow_actor</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_ecolog_crush_professor_start_1111</text>
             </phrase>
             <phrase id="111">
                 <text>bar_ecolog_crush_professor_start_111</text>
