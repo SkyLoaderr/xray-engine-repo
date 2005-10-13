@@ -323,8 +323,16 @@ function action_patrol:process_danger()
 		return false
 	end
 
-	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())
+	-- Отсеиваем реакцию на денжеры своих чуваков
+	local bd_type = best_danger:type()
+	if bd_type == danger_object.attack_sound then
+		local danger_object = best_danger:object()
+		if danger_object:character_community() == self.object:character_community() then
+			return false
+		end
+	end
 	
+	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
 	if not self:on_place() and
 	   danger_distance_sqr > self.a.danger_radius
 	then
