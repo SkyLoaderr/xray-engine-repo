@@ -146,8 +146,6 @@ function animation:__init(npc, mgr)
 	self.mgr = mgr
 	self.npc = npc
 	
-	self.animations = state_mgr_animation_list.get_anim()
-
 	self.states = {
 		last_id = nil,
 		current_state = nil,
@@ -174,7 +172,7 @@ function animation:set_state(id, reset)
 	local wpn_slot = self:weapon_slot()
 	--' выход из старого состояния
 	self.npc:clear_animations()	
-	if self.animations[self.states.target_state] ~= nil then
+	if state_mgr_animation_list.animations[self.states.target_state] ~= nil then
 		if self.mgr.emerg.animation_nout == true or
 		   self.mgr.emerg.animation == true
 		then
@@ -182,7 +180,7 @@ function animation:set_state(id, reset)
 			if self.npc:active_sound_count() > 0 then
 				if self.mgr.subanim > 0 then
 					for key = self.mgr.subanim, 0 do
-						local a = self.animations[self.states.target_state].subanim[key]
+						local a = state_mgr_animation_list.animations[self.states.target_state].subanim[key]
 						if a and a.into_music then
 							stop_play_sound(self.npc)
 							break
@@ -192,8 +190,8 @@ function animation:set_state(id, reset)
 			end
 						
 			-- экстренный выход, необходимо дропнуть приатаченные предметы
-			if self.animations[self.states.target_state].out ~= nil then
-				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
+			if state_mgr_animation_list.animations[self.states.target_state].out ~= nil then
+				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.target_state].out)
 				if anima then
 					if type(anima) == "table" then
 						for k,v in pairs(anima) do
@@ -220,7 +218,7 @@ function animation:set_state(id, reset)
 			-- выход из поданимаций	
 			if self.mgr.subanim > 0 then
 				for key = self.mgr.subanim, 0 do
-					local a = self.animations[self.states.target_state].subanim[key]
+					local a = state_mgr_animation_list.animations[self.states.target_state].subanim[key]
 					if a and a.out then
 						anima = self:anim_for_slot(wpn_slot,a.out)
 						if anima then
@@ -229,8 +227,8 @@ function animation:set_state(id, reset)
 					end
 				end
 			end			
-			if self.animations[self.states.target_state].out ~= nil then
-				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.target_state].out)
+			if state_mgr_animation_list.animations[self.states.target_state].out ~= nil then
+				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.target_state].out)
 				if anima then
 					if type(anima) == "table" then
 						for k,v in pairs(anima) do
@@ -250,9 +248,9 @@ function animation:set_state(id, reset)
 		end
 	end
 	--' вход в новое состояние	
-	if self.animations[id] ~= nil then
-		if self.animations[id].into ~= nil then
-			anima = self:anim_for_slot(wpn_slot,self.animations[id].into)
+	if state_mgr_animation_list.animations[id] ~= nil then
+		if state_mgr_animation_list.animations[id].into ~= nil then
+			anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[id].into)
 			if type(anima) == "table" then
 				for k,v in pairs(anima) do
 					if type(v) == "table" then
@@ -274,8 +272,8 @@ function animation:set_state(id, reset)
 			end
 			self:play_rnd(id, 100)			
 		end
-		if self.animations[id].idle ~= nil then
-			anima = self:anim_for_slot(wpn_slot,self.animations[id].idle)
+		if state_mgr_animation_list.animations[id].idle ~= nil then
+			anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[id].idle)
 			if anima then
 				self.npc:add_animation(anima, true)
 			end
@@ -360,8 +358,8 @@ function animation:update()
 	-- проверка закончился ли переход в состояние
 	if self.states.current_state == "new" then
 		local nnum = 0
-		if (self.animations[self.states.target_state] ~= nil and
-		   self.animations[self.states.target_state].idle ~= nil) or
+		if (state_mgr_animation_list.animations[self.states.target_state] ~= nil and
+		   state_mgr_animation_list.animations[self.states.target_state].idle ~= nil) or
 		   self.mgr.animstate:idle_animation_present()
 		then
 			nnum = 1
@@ -376,8 +374,8 @@ function animation:update()
 	--' ожидаем окончания перехода.
 	if self.states.current_state == "wait" then		
 		local nnum = 0
-		if (self.animations[self.states.target_state] ~= nil and
-		   self.animations[self.states.target_state].idle ~= nil) or
+		if (state_mgr_animation_list.animations[self.states.target_state] ~= nil and
+		   state_mgr_animation_list.animations[self.states.target_state].idle ~= nil) or
 		   self.mgr.animstate:idle_animation_present()
 		then
 			nnum = 1
@@ -410,7 +408,7 @@ function animation:update()
 		if self.states.anim_level < self.mgr.subanim then
 			self.npc:clear_animations()
 			for key = self.states.anim_level+1, self.mgr.subanim do
-				local a = self.animations[self.states.current_state].subanim[key]
+				local a = state_mgr_animation_list.animations[self.states.current_state].subanim[key]
 				if a and a.into then
 					anima = self:anim_for_slot(wpn_slot,a.into)
 					if anima then
@@ -424,7 +422,7 @@ function animation:update()
 			end
 			self.states.anim_level = self.mgr.subanim
 			-- добавляем айдл текущего уровня
-			anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].subanim[self.states.anim_level].idle)
+			anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.current_state].subanim[self.states.anim_level].idle)
 			if anima then
 				self.npc:add_animation(anima, true)
 			end		
@@ -435,7 +433,7 @@ function animation:update()
 		if self.states.anim_level > self.mgr.subanim then
 			self.npc:clear_animations()
 			for key = self.states.anim_level, self.mgr.subanim+1 do
-				local a = self.animations[self.states.current_state].subanim[key]
+				local a = state_mgr_animation_list.animations[self.states.current_state].subanim[key]
 				if a and a.out then
 					anima = self:anim_for_slot(wpn_slot,a.out)
 					if anima then
@@ -447,9 +445,9 @@ function animation:update()
 			-- добавляем айдл текущего уровня
 			local anima
 			if self.states.anim_level == 0 then
-				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].idle)
+				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.current_state].idle)
 			else
-				anima = self:anim_for_slot(wpn_slot,self.animations[self.states.current_state].subanim[self.states.anim_level].idle)
+				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.current_state].subanim[self.states.anim_level].idle)
 			end
 			if anima then
 				self.npc:add_animation(anima, true)
@@ -458,12 +456,12 @@ function animation:update()
 			return
 		end
 		--' Определяем нужно ли добавлять анимацию или ждать
-		if	self.animations[self.states.current_state] ~= nil then
+		if	state_mgr_animation_list.animations[self.states.current_state] ~= nil then
 			local state			
 			if self.states.anim_level == 0 then
-				state = self.animations[self.states.current_state]
+				state = state_mgr_animation_list.animations[self.states.current_state]
 			else
-				state = self.animations[self.states.current_state].subanim[self.states.anim_level]
+				state = state_mgr_animation_list.animations[self.states.current_state].subanim[self.states.anim_level]
 			end
 			if state.rnd ~= nil then
 				if self.states.begin == nil then				

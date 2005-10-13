@@ -1,5 +1,4 @@
-function get_anim()
-	animations = {
+animations = {
 		idle		= {	prop	= { maxidle = 5,
 									sumidle = 3,
 									rnd = 80 },	
@@ -634,5 +633,3 @@ function get_anim()
 									[10]= {"cr_raciya_10_talk_0"} } }
 
 	}
-	return animations
-end
