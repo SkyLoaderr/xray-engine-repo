@@ -172,7 +172,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 #ifdef _DEBUG
 	sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
 #else
-	sprintf(str, "%s", *stbl(GetRankAsText(pCharInfo->Rank().value())));
+	sprintf(str, "%s", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())));
 #endif
 	if (m_bInfoAutoAdjust)
 	{
@@ -282,7 +282,7 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 #ifdef _DEBUG
 	sprintf(str, "%s,%d", *stbl.translate(GetGoodwillAsText(goodwill)), goodwill);
 #else
-	sprintf(str, "%s", *stbl(GetGoodwillAsText(goodwill)));
+	sprintf(str, "%s", *stbl.translate(GetGoodwillAsText(goodwill)));
 #endif
 
 	m_icons[eUIRelation]->SetText(str);
