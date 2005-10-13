@@ -46,6 +46,20 @@ sound				= nature\wind4
 offset				= 0,0,0
 wind_gust_factor	= 0
 
+[ae0_effect_6]
+life_time			= 10						
+particles			= nature\fog_stormy_02
+sound				= nature\rt_ambient1
+offset				= 0,0,0
+wind_gust_factor	= 0
+
+[ae0_effect_7]
+life_time			= 10						
+particles			= nature\fog_stormy_02
+sound				= nature\rt_ambient2
+offset				= 0,0,0
+wind_gust_factor	= 0
+
 [ambient_env_day]
 sound_period		= 5, 10					; <from,to>				(sec)
 sounds				= nature\new_bird1,nature\new_bird2,nature\new_bird3,nature\new_forest_bird1,nature\new_forest_bird2,nature\new_forest_bird3,nature\new_forest_bird4,nature\new_forest_bird5,nature\random_flies1,nature\random_flies2		; <snd0,snd1..sndN>		sounds name (ambient\b1,ambient\b2,ambient\b3,ambient\b4,ambient\b5,)
@@ -86,7 +100,7 @@ effects				= 	; <eff0,eff1..effN>		effects sect name
 sound_period		= 5, 20					; <from,to>				(sec)
 sounds				= ambient\random\rt_swamp_thing1,ambient\random\rt_coo1-m,ambient\waterdrop1,ambient\rt_eerie_wind1,ambient\waterdrop2,ambient\underground\breath_1,ambient\underground\breath_2		; <snd0,snd1..sndN>		sounds name
 effect_period		= 5, 10					; <from,to>				(sec)
-effects				= ae0_effect_4	; <eff0,eff1..effN>		effects sect name
+effects				= ae0_effect_4,ae0_effect_6,ae0_effect_7	; <eff0,eff1..effN>		effects sect name
 
 
 
