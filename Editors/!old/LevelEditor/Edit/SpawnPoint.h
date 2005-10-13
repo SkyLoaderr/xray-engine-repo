@@ -90,7 +90,8 @@ public:
             u32		m_EM_FogColor;
             float	m_EM_FogDensity;
             u32		m_EM_AmbientColor;
-            u32		m_EM_LMapColor;
+            u32		m_EM_SkyColor;
+            u32		m_EM_HemiColor;
         };
     };
 

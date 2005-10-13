@@ -33,6 +33,7 @@
 #define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE421
 
 #define SPAWNPOINT_CHUNK_ENVMOD			0xE422
+#define SPAWNPOINT_CHUNK_ENVMOD2		0xE423
 
 //----------------------------------------------------
 #define RPOINT_SIZE 0.5f
@@ -263,7 +264,8 @@ void CSpawnPoint::Construct(LPVOID data)
             m_EM_FogColor		= 0x00808080;
             m_EM_FogDensity		= 1.f;
             m_EM_AmbientColor	= 0x00000000;
-            m_EM_LMapColor		= 0x00FFFFFF;
+            m_EM_SkyColor		= 0x00FFFFFF;
+            m_EM_HemiColor		= 0x00FFFFFF;
         }else{
             CreateSpawnData(LPCSTR(data));
             if (!m_SpawnData.Valid()){
@@ -598,7 +600,9 @@ bool CSpawnPoint::Load(IReader& F){
                 m_EM_FogColor		= F.r_u32();
                 m_EM_FogDensity		= F.r_float();
                 m_EM_AmbientColor	= F.r_u32();
-                m_EM_LMapColor		= F.r_u32();
+                m_EM_SkyColor		= F.r_u32();
+                if (F.find_chunk(SPAWNPOINT_CHUNK_ENVMOD2))
+                    m_EM_HemiColor	= F.r_u32();
             }
         break;
         default: THROW;
@@ -651,7 +655,10 @@ void CSpawnPoint::Save(IWriter& F){
             F.w_u32		(m_EM_FogColor);
             F.w_float	(m_EM_FogDensity);
         	F.w_u32		(m_EM_AmbientColor);
-            F.w_u32		(m_EM_LMapColor);
+            F.w_u32		(m_EM_SkyColor);
+            F.close_chunk();
+        	F.open_chunk(SPAWNPOINT_CHUNK_ENVMOD2);
+            F.w_u32		(m_EM_HemiColor);
             F.close_chunk();
         break;
         default: THROW;
@@ -703,7 +710,8 @@ bool CSpawnPoint::ExportGame(SExportStreams* F)
             F->envmodif.stream.w_fvector3(u32_3f(m_EM_FogColor));
             F->envmodif.stream.w_float	(m_EM_FogDensity);
             F->envmodif.stream.w_fvector3(u32_3f(m_EM_AmbientColor));
-            F->envmodif.stream.w_fvector3(u32_3f(m_EM_LMapColor));
+            F->envmodif.stream.w_fvector3(u32_3f(m_EM_SkyColor));
+            F->envmodif.stream.w_fvector3(u32_3f(m_EM_HemiColor));
 			F->envmodif.stream.close_chunk();
         break;
         default: THROW;
@@ -782,7 +790,8 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
         	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
         	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
-        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\LMap Color"), 	&m_EM_LMapColor);
+        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Sky Color"), 		&m_EM_SkyColor);
+        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Hemi Color"), 	&m_EM_HemiColor);
         }break;
         default: THROW;
         }
