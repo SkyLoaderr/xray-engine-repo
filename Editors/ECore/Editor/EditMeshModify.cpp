@@ -247,10 +247,7 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 
 		m_NewPoints.clear();
 		m_NewPoints.reserve(m_VertCount);
-
-		Msg("Optimize...");
-		Msg(".. Merge points");
-
+                                                
 		boolVec 	faces_mark;
 		faces_mark.resize(m_FaceCount,false);
         int			i_del_face 		= 0;

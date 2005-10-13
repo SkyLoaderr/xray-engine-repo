@@ -256,7 +256,11 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
                             Mpv.pindex		=Ipv.index;
 
 							MESH->m_VMRefs.push_back(st_VMapPtLst());
-							st_VMapPtLst&	vm_lst = MESH->m_VMRefs.back();
+							st_VMapPtLst&	m_vm_lst = MESH->m_VMRefs.back();
+
+                            DEFINE_VECTOR	(st_VMapPt,VMapPtVec,VMapPtIt);
+                            VMapPtVec		vm_lst;
+                            
 							Mpv.vmref 		= MESH->m_VMRefs.size()-1;
 
 							// parse uv-map
@@ -268,21 +272,13 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
                                 bResult		= false;
                                 break;
                             }
-
                             AStringVec names;
 							if (vmpl_cnt){
                             	// берем из poly
-                                vm_lst.count = 0;
-                                {
-                                    for (int vm_i=0; vm_i<vmpl_cnt; vm_i++){
-                                        if (Ipv.vm[vm_i].vmap->type!=ID_TXUV) continue;
-                                        vm_lst.count++;
-                                    }
-                                }
-                                vm_lst.pts			= xr_alloc<st_VMapPt>(vm_lst.count);
-                                for (int vm_i=0,vm_ii=0; vm_i<vmpl_cnt; vm_i++){
-                                    if (Ipv.vm[vm_i].vmap->type!=ID_TXUV) continue;
-									st_VMapPt& pt	= vm_lst.pts[vm_ii++];
+    							for (int vm_i=0; vm_i<vmpl_cnt; vm_i++){
+									if (Ipv.vm[vm_i].vmap->type!=ID_TXUV) continue;
+									vm_lst.push_back(st_VMapPt());
+									st_VMapPt& pt	= vm_lst.back();
         							pt.vmap_index	= VMIndices[Ipv.vm[vm_i].vmap];// номер моей VMap
                                     names.push_back	(Ipv.vm[vm_i].vmap->name);
             						pt.index 		= Ipv.vm[vm_i].index;
@@ -290,40 +286,30 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
 							}
                             if (vmpt_cnt){
                             	// берем из points
-                                vm_lst.count = 0;
-                                {
-                                    for (int vm_i=0; vm_i<vmpt_cnt; vm_i++){
-                                        if (Ipt.vm[vm_i].vmap->type!=ID_TXUV) continue;
-                                        if (std::find(names.begin(),names.end(),Ipt.vm[vm_i].vmap->name)!=names.end()) continue;
-                                        vm_lst.count++;
-                                    }
-                                }
-                                for (int vm_i=0,vm_ii=0; vm_i<vmpt_cnt; vm_i++){
+                                for (int vm_i=0; vm_i<vmpt_cnt; vm_i++){
 									if (Ipt.vm[vm_i].vmap->type!=ID_TXUV) continue;
                                     if (std::find(names.begin(),names.end(),Ipt.vm[vm_i].vmap->name)!=names.end()) continue;
-									st_VMapPt& pt	= vm_lst.pts[vm_ii++];
+									vm_lst.push_back(st_VMapPt());
+									st_VMapPt& pt	= vm_lst.back();
 									pt.vmap_index	= VMIndices[Ipt.vm[vm_i].vmap]; // номер моей VMap
 									pt.index 		= Ipt.vm[vm_i].index;
                                 }
 							}
 
-                            std::sort(&vm_lst.pts[0],&vm_lst.pts[vm_lst.count],CompareFunc);
+                            std::sort(vm_lst.begin(),vm_lst.end(),CompareFunc);
 
 							// parse weight-map
-                            int vm_cnt			= Ipt.nvmaps;
-                            vm_lst.count = 0;
-                            {
-                                for (int vm_i=0; vm_i<vm_cnt; vm_i++){
-                                    if (Ipt.vm[vm_i].vmap->type!=ID_WGHT) continue;
-                                    vm_lst.count++;
-                                }
-                            }
-                            for (int vm_i=0,vm_ii=0; vm_i<vm_cnt; vm_i++){
+                            int vm_cnt		=Ipt.nvmaps;
+                            for (int vm_i=0; vm_i<vm_cnt; vm_i++){
 								if (Ipt.vm[vm_i].vmap->type!=ID_WGHT) continue;
-                                st_VMapPt& pt	= vm_lst.pts[vm_ii++];
+								vm_lst.push_back(st_VMapPt());
+								st_VMapPt& pt	= vm_lst.back();
         	                    pt.vmap_index	= VMIndices[Ipt.vm[vm_i].vmap]; // номер моей VMap
             	                pt.index 		= Ipt.vm[vm_i].index;
                             }
+                            m_vm_lst.count		= vm_lst.size();
+                            m_vm_lst.pts		= xr_alloc<st_VMapPt>(m_vm_lst.count);
+                            Memory.mem_copy		(m_vm_lst.pts,&*vm_lst.begin(),m_vm_lst.count*sizeof(st_VMapPt));
                         }
                         if (!bResult) break;
 						// Ipol.surf->alpha_mode - заполнено как номер моего surface
