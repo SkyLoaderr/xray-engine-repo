@@ -281,6 +281,8 @@ void				WeaponUsageStatistic::OnBullet_Fire			(SBullet* pBullet, const CCartridg
 	WeaponIt->m_dwBulletsFired_d++;
 	//-----------------------------------------------------------------------------------
 	ActiveBullets.push_back(BulletData(object_parent->cName(), object_weapon->cNameSect(), pBullet));
+	
+//	Msg("! OnBullet Fire ID[%d]", pBullet->m_dwID);
 }
 
 /*
@@ -296,6 +298,7 @@ static u32 HitChecksRespondReceivedTrue = 0;
 void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s16 element, Fvector HitLocation)
 {
 	if (!pBullet || !pBullet->flags.allow_sendhit) return;
+//	Msg("! OnBullet Hit ID[%d]", pBullet->m_dwID);
 	ABULLETS_it BulletIt;
 	if (!FindBullet(pBullet->m_dwID, BulletIt)) return;
 	//-----------------------------------------------------
@@ -326,6 +329,7 @@ void				WeaponUsageStatistic::OnBullet_Hit			(SBullet* pBullet, u16 TargetID, s1
 		//---------------------------
 		WeaponIt->m_Hits.push_back(NewHit);
 	};
+	
 //	HitChecksSended++;
 }
 void				WeaponUsageStatistic::OnBullet_Remove		(SBullet* pBullet)
@@ -333,6 +337,7 @@ void				WeaponUsageStatistic::OnBullet_Remove		(SBullet* pBullet)
 	if (!pBullet || !pBullet->flags.allow_sendhit)	return;
 	ABULLETS_it		BulletIt;
 	if (!FindBullet(pBullet->m_dwID, BulletIt))		return;
+//	Msg("! Bullet Removed ID[%d]", BulletIt->Bullet.m_dwID);
 	BulletIt->Removed = true;
 	RemoveBullet	(BulletIt);
 }
@@ -456,7 +461,7 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 		u32 BulletID = P->r_u32();
 		if (!FindBullet(BulletID, BulletIt)) 
 		{
-			Msg("! Warning: No bullet found!");
+			Msg("! Warning: No bullet found! ID[%d]", BulletID);
 			continue;
 		};
 		BulletIt->HitResponds++;
@@ -470,7 +475,7 @@ void				WeaponUsageStatistic::On_Check_Respond			(NET_Packet* P)
 		s16 BoneID = P->r_s16();
 		if (!FindBullet(BulletID, BulletIt)) 
 		{
-			Msg("! Warning: No bullet found!");
+			Msg("! Warning: No bullet found! ID[%d]", BulletID);
 			continue;
 		};
 		BulletIt->HitResponds++;

@@ -85,14 +85,14 @@ BOOL  CBulletManager::firetrace_callback(collide::rq_result& result, LPVOID para
 		if (0!=(V=smart_cast<CKinematics*>(result.O->Visual()))){
 			CBoneData& B = V->LL_GetData((u16)result.element);
 			hit_material_idx = B.game_mtl_idx;
-			Level().BulletManager().RegisterEvent(TRUE,bullet, end_point, result, hit_material_idx);
+			Level().BulletManager().RegisterEvent(EVENT_HIT, TRUE,bullet, end_point, result, hit_material_idx);
 		}
 	} else {
 		//статический объект
 		//получить треугольник и узнать его материал
 		CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+result.element;
 		hit_material_idx	= T->material;
-		Level().BulletManager().RegisterEvent(FALSE,bullet, end_point, result, hit_material_idx);
+		Level().BulletManager().RegisterEvent(EVENT_HIT, FALSE,bullet, end_point, result, hit_material_idx);
 	}
 
 	//проверить достаточно ли силы хита, чтобы двигаться дальше
@@ -259,7 +259,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 			&& Game().m_WeaponUsageStatistic.CollectData())
 		{
 			CActor* pActor = smart_cast<CActor*>(E.R.O);
-			if (pActor && pActor->g_Alive())
+			if (pActor)// && pActor->g_Alive())
 			{
 				Game().m_WeaponUsageStatistic.OnBullet_Hit(&E.bullet, E.R.O->ID(), (s16)E.R.element, E.point);
 				AddStatistic = true;

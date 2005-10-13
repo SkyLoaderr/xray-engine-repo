@@ -187,10 +187,12 @@ void CBulletManager::UpdateWorkload()
 		// calculate bullet
 		for(u32 i=0; i<cur_step_num; i++){
 			if(!CalcBullet(rq_storage,rq_spatial,&bullet, m_dwStepTime)){
-				if (bullet.flags.allow_sendhit && GameID() != GAME_SINGLE)
-					Game().m_WeaponUsageStatistic.OnBullet_Remove(&bullet);
-				m_Bullets[k] = m_Bullets.back();
-				m_Bullets.pop_back();
+				collide::rq_result res;
+				RegisterEvent(EVENT_REMOVE, FALSE, &bullet, Fvector().set(0, 0, 0), res, k);
+//				if (bullet.flags.allow_sendhit && GameID() != GAME_SINGLE)
+//					Game().m_WeaponUsageStatistic.OnBullet_Remove(&bullet);
+//				m_Bullets[k] = m_Bullets.back();
+//				m_Bullets.pop_back();
 				break;
 			}
 		}
@@ -370,20 +372,44 @@ void CBulletManager::CommitEvents			()	// @ the start of frame
 {
 	for (u32 _it=0; _it<m_Events.size(); _it++)	{
 		_event&		E	= m_Events[_it];
-		if (E.dynamic)	DynamicObjectHit	(E);
-		else			StaticObjectHit		(E);
+		switch (E.Type)
+		{
+		case EVENT_HIT:
+			{
+				if (E.dynamic)	DynamicObjectHit	(E);
+				else			StaticObjectHit		(E);
+			}break;
+		case EVENT_REMOVE:
+			{
+				if (E.bullet.flags.allow_sendhit && GameID() != GAME_SINGLE)
+					Game().m_WeaponUsageStatistic.OnBullet_Remove(&E.bullet);
+				m_Bullets[E.tgt_material] = m_Bullets.back();
+				m_Bullets.pop_back();
+			}break;
+		}		
 	}
 	m_Events.clear_and_reserve	()	;
 }
 
-void CBulletManager::RegisterEvent			(BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 tgt_material)
+void CBulletManager::RegisterEvent			(EventType Type, BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 tgt_material)
 {
 	m_Events.push_back	(_event())		;
 	_event&	E		= m_Events.back()	;
-	E.dynamic		= _dynamic			;
-	E.result		= ObjectHit			(bullet,end_point,R,tgt_material,E.normal);
+	E.Type			= Type				;
 	E.bullet		= *bullet			;
-	E.point			= end_point			;
-	E.R				= R					;
-	E.tgt_material	= tgt_material		;
+	switch(Type)
+	{
+	case EVENT_HIT:
+		{
+			E.dynamic		= _dynamic			;
+			E.result		= ObjectHit			(bullet,end_point,R,tgt_material,E.normal);			
+			E.point			= end_point			;
+			E.R				= R					;
+			E.tgt_material	= tgt_material		;
+		}break;
+	case EVENT_REMOVE:
+		{
+			E.tgt_material	= tgt_material		;
+		}break;
+	}	
 }

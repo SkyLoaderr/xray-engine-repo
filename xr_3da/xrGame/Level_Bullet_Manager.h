@@ -73,7 +73,15 @@ class CBulletManager
 	DEFINE_VECTOR						(SBullet,BulletVec,BulletVecIt);
 	typedef std::pair<float,float>		_hit		;
 	friend	CLevel;
+
+	enum EventType {
+		EVENT_HIT	= u8(0),
+		EVENT_REMOVE,
+
+		EVENT_DUMMY = u8(-1),
+	};
 	struct	_event			{
+		EventType			Type;
 		BOOL				dynamic		;
 		_hit				result		;
 		SBullet				bullet		;
@@ -125,7 +133,7 @@ protected:
 	static BOOL				firetrace_callback	(collide::rq_result& result, LPVOID params);
 
 	// Deffer event
-	void					RegisterEvent		(BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material);
+	void					RegisterEvent		(EventType Type, BOOL _dynamic, SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material);
 	
 	//попадание по динамическому объекту
 	void					DynamicObjectHit	(_event& E);
