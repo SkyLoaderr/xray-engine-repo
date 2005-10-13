@@ -697,10 +697,14 @@ CLocatorAPI::files_it CLocatorAPI::file_find_it(LPCSTR fname)
     check_pathes	();
 
 	file			desc_f;
-	desc_f.name		= xr_strlwr(xr_strdup(fname));
+	string_path		file_name;
+	VERIFY			(xr_strlen(fname)*sizeof(char) < sizeof(file_name));
+	strcpy			(file_name,fname);
+	desc_f.name		= file_name;
+//	desc_f.name		= xr_strlwr(xr_strdup(fname));
     files_it I		= files.find(desc_f);
-    xr_free			(desc_f.name);
-	return I;
+//	xr_free			(desc_f.name);
+	return			(I);
 }
 
 BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
@@ -710,7 +714,7 @@ BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
     else				strcpy(fpath,nm);
 
     files_set 	folders;
-    files_it I;
+	files_it I;
 	// remove files
     I					= file_find_it(fpath);
     if (I!=files.end()){
