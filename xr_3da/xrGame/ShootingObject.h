@@ -27,18 +27,10 @@ protected:
 	void	reload	(LPCSTR section) {};
 	void	Load	(LPCSTR section);
 
-	//текущие значения хита и импульса для выстрела 
-	//используются для пробиваемости стен при RayPick
-	float		m_fCurrentFireDist;
-	float		m_fCurrentHitPower;
-	float		m_fCurrentHitImpulse;
-	float		m_fCurrentWallmarkSize;
 	Fvector		m_vCurrentShootDir;
 	Fvector		m_vCurrentShootPos;
 	//ID персонажа который иницировал действие
 	u16			m_iCurrentParentID;
-	//тип наносимого хита
-	ALife::EHitType m_eCurrentHitType;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,7 +69,7 @@ protected:
 	float					fireDispersionBase;
 
 	//счетчик времени, затрачиваемого на выстрел
-	float			fTime;
+	float					fTime;
 
 protected:
 	//для сталкеров, чтоб они знали эффективные границы использования 

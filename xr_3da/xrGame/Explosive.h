@@ -15,7 +15,6 @@
 class IRender_Light;
 DEFINE_VECTOR(CPhysicsShellHolder*,BLASTED_OBJECTS_V,BLASTED_OBJECTS_I);
 class CExplosive : 
-//	public Feel::Touch,
 	public IDamageSource
 {
 
@@ -30,7 +29,6 @@ public:
 	virtual void				net_Relcase		(CObject* O);
 	virtual void 				UpdateCL();
 
-//	virtual void 				feel_touch_new(CObject* O);
 private:
 	virtual void 				Explode();
 public:

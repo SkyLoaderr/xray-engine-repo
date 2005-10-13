@@ -657,6 +657,7 @@ void CWeapon::renderable_Render		()
 	UpdateXForm				();
 
 	//нарисовать подсветку
+
 	RenderLight				();	
 
 	//если мы в режиме снайперки, то сам HUD рисовать не надо

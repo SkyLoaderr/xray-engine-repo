@@ -21,28 +21,22 @@
 
 CShootingObject::CShootingObject(void)
 {
-	fTime				= 0;
- 	fTimeToFire			= 0;
-	iHitPower			= 0;
-	m_fStartBulletSpeed = 1000.f;
+	fTime							= 0;
+ 	fTimeToFire						= 0;
+	iHitPower						= 0;
+	m_fStartBulletSpeed				= 1000.f;
 
-
-	m_fCurrentHitPower = 0.0f;
-	m_fCurrentHitImpulse = 0.0f;
-	m_fCurrentFireDist = 0.0f;
-	m_fCurrentWallmarkSize = WALLMARK_SIZE;
-	m_vCurrentShootDir = Fvector().set(0,0,0);
-	m_vCurrentShootPos = Fvector().set(0,0,0);
-	m_iCurrentParentID = 0xFFFF;
-	m_eCurrentHitType = ALife::eHitTypeFireWound;
+	m_vCurrentShootDir.set			(0,0,0);
+	m_vCurrentShootPos.set			(0,0,0);
+	m_iCurrentParentID				= 0xFFFF;
 
 
 	//particles
-	m_sFlameParticlesCurrent = m_sFlameParticles = NULL;
-	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
-	m_sShellParticles = NULL;
+	m_sFlameParticlesCurrent		= m_sFlameParticles = NULL;
+	m_sSmokeParticlesCurrent		= m_sSmokeParticles = NULL;
+	m_sShellParticles				= NULL;
 	
-	bWorking			= false;
+	bWorking						= false;
 
 	reinit();
 
@@ -58,10 +52,6 @@ void CShootingObject::reinit()
 
 void CShootingObject::Load	(LPCSTR section)
 {
-//	//базовая дисперсия оружия
-//	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
-//	fireDispersionBase	= deg2rad					(fireDispersionBase);
-
 
 	//время затрачиваемое на выстрел
 	fTimeToFire			= pSettings->r_float		(section,"rpm");
@@ -326,7 +316,7 @@ void CShootingObject::StopLight			()
 
 void CShootingObject::RenderLight()
 {
-	if (m_bShotLight && light_time>0) 
+	if (IsWorking() && m_bShotLight && light_time>0) 
 		Light_Render(get_CurrentFirePoint());
 }
 
@@ -370,16 +360,10 @@ void CShootingObject::FireBullet(const Fvector& pos,
 								 bool send_hit)
 {
 	Fvector dir;
-//.	dir.random_dir(shot_dir, fire_disp, Random);
 	random_dir(dir,shot_dir,fire_disp);
 
-	//инициализипровать текущие параметры выстрела перед запуском RayPick
-	m_fCurrentHitPower	= float(iHitPower);
-	m_fCurrentHitImpulse = fHitImpulse;
-	m_fCurrentWallmarkSize = cartridge.fWallmarkSize;
 	m_vCurrentShootDir = dir;
 	m_vCurrentShootPos = pos;
-	m_fCurrentFireDist = fireDistance;
 	m_iCurrentParentID = parent_id;
 
 	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
