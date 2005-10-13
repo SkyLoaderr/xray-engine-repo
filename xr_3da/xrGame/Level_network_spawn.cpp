@@ -147,7 +147,11 @@ void	CLevel::ProcessGameSpawns	()
 #endif
 		g_sv_Spawn					(E);
 #ifdef DEBUG
-		if (g_bMEMO)	Msg			("* %20s : %d bytes, %d ops", *E->s_name,Memory.mem_usage()-E_mem, Memory.stat_calls );
+		if (g_bMEMO) {
+			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+			Msg						("* %20s : %d bytes, %d ops", *E->s_name,Memory.mem_usage()-E_mem, Memory.stat_calls );
+		}
 #endif
 		F_entity_Destroy			(E);
 		game_spawn_queue.pop_front	();
