@@ -8,7 +8,7 @@
 #include "client_spawn_manager.h"
 #include "../xr_object.h"
 
-void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
+void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags, Fvector pos)
 {
 	// Create
 	CSE_Abstract*		E	= F_entity_Create(name);
@@ -24,6 +24,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	E->ID_Phantom		=	0xffff;
 	E->s_flags.assign	(flags);
 	E->RespawnTime		=	0;
+	E->o_Position		= pos;
 
 	// Send
 	NET_Packet			P;

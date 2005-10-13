@@ -125,7 +125,9 @@ public:
 #endif
 		char	Name[128];	Name[0]=0;
 		sscanf	(args,"%s", Name);
-		Level().g_cl_Spawn	(Name,0xff,M_SPAWN_OBJECT_LOCAL);
+		Fvector pos = Actor()->Position();
+		pos.y		+= 2.0f;
+		Level().g_cl_Spawn	(Name,0xff,M_SPAWN_OBJECT_LOCAL, pos);
 	}
 	virtual void	Info	(TInfo& I)		
 	{
