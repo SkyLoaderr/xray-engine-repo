@@ -327,7 +327,7 @@ function action_patrol:process_danger()
 	local bd_type = best_danger:type()
 	if bd_type == danger_object.attack_sound then
 		local danger_object = best_danger:object()
-		if danger_object:character_community() == self.object:character_community() then
+		if danger_object and danger_object:character_community() == self.object:character_community() then
 			return false
 		end
 	end
