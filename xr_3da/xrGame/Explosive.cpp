@@ -34,39 +34,46 @@
 const u16	TEST_RAYS_PER_OBJECT=5;
 const u16	BLASTED_OBJ_PROCESSED_PER_FRAME=3;
 const float	exp_dist_extinction_factor=3.f;//(>1.f, 1.f -means no dist change of exp effect)	on the dist of m_fBlastRadius exp. wave effect in exp_dist_extinction_factor times less than maximum
+
 CExplosive::CExplosive(void) 
 {
-	m_fBlastHit = 50.f;
-	m_fBlastRadius = 10.f;
-	m_iFragsNum = 20;
-	m_fFragsRadius = 30.f;
-	m_fFragHit = 50;
-
-	m_fUpThrowFactor = 0.f;
-
-
-	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
-
-	m_pLight = ::Render->light_create();
-	m_pLight->set_shadow(true);
+	m_fBlastHit				= 50.f;
+	m_fBlastRadius			= 10.f;
+	m_iFragsNum				= 20;
+	m_fFragsRadius			= 30.f;
+	m_fFragHit				= 50;
+	m_fUpThrowFactor		= 0.f;
 
 
-	m_eHitTypeBlast = ALife::eHitTypeExplosion;
-	m_eHitTypeFrag = ALife::eHitTypeFireWound;
+	m_eSoundExplode			= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 
 
-	m_iCurrentParentID = 0xffff;
-	m_bReadyToExplode = false;
+	m_eHitTypeBlast			= ALife::eHitTypeExplosion;
+	m_eHitTypeFrag			= ALife::eHitTypeFireWound;
 
-	m_bExploding = false;
-	m_bExplodeEventSent = false;
-	m_vExplodeSize.set(0.001f,0.001f,0.001f);
+
+	m_iCurrentParentID		= 0xffff;
+	m_bReadyToExplode		= false;
+
+	m_bExploding			= false;
+	m_bExplodeEventSent		= false;
+	m_vExplodeSize.set		(0.001f,0.001f,0.001f);
+}
+
+void CExplosive::LightCreate()
+{
+	m_pLight				= ::Render->light_create();
+	m_pLight->set_shadow	(true);
+}
+
+void CExplosive::LightDestroy()
+{
+	m_pLight.destroy		();
 }
 
 CExplosive::~CExplosive(void) 
 {
-	m_pLight.destroy	();
-	sndExplode.destroy	();
+	sndExplode.destroy		();
 }
 
 void CExplosive::Load(LPCSTR section) 
@@ -115,9 +122,9 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 
 void CExplosive::net_Destroy	()
 {
-	m_blasted_objects.clear();
-	m_bExploding = false;
-	StopLight();
+	m_blasted_objects.clear		();
+	m_bExploding				= false;
+	StopLight					();
 }
 
 
@@ -429,7 +436,7 @@ void CExplosive::UpdateCL()
 		UpdateExplosionPos();
 		ExplodeWaveProcess();
 		//обновить подсветку взрыва
-		if(m_pLight->get_active() && m_fLightTime>0)
+		if(m_pLight && m_pLight->get_active() && m_fLightTime>0)
 		{
 			if(m_fExplodeDuration > (m_fExplodeDurationMax - m_fLightTime))
 			{
@@ -529,22 +536,29 @@ void CExplosive::FindNormal(Fvector& normal)
 
 void CExplosive::StartLight	()
 {
-	VERIFY(m_pLight);
+
 	VERIFY(!ph_world->Processing());
 	if(m_fLightTime>0)
 	{
-		m_pLight->set_color(m_LightColor.r, m_LightColor.g, m_LightColor.b);
-		m_pLight->set_range(m_fLightRange);
-		m_pLight->set_position(m_vExplodePos); 
-		m_pLight->set_active(true);
+		
+		VERIFY					(!m_pLight);
+		LightCreate				();
+
+		m_pLight->set_color		(m_LightColor.r, m_LightColor.g, m_LightColor.b);
+		m_pLight->set_range		(m_fLightRange);
+		m_pLight->set_position	(m_vExplodePos); 
+		m_pLight->set_active	(true);
 	}
 }
-void CExplosive::StopLight	()
+void CExplosive::StopLight		()
 {
-	VERIFY(m_pLight);
-	VERIFY(!ph_world->Processing());
-	m_pLight->set_active(false);
+	if	(m_pLight){
+		VERIFY						(!ph_world->Processing());
+		m_pLight->set_active		(false);
+		LightDestroy				();
+	}
 }
+
 void CExplosive::GetRaySourcePos(CExplosive*exp_obj,const	Fvector	&expl_center,Fvector	&p)
 {
 	if(exp_obj)
@@ -554,9 +568,9 @@ void CExplosive::GetRaySourcePos(CExplosive*exp_obj,const	Fvector	&expl_center,F
 }
 void CExplosive::GetRayExplosionSourcePos(Fvector &pos)
 {
-	pos.set(m_vExplodeSize);pos.mul(0.5f);
-	pos.random_point(pos);
-	pos.add(m_vExplodePos);
+	pos.set						(m_vExplodeSize);pos.mul(0.5f);
+	pos.random_point			(pos);
+	pos.add						(m_vExplodePos);
 }
 void CExplosive::ExplodeWaveProcessObject(collide::rq_results& storage, CPhysicsShellHolder*l_pGO)
 {
