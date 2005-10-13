@@ -518,7 +518,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
     	string_path		items_nm;
         data->r_stringZ	(items_nm,sizeof(items_nm));
         u32 set_cnt		= _GetItemCount(items_nm);
-        R_ASSERT		(set_cnt<MAX_ANIM_REFS);
+        R_ASSERT		(set_cnt<MAX_ANIM_SLOT);
     	string_path		nm;
         for (u32 k=0; k<set_cnt; k++){
         	_GetItem	(items_nm,k,nm);
@@ -554,7 +554,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	// initialize BoneDataAnimated
 	for (u32 i=0; i<bones->size(); i++){
 		CBoneDataAnimated* BDA	= (CBoneDataAnimated*)(*bones)[i];
-        ZeroMemory			(BDA->Motions,sizeof(MotionVec*)*MAX_ANIM_REFS);
+        ZeroMemory			(BDA->Motions,sizeof(MotionVec*)*MAX_ANIM_SLOT);
         for (u32 k=0; k<m_Motions.size(); k++)
         	BDA->Motions[k]	= m_Motions[k].motions(BDA->name);
 	}
