@@ -140,6 +140,7 @@ void CShootingObject::Light_Start	()
 void CShootingObject::Light_Render	(const Fvector& P)
 {
 	float light_scale			= light_time/light_lifetime;
+	R_ASSERT(light_render);
 	light_render->set_position	(P);
 	light_render->set_color		(light_build_color.r*light_scale,light_build_color.g*light_scale,light_build_color.b*light_scale);
 	light_render->set_range		(light_build_range*light_scale);
