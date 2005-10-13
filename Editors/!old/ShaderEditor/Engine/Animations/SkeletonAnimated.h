@@ -8,7 +8,7 @@
 // consts
 const	u32		MAX_BLENDED			=	16;
 const	u32		MAX_BLENDED_POOL	=	(MAX_BLENDED*MAX_PARTS);
-const	u32		MAX_ANIM_REFS		=	4;
+const	u32		MAX_ANIM_SLOT		=	4;
 
 // refs
 class   ENGINE_API CBlend;
@@ -113,7 +113,7 @@ public:
 class ENGINE_API		CBoneDataAnimated: public CBoneData             
 {
 public:
-	MotionVec*			Motions[MAX_ANIM_REFS];	// all known motions
+	MotionVec*			Motions[MAX_ANIM_SLOT];	// all known motions
 public:
 						CBoneDataAnimated(u16 ID):CBoneData(ID){}
 	// Motion control
@@ -145,7 +145,7 @@ private:
 #endif
 	CBlendInstance*								blend_instances;
 
-    svector<shared_motions,MAX_ANIM_REFS>       m_Motions;
+    svector<shared_motions,MAX_ANIM_SLOT>       m_Motions;
     CPartition*									m_Partition;
 
 	// Blending
@@ -171,9 +171,11 @@ public:
     u32							LL_CycleCount	(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].cycle()->size(); return cnt;}
     u32							LL_FXCount		(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].fx()->size(); return cnt;}
 	accel_map*					LL_Motions		(u32 slot){return m_Motions[slot].motion_map();}
-	u16							LL_MotionsSlotCount(){return (u16)m_Motions.size();}
 	MotionID					ID_Motion		(LPCSTR  N, u16 slot);
 #endif
+	u16							LL_MotionsSlotCount(){return (u16)m_Motions.size();}
+	const shared_motions&		LL_MotionsSlot	(u16 idx){return m_Motions[idx];}
+
 	CMotionDef*					LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motion_def(id.idx);}
 
 	// Low level interface
