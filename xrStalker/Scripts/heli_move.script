@@ -326,7 +326,12 @@ function heli_move:process_attack_params( path_info, index )
 	end
 
 	if target == "true" then
-		printf( "heli_move: attacking point!" )
+		if self.look_index then
+			printf( "heli_move: attacking point!" )
+		else
+			abort( "heli_move: you specified 'e' in path_mave, but didn't set any flags!" )
+		end
+
 		self.heliObject:SetEnemy( self.patrol_look:point( self.look_index ) )
 
 	elseif target == "actor" or target == "a" then
