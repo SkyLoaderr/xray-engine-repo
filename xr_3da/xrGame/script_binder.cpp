@@ -16,6 +16,10 @@
 #include "script_game_object.h"
 #include "gameobject.h"
 
+#ifdef DEBUG
+XRCORE_API	BOOL	g_bMEMO;
+#endif
+
 //#define DBG_DISABLE_SCRIPTS
 
 CScriptBinder::CScriptBinder		()
@@ -46,6 +50,11 @@ void CScriptBinder::clear			()
 
 void CScriptBinder::reinit			()
 {
+#ifdef DEBUG
+	u32									start = 0;
+	if (g_bMEMO)
+		start							= Memory.mem_usage();
+#endif
 	if (m_object) {
 		try {
 			m_object->reinit	();
@@ -54,6 +63,13 @@ void CScriptBinder::reinit			()
 			clear			();
 		}
 	}
+#ifdef DEBUG
+	if (g_bMEMO) {
+		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		Msg					("CScriptBinder::reinit() : %d",Memory.mem_usage() - start);
+	}
+#endif
 }
 
 void CScriptBinder::Load			(LPCSTR section)
@@ -62,6 +78,11 @@ void CScriptBinder::Load			(LPCSTR section)
 
 void CScriptBinder::reload			(LPCSTR section)
 {
+#ifdef DEBUG
+	u32									start = 0;
+	if (g_bMEMO)
+		start							= Memory.mem_usage();
+#endif
 #ifndef DBG_DISABLE_SCRIPTS
 	VERIFY					(!m_object);
 	if (!pSettings->line_exist(section,"script_binding"))
@@ -92,10 +113,22 @@ void CScriptBinder::reload			(LPCSTR section)
 		}
 	}
 #endif
+#ifdef DEBUG
+	if (g_bMEMO) {
+		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		Msg					("CScriptBinder::reload() : %d",Memory.mem_usage() - start);
+	}
+#endif
 }
 
 BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 {
+#ifdef DEBUG
+	u32									start = 0;
+	if (g_bMEMO)
+		start							= Memory.mem_usage();
+#endif
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	CSE_ALifeObject			*object = smart_cast<CSE_ALifeObject*>(abstract);
 	if (object && m_object) {
@@ -106,6 +139,14 @@ BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 			clear			();
 		}
 	}
+
+#ifdef DEBUG
+	if (g_bMEMO) {
+		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		Msg					("CScriptBinder::net_Spawn() : %d",Memory.mem_usage() - start);
+	}
+#endif
 
 	return					(TRUE);
 }

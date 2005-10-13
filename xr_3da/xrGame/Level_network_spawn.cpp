@@ -141,8 +141,10 @@ void	CLevel::ProcessGameSpawns	()
 #ifdef DEBUG
 		u32							E_mem = 0;
 		if (g_bMEMO)	{
-			E_mem = Memory.mem_usage();	
-			Memory.stat_calls = 0;
+			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+			E_mem					= Memory.mem_usage();	
+			Memory.stat_calls		= 0;
 		}
 #endif
 		g_sv_Spawn					(E);
