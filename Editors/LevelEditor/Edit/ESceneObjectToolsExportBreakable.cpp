@@ -25,8 +25,8 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
 	bool bResult 			= true;
     mesh->GenerateVNormals	();
     // fill faces
-    for (SurfFacesPairIt sp_it=mesh->GetSurfFaces().begin(); sp_it!=mesh->GetSurfFaces().end(); sp_it++){
-		IntVec& face_lst 	= sp_it->second;
+    for (SurfFaces::const_iterator sp_it=mesh->GetSurfFaces().begin(); sp_it!=mesh->GetSurfFaces().end(); sp_it++){
+		const IntVec& face_lst 	= sp_it->second;
         CSurface* surf 		= sp_it->first;
 		int gm_id			= surf->_GameMtl(); 
         if (gm_id==GAMEMTL_NONE_ID){ 
@@ -56,12 +56,12 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
                 break; 
             }
         }
-
-        st_Face*	faces 	= mesh->GetFaces();        	VERIFY(faces);
-        Fvector*	vn	 	= mesh->GetVNormals();		VERIFY(vn);
-        Fvector*	pts 	= mesh->GetVerts();			VERIFY(pts);
-	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
-			st_Face& face 	= faces[*f_it];
+                                                  
+        const st_Face* faces	= mesh->GetFaces();        	VERIFY(faces);
+        const Fvector*	vn	 	= mesh->GetVNormals();		VERIFY(vn);
+        const Fvector*	pts 	= mesh->GetVerts();			VERIFY(pts);
+	    for (IntVec::const_iterator f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
+			const st_Face& face = faces[*f_it];
             Fvector 		v[3],n[3];
             parent.transform_tiny	(v[0],pts[face.pv[0].pindex]);
             parent.transform_tiny	(v[1],pts[face.pv[1].pindex]);
