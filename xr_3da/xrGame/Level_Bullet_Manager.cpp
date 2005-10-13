@@ -188,7 +188,7 @@ void CBulletManager::UpdateWorkload()
 		for(u32 i=0; i<cur_step_num; i++){
 			if(!CalcBullet(rq_storage,rq_spatial,&bullet, m_dwStepTime)){
 				collide::rq_result res;
-				RegisterEvent(EVENT_REMOVE, FALSE, &bullet, Fvector().set(0, 0, 0), res, k);
+				RegisterEvent(EVENT_REMOVE, FALSE, &bullet, Fvector().set(0, 0, 0), res, (u16)k);
 //				if (bullet.flags.allow_sendhit && GameID() != GAME_SINGLE)
 //					Game().m_WeaponUsageStatistic.OnBullet_Remove(&bullet);
 //				m_Bullets[k] = m_Bullets.back();
