@@ -1231,30 +1231,26 @@ path_look = escape_hide_1_look
 def_state_moving = assault
 on_signal = ecolog_chase |%+bar_ecolog_see_chase% 
 meet = meet@ecolog_kruglov
-radius = 3
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_hit = hit@ecolog_professor
+radius = 0
+;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {+bar_rescue_research_chasing_end} walker@bar_ecolog_professor_companoin_1
 on_info2 = {+bar_ecolog_see_chase -bar_ecolog_saw_chase} %=bar_ecolog_spam_5 +bar_ecolog_saw_chase%
 
 [walker@bar_ecolog_professor_companoin_1]
 path_walk = escape_2_walk
-on_hit = hit@ecolog_professor
 on_signal = bandits_alive | camper@bar_rescue_research_hide_2 %+bar_bandits_alive%
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
 [camper@bar_rescue_research_hide_2]
 path_walk = escape_hide_2_walk
 path_look = escape_hide_2_look
 meet = meet@ecolog_kruglov
-radius = 3
-on_hit = hit@ecolog_professor
+radius = 0
 on_info = {+bar_bandits_dead} walker@bar_ecolog_professor_companoin_2
 
 [walker@bar_ecolog_professor_companoin_2]
 path_walk = escape_3_walk
-on_hit = hit@ecolog_professor
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = fire_anomaly | %+bar_fire_anomaly_forward%
 on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3
 
@@ -1262,21 +1258,22 @@ on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3
 path_walk = escape_stay
 path_look = escape_look
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_hit = hit@ecolog_professor
+radius = 0
+;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {+bar_go_through_anomaly} walker@bar_ecolog_professor_companoin_3
 
 [walker@bar_ecolog_professor_companoin_3]
 path_walk = escape_4_walk
 path_look = escape_4_look
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_hit = hit@ecolog_professor
-on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_done%
+;on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_done%
+
 [camper@bar_rescue_research_hide_4]
 path_walk = end_walk
 path_look = end_look
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+radius = 0
+;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
 [death@ecolog_crush]
 on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_done +bar_rescue_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_fail +bar_rescue_research_corruped +bar_heli_scene_professor_die%, %+bar_rescue_research_dead +bar_rescue_research_corruped +bar_heli_scene_professor_die%
