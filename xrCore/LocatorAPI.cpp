@@ -425,19 +425,6 @@ void	CLocatorAPI::file_list_close	(xr_vector<char*>* &lst)
 	}
 }
 
-bool PatternMatch(LPCSTR s, LPCSTR mask)
-{
-	LPCSTR cp=0;
-	LPCSTR mp=0;
-	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
-	for (;;) {
-		if (!*s) { while (*mask=='*') mask++; return !*mask; }
-		if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }
-		if (*mask==*s||*mask=='?') { mask++, s++; continue; }
-		mask=mp; s=cp++;
-	}
-}
-
 int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask)
 {
 	R_ASSERT		(path);

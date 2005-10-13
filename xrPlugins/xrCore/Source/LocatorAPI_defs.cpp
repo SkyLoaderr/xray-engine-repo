@@ -93,3 +93,16 @@ void FS_Path::rescan_path_cb	()
     FS.m_Flags.set(CLocatorAPI::flNeedRescan,TRUE);
 }
 
+bool XRCORE_API PatternMatch(LPCSTR s, LPCSTR mask)
+{
+	LPCSTR cp=0;
+	LPCSTR mp=0;
+	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
+	for (;;) {
+		if (!*s) { while (*mask=='*') mask++; return !*mask; }
+		if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }
+		if (*mask==*s||*mask=='?') { mask++, s++; continue; }
+		mask=mp; s=cp++;
+	}
+}
+

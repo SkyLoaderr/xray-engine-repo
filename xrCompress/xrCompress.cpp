@@ -59,7 +59,7 @@ BOOL	testSKIP		(LPCSTR path)
 
 	if (0==stricmp(p_ext,".swatch"))return TRUE;
 	if (0==stricmp(p_ext,".db"))	return TRUE;
-	if (0==stricmp(p_ext,".avi"))	return TRUE;
+	if (PatternMatch(p_ext,"*avi*"))return TRUE;
 	if (0==stricmp(p_ext,".key"))	return TRUE;
 	if (0==stricmp(p_ext,".tga"))	return TRUE;
 	if (0==stricmp(p_ext,".txt"))	return TRUE;
@@ -251,6 +251,7 @@ void	OpenPack			(LPCSTR tgt_folder, int num)
 	unlink			(fname);
 	fs				= FS.w_open	(fname);
 	fs_desc.clear	();
+	aliases.clear	();
 	dwTimeStart		= timeGetTime();
 	fs->open_chunk	(0);
 }
