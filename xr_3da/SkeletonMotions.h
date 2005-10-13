@@ -175,6 +175,7 @@ public:
 
 	// assignment & accessors
 	shared_motions&		operator=		(shared_motions const &rhs)	{	create(rhs);return *this;	}
+	bool				operator==		(shared_motions const &rhs)	const {return (p_ == rhs.p_);}
 
 	// misc func
 	MotionVec*			motions			(shared_str bone_name)		{	VERIFY(p_); return p_->motions(bone_name);		}
