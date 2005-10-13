@@ -471,6 +471,10 @@
 	<character id="rad_Svoboda_master">
 		<class>rad_Svoboda_master</class>
 	</character>
+	<!-- dead scientists -->
+	<character id="rad_ecolog">
+		<class>rad_Ecolog</class>
+	</character>
 	
 	
 <!-- Pripyat -->
