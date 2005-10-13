@@ -189,8 +189,12 @@ function r(index)
        	db.actor:give_info_portion ("mil_hunt_ready") 
     end
 
-	test_utils.setup_test(object_list, smart_terrains)
-	test_utils.run_test(index)
+	if (index == 100) then
+		db.actor:give_info_portion ("mil_village_bloodsucker1")
+	end
+	
+	--test_utils.setup_test(object_list, smart_terrains)
+	--test_utils.run_test(index)
 end
 
 ------------------------------------------------------------------------------

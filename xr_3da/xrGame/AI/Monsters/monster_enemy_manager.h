@@ -4,12 +4,12 @@
 class CBaseMonster;
 
 class CMonsterEnemyManager {
-	CBaseMonster			*monster;
+	CBaseMonster		*monster;
 
-	const CEntityAlive *enemy;
+	const CEntityAlive	*enemy;
 	Fvector				position;
 	u32					vertex;
-	TTime				time_last_seen;
+	u32					time_last_seen;
 
 	Flags32				flags;
 	bool				forced;
@@ -27,6 +27,8 @@ class CMonsterEnemyManager {
 	u32					my_vertex_enemy_last_seen;
 	// node, of enemy (its always valid unlike vertex)
 	u32					enemy_vertex_enemy_last_seen;
+
+	u32					m_time_updated;
 
 public:
 						CMonsterEnemyManager		(); 

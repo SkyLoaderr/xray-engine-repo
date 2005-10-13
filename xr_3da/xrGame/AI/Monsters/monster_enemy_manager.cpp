@@ -16,6 +16,7 @@ CMonsterEnemyManager::CMonsterEnemyManager()
 	danger_type						= eNone;
 	my_vertex_enemy_last_seen		= u32(-1);
 	enemy_vertex_enemy_last_seen	= u32(-1);
+	m_time_updated					= 0;
 }
 
 CMonsterEnemyManager::~CMonsterEnemyManager()
@@ -113,6 +114,8 @@ void CMonsterEnemyManager::update()
 		my_vertex_enemy_last_seen		= monster->ai_location().level_vertex_id();
 		enemy_vertex_enemy_last_seen	= enemy->ai_location().level_vertex_id();
 	}	
+	
+	m_time_updated		= time();
 }
 
 
@@ -122,7 +125,7 @@ void CMonsterEnemyManager::force_enemy (const CEntityAlive *enemy)
 	this->enemy		= enemy;
 	position		= enemy->Position();
 	vertex			= enemy->ai_location().level_vertex_id();
-	time_last_seen	= Device.dwTimeGlobal;
+	time_last_seen	= time();
 
 	forced			= true;
 
@@ -163,6 +166,7 @@ void CMonsterEnemyManager::reinit()
 	my_vertex_enemy_last_seen		= monster->ai_location().level_vertex_id();
 	enemy_vertex_enemy_last_seen	= u32(-1);
 
+	m_time_updated				= 0;
 }
 
 
@@ -174,7 +178,7 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
-	return (monster->memory().visual().visible_now(enemy) && (time_last_seen == Device.dwTimeGlobal)); 
+	return (monster->memory().visual().visible_now(enemy) && (time_last_seen == m_time_updated)); 
 }
 
 bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAlive *object1)

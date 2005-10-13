@@ -394,8 +394,8 @@ void CController::OnFreedFromControl(const CEntity *entity)
 void CController::draw_fire_particles()
 {
 	if (!EnemyMan.get_enemy()) return;
-	//if (!EnemyMan.see_enemy_now()) return;
 	CEntityAlive *enemy	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
+	if (!EnemyMan.see_enemy_now()) return;
 
 	// вычислить позицию и направленность партикла
 	Fvector my_head_pos;
@@ -428,7 +428,7 @@ void CController::draw_fire_particles()
 void CController::psy_fire()
 {
 	if (!EnemyMan.get_enemy())	return;
-
+	
 	draw_fire_particles			();
 	play_control_sound_hit		();
 

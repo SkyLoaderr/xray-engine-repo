@@ -56,7 +56,7 @@ MaxSpeed		     = 5.0						; option for ALife Simulator
 going_speed          = 4.5                      ; option for ALife Simulator
 search_speed         = 1.5                       ; option for ALife Simulator
 visual				 = monsters\kontroler\kontroler
-MaxHealthValue		     = 100			; range [0..200]
+MaxHealthValue		     = 200			; range [0..200]
 DynamicObjectsCount	 = 32
 
 ef_creature_type	 = 12						; option for evaluation functions
@@ -176,9 +176,9 @@ explosion_immunity 					= 1.0
 fire_wound_immunity  				= 1.0
 
 ;открытые раны
-bleeding_v					= 0.01						;потеря крови при номинальной ране в секунду
-wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
-min_wound_size				= 0.01
+bleeding_v					= 0.001						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.2				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+min_wound_size				= 0.1
 
 sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
 sleep_power = 1.0		;1.5
@@ -336,10 +336,10 @@ radius_max		= 0.8
 ;bip01_neck 			= 0.1, -1, 0.01
 ;bip01_head 			= 0.66, -1, 0.01
 
-default				= 0.5, -1, 0.01
+default				= 0.005, -1, 0.001
 
-bip01_pelvis 		= 0.5, -1, 0.01
-bip01_spine 		= 0.7, -1, 0.01
-bip01_spine1 		= 0.7, -1, 0.01
-bip01_neck 			= 0.5, -1, 0.01
-bip01_head 			= 0.7, -1, 0.01
+bip01_pelvis 		= 0.005, -1, 0.001
+bip01_spine 		= 0.007, -1, 0.001
+bip01_spine1 		= 0.007, -1, 0.001
+bip01_neck 			= 0.005, -1, 0.001
+bip01_head 			= 0.007, -1, 0.001
