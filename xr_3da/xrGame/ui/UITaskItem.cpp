@@ -387,6 +387,10 @@ void CUIUserTaskItem::SetGameTask				(CGameTask* gt, int obj_idx)
 	m_captionStatic->SetText					(*stbl.translate(gt->m_Title));
 	m_captionStatic->AdjustHeightToText			();
 
+	float h1 = _max( m_image->GetWndPos().y+m_image->GetHeight(),
+					m_captionStatic->GetWndPos().y + m_captionStatic->GetHeight() );
+	m_descriptionStatic->SetWndPos				(m_descriptionStatic->GetWndPos().x, h1+4.0f);
+
 	m_descriptionStatic->SetText				(*stbl.translate(obj->description));
 	m_descriptionStatic->AdjustHeightToText		();
 

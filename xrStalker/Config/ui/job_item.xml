@@ -69,7 +69,7 @@
 		</remove_btn>
 
 		<edit_text_btn x="195" y="5" width="20" height="20" check_mode="0">
-			<texture>ui_icons_newPDA_mapMarDel</texture>
+			<texture>ui_icons_newPDA_editUserSpot</texture>
 		</edit_text_btn>
 
 	</task_user_item>
