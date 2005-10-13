@@ -92,7 +92,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 #else
 	res	= DialogBox
 		(
-		GetModuleHandle(NULL),
+		GetModuleHandle(MODULE_NAME),
 		MAKEINTRESOURCE(IDD_STOP),
 		NULL,
 		DialogProc 
