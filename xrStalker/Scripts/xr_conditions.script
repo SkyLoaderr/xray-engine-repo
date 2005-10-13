@@ -279,7 +279,7 @@ function talking_or_tutor(actor, npc)
 end
 
 function see_actor(actor, npc)
-	return actor ~= nil and npc:see(actor)
+	return npc:see(actor)
 end
 
 -- видит ли вертолёт актера
