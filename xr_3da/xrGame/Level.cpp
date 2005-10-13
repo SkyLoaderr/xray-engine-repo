@@ -49,6 +49,8 @@
 
 #include "level_navigation_graph.h"
 
+#include "mt_config.h"
+
 #include "phcommander.h"
 #include "map_manager.h"
 
