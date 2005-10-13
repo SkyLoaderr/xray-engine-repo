@@ -65,8 +65,8 @@ function actor_binder:reinit()
 
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
 	self.object:set_callback(callback.article_info, self.article_callback, self)
-	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
-	self.object:set_callback(callback.on_item_drop, self.inventory_callback, self)
+	self.object:set_callback(callback.on_item_take, self.on_item_take, self)
+	self.object:set_callback(callback.on_item_drop, self.on_item_drop, self)
 	--self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 	self.object:set_callback(callback.task_state, self.task_callback, self)
 	--self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
@@ -91,9 +91,14 @@ function actor_binder:article_callback(npc, group, name)
 	end
 end
 ----------------------------------------------------------------------------------------------------------------------
-function actor_binder:inventory_callback(npc, info_id)
-	--' Ñ‏זוע
-	level_tasks.proceed(self.object)
+function actor_binder:on_item_take (obj)
+    level_tasks.proceed(self.object)
+    game_stats.update_take_item (obj, self.object)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:on_item_drop (obj)
+    level_tasks.proceed(self.object)
+    game_stats.update_drop_item (obj, self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:task_callback(id_task, subtask, id_state)
@@ -108,6 +113,7 @@ function actor_binder:task_callback(id_task, subtask, id_state)
 	else
 		news_manager.send_task(db.actor, "update")
 	end
+	game_stats.update_task (id_task, subtask, id_state, self.object)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -123,6 +129,8 @@ function actor_binder:update(delta)
 --	slowdown.update()
 
 	local time = time_global()
+	
+	game_stats.update (delta, self.object)
 
 	-- אןהויע ןמדמהû
 	self.weather_manager:update()
