@@ -41,16 +41,6 @@ function action_door:initialize(loading)
 	self.soundless_block = false
 
 	self.show_tips = self.st.show_tips
-	if self.st.tip_open then
-		self.tip_open = string_table():get_by_id(self.st.tip_open)
-	else
-		self.tip_open = nil
-	end
-	if self.st.tip_close then
-		self.tip_close = string_table():get_by_id(self.st.tip_close)
-	else
-		self.tip_close = nil
-	end
 
 	local disable_snd
 	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
@@ -159,7 +149,7 @@ function action_door:open_door(disable_snd)
 	self.block = false
 
 	if self.show_tips and self.tip_close then
-		self.object:set_tip_text(self.tip_close)
+		self.object:set_tip_text(self.st.tip_close)
 	end
 end
 
@@ -196,8 +186,8 @@ function action_door:close_door()
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
 
-	if self.show_tips and self.tip_open then
-		self.object:set_tip_text(self.tip_open)
+	if self.show_tips and self.st.tip_open then
+		self.object:set_tip_text(self.st.tip_open)
 	end
 end
 

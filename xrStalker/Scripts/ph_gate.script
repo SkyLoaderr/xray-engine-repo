@@ -142,17 +142,6 @@ function action_gate:initialize(loading)
 	    right_open_limit = -utils.deg2rad(def_open_limit)
 	end
 	
-	if self.st.tip_open then
-		self.tip_open = string_table():get_by_id(self.st.tip_open)
-	else
-		self.tip_open = nil
-	end
-	if self.st.tip_close then
-		self.tip_close = string_table():get_by_id(self.st.tip_close)
-	else
-		self.tip_close = nil
-	end
-
     self.bone_id[1] = self:get_bone_id("door_left")
     self.bone_id[2] = self:get_bone_id("door_right")
 	--self.joint_left = ph_shell:get_joint_by_bone_name("door_left")
@@ -250,8 +239,8 @@ function action_gate:initialize(loading)
 	    --self.joint_left:set_max_force_and_velocity(force, velocity, 1)
 	    --self.joint_right:set_max_force_and_velocity(force, velocity, 1)
 
-	    if self.tip_open then
-		    self.object:set_tip_text(self.tip_open)
+	    if self.st.tip_open then
+		    self.object:set_tip_text(self.st.tip_open)
 	    end
 	elseif self.st.locking == "hard" then
 	    if self.breakable then
@@ -286,8 +275,8 @@ function action_gate:initialize(loading)
 	    --self.joint_left:set_limits(angle_left, angle_left, 1)
 	    --self.joint_right:set_limits(angle_right, angle_right, 1)
 
-	    if self.tip_open then
-		    self.object:set_tip_text(self.tip_open)
+	    if self.st.tip_open then
+		    self.object:set_tip_text(self.st.tip_open)
 	    end
 	else
 	    printf("_bp: ph_gate.locking = none")
@@ -414,8 +403,8 @@ function action_gate:open_gate(disable_snd)
 	--self.joint_right:set_max_force_and_velocity(def_open_force, -def_open_velocity, 1)
 	self.state = state_open
 
-	if self.tip_close then
-		self.object:set_tip_text(self.tip_close)
+	if self.st.tip_close then
+		self.object:set_tip_text(self.st.tip_close)
 	end
 end
 
@@ -455,8 +444,8 @@ function action_gate:close_gate(disable_snd)
 	self.soundless_block = disable_snd
 	self.state = state_closed
 
-	if self.tip_open then
-		self.object:set_tip_text(self.tip_open)
+	if self.st.tip_open then
+		self.object:set_tip_text(self.st.tip_open)
 	end
 end
 
@@ -487,8 +476,8 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 	    local force, velocity
 	    local stick_close = false
 
-	    if self.tip_close then
-		    self.object:set_tip_text(self.tip_close)
+	    if self.st.tip_close then
+		    self.object:set_tip_text(self.st.tip_close)
 	    end
 
 	    local angle_left = self:get_angle(1)
@@ -513,8 +502,8 @@ function action_gate:hit_callback(obj, amount, local_direction, who, bone_index)
 	    elseif angle_right < self.right_close_limit + def_stick_angle then
 	        force = def_close_force
 	        velocity = def_close_velocity
-	        if stick_close and self.tip_open then
-		        self.object:set_tip_text(self.tip_open)
+	        if stick_close and self.st.tip_open then
+		        self.object:set_tip_text(self.st.tip_open)
 	        end
 	    else
 	        force = 0

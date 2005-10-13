@@ -20,8 +20,7 @@ function main()
 		        fuelcan = level.object("explosive_tank")
 			fuelcan:set_nonscript_usable(false)
 
-			local st = string_table()
-			fuelcan:set_tip_text(st:get_by_id("don't toch it's gonna blow"))
+			fuelcan:set_tip_text("don't toch it's gonna blow")
 		       	fuelcan:set_use_callback (this.fuelcan_use)
 			printf("FOUND FUELCAN")
 		end
