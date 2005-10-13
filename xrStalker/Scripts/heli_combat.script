@@ -42,9 +42,11 @@ function heli_combat:__init( object, heliObject )
 
 	local ltx               = bind_heli.get_heli_ltx()
 
-	self.flyby_attack_dist  = utils.cfg_get_number( ltx, "helicopter", "flyby_attack_dist",  self.object, true )
-	self.search_attack_dist = utils.cfg_get_number( ltx, "helicopter", "search_attack_dist", self.object, true )
-	self.default_velocity   = utils.cfg_get_number( ltx, "helicopter", "velocity",           self.object, true )
+	self.flyby_attack_dist  = utils.cfg_get_number( ltx, "helicopter", "flyby_attack_dist",    self.object, true )
+	self.search_attack_dist = utils.cfg_get_number( ltx, "helicopter", "search_attack_dist",   self.object, true )
+	self.default_velocity   = utils.cfg_get_number( ltx, "helicopter", "velocity",             self.object, true )
+	self.m_max_mgun_dist    = utils.cfg_get_number( ltx, "helicopter", "max_mgun_attack_dist", self.object, true )
+
 	self.search_velocity    = 10
 
 	self.retreat_already    = false
@@ -124,6 +126,8 @@ function heli_combat:initialize()
 	self:set_combat_type( combat_type_flyby ) --self:choose_combat_type() )
 	self.change_combat_type_time    = nil
 	self.change_combat_type_allowed = true
+
+	self.heliObject.m_max_mgun_dist = self.m_max_mgun_dist
 
 	self.initialized = true
 end

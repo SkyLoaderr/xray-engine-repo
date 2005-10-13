@@ -309,6 +309,8 @@ function heli_move:process_attack_params( path_info, index )
 	self.heliObject.m_use_mgun_on_attack   = wpns == nil or wpns == "1"
 	self.heliObject.m_use_rocket_on_attack = wpns == nil or wpns == "2"
 
+	self.heliObject.m_max_mgun_dist = 1000
+
 	--printf( "mgun=%s rockets=%s", tostring(self.heliObject.m_use_mgun_on_attack), tostring(self.heliObject.m_use_rocket_on_attack ))
 
 	local target = self:waypoint_param( path_info, index, "e" )
