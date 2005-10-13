@@ -227,9 +227,11 @@ public:
 	IC CSeniorityHierarchyHolder	&seniority_holder			();
 	IC CClientSpawnManager			&client_spawn_manager		();
 	IC CAutosaveManager				&autosave_manager			();
+	void							script_gc					();			// GC-cycle
 
 	IC CPHCommander					&ph_commander				();
 	IC CPHCommander					&ph_commander_scripts		();
+
 	// C/D
 	CLevel();
 	virtual ~CLevel();

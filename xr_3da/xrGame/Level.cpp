@@ -376,7 +376,7 @@ void CLevel::OnFrame	()
 	// Client receive
 	if (net_isDisconnected())	
 	{
-		Engine.Event.Defer			("kernel:disconnect");
+		Engine.Event.Defer				("kernel:disconnect");
 		return;
 	} else {
 		Device.Statistic.netClient.Begin();
@@ -412,7 +412,6 @@ void CLevel::OnFrame	()
 			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 			F->OutNext	("SPS/Sended : %4d/%4d", S->dwBytesPerSec, S->dwBytesSended);
 			F->OutNext	("sv_urate/cl_urate : %4d/%4d", psNET_ServerUpdate, psNET_ClientUpdate);
-			
 			
 			F->SetColor	(D3DCOLOR_XRGB(255,255,255));
 			for (u32 I=0; I<Server->client_Count(); ++I)	{
@@ -458,8 +457,8 @@ void CLevel::OnFrame	()
 	g_pGamePersistent->Environment.SetGameTime	(GetEnvironmentGameDayTimeSec(),GetGameTimeFactor());
 
 	//Device.Statistic.Scripting.Begin	();
-	ai().script_engine().script_process(ScriptEngine::eScriptProcessorLevel)->update();
-	//Device.Statistic.Scripting.End		();
+	ai().script_engine().script_process	(ScriptEngine::eScriptProcessorLevel)->update();
+	//Device.Statistic.Scripting.End	();
 	m_ph_commander->update				();
 	m_ph_commander_scripts->update		();
 //	autosave_manager().update			();
@@ -471,6 +470,16 @@ void CLevel::OnFrame	()
 
 	// update static sounds
 	m_level_sound_manager->Update		();
+
+	// deffer LUA-GC-STEP
+	if (g_mt_config.test(mtLUA_GC))		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CLevel::script_gc));
+	else								script_gc	()	;
+}
+
+int		psLUA_GCSTEP					= 10			;
+void	CLevel::script_gc				()
+{
+	lua_gc	(ai().script_engine().lua(), LUA_GCSTEP, psLUA_GCSTEP);
 }
 
 #ifdef DEBUG_PRECISE_PATH
