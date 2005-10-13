@@ -26,6 +26,14 @@ function action_sleep:reset_scheme()
 	else
 	    dream.type = "all"
 	end
+
+	dream.dream_prob = nil
+	if type(self.st.dream_prob) == "number" then
+	    local p = tonumber(self.st.dream_prob)
+	    if p >= 0 and p <= 100 then
+	        dream.dream_prob = p
+	    end
+	end
 	
 	self:switch_state(db.actor)
 end
@@ -80,5 +88,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
     st.type = utils.cfg_get_string(ini, section, "type", npc, false, "", "all")
+    st.dream_prob = utils.cfg_get_number(ini, section, "dream_prob", npc, true, nil)
 	st.cond = xr_logic.cfg_get_condlist(ini, section, "cond", npc)
 end
