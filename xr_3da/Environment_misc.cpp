@@ -20,9 +20,8 @@ void	CEnvModifier::load	(IReader* fs)
 	fs->r_fvector3	(fog_color);
 	fog_density		= fs->r_float	();
 	fs->r_fvector3	(ambient);
-	fs->r_fvector3	(dummy);
-	hemi_color.set	(0,0,0);
-	sky_color.set	(0,0,0);
+	fs->r_fvector3	(sky_color);
+	fs->r_fvector3	(hemi_color);
 }
 float	CEnvModifier::sum	(CEnvModifier& M, Fvector3& view)
 {
@@ -117,7 +116,6 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	wind_velocity			= pSettings->r_float	(S,"wind_velocity");
 	wind_direction			= deg2rad(pSettings->r_float(S,"wind_direction"));
 	ambient					= pSettings->r_fvector3	(S,"ambient");
-//	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
 	hemi_color				= pSettings->r_fvector4	(S,"hemi_color");
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
@@ -195,7 +193,6 @@ void CEnvDescriptorMixer::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescripto
 	// colors
 	sky_color.lerp			(A.sky_color,B.sky_color,f).add(M.sky_color).mul(_power);
 	ambient.lerp			(A.ambient,B.ambient,f).add(M.ambient).mul(_power);
-//	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
 	hemi_color.x			+= M.hemi_color.x;
 	hemi_color.y			+= M.hemi_color.y; 

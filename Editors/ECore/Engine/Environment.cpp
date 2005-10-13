@@ -295,7 +295,6 @@ void CEnvironment::OnFrame()
 	EM.fog_color.set		( 0,0,0 );
 	EM.fog_density			= 0;
 	EM.ambient.set			( 0,0,0 );
-//	EM.lmap_color.set		( 0,0,0 );
 	EM.sky_color.set		( 0,0,0 );
 	EM.hemi_color.set		( 0,0,0 );
 	Fvector	view			= Device.vCameraPosition;
