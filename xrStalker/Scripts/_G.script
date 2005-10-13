@@ -1130,7 +1130,7 @@ function path_cam_effector:Process(pos,dir,norm)
 	Mdef.c				= vector():set(pos)
 	
 	local mr 			= matrix()
-	mr:mul				(m,Mdef)
+	mr:mul				(Mdef,m)
 	dir:set				(mr.k)
 	norm:set			(mr.j)
 	pos:set				(mr.c)

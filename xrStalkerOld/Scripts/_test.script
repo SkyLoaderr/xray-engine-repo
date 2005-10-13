@@ -60,51 +60,14 @@ function some_cam_effector:Process (pos,dir,norm)
 	return true
 end
 
-class "path_cam_effector" (cam_effector)
-
-function path_cam_effector:__init(str_path) super(cam_effector_type.eCEHit, 10, false)
-	self.animator 				= object_animator()
-	self.animator:Load			(str_path)
-	self.animator:Play			(false)
-	self.fLifeTime				= self.animator:GetLengthSec()
-	printf("path length=%f",	self.fLifeTime)
-end
-
-function path_cam_effector:Process (pos,dir,norm)
-	self.fLifeTime 	= self.fLifeTime - device().f_time_delta
-	if self.fLifeTime<0 then return false 	end
-	
-	local m = matrix			()
-	self.animator:Update 		(device().f_time_delta)
-	self.animator:xform 		(m)
-
-	local Mdef 			= matrix	()
-	Mdef:identity		()
-	Mdef.j				= vector():set(norm)
-	Mdef.k				= vector():set(dir)
-	Mdef.i:crossproduct	(norm,dir)
-	Mdef.c				= vector():set(pos)
-	
-	local mr 			= matrix()
-	mr:mul				(m,Mdef)
-	dir:set				(mr.k)
-	norm:set			(mr.j)
-	
-	
-	return true;
-end
-
 function main()
-local v = level.get_snd_volume()
-printf("%f",v)
-level.set_snd_volume(v-0.05)
 
---local info = "test_andy_info" 
---db.actor:give_info_portion(info) 
+local ce = path_cam_effector("test.anm")
+--local ce = path_cam_effector("camera_effects\\earthquake.anm")
 
---local ce = _test.path_cam_effector("effector_test.anm")
+
 --local ce = _test.some_cam_effector(1.3,7.0,10.0,5.0)
---level.add_cam_effector(ce)
+level.add_cam_effector(ce)
 --level.actor_impact (1.3,7,10,5)
 
 --	local info = "tutorial_artefact_start" 
@@ -143,23 +106,3 @@ function _main()
 	
 end
 
-function f1()
-	return f2()+3
-end
-
-function f2()
-	return f3()+2
-end
-
-function f3()
-	return f4()+1
-end
-
-function f4()
-	return 44
-end
-
-function main____()
-	local d = f1()
-	local fff = 8
-end
