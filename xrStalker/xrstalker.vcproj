@@ -3081,6 +3081,9 @@
 					RelativePath=".\scripts\lua_help.script">
 				</File>
 				<File
+					RelativePath=".\scripts\memusage.script">
+				</File>
+				<File
 					RelativePath=".\scripts\profiler.script">
 				</File>
 				<File

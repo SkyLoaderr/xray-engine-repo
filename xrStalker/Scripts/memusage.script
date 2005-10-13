@@ -1,0 +1,4 @@
+function main()
+ collectgarbage("collect")
+ printf("%d Kb",collectgarbage("count"))
+end
