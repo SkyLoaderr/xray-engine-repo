@@ -21,6 +21,12 @@ function action_sleep:reset_scheme()
 	self.state = state_nowhere -- it's undefined wheather actor in zone or not
 	self.cond = self.st.cond
 	
+	if dream.dream_types[self.st.type] then
+	    dream.type = self.st.type
+	else
+	    dream.type = "all"
+	end
+	
 	self:switch_state(db.actor)
 end
 
@@ -46,17 +52,17 @@ function action_sleep:switch_state(actor)
 	if self.object:inside(actor:position()) then
 	    if self.cond then
 	        local cs = xr_logic.pick_section_from_condlist(db.actor, self.object, self.cond.condlist)
-	        db.can_sleep = (cs == "true" or cs == "")
+	        dream.can_sleep = (cs == "true" or cs == "")
 	    else
-	        db.can_sleep = true
+	        dream.can_sleep = true
 	    end
 	else
-	    db.can_sleep = false
+	    dream.can_sleep = false
 	end
 end
 
 function action_sleep:deactivate()
-    db.can_sleep = false
+    dream.can_sleep = false
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -72,6 +78,7 @@ end
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	
+
+    st.type = utils.cfg_get_string(ini, section, "type", npc, false, "", "all")
 	st.cond = xr_logic.cfg_get_condlist(ini, section, "cond", npc)
 end

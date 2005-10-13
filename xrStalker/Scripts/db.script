@@ -12,7 +12,6 @@ heli                = {}
 camp_storage        = {}
 story_by_id	        = {}
 smart_terrain_by_id = {}
-can_sleep           = false
 
 function add_obj( obj )
 end

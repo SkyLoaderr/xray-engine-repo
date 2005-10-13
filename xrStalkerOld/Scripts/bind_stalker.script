@@ -222,21 +222,6 @@ end
 --старт префетча звуков
 sound_prefetch.prefetch_sounds()
 
-function can_sleep_callback()
-    -- function must return "can_sleep" to allow actor sleeping, otherwise return string_table identifier that describes  reason
-    if db.can_sleep then
-        return "can_sleep" -- registered keyword
-    else
-        return "cant_sleep_not_on_solid_ground"
-    end
-end	
-
-function sleep_video_name_callback()
-	-- function returns video file name or empty string
---	return ""
-	return "sleep\\Movie-003_Rats_OutPut-010"
-end
-
 // this is test for section iteration
 /**
 local function test_section_iteration(file_name, section_name)

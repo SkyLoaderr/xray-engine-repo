@@ -483,6 +483,9 @@
 					RelativePath=".\Config\misc\devices.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\dream.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\effectors.ltx">
 				</File>
 				<File
@@ -2585,6 +2588,9 @@
 					<Filter
 						Name="Misc"
 						Filter="">
+						<File
+							RelativePath=".\Scripts\dream.script">
+						</File>
 						<File
 							RelativePath=".\scripts\fx_sound.script">
 						</File>
