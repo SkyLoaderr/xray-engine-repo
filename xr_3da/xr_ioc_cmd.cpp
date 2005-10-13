@@ -348,7 +348,7 @@ float	ps_gamma=1.f,ps_brightness=1.f,ps_contrast=1.f;
 class CCC_Gamma : public CCC_Float
 {
 public:
-	CCC_Gamma	(LPCSTR N, float* V) : CCC_Float(N,V,0.2f,2.2f)	{}
+	CCC_Gamma	(LPCSTR N, float* V) : CCC_Float(N,V,0.5f,1.5f)	{}
 
 	virtual void Execute(LPCSTR args)
 	{
