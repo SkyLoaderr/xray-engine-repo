@@ -66,7 +66,7 @@
 	</car_health_progress_bar>
 	<!-- armor -->
 	<static x="860" y="590" width="150" height="200" align="rb">
-		<text x="80" y="5" font="letterica16" r="255" g="255" b="255" a="130">armor</text>
+		<text complex_mode="0" align="l"  x="75" y="0" font="letterica16" r="255" g="255" b="255" a="130">armor</text>
 		<texture>ui\ui_mn_health</texture>
 	</static>
 	<!-- BATTERY -->
