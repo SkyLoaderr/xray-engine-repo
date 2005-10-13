@@ -43,5 +43,16 @@
 	<string id="alife_news_retreat">
 		<text>%s отступил с места боя</text>
 	</string>
+	
+	<string id="Btn_Yes">
+		<text>Да</text>
+	</string>
+	<string id="Btn_No">
+		<text>Нет</text>
+	</string>
+	<string id="Btn_OK">
+		<text>Принять</text>
+	</string>
+	
 </string_table>
 
