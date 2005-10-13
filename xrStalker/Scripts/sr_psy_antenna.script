@@ -8,12 +8,12 @@
 
 class "PsyAntennaPP" (effector)
 function PsyAntennaPP:__init() super(1001,10000000)
-	self.params							= effector_params();
+	self.params							= effector_params()
 end
 function PsyAntennaPP:process(pp)
-	pp:assign		(self.params);
-    effector.process(self,pp);
-    return          true;
+	pp:assign		(self.params)
+    effector.process(self,pp)
+    return          true
 end
 
 class "PsyAntenna"
@@ -23,44 +23,42 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // phantom gen
 // ----------------------------------------------------------------------------------------
-	self.phantom_max 					= 0 //8 //10	// max phantoms
-	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
-	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
+	self.phantom_max 					= 8 //10	// max phantoms
+	self.phantom_spawn_probability		= 0	// spawn probability (0..1)
+	self.phantom_spawn_radius			= 30.0	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
 	// antenna
-	self.hit_amplitude					= 10.0;	// размер хита = self.hit_amplitude*self.hit_intensity
-	// pause time [from]=to
-	self.idle_time						= {};
-	self.idle_time[20]					= 21;
+	self.hit_amplitude					= 10.0	// размер хита = self.hit_amplitude*self.hit_intensity
 // ----------------------------------------------------------------------------------------
 // postprocess
 // ----------------------------------------------------------------------------------------
---	self.base_amplitude					= color(0.2,0.15,0.0);		// max base color diff			[0.0-0.5]
+--	self.base_amplitude					= color(0.2,0.15,0.0)		// max base color diff			[0.0-0.5]
 	self.gray_amplitude					= 1.0						// gray max intensity			[0.0-1.0]
---	self.add_factor						= 0.1;	//0.3				// factor * color_animator(RGB)	[0.0-1.0]
+--	self.add_factor						= 0.1	//0.3				// factor * color_animator(RGB)	[0.0-1.0]
 --	self.dual_amplitude					= 0.075 //0.05				// H&V same						[0.0-0.2]
-	self.gray_color						= color(0.7, 0.7, 0.3);		// RGB							[0.0-1.0]
-	self.base_color						= color(0.3, 0.2, -0.1);	// RGB							[0.0-1.0]
-	self.noise_var						= noise(0.9, 0.15, 30);		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+	self.gray_color						= color(0.7, 0.7, 0.3)		// RGB							[0.0-1.0]
+	self.base_color						= color(0.3, 0.2, -0.1)	// RGB							[0.0-1.0]
+	self.noise_var						= noise(0.9, 0.15, 30)		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
 // ----------------------------------------------------------------------------------------
 // class variables initialize
 // ----------------------------------------------------------------------------------------
---	self.power_factor					= fcolor();
---	self.power_factor:set				(0,0,0,0);
-	self.eff_time						= 0;
---	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
-	self.hit_time						= 0;
-	self.intensity						= 0;	// текущая интенсивность
-	self.intensity_base					= 0;	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
-	self.intensity_inertion				= 0.05;	// скорость изменения интенсивности ед/секунду
-	self.hit_intensity					= 0;	// текущая интенсивность
-	self.pp 							= PsyAntennaPP();
-	self.pp.params.noise				= noise();
-	self.pp:start						();
+--	self.power_factor					= fcolor()
+--	self.power_factor:set				(0,0,0,0)
+	self.eff_time						= 0
+--	self.working_anim					= color_animator			("levels\\psy_antenna\\working")
+	self.hit_time						= 0
+	self.phantom_time                   = 0
+	self.intensity						= 0	// текущая интенсивность
+	self.intensity_base					= 0	// базовая интенсивность. к ней стремится текущая со скоростью self.intensity_inertion
+	self.intensity_inertion				= 0.05	// скорость изменения интенсивности ед/секунду
+	self.hit_intensity					= 0	// текущая интенсивность
+	self.pp 							= PsyAntennaPP()
+	self.pp.params.noise				= noise()
+	self.pp:start						()
 
 	self.cb    = color(0.7, 0.7, 0.5)
-	self.cg    = color(0.5, 0.5, 0.1);
-	self.ca    = color(0, 0, 0);
+	self.cg    = color(0.5, 0.5, 0.1)
+	self.ca    = color(0, 0, 0)
 	self.gray  = 1
 	self.noise = noise(1.0, 0.3, 30)
 // ----------------------------------------------------------------------------------------
@@ -68,8 +66,8 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 	self.sound_obj_left					= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1_l]] )
 	self.sound_obj_right				= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1_r]] )
-	self.sound_obj_left:play_at_pos		(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d + sound_object.looped);
-	self.sound_obj_right:play_at_pos	(db.actor, vector():set( 1, 0, 1), 0, sound_object.s2d + sound_object.looped);
+	self.sound_obj_left:play_at_pos		(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d + sound_object.looped)
+	self.sound_obj_right:play_at_pos	(db.actor, vector():set( 1, 0, 1), 0, sound_object.s2d + sound_object.looped)
 	self.sound_obj_left.volume			= self.intensity
 	self.sound_obj_right.volume			= self.intensity
 	self.snd_volume						= level.get_snd_volume()
@@ -77,33 +75,33 @@ function PsyAntenna:__init				()
 end
 
 function PsyAntenna:destroy				()
-	self.pp:finish 						();
+	self.pp:finish 						()
 	level.set_snd_volume				(self.snd_volume)
-end;
+end
 
 function PsyAntenna:construct			()
 end
 
 --function PsyAntenna:load				(F)
---	self.phase 							= F:r_u32();
+--	self.phase 							= F:r_u32()
 --end
 --function PsyAntenna:save				(F)
---	F:r_u32								(self.phase);
+--	F:r_u32								(self.phase)
 --end
 
 function PsyAntenna:update_postprocess	()
---	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity, 0.5+self.base_amplitude.g*self.intensity, 0.5+self.base_amplitude.b*self.intensity);
---	self.pp.params.color_gray			= color(self.gray_color.r, self.gray_color.g, self.gray_color.b);
---	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity);
---	self.pp.params.gray					= self.gray_amplitude*self.intensity;
+--	self.pp.params.color_base			= color(0.5+self.base_amplitude.r*self.intensity, 0.5+self.base_amplitude.g*self.intensity, 0.5+self.base_amplitude.b*self.intensity)
+--	self.pp.params.color_gray			= color(self.gray_color.r, self.gray_color.g, self.gray_color.b)
+--	self.pp.params.color_add 			= color(self.power_factor.r*self.add_factor*self.intensity, self.power_factor.g*self.add_factor*self.intensity, self.power_factor.b*self.add_factor*self.intensity)
+--	self.pp.params.gray					= self.gray_amplitude*self.intensity
 --	self.pp.params.gray					= 1
---	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity);
---	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
+--	self.pp.params.dual					= duality(self.dual_amplitude*self.power_factor.a*self.intensity, self.dual_amplitude*self.power_factor.a*self.intensity)
+--	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps)
 
 	self.pp.params.color_base			= color( 0.5+self.base_color.r*self.intensity, 0.5+self.base_color.g*self.intensity, 0.5+self.base_color.b*self.intensity )
 	self.pp.params.color_gray			= self.gray_color
-	self.pp.params.gray					= self.gray_amplitude*self.intensity;
-	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps);
+	self.pp.params.gray					= self.gray_amplitude*self.intensity
+	self.pp.params.noise				= noise(self.noise_var.intensity*self.intensity, self.noise_var.grain, self.noise_var.fps)
 
 --[[	self.pp.params.color_base = self.cb
 	self.pp.params.color_gray = self.cg
@@ -114,20 +112,19 @@ function PsyAntenna:update_postprocess	()
 end
 
 function PsyAntenna:update_psy_hit		(dt)
-	local d_time						= time_global()-self.hit_time;
-	if d_time > 1000 then --and self.power_factor.a>0.01 then
-		self.hit_time					= time_global();
+	if time_global()-self.hit_time > 1000 then --and self.power_factor.a>0.01 then
+		self.hit_time					= time_global()
 
-		local power						= self.hit_amplitude*self.hit_intensity;
+		local power						= self.hit_amplitude*self.hit_intensity
 		if power > 0 then
-			local psy_hit 					= hit();
---			psy_hit.power 					= self.power_factor.a*self.hit_amplitude*self.hit_intensity;
-			psy_hit.power 					= power
-			psy_hit.direction 				= vector():set( 0, 0, 0 );
-			psy_hit.impulse 				= 0;
-			psy_hit.draftsman 				= db.actor;
-			psy_hit.type 					= hit.telepatic;
-			db.actor:hit					(psy_hit);
+			local psy_hit 				= hit()
+--			psy_hit.power 				= self.power_factor.a*self.hit_amplitude*self.hit_intensity
+			psy_hit.power 				= power
+			psy_hit.direction 			= vector():set( 0, 0, 0 )
+			psy_hit.impulse 			= 0
+			psy_hit.draftsman 			= db.actor
+			psy_hit.type 				= hit.telepatic
+			db.actor:hit				(psy_hit)
 
 --			printf( "hit power=%f", psy_hit.power )
 
@@ -139,18 +136,20 @@ function PsyAntenna:update_psy_hit		(dt)
 end
 
 function PsyAntenna:generate_phantoms 	()
---	if self.power_factor.a>0.1 then
-		if math.random()<self.phantom_spawn_probability then
-			if phantom_manager:phantom_count()<self.phantom_max then
-				local yaw	 			= math.pi*2.0*math.random();
-				local radius 			= self.phantom_spawn_radius*(math.random()/2.0+0.5);
-				local height 			= self.phantom_spawn_height*math.random();
-				local a_pos 			= db.actor:position();
-				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z);
-				phantom_manager.spawn_phantom(pos);
-			end;
-		end;
---	end;
+	if time_global() - self.phantom_time > 10000 then
+		self.phantom_time				= time_global()
+
+		if math.random() < self.phantom_spawn_probability then
+			if phantom_manager:phantom_count() < self.phantom_max then
+				local yaw	 			= math.pi*2.0*math.random()
+				local radius 			= self.phantom_spawn_radius*(math.random()/2.0+0.5)
+				local height 			= self.phantom_spawn_height*math.random()
+				local a_pos 			= db.actor:position()
+				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z)
+				phantom_manager.spawn_phantom(pos)
+			end
+		end
+	end
 end
 
 function PsyAntenna:update_sound()
@@ -163,7 +162,7 @@ function PsyAntenna:update_sound()
 end
 
 function PsyAntenna:update			(dt)
-	self.eff_time					= self.eff_time + dt;
+	self.eff_time					= self.eff_time + dt
 
 	if math.abs( self.intensity_base - self.intensity ) >= self.intensity_inertion * dt * 0.001 then
 		local di = self.intensity_inertion * dt * 0.001
@@ -177,17 +176,17 @@ function PsyAntenna:update			(dt)
 		self.intensity = self.intensity_base
 	end
 
-	if (self.intensity<0.0)			then self.intensity=0.0; end;
-	if (self.intensity>1.0)			then self.intensity=1.0; end;
+	if (self.intensity<0.0)			then self.intensity=0.0 end
+	if (self.intensity>1.0)			then self.intensity=1.0 end
 
 --	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
 --	printf( "actor psy health = %f", db.actor.psy_health )
 
---	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001));
-	self:generate_phantoms 			();
-	self:update_postprocess 		();
-	self:update_sound				();
-	self:update_psy_hit				(dt);
+--	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001))
+	self:generate_phantoms 			()
+	self:update_postprocess 		()
+	self:update_sound				()
+	self:update_psy_hit				(dt)
 end
 
 
@@ -262,6 +261,8 @@ function action_psy_antenna:zone_enter()
 
 	psy_antenna.intensity_base = psy_antenna.intensity_base + self.st.intensity
 	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  + self.st.hit_intensity
+
+	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability + self.st.phantom_prob
 end
 
 function action_psy_antenna:zone_leave()
@@ -269,6 +270,8 @@ function action_psy_antenna:zone_leave()
 
 	psy_antenna.intensity_base = psy_antenna.intensity_base - self.st.intensity
 	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  - self.st.hit_intensity
+
+	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability - self.st.phantom_prob
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -292,4 +295,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.intensity     = utils.cfg_get_number( ini, section, "eff_intensity", npc, true ) * 0.01
 	st.hit_intensity = utils.cfg_get_number( ini, section, "hit_intensity", npc, true ) * 0.01
+	st.phantom_prob  = utils.cfg_get_number( ini, section, "phantom_prob",  npc, false, 0 ) * 0.01
 end
