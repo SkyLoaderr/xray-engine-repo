@@ -53,6 +53,9 @@
 	<string id="Btn_OK">
 		<text>Принять</text>
 	</string>
+	<string id="Btn_Cancel">
+		<text>Отменить</text>
+	</string>
 	
 </string_table>
 

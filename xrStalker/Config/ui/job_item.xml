@@ -79,7 +79,7 @@
 			<texture>ui_icons_PDA_dialog</texture>
 			
 			<edit_caption x="10" y="10" width="275" height="20">
-				<texture>ui_icons_PDA_dialog_line</texture>
+				<texture>ui_icons_PDA_dialog_string</texture>
 				<text x="0" y="0" font="letterica18"></text>
 			</edit_caption>
 	
@@ -88,12 +88,20 @@
 				<text x="0" y="0" font="letterica18"></text>
 			</edit_description>
 			
-		<ok_btn x="25" y="170" width="20" height="20" check_mode="0">
-			<texture>ui_icons_newPDA_mapMarDel</texture>
+		<ok_btn x="45" y="170" width="60" height="20" check_mode="0">
+			<texture_>ui_icons_newPDA_mapMarDel</texture_>
+			<text x="0" y="0" font="letterica18">Btn_OK</text>
+			<text_color>
+				<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
+			</text_color>
 		</ok_btn>
 		
-		<cancel_btn x="105" y="170" width="20" height="20" check_mode="0">
-			<texture>ui_icons_newPDA_mapMarDel</texture>
+		<cancel_btn x="155" y="170" width="60" height="20" check_mode="0">
+			<texture_>ui_icons_newPDA_mapMarDel</texture_>
+			<text x="0" y="0" font="letterica18">Btn_Cancel</text>
+			<text_color>
+				<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
+			</text_color>
 		</cancel_btn>
 			
 		</background>

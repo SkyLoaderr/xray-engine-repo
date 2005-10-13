@@ -42,5 +42,8 @@
 	<string id="Btn_OK">
 		<text>Ok</text>
 	</string>
+	<string id="Btn_Cancel">
+		<text>Cancel</text>
+	</string>
     
 </string_table>
