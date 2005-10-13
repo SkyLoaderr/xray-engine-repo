@@ -1133,7 +1133,7 @@ function path_cam_effector:Process(pos,dir,norm)
 	mr:mul				(m,Mdef)
 	dir:set				(mr.k)
 	norm:set			(mr.j)
-
+	pos:set				(mr.c)
 	return true;
 end
 
