@@ -299,8 +299,8 @@ class			= Z_GALANT
 ef_anomaly_type			= 5
 ef_weapon_type			= 17
 
-sound			= ;zone_mosquito_bald
-postprocess		= ;postprocess_gravi
+sound			= zone_mosquito_bald
+postprocess		= postprocess_gravi
 
 artefacts			= ;af_dummy_glassbeads, 1.0
 BirthProbability	= ;0.25
@@ -330,7 +330,7 @@ body_tearing_sound	= ;anomaly\gravity_entrance					;звук разрывания трупа
 entrance_sound		= ;anomaly\gravi_idle01							;при попадании объекта в аномалию
 
 hit_type		    = radiation
-hit_impulse_scale	= 0.0;0.5;0.1			;соотношение физического импульса и силы хита
+hit_impulse_scale	= 0.1;0.5;0.1			;соотношение физического импульса и силы хита
 effective_radius	= 1 ;размер радиуса в процентах от оригинального, где действует зона
 
 disable_time		= 5000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
@@ -351,7 +351,7 @@ idle_light			= off
 
 awaking_time		= 0;1000
 blowout_time		= 1	
-accamulate_time		= 1000
+accamulate_time		= 10
 
 
 blowout_light_time		= 100
