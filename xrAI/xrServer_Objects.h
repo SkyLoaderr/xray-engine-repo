@@ -118,15 +118,15 @@
 // 99 - CSE_ALifeObjectClimable			inheritance changed CSE_Abstruct -> CSE_AlifeObject
 // 100 - CSE_ALifeObjectClimable		inheritance changed CSE_AlifeObject -> CSE_AlifeDynamicObject
 // 101 - CSE_ALifeCreaturePhantom		new class based on CSE_ALifeCreatureAbstract
-// 102 = CSE_ALifeAnomalousZone			appended m_owner_id
-// 103 = CSE_ALifeCustomZone			appended m_owner_id,removed from CSE_ALifeAnomalousZone
-// 104 = CSE_Visual						appended flags
-// 105 = CSE_ALifeTraderAbstract		added full name
-// 106 = CSE_ALifeCustomZone			enabled\disabled time
-// 107 = CSE_ALifeCustomZone			enabled\disabled time extended
-
+// 102 - CSE_ALifeAnomalousZone			appended m_owner_id
+// 103 - CSE_ALifeCustomZone			appended m_owner_id,removed from CSE_ALifeAnomalousZone
+// 104 - CSE_Visual						appended flags
+// 105 - CSE_ALifeTraderAbstract		added full name
+// 106 - CSE_ALifeCustomZone			enabled\disabled time
+// 107 - CSE_ALifeCustomZone			enabled\disabled time extended
+// 108 - CSE_ALifeTraderAbstract		removed property m_tpEvents
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(107)
+#define SPAWN_VERSION	u16(108)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

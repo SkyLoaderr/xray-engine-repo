@@ -115,7 +115,6 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	if (pSettings->line_exist(caSection, "money"))
 		m_dwMoney 				= pSettings->r_u32(caSection, "money");
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
-	m_tpEvents.clear			();
 
 //	m_iCharacterProfile			= DEFAULT_PROFILE;
 	m_sCharacterProfile			= "default";
@@ -147,12 +146,10 @@ CSE_Abstract *CSE_ALifeTraderAbstract::init	()
 
 CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
 {
-	delete_data					(m_tpEvents);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
-	save_data					(m_tpEvents,tNetPacket);
 	tNetPacket.w_u32			(m_dwMoney);
 
 #ifdef XRGAME_EXPORTS
@@ -181,7 +178,10 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	u16 m_wVersion = base()->m_wVersion;
 	if (m_wVersion > 19) {
-		load_data				(m_tpEvents,tNetPacket);
+		if (m_wVersion < 108) {
+			ALife::PERSONAL_EVENT_P_VECTOR	temp;
+			load_data			(temp,tNetPacket);
+		}
 		ALife::TASK_VECTOR		l_tpTaskIDs;
 		if (m_wVersion < 36)
 			load_data			(l_tpTaskIDs,tNetPacket);
