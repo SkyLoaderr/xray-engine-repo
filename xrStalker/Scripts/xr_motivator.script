@@ -13,6 +13,7 @@ function motivator_binder:__init (obj) super(obj)
 	self.initialized = false
 	self.loaded = false
 	self.last_update = 0
+	----memusage.collect_info(self.object, "__init")
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
@@ -32,7 +33,8 @@ end
 
 function motivator_binder:reinit()
     object_binder.reinit(self)
-    printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
+    --memusage.collect_info(self.object, "reinit_start")
+    --printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
     
     -- КОЛЛБЕКИ ЗДЕСЬ СТАВИТЬ НЕЛЬЗЯ! Здесь еще неизвестна активная схема.
     -- Ставьте коллбеки в методе update в отмеченном комментарием месте.
@@ -60,16 +62,18 @@ function motivator_binder:reinit()
 	--state_mgr.bind_manager(self.object, self.st.state_mgr)
 
     --' Создание менеджера контроля положений тела
+    --memusage.collect_info(self.object, "before_statemgr")
 	self.st.state_mgr = state_mgr.bind_manager(self.object)	
+	--memusage.collect_info(self.object, "after_statemgr")
 	
     --' Загрузка историй для лагеря.
 	xr_kamp.loadStories(self.object, char_ini)	
-	
+	--memusage.collect_info(self.object, "reinit_end")
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
-	printf("motivator_binder:net_spawn(): self.object:name()='%s'", self.object:name())
-
+	--printf("motivator_binder:net_spawn(): self.object:name()='%s'", self.object:name())
+	--memusage.collect_info(self.object, "netspawn_start")
 	if not object_binder.net_spawn(self, sobject) then
 		return false
 	end
@@ -82,13 +86,14 @@ function motivator_binder:net_spawn(sobject)
 	db.add_obj(self.object)
 
     --' загрузка озвучки
+    --memusage.collect_info(self.object, "before_soundmgr")
     xr_sound.load_sound(self.object)
-
+    --memusage.collect_info(self.object, "after_soundmgr_netspawn_end")
 	return true
 end
 
 function motivator_binder:net_destroy()
-	printf("motivator_binder:net_destroy(): self.object:name()='%s'", self.object:name())
+	--printf("motivator_binder:net_destroy(): self.object:name()='%s'", self.object:name())
 
 	local st = db.storage[self.object:id()]
 	if st.active_scheme then
@@ -192,15 +197,17 @@ function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 	
 	if not self.initialized and db.actor then
+		--memusage.collect_info(self.object, "before_logic")
 		self.initialized = true
 		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
+		--memusage.collect_info(self.object, "after_logic_before_callback")
 		
 		-- Все CALLBACK-и ставить здесь:
 		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
 		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
 		self.object:set_callback(callback.death, motivator_binder.death_callback, self)
 		self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
-		
+		--memusage.collect_info(self.object, "after__callback")
 		
 		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
@@ -277,9 +284,11 @@ function motivator_binder:update(delta)
 end
 
 function motivator_binder:reload(section)
+	--memusage.collect_info(self.object, "reload_start")
 	object_binder.reload(self, section)
-	printf("motivator_binder:reload(): self.object:name()='%s'", self.object:name())
---	self.object:set_pda_callback(pda_callback)
+	--printf("motivator_binder:reload(): self.object:name()='%s'", self.object:name())
+	--self.object:set_pda_callback(pda_callback)
+	--memusage.collect_info(self.object, "reload_end")
 end
 
 function motivator_binder:net_save_relevant()

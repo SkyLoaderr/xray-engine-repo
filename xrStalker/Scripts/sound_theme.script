@@ -95,7 +95,332 @@ ph_snd_themes["radar_drone"] = {"ambient\\radar_1"}
 ph_snd_themes["radar_thunder"] = {"ambient\\radar_2"}
 ph_snd_themes["radar_sparks"] = {"ambient\\radarsparks_1"}
 										
-										
+
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Theme  functions
+-----------------------------------------------------------------------------------------------------------------------------------
+function weather_class(avail_types, npc)
+	local type = "weather_good"
+	if level.rain_factor() < 0.07 then
+		type = "weather_good"
+	else
+		type = "weather_bad"
+	end
+	return type
+end
+-------------------------------------------------------------------------
+-- ЗВУКИ СТАЛКЕРОВ
+-------------------------------------------------------------------------
+local sounds_base = stalker_ids.sound_script + 10000
+function id()
+	sounds_base = sounds_base + 1
+	return sounds_base - 1
+end
+
+theme = {
+	-- погода
+	weather = {	exec = sound_theme.weather_class, 
+				types = {weather_bad	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+						 weather_good	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}} }},
+
+	-- состояния тела
+	state				= {min_snd = 5, max_snd = 10, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	sleep				= {min_snd = 10, max_snd = 15, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- просьба о помощи
+	help				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	help_see			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	help_see_tutor		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	help_heavy			= {min_snd = 2, max_snd = 3, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	help_thanx			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	wounded_psy			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	wounded_psy_shoot	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- окрик
+	hail				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- ожидание
+	wait				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- speech
+    speech				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    speech1				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    
+	-- угрозы
+	threat_weap			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	threat_back			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	threat_stop			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- реакции
+	reac_hear				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_see				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_crps_monstr		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_crps_enemy			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_crps_neutral		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_crps_friend		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_nothing			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+	reac_music				= {min_snd = 1, max_snd = 2, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	reac_joke				= {min_snd = 1, max_snd = 2, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- болтовня
+	talk_hello				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	talk_hello_friend		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	talk_bye				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	talk_accept				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	talk_reject				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	talk_abuse				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- реакции на юзание
+	use_yes_fight			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_yes_sleep			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_yes_kamp			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_yes_default			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_no_fight			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_no_sleep			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_no_weapon			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_no_default			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	use_abuse				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- бой
+	fight_attack			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	fight_search			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+	-- торговля
+	trade_yes				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	trade_no				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- игра на губной гармошке
+	intro_harmonica			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	harmonica				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- игра на гитаре
+	intro_guitar			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	guitar					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+	-- шутки, прибаутки
+	intro_joke				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	joke					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- Истории
+	story_01				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= {	[2] = {theme = "story_reac_cool_info", min = 1, max = 1},
+								[3] = {theme = "story_reac_continue", min = 2, max = 3},
+								[5] = {theme = "story_reac_laughter", type = "all"}}},
+	story_02				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= {	[2] = {theme = "story_reac_yes", min = 1, max = 2},
+								[3] = {theme = "story_reac_continue", min = 1, max = 1},
+								[4] = {theme = "story_reac_action_right", min = 1, max = 1},
+								[5] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+								[6] = {theme = "story_reac_continue", min = 1, max = 1},
+								[7] = {theme = "story_reac_belief_story, story_reac_final_happy, story_reac_yes", min = 2, max = 4}}},											
+	story_03				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
+								[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
+								[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}},
+	story_04				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
+								[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
+								[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}},
+	story_05				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= {	[1] = {theme = "story_reac_advice_sceptic, story_reac_advice_support", min = 1, max = 1}}},
+	story_06				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= {	[2] = {theme = "story_reac_continue", min = 1, max = 1},
+								[3] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+								[4] = {theme = "story_reac_action_right", min = 1, max = 1},
+								[5] = {theme = "story_reac_yes", min = 1, max = 1},
+								[6] = {theme = "story_reac_disbelief_teller, story_reac_belief_story", min = 2, max = 3},
+								[7] = {theme = "story_reac_cool_teller", min = 1, max = 1},
+								[8] = {theme = "story_reac_wonder", min = 1, max = 1},
+								[9] = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4}}},
+
+	legend_01				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= { [1] = {theme = "story_reac_doubt", min = 1, max = 1},
+								[2] = {theme = "story_reac_wonder, story_reac_disbelief_story", min = 1, max = 1},
+								[3] = {theme = "story_reac_yes", min = 2, max = 3},
+								[4] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}},
+	legend_02				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= { [1] = {theme = "story_reac_doubt", min = 1, max = 1},
+								[2] = {theme = "story_reac_disbelief_story", min = 1, max = 1},
+								[3] = {theme = "story_reac_wonder", min = 1, max = 1},
+								[4] = {theme = "story_reac_laughter", min = 1, max = 1},
+								[5] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}},
+	legend_03				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= { [1] = {theme = "story_reac_cool_info", min = 1, max = 1},
+								[2] = {theme = "story_reac_yes, story_reac_doubt", min = 2, max = 4}}},								
+	legend_04				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= { [1] = {theme = "story_reac_fear", min = 1, max = 1},
+								[2] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}},
+								
+	legend_05				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
+					depence	= { [1] = {theme = "story_reac_yes", min = 2, max = 3},
+								[2] = {theme = "story_reac_doubt", min = 1, max = 1},
+								[3] = {theme = "story_reac_disbelief_story, story_reac_belief_story", min = 2, max = 4}}},
+
+	story_reac_action_right		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_action_wrong		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_advice_sceptic	= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_advice_support	= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_belief_story		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_continue			= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_cool_info		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_cool_teller		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_disbelief		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_disbelief_story	= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_disbelief_teller	= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_doubt			= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_fear				= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_final_happy		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_final_tragic		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_laughter			= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_old_story		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_uncertain		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_wonder			= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	story_reac_yes				= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+
+	-- УНИКАЛЬНЫЕ ТЕМЫ	
+	-- Escape
+	esc_tolik_help				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_guard_camp				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_factory_raid			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_factory_attack			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_factory_victory			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_fox_alert				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_tolik_to_wolf			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_tolik_to_lager			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_tolik_thanks			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_wolf_thanks				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_lager_killer			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_fanat_dialog			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_fanat_ready				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_direction_fire			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+			
+	-- Garbage DramMoment
+	gar_dm_bandit_backoff1		= {min_snd = 5, max_snd = 8, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_dm_bandit_backoff2		= {min_snd = 5, max_snd = 8, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_dm_bandit_demand		= {min_snd = 8, max_snd = 10, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_dm_newbie_no_money		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_dm_newbie_help_me		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_dm_newbie_thank_you		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+	gar_hellcar_alarm			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_hellcar_ambush			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_bandits_seryi			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_grey_grey				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_seryi_see_actor			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_dolg_blokpost			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_direction_fire			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_hellcar_to_battle		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	gar_hellcar_victory			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+	-- DarkValley
+	val_prisoner_captive_help_me	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_prisoner_captive_come_here	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_rob_leader_call				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_rob_guard_jeer				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_gate_soldiers				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_chase_soldiers				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_opendoor_soldier			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_guards				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_captive_phrase1		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_captive_phrase2		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_captive_phrase3		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_phrase1			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_phrase2			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_phrase3			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_phrase4			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_phrase5			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_phrase6			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_dead					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_nap1_go_home			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_escort_phrase_invite		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- Agroprom
+	agr_factory_soldiers			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	-- не стреляйте
+	dont_shoot_ukr					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- Bar Rostok Duty Guards
+	bar_dolg_base_guard_backoff		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_dolg_base_guard_no_talk		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_bar_osvedomitel_hello		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_bar_barmen_hello			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_bar_barmen_hello_room		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_dolg_leader_hello			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- Bar dolg guard
+	bar_dolg_guard_stop				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
+	-- Bar dolg hangar bridge
+	bar_dolg_hangar_bridge_hello	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- Bar dolg Petrenko
+	bar_dolg_petrenko_hello			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
+	-- Bar psyh
+	bar_psycho_pain					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_psycho_goodluck				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_barman_psycho				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	bar_arena_public				= {min_snd = 5, max_snd = 7, rnd = 80, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    
+    -- Military sounds
+    mil_max_thanx                  = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_max_before_collect         = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_kolyan                     = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_max_to_kolyan              = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_max_to_tolyan              = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_laugh1             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_laugh2             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_laugh3             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_laugh4             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_laugh5             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase1            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase2            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase3            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase4            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase5            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase6            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrase7            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_crazy                      = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_about_sniper          = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_go_attack             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_patrol             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_after_kill1           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_after_kill2           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_after_kill3           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_zoneguard          = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_patrol_base        = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_max_khutor_attack          = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_guard_to_max               = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_lukash_to_guard            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_lukash_to_actor            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_paul_frost                 = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_killer                = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_scull                 = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_max_to_actor               = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_collect_phrases            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_pavlik_to_ara              = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_ara_to_pavlik              = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_ara_ambush                 = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_hunter1                    = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_hunter2                    = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_hunter3                    = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_getready              = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_dolg_lukash_done           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_ambush1            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_ambush2            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_ambush3            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_ambush4            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_ambush5            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_ambush6            = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_victory1           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_victory2           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_victory3           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_victory4           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+    mil_freedom_victory5           = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}
+}
+   										
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id
 	local c = obj:story_id()
@@ -125,407 +450,40 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
-	local sounds_base = stalker_ids.sound_script + 10000
-
-	function id()
-		sounds_base = sounds_base + 1
-		return sounds_base - 1
-	end
-
+	local k,v = 0,0
+	
 	-- загрузка звуков на основе данных ltx
-	function load_sound_from_ltx(obj, name, min, max, rnd, prior)
-		local t = {}		
+	function load_sound_from_ltx(obj, name, tbl)
+		tbl.max_ids[obj:id()] = {}
 		if snd_ini:section_exist(name.."_rnd") then		
 			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)
 			if s then
-				local sid = id()				
-				t.rnd_id = sid
-				t.rnd_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, sid)
-				if t.rnd_max == 0 then
-					printf( "No random sound loaded: %s", s )
-				end
+				tbl.max_ids[obj:id()].rnd_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.rnd_id)
 			end
 		end
 		if snd_ini:section_exist(name.."_seq") then
 			local s = select_sound_from_ltx(obj, name.."_seq", snd_ini)
 			if s then
-				local sid = id()				
-				t.into_id = sid
-				t.into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, sid)
-				if t.into_max == 0 then
-					printf( "No into sound loaded: %s", s )
-				end
+				tbl.max_ids[obj:id()].into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.into_id)
 			end
 		end
-		if t.into_id ~= nil or
-		   t.rnd_id ~= nil
-		then
-			if min ~= nil then
-				t.min_snd = min
+	end
+	
+	function load_theme_sound(npc, tbl)
+		for k,v in pairs(tbl) do
+			if v.types == nil then
+				load_sound_from_ltx(npc, k, v)
 			else
-				t.min_snd = 3
+				load_theme_sound(npc, v.types)
 			end
-			if max ~= nil then
-				t.max_snd = max
-			else
-				t.max_snd = 5
-			end
-			if rnd ~= nil then
-				t.rnd_snd = rnd
-			else
-				t.rnd_snd = 100
-			end
-			if prior ~= nil then
-				t.prior = prior
-			else
-				t.prior = 5
-			end
-			return t
 		end
-		return nil
 	end
 
-	-- ОСНОВНЫЕ ТЕМЫ
-	-- фразы о погоде
-	theme[obj:id()] = {}
-	theme[obj:id()]["weather"] = { exec = weather_class, types = {}}
-	theme[obj:id()]["weather"].types["bad"]			= load_sound_from_ltx(obj, "weather_bad")
-	theme[obj:id()]["weather"].types["good"]		= load_sound_from_ltx(obj, "weather_good")
-
-	-- состояния тела
-	theme[obj:id()]["state"]						= load_sound_from_ltx(obj, "state_idle", 5, 10, 75)
-
-	theme[obj:id()]["sleep"]						= load_sound_from_ltx(obj, "state_sleep", 10, 15, 75)
-
-	-- просьба о помощи
-	theme[obj:id()]["help"]							= load_sound_from_ltx(obj, "help")
-	theme[obj:id()]["help_see"]						= load_sound_from_ltx(obj, "help_see")
-	theme[obj:id()]["help_see_tutor"]				= load_sound_from_ltx(obj, "help_see_tutor")
-	theme[obj:id()]["help_heavy"]					= load_sound_from_ltx(obj, "help_heavy", 2, 3, 100)
-	theme[obj:id()]["help_stalker_thanx"]			= load_sound_from_ltx(obj, "help_thanx")   -- Нужно переименовать в help_thanx
-	theme[obj:id()]["wounded_psy"]					= load_sound_from_ltx(obj, "wounded_psy")	
-	theme[obj:id()]["wounded_psy_shoot"]			= load_sound_from_ltx(obj, "wounded_psy_shoot")	
-
-	-- окрик
-	theme[obj:id()]["hail"]							= load_sound_from_ltx(obj, "hail")
-
-	-- ожидание
-	theme[obj:id()]["wait"]							= load_sound_from_ltx(obj, "wait", 5, 10, 100)
-
-	-- speech
-    theme[obj:id()]["speech"]						= load_sound_from_ltx(obj, "speech")
-    theme[obj:id()]["speech1"]						= load_sound_from_ltx(obj, "speech1")
-    
-	-- угрозы
-	theme[obj:id()]["threat_weap"]					= load_sound_from_ltx(obj, "threat_weap")
-	theme[obj:id()]["threat_back"]					= load_sound_from_ltx(obj, "threat_back")
-	theme[obj:id()]["threat_stop"]					= load_sound_from_ltx(obj, "threat_stop")
-
-	-- реакции
-	theme[obj:id()]["reac_hear"]					= load_sound_from_ltx(obj, "reac_hear")
-	theme[obj:id()]["reac_see"]						= load_sound_from_ltx(obj, "reac_see")
-	theme[obj:id()]["reac_crps_monstr"]				= load_sound_from_ltx(obj, "reac_crps_monstr")
-	theme[obj:id()]["reac_crps_enemy"]				= load_sound_from_ltx(obj, "reac_crps_enemy")
-	theme[obj:id()]["reac_crps_neutral"]			= load_sound_from_ltx(obj, "reac_crps_neutral")
-	theme[obj:id()]["reac_crps_friend"]				= load_sound_from_ltx(obj, "reac_crps_friend")
-	theme[obj:id()]["reac_nothing"]					= load_sound_from_ltx(obj, "reac_nothing")
-	
-	theme[obj:id()]["reac_music"]					= load_sound_from_ltx(obj, "reac_music", 1, 2, 100)
-	theme[obj:id()]["reac_joke"]					= load_sound_from_ltx(obj, "reac_joke", 1, 2, 100)
-
-	-- болтовня
-	theme[obj:id()]["talk_hello"]					= load_sound_from_ltx(obj, "talk_hello")
-	theme[obj:id()]["talk_hello_friend"]			= load_sound_from_ltx(obj, "talk_hello_friend")
-	theme[obj:id()]["talk_bye"]						= load_sound_from_ltx(obj, "talk_bye")
-	theme[obj:id()]["talk_accept"]					= load_sound_from_ltx(obj, "talk_accept")
-	theme[obj:id()]["talk_reject"]					= load_sound_from_ltx(obj, "talk_reject")
-	theme[obj:id()]["talk_abuse"]					= load_sound_from_ltx(obj, "talk_abuse")
-
-	-- реакции на юзание
-	theme[obj:id()]["use_yes_fight"]				= load_sound_from_ltx(obj, "use_yes_fight")
-	theme[obj:id()]["use_yes_sleep"]				= load_sound_from_ltx(obj, "use_yes_sleep")
-	theme[obj:id()]["use_yes_kamp"]					= load_sound_from_ltx(obj, "use_yes_kamp")
-	theme[obj:id()]["use_yes_default"]				= load_sound_from_ltx(obj, "use_yes_default")
-	theme[obj:id()]["use_no_fight"]					= load_sound_from_ltx(obj, "use_no_fight")
-	theme[obj:id()]["use_no_sleep"]					= load_sound_from_ltx(obj, "use_no_sleep")
-	theme[obj:id()]["use_no_weapon"]				= load_sound_from_ltx(obj, "use_no_weapon")
-	theme[obj:id()]["use_no_default"]				= load_sound_from_ltx(obj, "use_no_default")
-	theme[obj:id()]["use_abuse"]					= load_sound_from_ltx(obj, "use_abuse")
-	
-	
-	-- бой
-	theme[obj:id()]["fight_attack"]					= load_sound_from_ltx(obj, "fight_attack")
-	theme[obj:id()]["fight_search"]					= load_sound_from_ltx(obj, "fight_search")
-	
-	-- торговля
-	theme[obj:id()]["trade_yes"]					= load_sound_from_ltx(obj, "trade_yes")
-	theme[obj:id()]["trade_no"]						= load_sound_from_ltx(obj, "trade_no")
-
-	-- игра на губной гармошке
-	theme[obj:id()]["intro_harmonica"]				= load_sound_from_ltx(obj, "intro_harmonica")
-	theme[obj:id()]["harmonica"]					= load_sound_from_ltx(obj, "harmonica")
-	-- игра на гитаре
-	theme[obj:id()]["intro_guitar"]					= load_sound_from_ltx(obj, "intro_guitar")
-	theme[obj:id()]["guitar"]						= load_sound_from_ltx(obj, "guitar")
-	-- шутки, прибаутки
-	theme[obj:id()]["intro_joke"]					= load_sound_from_ltx(obj, "intro_joke")
-	theme[obj:id()]["joke"]							= load_sound_from_ltx(obj, "joke")
-
-	-- Истории
-	theme[obj:id()]["story_01"]						= load_sound_from_ltx(obj, "story_01")
-	theme[obj:id()]["story_01"].depence = {	[2] = {theme = "story_reac_cool_info", min = 1, max = 1},
-											[3] = {theme = "story_reac_continue", min = 2, max = 3},
-											[5] = {theme = "story_reac_laughter", type = "all"}}
-	theme[obj:id()]["story_02"]						= load_sound_from_ltx(obj, "story_02")
-	theme[obj:id()]["story_02"].depence = {	[2] = {theme = "story_reac_yes", min = 1, max = 2},
-											[3] = {theme = "story_reac_continue", min = 1, max = 1},
-											[4] = {theme = "story_reac_action_right", min = 1, max = 1},
-											[5] = {theme = "story_reac_cool_teller", min = 1, max = 1},
-											[6] = {theme = "story_reac_continue", min = 1, max = 1},
-											[7] = {theme = "story_reac_belief_story, story_reac_final_happy, story_reac_yes", min = 2, max = 4}}
-	theme[obj:id()]["story_03"]						= load_sound_from_ltx(obj, "story_03")
-	theme[obj:id()]["story_03"].depence = {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
-											[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
-											[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}
-	theme[obj:id()]["story_04"]						= load_sound_from_ltx(obj, "story_04")
-	theme[obj:id()]["story_04"].depence = {	[1] = {theme = "story_reac_continue", min = 1, max = 1},
-											[2] = {theme = "story_reac_final_tragic", min = 1, max = 1},
-											[3] = {theme = "story_reac_belief_story", min = 2, max = 3}}
-	theme[obj:id()]["story_05"]						= load_sound_from_ltx(obj, "story_05")
-	theme[obj:id()]["story_05"].depence = {	[1] = {theme = "story_reac_advice_sceptic, story_reac_advice_support", min = 1, max = 1} }
-	theme[obj:id()]["story_06"]						= load_sound_from_ltx(obj, "story_06")
-	theme[obj:id()]["story_06"].depence = {	[2] = {theme = "story_reac_continue", min = 1, max = 1},
-											[3] = {theme = "story_reac_cool_teller", min = 1, max = 1},
-											[4] = {theme = "story_reac_action_right", min = 1, max = 1},
-											[5] = {theme = "story_reac_yes", min = 1, max = 1},
-											[6] = {theme = "story_reac_disbelief_teller, story_reac_belief_story", min = 2, max = 3},
-											[7] = {theme = "story_reac_cool_teller", min = 1, max = 1},
-											[8] = {theme = "story_reac_wonder", min = 1, max = 1},
-											[9] = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4}}
-	theme[obj:id()]["legend_01"]					= load_sound_from_ltx(obj, "legend_01")
-	theme[obj:id()]["legend_01"].depence = {[1] = {theme = "story_reac_doubt", min = 1, max = 1},
-											[2] = {theme = "story_reac_wonder, story_reac_disbelief_story", min = 1, max = 1},
-											[3] = {theme = "story_reac_yes", min = 2, max = 3},
-											[4] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}
-	theme[obj:id()]["legend_02"]					= load_sound_from_ltx(obj, "legend_02")
-	theme[obj:id()]["legend_02"].depence = {[1] = {theme = "story_reac_doubt", min = 1, max = 1},
-											[2] = {theme = "story_reac_disbelief_story", min = 1, max = 1},
-											[3] = {theme = "story_reac_wonder", min = 1, max = 1},
-											[4] = {theme = "story_reac_laughter", min = 1, max = 1},
-											[5] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}
-	theme[obj:id()]["legend_03"]					= load_sound_from_ltx(obj, "legend_03")
-	theme[obj:id()]["legend_03"].depence = {[1] = {theme = "story_reac_cool_info", min = 1, max = 1},
-											[2] = {theme = "story_reac_yes, story_reac_doubt", min = 2, max = 4}}
-	theme[obj:id()]["legend_04"]					= load_sound_from_ltx(obj, "legend_04")
-	theme[obj:id()]["legend_04"].depence = {[1] = {theme = "story_reac_fear", min = 1, max = 1},
-											[2] = {theme = "story_reac_yes, story_reac_belief_story", min = 2, max = 4}}
-	theme[obj:id()]["legend_05"]					= load_sound_from_ltx(obj, "legend_05")
-	theme[obj:id()]["legend_05"].depence = {[1] = {theme = "story_reac_yes", min = 2, max = 3},
-											[2] = {theme = "story_reac_doubt", min = 1, max = 1},
-											[3] = {theme = "story_reac_disbelief_story, story_reac_belief_story", min = 2, max = 4}}
-
-	theme[obj:id()]["story_reac_action_right"]		= load_sound_from_ltx(obj, "story_reac_action_right", 1, 1, 100)
-	theme[obj:id()]["story_reac_action_wrong"]		= load_sound_from_ltx(obj, "story_reac_action_wrong", 1, 1, 100)
-	theme[obj:id()]["story_reac_advice_sceptic"]	= load_sound_from_ltx(obj, "story_reac_advice_sceptic", 1, 1, 100)
-	theme[obj:id()]["story_reac_advice_support"]	= load_sound_from_ltx(obj, "story_reac_advice_support", 1, 1, 100)
-	theme[obj:id()]["story_reac_belief_story"]		= load_sound_from_ltx(obj, "story_reac_belief_story", 1, 1, 100)
-	theme[obj:id()]["story_reac_continue"]			= load_sound_from_ltx(obj, "story_reac_continue", 1, 1, 100)
-	theme[obj:id()]["story_reac_cool_info"]			= load_sound_from_ltx(obj, "story_reac_cool_info", 1, 1, 100)
-	theme[obj:id()]["story_reac_cool_teller"]		= load_sound_from_ltx(obj, "story_reac_cool_teller", 1, 1, 100)
-	theme[obj:id()]["story_reac_disbelief"]			= load_sound_from_ltx(obj, "story_reac_disbelief", 1, 1, 100)
-	theme[obj:id()]["story_reac_disbelief_story"]	= load_sound_from_ltx(obj, "story_reac_disbelief_story", 1, 1, 100)
-	theme[obj:id()]["story_reac_disbelief_teller"]	= load_sound_from_ltx(obj, "story_reac_disbelief_teller", 1, 1, 100)
-	theme[obj:id()]["story_reac_doubt"]				= load_sound_from_ltx(obj, "story_reac_doubt", 1, 1, 100)
-	theme[obj:id()]["story_reac_fear"]				= load_sound_from_ltx(obj, "story_reac_fear", 1, 1, 100)
-	theme[obj:id()]["story_reac_final_happy"]		= load_sound_from_ltx(obj, "story_reac_final_happy", 1, 1, 100)
-	theme[obj:id()]["story_reac_final_tragic"]		= load_sound_from_ltx(obj, "story_reac_final_tragic", 1, 1, 100)
-	theme[obj:id()]["story_reac_laughter"]			= load_sound_from_ltx(obj, "story_reac_laughter", 1, 1, 100)
-	theme[obj:id()]["story_reac_old_story"]			= load_sound_from_ltx(obj, "story_reac_old_story", 1, 1, 100)
-	theme[obj:id()]["story_reac_uncertain"]			= load_sound_from_ltx(obj, "story_reac_uncertain", 1, 1, 100)
-	theme[obj:id()]["story_reac_wonder"]			= load_sound_from_ltx(obj, "story_reac_wonder", 1, 1, 100)
-	theme[obj:id()]["story_reac_yes"]				= load_sound_from_ltx(obj, "story_reac_yes", 1, 1, 100)
-	
-
-	-- УНИКАЛЬНЫЕ ТЕМЫ
-	
-	-- Escape
-	theme[obj:id()]["esc_tolik_help"]		= load_sound_from_ltx(obj, "esc_tolik_help")
-	theme[obj:id()]["esc_guard_camp"]		= load_sound_from_ltx(obj, "esc_guard_camp")
-	theme[obj:id()]["esc_factory_raid"]		= load_sound_from_ltx(obj, "esc_factory_raid")
-	theme[obj:id()]["esc_factory_attack"]	= load_sound_from_ltx(obj, "esc_factory_attack")
-	theme[obj:id()]["esc_factory_victory"]	= load_sound_from_ltx(obj, "esc_factory_victory")
-	theme[obj:id()]["esc_fox_alert"]		= load_sound_from_ltx(obj, "esc_fox_alert")	
-	theme[obj:id()]["esc_tolik_to_wolf"]	= load_sound_from_ltx(obj, "esc_tolik_to_wolf")
-	theme[obj:id()]["esc_tolik_to_lager"]	= load_sound_from_ltx(obj, "esc_tolik_to_lager")
-	theme[obj:id()]["esc_tolik_thanks"]		= load_sound_from_ltx(obj, "esc_tolik_thanks")	
-	theme[obj:id()]["esc_wolf_thanks"]		= load_sound_from_ltx(obj, "esc_wolf_thanks")	
-	theme[obj:id()]["esc_lager_killer"]		= load_sound_from_ltx(obj, "esc_lager_killer")	
-	theme[obj:id()]["esc_fanat_dialog"]		= load_sound_from_ltx(obj, "esc_fanat_dialog")
-	theme[obj:id()]["esc_fanat_ready"]		= load_sound_from_ltx(obj, "esc_fanat_ready")	
-	theme[obj:id()]["esc_direction_fire"]	= load_sound_from_ltx(obj, "esc_direction_fire")	
-		
-		
-	-- Garbage DramMoment
-	theme[obj:id()]["gar_dm_bandit_backoff1"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff1", 5, 8, 100)
-	theme[obj:id()]["gar_dm_bandit_backoff2"]		= load_sound_from_ltx(obj, "gar_dm_bandit_backoff2", 5, 8, 100)
-	theme[obj:id()]["gar_dm_bandit_demand"]			= load_sound_from_ltx(obj, "gar_dm_bandit_demand", 8, 10, 100)
-	theme[obj:id()]["gar_dm_newbie_no_money"]		= load_sound_from_ltx(obj, "gar_dm_newbie_no_money")
-	theme[obj:id()]["gar_dm_newbie_help_me"]		= load_sound_from_ltx(obj, "gar_dm_newbie_help_me")
-	theme[obj:id()]["gar_dm_newbie_thank_you"]		= load_sound_from_ltx(obj, "gar_dm_newbie_thank_you")
-	
-	theme[obj:id()]["gar_hellcar_alarm"]			= load_sound_from_ltx(obj, "gar_hellcar_alarm")
-	theme[obj:id()]["gar_hellcar_ambush"]			= load_sound_from_ltx(obj, "gar_hellcar_ambush")
-	theme[obj:id()]["gar_bandits_seryi"]			= load_sound_from_ltx(obj, "gar_bandits_seryi")
-	theme[obj:id()]["gar_grey_grey"]				= load_sound_from_ltx(obj, "gar_grey_grey")
-	theme[obj:id()]["gar_seryi_see_actor"]			= load_sound_from_ltx(obj, "gar_seryi_see_actor")
-	theme[obj:id()]["gar_dolg_blokpost"]			= load_sound_from_ltx(obj, "gar_dolg_blokpost", 10, 15, 100)
-	theme[obj:id()]["gar_direction_fire"]			= load_sound_from_ltx(obj, "gar_direction_fire")
-	theme[obj:id()]["gar_hellcar_to_battle"]		= load_sound_from_ltx(obj, "gar_hellcar_to_battle")
-	theme[obj:id()]["gar_hellcar_victory"]			= load_sound_from_ltx(obj, "gar_hellcar_victory")
-	
-	-- DarkValley
-	theme[obj:id()]["val_prisoner_captive_help_me"]	  = load_sound_from_ltx(obj, "val_prisoner_captive_help_me")
-	theme[obj:id()]["val_prisoner_captive_come_here"] = load_sound_from_ltx(obj, "val_prisoner_captive_come_here")
-	theme[obj:id()]["val_rob_leader_call"]			  = load_sound_from_ltx(obj, "val_rob_leader_call")
-	theme[obj:id()]["val_rob_guard_jeer"]			  = load_sound_from_ltx(obj, "val_rob_guard_jeer")
-	theme[obj:id()]["val_gate_soldiers"]			  = load_sound_from_ltx(obj, "val_gate_soldiers")
-	theme[obj:id()]["val_chase_soldiers"]			  = load_sound_from_ltx(obj, "val_chase_soldiers")
-	theme[obj:id()]["val_opendoor_soldier"]			  = load_sound_from_ltx(obj, "val_opendoor_soldier")
-	theme[obj:id()]["val_escort_guards"]			  = load_sound_from_ltx(obj, "val_escort_guards")
-	theme[obj:id()]["val_escort_captive_phrase1"]	  = load_sound_from_ltx(obj, "val_escort_captive_phrase1")
-	theme[obj:id()]["val_escort_captive_phrase2"]	  = load_sound_from_ltx(obj, "val_escort_captive_phrase2")
-	theme[obj:id()]["val_escort_captive_phrase3"]	  = load_sound_from_ltx(obj, "val_escort_captive_phrase3")
-	theme[obj:id()]["val_escort_nap1_phrase1"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase1")
-	theme[obj:id()]["val_escort_nap1_phrase2"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase2")
-	theme[obj:id()]["val_escort_nap1_phrase3"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase3")
-	theme[obj:id()]["val_escort_nap1_phrase4"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase4")
-	theme[obj:id()]["val_escort_nap1_phrase5"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase5")
-	theme[obj:id()]["val_escort_nap1_phrase6"]		  = load_sound_from_ltx(obj, "val_escort_nap1_phrase6")
-	theme[obj:id()]["val_escort_dead"]                = load_sound_from_ltx(obj, "val_escort_dead")
-	theme[obj:id()]["val_escort_nap1_go_home"]        = load_sound_from_ltx(obj, "val_escort_nap1_go_home")
-	theme[obj:id()]["val_escort_phrase_invite"]       = load_sound_from_ltx(obj, "val_escort_phrase_invite")
-
-	-- Pripyat
-	--theme[obj:id()]["pri_followers_leader"]         = load_sound_from_ltx(obj, "pri_followers_leader")
-	--theme[obj:id()]["pri_followers_btr_phrase1"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase1")
-	--theme[obj:id()]["pri_followers_btr_phrase3"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase3")
-	--theme[obj:id()]["pri_followers_btr_phrase4"]    = load_sound_from_ltx(obj, "pri_followers_btr_phrase4")
-
-	-- Agroprom
-	theme[obj:id()]["agr_factory_soldiers"]			= load_sound_from_ltx(obj, "agr_factory_soldiers")
-	-- не стреляйте
-	theme[obj:id()]["dont_shoot_ukr"]				= load_sound_from_ltx(obj, "dont_shoot_ukr")
-
-	-- Bar Rostok Duty Guards
-	theme[obj:id()]["bar_dolg_base_guard_backoff"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_backoff")
-	theme[obj:id()]["bar_dolg_base_guard_no_talk"]	= load_sound_from_ltx(obj, "bar_dolg_base_guard_no_talk")
-	theme[obj:id()]["bar_bar_osvedomitel_hello"]	= load_sound_from_ltx(obj, "bar_bar_osvedomitel_hello", 7, 10, 100)
-	theme[obj:id()]["bar_bar_barmen_hello"]			= load_sound_from_ltx(obj, "bar_bar_barmen_hello")
-	theme[obj:id()]["bar_bar_barmen_hello_room"]	= load_sound_from_ltx(obj, "bar_bar_barmen_hello_room")
-	theme[obj:id()]["bar_dolg_leader_hello"]		= load_sound_from_ltx(obj, "bar_dolg_leader_hello")
-
-	-- Bar dolg guard
-	theme[obj:id()]["bar_dolg_guard_stop"]	= load_sound_from_ltx(obj, "bar_dolg_guard_stop")
-	
-	-- Bar dolg hangar bridge
-	theme[obj:id()]["bar_dolg_hangar_bridge_hello"]	= load_sound_from_ltx(obj, "bar_dolg_hangar_bridge_hello")
-
-	-- Bar dolg Petrenko
-	theme[obj:id()]["bar_dolg_petrenko_hello"]	= load_sound_from_ltx(obj, "bar_dolg_petrenko_hello")
-
-	-- Bar psyh
-	theme[obj:id()]["bar_psycho_pain"]				= load_sound_from_ltx(obj, "bar_psycho_pain")
-	theme[obj:id()]["bar_psycho_goodluck"]			= load_sound_from_ltx(obj, "bar_psycho_goodluck")
-	theme[obj:id()]["bar_barman_psycho"]			= load_sound_from_ltx(obj, "bar_barman_psycho")
-	theme[obj:id()]["bar_arena_public"]				= load_sound_from_ltx(obj, "bar_arena_public", 5, 7, 80)
-    
-    -- Military sounds
-    theme[obj:id()]["mil_max_thanx"]                  = load_sound_from_ltx(obj, "mil_max_thanx")
-    theme[obj:id()]["mil_max_before_collect"]         = load_sound_from_ltx(obj, "mil_max_before_collect")
-    theme[obj:id()]["mil_kolyan"]                     = load_sound_from_ltx(obj, "mil_kolyan1")
-    theme[obj:id()]["mil_max_to_kolyan"]              = load_sound_from_ltx(obj, "mil_max_to_kolyan")
-    theme[obj:id()]["mil_max_to_tolyan"]              = load_sound_from_ltx(obj, "mil_max_to_tolyan")
-    theme[obj:id()]["mil_collect_laugh1"]             = load_sound_from_ltx(obj, "mil_collect_laugh1")
-    theme[obj:id()]["mil_collect_laugh2"]             = load_sound_from_ltx(obj, "mil_collect_laugh2")
-    theme[obj:id()]["mil_collect_laugh3"]             = load_sound_from_ltx(obj, "mil_collect_laugh3")
-    theme[obj:id()]["mil_collect_laugh4"]             = load_sound_from_ltx(obj, "mil_collect_laugh4")
-    theme[obj:id()]["mil_collect_laugh5"]             = load_sound_from_ltx(obj, "mil_collect_laugh5")
-    theme[obj:id()]["mil_collect_phrase1"]            = load_sound_from_ltx(obj, "mil_collect_phrase1")
-    theme[obj:id()]["mil_collect_phrase2"]            = load_sound_from_ltx(obj, "mil_collect_phrase2")
-    theme[obj:id()]["mil_collect_phrase3"]            = load_sound_from_ltx(obj, "mil_collect_phrase3")
-    theme[obj:id()]["mil_collect_phrase4"]            = load_sound_from_ltx(obj, "mil_collect_phrase4")
-    theme[obj:id()]["mil_collect_phrase5"]            = load_sound_from_ltx(obj, "mil_collect_phrase5")
-    theme[obj:id()]["mil_collect_phrase6"]            = load_sound_from_ltx(obj, "mil_collect_phrase6")
-    theme[obj:id()]["mil_collect_phrase7"]            = load_sound_from_ltx(obj, "mil_collect_phrase7")
-    theme[obj:id()]["mil_crazy"]                      = load_sound_from_ltx(obj, "mil_crazy")
-    theme[obj:id()]["mil_dolg_about_sniper"]          = load_sound_from_ltx(obj, "mil_dolg_about_sniper")
-    theme[obj:id()]["mil_dolg_go_attack"]             = load_sound_from_ltx(obj, "mil_dolg_go_attack")
-    theme[obj:id()]["mil_freedom_patrol"]             = load_sound_from_ltx(obj, "mil_freedom_patrol")
-    theme[obj:id()]["mil_dolg_after_kill1"]           = load_sound_from_ltx(obj, "mil_dolg_after_kill1")
-    theme[obj:id()]["mil_dolg_after_kill2"]           = load_sound_from_ltx(obj, "mil_dolg_after_kill2")
-    theme[obj:id()]["mil_dolg_after_kill3"]           = load_sound_from_ltx(obj, "mil_dolg_after_kill3")
-    theme[obj:id()]["mil_freedom_zoneguard"]          = load_sound_from_ltx(obj, "mil_freedom_zoneguard")
-    theme[obj:id()]["mil_freedom_patrol_base"]        = load_sound_from_ltx(obj, "mil_freedom_patrol")
-    theme[obj:id()]["mil_max_khutor_attack"]          = load_sound_from_ltx(obj, "mil_max_khutor_attack")
-    theme[obj:id()]["mil_guard_to_max"]               = load_sound_from_ltx(obj, "mil_guard_to_max")
-    theme[obj:id()]["mil_lukash_to_guard"]            = load_sound_from_ltx(obj, "mil_lukash_to_guard")
-    theme[obj:id()]["mil_lukash_to_actor"]            = load_sound_from_ltx(obj, "mil_lukash_to_actor")
-    theme[obj:id()]["mil_paul_frost"]                 = load_sound_from_ltx(obj, "mil_paul_frost")
-    theme[obj:id()]["mil_dolg_killer"]                = load_sound_from_ltx(obj, "mil_dolg_killer")
-    theme[obj:id()]["mil_dolg_scull"]                 = load_sound_from_ltx(obj, "mil_dolg_scull")
-    theme[obj:id()]["mil_max_to_actor"]               = load_sound_from_ltx(obj, "mil_max_to_actor")
-    theme[obj:id()]["mil_collect_phrases"]            = load_sound_from_ltx(obj, "mil_collect_phrases")
-    theme[obj:id()]["mil_pavlik_to_ara"]              = load_sound_from_ltx(obj, "mil_pavlik_to_ara")
-    theme[obj:id()]["mil_ara_to_pavlik"]              = load_sound_from_ltx(obj, "mil_ara_to_pavlik")
-    theme[obj:id()]["mil_ara_ambush"]                 = load_sound_from_ltx(obj, "mil_ara_ambush")
-    theme[obj:id()]["mil_hunter1"]                    = load_sound_from_ltx(obj, "mil_hunter1")
-    theme[obj:id()]["mil_hunter2"]                    = load_sound_from_ltx(obj, "mil_hunter2")
-    theme[obj:id()]["mil_hunter3"]                    = load_sound_from_ltx(obj, "mil_hunter3")
-    theme[obj:id()]["mil_dolg_getready"]              = load_sound_from_ltx(obj, "mil_dolg_getready")
-    theme[obj:id()]["mil_dolg_lukash_done"]           = load_sound_from_ltx(obj, "mil_dolg_lukash_done")
-    theme[obj:id()]["mil_freedom_ambush1"]            = load_sound_from_ltx(obj, "mil_freedom_ambush1")
-    theme[obj:id()]["mil_freedom_ambush2"]            = load_sound_from_ltx(obj, "mil_freedom_ambush2")
-    theme[obj:id()]["mil_freedom_ambush3"]            = load_sound_from_ltx(obj, "mil_freedom_ambush3")
-    theme[obj:id()]["mil_freedom_ambush4"]            = load_sound_from_ltx(obj, "mil_freedom_ambush4")
-    theme[obj:id()]["mil_freedom_ambush5"]            = load_sound_from_ltx(obj, "mil_freedom_ambush5")
-    theme[obj:id()]["mil_freedom_ambush6"]            = load_sound_from_ltx(obj, "mil_freedom_ambush6")
-    theme[obj:id()]["mil_freedom_victory1"]           = load_sound_from_ltx(obj, "mil_freedom_victory1")
-    theme[obj:id()]["mil_freedom_victory2"]           = load_sound_from_ltx(obj, "mil_freedom_victory2")
-    theme[obj:id()]["mil_freedom_victory3"]           = load_sound_from_ltx(obj, "mil_freedom_victory3")
-    theme[obj:id()]["mil_freedom_victory4"]           = load_sound_from_ltx(obj, "mil_freedom_victory4")
-    theme[obj:id()]["mil_freedom_victory5"]           = load_sound_from_ltx(obj, "mil_freedom_victory5")
-    
-    
-	-- ТЕМЫ, КОТОРЫЕ НУЖНО ПРИВЕСТИ К ВАРИАНТУ ОСНОВНОЙ ТЕМЫ
-	theme[obj:id()]["esc_volk_greet1"]			= load_sound_from_ltx(obj, "volk_greet1")
-	theme[obj:id()]["esc_volk_greet2"]			= load_sound_from_ltx(obj, "volk_greet2")
-
-	-- лагерь новичков на эскейп
-	theme[obj:id()]["esc_novice_camp_guards"]	= load_sound_from_ltx(obj, "novice_camp_guards")
-
-    -- радио для командира патруля
-    theme[obj:id()]["patrol_radio_1"]			= load_sound_from_ltx(obj, "military_radio")
-
-  	-- radar monolith
-	theme[obj:id()]["monolith_mumble"]			= load_sound_from_ltx(obj, "military_radio", 0, 0, 100)
+	load_theme_sound(obj, theme)
 
 	-- делаем заготовку в db.sound
 	db.sound[obj:id()] = {}
 	
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
-	--print_table(theme)
-end
-
------------------------------------------------------------------------------------------------------------------------------------
---	Theme  functions
------------------------------------------------------------------------------------------------------------------------------------
-//function weather_class(avail_types, npc, target)
-function weather_class(avail_types, npc)
-	local type = "good"
-	if level.rain_factor() < 0.07 then
-		type = "good"
-	else
-		type = "bad"
-	end
-	return type
+	print_table(theme)
 end

@@ -361,7 +361,7 @@ function CKampManager:proceedState(npc)
 			self.begin = time_global()
 			-- Меняем таймаут для истории
 			if k == "post_story" then
-				local dep = sound_theme.theme[npc_id][self.selected_story].depence[self.story_last]
+				local dep = sound_theme.theme[self.selected_story].depence[self.story_last]
 				if dep and dep.min and dep.max then
 					self.timeout["post_story"].min = math.random(dep.min, dep.max)*1000
 				end
@@ -528,7 +528,7 @@ function CKampManager:updateNpc(npc)
 	elseif sound == "reac_story" then
 		sound = ""
 		if self.npc[npc_id].new == true then
-			local dep = sound_theme.theme[npc_id][self.selected_story].depence[self.story_last+1]
+			local dep = sound_theme.theme[self.selected_story].depence[self.story_last+1]
 			if dep then
 				if dep.type == "all" then
 					xr_sound.set_sound_play(npc, dep.theme, math.random(100,300))

@@ -12,23 +12,20 @@ group_idle = {}
 function get_sound(path, tt, npc)
 	if path == nil then return nil end
 	if path.exec == nil then
-
 		-- чтение настроек темы
-		if path.into_id ~= nil or
-			path.rnd_id ~= nil
-		then
-			tt.into_id = path.into_id
-			tt.into_max = path.into_max
-			tt.into_last = nil
-			tt.rnd_id = path.rnd_id
-			tt.rnd_max = path.rnd_max
-			tt.rnd_last = nil
-			tt.min_snd = path.min_snd
-			tt.max_snd = path.max_snd
-			tt.rnd_snd = path.rnd_snd
-		end
+		tt.into_id = path.into_id
+		tt.into_max = path.max_ids[npc:id()].into_max
+		tt.into_last = nil
+
+		tt.rnd_id = path.rnd_id
+		tt.rnd_max = path.max_ids[npc:id()].rnd_max
+		tt.rnd_last = nil
+
+		tt.min_snd = path.min_snd
+		tt.max_snd = path.max_snd
+		tt.rnd_snd = path.rnd_snd
 	else
-		get_sound(path.types[path.exec(path.types, npc)], tt)
+		get_sound(path.types[path.exec(path.types, npc)], tt, npc)
 	end
 end
 -- Формирование ключа персонажа
@@ -84,7 +81,7 @@ function set_sound(npc, sound, now, into_timeout)
 			local t = 0		
 			for k,v in pairs(db.sound[npc_id].snd) do
 				snd_table[t] = {}
-				get_sound(sound_theme.theme[npc_id][v], snd_table[t], npc)
+				get_sound(sound_theme.theme[v], snd_table[t], npc)
 				t = t + 1
 			end	
 			for k,v in pairs(snd_table) do
@@ -169,8 +166,8 @@ function play_sound(npc, themes, timeout)
 	local t = 0		
 	for k,v in pairs(themes) do
 		snd_table[t] = {}
-		if sound_theme.theme[npc:id()][v] ~= nil then
-			get_sound(sound_theme.theme[npc:id()][v], snd_table[t], npc)
+		if sound_theme.theme[v] ~= nil then
+			get_sound(sound_theme.theme[v], snd_table[t], npc)
 		else
 			abort("ERROR: ILLEGAL PLAY SOUND!!! %s for %s", v, npc:name())
 		end
@@ -239,8 +236,8 @@ end
 function get_last_IDS(npc, theme)
 	local last_table = db.sound[npc:id()].last_snd
 	local snd_table = {}
-	if sound_theme.theme[npc:id()][theme] ~= nil then
-		get_sound(sound_theme.theme[npc:id()][theme], snd_table, npc)
+	if sound_theme.theme[theme] ~= nil then
+		get_sound(sound_theme.theme[theme], snd_table, npc)
 	end	
 	printf("LAST INTO ID for [%s] = [%s], max [%s]", theme, last_table[snd_table.into_id], snd_table.into_max)
 	return last_table[snd_table.into_id], snd_table.into_max

@@ -4,32 +4,25 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 function prefetch_sounds()
-	printf("Prefetching ph_snd_themes")
-
-	prefetch("news_manager") 
-	
+	local k,v,kk,vv = 0,0,0,0
+		
 	for k,v in pairs(sound_theme.ph_snd_themes) do
---		printf("prefetch [%s]", tostring(k))
 		for kk,vv in pairs(v) do
---			printf("file [%s]", tostring(vv))
 			level.prefetch_sound(vv)
 		end
 	end
 
-	printf("Prefetching stalker sounds")
-	for t,p in pairs(sound_theme.theme) do
-		for k,v in pairs(p) do
-			local name = tostring(k)
-			if v.types then
-				for kk,vv in pairs(v.types) do
-					prefetch_section(sound_theme.snd_ini, name.."_"..tostring(kk))
-				end
+	function prefetch_theme_sound(tbl)
+		for k,v in pairs(tbl) do
+			if v.types == nil then
+				prefetch_section(sound_theme.snd_ini, k)
 			else
-				prefetch_section(sound_theme.snd_ini, name)
+				prefetch_theme_sound(v.types)
 			end
 		end
-		break
-	end	
+	end
+
+	prefetch_theme_sound(sound_theme.theme)
 end
 
 
