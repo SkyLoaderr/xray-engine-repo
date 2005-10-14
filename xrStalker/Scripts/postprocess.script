@@ -33,9 +33,11 @@ class "PPEffector"
 ----------------
 function PPEffector:__init (ini_file, section)
     self.settings = {}
+    self.section = section
     self.current_func = 0
     self.base = 0.0
     self.func_time = 0.0
+    self.base_time = 0.0
     self.current_value = 0.0
     self.value = 0.0
     self.time = 0.0
@@ -95,7 +97,7 @@ function PPEffector:get_work_time ()
 end
 ----------------
 function PPEffector:sin_func (delta)
-    local v = pi_2 / self.func_time * delta * self.settings[self.current_func].scale
+    local v = pi_2 / self.base_time * delta * self.settings[self.current_func].scale
     self.value = v + self.value
     return math.sin (self.value)
 end
@@ -121,7 +123,7 @@ function PPEffector:update (delta)
     end
 
     self.time = self.time + delta
-
+    
     local v = 0.0
     if self.settings[self.current_func].func == "linear" then
        v = self:lin_func (delta)
@@ -133,7 +135,10 @@ function PPEffector:update (delta)
        v = 0.0
     end
 
+
     v = v * self.settings[self.current_func].intensity + self.base + self.settings[self.current_func].base_offset
+    
+    
     if v > 1.0 then v = 1.0 end
     if v < -1.0 then v = -1.0 end
 
@@ -142,6 +147,10 @@ function PPEffector:update (delta)
     if self.time > self.func_time then
        self:set_next_function ()
     end
+    
+    if self.section == "color_base_red" then
+       printf ("Current value = %f, time = %f", v, self.time)
+    end    
 
     return v
 end
@@ -160,6 +169,7 @@ function PPEffector:set_next_function ()
     end
 
     self.func_time = self.time + self.settings[self.current_func].time
+    self.base_time = self.settings[self.current_func].time
     self.base = self.current_value
     self.value = self.settings[self.current_func].init_value * pi_2
 end
