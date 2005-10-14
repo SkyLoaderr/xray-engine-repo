@@ -54,7 +54,7 @@ BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 	CreateUnbroken			();
-	CreateBroken			();
+	//CreateBroken			();
 	bRemoved				=false;
 	//Break					();
 	shedule_unregister		();
@@ -214,6 +214,7 @@ void CBreakableObject::Break()
 {
 	if(m_pPhysicsShell)return;
 	DestroyUnbroken();
+	CreateBroken();
 	ActivateBroken();
 	u16 el_num=m_pPhysicsShell->get_ElementsNumber();
 	for(u16 i=0;i<el_num;i++)
