@@ -22,6 +22,11 @@ class CController : public CBaseMonster,
 	ref_sound			m_sound_hit_fx;
 	SndShockEffector*	m_sndShockEffector;					
 
+	ref_sound			m_sound_aura_left_channel;
+	ref_sound			m_sound_aura_right_channel;
+	ref_sound			m_sound_aura_hit_left_channel;
+	ref_sound			m_sound_aura_hit_right_channel;
+
 
 	SAttackEffector		m_control_effector;
 
@@ -133,7 +138,14 @@ public:
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
+
 #endif
+
+private:
+#ifdef _DEBUG	
+		virtual void	debug_on_key		(int key);
+#endif
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

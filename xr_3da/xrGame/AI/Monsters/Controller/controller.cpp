@@ -36,6 +36,10 @@
 #include "../../../character_info.h"
 
 
+#ifdef _DEBUG
+#	include <dinput.h>
+#endif
+
 const u32	_pmt_psy_attack_delay		= 2000;
 const float	_pmt_psy_attack_min_angle	= deg(5);
 
@@ -154,6 +158,11 @@ void CController::Load(LPCSTR section)
 
 	// load
 	m_sound_hit_fx.create(TRUE, "affects\\tinnitus3a");
+
+	m_sound_aura_left_channel.create(FALSE, "monsters\\controller\\controller_psy_aura_l");
+	m_sound_aura_right_channel.create(FALSE, "monsters\\controller\\controller_psy_aura_r");
+	m_sound_aura_hit_left_channel.create(FALSE, "monsters\\controller\\controller_psy_hit_l");
+	m_sound_aura_hit_right_channel.create(FALSE, "monsters\\controller\\controller_psy_hit_l");
 }
 
 void CController::load_friend_community_overrides(LPCSTR section)
@@ -564,5 +573,22 @@ CBaseMonster::SDebugInfo CController::show_debug_info()
 	return CBaseMonster::SDebugInfo();
 }
 #endif
+
+#ifdef _DEBUG
+void CController::debug_on_key(int key)
+{
+	switch (key){
+	case DIK_9:
+		m_sound_aura_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		m_sound_aura_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		break;
+	case DIK_0:
+		m_sound_aura_hit_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		m_sound_aura_hit_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		break;
+	}
+}
+#endif
+
 
 
