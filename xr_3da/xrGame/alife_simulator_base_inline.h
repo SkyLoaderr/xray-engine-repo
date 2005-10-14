@@ -41,13 +41,6 @@ IC	const CALifeObjectRegistry			&CALifeSimulatorBase::objects				() const
 	return						(*m_objects);
 }
 
-IC	const CALifeEventRegistry			&CALifeSimulatorBase::events				() const
-{
-	VERIFY						(initialized());
-	VERIFY						(m_events);
-	return						(*m_events);
-}
-
 IC	const CALifeTaskRegistry			&CALifeSimulatorBase::tasks					() const
 {
 	VERIFY						(initialized());
@@ -137,13 +130,6 @@ IC	CALifeObjectRegistry				&CALifeSimulatorBase::objects				()
 	VERIFY						(initialized());
 	VERIFY						(m_objects);
 	return						(*m_objects);
-}
-
-IC	CALifeEventRegistry					&CALifeSimulatorBase::events				()
-{
-	VERIFY						(initialized());
-	VERIFY						(m_events);
-	return						(*m_events);
 }
 
 IC	CALifeTaskRegistry					&CALifeSimulatorBase::tasks					()

@@ -17,7 +17,6 @@ class CALifeSimulatorHeader;
 class CALifeTimeManager;
 class CALifeSpawnRegistry;
 class CALifeObjectRegistry;
-class CALifeEventRegistry; 
 class CALifeTaskRegistry;
 class CALifeGraphRegistry;
 class CALifeTraderRegistry;
@@ -42,7 +41,6 @@ protected:
 	CALifeTimeManager							*m_time_manager;
 	CALifeSpawnRegistry							*m_spawns;
 	CALifeObjectRegistry						*m_objects;
-	CALifeEventRegistry							*m_events; 
 	CALifeTaskRegistry							*m_tasks; 
 	CALifeGraphRegistry							*m_graph_objects;
 	CALifeTraderRegistry						*m_traders;
@@ -64,7 +62,6 @@ protected:
 	IC		CALifeTimeManager					&time						();
 	IC		CALifeSpawnRegistry					&spawns						();
 	IC		CALifeObjectRegistry				&objects					();
-	IC		CALifeEventRegistry					&events						();
 	IC		CALifeTaskRegistry					&tasks						();
 	IC		CALifeTraderRegistry				&traders					();
 	IC		CALifeScheduleRegistry				&scheduled					();
@@ -87,7 +84,6 @@ public:
 	IC		const CALifeTimeManager				&time						() const;
 	IC		const CALifeSpawnRegistry			&spawns						() const;
 	IC		const CALifeObjectRegistry			&objects					() const;
-	IC		const CALifeEventRegistry			&events						() const;
 	IC		const CALifeTaskRegistry			&tasks						() const;
 	IC		const CALifeGraphRegistry			&graph						() const;
 	IC		const CALifeTraderRegistry			&traders					() const;

@@ -24,32 +24,6 @@ IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, GameGraph::
 	object->m_tNodeID			= ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
 }
 
-IC	void CALifeGraphRegistry::remove	(CALifeEvent *event, GameGraph::_GRAPH_ID game_vertex_id)
-{
-	m_objects[game_vertex_id].events().remove(event->m_tEventID);
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] removing event [%d] from graph point %d",event->m_tEventID,game_vertex_id);
-	}
-#endif
-}
-
-IC	void CALifeGraphRegistry::add	(CALifeEvent *event, GameGraph::_GRAPH_ID game_vertex_id)
-{
-	m_objects[game_vertex_id].events().add(event->m_tEventID,event);
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] adding event [%d] from graph point %d",event->m_tEventID,game_vertex_id);
-	}
-#endif
-}
-
-IC	void CALifeGraphRegistry::change	(CALifeEvent *event, GameGraph::_GRAPH_ID game_vertex_id, GameGraph::_GRAPH_ID next_game_vertex_id)
-{
-	remove						(event,game_vertex_id);
-	add							(event,next_game_vertex_id);
-}
-
 IC	void CALifeGraphRegistry::assign	(CSE_ALifeMonsterAbstract *monster)
 {
 	monster->m_tNextGraphID		= monster->m_tPrevGraphID = monster->m_tGraphID;
@@ -84,12 +58,6 @@ template <typename F>
 IC	void CALifeGraphRegistry::iterate_objects			(GameGraph::_GRAPH_ID game_vertex_id, const F& f)
 {
 	iterate						(((CGraphPointInfo&)(objects()[game_vertex_id])).objects(),f);
-}
-
-template <typename F>
-IC	void CALifeGraphRegistry::iterate_events			(GameGraph::_GRAPH_ID game_vertex_id, const F& f)
-{
-	iterate						(((CGraphPointInfo&)(objects()[game_vertex_id])).events(),f);
 }
 
 template <typename F, typename C>

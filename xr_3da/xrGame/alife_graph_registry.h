@@ -10,7 +10,6 @@
 
 #include "xrServer_Objects_ALife_All.h"
 #include "alife_level_registry.h"
-#include "alife_event.h"
 
 class CSE_ALifeCreatureActor;
 
@@ -24,21 +23,11 @@ public:
 		>,
 		false
 	>							OBJECT_REGISTRY;
-	
-	typedef CSafeMapIterator<
-		ALife::_EVENT_ID,
-		CALifeEvent,
-		std::less<
-			ALife::_EVENT_ID
-		>,
-		false
-	>							EVENT_REGISTRY;
 
 public:
 	class CGraphPointInfo {
 	protected:
 		OBJECT_REGISTRY		m_objects;
-		EVENT_REGISTRY		m_events;
 
 	public:
 		IC	OBJECT_REGISTRY	&objects()
@@ -49,11 +38,6 @@ public:
 		IC	const OBJECT_REGISTRY	&objects() const
 		{
 			return			(m_objects);
-		}
-
-		IC	EVENT_REGISTRY	&events()
-		{
-			return			(m_events);
 		}
 	};
 
@@ -81,20 +65,15 @@ public:
 			void						attach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true, bool add_children = true);
 			void						detach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true, bool remove_children = true);
 	IC		void						assign					(CSE_ALifeMonsterAbstract	*object);
-	IC		void						add						(CALifeEvent				*event,		GameGraph::_GRAPH_ID		game_vertex_id);
-	IC		void						remove					(CALifeEvent				*event,		GameGraph::_GRAPH_ID		game_vertex_id);
 			void						add						(CSE_ALifeDynamicObject		*object,	GameGraph::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
 			void						remove					(CSE_ALifeDynamicObject		*object,	GameGraph::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
 	IC		void						change					(CSE_ALifeDynamicObject		*object,	GameGraph::_GRAPH_ID		game_vertex_id,	GameGraph::_GRAPH_ID	next_game_vertex_id);
-	IC		void						change					(CALifeEvent				*event,		GameGraph::_GRAPH_ID		game_vertex_id,	GameGraph::_GRAPH_ID	next_game_vertex_id);
 	IC		CALifeLevelRegistry			&level					() const;
 	IC		void						set_process_time		(const float &process_time);
 	IC		CSE_ALifeCreatureActor		*actor					() const;
 	IC		const GRAPH_REGISTRY		&objects				() const;
 	template <typename F>
 	IC		void						iterate_objects			(GameGraph::_GRAPH_ID game_vertex_id, const F& f);
-	template <typename F>
-	IC		void						iterate_events			(GameGraph::_GRAPH_ID game_vertex_id, const F& f);
 };
 
 #include "alife_graph_registry_inline.h"

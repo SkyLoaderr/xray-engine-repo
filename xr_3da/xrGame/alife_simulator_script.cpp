@@ -148,6 +148,7 @@ void CALifeSimulator::script_register(lua_State *L)
 		def("alife",						&alife)
 	];
 
+	VERIFY						(story_ids.empty());
 	generate_story_ids			(story_ids);
 
 	luabind::class_<class_exporter<CALifeSimulator> >	instance("story_ids");

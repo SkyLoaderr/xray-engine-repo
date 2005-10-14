@@ -27,10 +27,8 @@ CALifeGraphRegistry::CALifeGraphRegistry	()
 	{
 		GRAPH_REGISTRY::iterator	I = m_objects.begin();
 		GRAPH_REGISTRY::iterator	E = m_objects.end();
-		for ( ; I != E; ++I) {
+		for ( ; I != E; ++I)
 			(*I).objects().clear	();
-			(*I).events().clear		();
-		}
 	}
 
 	m_level							= 0;
