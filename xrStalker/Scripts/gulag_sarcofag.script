@@ -1,0 +1,28 @@
+local t = {}
+
+function load_job(sj, gname, type, squad, groups)
+
+end
+
+
+
+function load_states(gname, type)
+	
+end
+
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+	return nil
+end
+
+function checkStalker(npc_community, gulag_type)
+	
+	return false
+end
+
+function checkMonster(npc_community, gulag_type)
+		
+	return false
+end
