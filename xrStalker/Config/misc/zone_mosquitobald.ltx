@@ -880,7 +880,7 @@ actor_blowout_radius_percent	= 0.75
 ef_anomaly_type			= 1
 ef_weapon_type			= 13
 
-sound			= zone_mosquito_bald
+sound			= monsters\biting\def_0
 
 postprocess		= ;mosquito_bald
 
@@ -888,7 +888,7 @@ postprocess		= ;mosquito_bald
 BirthProbability	= 0.1
 hit_type			= strike
 
-idle_particles		= anomaly2\bold_idle
+idle_particles		= ;anomaly2\bold_idle
 blowout_particles	= anomaly2\teleport_out
 
 hit_small_particles			= ;hit_fx\hit_metal_02
@@ -898,10 +898,10 @@ idle_big_particles			= anomaly2\teleport_damage_smoke_00
 entrance_small_particles	= anomaly2\teleport_damage
 entrance_big_particles		= anomaly2\teleport_damage
 
-idle_sound			= ambient\fx1b		;постоянный звук
+idle_sound			= monsters\biting\def_0		;постоянный звук
 blowout_sound		= anomaly\anomaly_gravy_blast01; anomaly_gravy_blast01	;во время выброса(удара) в центре аномалии	
-hit_sound			= ;anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получает хит
-entrance_sound		= ;anomaly\anomaly_gravy_hit1								;при попадании объекта в аномалию
+hit_sound			= monsters\biting\def_0								;на персонаже, когда тот получает хит
+entrance_sound		= monsters\biting\def_0								;при попадании объекта в аномалию
 
 
 awaking_time		= 50;100
