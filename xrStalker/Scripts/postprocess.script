@@ -2,7 +2,7 @@
 local pi_2 = 1.57079632679489661923
 local func_sinus = 0
 local func_cosinus = 1
-local func_linear = 2  
+local func_linear = 2
 
 --function printf () end
 
@@ -10,11 +10,11 @@ local func_linear = 2
 class "PPData" (effector)
 ----------------
 function PPData:__init () super (1003,10000000)
-	self.params = effector_params ()
+        self.params = effector_params ()
 end
 ----------------
 function PPData:process (pp)
-	pp:assign (self.params)
+        pp:assign (self.params)
     effector.process (self, pp)
     return true
 end
@@ -38,7 +38,7 @@ function PPEffector:__init (ini_file, section)
            param = string.format ("fx_set_%d", a)
            if ini_file:line_exist (section, param) then
               self:parse_fx_data (ini_file:r_string (section, param), self.settings)
-           end 
+           end
        end
     end
     self:set_next_function ()
@@ -47,21 +47,21 @@ end
 function PPEffector:parse_data (str)
     local t = {}
     local size = string.len (str)
-	local pos = 1
+        local pos = 1
     while true do
           local start, finish = string.find (str, ",", pos)
           if start == nil then start = size + 1 end
-		  local temp = string.sub (str, pos, start - 1)
-		  table.insert (t, temp)
-		  pos = start + 1
-		  if finish == nil then break end
+          local temp = string.sub (str, pos, start - 1)
+          table.insert (t, temp)
+          pos = start + 1
+          if finish == nil then break end
     end
     return t
 end
 ----------------
 function PPEffector:parse_fx_data (str, t)
     local temp = self:parse_data (str)
-    if table.getn (temp) < 5 then 
+    if table.getn (temp) < 5 then
        return 0.0
     end
     local ins = {}
@@ -70,6 +70,11 @@ function PPEffector:parse_fx_data (str, t)
     ins.scale = tonumber (temp[3])
     ins.init_value = tonumber (temp[4])
     ins.intensity = tonumber (temp[5])
+    if table.getn (temp) == 6 then
+       ins.base_offset = tonumber (temp[6])
+    else
+       ins.base_offset = 0
+    end
     table.insert (t, ins)
     return ins.time
 end
@@ -102,26 +107,26 @@ end
 function PPEffector:update (delta)
     if table.getn (self.settings) == 0 then
        return self.current_value
-    end    
+    end
 
     if self.end_func == true then
        return 0.0 --self.current_value
-    end   
-    
+    end
+
     self.time = self.time + delta
 
     local v = 0.0
     if self.settings[self.current_func].func == "linear" then
        v = self:lin_func (delta)
     elseif self.settings[self.current_func].func == "sinus" then
-       v = self:sin_func (delta) 
+       v = self:sin_func (delta)
     elseif self.settings[self.current_func].func == "cosinus" then
-       v = self:cos_func (delta) 
-    else 
+       v = self:cos_func (delta)
+    else
        v = 0.0
-    end       
+    end
 
-    v = v * self.settings[self.current_func].intensity + self.base
+    v = v * self.settings[self.current_func].intensity + self.base + self.settings[self.current_func].base_offset
     if v > 1.0 then v = 1.0 end
     if v < -1.0 then v = -1.0 end
 
@@ -129,7 +134,7 @@ function PPEffector:update (delta)
 
     if self.time > self.func_time then
        self:set_next_function ()
-    end    
+    end
 
     return v
 end
@@ -138,15 +143,15 @@ function PPEffector:set_next_function ()
     if table.getn (self.settings) == 0 then
        self.end_func = true
        return
-    end    
-    
+    end
+
     self.current_func = self.current_func + 1
-    
+
     if self.current_func > table.getn (self.settings) then
        self.end_func = true
        return
     end
-    
+
     self.func_time = self.time + self.settings[self.current_func].time
     self.base = self.current_value
     self.value = self.settings[self.current_func].init_value * pi_2
@@ -192,15 +197,15 @@ function PostProcess:__init (ini_file)
     self.noise_g = PPEffector (ini_file, "noise_granularity")
     -- load noise FPS effect
     self.noise_f = PPEffector (ini_file, "noise_fps")
-    
-	self.pp = PPData ()
-	self.pp:start ()
-	self.pp.params.color_base = color (0.5, 0.5, 0.5)		// max base color diff			[0.0-0.5]
-	self.pp.params.color_gray = color (0.0, 0.0, 0.0)	    // RGB							[0.0-1.0]
-	self.pp.params.color_add  = color (0.0, 0.0, 0.0)	    // RGB							[0.0-1.0]
-	self.pp.params.gray  	  = 0.0						    // gray max intensity			[0.0-1.0]
-	self.pp.params.dual	  	  = duality (0.0, 0.0)
-	self.pp.params.noise      = noise   (0.0, 0.0, 30)		// intensity, grain, fps		[0.0-1.0,0.0-1.0,1-100]
+
+        self.pp = PPData ()
+        self.pp:start ()
+        self.pp.params.color_base = color (0.5, 0.5, 0.5)                // max base color diff                        [0.0-0.5]
+        self.pp.params.color_gray = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
+        self.pp.params.color_add  = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
+        self.pp.params.gray            = 0.0                                                    // gray max intensity                        [0.0-1.0]
+        self.pp.params.dual                    = duality (0.0, 0.0)
+        self.pp.params.noise      = noise   (0.0, 0.0, 30)                // intensity, grain, fps                [0.0-1.0,0.0-1.0,1-100]
 end
 ----------------
 function PostProcess:reset ()
@@ -222,25 +227,25 @@ function PostProcess:reset ()
 end
 ----------------
 function PostProcess:update (delta)
-    self.pp.params.color_base = color (self.base_r:update (delta) + 0.5, self.base_g:update (delta) + 0.5, self.base_b:update (delta) + 0.5)
-    self.pp.params.color_gray = color (self.gray_r:update (delta), self.gray_g:update (delta), self.gray_b:update (delta))
-    self.pp.params.color_add = color  (self.add_r:update (delta), self.add_g:update (delta), self.add_b:update (delta))
-    self.pp.params.gray = self.gray:update (delta)
-	self.pp.params.dual	= duality (self.duality_h:update (delta), self.duality_v:update (delta))
-	self.pp.params.noise = noise (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100)
+    self.pp.params.color_base   = color             (self.base_r:update (delta) + 0.5, self.base_g:update (delta) + 0.5, self.base_b:update (delta) + 0.5)
+    self.pp.params.color_gray   = color             (self.gray_r:update (delta), self.gray_g:update (delta), self.gray_b:update (delta))
+    self.pp.params.color_add    = color             (self.add_r:update (delta), self.add_g:update (delta), self.add_b:update (delta))
+    self.pp.params.gray         = self.gray:update  (delta)
+    self.pp.params.dual         = duality           (self.duality_h:update (delta), self.duality_v:update (delta))
+    self.pp.params.noise        = noise             (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100)
 end
 
 ----------------
 function main ()
     local process = PostProcess (ini_file ("scripts\\teleport.ltx"))
     level.set_weather_fx ("surge_day")
-	local prev_time	= time_global ()
-	while 1 do
-			wait ();
-			local dt = time_global () - prev_time;
-			prev_time = time_global()
-			if process:update (dt * 0.001) == true then
-			   break
-			end    
-	end
+        local prev_time        = time_global ()
+        while 1 do
+                        wait ();
+                        local dt = time_global () - prev_time;
+                        prev_time = time_global()
+                        if process:update (dt * 0.001) == true then
+                           break
+                        end
+        end
 end
