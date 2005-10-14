@@ -26,7 +26,7 @@ function dream_mgr:__init()
     if ini:section_exist("videos") then
         self.videos = {}
         if ini:section_exist("dreams") then
-            self.regular_probability = dream_prob or def_global_regular_probability
+            self.regular_probability = def_global_regular_probability
             if ini:line_exist("dreams", "regular_probability") then
                 local rp = ini:r_float("dreams", "regular_probability")
                 if rp >= 0 or rp <= 100 then
@@ -157,8 +157,13 @@ function dream_mgr:get_dream()
     
     if not dream then -- check regular dream
         local rval = math.random(100)
+        local rp = self.regular_probability
 
-        if rval < self.regular_probability and dream_types[type] then
+        if dream_prob then
+            rp = dream_prob
+        end
+
+        if rval < rp and dream_types[type] then
             local prob_power = 0
 
             for k, v in pairs(self.regular) do
