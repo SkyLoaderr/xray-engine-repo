@@ -142,8 +142,7 @@ void CPhysicItem::create_box_physic_shell	()
 	m_pPhysicsShell->add_Element(E);
 	m_pPhysicsShell->setDensity(2000.f);
 	
-	m_pPhysicsShell->mDesired.identity();
-	m_pPhysicsShell->fDesiredStrength = 0.f;
+
 }
 
 void CPhysicItem::create_box2sphere_physic_shell()
@@ -181,8 +180,6 @@ void CPhysicItem::create_box2sphere_physic_shell()
 	R_ASSERT							(m_pPhysicsShell);
 	m_pPhysicsShell->add_Element		(E);
 	m_pPhysicsShell->setDensity			(2000.f);
-	m_pPhysicsShell->mDesired.identity	();
-	m_pPhysicsShell->fDesiredStrength	= 0.f;
 	m_pPhysicsShell->SetAirResistance();
 }
 

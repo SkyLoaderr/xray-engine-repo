@@ -146,8 +146,6 @@ void CCustomRocket::create_physic_shell	()
 	R_ASSERT							(m_pPhysicsShell);
 	m_pPhysicsShell->add_Element		(E);
 	m_pPhysicsShell->setMass			(7.f);
-	m_pPhysicsShell->mDesired.identity	();
-	m_pPhysicsShell->fDesiredStrength	= 0.f;
 	m_pPhysicsShell->SetAirResistance();
 }
 

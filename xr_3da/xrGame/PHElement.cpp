@@ -785,7 +785,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		}
 		B->Callback_overwrite=TRUE;
 		VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
-		return;
+		//return;
 	}
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)

@@ -152,8 +152,6 @@ CPhysicsShell*	P_build_SimpleShell(CGameObject* obj,float mass,bool not_active_s
 	pPhysicsShell->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
 	if(!obj->H_Parent())
 		pPhysicsShell->Activate(obj->XFORM(),0,obj->XFORM(),not_active_state);
-	pPhysicsShell->mDesired.identity();
-	pPhysicsShell->fDesiredStrength = 0.f;
 	return pPhysicsShell;
 }
 

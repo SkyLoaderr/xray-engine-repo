@@ -44,8 +44,6 @@ public:
 	BOOL						bActive																																							;
 	bool						bActivating																																						;
 	Fmatrix						mXFORM																																							;					// In parent space
-	Fmatrix						mDesired																																						;					// In parent space
-	float						fDesiredStrength																																				;					// Desire strength, [0..1]%
 public:
 	virtual		void			Activate								(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)													= 0;
 	virtual		void			Activate								(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false)								= 0;
