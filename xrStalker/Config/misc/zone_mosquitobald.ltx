@@ -873,7 +873,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\teleport_out"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= 0.8;0.5 ;0.1
+hit_impulse_scale	= 0.01;0.5 ;0.1
 effective_radius	= 0.85 ;размер радиуса в процентах от оригинального, где действует зона
 actor_blowout_radius_percent	= 0.75
 
@@ -882,7 +882,7 @@ ef_weapon_type			= 13
 
 sound			= monsters\biting\def_0
 
-postprocess		= mosquito_bald
+postprocess		= postprocess_electra
 
 
 BirthProbability	= 0.1
@@ -904,9 +904,9 @@ hit_sound			= monsters\biting\def_0								;на персонаже, когда тот получает хит
 entrance_sound		= monsters\biting\def_0								;при попадании объекта в аномалию
 
 
-awaking_time		= 50;100
+awaking_time		= 0;100
 blowout_time		= 500	
-accamulate_time		= 1000 ;10;200
+accamulate_time		= 2000 ;10;200
 
 blowout_light_time		= 200
 blowout_explosion_time	= 200
