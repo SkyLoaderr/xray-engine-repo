@@ -96,6 +96,24 @@
 				RelativePath=".\Config\game.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\game_graphs.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\game_levels.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\game_levels_music.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\game_maps_mp.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\game_maps_single.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\game_story_ids.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\script.ltx">
 			</File>
 			<File
