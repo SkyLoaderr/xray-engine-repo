@@ -36,11 +36,7 @@ void CLevel::ClientReceive()
 				if (E->s_flags.is(M_SPAWN_UPDATE))
 					E->UPDATE_Read	(*P);
 				//-------------------------------------------------
-				if (E->s_flags.is(M_SPAWN_TIME))
-				{
-					E->m_dwSpawnTime = P->r_u32();
-//					Msg ("M_SPAWN - %s - %d", *s_name, E->m_dwSpawnTime );
-				}
+//				Msg ("M_SPAWN - %s[%d] - %d", *s_name, E->ID, E->ID_Parent);				
 				//-------------------------------------------------
 				//force object to be local for server client
 				if (OnServer())

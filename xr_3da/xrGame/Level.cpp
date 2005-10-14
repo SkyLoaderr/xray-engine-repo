@@ -302,6 +302,54 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 
 BOOL		g_bDebugEvents = FALSE	;
 
+
+void CLevel::g_cl_Event				(u16 dest, u16 type, NET_Packet& P)
+{
+	//			Msg				("--- event[%d] for [%d]",type,dest);
+	CObject*	 O	= Objects.net_Find	(dest);
+	if (0==O)		{
+		Msg("* WARNING: c_EVENT[%d] : unknown dest",dest);
+		return;
+	}
+	CGameObject* GO = smart_cast<CGameObject*>(O);
+	if (!GO)		{
+		Msg("! ERROR: c_EVENT[%d] : non-game-object",dest);
+		return;
+	}
+	if (type != GE_DESTROY_REJECT)
+	{
+		if (type == GE_DESTROY)
+			Game().OnDestroy(GO);
+		GO->OnEvent		(P,type);
+	}
+	else {
+		u32				pos = P.r_tell();
+		u16				id = P.r_u16();
+		P.r_seek		(pos);
+
+		bool			ok = true;
+
+		CObject			*D	= Objects.net_Find	(id);
+		if (0==D)		{
+			Msg			("! ERROR: c_EVENT[%d] : unknown dest",id);
+			ok			= false;
+		}
+
+		CGameObject		*GD = smart_cast<CGameObject*>(D);
+		if (!GD)		{
+			Msg			("! ERROR: c_EVENT[%d] : non-game-object",id);
+			ok			= false;
+		}
+
+		GO->OnEvent		(P,GE_OWNERSHIP_REJECT);
+		if (ok)
+		{
+			Game().OnDestroy(GD);
+			GD->OnEvent	(P,GE_DESTROY);
+		};
+	}
+};
+
 void CLevel::ProcessGameEvents		()
 {
 	// Game events
@@ -319,49 +367,7 @@ void CLevel::ProcessGameEvents		()
 			u16 dest,type;
 			game_events->get	(dest,type,P);
 
-//			Msg				("--- event[%d] for [%d]",type,dest);
-			CObject*	 O	= Objects.net_Find	(dest);
-			if (0==O)		{
-				Msg("* WARNING: c_EVENT[%d] : unknown dest",dest);
-				continue;
-			}
-			CGameObject* GO = smart_cast<CGameObject*>(O);
-			if (!GO)		{
-				Msg("! ERROR: c_EVENT[%d] : non-game-object",dest);
-				continue;
-			}
-			if (type != GE_DESTROY_REJECT)
-			{
-				if (type == GE_DESTROY)
-					Game().OnDestroy(GO);
-				GO->OnEvent		(P,type);
-			}
-			else {
-				u32				pos = P.r_tell();
-				u16				id = P.r_u16();
-				P.r_seek		(pos);
-
-				bool			ok = true;
-				
-				CObject			*D	= Objects.net_Find	(id);
-				if (0==D)		{
-					Msg			("! ERROR: c_EVENT[%d] : unknown dest",id);
-					ok			= false;
-				}
-
-				CGameObject		*GD = smart_cast<CGameObject*>(D);
-				if (!GD)		{
-					Msg			("! ERROR: c_EVENT[%d] : non-game-object",id);
-					ok			= false;
-				}
-
-				GO->OnEvent		(P,GE_OWNERSHIP_REJECT);
-				if (ok)
-				{
-					Game().OnDestroy(GD);
-					GD->OnEvent	(P,GE_DESTROY);
-				};
-			}
+			g_cl_Event(dest, type, P);
 		}
 	}
 	if (OnServer() && GameID()!= GAME_SINGLE)

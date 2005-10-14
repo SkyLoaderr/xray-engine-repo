@@ -299,7 +299,7 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 
 	pShell->Build();
 #ifdef DEBUG	
-	Msg("shell for %s created in %d ms",*m_EntityAlife.cName(),t.GetElapsed_ms());
+	Msg("shell for %s[%d] created in %d ms",*m_EntityAlife.cName(),m_EntityAlife.ID(),t.GetElapsed_ms());
 #endif
 }
 void CCharacterPhysicsSupport::CreateSkeleton()

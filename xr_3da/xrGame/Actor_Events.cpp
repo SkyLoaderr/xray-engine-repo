@@ -37,7 +37,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GE_TRADE_BUY:
 	case GE_OWNERSHIP_TAKE:
 		{
-			// Log("CActor::OnEvent - TAKE - ", *cName());
+			//Log("CActor::OnEvent - TAKE - ", *cName());
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 			if (!O)
@@ -81,7 +81,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
 				if (pWeapon) SelectBestWeapon();
 #ifdef DEBUG
-//				Msg("COnEvent - %s - TAKE - %s - PASSED", *cName(), *(O->cName()));
+//				Msg("OnEvent - %s[%d] - TAKE - %s[%d] - PASSED", *cName(), ID(), *(O->cName()), O->ID());
 #endif
 
 			} 
@@ -92,7 +92,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				P.w_u16(u16(O->ID()));
 				u_EventSend(P);
 #ifdef DEBUG
-//				Msg("OnEvent - %s - TAKE - %s - FAILED", *cName(), *(O->cName()));
+//				Msg("OnEvent - %s[%d] - TAKE - %s[%d] - FAILED", *cName(), ID(), *(O->cName()), O->ID());
 #endif
 			}
 		}
@@ -109,8 +109,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				Msg("! Error: No object to reject/sell [%d]", id);
 				break;
 			}
-#ifdef DEBUG
-//			Msg("OnEvent - %s - REJECT - %s", *cName(), *(O->cName()));
+#ifdef DEBUG			
+//			Msg("OnEvent - %s[%d] - REJECT - %s[%d]", *cName(), ID(), *(O->cName()), O->ID());
 #endif
 			
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) 

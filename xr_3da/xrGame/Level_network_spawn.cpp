@@ -70,20 +70,21 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 
 		if (0xffff != E->ID_Parent)	
 		{
+			/*
 			// Generate ownership-event
 			NET_Packet			GEN;
 			GEN.w_begin			(M_EVENT);
-			//---------------------------------------------
-			if (E->s_flags.is(M_SPAWN_TIME))
-				GEN.w_u32			(E->m_dwSpawnTime);
-			else
-			//-----------------------------------------
-				GEN.w_u32			(Level().timeServer());//-NET_Latency);
+			GEN.w_u32			(Level().timeServer());//-NET_Latency);
 			GEN.w_u16			(GE_OWNERSHIP_TAKE);
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));
 			game_events->insert	(GEN);
-			if (g_bDebugEvents)	ProcessGameEvents();
+			*/
+			NET_Packet	GEN;
+			GEN.write_start();
+			GEN.read_start();
+			GEN.w_u16			(u16(O->ID()));
+			g_cl_Event(E->ID_Parent, GE_OWNERSHIP_TAKE, GEN);
 		}
 	}
 	//---------------------------------------------------------

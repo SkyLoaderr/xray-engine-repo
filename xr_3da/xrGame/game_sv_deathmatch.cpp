@@ -609,6 +609,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 				//---------------------------------------
 				Check_ForClearRun(ps);
 			}
+			//-------------------------------
 		}break;
 	};
 }
@@ -1698,6 +1699,7 @@ void	game_sv_Deathmatch::check_InvinciblePlayers()
 		game_PlayerState* ps	= l_pC->ps;
 		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
 		u16 OldFlags = ps->flags;
+		KillPlayer(l_pC->ID, ps->GameID);
 		check_Player_for_Invincibility(ps);
 		if (ps->flags != OldFlags) signal_Syncronize();
 	};

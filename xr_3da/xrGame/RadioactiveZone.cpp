@@ -86,8 +86,9 @@ void CRadioactiveZone::UpdateWorkload					(u32	dt)
 			{
 				//=====================================
 				NET_Packet	l_P;
-				l_P.B.count = 0;
-				l_P.r_pos = 0;
+				l_P.write_start();
+				l_P.read_start();
+
 				l_P.w_u16	(ID());
 				l_P.w_u16	(ID());
 				l_P.w_dir	(Fvector().set(0,0,0));
