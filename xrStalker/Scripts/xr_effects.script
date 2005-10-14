@@ -1211,6 +1211,10 @@ function aes_earthshake (npc)
     set_postprocess ("scripts\\earthshake.ltx")
 end
 
+function vovan_camera_test (npc)
+	local ce = path_cam_effector("camera_effects\\test.anm")
+	level.add_cam_effector(ce)	                  
+end
 -------------------------------------------------------------------------------------
 -- Функции для Янтаря
 ----------------------------------------------------------------------------------
