@@ -46,7 +46,6 @@ extern "C" {
 
 void load_prop_helper			()
 {
-
 	prop_helper_module		= LoadLibrary(prop_helper_library);
 	if (!prop_helper_module) {
 		Msg					("! Cannot find library %s",prop_helper_library);
