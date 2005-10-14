@@ -9,12 +9,19 @@ local func_linear = 2
 
 class "PPData" (effector)
 ----------------
-function PPData:__init () super (1003,10000000)
-        self.params = effector_params ()
+function PPData:__init (host) super (1003,10000000)
+    self.params = effector_params ()
+    self.host = host
+    self.time = time_global ()
 end
 ----------------
 function PPData:process (pp)
-        pp:assign (self.params)
+    local t = time_global ()
+    if t - self.time ~= 0 then
+       self.host:update2 ((t - self.time) * 0.001)
+       self.time = t
+    end    
+    pp:assign (self.params)
     effector.process (self, pp)
     return true
 end
@@ -198,14 +205,14 @@ function PostProcess:__init (ini_file)
     -- load noise FPS effect
     self.noise_f = PPEffector (ini_file, "noise_fps")
 
-        self.pp = PPData ()
-        self.pp:start ()
-        self.pp.params.color_base = color (0.5, 0.5, 0.5)                // max base color diff                        [0.0-0.5]
-        self.pp.params.color_gray = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
-        self.pp.params.color_add  = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
-        self.pp.params.gray            = 0.0                                                    // gray max intensity                        [0.0-1.0]
-        self.pp.params.dual                    = duality (0.0, 0.0)
-        self.pp.params.noise      = noise   (0.0, 0.0, 30)                // intensity, grain, fps                [0.0-1.0,0.0-1.0,1-100]
+    self.pp = PPData (self)
+    self.pp:start ()
+    self.pp.params.color_base = color (0.5, 0.5, 0.5)                // max base color diff                        [0.0-0.5]
+    self.pp.params.color_gray = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
+    self.pp.params.color_add  = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
+    self.pp.params.gray       = 0.0                              // gray max intensity                        [0.0-1.0]
+    self.pp.params.dual       = duality (0.0, 0.0)
+    self.pp.params.noise      = noise   (0.0, 0.0, 30)                // intensity, grain, fps                [0.0-1.0,0.0-1.0,1-100]
 end
 ----------------
 function PostProcess:reset ()
@@ -226,13 +233,40 @@ function PostProcess:reset ()
     self.noise_f:reset ()
 end
 ----------------
-function PostProcess:update (delta)
+function PostProcess:update2 (delta)
     self.pp.params.color_base   = color             (self.base_r:update (delta) + 0.5, self.base_g:update (delta) + 0.5, self.base_b:update (delta) + 0.5)
     self.pp.params.color_gray   = color             (self.gray_r:update (delta), self.gray_g:update (delta), self.gray_b:update (delta))
     self.pp.params.color_add    = color             (self.add_r:update (delta), self.add_g:update (delta), self.add_b:update (delta))
     self.pp.params.gray         = self.gray:update  (delta)
     self.pp.params.dual         = duality           (self.duality_h:update (delta), self.duality_v:update (delta))
     self.pp.params.noise        = noise             (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100)
+end    
+----------------
+function PostProcess:update (delta)
+    --self.pp.params.color_base   = color             (self.base_r:update (delta) + 0.5, self.base_g:update (delta) + 0.5, self.base_b:update (delta) + 0.5)
+    --self.pp.params.color_gray   = color             (self.gray_r:update (delta), self.gray_g:update (delta), self.gray_b:update (delta))
+    --self.pp.params.color_add    = color             (self.add_r:update (delta), self.add_g:update (delta), self.add_b:update (delta))
+    --self.pp.params.gray         = self.gray:update  (delta)
+    --self.pp.params.dual         = duality           (self.duality_h:update (delta), self.duality_v:update (delta))
+    --self.pp.params.noise        = noise             (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100)
+    
+    if self.base_r.end_func == true and 
+       self.base_g.end_func == true and  
+       self.base_b.end_func == true and  
+       self.gray_r.end_func == true and  
+       self.gray_g.end_func == true and  
+       self.gray_b.end_func == true and  
+       self.add_r.end_func == true and  
+       self.add_g.end_func == true and  
+       self.add_b.end_func == true and  
+       self.gray.end_func == true and  
+       self.duality_h.end_func == true and  
+       self.duality_v.end_func == true and  
+       self.noise_i.end_func == true and  
+       self.noise_g.end_func == true and  
+       self.noise_f.end_func == true then
+       return true
+    end   
 end
 
 ----------------
