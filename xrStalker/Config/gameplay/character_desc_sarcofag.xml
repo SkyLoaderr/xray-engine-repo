@@ -1,0 +1,687 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+
+<specific_character id="gar_seriy" team_default = "1">
+		<name>Сталкер Серый</name>
+		<icon x="26" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Сталкер с грязным лицом и не менее грязной биографией.</bio>
+
+		<class>gar_seriy</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_hood_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			medkit = 1 \n
+			garbage_seriy_flash \n
+		</supplies>
+					
+		<start_dialog>gar_seriy_start</start_dialog>
+		<actor_dialog>gar_seriy_help</actor_dialog>
+		<actor_dialog>gar_seryi_about_garbage</actor_dialog>		
+	</specific_character>	
+	
+	<specific_character id="gar_dram_novice" team_default = "1">
+		<name>Юрик</name>
+		<icon x="20" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Сталкер новичок. Делает первые шаги в Зоне.</bio>
+
+		<class>gar_dram_novice</class>
+		<community>stalker</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\novice\green_stalker_11</visual>
+		<supplies>
+			[spawn] \n
+			device_torch \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+		</supplies>
+					
+		<start_dialog>gar_dramm_novice_start</start_dialog>
+		<actor_dialog>gar_dram_novice_level</actor_dialog>
+	</specific_character>
+	
+	
+	<specific_character id="gar_newbie_in_tonnel" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="26" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+
+		<class>gar_newbie_in_tonnel</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_rukzak_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+			
+		<start_dialog>gar_newbie_in_tonnel</start_dialog>
+	</specific_character>
+	
+	<specific_character id="gar_hellcar" team_default = "1">
+		<name>Сталкер Даймон</name>
+		<icon x="16" y="12"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Бежал в Зону, прячась от правоохранительных органов. В одиночку старается поддерживать порядок в Зоне, так, как он себе его представляет. Борец с беспределом. Жесток, но справедлив.</bio>
+
+		<class>gar_hellcar</class>
+		<community>stalker</community>
+
+		<rank>50</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+		
+		<panic_treshold>0</panic_treshold>
+
+		<visual>actors\neytral\stalker_neytral_balon_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			medkit = 1 \n
+			stalker_outfit \n
+		</supplies>
+
+		<start_dialog>gar_hellcar_start</start_dialog>
+		<actor_dialog>gar_hellcar_dialog_quest</actor_dialog>
+		<actor_dialog>gar_hellcar_dialog_thanks</actor_dialog>
+		<actor_dialog>gar_hellcar_bandits_damaged</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="gar_bandit_novice_wounded" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="14" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+
+		
+		<class>gar_bandit_novice_wounded</class>
+		<community>bandit</community>
+		
+		<rank>0</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>gar_wounded_bandit</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="gar_bandit_leader" team_default = "1">
+		<name>Предводитель бандитов</name>
+		<icon x="22" y="14"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>gar_bandit_leader</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_pbp = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+	</specific_character>
+	
+		<!---------------------------BANDIT NOVICE----------------------->
+	<specific_character id="gar_bandit_novice_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="14" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+	
+		<class>gar_bandit_novice</class>
+		<community>bandit</community>
+		
+		<rank>0</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+</specific_character>
+
+	<specific_character id="gar_bandit_novice_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>gar_bandit_novice</class>
+		<community>bandit</community>
+		
+		<rank>0</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+			wpn_toz34 \n
+			ammo_12x70_buck \n
+#include "gameplay\character_items.xml"						
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="gar_bandit_novice_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="2"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>gar_bandit_novice</class>
+		<community>bandit</community>
+		
+		<rank>0</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+	
+	<!---------------------------BANDIT general----------------------->
+	
+	<specific_character id="gar_bandit_general_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="14" y="4"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+	
+		<class>gar_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp = 1 \n
+			wpn_toz34 \n
+			ammo_12x76_dart = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="gar_bandit_general_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="2"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>gar_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_mp5 = 1 \n
+			ammo_9x19_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="gar_bandit_general_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="2"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+				
+		<class>gar_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj	= 1 \n
+			wpn_mp5 \n
+			ammo_9x19_pbp = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+	
+	
+	
+	<!---------------------------Stalker general----------------------->
+	
+	<specific_character id="gar_stalker_general_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="4"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<class>gar_stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pmm = 1 \n
+			wpn_toz34 \n
+			ammo_12x76_zhekan = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_esc</actor_dialog>
+
+	</specific_character>
+
+	<specific_character id="gar_stalker_general_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="16" y="6"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<class>gar_stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pmm = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+				
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_esc</actor_dialog>
+</specific_character>
+
+<specific_character id="gar_stalker_general_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="4"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<class>gar_stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_hood_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_esc</actor_dialog>
+</specific_character>
+
+	<specific_character id="gar_stalker_general_default4" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="4"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<class>gar_stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_hood_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_esc</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="gar_stalker_general_default5" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="16" y="6"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+
+		<class>gar_stalker_general</class>
+		<community>stalker</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_level</actor_dialog>
+		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
+		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
+		<actor_dialog>agr_stalker_esc</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="gar_wounded_bandit" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="12"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<class>gar_wounded_bandit</class>
+		<community>freedom</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_01\</snd_config>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+	<!---------------------------DOLG BLOKPOST----------------------->
+	<specific_character id="gar_dolg_blokpost_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+
+		<class>gar_dolg_blokpost</class>
+		<community>dolg</community>
+		
+		<rank>40</rank>
+		<reputation>20</reputation>
+		
+		<snd_config>characters_voice\human_03\</snd_config>
+
+		<panic_threshold>0.1</panic_threshold>
+
+		<visual>actors\dolg\stalker_do_mask_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pmm = 1 \n
+            wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n			
+#include "gameplay\character_items.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
+	</specific_character>
+
+	<specific_character id="gar_dolg_blokpost_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="4"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+
+		<class>gar_dolg_blokpost</class>
+		<community>dolg</community>
+		
+		<rank>40</rank>
+		<reputation>20</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\dolg\stalker_do_balon_8</visual>
+		<supplies>
+			[spawn] \n
+            wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
+	</specific_character>
+
+	<specific_character id="gar_dolg_blokpost_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="4"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		
+		<class>gar_dolg_blokpost</class>
+		<community>dolg</community>
+		
+		<rank>40</rank>
+		<reputation>20</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\dolg\stalker_do_balon_8</visual>
+		<supplies>
+			[spawn] \n
+            wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+            wpn_ak74 \n
+			ammo_5.45x39_ap \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
+	</specific_character>
+
+	<specific_character id="gar_dolg_blokpost_commander" team_default = "1">
+		<name>Хантер</name>
+		<icon x="18" y="12"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Офицер группировки "Долг". Детальная информация отсутствует.</bio>
+		
+		<class>gar_dolg_blokpost_commander</class>
+		<community>dolg</community>
+		
+		<rank>40</rank>
+		<reputation>20</reputation>
+
+		<snd_config>characters_voice\human_02\</snd_config>
+		
+		<visual>actors\dolg\stalker_do_balon_4</visual>
+		<supplies>
+			[spawn] \n
+            wpn_fort \n
+			ammo_9x18_pmm = 1 \n
+            wpn_spas12 \n
+			ammo_12x76_dart \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
+	</specific_character>
+	
+</xml>
