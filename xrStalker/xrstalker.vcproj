@@ -387,6 +387,9 @@
 						RelativePath=".\Config\gameplay\info_l11yantar.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\info_l12u_sarcofag.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\info_l12yantar_u.xml">
 					</File>
 					<File
@@ -517,6 +520,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_radar.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\gulag_sarcofag.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_tasks.ltx">
@@ -2765,6 +2771,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_radar.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\gulag_sarcofag.script">
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_yantar.script">
