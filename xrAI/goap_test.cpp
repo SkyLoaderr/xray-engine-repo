@@ -58,8 +58,8 @@ LPSTR show_condition(const xr_vector<CCondition> &condition, CSProblemSolver &pr
 	char					*s1 = s;
 	xr_vector<CCondition>::const_iterator	i = condition.begin();
 	xr_vector<CCondition>::const_iterator	e = condition.end();
-	CSProblemSolver::EVALUATOR_MAP::const_iterator	I = problem_solver.evaluators().begin();
-	CSProblemSolver::EVALUATOR_MAP::const_iterator	E = problem_solver.evaluators().end();
+	CSProblemSolver::EVALUATORS::const_iterator	I = problem_solver.evaluators().begin();
+	CSProblemSolver::EVALUATORS::const_iterator	E = problem_solver.evaluators().end();
 	for ( ; I != E; )
 		if ((i == e) || ((*I).first < (*i).condition())) {
 			s1				+= sprintf(s1,". ");
