@@ -1730,6 +1730,12 @@
 							<File
 								RelativePath=".\alife_human.cpp">
 							</File>
+							<File
+								RelativePath=".\alife_human_behaviour.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_human_misc.cpp">
+							</File>
 							<Filter
 								Name="brain"
 								Filter="">
