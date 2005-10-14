@@ -148,10 +148,6 @@ function PPEffector:update (delta)
        self:set_next_function ()
     end
     
-    if self.section == "color_base_red" then
-       printf ("Current value = %f, time = %f", v, self.time)
-    end    
-
     return v
 end
 ----------------
