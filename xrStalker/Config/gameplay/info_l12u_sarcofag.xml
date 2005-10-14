@@ -1,6 +1,19 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
+	<!-- Вскрытие управления -->
+	<info_portion id="sar_start_decoding"></info_portion>
+	<info_portion id="sar_finish_decoding"></info_portion>
 	
+	
+	<!-- спавн монолита -->
+	<info_portion id="sar_monolith_spawn1"></info_portion>
+	<info_portion id="sar_monolith_spawn2"></info_portion>
+	<info_portion id="sar_monolith_spawn3"></info_portion>
+	<info_portion id="sar_monolith_spawn4"></info_portion>
+	<info_portion id="sar_monolith_spawn5"></info_portion>
+	<info_portion id="sar_monolith_spawn6"></info_portion>
+	<info_portion id="sar_monolith_spawn7"></info_portion>
+	<info_portion id="sar_monolith_spawn8"></info_portion>
 	
 </game_information_portions>
