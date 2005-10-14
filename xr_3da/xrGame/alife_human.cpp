@@ -26,13 +26,6 @@
 using namespace ALife;
 using namespace ALifeCommunication;
 
-struct CRemovePersonalEventPredicate {
-	IC bool							operator()							(const CALifeEventPersonal *tPersonalEvent)  const
-	{
-		return						(!ai().alife().events().event(tPersonalEvent->m_tEventID,true));
-	};
-};
-
 struct CSortItemPredicate {
 	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2)  const
 	{
@@ -162,8 +155,6 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 
 void CSE_ALifeHumanAbstract::vfCheckForDeletedEvents()
 {
-	PERSONAL_EVENT_P_IT I = std::remove_if(m_tpEvents.begin(),m_tpEvents.end(),CRemovePersonalEventPredicate());
-	m_tpEvents.erase	(I,m_tpEvents.end());
 }
 
 bool CSE_ALifeHumanAbstract::similar_task				(const CALifeTask *prev_task, const CALifeTask *new_task)
