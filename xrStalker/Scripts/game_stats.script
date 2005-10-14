@@ -7,6 +7,9 @@ local   additional_time =   0
 
 --constants
 local   actor_position  =   0
+local   actor_item_drop =   1
+local   actor_item_take =   2
+local   actor_item_use  =   3
 ----------------------------------------------------------
 function initialize ()
     printf ("GAME STATS START AT LEVEL [%s]", level.name ())
@@ -17,7 +20,11 @@ function shutdown   ()
     local l_name = level.name ()
     for a = 1, table.getn (stats), 1 do
         if stats[a].id == actor_position then
-           printf ("[stats][%s][%s][%d][%f,%f,%f]", l_name, stats[a].time, stats[a].id, stats[a].position.x, stats[a].position.y, stats[a].position.z)
+           printf ("[stats][%s][%s][%d][%f,%f,%f][%f]", l_name, stats[a].time, stats[a].id, stats[a].position.x, stats[a].position.y, stats[a].position.z, stats[a].health)
+        elseif stats[a].id == actor_item_take then
+           printf ("[stats][%s][%s][%d][%f,%f,%f][%s]", l_name, stats[a].time, stats[a].id, stats[a].position.x, stats[a].position.y, stats[a].position.z, stats[a].item_name)
+        elseif stats[a].id == actor_item_drop then
+           printf ("[stats][%s][%s][%d][%f,%f,%f][%s]", l_name, stats[a].time, stats[a].id, stats[a].position.x, stats[a].position.y, stats[a].position.z, stats[a].item_name)
         end
     end
     stats = {}
@@ -29,6 +36,35 @@ function update     (delta, actor)
        return
     end
     additional_time = 0
-    local t = {time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds), id = actor_position, position = actor:position ()}
+    local t = {
+              time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds), 
+              id = actor_position, 
+              position = actor:position (),
+              health = actor.health
+              }
     table.insert (stats, t)
 end
+----------------------------------------------------------
+function update_task (id_task, subtask, id_state, actor)
+end
+----------------------------------------------------------
+function update_take_item (object, actor)
+    local t = {
+              time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds), 
+              id = actor_item_take,
+              position = actor:position (),
+              item_name = object:name ()
+              }
+    table.insert (stats, t)
+end
+----------------------------------------------------------
+function update_drop_item (object, actor)
+    local t = {
+              time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds), 
+              id = actor_item_drop,
+              position = actor:position (),
+              item_name = object:name ()
+              }
+    table.insert (stats, t)
+end
+----------------------------------------------------------
