@@ -3123,6 +3123,9 @@
 					RelativePath=".\scripts\memusage.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\p.script">
+				</File>
+				<File
 					RelativePath=".\scripts\profiler.script">
 				</File>
 				<File
