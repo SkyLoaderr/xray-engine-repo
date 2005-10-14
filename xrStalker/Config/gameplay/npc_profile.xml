@@ -464,15 +464,19 @@
 		<class>rad_soldier_specnaz</class>
 	</character>	
 	<!-- Dolg -->
-	<character id="rad_Dolg_specnaz">
-		<class>rad_Dolg_specnaz</class>
+	<character id="rad_Dolg_master">
+		<class>rad_Dolg_master</class>
 	</character>	
 	<!-- Svoboda -->
 	<character id="rad_Svoboda_master">
 		<class>rad_Svoboda_master</class>
 	</character>
-	
-	
+	<!-- dead scientists -->
+	<character id="rad_ecolog">
+		<class>rad_Ecolog</class>
+	</character>
+
+
 <!-- Pripyat -->
 	<!-- Monolith -->
 	<character id="pri_monolith_ambush">
