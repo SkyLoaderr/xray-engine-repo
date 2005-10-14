@@ -464,16 +464,12 @@
 		<class>rad_soldier_specnaz</class>
 	</character>	
 	<!-- Dolg -->
-	<character id="rad_Dolg_master">
-		<class>rad_Dolg_master</class>
+	<character id="rad_Dolg_specnaz">
+		<class>rad_Dolg_specnaz</class>
 	</character>	
 	<!-- Svoboda -->
 	<character id="rad_Svoboda_master">
 		<class>rad_Svoboda_master</class>
-	</character>
-	<!-- dead scientists -->
-	<character id="rad_ecolog">
-		<class>rad_Ecolog</class>
 	</character>
 	
 	
@@ -555,7 +551,16 @@
 	<character id="aes_Monolit_specnaz_rg6">
 		<class>aes_Monolit_specnaz_rg6</class>
 	</character>
-
-
+	
+<!-- Sarcofag -->
+	<character id="sar_monolith_specnaz">
+		<class>sar_monolith_specnaz</class>
+	</character>
+	<character id="sar_monolith_exo">
+		<class>sar_monolith_exo</class>
+	</character>
+	<character id="sar_monolith_commander">
+		<class>sar_monolith_commander</class>
+	</character>
 	
 </xml>
