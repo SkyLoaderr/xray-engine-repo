@@ -83,7 +83,6 @@ CPPEffectorController::~CPPEffectorController()
 {
 	if (m_effector) {
 		Level().Cameras.RemoveEffector(m_effector->get_type());
-		xr_delete(m_effector);
 	}
 }
 
@@ -100,7 +99,7 @@ void CPPEffectorController::deactivate()
 {
 	VERIFY				(m_effector);
 	
-	xr_delete			(m_effector);
+	Level().Cameras.RemoveEffector(m_effector->get_type());
 	m_effector			= 0;
 }
 

@@ -50,7 +50,7 @@ void CStateControllerAttackAbstract::execute()
 				if (!get_state_current()->check_completion())
 					state_id = eStateAttack_MoveOut;
 				else 
-					state_id = eStateAttack_HideInCoverLite;
+					state_id = eStateAttack_HideInCover;
 			}
 		}
 	}
@@ -86,7 +86,7 @@ void CStateControllerAttackAbstract::execute()
 				if (get_state(eStateAttack_MoveOut)->check_start_conditions())
 					state_id = eStateAttack_MoveOut;	
 				else 
-					state_id = eStateAttack_HideInCover;
+					state_id = eStateAttack_HideInCoverLite;
 			}
 		}
 	}

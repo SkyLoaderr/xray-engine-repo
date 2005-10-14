@@ -203,10 +203,11 @@ void CControllerAnimation::select_torso_animation()
 		target_motion			= m_torso[m_current_torso_action];
 	}
 	
-	if (ctrl_data->torso.motion != target_motion) {
+	if ((ctrl_data->torso.motion != target_motion) || m_wait_torso_anim_end) {
 		ctrl_data->torso.motion	= target_motion;
 		ctrl_data->torso.actual	= false;
 	}
+
 }
 
 void CControllerAnimation::select_legs_animation()

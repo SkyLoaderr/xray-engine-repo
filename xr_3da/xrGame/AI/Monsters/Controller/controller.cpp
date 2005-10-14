@@ -35,6 +35,7 @@
 #include "../../../InventoryOwner.h"
 #include "../../../character_info.h"
 
+
 const u32	_pmt_psy_attack_delay		= 2000;
 const float	_pmt_psy_attack_min_angle	= deg(5);
 
@@ -150,6 +151,9 @@ void CController::Load(LPCSTR section)
 	m_velocity_move_bkwd.Load	(section, "Velocity_MoveBkwd");
 
 	load_friend_community_overrides(section);
+
+	// load
+	m_sound_hit_fx.create(TRUE, "affects\\tinnitus3a");
 }
 
 void CController::load_friend_community_overrides(LPCSTR section)
@@ -281,6 +285,8 @@ void CController::reinit()
 
 	control().path_builder().detail().add_velocity(MonsterMovement::eControllerVelocityParameterMoveFwd,	CDetailPathManager::STravelParams(m_velocity_move_fwd.velocity.linear,	m_velocity_move_fwd.velocity.angular_path,	m_velocity_move_fwd.velocity.angular_real));
 	control().path_builder().detail().add_velocity(MonsterMovement::eControllerVelocityParameterMoveBkwd,	CDetailPathManager::STravelParams(m_velocity_move_bkwd.velocity.linear,	m_velocity_move_bkwd.velocity.angular_path, m_velocity_move_bkwd.velocity.angular_real));
+
+	m_sndShockEffector		 = 0;
 }
 
 void CController::control_hit()
@@ -306,6 +312,13 @@ void CController::UpdateCL()
 {
 	inherited::UpdateCL();
 	
+	if(m_sndShockEffector)
+	{
+		m_sndShockEffector->Update();
+		if(!m_sndShockEffector->Active()) xr_delete(m_sndShockEffector);
+	}
+
+
 	CPsyAuraController::frame_update();
 
 	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
@@ -411,18 +424,29 @@ void CController::draw_fire_particles()
 
 	PlayParticles("weapons\\generic_weapon07", my_head_pos, dir);
 
-	NET_Packet	l_P;
-	u_EventGen	(l_P,GE_HIT, enemy->ID());
-	l_P.w_u16	(ID());
-	l_P.w_u16	(ID());
-	l_P.w_dir	(dir);
-	l_P.w_float	(20.f);
-	l_P.w_s16	(smart_cast<CKinematics*>(enemy->Visual())->LL_GetBoneRoot());
-	l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
-	l_P.w_float	(200.f);
-	l_P.w_u16	( u16(ALife::eHitTypeWound) );
-	u_EventSend	(l_P);
-	
+	// check probability
+	if (Random.randI(100) > 30) {
+		NET_Packet	l_P;
+		u_EventGen	(l_P,GE_HIT, enemy->ID());
+		l_P.w_u16	(ID());
+		l_P.w_u16	(ID());
+		l_P.w_dir	(dir);
+		l_P.w_float	(20.f);
+		l_P.w_s16	(smart_cast<CKinematics*>(enemy->Visual())->LL_GetBoneRoot());
+		l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
+		l_P.w_float	(200.f);
+		l_P.w_u16	( u16(ALife::eHitTypeWound) );
+		u_EventSend	(l_P);
+
+		play_control_sound_hit		();
+	}
+
+	//m_sound_hit_fx.set_volume(10.0f);
+	//if(!m_sndShockEffector)
+	//	m_sndShockEffector = xr_new<SndShockEffector>();
+
+	//m_sndShockEffector->Start(m_sound_hit_fx._handle()->length_ms(), 10.f );
+	//m_sound_hit_fx.play_at_pos(this, Level().CurrentEntity()->Position());
 }
 
 void CController::psy_fire()
@@ -430,9 +454,6 @@ void CController::psy_fire()
 	if (!EnemyMan.get_enemy())	return;
 	
 	draw_fire_particles			();
-	play_control_sound_hit		();
-
-	m_psy_fire_start_time		= time();
 }
 
 bool CController::can_psy_fire()
@@ -446,6 +467,7 @@ bool CController::can_psy_fire()
 	dir_yaw			= angle_normalize(-dir_yaw);
 	if (angle_difference(cur_yaw,dir_yaw) > _pmt_psy_attack_min_angle) return false;
 
+	m_psy_fire_start_time		= time();
 	return true;
 }
 

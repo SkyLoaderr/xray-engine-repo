@@ -31,13 +31,16 @@ void CControlAnimation::reset_data()
 
 void CControlAnimation::update_frame() 
 {
-	check_callbacks	();
+	// move to schedule update
+	m_skeleton_animated->UpdateTracks	();	
 	
-	play			();	
+	check_callbacks						();
+	
+	play								();	
 
-	check_events	(m_data.global);
-	check_events	(m_data.torso);
-	check_events	(m_data.legs);
+	check_events						(m_data.global);
+	check_events						(m_data.torso);
+	check_events						(m_data.legs);
 }
 
 static void  global_animation_end_callback(CBlend* B)
@@ -161,6 +164,5 @@ void CControlAnimation::check_callbacks()
 		m_man->notify			(ControlCom::eventTorsoAnimationEnd, 0);
 		m_torso_animation_end	= false;
 	}
-
 
 }

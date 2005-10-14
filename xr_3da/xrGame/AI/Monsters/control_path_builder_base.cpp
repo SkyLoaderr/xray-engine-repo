@@ -140,7 +140,7 @@ void CControlPathBuilderBase::on_path_updated()
 		m_man->path_builder().detail().actual() && 
 		m_man->path_builder().enabled() && 
 		// конечный путь?
-		m_target_set.node != m_object->ai_location().level_vertex_id()	) {
+		m_target_set.node != m_object->ai_location().level_vertex_id() && m_target_actual) {
 			m_failed	= true;
 		}
 

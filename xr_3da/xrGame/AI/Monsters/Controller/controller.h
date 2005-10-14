@@ -8,6 +8,8 @@
 class CControllerAnimation;
 class CControllerDirection;
 
+class SndShockEffector;
+
 class CController : public CBaseMonster, 
 					public CPsyAuraController {
 
@@ -16,6 +18,9 @@ class CController : public CBaseMonster,
 	u8					m_max_controlled_number;
 	ref_sound			control_start_sound;		// звук, который играется в голове у актера
 	ref_sound			control_hit_sound;			// звук, который играется в голове у актера
+
+	ref_sound			m_sound_hit_fx;
+	SndShockEffector*	m_sndShockEffector;					
 
 
 	SAttackEffector		m_control_effector;
