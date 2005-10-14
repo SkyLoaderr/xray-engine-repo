@@ -179,8 +179,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	u16 m_wVersion = base()->m_wVersion;
 	if (m_wVersion > 19) {
 		if (m_wVersion < 108) {
-			ALife::PERSONAL_EVENT_P_VECTOR	temp;
-			load_data			(temp,tNetPacket);
+			R_ASSERT			(!tNetPacket.r_u32());
 		}
 		ALife::TASK_VECTOR		l_tpTaskIDs;
 		if (m_wVersion < 36)
