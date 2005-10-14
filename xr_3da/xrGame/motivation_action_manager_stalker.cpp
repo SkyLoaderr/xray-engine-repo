@@ -77,8 +77,8 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 	if (m_failed) {
 		{
 			Msg			("%d",evaluators().size());
-			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-			EVALUATOR_MAP::const_iterator	E = evaluators().end();
+			EVALUATORS::const_iterator	I = evaluators().begin();
+			EVALUATORS::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I)
 				Msg		("%d,%d",(*I).first,(*I).second->evaluate() ? 1 : 0);
 		}

@@ -19,6 +19,8 @@
 #include "object_handler_space.h"
 #include "game_object_space.h"
 #include "script_callback_ex.h"
+#include "stalker_animation_data_storage.h"
+#include "stalker_animation_data.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -55,16 +57,15 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_visual);
 	VERIFY						(m_skeleton_animated);
 
-	m_part_animations.Load		(m_skeleton_animated,"");
-	m_head_animations.Load		(m_skeleton_animated,"");
-	m_global_animations.Load	(m_skeleton_animated,"item_");
-	
+	m_data_storage				= stalker_animation_data_storage().object(m_skeleton_animated);
+	VERIFY						(m_data_storage);
+
 	if (!object().g_Alive())
 		return;
 
 #ifdef USE_HEAD_BONE_PART_FAKE
-	VERIFY						(!m_head_animations.A.empty());
-	u16							bone_part = m_skeleton_animated->LL_GetMotionDef(m_head_animations.A.front())->bone_or_part;
+	VERIFY						(!m_data_storage->m_head_animations.A.empty());
+	u16							bone_part = m_skeleton_animated->LL_GetMotionDef(m_data_storage->m_head_animations.A.front())->bone_or_part;
 	VERIFY						(bone_part != BI_NONE);
 	m_script_bone_part_mask		= CStalkerAnimationPair::all_bone_parts ^ (1 << bone_part);
 #endif
@@ -87,7 +88,7 @@ CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state() cons
 
 void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 {
-	m_skeleton_animated->PlayFX	(m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index],power_factor);
+	m_skeleton_animated->PlayFX	(m_data_storage->m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index],power_factor);
 }
 
 void CStalkerAnimationManager::update						()

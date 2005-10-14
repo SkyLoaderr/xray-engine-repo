@@ -44,15 +44,12 @@ IC	u32	CSoundPlayer::active_sound_count(bool only_playing) const
 	return								(count);
 }
 
-IC	ref_sound *CSoundPlayer::add			(ESoundTypes type, LPCSTR name, CSound_UserDataPtr data) const
+IC	ref_sound *CSoundPlayer::CSoundCollection::add	(ESoundTypes type, LPCSTR name) const
 {
 	ref_sound				*temp = xr_new<ref_sound>();
 	temp->create			(TRUE,name,type);
 	if (!temp->_p)
 		return				(0);
-	
-	temp->_p->g_object		= m_object;
-	temp->_p->g_userdata	= data;
 	return					(temp);
 }
 

@@ -149,8 +149,8 @@ void draw_planner						(const planner_type &brain, LPCSTR start_indent, LPCSTR i
 		HUD().Font().pFontSmall->OutNext("%s%s%s%s",start_indent,indent,indent,_brain.action2string(brain.solution()[i]));
 	// current
 	HUD().Font().pFontSmall->OutNext	("%s%scurrent world state",start_indent,indent);
-	planner_type::EVALUATOR_MAP::const_iterator	I = brain.evaluators().begin();
-	planner_type::EVALUATOR_MAP::const_iterator	E = brain.evaluators().end();
+	planner_type::EVALUATORS::const_iterator	I = brain.evaluators().begin();
+	planner_type::EVALUATORS::const_iterator	E = brain.evaluators().end();
 	for ( ; I != E; ++I) {
 		xr_vector<planner_type::COperatorCondition>::const_iterator J = std::lower_bound(brain.current_state().conditions().begin(),brain.current_state().conditions().end(),planner_type::CWorldProperty((*I).first,false));
 		char				temp = '?';
@@ -569,7 +569,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		CSoundPlayer::SOUND_COLLECTIONS::const_iterator	I = sound().objects().begin();
 		CSoundPlayer::SOUND_COLLECTIONS::const_iterator	E = sound().objects().end();
 		for ( ; I != E; ++I)
-			object_count	+= (*I).second.m_sounds.size();
+			object_count	+= (*I).second.second->m_sounds.size();
 		HUD().Font().pFontSmall->OutNext("%s%sobjects     : %d",indent,indent,object_count);
 	}
 	{

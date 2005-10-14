@@ -19,26 +19,43 @@ public:
 		shared_str								m_bone_name;
 	};
 
-	struct CSoundCollection : public CSoundParams, public CRandom32 {
-		xr_vector<ref_sound*>					m_sounds;
+	struct CSoundCollectionParams {
 		shared_str								m_sound_prefix;
+		shared_str								m_sound_player_prefix;
+		u32										m_max_count;
+		ESoundTypes								m_type;
 
-		IC				CSoundCollection		()
+		IC		bool	operator==	(const CSoundCollectionParams &object) const
 		{
-			seed								(u32(CPU::QPC() & 0xffffffff));
-		}
+			if (m_sound_prefix != object.m_sound_prefix)
+				return	(false);
 
-						~CSoundCollection		()
-		{
-			xr_vector<ref_sound*>::iterator		I = m_sounds.begin();
-			xr_vector<ref_sound*>::iterator		E = m_sounds.end();
-			for ( ; I != E; ++I) {
-				VERIFY							(*I);
-				if ((*I)->_feedback())
-					(*I)->stop					();
-				xr_delete						(*I);
-			}
+			if (m_sound_player_prefix != object.m_sound_player_prefix)
+				return	(false);
+
+			if (m_max_count != object.m_max_count)
+				return	(false);
+
+			if (m_type != object.m_type)
+				return	(false);
+
+			return		(true);
 		}
+	};
+
+	struct CSoundCollectionParamsFull : 
+		public CSoundParams,
+		public CSoundCollectionParams
+	{
+		CSound_UserDataPtr	m_data;
+	};
+
+	struct CSoundCollection : public CRandom32 {
+		xr_vector<ref_sound*>					m_sounds;
+
+						CSoundCollection		(const CSoundCollectionParams &params);
+						~CSoundCollection		();
+		IC	ref_sound	*add					(ESoundTypes type, LPCSTR name) const;
 	};
 
 	struct CSoundSingle : public CSoundParams {
@@ -58,6 +75,8 @@ public:
 			VERIFY								(m_sound);
 			if (m_sound->_feedback())
 				m_sound->stop					();
+
+			xr_delete							(m_sound);
 		}
 
 				void	play_at_pos				(CObject *object, const Fvector &position)
@@ -95,7 +114,8 @@ public:
 	};
 
 public:
-	typedef xr_map<u32,CSoundCollection>		SOUND_COLLECTIONS;
+	typedef std::pair<CSoundCollectionParamsFull,CSoundCollection*>	SOUND_COLLECTION;
+	typedef xr_map<u32,SOUND_COLLECTION>							SOUND_COLLECTIONS;
 
 private:
 	SOUND_COLLECTIONS							m_sounds;
@@ -104,12 +124,10 @@ private:
 	CObject										*m_object;
 	shared_str									m_sound_prefix;
 
-			u32			load						(xr_vector<ref_sound*> &sounds, LPCSTR	prefix, u32 max_count, ESoundTypes type, CSound_UserDataPtr data);
 	IC		Fvector		compute_sound_point			(const CSoundSingle &sound);
 			void		remove_inappropriate_sounds	(u32 sound_mask);
 			void		update_playing_sounds		();
 			bool		check_sound_legacy			(u32 internal_type) const;
-	IC		ref_sound	*add						(ESoundTypes type, LPCSTR name, CSound_UserDataPtr data) const;
 
 public:
 						CSoundPlayer				(CObject *object);

@@ -17,6 +17,8 @@
 #include "game_base_space.h"
 #include "weaponhud.h"
 //  [7/11/2005]
+#include "stalker_animation_data_storage.h"
+
 #ifndef _EDITOR
 #	include "ai_debug.h"
 #endif
@@ -147,6 +149,7 @@ void CGamePersistent::OnGameStart()
 void CGamePersistent::OnGameEnd	()
 {
 	__super::OnGameEnd			();
+	xr_delete					(g_stalker_animation_data_storage);
 	CWeaponHUD::CleanSharedContainer();
 }
 

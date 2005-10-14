@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "sound_player.h"
+#include "stalker_animation_data.h"
 
 void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 {
@@ -22,11 +23,11 @@ void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 MotionID CStalkerAnimationManager::assign_head_animation	()
 {
 	if (!object().sound().active_sound_count(true))
-		return	(m_head_animations.A[0]);
+		return	(m_data_storage->m_head_animations.A[0]);
 
 
 	if (!object().sound().active_sound_type((u32)StalkerSpace::eStalkerSoundMaskMovingInDanger))
-		return	(m_head_animations.A[1]);
+		return	(m_data_storage->m_head_animations.A[1]);
 
-	return		(m_head_animations.A[0]);
+	return		(m_data_storage->m_head_animations.A[0]);
 }

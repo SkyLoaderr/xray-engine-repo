@@ -14,6 +14,8 @@
 #include "../xr_object.h"
 #include "../skeletoncustom.h"
 #include "profiler.h"
+#include "sound_collection_storage.h"
+#include "object_broker.h"
 
 CSoundPlayer::CSoundPlayer			(CObject *object)
 {
@@ -30,8 +32,15 @@ CSoundPlayer::~CSoundPlayer			()
 
 void CSoundPlayer::clear			()
 {
-	while (!m_sounds.empty())
-		remove						(m_sounds.begin()->first);
+	m_sounds.clear					();
+	
+	xr_vector<CSoundSingle>::iterator	I = m_playing_sounds.begin();
+	xr_vector<CSoundSingle>::iterator	E = m_playing_sounds.end();
+	for ( ; I != E; ++I)
+		if ((*I).m_sound->_feedback())
+			(*I).m_sound->stop		();
+
+	m_playing_sounds.clear			();
 
 	m_sound_mask					= 0;
 }
@@ -51,78 +60,41 @@ void CSoundPlayer::unload			()
 {
 	remove_active_sounds			(u32(-1));
 	VERIFY							(m_playing_sounds.empty());
-
-	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.begin();
-	xr_map<u32,CSoundCollection>::iterator	E = m_sounds.end();
-	for ( ; I != E; ++I) {
-		if ((*I).second.m_sounds.empty())
-			continue;
-
-		if (!(*I).second.m_sounds.front()->_g_userdata())
-			continue;
-		
-		(*I).second.m_sounds.front()->_g_userdata()->invalidate();
-	}
 }
 
 u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, CSound_UserDataPtr data)
 {
-	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
+	SOUND_COLLECTIONS::iterator		I = m_sounds.find(internal_type);
 	if (m_sounds.end() != I)
 		return						(0);
 
-	CSoundCollection				sound_collection;
-	sound_collection.m_priority		= priority;
-	sound_collection.m_synchro_mask	= mask;
-	sound_collection.m_bone_name	= bone_name;
-	sound_collection.m_sound_prefix	= prefix;
-	m_sounds.insert					(std::make_pair(internal_type,sound_collection));
-	
-	I								= m_sounds.find(internal_type);
-	VERIFY							(m_sounds.end() != I);
-	return							(load((*I).second.m_sounds,prefix,max_count,type,data));
+	CSoundCollectionParamsFull			sound_params;
+	sound_params.m_priority				= priority;
+	sound_params.m_synchro_mask			= mask;
+	sound_params.m_bone_name			= bone_name;
+	sound_params.m_sound_prefix			= prefix;
+	sound_params.m_sound_player_prefix	= m_sound_prefix;
+	sound_params.m_max_count			= max_count;
+	sound_params.m_type					= type;
+
+	typedef CSoundCollectionStorage::SOUND_COLLECTION_PAIR	SOUND_COLLECTION_PAIR;
+	const SOUND_COLLECTION_PAIR			&pair = sound_collection_storage().object(sound_params);
+	VERIFY								(pair.first == (CSoundCollectionParams&)sound_params);
+	VERIFY								(pair.second);
+	m_sounds.insert						(std::make_pair(internal_type,std::make_pair(sound_params,pair.second)));
+	return								(pair.second->m_sounds.size());
 }
 
 void CSoundPlayer::remove			(u32 internal_type)
 {
-	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
+	SOUND_COLLECTIONS::iterator		I = m_sounds.find(internal_type);
 	VERIFY							(m_sounds.end() != I);
 	m_sounds.erase					(I);
 }
 
-u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max_count, ESoundTypes type, CSound_UserDataPtr data)
-{
-	sounds.clear					();
-	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
-		string256					fn, s, temp;
-		LPSTR						S = (LPSTR)&s;
-		_GetItem					(prefix,j,temp);
-		strconcat					(S,*m_sound_prefix,temp);
-		if (FS.exist(fn,"$game_sounds$",S,".ogg")) {
-			ref_sound				*temp = add(type,S,data);
-			if (temp)
-				sounds.push_back	(temp);
-		}
-		for (u32 i=0; i<max_count; ++i){
-			string256				name;
-			sprintf					(name,"%s%d",S,i);
-			if (FS.exist(fn,"$game_sounds$",name,".ogg")) {
-				ref_sound			*temp = add(type,name,data);
-				if (temp)
-					sounds.push_back(temp);
-			}
-		}
-	}
-#ifdef DEBUG
-	if (sounds.empty())
-		Msg							("- There are no sounds with prefix %s",prefix);
-#endif
-	return							((u32)sounds.size());
-}
-
 bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 {
-	xr_map<u32,CSoundCollection>::const_iterator	J = m_sounds.find(internal_type);
+	SOUND_COLLECTIONS::const_iterator	J = m_sounds.find(internal_type);
 	if (m_sounds.end() == J) {
 #ifdef DEBUG
 		ai().script_engine().script_log(eLuaMessageTypeError,"Can't find sound with internal type %d (sound_script = %d)",internal_type,StalkerSpace::eStalkerSoundScript);
@@ -130,8 +102,8 @@ bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 		return						(false);
 	}
 
-	VERIFY							(m_sounds.end() != J);
-	const CSoundCollection			&sound = (*J).second;
+	VERIFY								(m_sounds.end() != J);
+	const CSoundCollectionParamsFull	&sound = (*J).second.first;
 	if (sound.m_synchro_mask & m_sound_mask)
 		return						(false);
 
@@ -190,10 +162,10 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	if (!check_sound_legacy(internal_type))
 		return;
 	
-	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
+	SOUND_COLLECTIONS::iterator	I = m_sounds.find(internal_type);
 	VERIFY						(m_sounds.end() != I);
-	CSoundCollection			&sound = (*I).second;
-	if (sound.m_sounds.empty()) {
+	CSoundCollectionParamsFull	&sound = (*I).second.first;
+	if ((*I).second.second->m_sounds.empty()) {
 		Msg						("- There are no sounds in sound collection \"%s\" with internal type %d (sound_script = %d)",*sound.m_sound_prefix,internal_type,StalkerSpace::eStalkerSoundScript);
 		return;
 	}
@@ -203,8 +175,23 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
 	sound_single.m_bone_id		= smart_cast<CKinematics*>(m_object->Visual())->LL_BoneID(sound.m_bone_name);
-	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? sound.random(sound.m_sounds.size()) : id];
+	
+	sound_single.m_sound		= xr_new<ref_sound>();
+	sound_single.m_sound->clone	(
+		*(*I).second.second->m_sounds[
+			id == u32(-1)
+			?
+			(*I).second.second->random(
+				(*I).second.second->m_sounds.size()
+			)
+			:
+			id
+		]
+	);
+	sound_single.m_sound->_p->g_object		= m_object;
+	sound_single.m_sound->_p->g_userdata	= (*I).second.first.m_data;
 	VERIFY						(sound_single.m_sound->_handle());
+
 	VERIFY						(max_start_time >= min_start_time);
 	VERIFY						(max_stop_time >= min_stop_time);
 	u32							random_time = 0;
@@ -231,3 +218,47 @@ IC	Fvector CSoundPlayer::compute_sound_point(const CSoundSingle &sound)
 	l_tMatrix.mul_43			(m_object->XFORM(),smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
 	return						(l_tMatrix.c);
 }
+
+CSoundPlayer::CSoundCollection::CSoundCollection	(const CSoundCollectionParams &params)
+{
+	seed								(u32(CPU::QPC() & 0xffffffff));
+	m_sounds.clear						();
+	for (int j=0, N = _GetItemCount(*params.m_sound_prefix); j<N; ++j) {
+		string256						fn, s, temp;
+		LPSTR							S = (LPSTR)&s;
+		_GetItem						(*params.m_sound_prefix,j,temp);
+		strconcat						(S,*params.m_sound_player_prefix,temp);
+		if (FS.exist(fn,"$game_sounds$",S,".ogg")) {
+			ref_sound					*temp = add(params.m_type,S);
+			if (temp)
+				m_sounds.push_back		(temp);
+		}
+		for (u32 i=0; i<params.m_max_count; ++i){
+			string256					name;
+			sprintf						(name,"%s%d",S,i);
+			if (FS.exist(fn,"$game_sounds$",name,".ogg")) {
+				ref_sound				*temp = add(params.m_type,name);
+				if (temp)
+					m_sounds.push_back	(temp);
+			}
+		}
+	}
+#ifdef DEBUG
+	if (m_sounds.empty())
+		Msg							("- There are no sounds with prefix %s",*params.m_sound_prefix);
+#endif
+}
+
+CSoundPlayer::CSoundCollection::~CSoundCollection	()
+{
+#ifdef DEBUG
+	xr_vector<ref_sound*>::iterator	I = m_sounds.begin();
+	xr_vector<ref_sound*>::iterator	E = m_sounds.end();
+	for ( ; I != E; ++I) {
+		VERIFY						(*I);
+		VERIFY						(!(*I)->_feedback());
+	}
+#endif
+	delete_data						(m_sounds);
+}
+

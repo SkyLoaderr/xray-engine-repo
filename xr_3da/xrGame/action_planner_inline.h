@@ -206,8 +206,8 @@ TEMPLATE_SPECIALIZATION
 IC	void CPlanner::show_current_world_state	()
 {
 	Msg						("Current world state :");
-	EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-	EVALUATOR_MAP::const_iterator	E = evaluators().end();
+	EVALUATORS::const_iterator	I = evaluators().begin();
+	EVALUATORS::const_iterator	E = evaluators().end();
 	for ( ; I != E; ++I) {
 		xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
 		char				temp = '?';
@@ -222,8 +222,8 @@ TEMPLATE_SPECIALIZATION
 IC	void CPlanner::show_target_world_state	()
 {
 	Msg						("Target world state :");
-	EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-	EVALUATOR_MAP::const_iterator	E = evaluators().end();
+	EVALUATORS::const_iterator	I = evaluators().begin();
+	EVALUATORS::const_iterator	E = evaluators().end();
 	for ( ; I != E; ++I) {
 		xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
 		char				temp = '?';
@@ -241,8 +241,8 @@ IC	void CPlanner::show				(LPCSTR offset)
 	strconcat		(temp,offset,"    ");
 	{
 		Msg			("\n%sEVALUATORS : %d\n",offset,evaluators().size());
-		EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-		EVALUATOR_MAP::const_iterator	E = evaluators().end();
+		EVALUATORS::const_iterator	I = evaluators().begin();
+		EVALUATORS::const_iterator	E = evaluators().end();
 		for ( ; I != E; ++I)
 			Msg		("%sevaluator   [%d][%s]",offset,(*I).first,property2string((*I).first));
 	}

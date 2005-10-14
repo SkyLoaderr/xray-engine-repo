@@ -20,7 +20,7 @@
 XRCORE_API	BOOL	g_bMEMO;
 #endif
 
-//#define DBG_DISABLE_SCRIPTS
+#define DBG_DISABLE_SCRIPTS
 
 CScriptBinder::CScriptBinder		()
 {

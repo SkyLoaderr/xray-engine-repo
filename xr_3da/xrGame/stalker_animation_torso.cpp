@@ -17,6 +17,7 @@
 #include "object_handler_planner.h"
 #include "stalker_movement_manager.h"
 #include "entitycondition.h"
+#include "stalker_animation_data.h"
 
 bool CStalkerAnimationManager::strapped				() const
 {
@@ -47,15 +48,15 @@ MotionID CStalkerAnimationManager::no_object_animation(const EBodyState &body_st
 	if (eMentalStateFree == object().movement().mental_state()) {
 		R_ASSERT3			(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 		if (standing())
-			return			(m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
+			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
 		else
-			return			(m_part_animations.A[body_state].m_torso.A[0].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[object().conditions().IsLimping() ? 0 : 1]);
+			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[object().conditions().IsLimping() ? 0 : 1]);
 	}
 	else
 		if (standing())
-			return			(m_part_animations.A[body_state].m_torso.A[0].A[6].A[0]);
+			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[6].A[0]);
 		else
-			return			(m_part_animations.A[body_state].m_torso.A[0].A[6].A[1]);
+			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[6].A[1]);
 }
 
 MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBodyState &body_state) const
@@ -70,55 +71,55 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait2 : {
 			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
-				return m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[1];
+				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[1];
 			else
-				return m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
+				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
 		}
 #if 0
 		case ObjectHandlerSpace::eWorldOperatorStrapping :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[11].A[0];
+			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[11].A[0];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[12].A[0];
+			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[12].A[0];
 		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[11].A[1];
+			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[11].A[1];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[12].A[1];
+			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[12].A[1];
 #else
 		case ObjectHandlerSpace::eWorldOperatorStrapping :
-			return m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[0];
+			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[0];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
-			return m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[0];
+			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[0];
 		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
-			return m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[1];
+			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[1];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
-			return m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[1];
+			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[1];
 #endif
 		default : {
 			if (eMentalStateFree == object().movement().mental_state()) {
 				R_ASSERT3	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 				if (standing())
-					return m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
+					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
 				else
-					return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[1];
+					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[1];
 			}
 			else {
 				if (fis_zero(object().movement().speed(object().m_PhysicMovementControl))) {
-					return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
+					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 				}
 				if (standing()) {
-					return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
+					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 				}
 				switch (object().movement().movement_type()) {
 					case eMovementTypeWalk :
 						if (object().movement().body_state() == eBodyStateStand)
-							return m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
+							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
 						else
-							return m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
+							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
 					case eMovementTypeRun :
 						if (object().movement().body_state() == eBodyStateStand)
-							return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 7 : 8].A[0];
+							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 7 : 8].A[0];
 						else
-							return m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
+							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
 					default : NODEFAULT;
 				}
 			}
@@ -137,29 +138,29 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 	switch (m_weapon->STATE) {
 		case CWeapon::eReload : {
 			switch (m_weapon->GetReloadState()){
-				case CWeapon::eSubstateReloadBegin:			return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
-				case CWeapon::eSubstateReloadInProcess:		return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[1];
-				case CWeapon::eSubstateReloadEnd:			return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[2];
+				case CWeapon::eSubstateReloadBegin:			return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
+				case CWeapon::eSubstateReloadInProcess:		return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[1];
+				case CWeapon::eSubstateReloadEnd:			return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[2];
 				default:									NODEFAULT;
 			}
 #ifdef DEBUG
-			return  m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
+			return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
 #endif
 		}
 		case CWeapon::eShowing :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0];
+			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0];
 		case CWeapon::eHiding :
-			return m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0];
+			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0];
 		case CWeapon::eFire:
 			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
-				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
+				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
 			else
-				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
+				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
 		case CWeapon::eFire2 :
 			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
-				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
+				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
 			else
-				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
+				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
 	}
 
 	return			(unknown_object_animation(slot,body_state));
@@ -173,24 +174,24 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 
 	switch (m_missile->State()) {
 		case MS_SHOWING	 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0]);
 		case MS_HIDING	 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0]);
 		case MS_THREATEN :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0]);
 		case MS_READY	 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1]);
 		case MS_THROW	 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
 		case MS_END		 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
 		case MS_PLAYING	 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
 		case MS_IDLE	 :
 		case MS_HIDDEN	 :
 		case MS_EMPTY	 :
 		default			 :
-			return  (m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0]);
+			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0]);
 	}
 }
 

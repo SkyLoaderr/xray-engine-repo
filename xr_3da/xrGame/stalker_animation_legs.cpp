@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "sight_manager.h"
 #include "stalker_movement_manager.h"
+#include "stalker_animation_data.h"
 
 float faTurnAngles	[] = {
 	0.f,
@@ -38,12 +39,12 @@ MotionID CStalkerAnimationManager::assign_legs_animation	()
 	if (standing()) {
 		// standing
 		if (angle_difference(object().movement().body_orientation().current.yaw,object().movement().body_orientation().target.yaw) <= EPS_L)
-			return			(m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) || (object().movement().body_state() == eBodyStateCrouch) ? 1 : 0]);
+			return			(m_data_storage->m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) || (object().movement().body_state() == eBodyStateCrouch) ? 1 : 0]);
 		else
 			if (!left_angle(-object().movement().body_orientation().target.yaw,-object().movement().body_orientation().current.yaw))
-				return		(m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 4 : 2]);
+				return		(m_data_storage->m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 4 : 2]);
 			else
-				return		(m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 5 : 3]);
+				return		(m_data_storage->m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 5 : 3]);
 	}
 
 	float					fAnimationSwitchFactor = 1.f;
@@ -58,7 +59,7 @@ MotionID CStalkerAnimationManager::assign_legs_animation	()
 
 	if (eMentalStateDanger != object().movement().mental_state()) {
 		if (angle_difference(object().movement().body_orientation().current.yaw,yaw) <= PI_DIV_6)
-			return			(m_part_animations.A[l_tBodyState].m_movement.A[object().movement().movement_type()].A[eMovementDirectionForward].A[object().movement().mental_state()]);
+			return			(m_data_storage->m_part_animations.A[l_tBodyState].m_movement.A[object().movement().movement_type()].A[eMovementDirectionForward].A[object().movement().mental_state()]);
 		fAnimationSwitchFactor	= .0f;
 	}
 
@@ -192,5 +193,5 @@ MotionID CStalkerAnimationManager::assign_legs_animation	()
 				direction			= eMovementDirectionLeft;
 
 	object().adjust_speed_to_animation	(direction);
-	return							(m_part_animations.A[l_tBodyState].m_movement.A[object().movement().movement_type()].A[direction].A[0]);
+	return							(m_data_storage->m_part_animations.A[l_tBodyState].m_movement.A[object().movement().movement_type()].A[direction].A[0]);
 }

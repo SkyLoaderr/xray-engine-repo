@@ -50,7 +50,7 @@ IC	void CProblemSolverAbstract::clear					()
 		remove_operator		(m_operators.back().m_operator_id);
 
 	while (!m_evaluators.empty())
-		remove_evaluator	((*m_evaluators.begin()).first);
+		remove_evaluator	(m_evaluators.back().first);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -80,7 +80,7 @@ IC	bool CProblemSolverAbstract::actual			() const
 	xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
 	for ( ; I != E; ++I) {
-		EVALUATOR_MAP::const_iterator J = evaluators().find((*I).condition());
+		EVALUATORS::const_iterator J = std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate((*I).condition()));
 		VERIFY				(evaluators().end() != J);
 		if ((*J).second->evaluate() != (*I).value())
 			return			(false);
@@ -108,9 +108,9 @@ IC	void CProblemSolverAbstract::validate_properties	(const CState &conditions) c
 	xr_vector<COperatorCondition>::const_iterator	I = conditions.conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = conditions.conditions().end();
 	for ( ; I != E; ++I) {
-		if (!(evaluators().find((*I).condition()) != evaluators().end())) {
+		if (std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate((*I).condition())) == evaluators().end()) {
 			Msg		("! cannot find corresponding evaluator to the property with id %d",(*I).condition());
-			THROW	(evaluators().find((*I).condition()) != evaluators().end());
+			THROW	(std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate((*I).condition())) != evaluators().end());
 		}
 	}
 }
@@ -160,14 +160,15 @@ IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::target
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::add_evaluator				(const _condition_type &condition_id, _condition_evaluator_ptr evaluator)
 {
-	THROW						(m_evaluators.find(condition_id) == m_evaluators.end());
-	m_evaluators.insert			(std::make_pair(condition_id,evaluator));
+	THROW						(evaluators().end() == std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate(condition_id)));
+	m_evaluators.push_back		(std::make_pair(condition_id,evaluator));
+	std::sort					(m_evaluators.begin(),m_evaluators.end(),evaluator_predicate());
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condition_id)
 {
-	EVALUATOR_MAP::iterator		I = m_evaluators.find(condition_id);
+	EVALUATORS::iterator		I = std::find_if(m_evaluators.begin(),m_evaluators.end(),evaluator_predicate(condition_id));
 	THROW						(I != m_evaluators.end());
 	try {
 		delete_data				((*I).second);
@@ -182,24 +183,22 @@ IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condi
 TEMPLATE_SPECIALIZATION
 IC	typename CProblemSolverAbstract::_condition_evaluator_ptr CProblemSolverAbstract::evaluator	(const _condition_type &condition_id) const
 {
-	EVALUATOR_MAP::const_iterator	I = evaluators().find(condition_id);
+	EVALUATORS::const_iterator	I = std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate(condition_id));
 	THROW							(evaluators().end() != I);
 	return							((*I).second);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators() const
+IC	const typename CProblemSolverAbstract::EVALUATORS &CProblemSolverAbstract::evaluators() const
 {
-	return						(m_evaluators);
+	return							(m_evaluators);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::evaluate_condition			(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const
 {
-	EVALUATOR_MAP::const_iterator	J = m_evaluators.find(condition_id);
-	VERIFY							(J != m_evaluators.end());
 	size_t							index = I - m_current_state.conditions().begin();
-	m_current_state.add_condition	(I,COperatorCondition(condition_id,(*J).second->evaluate()));
+	m_current_state.add_condition	(I,COperatorCondition(condition_id,evaluator(condition_id)->evaluate()));
 	I								= m_current_state.conditions().begin() + index;
 	E								= m_current_state.conditions().end();
 }

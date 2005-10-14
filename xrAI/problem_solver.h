@@ -59,11 +59,37 @@ public:
 	};
 	typedef xr_vector<SOperator>									OPERATOR_VECTOR;
 	typedef typename OPERATOR_VECTOR::const_iterator				const_iterator;
-	typedef xr_map<_condition_type,_condition_evaluator_ptr>		EVALUATOR_MAP;
+	typedef std::pair<_condition_type,_condition_evaluator_ptr>		EVALUATOR_PAIR;
+	typedef xr_vector<EVALUATOR_PAIR>								EVALUATORS;
+
+	struct evaluator_predicate {
+		const _condition_type	*m_id;
+
+		IC						evaluator_predicate	(const _condition_type &id)
+		{
+			m_id				= &id;
+		}
+
+		IC						evaluator_predicate	()
+		{
+			m_id				= 0;
+		}
+
+		IC		bool			operator()			(const EVALUATOR_PAIR &pair) const
+		{
+			VERIFY				(m_id);
+			return				(*m_id == pair.first);
+		}
+
+		IC		bool			operator()			(const EVALUATOR_PAIR &pair0, const EVALUATOR_PAIR &pair1) const
+		{
+			return				(pair0.first < pair1.first);
+		}
+	};
 
 protected:
 	OPERATOR_VECTOR				m_operators;
-	EVALUATOR_MAP				m_evaluators;
+	EVALUATORS					m_evaluators;
 	xr_vector<_edge_type>		m_solution;
 	CState						m_target_state;
 	mutable CState				m_current_state;
@@ -127,7 +153,7 @@ public:
 	IC		virtual void				add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
 	IC		void						remove_evaluator		(const _condition_type &condition_id);
 	IC		_condition_evaluator_ptr	evaluator				(const _condition_type &condition_id) const;
-	IC		const EVALUATOR_MAP			&evaluators				() const;
+	IC		const EVALUATORS			&evaluators				() const;
 	IC		void						evaluate_condition		(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const;
 
 	// solver interface

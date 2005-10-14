@@ -183,10 +183,10 @@ void CObjectHandlerPlanner::remove_evaluators	(CObject *object)
 {
 #pragma todo("Dima to Dima : safe, but not optimal!")
 	for (;;) {
-		EVALUATOR_MAP::iterator	I = std::lower_bound(m_evaluators.begin(),m_evaluators.end(),uid(object->ID(),0),CMapLocator<EVALUATOR_MAP>());
+		EVALUATORS::iterator	I = std::lower_bound(m_evaluators.begin(),m_evaluators.end(),uid(object->ID(),0),CMapLocator<EVALUATORS>());
 		if (!object_action((*I).first,object))
 			break;
-		remove_evaluator((*I).first);
+		remove_evaluator		((*I).first);
 	}
 }
 

@@ -21,6 +21,8 @@
 
 #include "profiler.h"
 
+#include "sound_collection_storage.h"
+
 typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
 extern STORY_PAIRS								story_ids;
 
@@ -80,6 +82,8 @@ void clean_game_globals()
 	// Очищение таблицы идентификаторов рангов и отношений сталкеров
 	InventoryUtilities::ClearCharacterInfoStrings	();
 
+	xr_delete										(g_sound_collection_storage);
+	
 #ifdef DEBUG
 	xr_delete										(g_profiler);
 	release_smart_cast_stats						();
