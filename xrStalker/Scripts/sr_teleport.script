@@ -76,7 +76,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
 	
-	st.timeout = utils.cfg_get_number(ini, section, "timeout", obj, false, 0)
+	st.timeout = utils.cfg_get_number(ini, section, "timeout", obj, false, 900)
 	
 	st.points = {}
 	for i=1,10 do
