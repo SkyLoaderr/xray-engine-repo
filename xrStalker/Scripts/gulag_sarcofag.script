@@ -1,13 +1,114 @@
 local t = {}
 
 function load_job(sj, gname, type, squad, groups)
-
+	if type == "sar_monolith_general" then
+		t = { section = "logic@sar_monolith_general_post1_1",
+			idle = 0,
+			prior = 9, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_post1_2",
+			idle = 0,
+			prior = 9, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_patrol",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_patrol_follower",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "",
+			dependent = "logic@sar_monolith_general_patrol"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_patrol_follower",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "",
+			dependent = "logic@sar_monolith_general_patrol"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_kamp",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_kamp",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_kamp",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_general_kamp",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "sar_monolith_sklad" then
+		t = { section = "logic@sar_monolith_sklad_patrol",
+			idle = 0,
+			prior = 7, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_sklad_patrol_follower",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "",
+			dependent = "logic@sar_monolith_sklad_patrol"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_sklad_patrol_follower",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "",
+			dependent = "logic@sar_monolith_sklad_patrol"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_sklad_guard1",
+			idle = 0,
+			prior = 9, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_sklad_guard2",
+			idle = 0,
+			prior = 9, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 end
 
 
 
 function load_states(gname, type)
-	
+	if type == "sar_monolith_general" then
+		return function(gulag)
+			return 0
+		end
+    end
+    if type == "sar_monolith_sklad" then
+		return function(gulag)
+			return 0
+		end
+    end
 end
 
 --------------------------------------------------------------------------
@@ -18,7 +119,12 @@ function load_ltx(gname, type)
 end
 
 function checkStalker(npc_community, gulag_type)
-	
+	if gulag_type == "sar_monolith_general" then
+		return npc_community == "monolith"
+	end
+	if gulag_type == "sar_monolith_skald" then
+		return npc_community == "monolith"
+	end
 	return false
 end
 
