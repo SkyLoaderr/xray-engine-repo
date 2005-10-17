@@ -243,7 +243,6 @@ return \"%s\" \
 end \
 local this = {} \
 %s this %s \
-setmetatable(this, {__index = _G}) \
 setfenv(1, this) \
 		";
 
