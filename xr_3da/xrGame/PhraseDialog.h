@@ -33,7 +33,7 @@ struct SPhraseDialogData : CSharedResource
 	//для начала диалога
 	CPhraseScript	m_PhraseScript;
 
-	Flags16			m_eDialogType;
+//	Flags16			m_eDialogType;
 	
 	//произвольное число - приоритет диалога (0 по умолчанию), может быть отрицательным
 	//в окне выбора у актера диалоги будут сортироваться по этому значению от меньшего (снизу) к большему (сверху)
@@ -117,7 +117,7 @@ public:
 																							(SecondSpeaker()==dialog_manager && SecondIsSpeaking());}
 	CPhraseDialogManager* OurPartner	(CPhraseDialogManager* dialog_manager) const;
 		
-	bool				GetDialogType	(EDialogType type)	const {return !!data()->m_eDialogType.test((u16)type);}
+//	bool				GetDialogType	(EDialogType type)	const {return !!data()->m_eDialogType.test((u16)type);}
 
 protected:
 	//идентификатор диалога

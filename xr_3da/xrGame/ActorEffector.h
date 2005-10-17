@@ -72,3 +72,59 @@ public:
 	void Start			(int snd_length, float power);
 	void Update			();
 };
+
+class CObjectAnimator;
+class CAnimatorCamEffector :public CCameraEffector
+{
+	typedef		CCameraEffector					inherited;
+
+protected:
+	virtual bool		Cyclic					() const		{return true;};
+	virtual bool		Unlimited				() const		{return false;}
+	CObjectAnimator*							m_objectAnimator;
+public:
+						CAnimatorCamEffector	(ECameraEffectorType type, BOOL affected);
+	virtual				~CAnimatorCamEffector	();
+			void		Start					(LPCSTR fn);
+	virtual	BOOL		Process					(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
+};
+
+class CAnimatorCamLerpEffector :public CAnimatorCamEffector
+{
+public:
+	typedef fastdelegate::FastDelegate0<float>		GET_KOEFF_FUNC;
+
+protected:
+	typedef				CAnimatorCamEffector		inherited;
+	GET_KOEFF_FUNC									m_func;
+	virtual bool		Unlimited					() const		{return false;}
+	
+public:
+						CAnimatorCamLerpEffector	(ECameraEffectorType type, BOOL affected, GET_KOEFF_FUNC f);
+	virtual	BOOL		Process						(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
+};
+
+class CActorCondition;
+class CActorAlcoholCamEffector :public CAnimatorCamLerpEffector
+{
+	typedef  CAnimatorCamLerpEffector	inherited;
+protected:
+	virtual bool		Cyclic						() const		{return true;};
+	virtual bool		Unlimited					() const		{return true;}
+public:
+						CActorAlcoholCamEffector	(CActorCondition* c);
+};
+
+class CFireHitCamEffector :public CAnimatorCamLerpEffector
+{
+	typedef  CAnimatorCamLerpEffector	inherited;
+	float				m_power;
+protected:
+	virtual bool		Cyclic						() const		{return false;};
+	virtual bool		Unlimited					() const		{return false;}
+
+public:
+						CFireHitCamEffector		(float power);
+	float	xr_stdcall	GetPower				()				{return m_power;}
+
+};

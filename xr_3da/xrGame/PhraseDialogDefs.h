@@ -13,13 +13,14 @@ class CPhraseDialog;
 typedef boost::shared_ptr<CPhraseDialog> DIALOG_SHARED_PTR;
 
 
-
+/*
 //возможные типы диалогов
 typedef enum {
 	eDialogTypeAI		= 0x0,	//для разговора 2х NPC
 	eDialogTypePDA		= 0x1,
 	eDialogTypeActor	= 0x2
 } EDialogType;
+*/
 
 //тип id фразы
 typedef int PHRASE_ID;

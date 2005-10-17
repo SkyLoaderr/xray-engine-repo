@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "actorcondition.h"
 #include "actor.h"
+#include "actorEffector.h"
 #include "inventory.h"
 #include "level.h"
 #include "sleepeffector.h"
@@ -136,6 +137,16 @@ void CActorCondition::UpdateCondition()
 
 	m_fAlcohol		+= m_fV_Alcohol*(m_iDeltaTime/1000);
 	clamp			(m_fAlcohol,			0.0f,		1.0f);
+
+	CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEAlcohol);
+	if	((m_fAlcohol>0.001) ){
+		if(!ce){
+			Actor()->EffectorManager	().AddEffector				(xr_new<CActorAlcoholCamEffector>( this ));
+		}
+	}else{
+		if(ce)
+			Actor()->EffectorManager	().RemoveEffector			(eCEAlcohol);
+	}
 
 	inherited::UpdateCondition();
 }
@@ -373,4 +384,9 @@ void CActorCondition::reinit	()
 	inherited::reinit	();
 	m_bLimping					= false;
 	m_bIsSleeping				= false;
+}
+
+void CActorCondition::ChangeAlcohol	(float value)
+{
+	m_fAlcohol += value;
 }

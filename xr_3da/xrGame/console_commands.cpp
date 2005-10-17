@@ -2010,6 +2010,8 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"hud_weapon",			&psHUD_Flags,	HUD_WEAPON);
 	CMD3(CCC_Mask,				"hud_info",				&psHUD_Flags,	HUD_INFO);
 	CMD3(CCC_Mask,				"hud_draw",				&psHUD_Flags,	HUD_DRAW);
+	CMD3(CCC_Mask,				"hud_animate_hit",		&psHUD_Flags,	HUD_CAM_ANIM_HIT);
+
 	CMD2(CCC_Float,				"hud_fov",				&psHUD_FOV);
 
 	// Demo

@@ -14,7 +14,7 @@
 SPhraseDialogData::SPhraseDialogData ()
 {
 	m_PhraseGraph.clear();
-	m_eDialogType.zero();
+//	m_eDialogType.zero();
 	m_iPriority = 0;
 }
 
@@ -195,15 +195,6 @@ int	 CPhraseDialog::Priority()
 }
 
 
-//инициализация диалога
-//если диалог с таким id раньше не использовался
-//он будет загружен из файла
-/*
-void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
-{
-	Load(id_to_index::IdToIndex(dialog_id));
-}
-*/
 void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
 {
 	m_DialogId = dialog_id;
@@ -227,7 +218,7 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	THROW3(dialog_node, "dialog id=", *item_data.id);
 
 	uiXml.SetLocalRoot(dialog_node);
-
+/*
 	int actor_dialog = uiXml.ReadAttribInt(dialog_node, "actor", 1);
 	if (1 == actor_dialog) 
 		data()->m_eDialogType.set(eDialogTypeActor, TRUE);
@@ -239,7 +230,7 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	int ai_dialog = uiXml.ReadAttribInt(dialog_node, "ai", 0);
 	if (1 == ai_dialog) 
 		data()->m_eDialogType.set(eDialogTypeAI, TRUE);
-
+*/
 
 	data()->m_iPriority = uiXml.ReadAttribInt(dialog_node, "priority", 0);
 
@@ -284,8 +275,8 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, -10000);
 
 
-	phrase->m_sound = uiXml.Read	(phrase_node,	"sound", NULL);
-	phrase->m_anim = uiXml.Read		(phrase_node,	"anim", NULL);
+//	phrase->m_sound = uiXml.Read	(phrase_node,	"sound", NULL);
+//	phrase->m_anim = uiXml.Read		(phrase_node,	"anim", NULL);
 
 	
 	//прочитать действия и предикаты

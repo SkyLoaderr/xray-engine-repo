@@ -79,7 +79,7 @@ public:
 
 	virtual		IC CUI*		GetUI				(){return pUI;}
 
-	virtual		void		Hit					(int idx)					{HitMarker.Hit(idx);}
+	virtual		void		Hit					(int idx, float power);
 	CFontManager&			Font				()							{return *(UI()->Font());}
 	//текущий предмет на который смотрит HUD
 	collide::rq_result&		GetCurrentRayQuery	();

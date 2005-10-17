@@ -48,6 +48,7 @@ public:
 	void 					ChangeSatiety			(float value);
 	void 					ChangeRadiation			(float value);
 	void 					ChangePsyHealth			(float value);
+	virtual void 			ChangeAlcohol			(float value){};
 
 	void 					MaxPower				()					{m_fPower = m_fPowerMax;};
 	void					SetMaxPower				(float val)			{m_fPowerMax = val; clamp(m_fPowerMax,0.0f,1.0f);};

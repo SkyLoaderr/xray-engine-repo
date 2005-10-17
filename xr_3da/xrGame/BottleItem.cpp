@@ -7,6 +7,8 @@
 #include "BottleItem.h"
 #include "xrmessages.h"
 #include "net_utils.h"
+#include "entity_alive.h"
+#include "EntityCondition.h"
 
 #define BREAK_POWER 5.f
 
@@ -36,6 +38,8 @@ void CBottleItem::Load(LPCSTR section)
 
 	if(pSettings->line_exist(section, "break_sound"))
 		sndBreaking.create(TRUE, pSettings->r_string(section, "break_sound"));
+
+	m_alcohol = READ_IF_EXISTS(pSettings, r_float, section, "eat_alcohol", 0.0f);
 }
 
 void CBottleItem::net_Destroy() 
@@ -114,4 +118,11 @@ void CBottleItem::Hit (float P, Fvector &dir,
 			u_EventSend		(P);
 		};
 	}
+}
+
+void CBottleItem::UseBy				(CEntityAlive* entity_alive)
+{
+	inherited::UseBy					(entity_alive);
+
+	entity_alive->conditions().ChangeAlcohol			(m_alcohol);
 }

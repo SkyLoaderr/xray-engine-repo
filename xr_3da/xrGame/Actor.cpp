@@ -522,7 +522,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		mstate_wishful	&=~mcSprint;
 	};
 	//---------------------------------------------------------------
-
+w	HitMark			(iLost, dir, who, element, position_in_bone_space, impulse, hit_type);
+	//---------------------------------------------------------------
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
@@ -570,25 +571,78 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 }
 
+void CActor::HitMark	(float P, 
+						 Fvector &dir,			
+						 CObject* who, 
+						 s16 element, 
+						 Fvector position_in_bone_space, 
+						 float impulse,  
+						 ALife::EHitType hit_type)
+{
+	// hit marker
+	if ( (hit_type==ALife::eHitTypeFireWound||hit_type==ALife::eHitTypeWound_2) && g_Alive() && Local() && /*(this!=who) && */(Level().CurrentEntity()==this) )	
+	{
+		int id						= -1;
+		//---------------------------------------------------------
+		Fvector cam_pos,cam_dir,cam_norm;
+		cam_Active()->Get			(cam_pos,cam_dir,cam_norm);
+		cam_dir.normalize_safe		();
+		dir.normalize_safe			();
+
+		float ang_diff				= angle_difference	(cam_dir.getH(), dir.getH());
+		Fvector						cp;
+		cp.crossproduct				(cam_dir,dir);
+		bool bUp					=(cp.y>0.0f);
+
+		Fvector cross;
+		cross.crossproduct			(cam_dir, dir);
+		VERIFY(ang_diff>=0.0f && ang_diff<=PI);
+
+		float _s1 = PI_DIV_8;
+		float _s2 = _s1+PI_DIV_4;
+		float _s3 = _s2+PI_DIV_4;
+		float _s4 = _s3+PI_DIV_4;
+
+		if(ang_diff<=_s1){
+			id = 2;
+		}else
+		if(ang_diff>_s1 && ang_diff<=_s2){
+			id = (bUp)?5:7;
+		}else
+		if(ang_diff>_s2 && ang_diff<=_s3){
+			id = (bUp)?3:1;
+		}else
+		if(ang_diff>_s3 && ang_diff<=_s4){
+			id = (bUp)?4:6;
+		}else
+		if(ang_diff>_s4){
+			id = 0;
+		}else{
+			VERIFY(0);
+		}
+		/*
+		Log	("local hit dir	= ",dir);
+		Log	("camera dir	= ",cam_dir);
+		Log	("id			= ",id);
+		*/
+		HUD().Hit(id, P);
+	}
+
+}
+
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	if (g_Alive()) 
 	{
-//		ref_sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
-//			if (S.feedback) return;
-//
-//			Play hit-ref_sound
-//			S.play_at_pos(this, Position());
-		// hit marker
+/*		// hit marker
 		if (Local() && (this!=who) && Level().CurrentEntity() == this)	
 		{
 			int id		= -1;
 			Fvector a	= {0,0,1};
 			//---------------------------------------------------------
-			Fvector b;//	= {vLocalDir.x,0,vLocalDir.z};
+			Fvector b;
 			if (who && GameID() != GAME_SINGLE)
 			{
-//				b.set(who->Position().x - Position().x, 0,who->Position().z - Position().z);
 				Fmatrix m_inv;
 				Fvector tmp_d = {who->Position().x, 0,who->Position().z};
 				m_inv.invert(XFORM());
@@ -601,16 +655,14 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 			if (!fis_zero(mb)){
 				b.mul	(1.f/mb);
 				bool FB	= _abs(a.dotproduct(b))>0.7071f;
-//				float x	= _abs(vLocalDir.x);
-//				float z	= _abs(vLocalDir.z);
 			//---------------------------------------------------------
 				if (FB)	id = (b.z<0)?2:0;
 				else	id = (b.x<0)?3:1;
 			//---------------------------------------------------------
-				HUD().Hit(id);
+				HUD().Hit(id,perc);
 			}
 		}
-
+*/
 		// stop-motion
 		if (m_PhysicMovementControl->Environment()==CPHMovementControl::peOnGround || m_PhysicMovementControl->Environment()==CPHMovementControl::peAtWall)
 		{

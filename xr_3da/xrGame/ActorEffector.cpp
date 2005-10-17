@@ -12,10 +12,9 @@
 
 
 #include "CameraEffector.h"
+#include "../ObjectAnimator.h"
+#include "object_broker.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 CActorEffector::CActorEffector()
 {
@@ -230,4 +229,110 @@ void SndShockEffector::Update()
 	if (y>0.f){
 		psSoundVFactor	= y*(m_stored_volume-m_stored_volume*SND_MIN_VOLUME_FACTOR)+m_stored_volume*SND_MIN_VOLUME_FACTOR;
 	}
+}
+
+CAnimatorCamEffector::CAnimatorCamEffector	(ECameraEffectorType type, BOOL affected)
+:inherited(type, 1000.0, affected)
+{
+	m_objectAnimator = xr_new<CObjectAnimator>();
+}
+
+CAnimatorCamEffector::~CAnimatorCamEffector	()
+{
+	delete_data	(m_objectAnimator);
+}
+
+void CAnimatorCamEffector::Start	(LPCSTR fn)
+{
+	m_objectAnimator->Load		(fn);
+	m_objectAnimator->Play		(Cyclic());
+	fLifeTime					= m_objectAnimator->GetLength();
+}
+
+BOOL CAnimatorCamEffector::Process (Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+{
+	if(!Unlimited()){
+		fLifeTime				-= Device.fTimeDelta;			
+		if(fLifeTime<0) return FALSE;
+	};
+
+	const Fmatrix& m			= m_objectAnimator->XFORM();
+	m_objectAnimator->Update	(Device.fTimeDelta);
+
+	Fmatrix Mdef;
+	Mdef.identity				();
+	Mdef.j						= n;
+	Mdef.k						= d;
+	Mdef.i.crossproduct			(n,d);
+	Mdef.c						= p;
+
+	Fmatrix mr;
+	mr.mul						(Mdef,m);
+	d							= mr.k;
+	n							= mr.j;
+	p							= mr.c;
+
+	return						TRUE;
+}
+
+CAnimatorCamLerpEffector::CAnimatorCamLerpEffector(ECameraEffectorType type, BOOL affected, GET_KOEFF_FUNC f)
+:inherited(type, affected)
+{
+	m_func		= f;
+}
+
+BOOL CAnimatorCamLerpEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+{
+	if(!Unlimited()){
+		fLifeTime		-= Device.fTimeDelta;			
+		if(fLifeTime<0) return FALSE;
+	}
+
+	const Fmatrix& m			= m_objectAnimator->XFORM();
+	m_objectAnimator->Update	(Device.fTimeDelta);
+
+	Fmatrix Mdef;
+	Mdef.identity				();
+	Mdef.j						= n;
+	Mdef.k						= d;
+	Mdef.i.crossproduct			(n,d);
+	Mdef.c						= p;
+
+	Fmatrix mr;
+	mr.mul						(Mdef,m);
+
+
+	Fquaternion					q_src, q_dst, q_res;
+	q_src.set					(Mdef);
+	q_dst.set					(mr);
+
+	float	t					= m_func();
+	clamp						(t,0.0f,1.0f);
+
+	q_res.slerp					(q_src, q_dst, t);
+	
+	Fmatrix						res;
+	res.rotation				(q_res);
+	res.c.lerp					(p, mr.c, t);
+
+	d							= res.k;
+	n							= res.j;
+	p							= res.c;
+
+	return TRUE;
+}
+
+#include "ActorCondition.h"
+
+CActorAlcoholCamEffector::CActorAlcoholCamEffector(CActorCondition* c)
+:inherited(eCEAlcohol, FALSE, GET_KOEFF_FUNC(c, &CActorCondition::GetAlcohol))
+{
+	Start			("camera_effects\\fatigue.anm");
+}
+
+CFireHitCamEffector::CFireHitCamEffector	(float power)
+:inherited(eCEFireHit, FALSE ,GET_KOEFF_FUNC(this, &CFireHitCamEffector::GetPower))
+{
+	m_power			= power/100.0f;
+	clamp			(m_power, 0.0f, 1.0f);
 }

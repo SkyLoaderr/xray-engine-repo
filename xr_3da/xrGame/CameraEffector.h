@@ -10,13 +10,17 @@
 
 enum ECameraEffectorType
 {
-	eCEFall,
-	eCENoise,
-	eCEShot,
-	eCEZoom,
-	eCERecoil,
-	eCEBobbing,
-	eCEHit
+	eCEFall			=0,
+	eCENoise		=1,
+	eCEShot			=2,
+	eCEZoom			=3,
+	eCERecoil		=4,
+	eCEBobbing		=5,
+	eCEHit			=6,  //hit from monster
+	eCEAlcohol		=20,
+	eCEFireHit		= 21,
+	eCEUser			=100,
+	eCEMax			=u32(-1)
 };
 
 class CCameraShotEffector;

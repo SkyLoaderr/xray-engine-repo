@@ -32,6 +32,7 @@ public:
 	virtual CWound*		ConditionHit				(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void		UpdateCondition				();
 
+	virtual void 		ChangeAlcohol			(float value);
 
 	void				ProcessSleep				(ALife::_TIME_ID sleep_time);
 	bool				IsSleeping					() {return m_bIsSleeping;}
@@ -50,7 +51,8 @@ public:
 			void		ConditionJump				(float weight);
 			void		ConditionWalk				(float weight, bool accel, bool sprint);
 			void		ConditionStand				(float weight);
-
+			
+			float	xr_stdcall	GetAlcohol					()	{return m_fAlcohol;}
 public:
 	IC		CActor		&object						() const
 	{

@@ -64,7 +64,8 @@ void CCameraEffector::script_register(lua_State *L)
 				value("eCEZoom",			int(eCEZoom)),
 				value("eCERecoil",			int(eCERecoil)),
 				value("eCEBobbing",			int(eCEBobbing)),
-				value("eCEHit",				int(eCEHit))
+				value("eCEHit",				int(eCEHit)),
+				value("eCEUser",			int(eCEUser))
 			],
 		class_<CCameraEffector> ("cam_effector_base")
 			.def_readwrite("fLifeTime",	&CCameraEffector::fLifeTime)

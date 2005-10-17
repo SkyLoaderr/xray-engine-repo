@@ -67,7 +67,26 @@ void CHitMarker::Render()
 //--------------------------------------------------------------------
 
 void CHitMarker::Hit(int id){
-	VERIFY((id>=0)&&(id<4));
-	fHitMarks[id] = fShowTime;
+	VERIFY((id>=0)&&(id<8));
+	switch (id){
+	case 4:{
+		fHitMarks[0] = fShowTime;
+		fHitMarks[3] = fShowTime;
+	}break;
+	case 5:{
+		fHitMarks[2] = fShowTime;
+		fHitMarks[3] = fShowTime;
+	}break;
+	case 6:{
+		fHitMarks[0] = fShowTime;
+		fHitMarks[1] = fShowTime;
+	}break;
+	case 7:{
+		fHitMarks[1] = fShowTime;
+		fHitMarks[2] = fShowTime;
+	}break;
+	default:
+		fHitMarks[id] = fShowTime;
+	};
 }
 //--------------------------------------------------------------------

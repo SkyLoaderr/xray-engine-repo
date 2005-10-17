@@ -26,10 +26,10 @@ CAI_PhraseDialogManager::~CAI_PhraseDialogManager	(void)
 //PhraseDialogManager
 void CAI_PhraseDialogManager::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
 {
-	if(/*phrase_dialog->GetDialogType(eDialogTypePDA)|| */
-		phrase_dialog->GetDialogType(eDialogTypeAI))
+/*	if(	phrase_dialog->GetDialogType(eDialogTypeAI))
 		m_PendingDialogs.push_back(phrase_dialog);
 	else
+*/
 		AnswerPhrase(phrase_dialog);
 		
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);

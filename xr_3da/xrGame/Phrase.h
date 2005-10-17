@@ -31,8 +31,8 @@ public:
 
 	bool			IsDummy()		const;
 
-	shared_str		Sound()			const			{return m_sound;}
-	shared_str		Anim()			const			{return m_anim;}
+//	shared_str		Sound()			const			{return m_sound;}
+//	shared_str		Anim()			const			{return m_anim;}
 
 protected:
 	//уникальный индекс в списке фраз диалога
@@ -49,6 +49,6 @@ protected:
 
 	//для диалогов между NPC
 	//звуковой файл
-	shared_str m_sound;
-	shared_str m_anim;
+//	shared_str m_sound;
+//	shared_str m_anim;
 };
