@@ -26,12 +26,12 @@ function actor_binder:net_spawn(data)
 	db.add_actor(self.object)
 	
 	self.weather_manager:reset()
-	--game_stats.initialize ()
+	game_stats.initialize ()
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_destroy()
-    --game_stats.shutdown ()
+    game_stats.shutdown ()
 	db.del_actor(self.object)
 
     sr_light.clean_up ()
@@ -130,7 +130,7 @@ function actor_binder:update(delta)
 
 	local time = time_global()
 	
-	--game_stats.update (delta, self.object)
+	game_stats.update (delta, self.object)
 
 	-- апдейт погоды
 	self.weather_manager:update()
