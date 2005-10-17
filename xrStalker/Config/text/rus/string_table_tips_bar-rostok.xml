@@ -1,4 +1,11 @@
-
+	<string id="rostok_kruglov_spam_1">
+		<text>Сталкер, помоги! На нас напали наемники, половина наших погибла. Помоги нам, мы в долгу не останемся.</text>
+	</string>
+	<string id="rostok_kruglov_spam_2">
+		<text>…будь осторожнее, по пути к нам несколько засад наемников.</text>
+	</string>
+	
+	
 	<string id="bar_ecolog_crush_start_heli">
 		<text>Ну все Волкодав, ты допрыгался. Сюда летит военный вертолет. Сейчас они вас, как щенков!</text>
 	</string>
