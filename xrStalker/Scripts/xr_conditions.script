@@ -692,6 +692,5 @@ end
 -- Special for Sarcofag
 -------------------------------------------------------------------------------------
 function actor_has_decoder(actor, npc)
-	actor:object("decoder") ~= nil
-	return true
+	return actor:object("decoder") ~= nil
 end
