@@ -19,6 +19,7 @@ sunly			= sect_sunly
 ;!dx            = sect_dx
 pripyat	    	= sect_map;sect_prypyat
 mrachno         = sect_mrachno
+stancia2        = sect_stancia2
 
 [weather_effects]
 surge_day		= sect_surge_day
@@ -182,6 +183,58 @@ sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 210
 env_ambient		=	ambient_env_rain
 
+[sect_stancia2]
+00:00:00		=	stancia_01_no_light
+12:00:00		=	stancia_02_no_light
+
+[stancia_01_no_light]
+flares			=
+sky_texture		=	sky\sky_13_cube
+sky_rotation	=	0
+sky_color		=   0.50,	0.50,	0.50
+clouds_texture	=	oblaka
+clouds_color	=	0.204, 0.200, 0.204, 0.75, 1.7
+far_plane		=	950
+fog_color		=	0.204, 0.200, 0.204
+fog_density		=	1
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	
+bolt_period		=	8.f
+bolt_duration	=	0.25f;
+wind_velocity	=	100.0 
+wind_direction	=	0.0
+ambient			=	0.04,   0.04,  	0.04
+lmap_color		=   1.0,	1.0,	1.0
+hemi_color		=	0.50,	0.50,	0.50, 1
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-25.0, 210
+env_ambient		=	ambient_env_rain
+
+
+[stancia_02_no_light]
+flares			=
+sky_texture		=	sky\sky_13_cube
+sky_rotation	=	0
+sky_color		=	0.50,	0.50,	0.50
+clouds_texture	=	oblaka
+clouds_color	=	0.204, 0.200, 0.204, 0.75, 1.7
+far_plane		=	850
+fog_color		=	0.204, 0.200, 0.204
+fog_density		=	1
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	
+bolt_period		=	6.f
+bolt_duration	=	0.25f
+wind_velocity	=	100.0 
+wind_direction	=	0.0
+ambient			=   0.04,   0.04,  	0.04
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.50,	0.50,	0.50, 1
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-25.0, 210
+env_ambient		=	ambient_env_rain
 
 
 [sect_aaa]
