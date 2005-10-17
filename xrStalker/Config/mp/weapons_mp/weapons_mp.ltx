@@ -3,6 +3,9 @@
 [mp_wpn_wincheaster1300]:wpn_wincheaster1300
 $spawn              			= ""
 fire_dispersion_base		= 0.3
+hit_power                		= 50		; size of damage by bullet
+hit_impulse		 		= 140		; size of physic impulse by bullet	
+hit_type 				= fire_wound 	; [] type of the wound
 
 ;-----------------------------------------------------------------------------------
 [mp_wpn_abakan]:wpn_abakan
@@ -220,7 +223,7 @@ condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
 
 ; ttc
 
-hit_power        		= 133
+hit_power        		= 40;133
 hit_impulse      		= 210
 hit_type 			= fire_wound
 
@@ -880,7 +883,7 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-hit_power        		= 111
+hit_power        		= 60;111
 hit_impulse      		= 210
 hit_type 			= fire_wound
 
@@ -995,7 +998,7 @@ PDM_crouch_no_acc 		= 1.0
 
 ; ttc
 
-hit_power        		= 133
+hit_power        		= 40;133
 hit_impulse      		= 210
 hit_type 			= fire_wound
 
