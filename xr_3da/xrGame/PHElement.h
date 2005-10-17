@@ -35,10 +35,10 @@ class CPHElement	:
 
 	dReal						m_w_limit ;					//->to shell ??		//bl
 	dReal						m_l_limit ;					//->to shell ??		//bl
-	dVector3					m_safe_position;			//e					//st
-	dQuaternion					m_safe_quaternion;
-	dVector3					m_safe_velocity;			//e					//st
-	Fmatrix						m_inverse_local_transform;	//e				//bt
+//	dVector3					m_safe_position;			//e					//st
+//	dQuaternion					m_safe_quaternion;
+//	dVector3					m_safe_velocity;			//e					//st
+//	Fmatrix						m_inverse_local_transform;	//e				//bt
 	dReal						k_w;						//->to shell ??		//st
 	dReal						k_l;						//->to shell ??		//st
 	ObjectContactCallbackFun*	temp_for_push_out;			//->to shell ??		//aux
@@ -198,7 +198,9 @@ public:																																				//
 	virtual void						InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
 	virtual void						InterpolateGlobalPosition		(Fvector* v);																	//aux
 	virtual void						GetGlobalTransformDynamic		(Fmatrix* m);																	//aux
-			Fmatrix&					InverceLocalForm				(){return m_inverse_local_transform;}
+IC			void						InverceLocalForm				(Fmatrix&)	;
+IC			void						MulB43InverceLocalForm			(Fmatrix&)	;
+
 ////////////////////////////////////////////////////Structure/////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual CPhysicsShell*				PhysicsShell					();																				//aux

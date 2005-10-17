@@ -31,6 +31,8 @@
 #include "PHElement.h"
 #include "PHShell.h"
 #include "PHCollideValidator.h"
+#include "PHElementInline.h"
+
 IC		bool	PhOutOfBoundaries			(const Fvector& v)
 {
 	return v.y < phBoundaries.y1;
@@ -1139,7 +1141,9 @@ void CPHShell::GetGlobalPositionDynamic(Fvector* v)
 void CPHShell::ObjectToRootForm(const Fmatrix& form)
 {
 	Fmatrix M;
-	M.mul(m_object_in_root,(*elements.begin())->InverceLocalForm());
+	Fmatrix ILF;
+	(*elements.begin())->InverceLocalForm(ILF);
+	M.mul(m_object_in_root,ILF);
 	M.invert();
 	mXFORM.mul(form,M);
 	

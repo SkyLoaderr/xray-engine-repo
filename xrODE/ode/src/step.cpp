@@ -30,7 +30,22 @@
 #include <ode/matrix.h>
 #include "lcp.h"
 #include "util.h"
+#include "float.h"
+inline bool		_valid	(const float x)
+{
+	// check for: Signaling NaN, Quiet NaN, Negative infinity ( –INF), Positive infinity (+INF), Negative denormalized, Positive denormalized
+	int			cls			= _fpclass		(double(x));
+	if (cls&(_FPCLASS_SNAN+_FPCLASS_QNAN+_FPCLASS_NINF+_FPCLASS_PINF+_FPCLASS_ND+_FPCLASS_PD))	
+		return	false;	
 
+	/*	*****other cases are*****
+	_FPCLASS_NN Negative normalized non-zero 
+	_FPCLASS_NZ Negative zero ( – 0) 
+	_FPCLASS_PZ Positive 0 (+0) 
+	_FPCLASS_PN Positive normalized non-zero 
+	*/
+	return		true;
+}
 //****************************************************************************
 // misc defines
 
@@ -923,8 +938,15 @@ void dInternalStepIsland_x2 (dxWorld *world, dxBody * const *body, int nb,
   for (i=0; i<nb; i++) {
     dReal body_invMass = body[i]->invMass;
     dReal *body_invI = invI + i*12;
-    for (j=0; j<3; j++) body[i]->lvel[j] += body_invMass * cforce[i*8+j];
-    dMULTIPLYADD0_331 (body[i]->avel,body_invI,cforce+i*8+4);
+    for (j=0; j<3; j++)
+	{
+		float &lf=cforce[i*8+j];if(!_valid(lf))lf=0.f;
+		float &af=cforce[i*8+4+j];
+		if(!_valid(af))af=0.f;
+		body[i]->lvel[j] += body_invMass * cforce[i*8+j];
+	}
+		dMULTIPLYADD0_331 (body[i]->avel,body_invI,cforce+i*8+4);
+	
   }
 
   // update the position and orientation from the new linear/angular velocity

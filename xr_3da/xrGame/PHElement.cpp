@@ -9,6 +9,7 @@
 #include "game_object_space.h"
 #include "../skeletoncustom.h"
 #include <../ode/src/util.h>
+
 #ifdef DEBUG
 #include "../StatGraph.h"
 #include "PHDebug.h"
@@ -36,6 +37,7 @@
 
 #include "PHShell.h"
 #include "PHElement.h"
+#include "PHElementInline.h"
 extern CPHWorld*				ph_world;
 
 
@@ -107,9 +109,9 @@ void CPHElement::			build	(){
 	
 
 
-	m_inverse_local_transform.identity();
-	m_inverse_local_transform.c.set(m_mass_center);
-	m_inverse_local_transform.invert();
+	//m_inverse_local_transform.identity();
+	//m_inverse_local_transform.c.set(m_mass_center);
+	//m_inverse_local_transform.invert();
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 	///////////////////////////////////////////////////////////////////////////////////////
 	CPHGeometryOwner::build();
@@ -243,11 +245,13 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dBodySetRotation(m_body,R);
 
 
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	VERIFY2(dV_valid(m_safe_position),"not valide safe position");
-	VERIFY2(dV_valid(m_safe_velocity),"not valide safe velocity");
+	//dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+	//dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
+	//VERIFY2(dV_valid(m_safe_position),"not valide safe position");
+	//VERIFY2(dV_valid(m_safe_velocity),"not valide safe velocity");
+	VERIFY2(dBodyGetPosition(m_body),"not valide safe position");
+	VERIFY2(dBodyGetLinearVel(m_body),"not valide safe velocity");
 }
 
 void CPHElement::getQuaternion(Fquaternion& quaternion)
@@ -317,9 +321,9 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 
 	dBodySetAngularVel(m_body,ang_vel.x,ang_vel.y,ang_vel.z);
 
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+//	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+//	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
+//	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	m_body_interpolation.SetBody(m_body);
 
@@ -443,14 +447,16 @@ void CPHElement::PhDataUpdate(dReal step){
 	////////////////limit linear vel////////////////////////////////////////////////////////////////////////////////////////
 
 
-	if(!dV_valid(linear_velocity))
-	{
-		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
-		linear_velocity_smag=dDOT(m_safe_velocity,m_safe_velocity);
-		linear_velocity_mag =dSqrt(linear_velocity_smag);
+	//if(!dV_valid(linear_velocity))
+	//{
+	//	dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
+	//	linear_velocity_smag=dDOT(m_safe_velocity,m_safe_velocity);
+	//	linear_velocity_mag =dSqrt(linear_velocity_smag);
 
-	}
-	else if(linear_velocity_mag>m_l_limit)
+	//}
+	//else 
+	VERIFY(dV_valid(linear_velocity));
+	if(linear_velocity_mag>m_l_limit)
 	{
 		dReal f=linear_velocity_mag/m_l_limit;
 		linear_velocity_mag=m_l_limit;
@@ -462,34 +468,36 @@ void CPHElement::PhDataUpdate(dReal step){
 			linear_velocity[2]/f
 			);
 	}
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
-	if(!dV_valid(position)) 
-	{
-		dBodySetPosition(
-			m_body,
-			m_safe_position[0]-m_safe_velocity[0]*fixed_step,
-			m_safe_position[1]-m_safe_velocity[1]*fixed_step,
-			m_safe_position[2]-m_safe_velocity[2]*fixed_step
-			);
+	VERIFY(dV_valid(position));
+	//if(!dV_valid(position)) 
+	//{
+	//	dBodySetPosition(
+	//		m_body,
+	//		m_safe_position[0]-m_safe_velocity[0]*fixed_step,
+	//		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
+	//		m_safe_position[2]-m_safe_velocity[2]*fixed_step
+	//		);
 
-	}
-	else
-	{
-		dVectorSet(m_safe_position,position);
+	//}
+	//else
+	//{
+	//	dVectorSet(m_safe_position,position);
 
-		
-	}
+	//	
+	//}
 
 	/////////////////limit & secure angular vel///////////////////////////////////////////////////////////////////////////////
+	VERIFY(dV_valid(angular_velocity));
+	//if(!dV_valid(angular_velocity))
+	//{
+	//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 
-	if(!dV_valid(angular_velocity))
-	{
-		dBodySetAngularVel(m_body,0.f,0.f,0.f);
-
-	}
-	else if(angular_velocity_mag>m_w_limit)
+	//}
+	//else 
+	if(angular_velocity_mag>m_w_limit)
 	{
 		dReal f=angular_velocity_mag/m_w_limit;
 		angular_velocity_mag=m_w_limit;
@@ -504,14 +512,14 @@ void CPHElement::PhDataUpdate(dReal step){
 	////////////////secure rotation////////////////////////////////////////////////////////////////////////////////////////
 	{
 
-
-		if(!dQ_valid(dBodyGetQuaternion(m_body)))
+	VERIFY(dQ_valid(dBodyGetQuaternion(m_body)));
+	/*	if(!dQ_valid(dBodyGetQuaternion(m_body)))
 		{
 
 			dBodySetQuaternion(m_body,m_safe_quaternion);
 
 		}
-		else dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
+		else dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));*/
 
 	}
 
@@ -633,7 +641,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	{
 		if(id==m_SelfID)
 		{
-			body_pos.add(pos,m_inverse_local_transform.c);
+			body_pos.sub(pos,m_mass_center);
 		}
 		else
 		{ 
@@ -643,7 +651,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 				Fmatrix m;m.set(K->LL_GetTransform(m_SelfID));
 				m.invert();m.mulB(K->LL_GetTransform(id));
 				m.transform(body_pos,pos);
-				body_pos.add(m_inverse_local_transform.c);
+				body_pos.sub(m_mass_center);
 			}
 			else
 			{
@@ -679,7 +687,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 void CPHElement::applyImpact(const SPHImpact& I)
 {
 	Fvector pos;
-	pos.add(m_inverse_local_transform.c,I.point);
+	pos.add(I.point,m_mass_center);
 	Fvector dir;
 	dir.set(I.force);
 	float val=I.force.magnitude();
@@ -695,15 +703,16 @@ void CPHElement::applyImpact(const SPHImpact& I)
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_body_interpolation.InterpolateRotation(*m);
 	m_body_interpolation.InterpolatePosition(m->c);
-	m->mulB_43(m_inverse_local_transform);
-	
+	//m->mulB_43(m_inverse_local_transform);
+	MulB43InverceLocalForm(*m);
 	//bUpdate=false;
 	m_flags.set(flUpdate,FALSE);
 }
 void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 {
 	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
-	m->mulB_43(m_inverse_local_transform);
+	MulB43InverceLocalForm(*m);
+	//m->mulB_43(m_inverse_local_transform);
 	//bUpdate=false;
 	m_flags.set(flUpdate,FALSE);
 }
@@ -747,9 +756,9 @@ void CPHElement::RunSimulation(const Fmatrix& start_from)
 		globe.mul(start_from,mXFORM);
 		SetTransform(globe);
 	}
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+	//dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	//dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
+	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 }
 
@@ -968,7 +977,7 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 	if(!bActive||m_flags.test(flFixed)) return;
 	VERIFY2(_valid(velocity),"not valid arqument velocity");
 	dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 }
 void CPHElement::set_AngularVel			  (const Fvector& velocity)
 {
@@ -1281,9 +1290,9 @@ void CPHElement::ReAdjustMassPositions(const Fmatrix &shift_pivot,float density)
 	}
 
 	dBodySetMass(m_body,&m_mass);
-	m_inverse_local_transform.identity();
-	m_inverse_local_transform.c.set(m_mass_center);
-	m_inverse_local_transform.invert();
+	//m_inverse_local_transform.identity();
+	//m_inverse_local_transform.c.set(m_mass_center);
+	//m_inverse_local_transform.invert();
 	//dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 }
 void CPHElement::ResetMass(float density)
@@ -1295,8 +1304,8 @@ void CPHElement::ResetMass(float density)
 
 	setDensity(density);
 	dBodySetMass(m_body,&m_mass);
-	m_inverse_local_transform.c.set(m_mass_center);
-	m_inverse_local_transform.invert();
+	//m_inverse_local_transform.c.set(m_mass_center);
+	//m_inverse_local_transform.invert();
 	shift_mc.sub(m_mass_center,tmp);
 	tmp.set(*(Fvector *)dBodyGetPosition(m_body));
 	tmp.add(shift_mc);
@@ -1341,9 +1350,9 @@ void CPHElement::PresetActive()
 		m_shell->m_object_in_root.invert();
 
 	}
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+	//dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	//dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
+	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////
 	//initializing values for disabling//////////////////////////
@@ -1383,7 +1392,8 @@ void CPHElement::cv2bone_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix&
 	VERIFY2(_valid(q)&&_valid(pos),"cv2bone_Xfrom receive wrong data");
 	xform.rotation(q);
 	xform.c.set(pos);
-	xform.mulB(m_inverse_local_transform);
+	//xform.mulB(m_inverse_local_transform);
+	MulB43InverceLocalForm(xform);
 	VERIFY2(_valid(xform),"cv2bone_Xfrom returns wrong data");
 }
 void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)

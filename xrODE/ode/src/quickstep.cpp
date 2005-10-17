@@ -943,7 +943,7 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 		//@@@ note that this doesn't work for contact joints yet, as they are
 		// recreated every iteration
 		for (i=0; i<nj; i++) {
-			memcpy (joint[i]->lambda,lambda+ofs[i],info[i].m * sizeof(dReal));
+			memcpy (joint[i]->lambda,lambda+ofs[i],info[i].m * sizeof(dReal));//valid?
 		}
 #endif
 
@@ -951,11 +951,32 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 		// they should not be used again.
 		
 		// add stepsize * cforce to the body velocity
-		for (i=0; i<nb; i++) {
-			for (j=0; j<3; j++) body[i]->lvel[j] += stepsize * cforce[i*6+j];
-			for (j=0; j<3; j++) body[i]->avel[j] += stepsize * cforce[i*6+3+j];
-		}
+		bool bvalid=true;
+		for (i=0; i<nb; i++) 
+			for (j=0; j<3; j++)
+			{
 
+				float &lf=cforce[i*6+j];
+				float &af=cforce[i*6+3+j];
+				if(!_valid(lf))
+				{
+					lf=0.f;
+					bvalid=false;
+				}
+				if(!_valid(af))
+				{
+					af=0.f;
+					bvalid=false;
+				}
+				 body[i]->lvel[j] += stepsize * lf; //valid?
+				 body[i]->avel[j] += stepsize * af;//valid?
+			}
+		if(!bvalid)
+		{
+			for (i=0; i<nj; i++) {
+				for(j=0;j<6;j++)joint[i]->lambda[j]=0.f;
+			}
+		}
 		// if joint feedback is requested, compute the constraint force.
 		// BUT: cforce is inv(M)*J'*lambda, whereas we want just J'*lambda,
 		// so we must compute M*cforce.
@@ -1001,12 +1022,12 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 		dReal body_invMass = body[i]->invMass;
 		for (j=0; j<3; j++) 
 		{
-			if (_valid(body[i]->facc[j]))
+			//if (_valid(body[i]->facc[j]))
 				body[i]->lvel[j] += stepsize * body_invMass * body	[i]->facc[j];
 		}
 		for (j=0; j<3; j++)
 		{	
-			if(!_valid(body[i]->tacc[j]))body[i]->tacc[j]=0.f;
+		//	if(!_valid(body[i]->tacc[j]))body[i]->tacc[j]=0.f;
 			body[i]->tacc[j] *= stepsize;	
 		}
 		dMULTIPLYADD0_331 (body[i]->avel,invI + i*12,body[i]->tacc);
@@ -1029,16 +1050,16 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 	// update the position and orientation from the new linear/angular velocity
 	// (over the given timestep)
 	IFTIMING (dTimerNow ("update position");)
-	for (i=0; i<nb; i++) dxStepBody (body[i],stepsize);
+		for (i=0; i<nb; i++) dxStepBody (body[i],stepsize);
 
 	IFTIMING (dTimerNow ("tidy up");)
 
-	// zero all force accumulators
-	for (i=0; i<nb; i++) {
-		dSetZero (body[i]->facc,3);
-		dSetZero (body[i]->tacc,3);
-	}
+		// zero all force accumulators
+		for (i=0; i<nb; i++) {
+			dSetZero (body[i]->facc,3);
+			dSetZero (body[i]->tacc,3);
+		}
 
-	IFTIMING (dTimerEnd();)
-	IFTIMING (if (m > 0) dTimerReport (stdout,1);)
+		IFTIMING (dTimerEnd();)
+			IFTIMING (if (m > 0) dTimerReport (stdout,1);)
 }
