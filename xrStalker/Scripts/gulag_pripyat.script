@@ -298,8 +298,13 @@ function check_state_followers(gulag)
 		actor:has_info("pri_wave5_monolith3_dead") and
 		actor:has_info("pri_wave5_monolith4_dead")
 	then
-		actor:give_info_portion("pri_wave5_end")
-		return state_wave6
+	    if actor:dont_has_info("pri_wave5_leader_phrase_end") then
+		    actor:give_info_portion("pri_wave5_leader_phrase_start")
+		    return state_wave5
+	    else
+		    actor:give_info_portion("pri_wave5_end")
+		    return state_wave6
+		end
 	end
 	if state == state_wave6 and
 		--actor:has_info("pri_wave6_monolith1_dead") and
