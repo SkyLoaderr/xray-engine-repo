@@ -186,6 +186,27 @@ cost				= 0
 
 can_trade			= off
 
+[decoder]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\decoder"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_decoder.ogf
+radius				= 1
+;script_binding		= stalker.object_init
+
+inv_name			= Decoder	
+inv_name_short		= Decoder
+inv_weight			= 3	;0.2
+can_trade			= off
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 8
+inv_grid_y			= 18
+cost				= 50
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GARBAGE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
