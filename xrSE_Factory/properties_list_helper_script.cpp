@@ -17,12 +17,47 @@ using namespace luabind;
 
 struct CChooseType {};
 
-extern CScriptPropertiesListHelper *g_property_list_helper;
+typedef IPropHelper& (__stdcall *TPHelper) ();
+
+TPHelper					_PHelper = 0;
+HMODULE						prop_helper_module = 0;
+LPCSTR						prop_helper_library = "xrEPropsB.dll", prop_helper_func = "PHelper";
+CScriptPropertiesListHelper	*g_property_list_helper = 0;
+
+IPropHelper &PHelper()
+{
+	R_ASSERT3				(_PHelper,"Cannot find entry point of the function or Cannot find library",prop_helper_library);
+	return					(_PHelper());
+}
+
+void load_prop_helper			()
+{
+	prop_helper_module		= LoadLibrary(prop_helper_library);
+	if (!prop_helper_module) {
+		Msg					("! Cannot find library %s",prop_helper_library);
+		return;
+	}
+	_PHelper				= (TPHelper)GetProcAddress(prop_helper_module,prop_helper_func);
+	if (!_PHelper) {
+		Msg					("! Cannot find entry point of the function %s in the library %s",prop_helper_func,prop_helper_func);
+		return;
+	}
+}
 
 CScriptPropertiesListHelper *properties_helper()
 {
+	if (g_property_list_helper)
+		return							(g_property_list_helper);
+
+	if (!_PHelper)
+		load_prop_helper				();
+
+	if (_PHelper)
+		g_property_list_helper			= xr_new<CScriptPropertiesListHelper>();
+
 	if (!g_property_list_helper)
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Editor is not started, therefore prop_helper cannot be accessed!");
+
 	return								(g_property_list_helper);
 }
 
