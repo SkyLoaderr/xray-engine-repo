@@ -17,18 +17,22 @@ end
 ----------------
 function PPData:process (pp)
 	printf	("0")
-    local t = time_global ()
+    effector.process (self, pp)
 	printf	("1")
+    local t = time_global ()
+	printf	("2")
     --if t - self.time ~= 0 then
        self.host:update2 ((t - self.time) * 0.001)
-	printf	("2")
+	printf	("3")
        self.time = t
        pp:assign (self.params)
-	printf	("3")
-       effector.process (self, pp)
 	printf	("4")
     --end    
     return true
+end
+
+function PPData:__finalize()
+	printf	("PPData::~PPData() called!")
 end
 ----------------
 
