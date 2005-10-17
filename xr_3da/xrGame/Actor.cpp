@@ -522,7 +522,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		mstate_wishful	&=~mcSprint;
 	};
 	//---------------------------------------------------------------
-w	HitMark			(iLost, dir, who, element, position_in_bone_space, impulse, hit_type);
+	HitMark			(iLost, dir, who, element, position_in_bone_space, impulse, hit_type);
 	//---------------------------------------------------------------
 	switch (GameID())
 	{
