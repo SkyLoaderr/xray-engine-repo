@@ -27,6 +27,7 @@ local function script_name() \
 return \"%s\" \
 end \
 local this = {} \
+this._G = _G \
 %s this %s \
 setfenv(1, this) \
 		";
