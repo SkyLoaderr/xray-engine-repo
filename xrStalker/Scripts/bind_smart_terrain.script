@@ -1,0 +1,89 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Binder скриптовых зон
+Нужен как клиентская (онлайновая) часть объекта smart terrain. И ТОЛЬКО smart terrain!
+Чугай Саша
+--------------------------------------------------------------------------------------------------------------------]]
+
+function bind( obj )
+	local ini = obj:spawn_ini()
+
+	if not ini then
+		return
+	end
+
+	if ini:section_exist( "gulag1" ) then
+		if obj:clsid() == clsid.smart_terrain then
+			if alife() then
+				obj:bind_object( zone_binder( obj ) )
+			else
+				printf( "No simulation! SMART_TERRAIN '%s' disabled.", obj:name() )
+			end
+		else
+			abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", obj:name() )
+		end
+	end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- класс zone_binder. Он контролирует скриптовую зону для smart terrain
+----------------------------------------------------------------------------------------------------------------------
+class "zone_binder" ( object_binder )
+
+function zone_binder:__init( obj ) super( obj )
+end
+
+function zone_binder:net_spawn( server_object )
+	if not object_binder.net_spawn( self, server_object ) then
+		return false
+	end
+
+	self.object:set_callback( callback.zone_enter, self.on_enter, self )
+
+	self.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object )
+
+	db.add_zone( self.object )
+	db.add_smart_terrain( self.cl_smart_terrain )
+
+	return true
+end
+
+function zone_binder:net_destroy()
+	self.object:set_callback( callback.zone_enter, nil )
+
+	self.cl_smart_terrain:destroy()
+	
+	db.del_zone( self.object )
+	db.del_smart_terrain( self.cl_smart_terrain )
+
+	object_binder.net_destroy( self )
+end
+
+function zone_binder:net_save_relevant()
+	-- для smart terrain - да, для обычной скриптовой зоны - нет
+	return self.object:clsid() == clsid.smart_terrain
+end
+
+function zone_binder:save( packet )
+	printf( "zone binder save" )
+	object_binder.save( self, packet )
+
+	self.cl_smart_terrain:save( packet )
+end
+
+function zone_binder:load( packet )
+	printf( "zone binder load" )
+	object_binder.load( self, packet )
+end
+
+function zone_binder:update( delta )
+	object_binder.update( self, delta )
+
+	self.cl_smart_terrain:update()
+end
+
+-- callback на вход в зону
+function zone_binder:on_enter( zone, obj )
+	printf( "[zone %s] on_enter obj=%s, clsid=%s", zone:name(), obj:name(), obj:clsid() )
+
+	self.cl_smart_terrain:on_enter( obj )
+end

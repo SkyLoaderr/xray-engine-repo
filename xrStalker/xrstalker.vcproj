@@ -2448,6 +2448,9 @@
 						RelativePath=".\Scripts\bind_restrictor.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\bind_smart_terrain.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\bind_stalker.script">
 					</File>
 					<File
