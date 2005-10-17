@@ -102,9 +102,9 @@ struct dxBody : public dObject {
   dVector3 finite_rot_axis;	// finite rotation axis, unit length or 0=none
 
   // auto-disable information
-  dxAutoDisable adis;		// auto-disable parameters
-  dReal adis_timeleft;		// time left to be idle
-  int adis_stepsleft;		// steps left to be idle
+  //dxAutoDisable adis;		// auto-disable parameters
+  //dReal adis_timeleft;		// time left to be idle
+  //int adis_stepsleft;		// steps left to be idle
 };
 
 

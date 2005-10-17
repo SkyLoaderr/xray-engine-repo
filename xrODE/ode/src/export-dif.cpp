@@ -468,16 +468,16 @@ void dWorldExportDIF (dWorldID w, FILE *file, const char *prefix)
 		if (b->flags & dxBodyDisabled) c.print ("disabled",1);
 		if (b->flags & dxBodyNoGravity) c.print ("no_gravity",1);
 		if (b->flags & dxBodyAutoDisable) {
-			c.print ("auto_disable = {");
-			c.indent++;
-			c.print ("linear_threshold",b->adis.linear_threshold);
-			c.print ("angular_threshold",b->adis.angular_threshold);
-			c.print ("idle_time",b->adis.idle_time);
-			c.print ("idle_steps",b->adis.idle_steps);
-			c.print ("time_left",b->adis_timeleft);
-			c.print ("steps_left",b->adis_stepsleft);
-			c.indent--;
-			c.print ("},");
+//			c.print ("auto_disable = {");
+//			c.indent++;
+//			c.print ("linear_threshold",b->adis.linear_threshold);
+//			c.print ("angular_threshold",b->adis.angular_threshold);
+//			c.print ("idle_time",b->adis.idle_time);
+//			c.print ("idle_steps",b->adis.idle_steps);
+//			c.print ("time_left",b->adis_timeleft);
+//			c.print ("steps_left",b->adis_stepsleft);
+//			c.indent--;
+//			c.print ("},");
 		}
 		c.printNonzero ("facc",b->facc);
 		c.printNonzero ("tacc",b->tacc);

@@ -32,6 +32,7 @@
 
 void dInternalHandleAutoDisabling (dxWorld *world, dReal stepsize)
 {
+	/*
 	dxBody *bb;
 	for (bb=world->firstbody; bb; bb=(dxBody*)bb->next) {
 		// nothing to do unless this body is currently enabled and has
@@ -67,6 +68,7 @@ void dInternalHandleAutoDisabling (dxWorld *world, dReal stepsize)
 			bb->flags |= dxBodyDisabled;
 		}
 	}
+	*/
 }
 
 

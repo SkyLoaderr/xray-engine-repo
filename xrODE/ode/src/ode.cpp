@@ -275,8 +275,8 @@ dxBody *dBodyCreate (dxWorld *w)
 
   // set auto-disable parameters
   dBodySetAutoDisableDefaults (b);	// must do this after adding to world
-  b->adis_stepsleft = b->adis.idle_steps;
-  b->adis_timeleft	= b->adis.idle_time;
+//  b->adis_stepsleft = b->adis.idle_steps;
+//  b->adis_timeleft	= b->adis.idle_time;
 
   return b;
 }
@@ -764,8 +764,8 @@ void dBodyEnable (dBodyID b)
 {
   dAASSERT (b);
   b->flags &= ~dxBodyDisabled;
-  b->adis_stepsleft = b->adis.idle_steps;
-  b->adis_timeleft = b->adis.idle_time;
+ // b->adis_stepsleft = b->adis.idle_steps;
+ // b->adis_timeleft = b->adis.idle_time;
 }
 
 
@@ -803,56 +803,56 @@ int dBodyGetGravityMode (dBodyID b)
 dReal dBodyGetAutoDisableLinearThreshold (dBodyID b)
 {
 	dAASSERT(b);
-	return dSqrt (b->adis.linear_threshold);
+	return 0.f;//dSqrt (b->adis.linear_threshold);
 }
 
 
 void dBodySetAutoDisableLinearThreshold (dBodyID b, dReal linear_threshold)
 {
 	dAASSERT(b);
-	b->adis.linear_threshold = linear_threshold * linear_threshold;
+//	b->adis.linear_threshold = linear_threshold * linear_threshold;
 }
 
 
 dReal dBodyGetAutoDisableAngularThreshold (dBodyID b)
 {
 	dAASSERT(b);
-	return dSqrt (b->adis.angular_threshold);
+	return 0.f;//dSqrt (b->adis.angular_threshold);
 }
 
 
 void dBodySetAutoDisableAngularThreshold (dBodyID b, dReal angular_threshold)
 {
 	dAASSERT(b);
-	b->adis.angular_threshold = angular_threshold * angular_threshold;
+//	b->adis.angular_threshold = angular_threshold * angular_threshold;
 }
 
 
 int dBodyGetAutoDisableSteps (dBodyID b)
 {
 	dAASSERT(b);
-	return b->adis.idle_steps;
+	return 0;//b->adis.idle_steps;
 }
 
 
 void dBodySetAutoDisableSteps (dBodyID b, int steps)
 {
 	dAASSERT(b);
-	b->adis.idle_steps = steps;
+	//b->adis.idle_steps = steps;
 }
 
 
 dReal dBodyGetAutoDisableTime (dBodyID b)
 {
 	dAASSERT(b);
-	return b->adis.idle_time;
+	return 0.f;//b->adis.idle_time;
 }
 
 
 void dBodySetAutoDisableTime (dBodyID b, dReal time)
 {
 	dAASSERT(b);
-	b->adis.idle_time = time;
+	//b->adis.idle_time = time;
 }
 
 
@@ -876,10 +876,10 @@ void dBodySetAutoDisableDefaults (dBodyID b)
 	dAASSERT(b);
 	dWorldID w = b->world;
 	//dAASSERT(w);
-	b->adis.linear_threshold = dWorldGetAutoDisableLinearThreshold (w);
-	b->adis.angular_threshold = dWorldGetAutoDisableAngularThreshold (w);
-	b->adis.idle_steps = dWorldGetAutoDisableSteps (w);
-	b->adis.idle_time = dWorldGetAutoDisableTime (w);
+	//b->adis.linear_threshold = dWorldGetAutoDisableLinearThreshold (w);
+	//b->adis.angular_threshold = dWorldGetAutoDisableAngularThreshold (w);
+	//b->adis.idle_steps = dWorldGetAutoDisableSteps (w);
+	//b->adis.idle_time = dWorldGetAutoDisableTime (w);
 	dBodySetAutoDisableFlag (b, false);	//. 
 }
 
