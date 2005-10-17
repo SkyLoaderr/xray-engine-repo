@@ -12,6 +12,27 @@
 #include "script_thread.h"
 #include <stdarg.h>
 
+LPCSTR	file_header_old = "\
+local function script_name() \
+return \"%s\" \
+end \
+local this = {} \
+%s this %s \
+setmetatable(this, {__index = _G}) \
+setfenv(1, this) \
+		";
+
+LPCSTR	file_header_new = "\
+local function script_name() \
+return \"%s\" \
+end \
+local this = {} \
+%s this %s \
+setfenv(1, this) \
+		";
+
+LPCSTR	file_header = 0;
+
 #ifndef ENGINE_BUILD
 #	include "script_engine.h"
 #	include "ai_space.h"
@@ -68,6 +89,11 @@ CScriptStorage::CScriptStorage		()
 	luaJIT_setmode			(lua(),LUAJIT_MODE_ENGINE,m_jit?LUAJIT_MODE_ON:LUAJIT_MODE_OFF);
 	luaopen_coco			(lua());
 #endif
+
+	if (strstr(Core.Params,"-_g"))
+		file_header			= file_header_new;
+	else
+		file_header			= file_header_old;
 }
 
 CScriptStorage::~CScriptStorage		()
@@ -237,14 +263,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 	if (caNameSpaceName && xr_strcmp("_G",caNameSpaceName)) {
 		string512		insert, a, b;
 
-		LPCSTR			header = "\
-local function script_name() \
-return \"%s\" \
-end \
-local this = {} \
-%s this %s \
-setfenv(1, this) \
-		";
+		LPCSTR			header = file_header;
 
 		if (!parse_namespace(caNameSpaceName,a,b))
 			return		(false);
