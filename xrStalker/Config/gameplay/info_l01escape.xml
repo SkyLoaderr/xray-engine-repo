@@ -132,6 +132,7 @@
 	<info_portion id="tutorial_volk_acquainted"></info_portion>
 
 	<info_portion id="tutorial_heli_attack"></info_portion>
+	<info_portion id="esc_close_door"></info_portion>
 
 	<!-- infoportions for factory on escape -->
 	<info_portion id="escape_factory_quest"></info_portion>
