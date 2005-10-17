@@ -25,7 +25,12 @@ end
 
 function see_npc(actor, npc, p)
     local npc1 = level_object_by_sid(p[1])
-    return npc and npc1 and npc:see(npc1)
+    if npc and npc1 then
+        printf("cond <see_npc>: [%s]->[%s]", npc:name(), npc1:name())
+        return npc:see(npc1)
+    else
+        return false
+    end
 end
 
 -- проверка того что дистанция до обьекта <= заданной
