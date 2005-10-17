@@ -16,12 +16,17 @@ function PPData:__init (host) super (1003,10000000)
 end
 ----------------
 function PPData:process (pp)
+	printf	("0")
     local t = time_global ()
+	printf	("1")
     --if t - self.time ~= 0 then
        self.host:update2 ((t - self.time) * 0.001)
+	printf	("2")
        self.time = t
        pp:assign (self.params)
+	printf	("3")
        effector.process (self, pp)
+	printf	("4")
     --end    
     return true
 end
