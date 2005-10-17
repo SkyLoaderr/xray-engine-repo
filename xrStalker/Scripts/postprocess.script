@@ -18,11 +18,11 @@ end
 function PPData:process (pp)
     local t = time_global ()
     if t - self.time ~= 0 then
-       self.host:update2 ((t - self.time) * 0.001)
+       --self.host:update2 ((t - self.time) * 0.001)
        self.time = t
+       pp:assign (self.params)
+       effector.process (self, pp)
     end    
-    pp:assign (self.params)
-    effector.process (self, pp)
     return true
 end
 ----------------
@@ -213,12 +213,14 @@ function PostProcess:__init (ini_file)
 
     self.pp = PPData (self)
     self.pp:start ()
-    self.pp.params.color_base = color (0.5, 0.5, 0.5)                // max base color diff                        [0.0-0.5]
-    self.pp.params.color_gray = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
-    self.pp.params.color_add  = color (0.0, 0.0, 0.0)            // RGB                                                        [0.0-1.0]
-    self.pp.params.gray       = 0.0                              // gray max intensity                        [0.0-1.0]
+    self.pp.params.color_base = color (0.5, 0.5, 0.5)               // max base color diff       [0.0-0.5]
+    self.pp.params.color_gray = color (0.0, 0.0, 0.0)               // RGB                       [0.0-1.0]
+    self.pp.params.color_add  = color (0.0, 0.0, 0.0)               // RGB                       [0.0-1.0]
+    self.pp.params.gray       = 0.0                                 // gray max intensity        [0.0-1.0]
     self.pp.params.dual       = duality (0.0, 0.0)
-    self.pp.params.noise      = noise   (0.0, 0.0, 30)                // intensity, grain, fps                [0.0-1.0,0.0-1.0,1-100]
+    self.pp.params.noise      = noise   (0.0, 0.0, 30)              // intensity, grain, fps     [0.0-1.0,0.0-1.0,1-100]
+    
+    self.update_called = false
 end
 ----------------
 function PostProcess:reset ()
@@ -240,21 +242,22 @@ function PostProcess:reset ()
 end
 ----------------
 function PostProcess:update2 (delta)
+
     self.pp.params.color_base   = color             (self.base_r:update (delta) + 0.5, self.base_g:update (delta) + 0.5, self.base_b:update (delta) + 0.5)
     self.pp.params.color_gray   = color             (self.gray_r:update (delta), self.gray_g:update (delta), self.gray_b:update (delta))
     self.pp.params.color_add    = color             (self.add_r:update (delta), self.add_g:update (delta), self.add_b:update (delta))
     self.pp.params.gray         = self.gray:update  (delta)
     self.pp.params.dual         = duality           (self.duality_h:update (delta), self.duality_v:update (delta))
-    self.pp.params.noise        = noise             (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100)
+    self.pp.params.noise        = noise             (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100 + 1)
+    
+    self.update_called = true
 end    
 ----------------
-function PostProcess:update (delta)
-    --self.pp.params.color_base   = color             (self.base_r:update (delta) + 0.5, self.base_g:update (delta) + 0.5, self.base_b:update (delta) + 0.5)
-    --self.pp.params.color_gray   = color             (self.gray_r:update (delta), self.gray_g:update (delta), self.gray_b:update (delta))
-    --self.pp.params.color_add    = color             (self.add_r:update (delta), self.add_g:update (delta), self.add_b:update (delta))
-    --self.pp.params.gray         = self.gray:update  (delta)
-    --self.pp.params.dual         = duality           (self.duality_h:update (delta), self.duality_v:update (delta))
-    --self.pp.params.noise        = noise             (self.noise_i:update (delta), self.noise_g:update (delta), self.noise_f:update (delta) * 100)
+function PostProcess:update ()
+
+    if self.update_called == false then
+       return false
+    end   
     
     if self.base_r.end_func == true and 
        self.base_g.end_func == true and  
@@ -271,8 +274,13 @@ function PostProcess:update (delta)
        self.noise_i.end_func == true and  
        self.noise_g.end_func == true and  
        self.noise_f.end_func == true then
+       if self.pp ~= nil then
+          self.pp:finish ()
+          self.pp = nil
+       end   
        return true
     end   
+    return false
 end
 
 ----------------
@@ -284,8 +292,9 @@ function main ()
                         wait ();
                         local dt = time_global () - prev_time;
                         prev_time = time_global()
-                        if process:update (dt * 0.001) == true then
+                        if process:update () == true then
                            break
                         end
         end
 end
+-- run_string set_postprocess ("scripts\\sincos.ltx")
