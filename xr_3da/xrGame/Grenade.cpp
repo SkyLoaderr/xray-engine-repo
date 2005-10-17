@@ -43,7 +43,7 @@ void CGrenade::Load(LPCSTR section)
 
 void CGrenade::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse,ALife::EHitType hit_type)
 {
-	if( ALife::eHitTypeExplosion==hit_type && m_grenade_detonation_threshold_hit<P) 
+	if( ALife::eHitTypeExplosion==hit_type && m_grenade_detonation_threshold_hit<P&&!H_Parent() && getVisible() && m_pPhysicsShell) 
 	{
 		CExplosive::SetCurrentParentID(who->ID());
 		Destroy();
