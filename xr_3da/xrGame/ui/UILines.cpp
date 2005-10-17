@@ -281,7 +281,7 @@ void CUILines::Draw(float x, float y){
 void CUILines::DrawCursor(float x, float y){
 
 	R_ASSERT2(!uFlags.test(flColoringMode),"can't Draw Cursor in coloring mode");
-	R_ASSERT2(!uFlags.test(flRecognizeNewLine),"can't Draw Cursor in coloring mode");
+	R_ASSERT2(!uFlags.test(flRecognizeNewLine),"can't Draw Cursor in \"\\n\" mode");
 
 	int sz = (int)m_lines.size();
 	int lnsz = (int)m_text.size();
