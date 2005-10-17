@@ -238,7 +238,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 			if(it==it2) continue;
 			CUILevelMap* l2 = smart_cast<CUILevelMap*>(it2->second);VERIFY(l2);
 			if(l->GlobalRect().intersected(l2->GlobalRect())){
-				Msg("! --error-incorrect map definition!!! global rect of map [%s] intersects with [%s]", *l->MapName(), *l2->MapName());
+				Msg(" --error-incorrect map definition!!! global rect of map [%s] intersects with [%s]", *l->MapName(), *l2->MapName());
 			}
 		}
 		if(FALSE == l->GlobalRect().intersected(GlobalMap()->BoundRect())){
