@@ -337,6 +337,9 @@ theme = {
 	val_escort_nap1_go_home			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	val_escort_phrase_invite		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
+	-- Pripyat
+	pri_followers_leader_wave6_phrase = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
 	-- Agroprom
 	agr_factory_soldiers			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	-- не стрел€йте
