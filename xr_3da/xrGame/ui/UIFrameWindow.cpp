@@ -54,6 +54,7 @@ void CUIFrameWindow::Init(LPCSTR base_name, Frect* pRect)
 
 void CUIFrameWindow::InitTexture(const char* texture){
 	m_UIWndFrame.InitTexture(texture);
+	m_bTextureVisible = true;
 }
 
 
@@ -97,6 +98,9 @@ void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, float left_offset, float up
 //
 void CUIFrameWindow::Draw()
 {
+	if (!m_bTextureVisible)
+		return;
+
 	Frect rect = GetAbsoluteRect();
 	Fvector2 v;
 
