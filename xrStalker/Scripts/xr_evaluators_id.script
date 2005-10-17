@@ -5,14 +5,15 @@
 local id_start = stalker_ids.property_script
 
 -- эвалуаторы Глобальные
-global_evaluators       = id_start
-script_evaluator        = id_start + 1
-final_trade_init        = id_start + 2
-state_change            = id_start + 3
-position                = id_start + 4
-reaction                = id_start + 5
-danger					= id_start + 6
-state_mgr               = id_start + 100
+global_evaluators          = id_start
+script_evaluator           = id_start + 1
+final_trade_init           = id_start + 2
+state_change               = id_start + 3
+position                   = id_start + 4
+reaction                   = id_start + 5
+danger                     = id_start + 6
+reached_strn_task_location = id_start + 7
+state_mgr                  = id_start + 100
 
 stohe_tradeseller_base  = id_start + 1000
 stohe_kamp_base         = id_start + 1020
