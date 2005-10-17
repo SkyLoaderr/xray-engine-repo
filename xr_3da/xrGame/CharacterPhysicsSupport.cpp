@@ -272,7 +272,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 		//Log("mem use %d",Memory.mem_usage());
 
 		m_PhysicMovementControl.DestroyCharacter();
-		m_EntityAlife.PHSetPushOut();
+		//m_EntityAlife.PHSetPushOut();
 	}
 }
 

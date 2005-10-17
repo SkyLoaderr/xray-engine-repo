@@ -9364,6 +9364,9 @@
 							RelativePath=".\PHElement.h">
 						</File>
 						<File
+							RelativePath=".\PHElementInline.h">
+						</File>
+						<File
 							RelativePath=".\PHElementNetState.cpp">
 						</File>
 					</Filter>

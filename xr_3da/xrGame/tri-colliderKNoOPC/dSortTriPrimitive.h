@@ -236,7 +236,7 @@ int dSortTriPrimitiveCollide (
 			if(ph_dbg_draw_mask.test(phDBgDrawPositiveTries))
 				DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(255,0,0));
 #endif	
-			if(ret>10) continue;
+			//if(ret>10) continue;
 				if(!b_pushing&&(!intersect||no_last_pos))
 					ret+=T::Collide(
 					vertices[0],

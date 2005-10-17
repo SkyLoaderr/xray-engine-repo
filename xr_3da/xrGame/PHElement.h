@@ -23,7 +23,7 @@ class CPHElement	:
 {
 	friend class CPHFracturesHolder;
 
-	float						m_start_time;				//uu ->to shell ??	//aux
+	//float						m_start_time;				//uu ->to shell ??	//aux
 	dMass						m_mass;						//e ??				//bl
 	dBodyID						m_body;						//e					//st
 	dReal						m_l_scale;					// ->to shell ??	//bl
@@ -41,8 +41,8 @@ class CPHElement	:
 //	Fmatrix						m_inverse_local_transform;	//e				//bt
 	dReal						k_w;						//->to shell ??		//st
 	dReal						k_l;						//->to shell ??		//st
-	ObjectContactCallbackFun*	temp_for_push_out;			//->to shell ??		//aux
-	u32							push_untill;				//->to shell ??		//st
+	//ObjectContactCallbackFun*	temp_for_push_out;			//->to shell ??		//aux
+	//u32							push_untill;				//->to shell ??		//st
 	Flags8						m_flags;					//
 	enum				
 	{

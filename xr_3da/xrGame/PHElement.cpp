@@ -52,9 +52,9 @@ CPHElement::CPHElement()																															//aux
 	m_l_scale=default_l_scale;
 	m_w_scale=default_w_scale;
 
-	push_untill=0;
+	//push_untill=0;
 
-	temp_for_push_out=NULL;
+	//temp_for_push_out=NULL;
 
 	m_body=NULL;
 	bActive=false;
@@ -120,8 +120,8 @@ void CPHElement::			build	(){
 
 void CPHElement::RunSimulation()
 {
-	if(push_untill)
-		push_untill+=Device.dwTimeGlobal;
+	//if(push_untill)
+		//push_untill+=Device.dwTimeGlobal;
 
 	if(m_group)
 		dSpaceAdd(m_shell->dSpace(),(dGeomID)m_group);
@@ -216,12 +216,12 @@ void		CPHElement::Start()
 void		CPHElement::Deactivate()
 {
 	VERIFY(bActive);
-	if(push_untill)
-	{
-		push_untill-=Device.dwTimeGlobal;
-		if(push_untill<=0)
-			unset_Pushout();
-	}
+	//if(push_untill)
+	//{
+	//	push_untill-=Device.dwTimeGlobal;
+	//	if(push_untill<=0)
+	//		unset_Pushout();
+	//}
 	destroy();
 
 	bActive=false;
@@ -377,8 +377,8 @@ void CPHElement::Update(){
 
 	InterpolateGlobalTransform(&mXFORM);
 
-	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+	//if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		//if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 	VERIFY2(_valid(mXFORM),"invalid position in update");
 }
 
@@ -777,7 +777,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		//	dBodyEnable(m_body);
 		if(m_shell->dSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
-		m_start_time=Device.fTimeGlobal;
+		//m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
 		global_transform.set(m_shell->mXFORM);
 		//if(m_parent_element)
@@ -797,8 +797,8 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		//return;
 	}
 
-	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+	//if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		//if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/ ) return;
@@ -839,7 +839,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		//	dBodyEnable(m_body);
 		if(m_shell->dSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
-		m_start_time=Device.fTimeGlobal;
+		//m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
 		global_transform.set(m_shell->mXFORM);
 		//if(m_parent_element)
@@ -859,8 +859,8 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		return;
 	}
 
-	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+	//if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		//if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
 	if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/) return;
 
@@ -925,7 +925,7 @@ void CPHElement::set_CallbackData(void * cd)
 }
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
-	push_untill=0;
+	//push_untill=0;
 	CPHGeometryOwner::set_ContactCallback(callback);
 }
 
@@ -1034,20 +1034,21 @@ void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux
 
 void CPHElement::set_PushOut(u32 time,ObjectContactCallbackFun* push_out)
 {
-	temp_for_push_out=object_contact_callback;
+	VERIFY(false);
+	//temp_for_push_out=object_contact_callback;
 
-	set_ObjectContactCallback(push_out);
-	if(bActive) push_untill=Device.dwTimeGlobal+time;
-	else		push_untill=time;
+	//set_ObjectContactCallback(push_out);
+	//if(bActive) push_untill=Device.dwTimeGlobal+time;
+	//else		push_untill=time;
 
 }
 
 void CPHElement::unset_Pushout()
 {
-	object_contact_callback=temp_for_push_out;
-	temp_for_push_out=NULL;
-	set_ObjectContactCallback(object_contact_callback);
-	push_untill=0;
+	//object_contact_callback=temp_for_push_out;
+	//temp_for_push_out=NULL;
+	//set_ObjectContactCallback(object_contact_callback);
+	//push_untill=0;
 }
 
 void CPHElement::add_Shape(const SBoneShape& shape,const Fmatrix& offset)
@@ -1338,7 +1339,7 @@ void CPHElement::PresetActive()
 
 	CBoneInstance& B=m_shell->PKinematics()->LL_GetBoneInstance(m_SelfID);
 	mXFORM.set(B.mTransform);
-	m_start_time=Device.fTimeGlobal;
+	//m_start_time=Device.fTimeGlobal;
 	Fmatrix global_transform;
 	global_transform.set(m_shell->mXFORM);
 	global_transform.mulB(mXFORM);

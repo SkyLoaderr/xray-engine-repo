@@ -332,7 +332,7 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 
 	if(!newPhysicsShell->isEnabled())O->processing_deactivate();
 	newPhysicsShell->set_PhysicsRefObject(O);
-	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
+	//newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	O->setVisible(TRUE);
 	O->setEnabled(TRUE);
