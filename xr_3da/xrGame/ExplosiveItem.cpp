@@ -36,7 +36,7 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 	inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);
 
 	
-	if(GetCondition()<=0.f)
+	if(GetCondition()<=0.f&&CExplosive::Initiator()==u16(-1))
 	{
 		//запомнить того, кто взорвал вещь
 		SetInitiator( who->ID());
