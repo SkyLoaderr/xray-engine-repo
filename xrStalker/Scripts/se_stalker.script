@@ -85,33 +85,22 @@ end
 function se_stalker:read_smart_terrain_conditions()
 	if self.ini and self.ini:section_exist( smart_section ) then
 		local conds = {}
-		local line, str
 		local accepts = false
+		local result, field, str
+		local n = ini:line_count( smart_section )
 
-		for i = 0, 5 do
-			if i == 0 then
-				line = "s"
-			else
-				line = "s"..i
+		if n > 0 then
+			for i = 0, n-1 do
+				result, field, str = self.ini:r_line( smart_section, i, "", "" )
+
+				conds[field] = xr_logic.parse_condlist(self, smart_section, field, str)
 			end
 
-			if self.ini:line_exist( smart_section, line ) then
-				str = self.ini:r_string( smart_section, line )
-
-				table.insert( cond, xr_logic.parse_condlist(self, smart_section, line, str) )
-			else
-				break
-			end
-		end
-
-		if i > 0 then
 			return conds
-		else
-			return nil
 		end
-	else
-		return nil
 	end
+
+	return nil
 end
 --------------------
 function se_stalker:get_smart_terrain_conditions()
