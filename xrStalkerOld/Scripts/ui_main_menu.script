@@ -123,8 +123,15 @@ function main_menu:InitControls()
 	self.multi_tab = ui_main_multi_tab.main_multi_tab()
 	self.multi_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_frame:AttachChild(self.multi_tab)
-	
---	self.mp_dlg = ui_mp_main.mp_main()
+
+--[[
+	local edt = CUIEditBoxEx()
+	edt:InitTexture("ui_frame_01")
+	edt:Init(0, 0, 100, 100)
+	edt:SetAutoDelete(true)
+	edt:SetText("\\na\\nndy\\ndirty motherfucker")
+	self:AttachChild(edt)	
+]]	
 end
 
 
