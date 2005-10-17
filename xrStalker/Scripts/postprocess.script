@@ -283,10 +283,10 @@ function PostProcess:update ()
        self.noise_i.end_func == true and  
        self.noise_g.end_func == true and  
        self.noise_f.end_func == true then
-       if self.pp ~= nil then
-          self.pp:finish ()
-          self.pp = nil
-       end   
+--       if self.pp ~= nil then
+--          self.pp:finish ()
+--          self.pp = nil
+--       end   
        return true
     end   
     return false
