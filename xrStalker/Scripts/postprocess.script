@@ -17,12 +17,12 @@ end
 ----------------
 function PPData:process (pp)
     local t = time_global ()
-    if t - self.time ~= 0 then
+    --if t - self.time ~= 0 then
        --self.host:update2 ((t - self.time) * 0.001)
        self.time = t
        pp:assign (self.params)
        effector.process (self, pp)
-    end    
+    --end    
     return true
 end
 ----------------
