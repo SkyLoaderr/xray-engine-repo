@@ -269,6 +269,16 @@ void CWeapon::Load		(LPCSTR section)
 	camMaxAngle			= deg2rad					(camMaxAngle);
 	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); 
 	camRelaxSpeed		= deg2rad					(camRelaxSpeed);
+	if (pSettings->line_exist(section, "cam_relax_speed_ai"))
+	{
+		camRelaxSpeed_AI		= pSettings->r_float		(section,"cam_relax_speed_ai"	); 
+		camRelaxSpeed_AI		= deg2rad					(camRelaxSpeed_AI);
+	}
+	else
+	{
+		camRelaxSpeed_AI	= camRelaxSpeed;
+	}
+	
 //	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
 //	camDispersion		= deg2rad					(camDispersion);
 

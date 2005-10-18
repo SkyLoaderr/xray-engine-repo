@@ -63,7 +63,7 @@ void CObjectActionShow::initialize		()
 
 	object().weapon_shot_effector().Initialize(
 		m_weapon->camMaxAngle,
-		m_weapon->camRelaxSpeed,
+		m_weapon->camRelaxSpeed_AI,
 		m_weapon->camMaxAngleHorz,
 		m_weapon->camStepAngleHorz,
 		m_weapon->camDispertionFrac

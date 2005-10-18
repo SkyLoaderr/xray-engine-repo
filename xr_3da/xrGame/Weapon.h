@@ -354,6 +354,7 @@ public:
 	//מעהאקא ןנט סענוכüבו 
 	float					camMaxAngle;
 	float					camRelaxSpeed;
+	float					camRelaxSpeed_AI;
 	float					camDispersion;
 	float					camDispersionInc;
 	float					camDispertionFrac;
