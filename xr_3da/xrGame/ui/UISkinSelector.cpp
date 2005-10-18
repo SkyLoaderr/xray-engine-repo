@@ -271,15 +271,10 @@ void CUISkinSelectorWnd::SetCurSkin(int skin){
 
 	if (m_iActiveIndex != -1 && (m_iActiveIndex< m_firstSkin || m_iActiveIndex > m_firstSkin + 4))
 	{
-		for (int i = 0; i<4; i++)
-		{
-			if (m_iActiveIndex - i <= (int)m_skins.size() - 4)
-			{
-				m_firstSkin += m_iActiveIndex - i;
-				break;
-			}
-		}
-///		R_ASSERT2(false,"impossible behavior - something wrong");
+		if (m_iActiveIndex > (int)m_skins.size() - 4)
+			m_firstSkin = (int)m_skins.size() - 4;
+		else
+            m_firstSkin = m_iActiveIndex;
 	}
 	UpdateSkins();
 }
