@@ -1536,6 +1536,9 @@
     <string id="bar_ecolog_crush_professor_start_712">
         <text>Не волнуйся, у меня тоже защита неплохая.</text>
     </string>
+    <string id="bar_ecolog_crush_professor_start_9">
+        <text>Скорее, Меченый. Не время болтать.</text>
+    </string>
     <string id="bar_ecolog_dialog_0">
         <text>Сталкер, с тобой хочет поговорить профессор. Подойди к нему, будь так добр.</text>
     </string>
