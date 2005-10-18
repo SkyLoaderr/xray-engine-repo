@@ -453,9 +453,9 @@ function load_states(gname, type)
 				return gulag.state
 			elseif gulag.state == 0 and game.get_game_time():diffSec( gulag.stateBegin ) > 600 then
 				return 1
-			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 150 then
+			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 900 then
 				return 2
-			elseif gulag.state == 2 and game.get_game_time():diffSec( gulag.stateBegin ) > 200 then
+			elseif gulag.state == 2 and game.get_game_time():diffSec( gulag.stateBegin ) > 600 then
 				return 0
 			else
 				return gulag.state
@@ -473,7 +473,7 @@ function load_states(gname, type)
 				return gulag.state
 			elseif gulag.state == 0 and game.get_game_time():diffSec( gulag.stateBegin ) > 600 then
 				return 1
-			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 300 then
+			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 900 then
 				return 0
 			else
 				return gulag.state
