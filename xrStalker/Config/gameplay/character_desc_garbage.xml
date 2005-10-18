@@ -370,7 +370,7 @@
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_02\</snd_config>
-
+		
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<supplies>
 			[spawn] \n
@@ -406,6 +406,7 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -440,6 +441,7 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
+
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -506,8 +508,9 @@
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_02\</snd_config>
-
+		
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -526,6 +529,7 @@
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
+	
 	
 	<specific_character id="gar_wounded_bandit" team_default = "1">
 		<name>GENERATE_NAME</name>
