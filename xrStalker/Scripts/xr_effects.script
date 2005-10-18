@@ -1207,6 +1207,16 @@ function aes_kill_actor (actor, npc)
     end   
 end
 
+function set_sidorovich_animation (npc)
+    local sidor = level_object_by_sid (1118)
+    if sidor == nil then
+       abort ("SIDOROVICH NOT FOUND !!!")
+    end
+    --sidor:clear_animations ()
+    sidor:play_cycle ("alko", true)
+    --sidor:add_animation ("idle_looped")
+end
+
 
 -- постпроцесс и влияние удара в морду
 function aes_earthshake (npc)
