@@ -1224,7 +1224,7 @@ function set_sidorovich_animation (npc)
        abort ("SIDOROVICH NOT FOUND !!!")
     end
     --sidor:clear_animations ()
-    sidor:play_cycle ("alko", true)
+    sidor:play_cycle ("wonder", true)
     --sidor:add_animation ("idle_looped")
 end
 
