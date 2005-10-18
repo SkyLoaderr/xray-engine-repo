@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+<!-- ПРИ ЛОКАЛИЗАЦИИ НЕ ЗАБЫТЬ ИЗМЕНИТЬ ПУТЬ -->
+#include "text\rus\string_table_tips_escape.xml"
+#include "text\rus\string_table_tips_garbage.xml"
+#include "text\rus\string_table_tips_agroprom.xml"
+#include "text\rus\string_table_tips_darkvalley.xml"
+#include "text\rus\string_table_tips_bar-rostok.xml"
+#include "text\rus\string_table_tips_military.xml"
+#include "text\rus\string_table_tips_yantar.xml"
+#include "text\rus\string_table_tips_radar.xml"
+
+
+#include "text\rus\stable_storyline_info_escape.xml"
+#include "text\rus\stable_storyline_info_garbage.xml"
+#include "text\rus\stable_storyline_info_agroprom.xml"
+#include "text\rus\stable_storyline_info_darkvalley.xml"
+#include "text\rus\stable_storyline_info_bar.xml"
+#include "text\rus\stable_storyline_info_military.xml"
+#include "text\rus\stable_storyline_info_radar.xml"
+#include "text\rus\stable_storyline_info_aes.xml"
+#include "text\rus\stable_storyline_info_yantar.xml"
+
+
+#include "text\rus\string_table_tasks_escape.xml"
+#include "text\rus\string_table_tasks_agroprom.xml"
+#include "text\rus\string_table_tasks_darkvalley.xml"
+#include "text\rus\string_table_tasks_bar.xml"
+#include "text\rus\string_table_tasks_military.xml"
+#include "text\rus\string_table_tasks_radar.xml"
+#include "text\rus\string_table_tasks_garbage.xml"
+#include "text\rus\string_table_tasks_aes.xml"
+#include "text\rus\string_table_tasks_yantar.xml"
+
+
+#include "text\rus\string_table_mapspots_agroprom.xml"
+#include "text\rus\string_table_mapspots_bar.xml"
+#include "text\rus\string_table_mapspots_darkvalley.xml"
+#include "text\rus\string_table_mapspots_garbage.xml"
+#include "text\rus\string_table_mapspots_escape.xml"
+#include "text\rus\string_table_mapspots_military.xml"
+#include "text\rus\string_table_mapspots_radar.xml"
+#include "text\rus\string_table_mapspots_aes.xml"
+#include "text\rus\string_table_mapspots_yantar.xml"
+
+
+#include "text\rus\stable_generate_fnames.xml"
+#include "text\rus\stable_generate_snames.xml"
+
+    <string id="inventory_item_use">
+        <text>Поднять предмет ($$ACTION_USE$$)</text>
+    </string>
+    <string id="character_use">
+        <text>Говорить ($$ACTION_USE$$)</text>
+    </string>
+    <string id="dead_character_use">
+        <text>Обыскать труп ($$ACTION_USE$$)</text>
+    </string>
+    <string id="car_use">
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
+    </string>
+    <string id="physic_shell_use">
+        <text>Двигать объект ()</text>
+    </string>
+
+    <string id="general_help">
+        <text>Срочно нужна аптечка, помираю!!!</text>
+    </string>
+    <string id="general_new_task">
+        <text>Получено новое задание.</text>
+    </string>
+    <string id="general_complete_task">
+        <text>Задание выполнено.</text>
+    </string>
+    <string id="general_fail_task">
+        <text>Задание провалено.</text>
+    </string>
+    <string id="general_update_task">
+        <text>Задание обновлено.</text>
+    </string>
+    <string id="general_in_item">
+        <text>Получен предмет.</text>
+    </string>
+    <string id="general_out_item">
+        <text>Потерян предмет.</text>
+    </string>
+    <string id="general_in_money">
+        <text>Получены деньги.</text>
+    </string>
+    <string id="general_out_money">
+        <text>Потеряны деньги.</text>
+    </string>
+    <string id="general_new_encyclopedy">
+        <text>Новая статья в энциклопедии.</text>
+    </string>
+    <string id="general_new_diary">
+        <text>Новая запись в дневнике.</text>
+    </string>    
+
+    <string id="to_escape">
+        <text>На кордон</text>
+    </string>    
+    <string id="to_garbage">
+        <text>На свалку</text>
+    </string>    
+    <string id="to_agroprom">
+        <text>На "Агропром"</text>
+    </string>    
+    <string id="to_agroprom_underground">
+        <text>В катакомбы</text>
+    </string>    
+    <string id="to_darkvalley">
+        <text>В темную долину</text>
+    </string>    
+    <string id="to_bar">
+        <text>На бар</text>
+    </string>    
+    <string id="to_rostok">
+        <text>На "Росток"</text>
+    </string>    
+    <string id="to_military">
+        <text>На склады</text>
+    </string>    
+</string_table>
