@@ -49,6 +49,7 @@ enum EMonsterState {
 	eStateAttackCamp_Camp			= eStateAttack | 16,
 	eStateAttackCamp_StealOut		= eStateAttack | 17,
 
+	eStateAttack_Psy				= eStateAttack | 18,
 	// -------------------------------------------------------------
 
 	eStatePanic						= eGlobalState << 4,

@@ -14,7 +14,7 @@
 #include "../ai_monster_effector.h"
 #include "../../../ActorEffector.h"
 #include "psy_dog_aura.h"
-
+#include "psy_dog_state_manager.h"
 
 CPsyDog::CPsyDog()
 {
@@ -30,6 +30,10 @@ void CPsyDog::Load(LPCSTR section)
 	inherited::Load(section);
 	
 	m_aura->load(pSettings->r_string(section,"aura_effector"));
+
+	m_phantoms_max			= pSettings->r_u8(section,"Max_Phantoms_Count");
+	m_phantoms_min			= pSettings->r_u8(section,"Min_Phantoms_Count");
+	m_time_phantom_appear	= pSettings->r_u32(section,"Time_Phantom_Appear");
 }
 
 BOOL CPsyDog::net_Spawn(CSE_Abstract *dc)
@@ -44,6 +48,8 @@ void CPsyDog::reinit()
 	m_aura->reinit		();
 
 	m_enemy = 0;
+
+	m_time_last_phantom_appear = 0;
 }
 void CPsyDog::reload(LPCSTR section)
 {
@@ -89,10 +95,8 @@ void CPsyDog::Think()
 	inherited::Think();
 	if (!g_Alive()) return;
 	
-	static u32 time_last_change = 0;
-	
-	if (EnemyMan.get_enemy() && (m_storage.size() < 3) && (time_last_change + 5000 < time())){
-		if (spawn_phantom()) time_last_change = time();
+	if (EnemyMan.get_enemy() && (get_phantoms_count() < m_phantoms_max) && (m_time_last_phantom_appear + m_time_phantom_appear < time())){
+		if (spawn_phantom()) m_time_last_phantom_appear = time();
 	}else {
 		if (!EnemyMan.get_enemy() && !m_storage.empty()) {
 			delete_all_phantoms();
@@ -139,7 +143,15 @@ void CPsyDog::Die(CObject* who)
 	m_aura->on_death();
 }
 
+IStateManagerBase *CPsyDog::create_state_manager()
+{
+	return xr_new<CStateManagerPsyDog>(this);
+}
 
+u8 CPsyDog::get_phantoms_count()
+{
+	return m_storage.size();
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Phantom Psy Dog
@@ -250,4 +262,3 @@ void CPsyDogPhantom::Die(CObject* who)
 	m_parent->delete_phantom(this);
 	inherited::Die(who);
 }
-

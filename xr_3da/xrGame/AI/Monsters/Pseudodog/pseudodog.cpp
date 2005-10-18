@@ -22,8 +22,14 @@
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
-	StateMan = xr_new<CStateManagerPseudodog>(this);
 	com_man().add_ability(ControlCom::eControlJump);
+}
+
+DLL_Pure *CAI_PseudoDog::_construct()
+{
+	inherited::_construct			();
+	StateMan = create_state_manager	();
+	return							(this);
 }
 
 CAI_PseudoDog::~CAI_PseudoDog()
@@ -168,4 +174,8 @@ void CAI_PseudoDog::debug_on_key(int key)
 }
 #endif
 
+IStateManagerBase *CAI_PseudoDog::create_state_manager()
+{
+	return xr_new<CStateManagerPseudodog>(this);
+}
 

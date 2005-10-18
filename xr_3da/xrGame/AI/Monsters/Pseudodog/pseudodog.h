@@ -19,6 +19,8 @@ public:
 					CAI_PseudoDog		();
 	virtual			~CAI_PseudoDog		();	
 
+	virtual DLL_Pure	*_construct		();
+
 	virtual void	Load				(LPCSTR section);
 
 	virtual void	reinit				();
@@ -33,6 +35,8 @@ public:
 	virtual bool	jump						(CObject *enemy);
 
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
+
+	virtual IStateManagerBase *create_state_manager	();
 private:
 #ifdef _DEBUG	
 	virtual void	debug_on_key		(int key);
