@@ -2217,6 +2217,9 @@
 					RelativePath=".\scripts\qa.script">
 				</File>
 				<File
+					RelativePath=".\scripts\radar_test.script">
+				</File>
+				<File
 					RelativePath=".\scripts\test_heli_2.script">
 				</File>
 				<File
