@@ -5,7 +5,7 @@ end
 
 lasthealth  = 0
 lasttime	= 0
-post_process = nil
+post_process = 0
 ----------------------------------------------------------------------------------------------------------------------
 class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
@@ -168,9 +168,9 @@ function actor_binder:update(delta)
 	end
 
 	-- обновление постпроцессов
-	if post_process ~= nil then
+	if post_process ~= 0 then
 		if post_process:update () == true then
-		   post_process = nil
+		   post_process = 0
 		end
 	end
 
