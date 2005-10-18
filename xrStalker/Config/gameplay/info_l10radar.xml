@@ -93,13 +93,19 @@
 	</info_portion>	
 	
 	<info_portion id="rad_start_ambush_after_tramplin">
-	</info_portion>		
+	</info_portion>	
+		
+	<info_portion id="rad_start_ambush_before_tramplin">
+	</info_portion>	
 	
 	<info_portion id="rad_start_far_road_ambush">
 	</info_portion>		
 	
 	<info_portion id="rad_start_far_road_btr_ambush">
-	</info_portion>		
+	</info_portion>	
+		
+	<info_portion id="rad_start_ambush_after_valley">
+	</info_portion>	
 	
 	<info_portion id="rad_allow_suicide">
 	</info_portion>		
