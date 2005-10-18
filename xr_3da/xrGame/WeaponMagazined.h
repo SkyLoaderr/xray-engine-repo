@@ -121,6 +121,7 @@ public:
 	virtual void	SwitchMode				();
 	virtual bool	SingleShotMode			()			{return 1 == m_iQueueSize;}
 	virtual void	SetQueueSize			(int size);
+	IC		int		GetQueueSize			() const	{return m_iQueueSize;};
 	virtual bool	StopedAfterQueueFired	()			{return m_bStopedAfterQueueFired; }
 	virtual void	StopedAfterQueueFired	(bool value){m_bStopedAfterQueueFired = value; }
 
