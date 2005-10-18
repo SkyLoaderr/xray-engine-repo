@@ -36,7 +36,7 @@ on_timer = 4000 | sr_idle@post_heli %=play_snd(characters_voice\human_01\scenari
 
 [sr_idle@post_heli]
 on_info = %=bar_check_heli_scene%
-on_info2 = {+bar_ecolog_crush_heli_down} sr_idle@attract_freedom_2 %=bar_crush_heli_down%
+on_info2 = {+bar_ecolog_crush_heli_down} sr_idle@freedom_2 %=bar_crush_heli_down%
 
 [sr_idle@attract_ecolog]
 on_timer = 7000| {+bar_freedom_attack_ecolog} sr_idle@checker,{-bar_heli_scene_volkodav_die} sr_idle@attract_freedom %=bar_ecolog_crush_attract_actor%
