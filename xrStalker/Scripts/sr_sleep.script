@@ -27,7 +27,7 @@ function action_sleep:reset_scheme()
 	    dream.type = "all"
 	end
 
-	dream.dream_prob = nil
+	dream.dream_prob = -1
 	if type(self.st.dream_prob) == "number" then
 	    local p = tonumber(self.st.dream_prob)
 	    if p >= 0 and p <= 100 then

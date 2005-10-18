@@ -5,7 +5,7 @@
 ----------------------------------------------------------------------------------------------------
 
 can_sleep   = false
-dream_prob  = nil
+dream_prob  = -1
 type        = "all"
 dream_types = {nightmare = 1, normal = 1, happy = 1, all = 2}
 
@@ -159,7 +159,7 @@ function dream_mgr:get_dream()
         local rval = math.random(100)
         local rp = self.regular_probability
 
-        if dream_prob then
+        if dream_prob >= 0 then
             rp = dream_prob
         end
 
