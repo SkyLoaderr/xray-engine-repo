@@ -2,14 +2,15 @@
 	<text>Спасти исследования профессора Круглова.</text>
 </string>
 <string id="bar_resque_scientific_information">
-	<text>Необходимо любой ценой спасти исследования от рук "Свободы".</text>
+	<text>Необходимо любой ценой спасти исследования от рук Наемников.</text>
 </string>
 <string id="bar_resque_scientific_information_get">
-	<text>Получить у профессора флешку с результатами исследований.</text>
+	<text>Пробиться через засады наемников к профессору Круглову.</text>
 </string>
 <string id="bar_resque_scientific_information_bring">
-	<text>Доставить флешку бармену.</text>
+	<text>Помочь Круглову выбраться с "дикой территории".</text>
 </string>
+
 
 <string id="bar_kill_professor">
 	<text>Убить профессора Круглова.</text>
@@ -97,7 +98,7 @@
 
 
 <string id="bar_dolg_svoboda_ambush_quest">
-	<text>Уничтожение боевиков Свободы на дикой территории</text>
+	<text>Уничтожение наемников на дикой территории</text>
 </string>
 	<string id="bar_dolg_kill_tiran">
 	<text>Уничтожить предводителя отряда Тирана. Снять с трупа нашивки Тирана, как доказательство его смерти</text>
