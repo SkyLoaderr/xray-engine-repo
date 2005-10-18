@@ -6863,6 +6863,12 @@
 								RelativePath=".\PhraseDialog.h">
 							</File>
 							<File
+								RelativePath=".\PhraseDialog_script.cpp">
+							</File>
+							<File
+								RelativePath=".\PhraseDialog_script.h">
+							</File>
+							<File
 								RelativePath=".\PhraseDialogDefs.h">
 							</File>
 							<File
@@ -9659,7 +9665,7 @@
 						RelativePath=".\tri-colliderknoopc\dTriCylinder.h">
 					</File>
 					<File
-						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
 						<FileConfiguration
 							Name="Debug|Win32">
 							<Tool

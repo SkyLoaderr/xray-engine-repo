@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include "ui/xrXMLParser.h"
-
 #include "PhraseScript.h"
 
 class CPhraseDialog;
@@ -22,33 +20,26 @@ public:
 
 	void			SetText			(LPCSTR text)		{m_text = text;}
 	LPCSTR			GetText			()	const;
-	LPCSTR			GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2, LPCSTR dialog_id, int phrase_num) const;
+//	LPCSTR			GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2, LPCSTR dialog_id, int phrase_num) const;
 
-	void			SetIndex	(int index)			{m_iIndex = index;}
-	int				GetIndex	()	const			{return m_iIndex;}
+	void			SetIndex		(int index)			{m_iIndex = index;}
+	int				GetIndex		()	const			{return m_iIndex;}
 
-	int				GoodwillLevel()	const			{return m_iGoodwillLevel;}
+	int				GoodwillLevel	()	const			{return m_iGoodwillLevel;}
 
-	bool			IsDummy()		const;
-
-//	shared_str		Sound()			const			{return m_sound;}
-//	shared_str		Anim()			const			{return m_anim;}
+	bool			IsDummy			()	const;
+	CPhraseScript*	GetPhraseScript	()					{return &m_PhraseScript;};
 
 protected:
 	//уникальный индекс в списке фраз диалога
-	int	m_iIndex;
+	int				m_iIndex;
 	//текстовое представление фразы
-	xr_string m_text;
+	xr_string		m_text;
 	
 	//минимальный уровень благосклоггости, необходимый для того
 	//чтоб фразу можно было сказать
-	int m_iGoodwillLevel;
+	int				m_iGoodwillLevel;
 	
 	//для вызова скриптовых функций
-	CPhraseScript m_PhraseScript;
-
-	//для диалогов между NPC
-	//звуковой файл
-//	shared_str m_sound;
-//	shared_str m_anim;
+	CPhraseScript	m_PhraseScript;
 };

@@ -112,7 +112,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	}
 
 	//имена скриптовых функций
-	info_data()->m_PhraseScript.Load(uiXml, pNode);
+	info_data()->m_PhraseScript.Load(&uiXml, pNode);
 
 
 	//индексы статей

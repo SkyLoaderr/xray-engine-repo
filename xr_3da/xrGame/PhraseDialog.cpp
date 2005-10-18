@@ -2,7 +2,6 @@
 // PhraseDialog.cpp
 // Класс диалога - общения при помощи фраз 2х персонажей в игре
 ///////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "phrasedialog.h"
 #include "phrasedialogmanager.h"
@@ -167,7 +166,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 	
 	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(phrase_id);
 	THROW(phrase_vertex);
-	
+/*	
 	//если есть скриптовый текст, то он и будет задан
 	const CGameObject*	pSpeakerGO1 = smart_cast<const CGameObject*>(CurrentSpeaker());
 	const CGameObject*	pSpeakerGO2 = smart_cast<const CGameObject*>(OtherSpeaker());	
@@ -181,6 +180,8 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 	if(pSpeakerGO1 && pSpeakerGO2)
 		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2, *m_DialogId, (int)phrase_id);
 	return script_text?script_text:phrase_vertex->data()->GetText();
+*/
+	return phrase_vertex->data()->GetText();
 }
 
 LPCSTR CPhraseDialog::DialogCaption()
@@ -201,6 +202,9 @@ void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
 	inherited_shared::load_shared(m_DialogId, NULL);
 }
 
+#include "script_engine.h"
+#include "script_space.h"
+#include "ai_space.h"
 
 void CPhraseDialog::load_shared	(LPCSTR)
 {
@@ -232,18 +236,28 @@ void CPhraseDialog::load_shared	(LPCSTR)
 		data()->m_eDialogType.set(eDialogTypeAI, TRUE);
 */
 
-	data()->m_iPriority = uiXml.ReadAttribInt(dialog_node, "priority", 0);
+	SetPriority	( uiXml.ReadAttribInt(dialog_node, "priority", 0) );
 
 	//заголовок 
-	data()->m_sCaption = uiXml.Read(dialog_node, "caption", 0, NULL);
+	SetCaption	( uiXml.Read(dialog_node, "caption", 0, NULL) );
 
 	//предикаты начала диалога
-	data()->m_PhraseScript.Load(uiXml, dialog_node);
+	data()->m_PhraseScript.Load(&uiXml, dialog_node);
 
 	//заполнить граф диалога фразами
 	data()->m_PhraseGraph.clear();
 
 	phrase_list_node = uiXml.NavigateToNode(dialog_node, "phrase_list", 0);
+	if(NULL == phrase_list_node){
+		LPCSTR func = uiXml.Read(dialog_node, "init_func", 0, "");
+
+		luabind::functor<void>	lua_function;
+		bool functor_exists = ai().script_engine().functor(func ,lua_function);
+		THROW3(functor_exists, "Cannot find precondition", func);
+		lua_function	(this);
+		return;
+	}
+
 	int phrase_num = uiXml.GetNodesNum(phrase_list_node, "phrase");
 	THROW3(phrase_num, "dialog %s has no phrases at all", *item_data.id);
 
@@ -256,12 +270,43 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	//ищем стартовую фразу
 	XML_NODE* phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", START_PHRASE_STR);
 	THROW(phrase_node);
-	AddPhrase(phrase_node, START_PHRASE);
+	AddPhrase(phrase_node, START_PHRASE, NO_PHRASE);
 }
 
-
-void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
+void CPhraseDialog::SetCaption	(LPCSTR str)
 {
+	data()->m_sCaption = str;
+}
+
+void CPhraseDialog::SetPriority	(int val)
+{
+	data()->m_iPriority = val;
+}
+
+CPhrase* CPhraseDialog::AddPhrase	(LPCSTR text, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id, int goodwil_level)
+{
+	CPhraseGraph::CVertex* _vertex = data()->m_PhraseGraph.vertex(phrase_id);
+	if(_vertex) 
+		return _vertex->data();
+
+	CPhrase* phrase				= xr_new<CPhrase>(); VERIFY(phrase);
+	phrase->SetIndex			(phrase_id);
+
+	phrase->SetText				(text);
+	phrase->m_iGoodwillLevel	= goodwil_level;
+
+
+	data()->m_PhraseGraph.add_vertex	(phrase, phrase_id);
+	
+	if(prev_phrase_id != NO_PHRASE)
+		data()->m_PhraseGraph.add_edge		(prev_phrase_id, phrase_id, 0.f);
+	
+	return phrase;
+}
+
+void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id)
+{
+/*
 	//проверить не добавлена ли вершина
 	if(data()->m_PhraseGraph.vertex(phrase_id)) 
 		return;
@@ -275,26 +320,30 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, -10000);
 
 
-//	phrase->m_sound = uiXml.Read	(phrase_node,	"sound", NULL);
-//	phrase->m_anim = uiXml.Read		(phrase_node,	"anim", NULL);
-
-	
 	//прочитать действия и предикаты
-	phrase->m_PhraseScript.Load(uiXml, phrase_node);
+	phrase->m_PhraseScript.Load(&uiXml, phrase_node);
 	
 	data()->m_PhraseGraph.add_vertex(phrase, phrase_id);
+
+	if(prev_phrase_id != NO_PHRASE)
+		data()->m_PhraseGraph.add_edge		(prev_phrase_id, phrase_id, 0.f);
+*/
+	LPCSTR sText		= uiXml.Read		(phrase_node, "text", 0, "");
+	int		gw			= uiXml.ReadInt		(phrase_node, "goodwill", 0, -10000);
+	CPhrase* ph			= AddPhrase			(sText, phrase_id, prev_phrase_id, gw);
+	ph->m_PhraseScript.Load					(&uiXml, phrase_node);
 
 	//фразы которые собеседник может говорить после этой
 	int next_num = uiXml.GetNodesNum(phrase_node, "next");
 	for(int i=0; i<next_num; i++)
 	{
-		LPCSTR next_phrase_id_str = uiXml.Read(phrase_node, "next", i, "");
-		XML_NODE* next_phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", next_phrase_id_str);
+		LPCSTR next_phrase_id_str			= uiXml.Read(phrase_node, "next", i, "");
+		XML_NODE* next_phrase_node			= uiXml.NavigateToNodeWithAttribute("phrase", "id", next_phrase_id_str);
 		THROW(next_phrase_node);
-		int next_phrase_id = atoi(next_phrase_id_str);
+		int next_phrase_id					= atoi(next_phrase_id_str);
 
-		AddPhrase (next_phrase_node, next_phrase_id);
-		data()->m_PhraseGraph.add_edge(phrase_id, next_phrase_id, 0.f);
+		AddPhrase							(next_phrase_node, next_phrase_id, phrase_id);
+//		data()->m_PhraseGraph.add_edge		(phrase_id, next_phrase_id, 0.f);
 	}
 }
 

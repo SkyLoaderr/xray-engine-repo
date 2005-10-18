@@ -4,10 +4,8 @@
 
 #pragma once
 
-#include "UIStatic.h"
 #include "UIButton.h"
 #include "UIFrameWindow.h"
-#include "UIDragDropItem.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIWpnDragDropItem.h"
@@ -15,14 +13,11 @@
 #include "UIMultiTextStatic.h"
 #include "UIColorAnimatorWrapper.h"
 
-
-//#include "../UIZoneMap.h"
-
 #include "../actor.h"
 #include "../weapon.h"
 #include "../alife_space.h"
 
-#include "xrXMLParser.h"
+//#include "xrXMLParser.h"
 #include "UICarPanel.h"
 #include "UIMotionIcon.h"
 //////////////////////////////////////////////////////////////////////////
@@ -208,9 +203,9 @@ public:
 	
 protected:
 
-	void				InitFlashingIcons(CUIXml &node);
-	void				DestroyFlashingIcons();
-	void				UpdateFlashingIcons();
+	void				InitFlashingIcons			(CUIXml* node);
+	void				DestroyFlashingIcons		();
+	void				UpdateFlashingIcons			();
 
 	// first - иконка, second - анимация
 	DEF_MAP				(FlashingIcons, EFlashingIcons, CUIStatic*);

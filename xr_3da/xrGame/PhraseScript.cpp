@@ -13,6 +13,7 @@
 #include "inventoryowner.h"
 #include "script_space.h"
 #include "ai_debug.h"
+#include "ui/xrXMLParser.h"
 
 CPhraseScript::CPhraseScript	()
 {
@@ -22,9 +23,9 @@ CPhraseScript::~CPhraseScript	()
 }
 
 //загрузка из XML файла
-void CPhraseScript::Load		(CUIXml& uiXml, XML_NODE* phrase_node)
+void CPhraseScript::Load		(CUIXml* uiXml, XML_NODE* phrase_node)
 {
-	m_sScriptTextFunc = uiXml.Read(phrase_node, "script_text", 0, NULL);
+//	m_sScriptTextFunc = uiXml.Read(phrase_node, "script_text", 0, NULL);
 
 	LoadSequence(uiXml,phrase_node, "precondition",		m_Preconditions);
 	LoadSequence(uiXml,phrase_node, "action",			m_ScriptActions);
@@ -37,14 +38,14 @@ void CPhraseScript::Load		(CUIXml& uiXml, XML_NODE* phrase_node)
 }
 
 template<class T> 
-void  CPhraseScript::LoadSequence (CUIXml& uiXml, XML_NODE* phrase_node, 
+void  CPhraseScript::LoadSequence (CUIXml* uiXml, XML_NODE* phrase_node, 
 								  LPCSTR tag, T&  str_vector)
 {
-	int tag_num = uiXml.GetNodesNum(phrase_node, tag);
+	int tag_num = uiXml->GetNodesNum(phrase_node, tag);
 	str_vector.clear();
 	for(int i=0; i<tag_num; i++)
 	{
-		LPCSTR tag_text = uiXml.Read(phrase_node, tag, i, NULL);
+		LPCSTR tag_text = uiXml->Read(phrase_node, tag, i, NULL);
 		str_vector.push_back(tag_text);
 	}
 }
@@ -188,7 +189,7 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject*
 		lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 	}
 }
-
+/*
 LPCSTR  CPhraseScript::Text		(LPCSTR original_text, const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
 {
 	if(NULL == *m_sScriptTextFunc) return NULL;
@@ -198,3 +199,4 @@ LPCSTR  CPhraseScript::Text		(LPCSTR original_text, const CGameObject* pSpeakerG
 	THROW3(functor_exists, "Cannot find phrase dialog text script function", *m_sScriptTextFunc);
 	return lua_function		(original_text, pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 }
+*/

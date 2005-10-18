@@ -59,92 +59,90 @@ public:
 
 	//переобредел€ем copy constructor и оператор ==,
 	//чтоб не ругалс€ компил€тор
-    CPhraseDialog	(const CPhraseDialog& pharase_dialog) {*this = pharase_dialog;}
-	CPhraseDialog&	operator = (const CPhraseDialog& pharase_dialog) {*this = pharase_dialog; return *this;}
+			CPhraseDialog	(const CPhraseDialog& pharase_dialog) {*this = pharase_dialog;}
+			CPhraseDialog&	operator = (const CPhraseDialog& pharase_dialog) {*this = pharase_dialog; return *this;}
 
 	
-	//инициализаци€ диалога данными
-	//если диалог с таким id раньше не использовалс€
-	//он будет загружен из файла
-	//virtual void Load	(PHRASE_DIALOG_ID dialog_id);
-	virtual void Load	(PHRASE_DIALOG_ID dialog_id);
+	virtual void			Load				(PHRASE_DIALOG_ID dialog_id);
 
 	//св€зь диалога между двум€ DialogManager
-	virtual void Init	(CPhraseDialogManager* speaker_first, 
-						 CPhraseDialogManager* speaker_second);
+	virtual void			Init				(CPhraseDialogManager* speaker_first, CPhraseDialogManager* speaker_second);
 
-	IC		bool IsInit () {return ((FirstSpeaker()!=NULL)&& (SecondSpeaker()!=NULL));}
+	IC		bool			IsInit				() {return ((FirstSpeaker()!=NULL)&& (SecondSpeaker()!=NULL));}
 
 	//реинициализаци€ диалога
 	virtual void Reset  ();
 
 	//список предикатов начала диалога
-	virtual bool Precondition(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2);
+	virtual bool			Precondition		(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2);
 
 	//список доступных в данный момент фраз
-	virtual const PHRASE_VECTOR& PhraseList() const			{return m_PhraseVector;}
-			bool				allIsDummy	();
+	virtual const PHRASE_VECTOR& PhraseList		() const			{return m_PhraseVector;}
+			bool				allIsDummy		();
 	//сказать фразу и перейти к следующей стадии диалога
 	//если вернули false, то считаем, что диалог закончилс€
 	//(сделано статическим, так как мы должны передавать имеенно DIALOG_SHARED_PTR&,
 	//а не обычный указатель)
-	static bool			SayPhrase		(DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id);
+	static bool				SayPhrase			(DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id);
 
-	virtual LPCSTR		GetPhraseText		(PHRASE_ID phrase_id, bool current_speaking = true);
-	virtual LPCSTR		GetLastPhraseText	() {return GetPhraseText(m_iSaidPhraseID, false);}
-	virtual PHRASE_ID	GetLastPhraseID		() {return m_iSaidPhraseID;}
+	virtual LPCSTR			GetPhraseText		(PHRASE_ID phrase_id, bool current_speaking = true);
+	virtual LPCSTR			GetLastPhraseText	() {return GetPhraseText(m_iSaidPhraseID, false);}
+	virtual PHRASE_ID		GetLastPhraseID		() {return m_iSaidPhraseID;}
 
 	//заголовок, диалога, если не задан, то 0-€ фраза
-	virtual LPCSTR		DialogCaption	();
-	virtual int			Priority		();
+	virtual LPCSTR			DialogCaption		();
+	virtual int				Priority			();
 
 
-	virtual bool		IsFinished		()	const {return m_bFinished;}
+	virtual bool			IsFinished			()	const {return m_bFinished;}
 	
-	IC	CPhraseDialogManager* FirstSpeaker	()	const {return m_pSpeakerFirst;}
-	IC	CPhraseDialogManager* SecondSpeaker	()	const {return m_pSpeakerSecond;}
+	IC	CPhraseDialogManager* FirstSpeaker		()	const {return m_pSpeakerFirst;}
+	IC	CPhraseDialogManager* SecondSpeaker		()	const {return m_pSpeakerSecond;}
 	   
 		//кто собираетс€ говорить и кто слушать
 		CPhraseDialogManager* CurrentSpeaker	()	const;
-	    CPhraseDialogManager* OtherSpeaker	()	const;
+	    CPhraseDialogManager* OtherSpeaker		()	const;
 		//кто последний сказал фразу
-		CPhraseDialogManager* LastSpeaker	()	const {return m_bFirstIsSpeaking?SecondSpeaker():FirstSpeaker();}
+		CPhraseDialogManager* LastSpeaker		()	const {return m_bFirstIsSpeaking?SecondSpeaker():FirstSpeaker();}
 
-	IC bool				FirstIsSpeaking	()	const {return m_bFirstIsSpeaking;}
-	IC bool				SecondIsSpeaking()	const {return !m_bFirstIsSpeaking;}
+	IC bool					FirstIsSpeaking		()	const {return m_bFirstIsSpeaking;}
+	IC bool					SecondIsSpeaking	()	const {return !m_bFirstIsSpeaking;}
 
-	IC bool				IsWeSpeaking	(CPhraseDialogManager* dialog_manager) const  {return (FirstSpeaker()==dialog_manager && FirstIsSpeaking()) ||
+	IC bool					IsWeSpeaking		(CPhraseDialogManager* dialog_manager) const  {return (FirstSpeaker()==dialog_manager && FirstIsSpeaking()) ||
 																							(SecondSpeaker()==dialog_manager && SecondIsSpeaking());}
-	CPhraseDialogManager* OurPartner	(CPhraseDialogManager* dialog_manager) const;
-		
-//	bool				GetDialogType	(EDialogType type)	const {return !!data()->m_eDialogType.test((u16)type);}
+	CPhraseDialogManager*	OurPartner			(CPhraseDialogManager* dialog_manager) const;
 
 protected:
 	//идентификатор диалога
-	PHRASE_DIALOG_ID	m_DialogId;
+	PHRASE_DIALOG_ID		m_DialogId;
 
 	//ID последней сказанной фразы в диалоге, -1 если такой не было
-	PHRASE_ID	m_iSaidPhraseID;
+	PHRASE_ID				m_iSaidPhraseID;
 	//диалог закончен
-	bool		m_bFinished;
+	bool					m_bFinished;
 
 	//список указателей на фразы доступные в данный момент
-	PHRASE_VECTOR m_PhraseVector;
+	PHRASE_VECTOR			m_PhraseVector;
 
 	//указатели на собеседников в диалоге
-	CPhraseDialogManager* m_pSpeakerFirst;
-	CPhraseDialogManager* m_pSpeakerSecond;
-	//если фразу говорит 1й игрок - true, если 2й - false
-	bool				  m_bFirstIsSpeaking;
+	CPhraseDialogManager*	m_pSpeakerFirst;
+	CPhraseDialogManager*	m_pSpeakerSecond;
+	bool					m_bFirstIsSpeaking;
 
-	const SPhraseDialogData* data() const  { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
-	SPhraseDialogData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	const SPhraseDialogData* data		() const	{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	SPhraseDialogData*		data		()			{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 	//загрузка диалога из XML файла
-	virtual void load_shared	(LPCSTR);
+	virtual void			load_shared	(LPCSTR);
 	
 	//рекурсивное добавление фраз в граф
-	virtual void AddPhrase	(XML_NODE* phrase_node, int node_id);
+	void					AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id);
+public:
+	CPhrase*				AddPhrase	(LPCSTR text, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id, int goodwil_level);
+	void					SetCaption	(LPCSTR str);
+	void					SetPriority	(int val);
+
+protected:
 
 	//буфферные данные дл€ рекурсивной функции
 	CUIXml					uiXml;

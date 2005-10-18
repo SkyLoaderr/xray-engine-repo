@@ -160,7 +160,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	// Tabcontrol для оружия
 	AttachChild(&UITabControl);
-	UITabControl.Init(uiXml, "tab");
+	UITabControl.Init(&uiXml, "tab");
 
 	BringToTop(&UITabControl);	
 

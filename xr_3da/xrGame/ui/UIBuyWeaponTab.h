@@ -10,15 +10,15 @@
 
 #include "UITabControl.h"
 #include "UIMultiTextStatic.h"
-#include "xrXMLParser.h"
-#include "UIXmlInit.h"
+
+class CUIXml;
 
 class CUIBuyWeaponTab : public CUITabControl {
 public:
 	CUIBuyWeaponTab();
 	virtual ~CUIBuyWeaponTab();
 
-	virtual void Init(CUIXml& xml, char* path);
+	virtual void Init(CUIXml* xml, char* path);
 	virtual void OnTabChange(int iCur, int iPrev);
 			void SetActiveState(bool bState = true);
 private:

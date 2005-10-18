@@ -317,7 +317,7 @@ void CUIMainIngameWnd::Init()
 
 	// Flashing icons initialize
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
-	InitFlashingIcons(uiXml);
+	InitFlashingIcons(&uiXml);
 
 	// Claws animation
 	uiXml.SetLocalRoot(uiXml.GetRoot());
@@ -1440,10 +1440,10 @@ void CUIMainIngameWnd::SetFlashIconState_(EFlashingIcons type, bool enable)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
+void CUIMainIngameWnd::InitFlashingIcons(CUIXml* node)
 {
 	const char * const flashingIconNodeName = "flashing_icon";
-	int staticsCount = node.GetNodesNum("", 0, flashingIconNodeName);
+	int staticsCount = node->GetNodesNum("", 0, flashingIconNodeName);
 
 	CUIXmlInit xml_init;
 	CUIStatic *pIcon = NULL;
@@ -1451,8 +1451,8 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 	for (int i = 0; i < staticsCount; ++i)
 	{
 		pIcon = xr_new<CUIStatic>();
-		xml_init.InitStatic(node, flashingIconNodeName, i, pIcon);
-		shared_str iconType = node.ReadAttrib(flashingIconNodeName, i, "type", "none");
+		xml_init.InitStatic(*node, flashingIconNodeName, i, pIcon);
+		shared_str iconType = node->ReadAttrib(flashingIconNodeName, i, "type", "none");
 
 		// Теперь запоминаем иконку и ее тип
 		EFlashingIcons type = efiPdaTask;

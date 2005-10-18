@@ -8,7 +8,6 @@
 
 #include "shared_data.h"
 
-#include "ui/xrXMLParser.h"
 #include "PhraseScript.h"
 
 #include "xml_str_id_loader.h"

@@ -5,10 +5,6 @@
 
 #include "UIStatic.h"
 
-//#include "uiframewindow.h"
-//#include "uibutton.h"
-//#include "xrXMLParser.h"
-//#include "UIXmlInit.h"
 class CUIButton;
 
 class CUISleepWnd: public CUIStatic

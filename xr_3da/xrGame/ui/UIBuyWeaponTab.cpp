@@ -12,6 +12,8 @@
 #include "../string_table.h"
 #include "../HUDManager.h"
 #include "../UI.h"
+#include "xrXMLParser.h"
+#include "UIXmlInit.h"
 
 
 const u8			uIndicatorWidth				= 17;
@@ -26,20 +28,20 @@ CUIBuyWeaponTab::~CUIBuyWeaponTab(){
 
 }
 
-void CUIBuyWeaponTab::Init(CUIXml& xml, char* path){
+void CUIBuyWeaponTab::Init(CUIXml* xml, char* path){
 
-	R_ASSERT3(xml.NavigateToNode(path,0), "XML node not found", path);
+	R_ASSERT3(xml->NavigateToNode(path,0), "XML node not found", path);
 	
-	CUIXmlInit::InitWindow(xml, path, 0, this);
-	int tabsCount = xml.GetNodesNum(path, 0, "button");
+	CUIXmlInit::InitWindow(*xml, path, 0, this);
+	int tabsCount = xml->GetNodesNum(path, 0, "button");
 
-	XML_NODE* tab_node = xml.NavigateToNode(path,0);
-	xml.SetLocalRoot(tab_node);
+	XML_NODE* tab_node = xml->NavigateToNode(path,0);
+	xml->SetLocalRoot(tab_node);
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
 		CUITabButtonMP *newButton = xr_new<CUITabButtonMP>();
-		CUIXmlInit::Init3tButton(xml, "button", i, newButton);
+		CUIXmlInit::Init3tButton(*xml, "button", i, newButton);
 //		char ch[5];
 //		newButton->SetNumber(itoa(i+1,ch,10));
 
@@ -52,7 +54,7 @@ void CUIBuyWeaponTab::Init(CUIXml& xml, char* path){
 
 	SetNewActiveTab(m_iStubIndex);
 	
-	xml.SetLocalRoot(xml.GetRoot());
+	xml->SetLocalRoot(xml->GetRoot());
 
 	SetActiveState();
 }
