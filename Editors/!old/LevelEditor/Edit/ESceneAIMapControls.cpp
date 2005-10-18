@@ -16,7 +16,7 @@ TUI_ControlAIMapNodeAdd::TUI_ControlAIMapNodeAdd(int st, int act, ESceneCustomMT
 
 bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 {
-	append_nodes = 0;
+	append_nodes = 0;                           
 	Fvector p;
     ESceneAIMapTools* S 	= (ESceneAIMapTools*)parent_tool;
     if (S->PickObjects(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
@@ -114,11 +114,14 @@ void __fastcall TUI_ControlAIMapNodeRotate::Move(TShiftState _Shift)
         if 	(fis_zero(m_RotateVector.x)) 	R.rotateZ(amount);
         else								R.rotateX(amount);
         
-       	AINodeVec& lst = ((ESceneAIMapTools*)parent_tool)->Nodes();
+       	AINodeVec& lst 		= ((ESceneAIMapTools*)parent_tool)->Nodes();
         for(AINodeIt _F = lst.begin();_F!=lst.end();_F++)
             if((*_F)->flags.is(SAINode::flSelected)){
-            	R.transform_dir((*_F)->Plane.n);
-            	(*_F)->Plane.build((*_F)->Pos,(*_F)->Plane.n);
+            	Fvector 	new_n;
+            	R.transform_dir(new_n,(*_F)->Plane.n);
+                if (Fvector().set(0,1,0).dotproduct(new_n)>0.025f){
+	            	(*_F)->Plane.build((*_F)->Pos,new_n);           	
+                }
             }
     }
 }
