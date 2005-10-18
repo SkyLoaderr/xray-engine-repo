@@ -158,7 +158,11 @@
     <info_portion id="rostok_sniper_cheat"></info_portion>
     <info_portion id="rostok_actor_kill_killer"></info_portion>
     <info_portion id="rostok_sniper_to_walker"></info_portion>
+    <info_portion id="rostok_sniper_1_die"></info_portion>
+    <info_portion id="rostok_sniper_2_die"></info_portion>
     <info_portion id="rostok_sniper_3_die"></info_portion>
+    <info_portion id="rostok_sniper_4_die"></info_portion>
+    
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
     <info_portion id="bar_freedom_defence_ecolog"></info_portion>
     <info_portion id="bar_ecolog_crush_actor_enemy"></info_portion>
