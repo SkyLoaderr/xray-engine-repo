@@ -91,8 +91,13 @@ void CPsyDog::Think()
 	
 	static u32 time_last_change = 0;
 	
-	if ((m_storage.size() < 3) && (time_last_change + 5000 < time()))
+	if (EnemyMan.get_enemy() && (m_storage.size() < 3) && (time_last_change + 5000 < time())){
 		if (spawn_phantom()) time_last_change = time();
+	}else {
+		if (!EnemyMan.get_enemy() && !m_storage.empty()) {
+			delete_all_phantoms();
+		}
+	}
 
 	m_aura->update_schedule();
 }

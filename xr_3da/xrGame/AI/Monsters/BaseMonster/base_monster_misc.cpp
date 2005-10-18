@@ -25,7 +25,9 @@ void CBaseMonster::UpdateMemory()
 	EnemyMan.update				();	
 	CorpseMan.update			();
 		
+	// remove hit info from objects that are corpses
 	
+
 	hear_dangerous_sound = hear_interesting_sound = false;
 	SoundElem se;
 	

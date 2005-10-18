@@ -254,7 +254,9 @@ bool CControlPathBuilder::get_node_in_radius(u32 src_node, float min_radius, flo
 		Fvector			new_pos;
 		new_pos.mad		(vertex_position, dir, Random.randF(min_radius, max_radius));
 
+		restrictions().add_border		(vertex_position,new_pos);
 		dest_node		= ai().level_graph().check_position_in_direction(src_node, vertex_position, new_pos);
+		restrictions().remove_border	();
 		if (dest_node != u32(-1) && accessible(dest_node)) return true;
 	}
 	return false;

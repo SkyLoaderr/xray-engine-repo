@@ -155,6 +155,12 @@ bool CAI_PseudoDog::jump(CObject *enemy)
 	return false;
 }
 
+void CAI_PseudoDog::HitEntityInJump		(const CEntity *pEntity) 
+{
+	SAAParam &params	= anim().AA_GetParams("run_jamp_1");
+	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
+}
+
 
 #ifdef _DEBUG
 void CAI_PseudoDog::debug_on_key(int key)

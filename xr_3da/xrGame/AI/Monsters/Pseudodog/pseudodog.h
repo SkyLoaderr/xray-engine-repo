@@ -32,6 +32,7 @@ public:
 
 	virtual bool	jump						(CObject *enemy);
 
+	virtual void	HitEntityInJump		(const CEntity *pEntity);
 private:
 #ifdef _DEBUG	
 	virtual void	debug_on_key		(int key);

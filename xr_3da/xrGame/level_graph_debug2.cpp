@@ -1178,6 +1178,7 @@ void CLevelGraph::on_render2	()
 	for ( ; I != E; ++I) {
 		if (!(*I).second->m_ref_count)
 			continue;
+		if (!(*I).second->initialized()) continue;
 
 		u8 b = u8(R.randI(255));
 		u8 g = u8(R.randI(255));
