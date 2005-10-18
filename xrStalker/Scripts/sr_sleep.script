@@ -88,6 +88,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
     st.type = utils.cfg_get_string(ini, section, "type", npc, false, "", "all")
-    st.dream_prob = utils.cfg_get_number(ini, section, "dream_prob", npc, true, nil)
+    st.dream_prob = utils.cfg_get_number(ini, section, "dream_prob", npc, false, nil)
 	st.cond = xr_logic.cfg_get_condlist(ini, section, "cond", npc)
 end
