@@ -213,7 +213,7 @@ function action_patrol:execute()
 					state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
 				end
 			end
-			xr_sound.set_sound(self.object, "fight_attack")
+			xr_sound.set_sound(self.object, self.a.attack_sound)
 			self.enemy_position = self.enemy:position()
 			-- Занести место поиска врага в scan_table
 			if self.a.sniper == true then
@@ -519,6 +519,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
 	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false, 60000)
+	st.attack_sound = utils.cfg_get_string(ini, section, "attack_sound", npc, false, "", "fight_attack")
 	
 	-- Время забывания врага
 	st.idle = utils.cfg_get_number(ini, section, "enemy_idle", npc, false, 60000)
