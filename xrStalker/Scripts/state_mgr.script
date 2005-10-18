@@ -146,7 +146,8 @@ function eva_state_mgr_end:evaluate()
 	
 	local current_action_id = self.mgr:current_action_id()
 	if current_action_id ~= stalker_ids.action_combat_planner and
-	   current_action_id ~= stalker_ids.action_danger_planner
+	   current_action_id ~= stalker_ids.action_danger_planner and
+	   current_action_id ~= stalker_ids.action_anomaly_planner
 	then
 		self.st.combat = false
 	end
