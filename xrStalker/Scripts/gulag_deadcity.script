@@ -1,0 +1,856 @@
+
+--------------------------------------------------------------------------
+-- Member counts
+--------------------------------------------------------------------------
+local mob_spring_count = 10
+local st_snorks_count = 10
+local st_tushkanos_count = 8
+
+--------------------------------------------------------------------------
+-- States
+--------------------------------------------------------------------------
+local state_wait  = 0
+local state_wave1 = 1
+local state_wave2 = 2
+local state_wave3 = 3
+local state_wave4 = 4
+local state_wave5 = 5
+local state_wave6 = 6
+local state_wave7 = 7
+local state_wave8 = 8
+
+local state_zombied_wait  = 0
+local state_zombied_scene = 1
+local state_zombied_fight = 2
+local state_zombied_guard = 3
+
+zombied_in_combat = {}
+
+function is_zombied_in_combat()
+    local k, v = 0, 0
+    for k,v in pairs(zombied_in_combat) do
+        return true
+    end
+    return false
+end
+
+local gulags = {}
+
+--------------------------------------------------------------------------
+-- General
+--------------------------------------------------------------------------
+-- Job -------------------------------------------------------------------
+function load_job(sj, gname, type, squad, groups)
+    local g = gulags[type]
+    if g then
+        g[1](sj, gname, type, squad, groups)
+    end
+end
+
+-- State -----------------------------------------------------------------
+function load_states(gname, type)
+    local g = gulags[type]
+
+    if g then
+        return g[2]
+    end
+
+	return nil
+end
+	    
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx(gname, type)
+    local g = gulags[type]
+    if g and g[4] then
+        return g[4](gname, type)
+    end
+
+	return nil
+end
+
+-- Check communities -----------------------------------------------------
+local function checkCommon(npc_community, g)
+    --if g then
+    local n, i, v = 0
+    for i, v in pairs(g[3]) do
+        if npc_community == v then
+            return true
+        end
+        n = n + 1
+    end
+    if n > 0 then
+        return false
+    else -- empty communities list
+        return true
+    end
+    --end
+
+	--return false
+end
+
+function checkStalker(npc_community, gulag_type)
+    local g = gulags[gulag_type]
+    if g then
+        return checkCommon(npc_community, g)
+    end
+
+	return false
+end
+
+function checkMonster(npc_community, gulag_type)
+    local g = gulags[gulag_type]
+    if g then
+        return checkCommon(npc_community, g)
+    end
+
+    return false
+end
+
+
+--------------------------------------------------------------------------
+-- Predicates
+--------------------------------------------------------------------------
+function f_predicate1(obj)
+	return obj:profile_name() == "pri_followers"
+end
+
+function f_predicate2(obj)
+    local t = obj:best_weapon()
+    if t then
+        --printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
+	    return obj:profile_name() == "pri_followers" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --and t and t:animation_slot() == "4"
+	else
+	    return false
+	end
+end
+
+function f_predicate3(obj)
+	return obj:clsid() == clsid.controller_s
+end
+
+function f_predicate4(obj)
+    if obj:clsid() == clsid.script_stalker or obj:clsid() == clsid.stalker then
+        local prof = obj:profile_name()
+	    return prof == "pri_zombied" or prof == "pri_zombied_veteran"
+	end
+	return false
+end
+
+function f_predicate4_1(obj)
+    if obj:clsid() == clsid.script_stalker or obj:clsid() == clsid.stalker then
+        local prof = obj:profile_name()
+	    return prof == "pri_soldier_suicide"
+	end
+	return false
+end
+
+function f_predicate5(obj)
+	return obj:profile_name() == "pri_monolith_regular"
+end
+
+function f_predicate6(obj)
+	return obj:profile_name() == "pri_monolith_specnaz"
+end
+
+function f_predicate7(obj)
+	return obj:profile_name() == "pri_monolith_exo"
+end
+
+function f_predicate8(obj)
+    local t = obj:best_weapon()
+    if t then
+	    return obj:profile_name() == "pri_monolith_specnaz" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
+	else
+	    return false
+	end
+end
+
+function f_predicate9(obj)
+    local t = obj:best_weapon()
+    if t then
+	    return obj:profile_name() == "pri_monolith_specnaz" and string.sub(t:name(), 1, 7) == "wpn_svd" --string.find(t:name(), "^wpn_svd")
+	else
+	    return false
+	end
+end
+
+function f_predicate10(obj)
+    local t = obj:best_weapon()
+    if t then
+	    return obj:profile_name() == "pri_monolith_exo" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
+	else
+	    return false
+	end
+end
+
+function st_predicate1(obj) -- snorks
+    return obj:clsid() == clsid.snork_s
+end
+
+function st_predicate2(obj) -- tushkanos
+    return obj:clsid() == clsid.tushkano_s
+end
+
+--------------------------------------------------------------------------
+-- Gulags
+--------------------------------------------------------------------------
+
+--------------------------------------------------------------------------
+-- Followers
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_followers(sj, gname, type, squad, groups)
+    local i, v, j = 0, 0, 0
+
+    -- gulag members
+    local followers = {"leader", "bomber", "nap1", "nap2", "nap3"}
+
+    -- states name
+    local states_str = {"wait", "wave1", "wave2", "wave3", "wave4", "wave5", "wave6", "wave7", "wave8"}
+
+    -- states num
+    local states = {state_wait, state_wave1, state_wave2, state_wave3, state_wave4, state_wave5, state_wave6, state_wave7, state_wave8}
+
+    -- out restrictors for the each state
+    local restr = {"",                              "pri_followers_wave1_out_restr", "pri_followers_wave2_out_restr",
+                   "pri_followers_wave3_out_restr", "pri_followers_wave4_out_restr", "pri_followers_wave5_out_restr",
+                   "pri_followers_wave6_out_restr", "pri_followers_wave7_out_restr", "pri_followers_wave7_out_restr"}
+
+    -- priorities
+    local prior = {{2, 2, 2, 2, 2, 2, 2, 2, 3}, -- leader
+                   {3, 3, 3, 3, 3, 3, 3, 3, 2}, -- bomber
+                   {1, 1, 1, 1, 1, 1, 1, 1, 1}, -- nap1
+                   {1, 1, 1, 1, 1, 1, 1, 1, 1}, -- nap2
+                   {1, 1, 1, 1, 1, 1, 1, 1, 1}  -- nap3
+                  }
+    -- predicates
+    local pred = {f_predicate1, f_predicate2, f_predicate1, f_predicate1, f_predicate1}
+
+    local pr, pd
+    for i, v in pairs(followers) do
+        pr = prior[i]
+        pd = pred[i]
+        for j = 1, 9 do
+	        t = { section = "logic@" .. gname .. "_" .. v .. "_" .. states_str[j],
+		        idle = 0,
+		        prior = pr[j], state = { states[j] },
+		        squad = squad, group = groups[1],
+		        in_rest = "", out_rest = restr[j],
+		        predicate = pd
+	        }
+	        table.insert(sj, t)
+        end
+    end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_followers(gulag)
+	local state = gulag.state
+	local actor = db.actor
+    --printf("gulag <state>: prip followers check state(%d).", state)
+	if state == state_wait and actor:has_info("pri_followers_start") then
+		return state_wave1
+	end
+	if state == state_wave1 and
+		actor:has_info("pri_wave1_monolith1_dead") and
+		actor:has_info("pri_wave1_monolith2_dead") and
+		actor:has_info("pri_wave1_monolith3_dead") --and
+		--actor:has_info("pri_wave1_monolith4_dead")
+	then
+		actor:give_info_portion("pri_wave1_end")
+		return state_wave2
+	end
+	if state == state_wave2 and
+		actor:has_info("pri_wave2_monolith1_dead") and
+		actor:has_info("pri_wave2_monolith2_dead") and
+		--actor:has_info("pri_wave2_monolith3_dead") and
+		actor:has_info("pri_wave2_monolith4_dead") and
+		--actor:has_info("pri_wave2_monolith5_dead") and
+		actor:has_info("pri_wave2_monolith6_dead") --and
+		--actor:has_info("pri_wave2_monolith7_dead") and
+		--actor:has_info("pri_wave2_monolith8_dead") and
+		--actor:has_info("pri_wave2_monolith9_dead")
+	then
+		actor:give_info_portion("pri_wave2_end")
+		actor:give_info_portion("pri_wave3_end") -- FAKE
+		return state_wave4 --3
+	end
+	if state == state_wave3 and actor:has_info("pri_wave3_btr_dead") then
+		actor:give_info_portion("pri_wave3_end")
+		return state_wave4
+	end
+	if state == state_wave4 and
+		actor:has_info("pri_wave4_monolith1_dead") and
+		actor:has_info("pri_wave4_monolith2_dead") and
+		actor:has_info("pri_wave4_monolith3_dead") and
+		--actor:has_info("pri_wave4_monolith4_dead") and
+		actor:has_info("pri_wave4_monolith5_dead") and
+		--actor:has_info("pri_wave4_monolith6_dead") and
+		--actor:has_info("pri_wave4_monolith7_dead") and
+		actor:has_info("pri_wave4_monolith8_dead")
+	then
+		actor:give_info_portion("pri_wave4_end")
+		return state_wave5
+	end
+	if state == state_wave5 and
+		actor:has_info("pri_wave5_monolith1_dead") and
+		actor:has_info("pri_wave5_monolith2_dead") and
+		actor:has_info("pri_wave5_monolith3_dead") and
+		actor:has_info("pri_wave5_monolith4_dead")
+	then
+	    if actor:dont_has_info("pri_wave5_leader_phrase_end") then
+		    actor:give_info_portion("pri_wave5_leader_phrase_start")
+		    return state_wave5
+	    else
+		    actor:give_info_portion("pri_wave5_end")
+		    return state_wave6
+		end
+	end
+	if state == state_wave6 and
+		--actor:has_info("pri_wave6_monolith1_dead") and
+		actor:has_info("pri_wave6_monolith2_dead") and
+		actor:has_info("pri_wave6_monolith3_dead")
+	then
+		actor:give_info_portion("pri_wave6_end")
+		return state_wave7
+	end
+	if state == state_wave7 and
+        xr_gulag.getGulagPopulation("pri_ambush7") == 0
+    then
+        actor:give_info_portion("pri_wave7_end")
+        return state_wave8
+    end
+    return state
+end
+
+--------------------------------------------------------------------------
+-- Ambush7
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_ambush7(sj, gname, type, squad, groups)
+    local i = 0
+    for i = 1, 7 do
+        --- state 0
+	    t = { section = "logic@" .. gname .. "_monolith" .. i .. "_hide", 
+		    idle = 0,
+		    prior = 1, state = {0}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_out_restr"
+	    }
+	    table.insert(sj, t)
+        --- state 1
+	    t = { section = "logic@" .. gname .. "_monolith" .. i, 
+		    idle = 0,
+		    prior = 1, state = {1}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_out_restr"
+	    }
+        table.insert(sj, t)
+    end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_ambush7(gulag)
+	if db.actor:has_info("pri_wave7_start") then
+        return 1
+    else
+	    return 0
+	end
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_ambush7(gname, type)
+    local i, res = 0, ""
+    
+    for i = 1, 7 do
+        res = res.."[logic@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
+                   "active              = walker@" .. gname .. "_monolith" .. i .. "_hide\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
+                   "path_walk           = monolith" .. i .. "_hide_walk\n" ..
+                   "path_look           = monolith" .. i .. "_hide_look\n" ..
+                   "combat_ignore_cond  = always\n" ..
+                   "show_spot           = false\n" ..
+
+                   "[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "active              = walker@" .. gname .. "_monolith" .. i .. "\n" ..
+
+                   "[walker@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "path_walk           = monolith" .. i .. "_walk\n" ..
+                   "path_look           = monolith" .. i .. "_look\n"
+    end
+    return res
+end
+
+--------------------------------------------------------------------------
+-- Zombied
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_zombied(sj, gname, type, squad, groups)
+    local i, j, v
+
+    local states_str = {"wait", "scene", "fight", "guard"}
+    local states = {state_zombied_wait, state_zombied_scene, state_zombied_fight, state_zombied_guard}
+
+    local restr
+    for i = 1, 3 do
+        for j, v in pairs(states_str) do
+	        t = { section = "logic@" .. gname .. "_controller" .. i .. "_" .. v, 
+		        idle = 0,
+		        prior = 1, state = {states[j]},
+		        squad = squad, group = groups[1],
+		        in_rest = "", out_rest = gname .. "_base_restr",
+		        predicate = f_predicate3
+	        }
+	        table.insert(sj, t)
+        end
+    end
+
+    -- out restrictors for the each state of zombied stalkers
+    restr = {gname .. "_base_restr", gname .. "_base_big_restr", "", gname .. "_base_restr"}
+
+    for i = 1, 7 do
+        for j, v in pairs(states_str) do
+	        t = { section = "logic@" .. gname .. "_soldier" .. i .. "_" .. v, 
+		        idle = 0,
+		        prior = 1, state = {states[j]},
+		        squad = squad, group = groups[1],
+		        in_rest = "", out_rest = restr[j],
+		        predicate = f_predicate4
+	        }
+	        table.insert(sj, t)
+        end
+    end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_zombied(gulag)
+	local state = gulag.state
+	local actor = db.actor
+    if actor:has_info("pri_zombied_scene_start") then
+        if actor:dont_has_info("pri_zombied_scene_end") then
+            return state_zombied_scene -- suicide scene
+        elseif is_zombied_in_combat() then --table.getn(zombied_in_combat) > 0 then
+            if state_zombied_fight ~= state then
+                printf("gulag <state>: pri_zombied - fight")
+            end
+            return state_zombied_fight
+        else
+            if state_zombied_guard ~= state then
+                printf("gulag <state>: pri_zombied - guard")
+            end
+            return state_zombied_guard
+        end
+    end
+    return state
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_zombied(gname, type)
+    local i, res
+
+    res = "[" .. gname .. "_death]\n" ..
+          "on_info                 = %=pri_zombied_in_combat_dec%\n" ..
+
+          "[mob_camp@" .. gname .. "_controllers_wait]\n" ..
+          "path_look               = controllers_look\n" ..
+          "path_home               = controllers_home\n" ..
+          "time_change_point       = 10000\n" ..
+          "home_min_radius         = 1\n" ..
+          "home_max_radius         = 2\n" ..
+
+          "[mob_camp@" .. gname .. "_controllers_scene1]\n" ..
+          "path_look               = controllers_look\n" ..
+          "path_home               = controllers_home\n" ..
+          "time_change_point       = 5000\n" ..
+          "home_min_radius         = 1\n" ..
+          "home_max_radius         = 2\n" ..
+          "on_timer                = 10000 | mob_camp@" .. gname .. "_controllers_scene2\n" ..
+
+          "[mob_camp@" .. gname .. "_controllers_scene2]\n" ..
+          "path_look               = controllers_look\n" ..
+          "path_home               = controllers_home\n" ..
+          "time_change_point       = 5000\n" ..
+
+          "[mob_remark@" .. gname .. "_controllers_fight]\n" ..
+          "anim                    = stand_idle_0, stand_idle_1, stand_idle_2, stand_idle_3\n" ..
+          "on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%\n" ..
+          "on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%\n" ..
+
+          "[mob_camp@" .. gname .. "_controllers_guard]\n" ..
+          "path_look               = controllers_look\n" ..
+          "path_home               = controllers_home\n" ..
+          "time_change_point       = 10000\n" ..
+          "on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%\n" ..
+          "on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%\n"
+
+    for i = 1, 3 do
+        res = res.."[logic@" .. gname .. "_controller" .. i .. "_wait]\n" ..
+                    "active     = mob_camp@" .. gname .. "_controllers_wait\n" ..
+
+                    "[logic@" .. gname .. "_controller" .. i .. "_scene]\n" ..
+                    "active     = mob_camp@" .. gname .. "_controllers_scene1\n" ..
+
+                    "[logic@" .. gname .. "_controller" .. i .. "_fight]\n" ..
+                    "active     = mob_remark@" .. gname .. "_controllers_fight\n" ..
+                    "mob_death  = " .. gname .. "_death\n" ..
+
+                    "[logic@" .. gname .. "_controller" .. i .. "_guard]\n" ..
+                    "active     = mob_camp@" .. gname .. "_controllers_guard\n" ..
+                    "mob_death  = " .. gname .. "_death\n"
+    end
+
+    res = res .. "[combat_zombied]\n" ..
+                 "combat_type           = zombied\n" ..
+
+                 "[danger@zombied]\n" ..
+                 "ignore_danger_corpse  = 1\n" ..
+                 "ignore_danger_hit     = 1\n" ..
+
+                 "[remark@" .. gname .. "_soldier_wait]\n" ..
+                 ";no_move               = true\n" ..
+                 "anim                  = hide\n" ..
+                 "combat_ignore_cond    = {=check_fighting(813:814)}\n" ..
+                 "show_spot             = false\n" ..
+                 "danger                = danger@zombied\n" ..
+
+                 "[remark@" .. gname .. "_soldiers]\n" ..
+                 "anim                  = threat\n" ..
+                 "on_actor_dist_le_nvis = 25 | %=pri_zombied_in_combat_inc%\n" ..
+                 "on_actor_dist_ge_nvis = 40 | %=pri_zombied_in_combat_dec%\n" ..
+                 "show_spot             = false\n" ..
+                 "danger                = danger@zombied\n"
+
+    for i = 1, 7 do
+        res = res.."[logic@" .. gname .. "_soldier" .. i .. "_wait]\n" ..
+                   "active              = remark@" .. gname .. "_soldier_wait\n" ..
+                   "on_combat           = combat_zombied\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+
+                   "[logic@" .. gname .. "_soldier" .. i .. "_scene]\n" ..
+                   "active              = walker@" .. gname .. "_soldier" .. i .. "_scene\n" ..
+                   "on_combat           = combat_zombied\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_soldier" .. i .. "_scene]\n" ..
+                   "path_walk           = scene_walk" .. i .. "\n" ..
+                   "on_signal           = arrived | nil\n" ..
+                   "combat_ignore_cond  = {=check_fighting(813:814)}\n" ..
+                   "danger              = danger@zombied\n" ..
+
+                   "[logic@" .. gname .. "_soldier" .. i .. "_fight]\n" ..
+                   "active              = remark@" .. gname .. "_soldiers\n" ..
+                   "on_death            = " .. gname .. "_death\n" ..
+                   "on_combat           = combat_zombied\n" ..
+
+                   "[logic@" .. gname .. "_soldier" .. i .. "_guard]\n" ..
+                   "active              = remark@" .. gname .. "_soldiers\n" ..
+                   "on_death            = " .. gname .. "_death\n" ..
+                   "on_combat           = combat_zombied\n"
+    end
+
+    return res
+end
+
+--------------------------------------------------------------------------
+-- Monolith
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_monolith(sj, gname, type, squad, groups)
+    local i, j, v, prior, pred
+
+    -- walkers
+    prior = {6, 7, 8, 12, 12, 5}
+    for i, v in pairs({1, 3, 4, 5, 6, 8}) do
+        --- state: main
+	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
+		    idle = 0,
+		    prior = prior[i], state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
+		    out_rest = "",
+		    predicate = f_predicate6
+	    }
+	    table.insert(sj, t)
+	end
+
+	-- followers
+    prior = {6, 6, 4, 4}
+    for i = 1, 2 do
+        for j = 1, 2 do
+            --- state: main
+	        t = { section = "logic@" .. gname .. "_group_patrol" .. i, 
+		        idle = 0,
+		        prior = prior[i + 2 * (j - 1)], state = {0},
+		        squad = squad, group = groups[1],
+		        in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
+		        out_rest = "",
+		        predicate = f_predicate6
+	        }
+	        table.insert(sj, t)
+	    end
+    end
+
+	pred = {f_predicate8, f_predicate9, f_predicate10}
+	for i, v in pairs({"rpg", "svd", "machine_gun"}) do
+        --- state: main
+	    t = { section = "logic@" .. gname .. "_stalker_" .. v, 
+		    idle = 0,
+		    prior = 14, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
+		    out_rest = "",
+		    predicate = pred[i]
+	    }
+	    table.insert(sj, t)
+	end
+
+    -- kamps
+    prior = {{11, 11, 11, 3}, {10, 10, 10, 2}, {11, 11, 11}, {9, 9, 9}, {13, 13, 1}}
+    pred = {{f_predicate6, f_predicate6, f_predicate6, f_predicate6},
+            {f_predicate6, f_predicate6, f_predicate6, f_predicate6},
+            {f_predicate7, f_predicate7, f_predicate7},
+            {f_predicate6, f_predicate6, f_predicate6},
+            {f_predicate7, f_predicate7, f_predicate6}}
+    local pr, pd
+	for i, v in pairs({4, 4, 3, 3, 3}) do
+	    pr = prior[i]
+	    pd = pred[i]
+	    for j = 1, v do
+            --- state: main
+	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier", 
+		        idle = 0,
+		        prior = pr[j], state = {0},
+		        squad = squad, group = groups[1],
+		        in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
+		        out_rest = "",
+		        predicate = pd[j]
+	        }
+	        table.insert(sj, t)
+	    end
+	end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_monolith(gulag)
+    return 0
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_monolith(gname, type)
+    local i, v, res = 0, 0, ""
+    local id
+    
+    res = "[danger@monolith]\n" ..
+          "ignore_danger_sound = 150\n"
+
+    -- alone patrol soldiers
+    for i, v in pairs({1, 3, 4, 5, 6, 8}) do
+        res = res.."[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
+                   "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_patrol" .. v .. "]\n" ..
+                   "path_walk           = patrol" .. v .. "_walk\n" ..
+                   "path_look           = patrol" .. v .. "_look\n" ..
+                   "danger              = danger@monolith\n" ..
+                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+    end
+
+    -- group patrol soldiers 7, 10 (9, 13)
+    for i, v in pairs({7, 10}) do
+        res = res.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
+                   "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+                   
+                   "[patrol@" .. gname .. "_group_patrol" .. i .. "]\n" ..
+                   "path_walk           = patrol" .. v .. "_walk\n" ..
+                   "path_look           = patrol" .. v .. "_look\n" ..
+                   "formation           = line\n" ..
+                   "soundgroup          = " .. gname .."_group_patrol" .. i .. "\n" ..
+                   "danger              = danger@monolith\n" ..
+                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+    end
+
+    -- rpg, svd, machine-gun
+    id = {11, 12, 14}
+	for i, v in pairs({"rpg", "svd", "machine_gun"}) do
+	    res = res.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
+                   "active              = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+                   
+                   "[camper@" .. gname .. "_stalker_" .. v .. "]\n" ..
+                   "path_walk                   = patrol" .. id[i] .. "_walk\n" ..
+                   "path_look                   = patrol" .. id[i] .. "_look\n" ..
+                   --"no_retreat                  = true\n" ..
+                   "radius                      = 5\n" ..
+                   "def_state_campering         = threat\n" ..
+                   "def_state_campering_fire    = threat_fire\n" ..
+                   "danger                      = danger@monolith\n" ..
+                   "combat_ignore_cond          = {=pri_monolith_combat_ignore}\n"
+        if i == 2 then
+            res = res.."sniper = true\n"
+        end
+	end
+
+    -- kamps
+	for i = 1, 5 do
+	    res = res.."[logic@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
+                   "active              = kamp@" .. gname .. "_kamp" .. i .. "_soldier\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+                   
+                   "[kamp@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
+                   "center_point        = kamp" .. i .. "\n" ..
+                   "danger              = danger@monolith\n" ..
+                   "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
+                   "def_state_moving    = run\n" ..
+                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+	end
+
+    return res
+end
+
+--------------------------------------------------------------------------
+-- Stadium
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_stadium(sj, gname, type, squad, groups)
+    local i = 0
+    for i = 1, 10 do
+        --- state 0
+	    t = { section = "logic@" .. gname .. "_gigant", -- .. i .. "_wait", 
+		    idle = 0,
+		    prior = 1, state = {0}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_small_restr"
+	    }
+	    table.insert(sj, t)
+        --- state 1
+	    t = { section = "logic@" .. gname .. "_gigant", -- .. i, 
+		    idle = 0,
+		    prior = 1, state = {1}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_kill_restr"
+	    }
+        table.insert(sj, t)
+        --- state 2
+	    t = { section = "logic@" .. gname .. "_gigant", -- .. i, 
+		    idle = 0,
+		    prior = 1, state = {2}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_restr"
+	    }
+        table.insert(sj, t)
+   end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_stadium(gulag)
+	--local state = gulag.state
+	local actor = db.actor
+	if actor:has_info("pri_stadium_scene_start") then
+	    if actor:has_info("pri_stadium_scene_end") then
+	        return 2
+	    else
+	        return 1
+	    end
+	else
+	    return 0
+	end
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_stadium(gname, type)
+    return "[logic@pri_stadium_gigant]\nactive = nil\n"
+end
+
+--------------------------------------------------------------------------
+-- Snorks and tushkanos
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_st_monster(sj, gname, type, squad, groups)
+    local i = 0
+    for i = 1, st_snorks_count do
+        --- state 0
+	    t = { section = "logic@nil",
+		    idle = 0,
+		    prior = 1, state = {0}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_small_restr",
+		    predicate = st_predicate1
+	    }
+	    table.insert(sj, t)
+        --- state 1
+	    t = { section = "logic@nil",
+		    idle = 0,
+		    prior = 1, state = {1}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_big_restr",
+		    predicate = st_predicate1
+	    }
+        table.insert(sj, t)
+   end
+    for i = 1, st_tushkanos_count do
+        --- state 0
+	    t = { section = "logic@nil",
+		    idle = 0,
+		    prior = 1, state = {0}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_big_restr",
+		    predicate = st_predicate2
+	    }
+	    table.insert(sj, t)
+        --- state 1
+	    t = { section = "logic@nil",
+		    idle = 0,
+		    prior = 1, state = {1}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_big_restr",
+		    predicate = st_predicate2
+	    }
+        table.insert(sj, t)
+   end
+end
+
+--------------------------------------------------------------------------
+-- Monster on spring
+--------------------------------------------------------------------------
+-- Jobs ------------------------------------------------------------------
+function load_job_mob_spring(sj, gname, type, squad, groups)
+    local i = 0
+    for i = 1, mob_spring_count do
+        --- state 0
+	    t = { section = "logic@nil",
+		    idle = 0,
+		    prior = 1, state = {0}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_small_restr"
+	    }
+	    table.insert(sj, t)
+        --- state 1
+	    t = { section = "logic@nil",
+		    idle = 0,
+		    prior = 1, state = {1}, squad = squad, group = groups[1],
+		    in_rest = "", out_rest = gname .. "_big_restr"
+	    }
+        table.insert(sj, t)
+   end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_mob_spring(gulag)
+	local t = db.zone_by_name[gulag.name .. "_big_restr"] -- имя большого рестр.
+	if t and db.actor then
+		if t:inside(db.actor:position()) then
+			return 1
+		else
+			return 0
+		end
+	else
+		return gulag.state
+	end
+end
+
+--[[-----------------------------------------------------------------------------------------------------------------------
+--                         -- job_func          -- check_state func     -- communities                          -- dynamic ltx func
+gulags.pri_followers    = {load_job_followers,  check_state_followers,  {"stalker"}}
+gulags.pri_ambush7      = {load_job_ambush7,    check_state_ambush7,    {"monolith"},                           load_ltx_ambush7}
+gulags.pri_zombied      = {load_job_zombied,    check_state_zombied,    {"zombied", "military", "controller"},  load_ltx_zombied}
+gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"},                           load_ltx_monolith}
+gulags.pri_stadium      = {load_job_stadium,    check_state_stadium,    {"pseudo_gigant"},                      load_ltx_stadium}
+gulags.pri_mob_spring   = {load_job_mob_spring, check_state_mob_spring, {}}
+gulags.pri_st_monster   = {load_job_st_monster, check_state_mob_spring, {"snork", "tushkano"}}
+--printf("gulag <pri>: table -")
+--print_table(gulags)
+]]

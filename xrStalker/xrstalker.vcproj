@@ -522,6 +522,9 @@
 					RelativePath=".\Config\misc\gulag_dark_valley.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_deadcity.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_escape.ltx">
 				</File>
 				<File
@@ -2786,6 +2789,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_dark_valley.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\gulag_deadcity.script">
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_escape.script">
