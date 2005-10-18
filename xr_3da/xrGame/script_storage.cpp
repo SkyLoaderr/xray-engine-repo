@@ -83,6 +83,8 @@ CScriptStorage::CScriptStorage		()
 	luaopen_math			(lua());
 #ifdef DEBUG
 	luaopen_debug			(lua());
+	luaopen_io				(lua());
+
 #endif
 #ifdef USE_JIT
 	m_jit					= (0==strstr(Core.Params,"-nojit"));
