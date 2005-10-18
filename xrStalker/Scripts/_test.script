@@ -1,5 +1,28 @@
 -- run_string set_postprocess ("scripts\\sincos.ltx")
 
+
+function init_phrase_dialog(dlg)
+
+	local phrase_script = dlg:AddPhrase("_hello_world_0",0,-1,-10000)
+--	phrase_script:AddPrecondition("zzz")
+--	phrase_script:AddHasInfo("zzz")
+--	phrase_script:AddDontHasInfo("zzz")
+--	phrase_script:AddGiveInfo("zzz")
+--	phrase_script:AddDisableInfo("zzz")
+--	phrase_script:AddAction("zzz")
+
+	phrase_script = dlg:AddPhrase("_hello_world_1",1,0,-10000)
+	phrase_script = dlg:AddPhrase("_hello_world_2",2,0,-10000)
+	phrase_script = dlg:AddPhrase("_hello_world_3",3,0,-10000)
+	
+	phrase_script = dlg:AddPhrase("_hello_world_4",4,2,-10000)
+	phrase_script = dlg:AddPhrase("_hello_world_5",5,2,-10000)
+	phrase_script = dlg:AddPhrase("_hello_world_6",6,3,-10000)
+	phrase_script = dlg:AddPhrase("_hello_world_7",7,6,-10000)
+
+end
+
+
 class "some_cam_effector" (cam_effector)
 
 function some_cam_effector:__init(tm, amp,periods,power) super(cam_effector_type.eCEHit, tm, false)
