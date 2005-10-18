@@ -1234,11 +1234,15 @@ meet = meet@ecolog_kruglov
 no_retreat = true
 radius = 0
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_info = {+bar_rescue_research_chasing_end} walker@bar_ecolog_professor_companoin_1
+on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_professor_companion_1
 on_info2 = {+bar_ecolog_see_chase -bar_ecolog_saw_chase} %=bar_ecolog_spam_5 +bar_ecolog_saw_chase%
 
-[walker@bar_ecolog_professor_companoin_1]
+[camper@bar_ecolog_professor_companion_1]
 path_walk = escape_2_walk
+path_look = escape_hide_2_look
+meet = meet@ecolog_kruglov
+radius = 0
+no_retreat = true
 on_signal = bandits_alive | camper@bar_rescue_research_hide_2 %+bar_bandits_alive -bar_kruglov_follow_talk%
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
@@ -1247,10 +1251,14 @@ path_walk = escape_hide_2_walk
 path_look = escape_hide_2_look
 meet = meet@ecolog_kruglov
 radius = 0
-on_info = {+bar_bandits_dead} walker@bar_ecolog_professor_companoin_2
+on_info = {+bar_bandits_dead} camper@bar_ecolog_professor_companoin_2
 
-[walker@bar_ecolog_professor_companoin_2]
+[camper@bar_ecolog_professor_companoin_2]
 path_walk = escape_3_walk
+path_look = escape_look
+meet = meet@ecolog_kruglov
+radius = 0
+no_retreat = true
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = fire_anomaly | %+bar_fire_anomaly_forward%
 on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3 %-bar_kruglov_follow_talk%
@@ -1261,11 +1269,13 @@ path_look = escape_look
 meet = meet@ecolog_kruglov
 radius = 0
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_info = {+bar_go_through_anomaly} walker@bar_ecolog_professor_companoin_3
+on_info = {+bar_go_through_anomaly} camper@bar_ecolog_professor_companoin_3
 
-[walker@bar_ecolog_professor_companoin_3]
+[camper@bar_ecolog_professor_companoin_3]
 path_walk = escape_4_walk
 path_look = escape_4_look
+radius = 0
+no_retreat = true
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_done -bar_kruglov_follow_talk%
 
