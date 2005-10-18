@@ -3,6 +3,10 @@
 #include "PHObject.h"
 #include "ode_include.h"
 #include "physicscommon.h"
+#include "MathUtils.h"
+
+
+
 #ifdef DEBUG
 extern	u32				dbg_total_saved_tries					;
 #endif
@@ -20,7 +24,18 @@ struct Triangle
 	dReal pos;
 	dReal depth;
 	CDB::TRI* T ;
+	Triangle()
+	{
+		T		=NULL;
+#ifdef DEBUG
+		depth	=-dInfinity;
+		dist	=-dInfinity;
+#endif
+	}
 };
+
+
+
 class CObjectContactCallback
 {
 	
@@ -110,8 +125,7 @@ struct dxGeomUserData
 {
 	dVector3					last_pos										;
 	bool						pushing_neg,pushing_b_neg,b_static_colide		;
-	Triangle					neg_tri,b_neg_tri								;
-
+	CDB::TRI					*neg_tri,*b_neg_tri								;
 	CPHObject					*ph_object										;
 	CPhysicsShellHolder			*ph_ref_object									;
 	u16							material										;

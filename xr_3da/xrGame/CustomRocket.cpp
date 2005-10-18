@@ -13,6 +13,7 @@
 #include "gamemtllib.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "../fbasicvisual.h"
+#include "CalculateTriangle.h"
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
@@ -212,8 +213,10 @@ void CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c ,SGameMtl 
 					if (velocity.square_magnitude() > EPS)	
 					{	//. desync?
 						velocity.normalize();
-						float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
-						float dist=l_pUD->neg_tri.dist/cosinus;
+						Triangle neg_tri;
+						InitTriangle(l_pUD->neg_tri,neg_tri);
+						float cosinus=velocity.dotproduct(*((Fvector*)neg_tri.norm));
+						float dist=neg_tri.dist/cosinus;
 						velocity.mul(dist*1.1f);
 						l_pos.sub(velocity);
 #ifdef DEBUG

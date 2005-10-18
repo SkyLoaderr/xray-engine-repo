@@ -9102,6 +9102,9 @@
 				Name="Base"
 				Filter="">
 				<File
+					RelativePath=".\CalculateTriangle.h">
+				</File>
+				<File
 					RelativePath="ExtendedGeom.h">
 				</File>
 				<File
