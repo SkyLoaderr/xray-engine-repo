@@ -45,6 +45,8 @@
 #include "../../../camerabase.h"
 #include "../../clsid_game.h"
 #include "../../mt_config.h"
+#include "../../weaponmagazined.h"
+#include "../../object_handler_space.h"
 
 CActor *g_debug_actor = 0;
 
@@ -688,6 +690,23 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sinfinite ammo       : %s",indent,indent,m_infinite_ammo ? "+" : "-");
 	HUD().Font().pFontSmall->OutNext	("%s%sitem to spawn       : %s",indent,indent,item_to_spawn().size() ? *item_to_spawn() : "no item to spawn");
 	HUD().Font().pFontSmall->OutNext	("%s%sammo in box to spawn: %d",indent,indent,item_to_spawn().size() ? ammo_in_box_to_spawn() : 0);
+	
+	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(best_weapon());
+	if (weapon) {
+		CObjectHandlerPlanner			&planner = CObjectHandler::planner();
+		HUD().Font().pFontSmall->OutNext("%s%squeue size          : %d",indent,indent,weapon->GetQueueSize());
+		HUD().Font().pFontSmall->OutNext("%s%squeue interval      : %d",
+			indent,
+			indent,
+			planner.action(
+				planner.uid(
+					weapon->ID(),
+					ObjectHandlerSpace::eWorldOperatorQueueWait1
+				)
+			).inertia_time()
+		);
+	}
+	
 	if (inventory().ActiveItem()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sactive item",indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject         : %s",indent,indent,indent,inventory().ActiveItem() ? *inventory().ActiveItem()->object().cName() : "");
