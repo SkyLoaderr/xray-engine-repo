@@ -497,7 +497,7 @@ function load_states(gname, type)
 				return gulag.state
 			elseif gulag.state == 0 and game.get_game_time():diffSec( gulag.stateBegin ) > 600 then
 				return 1
-			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 900 then
+			elseif gulag.state == 1 and game.get_game_time():diffSec( gulag.stateBegin ) > 1200 then
 				return 0
 			else
 				return gulag.state
@@ -722,21 +722,26 @@ function load_ltx_far_road_ambush(gname, type)
     local i, res = 0, ""
 	for i = 1, 5 do
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
-					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
+					"active = walker@" .. gname .. "1_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
 					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
 					"on_hit=hit_death@" .. gname .. "\n" ..
 					"on_death=hit_death@" .. gname .. "\n" ..
 
-					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
+					"[walker@" .. gname .. "1_stalker" .. i .. "]\n" ..
 					"path_walk = walker" .. i .. "_walk\n" ..
 					"path_look = walker" .. i .. "_look\n" ..
 					"def_state_moving1 = sprint\n" ..
 					"def_state_moving2 = sprint\n" ..
 					"combat_ignore_cond = {=fighting_actor -rad_start_far_road_ambush}\n" ..
-					";on_info = {=fighting_actor -rad_start_far_road_ambush} %+rad_start_far_road_ambush% \n" ..
+					"on_info = {+rad_start_far_road_ambush} walker@" .. gname .. "2_stalker" .. i .. " \n" ..
+					"danger=danger_condition@" .. gname .. "1\n" ..
 
-					"danger=danger_condition@" .. gname .. "\n" 
+					"[walker@" .. gname .. "2_stalker" .. i .. "]\n" ..
+					"path_walk = walker" .. i .. "_walk\n" ..
+					"path_look = walker" .. i .. "_look\n" ..
+					"danger=danger_condition@" .. gname .. "2\n" 
+
 	end
 
 	res = res ..	"[hit_death@" .. gname .. "]\n" ..
@@ -745,10 +750,14 @@ function load_ltx_far_road_ambush(gname, type)
 					"[combat@" .. gname .. "]\n" ..
 					"combat_type = monolith\n" ..
 
-					"[danger_condition@" .. gname .. "]\n" ..
+					"[danger_condition@" .. gname .. "1]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
 					"ignore_distance = 5\n"..
+
+					"[danger_condition@" .. gname .. "2]\n" ..
+					"danger_expiration_time = 60000\n" ..
+					"danger_inertion_time =  90000\n" ..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
@@ -759,21 +768,26 @@ function load_ltx_far_road_btr_ambush(gname, type)
     local i, res = 0, ""
 	for i = 1, 5 do
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
-					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
+					"active = walker@" .. gname .. "1_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
 					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
 					"on_hit=hit_death@" .. gname .. "\n" ..
 					"on_death=hit_death@" .. gname .. "\n" ..
 
 
-					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
+					"[walker@" .. gname .. "1_stalker" .. i .. "]\n" ..
 					"path_walk = walker" .. i .. "_walk\n" ..
 					"path_look = walker" .. i .. "_look\n" ..
 					"def_state_moving1 = sprint\n" ..
 					"def_state_moving2 = sprint\n" ..
-					"danger=danger_condition@" .. gname .. "\n" ..
+					"danger=danger_condition@" .. gname .. "1\n" ..
 					"combat_ignore_cond = {=fighting_actor -rad_start_far_road_btr_ambush}\n" ..
-					";on_info = {=see_actor -rad_start_far_road_btr_ambush} %+rad_start_far_road_btr_ambush% \n" 
+					"on_info = {+rad_start_far_road_btr_ambush} walker@" .. gname .. "2_stalker" .. i .. "\n" .. 
+
+					"[walker@" .. gname .. "2_stalker" .. i .. "]\n" ..
+					"path_walk = walker" .. i .. "_walk\n" ..
+					"path_look = walker" .. i .. "_look\n" ..
+					"danger=danger_condition@" .. gname .. "2\n" 
 
 	end
 
@@ -783,10 +797,14 @@ function load_ltx_far_road_btr_ambush(gname, type)
 					"[combat@" .. gname .. "]\n" ..
 					"combat_type = monolith\n" ..
 
-					"[danger_condition@" .. gname .. "]\n" ..
+					"[danger_condition@" .. gname .. "1]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
 					"ignore_distance = 5\n"..
+
+					"[danger_condition@" .. gname .. "2]\n" ..
+					"danger_expiration_time = 60000\n" ..
+					"danger_inertion_time =  90000\n" ..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 	return res
@@ -796,21 +814,25 @@ function load_ltx_after_tramplin_ambush(gname, type)
     local i, res = 0, ""
 	for i = 1, 4 do
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
-					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
+					"active = walker@" .. gname .. "1_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
 					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
 					"on_hit=hit_death@" .. gname .. "\n" ..
 					"on_death=hit_death@" .. gname .. "\n" ..
 
-					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
+					"[walker@" .. gname .. "1_stalker" .. i .. "]\n" ..
 					"path_walk = walker" .. i .. "_walk\n" ..
 					"path_look = walker" .. i .. "_look\n" ..
 					"def_state_moving1 = sprint\n" ..
 					"def_state_moving2 = sprint\n" ..
 					"combat_ignore_cond = {=fighting_actor -rad_start_ambush_after_tramplin}\n" ..
-					";on_info = {=see_actor -rad_start_ambush_after_tramplin} %+rad_start_ambush_after_tramplin% \n" ..
-					"danger=danger_condition@" .. gname .. "\n" 
+					"on_info = {+rad_start_ambush_after_tramplin} walker@" .. gname .. "2_stalker" .. i .. "\n" ..
+					"danger=danger_condition@" .. gname .. "1\n" .. 
 
+					"[walker@" .. gname .. "2_stalker" .. i .. "]\n" ..
+					"path_walk = walker" .. i .. "_walk\n" ..
+					"path_look = walker" .. i .. "_look\n" ..
+					"danger=danger_condition@" .. gname .. "2\n" 
 
 	end
 	res = res ..	"[hit_death@" .. gname .. "]\n" ..
@@ -819,10 +841,14 @@ function load_ltx_after_tramplin_ambush(gname, type)
 					"[combat@" .. gname .. "]\n" ..
 					"combat_type = monolith\n" ..
 
-					"[danger_condition@" .. gname .. "]\n" ..
+					"[danger_condition@" .. gname .. "1]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
 					"ignore_distance = 5\n"..
+
+					"[danger_condition@" .. gname .. "2]\n" ..
+					"danger_expiration_time = 60000\n" ..
+					"danger_inertion_time =  90000\n" ..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
@@ -833,21 +859,25 @@ function load_ltx_before_tramplin_ambush(gname, type)
     local i, res = 0, ""
 	for i = 1, 5 do
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
-					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
+					"active = walker@" .. gname .. "1_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
 					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
 					"on_hit=hit_death@" .. gname .. "\n" ..
 					"on_death=hit_death@" .. gname .. "\n" ..
 
-					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
+					"[walker@" .. gname .. "1_stalker" .. i .. "]\n" ..
 					"path_walk = walk" .. i .. "\n" ..
 					"path_look = look" .. i .. "\n" ..
 					"def_state_moving1 = sprint\n" ..
 					"def_state_moving2 = sprint\n" ..
 					"combat_ignore_cond = {=fighting_actor -rad_start_ambush_before_tramplin}\n" ..
-					";on_info = {=see_actor -rad_start_ambush_before_tramplin} %+rad_start_ambush_before_tramplin% \n" ..
-					"danger=danger_condition@" .. gname .. "\n" 
+					"on_info = {+rad_start_ambush_before_tramplin} walker@" .. gname .. "2_stalker" .. i ..  "\n" ..
+					"danger=danger_condition@" .. gname .. "1\n" ..
 
+					"[walker@" .. gname .. "2_stalker" .. i .. "]\n" ..
+					"path_walk = walk" .. i .. "\n" ..
+					"path_look = look" .. i .. "\n" ..
+					"danger=danger_condition@" .. gname .. "2\n" 
 
 	end
 	res = res ..	"[hit_death@" .. gname .. "]\n" ..
@@ -856,10 +886,14 @@ function load_ltx_before_tramplin_ambush(gname, type)
 					"[combat@" .. gname .. "]\n" ..
 					"combat_type = monolith\n" ..
 
-					"[danger_condition@" .. gname .. "]\n" ..
+					"[danger_condition@" .. gname .. "1]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
 					"ignore_distance = 5\n"..
+
+					"[danger_condition@" .. gname .. "2]\n" ..
+					"danger_expiration_time = 60000\n" ..
+					"danger_inertion_time =  90000\n" ..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
@@ -870,21 +904,25 @@ function load_ltx_after_valley_ambush(gname, type)
     local i, res = 0, ""
 	for i = 1, 4 do
 	res = res .. "[logic@" .. gname .. "_stalker" .. i .. "]\n" ..
-					"active = walker@" .. gname .. "_stalker" .. i .. "\n" ..
+					"active = walker@" .. gname .. "1_stalker" .. i .. "\n" ..
 					"on_combat = combat@" .. gname .. "\n" ..
 					"combat_ignore = combat_ignore@" .. gname .. "\n" ..
 					"on_hit=hit_death@" .. gname .. "\n" ..
 					"on_death=hit_death@" .. gname .. "\n" ..
 
-					"[walker@" .. gname .. "_stalker" .. i .. "]\n" ..
+					"[walker@" .. gname .. "1_stalker" .. i .. "]\n" ..
 					"path_walk = walk" .. i .. "\n" ..
 					"path_look = look" .. i .. "\n" ..
 					"def_state_moving1 = sprint\n" ..
 					"def_state_moving2 = sprint\n" ..
 					"combat_ignore_cond = {=fighting_actor -rad_start_ambush_after_valley}\n" ..
-					";on_info = {=see_actor -rad_start_ambush_after_valley} %+rad_start_ambush_after_valley% \n" ..
-					"danger=danger_condition@" .. gname .. "\n" 
+					"on_info = {+rad_start_ambush_after_valley} walker@" .. gname .. "2_stalker" .. i .. "\n" ..
+					"danger=danger_condition@" .. gname .. "1\n" ..
 
+					"[walker@" .. gname .. "2_stalker" .. i .. "]\n" ..
+					"path_walk = walk" .. i .. "\n" ..
+					"path_look = look" .. i .. "\n" ..
+					"danger=danger_condition@" .. gname .. "2\n" 
 
 	end
 	res = res ..	"[hit_death@" .. gname .. "]\n" ..
@@ -893,10 +931,14 @@ function load_ltx_after_valley_ambush(gname, type)
 					"[combat@" .. gname .. "]\n" ..
 					"combat_type = monolith\n" ..
 
-					"[danger_condition@" .. gname .. "]\n" ..
+					"[danger_condition@" .. gname .. "1]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
 					"ignore_distance = 5\n"..
+
+					"[danger_condition@" .. gname .. "2]\n" ..
+					"danger_expiration_time = 60000\n" ..
+					"danger_inertion_time =  90000\n" ..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
