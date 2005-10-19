@@ -370,10 +370,15 @@ float CBoxGeom::radius()
 void CODEGeom::get_final_tx_bt(const dReal*	&p,	const dReal*	&R,dReal *bufV, dReal *bufM)
 {
 	VERIFY(m_geom_transform);
-	dGeomID		g		=geometry_bt();
-	if(is_transformed_bt())
+	dGeomID		g		=	geometry_bt()						;
+							get_final_tx	(g,p,R,bufV,bufM)	;
+
+}
+void CODEGeom::get_final_tx(dGeomID g,const dReal*	&p,const dReal*	&R,dReal * bufV, dReal* bufM)
+{
+	if(is_transform(g))
 	{
-		computeFinalTx(geometry_transform(),bufV,bufM);
+		computeFinalTx(g,bufV,bufM);
 		R=bufM;p=bufV;
 	}else
 	{

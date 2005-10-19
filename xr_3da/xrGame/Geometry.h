@@ -65,9 +65,13 @@ public:
 								else					return geometry_transform();
 								
 							}
+	ICF	static	bool		is_transform(dGeomID g)
+							{
+								return dGeomGetClass(g)==dGeomTransformClass;
+							}
 	IC			bool		is_transformed_bt()
 							{
-								return dGeomGetClass(m_geom_transform)==dGeomTransformClass;
+								return is_transform(m_geom_transform);
 							}
 	IC			u16&		element_position()
 							{
@@ -98,6 +102,7 @@ protected:
 				void		get_final_tx_bt		(const dReal*	&p,const dReal*	&R,dReal * bufV, dReal* bufM)		;
 	virtual		dGeomID		create				()																	=0;
 public:
+	static		void		get_final_tx		(dGeomID g,const dReal*	&p,const dReal*	&R,dReal * bufV, dReal* bufM);
 				void		build				(const Fvector& ref_point)											;
 	virtual		void		set_position		(const Fvector& ref_point)											;//for build geom
 				void		move_local_basis	(const Fmatrix& inv_new_mul_old)									;

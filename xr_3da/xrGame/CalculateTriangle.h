@@ -1,7 +1,7 @@
 #include "ExtendedGeom.h"
 #include "MathUtils.h"
 #include "Level.h"
-
+#include "Geometry.h"
 ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle)
 {
 	const Fvector* V_array=Level().ObjectSpace.GetStaticVerts();
@@ -13,9 +13,20 @@ ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle)
 	accurate_normalize(triangle.norm)								;
 	triangle.pos=dDOT(VRT[0],triangle.norm)							;
 }
-
-ICF void CalculateTri(CDB::TRI* XTri,const float* pos,Triangle& triangle)
+ICF void CalculateTriangle(CDB::TRI* XTri,const float* pos,Triangle& triangle)
 {
 	InitTriangle(XTri,triangle);
 	triangle.dist=dDOT(pos,triangle.norm)-triangle.pos;
+}
+ICF void CalculateTriangle(CDB::TRI* XTri,dGeomID g,Triangle& triangle)
+{
+	dVector3	v											;
+	dMatrix3	m											;
+	const float *p						=NULL				;
+	const float *r						=NULL				;
+	VERIFY								(g)					;
+	CODEGeom::get_final_tx				(g,p,r,v,m)			;
+	VERIFY								(p)					;
+	CalculateTriangle					(XTri,p,triangle)	;
+	
 }

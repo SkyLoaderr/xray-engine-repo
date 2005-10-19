@@ -621,6 +621,7 @@ void	CPHElement::applyImpulseVsMC(const Fvector& pos,const Fvector& dir, float v
 }
 void	CPHElement::applyImpulseVsGF(const Fvector& pos,const Fvector& dir, float val)
 {
+	VERIFY(_valid(pos)&&_valid(dir)&&_valid(val));
 	if(!bActive||m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	/////////////////////////////////////////////////////////////////////////
@@ -630,11 +631,13 @@ void	CPHElement::applyImpulseVsGF(const Fvector& pos,const Fvector& dir, float v
 	impulse.mul(val);
 	dBodyAddForceAtPos(m_body, impulse.x,impulse.y,impulse.z,pos.x, pos.y,pos.z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
+	VERIFY(dBodyStateValide(m_body));
 	////////////////////////////////////////////////////////////////////////
 }
 void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,u16 id)
 {
 
+	VERIFY(_valid(pos)&&_valid(dir)&&_valid(val));
 	if(!bActive||m_flags.test(flFixed)) return;
 	Fvector body_pos;
 	if(id!=BI_NONE)
@@ -707,6 +710,7 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	MulB43InverceLocalForm(*m);
 	//bUpdate=false;
 	m_flags.set(flUpdate,FALSE);
+	VERIFY(_valid(*m));
 }
 void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 {
@@ -715,10 +719,12 @@ void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 	//m->mulB_43(m_inverse_local_transform);
 	//bUpdate=false;
 	m_flags.set(flUpdate,FALSE);
+	VERIFY(_valid(*m));
 }
 
 void CPHElement::InterpolateGlobalPosition(Fvector* v){
 	m_body_interpolation.InterpolatePosition(*v);
+	VERIFY(_valid(*v));
 	//v->add(m_inverse_local_transform.c);
 
 }
@@ -775,6 +781,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
+		VERIFY(_valid(B->mTransform));
 		if(m_shell->dSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		//m_start_time=Device.fTimeGlobal;
@@ -837,6 +844,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
+		VERIFY(_valid(B->mTransform));
 		if(m_shell->dSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		//m_start_time=Device.fTimeGlobal;
@@ -981,6 +989,7 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 }
 void CPHElement::set_AngularVel			  (const Fvector& velocity)
 {
+	VERIFY(_valid(velocity));
 	if(!bActive||m_flags.test(flFixed)) return;
 	dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
 }
@@ -989,11 +998,13 @@ void	CPHElement::getForce(Fvector& force)
 {
 	if(!bActive) return;
 	force.set(*(Fvector*)dBodyGetForce(m_body));
+	VERIFY(dBodyStateValide(m_body));
 }
 void	CPHElement::getTorque(Fvector& torque)
 {
 	if(!bActive) return;
 	torque.set(*(Fvector*)dBodyGetTorque(m_body));
+	VERIFY(dBodyStateValide(m_body));
 }
 void	CPHElement::setForce(const Fvector& force)
 {
@@ -1002,6 +1013,7 @@ void	CPHElement::setForce(const Fvector& force)
 	m_shell->EnableObject(0);
 	dBodySetForce(m_body,force.x,force.y,force.z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
+	VERIFY(dBodyStateValide(m_body));
 }
 void	CPHElement::setTorque(const Fvector& torque)
 {
@@ -1010,6 +1022,7 @@ void	CPHElement::setTorque(const Fvector& torque)
 	m_shell->EnableObject(0);
 	dBodySetTorque(m_body,torque.x,torque.y,torque.z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
+	VERIFY(dBodyStateValide(m_body));
 }
 
 void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
@@ -1018,16 +1031,19 @@ void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
 }
 void	CPHElement::applyForce(float x,float y,float z)																//called anywhere ph state influent
 {
+	VERIFY(_valid(x)&&_valid(y)&&_valid(z));
 	if(!bActive)return;//hack??
 	if(m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject(0);
 	dBodyAddForce(m_body,x,y,z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
+	VERIFY(dBodyStateValide(m_body));
 }
 
 void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux
 {														
+	
 	applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
 }
 
@@ -1199,6 +1215,7 @@ void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_e
 
 const Fvector& CPHElement::mass_Center()
 {
+	VERIFY(dBodyStateValide(m_body));
 	return *((const Fvector*)dBodyGetPosition(m_body));
 }
 
@@ -1318,6 +1335,7 @@ void CPHElement::ResetMass(float density)
 }
 void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 {
+	VERIFY(_valid(shift_pivot)&&_valid(density));
 	ReAdjustMassPositions(shift_pivot,density);
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;++i)
@@ -1429,6 +1447,7 @@ void	CPHElement::ReleaseFixed()
 }
 void CPHElement::applyGravityAccel				(const Fvector& accel)
 {
+	VERIFY(_valid(accel));
 	if(m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject(0);
@@ -1443,6 +1462,7 @@ void CPHElement::CutVelocity(float l_limit,float a_limit)
 {
 	
 	if(!bActive)return;
+	VERIFY(_valid(l_limit)&&_valid(a_limit));
 	dVector3 limitedl,limiteda,diffl,diffa;
 	bool blimitl=dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
 	bool blimita=dVectorLimit(dBodyGetAngularVel(m_body),a_limit,limiteda);

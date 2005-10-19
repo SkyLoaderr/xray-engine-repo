@@ -205,7 +205,9 @@ void CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c ,SGameMtl 
 #endif
 			if(!l_pUD1||!l_pUD2) 
 			{
-				dxGeomUserData *&l_pUD = l_pUD1?l_pUD1:l_pUD2;
+				dGeomID g				=NULL						;
+				dxGeomUserData *&l_pUD	=		l_pUD1?l_pUD1:l_pUD2;
+				if(l_pUD1)	g=c.geom.g1;else	g=c.geom.g2;
 				if(l_pUD->pushing_neg) 
 				{
 					Fvector velocity;
@@ -214,8 +216,9 @@ void CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c ,SGameMtl 
 					{	//. desync?
 						velocity.normalize();
 						Triangle neg_tri;
-						InitTriangle(l_pUD->neg_tri,neg_tri);
+						CalculateTriangle(l_pUD->neg_tri,g,neg_tri);
 						float cosinus=velocity.dotproduct(*((Fvector*)neg_tri.norm));
+						VERIFY(_valid(neg_tri.dist));
 						float dist=neg_tri.dist/cosinus;
 						velocity.mul(dist*1.1f);
 						l_pos.sub(velocity);

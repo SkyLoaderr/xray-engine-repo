@@ -509,6 +509,7 @@ void CPHShell::TransformPosition(const Fmatrix &form)
 void CPHShell::SetGlTransformDynamic(const Fmatrix &form)
 {
 	VERIFY(bActive);
+	VERIFY(_valid(form));
 	Fmatrix current,replace;
 	GetGlobalTransformDynamic(&current);
 	current.invert();
@@ -1125,16 +1126,19 @@ void CPHShell::GetGlobalTransformDynamic(Fmatrix* m)
 {
 	(*elements.begin())->GetGlobalTransformDynamic(m);
 	m->mulB(m_object_in_root);
+	VERIFY2(_valid(*m),"not valide transform");
 }
 void CPHShell::InterpolateGlobalPosition(Fvector* v)
 {
 	(*elements.begin())->InterpolateGlobalPosition(v);
 	v->add(m_object_in_root.c);
+	VERIFY2(_valid(*v),"not valide result position");
 }
 
 void CPHShell::GetGlobalPositionDynamic(Fvector* v)
 {
 	(*elements.begin())->GetGlobalPositionDynamic(v);
+	VERIFY2(_valid(*v),"not valide result position");
 }
 
 
@@ -1146,6 +1150,7 @@ void CPHShell::ObjectToRootForm(const Fmatrix& form)
 	M.mul(m_object_in_root,ILF);
 	M.invert();
 	mXFORM.mul(form,M);
+	VERIFY2(_valid(form),"not valide transform");
 	
 }
 CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
