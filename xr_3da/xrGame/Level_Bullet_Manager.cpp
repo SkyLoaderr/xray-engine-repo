@@ -65,6 +65,7 @@ void SBullet::Init(const Fvector& position,
 	flags.allow_tracer					= !!cartridge.m_flags.test(CCartridge::cfTracer);
 	flags.allow_ricochet				= !!cartridge.m_flags.test(CCartridge::cfRicochet);
 	flags.explosive						= !!cartridge.m_flags.test(CCartridge::cfExplosive);
+	flags.skipped_frame					= 0;
 }
 
 //////////////////////////////////////////////////////////
@@ -223,6 +224,8 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 	if (result) range				= (rq_storage.r_begin()+rq_storage.r_count()-1)->range;
 	range		= _max				(EPS_L,range);
 
+	bullet->flags.skipped_frame = (Device.dwFrame >= bullet->frame_num);
+
 	if(!bullet->flags.ricochet_was)	{
 		//изменить положение пули
 		bullet->pos.mad(bullet->pos, cur_dir, range);
@@ -326,23 +329,46 @@ void CBulletManager::Render	()
 	for(BulletVecIt it = m_BulletsRendered.begin(); it!=m_BulletsRendered.end(); it++){
 		SBullet* bullet					= &(*it);
 		if(!bullet->flags.allow_tracer)	continue;
+		if (!bullet->flags.skipped_frame)  continue;
 
-		Fvector			dist;
-		dist.mul		(bullet->dir,- bullet->speed*float(m_dwStepTime)/1000.f);
-		float length	= dist.magnitude();
+		float length	= bullet->speed*float(m_dwStepTime)/1000.f;//dist.magnitude();
 
 		if(length<m_fTracerLengthMin) continue;
-
-		dist.div			(length);
 
 		if(length>m_fTracerLengthMax)
 			length			= m_fTracerLengthMax;
 
 		float width			= m_fTracerWidth;
+		float dist2segSqr = SqrDistancePointToSegment(Device.vCameraPosition, bullet->pos, Fvector().mul(bullet->dir, length));
+		//---------------------------------------------
+		float MaxDistSqr = 1.0f;
+		float MinDistSqr = 0.016f;
+		if (dist2segSqr < MaxDistSqr)
+		{
+			if (dist2segSqr < MinDistSqr) dist2segSqr = MinDistSqr;
+
+			width *= _sqrt(dist2segSqr/MaxDistSqr);//*MaxDistWidth/0.08f;			
+		}
+		/*
+		//---------------------------------------------
+		Fvector vT, v0, v1;
+		vT.mad(Device.vCameraPosition, Device.vCameraDirection, _sqrt(dist2segSqr));
+		v0.mad(vT, Device.vCameraTop, width*.5f);
+		v1.mad(vT, Device.vCameraTop, -width*.5f);
+		Fvector v0r, v1r;
+		Device.mFullTransform.transform(v0r, v0);
+		Device.mFullTransform.transform(v1r, v1);
+		float ViewWidth = v1r.distance_to(v0r);
+*/
+//		float dist = _sqrt(dist2segSqr);
+//		Msg("dist - [%f]; ViewWidth - %f, [%f]", dist, ViewWidth, ViewWidth*float(Device.dwHeight));
+//		Msg("dist - [%f]", dist);
+		//---------------------------------------------
+
 
 		Fvector center;
-		center.mad				(bullet->pos, dist,  -length);
-		tracers.Render			(verts, center, dist, length, width);
+		center.mad				(bullet->pos, bullet->dir,  -length*.5f);
+		tracers.Render			(verts, bullet->pos, center, bullet->dir, length, width);
 	}
 
 	u32 vCount					= (u32)(verts-start);

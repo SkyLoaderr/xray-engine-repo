@@ -25,7 +25,7 @@ CTracer::~CTracer()
 }
 
 
-IC void FillSprite      (FVF::V*& pv, const Fvector& pos, const float r1, float r2)
+IC void FillSprite_Circle      (FVF::V*& pv, const Fvector& pos, const float r1, float r2)
 {
 	const Fvector& T        = Device.vCameraTop;
 	const Fvector& R        = Device.vCameraRight;
@@ -48,10 +48,12 @@ IC void FillSprite      (FVF::V*& pv, const Fvector& pos, const float r1, float 
 	pv->set         (b.x+pos.x,b.y+pos.y,b.z+pos.z, 1.f,0.f);        pv++;
 }
 
-IC void FillSprite	(FVF::V*& pv, const Fvector& pos, const Fvector& dir, float r1, float r2)
+IC void FillSprite_Line	(FVF::V*& pv, const Fvector& pos, const Fvector& dir, float r1, float r2)
 {
     const Fvector& T        = dir;
+
     Fvector R;      R.crossproduct(T,Device.vCameraDirection).normalize_safe();
+	
     Fvector Vr, Vt;
     Vr.x            = R.x*r1;
     Vr.y            = R.y*r1;
@@ -66,15 +68,15 @@ IC void FillSprite	(FVF::V*& pv, const Fvector& pos, const Fvector& dir, float r
     c.invert        (a);
     d.invert        (b);
     pv->set         (d.x+pos.x,d.y+pos.y,d.z+pos.z, 0.f,1.f);        pv++;
-    pv->set         (a.x+pos.x,a.y+pos.y,a.z+pos.z, 0.f,0.f);        pv++;
+    pv->set         (a.x+pos.x,a.y+pos.y,a.z+pos.z, 0.f,0.5f);        pv++;
     pv->set         (c.x+pos.x,c.y+pos.y,c.z+pos.z, 1.f,1.f);        pv++;
-    pv->set         (b.x+pos.x,b.y+pos.y,b.z+pos.z, 1.f,0.f);        pv++;
+    pv->set         (b.x+pos.x,b.y+pos.y,b.z+pos.z, 1.f,0.5f);        pv++;
 }
 
-void  CTracer::Render	(FVF::V*&verts, const Fvector& center, const Fvector& dir, float length, float width)
+void  CTracer::Render	(FVF::V*&verts, const Fvector& pos, const Fvector& center, const Fvector& dir, float length, float width)
 {
 	if (::Render->ViewBase.testSphere_dirty((Fvector&)center,length*.5f)){
-		FillSprite	(verts,center,width,width);
-		FillSprite	(verts,center,dir,width,length);
+		FillSprite_Circle	(verts,pos,width*.5f,width*.5f);
+		FillSprite_Line	(verts,center,dir,width*.5f,length*.5f);
 	}
 }

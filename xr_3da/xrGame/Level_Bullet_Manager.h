@@ -19,6 +19,7 @@ struct SBullet
 			u16			allow_tracer	: 1	;
 			u16			allow_ricochet	: 1	;			//разрешить рикошет
 			u16			allow_sendhit	: 1	;			//statistics
+			u16			skipped_frame	: 1	;			//пропуск первой отрисовки 
 		};
 		u16				_storage			;
 	}				flags				;
