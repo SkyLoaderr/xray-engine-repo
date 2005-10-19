@@ -3379,6 +3379,28 @@
 							<File
 								RelativePath=".\ai\Monsters\Pseudodog\psy_dog_aura.h">
 							</File>
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_manager.h">
+							</File>
+							<Filter
+								Name="Psy Attack Hide"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_psy_attack.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_psy_attack_hide.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_psy_attack_hide_inline.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_psy_attack_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -9665,7 +9687,8 @@
 						RelativePath=".\tri-colliderknoopc\dTriCylinder.h">
 					</File>
 					<File
-						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+
 						<FileConfiguration
 							Name="Debug|Win32">
 							<Tool
