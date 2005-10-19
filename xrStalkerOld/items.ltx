@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	FOOD
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[bread_a]
+[bread_a]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "food and drugs\bread_a"
@@ -21,7 +21,7 @@ attach_position_offset	= 0.096910, -0.013594, 0.107925
 attach_bone_name		= bip01_r_hand
 auto_attach				= false
 
-[bread]
+[bread]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\bread"
@@ -60,7 +60,7 @@ position_offset			 = 0.0,0.0,0.0
 angle_offset			 = 1.570790,1.570790,3.92699 ;90,90,225 ;считается в радианах Angle*PI/180
 
 
-[kolbasa]
+[kolbasa]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\kolbasa"
@@ -98,7 +98,7 @@ hud = wpn_vodka_hud
 position_offset		= 0.0,0.0,0.0
 angle_offset		= 1.570790,1.570790,3.14159 ;90,90,180 ;считается в радианах Angle*PI/180
 
-[kolbasa_a]
+[kolbasa_a]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "food and drugs\kolbasa_a"
@@ -118,7 +118,7 @@ attach_position_offset	= 0.104196, -0.010821, 0.076969
 attach_bone_name		= bip01_r_hand
 auto_attach				= false
 
-[conserva]
+[conserva]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\conserva"
@@ -156,7 +156,7 @@ hud = wpn_vodka_hud
 position_offset		= -0.035,-0.08,0.065
 angle_offset		= 0,0,0
 
-[vodka_a]
+[vodka_a]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "food and drugs\vodka_a"
@@ -176,7 +176,7 @@ attach_position_offset	= 0.087266, -0.078540, 0.052360
 attach_bone_name		= bip01_r_hand
 auto_attach				= false
 
-[vodka]
+[vodka]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\vodka"
@@ -223,7 +223,7 @@ position_offset			 = -0.04,-0.08,0.0
 angle_offset			 = 0,0,0 					 ;0,0,0 ;считается в радианах Angle*PI/180
 
 
-[guitar_a]
+[guitar_a]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "food and drugs\guitar_a"
@@ -243,7 +243,7 @@ attach_position_offset	= 0.077492, -0.030020, 0.090059
 attach_bone_name		= bip01_l_hand
 auto_attach				= false
 
-[harmonica_a]
+[harmonica_a]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "food and drugs\harmonica_a"
@@ -266,7 +266,7 @@ auto_attach				= false
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	MEDICAL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[antirad]
+[antirad]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "food and drugs\antirad"
@@ -301,7 +301,7 @@ animation_slot		= 4
 hud = wpn_vodka_hud
 
 
-[medkit]
+[medkit]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\medkit"
@@ -336,7 +336,7 @@ animation_slot		= 4
 hud = wpn_vodka_hud
 
 
-[bandage]
+[bandage]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\bandage"
@@ -374,7 +374,7 @@ hud = wpn_vodka_hud
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	DEVICES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[binocular_a]
+[binocular_a]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "devices\binocular_a"
@@ -394,7 +394,7 @@ attach_position_offset	= 0.080000,0.021273,0.100000
 attach_bone_name		= bip01_r_hand
 auto_attach				= false
 
-[device_pda]
+[device_pda]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency= 
 $spawn 				= "devices\pda"
@@ -417,7 +417,7 @@ inv_grid_y			= 13
 cost				= 20
 
 
-[device_torch]
+[device_torch]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn				= "devices\torch"
@@ -459,7 +459,7 @@ night_vision_discharge_time			= 12	;(c) время разрядки (работы) устройства после
 belt								= true;
 
 
-[detector_simple]
+[detector_simple]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "devices\detector_simple"
@@ -508,7 +508,7 @@ cost				= 150	;30
 belt				= true;
 
 
-[detector_advances]
+[detector_advances]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "devices\detector_advanced"
@@ -562,7 +562,7 @@ cost				= 150	;30
 belt				= true;
 
 
-[detector_elite]
+[detector_elite]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "devices\detector_elite"
@@ -612,7 +612,7 @@ belt				= true;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	OTHERS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[wpn_vodka_hud]
+[wpn_vodka_hud]:identity_immunities
 fire_point               = 0.0, 0.0, 0.06
 fire_bone                = bip01_head
 orientation              = 0, 0, 0

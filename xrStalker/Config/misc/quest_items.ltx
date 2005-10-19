@@ -527,7 +527,7 @@ inv_grid_x			= 5
 inv_grid_y			= 14
 cost				= 0
 
-[hunters_toz]
+[hunters_toz]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn                   = "devices\quest_items\hunters_toz"					; option for Level Editor
@@ -583,8 +583,6 @@ inv_grid_width		= 6
 inv_grid_height		= 1
 inv_grid_x			= 12
 inv_grid_y			= 2
-
-immunities_sect		= weapon
 
 direction                = 0, 0, 1
 shell_point				 = 0.0, 0.183, 0.07
@@ -1085,7 +1083,7 @@ cost				= 0
 ;; PRIPYAT'
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-[pri_lom_ak74]
+[pri_lom_ak74]:identity_immunities
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn              	= "devices\quest_items\pri_lom_ak74"	; name and section in level editor
@@ -1129,8 +1127,6 @@ inv_grid_width			= 5	 ; position and size of the icon that will be used to displ
 inv_grid_height			= 2	 ; all icons are on the texture ui_icon_equipment.dds,   
 inv_grid_x				= 5  ; position and size are in terms of 64x64 squares
 inv_grid_y				= 5
-
-immunities_sect			= weapon
 
 ;-----------------------------------------------------------------------------------
 ; base dispersion

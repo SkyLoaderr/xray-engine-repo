@@ -84,6 +84,9 @@
 			Name="config"
 			Filter="">
 			<File
+				RelativePath=".\config\defines.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\evaluation.ltx">
 			</File>
 			<File

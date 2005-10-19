@@ -54,16 +54,20 @@ ph_after_death_velocity_factor= 1.2
 ph_skel_shot_up_factor        = 0.10
 ;----------------------------------------------------------------------
 
-weapon_bone0			 = bip01_r_finger1
-weapon_bone1			 = bip01_l_finger1
-weapon_bone2			 = bip01_r_finger11
+weapon_bone0				= bip01_r_finger1
+weapon_bone1				= bip01_l_finger1
+weapon_bone2				= bip01_r_finger11
 
-damage				= actor_damage
+damage						= actor_damage
 
-hit_sounds			= actor_hit_snds
+hit_probability_novice		= 0.25
+hit_probability_stalker		= 0.50
+hit_probability_veteran		= 0.75
+hit_probability_master		= 1.00
+hit_sounds					= actor_hit_snds
 ;actor condition
 
-immunities_sect				= actor_immunities
+immunities_sect				= actor_immunities_master
 condition_sect				= actor_condition
 
 heavy_breath_snd = actor\breath_1		;звук тяжелого дыхания при усталости	
@@ -114,7 +118,40 @@ luminocity_factor			= 0.5;0 			; фактор освещения (только для Актёра)
 transparency_threshold	 	= 0.4				; 0.25
 still_visible_time			= 5000				; время, которое объект всё ещё считается видимым, даже если он уже не во фрустуме
 
-[actor_immunities]
+[actor_immunities_novice]
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 0.8
+shock_immunity 				= 1.0
+wound_immunity				= 1.25
+radiation_immunity 			= 0.8
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 0.8
+fire_wound_immunity  		= 0.3;0.75;0.8
+
+[actor_immunities_stalker]
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 0.8
+shock_immunity 				= 1.0
+wound_immunity				= 1.25
+radiation_immunity 			= 0.8
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 0.8
+fire_wound_immunity  		= 0.3;0.75;0.8
+
+[actor_immunities_veteran]
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 0.8
+shock_immunity 				= 1.0
+wound_immunity				= 1.25
+radiation_immunity 			= 0.8
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 0.8
+fire_wound_immunity  		= 0.3;0.75;0.8
+
+[actor_immunities_master]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
 strike_immunity 			= 0.8
 shock_immunity 				= 1.0

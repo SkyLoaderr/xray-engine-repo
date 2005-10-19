@@ -41,18 +41,6 @@
 ;; Огнестрельное оружие
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-[weapon]
-burn_immunity = 1.0				;коэффициенты для попаданий в оружие различными типами хитов
-strike_immunity = 1.0
-shock_immunity = 1.0
-wound_immunity = 1.0		
-radiation_immunity = 1.0
-telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 1.0
-fire_wound_immunity  = 1.0
-
-
 [bullet_manager]
 tracer_width					= 0.08
 tracer_length_max				= 10.0	;24.0 ;14.0	
@@ -84,7 +72,7 @@ explode_particles				= explosions\expl_bullet,explosions\expl_bullet_00,explosio
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; AMUNITION
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[ammo_base]
+[ammo_base]:identity_immunities
 belt				= true;
 
 [ammo_9x18_fmj]:ammo_base
@@ -1059,7 +1047,7 @@ can_be_unlimited = false
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-[wpn_fake_missile]
+[wpn_fake_missile]:identity_immunities
 visual                  = weapons\ammo\ammo_vog-25.ogf
 cform                    = skeleton
 class                    = G_FAKE
@@ -1135,7 +1123,7 @@ engine_present		= false		;присутствует ли в ракете двигатель
 lights_enabled		= false		;свет вокруг ракеты, во время полета
 
 
-[wpn_fake_missile1]
+[wpn_fake_missile1]:identity_immunities
 $prefetch 		= 32
 visual                  = weapons\ammo\ammo_vog-25p.ogf
 cform                    = skeleton
@@ -1212,7 +1200,7 @@ lights_enabled 		= true			;свет вокруг ракеты, во время полета
 trail_light_color 	= 0.6,0.5,0.3
 trail_light_range 	= 8.0
 
-[wpn_fake_missile2]
+[wpn_fake_missile2]:identity_immunities
 $prefetch 		= 32
 visual                  = weapons\ammo\ammo_m209.ogf
 cform                    = skeleton
@@ -1634,7 +1622,7 @@ fire_wound_immunity		= 0.0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	WEAPON ADDON
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[wpn_addon_scope]
+[wpn_addon_scope]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn			= "weapons\addons\scope" ; option for Level Editor
@@ -1660,7 +1648,7 @@ scope_texture		= wpn\wpn_crosshair
 scope_zoom_factor	= 30;15		;ПСО-1 4X
 
 
-[wpn_addon_scope_susat]
+[wpn_addon_scope_susat]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn			= "weapons\addons\scope_susat" ; option for Level Editor
@@ -1686,7 +1674,7 @@ scope_texture		= wpn\wpn_crosshair_l85
 scope_zoom_factor	= 15		;SUSAT 4X
 
 
-[wpn_addon_silencer]
+[wpn_addon_silencer]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn			= "weapons\addons\silencer" ; option for Level Editor
@@ -1710,7 +1698,7 @@ bullet_speed_k	 	= 0.8
 fire_dispersion_base_k = 1.25;2
 cam_dispersion_k	= 0.8
 
-[wpn_addon_grenade_launcher]
+[wpn_addon_grenade_launcher]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn			= "weapons\addons\grenade_launcher" ; option for Level Editor
@@ -1732,7 +1720,7 @@ inv_grid_y			= 0
 grenade_vel			= 76
 
 
-[wpn_addon_grenade_launcher_m203]
+[wpn_addon_grenade_launcher_m203]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn			= "weapons\addons\grenade_launcher_m203" ; option for Level Editor
