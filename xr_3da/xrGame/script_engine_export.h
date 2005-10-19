@@ -117,14 +117,14 @@
 #	include "ai/monsters/controller/controller.h"
 #	include "ai/monsters/cat/cat.h"
 #	include "ai/monsters/tushkano/tushkano.h"
-#include "PhraseDialog_script.h"
-
+#	include "PhraseDialog_script.h"
 #	ifdef	DEBUG
-#	include "PHDebug.h"
+#		include "PHDebug.h"
 #	endif
 #	include "hit.h"
 #	include "PHDestroyable.h"
 #	include "car.h"
 #	include "script_lanim.h"
 #	include "artifact.h"
+#	include "game_cl_single.h"
 #endif

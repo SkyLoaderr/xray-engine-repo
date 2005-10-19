@@ -128,9 +128,8 @@ public:
 
 protected:
 //	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion) const;
-	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const;
-	virtual void AddGameTask			 (const CInfoPortion* info_portion) const;
-
+	virtual void AddEncyclopediaArticle	(const CInfoPortion* info_portion) const;
+	virtual void AddGameTask			(const CInfoPortion* info_portion) const;
 protected:
 struct SDefNewsMsg{
 		GAME_NEWS_DATA*	news_data;
@@ -229,7 +228,7 @@ protected:
 protected:
 	// Death
 	float					hit_slowmo;
-
+	float					hit_probability;
 
 	// media
 	SndShockEffector*		m_sndShockEffector;
@@ -730,6 +729,10 @@ private:
 
 public:
 	IC		CActorMemory		&memory							() const {VERIFY(m_memory); return(*m_memory); };
+
+	void						OnDifficultyChanged				();
+
+	IC float					HitProbability					() {return hit_probability;}
 };
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

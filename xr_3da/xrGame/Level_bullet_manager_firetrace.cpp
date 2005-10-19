@@ -28,34 +28,60 @@ extern float gCheckHitK;
 //test callback функция 
 //  object - object for testing
 //return TRUE-тестировать объект / FALSE-пропустить объект
-BOOL CBulletManager::test_callback(CObject* object, LPVOID params)
+BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object, LPVOID params)
 {
 	SBullet* bullet = (SBullet*)params;
 	if( (object->ID() == bullet->parent_id)		&&  
 		(bullet->fly_dist<PARENT_IGNORE_DIST)	&&
 		(!bullet->flags.ricochet_was))			return FALSE;
 
+	BOOL bRes						= TRUE;
 	// whine sounds
 	if (object){
+		bool bSphereIntersected		= false;
+		float dist					= 1000.f;
 		CEntity*	entity			= smart_cast<CEntity*>(object);
 		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
 			ICollisionForm*	cform	= entity->collidable.model;
 			ECollisionFormType tp	= cform->Type();
-			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||smart_cast<CActor*>(entity))){
+			CActor* actor			= smart_cast<CActor*>(entity);
+			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||actor)){
 				Fsphere S			= cform->getSphere();
 				entity->XFORM().transform_tiny	(S.P)	;
-				float dist			= 1000.f;
-				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
-					Fvector			pt;
-					pt.mad			(bullet->pos, bullet->dir, dist);
-					CObject* initiator	= Level().Objects.net_Find	(bullet->parent_id);
-					Level().BulletManager().PlayWhineSound			(bullet,initiator,pt);
+				dist				= 1000.f;
+				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist))
+					bSphereIntersected	= true;
+			}
+			if (actor){
+				if (Random.randF(0.f,1.f)>actor->HitProbability()){ 
+					Log				("- HIT - IGNORE");
+					bRes			= FALSE;
+				}else{
+					if (bSphereIntersected){
+						// проверим попали ли мы в объект
+						collide::rq_results	r_temp;
+						if (cform->_RayQuery(rd,r_temp)){
+							// в объект попали - отыгрывать звук пролета не нужно
+							bSphereIntersected= false;
+							Log			("- HIT - NORMAL");
+						}else{
+							// в объект вообще не попали - проверять в xr_area нет смысла
+							bRes		= FALSE;
+							Log			("- HIT - EMPTY");
+						}
+					}
 				}
 			}
 		}
+		if (bSphereIntersected){
+			Fvector					pt;
+			pt.mad					(bullet->pos, bullet->dir, dist);
+			CObject* initiator		= Level().Objects.net_Find	(bullet->parent_id);
+			Level().BulletManager().PlayWhineSound				(bullet,initiator,pt);
+		}
 	}
 	
-	return TRUE;
+	return bRes;
 }
 //callback функция 
 //	result.O;		// 0-static else CObject*

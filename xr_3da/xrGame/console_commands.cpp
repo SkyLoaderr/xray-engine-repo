@@ -11,6 +11,7 @@
 #include "ai_debug.h"
 #include "alife_simulator.h"
 #include "game_cl_base.h"
+#include "game_cl_single.h"
 #include "game_sv_single.h"
 #include "gamepersistent.h"
 #include "hit.h"
@@ -84,6 +85,7 @@ extern	BOOL	g_bStatisticSaveAuto	;
 extern	BOOL	g_SV_Disable_Auth_Check	;
 extern	BOOL	g_bDebugDumpPhysicsStep	;
 extern	BOOL	g_bLeaveTDemo			;
+extern	ESingleGameDifficulty g_SingleGameDifficulty;
 #ifdef DEBUG
 	extern	BOOL	g_SV_Force_Artefact_Spawn;
 #endif
@@ -132,6 +134,27 @@ public:
 	virtual void	Info	(TInfo& I)		
 	{
 		strcpy(I,"name,team,squad,group"); 
+	}
+};
+class CCC_GameDifficulty : public CCC_Token {
+public:
+	CCC_GameDifficulty(LPCSTR N) : CCC_Token(N,(u32*)&g_SingleGameDifficulty,difficulty_type_token)  {};
+	virtual void Execute(LPCSTR args) {
+#ifndef	DEBUG
+		if (GameID() != GAME_SINGLE){
+			Msg("For this game type difficulty level is disabled.");
+			return;
+		};
+#endif
+		CCC_Token::Execute(args);
+		if (g_pGameLevel && Level().game){
+			game_cl_Single* game		= smart_cast<game_cl_Single*>(Level().game); VERIFY(game);
+			game->OnDifficultyChanged	();
+		}
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"game difficulty"); 
 	}
 };
 class CCC_Restart : public IConsole_Command {
@@ -1964,6 +1987,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 	CMD3(CCC_Mask,				"g_god",				&psActorFlags,	AF_GODMODE	);
 	CMD1(CCC_Spawn,				"g_spawn"				);
+	CMD1(CCC_GameDifficulty,	"g_game_difficulty"		);
 	CMD1(CCC_Restart,			"g_restart"				);
 	CMD1(CCC_RestartFast,		"g_restart_fast"		);
 	CMD1(CCC_Money,				"g_money"				);

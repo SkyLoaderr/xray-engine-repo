@@ -75,7 +75,7 @@ void CEntityAlive::Load		(LPCSTR section)
 {
 	CEntity::Load					(section);
 	conditions().LoadCondition		(section);
-	conditions().LoadImmunities		(section);
+	conditions().LoadImmunities		(pSettings->r_string(section,"immunities_sect"),pSettings);
 
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 

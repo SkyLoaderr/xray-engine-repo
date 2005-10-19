@@ -99,7 +99,7 @@ CInventoryItem::~CInventoryItem()
 
 void CInventoryItem::Load(LPCSTR section) 
 {
-	CHitImmunity::LoadImmunities	(section);
+	CHitImmunity::LoadImmunities	(pSettings->r_string(section,"immunities_sect"),pSettings);
 
 	ISpatial*			self				=	smart_cast<ISpatial*> (this);
 	if (self)			self->spatial.type	|=	STYPE_VISIBLEFORAI;	

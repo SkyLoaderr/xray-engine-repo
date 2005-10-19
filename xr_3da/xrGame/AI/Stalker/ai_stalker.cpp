@@ -283,7 +283,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 		if(ini->section_exist("immunities"))
 		{
 			LPCSTR imm_sect = ini->r_string("immunities", "immunities_sect");
-			conditions().InitImmunities(imm_sect,pSettings);
+			conditions().LoadImmunities(imm_sect,pSettings);
 		}
 
 		if(ini->line_exist("bone_protection","bones_protection_sect")){

@@ -2,6 +2,20 @@
 #include "game_cl_single.h"
 #include "UIGameSP.h"
 #include "clsid_game.h"
+#include "actor.h"
+#include "script_space.h"
+
+using namespace luabind;
+
+ESingleGameDifficulty g_SingleGameDifficulty = egdMaster;
+
+xr_token							difficulty_type_token						[ ]={
+	{ "novice",						egdNovice									},
+	{ "stalker",					egdStalker									},
+	{ "veteran",					egdVeteran									},
+	{ "master",						egdMaster									},
+	{ 0,							0											}
+};
 
 game_cl_Single::game_cl_Single()
 {
@@ -21,3 +35,23 @@ char*	game_cl_Single::getTeamSection(int Team)
 {
 	return NULL;
 };
+
+void game_cl_Single::OnDifficultyChanged()
+{
+	Actor()->OnDifficultyChanged();
+}
+
+void CScriptGameDifficulty::script_register(lua_State *L)
+{
+	module(L)
+		[
+			class_<enum_exporter<ESingleGameDifficulty> >("game_difficulty")
+			.enum_("game_difficulty")
+			[
+				value("novice",				int(egdNovice			)),
+				value("stalker",			int(egdStalker			)),
+				value("veteran",			int(egdVeteran			)),
+				value("master",				int(egdMaster			))
+			]
+		];
+}

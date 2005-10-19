@@ -13,9 +13,7 @@ public:
 	CHitImmunity();
 	virtual ~CHitImmunity();
 
-	virtual void LoadImmunities (LPCSTR section);
-	virtual void LoadImmunities (LPCSTR section, LPCSTR line);
-	virtual void InitImmunities (LPCSTR section,CInifile* ini);
+	virtual void LoadImmunities (LPCSTR section,CInifile* ini);
 
 	virtual float AffectHit		(float power, ALife::EHitType hit_type);
 

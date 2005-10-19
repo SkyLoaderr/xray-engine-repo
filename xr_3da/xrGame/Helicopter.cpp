@@ -98,11 +98,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_death_ang_vel						= pSettings->r_fvector3(section,"death_angular_vel");
 	m_death_lin_vel_k					= pSettings->r_float(section,"death_lin_vel_koeff");
 
-
-
-
-
-	CHitImmunity::LoadImmunities		(section);
+	CHitImmunity::LoadImmunities		(section,pSettings);
 
 	//weapons
 	CShootingObject::Load				(section);

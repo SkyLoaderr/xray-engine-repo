@@ -9,12 +9,23 @@
 #include "stdafx.h"
 #include "script_effector.h"
 #include "script_effector_wrapper.h"
+#include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
 
 void SPPInfo_assign(SPPInfo *self, SPPInfo *obj)
 {
 	*self	= *obj;
+}
+
+void add_effector(CScriptEffector *self)
+{
+	self->Add		();
+}
+
+void remove_effector(CScriptEffector *self)
+{
+	self->Remove	();
 }
 
 void CScriptEffector::script_register(lua_State *L)
@@ -57,8 +68,8 @@ void CScriptEffector::script_register(lua_State *L)
 
 		class_<CScriptEffector, CScriptEffectorWrapper>("effector")
 			.def(								constructor<int,float>())
-			.def("start",						&CScriptEffector::Add)
-			.def("finish",						&CScriptEffector::Remove)
+			.def("start",						&add_effector,		adopt(_1))
+			.def("finish",						&remove_effector,	adopt(_1))
 			.def("process",	 					&CScriptEffector::process,	&CScriptEffectorWrapper::process_static)
 	];
 }

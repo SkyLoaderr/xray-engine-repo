@@ -896,7 +896,7 @@ void CCar::Init()
 
 	if(ini->section_exist("immunities"))
 	{
-		InitImmunities("immunities",ini);
+		LoadImmunities("immunities",ini);
 	}
 
 	CDamageManager::reload("car_definition",ini);

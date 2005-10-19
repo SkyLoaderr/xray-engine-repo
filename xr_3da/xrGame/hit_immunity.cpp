@@ -17,31 +17,20 @@ CHitImmunity::CHitImmunity()
 CHitImmunity::~CHitImmunity()
 {
 }
-void CHitImmunity::InitImmunities(LPCSTR imm_sect,CInifile* ini)
+void CHitImmunity::LoadImmunities(LPCSTR imm_sect,CInifile* ini)
 {
 	R_ASSERT2	(ini->section_exist(imm_sect), imm_sect);
 
-	m_HitTypeK[ALife::eHitTypeBurn]			= READ_IF_EXISTS(ini,r_float,imm_sect,"burn_immunity",			1.f);
-	m_HitTypeK[ALife::eHitTypeStrike]		= READ_IF_EXISTS(ini,r_float,imm_sect,"strike_immunity",		1.f);
-	m_HitTypeK[ALife::eHitTypeShock]		= READ_IF_EXISTS(ini,r_float,imm_sect,"shock_immunity",			1.f);
-	m_HitTypeK[ALife::eHitTypeWound]		= READ_IF_EXISTS(ini,r_float,imm_sect,"wound_immunity",			1.f);
-	m_HitTypeK[ALife::eHitTypeRadiation]	= READ_IF_EXISTS(ini,r_float,imm_sect,"radiation_immunity",		1.f);
-	m_HitTypeK[ALife::eHitTypeTelepatic]	= READ_IF_EXISTS(ini,r_float,imm_sect,"telepatic_immunity",		1.f);
-	m_HitTypeK[ALife::eHitTypeChemicalBurn] = READ_IF_EXISTS(ini,r_float,imm_sect,"chemical_burn_immunity",	1.f);
-	m_HitTypeK[ALife::eHitTypeExplosion]	= READ_IF_EXISTS(ini,r_float,imm_sect,"explosion_immunity",		1.f);
-	m_HitTypeK[ALife::eHitTypeFireWound]	= READ_IF_EXISTS(ini,r_float,imm_sect,"fire_wound_immunity",	1.f);
+	m_HitTypeK[ALife::eHitTypeBurn]			= ini->r_float(imm_sect,"burn_immunity");
+	m_HitTypeK[ALife::eHitTypeStrike]		= ini->r_float(imm_sect,"strike_immunity");
+	m_HitTypeK[ALife::eHitTypeShock]		= ini->r_float(imm_sect,"shock_immunity");
+	m_HitTypeK[ALife::eHitTypeWound]		= ini->r_float(imm_sect,"wound_immunity");
+	m_HitTypeK[ALife::eHitTypeRadiation]	= ini->r_float(imm_sect,"radiation_immunity");
+	m_HitTypeK[ALife::eHitTypeTelepatic]	= ini->r_float(imm_sect,"telepatic_immunity");
+	m_HitTypeK[ALife::eHitTypeChemicalBurn] = ini->r_float(imm_sect,"chemical_burn_immunity");
+	m_HitTypeK[ALife::eHitTypeExplosion]	= ini->r_float(imm_sect,"explosion_immunity");
+	m_HitTypeK[ALife::eHitTypeFireWound]	= ini->r_float(imm_sect,"fire_wound_immunity");
 }
-
-void CHitImmunity::LoadImmunities (LPCSTR section, LPCSTR line)
-{
-	InitImmunities	(READ_IF_EXISTS(pSettings,r_string,section,line,section),pSettings);
-}
-
-void CHitImmunity::LoadImmunities(LPCSTR section)
-{
-	LoadImmunities	(section, "immunities_sect");
-}
-
 
 float CHitImmunity::AffectHit (float power, ALife::EHitType hit_type)
 {

@@ -24,6 +24,7 @@
 #include "PHScriptCall.h"
 #include "HUDManager.h"
 #include "script_engine.h"
+#include "game_cl_single.h"
 
 #include "map_manager.h"
 #include "map_location.h"
@@ -112,6 +113,17 @@ void set_time_factor(float time_factor)
 float get_time_factor()
 {
 	return			(Level().GetGameTimeFactor());
+}
+
+void set_game_difficulty(ESingleGameDifficulty dif)
+{
+	g_SingleGameDifficulty		= dif;
+	game_cl_Single* game		= smart_cast<game_cl_Single*>(Level().game); VERIFY(game);
+	game->OnDifficultyChanged	();
+}
+ESingleGameDifficulty get_game_difficulty()
+{
+	return g_SingleGameDifficulty;
 }
 
 u32 get_time_days()
@@ -416,6 +428,9 @@ void CLevel::script_register(lua_State *L)
 		
 		def("set_time_factor",					set_time_factor),
 		def("get_time_factor",					get_time_factor),
+
+		def("set_game_difficulty",				set_game_difficulty),
+		def("get_game_difficulty",				get_game_difficulty),
 		
 		def("get_time_days",					get_time_days),
 		def("get_time_hours",					get_time_hours),

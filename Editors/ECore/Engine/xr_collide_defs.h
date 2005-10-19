@@ -126,5 +126,5 @@ namespace collide
 		IC void			r_clear			()	{ results.clear_not_free();	}
 	};
 	typedef  BOOL		rq_callback 	(rq_result& result, LPVOID user_data);
-	typedef  BOOL		test_callback 	(CObject* object, LPVOID user_data);
+	typedef  BOOL		test_callback 	(const ray_defs& rd, CObject* object, LPVOID user_data);
 };

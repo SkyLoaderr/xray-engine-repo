@@ -60,6 +60,7 @@
 #include "level.h"
 #include "GamePersistent.h"
 #include "game_cl_base.h"
+#include "game_cl_single.h"
 #include "xrmessages.h"
 
 #include "string_table.h"
@@ -206,6 +207,8 @@ CActor::CActor() : CEntityAlive()
 	m_game_task_manager		= NULL;
 	//-----------------------------------------------------------------------------------
 	m_memory				= xr_new<CActorMemory>(this);
+
+	hit_probability			= 1.f;
 }
 
 
@@ -277,6 +280,7 @@ void CActor::Load	(LPCSTR section )
 	CInventoryOwner::Load	(section);
 	memory().Load			(section);
 
+	OnDifficultyChanged		();
 	//////////////////////////////////////////////////////////////////////////
 	ISpatial*		self			=	smart_cast<ISpatial*> (this);
 	if (self)	{
@@ -1799,4 +1803,17 @@ Fvector CActor::weapon_recoil_delta_angle	()
 		effector->GetDeltaAngle		(result);
 
 	return							(result);
+}
+
+void CActor::OnDifficultyChanged	()
+{
+	// immunities
+	VERIFY(g_SingleGameDifficulty>=egdNovice && g_SingleGameDifficulty<=egdMaster); 
+	LPCSTR diff_name				= get_token_name(difficulty_type_token, g_SingleGameDifficulty);
+	string128						tmp;
+	strconcat						(tmp,"actor_immunities_",diff_name);
+	conditions().LoadImmunities		(tmp,pSettings);
+	// hit probability
+	strconcat						(tmp,"hit_probability_",diff_name);
+	hit_probability					= pSettings->r_float(*cNameSect(),tmp);
 }

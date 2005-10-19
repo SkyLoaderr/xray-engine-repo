@@ -129,7 +129,7 @@ protected:
 	void					PlayWhineSound		(SBullet* bullet, CObject* object, const Fvector& pos);
 	void					PlayExplodePS		(const Fmatrix& xf);
 	//функция обработки хитов объектов
-	static BOOL 			test_callback		(CObject* object, LPVOID params);
+	static BOOL 			test_callback		(const collide::ray_defs& rd, CObject* object, LPVOID params);
 	static BOOL				firetrace_callback	(collide::rq_result& result, LPVOID params);
 
 	// Deffer event

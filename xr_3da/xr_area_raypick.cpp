@@ -195,7 +195,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 				ICollisionForm*	cform		= collidable->collidable.model;
 				ECollisionFormType tp		= collidable->collidable.model->Type();
 				if (((R.tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
-					if (tb&&!tb(collidable,user_data))continue;
+					if (tb&&!tb(d_rd,collidable,user_data))continue;
 					cform->_RayQuery(d_rd,r_temp);
 				}
 			}
