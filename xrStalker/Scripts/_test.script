@@ -86,7 +86,7 @@ end
 
 function main()
    local h = hit ()
-   h.power = 1
+   h.power = 100
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
