@@ -16,6 +16,11 @@ IC	CSpaceRestrictionHolder::CSpaceRestrictionHolder	()
 
 IC	shared_str	CSpaceRestrictionHolder::normalize_string	(shared_str space_restrictors)
 {
+	//1. parse the string, copying to temp buffer with leading zeroes, storing pointers in vector
+	//2. sort the vector (svector???)
+	//3. copy back to another temp string, based on sorted vector
+	//4. finally, dock shared_str
+
 	string4096				m_temp_string;
 	u32						n = _GetItemCount(*space_restrictors);
 	if (n < 2)
