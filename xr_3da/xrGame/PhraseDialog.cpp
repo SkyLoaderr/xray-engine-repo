@@ -285,19 +285,18 @@ void CPhraseDialog::SetPriority	(int val)
 
 CPhrase* CPhraseDialog::AddPhrase	(LPCSTR text, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id, int goodwil_level)
 {
-	CPhraseGraph::CVertex* _vertex = data()->m_PhraseGraph.vertex(phrase_id);
-	if(_vertex) 
-		return NULL;
+	CPhrase* phrase					= NULL;
+	CPhraseGraph::CVertex* _vertex	= data()->m_PhraseGraph.vertex(phrase_id);
+	if(!_vertex) {
+		phrase						= xr_new<CPhrase>(); VERIFY(phrase);
+		phrase->SetIndex			(phrase_id);
 
-	CPhrase* phrase				= xr_new<CPhrase>(); VERIFY(phrase);
-	phrase->SetIndex			(phrase_id);
+		phrase->SetText				(text);
+		phrase->m_iGoodwillLevel	= goodwil_level;
 
-	phrase->SetText				(text);
-	phrase->m_iGoodwillLevel	= goodwil_level;
+		data()->m_PhraseGraph.add_vertex	(phrase, phrase_id);
+	}
 
-
-	data()->m_PhraseGraph.add_vertex	(phrase, phrase_id);
-	
 	if(prev_phrase_id != NO_PHRASE)
 		data()->m_PhraseGraph.add_edge		(prev_phrase_id, phrase_id, 0.f);
 	
