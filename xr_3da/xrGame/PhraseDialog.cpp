@@ -287,7 +287,7 @@ CPhrase* CPhraseDialog::AddPhrase	(LPCSTR text, PHRASE_ID phrase_id, PHRASE_ID p
 {
 	CPhraseGraph::CVertex* _vertex = data()->m_PhraseGraph.vertex(phrase_id);
 	if(_vertex) 
-		return _vertex->data();
+		return NULL;
 
 	CPhrase* phrase				= xr_new<CPhrase>(); VERIFY(phrase);
 	phrase->SetIndex			(phrase_id);
@@ -331,6 +331,8 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id, PHRAS
 	LPCSTR sText		= uiXml.Read		(phrase_node, "text", 0, "");
 	int		gw			= uiXml.ReadInt		(phrase_node, "goodwill", 0, -10000);
 	CPhrase* ph			= AddPhrase			(sText, phrase_id, prev_phrase_id, gw);
+	if(!ph)				return;
+
 	ph->m_PhraseScript.Load					(&uiXml, phrase_node);
 
 	//фразы которые собеседник может говорить после этой

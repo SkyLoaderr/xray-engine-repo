@@ -541,7 +541,7 @@ void CExplosive::StartLight	()
 	if(m_fLightTime>0)
 	{
 		
-		VERIFY					(!m_pLight);
+//		VERIFY					(!m_pLight);
 		LightCreate				();
 
 		m_pLight->set_color		(m_LightColor.r, m_LightColor.g, m_LightColor.b);
