@@ -115,15 +115,12 @@ function action_wait:finalize()
 	action_base.finalize (self)
 end
 function action_wait:deactivate()
-	printf("KAMP DEACTIVATE CALLED")
 	kamps[self.a.center_point]:removeNpc(self.object)
 end
 function action_wait:death_callback()
-	printf("KAMP DEACTIVATE CALLED")
 	kamps[self.a.center_point]:removeNpc(self.object)
 end
 function action_wait:net_destroy()
-	printf("KAMP DEACTIVATE CALLED")
 	kamps[self.a.center_point]:removeNpc(self.object)
 end
 
@@ -270,6 +267,11 @@ end
 function CKampManager:getDestVertex(npc_id, radius)
 	--printf("get dest Vertex called [%s]", npc_id)
 	if self.npc[npc_id].position == nil then
+		printf("-------debug_info-------------")
+		print_table(self.npc)
+		printf("-------debug_info-------------")
+		print_table(self.position)
+		printf("-------debug_info-------------")
 		abort("get dest Vertex: nil [%s]", npc_id)
 		return nil
 	end
@@ -642,8 +644,11 @@ function CKampManager:addNpc(npc)
 end
 function CKampManager:removeNpc(npc)
 	printf("KAMP [%s] remove npc", npc:name())
-	self.position[self.npc[npc:id()].position].used = nil
-	self.npc[npc:id()] = nil	
+	
+	if self.npc[npc:id()] ~= nil then
+		self.position[self.npc[npc:id()].position].used = nil
+		self.npc[npc:id()] = nil
+	end
 end
 function CKampManager:increasePops(npc)
 	self.population = self.population + 1
