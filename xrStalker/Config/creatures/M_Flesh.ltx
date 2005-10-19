@@ -174,15 +174,7 @@ health_hit_part 	= 1.0		;0.8			;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх чфюЁют№ 
 power_hit_part 		= 1.0		;0.9			;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх ёшыv
 psy_health_v		= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity = 1.0				;ъю¤ЇЇшЎшхэЄv шььєэшЄхЄр 
-strike_immunity = 1
-shock_immunity = 1.0
-wound_immunity = 0.70	;0.75	;1.0		
-radiation_immunity = 0.0; 0.01	;1.0
-telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 0.55
-fire_wound_immunity  = 0.15
+immunities_sect			= sect_flesh_immunities
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду
@@ -283,3 +275,14 @@ panic_threshold		= 0.2
 $spawn				= "monsters\fleshes\flesh_03_strong"
 visual				 = monsters\flesh\flesh
 panic_threshold		= 0.05	
+
+[sect_flesh_immunities]
+burn_immunity = 1.0				;ъю¤ЇЇшЎшхэЄv шььєэшЄхЄр 
+strike_immunity = 1
+shock_immunity = 1.0
+wound_immunity = 0.70	;0.75	;1.0		
+radiation_immunity = 0.0; 0.01	;1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 0.55
+fire_wound_immunity  = 0.15
