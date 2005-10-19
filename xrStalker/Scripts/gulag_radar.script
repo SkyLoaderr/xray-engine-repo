@@ -748,8 +748,7 @@ function load_ltx_far_road_ambush(gname, type)
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
-					"ignore_distance_corpse = 1\n"..
-					"ignore_distance_sound = 5\n"..
+					"ignore_distance = 5\n"..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
@@ -787,8 +786,7 @@ function load_ltx_far_road_btr_ambush(gname, type)
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
-					"ignore_distance_corpse = 1\n"..
-					"ignore_distance_sound = 5\n"..
+					"ignore_distance = 5\n"..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 	return res
@@ -824,8 +822,7 @@ function load_ltx_after_tramplin_ambush(gname, type)
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
-					"ignore_distance_corpse = 1\n"..
-					"ignore_distance_sound = 5\n"..
+					"ignore_distance = 5\n"..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
@@ -862,8 +859,7 @@ function load_ltx_before_tramplin_ambush(gname, type)
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
-					"ignore_distance_corpse = 1\n"..
-					"ignore_distance_sound = 5\n"..
+					"ignore_distance = 5\n"..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
@@ -900,8 +896,7 @@ function load_ltx_after_valley_ambush(gname, type)
 					"[danger_condition@" .. gname .. "]\n" ..
 					"danger_expiration_time = 60000\n" ..
 					"danger_inertion_time =  90000\n" ..
-					"ignore_distance_corpse = 1\n"..
-					"ignore_distance_sound = 5\n"..
+					"ignore_distance = 5\n"..
 
 					"[combat_ignore@" .. gname .. "]\n" 
 
