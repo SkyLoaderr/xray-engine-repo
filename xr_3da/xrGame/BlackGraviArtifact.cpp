@@ -14,7 +14,8 @@
 #include "physicsshellholder.h"
 #include "explosive.h"
 #include "net_utils.h"
-
+#include "PHWorld.h"
+extern CPHWorld*	ph_world;
 CBlackGraviArtefact::CBlackGraviArtefact(void) 
 {
 	m_fImpulseThreshold = 10.f;
@@ -64,9 +65,30 @@ BOOL CBlackGraviArtefact::net_Spawn(CSE_Abstract* DC)
 
 	return TRUE;
 }
-
+struct SRP
+{
+	CPhysicsShellHolder* obj;
+		SRP(CPhysicsShellHolder* O)
+		{
+			obj=O;
+		}
+	bool operator	() (const CPhysicsShellHolder* &O)
+	{
+		return obj==O;
+	}
+};
+void CBlackGraviArtefact::net_Relcase(CObject* O)
+{
+	inherited::net_Relcase(O);
+	//for vector
+	GAME_OBJECT_LIST_it I=std::remove_if(m_GameObjectList.begin(),m_GameObjectList.end(),SRP(smart_cast<CPhysicsShellHolder*>(O)));
+	m_GameObjectList.erase(I,m_GameObjectList.end());
+	//for list
+	//m_GameObjectList.remove_if(SRP(smart_cast<CPhysicsShellHolder*>(O)));
+}
 void CBlackGraviArtefact::UpdateCLChild() 
 {
+	VERIFY(!ph_world->Processing());
 	inherited::UpdateCLChild	();
 
 	if (getVisible() && m_pPhysicsShell) {
