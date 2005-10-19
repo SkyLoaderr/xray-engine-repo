@@ -77,7 +77,7 @@ BOOL CVampirePPEffector::Process(SPPInfo& pp)
 #define ANGLE_SPEED		0.2f	
 
 CVampireCameraEffector::CVampireCameraEffector(float time, float dist, float threshold_dist) :
-	inherited(ECameraEffectorType(1), time, TRUE)
+	inherited(ECameraEffectorType(1), time)
 {
 	fLifeTime			= time;
 	m_time_total		= time;

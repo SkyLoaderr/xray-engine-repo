@@ -85,7 +85,7 @@ public:
 	virtual void	UpdateHudPosition	();
 	
 	//просчет инерции для HUD 
-	virtual void	UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float actor_pitch);
+	virtual void	UpdateHudInertion		(Fmatrix& hud_trans);
 	//просчет дополнительных вычислений (переопределяется в потомках)
 	virtual void	UpdateHudAdditonal		(Fmatrix&);
 

@@ -42,8 +42,5 @@ public:
 	virtual void		OnAnimationEnd		();
 	virtual void		UpdateCL			();
 	virtual void		renderable_Render	();
-	virtual void		UpdateHudPosition	();
-	virtual void		UpdateHudInertion	(Fmatrix& hud_trans, float actor_yaw, float actor_pitch);
-	virtual void		UpdateHudAdditonal	(Fmatrix&);
 	virtual void		on_renderable_Render();
 };

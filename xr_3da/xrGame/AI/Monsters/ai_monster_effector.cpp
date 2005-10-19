@@ -74,7 +74,7 @@ BOOL CMonsterEffector::Process(SPPInfo& pp)
 //////////////////////////////////////////////////////////////////////////
 
 CMonsterEffectorHit::CMonsterEffectorHit(float time, float amp, float periods, float power) 
-	: CCameraEffector(ECameraEffectorType(eCEHit + 1), time, FALSE)
+	: CCameraEffector(ECameraEffectorType(eCEHit + 1), time)
 {
 	total			= time;
 

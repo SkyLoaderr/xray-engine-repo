@@ -316,7 +316,7 @@ void CShootingObject::StopLight			()
 
 void CShootingObject::RenderLight()
 {
-	if (IsWorking() && m_bShotLight && light_time>0) 
+	if ( light_render && m_bShotLight && light_time>0 ) 
 		Light_Render(get_CurrentFirePoint());
 }
 

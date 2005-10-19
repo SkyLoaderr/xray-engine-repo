@@ -14,7 +14,7 @@
 class CCameraEffector_script :public CCameraEffector//, public luabind::wrap_base
 {
 public:
-	CCameraEffector_script							(ECameraEffectorType type, float tm, bool affected):CCameraEffector(type, tm, affected) {};
+	CCameraEffector_script							(ECameraEffectorType type, float tm):CCameraEffector(type, tm) {};
 	virtual BOOL Process(Fvector &p, Fvector &d, Fvector &n, float &fFov, float &fFar, float &fAspect)									
 	{																				
 		return Process_(&p, &d, &n/*, &fFov, &fFar, &fAspect*/)	;	
@@ -26,7 +26,7 @@ public:
 class CCamEffectorWrapper :public CCameraEffector_script ,public luabind::wrap_base
 {
 public:
-	CCamEffectorWrapper		(ECameraEffectorType type, float tm, bool affected):CCameraEffector_script(type, tm, affected) {};
+	CCamEffectorWrapper		(ECameraEffectorType type, float tm):CCameraEffector_script(type, tm) {};
 	virtual bool Process_(Fvector *p, Fvector *d, Fvector *n)
 	{																				
 		return call<bool>("Process",p,d,n);										
@@ -72,7 +72,7 @@ void CCameraEffector::script_register(lua_State *L)
 			.def("GetType",					&CCameraEffector::GetType),
 
 		class_<BaseType, CCamEffectorWrapper, CCameraEffector>("cam_effector")
-			.def(	constructor<ECameraEffectorType ,float ,bool>()),
+			.def(	constructor<ECameraEffectorType ,float>()),
 
 		class_<CObjectAnimator>("object_animator")
 		.def(	constructor<>				())

@@ -117,21 +117,6 @@ void CHudItemObject::renderable_Render	()
 	CHudItem::renderable_Render	();
 }
 
-void CHudItemObject::UpdateHudPosition	()
-{
-	CHudItem::UpdateHudPosition	();
-}
-
-void CHudItemObject::UpdateHudInertion	(Fmatrix& hud_trans, float actor_yaw, float actor_pitch)
-{
-	CHudItem::UpdateHudInertion	(hud_trans,actor_yaw,actor_pitch);
-}
-
-void CHudItemObject::UpdateHudAdditonal	(Fmatrix &m)
-{
-	CHudItem::UpdateHudAdditonal(m);
-}
-
 void CHudItemObject::on_renderable_Render()
 {
 	CInventoryItemObject::renderable_Render();

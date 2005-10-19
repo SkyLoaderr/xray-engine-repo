@@ -30,13 +30,11 @@ class CCameraEffector
 {
 protected:
 	ECameraEffectorType		eType;
-	BOOL					bAffected;
 	float					fLifeTime;
 public:
-	CCameraEffector							(ECameraEffectorType type, float tm, BOOL affected) {eType = type; fLifeTime=tm; bAffected=affected;};
+	CCameraEffector							(ECameraEffectorType type, float tm) {eType = type; fLifeTime=tm;};
 	virtual				~CCameraEffector	() {};
 	IC ECameraEffectorType	GetType			() {return eType;}
-	IC BOOL					Affected		() {return bAffected;}
 	IC float				LifeTime		() {return fLifeTime;}
 
 	virtual CCameraShotEffector		*cast_effector_shot				()	{return 0;}
