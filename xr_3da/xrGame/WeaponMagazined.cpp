@@ -435,6 +435,7 @@ void CWeaponMagazined::UpdateCL			()
 			VERIFY(iAmmoElapsed);
 
 */
+
 			if(iAmmoElapsed>0)
 				state_Fire		(dt);
 			

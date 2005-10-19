@@ -93,6 +93,7 @@ void CWeaponRPG7::FireStart()
 
 void CWeaponRPG7::switch2_Fire	()
 {
+	m_iShotNum = 0;
 	m_bFireSingleShot = true;
 	bWorking = false;
 
