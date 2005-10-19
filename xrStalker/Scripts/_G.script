@@ -1107,7 +1107,8 @@ end
 -- Camera Effector
 -- создает эффектор на основе анимации камеры, заданной через leveleditor
 class "path_cam_effector" (cam_effector)
-function path_cam_effector:__init(str_path) super(cam_effector_type.eCEUser+1, 10, false)
+--function path_cam_effector:__init(str_path) super(cam_effector_type.eCEUser+1, 10, false)
+function path_cam_effector:__init(str_path) super(222, 10, false)
 	self.animator 				= object_animator()
 	self.animator:Load			(str_path)
 	self.animator:Play			(false)
