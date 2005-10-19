@@ -34,9 +34,9 @@ CGamePersistent::CGamePersistent(void)
 	ambient_effect_stop_time	= 0;
 	ambient_particles			= 0;
 	// 
-	// dSetAllocHandler		(ode_alloc		);
-	// dSetReallocHandler	(ode_realloc	);
-	// dSetFreeHandler		(ode_free		);
+	dSetAllocHandler			(ode_alloc		);
+	dSetReallocHandler			(ode_realloc	);
+	dSetFreeHandler				(ode_free		);
 
 	// 
 	BOOL	bDemoMode	= (0!=strstr(Core.Params,"-demomode "));

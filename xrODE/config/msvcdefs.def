@@ -1,5 +1,8 @@
 LIBRARY ODE
 EXPORTS
+dSetAllocHandler
+dSetReallocHandler
+dSetFreeHandler
 dxStepBody
 dAreConnected
 dAreConnectedExcluding
