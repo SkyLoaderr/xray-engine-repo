@@ -207,6 +207,43 @@ if type == "ds_kem1" then
 			in_rest = "", out_rest = "ds_boars_territory"
 		}
 		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@ds_boars_nest", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "ds_boars_territory"
+		}
+		table.insert(sj, t)
+		
 		end
 		
 	
