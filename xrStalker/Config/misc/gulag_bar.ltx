@@ -1289,6 +1289,13 @@ path_look = end_look
 meet = meet@ecolog_kruglov
 radius = 0
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+on_info = {+bar_rescue_research_reward} camper@bar_ecolog_professor_exit
+
+[camper@bar_ecolog_professor_exit]
+path_walk = escape_5_walk
+path_look = escape_5_look
+radius = 0
+no_retreat = true
 
 [death@ecolog_crush]
 on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_done +bar_rescue_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_fail +bar_rescue_research_corruped +bar_heli_scene_professor_die%, %+bar_rescue_research_dead +bar_rescue_research_corruped +bar_heli_scene_professor_die%
