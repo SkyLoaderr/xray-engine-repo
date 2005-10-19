@@ -105,7 +105,7 @@ chemical_burn_immunity	= 0.0 ;0.9
 fire_wound_immunity		= 0.45 ;0,35;0.1;0.05
 explosion_immunity		= 1
 
-[helicopter_missile]:identity_immunities
+[helicopter_missile]
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 visual                  = weapons\rpg_7\wpn_rpg_7_grenade.ogf
@@ -118,6 +118,8 @@ inv_grid_width			= 1
 inv_grid_height			= 1
 inv_grid_x				= 0
 inv_grid_y				= 0
+
+immunities_sect			= sect_hm_immunities
 
 cost					= 200
 ;---------------------------------------------------------------
@@ -192,3 +194,13 @@ trail_light_range = 20.0
 engine_particles = weapons\rpg_trail_01
 ;fly_particles	 = weapons\rpg_trail_01
 
+[sect_hm_immunities]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 1.0		
+radiation_immunity		= 1.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 1.0
