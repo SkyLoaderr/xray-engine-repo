@@ -91,6 +91,10 @@ rocket_class			= helicopter_missile ;wpn_rpg7_missile
 launch_speed			= 60 ;45 ;50 ;60 ;76 ;500
 
 ;------------------------------коэффициенты иммунитета 
+immunities_sect			= sect_heli_immunities
+
+
+[sect_heli_immunities]
 burn_immunity			= 0.8	
 strike_immunity			= 1 ;0.7
 shock_immunity			= 1 ;1.0
@@ -100,7 +104,6 @@ telepatic_immunity		= 0.0 ;1.0
 chemical_burn_immunity	= 0.0 ;0.9
 fire_wound_immunity		= 0.45 ;0,35;0.1;0.05
 explosion_immunity		= 1
-
 
 [helicopter_missile]:identity_immunities
 GroupControlSection		= spawn_group
