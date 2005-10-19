@@ -525,6 +525,8 @@ function rostok_kruglov_tip_1(actor,npc)
 end
 function rostok_kruglov_tip_2(actor,npc)
 	news_manager.send_tip(actor, "rostok_kruglov_spam_2", nil, "ecolog", nil, 503)
+	level_tasks.add_location(596, "green_location", "rostok_tainyi_hod")
+	level_tasks.add_location(597, "volkodav_location", "rostok_banda_volkodava")
 end
 function bar_crush_heli_down(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "freedom", nil, 509)
