@@ -133,7 +133,8 @@ void SHitMark::UpdateAnim	()
 {
 	int frame;
 	u32 clr			= m_lanim->CalculateRGB(Device.fTimeGlobal-m_StartTime,frame);
-	m_UIStaticItem->SetColor(clr);
+//	m_UIStaticItem->SetColor(clr);
+	m_UIStaticItem->SetColor		(subst_alpha(m_UIStaticItem->GetColor(), color_get_A(clr)));
 }
 
 SHitMark::~SHitMark		()
