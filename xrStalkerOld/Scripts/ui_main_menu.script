@@ -138,7 +138,10 @@ end
 function main_menu:InitCallBacks()
 	-- new game
 	self:AddCallback("btn_new_game",    ui_events.BUTTON_CLICKED,				self.OnButton_new_game_clicked,		self)
-	self:AddCallback("btn_hard",		ui_events.BUTTON_CLICKED,				self.OnButton_new_hard_game,		self)
+	self:AddCallback("btn_novice",		ui_events.BUTTON_CLICKED,				self.OnButton_new_novice_game,		self)
+	self:AddCallback("btn_stalker",		ui_events.BUTTON_CLICKED,				self.OnButton_new_stalker_game,		self)
+	self:AddCallback("btn_veteran",		ui_events.BUTTON_CLICKED,				self.OnButton_new_veteran_game,		self)
+	self:AddCallback("btn_master",		ui_events.BUTTON_CLICKED,				self.OnButton_new_master_game,		self)
 	self:AddCallback("btn_spawn",		ui_events.BUTTON_CLICKED,				self.OnButton_load_spawn,			self)
 	self:AddCallback("btn_new_back",	ui_events.BUTTON_CLICKED,				self.OnButton_back,					self)
 	-- options																											
@@ -161,9 +164,28 @@ function main_menu:InitCallBacks()
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_NO_CLICKED,		self.OnMsgNo,						self)
 end
 
-function main_menu:OnButton_new_hard_game()
+function main_menu:OnButton_new_novice_game()
 	local console = get_console()
-	console:execute("start server(all/single/alife/new) client(localhost)")
+	console:execute("g_game_difficulty novice")
+	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+end
+
+function main_menu:OnButton_new_stalker_game()
+	local console = get_console()
+	console:execute("g_game_difficulty stalker")
+	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+end
+
+function main_menu:OnButton_new_veteran_game()
+	local console = get_console()
+	console:execute("g_game_difficulty veteran")
+	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+end
+
+function main_menu:OnButton_new_master_game()
+	local console = get_console()
+	console:execute("g_game_difficulty master")
+	console:execute("start server(12lvl/single/alife/new) client(localhost)")
 end
 
 function main_menu:OnButton_load_spawn()
