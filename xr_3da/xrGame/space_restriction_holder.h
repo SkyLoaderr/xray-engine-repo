@@ -27,13 +27,18 @@ public:
 	typedef xr_map<shared_str,CSpaceRestrictionBridge*>	RESTRICTIONS;
 
 private:
-	xr_vector<shared_str>			m_temp;
+	enum {
+		MAX_RESTRICTION_PER_TYPE_COUNT	= u32(128),
+		dummy							= u32(-1),
+	};
+
+private:
 	RESTRICTIONS					m_restrictions;
 	shared_str						m_default_out_restrictions;
 	shared_str						m_default_in_restrictions;
 
 protected:
-	IC		shared_str				normalize_string				(shared_str space_restrictors);
+			shared_str				normalize_string				(shared_str space_restrictors);
 	IC		void					collect_garbage					();
 	virtual void					on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, shared_str old_restrictions, shared_str new_restrictions) = 0;
 

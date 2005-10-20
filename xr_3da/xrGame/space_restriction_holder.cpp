@@ -15,11 +15,72 @@
 #include "space_restriction_composition.h"
 #include "restriction_space.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 const u32 time_to_delete = 300000;
 
 CSpaceRestrictionHolder::~CSpaceRestrictionHolder			()
 {
 	delete_data				(m_restrictions);
+}
+
+shared_str CSpaceRestrictionHolder::normalize_string	(shared_str space_restrictors)
+{
+	u32						n = space_restrictors.size();
+	if (!n)
+		return				("");
+
+	//1. parse the string, copying to temp buffer with leading zeroes, storing pointers in vector
+	LPSTR					*strings = (LPSTR*)_alloca(MAX_RESTRICTION_PER_TYPE_COUNT*sizeof(LPSTR));
+	LPSTR					*string_current = strings;
+
+	LPSTR					temp_string = (LPSTR)_alloca((n+1)*sizeof(char));
+	LPCSTR					I = *space_restrictors;
+	LPSTR					i = temp_string, j = i;
+	for ( ; *I; ++I, ++i) {
+		if (*I != ',') {
+			*i				= *I;
+			continue;
+		}
+
+		*i					= 0;
+		VERIFY				(u32(string_current - strings) < MAX_RESTRICTION_PER_TYPE_COUNT);
+		*string_current		= j;
+		++string_current;
+		j					= i + 1;
+	}
+	if (string_current == strings)
+		return				(space_restrictors);
+
+	*i						= 0;
+	VERIFY					(u32(string_current - strings) < MAX_RESTRICTION_PER_TYPE_COUNT);
+	*string_current			= j;
+	++string_current;
+
+	//2. sort the vector (svector???)
+	std::sort				(strings,string_current,pred_str());
+
+	//3. copy back to another temp string, based on sorted vector
+	LPSTR					result_string = (LPSTR)_alloca((n+1)*sizeof(char));
+	LPSTR					pointer = result_string;
+	{
+		LPSTR				*I = strings;
+		LPSTR				*E = string_current;
+		for ( ; I != E; ++I) {
+			for (LPSTR i = *I; *i; ++i, ++pointer)
+				*pointer	= *i;
+
+			*pointer		= ',';
+			++pointer;
+		}
+	}
+	*(pointer - 1)			= 0;
+
+	//4. finally, dock shared_str
+	return					(result_string);
 }
 
 SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction	(shared_str space_restrictors)
