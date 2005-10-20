@@ -109,17 +109,6 @@ void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 	_close( hf );
 }
 
-void EFS_Utils::RegisterAccess(LPCSTR fn, LPCSTR start_msg, bool bLog)
-{
-	xr_string		m_LastAccessFN;
-    VERIFY			(xr_strlen(fn)<_MAX_PATH);
-    FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
-//.	CInifile* ini	= CInifile::Create(m_LastAccessFN.c_str(),false);
-//.	ini->w_string	("last_access",fn,Core.CompName);
-//.	CInifile::Destroy(ini);
-    if (bLog) 		WriteAccessLog(fn,start_msg);
-}
-
 BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool bMsg, shared_str* owner)
 {
 	string256 fn; strcpy(fn,fname);
@@ -130,8 +119,8 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool 
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		CloseHandle(handle);
         if (INVALID_HANDLE_VALUE==handle){
-			if (bMsg)	Msg("#!Access denied. File: '%s' currently locked by user: '%s'.",fn,GetLockOwner(0,fn).c_str());
-            if (owner) 	*owner = GetLockOwner(0,fn);
+			if (bMsg)	Msg("#!Access denied. File: '%s' currently locked by user: '%s'.",fn,GetLockOwner(0,fname).c_str());
+            if (owner) 	*owner = GetLockOwner(0,fname);
         }
 		return (INVALID_HANDLE_VALUE==handle);
 	}
@@ -150,11 +139,18 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 			LPSTR lp_fn			= fn;
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(mk_pair(lp_fn,handle));
 			R_ASSERT(			I.second);
-			// register access
-            xr_string			m_LastAccessFN;
-            FS.update_path		(m_LastAccessFN,"$server_data_root$","access.ini");
-            CInifile*	ini		= CInifile::Create(m_LastAccessFN.c_str(),false);
-            ini->w_string		("locked",fn,Core.CompName);
+			// register access              LockFile
+            xr_string			m_AccessFN = xr_string("access\\")+fname+xr_string(".desc");
+            FS.update_path		(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
+            
+            CInifile*	ini		= CInifile::Create(m_AccessFN.c_str(),false);
+            string512			buf0,buf1;
+            string16			dt_buf, tm_buf;
+            sprintf				(buf0,"%s-%s",_strdate(dt_buf),_strtime(tm_buf));
+            sprintf				(buf1,"\"locked  : from computer: '%s' by user: '%s'\"",Core.CompName,Core.UserName);
+            ini->w_string		("history",buf0,buf1);
+            sprintf 			(buf0,"\\\\%s\\%s",Core.CompName,Core.UserName);
+            ini->w_string		("locked","name",buf0);
             CInifile::Destroy	(ini);
             if (bLog) 			WriteAccessLog(fn,"Lock");
 			bRes				= true;
@@ -173,10 +169,15 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
     	void* handle 			= it->second;
 		m_LockFiles.erase		(it);
         // unregister access
-        xr_string				m_LastAccessFN;
-        FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
-        CInifile*	ini			= CInifile::Create(m_LastAccessFN.c_str(),false);
-        ini->remove_line		("locked",fn);
+        xr_string				m_AccessFN = xr_string("access\\")+fname+xr_string(".desc");
+        FS.update_path			(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
+        CInifile*	ini			= CInifile::Create(m_AccessFN.c_str(),false);
+        string512				buf0,buf1;
+        string16				dt_buf, tm_buf;
+        sprintf					(buf0,"%s-%s",_strdate(dt_buf),_strtime(tm_buf));
+        sprintf					(buf1,"\"unlocked: from computer: '%s' by user: '%s'\"",Core.CompName,Core.UserName);
+        ini->w_string			("locked","name","");
+        ini->w_string			("history",buf0,buf1);
         CInifile::Destroy		(ini);
 		if (bLog)				WriteAccessLog(fn,"Unlock");
 		return CloseHandle		(handle);
@@ -186,15 +187,12 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 
 shared_str EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 {
-	string256 fn; strcpy(fn,fname);
-	if (initial) FS.update_path(fn,initial,fn);
-
-	xr_string		m_LastAccessFN;
-	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
-	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),true);
-	static string256 comp;
-	strcpy			(comp,ini->line_exist("locked",fn)?ini->r_string("locked",fn):"unknown");
-	CInifile::Destroy(ini);
+    xr_string					m_AccessFN = xr_string("access\\")+fname+xr_string(".desc");
+    FS.update_path				(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
+    CInifile*	ini				= CInifile::Create(m_AccessFN.c_str(),false);
+	static string256 			comp;
+	strcpy						(comp,ini->line_exist("locked","name")?ini->r_string("locked","name"):"unknown");
+	CInifile::Destroy			(ini);
 
 	return comp;
 }

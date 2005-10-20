@@ -33,7 +33,6 @@ public:
 	BOOL		UnlockFile		(LPCSTR initial, LPCSTR fn, bool bLog=true);
 	shared_str	GetLockOwner	(LPCSTR initial, LPCSTR fn);
 
-	void		RegisterAccess	(LPCSTR fn, LPCSTR start_msg, bool bLog=true);
 	void		WriteAccessLog	(LPCSTR fn, LPCSTR start_msg);
 
 	xr_string AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name);
