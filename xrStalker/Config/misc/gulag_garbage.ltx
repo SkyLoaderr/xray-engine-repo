@@ -1028,6 +1028,10 @@ active = nil
 ;*****************************************************************
 [logic@gar_boars_nest]
 active = nil
+mob_death = mob_death@gar_boars_rush
+
+[mob_death@gar_boars_rush]
+on_info = {=killed_by_actor} %=inc_counter(gar_boars_counter)%
 
 ;*****************************************************************
 ;Fleshes (Dolg Quest)
