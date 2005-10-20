@@ -16,6 +16,7 @@
 #include "string_table.h"
 #include "actorcondition.h"
 #include "game_cl_base.h"
+#include "WeaponMagazined.h"
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
@@ -473,12 +474,15 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 	unaffected_r_torso.pitch	= r_torso.pitch;
 	unaffected_r_torso.roll		= r_torso.roll;
 
-
-//	Fvector			dangle;
-//	dangle			= weapon_recoil_delta_angle();
-//	r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
-//	r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
-
+	CWeaponMagazined *pWM = smart_cast<CWeaponMagazined*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().ItemFromSlot(inventory().GetActiveSlot())/*inventory().m_slots[inventory().GetActiveSlot()].m_pIItem*/ : NULL);
+	if (pWM && pWM->GetCurrentFireMode() == 1 && eacFirstEye != cam_active)
+	{
+		Fvector dangle = weapon_recoil_last_delta();
+		r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
+		r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
+	}
+	
 	// если есть движение - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
 		r_model_yaw		= angle_normalize(r_torso.yaw);
@@ -504,24 +508,25 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 {
 	// rotation
 	r_model_yaw		= NET_Last.o_model;
-	r_torso.yaw		= NET_Last.o_torso.yaw;
-	r_torso.pitch	= NET_Last.o_torso.pitch;
-	r_torso.roll	= NET_Last.o_torso.roll;
 
-//	CWeapon *pWeapon = smart_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-//		inventory().ItemFromSlot(inventory().GetActiveSlot())/*inventory().m_slots[inventory().GetActiveSlot()].m_pIItem*/ : NULL);
+//	r_torso.yaw		= NET_Last.o_torso.yaw;
+//	r_torso.pitch	= NET_Last.o_torso.pitch;
+//	r_torso.roll	= NET_Last.o_torso.roll;
 
-//	if(pWeapon) 
+	r_torso.yaw		=	unaffected_r_torso.yaw;
+	r_torso.pitch	=	unaffected_r_torso.pitch;
+	r_torso.roll	=	unaffected_r_torso.roll;
+
+	CWeaponMagazined *pWM = smart_cast<CWeaponMagazined*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().ItemFromSlot(inventory().GetActiveSlot())/*inventory().m_slots[inventory().GetActiveSlot()].m_pIItem*/ : NULL);
+	if (pWM && pWM->GetCurrentFireMode() == 1/* && eacFirstEye != cam_active*/)
 	{
-		Fvector			dangle;
-		dangle			= weapon_recoil_delta_angle();
-		r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
-		r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
-		r_torso.roll	=	unaffected_r_torso.roll + dangle.z;
+		Fvector dangle = weapon_recoil_last_delta();
+		r_torso.yaw		+=	dangle.y;
+		r_torso.pitch	+=	dangle.x;
+		r_torso.roll	+=	dangle.z;
 	}
 }
-
-
 
 bool	isActorAccelerated			(u32 mstate, bool ZoomMode) 
 {

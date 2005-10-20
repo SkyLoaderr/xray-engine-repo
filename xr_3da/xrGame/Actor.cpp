@@ -1705,6 +1705,7 @@ bool CActor::use_center_to_aim			() const
 void CActor::update_camera (CCameraShotEffector* effector)
 {
 	if (!effector) return;
+//	if (Level().CurrentViewEntity() != this) return;
 
 	CCameraBase* pACam = cam_FirstEye();
 	if (!pACam) return;
@@ -1721,7 +1722,6 @@ void CActor::update_camera (CCameraShotEffector* effector)
 
 	if (pACam->bClampYaw)	clamp(pACam->yaw,pACam->lim_yaw[0],pACam->lim_yaw[1]);
 	if (pACam->bClampPitch)	clamp(pACam->pitch,pACam->lim_pitch[0],pACam->lim_pitch[1]);
-
 }
 void CActor::on_weapon_shot_start		(CWeapon *weapon)
 {	
@@ -1801,6 +1801,17 @@ Fvector CActor::weapon_recoil_delta_angle	()
 
 	if (effector)
 		effector->GetDeltaAngle		(result);
+
+	return							(result);
+}
+
+Fvector CActor::weapon_recoil_last_delta()
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(EffectorManager().GetEffector(eCEShot));
+	Fvector							result = {0.f,0.f,0.f};
+
+	if (effector)
+		effector->GetLastDelta		(result);
 
 	return							(result);
 }

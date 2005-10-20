@@ -721,6 +721,7 @@ public:
 	virtual	void				on_weapon_shot_stop				(CWeapon *weapon);
 	virtual	void				on_weapon_hide					(CWeapon *weapon);
 			Fvector				weapon_recoil_delta_angle		();
+			Fvector				weapon_recoil_last_delta		();
 protected:
 	virtual	void				update_camera					(CCameraShotEffector* effector);
 

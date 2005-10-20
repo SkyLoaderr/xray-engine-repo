@@ -120,6 +120,7 @@ void CActorCondition::UpdateCondition()
 {
 	if (GodMode())				return;
 	if (!object().g_Alive())	return;
+	if (!object().Local())		return;	
 	
 
 	if ((object().mstate_real&mcAnyMove)) {
@@ -138,15 +139,18 @@ void CActorCondition::UpdateCondition()
 	m_fAlcohol		+= m_fV_Alcohol*(m_iDeltaTime/1000);
 	clamp			(m_fAlcohol,			0.0f,		1.0f);
 
-	CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEAlcohol);
-	if	((m_fAlcohol>0.001) ){
-		if(!ce){
-			Actor()->EffectorManager	().AddEffector				(xr_new<CActorAlcoholCamEffector>( this ));
+	if (GameID() == GAME_SINGLE)
+	{	
+		CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEAlcohol);
+		if	((m_fAlcohol>0.001) ){
+			if(!ce){
+				Actor()->EffectorManager	().AddEffector				(xr_new<CActorAlcoholCamEffector>( this ));
+			}
+		}else{
+			if(ce)
+				Actor()->EffectorManager	().RemoveEffector			(eCEAlcohol);
 		}
-	}else{
-		if(ce)
-			Actor()->EffectorManager	().RemoveEffector			(eCEAlcohol);
-	}
+	};
 
 	inherited::UpdateCondition();
 }
