@@ -3,6 +3,6 @@ bandage = 1, prob=0.30 \n
 antirad = 1, prob=0.2 \n
 bread_a = 1, prob=0.8 \n
 kolbasa_a = 1, prob=0.8 \n
-vodka_a = 1, prob=0.8 \n
+vodka_a = 1, prob=1.0 \n
 harmonica_a = 1, prob=0.3 \n
 guitar_a = 1, prob=0.3 \n
