@@ -1,6 +1,6 @@
 object Properties: TProperties
-  Left = 262
-  Top = 365
+  Left = 429
+  Top = 321
   Width = 424
   Height = 329
   BiDiMode = bdRightToLeft
@@ -35,7 +35,7 @@ object Properties: TProperties
     Left = 0
     Top = 1
     Width = 2
-    Height = 282
+    Height = 275
     Cursor = crHSplit
     Color = 4934475
     ParentColor = False
@@ -45,7 +45,7 @@ object Properties: TProperties
     Left = 2
     Top = 1
     Width = 414
-    Height = 282
+    Height = 275
     Cursor = crDefault
     LeftPosition = 0
     HeaderPopupMenu = pmSystem
@@ -127,16 +127,16 @@ object Properties: TProperties
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF0200000058106C0C00250000FFFFFFFF0000010001005C677D000000
-      32000000102700000000000014B295040000000000000000000000000000016F
-      0000000000000000000100000000000072732D3E5769647468293B0D0A090970
-      61466F6C646572732D3E48656967687409090909090909093D2066732D3E5265
-      6164496E746567657228416E7369537472696E67040000004B65790001000000
-      00000000000000000058106C0C00250000FFFFFFFF0000010101005C67590000
-      00320000001027000000000000ECB69504010000000000000000000000000001
-      6F0000000000000000000100000000000072732D3E5769647468293B0D0A0909
-      7061466F6C646572732D3E48656967687409090909090909093D2066732D3E52
-      656164496E746567657228416E7369537472696E670600000056616C75650001
+      F4FFFFFF020000000000000000000000FFFFFFFF000001000100696F7D000000
+      32000000102700000000004014B295040000000000000B400000000000000140
+      0000000000000000000100000000000000000000050000005374796C65007320
+      5365726966000E40A5B20E40C9B20E40F0B20E401BB30E4044B30E4066B30000
+      89B30E40AEB30E40CFB30E40F5B30E4016000000040000004B65790001000000
+      0000000000000000000000000000000000FFFFFFFF000001010100696F590000
+      00320000001027000000000040ECB695040100000000000B4000000000000001
+      400000000000000000000100000000000000000000050000005374796C650073
+      205365726966000E40A5B20E40C9B20E40F0B20E401BB30E4044B30E4066B300
+      0089B30E40AEB30E40CFB30E40F5B30E40160000000600000056616C75650001
       000000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -147,7 +147,7 @@ object Properties: TProperties
     HorizontalLines = True
     HorzDivLinesColor = 7368816
     HorzScrollBarStyles.ShowTrackHint = False
-    HorzScrollBarStyles.Width = 16
+    HorzScrollBarStyles.Width = 17
     HorzScrollBarStyles.ButtonSize = 16
     HorzScrollBarStyles.UseSystemMetrics = False
     HorzScrollBarStyles.UseXPThemes = False
@@ -204,7 +204,7 @@ object Properties: TProperties
     VertDivLinesColor = 7368816
     VerticalLines = True
     VertScrollBarStyles.ShowTrackHint = True
-    VertScrollBarStyles.Width = 16
+    VertScrollBarStyles.Width = 17
     VertScrollBarStyles.ButtonSize = 16
     VertScrollBarStyles.UseSystemMetrics = False
     VertScrollBarStyles.UseXPThemes = False
@@ -245,7 +245,7 @@ object Properties: TProperties
   end
   object paButtons: TPanel
     Left = 0
-    Top = 283
+    Top = 276
     Width = 416
     Height = 19
     Align = alBottom
@@ -322,6 +322,7 @@ object Properties: TProperties
     Width = 121
     Height = 112
     BevelOuter = bvNone
+    Constraints.MinWidth = 3
     ParentColor = True
     TabOrder = 4
     Visible = False
