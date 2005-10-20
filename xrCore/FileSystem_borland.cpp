@@ -119,8 +119,8 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool 
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		CloseHandle(handle);
         if (INVALID_HANDLE_VALUE==handle){
-			if (bMsg)	Msg("#!Access denied. File: '%s' currently locked by user: '%s'.",fn,GetLockOwner(0,fname).c_str());
-            if (owner) 	*owner = GetLockOwner(0,fname);
+			if (bMsg)	Msg("#!Access denied. File: '%s' currently locked by user: '%s'.",fn,GetLockOwner(initial,fname).c_str());
+            if (owner) 	*owner = GetLockOwner(initial,fname);
         }
 		return (INVALID_HANDLE_VALUE==handle);
 	}
@@ -140,7 +140,8 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(mk_pair(lp_fn,handle));
 			R_ASSERT(			I.second);
 			// register access              LockFile
-            xr_string			m_AccessFN = xr_string("access\\")+fname+xr_string(".desc");
+            xr_string pref 		= initial?xr_string(FS.get_path(initial)->m_Add)+"\\":xr_string("");
+            xr_string			m_AccessFN = xr_string("access\\")+pref+fname+xr_string(".desc");
             FS.update_path		(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
             
             CInifile*	ini		= CInifile::Create(m_AccessFN.c_str(),false);
@@ -169,7 +170,8 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
     	void* handle 			= it->second;
 		m_LockFiles.erase		(it);
         // unregister access
-        xr_string				m_AccessFN = xr_string("access\\")+fname+xr_string(".desc");
+        xr_string pref 			= initial?xr_string(FS.get_path(initial)->m_Add)+"\\":xr_string("");
+        xr_string				m_AccessFN = xr_string("access\\")+pref+fname+xr_string(".desc");
         FS.update_path			(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
         CInifile*	ini			= CInifile::Create(m_AccessFN.c_str(),false);
         string512				buf0,buf1;
@@ -187,7 +189,8 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 
 shared_str EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 {
-    xr_string					m_AccessFN = xr_string("access\\")+fname+xr_string(".desc");
+    xr_string pref 				= initial?xr_string(FS.get_path(initial)->m_Add)+"\\":xr_string("");
+    xr_string					m_AccessFN = xr_string("access\\")+pref+fname+xr_string(".desc");
     FS.update_path				(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
     CInifile*	ini				= CInifile::Create(m_AccessFN.c_str(),false);
 	static string256 			comp;
