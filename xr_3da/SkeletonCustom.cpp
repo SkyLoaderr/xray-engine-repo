@@ -138,8 +138,7 @@ void	CKinematics::IBoneInstances_Create()
 {
 	// VERIFY2				(bones->size() < 64, "More than 64 bones is a crazy thing!");
 	u32				size	= bones->size();
-	void*			ptr		= xr_malloc(size*sizeof(CBoneInstance));
-	bone_instances			= (CBoneInstance*)ptr;
+	bone_instances			=xr_alloc<CBoneInstance>(size);
 	for (u32 i=0; i<size; i++)
 		bone_instances[i].construct();
 }

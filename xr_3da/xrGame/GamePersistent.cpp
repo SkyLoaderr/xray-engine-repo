@@ -23,9 +23,15 @@
 #	include "ai_debug.h"
 #endif
 
-static	void *	ode_alloc	(size_t size)								{ return xr_malloc(size);			}
-static	void *	ode_realloc	(void *ptr, size_t oldsize, size_t newsize)	{ return xr_realloc(ptr,newsize);	}
-static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);				}
+#ifdef DEBUG
+	static	void *	ode_alloc	(size_t size)								{ return Memory.mem_alloc(size,"ODE");			}
+	static	void *	ode_realloc	(void *ptr, size_t oldsize, size_t newsize)	{ return Memory.mem_realloc(ptr,newsize,"ODE");	}
+	static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);							}
+#else
+	static	void *	ode_alloc	(size_t size)								{ return xr_malloc(size);			}
+	static	void *	ode_realloc	(void *ptr, size_t oldsize, size_t newsize)	{ return xr_realloc(ptr,newsize);	}
+	static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);				}
+#endif
 
 CGamePersistent::CGamePersistent(void)
 {

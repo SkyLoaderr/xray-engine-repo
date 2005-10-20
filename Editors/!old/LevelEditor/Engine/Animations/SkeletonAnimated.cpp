@@ -445,8 +445,7 @@ void	CSkeletonAnimated::IBoneInstances_Create()
 {
     inherited::IBoneInstances_Create();
 	u32				size	= bones->size();
-	void*			ptr		= xr_malloc(size*sizeof(CBlendInstance));
-	blend_instances			= (CBlendInstance*)ptr;
+	blend_instances			= xr_alloc<CBlendInstance>(size);
 	for (u32 i=0; i<size; i++)
 		blend_instances[i].construct();
 }

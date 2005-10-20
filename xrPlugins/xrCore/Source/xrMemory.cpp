@@ -136,8 +136,33 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 	return (u32) total;
 }
 
+#ifndef DEBUG
 void	xrMemory::mem_statistic	()
 {
+}
+#else
+void	xrMemory::mem_statistic	()
+{
+	if (!debug_mode)	return	;
+
+	debug_cs.Enter			();
+	debug_mode				= FALSE;
+
+	IWriter*	F			= FS.w_open	("x:\\$memstat$.txt");
+	char		temp [16394];
+	for (u32 it=0; it<debug_info.size(); it++)
+	{
+		if (0==debug_info[it]._p)	continue	;
+		sprintf			(temp,"%8d %s",debug_info[it]._size,debug_info[it]._name);
+		F->w_string		(temp)		;
+	}
+	FS.w_close				(F);
+
+	// leave
+	debug_mode				= TRUE;
+	debug_cs.Leave			();
+
+	/*
 	mem_compact				();
 	LPCSTR					fn	= "$memstat$.tmp";
 	xr_map<u32,u32>			stats;
@@ -178,14 +203,16 @@ void	xrMemory::mem_statistic	()
 		xr_map<u32,u32>::iterator E		= stats.end();
 		for (; I!=E; I++)	Msg			("%8d : %-4d [%d]",I->first,I->second,I->first*I->second);
 	}
+	*/
 }
+#endif
 
 // xr_strdup
 char*			xr_strdup		(const char* string)
 {	
 	VERIFY	(string);
-	u32		len			= u32(xr_strlen(string))+1;
-	char *	memory		= (char *) Memory.mem_alloc( len );
+	u32		len			= u32(xr_strlen(string))+1	;
+	char *	memory		= xr_alloc<char> ( len )	;
 	Memory.mem_copy		(memory,string,len);
 	return	memory;
 }

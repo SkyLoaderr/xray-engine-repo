@@ -11,6 +11,8 @@ public:
 	struct				mdbg {
 		void*			_p;
 		size_t 			_size;
+		const char*		_name;
+		u32				_dummy;
 	};
 public:
 	xrMemory			();
@@ -30,7 +32,7 @@ public:
 	u32					stat_calls;
 	s32					stat_counter;
 public:
-	void				dbg_register	(void* _p,	size_t _size);
+	void				dbg_register	(void* _p,	size_t _size, const char* _name);
 	void				dbg_unregister	(void* _p);
 	void				dbg_check		();
 
@@ -40,9 +42,14 @@ public:
 	void				mem_counter_set	(u32 _val)	{ stat_counter = _val;	}
 	u32					mem_counter_get	()			{ return stat_counter;	}
 
+#ifdef DEBUG
+	void*				mem_alloc		(size_t	size				, const char* _name);
+	void*				mem_realloc		(void*	p, size_t size		, const char* _name);
+#else
 	void*				mem_alloc		(size_t	size				);
-	void				mem_free		(void*	p					);
 	void*				mem_realloc		(void*	p, size_t size		);
+#endif
+	void				mem_free		(void*	p					);
 
 	pso_MemCopy*		mem_copy;
 	pso_MemFill*		mem_fill;
@@ -66,24 +73,30 @@ extern XRCORE_API	xrMemory	Memory;
 #endif
 
 // generic "C"-like allocations/deallocations
-template <class T>
-IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T));	}
-
-template <class T>
-IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
-
-IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
-
-IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
+#ifdef DEBUG
+	template <class T>
+	IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T),typeid(T).name());	}
+	template <class T>
+	IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
+	IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size,0);				}
+	IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size,0);			}
+#else
+	template <class T>
+	IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T));	}
+	template <class T>
+	IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
+	IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
+	IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
+#endif
 
 XRCORE_API	char* 	xr_strdup	(const char* string);
 
 // Global new/delete override
 #if !(defined(__BORLANDC__) || defined(NO_XRNEW))
-	IC void*	__cdecl operator new		(size_t size)		{	return xr_malloc(size?size:1);			}
-	IC void		__cdecl operator delete		(void *p)			{	xr_free(p);								}
-	IC void*	__cdecl operator new[]		(size_t size)		{	return xr_malloc(size?size:1);			}
-	IC void		__cdecl	operator delete[]	(void* p)			{	xr_free(p);								}
+	IC void*	operator new		(size_t size)		{	return Memory.mem_alloc(size?size:1, "C++ NEW");	}
+	IC void		operator delete		(void *p)			{	xr_free(p);											}
+	IC void*	operator new[]		(size_t size)		{	return Memory.mem_alloc(size?size:1, "C++ NEW");	}
+	IC void		operator delete[]	(void* p)			{	xr_free(p);											}
 #endif
 
 // POOL-ing

@@ -61,7 +61,11 @@ static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
     return	NULL;
   }
   else
-    return xr_realloc		(ptr, nsize);
+#ifdef DEBUG
+    return Memory.mem_realloc		(ptr, nsize, "LUA");
+#else
+    return Memory.mem_realloc		(ptr, nsize);
+#endif
 }
 
 CScriptStorage::CScriptStorage		()

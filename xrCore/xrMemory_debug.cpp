@@ -25,14 +25,14 @@ void	dbg_header			(xrMemory::mdbg& dbg, bool _debug)
 	R_ASSERT2			(t1==t2,"CorePanic: Memory block header corrupted");
 }
 
-void	xrMemory::dbg_register		(void* _p, size_t _size)
+void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)
 {
 	VERIFY					(debug_mode);
 	debug_cs.Enter			();
 	debug_mode				= FALSE;
 
 	// register + mark
-	mdbg	dbg				=  { _p,_size };
+	mdbg	dbg				=  { _p,_size,_name, 0 };
 	dbg_header				(dbg,true);
 	debug_info.push_back	(dbg);
 	u8*			_ptr		= (u8*)	_p;

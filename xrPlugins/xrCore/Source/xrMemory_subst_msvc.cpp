@@ -25,7 +25,7 @@ ICF	u32		get_pool			(size_t size)
 	else						return pid;
 }
 
-void*	xrMemory::mem_alloc		(size_t size)
+void*	xrMemory::mem_alloc		(size_t size, const char* _name)
 {
 	// if (mem_initialized)		Memory.dbg_check			();
 	stat_calls++;
@@ -61,7 +61,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 		}
 	}
 
-	if		(debug_mode)		dbg_register		(_ptr,size);
+	if		(debug_mode)		dbg_register		(_ptr,size,_name);
 #ifdef DEBUG
 	if (mem_initialized)		debug_cs.Leave		();
 	//if(g_globalCheckAddr==_ptr){
@@ -101,10 +101,10 @@ void	xrMemory::mem_free		(void* P)
 }
 
 extern BOOL	g_bDbgFillMemory	;
-void*	xrMemory::mem_realloc	(void* P, size_t size)
+void*	xrMemory::mem_realloc	(void* P, size_t size, const char* _name)
 {
 	stat_calls++;
-	if (0==P)					return mem_alloc(size);
+	if (0==P)					return mem_alloc	(size,_name);
 
 #ifdef DEBUG
 	if(g_globalCheckAddr==P)
@@ -115,9 +115,17 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	if (mem_initialized)		debug_cs.Enter		();
 #endif
 	u32		p_current			= get_header(P);
+	u32		p_new				= get_pool	(size+(debug_mode?4:0));
+	u32		p_mode				;
+
+	if (mem_generic==p_current)	{
+		if (p_new<p_current)		p_mode	= 2	;
+		else						p_mode	= 0	;
+	} else 							p_mode	= 1	;
+
 	void*	_real				= (void*)(((u8*)P)-1);
 	void*	_ptr				= NULL;
-	if (mem_generic==p_current)
+	if		(0==p_mode)
 	{
 		u32		_footer			=	debug_mode?4:0;
 #ifdef DEBUG
@@ -130,17 +138,26 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 		void*	_real2			=	xr_aligned_offset_realloc	(_real,size+_footer,16,0x1);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
-		if		(debug_mode)	dbg_register	(_ptr,size);
-	} else {
+		if		(debug_mode)	dbg_register	(_ptr,size,_name);
+	} else if (1==p_mode)		{
+		// pooled realloc
 		R_ASSERT2				(p_current<mem_pools_count,"Memory corruption");
 		u32		s_current		= mem_pools[p_current].get_element();
 		u32		s_dest			= (u32)size;
 		void*	p_old			= P;
-		void*	p_new			= mem_alloc(size);
+		void*	p_new			= mem_alloc		(size,_name);
 		mem_copy				(p_new,p_old,_min(s_current,s_dest));
 		mem_free				(p_old);
 		_ptr					= p_new;
+	} else if (2==p_mode)		{
+		// relocate into another mmgr(pooled) from real
+		void*	p_old			= P;
+		void*	p_new			= mem_alloc		(size,_name);
+		mem_copy				(p_new,p_old,size);
+		mem_free				(p_old);
+		_ptr					= p_new;
 	}
+
 #ifdef DEBUG
 	if (mem_initialized)		debug_cs.Leave	();
 
