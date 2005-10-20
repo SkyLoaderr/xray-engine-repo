@@ -348,7 +348,7 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
 	{
 //		speaker_name.SetText(m_pOthersInvOwner->Name());
-		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), m_pOurInvOwner->Name());
+		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), m_pOthersInvOwner->Name());
 	}
 
 	//если диалог завершился, перейти в режим выбора темы
