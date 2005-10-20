@@ -20,10 +20,8 @@ function opt_gameplay:InitControls(x, y, xml, handler)
 	c = xml:InitTrackBar("tab_gameplay:track_crosshair",	self)
 	c:Enable(false)
 	
-	c = xml:InitCheck("tab_gameplay:check_tips",	self)
-	c:Enable(false)
-	c = xml:InitCheck("tab_gameplay:check_blood",		self)
-	c:Enable(false)
+	xml:InitCheck("tab_gameplay:check_tips",	self)
+	xml:InitCheck("tab_gameplay:check_dist",	self)
 	xml:InitStatic("tab_gameplay:pic_crosshair", self)
 	
 end

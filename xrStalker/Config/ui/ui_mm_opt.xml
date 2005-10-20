@@ -155,11 +155,13 @@
 		</track_crosshair>
 		
 		<check_tips x="20" y="55" width="143" height="21">
+			<options_item entry="hud_info" group="mm_opt_controls"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_tips</text>
 		</check_tips>
-		<check_blood x="20" y="80" width="143" height="21">
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_blood</text>
-		</check_blood>
+		<check_dist x="20" y="80" width="143" height="21">
+			<options_item entry="hud_crosshair_dist" group="mm_opt_controls"/>
+			<text font="letterica16" r="115" g="114" b="112">Crosshair distance</text>
+		</check_dist>
 		<pic_crosshair x="-7" y="117" width="470" height="179">
 			<texture>ui_options_tv</texture>
 		</pic_crosshair>
