@@ -2064,10 +2064,25 @@
 						RelativePath=".\Config\models\capture\armor_helmet_damage_med.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\capture\burer_captures.ltx">
+					</File>
+					<File
 						RelativePath=".\config\models\capture\c_dog.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\capture\cat_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\chimera_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\dog_captures.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\models\capture\exo_helmet_damage_med.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\flesh_captures.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\models\capture\gilet_antigas_damage_low.ltx">
@@ -2080,6 +2095,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\models\capture\gilet_mask_damage_no.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\izlom_captures.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\models\capture\kombez_antigas_damage_low.ltx">
@@ -2106,6 +2124,12 @@
 						RelativePath=".\Config\models\capture\kombez_mask_damage_no.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\capture\kontroler_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\krovosos_captures.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\models\capture\kurtka_antigas_damage_low.ltx">
 					</File>
 					<File
@@ -2115,7 +2139,28 @@
 						RelativePath=".\Config\models\capture\kurtka_mask_damage_no.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\capture\mutant_boar_captures.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\models\capture\plasch_mask_damage_no.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\poltergeist_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\pseudodog_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\psevdogigant_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\snork_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\tushkano_captures.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\capture\zombi_captures.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\models\capture\zombied_damage_med.ltx">
