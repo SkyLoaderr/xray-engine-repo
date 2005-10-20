@@ -106,6 +106,12 @@ function action_postprocess:update (delta)
 	end
 	
 	self.actor_inside = self.object:inside (db.actor:position ())
+	
+	--if self.actor_inside == true then
+	   --printf ("[%d]ACTOR IN DEAD ZONE !!!", time_global ()) 
+	--else
+	   --printf ("[%d]ACTOR NOT IN DEAD ZONE !!!", time_global ())   
+	--end
 	self:update_hit (delta)
 end
 -------------------
