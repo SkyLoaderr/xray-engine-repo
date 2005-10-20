@@ -83,13 +83,15 @@ function init_intro_dialog(dlg)
 		phrase_table_filled = true
 	end
 
-	local phrase_script = dlg:AddPhrase("",0,-1,-10000)
-	phrase_script = dlg:AddPhrase("",get_id("intro"),0,-10000)
-	
+	local phrase_ = dlg:AddPhrase("",0,-1,-10000)
+		phrase_ = dlg:AddPhrase("",get_id("intro"),0,-10000)
+
 	local k,v = 0,0
 	for k,v in pairs(phrase.intro) do
-		phrase_script = dlg:AddPhrase(k,get_id("intro"),1,-10000)
-		if phrase_script then
+		phrase_ = dlg:AddPhrase(k,get_id("intro"),1,-10000)
+		
+		if phrase_ then
+			local phrase_script = phrase_:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_intro")
 		end
 	end
