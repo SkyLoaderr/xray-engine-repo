@@ -10,7 +10,6 @@ struct OggVorbis_File;
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
-	OggVorbis_File*			ovf;
 	shared_str				fname;
 	IReader*				wave;					// real source
 	cache_cat				CAT;
@@ -26,8 +25,8 @@ public:
 	float					m_fMaxAIDist;
 	u32						m_uGameType;
 private:
-	void 					i_decompress_fr			(char* dest, u32 size);    
-	void 					i_decompress_hr			(char* dest, u32 size);
+	void 					i_decompress_fr			(OggVorbis_File* ovf, char* dest, u32 size);    
+	void 					i_decompress_hr			(OggVorbis_File* ovf, char* dest, u32 size);
 	void					LoadWave 				(LPCSTR name, BOOL b3D);
 public:
 	CSoundRender_Source		();

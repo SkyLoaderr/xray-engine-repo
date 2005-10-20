@@ -35,16 +35,43 @@ long ov_tell_func(void *datasource)
 	return ((IReader*)datasource)->tell(); 
 }
 
+void CSoundRender_Source::decompress		(u32 line)
+{
+	OggVorbis_File ovf;
+	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
+
+	wave->seek				(0);
+	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
+
+	// decompression of one cache-line
+	u32		line_size	= SoundRender->cache.get_linesize();
+	char*	dest		= (char*)	SoundRender->cache.get_dataptr	(CAT,line);
+	u32		buf_offs	= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;
+	u32		left_file	= dwBytesTotal - buf_offs;
+	u32		left		= _min	(left_file,line_size);
+	// seek
+	u32	cur_pos			= u32	(ov_pcm_tell(&ovf));
+	if (cur_pos!=buf_offs){
+		ov_pcm_seek		(&ovf,buf_offs);
+	}
+	// decompress
+	if (psSoundFreq==sf_22K)	i_decompress_hr(&ovf,dest,left);
+	else						i_decompress_fr(&ovf,dest,left);
+}
+
 void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
 	// Load file into memory and parse WAV-format
 	wave					= FS.r_open(pName); 
 	R_ASSERT3				(wave&&wave->length(),"Can't open wave file:",pName);
 
+	OggVorbis_File ovf;
 	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
-	ov_open_callbacks		(wave,ovf,NULL,0,ovc);
 
-	vorbis_info* ovi		= ov_info(ovf,-1);
+	wave->seek				(0);
+	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
+
+	vorbis_info* ovi		= ov_info(&ovf,-1);
 	// verify
 	R_ASSERT3				(ovi,"Invalid source info:",pName);
 	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
@@ -55,14 +82,14 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 	wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 
-	s64 pcm_total			= ov_pcm_total(ovf,-1);
+	s64 pcm_total			= ov_pcm_total(&ovf,-1);
 	if (psSoundFreq==sf_22K) pcm_total/=2;
 	dwBytesTotal			= u32(pcm_total*wfxdest.nBlockAlign); 
 	dwBytesPerMS			= wfxdest.nAvgBytesPerSec/1000;
 //	dwBytesPerSec			= wfxdest.nAvgBytesPerSec;
 	dwTimeTotal				= u32 ( sdef_source_footer + u64( (u64(dwBytesTotal)*u64(1000))/u64(wfxdest.nAvgBytesPerSec) ) );
 
-	vorbis_comment*	ovm		= ov_comment(ovf,-1);
+	vorbis_comment*	ovm		= ov_comment(&ovf,-1);
 	if (ovm->comments){
 		IReader F			(ovm->user_comments[0],ovm->comment_lengths[0]);
 		u32 vers			= F.r_u32	();
@@ -121,7 +148,7 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 
 void CSoundRender_Source::unload()
 {
-	ov_clear						(ovf);
+//	ov_clear						(ovf);
 	FS.r_close						(wave);
 	SoundRender->cache.cat_destroy	(CAT);
     dwTimeTotal						= 0;
