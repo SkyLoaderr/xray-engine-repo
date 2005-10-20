@@ -280,7 +280,7 @@ function gar_hellcar_victory(actor, npc)
 		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
 	end
 end
-
+--[[
 function gar_boars_counter(actor, npc)
 	local c = pstor_retrieve(actor, "gar_boars_counter", 0)
 	
@@ -292,6 +292,7 @@ function gar_boars_counter(actor, npc)
 		...
 	end
 end
+]]
 	
 function actor_friend(actor, npc)
 	printf("_bp: xr_effects: actor_friend(): npc='%s': time=%d", npc:name(), time_global())
