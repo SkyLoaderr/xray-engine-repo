@@ -576,7 +576,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 }
 
 void CActor::HitMark	(float P, 
-						 Fvector &dir,			
+						 Fvector dir,			
 						 CObject* who, 
 						 s16 element, 
 						 Fvector position_in_bone_space, 
@@ -624,12 +624,7 @@ void CActor::HitMark	(float P,
 		}else{
 			VERIFY(0);
 		}
-		/*
-		Log	("local hit dir	= ",dir);
-		Log	("camera dir	= ",cam_dir);
-		Log	("id			= ",id);
-		*/
-		HUD().Hit(id, P);
+		HUD().Hit(id, P, dir);
 	}
 
 }

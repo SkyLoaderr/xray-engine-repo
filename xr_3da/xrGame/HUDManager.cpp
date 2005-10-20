@@ -281,10 +281,9 @@ void  CHUDManager::ShowCrosshair	(bool show)
 	m_pHUDCursor->m_bShowCrosshair = show;
 }
 
-//////////////////////////////////////////////////////////////////////////
 #include "ActorEffector.h"
 
-void CHUDManager::Hit(int idx, float power)	
+void CHUDManager::Hit(int idx, float power, const Fvector& dir)	
 {
 	if(psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
 		CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEFireHit);
@@ -321,5 +320,5 @@ void CHUDManager::Hit(int idx, float power)
 			Actor()->EffectorManager	().AddEffector		(e);
 		}
 	}
-	HitMarker.Hit(idx);
+	HitMarker.Hit(idx, dir);
 }

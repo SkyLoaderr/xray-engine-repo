@@ -34,7 +34,7 @@ public:
 	virtual		void		OnFrame					(){;}
 	virtual		void		OnEvent					(EVENT E, u64 P1, u64 P2){;}
 
-	virtual		void		Hit						(int idx, float power){;}
+//	virtual		void		Hit						(int idx, float power){;}
 
 	virtual IC	CUI*		GetUI					()=0;
 };

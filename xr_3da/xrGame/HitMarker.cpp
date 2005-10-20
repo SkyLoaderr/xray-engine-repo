@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "HitMarker.h"
 #include "../render.h"
+#include "../LightAnimLibrary.h"
+#include "UIStaticItem.h"
 
 static Fvector2			as_PC[5];
 static Fvector2			as_TC[5];
@@ -11,6 +13,7 @@ const static u32		as_id[4*3] = {0,1,4,  1,2,4,  2,3,4,  3,0,4};
 //--------------------------------------------------------------------
 CHitMarker::CHitMarker()
 {
+/*
 	ZeroMemory		(fHitMarks,sizeof(float)*4);
 	as_PC[0].set	(-0.5f,-0.67f);
 	as_PC[1].set	(0.5f,-0.67f);
@@ -25,6 +28,8 @@ CHitMarker::CHitMarker()
 
 	hShader.create	("hud\\hitmarker","ui\\hud_hitmarker");
 	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), NULL);
+*/
+	hShader2.create	("hud\\default","ui\\ui_hud_hit_mark");
 }
 //--------------------------------------------------------------------
 CHitMarker::~CHitMarker()
@@ -34,6 +39,20 @@ CHitMarker::~CHitMarker()
 const static float fShowTime = 0.5f;
 void CHitMarker::Render()
 {
+	float h1,p1;
+	Device.vCameraDirection.getHP	(h1,p1);
+
+	while( m_HitMarks.size() && !m_HitMarks.front()->IsActive() ){
+		xr_delete	( m_HitMarks.front() );
+		m_HitMarks.pop_front	();
+	}
+
+	HITMARKS::iterator it = m_HitMarks.begin();
+	HITMARKS::iterator it_e = m_HitMarks.end();
+	for(;it!=it_e;++it)
+		(*it)->Draw(-h1);
+
+/*
 	if (fHitMarks[0]>0 || fHitMarks[1]>0 || fHitMarks[2]>0 || fHitMarks[3]>0)	
 	{
 		float		w_2		= float(::Render->getTarget()->get_width())/2;
@@ -63,10 +82,14 @@ void CHitMarker::Render()
 			RCache.Render		(D3DPT_TRIANGLELIST,dwOffset,Count/3);
 		}
 	}
+*/
 }
 //--------------------------------------------------------------------
 
-void CHitMarker::Hit(int id){
+void CHitMarker::Hit(int id, const Fvector& dir){
+
+	m_HitMarks.push_back	(xr_new<SHitMark>(hShader2,dir));
+/*
 	VERIFY((id>=0)&&(id<8));
 	switch (id){
 	case 4:{
@@ -87,6 +110,46 @@ void CHitMarker::Hit(int id){
 	}break;
 	default:
 		fHitMarks[id] = fShowTime;
-	};
+	};*/
 }
 //--------------------------------------------------------------------
+
+
+
+SHitMark::SHitMark		(const ref_shader& sh, const Fvector& dir)
+{
+	m_StartTime							= Device.fTimeGlobal;
+	m_lanim								= LALib.FindItem("hud_hit_mark");
+	m_HitDirection						= dir.getH();
+	m_UIStaticItem						= xr_new<CUIStaticItem>();
+	m_UIStaticItem->SetShader			(sh);
+//	m_UIStaticItem->SetHeadingPivot		(Fvector2().set(64.0f,64.0f));
+//	m_UIStaticItem->SetOriginalRect		(0.0f,0.0f,128.0f,128.0f);
+	m_UIStaticItem->SetPos				(256.0f, 128.0f);
+	m_UIStaticItem->SetRect				(.0f, .0f, 512.0f, 512.0f);
+}
+
+void SHitMark::UpdateAnim	()
+{
+	int frame;
+	u32 clr			= m_lanim->CalculateRGB(Device.fTimeGlobal-m_StartTime,frame);
+	m_UIStaticItem->SetColor(clr);
+}
+
+SHitMark::~SHitMark		()
+{
+	xr_delete(m_UIStaticItem);
+}
+
+bool	SHitMark::IsActive()
+{
+	return ((Device.fTimeGlobal-m_StartTime) < m_lanim->Length_sec());
+}
+
+void	SHitMark::Draw(float cam_dir)
+{
+	UpdateAnim						();
+
+	float res_h						= cam_dir + m_HitDirection;
+	m_UIStaticItem->Render			(res_h);
+}
