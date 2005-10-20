@@ -181,21 +181,16 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		id_Group			= E->g_group();
 
 
-#ifdef DEBUG
-		if (!ai().get_alife()) {
-			
-			CSE_ALifeMonsterRat		*rat		= smart_cast<CSE_ALifeMonsterRat*>(E);
-			CSE_ALifeMonsterBase	*monster	= smart_cast<CSE_ALifeMonsterBase*>(E);
+		CSE_ALifeMonsterRat		*rat		= smart_cast<CSE_ALifeMonsterRat*>(E);
+		CSE_ALifeMonsterBase	*monster	= smart_cast<CSE_ALifeMonsterBase*>(E);
 
-			if (monster || rat) {
-				MONSTER_COMMUNITY		monster_community;
-				monster_community.set	(pSettings->r_string(*cNameSect(), "species"));
+		if (monster || rat) {
+			MONSTER_COMMUNITY		monster_community;
+			monster_community.set	(pSettings->r_string(*cNameSect(), "species"));
 
-				if(monster_community.team() != 255)
-					id_Team = monster_community.team();
-			}
+			if(monster_community.team() != 255)
+				id_Team = monster_community.team();
 		}
-#endif
 	}
 
 

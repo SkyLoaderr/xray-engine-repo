@@ -1837,6 +1837,7 @@ void CSE_ALifeMonsterZombie::FillProps		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeMonsterBase::CSE_ALifeMonsterBase	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection),CSE_PHSkeleton(caSection)
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
+	m_spec_object_id			= 0xffff;
 }
 
 CSE_ALifeMonsterBase::~CSE_ALifeMonsterBase()
@@ -1848,12 +1849,17 @@ void CSE_ALifeMonsterBase::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	inherited1::STATE_Read		(tNetPacket,size);
 	if(m_wVersion>=68)
 		inherited2::STATE_Read		(tNetPacket,size);
+
+	if (m_wVersion>=109)
+		tNetPacket.r_u16			(m_spec_object_id);	
 }
 
 void CSE_ALifeMonsterBase::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
+	
+	tNetPacket.w_u16			(m_spec_object_id);	
 }
 
 void CSE_ALifeMonsterBase::UPDATE_Read	(NET_Packet	&tNetPacket)
