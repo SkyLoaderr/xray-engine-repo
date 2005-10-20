@@ -272,7 +272,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 		if (!parse_namespace(caNameSpaceName,a,b))
 			return		(false);
 		sprintf			(insert,header,caNameSpaceName,a,b);
-		size_t			str_len = xr_strlen(insert);
+		u32				str_len = xr_strlen(insert);
 		LPSTR			script = xr_alloc<char>(str_len + tSize);
 		strcpy			(script,insert);
 		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
