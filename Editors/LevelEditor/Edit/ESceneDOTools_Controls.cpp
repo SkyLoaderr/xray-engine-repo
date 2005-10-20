@@ -4,10 +4,11 @@
 #include "ESceneDOTools.h"
 #include "FrameDetObj.h"
 #include "UI_LevelTools.h"
+#include "ESceneControlsCustom.h"
 
 void EDetailManager::CreateControls()
 {
-	//inherited::CreateDefaultControls(estDefault);
+	AddControl		(xr_new<TUI_CustomControl>(estDefault,	etaSelect, this));
 	// frame
     pFrame 			= xr_new<TfraDetailObject>((TComponent*)0,this);
 }
