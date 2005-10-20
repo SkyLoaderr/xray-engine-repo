@@ -647,8 +647,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
-			ammo_12x70_buck = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
 			bar_ecolog_flash \n
 		</supplies>
 				
@@ -675,8 +675,8 @@
 			[spawn] \n
 			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_ak74 = 1, scope \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 			medkit = 3 \n
 			ecolog_outfit \n
 		</supplies>
@@ -1732,8 +1732,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
-			ammo_9x19_fmj = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -1757,8 +1757,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_walther \n
-			ammo_9x19_fmj = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -1784,10 +1784,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pmm = 1 \n
-			wpn_mp5 \n
-			ammo_9x19_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 			device_torch \n
 		</supplies>
 					
@@ -1812,10 +1810,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pmm = 1 \n
-			wpn_ak74u \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 			device_torch \n
 		</supplies>
 					
@@ -1840,10 +1836,8 @@
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_ak74u \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 			device_torch \n
 		</supplies>
 					
@@ -1922,8 +1916,8 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_pbp = 1 \n
-			wpn_spas12 \n
-			ammo_12x76_dart = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -1949,8 +1943,8 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_pbp = 1 \n
-			wpn_l85 = 1, 0, 0, 0 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -1976,8 +1970,8 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 1, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 			device_torch \n
 		</supplies>
 					
@@ -2004,8 +1998,8 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 1, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 			device_torch \n
 		</supplies>
 					
