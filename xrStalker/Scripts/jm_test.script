@@ -15,9 +15,7 @@ object_list["test1"] = {
 -- Bloodsuckers
 -----------------------------------------------------------------------------------
 object_list["test2"] = {
-    "mil_bloodsucker1",
-    "mil_bloodsucker2",
-    "mil_bloodsucker3"
+    "mil_bloodsucker1"
 }
 
 
