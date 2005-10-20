@@ -147,8 +147,8 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPCSTR fname, bool bLog)
             CInifile*	ini		= CInifile::Create(m_AccessFN.c_str(),false);
             string512			buf0,buf1;
             string16			dt_buf, tm_buf;
-            sprintf				(buf0,"%s-%s",_strdate(dt_buf),_strtime(tm_buf));
-            sprintf				(buf1,"\"locked  : from computer: '%s' by user: '%s'\"",Core.CompName,Core.UserName);
+            sprintf				(buf0,"%s-%s:%s-LOCK",_strdate(dt_buf),_strtime(tm_buf),"1");
+            sprintf				(buf1,"\"Computer: '%s' User: '%s'\"",Core.CompName,Core.UserName);
             ini->w_string		("history",buf0,buf1);
             sprintf 			(buf0,"\\\\%s\\%s",Core.CompName,Core.UserName);
             ini->w_string		("locked","name",buf0);
@@ -176,8 +176,8 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
         CInifile*	ini			= CInifile::Create(m_AccessFN.c_str(),false);
         string512				buf0,buf1;
         string16				dt_buf, tm_buf;
-        sprintf					(buf0,"%s-%s",_strdate(dt_buf),_strtime(tm_buf));
-        sprintf					(buf1,"\"unlocked: from computer: '%s' by user: '%s'\"",Core.CompName,Core.UserName);
+        sprintf					(buf0,"%s-%s:%s-UNLOCK",_strdate(dt_buf),_strtime(tm_buf),"0");
+        sprintf					(buf1,"\"Computer: '%s' User: '%s'\"",Core.CompName,Core.UserName);
         ini->w_string			("locked","name","");
         ini->w_string			("history",buf0,buf1);
         CInifile::Destroy		(ini);
