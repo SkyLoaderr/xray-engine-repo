@@ -643,7 +643,7 @@
 		<rank>70</rank>
 		<reputation>90</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog</visual>
+		<visual>actors\ecolog\stalker_ecolog_military</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1728,7 +1728,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog_military</visual>
+		<visual>actors\ecolog\stalker_ecolog</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1753,7 +1753,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog_military</visual>
+		<visual>actors\ecolog\stalker_ecolog</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
