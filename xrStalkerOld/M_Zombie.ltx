@@ -164,15 +164,7 @@ health_hit_part 		= 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part 			= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 psy_health_v			= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity			= 0.3						;коэффициенты иммунитета 
-strike_immunity			= 0.8
-shock_immunity			= 0.8
-wound_immunity			= 0.8;1
-radiation_immunity		= 0.0	;0.5
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 0.3
-explosion_immunity		= 0.5
-fire_wound_immunity		= 0.3
+immunities_sect			= sect_zombie_immunities
 
 ;открытые раны
 bleeding_v				= 0						;потеря крови при номинальной ране в секунду
@@ -237,6 +229,17 @@ damage					= m_zombie_damage
 ;species of monster
 species					= zombie
 
+[sect_zombie_immunities]
+burn_immunity			= 0.3						;коэффициенты иммунитета 
+strike_immunity			= 0.8
+shock_immunity			= 0.8
+wound_immunity			= 0.8;1
+radiation_immunity		= 0.0	;0.5
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.3
+explosion_immunity		= 0.5
+fire_wound_immunity		= 0.3
+
 [m_zombie_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
@@ -287,7 +290,9 @@ FakeDeathCount					= 10		; max count of fake death
 StartFakeDeathHealthThreshold	= 0.8
 
 health_hit_part 		= 0.25		;0.8			;процент хита, уходящий на отнимание здоровья
+immunities_sect			= sect_zombie_immortal_immunities
 
+[sect_zombie_immortal_immunities]
 burn_immunity			= 0.3						;коэффициенты иммунитета 
 strike_immunity			= 0.3
 shock_immunity			= 0.3
@@ -297,3 +302,4 @@ telepatic_immunity		= 1.0
 chemical_burn_immunity	= 0.01
 explosion_immunity		= 0.3
 fire_wound_immunity		= 0.3;0.5
+
