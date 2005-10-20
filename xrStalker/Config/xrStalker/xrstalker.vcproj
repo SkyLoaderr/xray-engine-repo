@@ -2160,6 +2160,9 @@
 						RelativePath=".\config\models\capture\snork_captures.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\models\capture\stalker_hero_captures.ltx">
+					</File>
+					<File
 						RelativePath=".\config\models\capture\tushkano_captures.ltx">
 					</File>
 					<File
