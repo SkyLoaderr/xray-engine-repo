@@ -744,8 +744,8 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
 	m_wItemCount				>>= 1;
 
-	m_faWeights					= (float*)xr_malloc(m_wItemCount*sizeof(float));
-	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
+	m_faWeights					= xr_alloc<float>(m_wItemCount);
+	m_cppArtefactSections		= xr_alloc<string64>(m_wItemCount);
 	string512					l_caBuffer;
 	for (u16 i=0; i<m_wItemCount; ++i) {
 		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,i << 1,l_caBuffer));
@@ -809,8 +809,8 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		(m_fBirthProbability);
 		u16						l_wItemCount;
 		tNetPacket.r_u16		(l_wItemCount);
-		float					*l_faWeights			= (float*)xr_malloc(l_wItemCount*sizeof(float));
-		string64				*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
+		float					*l_faWeights			= xr_alloc<float>(l_wItemCount);
+		string64				*l_cppArtefactSections	= xr_alloc<string64>(l_wItemCount);
 
 		for (u16 i=0; i<l_wItemCount; ++i) {
 			tNetPacket.r_stringZ(l_cppArtefactSections[i]);
