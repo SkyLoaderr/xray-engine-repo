@@ -101,6 +101,7 @@ function options_dialog:OnBtnAccept()
 		opt:SaveValues("mm_opt_sound")
 	elseif i == 2 then
 --		self.dlg_gameplay:Show(true)
+		opt:SaveValues("mm_opt_controls")
 	elseif i == 3 then
 		opt:SaveValues("mm_opt_controls")
 		opt:SaveValues("key_binding")
