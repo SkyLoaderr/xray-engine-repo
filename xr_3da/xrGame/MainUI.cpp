@@ -7,6 +7,7 @@
 #include "../IGame_Level.h"
 #include "xr_Level_controller.h"
 #include "ui\UITextureMaster.h"
+#include "ui\UIXmlInit.h"
 #include <dinput.h>
 
 
@@ -112,6 +113,7 @@ CMainUI::CMainUI	()
 	g_pGamePersistent->m_pMainUI= this;
 	if (Device.bReady)			OnDeviceCreate();  	
 	ReadTextureInfo();
+	CUIXmlInit::InitColorDefs();
 }
 
 CMainUI::~CMainUI	()

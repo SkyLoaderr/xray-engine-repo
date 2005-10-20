@@ -116,7 +116,7 @@ public:
 
 	static const ColorDefs		*GetColorDefs()		{ R_ASSERT(m_pColorDefs); return m_pColorDefs; }
 
-	void						InitColorDefs();
+	static void					InitColorDefs();
 	static void					DeleteColorDefs()	{ xr_delete(m_pColorDefs); }
 private:
 	static	ColorDefs			*m_pColorDefs;    

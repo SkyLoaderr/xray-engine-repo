@@ -5,6 +5,7 @@
 class CUIStatic;
 class CUIScrollView;
 class CUI3tButton;
+class CUIMapInfo;
 
 class CUIMapDesc : public CUIDialogWnd {
 public:
@@ -25,4 +26,5 @@ private:
 	CUIStatic*		m_pImage;
 	CUI3tButton*	m_pBtnSpectator;
 	CUI3tButton*	m_pBtnNext;
+	CUIMapInfo*		m_pMapInfo;
 };

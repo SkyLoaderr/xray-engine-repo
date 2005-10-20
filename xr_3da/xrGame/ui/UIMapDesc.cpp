@@ -9,6 +9,7 @@
 #include "../hudmanager.h"
 #include "../level.h"
 #include "../game_cl_teamdeathmatch.h"
+#include "UIMapInfo.h"
 #include <dinput.h>
 
 CUIMapDesc::CUIMapDesc(){
@@ -20,6 +21,8 @@ CUIMapDesc::CUIMapDesc(){
 
 	m_pBtnSpectator	= xr_new<CUI3tButton>();	AttachChild(m_pBtnSpectator);
 	m_pBtnNext		= xr_new<CUI3tButton>();	AttachChild(m_pBtnNext);
+
+	m_pMapInfo		= xr_new<CUIMapInfo>();		AttachChild(m_pMapInfo);
 	
 
 	for (int i = 0; i <3; i++)
@@ -40,6 +43,8 @@ CUIMapDesc::~CUIMapDesc(){
 
 	xr_delete(m_pBtnSpectator);
 	xr_delete(m_pBtnNext);
+
+	xr_delete(m_pMapInfo);
 
 	for (int i = 0; i <3; i++)
 		xr_delete(m_pFrame[i]);		

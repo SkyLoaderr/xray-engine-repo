@@ -11237,6 +11237,19 @@
 					<File
 						RelativePath=".\ui\UIMapDesc.h">
 					</File>
+					<Filter
+						Name="MapInfo"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIMapInfo.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMapInfo.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIMapInfo_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

@@ -7,6 +7,7 @@
 #include "UI3tButton.h"
 #include "UISpinText.h"
 #include "UIXmlInit.h"
+#include "UIMapInfo.h"
 #include "../../xr_ioconsole.h"
 
 #define	MAP_LIST	"map_list.ltx"
@@ -129,36 +130,7 @@ void CUIMapList::OnListItemClicked(){
 	desc_txt += ".txt";
 
 
-	m_pMapName->SetText(pItem->GetText());
-
-	if (FS.exist("$game_config$", desc_txt.c_str()))
-	{
-		IReader *F = FS.r_open("$game_config$", desc_txt.c_str());
-		if(F==NULL) return;
-
-		CMemoryWriter W;	
-		
-		m_pMapDesc->SetText(ParseFile(W, F));
-		//	W.w(F->pointer(),F->length());
-		W.w_stringZ("");
-		FS.r_close(F);
-	}
-	else
-		m_pMapDesc->SetText("");
-
-}
-
-LPCSTR ParseFile(CMemoryWriter& W, IReader *F )
-{
-	string4096	str;
-
-	while( !F->eof() ){
-		F->r_string		(str,sizeof(str));
-		W.w_string		(str);
-	}
-	W.w_stringZ("");
-
-	return (LPCSTR )W.pointer();
+	m_pMapInfo->InitMap(pItem->GetText());
 }
 
 xr_token g_GameModes[ ];
@@ -335,9 +307,8 @@ void CUIMapList::SetMapPic(CUIStatic* map_pic){
 	m_pMapPic = map_pic;
 }
 
-void CUIMapList::SetMapDesc(CUIStatic* map_desc, CUILabel* map_name){
-	m_pMapDesc = map_desc;
-	m_pMapName = map_name;
+void CUIMapList::SetMapInfo(CUIMapInfo* map_info){
+	m_pMapInfo = map_info;	
 }
 
 void CUIMapList::SetServerParams(LPCSTR params){

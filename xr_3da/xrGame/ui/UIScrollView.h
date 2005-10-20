@@ -16,13 +16,15 @@ protected:
 	float			m_rightIdent;
 	Flags16			m_flags;
 	void			RecalcSize			();
-	void			UpdateScroll		();
-	void			Init				();// need parent to be initialized
+	void			UpdateScroll		();	
 	void			OnScrollV			();
 	void			SetRightIndention	(float val);
 public:
+	using CUIWindow::Init;
+			
 					CUIScrollView		();
 	virtual			~CUIScrollView		();
+			void	Init				();// need parent to be initialized
 	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 	virtual bool	OnMouse				(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw				();

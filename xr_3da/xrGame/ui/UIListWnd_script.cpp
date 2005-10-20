@@ -4,6 +4,7 @@
 #include "ServerList.h"
 #include "UIMapList.h"
 #include "UISpinText.h"
+#include "UIMapInfo.h"
 
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
@@ -101,7 +102,7 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("GetCurGameType",			&CUIMapList::GetCurGameType)
 		.def("StartDedicatedServer",	&CUIMapList::StartDedicatedServer)
 		.def("SetMapPic",				&CUIMapList::SetMapPic)
-		.def("SetMapDesc",				&CUIMapList::SetMapDesc),	
+		.def("SetMapInfo",				&CUIMapList::SetMapInfo),	
 		
 
 		class_<enum_exporter<GAME_TYPE> >("GAME_TYPE")

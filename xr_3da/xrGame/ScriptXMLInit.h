@@ -24,6 +24,7 @@ class CUIArtefactPanel;
 class CServerList;
 class CUIMapList;
 class CUITrackBar;
+class CUIMapInfo;
 
 class CScriptXmlInit {
 public:
@@ -53,6 +54,7 @@ public:
 	CUITabControl*		InitTab(LPCSTR path, CUIWindow* parent);
 	CServerList*		InitServerList(LPCSTR path, CUIWindow* parent);
 	CUIMapList*			InitMapList(LPCSTR path, CUIWindow* parent);
+	CUIMapInfo*			InitMapInfo(LPCSTR path, CUIWindow* parent);
 	CUITrackBar*		InitTrackBar(LPCSTR path, CUIWindow* parent);
 	CUIEditBox*			InitCDkey(LPCSTR path, CUIWindow* parent);
 	CUIWindow*			InitKeyBinding(LPCSTR path, CUIWindow* parent);

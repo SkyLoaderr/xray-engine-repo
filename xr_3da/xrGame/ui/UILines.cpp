@@ -170,7 +170,7 @@ void CUILines::ParseText(){
 		return;
 
 	Reset();
-	if (m_text.length() && NULL == m_pFont)
+	if (!m_text.empty() && NULL == m_pFont)
 		R_ASSERT2(false, "can't parse text without font");
 		
 	if(NULL == m_pFont)
@@ -187,6 +187,8 @@ void CUILines::ParseText(){
 		subline.m_color = GetTextColor();
 		line->AddSubLine(&subline);
 	}
+
+	R_ASSERT(m_wndSize.x > m_pFont->SizeOfRel(m_text[0]));
 
 	if (uFlags.test(flRecognizeNewLine))
 		line->ProcessNewLines(); // process "\n"

@@ -16,6 +16,7 @@
 #include "ui\UIEditBox.h"
 #include "ui\UITrackBar.h"
 #include "ui\UICDkey.h"
+#include "ui\UIMapInfo.h"
 
 #include "script_space.h"
 using namespace luabind;
@@ -218,6 +219,14 @@ CUIMapList* CScriptXmlInit::InitMapList(LPCSTR path, CUIWindow* parent){
 	return pWnd;	
 }
 
+CUIMapInfo* CScriptXmlInit::InitMapInfo(LPCSTR path, CUIWindow* parent){
+	CUIMapInfo* pWnd = xr_new<CUIMapInfo>();
+	CUIXmlInit::InitWindow(m_xml,path,0,pWnd);
+	pWnd->SetAutoDelete(true);
+	parent->AttachChild(pWnd);
+	return pWnd;	
+}
+
 CUIWindow* CScriptXmlInit::InitKeyBinding(LPCSTR path, CUIWindow* parent){
 	CUIKeyBinding* pWnd = xr_new<CUIKeyBinding>();
 	pWnd->InitFromXml(m_xml, path);	
@@ -266,6 +275,7 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("InitTab",			&CScriptXmlInit::InitTab)
 		.def("InitServerList",	&CScriptXmlInit::InitServerList)
 		.def("InitMapList",		&CScriptXmlInit::InitMapList)
+		.def("InitMapInfo",		&CScriptXmlInit::InitMapInfo)
 		.def("InitTrackBar",	&CScriptXmlInit::InitTrackBar)
 		.def("InitCDkey",		&CScriptXmlInit::InitCDkey)
 		.def("InitKeyBinding",	&CScriptXmlInit::InitKeyBinding)
