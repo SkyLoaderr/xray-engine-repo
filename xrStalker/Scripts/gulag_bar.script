@@ -669,25 +669,25 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper7", 
 			idle = 0,
-			prior = 2, state = {1}, squad = squad, group = groups[0],
+			prior = 1, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper8", 
 			idle = 0,
-			prior = 2, state = {1}, squad = squad, group = groups[0],
+			prior = 1, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper9", 
 			idle = 0,
-			prior = 2, state = {1}, squad = squad, group = groups[0],
+			prior = 1, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper10", 
 			idle = 0,
-			prior = 2, state = {1}, squad = squad, group = groups[0],
+			prior = 1, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
