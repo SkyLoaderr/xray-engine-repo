@@ -33,7 +33,8 @@ bool r_line(CScriptIniFile *self, LPCSTR S, int L,	xr_string &N, xr_string &V)
 		return		(false);
 
 	N				= n;
-	V				= v;
+	if (v)
+		V			= v;
 	return			(true);
 }
 
