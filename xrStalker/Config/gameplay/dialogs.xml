@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
+
+    <dialog id="dm_hello_dialog">
+		<init_func>dialog_manager.init_intro_dialog</init_func>
+    </dialog>
+
+
     <!-- FINAL DIALOGS -->
     <dialog id="hello_dialog">
         <phrase_list>

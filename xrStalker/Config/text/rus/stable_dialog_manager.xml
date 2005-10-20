@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="dm_universal_hello_0">
+        <text>Здоров, бродяга!</text>
+    </string>
+    <string id="dm_universal_hello_1">
+        <text>Чуввак, у тебя мелочь есть?</text>
+    </string>
+    <string id="dm_universal_hello_2">
+        <text>Че надо то?</text>
+    </string>
+    <string id="dm_universal_hello_3">
+        <text>В бабруйск, жывотное!</text>
+    </string>
+    <string id="dm_universal_hello_4">
+        <text>Здравия желаю!</text>
+    </string>
+
 </string_table>

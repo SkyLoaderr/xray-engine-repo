@@ -1,0 +1,119 @@
+phrase = {
+	intro = {},
+	trade_info = {},
+	actio_info = {},
+	cool_info = {}
+	}
+
+local phrase_ini = ini_file("misc\\dialog_manager.ltx")
+
+local intro_id = 0
+local phrase_table_filled = false
+
+function get_id(type)
+	if type == "intro" then
+		intro_id = intro_id + 1
+		return intro_id
+	else
+		abort("Dialog manager error: unknown GET_ID() type")
+	end
+end
+
+-- 1. Необходимо сформировать набор предикатов  table[string_id] = predicate()
+function fill_phrase_table()
+	-- Итерируемся по всем настройкам фраз
+	if not phrase_ini:section_exist("list") then
+		abort("There is no section [list] in dialog_manager.ltx")
+	end
+	local n = phrase_ini:line_count("list")
+	local id, value = "",""
+	local category = ""
+	
+	for i=0,n-1 do
+		result, id, value	= phrase_ini:r_line("list",i,"","")
+		
+		if not phrase_ini:section_exist(id) then
+			abort("There is no section [%s] in dialog_manager.ltx", id)
+		end		
+		-- 2. Необходимо сформировать набор предикатов  table[string_id] = predicate()
+		if not phrase_ini:line_exist(id, "category") then
+			abort("Dialog manager error: not categoried section [%s]", id)
+		end
+		category = phrase_ini:r_string(id, "category")
+		phrase[category][id] = {}
+		local tt = phrase[category][id]
+		if phrase_ini:line_exist(id, "community") then
+			tt.community = phrase_ini:r_string(id, "community")
+		end
+		if phrase_ini:line_exist(id, "npc_community") then
+			tt.npc_community = phrase_ini:r_string(id, "npc_community")
+		end
+		if phrase_ini:line_exist(id, "reputation") then
+			tt.reputation = phrase_ini:r_string(id, "reputation")
+		end
+		if phrase_ini:line_exist(id, "relation") then
+			tt.relation = phrase_ini:r_string(id, "relation")
+		end
+		if phrase_ini:line_exist(id, "npc_rank") then
+			tt.npc_rank = phrase_ini:r_string(id, "npc_rank")
+		end
+		if phrase_ini:line_exist(id, "level") then
+			tt.level = phrase_ini:r_string(id, "level")
+		end
+		if phrase_ini:line_exist(id, "condlist") then
+			tt.condlist = phrase_ini:r_string(id, "condlist")
+		end
+		if phrase_ini:line_exist(id, "smart_terrain") then
+			tt.smart_terrain = phrase_ini:r_string(id, "smart_terrain")
+		end					
+		if phrase_ini:line_exist(id, "price") then
+			tt.price = phrase_ini:r_string(id, "price")
+		end					
+		if phrase_ini:line_exist(id, "action") then
+			tt.action = phrase_ini:r_string(id, "action")
+		end					
+	end
+end
+
+-- 2. Необходимо создать стартовый диалог, с разветвлением на третьем уровне, где каждая фраза будет иметь
+-- одну и ту же функцию в прекондишне
+function init_intro_dialog(dlg)
+	if phrase_table_filled == false then
+		fill_phrase_table()
+		phrase_table_filled = true
+	end
+
+	local phrase_script = dlg:AddPhrase("",0,-1,-10000)
+	phrase_script = dlg:AddPhrase("",get_id("intro"),0,-10000)
+	
+	local k,v = 0,0
+	for k,v in pairs(phrase.intro) do
+		phrase_script = dlg:AddPhrase(k,get_id("intro"),1,-10000)
+		if phrase_script then
+			phrase_script:AddPrecondition("dialog_manager.precondition_intro")
+		end
+	end
+
+
+--	phrase_script:AddPrecondition("zzz")
+--	phrase_script:AddHasInfo("zzz")
+--	phrase_script:AddDontHasInfo("zzz")
+--	phrase_script:AddGiveInfo("zzz")
+--	phrase_script:AddDisableInfo("zzz")
+--	phrase_script:AddAction("zzz")
+
+end
+
+
+function precondition_intro(actor, npc, phrase)
+	printf("called [%s] [%s] [%s]", actor:name(), npc:name(), tostring(phrase))
+	return true
+end
+
+-- 3. При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
+-- которые возвращают TRUE. Определяется из них фраза, охватывающая самую узкую ситуацию (по количеству
+-- проверяемых функций в условии. Ее порядковый номер запоминается.
+-- 4. При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
+-- всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
+-- 5. Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
+
