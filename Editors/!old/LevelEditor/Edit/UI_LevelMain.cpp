@@ -115,13 +115,13 @@ CCommandVar CLevelTools::CommandReadonlyTarget(CCommandVar p1, CCommandVar p2)
 		    M->m_EditFlags.set(ESceneCustomMTools::flForceReadonly,FALSE);
             res				= FALSE;
         }else{
-            xr_string pn	= Scene->LevelPartName(_maps_,LTools->m_LastFileName.c_str(),M->ClassID);
-         	EFS.UnlockFile	(0,pn.c_str(),false);
+            xr_string pn	= Scene->LevelPartName(LTools->m_LastFileName.c_str(),M->ClassID);
+         	EFS.UnlockFile	(_maps_,pn.c_str(),false);
         }
     }else{
-        xr_string pn		= Scene->LevelPartName(_maps_,LTools->m_LastFileName.c_str(),M->ClassID);
-    	if (!EFS.CheckLocking(0,pn.c_str(),false,false))
-         	EFS.LockFile	(0,pn.c_str(),false);
+        xr_string pn		= Scene->LevelPartName(LTools->m_LastFileName.c_str(),M->ClassID);
+    	if (!EFS.CheckLocking(_maps_,pn.c_str(),false,false))
+         	EFS.LockFile	(_maps_,pn.c_str(),false);
     }
     if (res){
     	Reset				();
@@ -212,9 +212,11 @@ CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
                 Scene->Save		(_maps_, temp_fn.c_str(), false);
                 UI->ResetStatus	();
                 // set new name
-                Scene->UnlockLevel		(_maps_,Tools->m_LastFileName.c_str());
-                Tools->m_LastFileName 	= temp_fn.c_str();
-                Scene->LockLevel		(_maps_,Tools->m_LastFileName.c_str());
+                if (0!=xr_strcmp(Tools->m_LastFileName.c_str(),temp_fn.c_str())){
+	                Scene->UnlockLevel		(_maps_,Tools->m_LastFileName.c_str());
+    	            Tools->m_LastFileName 	= temp_fn.c_str();
+        	        Scene->LockLevel		(_maps_,Tools->m_LastFileName.c_str());
+                }
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
                 EPrefs->AppendRecentFile(temp_fn.c_str());
                 return 			TRUE;

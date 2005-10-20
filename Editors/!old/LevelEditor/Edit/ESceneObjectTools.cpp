@@ -177,11 +177,11 @@ void ESceneObjectTools::HighlightTexture(LPCSTR tex_name, bool allow_ratio, u32 
                     if (0==stricmp((*it)->_Texture(),tex_name)){
                         Fvector 		verts[3];
                         for (EditMeshIt mesh_it=e_obj->FirstMesh(); mesh_it!=e_obj->LastMesh(); mesh_it++){
-                            SurfFaces& 		surf_faces	= (*mesh_it)->GetSurfFaces();
-                            SurfFacesPairIt sf_it 		= surf_faces.find(*it);
+                            const SurfFaces& surf_faces			= (*mesh_it)->GetSurfFaces();
+                            SurfFaces::const_iterator  sf_it 	= surf_faces.find(*it);
                             if (sf_it!=surf_faces.end()){
-                                IntVec& lst				= sf_it->second;
-                                for (IntIt i_it=lst.begin(); i_it!=lst.end(); i_it++){
+                                const IntVec& lst				= sf_it->second;
+                                for (IntVec::const_iterator i_it=lst.begin(); i_it!=lst.end(); i_it++){
                                     e_obj->GetFaceWorld	(s_obj->_Transform(),*mesh_it,*i_it,verts);
                                     u32 clr	= 0x80FFFFFF;
                                     if (allow_ratio){

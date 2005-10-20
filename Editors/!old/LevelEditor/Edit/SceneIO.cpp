@@ -113,26 +113,26 @@ void st_LevelOptions::Read(IReader& F)
 //------------------------------------------------------------------------------------------------
 // Scene
 //------------------------------------------------------------------------------------------------
-BOOL EScene::LoadLevelPart(ESceneCustomMTools* M, LPCSTR full_name)
+BOOL EScene::LoadLevelPart(ESceneCustomMTools* M, LPCSTR initial, LPCSTR map_name)
 {
-	if (FS.exist(full_name)){
+	if (FS.exist(initial,map_name)){
 		// check locking
         shared_str locker;
-        if (EFS.CheckLocking(0,full_name,false,false,&locker)){
+        if (EFS.CheckLocking(initial,map_name,false,false,&locker)){
             M->m_EditFlags.set(ESceneCustomMTools::flReadonly,TRUE);
             Msg				("!Level part '%s' locked by '%s'.",M->ClassDesc(),locker.c_str());
         }else{
             M->m_EditFlags.set(ESceneCustomMTools::flReadonly,FALSE);
-			if (M->IsEditable()) EFS.LockFile(0,full_name);
+			if (M->IsEditable()) EFS.LockFile(initial,map_name);
         }
-        IReader* R		= FS.r_open	(full_name); VERIFY(R);
+        IReader* R		= FS.r_open	(initial,map_name); VERIFY(R);
     	// check level part GUID
         R_ASSERT	(R->find_chunk	(CHUNK_TOOLS_GUID));
         xrGUID		guid;
         R->r		(&guid,sizeof(guid));
         if (guid!=m_GUID){
-        	EFS.UnlockFile(0,full_name);
-            ELog.DlgMsg	(mtError,"Skipping invalid version of level part: '%s\\%s.part'",EFS.ExtractFileName(full_name).c_str(),M->ClassName());
+        	EFS.UnlockFile(initial,map_name);
+            ELog.DlgMsg	(mtError,"Skipping invalid version of level part: '%s\\%s.part'",EFS.ExtractFileName(map_name).c_str(),M->ClassName());
             return 	FALSE;
         }
         // read data
@@ -147,40 +147,26 @@ BOOL EScene::LoadLevelPart(ESceneCustomMTools* M, LPCSTR full_name)
 }
 BOOL EScene::LoadLevelPart(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bLock)
 {
-	xr_string pn	= LevelPartName(initial,map_name,cls);
-    if (LoadLevelPart(GetMTools(cls),pn.c_str())){
-		if (bLock)	EFS.LockFile(0,pn.c_str(),false);
+	xr_string pn	= LevelPartName(map_name,cls);
+    if (LoadLevelPart(GetMTools(cls),initial,pn.c_str())){
+		if (bLock)	EFS.LockFile(initial,pn.c_str(),false);
     	return 		TRUE;
     }
     return 			FALSE;
 }
-BOOL EScene::UnloadLevelPart(ESceneCustomMTools* M, LPCSTR full_name)
+BOOL EScene::UnloadLevelPart(ESceneCustomMTools* M)
 {
 	M->Clear		();
     return 			TRUE;
 }
 BOOL EScene::UnloadLevelPart(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bUnlock)
 {
-	xr_string pn	= LevelPartName(initial,map_name,cls);
-    if (UnloadLevelPart(GetMTools(cls),pn.c_str())){
-		if (bUnlock)EFS.UnlockFile(0,pn.c_str(),false);
+	xr_string pn	= LevelPartName(map_name,cls);
+    if (UnloadLevelPart(GetMTools(cls))){
+		if (bUnlock)EFS.UnlockFile(initial,pn.c_str(),false);
     	return 		TRUE;
     }
     return 			FALSE;
-}
-
-xr_string EScene::LevelPartName(LPCSTR full_name, ObjClassID cls)
-{
-	ESceneCustomMTools* M			= GetMTools(cls);
-    return 			EFS.ExtractFilePath(full_name)+EFS.ExtractFileName(full_name)+"\\"+M->ClassName()+".part";
-}
-
-xr_string EScene::LevelPartName(LPCSTR initial, LPCSTR map_name, ObjClassID cls)
-{
-    xr_string 		full_name;
-    if (initial)	FS.update_path	(full_name,initial,map_name);
-    else			full_name		= map_name;
-    return 			LevelPartName	(full_name.c_str(),cls);
 }
 
 xr_string EScene::LevelPartPath(LPCSTR full_name)
@@ -188,25 +174,22 @@ xr_string EScene::LevelPartPath(LPCSTR full_name)
     return 			EFS.ExtractFilePath(full_name)+EFS.ExtractFileName(full_name)+"\\";
 }
 
-xr_string EScene::LevelPartPath(LPCSTR initial, LPCSTR map_name)
+xr_string EScene::LevelPartName(LPCSTR map_name, ObjClassID cls)
 {
-    xr_string 		full_name;
-    if (initial)	FS.update_path	(full_name,initial,map_name);
-    else			full_name		= map_name;
-    return 			LevelPartPath	(full_name.c_str());
+    return 			LevelPartPath(map_name)+GetMTools(cls)->ClassName()+".part";
 }
 
 void EScene::LockLevel(LPCSTR initial, LPCSTR map_name)
 {
+	// lock main level
+    if (!EFS.CheckLocking(initial,map_name,false,false))
+        EFS.LockFile(initial,map_name,false);
     // lock parts
-    xr_string pp	= LevelPartPath(initial,map_name);
     SceneToolsMapPairIt _I 	= Scene->FirstTools();
     SceneToolsMapPairIt _E 	= Scene->LastTools();
     for (; _I!=_E; _I++)
-        if ((_I->first!=OBJCLASS_DUMMY)&&_I->second&&_I->second->IsEnabled()&&_I->second->IsEditable()){
-            xr_string pn 	= pp+_I->second->ClassName()+".part";
-		    EFS.LockFile	(0,pn.c_str());
-        }
+        if ((_I->first!=OBJCLASS_DUMMY)&&_I->second&&_I->second->IsEnabled()&&_I->second->IsEditable())
+		    EFS.LockFile	(initial,LevelPartName(map_name,_I->first).c_str());
 }
 
 void EScene::UnlockLevel(LPCSTR initial, LPCSTR map_name)
@@ -215,13 +198,11 @@ void EScene::UnlockLevel(LPCSTR initial, LPCSTR map_name)
     if (EFS.CheckLocking(initial,map_name,true,false))
 	    EFS.UnlockFile	(initial,map_name,false);
     // unlock using parts
-    xr_string pp	= LevelPartPath(initial,map_name);
     SceneToolsMapPairIt _I 	= Scene->FirstTools();
     SceneToolsMapPairIt _E 	= Scene->LastTools();
     for (; _I!=_E; _I++)
         if ((_I->first!=OBJCLASS_DUMMY)&&_I->second&&_I->second->IsEnabled()&&_I->second->IsEditable()){
-            xr_string pn 	= pp+_I->second->ClassName()+".part";
-		    EFS.UnlockFile	(0,pn.c_str());
+		    EFS.UnlockFile	(initial,LevelPartName(map_name,_I->first).c_str());
         }
 }
 
@@ -253,12 +234,12 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     
 	if (!bUndo){ 
 	    shared_str		locker;    
-		if ((false==EFS.CheckLocking(0,full_name.c_str(),true,false))&&
-        	(true==EFS.CheckLocking(0,full_name.c_str(),false,false,&locker))){
+		if ((false==EFS.CheckLocking(initial,map_name,true,false))&&
+        	(true==EFS.CheckLocking(initial,map_name,false,false,&locker))){
             bSaveMain	= false;
         }
         if (bSaveMain){
-	    	EFS.UnlockFile	(0,full_name.c_str(),false);
+	    	EFS.UnlockFile	(initial,map_name,false);
     		EFS.MarkFile	(full_name.c_str(),true);
         }
     	part_prefix		= LevelPartPath(full_name.c_str());
@@ -316,7 +297,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
 		         	_I->second->Save(m_SaveCache);
 
-					EFS.UnlockFile	(0,part_name.c_str(),false);
+					EFS.UnlockFile	(initial,LevelPartName(map_name,_I->first).c_str(),false);
 					EFS.MarkFile	(part_name.c_str(),true);
 
                     IWriter* FF		= FS.w_open	(part_name.c_str());
@@ -331,7 +312,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
                         FS.w_close		(FF);
 
-						EFS.LockFile	(0,part_name.c_str(),false);
+						EFS.LockFile	(initial,LevelPartName(map_name,_I->first).c_str(),false);
                     }else{
                     	Msg			("!Can't save level part '%s' - accsess denied.",_I->second->ClassName());
                     }
@@ -345,7 +326,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     if (bSaveMain)		FS.w_close(F);
 
 	if (!bUndo){ 
-    	if (bSaveMain)	EFS.LockFile(0,full_name.c_str(),false);
+    	if (bSaveMain)	EFS.LockFile(initial,map_name,false);
     	m_RTFlags.set	(flRT_Unsaved,FALSE);
     	Msg				("Saving time: %3.2f sec",T.GetElapsed_sec());
     }
@@ -448,11 +429,6 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
             return false;
         }
 
-        xr_string 	part_prefix;
-        if (!bUndo){
-            part_prefix		= LevelPartPath(full_name.c_str());
-        }
-        
         // Lev. ops.
         IReader* LOP = F->open_chunk(CHUNK_LEVELOP);
         if (LOP){
@@ -501,8 +477,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
     	            chunk->close	();
                 }else{
                     if (_I->second->IsEnabled() && (_I->first!=OBJCLASS_DUMMY)){
-                        xr_string 		part_name = part_prefix+_I->second->ClassName()+".part";
-                        LoadLevelPart	(_I->second,part_name.c_str());
+                        LoadLevelPart	(_I->second,initial,LevelPartName(map_name,_I->first).c_str());
                     }
                 }
             }

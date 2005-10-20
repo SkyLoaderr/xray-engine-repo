@@ -607,8 +607,8 @@ bool ESceneAIMapTools::GenerateMap(bool bFromSelectedOnly)
                 EditMeshVec& 		_meshes = E->Meshes();
                 for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
                     pb->Inc(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->GetName()).c_str());
-                    SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
-                    for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
+                    const SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
+                    for (SurfFaces::const_iterator sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
                         CSurface* surf		= sp_it->first;
                         // test passable
     //.			        SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
@@ -616,8 +616,8 @@ bool ESceneAIMapTools::GenerateMap(bool bFromSelectedOnly)
                         Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
                         if (!c_sh->flags.bCollision) 			continue;
                         // collect tris
-                        IntVec& face_lst 	= sp_it->second;
-                        for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
+                        const IntVec& face_lst 	= sp_it->second;
+                        for (IntVec::const_iterator it=face_lst.begin(); it!=face_lst.end(); it++){
                             E->GetFaceWorld	(S->_Transform(),*m_it,*it,verts);
                             ETOOLS::collector_add_face_d(CL,verts[0],verts[1],verts[2], *it);
                             if (surf->m_Flags.is(CSurface::sf2Sided))

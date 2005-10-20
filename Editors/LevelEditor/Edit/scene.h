@@ -112,14 +112,16 @@ public:
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 
+    xr_string		LevelPartPath		(LPCSTR map_name);
+    xr_string		LevelPartName		(LPCSTR map_name, ObjClassID cls);
+/*    
     xr_string		LevelPartName		(LPCSTR full_name, ObjClassID cls);
     xr_string		LevelPartName		(LPCSTR initial, LPCSTR map_name, ObjClassID cls);
-    xr_string		LevelPartPath		(LPCSTR full_name);
     xr_string		LevelPartPath		(LPCSTR initial, LPCSTR map_name);
-    
-    BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR full_name);
+*/    
+    BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR initial, LPCSTR map_name);
     BOOL			LoadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bLock);
-    BOOL		 	UnloadLevelPart		(ESceneCustomMTools* M, LPCSTR full_name);
+    BOOL		 	UnloadLevelPart		(ESceneCustomMTools* M);
     BOOL			UnloadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bUnlock);
                                               
     void			LockLevel			(LPCSTR initial, LPCSTR map_name);
