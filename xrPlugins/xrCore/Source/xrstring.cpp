@@ -47,7 +47,7 @@ str_value*	str_container::dock		(str_c value)
 	// it may be the case, string is not fount or has "non-exact" match
 	if (0==result)				{
 		// Insert string
-		result					= (str_value*)xr_malloc(HEADER+s_len_with_zero);
+		result					= (str_value*)Memory.mem_alloc(HEADER+s_len_with_zero, "storage: sstring");
 		result->dwReference		= 0;
 		result->dwLength		= sv->dwLength;
 		result->dwCRC			= sv->dwCRC;
