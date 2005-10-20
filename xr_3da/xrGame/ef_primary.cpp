@@ -21,6 +21,8 @@
 #include "alife_human_brain.h"
 #include "alife_human_object_handler.h"
 
+#define NO_HUMAN_BRAIN
+
 IC	CLASS_ID CBaseFunction::clsid_member_item() const
 {
 	CLASS_ID					result;
@@ -339,7 +341,7 @@ float CItemDeterioration::ffGetValue()
 	}
 }
 
-/**
+#ifndef NO_HUMAN_BRAIN
 float CEquipmentPreference::ffGetValue()
 {
 	if (ef_storage().non_alife().member()) {
@@ -378,7 +380,7 @@ float CMainWeaponPreference::ffGetValue()
 		return					(l_tpALifeHumanAbstract->brain().m_cpMainWeaponPreferences[ef_storage().m_pfMainWeaponType->dwfGetDiscreteValue(iFloor(ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f))]);
 	}
 }
-/**/
+#else
 float CEquipmentPreference::ffGetValue()
 {
 	if (ef_storage().non_alife().member()) {
@@ -417,7 +419,7 @@ float CMainWeaponPreference::ffGetValue()
 		return					(l_tpALifeHumanAbstract->m_cpMainWeaponPreferences[ef_storage().m_pfMainWeaponType->dwfGetDiscreteValue(iFloor(ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f))]);
 	}
 }
-/**/
+#endif
 
 float CItemValue::ffGetValue()
 {
@@ -432,6 +434,7 @@ float CItemValue::ffGetValue()
 	}
 }
 
+#ifndef NO_HUMAN_BRAIN
 float CWeaponAmmoCount::ffGetValue()
 {
 	if (ef_storage().non_alife().member()) {
@@ -444,6 +447,20 @@ float CWeaponAmmoCount::ffGetValue()
 		return					(l_tpALifeHumanAbstract->brain().object_handler().get_available_ammo_count(smart_cast<const CSE_ALifeItemWeapon*>(ef_storage().alife().member_item()),l_tpALifeHumanAbstract->alife().m_temp_item_vector));
 	}
 }
+#else
+float CWeaponAmmoCount::ffGetValue()
+{
+	if (ef_storage().non_alife().member()) {
+#pragma todo("Dima to Dima : Append WeaponAmmoCount with non-ALife branch")
+		return					(0);
+	}
+	else {
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>(ef_storage().alife().member());
+		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
+		return					(l_tpALifeHumanAbstract->get_available_ammo_count(smart_cast<const CSE_ALifeItemWeapon*>(ef_storage().alife().member_item()),l_tpALifeHumanAbstract->alife().m_temp_item_vector));
+	}
+}
+#endif
 
 u32	 CWeaponAmmoCount::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 {
