@@ -25,9 +25,9 @@
 
 #include "inventory_item.h"
 
-#define C_ON_ENEMY		D3DCOLOR_XRGB(0xff,0,0)
-#define C_ON_NEUTRAL	D3DCOLOR_XRGB(0xff,0xff,0xff)
-#define C_ON_FRIEND		D3DCOLOR_XRGB(0,0xff,0)
+u32 C_ON_ENEMY		D3DCOLOR_XRGB(0xff,0,0);
+u32 C_ON_NEUTRAL	D3DCOLOR_XRGB(0xff,0xff,0x80);
+u32 C_ON_FRIEND		D3DCOLOR_XRGB(0,0xff,0);
 
 
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
@@ -127,20 +127,20 @@ extern ENGINE_API BOOL g_bRendering;
 void CHUDCursor::Render()
 {
 	VERIFY		(g_bRendering);
-	Fvector		p1,p2,dir;
 
 	CObject*	O		= Level().CurrentEntity();
 	if (0==O)	return;
 	CEntity*	E		= smart_cast<CEntity*>(O);
 	if (0==E)	return;
 
-	p1					= Device.vCameraPosition;
-	dir					= Device.vCameraDirection;
+	Fvector p1				= Device.vCameraPosition;
+	Fvector dir				= Device.vCameraDirection;
 	
 	// Render cursor
 	u32 C				= C_DEFAULT;
 	
 	FVF::TL				PT;
+	Fvector				p2;
 	p2.mad				(p1,dir,RQ.range);
 	PT.transform		(p2,Device.mFullTransform);
 	float				di_size = C_SIZE/powf(PT.p.w,.2f);
@@ -148,13 +148,12 @@ void CHUDCursor::Render()
 	CGameFont* F		= HUD().Font().pFontDI;
 	F->SetAligment		(CGameFont::alCenter);
 	F->SetSizeI			(0.02f);
-	F->OutSetI			(0.f,0.f+di_size*2);
-#ifdef DEBUG
+	F->OutSetI			(0.f,0.05f);
+
 	if (psHUD_Flags.test(HUD_CROSSHAIR_DIST)){
 		F->SetColor		(C);
-		F->OutNext		("%3.1f",RQ.range);
+		F->OutNext		("%4.1f",RQ.range);
 	}
-#endif
 
 	if (psHUD_Flags.test(HUD_INFO)){ 
 		if (RQ.O){
@@ -162,21 +161,14 @@ void CHUDCursor::Render()
 			CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>	(Level().CurrentEntity());
 			PIItem			l_pI	= smart_cast<PIItem>		(RQ.O);
 
-			string256 name_buf;
-			LPCSTR object_name = *RQ.O->cName();
-
 			if (GameID() == GAME_SINGLE)
 			{
-				if (E && (E->g_Health()>0))
+				if (E && E->g_Alive() )
 				{
 					CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
 					CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(E);
 
 					if(our_inv_owner && others_inv_owner){
-						CStringTable	strtbl		;
-						sprintf			(name_buf, "%s, %s", *strtbl.translate(others_inv_owner->CharacterInfo().Community().id()), 
-							*strtbl.translate(others_inv_owner->Name()));
-						object_name		= name_buf	;
 
 						switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
 						{
@@ -190,8 +182,10 @@ void CHUDCursor::Render()
 					}
 
 					if (fuzzyShowInfo>0.5f){
+						CStringTable	strtbl		;
 						F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-						F->OutNext	("%s", object_name);
+						F->OutNext	("%s", *strtbl.translate(others_inv_owner->Name()) );
+						F->OutNext	("%s", *strtbl.translate(others_inv_owner->CharacterInfo().Community().id()) );
 					}
 					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 				}
@@ -266,6 +260,7 @@ void CHUDCursor::Render()
 		RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 	}else{
 		//отрендерить прицел
+		HUDCrosshair.cross_color	= C;
 		HUDCrosshair.OnRender		();
 	}
 }

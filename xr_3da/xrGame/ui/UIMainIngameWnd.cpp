@@ -358,6 +358,8 @@ void CUIMainIngameWnd::Init()
 	UIStaticDiskIO.SetOriginalRect			(0,0,32,32);
 	UIStaticDiskIO.SetStretchTexture		(TRUE);
 
+	m_contactsSnd.create					(TRUE,"detectors\\DA-2_beep1");
+
 }
 float UIStaticDiskIO_start_time = 0.0f;
 void CUIMainIngameWnd::Draw()
@@ -1499,6 +1501,8 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 void CUIMainIngameWnd::AnimateContacts()
 {
 	UIPdaOnline.ResetAnimation	();
+	if(NULL==m_contactsSnd._feedback())
+		m_contactsSnd.play_at_pos			(0,Fvector().set(0,0,0),sm_2D);
 }
 
 void CUIMainIngameWnd::AddMonsterClawsEffect(const shared_str &monsterName, const shared_str &textureName)

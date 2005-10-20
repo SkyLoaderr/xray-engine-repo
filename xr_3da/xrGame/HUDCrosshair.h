@@ -14,7 +14,6 @@ private:
 	float			min_radius_perc;
 	float			max_radius_perc;
 	Ivector2		center;
-	Fcolor			cross_color;
 
 	//текущий радиус прицела
 	int				radius;
@@ -25,6 +24,8 @@ private:
 	ref_geom 		hGeomLine;
 	ref_shader		hShader;
 public:
+	u32				cross_color;
+
 					CHUDCrosshair	();
 					~CHUDCrosshair	();
 

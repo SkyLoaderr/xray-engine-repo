@@ -11,7 +11,6 @@ enum{
 struct SBinocVisibleObj{
 							SBinocVisibleObj		()					{};
 	CObject*				m_object;
-//	CUIFrameWindow*			m_frame;
 	CUIStatic				m_lt;
 	CUIStatic				m_lb;
 	CUIStatic				m_rt;
@@ -20,7 +19,6 @@ struct SBinocVisibleObj{
 
 	float					m_upd_speed;
 	Flags8					m_flags;
-//	void					destroy					()					{xr_delete(m_frame);}
 	void					create_default			(u32 color);
 	void					Draw					();
 	void					Update					();

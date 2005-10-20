@@ -2,14 +2,18 @@
 #include "WeaponBinocularsVision.h"
 #include "WeaponBinoculars.h"
 #include "ui\UIFrameWindow.h"
-//#include "ui.h"
 #include "MainUI.h"
 #include "entity_alive.h"
 #include "visual_memory_manager.h"
 #include "actor.h"
 #include "actor_memory.h"
+#include "relation_registry.h"
 
 #define RECT_SIZE	16
+
+extern u32 C_ON_ENEMY;
+extern u32 C_ON_NEUTRAL;
+extern u32 C_ON_FRIEND;
 
 struct FindVisObjByObject{
 	const CObject*			O;
@@ -98,7 +102,24 @@ void SBinocVisibleObj::Update()
 		if (mn.similar(cur_rect.lt,2.f)&&mx.similar(cur_rect.rb,2.f)){ 
 			// target locked
 			m_flags.set(flTargetLocked,TRUE);
-			u32 clr		= subst_alpha(m_lt.GetColor(),255);
+			u32 clr	= subst_alpha(m_lt.GetColor(),255);
+
+			CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(Actor());
+			CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(m_object);
+
+			if(our_inv_owner && others_inv_owner){
+
+				switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
+				{
+				case ALife::eRelationTypeEnemy:
+					clr = C_ON_ENEMY; break;
+				case ALife::eRelationTypeNeutral:
+					clr = C_ON_NEUTRAL; break;
+				case ALife::eRelationTypeFriend:
+					clr = C_ON_FRIEND; break;
+				}
+			}
+
 			m_lt.SetColor	(clr);
 			m_lb.SetColor	(clr);
 			m_rt.SetColor	(clr);
@@ -127,12 +148,6 @@ CBinocularsVision::~CBinocularsVision()
 
 void CBinocularsVision::Update()
 {
-/*
-	CFrustum F;
-	F.CreateFromMatrix						(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-	xr_vector<ISpatial*>					R;
-	g_SpatialSpace->q_frustum				(R,0,STYPE_VISIBLEFORAI,F); //
-*/
 
 	const CVisualMemoryManager::VISIBLES& vVisibles = Actor()->memory().visual().objects();
 
@@ -140,20 +155,16 @@ void CBinocularsVision::Update()
 	for(;it!=m_active_objects.end();++it)
 		(*it).m_flags.set					(flVisObjNotValid, TRUE) ;
 
-//	for (u32 o_it=0; o_it<R.size(); o_it++)
 
 	CVisualMemoryManager::VISIBLES::const_iterator v_it = vVisibles.begin();
 	for (; v_it!=vVisibles.end(); ++v_it)
 	{
-//		CObject*	object_					= smart_cast<CObject*>(R[o_it]);
 		const CObject*	_object_			= (*v_it).m_object;
 		if (!Actor()->memory().visual().visible_now(smart_cast<const CGameObject*>(_object_)))
 			continue;
 
 		CObject* object_ = const_cast<CObject*>(_object_);
 		
-//		if(!object_ || !object_->Visual())				continue;
-//		if(!(object_->spatial.type&STYPE_RENDERABLE))	continue;
 
 		CEntityAlive*	EA = smart_cast<CEntityAlive*>(object_);
 		if(!EA || !EA->g_Alive())						continue;

@@ -38,7 +38,7 @@ void CHUDCrosshair::Load		()
 	max_radius_perc = pSettings->r_float (HUD_CURSOR_SECTION, "max_radius");
 	//max_radius = iFloor(0.5f + max_radius_perc*float(Device.dwWidth));
 
-	cross_color = pSettings->r_fcolor (HUD_CURSOR_SECTION, "cross_color");
+	cross_color = pSettings->r_fcolor (HUD_CURSOR_SECTION, "cross_color").get();
 
 
 	radius_speed_perc = pSettings->r_float (HUD_CURSOR_SECTION, "radius_lerp_speed");
@@ -71,7 +71,7 @@ void CHUDCrosshair::OnRender ()
 	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(10,hGeomLine->vb_stride,dwOffset);
 	FVF::TL0uv* pv						= pv_start;
 	
-	u32 color = cross_color.get			();
+//	u32 color = cross_color.get			();
 
 	int cross_length = iFloor(0.5f + cross_length_perc*Device.dwWidth);
 	int min_radius = iFloor(0.5f + min_radius_perc*Device.dwWidth);
@@ -87,20 +87,20 @@ void CHUDCrosshair::OnRender ()
 
 
 	// 0
-	pv->set					(center.x+1,center.y + y_min, color); pv++;
-	pv->set					(center.x+1,center.y + y_max, color); pv++;
+	pv->set					(center.x+1,center.y + y_min, cross_color); pv++;
+	pv->set					(center.x+1,center.y + y_max, cross_color); pv++;
 	// 1
-	pv->set					(center.x+1,center.y - y_min , color); pv++;
-	pv->set					(center.x+1,center.y - y_max, color); pv++;
+	pv->set					(center.x+1,center.y - y_min , cross_color); pv++;
+	pv->set					(center.x+1,center.y - y_max, cross_color); pv++;
 	// 2
-	pv->set					(center.x + x_min+1, center.y, color); pv++;
-	pv->set					(center.x + x_max+1, center.y, color); pv++;
+	pv->set					(center.x + x_min+1, center.y, cross_color); pv++;
+	pv->set					(center.x + x_max+1, center.y, cross_color); pv++;
 	// 3
-	pv->set					(center.x - x_min, center.y, color); pv++;
-	pv->set					(center.x - x_max, center.y, color); pv++;
+	pv->set					(center.x - x_min, center.y, cross_color); pv++;
+	pv->set					(center.x - x_max, center.y, cross_color); pv++;
 	// 4
-	pv->set					(center.x, center.y, color); pv++;
-	pv->set					(center.x+1, center.y, color); pv++;
+	pv->set					(center.x, center.y, cross_color); pv++;
+	pv->set					(center.x+1, center.y, cross_color); pv++;
 
 	// render	
 	dwCount 				= u32(pv-pv_start);

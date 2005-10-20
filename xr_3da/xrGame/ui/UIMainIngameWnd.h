@@ -197,7 +197,7 @@ public:
 
 	//
 	void				AnimateContacts();
-
+	ref_sound			m_contactsSnd;
 	// Обработчик события получения новости
 	void				ReceiveNews	(GAME_NEWS_DATA &news);
 	
