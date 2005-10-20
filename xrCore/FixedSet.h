@@ -27,7 +27,7 @@ private:
 	{
 		u32	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
-		TNode*	newNodes = (TNode*) xr_malloc(Size(newLimit));
+		TNode*	newNodes = xr_alloc<TNode>	(newLimit);
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));

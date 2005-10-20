@@ -110,14 +110,14 @@ ShaderElement* CResourceManager::_CreateElement			(ShaderElement& S)
 
 	// Create _new_ entry
 	ShaderElement*	N		=	xr_new<ShaderElement>(S);
-	N->dwFlags				|=	xr_resource::RF_REGISTERED;
+	N->dwFlags				|=	xr_resource_flagged::RF_REGISTERED;
 	v_elements.push_back	(N);
 	return N;
 }
 
 void CResourceManager::_DeleteElement(const ShaderElement* S)
 {
-	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (0==(S->dwFlags&xr_resource_flagged::RF_REGISTERED))	return;
 	if (reclaim(v_elements,S))						return;
 	Msg	("! ERROR: Failed to find compiled 'shader-element'");
 }
@@ -204,7 +204,7 @@ Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_te
 
 	// Create _new_ entry
 	Shader*		N			=	xr_new<Shader>(S);
-	N->dwFlags				|=	xr_resource::RF_REGISTERED;
+	N->dwFlags				|=	xr_resource_flagged::RF_REGISTERED;
 	v_shaders.push_back		(N);
 	return N;
 }
@@ -230,7 +230,7 @@ Shader*		CResourceManager::Create	(LPCSTR s_shader,	LPCSTR s_textures,	LPCSTR s_
 
 void CResourceManager::Delete(const Shader* S)
 {
-	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (0==(S->dwFlags&xr_resource_flagged::RF_REGISTERED))	return;
 	if (reclaim(v_shaders,S))						return;
 	Msg	("! ERROR: Failed to find complete shader");
 }

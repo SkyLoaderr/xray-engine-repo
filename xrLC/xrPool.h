@@ -14,7 +14,7 @@ private:
 	{
 		// Allocate
 		VERIFY				(0==list);
-		list				= (T*)		xr_malloc	(granularity*sizeof(T));
+		list				= xr_alloc<T>	(granularity);
 		blocks.push_back	(list);
 
 		// Partition

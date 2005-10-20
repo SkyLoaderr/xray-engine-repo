@@ -74,7 +74,7 @@ public:
 	virtual void			setup		(R_constant* C)	= 0;
 };
 
-class	ENGINE_API			R_constant_table	: public xr_resource	{
+class	ENGINE_API			R_constant_table	: public xr_resource_flags	{
 public:
 	typedef xr_vector<R_constant*>		c_table;
 	c_table					table;

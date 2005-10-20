@@ -285,7 +285,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR d_shader, LPCSTR s_textures)
 
 	// Create _new_ entry
 	Shader*		N			=	xr_new<Shader>(S);
-	N->dwFlags				|=	xr_resource::RF_REGISTERED;
+	N->dwFlags				|=	xr_resource_flagged::RF_REGISTERED;
 	v_shaders.push_back		(N);
 	return N;
 }

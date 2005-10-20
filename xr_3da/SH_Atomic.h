@@ -25,7 +25,7 @@ struct	ENGINE_API		SPS				: public xr_resource_named							{
 typedef	resptr_core<SPS,resptr_base<SPS> >													ref_ps;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SState			: public xr_resource									{
+struct	ENGINE_API		SState			: public xr_resource_flagged						{
 	IDirect3DStateBlock9*				state;
 	SimulatorStates						state_code;
 	~SState			();
@@ -33,7 +33,7 @@ struct	ENGINE_API		SState			: public xr_resource									{
 typedef	resptr_core<SState,resptr_base<SState> >											ref_state;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SDeclaration	: public xr_resource									{
+struct	ENGINE_API		SDeclaration	: public xr_resource_flagged						{
 	IDirect3DVertexDeclaration9*		dcl;
 	xr_vector<D3DVERTEXELEMENT9>		dcl_code;
 	~SDeclaration	();

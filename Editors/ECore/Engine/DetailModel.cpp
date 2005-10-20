@@ -89,12 +89,12 @@ void CDetail::Load		(IReader* S)
 	
 	// Vertices                             
 	u32				size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)	xr_malloc	(size_vertices);
+	vertices		= xr_alloc<CDetail::fvfVertexIn>	(number_vertices);
 	S->r			(vertices,size_vertices);
 	
 	// Indices
 	u32				size_indices		= number_indices*sizeof(u16);
-	indices			= (u16*)					xr_malloc	(size_indices);
+	indices			= xr_alloc<u16>						(number_indices);
 	S->r			(indices,size_indices);
 	
 	// Validate indices

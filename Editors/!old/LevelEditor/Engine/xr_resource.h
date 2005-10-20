@@ -8,11 +8,18 @@ public:
 	enum			{RF_REGISTERED=1<<0 };
 public:
 	u32				dwReference;
-	u32				dwFlags;
-
-	xr_resource()	: dwReference(0), dwFlags(0)	{ }
+	xr_resource()			: dwReference(0), dwFlags(0)	{ }
 };
-class	XRCORE_API	xr_resource_named	:	public xr_resource		{
+
+class	XRCORE_API	xr_resource_flagged	{
+public:
+	enum			{RF_REGISTERED=1<<0 };
+public:
+	u32				dwFlags;
+	xr_resource_flagged()	: dwFlags(0)					{ }
+};
+
+class	XRCORE_API	xr_resource_named	:	public xr_resource_flagged	{
 public:
 	shared_str		cName;
 
@@ -24,7 +31,6 @@ public:
 	xr_resource_named()	: cName(0)		{ }
 	~xr_resource_named()				{ }
 };
-
 
 // resptr_BASE
 template <class T>

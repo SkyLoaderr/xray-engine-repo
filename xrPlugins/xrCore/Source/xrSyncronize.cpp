@@ -2,7 +2,7 @@
 
 xrCriticalSection::xrCriticalSection	()
 {
-	pmutex							= xr_malloc(sizeof(CRITICAL_SECTION));
+	pmutex							= xr_alloc<CRITICAL_SECTION>(1);
 	InitializeCriticalSection		( (CRITICAL_SECTION*)pmutex	);
 };
 xrCriticalSection::~xrCriticalSection	()
