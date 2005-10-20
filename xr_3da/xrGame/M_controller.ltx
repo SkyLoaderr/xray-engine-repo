@@ -42,6 +42,21 @@ stand_run_fwd_0	 	=	    1,	   0.01,     1,	    0.25,    0.6,
 stand_run_dmg_0	 	=	    1,	   0.01,     1,	    0.25,    0.6,    
 
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[controller_immunities]
+burn_immunity 						= 1.0				;коэффициенты иммунитета 
+strike_immunity 					= 0.9
+shock_immunity 						= 1.0
+wound_immunity 						= 1.0
+radiation_immunity 					= 0.00000001
+telepatic_immunity 					= 0.0000001
+chemical_burn_immunity 				= 0.9
+explosion_immunity 					= 1.0
+fire_wound_immunity  				= 1.0
+
+
 [m_controller_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
@@ -165,15 +180,8 @@ health_hit_part = 0.1		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part = 0.1		;0.9			;процент хита, уходящий на отнимание силы
 psy_health_v				= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity 						= 1.0				;коэффициенты иммунитета 
-strike_immunity 					= 0.9
-shock_immunity 						= 1.0
-wound_immunity 						= 1.0
-radiation_immunity 					= 0.00000001
-telepatic_immunity 					= 0.0000001
-chemical_burn_immunity 				= 0.9
-explosion_immunity 					= 1.0
-fire_wound_immunity  				= 1.0
+
+immunities_sect				= controller_immunities
 
 ;открытые раны
 bleeding_v					= 0.001						;потеря крови при номинальной ране в секунду

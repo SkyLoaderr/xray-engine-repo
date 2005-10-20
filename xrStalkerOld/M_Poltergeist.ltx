@@ -39,6 +39,20 @@ stand_walk_fwd_dmg_0	=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
 stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
 stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[poltergeist_immunities]
+burn_immunity 		= 0.3					;коэффициенты иммунитета 
+strike_immunity 	= 0.7
+shock_immunity 		= 0.5
+wound_immunity 		= 0.3
+radiation_immunity 	= 0.0
+telepatic_immunity 	= 1.0
+chemical_burn_immunity 	= 1.0
+explosion_immunity 	= 1.0
+fire_wound_immunity = 0.5
+
 [m_poltergeist_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_radioactive
@@ -164,15 +178,8 @@ health_hit_part 	= 1.0					;процент хита, уходящий на отнимание здоровья
 power_hit_part 		= 1.0					;процент хита, уходящий на отнимание силы
 psy_health_v 		= 0.1					;скорость восстановления psy-здоровья
 
-burn_immunity 		= 0.3					;коэффициенты иммунитета 
-strike_immunity 	= 0.7
-shock_immunity 		= 0.5
-wound_immunity 		= 0.3
-radiation_immunity 	= 0.0
-telepatic_immunity 	= 1.0
-chemical_burn_immunity 	= 1.0
-explosion_immunity 	= 1.0
-fire_wound_immunity = 0.5
+immunities_sect		= poltergeist_immunities
+
 
 ;открытые раны
 bleeding_v			= 0						;потеря крови при номинальной ране в секунду

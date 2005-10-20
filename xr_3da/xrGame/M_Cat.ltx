@@ -45,6 +45,21 @@ stand_run_dmg_0		=	   6,	    0.2,     1,	    0.25,    0.7,    0.7,     1.0,     
 stand_steal_0		=	   1,	    0.2,     1,	    0.25,    0.7,    0.7,     1.0,     0.7,    1.0
 stand_drag_0		=	   1,	    0.2,     1,	    0.25,    0.7,    0.7,     1.0,     0.7,    1.0
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[cat_immunities]
+burn_immunity 					= 1.0				;ъю¤ЇЇшЎшхэЄv шььєэшЄхЄр 
+strike_immunity 				= 1.0
+shock_immunity 					= 1.0
+wound_immunity 					= 0.9
+radiation_immunity 				= 0.01
+telepatic_immunity 				= 1.0
+chemical_burn_immunity 			= 1.0
+explosion_immunity 				= 1.0
+fire_wound_immunity  			= 1.0
+
+
 [m_cat_e]
 GroupControlSection	= spawn_group
 $spawn              = "monsters\cat"			; option for Level Editor
@@ -165,15 +180,8 @@ health_hit_part 				= 1.0				;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх чфюЁют№ 
 power_hit_part 					= 1.0				;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх ёшыv
 psy_health_v					= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity 					= 1.0				;ъю¤ЇЇшЎшхэЄv шььєэшЄхЄр 
-strike_immunity 				= 1.0
-shock_immunity 					= 1.0
-wound_immunity 					= 0.9
-radiation_immunity 				= 0.01
-telepatic_immunity 				= 1.0
-chemical_burn_immunity 			= 1.0
-explosion_immunity 				= 1.0
-fire_wound_immunity  			= 1.0
+immunities_sect					= cat_immunities
+
 
 ;открытые раны
 bleeding_v						= 0.01						;потеря крови при номинальной ране в секунду

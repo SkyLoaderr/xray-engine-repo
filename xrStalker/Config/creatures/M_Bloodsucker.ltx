@@ -62,7 +62,21 @@ stand_walk_dmg_0	=   4,	  0.05,    1.0,	   0.60,     1.0,
 stand_steal_0		=	2,	  0.15,    0.2,    0.50,     0.2,   
 ;stand_drag_0		=	1,	  0.2,	   1.0,	   0.25,     0.7,   
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[bloodsucker_immunities]
+burn_immunity 				= 0.5						
+strike_immunity 			= 0.5						
+shock_immunity 				= 0.5						
+wound_immunity 				= 0.4	;0.75	;1.0		
+radiation_immunity 			= 0.0	;0.5
+telepatic_immunity 			= 1.0
+chemical_burn_immunity		= 0.5
+explosion_immunity 			= 0.4
+fire_wound_immunity  		= 0.07
 
+;===========================================================================
 [m_bloodsucker_e]
 GroupControlSection			 = spawn_group
 SpaceRestrictionSection		 = space_restrictor,zone_mosquito_bald,zone_witches_galantine,zone_burning_fuzz1,zone_mincer,zone_gravi_zone
@@ -205,15 +219,7 @@ psy_health_v				= 0.1						;скорость восстановления psy-здоровья
 
 
 ;Immunities												;коэффициенты иммунитета меньше сильнее имунитет
-burn_immunity 				= 0.5						
-strike_immunity 			= 0.5						
-shock_immunity 				= 0.5						
-wound_immunity 				= 0.4	;0.75	;1.0		
-radiation_immunity 			= 0.0	;0.5
-telepatic_immunity 			= 1.0
-chemical_burn_immunity		= 0.5
-explosion_immunity 			= 0.4
-fire_wound_immunity  		= 0.07
+immunities_sect				= bloodsucker_immunities
 
 ;открытые раны
 bleeding_v					= 0.05						;потеря крови при номинальной ране в секунду

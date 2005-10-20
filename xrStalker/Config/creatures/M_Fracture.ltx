@@ -13,6 +13,20 @@ stand_attack_2 =	  	0.45,		30,		    120,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6
 stand_walk_fwd_0 	=	1,	   0.01,     1,     0.25,    0.7,   
 stand_run_fwd_0	 	=	1,	   0.01,     1,	    0.25,    0.6,    
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[fracture_immunities]
+burn_immunity = 0.8				;коэффициенты иммунитета 
+strike_immunity = 0.8
+shock_immunity = 0.8
+wound_immunity = 0.50	;0.75	;1.0		
+radiation_immunity = 0.5
+telepatic_immunity = 1.0
+chemical_burn_immunity = 0.8
+explosion_immunity = 0.8
+fire_wound_immunity  = 0.105
+
 
 [m_fracture_e]
 GroupControlSection	= spawn_group
@@ -140,15 +154,7 @@ health_hit_part 	= 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 psy_health_v = 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity = 0.8				;коэффициенты иммунитета 
-strike_immunity = 0.8
-shock_immunity = 0.8
-wound_immunity = 0.50	;0.75	;1.0		
-radiation_immunity = 0.5
-telepatic_immunity = 1.0
-chemical_burn_immunity = 0.8
-explosion_immunity = 0.8
-fire_wound_immunity  = 0.105
+immunities_sect				= fracture_immunities
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду

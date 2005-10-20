@@ -36,6 +36,19 @@ stand_walk_dmg_0 	=	   1,	  0.4,    1,      0.9,    0.7,
 stand_run_fwd_0	 	=	   1,	  0.4,    1,      0.9,    0.6,    
 stand_run_dmg_0	    =	   1,	  0.4,    1,      0.9,    0.6,    
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[burer_immunities]
+burn_immunity			= 0.8						;коэффициенты иммунитета 
+strike_immunity			= 0.7
+shock_immunity			= 1.0
+wound_immunity			= 1.0
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.5
+fire_wound_immunity		= 0.5
 
 [m_burer_e]
 GroupControlSection		= spawn_group
@@ -160,15 +173,7 @@ health_hit_part			= 0.5						;процент хита, уходящий на отнимание здоровья
 power_hit_part			= 1.0						;процент хита, уходящий на отнимание силы
 psy_health_v			= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity			= 0.8						;коэффициенты иммунитета 
-strike_immunity			= 0.7
-shock_immunity			= 1.0
-wound_immunity			= 1.0
-radiation_immunity		= 0.0
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 1.0
-explosion_immunity		= 0.5
-fire_wound_immunity		= 0.5
+immunities_sect			= burer_immunities
 
 ;открытые раны
 bleeding_v						= 0						;потеря крови при номинальной ране в секунду

@@ -43,6 +43,19 @@ stand_run_dmg_0		=	1,	0.4,     1,	  0.20,    0.7,    0.7,	    1.0,     0.7,    1
 stand_steal_0		=	1,	0.2,     1,	  0.25,    0.7,    0.7,	    1.0,     0.7,    1.0
 stand_drag_0		=	1,	0.2,     1,	  0.25,    0.7,    0.7,	    1.0,     0.7,    1.0
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[dog_immunities]
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 0.9	;0.75	;1.0		
+radiation_immunity = 0.001	;0.5
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 0.45
 
 [m_dog_e]
 GroupControlSection	= spawn_group
@@ -168,15 +181,7 @@ health_hit_part 	= 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 psy_health_v		= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity = 1.0				;коэффициенты иммунитета 
-strike_immunity = 1.0
-shock_immunity = 1.0
-wound_immunity = 0.9	;0.75	;1.0		
-radiation_immunity = 0.001	;0.5
-telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 1.0
-fire_wound_immunity  = 0.45
+immunities_sect		= dog_immunities
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду

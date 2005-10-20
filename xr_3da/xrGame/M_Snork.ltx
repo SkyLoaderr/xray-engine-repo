@@ -45,6 +45,22 @@ stand_run_dmg_0		=	  4,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,  
 stand_steal_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
 stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
 
+
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[snork_immunities]
+burn_immunity			= 0.8								;коэффициенты иммунитета 
+strike_immunity			= 0.8
+shock_immunity			= 0.8
+wound_immunity			= 0.8	;0.75	;1.0		
+radiation_immunity		= 0.01	;0.5
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.8
+explosion_immunity		= 0.8
+fire_wound_immunity		= 0.18
+
+
 [m_snork_e]
 GroupControlSection		= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
@@ -168,15 +184,7 @@ power_hit_part 			= 1		;0.9					;процент хита, уходящий на отнимание силы
 psy_health_v = 0.1						;скорость восстановления psy-здоровья
 
 ;Immunities 
-burn_immunity			= 0.8								;коэффициенты иммунитета 
-strike_immunity			= 0.8
-shock_immunity			= 0.8
-wound_immunity			= 0.8	;0.75	;1.0		
-radiation_immunity		= 0.01	;0.5
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 0.8
-explosion_immunity		= 0.8
-fire_wound_immunity		= 0.18
+immunities_sect				= snork_immunities
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду

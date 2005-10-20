@@ -37,6 +37,21 @@ ce_power		    = 1.0 ;0.7 ; power
 stand_walk_fwd_0 	=	   1,	   0.01,    1,	    0.25,    0.7,    
 stand_run_fwd_0	 	=	   1,	   0.01,    1,	    0.25,    0.6,    
 
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[chimera_immunities]
+burn_immunity = 0.9				;коэффициенты иммунитета 
+strike_immunity = 0.5
+shock_immunity = 0.5
+wound_immunity = 0.15	;0.30	;1.0		
+radiation_immunity = 0.0
+telepatic_immunity = 0.5
+chemical_burn_immunity = 0.9
+explosion_immunity = 0.04
+fire_wound_immunity  = 0.050
+
+
 [m_chimera_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_witches_galantine,zone_burning_fuzz1,zone_mincer,zone_gravi_zone
@@ -165,15 +180,7 @@ health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
 psy_health_v				= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity = 0.9				;коэффициенты иммунитета 
-strike_immunity = 0.5
-shock_immunity = 0.5
-wound_immunity = 0.15	;0.30	;1.0		
-radiation_immunity = 0.0
-telepatic_immunity = 0.5
-chemical_burn_immunity = 0.9
-explosion_immunity = 0.04
-fire_wound_immunity  = 0.050
+immunities_sect				= chimera_immunities
 
 
 ;открытые раны
