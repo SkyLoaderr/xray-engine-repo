@@ -143,6 +143,15 @@ function play_snd_from_obj(actor, npc, p)
 	end
 end
 
+-- прибавить к указанному счётчику актёра 1
+function inc_counter(actor, npc, p)
+	if p[1] then
+		pstor_store(actor, p[1], pstor_retrieve(actor, p[1], 0) + 1)
+	end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+
 -- постпроцесс и влияние удара в морду
 function actor_punch(npc)
 	if db.actor:position():distance_to_sqr(npc:position()) > 2.25 then
