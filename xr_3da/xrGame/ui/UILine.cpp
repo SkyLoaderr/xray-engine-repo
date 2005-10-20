@@ -151,7 +151,7 @@ void CUILine::DrawCursor(CGameFont* pFont, float x, float y, u32 color){
 
 	Frect scr_rect;
 	scr_rect.set(0,0,1024,768);
-	UI()->OutText(pFont, scr_rect, x, y,  "|");
+	UI()->OutText(pFont, scr_rect, x, y,  "_");
 }
 
 CUILine* CUILine::GetEmptyLine(){
