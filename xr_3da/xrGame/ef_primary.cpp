@@ -18,6 +18,8 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "clsid_game.h"
 #include "ef_primary.h"
+#include "alife_human_brain.h"
+#include "alife_human_object_handler.h"
 
 IC	CLASS_ID CBaseFunction::clsid_member_item() const
 {
@@ -346,7 +348,7 @@ float CEquipmentPreference::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>(ef_storage().alife().member());
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
-		return					(l_tpALifeHumanAbstract->m_cpEquipmentPreferences[ef_storage().m_pfEquipmentType->dwfGetDiscreteValue()]);
+		return					(l_tpALifeHumanAbstract->brain().m_cpEquipmentPreferences[ef_storage().m_pfEquipmentType->dwfGetDiscreteValue()]);
 	}
 }
 
@@ -372,7 +374,7 @@ float CMainWeaponPreference::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>(ef_storage().alife().member());
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
-		return					(l_tpALifeHumanAbstract->m_cpMainWeaponPreferences[ef_storage().m_pfMainWeaponType->dwfGetDiscreteValue(iFloor(ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f))]);
+		return					(l_tpALifeHumanAbstract->brain().m_cpMainWeaponPreferences[ef_storage().m_pfMainWeaponType->dwfGetDiscreteValue(iFloor(ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f))]);
 	}
 }
 
@@ -398,7 +400,7 @@ float CWeaponAmmoCount::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>(ef_storage().alife().member());
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
-		return					(l_tpALifeHumanAbstract->get_available_ammo_count(smart_cast<const CSE_ALifeItemWeapon*>(ef_storage().alife().member_item()),l_tpALifeHumanAbstract->alife().m_temp_item_vector));
+		return					(l_tpALifeHumanAbstract->brain().object_handler().get_available_ammo_count(smart_cast<const CSE_ALifeItemWeapon*>(ef_storage().alife().member_item()),l_tpALifeHumanAbstract->alife().m_temp_item_vector));
 	}
 }
 

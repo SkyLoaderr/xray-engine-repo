@@ -58,7 +58,7 @@ CALifeDiscovery::CALifeDiscovery	(LPCSTR section)
 		LPSTR_IT				E = m_dependency.end();
 		for ( ; I != E; ++I) {
 			_GetItem			(S,int(I - B),S1);
-			*I					= (char*)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
+			*I					= xr_alloc<char>(xr_strlen(S1) + 1);
 			strcpy				((char*)(*I),S1);
 		}
 	}

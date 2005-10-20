@@ -90,7 +90,7 @@ void						CLevel::Demo_PrepareToStore			()
 	FS.update_path      (m_sDemoName,"$logs$",m_sDemoName);
 	//---------------------------------------------------------------
 	m_dwStoredDemoDataSize = 0;
-	m_pStoredDemoData = (u8*) xr_malloc(DEMO_DATA_SIZE);
+	m_pStoredDemoData = xr_alloc<u8>(DEMO_DATA_SIZE/sizeof(u8));
 	//---------------------------------------------------------------
 	m_dwCurDemoFrame = 0;
 };

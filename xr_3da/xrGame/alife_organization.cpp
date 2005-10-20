@@ -29,7 +29,7 @@ CALifeOrganization::CALifeOrganization	(LPCSTR section)
 	LPSTR_IT					E = m_possible_discoveries.end();
 	for ( ; I != E; ++I) {
 		_GetItem				(S,int(I - B),S1);
-		*I						= (char*)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
+		*I						= xr_alloc<char>(xr_strlen(S1) + 1);
 		strcpy					((char*)(*I),S1);
 	}
 	m_join_probability			= pSettings->r_float	(section,"join_probability");

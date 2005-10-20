@@ -24,9 +24,10 @@ IC	CMultiBinaryHeap::CDataStorage			(const u32 vertex_count) :
 	u32						memory_usage = 0;
 	u32						byte_count;
 
-	byte_count				= (vertex_count/heap_count + 1)*sizeof(CGraphVertex*);
+	u32						temp = vertex_count/heap_count + 1;
+	byte_count				= temp*sizeof(CGraphVertex*);
 	for (u32 i=0; i<heap_count; ++i) {
-		m_heaps[i].m_heap	= (CGraphVertex**)xr_malloc(byte_count);
+		m_heaps[i].m_heap	= xr_alloc<CGraphVertex*>(temp);
 		ZeroMemory			(m_heaps[i].m_heap,byte_count);
 		memory_usage		+= byte_count;
 	}

@@ -52,7 +52,7 @@ private:
 /////////////////////////////////////////////////////////////////
 	IC	void add_block()
 	{
-		blocks.push_back((T*)xr_malloc(block_size*sizeof(T)));
+		blocks.push_back(xr_alloc<T>(block_size));
 	};
 	IC void next_block()
 	{

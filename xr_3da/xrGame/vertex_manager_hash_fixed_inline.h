@@ -32,12 +32,12 @@ IC	CHashFixedVertexManager::CDataStorage		(const u32 vertex_count) :
 	u32						byte_count;
 
 	byte_count				= (hash_size)*sizeof(CGraphIndexVertex*);
-	m_hash					= (CGraphIndexVertex**)xr_malloc(byte_count);
+	m_hash					= xr_alloc<CGraphIndexVertex*>(hash_size);
 	ZeroMemory				(m_hash,byte_count);
 	memory_usage			+= byte_count;
 
 	byte_count				= (fix_size)*sizeof(CGraphIndexVertex);
-	m_vertices				= (CGraphIndexVertex*)xr_malloc(byte_count);
+	m_vertices				= xr_alloc<CGraphIndexVertex>(fix_size);
 	ZeroMemory				(m_vertices,byte_count);
 	memory_usage			+= byte_count;
 }

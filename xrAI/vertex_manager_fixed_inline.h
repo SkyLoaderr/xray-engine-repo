@@ -33,7 +33,7 @@ IC	CFixedVertexManager::CDataStorage		(const u32 vertex_count) :
 	u32						byte_count;
 
 	byte_count				= (vertex_count)*sizeof(CGraphIndexVertex);
-	m_indexes				= (CGraphIndexVertex*)xr_malloc(byte_count);
+	m_indexes				= xr_alloc<CGraphIndexVertex>(vertex_count);
 	ZeroMemory				(m_indexes,byte_count);
 	memory_usage			+= byte_count;
 }

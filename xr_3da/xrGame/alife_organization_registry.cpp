@@ -117,7 +117,7 @@ CALifeOrganizationRegistry::CALifeOrganizationRegistry	(LPCSTR section)
 	for (u32 i=0, n=_GetItemCount(S); i<n; ++i) {
 		string64				S1;
 		_GetItem				(S,i,S1);
-		LPSTR					S2 = (LPSTR)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
+		LPSTR					S2 = xr_alloc<char>(xr_strlen(S1) + 1);
 		strcpy					(S2,S1);
 		m_artefacts.insert		(mk_pair(S2,false));
 	}

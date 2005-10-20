@@ -60,9 +60,9 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName)
 	}
 
 	F->r			(&m_dwVariableCount,sizeof(m_dwVariableCount));
-	m_dwaAtomicFeatureRange = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	m_dwaAtomicFeatureRange = xr_alloc<u32>(m_dwVariableCount);
 	ZeroMemory		(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(u32));
-	u32				*m_dwaAtomicIndexes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	u32				*m_dwaAtomicIndexes = xr_alloc<u32>(m_dwVariableCount);
 	ZeroMemory		(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(u32));
 
 	for (u32 i=0; i<m_dwVariableCount; ++i) {
@@ -71,7 +71,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName)
 			m_dwaAtomicIndexes[i] = m_dwaAtomicIndexes[i-1] + m_dwaAtomicFeatureRange[i-1];
 	}
 
-	m_dwaVariableTypes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	m_dwaVariableTypes = xr_alloc<u32>(m_dwVariableCount);
 	F->r			(m_dwaVariableTypes,m_dwVariableCount*sizeof(u32));
 
 	F->r			(&m_dwFunctionType,sizeof(u32));
@@ -80,15 +80,15 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName)
 	F->r			(&m_fMaxResultValue,sizeof(float));
 
 	F->r			(&m_dwPatternCount,sizeof(m_dwPatternCount));
-	m_tpPatterns	= (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
-	m_dwaPatternIndexes = (u32 *)xr_malloc(m_dwPatternCount*sizeof(u32));
+	m_tpPatterns	= xr_alloc<SPattern>(m_dwPatternCount);
+	m_dwaPatternIndexes = xr_alloc<u32>(m_dwPatternCount);
 	ZeroMemory		(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
 	m_dwParameterCount = 0;
 	for ( i=0; i<m_dwPatternCount; ++i) {
 		if (i)
 			m_dwaPatternIndexes[i] = m_dwParameterCount;
 		F->r		(&(m_tpPatterns[i].dwCardinality),sizeof(m_tpPatterns[i].dwCardinality));
-		m_tpPatterns[i].dwaVariableIndexes = (u32 *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(u32));
+		m_tpPatterns[i].dwaVariableIndexes = xr_alloc<u32>(m_tpPatterns[i].dwCardinality);
 		F->r		(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality*sizeof(u32));
 		u32			m_dwComplexity = 1;
 		for (int j=0; j<(int)m_tpPatterns[i].dwCardinality; ++j)
@@ -96,11 +96,11 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName)
 		m_dwParameterCount += m_dwComplexity;
 	}
 	
-	m_faParameters	= (float *)xr_malloc(m_dwParameterCount*sizeof(float));
+	m_faParameters	= xr_alloc<float>(m_dwParameterCount);
 	F->r			(m_faParameters,m_dwParameterCount*sizeof(float));
 	FS.r_close		(F);
 
-	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	m_dwaVariableValues = xr_alloc<u32>(m_dwVariableCount);
 	
 	xr_free			(m_dwaAtomicIndexes);
     

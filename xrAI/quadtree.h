@@ -41,7 +41,7 @@ public:
 		IC			CFixedStorage			(u32 max_object_count) :
 						m_max_object_count	(max_object_count)
 		{
-			m_objects			= (T*)xr_malloc(m_max_object_count*sizeof(T));
+			m_objects			= xr_alloc<T>(m_max_object_count);
 			T					*B = 0;
 			T					*I = m_objects;
 			T					*E = m_objects + m_max_object_count;
