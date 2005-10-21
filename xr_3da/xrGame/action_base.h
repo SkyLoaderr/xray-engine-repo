@@ -40,7 +40,6 @@ public:
 
 protected:
 	u32							m_start_level_time;
-	ALife::_TIME_ID				m_start_game_time;
 	u32							m_inertia_time;
 	mutable _edge_value_type	m_weight;
 	bool						m_first_time;
@@ -69,7 +68,6 @@ public:
 	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 	IC		void				set_inertia_time	(u32 inertia_time);
 	IC		u32					start_level_time	() const;
-	IC		ALife::_TIME_ID		start_game_time		() const;
 	IC		u32					inertia_time		() const;
 	IC		bool				completed			() const;
 	IC		void				set_property		(const _condition_type &condition_id, const _value_type &value);

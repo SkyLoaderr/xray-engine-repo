@@ -110,12 +110,6 @@ IC	u32	CBaseAction::start_level_time			() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	ALife::_TIME_ID	CBaseAction::start_game_time	() const
-{
-	return				(m_start_game_time);
-}
-
-TEMPLATE_SPECIALIZATION
 IC	u32	CBaseAction::inertia_time				() const
 {
 	return				(m_inertia_time);

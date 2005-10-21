@@ -22,12 +22,11 @@ protected:
 
 protected:
 	_condition_type		m_condition;
-	_value_type			m_value;
 	u32					m_hash;
+	_value_type			m_value;
 
 public:
 	IC								COperatorConditionAbstract	(const _condition_type condition, const _value_type value);
-	virtual							~COperatorConditionAbstract	();
 	IC		const _condition_type	&condition					() const;
 	IC		const _value_type		&value						() const;
 	IC		const u32				&hash_value					() const;

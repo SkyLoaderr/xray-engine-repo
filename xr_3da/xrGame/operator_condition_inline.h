@@ -31,11 +31,6 @@ IC	CAbstractOperatorCondition::COperatorConditionAbstract	(const _condition_type
 }
 
 TEMPLATE_SPECIALIZATION
-CAbstractOperatorCondition::~COperatorConditionAbstract	()
-{
-}
-
-TEMPLATE_SPECIALIZATION
 IC	const _condition_type &CAbstractOperatorCondition::condition	() const
 {
 	return				(m_condition);
