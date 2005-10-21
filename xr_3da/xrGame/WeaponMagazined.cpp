@@ -280,9 +280,7 @@ void CWeaponMagazined::UnloadMagazine()
 
 void CWeaponMagazined::ReloadMagazine() 
 {
-	m_dwAmmoCurrentCalcFrame = 0;
-
-	SwitchState(eIdle);
+	m_dwAmmoCurrentCalcFrame = 0;	
 
 	//устранить осечку при перезарядке
 	if(IsMisfire())	bMisfire = false;
@@ -425,17 +423,6 @@ void CWeaponMagazined::UpdateCL			()
 				fTime = 0;
 			break;
 		case eFire:			
-/*			if(OnClient() && !iAmmoElapsed)
-			{
-				fTime			-=	dt;
-				if (fTime<0)	
-					fTime = 0;
-				break;
-			}
-			VERIFY(iAmmoElapsed);
-
-*/
-
 			if(iAmmoElapsed>0)
 				state_Fire		(dt);
 			
@@ -448,7 +435,6 @@ void CWeaponMagazined::UpdateCL			()
 			else
 			{
 				fTime			-=	dt;
-//				if (fTime<0)	fTime = 0;
 			}
 
 			break;
@@ -493,6 +479,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	};
 		
 	VERIFY(!m_magazine.empty());
+//	Msg("%d && %d && (%d || %d) && (%d || %d)", !m_magazine.empty(), fTime<=0, IsWorking(), m_bFireSingleShot, m_iQueueSize < 0, m_iShotNum < m_iQueueSize);
 	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
 	{
 		m_bFireSingleShot = false;
@@ -580,7 +567,7 @@ void CWeaponMagazined::OnAnimationEnd()
 {
 	switch(STATE) 
 	{
-		case eReload:	ReloadMagazine();		break;	// End of reload animation
+		case eReload:	ReloadMagazine();	SwitchState(eIdle);	break;	// End of reload animation
 		case eHiding:	SwitchState(eHidden);   break;	// End of Hide
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
 		case eIdle:		switch2_Idle();			break;  // Keep showing idle

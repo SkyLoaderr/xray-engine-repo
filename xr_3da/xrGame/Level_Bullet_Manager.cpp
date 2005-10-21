@@ -342,7 +342,7 @@ void CBulletManager::Render	()
 		float dist2segSqr = SqrDistancePointToSegment(Device.vCameraPosition, bullet->pos, Fvector().mul(bullet->dir, length));
 		//---------------------------------------------
 		float MaxDistSqr = 1.0f;
-		float MinDistSqr = 0.04f;
+		float MinDistSqr = 0.09f;
 		if (dist2segSqr < MaxDistSqr)
 		{
 			if (dist2segSqr < MinDistSqr) dist2segSqr = MinDistSqr;
@@ -351,7 +351,7 @@ void CBulletManager::Render	()
 		}
 		if (Device.vCameraPosition.distance_to_sqr(bullet->pos)<(length*length))
 		{
-			length = Device.vCameraPosition.distance_to(bullet->pos) - 0.02f;
+			length = Device.vCameraPosition.distance_to(bullet->pos) - 0.3f;
 		}
 		/*
 		//---------------------------------------------

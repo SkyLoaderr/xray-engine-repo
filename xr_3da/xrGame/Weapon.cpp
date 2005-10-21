@@ -484,7 +484,6 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u8					(m_flagsAddOnState);
 	P.w_u8					((u8)m_ammoType);
 	P.w_u8					((u8)STATE);
-
 	P.w_u8					((u8)m_bZoomMode);
 }
 
@@ -563,7 +562,10 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 		{
 			u8				state;
 			P.r_u8			(state);
-			P.r_u8			(m_sub_state);
+			P.r_u8			(m_sub_state);		
+			u8 AmmoElapsed = P.r_u8();			
+
+			if (OnClient()) SetAmmoElapsed(int(AmmoElapsed));			
 			OnStateSwitch	(u32(state));
 		}
 		break;
@@ -717,11 +719,14 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				//если оружие чем-то занято, то ничего не делать
 				if(IsPending()) return false;
 
+				if (!OnClient())
+				{				
+					if(flags&CMD_START) {
+						FireStart();
+					}else 
+						FireEnd();
+				};
 
-				if(flags&CMD_START) {
-					FireStart();
-				}else 
-					FireEnd();
 			} 
 			return true;
 		case kWPN_NEXT: 
@@ -1101,6 +1106,8 @@ CUIStaticItem* CWeapon::ZoomTexture()
 
 void CWeapon::SwitchState(u32 S)
 {
+	if (OnClient()) return;
+
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
 	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/ 
 		&& m_pInventory && OnServer())	
@@ -1110,6 +1117,7 @@ void CWeapon::SwitchState(u32 S)
 		CHudItem::object().u_EventGen		(P,GE_WPN_STATE_CHANGE,CHudItem::object().ID());
 		P.w_u8			(u8(S));
 		P.w_u8			(u8(m_sub_state));
+		P.w_u8			(u8(iAmmoElapsed & 0xff));
 		CHudItem::object().u_EventSend		(P);
 	}
 }
