@@ -51,11 +51,12 @@ public:		// User declarations
     static void __fastcall AddMessage	(const AnsiString& msg){AddMessage(mtCustom,msg);}
     static void __fastcall AddDlgMessage(TMsgDlgType mt, const AnsiString& msg);
     static void __fastcall AddDlgMessage(const AnsiString& msg){AddDlgMessage(mtCustom,msg);}
-    static void __fastcall ShowLog();
-    static void __fastcall HideLog();
-    static void __fastcall CreateLog();
-    static void __fastcall DestroyLog();
+    static void __fastcall ShowLog		();
+    static void __fastcall HideLog		();
+    static void __fastcall CreateLog	();
+    static void __fastcall DestroyLog	();
     static void __fastcall ChangeVisible(){if (form->Visible) HideLog(); else ShowLog();}
+    static bool __fastcall IsVisible	(){return form->Visible;}
 };
 //---------------------------------------------------------------------------
 #endif

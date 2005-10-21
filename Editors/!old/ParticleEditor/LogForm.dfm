@@ -1,8 +1,8 @@
 object frmLog: TfrmLog
-  Left = -722
-  Top = 411
+  Left = 560
+  Top = 413
   Width = 400
-  Height = 222
+  Height = 225
   BorderStyle = bsSizeToolWin
   Caption = 'Log'
   Color = clBtnFace
@@ -23,7 +23,7 @@ object frmLog: TfrmLog
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 175
+    Top = 171
     Width = 392
     Height = 20
     Align = alBottom
@@ -106,7 +106,7 @@ object frmLog: TfrmLog
     Left = 0
     Top = 0
     Width = 392
-    Height = 175
+    Height = 171
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
@@ -114,7 +114,7 @@ object frmLog: TfrmLog
       Left = 0
       Top = 0
       Width = 392
-      Height = 175
+      Height = 171
       Style = lbOwnerDrawFixed
       AutoComplete = False
       Align = alClient

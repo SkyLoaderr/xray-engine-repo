@@ -798,7 +798,7 @@ void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
 MotionID CSkeletonAnimated::ID_Motion(LPCSTR  N, u16 slot)
 {
 	MotionID 				motion_ID;
-    if (slot<MAX_ANIM_REFS){
+    if (slot<MAX_ANIM_SLOT){
         shared_motions* s_mots	= &m_Motions[slot];
         // find in cycles
         accel_map::iterator I 	= s_mots->cycle()->find(LPSTR(N));
