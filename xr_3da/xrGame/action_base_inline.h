@@ -72,7 +72,6 @@ void CBaseAction::initialize		()
 		debug_log		(eActionStateInitialized);
 #endif
 	m_start_level_time	= Device.dwTimeGlobal;
-	m_start_game_time	= Level().GetGameTime();
 	m_first_time		= true;
 }
 
