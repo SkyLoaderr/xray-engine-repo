@@ -114,6 +114,8 @@ virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback)		
 virtual		void		SetWheelContactCallback				(ObjectContactCallbackFun* callback)						=0 ;
 virtual		ObjectContactCallbackFun* ObjectContactCallBack	()															{return NULL;}
 virtual		void		GetVelocity							(Fvector& vvel)												=0 ;
+virtual		void		GetSavedVelocity					(Fvector& vvel)												;
+virtual		void		GetSmothedVelocity					(Fvector& vvel)												;
 virtual		void		SetVelocity							(Fvector vel)												=0 ;
 virtual		void		SetAirControlFactor					(float factor)												=0 ;
 virtual		void		GetPosition							(Fvector& vpos)												=0 ;

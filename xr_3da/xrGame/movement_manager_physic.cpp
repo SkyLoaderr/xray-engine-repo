@@ -161,7 +161,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
 	velocity.mul						(desirable_speed);//*1.25f
 	if(!movement_control->PhyssicsOnlyMode())
-		movement_control->SetVelocity		(velocity);
+		movement_control->SetCharacterVelocity(velocity);
 
 	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
 		

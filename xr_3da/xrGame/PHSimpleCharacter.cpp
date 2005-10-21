@@ -832,8 +832,9 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 	dGeomGetUserData(m_hat)->pushing_neg=false;
 	dGeomGetUserData(m_geom_shell)->pushing_neg=false;
 	dGeomGetUserData(m_hat)->pushing_neg=false;
-
+	
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
+	CPHDisablingTranslational::Reinit();
 	m_body_interpolation.ResetPositions();
 	CPHObject::spatial_move();
 }
@@ -996,6 +997,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 				m_safe_position[0]+linear_velocity[0]*fixed_step,
 				m_safe_position[1]+linear_velocity[1]*fixed_step,
 				m_safe_position[2]+linear_velocity[2]*fixed_step);
+			
 		}
 	}
 	else
@@ -1007,7 +1009,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
-
+		
 
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 	dVectorSet(m_safe_velocity,linear_velocity);

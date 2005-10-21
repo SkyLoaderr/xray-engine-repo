@@ -120,10 +120,10 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	//if(!fis_zero(mAccel))vAccel.mul(1.f/mAccel);
 	m_character->SetAcceleration(vAccel);
 	if(!fis_zero(jump)) m_character->Jump(vAccel);
-
-	m_character->GetVelocity(vVelocity); 
+	
+	m_character->GetSavedVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
-	//if(ph_world->disable_count==0)Msg("avel %f", fActualVelocity);
+	//Msg("saved avel %f", fActualVelocity);
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
 
@@ -271,7 +271,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	m_character->SetMaximumVelocity(speed);
 	m_character->SetAcceleration(dir);
 	//////////////////////////////////////////////////////
-	m_character->GetVelocity(vVelocity); 
+	m_character->GetSavedVelocity(vVelocity);
 	fActualVelocity=vVelocity.magnitude();
 
 	gcontact_Was=m_character->ContactWas();

@@ -8,10 +8,12 @@ struct SDisableVector
 {
 	Fvector						sum																			;
 	Fvector						previous																	;
+	float						UpdatePrevious				(const Fvector& new_vector)						;
 	float						Update						(const Fvector& new_vector)						;
 	void						Reset						()												;
 	void						Init						()												;
 	float						SumMagnitude				()												;
+
 	SDisableVector											()												;
 };
 struct SDisableUpdateState
@@ -54,7 +56,7 @@ class CPHDisablingBase :
 {
 public:
 
-
+				void			UpdateValues				(const Fvector &new_pos,const Fvector &new_vel)	;
 	virtual		void			UpdateL2					()												;
 	virtual		void			set_DisableParams			(const SOneDDOParams& params)					;
 
@@ -80,6 +82,7 @@ class CPHDisablingRotational :
 {
 public:
 								CPHDisablingRotational		()												;
+				void			Reinit						()												;
 	virtual		void			UpdateL1					()												;
 	virtual		void			set_DisableParams			(const SAllDDOParams& params)					;
 };
@@ -89,6 +92,7 @@ class CPHDisablingTranslational :
 {
 public:
 								CPHDisablingTranslational	()												;
+				void			Reinit						()												;
 	virtual		void			UpdateL1					()												;
 	virtual		void			set_DisableParams			(const SAllDDOParams& params)					;
 };

@@ -86,13 +86,7 @@ private:
 	u32					trying_times[4];
 	Fvector				trying_poses[4];
 	DWORD				m_dwCurBox;
-	//Fvector				vFootCenter;			// задаются относительно Position()
-	//Fvector				vFootExt;				//
 
-	//float				fAirFriction;
-	//float				fWallFriction;
-	//float				fGroundFriction;
-	//float				fFriction;				// Current friction
 	float				fMass;
 	float				fMinCrashSpeed;
 	float				fMaxCrashSpeed;
@@ -141,47 +135,43 @@ public:
 #endif
 
 	void				SetPLastMaterialIDX	(u16* p){m_character->SetPLastMaterialIDX(p);}
-
-	dBodyID				GetBody				( )		{if(m_character) return m_character->get_body(); else return NULL;}
-	const Fvector&		GetVelocity			( )		{ return vVelocity;	}
-	void				GetCharacterVelocity(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
-	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
-	float				GetVelocityActual	()		{ return fActualVelocity;	}
-	float				GetContactSpeed		()		{ return fContactSpeed; }
-	void				GroundNormal		(Fvector &norm)					;
-	CPHSynchronize*		GetSyncItem			()								;
-	void				Freeze				()								;
-	void				UnFreeze			()								;
-	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character->SetVelocity(vVelocity);}
-	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character->SetVelocity(vVelocity);}
-	void				SetPhysicsRefObject(CPhysicsShellHolder* ref_object){m_character->SetPhysicsRefObject(ref_object);};
+	dBodyID				GetBody						( )		{if(m_character) return m_character->get_body(); else return NULL;}
+	const Fvector&		GetVelocity					( )		{ return vVelocity;	}
+	void				GetCharacterVelocity		(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
+	float				GetVelocityMagnitude		()		{ return vVelocity.magnitude();	}
+	float				GetVelocityActual			()		{ return fActualVelocity;	}
+	void				GetSmoothedVelocity			(Fvector& v){if(m_character)m_character->GetSmothedVelocity(v);else v.set(0,0,0);}
+	float				GetContactSpeed				()		{ return fContactSpeed; }
+	void				GroundNormal				(Fvector &norm)					;
+	CPHSynchronize*		GetSyncItem					()								;
+	void				Freeze						()								;
+	void				UnFreeze					()								;
+	void				SetVelocity					(float x, float y, float z)	{SetVelocity(Fvector().set(x,y,z));}
+	void				SetVelocity					(const Fvector& v)	{vVelocity.set(v);SetCharacterVelocity(v);}
+	void				SetCharacterVelocity		(const Fvector& v)	{if(m_character)m_character->SetVelocity(vVelocity);}										
+	void				SetPhysicsRefObject			(CPhysicsShellHolder* ref_object){m_character->SetPhysicsRefObject(ref_object);};
 	
-	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
-	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
-	void				ActivateBox		(DWORD id, BOOL Check = false);
-	bool				ActivateBoxDynamic(DWORD id,int num_it=9,int num_steps=5,float resolve_depth=0.01f);
-	void				InterpolateBox	(DWORD id,float k);
-	EEnvironment		Environment		( )			{ return eEnvironment; }
-	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
-	const Fbox&			Box				( )			{ return aabb; }
-	DWORD				BoxID			( )const	{ return m_dwCurBox;}
-	const Fbox*			Boxes			( )			{return boxes;}
-	float				FootRadius		( )			{if(m_character)return m_character->FootRadius(); else return 0.f;};
-	void				CollisionEnable (BOOL enable){if(m_character) if(enable)m_character->collision_enable();else m_character->collision_disable();}
-	//const Fvector&		FootExtent		( )			{return vFootExt;}
-	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
+	void				CalcMaximumVelocity			(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
+	void				CalcMaximumVelocity			(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
+	void				ActivateBox					(DWORD id, BOOL Check = false);
+	bool				ActivateBoxDynamic			(DWORD id,int num_it=9,int num_steps=5,float resolve_depth=0.01f);
+	void				InterpolateBox				(DWORD id,float k);
+	EEnvironment		Environment					( )			{ return eEnvironment; }
+	EEnvironment		OldEnvironment				( )			{ return eOldEnvironment; }
+	const Fbox&			Box							( )			{ return aabb; }
+	DWORD				BoxID						( )const	{ return m_dwCurBox;}
+	const Fbox*			Boxes						( )			{return boxes;}
+	float				FootRadius					( )			{if(m_character)return m_character->FootRadius(); else return 0.f;};
+	void				CollisionEnable 			(BOOL enable){if(m_character) if(enable)m_character->collision_enable();else m_character->collision_disable();}
+	void				SetBox						(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
-	void				SetParent		(CObject* P){ pObject = P; }
+	void				SetParent					(CObject* P){ pObject = P; }
 
-	void				SetMass			(float M)	{ fMass = M;
+	void				SetMass						(float M)	{ fMass = M;
 	if(m_character)
 		m_character->SetMas(fMass);
 	}
-	float				GetMass			()			{ return fMass;	}
-
-	//void				SetFoots		(Fvector& C, Fvector &E)
-	//{	vFootCenter.set	(C); vFootExt.set	(E); 	}
-
+	float				GetMass						()			{ return fMass;	}
 	void				SetCrashSpeeds	(float min, float max)
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}
 

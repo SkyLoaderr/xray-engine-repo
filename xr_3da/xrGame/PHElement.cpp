@@ -107,12 +107,8 @@ void CPHElement::			build	(){
 		dBodySetMass(m_body,&m_mass);
 	}
 	
-
-
-	//m_inverse_local_transform.identity();
-	//m_inverse_local_transform.c.set(m_mass_center);
-	//m_inverse_local_transform.invert();
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+	CPHDisablingTranslational::Reinit();
 	///////////////////////////////////////////////////////////////////////////////////////
 	CPHGeometryOwner::build();
 	set_body(m_body);
@@ -243,13 +239,8 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetRotation(m_body,R);
+	CPHDisablingFull::Reinit();
 
-
-	//dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
-	//dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	//VERIFY2(dV_valid(m_safe_position),"not valide safe position");
-	//VERIFY2(dV_valid(m_safe_velocity),"not valide safe velocity");
 	VERIFY2(dBodyGetPosition(m_body),"not valide safe position");
 	VERIFY2(dBodyGetLinearVel(m_body),"not valide safe velocity");
 }
@@ -259,40 +250,36 @@ void CPHElement::getQuaternion(Fquaternion& quaternion)
 	if(!bActive) return;
 	const float* q=dBodyGetQuaternion(m_body);
 	quaternion.set(-q[0],q[1],q[2],q[3]);
+	VERIFY(_valid(quaternion));
 }
 void CPHElement::setQuaternion(const Fquaternion& quaternion)
 {
+	VERIFY(_valid(quaternion));
 	if(!bActive) return;
 	dQuaternion q={-quaternion.w,quaternion.x,quaternion.y,quaternion.z};
 	dBodySetQuaternion(m_body,q);
+	CPHDisablingRotational::Reinit();
 }
 void CPHElement::GetGlobalPositionDynamic(Fvector* v)
 {
 	if(!bActive) return;
 	v->set((*(Fvector*)dBodyGetPosition(m_body)));
+	VERIFY(_valid(*v));
 }
 
 void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 {
 	if(!bActive) return;
+	VERIFY(_valid(position));
 	dBodySetPosition(m_body,position.x,position.y,position.z);
+	CPHDisablingTranslational::Reinit();
 }
 
 void CPHElement::TransformPosition(const Fmatrix &form)
 {
 	if(!bActive)return;
+	VERIFY(_valid(form));
 	R_ASSERT2(m_body,"body is not created");
-	//dMatrix3 dMT,dMN;
-	//PHDynamicData::FMXtoDMX(form,dMT);
-
-	//const dReal* dMB=dBodyGetRotation(m_body);
-	//dVector3 dVT,dVN,dVB;
-	//dVectorSet(dVB,(const dReal*)&form.c);
-	//dMULTIPLY0_331(dVT,dMB,dVB);
-	//dMULTIPLY0_333(dMN,dMB,dMT);
-	//dVectorAdd(dVN,dBodyGetPosition(m_body),dVT);
-	//dBodySetPosition(m_body,dVN[0],dVN[1],dVN[2]);
-	//dBodySetRotation(m_body,dMN);
 	Fmatrix bm;
 	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),bm);
 	Fmatrix new_bm;
@@ -301,6 +288,7 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 	PHDynamicData::FMXtoDMX(new_bm,dBM);
 	dBodySetRotation(m_body,dBM);
 	dBodySetPosition(m_body,new_bm.c.x,new_bm.c.y,new_bm.c.z);
+	CPHDisablingFull::Reinit();
 	m_body_interpolation.ResetPositions();
 	m_body_interpolation.ResetRotations();
 }
@@ -356,6 +344,7 @@ void CPHElement::Activate(bool disable){
 }
 
 void CPHElement::Activate(const Fmatrix& start_from,bool disable){
+	VERIFY(_valid(start_from));
 	Fmatrix globe;
 	globe.mul(start_from,mXFORM);
 
@@ -371,14 +360,7 @@ void CPHElement::Update(){
 	if(bActivating) bActivating=false;
 	if( !dBodyIsEnabled(m_body)&&!m_flags.test(flUpdate)/*!bUpdate*/) return;
 
-	//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
-	//					  dBodyGetPosition(m_body),
-	//					  mXFORM);
-
 	InterpolateGlobalTransform(&mXFORM);
-
-	//if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		//if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 	VERIFY2(_valid(mXFORM),"invalid position in update");
 }
 
@@ -446,15 +428,6 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	////////////////limit linear vel////////////////////////////////////////////////////////////////////////////////////////
 
-
-	//if(!dV_valid(linear_velocity))
-	//{
-	//	dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
-	//	linear_velocity_smag=dDOT(m_safe_velocity,m_safe_velocity);
-	//	linear_velocity_mag =dSqrt(linear_velocity_smag);
-
-	//}
-	//else 
 	VERIFY(dV_valid(linear_velocity));
 	if(linear_velocity_mag>m_l_limit)
 	{
@@ -468,35 +441,12 @@ void CPHElement::PhDataUpdate(dReal step){
 			linear_velocity[2]/f
 			);
 	}
-	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
 	VERIFY(dV_valid(position));
-	//if(!dV_valid(position)) 
-	//{
-	//	dBodySetPosition(
-	//		m_body,
-	//		m_safe_position[0]-m_safe_velocity[0]*fixed_step,
-	//		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
-	//		m_safe_position[2]-m_safe_velocity[2]*fixed_step
-	//		);
-
-	//}
-	//else
-	//{
-	//	dVectorSet(m_safe_position,position);
-
-	//	
-	//}
-
 	/////////////////limit & secure angular vel///////////////////////////////////////////////////////////////////////////////
 	VERIFY(dV_valid(angular_velocity));
-	//if(!dV_valid(angular_velocity))
-	//{
-	//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 
-	//}
-	//else 
 	if(angular_velocity_mag>m_w_limit)
 	{
 		dReal f=angular_velocity_mag/m_w_limit;
@@ -513,13 +463,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	{
 
 	VERIFY(dQ_valid(dBodyGetQuaternion(m_body)));
-	/*	if(!dQ_valid(dBodyGetQuaternion(m_body)))
-		{
 
-			dBodySetQuaternion(m_body,m_safe_quaternion);
-
-		}
-		else dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));*/
 
 	}
 
@@ -572,18 +516,7 @@ void CPHElement::Disable()	{
 //	return;
 	if(!bActive||!dBodyIsEnabled(m_body)) return;
 	FillInterpolation();
-	//if(!b_contacts_saved)
-	//{
-	//	if(m_group)
-	//		SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
-	//	else 
-	//		SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
-	//	b_contacts_saved=true;
-	//}
-	//	dBodySetForce(m_body,0.f,0.f,0.f);
-	//	dBodySetTorque(m_body,0.f,0.f,0.f);
-	//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
-	//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
+
 	dBodyDisable(m_body);
 }
 
@@ -597,7 +530,7 @@ void CPHElement::ReEnable(){
 void	CPHElement::Freeze()
 {
 	if(!m_body) return;
-	//was_enabled_before_freeze=!!dBodyIsEnabled(m_body);
+
 	m_flags.set(flWasEnabledBeforeFreeze,!!dBodyIsEnabled(m_body));
 	dBodyDisable(m_body);
 }
@@ -1322,12 +1255,11 @@ void CPHElement::ResetMass(float density)
 
 	setDensity(density);
 	dBodySetMass(m_body,&m_mass);
-	//m_inverse_local_transform.c.set(m_mass_center);
-	//m_inverse_local_transform.invert();
+
 	shift_mc.sub(m_mass_center,tmp);
 	tmp.set(*(Fvector *)dBodyGetPosition(m_body));
 	tmp.add(shift_mc);
-	//dBodySetPosition(m_body,tmp.x,tmp.y,tmp.z);
+	
 
 	bActivating = true;
 
