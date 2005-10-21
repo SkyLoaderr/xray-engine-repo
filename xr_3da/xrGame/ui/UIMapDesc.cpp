@@ -20,16 +20,15 @@ CUIMapDesc::CUIMapDesc(){
 	m_pTextDesc		= xr_new<CUIScrollView>();	AttachChild(m_pTextDesc);
 
 	m_pBtnSpectator	= xr_new<CUI3tButton>();	AttachChild(m_pBtnSpectator);
-	m_pBtnNext		= xr_new<CUI3tButton>();	AttachChild(m_pBtnNext);
-
-	m_pMapInfo		= xr_new<CUIMapInfo>();		AttachChild(m_pMapInfo);
-	
+	m_pBtnNext		= xr_new<CUI3tButton>();	AttachChild(m_pBtnNext);	
 
 	for (int i = 0; i <3; i++)
 	{
 		m_pFrame[i] = xr_new<CUIStatic>();
 		AttachChild(m_pFrame[i]);
 	}
+
+	m_pMapInfo		= xr_new<CUIMapInfo>();		AttachChild(m_pMapInfo);
 
     Init();
 }
@@ -75,11 +74,11 @@ void CUIMapDesc::Init(){
 	else
 		m_pImage->InitTexture("ui\\ui_nomap");
 
+	CUIXmlInit::InitWindow(xml_doc, "map_desc:map_info", 0, m_pMapInfo);
 
-//	xr_string map_name = "ui\\ui_map_";
-//	map_name +=	;
-//	map_name += ".dds";
-	
+	m_pMapInfo->InitMap(*Level().name());
+
+	ADD_TEXT_TO_VIEW2(m_pMapInfo->GetLargeDesc(),m_pTextDesc);
 
 
 	CUIXmlInit::InitStatic		(xml_doc,"map_desc:image_frames_1",	0,	m_pFrame[0]);

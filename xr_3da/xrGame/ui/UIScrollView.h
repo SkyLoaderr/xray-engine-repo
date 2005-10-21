@@ -41,3 +41,12 @@ public:
 			void	SetFixedScrollBar	(bool b);
 			float	GetDesiredChildWidth();
 };
+
+#define ADD_TEXT_TO_VIEW3(txt,st,view)		st = xr_new<CUIStatic>();						\
+											st->SetText(txt);								\
+											st->SetWidth(view->GetDesiredChildWidth());		\
+											st->AdjustHeightToText();						\
+											view->AddWindow(st)
+
+#define ADD_TEXT_TO_VIEW2(txt,view)			CUIStatic*	pSt = xr_new<CUIStatic>();			\
+											ADD_TEXT_TO_VIEW3(txt,pSt,view)

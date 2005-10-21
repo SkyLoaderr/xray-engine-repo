@@ -19,8 +19,9 @@
 		
 		<image x="80" y="61" width="287" height="215" />
 		
-		<text_desc x="72" y="331" width="620" height="160">
-			<text>There must be large text description of current map. Dear game designer, it is task for you</text>
+		<map_info x="470" y="100" width="250" height="215" />
+		
+		<text_desc x="72" y="331" width="620" height="160">			
 		</text_desc>
 		
 		<btn_next x="394" y="504" width="157" height="48">
