@@ -33,6 +33,10 @@ void CSheduler::Destroy			()
 		Debug.fatal		("Sheduler work-list is not empty\n%s",_objects);
 	}
 #endif
+	ItemsRT.clear		();
+	Items.clear			();
+	ItemsProcessed.clear();
+	Registration.clear	();
 }
 
 void	CSheduler::internal_Registration()

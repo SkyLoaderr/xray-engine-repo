@@ -280,7 +280,7 @@ void CRenderDevice::FrameMove()
 	Statistic.EngineTOTAL.End	();
 }
 
-void ProcessLoading(RP_FUNC *f)
+void ProcessLoading				(RP_FUNC *f)
 {
 	static u32 processed_idx			= 0;
 	u32 tm = Device.TimerAsyncMM		();
