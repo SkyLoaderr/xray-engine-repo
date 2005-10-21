@@ -10,9 +10,9 @@
 
 #define CStateMonsterRestFunAbstract CStateMonsterRestFun<_Object>
 
-#define IMPULSE_TO_CORPSE	20.f
+#define IMPULSE_TO_CORPSE	15.f
 #define MIN_DELAY			100
-#define TIME_IN_STATE		15000
+#define TIME_IN_STATE		8000
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterRestFunAbstract::CStateMonsterRestFun(_Object *obj) : inherited(obj)

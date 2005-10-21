@@ -2673,6 +2673,16 @@
 								RelativePath=".\ai\Monsters\States\monster_state_controlled_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Home Point"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_home_point_rest.h">
+							</File>
+							<File
+								RelativePath=".\monster_state_home_point_rest_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="components"
@@ -9688,7 +9698,6 @@
 					</File>
 					<File
 						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
-
 						<FileConfiguration
 							Name="Debug|Win32">
 							<Tool

@@ -40,6 +40,7 @@ public:
 
 protected:
 	u32							m_start_level_time;
+	u32							m_start_game_time;
 	u32							m_inertia_time;
 	mutable _edge_value_type	m_weight;
 	bool						m_first_time;

@@ -29,18 +29,7 @@ CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
 	add_state(eStateSquad_Rest,			xr_new<CStateMonsterSquadRest<_Object> >	(obj));
 	add_state(eStateSquad_RestFollow,	xr_new<CStateMonsterSquadRestFollow<_Object> >(obj));
 	add_state(eStateCustomMoveToRestrictor, xr_new<CStateMonsterMoveToRestrictor<_Object> > (obj));
-}
-
-TEMPLATE_SPECIALIZATION
-CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj, state_ptr state_sleep, state_ptr state_walk) : inherited(obj)
-{
-	add_state(eStateRest_Sleep,			state_sleep);
-	add_state(eStateRest_WalkGraphPoint,state_walk);
-	add_state(eStateRest_Idle,			xr_new<CStateMonsterRestIdle<_Object> >		(obj));
-	add_state(eStateRest_Fun,			xr_new<CStateMonsterRestFun<_Object> >		(obj));
-	add_state(eStateSquad_Rest,			xr_new<CStateMonsterSquadRest<_Object> >	(obj));
-	add_state(eStateSquad_RestFollow,	xr_new<CStateMonsterSquadRestFollow<_Object> >(obj));
-	add_state(eStateCustomMoveToRestrictor, xr_new<CStateMonsterMoveToRestrictor<_Object> > (obj));
+	//add_state(eStateRest_MoveToHomePoint, xr_new<CStateMonsterRestMoveToHomePoint<_Object> > (obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -73,8 +62,6 @@ void CStateMonsterRestAbstract::critical_finalize()
 	object->anomaly_detector().deactivate();
 }
 
-
-
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestAbstract::execute()
 {
@@ -88,45 +75,55 @@ void CStateMonsterRestAbstract::execute()
 	
 	if (move_to_restrictor) select_state(eStateCustomMoveToRestrictor);
 	else {
-		// check squad behaviour
-		bool use_squad = false;
+		bool move_to_home_point = false;
+		
+		//if (prev_substate == eStateRest_MoveToHomePoint) {
+		//	if (!get_state(eStateRest_MoveToHomePoint)->check_completion()) 
+		//		move_to_home_point = true;
+		//} else if (get_state(eStateRest_MoveToHomePoint)->check_start_conditions()) 
+		//	move_to_home_point = true;
+		
+		if (move_to_home_point) select_state(eStateRest_MoveToHomePoint);
+		else {
+			// check squad behaviour
+			bool use_squad = false;
 
-		if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
-			select_state	(eStateSquad_Rest);
-			use_squad		= true;
-		} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
-			select_state	(eStateSquad_RestFollow);
-			use_squad		= true;
-		} 
+			if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
+				select_state	(eStateSquad_Rest);
+				use_squad		= true;
+			} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
+				select_state	(eStateSquad_RestFollow);
+				use_squad		= true;
+			} 
 
-		if (!use_squad) {
-			bool bNormalSatiety =	(object->conditions().GetSatiety() > object->db().m_fMinSatiety) && 
-				(object->conditions().GetSatiety() < object->db().m_fMaxSatiety); 
+			if (!use_squad) {
+				bool bNormalSatiety =	(object->conditions().GetSatiety() > object->db().m_fMinSatiety) && 
+					(object->conditions().GetSatiety() < object->db().m_fMaxSatiety); 
 
-			bool state_fun = false;
+				bool state_fun = false;
 
-			if (prev_substate == eStateRest_Fun) {
-				if (!get_state(eStateRest_Fun)->check_completion()) 
-					state_fun = true;
-			} else {
-				if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
-					state_fun = true;
-			}
-
-			if (state_fun) {
-				select_state	(eStateRest_Fun);
-			} else {
-				if (bNormalSatiety) {
-					select_state	(eStateRest_Idle);
+				if (prev_substate == eStateRest_Fun) {
+					if (!get_state(eStateRest_Fun)->check_completion()) 
+						state_fun = true;
 				} else {
-					select_state	(eStateRest_WalkGraphPoint);
+					if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
+						state_fun = true;
 				}
-			}
 
-			if ((prev_substate == eStateRest_Fun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
+				if (state_fun) {
+					select_state	(eStateRest_Fun);
+				} else {
+					if (bNormalSatiety) {
+						select_state	(eStateRest_Idle);
+					} else {
+						select_state	(eStateRest_WalkGraphPoint);
+					}
+				}
+
+				if ((prev_substate == eStateRest_Fun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
+			}
 		}
 	}
-
 
 	get_state_current()->execute();
 	prev_substate = current_substate;

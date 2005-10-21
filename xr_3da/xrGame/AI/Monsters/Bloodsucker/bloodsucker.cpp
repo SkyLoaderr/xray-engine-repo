@@ -300,29 +300,29 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	if (!g_Alive())	setVisible(TRUE);
 	CInvisibility::schedule_update();
 
-	if (state_invisible && g_Alive() && (m_fCurSpeed != 0)) {
-		SGameMtlPair* mtl_pair		= material().get_current_pair();
-		if (!mtl_pair) return;
+	//if (state_invisible && g_Alive() && (m_fCurSpeed != 0)) {
+	//	SGameMtlPair* mtl_pair		= material().get_current_pair();
+	//	if (!mtl_pair) return;
 
-		if (mtl_pair->CollideParticles.empty()) return;
+	//	if (mtl_pair->CollideParticles.empty()) return;
 
-		LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+	//	LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 
-		//отыграть партиклы столкновения материалов
-		CParticlesObject* ps = CParticlesObject::Create(ps_name,TRUE);
+	//	//отыграть партиклы столкновения материалов
+	//	CParticlesObject* ps = CParticlesObject::Create(ps_name,TRUE);
 
-		// вычислить позицию и направленность партикла
-		Fmatrix pos; 
+	//	// вычислить позицию и направленность партикла
+	//	Fmatrix pos; 
 
-		// установить направление
-		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
-		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
-		// установить позицию
-		pos.c.set(CStepManager::get_foot_position(eFrontLeft));
+	//	// установить направление
+	//	pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+	//	Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
+	//	// установить позицию
+	//	pos.c.set(CStepManager::get_foot_position(eFrontLeft));
 
-		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-		GamePersistent().ps_needtoplay.push_back(ps);
-	}
+	//	ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+	//	GamePersistent().ps_needtoplay.push_back(ps);
+	//}
 
 	UpdateCamera();
 }
@@ -398,16 +398,11 @@ bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
 
 void CAI_Bloodsucker::play_hidden_run_particles()
 {
-	Fmatrix	xform			= XFORM();
 	Fvector pos;
 	pos.set	(Position());
-	pos.y	+= 0.1f;
+	pos.y	+= 0.05f;
 
-	xform.translate_over	(pos);
-
-	CParticlesObject*		ps = CParticlesObject::Create(invisible_run_particles_name, TRUE);
-	ps->UpdateParent		(xform, zero_vel);
-	ps->Play				();
+	PlayParticles(invisible_run_particles_name, pos, Direction());
 }
 
 #ifdef DEBUG
@@ -427,12 +422,32 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 void CAI_Bloodsucker::debug_on_key(int key)
 {
 	switch (key){
+	//case DIK_MINUS:
+	//	m_alien_control.deactivate();
+	//	break;
+	//case DIK_EQUALS:
+	//	m_alien_control.activate();
+	//	break;
 	case DIK_MINUS:
-		m_alien_control.deactivate();
+		{
+			cNameVisual_set	("monsters\\krovosos\\krovosos");
+
+			//NET_Packet		P;
+			//u_EventGen		(P, GE_CHANGE_VISUAL,ID());
+			//P.w_stringZ		("monsters\\krovosos\\krovosos");
+			//u_EventSend		(P);
+		}
 		break;
 	case DIK_EQUALS:
-		m_alien_control.activate();
+		{
+			cNameVisual_set	("monsters\\krovosos\\krovosos_xray");
+			//NET_Packet		P;
+			//u_EventGen		(P, GE_CHANGE_VISUAL,ID());
+			//P.w_stringZ		("monsters\\krovosos\\krovosos_xray");
+			//u_EventSend		(P);
+		}
 		break;
+
 	}
 }
 #endif

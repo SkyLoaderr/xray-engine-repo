@@ -11,6 +11,7 @@ enum EMonsterState {
 	eStateRest_Idle					= eStateRest | 2,
 	eStateRest_Fun					= eStateRest | 3,
 	eStateRest_Sleep				= eStateRest | 4,
+	eStateRest_MoveToHomePoint		= eStateRest | 5,
 
 	// -------------------------------------------------------------
 

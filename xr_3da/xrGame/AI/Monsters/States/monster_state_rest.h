@@ -13,7 +13,6 @@ protected:
 
 public:
 						CStateMonsterRest		(_Object *obj);
-						CStateMonsterRest		(_Object *obj, state_ptr state_sleep, state_ptr state_walk);
 	virtual				~CStateMonsterRest		();
 
 	virtual	void		initialize				();
