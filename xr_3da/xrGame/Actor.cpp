@@ -770,15 +770,6 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	accel.mul					(1.f-hit_slowmo);
 	
-	// Calculate physics
-
-	//m_PhysicMovementControl->SetPosition		(Position());
-	//m_PhysicMovementControl->Calculate		(accel,0,jump,dt,false);
-	//m_PhysicMovementControl->GetPosition		(Position());
-	//Fvector vAccel;
-	//m_PhysicMovementControl->vExternalImpulse.div(dt);
-
-	//m_PhysicMovementControl->SetPosition		(Position());
 	if(g_Alive())
 	{
 	if(mstate_real&mcClimb&&!cameras[eacFirstEye]->bClampYaw)accel.set(0.f,0.f,0.f);
@@ -786,37 +777,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	m_PhysicMovementControl->GetPosition		(Position());
 	m_PhysicMovementControl->bSleep				=false;
 	}
-	///////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////Update m_PhysicMovementControl///////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////
-	//m_PhysicMovementControl->SetEnvironment(m_PhysicMovementControl->Environment(),m_PhysicMovementControl->OldEnvironment());//peOnGround,peAtWall,peInAir
-	//m_PhysicMovementControl->SetPosition		(Position());
-	//Fvector velocity=m_PhysicMovementControl->GetVelocity();
-	//m_PhysicMovementControl->SetVelocity(velocity);
-	//m_PhysicMovementControl->gcontact_Was=m_PhysicMovementControl->gcontact_Was;
-	//m_PhysicMovementControl->SetContactSpeed(m_PhysicMovementControl->GetContactSpeed());
-	//velocity.y=0.f;
-	//m_PhysicMovementControl->SetActualVelocity(velocity.magnitude());
-	//m_PhysicMovementControl->gcontact_HealthLost=m_PhysicMovementControl->gcontact_HealthLost;
-	//m_PhysicMovementControl->gcontact_Power=m_PhysicMovementControl->gcontact_Power;
 
-	/////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////
-	
-	//if (m_PhysicMovementControl->gcontact_Was) 
-	//{
-	//	Fvector correctV					= m_PhysicMovementControl->GetVelocity	();
-	//	correctV.x							*= 0.1f;
-	//	correctV.z							*= 0.1f;
-	//	m_PhysicMovementControl->SetVelocity				(correctV);
-
-	//	if (Local()) {
-	//	g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
-	//	/*SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
-	//	
-	//	::Sound->play_at_pos						(pair->,this,Position());*/
-	//	}
-	//}
 	
 
 	{
