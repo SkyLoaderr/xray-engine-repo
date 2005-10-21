@@ -188,6 +188,7 @@ void CUILines::ParseText(){
 		line->AddSubLine(&subline);
 	}
 
+#pragma todo("SATAN->SATAN : hm...")
 //	R_ASSERT(m_wndSize.x > m_pFont->SizeOfRel(m_text[0]));
 
 	if (uFlags.test(flRecognizeNewLine))
