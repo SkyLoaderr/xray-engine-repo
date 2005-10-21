@@ -24,6 +24,27 @@ if type == "ds_kem1" then
 		table.insert(sj, t)	
        end
        
+       if type == "ds_kem2" then
+		t = { section = "logic@ds_kem2_camper1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+       table.insert(sj, t)	
+       t = { section = "logic@ds_kem2_camper2",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+	   t = { section = "logic@ds_kem2_camper3",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+       end
+       
        if type == "ds_ptr" then
 		t = { section = "logic@ds_ptr_patrol1",
 			idle = 0,
@@ -97,7 +118,25 @@ if type == "ds_kem1" then
 		table.insert(sj, t)	
       end
       
-      
+      if type == "ds_grverfer1" then
+		t = { section = "logic@ds_grverfer1_camper1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+       table.insert(sj, t)	
+       end
+       
+       if type == "ds_grverfer2" then
+		t = { section = "logic@ds_grverfer1_camper1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+       table.insert(sj, t)	
+       end
+       
+       
        if type == "ds_boars_nest" then
 		t = { section = "logic@ds_boars_nest", 
 			idle = 0,
@@ -259,6 +298,24 @@ if type == "ds_kem1" then
 		end
 	end
 	
+	if type == "ds_kem2" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "ds_grverfer1" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "ds_grverfer2" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
 	if type == "ds_ptr" then
 		return function(gulag)
 			return 0
@@ -296,14 +353,14 @@ if type == "ds_kem1" then
 						return 1
 					else
 						if gulag:get_population() >= 5 then
-							return 2
+							return 1
 						else
 							return 0
 						end
 					end
 				else
 					if gulag:get_population() >= 3 then
-						return 2
+						return 1
 					else
 						return 0
 					end
@@ -332,6 +389,18 @@ end
 function checkStalker(npc_community, gulag_type)
 
 	if gulag_type == "ds_kem1" then
+	   return npc_community == "military"
+	end
+	
+	if gulag_type == "ds_kem2" then
+	   return npc_community == "military"
+	end
+	
+	if gulag_type == "ds_grverfer1" then
+	   return npc_community == "military"
+	end
+	
+	if gulag_type == "ds_grverfer2" then
 	   return npc_community == "military"
 	end
 	
