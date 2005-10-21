@@ -22,6 +22,7 @@
 #include "profiler.h"
 
 #include "sound_collection_storage.h"
+#include "relation_registry.h"
 
 typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
 extern STORY_PAIRS								story_ids;
@@ -88,5 +89,8 @@ void clean_game_globals()
 	xr_delete										(g_profiler);
 	release_smart_cast_stats						();
 #endif
+
+	RELATION_REGISTRY::clear_relation_registry		();
+
 	dump_list_wnd									();
 }
