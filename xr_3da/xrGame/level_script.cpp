@@ -342,7 +342,7 @@ void spawn_phantom(const Fvector &position)
 
 Fbox get_bounding_volume()
 {
-	return Level().ObjectSpace().GetBoundingVolume();
+	return Level().ObjectSpace.GetBoundingVolume();
 }
 
 void iterate_sounds					(LPCSTR prefix, u32 max_count, const CScriptCallbackEx<void> &callback)
