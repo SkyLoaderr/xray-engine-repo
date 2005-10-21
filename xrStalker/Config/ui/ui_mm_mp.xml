@@ -23,12 +23,9 @@
 	<static_map_pic x="616" y="242" width="256" height="256">
 		<texture>ui\ui_map_nopic</texture>
 	</static_map_pic>
-	<cap_map_name x="627" y="451" width="211" height="30">
-		<text font="graffiti22" r="145" g="112" b="43"></text>
-	</cap_map_name>
-	<cap_map_description x="627" y="481" width="211" height="144">
-	</cap_map_description>
-		
+	<cap_map_info x="627" y="451" width="255" height="441">		
+	</cap_map_info>
+			
 	<tab x="130" y="195" width="1014" height="26">
 		<!-- BUTTONS -->
 		<button x="0" y="0" width="116" height="26">
