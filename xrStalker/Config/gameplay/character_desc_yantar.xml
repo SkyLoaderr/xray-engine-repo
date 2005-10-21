@@ -74,7 +74,7 @@
 			ammo_11.43x23_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
@@ -100,7 +100,7 @@
 			ammo_9x19_fmj = 1 \n
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>

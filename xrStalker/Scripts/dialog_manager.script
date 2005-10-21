@@ -45,8 +45,8 @@ function fill_phrase_table()
 		if phrase_ini:line_exist(id, "community") then
 			tt.community = phrase_ini:r_string(id, "community")
 		end
-		if phrase_ini:line_exist(id, "npc_community") then
-			tt.npc_community = phrase_ini:r_string(id, "npc_community")
+		if phrase_ini:line_exist(id, "npc_ñommunity") then
+			tt.npc_community = phrase_ini:r_string(id, "npc_ñommunity")
 		end
 		if phrase_ini:line_exist(id, "relation") then
 			tt.relation = phrase_ini:r_string(id, "relation")
@@ -73,7 +73,7 @@ function fill_phrase_table()
 			tt.wounded = phrase_ini:r_string(id, "wounded")
 		else
 			tt.wounded = "false"
-		end					
+		end
 	end
 end
 
