@@ -28,7 +28,8 @@ function mp_server:InitControls(x, y, xml, handler)
 	map_list:SetModeSelector(handler.spin_mode)
 	map_list:LoadMapList()
 	map_list:SetMapPic(handler.map_pic)
-	map_list:SetMapDesc(handler.map_desc, handler.map_name)
+	map_list:SetMapInfo(handler.map_info)
+
 	handler.map_list = map_list;
 	xml:InitLabel("tab_server:cap_server_settings", self)	
 	xml:InitStatic("tab_server:cap_server_name",	self)

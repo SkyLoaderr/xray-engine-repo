@@ -37,10 +37,9 @@ function mp_main:InitControls()
 	
 	self.map_pic = xml:InitStatic("static_map_pic", self)
 	local bk = xml:InitStatic("background", self)
-	self.map_desc= xml:InitStatic("cap_map_description", bk)
-	self.map_name= xml:InitLabel("cap_map_name", bk)
-	self:Enable(true)
-
+	self.map_info= xml:InitMapInfo("cap_map_info", bk)
+	self:Enable(true)	
+	
 	xml:InitLabel("cap_multiplayer",self)
 	xml:InitLabel("static_player_name",self)
 	self.player_name = xml:InitEditBox("edit_player_name", self)
