@@ -34,6 +34,10 @@ CHitMarker::CHitMarker()
 //--------------------------------------------------------------------
 CHitMarker::~CHitMarker()
 {
+	while( m_HitMarks.size() ){
+		xr_delete	( m_HitMarks.front() );
+		m_HitMarks.pop_front	();
+	}
 } 
 //--------------------------------------------------------------------
 const static float fShowTime = 0.5f;

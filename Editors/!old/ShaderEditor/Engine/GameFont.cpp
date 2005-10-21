@@ -214,7 +214,7 @@ void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 
 void __cdecl CGameFont::OutI(float _x, float _y, LPCSTR fmt,...)
 {
-	if (!Device.bActive)	return;
+//	if (!Device.bActive)	return;
 	String		rs;
 	rs.x		=DI2PX(_x);
 	rs.y		=DI2PY(_y);
@@ -306,23 +306,3 @@ float CGameFont::SizeOf(LPCSTR s,float size)
 	}
 	return 0;
 }
-/*
-#ifdef DEBUG
-void CGameFont::SetSizeI		(float S)
-{
-	VERIFY(uFlags&fsDeviceIndependent);
-	fCurrentSize=S*Device.dwWidth;
-}
-void CGameFont::SetSize			(float S)
-{
-	int font_size1 = iFloor(fCurrentSize);
-	int font_size2 = iFloor(S);
-	if(font_size2>font_size1)std::swap(font_size1,font_size2);
-
-	if(font_size1&&font_size2){
-		VERIFY( (font_size1%font_size2)==0 );
-	};
-	fCurrentSize=S;
-}
-#endif
-*/
