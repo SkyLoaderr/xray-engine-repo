@@ -862,7 +862,6 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		if type == "bar_freedom_chasers_attack" then
 		t = { section = "logic@bar_freedom_chaser_attack_hide_1", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
@@ -2019,7 +2018,7 @@ function load_states(gname, type)
 		return function (gulag)
 			if db.actor:has_info("bar_bandits_alive") then
 				return 1
-			end 
+			end
 			return 0
 		end
 	end
