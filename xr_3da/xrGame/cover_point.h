@@ -14,7 +14,6 @@ class CCoverPoint {
 public:
 	Fvector				m_position;
 	u32					m_level_vertex_id;
-	u8					m_cover[4][2];
 
 public:
 	IC					CCoverPoint		(const Fvector &point, u32 level_vertex_id);
