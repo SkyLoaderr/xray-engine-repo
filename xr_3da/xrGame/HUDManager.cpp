@@ -7,8 +7,6 @@
 #include "hudcursor.h"
 
 #include "actor.h"
-//#include "car.h"
-//#include "spectator.h"
 #include "../igame_level.h"
 #include "clsid_game.h"
 
@@ -281,44 +279,8 @@ void  CHUDManager::ShowCrosshair	(bool show)
 	m_pHUDCursor->m_bShowCrosshair = show;
 }
 
-#include "ActorEffector.h"
 
 void CHUDManager::Hit(int idx, float power, const Fvector& dir)	
 {
-	if(psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
-		CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEFireHit);
-		if(!ce){
-			CAnimatorCamEffector* e		= xr_new<CFireHitCamEffector>(eCEFireHit, power/100.0f);
-			string_path fn;
-			if(idx==0)
-				sprintf(fn,"camera_effects\\hit_front.anm");
-			else
-			if(idx==1)
-				sprintf(fn,"camera_effects\\hit_right.anm");
-			else
-			if(idx==2)
-				sprintf(fn,"camera_effects\\hit_back.anm");
-			else
-			if(idx==3)
-				sprintf(fn,"camera_effects\\hit_left.anm");
-			else
-			if(idx==4)
-				sprintf(fn,"camera_effects\\hit_front_left.anm");
-			else
-			if(idx==5)
-				sprintf(fn,"camera_effects\\hit_back_left.anm");
-			else
-			if(idx==6)
-				sprintf(fn,"camera_effects\\hit_front_right.anm");
-			else
-			if(idx==7)
-				sprintf(fn,"camera_effects\\hit_back_right.anm");
-			
-			VERIFY(idx>=0&&idx<=7);
-
-			e->Start					(fn);
-			Actor()->EffectorManager	().AddEffector		(e);
-		}
-	}
 	HitMarker.Hit(idx, dir);
 }

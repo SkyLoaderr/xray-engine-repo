@@ -340,6 +340,11 @@ void spawn_phantom(const Fvector &position)
 	Level().spawn_item("m_phantom", position, u32(-1), u16(-1), false);
 }
 
+Fbox get_bounding_volume()
+{
+	return Level().ObjectSpace().GetBoundingVolume();
+}
+
 void iterate_sounds					(LPCSTR prefix, u32 max_count, const CScriptCallbackEx<void> &callback)
 {
 	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
@@ -471,6 +476,8 @@ void CLevel::script_register(lua_State *L)
 		def("disable_input",					disable_input),
 		def("enable_input",						enable_input),
 		def("spawn_phantom",					spawn_phantom),
+
+		def("get_bounding_volume",				get_bounding_volume),
 
 		def("iterate_sounds",					&iterate_sounds1),
 		def("iterate_sounds",					&iterate_sounds2),

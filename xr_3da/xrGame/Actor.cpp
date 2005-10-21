@@ -436,14 +436,6 @@ void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
-#ifndef _DEBUG
-	if (hit_type != ALife::eHitTypeTelepatic && hit_type != ALife::eHitTypeRadiation) {
-		if(Level().CurrentEntity() == this) {
-			Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_pShootingEffector->ppi,		m_pShootingEffector->time,		m_pShootingEffector->time_attack,		m_pShootingEffector->time_release));
-			Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_pShootingEffector->ce_time,	m_pShootingEffector->ce_amplitude,m_pShootingEffector->ce_period_number,m_pShootingEffector->ce_power));
-		}
-	}
-#endif
 
 	bool bPlaySound = true;
 	if (!g_Alive()) bPlaySound = false;
@@ -586,45 +578,75 @@ void CActor::HitMark	(float P,
 	// hit marker
 	if ( (hit_type==ALife::eHitTypeFireWound||hit_type==ALife::eHitTypeWound_2) && g_Alive() && Local() && /*(this!=who) && */(Level().CurrentEntity()==this) )	
 	{
-		int id						= -1;
-		//---------------------------------------------------------
-		Fvector cam_pos,cam_dir,cam_norm;
-		cam_Active()->Get			(cam_pos,cam_dir,cam_norm);
-		cam_dir.normalize_safe		();
-		dir.normalize_safe			();
+		HUD().Hit(0, P, dir);
+		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_pShootingEffector->ppi,		m_pShootingEffector->time,	m_pShootingEffector->time_attack,	m_pShootingEffector->time_release));
 
-		float ang_diff				= angle_difference	(cam_dir.getH(), dir.getH());
-		Fvector						cp;
-		cp.crossproduct				(cam_dir,dir);
-		bool bUp					=(cp.y>0.0f);
 
-		Fvector cross;
-		cross.crossproduct			(cam_dir, dir);
-		VERIFY(ang_diff>=0.0f && ang_diff<=PI);
+	if(psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
+		CCameraEffector* ce = EffectorManager().GetEffector(eCEFireHit);
+		if(!ce)
+			{
+			int id						= -1;
+			Fvector						cam_pos,cam_dir,cam_norm;
+			cam_Active()->Get			(cam_pos,cam_dir,cam_norm);
+			cam_dir.normalize_safe		();
+			dir.normalize_safe			();
 
-		float _s1 = PI_DIV_8;
-		float _s2 = _s1+PI_DIV_4;
-		float _s3 = _s2+PI_DIV_4;
-		float _s4 = _s3+PI_DIV_4;
+			float ang_diff				= angle_difference	(cam_dir.getH(), dir.getH());
+			Fvector						cp;
+			cp.crossproduct				(cam_dir,dir);
+			bool bUp					=(cp.y>0.0f);
 
-		if(ang_diff<=_s1){
-			id = 2;
-		}else
-		if(ang_diff>_s1 && ang_diff<=_s2){
-			id = (bUp)?5:7;
-		}else
-		if(ang_diff>_s2 && ang_diff<=_s3){
-			id = (bUp)?3:1;
-		}else
-		if(ang_diff>_s3 && ang_diff<=_s4){
-			id = (bUp)?4:6;
-		}else
-		if(ang_diff>_s4){
-			id = 0;
-		}else{
-			VERIFY(0);
+			Fvector cross;
+			cross.crossproduct			(cam_dir, dir);
+			VERIFY						(ang_diff>=0.0f && ang_diff<=PI);
+
+			float _s1 = PI_DIV_8;
+			float _s2 = _s1+PI_DIV_4;
+			float _s3 = _s2+PI_DIV_4;
+			float _s4 = _s3+PI_DIV_4;
+
+			if(ang_diff<=_s1){
+				id = 2;
+			}else
+			if(ang_diff>_s1 && ang_diff<=_s2){
+				id = (bUp)?5:7;
+			}else
+			if(ang_diff>_s2 && ang_diff<=_s3){
+				id = (bUp)?3:1;
+			}else
+			if(ang_diff>_s3 && ang_diff<=_s4){
+				id = (bUp)?4:6;
+			}else
+			if(ang_diff>_s4){
+				id = 0;
+			}else{
+				VERIFY(0);
+			}
+
+
+			CAnimatorCamEffector* e		= xr_new<CFireHitCamEffector>(eCEFireHit, P/100.0f);
+			string_path fn;
+			if(id==0)	sprintf(fn,"camera_effects\\hit_front.anm");
+			else
+			if(id==1)	sprintf(fn,"camera_effects\\hit_right.anm");
+			else
+			if(id==2)	sprintf(fn,"camera_effects\\hit_back.anm");
+			else
+			if(id==3)	sprintf(fn,"camera_effects\\hit_left.anm");
+			else
+			if(id==4)	sprintf(fn,"camera_effects\\hit_front_left.anm");
+			else
+			if(id==5)	sprintf(fn,"camera_effects\\hit_back_left.anm");
+			else
+			if(id==6)	sprintf(fn,"camera_effects\\hit_front_right.anm");
+			else
+			if(id==7)	sprintf(fn,"camera_effects\\hit_back_right.anm");
+			
+			e->Start							(fn);
+			EffectorManager	().AddEffector		(e);
+			}
 		}
-		HUD().Hit(id, P, dir);
 	}
 
 }
@@ -633,35 +655,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 {
 	if (g_Alive()) 
 	{
-/*		// hit marker
-		if (Local() && (this!=who) && Level().CurrentEntity() == this)	
-		{
-			int id		= -1;
-			Fvector a	= {0,0,1};
-			//---------------------------------------------------------
-			Fvector b;
-			if (who && GameID() != GAME_SINGLE)
-			{
-				Fmatrix m_inv;
-				Fvector tmp_d = {who->Position().x, 0,who->Position().z};
-				m_inv.invert(XFORM());
-				m_inv.transform_tiny(b, tmp_d);
-			}
-			else
-				b.set(vLocalDir.x,0,vLocalDir.z);
-			//---------------------------------------------------------
-			float mb	= b.magnitude();		
-			if (!fis_zero(mb)){
-				b.mul	(1.f/mb);
-				bool FB	= _abs(a.dotproduct(b))>0.7071f;
-			//---------------------------------------------------------
-				if (FB)	id = (b.z<0)?2:0;
-				else	id = (b.x<0)?3:1;
-			//---------------------------------------------------------
-				HUD().Hit(id,perc);
-			}
-		}
-*/
+
 		// stop-motion
 		if (m_PhysicMovementControl->Environment()==CPHMovementControl::peOnGround || m_PhysicMovementControl->Environment()==CPHMovementControl::peAtWall)
 		{
@@ -670,14 +664,6 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 			m_PhysicMovementControl->SetVelocity(zeroV);
 		}
 		
-		//slow actor, only when wound hit
-		/*if(hit_type == ALife::eHitTypeWound)
-		{
-			hit_slowmo				= perc/100.f;
-			if (hit_slowmo>1.f)		hit_slowmo = 1.f;
-		}
-		hit_slowmo = 0.f;*/
-
 		// check damage bone
 		Fvector D;
 		XFORM().transform_dir(D,vLocalDir);
