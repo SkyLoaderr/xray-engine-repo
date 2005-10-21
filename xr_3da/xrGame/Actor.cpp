@@ -489,7 +489,9 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		}
 		if (bPlaySound) 
 		{
-			S.play_at_pos(this, Position());
+			Fvector point		= Position();
+			point.y				+= CameraHeight();
+			S.play_at_pos		(this, point);
 		};
 	}
 
