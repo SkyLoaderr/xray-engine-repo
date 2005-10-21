@@ -57,6 +57,8 @@ void CSoundRender_Source::decompress		(u32 line)
 	// decompress
 	if (psSoundFreq==sf_22K)	i_decompress_hr(&ovf,dest,left);
 	else						i_decompress_fr(&ovf,dest,left);
+	
+	ov_clear					(&ovf);
 }
 
 void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
@@ -118,6 +120,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 		Log				("! Missing ogg-comment, file: ",pName);
 	}
 	R_ASSERT3((m_fMaxAIDist>=0.1f)&&(m_fMaxDist>=0.1f),"Invalid max distance.",pName);
+	ov_clear			(&ovf);
 }
 
 void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
