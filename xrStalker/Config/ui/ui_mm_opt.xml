@@ -151,15 +151,22 @@
 		<cap_crosshair x="20" y="20" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair</text>
 		</cap_crosshair>
+		<cap_difficulty x="20" y="300" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">Difficulty</text>
+		</cap_difficulty>
 		<track_crosshair x="194" y="20" width="261" height="21">			
 		</track_crosshair>
 		
+		<list_difficulty x="194" y="300" width="261" height="21">	
+			<options_item entry="g_game_difficulty" group="mm_opt_gameplay"/>		
+		</list_difficulty>
+		
 		<check_tips x="20" y="55" width="143" height="21">
-			<options_item entry="hud_info" group="mm_opt_controls"/>
+			<options_item entry="hud_info" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_tips</text>
 		</check_tips>
 		<check_dist x="20" y="80" width="143" height="21">
-			<options_item entry="hud_crosshair_dist" group="mm_opt_controls"/>
+			<options_item entry="hud_crosshair_dist" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="115" g="114" b="112">Crosshair distance</text>
 		</check_dist>
 		<pic_crosshair x="-7" y="117" width="470" height="179">

@@ -69,6 +69,7 @@ end
 function options_dialog:UpdateControls()
 	local opt = COptionsManager()
 	opt:SetCurrentValues("mm_opt_video")
+	opt:SetCurrentValues("mm_opt_gameplay")
 	opt:SetCurrentValues("mm_opt_sound")
 	opt:SetCurrentValues("mm_opt_controls")
 	opt:SetCurrentValues("key_binding")
@@ -101,7 +102,7 @@ function options_dialog:OnBtnAccept()
 		opt:SaveValues("mm_opt_sound")
 	elseif i == 2 then
 --		self.dlg_gameplay:Show(true)
-		opt:SaveValues("mm_opt_controls")
+		opt:SaveValues("mm_opt_gameplay")
 	elseif i == 3 then
 		opt:SaveValues("mm_opt_controls")
 		opt:SaveValues("key_binding")
