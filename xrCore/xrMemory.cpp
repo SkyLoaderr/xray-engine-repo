@@ -147,8 +147,9 @@ LPCSTR	memstat_file			= "x:\\$memstat$.txt";
 void	xrMemory::mem_statistic	()
 {
 	if (!debug_mode)	return	;
+	mem_compact				()	;
 
-	debug_cs.Enter			();
+	debug_cs.Enter			()	;
 	debug_mode				= FALSE;
 
 	FILE*		F			= fopen		(memstat_file,"w");
