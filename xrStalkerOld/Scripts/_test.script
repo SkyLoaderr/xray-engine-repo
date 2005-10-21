@@ -85,6 +85,7 @@ function some_cam_effector:Process (pos,dir,norm)
 end
 
 function main()
+	local bb = level.get_bounding_volume()
    local h = hit ()
    h.power = 100
    h.direction = vector():set(0, 0, 1)

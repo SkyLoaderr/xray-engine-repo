@@ -33,7 +33,7 @@
     </right_frame_line>
 
 	<!-- CONTACT LIST -->
-	<list x="20" y="80" width="425" height="370" item_height = "74"></list>
+	<list x="20" y="80" width="425" height="370" always_show_scroll="0"></list>
 
     <!--  ANIMATED STATIC -->
     <a_static x="250" y="-3" width="32" height="32"

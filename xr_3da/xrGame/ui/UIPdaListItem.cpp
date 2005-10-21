@@ -76,21 +76,7 @@ void CUIPdaListItem::Init(float x, float y, float width, float height)
 
 void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 {
-	VERIFY(pInvOwner);
-	UIInfo->InitCharacter(pInvOwner);
-	UIName->SetText(pInvOwner->Name());
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIPdaListItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
-{
-	if (pWnd == this && STATIC_FOCUS_RECEIVED == msg)
-	{
-		if(UIName)UIName->SetHighlightText(true);
-	}
-	else if (pWnd == this && STATIC_FOCUS_LOST == msg)
-	{
-		if(UIName)UIName->SetHighlightText(false);
-	}
+	VERIFY						(pInvOwner);
+	UIInfo->InitCharacter		(pInvOwner);
+	UIName->SetText				(pInvOwner->Name());
 }

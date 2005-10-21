@@ -308,9 +308,9 @@ void CUICharacterInfo::ResetAllStrings()
 void CUICharacterInfo::UpdateRelation()
 {
 	if(!m_icons[eUIRelation] ||!m_icons[eUIRelationCaption]) return;
-		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-		if (pActor->ID()==m_ownerID || !!hasOwner())
+		if (pActor->ID()==m_ownerID || !hasOwner())
 		{
 			if(m_icons[eUIRelationCaption])	m_icons[eUIRelationCaption]->Show	(false);
 			if(m_icons[eUIRelation])		m_icons[eUIRelation]->Show			(false);
@@ -330,9 +330,16 @@ void CUICharacterInfo::Update()
 
 
 	if(hasOwner() && (Device.dwFrame%100==0)  ){
-		if (NULL==Level().Objects.net_Find(m_ownerID) )
+		CObject* O = Level().Objects.net_Find(m_ownerID);
+		if (NULL==O)
 			m_ownerID = u32(-1);
 		else
 			UpdateRelation();
+
+		if(O && m_icons[eUIIcon]){
+			CEntityAlive* ea = smart_cast<CEntityAlive*>(O);
+			if(!ea->g_Alive())
+				m_icons[eUIIcon]->SetColor(color_argb(255,255,160,160));
+		}
 	}
 }

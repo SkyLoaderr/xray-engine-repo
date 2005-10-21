@@ -95,6 +95,7 @@ void CUIStalkersRankingWnd::Init()
 
 void CUIStalkersRankingWnd::AddStalkerInfo()
 {
+/*  //.
 	UIStalkersList->RemoveAll();
 	CInventoryOwner *m_pInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
 	if(!m_pInvOwner) return;
@@ -118,6 +119,7 @@ void CUIStalkersRankingWnd::AddStalkerInfo()
 		// CCharacterInfo. ќстальное можно перехер€чить :)
 		pItem->SetData(pda->GetOriginalOwner());
 	}
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////

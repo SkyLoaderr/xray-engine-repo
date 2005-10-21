@@ -13,17 +13,17 @@ class CUIIconedListItem;
 class CUICharacterInfo;
 class CInventoryOwner;
 
-class CUIPdaListItem : public CUIListItem
+class CUIPdaListItem : public CUIWindow
 {
 private:
-	typedef CUIListItem inherited;
+	typedef CUIWindow inherited;
 public:
 					CUIPdaListItem		();
 	virtual			~CUIPdaListItem		();
 	virtual void	Init				(float x, float y, float width, float height);
 	virtual void	InitCharacter		(CInventoryOwner* pInvOwner);
-	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
-
+	
+	void*					m_data;
 protected:
 	//информация о персонаже
 	CUIFrameWindow*			UIMask;
