@@ -23,15 +23,10 @@ LPCSTR CPhrase::GetText		()	const
 {
 	return m_text.c_str();
 }
-/*
-LPCSTR  CPhrase::GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2, LPCSTR dialog_id, int phrase_num) const
-{
-	return m_PhraseScript.Text(GetText(), pSpeaker1, pSpeaker2, dialog_id, phrase_num);
-}
-*/
+
 bool	CPhrase::IsDummy()		const
 {
-	if(xr_strlen(GetText()) == 0 /*&& !m_PhraseScript.HasText()*/)
+	if( xr_strlen(GetText()) == 0 )
 		return true;
 
 	return false;

@@ -20,10 +20,6 @@
 #include "../../cameraBase.h"
 #include "UIXmlInit.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 const float MessageShift	= 30;
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,7 +93,6 @@ void CUITalkWnd::InitTalkDialog()
 	UITalkDialogWnd->ClearAll();
 
 	InitOthersStartDialog					();
-//	UpdateQuestions							();
 	NeedUpdateQuestions						();
 	Update									();
 
@@ -116,9 +111,7 @@ void CUITalkWnd::InitOthersStartDialog()
 		m_pOthersDialogManager->InitDialog(m_pOurDialogManager, m_pCurrentDialog);
 		
 		//сказать фразу
-//		CUIString speaker_name;
 		CStringTable stbl;
-//		speaker_name.SetText(m_pOthersInvOwner->Name());
 		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), m_pOthersInvOwner->Name());
 		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
 
@@ -146,7 +139,6 @@ void CUITalkWnd::UpdateQuestions()
 		for(u32 i=0; i< m_pOurDialogManager->AvailableDialogs().size(); i++)
 		{
 			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
-//			if(phrase_dialog->GetDialogType(eDialogTypeActor))
 			AddQuestion(phrase_dialog->DialogCaption(), (int)i);
 		}
 	}
@@ -160,14 +152,9 @@ void CUITalkWnd::UpdateQuestions()
 				CPhrase* phrase = m_pCurrentDialog->PhraseList()[Random.randI(m_pCurrentDialog->PhraseList().size())];
 				SayPhrase(phrase->GetIndex());
 			};
-/*			if(m_pCurrentDialog->PhraseList().size() == 1)
-			{
-				CPhrase* phrase = m_pCurrentDialog->PhraseList().front();
-				if(phrase->IsDummy()) SayPhrase(phrase->GetIndex());
-			}*/
 
 			//выбор доступных фраз из активного диалога
-			if(m_pCurrentDialog)
+			if( m_pCurrentDialog && !m_pCurrentDialog->allIsDummy() )
 			{			
 				for(PHRASE_VECTOR::const_iterator   it = m_pCurrentDialog->PhraseList().begin();
 					it != m_pCurrentDialog->PhraseList().end();
@@ -235,8 +222,6 @@ void CUITalkWnd::Update()
 	//остановить разговор, если нужно
 	if (m_pActor && !m_pActor->IsTalking())
 	{
-//		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-//		if(pGameSP) pGameSP->StartStopMenu(this);
 		Game().StartStopMenu(this,true);
 	}else{
 		CGameObject* pOurGO = smart_cast<CGameObject*>(m_pOurInvOwner);
@@ -304,8 +289,6 @@ void  CUITalkWnd::ToTopicMode		()
 void CUITalkWnd::AskQuestion()
 {
 	if(m_bNeedToUpdateQuestions) return;//quick dblclick:(
-	//очистить лог сообщений
-	//UITalkDialogWnd->UIAnswersList.RemoveAll();
 	PHRASE_ID phrase_id;
 
 	//игрок выбрал тему разговора
@@ -337,19 +320,13 @@ void CUITalkWnd::AskQuestion()
 
 void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 {
-	//сказать фразу
-//	CUIString speaker_name;
-//	speaker_name.SetText(m_pOurInvOwner->Name());
 
 	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), m_pOurInvOwner->Name());
 	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
 
 	//добавить ответ собеседника в список, если он что-то сказал
 	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
-	{
-//		speaker_name.SetText(m_pOthersInvOwner->Name());
 		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), m_pOthersInvOwner->Name());
-	}
 
 	//если диалог завершился, перейти в режим выбора темы
 	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
@@ -359,13 +336,8 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 void CUITalkWnd::AddQuestion(LPCSTR text, int value)
 {
-//	CUIString str(*CStringTable()(text));
-
+	if(xr_strlen(text) == 0) return;
 	UITalkDialogWnd->AddQuestion(*CStringTable().translate(text),value);
-/*
-	UITalkDialogWnd->UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd->UIQuestionsList.GetTextColor(), 
-						UITalkDialogWnd->UIQuestionsList.GetFont(), pData, value);
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -375,23 +347,9 @@ void CUITalkWnd::AddAnswer(LPCSTR text, const char* SpeakerName)
 	//для пустой фразы вообще ничего не выводим
 	if(xr_strlen(text) == 0) return;
 	PlaySnd			(text);
-//	CUIString str(*CStringTable()(text));
 
 	bool i_am = (0 == xr_strcmp(SpeakerName, m_pOurInvOwner->Name()));
 	UITalkDialogWnd->AddAnswer(SpeakerName,*CStringTable().translate(text),i_am);
-/*
-	u32 cl = UITalkDialogWnd->UIAnswersList.GetTextColor();
-	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd->GetOurReplicsColor();
-
-
-	UITalkDialogWnd->UIAnswersList.AddParsedItem<CUIListItem>(SpeakerName, 0, UITalkDialogWnd->GetHeaderColor(), UITalkDialogWnd->GetHeaderFont());
-	UITalkDialogWnd->UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, cl);
-
-	CUIString Local;
-	Local.SetText(" ");
-	UITalkDialogWnd->UIAnswersList.AddParsedItem<CUIListItem>(Local, 0, UITalkDialogWnd->UIAnswersList.GetTextColor());
-	UITalkDialogWnd->UIAnswersList.ScrollToEnd();
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -12,28 +12,22 @@
 
 SPhraseDialogData::SPhraseDialogData ()
 {
-	m_PhraseGraph.clear();
-//	m_eDialogType.zero();
-	m_iPriority = 0;
+	m_PhraseGraph.clear	();
+	m_iPriority			= 0;
 }
 
 SPhraseDialogData::~SPhraseDialogData ()
-{
-}
-
-//////////////////////////////////////////////////////////////////////////
+{}
 
 
 
 CPhraseDialog::CPhraseDialog(void)
 {
 	m_iSaidPhraseID = NO_PHRASE;
-	m_bFinished = false;
-
+	m_bFinished			= false;
 	m_pSpeakerFirst		= NULL;
 	m_pSpeakerSecond	= NULL;
-
-	m_DialogId = NULL;
+	m_DialogId			= NULL;
 }
 
 CPhraseDialog::~CPhraseDialog(void)
@@ -46,18 +40,18 @@ void CPhraseDialog::Init(CPhraseDialogManager* speaker_first,
 {
 	THROW(!IsInit());
 
-	m_pSpeakerFirst = speaker_first;
-	m_pSpeakerSecond = speaker_second;
+	m_pSpeakerFirst		= speaker_first;
+	m_pSpeakerSecond	= speaker_second;
 
-	m_iSaidPhraseID = NO_PHRASE;
+	m_iSaidPhraseID		= NO_PHRASE;
 	m_PhraseVector.clear();
 
 	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(START_PHRASE);
 	THROW(phrase_vertex);
 	m_PhraseVector.push_back(phrase_vertex->data());
 
-	m_bFinished = false;
-	m_bFirstIsSpeaking = true;
+	m_bFinished			= false;
+	m_bFirstIsSpeaking	= true;
 }
 
 //обнуляем все связи
@@ -166,21 +160,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 	
 	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(phrase_id);
 	THROW(phrase_vertex);
-/*	
-	//если есть скриптовый текст, то он и будет задан
-	const CGameObject*	pSpeakerGO1 = smart_cast<const CGameObject*>(CurrentSpeaker());
-	const CGameObject*	pSpeakerGO2 = smart_cast<const CGameObject*>(OtherSpeaker());	
 
-	if(!current_speaking) 
-		std::swap(pSpeakerGO1, pSpeakerGO2);
-	
-	LPCSTR script_text = NULL;
-	//если собеседники еще не заданы, то текст фразы запрашивается только для 
-	//обычный но не скриптовый
-	if(pSpeakerGO1 && pSpeakerGO2)
-		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2, *m_DialogId, (int)phrase_id);
-	return script_text?script_text:phrase_vertex->data()->GetText();
-*/
 	return phrase_vertex->data()->GetText();
 }
 
@@ -222,19 +202,7 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	THROW3(dialog_node, "dialog id=", *item_data.id);
 
 	uiXml.SetLocalRoot(dialog_node);
-/*
-	int actor_dialog = uiXml.ReadAttribInt(dialog_node, "actor", 1);
-	if (1 == actor_dialog) 
-		data()->m_eDialogType.set(eDialogTypeActor, TRUE);
 
-	int pda_dialog = uiXml.ReadAttribInt(dialog_node, "pda", 0);
-	if (1 == pda_dialog) 
-		data()->m_eDialogType.set(eDialogTypePDA, TRUE);
-
-	int ai_dialog = uiXml.ReadAttribInt(dialog_node, "ai", 0);
-	if (1 == ai_dialog) 
-		data()->m_eDialogType.set(eDialogTypeAI, TRUE);
-*/
 
 	SetPriority	( uiXml.ReadAttribInt(dialog_node, "priority", 0) );
 
@@ -305,28 +273,7 @@ CPhrase* CPhraseDialog::AddPhrase	(LPCSTR text, PHRASE_ID phrase_id, PHRASE_ID p
 
 void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id)
 {
-/*
-	//проверить не добавлена ли вершина
-	if(data()->m_PhraseGraph.vertex(phrase_id)) 
-		return;
 
-	CPhrase* phrase = xr_new<CPhrase>(); VERIFY(phrase);
-	phrase->SetIndex(phrase_id);
-	
-	//текстовое представление фразы
-	phrase->SetText(uiXml.Read(phrase_node, "text", 0, ""));
-	//уровень благосклонности
-	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, -10000);
-
-
-	//прочитать действия и предикаты
-	phrase->m_PhraseScript.Load(&uiXml, phrase_node);
-	
-	data()->m_PhraseGraph.add_vertex(phrase, phrase_id);
-
-	if(prev_phrase_id != NO_PHRASE)
-		data()->m_PhraseGraph.add_edge		(prev_phrase_id, phrase_id, 0.f);
-*/
 	LPCSTR sText		= uiXml.Read		(phrase_node, "text", 0, "");
 	int		gw			= uiXml.ReadInt		(phrase_node, "goodwill", 0, -10000);
 	CPhrase* ph			= AddPhrase			(sText, phrase_id, prev_phrase_id, gw);
@@ -344,7 +291,6 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id, PHRAS
 		int next_phrase_id					= atoi(next_phrase_id_str);
 
 		AddPhrase							(next_phrase_node, next_phrase_id, phrase_id);
-//		data()->m_PhraseGraph.add_edge		(phrase_id, next_phrase_id, 0.f);
 	}
 }
 
