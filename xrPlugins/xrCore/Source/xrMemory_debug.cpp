@@ -121,20 +121,11 @@ void	xrMemory::dbg_check		()
 	debug_cs.Leave			();
 }
 
+extern	LPCSTR	memstat_file;
 void	dbg_dump_leaks()
 {
-	size_t		_count	= 0, _total = 0;
-	Memory.debug_cs.Enter			();
-	for (int it=0; it<int(Memory.debug_info.size()); it++)
-	{
-		if (0==Memory.debug_info[it]._p)	
-			continue;
-
-		_count				++	;
-		_total				+=	Memory.debug_info[it]._size;
-	}
-	Memory.debug_cs.Leave			();
-	Msg						("leaks: count[%d], bytes[%d]",_count,_total);
+	memstat_file		=	"x:\\$memleak$.txt"	;
+	Memory.mem_statistic	();
 }
 
 #endif
