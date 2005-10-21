@@ -48,29 +48,31 @@ function fill_phrase_table()
 		if phrase_ini:line_exist(id, "npc_community") then
 			tt.npc_community = phrase_ini:r_string(id, "npc_community")
 		end
-		if phrase_ini:line_exist(id, "reputation") then
-			tt.reputation = phrase_ini:r_string(id, "reputation")
-		end
 		if phrase_ini:line_exist(id, "relation") then
 			tt.relation = phrase_ini:r_string(id, "relation")
 		end
 		if phrase_ini:line_exist(id, "npc_rank") then
-			tt.npc_rank = phrase_ini:r_string(id, "npc_rank")
+			tt.npc_rank = phrase_ini:r_u32(id, "npc_rank")
 		end
 		if phrase_ini:line_exist(id, "level") then
 			tt.level = phrase_ini:r_string(id, "level")
 		end
 		if phrase_ini:line_exist(id, "condlist") then
-			tt.condlist = phrase_ini:r_string(id, "condlist")
+			tt.condlist = xr_logic.parse_condlist(db.actor, "dialog_manager", "condlist", phrase_ini:r_string(id, "condlist"))
 		end
 		if phrase_ini:line_exist(id, "smart_terrain") then
 			tt.smart_terrain = phrase_ini:r_string(id, "smart_terrain")
 		end					
 		if phrase_ini:line_exist(id, "price") then
-			tt.price = phrase_ini:r_string(id, "price")
+			tt.price = phrase_ini:r_u32(id, "price")
 		end					
 		if phrase_ini:line_exist(id, "action") then
 			tt.action = phrase_ini:r_string(id, "action")
+		end					
+		if phrase_ini:line_exist(id, "wounded") then
+			tt.wounded = phrase_ini:r_string(id, "wounded")
+		else
+			tt.wounded = "false"
 		end					
 	end
 end
@@ -144,9 +146,51 @@ function precondition_intro(npc, actor)
 end
 
 function calculate_predicate(npc, tbl)
-	if math.random(0,2) < 1 then
-		return true, math.random(1,3)
-	else
-		return false, 0
+	local property_num = 0
+
+	if tbl.community ~= nil then
+		if tbl.community ~= db.actor:character_community() then return false,0 end
+		property_num = property_num + 1		
 	end
+	if tbl.npc_community ~= nil then
+		if tbl.npc_community ~= npc:character_community() then return false,0 end
+		property_num = property_num + 1		
+	end
+	if tbl.relation ~= nil then
+		if (tbl.relation == "friend" and npc:relation(db.actor) ~= game_object.friend) or
+		   (tbl.relation == "neutral" and npc:relation(db.actor) ~= game_object.neutral) or
+		   (tbl.relation == "enemy" and npc:relation(db.actor) ~= game_object.enemy)
+		then 
+			return false,0 
+		end
+		property_num = property_num + 1		
+	end
+	if tbl.npc_rank ~= nil then
+		if tbl.npc_rank > npc:character_rank() then return false,0 end
+		property_num = property_num + 1		
+	end
+	if tbl.level ~= nil then
+		if tbl.level ~= level.name() then return false,0 end
+		property_num = property_num + 1		
+	end
+	if tbl.condlist ~= nil then
+		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false,0 end
+		property_num = property_num + 1		
+	end
+	if tbl.smart_terrain ~= nil then
+		if tbl.smart_terrain ~= xr_gulag.isUnderFraction(npc) then return false,0 end
+		property_num = property_num + 1		
+	end
+	if tbl.wounded ~= nil then
+		if (tbl.wounded == "true" and not xr_wounded.is_wounded(npc)) or
+		   (tbl.wounded == "heavy" and not xr_wounded.is_heavy_wounded_by_id(npc:id())) or
+		   (tbl.wounded == "psy" and not xr_wounded.is_psy_wounded_by_id(npc:id()))
+		then
+			return false,0 
+		end
+		property_num = property_num + 1		
+	end		
+	return true, property_num
 end
+		
+		

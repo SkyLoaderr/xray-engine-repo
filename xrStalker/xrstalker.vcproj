@@ -1328,9 +1328,6 @@
 					RelativePath=".\Config\ui\ui_keybinding.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\ui_mapinfo.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\ui_mm_mp.xml">
 				</File>
 				<File
