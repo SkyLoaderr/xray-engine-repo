@@ -18,9 +18,9 @@
       Intermediate\SoundRender_Target.obj Intermediate\stdafx.obj 
       Intermediate\cl_collector.obj Intermediate\guids.obj 
       Intermediate\SoundRender_Cache.obj Intermediate\SoundRender_TargetA.obj 
-      Intermediate\soundrender_targetD.obj Intermediate\SoundRender_CoreD.obj 
       Intermediate\SoundRender_CoreA.obj Intermediate\sound.obj 
-      Intermediate\xrCDB_Collector.obj"/>
+      Intermediate\xrCDB_Collector.obj Intermediate\soundrender_targetD.obj 
+      Intermediate\SoundRender_CoreD.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -40,19 +40,19 @@
     <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrSoundB.bpf"/>
-    <INCLUDEPATH value="&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot;;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\xiph\include;R:\SDK\!old\ogg.old\vorbis\include"/>
+    <INCLUDEPATH value="&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot;;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\xiph\include"/>
     <LIBPATH value="P:\xrCore;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(BCB)\lib\psdk;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;..\Editors\lib\dx;..\Editors\lib;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; 
-      -I$(BCB)\include -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
+    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot; -I$(BCB)\include 
+      -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore 
       -IR:\SDK\eax20\Include -IR:\SDK\OpenAL\include -IR:\SDK\OpenAL\include\AL 
-      -IR:\SDK\xiph\include -IR:\SDK\!old\ogg.old\vorbis\include -src_suffix cpp 
-      -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
+      -IR:\SDK\xiph\include -src_suffix cpp -D_EDITOR -D_XRSOUNDB 
+      -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -91,12 +91,12 @@
       <FILE FILENAME="MusicStream.h" FORMNAME="" UNITNAME="MusicStream.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender.h" FORMNAME="" UNITNAME="SoundRender.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_TargetA.cpp" FORMNAME="" UNITNAME="SoundRender_TargetA" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="soundrender_targetD.cpp" FORMNAME="" UNITNAME="SoundRender_TargetD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SoundRender_CoreD.cpp" FORMNAME="" UNITNAME="SoundRender_CoreD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_CoreA.cpp" FORMNAME="" UNITNAME="SoundRender_CoreA.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="sound.cpp" FORMNAME="" UNITNAME="sound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ETools.h" FORMNAME="" UNITNAME="ETools.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrCDB_Collector.cpp" FORMNAME="" UNITNAME="xrCDB_Collector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="soundrender_targetD.cpp" FORMNAME="" UNITNAME="soundrender_targetD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_CoreD.cpp" FORMNAME="" UNITNAME="SoundRender_CoreD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -131,36 +131,36 @@ Comments=
 
 [HistoryLists\hlIncludePath]
 Count=30
-Item0=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\xiph\include;R:\SDK\!old\ogg.old\vorbis\include
-Item1=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\vorbis\include;R:\SDK\xiph\include
-Item2=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\vorbis\include;R:\SDK\xiph\include;R:\SDK\!old\ogg.old\ogg\include
-Item3=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\ogg\include;R:\SDK\xiph\include
-Item4=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\ogg\include;R:\SDK\!old\ogg.old\vorbis\include;R:\SDK\xiph\include\1
-Item5=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\xiph\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
-Item6=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
-Item7=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;..\..\Tools\Etools
-Item8=R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
-Item9=R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
-Item10=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
-Item11=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include
-Item12=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include
-Item13=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include
-Item14=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore
-Item15=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include
-Item16=R:\SDK\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include
-Item17=R:\SDK\DirectX8.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include
-Item18=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;$(BCB)\include\mfc
-Item19=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;$(BCB)\include\mfc
-Item20=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item21=R:\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item22=R:\DirectX9\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item23=R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item24=..\LevelOptions\Engine;..\LevelOptions\Editor;..\LevelOptions;Editor;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item25=Editor;R:\DirectX8.1\include\;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item26=Editor;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item27=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item28=$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item29=$(BCB)\include;$(BCB)\include\vcl;edit
+Item0=R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\xiph\include
+Item1=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\xiph\include
+Item2=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\xiph\include;R:\SDK\!old\ogg.old\vorbis\include
+Item3=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\vorbis\include;R:\SDK\xiph\include
+Item4=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\vorbis\include;R:\SDK\xiph\include;R:\SDK\!old\ogg.old\ogg\include
+Item5=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\ogg\include;R:\SDK\xiph\include
+Item6=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;R:\SDK\!old\ogg.old\ogg\include;R:\SDK\!old\ogg.old\vorbis\include;R:\SDK\xiph\include\1
+Item7=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\xiph\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
+Item8=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
+Item9=R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL;..\..\Tools\Etools
+Item10=R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
+Item11=R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
+Item12=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL
+Item13=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include
+Item14=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include
+Item15=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include
+Item16=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore
+Item17=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include
+Item18=R:\SDK\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include
+Item19=R:\SDK\DirectX8.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include
+Item20=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;$(BCB)\include\mfc
+Item21=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;$(BCB)\include\mfc
+Item22=R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item23=R:\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item24=R:\DirectX9\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item25=R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item26=..\LevelOptions\Engine;..\LevelOptions\Editor;..\LevelOptions;Editor;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item27=Editor;R:\DirectX8.1\include\;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item28=Editor;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item29=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
 
 [HistoryLists\hlLibraryPath]
 Count=18
@@ -216,7 +216,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=
