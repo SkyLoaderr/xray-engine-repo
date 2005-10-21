@@ -188,7 +188,7 @@ void CUILines::ParseText(){
 		line->AddSubLine(&subline);
 	}
 
-	R_ASSERT(m_wndSize.x > m_pFont->SizeOfRel(m_text[0]));
+//	R_ASSERT(m_wndSize.x > m_pFont->SizeOfRel(m_text[0]));
 
 	if (uFlags.test(flRecognizeNewLine))
 		line->ProcessNewLines(); // process "\n"
