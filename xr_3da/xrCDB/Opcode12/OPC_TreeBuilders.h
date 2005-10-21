@@ -20,6 +20,9 @@
 #ifndef __OPC_TREEBUILDERS_H__
 #define __OPC_TREEBUILDERS_H__
 
+#include "opc_aabbtree.h"
+#include <xrPool.h>
+
 	//! Tree splitting rules
 	enum SplittingRules			{
 		// Tree
@@ -35,6 +38,8 @@
 		//
 		SPLIT_FORCE_DWORD		= 0x7fffffff
 	};
+
+
 
 	class OPCODE_API AABBTreeBuilder
 	{
@@ -97,9 +102,13 @@
 		inline_						void		IncreaseNbInvalidSplits()		{ mNbInvalidSplits++;		}
 		inline_						udword		GetNbInvalidSplits()	const	{ return mNbInvalidSplits;	}
 
-		private:
+		private:					
 									udword		mCount;				//!< Stats: number of nodes created
 									udword		mNbInvalidSplits;	//!< Stats: number of invalid splits
+		public:
+				poolSS<AABBTreeNode,16*1024>	mPOOL		;
+		inline_					AABBTreeNode*	node_alloc	()					{return mPOOL.create();		}
+		inline_						void		node_destroy(AABBTreeNode* &n)	{return mPOOL.destroy(n);	}
 	};
 
 	class OPCODE_API AABBTreeOfAABBsBuilder : public AABBTreeBuilder

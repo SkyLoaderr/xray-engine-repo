@@ -233,7 +233,10 @@ bool OPCODE_Model::Build(const OPCODECREATE& create)
 	if(!mTree->Build(mSource))	return false;
 
 	// 3-3) Delete generic tree if needed
-	if(!create.KeepOriginal)	xr_delete(mSource);
+	if(!create.KeepOriginal)	{
+		mSource->destroy	(&TB)		;
+		xr_delete			(mSource)	;	
+	}
 
 #ifdef __MESHMERIZER_H__
 	// 4) Convex hull

@@ -20,6 +20,8 @@
 #ifndef __OPC_AABBTREE_H__
 #define __OPC_AABBTREE_H__
 
+	class AABBTreeBuilder;
+
 	//! TO BE DOCUMENTED
 	#define IMPLEMENT_TREE(baseclass, volume)																			\
 		public:																											\
@@ -50,6 +52,7 @@
 		// Data access
 		inline_	const udword*		GetPrimitives()		const	{ return mNodePrimitives;	}
 		inline_	udword				GetNbPrimitives()	const	{ return mNbPrimitives;		}
+				void				destroy				(AABBTreeBuilder*	_tree);
 
 		protected:
 		// Tree-dependent data

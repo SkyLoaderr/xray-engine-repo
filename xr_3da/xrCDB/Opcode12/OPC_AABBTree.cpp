@@ -65,10 +65,14 @@ AABBTreeNode::AABBTreeNode() : mP(null), mN(null), mNbPrimitives(0), mNodePrimit
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBTreeNode::~AABBTreeNode()
 {
-	xr_delete		(mP);
-	xr_delete		(mN);
-	mNodePrimitives	= null;	// This was just a shortcut to the global list => no release
-	mNbPrimitives	= 0;
+}
+
+void  AABBTreeNode::destroy		(AABBTreeBuilder*	_tree)
+{
+	if (mP)	{ mP->destroy		(_tree); _tree->node_destroy	(mP); }
+	if (mN)	{ mN->destroy		(_tree); _tree->node_destroy	(mN); }
+	mNodePrimitives				= null;	// This was just a shortcut to the global list => no release
+	mNbPrimitives				= 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,11 +271,11 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 	}
 
 	// Now create children and assign their pointers.
-	mP = xr_new<AABBTreeNode>();	CHECKALLOC(mP);
-	mN = xr_new<AABBTreeNode>();	CHECKALLOC(mN);
+	mP = builder->node_alloc();     CHECKALLOC(mP);
+	mN = builder->node_alloc();		CHECKALLOC(mN);
 
 	// Update stats
-	builder->IncreaseCount(2);
+	builder->IncreaseCount	(2);
 
 	// Assign children
 	mP->mNodePrimitives	= &mNodePrimitives[0];
