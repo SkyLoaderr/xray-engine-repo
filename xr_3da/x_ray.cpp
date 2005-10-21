@@ -216,7 +216,6 @@ void Startup					( )
 		Console->Reset();
 
 	destroyEngine();
-
 }
 
 static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )

@@ -122,7 +122,7 @@ void	xrMemory::dbg_check		()
 }
 
 extern	LPCSTR	memstat_file;
-void	dbg_dump_leaks()
+XRCORE_API void	dbg_dump_leaks	()
 {
 	memstat_file		=	"x:\\$memleak$.txt"	;
 	Memory.mem_statistic	();
