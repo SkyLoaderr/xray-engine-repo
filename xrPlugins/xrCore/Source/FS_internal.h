@@ -46,7 +46,7 @@ public:
         	fclose				(hf);
         	// release RO attrib
 	        DWORD dwAttr 		= GetFileAttributes(*fName);
-	        if ((dwAttr != -1)&&(dwAttr&FILE_ATTRIBUTE_READONLY)){
+	        if ((dwAttr != u32(-1))&&(dwAttr&FILE_ATTRIBUTE_READONLY)){
                 dwAttr 			&=~ FILE_ATTRIBUTE_READONLY;
                 SetFileAttributes(*fName, dwAttr);
             }
