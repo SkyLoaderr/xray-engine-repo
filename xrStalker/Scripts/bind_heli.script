@@ -6,7 +6,7 @@ Helicoter binding
 	- настройки в ltx
 --------------------------------------------------------------------------------------------------]]
 
-local heli_ltx = ini_file( "creatures\\helicopter.ltx" )
+local heli_ltx = system_ini() --ini_file( "creatures\\helicopter.ltx" )
 
 
 ---------------------------------------------------------------------------------------------
