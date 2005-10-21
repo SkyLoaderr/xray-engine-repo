@@ -54,7 +54,7 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 			}
 			if (actor){
 				if (Random.randF(0.f,1.f)>actor->HitProbability()){ 
-					Log				("- HIT - IGNORE");
+//					Log				("- HIT - IGNORE");
 					bRes			= FALSE;
 				}else{
 					if (bSphereIntersected){
@@ -63,11 +63,11 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 						if (cform->_RayQuery(rd,r_temp)){
 							// в объект попали - отыгрывать звук пролета не нужно
 							bSphereIntersected= false;
-							Log			("- HIT - NORMAL");
+//							Log			("- HIT - NORMAL");
 						}else{
 							// в объект вообще не попали - проверять в xr_area нет смысла
 							bRes		= FALSE;
-							Log			("- HIT - EMPTY");
+//							Log			("- HIT - EMPTY");
 						}
 					}
 				}
