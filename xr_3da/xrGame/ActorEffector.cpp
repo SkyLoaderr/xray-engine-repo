@@ -300,6 +300,6 @@ CActorAlcoholCamEffector::CActorAlcoholCamEffector(CActorCondition* c)
 CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
 :inherited(type, GET_KOEFF_FUNC(this, &CFireHitCamEffector::GetPower))
 {
-	m_power			= power/100.0f;
+	m_power			= power;
 	clamp			(m_power, 0.0f, 1.0f);
 }
