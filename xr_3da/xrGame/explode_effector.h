@@ -3,8 +3,6 @@
 #include "CameraEffector.h"
 #include "../cameramanager.h"
 
-#define EXPLODE_EFFECTOR_TYPE_ID	7
-
 class CExplodeEffector : public CCameraEffector {
 	typedef CCameraEffector inherited;	
 
