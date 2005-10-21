@@ -100,6 +100,11 @@
 	<info_portion id="aes2_monolit_ambush4"></info_portion>
 	<info_portion id="aes2_monolit_ambush5"></info_portion>
 	<info_portion id="aes2_teleport_trader"></info_portion>
+	<info_portion id="aes2_monolit_teleport1"></info_portion>
+	<info_portion id="aes2_monolit_teleport2"></info_portion>
+	<info_portion id="aes2_monolit_teleport3"></info_portion>
+	<info_portion id="aes2_monolit_teleport4"></info_portion>
+	<info_portion id="aes2_monolit_teleport5"></info_portion>
 
 
    
