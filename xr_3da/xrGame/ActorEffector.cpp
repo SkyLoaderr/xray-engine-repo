@@ -297,8 +297,8 @@ CActorAlcoholCamEffector::CActorAlcoholCamEffector(CActorCondition* c)
 	Start			("camera_effects\\fatigue.anm");
 }
 
-CFireHitCamEffector::CFireHitCamEffector	(float power)
-:inherited(eCEFireHit, GET_KOEFF_FUNC(this, &CFireHitCamEffector::GetPower))
+CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
+:inherited(type, GET_KOEFF_FUNC(this, &CFireHitCamEffector::GetPower))
 {
 	m_power			= power/100.0f;
 	clamp			(m_power, 0.0f, 1.0f);

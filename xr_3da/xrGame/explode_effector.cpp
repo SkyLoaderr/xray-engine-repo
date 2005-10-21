@@ -2,7 +2,7 @@
 #include "explode_effector.h" 
 
 CExplodeEffector::CExplodeEffector(float time, float amp, float periods, float power) 
-		: CCameraEffector(ECameraEffectorType(EXPLODE_EFFECTOR_TYPE_ID), time)
+		: CCameraEffector(ECameraEffectorType(eExplode), time)
 {
 	total			= time;
 

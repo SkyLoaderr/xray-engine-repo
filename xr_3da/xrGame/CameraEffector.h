@@ -17,6 +17,7 @@ enum ECameraEffectorType
 	eCERecoil		=4,
 	eCEBobbing		=5,
 	eCEHit			=6,  //hit from monster
+	eExplode		=7,
 	eCEAlcohol		=20,
 	eCEFireHit		= 21,
 	eCEUser			=100,

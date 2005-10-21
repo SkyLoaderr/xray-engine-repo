@@ -136,6 +136,7 @@ protected:
 		float 					time;
 		float 					amplitude;	
 		float 					period_number;
+		shared_str				file_name;
 	} effector;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

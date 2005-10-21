@@ -111,7 +111,6 @@ protected:
 	virtual bool		Unlimited					() const		{return false;}
 
 public:
-						CFireHitCamEffector		(float power);
-	float	xr_stdcall	GetPower				()				{return m_power;}
-
+						CFireHitCamEffector			(ECameraEffectorType type,float power);
+	float	xr_stdcall	GetPower					()				{return m_power;}
 };

@@ -118,6 +118,7 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 	effector.time			= ini->r_float("explode_effector","time");
 	effector.amplitude		= ini->r_float("explode_effector","amplitude");
 	effector.period_number	= ini->r_float("explode_effector","period_number");
+	effector.file_name		= ini->r_string("explode_effector","cam_file_name");
 }
 
 void CExplosive::net_Destroy	()
@@ -376,8 +377,12 @@ void CExplosive::Explode()
 	{
 		float dist_to_actor = pActor->Position().distance_to(pos);
 		float max_dist		= EFFECTOR_RADIUS;
-		if (dist_to_actor < max_dist) 
-			pActor->EffectorManager().AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
+		if (dist_to_actor < max_dist) {
+			CFireHitCamEffector* e = xr_new<CFireHitCamEffector>(eExplode, (max_dist - dist_to_actor) / max_dist);
+			e->Start	(*effector.file_name);
+			pActor->EffectorManager().AddEffector(e);
+//			pActor->EffectorManager().AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
+		}
 	}
 	//////////////////////////////////
 	

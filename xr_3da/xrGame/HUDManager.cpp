@@ -288,7 +288,7 @@ void CHUDManager::Hit(int idx, float power, const Fvector& dir)
 	if(psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
 		CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEFireHit);
 		if(!ce){
-			CAnimatorCamEffector* e		= xr_new<CFireHitCamEffector>(power);
+			CAnimatorCamEffector* e		= xr_new<CFireHitCamEffector>(eCEFireHit, power);
 			string_path fn;
 			if(idx==0)
 				sprintf(fn,"camera_effects\\hit_front.anm");
