@@ -189,7 +189,7 @@
 				FavorSizeOrSpeed="1"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_DEBUG;ETOOLS_EXPORTS"
+				PreprocessorDefinitions="WIN32;DEBUG;NDEBUG;_WINDOWS;_DEBUG;ETOOLS_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
