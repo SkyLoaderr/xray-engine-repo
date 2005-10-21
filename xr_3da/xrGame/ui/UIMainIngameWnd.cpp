@@ -358,7 +358,9 @@ void CUIMainIngameWnd::Init()
 	UIStaticDiskIO.SetOriginalRect			(0,0,32,32);
 	UIStaticDiskIO.SetStretchTexture		(TRUE);
 
-	m_contactsSnd.create					(TRUE,"detectors\\DA-2_beep1");
+	LPCSTR		snd_new_contact				= uiXml.Read("new_contact_snd",0,NULL);
+	if(snd_new_contact)
+		m_contactsSnd.create					(TRUE,snd_new_contact);
 
 }
 float UIStaticDiskIO_start_time = 0.0f;
@@ -1501,7 +1503,7 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 void CUIMainIngameWnd::AnimateContacts()
 {
 	UIPdaOnline.ResetAnimation	();
-	if(NULL==m_contactsSnd._feedback())
+	if(m_contactsSnd._handle() && NULL==m_contactsSnd._feedback()) //created and not played now
 		m_contactsSnd.play_at_pos			(0,Fvector().set(0,0,0),sm_2D);
 }
 
