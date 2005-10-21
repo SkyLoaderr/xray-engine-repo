@@ -94,169 +94,86 @@ function load_job(sj, gname, type, squad, groups)
 		end
 	end
 ----------------------------------------------------------------------------
-	if type == "rad_boars_migrate" then
-		local boar_num = 8
-		local r = 1
-		for i = 1, boar_num do
-			r = 1
-			t = { section = "logic@rad_boars_migrate", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_boars_migrate_sr"..r
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, boar_num do
-			r = 2
-			t = { section = "logic@rad_boars_migrate", 
-				idle = 0,
-				prior = 5, state = {2}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_boars_migrate_sr"..r
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, boar_num do
-			r = 3
-			t = { section = "logic@rad_boars_migrate", 
-				idle = 0,
-				prior = 5, state = {3}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_boars_migrate_sr"..r
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, boar_num do
-
-			t = { section = "logic@rad_boars_migrate", 
-				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_boars_migrate_territory"
-			}
-			table.insert(sj, t)
-		end
-	end
-
-	if type == "rad_chimeras" then
-		local chimera_num = 2
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_chimeras", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_chimeras"
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_chimeras", 
-				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_chimeras_territory"
-			}
-			table.insert(sj, t)
-		end
-	end
-
-	if type == "rad_boars" then
-		local chimera_num = 6
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_boars", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_boars"
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_boars", 
-				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_boars_territory"
-			}
-			table.insert(sj, t)
-		end
-	end
-
-	if type == "rad_fleshes" then
-		local chimera_num = 6
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_fleshes", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_fleshes"
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_fleshes", 
-				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_fleshes_territory"
-			}
-			table.insert(sj, t)
-		end
-	end
-
 	if type == "rad_pseudodogs" then
-		local chimera_num = 6
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_pseudodogs", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_pseudodogs"
-			}
-			table.insert(sj, t)
-		end
-
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_pseudodogs", 
+		for i = 1, 6 do
+			t = { section = "logic@rad_pseudodogs_dog"..i , 
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_pseudodogs_territory"
+				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
-	end
 
-	if type == "rad_zombies" then
-		local chimera_num = 6
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_zombies", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_zombies_nest"
-			}
-			table.insert(sj, t)
-		end
-		for i = 1, chimera_num do
-			t = { section = "logic@rad_zombies", 
+	end
+----------------------------------------------------------------------------
+	if type == "rad_bloodsucker" then
+		for i = 1, 1 do
+			t = { section = "logic@rad_bloodsucker_suck"..i , 
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_zombies_territory"
+				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
-	end
 
+	end
+----------------------------------------------------------------------------
+	if type == "rad_snork1" then
+		for i = 1, 11 do
+			t = { section = "logic@rad_snork1_"..i , 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+
+	end
+	if type == "rad_snork2" then
+		for i = 1, 10 do
+			t = { section = "logic@rad_snork2_"..i , 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+
+	end
+-------------------------------------------------------------------------------
 	if type == "rad_gig" then
-			t = { section = "logic@rad_gig", 
-				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_gig"
-			}
-			table.insert(sj, t)
-
-			t = { section = "logic@rad_gig", 
+		for i = 1, 1 do
+			t = { section = "logic@rad_gig"..i , 
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = "rad_gig_territory"
+				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
+		end
+
 	end
+
+	if type == "rad_zombied1" then
+		for i = 1, 4 do
+			t = { section = "logic@rad_zombied1"..i , 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+	end
+	if type == "rad_zombied2" then
+		for i = 1, 7 do
+			t = { section = "logic@rad_zombied2"..i , 
+				idle = 0,
+				prior = 5, state = {0}, squad = squad, group = groups[0],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+	end
+----------------------------------------------------------------------------
 	if type == "freedom_vs_duty" then
 			t = { section = "logic@rad_svoboda", 
 				idle = 0,
@@ -415,6 +332,7 @@ function load_job(sj, gname, type, squad, groups)
 			}
 			table.insert(sj, t)
 	end
+----------------------------------------------------------------------------
 	if type == "rad_valley" then
 		for i = 1,3 do
 			t = { section = "logic@rad_valley_kamp", 
@@ -538,76 +456,6 @@ function load_states(gname, type)
 		end
 	end
 
-	if type == "rad_boars_migrate" then
-		return function(gulag)
-			local t = db.zone_by_name["rad_boars_migrate_territory"] 
-			local actor = db.actor
-
-			if t and actor then
-				if t:inside(actor:position()) then
-					return 0
-				elseif game.get_game_time():diffSec( gulag.stateBegin ) > 600 then
-					
-					return math.random(1, 3)
-				else
-					return gulag.state
-				end
-			else
-				return gulag.state
-			end
-		end
-	end
-
-	if type == "rad_boars" then
-		return function(gulag)
-			local t = db.zone_by_name["rad_boars_territory"] 
-			local actor = db.actor
-
-			if t and actor then
-				if t:inside(actor:position()) then
-					return 0
-				else
-					return 1
-				end
-			else
-				return gulag.state
-			end
-		end
-	end
-
-	if type == "rad_chimeras" then
-		return function(gulag)
-			local t = db.zone_by_name["rad_chimeras_territory"] 
-			local actor = db.actor
-
-			if t and actor then
-				if t:inside(actor:position()) then
-					return 0
-				else
-					return 1
-				end
-			else
-				return gulag.state
-			end
-		end
-	end
-
-	if type == "rad_fleshes" then
-		return function(gulag)
-			local t = db.zone_by_name["rad_fleshes_territory"] 
-			local actor = db.actor
-
-			if t and actor then
-				if t:inside(actor:position()) then
-					return 0
-				else
-					return 1
-				end
-			else
-				return gulag.state
-			end
-		end
-	end
 
 	if type == "rad_gig" then
 		return function(gulag)
@@ -628,37 +476,67 @@ function load_states(gname, type)
 
 	if type == "rad_pseudodogs" then
 		return function(gulag)
-			local t = db.zone_by_name["rad_pseudodogs_territory"] 
 			local actor = db.actor
-
-			if t and actor then
-				if t:inside(actor:position()) then
-					return 0
-				else
-					return 1
-				end
-			else
+			if not actor then
 				return gulag.state
+			else	
+				return 0
 			end
 		end
 	end
-	if type == "rad_zombies" then
+
+	if type == "rad_bloodsucker" then
 		return function(gulag)
-			local t = db.zone_by_name["rad_zombies_territory"] 
 			local actor = db.actor
-
-			if t and actor then
-				if t:inside(actor:position()) then
-					return 0
-				else
-					return 1
-				end
-			else
+			if not actor then
 				return gulag.state
+			else	
+				return 0
 			end
 		end
 	end
 
+	if type == "rad_snork1" then
+		return function(gulag)
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			else	
+				return 0
+			end
+		end
+	end
+
+	if type == "rad_snork2" then
+		return function(gulag)
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			else	
+				return 0
+			end
+		end
+	end
+	if type == "rad_zombied1" then
+		return function(gulag)
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			else	
+				return 0
+			end
+		end
+	end
+	if type == "rad_zombied2" then
+		return function(gulag)
+			local actor = db.actor
+			if not actor then
+				return gulag.state
+			else	
+				return 0
+			end
+		end
+	end
 	if type == "freedom_vs_duty" then
 		return function(gulag)
 			local actor = db.actor
@@ -715,6 +593,29 @@ function load_ltx(gname, type)
 	if type == "rad_after_valley" then
 		return load_ltx_after_valley_ambush(gname, type)
 	end
+	if type == "rad_pseudodogs" then
+		return load_ltx_pseudodogs(gname, type)
+	end
+	if type == "rad_gig" then
+		return load_ltx_gig(gname, type)
+	end
+	if type == "rad_bloodsucker" then
+		return load_ltx_bloodsucker(gname, type)
+	end
+	if type == "rad_snork1" then
+		return load_ltx_snork1(gname, type)
+	end
+	if type == "rad_snork2" then
+		return load_ltx_snork2(gname, type)
+	end
+
+	if type == "rad_zombied1" then
+		return load_ltx_zombied1(gname, type)
+	end
+	if type == "rad_zombied2" then
+		return load_ltx_zombied2(gname, type)
+	end
+
 	return nil
 end
 -------------------------------------------------------------------------
@@ -944,6 +845,103 @@ function load_ltx_after_valley_ambush(gname, type)
 
 	return res
 end
+-----------mob_campers---------------------------------------------------------------
+function load_ltx_pseudodogs(gname, type)
+    local i, res = 0, ""
+	for i = 1, 6 do
+	res = res .. "[logic@" .. gname .. "_dog" .. i .. "]\n" ..
+					"active = mob_camp@" .. gname .. "_dog" .. i .. "\n" ..
+
+					"[mob_camp@" .. gname .. "_dog" .. i .. "]\n" ..
+					"path_home = home" .. i .. "\n" ..
+					"npc_friendly = true\n"..
+					"path_look = look" .. i .. "\n" 
+	end
+	return res
+end
+
+function load_ltx_bloodsucker(gname, type)
+    local i, res = 0, ""
+	for i = 1, 1 do
+	res = res .. "[logic@" .. gname .. "_suck" .. i .. "]\n" ..
+					"active = mob_camp@" .. gname .. "_suck" .. i .. "\n" ..
+
+					"[mob_camp@" .. gname .. "_suck" .. i .. "]\n" ..
+					"path_home = home" .. i .. "\n" ..
+					"npc_friendly = true\n"..
+					"path_look = look" .. i .. "\n" 
+	end
+	return res
+end
+
+function load_ltx_gig(gname, type)
+    local i, res = 0, ""
+	for i = 1, 1 do
+	res = res .. "[logic@" .. gname .. i .. "]\n" ..
+					"active = mob_camp@" .. gname  .. i .. "\n" ..
+
+					"[mob_camp@" .. gname  .. i .. "]\n" ..
+					"path_home = home" .. i .. "\n" ..
+					"time_change_point = 30000\n" ..
+					"npc_friendly = true\n"..
+					"path_look = look" .. i .. "\n" 
+	end
+	return res
+end
+
+function load_ltx_snork1(gname, type)
+    local i, res = 0, ""
+	for i = 1, 11 do
+	res = res .. "[logic@" .. gname .."_".. i .. "]\n" ..
+					"active = mob_camp@" .. gname  .. i .. "\n" ..
+
+					"[mob_camp@" .. gname  .. i .. "]\n" ..
+					"path_home = home" .. i .. "\n" ..
+					"npc_friendly = true\n"..
+					"path_look = look" .. i .. "\n" 
+	end
+	return res
+end
+
+function load_ltx_snork2(gname, type)
+    local i, res = 0, ""
+	for i = 1, 10 do
+	res = res .. "[logic@" .. gname .."_".. i .. "]\n" ..
+					"active = mob_camp@" .. gname  .. i .. "\n" ..
+
+					"[mob_camp@" .. gname  .. i .. "]\n" ..
+					"path_home = home" .. i .. "\n" ..
+					"npc_friendly = true\n"..
+					"path_look = look" .. i .. "\n" 
+	end
+	return res
+end
+
+function load_ltx_zombied1(gname, type)
+    local i, res = 0, ""
+	for i = 1, 4 do
+	res = res .. "[logic@" .. gname .. i .. "]\n" ..
+					"active = walker@" .. gname  .. i .. "\n" ..
+
+					"[walker@" .. gname  .. i .. "]\n" ..
+					"npc_friendly = true\n"..
+					"path_walk = walk\n" 
+	end
+	return res
+end
+
+function load_ltx_zombied2(gname, type)
+    local i, res = 0, ""
+	for i = 1, 7 do
+	res = res .. "[logic@" .. gname .. i .. "]\n" ..
+					"active = walker@" .. gname  .. i .. "\n" ..
+
+					"[walker@" .. gname  .. i .. "]\n" ..
+					"npc_friendly = true\n"..
+					"path_walk = walk\n" 
+	end
+	return res
+end
 --------------------------------------------------------------------------
 function load_ltx_antenna_patrol(gname, type)
     local i, res = 0, ""
@@ -988,7 +986,11 @@ function checkStalker(npc_community, gulag_type)
 		gulag_type == "rad_far_road_btr_ambush" then
 			return npc_community == "monolith"
 	end
-	
+
+	if gulag_type == "rad_zombied1" or gulag_type == "rad_zombied2" then
+		return npc_community == "zombied"
+	end	
+
 	if gulag_type == "freedom_vs_duty" then
 		return true
 	end
@@ -998,17 +1000,7 @@ end
 
 function checkMonster( npc_community, gulag_type )
 
-	if gulag_type == "rad_boars_migrate" or gulag_type == "rad_boars" then
-		return npc_community == "boar"
-	end
 
-	if gulag_type == "rad_chimeras" then
-		return npc_community == "chimera"
-	end
-
-	if gulag_type == "rad_fleshes" then
-		return npc_community == "flesh"
-	end
 	if gulag_type == "rad_gig" then
 		return npc_community == "pseudo_gigant"
 	end
@@ -1017,10 +1009,15 @@ function checkMonster( npc_community, gulag_type )
 		return npc_community == "pseudodog"
 	end
 
-	if gulag_type == "rad_zombies" then
-		return true
+	if gulag_type == "rad_bloodsucker" then
+		return npc_community == "bloodsucker"
 	end
 
+	if gulag_type == "rad_snork1" or gulag_type == "rad_snork2" then
+		return npc_community == "snork"
+	end
+
+	
 	return false
 end
 -------------------------------------------------------------------------------------------------------------------------
