@@ -88,7 +88,9 @@ void CHitMarker::Render()
 
 void CHitMarker::Hit(int id, const Fvector& dir){
 
-	m_HitMarks.push_back	(xr_new<SHitMark>(hShader2,dir));
+	Fvector hit_dir = dir;
+	hit_dir.mul(-1.0f);
+	m_HitMarks.push_back	(xr_new<SHitMark>(hShader2,hit_dir));
 /*
 	VERIFY((id>=0)&&(id<8));
 	switch (id){
