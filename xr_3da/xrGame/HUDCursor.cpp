@@ -179,7 +179,6 @@ void CHUDCursor::Render()
 						case ALife::eRelationTypeFriend:
 							C = C_ON_FRIEND; break;
 						}
-					}
 
 					if (fuzzyShowInfo>0.5f){
 						CStringTable	strtbl		;
@@ -187,6 +186,8 @@ void CHUDCursor::Render()
 						F->OutNext	("%s", *strtbl.translate(others_inv_owner->Name()) );
 						F->OutNext	("%s", *strtbl.translate(others_inv_owner->CharacterInfo().Community().id()) );
 					}
+					}
+
 					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 				}
 				else 
