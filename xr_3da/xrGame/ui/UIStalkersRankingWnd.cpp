@@ -35,7 +35,6 @@ void CUIStalkersRankingWnd::Init()
 
 	CUIXmlInit	xml_init;
 
-//	inherited::Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	xml_init.InitWindow(uiXml, "main_wnd", 0, this);
 
 	// Декоративное оформление
@@ -102,7 +101,6 @@ void CUIStalkersRankingWnd::AddStalkerInfo()
 
 	CPda * m_pPda = m_pInvOwner->GetPDA();
 	if(!m_pPda)return;
-//	PDA_LIST_it it;	
 
 	// Добавить список рейтингов
 
@@ -120,18 +118,6 @@ void CUIStalkersRankingWnd::AddStalkerInfo()
 		// CCharacterInfo. Остальное можно перехерячить :)
 		pItem->SetData(pda->GetOriginalOwner());
 	}
-/*
-	for(it = m_pPda->m_PDAList.begin(); m_pPda->m_PDAList.end() != it; ++it)
-	{	
-		CUIPdaListItem* pItem = NULL;
-		pItem = xr_new<CUIPdaListItem>();
-		UIStalkersList.AddItem<CUIListItem>(pItem); 
-		pItem->InitCharacter((*it)->GetOriginalOwner());
-		// To ЮРА: самое важное, что надо оставить - это дате элемента задать указатель на
-		// CCharacterInfo. Остальное можно перехерячить :)
-		pItem->SetData((*it)->GetOriginalOwner());
-	}
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -155,7 +141,6 @@ void CUIStalkersRankingWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	if (UIStalkersList == pWnd && LIST_ITEM_CLICKED == msg)
 	{
 		UICharacterWindow->Show(true);
-//		CCharacterInfo &charInfo = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData())->CharacterInfo();
 		CInventoryOwner* IO = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData());
 		UICharacterInfo->InitCharacter(IO);
 		UICharIconHeader->UITitleText.SetText(IO->Name());
