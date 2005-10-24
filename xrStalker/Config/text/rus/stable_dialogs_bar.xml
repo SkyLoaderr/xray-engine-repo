@@ -1468,7 +1468,7 @@
         <text>К сожалению, мне пора. Удачи.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_11">
-        <text>Сталкер, помоги! Мы возвращались с Янтаря, когда нас сбили наемники. Говорят что им информация нужна, но я то знаю, что перестреляют они нас. Выведи меня к Янтарю и я поделюсь с тобой тем что знаю о вашем "выжигателе мозгов", а бармен тебе за это хорошо заплатит.</text>
+        <text>Сталкер, помоги! Мы возвращались с Янтаря, когда нас сбили наемники. Говорят что им информация нужна, но я то знаю - перестреляют они нас. Выведи меня к Янтарю и я поделюсь с тобой тем что знаю о вашем "выжигателе мозгов", а бармен тебе за это хорошо заплатит.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_111">
         <text>Хорошо, следуй за мной.</text>
@@ -1486,7 +1486,16 @@
         <text>Поторопись, нужно поскорее выбраться отсюда.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_31">
-        <text>Фух. Неужели мы в безопасности? Наконец-то. Спасибо тебе за помощь. Я вечный твой должник, а пока возьми вот эту флешку. Это результаты последней экспедиции. Уверен, что бармен за эту информацию достойно заплатит.</text>
+        <text>Фух. Неужели мы в безопасности? Наконец-то. Спасибо тебе за помощь. Я твой должник, а пока возьми вот эту флешку. Это результаты последней экспедиции. Уверен, бармен за эту информацию хорошо заплатит.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_311">
+        <text>Да, мы на месте.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_3111">
+        <text>Меченый, если зайдешь к нам в мобильную лабораторию на Янтаре, подарим тебе скафандр научный.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_31111">
+        <text>Посмотрим как получится.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_41">
         <text>Здравствуй, сталкер. От имени мировой науки выражаю свою благодарность.</text>
@@ -1495,46 +1504,37 @@
         <text>Меченый, останови их! Они же нас прикончат!!!</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_511">
-        <text>Посиди тут тихо, я сейчас с ними разберусь.</text>
+        <text>Посиди тихо, сейчас с ними разберемся.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_5111">
-        <text>Хорошо, я буду ждать тебя.</text>
+        <text>Хорошо.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_512">
-        <text>Опасности больше нет, можно выбираться.</text>
+        <text>Опасности пока нет, можно идти дальше.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_5121">
-        <text>Спасибо, Меченый. Идем скорее.</text>
+        <text>Идем скорее.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_61">
-        <text>Там кто-то есть, Меченый. Сходи разведай.</text>
+        <text>Меченый, слишком опасно идти дальше. Да и я хочу передохнуть чуток.  Может пока сходишь разведаешь дальнейшую дорогу?</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_611">
-        <text>Хорошо, посиди тут тихо. Сейчас все узнаю.</text>
+        <text>Хорошо, посиди тихо. Сейчас разведаю.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_6111">
         <text>Хорошо, я жду здесь.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_612">
-        <text>Там никого нет, можно идти</text>
+        <text>Вроде все спокойно, можно идти.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_6121">
         <text>Хорошо, идем скорее.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_613">
-        <text>Я всех убил, можно идти.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_6131">
-        <text>Спасибо, Меченый. Идем скорее.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_71">
         <text>Осторожнее с Жаркой, Меченый. Мне не опасно, меня защитит скафандр, а тебе лучше избежать приближения жарки.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_711">
         <text>Спасибо за совет.</text>
-    </string>
-    <string id="bar_ecolog_crush_professor_start_712">
-        <text>Не волнуйся, у меня тоже защита неплохая.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_91">
         <text>Скорее, Меченый. Не время болтать.</text>
