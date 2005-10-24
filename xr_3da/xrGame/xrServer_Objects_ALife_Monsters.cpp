@@ -901,6 +901,7 @@ void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Min start power"),				&m_min_start_power,			1.f,1000.f);
 	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Max start power"),				&m_max_start_power,			1.f,1000.f);
 	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Power artefact factor"),			&m_power_artefact_factor,	0.001f,1000.f);
+	PHelper().CreateFlag32			(items,PrepareKey(pref,*s_name,"ALife\\Visible for AI"),				&m_flags,					flVisibleForAI);
 }
 
 bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
