@@ -2,13 +2,15 @@ phrase = {
 	intro = {},
 	trade_info = {},
 	actio_info = {},
-	cool_info = {}
+	cool_info = {},
+	help_thanks = {}
 	}
 
 local phrase_ini = ini_file("misc\\dialog_manager.ltx")
 
 local intro_id = 0
 local cool_info_id = 0
+local help_thanks_id = 0
 local phrase_table_filled = false
 
 function get_id(type)
@@ -18,6 +20,9 @@ function get_id(type)
 	elseif type == "cool_info" then
 		cool_info_id = cool_info_id + 1
 		return cool_info_id
+	elseif type == "help_thanks" then
+		help_thanks_id = help_thanks_id + 1
+		return help_thanks_id
 	else
 		abort("Dialog manager error: unknown GET_ID() type")
 	end
@@ -121,20 +126,65 @@ function init_cool_info_dialog(dlg)
 	
 	local k,v,kk,vv = 0,0,0,0
 	for k,v in pairs(phrase.cool_info) do
-		phr = dlg:AddPhrase(k,get_id("cool_info"),0,-10000)		
+		local last_id = get_id("cool_info")
+		phr = dlg:AddPhrase(k,last_id,0,-10000)		
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_cool_info")
+			
 			if v.article_info ~= nil then
+				phr = dlg:AddPhrase("",get_id("cool_info"),last_id,-10000)		
+				phrase_script = phr:GetPhraseScript()
+				
 				local article_info = parse_names(v.article_info)
 				for kk,vv in pairs(article_info) do
-					printf("AddGiveInfo [%s]", tostring(vv))
 					phrase_script:AddGiveInfo(vv)
 				end
 			end
 		end
 	end
 end
+
+
+function init_help_wounded_medkit_dialog(dlg)
+	if phrase_table_filled == false then
+		fill_phrase_table()
+		phrase_table_filled = true
+	end
+
+	local phr = dlg:AddPhrase("dm_general_help_medkit",0,-1,-10000)
+	local phrase_script = phr:GetPhraseScript()
+	phrase_script:AddAction("dialogs.transfer_medkit")
+	
+	local k,v = 0,0
+	for k,v in pairs(phrase.help_thanks) do
+		phr = dlg:AddPhrase(k,get_id("help_thanks"),0,-10000)		
+		if phr then
+			phrase_script = phr:GetPhraseScript()
+			phrase_script:AddPrecondition("dialog_manager.precondition_help_thanks")
+		end
+	end
+end
+function init_help_wounded_bandage_dialog(dlg)
+	if phrase_table_filled == false then
+		fill_phrase_table()
+		phrase_table_filled = true
+	end
+
+	local phr = dlg:AddPhrase("dm_general_help_bandage",0,-1,-10000)
+	local phrase_script = phr:GetPhraseScript()
+	phrase_script:AddAction("dialogs.transfer_bandage")
+	
+	local k,v = 0,0
+	for k,v in pairs(phrase.help_thanks) do
+		phr = dlg:AddPhrase(k,get_id("help_thanks"),0,-10000)		
+		if phr then
+			phrase_script = phr:GetPhraseScript()
+			phrase_script:AddPrecondition("dialog_manager.precondition_help_thanks")
+		end
+	end
+end
+
 
 local call_count, max_count, select_count = 0,0,0
 local tmp_tbl = {}
@@ -143,6 +193,9 @@ function precondition_intro(npc, actor)
 end
 function precondition_cool_info(npc, actor)
 	return precondition(npc, actor, phrase.cool_info)
+end
+function precondition_help_thanks(npc, actor)
+	return precondition(npc, actor, phrase.help_thanks)
 end
 
 function precondition(npc, actor, tbl)

@@ -386,7 +386,7 @@ function init_wounded(npc, ini, section, st, scheme)
 			st.hp_cover			= xr_meet.parse_data(npc, "10|false")
 			st.hp_fight			= xr_meet.parse_data(npc, "10|false")
 			st.syndata			= xr_meet.parse_syn_data(npc, "")
-			st.help_dialog		= "actor_help_wounded"
+			st.help_dialog		= "general_help_dialogs"						
 			st.help_start_dialog= nil
 		end
 	else

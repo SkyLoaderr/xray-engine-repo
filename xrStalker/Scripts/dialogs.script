@@ -115,7 +115,10 @@ function allow_wounded_dialog(object, victim, id)
 	if db.storage[victim:id()].wounded == nil then
 		return false
 	end	
-	if db.storage[victim:id()].wounded.help_dialog == id then
+	if (db.storage[victim:id()].wounded.help_dialog == "general_help_dialogs" and
+	   (id == "dm_help_wounded_medkit_dialog" or id == "dm_help_wounded_bandage_dialog")) or
+	   (db.storage[victim:id()].wounded.help_dialog == id)	
+	then
 		printf( "*DIALOGS*: allow_wounded_dialog id=%s TRUE", id )
 		return true
 	end

@@ -5,6 +5,12 @@
     <string id="dm_general_cool_info">
         <text>Что можешь интересного рассказать?</text>
     </string>
+    <string id="dm_general_help_medkit">
+        <text>Держи аптечку.</text>
+    </string>
+    <string id="dm_general_help_bandage">
+        <text>Держи бинт.</text>
+    </string>
 
 
 
@@ -46,6 +52,23 @@
     </string>
     <string id="dm_universal_cool_info_6">
         <text>Чувак, если ты в армии не служил, то не вступай в Долг. Замучают со своим уставом, солдафоны хреновы.</text>
+    </string>
+
+
+    <string id="dm_help_thanks_1">
+        <text>Спасибо, чувак</text>
+    </string>
+    <string id="dm_help_thanks_2">
+        <text>Спасибо тебе от "Долга"</text>
+    </string>
+    <string id="dm_help_thanks_3">
+        <text>Благодарю от имени "Долга"</text>
+    </string>
+    <string id="dm_help_thanks_4">
+        <text>Спасибо тебе большое.</text>
+    </string>
+    <string id="dm_help_thanks_5">
+        <text>Ништяк браток! вколи еще.</text>
     </string>
 
 </string_table>
