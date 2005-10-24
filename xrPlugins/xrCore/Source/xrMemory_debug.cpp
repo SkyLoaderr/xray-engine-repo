@@ -71,7 +71,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 			memset			(debug_info[_found]._p,'C',debug_info[_found]._size);
 
 		// clear record
-		std::swap			(debug_info[_found],debug_info[_found].back());
+		std::swap			(debug_info[_found],debug_info.back());
 		debug_info.pop_back	();
 		debug_info_update	++;
 	}
