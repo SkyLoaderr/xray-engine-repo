@@ -5,7 +5,7 @@
 
 #include "client_id.h"
 
-const	u32			NET_PacketSizeLimit	= 4096; //16384;//8192;
+const	u32			NET_PacketSizeLimit	= 8192; //16384;//8192;
 
 struct	NET_Buffer
 {
