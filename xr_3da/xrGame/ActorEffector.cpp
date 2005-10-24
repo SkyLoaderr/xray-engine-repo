@@ -294,7 +294,7 @@ BOOL CAnimatorCamLerpEffector::Process(Fvector &p, Fvector &d, Fvector &n, float
 CActorAlcoholCamEffector::CActorAlcoholCamEffector(CActorCondition* c)
 :inherited(eCEAlcohol, GET_KOEFF_FUNC(c, &CActorCondition::GetAlcohol))
 {
-	Start			("camera_effects\\fatigue.anm");
+	Start			("camera_effects\\drunk.anm");
 }
 
 CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
