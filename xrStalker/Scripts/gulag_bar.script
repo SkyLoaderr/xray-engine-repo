@@ -2004,8 +2004,7 @@ function load_states(gname, type)
 				 return 1 -- actor enemy
 			end
 			if db.actor:has_info("bar_rescue_research_chasing_start") and
-			   db.actor:dont_has_info("bar_heli_scene_professor_die") and 
-               db.actor:dont_has_info("bar_kill_professor_volkodav_dead") then
+			   db.actor:dont_has_info("bar_heli_scene_professor_die") then
 				 return 2 -- start chasing			
 			end
 			if db.actor:has_info("bar_heli_scene_professor_die") then
