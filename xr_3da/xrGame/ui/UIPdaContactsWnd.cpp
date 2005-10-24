@@ -107,23 +107,6 @@ void CUIPdaContactsWnd::Update()
 
 void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(pWnd == UIListWnd)
-	{
-		if(msg == LIST_ITEM_CLICKED)
-		{
-			CPda* pda = (CPda*)((CUIListItem*)pData)->GetData();
-			R_ASSERT(pda);
-
-			GetTop()->SendMessage(this, PDA_CONTACTS_WND_CONTACT_SELECTED);
-		}
-	}
-
-	if (pWnd->GetParent() == UIListWnd && STATIC_FOCUS_RECEIVED)
-	{
-		CUIPdaListItem *pPLIItem = smart_cast<CUIPdaListItem*>(pWnd);
-		R_ASSERT(pPLIItem);
-	}
-
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
