@@ -11,6 +11,10 @@
 #include "../../movement_manager_space.h"
 #include "../../level_path_manager.h"
 
+#ifdef DEBUG
+extern bool show_restrictions(CRestrictedObject *object);
+#endif
+
 CControlPathBuilder::CControlPathBuilder(CCustomMonster *monster) : CMovementManager(monster)
 {
 	m_selector_approach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
@@ -227,13 +231,20 @@ bool CControlPathBuilder::valid_and_accessible(Fvector &pos, u32 node)
 void CControlPathBuilder::fix_position(const Fvector &pos, u32 node, Fvector &res_pos)
 {
 	VERIFY(accessible(node));
+	VERIFY(ai().level_graph().inside(node, pos));
 
 	res_pos.set	(pos);
 	res_pos.y	= ai().level_graph().vertex_plane_y(node,res_pos.x,res_pos.z);
 
 	if (!accessible(res_pos)) {
 		u32	level_vertex_id = restrictions().accessible_nearest(Fvector().set(res_pos),res_pos);
-		VERIFY	(level_vertex_id == node);
+		
+#ifdef DEBUG		
+		if (level_vertex_id != node) {
+			Msg		("! src_node[%d] res_node[%d] src_pos[%f,%f,%f] res_pos[%f,%f,%f]",node,level_vertex_id,VPUSH(pos),VPUSH(res_pos));
+		}
+		VERIFY3((level_vertex_id == node) || show_restrictions(m_restricted_object),"Invalid restrictions (see log for details) for object ",*(CControl_Com::m_object->cName()));
+#endif
 	}
 }
 
