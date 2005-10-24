@@ -42,7 +42,11 @@ void*  FileDownload(LPCSTR fn, u32* pdwSize)
 	R_ASSERT2(hFile>0,fn);
 	size	= filelength(hFile);
 
-	buf		= Memory.mem_alloc	(size,"FILE in memory");
+	buf		= Memory.mem_alloc	(size
+#ifdef DEBUG
+		,"FILE in memory"
+#endif
+		);
 	_read	(hFile,buf,size);
 	_close	(hFile);
 	if (pdwSize) *pdwSize = size;
@@ -97,8 +101,16 @@ void CMemoryWriter::w	(const void* ptr, u32 count)
 		// reallocate
 		if (mem_size==0)	mem_size=128;
 		while (mem_size <= (position+count)) mem_size*=2;
-		if (0==data)		data = (BYTE*)	Memory.mem_alloc	(mem_size,		"CMemoryWriter - storage");
-		else				data = (BYTE*)	Memory.mem_realloc	(data,mem_size,	"CMemoryWriter - storage");
+		if (0==data)		data = (BYTE*)	Memory.mem_alloc	(mem_size
+#ifdef DEBUG
+			,		"CMemoryWriter - storage"
+#endif
+			);
+		else				data = (BYTE*)	Memory.mem_realloc	(data,mem_size
+#ifdef DEBUG
+			,	"CMemoryWriter - storage"
+#endif
+			);
 	}
 	Memory.mem_copy	(data+position,ptr,count);
 	position		+=count;

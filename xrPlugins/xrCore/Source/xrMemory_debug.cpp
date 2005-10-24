@@ -2,9 +2,9 @@
 #pragma hdrstop
 
 #ifndef DEBUG
-void	xrMemory::dbg_register		(void* _p, size_t _size)	{ }
-void	xrMemory::dbg_unregister	(void* _p)					{ }
-void	xrMemory::dbg_check			()							{ }
+void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)	{ }
+void	xrMemory::dbg_unregister	(void* _p)									{ }
+void	xrMemory::dbg_check			()											{ }
 
 #else
 

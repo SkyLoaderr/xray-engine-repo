@@ -25,7 +25,11 @@ ICF	u32		get_pool			(size_t size)
 	else						return pid;
 }
 
-void*	xrMemory::mem_alloc		(size_t size, const char* _name)
+void*	xrMemory::mem_alloc		(size_t size
+#ifdef DEBUG
+								 , const char* _name
+#endif
+								 )
 {
 	// if (mem_initialized)		Memory.dbg_check			();
 	stat_calls++;
@@ -61,8 +65,8 @@ void*	xrMemory::mem_alloc		(size_t size, const char* _name)
 		}
 	}
 
-	if		(debug_mode)		dbg_register		(_ptr,size,_name);
 #ifdef DEBUG
+	if		(debug_mode)		dbg_register		(_ptr,size,_name);
 	if (mem_initialized)		debug_cs.Leave		();
 	//if(g_globalCheckAddr==_ptr){
 	//	__asm int 3;
@@ -101,10 +105,18 @@ void	xrMemory::mem_free		(void* P)
 }
 
 extern BOOL	g_bDbgFillMemory	;
-void*	xrMemory::mem_realloc	(void* P, size_t size, const char* _name)
+void*	xrMemory::mem_realloc	(void* P, size_t size
+#ifdef DEBUG
+								 , const char* _name
+#endif
+								 )
 {
 	stat_calls++;
-	if (0==P)					return mem_alloc	(size,_name);
+	if (0==P)					return mem_alloc	(size
+#ifdef DEBUG
+		,_name
+#endif
+		);
 
 #ifdef DEBUG
 	if(g_globalCheckAddr==P)
@@ -138,21 +150,31 @@ void*	xrMemory::mem_realloc	(void* P, size_t size, const char* _name)
 		void*	_real2			=	xr_aligned_offset_realloc	(_real,size+_footer,16,0x1);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
+#ifdef DEBUG
 		if		(debug_mode)	dbg_register	(_ptr,size,_name);
+#endif
 	} else if (1==p_mode)		{
 		// pooled realloc
 		R_ASSERT2				(p_current<mem_pools_count,"Memory corruption");
 		u32		s_current		= mem_pools[p_current].get_element();
 		u32		s_dest			= (u32)size;
 		void*	p_old			= P;
-		void*	p_new			= mem_alloc		(size,_name);
+		void*	p_new			= mem_alloc		(size
+#ifdef DEBUG
+			,_name
+#endif
+			);
 		mem_copy				(p_new,p_old,_min(s_current,s_dest));
 		mem_free				(p_old);
 		_ptr					= p_new;
 	} else if (2==p_mode)		{
 		// relocate into another mmgr(pooled) from real
 		void*	p_old			= P;
-		void*	p_new			= mem_alloc		(size,_name);
+		void*	p_new			= mem_alloc		(size
+#ifdef DEBUG
+			,_name
+#endif
+			);
 		mem_copy				(p_new,p_old,size);
 		mem_free				(p_old);
 		_ptr					= p_new;
