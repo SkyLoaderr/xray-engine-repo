@@ -342,7 +342,8 @@ function path_to_lager(actor, npc)
     if actor ~= nil and
 	   (actor:has_info("tutorial_wounded_death") 
 	   or actor:has_info("tutorial_wounded_help")) and
-	   actor:dont_has_info("esc_path_to_lager")
+	   actor:dont_has_info("esc_path_to_lager") and
+	   actor:dont_has_info("esc_wolf_dead")
 	then
 		xr_effects.esc_wolf_thanks(actor, npc)
 	end
