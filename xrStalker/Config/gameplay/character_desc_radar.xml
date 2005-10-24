@@ -385,7 +385,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default2" team_default = "1">
@@ -411,7 +410,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default3" team_default = "1">
@@ -437,7 +435,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default4" team_default = "1">
@@ -463,7 +460,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default5" team_default = "1">
@@ -489,7 +485,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default6" team_default = "1">
@@ -515,7 +510,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default7" team_default = "1">
@@ -541,7 +535,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_default8" team_default = "1">
@@ -567,7 +560,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 <!---------------------------ZOMBIED VETERANS----------------------->
@@ -595,7 +587,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_veteran_default2" team_default = "1">
@@ -622,7 +613,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_veteran_default3" team_default = "1">
@@ -649,7 +639,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_zombied_veteran_default4" team_default = "1">
@@ -676,7 +665,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 
@@ -997,7 +985,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_soldier_specnaz_default2" team_default = "1">
@@ -1025,7 +1012,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_soldier_specnaz_default3" team_default = "1">
@@ -1053,7 +1039,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA MASTER----------------------->
@@ -1083,7 +1068,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_Svoboda_master2" team_default = "1">
@@ -1111,7 +1095,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_Svoboda_master3" team_default = "1">
@@ -1139,7 +1122,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 <!---------------------------DOLG MASTER---------------------->
@@ -1167,7 +1149,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_dolg_master_default2" team_default = "1">
@@ -1196,7 +1177,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_dolg_master_default3" team_default = "1">
@@ -1225,7 +1205,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_dolg_master_default4" team_default = "1">
@@ -1252,7 +1231,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 <!--------------------------- dead SCIENTISTS ---------------------->
@@ -1283,7 +1261,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_ecolog_default2" team_default = "1">
@@ -1314,7 +1291,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="rad_ecolog_default3" team_default = "1">
@@ -1345,7 +1321,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 </xml>
