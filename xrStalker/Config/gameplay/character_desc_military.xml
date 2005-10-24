@@ -31,8 +31,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA ENGINEER----------------------->
@@ -64,8 +62,6 @@
 		</supplies>
 			
 		<start_dialog>mil_screw_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA REGULAR----------------------->
@@ -97,8 +93,7 @@
 		</supplies>
 					
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA SNIPER---------------------->
 	<specific_character id="mil_Svoboda_sniper" team_default = "1">
@@ -128,8 +123,7 @@
 		</supplies>
 			
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
 	<specific_character id="mil_Svoboda_stukach" team_default = "1">
@@ -159,8 +153,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA ZONEGUARD---------------------->
 	<specific_character id="mil_Svoboda_zoneguard" team_default = "1">
@@ -221,8 +213,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 <!---------------------------SVOBODA LEADER---------------------->
@@ -346,8 +336,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA COOK----------------------->
 	<specific_character id="mil_Svoboda_cook" team_default = "1">
@@ -448,8 +436,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 
@@ -482,8 +468,6 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
 	<specific_character id="mil_Dolg_specnaz_silence" team_default = "1">
@@ -510,8 +494,6 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
 	<specific_character id="mil_Dolg_specnaz_cherep" team_default = "1">
@@ -541,8 +523,6 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 	
 	
@@ -575,8 +555,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="mil_Killer_specnaz" team_default = "1">
@@ -605,8 +583,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 	
@@ -639,10 +615,6 @@
 		</supplies>
 						
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 <!---------------------------STALKER VETERAN---------------------->
@@ -672,10 +644,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 	
@@ -706,8 +674,6 @@
                 </supplies>
 
                 <start_dialog>hello_dialog</start_dialog>
-                <actor_dialog>general_pda_talk</actor_dialog>
-                <actor_dialog>esc_stalker_talk_level</actor_dialog>
         </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
@@ -734,8 +700,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 	
 </xml>
