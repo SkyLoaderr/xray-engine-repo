@@ -132,6 +132,7 @@
 		<task>bar_resque_information</task>
 	</info_portion> 
 	<info_portion id="bar_kruglov_follow_actor"></info_portion>
+	<info_portion id="rostok_kruglov_remark_1"></info_portion>
 	<info_portion id="bar_kruglov_follow_talk"></info_portion>
 	<info_portion id="bar_rescue_research_done"></info_portion>
 	<info_portion id="bar_rescue_research_fail"></info_portion>	
