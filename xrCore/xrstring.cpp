@@ -81,8 +81,10 @@ void		str_container::clean	()
 			it++;
 		}
 	}
+	if (container.empty())	container.clear	();
 	cs.Leave	();
 }
+
 void		str_container::verify	()
 {
 	cs.Enter	();
@@ -96,6 +98,7 @@ void		str_container::verify	()
 	}
 	cs.Leave	();
 }
+
 void		str_container::dump	()
 {
 	cs.Enter	();
@@ -105,6 +108,7 @@ void		str_container::dump	()
 		Msg	("ref[%4d]-len[%3d]-crc[%8X] : %s",(*it)->dwReference,(*it)->dwLength,(*it)->dwCRC,(*it)->value);
 	cs.Leave	();
 }
+
 u32			str_container::stat_economy		()
 {
 	cs.Enter	();
@@ -120,11 +124,13 @@ u32			str_container::stat_economy		()
 
 	return		u32(counter);
 }
+
 str_container::~str_container		()
 {
 	clean	();
 	//R_ASSERT(container.empty());
 }
+
 /*
 shared_str& __cdecl shared_str::sprintf(const char* format, ...)
 {

@@ -32,11 +32,11 @@ private:
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));
-		if (limit) PSGP.memCopy(newNodes, nodes, Size(limit));
+		if (limit) Memory.mem_copy	(newNodes, nodes, Size(limit));
 
 		for (u32 I=0; I<pool; I++)
 		{
-			VERIFY(nodes);
+			VERIFY	(nodes);
 			TNode*	Nold	= nodes	+ I;
 			TNode*	Nnew	= newNodes + I;
 
@@ -49,7 +49,7 @@ private:
 				Nnew->right		= newNodes + Rid;
 			}
 		}
-		if (nodes) xr_free(nodes);
+		if (nodes) xr_free	(nodes);
 
 		nodes = newNodes;
 		limit = newLimit;
@@ -61,8 +61,8 @@ private:
 		TNode *node = nodes + pool;
 		node->key	= key;
 		node->right = node->left = 0;
-		pool++;
-		return node;
+		pool++		;
+		return node	;
 	}
 	IC TNode*	CreateChild	(TNode* &parent, const K& key)
 	{
@@ -115,6 +115,10 @@ public:
 		nodes	= 0; 
 	}
 	~FixedMAP() {
+		destroy	();
+	}
+	void		destroy()
+	{
 		if (nodes) {
 			xr_free(nodes);
 			nodes	= 0;

@@ -62,6 +62,7 @@ void				smem_container::clean			()
 	cdb::iterator	end	= container.end		();
 	for (; it!=end; it++)	if (0==(*it)->dwReference)	xr_free	(*it);
 	container.erase	(remove(container.begin(),container.end(),(smem_value*)0),container.end());
+	if (container.empty())	container.clear	();
 	cs.Leave		();
 }
 
