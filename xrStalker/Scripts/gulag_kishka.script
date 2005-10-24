@@ -415,9 +415,11 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "ds_ptr" then
 	   return npc_community == "military"
 	end
+	
 	if gulag_type == "ds_ptr2" then
 	   return npc_community == "military"
 	end
+	
 	if gulag_type == "ds_ptr3" then
 	   return npc_community == "military"
 	end
