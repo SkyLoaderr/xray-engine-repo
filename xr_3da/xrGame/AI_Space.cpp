@@ -93,7 +93,7 @@ void CAI_Space::load				(LPCSTR level_name)
 	m_cover_manager->compute_static_cover	();
 
 #ifdef DEBUG
-	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",timer.GetElapsed_ms()*1000.f,float(Memory.mem_usage() - mem_usage)/1048576.0);
+	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",timer.GetElapsed_sec(),float(Memory.mem_usage() - mem_usage)/1048576.0);
 #endif
 }
 
