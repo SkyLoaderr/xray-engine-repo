@@ -71,13 +71,13 @@ void	xrMemory::dbg_unregister	(void* _p)
 			memset			(debug_info[_found]._p,'C',debug_info[_found]._size);
 
 		// clear record
-		debug_info[_found]._p		= NULL; 
-		debug_info[_found]._size	= 0;
-		debug_info_update			++;
+		std::swap			(debug_info[_found],debug_info[_found].back());
+		debug_info.pop_back	();
+		debug_info_update	++;
 	}
 
 	// perform cleanup
-	if (debug_info_update>1024)
+	if (debug_info_update>1024*1024)
 	{
 		debug_info_update	=	0;
 		debug_info.erase	(std::remove_if(debug_info.begin(),debug_info.end(),pred_mdbg),debug_info.end());
