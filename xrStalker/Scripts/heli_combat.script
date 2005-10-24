@@ -25,8 +25,6 @@ local combat_type_search = 1   -- поиск врага, кружение вокруг точки, где послед
 local flyby_state_to_attack_dist = 0
 local flyby_state_to_enemy       = 1
 
-local flyby_attack_altitude      = 35
-
 local combat_type_change_delay   = 5000
 local visibility_delay           = 3000
 
@@ -36,24 +34,27 @@ local dummy_vector = vector()
 class "heli_combat"
 
 function heli_combat:__init( object, heliObject )
-	self.object             = object
-	self.heliObject         = heliObject
-	self.initialized        = false
+	self.object                = object
+	self.heliObject            = heliObject
+	self.initialized           = false
 
-	local ltx               = bind_heli.get_heli_ltx()
+	self.level_max_y           = level.get_bounding_volume().max.y
 
-	self.flyby_attack_dist  = utils.cfg_get_number( ltx, "helicopter", "flyby_attack_dist",    self.object, true )
-	self.search_attack_dist = utils.cfg_get_number( ltx, "helicopter", "search_attack_dist",   self.object, true )
-	self.default_velocity   = utils.cfg_get_number( ltx, "helicopter", "velocity",             self.object, true )
-	self.m_max_mgun_dist    = utils.cfg_get_number( ltx, "helicopter", "max_mgun_attack_dist", self.object, true )
+	local ltx                  = bind_heli.get_heli_ltx()
 
-	self.search_velocity    = 10
+	self.flyby_attack_dist     = utils.cfg_get_number( ltx, "helicopter", "flyby_attack_dist",    self.object, true )
+	self.search_attack_dist    = utils.cfg_get_number( ltx, "helicopter", "search_attack_dist",   self.object, true )
+	self.default_velocity      = utils.cfg_get_number( ltx, "helicopter", "velocity",             self.object, true )
+	self.default_safe_altitude = utils.cfg_get_number( ltx, "helicopter", "safe_altitude",        self.object, true ) + self.level_max_y
+	self.m_max_mgun_dist       = utils.cfg_get_number( ltx, "helicopter", "max_mgun_attack_dist", self.object, true )
 
-	self.retreat_already    = false
+	self.search_velocity       = 10
 
-	self.enemy_forgetable   = true
+	self.retreat_already       = false
 
-	self.section_changed    = false
+	self.enemy_forgetable      = true
+
+	self.section_changed       = false
 end
 
 function heli_combat:read_custom_data( ini, section )
@@ -63,6 +64,10 @@ function heli_combat:read_custom_data( ini, section )
 
 	local combat_enemy     = utils.cfg_get_string( ini, section, "combat_enemy",      self.object, false, "", nil )
 	self:set_enemy_from_custom_data( combat_enemy )
+
+	self.max_velocity      = utils.cfg_get_number( ini, section, "combat_velocity",      self.object, false, self.default_velocity )
+	self.safe_altitude     = utils.cfg_get_number( ini, section, "combat_safe_altitude", self.object, false,
+	                                               self.default_safe_altitude ) + self.level_max_y
 
 	self.section_changed   = true
 end
@@ -203,6 +208,10 @@ function heli_combat:update_custom_data_settings()
 	if self.section_changed then
 		self.heliObject.m_use_rocket_on_attack = self.combat_use_rocket
 		self.heliObject.m_use_mgun_on_attack   = self.combat_use_mgun
+
+		if self.combat_type == combat_type_flyby then
+			self.heliObject:SetMaxVelocity( self.max_velocity )
+		end
 
 		self.section_changed = false
 	end
@@ -438,7 +447,7 @@ function heli_combat:flyby_initialize()
 	self.was_callback          = false
 	self.flyby_initialized     = true
 
-	self.heliObject:SetMaxVelocity( self.default_velocity )
+	self.heliObject:SetMaxVelocity( self.max_velocity )
 	self.heliObject:LookAtPoint( dummy_vector, false )
 end
 
@@ -478,7 +487,7 @@ function heli_combat:flyby_calc_best_attack_dist_point()
 	local r = self.flyby_attack_dist
 
 	local ret = self:flyby_cross_ray_circle( p, v, o, r )
-	ret.y = flyby_attack_altitude
+	ret.y = self.safe_altitude
 
 	return ret
 end
@@ -521,7 +530,7 @@ function heli_combat:flyby_update_flight( see_enemy )
 		end
 
 		local p = self.enemy_last_seen_pos
-		p:set( p.x, flyby_attack_altitude, p.z )
+		p:set( p.x, self.safe_altitude, p.z )
 		self.heliObject:SetDestPosition( p )
 	end
 end
