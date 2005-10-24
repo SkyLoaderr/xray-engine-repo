@@ -46,8 +46,8 @@ void CEngine::Destroy	()
 {
 	Engine.Sheduler.Destroy				( );
 #ifdef DEBUG
-	extern void	dbg_dump_leaks			( );
-	if (Memory.debug_mode)				dbg_dump_leaks	();
+	extern void	dbg_dump_leaks_prepare	( );
+	if (Memory.debug_mode)				dbg_dump_leaks_prepare	();
 #endif
 	Engine.External.Destroy				( );
 	

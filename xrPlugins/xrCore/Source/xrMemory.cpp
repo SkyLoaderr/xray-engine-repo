@@ -76,13 +76,11 @@ void	xrMemory::_destroy()
 	xr_delete					(g_pSharedMemoryContainer);
 	xr_delete					(g_pStringContainer);
 
-	/*
 #ifndef M_BORLAND
 #ifdef DEBUG
-	if (debug_mode)				dbg_dump_leaks();
+	if (debug_mode)				dbg_dump_leaks	();
 #endif
 #endif
-	*/
 
 	mem_initialized				= FALSE;
 	debug_mode					= FALSE;
@@ -153,7 +151,6 @@ void	xrMemory::mem_statistic	()
 	debug_mode				= FALSE;
 
 	FILE*		F			= fopen		(memstat_file,"w");
-	char		temp [16394];
 	for (u32 it=0; it<debug_info.size(); it++)
 	{
 		if (0==debug_info[it]._p)	continue	;
