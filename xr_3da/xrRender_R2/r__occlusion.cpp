@@ -31,6 +31,8 @@ void	R_occlusion::occq_destroy	(				)
 		_RELEASE(pool.back().Q);
 		pool.pop_back	();
 	}
+	used.clear	();
+	pool.clear	();
 	fids.clear	();
 }
 u32		R_occlusion::occq_begin		(u32&	ID		)
