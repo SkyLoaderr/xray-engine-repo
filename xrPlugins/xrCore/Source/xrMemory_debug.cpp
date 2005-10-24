@@ -77,7 +77,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 	}
 
 	// perform cleanup
-	if (debug_info_update>1024*10)
+	if (debug_info_update>1024*100)
 	{
 		debug_info_update	=	0;
 		debug_info.erase	(std::remove_if(debug_info.begin(),debug_info.end(),pred_mdbg),debug_info.end());
