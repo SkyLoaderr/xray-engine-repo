@@ -8,7 +8,6 @@ class CMonsterStateManager : public IStateManagerBase, public CState<_Object> {
 
 public:
 					CMonsterStateManager	(_Object *obj) : inherited(obj) {}
-
 	virtual void	reinit					();
 	virtual void	update					();
 	virtual void	force_script_state		(EMonsterState state);
