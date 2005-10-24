@@ -837,11 +837,11 @@
 			device_torch \n			
 #include "gameplay\character_items.xml"
 		</supplies>
-
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_regular_default2" team_default = "1">
@@ -870,9 +870,10 @@
 		</supplies>
 
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_regular_default3" team_default = "1">
@@ -903,9 +904,10 @@
 		</supplies>
 
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
+		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 
 <!---------------------------DOLG SNIPER---------------------->
@@ -934,7 +936,7 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -963,7 +965,7 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -992,7 +994,7 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1021,7 +1023,7 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1051,7 +1053,7 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1081,7 +1083,7 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1109,7 +1111,7 @@
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
@@ -1138,8 +1140,9 @@
 		</supplies>			
 		
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_master_default2" team_default = "1">
@@ -1167,8 +1170,9 @@
 		</supplies>	
 				
 		<start_dialog>dm_hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 	</specific_character>
 
 
@@ -1737,7 +1741,7 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1762,7 +1766,7 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1790,7 +1794,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1816,7 +1820,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1842,7 +1846,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 		
@@ -1868,7 +1872,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1893,7 +1897,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
@@ -1921,7 +1925,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1948,7 +1952,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1976,7 +1980,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -2004,7 +2008,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
