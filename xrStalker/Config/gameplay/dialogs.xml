@@ -5,6 +5,11 @@
 		<init_func>dialog_manager.init_intro_dialog</init_func>
     </dialog>
 
+    <dialog id="dm_cool_info_dialog">
+		<init_func>dialog_manager.init_cool_info_dialog</init_func>
+		<precondition>dialog_manager.precondition_cool_info_global</precondition>
+    </dialog>
+
 
     <!-- FINAL DIALOGS -->
     <dialog id="hello_dialog">
@@ -23,58 +28,6 @@
             <phrase id="2">
                 <text>hello_dialog_2</text>
                 <precondition>dialogs.is_not_wounded</precondition>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="general_pda_talk" pda="1">
-        <precondition>dialogs.is_bad_relation</precondition>
-        <phrase_list>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="11">
-                <text />
-            </phrase>
-            <phrase id="10">
-                <text />
-            </phrase>
-            <phrase id="2">
-                <text />
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="21">
-                <text />
-                <precondition>dialogs.want_trade</precondition>
-                <action>dialogs.trade_init</action>
-                <next>10</next>
-            </phrase>
-            <phrase id="22">
-                <text />
-                <precondition>dialogs.dont_want_trade</precondition>
-                <next>10</next>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <next>31</next>
-                <next>32</next>
-            </phrase>
-            <phrase id="31">
-                <text />
-                <action>dialogs.helper_init</action>
-                <next>10</next>
-            </phrase>
-            <phrase id="32">
-                <text />
-                <next>10</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>11</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -129,76 +82,6 @@
             <phrase id="0">
                 <text>actor_break_dialog_0</text>
                 <action>dialogs.break_dialog</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="companion_release_dialog" priority="7">
-		<precondition>dialogs.is_companion</precondition>
-        <phrase_list>
-            <phrase id="0">
-                <text>companion_release_dialog_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>companion_release_dialog_1</text>
-                <action>dialogs.companion_stop_following</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="companion_hire_dialog" priority="8">
-        <precondition>dialogs.not_is_companion</precondition>
-        <phrase_list>
-            <phrase id="2">
-                <text>companion_hire_dialog_2</text>
-                <precondition>dialogs.not_companion_will_follow</precondition>
-            </phrase>
-            <phrase id="0">
-                <text>companion_hire_dialog_0</text>
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="1">
-                <text>companion_hire_dialog_1</text>
-                <precondition>dialogs.companion_will_follow</precondition>
-                <action>dialogs.companion_start_following</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="companion_management_dialog" priority="8">
-        <precondition>dialogs.is_companion</precondition>
-        <phrase_list>
-            <phrase id="17">
-                <text>companion_management_dialog_17</text>
-                <action>dialogs.companion_suicide</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="16">
-                <text>companion_management_dialog_16</text>
-            </phrase>
-            <phrase id="14">
-                <text>companion_management_dialog_14</text>
-                <action>dialogs.companion_beh_walk_simple</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="13">
-                <text>companion_management_dialog_13</text>
-            </phrase>
-            <phrase id="11">
-                <text>companion_management_dialog_11</text>
-                <action>dialogs.companion_beh_walk_simple</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="1">
-                <text>companion_management_dialog_1</text>
-                <next>11</next>
-                <next>13</next>
-                <next>14</next>
-                <next>16</next>
-                <next>17</next>
-            </phrase>
-            <phrase id="0">
-                <text>companion_management_dialog_0</text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>

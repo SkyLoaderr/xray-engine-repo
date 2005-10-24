@@ -8,18 +8,22 @@ phrase = {
 local phrase_ini = ini_file("misc\\dialog_manager.ltx")
 
 local intro_id = 0
+local cool_info_id = 0
 local phrase_table_filled = false
 
 function get_id(type)
 	if type == "intro" then
 		intro_id = intro_id + 1
 		return intro_id
+	elseif type == "cool_info" then
+		cool_info_id = cool_info_id + 1
+		return cool_info_id
 	else
 		abort("Dialog manager error: unknown GET_ID() type")
 	end
 end
 
--- 1. Необходимо сформировать набор предикатов  table[string_id] = predicate()
+-- Необходимо сформировать набор предикатов  table[string_id] = predicate()
 function fill_phrase_table()
 	-- Итерируемся по всем настройкам фраз
 	if not phrase_ini:section_exist("list") then
@@ -66,8 +70,8 @@ function fill_phrase_table()
 		if phrase_ini:line_exist(id, "price") then
 			tt.price = phrase_ini:r_u32(id, "price")
 		end					
-		if phrase_ini:line_exist(id, "action") then
-			tt.action = phrase_ini:r_string(id, "action")
+		if phrase_ini:line_exist(id, "article_info") then
+			tt.article_info = phrase_ini:r_string(id, "article_info")
 		end					
 		if phrase_ini:line_exist(id, "wounded") then
 			tt.wounded = phrase_ini:r_string(id, "wounded")
@@ -77,7 +81,7 @@ function fill_phrase_table()
 	end
 end
 
--- 2. Необходимо создать стартовый диалог, с разветвлением на третьем уровне, где каждая фраза будет иметь
+-- Необходимо создать стартовый диалог, с разветвлением на третьем уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне
 function init_intro_dialog(dlg)
 	if phrase_table_filled == false then
@@ -105,16 +109,50 @@ function init_intro_dialog(dlg)
 --	phrase_script:AddAction("zzz")
 end
 
+-- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
+-- одну и ту же функцию в прекондишне.
+function init_cool_info_dialog(dlg)
+	if phrase_table_filled == false then
+		fill_phrase_table()
+		phrase_table_filled = true
+	end
+
+	local phr = dlg:AddPhrase("dm_general_cool_info",0,-1,-10000)
+	
+	local k,v,kk,vv = 0,0,0,0
+	for k,v in pairs(phrase.cool_info) do
+		phr = dlg:AddPhrase(k,get_id("cool_info"),0,-10000)		
+		if phr then
+			local phrase_script = phr:GetPhraseScript()
+			phrase_script:AddPrecondition("dialog_manager.precondition_cool_info")
+			if v.article_info ~= nil then
+				local article_info = parse_names(v.article_info)
+				for kk,vv in pairs(article_info) do
+					printf("AddGiveInfo [%s]", tostring(vv))
+					phrase_script:AddGiveInfo(vv)
+				end
+			end
+		end
+	end
+end
+
 local call_count, max_count, select_count = 0,0,0
 local tmp_tbl = {}
 function precondition_intro(npc, actor)
+	return precondition(npc, actor, phrase.intro)
+end
+function precondition_cool_info(npc, actor)
+	return precondition(npc, actor, phrase.cool_info)
+end
+
+function precondition(npc, actor, tbl)
 	local k,v = 0,0
-	-- 3. При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
+	-- При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
 	-- которые возвращают TRUE. Определяется из них фраза, охватывающая самую узкую ситуацию (по количеству
 	-- проверяемых функций в условии. Ее порядковый номер запоминается.
 	if call_count == 0 then
 		local value, number, max_number = 0,0,0
-		for k,v in pairs(phrase.intro) do
+		for k,v in pairs(tbl) do
 			value, number = calculate_predicate(npc, v)
 			max_count = max_count + 1
 			if value == true then
@@ -127,16 +165,15 @@ function precondition_intro(npc, actor)
 				end								
 			end
 		end
-		print_table(tmp_tbl)
 	end
 	
 	call_count = call_count + 1
 	if call_count < max_count then
-		-- 4. При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
+		-- При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
 		-- всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
 		return tmp_tbl[call_count] == true
 	elseif call_count == max_count then
-		-- 5. Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
+		-- Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
 		local return_value = tmp_tbl[call_count] == true
 		tmp_tbl = {}
 		call_count, max_count, select_count = 0,0,0
@@ -175,7 +212,7 @@ function calculate_predicate(npc, tbl)
 	end
 	if tbl.condlist ~= nil then
 		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false,0 end
-		property_num = property_num + 1		
+		property_num = property_num + table.getn(tbl.condlist.infop_check)
 	end
 	if tbl.smart_terrain ~= nil then
 		if tbl.smart_terrain ~= xr_gulag.isUnderFraction(npc) then return false,0 end
@@ -193,4 +230,14 @@ function calculate_predicate(npc, tbl)
 	return true, property_num
 end
 		
+
+function precondition_cool_info_global(actor, npc)
+	if xr_wounded.is_wounded(npc) or
+	   xr_wounded.is_heavy_wounded_by_id(npc:id()) or
+	   xr_wounded.is_psy_wounded_by_id(npc:id())
+	then
+		return false
+	end
+	return true
+end
 		

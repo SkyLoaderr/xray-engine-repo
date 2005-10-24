@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+
+	<!-- Служебные стрингтейблы   -->
+    <string id="dm_general_cool_info">
+        <text>Что можешь интересного рассказать?</text>
+    </string>
+
+
+
     <string id="dm_universal_hello_0">
         <text>Здоров, бродяга!</text>
     </string>
@@ -17,6 +25,27 @@
     </string>
     <string id="dm_universal_hello_5">
         <text>Аптечку... подыхаю!</text>
+    </string>
+
+
+    <string id="dm_universal_cool_info_1">
+        <text>Слышал? Стрелок вернулся!</text>
+    </string>
+    <string id="dm_universal_cool_info_2">
+        <text>Плоть особенно хороша, когда приготовлена на авиционном топливе.</text>
+    </string>
+    <string id="dm_universal_cool_info_3">
+        <text>Говорят, в центре зоны есть клондайк артефактов! И кто найдет его - обогатится. 
+        Немерянно обогатится. Слышишь?! НЕМЕРЯННО!</text>
+    </string>
+    <string id="dm_universal_cool_info_4">
+        <text>ААААА! Они убили Бобика! Козлы позорные!</text>
+    </string>
+    <string id="dm_universal_cool_info_5">
+        <text>Свобода - сборище отморозков, созданных для того, чтобы Зоне было на ком дрессировать своих зверюшек!</text>
+    </string>
+    <string id="dm_universal_cool_info_6">
+        <text>Чувак, если ты в армии не служил, то не вступай в Долг. Замучают со своим уставом, солдафоны хреновы.</text>
     </string>
 
 </string_table>
