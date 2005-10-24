@@ -4,12 +4,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "UIListItem.h"
-//#include "UIMultiTextStatic.h"
-//#include "UIIconedListItem.h"
+#include "UIWindow.h"
 
 class CUIFrameWindow;
-class CUIIconedListItem;
 class CUICharacterInfo;
 class CInventoryOwner;
 
@@ -27,6 +24,5 @@ public:
 protected:
 	//информация о персонаже
 	CUIFrameWindow*			UIMask;
-	CUIIconedListItem*		UIName;
 	CUICharacterInfo*		UIInfo;
 };
