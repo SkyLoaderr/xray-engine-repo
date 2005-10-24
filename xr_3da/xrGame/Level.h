@@ -33,6 +33,7 @@ class	CLevelSoundManager;
 
 const int maxRP					= 64;
 const int maxTeams				= 32;
+const int NET_ObjectsPerPacket	= NET_PacketSizeLimit/280;
 
 //class CFogOfWar;
 class CFogOfWarMngr;

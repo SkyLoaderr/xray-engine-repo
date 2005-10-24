@@ -67,7 +67,7 @@ void CLevel::ClientSend	()
 	//-------------------------------------------------
 	while (1)				{
 		P.w_begin						(M_UPDATE);
-		start	= Objects.net_Export	(&P, start, 48);
+		start	= Objects.net_Export	(&P, start, NET_ObjectsPerPacket);
 		if (P.B.count>2)				Send	(P, net_flags(FALSE));
 		else							break	;
 	}
@@ -107,8 +107,7 @@ void CLevel::ClientSave	()
 	for (;;) {
 		P.w_begin	(M_SAVE_PACKET);
 		
-//		start		= Objects.net_Save(&P, start, 48);
-		start		= Objects_net_Save(&P, start, 48);
+		start		= Objects_net_Save(&P, start, NET_ObjectsPerPacket);
 
 		if (P.B.count>2)
 			Send	(P, net_flags(FALSE));
