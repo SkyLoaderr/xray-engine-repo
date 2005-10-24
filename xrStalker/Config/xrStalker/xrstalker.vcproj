@@ -280,6 +280,9 @@
 					Name="Dialogs"
 					Filter="">
 					<File
+						RelativePath=".\Config\gameplay\character_dialogs.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs.xml">
 					</File>
 					<File
