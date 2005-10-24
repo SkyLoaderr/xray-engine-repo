@@ -40,7 +40,7 @@ function heli_combat:__init( object, heliObject )
 
 	self.level_max_y           = level.get_bounding_volume().max.y
 
-	local ltx                  = bind_heli.get_heli_ltx()
+	local ltx                  = system_ini()
 
 	self.flyby_attack_dist     = utils.cfg_get_number( ltx, "helicopter", "flyby_attack_dist",    self.object, true )
 	self.search_attack_dist    = utils.cfg_get_number( ltx, "helicopter", "search_attack_dist",   self.object, true )

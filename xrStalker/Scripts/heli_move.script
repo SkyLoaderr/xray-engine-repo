@@ -22,7 +22,7 @@ function heli_move:__init( obj, storage )
 	self.a          = storage
 	self.combat_mgr = db.storage[obj:id()].combat
 
-	self.default_velocity = utils.cfg_get_number( bind_heli.get_heli_ltx(), "helicopter", "velocity", self.object, true )
+	self.default_velocity = utils.cfg_get_number( system_ini(), "helicopter", "velocity", self.object, true )
 end
 
 function heli_move:reset_scheme( loading )
