@@ -57,7 +57,7 @@ public:
 #else
 
 template <class T>
-class	xr_allocator_t	{
+class	xalloc	{
 public:
 	typedef	size_t		size_type;
 	typedef ptrdiff_t	difference_type;
@@ -69,14 +69,14 @@ public:
 
 public:
 	template<class _Other>	
-	struct rebind			{	typedef xr_allocator_t<_Other> other;	};
+	struct rebind			{	typedef xalloc<_Other> other;	};
 public:
 							pointer					address			(reference _Val) const					{	return (&_Val);	}
 							const_pointer			address			(const_reference _Val) const			{	return (&_Val);	}
-													xr_allocator_t	()										{	}
-													xr_allocator_t	(const xr_allocator_t<T>&)				{	}
-	template<class _Other>							xr_allocator_t	(const xr_allocator_t<_Other>&)			{	}
-	template<class _Other>	xr_allocator_t<T>&		operator=		(const xr_allocator_t<_Other>&)			{	return (*this);	}
+													xalloc			()										{	}
+													xalloc			(const xalloc<T>&)						{	}
+	template<class _Other>							xalloc			(const xalloc<_Other>&)					{	}
+	template<class _Other>	xalloc<T>&				operator=		(const xalloc<_Other>&)					{	return (*this);	}
 							pointer					allocate		(size_type n, const void* p=0) const	{	return xr_alloc<T>((u32)n);	}
 							char _FARQ *			_Charalloc		(size_type n)							{	return (char _FARQ *)allocate(n); }
 							void					deallocate		(pointer p, size_type n) const			{	xr_free	(p);				}
@@ -85,23 +85,23 @@ public:
 							void					destroy			(pointer p)								{	std::_Destroy(p);			}
 							size_type				max_size		() const								{	size_type _Count = (size_type)(-1) / sizeof (T);	return (0 < _Count ? _Count : 1);	}
 };
-template<class _Ty,	class _Other>	inline	bool operator==(const xr_allocator_t<_Ty>&, const xr_allocator_t<_Other>&)			{	return (true);							}
-template<class _Ty, class _Other>	inline	bool operator!=(const xr_allocator_t<_Ty>&, const xr_allocator_t<_Other>&)			{	return (false);							}
+template<class _Ty,	class _Other>	inline	bool operator==(const xalloc<_Ty>&, const xalloc<_Other>&)		{	return (true);							}
+template<class _Ty, class _Other>	inline	bool operator!=(const xalloc<_Ty>&, const xalloc<_Other>&)		{	return (false);							}
 
 namespace std
 {
-	template<class _Tp1, class _Tp2>	inline	xr_allocator_t<_Tp2>&	__stl_alloc_rebind(xr_allocator_t<_Tp1>& __a, const _Tp2*)	{	return (xr_allocator_t<_Tp2>&)(__a);	}
-	template<class _Tp1, class _Tp2>	inline	xr_allocator_t<_Tp2>	__stl_alloc_create(xr_allocator_t<_Tp1>&, const _Tp2*)		{	return xr_allocator_t<_Tp2>();			}
+	template<class _Tp1, class _Tp2>	inline	xalloc<_Tp2>&	__stl_alloc_rebind(xalloc<_Tp1>& __a, const _Tp2*)	{	return (xalloc<_Tp2>&)(__a);	}
+	template<class _Tp1, class _Tp2>	inline	xalloc<_Tp2>	__stl_alloc_create(xalloc<_Tp1>&, const _Tp2*)		{	return xalloc<_Tp2>();			}
 };
 
 // string(char)
-typedef		std::basic_string<char, std::char_traits<char>, xr_allocator_t<char> >	xr_string;
+typedef		std::basic_string<char, std::char_traits<char>, xalloc<char> >	xr_string;
 
 // vector
-template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: 
-			xr_vector	()									: std::vector<T,xr_allocator_t<T> >	()				{}
-			xr_vector	(size_t _count, const T& _value)	: std::vector<T,xr_allocator_t<T> >	(_count,_value)	{}
-	explicit xr_vector	(size_t _count)						: std::vector<T,xr_allocator_t<T> > (_count)		{}
+template	<typename T>									class	xr_vector		: public std::vector<T,xalloc<T> >								{ public: 
+			xr_vector	()									: std::vector<T,xalloc<T> >	()				{}
+			xr_vector	(size_t _count, const T& _value)	: std::vector<T,xalloc<T> >	(_count,_value)	{}
+	explicit xr_vector	(size_t _count)						: std::vector<T,xalloc<T> > (_count)		{}
 	u32		size() const									{ return (u32)__super::size(); } 
 
 	void	clear_and_free()								{ __super::clear();		}
@@ -117,18 +117,18 @@ template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocat
 	const_reference operator[](size_type _Pos) const		{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 	reference operator[](size_type _Pos)					{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 };
-template	<>												class	xr_vector<bool>	: public std::vector<bool,xr_allocator_t<bool> >						{ public: 
+template	<>												class	xr_vector<bool>	: public std::vector<bool,xalloc<bool> >						{ public: 
 	u32		size() const									{ return (u32)__super::size();	} 
 	void	clear()											{ erase(begin(),end());			} 
 };
-template	<typename T>									class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >								{ public: 
-	typedef typename xr_allocator_t<T>						allocator_type;
+template	<typename T>									class	xr_deque 		: public std::deque<T,xalloc<T> >								{ public: 
+	typedef typename xalloc<T>						allocator_type;
 	typedef typename allocator_type::value_type				value_type;
 	typedef typename allocator_type::size_type				size_type;
 	u32		size() const									{return (u32)__super::size(); } 
 };
 template	<typename _Ty, class _C = xr_vector<_Ty> >		class	xr_stack		{ public:
-	typedef typename xr_allocator_t<_Ty>					allocator_type;
+	typedef typename xalloc<_Ty>					allocator_type;
 	typedef typename allocator_type::value_type				value_type;
 	typedef typename allocator_type::size_type				size_type;
 
@@ -150,11 +150,11 @@ protected:
 	_C c;
 };
 
-template	<typename T>									class	xr_list 		: public std::list<T,xr_allocator_t<T> >								{ public: u32 size() const {return (u32)__super::size(); } };
-template	<typename K, class P=std::less<K> >				class	xr_set			: public std::set<K,P,xr_allocator_t<K> >								{ public: u32 size() const {return (u32)__super::size(); } };
-template	<typename K, class P=std::less<K> >				class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >							{ public: u32 size() const {return (u32)__super::size(); } };
-template	<typename K, class V, class P=std::less<K> >	class	xr_map 			: public std::map<K,V,P,xr_allocator_t<std::pair<const K,V> > >			{ public: u32 size() const {return (u32)__super::size(); } };
-template	<typename K, class V, class P=std::less<K> >	class	xr_multimap		: public std::multimap<K,V,P,xr_allocator_t<std::pair<const K,V> > >	{ public: u32 size() const {return (u32)__super::size(); } };
+template	<typename T>									class	xr_list 		: public std::list<T,xalloc<T> >								{ public: u32 size() const {return (u32)__super::size(); } };
+template	<typename K, class P=std::less<K> >				class	xr_set			: public std::set<K,P,xalloc<K> >								{ public: u32 size() const {return (u32)__super::size(); } };
+template	<typename K, class P=std::less<K> >				class	xr_multiset		: public std::multiset<K,P,xalloc<K> >							{ public: u32 size() const {return (u32)__super::size(); } };
+template	<typename K, class V, class P=std::less<K> >	class	xr_map 			: public std::map<K,V,P,xalloc<std::pair<const K,V> > >			{ public: u32 size() const {return (u32)__super::size(); } };
+template	<typename K, class V, class P=std::less<K> >	class	xr_multimap		: public std::multimap<K,V,P,xalloc<std::pair<const K,V> > >	{ public: u32 size() const {return (u32)__super::size(); } };
 
 #endif
 
