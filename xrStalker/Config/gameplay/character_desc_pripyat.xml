@@ -27,8 +27,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="pri_monolith_ambush_default2" team_default = "1">
@@ -55,8 +53,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 <!-------------------------- REGULAR ----------------------->
@@ -85,8 +81,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="pri_monolith_regular_default2" team_default = "1">
@@ -114,8 +108,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="pri_monolith_regular_default3" team_default = "1">
@@ -143,8 +135,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="pri_monolith_regular_default4" team_default = "1">
@@ -172,8 +162,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 <!-------------------------- SPECNAZ ----------------------->
@@ -202,8 +190,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="pri_monolith_specnaz_default2" team_default = "1">
@@ -231,8 +217,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 <!---------------------------- EXO ------------------------->
@@ -261,8 +245,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="pri_monolith_exo_default2" team_default = "1">
@@ -290,8 +272,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 <!-------------------------- LEADER ------------------------>
@@ -322,8 +302,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 <!-------------------------- STALKER ----------------------->
@@ -353,11 +331,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-
 	</specific_character>
 
 	<specific_character id="pri_followers_stalker2" team_default = "1">
@@ -385,11 +358,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-
 	</specific_character>
 
 	<specific_character id="pri_followers_stalker3" team_default = "1">
@@ -417,11 +385,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-
 	</specific_character>
 
 <!-------------------------- SOLDIER ----------------------->
@@ -447,8 +410,6 @@
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------- ZOMBIED ----------------------------->
@@ -473,8 +434,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="pri_zombied_default1" team_default = "1">
@@ -500,8 +459,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!--------------------------- VETERANS----------------------->
@@ -528,8 +485,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="pri_zombied_veteran_default2" team_default = "1">
@@ -553,8 +508,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 </xml>
