@@ -2017,9 +2017,9 @@ function load_states(gname, type)
 	if type == "bar_freedom_chasers_attack" then        
 		return function (gulag)
 			if db.actor:has_info("bar_bandits_alive") then
-				return 1
+				return 0
 			end
-			return 0
+			return 1
 		end
 	end
 	if type == "bar_ecolog_crush" then        
