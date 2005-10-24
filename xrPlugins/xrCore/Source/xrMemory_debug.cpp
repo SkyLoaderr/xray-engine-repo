@@ -125,7 +125,6 @@ extern	LPCSTR	memstat_file;
 XRCORE_API void	dbg_dump_leaks_prepare	()
 {
 	memstat_file		=	"x:\\$memleak$.txt"	;
-	if (!debug_mode)	return	;
 	mem_compact				()	;
 
 	debug_cs.Enter			()	;
