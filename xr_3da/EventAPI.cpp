@@ -194,3 +194,10 @@ BOOL CEventAPI::Peek(LPCSTR EName)
 	CS.Leave	();
 	return FALSE;
 }
+
+void CEventAPI::_destroy()
+{
+	Dump	();
+	if (Events.empty())				Events.clear();
+	if (Events_Deferred.empty())	Events_Deferred.clear();
+}
