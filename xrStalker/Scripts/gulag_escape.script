@@ -15,15 +15,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_blockpost_follower1",
 			idle = 4,
 			prior = 7, state = {0},
-			in_rest = "", out_rest = "esc_blockpost_patrol_restrictor",
-			dependent = "logic@esc_blockpost_patrol1"
+			in_rest = "", out_rest = "esc_blockpost_patrol_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_blockpost_follower2",
 			idle = 4,
 			prior = 7, state = {0},
-			in_rest = "", out_rest = "esc_blockpost_patrol_restrictor",
-			dependent = "logic@esc_blockpost_patrol1"
+			in_rest = "", out_rest = "esc_blockpost_patrol_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_blockpost_commander_day",
@@ -204,29 +202,25 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_specnaz_follower1",
 			idle = 4,
 			prior = 7, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@esc_specnaz_raid1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower2",
 			idle = 4,
 			prior = 7, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@esc_specnaz_raid1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower3",
 			idle = 4,
 			prior = 7, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@esc_specnaz_raid2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower4",
 			idle = 4,
 			prior = 7, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@esc_specnaz_raid2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end

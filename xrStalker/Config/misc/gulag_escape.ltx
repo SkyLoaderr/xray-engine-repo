@@ -2,29 +2,33 @@
 ;-- ESCAPE BLOCKPOST
 ;-------------------------------------------------------------------------------------------------
 [logic@esc_blockpost_patrol1]
-active = walker@esc_blokpost_day_patrol_commander
+active = patrol@esc_blokpost_day_patrol_commander
 
-[walker@esc_blokpost_day_patrol_commander]
+[patrol@esc_blokpost_day_patrol_commander]
 path_walk = day_patrol_walk
 path_look = day_patrol_look
+formation = back
+commander = true
 
 
 [logic@esc_blockpost_follower1]
-active = follower@esc_blokpost_day_patrol_follower1
+active = patrol@esc_blokpost_day_patrol_follower1
 
-[follower@esc_blokpost_day_patrol_follower1]
-formation_line = true
-anim_walk = patrol
-distance = 2
+[patrol@esc_blokpost_day_patrol_follower1]
+path_walk = day_patrol_walk
+path_look = day_patrol_look
+formation = back
+commander = false
 
 
 [logic@esc_blockpost_follower2]
-active = follower@esc_blokpost_day_patrol_follower2
+active = patrol@esc_blokpost_day_patrol_follower2
 
-[follower@esc_blokpost_day_patrol_follower2]
-formation_line = true
-anim_walk = patrol
-distance = 2
+[patrol@esc_blokpost_day_patrol_follower2]
+path_walk = day_patrol_walk
+path_look = day_patrol_look
+formation = back
+commander = false
 
 
 [logic@esc_blockpost_commander_day]
@@ -184,55 +188,59 @@ soundgroup = esc_blokpost_specnaz
 
 
 [logic@esc_specnaz_raid1]
-active = walker@esc_specnaz_raid1
+active = patrol@esc_specnaz_raid1
 
-[walker@esc_specnaz_raid1]
+[patrol@esc_specnaz_raid1]
 path_walk = walk_raid1
-def_state_moving = raid
+formation = line
+commander = true
+move_type = raid
 
 
 [logic@esc_specnaz_raid2]
-active = walker@esc_specnaz_raid2
+active = patrol@esc_specnaz_raid2
 
-[walker@esc_specnaz_raid2]
+[patrol@esc_specnaz_raid2]
 path_walk = walk_raid2
-def_state_moving = raid
+formation = line
+commander = true
+move_type = raid
 
 
 [logic@esc_specnaz_follower1]
-active = follower@esc_specnaz_follower1
+active = patrol@esc_specnaz_follower1
 
-[follower@esc_specnaz_follower1]
-formation_line = true
-anim_walk = raid
-distance = 2
+[patrol@esc_specnaz_follower1]
+path_walk = walk_raid1
+formation = line
+move_type = raid
 
 
 [logic@esc_specnaz_follower2]
-active = follower@esc_specnaz_follower2
+active = patrol@esc_specnaz_follower2
 
-[follower@esc_specnaz_follower2]
-formation_line = true
-anim_walk = raid
-distance = 2
+[patrol@esc_specnaz_follower2]
+path_walk = walk_raid1
+formation = line
+move_type = raid
 
 
 [logic@esc_specnaz_follower3]
-active = follower@esc_specnaz_follower3
+active = patrol@esc_specnaz_follower3
 
-[follower@esc_specnaz_follower3]
-formation_line = true
-anim_walk = raid
-distance = 2
+[patrol@esc_specnaz_follower3]
+path_walk = walk_raid2
+formation = line
+move_type = raid
 
 
 [logic@esc_specnaz_follower4]
-active = follower@esc_specnaz_follower4
+active = patrol@esc_specnaz_follower4
 
-[follower@esc_specnaz_follower4]
-formation_line = true
-anim_walk = raid
-distance = 2
+[patrol@esc_specnaz_follower4]
+path_walk = walk_raid2
+formation = line
+move_type = raid
 
 ;-------------------------------------------------------------------------------------------------
 ;-- ESCAPE LAGER
