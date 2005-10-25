@@ -310,7 +310,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	// load damage params
 
-	m_tpKnownCustomers				= tpHuman->brain().m_tpKnownCustomers;
+	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
 
 	if (!g_Alive())
 		sound().set_sound_mask(u32(eStalkerSoundMaskDie));
