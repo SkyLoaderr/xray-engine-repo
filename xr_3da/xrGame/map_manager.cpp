@@ -231,7 +231,7 @@ void CMapManager::Update()
 	std::sort( Locations().begin(),Locations().end() );
 
 	while( (!Locations().empty())&&(!Locations().back().actual) ){
-		xr_delete(Locations().back().location);
+		delete_data(Locations().back().location);
 		Locations().pop_back();
 	}
 }
