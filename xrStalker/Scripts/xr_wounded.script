@@ -136,8 +136,6 @@ function action_wounded:execute ()
 		--жрание аптечек и прочей срани.
 		if self.object:object("medkit") ~= nil then
 			self.object:eat(self.object:object("medkit"))
-		elseif self.object:object("bandage") ~= nil then
-			self.object:eat(self.object:object("bandage"))
 		end
 		local emerg = nil
 		if wound_manager.state == "psy_shoot" then
