@@ -41,10 +41,19 @@ bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 	return							(memory().visual().visible(dwNodeID,movement().m_head.current.yaw,ffGetFov()));
 }
 
+BOOL CAI_Stalker::feel_touch_contact	(CObject *O)
+{
+	CGameObject						*game_object = smart_cast<CGameObject*>(O);
+	if (!game_object)
+		return						(FALSE);
+
+	return							(game_object->feel_touch_on_contact(this));
+}
+
 BOOL CAI_Stalker::feel_touch_on_contact	(CObject *O)
 {
-	if ((O->spatial.type | STYPE_VISIBLEFORAI) != O->spatial.type)
-		return	(FALSE);
+//	if ((O->spatial.type | STYPE_VISIBLEFORAI) != O->spatial.type)
+//		return	(FALSE);
 
 	return		(inherited::feel_touch_on_contact(O));
 }

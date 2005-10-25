@@ -70,6 +70,7 @@ public:
 	virtual		void	feel_touch_new					(CObject* O	);
 	virtual		void	feel_touch_delete				(CObject* O	);
 	virtual		BOOL	feel_touch_contact				(CObject* O	);
+	virtual		BOOL	feel_touch_on_contact			(CObject* O );
 	virtual		float	effective_radius				();
 	virtual		float	distance_to_center				(CObject* O	);			
 	virtual		void	Postprocess						(float val)					{}

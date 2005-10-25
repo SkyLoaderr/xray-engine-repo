@@ -1427,3 +1427,11 @@ void CCustomZone::GoEnabledState()
 		P.w_u8			(u8(eZoneStateIdle));
 		u_EventSend		(P);
 }
+
+BOOL CCustomZone::feel_touch_on_contact	(CObject *O)
+{
+	if ((spatial.type | STYPE_VISIBLEFORAI) != spatial.type)
+		return			(FALSE);
+
+	return				(inherited::feel_touch_on_contact(O));
+}
