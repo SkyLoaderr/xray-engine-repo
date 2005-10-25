@@ -137,7 +137,6 @@ void CUIListWnd::RemoveItem(int index)
 	
 	DetachChild(*it);
 
-	m_ItemList.erase(it);
 
 	UpdateList();
 
