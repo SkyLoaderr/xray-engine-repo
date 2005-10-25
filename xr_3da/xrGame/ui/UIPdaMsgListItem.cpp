@@ -11,6 +11,7 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "uicoloranimatorwrapper.h"
+#include "../object_broker.h"
 
 #define PDA_MSG_MAINGAME_CHAR "maingame_pda_msg.xml"
 
@@ -29,6 +30,10 @@ CUIPdaMsgListItem::CUIPdaMsgListItem(int iDelay){
 
 CUIPdaMsgListItem::~CUIPdaMsgListItem(void)
 {
+#pragma todo ("fixme")
+	CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(GetData());
+	if(p)
+		delete_data(p);
 }
 
 void CUIPdaMsgListItem::SetFont(CGameFont* pFont){

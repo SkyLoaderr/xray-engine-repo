@@ -4,6 +4,7 @@
 #include "UIColorAnimatorWrapper.h"
 
 #include "../xr_level_controller.h"
+#include "../object_broker.h"
 
 CUIEditKeyBind::CUIEditKeyBind(){
     m_bEditMode = false;
@@ -12,6 +13,10 @@ CUIEditKeyBind::CUIEditKeyBind(){
 	m_pAnimation->Cyclic(true);
 	m_bChanged = false;
 	m_lines.SetTextComplexMode(false);
+}
+CUIEditKeyBind::~CUIEditKeyBind()
+{
+	delete_data(m_pAnimation);
 }
 
 void CUIEditKeyBind::SetText(const char* text){

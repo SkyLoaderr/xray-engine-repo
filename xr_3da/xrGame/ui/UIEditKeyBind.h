@@ -10,7 +10,8 @@ char* GetKeyName(int dik);
 
 class CUIEditKeyBind : public CUILabel, public CUIOptionsItem {
 public:
-	CUIEditKeyBind();
+					CUIEditKeyBind();
+	virtual			~CUIEditKeyBind();
 	// options item
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
