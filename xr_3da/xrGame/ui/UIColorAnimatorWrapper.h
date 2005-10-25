@@ -25,6 +25,7 @@ public:
 	// Для проигрывания только 1 цикла вызовите Cyclic(false);
 
 						CUIColorAnimatorWrapper	();
+						~CUIColorAnimatorWrapper(){};
 	// colorToModify - указатель на цвет который меняем
 	// animationName - имя цветовой анимации
 	explicit			CUIColorAnimatorWrapper	(const shared_str &animationName);
@@ -35,7 +36,7 @@ public:
 	void				SetColorAnimation		(const shared_str &animationName);
 	void				SetColorToModify		(u32 *colorToModify);
 	// Функция которую необходимо обязательно поместить в Update диалога, для обновления анимации
-	virtual void		Update					();
+	void				Update					();
 	void				Cyclic					(bool cyclic)	{ isCyclic = cyclic; }
 	void				Reset					();
 	u32					GetColor				() const		{ return currColor; }

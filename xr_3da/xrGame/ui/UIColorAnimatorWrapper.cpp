@@ -55,8 +55,6 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName
 	currColor		= 0xffff0000;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIColorAnimatorWrapper::SetColorAnimation(const shared_str &animationName)
 {
 	if (animationName.size() != 0)
