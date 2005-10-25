@@ -10,13 +10,13 @@ local level_scripts = {
 
 function proceed()
 	for k, v in pairs( level_scripts ) do
-		v:proceed()
+		v.proceed()
 	end
 end
 
 function process_info_portion(info_id)
 	for k, v in pairs( level_scripts ) do
-		if v:process_info_portion(info_id) then
+		if v.process_info_portion(info_id) then
 			return
 		end
 	end
