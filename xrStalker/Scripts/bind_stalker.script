@@ -92,12 +92,12 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:on_item_take (obj)
     level_tasks.proceed(self.object)
-    --game_stats.update_take_item (obj, self.object)
+    game_stats.update_take_item (obj, self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:on_item_drop (obj)
     level_tasks.proceed(self.object)
-    --game_stats.update_drop_item (obj, self.object)
+    game_stats.update_drop_item (obj, self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:task_callback(id_task, subtask, id_state)
@@ -112,7 +112,7 @@ function actor_binder:task_callback(id_task, subtask, id_state)
 	else
 		news_manager.send_task(db.actor, "update")
 	end
-	--game_stats.update_task (id_task, subtask, id_state, self.object)
+	game_stats.update_task (id_task, subtask, id_state, self.object)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
