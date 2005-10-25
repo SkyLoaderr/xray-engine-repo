@@ -194,9 +194,7 @@ void CUITreeViewItem::AddItem(CUITreeViewItem *pItem)
 	pItem->SetAutoDelete(false);
 
 	pItem->SetOwner(this);
-
 	pItem->SetText(pItem->GetText());
-
 }
 
 //////////////////////////////////////////////////////////////////////////

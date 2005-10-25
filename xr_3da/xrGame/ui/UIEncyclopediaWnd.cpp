@@ -178,8 +178,8 @@ bool CUIEncyclopediaWnd::HasArticle(ARTICLE_ID id)
 
 void CUIEncyclopediaWnd::DeleteArticles()
 {
-	delete_data			(m_ArticlesDB);
 	UIIdxList->RemoveAll();
+	delete_data			(m_ArticlesDB);
 }
 
 shared_str CUIEncyclopediaWnd::SetCurrentArtice(CUITreeViewItem *pTVItem)

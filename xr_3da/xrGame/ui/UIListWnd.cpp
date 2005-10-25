@@ -44,8 +44,11 @@ CUIListWnd::CUIListWnd()
 CUIListWnd::~CUIListWnd()
 {
 	//очистить список и удалить все элементы
-	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
-		DetachChild(*it);
+//	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
+//		DetachChild(*it);
+
+	while(!m_ItemList.empty())
+		DetachChild(m_ItemList.front());
 
 	m_ItemList.clear();
 }
@@ -175,9 +178,15 @@ CUIListItem* CUIListWnd::GetItem(int index)
 	return (*it);
 }
 
-//////////////////////////////////////////////////////////////////////////
-//убрать все элементы из списка
-//////////////////////////////////////////////////////////////////////////
+
+void CUIListWnd::DetachChild(CUIWindow* pChild)
+{
+	LIST_ITEM_LIST_it it = std::find(m_ItemList.begin(),m_ItemList.end(),pChild);
+	if(it!=m_ItemList.end())
+		m_ItemList.erase(it);
+
+	inherited::DetachChild	(pChild);
+}
 
 void CUIListWnd::RemoveAll()
 {
@@ -188,14 +197,9 @@ void CUIListWnd::RemoveAll()
 		
 	while(!m_ItemList.empty())
 	{
-		it = m_ItemList.begin();
-		
-//		VERIFY( !(*it)->IsAutoDelete() );
-		
-		DetachChild(*it);
-//		if(NULL != *it && !(*it)->IsManualDelete()) xr_delete(*it);
-
-		m_ItemList.erase(it);
+//		it = m_ItemList.begin();
+		DetachChild(m_ItemList.front());
+//		m_ItemList.erase(it);
 	}
 
 	m_iFirstShownIndex = 0;

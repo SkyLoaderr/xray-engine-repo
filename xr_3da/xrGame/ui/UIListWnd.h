@@ -40,6 +40,7 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	virtual void Update();
+	virtual void DetachChild			(CUIWindow* pChild);
 
 	// Добавление элементов в листбокс
 	template <class Element>
