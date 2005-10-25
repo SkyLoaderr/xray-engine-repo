@@ -198,7 +198,7 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 
 	Fmatrix M;
 	M.setHPB (0.f, -dy, 0.f);
-	B->mTransform.mulB(M);
+	B->mTransform.mulB_43(M);
 }
 
 BOOL CAI_Trader::net_Spawn			(CSE_Abstract* DC)

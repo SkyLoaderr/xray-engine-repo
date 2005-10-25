@@ -202,7 +202,7 @@ void CFlyer::Update(u32 DT)
 	// повернем модель
 	Q.rotationYawPitchRoll(bank,0,-(V.z));
 	Rbank.rotation	(Q);
-	mRotate.mulB	(Rbank);
+	mRotate.mulB_43	(Rbank);
 
 	// crop yaw angle
 	if (mYaw>PI_MUL_2){ 

@@ -114,7 +114,7 @@ void CCar::cb_Steer			(CBoneInstance* B)
 	C->m_steer_angle=C->m_steering_wheels.begin()->GetSteerAngle()*0.1f+C->m_steer_angle*0.9f;
 	m.rotateZ(C->m_steer_angle);
 
-	B->mTransform.mulB	(m);
+	B->mTransform.mulB_43	(m);
 }
 
 // Core events
@@ -407,8 +407,7 @@ void CCar::UpdateCL				( )
 		
 		if(m_pPhysicsShell->isEnabled())
 		{
-			Owner()->XFORM().set(XFORM());
-			Owner()->XFORM().mulB	(m_sits_transforms[0]);
+			Owner()->XFORM().mulB_43	(XFORM(),m_sits_transforms[0]);
 		}
 		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 		{

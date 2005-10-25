@@ -148,8 +148,7 @@ void CStateBloodsuckerVampireExecuteAbstract::look_head()
 	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
 
 	Fmatrix global_transform;
-	global_transform.set(object->XFORM());
-	global_transform.mulB(bone_transform);
+	global_transform.mul_43(object->XFORM(),bone_transform);
 
 	object->CControlledActor::look_point	(global_transform.c);
 }

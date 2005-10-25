@@ -585,7 +585,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 			if(K)
 			{
 				Fmatrix m;m.set(K->LL_GetTransform(m_SelfID));
-				m.invert();m.mulB(K->LL_GetTransform(id));
+				m.invert();m.mulB_43(K->LL_GetTransform(id));
 				m.transform(body_pos,pos);
 				body_pos.sub(m_mass_center);
 			}
@@ -719,9 +719,8 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		mXFORM.set(B->mTransform);
 		//m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
-		global_transform.set(m_shell->mXFORM);
 		//if(m_parent_element)
-		global_transform.mulB(mXFORM);
+		global_transform.mulB_43(m_shell->mXFORM,mXFORM);
 		SetTransform(global_transform);
 
 		FillInterpolation();
@@ -745,10 +744,10 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 
 	{
 		InterpolateGlobalTransform(&mXFORM);
-		parent.set(m_shell->mXFORM);
-		parent.invert();
-		mXFORM.mulA(parent);
-		B->mTransform.set(mXFORM);
+		parent.set			(m_shell->mXFORM);
+		parent.invert		();
+		mXFORM.mulA_43		(parent);
+		B->mTransform.set	(mXFORM);
 	}
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	VERIFY2(_valid(B->mTransform),"Bones callback returns bad matrix");
@@ -782,9 +781,8 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		mXFORM.set(B->mTransform);
 		//m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
-		global_transform.set(m_shell->mXFORM);
 		//if(m_parent_element)
-		global_transform.mulB(mXFORM);
+		global_transform.mul_43(m_shell->mXFORM, mXFORM);
 		SetTransform(global_transform);
 
 		FillInterpolation();
@@ -816,10 +814,10 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	
 	{
 		InterpolateGlobalTransform(&mXFORM);
-		parent.set(m_shell->mXFORM);
-		parent.invert();
-		mXFORM.mulA(parent);
-		B->mTransform.set(mXFORM);
+		parent.set			(m_shell->mXFORM);
+		parent.invert		();
+		mXFORM.mulA_43		(parent);
+		B->mTransform.set	(mXFORM);
 	}
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	VERIFY2(_valid(B->mTransform),"Bones callback returns bad matrix");
@@ -1291,8 +1289,7 @@ void CPHElement::PresetActive()
 	mXFORM.set(B.mTransform);
 	//m_start_time=Device.fTimeGlobal;
 	Fmatrix global_transform;
-	global_transform.set(m_shell->mXFORM);
-	global_transform.mulB(mXFORM);
+	global_transform.mul_43(m_shell->mXFORM, mXFORM);
 	SetTransform(global_transform);
 
 	if(!m_parent_element) 
@@ -1351,7 +1348,7 @@ void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& 
 {
 	
 	cv2bone_Xfrom(q,pos,xform);
-	xform.mulB(m_shell->m_object_in_root);
+	xform.mulB_43(m_shell->m_object_in_root);
 	VERIFY2(_valid(xform),"cv2obj_Xfrom returns wrong data");
 }
 

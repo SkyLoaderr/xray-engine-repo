@@ -93,7 +93,7 @@ void	CRenderTarget::u_compute_texgen_jitter	(Fmatrix&		m_Texgen_J)
 	float	offset			= (.5f / float(TEX_jitter));
 	m_TexelAdjust.scale			(scale_X,	scale_Y,1.f	);
 	m_TexelAdjust.translate_over(offset,	offset,	0	);
-	m_Texgen_J.mulA				(m_TexelAdjust);
+	m_Texgen_J.mulA_44			(m_TexelAdjust);
 }
 
 u8		fpack			(float v)				{

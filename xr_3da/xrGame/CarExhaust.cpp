@@ -43,7 +43,7 @@ void CCar::SExhaust::Update()
 	VERIFY(!ph_world->Processing());
 	Fmatrix global_transform;
 	pelement->InterpolateGlobalTransform(&global_transform);
-	global_transform.mulB(transform);
+	global_transform.mulB_43(transform);
 	dVector3 res;
 	Fvector	 res_vel;
 	dBodyGetPointVel(pelement->get_body(),global_transform.c.x,global_transform.c.y,global_transform.c.z,res);

@@ -984,7 +984,7 @@ void CRender::render_sun_near	()
 		Fvector cam_snapped	= wform		(m_viewport_inv,cam_pixel);
 		Fvector diff;		diff.sub	(cam_snapped,cam_proj				);
 		Fmatrix adjust;		adjust.translate(diff);
-		cull_xform.mulA		(adjust);
+		cull_xform.mulA_44	(adjust);
 
 		// calculate scissor
 		Fbox		scissor				;	scissor.invalidate();

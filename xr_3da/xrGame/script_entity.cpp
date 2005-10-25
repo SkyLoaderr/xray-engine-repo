@@ -353,9 +353,9 @@ const Fmatrix CScriptEntity::GetUpdatedMatrix(shared_str caBoneName, const Fvect
 	l_tMatrix.c		= tPositionOffset;
 
 	if (xr_strlen(caBoneName)) {
-		CBoneInstance	&l_tBoneInstance = smart_cast<CKinematics*>(object().Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(object().Visual())->LL_BoneID(caBoneName));
-		l_tMatrix.mulA	(l_tBoneInstance.mTransform);
-		l_tMatrix.mulA	(object().XFORM());
+		CBoneInstance	&	l_tBoneInstance = smart_cast<CKinematics*>(object().Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(object().Visual())->LL_BoneID(caBoneName));
+		l_tMatrix.mulA_43	(l_tBoneInstance.mTransform);
+		l_tMatrix.mulA_43	(object().XFORM());
 	}
 
 	return			(l_tMatrix);

@@ -36,8 +36,7 @@ Fvector get_bone_position	(CObject *object, LPCSTR bone_name)
 	CBoneInstance &bone = smart_cast<CKinematics*>(object->Visual())->LL_GetBoneInstance	(bone_id);
 
 	Fmatrix	global_transform;
-	global_transform.set	(object->XFORM());
-	global_transform.mulB	(bone.mTransform);
+	global_transform.mul	(object->XFORM(),bone.mTransform);
 
 	return	(global_transform.c);
 }

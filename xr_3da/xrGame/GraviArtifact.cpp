@@ -84,7 +84,7 @@ void CGraviArtefact::UpdateCLChild()
 					Fvector	x;
 					x.set(-0.1f, 0.f, -0.3f);
 					Ruck_MTX.translate_add(x);
-					Ruck_MTX.mulA		(XFORM());
+					Ruck_MTX.mulA_43	(XFORM());
 					XFORM().set(Ruck_MTX);
 				};
 			};

@@ -53,9 +53,9 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 
 
 	Fmatrix shift_pivot;
-	shift_pivot.set(new_bi.mTransform);
-	shift_pivot.invert();
-	shift_pivot.mulB(old_bi.mTransform);
+	shift_pivot.set		(new_bi.mTransform);
+	shift_pivot.invert	();
+	shift_pivot.mulB_43	(old_bi.mTransform);
 	/////////////////////////////////////////////
 	float density=element->getDensity();
 	new_element->SetShell(element->PHShell());
@@ -64,8 +64,8 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	InitNewElement(new_element,shift_pivot,density);
 	Fmatrix shell_form;
 	element->PHShell()->GetGlobalTransformDynamic(&shell_form);
-	current_transtform.mulA(shell_form);
-	new_element->SetTransform(current_transtform);
+	current_transtform.mulA_43	(shell_form);
+	new_element->SetTransform	(current_transtform);
 
 
 	//dBodyID new_element_body=new_element->get_body();

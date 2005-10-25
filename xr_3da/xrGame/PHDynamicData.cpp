@@ -71,12 +71,12 @@ void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 	//mYM.rotateY			(deg2rad(-90.f));
 	DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
 	DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
-	parent_transform.mulB(ZeroTransform);
+	parent_transform.mulB_43	(ZeroTransform);
 	//parent_transform.mulA(mYM);
-	parent_transform.invert();
+	parent_transform.invert		();
 
 	//BoneTransform.mulA(mYM);
-	BoneTransform.mulA(parent_transform);
+	BoneTransform.mulA_43		(parent_transform);
 
 	for(unsigned int i=0;i<numOfChilds;++i){
 
@@ -97,11 +97,11 @@ void PHDynamicData::InterpolateTransform(Fmatrix &transform){
 	//			dBodyGetPosition(body),BoneTransform);
 	body_interpolation.InterpolateRotation(transform);
 	body_interpolation.InterpolatePosition(transform.c);
-	Fmatrix zero;
-	zero.set(ZeroTransform);
-	zero.invert();
+	Fmatrix				zero;
+	zero.set			(ZeroTransform);
+	zero.invert			();
 	//BoneTransform.mulB(zero);
-	transform.mulB(zero);
+	transform.mulB_43	(zero);
 }
 void PHDynamicData::InterpolateTransformVsParent(Fmatrix &transform){
 	Fmatrix parent_transform;
@@ -113,13 +113,13 @@ void PHDynamicData::InterpolateTransformVsParent(Fmatrix &transform){
 	body_interpolation.InterpolateRotation(transform);
 
 	body_interpolation.InterpolatePosition(transform.c);
-	parent_transform.mulB(ZeroTransform);
+	parent_transform.mulB_43	(ZeroTransform);
 
 	parent_transform.invert();
 
 
 	//BoneTransform.mulA(parent_transform);
-	transform.mulA(parent_transform);
+	transform.mulA_43	(parent_transform);
 }
 PHDynamicData * PHDynamicData::GetChild(unsigned int ChildNum)
 {
@@ -137,7 +137,7 @@ void PHDynamicData::CalculateData()
 	Fmatrix zero;
 	zero.set(ZeroTransform);
 	zero.invert();
-	BoneTransform.mulB(zero);
+	BoneTransform.mulB_43(zero);
 	for(unsigned int i=0;i<numOfChilds;++i){
 
 		Childs[i].CalculateR_N_PosOfChilds(body);

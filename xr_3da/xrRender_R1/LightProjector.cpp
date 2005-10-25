@@ -226,9 +226,9 @@ void CLightProjector::calculate	()
 		};
 		R.UVgen.mul				(m_TexelAdjust,mCombine);
 		mTemp.scale				(fSlotSize,fSlotSize,1);
-		R.UVgen.mulA			(mTemp);
+		R.UVgen.mulA_44			(mTemp);
 		mTemp.translate			(fSlotX+fTexelOffs,fSlotY+fTexelOffs,0);
-		R.UVgen.mulA			(mTemp);
+		R.UVgen.mulA_44			(mTemp);
 
 		// Build bbox and render
 		Fvector					min,max;

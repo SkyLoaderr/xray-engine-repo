@@ -103,7 +103,7 @@ void  CAI_Boar::BoneCallback(CBoneInstance *B)
 	
 	Fmatrix M;
 	M.setHPB (0.0f,-P->_cur_delta,0.0f);
-	B->mTransform.mulB(M);
+	B->mTransform.mulB_43(M);
 }
 
 BOOL CAI_Boar::net_Spawn (CSE_Abstract* DC) 

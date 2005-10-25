@@ -1098,11 +1098,11 @@ void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner
 	if ((1==priority)&&(false==strictB2F)){
 		u32 clr					= bSelected?0x00FFFFFF:0x00FFFF00;
 		Fmatrix main_xform, ambient_xform;
-		owner->get_bone_xform	(*light_main_bone,main_xform);
-		main_xform.mulA			(parent);
+		owner->get_bone_xform		(*light_main_bone,main_xform);
+		main_xform.mulA_43			(parent);
 		if(flags.is(flPointAmbient) ){
 			owner->get_bone_xform	(*light_ambient_bone,ambient_xform);
-			ambient_xform.mulA		(parent);
+			ambient_xform.mulA_43	(parent);
 		}
 		if (bSelected){
 			if (flags.is(flTypeSpot)){

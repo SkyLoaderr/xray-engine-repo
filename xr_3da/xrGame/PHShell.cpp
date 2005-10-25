@@ -614,8 +614,8 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
 	Fmatrix fm_position;
-	fm_position.set(bone_data.bind_transform);
-	fm_position.mulA(global_parent);
+	fm_position.set		(bone_data.bind_transform);
+	fm_position.mulA_43	(global_parent);
 	Flags64 mask;
 	mask.assign(m_pKinematics->LL_GetBonesVisible());
 	bool no_visible=!mask.is(1ui64<<(u64)id);
@@ -665,7 +665,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			Fmatrix vs_root_position;
 			vs_root_position.set(root_e->mXFORM);
 			vs_root_position.invert();
-			vs_root_position.mulB(fm_position);
+			vs_root_position.mulB_43(fm_position);
 
 			E=root_e;
 			if(breakable)
@@ -1125,7 +1125,7 @@ void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 void CPHShell::GetGlobalTransformDynamic(Fmatrix* m)
 {
 	(*elements.begin())->GetGlobalTransformDynamic(m);
-	m->mulB(m_object_in_root);
+	m->mulB_43	(m_object_in_root);
 	VERIFY2(_valid(*m),"not valide transform");
 }
 void CPHShell::InterpolateGlobalPosition(Fvector* v)

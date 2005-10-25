@@ -39,7 +39,7 @@ void  CProjector::BoneCallbackX(CBoneInstance *B)
 
 	Fmatrix M;
 	M.setHPB (0.0f, P->_current.pitch,0.0f);
-	B->mTransform.mulB(M);
+	B->mTransform.mulB_43(M);
 }
 
 void  CProjector::BoneCallbackY(CBoneInstance *B)
@@ -51,7 +51,7 @@ void  CProjector::BoneCallbackY(CBoneInstance *B)
 
 	Fmatrix M;
 	M.setHPB (-delta_yaw, 0.0, 0.0f);
-	B->mTransform.mulB(M);
+	B->mTransform.mulB_43(M);
 }
 
 BOOL CProjector::net_Spawn(CSE_Abstract* DC)

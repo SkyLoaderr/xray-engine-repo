@@ -13,14 +13,14 @@ void CCarWeapon::BoneCallbackX		(CBoneInstance *B)
 {
 	CCarWeapon	*P = static_cast<CCarWeapon*>(B->Callback_Param);
 	Fmatrix rX;		rX.rotateX		(P->m_cur_x_rot);
-	B->mTransform.mulB(rX);
+	B->mTransform.mulB_43			(rX);
 }
 
 void CCarWeapon::BoneCallbackY		(CBoneInstance *B)
 {
 	CCarWeapon	*P = static_cast<CCarWeapon*>(B->Callback_Param);
 	Fmatrix rY;		rY.rotateY		(P->m_cur_y_rot);
-	B->mTransform.mulB(rY);
+	B->mTransform.mulB_43			(rY);
 }
 
 CCarWeapon::CCarWeapon(CPhysicsShellHolder* obj)
@@ -140,7 +140,7 @@ void CCarWeapon::UpdateBarrelDir()
 	CKinematics* K		= smart_cast<CKinematics*>(m_object->Visual());
 	m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 
-	m_fire_bone_xform.mulA(m_object->XFORM());
+	m_fire_bone_xform.mulA_43(m_object->XFORM());
 	m_fire_pos.set(0,0,0); 
 	m_fire_bone_xform.transform_tiny(m_fire_pos);
 	m_fire_dir.set(0,0,1);

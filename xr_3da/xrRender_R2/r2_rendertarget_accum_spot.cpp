@@ -78,7 +78,7 @@ void CRenderTarget::accum_spot	(light* L)
 		Fmatrix			xf_view			= L->X.S.view;
 		Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,L->X.S.project);
 		m_Shadow.mul					(xf_view, xf_world);
-		m_Shadow.mulA					(xf_project	);
+		m_Shadow.mulA_44				(xf_project	);
 
 		// lmap
 						view_dim			= 1.f;
@@ -94,7 +94,7 @@ void CRenderTarget::accum_spot	(light* L)
 		// compute xforms
 		xf_project.mul		(m_TexelAdjust2,L->X.S.project);
 		m_Lmap.mul			(xf_view, xf_world);
-		m_Lmap.mulA			(xf_project	);
+		m_Lmap.mulA_44		(xf_project	);
 	}
 
 	// Common constants

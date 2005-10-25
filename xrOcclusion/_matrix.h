@@ -127,12 +127,12 @@ public:
 		m[3][3] = 1;
 		return *this;
 	}
-	IC	SelfRef	mulA		( const Self &A )			// mul after 
+	IC	SelfRef	mulA_44		( const Self &A )			// mul after 
 	{
     	Self B; B.set( *this ); 	mul		( A, B );
 		return *this;
     };
-	IC	SelfRef	mulB		( const Self &B )			// mul before
+	IC	SelfRef	mulB_44		( const Self &B )			// mul before
 	{
 		Self A; A.set( *this ); 	mul		( A, B );
 		return *this;

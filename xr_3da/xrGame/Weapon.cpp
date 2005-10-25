@@ -1319,12 +1319,12 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 		Fmatrix hud_rotation_y;
 		hud_rotation_y.identity();
 		hud_rotation_y.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
-		hud_rotation.mulA(hud_rotation_y);
+		hud_rotation.mulA_43(hud_rotation_y);
 
 		Fvector offset = m_pHUD->ZoomOffset();
-		offset.mul(m_fZoomRotationFactor);
-		hud_rotation.translate_over(offset);
-		trans.mulB(hud_rotation);
+		offset.mul					(m_fZoomRotationFactor);
+		hud_rotation.translate_over	(offset);
+		trans.mulB_43				(hud_rotation);
 
 		if(pActor->IsZoomAimingMode())
 			m_fZoomRotationFactor += Device.fTimeDelta/m_fZoomRotateTime;

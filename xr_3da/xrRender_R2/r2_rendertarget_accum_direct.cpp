@@ -98,7 +98,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 			{
 				Fvector		bias;	bias.mul		(L_dir,ps_r2_sun_tsm_bias);
 				Fmatrix		bias_t;	bias_t.translate(bias);
-				m_shadow.mulB		(bias_t);
+				m_shadow.mulB_44	(bias_t);
 			}
 			FPU::m24r		();
 		}
@@ -118,9 +118,9 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 			Fvector			localnormal;m_xform.transform_dir(localnormal,normal); localnormal.normalize();
 			m_clouds_shadow.mul			(m_xform,xf_invview)		;
 			m_xform.scale				(0.002f,0.002f,1.f)			;
-			m_clouds_shadow.mulA		(m_xform)					;
+			m_clouds_shadow.mulA_44		(m_xform)					;
 			m_xform.translate			(localnormal.mul(w_shift))	;
-			m_clouds_shadow.mulA		(m_xform)					;
+			m_clouds_shadow.mulA_44		(m_xform)					;
 		}
 
 		// Make jitter texture
@@ -282,7 +282,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 			{
 				Fvector		bias;	bias.mul		(L_dir,ps_r2_sun_tsm_bias);
 				Fmatrix		bias_t;	bias_t.translate(bias);
-				m_shadow.mulB		(bias_t);
+				m_shadow.mulB_44	(bias_t);
 			}
 			FPU::m24r		();
 		}

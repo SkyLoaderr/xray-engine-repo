@@ -73,8 +73,8 @@ void CHelicopter::StartFlame ()
 void CHelicopter::UpdateHeliParticles	()
 {
 	CKinematics* K		= smart_cast<CKinematics*>(Visual());
-	m_particleXFORM	= K->LL_GetTransform(m_smoke_bone);
-	m_particleXFORM.mulA(XFORM());
+	m_particleXFORM		= K->LL_GetTransform(m_smoke_bone);
+	m_particleXFORM.mulA_43(XFORM());
 
 	if (m_pParticle){
 		

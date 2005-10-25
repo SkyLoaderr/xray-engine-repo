@@ -11,7 +11,7 @@ CHelicopter::BoneMGunCallbackX(CBoneInstance *B)
 {
 	CHelicopter	* P = static_cast<CHelicopter*>(B->Callback_Param);
 	Fmatrix rX;		rX.rotateX		(P->m_cur_x_rot);
-	B->mTransform.mulB(rX);
+	B->mTransform.mulB_43			(rX);
 }
 
 void  
@@ -19,9 +19,8 @@ CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 {
 	CHelicopter	* P = static_cast<CHelicopter*>(B->Callback_Param);
 	Fmatrix rY;		rY.rotateY		(P->m_cur_y_rot);
-	B->mTransform.mulB(rY);
+	B->mTransform.mulB_43			(rY);
 }
-
 
 
 void CHelicopter::OnEvent(	NET_Packet& P, u16 type) 
@@ -185,18 +184,18 @@ void CHelicopter::UpdateMGunDir()
 	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 	m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 
-	m_fire_bone_xform.mulA(XFORM());
-	m_fire_pos.set(0,0,0); 
+	m_fire_bone_xform.mulA_43	(XFORM());
+	m_fire_pos.set				(0,0,0); 
 	m_fire_bone_xform.transform_tiny(m_fire_pos);
-	m_fire_dir.set(0,0,1);
+	m_fire_dir.set				(0,0,1);
 	m_fire_bone_xform.transform_dir(m_fire_dir);
 
 	m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
-	m_left_rocket_bone_xform.mulA(XFORM());
+	m_left_rocket_bone_xform.mulA_43	(XFORM());
 	m_left_rocket_bone_xform.c.y += 1.0f;
 	//.fake
 	m_right_rocket_bone_xform	= K->LL_GetTransform(m_right_rocket_bone);
-	m_right_rocket_bone_xform.mulA(XFORM());
+	m_right_rocket_bone_xform.mulA_43	(XFORM());
 	m_right_rocket_bone_xform.c.y += 1.0f;
 	//.fake
 

@@ -222,7 +222,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 	if(m_fatal_hit.is_valide())
 	{
 		Fmatrix m;m.set(own_K->LL_GetTransform(m_fatal_hit.bone()));
-		m.mulA(PPhysicsShellHolder()->XFORM());
+		m.mulA_43		(PPhysicsShellHolder()->XFORM());
 		m.transform_tiny(pos,m_fatal_hit.bone_space_position());
 
 		////////////////////////////////////////////////////////////////////////////////////

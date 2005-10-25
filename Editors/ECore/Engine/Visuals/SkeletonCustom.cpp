@@ -536,7 +536,7 @@ void BuildMatrix		(Fmatrix &mView, float invsz, const Fvector norm, const Fvecto
 	up.crossproduct		(norm,right);
 	mView.build_camera	(from,at,up);
 	mScale.scale		(invsz,invsz,invsz);
-	mView.mulA			(mScale);
+	mView.mulA_43		(mScale);
 }
 
 #include "cl_intersect.h"

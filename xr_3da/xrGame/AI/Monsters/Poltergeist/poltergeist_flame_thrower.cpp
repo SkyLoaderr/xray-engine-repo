@@ -47,8 +47,7 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
 
 	Fmatrix global_transform;
-	global_transform.set(target_object->XFORM());
-	global_transform.mulB(bone_transform);
+	global_transform.mul_43(target_object->XFORM(),bone_transform);
 
 	Fvector target_point = global_transform.c;
 	element->target_dir.sub(target_point, element->position);

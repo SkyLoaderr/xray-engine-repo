@@ -164,7 +164,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	up.crossproduct		(sml_normal,right);
 	mView.build_camera	(from,at,up);
 	mScale.scale		(invsz,invsz,invsz);
-	mView.mulA			(mScale);
+	mView.mulA_43		(mScale);
 }
 
 void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)

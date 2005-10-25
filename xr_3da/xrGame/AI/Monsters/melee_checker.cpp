@@ -14,12 +14,9 @@ float CMeleeChecker::distance_to_enemy(const CEntity *enemy)
 	Fvector					enemy_center;
 	enemy->Center			(enemy_center);
 
-	Fmatrix					global_transform;
-	global_transform.set	(m_object->XFORM());
-
 	CKinematics *p_visual	= smart_cast<CKinematics*>(m_object->Visual());
-
-	global_transform.mulB	(p_visual->LL_GetBoneInstance(p_visual->LL_BoneID("bip01_head")).mTransform);
+	Fmatrix					global_transform;
+	global_transform.mul_43	(m_object->XFORM(), p_visual->LL_GetBoneInstance(p_visual->LL_BoneID("bip01_head")).mTransform);
 
 	Fvector					dir; 
 	dir.sub					(enemy_center, global_transform.c);
