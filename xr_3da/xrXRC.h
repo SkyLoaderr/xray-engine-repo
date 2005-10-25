@@ -50,6 +50,7 @@ public:
 	IC void			r_free			()	{	CL.r_free();				}
 	IC int			r_count			()	{	return CL.r_count();		};
 	IC void			r_clear			()	{	CL.r_clear();				};
+	IC void			r_clear_compact	()	{	CL.r_clear_compact();		};
 	
 	xrXRC();
 	~xrXRC();
