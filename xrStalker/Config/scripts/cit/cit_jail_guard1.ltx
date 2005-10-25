@@ -15,10 +15,27 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 ;--- слушаем, что нам говорит второй охранник
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_guard2_1]
-anim                = wait
+anim                = patrol
 target              = 1202 ; guard2
-on_info             = {+cit_jail_doctor_out_start} walker@open_door
+on_info             = {+cit_jail_guard2_talk_to_doctor} remark@look_at_actor1
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- смотрим на актера
+;-----------------------------------------------------------------------------------------------------------
+[remark@look_at_actor1]
+anim                = threat
+target              = actor
+on_info             = {+cit_jail_kill_actor} remark@kill_actor, {+cit_jail_doctor_out_start} walker@open_door
+combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- если актер не послушался и не отошел к стене, убиваем его
+;-----------------------------------------------------------------------------------------------------------
+[remark@kill_actor]
+anim                = patrol
+on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@open_door
+combat_ignore_cond  = {=check_fighting(1201)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- открываем решетку, чтоб выпустить доктора
@@ -26,13 +43,13 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 [walker@open_door]
 path_walk           = cit_jail_guard1_button_press_walk
 path_look           = cit_jail_guard1_button_press_look
-on_signal           = pressed | remark@look_at_actor %+cit_jail_door_opened%
+on_signal           = pressed | remark@look_at_actor2 %+cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- смотрим за актером, шоб не сбежал
 ;-----------------------------------------------------------------------------------------------------------
-[remark@look_at_actor]
+[remark@look_at_actor2]
 anim                = threat
 target              = actor
 on_info             = {+cit_jail_guard1_close_door} walker@close_door
