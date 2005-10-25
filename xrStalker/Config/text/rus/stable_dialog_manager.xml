@@ -5,6 +5,9 @@
     <string id="dm_general_cool_info">
         <text>Что можешь интересного рассказать?</text>
     </string>
+    <string id="dm_general_action_info">
+        <text>Что здесь происходит?</text>
+    </string>
     <string id="dm_general_help_medkit">
         <text>Держи аптечку.</text>
     </string>
@@ -53,6 +56,23 @@
     <string id="dm_universal_cool_info_6">
         <text>Чувак, если ты в армии не служил, то не вступай в Долг. Замучают со своим уставом, солдафоны хреновы.</text>
     </string>
+
+    <string id="dm_universal_action_info_1">
+        <text>Здесь ничего не происходит! Это тестовый уровень, придурок.</text>
+    </string>
+    <string id="dm_universal_action_info_2">
+        <text>Да так, время от времени убивают кого-то. А кто-то сам умирает. Жизнь идет вообщем.</text>
+    </string>
+    <string id="dm_universal_action_info_3">
+        <text>Да я тут сам недавно, охраняю вон того олуха в ярком прикиде.</text>
+    </string>
+    <string id="dm_universal_action_info_4">
+        <text>А тебе какое дело что здесь и как? Ты наверное шпион? А ну вали отсюда!</text>
+    </string>
+    <string id="dm_universal_action_info_5">
+        <text>Здесь ... э-э ... происходит... О! происходит! Ты гений, чувак!</text>
+    </string>
+
 
 
     <string id="dm_help_thanks_1">

@@ -1,7 +1,7 @@
 phrase = {
 	intro = {},
 	trade_info = {},
-	actio_info = {},
+	action_info = {},
 	cool_info = {},
 	help_thanks = {}
 	}
@@ -10,6 +10,7 @@ local phrase_ini = ini_file("misc\\dialog_manager.ltx")
 
 local intro_id = 0
 local cool_info_id = 0
+local action_info_id = 0
 local help_thanks_id = 0
 local phrase_table_filled = false
 
@@ -20,6 +21,9 @@ function get_id(type)
 	elseif type == "cool_info" then
 		cool_info_id = cool_info_id + 1
 		return cool_info_id
+	elseif type == "action_info" then
+		action_info_id = action_info_id + 1
+		return action_info_id
 	elseif type == "help_thanks" then
 		help_thanks_id = help_thanks_id + 1
 		return help_thanks_id
@@ -145,7 +149,38 @@ function init_cool_info_dialog(dlg)
 	end
 end
 
+-- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
+-- одну и ту же функцию в прекондишне.
+function init_action_info_dialog(dlg)
+	if phrase_table_filled == false then
+		fill_phrase_table()
+		phrase_table_filled = true
+	end
 
+	local phr = dlg:AddPhrase("dm_general_action_info",0,-1,-10000)
+	
+	local k,v,kk,vv = 0,0,0,0
+	for k,v in pairs(phrase.action_info) do
+		local last_id = get_id("action_info")
+		phr = dlg:AddPhrase(k,last_id,0,-10000)		
+		if phr then
+			local phrase_script = phr:GetPhraseScript()
+			phrase_script:AddPrecondition("dialog_manager.precondition_action_info")
+			
+			if v.article_info ~= nil then
+				phr = dlg:AddPhrase("",get_id("action_info"),last_id,-10000)		
+				phrase_script = phr:GetPhraseScript()
+				
+				local article_info = parse_names(v.article_info)
+				for kk,vv in pairs(article_info) do
+					phrase_script:AddGiveInfo(vv)
+				end
+			end
+		end
+	end
+end
+
+-- Диалоги помощи раненным
 function init_help_wounded_medkit_dialog(dlg)
 	if phrase_table_filled == false then
 		fill_phrase_table()
@@ -193,6 +228,9 @@ function precondition_intro(npc, actor)
 end
 function precondition_cool_info(npc, actor)
 	return precondition(npc, actor, phrase.cool_info)
+end
+function precondition_action_info(npc, actor)
+	return precondition(npc, actor, phrase.action_info)
 end
 function precondition_help_thanks(npc, actor)
 	return precondition(npc, actor, phrase.help_thanks)
@@ -293,4 +331,12 @@ function precondition_cool_info_global(actor, npc)
 	end
 	return true
 end
-		
+function precondition_action_info_global(actor, npc)
+	if xr_wounded.is_wounded(npc) or
+	   xr_wounded.is_heavy_wounded_by_id(npc:id()) or
+	   xr_wounded.is_psy_wounded_by_id(npc:id())
+	then
+		return false
+	end
+	return true
+end

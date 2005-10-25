@@ -10,6 +10,11 @@
 		<precondition>dialog_manager.precondition_cool_info_global</precondition>
     </dialog>
 
+    <dialog id="dm_action_info_dialog">
+		<init_func>dialog_manager.init_action_info_dialog</init_func>
+		<precondition>dialog_manager.precondition_action_info_global</precondition>
+    </dialog>
+
     <dialog id="dm_help_wounded_medkit_dialog">
 		<init_func>dialog_manager.init_help_wounded_medkit_dialog</init_func>
         <precondition>dialogs.allow_wounded_dialog</precondition>
