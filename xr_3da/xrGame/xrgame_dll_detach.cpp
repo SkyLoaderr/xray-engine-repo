@@ -16,6 +16,7 @@
 #include "character_info.h"
 #include "specific_character.h"
 #include "character_community.h"
+#include "monster_community.h"
 #include "character_rank.h"
 #include "character_reputation.h"
 
@@ -71,7 +72,7 @@ void clean_game_globals()
 	CHARACTER_COMMUNITY::DeleteIdToIndexData		();
 	CHARACTER_RANK::DeleteIdToIndexData				();
 	CHARACTER_REPUTATION::DeleteIdToIndexData		();
-
+	MONSTER_COMMUNITY::DeleteIdToIndexData			();
 
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks				();
