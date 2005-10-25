@@ -32,6 +32,7 @@ extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();
 extern void release_smart_cast_stats				();
 extern void dump_list_wnd							();
+extern void dump_list_lines							();
 
 void clean_game_globals()
 {
@@ -94,4 +95,5 @@ void clean_game_globals()
 	RELATION_REGISTRY::clear_relation_registry		();
 
 	dump_list_wnd									();
+	dump_list_lines									();
 }

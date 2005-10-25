@@ -151,6 +151,7 @@ void CUIStatsListItem::XmlInit(const char *path, CUIXml &uiXml)
 	for (int i = 0; i < tabsCount; ++i)
 	{
 		pButton = xr_new<CUIButton>();
+		pButton->SetAutoDelete(true);
 		xml_init.InitStatic(uiXml, "static", i, pButton);
 		//pButton->SetNewRenderMethod(true);
 		pButton->SetTextAlignment(CGameFont::alLeft);

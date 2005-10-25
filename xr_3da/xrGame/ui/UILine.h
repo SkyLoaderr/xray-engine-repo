@@ -48,7 +48,7 @@ CUILine& operator=(const CUILine& other);
 	float GetLength(CGameFont* pFont);
 	int   GetTextLength();
 	float GetVisibleLength(CGameFont* pFont);
-CUILine* CutByLength(CGameFont* pFont, float length, BOOL cut_word);
+const CUILine* CutByLength(CGameFont* pFont, float length, BOOL cut_word);
 
 	void Draw(CGameFont* pFont, float x, float y)							const;
     int	 DrawCursor(int pos, CGameFont* pFont, float x, float y, u32 color)	const;
@@ -57,9 +57,9 @@ static void DrawCursor(CGameFont* pFont, float x, float y, u32 color);
 protected:
 	int		GetSize();
 	bool	GetWord(Word& w, const xr_string& text, int begin)				const;
-CUILine*	Cut2Pos(Position& pos, bool to_first = true);
-CUILine*	CutWord(CGameFont* pFont, float length);
-CUILine*	GetEmptyLine();
+const CUILine* Cut2Pos(Position& pos, bool to_first = true);
+const CUILine* CutWord(CGameFont* pFont, float length);
+const CUILine* GetEmptyLine();
 	float	GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont)		const;
 	float	GetLength_inclusiveWord_2(Position& pos, CGameFont* pFont)		const;
 	bool	InitPos(Position& pos)											const;

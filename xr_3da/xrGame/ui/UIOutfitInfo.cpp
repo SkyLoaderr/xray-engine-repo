@@ -27,6 +27,12 @@ CUIOutfitInfo::CUIOutfitInfo(){
 CUIOutfitInfo::~CUIOutfitInfo(){
 }
 
+#define ADD_ITEM(x)	x = xr_new<CUIListItem>();		\
+					m_listWnd.AddItem(x);			\
+					x->SetFont(m_pFont);			\
+					x->SetAutoDelete(true);			\
+					x->SetTextColor(m_textColor)
+
 void CUIOutfitInfo::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x, y, width, height);
 	// init Caption
@@ -40,35 +46,16 @@ void CUIOutfitInfo::Init(float x, float y, float width, float height){
 	m_staticTitle.SetFont(UI()->Font()->pFontGraffiti22Russian);
 	m_staticTitle.SetTextColor(0xffE79916);
 	
-	m_itemBurnProtection = xr_new<CUIListItem>();
-	m_itemChemicalBurnProtection = xr_new<CUIListItem>();
 	if (GameID() == GAME_SINGLE)
 	{
-		m_listWnd.AddItem(m_itemBurnProtection);		
-		m_itemBurnProtection->SetFont(m_pFont);
-		m_itemBurnProtection->SetTextColor(m_textColor);
-
-		m_listWnd.AddItem(m_itemChemicalBurnProtection);
-		m_itemChemicalBurnProtection->SetFont(m_pFont);
-		m_itemChemicalBurnProtection->SetTextColor(m_textColor);
+		ADD_ITEM(m_itemBurnProtection);
+		ADD_ITEM(m_itemChemicalBurnProtection);
 	}
 
-
-	m_listWnd.AddItem(m_itemExplosionProtection = xr_new<CUIListItem>());
-	m_itemExplosionProtection->SetFont(m_pFont);
-	m_itemExplosionProtection->SetTextColor(m_textColor);
-
-	m_listWnd.AddItem(m_itemFireWoundProtection = xr_new<CUIListItem>());
-	m_itemFireWoundProtection->SetFont(m_pFont);
-	m_itemFireWoundProtection->SetTextColor(m_textColor);
-
-	m_listWnd.AddItem(m_itemShockProtection = xr_new<CUIListItem>());
-	m_itemShockProtection->SetFont(m_pFont);
-	m_itemShockProtection->SetTextColor(m_textColor);
-
-	m_listWnd.AddItem(m_itemStrikeProtection = xr_new<CUIListItem>());
-	m_itemStrikeProtection->SetFont(m_pFont);
-	m_itemStrikeProtection->SetTextColor(m_textColor);	
+	ADD_ITEM(m_itemExplosionProtection);
+	ADD_ITEM(m_itemFireWoundProtection);
+	ADD_ITEM(m_itemShockProtection);
+	ADD_ITEM(m_itemStrikeProtection);
 }
 
 void CUIOutfitInfo::SetText(const CStringTable& stringTable){
@@ -95,8 +82,12 @@ void CUIOutfitInfo::Update(){
 void CUIOutfitInfo::SetFont(CGameFont* pFont){
 	if (m_itemBurnProtection)
 	{
-		m_itemBurnProtection->SetFont(pFont);
-		m_itemChemicalBurnProtection->SetFont(pFont);
+		if (GameID() == GAME_SINGLE)
+		{
+			m_itemBurnProtection->SetFont(pFont);
+			m_itemChemicalBurnProtection->SetFont(pFont);
+		}
+		
 		m_itemExplosionProtection->SetFont(pFont);
 		m_itemFireWoundProtection->SetFont(pFont);
 		m_itemShockProtection->SetFont(pFont);
@@ -109,8 +100,11 @@ void CUIOutfitInfo::SetFont(CGameFont* pFont){
 void CUIOutfitInfo::SetTextColor(u32 color){
 	if (m_itemBurnProtection)
 	{
-		m_itemBurnProtection->SetTextColor(color);
-		m_itemChemicalBurnProtection->SetTextColor(color);
+		if (GameID() == GAME_SINGLE)
+		{
+			m_itemBurnProtection->SetTextColor(color);
+            m_itemChemicalBurnProtection->SetTextColor(color);
+		}
 		m_itemExplosionProtection->SetTextColor(color);
 		m_itemFireWoundProtection->SetTextColor(color);
 		m_itemShockProtection->SetTextColor(color);
@@ -125,8 +119,11 @@ void CUIOutfitInfo::SetTitleTextColor(u32 color){
 }
 
 void CUIOutfitInfo::Update(CCustomOutfit& outfit){
-	SetItem(ALife::eHitTypeBurn,		 outfit, m_itemBurnProtection,			m_strBurnProtection);
-	SetItem(ALife::eHitTypeChemicalBurn, outfit, m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
+	if (GameID() == GAME_SINGLE)
+	{
+        SetItem(ALife::eHitTypeBurn,		 outfit, m_itemBurnProtection,			m_strBurnProtection);
+        SetItem(ALife::eHitTypeChemicalBurn, outfit, m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
+	}
 	SetItem(ALife::eHitTypeExplosion,	 outfit, m_itemExplosionProtection,		m_strExplosionProtection);
 	SetItem(ALife::eHitTypeFireWound,	 outfit, m_itemFireWoundProtection,		m_strFireWoundProtection);
 	SetItem(ALife::eHitTypeShock,		 outfit, m_itemShockProtection,			m_strShockProtection);
@@ -139,8 +136,11 @@ void CUIOutfitInfo::Update(shared_str section_name){
 	if (xr_strlen(section_name) != 0)
 		GetInfoFromSettings(vals, section_name);
 
-	SetItem(ALife::eHitTypeBurn,		 vals[0], m_itemBurnProtection,			m_strBurnProtection);
-	SetItem(ALife::eHitTypeChemicalBurn, vals[1], m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
+	if (GameID() == GAME_SINGLE)
+	{
+        SetItem(ALife::eHitTypeBurn,		 vals[0], m_itemBurnProtection,			m_strBurnProtection);
+        SetItem(ALife::eHitTypeChemicalBurn, vals[1], m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
+	}
 	SetItem(ALife::eHitTypeExplosion,	 vals[2], m_itemExplosionProtection,	m_strExplosionProtection);
 	SetItem(ALife::eHitTypeFireWound,	 vals[3], m_itemFireWoundProtection,	m_strFireWoundProtection);
 	SetItem(ALife::eHitTypeShock,		 vals[4], m_itemShockProtection,		m_strShockProtection);
@@ -148,8 +148,11 @@ void CUIOutfitInfo::Update(shared_str section_name){
 }
 
 void CUIOutfitInfo::GetInfoFromSettings(int values[], shared_str section_name){
-	values[0] = iFloor(100.f*pSettings->r_float(section_name, "burn_immunity"));
-	values[1] = iFloor(100.f*pSettings->r_float(section_name, "chemical_burn_immunity"));
+	if (GameID() == GAME_SINGLE)
+	{
+        values[0] = iFloor(100.f*pSettings->r_float(section_name, "burn_immunity"));
+        values[1] = iFloor(100.f*pSettings->r_float(section_name, "chemical_burn_immunity"));
+	}
 	values[2] = iFloor(100.f*pSettings->r_float(section_name, "explosion_immunity"));
 	values[3] = iFloor(100.f*pSettings->r_float(section_name, "fire_wound_immunity"));
 	values[4] = iFloor(100.f*pSettings->r_float(section_name, "shock_immunity"));

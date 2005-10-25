@@ -46,7 +46,8 @@ public:
 											st->SetText(txt);								\
 											st->SetWidth(view->GetDesiredChildWidth());		\
 											st->AdjustHeightToText();						\
+											st->SetAutoDelete(true);						\
 											view->AddWindow(st)
 
-#define ADD_TEXT_TO_VIEW2(txt,view)			CUIStatic*	pSt = xr_new<CUIStatic>();			\
+#define ADD_TEXT_TO_VIEW2(txt,view)			CUIStatic*	pSt;								\
 											ADD_TEXT_TO_VIEW3(txt,pSt,view)

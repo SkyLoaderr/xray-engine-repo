@@ -22,15 +22,18 @@ CUIScrollBar::CUIScrollBar(void)
 	m_iStepSize		= 1;
 	m_iScrollPos	= 0;
 	m_b_enabled		= true;
-	m_DecButton		= xr_new<CUIButton>();				m_DecButton->SetAutoDelete(true);
-	m_IncButton		= xr_new<CUIButton>();				m_IncButton->SetAutoDelete(true);
-	m_ScrollBox		= xr_new<CUIScrollBox>();			m_ScrollBox->SetAutoDelete(true);
+	m_DecButton		= xr_new<CUIButton>();		//		m_DecButton->SetAutoDelete(true);
+	m_IncButton		= xr_new<CUIButton>();		//		m_IncButton->SetAutoDelete(true);
+	m_ScrollBox		= xr_new<CUIScrollBox>();	//		m_ScrollBox->SetAutoDelete(true);
 	m_StaticBackground = xr_new<CUIStaticItem>();
 }
 
 CUIScrollBar::~CUIScrollBar(void)
 {
 	xr_delete(m_StaticBackground);
+	xr_delete(m_DecButton);
+	xr_delete(m_IncButton);
+	xr_delete(m_ScrollBox);
 }
 
 void CUIScrollBar::Init(float x, float y, float length, bool bIsHorizontal)

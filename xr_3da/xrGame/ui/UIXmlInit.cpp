@@ -1215,6 +1215,7 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 		InitText(xml_doc, "text", i, newStatic);
 		newStatic->SetWidth(pWnd->GetDesiredChildWidth());
 		newStatic->AdjustHeightToText();
+		newStatic->SetAutoDelete(true);
 		pWnd->AddWindow(newStatic);
 	}
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
