@@ -156,8 +156,8 @@ protected:
 	u16							iRoot;			// Root bone index
 
 	// Fast search
-	accel*						bone_map_N;		// bones  assotiations	(shared)	- sorted by name
-	accel*						bone_map_P;		// bones  assotiations	(shared)	- sorted by name-pointer
+	accel*						bone_map_N;		// bones  associations	(shared)	- sorted by name
+	accel*						bone_map_P;		// bones  associations	(shared)	- sorted by name-pointer
 
 	BOOL						Update_Visibility		;
 	u32							Update_LastTime			;
