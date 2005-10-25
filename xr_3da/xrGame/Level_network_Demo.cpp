@@ -103,11 +103,7 @@ void						CLevel::CallOldCrashHandler			()
 
 void						CLevel::WriteStoredDemo			()
 {	
-	if (!DemoCS.TryEnter()) 
-	{
-		Msg("! Unable to Write Stored Demo!");
-		return;
-	};
+	if (!DemoCS.TryEnter()) return;
 	
 	Demo_DumpData();
 	DemoCS.Leave();

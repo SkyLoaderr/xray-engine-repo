@@ -815,7 +815,7 @@ bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
 
-		if (!l_pC->net_Ready || ps->Skip) continue;
+		if (!l_pC->net_Ready || ps->Skip || ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
 		else
 			TeamAlived[ps->team-1]++;
 	}
