@@ -8,6 +8,9 @@
     <string id="dm_general_action_info">
         <text>Что здесь происходит?</text>
     </string>
+    <string id="dm_general_trade_info">
+        <text>Интересует информация за деньги.</text>
+    </string>
     <string id="dm_general_help_medkit">
         <text>Держи аптечку.</text>
     </string>

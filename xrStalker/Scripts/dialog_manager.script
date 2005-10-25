@@ -11,6 +11,7 @@ local phrase_ini = ini_file("misc\\dialog_manager.ltx")
 local intro_id = 0
 local cool_info_id = 0
 local action_info_id = 0
+local trade_info_id = 0
 local help_thanks_id = 0
 local phrase_table_filled = false
 
@@ -24,6 +25,9 @@ function get_id(type)
 	elseif type == "action_info" then
 		action_info_id = action_info_id + 1
 		return action_info_id
+	elseif type == "trade_info" then
+		trade_info_id = trade_info_id + 1
+		return trade_info_id
 	elseif type == "help_thanks" then
 		help_thanks_id = help_thanks_id + 1
 		return help_thanks_id
@@ -180,6 +184,17 @@ function init_action_info_dialog(dlg)
 	end
 end
 
+-- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
+-- одну и ту же функцию в прекондишне.
+function init_trade_info_dialog(dlg)
+	if phrase_table_filled == false then
+		fill_phrase_table()
+		phrase_table_filled = true
+	end
+
+	local phr = dlg:AddPhrase("dm_general_trade_info",0,-1,-10000)
+end
+
 -- Диалоги помощи раненным
 function init_help_wounded_medkit_dialog(dlg)
 	if phrase_table_filled == false then
@@ -231,6 +246,9 @@ function precondition_cool_info(npc, actor)
 end
 function precondition_action_info(npc, actor)
 	return precondition(npc, actor, phrase.action_info)
+end
+function precondition_trade_info(npc, actor)
+	return precondition(npc, actor, phrase.trade_info)
 end
 function precondition_help_thanks(npc, actor)
 	return precondition(npc, actor, phrase.help_thanks)
@@ -322,16 +340,7 @@ function calculate_predicate(npc, tbl)
 end
 		
 
-function precondition_cool_info_global(actor, npc)
-	if xr_wounded.is_wounded(npc) or
-	   xr_wounded.is_heavy_wounded_by_id(npc:id()) or
-	   xr_wounded.is_psy_wounded_by_id(npc:id())
-	then
-		return false
-	end
-	return true
-end
-function precondition_action_info_global(actor, npc)
+function precondition_info_global(actor, npc)
 	if xr_wounded.is_wounded(npc) or
 	   xr_wounded.is_heavy_wounded_by_id(npc:id()) or
 	   xr_wounded.is_psy_wounded_by_id(npc:id())
