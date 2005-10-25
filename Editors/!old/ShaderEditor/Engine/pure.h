@@ -58,7 +58,7 @@ public:
 		for (u32 i=0; i<R.size(); i++) {
 			if (R[i].Object==obj) R[i].Prio = -1;
 		}
-		Resort	();
+		Resort				();
 	};
 	void Process(RP_FUNC *f)
 	{
@@ -74,6 +74,7 @@ public:
 	{
 		qsort	(&*R.begin(),R.size(),sizeof(_REG_INFO),_REG_Compare);
 		while	((R.size()) && (R[R.size()-1].Prio<0)) R.pop_back();
+		if (R.empty())		R.clear		();
 	};
 };
 
