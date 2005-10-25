@@ -47,6 +47,7 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 {
 	CreatePhysicsShell(D);
 	RunStartupAnim(D);
+
 }
 void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 {
@@ -82,12 +83,6 @@ void CPhysicObject::CreatePhysicsShell(CSE_Abstract* e)
 {
 	CSE_ALifeObjectPhysic	*po	= smart_cast<CSE_ALifeObjectPhysic*>(e);
 	CreateBody(po);
-	CKinematics* K=smart_cast<CKinematics*>(Visual());
-	if(K)
-	{
-		K->CalculateBones_Invalidate();
-		K->CalculateBones	();
-	}
 }
 
 void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
