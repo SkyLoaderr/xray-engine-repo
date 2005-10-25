@@ -280,9 +280,6 @@
 					Name="Dialogs"
 					Filter="">
 					<File
-						RelativePath=".\Config\gameplay\character_dialogs.xml">
-					</File>
-					<File
 						RelativePath=".\Config\gameplay\dialogs.xml">
 					</File>
 					<File
@@ -1767,6 +1764,18 @@
 					</File>
 					<File
 						RelativePath=".\Config\scripts\cit\cit_hunt_victim.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_jail_button.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_jail_door.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_jail_guard1.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_jail_guard2.ltx">
 					</File>
 				</Filter>
 				<Filter
