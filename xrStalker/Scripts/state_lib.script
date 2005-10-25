@@ -292,6 +292,13 @@ states = {
 				animstate = "sleep",
 				animation = "sleeping"
 			},
+	sleep_sit = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "sleep_sit"
+			},
 	eat_bread	= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
