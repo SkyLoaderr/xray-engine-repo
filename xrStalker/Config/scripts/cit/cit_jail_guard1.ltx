@@ -9,7 +9,7 @@ combat_ignore       = combat_ignore
 path_walk           = cit_jail_guard1_walk
 path_look           = cit_jail_guard1_look
 on_info             = {+cit_jail_guard2_talk_to_guard1} remark@look_at_guard2_1
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1201)}
+combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- слушаем, что нам говорит второй охранник
@@ -18,7 +18,7 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 anim                = wait
 target              = 1202 ; guard2
 on_info             = {+cit_jail_doctor_out_start} walker@open_door
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1201)}
+combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- открываем решетку, чтоб выпустить доктора
@@ -27,7 +27,7 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 path_walk           = cit_jail_guard1_button_press_walk
 path_look           = cit_jail_guard1_button_press_look
 on_signal           = pressed | remark@look_at_actor %+cit_jail_door_opened%
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1201)}
+combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- смотрим за актером, шоб не сбежал
@@ -36,7 +36,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting
 anim                = threat
 target              = actor
 on_info             = {+cit_jail_guard1_close_door} walker@close_door
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1201)}
+combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- закрываем решетку, чтоб выпустить доктора
@@ -45,7 +45,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting
 path_walk           = cit_jail_guard1_button_press_walk
 path_look           = cit_jail_guard1_button_press_look
 on_signal           = pressed | walker@guard2 %-cit_jail_door_opened%
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1201)}
+combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- патрулируем возле решетки
@@ -53,4 +53,4 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting
 [walker@guard2]
 path_walk           = cit_jail_guard1_walk
 path_look           = cit_jail_guard1_look
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1201)}
+combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
