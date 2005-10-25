@@ -42,6 +42,7 @@ CServerList::CServerList(){
 
 CServerList::~CServerList()
 {
+	xr_delete(m_pAnimation);
 };
 
 void CServerList::Init(float x, float y, float width, float height){
