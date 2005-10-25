@@ -499,6 +499,7 @@ BOOL game_cl_TeamDeathmatch::CanCallInventoryMenu			()
 BOOL game_cl_TeamDeathmatch::CanCallTeamSelectMenu			()
 {
 	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	if (!local_player) return false;
 	if (pInventoryMenu && pInventoryMenu->IsShown())
 	{
 		return FALSE;
