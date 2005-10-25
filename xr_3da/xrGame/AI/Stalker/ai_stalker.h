@@ -282,6 +282,7 @@ public:
 			bool						fire_make_sense			();
 			
 	virtual LPCSTR						Name					() const;
+	virtual BOOL						feel_touch_contact		(CObject* O);
 	virtual BOOL						feel_touch_on_contact	(CObject* O);
 
 	//флаги, какие действия совершал актер по отношению к сталкеру
