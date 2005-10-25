@@ -1724,6 +1724,13 @@ void	CActor::Check_for_AutoPickUp()
 
 		if (APU_Box.Pick(pIItem->object().Position(), pIItem->object().Position()))
 		{
+			if (pIItem->GetSlot() == PISTOL_SLOT || pIItem->GetSlot() == RIFLE_SLOT)
+			{
+				if (inventory().ItemFromSlot(pIItem->GetSlot()))
+				{
+					continue;
+				}
+			}
 			NET_Packet P;
 			u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
 			P.w_u16(pIItem->object().ID());
