@@ -312,7 +312,7 @@ void CObjectFactory::register_classes	()
 	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_FAKE			,"wpn_grenade_fake");
 
 	// Zones
-	ADD(CCustomZone				,CSE_ALifeAnomalousZone			,CLSID_ZONE						,"zone");
+	ADD(CCustomZone				,CSE_ALifeCustomZone			,CLSID_ZONE						,"zone");
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_MBALD					,"zone_mosquito_bald");
 	ADD(CMincer					,CSE_ALifeAnomalousZone			,CLSID_Z_MINCER					,"zone_mincer");
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_ACIDF					,"zone_acid_fog");
