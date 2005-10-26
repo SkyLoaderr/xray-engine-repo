@@ -1599,6 +1599,9 @@
 				Name="scripts"
 				Filter="">
 				<File
+					RelativePath=".\Config\scripts\deadcity_wake.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\door.ltx">
 				</File>
 				<File
