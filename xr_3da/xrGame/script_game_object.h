@@ -204,7 +204,7 @@ public:
 			bool				GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay);
 			void				SetNewsShowTime		(LPCSTR news, int show_time);
 
-			void				AddIconedTalkMessage(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2);
+			void				AddIconedTalkMessage(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2, LPCSTR templ_name);
 	//предикаты наличия/отсутствия порции информации у персонажа
 			bool				HasInfo				(LPCSTR info_id);
 			bool				DontHasInfo			(LPCSTR info_id);

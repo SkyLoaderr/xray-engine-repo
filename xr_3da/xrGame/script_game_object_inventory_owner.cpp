@@ -56,7 +56,7 @@ void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
 		HUD().GetUI()->UIMainIngameWnd->SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
 }
 
-void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2)
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2, LPCSTR templ_name)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -64,7 +64,8 @@ void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name
 
 	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu->AddIconedMessage(*CStringTable().translate(news), texture_name,Frect().set(x1,y1,x2,y2));
+		pGameSP->TalkMenu->AddIconedMessage(*CStringTable().translate(news), texture_name,Frect().set(x1,y1,x2,y2), 
+			templ_name?templ_name:"iconed_answer_item" );
 	}
 
 }
