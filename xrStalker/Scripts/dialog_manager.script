@@ -84,7 +84,7 @@ function fill_phrase_table()
 			tt.price = phrase_ini:r_u32(id, "price")
 		end					
 		if phrase_ini:line_exist(id, "article_info") then
-			tt.article_info = phrase_ini:r_string(id, "article_info")
+			tt.article_info = parse_names(phrase_ini:r_string(id, "article_info"))
 		end					
 		if phrase_ini:line_exist(id, "wounded") then
 			tt.wounded = phrase_ini:r_string(id, "wounded")
@@ -143,9 +143,8 @@ function init_cool_info_dialog(dlg)
 			if v.article_info ~= nil then
 				phr = dlg:AddPhrase("",get_id("cool_info"),last_id,-10000)		
 				phrase_script = phr:GetPhraseScript()
-				
-				local article_info = parse_names(v.article_info)
-				for kk,vv in pairs(article_info) do
+								
+				for kk,vv in pairs(v.article_info) do
 					phrase_script:AddGiveInfo(vv)
 				end
 			end
@@ -193,6 +192,28 @@ function init_trade_info_dialog(dlg)
 	end
 
 	local phr = dlg:AddPhrase("dm_general_trade_info",0,-1,-10000)
+	local phrase_script = phr:GetPhraseScript()
+	phrase_script:AddAction("dialog_manager.action_trade_info_init")
+	
+	dlg:AddPhrase("dm_general_trade_info_caption",get_id("trade_info"),0,-10000)
+
+	-- Изначально считаем что каждый сталкер знает ВСЮ информацию. Не забыть потом
+	-- вставить инфопоршн, что сталкер сам знает информацию
+	local k,v,kk,vv = 0,0,0,0
+	for k,v in pairs(phrase.trade_info) do
+		phr = dlg:AddPhrase(k,get_id("trade_info"),1,-10000)		
+		if phr then
+			phrase_script = phr:GetPhraseScript()
+			phrase_script:AddPrecondition("dialog_manager.precondition_trade_info")
+			
+			if v.article_info ~= nil then
+				for kk,vv in pairs(v.article_info) do
+					phrase_script:AddGiveInfo(vv)
+				end
+			end
+		end
+	end
+	dlg:AddPhrase("dm_general_trade_info_nothing",get_id("trade_info"),1,-10000)
 end
 
 -- Диалоги помощи раненным
@@ -215,29 +236,41 @@ function init_help_wounded_medkit_dialog(dlg)
 		end
 	end
 end
-function init_help_wounded_bandage_dialog(dlg)
-	if phrase_table_filled == false then
-		fill_phrase_table()
-		phrase_table_filled = true
-	end
-
-	local phr = dlg:AddPhrase("dm_general_help_bandage",0,-1,-10000)
-	local phrase_script = phr:GetPhraseScript()
-	phrase_script:AddAction("dialogs.transfer_bandage")
-	
-	local k,v = 0,0
-	for k,v in pairs(phrase.help_thanks) do
-		phr = dlg:AddPhrase(k,get_id("help_thanks"),0,-10000)		
-		if phr then
-			phrase_script = phr:GetPhraseScript()
-			phrase_script:AddPrecondition("dialog_manager.precondition_help_thanks")
-		end
-	end
-end
-
 
 local call_count, max_count, select_count = 0,0,0
 local tmp_tbl = {}
+function action_trade_info_init(npc, actor)
+	local value, number, max_number = 0,0,0
+	for k,v in pairs(phrase.action_info) do
+		value, number = calculate_predicate(npc, v)
+		max_count = max_count + 1
+		if value == true then
+			if number > max_number then
+				max_number = number
+				tmp_tbl = {}
+			end
+			if number == max_number then
+				tmp_tbl[max_count] = true
+			end								
+		end
+	end
+end
+function precondition_trade_info(actor, npc)
+	call_count = call_count + 1
+	if call_count < max_count then
+		-- При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
+		-- всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
+		return tmp_tbl[call_count] == true
+	elseif call_count == max_count then
+		-- Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
+		local return_value = tmp_tbl[call_count] == true
+		tmp_tbl = {}
+		call_count, max_count, select_count = 0,0,0
+		return return_value
+	end
+	abort("Dialog manager error: unexpected programm point. Trade Info")
+end
+
 function precondition_intro(npc, actor)
 	return precondition(npc, actor, phrase.intro)
 end
@@ -293,7 +326,7 @@ end
 
 function calculate_predicate(npc, tbl)
 	local property_num = 0
-
+	local k,v = 0,0
 	if tbl.community ~= nil then
 		if tbl.community ~= db.actor:character_community() then return false,0 end
 		property_num = property_num + 1		
@@ -335,7 +368,21 @@ function calculate_predicate(npc, tbl)
 			return false,0 
 		end
 		property_num = property_num + 1		
-	end		
+	end
+	if tbl.price ~= nil then
+		if db.actor:money() < tbl.price	then
+			return false,0 
+		end
+		
+		if tbl.article_info ~= nil then
+			for k,v in pairs(tbl.article_info) do
+				if db.actor:has_info(v) then
+					return false,0
+				end
+			end				
+		end
+	end
+	
 	return true, property_num
 end
 		

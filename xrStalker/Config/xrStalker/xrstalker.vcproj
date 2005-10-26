@@ -220,6 +220,9 @@
 				Name="gameplay"
 				Filter="">
 				<File
+					RelativePath=".\Config\gameplay\character_dialogs.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\character_items.xml">
 				</File>
 				<File

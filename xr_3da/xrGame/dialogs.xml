@@ -10,12 +10,12 @@
 		<precondition>dialog_manager.precondition_info_global</precondition>
     </dialog>
 
-    <dialog id="dm_action_info_dialog" priority="-2">
+    <dialog id="dm_action_info_dialog" priority="-3">
 		<init_func>dialog_manager.init_action_info_dialog</init_func>
 		<precondition>dialog_manager.precondition_info_global</precondition>
     </dialog>
 
-    <dialog id="dm_cool_info_dialog" priority="-3">
+    <dialog id="dm_cool_info_dialog" priority="-2">
 		<init_func>dialog_manager.init_cool_info_dialog</init_func>
 		<precondition>dialog_manager.precondition_info_global</precondition>
     </dialog>
@@ -25,12 +25,6 @@
         <precondition>dialogs.allow_wounded_dialog</precondition>
         <precondition>dialogs.is_opp_wounded</precondition>
         <precondition>dialogs.actor_have_medkit</precondition>
-    </dialog>
-    <dialog id="dm_help_wounded_bandage_dialog" priority="9">
-		<init_func>dialog_manager.init_help_wounded_bandage_dialog</init_func>
-        <precondition>dialogs.allow_wounded_dialog</precondition>
-        <precondition>dialogs.is_opp_wounded</precondition>
-        <precondition>dialogs.actor_have_bandage</precondition>
     </dialog>
 
     <!-- FINAL DIALOGS -->
