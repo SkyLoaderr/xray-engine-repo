@@ -1186,6 +1186,34 @@ function pri_zombied_in_combat_dec(actor, npc)
     --printf("effect <pri>: zombied in combat(%s) dec.", npc:name())
 end
 
+---------------------------------------------------------
+-- DeadCity
+---------------------------------------------------------
+-- сцены просыпания возле доктора
+function cit_wake_scene1(npc)
+    db.actor:hide_weapon()
+    level.disable_input()
+	--local snd_obj = sound_object([[ambient\earthquake]])
+	--snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+	local ce = path_cam_effector("camera_effects\\prison_0.anm")
+	level.add_cam_effector(ce)	                  
+    --set_postprocess ("scripts\\prison_0.ltx")
+end
+
+function cit_wake_scene2(npc)
+	--local snd_obj = sound_object([[ambient\earthquake]])
+	--snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+	local ce = path_cam_effector("camera_effects\\prison_1.anm")
+	level.add_cam_effector(ce)	                  
+    --set_postprocess ("scripts\\prison_1.ltx")
+end
+
+function cit_wake_scene3(npc)
+    level.enable_input()
+    db.actor:restore_weapon()
+end
+
+
 -------------------------------------------------------------------------------------
 -- Функции для работы с вертолётами
 -------------------------------------------------------------------------------------

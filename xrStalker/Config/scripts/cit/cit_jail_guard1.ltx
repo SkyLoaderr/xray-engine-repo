@@ -61,4 +61,11 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting
 [walker@guard2]
 path_walk           = cit_jail_guard1_walk
 path_look           = cit_jail_guard1_look
+on_timer            = 10000 | remark@sleep
+combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+
+[remark@sleep]
+no_move             = true
+no_rotate           = true
+anim                = sleep_sit
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}

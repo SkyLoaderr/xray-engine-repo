@@ -6,9 +6,14 @@ combat_ignore       = combat_ignore
 ;--- ждем пока актер проснется
 ;-----------------------------------------------------------------------------------------------------------
 [remark@wait_actor_wake]
-anim                = sit_knee
+anim                = doctor_wakeup
 target              = actor
-on_info             = {+cit_jail_actor_wake} remark@talk_to_actor
+on_timer            = 15000 | remark@shake_actor
+combat_ignore_cond  = always
+
+[remark@shake_actor]
+anim                = wait
+on_timer            = 10000 | remark@talk_to_actor %+cit_jail_actor_wake%
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -26,7 +31,8 @@ combat_ignore_cond  = always
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_guard1]
 anim                = wait
-target              = 1201 ; guard1
+;target              = 1201 ; guard1
+target              = actor
 on_info             = {+cit_jail_guard2_talk_to_doctor} remark@look_at_guard2
 combat_ignore_cond  = always
 
