@@ -712,13 +712,14 @@ function rostok_gulag_inactive(actor, npc, gname)
 	end
 	
 	local val = 0
-	
+	printf("gulag name",gname)
 	for k,v in pairs(xr_gulag.fraction[gname].Object) do
 		if v:alive() and
-		   not(is_heavy_wounded_by_id(v:id()) or
-		       is_psy_wounded_by_id(v:id()))
+		   not(xr_wounded.is_heavy_wounded_by_id(v:id()) or
+		       xr_wounded.is_psy_wounded_by_id(v:id()))
 		then
 			val = val + 1
+			printf("value",val)	
 		end
 	end
 	if val == 0 then 
