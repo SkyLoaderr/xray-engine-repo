@@ -1,0 +1,11 @@
+    <article id="sar_command_center_info" name="monolith_commnad_center" article_type="task" group="monolith_commnad_center">
+        <text>sar_command_center_text</text>
+    </article>
+
+	<article id="sar_monolith_call_info" name="sar_monolith_call" article_type="task" group="sar_monolith_call">
+        <text>sar_monolith_call_text</text>
+    </article>
+    
+    <article id="zones_mystery" name="zones_mystery_lab" article_type="task" group="zones_mystery_lab">
+        <text>zones_mystery_text</text>
+    </article>
