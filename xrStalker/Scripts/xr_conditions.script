@@ -704,6 +704,30 @@ function is_wfx_playing (actor, npc)
 end
 
 -------------------------------------------------------------------------------------
+-- Special for rostok
+-------------------------------------------------------------------------------------
+function rostok_gulag_inactive(actor, npc, gname)
+	if xr_gulag.fraction[gname] == nil then
+		return nil
+	end
+	
+	local val = 0
+	
+	for k,v in pairs(xr_gulag.fraction[gname].Object) do
+		if v:alive() and
+		   not(is_heavy_wounded_by_id(v:id()) or
+		       is_psy_wounded_by_id(v:id()))
+		then
+			val = val + 1
+		end
+	end
+	if val == 0 then 
+		return true
+	end
+	return false
+end
+
+-------------------------------------------------------------------------------------
 -- Special for Radar
 -------------------------------------------------------------------------------------
 function rad_pass_time(actor, npc)
