@@ -988,7 +988,8 @@ function load_ltx_antenna_patrol(gname, type)
                    "[walker@" .. gname .. "_wagon" .. i .. "]\n" ..
                    "path_walk = wagon_walk" .. i .. "\n" ..
                    "path_look = wagon_look" .. i .. "\n" ..
-					"danger=danger_condition@" .. gname .. "1\n"
+					"on_info = {+bar_deactivate_radar_done} walker@death\n" ..
+					"danger=danger_condition@" .. gname .. "\n"
     end
 
 
@@ -999,7 +1000,8 @@ function load_ltx_antenna_patrol(gname, type)
                    "[walker@" .. gname .. "_gates" .. i .. "]\n" ..
                    "path_walk = gates_walk" .. i .. "\n" ..
                    "path_look = gates_look" .. i .. "\n" ..
-					"danger=danger_condition@" .. gname .. "1\n" 
+					"on_info = {+bar_deactivate_radar_done} walker@death\n" ..
+					"danger=danger_condition@" .. gname .. "\n" 
     end
     for i = 1, 2 do
         res = res.."[logic@" .. gname .. "_hole" .. i .. "]\n" ..
@@ -1008,7 +1010,8 @@ function load_ltx_antenna_patrol(gname, type)
                    "[walker@" .. gname .. "_hole" .. i .. "]\n" ..
                    "path_walk = hole_walk" .. i .. "\n" ..
                    "path_look = hole_look" .. i .. "\n" ..
-					"danger=danger_condition@" .. gname .. "1\n" 
+					"on_info = {+bar_deactivate_radar_done} walker@death\n" ..
+					"danger=danger_condition@" .. gname .. "\n" 
     end
 
     for i = 1, 3 do
@@ -1017,7 +1020,8 @@ function load_ltx_antenna_patrol(gname, type)
 
                    "[kamp@" .. gname .. "_kamper" .. i .. "]\n" ..
                    "center_point = kamp\n"..
-				   "danger=danger_condition@" .. gname .. "1\n" 
+					"on_info = {+bar_deactivate_radar_done} walker@death \n" ..
+				   "danger=danger_condition@" .. gname .. "\n" 
     end
 		res = res..	"[danger_condition@" .. gname .. "]\n"..
 				"danger_expiration_time = 60000\n"..
@@ -1031,7 +1035,8 @@ function load_ltx_antenna_patrol(gname, type)
                    "[walker@" .. gname .. "_guard_wagon" .. i .. "]\n" ..
                    "path_walk = wagon_guard_walk" .. i .. "\n" ..
                    "path_look = wagon_guard_look" .. i .. "\n"..
-					"danger=danger_condition@" .. gname .. "1\n" 
+					"on_info = {+bar_deactivate_radar_done} walker@death \n" ..
+					"danger=danger_condition@" .. gname .. "\n" 
 
     end
 
@@ -1043,7 +1048,8 @@ function load_ltx_antenna_patrol(gname, type)
                    "[walker@" .. gname .. "_guard_gates" .. i .. "]\n" ..
                    "path_walk = gates_guard_walk" .. i .. "\n" ..
                    "path_look = gates_guard_look" .. i .. "\n"..
-				   "danger=danger_condition@" .. gname .. "1\n" 
+					"on_info = {+bar_deactivate_radar_done} walker@death \n" ..
+				   "danger=danger_condition@" .. gname .. "\n" 
     end
     for i = 1, 2 do
         res = res.."[logic@" .. gname .. "_guard_hole" .. i .. "]\n" ..
@@ -1052,11 +1058,19 @@ function load_ltx_antenna_patrol(gname, type)
                    "[walker@" .. gname .. "_guard_hole" .. i .. "]\n" ..
                    "path_walk = hole_guard_walk" .. i .. "\n" ..
                    "path_look = hole_guard_look" .. i .. "\n"..
-					"danger=danger_condition@" .. gname .. "1\n" 
+					"on_info = {+bar_deactivate_radar_done} walker@death \n" ..
+					"danger=danger_condition@" .. gname .. "\n" 
     end
 
-    return res
-end
+
+	res = res ..	"[walker@death]\n" ..
+					"path_walk = death\n" ..
+					"on_info = %=kill% \n" ..
+					"danger = danger_condition@death\n"..
+					"[danger_condition@death]\n" ..
+					"ignore_distance = 0"
+	return res
+end	
 
 
 --------------------------------------------------------------------------
