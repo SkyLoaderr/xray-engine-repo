@@ -399,7 +399,15 @@ animations = {
 						out		= { [0]	= "knopka_1" },
 						idle	= { [0]	= "knopka_2" },
 						rnd		= nil },
-
+						
+		doctor_wakeup = {prop	= { maxidle = 10,
+									sumidle = 20,
+									rnd = 100 },
+						into	= nil,
+						out		= { [0]	= {"prison_1"}},
+						idle	= { [0]	= "prison_0" },
+						rnd		= nil},
+						
 		warding		= {	prop	= { maxidle = 10,
 									sumidle = 10,
 									rnd = 0 },
