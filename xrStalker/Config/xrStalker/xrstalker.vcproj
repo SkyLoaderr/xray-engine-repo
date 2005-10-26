@@ -3232,6 +3232,9 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\Config\gameplay\tasks_sarcofag.xml">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
