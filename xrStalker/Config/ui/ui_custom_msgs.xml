@@ -30,5 +30,8 @@
 		<texture x="0" y="0" width="984" height="728">car\trabantnoise</texture>
 	</sleep_001>
 
+	<torch_night_vision  x="0" y="0" width="1024" height="768" stretch="1">
+		<texture>wpn\wpn_night</texture>
+	</torch_night_vision>
 
 </header>
