@@ -148,7 +148,7 @@
 	</character>
 
 	
-<!-- Darkvalley + X18 -->
+<!-- Darkvalley -->
 	<!-- Bandits -->	
 	<character id="val_bandit_borov">
 		<class>val_bandit_borov</class>
@@ -196,6 +196,13 @@
 	</character>
 	<character id="dar_corpse">
 		<class>dar_corpse</class>
+	</character>
+
+<!-- Darkvalley -->
+	<!-- Bandits -->	
+	<character id="cit_doctor">
+		<class>cit_doctor</class>
+		<specific_character>cit_doctor</specific_character>
 	</character>
 
 <!-- Bar + Rostok -->
