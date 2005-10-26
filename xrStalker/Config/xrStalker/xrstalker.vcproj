@@ -913,6 +913,22 @@
 							RelativePath=".\Config\text\rus\string_table_tips_radar.xml">
 						</File>
 					</Filter>
+					<Filter
+						Name="L12u_sarcofag"
+						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_storyline_info_sarcofag.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_mapspots_sarcofag.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tasks_sarcofag.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\rus\string_table_tips_sarcofag.xml">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="eng"
