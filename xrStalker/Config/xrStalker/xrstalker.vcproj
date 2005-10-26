@@ -220,9 +220,6 @@
 				Name="gameplay"
 				Filter="">
 				<File
-					RelativePath=".\Config\gameplay\character_dialogs.xml">
-				</File>
-				<File
 					RelativePath=".\Config\gameplay\character_items.xml">
 				</File>
 				<File
@@ -473,6 +470,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\gameplay\character_desc_darkvalley.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\character_desc_deadcity.xml">
 					</File>
 					<File
 						RelativePath=".\Config\gameplay\character_desc_escape.xml">
@@ -3235,9 +3235,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\Config\gameplay\tasks_sarcofag.xml">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
