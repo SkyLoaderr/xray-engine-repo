@@ -323,11 +323,11 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), m_pOurInvOwner->Name());
 	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
-
+/*
 	//добавить ответ собеседника в список, если он что-то сказал
 	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
 		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), m_pOthersInvOwner->Name());
-
+*/
 	//если диалог завершился, перейти в режим выбора темы
 	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
 }

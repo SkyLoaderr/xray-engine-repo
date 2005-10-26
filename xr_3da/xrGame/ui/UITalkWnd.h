@@ -54,7 +54,6 @@ public:
 	void				AddIconedMessage(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name);
 
 protected:
-
 	//диалог
 	void				InitTalkDialog();
 	void				AskQuestion();
@@ -62,9 +61,10 @@ protected:
 	void				SayPhrase(PHRASE_ID phrase_id);
 
 	// Функции добавления строк в листы вопросов и ответов
+public:
 	void				AddQuestion(LPCSTR text, int value = 0);
 	void				AddAnswer(LPCSTR text, const char* SpeakerName);
-
+protected:
 	//для режима торговли
 	CUITradeWnd*			UITradeWnd;
 	CUITalkDialogWnd*		UITalkDialogWnd;

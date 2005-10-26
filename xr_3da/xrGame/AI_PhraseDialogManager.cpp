@@ -19,21 +19,18 @@ CAI_PhraseDialogManager::CAI_PhraseDialogManager	(void)
 }
 
 CAI_PhraseDialogManager::~CAI_PhraseDialogManager	(void)
-{
-}
-
+{}
 
 //PhraseDialogManager
 void CAI_PhraseDialogManager::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
 {
-/*	if(	phrase_dialog->GetDialogType(eDialogTypeAI))
-		m_PendingDialogs.push_back(phrase_dialog);
-	else
-*/
-		AnswerPhrase(phrase_dialog);
-		
+	AnswerPhrase(phrase_dialog);
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }
+#include "uigamesp.h"
+#include "hudmanager.h"
+#include "level.h"
+#include "ui/UItalkWnd.h"
 
 void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 {
@@ -71,36 +68,21 @@ void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 		
 		phrase_num = phrases[Random.randI(0, phrases.size())];
 
-		CPhraseDialogManager::SayPhrase(phrase_dialog, 
-			phrase_dialog->PhraseList()[phrase_num]->GetIndex());
+		PHRASE_ID _id = phrase_dialog->PhraseList()[phrase_num]->GetIndex();
+		
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		pGameSP->TalkMenu->AddAnswer(phrase_dialog->GetPhraseText(_id), pInvOwner->Name());
+
+		CPhraseDialogManager::SayPhrase(phrase_dialog, _id);
 
 	}
 }
 
-bool CAI_PhraseDialogManager::NeedAnswerOnPending		()
-{
-	return !m_PendingDialogs.empty();
-}
-
-void CAI_PhraseDialogManager::AnswerOnPending			()
-{
-	for(DIALOG_SHARED_IT it = m_PendingDialogs.begin();
-		 m_PendingDialogs.end() != it; it++)
-	{
-		AnswerPhrase(*it);
-	}
-	m_PendingDialogs.clear();
-}
 
 
 void CAI_PhraseDialogManager::SetStartDialog(PHRASE_DIALOG_ID phrase_dialog)
 {
 	m_sStartDialog = phrase_dialog;
-
-#ifdef _DEBUG
-	//CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
-	//Msg("[PhraseDialogManager] %s set start dialog %s",pOwner->Name(), *m_sStartDialog);
-#endif
 }
 
 void CAI_PhraseDialogManager::SetDefaultStartDialog(PHRASE_DIALOG_ID phrase_dialog)
@@ -111,12 +93,6 @@ void CAI_PhraseDialogManager::SetDefaultStartDialog(PHRASE_DIALOG_ID phrase_dial
 void CAI_PhraseDialogManager::RestoreDefaultStartDialog()
 {
 	m_sStartDialog = m_sDefaultStartDialog;
-
-#ifdef _DEBUG
-	//CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
-	//Msg("[PhraseDialogManager] %s restore default start dialog %s",pOwner->Name(), *m_sStartDialog);
-#endif
-
 }
 
 

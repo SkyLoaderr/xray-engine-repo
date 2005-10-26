@@ -102,6 +102,11 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 
 	CPhrase* last_phrase = phrase_vertex->data();
 
+	//вызвать скриптовую присоединенную функцию 
+	//активируется после сказанной фразы
+	//первый параметр - тот кто говорит фразу, второй - тот кто слушает
+	last_phrase->m_PhraseScript.Action(pSpeakerGO1, pSpeakerGO2, *phrase_dialog->m_DialogId, (int)phrase_id);
+
 	//больше нет фраз, чтоб говорить
 	phrase_dialog->m_PhraseVector.clear();
 	if(phrase_vertex->edges().empty())
@@ -139,10 +144,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 				 phrase_dialog->m_PhraseVector.end(), PhraseGoodwillPred);
 	}
 
-	//вызвать скриптовую присоединенную функцию 
-	//активируется после сказанной фразы
-	//первый параметр - тот кто говорит фразу, второй - тот кто слушает
-	last_phrase->m_PhraseScript.Action(pSpeakerGO1, pSpeakerGO2, *phrase_dialog->m_DialogId, (int)phrase_id);
+
 
 	//сообщить CDialogManager, что сказана фраза
 	//и ожидается ответ

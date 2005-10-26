@@ -189,14 +189,3 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject*
 		lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
 	}
 }
-/*
-LPCSTR  CPhraseScript::Text		(LPCSTR original_text, const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
-{
-	if(NULL == *m_sScriptTextFunc) return NULL;
-
-	luabind::functor<LPCSTR>	lua_function;
-	bool functor_exists = ai().script_engine().functor(*m_sScriptTextFunc ,lua_function);
-	THROW3(functor_exists, "Cannot find phrase dialog text script function", *m_sScriptTextFunc);
-	return lua_function		(original_text, pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
-}
-*/

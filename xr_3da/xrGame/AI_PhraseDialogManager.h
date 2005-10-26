@@ -22,8 +22,6 @@ public:
 	virtual void UpdateAvailableDialogs	(CPhraseDialogManager* partner);
 	virtual void AnswerPhrase			(DIALOG_SHARED_PTR& phrase_dialog);
 
-	virtual bool NeedAnswerOnPending		();
-	virtual void AnswerOnPending			();
 
 	virtual void				SetStartDialog				(PHRASE_DIALOG_ID phrase_dialog);
 	virtual void				SetDefaultStartDialog		(PHRASE_DIALOG_ID phrase_dialog);
