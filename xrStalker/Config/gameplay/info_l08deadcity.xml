@@ -3,6 +3,7 @@
     <info_portion id="cit_jail_door_opened"></info_portion>
     <info_portion id="cit_actor_near_grates"></info_portion>
 
+    <info_portion id="cit_jail_start_waking"></info_portion>
     <info_portion id="cit_jail_actor_wake"></info_portion>
     <info_portion id="cit_jail_scene_start"></info_portion>
     <info_portion id="cit_jail_guard2_talk_to_guard1"></info_portion>
