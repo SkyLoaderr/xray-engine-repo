@@ -236,32 +236,36 @@ function init_help_wounded_medkit_dialog(dlg)
 	end
 end
 
-local call_count, max_count, select_count = 0,0,0
+local call_count, max_count = 0,0
 local tmp_tbl = {}
 function action_trade_info_init(npc, actor)
+	printf("TRADE INIT CALLED [%s] [%s]", tostring(call_count), tostring(max_count))
 	local value, number, max_number = 0,0,0
 	local k,v = 0,0
+	local max_count = 0
 	for k,v in pairs(phrase.trade_info) do
 		value, number = calculate_predicate(npc, v)
 		max_count = max_count + 1
 		if value == true then
 			-- выдаем сообщение, что мы готовы торговать этим товаром.
-			db.actor:give_talk_message(k, "ui\\ui_icons_task", 350,150,50,50,"iconed_answer_item")
+			--db.actor:give_talk_message(k, "ui\\ui_icons_task", 350,150,50,50,"iconed_answer_item")
 			tmp_tbl[max_count] = true
 		end
 	end
+	printf("TRADE INIT [%s] [%s]", tostring(call_count), tostring(max_count))
 end
 function precondition_trade_info(actor, npc)
 	call_count = call_count + 1
+	printf("TRADE Prec [%s] [%s]", tostring(call_count), tostring(max_count))
 	if call_count < max_count then
 		-- При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
 		-- всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
 		return tmp_tbl[call_count] == true
-	elseif call_count == max_count then
+	elseif call_count >= max_count then
 		-- Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
 		local return_value = tmp_tbl[call_count] == true
 		tmp_tbl = {}
-		call_count, max_count, select_count = 0,0,0
+		call_count, max_count = 0,0
 		return return_value
 	end
 	abort("Dialog manager error: unexpected programm point. Trade Info")
@@ -311,7 +315,7 @@ function precondition(npc, actor, tbl)
 		-- Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
 		local return_value = tmp_tbl[call_count] == true
 		tmp_tbl = {}
-		call_count, max_count, select_count = 0,0,0
+		call_count, max_count = 0,0
 		return return_value
 	end
 	abort("Dialog manager error: unexpected programm point")
