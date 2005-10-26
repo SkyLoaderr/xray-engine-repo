@@ -9,7 +9,7 @@
 #include "gameplay\tasks_radar.xml"
 #include "gameplay\tasks_aes.xml"
 #include "gameplay\tasks_yantar.xml"
-
+#include "gameplay\tasks_sarcofag.xml"
 
 	<game_task id="task1">
 		<title>Task 1. What a shame! It's failed!</title>
