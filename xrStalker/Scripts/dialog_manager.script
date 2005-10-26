@@ -247,7 +247,7 @@ function action_trade_info_init(npc, actor)
 		max_count = max_count + 1
 		if value == true then
 			-- выдаем сообщение, что мы готовы торговать этим товаром.
-			db.actor:give_talk_message(k, "ui\\ui_icons_task", 350,150,50,50)
+			db.actor:give_talk_message(k, "ui\\ui_icons_task", 350,150,50,50,nil)
 			tmp_tbl[max_count] = true
 		end
 	end
