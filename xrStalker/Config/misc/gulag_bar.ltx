@@ -1416,7 +1416,7 @@ meet = meet@ecolog_kruglov
 no_retreat = true
 radius = 0
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_professor_companion_1
+on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_professor_companion_1,{=rostok_gulag_inactive("bar_freedom_attack")} camper@bar_ecolog_professor_companion_1 
 on_info2 = {+bar_ecolog_see_chase -bar_ecolog_saw_chase} %=bar_ecolog_spam_5 +bar_ecolog_saw_chase%
 
 [camper@bar_ecolog_professor_companion_1]
@@ -1424,13 +1424,14 @@ path_walk = escape_2_walk
 path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
-on_signal = bandits_alive | camper@bar_rescue_research_hide_2 %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
+on_signal = bandits_alive | camper@bar_rescue_research_hide_2 %+bar_bandits_alive -bar_kruglov_follow_talk%     ; =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
 [camper@bar_rescue_research_hide_2]
 path_walk = escape_hide_2_walk
 path_look = escape_hide_2_look
 meet = meet@ecolog_kruglov
+def_state_moving = assault
 radius = 0
 on_info = {+bar_bandits_dead} camper@bar_ecolog_professor_companoin_2 
 
