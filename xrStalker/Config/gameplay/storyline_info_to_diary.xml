@@ -8,7 +8,7 @@
 #include "gameplay\storyline_info_military.xml"
 #include "gameplay\storyline_info_radar.xml"
 #include "gameplay\storyline_info_aes.xml"
-
+#include "gameplay\storyline_info_sarcofag.xml"
     
 
 </encyclopedia>
