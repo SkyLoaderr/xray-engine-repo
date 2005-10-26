@@ -415,7 +415,7 @@ bool CLevelNavigationGraph::valid			(LPCSTR file_name)
 	}
 
 	chunk->r		(&m_level_guid,sizeof(m_level_guid));
-	FS.r_close		(chunk);
+	chunk->close	();
 	if (m_level_guid != header().guid()) {
 		FS.r_close	(reader);
 		Msg			("! Sector graph doesn't correspond to the level graph : rebuilding...");
@@ -429,7 +429,7 @@ bool CLevelNavigationGraph::valid			(LPCSTR file_name)
 	}
 
 	load_data		(m_sectors,*chunk);
-	FS.r_close		(chunk);
+	chunk->close	();
 	
 	FS.r_close		(reader);
 	return			(true);

@@ -305,6 +305,7 @@ IC	void CAbstractGraph::load			(IReader &stream)
 			add_edge			(vertex_id0,vertex_id1,edge_weight);
 		}
 	}
+	chunk0->close				();
 }
 
 #undef TEMPLATE_SPECIALIZATION
