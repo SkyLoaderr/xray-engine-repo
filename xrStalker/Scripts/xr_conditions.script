@@ -706,14 +706,14 @@ end
 -------------------------------------------------------------------------------------
 -- Special for rostok
 -------------------------------------------------------------------------------------
-function rostok_gulag_inactive(actor, npc, gname)
-	if xr_gulag.fraction[gname] == nil then
+function rostok_gulag_inactive(actor, npc)
+	if xr_gulag.fraction["bar_freedom_attack"] == nil then
 		return nil
 	end
 	
 	local val = 0
 	printf("gulag name",gname)
-	for k,v in pairs(xr_gulag.fraction[gname].Object) do
+	for k,v in pairs(xr_gulag.fraction["bar_freedom_attack"].Object) do
 		if v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(v:id()) or
 		       xr_wounded.is_psy_wounded_by_id(v:id()))
