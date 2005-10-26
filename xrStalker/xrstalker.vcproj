@@ -2214,6 +2214,13 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="alife"
+				Filter="">
+				<File
+					RelativePath=".\Config\alife.ltx">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="scripts"
