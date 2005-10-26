@@ -73,7 +73,7 @@ function mob_camp:reset_scheme()
 	
 	-- check enemy transfering
 	if self.st.skip_transfer_enemy then
-		--self.object:skip_transfer_enemy(true)
+		self.object:skip_transfer_enemy(true)
 	end
 end
 
@@ -288,14 +288,14 @@ function mob_camp:deactivate()
 	if self.home_path then
 		db.camp_storage[self.st.home_point][self.cur_point_index+1] = false
 	end
-	--self.object:skip_transfer_enemy(false)
+	self.object:skip_transfer_enemy(false)
 end
 
 function mob_camp:net_destroy()
 	if self.home_path then
 		db.camp_storage[self.st.home_point][self.cur_point_index+1] = false
 	end
-	--self.object:skip_transfer_enemy(false)
+	self.object:skip_transfer_enemy(false)
 end
 
 ----------------------------------------------------------------------------------------------------
