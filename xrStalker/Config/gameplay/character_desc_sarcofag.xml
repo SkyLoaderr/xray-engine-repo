@@ -77,7 +77,6 @@
             wpn_desert_eagle \n
             ammo_11.43x23_fmj = 1 \n
             wpn_gauss \n
-            ammo_gauss = 1 \n
 #include "gameplay\character_items.xml"
         </supplies>
 					
