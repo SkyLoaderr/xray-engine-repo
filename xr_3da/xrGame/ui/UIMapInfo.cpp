@@ -98,6 +98,7 @@ void CUIMapInfo::InitMap(const char* map_name){
 		st->SetText(map_name);
 		st->SetWidth(m_view->GetDesiredChildWidth());
 		st->AdjustHeightToText();
+		st->SetAutoDelete(true);
 		m_view->AddWindow(st);
 	}
 
