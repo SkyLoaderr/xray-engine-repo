@@ -61,7 +61,7 @@ if type == "ds_kem1" then
 		table.insert(sj, t)	
        end
        
-       if type == "ptr2" then
+       if type == "ds_ptr2" then
 		t = { section = "logic@ds_ptr2_patrol1",
 			idle = 0,
 			prior = 1, state = {0},

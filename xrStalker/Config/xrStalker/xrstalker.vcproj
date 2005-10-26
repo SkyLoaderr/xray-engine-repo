@@ -1973,6 +1973,13 @@
 						RelativePath=".\Config\scripts\esc_novice_attacker3.ltx">
 					</File>
 				</Filter>
+				<Filter
+					Name="DarkScape"
+					Filter="">
+					<File
+						RelativePath=".\config\scripts\ds\heli.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Zones"
