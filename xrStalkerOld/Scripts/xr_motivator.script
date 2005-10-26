@@ -68,6 +68,8 @@ function motivator_binder:reinit()
 	
     --' Загрузка историй для лагеря.
 	xr_kamp.loadStories(self.object, char_ini)	
+	-- Загрузка информации на продажу.`
+	dialog_manager.load_trade_info(self.object)
 	--memusage.collect_info(self.object, "reinit_end")
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -179,7 +181,7 @@ function motivator_binder:stalker_death_impulse(victim, who)
 	victim:hit(h)
 	--]]
 	
-	local actor_pos = utils.vector_copy_by_val(who:position())
+	local actor_pos = who:position()
 	local npc_pos = victim:position()
 
 	if actor_pos.y >= npc_pos.y - 3.0 then

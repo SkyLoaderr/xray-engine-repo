@@ -241,17 +241,14 @@ local call_count, max_count, select_count = 0,0,0
 local tmp_tbl = {}
 function action_trade_info_init(npc, actor)
 	local value, number, max_number = 0,0,0
-	for k,v in pairs(phrase.action_info) do
+	local k,v = 0,0
+	for k,v in pairs(phrase.trade_info) do
 		value, number = calculate_predicate(npc, v)
 		max_count = max_count + 1
 		if value == true then
-			if number > max_number then
-				max_number = number
-				tmp_tbl = {}
-			end
-			if number == max_number then
-				tmp_tbl[max_count] = true
-			end								
+			-- выдаем сообщение, что мы готовы торговать этим товаром.
+			db.actor:give_talk_message(k, "ui\\ui_icons_task", 350,150,50,50)
+			tmp_tbl[max_count] = true
 		end
 	end
 end
@@ -279,9 +276,6 @@ function precondition_cool_info(npc, actor)
 end
 function precondition_action_info(npc, actor)
 	return precondition(npc, actor, phrase.action_info)
-end
-function precondition_trade_info(npc, actor)
-	return precondition(npc, actor, phrase.trade_info)
 end
 function precondition_help_thanks(npc, actor)
 	return precondition(npc, actor, phrase.help_thanks)
@@ -395,4 +389,13 @@ function precondition_info_global(actor, npc)
 		return false
 	end
 	return true
+end
+
+
+
+
+
+-- Функция рандомной загрузки информации на продажу.
+-- Загружает в чувака на выбор 3-5 различных информаций из доступных ему.
+function load_trade_info(npc)
 end
