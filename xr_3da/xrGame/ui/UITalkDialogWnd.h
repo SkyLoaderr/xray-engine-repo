@@ -116,6 +116,6 @@ class CUIAnswerItemIconed :public CUIAnswerItem
 
 public:
 					CUIAnswerItemIconed		(CUIXml* xml_doc, LPCSTR path);
-	void			Init					(LPCSTR text, LPCSTR texture_name, Frect texture_rect);
+	void			Init					(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name);
 
 };

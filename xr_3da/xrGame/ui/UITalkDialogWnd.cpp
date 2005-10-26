@@ -162,9 +162,9 @@ void CUITalkDialogWnd::AddAnswer(const char* SpeakerName, const char* str, bool 
 	UIAnswersList->ScrollToEnd		();
 }
 
-void CUITalkDialogWnd::AddIconedAnswer(LPCSTR text, LPCSTR texture_name, Frect texture_rect)
+void CUITalkDialogWnd::AddIconedAnswer(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name)
 {
-	CUIAnswerItemIconed* itm				= xr_new<CUIAnswerItemIconed>(m_uiXml,"iconed_answer_item");
+	CUIAnswerItemIconed* itm				= xr_new<CUIAnswerItemIconed>(m_uiXml,templ_name);
 	itm->Init								(text, texture_name, texture_rect);
 	UIAnswersList->AddWindow				(itm);
 	UIAnswersList->ScrollToEnd				();

@@ -51,7 +51,7 @@ public:
 	void				InitOthersStartDialog();
 	virtual bool		IR_OnKeyboardPress(int dik);
 	void				SwitchToTrade();
-	void				AddIconedMessage(LPCSTR text, LPCSTR texture_name, Frect texture_rect);
+	void				AddIconedMessage(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name);
 
 protected:
 
