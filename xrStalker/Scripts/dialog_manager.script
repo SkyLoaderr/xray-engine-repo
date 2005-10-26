@@ -192,10 +192,9 @@ function init_trade_info_dialog(dlg)
 	end
 
 	local phr = dlg:AddPhrase("dm_general_trade_info",0,-1,-10000)
+	phr = dlg:AddPhrase("dm_general_trade_info_caption",get_id("trade_info"),0,-10000)
 	local phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("dialog_manager.action_trade_info_init")
-	
-	dlg:AddPhrase("dm_general_trade_info_caption",get_id("trade_info"),0,-10000)
 
 	-- Изначально считаем что каждый сталкер знает ВСЮ информацию. Не забыть потом
 	-- вставить инфопоршн, что сталкер сам знает информацию
