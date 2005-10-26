@@ -3,7 +3,7 @@
 #include "night_vision_effector.h"
 #include "hudsound.h"
 
-#include "ui/uistatic.h"
+//#include "ui/uistatic.h"
 
 class CLAItem;
 class CMonsterEffector;
@@ -65,7 +65,7 @@ protected:
 	HUD_SOUND				m_NightVisionOnSnd;
 	HUD_SOUND				m_NightVisionOffSnd;
 	HUD_SOUND				m_NightVisionIdleSnd;
-	CUIStaticItem			m_NightVisionTexture;
+//	CUIStaticItem			m_NightVisionTexture;
 
 	float					m_NightVisionRechargeTime;
 	float					m_NightVisionRechargeTimeMin;

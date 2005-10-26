@@ -120,6 +120,8 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 	xr_delete(UIZoneMap);
 	xr_delete(m_artefactPanel);
 	xr_delete(m_pMoneyIndicator);
+	HUD_SOUND::DestroySound(m_contactSnd);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -188,10 +190,6 @@ void CUIMainIngameWnd::Init()
 	UIInfoMessages.SetVertFlip(true);
 
 		
-//	AttachChild(&UITextWound);
-//	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
-//						UIStaticWound.GetWndRect().top+40,
-//						30,30);
 
 	//Полоса прогресса здоровья
 	UIStaticHealth.AttachChild(&UIHealthBar);
@@ -216,24 +214,19 @@ void CUIMainIngameWnd::Init()
 	// Загружаем иконки 
 	AttachChild(&UIWeaponJammedIcon);
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
-///.UIWeaponJammedIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 	UIWeaponJammedIcon.ClipperOn();
 
 	AttachChild(&UIRadiaitionIcon);
 	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
-///.UIRadiaitionIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIWoundIcon);
 	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
-///.UIWoundIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIStarvationIcon);
 	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-///.UIStarvationIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIFatigueIcon);
 	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
-///.UIFatigueIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
 	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
@@ -278,7 +271,6 @@ void CUIMainIngameWnd::Init()
 		m_pMoneyIndicator = xr_new<CUIMoneyIndicator>();
 		AttachChild(m_pMoneyIndicator);
 		m_pMoneyIndicator->InitFromXML(uiXml);
-//		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
 
 		if (GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
 		{
@@ -302,10 +294,6 @@ void CUIMainIngameWnd::Init()
 			UITeam1Score.SetText("10");
 			UITeam2Score.SetText("10");
 
-//			UITeam1Sign.Show(false);
-//			UITeam2Sign.Show(false);
-//			UITeam1Score.Show(false);
-//			UITeam2Score.Show(false);
 		}
 
 		//  [7/27/2005]
@@ -319,21 +307,7 @@ void CUIMainIngameWnd::Init()
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(&uiXml);
 
-	// Claws animation
 	uiXml.SetLocalRoot(uiXml.GetRoot());
-	m_ClawsTexture.SetRect					(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-	m_ClawsAnimation.SetColorAnimation		("ui_claws_animation");
-	m_ClawsAnimation.SetColorToModify		(&m_ClawsTexture.GetColorRef());
-	m_ClawsAnimation.Cyclic					(false);
-	m_ClawsAnimation.Reset					();
-
-	AttachChild(&UIStaticBattery);
-	xml_init.InitStatic(uiXml, "battery_static", 0, &UIStaticBattery);
-	//Полоса прогресса армора
-	UIStaticBattery.AttachChild(&UIBatteryBar);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
-	ShowBattery(false);
-	SetBatteryCharge(1.0f);
 	
 	AttachChild(&UICarPanel);
 	xml_init.InitWindow(uiXml, "car_panel", 0, &UICarPanel);
@@ -358,11 +332,10 @@ void CUIMainIngameWnd::Init()
 	UIStaticDiskIO.SetOriginalRect			(0,0,32,32);
 	UIStaticDiskIO.SetStretchTexture		(TRUE);
 
-	LPCSTR		snd_new_contact				= uiXml.Read("new_contact_snd",0,NULL);
-	if(snd_new_contact)
-		m_contactsSnd.create					(TRUE,snd_new_contact);
 
+	HUD_SOUND::LoadSound("maingame_ui", "snd_new_contact"		, m_contactSnd		, TRUE, SOUND_TYPE_IDLE);
 }
+
 float UIStaticDiskIO_start_time = 0.0f;
 void CUIMainIngameWnd::Draw()
 {
@@ -395,7 +368,7 @@ void CUIMainIngameWnd::Draw()
 		UISndNoiseBar.SetProgressPos( (s16)progr );
 	}
 	
-
+/*
 	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
 	{
 		CUSTOM_TEXTURE& custom_texture = *it;
@@ -403,11 +376,10 @@ void CUIMainIngameWnd::Draw()
 		custom_texture.static_item->SetPos	(custom_texture.x1, custom_texture.y1);
 		custom_texture.static_item->SetRect	(0,0,custom_texture.x2-custom_texture.x1, custom_texture.y2-custom_texture.y1);
 		custom_texture.static_item->Render	();
-//.		custom_texture.static_item->Render(custom_texture.x1, custom_texture.y1, custom_texture.x2, custom_texture.y2);
 	}
 	m_CustomTextures.clear();
 
-	//отрендерить текстуру объектива снайперского прицела или бинокля
+*/	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon){
 		m_pWeapon->OnDrawUI();
 	}
@@ -416,9 +388,6 @@ void CUIMainIngameWnd::Draw()
 	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomHideCrosshair()){
 		zoom_mode = true;
 		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom()){
-//			m_pWeapon->ZoomTexture()->SetPos	(0,0);
-//			m_pWeapon->ZoomTexture()->SetRect	(0,0,UI_BASE_WIDTH, UI_BASE_HEIGHT);
-//			m_pWeapon->ZoomTexture()->Render	();
 			scope_mode = true;
 		}
 
@@ -430,8 +399,6 @@ void CUIMainIngameWnd::Draw()
 		zoom_mode = true;
 	}
 	
-//	if(!scope_mode)
-//	{
 		if(g_bShowHudInfo)
 		{
 			CUIWindow::Draw();
@@ -443,20 +410,6 @@ void CUIMainIngameWnd::Draw()
 			psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 		}
 		RenderQuickInfos();
-//	}
-
-	// Render claws
-	if (!m_ClawsAnimation.Done() && m_ClawsTexture.GetShader())
-	{
-		m_ClawsTexture.SetPos	(0, 0);
-		//m_ClawsTexture.Render	(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-		//m_ClawsTexture.SetRect	(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-
-		m_ClawsTexture.Render	(PI_DIV_3);
-///.m_ClawsTexture.SetScaleXY	(0.5f, 0.5f);
-	}
-
-//	DrawPdaMessages();
 
 #ifdef DEBUG 
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
@@ -765,11 +718,7 @@ void CUIMainIngameWnd::Update()
 		i = static_cast<EWarningIcons>(i + 1);
 	}
 
-	FadeUpdate(&UIInfoMessages);//, m_iInfoMessagesFade_mSec);
-
-//	UIContactsAnimation.Update();
-//	UIPdaOnline.SetTextColor(subst_alpha(UIPdaOnline.GetTextColor(), color_get_A(UIContactsAnimation.GetColor())));
-	m_ClawsAnimation.Update();
+	FadeUpdate(&UIInfoMessages);
 
 	UpdatePickUpItem();
 
@@ -1375,11 +1324,7 @@ void CUIMainIngameWnd::DisplayMoneyChange(shared_str deltaMoney)
 void CUIMainIngameWnd::DisplayMoneyBonus(shared_str bonus){
 	m_pMoneyIndicator->SetMoneyBonus(*bonus);
 }
-
-//-----------------------------------------------------------------------------/
-// Local compare functor 
-//-----------------------------------------------------------------------------/
-
+/*
 struct priority_greater : public std::binary_function<CUSTOM_TEXTURE, CUSTOM_TEXTURE, bool>
 {	// functor for operator>
 	bool operator()(const CUSTOM_TEXTURE& Left, const CUSTOM_TEXTURE& Right) const
@@ -1388,7 +1333,6 @@ struct priority_greater : public std::binary_function<CUSTOM_TEXTURE, CUSTOM_TEX
 	}
 } priority_greater_functor;
 
-//////////////////////////////////////////////////////////////////////////
 
 void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, float left, float top, float right, float bottom, int priority)
 {
@@ -1396,7 +1340,7 @@ void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, float left, float top,
 
 	std::sort(m_CustomTextures.begin(), m_CustomTextures.end(), priority_greater_functor);
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd)
@@ -1503,45 +1447,11 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 void CUIMainIngameWnd::AnimateContacts()
 {
 	UIPdaOnline.ResetAnimation	();
-	if(m_contactsSnd._handle() && NULL==m_contactsSnd._feedback()) //created and not played now
-		m_contactsSnd.play_at_pos			(0,Fvector().set(0,0,0),sm_2D);
+
+	HUD_SOUND::PlaySound	(m_contactSnd, Fvector().set(0,0,0), 0, true );
+
 }
 
-void CUIMainIngameWnd::AddMonsterClawsEffect(const shared_str &monsterName, const shared_str &textureName)
-{
-	if (m_ClawsTextures.find(monsterName) != m_ClawsTextures.end()) return;
-
-	// Check for texture existance
-	if (m_ClawsRepos.find(textureName) == m_ClawsRepos.end())
-	{
-		m_ClawsRepos[textureName].create("hud\\default", *textureName);
-	}
-
-	ref_shader *sh = &m_ClawsRepos[textureName];
-	// Add new texture
-	m_ClawsTextures[monsterName] = sh;
-}
-
-void CUIMainIngameWnd::PlayClawsAnimation(const shared_str &monsterName)
-{
-	MonsterClawsTextures_it it = m_ClawsTextures.find(monsterName);
-	R_ASSERT2(it != m_ClawsTextures.end(), "Monster claws texture for this monster doesn't exist");
-	
-	m_ClawsTexture.SetShader	(*it->second);
-	m_ClawsAnimation.Reset		();
-}
-
-void CUIMainIngameWnd::ShowBattery(bool on)
-{
-	UIStaticBattery.Show(on);
-}
-
-void CUIMainIngameWnd::SetBatteryCharge(float value)
-{
-	s16 pos = static_cast<s16>(value * 100);
-	clamp<s16>(pos, 0, 100);
-	UIBatteryBar.SetProgressPos(pos);
-}
 
 void CUIMainIngameWnd::SetPickUpItem	(CInventoryItem* PickUpItem)
 {

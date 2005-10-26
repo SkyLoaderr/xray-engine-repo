@@ -17,11 +17,9 @@
 #include "../weapon.h"
 #include "../alife_space.h"
 
-//#include "xrXMLParser.h"
 #include "UICarPanel.h"
 #include "UIMotionIcon.h"
-//////////////////////////////////////////////////////////////////////////
-
+#include "../hudsound.h"
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
 extern float			g_fHudAdjustValue;
@@ -32,8 +30,8 @@ class					CLAItem;
 class					CUIZoneMap;
 class					CUIArtefactPanel;
 class					CUIMoneyIndicator;
-//////////////////////////////////////////////////////////////////////////
 
+/*
 struct CUSTOM_TEXTURE
 {
 	CUSTOM_TEXTURE(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0)
@@ -51,9 +49,8 @@ struct CUSTOM_TEXTURE
 	int				texPriority;
 };
 
-//////////////////////////////////////////////////////////////////////////
-
 DEFINE_VECTOR(CUSTOM_TEXTURE, CUSTOM_TEXTURE_VECTOR, CUSTOM_TEXTURE_IT);
+*/
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -81,27 +78,25 @@ protected:
 	CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
 
 public:
-	void AddStaticItem					(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0);
+//	void AddStaticItem					(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0);
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
 	void AddInfoMessage	(LPCSTR message);
 
 protected:
-	void HideAll();
-	void ShowAll();
-	bool m_bShowHudCrosshair;
+	void				HideAll();
+	void				ShowAll();
+	bool				m_bShowHudCrosshair;
 	
 	CUIStatic			UIStaticDiskIO;
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
-	CUIStatic			UIStaticBattery;
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
 	CUIButton			UIStaticQuickHelp;
 	CUIStatic			UITextWound;
 	CUIProgressBar		UIHealthBar;
 	CUIProgressBar		UIArmorBar;
-	CUIProgressBar		UIBatteryBar;
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;	
 	CUIZoneMap*			UIZoneMap;
@@ -128,7 +123,7 @@ protected:
 	
 	//список текстур, задаваемых извне, которые будут отрисованы
 	//на текущем кадре
-	CUSTOM_TEXTURE_VECTOR m_CustomTextures;	
+//	CUSTOM_TEXTURE_VECTOR m_CustomTextures;	
 public:
 	// Изменить индикатор текущего количества денег
 	void				ChangeTotalMoneyIndicator(shared_str newMoneyString);
@@ -197,7 +192,8 @@ public:
 
 	//
 	void				AnimateContacts();
-	ref_sound			m_contactsSnd;
+	HUD_SOUND			m_contactSnd;
+
 	// Обработчик события получения новости
 	void				ReceiveNews	(GAME_NEWS_DATA &news);
 	
@@ -228,39 +224,19 @@ protected:
 	// Просчитать анимационные параметры фейда для айтемов листа
 	void				FadeUpdate(CUIListWnd *pWnd);//, int fadeDuration);
 
-private:
-	// Блок операций работы с текстурами-эффектами ударов когтей на экране(как в Doom 3)
-	DEF_MAP(ClawsTexturesRepository, shared_str /*texture name*/, ref_shader /*actually shader*/);
-	DEF_MAP(MonsterClawsTextures, shared_str /*monster name*/, ref_shader* /*effect texture*/);
-	ClawsTexturesRepository		m_ClawsRepos;
-	MonsterClawsTextures		m_ClawsTextures;
-
-	// Static item for display claws texture
-	CUIStaticItem				m_ClawsTexture;
-	// Animation engine for claws
-	CUIColorAnimatorWrapper		m_ClawsAnimation;
-
 public:
-	// Инициализировать текстуры когтей для монстров
-	void				AddMonsterClawsEffect(const shared_str &monsterName, const shared_str &textureName);
-	// Проиграть анимацию текстуры когтей монстра
-	void				PlayClawsAnimation(const shared_str &monsterName);
-	// Установить позицию заряда батарейки
-	void				SetBatteryCharge(float value);
-	// Показать/спрятать батарейку
-	void				ShowBattery(bool on);
 	CUICarPanel&		CarPanel(){return UICarPanel;};
 	CUIMotionIcon&		MotionIcon(){return UIMotionIcon;}
 protected:
 	CInventoryItem*		m_pPickUpItem;
 	CUIStatic			UIPickUpItemIcon;
 
-	float					m_iPickUpItemIconX;
-	float					m_iPickUpItemIconY;
-	float					m_iPickUpItemIconWidth;
-	float					m_iPickUpItemIconHeight;
+	float				m_iPickUpItemIconX;
+	float				m_iPickUpItemIconY;
+	float				m_iPickUpItemIconWidth;
+	float				m_iPickUpItemIconHeight;
 
-    void				UpdatePickUpItem();
+	void				UpdatePickUpItem();
 public:
 	void				SetPickUpItem	(CInventoryItem* PickUpItem);
 

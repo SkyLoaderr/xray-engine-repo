@@ -30,8 +30,8 @@ class CController : public CBaseMonster,
 
 	SAttackEffector		m_control_effector;
 
-	CUIStaticItem		m_UIControlFX;
-	CUIStaticItem		m_UIControlFX2;
+//	CUIStaticItem		m_UIControlFX;
+//	CUIStaticItem		m_UIControlFX2;
 
 	u32					time_control_hit_started;
 	bool				active_control_fx;

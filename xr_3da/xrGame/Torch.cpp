@@ -14,6 +14,7 @@
 #include "inventory.h"
 
 #include "ui/UIMainIngameWnd.h"
+#include "UIGameCustom.h"
 
 static const float		TIME_2_HIDE				= 5.f;
 static const float		TORCH_INERTION_CLAMP	= PI_DIV_6;
@@ -60,9 +61,9 @@ void CTorch::Load(LPCSTR section)
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
 	if(m_bNightVisionEnabled)
 	{
-		LPCSTR texture = pSettings->r_string(section,"night_vision_texture");
+/*		LPCSTR texture = pSettings->r_string(section,"night_vision_texture");
 		m_NightVisionTexture.Init(texture, "hud\\default", 0, 0, alNone);
-
+*/
 		// Load attack postprocess --------------------------------------------------------
 		LPCSTR ppi_section = pSettings->r_string(section,"night_vision_effector");
 		m_NightVisionEffector.Load(ppi_section);
@@ -111,6 +112,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
 				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
 			}
+			HUD().GetUI()->UIGame()->AddCustomStatic("torch_night_vision");
 		}
 	}
 	else
@@ -124,6 +126,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
 				HUD_SOUND::StopSound(m_NightVisionIdleSnd);
 			}
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("torch_night_vision");
 		}
 	}
 }
@@ -146,12 +149,13 @@ void CTorch::UpdateSwitchNightVision   ()
 		m_NightVisionChargeTime			+= Device.fTimeDelta;
 		clamp(m_NightVisionChargeTime, 0.f, m_NightVisionRechargeTime);
 	}
-
+/*
 	if(m_NightVisionEffector.IsActive())
 	{
 		if(m_NightVisionTexture.GetShader())
 			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_NightVisionTexture, 0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	}
+*/
 }
 
 float  CTorch::NightVisionBattery ()

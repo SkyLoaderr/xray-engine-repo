@@ -61,8 +61,8 @@ void CController::Load(LPCSTR section)
 	inherited::Load	(section);
 
 	// Load Control FX texture
-	m_UIControlFX.Init(pSettings->r_string(section, "control_fx_texture"), "hud\\default",0,0,0);
-	m_UIControlFX2.Init(pSettings->r_string(section, "control_fx_texture2"), "hud\\default",0,0,0);
+//	m_UIControlFX.Init(pSettings->r_string(section, "control_fx_texture"), "hud\\default",0,0,0);
+//	m_UIControlFX2.Init(pSettings->r_string(section, "control_fx_texture2"), "hud\\default",0,0,0);
 
 	m_max_controlled_number			= pSettings->r_u8(section,"Max_Controlled_Count");
 	m_controlled_objects.reserve	(m_max_controlled_number);
@@ -342,20 +342,23 @@ void CController::UpdateCL()
 
 		
 		if (percent < TEXTURE_SIZE_PERCENT ) {
+/*
 			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent);
 			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent);
 			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent);
 			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent);
 
 			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX2,x1,y1,x2,y2);
+/*
 		} else if (percent2 > 0){
+/*
 			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent2);
 			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent2);
 			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent2);
 			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent2);
 
 			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX,x1,y1,x2,y2);
-
+*/
 		} else active_control_fx = false;
 	}
 }
