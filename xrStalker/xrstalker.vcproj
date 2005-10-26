@@ -2649,6 +2649,9 @@
 							RelativePath=".\Scripts\mob_eluder.script">
 						</File>
 						<File
+							RelativePath=".\scripts\mob_home.script">
+						</File>
+						<File
 							RelativePath=".\scripts\mob_jump.script">
 						</File>
 						<File

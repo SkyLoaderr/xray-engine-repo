@@ -1,0 +1,68 @@
+----------------------------------------------------------------------------------------------------
+-- Mob Home
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Jim
+----------------------------------------------------------------------------------------------------
+
+class "mob_home"
+
+----------------------------------------------------------------------------------------------------
+-- CONSTRUCTION SCHEME
+----------------------------------------------------------------------------------------------------
+function mob_home:__init(obj, storage)
+	self.object = obj
+	self.st		= storage
+end
+
+----------------------------------------------------------------------------------------------------
+-- RESET SCHEME
+----------------------------------------------------------------------------------------------------
+function mob_home:reset_scheme()
+	self.object:set_home(self.st.home, self.st.home_min_radius, self.st.home_max_radius)
+end
+
+----------------------------------------------------------------------------------------------------
+-- UPDATE
+----------------------------------------------------------------------------------------------------
+
+function mob_home:update(delta)
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
+	end
+end
+
+function mob_home:deactivate()
+	self.object:remove_home()
+end
+
+----------------------------------------------------------------------------------------------------
+-- ADD_TO_BINDER
+----------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
+	local new_action = mob_home(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+
+----------------------------------------------------------------------------------------------------
+-- SET_SCHEME
+----------------------------------------------------------------------------------------------------
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local storage				= xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	storage.logic				= xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	
+	storage.home				= utils.cfg_get_string(ini, section, "path_home",			npc, false, gulag_name)
+	storage.home_min_radius		= utils.cfg_get_number(ini, section, "home_min_radius",		npc, false, 20)
+	storage.home_max_radius		= utils.cfg_get_number(ini, section, "home_max_radius",		npc, false, 40)
+	
+	-- check min and max radius
+	if	storage.home_min_radius > storage.home_max_radius then
+		_G.abort("Mob_Home : Home Min Radius MUST be < Max Radius")
+	end 
+	
+end
+
