@@ -720,7 +720,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		//m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
 		//if(m_parent_element)
-		global_transform.mulB_43(m_shell->mXFORM,mXFORM);
+		global_transform.mul_43(m_shell->mXFORM,mXFORM);
 		SetTransform(global_transform);
 
 		FillInterpolation();

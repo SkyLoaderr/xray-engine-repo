@@ -407,7 +407,7 @@ void CCar::UpdateCL				( )
 		
 		if(m_pPhysicsShell->isEnabled())
 		{
-			Owner()->XFORM().mulB_43	(XFORM(),m_sits_transforms[0]);
+			Owner()->XFORM().mul_43	(XFORM(),m_sits_transforms[0]);
 		}
 		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 		{
