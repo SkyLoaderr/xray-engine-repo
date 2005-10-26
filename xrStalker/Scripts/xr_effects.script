@@ -1195,13 +1195,12 @@ function cit_wake_scene1(npc)
     level.disable_input()
 	local ce = path_cam_effector("camera_effects\\prison_0.anm")
 	level.add_cam_effector(ce)	                  
-    --set_postprocess ("scripts\\prison_0.ltx")
+    set_postprocess ("scripts\\deadcity_wake.ltx")
 end
 
 function cit_wake_scene2(npc)
 	local ce = path_cam_effector("camera_effects\\prison_1.anm")
 	level.add_cam_effector(ce)	                  
-    --set_postprocess ("scripts\\prison_1.ltx")
 end
 
 function cit_wake_scene3(npc)
