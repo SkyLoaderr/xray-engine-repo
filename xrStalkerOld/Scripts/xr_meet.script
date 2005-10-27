@@ -276,6 +276,12 @@ function Cmeet_manager:process_use()
 	if is_talking and self.npc:position():distance_to_sqr(db.actor:position()) > 9 then
 		self.npc:stop_talk()
 	end
+
+	-- запрещаем юзать спящих
+	if xr_sleeper.is_npc_asleep(self.npc) then
+		self.npc:disable_talk()
+		return
+	end
 	
 	local t
 	if isWeapon(db.actor:active_item())	then

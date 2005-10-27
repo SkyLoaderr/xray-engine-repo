@@ -68,14 +68,14 @@ function notify_on_use(victim, who)
 			-- Юзание раненого
 			printf("use_no_wounded")
 			return
+		elseif xr_sleeper.is_npc_asleep(victim) then
+			-- Юзание спящего
+			printf("use_no_sleep")
+			xr_sound.set_sound_play(victim, "use_no_sleep")
 		elseif xr_meet.cannot_talk_by_weapon(victim) then
 			-- Необходимо спрятать оружие
 			printf("use_no_weapon")
 			xr_sound.set_sound_play(victim, "use_no_weapon")
-		elseif db.storage[victim:id()].state_mgr.animstate:state() == "sleep" then
-			-- Юзание спящего
-			printf("use_no_sleep")
-			xr_sound.set_sound_play(victim, "use_no_sleep")
 		elseif db.storage[victim:id()].active_scheme == "kamp" then
 			-- Юзание чувака в лагере
 			printf("use_no_kamp")
