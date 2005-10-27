@@ -38,6 +38,7 @@ class CUILine {
 	friend class CUILines;
 public:    
 	CUILine();
+	~CUILine();
 	CUILine(const CUILine& other);
 CUILine& operator=(const CUILine& other);
 	void AddSubLine(const xr_string& str, u32 color);
