@@ -220,6 +220,12 @@
 				Name="gameplay"
 				Filter="">
 				<File
+					RelativePath=".\Config\gameplay\character_drugs.xml">
+				</File>
+				<File
+					RelativePath=".\Config\gameplay\character_food.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\character_items.xml">
 				</File>
 				<File
