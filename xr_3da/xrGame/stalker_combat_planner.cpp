@@ -89,7 +89,7 @@ IC	void CStalkerCombatPlanner::update_cover	()
 		return;
 
 #if 1
-	if (last_cover && m_object->memory().visual().visible_now(m_object->memory().enemy().selected())) {
+	if (point && last_cover && m_object->memory().visual().visible_now(m_object->memory().enemy().selected())) {
 		if	(
 				CScriptActionPlanner::m_storage.property(eWorldPropertyInCover)
 				&&
