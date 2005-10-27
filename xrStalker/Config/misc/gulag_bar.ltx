@@ -1240,8 +1240,8 @@ use_wpn = true
 meet_dialog = bar_ecolog_dialog
 
 [meet@ecolog_kruglov]
-meet_state =  3|hello
-meet_state_wpn =  3|hello
+meet_state =  3|idle
+meet_state_wpn =  3|idle
 victim = actor
 victim_wpn = actor
 use = true
@@ -1399,7 +1399,7 @@ on_info = {+bar_kruglov_follow_actor} remark@kruglov_dialog_2
 
 [remark@kruglov_dialog_2]
 snd = rostok_kruglov_help_2
-anim = hello
+anim = idle
 no_move = true
 ;meet = meet@ecolog_kruglov
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
