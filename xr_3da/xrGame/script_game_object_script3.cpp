@@ -154,6 +154,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		.def("inventory_for_each",			&CScriptGameObject::ForEachInventoryItems)
 		.def("drop_item",					&CScriptGameObject::DropItem)
+		.def("drop_item_and_teleport",		&CScriptGameObject::DropItemAndTeleport)
 		.def("transfer_item",				&CScriptGameObject::TransferItem)
 		.def("transfer_money",				&CScriptGameObject::TransferMoney)
 		.def("money",						&CScriptGameObject::Money)

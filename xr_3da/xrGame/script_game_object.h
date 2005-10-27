@@ -229,6 +229,7 @@ public:
 			bool				IsTradeEnabled		();
 
 			void				DropItem			(CScriptGameObject* pItem);
+			void				DropItemAndTeleport	(CScriptGameObject* pItem, Fvector position);
 			void				ForEachInventoryItems(const luabind::functor<void> &functor);
 			void				TransferItem		(CScriptGameObject* pItem, CScriptGameObject* pForWho);
 			void				TransferMoney		(int money, CScriptGameObject* pForWho);
