@@ -13,7 +13,6 @@
 #include "../camerabase.h"
 #include "inventory.h"
 
-#include "ui/UIMainIngameWnd.h"
 #include "UIGameCustom.h"
 
 static const float		TIME_2_HIDE				= 5.f;
@@ -54,16 +53,12 @@ CTorch::~CTorch(void)
 void CTorch::Load(LPCSTR section) 
 {
 	inherited::Load			(section);
-//	m_pos					= pSettings->r_fvector3(section,"position");
 	light_trace_bone		= pSettings->r_string(section,"light_trace_bone");
 
 
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
 	if(m_bNightVisionEnabled)
 	{
-/*		LPCSTR texture = pSettings->r_string(section,"night_vision_texture");
-		m_NightVisionTexture.Init(texture, "hud\\default", 0, 0, alNone);
-*/
 		// Load attack postprocess --------------------------------------------------------
 		LPCSTR ppi_section = pSettings->r_string(section,"night_vision_effector");
 		m_NightVisionEffector.Load(ppi_section);
@@ -112,7 +107,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
 				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
 			}
-			HUD().GetUI()->UIGame()->AddCustomStatic("torch_night_vision");
+			HUD().GetUI()->UIGame()->AddCustomStatic("torch_night_vision", true);
 		}
 	}
 	else

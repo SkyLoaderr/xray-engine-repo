@@ -21,6 +21,8 @@
 #include "../../../game_object_space.h"
 #include "../../../ai_monster_space.h"
 #include "../control_animation_base.h"
+#include "../../../UIGameCustom.h"
+#include "../../../UI/UIStatic.h"
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power)
 {
@@ -66,7 +68,8 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 		// перевод из локальных координат в мировые вектора направления импульса
 		Fvector hit_dir;
-		XFORM().transform_dir(hit_dir,dir);
+//		XFORM().transform_dir(hit_dir,dir);
+		hit_dir = dir;
 		hit_dir.normalize();
 
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
@@ -85,6 +88,18 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		u_EventSend	(l_P);
 		
 		if (smart_cast<CActor *>(pEntityNC)) {
+			SDrawStaticStruct* s = HUD().GetUI()->UIGame()->AddCustomStatic("monster_claws", false);
+			s->m_endTime = Device.fTimeGlobal+3.0f;// 3sec
+			
+			float h1,p1;
+			Device.vCameraDirection.getHP	(h1,p1);
+
+			Fvector hd = hit_dir;
+			hd.mul(-1);
+			float d = -h1 + hd.getH();
+			s->wnd()->SetHeading	(d);
+			s->wnd()->SetHeadingPivot(Fvector2().set(256,512));
+
 			//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
 			SetAttackEffector									();
 		}

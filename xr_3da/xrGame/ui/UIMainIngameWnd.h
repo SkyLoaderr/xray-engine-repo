@@ -31,28 +31,6 @@ class					CUIZoneMap;
 class					CUIArtefactPanel;
 class					CUIMoneyIndicator;
 
-/*
-struct CUSTOM_TEXTURE
-{
-	CUSTOM_TEXTURE(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0)
-	{
-		static_item		= si;
-		x1				= left;
-		y1				= top;
-		x2				= right;
-		y2				= bottom;
-		texPriority		= priority;
-	};
-		
-	CUIStaticItem*	static_item;
-	float			x1, y1, x2, y2;
-	int				texPriority;
-};
-
-DEFINE_VECTOR(CUSTOM_TEXTURE, CUSTOM_TEXTURE_VECTOR, CUSTOM_TEXTURE_IT);
-*/
-
-//////////////////////////////////////////////////////////////////////////
 
 class CUIMainIngameWnd: public CUIWindow  
 {
@@ -62,7 +40,6 @@ public:
 
 	virtual void Init();
 	virtual void Draw();
-//	virtual void DrawPdaMessages();
 	virtual void Update();
 
 	bool OnKeyboardPress(int dik);
@@ -78,7 +55,6 @@ protected:
 	CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
 
 public:
-//	void AddStaticItem					(CUIStaticItem* si, float left, float top, float right, float bottom, int priority = 0);
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
 	void AddInfoMessage	(LPCSTR message);
@@ -121,9 +97,6 @@ protected:
 	CUIStatic			UIRankIndicator;
 	//  [7/27/2005]
 	
-	//список текстур, задаваемых извне, которые будут отрисованы
-	//на текущем кадре
-//	CUSTOM_TEXTURE_VECTOR m_CustomTextures;	
 public:
 	// Изменить индикатор текущего количества денег
 	void				ChangeTotalMoneyIndicator(shared_str newMoneyString);

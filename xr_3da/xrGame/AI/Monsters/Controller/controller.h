@@ -1,7 +1,6 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../anim_triple.h"
-#include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
 
@@ -29,9 +28,6 @@ class CController : public CBaseMonster,
 
 
 	SAttackEffector		m_control_effector;
-
-//	CUIStaticItem		m_UIControlFX;
-//	CUIStaticItem		m_UIControlFX2;
 
 	u32					time_control_hit_started;
 	bool				active_control_fx;

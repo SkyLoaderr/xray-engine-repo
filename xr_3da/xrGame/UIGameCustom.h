@@ -16,6 +16,23 @@ class CUIDialogWnd;
 class CUICaption;
 class CUIStatic;
 
+struct SDrawStaticStruct{
+	SDrawStaticStruct	();
+	CUIStatic*		m_static;
+	float			m_endTime;
+	shared_str		m_name;
+	void			Draw();
+	void			Update();
+	CUIStatic*		wnd()		{return m_static;}
+	bool			IsActual();
+	bool operator ==(LPCSTR str){
+		return (m_name == str);
+	}
+};
+
+
+typedef xr_vector<SDrawStaticStruct>	st_vec;
+
 class CUIGameCustom :public DLL_Pure, public ISheduled
 {
 	typedef ISheduled inherited;
@@ -28,7 +45,7 @@ protected:
 	CUICaption*			GameCaptions			() {return m_pgameCaptions;}
 	CUICaption*			m_pgameCaptions;
 	
-	xr_map<shared_str,CUIStatic*>	m_custom_statics;
+	st_vec										m_custom_statics;
 public:
 
 	virtual void		SetClGame				(game_cl_GameState* g){};
@@ -61,11 +78,11 @@ public:
 			void		CustomMessageOut		(LPCSTR id, LPCSTR msg, u32 color);
 			void		RemoveCustomMessage		(LPCSTR id);
 
-			void		AddCustomStatic			(LPCSTR id);
-			CUIStatic*	GetCustomStatic			(LPCSTR id);
-			void		RemoveCustomStatic		(LPCSTR id);
+			SDrawStaticStruct*	AddCustomStatic		(LPCSTR id, bool bSingleInstance);
+			SDrawStaticStruct*	GetCustomStatic		(LPCSTR id);
+			void				RemoveCustomStatic	(LPCSTR id);
 
-	virtual	shared_str	shedule_Name			() const		{ return shared_str("CUIGameCustom"); };
+	virtual	shared_str	shedule_Name				() const		{ return shared_str("CUIGameCustom"); };
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

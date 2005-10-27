@@ -11,7 +11,10 @@
 #include "../../../level.h"
 #include "../../../sound_player.h"
 #include "../../../ai_monster_space.h"
-#include "../../../ui/UIMainIngameWnd.h"
+//#include "../../../ui/UIMainIngameWnd.h"
+#include "../../../UIGameCustom.h"
+#include "../../../ui/UIStatic.h"
+
 #include "../monster_velocity_space.h"
 #include "../../../level_debug.h"
 #include "../../../game_object_space.h"
@@ -296,6 +299,8 @@ void CController::reinit()
 	control().path_builder().detail().add_velocity(MonsterMovement::eControllerVelocityParameterMoveBkwd,	CDetailPathManager::STravelParams(m_velocity_move_bkwd.velocity.linear,	m_velocity_move_bkwd.velocity.angular_path, m_velocity_move_bkwd.velocity.angular_real));
 
 	m_sndShockEffector		 = 0;
+	active_control_fx		 = false;
+
 }
 
 void CController::control_hit()
@@ -310,9 +315,10 @@ void CController::control_hit()
 	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
 
 	play_control_sound_hit		();
-
+/*
 	active_control_fx			= true;
 	time_control_hit_started	= Device.dwTimeGlobal;
+*/
 }
 
 #define TEXTURE_SIZE_PERCENT 2.f
@@ -342,24 +348,30 @@ void CController::UpdateCL()
 
 		
 		if (percent < TEXTURE_SIZE_PERCENT ) {
-/*
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("controller_fx2");
+			SDrawStaticStruct* s = HUD().GetUI()->UIGame()->AddCustomStatic("controller_fx", true);
+			
 			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent);
 			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent);
 			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent);
 			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent);
 
-			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX2,x1,y1,x2,y2);
-/*
+			s->wnd()->SetWndRect				(x1,y1,x2-x1,y2-y1);
 		} else if (percent2 > 0){
-/*
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("controller_fx");
+			SDrawStaticStruct* s = HUD().GetUI()->UIGame()->AddCustomStatic("controller_fx2", true);
+			
 			float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * percent2);
 			float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * percent2);
 			float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * percent2);
 			float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * percent2);
 
-			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_UIControlFX,x1,y1,x2,y2);
-*/
-		} else active_control_fx = false;
+			s->wnd()->SetWndRect				(x1,y1,x2-x1,y2-y1);
+		} else {
+			active_control_fx = false;
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("controller_fx");
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("controller_fx2");
+		}
 	}
 }
 
@@ -466,6 +478,10 @@ void CController::psy_fire()
 	if (!EnemyMan.get_enemy())	return;
 	
 	draw_fire_particles			();
+/*	
+	active_control_fx			= true;
+	time_control_hit_started	= Device.dwTimeGlobal;
+*/
 }
 
 bool CController::can_psy_fire()

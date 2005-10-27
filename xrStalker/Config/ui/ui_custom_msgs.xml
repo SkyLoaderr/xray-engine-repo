@@ -34,4 +34,16 @@
 		<texture>wpn\wpn_night</texture>
 	</torch_night_vision>
 
+	<controller_fx  x="0" y="0" width="1024" height="768" stretch="1">
+		<texture>act\act_controller_hit</texture>
+	</controller_fx>
+
+	<controller_fx2  x="0" y="0" width="1024" height="768" stretch="1">
+		<texture>act\act_controller_hit1</texture>
+	</controller_fx2>
+	
+	<monster_claws  x="512" y="150" width="512" height="512" alignment="c" stretch="1" heading="1" light_anim="monster_claws" la_alpha="1" la_cyclic="0">
+		<texture>controller\controller_blood_01</texture>
+	</monster_claws>
+	
 </header>

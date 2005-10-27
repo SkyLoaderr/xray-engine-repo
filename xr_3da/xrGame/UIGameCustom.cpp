@@ -8,6 +8,12 @@
 #include "object_broker.h"
 #include "string_table.h"
 
+struct predicate_remove_stat {
+	bool	operator() (SDrawStaticStruct& s) {
+		return ( !s.IsActual() );
+	}
+};
+
 CUIGameCustom::CUIGameCustom()
 {
 	uFlags					= 0;
@@ -35,19 +41,23 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 	inherited::shedule_Update(dt);
 }
 
+
 void CUIGameCustom::OnFrame() 
 {
-	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.begin();
+	st_vec::iterator it = m_custom_statics.begin();
 	for(;it!=m_custom_statics.end();++it)
-		it->second->Update();
+		(*it).Update();
+
+	it = remove_if(m_custom_statics.begin(), m_custom_statics.end(), predicate_remove_stat());
+	m_custom_statics.erase(it, m_custom_statics.end());
 }
 
 void CUIGameCustom::Render()
 {
 	GameCaptions()->Draw();
-	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.begin();
+	st_vec::iterator it = m_custom_statics.begin();
 	for(;it!=m_custom_statics.end();++it)
-		it->second->Draw();
+		(*it).Draw();
 
 }
 
@@ -107,39 +117,72 @@ void CUIGameCustom::RemoveCustomMessage		(LPCSTR id)
 	GameCaptions()->removeCustomMessage(id);
 }
 
-void CUIGameCustom::AddCustomStatic			(LPCSTR id)
+SDrawStaticStruct* CUIGameCustom::AddCustomStatic			(LPCSTR id, bool bSingleInstance)
 {
-	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.find(id);
-	if(it!=m_custom_statics.end())
-		RemoveCustomStatic	(id);
-
+	if(bSingleInstance){
+		st_vec::iterator it = std::find(m_custom_statics.begin(),m_custom_statics.end(), id);
+		if(it!=m_custom_statics.end())
+			return &(*it);
+	}
+	
 	CUIXml uiXml;
 	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "ui_custom_msgs.xml");
 	R_ASSERT3						(xml_result, "xml file not found", "ui_custom_msgs.xml");
+
 	CUIXmlInit xml_init;
-	CUIStatic* s					= xr_new<CUIStatic>();
-	m_custom_statics[id]			= s;
-	xml_init.InitStatic				(uiXml, id, 0, s);
+	m_custom_statics.push_back		(SDrawStaticStruct());
+	SDrawStaticStruct& sss			= m_custom_statics.back();
+
+	sss.m_static					= xr_new<CUIStatic>();
+	sss.m_name						= id;
+	xml_init.InitStatic				(uiXml, id, 0, sss.m_static);
+
+	return &sss;
 }
 
-CUIStatic* CUIGameCustom::GetCustomStatic		(LPCSTR id)
+SDrawStaticStruct* CUIGameCustom::GetCustomStatic		(LPCSTR id)
 {
-	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.find(id);
+	st_vec::iterator it = std::find(m_custom_statics.begin(),m_custom_statics.end(), id);
 	if(it!=m_custom_statics.end()){
-		return it->second;
+		return &(*it);
 	}
 	return NULL;
 }
 
 void CUIGameCustom::RemoveCustomStatic		(LPCSTR id)
 {
-	xr_map<shared_str,CUIStatic*>::iterator it = m_custom_statics.find(id);
+	st_vec::iterator it = std::find(m_custom_statics.begin(),m_custom_statics.end(), id);
 	if(it!=m_custom_statics.end()){
-		xr_delete(it->second);
+		xr_delete((*it).m_static);
 		m_custom_statics.erase(it);
 	}
 }
 
+SDrawStaticStruct::SDrawStaticStruct	()
+{
+	m_static	= NULL;
+	m_endTime	= -1.0f;	
+}
+
+bool SDrawStaticStruct::IsActual()
+{
+	if(m_endTime<0) return true;
+	return Device.fTimeGlobal < m_endTime;
+}
+
+void SDrawStaticStruct::Draw()
+{
+	if(m_static)
+		m_static->Draw();
+}
+
+void SDrawStaticStruct::Update()
+{
+	if(!IsActual())	
+		xr_delete(m_static);
+	else
+		m_static->Update();
+}
 
 #include "script_space.h"
 using namespace luabind;
@@ -153,6 +196,10 @@ void CUIGameCustom::script_register(lua_State *L)
 {
 	module(L)
 		[
+			class_< SDrawStaticStruct >("SDrawStaticStruct")
+			.def_readwrite("m_endTime",		&SDrawStaticStruct::m_endTime)
+			.def("wnd",					&SDrawStaticStruct::wnd),
+
 			class_< CUIGameCustom >("CUIGameCustom")
 			.def("AddDialogToRender",		&CUIGameCustom::AddDialogToRender)
 			.def("RemoveDialogToRender",	&CUIGameCustom::RemoveDialogToRender)
