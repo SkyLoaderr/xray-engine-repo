@@ -15,7 +15,7 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 ;--- слушаем, что нам говорит второй охранник
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_guard2_1]
-anim                = patrol
+anim                = wait
 target              = 1202 ; guard2
 on_info             = {+cit_jail_kill_actor} remark@kill_actor, {+cit_jail_doctor_out_start} walker@open_door
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
@@ -24,7 +24,7 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 ;--- если актер не послушался и не отошел к стене, убиваем его
 ;-----------------------------------------------------------------------------------------------------------
 [remark@kill_actor]
-anim                = patrol
+anim                = wait
 on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@open_door
 combat_ignore_cond  = {=check_fighting(1200)}
 
@@ -41,7 +41,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting
 ;--- смотрим за актером, шоб не сбежал
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_actor]
-anim                = threat
+anim                = wait
 target              = actor
 on_info             = {+cit_jail_guard1_close_door} walker@close_door
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
