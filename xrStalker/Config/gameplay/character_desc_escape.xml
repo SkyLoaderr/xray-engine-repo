@@ -213,8 +213,8 @@
 			wpn_pm \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
 					
@@ -247,8 +247,8 @@
 			device_torch \n
 			wpn_bm16 \n
 			ammo_12x70_buck \n
-#include "gameplay\character_items.xml"
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"					
 		</supplies>
 					
@@ -279,8 +279,8 @@
 			wpn_pb \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"	
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml"	\n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"		
 		</supplies>
 					
@@ -314,7 +314,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 					
@@ -345,7 +345,7 @@
 			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 			
@@ -378,7 +378,7 @@
 			device_torch \n
 			wpn_bm16 \n
 			ammo_12x70_buck \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 					
@@ -408,7 +408,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n		
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 
@@ -438,7 +438,7 @@
 			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 			
@@ -471,8 +471,8 @@
 			device_torch \n
 			wpn_bm16 \n
 			ammo_12x70_buck \n		
-#include "gameplay\character_items.xml"	
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml"	\n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 			
@@ -502,8 +502,8 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 			
@@ -534,8 +534,8 @@
 			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 			
@@ -567,7 +567,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
 			
@@ -630,7 +630,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
@@ -661,8 +661,8 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
 					
@@ -693,7 +693,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
@@ -724,8 +724,8 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
@@ -756,7 +756,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
@@ -787,7 +787,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
@@ -818,7 +818,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
@@ -849,7 +849,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>	
 					
@@ -880,7 +880,7 @@
 			wpn_ak74 = 1, silencer \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 					
@@ -911,7 +911,7 @@
 			wpn_ak74 = 1, silencer \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 					
