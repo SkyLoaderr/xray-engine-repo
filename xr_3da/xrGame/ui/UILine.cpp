@@ -23,7 +23,7 @@ CUIColorAnimatorWrapper CUILine::m_animation;
 	};
 	xr_vector<DBGList>	dbg_list_lines;
 	void dump_list_lines(){
-		Msg("------Total  wnds %d",dbg_list_lines.size());
+		Msg("------Total  Lines %d",dbg_list_lines.size());
 		xr_vector<DBGList>::iterator _it = dbg_list_lines.begin();
 		for(;_it!=dbg_list_lines.end();++_it)
 			Msg("--leak detected ---- Line = %d",(*_it).num);
