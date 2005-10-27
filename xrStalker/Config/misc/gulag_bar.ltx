@@ -1445,7 +1445,25 @@ path_look = escape_hide_2_look
 meet = meet@ecolog_kruglov
 def_state_moving = assault
 radius = 0
-on_info = {+bar_bandits_dead} camper@bar_ecolog_professor_companoin_2 
+on_info = {+bar_bandits_dead} camper@bar_ecolog_professor_companoin_2a
+
+[camper@bar_ecolog_professor_companoin_2a]
+path_walk = escape_3a_walk
+path_look = escape_look
+radius = 0
+no_retreat = true
+on_signal = ambush | camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk%
+on_info = {+rostok_spawn_naemniki} camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk%
+
+[camper@bar_rescue_research_ambush_hide]
+path_walk = escape_hide_3_walk
+path_look = escape_hide_3_look
+meet = meet@ecolog_kruglov
+def_state_moving = assault
+radius = 0
+on_info = {+bar_ambush_dead} camper@bar_ecolog_professor_companoin_2
+
+
 
 [camper@bar_ecolog_professor_companoin_2]
 path_walk = escape_3_walk
