@@ -56,7 +56,7 @@ fire_dispersion_base		= 0.2 	;угол (в градусах) базовой дисперсии оружия (оружия
 control_inertion_factor		= 1.15f
 
 ;отдача
-cam_relax_speed         	= 4;0.2	;скорость возврата в исходное положение
+cam_relax_speed         	= 4		;скорость возврата в исходное положение
 cam_dispersion          	= 0.2	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc			= 0.1	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac			= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
@@ -89,7 +89,7 @@ PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
 
 ; ttc
-hit_power                	= 89
+hit_power                	= 145
 hit_impulse		        = 105
 hit_type 			= fire_wound
 
@@ -98,7 +98,7 @@ bullet_speed			= 925	;начальная скорость пули
 rpm                      	= 860
 ; end ttc
 
-hud                      = wpn_fn2000_hud_new
+hud                      = wpn_fn2000_hud
 normal                   = 0, 1, 0
 position                 = -0.026, -0.132, 0.0
 orientation              = 0, 0, 0
@@ -166,7 +166,7 @@ grenade_class			= ammo_m209
 
 
 
-[wpn_fn2000_hud_new]
+[wpn_fn2000_hud]
 shell_point          	= 00.00, -0.03, 0.05
 shell_dir		 		= 0.0, 1.0, 0.0
 
