@@ -11078,6 +11078,12 @@
 						RelativePath=".\ui\UIStatsPlayerInfo.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIStatsPlayerList.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIStatsPlayerList.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIStatsWnd.cpp">
 					</File>
 					<File
