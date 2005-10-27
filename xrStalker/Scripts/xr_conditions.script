@@ -727,6 +727,13 @@ function rostok_gulag_inactive(actor, npc)
 	return false
 end
 
+function rostok_dist_to_actor_le(actor, npc, p)
+    local actor = db.actor
+    if actor then
+	    return npc:position():distance_to_sqr(actor:position()) < p[1]*p[1]
+	end
+	return false
+end
 -------------------------------------------------------------------------------------
 -- Special for Radar
 -------------------------------------------------------------------------------------
