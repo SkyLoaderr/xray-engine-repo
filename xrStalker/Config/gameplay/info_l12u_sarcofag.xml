@@ -4,6 +4,7 @@
 	<!-- Вскрытие управления -->
 	<info_portion id="sar_secret_door_find"></info_portion>
 	<info_portion id="sar_start_decoding"></info_portion>
+	<info_portion id="sar_access_decoding"></info_portion>
 	<info_portion id="sar_finish_decoding"></info_portion>
 	<info_portion id="sar_fail_decoding">
 		<disable>sar_start_decoding</disable>
