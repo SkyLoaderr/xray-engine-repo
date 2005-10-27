@@ -63,12 +63,8 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	stream						= FS.r_open(file_name);
 	load						(*stream,&guid);
 	FS.r_close					(stream);
-	
-	chunk						= chunk0->open_chunk(1);
-	if (chunk) {
-		chunk					= chunk0->open_chunk(1);
-		VERIFY					(chunk);
-	}
+
+	chunk0->close				();
 }
 
 void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
@@ -149,11 +145,19 @@ void CALifeSpawnRegistry::build_spawn_anomalies	()
 		if (anomaly) {
 			ALife::EAnomalousZoneType		type = anomaly->m_tAnomalyType;
 			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {
+#if 0
+				CALifeSpawnRegistry::REGISTRY::iterator		I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
+				if (m_artefact_anomaly_map.end() != I)
+					(*I).second.insert		(type);
+				else {
+					m_artefact_anomaly_map.insert(mk_pair(anomaly->m_cppArtefactSections[i],ZONE_TYPES()));
+#else
 				ALife::ITEM_SET_PAIR_IT		I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
 				if (m_artefact_anomaly_map.end() != I)
 					(*I).second.insert		(type);
 				else {
 					m_artefact_anomaly_map.insert(mk_pair(anomaly->m_cppArtefactSections[i],ALife::U32_SET()));
+#endif
 					I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
 					if ((*I).second.find(type) == (*I).second.end())
 						(*I).second.insert	(type);
