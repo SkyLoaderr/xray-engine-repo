@@ -184,11 +184,19 @@ void CAttachmentOwner::reattach_items		()
 		VERIFY (attachable_item);
 		attachable_item->set_bone_id		(smart_cast<CKinematics*>(game_object->Visual())->LL_BoneID(attachable_item->bone_name()));
 	}
-	//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//	this is commented by Dima, since there is no any check about 
+//	is there any other clients which need visual callback too
+//	if (m_attached_objects.empty())
+//		game_object->SetKinematicsCallback(false);
+//	else
+//		game_object->SetKinematicsCallback(true);
+
+//	
 	if (m_attached_objects.empty())
-		game_object->SetKinematicsCallback(false);
+		game_object->remove_visual_callback(AttachmentCallback);
 	else
-		game_object->SetKinematicsCallback(true);
+		game_object->add_visual_callback(AttachmentCallback);
 }
 
 CAttachableItem* CAttachmentOwner::attachedItem			(CLASS_ID clsid) const
