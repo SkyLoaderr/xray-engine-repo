@@ -48,8 +48,6 @@ function heli_binder:reinit()
 	self.object:set_callback( callback.helicopter_on_point, self.on_point, self )
 	self.object:set_callback( callback.helicopter_on_hit,   self.on_hit,   self )
 
-	self.st.heli_ltx = heli_ltx
-
 	self.st.combat = heli_combat.heli_combat( self.object, self.heliObject )
 
 	self.last_hit_snd_timeout = 0
