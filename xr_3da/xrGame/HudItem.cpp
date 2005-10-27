@@ -19,7 +19,7 @@
 CHudItem::CHudItem(void)
 {
 	m_pHUD				= NULL;
-	hud_mode			= FALSE;
+	SetHUDmode			(FALSE);
 	m_dwStateTime		= 0;
 	m_bRenderHud		= true;
 
@@ -68,13 +68,13 @@ void CHudItem::net_Destroy()
 	if(m_pHUD)
 		m_pHUD->net_DestroyHud	();
 
-	hud_mode			= FALSE;
+	SetHUDmode			(FALSE);
 	m_dwStateTime		= 0;
 }
 
 void CHudItem::PlaySound	(HUD_SOUND& hud_snd, const Fvector& position)
 {
-	HUD_SOUND::PlaySound	(hud_snd, position, object().H_Root(), !!hud_mode);
+	HUD_SOUND::PlaySound	(hud_snd, position, object().H_Root(), !!GetHUDmode());
 }
 
 BOOL  CHudItem::net_Spawn	(CSE_Abstract* DC) 
@@ -85,7 +85,7 @@ BOOL  CHudItem::net_Spawn	(CSE_Abstract* DC)
 void CHudItem::renderable_Render()
 {
 	UpdateXForm	();
-	BOOL _hud_render			= ::Render->get_HUD() && hud_mode;
+	BOOL _hud_render			= ::Render->get_HUD() && GetHUDmode();
 	if(_hud_render && !m_pHUD->IsHidden() && !item().IsHidden()){ 
 		// HUD render
 		if(m_bRenderHud){
@@ -148,20 +148,23 @@ bool CHudItem::Activate()
 		m_pHUD->Init();
 
 	Show();
+	OnActiveItem ();
 	return true;
 }
 
 void CHudItem::Deactivate() 
 {
 	Hide();
+	OnHiddenItem ();
 }
 
 
 
 void CHudItem::UpdateHudPosition	()
 {
-	if (m_pHUD && hud_mode){
-		if(item().IsHidden()) hud_mode = false;
+	if (m_pHUD && GetHUDmode()){
+		if(item().IsHidden()) 
+			SetHUDmode(FALSE);
 
 		Fmatrix							trans;
 
@@ -243,8 +246,8 @@ void CHudItem::UpdateCL()
 
 void CHudItem::OnH_A_Chield		()
 {
-	hud_mode = FALSE;
-	
+	SetHUDmode		(FALSE);
+
 	if (m_pHUD) {
 		if(Level().CurrentEntity() == object().H_Parent() && smart_cast<CActor*>(object().H_Parent()))
 			m_pHUD->Visible(true);
@@ -255,15 +258,12 @@ void CHudItem::OnH_A_Chield		()
 
 void CHudItem::OnH_B_Chield		()
 {
-	if (item().m_pInventory && item().m_pInventory->ActiveItem() == smart_cast<PIItem>(this))
-		OnActiveItem ();
-	else
-		OnHiddenItem ();
+	OnHiddenItem ();
 }
 
 void CHudItem::OnH_B_Independent	()
 {
-	hud_mode = FALSE;
+	SetHUDmode(FALSE);
 	if (m_pHUD)
 		m_pHUD->Visible(false);
 	

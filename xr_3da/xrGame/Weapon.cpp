@@ -150,7 +150,7 @@ void CWeapon::UpdateFireDependencies_internal()
 
 		UpdateXForm			();
 
-		if (hud_mode && (0!=H_Parent()))// && Local())
+		if (GetHUDmode() && (0!=H_Parent()))// && Local())
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
@@ -601,7 +601,7 @@ void CWeapon::OnH_B_Independent	()
 	SwitchState(eIdle);
 
 	m_strapped_mode				= false;
-	hud_mode					= FALSE;
+	SetHUDmode					(FALSE);
 	m_bZoomMode					= false;
 	UpdateXForm					();
 

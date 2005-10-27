@@ -161,7 +161,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	if(active_slot == u8(-1))
 		inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	else
-		inventory().SetActiveSlot(active_slot);
+		inventory().Activate(active_slot);
 
 	CharacterInfo().load(input_packet);
 	load_data		(m_game_name, input_packet);

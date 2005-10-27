@@ -503,33 +503,15 @@ bool CInventory::Activate(u32 slot, bool force)
 
 	R_ASSERT2(slot == NO_ACTIVE_SLOT || slot<m_slots.size(), "wrong slot number");
 
-//	Msg("CInventory::Activate slot [%d] frame =[%d]", slot, Device.dwFrame);
-#ifdef _DEBUG
-	//Msg("slot: %d active slot: %d next_active: %d", slot, m_iActiveSlot, m_iNextActiveSlot);
-//	if(slot != NO_ACTIVE_SLOT && m_slots[slot].m_pIItem)
-//		Msg("activating %s item", m_slots[slot].m_pIItem->cName());
-#endif
-
 	if(slot != NO_ACTIVE_SLOT && !m_slots[slot].m_bCanBeActivated) 
-	{
-#ifdef _DEBUG
-		//Msg("slot %d, cant be activaterd", slot);
-#endif
 		return false;
-	}
 	
 
 	if(m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&
 		m_iActiveSlot != NO_ACTIVE_SLOT &&
 		m_slots[m_iActiveSlot].m_pIItem &&
 		m_slots[m_iActiveSlot].m_pIItem->IsHiding()))
-	{
-#ifdef _DEBUG
-		//Msg("m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&	m_iActiveSlot != NO_ACTIVE_SLOT &&	m_slots[m_iActiveSlot].m_pIItem &&	m_slots[m_iActiveSlot].m_pIItem->IsHiding())");
-#endif
-
 		return false;
-	}
 
 	//активный слот не выбран
 	if(m_iActiveSlot == NO_ACTIVE_SLOT)
@@ -540,12 +522,7 @@ bool CInventory::Activate(u32 slot, bool force)
 			return true;
 		}
 		else 
-		{
-#ifdef _DEBUG
-			//Msg("m_slots[slot].m_pIItem == NULL");
-#endif
 			return false;
-		}
 	}
 	//активный слот задействован
 	else if(slot == NO_ACTIVE_SLOT || m_slots[slot].m_pIItem)
@@ -556,11 +533,6 @@ bool CInventory::Activate(u32 slot, bool force)
 	
 		return true;
 	}
-
-#ifdef _DEBUG
-	//Msg("Why where are here???");
-#endif
-
 	return false;
 }
 
@@ -696,9 +668,6 @@ void CInventory::Update()
 	{
 		bActiveSlotVisible = true;
 	}
-
-//	if (ActiveItem() && ActiveItem()->IsHidden())
-//		m_slots[m_iActiveSlot].m_pIItem = 0;
 
 	if(m_iNextActiveSlot != m_iActiveSlot && !bActiveSlotVisible)
 	{

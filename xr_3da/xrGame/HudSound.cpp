@@ -81,7 +81,7 @@ void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 void HUD_SOUND::PlaySound	(	HUD_SOUND&		hud_snd,
 								const Fvector&	position,
 								const CObject*	parent,
-								bool			hud_mode,
+								bool			b_hud_mode,
 								bool			looped)
 {
 	if (hud_snd.sounds.empty())	return;
@@ -89,7 +89,7 @@ void HUD_SOUND::PlaySound	(	HUD_SOUND&		hud_snd,
 	hud_snd.m_activeSnd			= NULL;
 	StopSound					(hud_snd);
 
-	u32 flags = hud_mode?sm_2D:0;
+	u32 flags = b_hud_mode?sm_2D:0;
 	if(looped)
 		flags |= sm_Looped;
 

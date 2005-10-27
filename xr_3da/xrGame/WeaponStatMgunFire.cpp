@@ -70,8 +70,8 @@ void CWeaponStatMgun::OnShot()
 	StartSmokeParticles		(m_fire_pos, zero_vel);
 	OnShellDrop				(m_fire_pos, zero_vel);
 
-	bool hud_mode =			(Level().CurrentEntity() == smart_cast<CObject*>(Owner()));
-	HUD_SOUND::PlaySound	(sndShot, m_fire_pos, Owner(), hud_mode);
+	bool b_hud_mode =			(Level().CurrentEntity() == smart_cast<CObject*>(Owner()));
+	HUD_SOUND::PlaySound	(sndShot, m_fire_pos, Owner(), b_hud_mode);
 
 	AddShotEffector			();
 	m_dAngle.set			(	::Random.randF(-fireDispersionBase,fireDispersionBase),

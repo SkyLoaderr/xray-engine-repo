@@ -47,7 +47,7 @@ void CMissile::reinit		()
 	m_dwDestroyTime		= 0xffffffff;
 	m_bPending			= false;
 	m_fake_missile		= NULL;
-	hud_mode			= FALSE;
+	SetHUDmode			(FALSE);
 }
 
 void CMissile::Load(LPCSTR section) 
@@ -620,7 +620,7 @@ void  CMissile::UpdateFireDependencies_internal	()
 
 		UpdateXForm			();
 		
-		if (hud_mode && !IsHidden()){
+		if (GetHUDmode() && !IsHidden()){
 			// 1st person view - skeletoned
 			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
 			VERIFY					(V);
