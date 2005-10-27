@@ -34,6 +34,9 @@ combat_ignore_cond  = {=check_fighting(1200)}
 [walker@open_door]
 path_walk           = cit_jail_guard1_button_press_walk
 path_look           = cit_jail_guard1_button_press_look
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 on_signal           = pressed | remark@look_at_actor %+cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
 
