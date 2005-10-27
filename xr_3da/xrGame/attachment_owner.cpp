@@ -192,11 +192,6 @@ void CAttachmentOwner::reattach_items		()
 //	else
 //		game_object->SetKinematicsCallback(true);
 
-//	
-	if (m_attached_objects.empty())
-		game_object->remove_visual_callback(AttachmentCallback);
-	else
-		game_object->add_visual_callback(AttachmentCallback);
 }
 
 CAttachableItem* CAttachmentOwner::attachedItem			(CLASS_ID clsid) const
