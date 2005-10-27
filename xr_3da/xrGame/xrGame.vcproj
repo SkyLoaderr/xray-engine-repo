@@ -10388,6 +10388,9 @@
 					RelativePath=".\ui\uiabstract.h">
 				</File>
 				<File
+					RelativePath=".\ui\UIMessages.h">
+				</File>
+				<File
 					RelativePath=".\ui\UIWndCallback.cpp">
 				</File>
 				<File
@@ -10401,9 +10404,6 @@
 					</File>
 					<File
 						RelativePath=".\ui\tinyxml.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIMessages.h">
 					</File>
 					<File
 						RelativePath=".\ui\UITextureMaster.cpp">
@@ -11049,6 +11049,12 @@
 				<Filter
 					Name="Stats"
 					Filter="">
+					<File
+						RelativePath=".\ui\UIStatsPlayerInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIStatsPlayerInfo.h">
+					</File>
 					<File
 						RelativePath=".\ui\UIStatsWnd.cpp">
 					</File>
