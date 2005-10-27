@@ -1383,7 +1383,8 @@ path_walk = professor_walk
 path_look = professor_look
 def_state_moving = assault
 meet = meet@ecolog_kruglov
-on_info = {+rostok_kruglov_remark_1} remark@kruglov_dialog_1
+on_info = {=rostok_dist_to_actor_le(5)} remark@kruglov_dialog_1
+;on_info = {+rostok_kruglov_remark_1} remark@kruglov_dialog_1
 
 [remark@kruglov_dialog_1]
 snd = rostok_kruglov_help_1
