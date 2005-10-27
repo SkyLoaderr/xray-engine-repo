@@ -1248,8 +1248,8 @@ use = true
 use_wpn = true
 
 [meet@ecolog_kruglov_1]
-meet_state =  20|hello
-meet_state_wpn =  20|hello
+meet_state =  6|hello
+meet_state_wpn =  6|hello
 victim = actor
 victim_wpn = actor
 use = true
@@ -1393,12 +1393,13 @@ path_walk = professor_walk
 path_look = professor_look
 def_state_moving = assault
 meet = meet@ecolog_kruglov
-on_info = {=rostok_dist_to_actor_le(5)} remark@kruglov_dialog_1
+on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_dialog_1
 ;on_info = {+rostok_kruglov_remark_1} remark@kruglov_dialog_1
 
 [remark@kruglov_dialog_1]
 snd = rostok_kruglov_help_1
 anim = hello
+target = actor
 meet = meet@ecolog_kruglov_1
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {+bar_kruglov_follow_actor} remark@kruglov_dialog_2
