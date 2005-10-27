@@ -2,6 +2,63 @@
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
 
+function disable_ui_elements(actor, npc, p)
+    local i, v = 0, 0
+    for i, v in pairs(p) do
+        if v == "all" then
+            db.actor:hide_weapon()
+            level.disable_input()
+            level.hide_indicators()
+            break
+        elseif v == "weapon" then
+            db.actor:hide_weapon()
+        elseif v == "input" then
+            level.disable_input()
+        elseif v == "hud" then
+            level.hide_indicators()
+        end
+    end
+end
+
+function enable_ui_elements(actor, npc, p)
+    local i, v = 0, 0
+    for i, v in pairs(p) do
+        if v == "all" then
+            level.show_indicators()
+            level.enable_input()
+            db.actor:restore_weapon()
+            break
+        elseif v == "hud" then
+            level.show_indicators()
+        elseif v == "input" then
+            level.enable_input()
+        elseif v == "weapon" then
+            db.actor:restore_weapon()
+        end
+    end
+end
+
+function disable_ui(actor, npc)
+    db.actor:hide_weapon()
+    level.disable_input()
+    level.hide_indicators()
+end
+
+function enable_ui(actor, npc)
+    level.show_indicators()
+    level.enable_input()
+    db.actor:restore_weapon()
+end
+
+function run_cam_effector(actor, npc, p)
+	local ce = path_cam_effector("camera_effects\\" .. p[1] .. ".anm")
+	level.add_cam_effector(ce)	                  
+end
+
+function run_postprocess(actor, npc, p)
+    set_postprocess("scripts\\" .. p[1] .. ".ltx")
+end
+
 --[[
 Дать сталкеру небольшой пинок. Например чтоб скинуть его с возвышения.
 параметры: actor, npc, p[direction,bone,power,impulse,reverse=false]
@@ -1190,46 +1247,6 @@ end
 ---------------------------------------------------------
 -- DeadCity
 ---------------------------------------------------------
--- сцена просыпания возле доктора
-function cit_punch_ambush(first_speaker, second_speaker)
-	--abort("KICK ASS !!!!")
-	--xr_punch.punch[first_speaker:id()] = second_speaker
-	db.storage[db.actor:id()].punch = {}
-	local st = db.storage[db.actor:id()].punch
-	st.dest_walk = patrol("val_ambush_dest_walk"):point(0)
-	st.dest_look = utils.vector_copy_by_val(
-		patrol("val_ambush_dest_look"):point(0)):sub(st.dest_walk)
-	st.info = { "val_prisoner_plr_captured", "val_prisoner_door_unlocked",
-		"val_prisoner_door_unlocked_demo", "val_sacrifice_start" }
-	st.dump_inventory_pos = patrol("val_ambush_inventory_dump_place"):point(0)
-	st.disable_input_tm = 15000
-
-	db.storage[second_speaker:id()].punch.enabled = true
-	-- xr_punch.put_actor_to_sleep_instantly()
-end
-
-function cit_wake_scene0(npc)
-    db.actor:hide_weapon()
-    level.disable_input()
-    level.hide_indicators()
-    set_postprocess("scripts\\deadcity_wake.ltx")
-end
-
-function cit_wake_scene1(npc)
-	local ce = path_cam_effector("camera_effects\\prison_0.anm")
-	level.add_cam_effector(ce)	                  
-end
-
-function cit_wake_scene2(npc)
-	local ce = path_cam_effector("camera_effects\\prison_1.anm")
-	level.add_cam_effector(ce)	                  
-end
-
-function cit_wake_scene3(npc)
-    level.show_indicators()
-    level.enable_input()
-    db.actor:restore_weapon()
-end
 
 
 -------------------------------------------------------------------------------------
@@ -1328,5 +1345,3 @@ end
 function rad_sos_spam(actor, npc)
 	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)
 end
-
-
