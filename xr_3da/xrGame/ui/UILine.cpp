@@ -65,7 +65,7 @@ CUILine::~CUILine(){
 
 CUILine::CUILine(const CUILine& other){
 	m_subLines = other.m_subLines;
-	xr_delete(m_tmpLine);
+	m_tmpLine = NULL;
 #ifdef LOG_ALL_LINES
 	ListLinesCount++;
 	dbg_list_lines.push_back(DBGList());
