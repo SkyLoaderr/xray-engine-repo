@@ -111,6 +111,12 @@
 	<info_portion id="aes2_monolit_teleport3"></info_portion>
 	<info_portion id="aes2_monolit_teleport4"></info_portion>
 	<info_portion id="aes2_monolit_teleport5"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready1"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready2"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready3"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready4"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready5"></info_portion>
+
 
 
    
