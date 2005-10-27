@@ -107,9 +107,15 @@
 	<info_portion id="rad_start_ambush_after_valley">
 	</info_portion>	
 	
+	
 	<info_portion id="rad_allow_suicide">
 	</info_portion>		
+
+	<info_portion id="rad_pre_start_monolith_vs_military">
+	</info_portion>		
 	
+	<info_portion id="rad_start_monolith_vs_military">
+	</info_portion>	
 </game_information_portions>
 
 
