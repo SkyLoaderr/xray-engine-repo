@@ -6,7 +6,7 @@
 #include "UIWindow.h"
 #include "../MainUI.h"
 
-//#define LOG_ALL_WNDS
+#define LOG_ALL_WNDS
 #ifdef LOG_ALL_WNDS
 	int ListWndCount = 0;
 	struct DBGList{
