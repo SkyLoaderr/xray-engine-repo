@@ -14,8 +14,8 @@ protected:
 	bool					active;
 
 public:
-				CTelekinesis			(){active=false;}
-	virtual ~CTelekinesis			(){}
+					CTelekinesis		();
+	virtual			~CTelekinesis		();
 
 			// allocates relevant TelekineticObject
 

@@ -3,6 +3,18 @@
 #include "../../entity_alive.h"
 #include "../../PhysicsShell.h"
 
+CTelekinesis::CTelekinesis()
+{
+	active=false;
+}
+CTelekinesis::~CTelekinesis()
+{
+	for (TELE_OBJECTS_IT it = objects.begin(); it != objects.end(); ++it) {
+		(*it)->release();
+		xr_delete(*it);
+	}
+}
+
 bool	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
 {
 	active = true;
@@ -27,11 +39,9 @@ void CTelekinesis::deactivate()
 
 	// отпустить все объекты
 	// 
-	for (u32 i = 0; i < objects.size(); i++) 
-	{
-
-		objects[i]->release();
-		xr_delete(objects[i]);
+	for (TELE_OBJECTS_IT it = objects.begin(); it != objects.end(); ++it) {
+		(*it)->release();
+		xr_delete(*it);
 	}
 
 	clear();
@@ -46,7 +56,6 @@ void CTelekinesis::clear_deactivate()
 	// 
 	for (u32 i = 0; i < objects.size(); i++) 
 	{
-
 		objects[i]->switch_state(TS_None);
 		xr_delete(objects[i]);
 	}
