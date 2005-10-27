@@ -24,6 +24,11 @@ game_cl_GameState::game_cl_GameState()
 
 game_cl_GameState::~game_cl_GameState()
 {
+	PLAYERS_MAP_IT I	= players.begin();
+	for(;I!=players.end(); ++I)
+		xr_delete(I->second);
+	players.clear();
+
 	shedule_unregister();
 }
 
