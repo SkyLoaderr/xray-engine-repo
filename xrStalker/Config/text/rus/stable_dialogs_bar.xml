@@ -1467,6 +1467,21 @@
     <string id="bar_ecolog_crush_professor_give_info_dp_14">
         <text>К сожалению, мне пора. Удачи.</text>
     </string>
+    <string id="bar_ecolog_crush_professor_start_101">
+        <text>Меченый, останови их! Они же нас прикончат!!!</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_1011">
+        <text>Посиди тихо, сейчас с ними разберемся.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_10111">
+        <text>Хорошо.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_1012">
+        <text>Опасности пока нет, можно идти дальше.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_start_10121">
+        <text>Идем скорее.</text>
+    </string>
     <string id="bar_ecolog_crush_professor_start_11">
         <text>Сталкер, помоги! Мы возвращались с Янтаря, когда нас сбили наемники. Говорят что им информация нужна, но я то знаю - перестреляют они нас. Выведи меня к Янтарю и я поделюсь с тобой тем что знаю о вашем "выжигателе мозгов", а бармен тебе за это хорошо заплатит.</text>
     </string>
@@ -1516,10 +1531,10 @@
         <text>Идем скорее.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_61">
-        <text>Меченый, слишком опасно идти дальше. Да и я хочу передохнуть чуток. Может пока сходишь разведаешь дальнейшую дорогу?</text>
+        <text>Меченый, останови их! Они же нас прикончат!!!</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_611">
-        <text>Хорошо, посиди тихо. Сейчас разведаю.</text>
+        <text>Cиди тихо. Cейчас с ними разберемся.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_6111">
         <text>Хорошо, я жду здесь.</text>

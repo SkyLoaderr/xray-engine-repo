@@ -176,6 +176,7 @@
 
 <info_portion id="bar_go_through_anomaly"></info_portion>
 <info_portion id="bar_fire_anomaly_forward"></info_portion>
+<info_portion id="bar_ambush_dead"></info_portion>
 <info_portion id="bar_bandits_dead"></info_portion>
 <info_portion id="bar_bandits_alive"></info_portion>
 <info_portion id="bar_rescue_research_chasing_end"></info_portion>
