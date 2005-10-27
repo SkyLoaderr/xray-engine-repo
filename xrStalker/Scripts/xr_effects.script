@@ -1210,6 +1210,7 @@ end
 function cit_wake_scene0(npc)
     db.actor:hide_weapon()
     level.disable_input()
+    level.hide_indicators()
     set_postprocess("scripts\\deadcity_wake.ltx")
 end
 
@@ -1224,6 +1225,7 @@ function cit_wake_scene2(npc)
 end
 
 function cit_wake_scene3(npc)
+    level.show_indicators()
     level.enable_input()
     db.actor:restore_weapon()
 end
