@@ -22,9 +22,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_lr300 \n
 			ammo_5.56x45_ss190 = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -50,9 +48,7 @@
 			ammo_9x19_fmj = 1 \n
 			wpn_abakan \n
 	    	ammo_5.45x39_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -78,9 +74,7 @@
 			ammo_9x19_pbp = 1 \n	
 			wpn_abakan \n
 	    	ammo_5.45x39_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -106,9 +100,7 @@
 			ammo_9x19_pbp = 1 \n	
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -135,9 +127,7 @@
 			ammo_9x19_fmj = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -163,9 +153,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -192,9 +180,7 @@
 			ammo_11.43x23_hydro  = 1 \n
 			wpn_lr300 = 1, scope \n
 			ammo_5.56x45_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -220,9 +206,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_abakan \n
 	    	ammo_5.45x39_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -248,9 +232,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_abakan \n
 	    	ammo_5.45x39_ap = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -276,9 +258,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_7h14 = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -305,9 +285,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -333,9 +311,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
-			medkit = 1, prob=0.7 \n
-			bandage = 1, prob=0.30 \n
-			antirad = 1, prob=0.1 \n
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -674,8 +650,7 @@
 			wpn_spas12 \n
 			ammo_12x76_zhekan = 1 \n
 			device_torch \n
-			medkit = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -703,8 +678,7 @@
 			wpn_ak74 = 1, scope \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-			medkit = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -732,8 +706,7 @@
 			wpn_l85 \n
 			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
-			medkit = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -761,8 +734,7 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
-			medkit = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -790,8 +762,7 @@
 			wpn_abakan = 1, scope silencer launcher\n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
-			medkit = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -820,8 +791,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_abakan = 1, scope silencer \n
 	    	ammo_5.45x39_ap = 1 \n
-			medkit = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -849,8 +819,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_lr300 = scope \n
 			ammo_5.56x45_ap \n
-			medkit = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -878,8 +847,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_l85 \n
 			ammo_5.56x45_ap \n
-			medkit = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -906,8 +874,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_ak74 = 1, scope silencer \n
 	    	ammo_5.45x39_ap = 1 \n
-			medkit = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -934,8 +901,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_abakan = 1, scope silencer \n
 			ammo_5.45x39_ap = 1 \n
-			medkit = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -965,7 +931,8 @@
 			wpn_abakan = 1, scope silencer \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -992,7 +959,8 @@
 			wpn_val \n
 			ammo_9x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1019,7 +987,8 @@
 			wpn_abakan = 1, scope silencer launcher cond=0.9 \n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1048,7 +1017,8 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1075,7 +1045,8 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_lr300 = 1, scope \n
 			ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1102,7 +1073,8 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_vintorez \n
 			ammo_9x39_ap = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1129,7 +1101,8 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1157,7 +1130,8 @@
 			ammo_9x39_pab9 = 1 \n
 			ammo_9x39_sp5 = 1 \n
 			ammo_vog-25 = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1185,7 +1159,8 @@
 			ammo_9x39_ap = 1 \n
 			ammo_9x39_sp5 = 1 \n
 			ammo_vog-25p = 2 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1211,7 +1186,8 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_abakan = 1, scope silencer launcher cond=0.9 \n
 	    	ammo_5.45x39_ap = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1237,11 +1213,8 @@
 			[spawn] \n
 			wpn_usp \n
 			ammo_11.43x23_fmj = 1 \n
-			medkit = 2 \n
-			bandage = 1 \n
-			antirad = 2 \n
-			bread_a = 1 \n
-			kolbasa_a = 1 \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -1267,11 +1240,8 @@
 			ammo_11.43x23_fmj = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
-			medkit = 2 \n
-			bandage = 1 \n
-			antirad = 2 \n
-			bread_a = 1 \n
-			kolbasa_a = 1 \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -1297,11 +1267,8 @@
 			ammo_11.43x23_fmj = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
-			medkit = 2 \n
-			bandage = 1 \n
-			antirad = 2 \n
-			bread_a = 1 \n
-			kolbasa_a = 1 \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
