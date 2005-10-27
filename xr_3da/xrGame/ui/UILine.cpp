@@ -76,8 +76,7 @@ CUILine::CUILine(const CUILine& other){
 
 CUILine& CUILine::operator =(const CUILine& other){
 	m_subLines = other.m_subLines;
-	m_tmpLine = NULL;
-
+	xr_delete(m_tmpLine);
 	return (*this);
 }
 
