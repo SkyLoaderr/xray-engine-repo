@@ -23,6 +23,9 @@
 	<info_portion id="sar_monolith_spawn6"></info_portion>
 	<info_portion id="sar_monolith_spawn7"></info_portion>
 	<info_portion id="sar_monolith_spawn8"></info_portion>
+	<info_portion id="sar_start_teleport"></info_portion>
+	<info_portion id="sar_end_teleport"></info_portion>
+	
 	
 	<!-- разрушение Монолита -->
 	<info_portion id="sar_monolith_generator_find"></info_portion>
