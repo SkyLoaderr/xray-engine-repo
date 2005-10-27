@@ -4,7 +4,7 @@ local func_sinus = 0
 local func_cosinus = 1
 local func_linear = 2
 
---function printf () end
+function printf () end
 
 
 class "PPData" (effector)
