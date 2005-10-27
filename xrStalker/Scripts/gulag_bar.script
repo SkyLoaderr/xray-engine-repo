@@ -611,7 +611,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper_5", 
 			idle = 0,
-			prior = 5, state = {0,1}, squad = squad, group = groups[0],
+			prior = 2, state = {0,1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
