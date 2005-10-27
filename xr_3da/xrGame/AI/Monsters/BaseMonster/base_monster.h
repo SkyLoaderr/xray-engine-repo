@@ -40,6 +40,8 @@ class CControlPathBuilderBase;
 class CControlDirectionBase;
 class CMonsterCoverManager;
 
+class CMonsterHome;
+
 class CBaseMonster : public CCustomMonster, public CStepManager
 {
 	typedef	CCustomMonster								inherited;
@@ -259,7 +261,10 @@ public:
 		eMonsterTypeOutdoor,
 	} m_monster_type;
 
-	
+	// -----------------------------------------------------------------------------
+
+	CMonsterHome			*Home;
+
 	//////////////////////////////////////////////////////////////////////////
 	// -----------------------------------------------------------------------------
 	// Special Services (refactoring needed)

@@ -12,6 +12,8 @@ enum EMonsterState {
 	eStateRest_Fun					= eStateRest | 3,
 	eStateRest_Sleep				= eStateRest | 4,
 	eStateRest_MoveToHomePoint		= eStateRest | 5,
+	eStateRest_WalkToCover			= eStateRest | 6,
+	eStateRest_LookOpenPlace		= eStateRest | 7,
 
 	// -------------------------------------------------------------
 
@@ -51,19 +53,30 @@ enum EMonsterState {
 	eStateAttackCamp_StealOut		= eStateAttack | 17,
 
 	eStateAttack_Psy				= eStateAttack | 18,
+	eStateAttack_MoveToHomePoint	= eStateAttack | 19,
+	eStateAttack_HomePoint_Hide		= eStateAttack | 20,
+	eStateAttack_HomePoint_Camp		= eStateAttack | 21,
+	eStateAttack_HomePoint_LookOpenPlace = eStateAttack | 22,
+
 	// -------------------------------------------------------------
 
 	eStatePanic						= eGlobalState << 4,
 	
 	eStatePanic_Run					= eStatePanic | 1,
 	eStatePanic_FaceUnprotectedArea = eStatePanic | 2,
+	eStatePanic_MoveToHomePoint		= eStatePanic | 3,
 	
+	eStatePanic_HomePoint_Hide			= eStatePanic | 4,		
+	eStatePanic_HomePoint_LookOpenPlace	= eStatePanic | 5,
+	eStatePanic_HomePoint_Camp			= eStatePanic | 6,
+
 	// -------------------------------------------------------------
 
 	eStateHitted					= eGlobalState << 5,
 	
 	eStateHitted_Hide				= eStateHitted | 1,
 	eStateHitted_MoveOut			= eStateHitted | 2,
+	eStateHitted_Home				= eStateHitted | 3,
 
 	// -------------------------------------------------------------
 
@@ -72,6 +85,7 @@ enum EMonsterState {
 	eStateHearDangerousSound_Hide			= eStateHearDangerousSound | 1,
 	eStateHearDangerousSound_FaceOpenPlace	= eStateHearDangerousSound | 2,
 	eStateHearDangerousSound_StandScared	= eStateHearDangerousSound | 3,
+	eStateHearDangerousSound_Home			= eStateHearDangerousSound | 4,
 	
 	// -------------------------------------------------------------
 
@@ -146,3 +160,4 @@ enum EMonsterState {
 };
 
 #define is_state(state, type) (((state & type) == type) && (state != eStateUnknown))
+

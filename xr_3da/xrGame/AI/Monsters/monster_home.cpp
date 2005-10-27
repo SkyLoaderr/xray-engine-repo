@@ -1,0 +1,90 @@
+#include "stdafx.h"
+#include "monster_home.h"
+#include "BaseMonster/base_monster.h"
+#include "../../ai_space.h"
+#include "../../patrol_path_storage.h"
+#include "../../patrol_path.h"
+#include "../../level_navigation_graph.h"
+#include "../../cover_point.h"
+#include "monster_cover_manager.h"
+
+void CMonsterHome::load(LPCSTR line)
+{
+	m_path			= 0;
+	m_radius_min	= 20.f;
+	m_radius_max	= 40.f;
+
+	if (m_object->spawn_ini() && m_object->spawn_ini()->section_exist(line)) {
+		m_path			= ai().patrol_paths().path(m_object->spawn_ini()->r_string(line,"path"));
+		if (m_object->spawn_ini()->line_exist(line,"radius_min"))
+			m_radius_min	= m_object->spawn_ini()->r_float(line,"radius_min");
+		if (m_object->spawn_ini()->line_exist(line,"radius_max"))
+			m_radius_max	= m_object->spawn_ini()->r_float(line,"radius_max");
+
+		VERIFY3(m_radius_max > m_radius_min, "Error: Wrong home point radius specified for monster ", *m_object->cName());
+	}
+}
+
+void CMonsterHome::setup(LPCSTR path_name, float min_radius, float max_radius)
+{
+	m_path			= ai().patrol_paths().path(path_name);
+	m_radius_min	= min_radius;
+	m_radius_max	= max_radius;
+}
+
+u32	CMonsterHome::get_place()
+{
+	VERIFY	(m_path);
+	u32		result = u32(-1);
+
+	//get_random_point
+	const CPatrolPath::CVertex *vertex = m_path->vertex(Random.randI(m_path->vertex_count()));
+	
+	//get_random node
+	m_object->control().path_builder().get_node_in_radius(vertex->data().level_vertex_id(), m_radius_min, m_radius_min + (m_radius_max - m_radius_min)/2, 5, result);
+	
+	// if node was not found - return vertex selected
+	if (result == u32(-1)) return vertex->data().level_vertex_id();
+
+	return result;
+}
+
+u32	CMonsterHome::get_place_in_cover()
+{
+	VERIFY	(m_path);
+
+	//get_random_point
+	const CPatrolPath::CVertex *vertex = m_path->vertex(Random.randI(m_path->vertex_count()));
+
+	// find cover
+	CCoverPoint *point = m_object->CoverMan->find_cover(vertex->data().position(), vertex->data().position(), m_radius_min, m_radius_min + (m_radius_max - m_radius_min)/2);
+	if (point) return point->level_vertex_id();
+
+	return u32(-1);
+}
+
+
+bool CMonsterHome::at_home()
+{
+	return at_home(m_object->Position());
+}
+
+bool CMonsterHome::at_home(const Fvector &pos)
+{
+	if (!m_path) return true;
+
+	// check every point and distance to it
+	for (u32 i=0; i<m_path->vertex_count(); i++) {
+		const CPatrolPath::CVertex *vertex = m_path->vertex(i);
+		float dist = pos.distance_to(ai().level_graph().vertex_position(vertex->data().level_vertex_id()));
+
+		if (dist < m_radius_max) return true;
+	}
+
+	return false;
+}
+
+void CMonsterHome::remove_home()
+{
+	m_path = 0;
+}

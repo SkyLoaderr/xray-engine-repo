@@ -76,7 +76,7 @@ void CStateMonsterRestFunAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterRestFunAbstract::check_start_conditions()
 {
-	return (object->CorpseMan.get_corpse() != 0);
+	return ((object->CorpseMan.get_corpse() != 0) && object->Home->at_home(object->CorpseMan.get_corpse()->Position()));
 }
 
 TEMPLATE_SPECIALIZATION

@@ -15,5 +15,8 @@ public:
 	// найти лучший ковер относительно "position"
 	CCoverPoint *find_cover				(const Fvector &position, float min_pos_distance, float	max_pos_distance, float deviation = 0.f);
 
+	// найти лучший ковер относительно "src_pos" и "dest_pos"
+	CCoverPoint *find_cover				(const Fvector &src_pos, const Fvector &dest_pos, float min_pos_distance, float	max_pos_distance, float deviation = 0.f);
+
 	void		less_cover_direction	(Fvector &dir);
 };

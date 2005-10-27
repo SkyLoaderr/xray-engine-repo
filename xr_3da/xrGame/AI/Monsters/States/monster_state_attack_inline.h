@@ -7,9 +7,12 @@
 #include "monster_state_find_enemy.h"
 #include "monster_state_steal.h"
 #include "monster_state_attack_camp.h"
+#include "monster_state_home_point_attack.h"
 
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
+
+
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -20,25 +23,27 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateAttack_Run,			xr_new<CStateMonsterAttackRun<_Object> >		(obj));
-	add_state	(eStateAttack_Melee,		xr_new<CStateMonsterAttackMelee<_Object> >		(obj));
-	add_state	(eStateAttack_RunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
-	add_state	(eStateAttack_RunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
-	add_state	(eStateAttack_FindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
-	add_state	(eStateAttack_Steal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
-	add_state	(eStateAttackCamp,			xr_new<CStateMonsterAttackCamp<_Object> >		(obj));	
+	add_state	(eStateAttack_Run,				xr_new<CStateMonsterAttackRun<_Object> >		(obj));
+	add_state	(eStateAttack_Melee,			xr_new<CStateMonsterAttackMelee<_Object> >		(obj));
+	add_state	(eStateAttack_RunAttack,		xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
+	add_state	(eStateAttack_RunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
+	add_state	(eStateAttack_FindEnemy,		xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
+	add_state	(eStateAttack_Steal,			xr_new<CStateMonsterSteal<_Object> >			(obj));	
+	add_state	(eStateAttackCamp,				xr_new<CStateMonsterAttackCamp<_Object> >		(obj));	
+	add_state	(eStateAttack_MoveToHomePoint,	xr_new<CStateMonsterAttackMoveToHomePoint<_Object> >(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj, state_ptr state_run, state_ptr state_melee) : inherited(obj)
 {
-	add_state	(eStateAttack_Run,			state_run);
-	add_state	(eStateAttack_Melee,		state_melee);
-	add_state	(eStateAttack_RunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
-	add_state	(eStateAttack_RunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
-	add_state	(eStateAttack_FindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
-	add_state	(eStateAttack_Steal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
-	add_state	(eStateAttackCamp,			xr_new<CStateMonsterAttackCamp<_Object> >		(obj));	
+	add_state	(eStateAttack_Run,				state_run);
+	add_state	(eStateAttack_Melee,			state_melee);
+	add_state	(eStateAttack_RunAttack,		xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
+	add_state	(eStateAttack_RunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
+	add_state	(eStateAttack_FindEnemy,		xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
+	add_state	(eStateAttack_Steal,			xr_new<CStateMonsterSteal<_Object> >			(obj));	
+	add_state	(eStateAttackCamp,				xr_new<CStateMonsterAttackCamp<_Object> >		(obj));	
+	add_state	(eStateAttack_MoveToHomePoint,	xr_new<CStateMonsterAttackMoveToHomePoint<_Object> >(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -64,7 +69,10 @@ void CStateMonsterAttackAbstract::execute()
 {
 	bool selected = false;
 	
-	if (check_steal_state()) {
+	if (check_home_point()) {
+		select_state	(eStateAttack_MoveToHomePoint);
+		selected		= true;
+	}else if (check_steal_state()) {
 		select_state	(eStateAttack_Steal);
 		selected		= true;
 	} else if (check_camp_state()) {
@@ -167,6 +175,17 @@ bool CStateMonsterAttackAbstract::check_run_attack_state()
 	return false;
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackAbstract::check_home_point()
+{
+	if (prev_substate != eStateAttack_MoveToHomePoint) {
+		if (get_state(eStateAttack_MoveToHomePoint)->check_start_conditions())	return true;
+	} else {
+		if (!get_state(eStateAttack_MoveToHomePoint)->check_completion())		return true;
+	}
+
+	return false;
+}
 
 
 TEMPLATE_SPECIALIZATION

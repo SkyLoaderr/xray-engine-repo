@@ -2677,10 +2677,22 @@
 							Name="Home Point"
 							Filter="">
 							<File
+								RelativePath=".\ai\Monsters\States\monster_state_home_point_attack.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_home_point_attack_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_home_point_danger.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_home_point_danger_inline.h">
+							</File>
+							<File
 								RelativePath=".\ai\Monsters\States\monster_state_home_point_rest.h">
 							</File>
 							<File
-								RelativePath=".\monster_state_home_point_rest_inline.h">
+								RelativePath=".\ai\Monsters\States\monster_state_home_point_rest_inline.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -2748,13 +2760,13 @@
 							<File
 								RelativePath=".\ai\Monsters\monster_sound_memory.cpp">
 							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_sound_memory.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="State"
 							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\monster_sound_memory.h">
-							</File>
 							<File
 								RelativePath=".\ai\Monsters\monster_state_manager.h">
 							</File>
@@ -3175,6 +3187,16 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\monster_cover_manager.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Home"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\monster_home.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_home.h">
 							</File>
 						</Filter>
 					</Filter>

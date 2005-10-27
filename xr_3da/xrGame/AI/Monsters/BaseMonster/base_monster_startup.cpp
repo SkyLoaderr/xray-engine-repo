@@ -17,6 +17,7 @@
 #include "../controlled_entity.h"
 #include "../anomaly_detector.h"
 #include "../monster_cover_manager.h"
+#include "../monster_home.h"
 
 void CBaseMonster::Load(LPCSTR section)
 {
@@ -75,6 +76,8 @@ void CBaseMonster::reload	(LPCSTR section)
 		else if (xr_strcmp(pSettings->r_string(section,"monster_type"), "outdoor") == 0)
 			m_monster_type = eMonsterTypeOutdoor;
 	}
+
+	Home->load						("home");
 }
 
 void CBaseMonster::reinit()

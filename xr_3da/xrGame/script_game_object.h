@@ -187,6 +187,8 @@ public:
 
 	// CBaseMonster
 			void				skip_transfer_enemy		(bool val);
+			void				set_home				(LPCSTR name, float r_min, float r_max);
+			void				remove_home				();
 
 			template <typename T>
 			IC		T	*motivation_action_manager();

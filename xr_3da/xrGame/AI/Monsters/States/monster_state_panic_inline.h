@@ -5,6 +5,7 @@
 #include "state_custom_action.h"
 #include "state_look_unprotected_area.h"
 #include "monster_state_panic_run.h"
+#include "monster_state_home_point_attack.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -17,6 +18,7 @@ CStateMonsterPanicAbstract::CStateMonsterPanic(_Object *obj) : inherited(obj)
 {
 	add_state(eStatePanic_Run,					xr_new<CStateMonsterPanicRun<_Object> >(obj));
 	add_state(eStatePanic_FaceUnprotectedArea,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
+	add_state(eStatePanic_MoveToHomePoint,		xr_new<CStateMonsterAttackMoveToHomePoint<_Object> >(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -33,10 +35,11 @@ void CStateMonsterPanicAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterPanicAbstract::reselect_state()
 {
-	if (prev_substate == u32(-1)) {
-		select_state(eStatePanic_Run);
+	if (get_state(eStatePanic_MoveToHomePoint)->check_start_conditions()) {
+		select_state(eStatePanic_MoveToHomePoint);
+		return;
 	}
-	
+
 	if (prev_substate == eStatePanic_Run) select_state(eStatePanic_FaceUnprotectedArea);
 	else select_state(eStatePanic_Run);
 }

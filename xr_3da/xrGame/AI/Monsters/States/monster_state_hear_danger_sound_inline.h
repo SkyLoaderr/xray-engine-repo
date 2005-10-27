@@ -3,6 +3,7 @@
 #include "state_hide_from_point.h"
 #include "state_look_unprotected_area.h"
 #include "state_custom_action.h"
+#include "monster_state_home_point_danger.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -16,11 +17,17 @@ CStateMonsterHearDangerousSoundAbstract::CStateMonsterHearDangerousSound(_Object
 	add_state	(eStateHearDangerousSound_Hide,				xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
 	add_state	(eStateHearDangerousSound_FaceOpenPlace,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
 	add_state	(eStateHearDangerousSound_StandScared,		xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateHearDangerousSound_Home,				xr_new<CStateMonsterDangerMoveToHomePoint<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHearDangerousSoundAbstract::reselect_state()
 {
+	if (get_state(eStateHearDangerousSound_Home)->check_start_conditions())	{
+		select_state(eStateHearDangerousSound_Home);
+		return;
+	}
+
 	if (prev_substate == u32(-1)){
 		select_state(eStateHearDangerousSound_Hide);
 		return;

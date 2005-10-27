@@ -35,8 +35,11 @@ void CStateMonsterCustomActionAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterCustomActionAbstract::check_completion()
 {	
-	if (time_state_started + data.time_out > Device.dwTimeGlobal) return false;
-	return true;
+	if (data.time_out) {
+		if (time_state_started + data.time_out < time()) return true;
+	}
+	
+	return false;
 }
 
 #undef TEMPLATE_SPECIALIZATION

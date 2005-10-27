@@ -171,7 +171,8 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 
 		// base monster
 		.def("skip_transfer_enemy",			&CScriptGameObject::skip_transfer_enemy)
-
+		.def("set_home",					&CScriptGameObject::set_home)
+		.def("remove_home",					&CScriptGameObject::remove_home)
 		.def("can_script_capture",			&CScriptGameObject::can_script_capture)
 
 		// inventory owner

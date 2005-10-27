@@ -90,5 +90,8 @@ public:
 	
 	void		clear					() {Sounds.clear();}
 	void		remove_links			(CObject *O);
+
+	bool		is_help_sound			(int eType);
+	void		add_help_sound			(const CEntityAlive *);
 };
 

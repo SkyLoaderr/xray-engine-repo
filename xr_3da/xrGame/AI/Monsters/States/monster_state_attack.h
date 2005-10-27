@@ -26,6 +26,7 @@ private:
 			bool		check_run_away_state	();
 			bool		check_run_attack_state	();
 			bool		check_camp_state		();
+			bool		check_home_point		();
 };
 
 #include "monster_state_attack_inline.h"

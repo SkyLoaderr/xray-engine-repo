@@ -125,59 +125,12 @@ struct pred_remove_nonactual_sounds {
 
 void CMonsterSoundMemory::UpdateHearing()
 {
-
 	// удаление устаревших звуков
 	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), pred_remove_nonactual_sounds(Device.dwTimeGlobal - time_memory));
 	Sounds.erase(I,Sounds.end());
 
 	// пересчитать value
 	for (I=Sounds.begin(); I!=Sounds.end(); I++) I->CalcValue(Device.dwTimeGlobal, monster->Position());
-
-	//#ifdef DEBUG
-	//	CBaseMonster *pB = smart_cast<CBaseMonster*>(this);
-	//
-	//	pB->HDebug->HT_Clear();
-	//	pB->HDebug->L_Clear();
-	//
-	//	for (u32 i=0; i<Sounds.size();i++) {
-	//		string128 s_type;
-	//		switch(Sounds[i].type){
-	//			case WEAPON_SHOOTING:			strcpy(s_type,"WEAPON_SHOOTING"); break;
-	//			case MONSTER_ATTACKING:			strcpy(s_type,"MONSTER_ATTACKING"); break;
-	//			case WEAPON_BULLET_RICOCHET:	strcpy(s_type,"WEAPON_BULLET_RICOCHET"); break;
-	//			case WEAPON_RECHARGING:			strcpy(s_type,"WEAPON_RECHARGING"); break;
-	//
-	//			case WEAPON_TAKING:				strcpy(s_type,"WEAPON_TAKING"); break;
-	//			case WEAPON_HIDING:				strcpy(s_type,"WEAPON_HIDING"); break;
-	//			case WEAPON_CHANGING:			strcpy(s_type,"WEAPON_CHANGING"); break;
-	//			case WEAPON_EMPTY_CLICKING:		strcpy(s_type,"WEAPON_EMPTY_CLICKING"); break;
-	//
-	//			case MONSTER_DYING:				strcpy(s_type,"MONSTER_DYING"); break;
-	//			case MONSTER_INJURING:			strcpy(s_type,"MONSTER_INJURING"); break;
-	//			case MONSTER_WALKING:			strcpy(s_type,"MONSTER_WALKING"); break;
-	//			case MONSTER_JUMPING:			strcpy(s_type,"MONSTER_JUMPING"); break;
-	//			case MONSTER_FALLING:			strcpy(s_type,"MONSTER_FALLING"); break;
-	//			case MONSTER_TALKING:			strcpy(s_type,"MONSTER_TALKING"); break;
-	//
-	//			case DOOR_OPENING:				strcpy(s_type,"DOOR_OPENING"); break;
-	//			case DOOR_CLOSING:				strcpy(s_type,"DOOR_CLOSING"); break;
-	//			case OBJECT_BREAKING:			strcpy(s_type,"OBJECT_BREAKING"); break;
-	//			case OBJECT_FALLING:			strcpy(s_type,"OBJECT_FALLING"); break;
-	//			case NONE_DANGEROUS_SOUND:		strcpy(s_type,"NONE_DANGEROUS_SOUND"); break;
-	//		}
-	//
-	//		string128 s;
-	//		sprintf(s,"S[%i]:: type=%s : time=%u : power=%.3f !!! val=%i", i, s_type, Sounds[i].time, Sounds[i].power, Sounds[i].value);
-	//		pB->HDebug->HT_Add(50, 50 + i*20, s);
-	//		pB->HDebug->L_AddPoint(Sounds[i].position,0.15f,D3DCOLOR_XRGB(0,255,255));
-	//		Fvector new_v;
-	//		new_v = Sounds[i].position;
-	//		new_v.y += 5.0f;
-	//		pB->HDebug->L_AddLine(Sounds[i].position, new_v, D3DCOLOR_XRGB(0,255,255));
-	//	}
-	//
-	//#endif
-
 }
 
 bool CMonsterSoundMemory::is_loud_sound(float val)
@@ -215,4 +168,16 @@ void CMonsterSoundMemory::remove_links(CObject *O)
 	// удаление устаревших звуков
 	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), pred_remove_relcase(O));
 	Sounds.erase(I,Sounds.end());
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Help Sounds
+//////////////////////////////////////////////////////////////////////////
+bool CMonsterSoundMemory::is_help_sound(int eType)
+{
+	return true;
+}
+
+void CMonsterSoundMemory::add_help_sound(const CEntityAlive *entity)
+{
 }

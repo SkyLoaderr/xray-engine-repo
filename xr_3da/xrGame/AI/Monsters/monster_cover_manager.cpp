@@ -166,6 +166,14 @@ CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &position, float min
 	return				point;
 }
 
+// найти лучший ковер относительно "position"
+CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &src_pos, const Fvector &dest_pos, float min_pos_distance, float	max_pos_distance, float deviation)
+{
+	m_ce_best->setup	(m_object, dest_pos, min_pos_distance,max_pos_distance,deviation);
+	CCoverPoint			*point = ai().cover_manager().best_cover(src_pos,30.f,*m_ce_best);
+	return				point;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Find Less Cover Direction (e.g. look at the most open place)
 //////////////////////////////////////////////////////////////////////////

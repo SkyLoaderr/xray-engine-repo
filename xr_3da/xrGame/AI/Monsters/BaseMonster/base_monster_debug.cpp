@@ -136,6 +136,10 @@ void CBaseMonster::debug_fsm()
 		case eStateRest_Idle:							sprintf(st,"Rest :: Idle");					break;
 		case eStateRest_Fun:							sprintf(st,"Rest :: Fun");					break;
 		case eStateRest_Sleep:							sprintf(st,"Rest :: Sleep");				break;
+		case eStateRest_MoveToHomePoint:				sprintf(st,"Rest :: MoveToHomePoint");		break;
+		case eStateRest_WalkToCover:					sprintf(st,"Rest :: WalkToCover");			break;
+		case eStateRest_LookOpenPlace:					sprintf(st,"Rest :: LookOpenPlace");		break;
+
 		case eStateEat_CorpseApproachRun:				sprintf(st,"Eat :: Corpse Approach Run");	break;
 		case eStateEat_CorpseApproachWalk:				sprintf(st,"Eat :: Corpse Approach Walk");	break;
 		case eStateEat_CheckCorpse:						sprintf(st,"Eat :: Check Corpse");			break;
@@ -143,6 +147,7 @@ void CBaseMonster::debug_fsm()
 		case eStateEat_WalkAway:						sprintf(st,"Eat :: Walk Away");				break;
 		case eStateEat_Rest:							sprintf(st,"Eat :: Rest After Meal");		break;
 		case eStateEat_Drag:							sprintf(st,"Eat :: Drag");					break;
+		
 		case eStateAttack_Run:							sprintf(st,"Attack :: Run");				break;
 		case eStateAttack_Melee:						sprintf(st,"Attack :: Melee");				break;
 		case eStateAttack_RunAttack:					sprintf(st,"Attack :: Run Attack");			break;
@@ -160,13 +165,27 @@ void CBaseMonster::debug_fsm()
 		case eStateAttack_MoveOut:						sprintf(st,"Attack :: Move Out From Cover");break;
 		case eStateAttack_CampInCover:					sprintf(st,"Attack :: Camp In Cover");		break;
 
+		case eStateAttack_Psy:							sprintf(st,"Attack :: Psy");				break;
+		case eStateAttack_MoveToHomePoint:				sprintf(st,"Attack :: Move To Home Point");	break;
+		case eStateAttack_HomePoint_Hide:				sprintf(st,"Attack :: Home Point :: Hide");	break;
+		case eStateAttack_HomePoint_Camp:				sprintf(st,"Attack :: Home Point :: Camp");	break;
+		case eStateAttack_HomePoint_LookOpenPlace:		sprintf(st,"Attack :: Home Point :: Look Open Place");	break;
+		
 		case eStatePanic_Run:							sprintf(st,"Panic :: Run Away");				break;
 		case eStatePanic_FaceUnprotectedArea:			sprintf(st,"Panic :: Face Unprotected Area");	break;
+		case eStatePanic_HomePoint_Hide:				sprintf(st,"Panic :: Home Point :: Hide");		break;
+		case eStatePanic_HomePoint_LookOpenPlace:		sprintf(st,"Panic :: Home Point :: Look Open Place");	break;
+		case eStatePanic_HomePoint_Camp:				sprintf(st,"Panic :: Home Point :: Camp");		break;
+
 		case eStateHitted_Hide:							sprintf(st,"Hitted :: Hide");					break;
 		case eStateHitted_MoveOut:						sprintf(st,"Hitted :: MoveOut");				break;
+		case eStateHitted_Home:							sprintf(st,"Hitted :: Home");				break;
+
 		case eStateHearDangerousSound_Hide:				sprintf(st,"Dangerous Snd :: Hide");			break;
 		case eStateHearDangerousSound_FaceOpenPlace:	sprintf(st,"Dangerous Snd :: FaceOpenPlace");	break;
 		case eStateHearDangerousSound_StandScared:		sprintf(st,"Dangerous Snd :: StandScared");		break;
+		case eStateHearDangerousSound_Home:				sprintf(st,"Dangerous Snd :: Home");			break;
+
 		case eStateHearInterestingSound_MoveToDest:		sprintf(st,"Interesting Snd :: MoveToDest");	break;
 		case eStateHearInterestingSound_LookAround:		sprintf(st,"Interesting Snd :: LookAround");	break;
 		case eStateControlled_Follow_Wait:				sprintf(st,"Controlled :: Follow : Wait");			break;

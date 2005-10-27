@@ -10,6 +10,7 @@
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 #include "../anomaly_detector.h"
+#include "monster_state_home_point_rest.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -29,7 +30,7 @@ CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
 	add_state(eStateSquad_Rest,			xr_new<CStateMonsterSquadRest<_Object> >	(obj));
 	add_state(eStateSquad_RestFollow,	xr_new<CStateMonsterSquadRestFollow<_Object> >(obj));
 	add_state(eStateCustomMoveToRestrictor, xr_new<CStateMonsterMoveToRestrictor<_Object> > (obj));
-	//add_state(eStateRest_MoveToHomePoint, xr_new<CStateMonsterRestMoveToHomePoint<_Object> > (obj));
+	add_state(eStateRest_MoveToHomePoint, xr_new<CStateMonsterRestMoveToHomePoint<_Object> > (obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -75,13 +76,14 @@ void CStateMonsterRestAbstract::execute()
 	
 	if (move_to_restrictor) select_state(eStateCustomMoveToRestrictor);
 	else {
+		// check home point
 		bool move_to_home_point = false;
 		
-		//if (prev_substate == eStateRest_MoveToHomePoint) {
-		//	if (!get_state(eStateRest_MoveToHomePoint)->check_completion()) 
-		//		move_to_home_point = true;
-		//} else if (get_state(eStateRest_MoveToHomePoint)->check_start_conditions()) 
-		//	move_to_home_point = true;
+		if (prev_substate == eStateRest_MoveToHomePoint) {
+			if (!get_state(eStateRest_MoveToHomePoint)->check_completion()) 
+				move_to_home_point = true;
+		} else if (get_state(eStateRest_MoveToHomePoint)->check_start_conditions()) 
+			move_to_home_point = true;
 		
 		if (move_to_home_point) select_state(eStateRest_MoveToHomePoint);
 		else {
