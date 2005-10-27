@@ -1189,13 +1189,33 @@ end
 ---------------------------------------------------------
 -- DeadCity
 ---------------------------------------------------------
--- сцены просыпания возле доктора
-function cit_wake_scene1(npc)
+-- сцена просыпания возле доктора
+function cit_punch_ambush(first_speaker, second_speaker)
+	--abort("KICK ASS !!!!")
+	--xr_punch.punch[first_speaker:id()] = second_speaker
+	db.storage[db.actor:id()].punch = {}
+	local st = db.storage[db.actor:id()].punch
+	st.dest_walk = patrol("val_ambush_dest_walk"):point(0)
+	st.dest_look = utils.vector_copy_by_val(
+		patrol("val_ambush_dest_look"):point(0)):sub(st.dest_walk)
+	st.info = { "val_prisoner_plr_captured", "val_prisoner_door_unlocked",
+		"val_prisoner_door_unlocked_demo", "val_sacrifice_start" }
+	st.dump_inventory_pos = patrol("val_ambush_inventory_dump_place"):point(0)
+	st.disable_input_tm = 15000
+
+	db.storage[second_speaker:id()].punch.enabled = true
+	-- xr_punch.put_actor_to_sleep_instantly()
+end
+
+function cit_wake_scene0(npc)
     db.actor:hide_weapon()
     level.disable_input()
+    set_postprocess("scripts\\deadcity_wake.ltx")
+end
+
+function cit_wake_scene1(npc)
 	local ce = path_cam_effector("camera_effects\\prison_0.anm")
 	level.add_cam_effector(ce)	                  
-    set_postprocess ("scripts\\deadcity_wake.ltx")
 end
 
 function cit_wake_scene2(npc)
