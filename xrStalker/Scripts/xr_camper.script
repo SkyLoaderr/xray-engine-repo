@@ -64,7 +64,6 @@ function evaluator_close_combat:evaluate()
 	if self.close_combat == true then		
 		local a = self.object:memory_time(self.object:best_enemy())
 		if a then
---			printf("%s - %s ? %s", time_global(), a, 20000)
 			if time_global() - a > 20000 then
 				self.close_combat = false
 			end
@@ -183,13 +182,11 @@ function action_patrol:execute()
 		--printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 		if time_global()- self.a.mem_enemy > self.a.idle then
 			if self.enemy ~= nil then
-				printf ("DISABLE ENEMY : %s", self.enemy:name ())
 				self.object:enable_memory_object(self.enemy, false)
 			end
 			self.a.enemy_id = nil
 			self.enemy = nil
 			self.a.mem_enemy = nil
-			--self:reset_scheme() -- СТРАШНЕЙШИЙ ФЕЙК
 			self.move_mgr:continue()
 		end
 	end
@@ -222,14 +219,17 @@ function action_patrol:execute()
 				self.direction = vector():set(self.enemy_position.x - self.position.x,
 											  0,
 											  self.enemy_position.z - self.position.z)
-				self.direction:normalize()				
-				self.point_0 = vector():set(self.enemy_position.x + self.a.enemy_disp*self.direction.z,
+				self.direction:normalize()
+				local wide_sight = self.position:distance_to(self.enemy_position)*math.tan(self.a.enemy_disp)
+				
+				
+				self.point_0 = vector():set(self.enemy_position.x + wide_sight*self.direction.z,
 											self.enemy_position.y,
-											self.enemy_position.z - self.a.enemy_disp*self.direction.x)
+											self.enemy_position.z - wide_sight*self.direction.x)
 				--self.point_0:normalize()
-				self.point_2 = vector():set(self.enemy_position.x - self.a.enemy_disp*self.direction.z,
+				self.point_2 = vector():set(self.enemy_position.x - wide_sight*self.direction.z,
 											self.enemy_position.y,
-											self.enemy_position.z + self.a.enemy_disp*self.direction.x)
+											self.enemy_position.z + wide_sight*self.direction.x)
 				--self.point_1:normalize()
 				--printf("POINT 0 [%s] [%s] [%s]", self.point_0.x, self.point_0.y, self.point_0.z)
 				--printf("POINT 1 [%s] [%s] [%s]", self.enemy_position.x, self.enemy_position.y, self.enemy_position.z)
@@ -246,14 +246,26 @@ function action_patrol:execute()
 				-- поиск врага (сканирование врага)
 				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
 				-- сканируем
-				self:scan(-1)
+				if time_global() - self.a.mem_enemy < self.a.post_enemy_wait then
+					local position
+					if self.enemy_position then
+						position = {look_position = self.enemy_position}
+					end
+					if self.a.suggested_state.campering then
+						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position)
+					else
+						state_mgr.set_state(self.object, "hide_na", nil, nil, position)
+					end
+				else
+					self:scan(-1)
+				end
 			else				
 				-- если норетрит или мы на месте - ныкаться, иначе идти на точку				
 				if self:on_place() then 
 					--printf("on place[%s]", self.object:name())
 					local position
-					if self.position then
-						position = {look_position = self.position}
+					if self.enemy_position then
+						position = {look_position = self.enemy_position}
 					end
 					if self.a.suggested_state.campering then
 						state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position)
@@ -349,14 +361,17 @@ function action_patrol:process_danger()
 	if self.a.suggested_state.campering then
 		state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, position, emerg)
 	else
-		state_mgr.set_state(self.object, "hide", nil, nil, position, emerg)
+		if self.a.sniper == true then
+			state_mgr.set_state(self.object, "hide_na", nil, nil, position, emerg)
+		else
+			state_mgr.set_state(self.object, "hide", nil, nil, position, emerg)
+		end
 	end	
 	return true
 end
 function action_patrol:scan(flag)
 	if self.a.scan_table[flag] == nil then
 		return
-		--abort("SNIPER: cannot find point with flag [%s] in the path [%s]", utils.to_str(flag), self.a.path_look)
 	end
 	
 	if self.flag ~= flag then
@@ -524,8 +539,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	-- Время забывания врага
 	st.idle = utils.cfg_get_number(ini, section, "enemy_idle", npc, false, 60000)
-	
-	st.enemy_disp = 20
+	st.post_enemy_wait = 5000 -- время, которое мы ждем врага, смотря в его последнюю позицию.	
+	st.enemy_disp = 7/57.2957 -- Угол в пределах которого снайпер ведет поиск потерянного врага.
 	
 	st.scandelta = 30
 	st.timedelta = 4000
