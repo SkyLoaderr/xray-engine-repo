@@ -10,6 +10,7 @@ class CMonsterCoverManager {
 
 public:
 				CMonsterCoverManager	(CBaseMonster *monster);
+				~CMonsterCoverManager	();
 
 	void		load					();
 	// найти лучший ковер относительно "position"

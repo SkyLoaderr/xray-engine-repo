@@ -151,6 +151,11 @@ void CCoverEvaluator::evaluate(CCoverPoint *cover_point, float weight)
 
 CMonsterCoverManager::CMonsterCoverManager(CBaseMonster *monster) : m_object(monster)
 {
+	m_ce_best = 0;
+}
+CMonsterCoverManager::~CMonsterCoverManager()
+{
+	xr_delete(m_ce_best);
 }
 
 void CMonsterCoverManager::load()
