@@ -31,6 +31,7 @@ CAI_Trader::CAI_Trader()
 
 CAI_Trader::~CAI_Trader()
 {
+	xr_delete						(m_sound_player);
 	delete_data						(m_tpOrderedArtefacts);
 }
 
