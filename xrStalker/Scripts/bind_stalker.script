@@ -97,7 +97,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:on_item_drop (obj)
     level_tasks.proceed(self.object)
-    game_stats.update_drop_item (obj, self.object)
+    --game_stats.update_drop_item (obj, self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:task_callback(id_task, subtask, id_state)
