@@ -209,7 +209,7 @@ function relocate_money(actor, type)
 	elseif type == "out" then
 		db.actor:give_game_news("general_out_money", "ui\\ui_icons_task", 450,50,50,50, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_in_money", "ui\\ui_icons_task", 450,50,50,50,"iconed_answer_item")
+			db.actor:give_talk_message("general_out_money", "ui\\ui_icons_task", 450,50,50,50,"iconed_answer_item")
 		end		
 	end
 	
