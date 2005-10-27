@@ -271,6 +271,14 @@ function actor_has_item(actor, npc, p)
 	return p[1] ~= nil and actor:object( p[1] ) ~= nil
 end
 
+function signal(actor, npc, p)
+	if p[1] then
+		local st = db.storage[npc:id()]
+		return st[st.active_scheme].signals[p[1]] == true
+	else
+		return false
+	end
+end
 
 -- Функции поддержки kamp
 function _kamp_talk(actor, npc)
