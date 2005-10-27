@@ -197,10 +197,18 @@ function init_trade_info_dialog(dlg)
 	end
 
 	local phr = dlg:AddPhrase("dm_general_trade_info",0,-1,-10000)
-	phr = dlg:AddPhrase("dm_general_trade_info_caption",get_id("trade_info"),0,-10000)
 	local phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("dialog_manager.action_trade_info_init")
 
+	phr = dlg:AddPhrase("dm_general_trade_info_caption",get_id("trade_info"),0,-10000)
+	phrase_script = phr:GetPhraseScript()
+	phrase_script:AddAction("dialog_manager.action_trade_info_show")
+	phrase_script:AddPrecondition("dialog_manager.precondition_can_trade_info")
+		
+	phr = dlg:AddPhrase("dm_general_trade_info_hasno",get_id("trade_info"),0,-10000)
+	phrase_script = phr:GetPhraseScript()
+	phrase_script:AddPrecondition("dialog_manager.precondition_cannot_trade_info")
+	
 	-- Изначально считаем что каждый сталкер знает ВСЮ информацию. Не забыть потом
 	-- вставить инфопоршн, что сталкер сам знает информацию
 	local k,v,kk,vv = 0,0,0,0
@@ -246,26 +254,30 @@ end
 
 local call_count, max_count = 0,0
 local tmp_tbl = {}
-function action_trade_info_init(npc, actor, p1, p2 )
-	printf("TRADE INIT CALLED [%s] [%s]", tostring(p1), tostring(p2))
+local show_tbl = {}
+function action_trade_info_init(npc, actor)
 	local value, number, max_number = 0,0,0
 	local k,v = 0,0
 	max_count = 0
-	for k,v in pairs(phrase.trade_info) do
-	
+	show_tbl = {}
+	for k,v in pairs(phrase.trade_info) do	
 		value, number = calculate_predicate(npc, v)
 		max_count = max_count + 1
 		if value == true then
-			-- выдаем сообщение, что мы готовы торговать этим товаром.
-			db.actor:give_talk_message(v.name, "ui\\ui_icons_task", 350,150,50,50,"iconed_trade_info")		
+			table.insert(show_tbl, k)
 			-- отмечаем что игрок может купить данный товар
 			tmp_tbl[max_count] = true
 		elseif calculate_predicate(npc, v, {no_price = true}) == true then
-			-- выдаем сообщение, что мы готовы торговать этим товаром.
-			db.actor:give_talk_message(v.name, "ui\\ui_icons_task", 350,150,50,50,"iconed_trade_info")		
+			table.insert(show_tbl, k)
 		end		
 	end
 	--printf("TRADE INIT [%s] [%s]", tostring(call_count), tostring(max_count))
+end
+function action_trade_info_show(npc, actor)
+	local k,v = 0,0
+	for k,v in pairs(show_tbl) do
+		db.actor:give_talk_message(phrase.trade_info[v].name, "ui\\ui_icons_task", 350,150,50,50,"iconed_trade_info")
+	end
 end
 function precondition_trade_info(actor, npc)
 	call_count = call_count + 1
@@ -282,6 +294,12 @@ function precondition_trade_info(actor, npc)
 		return return_value
 	end
 	abort("Dialog manager error: unexpected programm point. Trade Info")
+end
+function precondition_can_trade_info(npc, actor)
+	return table.getn(show_tbl) > 0
+end
+function precondition_cannot_trade_info(npc, actor)
+	return table.getn(show_tbl) == 0
 end
 function action_transfer_money(actor, npc, p1, p2)
 	printf("TRADE TRANSFER MONEY [%s] [%s] [%s] [%s]", actor:name(), npc:name(), tostring(p1), tostring(p2))

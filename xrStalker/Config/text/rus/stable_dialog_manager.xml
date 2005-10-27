@@ -17,6 +17,9 @@
     <string id="dm_general_trade_info_nothing">
         <text>Может как нибудь в другой раз.</text>
     </string>
+    <string id="dm_general_trade_info_hasno">
+        <text>Ничего предложить не могу.</text>
+    </string>
     <string id="dm_general_help_medkit">
         <text>Держи аптечку.</text>
     </string>
