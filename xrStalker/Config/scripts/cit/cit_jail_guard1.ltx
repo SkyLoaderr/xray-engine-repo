@@ -1,6 +1,11 @@
 [logic]
 active              = walker@guard1
 combat_ignore       = combat_ignore
+on_hit = hit
+
+[hit]
+on_info = {=hit_by_actor} remark@kill_actor2
+
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- патрулируем возле решетки
@@ -75,3 +80,12 @@ no_move             = true
 no_rotate           = true
 anim                = sleep_sit
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- убиваем актера
+;-----------------------------------------------------------------------------------------------------------
+[remark@kill_actor2]
+anim                = threat
+;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@open_door
+combat_ignore_cond  = {=check_fighting(1200)}
+
