@@ -23,7 +23,7 @@
             ammo_11.43x23_hydro = 1 \n
             wpn_fn2000 \n
             ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -51,7 +51,7 @@
             ammo_11.43x23_fmj = 1 \n
             wpn_g36 \n
             ammo_5.56x45_ap = 1 \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -77,7 +77,7 @@
             wpn_desert_eagle \n
             ammo_11.43x23_fmj = 1 \n
             wpn_gauss \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_drugs.xml"
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
