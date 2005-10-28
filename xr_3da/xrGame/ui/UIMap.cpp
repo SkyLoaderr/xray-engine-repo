@@ -412,7 +412,7 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 		Msg("! --try x2=%f or  y2=%f",m_GlobalRect.x1+kh*BoundRect().width(), m_GlobalRect.y1+kw*BoundRect().height());
 	}
 #endif
-//	Msg("Succesfully loaded map %s. Identity zoom=%f",*name, kw);
+//	Msg("Succesfully loaded map %s. Zoom=%f",*name, kw);
 	
 	if(gameLtx.line_exist(MapName(),"anomalies_texture")){
 		LPCSTR texture						= gameLtx.r_string	(MapName(),"anomalies_texture");
