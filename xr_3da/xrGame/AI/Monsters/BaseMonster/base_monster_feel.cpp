@@ -33,16 +33,21 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 
 	if (user_data)
 		user_data->accept	(sound_user_data_visitor());
-	
-	// ignore sounds if not from enemies
-	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
-	if (entity && (!EnemyMan.is_enemy(entity))) return;
 
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;
 
 	// ignore distant sounds
 	if (this->Position().distance_to(Position) > db().m_max_hear_dist)	return;
+
+	// ignore sounds if not from enemies and not help sounds
+	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
+	if (entity && (!EnemyMan.is_enemy(entity))) {
+		if (SoundMemory.is_help_sound(eType)) {
+			SoundMemory.add_help_sound(entity);
+		}
+		return;
+	}
 	
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) power = 1.f;
 
