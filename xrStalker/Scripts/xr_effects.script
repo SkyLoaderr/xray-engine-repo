@@ -51,8 +51,7 @@ function enable_ui(actor, npc)
 end
 
 function run_cam_effector(actor, npc, p)
-	local ce = path_cam_effector("camera_effects\\" .. p[1] .. ".anm")
-	level.add_cam_effector(ce)	                  
+	level.add_cam_effector("camera_effects\\" .. p[1] .. ".anm")	                  
 end
 
 function run_postprocess(actor, npc, p)
@@ -247,8 +246,7 @@ function actor_punch(npc)
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 
-	local ce = path_cam_effector("camera_effects\\fusker.anm")
-	level.add_cam_effector(ce)	
+	level.add_cam_effector("camera_effects\\fusker.anm")	
 	
 	
 end
@@ -1359,14 +1357,12 @@ end
 function aes_earthshake (npc)
 	local snd_obj = sound_object([[ambient\earthquake]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
-	local ce = path_cam_effector("camera_effects\\earthquake.anm")
-	level.add_cam_effector(ce)	                  
+	level.add_cam_effector("camera_effects\\earthquake.anm")	                  
     set_postprocess ("scripts\\earthshake.ltx")
 end
 
 function vovan_camera_test (npc)
-	local ce = path_cam_effector("camera_effects\\test.anm")
-	level.add_cam_effector(ce)	                  
+	level.add_cam_effector("camera_effects\\test.anm")	                  
 end
 -------------------------------------------------------------------------------------
 -- Функции для Янтаря
