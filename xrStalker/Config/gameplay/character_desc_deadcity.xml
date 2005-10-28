@@ -26,7 +26,7 @@
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
 
-<!-------------------------- BANDIT ------------------------>
+<!-------------------------- BANDITS ----------------------->
 <!--------------------------- DRUNK ------------------------>
     <specific_character id="cit_bandit_drunk" team_default = "1">
         <name>GENERATE_NAME</name>
@@ -50,4 +50,219 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
+
+<!---------------------------BANDIT GENERAL---------------------->
+	<specific_character id="cit_bandit_general_defaul1t" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="14" y="4"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>cit_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\bandit\stalker_bandit_3</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp = 1 \n
+			wpn_toz34 \n
+			ammo_12x76_dart = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_bandit_general_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="2"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>cit_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\bandit\stalker_bandit_4</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 = 1, 0, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_bandit_general_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="2"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>cit_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\bandit\stalker_bandit_5</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_ak74 = 1, 0, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_bandit_general_default4" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="6"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+				
+		<class>cit_bandit_general</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\bandit\stalker_bandit_8</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pmm	= 1 \n
+			wpn_mp5 \n
+			ammo_9x19_pbp = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+<!---------------------------BANDIT VETERAN---------------------->
+	<specific_character id="cit_bandit_veteran_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="22" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>cit_bandit_veteran</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 2 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_bandit_veteran_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>cit_bandit_veteran</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_bandit_veteran_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+
+		<class>cit_bandit_veteran</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 </xml>
