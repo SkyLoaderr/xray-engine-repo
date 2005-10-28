@@ -1,12 +1,8 @@
 
-function drop_(item)
-	local v = vector()
-	v:set(0,1,0)
-	db.actor:drop_item_and_teleport(item,v)
-end
-
 function main()
-db.actor:inventory_for_each(_test.drop_)
+--	local ce = path_cam_effector("camera_effects\\prison_1.anm")
+	local ce = _G.path_cam_effector("test.anm")
+	level.add_cam_effector(ce)	
 
 --   local h = hit ()
 --   h.power = 100
