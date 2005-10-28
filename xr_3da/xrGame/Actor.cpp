@@ -1141,6 +1141,7 @@ void CActor::shedule_Update	(u32 DT)
 	m_pPhysics_support->in_shedule_Update(DT);
 	///////////////////////////////////////////////
 	Check_for_AutoPickUp();
+/*
 	if (GameID() == GAME_SINGLE)
 	{
 		Fvector2 pos2d;
@@ -1149,6 +1150,7 @@ void CActor::shedule_Update	(u32 DT)
 		if(F)
 			F->Open(pos2d);
 	};
+*/
 };
 
 void CActor::renderable_Render	()

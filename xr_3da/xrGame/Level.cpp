@@ -94,13 +94,9 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 
 	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
 
-	//by Dandy
-//	m_pFogOfWar					= NULL;
-//	m_pFogOfWar					= xr_new<CFogOfWar>();
-
 	m_pBulletManager			= xr_new<CBulletManager>();
 	m_map_manager				= xr_new<CMapManager>();
-	m_pFogOfWarMngr				= xr_new<CFogOfWarMngr>();
+//	m_pFogOfWarMngr				= xr_new<CFogOfWarMngr>();
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
 	m_bIn_CrPr						= false;
@@ -259,7 +255,7 @@ CLevel::~CLevel()
 #endif
 	//-----------------------------------------------------------
 	xr_delete					(m_map_manager);
-	xr_delete					(m_pFogOfWarMngr);
+//	xr_delete					(m_pFogOfWarMngr);
 	//-----------------------------------------------------------
 	Demo_Clear					();
 	m_aDemoData.clear			();

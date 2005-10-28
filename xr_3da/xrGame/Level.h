@@ -263,18 +263,12 @@ public:
 	float				GetEnvironmentGameDayTimeSec();
 
 protected:
-//	CFogOfWar*			m_pFogOfWar;
-	CFogOfWarMngr*		m_pFogOfWarMngr;
-public:
-//	IC CFogOfWar&		FogOfWar() {return	*m_pFogOfWar;}
-
-	//список локаций на карте, которые отображаются в данный момент
+//	CFogOfWarMngr*		m_pFogOfWarMngr;
 protected:	
 	CMapManager *			m_map_manager;
-//	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
 public:
 	CMapManager&			MapManager					()	{return *m_map_manager;}
-	CFogOfWarMngr&			FogOfWarMngr				()	{return *m_pFogOfWarMngr;}
+//	CFogOfWarMngr&			FogOfWarMngr				()	{return *m_pFogOfWarMngr;}
 
 	//работа с пулями
 protected:	
