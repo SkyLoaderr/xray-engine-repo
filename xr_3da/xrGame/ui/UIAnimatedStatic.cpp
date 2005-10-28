@@ -54,7 +54,7 @@ void CUIAnimatedStatic::Update()
 	// Если анимация закончилась
 	if (m_uTimeElapsed > m_uAnimationDuration)
 	{
-		//Rewind(m_uAnimationDuration - m_uAnimationDuration);
+		Rewind(0);
 		if (!m_bCyclic)
 			Stop();
 	}
