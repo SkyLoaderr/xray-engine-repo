@@ -1317,6 +1317,14 @@ function set_sidorovich_animation (npc)
     --sidor:add_animation ("idle_looped")
 end
 
+function aes_zombie_hit (npc)
+    hit_obj (db.actor, npc, {1119, "head2", 1, 10})
+    hit_obj (db.actor, npc, {1120, "head2", 1, 10})
+    hit_obj (db.actor, npc, {1121, "head2", 1, 10})
+    hit_obj (db.actor, npc, {1122, "head2", 1, 10})
+    hit_obj (db.actor, npc, {1123, "head2", 1, 10})
+--параметры: actor, npc, p[sid,bone,power,impulse,hit_src=npc:position()]
+end
 
 -- постпроцесс и влияние удара в морду
 function aes_earthshake (npc)
