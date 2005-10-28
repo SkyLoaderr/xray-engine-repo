@@ -107,6 +107,9 @@
 	<info_portion id="rad_start_ambush_after_valley">
 	</info_portion>	
 	
+	<info_portion id="rad_start_ambush_in_antenna_tunnel">
+	</info_portion>		
+	
 	
 	<info_portion id="rad_allow_suicide">
 	</info_portion>		
