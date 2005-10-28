@@ -74,8 +74,10 @@ void						CLevel_DemoCrash_Handler	()
 
 void						CLevel::Demo_PrepareToStore			()
 {
-	m_pOldCrashHandler = Debug.get_crashhandler();
-	Debug.set_crashhandler(CLevel_DemoCrash_Handler);
+	VERIFY						(!m_we_used_old_crach_handler);
+	m_we_used_old_crach_handler	= true;
+	m_pOldCrashHandler			= Debug.get_crashhandler();
+	Debug.set_crashhandler		(CLevel_DemoCrash_Handler);
 	//---------------------------------------------------------------
 	m_bDemoSaveMode = TRUE;
 

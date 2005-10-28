@@ -52,6 +52,7 @@ private:
 	void						Demo_Clear				();
 
 	crashhandler*				m_pOldCrashHandler;
+	bool						m_we_used_old_crach_handler;
 
 	u32							m_dwCurDemoFrame;
 	void						Demo_StartFrame			();

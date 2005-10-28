@@ -147,8 +147,9 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwStoredDemoDataSize = 0;
 	m_pStoredDemoData = NULL;
 	m_pOldCrashHandler = NULL;
+	m_we_used_old_crach_handler	= false;
 	if (!strstr(Core.Params,"-tdemo ") && !strstr(Core.Params,"-tdemof "))
-	{		
+	{
 		Demo_PrepareToStore();
 	};
 	//---------------------------------------------------------
@@ -262,6 +263,9 @@ CLevel::~CLevel()
 	//-----------------------------------------------------------
 	Demo_Clear					();
 	m_aDemoData.clear			();
+
+	if (m_we_used_old_crach_handler)
+		Debug.set_crashhandler	(m_pOldCrashHandler);
 }
 
 void CLevel::PrefetchSound		(LPCSTR name)
