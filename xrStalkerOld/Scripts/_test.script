@@ -1,98 +1,20 @@
--- run_string set_postprocess ("scripts\\sincos.ltx")
 
-
-function init_phrase_dialog(dlg)
-
-	local phrase_script = dlg:AddPhrase("_hello_world_0",0,-1,-10000)
---	phrase_script:AddPrecondition("zzz")
---	phrase_script:AddHasInfo("zzz")
---	phrase_script:AddDontHasInfo("zzz")
---	phrase_script:AddGiveInfo("zzz")
---	phrase_script:AddDisableInfo("zzz")
---	phrase_script:AddAction("zzz")
-
-	phrase_script = dlg:AddPhrase("_hello_world_1",1,0,-10000)
-	phrase_script = dlg:AddPhrase("_hello_world_2",2,0,-10000)
-	phrase_script = dlg:AddPhrase("_hello_world_3",3,0,-10000)
-	
-	phrase_script = dlg:AddPhrase("_hello_world_4",4,2,-10000)
-	phrase_script = dlg:AddPhrase("_hello_world_5",5,2,-10000)
-	phrase_script = dlg:AddPhrase("_hello_world_6",6,3,-10000)
-	phrase_script = dlg:AddPhrase("_hello_world_7",7,6,-10000)
-
-end
-
-
-class "some_cam_effector" (cam_effector)
-
-function some_cam_effector:__init(tm, amp,periods,power) super(cam_effector_type.eCEHit, tm, false)
-
-	self.total 			= tm
-	self.max_amp 		= amp*power
-	self.period_number	= periods
-	self.power			= power
-	self.offset			= vector()
-	
-	self.offset.x		= math.random(1000,2000)/1000.0
-	self.offset.y		= math.random(1000,6000)/1000.0
-	self.offset.z		= math.random(1000,6000)/1000.0
-end
-
-function dump_matrix(mm, text)
-	printf("%s",text)
-	printf("i %f %f %f", mm.i.x, mm.i.y, mm.i.z)
-	printf("j %f %f %f", mm.j.x, mm.j.y, mm.j.z)
-	printf("k %f %f %f", mm.k.x, mm.k.y, mm.k.z)
-	printf("c %f %f %f", mm.c.x, mm.c.y, mm.c.z)
-
-end
-
-function dump_vector(v, text)
-	printf("%s",text)
-	printf("%f %f %f", v.x, v.y, v.z)
-
-end
-
-function some_cam_effector:Process (pos,dir,norm)
-	self.fLifeTime 	= self.fLifeTime - device().f_time_delta
-	if self.fLifeTime<0 then return false 	end
-	
-	local time_left_perc = self.fLifeTime / self.total
-	
-	local Mdef 			= matrix	()
-	Mdef:identity		()
-	Mdef.j				= vector():set(norm)
-	Mdef.k				= vector():set(dir)
-	Mdef.i:crossproduct	(norm,dir)
-	Mdef.c				= vector():set(pos)
-	
-	local period_all 	= self.period_number 	* math.pi*2.0
-	local cur_amp		= self.max_amp 			* (math.pi/180.0) * time_left_perc
-
-	local dangle 		= vector()
-	dangle.x 			= cur_amp/self.offset.x * math.sin(period_all/self.offset.x * (1.0 - time_left_perc))
-	dangle.y 			= cur_amp/self.offset.y * math.cos(period_all/self.offset.y * (1.0 - time_left_perc))
-	dangle.x 			= cur_amp/self.offset.z * math.sin(period_all/self.offset.z * (1.0 - time_left_perc))
-	
-	local R				= matrix()
-	R:setHPB			(dangle.x,dangle.y,dangle.z)
-	local mR			= matrix()
-	mR:mul				(Mdef, R)
-
-	dir:set				(mR.k)
-	norm:set			(mR.j)
-	return true
+function drop_(item)
+	local v = vector()
+	v:set(0,1,0)
+	db.actor:drop_item_and_teleport(item,v)
 end
 
 function main()
-	local bb = level.get_bounding_volume()
-   local h = hit ()
-   h.power = 100
-   h.direction = vector():set(0, 0, 1)
-   h.impulse = 100
-   h.draftsman = db.actor
-   h.type = hit.fire_wound
-   db.actor:hit(h)
+db.actor:inventory_for_each(_test.drop_)
+
+--   local h = hit ()
+--   h.power = 100
+--   h.direction = vector():set(0, 0, 1)
+--   h.impulse = 100
+--   h.draftsman = db.actor
+--   h.type = hit.fire_wound
+--   db.actor:hit(h)
 	
 --local ce = path_cam_effector("test.anm")
 --local ce = path_cam_effector("camera_effects\\earthquake.anm")
