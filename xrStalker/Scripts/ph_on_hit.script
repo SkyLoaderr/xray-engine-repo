@@ -18,6 +18,7 @@ function ph_on_hit:update(delta)
 end
 
 function ph_on_hit:hit_callback(obj, amount, local_direction, who, bone_index)
+    printf ("PH_ON_HIT CALLED")
 	local who_name
 	if who then
 		who_name = who:name()
@@ -40,12 +41,13 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
  	local action = ph_on_hit(npc, storage)
 	storage.action = action
+	xr_logic.subscribe_action_for_events (npc, storage, action)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	npc:set_callback(callback.hit, st.action.hit_callback, st.action)
+	--npc:set_callback(callback.hit, st.action.hit_callback, st.action)
 	--npc:set_nonscript_usable(false)
 	--npc:set_callback(callback.use_object, st.action.hit_callback, st.action)
 end
