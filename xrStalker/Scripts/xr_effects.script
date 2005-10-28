@@ -60,14 +60,15 @@ function run_postprocess(actor, npc, p)
 end
 
 -----------------------------------------------------------------------------
-local drop_params = {}
+local drop_point, drop_object = 0, 0
 local function drop_object_item(item)
-    drop_params[2]:drop_item_and_teleport(item, drop_params[1])
+    drop_object:drop_item_and_teleport(item, drop_point)
 end
 
 function drop_actor_inventory(actor, npc, p)
     if p[1] then
-        drop_params = {patrol(p[1]):point(0), actor}
+        drop_point  = patrol(p[1]):point(0)
+        drop_object = actor
         actor:inventory_for_each(drop_object_item)
     end
 end
@@ -75,7 +76,8 @@ end
 -- FIXME: drop_npc_inventory doesn't work
 function drop_npc_inventory(actor, npc, p)
     if p[1] then
-        drop_params = {patrol(p[1]):point(0), npc}
+        drop_point  = patrol(p[1]):point(0)
+        drop_object = npc
         npc:inventory_for_each(drop_object_item)
     end
 end
