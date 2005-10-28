@@ -16,6 +16,7 @@
 #include "../states/monster_state_hitted.h"
 #include "../../../entitycondition.h"
 #include "../states/monster_state_controlled.h"
+#include "../states/monster_state_help_sound.h"
 
 CStateManagerGigant::CStateManagerGigant(CPseudoGigant *monster) : inherited(monster)
 {
@@ -27,6 +28,7 @@ CStateManagerGigant::CStateManagerGigant(CPseudoGigant *monster) : inherited(mon
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CPseudoGigant> >	(monster));
 	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CPseudoGigant> >				(monster));
 	add_state(eStateControlled,				xr_new<CStateMonsterControlled<CPseudoGigant> >			(monster));
+	add_state(eStateHearHelpSound,			xr_new<CStateMonsterHearHelpSound<CPseudoGigant> >		(monster));
 }
 
 void CStateManagerGigant::execute()
@@ -45,6 +47,8 @@ void CStateManagerGigant::execute()
 
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
+		} else if (check_state(eStateHearHelpSound)) {
+			state_id = eStateHearHelpSound;
 		} else if (object->hear_interesting_sound) {
 			state_id = eStateHearInterestingSound;
 		} else if (object->hear_dangerous_sound) {

@@ -33,6 +33,8 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	m_alien_control.init_external							(this);
 
 	//com_man().add_ability(ControlCom::eControlRunAttack);
+	com_man().add_ability(ControlCom::eControlRotationJump);
+
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -146,6 +148,8 @@ void CAI_Bloodsucker::reinit()
 	
 	state_invisible				= CInvisibility::is_active();
 	m_last_invisible_run_play	= 0;
+
+	com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -300,30 +304,6 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	if (!g_Alive())	setVisible(TRUE);
 	CInvisibility::schedule_update();
 
-	//if (state_invisible && g_Alive() && (m_fCurSpeed != 0)) {
-	//	SGameMtlPair* mtl_pair		= material().get_current_pair();
-	//	if (!mtl_pair) return;
-
-	//	if (mtl_pair->CollideParticles.empty()) return;
-
-	//	LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-
-	//	//отыграть партиклы столкновения материалов
-	//	CParticlesObject* ps = CParticlesObject::Create(ps_name,TRUE);
-
-	//	// вычислить позицию и направленность партикла
-	//	Fmatrix pos; 
-
-	//	// установить направление
-	//	pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
-	//	Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
-	//	// установить позицию
-	//	pos.c.set(CStepManager::get_foot_position(eFrontLeft));
-
-	//	ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-	//	GamePersistent().ps_needtoplay.push_back(ps);
-	//}
-
 	UpdateCamera();
 }
 
@@ -339,8 +319,6 @@ void CAI_Bloodsucker::on_activate()
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	state_invisible = true;
 
-	//spatial.type |= STYPE_VISIBLEFORAI;
-
 }
 
 void CAI_Bloodsucker::on_deactivate()
@@ -349,8 +327,6 @@ void CAI_Bloodsucker::on_deactivate()
 	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 	state_invisible = false;
-	
-	//spatial.type &= ~STYPE_VISIBLEFORAI;
 }
 
 void CAI_Bloodsucker::net_Destroy()
@@ -451,9 +427,4 @@ void CAI_Bloodsucker::debug_on_key(int key)
 	}
 }
 #endif
-
-
-
-
-
 

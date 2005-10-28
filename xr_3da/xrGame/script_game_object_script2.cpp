@@ -169,6 +169,10 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("get_invisible",				&CScriptGameObject::get_invisible)
 		.def("get_manual_invisibility",		&CScriptGameObject::get_manual_invisibility)
 
+		// zombie
+		.def("fake_death_fall_down",		&CScriptGameObject::fake_death_fall_down)
+		.def("fake_death_stand_up",			&CScriptGameObject::fake_death_stand_up)
+
 		// base monster
 		.def("skip_transfer_enemy",			&CScriptGameObject::skip_transfer_enemy)
 		.def("set_home",					&CScriptGameObject::set_home)

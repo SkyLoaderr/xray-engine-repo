@@ -49,6 +49,14 @@ public:
 	float			health_death_threshold;
 	float			last_health_fake_death;
 
+	bool			fake_death_fall_down	(); //return true if everything is ok
+	void			fake_death_stand_up		();
+
+#ifdef DEBUG
+	void			debug_on_key			(int key);
+#endif
+
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

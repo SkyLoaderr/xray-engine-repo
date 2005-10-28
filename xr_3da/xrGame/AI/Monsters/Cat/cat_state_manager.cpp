@@ -18,6 +18,7 @@
 #include "../../../clsid_game.h"
 #include "../states/state_test_look_actor.h"
 #include "../../../entitycondition.h"
+#include "../states/monster_state_help_sound.h"
 
 CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
 {
@@ -31,7 +32,7 @@ CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
 	add_state(eStateAttack_AttackRat,	xr_new<CStateCatAttackRat<CCat> >					(obj));
 
 	add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CCat> >				(obj));
-
+	add_state(eStateHearHelpSound,		xr_new<CStateMonsterHearHelpSound<CCat> >		(obj));
 
 	m_rot_jump_last_time = 0;
 }
@@ -60,6 +61,8 @@ void CStateManagerCat::execute()
 		}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
+	} else if (check_state(eStateHearHelpSound)) {
+		state_id = eStateHearHelpSound;
 	} else if (object->hear_dangerous_sound) {
 		state_id = eStateHearDangerousSound;
 	} else if (object->hear_interesting_sound) {

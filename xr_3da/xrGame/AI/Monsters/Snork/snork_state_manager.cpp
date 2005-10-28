@@ -19,6 +19,7 @@
 #include "../states/state_look_point.h"
 #include "../states/state_test_look_actor.h"
 #include "../states/state_test_state.h"
+#include "../states/monster_state_help_sound.h"
 
 #include "../../../entitycondition.h"
 
@@ -33,7 +34,7 @@ CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CSnork> >				(obj));
 
 	add_state(eStateFindEnemy,			xr_new<CStateMonsterTestCover<CSnork> >			(obj));
-	//add_state(eStateFakeDeath,			xr_new<CStateMonsterLookActor<CSnork> >			(obj));
+	add_state(eStateHearHelpSound,		xr_new<CStateMonsterHearHelpSound<CSnork> >		(obj));	
 }
 
 CStateManagerSnork::~CStateManagerSnork()
@@ -53,6 +54,8 @@ void CStateManagerSnork::execute()
 		}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
+	} else if (check_state(eStateHearHelpSound)) {
+		state_id = eStateHearHelpSound;
 	} else if (object->hear_dangerous_sound) {
 		state_id = eStateHearDangerousSound;
 	} else if (object->hear_interesting_sound) {

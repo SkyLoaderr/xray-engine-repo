@@ -51,6 +51,7 @@ public:
 	void		ta_pointbreak			();
 	void		ta_fill_data			(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep, u32 capture_type = ControlCom::eCaptureDir | ControlCom::eCapturePath | ControlCom::eCaptureMovement);
 	bool		ta_is_active			();
+	bool		ta_is_active			(const SAnimationTripleData &data);
 	void		ta_deactivate			();
 	
 	//-------------------------------------------------------------------------------

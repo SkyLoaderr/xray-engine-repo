@@ -15,6 +15,7 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "../states/monster_state_controlled.h"
+#include "../states/monster_state_help_sound.h"
 
 CStateManagerFlesh::CStateManagerFlesh(CAI_Flesh *monster) : inherited(monster)
 {
@@ -26,6 +27,7 @@ CStateManagerFlesh::CStateManagerFlesh(CAI_Flesh *monster) : inherited(monster)
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CAI_Flesh> >	(monster));
 	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CAI_Flesh> >				(monster));
 	add_state(eStateControlled,				xr_new<CStateMonsterControlled<CAI_Flesh> >			(monster));
+	add_state(eStateHearHelpSound,			xr_new<CStateMonsterHearHelpSound<CAI_Flesh> >		(monster));
 
 }
 
@@ -45,6 +47,8 @@ void CStateManagerFlesh::execute()
 
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
+		} else if (check_state(eStateHearHelpSound)) {
+			state_id = eStateHearHelpSound;
 		} else if (object->hear_interesting_sound) {
 			state_id = eStateHearInterestingSound;
 		} else if (object->hear_dangerous_sound) {

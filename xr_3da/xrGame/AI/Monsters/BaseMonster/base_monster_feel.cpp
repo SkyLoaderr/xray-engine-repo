@@ -23,6 +23,7 @@
 #include "../control_animation_base.h"
 #include "../../../UIGameCustom.h"
 #include "../../../UI/UIStatic.h"
+#include "../../../ai_object_location.h"
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power)
 {
@@ -43,9 +44,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 	// ignore sounds if not from enemies and not help sounds
 	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
 	if (entity && (!EnemyMan.is_enemy(entity))) {
-		if (SoundMemory.is_help_sound(eType)) {
-			SoundMemory.add_help_sound(entity);
-		}
+		SoundMemory.check_help_sound(eType, entity->ai_location().level_vertex_id());
 		return;
 	}
 	
@@ -73,7 +72,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 		// перевод из локальных координат в мировые вектора направления импульса
 		Fvector hit_dir;
-//		XFORM().transform_dir(hit_dir,dir);
+		XFORM().transform_dir(hit_dir,dir);
 		hit_dir = dir;
 		hit_dir.normalize();
 

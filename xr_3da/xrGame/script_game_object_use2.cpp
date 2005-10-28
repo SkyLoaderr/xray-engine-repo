@@ -2,6 +2,7 @@
 #include "script_game_object.h"
 #include "script_game_object_impl.h"
 #include "ai/monsters/bloodsucker/bloodsucker.h"
+#include "ai/monsters/zombie/zombie.h"
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
 #include "ai/monsters/monster_home.h"
@@ -104,5 +105,26 @@ void CScriptGameObject::remove_home()
 {
 	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
 	if (monster) monster->Home->remove_home();
+}
+
+bool CScriptGameObject::fake_death_fall_down()
+{
+	CZombie	*monster = smart_cast<CZombie*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CZombie : cannot access class member fake_death_fall_down!");
+		return false;
+	}
+
+	return monster->fake_death_fall_down();
+}
+void CScriptGameObject::fake_death_stand_up()
+{
+	CZombie	*monster = smart_cast<CZombie*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CZombie : cannot access class member fake_death_fall_down!");
+		return;
+	}
+
+	monster->fake_death_stand_up();
 }
 

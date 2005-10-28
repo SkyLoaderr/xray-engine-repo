@@ -4,6 +4,7 @@
 
 #define CHECK_SOUND_TYPE(a,b,c) { if ((a & b) == b) return c; }
 
+const	u32	time_help_sound_remember = 10000;
 
 TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 { 
@@ -34,7 +35,9 @@ TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 
 CMonsterSoundMemory::CMonsterSoundMemory()
 {
-	Sounds.reserve(20);
+	Sounds.reserve		(20);
+	m_time_help_sound	= 0;
+	m_help_node			= u32(-1);
 }
 CMonsterSoundMemory::~CMonsterSoundMemory()
 {
@@ -131,6 +134,9 @@ void CMonsterSoundMemory::UpdateHearing()
 
 	// пересчитать value
 	for (I=Sounds.begin(); I!=Sounds.end(); I++) I->CalcValue(Device.dwTimeGlobal, monster->Position());
+
+	// update help sound
+	if (m_time_help_sound + time_help_sound_remember < time()) m_time_help_sound = 0;
 }
 
 bool CMonsterSoundMemory::is_loud_sound(float val)
@@ -173,11 +179,21 @@ void CMonsterSoundMemory::remove_links(CObject *O)
 //////////////////////////////////////////////////////////////////////////
 // Help Sounds
 //////////////////////////////////////////////////////////////////////////
-bool CMonsterSoundMemory::is_help_sound(int eType)
+bool CMonsterSoundMemory::hear_help_sound()
 {
+	if ((m_time_help_sound == 0) || (m_time_help_sound + time_help_sound_remember < time())) return false;
 	return true;
 }
 
-void CMonsterSoundMemory::add_help_sound(const CEntityAlive *entity)
+void CMonsterSoundMemory::check_help_sound(int eType, u32 node)
 {
+	if ((eType & SOUND_TYPE_MONSTER_ATTACKING) != SOUND_TYPE_MONSTER_ATTACKING) return;
+	if ((eType & SOUND_TYPE_MONSTER_INJURING) != SOUND_TYPE_MONSTER_INJURING) return;
+	if ((eType & SOUND_TYPE_MONSTER_DYING) != SOUND_TYPE_MONSTER_DYING) return;
+
+	if (m_time_help_sound) return;
+
+	m_time_help_sound	= time();
+	m_help_node			= node;
 }
+

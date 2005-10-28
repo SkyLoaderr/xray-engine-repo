@@ -13,6 +13,7 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "../states/monster_state_controlled.h"
+#include "../states/monster_state_help_sound.h"
 
 CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : inherited(monster)
 {
@@ -24,6 +25,7 @@ CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : inherited(monster)
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CAI_Dog> >	(monster));
 	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CAI_Dog> >				(monster));
 	add_state(eStateControlled,				xr_new<CStateMonsterControlled<CAI_Dog> >			(monster));
+	add_state(eStateHearHelpSound,			xr_new<CStateMonsterHearHelpSound<CAI_Dog> >		(monster));
 }
 
 void CStateManagerDog::execute()
@@ -41,6 +43,8 @@ void CStateManagerDog::execute()
 			}
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
+		} else if (check_state(eStateHearHelpSound)) {
+			state_id = eStateHearHelpSound;
 		} else if (object->hear_interesting_sound) {
 			state_id = eStateHearInterestingSound;
 		} else if (object->hear_dangerous_sound) {

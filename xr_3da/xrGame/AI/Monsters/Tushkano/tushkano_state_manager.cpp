@@ -14,6 +14,7 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "../states/monster_state_controlled.h"
+#include "../states/monster_state_help_sound.h"
 
 #include "../../../entitycondition.h"
 
@@ -27,6 +28,7 @@ CStateManagerTushkano::CStateManagerTushkano(CTushkano *obj) : inherited(obj)
 	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CTushkano> >				(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CTushkano> >				(obj));
 	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CTushkano> >			(obj));
+	add_state(eStateHearHelpSound,		xr_new<CStateMonsterHearHelpSound<CTushkano> >		(obj));
 }
 
 CStateManagerTushkano::~CStateManagerTushkano()
@@ -48,6 +50,8 @@ void CStateManagerTushkano::execute()
 			}
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
+		} else if (check_state(eStateHearHelpSound)) {
+			state_id = eStateHearHelpSound;
 		} else if (object->hear_interesting_sound || object->hear_dangerous_sound) {
 			state_id = eStateHearDangerousSound;
 		} else {

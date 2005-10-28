@@ -64,12 +64,14 @@ typedef struct tagSoundElement
 
 } SoundElem;
 
-
 class CMonsterSoundMemory {
 	TTime					time_memory;				// время хранения звуков
 	xr_vector<SoundElem>	Sounds;
 
 	CBaseMonster			*monster;
+
+	u32						m_time_help_sound;
+	u32						m_help_node;
 
 public:
 				CMonsterSoundMemory		();
@@ -91,7 +93,10 @@ public:
 	void		clear					() {Sounds.clear();}
 	void		remove_links			(CObject *O);
 
-	bool		is_help_sound			(int eType);
-	void		add_help_sound			(const CEntityAlive *);
+	// help sounds
+	bool		hear_help_sound			();
+	u32			hear_help_sound_node	(){VERIFY(m_help_node != u32(-1)); return m_help_node;}
+
+	void		check_help_sound		(int eType, u32 node);
 };
 

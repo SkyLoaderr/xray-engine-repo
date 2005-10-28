@@ -9,6 +9,11 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
+#ifdef DEBUG
+#include <dinput.h>
+#endif
+
+
 CZombie::CZombie()
 {
 	StateMan = xr_new<CStateManagerZombie>(this);
@@ -175,3 +180,46 @@ void CZombie::shedule_Update(u32 dt)
 	}
 }
 
+bool CZombie::fake_death_fall_down()
+{
+	if (com_man().ta_is_active()) return false;
+
+	com_man().ta_activate		(anim_triple_death[u8(Random.randI(FAKE_DEATH_TYPES_COUNT))]);
+	move().stop					();
+
+	return true;
+}
+
+void CZombie::fake_death_stand_up()
+{
+	// check if state active
+	bool active = false;
+	for (u32 i=0; i<FAKE_DEATH_TYPES_COUNT; i++) {
+		if (com_man().ta_is_active(anim_triple_death[i])) {
+			active = true;
+			break;
+		}
+	}
+	if (!active) return;
+	
+	com_man().ta_pointbreak();
+}
+
+
+#ifdef DEBUG
+void CZombie::debug_on_key(int key)
+{
+	switch (key){
+	case DIK_MINUS:
+		{
+			fake_death_fall_down();
+		}
+		break;
+	case DIK_EQUALS:
+		{
+			fake_death_stand_up();
+		}
+		break;
+	}
+}
+#endif

@@ -188,6 +188,11 @@ void CBaseMonster::debug_fsm()
 
 		case eStateHearInterestingSound_MoveToDest:		sprintf(st,"Interesting Snd :: MoveToDest");	break;
 		case eStateHearInterestingSound_LookAround:		sprintf(st,"Interesting Snd :: LookAround");	break;
+		
+		case eStateHearHelpSound:						sprintf(st,"Hear Help Sound");	break;
+		case eStateHearHelpSound_MoveToDest:			sprintf(st,"Hear Help Sound :: MoveToDest");	break;
+		case eStateHearHelpSound_LookAround:			sprintf(st,"Hear Help Sound :: LookAround");	break;
+
 		case eStateControlled_Follow_Wait:				sprintf(st,"Controlled :: Follow : Wait");			break;
 		case eStateControlled_Follow_WalkToObject:		sprintf(st,"Controlled :: Follow : WalkToObject");	break;
 		case eStateControlled_Attack:					sprintf(st,"Controlled :: Attack");					break;

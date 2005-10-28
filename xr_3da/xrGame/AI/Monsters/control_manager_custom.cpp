@@ -172,6 +172,20 @@ bool CControlManagerCustom::ta_is_active()
 	return (m_triple_anim->is_active());
 }
 
+bool CControlManagerCustom::ta_is_active(const SAnimationTripleData &data)
+{
+	if (!m_triple_anim->is_active()) return false;
+
+	SAnimationTripleData	*ctrl_data = (SAnimationTripleData*)m_man->data(this, ControlCom::eControlTripleAnimation); 
+	VERIFY					(ctrl_data);
+
+	return (
+		(ctrl_data->pool[0] == data.pool[0]) &&
+		(ctrl_data->pool[1] == data.pool[1]) && 
+		(ctrl_data->pool[2] == data.pool[2])
+	);
+}
+
 void CControlManagerCustom::ta_deactivate()
 {
 	m_man->release(this, ControlCom::eControlTripleAnimation);

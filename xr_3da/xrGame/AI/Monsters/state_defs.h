@@ -94,6 +94,10 @@ enum EMonsterState {
 	eStateHearInterestingSound_MoveToDest	= eStateHearInterestingSound | 1,
 	eStateHearInterestingSound_LookAround	= eStateHearInterestingSound | 2,
 
+	eStateHearHelpSound						= eStateHearInterestingSound | 3,
+	eStateHearHelpSound_MoveToDest			= eStateHearInterestingSound | 4,
+	eStateHearHelpSound_LookAround			= eStateHearInterestingSound | 5,
+
 	// -------------------------------------------------------------
 
 	eStateControlled				= eGlobalState << 8,

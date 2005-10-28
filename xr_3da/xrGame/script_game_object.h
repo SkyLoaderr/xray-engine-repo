@@ -185,6 +185,10 @@ public:
 			void				set_manual_invisibility (bool val);
 			bool				get_manual_invisibility ();
 
+	// Zombie
+			bool				fake_death_fall_down	();
+			void				fake_death_stand_up		();
+
 	// CBaseMonster
 			void				skip_transfer_enemy		(bool val);
 			void				set_home				(LPCSTR name, float r_min, float r_max);
