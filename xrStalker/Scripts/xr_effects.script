@@ -1322,7 +1322,7 @@ function aes_grenade_explode (actor, npc)
 end
 
 function aes_kill_actor (actor, npc)
-    if actor ~= nil then 
+    if actor ~= nil and actor.health > 0 then 
        actor:kill (actor)
     end   
 end
