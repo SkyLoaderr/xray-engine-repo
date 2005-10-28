@@ -122,10 +122,11 @@ void CUIGameLog::Update()
 
 	for (int i = 0; i < invisible_items; i++)
 	{
-		pItem = /*UILogList.*/GetItem(i);
+/*
+		pItem = GetItem(i);
 		anm		= reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
-		
 		xr_delete(anm);
+*/
 		toDelIndexes.insert(i);
 	}
 	
@@ -133,6 +134,6 @@ void CUIGameLog::Update()
 	// Delete elements
 	for (ToDelIndexes_it it = toDelIndexes.begin(); it != toDelIndexes.end(); ++it)
 	{
-		/*UILogList.*/RemoveItem(*it);
+		RemoveItem(*it);
 	}
 }

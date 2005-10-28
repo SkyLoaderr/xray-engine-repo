@@ -1369,7 +1369,7 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd)
 
 			if (p->Done())
 			{
-				xr_delete(p);
+//				xr_delete(p);
 				pWnd->RemoveItem(i);
 			}
 		}

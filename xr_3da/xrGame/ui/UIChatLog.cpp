@@ -25,8 +25,8 @@ void CUIChatLog::AddLogMessage(const shared_str &msg, const shared_str &author)
 	::ZeroMemory(fullLine, 256);
 	strconcat(fullLine, *author, ": ", *msg);
 	CUIColorAnimatorWrapper	*animation	= xr_new<CUIColorAnimatorWrapper>(CHAT_LOG_ITEMS_ANIMATION);
-	/*UILogList.*/AddItem<CUIListItem>(fullLine, 0, animation);
-	CUIListItem	*item = /*UILogList.*/GetItem(/*UILogList.*/GetSize() - 1);
+	AddItem<CUIListItem>(fullLine, 0, animation);
+	CUIListItem	*item = GetItem(GetSize() - 1);
 	VERIFY(item);
 	item->Show(true);
 	animation->SetColorToModify(&item->GetTextColorRef());
@@ -40,16 +40,10 @@ void CUIChatLog::Init(float x, float y, float width, float height)
 {
 	CUIListWnd::Init(x, y, width, height);
 
-	// Chat log
-//	AttachChild(&UILogList);
-//	UILogList.Init(0,0,width,height);
-//	xml_init.InitListWnd(uiXml, "chat_log_list", 0, &UILogList);
 	EnableScrollBar(false);
 	CUIStatic* ps = xr_new<CUIStatic>();
 	AttachChild(ps);
 	ps->Init(x, y, width, height);
-//	ps->InitSharedTexture("ui_texture.xml","debug");
-//	ps->SetStretchTexture(true);
 }
 
 void CUIChatLog::Update()
@@ -57,9 +51,9 @@ void CUIChatLog::Update()
 	CUIListItem				*item		= NULL;
 	CUIColorAnimatorWrapper *anm		= NULL;
 	toDelIndexes.clear();
-	for (int i = 0; i < /*UILogList.*/GetSize(); ++i)
+	for (int i = 0; i < GetSize(); ++i)
 	{
-		item	= /*UILogList.*/GetItem(i);
+		item	= GetItem(i);
 		VERIFY(item);
 		anm		= reinterpret_cast<CUIColorAnimatorWrapper*>(item->GetData());
 		anm->Update();
@@ -67,7 +61,7 @@ void CUIChatLog::Update()
 		// Remove at animation end
 		if (anm->Done())
 		{
-			xr_delete(anm);
+//			xr_delete(anm);
 			toDelIndexes.insert(i);
 		}
 	}
@@ -75,6 +69,6 @@ void CUIChatLog::Update()
 	// Delete elements
 	for (ToDelIndexes_it it = toDelIndexes.begin(); it != toDelIndexes.end(); ++it)
 	{
-		/*UILogList.*/RemoveItem(*it);
+		RemoveItem(*it);
 	}
 }
