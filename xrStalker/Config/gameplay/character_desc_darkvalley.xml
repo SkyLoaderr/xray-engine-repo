@@ -26,6 +26,8 @@
 			borov_flash \n
 			device_torch \n
 			val_key_to_underground \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -55,7 +57,8 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -84,7 +87,9 @@
 			device_torch \n
 			wpn_toz34 \n
 			ammo_12x70_buck = 1 \n
-#include "gameplay\character_items.xml"						
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -113,7 +118,8 @@
 			device_torch \n
 			wpn_toz34 \n
 			ammo_12x70_buck = 1 \n
-#include "gameplay\character_items.xml"						
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -140,7 +146,8 @@
 			wpn_pb \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -170,7 +177,9 @@
 			wpn_toz34 \n
 			ammo_12x76_dart = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -199,7 +208,8 @@
 			wpn_ak74 = 1, 0, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -228,7 +238,8 @@
 			wpn_ak74 = 1, 0, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -257,7 +268,8 @@
 			wpn_mp5 \n
 			ammo_9x19_pbp = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -287,7 +299,9 @@
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -316,7 +330,8 @@
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -345,7 +360,8 @@
 			wpn_l85 \n
 			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -379,6 +395,8 @@
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n			
 #include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -409,7 +427,8 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -440,7 +459,8 @@
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -472,6 +492,7 @@
             ammo_9x19_pbp = 1 \n
             wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
+#include "gameplay\character_drugs.xml"
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -500,6 +521,7 @@
             ammo_9x19_pbp = 1 \n
             wpn_ak74 \n
             ammo_5.45x39_fmj = 1 \n
+#include "gameplay\character_drugs.xml"
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -530,7 +552,8 @@
             wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -559,7 +582,8 @@
             wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -588,7 +612,8 @@
             wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -617,7 +642,8 @@
             wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -649,7 +675,8 @@
             ammo_5.45x39_ap = 1 \n
             ammo_5.45x39_fmj = 2 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -678,7 +705,8 @@
             wpn_abakan \n
             ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -707,7 +735,8 @@
             wpn_abakan \n
             ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -736,7 +765,8 @@
             wpn_abakan \n
             ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -765,6 +795,9 @@
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -793,6 +826,9 @@
 			device_torch \n
 			wpn_toz34 \n
 			ammo_12x70_buck \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -819,6 +855,8 @@
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n		
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -845,6 +883,8 @@
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -873,6 +913,8 @@
 			device_torch \n
 			wpn_toz34 \n
 			ammo_12x70_buck \n			
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -899,6 +941,8 @@
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -929,6 +973,8 @@
 			ammo_12x76_zhekan = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -963,6 +1009,8 @@
 			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -995,7 +1043,8 @@
 			wpn_mp5 \n
 			ammo_9x19_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1028,7 +1077,8 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -1061,7 +1111,8 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
