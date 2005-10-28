@@ -1339,13 +1339,20 @@ function set_sidorovich_animation (npc)
     --sidor:add_animation ("idle_looped")
 end
 
-function aes_zombie_hit (npc)
-    hit_obj (db.actor, npc, {1119, "head2", 1, 10})
-    hit_obj (db.actor, npc, {1120, "head2", 1, 10})
-    hit_obj (db.actor, npc, {1121, "head2", 1, 10})
-    hit_obj (db.actor, npc, {1122, "head2", 1, 10})
-    hit_obj (db.actor, npc, {1123, "head2", 1, 10})
---параметры: actor, npc, p[sid,bone,power,impulse,hit_src=npc:position()]
+function aes_zombie_hit1 (npc)
+	level_object_by_sid (1119):set_const_force (vector ():set (0, 0, 1), 2000, 3)
+	level_object_by_sid (1120):set_const_force (vector ():set (0, 0, 1), 2000, 3)
+	level_object_by_sid (1121):set_const_force (vector ():set (0, 0, 1), 2000, 3)
+	level_object_by_sid (1122):set_const_force (vector ():set (0, 0, 1), 2000, 3)
+	level_object_by_sid (1123):set_const_force (vector ():set (0, 0, 1), 2000, 3)
+end
+
+function aes_zombie_hit2 (npc)
+	level_object_by_sid (1119):set_const_force (vector ():set (0, 0, -1), 2000, 3)
+	level_object_by_sid (1120):set_const_force (vector ():set (0, 0, -1), 2000, 3)
+	level_object_by_sid (1121):set_const_force (vector ():set (0, 0, -1), 2000, 3)
+	level_object_by_sid (1122):set_const_force (vector ():set (0, 0, -1), 2000, 3)
+	level_object_by_sid (1123):set_const_force (vector ():set (0, 0, -1), 2000, 3)
 end
 
 -- постпроцесс и влияние удара в морду
@@ -1374,4 +1381,9 @@ end
 -----------------------------radar
 function rad_sos_spam(actor, npc)
 	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)
+end
+
+
+function monolith_generator_hit (actor, npc)
+    printf ("ON GENERATOR HIT !!!")
 end
