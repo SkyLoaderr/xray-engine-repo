@@ -977,6 +977,9 @@
 							RelativePath=".\Config\text\eng\mp_st_speechmenu.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_dialog_manager.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\stable_dialogs.xml">
 						</File>
 						<File
@@ -1046,10 +1049,16 @@
 							RelativePath=".\Config\text\eng\stable_storyline_info_radar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_storyline_info_sarcofag.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_to_diary.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_yantar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\storyline_info_yantar.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_artefacts.xml">
@@ -1109,6 +1118,9 @@
 							RelativePath=".\Config\text\eng\string_table_mapspots_radar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_mapspots_sarcofag.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_mapspots_yantar.xml">
 						</File>
 						<File
@@ -1142,6 +1154,9 @@
 							RelativePath=".\Config\text\eng\string_table_tasks_radar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_tasks_sarcofag.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_tasks_yantar.xml">
 						</File>
 						<File
@@ -1164,6 +1179,12 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_tips_military.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\string_table_tips_radar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\string_table_tips_sarcofag.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_tips_yantar.xml">
