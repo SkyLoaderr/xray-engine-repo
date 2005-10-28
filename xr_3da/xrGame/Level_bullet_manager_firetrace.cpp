@@ -296,7 +296,9 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		P.w_u16			(E.bullet.parent_id);
 		P.w_u16			(E.bullet.weapon_id);
 		P.w_dir			(original_dir);
-		P.w_float		(power*gCheckHitK);
+		P.w_float		(power);
+		//врна анкэье рюйнцн ме декюкх!!!!!!
+///		P.w_float		(power*gCheckHitK);
 		P.w_s16			((s16)E.R.element);
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
