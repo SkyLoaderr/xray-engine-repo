@@ -383,18 +383,7 @@ void CUILevelMap::Draw()
 		}
 	}
 	inherited::Draw();
-/*
-	CGameFont* F		= UI()->Font()->pFontDI;
-	F->SetAligment		(CGameFont::alCenter);
-	F->SetSizeI			(0.02f);
-	F->OutSetI			(0.f,-0.8f);
-	F->SetColor			(0xffffffff);
 
-	Fvector2 cursor_pos = GetUICursor()->GetPos();
-	cursor_pos.sub(GetAbsolutePos());
-	Fvector2 pt = ConvertLocalToReal(cursor_pos);
-	F->OutNext			("pos on map = %3.2f-%3.2f",pt.x, pt.y);
-*/
 }
 
 void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
