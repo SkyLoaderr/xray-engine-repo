@@ -66,6 +66,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.article_info, self.article_callback, self)
 	self.object:set_callback(callback.on_item_take, self.on_item_take, self)
 	self.object:set_callback(callback.on_item_drop, self.on_item_drop, self)
+	self.object:set_callback(callback.trade_sell_buy_item, self.on_trade, self) -- for game stats
 	--self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 	self.object:set_callback(callback.task_state, self.task_callback, self)
 	--self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
@@ -77,6 +78,14 @@ function actor_binder:info_callback(npc, info_id)
 	level_tasks.proceed(self.object)
 	-- Отметки на карте
 	level_tasks.process_info_portion(info_id)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:on_trade (item, sell_bye, money)
+    if sell_bye == true then
+       game_stats.money_trade_update (money)
+    else       
+       game_stats.money_trade_update (-money) 
+    end   
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:article_callback(npc, group, name)
