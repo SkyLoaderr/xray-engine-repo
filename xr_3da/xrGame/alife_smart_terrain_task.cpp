@@ -8,3 +8,53 @@
 
 #include "stdafx.h"
 #include "alife_smart_terrain_task.h"
+#include "ai_space.h"
+#include "patrol_path_storage.h"
+#include "patrol_path.h"
+#include "patrol_point.h"
+
+IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask				(LPCSTR patrol_path_name, const u32 &patrol_point_index)
+{
+#ifdef DEBUG
+	m_patrol_path_name		= patrol_path_name;
+	m_patrol_point_index	= patrol_point_index;
+#endif
+	m_patrol_point			= 0;
+	setup_patrol_point		(patrol_path_name,patrol_point_index);
+}
+
+IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask				(const shared_str &patrol_path_name, const u32 &patrol_point_index)
+{
+#ifdef DEBUG
+	m_patrol_path_name		= patrol_path_name;
+	m_patrol_point_index	= patrol_point_index;
+#endif
+	m_patrol_point			= 0;
+	setup_patrol_point		(patrol_path_name,patrol_point_index);
+}
+
+IC	void CALifeSmartTerrainTask::setup_patrol_point				(const shared_str &patrol_path_name, const u32 &patrol_point_index)
+{
+	VERIFY					(!m_patrol_point);
+
+	const CPatrolPath		*patrol_path = ai().patrol_paths().path(patrol_path_name);
+	VERIFY					(patrol_path);
+
+	m_patrol_point			= &patrol_path->vertex(patrol_point_index)->data();
+	VERIFY					(m_patrol_point);
+}
+
+GameGraph::_GRAPH_ID CALifeSmartTerrainTask::game_vertex_id		() const
+{
+	return					(patrol_point().game_vertex_id());
+}
+
+u32	CALifeSmartTerrainTask::level_vertex_id						() const
+{
+	return					(patrol_point().level_vertex_id());
+}
+
+Fvector CALifeSmartTerrainTask::position						() const
+{
+	return					(patrol_point().position());
+}
