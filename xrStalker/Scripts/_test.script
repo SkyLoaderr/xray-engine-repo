@@ -1,8 +1,8 @@
 
 function main()
 --	local ce = path_cam_effector("camera_effects\\prison_1.anm")
-	local ce = _G.path_cam_effector("test.anm")
-	level.add_cam_effector(ce)	
+	_G.ce = _G.path_cam_effector("test.anm")
+	level.add_cam_effector(_G.ce)	
 
 --   local h = hit ()
 --   h.power = 100
