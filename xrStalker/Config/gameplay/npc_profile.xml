@@ -198,11 +198,16 @@
 		<class>dar_corpse</class>
 	</character>
 
-<!-- Darkvalley -->
-	<!-- Bandits -->	
+<!-- DeadCity -->
+	<!-- Doctor -->	
 	<character id="cit_doctor">
 		<class>cit_doctor</class>
 		<specific_character>cit_doctor</specific_character>
+	</character>
+
+	<!-- Bandits -->	
+	<character id="cit_bandit_drunk">
+		<class>cit_bandit_drunk</class>
 	</character>
 
 <!-- Bar + Rostok -->
