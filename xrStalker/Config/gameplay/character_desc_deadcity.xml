@@ -25,4 +25,29 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
+
+<!-------------------------- BANDIT ------------------------>
+<!--------------------------- DRUNK ------------------------>
+    <specific_character id="cit_bandit_drunk" team_default = "1">
+        <name>GENERATE_NAME</name>
+        <icon x="24" y="10"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>Алкаш.</bio>
+
+        <class>cit_bandit_drunk</class>
+        <community>bandit</community>
+
+        <rank>40</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\bandit\stalker_bandit_drunk</visual>
+        <snd_config>characters_voice\human_02\</snd_config>
+        <supplies>
+            [spawn] \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
 </xml>
