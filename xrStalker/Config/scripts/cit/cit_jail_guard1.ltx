@@ -1,11 +1,15 @@
 [logic]
 active              = walker@guard1
 combat_ignore       = combat_ignore
-on_hit = hit
+;on_hit              = hit
 
 [hit]
-on_info = {=hit_by_actor} remark@kill_actor2
+on_info             = {=hit_by_actor} remark@kill_actor2
 
+[danger@sleep]
+ignore_danger_sound  = 2
+ignore_danger_corpse = 2
+ignore_danger_grenade = 2
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- патрулируем возле решетки
@@ -75,17 +79,23 @@ path_look           = cit_jail_guard1_look
 on_timer            = 10000 | remark@sleep
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
 
+;-----------------------------------------------------------------------------------------------------------
+;--- детский час
+;-----------------------------------------------------------------------------------------------------------
 [remark@sleep]
 no_move             = true
 no_rotate           = true
 anim                = sleep_sit
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+danger              = danger@sleep
+on_info             = {=hit_by_actor} remark@kill_actor2
+combat_ignore_cond  = always ;{=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- убиваем актера
 ;-----------------------------------------------------------------------------------------------------------
 [remark@kill_actor2]
 anim                = threat
+target              = nil
 ;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@open_door
 combat_ignore_cond  = {=check_fighting(1200)}
 
