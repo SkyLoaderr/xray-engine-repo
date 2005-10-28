@@ -1641,6 +1641,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				pItem->SetWidth(UIItemInfo.UIDesc->GetDesiredChildWidth());
 				pItem->SetText(*CStringTable().translate(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
 				pItem->AdjustHeightToText();
+				pItem->SetAutoDelete(true);
 				UIItemInfo.UIDesc->AddWindow(pItem);
 					//.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
 			}
