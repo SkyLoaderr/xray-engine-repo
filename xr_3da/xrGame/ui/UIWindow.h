@@ -186,6 +186,10 @@ protected:
 								if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);
 	};
 
+#ifdef DEBUG
+	int m_dbg_id;
+#endif
+
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
 	// Последняя позиция мышки

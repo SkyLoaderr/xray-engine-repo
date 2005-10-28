@@ -101,13 +101,14 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 			UICondProgresBar->SetProgressPos	( s16(iFloor(cond*100.0f+1.0f-EPS)) );
 		}
 
-		UIDesc->Clear();
-		CUIStatic* pItem = xr_new<CUIStatic>();
-		pItem->SetWidth(UIDesc->GetDesiredChildWidth());
-		pItem->SetText(*pInvItem->ItemDescription());
-		pItem->AdjustHeightToText();
-		pItem->SetAutoDelete(true);
-		UIDesc->AddWindow(pItem);
+		UIDesc->Clear						();
+		VERIFY(0==UIDesc->GetSize());
+		CUIStatic* pItem					= xr_new<CUIStatic>();
+		pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
+		pItem->SetText						(*pInvItem->ItemDescription());
+		pItem->AdjustHeightToText			();
+		pItem->SetAutoDelete				(true);
+		UIDesc->AddWindow					(pItem);
 
 		// Загружаем картинку
 		UIItemImage->SetShader(InventoryUtilities::GetEquipmentIconsShader());

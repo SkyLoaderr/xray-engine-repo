@@ -256,17 +256,21 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == DRAG_DROP_ITEM_DRAG)
 	{
-		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
-		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		SetCurrentItem(pInvItem);
-		m_pCurrentDragDropItem->Rescale(1.0f,1.0f);
+		if (m_pCurrentDragDropItem) 
+			m_pCurrentDragDropItem->Highlight(false);
+
+		m_pCurrentDragDropItem			= (CUIDragDropItem*)pWnd;
+		PIItem pInvItem					= (PIItem)m_pCurrentDragDropItem->GetData();
+		SetCurrentItem					(pInvItem);
+		m_pCurrentDragDropItem->Rescale	(1.0f,1.0f);
 	}
 	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
-		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
-		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
+		if (m_pCurrentDragDropItem) 
+			m_pCurrentDragDropItem->Highlight(false);
+
+		m_pCurrentDragDropItem			= (CUIDragDropItem*)pWnd;
+		PIItem pInvItem					= (PIItem)m_pCurrentDragDropItem->GetData();
 		
 		SetCurrentItem(pInvItem);
 		
@@ -312,23 +316,21 @@ void CUITradeWnd::Update()
 		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i]->GetData();
 		if(pItem && !pItem->Useful())
 		{
-			m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
-			m_vDragDropItems[i]->SetData(NULL);
-			m_vDragDropItems[i]->SetCustomDraw(NULL);
+			m_vDragDropItems[i]->GetParent()->DetachChild	(m_vDragDropItems[i]);
+			m_vDragDropItems[i]->SetData					(NULL);
+			m_vDragDropItems[i]->SetCustomDraw				(NULL);
 
-			UpdatePrices();
+			UpdatePrices									();
 
-			xr_delete(m_vDragDropItems[i]);
-			m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
+			xr_delete										(m_vDragDropItems[i]);
+			m_vDragDropItems.erase							(m_vDragDropItems.begin()+i);
 		}
 	}
 
-	inherited::Update();
+	inherited::Update			();
 	UpdateCameraDirection		(smart_cast<CGameObject*>(m_pOthersInvOwner));
 }
 
-//////////////////////////////////////////////////////////////////////////
-//#include "../ai/trader/ai_trader.h"
 void CUITradeWnd::Show()
 {
 	inherited::Show		(true);
@@ -337,8 +339,6 @@ void CUITradeWnd::Show()
 	SetCurrentItem		(NULL);
 	ResetAll			();
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::Hide()
 {

@@ -6,19 +6,21 @@
 #include "UIWindow.h"
 #include "../MainUI.h"
 
+
 //#define LOG_ALL_WNDS
 #ifdef LOG_ALL_WNDS
 	int ListWndCount = 0;
 	struct DBGList{
-		CUIWindow*		wnd;
 		int				num;
+		bool			closed;
 	};
 	xr_vector<DBGList>	dbg_list_wnds;
 	void dump_list_wnd(){
 		Msg("------Total  wnds %d",dbg_list_wnds.size());
 		xr_vector<DBGList>::iterator _it = dbg_list_wnds.begin();
 		for(;_it!=dbg_list_wnds.end();++_it)
-			Msg("--leak detected ---- wnd = %d",(*_it).num);
+			if(!(*_it).closed)
+				Msg("--leak detected ---- wnd = %d",(*_it).num);
 	}
 #else
 	void dump_list_wnd(){}
@@ -48,9 +50,10 @@ CUIWindow::CUIWindow()
 	m_bClickable			= false;
 #ifdef LOG_ALL_WNDS
 	ListWndCount++;
+	m_dbg_id = ListWndCount;
 	dbg_list_wnds.push_back(DBGList());
-	dbg_list_wnds.back().wnd = this;
-	dbg_list_wnds.back().num = ListWndCount;
+	dbg_list_wnds.back().num		= m_dbg_id;
+	dbg_list_wnds.back().closed		= false;
 #endif
 }
 
@@ -69,32 +72,29 @@ CUIWindow::~CUIWindow()
 	xr_vector<DBGList>::iterator _it = dbg_list_wnds.begin();
 	bool bOK = false;
 	for(;_it!=dbg_list_wnds.end();++_it){
-		if((*_it).wnd == this){
+		if( (*_it).num==m_dbg_id && !(*_it).closed){
 			bOK = true;
+			(*_it).closed = true;
 			dbg_list_wnds.erase(_it);
 			break;
 		}
+		if( (*_it).num==m_dbg_id && (*_it).closed){
+			Msg("--CUIWindow [%d] already deleted", m_dbg_id);
+			bOK = true;
+		}
 	}
 	if(!bOK)
-		Msg("CUIWindow::~CUIWindow.!!!!!!!!!!!!!!!!!!!!!!! cannot find window in list");
+		Msg("CUIWindow::~CUIWindow.[%d] cannot find window in list", m_dbg_id);
 #endif
 
 }
 
-//
-//void CUIWindow::Init( int x, int y, int width, int height)
-//{
-//	SetWndRect(x, y, width, height);
-//}
 
 void CUIWindow::Init(Frect* pRect)
 {
 	SetWndRect(*pRect);
 }
 
-//
-// прорисовка окна
-//
 void CUIWindow::Draw()
 {
 	//перерисовать дочерние окна

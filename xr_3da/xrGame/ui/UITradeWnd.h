@@ -8,23 +8,6 @@
 
 class CInventoryOwner;
 class CEatableItem;
-
-//#include "UIDialogWnd.h"
-//#include "UIStatic.h"
-//#include "UIButton.h"
-//#include "UIWpnDragDropItem.h"
-//#include "UIDragDropList.h"
-//#include "UIProgressBar.h"
-//#include "UIPropertiesBox.h"
-
-//#include "UIEditBox.h"
-//#include "UIListWnd.h"
-//#include "UIMessageBox.h"
-//#include "UIMultiTextStatic.h"
-
-//#include "UICharacterInfo.h"
-//#include "UIItemInfo.h"
-
 class CTrade;
 struct CUITradeInternal;
 class CUIDragDropList;
@@ -40,7 +23,6 @@ public:
 
 	virtual void Init();
 
-//	typedef enum{TRADE_WND_CLOSED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	void InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers);
