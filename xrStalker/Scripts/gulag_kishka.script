@@ -344,34 +344,13 @@ if type == "ds_kem1" then
 		end
 	end
 	
-	if type == "ds_boars_nest" then        
+	
+if type == "ds_boars_nest" then
 		return function(gulag)
-			local t = db.zone_by_name["ds_boars_territory"]
-			if t and db.actor then
-				if gulag.state ~= 2 then
-					if t:inside(db.actor:position()) then
-						return 1
-					else
-						if gulag:get_population() >= 5 then
-							return 1
-						else
-							return 0
-						end
-					end
-				else
-					if gulag:get_population() >= 3 then
-						return 1
-					else
-						return 0
-					end
-				end
-			else
-				return gulag.state
-			end
+			return 0
 		end
 	end
-end
-
+	
 
 
 
