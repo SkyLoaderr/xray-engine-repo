@@ -82,7 +82,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	st.timer_id = utils.cfg_get_string( ini, section, "timer_id", obj, false, "", "hud_timer")
 		
 	st.ui = get_hud()
-	st.ui:AddCustomStatic(st.timer_id)
+	st.ui:AddCustomStatic(st.timer_id, true)
 	st.timer = st.ui:GetCustomStatic(st.timer_id)
 end
 
