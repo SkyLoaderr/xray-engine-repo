@@ -293,7 +293,6 @@ function CKampManager:proceedState(npc)
 	local active_sound_count = npc:active_sound_count()
 	if self.npc[npc_id].need_sound_begin == true then
 		if active_sound_count == 0 then
-			printf("Sound not begin")
 			return
 		else			
 			self.npc[npc_id].need_sound_begin = false
@@ -552,6 +551,7 @@ function CKampManager:updateNpc(npc)
 		sound = ""
 	end
 
+	printf("Proceed Update Npc [%s] sound [%s]", state, sound)	
 	return state, sound, substate
 end
 function CKampManager:checkNpcAbility(npc)
