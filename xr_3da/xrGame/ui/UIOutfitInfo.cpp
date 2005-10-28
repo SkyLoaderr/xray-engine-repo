@@ -60,7 +60,7 @@ void CUIOutfitInfo::Init(float x, float y, float width, float height){
 
 void CUIOutfitInfo::SetText(const CStringTable& stringTable){
 #ifdef DEBUG
-	R_ASSERT2(m_itemBurnProtection,"Need Call Init first");
+	R_ASSERT2(m_itemExplosionProtection,"Need Call Init first");
 #endif
 
 	// caption
