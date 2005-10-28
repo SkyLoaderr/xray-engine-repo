@@ -9,6 +9,7 @@ active = camper@sar_monolith_general_post1_1
 path_walk = post1_1_walk
 path_look = post1_1_look
 radius = 5
+def_state_campering = threat
 
 
 [logic@sar_monolith_general_post1_2]
@@ -18,22 +19,29 @@ active = camper@sar_monolith_general_post1_2
 path_walk = post1_2_walk
 path_look = post1_2_look
 radius = 5
+def_state_campering = threat
 
 
 [logic@sar_monolith_general_patrol]
-active = walker@sar_monolith_general_patrol
+active = patrol@sar_monolith_general_patrol
 
-[walker@sar_monolith_general_patrol]
+[patrol@sar_monolith_general_patrol]
+path_walk = patrol_walk
+commander = true
+
+
+[logic@sar_monolith_general_patrol_follower1]
+active = patrol@sar_monolith_general_patrol_follower1
+
+[patrol@sar_monolith_general_patrol_follower1]
 path_walk = patrol_walk
 
 
-[logic@sar_monolith_general_patrol_follower]
-active = follower@sar_monolith_general_patrol_follower
+[logic@sar_monolith_general_patrol_follower2]
+active = patrol@sar_monolith_general_patrol_follower2
 
-[follower@sar_monolith_general_patrol_follower]
-formation_line = false
-anim_walk = patrol
-distance = 2
+[patrol@sar_monolith_general_patrol_follower2]
+path_walk = patrol_walk
 
 
 [logic@sar_monolith_general_kamp]
