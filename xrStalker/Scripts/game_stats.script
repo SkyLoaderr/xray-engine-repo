@@ -99,7 +99,7 @@ function update_drop_item (object, actor)
     local t = {
               time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds), 
               id = actor_item_drop,
-              position = actor:position (),
+              position = db.actor:position (),
               item_name = object:name ()
               }
     table.insert (stats, t)
@@ -109,7 +109,7 @@ function money_trade_update (money_i)
     local t = {
               time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds),   
               id = actor_money_trade,
-              position = actor:position (),
+              position = db.actor:position (),
               money = money_i
               }
     table.insert (stats, t)
@@ -119,7 +119,7 @@ function money_quest_update (money_i)
     local t = {
               time = game.get_game_time ():timeToString (game.CTime.TimeToSeconds),   
               id = actor_money_quest,
-              position = actor:position (),
+              position = db.actor:position (),
               money = money_i
               }
     table.insert (stats, t)
