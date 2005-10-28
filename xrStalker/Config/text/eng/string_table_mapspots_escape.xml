@@ -13,6 +13,9 @@
     <string id="esc_fox">
         <text>Wounded Fox.</text>
     </string>
+    <string id="esc_mill">
+        <text>Abandoned windmill. The missing chap has been seen here last time.</text>
+    </string>
     <string id="escape_dinamit">
         <text>Dynamite at the factory.</text>
     </string>

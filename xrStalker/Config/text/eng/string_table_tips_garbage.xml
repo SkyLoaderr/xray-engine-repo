@@ -1,18 +1,18 @@
     <string id="gar_direction_fire">
-        <text>Let's allow them to approach closer, so as no one escapes. I'll fire first, then you do.</text>
+        <text>Let's allow them to approach closer, so that no one escapes. I'll fire first, then you do.</text>
     </string>
     <string id="gar_dolg_blokpost_warning">
         <text>Stalker, you have entered the territory controlled by Duty faction. Any sign of agression will be severely punished.</text>
     </string>
     <string id="gar_dolg_monster_rush">
-        <text>Attention everyone!! Duty's outpost at the Garbage speaking. The wave of mutants is moving from the Dark Valley to the Bar's direction. Everyone who assists in shooting off the vermins will be granted the gratitude from our side.</text>
+        <text>Attention everyone!! Duty's outpost at the Garbage speaking. The wave of mutants is moving from the Dark Valley to the Bar's direction. Everyone who assists in \nshooting off the vermins will be granted the gratitude from our side.</text>
     </string>
     <string id="gar_dolg_warning">
-        <text>Stalker, you have entered the Duty's territory. Would you try to make any rows - you'll be granted the invalidity!</text>
+        <text>Stalker, you have entered the Duty's territory. Would you try to make any rows - you'll get occupational invalidism!</text>
     </string>
     <string id="gar_hellcar_victory">
         <text>Attaboys, guys, we've defeated them. Everyone rest now, and you stalker come closer, let's have a chat.</text>
     </string>
     <string id="tips_gar_hellcar_alarm">
-        <text>Attention to all available stalkers! Damon is speaking. Bandits want to obtain control over this territory. Everyone who has objections and who is capable to bear arms, gathers at the machinery waste.</text>
+        <text>Attention to all available stalkers! Damon is speaking. Bandits want to obtain control over this territory. Everyone who has objections and who is capable to bear \narms, gathers at the machinery waste.</text>
     </string>

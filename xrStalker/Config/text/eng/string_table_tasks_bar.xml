@@ -8,10 +8,10 @@
         <text>Neutralize insane veterans</text>
     </string>
     <string id="bar_dolg_base_rules">
-        <text>This string was added automatically</text>
+        <text>Check in at Duty's commander</text>
     </string>
     <string id="bar_dolg_base_rules_talk">
-        <text>This string was added automatically</text>
+        <text>Find Duty's commander and check-in.</text>
     </string>
     <string id="bar_dolg_bring_rg6">
         <text>Procure RG6 for General Voronin</text>
@@ -119,7 +119,7 @@
         <text>Deactivate the radar</text>
     </string>
     <string id="descr_deactivate_radar">
-        <text>This string was added automatically</text>
+        <text>Disable brain burnout.</text>
     </string>
     <string id="find_and_deactivate_radar">
         <text>Locate and deactivate the radar</text>

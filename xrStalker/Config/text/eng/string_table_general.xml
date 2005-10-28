@@ -6,6 +6,18 @@
     <string id="AK-74_info">
         <text>AK-74 info</text>
     </string>
+    <string id="Btn_Cancel">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="Btn_No">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="Btn_OK">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="Btn_Yes">
+        <text>This string was added automatically</text>
+    </string>
     <string id="Machineguns">
         <text>Machineguns</text>
     </string>
@@ -27,23 +39,10 @@
     <string id="escape_blockpost_case">
         <text>Case from blockpost</text>
     </string>
-    <string id="test1">
-        <text>This is a GENERAL test string</text>
+    <string id="health">
+        <text>This string was added automatically</text>
     </string>
     <string id="test2">
         <text>This is a another GENERAL test string</text>
     </string>
-	<string id="Btn_Yes">
-		<text>Yes</text>
-	</string>
-	<string id="Btn_No">
-		<text>No</text>
-	</string>
-	<string id="Btn_OK">
-		<text>Ok</text>
-	</string>
-	<string id="Btn_Cancel">
-		<text>Cancel</text>
-	</string>
-    
 </string_table>

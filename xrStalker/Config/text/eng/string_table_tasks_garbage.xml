@@ -2,13 +2,13 @@
         <text>Eliminate bandits' raid.</text>
     </string>
     <string id="gar_hellcar_alive">
-        <text>Dimon must survive.</text>
+        <text>Talk to Damon.</text>
     </string>
     <string id="gar_help_hellcar">
-        <text>Repulse the raid of bandits.</text>
+        <text>Beat off bandits raid.</text>
     </string>
     <string id="gar_help_tunnel_newbie">
-        <text>Help out the newbie from the dump.</text>
+        <text>Help out the newbie from the garbage.</text>
     </string>
     <string id="gar_kill_bandits">
         <text>Eliminate the raid of bandits.</text>
@@ -17,7 +17,7 @@
         <text>Kill bandits nearby the tunnel</text>
     </string>
     <string id="gar_kill_bandits_post">
-        <text>Escort the newbie to the cordon</text>
+        <text>Escort the freshman to the cordon</text>
     </string>
     <string id="gar_kill_boars">
         <text>Pass to the Bar</text>
@@ -26,13 +26,13 @@
         <text>Slay the boars</text>
     </string>
     <string id="gar_kill_boars_2">
-        <text>Receive the permit from the Duty.</text>
+        <text>Receive the pass from the Duty.</text>
     </string>
     <string id="gar_kill_boars_main">
         <text>Quest to access the Bar.</text>
     </string>
     <string id="gar_say_free_pass">
-        <text>Inform the newbie of the path open</text>
+        <text>Inform the freshguy of the path open</text>
     </string>
     <string id="garbage_meet_stalker_1">
         <text>Talk to the Grey about Gunslinger</text>

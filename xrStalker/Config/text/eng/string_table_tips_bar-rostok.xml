@@ -71,10 +71,10 @@
         <text>Well okay Wolfhound that's it. The military copter is comming here. Now they'll crush you like dummies!</text>
     </string>
     <string id="bar_ecolog_escape">
-        <text>This string was added automatically</text>
+        <text>Guys, ecologist has run away! All after him, c'mon!</text>
     </string>
     <string id="bar_ecolog_hit">
-        <text>This string was added automatically</text>
+        <text>Branded One, help me! They're trying to kill me!</text>
     </string>
     <string id="bar_ecolog_spam_1">
         <text>You'll live well without it, jackal. Finish your school first and then pose demands.</text>
@@ -98,7 +98,7 @@
         <text>Branded one. You, son of a bitch, will pay for that setup-trap.</text>
     </string>
     <string id="bar_freedom_chase">
-        <text>This string was added automatically</text>
+        <text>They're chasing us!</text>
     </string>
     <string id="bar_freedom_spam_1">
         <text>Listen, bookworm. Either you give me the results or leave here inside the plastic bag.</text>
@@ -135,4 +135,10 @@
     </string>
     <string id="bar_territory_nodolg_kill">
         <text>Attention! A murderer has been found! Everyone within the Duty perimeter is ordered to eliminate the murderer!</text>
+    </string>
+    <string id="rostok_kruglov_spam_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rostok_kruglov_spam_2">
+        <text>This string was added automatically</text>
     </string>

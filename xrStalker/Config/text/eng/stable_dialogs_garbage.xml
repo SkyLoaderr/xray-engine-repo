@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="gar_dolg_blokpost_11">
-        <text>Halt, stalker. You can't proceed any further!</text>
+        <text>Halt, stalker. You can't go further!</text>
     </string>
     <string id="gar_dolg_blokpost_111">
         <text>And why that?</text>
     </string>
     <string id="gar_dolg_blokpost_1111">
-        <text>Farther lies our territory - the base of Duty faction. And we're indeed eager to find a quarrel in the straw when choosing the ones to let into our residence. If you have no significant deals with our leaders, we are not letting you in.</text>
+        <text>Farther lies our territory - the base of Duty faction. And we're indeed eager to find a quarrel in the straw when choosing the ones to let into our residence. If you \nhave no significant deals with our leaders, we are not letting you in.</text>
     </string>
     <string id="gar_dolg_blokpost_11111">
         <text>Okay, I'm gonna go. For now. But I'll be back!</text>
     </string>
     <string id="gar_dolg_blokpost_111111">
-        <text>Please, do. Any time day or night.</text>
+        <text>Please, do. Any time day and night.</text>
     </string>
     <string id="gar_dolg_blokpost_11112">
-        <text>I have business with the bartender. I believe you know him?</text>
+        <text>I have business with the barkeep. I believe you know him?</text>
     </string>
     <string id="gar_dolg_blokpost_111121">
         <text>Even if I do, the pass costs a sum. Shell out half a grand and we'll let you in. Or you can render us some service. Choose.</text>
     </string>
     <string id="gar_dolg_blokpost_1111211">
-        <text>I'll better be giving you money.</text>
+        <text>I'll better give you money then.</text>
     </string>
     <string id="gar_dolg_blokpost_11112111">
-        <text>Perfect, now pass, and you'd better have a really substantial concern to the barman. But there is quite a number of anomalies in the passageway, stay cautious.</text>
+        <text>Perfect, now pass, and you'd better have a really important business to the barkeep. But there is quite a number of anomalies in the passageway, stay cautious.</text>
     </string>
     <string id="gar_dolg_blokpost_1111212">
         <text>What kind of service?</text>
     </string>
     <string id="gar_dolg_blokpost_11112121">
-        <text>Hah, trifles in general. There is a boars nest nearby. It would be nice if someone cleared it away. I'll show you the its location. Clear it and consider the due to be paid.</text>
+        <text>Hah, trifles in general. There is a boar nest nearby. It would be nice if someone cleared it away. I'll show you its location. Clear it and consider the due to be paid.</text>
     </string>
     <string id="gar_dolg_blokpost_111121211">
         <text>Deal. I'm gonna switch to the hunt now, make a toast of dairy boar.</text>
@@ -52,13 +52,13 @@
         <text>Doing... still.</text>
     </string>
     <string id="gar_dolg_blokpost_2211">
-        <text>When you start undoing them, bring me one toast please.</text>
+        <text>When you start undoing them, bring me some toast please.</text>
     </string>
     <string id="gar_dolg_blokpost_222">
         <text>Sorry, all toastes were spent, by me.</text>
     </string>
     <string id="gar_dolg_blokpost_2221">
-        <text>Joker, darn... Alright, you may pass, but be sure that the toast will be reminded.</text>
+        <text>Wag, darn... Alright, you may pass, but be sure that I'll carry you this toast back.</text>
     </string>
     <string id="gar_dolg_blokpost_33">
         <text>When you see the barkeep, send my greetings to him. Oh, and dont forget about lots of anomalies in the passage, be careful.</text>
@@ -85,7 +85,7 @@
         <text>Thanks, my friend, you've helped me a lot. I'll remember that.</text>
     </string>
     <string id="gar_dramm_novice_start_1">
-        <text>Next time try to avoid such scrapes. You'll save your nerves and my bullets.</text>
+        <text>Next time try to avoid such scraps. You'll save your nerves and my bullets.</text>
     </string>
     <string id="gar_dramm_novice_start_11">
         <text>Until you are taken ill with sclerosis. I know, I know. Well, so long.</text>
@@ -121,7 +121,7 @@
         <text>I'll act under the circumstances.</text>
     </string>
     <string id="gar_hellcar_dialog_quest_1112">
-        <text>This is not my business and I won't risk my skin.</text>
+        <text>This is not my business and I won't risk my butt.</text>
     </string>
     <string id="gar_hellcar_dialog_quest_11121">
         <text>As you want, but you'll be whipping the cat, when paying the due to the freaks.</text>
@@ -130,7 +130,7 @@
         <text>Let me deal with this myself.</text>
     </string>
     <string id="gar_hellcar_dialog_quest_1113">
-        <text>Steam not, old man. I have spoiled them a bit. So the reinforcement can reinforce the mere dead ones.</text>
+        <text>Fear not, old man. I have spoiled them a bit. So the reinforcement can reinforce only dead ranks.</text>
     </string>
     <string id="gar_hellcar_dialog_quest_11131">
         <text>Oh, you are cool. But I'll better secure myself. What of it.</text>
@@ -139,10 +139,10 @@
         <text>Good luck there.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_0">
-        <text>Yeah he's likely to be alive.</text>
+        <text>What say you, old man?</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_1">
-        <text>When I have free time, I'll be happy to help you with your affair. People like you typically don't go for nothing. Besides I know quite enough and can share some info.</text>
+        <text>When I have free time, I'll be happy to help you with your business. People like you don't wander for no reason. Besides I know quite enough and can share \nsome info.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_11">
         <text>Information is good, but you cannot feed on it alone. And besides, I could well do with some healing, buy up some ammo and so forth.\n</text>
@@ -160,13 +160,13 @@
         <text>Do as you want, but I won't be waiting for you for the whole life, you must be not a fair maiden.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_1211">
-        <text>Guess I'm not seeking mariage with you. See you, old man.</text>
+        <text>Guess I'm not seeking marriage with you. See you, old man.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_13">
         <text>Tell me about yourself at first.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_13111">
-        <text>I'm Dimon. I've come here three years ago. As the majority in here - I'm the runaway. I've got two murders and heavy bodity on my back. Several years ago my friend has been maliciously hammered in the outside region. He has been gathered by particles in the resuscitation unit. Hence we had to make a visit of gratitude. When the cops zoomed up to arrest me, I had to croak one of them and jump off the second floor. Since then I wander in there. Yet my collection of articles on the back has been decently increased. And here I struggle with the chaos as I can. As at the Big Land. Train and organize the youth, teach them how to survive.</text>
+        <text>I'm Damon. I've come here three years ago. As the majority in here - I'm the runaway. I've got two murders and heavy bodity on my back. Several years ago my \nfriend has been maliciously hammered in the outside region. He has been gathered by particles in the resuscitation unit. Hence we had to make a visit of gratitude. \nWhen the cops zoomed up to arrest me, I had to croak one of them and jump off the second floor. Since then I wander in there. Yet my collection of articles on the \nback has been decently increased. And here I struggle with the chaos as I can. As at the Big Land. Train and organize the youth, teach them how to survive.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_131111">
         <text>Why aren't you joining the Duty with these humanistic gospels?</text>
@@ -259,7 +259,7 @@
         <text>It doesn't seem there are other forces to reign here at any other time. Alright, thanks, I'll make it on my own from here.</text>
     </string>
     <string id="gar_newbie_in_tonnel_44">
-        <text>Gesundheit! Glad to see you in one piece.</text>
+        <text>Gesundheit, so to say! Glad to see you in one piece.</text>
     </string>
     <string id="gar_newbie_in_tonnel_444">
         <text>Thanks, likewise.</text>
@@ -268,7 +268,7 @@
         <text>Well now have you got time to talk down calmly?</text>
     </string>
     <string id="gar_seriy_help_1">
-        <text>Yes, for the time being. Where have you poked out?</text>
+        <text>Yes, for the time being. Wherefrom have you poked out?</text>
     </string>
     <string id="gar_seriy_help_11">
         <text>I've been talking to Fox recently. He says that you've got information on the Gunslinger's grouping.</text>
