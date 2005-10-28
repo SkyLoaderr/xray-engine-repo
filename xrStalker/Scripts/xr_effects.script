@@ -1247,7 +1247,24 @@ end
 ---------------------------------------------------------
 -- DeadCity
 ---------------------------------------------------------
+local drop_params = {}
+local function drop_actor_item(item)
+    drop_params[2]:drop_item_and_teleport(item, drop_params[1])
+end
 
+function drop_actor_inventory(actor, npc, p)
+    if p[1] then
+        drop_params = {patrol(p[1]):point(0), actor}
+        actor:inventory_for_each(drop_actor_item)
+    end
+end
+
+function drop_npc_inventory(actor, npc, p)
+    if p[1] then
+        drop_params = {patrol(p[1]):point(0), npc}
+        npc:inventory_for_each(drop_actor_item)
+    end
+end
 
 -------------------------------------------------------------------------------------
 -- Функции для работы с вертолётами
