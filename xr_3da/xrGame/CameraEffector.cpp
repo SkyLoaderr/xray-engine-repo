@@ -11,29 +11,6 @@
 #include "../objectAnimator.h"
 
 
-class CCameraEffector_script :public CCameraEffector//, public luabind::wrap_base
-{
-public:
-	CCameraEffector_script							(ECameraEffectorType type, float tm):CCameraEffector(type, tm) {};
-	virtual BOOL Process(Fvector &p, Fvector &d, Fvector &n, float &fFov, float &fFar, float &fAspect)									
-	{																				
-		return Process_(&p, &d, &n/*, &fFov, &fFar, &fAspect*/)	;	
-	}                                   											
-	virtual bool Process_(Fvector *p, Fvector *d, Fvector *n/*, float *fFov, float *fFar, float *fAspect*/)	{return false;};
-
-};
-
-class CCamEffectorWrapper :public CCameraEffector_script ,public luabind::wrap_base
-{
-public:
-	CCamEffectorWrapper		(ECameraEffectorType type, float tm):CCameraEffector_script(type, tm) {};
-	virtual bool Process_(Fvector *p, Fvector *d, Fvector *n)
-	{																				
-		return call<bool>("Process",p,d,n);										
-	}                                   											
-
-};
-
 using namespace luabind;
 void play_object_animator(CObjectAnimator* self, bool bLooped)
 {
@@ -52,28 +29,8 @@ void object_animator_xform(CObjectAnimator* self, Fmatrix* dst)
 
 void CCameraEffector::script_register(lua_State *L)
 {
-	typedef CCameraEffector_script BaseType;
 	module(L)
 	[
-		class_<enum_exporter<ECameraEffectorType> >("cam_effector_type")
-			.enum_("events")
-			[
-				value("eCEFall",			int(eCEFall)),
-				value("eCENoise",			int(eCENoise)),
-				value("eCEShot",			int(eCEShot)),
-				value("eCEZoom",			int(eCEZoom)),
-				value("eCERecoil",			int(eCERecoil)),
-				value("eCEBobbing",			int(eCEBobbing)),
-				value("eCEHit",				int(eCEHit)),
-				value("eCEUser",			int(eCEUser))
-			],
-		class_<CCameraEffector> ("cam_effector_base")
-			.def_readwrite("fLifeTime",	&CCameraEffector::fLifeTime)
-			.def("GetType",					&CCameraEffector::GetType),
-
-		class_<BaseType, CCamEffectorWrapper, CCameraEffector>("cam_effector")
-			.def(	constructor<ECameraEffectorType ,float>()),
-
 		class_<CObjectAnimator>("object_animator")
 		.def(	constructor<>				())
 		.def("xform",						&object_animator_xform)

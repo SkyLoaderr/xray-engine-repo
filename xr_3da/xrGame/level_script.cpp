@@ -377,19 +377,11 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 	iterate_sounds				(prefix,max_count,temp);
 }
 
-/*
 #include "actoreffector.h"
-#include "ai/monsters/ai_monster_effector.h"
-void actor_impact(float time, float amp, float periods, float power)
+void add_cam_effector(LPCSTR fn)
 {
-	Actor()->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(time, amp, periods, power));
-//	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(db().m_attack_effector.ppi, db().m_attack_effector.time, db().m_attack_effector.time_attack, db().m_attack_effector.time_release));
-	
-}
-*/
-#include "actoreffector.h"
-void add_cam_effector(CCameraEffector* e)
-{
+	CAnimatorCamEffector* e	= xr_new<CAnimatorCamEffector>(eCEUser);
+	e->Start (fn);
 	Actor()->EffectorManager().AddEffector(e);
 }
 		
@@ -450,11 +442,7 @@ void CLevel::script_register(lua_State *L)
 		def("prefetch_sound",					prefetch_sound),
 
 		def("client_spawn_manager",				get_client_spawn_manager),
-/*
-		def("map_add_entity_icon",				map_add_entity_icon),
-		def("map_add_object_icon",				map_add_object_icon),
-		def("map_remove_object_icon",			map_remove_object_icon),
-*/
+
 		def("map_add_object_spot",				map_add_object_spot),
 		def("map_remove_object_spot",			map_remove_object_spot),
 		def("map_has_object_spot",				map_has_object_spot),
@@ -484,7 +472,7 @@ void CLevel::script_register(lua_State *L)
 		def("physics_world",					&physics_world),
 		def("get_snd_volume",					&get_snd_volume),
 		def("set_snd_volume",					&set_snd_volume),
-//		def("actor_impact",						&actor_impact),
-		def("add_cam_effector",					&add_cam_effector,adopt(_1) )
+
+		def("add_cam_effector",					&add_cam_effector)
 	];
 }
