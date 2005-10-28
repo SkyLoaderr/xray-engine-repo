@@ -19,7 +19,8 @@
         <snd_config>characters_voice\human_02\</snd_config>
         <supplies>
             [spawn] \n
-#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
