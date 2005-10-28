@@ -3,7 +3,7 @@ local t = {}
 function load_job(sj, gname, type, squad, groups)
 
 
-if type == "ds_kem1" then
+	if type == "ds_kem1" then
 		t = { section = "logic@ds_kem1_camper1",
 			idle = 0,
 			prior = 1, state = {0},
@@ -345,13 +345,12 @@ if type == "ds_kem1" then
 	end
 	
 	
-if type == "ds_boars_nest" then
+	if type == "ds_boars_nest" then
 		return function(gulag)
 			return 0
 		end
 	end
-	
-
+end
 
 
 
