@@ -1838,6 +1838,9 @@
 					<File
 						RelativePath=".\Config\scripts\cit\cit_jail_guard2.ltx">
 					</File>
+					<File
+						RelativePath=".\Config\scripts\cit\cit_jail_scene_zone.ltx">
+					</File>
 				</Filter>
 				<Filter
 					Name="DarkValley"
