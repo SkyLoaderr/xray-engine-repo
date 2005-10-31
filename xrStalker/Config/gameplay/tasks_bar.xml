@@ -12,6 +12,7 @@
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_get">green_location</map_location_type>
 			<object_story_id>rostok_tainyi_hod</object_story_id>
+			<infoportion_complete>rostok_objective_1</infoportion_complete>
 			<function_complete>bar_rostok_tasks.has_professor_research</function_complete>
 			<article>descr_bar_resque_information</article>
 		</objective>

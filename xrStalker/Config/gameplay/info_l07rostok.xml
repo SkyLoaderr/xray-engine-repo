@@ -168,6 +168,7 @@
     <info_portion id="rostok_ambush_killer_1_die"></info_portion>
     <info_portion id="rostok_ambush_killer_2_die"></info_portion>
     <info_portion id="rostok_ambush_killer_3_die"></info_portion>
+    <info_portion id="rostok_objective_1"></info_portion>
     
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
     <info_portion id="bar_freedom_defence_ecolog"></info_portion>
