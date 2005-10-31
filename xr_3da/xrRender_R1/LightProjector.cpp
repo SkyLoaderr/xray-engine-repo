@@ -192,12 +192,22 @@ void CLightProjector::calculate	()
 		
 		// calculate view-matrix
 		Fmatrix		mView;
-		Fvector		v_C, v_N;
+		Fvector		v_C, v_Cs, v_N;
 		v_C.set					(R.C);
+		v_Cs					= v_C;
 		v_C.y					+=	P_cam_dist;
 		v_N.set					(0,0,1);
-		VERIFY					(_valid(R.C) && _valid(R.C) && _valid(v_N));
-		mView.build_camera		(v_C,R.C,v_N);
+		VERIFY					(_valid(v_C) && _valid(v_Cs) && _valid(v_N));
+#ifdef DEBUG
+		Fvector v;
+		v.sub		(v_Cs,v_C);;
+		if ((v.x*v.x+v.y*v.y+v.z*v.z)<=flt_zero)	{
+			Log	("v_N",v_N);
+			Log	("v_C",v_C);
+			Log	("v_Cs",v_Cs);
+		}
+#endif
+		mView.build_camera		(v_C,v_Cs,v_N);
 		RCache.set_xform_view	(mView);
 
 		// Select slot, set viewport
