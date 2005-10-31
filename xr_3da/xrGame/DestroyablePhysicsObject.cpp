@@ -91,6 +91,8 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 void CDestroyablePhysicsObject::Destroy()
 {
 	VERIFY(!ph_world->Processing());
+	const CGameObject *who_object = smart_cast<const CGameObject*>(FatalHit().initiator());
+	callback(GameObject::eDeath)(lua_game_object(),who_object  ? who_object : 0);
 	CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	if(m_destroy_sound._handle())
 	{
