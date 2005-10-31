@@ -350,7 +350,7 @@ if type == "ds_kem1" then
 			return 0
 		end
 	end
-	
+end
 
 
 
