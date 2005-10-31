@@ -549,6 +549,7 @@ void CCustomRocket::StopEngineParticles()
 }
 void CCustomRocket::StartFlyParticles()
 {
+#pragma todo("remove 'm_bFlyingSoundPresent' - use handle")
 	if(m_bFlyingSoundPresent)
 		m_flyingSound.play_at_pos(0, XFORM().c, sm_Looped );
 

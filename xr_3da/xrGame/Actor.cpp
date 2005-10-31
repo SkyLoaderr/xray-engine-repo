@@ -1061,10 +1061,12 @@ void CActor::shedule_Update	(u32 DT)
 
 	//звук тяжелого дыхания при уталости и хромании
 	if(conditions().IsLimping() && g_Alive()){
+#pragma todo("remove 'm_bHeavyBreathSndPlaying' - use feedback")
 		if(!m_bHeavyBreathSndPlaying){
 			Fvector pos;
 			pos.set(0,ACTOR_HEIGHT,0);
 			m_HeavyBreathSnd.play_at_pos(this, pos, sm_Looped | sm_2D);
+#pragma todo("remove 'm_bHeavyBreathSndPlaying' - use feedback")
 			m_bHeavyBreathSndPlaying = true;
 		}else{
 			Fvector pos;
@@ -1072,6 +1074,7 @@ void CActor::shedule_Update	(u32 DT)
 			m_HeavyBreathSnd.set_position(pos);
 		}
 	}else if(m_bHeavyBreathSndPlaying){
+#pragma todo("remove 'm_bHeavyBreathSndPlaying' - use feedback")
 		m_bHeavyBreathSndPlaying = false;
 		m_HeavyBreathSnd.stop();
 	}
