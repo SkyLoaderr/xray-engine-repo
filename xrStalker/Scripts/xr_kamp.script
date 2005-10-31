@@ -309,7 +309,7 @@ function CKampManager:proceedState(npc)
 		return
 	end
 
-	printf("Proceed state for [%s]", npc_id)
+	--printf("Proceed state for [%s]", npc_id)
 	-- ¬ случае с историей переход обрабатываетс€ отдельно
 	if self.kamp_state == "post_story" then
 		if self.story_last < self.story_max - 1 then
@@ -428,7 +428,7 @@ function CKampManager:proceedRole(npc, director)
 		end
 		state = self.npc[npc_id].state_selected	
 	end
-	printf("Proceed Role state [%s] sound [%s]", state, sound)	
+	--printf("Proceed Role state [%s] sound [%s]", state, sound)	
 	return state, sound
 end
 function CKampManager:updateNpc(npc)
@@ -523,6 +523,7 @@ function CKampManager:updateNpc(npc)
 	elseif sound == "reac_harmonica" then
 		sound = "reac_music"
 	elseif sound == "reac_joke" then
+		sound = ""	
 		if self.npc[npc_id].new == true then
 			if self.censor == nil then
 				xr_sound.set_sound_play(npc, "reac_joke", math.random(2000,3000))
@@ -532,7 +533,6 @@ function CKampManager:updateNpc(npc)
 			end
 			self.npc[npc_id].new = false
 		end
-		sound = ""
 	elseif sound == "reac_story" then
 		sound = ""
 		if self.npc[npc_id].new == true then
@@ -551,7 +551,7 @@ function CKampManager:updateNpc(npc)
 		sound = ""
 	end
 
-	printf("Proceed Update Npc [%s] sound [%s]", state, sound)	
+	--printf("Proceed Update Npc [%s] sound [%s]", state, sound)	
 	return state, sound, substate
 end
 function CKampManager:checkNpcAbility(npc)
@@ -651,10 +651,24 @@ function CKampManager:addNpc(npc)
 end
 function CKampManager:removeNpc(npc)
 	printf("KAMP [%s] remove npc", npc:name())
+	local npc_id = npc:id()
+	if self.npc[npc_id] ~= nil then
+		-- ≈сли удал€ем режиссера - необходимо форсированно перевести лагерь в идловое состо€ние.
+		if self.director == npc_id then
+			self.director = nil
+			self.npc[npc_id].begin = nil
+			self.censor = nil
+			self.kamp_state = "idle"
+			self.begin = time_global()
+			for kk,vv in pairs(self.npc) do
+				vv.new = true
+			end
+			xr_sound.set_sound(npc, nil)
+			stop_play_sound(npc)
+		end
 	
-	if self.npc[npc:id()] ~= nil then
-		self.position[self.npc[npc:id()].position].used = nil
-		self.npc[npc:id()] = nil
+		self.position[self.npc[npc_id].position].used = nil
+		self.npc[npc_id] = nil
 	end
 end
 function CKampManager:increasePops(npc)
