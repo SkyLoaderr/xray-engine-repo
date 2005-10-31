@@ -9,8 +9,8 @@ class CUIScrollView :public CUIWindow, public CUIWndCallback
 {
 typedef CUIWindow	inherited;
 friend class CUIXmlInit; //for init
-enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),};
 protected:
+enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),};
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
 	float			m_rightIdent;
@@ -29,7 +29,7 @@ public:
 	virtual bool	OnMouse				(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw				();
 	virtual void	Update				();
-			void	AddWindow			(CUIWindow* pWnd);
+			void	AddWindow			(CUIWindow* pWnd, bool auto_delete = false);
 			void	RemoveWindow		(CUIWindow* pWnd);
 			void	Clear				();
 			void	ScrollToBegin		();

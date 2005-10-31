@@ -21,6 +21,8 @@ CUIScrollView::~CUIScrollView()
 void CUIScrollView::SendMessage	(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
+	if (CHILD_CHANGED_SIZE == msg && m_pad->IsChild(pWnd))
+		m_flags.set			(eNeedRecalc,TRUE);
 }
 
 void CUIScrollView::Init				()
@@ -40,8 +42,9 @@ void CUIScrollView::Init				()
 
 }
 
-void CUIScrollView::AddWindow			(CUIWindow* pWnd)
+void CUIScrollView::AddWindow			(CUIWindow* pWnd, bool auto_delete)
 {
+	pWnd->SetAutoDelete(auto_delete);
 	m_pad->AttachChild	(pWnd);
 	m_flags.set			(eNeedRecalc,TRUE);
 //	RecalcSize			();
