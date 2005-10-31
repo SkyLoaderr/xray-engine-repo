@@ -595,7 +595,6 @@ end
 function bar_ecolog_spam_5(actor, npc)
 	if db.actor:dont_has_info("bar_heli_scene_volkodav_die") and db.actor:dont_has_info("bar_ecolog_saw_chase") then
 		news_manager.send_tip(actor, "bar_freedom_chase", nil, "ecolog", nil, 503)
-		play_snd_from_obj(actor, npc, {503, "characters_voice\\human_01\\scenario\\Rostok\\kruglov_stop_enemy_1"})
 		db.actor:give_info_portion("bar_ecolog_saw_chase")
 	end
 end
