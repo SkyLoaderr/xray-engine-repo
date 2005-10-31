@@ -1456,6 +1456,7 @@ radius = 0
 no_retreat = true
 on_signal = bandits_alive | camper@bar_ecolog_professor_companion_1a %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+def_state_moving = assault
 
 [camper@bar_ecolog_professor_companion_1a]
 path_walk = escape_2a_walk
@@ -1463,6 +1464,7 @@ path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
 on_signal = arrived_hide_2 | camper@bar_rescue_research_hide_2
+def_state_moving = assault
 
 [camper@bar_rescue_research_hide_2]
 path_walk = escape_hide_2_walk
@@ -1517,6 +1519,7 @@ no_retreat = true
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = fire_anomaly | %+bar_fire_anomaly_forward%
 on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3 %-bar_kruglov_follow_talk%
+def_state_moving = assault
 
 [camper@bar_rescue_research_hide_3]
 path_walk = escape_stay
@@ -1533,7 +1536,7 @@ radius = 0
 no_retreat = true
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = arrived_torrid |camper@bar_ecolog_professor_companoin_3
-
+def_state_moving = assault
 
 
 [camper@bar_ecolog_professor_companoin_3]
@@ -1543,6 +1546,7 @@ radius = 0
 no_retreat = true
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_done -bar_kruglov_follow_talk%
+def_state_moving = assault
 
 [camper@bar_rescue_research_hide_4]
 path_walk = end_walk
