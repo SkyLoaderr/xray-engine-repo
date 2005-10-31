@@ -117,6 +117,7 @@ void CLightProjector::OnAppActivate()
 }
 
 //
+#include "../SkeletonCustom.h"
 void CLightProjector::calculate	()
 {
 	if (receivers.empty())		return;
@@ -204,9 +205,30 @@ void CLightProjector::calculate	()
 		if ((v.x*v.x+v.y*v.y+v.z*v.z)<=flt_zero)	{
 			CObject* OO = dynamic_cast<CObject*>(R.O);
 			Msg("Object[%s] has invalid position. ",*OO->cName());
+			Fvector cc;
+			OO->Center(cc);
+			Log("center=",cc);
+
+			Log("visual_center=",OO->Visual()->vis.sphere.P);
+			
+			Log("full_matrix=",OO->XFORM());
+
 			Log	("v_N",v_N);
 			Log	("v_C",v_C);
 			Log	("v_Cs",v_Cs);
+
+			Log("all bones transform:--------");
+			CKinematics* K = dynamic_cast<CKinematics*>(OO->Visual());
+			
+			for(u16 ii=0; ii<K->LL_BoneCount();++ii){
+				Fmatrix tr;
+
+				tr = K->LL_GetTransform(ii);
+				Log("bone ",K->LL_BoneName_dbg(ii));
+				Log("bone_matrix",tr);
+			}
+			Log("end-------");
+
 		}
 #endif
 		mView.build_camera		(v_C,v_Cs,v_N);

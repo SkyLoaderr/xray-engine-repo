@@ -43,6 +43,9 @@ bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 
 BOOL CAI_Stalker::feel_touch_contact	(CObject *O)
 {
+	if (!inherited::feel_touch_contact(O))
+		return						(FALSE);
+
 	CGameObject						*game_object = smart_cast<CGameObject*>(O);
 	if (!game_object)
 		return						(FALSE);

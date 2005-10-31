@@ -77,6 +77,13 @@ void CStalkerActionGetOutOfAnomaly::finalize	()
 void CStalkerActionGetOutOfAnomaly::execute	()
 {
 	inherited::execute					();
+//
+	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_mental_state			(eMentalStateDanger);
+//
 
 	m_temp0.clear						();
 	m_temp1.clear						();

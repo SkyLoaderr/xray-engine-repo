@@ -523,9 +523,17 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%s%sextrapolate   : %f",indent,indent,indent,movement().detail().extrapolate_length());
 	HUD().Font().pFontSmall->OutNext	("%s%s%spath size     : %d",indent,indent,indent,movement().detail().path().size());
 	if (!movement().detail().path().empty()) {
-		HUD().Font().pFontSmall->OutNext	("%s%s%scurrent point : %d",indent,indent,indent,movement().detail().curr_travel_point_index());
-		HUD().Font().pFontSmall->OutNext	("%s%s%sstart point   : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().front().position));
-		HUD().Font().pFontSmall->OutNext	("%s%s%sdest point    : [%f][%f][%f]",indent,indent,indent,movement().detail().path().empty() ? VPUSH(Fvector().set(0.f,0.f,0.f)) : VPUSH(movement().detail().path().back().position));
+		HUD().Font().pFontSmall->OutNext	("%s%s%sstart point   : [%f][%f][%f]",indent,indent,indent,VPUSH(movement().detail().path().front().position));
+		HUD().Font().pFontSmall->OutNext	("%s%s%sdest point    : [%f][%f][%f]",indent,indent,indent,VPUSH(movement().detail().path().back().position));
+		HUD().Font().pFontSmall->OutNext	("%s%s%scurrent point",indent,indent,indent);
+		HUD().Font().pFontSmall->OutNext	("%s%s%s%sindex     : %d",indent,indent,indent,indent,movement().detail().curr_travel_point_index());
+		HUD().Font().pFontSmall->OutNext	("%s%s%s%sposition  : [%f][%f][%f]",indent,indent,indent,indent,VPUSH(movement().detail().path()[movement().detail().curr_travel_point_index()].position));
+		CDetailPathManager::STravelParams	current_velocity = movement().detail().velocity(movement().detail().path()[movement().detail().curr_travel_point_index()].velocity);
+		HUD().Font().pFontSmall->OutNext	("%s%s%s%slinear    : %f",    indent,indent,indent,indent,current_velocity.linear_velocity);
+		HUD().Font().pFontSmall->OutNext	("%s%s%s%sangular   : %f deg",indent,indent,indent,indent,rad2deg(current_velocity.angular_velocity));
+		HUD().Font().pFontSmall->OutNext	("%s%s%s%sangular(R): %f deg",indent,indent,indent,indent,rad2deg(current_velocity.real_angular_velocity));
+		HUD().Font().pFontSmall->OutNext	("%s%s%sspeed(calc)   : %f",indent,indent,indent,movement().speed());
+		HUD().Font().pFontSmall->OutNext	("%s%s%sspeed(physics): %f",indent,indent,indent,movement().speed(m_PhysicMovementControl));
 	}
 
 	if (movement().detail().use_dest_orientation())
