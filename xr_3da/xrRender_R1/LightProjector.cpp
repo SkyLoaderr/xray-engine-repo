@@ -202,6 +202,8 @@ void CLightProjector::calculate	()
 		Fvector v;
 		v.sub		(v_Cs,v_C);;
 		if ((v.x*v.x+v.y*v.y+v.z*v.z)<=flt_zero)	{
+			CObject* OO = dynamic_cast<CObject*>(R.O);
+			Msg("Object[%s] has invalid position. ",*OO->cName());
 			Log	("v_N",v_N);
 			Log	("v_C",v_C);
 			Log	("v_Cs",v_Cs);
