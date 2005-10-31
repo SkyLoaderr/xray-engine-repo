@@ -192,6 +192,22 @@ void draw_restrictions(const shared_str &restrictions, LPCSTR start_indent, LPCS
 		HUD().Font().pFontSmall->OutNext("%s%s%s%s",start_indent,indent,indent,_GetItem(*restrictions,i,temp));
 }
 
+LPCSTR movement_type(const MonsterSpace::EMovementType &movement_type)
+{
+	switch (movement_type) {
+		case MonsterSpace::eMovementTypeStand :
+			return		("stand");
+		case MonsterSpace::eMovementTypeWalk  :
+			return		("walk");
+		case MonsterSpace::eMovementTypeRun   :
+			return		("run");
+		default			: NODEFAULT;
+	}
+#ifdef DEBUG
+	return				("invalid");
+#endif
+}
+
 void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 {
 	inherited::OnHUDDraw				(hud);
@@ -406,6 +422,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// movement
 	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("%smovement",indent);
+	HUD().Font().pFontSmall->OutNext	("%s%senabled         : %s",indent,indent,movement().enabled() ? "+" : "-");
 
 	LPCSTR								mental_state = "invalid";
 	switch (movement().mental_state()) {
@@ -442,42 +459,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		default : NODEFAULT;
 	}
 	HUD().Font().pFontSmall->OutNext	("%s%sbody state      : %s",indent,indent,body_state);
-
-	LPCSTR								movement_type = "invalid";
-	switch (movement().movement_type()) {
-		case MonsterSpace::eMovementTypeStand : {
-			movement_type				= "stand";
-			break;
-		}
-		case MonsterSpace::eMovementTypeWalk : {
-			movement_type				= "walk";
-			break;
-		}
-		case MonsterSpace::eMovementTypeRun : {
-			movement_type				= "run";
-			break;
-		}
-		default : NODEFAULT;
-	}
-	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s (current)",indent,indent,movement_type);
-
-										movement_type = "invalid";
-	switch (movement().target_movement_type()) {
-		case MonsterSpace::eMovementTypeStand : {
-			movement_type				= "stand";
-			break;
-		}
-		case MonsterSpace::eMovementTypeWalk : {
-			movement_type				= "walk";
-			break;
-		}
-		case MonsterSpace::eMovementTypeRun : {
-			movement_type				= "run";
-			break;
-		}
-		default : NODEFAULT;
-	}
-	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s (target)",indent,indent,movement_type);
+	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s (current)",indent,indent,movement_type(movement().movement_type()));
+	HUD().Font().pFontSmall->OutNext	("%s%smovement type   : %s (target)",indent,indent, movement_type(movement().target_movement_type()));
 
 	LPCSTR						path_type = "invalid";
 	switch (movement().path_type()) {
