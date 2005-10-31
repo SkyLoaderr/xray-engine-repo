@@ -96,7 +96,7 @@
     <info_portion id="pri_stadium_scene_start"></info_portion>
     <info_portion id="pri_stadium_scene_end"></info_portion>
 
-    <info_portion id="pri_decoder_got">
+    <info_portion id="pri_monolith_decoder_got">
         <task>sar_secret_lab</task>
     </info_portion>
 
