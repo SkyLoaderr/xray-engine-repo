@@ -111,12 +111,26 @@
 	<info_portion id="aes2_monolit_teleport3"></info_portion>
 	<info_portion id="aes2_monolit_teleport4"></info_portion>
 	<info_portion id="aes2_monolit_teleport5"></info_portion>
+	<info_portion id="aes2_monolit_teleport6"></info_portion>
+	<info_portion id="aes2_monolit_teleport7"></info_portion>
+	<info_portion id="aes2_monolit_teleport8"></info_portion>
+	<info_portion id="aes2_monolit_teleport9"></info_portion>
+	<info_portion id="aes2_monolit_teleport10"></info_portion>
 	<info_portion id="aes2_monolit_teleport_ready1"></info_portion>
 	<info_portion id="aes2_monolit_teleport_ready2"></info_portion>
 	<info_portion id="aes2_monolit_teleport_ready3"></info_portion>
 	<info_portion id="aes2_monolit_teleport_ready4"></info_portion>
 	<info_portion id="aes2_monolit_teleport_ready5"></info_portion>
-
+	<info_portion id="aes2_monolit_teleport_ready6"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready7"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready8"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready9"></info_portion>
+	<info_portion id="aes2_monolit_teleport_ready10"></info_portion>
+	<info_portion id="aes2_sniper_ready1"></info_portion>
+	<info_portion id="aes2_sniper_ready2"></info_portion>
+	<info_portion id="aes2_sniper_ready3"></info_portion>
+	<info_portion id="aes2_sniper_ready4"></info_portion>
+	<info_portion id="aes2_sniper_ready5"></info_portion>
 
 
    
