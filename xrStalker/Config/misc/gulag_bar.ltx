@@ -1471,6 +1471,16 @@ meet = meet@ecolog_kruglov
 def_state_moving = assault
 radius = 0
 on_info = {+bar_bandits_dead} camper@bar_ecolog_professor_companoin_2a
+on_info2 = {=rostok_gulag_2_inactive} remark@bar_ecolog_professor_companion_2 %+bar_bandits_dead%
+
+[remark@bar_ecolog_professor_companion_2]
+snd = rostok_kruglov_help_6
+no_move = true
+on_signal = sound_end | camper@bar_ecolog_professor_companion_2a
+;meet = meet@ecolog_kruglov
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+
+
 
 [camper@bar_ecolog_professor_companoin_2a]
 path_walk = escape_3a_walk
