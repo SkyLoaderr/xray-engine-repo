@@ -62,10 +62,6 @@ public:
 
 	void		OnPerformTrade		(u32 money_get, u32 money_put);
 
-//	void		Communicate();
-//	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
-	
-	void		SellItem(int id);
 	void		SellItem(CInventoryItem* pItem);
 
 	CInventoryOwner*	GetPartner();	
