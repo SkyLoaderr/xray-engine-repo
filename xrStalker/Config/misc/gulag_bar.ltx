@@ -1454,9 +1454,15 @@ path_walk = escape_2_walk
 path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
-on_info = {+rostok_spawn_naemniki} camper@bar_rescue_research_hide_2
-on_signal = bandits_alive | camper@bar_rescue_research_hide_2 %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
+on_signal = bandits_alive | camper@bar_ecolog_professor_companion_1a %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+
+[camper@bar_ecolog_professor_companion_1a]
+path_walk = escape_2a_walk
+path_look = escape_hide_2_look
+radius = 0
+no_retreat = true
+on_signal = arrived_hide_2 | camper@bar_rescue_research_hide_2
 
 [camper@bar_rescue_research_hide_2]
 path_walk = escape_hide_2_walk
@@ -1527,7 +1533,21 @@ path_look = end_look
 meet = meet@ecolog_kruglov
 radius = 0
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-;on_info = {+bar_rescue_research_reward} camper@bar_ecolog_professor_exit
+on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_exit_dialog_1
+
+[remark@kruglov_exit_dialog_1]
+snd = rostok_kruglov_help_3
+anim = hello
+meet = meet@ecolog_kruglov_1
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+on_info = {+bar_rescue_research_reward} remark@kruglov_exit_dialog_2
+
+remark@kruglov_exit_dialog_1]
+snd = rostok_kruglov_help_4
+anim = hello
+meet = meet@ecolog_kruglov_1
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+on_signal = sound_end | camper@bar_ecolog_professor_exit
 
 [camper@bar_ecolog_professor_exit]
 path_walk = escape_5_walk
