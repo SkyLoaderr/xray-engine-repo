@@ -1466,11 +1466,15 @@ def_state_moving = assault
 radius = 0
 on_info = {+bar_bandits_dead} walker@bar_ecolog_professor_companoin_2a
 
-[walker@bar_ecolog_professor_companoin_2a]
+[camper@bar_ecolog_professor_companoin_2a]
 path_walk = escape_3a_walk
 path_look = escape_look
 on_signal = ambush | camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk %
 on_info = {+rostok_spawn_naemniki} camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk%
+def_state_moving = assault
+radius = 0
+no_retreat = true
+
 
 [camper@bar_rescue_research_ambush_hide]
 path_walk = escape_hide_3_walk
