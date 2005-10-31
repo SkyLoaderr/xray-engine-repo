@@ -273,6 +273,15 @@ IC float		prg_pos_on_plane(const Fvector	&in_norm,float d,const Fvector &in_pos,
 	out_pos.add(in_pos,diff);
 	return prg;
 }
+
+IC void		prg_dir_on_plane(const Fvector	&in_norm,const Fvector &in_dir,Fvector &out_dir)
+{
+	float prg=-in_dir.dotproduct(in_norm);
+	Fvector diff;diff.set(in_norm);diff.mul(prg);
+	out_dir.add(in_dir,diff);
+	return;
+}
+
 IC void		restrict_vector_in_dir(Fvector& V,const Fvector& dir)
 {
 	Fvector sub;sub.set(dir);

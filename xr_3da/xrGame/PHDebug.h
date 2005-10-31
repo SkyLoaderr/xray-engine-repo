@@ -5,6 +5,8 @@
 #include "../StatGraph.h"
 #define DRAW_CONTACTS
 
+const float DET_CHECK_EPS =0.1f;
+
 extern	Flags32			ph_dbg_draw_mask						;
 extern	bool			draw_frame								;
 extern	u32				dbg_tries_num							;

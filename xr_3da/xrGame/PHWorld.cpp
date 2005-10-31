@@ -111,7 +111,9 @@ void CPHWorld::Create()
 
 /////////////////////////////////////////////////////////////////////////////
 
-void CPHWorld::Destroy(){
+void CPHWorld::Destroy()
+{
+	r_spatial.clear();
 	xr_delete(m_commander);
 	Mesh.Destroy();
 #ifdef PH_PLAIN

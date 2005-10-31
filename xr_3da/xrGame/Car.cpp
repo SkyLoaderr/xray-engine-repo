@@ -108,6 +108,7 @@ void CCar::reload		(LPCSTR section)
 
 void CCar::cb_Steer			(CBoneInstance* B)
 {
+	VERIFY2(fsimilar(DET(B->mTransform),1.f,EPS_L),"Bones receive returns 0 matrix");
 	CCar*	C			= static_cast<CCar*>(B->Callback_Param);
 	Fmatrix m;
 
@@ -115,6 +116,7 @@ void CCar::cb_Steer			(CBoneInstance* B)
 	m.rotateZ(C->m_steer_angle);
 
 	B->mTransform.mulB_43	(m);
+	VERIFY2(fsimilar(DET(B->mTransform),1.f,EPS_L),"Bones callback returns BAD!!! matrix");
 }
 
 // Core events
@@ -800,7 +802,10 @@ void CCar::Init()
 	}
 	if(ini->line_exist("car_definition","steer"))
 	{
+		
+		
 		m_bone_steer=pKinematics->LL_BoneID(ini->r_string("car_definition","steer"));
+		VERIFY2(fsimilar(DET(pKinematics->LL_GetTransform(m_bone_steer)),1.f,EPS_L),"BBADD MTX");
 		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(bctPhysics,cb_Steer,this);
 	}
 	//ref_wheel.Init();

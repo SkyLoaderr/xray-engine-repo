@@ -312,9 +312,13 @@ add_to_type_list(CPhysicsShell)
 #undef script_type_list
 #define script_type_list save_type_list(CPhysicsShell)
 
-# define DET(a) 	 (( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -\
-a._12 * ( a._21 * a._33 - a._23 * a._31 ) +\
-a._13 * ( a._21 * a._32 - a._22 * a._31 ) ))
+IC float DET(const Fmatrix &a){
+return
+(( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -
+a._12 * ( a._21 * a._33 - a._23 * a._31 ) +
+a._13 * ( a._21 * a._32 - a._22 * a._31 ) ));
+}
+
 // Implementation creator
 CPhysicsJoint*				P_create_Joint				(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)		;
 CPhysicsElement*			P_create_Element			()																					;
