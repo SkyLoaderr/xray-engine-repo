@@ -20,6 +20,24 @@ path_look = post1_2_look
 radius = 5
 
 
+[logic@sar_monolith_general_post2_1]
+active = camper@sar_monolith_general_post2_1
+
+[camper@sar_monolith_general_post2_1]
+path_walk = post2_1_walk
+path_look = post2_1_look
+radius = 5
+
+
+[logic@sar_monolith_general_post2_2]
+active = camper@sar_monolith_general_post2_2
+
+[camper@sar_monolith_general_post2_2]
+path_walk = post2_2_walk
+path_look = post2_2_look
+radius = 5
+
+
 [logic@sar_monolith_general_patrol]
 active = patrol@sar_monolith_general_patrol
 
@@ -35,11 +53,11 @@ active = patrol@sar_monolith_general_patrol_follower1
 path_walk = patrol_walk
 
 
-[logic@sar_monolith_general_patrol_follower2]
-active = patrol@sar_monolith_general_patrol_follower2
+[logic@sar_monolith_general_patrol_room]
+active = walker@sar_monolith_general_patrol_room
 
-[patrol@sar_monolith_general_patrol_follower2]
-path_walk = patrol_walk
+[walker@sar_monolith_general_patrol_room]
+path_walk = patrol_walk_room
 
 
 [logic@sar_monolith_general_kamp]
