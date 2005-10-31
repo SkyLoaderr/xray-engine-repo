@@ -339,6 +339,10 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			HUD().Font().pFontSmall->OutNext("%s%s%sdependent : %s",indent,indent,indent,*memory().danger().selected()->dependent_object()->cName());
 	}
 
+	HUD().Font().pFontSmall->OutNext	("%sanomalies",indent);
+	HUD().Font().pFontSmall->OutNext	("%s%sundetected  : %s",indent,indent,undetected_anomaly() ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%sinside      : %s",indent,indent,inside_anomaly() ? "+" : "-");
+
 	// agent manager
 	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("agent manager");
