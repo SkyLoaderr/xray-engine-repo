@@ -494,7 +494,7 @@ void CUIMainIngameWnd::Update()
 	if (!m_pActor) 
 	{
 		m_pItem					= NULL;
-		m_pWeapon				= NULL;
+		m_pWeapon				= NULL;	//Msg("* m_pWeapon = NULL");
 		CUIWindow::Update		();
 		return;
 	}
@@ -551,11 +551,12 @@ void CUIMainIngameWnd::Update()
 		// then no need to update info
 		static u32			prevAmmoID		= static_cast<u32>(-1);
 		static u32			prevState		= static_cast<u32>(-1);
-		if(pWeapon &&	((item && m_pItem != item) || 
-						 (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) ))
+		if(	((item && m_pItem != item) || 
+						 (pWeapon && (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) )))
 		{
 			m_pItem							= item;
-			prevState						= pWeapon->State();
+			if (pWeapon)
+				prevState						= pWeapon->State();
 			active_item_changed				= true;
 		};		
 
@@ -565,12 +566,13 @@ void CUIMainIngameWnd::Update()
 			UIWeaponSignAmmo.Show			(false);
 			UIWeaponBack.SetText			(m_pItem->NameShort());
 		}
-		else if(pWeapon)
+//		else 
+		if(pWeapon)
 		{
 
 			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
 			{
-				m_pWeapon					= pWeapon;
+				m_pWeapon					= pWeapon;//		Msg("- New m_pWeapon - %s[%d][0x%8x]", *pWeapon->cNameSect(), pWeapon->ID(), pWeapon);
 				prevState					= pWeapon->State();
 
 				if(m_pWeapon->ShowAmmo())
@@ -590,9 +592,9 @@ void CUIMainIngameWnd::Update()
 					int iYPos				= pSettings->r_u32(sect_name, "inv_grid_y");
 
 					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(iXPos * INV_GRID_WIDTH),
-																	float(iYPos * INV_GRID_HEIGHT),
-																	float(iGridWidth * INV_GRID_WIDTH),
-																	float(iGridHeight * INV_GRID_HEIGHT));
+						float(iYPos * INV_GRID_HEIGHT),
+						float(iGridWidth * INV_GRID_WIDTH),
+						float(iGridHeight * INV_GRID_HEIGHT));
 					UIWeaponIcon.SetStretchTexture(true);
 
 					// now perform only width scale for ammo, which (W)size >2
@@ -611,7 +613,7 @@ void CUIMainIngameWnd::Update()
 
 			string256 sItemName;
 			strcpy(sItemName, m_pItem->NameShort());			
-			
+
 			if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
 				strcat(sItemName, pWeaponMagazined->GetCurrentFireModeStr());
 
@@ -630,10 +632,15 @@ void CUIMainIngameWnd::Update()
 				UIWeaponSignAmmo.SetText(text_str);
 			}
 		}
+		else
+		{
+			m_pWeapon					= NULL; //Msg("* m_pWeapon = NULL");
+			UIWeaponBack.SetText		("");
+		}
 	} 
 	else
 	{
-		m_pWeapon					= NULL;
+		m_pWeapon					= NULL; //Msg("* m_pWeapon = NULL");
 		UIWeaponBack.SetText		("");
 	}
 
