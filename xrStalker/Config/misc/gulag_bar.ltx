@@ -1499,7 +1499,14 @@ meet = meet@ecolog_kruglov
 def_state_moving = assault
 radius = 0
 on_info = {+bar_ambush_dead} camper@bar_ecolog_professor_companoin_2
+on_info2 = {+rostok_ambush_killer_1_die +rostok_ambush_killer_2_die +rostok_ambush_killer_3_die} remark@bar_ecolog_professor_companion_2a %+bar_ambush_dead%
 
+[remark@bar_ecolog_professor_companion_2a]
+snd = rostok_kruglov_help_6
+no_move = true
+on_signal = sound_end | camper@bar_ecolog_professor_companoin_2
+;meet = meet@ecolog_kruglov
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
 
 [camper@bar_ecolog_professor_companoin_2]
