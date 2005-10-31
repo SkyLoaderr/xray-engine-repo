@@ -62,11 +62,11 @@ void CUIAnimatedStatic::Update()
 	// “еперь вычисл€ем кадры в зависимости от времени
 	u32 curFrame = m_uTimeElapsed / oneFrameDuration;
 
-//	if (curFrame != m_uCurFrame)
-//	{
+	if (curFrame != m_uCurFrame)
+	{
 		m_uCurFrame = curFrame;
 		SetFrame(m_uCurFrame);
-//	}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
