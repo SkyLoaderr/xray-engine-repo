@@ -1,9 +1,5 @@
-// FBasicVisual.h: interface for the FBasicVisual class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_FBASICVISUAL_H__2DCBE980_AF27_11D3_B4E3_4854E82A090D__INCLUDED_)
-#define AFX_FBASICVISUAL_H__2DCBE980_AF27_11D3_B4E3_4854E82A090D__INCLUDED_
+#ifndef FBasicVisualH
+#define FBasicVisualH
 #pragma once
 
 #include "vis_common.h"
@@ -70,4 +66,4 @@ public:
 	virtual ~IRender_Visual		();
 };
 
-#endif // !defined(AFX_FBASICVISUAL_H__2DCBE980_AF27_11D3_B4E3_4854E82A090D__INCLUDED_)
+#endif // !FBasicVisualH

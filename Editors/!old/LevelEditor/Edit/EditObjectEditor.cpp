@@ -173,7 +173,7 @@ void CEditableObject::GetLODFrame(int frame, Fvector p[4], Fvector2 t[4], const 
     Fmatrix T,matrix,rot;
     T.scale(r,S.y,r);
     T.translate_over(P);
-    if (parent) T.mulA(*parent);
+    if (parent) T.mulA_43(*parent);
 
     float angle = frame*(PI_MUL_2/float(LOD_SAMPLE_COUNT));
     rot.rotateY(-angle);

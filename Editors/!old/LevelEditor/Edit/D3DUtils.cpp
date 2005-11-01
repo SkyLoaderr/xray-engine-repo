@@ -644,7 +644,7 @@ void CDrawUtilities::DrawSphere(const Fmatrix& parent, const Fvector& center, fl
     Fmatrix B;
     B.scale				(radius,radius,radius);
     B.translate_over	(center);
-    B.mulA				(parent);
+    B.mulA_43			(parent);
     RCache.set_xform_world(B);
     DrawIdentSphere		(bSolid, bWire, clr_s,clr_w);
 }
@@ -731,7 +731,7 @@ void CDrawUtilities::DrawCylinder(const Fmatrix& parent, const Fvector& center, 
 
     // final xform
     Fmatrix xf;			xf.mul (mR,mScale);
-    xf.mulA				(parent);
+    xf.mulA_43			(parent);
     RCache.set_xform_world(xf);
 	DrawIdentCylinder	(bSolid,bWire,clr_s,clr_w);
 }
@@ -757,7 +757,7 @@ void CDrawUtilities::DrawCone	(const Fmatrix& parent, const Fvector& apex, const
 
     // final xform
     Fmatrix xf;			xf.mul (mR,mScale);
-    xf.mulA				(parent);
+    xf.mulA_43			(parent);
     RCache.set_xform_world(xf);
 	DrawIdentCone		(bSolid,bWire,clr_s,clr_w);
 }

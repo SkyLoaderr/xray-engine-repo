@@ -156,7 +156,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
 			if (EPrefs->object_flags.is(epoDrawBoneShapes)){ 
 		        Device.SetShader(Device.m_SelectionShader);
                 Fmatrix mat	= M;
-                mat.mulA	(parent);
+                mat.mulA_43	(parent);
                 u32 c 		= (*b_it)->flags.is(CBone::flSelected)?0x80ffffff:0x300000ff;
                 if ((*b_it)->shape.Valid()){
                     switch ((*b_it)->shape.type){

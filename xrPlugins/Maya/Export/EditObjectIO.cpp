@@ -53,7 +53,7 @@ bool CEditableObject::SaveObject(const char* fname)
             mScale.scale			(t_vScale);
             mTranslate.translate	(t_vPosition);
             mTransform.mul			(mTranslate,mRotate);
-            mTransform.mulB			(mScale);
+            mTransform.mulB_43		(mScale);
 	        TranslateToWorld		(mTransform);
             t_vRotate.set			(0,0,0);
             t_vPosition.set			(0,0,0);

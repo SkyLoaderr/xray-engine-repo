@@ -96,7 +96,7 @@ static void CalculateAnim(CBone* bone, CSMotion* motion, Fmatrix& parent)
         L.k.set		(M.k);
 
         Fmatrix		 LI; LI.invert(parent);
-        M.mulA		(LI);
+        M.mulA_43	(LI);
     }else{
         M.setXYZi	(r.x,r.y,r.z);
         M.c.set		(bone->_Offset());
@@ -407,14 +407,14 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
             rot.setXYZi(R.x,R.y,R.z);
             mat.identity();
             mat.c.set(T);
-            mat.mulA(matrix);
+            mat.mulA_43(matrix);
             mat.i.set(rot.i);
             mat.j.set(rot.j);
             mat.k.set(rot.k);
         }else{
             mat.setXYZi(R.x,R.y,R.z);
             mat.c.set(T);
-            mat.mulA(matrix);
+            mat.mulA_43(matrix);
         }
         matrix.set(mat);
     }

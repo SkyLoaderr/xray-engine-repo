@@ -878,7 +878,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 CBone* B 	= *b_it;
                 Fmatrix mat	= B->_MTransform();
 //.	            VERIFY		(!motion->GetMotionFlags(bone_id).is(st_BoneMotion::flWorldOrient));
-	         	if (B->IsRoot()) mat.mulA(mGT);
+	         	if (B->IsRoot()) mat.mulA_43(mGT);
 				Fquaternion	q;
                 q.set		(mat);
                 CKeyQR&	Kr 	= items[bone_id]._keysQR[frm-motion->FrameStart()];
