@@ -97,6 +97,7 @@ public:
 	virtual	void					reinit					();
 	virtual	void					reload					(CAI_Stalker *object);
 	virtual void					update					();
+			void					play_delayed_callbacks	();
 			void					play_fx					(float power_factor, int fx_index);
 
 public:

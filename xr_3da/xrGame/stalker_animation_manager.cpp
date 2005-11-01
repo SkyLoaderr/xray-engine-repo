@@ -91,13 +91,19 @@ void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 	m_skeleton_animated->PlayFX	(m_data_storage->m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index],power_factor);
 }
 
+void CStalkerAnimationManager::play_delayed_callbacks		()
+{
+	if (!m_call_script_callback)
+		return;
+
+	m_call_script_callback							= false;
+	object().callback(GameObject::eScriptAnimation)	();
+}
+
 void CStalkerAnimationManager::update						()
 {
 	try {
-		if (m_call_script_callback) {
-			m_call_script_callback	= false;
-			object().callback(GameObject::eScriptAnimation)();
-		}
+		play_delayed_callbacks	();
 
 		if (!object().g_Alive())
 			return;
