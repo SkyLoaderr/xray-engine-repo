@@ -365,7 +365,7 @@ function action_patrol:process_danger()
 	end
 	
 	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
-	if not self:on_place() and
+	if not self:on_place() then
 		if danger_distance_sqr > danger_settings.ignore_distance then
 			return false
 		end
