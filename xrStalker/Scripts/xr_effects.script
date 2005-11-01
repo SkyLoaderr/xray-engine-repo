@@ -1337,19 +1337,114 @@ function set_sidorovich_animation (npc)
 end
 
 function aes_zombie_hit1 (npc)
-	level_object_by_sid (1119):set_const_force (vector ():set (0, 0, 1), 2000, 3)
-	level_object_by_sid (1120):set_const_force (vector ():set (0, 0, 1), 2000, 3)
-	level_object_by_sid (1121):set_const_force (vector ():set (0, 0, 1), 2000, 3)
-	level_object_by_sid (1122):set_const_force (vector ():set (0, 0, 1), 2000, 3)
-	level_object_by_sid (1123):set_const_force (vector ():set (0, 0, 1), 2000, 3)
+    --local npc = level_object_by_sid (1119)
+    --local force = vector ():set (0, 0, 0.02)
+    --local pshell = npc:get_physics_shell ()
+    
+    --local joint = pshell:get_joint_by_bone_name ("head2")
+    --joint:set_max_force_and_velocity (0.5 + math.random (), 0.1 * -1, 0)
+    --joint:set_max_force_and_velocity (0.5 + math.random(), 0.1 * -1,  2)
+    
+    --local npc = level_object_by_sid (1119)
+    --local force = vector ():set (0, 0, 50)
+    --local pshell = npc:get_physics_shell ()
+    --local element = pshell:get_element_by_bone_name ("foot_right")
+    --element:apply_force (force.x, force.y, force.z)
+    
+    -- foot_right, foot_left, left_hand, right_hand
+        
+    
+    --local dir = npc:direction ()
+    --dir.y = 0.0
+    --dir:normalize ()
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1120)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1121)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1122)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1123)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
 end
 
 function aes_zombie_hit2 (npc)
-	level_object_by_sid (1119):set_const_force (vector ():set (0, 0, -1), 2000, 3)
-	level_object_by_sid (1120):set_const_force (vector ():set (0, 0, -1), 2000, 3)
-	level_object_by_sid (1121):set_const_force (vector ():set (0, 0, -1), 2000, 3)
-	level_object_by_sid (1122):set_const_force (vector ():set (0, 0, -1), 2000, 3)
-	level_object_by_sid (1123):set_const_force (vector ():set (0, 0, -1), 2000, 3)
+    --local npc = level_object_by_sid (1119)
+    --local force = vector ():set (0, 0, 50)
+    --local pshell = npc:get_physics_shell ()
+    --local element = pshell:get_element_by_bone_name ("foot_right")
+    --element:apply_force (force.x, force.y, force.z)
+    
+    
+    --local npc = level_object_by_sid (1119)
+    --local force = vector ():set (0, 0, 0.02)
+    --local pshell = npc:get_physics_shell ()
+    
+    --local joint = pshell:get_joint_by_bone_name ("head2")
+    --joint:set_max_force_and_velocity (0.5 + math.random (), 0.1 * 1, 0)
+    --joint:set_max_force_and_velocity (0.5 + math.random(), 0.1 * 1,  2)
+                --self.dir_x_axis  = self.dir_x_axis * (-1)
+                --self.dir_z_axis = self.dir_z_axis * (-1)
+                --self.time    = device():time_global() + math.random(800, 1000)
+        --end
+    
+    --local element = pshell:get_element_by_bone_name ("foot_right")
+    --element:apply_force (force.x, force.y, force.z)
+    --local npc = level_object_by_sid (1119)
+    --local dir = npc:direction ()
+    --dir.y = 0.0
+    --dir.x = -dir.x
+    --dir.z = -dir.z
+    --dir:normalize ()
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1120)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir.x = -dir.x
+    --dir.z = -dir.z
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1121)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir.x = -dir.x
+    --dir.z = -dir.z
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1122)
+    --dir = npc:direction ()
+    --dir.y = 0.0
+    --dir.x = -dir.x
+    --dir.z = -dir.z
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
+	
+    --npc = level_object_by_sid (1123)
+    --dir = npc:direction ()
+    --dir.x = -dir.x
+    --dir.z = -dir.z
+    --dir.y = 0.0
+    --dir:normalize ()   
+	--npc:set_const_force (dir, 2000, 3)
 end
 
 -- постпроцесс и влияние удара в морду
