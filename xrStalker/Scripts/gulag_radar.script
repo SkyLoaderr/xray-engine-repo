@@ -9,7 +9,7 @@ function load_job(sj, gname, type, squad, groups)
 				idle = 0,
 				prior = 5, state = {0},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = ""
+				in_rest = "rad_wagon_restrictor", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
@@ -45,7 +45,7 @@ function load_job(sj, gname, type, squad, groups)
 				idle = 0,
 				prior = 5, state = {1},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = ""
+				in_rest = "rad_wagon_restrictor", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
@@ -1295,7 +1295,7 @@ function checkStalker(npc_community, gulag_type)
 		gulag_type == "rad_after_tramplin_ambush"	or
 		gulag_type == "rad_before_tramplin_ambush"	or
 		gulag_type == "rad_far_road_ambush"			or 
-		gulag_type == "rad_far_road_ambush"			or 
+		gulag_type == "rad_far_road_btr_ambush"			or 
 		gulag_type == "rad_antenna_camper" then
 			return npc_community == "monolith"
 	end
