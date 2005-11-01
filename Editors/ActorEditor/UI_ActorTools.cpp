@@ -102,7 +102,7 @@ void CActorTools::PreviewModel::Render()
 		Fmatrix R,T;
        	R.rotateY(angle);
     	T.translate(m_vPosition);
-        T.mulA(R);
+        T.mulA_43(R);
     	m_pObject->RenderSingle(T);
     }
 }

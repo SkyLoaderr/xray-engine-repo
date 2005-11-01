@@ -239,7 +239,7 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
     }
                                             
     PHelper().CreateCaption			(items, PrepareKey(pref,"Global\\Motion count"),	m_cnt.c_str());
-    V=PHelper().CreateChoose		(items, PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions,0,0,MAX_ANIM_REFS);
+    V=PHelper().CreateChoose		(items, PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions,0,0,MAX_ANIM_SLOT);
     V->OnChangeEvent.bind			(this,&CActorTools::OnMotionRefsChange);
     ButtonValue* B;             
     if (m_pEditObject->m_SMotionRefs.size()==0) {            
@@ -445,7 +445,7 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         mBind.setXYZi				(BONE->_RestRotate().x,BONE->_RestRotate().y,BONE->_RestRotate().z);
         mBindI.invert				(mBind);
         mLocal.setXYZi				(BONE->_Rotate().x,BONE->_Rotate().y,BONE->_Rotate().z);
-        mLocal.mulA					(mBindI);
+        mLocal.mulA_43				(mBindI);
         mLocal.getXYZi				(lim_rot);
         lim_rot.x 					= rad2deg(lim_rot.x);
         lim_rot.y 					= rad2deg(lim_rot.y);
