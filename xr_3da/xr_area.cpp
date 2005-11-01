@@ -10,8 +10,11 @@
 
 using namespace	collide;
 
+extern	BOOL g_bLoaded;
+
 void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 {
+	if (!g_bLoaded)									return;
 	if (!S)											return;
 	if (S->g_object && S->g_object->getDestroy())	{S->g_object=0; return;}
 	if (0==S->feedback)								return;
@@ -36,6 +39,8 @@ void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 	for (; it!=end; it++)	{
 		Feel::Sound* L		= (*it)->dcast_FeelSound	();
 		if (0==L)			continue;
+		CObject* CO = (*it)->dcast_CObject();	VERIFY(CO);
+		if (CO->getDestroy()) continue;
 
 		// Energy and signal
 		VERIFY				(_valid((*it)->spatial.center));
