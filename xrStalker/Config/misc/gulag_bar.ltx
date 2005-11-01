@@ -856,6 +856,22 @@ soundgroup = bar_freedom_attack1
 radius = 5
 ;no_retreat = true
 
+[logic@bar_freedom_attack_sniper_7]
+active = camper@bar_freedom_attack_sniper_7
+on_death = death@bar_freedom_attack_killer
+
+[camper@bar_freedom_attack_sniper_7]
+path_walk = camper_7_walk
+path_look = camper_7_look
+def_state_moving = assault
+soundgroup = bar_freedom_attack1
+radius = 5
+;no_retreat = true
+
+
+
+
+
 ;chasing
 
 [logic@bar_freedom_attack_chaser_1]
