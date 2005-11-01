@@ -105,15 +105,15 @@ function action_impulse:perform_impulse(dir)
     end
 
 	if self.velocity_x ~= 0 then
-		self.joint:set_max_force_and_velocity(force_x, dir * self.velocity_x, 0)
+		self.joint:set_max_force_and_velocity(force_x, dir * self.velocity.x, 0)
 	end
 	
 	if self.velocity_y ~= 0 then
-		self.joint:set_max_force_and_velocity(force_y, dir * self.velocity_y, 1)
+		self.joint:set_max_force_and_velocity(force_y, dir * self.velocity.y, 1)
 	end
 	
 	if self.velocity_z ~= 0 then
-		self.joint:set_max_force_and_velocity(force_z, dir * self.velocity_z, 2)
+		self.joint:set_max_force_and_velocity(force_z, dir * self.velocity.z, 2)
 	end
 end
 
