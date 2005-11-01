@@ -25,14 +25,14 @@ IC	void CALifeHumanPatrolPathManager::path					(LPCSTR path_name)
 	path					(shared_str(path_name));
 }
 
-IC	bool CALifeHumanPatrolPathManager::completed			() const
-{
-	return					(m_completed);
-}
-
 IC	bool CALifeHumanPatrolPathManager::actual				() const
 {
 	return					(m_actual);
+}
+
+IC	bool CALifeHumanPatrolPathManager::completed			() const
+{
+	return					(actual() && m_completed);
 }
 
 IC	void CALifeHumanPatrolPathManager::start_type			(const EPatrolStartType	&start_type)

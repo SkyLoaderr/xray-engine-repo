@@ -60,8 +60,8 @@ public:
 	IC		void					route_type					(const EPatrolRouteType	&route_type);
 	IC		const EPatrolStartType	&start_type					() const;
 	IC		const EPatrolRouteType	&route_type					() const;
-	IC		bool					completed					() const;
 	IC		bool					actual						() const;
+	IC		bool					completed					() const;
 	IC		const CPatrolPath		&path						() const;
 	IC		void					start_vertex_index			(const u32 &start_vertex_index);
 	IC		bool					use_randomness				() const;
