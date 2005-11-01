@@ -23,7 +23,7 @@ private:
 	CUIStatic*		m_pCaption;
 	CUIStatic*		m_pBackground;
 	CUIStatic*		m_pFrame[3];
-	CUIStatsPlayerList*	m_pTextDesc;
+	CUIScrollView*	m_pTextDesc;
 	CUIStatic*		m_pImage;
 	CUI3tButton*	m_pBtnSpectator;
 	CUI3tButton*	m_pBtnNext;
