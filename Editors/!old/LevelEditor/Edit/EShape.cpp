@@ -96,7 +96,7 @@ void CEditShape::ApplyScale()
 		}break;
 		case cfBox:{
             Fmatrix& B		= it->data.box;
-            B.mulA			(FTransformS);
+            B.mulA_43		(FTransformS);
 		}break;
         }
     }
@@ -130,7 +130,7 @@ void CEditShape::Attach(CEditShape* from)
 	// transfer data
     from->ApplyScale		();
 	Fmatrix M 				= from->_Transform();
-    M.mulA					(_ITransform());
+    M.mulA_43				(_ITransform());
 	for (ShapeIt it=from->shapes.begin(); it!=from->shapes.end(); it++){
 		switch (it->type){
 		case cfSphere:{
@@ -140,7 +140,7 @@ void CEditShape::Attach(CEditShape* from)
 		}break;
 		case cfBox:{
             Fmatrix B		= it->data.box;
-            B.mulA			(M);
+            B.mulA_43		(M);
             add_box			(B);
 		}break;
         default: THROW;
@@ -175,7 +175,7 @@ void CEditShape::Detach()
             }break;
             case cfBox:{
                 Fmatrix B		= it->data.box;
-                B.mulA			(M);
+                B.mulA_43		(M);
                 shape->PPosition= B.c;
                 B.c.set			(0,0,0);
                 shape->add_box	(B);
@@ -253,7 +253,7 @@ bool CEditShape::FrustumPick(const CFrustum& frustum)
         	Fbox 			box;
             box.identity	();
             Fmatrix B		= it->data.box;
-            B.mulA	 		(_Transform());
+            B.mulA_43 		(_Transform());
             box.xform		(B);
 			u32 mask		= 0xff;
             if (frustum.testAABB(box.data(),mask)) return true;
@@ -325,7 +325,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                     Fmatrix B;
                     B.scale				(S.R,S.R,S.R);
                     B.translate_over	(S.P);
-                    B.mulA				(_Transform());
+                    B.mulA_43			(_Transform());
                     RCache.set_xform_world(B);
                     Device.SetShader	(Device.m_WireShader);
                     DU.DrawCross		(zero,1.f,m_DrawEdgeColor,false);
@@ -333,7 +333,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                 }break;
                 case cfBox:
                     Fmatrix B			= it->data.box;
-                    B.mulA				(_Transform()); 
+                    B.mulA_43			(_Transform()); 
                     RCache.set_xform_world(B);
                     DU.DrawIdentBox		(true,true,clr,m_DrawEdgeColor);
                 break;

@@ -559,7 +559,7 @@ void ESceneWallmarkTools::BuildMatrix	(Fmatrix &mView, float inv_w, float inv_h,
 	mRot.rotateZ		(angle);
 	mView.mulA_43		(mRot);
 	mScale.scale		(inv_w,inv_h,_max(inv_w,inv_h));
-	mView.mulA			(mScale);
+	mView.mulA_43		(mScale);
 }
 
 int	ESceneWallmarkTools::ObjectCount()

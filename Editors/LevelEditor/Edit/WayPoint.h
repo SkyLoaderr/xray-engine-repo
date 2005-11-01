@@ -43,6 +43,8 @@ public:
     bool		AddDoubleLink	(CWayPoint* P);
     bool		RemoveLink		(CWayPoint* P);
     void		InvertLink		(CWayPoint* P);
+    void		Convert1Link	(CWayPoint* P);
+    void		Convert2Link	(CWayPoint* P);
     WPLIt		FindLink		(CWayPoint* P);
     void		GetBox			(Fbox& bb);
 };
@@ -77,6 +79,8 @@ public:
     void			RemoveSelectedPoints();
     void			RemoveLink		();
     void			InvertLink		();
+    void			Convert1Link	();
+    void			Convert2Link	();
     bool			Add1Link		();
     bool			Add2Link		();
     // change position/orientation methods

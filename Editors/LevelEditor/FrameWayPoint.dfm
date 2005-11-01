@@ -183,7 +183,7 @@ object fraWayPoint: TfraWayPoint
     Left = 0
     Top = 49
     Width = 217
-    Height = 99
+    Height = 84
     Align = alTop
     ParentColor = True
     TabOrder = 1
@@ -225,7 +225,7 @@ object fraWayPoint: TfraWayPoint
     object ebInvertLink: TExtBtn
       Left = 2
       Top = 67
-      Width = 215
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
@@ -244,13 +244,13 @@ object fraWayPoint: TfraWayPoint
     object ebAdd1Link: TExtBtn
       Left = 2
       Top = 37
-      Width = 215
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      Caption = 'Make 1-Link'
+      Caption = 'Create 1-Link'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -261,9 +261,9 @@ object fraWayPoint: TfraWayPoint
       OnClick = ebAdd1LinksClick
     end
     object ebRemoveLinks: TExtBtn
-      Left = 2
-      Top = 82
-      Width = 215
+      Left = 109
+      Top = 67
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
@@ -282,13 +282,13 @@ object fraWayPoint: TfraWayPoint
     object ebAdd2Link: TExtBtn
       Left = 2
       Top = 52
-      Width = 215
+      Width = 107
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      Caption = 'Make 2-Link'
+      Caption = 'Create 2-Link'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -364,11 +364,49 @@ object fraWayPoint: TfraWayPoint
       Width = 215
       Height = 2
     end
+    object ebConvert1: TExtBtn
+      Left = 109
+      Top = 37
+      Width = 107
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Convert to 1-Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebConvert1Click
+    end
+    object ebConvert2: TExtBtn
+      Left = 109
+      Top = 52
+      Width = 107
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Convert to 2-Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebConvert2Click
+    end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameAITPoint'
     Options = []
-    Version = 6
+    Version = 7
     StoredProps.Strings = (
       'paCommands.Height'
       'paCommands.Tag'

@@ -45,6 +45,7 @@ void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
     	bRes|=((CWayObject*)(*it))->Add1Link();
     }
 	if (bRes) Scene->UndoSave();
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -60,6 +61,29 @@ void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	bRes|=((CWayObject*)(*it))->Add2Link();
 	if (bRes) Scene->UndoSave();
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraWayPoint::ebConvert1Click(TObject *Sender)
+{
+	ObjectList lst;
+    int cnt = Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->Convert1Link();
+	if (cnt) Scene->UndoSave();
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraWayPoint::ebConvert2Click(TObject *Sender)
+{
+	ObjectList lst;
+    int cnt = Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->Convert2Link();
+	if (cnt) Scene->UndoSave();
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -74,6 +98,7 @@ void __fastcall TfraWayPoint::ebRemoveLinksClick(TObject *Sender)
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	((CWayObject*)(*it))->RemoveLink();
 	if (cnt) Scene->UndoSave();
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -88,6 +113,7 @@ void __fastcall TfraWayPoint::ebInvertLinkClick(TObject *Sender)
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	((CWayObject*)(*it))->InvertLink();
 	if (cnt) Scene->UndoSave();
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -96,4 +122,5 @@ void __fastcall TfraWayPoint::ebModeWayClick(TObject *Sender)
 	LTools->SetTarget		(OBJCLASS_WAY,dynamic_cast<TExtBtn*>(Sender)->Tag);
 }
 //---------------------------------------------------------------------------
+
 

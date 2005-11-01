@@ -416,7 +416,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
     if (FS.exist(full_name.c_str())){
         CTimer T; T.Start();
         // lock main level
-        if (!EFS.CheckLocking(initial,map_name,false,false))
+        if (!bUndo&&!EFS.CheckLocking(initial,map_name,false,false))
             EFS.LockFile(initial,map_name,false);
         // read main level
         IReader* F 	= FS.r_open(full_name.c_str()); VERIFY(F);
@@ -476,7 +476,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 	                _I->second->Load(*chunk);
     	            chunk->close	();
                 }else{
-                    if (_I->second->IsEnabled() && (_I->first!=OBJCLASS_DUMMY)){
+                    if (!bUndo && _I->second->IsEnabled() && (_I->first!=OBJCLASS_DUMMY)){
                         LoadLevelPart	(_I->second,initial,LevelPartName(map_name,_I->first).c_str());
                     }
                 }

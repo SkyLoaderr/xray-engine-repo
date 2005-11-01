@@ -148,6 +148,31 @@ void CWayPoint::InvertLink(CWayPoint* P)
     if (a){ P->CreateLink(this, p_a);}
 	if (b){ CreateLink(P, p_b);      }
 }
+void CWayPoint::Convert1Link(CWayPoint* P)
+{
+	WPLIt A=FindLink(P);
+    WPLIt B=P->FindLink(this);
+    bool a=(A!=m_Links.end()), b=(B!=P->m_Links.end());
+	float p_a=1.f;
+	float p_b=1.f;
+    if ((a&&!b)||(!a&&b)||(!a&&!b)) return;
+	if (a){ p_a = (*A)->probability; xr_delete(*A); m_Links.erase(A);	}
+	if (b){ p_b = (*B)->probability; xr_delete(*B); P->m_Links.erase(B);}
+    CreateLink	(P, p_a);
+}
+void CWayPoint::Convert2Link(CWayPoint* P)
+{
+	WPLIt A=FindLink(P);
+    WPLIt B=P->FindLink(this);
+    bool a=(A!=m_Links.end()), b=(B!=P->m_Links.end());
+	float p_a=1.f;
+	float p_b=1.f;
+    if ((a&&b)||(!a&&!b)) return;
+	if (a){ p_a = (*A)->probability; xr_delete(*A); m_Links.erase(A);	} 
+	if (b){ p_b = (*B)->probability; xr_delete(*B); P->m_Links.erase(B);}
+    P->CreateLink(this, p_b);
+	CreateLink(P, p_a);      
+}
 void CWayPoint::CreateLink(CWayPoint* P, float pb)
 {
 	if (P!=this) m_Links.push_back(xr_new<SWPLink>(P,pb));
@@ -230,6 +255,42 @@ void CWayObject::InvertLink()
             for (; _B!=_B1; _B++){
                 CWayPoint* B = (CWayPoint*)(*_B);
                 A->InvertLink(B);
+            }
+        }
+    }
+}
+
+void CWayObject::Convert1Link()
+{
+    WPVec objects;
+    if (GetSelectedPoints(objects)){
+        WPIt _A0=objects.begin();
+        WPIt _A1=objects.end(); _A1--;
+        WPIt _B1=objects.end();
+        for (WPIt _A=_A0; _A!=_A1; _A++){
+            CWayPoint* A = (CWayPoint*)(*_A);
+            WPIt _B=_A; _B++;
+            for (; _B!=_B1; _B++){
+                CWayPoint* B = (CWayPoint*)(*_B);
+                A->Convert1Link(B);
+            }
+        }
+    }
+}
+
+void CWayObject::Convert2Link()
+{
+    WPVec objects;
+    if (GetSelectedPoints(objects)){
+        WPIt _A0=objects.begin();
+        WPIt _A1=objects.end(); _A1--;
+        WPIt _B1=objects.end();
+        for (WPIt _A=_A0; _A!=_A1; _A++){
+            CWayPoint* A = (CWayPoint*)(*_A);
+            WPIt _B=_A; _B++;
+            for (; _B!=_B1; _B++){
+                CWayPoint* B = (CWayPoint*)(*_B);
+                A->Convert2Link(B);
             }
         }
     }

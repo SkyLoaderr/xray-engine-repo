@@ -137,7 +137,7 @@ void CCustomObject::RotateLocal(Fvector& axis, float angle)
     Fmatrix m;
     Fvector r;
     m.rotation(axis,angle);
-    FTransformRP.mulB(m);
+    FTransformRP.mulB_43(m);
     FTransformRP.getXYZ(r);
     PRotation		= r;    
 }
