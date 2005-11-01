@@ -243,6 +243,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 
 	VERIFY2(dBodyGetPosition(m_body),"not valide safe position");
 	VERIFY2(dBodyGetLinearVel(m_body),"not valide safe velocity");
+	m_flags.set(flUpdate,TRUE);
 }
 
 void CPHElement::getQuaternion(Fquaternion& quaternion)
@@ -259,6 +260,7 @@ void CPHElement::setQuaternion(const Fquaternion& quaternion)
 	dQuaternion q={-quaternion.w,quaternion.x,quaternion.y,quaternion.z};
 	dBodySetQuaternion(m_body,q);
 	CPHDisablingRotational::Reinit();
+	m_flags.set(flUpdate,TRUE);
 }
 void CPHElement::GetGlobalPositionDynamic(Fvector* v)
 {
@@ -273,6 +275,7 @@ void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 	VERIFY(_valid(position));
 	dBodySetPosition(m_body,position.x,position.y,position.z);
 	CPHDisablingTranslational::Reinit();
+	m_flags.set(flUpdate,TRUE);
 }
 
 void CPHElement::TransformPosition(const Fmatrix &form)
@@ -291,6 +294,7 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 	CPHDisablingFull::Reinit();
 	m_body_interpolation.ResetPositions();
 	m_body_interpolation.ResetRotations();
+	m_flags.set(flUpdate,TRUE);
 }
 CPHElement::~CPHElement	()
 {
@@ -651,7 +655,7 @@ void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 	MulB43InverceLocalForm(*m);
 	//m->mulB_43(m_inverse_local_transform);
 	//bUpdate=false;
-	m_flags.set(flUpdate,FALSE);
+	//m_flags.set(flUpdate,FALSE);
 	VERIFY(_valid(*m));
 }
 
