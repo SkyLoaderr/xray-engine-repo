@@ -230,7 +230,7 @@ void CParticleTools::OnFrame()
     pos.mad(vel,Device.fTimeDelta);
     if (abs(pos.z)>100.f) pos.set(0,0,0);
 	Fmatrix M,R; M.translate(pos); R.rotateY(PI);
-	M.mulB(R);    
+	M.mulB_43(R);    
     	m_EditPE->UpdateParent	(M,vel,FALSE);
 */        
     AnsiString tmp;                              
@@ -577,8 +577,8 @@ void CParticleTools::MouseMove(TShiftState Shift)
     case etaRotate:{
     	m_RotateVector.normalize_safe();
         Fmatrix mR;
-        mR.rotation		(m_RotateVector,m_RotateAmount);
-        m_Transform.mulB(mR);
+        mR.rotation			(m_RotateVector,m_RotateAmount);
+        m_Transform.mulB_43	(mR);
     }break;
     case etaScale:	break;
     }
