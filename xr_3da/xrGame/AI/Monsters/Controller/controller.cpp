@@ -166,6 +166,9 @@ void CController::Load(LPCSTR section)
 	m_sound_aura_right_channel.create(TRUE, "monsters\\controller\\controller_psy_aura_r");
 	m_sound_aura_hit_left_channel.create(TRUE, "monsters\\controller\\controller_psy_hit_l");
 	m_sound_aura_hit_right_channel.create(TRUE, "monsters\\controller\\controller_psy_hit_l");
+
+	particles_fire = pSettings->r_string(section,"Control_Hit");
+		
 }
 
 void CController::load_friend_community_overrides(LPCSTR section)
@@ -446,7 +449,7 @@ void CController::draw_fire_particles()
 	dir.sub			(position, my_head_pos);
 	dir.normalize	();
 
-	PlayParticles("weapons\\generic_weapon07", my_head_pos, dir);
+	PlayParticles(particles_fire, my_head_pos, dir);
 
 	// check probability
 	if (Random.randI(100) > 30) {

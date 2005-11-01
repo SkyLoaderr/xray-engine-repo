@@ -34,7 +34,7 @@ class CController : public CBaseMonster,
 	
 	bool				int_need_deactivate;		// internal var
 
-	LPCSTR				particle_fire;
+	LPCSTR				particles_fire;
 
 	CControllerAnimation	*m_custom_anim_base;
 	CControllerDirection	*m_custom_dir_base;
