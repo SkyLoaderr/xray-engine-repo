@@ -10,6 +10,8 @@
 #include "patrol_point.h"
 #include "level_graph.h"
 #include "level_navigation_graph.h"
+#include "game_level_cross_table.h"
+#include "game_graph.h"
 #include "object_broker.h"
 
 #ifdef XRGAME_EXPORTS
@@ -52,6 +54,8 @@ IC	void CPatrolPoint::correct_position						(const CLevelGraph *level_graph, con
 
 	if (!level_graph->inside(level_vertex_id(level_graph,cross,game_graph),position()))
 		m_position		= level_graph->vertex_position(level_vertex_id(level_graph,cross,game_graph));
+
+	m_game_vertex_id	= cross->vertex(level_vertex_id(level_graph,cross,game_graph)).game_vertex_id();
 }
 
 CPatrolPoint::CPatrolPoint									(const CLevelGraph *level_graph, const CGameLevelCrossTable *cross, const CGameGraph *game_graph, const CPatrolPath *path, const Fvector &position, u32 level_vertex_id, u32 flags, shared_str name)
