@@ -153,7 +153,7 @@ void CALifeHumanDetailPathManager::follow_path				(const ALife::_TIME_ID &time_d
 		return;
 	}
 
-	float							update_distance = (float(time_delta)/ai().alife().time_manager().normal_time_factor()*speed())/100.f;
+	float							update_distance = ((float(time_delta)/1000.f)/ai().alife().time_manager().normal_time_factor())*speed();
 	for ( ; m_path.size() > 1;) {
 		float						distance_between = ai().game_graph().distance(object().m_tGraphID,(GameGraph::_GRAPH_ID)m_path[m_path.size() - 2]);
 		if (distance_between > (update_distance + m_walked_distance)) {
