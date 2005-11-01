@@ -401,7 +401,7 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 	    }
 	    table.insert(sj, t)        
     end
-    t[1].prior = 125 -- FAKE
+    sj[1].prior = 125 -- FAKE
 
     local pr = {1, 1, 1, 3, 2}
     -- кемпы
