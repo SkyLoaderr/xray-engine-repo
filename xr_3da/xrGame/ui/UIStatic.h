@@ -68,6 +68,8 @@ public:
 
 
 	// own
+	virtual void		SetHighlightColor(const u32 uColor)	{ m_HighlightColor = uColor; }
+			void		EnableTextHighlighting(bool value)		{ m_bEnableTextHighlighting = value; }
 			void		SetLightAnim				(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor);
 			void		ResetAnimation				();
 	virtual void		Init						(LPCSTR tex_name, float x, float y, float width, float height);	
@@ -75,7 +77,7 @@ public:
 
 	virtual void		DrawTexture					();
 	virtual void		DrawText					();
-
+	virtual void		DrawHighlightedText			();
 
 	virtual void		OnFocusReceive				();
 	virtual void		OnFocusLost					();
@@ -101,6 +103,8 @@ public:
 //	virtual void			SetTextAlign		(CGameFont::EAligment align);
 //	CGameFont::EAligment	GetTextAlign		();
 			void AdjustHeightToText			();
+			void HighlightText(bool bHighlight) {m_bEnableTextHighlighting = bHighlight;}
+	virtual bool IsHighlightText();
 
 	virtual void ClipperOn					();
 	virtual void ClipperOff					();
@@ -157,6 +161,10 @@ public:
 
 	CUILines*				m_pLines;
 protected:
+	bool			m_bEnableTextHighlighting;
+		// Цвет подсветки
+	u32				m_HighlightColor;
+
 	// this array of color will be useful in CUI3tButton class
 	// but we really need to declare it directly there because it must be initialized in CUIXmlInit::InitStatic
 	u32  m_dwTextColor[4];
@@ -185,6 +193,8 @@ protected:
 	void Elipsis(const Frect &rect, EElipsisPosition elipsisPos);
 	int	m_iElipsisIndent;
 	Frect	m_ClipRect;
+
+//	bool			m_bEnableTextHighlighting;
 
 private:
 	Frect	m_xxxRect; // need by RescaleRelative2Rect(Frect& r). it is initializes only once in Init(x,y,width,height)

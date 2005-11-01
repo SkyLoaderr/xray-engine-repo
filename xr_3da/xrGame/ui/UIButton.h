@@ -61,13 +61,9 @@ public:
 //	virtual	void	UpdateTextAlign();
 
 	//подсвечен ли текст на кнопке
-	virtual bool	IsHighlightText();
-	void	HighlightText(bool bHighlight) {m_bEnableTextHighlighting = bHighlight;}
 	// принудительна€ подсветка
 	virtual void	HighlightItem(bool bHighlight) { m_bCursorOverWindow = bHighlight; }
 	// ÷вет подсветки
-	virtual void	SetHighlightColor(const u32 uColor)	{ m_HighlightColor = uColor; }
-	void			EnableTextHighlighting(bool value)		{ m_bEnableTextHighlighting = value; }
 
 	//состо€ни€ в которых находитс€ кнопка
 	typedef enum{BUTTON_NORMAL, //кнопка никак не затрагиваетс€
@@ -104,7 +100,7 @@ protected:
 	bool			m_bButtonClicked;
 
 	// ¬ключена ли подсветка текста
-	bool			m_bEnableTextHighlighting;
+//	bool			m_bEnableTextHighlighting;
 
 	//режим в котором нажимаетс€ кнопка
 	E_PRESS_MODE	m_ePressMode;
@@ -114,7 +110,7 @@ protected:
 	float				m_iPushOffsetY;
 
 	// ÷вет подсветки
-	u32				m_HighlightColor;
+//	u32				m_HighlightColor;
 
 	// код акселератора
 	u32				m_uAccelerator;

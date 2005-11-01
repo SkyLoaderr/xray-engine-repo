@@ -255,19 +255,9 @@ void CUIButton::DrawText(){
 		down_offset = m_iPushOffsetY;
 	}
 
-	if(IsHighlightText() && xr_strlen(m_pLines->GetText())>0 && m_bEnableTextHighlighting)
-	{
-		DrawHighlightedText();
-	}
-
 	CUIStatic::DrawText();
 }
 
-
-bool CUIButton::IsHighlightText()
-{
-	return m_bCursorOverWindow;
-}
 
 void  CUIButton::Update()
 {
