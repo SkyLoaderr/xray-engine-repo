@@ -171,7 +171,8 @@ function animation:set_state(id, reset)
 	local nn = 0
 	local wpn_slot = self:weapon_slot()
 	--' выход из старого состояния
-	self.npc:clear_animations()	
+	self.npc:clear_animations()
+	self:clear_anim_callback()
 	if state_mgr_animation_list.animations[self.states.target_state] ~= nil then
 		if self.mgr.emerg.animation_nout == true or
 		   self.mgr.emerg.animation == true
@@ -189,7 +190,7 @@ function animation:set_state(id, reset)
 				end
 			end
 						
-			-- экстренный выход, необходимо дропнуть приатаченные предметы
+			-- (2) экстренный выход, необходимо дропнуть приатаченные предметы
 			if state_mgr_animation_list.animations[self.states.target_state].out ~= nil then
 				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.target_state].out)
 				if anima then
@@ -574,60 +575,81 @@ function animation:callback_process()
 		end
 		return ret
 end
+-- Обнуляем колбек при переключении анимационных блоков
+function animation:clear_anim_callback()
+	self.clb_settings = {}
+end
 --' настройка колбека на особые действия
 function animation:set_anim_callback(value)
-	print_table(value)
-	tmp_table = {
+	printf("SET ANIM callback [%s]", self.npc:animation_count())
+	-- Нужно определить разницу между активным количеством анимаций и размером таблицы
+	-- дополнить таблицами нилами до нужного размера
+	-- в последнюю позицию записать настройки.
+	local table_size = table.getn(self.clb_settings)
+	local anim_count = self.npc:animation_count()
+	printf("for debug [%s] [%s]", table_size, anim_count)
+	for key = table_size+1, anim_count - table_size do
+		table.insert(self.clb_settings, "nil")
+	end
+	
+	self.clb_settings[table.getn(self.clb_settings)] = {
 		a = value.a,
 		d = value.d,
 		s = value.s,
 		sh = value.sh,
 		f = value.f
 	}
-	table.insert(self.clb_settings, tmp_table)
-	return true 
+	print_table(self.clb_settings)
 end
 --' коллбек на особые действия
 function animation:anim_callback()
 	printf("anim callback [%s]", self.npc:animation_count())
+	print_table(self.clb_settings)
 	-- Проходим по таблице, из 1 позиции вычитываем действий. Остальные просто сдвигаем
 	v = self.clb_settings[1]
-	if v ~= nil then
-		-- Производим действия находящиеся на 1 позиции
-		if v.a ~= nil and
-			self.states.attach_items[v.a] ~= nil 
-		then
-			printf("item [%s] attach", utils.to_str(v.a))
-			self.states.attach_items[v.a].mode = "attach"
-			self.states.attach_items[v.a].done = false
-		end
-		if v.d ~= nil and
-			self.states.attach_items[v.d] ~= nil 
-		then
-			printf("item [%s] detach", utils.to_str(v.d))	
-			self.states.attach_items[v.d].mode = "detach"
-			self.states.attach_items[v.d].done = false
-		end
-		if v.s ~= nil then
-			xr_sound.set_sound_play(self.npc, v.s)
-		end
-		if v.sh ~= nil then
-			-- наносим хит себе.
-			local h = hit()
-			h.power = v.sh
-			h.direction = vector_rotate_y(self.npc:direction(), 90)
-			h.draftsman = self.npc
-			h.impulse = 200
-			h.type = hit.wound
-			self.npc:hit(h)
-		end
-		if v.f ~= nil then
-			-- Запуск функции
-			printf("called function [%s]", tostring(v.f))
-			v.f(self.npc)
-		end
+	
+	if v == nil then
+		return true
+	end	
+	if v == "nil" then
 		table.remove(self.clb_settings, 1)
+		return true
 	end
+	
+	-- Производим действия находящиеся на 1 позиции
+	if v.a ~= nil and
+		self.states.attach_items[v.a] ~= nil 
+	then
+		printf("item [%s] attach", utils.to_str(v.a))
+		self.states.attach_items[v.a].mode = "attach"
+		self.states.attach_items[v.a].done = false
+	end
+	if v.d ~= nil and
+		self.states.attach_items[v.d] ~= nil 
+	then
+		printf("item [%s] detach", utils.to_str(v.d))	
+		self.states.attach_items[v.d].mode = "detach"
+		self.states.attach_items[v.d].done = false
+	end
+	if v.s ~= nil then
+		xr_sound.set_sound_play(self.npc, v.s)
+	end
+	if v.sh ~= nil then
+		-- наносим хит себе.
+		local h = hit()
+		h.power = v.sh
+		h.direction = vector_rotate_y(self.npc:direction(), 90)
+		h.draftsman = self.npc
+		h.impulse = 200
+		h.type = hit.wound
+		self.npc:hit(h)
+	end
+	if v.f ~= nil then
+		-- Запуск функции
+		printf("called function [%s]", tostring(v.f))
+		v.f(self.npc)
+	end
+	table.remove(self.clb_settings, 1)
 	return true 
 end
 --' в каком состоянии мы находимся

@@ -331,9 +331,29 @@ function action_patrol:process_danger()
 		return false
 	end
 
-	if time_global() - best_danger:time() >= self.a.idle then
-		return false
+	local danger_settings = db.storage[self.object:id()].danger
+		
+	local passed_time = time_global() - best_danger:time()
+	if bd_type == danger_object.grenade then
+		if danger_settings.danger_inertion_time_grenade <= passed_time then
+			return false
+		end
+	elseif bd_type == danger_object.entity_corpse then
+		if danger_settings.danger_inertion_time_corpse <= passed_time then
+			return false
+		end
+	elseif bd_type == danger_object.entity_attacked or
+		   bd_type == danger_object.attacked then
+		if danger_settings.danger_inertion_time_hit <= passed_time then
+			return false
+		end	
+	elseif bd_type == danger_object.enemy_sound or
+		   bd_type == danger_object.attack_sound then
+		if danger_settings.danger_inertion_time_sound <= passed_time then
+			return false
+		end	
 	end
+
 
 	-- Отсеиваем реакцию на денжеры своих чуваков
 	local bd_type = best_danger:type()
@@ -346,7 +366,28 @@ function action_patrol:process_danger()
 	
 	danger_distance_sqr = best_danger:position():distance_to_sqr(self.object:position())	
 	if not self:on_place() and
-	   danger_distance_sqr > self.a.danger_radius
+		if danger_distance_sqr > danger_settings.ignore_distance then
+			return false
+		end
+		if bd_type == danger_object.grenade then
+			if danger_distance_sqr > danger_settings.ignore_distance_grenade then
+				return false
+			end
+		elseif bd_type == danger_object.entity_corpse then
+			if danger_distance_sqr > danger_settings.ignore_distance_corpse then
+				return false
+			end
+		elseif bd_type == danger_object.entity_attacked or
+			   bd_type == danger_object.attacked then
+			if danger_distance_sqr > danger_settings.ignore_distance_hit then
+				return false
+			end
+		elseif bd_type == danger_object.enemy_sound or
+			   bd_type == danger_object.attack_sound then
+			if danger_distance_sqr > danger_settings.ignore_distance_sound then
+				return false
+			end
+		end		   	   
 	then
 		return false
 	end
@@ -525,7 +566,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 	
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false, 20)
-	st.danger_radius = utils.cfg_get_number(ini, section, "danger_radius", npc, false, 5)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving1 = st.suggested_state.moving
