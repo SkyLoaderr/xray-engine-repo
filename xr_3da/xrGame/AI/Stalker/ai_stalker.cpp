@@ -672,6 +672,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	float dt			= float(DT)/1000.f;
 
 	if (g_Alive()) {
+		animation().play_delayed_callbacks	();
+
 //		bool			check = !!memory().enemy().selected();
 #if 0//def DEBUG
 		memory().visual().check_visibles();
