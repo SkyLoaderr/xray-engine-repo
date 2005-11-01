@@ -283,7 +283,18 @@ void CBreakableObject::ObjectContactCallback(bool&/**do_colide/**/,dContact& c,S
 void CBreakableObject::ProcessDamage()
 {
 	
-	Hit(m_max_frame_damage,m_contact_damage_dir,0,0,m_contact_damage_pos,m_max_frame_damage,ALife::eHitTypeStrike);
+	//Hit(m_max_frame_damage,m_contact_damage_dir,0,0,m_contact_damage_pos,m_max_frame_damage,ALife::eHitTypeStrike);
+	NET_Packet		P;
+	u_EventGen(P,GE_HIT,ID());
+	P.w_u16		(ID());
+	P.w_u16		(ID());
+	P.w_dir		(m_contact_damage_dir);
+	P.w_float	(m_max_frame_damage);
+	P.w_s16		(PKinematics(Visual())->LL_GetBoneRoot());
+	P.w_vec3	(m_contact_damage_pos);
+	P.w_float	(0.f);
+	P.w_u16		(ALife::eHitTypeStrike);
+	u_EventSend(P);
 	m_max_frame_damage		= 0.f;
 	b_resived_damage		=false;
 }
