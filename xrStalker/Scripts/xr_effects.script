@@ -630,8 +630,14 @@ function rostok_kruglov_tip_2(actor,npc)
 	news_manager.send_tip(actor, "rostok_kruglov_spam_2", nil, "ecolog", nil, 503)
 	level_tasks.add_location(597, "volkodav_location", "rostok_banda_volkodava")
 end
-function rostok_kruglov_attract(actor,npc)
-	xr_sound.set_sound_play(npc, "rostok_kruglov_help_6")
+function rostok_kruglov_attract_1(actor,npc)
+	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_1")
+end
+function rostok_kruglov_attract_2(actor,npc)
+	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_2")
+end
+function rostok_kruglov_ambush(actor,npc)
+	xr_sound.set_sound_play(npc, "rostok_kruglov_help_5")
 end
 function bar_crush_heli_down(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "freedom", nil, 509)

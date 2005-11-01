@@ -1437,9 +1437,8 @@ on_info = {+bar_rescue_research_chasing_start} camper@bar_rescue_research_hide_1
 [camper@bar_rescue_research_hide_1a]
 path_walk = escape_1a_walk
 path_look = escape_hide_1_look
-on_signal = arrived_1 | camper@bar_rescue_research_hide_1
+on_signal = arrived_1 | camper@bar_rescue_research_hide_1 %=rostok_kruglov_attract_1%
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_hit = hit@ecolog_professor
 def_state_moving = assault
 
 [camper@bar_rescue_research_hide_1]
@@ -1479,7 +1478,7 @@ path_walk = escape_2a_walk
 path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
-on_signal = arrived_hide_2 | camper@bar_rescue_research_hide_2
+on_signal = arrived_hide_2 | camper@bar_rescue_research_hide_2 %=rostok_kruglov_attract_2%
 def_state_moving = assault
 
 [camper@bar_rescue_research_hide_2]
@@ -1503,7 +1502,7 @@ combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 [camper@bar_ecolog_professor_companion_2a]
 path_walk = escape_3a_walk
 path_look = escape_look
-on_signal = ambush | camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk %
+on_signal = ambush | camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk =rostok_kruglov_ambush%
 on_info = {+rostok_spawn_naemniki} camper@bar_rescue_research_ambush_hide %-bar_kruglov_follow_talk%
 def_state_moving = assault
 radius = 0
