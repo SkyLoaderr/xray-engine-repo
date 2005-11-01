@@ -15,10 +15,11 @@ enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),};
 	CUIWindow*		m_pad;
 	float			m_rightIdent;
 	Flags16			m_flags;
-	void			RecalcSize			();
-	void			UpdateScroll		();	
-	void			OnScrollV			();
-	void			SetRightIndention	(float val);
+
+virtual void		RecalcSize			();
+		void		UpdateScroll		();	
+		void		OnScrollV			();
+		void		SetRightIndention	(float val);
 public:
 	using CUIWindow::Init;
 			
@@ -46,8 +47,7 @@ public:
 											st->SetText(txt);								\
 											st->SetWidth(view->GetDesiredChildWidth());		\
 											st->AdjustHeightToText();						\
-											st->SetAutoDelete(true);						\
-											view->AddWindow(st)
+											view->AddWindow(st, true)
 
 #define ADD_TEXT_TO_VIEW2(txt,view)			CUIStatic*	pSt;								\
 											ADD_TEXT_TO_VIEW3(txt,pSt,view)

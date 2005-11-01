@@ -12,12 +12,14 @@
 #include "UIMapInfo.h"
 #include <dinput.h>
 
+#include "UIStatsPlayerList.h"
+
 CUIMapDesc::CUIMapDesc(){
 	m_pBackground	= xr_new<CUIStatic>();		AttachChild(m_pBackground);	
 	m_pCaption		= xr_new<CUIStatic>();		AttachChild(m_pCaption);
 
 	m_pImage		= xr_new<CUIStatic>();		AttachChild(m_pImage);
-	m_pTextDesc		= xr_new<CUIScrollView>();	AttachChild(m_pTextDesc);
+	m_pTextDesc		= xr_new<CUIStatsPlayerList>();	AttachChild(m_pTextDesc);
 
 	m_pBtnSpectator	= xr_new<CUI3tButton>();	AttachChild(m_pBtnSpectator);
 	m_pBtnNext		= xr_new<CUI3tButton>();	AttachChild(m_pBtnNext);	
@@ -78,7 +80,7 @@ void CUIMapDesc::Init(){
 
 	m_pMapInfo->InitMap(*Level().name());
 
-	ADD_TEXT_TO_VIEW2(m_pMapInfo->GetLargeDesc(),m_pTextDesc);
+//	ADD_TEXT_TO_VIEW2(m_pMapInfo->GetLargeDesc(),m_pTextDesc);
 
 
 	CUIXmlInit::InitStatic		(xml_doc,"map_desc:image_frames_1",	0,	m_pFrame[0]);
@@ -119,6 +121,9 @@ bool CUIMapDesc::OnKeyboard(int dik, EUIMessages keyboard_action){
 			dm->OnMapInfoAccept();
 			return true;
 			break;
+	}
+	if (int x = sizeof x)
+	{
 	}
 
     return false;

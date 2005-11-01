@@ -48,6 +48,7 @@ CUIStatic:: CUIStatic()
 	m_lainm_start_time		= -1.0f;
 	m_pLines				= NULL;
 	m_lanimFlags.zero		();
+	m_bEnableTextHighlighting = false;
 }
 
 CUIStatic::~ CUIStatic()
@@ -137,12 +138,14 @@ void  CUIStatic::Draw()
 
 
 void CUIStatic::DrawText(){
-	
 	if (m_pLines)
 	{
 		m_pLines->SetWndSize(m_wndSize);
 		Frect r = GetAbsoluteRect();
         m_pLines->Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
+
+		if(IsHighlightText() && xr_strlen(m_pLines->GetText())>0 && m_bEnableTextHighlighting)
+			DrawHighlightedText();		
 	}
 }
 
@@ -585,4 +588,25 @@ void CUIStatic::RescaleRelative2Rect(const Frect& r){
 void CUIStatic::SetTextST				(LPCSTR str_id)
 {
 	SetText					(*CStringTable().translate(str_id));
+}
+
+void CUIStatic::DrawHighlightedText(){
+	Frect rect = GetAbsoluteRect();
+	u32 def_col = m_pLines->GetTextColor();
+	m_pLines->SetTextColor(m_HighlightColor);
+	m_pLines->Draw(	rect.left + 1 + m_iTextOffsetX, rect.top + 1 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left - 1 + m_iTextOffsetX, rect.top - 1 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left - 1 + m_iTextOffsetX, rect.top + 1 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left + 1 + m_iTextOffsetX, rect.top - 1 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left + 1 + m_iTextOffsetX, rect.top + 0 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left - 1 + m_iTextOffsetX, rect.top - 0 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left - 0 + m_iTextOffsetX,	rect.top + 1 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left + 0 + m_iTextOffsetX, rect.top - 1 + m_iTextOffsetY);
+
+	m_pLines->SetTextColor(def_col);
+}
+
+bool CUIStatic::IsHighlightText()
+{
+	return m_bCursorOverWindow;
 }

@@ -4,17 +4,21 @@
 #include "UIStatic.h"
 #include "../game_cl_base.h"
 
-//#define UPD_INFO(x)
 
-CUIStatsPlayerInfo::CUIStatsPlayerInfo(){
+CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info)
+{
+	m_field_info = info;
 
+	xr_vector<PI_FIELD_INFO>&	field_info = *info;
+	for (u32 i = 0; i<field_info.size(); i++)
+		AddField(field_info[i].width);
+
+	R_ASSERT(!field_info.empty());
 }
 
 CUIStatsPlayerInfo::~CUIStatsPlayerInfo(){
-    xr_vector<FIELD>::iterator it = m_fields.begin();
-    
-	for	(;it!=m_fields.end(); it++)
-		 xr_delete((*it).wnd);
+	for (u32 i = 0; i<m_fields.size(); i++)
+		xr_delete(m_fields[i]);
 }
 
 void CUIStatsPlayerInfo::SetInfo(game_PlayerState* pInfo){
@@ -25,27 +29,23 @@ void CUIStatsPlayerInfo::Update(){
 	if (!m_pPlayerInfo)
 		return;
 
-	xr_vector<FIELD>::iterator it = m_fields.begin();
-    
-	for	(;it!=m_fields.end(); it++){
-		FIELD& f = *it;
-		f.wnd->SetText(GetInfoByID(*f.name));
-	}
+	xr_vector<PI_FIELD_INFO>&	field_info = *m_field_info;
+
+	for (u32 i = 0; i<m_fields.size(); i++)
+		m_fields[i]->SetText(GetInfoByID(*field_info[i].name));
+
 	m_pPlayerInfo = NULL;
 }
 
-void CUIStatsPlayerInfo::AddField(shared_str& name, float len){
-	FIELD f;
-
-	f.name = name;
-	f.wnd = xr_new<CUIStatic>();
+void CUIStatsPlayerInfo::AddField(float len){
+	CUIStatic* wnd = xr_new<CUIStatic>();
 
 	if (m_fields.empty())
-		f.wnd->Init(0,0,len,this->GetHeight());
+		wnd->Init(0,0,len,this->GetHeight());
 	else
-		f.wnd->Init(m_fields.back().wnd->GetWndRect().right,0,len,this->GetHeight());
-	m_fields.push_back(f);
-	AttachChild(f.wnd);
+		wnd->Init(m_fields.back()->GetWndRect().right,0,len,this->GetHeight());
+	m_fields.push_back(wnd);
+	AttachChild(wnd);
 }
 
 const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
@@ -64,7 +64,7 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 	else if (0 == xr_strcmp(id,"rank"))
 		sprintf(ans,"%d",(int)m_pPlayerInfo->rank);
 	else
-		R_ASSERT(false);
+		R_ASSERT2(false, "invalid info ID");
 
     return ans;
 }

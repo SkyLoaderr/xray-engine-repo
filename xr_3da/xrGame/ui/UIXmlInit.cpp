@@ -30,6 +30,7 @@
 #include "uixmlinit.h"
 #include "uiartefactpanel.h"
 #include "UIScrollView.h"
+#include "UIStatsPlayerList.h"
 
 #include "UITextureMaster.h"
 
@@ -185,13 +186,22 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int flag_text				= xml_doc.ReadAttribInt(path, index, "la_text",		1);
 	int flag_texture			= xml_doc.ReadAttribInt(path, index, "la_texture",	1);
 	int flag_alpha				= xml_doc.ReadAttribInt(path, index, "la_alpha",	0);
-
-	
+		
 	pWnd->SetLightAnim(str_flag,	(flag_cyclic)?true:false, 
 									(flag_alpha)?true:false,
 									(flag_text)?true:false,
 									(flag_texture)?true:false
 									);
+
+	u32 hA = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hA", 255));
+	u32 hR = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hR", 153));
+	u32 hG = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hG", 153));
+	u32 hB = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hB", 153));
+	pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
+
+	int flag_highlight_txt		= xml_doc.ReadAttribInt(path, index, "highlight_text", 0);
+	if(flag_highlight_txt)
+		pWnd->HighlightText(true);
 	
 	return true;
 }
@@ -317,19 +327,13 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	pWnd->SetAccelerator(accel);
 
-	u32 hA = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hA", 255));
-	u32 hR = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hR", 153));
-	u32 hG = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hG", 153));
-	u32 hB = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hB", 153));
-
+	
 	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
 	float shadowOffsetY	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);
 
 	float pushOffsetX		= xml_doc.ReadAttribFlt(path, index, "push_off_x", 2);
 	float pushOffsetY		= xml_doc.ReadAttribFlt(path, index, "push_off_y", 3);
 
-
-	pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
 	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
 	pWnd->SetPushOffsetX(pushOffsetX);
 	pWnd->SetPushOffsetY(pushOffsetY);
@@ -1221,4 +1225,29 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 //////////////////////////////////////////////////////////////
 
 	return								true;
+}
+
+bool CUIXmlInit::InitStatsPlayerList(CUIXml& xml_doc, const char* path, int index, CUIStatsPlayerList* pWnd){
+	bool status = true;
+    status &= InitScrollView(xml_doc, path, index, pWnd);
+	pWnd->SetFixedScrollBar(false);
+
+	pWnd->SetSpectator(xml_doc.ReadAttribInt(path,index,"spectator",0)? true: false);
+
+	int tabsCount	= xml_doc.GetNodesNum(path, index, "field");	
+
+	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
+	xml_doc.SetLocalRoot(tab_node);
+
+	for (int i = 0; i < tabsCount; ++i)
+	{
+		//PI_FIELD_INFO fi;
+		LPCSTR name = xml_doc.ReadAttrib("field",i,"name");
+		float width = xml_doc.ReadAttribFlt("field",i,"width");
+		pWnd->AddField(name,width);
+	}
+	
+	xml_doc.SetLocalRoot(xml_doc.GetRoot());
+
+	return status;
 }

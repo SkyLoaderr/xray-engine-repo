@@ -5,23 +5,25 @@
 struct game_PlayerState;
 class CUIStatic;
 
+typedef struct {
+	shared_str	name;
+	float		width;
+} PI_FIELD_INFO;
+
 class CUIStatsPlayerInfo : public CUIWindow {
 public:
-	CUIStatsPlayerInfo();
+	CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info);
 	~CUIStatsPlayerInfo();
-			void SetInfo(game_PlayerState* pInfo);
-			void AddField(shared_str& name, float len);
+
+			void SetInfo(game_PlayerState* pInfo);			
 	virtual void Update();
 
 protected:
+			void AddField(float len);
 //			int GetInfoByID(const char* id);
 	const char* GetInfoByID(const char* id);
 	game_PlayerState*	m_pPlayerInfo;
 
-	typedef struct{
-		shared_str name;
-		CUIStatic* wnd;
-	} FIELD;
-
-	xr_vector<FIELD>	m_fields;
+	xr_vector<CUIStatic*>	m_fields;
+	xr_vector<PI_FIELD_INFO>*	m_field_info;
 };
