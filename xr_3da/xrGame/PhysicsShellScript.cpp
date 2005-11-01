@@ -43,6 +43,7 @@ void CPhysicsElement::script_register(lua_State *L)
 			.def("fix",							&CPhysicsElement::Fix)
 			.def("release_fixed",				&CPhysicsElement::ReleaseFixed)
 			.def("is_fixed",					&CPhysicsElement::isFixed)
+			.def("get_global_transform",		&CPhysicsElement::GetGlobalTransformDynamic)
 		];
 }
 
