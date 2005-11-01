@@ -18,16 +18,6 @@ function ph_on_death:update(delta)
 end
 
 function ph_on_death:death_callback (obj, who)
-    printf ("PH_ON_DEATH CALLED")
-	local who_name
-	if who then
-		who_name = who:name()
-	else
-		who_name = "nil"
-	end
-
-	printf("_bp: ph_on_death:death_callback: obj='%s', who='%s'", obj:name(), who_name)
-
 	if db.storage[self.object:id()].active_scheme then
 		if xr_logic.try_switch_to_another_section (obj, self.st, db.actor) then
 			return
@@ -50,7 +40,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 end
 
 function disable_scheme(npc, scheme)
-	npc:set_callback(callback.death, nil)
+---	npc:set_callback(callback.death, nil)
 end
 
 
