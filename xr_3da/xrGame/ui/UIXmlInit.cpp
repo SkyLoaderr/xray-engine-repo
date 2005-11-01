@@ -512,9 +512,8 @@ CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR p
 	int items_num = xml_doc.GetNodesNum(path, 0, "auto_static");
 	// tmp statics vector
 	StaticsVec	tmpVec;
-
-	XML_NODE* _node = xml_doc.NavigateToNode(path,0);
-	xml_doc.SetLocalRoot(_node);
+	XML_NODE* _stored_root = xml_doc.GetLocalRoot();
+	xml_doc.SetLocalRoot(xml_doc.NavigateToNode(path,0));
 
 	CUIStatic* pUIStatic = NULL;
 	for(int i=0; i<items_num; i++)
@@ -527,7 +526,7 @@ CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR p
 		pUIStatic = NULL;
 	}
 
-	xml_doc.SetLocalRoot(xml_doc.GetRoot());
+	xml_doc.SetLocalRoot(_stored_root);
 	return tmpVec;
 }
 
