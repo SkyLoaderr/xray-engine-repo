@@ -3170,6 +3170,9 @@
 						Name="test_levels"
 						Filter="">
 						<File
+							RelativePath=".\scripts\quest_aes.script">
+						</File>
+						<File
 							RelativePath=".\scripts\quest_agroprom.script">
 						</File>
 						<File
@@ -3180,6 +3183,21 @@
 						</File>
 						<File
 							RelativePath=".\scripts\quest_garbage.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_military.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_pripyat.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_radar.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_rostok.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_yantar.script">
 						</File>
 					</Filter>
 				</Filter>
