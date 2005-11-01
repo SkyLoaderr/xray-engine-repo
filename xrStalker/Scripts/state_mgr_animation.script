@@ -581,13 +581,13 @@ function animation:clear_anim_callback()
 end
 --' настройка колбека на особые действи€
 function animation:set_anim_callback(value)
-	printf("SET ANIM callback [%s]", self.npc:animation_count())
+	--printf("SET ANIM callback [%s]", self.npc:animation_count())
 	-- Ќужно определить разницу между активным количеством анимаций и размером таблицы
 	-- дополнить таблицами нилами до нужного размера
 	-- в последнюю позицию записать настройки.
 	local table_size = table.getn(self.clb_settings)
 	local anim_count = self.npc:animation_count()
-	printf("for debug [%s] [%s]", table_size, anim_count)
+	--printf("for debug [%s] [%s]", table_size, anim_count)
 	for key = table_size+1, anim_count - table_size do
 		table.insert(self.clb_settings, "nil")
 	end
@@ -599,12 +599,12 @@ function animation:set_anim_callback(value)
 		sh = value.sh,
 		f = value.f
 	}
-	print_table(self.clb_settings)
+	--print_table(self.clb_settings)
 end
 --' коллбек на особые действи€
 function animation:anim_callback()
 	printf("anim callback [%s]", self.npc:animation_count())
-	print_table(self.clb_settings)
+	--print_table(self.clb_settings)
 	-- ѕроходим по таблице, из 1 позиции вычитываем действий. ќстальные просто сдвигаем
 	v = self.clb_settings[1]
 	
