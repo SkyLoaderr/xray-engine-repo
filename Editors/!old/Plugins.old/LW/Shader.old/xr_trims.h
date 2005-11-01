@@ -27,7 +27,7 @@ XRCORE_API LPSTR	    	_Trim					( LPSTR str );
 XRCORE_API LPSTR	    	_TrimLeft				( LPSTR str );
 XRCORE_API LPSTR	    	_TrimRight				( LPSTR str );
 XRCORE_API LPSTR	    	_ChangeSymbol			( LPSTR name, char src, char dest );
-XRCORE_API u32		    	_ParseItem				( LPSTR src, xr_token* token_list );
+XRCORE_API u32		    	_ParseItem				( LPCSTR src, xr_token* token_list );
 XRCORE_API u32		    	_ParseItem				( LPSTR src, int ind, xr_token* token_list );
 XRCORE_API LPSTR 	    	_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator );
 XRCORE_API LPSTR 	    	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator );
