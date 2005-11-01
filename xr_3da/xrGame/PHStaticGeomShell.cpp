@@ -29,6 +29,7 @@ void CPHStaticGeomShell::Activate(const Fmatrix& form)
 void CPHStaticGeomShell::Deactivate()
 {
 	spatial_unregister();
+	CPHUpdateObject::Deactivate();
 	destroy();
 }
 
