@@ -77,6 +77,7 @@ CCar::CCar(void)
 	b_exploded=false;
 	m_car_weapon=NULL;
 	m_power_neutral_factor=0.25f;
+	m_steer_angle=0.f;
 #ifdef DEBUG
 	InitDebug();
 #endif
@@ -108,15 +109,21 @@ void CCar::reload		(LPCSTR section)
 
 void CCar::cb_Steer			(CBoneInstance* B)
 {
-	VERIFY2(fsimilar(DET(B->mTransform),1.f,EPS_L),"Bones receive returns 0 matrix");
+	VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones receive returns 0 matrix");
 	CCar*	C			= static_cast<CCar*>(B->Callback_Param);
 	Fmatrix m;
 
-	C->m_steer_angle=C->m_steering_wheels.begin()->GetSteerAngle()*0.1f+C->m_steer_angle*0.9f;
+
 	m.rotateZ(C->m_steer_angle);
 
 	B->mTransform.mulB_43	(m);
-	VERIFY2(fsimilar(DET(B->mTransform),1.f,EPS_L),"Bones callback returns BAD!!! matrix");
+#ifdef DEBUG
+	if( !fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS) ){
+	
+		Log("RotatingZ angle=",C->m_steer_angle);	
+		VERIFY2(0,"Bones callback returns BAD!!! matrix");
+	}
+#endif
 }
 
 // Core events
@@ -808,6 +815,7 @@ void CCar::Init()
 		VERIFY2(fsimilar(DET(pKinematics->LL_GetTransform(m_bone_steer)),1.f,EPS_L),"BBADD MTX");
 		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(bctPhysics,cb_Steer,this);
 	}
+	m_steer_angle=0.f;
 	//ref_wheel.Init();
 	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;
 	b_exploded						=false;
@@ -1683,7 +1691,8 @@ void CCar::PhDataUpdate(dReal step)
 		}
 	}
 	
-
+	m_steer_angle=m_steering_wheels.begin()->GetSteerAngle()*0.1f+m_steer_angle*0.9f;
+	VERIFY(_valid(m_steer_angle));
 }
 
 BOOL CCar::UsedAI_Locations()
