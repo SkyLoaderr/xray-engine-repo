@@ -739,12 +739,18 @@
         <text>Ќу и сволочь же ты!..–азве не понимаешь, что в следующий раз на моем месте можешь быть ты?!</text>
     </string>
     <string id="tutorial_wounded_thanks_0">
-        <text> ак себ€ чувствуешь?</text>
+        <text>Ќу как ты?</text>
     </string>
     <string id="tutorial_wounded_thanks_1">
         <text>ћеченый, ты не представл€ешь, как € тебе благодарен. ѕойдем в лагерь, € расскажу своим, что ты нормальный мужик и с башней дружишь...</text>
     </string>
     <string id="tutorial_wounded_thanks_2">
         <text>Ќу ладно, пошли. ј то они от мен€, как от прокаженного шарахаютс€. ѕистолетами в морду тычут.</text>
+    </string>
+    <string id="tutorial_wounded_thanks_3">
+        <text>ѕривет, старик, € так рад, что ты живой и здоровый. ћиллионером и супергероем уже стал?!</text>
+    </string>
+    <string id="tutorial_wounded_thanks_4">
+        <text>≈ще нет, но € плотно работаю над этим вопросом.</text>
     </string>
 </string_table>
