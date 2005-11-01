@@ -138,7 +138,6 @@ function evaluator_danger:evaluate()
 		return false
 	else
 		self.danger_time = time_global()
-		printf("DANGER [%s]->[%s] [TRUE] other, type [%s], dist [%s]", self.object:name(), best_danger_name, tostring(bd_type), tostring(danger_distance_sqr))
 		return true
 	end
 
