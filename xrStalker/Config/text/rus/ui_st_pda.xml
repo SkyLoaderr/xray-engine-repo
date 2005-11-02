@@ -44,6 +44,9 @@
         <text>Свои</text>
     </string>
 
+	<string id="pda_btn_reputation">
+		<text>Репутация</text>
+	</string>
 
 
 	<string id="level_changer_invitation">
