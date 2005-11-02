@@ -395,7 +395,16 @@ void set_snd_volume(float v)
 	psSoundVFactor = v;
 	clamp(psSoundVFactor,0.0f,1.0f);
 }
+#include "actor_statistic_mgr.h"
+void add_actor_points(LPCSTR sect, LPCSTR detail_key, int cnt, int pts)
+{
+	return Actor()->StatisticMgr().AddPoints(_ParseItem(sect, actor_stats_token), detail_key, cnt, pts);
+}
 
+int get_actor_points(LPCSTR sect)
+{
+	return Actor()->StatisticMgr().GetSectionPoints(_ParseItem(sect, actor_stats_token));
+}
 
 void CLevel::script_register(lua_State *L)
 {
@@ -474,5 +483,12 @@ void CLevel::script_register(lua_State *L)
 		def("set_snd_volume",					&set_snd_volume),
 
 		def("add_cam_effector",					&add_cam_effector)
+	],
+	
+	module(L,"actor_stats")
+	[
+		def("add_points",					&add_actor_points),
+		def("get_points",					&get_actor_points)
 	];
+
 }

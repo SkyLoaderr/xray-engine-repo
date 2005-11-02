@@ -2,12 +2,12 @@
 #include "actor_statistic_mgr.h"
 
 xr_token actor_stats_token[]={
-	{"Total",				100},
-	{"StalkerKills",		1},
-	{"MonsterKills",		2},
-	{"Quests",				3},
-	{"Trade",				4},
-	{"Reputation",			5},
+	{"total",				100},
+	{"stalkerkills",		1},
+	{"monsterkills",		2},
+	{"quests",				3},
+	{"trade",				4},
+	{"reputation",			5},
 	{0,0					}
 };
 void SStatDetailData::save(IWriter &stream)

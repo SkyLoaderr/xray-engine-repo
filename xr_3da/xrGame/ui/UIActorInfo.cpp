@@ -103,6 +103,8 @@ void CUIActorInfoWnd::FillInfo			()
 		UIMasterList->AddWindow				(itm, true);
 	}
 
+	UIMasterList->SetSelected(UIMasterList->GetItem(0) );
+
 }
 
 void CUIActorInfoWnd::FillDetail	(int idx)
