@@ -1,6 +1,8 @@
 
 function main()
-	level.add_cam_effector("camera_effects\\prison_1.anm")	
+
+actor_stats.add_points("stalkerkills","banan",2,45)
+--	level.add_cam_effector("camera_effects\\prison_1.anm")	
 
 --   local h = hit ()
 --   h.power = 100
