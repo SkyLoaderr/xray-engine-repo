@@ -14,16 +14,24 @@ CALifeSmartTerrainRegistry::~CALifeSmartTerrainRegistry	()
 {
 }
 
-void CALifeSmartTerrainRegistry::add	(CSE_ALifeDynamicObject *object)
+void CALifeSmartTerrainRegistry::add					(CSE_ALifeDynamicObject *object)
 {
-	CSE_ALifeSmartZone			*zone = smart_cast<CSE_ALifeSmartZone*>(object);
+	CSE_ALifeSmartZone		*zone = smart_cast<CSE_ALifeSmartZone*>(object);
 	if (!zone)
 		return;
 
-	if (objects().find(object->ID) != objects().end()) {
-		THROW2					((*(objects().find(object->ID))).second == object,"The specified object is already presented in the Object Registry!");
-		THROW2					((*(objects().find(object->ID))).second != object,"Object with the specified ID is already presented in the Object Registry!");
-	}
+	OBJECTS::const_iterator	I = objects().find(object->ID);
+	VERIFY					(I != objects().end());
+	m_objects.insert		(std::make_pair(object->ID,zone));
+}
 
-	m_objects.insert			(std::make_pair(object->ID,zone));
+void CALifeSmartTerrainRegistry::remove					(CSE_ALifeDynamicObject *object)
+{
+	CSE_ALifeSmartZone		*zone = smart_cast<CSE_ALifeSmartZone*>(object);
+	if (!zone)
+		return;
+
+	OBJECTS::iterator		I = m_objects.find(object->ID);
+	VERIFY					(I != m_objects.end());
+	m_objects.erase			(I);
 }
