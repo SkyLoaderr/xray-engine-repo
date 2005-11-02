@@ -285,7 +285,7 @@ end
 -- возвращает true, если значение указанного счётчика актёра больше указанного числа
 function counter_greater(actor, npc, p)
 	if p[1] and p[2] then
-		local c = pstor_retrieve(actor, p[1], 0)
+		local c = xr_logic.pstor_retrieve(actor, p[1], 0)
 		return c > p[2]
 	else
 		return false
