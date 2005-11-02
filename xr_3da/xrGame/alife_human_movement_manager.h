@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "script_export_space.h"
+
 class CSE_ALifeHumanAbstract;
 class CALifeHumanDetailPathManager;
 class CALifeHumanPatrolPathManager;
@@ -44,6 +46,11 @@ public:
 public:
 			bool				completed					() const;
 			bool				actual						() const;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+#undef script_type_list
+add_to_type_list(CALifeHumanMovementManager)
+#define script_type_list save_type_list(CALifeHumanMovementManager)
 
 #include "alife_human_movement_manager_inline.h"

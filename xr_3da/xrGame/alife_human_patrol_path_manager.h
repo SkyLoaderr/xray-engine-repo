@@ -9,6 +9,7 @@
 #pragma once
 
 #include "game_graph_space.h"
+#include "script_export_space.h"
 
 class CSE_ALifeHumanAbstract;
 class CPatrolPath;
@@ -68,6 +69,11 @@ public:
 	IC		void					use_randomness				(const bool &use_randomness);
 			const _GRAPH_ID			&target_game_vertex_id		() const;
 			const u32				&target_level_vertex_id		() const;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+#undef script_type_list
+add_to_type_list(CALifeHumanPatrolPathManager)
+#define script_type_list save_type_list(CALifeHumanPatrolPathManager)
 
 #include "alife_human_patrol_path_manager_inline.h"
