@@ -120,25 +120,25 @@ still_visible_time			= 5000				; время, которое объект всё ещё считается видимым
 
 [actor_immunities_novice]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
-strike_immunity 			= 0.8
+strike_immunity 			= 1
 shock_immunity 				= 1.0
 wound_immunity				= 1.0
-radiation_immunity 			= 0.8
+radiation_immunity 			= 1
 telepatic_immunity 			= 1.0
 chemical_burn_immunity 		= 1.0
-explosion_immunity 			= 0.8
+explosion_immunity 			= 1
 fire_wound_immunity  		= 1.0
 
 [actor_immunities_stalker]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
-strike_immunity 			= 0.8
+strike_immunity 			= 0.9
 shock_immunity 				= 1.0
 wound_immunity				= 1.0
-radiation_immunity 			= 0.8
+radiation_immunity 			= 0.9
 telepatic_immunity 			= 1.0
 chemical_burn_immunity 		= 1.0
-explosion_immunity 			= 0.8
-fire_wound_immunity  		= 1.0
+explosion_immunity 			= 0.9
+fire_wound_immunity  		= 0.9
 
 [actor_immunities_veteran]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
@@ -148,19 +148,19 @@ wound_immunity				= 1.0
 radiation_immunity 			= 0.8
 telepatic_immunity 			= 1.0
 chemical_burn_immunity 		= 1.0
-explosion_immunity 			= 0.8
-fire_wound_immunity  		= 1.0
+explosion_immunity 			= 0.85
+fire_wound_immunity  		= 0.8
 
 [actor_immunities_master]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
-strike_immunity 			= 0.8
+strike_immunity 			= 0.7
 shock_immunity 				= 1.0
 wound_immunity				= 1.0
-radiation_immunity 			= 0.8
+radiation_immunity 			= 0.7
 telepatic_immunity 			= 1.0
 chemical_burn_immunity 		= 1.0
 explosion_immunity 			= 0.8
-fire_wound_immunity  		= 0.5
+fire_wound_immunity  		= 0.7
 
 [actor_condition]
 satiety_v					= 0.000005				;скорость уменьшения сытости со временем
@@ -177,7 +177,7 @@ alcohol_v					= -0.003
 max_power_leak_speed		= 0.00001				;накопление усталости (макс граница, до которой восстанавливается сила) в секунду игрового времени
 
 ;открытые раны
-bleeding_v					= 0.0015				;потеря крови при номинальной ране в секунду
+bleeding_v					= 0.0008;0.0015				;потеря крови при номинальной ране в секунду
 wound_incarnation_v			= 0.0005 ;0.00017		;крутизна кривой заживления (какой процент раны заживет в игровую секунду)
 min_wound_size				= 0.0256				;минимальный размер раны, после которого она считается зажившей
 
@@ -228,48 +228,48 @@ bip01_pelvis 				= 1.0, 10, 2.0
 bip01_spine 		 		= 0.1, 10, 2.0
 bip01_spine1 		 		= 0.1, 0, 2.0
 bip01_neck 			 		= 0.1, 0, 2.0
-bip01_head 			 		= 0.2, 0, 2.0
-eyelid_1 			 		= 0.0, 0, 2.0
-eye_left 			 		= 0.0, 0, 2.0
-eye_right 			 		= 0.0, 0, 2.0
+bip01_head 			 		= 0.5, 0, 2.0
+eyelid_1 			 		= 0.2, 0, 2.0
+eye_left 			 		= 0.2, 0, 2.0
+eye_right 			 		= 0.2, 0, 2.0
 jaw_1 		 		 		= 0.2, 0, 2.0
 
 bip01_l_clavicle	 		= 0.1, 4, 2.0
 bip01_l_upperarm	 		= 0.1, 4, 2.0
 bip01_l_forearm	 	 		= 0.1, 4, 2.0
-bip01_l_hand	 	 		= 0.0, 4, 1.0
-bip01_l_finger0	 	 		= 0.0, 4, 1.0
-bip01_l_finger01	 		= 0.0, 4, 1.0
-bip01_l_finger02	 		= 0.0, 4, 1.0
-bip01_l_finger1	 	 		= 0.0, 4, 1.0
-bip01_l_finger11	 		= 0.0, 4, 1.0
-bip01_l_finger12	 		= 0.0, 4, 1.0
-bip01_l_finger2	 	 		= 0.0, 4, 1.0
-bip01_l_finger21	 		= 0.0, 4, 1.0
-bip01_l_finger22	 		= 0.0, 4, 1.0
+bip01_l_hand	 	 		= 0.05, 4, 1.0
+bip01_l_finger0	 	 		= 0.05, 4, 1.0
+bip01_l_finger01	 		= 0.05, 4, 1.0
+bip01_l_finger02	 		= 0.05, 4, 1.0
+bip01_l_finger1	 	 		= 0.05, 4, 1.0
+bip01_l_finger11	 		= 0.05, 4, 1.0
+bip01_l_finger12	 		= 0.05, 4, 1.0
+bip01_l_finger2	 	 		= 0.05, 4, 1.0
+bip01_l_finger21	 		= 0.05, 4, 1.0
+bip01_l_finger22	 		= 0.05, 4, 1.0
 
 bip01_r_clavicle	 		= 0.1, 2, 2.0
 bip01_r_upperarm	 		= 0.1, 2, 2.0
 bip01_r_forearm	 	 		= 0.1, 2, 2.0
-bip01_r_hand	 	 		= 0.0, 2, 1.0
-bip01_r_finger0	 	 		= 0.0, 2, 1.0
-bip01_r_finger01	 		= 0.0, 2, 1.0
-bip01_r_finger02	 		= 0.0, 2, 1.0
-bip01_r_finger1	 	 		= 0.0, 2, 1.0
-bip01_r_finger11	 		= 0.0, 2, 1.0
-bip01_r_finger12	 		= 0.0, 2, 1.0
-bip01_r_finger2	 	 		= 0.0, 2, 1.0
-bip01_r_finger21	 		= 0.0, 2, 1.0
-bip01_r_finger22	 		= 0.0, 2, 1.0
+bip01_r_hand	 	 		= 0.05, 2, 1.0
+bip01_r_finger0	 	 		= 0.05, 2, 1.0
+bip01_r_finger01	 		= 0.05, 2, 1.0
+bip01_r_finger02	 		= 0.05, 2, 1.0
+bip01_r_finger1	 	 		= 0.05, 2, 1.0
+bip01_r_finger11	 		= 0.05, 2, 1.0
+bip01_r_finger12	 		= 0.05, 2, 1.0
+bip01_r_finger2	 	 		= 0.05, 2, 1.0
+bip01_r_finger21	 		= 0.05, 2, 1.0
+bip01_r_finger22	 		= 0.05, 2, 1.0
 
 bip01_l_thigh	 	 		= 0.1, 8, 2.0
 bip01_l_calf	 	 		= 0.1, 8, 2.0
-bip01_l_foot	 	 		= 0.0, 8, 1.0
-bip01_l_toe0	 	 		= 0.0, 8, 1.0
+bip01_l_foot	 	 		= 0.1, 8, 1.0
+bip01_l_toe0	 	 		= 0.1, 8, 1.0
 bip01_r_thigh	 	 		= 0.1, 6, 2.0
 bip01_r_calf	 	 		= 0.1, 6, 2.0
-bip01_r_foot	 	 		= 0.0, 6, 1.0
-bip01_r_toe0	 	 		= 0.0, 6, 1.0
+bip01_r_foot	 	 		= 0.1, 6, 1.0
+bip01_r_toe0	 	 		= 0.1, 6, 1.0
 
 [actor_animation]
 ;углы  дворота ног актера во время стрейфов (в градусах)
