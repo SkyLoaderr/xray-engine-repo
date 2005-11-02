@@ -117,9 +117,8 @@ void CUIPdaContactsWnd::AddContact(CPda* pda)
 
 	CUIPdaListItem* pItem			= NULL;
 	pItem							= xr_new<CUIPdaListItem>();
-	pItem->SetAutoDelete			(true);
-	UIListWnd->AddWindow			(pItem);
-	pItem->Init						(0,0,UIListWnd->GetWidth(),75);
+	UIListWnd->AddWindow			(pItem, true);
+	pItem->Init						(0,0,UIListWnd->GetWidth(),85);
 	pItem->InitCharacter			(pda->GetOriginalOwner());
 	pItem->m_data					= (void*)pda;
 }

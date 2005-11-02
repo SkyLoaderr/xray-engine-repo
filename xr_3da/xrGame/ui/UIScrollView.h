@@ -10,7 +10,7 @@ class CUIScrollView :public CUIWindow, public CUIWndCallback
 typedef CUIWindow	inherited;
 friend class CUIXmlInit; //for init
 protected:
-enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),};
+enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe=(1<<3),};
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
 	float			m_rightIdent;
@@ -20,6 +20,7 @@ virtual void		RecalcSize			();
 		void		UpdateScroll		();	
 		void		OnScrollV			();
 		void		SetRightIndention	(float val);
+		void		SetVertFlip			(bool val)							{m_flags.set(eVertFlip, val);}
 public:
 	using CUIWindow::Init;
 			
@@ -30,17 +31,17 @@ public:
 	virtual bool	OnMouse				(float x, float y, EUIMessages mouse_action);
 	virtual void	Draw				();
 	virtual void	Update				();
-			void	AddWindow			(CUIWindow* pWnd, bool auto_delete = false);
+			void	AddWindow			(CUIWindow* pWnd, bool auto_delete);
 			void	RemoveWindow		(CUIWindow* pWnd);
 			void	Clear				();
 			void	ScrollToBegin		();
 			void	ScrollToEnd			();
-			void	SetVertFlip			(bool val)							{m_flags.set(eVertFlip, val);}
 			bool	GetVertFlip			()									{return !!m_flags.test(eVertFlip);}
 			u32		GetSize				();
 	CUIWindow*		GetItem				(u32 idx);
 			void	SetFixedScrollBar	(bool b);
 			float	GetDesiredChildWidth();
+			void	SetSelected			(CUIWindow*);
 };
 
 #define ADD_TEXT_TO_VIEW3(txt,st,view)		st = xr_new<CUIStatic>();						\

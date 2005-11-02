@@ -165,3 +165,9 @@ protected:
 	Fvector2				m_wndSize;
 	EWindowAlignment		m_alignment;
 };
+class CUISelectable{
+	bool m_bSelected;
+public:
+	CUISelectable():m_bSelected(false){}
+	virtual void	SetSelected	(bool b){m_bSelected = b;};
+};

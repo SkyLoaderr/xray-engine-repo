@@ -36,7 +36,6 @@ void CUIScrollView::Init				()
 	m_VScrollBar->SetWindowName	("scroll_v");
 	m_VScrollBar->SetStepSize	(_max(1,iFloor(GetHeight()/10)));
 	m_VScrollBar->SetPageSize	(iFloor(GetHeight()));
-//	m_VScrollBar->SetPageSize	(iFloor(10));
 	Register					(m_VScrollBar);
 	AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIScrollView::OnScrollV,this));
 
@@ -44,17 +43,16 @@ void CUIScrollView::Init				()
 
 void CUIScrollView::AddWindow			(CUIWindow* pWnd, bool auto_delete)
 {
-	pWnd->SetAutoDelete(auto_delete);
+	if(auto_delete)		pWnd->SetAutoDelete	(true);
+
 	m_pad->AttachChild	(pWnd);
 	m_flags.set			(eNeedRecalc,TRUE);
-//	RecalcSize			();
 }
 
 void CUIScrollView::RemoveWindow		(CUIWindow* pWnd)
 {
 	m_pad->DetachChild	(pWnd);
 	m_flags.set			(eNeedRecalc,TRUE);
-//	RecalcSize			();
 }
 
 void CUIScrollView::Clear				()
@@ -190,8 +188,6 @@ void CUIScrollView::ScrollToBegin		()
 	if(m_flags.test	(eNeedRecalc) )
 		RecalcSize			();
 
-//	m_pad->SetWndPos			(0.0f,0.0f);
-//	UpdateScroll				();
 	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMinRange());
 	OnScrollV();
 }
@@ -225,4 +221,14 @@ CUIWindow* CUIScrollView::GetItem		(u32 idx)
 
 float CUIScrollView::GetDesiredChildWidth(){
 	return GetWidth() - SCROLLBAR_WIDTH;
+}
+
+void CUIScrollView::SetSelected			(CUIWindow* w)
+{
+	if(!m_flags.test(eItemsSelectabe)) return;
+
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		(smart_cast<CUISelectable*>(*it))->SetSelected(*it==w);
+	}
 }

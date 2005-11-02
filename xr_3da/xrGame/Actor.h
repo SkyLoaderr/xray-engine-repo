@@ -61,6 +61,7 @@ class CCameraShotEffector;
 class CActorInputHandler;
 
 class CActorMemory;
+class CActorStatisticMgr;
 
 class	CActor: 
 	public CEntityAlive, 
@@ -143,12 +144,13 @@ public:
 	virtual void	AddGameNews				 (GAME_NEWS_DATA& news_data);
 protected:
 	CGameTaskManager*				m_game_task_manager;
-
+	CActorStatisticMgr*				m_statistic_manager;
 public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
 	virtual	void UpdateContact		(u16 contact_id);
 	virtual	void RunTalkDialog		(CInventoryOwner* talk_partner);
 	CGameTaskManager&				GameTaskManager() const {return *m_game_task_manager;}
+	CActorStatisticMgr&				StatisticMgr()	{return *m_statistic_manager;}
 	CKnownContactsRegistryWrapper	*contacts_registry;
 	CEncyclopediaRegistryWrapper	*encyclopedia_registry;
 //	CGameTaskRegistryWrapper		*game_task_registry;

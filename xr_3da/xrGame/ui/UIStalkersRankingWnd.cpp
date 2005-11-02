@@ -75,7 +75,7 @@ void CUIStalkersRankingWnd::Init()
 	UICharacterInfo->Init(0,0,UICharacterWindow->GetWidth(), 
 									UICharacterWindow->GetHeight(), 
 									STALKERS_RANKING_CHARACTER_XML);
-	UICharacterInfo->m_bInfoAutoAdjust = false;
+//	UICharacterInfo->m_bInfoAutoAdjust = false;
 
 
 	UIMask = xr_new<CUIFrameWindow>(); UIMask->SetAutoDelete(true);

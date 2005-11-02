@@ -1,64 +1,71 @@
-//=============================================================================
-//  Filename:   UIActorInfo.h
-//	Created by Roman E. Marchenko, vortex@gsc-game.kiev.ua
-//	Copyright 2004. GSC Game World
-//	---------------------------------------------------------------------------
-//  Окно информации о актере
-//=============================================================================
-
-#ifndef UI_ACTOR_INFO_H_
-#define UI_ACTOR_INFO_H_
-
 #pragma once
 
-//////////////////////////////////////////////////////////////////////////
 #include "UIWindow.h"
-//#include "UIFrameWindow.h"
-//#include "UIListWnd.h"
-//#include "UICharacterInfo.h"
-//#include "UIAnimatedStatic.h"
-//#include "UIFrameLineWnd.h"
+#include "UIWndCallback.h"
 
 class CUIFrameWindow;
 class CUIFrameLineWnd;
 class CUIAnimatedStatic;
 class CUIStatic;
 class CUICharacterInfo;
-class CUIListWnd;
-//////////////////////////////////////////////////////////////////////////
-/*
-SELECT xray_oles.result, count(xray_oles.result)
-FROM xray_oles
-group by xray_oles.result
-order by count(xray_oles.result) desc
-*/
+class CUIScrollView;
+class CUIXml;
+
 class CUIActorInfoWnd: public CUIWindow
 {
 	typedef CUIWindow inherited;
 
 public:
-						CUIActorInfoWnd		();
-	virtual void		Init				();
-	virtual void		Show				(bool status);
-	void				SetLineOfText		(int idx, LPCSTR text);
-
+							CUIActorInfoWnd		();
+	virtual void			Init				();
+	virtual void			Show				(bool status);
+	CUIScrollView&			DetailList			()				{return *UIDetailList;}
+	CUIScrollView&			MasterList			()				{return *UIMasterList;}
+	void					FillDetail			(int idx);
+	
 protected:
-	// Фреймы дикоративного оформления
-	CUIFrameWindow*		UIInfoFrame;
-	CUIFrameWindow*		UICharIconFrame;
-	CUIFrameLineWnd*	UIInfoHeader;
-	CUIFrameLineWnd*	UICharIconHeader;
-	CUIAnimatedStatic*	UIAnimatedIcon;
-	CUIStatic*			UIArticleHeader;
+	CUIFrameWindow*			UIInfoFrame;
+	CUIFrameLineWnd*		UIInfoHeader;
+	CUIFrameWindow*			UICharIconFrame;
+	CUIFrameLineWnd*		UICharIconHeader;
+	CUIAnimatedStatic*		UIAnimatedIcon;
 
-	//информация о персонаже
-	CUIWindow*			UICharacterWindow;
-	CUICharacterInfo*	UICharacterInfo;
-	CUIFrameWindow*		UIMask;
-	//лог сообщений
-	CUIListWnd*			UIInfoList;
+	CUIWindow*				UICharacterWindow;
+	CUICharacterInfo*		UICharacterInfo;
+
+	CUIScrollView*			UIMasterList;
+	CUIScrollView*			UIDetailList;
+
+	void					FillInfo			();
 };
 
-//////////////////////////////////////////////////////////////////////////
+class CUIActorStaticticHeader :public CUIWindow, public CUIWndCallback, public CUISelectable
+{
+	CUIActorInfoWnd*						m_actorInfoWnd;
+protected:
+	CUIStatic*		m_text;
+	CUIStatic*		m_num;
+	u32				m_stored_alpha;
+public:
+					CUIActorStaticticHeader	(CUIActorInfoWnd* w);
+	void			Init					(CUIXml* xml, LPCSTR path, int idx);
+	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void	OnMouseDown				(bool left_button = true);
+	virtual void	SetSelected				(bool b);
+			void	SetText1				(LPCSTR str);
 
-#endif
+	int										m_index;
+};
+
+class CUIActorStaticticDetail :public CUIWindow
+{
+protected:
+	CUIStatic*		m_text;
+	CUIStatic*		m_num1;
+	CUIStatic*		m_num2;
+public:
+	void			Init					(CUIXml* xml, LPCSTR path, int idx);
+			void	SetText1				(LPCSTR str);
+			void	SetText2				(LPCSTR str);
+			void	SetText3				(LPCSTR str);
+};

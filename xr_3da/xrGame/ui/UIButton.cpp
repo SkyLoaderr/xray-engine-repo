@@ -31,7 +31,7 @@ CUIButton:: CUIButton()
 	m_iPushOffsetX				= PUSH_OFFSET_RIGHT;
     m_iPushOffsetY				= PUSH_OFFSET_DOWN;
 
-	m_HighlightColor			= 0xFF999999;
+	m_HighlightColor			= 0xFFFFFFFF;
 	m_uAccelerator				= static_cast<u32>(-1);
 
 	m_iTexOffsetX				= 0.0f;
@@ -218,7 +218,7 @@ void CUIButton::DrawHighlightedText(){
 	Frect rect = GetAbsoluteRect();
 	u32 def_col = m_pLines->GetTextColor();
 	m_pLines->SetTextColor(m_HighlightColor);
-
+/*
 	m_pLines->Draw(	rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
 	m_pLines->Draw(	rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
@@ -235,6 +235,9 @@ void CUIButton::DrawHighlightedText(){
 					rect.top + down_offset   + 1 +m_iTextOffsetY + m_iShadowOffsetY);
 	m_pLines->Draw(	rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 					rect.top + down_offset   - 1 +m_iTextOffsetY + m_iShadowOffsetY);
+*/
+	m_pLines->Draw(	rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+					rect.top + down_offset   - 0 +m_iTextOffsetY + m_iShadowOffsetY);
 
 	m_pLines->SetTextColor(def_col);
 

@@ -22,6 +22,7 @@
 #include "map_location_defs.h"
 
 #include "levelFogOfWar.h"
+#include "actor_statistic_defs.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -90,5 +91,11 @@ add_to_registry_type_list(CGameTaskRegistry);
 add_to_registry_type_list(CFogOfWarRegistry);
 #define map_locations define_constant(CFogOfWarRegistry) 
 #define registry_type_list save_registry_type_list(CFogOfWarRegistry)
+
+//ActorStatistics
+add_to_registry_type_list(CActorStatisticRegistry);
+#define map_locations define_constant(CActorStatisticRegistry) 
+#define registry_type_list save_registry_type_list(CActorStatisticRegistry)
+
 
 #pragma warning(pop)

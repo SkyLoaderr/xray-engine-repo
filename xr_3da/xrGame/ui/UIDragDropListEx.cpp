@@ -14,7 +14,6 @@ CUIDragDropListEx::CUIDragDropListEx()
 	m_vScrollBar				= xr_new<CUIScrollBar>();
 	m_background				= xr_new<CUIStatic>();
 
-	m_container->SetAutoDelete	(false);
 	m_vScrollBar->SetAutoDelete	(true);
 	m_background->SetAutoDelete	(true);
 	m_selected_item				= NULL;
@@ -148,7 +147,6 @@ void CUIDragDropListEx::AddItem(CUICellItem*itm ,int x, int y)
 	C.SetItem				(itm);
 	C.m_item->SetWndRect	(float(CellSize().x*x), float(CellSize().y*y), float(CellSize().x), float(CellSize().y));
 	m_container->AttachChild(itm);
-	itm->SetAutoDelete		(false);
 	itm->SetWindowName		("cell_item");
 	Register				(itm);
 }

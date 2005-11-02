@@ -44,7 +44,7 @@ void CUIContractsWnd::Init()
 	Frect r = wnd.GetWndRect();
 	AttachChild(&UICharInfo);
 	UICharInfo.Init(r.left, r.top, r.right, r.bottom, CONTRACTS_CHAR_XML);
-	UICharInfo.m_bInfoAutoAdjust = false;
+//	UICharInfo.m_bInfoAutoAdjust = false;
 
 	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
 }

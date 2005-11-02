@@ -193,15 +193,18 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 									(flag_texture)?true:false
 									);
 
-	u32 hA = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hA", 255));
-	u32 hR = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hR", 153));
-	u32 hG = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hG", 153));
-	u32 hB = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hB", 153));
-	pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
 
 	int flag_highlight_txt		= xml_doc.ReadAttribInt(path, index, "highlight_text", 0);
-	if(flag_highlight_txt)
+	if(flag_highlight_txt){
 		pWnd->HighlightText(true);
+
+		u32 hA = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hA", 255));
+		u32 hR = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hR", 255));
+		u32 hG = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hG", 255));
+		u32 hB = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hB", 255));
+		pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
+
+	}
 	
 	return true;
 }
@@ -1204,11 +1207,15 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 
 	pWnd->SetFixedScrollBar(b);
 
+	b = (1==xml_doc.ReadAttribInt(path, index, "can_select",0));
+
+	pWnd->m_flags.set					(CUIScrollView::eItemsSelectabe, b);
+
 /////////////////////////////////////////////////////////////////////
 	int tabsCount	= xml_doc.GetNodesNum(path, index, "text");
 
-	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
-	xml_doc.SetLocalRoot(tab_node);
+	XML_NODE* _stored_root = xml_doc.GetLocalRoot();
+	xml_doc.SetLocalRoot(xml_doc.NavigateToNode(path,index));
 
 	CUIStatic* newStatic;
 
@@ -1218,12 +1225,9 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 		InitText(xml_doc, "text", i, newStatic);
 		newStatic->SetWidth(pWnd->GetDesiredChildWidth());
 		newStatic->AdjustHeightToText();
-		newStatic->SetAutoDelete(true);
-		pWnd->AddWindow(newStatic);
+		pWnd->AddWindow(newStatic, true);
 	}
-	xml_doc.SetLocalRoot(xml_doc.GetRoot());
-//////////////////////////////////////////////////////////////
-
+	xml_doc.SetLocalRoot(_stored_root);
 	return								true;
 }
 

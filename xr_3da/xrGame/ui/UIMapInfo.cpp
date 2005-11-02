@@ -36,8 +36,7 @@ void CUIMapInfo::Init(float x, float y, float width, float height){
 						st->SetText(text.c_str());											\
 						st->SetWidth(m_view->GetDesiredChildWidth());						\
 						st->AdjustHeightToText();											\
-						st->SetAutoDelete(true);											\
-						m_view->AddWindow(st)												\
+						m_view->AddWindow(st, true)												\
 
 void CUIMapInfo::InitMap(const char* map_name){
 	m_view->Clear();
@@ -74,8 +73,7 @@ void CUIMapInfo::InitMap(const char* map_name){
 			st->SetText(map_name);
 		st->SetWidth(m_view->GetDesiredChildWidth());
 		st->AdjustHeightToText();
-		st->SetAutoDelete(true);
-		m_view->AddWindow(st);
+		m_view->AddWindow(st, true);
 
 		u32 header_color, txt_color;
 		CGameFont* txt_font;
@@ -98,8 +96,7 @@ void CUIMapInfo::InitMap(const char* map_name){
 		st->SetText(map_name);
 		st->SetWidth(m_view->GetDesiredChildWidth());
 		st->AdjustHeightToText();
-		st->SetAutoDelete(true);
-		m_view->AddWindow(st);
+		m_view->AddWindow(st, true);
 	}
 
 	if (!m_large_desc)

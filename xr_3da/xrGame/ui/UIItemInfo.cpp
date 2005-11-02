@@ -107,8 +107,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
 		pItem->SetText						(*pInvItem->ItemDescription());
 		pItem->AdjustHeightToText			();
-		pItem->SetAutoDelete				(true);
-		UIDesc->AddWindow					(pItem);
+		UIDesc->AddWindow					(pItem, true);
 
 		// Загружаем картинку
 		UIItemImage->SetShader(InventoryUtilities::GetEquipmentIconsShader());

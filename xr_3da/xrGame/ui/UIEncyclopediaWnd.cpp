@@ -193,10 +193,10 @@ shared_str CUIEncyclopediaWnd::SetCurrentArtice(CUITreeViewItem *pTVItem)
 	if (!pTVItem->IsRoot())
 	{
 
-		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();
 		article_info->Init			("encyclopedia_item.xml","encyclopedia_wnd:objective_item");
 		article_info->SetArticle	(m_ArticlesDB[pTVItem->GetValue()]);
-		UIInfoList->AddWindow		(article_info);
+		UIInfoList->AddWindow		(article_info, true);
 
 		// Пометим как прочитанную
 		if (!pTVItem->IsArticleReaded())

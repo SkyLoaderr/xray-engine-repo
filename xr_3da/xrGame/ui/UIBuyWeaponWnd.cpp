@@ -1635,15 +1635,11 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
 			{
-//				CUIString str;
-//				str.SetText();
 				CUIStatic* pItem = xr_new<CUIStatic>();
 				pItem->SetWidth(UIItemInfo.UIDesc->GetDesiredChildWidth());
 				pItem->SetText(*CStringTable().translate(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
 				pItem->AdjustHeightToText();
-				pItem->SetAutoDelete(true);
-				UIItemInfo.UIDesc->AddWindow(pItem);
-					//.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
+				UIItemInfo.UIDesc->AddWindow(pItem, true);
 			}
 		}
 	}

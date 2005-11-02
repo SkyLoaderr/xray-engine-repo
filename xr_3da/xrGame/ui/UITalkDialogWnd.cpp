@@ -149,9 +149,8 @@ void CUITalkDialogWnd::AddQuestion(const char* str, int value)
 {
 	CUIQuestionItem* itm			= xr_new<CUIQuestionItem>(m_uiXml,"question_item");
 	itm->Init						(value, str);
-	UIQuestionsList->AddWindow		(itm);
 	itm->SetWindowName				("question_item");
-	itm->SetAutoDelete				(true);
+	UIQuestionsList->AddWindow		(itm, true);
 	Register						(itm);
 }
 
@@ -159,8 +158,7 @@ void CUITalkDialogWnd::AddAnswer(const char* SpeakerName, const char* str, bool 
 {
 	CUIAnswerItem* itm				= xr_new<CUIAnswerItem>(m_uiXml,bActor?"actor_answer_item":"other_answer_item");
 	itm->Init						(str, SpeakerName);
-	itm->SetAutoDelete				(true);
-	UIAnswersList->AddWindow		(itm);
+	UIAnswersList->AddWindow		(itm, true);
 	UIAnswersList->ScrollToEnd		();
 }
 
@@ -168,8 +166,7 @@ void CUITalkDialogWnd::AddIconedAnswer(LPCSTR text, LPCSTR texture_name, Frect t
 {
 	CUIAnswerItemIconed* itm				= xr_new<CUIAnswerItemIconed>(m_uiXml,templ_name);
 	itm->Init								(text, texture_name, texture_rect);
-	itm->SetAutoDelete				(true);
-	UIAnswersList->AddWindow				(itm);
+	UIAnswersList->AddWindow				(itm, true);
 	UIAnswersList->ScrollToEnd				();
 
 }

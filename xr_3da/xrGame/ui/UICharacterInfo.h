@@ -45,13 +45,10 @@ public:
 		eMaxCaption,
 	};
 	CUIStatic*			m_icons[eMaxCaption];
-	//CInventoryOwner* pInvOwner;
 	u32					m_ownerID;
 	// Biography
 	CUIScrollView*		pUIBio;
 	bool				hasOwner()			{return (m_ownerID!=u32(-1));}
-	// Для автоматического выравнивания текста после кепшинов установить этот флаг
-	bool		m_bInfoAutoAdjust;
 
 	CUIStatic&	UIIcon()		{VERIFY(m_icons[eUIIcon]);return *m_icons[eUIIcon];}	
 	CUIStatic&	UIName()		{VERIFY(m_icons[eUIName]);return *m_icons[eUIName];}	

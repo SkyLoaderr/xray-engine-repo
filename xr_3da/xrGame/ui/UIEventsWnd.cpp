@@ -140,7 +140,7 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 			VERIFY(task->m_Objectives.size()==1);
 			pTaskItem = xr_new<CUIUserTaskItem>(this);
 			pTaskItem->SetGameTask			(task, 0);
-			m_ListWnd->AddWindow			(pTaskItem);
+			m_ListWnd->AddWindow			(pTaskItem,true);
 		}else
 		for (u32 i = 0; i < task->m_Objectives.size(); ++i)
 		{
@@ -150,7 +150,7 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 				pTaskItem = xr_new<CUITaskSubItem>(this);
 
 			pTaskItem->SetGameTask			(task, i);
-			m_ListWnd->AddWindow			(pTaskItem);
+			m_ListWnd->AddWindow			(pTaskItem,true);
 		}
 
 	}

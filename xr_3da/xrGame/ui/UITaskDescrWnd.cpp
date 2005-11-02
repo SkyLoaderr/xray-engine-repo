@@ -54,16 +54,16 @@ void CUITaskDescrWnd::ClearAll					()
 
 void CUITaskDescrWnd::AddArticle				(LPCSTR article)
 {
-	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();
 	article_info->Init			("encyclopedia_item.xml","events_wnd:objective_item");
 	article_info->SetArticle	(article);
-	m_UITaskInfoWnd->AddWindow	(article_info);
+	m_UITaskInfoWnd->AddWindow	(article_info, true);
 }
 
 void CUITaskDescrWnd::AddArticle					(CEncyclopediaArticle* article)
 {
-	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+	CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();
 	article_info->Init			("encyclopedia_item.xml","events_wnd:objective_item");
 	article_info->SetArticle	(article);
-	m_UITaskInfoWnd->AddWindow	(article_info);
+	m_UITaskInfoWnd->AddWindow	(article_info, true);
 }

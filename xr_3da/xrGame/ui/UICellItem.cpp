@@ -53,7 +53,6 @@ CUIFlyingItem* CUICellItem::CreateFlyingItem()
 CUIFlyingItem::CUIFlyingItem(CUICellItem* parent)
 {
 	m_pParent						= parent;
-	m_static.SetAutoDelete			(false);
 	AttachChild						(&m_static);
 	HUD().GetUI()->StartStopMenu	(this,false);
 //	GetUICursor()->SetMoveReceiver(CUICursor::CURSOR_MOVE_EVENT(this,&CUIFlyingItem::OnMouseMoved));

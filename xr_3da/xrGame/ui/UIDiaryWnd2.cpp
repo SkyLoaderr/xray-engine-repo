@@ -246,10 +246,10 @@ void CUIDiaryWnd::OnSrcListItemClicked	(CUIWindow* w,void* p)
 	m_DescrView->Clear	();
 	if (!pSelItem->IsRoot())
 	{
-		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();article_info->SetAutoDelete(true);
+		CUIEncyclopediaArticleWnd*	article_info = xr_new<CUIEncyclopediaArticleWnd>();
 		article_info->Init			("encyclopedia_item.xml","encyclopedia_wnd:objective_item");
 		article_info->SetArticle	(m_ArticlesDB[pSelItem->GetValue()]);
-		m_DescrView->AddWindow		(article_info);
+		m_DescrView->AddWindow		(article_info, true);
 	}
 }
 extern void draw_sign		(CUIStatic* s, Frect& r);

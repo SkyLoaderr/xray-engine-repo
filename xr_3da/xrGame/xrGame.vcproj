@@ -6958,6 +6958,19 @@
 								RelativePath=".\game_news.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="statistics"
+							Filter="">
+							<File
+								RelativePath=".\actor_statistic_defs.h">
+							</File>
+							<File
+								RelativePath=".\actor_statistic_mgr.cpp">
+							</File>
+							<File
+								RelativePath=".\actor_statistic_mgr.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="inventory"

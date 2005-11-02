@@ -732,10 +732,22 @@ void CUIMainIngameWnd::Update()
 	CUIWindow::Update();
 }
 
+#include "../actor_statistic_mgr.h"
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
 	if(dik==DIK_K&&strstr(Core.Params,"andy")){
+		Actor()->StatisticMgr().AddPoints	(2, "monster_1", 1, 20);
+		Actor()->StatisticMgr().AddPoints	(2, "monster_2", 15, 15);
+
+		Actor()->StatisticMgr().AddPoints	(3, "quest", 1, 5);
+
+		Actor()->StatisticMgr().AddPoints	(1, "stalker_11", 1, 150);
+		Actor()->StatisticMgr().AddPoints	(1, "stalker_11", 1, 100);
+		Actor()->StatisticMgr().AddPoints	(1, "stalker_22", 2, 150);
+		Actor()->StatisticMgr().AddPoints	(1, "stalker_33", 100, 150);
+		
+/*
 		if(!w){
 			w = xr_new<CTestDragDropWnd>	();
 			Game().StartStopMenu			(w,true);
@@ -743,6 +755,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			Game().StartStopMenu			(w,true);
 			xr_delete						(w);
 		}
+*/
 	}
 
 

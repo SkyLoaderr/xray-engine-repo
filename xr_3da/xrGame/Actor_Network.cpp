@@ -40,6 +40,7 @@
 #include "game_base_kill_type.h"
 #include "holder_custom.h"
 #include "actor_memory.h"
+#include "actor_statistic_mgr.h"
 
 int			g_cl_InterpolationType		= 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -800,13 +801,16 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) )
 		g_actor = this;
 
-	if (GameID() == GAME_SINGLE){
+	if (IsGameTypeSingle()){
 		Level().MapManager().AddMapLocation("actor_location",ID());
 		Level().MapManager().AddMapLocation("actor_location_p",ID());
+
+		m_game_task_manager	= xr_new<CGameTaskManager>();
+		GameTaskManager().initialize(ID());
+
+		m_statistic_manager = xr_new<CActorStatisticMgr>();
 	}
 
-	m_game_task_manager	= xr_new<CGameTaskManager>();
-	GameTaskManager().initialize(ID());
 
 	spatial.type |=STYPE_REACTTOSOUND;
 	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
@@ -823,7 +827,8 @@ void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
 	delete_data				(m_game_task_manager);
-	Level().MapManager().RemoveMapLocationByObjectID(ID());
+	delete_data				(m_statistic_manager);
+	Level().MapManager		().RemoveMapLocationByObjectID(ID());
 
 #pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")
 	CInventoryOwner::net_Destroy();

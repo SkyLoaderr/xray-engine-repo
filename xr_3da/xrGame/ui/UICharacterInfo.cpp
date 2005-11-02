@@ -1,11 +1,6 @@
-// UICharacterInfo.cpp:  окошко, с информацией о персонаже
-// 
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 
 #include "UIInventoryUtilities.h"
-using namespace InventoryUtilities;
 
 #include "uicharacterinfo.h"
 #include "../actor.h"
@@ -18,30 +13,22 @@ using namespace InventoryUtilities;
 #include "UIXmlInit.h"
 
 #include "uistatic.h"
-//#include "UIFrameWindow.h"
-//#include "UIListWnd.h"
 #include "UIScrollView.h"
 
-//////////////////////////////////////////////////////////////////////////
+using namespace InventoryUtilities;
 
 CUICharacterInfo::CUICharacterInfo()
 {
 	ZeroMemory			(m_icons,eMaxCaption*sizeof(CUIStatic*));
 	pUIBio				= NULL;
-//	pInvOwner			= NULL;
-	m_bInfoAutoAdjust	= true;
 	m_ownerID			= u32(-1);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 CUICharacterInfo::~CUICharacterInfo()
 {
 	for(int i=0; i<eMaxCaption;++i)
 		if(m_icons[i])xr_delete(m_icons[i]);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml* xml_doc)
 {
@@ -157,23 +144,15 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 {
 	VERIFY(pCharInfo);
 
+	CStringTable	stbl;
 	string256		str;
 	if(m_icons[eUIName]){
-//		strcpy						(str,pCharInfo->Name());
 		CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_ownerID));
-
 		m_icons[eUIName]->SetText	(IO->Name());
 	}
 
-	CStringTable	stbl;
-
+/*
 	float offset;
-
-#ifdef _DEBUG
-	sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
-#else
-	sprintf(str, "%s", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())));
-#endif
 	if (m_bInfoAutoAdjust)
 	{
 		if (	m_icons[eUIRankCaption] && 
@@ -184,15 +163,19 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 			m_icons[eUIRank]->SetWndRect(offset, m_icons[eUIRank]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIRank]->GetWndRect().bottom);
 		}
 	}
-	if(m_icons[eUIRank])
-		m_icons[eUIRank]->SetText(str);
+*/
+	if(m_icons[eUIRank]){
+	#ifdef _DEBUG
+		sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
+	#else
+		sprintf(str, "%s", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())));
+	#endif
+
+	m_icons[eUIRank]->SetText(str);
+	}
 
 
-#ifdef _DEBUG
-	sprintf(str, "%s,%d", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())), pCharInfo->Reputation().value());
-#else
-	sprintf(str, "%s", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())));
-#endif
+/*
 	if (m_bInfoAutoAdjust)
 	{
 		if (m_icons[eUIReputationCaption] &&
@@ -203,11 +186,17 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 			m_icons[eUIReputation]->SetWndRect(offset, m_icons[eUIReputation]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIReputation]->GetWndRect().bottom);
 		}
 	}
-	if(m_icons[eUIReputation])
+*/
+	if(m_icons[eUIReputation]){
+	#ifdef _DEBUG
+		sprintf(str, "%s,%d", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())), pCharInfo->Reputation().value());
+	#else
+		sprintf(str, "%s", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())));
+	#endif
 		m_icons[eUIReputation]->SetText(str);
+	}
 
-	sprintf(str, "%s", *CStringTable().translate(pCharInfo->Community().id()));
-	if (m_bInfoAutoAdjust)
+/*	if (m_bInfoAutoAdjust)
 	{
 		if (m_icons[eUICommunityCaption] && 
 			m_icons[eUICommunityCaption]->IsEnabled() && 
@@ -217,8 +206,11 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 			m_icons[eUICommunity]->SetWndRect(offset, m_icons[eUICommunity]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUICommunity]->GetWndRect().bottom - m_icons[eUICommunity]->GetWndRect().top);
 		}
 	}
-	if(m_icons[eUICommunity])
+*/
+	if(m_icons[eUICommunity]){
+		sprintf(str, "%s", *CStringTable().translate(pCharInfo->Community().id()));
 		m_icons[eUICommunity]->SetText(str);
+	}
 
 	m_icons[eUIIcon]->SetShader(GetCharIconsShader());
 	m_icons[eUIIcon]->GetUIStaticItem().SetOriginalRect(	float(pCharInfo->TradeIconX()*ICON_GRID_WIDTH),
@@ -231,16 +223,13 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	if (pUIBio && pUIBio->IsEnabled())
 	{
 		pUIBio->Clear();
-//		static CUIString str;
 		if (pCharInfo->Bio())
 		{
-			//str.SetText(pCharInfo->Bio());
-			CUIStatic* pItem = xr_new<CUIStatic>();
-			pItem->SetWidth(pUIBio->GetDesiredChildWidth());
-			pItem->SetText(pCharInfo->Bio());
-			pItem->AdjustHeightToText();
-			pUIBio->AddWindow(pItem);
-				//AddParsedItem<CUIListItem>(str, 0.0f, pUIBio->GetTextColor(), pUIBio->GetFont());
+			CUIStatic* pItem				= xr_new<CUIStatic>();
+			pItem->SetWidth					(pUIBio->GetDesiredChildWidth());
+			pItem->SetText					(pCharInfo->Bio());
+			pItem->AdjustHeightToText		();
+			pUIBio->AddWindow				(pItem, true);
 		}
 	}
 }
@@ -286,11 +275,13 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 #endif
 
 	m_icons[eUIRelation]->SetText(str);
+/*
 	if (m_bInfoAutoAdjust)
 	{
 		float offset = (m_icons[eUIRelationCaption]->GetFont()->SizeOf(m_icons[eUIRelationCaption]->GetText()) + m_icons[eUIRelationCaption]->GetWndRect().left + 5.0f);
 		m_icons[eUIRelation]->SetWndRect(offset, m_icons[eUIRelation]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUICommunity]->GetWndRect().bottom - m_icons[eUIRelation]->GetWndRect().top);
 	}
+*/
 }
 
 

@@ -11,19 +11,19 @@
 #include "alife_registry_container.h"
 #include "alife_registry_wrapper.h"
 
-typedef CALifeRegistryWrapper<CInfoPortionRegistry> KNOWN_INFO_REGISTRY;
+//typedef CALifeRegistryWrapper<CInfoPortionRegistry> KNOWN_INFO_REGISTRY;
 
 //реестр контактов общения с другими персонажами
-typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
+//typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
 
 //реестр статей энциклопедии, о которых знает актер
-typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
+//typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
 
 //реестр заданий, полученных актером
 //typedef CALifeRegistryWrapper<CGameTaskRegistry> GAME_TASK_REGISTRY;
 
 //реестр новостей, полученных актером
-typedef CALifeRegistryWrapper<CGameNewsRegistry> GAME_NEWS_REGISTRY;
+//typedef CALifeRegistryWrapper<CGameNewsRegistry> GAME_NEWS_REGISTRY;
 
 
 template <typename T>
@@ -48,13 +48,13 @@ public:
 	}
 };
 
-class CKnownContactsRegistryWrapper :	public CALifeRegistryWrapperObject<KNOWN_CONTACTS_REGISTRY> {};
-class CEncyclopediaRegistryWrapper :	public CALifeRegistryWrapperObject<ENCYCLOPEDIA_REGISTRY> {};
-//class CGameTaskRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_TASK_REGISTRY> {};
-class CGameNewsRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_NEWS_REGISTRY> {};
-class CInfoPortionWrapper :				public CALifeRegistryWrapperObject<KNOWN_INFO_REGISTRY> {};
+class CKnownContactsRegistryWrapper :	public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CKnownContactsRegistry> > {};
+class CEncyclopediaRegistryWrapper :	public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CEncyclopediaRegistry> > {};
+class CGameNewsRegistryWrapper :		public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CGameNewsRegistry> > {};
+class CInfoPortionWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CInfoPortionRegistry> > {};
 class CRelationRegistryWrapper :		public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CRelationRegistry> > {};
 class CMapLocationWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CMapLocationRegistry> > {};
 class CGameTaskWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CGameTaskRegistry> > {};
 
 class CFogOfWarWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CFogOfWarRegistry> > {};
+class CActorStatisticsWrapper :			public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CActorStatisticRegistry> > {};

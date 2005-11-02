@@ -92,10 +92,10 @@ void CUINewsWnd::AddNews()
 
 void CUINewsWnd::AddNewsItem(const shared_str &text)
 {
-	CUINewsItemWnd* itm	= xr_new<CUINewsItemWnd>(); itm->SetAutoDelete(true);
+	CUINewsItemWnd* itm	= xr_new<CUINewsItemWnd>();
 	itm->Init	(NEWS_XML,"news_item");
 	itm->SetText(text);
-	UIScrollWnd->AddWindow(itm);
+	UIScrollWnd->AddWindow(itm, true);
 }
 
 

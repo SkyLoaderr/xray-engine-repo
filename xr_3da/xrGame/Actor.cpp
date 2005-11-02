@@ -205,6 +205,7 @@ CActor::CActor() : CEntityAlive()
 	m_iLastHitterID			= u16(-1);
 	m_iLastHittingWeaponID	= u16(-1);
 	m_game_task_manager		= NULL;
+	m_statistic_manager		= NULL;
 	//-----------------------------------------------------------------------------------
 	m_memory				= xr_new<CActorMemory>(this);
 
