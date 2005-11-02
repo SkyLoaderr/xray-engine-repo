@@ -32,12 +32,24 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.restrictors = {}
 
 	self.ObjectJob = {}
-	
-	self.localLtx = gulag_tasks.loadLtx(name, type) or gulag_tasks_ltx
+
+	self:init_ltx(name, type)
 
 	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self.calculateStates = gulag_tasks.loadStates(name, type)
+end
+
+function fract:init_ltx(name, type)
+	local ltx, ltx_name = gulag_tasks.loadLtx(name, type)
+
+	if ltx then
+		self.ltx      = ltx
+		self.ltx_name = ltx_name
+	else
+		self.ltx      = gulag_tasks_ltx
+		self.ltx_name = gulag_tasks_file_name
+	end
 end
 
 function fract:addObject(npc)
@@ -319,9 +331,9 @@ function fract:setJob(npc, job, jobN)
 	--local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
 	--xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect, false)
 
-	xr_logic.configure_schemes(npc, self.localLtx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
-	local sect = xr_logic.determine_section_to_activate(npc, self.localLtx, job.section, db.actor)
-	xr_logic.activate_by_section(npc, self.localLtx, sect, false)
+	xr_logic.configure_schemes(npc, self.ltx, self.ltx_name, self:get_stype(npc), job.section, self.name)
+	local sect = xr_logic.determine_section_to_activate(npc, self.ltx, job.section, db.actor)
+	xr_logic.activate_by_section(npc, self.ltx, sect, false)
 
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())

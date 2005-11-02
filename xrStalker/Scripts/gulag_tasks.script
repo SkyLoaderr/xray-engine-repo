@@ -1,6 +1,9 @@
 local t, k, v
 local level_gulags = xr_gulag.level_gulags
 
+-- кэш для динамических ltx
+local dynamic_ltx = {}
+
 function loadJob(sj, gname, type, squad, groups)
 	if type == "test" then
 		t = { section = "logic@walker1",
@@ -201,18 +204,32 @@ function loadStates(gname, type)
 	abort("ERROR: unrecognized gulag's type '%s'", type)
 end
 
+-- загрузка динамических ltx
+-- их имена: "*имя_смарттерейна*тип_гулага"
 function loadLtx(name, type)
-    local l
-    for k, v in pairs(level_gulags) do
-	    l = v.load_ltx(name, type)
-	    if l ~= nil then
-	        local ini = create_ini_file(l)
-	        --printf("gulag <ltx>:\n%s", l)
-	        return ini
-	    end
-    end
+--	printf( "loadLtx: name=%s type=%s", name, type )
 
-    return nil
+	local h    = "*"..name.."*"..type
+	local dltx = dynamic_ltx[h]
+
+	if dltx then
+		return dltx, h
+	else
+		local l
+
+		for k, v in pairs(level_gulags) do
+			l = v.load_ltx(name, type)
+			if l ~= nil then
+				dltx = create_ini_file(l)
+				--printf("gulag <ltx>:\n%s", l)
+				dynamic_ltx[h] = dltx
+
+				return dltx, h
+			end
+    	end
+
+	    return nil, nil
+    end
 end
 
 function get_megafone(type, name)

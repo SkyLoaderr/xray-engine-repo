@@ -453,19 +453,6 @@ function no_need_to_rotate_xz(npc, target_pos)
 	return y < 0.3
 end
 
-function get_customdata_or_ini_file(npc, filename)
-	if filename == "<customdata>" then
-		local ini = npc:spawn_ini()
-		if ini then
-			return ini
-		end
-		return ini_file([[scripts\dummy.ltx]])
-	else
-		return ini_file(filename)
-	end
-end
-
-
 -- Перевод угла из радианов в градусы
 function rad2deg(r)
 	return r * 180.0 / math.pi
