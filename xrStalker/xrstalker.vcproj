@@ -2897,6 +2897,9 @@
 						Name="Physics"
 						Filter="">
 						<File
+							RelativePath=".\Scripts\ph_death.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\ph_on_hit.script">
 						</File>
 					</Filter>
