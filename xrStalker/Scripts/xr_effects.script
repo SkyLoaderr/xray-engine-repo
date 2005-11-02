@@ -632,6 +632,7 @@ function rostok_kruglov_tip_2(actor,npc)
 end
 function rostok_kruglov_attract_1(actor,npc)
 	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_1")
+	news_manager.send_tip(actor, "bar_freedom_chase", nil, "ecolog", nil, 503)
 end
 function rostok_kruglov_attract_2(actor,npc)
 	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_2")
