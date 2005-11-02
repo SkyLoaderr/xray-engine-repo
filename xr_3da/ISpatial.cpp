@@ -60,15 +60,14 @@ BOOL	verify_sp	(ISpatial* sp, Fvector& node_center, float node_radius)
 
 void	ISpatial::spatial_register	()
 {
+	spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	if (spatial.node_ptr)
 	{
 		// already registered - nothing to do
-		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	} else {
 		// register
 		spatial.space->insert	(this);
-		spatial.sector			=	::Render->detectSector(spatial.center);
-		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
+		spatial.sector			=	0;
 	}
 }
 
