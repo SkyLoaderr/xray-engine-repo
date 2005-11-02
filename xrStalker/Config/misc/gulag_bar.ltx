@@ -1444,13 +1444,11 @@ def_state_moving = assault
 path_walk = escape_hide_1_walk
 path_look = escape_hide_1_look
 def_state_moving = assault
-on_timer = 6000 |%=bar_ecolog_spam_5% 
 meet = meet@ecolog_kruglov
 no_retreat = true
 radius = 0
-;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_professor_companion_1 
-on_info2 = {=rostok_gulag_inactive} remark@bar_ecolog_professor_companion_1 %+bar_rescue_research_chasing_end% ; {+bar_ecolog_see_chase -bar_ecolog_saw_chase} %=bar_ecolog_spam_5 +bar_ecolog_saw_chase%
+on_info2 = {=rostok_gulag_inactive} remark@bar_ecolog_professor_companion_1 %+bar_rescue_research_chasing_end% 
 
 [remark@bar_ecolog_professor_companion_1]
 snd = rostok_kruglov_help_6
@@ -1540,7 +1538,13 @@ path_look = escape_look
 meet = meet@ecolog_kruglov
 radius = 0
 ;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_info = {+bar_go_through_anomaly} camper@bar_ecolog_professor_torrid
+on_info = {=rostok_dist_to_actor_le(7)} remark@bar_ecolog_professor_torrid
+
+[remark@bar_ecolog_professor_torrid]
+snd = rostok_kruglov_help_6
+anim = hello
+on_signal = sound_end | camper@bar_ecolog_professor_torrid %+bar_go_through_anomaly%
+combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 
 [camper@bar_ecolog_professor_torrid]
 path_walk = torrid_walk
