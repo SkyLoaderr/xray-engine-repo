@@ -75,7 +75,7 @@ void CSpecificCharacter::Load(SPECIFIC_CHARACTER_ID id)
 
 void CSpecificCharacter::load_shared	(LPCSTR)
 {
-#ifdef DEBUG
+#if 0
 	CTimer			timer;
 	timer.Start		();
 #endif
@@ -205,7 +205,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 #endif
 
-#ifdef DEBUG
+#if 0
 	Msg			("CSpecificCharacter::load_shared() takes %f milliseconds",timer.GetElapsed_sec()*1000.f);
 #endif
 }
