@@ -458,9 +458,15 @@ void CALifeSurgeManager::spawn_new_spawns			()
 	for ( ; I != E; ++I) {
 		CSE_ALifeDynamicObject	*object, *spawn = smart_cast<CSE_ALifeDynamicObject*>(&spawns().spawns().vertex(*I)->data()->object());
 		VERIFY3					(spawn,spawns().spawns().vertex(*I)->data()->object().name(),spawns().spawns().vertex(*I)->data()->object().name_replace());
-//		Msg						("LSS : SURGE : SPAWN : [%s],[%s], level %s",*spawn->s_name,spawn->name_replace(),*ai().game_graph().header().level(ai().game_graph().vertex(spawn->m_tGraphID)->level_id()).name());
+
+#ifdef DEBUG
+		CTimer					timer;
+		timer.Start				();
+#endif
 		create					(object,spawn,*I);
-//		object->on_spawn		();
+#ifdef DEBUG
+		Msg						("LSS : SURGE : SPAWN : [%s],[%s], level %s, time %f ms",*spawn->s_name,spawn->name_replace(),*ai().game_graph().header().level(ai().game_graph().vertex(spawn->m_tGraphID)->level_id()).name(),timer.GetElapsed_sec()*1000.f);
+#endif
 	}
 }
 
