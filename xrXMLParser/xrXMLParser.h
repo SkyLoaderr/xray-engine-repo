@@ -60,16 +60,16 @@ public:
 
 
 	//чтение элементов
-	LPCSTR Read(LPCSTR path, int index,  LPCSTR   default_str_val = "" );
-	LPCSTR Read(XML_NODE* start_node, LPCSTR path, int index,  LPCSTR   default_str_val = "" );
+	LPCSTR Read(LPCSTR path, int index,  LPCSTR   default_str_val);
+	LPCSTR Read(XML_NODE* start_node, LPCSTR path, int index,  LPCSTR   default_str_val );
 	LPCSTR Read(XML_NODE* node,  LPCSTR   default_str_val);
 
-	int   ReadInt(LPCSTR path, int index,  int default_int_val = 0);
-	int   ReadInt(XML_NODE* start_node,  LPCSTR path, int index,  int default_int_val = 0);
+	int   ReadInt(LPCSTR path, int index,  int default_int_val);
+	int   ReadInt(XML_NODE* start_node,  LPCSTR path, int index,  int default_int_val);
 	int   ReadInt(XML_NODE* node,  int default_int_val);
 
-	float   ReadFlt(LPCSTR path, int index,  float default_flt_val = 0.0f);
-	float   ReadFlt(XML_NODE* start_node,  LPCSTR path, int index,  float default_flt_val = 0.0f);
+	float   ReadFlt(LPCSTR path, int index,  float default_flt_val);
+	float   ReadFlt(XML_NODE* start_node,  LPCSTR path, int index,  float default_flt_val);
 	float   ReadFlt(XML_NODE* node,  float default_flt_val);
 
 
