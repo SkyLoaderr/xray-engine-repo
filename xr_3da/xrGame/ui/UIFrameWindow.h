@@ -20,6 +20,7 @@ class CUIFrameWindow: public CUIWindow,
 private:
 	typedef CUIWindow inherited;
 public:
+	using CUIWindow::Draw;
 	////////////////////////////////////
 	//конструктор/деструктор
 	CUIFrameWindow();

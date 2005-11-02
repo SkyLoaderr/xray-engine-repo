@@ -15,7 +15,7 @@ CUIStats::CUIStats(){
 }
 
 CUIStats::~CUIStats(){
-
+	xr_delete(m_pBack);
 }
 
 void CUIStats::Init(CUIXml& xml_doc, int team){
@@ -24,10 +24,8 @@ void CUIStats::Init(CUIXml& xml_doc, int team){
 	CUIWindow* pWnd = NULL;
 	CUIStatic* pSt	= NULL;
 
-    CUIFrameWindow* pFrm = xr_new<CUIFrameWindow>();
-	CUIXmlInit::InitFrameWindow(xml_doc, "stats_wnd:back_ground",0, pFrm);
-	pFrm->SetAutoDelete(true);
-	AttachChild(pFrm);
+    m_pBack = xr_new<CUIFrameWindow>();
+	CUIXmlInit::InitFrameWindow(xml_doc, "stats_wnd:back_ground",0, m_pBack);
 
 	switch (GameID()){
 		case GAME_ARTEFACTHUNT:
@@ -53,14 +51,39 @@ void CUIStats::Init(CUIXml& xml_doc, int team){
 	//	default:
 	}
 
-    CUIStatsPlayerList* pPList = xr_new<CUIStatsPlayerList>();	
+	// players
+	CUIStatsPlayerList* pPList = xr_new<CUIStatsPlayerList>();
 	CUIXmlInit::InitStatsPlayerList(xml_doc, "stats_wnd:player_list",0,pPList);
 	pPList->SetMessageTarget(this);
-	pWnd = pPList->GetHeader();
+
+	u32 col;
+    CGameFont* pF;
+	CUIXmlInit::InitFont(xml_doc, "stats_wnd:player_list_header:text", 0, col, pF);
+	pWnd = pPList->GetHeader(pF,col);
+
+	AddWindow(pWnd, true);
+	AddWindow(pPList, true);
+
+	// spectators
+	pPList = xr_new<CUIStatsPlayerList>();
+	CUIXmlInit::InitStatsPlayerList(xml_doc, "stats_wnd:spectator_list",0,pPList);
+	pPList->SetMessageTarget(this);
+
+	col = 0;
+    pF = NULL;
+	CUIXmlInit::InitFont(xml_doc, "stats_wnd:spectator_list_header:text", 0, col, pF);
+	pWnd = pPList->GetHeader(pF,col);
+
 	AddWindow(pWnd, true);
 	AddWindow(pPList, true);
 
 
 
+}
+
+void CUIStats::Draw(){
+	Fvector2 pos = GetWndPos();
+	m_pBack->Draw(pos.x,pos.y);	
+	CUIScrollView::Draw();
 }
 

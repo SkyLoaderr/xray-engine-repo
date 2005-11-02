@@ -4,6 +4,7 @@
 #include "UIStatsPlayerList.h"
 
 class CUIXml;
+class CUIFrameWindow;
 
 class CUIStats : public CUIScrollView {
 public:
@@ -13,4 +14,8 @@ public:
 	virtual ~CUIStats();
 
 			void Init(CUIXml& xml_doc, int team = 0);
+	virtual void Draw();
+
+protected:
+	CUIFrameWindow* m_pBack;
 };

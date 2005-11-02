@@ -138,7 +138,8 @@ void CUIScrollView::Draw				()
 	{
 		Frect	item_rect		= (*it)->GetAbsoluteRect();
 		if(visible_rect.intersected		(item_rect)){
-			(*it)->Draw					();
+			if ((*it)->GetVisible())
+                (*it)->Draw();
 			iDone						= 1;
 		}else
 			if(iDone==1)	break;

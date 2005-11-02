@@ -41,9 +41,13 @@ void CUIStatsPlayerInfo::AddField(float len){
 	CUIStatic* wnd = xr_new<CUIStatic>();
 
 	if (m_fields.empty())
-		wnd->Init(0,0,len,this->GetHeight());
+		wnd->Init(10,0,len,this->GetHeight());		
 	else
+	{
 		wnd->Init(m_fields.back()->GetWndRect().right,0,len,this->GetHeight());
+		wnd->SetTextAlignment(CGameFont::alCenter);
+	}
+//	wnd->SetVTextAlignment(valCenter);
 	m_fields.push_back(wnd);
 	AttachChild(wnd);
 }
