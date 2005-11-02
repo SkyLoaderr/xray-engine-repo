@@ -182,25 +182,25 @@ object_list["test1"] = {
 
 -- define smart terrains
 smart_terrains["test1"] = {
-	"rad_antena"		or 
-	"rad_entrance"	or
-	"rad_antenna_monolith"	or
-	"rad_valley"		or
-	"rad_after_valley"			or
-	"rad_after_tramplin_ambush"	or
-	"rad_before_tramplin_ambush"	or
-	"rad_far_road_ambush"			or 
-	"rad_far_road_btr_ambush"			or 
-	"rad_antenna_camper" then
-	rad_zombied1
-	rad_zombied2
-	freedom_vs_duty
-	rad_antenna_specnaz
-	rad_gig
-	rad_pseudodogs
-	rad_bloodsucker
-		rad_snork1
-	rad_snork2
+	"rad_antena",
+	"rad_entrance",
+	"rad_antenna_monolith",
+	"rad_valley",
+	"rad_after_valley",
+	"rad_after_tramplin_ambush",
+	"rad_before_tramplin_ambush",
+	"rad_far_road_ambush",
+	"rad_far_road_btr_ambush",
+	"rad_antenna_camper",
+	"rad_zombied1",
+	"rad_zombied2",
+	"freedom_vs_duty",
+	"rad_antenna_specnaz",
+	"rad_gig",
+	"rad_pseudodogs",
+	"rad_bloodsucker",
+		"rad_snork1",
+	"rad_snork2"
 
 }
 
