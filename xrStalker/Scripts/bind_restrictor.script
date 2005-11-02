@@ -49,7 +49,7 @@ function restrictor_binder:net_spawn(data)
 
 	-- Не регистрироваться на апдейты, если у объекта в customdata
 	-- нет секции logic вообще.
-	local char_ini = utils.get_customdata_or_ini_file(self.object, "<customdata>")
+	local char_ini = xr_logic.get_customdata_or_ini_file(self.object, "<customdata>")
 	if char_ini:section_exist("logic") then
 		updatable_binders[self.object:id()] = self
 	end
