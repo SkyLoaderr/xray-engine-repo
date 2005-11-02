@@ -8,7 +8,8 @@ xr_token actor_stats_token[]={
 	{"quests",				3},
 	{"trade",				4},
 	{"reputation",			5},
-	{0,0					}
+	{"foo",					0},
+	{0,						0}
 };
 void SStatDetailData::save(IWriter &stream)
 {

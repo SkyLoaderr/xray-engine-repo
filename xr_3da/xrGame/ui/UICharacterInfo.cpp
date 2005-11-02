@@ -54,8 +54,6 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		AttachChild(pItem);
 	}
 
-
-	///////////////
 	// rank
 	if(xml_doc->NavigateToNode("rank_static", 0))
 	{
@@ -71,7 +69,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		xml_init.InitStatic(*xml_doc, "rank_caption", 0, pItem);
 		AttachChild(pItem);
 	}
-	/////////////////////
+
 	//community
 	if(xml_doc->NavigateToNode("community_static", 0))
 	{
@@ -88,7 +86,6 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		AttachChild(pItem);
 	}
 
-	/////////////////////
 	//reputation
 	if(xml_doc->NavigateToNode("reputation_static", 0))
 	{
@@ -105,7 +102,6 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		AttachChild(pItem);
 	}
 
-	///////////////////
 	// relation
 	if(xml_doc->NavigateToNode("relation_static", 0))
 	{
@@ -138,8 +134,6 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, const c
 	Init(x,y,width,height,&uiXml);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 {
 	VERIFY(pCharInfo);
@@ -151,19 +145,6 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 		m_icons[eUIName]->SetText	(IO->Name());
 	}
 
-/*
-	float offset;
-	if (m_bInfoAutoAdjust)
-	{
-		if (	m_icons[eUIRankCaption] && 
-				m_icons[eUIRankCaption]->IsEnabled() && 
-				m_icons[eUIRankCaption]->GetFont())
-		{
-			offset = (m_icons[eUIRankCaption]->GetFont()->SizeOf(m_icons[eUIRankCaption]->GetText()) + m_icons[eUIRankCaption]->GetWndRect().left + 5.0f);
-			m_icons[eUIRank]->SetWndRect(offset, m_icons[eUIRank]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIRank]->GetWndRect().bottom);
-		}
-	}
-*/
 	if(m_icons[eUIRank]){
 	#ifdef _DEBUG
 		sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
@@ -175,18 +156,6 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	}
 
 
-/*
-	if (m_bInfoAutoAdjust)
-	{
-		if (m_icons[eUIReputationCaption] &&
-			m_icons[eUIReputationCaption]->IsEnabled() && 
-			m_icons[eUIReputationCaption]->GetFont())
-		{
-			offset = (m_icons[eUIReputationCaption]->GetFont()->SizeOf(m_icons[eUIReputationCaption]->GetText()) + m_icons[eUIReputationCaption]->GetWndRect().left + 5.0f);
-			m_icons[eUIReputation]->SetWndRect(offset, m_icons[eUIReputation]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUIReputation]->GetWndRect().bottom);
-		}
-	}
-*/
 	if(m_icons[eUIReputation]){
 	#ifdef _DEBUG
 		sprintf(str, "%s,%d", *stbl.translate(GetReputationAsText(pCharInfo->Reputation().value())), pCharInfo->Reputation().value());
@@ -196,17 +165,6 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 		m_icons[eUIReputation]->SetText(str);
 	}
 
-/*	if (m_bInfoAutoAdjust)
-	{
-		if (m_icons[eUICommunityCaption] && 
-			m_icons[eUICommunityCaption]->IsEnabled() && 
-			m_icons[eUICommunityCaption]->GetFont())
-		{
-			offset = (m_icons[eUICommunityCaption]->GetFont()->SizeOf(m_icons[eUICommunityCaption]->GetText()) + m_icons[eUICommunityCaption]->GetWndRect().left + 5.0f);
-			m_icons[eUICommunity]->SetWndRect(offset, m_icons[eUICommunity]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUICommunity]->GetWndRect().bottom - m_icons[eUICommunity]->GetWndRect().top);
-		}
-	}
-*/
 	if(m_icons[eUICommunity]){
 		sprintf(str, "%s", *CStringTable().translate(pCharInfo->Community().id()));
 		m_icons[eUICommunity]->SetText(str);
@@ -234,8 +192,6 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 {
 	m_ownerID = (smart_cast<CObject*>(pOwner))->ID();
@@ -244,29 +200,13 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 	UpdateRelation();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill)
 {
 	shared_str relation_str;
 
 	CStringTable stbl;
 
-	switch(relation) {
-	case ALife::eRelationTypeFriend:
-		m_icons[eUIRelation]->SetTextColor(0xff00ff00);
-		break;
-	case ALife::eRelationTypeNeutral:
-		m_icons[eUIRelation]->SetTextColor(0xffc0c0c0);
-		break;
-	case ALife::eRelationTypeEnemy:
-		m_icons[eUIRelation]->SetTextColor(0xffff0000);
-		break;
-	default:
-		NODEFAULT;
-	}
-
+	m_icons[eUIRelation]->SetTextColor(GetRelationColor(relation));
 	string256		str;
 #ifdef _DEBUG
 	sprintf(str, "%s,%d", *stbl.translate(GetGoodwillAsText(goodwill)), goodwill);
@@ -275,13 +215,6 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 #endif
 
 	m_icons[eUIRelation]->SetText(str);
-/*
-	if (m_bInfoAutoAdjust)
-	{
-		float offset = (m_icons[eUIRelationCaption]->GetFont()->SizeOf(m_icons[eUIRelationCaption]->GetText()) + m_icons[eUIRelationCaption]->GetWndRect().left + 5.0f);
-		m_icons[eUIRelation]->SetWndRect(offset, m_icons[eUIRelation]->GetWndRect().top, GetWndRect().right - offset - 10.0f, m_icons[eUICommunity]->GetWndRect().bottom - m_icons[eUIRelation]->GetWndRect().top);
-	}
-*/
 }
 
 

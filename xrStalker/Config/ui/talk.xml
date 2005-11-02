@@ -10,7 +10,7 @@
 	</right_character_icon>
 	
 	<!-- BUTTONS -->
-	<button x="437" y="726" width="138" height="47" hR="0" hB="0" hG="0">
+	<button x="437" y="726" width="138" height="47" hR="255" hB="83" hG="179" highlight_text="1">
 		<texture>ui\ui_button_01</texture>
 		<text align="c"	font="header" r="238" g="153" b="26">Trade</text>
 	</button>

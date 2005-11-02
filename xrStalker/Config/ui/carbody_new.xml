@@ -48,7 +48,7 @@
 	</auto_static>
 
 	<!-- TAKE ALL -->
-	<take_all_btn x="865" y="725" width="110" height="40" hR="0" hB="0" hG="0">
+	<take_all_btn x="865" y="725" width="110" height="40" hR="255" hB="83" hG="179" highlight_text="1">
         <texture>ui\ui_button_06</texture>
         <text align="c" font="graffiti22" r="238" g="153" b="26">Take All</text>
 	</take_all_btn>

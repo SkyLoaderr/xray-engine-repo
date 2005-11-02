@@ -62,14 +62,8 @@
         <text>Food</text>
     </button>
 
-	<!-- Sleep button OLD!!! OLD!!! OLD!!! REMOVE ME!!! -->
-    <sleep_button x="800" y="715" width="150" height="40">
-        <texture>ui\ui_button_01</texture>
-        <text align="c">ui_inv_rest</text>
-    </sleep_button>
-
 	<!-- Drop button -->
-    <drop_button x="230" y="413" width="110" height="60" hR="0" hB="0" hG="0">
+    <drop_button x="230" y="413" width="110" height="60" hR="255" hB="83" hG="179" highlight_text="1">
         <texture>ui\ui_cm_drop_over</texture>
         <text x="0" y="0" font="graffiti22" r="238" g="153" b="26">ui_inv_drop</text>
     </drop_button>
@@ -140,13 +134,8 @@
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
 	</time_static>
 
-	<!-- !!!! OLD OLD OLui_inv_weightui_inv_weightui_inv_weightui_inv_weightui_inv_weightD !!!!!-->
-    <weight_static x="20" y="259" width="315" height="30">
-        <text x="20" y="8" font="graffiti22" r="238" g="153" b="26" a="255">ui_inv_weight</text>
-	</weight_static>
-
 	<!-- Exit button -->
-    <exit_button x="885" y="725" width="110" height="40" hR="0" hB="0" hG="0">
+    <exit_button x="885" y="725" width="110" height="40" hR="255" hB="83" hG="179" highlight_text="1">
         <texture>ui\ui_button_06</texture>
         <text align="c" font="graffiti22" r="238" g="153" b="26">ui_inv_exit</text>
     </exit_button>

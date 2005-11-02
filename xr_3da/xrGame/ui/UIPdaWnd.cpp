@@ -39,8 +39,17 @@ u32			g_pda_info_state				= 0;
 
 CUIPdaWnd::CUIPdaWnd()
 {
-	Init();
-	SetFont(HUD().Font().pFontMedium);
+	UIMapWnd				= NULL;
+	UIPdaContactsWnd		= NULL;
+	UIEncyclopediaWnd		= NULL;
+	UIDiaryWnd				= NULL;
+	UIActorInfo				= NULL;
+	UIStalkersRanking		= NULL;
+	UIEventsWnd				= NULL;
+	m_updatedSectionImage	= NULL;
+
+	Init					();
+	SetFont					(HUD().Font().pFontMedium);
 }
 
 CUIPdaWnd::~CUIPdaWnd()
@@ -88,33 +97,36 @@ void CUIPdaWnd::Init()
 	UIMainPdaFrame->AttachChild(UITimerBackground);
 	xml_init.InitFrameLine	(uiXml, "timer_frame_line", 0, UITimerBackground);
 
-	// Oкно коммуникaции
-	UIPdaContactsWnd		= xr_new<CUIPdaContactsWnd>();
-	UIPdaContactsWnd->Init	();
-
 	// Oкно карты
 	UIMapWnd				= xr_new<CUIMapWnd>();
 	UIMapWnd->Init			("pda_map.xml","map_wnd");
 
-	// Oкно новостей
-	UIDiaryWnd				= xr_new<CUIDiaryWnd>();
-	UIDiaryWnd->Init		();
+	if( IsGameTypeSingle() )
+	{
+		// Oкно коммуникaции
+		UIPdaContactsWnd		= xr_new<CUIPdaContactsWnd>();
+		UIPdaContactsWnd->Init	();
 
-	// Окно энциклопедии
-	UIEncyclopediaWnd		= xr_new<CUIEncyclopediaWnd>();
-	UIEncyclopediaWnd->Init	();
 
-	// Окно статистики о актере
-	UIActorInfo				= xr_new<CUIActorInfoWnd>();
-	UIActorInfo->Init		();
+		// Oкно новостей
+		UIDiaryWnd				= xr_new<CUIDiaryWnd>();
+		UIDiaryWnd->Init		();
 
-	// Окно рейтинга сталкеров
-	UIStalkersRanking		= xr_new<CUIStalkersRankingWnd>();
-	UIStalkersRanking->Init	();
+		// Окно энциклопедии
+		UIEncyclopediaWnd		= xr_new<CUIEncyclopediaWnd>();
+		UIEncyclopediaWnd->Init	();
 
-	UIEventsWnd				= xr_new<CUIEventsWnd>();
-	UIEventsWnd->Init		();
+		// Окно статистики о актере
+		UIActorInfo				= xr_new<CUIActorInfoWnd>();
+		UIActorInfo->Init		();
 
+		// Окно рейтинга сталкеров
+		UIStalkersRanking		= xr_new<CUIStalkersRankingWnd>();
+		UIStalkersRanking->Init	();
+
+		UIEventsWnd				= xr_new<CUIEventsWnd>();
+		UIEventsWnd->Init		();
+	}
 	// Tab control
 	UITabControl			= xr_new<CUITabControl>(); UITabControl->SetAutoDelete(true);
 	UIMainPdaFrame->AttachChild(UITabControl);
@@ -125,7 +137,6 @@ void CUIPdaWnd::Init()
 	UIOffButton						= xr_new<CUIButton>(); UIOffButton->SetAutoDelete(true);
 	UIMainPdaFrame->AttachChild		(UIOffButton);
 	xml_init.InitButton				(uiXml, "off_button", 0, UIOffButton);
-//	UIOffButton->TextureOff			();
 	UIOffButton->SetMessageTarget	(this);
 
 	if(GameID()!=GAME_SINGLE){
@@ -143,8 +154,6 @@ void CUIPdaWnd::Init()
 	m_pActiveSection				= eptNoActiveTab;
 
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
@@ -182,9 +191,6 @@ void CUIPdaWnd::Hide()
 
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-
 void CUIPdaWnd::UpdateDateTime()
 {
 	static shared_str prevStrTime = " ";
@@ -199,14 +205,11 @@ void CUIPdaWnd::UpdateDateTime()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIPdaWnd::Update()
 {
 	inherited::Update		();
 	UpdateDateTime			();
 }
-
 
 void CUIPdaWnd::SetActiveSubdialog(EPdaTabs section)
 {

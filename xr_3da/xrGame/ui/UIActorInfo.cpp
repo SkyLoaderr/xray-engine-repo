@@ -11,7 +11,12 @@
 #include "UIAnimatedStatic.h"
 #include "UIScrollView.h"
 #include "UICharacterInfo.h"
+#include "UI3tButton.h"
+#include "UIInventoryUtilities.h"
 #include "../actor_statistic_mgr.h"
+#include "../character_community.h"
+#include "../character_reputation.h"
+#include "../relation_registry.h"
 
 const char * const		ACTOR_STATISTIC_XML		= "actor_statistic.xml";
 const char * const		ACTOR_CHARACTER_XML		= "pda_dialog_character.xml";
@@ -19,6 +24,7 @@ const char * const		ACTOR_CHARACTER_XML		= "pda_dialog_character.xml";
 
 CUIActorInfoWnd::CUIActorInfoWnd()
 {}
+
 
 void CUIActorInfoWnd::Init()
 {
@@ -71,7 +77,6 @@ void CUIActorInfoWnd::Init()
 
 }
 
-
 void CUIActorInfoWnd::Show(bool status)
 {
 	inherited::Show(status);
@@ -79,11 +84,11 @@ void CUIActorInfoWnd::Show(bool status)
 	
 	UICharacterInfo->InitCharacter			(Actor());
 	UICharIconHeader->UITitleText.SetText	(Actor()->Name());
-	FillInfo								();
+	FillPointsInfo							();
 }
 
 
-void CUIActorInfoWnd::FillInfo			()
+void CUIActorInfoWnd::FillPointsInfo			()
 {
 	CUIXml									uiXml;
 	uiXml.Init								(CONFIG_PATH, UI_PATH,ACTOR_STATISTIC_XML);
@@ -98,8 +103,16 @@ void CUIActorInfoWnd::FillInfo			()
 		CUIActorStaticticHeader* itm		= xr_new<CUIActorStaticticHeader>(this);
 		itm->Init							(&uiXml, "master_part", i);
 		
-		sprintf								(buff,"%d", Actor()->StatisticMgr().GetSectionPoints(itm->m_index));
-		itm->SetText1						(buff);
+		if(_ParseItem("foo",actor_stats_token)!=(u32)itm->m_index){
+
+			if(_ParseItem("reputation",actor_stats_token)==(u32)itm->m_index){
+				itm->SetText1						(InventoryUtilities::GetReputationAsText(Actor()->Reputation()));
+				itm->m_num->SetTextColor			(InventoryUtilities::GetReputationColor(Actor()->Reputation()));
+			}else{
+				sprintf								(buff,"%d", Actor()->StatisticMgr().GetSectionPoints(itm->m_index));
+				itm->SetText1						(buff);
+			}
+		}
 		UIMasterList->AddWindow				(itm, true);
 	}
 
@@ -107,7 +120,7 @@ void CUIActorInfoWnd::FillInfo			()
 
 }
 
-void CUIActorInfoWnd::FillDetail	(int idx)
+void CUIActorInfoWnd::FillPointsDetail	(int idx)
 {
 	UIDetailList->Clear						();
 	CUIXml									uiXml;
@@ -120,7 +133,11 @@ void CUIActorInfoWnd::FillDetail	(int idx)
 	XML_NODE* n								= uiXml.NavigateToNode(path,0);
 	if(!n)
 		sprintf								(path,"detail_part_def");
-
+	if(idx==5)//reputation
+	{
+		FillReputationDetails				(&uiXml, path);
+		return;
+	}
 	SStatSectionData&	section				= Actor()->StatisticMgr().GetSection(idx);
 	vStatDetailData::const_iterator it		= section.data.begin();
 	vStatDetailData::const_iterator it_e	= section.data.end();
@@ -128,19 +145,55 @@ void CUIActorInfoWnd::FillDetail	(int idx)
 	int _cntr = 0;
 	string64 buff;
 	for(;it!=it_e;++it,++_cntr){
-		CUIActorStaticticDetail* itm			= xr_new<CUIActorStaticticDetail>();
-		itm->Init								(&uiXml, path, 0);
+		CUIActorStaticticDetail* itm		= xr_new<CUIActorStaticticDetail>();
+		itm->Init							(&uiXml, path, 0);
 
-		sprintf									(buff,"%d. %s",_cntr, *((*it).key));
-		itm->SetText1							(buff);
+		sprintf								(buff,"%d. %s",_cntr, *((*it).key));
+		itm->SetText1						(buff);
 
-		sprintf									(buff,"x%d", (*it).count);
-		itm->SetText2							(buff);
+		sprintf								(buff,"x%d", (*it).count);
+		itm->SetText2						(buff);
 
-		sprintf									(buff,"%d", (*it).points);
-		itm->SetText3							(buff);
+		sprintf								(buff,"%d", (*it).points);
+		itm->SetText3						(buff);
 
-		UIDetailList->AddWindow					(itm, true);
+		UIDetailList->AddWindow				(itm, true);
+	}
+}
+
+void	CUIActorInfoWnd::FillReputationDetails		(CUIXml* xml, LPCSTR path)
+{
+	XML_NODE* _list_node					= xml->NavigateToNode	("relation_communities_list",0);
+	int cnt = xml->GetNodesNum				("relation_communities_list",0,"r");
+
+	CHARACTER_COMMUNITY						comm;
+
+
+	CHARACTER_REPUTATION					rep_actor, rep_neutral;
+	rep_actor.set							(Actor()->Reputation());
+	rep_neutral.set							(NEUTAL_REPUTATION);
+
+	CHARACTER_GOODWILL d_neutral			= CHARACTER_REPUTATION::relation(rep_actor.index(), rep_neutral.index());
+
+
+	string64 buff;
+	for(int i=0;i<cnt;++i){
+		CUIActorStaticticDetail* itm		= xr_new<CUIActorStaticticDetail>();
+		itm->Init							(xml, path, 0);
+		comm.set							(xml->Read(_list_node,"r",i,"unknown_community"));
+		itm->SetText1						(*(comm.id()));
+		
+		CHARACTER_GOODWILL	gw				= RELATION_REGISTRY().GetCommunityGoodwill(comm.index(), Actor()->ID());
+		gw									+= CHARACTER_COMMUNITY::relation(Actor()->Community(),comm.index());
+		gw									+= d_neutral;
+
+		itm->SetText2						(InventoryUtilities::GetGoodwillAsText(gw));
+		itm->m_num1->SetTextColor			(InventoryUtilities::GetGoodwillColor(gw));
+
+		sprintf								(buff,"%d", gw);
+		itm->SetText3						(buff);
+
+		UIDetailList->AddWindow				(itm, true);
 	}
 }
 
@@ -149,10 +202,6 @@ CUIActorStaticticHeader::CUIActorStaticticHeader	(CUIActorInfoWnd* w)
 :m_actorInfoWnd(w)
 {}
 
-void CUIActorStaticticHeader::SendMessage				(CUIWindow* pWnd, s16 msg, void* pData)
-{
-	CUIWndCallback::OnEvent(pWnd, msg, pData);
-}
 
 void CUIActorStaticticHeader::Init	(CUIXml* xml, LPCSTR path, int idx)
 {
@@ -182,7 +231,7 @@ void CUIActorStaticticHeader::Init	(CUIXml* xml, LPCSTR path, int idx)
 
 void CUIActorStaticticHeader::OnMouseDown	(bool left_button)
 {
-	if(left_button && m_index!=100)
+	if(left_button && m_index!=100 && m_index>0)
 		m_actorInfoWnd->MasterList().SetSelected	(this);
 }
 
@@ -191,7 +240,7 @@ void CUIActorStaticticHeader::SetSelected(bool b)
 	CUISelectable::SetSelected(b);
 	m_text->SetTextColor( subst_alpha(m_text->GetTextColor(), b?255:m_stored_alpha ));
 	if(b) 
-		m_actorInfoWnd->FillDetail					(m_index);
+		m_actorInfoWnd->FillPointsDetail			(m_index);
 }
 
 void CUIActorStaticticHeader::SetText1				(LPCSTR str)

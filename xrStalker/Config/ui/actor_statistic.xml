@@ -1,25 +1,24 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<main_wnd x="76" y="62" width="761" height="475"/>
-	
+
+
 	<list x="20" y="87" width="420" height="370" item_height = "18">
 		<font font="letterica18" r="255" g="255" b="255"></font>
 	</list>
-	<!-- CURRENT ARTICLE HEADER -->
 	<article_header_static x="22" y="48" width="430" height="22">
 		<text font="letterica25" r="225" g="225" b="250">Player statistics</text>
 	</article_header_static>
-    
-	<!-- MASK FOR CHARACTER ICON -->	
 	<mask_frame_window x="0" y="0" width="1" height="1">
 		<texture>ui_pda_frame2</texture>		
 	</mask_frame_window>
 	
 		
+	<main_wnd x="76" y="62" width="761" height="475"/>
+
 	<!-- CHARACTER INFO WINDOW -->
 	<character_info x="26" y="58" width="236" height="120"/>
 
-	<master_list x="15" y="250" width="280" height="212" always_show_scroll="0" can_select="1"/>
+	<master_list x="15" y="200" width="280" height="262" always_show_scroll="0" can_select="1"/>
 
 	<detail_list x="20" y="80" width="423" height="380" always_show_scroll="0"/>
 
@@ -93,11 +92,13 @@
 			<num_static x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
 			</num_static>
-			<auto>
-				<auto_static x="0" y="52" width="250" height="3" stretch="1">
-					<texture>ui\ui_pda_horizontal_line</texture>
-				</auto_static>
-			</auto>
+		</master_part>
+
+		<master_part x="0" y="0" width="250" height="55" id="foo">
+			<caption_static x="0" y="20" width="200" height="20">
+				<text align="l" x="0" y="0" font="letterica25" r="230" g="230" b="200" a="230">Score</text>
+			</caption_static>
+			<num_static x="0" y="0" width="0" height="0"/>
 		</master_part>
 
 		<master_part x="0" y="0" width="250" height="25" id="stalkerkills">
@@ -196,6 +197,7 @@
 				<auto_static x="0" y="20" width="390" height="3" stretch="1">
 					<texture>ui\ui_pda_horizontal_line</texture>
 				</auto_static>
+
 			</auto>
 		</detail_part_5>
 
