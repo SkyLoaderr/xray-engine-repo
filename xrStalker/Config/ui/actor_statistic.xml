@@ -184,6 +184,17 @@
 			</auto>
 		</detail_part_5>
 
+		<relation_communities_list>
+			<r>stalker</r>
+			<r>monolith</r>
+			<r>military</r>
+			<r>killer</r>
+			<r>ecolog</r>
+			<r>dolg</r>
+			<r>freedom</r>
+			<r>bandit</r>
+			<r>zombied</r>
+		</relation_communities_list>
 	</actor_details_wnd>
 	
 </window>
