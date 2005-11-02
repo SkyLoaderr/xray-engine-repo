@@ -75,8 +75,9 @@ void CStateBurerAttackGraviAbstract::finalize()
 {
 	inherited::finalize();
 
-	object->DeactivateShield	();
-	object->set_script_capture	(true);
+	object->com_man().ta_pointbreak	();
+	object->DeactivateShield		();
+	object->set_script_capture		(true);
 }
 
 TEMPLATE_SPECIALIZATION

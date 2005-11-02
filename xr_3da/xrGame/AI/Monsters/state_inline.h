@@ -24,6 +24,8 @@ CStateAbstract::~CState()
 TEMPLATE_SPECIALIZATION
 void CStateAbstract::reinit()
 {
+	if (current_substate != u32(-1)) get_state_current()->critical_finalize();
+
 	for (STATE_MAP_IT it = substates.begin(); it != substates.end(); it++) 
 		it->second->reinit();
 
