@@ -37,6 +37,7 @@
 		<task>sar_warlab</task>
 		<article>zones_mystery</article>
 	</info_portion>
+	<info_portion id="sar_warlab_go"></info_portion>
 	
 	<!-- поиск Монолита -->
 	<info_portion id="sar_monolith_call">
