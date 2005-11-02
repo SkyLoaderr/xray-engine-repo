@@ -1,13 +1,17 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 	<main_wnd x="76" y="62" width="761" height="475"/>
-	<!-- CHARACTER INFO WINDOW -->
-	<character_info x="26" y="58" width="236" height="120"></character_info>
-
-	<!-- MESSAGE LOG LIST -->
+	
 	<list x="20" y="87" width="420" height="370" item_height = "18">
 		<font font="letterica18" r="255" g="255" b="255"></font>
 	</list>
+		
+	<!-- CHARACTER INFO WINDOW -->
+	<character_info x="26" y="58" width="236" height="120"/>
+
+	<master_list x="15" y="250" width="280" height="212" always_show_scroll="0" can_select="1"/>
+
+	<detail_list x="20" y="80" width="423" height="380" always_show_scroll="0"/>
 
 	<!-- INFO BACKGROUND -->
 	<info_frame_window x="313" y="0" width="448" height="475" a="80">
@@ -17,7 +21,7 @@
 	<!-- HEADER FOR MSGLOG -->
 	<info_frame_line x="8" y="17" width="434" height="21">
 		<title x="10" y="1" width="435" height="18">
-			<text font="letterica16" r="255" g="255" b="255"></text>
+			<text font="letterica16">Detail_info</text>
 		</title>
 		<texture>ui_string_03</texture>		
 	</info_frame_line>
@@ -30,36 +34,16 @@
 	<!-- HEADER CHAR ICON -->
 	<chicon_frame_line x="8" y="16" width="284" height="27">
         <title x="15" y="1" width="545" height="440">
-            <text font="letterica25" r="225" g="225" b="250">dummy</text>
+            <text font="letterica25" r="225" g="225" b="250"/>
         </title>
 		<texture>ui_string_02</texture>		
 	</chicon_frame_line>
 	
-	<!--  ANIMATED STATIC -->
-	<a_static x="250" y="-3" width="32" height="32"
-			frames			= "16"
-			duration		= "1000"
-			columns			= "8"
-			frame_width		= "32"
-			frame_height	= "32"
-			cyclic			= "1"
-			autoplay		= "1"
-	>
+	<a_static x="250" y="-3" width="32" height="32"	frames="16" duration="1000" columns="8" frame_width="32" frame_height="32" cyclic="1" autoplay="1">
 		<texture>ui\ui_pda_anims_03</texture>
 	</a_static>
 
-	<!-- CURRENT ARTICLE HEADER -->
-	<article_header_static x="22" y="48" width="430" height="22">
-		<text font="letterica25" r="225" g="225" b="250">Player statistics</text>
-	</article_header_static>
-    
-	<!-- MASK FOR CHARACTER ICON -->	
-	<mask_frame_window x="0" y="0" width="1" height="1">
-		<texture>ui_pda_frame2</texture>		
-	</mask_frame_window>
-	
-  	<!-- AUTOSTATICS FOR RIGHT FRAME WINDOW -->
-
+   
 	<!-- LEFT LADDER -->
 	<right_auto_static x="8" y="52" width="4" height="420">
 		<texture>ui\ui_pda_vertical_line_r_l</texture>
@@ -78,7 +62,6 @@
 	</right_auto_static>
 
   	<!-- AUTOSTATICS FOR LEFT FRAME WINDOW -->
-	
 	<!-- LEFT LADDER -->
 	<left_auto_static x="8" y="41" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_l_l</texture>
@@ -91,7 +74,133 @@
 	<left_auto_static x="14" y="78" width="405" height="2" stretch="1">
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</left_auto_static>
+	
+	<actor_details_wnd>
+		<master_part x="0" y="0" width="250" height="55" id="reputation">
+			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" x="0" y="0" font="letterica25" r="170" g="170" b="170" a="160">Reputation</text>
+			</caption_static>
+			<num_static x="210" y="0" width="25" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static>
+			<auto>
+				<auto_static x="0" y="52" width="250" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</master_part>
 
+		<master_part x="0" y="0" width="250" height="25" id="stalkerkills">
+			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">1. Stalker Kills</text>
+			</caption_static>
+			<num_static x="210" y="0" width="25" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static>
+			<auto>
+				<auto_static x="0" y="20" width="250" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</master_part>
 
+		<master_part x="0" y="0" width="250" height="25" id="monsterkills">
+			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">2. Monster Kills</text>
+			</caption_static>
+			<num_static x="210" y="0" width="25" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static>
+			<auto>
+				<auto_static x="0" y="20" width="250" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</master_part>
+		
+		<master_part x="0" y="0" width="250" height="25" id="quests">
+			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">3. Quests Completed</text>
+			</caption_static>
+			<num_static x="210" y="0" width="25" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static>
+			<auto>
+				<auto_static x="0" y="20" width="250" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</master_part>
+
+		<master_part x="0" y="0" width="250" height="25" id="trade">
+			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">4. Trade</text>
+			</caption_static>
+			<num_static x="210" y="0" width="25" height="20">
+				<text align="r" x="0" y="0" font="letterica18"/>
+			</num_static>
+			<auto>
+				<auto_static x="0" y="20" width="250" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</master_part>
+
+		<master_part x="0" y="0" width="250" height="45" id="total">
+			<caption_static x="0" y="20" width="200" height="20">
+				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="230">Total</text>
+			</caption_static>
+			<num_static x="210" y="20" width="25" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static>
+		</master_part>
+
+		<detail_part_def x="0" y="0" width="390" height="25">
+			<caption_static x="0" y="0" width="200" height="20">
+				<text align="l" x="0" y="0" font="letterica18" a="200"/>
+			</caption_static>
+			<num_static1 x="180" y="0" width="100" height="20">
+				<text align="r" x="0" y="0" font="letterica16" a="200"/>
+			</num_static1>
+			<num_static2 x="280" y="0" width="100" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static2>
+			<auto>
+				<auto_static x="0" y="20" width="390" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</detail_part_def>
+
+		<detail_part_5 x="0" y="0" width="390" height="25">
+			<caption_static x="0" y="0" width="200" height="20">
+				<text align="l" x="0" y="0" font="letterica18" a="200"/>
+			</caption_static>
+			<num_static1 x="180" y="0" width="100" height="20">
+				<text align="r" x="0" y="0" font="letterica16" a="200"/>
+			</num_static1>
+			<num_static2 x="280" y="0" width="100" height="20">
+				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+			</num_static2>
+			<auto>
+				<auto_static x="0" y="20" width="390" height="3" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
+		</detail_part_5>
+
+		<relation_communities_list>
+			<r>stalker</r>
+			<r>monolith</r>
+			<r>military</r>
+			<r>killer</r>
+			<r>ecolog</r>
+			<r>dolg</r>
+			<r>freedom</r>
+			<r>bandit</r>
+			<r>zombied</r>
+		</relation_communities_list>
+	</actor_details_wnd>
+	
 </window>
 
