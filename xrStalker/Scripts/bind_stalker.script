@@ -17,6 +17,7 @@ function actor_binder:net_spawn(data)
 	printf("actor net spawn")		
 
 	self.bCheckStart = true
+	self.weapon_hide = false -- спрятано или нет оружие при разговоре.
 
 	if object_binder.net_spawn(self,data) == false then
 		return false
@@ -169,6 +170,18 @@ function actor_binder:update(delta)
 		self.st.sleep_relocate_time = nil
 	end
 
+	-- Апдейт прятание оружия игрока во время диалога
+	if self.object:is_talking() then
+		if self.weapon_hide == false then
+			self.object:hide_weapon()
+			self.weapon_hide = true
+		end
+	else
+		if self.weapon_hide == true then
+			self.object:restore_weapon()
+			self.weapon_hide = false
+		end
+	end	
 
 	-- обновление рестрикторов, которые под логикой, срабатывает через интервалы времени
 	if self.next_restrictors_update_time < time then
