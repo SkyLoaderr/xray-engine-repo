@@ -282,6 +282,17 @@ function signal(actor, npc, p)
 	end
 end
 
+-- возвращает true, если значение указанного счётчика актёра больше указанного числа
+function counter_greater(actor, npc, p)
+	if p[1] and p[2] then
+		local c = pstor_retrieve(actor, p[1], 0)
+		return c > p[2]
+	else
+		return false
+	end
+end
+
+-------------------------------------------------------------------------------------------------------
 -- Функции поддержки kamp
 function _kamp_talk(actor, npc)
 	if xr_kamp.kamp_stalkers[npc:id()] then
