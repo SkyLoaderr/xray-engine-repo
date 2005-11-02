@@ -230,7 +230,7 @@ void	CROS_impl::update	(IRenderable* O)
 		for (u32 lit=0; lit<lights.size(); lit++)	{
 			float	d	=	lights[lit].source->position.distance_to(position);
 			float	r	=	lights[lit].source->range;
-			float	a	=	clampr(1.f - d/(r+EPS),0.f,1.f);
+			float	a	=	clampr(1.f - d/(r+EPS),0.f,1.f)*(lights[lit].source->flags.bStatic?1.f:2.f);
 			lacc.x		+=	lights[lit].color.r*a;
 			lacc.y		+=	lights[lit].color.g*a;
 			lacc.z		+=	lights[lit].color.b*a;
