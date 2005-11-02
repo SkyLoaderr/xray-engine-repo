@@ -1486,3 +1486,12 @@ end
 function monolith_generator_hit (actor, npc)
     printf ("ON GENERATOR HIT !!!")
 end
+
+-------------------------------------------------------------------------------------
+-- Функции для кишок
+----------------------------------------------------------------------------------
+function kishka_heli_mapspot(actor, npc, p)
+	if p[1] and not level_tasks.is_map_spot_present( p[1], "anomaly_zone_location" ) then
+		level_tasks.add_location( p[1], "anomaly_zone_location", "vertolyot!" )
+	end
+end
