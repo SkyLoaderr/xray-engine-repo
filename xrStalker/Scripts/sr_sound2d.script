@@ -107,6 +107,10 @@ function set_scheme (obj, ini, scheme, section, gulag_name)
 	st.delay = utils.cfg_get_number (ini, section, "delay", obj, false, 0)
 	st.delay_max = utils.cfg_get_number (ini, section, "delay_max", obj, false, 0)
 	
+	if st.delay_max < st.delay then
+	    st.delay_max = st.delay
+	end
+	
 	if st.snd_name ~= nil then
        if st.snd_name == "" then
 	      abort ("SR_SOUND2D : invalid sound name")
