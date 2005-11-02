@@ -10,7 +10,7 @@
 #include "script_callback_ex.h"
 #include "ai/stalker/ai_stalker.h"
 #include "CustomZone.h"
-
+#include "MathUtils.h"
 bool CHelicopter::isObjectVisible			(CObject* O)
 {
 	Fvector dir_to_object;

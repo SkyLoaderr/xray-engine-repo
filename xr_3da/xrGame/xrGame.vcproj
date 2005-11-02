@@ -9917,10 +9917,52 @@
 				Name="IK"
 				Filter="">
 				<File
+					RelativePath=".\Ik\aint.cxx">
+				</File>
+				<File
+					RelativePath=".\Ik\aint.h">
+				</File>
+				<File
 					RelativePath=".\Ik\Dof7control.cpp">
 				</File>
 				<File
 					RelativePath=".\Ik\Dof7control.h">
+				</File>
+				<File
+					RelativePath=".\Ik\eqn.cxx">
+				</File>
+				<File
+					RelativePath=".\Ik\eqn.h">
+				</File>
+				<File
+					RelativePath=".\Ik\eulersolver.cxx">
+				</File>
+				<File
+					RelativePath=".\Ik\eulersolver.h">
+				</File>
+				<File
+					RelativePath=".\Ik\IKLimb.cpp">
+				</File>
+				<File
+					RelativePath=".\Ik\IKLimb.h">
+				</File>
+				<File
+					RelativePath=".\IKLimbsController.cpp">
+				</File>
+				<File
+					RelativePath=".\IKLimbsController.h">
+				</File>
+				<File
+					RelativePath=".\Ik\jtlimits.cxx">
+				</File>
+				<File
+					RelativePath=".\Ik\jtlimits.h">
+				</File>
+				<File
+					RelativePath=".\Ik\limb.cxx">
+				</File>
+				<File
+					RelativePath=".\Ik\limb.h">
 				</File>
 				<File
 					RelativePath=".\Ik\math3d.cpp">

@@ -8,6 +8,7 @@
 #include "../Motion.h"
 #include "../skeletonanimated.h"
 #include "level.h"
+#include "MathUtils.h"
 weapon_hud_container* g_pWeaponHUDContainer=0;
 
 BOOL weapon_hud_value::load(const shared_str& section, CHudItem* owner)

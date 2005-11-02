@@ -384,4 +384,25 @@ private:
 			R_ASSERT(false);
 		}
 };
+
+IC float DET(const Fmatrix &a){
+	return
+		(( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -
+		a._12 * ( a._21 * a._33 - a._23 * a._31 ) +
+		a._13 * ( a._21 * a._32 - a._22 * a._31 ) ));
+}
+
+#ifdef DEBUG
+const float				DET_CHECK_EPS =0.1f					;
+#define	VERIFY_RMATRIX(M)	{\
+	float d=DET(M);\
+	if( !fsimilar(d,1.f,DET_CHECK_EPS) ){\
+		\
+		Log("matrix--- ",M);	\
+		Log("determinant- ",d);	\
+		VERIFY2(0,"Is not valid rotational matrix");\
+	}};
+#else
+#define	VERIFY_RMATRIX(M)	
+#endif
 #endif

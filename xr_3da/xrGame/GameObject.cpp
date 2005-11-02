@@ -28,7 +28,7 @@
 #include "level.h"
 #include "net_utils.h"
 #include "script_callback_ex.h"
-
+#include "MathUtils.h"
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
