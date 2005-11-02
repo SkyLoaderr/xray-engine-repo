@@ -75,6 +75,11 @@ void CSpecificCharacter::Load(SPECIFIC_CHARACTER_ID id)
 
 void CSpecificCharacter::load_shared	(LPCSTR)
 {
+#ifdef DEBUG
+	CTimer			timer;
+	timer.Start		();
+#endif
+
 	CUIXml uiXml;
 	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_OwnId);
 
@@ -198,6 +203,10 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
 	R_ASSERT3(data()->m_Reputation != NO_REPUTATION, "'reputation' field not fulfiled for specific character", *m_OwnId);
 
+#endif
+
+#ifdef DEBUG
+	Msg			("CSpecificCharacter::load_shared() takes %f milliseconds",timer.GetElapsed_sec()*1000.f);
 #endif
 }
 
