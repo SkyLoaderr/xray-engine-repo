@@ -49,8 +49,8 @@ public:
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-#undef script_type_list
 add_to_type_list(CALifeHumanMovementManager)
+#undef script_type_list
 #define script_type_list save_type_list(CALifeHumanMovementManager)
 
 #include "alife_human_movement_manager_inline.h"

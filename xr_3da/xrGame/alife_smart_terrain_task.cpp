@@ -13,27 +13,7 @@
 #include "patrol_path.h"
 #include "patrol_point.h"
 
-IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask				(LPCSTR patrol_path_name, const u32 &patrol_point_index)
-{
-#ifdef DEBUG
-	m_patrol_path_name		= patrol_path_name;
-	m_patrol_point_index	= patrol_point_index;
-#endif
-	m_patrol_point			= 0;
-	setup_patrol_point		(patrol_path_name,patrol_point_index);
-}
-
-IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask				(const shared_str &patrol_path_name, const u32 &patrol_point_index)
-{
-#ifdef DEBUG
-	m_patrol_path_name		= patrol_path_name;
-	m_patrol_point_index	= patrol_point_index;
-#endif
-	m_patrol_point			= 0;
-	setup_patrol_point		(patrol_path_name,patrol_point_index);
-}
-
-IC	void CALifeSmartTerrainTask::setup_patrol_point				(const shared_str &patrol_path_name, const u32 &patrol_point_index)
+void CALifeSmartTerrainTask::setup_patrol_point				(const shared_str &patrol_path_name, const u32 &patrol_point_index)
 {
 	VERIFY					(!m_patrol_point);
 

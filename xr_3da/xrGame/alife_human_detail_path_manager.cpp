@@ -52,6 +52,11 @@ void CALifeHumanDetailPathManager::target					(const CALifeSmartTerrainTask &tas
 	target							(task.game_vertex_id(),task.level_vertex_id());
 }
 
+void CALifeHumanDetailPathManager::target					(const CALifeSmartTerrainTask *task)
+{
+	target							(*task);
+}
+
 bool CALifeHumanDetailPathManager::completed				() const
 {
 	if (m_destination.m_game_vertex_id != object().m_tGraphID)

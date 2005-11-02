@@ -57,6 +57,7 @@ public:
 			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id);
 			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id);
 			void		target						(const CALifeSmartTerrainTask &task);
+			void		target						(const CALifeSmartTerrainTask *task);
 
 public:
 			void		update						();
@@ -71,8 +72,8 @@ public:
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-#undef script_type_list
 add_to_type_list(CALifeHumanDetailPathManager)
+#undef script_type_list
 #define script_type_list save_type_list(CALifeHumanDetailPathManager)
 
 #include "alife_human_detail_path_manager_inline.h"

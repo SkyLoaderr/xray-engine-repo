@@ -9,6 +9,7 @@
 #pragma once
 
 #include "game_graph_space.h"
+#include "script_export_space.h"
 
 class CPatrolPoint;
 
@@ -27,15 +28,23 @@ private:
 #endif
 
 private:
-	IC		void					setup_patrol_point		(const shared_str &patrol_path_name, const u32 &patrol_point_index);
+			void					setup_patrol_point		(const shared_str &patrol_path_name, const u32 &patrol_point_index);
 	IC		const CPatrolPoint		&patrol_point			() const;
+			void					init					(const shared_str &patrol_path_name, const u32 &patrol_point_index);
 
 public:
-									CALifeSmartTerrainTask	(LPCSTR patrol_path_name, const u32 &patrol_point_index = 0);
+									CALifeSmartTerrainTask	(LPCSTR patrol_path_name);
+									CALifeSmartTerrainTask	(LPCSTR patrol_path_name, const u32 &patrol_point_index);
+									CALifeSmartTerrainTask	(const shared_str &patrol_path_name);
 									CALifeSmartTerrainTask	(const shared_str &patrol_path_name, const u32 &patrol_point_index = 0);
 			GameGraph::_GRAPH_ID	game_vertex_id			() const;
 			u32						level_vertex_id			() const;
 			Fvector					position				() const;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CALifeSmartTerrainTask)
+#undef script_type_list
+#define script_type_list save_type_list(CALifeSmartTerrainTask)
 
 #include "alife_smart_terrain_task_inline.h"
