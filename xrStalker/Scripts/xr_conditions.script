@@ -730,7 +730,7 @@ end
 -------------------------------------------------------------------------------------
 function rostok_gulag_inactive(actor, npc)
 	if xr_gulag.fraction["bar_freedom_attack"] == nil then
-		return nil
+		return true
 	end
 	
 	local val = 0
@@ -751,7 +751,7 @@ end
 
 function rostok_gulag_2_inactive(actor, npc)
 	if xr_gulag.fraction["bar_freedom_chasers_attack"] == nil then
-		return nil
+		return true
 	end
 	
 	local val = 0
