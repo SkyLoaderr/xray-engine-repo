@@ -24,7 +24,8 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
 		state				= _loop?stStartingLooped:stStarting;
     }else{
 		state				= _loop?stStartingLoopedDelayed:stStartingDelayed;
-    }
+		dwTimeToPropagade	= SoundRender->Timer.GetElapsed_ms();
+	}
 	bStopping				=	FALSE;
 }
 
@@ -32,7 +33,7 @@ void CSoundRender_Emitter::i_stop()
 {
 	if (target)	SoundRender->i_stop		(this);
 	if (owner_data){
-		Event_ReleaseOwner		();
+		Event_ReleaseOwner		(); 
 		VERIFY(this==owner_data->feedback);
 		owner_data->feedback	= NULL;
 		owner_data				= NULL;
