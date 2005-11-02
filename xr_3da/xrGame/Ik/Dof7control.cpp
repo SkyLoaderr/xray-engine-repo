@@ -86,11 +86,11 @@ static int solve_R_angle(const float g[3],
 			 const Matrix  T, 
 			 float &r_angle)
 {
-    double rhs = DOT(g,g) - DOT(s,s) - DOT(t,t);
+    float rhs = DOT(g,g) - DOT(s,s) - DOT(t,t);
 
     // alpha = Rot(T)*t' NOT alpha = t*Rot(T)
 
-    double alpha[3];
+    float alpha[3];
 
     for (int j = 0; j < 3; j++)
     {
@@ -99,9 +99,9 @@ static int solve_R_angle(const float g[3],
 	    alpha[j] += T[j][i] * t[i]; 
     }
 
-    double a = alpha[0]*s[0] + alpha[2]*s[2];
-    double b = alpha[0]*s[2] - alpha[2]*s[0];
-    double c = alpha[1]*s[1];
+    float a = alpha[0]*s[0] + alpha[2]*s[2];
+    float b = alpha[0]*s[2] - alpha[2]*s[0];
+    float c = alpha[1]*s[1];
 
     int n; 
     float temp[2];

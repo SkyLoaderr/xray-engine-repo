@@ -38,13 +38,13 @@
 // Normalize an angle to the range -Pi..Pi
 //
 
-static double angle_normalize(double x)
-{
-    while (x > M_PI)  x -= 2*M_PI;
-    while (x < -M_PI) x += 2*M_PI;
-
-    return x;
-}
+//static double angle_normalize_signed(double x)
+//{
+//    while (x > M_PI)  x -= 2*M_PI;
+//    while (x < -M_PI) x += 2*M_PI;
+//
+//    return x;
+//}
 
 #if 0  
 //
@@ -53,19 +53,19 @@ static double angle_normalize(double x)
 // a lower magnitude. Assumes that angles are in the 
 // range -Pi .. Pi
 //
-double angle_distance(double x, double y)
+float angle_distance(float x, float y)
 {
     unsigned int signx = x > 0.0;
     unsigned int signy = y > 0.0;
-    double dist; 
+    float dist; 
 
-    dist = fabs(x-y);
+    dist = _abs(x-y);
 
     // If angles are of opposite signs check whether clockwise
     // or anticlockwise distances are closer 
     if (signx != signy)
     {
-        double temp = (2*M_PI) - dist;
+        float temp = (2*M_PI) - dist;
         if (temp < dist)
             dist = temp;
     }
@@ -78,9 +78,9 @@ double angle_distance(double x, double y)
 // Either one or two solutions. Return the answer in radians
 //
 
-int solve_trig1(double a, double b, double c, float theta[2])
+int solve_trig1(float a, float b, float c, float theta[2])
 {
-    float temp  = (float) (a*a+b*b-c*c);
+    float temp  = (a*a+b*b-c*c);
 
     if (temp < 0.0)
     {
@@ -106,8 +106,8 @@ int solve_trig1(double a, double b, double c, float theta[2])
         theta[1] = theta[0] - temp;
         theta[0] += temp;
 
-	theta[0] = angle_normalize(theta[0]);
-	theta[1] = angle_normalize(theta[1]);
+	theta[0] = angle_normalize_signed(theta[0]);
+	theta[1] = angle_normalize_signed(theta[1]);
     }
     return num;
 }
@@ -122,21 +122,21 @@ int solve_trig1(double a, double b, double c, float theta[2])
 // There is at most one solution. The answer is returned in radians
 // 
 
-double solve_trig2(double a, double b, double c, double d)
+float solve_trig2(float a, float b, float c, float d)
 {
-    return atan2(a*d-b*c,a*c+b*d);
+    return (float)atan2(a*d-b*c,a*c+b*d);
 }
 
 
 // 
 // arccos routine that returns up to two solutions. 
 //
-int myacos(double x, float solns[2])
+int myacos(float x, float solns[2])
 {
     if (_abs(x) > 1)
 	return 0;
 
-    solns[0] = (float)angle_normalize(acos(x));
+    solns[0] = angle_normalize_signed(acos(x));
 
     if (iszero(solns[0]))
 	return 1;
@@ -149,12 +149,12 @@ int myacos(double x, float solns[2])
 // 
 // arcsin routine that returns up to two solutions. 
 //
-int myasin(double x, float solns[2])
+int myasin(float x, float solns[2])
 {
     if (_abs(x) > 1)
 	return 0;
 
-    solns[0] = (float)angle_normalize(asin(x));
+    solns[0] = (float)angle_normalize_signed(asin(x));
 
     if (iszero(solns[0]))
 	return 1;

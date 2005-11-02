@@ -50,29 +50,29 @@ inline float iszero(float x)
 //
 // Normalize an angle to to range -Pi..Pi
 //
-double angle_normalize(double x);
+//double angle_normalize(double x);
 
 
 //
 // Returns angle between angles x and y
 //
-double angle_distance(double x, double y);
+double angle_distance(float x, float y);
 
 #endif
 
 // Solve a*cos(theta) + b*sin(theta) = c
-int   solve_trig1(double a, double b, double c, float theta[2]);
+int   solve_trig1(float a, float b, float c, float theta[2]);
 
 // Solves
 //      a*cos(theta) - b*sin(theta) = c
 //      a*sin(theta) + b*cos(theta) = d
-double solve_trig2(double a, double b, double c, double d);
+float solve_trig2(float a, float b, float c, float d);
 
 //
 // Returns both solutions for arcos and arcsin
 //
-int myacos(double x, float solns[2]);
-int myasin(double x, float solns[2]);
+int myacos(float x, float solns[2]);
+int myasin(float x, float solns[2]);
 
 
 //
