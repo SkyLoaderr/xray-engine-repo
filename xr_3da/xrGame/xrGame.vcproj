@@ -9982,12 +9982,6 @@
 			Name="UI"
 			Filter="">
 			<File
-				RelativePath=".\HitMarker.cpp">
-			</File>
-			<File
-				RelativePath=".\HitMarker.h">
-			</File>
-			<File
 				RelativePath=".\MainUI.cpp">
 			</File>
 			<File
@@ -9998,12 +9992,6 @@
 			</File>
 			<File
 				RelativePath=".\UI.h">
-			</File>
-			<File
-				RelativePath=".\UICursor.cpp">
-			</File>
-			<File
-				RelativePath=".\UICursor.h">
 			</File>
 			<File
 				RelativePath=".\UIDialogHolder.cpp">
@@ -11006,16 +10994,10 @@
 					RelativePath=".\ContextMenu.h">
 				</File>
 				<File
-					RelativePath=".\HUDCrosshair.cpp">
+					RelativePath=".\HitMarker.cpp">
 				</File>
 				<File
-					RelativePath=".\HUDCrosshair.h">
-				</File>
-				<File
-					RelativePath=".\HUDCursor.cpp">
-				</File>
-				<File
-					RelativePath=".\HUDCursor.h">
+					RelativePath=".\HitMarker.h">
 				</File>
 				<File
 					RelativePath=".\HUDManager.cpp">
@@ -11365,6 +11347,28 @@
 						</File>
 					</Filter>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Cursor"
+				Filter="">
+				<File
+					RelativePath=".\HUDCrosshair.cpp">
+				</File>
+				<File
+					RelativePath=".\HUDCrosshair.h">
+				</File>
+				<File
+					RelativePath=".\HUDCursor.cpp">
+				</File>
+				<File
+					RelativePath=".\HUDCursor.h">
+				</File>
+				<File
+					RelativePath=".\UICursor.cpp">
+				</File>
+				<File
+					RelativePath=".\UICursor.h">
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
