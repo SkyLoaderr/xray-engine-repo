@@ -1435,6 +1435,9 @@
 						RelativePath=".\Config\ui\ui_common.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_mainMenu.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_map_description.xml">
 					</File>
 					<File
@@ -1461,6 +1464,9 @@
 					Filter="">
 					<File
 						RelativePath=".\Config\ui\ui_mm_load_dlg.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_mm_main.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_mm_mp.xml">
