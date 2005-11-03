@@ -46,6 +46,10 @@ news = {
 	gar_dolg_monster_rush			= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
 	gar_direction_fire				= sound_object([[characters_voice\human_01\scenario\garbage\junkyard_combat_ambush]]),
 	gar_hellcar_victory				= sound_object([[characters_voice\human_01\scenario\garbage\junkyard_combat_end]]),
+	gar_actor_looser				= sound_object([[characters_voice\human_01\scenario\garbage\duty_after_rush_bad]]),
+	gar_actor_normal				= sound_object([[characters_voice\human_01\scenario\garbage\duty_after_rush_normal]]),
+	gar_actor_winner				= sound_object([[characters_voice\human_01\scenario\garbage\duty_after_rush_good]]),
+
 
 	esc_direction_fire				= sound_object([[characters_voice\human_01\scenario\escape\lager_fanat_attack]]),
 	esc_fanat_victory				= sound_object([[characters_voice\human_01\scenario\escape\lager_fanat_victory]]),
