@@ -1,0 +1,7 @@
+function proceed()
+    local actor = db.actor
+end
+
+function process_info_portion(info_id)
+	return false
+end
