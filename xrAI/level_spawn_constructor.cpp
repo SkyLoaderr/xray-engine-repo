@@ -318,12 +318,10 @@ void CLevelSpawnConstructor::correct_objects					()
 			string4096	S1;
 			char		*S = S1;
 			S			+= sprintf(S,"Corresponding graph vertex for the spawn-point %s is located on the ANOTHER level\n",m_spawns[i]->name_replace());
-			S			+= sprintf(S,"Level ID    : %d\n",m_level.id());
-			S			+= sprintf(S,"Spawn index : %d\n",i);
-			S			+= sprintf(S,"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
-			S			+= sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
-			S			+= sprintf(S,"\nProbably, you filled offsets in \"game_levels.ltx\" incorrect\n");
-			R_ASSERT2	(dwBest != -1,S1);
+			S			+= sprintf(S,"Current level  : [%d][%s]\n",m_level.id(),*game_graph().header().level(m_level.id()).name());
+			S			+= sprintf(S,"Conflict level : %d\n",game_graph().vertex(dwBest)->level_id(),*game_graph().header().level(game_graph().vertex(dwBest)->level_id()).name());
+			S			+= sprintf(S,"Probably, you filled offsets in \"game_levels.ltx\" incorrect");
+			R_ASSERT2	(game_graph().vertex(dwBest)->level_id() == m_level.id(),S1);
 		}
 
 		float				fCurrentBestDistance = cross_table().vertex(m_spawns[i]->m_tNodeID).distance();
