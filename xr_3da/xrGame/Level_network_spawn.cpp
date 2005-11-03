@@ -5,6 +5,7 @@
 #include "net_queue.h"
 #include "ai_space.h"
 #include "game_level_cross_table.h"
+#include "level_navigation_graph.h"
 #include "client_spawn_manager.h"
 #include "../xr_object.h"
 
