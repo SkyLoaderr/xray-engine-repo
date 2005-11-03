@@ -204,6 +204,17 @@
 		<specific_character>cit_doctor</specific_character>
 	</character>
 
+	<!-- Killers -->	
+	<character id="cit_killer_general">
+		<class>cit_killer_general</class>
+	</character>
+	<character id="cit_killer_nauchniy">
+		<class>cit_killer_nauchniy</class>
+	</character>
+	<character id="cit_killer_exo">
+		<class>cit_killer_exo</class>
+	</character>
+
 	<!-- Bandits -->	
 	<character id="cit_bandit_drunk">
 		<class>cit_bandit_drunk</class>
