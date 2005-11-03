@@ -98,7 +98,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(abstract);
 	if (dynamic_object && ai().get_level_graph()) {
 		dynamic_object->m_tNodeID	= level_vertex_id;
-		if (ai().get_cross_table())
+		if (ai().level_graph().valid_vertex_id(level_vertex_id) && ai().get_cross_table())
 			dynamic_object->m_tGraphID	= ai().cross_table().vertex(level_vertex_id).game_vertex_id();
 	}
 
