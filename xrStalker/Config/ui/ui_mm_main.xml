@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window>
+
+	<shniaga_wnd x="596" y="397" width="392" height="313">
+		<shniaga x="0" y="0" width="392" height="73">
+			<left_anim x="16" y="10" width="55" height="55">
+			</left_anim>
+			
+			<right_anim x="313" y="11">
+			</right_anim>
+		</shniaga>
+		
+	</shniaga_wnd>
+	
+
+
+</window>
