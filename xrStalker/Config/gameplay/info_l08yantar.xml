@@ -11,7 +11,10 @@
 	<info_portion id="yan_scientist_return_to_bunker"></info_portion>
 	<info_portion id="yan_scientist_gulag_state_2"></info_portion>
 	<info_portion id="yan_scientist_gulag_state_3"></info_portion>
-	<info_portion id="yan_scientist_die"></info_portion>
+	<info_portion id="yan_scientist_die">
+		<disable>yan_scientist_door_2_open</disable>
+		<disable>yan_scientist_door_1_open</disable>
+	</info_portion>
 	<info_portion id="yan_scientist_door_2_open"></info_portion>
 	<info_portion id="yan_scientist_door_1_open"></info_portion>
 	<info_portion id="yan_scientist_exit"></info_portion>
