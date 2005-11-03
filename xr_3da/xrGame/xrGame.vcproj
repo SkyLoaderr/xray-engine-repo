@@ -11137,6 +11137,12 @@
 					Name="Stats"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIStats.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIStats.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIStatsPlayerInfo.cpp">
 					</File>
 					<File
