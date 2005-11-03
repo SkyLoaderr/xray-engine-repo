@@ -274,9 +274,10 @@ end
 -- возвращает true, если в текущей схеме персонажа взведён указанный сигнал.
 function signal(actor, npc, p)
 	if p[1] then
-		local st = db.storage[npc:id()]
-		printf( "xr_conditions.signal: npc=%s, scheme=%s", npc:name(), tostring(st.active_scheme) )
-		return st[st.active_scheme].signals[p[1]] == true
+		local st   = db.storage[npc:id()]
+		local sigs = st[st.active_scheme].signals
+--		printf( "xr_conditions.signal: npc=%s, scheme=%s", npc:name(), tostring(st.active_scheme) )
+		return sigs ~= nil and sigs[p[1]] == true
 	else
 		return false
 	end
