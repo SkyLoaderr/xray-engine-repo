@@ -43,45 +43,26 @@
         <font font="letterica16" r="255" g="255" b="255"></font>
     </idx_list>
 
-    <!--  ANIMATED STATIC -->
-    <a_static x="250" y="-3" width="32" height="32"
-            frames          = "16"
-            duration        = "1000"
-            columns         = "8"
-            frame_width     = "32"
-            frame_height    = "32"
-            cyclic          = "1"
-            autoplay        = "1"
-    >
+    <a_static x="250" y="-3" width="32" height="32" frames="16" duration="1000" columns="8" frame_width="32" frame_height="32" cyclic="1" autoplay="1">
         <texture>ui\ui_pda_anims_01</texture>
     </a_static>
 
-  	<!-- AUTOSTATICS FOR LEFT FRAME WINDOW -->
-	
-	<!-- LEFT LADDER -->
 	<left_auto_static x="8" y="41" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_l_l</texture>
 	</left_auto_static>
-	<!-- RIGHT LADDER -->
 	<left_auto_static x="416" y="82" width="4" height="388">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</left_auto_static>
-	<!-- UPPER HORISONTAL LINE -->
 	<left_auto_static x="14" y="78" width="405" height="2" stretch="1">
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</left_auto_static>
 
-  	<!-- AUTOSTATICS FOR RIGHT FRAME WINDOW -->
-
-	<!-- LEFT LADDER -->
 	<right_auto_static x="8" y="52" width="4" height="420">
 		<texture>ui\ui_pda_vertical_line_r_l</texture>
 	</right_auto_static>
-	<!-- RIGHT LADDER -->
 	<right_auto_static x="269" y="52" width="4" height="420">
 		<texture>ui\ui_pda_vertical_line_r_r</texture>
 	</right_auto_static>
-   	<!-- UPPER EVENTS HORISONTAL LINE -->
 	<right_auto_static x="8" y="48" width="262" height="2" stretch="1">
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</right_auto_static>
@@ -104,14 +85,7 @@
 			<left_frame_header x="8" y="16" width="283" height="27">
 				<texture>ui_string_02</texture>
 				
-				<anim_static x="710" y="-3" width="32" height="32"
-																	frames			= "16"
-																	duration		= "1000"
-																	columns			= "8"
-																	frame_width		= "32"
-																	frame_height	= "32"
-																	cyclic			= "1"
-																	autoplay		= "1">
+				<anim_static x="710" y="-3" width="32" height="32" frames="16" duration="1000" columns="8" frame_width="32" frame_height="32" cyclic="1" autoplay="1">
 					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
 								
