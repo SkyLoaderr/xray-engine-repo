@@ -317,9 +317,9 @@ void CLevelSpawnConstructor::correct_objects					()
 		if (game_graph().vertex(dwBest)->level_id() != m_level.id()) {
 			string4096	S1;
 			char		*S = S1;
-			S			+= sprintf(S,"Corresponding graph vertex for the spawn-point %s is located on the ANOTHER level\n",m_spawns[i]->name_replace());
+			S			+= sprintf(S,"Corresponding graph vertex for the spawn point is located on the ANOTHER level\n",m_spawns[i]->name_replace());
 			S			+= sprintf(S,"Current level  : [%d][%s]\n",m_level.id(),*game_graph().header().level(m_level.id()).name());
-			S			+= sprintf(S,"Conflict level : %d\n",game_graph().vertex(dwBest)->level_id(),*game_graph().header().level(game_graph().vertex(dwBest)->level_id()).name());
+			S			+= sprintf(S,"Conflict level : [%d][%s]\n",game_graph().vertex(dwBest)->level_id(),*game_graph().header().level(game_graph().vertex(dwBest)->level_id()).name());
 			S			+= sprintf(S,"Probably, you filled offsets in \"game_levels.ltx\" incorrect");
 			R_ASSERT2	(game_graph().vertex(dwBest)->level_id() == m_level.id(),S1);
 		}
