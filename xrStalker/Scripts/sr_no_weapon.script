@@ -57,12 +57,12 @@ end
 
 function action_no_weapon:zone_enter()
 	self.state = state_inside
-	db.actor:hide_weapon()
+	bind_stalker.hide_weapon()
 end
 
 function action_no_weapon:zone_leave()
 	self.state = state_outside
-	db.actor:restore_weapon()
+	bind_stalker.restore_weapon()
 end
 
 ---------------------------------------------------------------------------------------------------------------------

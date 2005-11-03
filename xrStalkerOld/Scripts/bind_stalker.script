@@ -5,6 +5,7 @@ end
 lasthealth  = 0
 lasttime	= 0
 post_process = 0
+local weapon_hide = false
 ----------------------------------------------------------------------------------------------------------------------
 class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
@@ -172,15 +173,9 @@ function actor_binder:update(delta)
 
 	-- Апдейт прятание оружия игрока во время диалога
 	if self.object:is_talking() then
-		if self.weapon_hide == false then
-			self.object:hide_weapon()
-			self.weapon_hide = true
-		end
+		hide_weapon()
 	else
-		if self.weapon_hide == true then
-			self.object:restore_weapon()
-			self.weapon_hide = false
-		end
+		restore_weapon()
 	end	
 
 	-- обновление рестрикторов, которые под логикой, срабатывает через интервалы времени
@@ -252,6 +247,21 @@ function actor_init    (npc)
 end
 --старт префетча звуков
 sound_prefetch.prefetch_sounds()
+
+
+-- Weapon functions
+function hide_weapon()
+	if weapon_hide == false then
+		db.actor:hide_weapon()
+		weapon_hide = true
+	end
+end
+function restore_weapon()
+	if weapon_hide == true then
+		db.actor:restore_weapon()
+		weapon_hide = false
+	end
+end
 
 // this is test for section iteration
 /**
