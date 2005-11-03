@@ -1362,9 +1362,6 @@
 					RelativePath=".\Config\ui\trade_item.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\trade_new.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\ui_custom_msgs.xml">
 				</File>
 				<File
