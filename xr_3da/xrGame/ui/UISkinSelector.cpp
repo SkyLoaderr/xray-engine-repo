@@ -117,7 +117,7 @@ void CUISkinSelectorWnd::Init(const char* strSectionName)
 	CUIXmlInit::Init3tButton(xml_doc,"skin_selector:btn_back",		0,m_pBtnBack);
 
 	if (xml_doc.NavigateToNode("skin_selector:skin_shader",0))
-		m_shader = xml_doc.Read("skin_selector:skin_shader",0);
+		m_shader = xml_doc.Read("skin_selector:skin_shader",0,"");
 
 	InitSkins();
 	string64 buff;

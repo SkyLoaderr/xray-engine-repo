@@ -82,14 +82,14 @@ void CInfoPortion::load_shared	(LPCSTR)
 
 
 	//текст
-	info_data()->m_text = uiXml.Read(pNode, "text", 0);
+	info_data()->m_text = uiXml.Read(pNode, "text", 0,"");
 
 	//список названий диалогов
 	int dialogs_num = uiXml.GetNodesNum(pNode, "dialog");
 	info_data()->m_DialogNames.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
-		shared_str dialog_name = uiXml.Read(pNode, "dialog", i);
+		shared_str dialog_name = uiXml.Read(pNode, "dialog", i,"");
 		info_data()->m_DialogNames.push_back(dialog_name);
 	}
 
@@ -97,7 +97,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_ActorDialogNames.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
-		shared_str dialog_name = uiXml.Read(pNode, "actor_dialog", i);
+		shared_str dialog_name = uiXml.Read(pNode, "actor_dialog", i,"");
 		info_data()->m_ActorDialogNames.push_back(dialog_name);
 	}
 	
@@ -107,7 +107,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_DisableInfo.clear();
 	for(i=0; i<disable_num; ++i)
 	{
-		INFO_ID info_id = uiXml.Read(pNode, "disable", i);
+		INFO_ID info_id = uiXml.Read(pNode, "disable", i,"");
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 

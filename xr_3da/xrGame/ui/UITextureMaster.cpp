@@ -29,7 +29,7 @@ void CUITextureMaster::ParseShTexInfo(LPCSTR xml_file){
 
 	CUIXml xml;
 	xml.Init(CONFIG_PATH, UI_PATH, xml_file);
-	xr_string texture = xml.Read("file_name",0); 
+	xr_string texture = xml.Read("file_name",0,""); 
 
 	shared_textures_it	sht_it = m_shTex.find(texture);
 	if (m_shTex.end() == sht_it)

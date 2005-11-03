@@ -15,6 +15,7 @@
 #include "../skeletoncustom.h"
 #include "Actor.h"
 #include "AI/Stalker/ai_stalker.h"
+#include "character_info.h"
 
 //константы shoot_factor, определ€ющие 
 //поведение пули при столкновении с объектом
@@ -36,48 +37,53 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 		(!bullet->flags.ricochet_was))			return FALSE;
 
 	BOOL bRes						= TRUE;
-	// whine sounds
 	if (object){
-		bool bSphereIntersected		= false;
-		float dist					= 1000.f;
 		CEntity*	entity			= smart_cast<CEntity*>(object);
 		if (entity&&entity->g_Alive()&&(entity->ID()!=bullet->parent_id)){
 			ICollisionForm*	cform	= entity->collidable.model;
-			ECollisionFormType tp	= cform->Type();
-			CActor* actor			= smart_cast<CActor*>(entity);
-			if ((tp==cftObject)&&(smart_cast<CAI_Stalker*>(entity)||actor)){
-				Fsphere S			= cform->getSphere();
-				entity->XFORM().transform_tiny	(S.P)	;
-				dist				= 1000.f;
-				if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist))
-					bSphereIntersected	= true;
-			}
-			if (actor){
-				if (Random.randF(0.f,1.f)>actor->HitProbability()){ 
-//					Log				("- HIT - IGNORE");
-					bRes			= FALSE;
-				}else{
-					if (bSphereIntersected){
-						// проверим попали ли мы в объект
-						collide::rq_results	r_temp;
-						if (cform->_RayQuery(rd,r_temp)){
-							// в объект попали - отыгрывать звук пролета не нужно
-							bSphereIntersected= false;
-//							Log			("- HIT - NORMAL");
-						}else{
-							// в объект вообще не попали - провер€ть в xr_area нет смысла
-							bRes		= FALSE;
-//							Log			("- HIT - EMPTY");
+			if ((NULL!=cform) && (cftObject==cform->Type())){
+				CActor* actor		= smart_cast<CActor*>(entity);
+				CAI_Stalker* stalker= smart_cast<CAI_Stalker*>(entity);
+				if (actor||stalker){
+					// test sphere intersection
+					Fsphere S		= cform->getSphere();
+					entity->XFORM().transform_tiny	(S.P)	;
+					float dist		= rd.range;
+					if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
+						bool play_whine				= true;
+						CObject* initiator			= Level().Objects.net_Find	(bullet->parent_id);
+						if (actor){
+							// actor special case
+							CAI_Stalker* i_stalker	= smart_cast<CAI_Stalker*>(initiator);
+							float hpf				= (i_stalker)?i_stalker->SpecificCharacter().hit_probability_factor():1.f;
+							if (Random.randF(0.f,1.f)>(actor->HitProbability()*hpf)){ 
+								bRes				= FALSE;	// don't hit actor
+								play_whine			= true;		// play whine sound
+							}else{
+								// real test actor CFORM
+								collide::rq_results	r_temp;
+								if (cform->_RayQuery(rd,r_temp)){
+									bRes			= TRUE;		// hit actor
+									play_whine		= false;	// don't play whine sound
+								}else{
+									bRes			= FALSE;	// don't hit actor
+									play_whine		= true;		// play whine sound
+								}
+							}
 						}
+						// play whine sound
+						if (play_whine){
+							Fvector					pt;
+							pt.mad					(bullet->pos, bullet->dir, dist);
+							Level().BulletManager().PlayWhineSound				(bullet,initiator,pt);
+						}
+					}else{
+						// don't test this object again (return FALSE)
+						bRes		= FALSE;
 					}
+
 				}
 			}
-		}
-		if (bSphereIntersected){
-			Fvector					pt;
-			pt.mad					(bullet->pos, bullet->dir, dist);
-			CObject* initiator		= Level().Objects.net_Find	(bullet->parent_id);
-			Level().BulletManager().PlayWhineSound				(bullet,initiator,pt);
 		}
 	}
 	

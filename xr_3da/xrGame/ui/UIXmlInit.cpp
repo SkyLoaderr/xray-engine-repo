@@ -306,8 +306,8 @@ bool CUIXmlInit::InitSound(CUIXml& xml_doc, const char* path, int index, CUI3tBu
 	strconcat(sound_h, path, ":sound_h");
 	strconcat(sound_t, path, ":sound_t");
 
-	shared_str sound_h_result = xml_doc.Read(sound_h, index);
-	shared_str sound_t_result = xml_doc.Read(sound_t, index);
+	shared_str sound_h_result = xml_doc.Read(sound_h, index, "");
+	shared_str sound_t_result = xml_doc.Read(sound_t, index, "");
 
 	if (xr_strlen(sound_h_result) != 0)
 		pWnd->InitSoundH(*sound_h_result);
@@ -870,7 +870,7 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 
 		CStringTable st;
 
-		p->str =  st.translate(xml_doc.Read(ph, i));
+		p->str =  st.translate(xml_doc.Read(ph, i, ""));
 	}
 
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());

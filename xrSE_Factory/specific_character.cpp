@@ -35,6 +35,7 @@ SSpecificCharacterData::SSpecificCharacterData()
 	m_bNoRandom				= false;
 	m_bDefaultForCommunity	= false;
 	m_fPanic_threshold		= 0.0f;
+	m_fHitProbabilityFactor	= 1.f;
 }
 
 SSpecificCharacterData::~SSpecificCharacterData()
@@ -130,7 +131,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_ActorDialogs.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
-		shared_str dialog_name = uiXml.Read(uiXml.GetLocalRoot(), "actor_dialog", i);
+		shared_str dialog_name = uiXml.Read(uiXml.GetLocalRoot(), "actor_dialog", i, "");
 		data()->m_ActorDialogs.push_back(dialog_name);
 	}
 
@@ -144,7 +145,8 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_sBioText		= uiXml.Read("bio", 0, "");
 
 
-	data()->m_fPanic_threshold =uiXml.ReadFlt("panic_threshold",0);
+	data()->m_fPanic_threshold		= uiXml.ReadFlt("panic_threshold",0,0.f);
+	data()->m_fHitProbabilityFactor	= uiXml.ReadFlt("hit_probability_factor",0,1.f);
 #endif
 
 	data()->m_sVisual		= uiXml.Read("visual", 0, "");
@@ -246,6 +248,11 @@ LPCSTR CSpecificCharacter::sound_voice_prefix () const
 float CSpecificCharacter::panic_threshold () const 
 {
 	return data()->m_fPanic_threshold;
+}
+
+float CSpecificCharacter::hit_probability_factor () const 
+{
+	return data()->m_fHitProbabilityFactor;
 }
 
 #endif

@@ -42,6 +42,7 @@ struct SSpecificCharacterData : CSharedResource
 	xr_string	m_sound_voice_prefix;
 
 	float		m_fPanic_threshold;
+	float		m_fHitProbabilityFactor;
 #endif
 
 	//имя модели
@@ -129,10 +130,11 @@ public:
 	LPCSTR						Visual		() const ;
 
 #ifdef  XRGAME_EXPORTS
-	LPCSTR						SupplySpawn			() const ;
-	LPCSTR						NpcConfigSect		() const ;
-	LPCSTR						sound_voice_prefix	() const ;
-	float						panic_threshold		() const ;
+	LPCSTR						SupplySpawn				() const ;
+	LPCSTR						NpcConfigSect			() const ;
+	LPCSTR						sound_voice_prefix		() const ;
+	float						panic_threshold			() const ;
+	float						hit_probability_factor	() const ;
 
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
 	int		TradeIconY	() const	 {return data()->m_iIconY;}

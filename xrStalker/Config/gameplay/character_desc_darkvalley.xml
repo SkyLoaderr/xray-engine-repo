@@ -13,6 +13,7 @@
 		<community>bandit</community>
 		
 		<rank>60</rank>
+		<hit_probability_factor>1.5</hit_probability_factor>
 		<reputation>-70</reputation>
  
 		<visual>actors\bandit\stalker_bandit_borov</visual>

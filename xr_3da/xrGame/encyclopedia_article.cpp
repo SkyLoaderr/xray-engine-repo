@@ -69,7 +69,7 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	THROW3(pNode, "encyclopedia article id=", *item_data.id);
 
 	//текст
-	data()->text = uiXml.Read(pNode, "text", 0);
+	data()->text = uiXml.Read(pNode, "text", 0, "");
 	//имя
 	data()->name = uiXml.ReadAttrib(pNode, "name", "");
 	//группа
