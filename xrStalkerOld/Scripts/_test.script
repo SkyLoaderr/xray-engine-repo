@@ -1,7 +1,16 @@
 
 function main()
+--	"stalkerkills"
+--	"monsterkills"
+--	"quests"
+--	"artefacts"
 
-actor_stats.add_points("stalkerkills","banan",2,45)
+actor_stats.add_points("stalkerkills","dolg",2,22)
+actor_stats.add_points("stalkerkills","svoboda",1,45)
+actor_stats.add_points("stalkerkills","urod",1,5)
+actor_stats.add_points("artefacts","af_1",1,800)
+actor_stats.add_points("quests","help wounded",1,2000)
+
 --	level.add_cam_effector("camera_effects\\prison_1.anm")	
 
 --   local h = hit ()
