@@ -1,5 +1,5 @@
 [logic]
-active              = remark@wait_actor_wake ;walker@wait_actor_wake
+active              = remark@wait_actor_wake
 combat_ignore       = combat_ignore
 
 [meet@scene_start]
@@ -19,14 +19,6 @@ meet                = meet@scene_start
 on_timer            = 8000 | %+cit_jail_start_waking%
 on_timer2           = 15000 | remark@talk_to_actor %+cit_jail_actor_wake%
 combat_ignore_cond  = always
-
-;[walker@wait_actor_wake]
-;path_walk           = cit_jail_doctor_wait_walk
-;path_look           = cit_jail_doctor_wait_look
-;meet                = meet@scene_start
-;on_timer            = 12000 | %+cit_jail_start_waking%
-;on_timer2           = 20000 | remark@talk_to_actor %+cit_jail_actor_wake%
-;combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- разговариваем с актером
