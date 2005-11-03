@@ -360,7 +360,7 @@ function gar_hellcar_victory(actor, npc)
 end
 
 function gar_boars_counter(actor, npc)
-	local c = pstor_retrieve(actor, "gar_boars_counter", 0)
+	local c = xr_logic.pstor_retrieve(actor, "gar_boars_counter", 0)
 	
 	if c <= 2 then
 		news_manager.send_tip(actor, "gar_actor_looser", 0, "dolg", 0)
