@@ -9,3 +9,7 @@
     <article id="zones_mystery" name="sar_warlab" article_type="task" group="sar_warlab">
         <text>zones_mystery_text</text>
     </article>
+    
+    <article id="sar_secret_lab_info" name="sar_secret_lab" article_type="task" group="sar_secret_lab">
+        <text>sar_secret_lab_text</text>
+    </article>
