@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
+	<background x="0" y="0" width="1024" height="768">
+		<texture>ui_menu_backgraund</texture>
+	</background>
+	<fire_movie x="525" y="459" width="128" height="256">
+		<texture>ui\ui_trabantnoise</texture>
+	</fire_movie>
 
 	<shniaga_wnd x="596" y="397" width="392" height="313">
 		<shniaga x="0" y="0" width="392" height="73">
