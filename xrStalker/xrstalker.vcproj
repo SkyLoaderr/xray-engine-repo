@@ -1212,9 +1212,6 @@
 				Name="ui"
 				Filter="">
 				<File
-					RelativePath=".\Config\ui\actor_diary.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\actor_statistic.xml">
 				</File>
 				<File
@@ -1234,12 +1231,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\color_defs.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\contracts.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\contracts_character.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\encyclopedia.xml">
