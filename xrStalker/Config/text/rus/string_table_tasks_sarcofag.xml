@@ -31,7 +31,7 @@
     </string>
     
     <string id="sar_secret_lab_3">
-        <text>Войти в секретный командный центр.</text>
+        <text>Разведать, что находится за дверью.</text>
     </string>
     
     <string id="sar_monolith_destroy">
@@ -55,7 +55,7 @@
     </string>
     
     <string id="sar_perception_1">
-        <text>Встретится с теми, кто соял за Монолитом.</text>
+        <text>Встретится с теми, кто стоял за Монолитом.</text>
     </string>
     
     <string id="sar_perception_2">
