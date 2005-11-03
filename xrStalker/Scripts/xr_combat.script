@@ -83,7 +83,7 @@ end
 function add_to_binder(npc, ini, scheme, section, storage)
 	local manager = npc:motivation_action_manager()
 
-	manager:add_evaluator( xr_evaluators_id.script_combat, this.evaluator_check_combat("combat_check",storage) )
+	manager:add_evaluator( xr_evaluators_id.script_combat, this.evaluator_check_combat("script_combat",storage) )
 
 	local action = manager:action(stalker_ids.action_combat_planner)
 	action:add_precondition(world_property(xr_evaluators_id.script_combat, false))
