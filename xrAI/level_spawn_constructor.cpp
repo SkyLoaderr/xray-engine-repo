@@ -314,17 +314,28 @@ void CLevelSpawnConstructor::correct_objects					()
 			m_spawns[i]->o_Position	= new_position;
 		}
 		u32					dwBest = cross_table().vertex(m_spawns[i]->m_tNodeID).game_vertex_id();
-		VERIFY				(game_graph().vertex(dwBest)->level_id() == m_level.id());
-		float fCurrentBestDistance = cross_table().vertex(m_spawns[i]->m_tNodeID).distance();
+		if (game_graph().vertex(dwBest)->level_id() != m_level.id()) {
+			string4096	S1;
+			char		*S = S1;
+			S			+= sprintf(S,"Corresponding graph vertex for the spawn-point %s is located on the ANOTHER level\n",m_spawns[i]->name_replace());
+			S			+= sprintf(S,"Level ID    : %d\n",m_level.id());
+			S			+= sprintf(S,"Spawn index : %d\n",i);
+			S			+= sprintf(S,"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
+			S			+= sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
+			S			+= sprintf(S,"\nProbably, you filled offsets in \"game_levels.ltx\" incorrect\n");
+			R_ASSERT2	(dwBest != -1,S1);
+		}
+
+		float				fCurrentBestDistance = cross_table().vertex(m_spawns[i]->m_tNodeID).distance();
 		if (dwBest == u32(-1)) {
-			string4096 S1;
-			char *S = S1;
-			S += sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_spawns[i]->name_replace());
-			S += sprintf(S,"Level ID    : %d\n",m_level.id());
-			S += sprintf(S,"Spawn index : %d\n",i);
-			S += sprintf(S,"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
-			S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
-			R_ASSERT2(dwBest != -1,S1);
+			string4096	S1;
+			char		*S = S1;
+			S			+= sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_spawns[i]->name_replace());
+			S			+= sprintf(S,"Level ID    : %d\n",m_level.id());
+			S			+= sprintf(S,"Spawn index : %d\n",i);
+			S			+= sprintf(S,"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
+			S			+= sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
+			R_ASSERT2	(dwBest != -1,S1);
 		}
 		m_spawns[i]->m_tGraphID		= (GameGraph::_GRAPH_ID)dwBest;
 		m_spawns[i]->m_fDistance	= fCurrentBestDistance;
