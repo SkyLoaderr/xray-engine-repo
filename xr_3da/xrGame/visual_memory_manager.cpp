@@ -484,11 +484,15 @@ void CVisualMemoryManager::update				(float time_delta)
 	squad_mask_type						mask = this->mask();
 	VERIFY								(m_objects);
 	m_visible_objects.clear				();
+
+	START_PROFILE("AI/Memory Manager/visuals/update/feel_vision_get")
 	if (m_object)
 		m_object->feel_vision_get		(m_visible_objects);
 	else
 		m_actor->memory().feel_vision_get(m_visible_objects);
+	STOP_PROFILE
 
+	START_PROFILE("AI/Memory Manager/visuals/update/make_invisible")
 	{
 		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
 		xr_vector<CVisibleObject>::iterator	E = m_objects->end();
@@ -496,14 +500,18 @@ void CVisualMemoryManager::update				(float time_delta)
 			if ((*I).m_level_time + current_state().m_still_visible_time < Device.dwTimeGlobal)
 				(*I).visible			(mask,false);
 	}
+	STOP_PROFILE
 
+	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles")
 	{
 		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
 		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
 		for ( ; I != E; ++I)
 			add_visible_object			(*I,time_delta);
 	}
+	STOP_PROFILE
 
+	START_PROFILE("AI/Memory Manager/visuals/update/make_not_yet_visible")
 	{
 		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
 		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
@@ -511,7 +519,9 @@ void CVisualMemoryManager::update				(float time_delta)
 			if ((*I).m_update_time < Device.dwTimeGlobal)
 				(*I).m_value			= 0.f;
 	}
+	STOP_PROFILE
 
+	START_PROFILE("AI/Memory Manager/visuals/update/removing_offline")
 	// verifying if object is online
 	{
 		xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflinePredicate());
@@ -523,6 +533,7 @@ void CVisualMemoryManager::update				(float time_delta)
 		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
 		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
 	}
+	STOP_PROFILE
 
 #if 0//def DEBUG
 	if (m_stalker) {
