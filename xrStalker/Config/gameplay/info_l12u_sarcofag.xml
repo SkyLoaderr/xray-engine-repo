@@ -47,4 +47,6 @@
 	<info_portion id="sar_monolith_find"></info_portion>
 	<info_portion id="sar_monolith_go"></info_portion>
 	
+	<info_portion id="mon_ambush"></info_portion>
+	
 </game_information_portions>
