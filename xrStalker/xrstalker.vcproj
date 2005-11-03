@@ -2043,13 +2043,22 @@
 				Name="Zones"
 				Filter="">
 				<File
-					RelativePath=".\Config\misc\zone_ameba.ltx">
-				</File>
-				<File
 					RelativePath=".\Config\misc\zone_burningfuzz.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\zone_buzz.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_gravi.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_kampfire.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\zone_mincer.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_minefield.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\zone_mosquitobald.ltx">
@@ -2061,14 +2070,27 @@
 					RelativePath=".\Config\misc\zone_radioactive.ltx">
 				</File>
 				<File
-					RelativePath=".\Config\misc\zone_rustyhair.ltx">
+					RelativePath=".\Config\misc\zone_teleport.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\zone_torrid.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\zone_witchesgalantine.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\zones.ltx">
 				</File>
+				<Filter
+					Name="old_and_unused"
+					Filter="">
+					<File
+						RelativePath=".\Config\misc\zone_ameba.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\zone_rustyhair.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Prefetch"

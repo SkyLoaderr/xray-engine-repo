@@ -1,77 +1,73 @@
+[zone_buzz]
+GroupControlSection			= spawn_group_zone
+$spawn 						= "zones\buzz"
+$prefetch 					= 16
+class						= Z_MBALD
 
-[zone_radioactive]
-GroupControlSection	= spawn_group_zone
-$spawn 			= "zones\radioactive"
-;$prefetch 		= 16
-class			= Z_RADIO
-hit_impulse_scale	= .01
-effective_radius	= 0.95 ;размер радиуса в процентах от оригинального, где действует зона
-sound			= zone_mosquito_bald
-postprocess		= postprocess_rad
+hit_impulse_scale			= 0.0
+effective_radius			= 1.3 ;размер радиуса в процентах от оригинального, где действует зона
 
-ef_anomaly_type			= 3
-ef_weapon_type			= 15
+ef_anomaly_type				= 1
+ef_weapon_type				= 13
 
-artefacts		= 
-BirthProbability = 0.0;0.1
+sound						= 
+postprocess					= postprocess_flame
+	
+artefacts					= 
+BirthProbability 			= 0.01
 
-hit_type		= radiation
+idle_particles				= explosions\campfire_05
+blowout_particles			= explosions\campfire_blowout
 
-disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= -1	;время отключения idle партиклов
+hit_small_particles			= damage_fx\burn_creatures00
+hit_big_particles			= damage_fx\burn_creatures00
+idle_small_particles		= damage_fx\burn_creatures00
+idle_big_particles			= damage_fx\burn_creatures00
+entrance_small_particles	= damage_fx\burn_creatures00
+entrance_big_particles		= damage_fx\burn_creatures00
 
-ignore_nonalive		= true;
-ignore_small		= false;
-ignore_artefacts	= true
+idle_sound					= ambient\fire2		;постоянный звук
+blowout_sound				= ambient\fire2		;во время выброса(удара) в центре аномалии	
+hit_sound					= ambient\fire2		;на персонаже, когда тот получает хит
+entrance_sound				= ambient\fire2		;при попадании объекта в аномалию
 
-blowout_light		= off
-idle_light			= off
+hit_type					= burn
 
-awaking_time		= 100
-blowout_time		= 100	
-accamulate_time		= 500
+disable_time				= 10000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small			= -1	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time			= 50000	;время отключения idle партиклов
 
-visible_by_detector = on
+ignore_nonalive				= false
+ignore_small				= true
+ignore_artefacts			= true
 
-blowout_wind		= off
+blowout_light				= on
+light_color		    		= 1.8,1.7,1.4
+light_animation             = koster
+light_range		    		= 8
+light_time 		    		= 0.35
+light_height				= 0.75			;подъем источника света на высоту
+
+
+idle_light					= off
+idle_light_range			= 8.0
+idle_light_range_delta 		= 0.25
+idle_light_anim				= koster_00
+idle_light_height			= 0.70			;подъем источника света на высоту
+
+awaking_time				= 0
+blowout_time				= 1000	
+accamulate_time				= 0
+
+visible_by_detector 		= off
+
+blowout_wind				= off
+
+blowout_wind_time_start 	= 0
+blowout_wind_time_peak  	= 600
+blowout_wind_time_end		= 899
+blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
-
-[zone_radioactive_weak]:zone_radioactive
-$spawn 			= "zones\radioactive_weak"
-
-awaking_time		= 100
-blowout_time		= 100	
-accamulate_time		= 500
-
-effective_radius	= 0.7
-
-[zone_radioactive_average]:zone_radioactive
-$spawn 			= "zones\radioactive_average"
-awaking_time		= 70
-blowout_time		= 100	
-accamulate_time		= 250
-
-effective_radius	= 0.85
-
-[zone_radioactive_strong]:zone_radioactive
-$spawn 			= "zones\radioactive_strong"
-
-awaking_time		= 50
-blowout_time		= 100	
-accamulate_time		= 100
-
-effective_radius	= 1
-
-[zone_radioactive_killing]:zone_radioactive
-$spawn 			= "zones\radioactive_killing"
-
-awaking_time		= 10
-blowout_time		= 100	
-accamulate_time		= 10
-
-effective_radius	= 1
-
