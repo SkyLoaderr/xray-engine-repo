@@ -62,10 +62,14 @@ public:
 	IC		void					set_current_level	(u32 level_id);
 	IC		const _GRAPH_ID			current_level_vertex() const;
 
+#if 1
+};
+#else
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CGameGraph)
 #undef script_type_list
 #define script_type_list save_type_list(CGameGraph)
+#endif
 
 #include "game_graph_inline.h"
