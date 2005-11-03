@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "actor_statistic_mgr.h"
+#include "alife_registry_wrappers.h"
 
 xr_token actor_stats_token[]={
 	{"total",				100},
 	{"stalkerkills",		1},
 	{"monsterkills",		2},
 	{"quests",				3},
-	{"trade",				4},
+	{"artefacts",			4},
 	{"reputation",			5},
 	{"foo",					0},
 	{0,						0}

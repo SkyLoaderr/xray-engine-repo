@@ -1,7 +1,7 @@
 #pragma once
 #include "actor_statistic_defs.h"
-#include "alife_registry_wrappers.h"
 
+class CActorStatisticsWrapper;
 class CActorStatisticMgr
 {
 private:
