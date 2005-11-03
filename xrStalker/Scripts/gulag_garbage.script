@@ -1491,7 +1491,7 @@ function load_states(gname, type)
 						end
 					end
 				else
-					if gulag:get_population() >= 3 then
+					if gulag:get_population() >= 2 then
 						return 2
 					else
 						return 0
