@@ -172,10 +172,14 @@ function actor_binder:update(delta)
 	end
 
 	-- Апдейт прятание оружия игрока во время диалога
-	if self.object:is_talking() then
-		hide_weapon()
+	if weapon_hide == true or self.object:is_talking() then
+		if self.weapon_hide == false then
+			self.object:hide_weapon()
+		end
 	else
-		restore_weapon()
+		if self.weapon_hide == true then
+			self.object:restore_weapon()
+		end
 	end	
 
 	-- обновление рестрикторов, которые под логикой, срабатывает через интервалы времени
@@ -251,16 +255,10 @@ sound_prefetch.prefetch_sounds()
 
 -- Weapon functions
 function hide_weapon()
-	if weapon_hide == false then
-		db.actor:hide_weapon()
-		weapon_hide = true
-	end
+	weapon_hide = true
 end
 function restore_weapon()
-	if weapon_hide == true then
-		db.actor:restore_weapon()
-		weapon_hide = false
-	end
+	weapon_hide = false
 end
 
 // this is test for section iteration
