@@ -133,7 +133,9 @@ BOOL CRenderTarget::NeedPostProcess()
 	bool	_gray	= (param_gray>0.001f);
 	bool	_noise	= (param_noise>0.001f);
 	bool	_dual	= (param_duality_h>0.001f)||(param_duality_v>0.001f);
-			
+
+	bool	_menu_pp= g_pGamePersistant?g_pGamePersistant->OnRenderPPUI_query():false;
+
 	bool	_cbase	= false;
 	{
 		int		_r	= color_get_R(param_color_base)	; _r=_abs(_r-int(0x7f));
@@ -148,7 +150,7 @@ BOOL CRenderTarget::NeedPostProcess()
 		int		_b	= color_get_B(param_color_add)	;
 		if (_r>2 || _g>2 || _b>2)	_cadd	= true	;
 	}
-	return _blur || _gray || _noise || _dual || _cbase || _cadd; 
+	return _blur || _gray || _noise || _dual || _cbase || _cadd || _menu_pp; 
 }
 
 BOOL CRenderTarget::Perform		()
@@ -157,8 +159,8 @@ BOOL CRenderTarget::Perform		()
 }
 
 #include <dinput.h>
-#define SHOW(a)		Log(#a,a);
-#define SHOWX(a)	Msg("%s %x",#a,a);
+#define SHOW(a)		Log			(#a,a);
+#define SHOWX(a)	Msg			("%s %x",#a,a);
 void CRenderTarget::Begin		()
 {
 	/*
@@ -213,10 +215,13 @@ struct TL_2c3uv {
 
 void CRenderTarget::End		()
 {
+	if (g_pGamePersistent)	g_pGamePersistent->OnRenderPPUI_main	()			;	// PP-UI
+
 	// find if distortion is needed at all
-	BOOL	bPerform	= Perform				();
+	BOOL	bPerform	= Perform				()	;
 	BOOL	bDistort	= RImplementation.o.distortion;
-	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
+	bool	_menu_pp	= g_pGamePersistant?g_pGamePersistant->OnRenderPPUI_query():false;
+	if ((0==RImplementation.mapDistort.size()) && !_menu_pp) 	bDistort	= FALSE;
 	if (bDistort)		phase_distortion		();
 
 	// combination/postprocess
@@ -272,4 +277,5 @@ void	CRenderTarget::phase_distortion	()
 	RCache.set_ColorWriteEnable					( );
 	CHK_DX(HW.pDevice->Clear					( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,127,127), 1.0f, 0L));
 	RImplementation.r_dsgraph_render_distort	( );
+	if (g_pGamePersistent)	g_pGamePersistent->OnRenderPPUI_pp()	;	// PP-UI
 }
