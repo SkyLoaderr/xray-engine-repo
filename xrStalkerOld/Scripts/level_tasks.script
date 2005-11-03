@@ -5,7 +5,8 @@ local level_scripts = {
 	darkvalley_tasks,
 	bar_rostok_tasks,
     mil_tasks,
-	radar_tasks
+	radar_tasks,
+	pripyat_tasks
 }
 
 function proceed()
