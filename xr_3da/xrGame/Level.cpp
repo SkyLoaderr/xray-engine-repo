@@ -303,7 +303,7 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 BOOL		g_bDebugEvents = FALSE	;
 
 
-void CLevel::g_cl_Event				(u16 dest, u16 type, NET_Packet& P)
+void CLevel::cl_Process_Event				(u16 dest, u16 type, NET_Packet& P)
 {
 	//			Msg				("--- event[%d] for [%d]",type,dest);
 	CObject*	 O	= Objects.net_Find	(dest);
@@ -364,10 +364,26 @@ void CLevel::ProcessGameEvents		()
 
 		while	(game_events->available(svT))
 		{
-			u16 dest,type;
-			game_events->get	(dest,type,P);
+			u16 ID,dest,type;
+			game_events->get	(ID,dest,type,P);
 
-			g_cl_Event(dest, type, P);
+			switch (ID)
+			{
+			case M_SPAWN:
+				{
+					u16 dummy16;
+					P.r_begin(dummy16);
+					cl_Process_Spawn(P);
+				}break;
+			case M_EVENT:
+				{
+					cl_Process_Event(dest, type, P);
+				}break;
+			default:
+				{
+					VERIFY(0);
+				}break;
+			}			
 		}
 	}
 	if (OnServer() && GameID()!= GAME_SINGLE)

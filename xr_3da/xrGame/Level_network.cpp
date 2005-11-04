@@ -245,7 +245,9 @@ void			CLevel::ClearAllObjects				()
 			//-------------------------------------------------------------
 			ParentFound = true;
 			//-------------------------------------------------------------
+#ifdef DEBUG
 			Msg ("Rejection of %s[%d] from %s[%d]", *(pObj->cNameSect()), pObj->ID(), *(pObj->H_Parent()->cNameSect()), pObj->H_Parent()->ID());
+#endif
 		};
 		ProcessGameEvents();
 	};
@@ -266,7 +268,9 @@ void			CLevel::ClearAllObjects				()
 		//-------------------------------------------------------------
 		ParentFound = true;
 		//-------------------------------------------------------------
+#ifdef DEBUG
 		Msg ("Destruction of %s[%d]", *(pObj->cNameSect()), pObj->ID());
+#endif
 	};
 	ProcessGameEvents();
 };

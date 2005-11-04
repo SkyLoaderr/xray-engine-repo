@@ -8,6 +8,7 @@ extern int		g_dwEventDelay;
 class	NET_Event
 {
 public:
+	u16					ID;
 	u32					timestamp;
 	u16					type;
 	u16					destination;
@@ -16,12 +17,25 @@ public:
 	void				import		(NET_Packet& P)
 	{
 		data.clear		();
-		u16				ID;	
-		P.r_begin		(ID			);	VERIFY(M_EVENT==ID);
-		P.r_u32			(timestamp	);
-		timestamp += u32(g_dwEventDelay);
-		P.r_u16			(type		);
-		P.r_u16			(destination);
+		P.r_begin		(ID			);	//VERIFY(M_EVENT==ID);
+		switch (ID)
+		{
+		case M_SPAWN:
+			{
+				P.read_start();
+			}break;
+		case M_EVENT:
+			{
+				P.r_u32			(timestamp	);
+				timestamp += u32(g_dwEventDelay);
+				P.r_u16			(type		);
+				P.r_u16			(destination);
+			}break;
+		default:
+			{
+				VERIFY(0);
+			}break;
+		}
 
 		u32 size		= P.r_elapsed();
 		if (size)	
@@ -95,9 +109,10 @@ public:
 			return TRUE;
 		}
 	}
-	IC void				get			(u16& dest, u16& type, NET_Packet& P)
+	IC void				get			(u16& ID, u16& dest, u16& type, NET_Packet& P)
 	{
 		const NET_Event& E	= *queue.begin();
+		ID					= E.ID;
 		dest				= E.destination;
 		type				= E.type;
 		E.implication		(P);

@@ -204,7 +204,7 @@ void CHUDCursor::Render()
 			{
 				if (E && (E->g_Health()>0))
 				{
-					if (pCurEnt){	
+					if (pCurEnt && GameID() == GAME_SINGLE){	
 						if (GameID() == GAME_DEATHMATCH)			C = C_ON_ENEMY;
 						else{	
 							if (E->g_Team() != pCurEnt->g_Team())	C = C_ON_ENEMY;

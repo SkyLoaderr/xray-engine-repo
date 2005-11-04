@@ -1163,13 +1163,18 @@ void CActor::make_Interpolation	()
 			if (!pSyncObj) return;
 			pSyncObj->set_State(PredictedState);//, PredictedState.enabled);
 			Position().set(PredictedState.position);
+			VERIFY2								(_valid(renderable.xform),*cName());
 		}
 		else
 		{
-			float factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+			float factor = 0.0f;
+
+			if (m_dwIEndTime != m_dwIStartTime)
+				factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
 
 			Position().lerp(IStart.Pos, IEnd.Pos, factor);
-			
+			VERIFY2								(_valid(renderable.xform),*cName());
+
 			for (u32 k=0; k<3; k++)
 			{
 				IPosL[k] = Position()[k];

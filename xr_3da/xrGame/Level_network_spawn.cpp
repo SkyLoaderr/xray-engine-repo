@@ -9,6 +9,38 @@
 #include "client_spawn_manager.h"
 #include "../xr_object.h"
 
+void CLevel::cl_Process_Spawn(NET_Packet& P)
+{
+	// Begin analysis
+	shared_str			s_name;
+	P.r_stringZ		(s_name);
+
+	// Create DC (xrSE)
+	CSE_Abstract*		E	= F_entity_Create	(*s_name);
+	R_ASSERT2(E, *s_name);
+
+	E->Spawn_Read		(P);
+	if (E->s_flags.is(M_SPAWN_UPDATE))
+		E->UPDATE_Read	(P);
+//-------------------------------------------------
+//	Msg ("M_SPAWN - %s[%d] - %d", *s_name, E->ID, E->ID_Parent);
+//-------------------------------------------------
+	//force object to be local for server client
+	if (OnServer())
+	{
+		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
+	};
+
+	/*
+	game_spawn_queue.push_back(E);
+	if (g_bDebugEvents)		ProcessGameSpawns();
+	/*/
+	g_sv_Spawn					(E);
+
+	F_entity_Destroy			(E);
+	//*/
+};
+
 void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags, Fvector pos)
 {
 	// Create
@@ -36,8 +68,22 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags, Fvector pos)
 	F_entity_Destroy	(E);
 }
 
+#ifdef DEBUG
+XRCORE_API	BOOL	g_bMEMO;
+#endif
+
 void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 {
+#ifdef DEBUG
+	u32							E_mem = 0;
+	if (g_bMEMO)	{
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		E_mem					= Memory.mem_usage();	
+		Memory.stat_calls		= 0;
+	}
+#endif
+	//-----------------------------------------------------------------
 //	CTimer		T(false);
 
 #ifdef DEBUG
@@ -75,21 +121,30 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 			// Generate ownership-event
 			NET_Packet			GEN;
 			GEN.w_begin			(M_EVENT);
-			GEN.w_u32			(Level().timeServer());//-NET_Latency);
+			GEN.w_u32			(E->m_dwSpawnTime);//-NET_Latency);
 			GEN.w_u16			(GE_OWNERSHIP_TAKE);
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));
 			game_events->insert	(GEN);
-			*/
+			/*/
 			NET_Packet	GEN;
 			GEN.write_start();
 			GEN.read_start();
 			GEN.w_u16			(u16(O->ID()));
-			g_cl_Event(E->ID_Parent, GE_OWNERSHIP_TAKE, GEN);
+			cl_Process_Event(E->ID_Parent, GE_OWNERSHIP_TAKE, GEN);
+			//*/
 		}
 	}
 	//---------------------------------------------------------
 	Game().OnSpawn(O);
+	//---------------------------------------------------------
+#ifdef DEBUG
+	if (g_bMEMO) {
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+		Msg						("* %20s : %d bytes, %d ops", *E->s_name,Memory.mem_usage()-E_mem, Memory.stat_calls );
+	}
+#endif
 }
 
 CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item)
@@ -131,34 +186,16 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 		return				(abstract);
 }
 
-#ifdef DEBUG
-XRCORE_API	BOOL	g_bMEMO;
-#endif
-
 void	CLevel::ProcessGameSpawns	()
 {
 	while (!game_spawn_queue.empty())
 	{
 		CSE_Abstract*	E			= game_spawn_queue.front();
 
-#ifdef DEBUG
-		u32							E_mem = 0;
-		if (g_bMEMO)	{
-			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-			E_mem					= Memory.mem_usage();	
-			Memory.stat_calls		= 0;
-		}
-#endif
 		g_sv_Spawn					(E);
-#ifdef DEBUG
-		if (g_bMEMO) {
-			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-			lua_gc					(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-			Msg						("* %20s : %d bytes, %d ops", *E->s_name,Memory.mem_usage()-E_mem, Memory.stat_calls );
-		}
-#endif
+
 		F_entity_Destroy			(E);
+
 		game_spawn_queue.pop_front	();
 	}
 }

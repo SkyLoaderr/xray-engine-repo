@@ -768,11 +768,15 @@ void		game_cl_Deathmatch::OnRender				()
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2)
 {
-	if (((game_PlayerState*)v1)->kills==((game_PlayerState*)v2)->kills)
+	game_PlayerState* p1 = (game_PlayerState*)v1;
+	game_PlayerState* p2 = (game_PlayerState*)v2;
+	if (p1->testFlag(GAME_PLAYER_FLAG_SPECTATOR) && !p2->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) return false;
+	if (!p1->testFlag(GAME_PLAYER_FLAG_SPECTATOR) && p2->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) return true;	
+	if (p1->kills==p2->kills)
 	{
-		return ((game_PlayerState*)v1)->deaths<((game_PlayerState*)v2)->deaths;
+		return p1->deaths<p2->deaths;
 	}
-	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
+	return p1->kills>p2->kills;
 };
 
 void				game_cl_Deathmatch::PlayParticleEffect		(LPCSTR EffName, Fvector& pos)
