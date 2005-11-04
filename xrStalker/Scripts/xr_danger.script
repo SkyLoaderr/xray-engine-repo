@@ -12,7 +12,6 @@ local def_ignore_distance_corpse	= 10
 local def_ignore_distance_hit		= 150
 local def_ignore_distance_sound		= 50
 
-local def_danger_expiration_time		= 5000
 local def_danger_inertion_time_grenade	= 20000
 local def_danger_inertion_time_corpse	= 10000
 local def_danger_inertion_time_hit		= 60000
@@ -51,9 +50,9 @@ function evaluator_danger:evaluate()
 	-- проверка на денжер.
 	if best_danger == nil then
 		printf("DANGER [%s] [FALSE] no danger", self.object:name())
+		self.danger_time = nil
 		return false
 	end
-	local danger_time = best_danger:time()
 
 	-- Проверка, не находится ли данжер в списке запрещенных.
 	local bd_type = best_danger:type()	
@@ -94,20 +93,22 @@ function evaluator_danger:evaluate()
 	end
 
 	-- инерция возврата. Только не для кемпера.
-	local passed_time = time_global() - danger_time
-	if check_danger_inertion_time(self.object, best_danger, passed_time) == true then
-		printf("DANGER [%s]: [%s] [TRUE] inertion time [%s]", self.object:name(), passed_time, bd_type)
-		return true
-	end		
-	
-	-- Денжер слишком устарел
-	if time_global() - danger_time >= self.a.danger_expiration_time then
-		printf("DANGER [%s]->[%s] [FALSE] extra time", self.object:name(), best_danger_name)
-		return false
+	if self.danger_time then
+		self.danger_time = best_danger:time()
+		local passed_time = time_global() - self.danger_time
+		if check_danger_inertion_time(self.object, best_danger, passed_time) == true then
+			printf("DANGER [%s]: [%s] [TRUE] inertion time [%s]", self.object:name(), passed_time, bd_type)
+			return true
+		else
+			printf("DANGER [%s]: [%s] [FALSE] expiration time [%s]", self.object:name(), passed_time, bd_type)
+			return false
+		end		
 	end
 
+			
 	-- Отсеиваем по дистанции
 	if check_danger_distance(self.object, best_danger) == false then
+		printf("DANGER [%s]->[%s] [FALSE] danger_distance", self.object:name(), best_danger_name)
 		return false
 	end
 
@@ -129,14 +130,17 @@ function evaluator_danger:evaluate()
 		return false
 	end
 
+
 	-- Денжер для снайпера
 	if active_scheme == "camper" then
 		if best_danger:type() == danger_object.grenade then
 			printf("DANGER [%s]->[%s] [TRUE] camper, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
+			self.danger_time = best_danger:time()
 			return true
 		end
 		return false
 	else
+		self.danger_time = best_danger:time()
 		return true
 	end
 
@@ -181,7 +185,6 @@ function reset_danger(npc, scheme, st, section)
 	st.danger.ignore_distance_hit		=  math.pow(utils.cfg_get_number(st.ini, danger_section, "ignore_distance_hit", npc, false, def_ignore_distance_hit), 2)
 	st.danger.ignore_distance_sound		=  math.pow(utils.cfg_get_number(st.ini, danger_section, "ignore_distance_sound", npc, false, def_ignore_distance_sound), 2)
 
-	st.danger.danger_expiration_time	=  utils.cfg_get_number(st.ini, danger_section, "danger_expiration_time", npc, false, def_danger_expiration_time)
 	st.danger.danger_inertion_time_grenade		=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_grenade", npc, false, def_danger_inertion_time_grenade)
 	st.danger.danger_inertion_time_corpse		=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_corpse", npc, false, def_danger_inertion_time_corpse)
 	st.danger.danger_inertion_time_hit			=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_hit", npc, false, def_danger_inertion_time_hit)	
