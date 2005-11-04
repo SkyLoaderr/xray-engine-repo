@@ -604,7 +604,7 @@ function switch_to_section(npc, st, section)
 end
 
 function cond_name(cond, etalon)
-	return string.find(cond, etalon) == 1
+	return string.find( cond, "^"..etalon.."%d*$" ) ~= nil
 end
 
 function try_switch_to_another_section(npc, st, actor)
