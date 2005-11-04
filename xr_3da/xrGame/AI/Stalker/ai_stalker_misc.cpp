@@ -23,6 +23,8 @@
 #include "../../level.h"
 #include "../../sound_player.h"
 #include "ai_stalker_space.h"
+#include "../../enemy_manager.h"
+#include "../../visual_memory_manager.h"
 
 #define USE_STEALTH
 #ifdef USE_STEALTH
@@ -147,4 +149,33 @@ void CAI_Stalker::react_on_member_death	()
 		sound().play			(StalkerSpace::eStalkerSoundTolls);
 
 	reaction.clear				();
+}
+
+void CAI_Stalker::process_enemies		()
+{
+	if (memory().enemy().selected())
+		return;
+
+	typedef MemorySpace::squad_mask_type	squad_mask_type;
+	typedef CVisualMemoryManager::VISIBLES	VISIBLES;
+
+	squad_mask_type				mask = memory().visual().mask();
+	VISIBLES::const_iterator	I = memory().visual().objects().begin();
+	VISIBLES::const_iterator	E = memory().visual().objects().end();
+	for ( ; I != E; ++I) {
+		if (!(*I).visible(mask))
+			continue;
+
+		const CAI_Stalker		*member = smart_cast<const CAI_Stalker*>((*I).m_object);
+		if (!member)
+			continue;
+
+		if (is_relation_enemy(member))
+			continue;
+
+		if (!member->memory().enemy().selected())
+			continue;
+
+		memory().make_object_visible_somewhen	(member->memory().enemy().selected());
+	}
 }

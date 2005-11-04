@@ -385,6 +385,7 @@ private:
 	virtual bool						natural_weapon					() const {return false;}
 	virtual bool						natural_detector				() const {return false;}
 	virtual bool						use_center_to_aim				() const;
+			void						process_enemies					();
 
 private:
 	bool								m_group_behaviour;
