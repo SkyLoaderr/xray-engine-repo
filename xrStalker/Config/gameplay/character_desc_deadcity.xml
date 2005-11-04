@@ -406,20 +406,20 @@
 	</specific_character>
 
 <!------------------------------- EXO --------------------------->
-	<specific_character id="cit_bandit_exo" team_default = "1">
+	<specific_character id="cit_bandit_veteran_best" team_default = "1">
 		<name>GENERATE_NAME</name>
-		<icon x="24" y="6"></icon>
+		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
-		<class>cit_bandit_exo</class>
+		<class>cit_bandit_veteran_best</class>
 		<community>bandit</community>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\bandit\stalker_bandit_8</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n

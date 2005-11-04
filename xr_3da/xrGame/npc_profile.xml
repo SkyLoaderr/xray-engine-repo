@@ -225,8 +225,8 @@
 	<character id="cit_bandit_veteran">
 		<class>cit_bandit_veteran</class>
 	</character>
-	<character id="cit_bandit_exo">
-		<class>cit_bandit_exo</class>
+	<character id="cit_bandit_veteran_best">
+		<class>cit_bandit_veteran_best</class>
 	</character>
 
 <!-- Bar + Rostok -->
