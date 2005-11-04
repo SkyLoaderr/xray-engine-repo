@@ -17,6 +17,7 @@ local def_danger_inertion_time_grenade	= 20000
 local def_danger_inertion_time_corpse	= 10000
 local def_danger_inertion_time_hit		= 60000
 local def_danger_inertion_time_sound	= 15000
+local def_danger_inertion_time_ricochet	= 30000
 
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -52,6 +53,7 @@ function evaluator_danger:evaluate()
 		printf("DANGER [%s] [FALSE] no danger", self.object:name())
 		return false
 	end
+	local danger_time = best_danger:time()
 
 	-- Проверка, не находится ли данжер в списке запрещенных.
 	local bd_type = best_danger:type()	
@@ -92,15 +94,14 @@ function evaluator_danger:evaluate()
 	end
 
 	-- инерция возврата. Только не для кемпера.
-	if self.danger_time then
-		local passed_time = time_global() - self.danger_time
-		if check_danger_inertion_time(self.object, best_danger, passed_time) == true then
-			return true
-		end		
-	end
+	local passed_time = time_global() - danger_time
+	if check_danger_inertion_time(self.object, best_danger, passed_time) == true then
+		printf("DANGER [%s]: [%s] [TRUE] inertion time [%s]", self.object:name(), passed_time, bd_type)
+		return true
+	end		
 	
 	-- Денжер слишком устарел
-	if time_global() - best_danger:time() >= self.a.danger_expiration_time then
+	if time_global() - danger_time >= self.a.danger_expiration_time then
 		printf("DANGER [%s]->[%s] [FALSE] extra time", self.object:name(), best_danger_name)
 		return false
 	end
@@ -131,13 +132,11 @@ function evaluator_danger:evaluate()
 	-- Денжер для снайпера
 	if active_scheme == "camper" then
 		if best_danger:type() == danger_object.grenade then
-			self.danger_time = time_global()
 			printf("DANGER [%s]->[%s] [TRUE] camper, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
 			return true
 		end
 		return false
 	else
-		self.danger_time = time_global()
 		return true
 	end
 
@@ -187,6 +186,7 @@ function reset_danger(npc, scheme, st, section)
 	st.danger.danger_inertion_time_corpse		=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_corpse", npc, false, def_danger_inertion_time_corpse)
 	st.danger.danger_inertion_time_hit			=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_hit", npc, false, def_danger_inertion_time_hit)	
 	st.danger.danger_inertion_time_sound		=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_sound", npc, false, def_danger_inertion_time_sound)	
+	st.danger.danger_inertion_time_ricochet		=  utils.cfg_get_number(st.ini, danger_section, "danger_inertion_time_sound", npc, false, def_danger_inertion_time_ricochet)
 end
 
 
@@ -213,6 +213,10 @@ function check_danger_inertion_time(npc, danger, passed_time)
 			if danger_settings.danger_inertion_time_sound <= passed_time then
 				return false
 			end	
+		elseif bd_type == danger_object.bullet_ricochet then
+			if danger_settings.danger_inertion_time_ricochet <= passed_time then
+				return false
+			end	
 		end
 	else
 		if bd_type == danger_object.grenade then
@@ -231,6 +235,10 @@ function check_danger_inertion_time(npc, danger, passed_time)
 		elseif bd_type == danger_object.enemy_sound or
 			bd_type == danger_object.attack_sound then
 			if def_danger_inertion_time_sound <= passed_time then
+				return false
+			end	
+		elseif bd_type == danger_object.bullet_ricochet then
+			if def_danger_inertion_time_ricochet <= passed_time then
 				return false
 			end	
 		end
