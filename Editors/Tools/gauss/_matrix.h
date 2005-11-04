@@ -81,6 +81,7 @@ public:
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
 	ICF	SelfRef	mul			(const Self &A,const Self &B)
 	{
+		VERIFY	((this!=&A)&&(this!=&B));
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2] + A.m[3][0] * B.m[0][3];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2] + A.m[3][1] * B.m[0][3];
 		m[0][2] = A.m[0][2] * B.m[0][0] + A.m[1][2] * B.m[0][1] + A.m[2][2] * B.m[0][2] + A.m[3][2] * B.m[0][3];
@@ -106,6 +107,7 @@ public:
 	// Multiply RES = A[4x3]*B[4x3] (no projection), faster than ordinary multiply
 	ICF	SelfRef	mul_43		(const Self &A,const Self &B)
 	{
+		VERIFY	((this!=&A)&&(this!=&B));
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2];
 		m[0][2] = A.m[0][2] * B.m[0][0] + A.m[1][2] * B.m[0][1] + A.m[2][2] * B.m[0][2];
