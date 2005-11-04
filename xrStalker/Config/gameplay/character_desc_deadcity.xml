@@ -47,10 +47,10 @@
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
+			wpn_beretta \n
+			ammo_9x19_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -80,10 +80,10 @@
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -114,10 +114,10 @@
 		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp = 2 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -148,10 +148,11 @@
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 3 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ss190 = 2 \n
+			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -180,6 +181,9 @@
         <snd_config>characters_voice\human_02\</snd_config>
         <supplies>
             [spawn] \n
+            vodka = 3 \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -204,10 +208,10 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
-			wpn_toz34 \n
-			ammo_12x76_dart = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
@@ -237,7 +241,7 @@
 			[spawn] \n
 			wpn_hpsa \n
 			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 0, 1, 0 \n
+			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
@@ -267,8 +271,8 @@
 			[spawn] \n
 			wpn_hpsa \n
 			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 0, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 2 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -295,10 +299,10 @@
 		<snd_config>characters_voice\human_03\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_pmm	= 1 \n
-			wpn_mp5 \n
-			ammo_9x19_pbp = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -328,8 +332,8 @@
 			[spawn] \n
 			wpn_hpsa \n
 			ammo_9x19_pbp = 2 \n
-			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 2 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
@@ -359,8 +363,8 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -388,9 +392,41 @@
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
+			ammo_9x19_pbp = 2 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 2 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+<!------------------------------- EXO --------------------------->
+	<specific_character id="cit_bandit_exo" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="24" y="6"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>cit_bandit_exo</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_8</visual>
+		<snd_config>characters_voice\human_03\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 3 \n
 			wpn_l85 \n
-			ammo_5.56x45_ss190 = 1 \n
+			ammo_5.56x45_ss190 = 3 \n
+			ammo_5.56x45_ap = 2 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
