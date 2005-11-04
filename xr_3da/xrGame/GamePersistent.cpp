@@ -285,3 +285,19 @@ void CGamePersistent::OnAppDeactivate	()
 	}
 }
 
+bool CGamePersistent::OnRenderPPUI_query()
+{
+	return UI()->OnRenderPPUI_query();
+	// enable PP or not
+}
+
+void CGamePersistent::OnRenderPPUI_main()
+{
+	// always
+	UI()->OnRenderPPUI_main();
+}
+
+void CGamePersistent::OnRenderPPUI_PP()
+{
+	UI()->OnRenderPPUI_PP();
+}

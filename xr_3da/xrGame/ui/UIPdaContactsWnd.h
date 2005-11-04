@@ -4,9 +4,6 @@
 #include "UIWindow.h"
 
 
-extern const char * const PDA_CONTACTS_HEADER_SUFFIX;
-
-
 class CUIFrameWindow;
 class CUIFrameLineWnd;
 class CUIStatic;
@@ -48,6 +45,5 @@ protected:
 	CUIFrameLineWnd*			UIContactsHeader;
 	CUIFrameWindow*				UIRightFrame;
 	CUIFrameLineWnd*			UIRightFrameHeader;
-	CUIStatic*					UIArticleHeader;
 	CUIAnimatedStatic*			UIAnimation;
 };

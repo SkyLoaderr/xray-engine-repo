@@ -7,24 +7,24 @@
 		<left_frame x="0" y="0" width="340" height="475" a="90">
 			<texture>ui_pda_frame_sub</texture>
 
-			<auto_static x="8" y="44" width="4" height="470">
+			<auto_static x="8" y="48" width="4" height="467">
 				<texture>ui\ui_pda_vertical_line_r_l</texture>
 			</auto_static>
-			<auto_static x="310" y="44" width="4" height="470">
+			<auto_static x="310" y="48" width="4" height="467">
 				<texture>ui\ui_pda_vertical_line_r_r</texture>
 			</auto_static>
-			<auto_static x="8" y="44" width="308" height="2" stretch="1">
+			<auto_static x="8" y="48" width="308" height="2" stretch="1">
 				<texture>ui\ui_pda_horizontal_line</texture>
 			</auto_static>
 			
-			<left_frame_header x="8" y="16" width="325" height="21">
-				<texture>ui_string_03</texture>
+			<left_frame_header x="8" y="17" width="325" height="27">
+				<texture>ui_string_02</texture>
 				
-				<anim_static x="290" y="-8" width="32" height="32" frames = "16" duration = "1000" columns = "8" frame_width = "32" frame_height = "32" cyclic = "1" autoplay = "1">
+				<anim_static x="290" y="-6" width="32" height="32" frames = "16" duration = "1000" columns = "8" frame_width = "32" frame_height = "32" cyclic = "1" autoplay = "1">
 					<texture>ui\ui_pda_anims_01</texture>
 				</anim_static>
 				
-				<filter_tab x="0" y="2" width = "325" height="12">
+				<filter_tab x="0" y="6" width = "325" height="12">
 					<button x="0" y="0" width="70" height="12">
 						<text x="10" y="0" font="letterica18" r="255" g="255" b="255">pda_btn_active</text>
 						<text_color>
@@ -52,7 +52,7 @@
 				</filter_tab>						
 			</left_frame_header>
 
-			<list x="0" y="45" width="336" height="416" right_ident="10" />
+			<list x="0" y="48" width="336" height="413" right_ident="10" />
 		</left_frame>
 	
 		<right_frame x="352" y="0" width="409" height="475">

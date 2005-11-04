@@ -132,8 +132,8 @@ bool CUI::Render()
 	else
 		m_pMessagesWnd->Draw();
 	DoRenderDialogs();
-	if(GetUICursor()->IsVisible())
-        GetUICursor()->Render();
+//	if(GetUICursor()->IsVisible())
+//        GetUICursor()->Render();
 	return false;
 }
 bool	CUI::IR_OnMouseWheel			(int direction)

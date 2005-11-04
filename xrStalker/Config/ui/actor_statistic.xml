@@ -87,10 +87,10 @@
 	<actor_details_wnd>
 		<master_part x="0" y="0" width="250" height="55" id="reputation">
 			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica25" r="170" g="170" b="170" a="160">Reputation</text>
+				<text align="l" x="0" y="0" font="letterica25" r="180" g="180" b="180" a="160">Reputation:</text>
 			</caption_static>
 			<num_static x="210" y="0" width="25" height="20">
-				<text align="r" x="0" y="0" font="letterica18" a="200"/>
+				<text align="r" x="0" y="0" font="letterica25" a="200"/>
 			</num_static>
 		</master_part>
 
@@ -143,9 +143,9 @@
 			</auto>
 		</master_part>
 
-		<master_part x="0" y="0" width="250" height="25" id="trade">
+		<master_part x="0" y="0" width="250" height="25" id="artefacts">
 			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">4. Trade</text>
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">4. Artefacts</text>
 			</caption_static>
 			<num_static x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18"/>

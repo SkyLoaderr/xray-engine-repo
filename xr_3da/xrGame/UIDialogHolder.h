@@ -15,9 +15,6 @@ class CDialogHolder :public ISheduled,public pureFrame
 {
 	//dialogs
 	xr_stack<CUIDialogWnd*>									m_input_receivers;
-/*	xr_vector<CUIWindow*>									m_dialogsToRender;
-	xr_vector<CUIWindow*>									m_dialogsToErase;
-*/
 	xr_vector<dlgItem>										m_dialogsToRender;
 
 

@@ -60,6 +60,9 @@ class CMainUI :
 	string_path		m_screenshot_name;
 	u32				m_screenshotFrame;
 			void	ReadTextureInfo();
+
+	xr_vector<CUIWindow*>		m_pp_draw_wnds;
+
 public:
 					CMainUI							();
 	virtual			~CMainUI						();
@@ -82,9 +85,11 @@ public:
 
 	virtual void	IR_OnMouseWheel					(int direction)	;
 
-	//pureRender
-	virtual void	OnRender						(void);
+	bool			OnRenderPPUI_query				();
+	void			OnRenderPPUI_main				();
+	void			OnRenderPPUI_PP					();
 
+	virtual void	OnRender						();
 	//pureFrame
 	virtual void	OnFrame							(void);
 
@@ -105,6 +110,9 @@ public:
 	void			PushScissor						(const Frect& r, bool overlapped=false);
 	void			PopScissor						();
 	void			Screenshot						(IRender_interface::ScreenshotMode mode=IRender_interface::SM_NORMAL, LPCSTR name = 0);
+
+	void			RegisterPPDraw					(CUIWindow* w);
+	void			UnregisterPPDraw				(CUIWindow* w);
 };
 
 

@@ -95,6 +95,8 @@ void CDialogHolder::RemoveDialogToRender(CUIWindow* pDialog)
 	}
 }
 
+
+
 void CDialogHolder::DoRenderDialogs()
 {
 	xr_vector<dlgItem>::iterator it = m_dialogsToRender.begin();
@@ -102,8 +104,8 @@ void CDialogHolder::DoRenderDialogs()
 		if( (*it).enabled && (*it).wnd->IsShown() )
 			(*it).wnd->Draw();
 	}
-
 }
+
 CUIDialogWnd* CDialogHolder::MainInputReceiver()
 { 
 	if ( !m_input_receivers.empty() ) 

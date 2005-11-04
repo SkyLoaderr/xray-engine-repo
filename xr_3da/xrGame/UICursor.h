@@ -4,7 +4,7 @@
 
 #include "UIStaticItem.h"
 
-class CUICursor
+class CUICursor:public pureRender
 {
 	ref_shader		hShader;
 	bool			bVisible;
@@ -18,7 +18,7 @@ class CUICursor
 public:
 					CUICursor		();
 	virtual			~CUICursor		();
-	void			Render			();
+	virtual void	OnRender		();
 	void			HoldMode		(bool b);
 	Fvector2		GetPosDelta		();
 	void			SetPos			(float x, float y);

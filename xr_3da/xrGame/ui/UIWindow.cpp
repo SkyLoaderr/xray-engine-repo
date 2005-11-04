@@ -26,6 +26,12 @@
 	void dump_list_wnd(){}
 #endif
 
+void CUIWindow::SetPPMode()
+{
+	m_bPP					= true;
+	UI()->RegisterPPDraw	(this);
+	Show					(false);
+};
 
 CUIWindow::CUIWindow()
 {
@@ -48,6 +54,7 @@ CUIWindow::CUIWindow()
 	EnableDoubleClick		(true);
 	m_bCursorOverWindow		= false;
 	m_bClickable			= false;
+	m_bPP					= false;
 #ifdef LOG_ALL_WNDS
 	ListWndCount++;
 	m_dbg_id = ListWndCount;
@@ -67,6 +74,9 @@ CUIWindow::~CUIWindow()
 		parent->CUIWindow::DetachChild( this );
 
 	DetachAll();
+
+	if(	GetPPMode() )
+		UI()->UnregisterPPDraw	(this);
 
 #ifdef LOG_ALL_WNDS
 	xr_vector<DBGList>::iterator _it = dbg_list_wnds.begin();

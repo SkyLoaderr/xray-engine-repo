@@ -110,7 +110,9 @@ void CUIWindow::script_register(lua_State *L)
 		.def("GetFont",					&CUIWindow::GetFont)
 
 		.def("WindowName",				&CUIWindow::WindowName_script)
-		.def("SetWindowName",			&CUIWindow::SetWindowName),
+		.def("SetWindowName",			&CUIWindow::SetWindowName)
+		.def("SetPPMode",				&CUIWindow::SetPPMode),
+
 //		.def("",						&CUIWindow::)
 		
 		class_<CDialogHolder>("CDialogHolder")

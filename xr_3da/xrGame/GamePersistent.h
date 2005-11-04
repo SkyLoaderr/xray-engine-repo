@@ -45,6 +45,10 @@ public:
 	virtual	float		MtlTransparent			(u32 mtl_idx);
 	virtual	void		Statistics				(CGameFont* F);
 	virtual	u32			GameType				() {return m_eGameType;}
+
+	virtual bool		OnRenderPPUI_query		();
+	virtual void		OnRenderPPUI_main		();
+	virtual void		OnRenderPPUI_PP			();
 };
 
 IC CGamePersistent&		GamePersistent()		{ return *((CGamePersistent*) g_pGamePersistent);			}

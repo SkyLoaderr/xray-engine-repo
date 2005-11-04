@@ -23,15 +23,18 @@ CUICursor::CUICursor()
 
 	hShader.create	("hud\\cursor","ui\\ui_ani_cursor");
 	m_si.SetShader(hShader);
+	Device.seqRender.Add	(this,REG_PRIORITY_LOW);
 }
 //--------------------------------------------------------------------
 CUICursor::~CUICursor	()
 {
+	Device.seqRender.Remove	(this);
 }
 //--------------------------------------------------------------------
 u32 last_render_frame = 0;
-void CUICursor::Render	()
+void CUICursor::OnRender	()
 {
+	if( !IsVisible() ) return;
 #ifdef DEBUG
 	VERIFY(last_render_frame != Device.dwFrame);
 	last_render_frame = Device.dwFrame;

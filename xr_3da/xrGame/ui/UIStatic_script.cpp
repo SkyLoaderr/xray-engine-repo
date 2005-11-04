@@ -36,6 +36,8 @@ void CUIStatic::script_register(lua_State *L)
 		.def("SetTextAlign",		&CUIStatic::SetTextAlign_script)
 		.def("GetTextAlign",		&CUIStatic::GetTextAlign_script)
 
+		.def("SetHeading",			&CUIStatic::SetHeading)
+		.def("GetHeading",			&CUIStatic::GetHeading)
 	
 		.def("ClipperOn",			&CUIStatic::ClipperOn)
 		.def("ClipperOff",			(void(CUIStatic::*)(void))CUIStatic::ClipperOff )

@@ -170,6 +170,9 @@ void CMainUI::Activate	(bool bActivate)
 		if(g_pGameLevel){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
+//			psDeviceFlags.set(rsDrawStatic,FALSE);
+//			psDeviceFlags.set(rsDrawDynamic,FALSE);
+
 		};
 		Device.seqRender.Add		(this);
 	}else{
@@ -191,6 +194,8 @@ void CMainUI::Activate	(bool bActivate)
 		CleanInternals				();
 		if(g_pGameLevel){
 			Device.seqFrame.Add		(g_pGameLevel);
+//			psDeviceFlags.set		(rsDrawStatic,TRUE);
+//			psDeviceFlags.set		(rsDrawDynamic,TRUE);
 			Device.seqRender.Add	(g_pGameLevel);
 		};
 		if(m_Flags.is(flRestoreConsole))
@@ -274,17 +279,42 @@ void CMainUI::IR_OnMouseWheel(int direction)
 	MainInputReceiver()->IR_OnMouseWheel(direction);
 }
 
-//pureRender
-void	CMainUI::OnRender		(void)
+
+bool CMainUI::OnRenderPPUI_query()
 {
+	return IsActive();
+}
+
+
+void CMainUI::OnRender	()
+{
+//		Render->Calculate			();
+		Render->Render				();
+}
+
+void CMainUI::OnRenderPPUI_main	()
+{
+	if(!IsActive()) return;
+
 	if(m_Flags.is(flGameSaveScreenshot)){
 		return;
 	};
 	DoRenderDialogs();
 
 	m_pFontManager->Render();
-	if(	GetUICursor()->IsVisible())
-		GetUICursor()->Render();
+//	if(	GetUICursor()->IsVisible())
+//		GetUICursor()->Render();
+}
+
+void CMainUI::OnRenderPPUI_PP	()
+{
+	if(!IsActive()) return;
+	
+	xr_vector<CUIWindow*>::iterator it = m_pp_draw_wnds.begin();
+	for(; it!=m_pp_draw_wnds.end();++it){
+//		if( (*it)->IsShown() )
+			(*it)->Draw();
+	}
 }
 
 //pureFrame
@@ -310,6 +340,9 @@ void	CMainUI::OnFrame		(void)
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
+//			psDeviceFlags.set		(rsDrawStatic,FALSE);
+//			psDeviceFlags.set		(rsDrawDynamic,FALSE);
+
 		};
 
 		if(m_Flags.is(flRestoreConsole))
@@ -426,9 +459,24 @@ void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR na
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
+//			psDeviceFlags.set		(rsDrawStatic,TRUE);
+//			psDeviceFlags.set		(rsDrawDynamic,TRUE);
+
 		};
 		m_screenshotFrame			= Device.dwFrame+1;
 		m_Flags.set					(flRestoreConsole,		Console->bVisible);
 		Console->Hide				();
 	}
+}
+
+void CMainUI::RegisterPPDraw					(CUIWindow* w)
+{
+	UnregisterPPDraw				(w);
+	m_pp_draw_wnds.push_back		(w);
+}
+
+void CMainUI::UnregisterPPDraw				(CUIWindow* w)
+{
+	xr_vector<CUIWindow*>::iterator it = remove( m_pp_draw_wnds.begin(), m_pp_draw_wnds.end(), w);
+	m_pp_draw_wnds.erase(it, m_pp_draw_wnds.end());
 }

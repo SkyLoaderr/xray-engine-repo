@@ -66,6 +66,9 @@ void					CRender::create					()
 	o.forceskinw				= (strstr(Core.Params,"-skinw"))?		TRUE	:FALSE	;
 	c_ldynamic_props			= "L_dynamic_props";
 
+//---------
+	Target						= xr_new<CRenderTarget>		();
+//---------
 	//
 	Models						= xr_new<CModelPool>		();
 	L_Dynamic					= xr_new<CLightR_Manager>	();
@@ -81,6 +84,11 @@ void					CRender::destroy				()
 	::PortalTraverser.destroy	();
 	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();
+	
+	//*** Components
+	xr_delete					(Target);
+
+
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);
 	Device.seqFrame.Remove		(this);
@@ -464,7 +472,7 @@ void	CRender::Render		()
 	phase										= PHASE_NORMAL	;
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
-	Details->Render								();				// grass / details
+	if(Details)Details->Render								();				// grass / details
 	r_dsgraph_render_lods						(true,false);	// lods - FB
 	g_pGamePersistent->Environment.RenderSky	();				// sky / sun
 	g_pGamePersistent->Environment.RenderClouds	();				// clouds
@@ -472,23 +480,23 @@ void	CRender::Render		()
 	o.vis_intersect								= TRUE			;
 	HOM.Disable									();
 	L_Dynamic->render							();				// addititional light sources
-	Wallmarks->Render							();				// wallmarks has priority as normal geometry
+	if(Wallmarks)Wallmarks->Render				();				// wallmarks has priority as normal geometry
 	HOM.Enable									();
 	o.vis_intersect								= FALSE			;
 	phase										= PHASE_NORMAL	;
 	r_pmask										(true,true);	// enable priority "0" and "1"
-	L_Shadows->render							();				// ... and shadows
+	if(L_Shadows)L_Shadows->render							();				// ... and shadows
 	r_dsgraph_render_lods						(false,true);	// lods - FB
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	PortalTraverser.fade_render					();				// faded-portals
 	r_dsgraph_render_sorted						();				// strict-sorted geoms
-	L_Glows->Render								();				// glows
+	if(L_Glows)L_Glows->Render								();				// glows
 	g_pGamePersistent->Environment.RenderFlares	();				// lens-flares
 	g_pGamePersistent->Environment.RenderLast	();				// rain/thunder-bolts
 
 	// Postprocess, if necessary
 	Target->End						();
-	L_Projector->finalize			();
+	if(L_Projector)L_Projector->finalize			();
 
 	// HUD
 	Device.Statistic.RenderDUMP.End	();

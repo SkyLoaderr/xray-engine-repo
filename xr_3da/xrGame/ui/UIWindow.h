@@ -111,6 +111,8 @@ public:
 	virtual void			Update				();
 
 
+			void			SetPPMode			();
+	IC		bool			GetPPMode			()		{return m_bPP;};
 	//для перевода окна и потомков в исходное состояние
 	virtual void			Reset				();
 	virtual void			ResetAll			();
@@ -167,7 +169,7 @@ protected:
 
 	CGameFont*				m_pFont;
 
-
+	bool					m_bPP;
 	//время прошлого клика мышки
 	//для определения DoubleClick
 	u32						m_dwLastClickTime;

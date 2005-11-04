@@ -122,6 +122,7 @@ void CUIActorInfoWnd::FillPointsInfo			()
 
 void CUIActorInfoWnd::FillPointsDetail	(int idx)
 {
+
 	UIDetailList->Clear						();
 	CUIXml									uiXml;
 	uiXml.Init								(CONFIG_PATH, UI_PATH,ACTOR_STATISTIC_XML);
@@ -135,9 +136,14 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 		sprintf								(path,"detail_part_def");
 	if(idx==5)//reputation
 	{
-		FillReputationDetails				(&uiXml, path);
+		UIInfoHeader->GetTitleStatic()->SetText	("Community relations");
+		FillReputationDetails					(&uiXml, path);
 		return;
 	}
+	string256	str;
+	sprintf		(str,"Detail list for %s", get_token_name(actor_stats_token,idx));
+	UIInfoHeader->GetTitleStatic()->SetText	(str);
+
 	SStatSectionData&	section				= Actor()->StatisticMgr().GetSection(idx);
 	vStatDetailData::const_iterator it		= section.data.begin();
 	vStatDetailData::const_iterator it_e	= section.data.end();
@@ -239,8 +245,9 @@ void CUIActorStaticticHeader::SetSelected(bool b)
 {
 	CUISelectable::SetSelected(b);
 	m_text->SetTextColor( subst_alpha(m_text->GetTextColor(), b?255:m_stored_alpha ));
-	if(b) 
+	if(b){ 
 		m_actorInfoWnd->FillPointsDetail			(m_index);
+	}
 }
 
 void CUIActorStaticticHeader::SetText1				(LPCSTR str)

@@ -17,7 +17,6 @@
 #define PDA_CONTACT_HEIGHT 70
 
 const char * const PDA_CONTACTS_XML					= "pda_contacts_new.xml";
-const char * const PDA_CONTACTS_HEADER_SUFFIX		= "/Contacts";
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
 {
@@ -40,8 +39,6 @@ void CUIPdaContactsWnd::Init()
 	R_ASSERT3(xml_result, "xml file not found", PDA_CONTACTS_XML);
 
 	CUIXmlInit	xml_init;
-	string128	buf;
-
 
 	xml_init.InitWindow					(uiXml, "main_wnd", 0, this);
 
@@ -53,8 +50,6 @@ void CUIPdaContactsWnd::Init()
 	UIContactsHeader					= xr_new<CUIFrameLineWnd>();UIContactsHeader->SetAutoDelete(true);
 	UIFrameContacts->AttachChild		(UIContactsHeader);
 	xml_init.InitFrameLine				(uiXml, "left_frame_line", 0, UIContactsHeader);
-	strconcat							(buf, ALL_PDA_HEADER_PREFIX, PDA_CONTACTS_HEADER_SUFFIX);
-	UIContactsHeader->UITitleText.SetText(buf);
 
 	UIRightFrame						= xr_new<CUIFrameWindow>();UIRightFrame->SetAutoDelete(true);
 	AttachChild							(UIRightFrame);
@@ -64,13 +59,8 @@ void CUIPdaContactsWnd::Init()
 	UIRightFrame->AttachChild			(UIRightFrameHeader);
 	xml_init.InitFrameLine				(uiXml, "right_frame_line", 0, UIRightFrameHeader);
 
-	UIArticleHeader						= xr_new<CUIStatic>();UIArticleHeader->SetAutoDelete(true);
-	UIFrameContacts->AttachChild		(UIArticleHeader);
-	xml_init.InitStatic					(uiXml, "article_header_static", 0, UIArticleHeader);
-	UIArticleHeader->SetText			("Contacts");
-
 	UIAnimation							= xr_new<CUIAnimatedStatic>();UIAnimation->SetAutoDelete(true);
-	UIRightFrameHeader->AttachChild		(UIAnimation);
+	UIContactsHeader->AttachChild		(UIAnimation);
 	xml_init.InitAnimatedStatic			(uiXml, "a_static", 0, UIAnimation);
 
 	UIListWnd							= xr_new<CUIScrollView>();UIListWnd->SetAutoDelete(true);
