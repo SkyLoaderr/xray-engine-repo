@@ -208,6 +208,22 @@ LPCSTR movement_type(const MonsterSpace::EMovementType &movement_type)
 #endif
 }
 
+LPCSTR danger_type(const CDangerObject::EDangerType &danger_type)
+{
+	switch (danger_type) {
+		case CDangerObject::eDangerTypeBulletRicochet		: return	("bullet ricochet");
+		case CDangerObject::eDangerTypeAttackSound			: return	("attack sound");
+		case CDangerObject::eDangerTypeEntityAttacked		: return	("entity attacked");
+		case CDangerObject::eDangerTypeEntityDeath			: return	("entity death");
+		case CDangerObject::eDangerTypeFreshEntityCorpse	: return	("fresh entity corpse");
+		case CDangerObject::eDangerTypeAttacked				: return	("I am attacked");
+		case CDangerObject::eDangerTypeGrenade				: return	("greande nearby");
+		case CDangerObject::eDangerTypeEnemySound			: return	("enemy sound");
+		default												: NODEFAULT;
+	};
+	return				("");
+}
+
 void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 {
 	inherited::OnHUDDraw				(hud);
@@ -350,6 +366,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().danger().objects().size());
 	if (memory().danger().selected() && memory().danger().selected()->object()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
+		HUD().Font().pFontSmall->OutNext	("%s%s%stype      : %s",indent,indent,indent,danger_type(memory().danger().selected()->type()));
+		HUD().Font().pFontSmall->OutNext	("%s%s%stime      : %d",indent,indent,indent,memory().danger().selected()->time());
 		HUD().Font().pFontSmall->OutNext	("%s%s%sinitiator : %s",indent,indent,indent,*memory().danger().selected()->object()->cName());
 		if (memory().danger().selected()->dependent_object() && !!memory().danger().selected()->dependent_object()->cName())
 			HUD().Font().pFontSmall->OutNext("%s%s%sdependent : %s",indent,indent,indent,*memory().danger().selected()->dependent_object()->cName());
