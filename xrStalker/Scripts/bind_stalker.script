@@ -175,10 +175,12 @@ function actor_binder:update(delta)
 	if weapon_hide == true or self.object:is_talking() then
 		if self.weapon_hide == false then
 			self.object:hide_weapon()
+			self.weapon_hide = true
 		end
 	else
 		if self.weapon_hide == true then
 			self.object:restore_weapon()
+			self.weapon_hide = false
 		end
 	end	
 
