@@ -303,6 +303,8 @@ void CObjectActionQueueWait::execute			()
 void CObjectActionQueueWait::finalize		()
 {
 	inherited::finalize		();
+	if (!completed())
+		m_magazined->StopedAfterQueueFired(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
