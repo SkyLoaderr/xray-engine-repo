@@ -116,15 +116,26 @@ void CTheoraSurface::write_tga(u32 width, u32 height, u32 frame, u32 pixelformat
 	u_free(data);
 }
 */
+void CTheoraSurface::Play(BOOL _looped)		
+{
+	playing=TRUE;
+	looped=_looped;
+	tm_start = Device.TimerAsyncMM();
+}
+
 BOOL CTheoraSurface::Update(u32 dt)
 {
 	VERIFY				(Valid());
 	BOOL redraw			= FALSE;
+
+
 	if (playing){
-		tm_play			+= dt;
+//		tm_play			+= dt;
+		tm_play			= Device.TimerAsyncMM()-tm_start;
 		if (tm_play>tm_total){ 
 			if (looped){	
-				tm_play %= tm_total;
+//				tm_play %= tm_total;
+				tm_play = tm_play-tm_total;
 				Reset	();
 			}else{	
 				Stop	();

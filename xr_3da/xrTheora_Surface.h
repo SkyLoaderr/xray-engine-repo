@@ -44,7 +44,7 @@ public:
 	BOOL				Update				(u32 dt);
 	void				DecompressFrame		(u32* dst);
 
-	void				Play				(BOOL _looped)		{playing=TRUE;looped=_looped;}
+	void				Play				(BOOL _looped);
 	void				Pause				(BOOL _pause)		{playing=!_pause;}
 	void				Stop				()					{playing=FALSE;Reset();}
 	BOOL				IsPlaying			()					{return playing;}
