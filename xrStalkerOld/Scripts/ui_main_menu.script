@@ -74,7 +74,16 @@ function main_menu:InitControls()
 			  self.screen.y, 
 			  self.screen.width, 
 			  self.screen.height)
-	-- AVI
+			  
+    local xml = CScriptXmlInit()
+     xml:ParseFile("ui_mm_main.xml")
+     
+     xml:InitStatic("background", self)
+     self.st___ = xml:InitStatic("fire_movie", self)
+	 self.st___:SetPPMode()
+			  
+			  
+	--[[ AVI
 
 --	self.avi = CUIStatic()
 --	self.avi:SetAutoDelete(true)
@@ -123,7 +132,7 @@ function main_menu:InitControls()
 	self.multi_tab = ui_main_multi_tab.main_multi_tab()
 	self.multi_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_frame:AttachChild(self.multi_tab)
-
+]]
 --[[
 	local edt = CUIEditBoxEx()
 	edt:InitTexture("ui_frame_01")
@@ -276,7 +285,7 @@ end
 
 function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
-	
+	self.st___:SetHeading(self.st___:GetHeading()+0.1)
 	local bind = dik_to_bind(dik)
 	local console = get_console()
 	
