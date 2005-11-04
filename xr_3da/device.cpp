@@ -269,8 +269,9 @@ void CRenderDevice::FrameMove()
 
 //		u64	qTime		= TimerGlobal.GetElapsed_clk();
 		fTimeGlobal		= TimerGlobal.GetElapsed_sec(); //float(qTime)*CPU::cycles2seconds;
+		u32	_old_global	= dwTimeGlobal;
 		dwTimeGlobal	= TimerGlobal.GetElapsed_ms	();	//u32((qTime*u64(1000))/CPU::cycles_per_second);
-		dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
+		dwTimeDelta		= dwTimeGlobal-_old_global;
 	}
 
 	// Frame move
