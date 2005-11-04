@@ -1,6 +1,13 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!-- CHARACTER INFO IN THE PDA DIALOG -->
 <window>
+	<!-- REMOVE MEEEE -->
+	<name_static x="30" y="182" width="240" height="16">
+		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" complex_mode="0"/>
+	</name_static>	
+	
+	
+	
 	
 	<!-- ICON -->
 	<icon_static x="0" y="0" width="106" height="120"></icon_static>
