@@ -13,6 +13,8 @@ local dummy_vector = vector()
 local state_move = 0
 local state_look = 1
 
+local default_velocity = utils.cfg_get_number( system_ini(), "helicopter", "velocity", nil, true )
+
 ----------------------------------------------------------------------------------------------------
 class "heli_move"
 
@@ -21,8 +23,6 @@ function heli_move:__init( obj, storage )
 	self.heliObject = obj:get_helicopter()
 	self.a          = storage
 	self.combat_mgr = db.storage[obj:id()].combat
-
-	self.default_velocity = utils.cfg_get_number( system_ini(), "helicopter", "velocity", self.object, true )
 end
 
 function heli_move:reset_scheme( loading )
@@ -58,6 +58,8 @@ function heli_move:reset_scheme( loading )
 		self.path_look_info = self.a.path_look_info
 	end
 
+	self.default_velocity = self.a.default_velocity
+
 	if loading then
 		self.state            = xr_logic.pstor_retrieve( self.object, "st"  )
 		self.last_index       = xr_logic.pstor_retrieve( self.object, "li"  ) or nil
@@ -72,6 +74,8 @@ function heli_move:reset_scheme( loading )
 		end
 	else
 		self.heliObject:ClearEnemy()
+
+		self.heliObject:SetMaxVelocity( self.default_velocity )
 
 		self.state            = nil
 		self.last_index       = nil
@@ -374,10 +378,11 @@ function set_scheme( npc, ini, scheme, section )
 
 	a.logic = xr_logic.cfg_get_switch_conditions( ini, section, npc )
 
-	a.path_move       = utils.cfg_get_string( ini, section, "path_move",    npc, true,  ""   )
-	a.path_look       = utils.cfg_get_string( ini, section, "path_look",    npc, false, ""   )
-	a.engine_sound    = utils.cfg_get_bool  ( ini, section, "engine_sound", npc, false, true )
-	a.rocket_delay    = utils.cfg_get_number( ini, section, "rocket_delay", npc, false, nil  )
+	a.path_move        = utils.cfg_get_string( ini, section, "path_move",        npc, true,  ""   )
+	a.path_look        = utils.cfg_get_string( ini, section, "path_look",        npc, false, ""   )
+	a.engine_sound     = utils.cfg_get_bool  ( ini, section, "engine_sound",     npc, false, true )
+	a.rocket_delay     = utils.cfg_get_number( ini, section, "rocket_delay",     npc, false, nil  )
+	a.default_velocity = utils.cfg_get_number( ini, section, "default_velocity", npc, false, default_velocity )
 
 	a.path_move_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	a.path_look_info = nil -- не загружены.
