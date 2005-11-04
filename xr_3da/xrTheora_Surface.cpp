@@ -135,7 +135,7 @@ BOOL CTheoraSurface::Update(u32 dt)
 		if (tm_play>tm_total){ 
 			if (looped){	
 //				tm_play %= tm_total;
-				tm_play = tm_play-tm_total;
+				tm_start = tm_start+tm_total;
 				Reset	();
 			}else{	
 				Stop	();
