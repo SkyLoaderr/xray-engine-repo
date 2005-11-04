@@ -311,6 +311,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	// load damage params
 
 	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
+//	m_tpKnownCustomers				= tpHuman->brain().m_tpKnownCustomers;
 
 	if (!g_Alive())
 		sound().set_sound_mask(u32(eStalkerSoundMaskDie));
@@ -459,7 +460,6 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 		P.w					(&f1,						sizeof(f1));
 	}
-
 //.
 	ALife::ETaskState				task_state = ALife::eTaskStateChooseTask;
 	P.w								(&task_state,sizeof(task_state));
@@ -682,7 +682,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
 		else
 			Exec_Visibility				();
+
 		memory().update					(dt);
+		process_enemies					();
 //		if (memory().enemy().selected() && !check)
 //			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
 //		if (!memory().enemy().selected() && check)
