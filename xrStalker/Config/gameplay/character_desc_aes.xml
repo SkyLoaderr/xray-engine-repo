@@ -30,7 +30,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -61,7 +60,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 
@@ -88,7 +86,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
   
@@ -119,7 +116,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 <!---------------------------MONOLIT SNIPER GAUSS---------------------->
@@ -149,7 +145,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 <!---------------------------MONOLIT MASTER----------------------->
@@ -180,7 +175,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 	
@@ -214,7 +208,6 @@
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SOLDIER MASTER----------------------->
@@ -249,7 +242,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ---------------------->
@@ -283,7 +275,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ AES---------------------->
@@ -348,7 +339,7 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
+		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
