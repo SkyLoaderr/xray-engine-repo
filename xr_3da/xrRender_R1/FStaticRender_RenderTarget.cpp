@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "fstaticrender_rendertarget.h"
+#include "../IGame_Persistent.h"
+
 
 static LPCSTR		RTname			= "$user$rendertarget";
 static LPCSTR		RTname_distort	= "$user$distort";
@@ -134,7 +136,7 @@ BOOL CRenderTarget::NeedPostProcess()
 	bool	_noise	= (param_noise>0.001f);
 	bool	_dual	= (param_duality_h>0.001f)||(param_duality_v>0.001f);
 
-	bool	_menu_pp= g_pGamePersistant?g_pGamePersistant->OnRenderPPUI_query():false;
+	bool	_menu_pp= g_pGamePersistent?g_pGamePersistent->OnRenderPPUI_query():false;
 
 	bool	_cbase	= false;
 	{
@@ -220,7 +222,7 @@ void CRenderTarget::End		()
 	// find if distortion is needed at all
 	BOOL	bPerform	= Perform				()	;
 	BOOL	bDistort	= RImplementation.o.distortion;
-	bool	_menu_pp	= g_pGamePersistant?g_pGamePersistant->OnRenderPPUI_query():false;
+	bool	_menu_pp	= g_pGamePersistent?g_pGamePersistent->OnRenderPPUI_query():false;
 	if ((0==RImplementation.mapDistort.size()) && !_menu_pp) 	bDistort	= FALSE;
 	if (bDistort)		phase_distortion		();
 
@@ -277,5 +279,5 @@ void	CRenderTarget::phase_distortion	()
 	RCache.set_ColorWriteEnable					( );
 	CHK_DX(HW.pDevice->Clear					( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,127,127), 1.0f, 0L));
 	RImplementation.r_dsgraph_render_distort	( );
-	if (g_pGamePersistent)	g_pGamePersistent->OnRenderPPUI_pp()	;	// PP-UI
+	if (g_pGamePersistent)	g_pGamePersistent->OnRenderPPUI_PP()	;	// PP-UI
 }
