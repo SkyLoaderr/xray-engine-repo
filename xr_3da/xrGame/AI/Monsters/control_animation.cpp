@@ -166,3 +166,30 @@ void CControlAnimation::check_callbacks()
 	}
 
 }
+
+void CControlAnimation::restart(SAnimationPart &part, PlayCallback callback)
+{
+	VERIFY				(part.motion.valid());
+	VERIFY				(part.blend);
+
+	u16 bone_or_part	= m_skeleton_animated->LL_GetMotionDef(part.motion)->bone_or_part;
+	if (bone_or_part == u16(-1)) bone_or_part = m_skeleton_animated->LL_PartID("default");
+
+	//save 
+	float time_saved		= part.blend->timeCurrent;
+	
+	// start
+	part.blend				= m_skeleton_animated->LL_PlayCycle(bone_or_part,part.motion, TRUE, callback, this);
+
+	// restore
+	part.blend->timeCurrent = time_saved;
+}
+
+void CControlAnimation::restart()
+{
+	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_object->Visual());
+
+	if (m_data.global.blend)	restart(m_data.global,global_animation_end_callback);
+	if (m_data.legs.blend)		restart(m_data.legs,legs_animation_end_callback);
+	if (m_data.torso.blend)		restart(m_data.torso,torso_animation_end_callback);
+}

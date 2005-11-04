@@ -407,6 +407,7 @@ void CAI_Bloodsucker::debug_on_key(int key)
 	case DIK_MINUS:
 		{
 			cNameVisual_set	("monsters\\krovosos\\krovosos");
+			control().animation().restart();
 
 			//NET_Packet		P;
 			//u_EventGen		(P, GE_CHANGE_VISUAL,ID());
@@ -417,6 +418,8 @@ void CAI_Bloodsucker::debug_on_key(int key)
 	case DIK_EQUALS:
 		{
 			cNameVisual_set	("monsters\\krovosos\\krovosos_xray");
+			control().animation().restart();
+
 			//NET_Packet		P;
 			//u_EventGen		(P, GE_CHANGE_VISUAL,ID());
 			//P.w_stringZ		("monsters\\krovosos\\krovosos_xray");

@@ -63,6 +63,8 @@ public:
 			void	add_anim_event			(MotionID, float, u32);
 
 			CBlend	*current_blend			() {return m_data.global.blend;}
+
+			void	restart					();
 			
 		// Services
 		IC	float	motion_time				(MotionID motion_id, IRender_Visual *visual);
@@ -73,6 +75,8 @@ private:
 	void	play_part			(SAnimationPart &part, PlayCallback callback);
 	void	check_events		(SAnimationPart &part);
 	void	check_callbacks		();
+
+	void	restart				(SAnimationPart &part, PlayCallback callback);
 
 public:
 	enum EAnimationEventType {

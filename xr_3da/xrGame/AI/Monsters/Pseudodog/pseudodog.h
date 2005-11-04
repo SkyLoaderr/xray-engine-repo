@@ -32,8 +32,6 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 	//virtual void	play_effect_sound	();
 
-	virtual bool	jump						(CObject *enemy);
-
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
 
 	virtual IStateManagerBase *create_state_manager	();

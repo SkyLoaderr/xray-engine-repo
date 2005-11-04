@@ -244,13 +244,3 @@ void CChimera::UpdateCL()
 {
 	inherited::UpdateCL				();
 }
-
-bool CChimera::jump(CObject *enemy)
-{
-	if (com_man().script_jump (enemy)) {
-		sound().play			(MonsterSpace::eMonsterSoundAttack);
-		return true;
-	}
-	
-	return false;
-}

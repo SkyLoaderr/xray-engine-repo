@@ -244,15 +244,12 @@ void CSnork::HitEntityInJump(const CEntity *pEntity)
 	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
-bool CSnork::jump(CObject *enemy)
+void CSnork::jump(const Fvector &position, float factor)
 {
-	if (com_man().script_jump (enemy)) {
-		sound().play			(MonsterSpace::eMonsterSoundAttack);
-		return true;
-	}
-	
-	return false;
+	com_man().script_jump	(position, factor);
+	sound().play			(MonsterSpace::eMonsterSoundAttack);
 }
+
 #ifdef _DEBUG
 void CSnork::debug_on_key(int key)
 {

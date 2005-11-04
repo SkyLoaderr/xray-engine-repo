@@ -486,7 +486,7 @@ public:
 			void				info_clear				();
 			
 			// Monster Jumper
-			bool				jump					(CScriptGameObject *enemy);
+			void				jump					(const Fvector &position, float factor);
 
 			void				set_ignore_monster_threshold		(float ignore_monster_threshold);
 			void				restore_ignore_monster_threshold	();

@@ -706,15 +706,17 @@ void CScriptGameObject::info_clear()
 #endif
 }
 
-bool CScriptGameObject::jump(CScriptGameObject *enemy)
+void CScriptGameObject::jump(const Fvector &position, float factor)
 {
 	CBaseMonster	*monster = smart_cast<CBaseMonster*>(&object());
 	if (!monster) {
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot process jump for not a monster!");
-		return false;
+		return;
 	}
-	return 			monster->jump(&enemy->object());
+	
+	monster->jump(position, factor);
 }
+
 
 void CScriptGameObject::make_object_visible_somewhen	(CScriptGameObject *object)
 {

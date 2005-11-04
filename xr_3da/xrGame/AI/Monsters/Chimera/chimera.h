@@ -25,7 +25,6 @@ public:
 	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index);
 	virtual	void	TranslateActionToPathParams ();
 	virtual void	HitEntityInJump				(const CEntity *pEntity);
-	virtual bool	jump						(CObject *enemy);
 
 	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
 	

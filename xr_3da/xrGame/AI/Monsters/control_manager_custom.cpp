@@ -257,7 +257,8 @@ void CControlManagerCustom::jump(CObject *obj, const SControlJumpData &ta)
 	ctrl_data->state_glide.motion					= ta.state_glide.motion;	
 	ctrl_data->state_ground.motion					= ta.state_ground.motion;
 	ctrl_data->state_ground.velocity_mask			= ta.state_ground.velocity_mask;	
-	
+	ctrl_data->force_factor							= -1.f;
+
 	m_man->activate									(ControlCom::eControlJump);
 }
 
@@ -297,6 +298,8 @@ void CControlManagerCustom::load_jump_data(LPCSTR s1, LPCSTR s2, LPCSTR s3, LPCS
 
 	m_jump->setup_data().state_prepare_in_move.velocity_mask	= vel_mask_prepare;
 	m_jump->setup_data().state_ground.velocity_mask				= vel_mask_ground;
+
+	m_jump->setup_data().force_factor = -1.f;
 }
 
 
@@ -322,6 +325,7 @@ void CControlManagerCustom::jump(const SControlJumpData &ta)
 	ctrl_data->state_glide.motion					= ta.state_glide.motion;	
 	ctrl_data->state_ground.motion					= ta.state_ground.motion;
 	ctrl_data->state_ground.velocity_mask			= ta.state_ground.velocity_mask;	
+	ctrl_data->force_factor							= -1.f;
 
 	m_man->activate		(ControlCom::eControlJump);
 }
@@ -339,27 +343,26 @@ void CControlManagerCustom::jump(const Fvector &position)
 	ctrl_data->target_object						= 0;
 	ctrl_data->target_position						= position;
 	ctrl_data->flags.or								(SControlJumpData::ePrepareSkip);
+	ctrl_data->force_factor							= -1.f;
 
 	m_man->activate		(ControlCom::eControlJump);
 }
 
 
-bool CControlManagerCustom::script_jump(CObject *obj)
+void CControlManagerCustom::script_jump(const Fvector &position, float factor)
 {
-	if (!m_man->check_start_conditions(ControlCom::eControlJump)) return false;
-	if (!m_jump->can_jump(obj)) return false;
+	if (!m_man->check_start_conditions(ControlCom::eControlJump)) return;
 
 	m_man->capture		(this, ControlCom::eControlJump);
 
 	SControlJumpData	*ctrl_data = (SControlJumpData *) m_man->data(this, ControlCom::eControlJump);
 	VERIFY				(ctrl_data);
 
-	ctrl_data->target_object		= obj;
-	ctrl_data->target_position		= obj->Position();
-	ctrl_data->flags.set			(SControlJumpData::ePrepareSkip, false);
+	ctrl_data->target_object		= 0;
+	ctrl_data->target_position		= position;
+	ctrl_data->force_factor			= factor;
 
 	m_man->activate		(ControlCom::eControlJump);
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////

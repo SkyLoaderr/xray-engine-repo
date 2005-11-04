@@ -16,7 +16,7 @@ public:
 	virtual void	reinit				();				
 	virtual void	UpdateCL			();
 	virtual void	CheckSpecParams		(u32 spec_params);
-	virtual bool	jump				(CObject *enemy);
+	virtual void	jump				(const Fvector &position, float factor);
 	virtual bool	ability_jump_over_physics	() {return true;}
 	virtual bool	ability_distant_feel		() {return true;}
 	virtual void	HitEntityInJump		(const CEntity *pEntity);

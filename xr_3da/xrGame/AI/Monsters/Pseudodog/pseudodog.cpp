@@ -151,16 +151,6 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 }
 
 
-bool CAI_PseudoDog::jump(CObject *enemy)
-{
-	if (com_man().script_jump (enemy)) {
-		sound().play			(MonsterSpace::eMonsterSoundAttack);
-		return true;
-	}
-
-	return false;
-}
-
 void CAI_PseudoDog::HitEntityInJump		(const CEntity *pEntity) 
 {
 	SAAParam &params	= anim().AA_GetParams("run_jamp_1");

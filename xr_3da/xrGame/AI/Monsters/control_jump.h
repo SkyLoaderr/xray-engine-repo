@@ -5,6 +5,7 @@
 struct SControlJumpData : public ControlCom::IComData {
 	CObject					*target_object;
  	Fvector					target_position;
+	float					force_factor;
 
 	enum EFlags {	
 		eEnablePredictPosition		= u32(1) << 0,

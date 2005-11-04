@@ -152,7 +152,7 @@ public:
 	bool					m_script_state_must_execute;
 
 
-	virtual bool			jump							(CObject *enemy) {return false;}
+	virtual void			jump							(const Fvector &position, float factor) {}
 
 	bool					m_skip_transfer_enemy;			
 	IC		void			skip_transfer_enemy				(bool value){m_skip_transfer_enemy = value;}

@@ -338,8 +338,9 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 			// получить время физ.прыжка
 			float ph_time = m_object->m_PhysicMovementControl->JumpMinVelTime(m_target_position);
 			// выполнить прыжок в соответствии с делителем времени
-			m_object->m_PhysicMovementControl->Jump(m_target_position,ph_time/m_jump_factor);
-			m_jump_time			= ph_time/m_jump_factor;
+			float cur_factor	= ((m_data.force_factor > 0) ? m_data.force_factor : m_jump_factor);
+			m_jump_time			= ph_time/cur_factor;
+			m_object->m_PhysicMovementControl->Jump(m_target_position,m_jump_time);
 			m_time_started		= time();
 			m_time_next_allowed	= m_time_started + m_delay_after_jump;
 			//---------------------------------------------------------------------------------

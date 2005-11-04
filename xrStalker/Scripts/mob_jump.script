@@ -104,11 +104,15 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	storage.logic			= xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
 	storage.jump_path_name	= utils.cfg_get_string(ini, section, "path_jump",		npc, false, gulag_name)
-	storage.ph_jump_phactor	= utils.cfg_get_number(ini, section, "ph_jump_phactor",	npc, false, 1.8)
+	storage.ph_jump_factor	= utils.cfg_get_number(ini, section, "ph_jump_factor",	npc, false, 1.8)
 	
 	local offset_str		= utils.cfg_get_string(ini, section, "offset",			npc, false, gulag_name) 
 	local elems				= parse_names(offset_str)
 	
 	storage.offset			= vector():set(tonumber(elems[1]), tonumber(elems[2]), tonumber(elems[3]))
+	
+	if	not ini:line_exist( section, "on_signal" ) then
+		utils.abort("Bad jump scheme usage! `on_signal` line must be specified")
+	end 
 end
 
