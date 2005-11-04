@@ -367,7 +367,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (memory().danger().selected() && memory().danger().selected()->object()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%stype      : %s",indent,indent,indent,danger_type(memory().danger().selected()->type()));
-		HUD().Font().pFontSmall->OutNext	("%s%s%stime      : %d",indent,indent,indent,memory().danger().selected()->time());
+		HUD().Font().pFontSmall->OutNext	("%s%s%stime      : %.3f (%.3f)",indent,indent,indent,float(memory().danger().selected()->time())/1000.f,float(Device.dwTimeGlobal - memory().danger().selected()->time())/1000.f);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sinitiator : %s",indent,indent,indent,*memory().danger().selected()->object()->cName());
 		if (memory().danger().selected()->dependent_object() && !!memory().danger().selected()->dependent_object()->cName())
 			HUD().Font().pFontSmall->OutNext("%s%s%sdependent : %s",indent,indent,indent,*memory().danger().selected()->dependent_object()->cName());
