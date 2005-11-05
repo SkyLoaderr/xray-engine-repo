@@ -49,4 +49,69 @@
 	
 	<info_portion id="mon_ambush"></info_portion>
 	
+	<!---------------- Sarcofag 2 ------------------->
+	
+	<!---------------- Spawn_stalkers --------------->
+	
+	<info_portion id="sar2_spawn_1"></info_portion>
+	<info_portion id="sar2_spawn_2"></info_portion>
+	<info_portion id="sar2_spawn_3"></info_portion>
+	<info_portion id="sar2_spawn_4"></info_portion>
+	<info_portion id="sar2_spawn_5"></info_portion>
+	<info_portion id="sar2_spawn_6"></info_portion>
+	<info_portion id="sar2_spawn_7"></info_portion>
+	<info_portion id="sar2_spawn_8"></info_portion>
+	<info_portion id="sar2_spawn_9"></info_portion>
+	<info_portion id="sar2_spawn_10"></info_portion>
+	<info_portion id="sar2_spawn_11"></info_portion>
+	<info_portion id="sar2_spawn_12"></info_portion>
+	<info_portion id="sar2_spawn_13"></info_portion>
+	<info_portion id="sar2_spawn_14"></info_portion>
+	<info_portion id="sar2_spawn_15"></info_portion>
+	<info_portion id="sar2_spawn_16"></info_portion>
+	<info_portion id="sar2_spawn_17"></info_portion>
+	<info_portion id="sar2_spawn_18"></info_portion>
+	<info_portion id="sar2_spawn_19"></info_portion>
+	<info_portion id="sar2_spawn_20"></info_portion>
+	<info_portion id="sar2_spawn_21"></info_portion>
+	<info_portion id="sar2_spawn_22"></info_portion>
+	<info_portion id="sar2_spawn_23"></info_portion>
+	<info_portion id="sar2_spawn_24"></info_portion>
+	<info_portion id="sar2_spawn_25"></info_portion>
+	<info_portion id="sar2_spawn_26"></info_portion>
+	<info_portion id="sar2_spawn_27"></info_portion>
+	<info_portion id="sar2_spawn_28"></info_portion>
+	<info_portion id="sar2_spawn_29"></info_portion>
+	<info_portion id="sar2_spawn_30"></info_portion>
+	<info_portion id="sar2_spawn_31"></info_portion>
+	<info_portion id="sar2_spawn_32"></info_portion>
+	<info_portion id="sar2_spawn_33"></info_portion>
+	<info_portion id="sar2_spawn_34"></info_portion>
+	<info_portion id="sar2_spawn_35"></info_portion>
+	<info_portion id="sar2_spawn_36"></info_portion>
+	<info_portion id="sar2_spawn_37"></info_portion>
+	<info_portion id="sar2_spawn_38"></info_portion>
+	<info_portion id="sar2_spawn_39"></info_portion>
+	<info_portion id="sar2_spawn_40"></info_portion>
+	<info_portion id="sar2_spawn_41"></info_portion>
+	<info_portion id="sar2_spawn_42"></info_portion>
+	<info_portion id="sar2_spawn_43"></info_portion>
+	<info_portion id="sar2_spawn_44"></info_portion>
+	<info_portion id="sar2_spawn_45"></info_portion>
+	<info_portion id="sar2_spawn_46"></info_portion>
+	<info_portion id="sar2_spawn_47"></info_portion>
+	<info_portion id="sar2_spawn_48"></info_portion>
+	<info_portion id="sar2_spawn_49"></info_portion>
+	<info_portion id="sar2_spawn_50"></info_portion>
+	<info_portion id="sar2_spawn_51"></info_portion>
+	<info_portion id="sar2_spawn_52"></info_portion>
+	<info_portion id="sar2_spawn_53"></info_portion>
+	<info_portion id="sar2_spawn_54"></info_portion>
+	<info_portion id="sar2_spawn_55"></info_portion>
+	<info_portion id="sar2_spawn_56"></info_portion>
+	<info_portion id="sar2_spawn_57"></info_portion>
+	<info_portion id="sar2_spawn_58"></info_portion>
+	<info_portion id="sar2_spawn_59"></info_portion>
+	<info_portion id="sar2_spawn_60"></info_portion>
+	
 </game_information_portions>
