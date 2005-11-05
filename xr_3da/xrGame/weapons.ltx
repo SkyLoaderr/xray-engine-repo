@@ -1416,6 +1416,74 @@ explosion_immunity		= 1.0
 fire_wound_immunity		= 0.7
 
 
+[explosive_barrel_low]:identity_immunities
+
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "weapons\explosive\barrel_low"
+$prefetch			= 16
+class				= II_EXPLO
+cform				= skeleton
+visual				= physics\balon\bochka_fuel.ogf
+inv_name			= Barrel
+inv_name_short		= 
+inv_weight			= .1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 9
+inv_grid_y			= 9
+;вещь невозможно подобрать
+can_take			= false
+
+cost				= 500
+;-----------------------------------------------------------------------------------
+blast				= 150
+blast_r				= 8
+blast_impulse		= 250
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 5
+frags_r				= 15
+frag_hit			= 75
+frag_hit_impulse	= 150
+
+hit_type_blast		= explosion
+hit_type_frag		= burn
+
+up_throw_factor		= 1.0
+;-----------------------------------------------------------------------------------
+wm_size                  = 0.1
+
+explode_particles		 = explosions\explosion_barrel
+
+light_color		         = 1.9,1.4,0.5
+light_range		         = 14.0
+light_time 		         = 0.85
+
+;трассы от осколков
+fragment_speed				= 100		;скорость осколков (м/с)
+
+explode_duration		 = 5		;подолжительность взрыва (с)
+
+
+;звуки
+snd_explode = weapons\f1_explode
+
+;коэффициенты для попаданий различными типами хитов
+burn_immunity			= 1
+strike_immunity			= 1
+shock_immunity			= 1
+wound_immunity			= 1
+radiation_immunity		= 1
+telepatic_immunity		= 1
+chemical_burn_immunity	= 1
+explosion_immunity		= 1
+fire_wound_immunity		= 3
+
+
 [explosive_barrel]:identity_immunities
 
 GroupControlSection	= spawn_group
