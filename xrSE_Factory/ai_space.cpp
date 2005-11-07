@@ -19,7 +19,7 @@ CAI_Space::CAI_Space				()
 
 void CAI_Space::init				()
 {
-	VERIFY					(m_script_engine);
+	VERIFY					(!m_script_engine);
 	m_script_engine			= xr_new<CScriptEngine>();
 }
 
