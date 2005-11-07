@@ -960,7 +960,8 @@ void CActor::shedule_Update	(u32 DT)
 
 	//обновление инвентаря
 	UpdateInventoryOwner			(DT);
-	GameTaskManager().UpdateTasks	();
+	if (GameID() == GAME_SINGLE)
+		GameTaskManager().UpdateTasks	();
 
 	if(m_holder || !getEnabled() || !Ready())
 	{
