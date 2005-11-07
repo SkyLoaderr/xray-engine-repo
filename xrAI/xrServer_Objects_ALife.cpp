@@ -242,10 +242,6 @@ CSE_ALifeObject::~CSE_ALifeObject			()
 #endif
 }
 
-void CSE_ALifeObject::on_surge				()
-{
-}
-
 bool CSE_ALifeObject::move_offline			() const
 {
 	return						(!m_flags.test(flOfflineNoMove));

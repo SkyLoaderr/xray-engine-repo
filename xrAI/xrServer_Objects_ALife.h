@@ -110,7 +110,6 @@ public:
 	virtual bool					can_switch_online	() const;
 	virtual bool					can_switch_offline	() const;
 	virtual bool					interactive			() const;
-	virtual void					on_surge			();
 	virtual CSE_ALifeObject			*cast_alife_object	() {return this;}
 			bool					move_offline		() const;
 			void					can_switch_online	(bool value);
@@ -127,6 +126,7 @@ public:
 	virtual void					spawn_supplies		(LPCSTR);
 	virtual void					spawn_supplies		();
 			CALifeSimulator			&alife				() const;
+	virtual void					on_surge			();
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObject)
@@ -145,6 +145,14 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeGroupAbstract)
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	() {return this;};
 	virtual CSE_Abstract			*cast_abstract			() {return 0;};
+#ifdef XRGAME_EXPORTS
+	virtual	bool					synchronize_location	();
+	virtual	void					try_switch_online		();
+	virtual	void					try_switch_offline		();
+	virtual	void					switch_online			();
+	virtual	void					switch_offline			();
+	virtual	bool					redundant				() const;
+#endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeGroupAbstract)
 #define script_type_list save_type_list(CSE_ALifeGroupAbstract)
@@ -217,6 +225,38 @@ public:
 	{
 		return						(this);
 	}
+
+#ifdef XRGAME_EXPORTS
+	virtual	void					switch_online			()
+	{
+		inherited2::switch_online	();
+	}
+
+	virtual	void					switch_offline			()
+	{
+		inherited2::switch_offline	();
+	}
+
+	virtual	bool					synchronize_location	()
+	{
+		return						(inherited2::synchronize_location());
+	}
+
+	virtual	void					try_switch_online		()
+	{
+		inherited2::try_switch_online	();
+	}
+
+	virtual	void					try_switch_offline		()
+	{
+		inherited2::try_switch_offline	();
+	}
+
+	virtual	bool					redundant				() const
+	{
+		return							(inherited2::redundant());
+	}
+#endif
 };
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
@@ -227,6 +267,17 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	virtual							~CSE_ALifeDynamicObject	();
 #ifdef XRGAME_EXPORTS
 	virtual void					on_spawn				();
+	virtual void					on_before_register		();
+	virtual void					on_register				();
+	virtual void					on_unregister			();
+	virtual	bool					synchronize_location	();
+	virtual	void					try_switch_online		();
+	virtual	void					try_switch_offline		();
+	virtual	void					switch_online			();
+	virtual	void					switch_offline			();
+	virtual	void					add_online				(const bool &update_registries);
+	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
+	virtual	bool					redundant				() const;
 #endif
 	virtual CSE_ALifeDynamicObject	*cast_alife_dynamic_object	() {return this;}
 SERVER_ENTITY_DECLARE_END
@@ -266,7 +317,7 @@ add_to_type_list(CSE_ALifeSpaceRestrictor)
 #define script_type_list save_type_list(CSE_ALifeSpaceRestrictor)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeSpaceRestrictor)
-	GameGraph::_GRAPH_ID				m_tNextGraphID;
+	GameGraph::_GRAPH_ID			m_tNextGraphID;
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	Fvector							m_tAngles;
@@ -297,6 +348,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);
 	// additional functionality
 	virtual bool					enabled						(CSE_ALifeMonsterAbstract *object) const {return false;};
+	virtual float					suitable					(CSE_ALifeMonsterAbstract *object) const {return 0.f;};
 	virtual void					register_npc				(CSE_ALifeMonsterAbstract *object) {};
 	virtual void					unregister_npc				(CSE_ALifeMonsterAbstract *object) {};
 	virtual	CALifeSmartTerrainTask	*task						(CSE_ALifeMonsterAbstract *object) {return 0;};

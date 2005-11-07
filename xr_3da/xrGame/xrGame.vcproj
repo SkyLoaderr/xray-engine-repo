@@ -771,6 +771,30 @@
 							Filter="">
 							<File
 								RelativePath=".\greeting_manager.cpp">
+								<FileConfiguration
+									Name="Debug|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Mixed|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Release|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="DebugNoExceptions|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\greeting_manager.h">
@@ -1715,26 +1739,34 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="server_entities_brains"
+						Name="server_entities"
 						Filter="">
 						<Filter
-							Name="anomaly"
+							Name="anomalous_zone"
 							Filter="">
 							<File
-								RelativePath=".\alife_anomaly.cpp">
+								RelativePath=".\alife_anomalous_zone.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="creature_abstract"
+							Filter="">
+							<File
+								RelativePath=".\alife_creature_abstract.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="dynamic_object"
+							Filter="">
+							<File
+								RelativePath=".\alife_dynamic_object.cpp">
 							</File>
 						</Filter>
 						<Filter
 							Name="human"
 							Filter="">
 							<File
-								RelativePath=".\alife_human.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_human_behaviour.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_human_misc.cpp">
+								RelativePath=".\alife_human_abstract.cpp">
 							</File>
 							<Filter
 								Name="brain"
@@ -1748,6 +1780,60 @@
 								<File
 									RelativePath=".\alife_human_brain_inline.h">
 								</File>
+								<File
+									RelativePath=".\alife_human_brain_save.h">
+								</File>
+								<File
+									RelativePath=".\alife_human_brain_script.cpp">
+								</File>
+							</Filter>
+							<Filter
+								Name="movement_manager"
+								Filter="">
+								<File
+									RelativePath=".\alife_human_movement_manager.cpp">
+								</File>
+								<File
+									RelativePath=".\alife_human_movement_manager.h">
+								</File>
+								<File
+									RelativePath=".\alife_human_movement_manager_inline.h">
+								</File>
+								<File
+									RelativePath=".\alife_human_movement_manager_script.cpp">
+								</File>
+								<Filter
+									Name="detail_path_manager"
+									Filter="">
+									<File
+										RelativePath=".\alife_human_detail_path_manager.cpp">
+									</File>
+									<File
+										RelativePath=".\alife_human_detail_path_manager.h">
+									</File>
+									<File
+										RelativePath=".\alife_human_detail_path_manager_inline.h">
+									</File>
+									<File
+										RelativePath=".\alife_human_detail_path_manager_script.cpp">
+									</File>
+								</Filter>
+								<Filter
+									Name="patrol_path_manager"
+									Filter="">
+									<File
+										RelativePath=".\alife_human_patrol_path_manager.cpp">
+									</File>
+									<File
+										RelativePath=".\alife_human_patrol_path_manager.h">
+									</File>
+									<File
+										RelativePath=".\alife_human_patrol_path_manager_inline.h">
+									</File>
+									<File
+										RelativePath=".\alife_human_patrol_path_manager_script.cpp">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="object_handler"
@@ -1761,13 +1847,57 @@
 								<File
 									RelativePath=".\alife_human_object_handler_inline.h">
 								</File>
+								<File
+									RelativePath=".\alife_human_object_handler_save.h">
+								</File>
 							</Filter>
 						</Filter>
 						<Filter
-							Name="monster"
+							Name="group_abstract"
 							Filter="">
 							<File
-								RelativePath=".\alife_monster.cpp">
+								RelativePath=".\alife_group_abstract.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="monster_abstract"
+							Filter="">
+							<File
+								RelativePath=".\alife_monster_abstract.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="object"
+							Filter="">
+							<File
+								RelativePath=".\alife_object.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="online_offline_group"
+							Filter="">
+							<File
+								RelativePath=".\alife_online_offline_group.cpp">
+							</File>
+							<Filter
+								Name="brain"
+								Filter="">
+								<File
+									RelativePath=".\alife_online_offline_group_brain.cpp">
+								</File>
+								<File
+									RelativePath=".\alife_online_offline_group_brain.h">
+								</File>
+								<File
+									RelativePath=".\alife_online_offline_group_brain_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="smart_zone"
+							Filter="">
+							<File
+								RelativePath=".\alife_smart_zone.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -1775,6 +1905,13 @@
 							Filter="">
 							<File
 								RelativePath=".\alife_trader.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="trader_abstract"
+							Filter="">
+							<File
+								RelativePath=".\alife_trader_abstract.cpp">
 							</File>
 						</Filter>
 					</Filter>
@@ -1920,6 +2057,9 @@
 							<File
 								RelativePath=".\alife_smart_terrain_task_inline.h">
 							</File>
+							<File
+								RelativePath=".\alife_smart_terrain_task_script.cpp">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -1973,6 +2113,19 @@
 									RelativePath=".\alife_level_registry_inline.h">
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="group_registry"
+							Filter="">
+							<File
+								RelativePath=".\alife_group_registry.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_group_registry.h">
+							</File>
+							<File
+								RelativePath=".\alife_group_registry_inline.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="news_registry"
@@ -4583,6 +4736,9 @@
 					</File>
 					<File
 						RelativePath=".\game_graph_inline.h">
+					</File>
+					<File
+						RelativePath=".\game_graph_script.cpp">
 					</File>
 					<File
 						RelativePath=".\game_graph_space.h">
@@ -8522,9 +8678,6 @@
 						<File
 							RelativePath=".\object_item_script.h">
 						</File>
-						<File
-							RelativePath=".\object_item_script_inline.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="object_item_single"
@@ -8641,6 +8794,30 @@
 					<File
 						RelativePath=".\string_table_defs.h">
 					</File>
+				</Filter>
+				<Filter
+					Name="associative_vector"
+					Filter="">
+					<Filter
+						Name="vector"
+						Filter="">
+						<File
+							RelativePath=".\associative_vector.h">
+						</File>
+						<File
+							RelativePath=".\associative_vector_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="compare"
+						Filter="">
+						<File
+							RelativePath=".\associative_vector_compare_predicate.h">
+						</File>
+						<File
+							RelativePath=".\associative_vector_compare_predicate_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

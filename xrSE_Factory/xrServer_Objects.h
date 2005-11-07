@@ -126,8 +126,9 @@
 // 107 - CSE_ALifeCustomZone			enabled\disabled time extended
 // 108 - CSE_ALifeTraderAbstract		removed property m_tpEvents
 // 109 - CSE_ALifeBaseMonster			added property m_spec_object
+// 110 - CSE_ALifeHumanAbstract			removed a lot
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(109)
+#define SPAWN_VERSION	u16(110)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
