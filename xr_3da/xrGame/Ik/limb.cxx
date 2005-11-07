@@ -599,7 +599,7 @@ int inspect_range(const AngleIntList &f,
     AngleIntListIterator	a;
     AngleInt				*ap;
 
-    for ( a.Start(f); !!(ap = a.Next()); ) {
+    for ( a.Start(f), ap = a.Next(); ap; ap = a.Next()) {
 		
 		if (ap->IsEmpty())
 			continue;
