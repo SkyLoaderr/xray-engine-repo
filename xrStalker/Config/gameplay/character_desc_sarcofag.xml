@@ -231,7 +231,7 @@
 		<map_icon x="0" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
 
-        <class>sar2_</class>
+        <class>sar2_seriy</class>
         <community>monolith</community>
 
         <rank>40</rank>
@@ -372,7 +372,7 @@
 		<map_icon x="0" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
 
-        <class>sar2_</class>
+        <class>sar2_ratcatcher</class>
         <community>monolith</community>
 
         <rank>40</rank>
@@ -924,7 +924,7 @@
 		<map_icon x="5" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
 
-        <class>sar2_voboda_master_ugrumiy</class>
+        <class>sar2_svoboda_master_ugrumiy</class>
         <community>monolith</community>
 
         <rank>40</rank>
