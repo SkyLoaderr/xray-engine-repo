@@ -94,6 +94,72 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
+<!----------------------------- VETERAN ------------------------->
+	<specific_character id="cit_killer_veteran1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="18" y="8"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+
+		<class>cit_killer_veteran</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+		
+		<panic_threshold>0</panic_threshold>
+
+		<visual>actors\killer\stalker_ki_head_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_fmj = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ss190 = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_killer_veteran2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="28" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+
+		<class>cit_killer_veteran</class>
+		<community>killer</community>
+
+		<rank>70</rank>
+		<reputation>-50</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+		
+		<panic_threshold>0</panic_threshold>
+
+		<visual>actors\killer\stalker_ki_mask</visual>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ss190 = 1 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 <!------------------------------ NAUCHNIY ----------------------->
 	<specific_character id="cit_killer_nauchniy" team_default = "1">
 		<name>GENERATE_NAME</name>
@@ -405,7 +471,7 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-<!------------------------------- EXO --------------------------->
+<!-------------------------- VETERAN BEST ----------------------->
 	<specific_character id="cit_bandit_veteran_best" team_default = "1">
 		<name>GENERATE_NAME</name>
 		<icon x="22" y="14"></icon>

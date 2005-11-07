@@ -208,6 +208,9 @@
 	<character id="cit_killer_general">
 		<class>cit_killer_general</class>
 	</character>
+	<character id="cit_killer_veteran">
+		<class>cit_killer_veteran</class>
+	</character>
 	<character id="cit_killer_nauchniy">
 		<class>cit_killer_nauchniy</class>
 	</character>
