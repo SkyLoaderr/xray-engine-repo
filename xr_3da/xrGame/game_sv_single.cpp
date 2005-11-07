@@ -21,11 +21,6 @@ game_sv_Single::~game_sv_Single			()
 void	game_sv_Single::Create			(shared_str& options)
 {
 	inherited::Create					(options);
-}
-
-void game_sv_Single::OnPlayerConnect	(ClientID id_who)
-{
-	inherited::OnPlayerConnect			(id_who);
 
 	if (strstr(*options,"/alife"))
 		m_alife_simulator				= xr_new<CALifeSimulator>(&server(),&options);

@@ -19,7 +19,6 @@ public:
 
 	virtual		LPCSTR				type_name				() const { return "single";};
 	virtual		void				Create					(shared_str& options);
-	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
 
 
