@@ -75,15 +75,15 @@ function main_menu:InitControls()
 			  self.screen.width, 
 			  self.screen.height)
 			  
-    local xml = CScriptXmlInit()
-     xml:ParseFile("ui_mm_main.xml")
+--    local xml = CScriptXmlInit()
+--     xml:ParseFile("ui_mm_main.xml")
      
-     xml:InitStatic("background", self)
-     self.st___ = xml:InitStatic("fire_movie", self)
-	 self.st___:SetPPMode()
+--     xml:InitStatic("background", self)
+--     self.st___ = xml:InitStatic("fire_movie", self)
+--	 self.st___:SetPPMode()
 			  
 			  
-	--[[ AVI
+	-- AVI
 
 --	self.avi = CUIStatic()
 --	self.avi:SetAutoDelete(true)
