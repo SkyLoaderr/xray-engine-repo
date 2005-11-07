@@ -20,11 +20,22 @@ void CParticleTools::OnParticleItemRemove(LPCSTR name, EItemType type, bool& res
     res				= true;
 }
 
+void  CParticleTools::OnControlClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+{
+	m_Transform.identity();
+    bDataModified	= false;
+}
+
 void CParticleTools::OnParticleItemFocused(ListItemsVec& items)
 {
 	PropItemVec props;
 	m_EditMode	= emEffect;
 
+    ButtonValue* B;
+	B=PHelper().CreateButton	(props,"Transform\\Edit",	"Reset",	ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent.bind		(this,&CParticleTools::OnControlClick);
+    PHelper().CreateFlag32		(props,"Transform\\Type",	&m_Flags,	flSetXFORM,"Update","Set");
+    
     // reset to default
     ResetCurrent	();
     

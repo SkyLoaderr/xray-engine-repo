@@ -575,9 +575,10 @@ void CParticleTools::MouseMove(TShiftState Shift)
     case etaAdd: 	break;
     case etaMove:	m_Transform.c.add(m_MoveAmount); break;
     case etaRotate:{
-    	m_RotateVector.normalize_safe();
-        Fmatrix mR;
-        mR.rotation			(m_RotateVector,m_RotateAmount);
+    	Fmatrix mR; mR.identity();
+    	if (!fis_zero(m_RotateVector.x)) 		mR.rotateX(m_RotateAmount);
+        else if (!fis_zero(m_RotateVector.y)) 	mR.rotateY(m_RotateAmount);
+        else if (!fis_zero(m_RotateVector.z)) 	mR.rotateZ(m_RotateAmount);
         m_Transform.mulB_43	(mR);
     }break;
     case etaScale:	break;
@@ -590,8 +591,8 @@ void CParticleTools::RealApplyParent()
 {
     switch(m_EditMode){
     case emNone: break;
-    case emEffect:	m_EditPE->UpdateParent(m_Transform,m_Vel,FALSE); break;    
-    case emGroup:	m_EditPG->UpdateParent(m_Transform,m_Vel,FALSE); break;
+    case emEffect:	m_EditPE->UpdateParent(m_Transform,m_Vel,m_Flags.is(flSetXFORM)); 	break;    
+    case emGroup:	m_EditPG->UpdateParent(m_Transform,m_Vel,m_Flags.is(flSetXFORM)); 	break;
     default: THROW;
     }
 	m_Flags.set		(flApplyParent,FALSE);

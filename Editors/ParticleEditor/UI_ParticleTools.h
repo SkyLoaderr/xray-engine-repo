@@ -54,6 +54,8 @@ class CParticleTools: public CToolsCustom
     void				CompileEffect		(bool bForced=false){m_Flags.set(flCompileEffect,TRUE); if (bForced) RealCompileEffect();}
     u32					remove_action_num;
     void				RealRemoveAction	();
+
+    void __stdcall		OnControlClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
 public:
     void				RemoveAction		(u32 idx, bool bForced=false){remove_action_num=idx;m_Flags.set(flRemoveAction,TRUE); if (bForced) RealRemoveAction();}
 public:
@@ -70,7 +72,8 @@ public:
         flRemoveAction		= (1<<3),
         flAnimatedParent	= (1<<4),
         flAnimatedPath		= (1<<5),
-        flSelectEffect		= (1<<6)
+        flSelectEffect		= (1<<6),
+        flSetXFORM			= (1<<7),
     };
     Flags32				m_Flags;
 protected:
