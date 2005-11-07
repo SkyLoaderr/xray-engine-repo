@@ -1370,23 +1370,26 @@ function sar2_scene_start(actor, npc)
             sar2_heroes[i] = 1
         end
     end
+    printf("effects<sar2>: scene start.")
 end
 
 function sar_hero_dead(actor, npc)
     if sar2_heroes_count > 0 then
         sar2_heroes_count = sar2_heroes_count - 1
     end
+    printf("effects<sar2>: hero dead.")
 end
 
 function sar2_hero_spawn(actor, npc)
     if sar2_heroes_count < sar2_heroes_max_count then
-        local i, v = 0, 0
+        local i, v, c = 0, 0, 0
         local t = {}
 
         for i, v in pairs(sar2_heroes) do
             actor:give_info_portion("sar2_spawn_" .. i)
             table.insert(t, i)
 
+            c = c + 1
             sar2_heroes_count = sar2_heroes_count + 1
             if sar2_heroes_count >= sar2_heroes_max_count then
                 break
@@ -1395,6 +1398,9 @@ function sar2_hero_spawn(actor, npc)
         
         for i, v in pairs(t) do
             sar2_heroes[v] = nil
+        end
+        if c > 0 then
+            printf("effects<sar2>: hero spawn.")
         end
     end
 end
