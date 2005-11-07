@@ -27,7 +27,12 @@ void CPhysicsShell::script_register(lua_State *L)
 			.def("get_angular_vel",				&CPhysicsShell::get_AngularVel)
 		];
 }
-
+Fmatrix	global_transform(CPhysicsElement* E)
+{
+	Fmatrix m;
+	E->GetGlobalTransformDynamic(&m);
+	return m;
+}
 void CPhysicsElement::script_register(lua_State *L)
 {
 	module(L)
@@ -43,7 +48,7 @@ void CPhysicsElement::script_register(lua_State *L)
 			.def("fix",							&CPhysicsElement::Fix)
 			.def("release_fixed",				&CPhysicsElement::ReleaseFixed)
 			.def("is_fixed",					&CPhysicsElement::isFixed)
-			.def("get_global_transform",		&CPhysicsElement::GetGlobalTransformDynamic)
+			.def("global_transform",			&global_transform)
 		];
 }
 
