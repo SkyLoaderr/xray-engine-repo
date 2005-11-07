@@ -17,6 +17,7 @@ private:
 public:
 							CAI_Space		();
 	virtual					~CAI_Space		();
+			void			init			();
 	IC		CScriptEngine	&script_engine	() const;
 };
 
