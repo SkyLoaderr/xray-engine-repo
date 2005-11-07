@@ -34,7 +34,7 @@ CUIDiaryWnd::~CUIDiaryWnd()
 	delete_data(m_DescrView);
 	delete_data(m_ArticlesDB);
 	delete_data(m_updatedSectionImage);
-	delete_data(m_videoWnd);
+//	delete_data(m_videoWnd);
 }
 
 void CUIDiaryWnd::Show(bool status)
