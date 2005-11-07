@@ -1392,9 +1392,13 @@ function sar2_hero_spawn(actor, npc)
                 break
             end
         end
-
-        for i, v in pairs(t) do
-            sar2_heroes[v] = nil
+        
+        if sar2_heroes_count == 0 then
+            actor:give_info_portion("sar2_teleport_end")
+        else
+            for i, v in pairs(t) do
+                sar2_heroes[v] = nil
+            end
         end
     end
 end
