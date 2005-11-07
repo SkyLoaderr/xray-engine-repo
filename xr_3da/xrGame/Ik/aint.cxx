@@ -749,9 +749,9 @@ void Intersect(const AngleIntList &a,
     if (a.IsEmpty() || b.IsEmpty())
 	return; 
 
-    for (AngleIntListIterator aa(a);ap = aa.Next() ; )
+    for (AngleIntListIterator aa(a); !!(ap = aa.Next()) ; )
 	{
-		for (AngleIntListIterator bb(b);bp = bb.Next() ; )
+		for (AngleIntListIterator bb(b); !!(bp = bb.Next()) ; )
 		{
 			aint_intersect(*ap, *bp, c);
 		}
