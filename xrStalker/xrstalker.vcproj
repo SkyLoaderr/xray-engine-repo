@@ -1616,6 +1616,9 @@
 					RelativePath=".\config\weathers\weather_map.ltx">
 				</File>
 				<File
+					RelativePath=".\config\weathers\weather_rain.ltx">
+				</File>
+				<File
 					RelativePath=".\config\weathers\weather_surge.ltx">
 				</File>
 				<File
