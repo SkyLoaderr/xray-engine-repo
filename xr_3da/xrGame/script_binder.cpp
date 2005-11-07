@@ -65,8 +65,8 @@ void CScriptBinder::reinit			()
 	}
 #ifdef DEBUG
 	if (g_bMEMO) {
-		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+//		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+//		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
 		Msg					("CScriptBinder::reinit() : %d",Memory.mem_usage() - start);
 	}
 #endif
@@ -115,8 +115,8 @@ void CScriptBinder::reload			(LPCSTR section)
 #endif
 #ifdef DEBUG
 	if (g_bMEMO) {
-		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+//		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+//		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
 		Msg					("CScriptBinder::reload() : %d",Memory.mem_usage() - start);
 	}
 #endif
@@ -142,8 +142,8 @@ BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 
 #ifdef DEBUG
 	if (g_bMEMO) {
-		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+//		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
+//		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
 		Msg					("CScriptBinder::net_Spawn() : %d",Memory.mem_usage() - start);
 	}
 #endif

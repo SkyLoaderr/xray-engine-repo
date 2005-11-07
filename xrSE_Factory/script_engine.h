@@ -11,6 +11,8 @@
 #include "script_storage.h"
 #include "script_export_space.h"
 #include "script_space_forward.h"
+#include "associative_vector.h"
+
 extern "C" {
 	#include <lua.h>
 	#include <luajit.h>
@@ -33,9 +35,9 @@ struct lua_Debug;
 
 class CScriptEngine : public CScriptStorage {
 public:
-	typedef CScriptStorage								inherited;
-	typedef ScriptEngine::EScriptProcessors				EScriptProcessors;
-	typedef xr_map<EScriptProcessors,CScriptProcess*>	CScriptProcessStorage;
+	typedef CScriptStorage											inherited;
+	typedef ScriptEngine::EScriptProcessors							EScriptProcessors;
+	typedef associative_vector<EScriptProcessors,CScriptProcess*>	CScriptProcessStorage;
 
 private:
 	bool						m_reload_modules;
@@ -60,6 +62,7 @@ private:
 public:
 								CScriptEngine				();
 	virtual						~CScriptEngine				();
+			void				init						();
 	virtual	void				unload						();
 	static	int					lua_panic					(lua_State *L);
 	static	void				lua_error					(lua_State *L);
@@ -75,11 +78,9 @@ public:
 			void				process_file_if_exists		(LPCSTR file_name, bool warn_if_not_exist);
 			void				process_file				(LPCSTR file_name);
 			void				process_file				(LPCSTR file_name, bool reload_modules);
-			void				script_export				();
 			bool				function_object				(LPCSTR function_to_call, luabind::object &object, int type = LUA_TFUNCTION);
 			void				register_script_classes		();
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
-			void				load_class_registrators		();
 
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);

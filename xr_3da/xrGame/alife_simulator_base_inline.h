@@ -104,6 +104,13 @@ IC	const CALifeSmartTerrainRegistry	&CALifeSimulatorBase::smart_terrains		() con
 	return						(*m_smart_terrains);
 }
 
+IC	const CALifeGroupRegistry			&CALifeSimulatorBase::groups				() const
+{
+	VERIFY						(initialized());
+	VERIFY						(m_groups);
+	return						(*m_groups);
+}
+
 IC	CALifeSimulatorHeader				&CALifeSimulatorBase::header				()
 {
 	VERIFY						(initialized());
@@ -193,6 +200,13 @@ IC	CALifeSmartTerrainRegistry			&CALifeSimulatorBase::smart_terrains		()
 	VERIFY						(initialized());
 	VERIFY						(m_smart_terrains);
 	return						(*m_smart_terrains);
+}
+
+IC	CALifeGroupRegistry					&CALifeSimulatorBase::groups				()
+{
+	VERIFY						(initialized());
+	VERIFY						(m_groups);
+	return						(*m_groups);
 }
 
 IC	CALifeRegistryContainer		&CALifeSimulatorBase::registry						() const

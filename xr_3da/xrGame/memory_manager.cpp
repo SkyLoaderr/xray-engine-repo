@@ -13,7 +13,7 @@
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
 #include "item_manager.h"
-#include "greeting_manager.h"
+//#include "greeting_manager.h"
 #include "danger_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ai/stalker/ai_stalker_impl.h"
@@ -37,7 +37,7 @@ CMemoryManager::CMemoryManager		(CEntityAlive *entity_alive, CSound_UserDataVisi
 	m_hit				= xr_new<CHitMemoryManager>		(m_object, m_stalker);
 	m_enemy				= xr_new<CEnemyManager>			(m_object);
 	m_item				= xr_new<CItemManager>			(m_object);
-	m_greeting			= xr_new<CGreetingManager>		(m_object);
+//	m_greeting			= xr_new<CGreetingManager>		(m_object);
 	m_danger			= xr_new<CDangerManager>		(m_object);
 }
 
@@ -48,7 +48,7 @@ CMemoryManager::~CMemoryManager		()
 	xr_delete			(m_hit);
 	xr_delete			(m_enemy);
 	xr_delete			(m_item);
-	xr_delete			(m_greeting);
+//	xr_delete			(m_greeting);
 	xr_delete			(m_danger);
 }
 
@@ -59,7 +59,7 @@ void CMemoryManager::Load			(LPCSTR section)
 	hit().Load			(section);
 	enemy().Load		(section);
 	item().Load			(section);
-	greeting().Load		(section);
+//	greeting().Load		(section);
 	danger().Load		(section);
 }
 
@@ -70,7 +70,7 @@ void CMemoryManager::reinit			()
 	hit().reinit		();
 	enemy().reinit		();
 	item().reinit		();
-	greeting().reinit	();
+//	greeting().reinit	();
 	danger().reinit		();
 }
 
@@ -81,7 +81,7 @@ void CMemoryManager::reload			(LPCSTR section)
 	hit().reload		(section);
 	enemy().reload		(section);
 	item().reload		(section);
-	greeting().reload	(section);
+//	greeting().reload	(section);
 	danger().reload		(section);
 }
 
@@ -99,7 +99,7 @@ void CMemoryManager::update			(float time_delta)
 	// update enemies and items
 	enemy().reset		();
 	item().reset		();
-	greeting().reset	();
+//	greeting().reset	();
 
 	if (visual().enabled())
 		update			(visual().objects(),true);
@@ -109,7 +109,7 @@ void CMemoryManager::update			(float time_delta)
 	
 	enemy().update		();
 	item().update		();
-	greeting().update	();
+//	greeting().update	();
 	danger().update		();
 	
 	STOP_PROFILE
@@ -143,7 +143,7 @@ void CMemoryManager::update			(const xr_vector<T> &objects, bool add_enemies)
 		}
 
 		const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
-		if (m_stalker && stalker && greeting().add(stalker))
+		if (m_stalker && stalker /**&& greeting().add(stalker)/**/)
 			continue;
 
 		if ((*I).m_object)

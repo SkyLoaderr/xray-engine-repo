@@ -251,6 +251,7 @@ float CVisualMemoryManager::get_visible_value	(float distance, float object_dist
 
 CNotYetVisibleObject *CVisualMemoryManager::not_yet_visible_object(const CGameObject *game_object)
 {
+	START_PROFILE("AI/Memory Manager/visuals/not_yet_visible_object")
 	xr_vector<CNotYetVisibleObject>::iterator	I = std::find_if(
 		m_not_yet_visible_objects.begin(),
 		m_not_yet_visible_objects.end(),
@@ -259,6 +260,7 @@ CNotYetVisibleObject *CVisualMemoryManager::not_yet_visible_object(const CGameOb
 	if (I == m_not_yet_visible_objects.end())
 		return							(0);
 	return								(&*I);
+	STOP_PROFILE
 }
 
 void CVisualMemoryManager::add_not_yet_visible_object	(const CNotYetVisibleObject &not_yet_visible_object)

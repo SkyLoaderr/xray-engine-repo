@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "associative_vector.h"
+
 template <
 	typename _operator_condition,
 	typename _condition_state,
@@ -57,35 +59,9 @@ public:
 			return			(m_operator);
 		}
 	};
-	typedef xr_vector<SOperator>									OPERATOR_VECTOR;
-	typedef typename OPERATOR_VECTOR::const_iterator				const_iterator;
-	typedef std::pair<_condition_type,_condition_evaluator_ptr>		EVALUATOR_PAIR;
-	typedef xr_vector<EVALUATOR_PAIR>								EVALUATORS;
-
-	struct evaluator_predicate {
-		const _condition_type	*m_id;
-
-		IC						evaluator_predicate	(const _condition_type &id)
-		{
-			m_id				= &id;
-		}
-
-		IC						evaluator_predicate	()
-		{
-			m_id				= 0;
-		}
-
-		IC		bool			operator()			(const EVALUATOR_PAIR &pair) const
-		{
-			VERIFY				(m_id);
-			return				(*m_id == pair.first);
-		}
-
-		IC		bool			operator()			(const EVALUATOR_PAIR &pair0, const EVALUATOR_PAIR &pair1) const
-		{
-			return				(pair0.first < pair1.first);
-		}
-	};
+	typedef xr_vector<SOperator>											OPERATOR_VECTOR;
+	typedef typename OPERATOR_VECTOR::const_iterator						const_iterator;
+	typedef associative_vector<_condition_type,_condition_evaluator_ptr>	EVALUATORS;
 
 protected:
 	OPERATOR_VECTOR				m_operators;

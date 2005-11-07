@@ -53,13 +53,14 @@ public:
 	typedef OBJECT_ITEM_STORAGE::const_iterator	const_iterator;
 
 protected:
-	OBJECT_ITEM_STORAGE					m_clsids;
-	bool								m_initialized;
+	mutable OBJECT_ITEM_STORAGE			m_clsids;
+	mutable bool						m_actual;
 
 protected:
 			void						register_classes				();
 	IC		void						add								(CObjectItemAbstract *item);
 	IC		const OBJECT_ITEM_STORAGE	&clsids							() const;
+	IC		void						actualize						() const;
 	template <typename _unknown_type>
 	IC		void						add								(const CLASS_ID &clsid, LPCSTR script_clsid);
 

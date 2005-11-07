@@ -21,6 +21,7 @@
 #include "alife_news_registry.h"
 #include "alife_story_registry.h"
 #include "alife_smart_terrain_registry.h"
+#include "alife_group_registry.h"
 #include "alife_registry_container.h"
 #include "xrserver.h"
 #include "level_navigation_graph.h"
@@ -44,8 +45,9 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_news						= 0;
 	m_story_objects				= 0;
 	m_smart_terrains			= 0;
+	m_groups					= 0;
 	m_registry_container		= 0;
-	random().seed						(u32(CPU::QPC() & 0xffffffff));
+	random().seed				(u32(CPU::QPC() & 0xffffffff));
 }
 
 CALifeSimulatorBase::~CALifeSimulatorBase	()
@@ -68,6 +70,7 @@ void CALifeSimulatorBase::unload			()
 	xr_delete					(m_news);
 	xr_delete					(m_story_objects);
 	xr_delete					(m_smart_terrains);
+	xr_delete					(m_groups);
 	xr_delete					(m_registry_container);
 	m_initialized				= false;
 }
@@ -87,6 +90,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
 	m_story_objects				= xr_new<CALifeStoryRegistry>		();
 	m_smart_terrains			= xr_new<CALifeSmartTerrainRegistry>();
+	m_groups					= xr_new<CALifeGroupRegistry>		();
 	m_registry_container		= xr_new<CALifeRegistryContainer>	();
 	m_initialized				= true;
 }

@@ -12,6 +12,7 @@
 #include "motivation.h"
 #include "motivation_action.h"
 #include "script_export_space.h"
+#include "associative_vector.h"
 
 class CScriptGameObject;
 
@@ -22,9 +23,9 @@ template <
 >
 class CMotivationManager {
 public:
-	typedef _motivation_type<_object_type>			CSMotivation;
-	typedef _motivation_action_type<_object_type>	CSMotivationAction;
-	typedef xr_map<u32,CSMotivationAction*>			ACTIONS;
+	typedef _motivation_type<_object_type>				CSMotivation;
+	typedef _motivation_action_type<_object_type>		CSMotivationAction;
+	typedef associative_vector<u32,CSMotivationAction*>	ACTIONS;
 
 public:
 	typedef CGraphAbstract<

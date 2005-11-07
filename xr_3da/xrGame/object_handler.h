@@ -11,14 +11,6 @@
 #include "inventoryowner.h"
 #include "graph_engine_space.h"
 
-template<typename _container_type>
-struct CMapLocator {
-	bool operator()(const typename _container_type::value_type &I, u32 id) const
-	{
-		return		(I.first < id);
-	}
-};
-
 namespace MonsterSpace {
 	enum EObjectAction;
 }

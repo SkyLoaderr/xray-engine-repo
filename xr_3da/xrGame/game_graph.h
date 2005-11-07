@@ -62,7 +62,7 @@ public:
 	IC		void					set_current_level	(u32 level_id);
 	IC		const _GRAPH_ID			current_level_vertex() const;
 
-#if 1
+#if 0
 };
 #else
 	DECLARE_SCRIPT_REGISTER_FUNCTION

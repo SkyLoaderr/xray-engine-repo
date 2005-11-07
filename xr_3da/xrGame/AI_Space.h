@@ -48,6 +48,7 @@ private:
 public:
 										CAI_Space				();
 	virtual								~CAI_Space				();
+			void						init					();
 	IC		CGameGraph					&game_graph				() const;
 	IC		CGameGraph					*get_game_graph			() const;
 	IC		CLevelNavigationGraph		&level_graph			() const;

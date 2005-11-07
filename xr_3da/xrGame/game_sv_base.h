@@ -162,6 +162,8 @@ public:
 	virtual		bool				custom_sls_default		() {return false;};
 	virtual		void				sls_default				() {};
 	virtual		shared_str			level_name				(const shared_str &server_options) const;
+	virtual		void				on_death				(CSE_Abstract *e_dest, CSE_Abstract *e_src);
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

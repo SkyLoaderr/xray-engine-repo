@@ -14,13 +14,14 @@ class CGameLevelCrossTable;
 class CGameGraph;
 
 #include "object_interfaces.h"
+#include "associative_vector.h"
 
 class CPatrolPathStorage : public IPureSerializeObject<IReader,IWriter> {
 private:
 	typedef IPureSerializeObject<IReader,IWriter>		inherited;
 
 public:
-	typedef xr_map<shared_str,CPatrolPath*>				PATROL_REGISTRY;
+	typedef associative_vector<shared_str,CPatrolPath*>	PATROL_REGISTRY;
 	typedef PATROL_REGISTRY::iterator					iterator;
 	typedef PATROL_REGISTRY::const_iterator				const_iterator;
 

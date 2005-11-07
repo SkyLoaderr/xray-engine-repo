@@ -26,6 +26,7 @@
 #include "ef_pattern.h"
 #include "graph_engine.h"
 #include "xrserver.h"
+#include "alife_human_brain.h"
 
 using namespace ALife;
 
@@ -270,12 +271,12 @@ void CALifeSurgeManager::update_tasks()
 	TRADER_SET_MAP::const_iterator	I = organizations().cross_traders().begin();
 	TRADER_SET_MAP::const_iterator	E = organizations().cross_traders().end();
 	for ( ; I != E; ++I) {
-		ITEM_SET_MAP::const_iterator	J = spawns().artefact_anomaly_map().find((LPSTR)(*I).first);
+		CALifeSpawnRegistry::REGISTRY::const_iterator	J = spawns().artefact_anomaly_map().find((LPSTR)(*I).first);
 		if (spawns().artefact_anomaly_map().end() == J)
 			continue;
 		// iterating on the anomaly types that can generate this type of artefact
-		U32_SET::const_iterator	i = (*J).second.begin();
-		U32_SET::const_iterator	e = (*J).second.end();
+		CALifeSpawnRegistry::ZONE_TYPES::const_iterator	i = (*J).second.begin();
+		CALifeSpawnRegistry::ZONE_TYPES::const_iterator	e = (*J).second.end();
 		for ( ; i != e; ++i) {
 			// iterating on all the active anomalies by the particular type
 			ANOMALY_P_VECTOR::const_iterator	II = anomalies().cross()[*i].begin();
@@ -314,39 +315,18 @@ void CALifeSurgeManager::update_tasks()
 
 void CALifeSurgeManager::assign_stalker_customers()
 {
-//	SCHEDULE_P_MAP::const_iterator	I = scheduled().objects().begin();
-//	SCHEDULE_P_MAP::const_iterator	E = scheduled().objects().end();
 	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>((*I).second);
-		if (l_tpALifeHumanAbstract && xr_strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
-//			u32						N = _GetItemCount(l_tpALifeHumanAbstract->m_caKnownCustomers);
-//			if (!N)
-//				continue;
-//			
-//			string32				S;
-//			l_tpALifeHumanAbstract->m_tpKnownCustomers.clear();
-//			for (u32 i=0; i<N; ++i) {
-//				_GetItem(l_tpALifeHumanAbstract->m_caKnownCustomers,i,S);
-//				bool				bOk = false;
-//				D_OBJECT_P_MAP::const_iterator	II = objects().objects().begin();
-//				D_OBJECT_P_MAP::const_iterator	EE = objects().objects().end();
-//				for ( ; II != EE; ++II) {
-//					CSE_ALifeTraderAbstract *l_tpTraderAbstract = smart_cast<CSE_ALifeTraderAbstract*>((*II).second);
-//					if (l_tpTraderAbstract) {
-//						if (!xr_strcmp((*II).second->name_replace(),S)) {
-//							l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back((*II).second->ID);
-//							bOk		= true;
-//							break;
-//						}
-//					}
-//				}
-//				R_ASSERT3			(bOk,"There is no customer for the stalker ",l_tpALifeHumanAbstract->name_replace());
-//			}
-			l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back(traders().trader_nearest(l_tpALifeHumanAbstract)->ID);
-			l_tpALifeHumanAbstract->m_caKnownCustomers = 0;
-		}
+		if (!l_tpALifeHumanAbstract)
+			continue;
+
+		l_tpALifeHumanAbstract->brain().m_tpKnownCustomers.push_back(
+			traders().trader_nearest(
+				l_tpALifeHumanAbstract
+			)->ID
+		);
 	}
 }
 

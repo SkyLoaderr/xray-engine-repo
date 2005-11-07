@@ -10,6 +10,7 @@
 
 #include "restricted_object.h"
 #include "detail_path_manager_space.h"
+#include "associative_vector.h"
 
 using namespace DetailPathManager;
 
@@ -68,7 +69,12 @@ private:
 	CRestrictedObject							*m_restricted_object;
 
 public:
-	typedef xr_map<u32,STravelParams>	VELOCITIES;
+	typedef
+		associative_vector<
+			u32,
+			STravelParams
+		>										VELOCITIES;
+
 protected:
 	VELOCITIES									m_movement_params;
 	u32											m_current_travel_point;

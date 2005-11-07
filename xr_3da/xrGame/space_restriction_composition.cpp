@@ -20,6 +20,13 @@
 #include <malloc.h>
 #pragma warning(pop)
 
+int g_restriction_checker = 0;
+
+CSpaceRestrictionComposition::~CSpaceRestrictionComposition	()
+{
+	--g_restriction_checker;
+}
+
 struct CMergePredicate {
 	CSpaceRestrictionComposition *m_restriction;
 

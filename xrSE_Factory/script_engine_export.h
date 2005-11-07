@@ -128,4 +128,10 @@
 #	include "script_lanim.h"
 #	include "artifact.h"
 #	include "game_cl_single.h"
+#	include "alife_human_brain.h"
+#	include "alife_human_movement_manager.h"
+#	include "alife_human_patrol_path_manager.h"
+#	include "alife_human_detail_path_manager.h"
+#	include "alife_smart_terrain_task.h"
+#	include "game_graph.h"
 #endif

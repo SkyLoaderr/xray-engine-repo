@@ -14,6 +14,8 @@
 class CSpaceRestrictionBridge;
 class CSpaceRestrictionHolder;
 
+extern int g_restriction_checker;
+
 class CSpaceRestrictionComposition : public CSpaceRestrictionBase {
 public:
 	using CSpaceRestrictionBase::inside;
@@ -33,6 +35,7 @@ protected:
 
 public:
 	IC						CSpaceRestrictionComposition	(CSpaceRestrictionHolder *space_restriction_holder, shared_str space_restrictors);
+		virtual				~CSpaceRestrictionComposition	();
 		virtual void		initialize						();
 		virtual bool		inside							(const Fsphere &sphere);
 	IC	virtual shared_str	name							() const;

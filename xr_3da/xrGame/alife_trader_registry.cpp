@@ -11,11 +11,11 @@
 #include "ai_space.h"
 #include "game_graph.h"
 
-CALifeTraderRegistry::~CALifeTraderRegistry	()
+CALifeTraderRegistry::~CALifeTraderRegistry				()
 {
 }
 
-CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *human)
+CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest	(CSE_ALifeHumanAbstract *human)
 {
 	float						best_distance = flt_max;
 	CSE_ALifeTrader				*trader = 0;
@@ -35,9 +35,24 @@ CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *hu
 	return						(trader);
 }
 
-void CALifeTraderRegistry::add	(CSE_ALifeDynamicObject *object)
+void CALifeTraderRegistry::add							(CSE_ALifeDynamicObject *object)
 {
-	CSE_ALifeTrader			*trader = smart_cast<CSE_ALifeTrader*>(object);
-	if (trader)
-		m_traders.push_back	(trader);
+	CSE_ALifeTrader				*trader = smart_cast<CSE_ALifeTrader*>(object);
+	if (!trader)
+		return;
+
+	m_traders.push_back			(trader);
+}
+
+void CALifeTraderRegistry::remove						(CSE_ALifeDynamicObject *object)
+{
+	CSE_ALifeTrader				*trader = smart_cast<CSE_ALifeTrader*>(object);
+	if (!trader)
+		return;
+
+	TRADER_REGISTRY::iterator	I = std::find(m_traders.begin(),m_traders.end(),trader);
+	if (I == m_traders.end())
+		return;
+
+	m_traders.erase				(I);
 }

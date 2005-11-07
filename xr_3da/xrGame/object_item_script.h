@@ -38,5 +38,3 @@ public:
 #endif
 	virtual ObjectFactory::SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 };
-
-#include "object_item_script_inline.h"

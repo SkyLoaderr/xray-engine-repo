@@ -59,6 +59,7 @@ CALifeUpdateManager::CALifeUpdateManager	(xrServer *server, LPCSTR section) :
 	shedule.t_min			= pSettings->r_s32	(section,"schedule_min");
 	shedule.t_max			= pSettings->r_s32	(section,"schedule_max");
 	shedule_register		();
+
 	m_max_process_time		= pSettings->r_s32	(section,"process_time");
 	m_update_monster_factor	= pSettings->r_float(section,"update_monster_factor");
 	m_changing_level		= false;
@@ -188,8 +189,6 @@ void CALifeUpdateManager::update(bool switch_objects, bool spawn_update, bool sc
 					Level().Send			(net_packet,net_flags(TRUE));
 					return;
 				}
-//				for ( ;!graph().level().objects().empty(); )
-//					furl_object			((*graph().level().objects().begin()).second);
 				break;
 			}
 			
@@ -245,6 +244,21 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 	save								(save_name);
 
 	Msg									("* New game is successfully created!");
+
+#if 0
+	CSE_Abstract						*object = spawn_item("online_offline_group",Fvector().set(0.f,0.f,0.f),u32(-1),GameGraph::_GRAPH_ID(-1),0xffff);
+	CSE_ALifeOnlineOfflineGroup			*group = smart_cast<CSE_ALifeOnlineOfflineGroup*>(object);
+	VERIFY								(group);
+
+	CALifeObjectRegistry::OBJECT_REGISTRY::const_iterator	I = objects().objects().begin();
+	CALifeObjectRegistry::OBJECT_REGISTRY::const_iterator	E = objects().objects().end();
+	for ( ; I != E; ++I) {
+		if (!smart_cast<CSE_ALifeHumanStalker*>((*I).second))
+			continue;
+
+		group->register_member			((*I).first);
+	}
+#endif
 }
 
 void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_only)
@@ -296,37 +310,22 @@ bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
 void CALifeUpdateManager::set_switch_online		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-//	if (object->can_switch_online() == value)
-//		return;
-
-//	unregister_object				(object,object->m_bOnline);
-//	object->m_alife_simulator		= 0;
+	VERIFY							(object);
 	object->can_switch_online		(value);
-//	register_object					(object,true);
 }
 
 void CALifeUpdateManager::set_switch_offline	(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-//	if (object->can_switch_offline() == value)
-//		return;
-
-//	unregister_object				(object,object->m_bOnline);
-//	object->m_alife_simulator		= 0;
+	VERIFY							(object);
 	object->can_switch_offline		(value);
-//	register_object					(object,true);
 }
 
 void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-//	if (object->interactive() == value)
-//		return;
-
-//	unregister_object				(object,object->m_bOnline);
-//	object->m_alife_simulator		= 0;
+	VERIFY							(object);
 	object->interactive				(value);
-//	register_object					(object,true);
 }
 
 void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const

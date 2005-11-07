@@ -38,7 +38,7 @@ void CSelectorManager::reinit			()
 
 void CSelectorManager::remove			(LPCSTR selector_name)
 {
-	xr_map<LPCSTR,CAbstractVertexEvaluator*,pred_str>::iterator	I = m_selectors.find(selector_name);
+	SELECTORS::iterator			I = m_selectors.find(selector_name);
 	VERIFY						(m_selectors.end() != I);
 	xr_delete					((*I).second);
 	m_selectors.erase			(I);

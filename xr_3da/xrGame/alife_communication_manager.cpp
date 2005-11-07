@@ -13,6 +13,8 @@
 #include "alife_object_registry.h"
 #include "alife_graph_registry.h"
 #include "ai_debug.h"
+#include "alife_human_brain.h"
+#include "alife_human_object_handler.h"
 
 #pragma warning(push)
 #pragma warning(disable:4995)
@@ -125,38 +127,38 @@ void CALifeCommunicationManager::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tp
 	sort				(m_temp_item_vector.begin(),m_temp_item_vector.end(),CSortByOwnerPredicate(tpALifeHumanAbstract->ID));
 	switch (i) {
 		case 0 : {
-			j	= tpALifeHumanAbstract->ifChooseFood		(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_food		(&tpBlockedItems);
 			break;
 		}
 		case 1 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeKnife,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_weapon		(eWeaponPriorityTypeKnife,&tpBlockedItems);
 			break;
 		}
 		case 2 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeSecondary,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_weapon		(eWeaponPriorityTypeSecondary,&tpBlockedItems);
 			break;
 		}
 		case 3 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypePrimary,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_weapon		(eWeaponPriorityTypePrimary,&tpBlockedItems);
 			break;
 		}
 		case 4 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeGrenade,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_weapon		(eWeaponPriorityTypeGrenade,&tpBlockedItems);
 			break;
 		}
 		case 5 : {
-			j	= tpALifeHumanAbstract->ifChooseMedikit		(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_medikit		(&tpBlockedItems);
 			break;
 		}
 		case 6 : {
-			j	= tpALifeHumanAbstract->ifChooseDetector	(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_detector	(&tpBlockedItems);
 			break;
 		}
 		case 7 : {
-			j	= tpALifeHumanAbstract->ifChooseEquipment	(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->brain().objects().choose_equipment	(&tpBlockedItems);
 			break;
 		}
-		default :			NODEFAULT;
+		default :																	NODEFAULT;
 	}
 }
 
@@ -170,8 +172,8 @@ void CALifeCommunicationManager::vfAssignItemParents(CSE_ALifeHumanAbstract *tpA
 	for ( ; I != E; ++I) {
 		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(objects().object(*I));
 		tpALifeHumanAbstract->attach(l_tpALifeInventoryItem,true,true);
-		R_ASSERT			(tpALifeHumanAbstract->m_dwTotalMoney >= l_tpALifeInventoryItem->m_dwCost);
-		tpALifeHumanAbstract->m_dwTotalMoney			-= l_tpALifeInventoryItem->m_dwCost;
+		R_ASSERT			(tpALifeHumanAbstract->brain().m_dwTotalMoney >= l_tpALifeInventoryItem->m_dwCost);
+		tpALifeHumanAbstract->brain().m_dwTotalMoney	-= l_tpALifeInventoryItem->m_dwCost;
 	}
 }
 
@@ -352,7 +354,7 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 		}
 	}
 
-	bool					l_bResult = tpALifeHumanAbstract1->bfCanGetItem(0) && tpALifeHumanAbstract2->bfCanGetItem(0);
+	bool					l_bResult = tpALifeHumanAbstract1->brain().objects().can_take_item(0) && tpALifeHumanAbstract2->brain().objects().can_take_item(0);
 
 	if (!l_bResult) {
 		{
@@ -625,12 +627,12 @@ void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALif
 		vfPrintItems	(tpALifeHumanAbstract2,m_tpItems2);
 	}
 #endif
-	tpALifeHumanAbstract1->m_dwTotalMoney = dwfComputeItemCost(m_tpItems1) + tpALifeHumanAbstract1->m_dwMoney;
-	tpALifeHumanAbstract2->m_dwTotalMoney = dwfComputeItemCost(m_tpItems2) + tpALifeHumanAbstract2->m_dwMoney;
+	tpALifeHumanAbstract1->brain().m_dwTotalMoney = dwfComputeItemCost(m_tpItems1) + tpALifeHumanAbstract1->m_dwMoney;
+	tpALifeHumanAbstract2->brain().m_dwTotalMoney = dwfComputeItemCost(m_tpItems2) + tpALifeHumanAbstract2->m_dwMoney;
 
-	if (!(tpALifeHumanAbstract1->m_dwTotalMoney*tpALifeHumanAbstract2->m_dwTotalMoney)) {
-		tpALifeHumanAbstract1->m_dwTotalMoney = u32(-1);
-		tpALifeHumanAbstract2->m_dwTotalMoney = u32(-1);
+	if (!(tpALifeHumanAbstract1->brain().m_dwTotalMoney*tpALifeHumanAbstract2->brain().m_dwTotalMoney)) {
+		tpALifeHumanAbstract1->brain().m_dwTotalMoney = u32(-1);
+		tpALifeHumanAbstract2->brain().m_dwTotalMoney = u32(-1);
 #ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
 			Msg			("There is no money and valuable items to trade");
@@ -653,7 +655,7 @@ void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALif
 	tpALifeHumanAbstract2->vfDetachAll();
 #endif
 	for (int j=0, k=0; j<8; ++j) {
-		if (m_temp_item_vector.empty() || !(tpALifeHumanAbstract1->m_dwTotalMoney + tpALifeHumanAbstract2->m_dwTotalMoney))
+		if (m_temp_item_vector.empty() || !(tpALifeHumanAbstract1->brain().m_dwTotalMoney + tpALifeHumanAbstract2->brain().m_dwTotalMoney))
 			break;
 		int				l_iItemCount1 = 0, l_iItemCount2 = 0;
 		switch (k) {
@@ -786,8 +788,8 @@ void CALifeCommunicationManager::vfPerformTrading(CSE_ALifeHumanAbstract *tpALif
 	}
 #endif
 
-	tpALifeHumanAbstract1->m_dwTotalMoney = u32(-1);
-	tpALifeHumanAbstract2->m_dwTotalMoney = u32(-1);
+	tpALifeHumanAbstract1->brain().m_dwTotalMoney = u32(-1);
+	tpALifeHumanAbstract2->brain().m_dwTotalMoney = u32(-1);
 }
 
 void CALifeCommunicationManager::vfPerformCommunication()
@@ -825,7 +827,7 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 	}
 #endif
 	CSE_ALifeItemPDA						*original_pda = 0;
-	tpALifeHumanAbstract->m_dwTotalMoney	= tpALifeHumanAbstract->m_dwMoney;
+	tpALifeHumanAbstract->brain().m_dwTotalMoney	= tpALifeHumanAbstract->m_dwMoney;
 	{
 		OBJECT_IT							I = tpALifeHumanAbstract->children.begin();
 		OBJECT_IT							E = tpALifeHumanAbstract->children.end();
@@ -839,7 +841,7 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 			tpALifeHumanAbstract->detach	(l_tpALifeInventoryItem,0,true,false);
 			tpALifeTrader->attach			(l_tpALifeInventoryItem,true);
 			u32								l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem);
-			tpALifeHumanAbstract->m_dwTotalMoney += l_dwItemCost;
+			tpALifeHumanAbstract->brain().m_dwTotalMoney += l_dwItemCost;
 			tpALifeTrader->m_dwMoney		-= l_dwItemCost;
 		}
 		tpALifeHumanAbstract->children.clear();
@@ -847,7 +849,7 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 	
 	sort									(tpALifeTrader->children.begin(),tpALifeTrader->children.end());
 
-	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
+	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->brain().m_dwTotalMoney;
 	
 	m_temp_item_vector.clear				();
 	append_item_vector						(tpALifeTrader->children,m_temp_item_vector);
@@ -872,9 +874,9 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 		}
 	}
 
-	tpALifeTrader->m_dwMoney				+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;
-	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
-	tpALifeHumanAbstract->m_dwTotalMoney	= u32(-1);
+	tpALifeTrader->m_dwMoney				+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->brain().m_dwTotalMoney;
+	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->brain().m_dwTotalMoney;
+	tpALifeHumanAbstract->brain().m_dwTotalMoney	= u32(-1);
 
 #pragma todo("Dima to Dima : Process situation if trader has not enough money")
 	R_ASSERT2								(int(tpALifeTrader->m_dwMoney) >= 0,"Trader must have enough money to pay for the artefacts!");

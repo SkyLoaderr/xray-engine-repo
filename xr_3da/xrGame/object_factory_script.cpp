@@ -62,7 +62,7 @@ void CObjectFactory::register_script_class			(LPCSTR unknown_class, LPCSTR clsid
 
 void CObjectFactory::register_script_classes()
 {
-	ai().script_engine().register_script_classes();
+	ai();
 }
 
 using namespace luabind;

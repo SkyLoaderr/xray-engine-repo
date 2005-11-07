@@ -50,7 +50,7 @@ IC	void CProblemSolverAbstract::clear					()
 		remove_operator		(m_operators.back().m_operator_id);
 
 	while (!m_evaluators.empty())
-		remove_evaluator	(m_evaluators.back().first);
+		remove_evaluator	((*(m_evaluators.end() - 1)).first);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -79,10 +79,14 @@ IC	bool CProblemSolverAbstract::actual			() const
 
 	xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
+	EVALUATORS::const_iterator						i = evaluators().begin(), j;
+	EVALUATORS::const_iterator						e = evaluators().end();
 	for ( ; I != E; ++I) {
-		EVALUATORS::const_iterator J = std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate((*I).condition()));
-		VERIFY				(evaluators().end() != J);
-		if ((*J).second->evaluate() != (*I).value())
+		if ((*i).first < (*I).condition())
+			i				= std::lower_bound(i,e,(*I).condition(),evaluators().value_comp());
+		VERIFY				(i != e);
+		VERIFY				((*i).first == (*I).condition());
+		if ((*i).second->evaluate() != (*I).value())
 			return			(false);
 	}
 	return					(true);
@@ -108,9 +112,9 @@ IC	void CProblemSolverAbstract::validate_properties	(const CState &conditions) c
 	xr_vector<COperatorCondition>::const_iterator	I = conditions.conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = conditions.conditions().end();
 	for ( ; I != E; ++I) {
-		if (std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate((*I).condition())) == evaluators().end()) {
+		if (evaluators().find((*I).condition()) == evaluators().end()) {
 			Msg		("! cannot find corresponding evaluator to the property with id %d",(*I).condition());
-			THROW	(std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate((*I).condition())) != evaluators().end());
+			THROW	(evaluators().find((*I).condition()) != evaluators().end());
 		}
 	}
 }
@@ -160,15 +164,14 @@ IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::target
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::add_evaluator				(const _condition_type &condition_id, _condition_evaluator_ptr evaluator)
 {
-	THROW						(evaluators().end() == std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate(condition_id)));
-	m_evaluators.push_back		(std::make_pair(condition_id,evaluator));
-	std::sort					(m_evaluators.begin(),m_evaluators.end(),evaluator_predicate());
+	THROW						(evaluators().end() == evaluators().find(condition_id));
+	m_evaluators.insert			(std::make_pair(condition_id,evaluator));
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condition_id)
 {
-	EVALUATORS::iterator		I = std::find_if(m_evaluators.begin(),m_evaluators.end(),evaluator_predicate(condition_id));
+	EVALUATORS::iterator		I = m_evaluators.find(condition_id);
 	THROW						(I != m_evaluators.end());
 	try {
 		delete_data				((*I).second);
@@ -183,15 +186,15 @@ IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condi
 TEMPLATE_SPECIALIZATION
 IC	typename CProblemSolverAbstract::_condition_evaluator_ptr CProblemSolverAbstract::evaluator	(const _condition_type &condition_id) const
 {
-	EVALUATORS::const_iterator	I = std::find_if(evaluators().begin(),evaluators().end(),evaluator_predicate(condition_id));
-	THROW							(evaluators().end() != I);
-	return							((*I).second);
+	EVALUATORS::const_iterator	I = evaluators().find(condition_id);
+	THROW						(evaluators().end() != I);
+	return						((*I).second);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::EVALUATORS &CProblemSolverAbstract::evaluators() const
 {
-	return							(m_evaluators);
+	return						(m_evaluators);
 }
 
 TEMPLATE_SPECIALIZATION

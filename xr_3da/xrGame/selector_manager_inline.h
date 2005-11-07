@@ -10,7 +10,7 @@
 
 IC	CAbstractVertexEvaluator *CSelectorManager::selector(LPCSTR selector_name)
 {
-	xr_map<LPCSTR,CAbstractVertexEvaluator*,pred_str>::iterator	I = m_selectors.find(selector_name);
+	SELECTORS::iterator	I = m_selectors.find(selector_name);
 	VERIFY				(m_selectors.end() != I);
 	return				((*I).second);
 }
@@ -18,7 +18,7 @@ IC	CAbstractVertexEvaluator *CSelectorManager::selector(LPCSTR selector_name)
 template <typename T>
 IC	void CSelectorManager::add				(LPCSTR section, LPCSTR selector_name)
 {
-	xr_map<LPCSTR,CAbstractVertexEvaluator*,pred_str>::const_iterator	I = m_selectors.find(selector_name);
+	SELECTORS::const_iterator	I = m_selectors.find(selector_name);
 	VERIFY						(m_selectors.end() == I);
 	T							*selector = xr_new<T>();
 	selector->Load				(section,selector_name);

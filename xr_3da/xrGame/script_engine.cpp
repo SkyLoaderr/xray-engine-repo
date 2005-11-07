@@ -144,16 +144,13 @@ void CScriptEngine::setup_auto_load		()
 	// lua_settop							(lua(),-0);
 }
 
-void CScriptEngine::script_export		()
+void CScriptEngine::init				()
 {
 	luabind::open						(lua());
-
 	setup_callbacks						();
-	
 	export_classes						(lua());
-
 	setup_auto_load						();
-	load_class_registrators				();
+	register_script_classes				();
 	object_factory().register_script	();
 
 #ifdef DEBUG
@@ -258,8 +255,24 @@ void CScriptEngine::process_file	(LPCSTR file_name, bool reload_modules)
 	m_reload_modules		= false;
 }
 
-void CScriptEngine::register_script_classes	()
+void CScriptEngine::register_script_classes		()
 {
+#ifdef DBG_DISABLE_SCRIPTS
+	return;
+#endif
+	string256					S;
+	FS.update_path				(S,"$game_config$","script.ltx");
+	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
+	R_ASSERT					(l_tpIniFile);
+
+	if (!l_tpIniFile->section_exist("common")) {
+		xr_delete				(l_tpIniFile);
+		return;
+	}
+
+	m_class_registrators		= READ_IF_EXISTS(l_tpIniFile,r_string,"common","class_registrators","");
+	xr_delete					(l_tpIniFile);
+
 	u32							n = _GetItemCount(*m_class_registrators);
 	string256					I;
 	for (u32 i=0; i<n; ++i) {
@@ -271,25 +284,6 @@ void CScriptEngine::register_script_classes	()
 		}
 		result					(const_cast<CObjectFactory*>(&object_factory()));
 	}
-}
-
-void CScriptEngine::load_class_registrators		()
-{
-#ifdef DBG_DISABLE_SCRIPTS
-	return;
-#endif
-	string256		S;
-	FS.update_path	(S,"$game_config$","script.ltx");
-	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
-	R_ASSERT		(l_tpIniFile);
-
-	if (!l_tpIniFile->section_exist("common")) {
-		xr_delete			(l_tpIniFile);
-		return;
-	}
-
-	m_class_registrators	= READ_IF_EXISTS(l_tpIniFile,r_string,"common","class_registrators","");
-	xr_delete				(l_tpIniFile);
 }
 
 bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object, int type)

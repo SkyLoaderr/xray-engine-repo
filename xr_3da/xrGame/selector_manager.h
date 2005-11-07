@@ -9,13 +9,14 @@
 #pragma once
 
 #include "path_manager_params_level_evaluator.h"
+#include "associative_vector.h"
 
 class CCustomMonster;
 
 class CSelectorManager {
 public:
-	typedef CAbstractVertexEvaluator			evaluator;
-	typedef xr_map<LPCSTR,evaluator*,pred_str>	SELECTORS;
+	typedef CAbstractVertexEvaluator						evaluator;
+	typedef associative_vector<LPCSTR,evaluator*,pred_str>	SELECTORS;
 
 protected:
 	SELECTORS			m_selectors;

@@ -31,13 +31,10 @@
 #define MAX_ITEM_VOLUME				100
 #define INVALID_STORY_ID			ALife::_STORY_ID(-1)
 
-class CALifeEventGroup;
 class CSE_ALifeDynamicObject;
 class CSE_ALifeMonsterAbstract;
 class CSE_ALifeTrader;
-class CALifeEvent;
 class CALifeTask;
-class CALifeEventPersonal;
 class CALifeKnownAnomaly;
 class CALifeDiscovery;
 class CALifeOrganization;
@@ -306,12 +303,6 @@ xr_token							hit_types_token							[ ];
 	DEFINE_MAP		(_NEWS_ID,					CALifeNews*,					NEWS_REGISTRY,				NEWS_REGISTRY_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
-	DEFINE_MAP		(_EVENT_ID,					CALifeEvent*,					EVENT_MAP,					EVENT_PAIR_IT);
-
-	typedef struct tagSGraphPoint {
-		D_OBJECT_MAP			tpObjects;
-		EVENT_MAP				tpEvents;
-	} SGraphPoint;
 
 	DEFINE_VECTOR	(SArtefactOrder,			ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
 
@@ -323,7 +314,6 @@ xr_token							hit_types_token							[ ];
 
 	DEFINE_VECTOR	(int,						INT_VECTOR,						INT_IT);
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
-	DEFINE_VECTOR	(CALifeEvent*,				EVENT_P_VECTOR,					EVENT_P_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);
@@ -331,13 +321,11 @@ xr_token							hit_types_token							[ ];
 	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeMonsterAbstract*,	MONSTER_P_VECTOR,				MONSTER_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
-	DEFINE_VECTOR	(CALifeEventPersonal*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
 	DEFINE_VECTOR	(MONSTER_P_VECTOR,			MONSTER_P_VECTOR_VECTOR,		MONSTER_P_VECTOR_IT);
 	DEFINE_VECTOR	(CALifeKnownAnomaly*,		ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
 	DEFINE_VECTOR	(CALifeArtefactDemand*,		DEMAND_P_VECTOR,				DEMAND_P_IT);
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
-	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
 	DEFINE_VECTOR	(SArtefactTraderOrder,		ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
 	DEFINE_VECTOR	(CSE_ALifeInventoryItem*,	ITEM_P_VECTOR,					ITEM_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeItemWeapon*,		WEAPON_P_VECTOR,				WEAPON_P_IT);
@@ -347,7 +335,6 @@ xr_token							hit_types_token							[ ];
 
 	DEFINE_SET		(_TASK_ID,					TASK_SET,						TASK_SET_IT);
 	DEFINE_SET		(CSE_ALifeTrader*,			TRADER_SET,						TRADER_SET_IT);
-	DEFINE_SET		(EAnomalousZoneType,		U32_SET,						U32_SET_IT);
 	DEFINE_SET		(CSE_ALifeDynamicObject*,	D_OBJECT_SET,					D_OBJECT_SET_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
@@ -361,7 +348,6 @@ xr_token							hit_types_token							[ ];
 	DEFINE_MAP_PRED	(LPCSTR,					u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,				pred_str);
 	DEFINE_MAP_PRED	(u32,						SOrganizationOrder,				ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT,		std::greater<u32>);
 	DEFINE_MAP_PRED	(LPSTR,						bool,							LPSTR_BOOL_MAP,				LPSTR_BOOL_PAIR_IT,				pred_str);
-	DEFINE_MAP_PRED	(LPSTR,						U32_SET,						ITEM_SET_MAP,				ITEM_SET_PAIR_IT,				pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					TRADER_SET,						TRADER_SET_MAP,				TRADER_SET_PAIR_IT,				pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					SArtefactTraderOrder*,			ARTEFACT_TRADER_ORDER_MAP,	ARTEFACT_TRADER_ORDER_PAIR_IT,	pred_str);
 };

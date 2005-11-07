@@ -199,7 +199,7 @@ void game_sv_Single::SetEnvironmentGameTimeFactor		(const float fTimeFactor)
 //	return(inherited::SetGameTimeFactor(fTimeFactor));
 }
 
-bool game_sv_Single::change_level			(NET_Packet &net_packet, ClientID sender)
+bool game_sv_Single::change_level					(NET_Packet &net_packet, ClientID sender)
 {
 	if (ai().get_alife())
 		return					(alife().change_level(net_packet));
@@ -207,7 +207,7 @@ bool game_sv_Single::change_level			(NET_Packet &net_packet, ClientID sender)
 		return					(true);
 }
 
-void game_sv_Single::save_game				(NET_Packet &net_packet, ClientID sender)
+void game_sv_Single::save_game						(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return;
@@ -215,7 +215,7 @@ void game_sv_Single::save_game				(NET_Packet &net_packet, ClientID sender)
 	alife().save				(net_packet);
 }
 
-bool game_sv_Single::load_game				(NET_Packet &net_packet, ClientID sender)
+bool game_sv_Single::load_game					(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return					(inherited::load_game(net_packet,sender));
@@ -224,11 +224,11 @@ bool game_sv_Single::load_game				(NET_Packet &net_packet, ClientID sender)
 	return						(alife().load_game(*game_name,true));
 }
 
-void game_sv_Single::reload_game			(NET_Packet &net_packet, ClientID sender)
+void game_sv_Single::reload_game				(NET_Packet &net_packet, ClientID sender)
 {
 }
 
-void game_sv_Single::switch_distance		(NET_Packet &net_packet, ClientID sender)
+void game_sv_Single::switch_distance			(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return;
@@ -236,7 +236,7 @@ void game_sv_Single::switch_distance		(NET_Packet &net_packet, ClientID sender)
 	alife().set_switch_distance	(net_packet.r_float());
 }
 
-void game_sv_Single::teleport_object	(NET_Packet &net_packet, u16 id)
+void game_sv_Single::teleport_object			(NET_Packet &net_packet, u16 id)
 {
 	if (!ai().get_alife())
 		return;
@@ -252,7 +252,7 @@ void game_sv_Single::teleport_object	(NET_Packet &net_packet, u16 id)
 	alife().teleport_object (id,game_vertex_id,level_vertex_id,position);
 }
 
-void game_sv_Single::add_restriction	(NET_Packet &packet, u16 id)
+void game_sv_Single::add_restriction			(NET_Packet &packet, u16 id)
 {
 	if (!ai().get_alife())
 		return;
@@ -266,7 +266,7 @@ void game_sv_Single::add_restriction	(NET_Packet &packet, u16 id)
 	alife().add_restriction (id,restriction_id,restriction_type);
 }
 
-void game_sv_Single::remove_restriction	(NET_Packet &packet, u16 id)
+void game_sv_Single::remove_restriction			(NET_Packet &packet, u16 id)
 {
 	if (!ai().get_alife())
 		return;
@@ -291,7 +291,7 @@ void game_sv_Single::remove_all_restrictions	(NET_Packet &packet, u16 id)
 	alife().remove_all_restrictions (id,restriction_type);
 }
 
-void game_sv_Single::sls_default		()
+void game_sv_Single::sls_default				()
 {
 	alife().update			(true,false,false);
 }
@@ -301,4 +301,14 @@ shared_str game_sv_Single::level_name			(const shared_str &server_options) const
 	if (!ai().get_alife())
 		return				(inherited::level_name(server_options));
 	return					(alife().level_name());
+}
+
+void game_sv_Single::on_death					(CSE_Abstract *e_dest, CSE_Abstract *e_src)
+{
+	inherited::on_death		(e_dest,e_src);
+
+	if (!ai().get_alife())
+		return;
+
+	alife().on_death		(e_dest,e_src);
 }

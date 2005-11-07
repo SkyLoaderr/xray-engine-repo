@@ -10,6 +10,7 @@
 
 #include "random32.h"
 #include "ai_sounds.h"
+#include "associative_vector.h"
 
 class CSoundPlayer : public CRandom32 {
 public:
@@ -115,7 +116,7 @@ public:
 
 public:
 	typedef std::pair<CSoundCollectionParamsFull,CSoundCollection*>	SOUND_COLLECTION;
-	typedef xr_map<u32,SOUND_COLLECTION>							SOUND_COLLECTIONS;
+	typedef associative_vector<u32,SOUND_COLLECTION>				SOUND_COLLECTIONS;
 
 private:
 	SOUND_COLLECTIONS							m_sounds;

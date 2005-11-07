@@ -19,6 +19,9 @@
 #include "alife_simulator.h"
 #include "alife_graph_registry.h"
 #include "alife_object_registry.h"
+#include "alife_human_brain.h"
+#include "alife_human_movement_manager.h"
+#include "alife_human_detail_path_manager.h"
 
 u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance);
 
@@ -154,14 +157,15 @@ void CLevelGraph::on_render4	()
 			{
 				CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = smart_cast<CSE_ALifeMonsterAbstract *>((*I).second);
 				if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
+					/**/
 					CSE_ALifeHumanAbstract *tpALifeHuman = smart_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
-					if (tpALifeHuman && tpALifeHuman->m_tpPath.size()) {
-						Fvector t1 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[0])->game_point();
+					if (tpALifeHuman && tpALifeHuman->brain().movement().detail().path().size()) {
+						Fvector t1 = ai().game_graph().vertex(tpALifeHuman->brain().movement().detail().path().back())->game_point();
 						t1.y += .6f;
 						NORMALIZE_VECTOR(t1);
 						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-						for (int i=1; i<(int)tpALifeHuman->m_tpPath.size(); ++i) {
-							Fvector t2 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[i])->game_point();
+						for (int i=(int)tpALifeHuman->brain().movement().detail().path().size() - 2; i>=0;--i) {
+							Fvector t2 = ai().game_graph().vertex(tpALifeHuman->brain().movement().detail().path()[i])->game_point();
 							t2.y += .6f;
 							NORMALIZE_VECTOR(t2);
 							RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
@@ -169,6 +173,7 @@ void CLevelGraph::on_render4	()
 							t1 = t2;
 						}
 					}
+					/**/
 					if (tpALifeMonsterAbstract->m_fDistanceToPoint > EPS_L) {
 						Fvector t1 = ai().game_graph().vertex(tpALifeMonsterAbstract->m_tGraphID)->game_point();
 						Fvector t2 = ai().game_graph().vertex(tpALifeMonsterAbstract->m_tNextGraphID)->game_point();

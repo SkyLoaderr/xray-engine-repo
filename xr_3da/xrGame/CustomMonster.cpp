@@ -23,7 +23,6 @@
 #include "sound_memory_manager.h"
 #include "enemy_manager.h"
 #include "item_manager.h"
-#include "greeting_manager.h"
 #include "danger_manager.h"
 #include "ai_object_location.h"
 #include "level_navigation_graph.h"
@@ -1005,15 +1004,15 @@ float CCustomMonster::evaluate		(const CEnemyManager *manager, const CEntityAliv
 	return	(memory().enemy().evaluate(object));
 }
 
-bool CCustomMonster::useful			(const CGreetingManager *manager, const CAI_Stalker *object) const
-{
-	return	(memory().greeting().useful(object));
-}
+//bool CCustomMonster::useful			(const CGreetingManager *manager, const CAI_Stalker *object) const
+//{
+//	return	(memory().greeting().useful(object));
+//}
 
-float CCustomMonster::evaluate		(const CGreetingManager *manager, const CAI_Stalker *object) const
-{
-	return	(memory().greeting().evaluate(object));
-}
+//float CCustomMonster::evaluate		(const CGreetingManager *manager, const CAI_Stalker *object) const
+//{
+//	return	(memory().greeting().evaluate(object));
+//}
 
 bool CCustomMonster::useful			(const CDangerManager *manager, const CDangerObject &object) const
 {

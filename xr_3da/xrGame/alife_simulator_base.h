@@ -26,6 +26,7 @@ class CALifeOrganizationRegistry;
 class CALifeNewsRegistry;
 class CALifeStoryRegistry;
 class CALifeSmartTerrainRegistry;
+class CALifeGroupRegistry;
 class CALifeRegistryContainer;
 
 class CSE_Abstract;
@@ -50,6 +51,7 @@ protected:
 	CALifeNewsRegistry							*m_news;
 	CALifeStoryRegistry							*m_story_objects;
 	CALifeSmartTerrainRegistry					*m_smart_terrains;
+	CALifeGroupRegistry							*m_groups;
 	CALifeRegistryContainer						*m_registry_container;
 	CRandom32									m_random;
 	bool										m_initialized;
@@ -64,15 +66,16 @@ protected:
 	IC		CALifeObjectRegistry				&objects					();
 	IC		CALifeTaskRegistry					&tasks						();
 	IC		CALifeTraderRegistry				&traders					();
-	IC		CALifeScheduleRegistry				&scheduled					();
 	IC		CALifeAnomalyRegistry				&anomalies					();
 	IC		CALifeOrganizationRegistry			&organizations				();
 	IC		CALifeNewsRegistry					&news						();
 	IC		CALifeStoryRegistry					&story_objects				();
 	IC		CALifeSmartTerrainRegistry			&smart_terrains				();
+	IC		CALifeGroupRegistry					&groups						();
 
 public:
 	IC		CALifeGraphRegistry					&graph						();
+	IC		CALifeScheduleRegistry				&scheduled					();
 	IC		CALifeTimeManager					&time_manager				();
 	IC		CALifeRegistryContainer				&registry					() const;
 
@@ -93,6 +96,7 @@ public:
 	IC		const CALifeNewsRegistry			&news						() const;
 	IC		const CALifeStoryRegistry			&story_objects				() const;
 	IC		const CALifeSmartTerrainRegistry	&smart_terrains				() const;
+	IC		const CALifeGroupRegistry			&groups						() const;
 	IC		CRandom32							&random						();
 	IC		xrServer							&server						() const;
 	IC		const CALifeTimeManager				&time_manager				() const;
@@ -104,8 +108,6 @@ public:
 
 protected:
 			void								create						(CSE_ALifeDynamicObject	*&object, CSE_ALifeDynamicObject *spawn_object,	const ALife::_SPAWN_ID &spawn_id);
-			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false);
-			void								unregister_object			(CSE_ALifeDynamicObject *object, bool alife_query = true);
 			void								unload						();
 	virtual	void								reload						(LPCSTR section);
 	IC		void								setup_command_line			(shared_str *command_line);
@@ -114,12 +116,15 @@ protected:
 	virtual void								setup_simulator				(CSE_ALifeObject *object) = 0;
 
 public:
+			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false);
+			void								unregister_object			(CSE_ALifeDynamicObject *object, bool alife_query = true);
 			void								release						(CSE_Abstract			*object, bool alife_query = true);
 			void								create						(CSE_ALifeObject		*object);
 			CSE_Abstract						*create						(CSE_ALifeGroupAbstract	*object, CSE_ALifeDynamicObject	*j);
 			CSE_Abstract						*spawn_item					(LPCSTR section,		const Fvector &position, u32 level_vertex_id, GameGraph::_GRAPH_ID game_vertex_id, u16 parent_id);
 			void								append_item_vector			(ALife::OBJECT_VECTOR	&tObjectVector,	ALife::ITEM_P_VECTOR &tItemList);
 			shared_str							level_name					() const;
+			void								on_death					(CSE_Abstract *killed, CSE_Abstract *killer);
 
 public:
 	ALife::ITEM_P_VECTOR						m_temp_item_vector;

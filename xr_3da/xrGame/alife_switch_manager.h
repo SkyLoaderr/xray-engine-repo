@@ -26,11 +26,14 @@ private:
 
 protected:
 			bool	synchronize_location	(CSE_ALifeDynamicObject	*object);
-			void	remove_online			(CSE_ALifeDynamicObject	*object, bool update_registries = true);
-			void	add_online				(CSE_ALifeDynamicObject	*object, bool update_registries = true);
+
+public:
+			void	try_switch_online		(CSE_ALifeDynamicObject	*object);
+			void	try_switch_offline		(CSE_ALifeDynamicObject	*object);
 			void	switch_online			(CSE_ALifeDynamicObject	*object);
 			void	switch_offline			(CSE_ALifeDynamicObject	*object);
-			void	furl_object				(CSE_ALifeDynamicObject	*object);
+			void	remove_online			(CSE_ALifeDynamicObject	*object, bool update_registries = true);
+			void	add_online				(CSE_ALifeDynamicObject	*object, bool update_registries = true);
 
 public:
 	IC				CALifeSwitchManager		(xrServer *server, LPCSTR section);

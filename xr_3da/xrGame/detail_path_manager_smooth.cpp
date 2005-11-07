@@ -510,8 +510,8 @@ bool CDetailPathManager::init_build(
 	straight_line_index					= u32(-1);
 	straight_line_index_negative		= u32(-1);
 	m_start_params.clear				();
-	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
-	xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
+	VELOCITIES::const_iterator			I = m_movement_params.begin(), B = I;
+	VELOCITIES::const_iterator			E = m_movement_params.end();
 	for ( ; I != E; ++I) {
 		if (!check_mask(m_velocity_mask,(*I).first))
 			continue;

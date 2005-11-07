@@ -17,6 +17,7 @@
 #include "alife_anomaly_registry.h"
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
+#include "alife_group_registry.h"
 #include "alife_registry_container.h"
 #include "xrserver.h"
 #include "level.h"
@@ -122,6 +123,8 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	registry().load				(*stream);
 
 	FS.r_close					(stream);
+
+	groups().on_after_game_load	();
 
 	VERIFY						(graph().actor());
 	

@@ -22,11 +22,16 @@ public:
 	typedef CGameGraph::LEVEL_POINT_VECTOR											ARTEFACT_SPAWNS;
 	typedef CGraphAbstractSerialize<CServerEntityWrapper*,float,ALife::_SPAWN_ID>	SPAWN_GRAPH;
 
+public:
+	typedef ALife::EAnomalousZoneType		EAnomalousZoneType;
+	typedef xr_set<EAnomalousZoneType>		ZONE_TYPES;
+	typedef xr_map<shared_str,ZONE_TYPES>	REGISTRY;
+
 protected:
 	CALifeSpawnHeader						m_header;
 	SPAWN_GRAPH								m_spawns;
 	ARTEFACT_SPAWNS							m_artefact_spawn_positions;
-	ALife::ITEM_SET_MAP						m_artefact_anomaly_map;
+	REGISTRY								m_artefact_anomaly_map;
 	shared_str								m_spawn_name;
 	xr_vector<ALife::_SPAWN_ID>				m_spawn_roots;
 	xr_vector<ALife::_SPAWN_ID>				m_temp0;
@@ -64,7 +69,7 @@ public:
 	IC		const CALifeSpawnHeader			&header						() const;
 	IC		const SPAWN_GRAPH				&spawns						() const;
 	IC		void							assign_artefact_position	(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object) const;
-	IC		const ALife::ITEM_SET_MAP		&artefact_anomaly_map		() const;
+	IC		const REGISTRY					&artefact_anomaly_map		() const;
 };
 
 #include "alife_spawn_registry_inline.h"

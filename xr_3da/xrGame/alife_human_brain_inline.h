@@ -8,19 +8,20 @@
 
 #pragma once
 
-IC	CALifeHumanBrain::object_type &CALifeHumanBrain::object	() const
+IC	CALifeHumanBrain::object_type &CALifeHumanBrain::object				() const
 {
 	VERIFY		(m_object);
 	return		(*m_object);
 }
 
-IC	CALifeHumanBrain::object_handler_type &CALifeHumanBrain::object_handler	() const
+IC	CALifeHumanBrain::object_handler_type &CALifeHumanBrain::objects	() const
 {
 	VERIFY		(m_object_handler);
 	return		(*m_object_handler);
 }
 
-IC	bool CALifeHumanBrain::failed							() const
+IC	CALifeHumanBrain::movement_manager_type &CALifeHumanBrain::movement	() const
 {
-	return		(m_failed);
+	VERIFY		(m_movement_manager);
+	return		(*m_movement_manager);
 }

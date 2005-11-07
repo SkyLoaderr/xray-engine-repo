@@ -202,7 +202,8 @@ void CObjectFactory::register_classes	()
 	add<CSE_SpawnGroup>											(CLSID_AI_SPAWN_GROUP			,"spawn_group");
 	add<CSE_Event>												(CLSID_EVENT					,"event");
 	add<CSE_ALifeGraphPoint>									(CLSID_AI_GRAPH					,"graph_point");
-
+	add<CSE_ALifeOnlineOfflineGroup>							(CLSID_ONLINE_OFFLINE_GROUP		,"online_offline_group");
+	
 	// client and server entities
 	ADD(CActor					,CSE_ALifeCreatureActor			,CLSID_OBJECT_ACTOR				,"actor");
 	ADD(CSpectator				,CSE_Spectator					,CLSID_SPECTATOR				,"spectator");

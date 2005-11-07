@@ -13,6 +13,7 @@ IC	CSpaceRestrictionComposition::CSpaceRestrictionComposition	(CSpaceRestriction
 	VERIFY						(space_restriction_holder);
 	m_space_restriction_holder	= space_restriction_holder;
 	m_space_restrictors			= space_restrictors;
+	++g_restriction_checker;
 }
 
 IC	shared_str	CSpaceRestrictionComposition::name					() const

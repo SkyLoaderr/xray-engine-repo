@@ -15,6 +15,7 @@
 #include "script_engine.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "restriction_space.h"
+#include "alife_graph_registry.h"
 
 using namespace luabind;
 
@@ -124,11 +125,17 @@ void remove_out_restriction	(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *m
 	alife->remove_restriction	(monster->ID,id,RestrictionSpace::eRestrictorTypeOut);
 }
 
+u32 get_level_id(CALifeSimulator *self)
+{
+	return						(self->graph().level().level_id());
+}
+
 void CALifeSimulator::script_register(lua_State *L)
 {
 	module(L)
 	[
 		class_<CALifeSimulator>("alife_simulator")
+			.def("level_id",				&get_level_id)
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,LPCSTR))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID, bool))(alife_object))

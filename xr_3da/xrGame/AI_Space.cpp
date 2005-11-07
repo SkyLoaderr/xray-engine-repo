@@ -23,16 +23,41 @@ CAI_Space *g_ai_space = 0;
 
 CAI_Space::CAI_Space				()
 {
-	m_ef_storage			= xr_new<CEF_Storage>();
-	m_game_graph			= xr_new<CGameGraph>();
-	m_graph_engine			= xr_new<CGraphEngine>(game_graph().header().vertex_count());
-	m_cover_manager			= xr_new<CCoverManager>();
-	m_script_engine			= xr_new<CScriptEngine>();
-	m_movement_coordinator	= xr_new<CMovementCoordinator>();
+	m_ef_storage			= 0;
+	m_game_graph			= 0;
+	m_graph_engine			= 0;
+	m_cover_manager			= 0;
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
+	m_movement_coordinator	= 0;
+	m_patrol_path_storage	= 0;
+	m_script_engine			= 0;
+}
+
+void CAI_Space::init				()
+{
+	VERIFY					(!m_ef_storage);
+	m_ef_storage			= xr_new<CEF_Storage>();
+
+	VERIFY					(!m_game_graph);
+	m_game_graph			= xr_new<CGameGraph>();
+
+	VERIFY					(!m_graph_engine);
+	m_graph_engine			= xr_new<CGraphEngine>(game_graph().header().vertex_count());
+
+	VERIFY					(!m_cover_manager);
+	m_cover_manager			= xr_new<CCoverManager>();
+
+	VERIFY					(!m_movement_coordinator);
+	m_movement_coordinator	= xr_new<CMovementCoordinator>();
+
+	VERIFY					(!m_patrol_path_storage);
 	m_patrol_path_storage	= xr_new<CPatrolPathStorage>();
+
+	VERIFY					(!m_script_engine);
+	m_script_engine			= xr_new<CScriptEngine>();
+	script_engine().init	();
 
 	extern string4096		g_ca_stdout;
 	setvbuf					(stderr,g_ca_stdout,_IOFBF,sizeof(g_ca_stdout));
