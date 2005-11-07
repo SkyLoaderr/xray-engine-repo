@@ -1381,6 +1381,7 @@ function sar_hero_dead(actor, npc)
 end
 
 function sar2_hero_spawn(actor, npc)
+    printf("effects <sar2>: hero count - %d, max - %d.", sar2_heroes_count, sar2_heroes_max_count)
     if sar2_heroes_count < sar2_heroes_max_count then
         local i, v, c = 0, 0, 0
         local t = {}
