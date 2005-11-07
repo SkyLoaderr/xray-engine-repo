@@ -285,7 +285,7 @@ end
 
 function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
-	self.st___:SetHeading(self.st___:GetHeading()+0.1)
+--	self.st___:SetHeading(self.st___:GetHeading()+0.1)
 	local bind = dik_to_bind(dik)
 	local console = get_console()
 	
