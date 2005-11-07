@@ -300,6 +300,7 @@ BOOL CRenderDevice::Begin	()
 		}
 	}
 
+    VERIFY 					(FALSE==g_bRendering);
 	CHK_DX					(HW.pDevice->BeginScene());
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|D3DCLEAR_TARGET|

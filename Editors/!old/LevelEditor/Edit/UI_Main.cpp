@@ -346,8 +346,7 @@ void TUI::PrepareRedraw()
 void TUI::Redraw()
 {
 	PrepareRedraw();
-//    try
-    {
+    try{
     	Device.Statistic.RenderDUMP_RT.Begin();
         if (Device.Begin()){
             Device.UpdateView		();
@@ -374,28 +373,35 @@ void TUI::Redraw()
                 DU.DrawPivot		(m_Pivot);
             }
 
-            Tools->Render			();
-
+            try{
+	            Tools->Render			();
+		    }catch(...){
+		    	ELog.DlgMsg(mtError, "Critical error has occured in render routine!!! [Type B]");
+            }
+            
             // draw selection rect
             if(m_SelectionRect) 	DU.DrawSelectionRect(m_SelStart,m_SelEnd);
 
             // draw axis
             DU.DrawAxis(Device.m_Camera.GetTransform());
 
-            // end draw
-            Device.End();
+            try{
+	            // end draw
+    	        Device.End();
+		    }catch(...){
+		    	ELog.DlgMsg(mtError, "Critical error has occured in render routine!!! [Type C]");
+            }
         }
     	Device.Statistic.RenderDUMP_RT.End();
-    }
-/*    catch(...)
-    {
-		_clear87();
-		FPU::m24r();
-    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
+    }catch(...){
+    	ELog.DlgMsg(mtError, "Critical error has occured in render routine!!! [Type A]");
+//		_clear87();
+//		FPU::m24r();
+//    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
         Device.End();
-		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
+//		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
-*/
+
 	OutInfo();
 }
 //---------------------------------------------------------------------------

@@ -9,7 +9,9 @@ public:
 	enum ESummaryTextureType{
     	sttFirst = 0,
     	sttBase  = 0,
+        sttImplicit,
         sttDetail,
+        sttBump,
         sttDO,
         sttGlow,
         sttLOD,
@@ -18,14 +20,13 @@ public:
 private:
 	struct STextureInfo{
     	shared_str 			file_name;
-        shared_str			detail_name;
         STextureParams  	info;
-    	ESummaryTextureType type;                
+    	ESummaryTextureType type;
         bool				bReady;
         struct SObjInfo{
         	int 			ref_count;
         	float 			area;
-            SObjInfo(float a):ref_count(0),area(a){}
+            SObjInfo(float a):ref_count(0),area(a){}            
         };
         DEFINE_MAP(shared_str,SObjInfo,objinf_map,objinf_map_it);
         objinf_map			objects;
