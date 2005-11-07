@@ -1292,6 +1292,7 @@ end
 ---------------------------------------------------------
 -- Sarcofag2
 ---------------------------------------------------------
+--[[
 local sar2_heroes_list = {
     "sar2_tutorial_wounded",
     "sar2_stalker_freeman",
@@ -1354,35 +1355,48 @@ local sar2_heroes_list = {
     "sar2_monolith_exo",
     "sar2_monolith_exo2"
 }
+--]]
 
+local sar2_heroes_number = 60
 local sar2_heroes_count, sar2_heroes_max_count = 0, 6
 local sar2_heroes = {}
 
 function sar2_scene_start(actor, npc)
-    local i, v = 0, 0
+    local i = 0
     
-    for i, v in pairs(sar2_heroes_list) do
+    for i = 1, sar2_heroes_number do
         --if sar2_hero_is_dead(v) then
         if actor:has_info("sar2_death_" .. i) then
-            sar2_heroes[v] = i
+            sar2_heroes[i] = 1
         end
     end
 end
 
-function sar2_hero_dead(actor, npc)
-    local i, v, has_hero = 0, 0, false
-    local name = npc:name()
+function sar2_hero_dead(actor, npc, p)
+    local n = -1
 
-    sar2_heroes[name] = nil
+    if p[1] then
+        n = p[1]
 
-    for v, i in pairs(sar2_heroes_list) do
-        actor:give_info_portion("sar2_spawn_" .. i)
-        has_hero = true
-        break
+        sar2_heroes[n] = nil
+
+        if sar2_heroes_count > 0 then
+            sar2_heroes_count = sar2_heroes_count - 1
+        end
     end
+end
 
-    if not has_hero and sar2_heroes_count > 0 then
-        sar2_heroes_count = sar2_heroes_count - 1
+function sar2_hero_spawn(actor, npc)
+    if sar2_heroes_count < sar2_heroes_max_count then
+        local i, v = 0, 0
+
+        for i, v in pairs(sar2_heroes) do
+            actor:give_info_portion("sar2_spawn_" .. i)
+            sar2_heroes_count = sar2_heroes_count + 1
+            if sar2_heroes_count >= sar2_heroes_max_count then
+                break
+            end
+        end
     end
 end
 
