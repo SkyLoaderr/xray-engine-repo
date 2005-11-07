@@ -1372,30 +1372,29 @@ function sar2_scene_start(actor, npc)
     end
 end
 
-function sar2_hero_dead(actor, npc, p)
-    local n = -1
-
-    if p[1] then
-        n = p[1]
-
-        sar2_heroes[n] = nil
-
-        if sar2_heroes_count > 0 then
-            sar2_heroes_count = sar2_heroes_count - 1
-        end
+function sar2_hero_dead(actor, npc)
+    if sar2_heroes_count > 0 then
+        sar2_heroes_count = sar2_heroes_count - 1
     end
 end
 
 function sar2_hero_spawn(actor, npc)
     if sar2_heroes_count < sar2_heroes_max_count then
         local i, v = 0, 0
+        local t = {}
 
         for i, v in pairs(sar2_heroes) do
             actor:give_info_portion("sar2_spawn_" .. i)
+            table.insert(t, i)
+
             sar2_heroes_count = sar2_heroes_count + 1
             if sar2_heroes_count >= sar2_heroes_max_count then
                 break
             end
+        end
+
+        for i, v in pairs(t) do
+            sar2_heroes[v] = nil
         end
     end
 end
