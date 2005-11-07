@@ -7,7 +7,7 @@
 #include "alife_time_manager.h"
 #include "net_utils.h"
 
-game_sv_Single::game_sv_Single()
+game_sv_Single::game_sv_Single			()
 {
 	m_alife_simulator			= NULL;
 	type						= GAME_SINGLE;
@@ -21,10 +21,16 @@ game_sv_Single::~game_sv_Single			()
 void	game_sv_Single::Create			(shared_str& options)
 {
 	inherited::Create					(options);
+}
+
+void game_sv_Single::OnPlayerConnect	(ClientID id_who)
+{
+	inherited::OnPlayerConnect			(id_who);
+
 	if (strstr(*options,"/alife"))
 		m_alife_simulator				= xr_new<CALifeSimulator>(&server(),&options);
 
-	switch_Phase		(GAME_PHASE_INPROGRESS);
+	switch_Phase						(GAME_PHASE_INPROGRESS);
 }
 
 CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
