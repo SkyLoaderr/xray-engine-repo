@@ -51,6 +51,9 @@
 	
 	<!---------------- Sarcofag 2 ------------------->
 	
+	<info_portion id="sar2_teleport_start"></info_portion>
+	<info_portion id="sar2_teleport_end"></info_portion>
+	
 	<!---------------- Spawn_stalkers --------------->
 	
 	<info_portion id="sar2_spawn_1"></info_portion>
