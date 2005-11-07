@@ -1360,6 +1360,19 @@
 					<File
 						RelativePath=".\alife_space.h">
 					</File>
+					<Filter
+						Name="human_brain"
+						Filter="">
+						<File
+							RelativePath=".\alife_human_brain.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_human_brain.h">
+						</File>
+						<File
+							RelativePath=".\alife_human_brain_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ServerEntities"
@@ -1547,6 +1560,22 @@
 					</File>
 					<File
 						RelativePath=".\intrusive_ptr_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="associative_vector"
+					Filter="">
+					<File
+						RelativePath=".\associative_vector.h">
+					</File>
+					<File
+						RelativePath=".\associative_vector_compare_predicate.h">
+					</File>
+					<File
+						RelativePath=".\associative_vector_compare_predicate_inline.h">
+					</File>
+					<File
+						RelativePath=".\associative_vector_inline.h">
 					</File>
 				</Filter>
 			</Filter>
