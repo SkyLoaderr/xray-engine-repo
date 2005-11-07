@@ -16,6 +16,7 @@
 class CALifeHumanObjectHandler;
 class CALifeHumanMovementManager;
 class CSE_ALifeSmartZone;
+class NET_Packet;
 
 class CALifeHumanBrain {
 public:

@@ -8,26 +8,28 @@
 
 #include "stdafx.h"
 #include "alife_human_brain.h"
-#include "alife_human_object_handler.h"
-#include "alife_human_movement_manager.h"
-#include "alife_human_detail_path_manager.h"
-#include "alife_human_patrol_path_manager.h"
-#include "xrServer_Objects_ALife_Monsters.h"
-#include "ai_space.h"
-#include "ef_storage.h"
-#include "ef_primary.h"
 #include "object_broker.h"
-#include "alife_simulator.h"
-#include "alife_graph_registry.h"
-#include "movement_manager_space.h"
-#include "alife_smart_terrain_registry.h"
-#include "alife_time_manager.h"
-#include "date_time.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
-#ifdef DEBUG
-#	include "level.h"
-#	include "map_location.h"
-#	include "map_manager.h"
+#ifdef XRGAME_EXPORTS
+#	include "alife_human_object_handler.h"
+#	include "alife_human_movement_manager.h"
+#	include "alife_human_detail_path_manager.h"
+#	include "alife_human_patrol_path_manager.h"
+#	include "ai_space.h"
+#	include "ef_storage.h"
+#	include "ef_primary.h"
+#	include "alife_simulator.h"
+#	include "alife_graph_registry.h"
+#	include "movement_manager_space.h"
+#	include "alife_smart_terrain_registry.h"
+#	include "alife_time_manager.h"
+#	include "date_time.h"
+#	ifdef DEBUG
+#		include "level.h"
+#		include "map_location.h"
+#		include "map_manager.h"
+#	endif
 #endif
 
 #define MAX_ITEM_FOOD_COUNT			3
@@ -38,13 +40,18 @@ CALifeHumanBrain::CALifeHumanBrain			(object_type *object)
 {
 	VERIFY							(object);
 	m_object						= object;
+	m_last_search_time				= 0;
+
+#ifdef XRGAME_EXPORTS
 	m_object_handler				= xr_new<CALifeHumanObjectHandler>(object);
 	m_movement_manager				= xr_new<CALifeHumanMovementManager>(object);
-	m_last_search_time				= 0;
+#endif
 	
+#ifdef XRGAME_EXPORTS
 	u32								hours,minutes,seconds;
 	sscanf							(pSettings->r_string(this->object().name(),"smart_terrain_choose_interval"),"%d:%d:%d",&hours,&minutes,&seconds);
 	m_time_interval					= (u32)generate_time(1,1,1,hours,minutes,seconds);
+#endif
 
 	m_dwTotalMoney					= 0;
 	m_tpKnownCustomers.clear		();
@@ -70,8 +77,10 @@ CALifeHumanBrain::CALifeHumanBrain			(object_type *object)
 
 CALifeHumanBrain::~CALifeHumanBrain			()
 {
+#ifdef XRGAME_EXPORTS
 	xr_delete						(m_object_handler);
 	xr_delete						(m_movement_manager);
+#endif
 }
 
 void CALifeHumanBrain::on_state_write		(NET_Packet &packet)
