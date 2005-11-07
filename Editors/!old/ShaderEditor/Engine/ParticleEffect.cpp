@@ -281,21 +281,21 @@ void CParticleEffect::Render(float )
                         if (m_RT_Flags.is(flRT_XFORM)){
                             Fvector p;
                             m_XFORM.transform_tiny(p,m.pos);
-	                        M.mulB_43		(m_XFORM);
+	                        M.mulA_43		(m_XFORM);
                             FillSprite		(pv,M.k,M.i,p,lt,rb,r_x,r_y,m.color,m.rot.x);
                         }else{
                             FillSprite		(pv,M.k,M.i,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
                         }
                     }else if ((speed>=EPS_S)&&m_Def->m_Flags.is(CPEDef::dfFaceAlign)){
                     	Fmatrix	M;  		M.identity();
-                        M.k.div				(m.vel,speed);
+                        M.k.div				(m.vel,speed);            
                         M.j.set 			(0,1,0);	if (_abs(M.j.dotproduct(M.k))>.99f)  M.j.set(0,0,1);
                         M.i.crossproduct	(M.j,M.k);	M.i.normalize	();
                         M.j.crossproduct   	(M.k,M.i);	M.j.normalize  ();
                         if (m_RT_Flags.is(flRT_XFORM)){
                             Fvector p;
                             m_XFORM.transform_tiny(p,m.pos);
-	                        M.mulB_43		(m_XFORM);
+	                        M.mulA_43		(m_XFORM);
                             FillSprite		(pv,M.j,M.i,p,lt,rb,r_x,r_y,m.color,m.rot.x);
                         }else{
                             FillSprite		(pv,M.j,M.i,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
