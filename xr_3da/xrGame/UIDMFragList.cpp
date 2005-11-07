@@ -45,7 +45,7 @@ void	CUIDMFragList::UpdateItemsList ()
 	items.clear			();
 	for (;I!=E;++I)		
 	{
-		game_PlayerState* PS = (game_PlayerState*) I->second;
+//		game_PlayerState* PS = (game_PlayerState*) I->second;
 		if (Game().Phase() == GAME_PHASE_INPROGRESS)
 		{
 ///			if (PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;

@@ -155,7 +155,7 @@ bool CAgentMemberManager::cover_detouring		() const
 
 bool CAgentMemberManager::can_cry_noninfo_phrase() const
 {
-	return								(true);
+//	return								(true);
 
 	MEMBER_STORAGE::const_iterator		I = members().begin();
 	MEMBER_STORAGE::const_iterator		E = members().end();
