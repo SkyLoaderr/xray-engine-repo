@@ -1372,7 +1372,7 @@ function sar2_scene_start(actor, npc)
     end
 end
 
-function sar2_hero_dead(actor, npc)
+function sar_hero_dead(actor, npc)
     if sar2_heroes_count > 0 then
         sar2_heroes_count = sar2_heroes_count - 1
     end
