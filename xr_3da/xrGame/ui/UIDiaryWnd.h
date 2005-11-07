@@ -13,7 +13,7 @@ class CUITabControl;
 class CUIScrollView;
 class CUIListWnd;
 class CEncyclopediaArticle;
-class CUIVideoPlayerWnd;
+//class CUIVideoPlayerWnd;
 
 class CUIDiaryWnd: public CUIWindow, public CUIWndCallback
 {
@@ -28,7 +28,7 @@ protected:
 	EDiaryFilter		m_currFilter;
 
 	CUINewsWnd*			m_UINewsWnd;
-	CUIVideoPlayerWnd*	m_videoWnd;
+//	CUIVideoPlayerWnd*	m_videoWnd;
 
 	CUIWindow*			m_UILeftWnd;
 	CUIWindow*			m_UIRightWnd;
