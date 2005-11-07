@@ -42,7 +42,6 @@ BOOL APIENTRY DllMain		(HANDLE module_handle, DWORD call_reason, LPVOID reserved
 			string_path					SYSTEM_LTX;
 			FS.update_path				(SYSTEM_LTX,"$game_config$","system.ltx");
 			pSettings					= xr_new<CInifile>(SYSTEM_LTX);
-			ai().script_engine().script_export	();
 			break;
 		}
 		case DLL_PROCESS_DETACH: {
