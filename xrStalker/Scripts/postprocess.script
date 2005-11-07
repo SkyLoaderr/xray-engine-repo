@@ -59,6 +59,13 @@ function PPEffector:__init (ini_file, section)
            end
        end
     end
+    
+    if table.getn (self.settings) > 1 then
+       if ini_file:line_exist (section, "init_value") then
+          self.settings[1].start_value = ini_file:r_float (section, "init_value")
+       end   
+    end    
+        
     self:set_next_function ()
 end
 ----------------
@@ -88,6 +95,7 @@ function PPEffector:parse_fx_data (str, t)
     ins.scale = tonumber (temp[3])
     ins.init_value = tonumber (temp[4])
     ins.intensity = tonumber (temp[5])
+    ins.start_value = 0.0
     if table.getn (temp) == 6 then
        ins.base_offset = tonumber (temp[6])
     else
@@ -188,6 +196,14 @@ function PPEffector:reset ()
     self.current_value = 0.0
     self.base = 0.0
     self:set_next_function ()
+    
+    if self.current_func == 1 then
+       if self.settings[self.current_func].func == "linear" then
+          self.current_value = self.settings[self.current_func].start_value
+       else
+          self.base = self.settings[self.current_func].start_value
+       end
+    end      
 end
 
 
@@ -294,7 +310,7 @@ end
 
 ----------------
 function main ()
-    local process = PostProcess (ini_file ("scripts\\teleport.ltx"))
+    local process = PostProcess (ini_file ("scripts\\proba.ltx"))
     level.set_weather_fx ("surge_day")
         local prev_time        = time_global ()
         while 1 do
