@@ -523,6 +523,8 @@ public:
 	virtual	void					switch_online			();
 	virtual	void					switch_offline			();
 	virtual	bool					redundant				() const;
+#else
+	virtual void					update					() {};
 #endif
 
 SERVER_ENTITY_DECLARE_END

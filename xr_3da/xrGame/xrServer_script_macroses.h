@@ -192,7 +192,6 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #	define luabind_virtual_zone(a,b) \
 		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)\
 		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,smart_touch)\
-		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,enabled)\
 		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,detect_probability)
 #endif
 
