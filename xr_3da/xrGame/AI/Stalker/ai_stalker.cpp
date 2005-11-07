@@ -310,8 +310,8 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	// load damage params
 
-	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
-//	m_tpKnownCustomers				= tpHuman->brain().m_tpKnownCustomers;
+//	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
+	m_tpKnownCustomers				= tpHuman->brain().m_tpKnownCustomers;
 
 	if (!g_Alive())
 		sound().set_sound_mask(u32(eStalkerSoundMaskDie));
@@ -460,11 +460,12 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 		P.w					(&f1,						sizeof(f1));
 	}
+
 //.
-	ALife::ETaskState				task_state = ALife::eTaskStateChooseTask;
-	P.w								(&task_state,sizeof(task_state));
-	P.w_u32							(0);
-	P.w_u32							(0);
+//	ALife::ETaskState				task_state = ALife::eTaskStateChooseTask;
+//	P.w								(&task_state,sizeof(task_state));
+//	P.w_u32							(0);
+//	P.w_u32							(0);
 
 	P.w_stringZ						(m_sStartDialog);
 }
@@ -509,10 +510,10 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r_float						();
 	P.r_float						();
 //.
-	ALife::ETaskState				task_state;
-	P.r								(&task_state,sizeof(task_state));
-	P.r_u32							();
-	P.r_u32							();
+//	ALife::ETaskState				task_state;
+//	P.r								(&task_state,sizeof(task_state));
+//	P.r_u32							();
+//	P.r_u32							();
 
 	P.r_stringZ						(m_sStartDialog);
 

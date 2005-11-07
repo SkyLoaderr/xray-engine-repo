@@ -56,6 +56,7 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_1			(enabled,bool,CSE_ALifeMonsterAbstract*)\
+	DEFINE_LUA_WRAPPER_METHOD_1			(suitable,float,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(register_npc,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(unregister_npc,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_1			(task,CALifeSmartTerrainTask*,CSE_ALifeMonsterAbstract*)\
@@ -178,10 +179,23 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	)
 
-#define luabind_virtual_zone(a,b) \
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)\
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,smart_touch)\
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,detect_probability)
+#ifdef XRGAME_EXPORTS
+#	define luabind_virtual_zone(a,b) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,smart_touch)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,enabled)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,suitable)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,register_npc)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,unregister_npc)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,task)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,detect_probability)
+#else
+#	define luabind_virtual_zone(a,b) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,smart_touch)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,enabled)\
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,detect_probability)
+#endif
 
 #define luabind_virtual_monster(a,b) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)

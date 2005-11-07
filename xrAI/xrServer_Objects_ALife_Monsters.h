@@ -12,6 +12,10 @@
 #include "xrServer_Objects_ALife.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "character_info_defs.h"
+#include "associative_vector.h"
+
+class CALifeHumanBrain;
+class CALifeOnlineOfflineGroupBrain;
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -43,14 +47,11 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 		
 #ifdef XRGAME_EXPORTS
 	//для работы с relation system
-	u16								object_id	() const;
-	CHARACTER_COMMUNITY_INDEX		Community	() const;
-	LPCSTR							CommunityName () const;
-	CHARACTER_RANK_VALUE			Rank		() const;
-	CHARACTER_REPUTATION_VALUE		Reputation	() const;
-
-private:
-//	bool							m_character_profile_init;
+	u16								object_id				() const;
+	CHARACTER_COMMUNITY_INDEX		Community				() const;
+	LPCSTR							CommunityName			() const;
+	CHARACTER_RANK_VALUE			Rank					() const;
+	CHARACTER_REPUTATION_VALUE		Reputation				() const;
 
 #endif
 
@@ -62,25 +63,27 @@ private:
 	xr_vector<SPECIFIC_CHARACTER_ID> m_DefaultCharacters;
 
 public:	
-									CSE_ALifeTraderAbstract(LPCSTR caSection);
-	virtual							~CSE_ALifeTraderAbstract();
+									CSE_ALifeTraderAbstract		(LPCSTR caSection);
+	virtual							~CSE_ALifeTraderAbstract	();
 	// we need this to prevent virtual inheritance :-(
-	virtual CSE_Abstract			*base					() = 0;
-	virtual const CSE_Abstract		*base					() const = 0;
-	virtual CSE_Abstract			*init					();
-	virtual CSE_Abstract			*cast_abstract			() {return 0;};
-	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
+	virtual CSE_Abstract			*base						() = 0;
+	virtual const CSE_Abstract		*base						() const = 0;
+	virtual CSE_Abstract			*init						();
+	virtual CSE_Abstract			*cast_abstract				() {return 0;};
+	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract		() {return this;};
 	// end of the virtual inheritance dependant code
-			void __stdcall			OnChangeProfile			(PropValue* sender);
+			void __stdcall			OnChangeProfile				(PropValue* sender);
 
 #ifdef XRGAME_EXPORTS
-			void					attach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
-			void					detach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
+			void					attach						(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
+			void					detach						(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
+	virtual	void					add_online					(const bool &update_registries);
+	virtual	void					add_offline					(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 #ifdef DEBUG
 			bool					check_inventory_consistency	();
 #endif
-			void					vfInitInventory			();
-	virtual void					spawn_supplies			();
+			void					vfInitInventory				();
+	virtual void					spawn_supplies				();
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTraderAbstract)
@@ -98,7 +101,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
-	virtual void					on_surge				();
 	int 							supplies_count;
 			void 	__stdcall		OnSuppliesCountChange	(PropValue* sender);
 	virtual bool					natural_weapon			() const {return false;}
@@ -107,6 +109,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 #ifdef XRGAME_EXPORTS
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
+	virtual void					on_surge				();
+	virtual	void					add_online				(const bool &update_registries);
+	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 #endif
 #ifdef DEBUG
 	virtual bool					match_configuration		() const;
@@ -140,7 +145,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	float							m_fBirthProbability;
 	u16								m_wItemCount;
 	float							*m_faWeights;
-	string64						*m_cppArtefactSections;
+	xr_vector<shared_str>			m_cppArtefactSections;
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;
 	float							m_fStartPower;
@@ -321,6 +326,8 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	virtual bool					natural_detector		() const {return false;}
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();
+	virtual	void					add_online				(const bool &update_registries);
+	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 #endif
 #ifdef DEBUG
 	virtual bool					match_configuration		() const;
@@ -418,90 +425,45 @@ add_to_type_list(CSE_ALifeMonsterBase)
 
 //-------------------------------
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
-	DWORD_VECTOR					m_tpPath;
-	u32								m_dwCurNode;
-	GameGraph::_GRAPH_ID			m_tDestGraphPointIndex;								
-	xr_vector<bool>					m_baVisitedVertices;
-	ALife::ETaskState				m_tTaskState;
-	u32								m_dwCurTaskLocation;
-	u32								m_dwCurTaskID;
-	float							m_fSearchSpeed;
-	shared_str						m_caKnownCustomers;
-	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
-	svector<char,5>					m_cpEquipmentPreferences;
-	svector<char,4>					m_cpMainWeaponPreferences;
-	u32								m_dwTotalMoney;
-	float							m_fGoingSuccessProbability;
-	float							m_fSearchSuccessProbability;
-	float							m_detect_probability;
+public:
+	ALife::_OBJECT_ID				m_group_id;
+	ALife::_OBJECT_ID				m_smart_terrain_id;
 
-									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
+
+public:
+									CSE_ALifeHumanAbstract	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
-	virtual void					on_surge				();
-	virtual bool					natural_weapon			() const {return false;}
-	virtual bool					natural_detector		() const {return false;}
-#ifdef XRGAME_EXPORTS
-	virtual	void					update					();
-			bool					process_smart_terrain_task	();
-			// FSM
-			void					vfChooseTask			();
-			void					vfHealthCare			();
-			void					vfBuySupplies			();
-			void					vfGoToCustomer			();
-			void					vfBringToCustomer		();
-			void					vfGoToSOS				();
-			void					vfSendSOS				();
-			void					vfAccomplishTask		();
-			void					vfSearchObject			();
-			// FSM miscellanious
-			void					vfChooseHumanTask		();
-			bool					bfHealthIsGood			();
-			bool					bfItemCanTreat			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
-			void					vfUseItem				(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
-			bool					bfCanTreat				();
-			bool					bfEnoughMoneyToTreat	();
-			bool					bfEnoughTimeToTreat		();
-			bool					bfEnoughEquipmentToGo	();
-			bool					bfDistanceToTraderIsDanger	();
-			bool					bfEnoughMoneyToEquip	();
-			// miscellanious
-			bool					bfCheckIfTaskCompleted	(ALife::_TASK_ID		task_id, ALife::OBJECT_IT &I);
-			bool					bfCheckIfTaskCompleted	(ALife::_TASK_ID		task_id);
-			bool					bfCheckIfTaskCompleted	(ALife::OBJECT_IT		&I);
-			bool					bfCheckIfTaskCompleted	();
-			bool					similar_task			(const CALifeTask		*prev_task, const CALifeTask *new_task);
-			void					vfCheckForDeletedEvents	();
-			bool					bfChooseNextRoutePoint	();
-			void					vfSetCurrentTask		(ALife::_TASK_ID		&tTaskID);
-			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,		ALife::OBJECT_VECTOR	&tpObjectVector);
-			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,		ALife::ITEM_P_VECTOR	&tpItemVector,		ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ALife::ITEM_P_VECTOR	&tpItemVector,		ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,					float					&fHitPower);
-	virtual bool					bfPerformAttack			();
-	virtual	void					vfUpdateWeaponAmmo		();
-	virtual	void					vfProcessItems			();
-	virtual	void					vfAttachItems			(ALife::ETakeType		tTakeType = ALife::eTakeTypeAll);
-			bool					bfCanGetItem			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
-	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,		int						iGroupIndex,		bool			bMutualDetection);
-			void					vfCollectAmmoBoxes		();
-	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-	virtual	void					vfDetachAll				(bool					bFictitious = false);
-			int						ifChooseEquipment		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseWeapon			(ALife::EWeaponPriorityType	tWeaponPriorityType,	ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseFood			(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseMedikit			(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseDetector		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseValuables		();
-			bool					bfChooseFast			();
-			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
-	virtual void					spawn_supplies			();
-#endif
 	virtual CSE_Abstract			*cast_abstract			() {return this;};
 	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
 	virtual CSE_ALifeHumanAbstract	*cast_human_abstract	() {return this;};
+	virtual bool					natural_weapon			() const {return false;}
+	virtual bool					natural_detector		() const {return false;}
+	IC		CALifeHumanBrain		&brain					() {VERIFY(m_brain); return(*m_brain);}
+
+#ifdef XRGAME_EXPORTS
+	virtual	void					update					();
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType &tHitType, float &fHitPower);
+	virtual bool					bfPerformAttack			();
+	virtual	void					vfUpdateWeaponAmmo		();
+	virtual	void					vfProcessItems			();
+	virtual	void					vfAttachItems			(ALife::ETakeType tTakeType = ALife::eTakeTypeAll);
+	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
+	virtual	void					vfDetachAll				(bool bFictitious = false);
+	virtual void					spawn_supplies			();
+	virtual void					on_surge				();
+	virtual void					on_register				();
+	virtual void					on_unregister			();
+	virtual	void					add_online				(const bool &update_registries);
+	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
+#endif
+
+private:
+	CALifeHumanBrain				*m_brain;
+
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHumanAbstract)
 #define script_type_list save_type_list(CSE_ALifeHumanAbstract)
@@ -517,6 +479,55 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract,CSE_PH
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHumanStalker)
 #define script_type_list save_type_list(CSE_ALifeHumanStalker)
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeOnlineOfflineGroup,CSE_ALifeDynamicObject,CSE_ALifeSchedulable)
+public:
+									CSE_ALifeOnlineOfflineGroup	(LPCSTR caSection);
+	virtual							~CSE_ALifeOnlineOfflineGroup();
+	virtual CSE_Abstract			*base						();
+	virtual const CSE_Abstract		*base						() const;
+	virtual CSE_Abstract			*init						();
+	virtual CSE_Abstract			*cast_abstract				() {return this;};
+	virtual CSE_ALifeSchedulable	*cast_schedulable			() {return this;};
+
+public:
+	typedef CSE_ALifeHumanStalker							MEMBER;
+	typedef associative_vector<ALife::_OBJECT_ID,MEMBER*>	MEMBERS;
+
+private:
+	MEMBERS							m_members;
+
+#ifdef XRGAME_EXPORTS
+
+private:
+	CALifeOnlineOfflineGroupBrain	*m_brain;
+
+public:
+	IC		CALifeOnlineOfflineGroupBrain	&brain	() const;
+
+public:
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType &tHitType, float &fHitPower);
+	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
+	virtual bool					bfActive				();
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
+	virtual void					update					();
+			void					register_member			(ALife::_OBJECT_ID member_id);
+			void					unregister_member		(ALife::_OBJECT_ID member_id);
+			void					notify_on_member_death	(MEMBER *member);
+			MEMBER					*member					(ALife::_OBJECT_ID member_id, bool no_assert = false);
+	virtual void					on_before_register		();
+			void					on_after_game_load		();
+	virtual	bool					synchronize_location	();
+	virtual	void					try_switch_online		();
+	virtual	void					try_switch_offline		();
+	virtual	void					switch_online			();
+	virtual	void					switch_offline			();
+	virtual	bool					redundant				() const;
+#endif
+
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeOnlineOfflineGroup)
+#define script_type_list save_type_list(CSE_ALifeOnlineOfflineGroup)
 
 #pragma warning(pop)
 

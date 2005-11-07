@@ -172,13 +172,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			if (game->Type() != GAME_SINGLE)
 				Msg				("* [%2d] is [%s:%s]", id_src, *e_src->s_name, e_src->name_replace());
 
-			{
-				CSE_ALifeCreatureAbstract	*creature = smart_cast<CSE_ALifeCreatureAbstract*>(e_dest);
-				if (creature) {
-					VERIFY					(creature->m_killer_id == ALife::_OBJECT_ID(-1));
-					creature->m_killer_id	= id_src;
-				}
-			}
+			game->on_death		(e_dest,e_src);
 
 //			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил

@@ -11,8 +11,8 @@
 #include "xrServer_Objects_ALife_Items.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "object_broker.h"
-#include "alife_event_personal.h"
 #include "alife_artefact_order.h"
+#include "alife_human_brain.h"
 
 #ifndef AI_COMPILER
 #	include "ai_space.h"
@@ -27,6 +27,9 @@
 #	include "alife_registry_container.h"
 #	include "ef_primary.h"
 #	include "string_table.h"
+#	include "alife_online_offline_group_brain.h"
+#	include "alife_simulator.h"
+#	include "alife_object_registry.h"
 #endif
 
 void setup_location_types_section(GameGraph::TERRAIN_VECTOR &m_vertex_types, CInifile *ini, LPCSTR section)
@@ -181,6 +184,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if (m_wVersion < 108) {
 			R_ASSERT			(!tNetPacket.r_u32());
 		}
+
 		ALife::TASK_VECTOR		l_tpTaskIDs;
 		if (m_wVersion < 36)
 			load_data			(l_tpTaskIDs,tNetPacket);
@@ -519,12 +523,6 @@ const CSE_Abstract *CSE_ALifeTrader::base	() const
 	return						(inherited1::base());
 }
 
-void CSE_ALifeTrader::on_surge				()
-{
-	inherited1::on_surge		();
-	m_tpOrderedArtefacts.clear	();
-}
-
 void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
@@ -745,10 +743,10 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 	m_wItemCount				>>= 1;
 
 	m_faWeights					= xr_alloc<float>(m_wItemCount);
-	m_cppArtefactSections		= xr_alloc<string64>(m_wItemCount);
+	m_cppArtefactSections.resize(m_wItemCount);
 	string512					l_caBuffer;
 	for (u16 i=0; i<m_wItemCount; ++i) {
-		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,i << 1,l_caBuffer));
+		m_cppArtefactSections[i]= _GetItem(l_caParameters,i << 1,l_caBuffer);
 		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 	m_wArtefactSpawnCount		= 32;
@@ -782,7 +780,6 @@ const CSE_Abstract *CSE_ALifeAnomalousZone::base	() const
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone		()
 {
 	xr_free						(m_faWeights);
-	xr_free						(m_cppArtefactSections);
 }
 
 u32	CSE_ALifeAnomalousZone::ef_anomaly_type			() const
@@ -810,10 +807,12 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		u16						l_wItemCount;
 		tNetPacket.r_u16		(l_wItemCount);
 		float					*l_faWeights			= xr_alloc<float>(l_wItemCount);
-		string64				*l_cppArtefactSections	= xr_alloc<string64>(l_wItemCount);
+
+		xr_vector<shared_str>			l_cppArtefactSections;
+		l_cppArtefactSections.resize	(m_wItemCount);
 
 		for (u16 i=0; i<l_wItemCount; ++i) {
-			tNetPacket.r_stringZ(l_cppArtefactSections[i]);
+			tNetPacket.r_stringZ	(l_cppArtefactSections[i]);
 			if (m_wVersion > 26)
 				tNetPacket.r_float	(l_faWeights[i]);
 			else {
@@ -825,13 +824,12 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 		for ( i=0; i<l_wItemCount; ++i)
 			for (u16 j=0; j<m_wItemCount; ++j)
-				if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
+				if (!strstr(*l_cppArtefactSections[i],*m_cppArtefactSections[j])) {
 					m_faWeights[j] = l_faWeights[i];
 					break;
 				}
 
-				xr_free					(l_faWeights);
-				xr_free					(l_cppArtefactSections);
+		xr_free							(l_faWeights);
 	}
 	
 	if (m_wVersion > 25) {
@@ -867,7 +865,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_fBirthProbability);
 	tNetPacket.w_u16			(m_wItemCount);
 	for (u16 i=0; i<m_wItemCount; ++i) {
-		tNetPacket.w_stringZ		(m_cppArtefactSections[i]);
+		tNetPacket.w_stringZ	(m_cppArtefactSections[i]);
 		tNetPacket.w_float		(m_faWeights[i]);
 	}
 	tNetPacket.w_u16			(m_wArtefactSpawnCount);
@@ -894,7 +892,7 @@ void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"Radius"),								&m_fRadius,0.f,100.f);
 
 	for (u16 i=0; i<m_wItemCount; ++i)
-		PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"ALife\\Artefact Weights",				m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+		PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"ALife\\Artefact Weights",				*m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
 
 	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,		0.f,1.f);
 	PHelper().CreateU16				(items,PrepareKey(pref,*s_name,"ALife\\Artefact spawn places count"),	&m_wArtefactSpawnCount,		32,	256);
@@ -1483,6 +1481,14 @@ void CSE_ALifeCreatureActor::FillProps		(LPCSTR pref, PropItemVec& items)
   	inherited2::FillProps		(pref,items);
 }
 
+#ifdef XRGAME_EXPORTS
+void CSE_ALifeCreatureActor::spawn_supplies	()
+{
+	inherited1::spawn_supplies	();
+	inherited2::spawn_supplies	();
+}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureCrow
 ////////////////////////////////////////////////////////////////////////////
@@ -1892,42 +1898,23 @@ void CSE_ALifeMonsterBase::FillProps	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection)
 {
-	m_tpPath.clear				();
-	m_baVisitedVertices.clear	();
-	m_dwCurTaskID				= ALife::_TASK_ID(-1);
-	m_tTaskState				= ALife::eTaskStateChooseTask;
-	m_dwCurTaskLocation			= u32(-1);
-	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
-	m_dwCurNode					= u32(-1);
-	m_caKnownCustomers			= "m_trader0000";
-	m_tpKnownCustomers.clear	();
-	m_cpEquipmentPreferences.resize(5);
-	m_cpMainWeaponPreferences.resize(4);
-#ifdef XRGAME_EXPORTS
-	m_cpEquipmentPreferences.resize(iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f));
-	m_cpMainWeaponPreferences.resize(iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f));
-	R_ASSERT2					((iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) && (iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f) == 4),"Recompile Level Editor and xrAI and rebuild file \"game.spawn\"!");
-#endif
-	{
-		for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; ++i)
-			m_cpEquipmentPreferences[i] = u8(::Random.randI(3));
-	}
-	{
-		for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; ++i)
-			m_cpMainWeaponPreferences[i] = u8(::Random.randI(3));
-	}
-	m_fGoingSuccessProbability	= pSettings->r_float(caSection, "going_item_detect_probability");
-	m_fSearchSuccessProbability	= pSettings->r_float(caSection, "search_item_detect_probability");
+	m_brain						= 0;
+	m_group_id					= 0xffff;
+	m_smart_terrain_id			= 0xffff;
 }
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
+	xr_delete					(m_brain);
 }
 
 CSE_Abstract *CSE_ALifeHumanAbstract::init			()
 {
 	inherited1::init			();
 	inherited2::init			();
+
+	m_brain						= xr_new<CALifeHumanBrain>(this);
+
 	return						(base());
 }
 
@@ -1941,65 +1928,44 @@ const CSE_Abstract *CSE_ALifeHumanAbstract::base	() const
 	return						(inherited2::base());
 }
 
-void CSE_ALifeHumanAbstract::on_surge				()
-{
-	inherited2::on_surge		();
-	m_dwCurTaskID				= u32(-1);
-	m_tTaskState				= eTaskStateChooseTask;
-	m_baVisitedVertices.clear	();
-	m_tpPath.clear				();
-	m_dwCurNode					= u32(-1);
-//	m_tpKnownCustomers.clear	();
-}
-
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	save_data					(m_tpPath,tNetPacket);
-	save_data					(m_baVisitedVertices,tNetPacket);
-	tNetPacket.w_stringZ		(*m_caKnownCustomers?*m_caKnownCustomers:"");
-	save_data					(m_tpKnownCustomers,tNetPacket);
-	save_data					(m_cpEquipmentPreferences,tNetPacket);
-	save_data					(m_cpMainWeaponPreferences,tNetPacket);
+	brain().on_state_write		(tNetPacket);
+	tNetPacket.w				(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 }
 
 void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
-	if (m_wVersion > 19) {
-		load_data				(m_tpPath,tNetPacket);
-		load_data				(m_baVisitedVertices,tNetPacket);
-		if (m_wVersion > 35) {
-			tNetPacket.r_stringZ(m_caKnownCustomers);
-			load_data			(m_tpKnownCustomers,tNetPacket);
-			if (m_wVersion > 69) {
-				load_data		(m_cpEquipmentPreferences,tNetPacket);
-				load_data		(m_cpMainWeaponPreferences,tNetPacket);
-			}
-		}
-	}
-	m_tpPath.clear				();
-	m_baVisitedVertices.clear	();
+	brain().on_state_read		(tNetPacket);
+	if (m_wVersion >= 110)
+		tNetPacket.r			(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 }
 
 void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 	inherited2::UPDATE_Write	(tNetPacket);
-	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
-	tNetPacket.w_u32			(m_dwCurTaskLocation);
-	tNetPacket.w_u32			(m_dwCurTaskID);
+//	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
+//	tNetPacket.w_u32			(m_dwCurTaskLocation);
+//	tNetPacket.w_u32			(m_dwCurTaskID);
 };
 
 void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
-	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
-	tNetPacket.r_u32			(m_dwCurTaskLocation);
-	tNetPacket.r_u32			(m_dwCurTaskID);
+//	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
+//	tNetPacket.r_u32			(m_dwCurTaskLocation);
+//	tNetPacket.r_u32			(m_dwCurTaskID);
+	if (m_wVersion < 110) {
+		tNetPacket.r_u32		();
+		tNetPacket.r_u32		();
+		tNetPacket.r_u32		();
+	}
 };
 
 void CSE_ALifeHumanAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
@@ -2010,12 +1976,19 @@ void CSE_ALifeHumanAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Use smart terrain tasks"),	&m_flags,			flUseSmartTerrains);
 }
 
+#ifdef XRGAME_EXPORTS
+void CSE_ALifeHumanAbstract::spawn_supplies	()
+{
+	inherited1::spawn_supplies	();
+	inherited2::spawn_supplies	();
+}
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanStalker
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection),CSE_PHSkeleton(caSection)
 {
-	m_dwTotalMoney				= 0;
 	m_trader_flags.set			(eTraderFlagInfiniteAmmo,TRUE);
 	m_demo_mode					= FALSE;
 	m_start_dialog				= "";
@@ -2068,4 +2041,91 @@ void CSE_ALifeHumanStalker::FillProps		(LPCSTR pref, PropItemVec& values)
 	inherited1::FillProps		(pref,values);
 	inherited2::FillProps		(pref,values);
 	PHelper().CreateBOOL		(values,PrepareKey(pref,*s_name,"Demo mode"),&m_demo_mode);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CSE_ALifeOnlineOfflineGroup
+//////////////////////////////////////////////////////////////////////////
+
+CSE_ALifeOnlineOfflineGroup::CSE_ALifeOnlineOfflineGroup	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_ALifeSchedulable(caSection)
+{
+}
+
+CSE_Abstract *CSE_ALifeOnlineOfflineGroup::base				()
+{
+	return						(this);
+}
+
+const CSE_Abstract *CSE_ALifeOnlineOfflineGroup::base		() const
+{
+	return						(this);
+}
+
+CSE_Abstract *CSE_ALifeOnlineOfflineGroup::init				()
+{
+	inherited1::init			();
+	inherited2::init			();
+
+#ifdef XRGAME_EXPORTS
+	m_brain						= xr_new<CALifeOnlineOfflineGroupBrain>(this);
+#endif
+
+	VERIFY						(m_members.empty());
+	m_flags.set					(flUsedAI_Locations,FALSE);
+
+	return						(this);
+}
+
+CSE_ALifeOnlineOfflineGroup::~CSE_ALifeOnlineOfflineGroup	()
+{
+#ifdef XRGAME_EXPORTS
+	xr_delete					(m_brain);
+#endif
+}
+
+void CSE_ALifeOnlineOfflineGroup::STATE_Write				(NET_Packet &tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+
+#if 1
+	tNetPacket.w_u32			(m_members.size());
+
+	MEMBERS::iterator			I = m_members.begin();
+	MEMBERS::iterator			E = m_members.end();
+	for ( ; I != E; ++I)
+		save_data				((*I).first,tNetPacket);
+#endif
+}
+
+void CSE_ALifeOnlineOfflineGroup::STATE_Read				(NET_Packet &tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket, size);
+
+#if 1
+	u32							container_size = tNetPacket.r_u32();
+
+	MEMBERS::iterator			I = m_members.begin();
+	MEMBERS::iterator			E = m_members.end();
+	for (u32 i=0; i<container_size; ++i) {
+		MEMBERS::value_type		pair;
+		load_data				(pair.first,tNetPacket);
+		pair.second				= 0;
+		m_members.insert		(pair);
+	}
+#endif
+}
+
+void CSE_ALifeOnlineOfflineGroup::UPDATE_Write				(NET_Packet &tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+void CSE_ALifeOnlineOfflineGroup::UPDATE_Read				(NET_Packet &tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeOnlineOfflineGroup::FillProps					(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProps		(pref,values);
 }

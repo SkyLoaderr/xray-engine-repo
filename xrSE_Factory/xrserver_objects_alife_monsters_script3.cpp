@@ -74,7 +74,6 @@ void CSE_ALifeCreaturePhantom::script_register(lua_State *L)
 	];
 }
 
-
 void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 {
 	module(L)[
@@ -88,5 +87,17 @@ void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 		.def_readwrite("team",&CSE_ALifeCreatureAbstract::s_team)
 		.def_readwrite("squad",&CSE_ALifeCreatureAbstract::s_squad)
 		.def_readwrite("group",&CSE_ALifeCreatureAbstract::s_group)
+	];
+}
+
+void CSE_ALifeOnlineOfflineGroup::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife2(
+			CSE_ALifeOnlineOfflineGroup,
+			"cse_alife_online_offline_group",
+			CSE_ALifeDynamicObject,
+			CSE_ALifeSchedulable
+		)
 	];
 }
