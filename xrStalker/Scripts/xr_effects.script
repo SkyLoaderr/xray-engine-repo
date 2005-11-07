@@ -1370,14 +1370,14 @@ function sar2_scene_start(actor, npc)
             sar2_heroes[i] = 1
         end
     end
-    printf("effects<sar2>: scene start.")
+    printf("effects <sar2>: scene start.")
 end
 
 function sar_hero_dead(actor, npc)
     if sar2_heroes_count > 0 then
         sar2_heroes_count = sar2_heroes_count - 1
     end
-    printf("effects<sar2>: hero dead.")
+    printf("effects <sar2>: hero dead.")
 end
 
 function sar2_hero_spawn(actor, npc)
@@ -1400,7 +1400,7 @@ function sar2_hero_spawn(actor, npc)
             sar2_heroes[v] = nil
         end
         if c > 0 then
-            printf("effects<sar2>: hero spawn.")
+            printf("effects <sar2>: hero spawn.")
         end
     end
 end
