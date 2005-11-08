@@ -338,14 +338,9 @@ function CKampManager:proceedState(npc)
 	end
 	-- ќсуществл€етс€ рандомный взвешенный переход.
 	if max_rnd == 0 then
-		printf("------------------debug info-----------------------")
-		printf("kamp state [%s]", tostring(self.kamp_state))
-		printf("director [%s]", tostring(self.director))
-		printf("--- self.npc ---")
-		print_table(self.npc)
-		printf("--- self.kamp_states ---")
-		print_table(self.kamp_states)
-		abort("NO STATE AVAIL [%s]", self.kamp_name)
+		-- ≈сли переходить некуда - переходим в айдл
+		temp["idle"] = 100
+		max_rnd = 100
 	end
 	local p = math.random(0,max_rnd)
 	for k,v in pairs(temp) do
