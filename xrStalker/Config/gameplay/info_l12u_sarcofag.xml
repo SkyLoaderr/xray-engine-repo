@@ -52,6 +52,7 @@
 	<!---------------- Sarcofag 2 ------------------->
 	<info_portion id="sar2_teleport_start"></info_portion>
 	<info_portion id="sar2_monolith_rock"></info_portion>
+	<info_portion id="sar2_monolith_end"></info_portion>
 	
 	<!---------------- Spawn_stalkers --------------->
 	
