@@ -11,11 +11,7 @@
 <!--    <dialog>actor_help_wounded</dialog>   -->
   </info_portion>
 
-  <info_portion id="encyclopedy">
-	<article>weapons1_ammo_ammo-9x18-fmj</article>
-	<article>mutant_rat_general</article>
-  </info_portion>
-   
+
   <!-- special info portion that sends to actor when it
     use in-game UI (PDA, Inventory, etc)-->
     
