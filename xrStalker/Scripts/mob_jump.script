@@ -74,7 +74,7 @@ function mob_jump:update(delta)
 	end
 	
 	if self.state_current == STATE_JUMP then 
-		self.object:jump(self.point, self.st.ph_jump_phactor)
+		self.object:jump(self.point, self.st.ph_jump_factor)
 		self.st.signals["jumped"] = true
 		xr_logic.mob_release(self.object)
 	end
