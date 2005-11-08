@@ -26,6 +26,12 @@ void clear_smart_terrain(CSE_ALifeHumanAbstract *human)
 	human->m_smart_terrain_id	= 0xffff;
 }
 
+ALife::_OBJECT_ID smart_terrain_id	(CSE_ALifeHumanAbstract *human)
+{
+	THROW						(human);
+	return						(human->m_smart_terrain_id);
+}
+
 void CSE_ALifeCreatureCrow::script_register(lua_State *L)
 {
 	module(L)[
@@ -81,8 +87,9 @@ void CSE_ALifeHumanAbstract::script_register(lua_State *L)
 			CSE_ALifeTraderAbstract,
 			CSE_ALifeMonsterAbstract
 		)
-		.def("brain",				&get_brain)
+		.def("smart_terrain_id",	&smart_terrain_id)
 		.def("clear_smart_terrain",	&clear_smart_terrain)
+		.def("brain",				&get_brain)
 	];
 }
 

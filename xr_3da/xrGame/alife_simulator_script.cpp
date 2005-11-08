@@ -29,10 +29,16 @@ CALifeSimulator *alife			()
 	return			(const_cast<CALifeSimulator*>(ai().get_alife()));
 }
 
-CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, ALife::_OBJECT_ID id)
+CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, ALife::_OBJECT_ID object_id)
 {
 	VERIFY			(self);
-	return			(self->objects().object(id,true));
+	return			(self->objects().object(object_id,true));
+}
+
+bool valid_object_id						(const CALifeSimulator *self, ALife::_OBJECT_ID object_id)
+{
+	VERIFY			(self);
+	return			(object_id != 0xffff);
 }
 
 CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, LPCSTR name)
@@ -135,6 +141,7 @@ void CALifeSimulator::script_register(lua_State *L)
 	module(L)
 	[
 		class_<CALifeSimulator>("alife_simulator")
+			.def("valid_object_id",			&valid_object_id)
 			.def("level_id",				&get_level_id)
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,LPCSTR))(alife_object))
