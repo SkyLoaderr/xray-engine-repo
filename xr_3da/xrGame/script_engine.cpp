@@ -150,6 +150,7 @@ void CScriptEngine::init				()
 	setup_callbacks						();
 	export_classes						(lua());
 	setup_auto_load						();
+	m_stack_is_ready					= true;
 	register_script_classes				();
 	object_factory().register_script	();
 
@@ -233,6 +234,7 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 #ifdef DEBUG
 			print_stack		();
 			Msg				("* trying to access variable %s, which doesn't exist, or to load script %s, , which doesn't exist too",file_name,S1);
+			m_stack_is_ready= true;
 #endif
 			add_no_file		(file_name,string_length);
 			return;
