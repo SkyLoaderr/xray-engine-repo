@@ -55,8 +55,8 @@ class CALifeSmartTerrainTask;
 	INHERIT_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
-	DEFINE_LUA_WRAPPER_METHOD_1			(enabled,bool,CSE_ALifeMonsterAbstract*)\
-	DEFINE_LUA_WRAPPER_METHOD_1			(suitable,float,CSE_ALifeMonsterAbstract*)\
+	DEFINE_LUA_WRAPPER_CONST_METHOD_1	(enabled,bool,CSE_ALifeMonsterAbstract*)\
+	DEFINE_LUA_WRAPPER_CONST_METHOD_1	(suitable,float,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(register_npc,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(unregister_npc,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_1			(task,CALifeSmartTerrainTask*,CSE_ALifeMonsterAbstract*)\
