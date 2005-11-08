@@ -107,7 +107,7 @@ ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\human_01\scenario\gar
 ph_snd_themes["radar_drone"] = {"ambient\\radar_1"}
 ph_snd_themes["radar_thunder"] = {"ambient\\radar_2"}
 ph_snd_themes["radar_sparks"] = {"ambient\\radarsparks_1"}
-ph_snd_themes["aes_teleport"] = {"anomaly\\gravi_blowout5"}
+ph_snd_themes["aes_teleport"] = {"anomaly\\teleport_incoming"}
 ph_snd_themes["yan_antenna"] = {"characters_voice\\human_01\\scenario\\yantar\\psy_voices_1",
                                 "characters_voice\\human_02\\scenario\\yantar\\psy_voices_1",
                                 "characters_voice\\human_03\\scenario\\yantar\\psy_voices_1"}
