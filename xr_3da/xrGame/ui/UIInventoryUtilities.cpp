@@ -567,5 +567,7 @@ u32	InventoryUtilities::GetRelationColor(ALife::ERelationType relation)
 	default:
 		NODEFAULT;
 	}
+#ifdef DEBUG
 	return 0xffffffff;
+#endif
 }

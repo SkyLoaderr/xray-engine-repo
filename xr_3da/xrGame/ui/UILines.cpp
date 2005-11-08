@@ -365,7 +365,9 @@ float CUILines::GetIndentByAlign(float length)const{
 	default:
 			NODEFAULT;
 	}
+#ifdef DEBUG
 	return 0;
+#endif
 }
 
 float CUILines::GetVIndentByAlign(){
@@ -379,7 +381,9 @@ float CUILines::GetVIndentByAlign(){
 	default:
 		NODEFAULT;
 	}
+#ifdef DEBUG
 	return 0;
+#endif
 }
 
 // %c<255,255,255,255>

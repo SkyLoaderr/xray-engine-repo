@@ -151,7 +151,9 @@ const char* CUIMapList::GetCLGameModeName(){
 	else
 		NODEFAULT;
 
+#ifdef DEBUG
 	return NULL;
+#endif
 }
 
 GAME_TYPE CUIMapList::GetCurGameType(){
@@ -166,7 +168,9 @@ GAME_TYPE CUIMapList::GetCurGameType(){
 	else
 		NODEFAULT;
 
+#ifdef DEBUG
 	return GAME_UNKNOWN;
+#endif
 }
 
 const char* CUIMapList::GetCommandLine(LPCSTR player_name){

@@ -187,5 +187,7 @@ void CSpaceRestrictionComposition::test_correctness()
 Fsphere CSpaceRestrictionComposition::sphere	() const
 {
 	NODEFAULT;
+#ifdef DEBUG
 	return							(m_sphere);
+#endif
 }
