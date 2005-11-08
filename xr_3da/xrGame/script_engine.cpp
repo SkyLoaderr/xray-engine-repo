@@ -233,7 +233,7 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 		if (!warn_if_not_exist && !FS.exist(S)) {
 #ifdef DEBUG
 			print_stack		();
-			Msg				("* trying to access variable %s, which doesn't exist, or to load script %s, , which doesn't exist too",file_name,S1);
+			Msg				("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too",file_name,S1);
 			m_stack_is_ready= true;
 #endif
 			add_no_file		(file_name,string_length);
