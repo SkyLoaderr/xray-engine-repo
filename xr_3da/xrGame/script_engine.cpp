@@ -150,7 +150,9 @@ void CScriptEngine::init				()
 	setup_callbacks						();
 	export_classes						(lua());
 	setup_auto_load						();
+#ifdef DEBUG
 	m_stack_is_ready					= true;
+#endif
 	register_script_classes				();
 	object_factory().register_script	();
 
