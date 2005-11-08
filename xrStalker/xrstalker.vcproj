@@ -2374,6 +2374,15 @@
 					RelativePath=".\scripts\jm_test.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\krondor_test1.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\krondor_test2.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\krondor_test3.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\mil_test.script">
 				</File>
 				<File
