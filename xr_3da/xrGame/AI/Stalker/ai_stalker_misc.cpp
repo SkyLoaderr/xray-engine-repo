@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "ai_stalker_space.h"
 #include "../../bolt.h"
 #include "../../inventory.h"
 #include "../../character_info.h"
@@ -22,14 +23,9 @@
 #include "../../member_order.h"
 #include "../../level.h"
 #include "../../sound_player.h"
-#include "ai_stalker_space.h"
 #include "../../enemy_manager.h"
+#include "../../danger_manager.h"
 #include "../../visual_memory_manager.h"
-
-#define USE_STEALTH
-#ifdef USE_STEALTH
-#	include "../../danger_manager.h"
-#endif
 
 const u32 TOLLS_INTERVAL	= 2000;
 const u32 GRENADE_INTERVAL	= 0*1000;
@@ -40,11 +36,9 @@ bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *objec
 	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
 	if (explosive && (explosive->CurrentParentID() != 0xffff)) {
 		agent_manager().explosive().register_explosive(explosive,object);
-#ifdef USE_STEALTH
 		CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(Level().Objects.net_Find(explosive->CurrentParentID()));
 		if (entity_alive)
 			memory().danger().add(CDangerObject(entity_alive,object->Position(),Device.dwTimeGlobal,CDangerObject::eDangerTypeGrenade,CDangerObject::eDangerPerceiveTypeVisual,object));
-#endif
 	}
 
 	if (!memory().item().useful(object))
@@ -159,6 +153,7 @@ void CAI_Stalker::process_enemies		()
 	typedef MemorySpace::squad_mask_type	squad_mask_type;
 	typedef CVisualMemoryManager::VISIBLES	VISIBLES;
 
+	bool						found = false;
 	squad_mask_type				mask = memory().visual().mask();
 	VISIBLES::const_iterator	I = memory().visual().objects().begin();
 	VISIBLES::const_iterator	E = memory().visual().objects().end();
@@ -173,9 +168,14 @@ void CAI_Stalker::process_enemies		()
 		if (is_relation_enemy(member))
 			continue;
 
-		if (!member->memory().enemy().selected())
+		if (!member->memory().enemy().selected()) {
+			if (!memory().danger().selected() && member->memory().danger().selected())
+				memory().danger().add(*member->memory().danger().selected());
 			continue;
+		}
 
 		memory().make_object_visible_somewhen	(member->memory().enemy().selected());
+		found					= true;
+		break;
 	}
 }

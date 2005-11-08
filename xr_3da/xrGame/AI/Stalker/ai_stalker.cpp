@@ -684,8 +684,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		else
 			Exec_Visibility				();
 
-		memory().update					(dt);
 		process_enemies					();
+		memory().update					(dt);
+
 //		if (memory().enemy().selected() && !check)
 //			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
 //		if (!memory().enemy().selected() && check)
