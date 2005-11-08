@@ -1357,21 +1357,28 @@ local sar2_heroes_list = {
 }
 --]]
 
-local sar2_heroes_number = 60
+local sar2_heroes_sel_number, sar2_heroes_number = 0, 60
 local sar2_heroes_count, sar2_heroes_max_count = 0, 6
-local sar2_heroes = {}
+local sar2_hero_next_free_id = 1
+local sar2_heroes_sel = {}
 
 function sar2_scene_start(actor, npc)
     printf("effects <sar2>: scene start initializing.")
     local i = 0
     
+    sar2_heroes_sel = {}
+    sar2_heroes_sel_number = 0
+    sar2_hero_next_free_id = 1
     for i = 1, sar2_heroes_number do
         --if sar2_hero_is_dead(v) then
         if actor:has_info("sar2_death_" .. i) then
-            sar2_heroes[i] = 1
+            table.insert(sar2_heroes_sel, i)
+            sar2_heroes_sel_number = sar2_heroes_sel_number + 1
+            --printf("effects <sar2>: hero [%d] added.", i)
         end
     end
-    print_table(sar2_heroes)
+
+    print_table(sar2_heroes_sel)
     printf("effects <sar2>: scene end initializing.")
 end
 
@@ -1385,27 +1392,22 @@ end
 
 function sar2_hero_spawn(actor, npc)
     printf("effects <sar2>: hero count - %d, max - %d.", sar2_heroes_count, sar2_heroes_max_count)
-    if sar2_heroes_count < sar2_heroes_max_count then
-        local i, v, c = 0, 0, 0
-        local t = {}
+    local c = sar2_heroes_max_count - sar2_heroes_count
 
-        for i, v in pairs(sar2_heroes) do
-            actor:give_info_portion("sar2_spawn_" .. i)
-            table.insert(t, i)
+    -- check if we need to spawn stalkers
+    if sar2_hero_next_free_id <= sar2_heroes_sel_number and c > 0 then
+        local i, n = 0, math.min(sar2_hero_next_free_id + c - 1, sar2_heroes_sel_number)
 
-            c = c + 1
-            sar2_heroes_count = sar2_heroes_count + 1
-            if sar2_heroes_count >= sar2_heroes_max_count then
-                break
-            end
+        for i = sar2_hero_next_free_id, n do
+            actor:give_info_portion("sar2_spawn_" .. sar2_heroes_sel[i])
         end
-        
-        for i, v in pairs(t) do
-            sar2_heroes[v] = nil
-        end
-        if c > 0 then
+
+        if n >= sar2_hero_next_free_id then
             printf("effects <sar2>: hero spawn.")
         end
+        
+        sar2_heroes_count = sar2_heroes_count + (n - sar2_hero_next_free_id + 1)
+        sar2_hero_next_free_id = n + 1
     end
 end
 
