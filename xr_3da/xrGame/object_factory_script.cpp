@@ -71,6 +71,8 @@ struct CInternal{};
 
 void CObjectFactory::register_script	() const
 {
+	actualize					();
+
 	luabind::class_<CInternal>	instance("clsid");
 
 	const_iterator				I = clsids().begin(), B = I;
