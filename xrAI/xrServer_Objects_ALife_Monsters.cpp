@@ -234,6 +234,13 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			load_data					(m_character_name, tNetPacket);
 		}
 	}
+
+#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
+		specific_character();
+#endif
+#endif
+
 }
 
 

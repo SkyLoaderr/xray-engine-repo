@@ -7,16 +7,16 @@ class CUIAnimatedStatic;
 class CUIStatic;
 class CUICharacterInfo;
 class CUIScrollView;
+class CUIXml;
 
 class CUIStalkersRankingWnd: public CUIWindow
 {
 	typedef CUIWindow inherited;
 
 public:
-	virtual void			Init				();
+			void			Init				();
 	virtual void			Show				(bool status);
-	virtual void			SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
-	
+			void			ShowHumanDetails	();
 protected:
 	CUIFrameWindow*			UIInfoFrame;
 	CUIFrameWindow*			UICharIconFrame;
@@ -27,6 +27,28 @@ protected:
 	// информация о персонаже
 	CUIWindow*				UICharacterWindow;
 	CUICharacterInfo*		UICharacterInfo;
-	// Список сталкеров
+	void					FillList			();
 	CUIScrollView*			UIList;
+
+public:
+	CUIScrollView&			GetTopList			()			{return *UIList;}
+	void					ShowHumanInfo		(u16 id);
+
+};
+
+class CUIStalkerRankingInfoItem :public CUIWindow, public CUISelectable
+{
+	CUIStalkersRankingWnd*	m_StalkersRankingWnd;
+	u32						m_stored_alpha;
+public:
+	u16						m_humanID;
+	CUIStatic*				m_text1;
+	CUIStatic*				m_text2;
+	CUIStatic*				m_text3;
+public:
+							CUIStalkerRankingInfoItem(CUIStalkersRankingWnd*);
+	
+	void					Init			(CUIXml* xml, LPCSTR path, int idx);
+	virtual void			SetSelected		(bool b);
+	virtual void			OnMouseDown		(bool left_button = true);
 };

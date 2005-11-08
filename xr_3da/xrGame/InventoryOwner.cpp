@@ -33,7 +33,6 @@
 //////////////////////////////////////////////////////////////////////////
 CInventoryOwner::CInventoryOwner			()
 {
-	m_pCharacterInfo			= NULL;
 	m_pTrade					= NULL;
 	
 	m_inventory					= xr_new<CInventory>();
@@ -91,7 +90,8 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 	CGameObject			*pThis = smart_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 	CSE_Abstract* E	= (CSE_Abstract*)(DC);
-	if (GameID() == GAME_SINGLE)
+
+	if ( IsGameTypeSingle() )
 	{
 		CSE_ALifeTraderAbstract* pTrader = NULL;
 		if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
@@ -100,14 +100,14 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 		R_ASSERT( pTrader->character_profile().size() );
 
 		//синхронизируем параметры персонажа с серверным объектом
+		CharacterInfo().Init(pTrader);
+/*
 		CharacterInfo().m_CurrentCommunity.set(pTrader->m_community_index);
 		CharacterInfo().m_CurrentRank.set(pTrader->m_rank);
 		CharacterInfo().m_CurrentReputation.set(pTrader->m_reputation);
-
-
 		CharacterInfo().Load(pTrader->character_profile());
 		CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
-
+*/
 		//-------------------------------------
 		m_known_info_registry->registry().init(E->ID);
 		//-------------------------------------

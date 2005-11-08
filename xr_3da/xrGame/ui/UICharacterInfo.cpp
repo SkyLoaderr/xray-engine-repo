@@ -15,20 +15,34 @@
 #include "uistatic.h"
 #include "UIScrollView.h"
 
+
+#include "../alife_simulator.h"
+#include "../ai_space.h"
+#include "../alife_object_registry.h"
+#include "../xrServer.h"
+#include "../xrServer_Objects_ALife_Monsters.h"
+
 using namespace InventoryUtilities;
 
+CSE_ALifeTraderAbstract* get_from_id (u16 id)
+{
+	if( ai().get_alife() && ai().get_game_graph() )
+	{
+		return	smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(id));
+	}else{
+		return	smart_cast<CSE_ALifeTraderAbstract*>(Level().Server->game->get_entity_from_eid(id));
+	}
+}
+
 CUICharacterInfo::CUICharacterInfo()
+:m_ownerID(u16(-1)),pUIBio(NULL)
 {
 	ZeroMemory			(m_icons,eMaxCaption*sizeof(CUIStatic*));
-	pUIBio				= NULL;
-	m_ownerID			= u32(-1);
+	m_bForceUpdate		= false;
 }
 
 CUICharacterInfo::~CUICharacterInfo()
-{
-	for(int i=0; i<eMaxCaption;++i)
-		if(m_icons[i])xr_delete(m_icons[i]);
-}
+{}
 
 void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml* xml_doc)
 {
@@ -44,7 +58,8 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		pItem->ClipperOn	();
 		pItem->Show			(true);
 		pItem->Enable		(true);
-		AttachChild(pItem);
+		AttachChild			(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	if(xml_doc->NavigateToNode("name_static", 0)){
@@ -52,6 +67,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		xml_init.InitStatic(*xml_doc, "name_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 0);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	// rank
@@ -61,6 +77,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		xml_init.InitStatic(*xml_doc, "rank_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	if(xml_doc->NavigateToNode("rank_caption", 0))
@@ -68,6 +85,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		pItem = m_icons[eUIRankCaption] = xr_new<CUIStatic>();
 		xml_init.InitStatic(*xml_doc, "rank_caption", 0, pItem);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	//community
@@ -77,6 +95,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		xml_init.InitStatic(*xml_doc, "community_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	if(xml_doc->NavigateToNode("community_caption", 0))
@@ -84,6 +103,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		pItem = m_icons[eUICommunityCaption] = xr_new<CUIStatic>();
 		xml_init.InitStatic(*xml_doc, "community_caption", 0, pItem);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	//reputation
@@ -93,6 +113,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		xml_init.InitStatic(*xml_doc, "reputation_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	if(xml_doc->NavigateToNode("reputation_caption", 0))
@@ -100,6 +121,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		pItem = m_icons[eUIReputationCaption] = xr_new<CUIStatic>();
 		xml_init.InitStatic(*xml_doc, "reputation_caption", 0, pItem);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	// relation
@@ -109,6 +131,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		xml_init.InitStatic(*xml_doc, "relation_static", 0, pItem);
 		pItem->SetElipsis(CUIStatic::eepEnd, 1);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	if(xml_doc->NavigateToNode("relation_caption", 0))
@@ -116,6 +139,7 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 		pItem = m_icons[eUIRelationCaption] = xr_new<CUIStatic>();
 		xml_init.InitStatic(*xml_doc, "relation_caption", 0, pItem);
 		AttachChild(pItem);
+		pItem->SetAutoDelete(true);
 	}
 
 	if (xml_doc->NavigateToNode("biography_list", 0))
@@ -128,12 +152,77 @@ void CUICharacterInfo::Init(float x, float y, float width, float height, CUIXml*
 
 void CUICharacterInfo::Init(float x, float y, float width, float height, const char* xml_name)
 {
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
-	R_ASSERT3(xml_result, "xml file not found", xml_name);
-	Init(x,y,width,height,&uiXml);
+	CUIXml							uiXml;
+	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
+	R_ASSERT3						(xml_result, "xml file not found", xml_name);
+	Init							(x,y,width,height,&uiXml);
 }
 
+void CUICharacterInfo::InitCharacter(u16 id)
+{
+	m_ownerID					= id;
+
+	CCharacterInfo				chInfo;
+	CSE_ALifeTraderAbstract*	T = get_from_id(m_ownerID);
+
+	chInfo.Init					(T);
+
+	CStringTable	stbl;
+	string256		str;
+	if(m_icons[eUIName]){
+		m_icons[eUIName]->SetText	(T->m_character_name.c_str());
+	}
+
+	if(m_icons[eUIRank]){
+	#ifdef _DEBUG
+		sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(chInfo.Rank().value())), chInfo.Rank().value());
+	#else
+		sprintf(str, "%s", *stbl.translate(GetRankAsText(chInfo.Rank().value())));
+	#endif
+
+	m_icons[eUIRank]->SetText(str);
+	}
+
+
+	if(m_icons[eUIReputation]){
+	#ifdef _DEBUG
+		sprintf(str, "%s,%d", *stbl.translate(GetReputationAsText(chInfo.Reputation().value())), chInfo.Reputation().value());
+	#else
+		sprintf(str, "%s", *stbl.translate(GetReputationAsText(chInfo.Reputation().value())));
+	#endif
+		m_icons[eUIReputation]->SetText(str);
+	}
+
+	if(m_icons[eUICommunity]){
+		sprintf(str, "%s", *CStringTable().translate(chInfo.Community().id()));
+		m_icons[eUICommunity]->SetText(str);
+	}
+
+	m_icons[eUIIcon]->SetShader(GetCharIconsShader());
+	m_icons[eUIIcon]->GetUIStaticItem().SetOriginalRect(	float(chInfo.TradeIconX()*ICON_GRID_WIDTH),
+															float(chInfo.TradeIconY()*ICON_GRID_HEIGHT),
+															float(CHAR_ICON_WIDTH*ICON_GRID_WIDTH),
+															float(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT));
+	m_icons[eUIIcon]->SetStretchTexture						(true);
+
+	// Bio
+	if (pUIBio && pUIBio->IsEnabled())
+	{
+		pUIBio->Clear();
+		if (chInfo.Bio())
+		{
+			CUIStatic* pItem				= xr_new<CUIStatic>();
+			pItem->SetWidth					(pUIBio->GetDesiredChildWidth());
+			pItem->SetText					(chInfo.Bio());
+			pItem->AdjustHeightToText		();
+			pUIBio->AddWindow				(pItem, true);
+		}
+	}
+
+//	UpdateRelation	();
+	m_bForceUpdate	= true;
+}
+/*
 void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 {
 	VERIFY(pCharInfo);
@@ -198,7 +287,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 	InitCharacter(&pOwner->CharacterInfo());
 
 	UpdateRelation();
-}
+}*/
 
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill)
 {
@@ -232,19 +321,19 @@ void CUICharacterInfo::ResetAllStrings()
 void CUICharacterInfo::UpdateRelation()
 {
 	if(!m_icons[eUIRelation] ||!m_icons[eUIRelationCaption]) return;
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-		if (pActor->ID()==m_ownerID || !hasOwner())
+		if (Actor()->ID()==m_ownerID || !hasOwner())
 		{
 			if(m_icons[eUIRelationCaption])	m_icons[eUIRelationCaption]->Show	(false);
 			if(m_icons[eUIRelation])		m_icons[eUIRelation]->Show			(false);
 		}
 		else
 		{
-			CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(m_ownerID));
-			if(pActor)
-				SetRelation(RELATION_REGISTRY().GetRelationType(IO,		static_cast<CInventoryOwner*>(pActor)),
-							RELATION_REGISTRY().GetAttitude(IO,			static_cast<CInventoryOwner*>(pActor)));
+			CSE_ALifeTraderAbstract* T = get_from_id	(m_ownerID);
+			CSE_ALifeTraderAbstract* TA = get_from_id	(Actor()->ID());
+
+			SetRelation(RELATION_REGISTRY().GetRelationType(T,		TA),
+						RELATION_REGISTRY().GetAttitude(T,			TA));
 		}
 }
 
@@ -253,17 +342,19 @@ void CUICharacterInfo::Update()
 	inherited::Update();
 
 
-	if(hasOwner() && (Device.dwFrame%100==0)  ){
-		CObject* O = Level().Objects.net_Find(m_ownerID);
-		if (NULL==O)
-			m_ownerID = u32(-1);
-		else
+	if(hasOwner() && (m_bForceUpdate||(Device.dwFrame%100==0))  ){
+		m_bForceUpdate = false;
+		CSE_ALifeTraderAbstract* T = get_from_id	(m_ownerID);
+		if (NULL==T){
+			m_ownerID = u16(-1);
+			return;
+		}else
 			UpdateRelation();
 
-		if(O && m_icons[eUIIcon]){
-			CEntityAlive* ea = smart_cast<CEntityAlive*>(O);
-			if(!ea->g_Alive())
-				m_icons[eUIIcon]->SetColor(color_argb(255,255,160,160));
+		if(m_icons[eUIIcon]){
+			CSE_ALifeCreatureAbstract*		pCreature = smart_cast<CSE_ALifeCreatureAbstract*>(T);
+			if(!pCreature->g_Alive())
+				m_icons[eUIIcon]->SetColor	(color_argb(255,255,160,160));
 		}
 	}
 }

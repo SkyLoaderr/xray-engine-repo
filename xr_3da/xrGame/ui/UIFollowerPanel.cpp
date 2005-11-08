@@ -50,7 +50,7 @@ void CUIFollowerPanel::RemoveFollower(u16 id)
 	WINDOW_LIST_it it;
 	for(it=wl.begin();it!=wl.end();++it){
 		UIFollowerIcon* i = smart_cast<UIFollowerIcon*>(*it);
-		if(i->m_ownerID == id){
+		if(i->OwnerID() == id){
 			DetachChild		(*it);
 			break;
 		}

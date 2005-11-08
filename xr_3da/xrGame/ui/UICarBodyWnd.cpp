@@ -115,13 +115,7 @@ void CUICarBodyWnd::Init()
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	UIPropertiesBox.Hide();
-/*
-	AttachChild(&UIMessageBox);
-	UIMessageBox.Init("ui\\ui_frame", 0, 0, 300, 300);
-	UIMessageBox.AutoCenter();
-	UIMessageBox.Hide();
-*/	
-	//////
+
 	UIOurBagList.SetCheckProc(OurBagProc);
 	UIOthersBagList.SetCheckProc(OthersBagProc);
 
@@ -139,31 +133,28 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 								CInventory* pOthersInv, CGameObject* pOthersObject)
 {
 
-    m_pOurObject = pOurObject;
-	m_pOthersObject = pOthersObject;
+    m_pOurObject			= pOurObject;
+	m_pOthersObject			= pOthersObject;
 
-	m_pInv = pOurInv;
-	m_pOthersInv = pOthersInv;
+	m_pInv					= pOurInv;
+	m_pOthersInv			= pOthersInv;
 
 	
-	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pOurObject);
-	UICharacterInfoLeft.InitCharacter(pOurInvOwner);
-	CInventoryOwner* pOthersInvOwner = smart_cast<CInventoryOwner*>(pOthersObject);
-	if(pOthersInvOwner)	UICharacterInfoRight.InitCharacter(pOthersInvOwner);
-	//CCar* pOthersCar = smart_cast<CCar*>(pOthersObject);	
+//	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pOurObject);
+	UICharacterInfoLeft.InitCharacter(pOurObject->ID());
+//	CInventoryOwner* pOthersInvOwner = smart_cast<CInventoryOwner*>(pOthersObject);
+	if(pOthersObject)	UICharacterInfoRight.InitCharacter(pOthersObject->ID());
 	
 
-	m_pMouseCapturer = NULL;
-	UIPropertiesBox.Hide();
+	m_pMouseCapturer			= NULL;
+	UIPropertiesBox.Hide		();
 //	UIMessageBox.Hide();
-	EnableAll();
+	EnableAll					();
 
 
-	UpdateLists();
+	UpdateLists					();
 
 }  
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::UpdateLists()
 {

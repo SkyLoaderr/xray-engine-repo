@@ -20,6 +20,7 @@ class NET_Packet;
 	#include "character_community.h"
 	#include "character_rank.h"
 	#include "character_reputation.h"
+	class CSE_ALifeTraderAbstract;
 #endif
 
 
@@ -71,7 +72,8 @@ public:
 	//инициализация профиля подразумевает
 	//загрузку соответствующего CSpecificCharacter, по 
 	//указанному индексу
-	void InitSpecificCharacter (SPECIFIC_CHARACTER_ID new_id);
+	void	Init				(CSE_ALifeTraderAbstract* trader);
+	void InitSpecificCharacter	(SPECIFIC_CHARACTER_ID new_id);
 #endif
 
 protected:

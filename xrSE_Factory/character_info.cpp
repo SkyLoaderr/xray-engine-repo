@@ -17,6 +17,7 @@
 
 #include "PhraseDialog.h"
 #include "alife_registry_container_composition.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
 #endif
 
@@ -126,6 +127,14 @@ void CCharacterInfo::load_shared	(LPCSTR)
 }
 
 #ifdef XRGAME_EXPORTS
+void CCharacterInfo::Init	(CSE_ALifeTraderAbstract* trader)
+{
+	m_CurrentCommunity.set		(trader->m_community_index);
+	m_CurrentRank.set			(trader->m_rank);
+	m_CurrentReputation.set		(trader->m_reputation);
+	Load						(trader->character_profile());
+	InitSpecificCharacter		(trader->specific_character());
+}
 
 
 PROFILE_ID CCharacterInfo::Profile()			const

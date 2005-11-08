@@ -42,16 +42,15 @@ class CUIActorStaticticHeader :public CUIWindow, public CUISelectable
 {
 	CUIActorInfoWnd*						m_actorInfoWnd;
 protected:
-	CUIStatic*		m_text;
 	u32				m_stored_alpha;
 public:
-	CUIStatic*		m_num;
+	CUIStatic*		m_text1;
+	CUIStatic*		m_text2;
 public:
 					CUIActorStaticticHeader	(CUIActorInfoWnd* w);
 	void			Init					(CUIXml* xml, LPCSTR path, int idx);
 	virtual void	OnMouseDown				(bool left_button = true);
 	virtual void	SetSelected				(bool b);
-			void	SetText1				(LPCSTR str);
 
 	int										m_index;
 };
@@ -59,13 +58,10 @@ public:
 class CUIActorStaticticDetail :public CUIWindow
 {
 protected:
-	CUIStatic*		m_text;
 public:
-	CUIStatic*		m_num1;
-	CUIStatic*		m_num2;
+	CUIStatic*		m_text1;
+	CUIStatic*		m_text2;
+	CUIStatic*		m_text3;
 public:
 	void			Init					(CUIXml* xml, LPCSTR path, int idx);
-			void	SetText1				(LPCSTR str);
-			void	SetText2				(LPCSTR str);
-			void	SetText3				(LPCSTR str);
 };

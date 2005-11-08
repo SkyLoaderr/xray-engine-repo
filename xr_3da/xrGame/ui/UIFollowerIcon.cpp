@@ -47,8 +47,8 @@ void UIFollowerIcon::Init(Frect rect, const char* xml_name)
 
 void UIFollowerIcon::InitCharacter	(u16 id)
 {
-	CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(id));
-	inherited::InitCharacter(IO);
+//	CInventoryOwner* IO = smart_cast<CInventoryOwner*>(Level().Objects.net_Find(id));
+	inherited::InitCharacter(id);
 }
 
 void UIFollowerIcon::Draw()

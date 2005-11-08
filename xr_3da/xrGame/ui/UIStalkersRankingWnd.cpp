@@ -60,8 +60,8 @@ void CUIStalkersRankingWnd::Init()
 											UICharacterWindow->GetHeight(), 
 											STALKERS_RANKING_CHARACTER_XML);
 
-	xml_init.InitAutoStatic				(uiXml, "right_auto_static", UICharIconFrame);
-	xml_init.InitAutoStatic				(uiXml, "left_auto_static",  UIInfoFrame);
+	xml_init.InitAutoStaticGroup		(uiXml, "left_auto",				UIInfoFrame);
+	xml_init.InitAutoStaticGroup		(uiXml, "right_auto",				UICharIconFrame);
 }
 
 
@@ -69,23 +69,94 @@ void CUIStalkersRankingWnd::Show(bool status)
 {
 	inherited::Show(status);
 	if (status)
-	{
-//		AddStalkerInfo							();
-		UICharacterWindow->Show					(false);
-		UICharIconHeader->UITitleText.SetText	("");
+		FillList								();
+}
+void CUIStalkersRankingWnd::FillList()
+{
+	CUIXml									uiXml;
+	uiXml.Init								(CONFIG_PATH, UI_PATH,STALKERS_RANKING_XML);
+
+	UIList->Clear							();
+
+	uiXml.SetLocalRoot						(uiXml.NavigateToNode("stalkers_list",0));
+	string32								buff;
+
+	for(int i=0; i<30; ++i){
+		CUIStalkerRankingInfoItem* itm		= xr_new<CUIStalkerRankingInfoItem>(this);
+		if(i==10)
+			itm->Init							(&uiXml, "item_ellipsis", 0);
+		else{
+			itm->Init							(&uiXml, "item_human", 0);
+
+			sprintf								(buff,"%d.",i);
+			itm->m_text1->SetText				(buff);		
+
+
+			sprintf								(buff,"human %d",i);
+			itm->m_text2->SetText				(buff);		
+
+			sprintf								(buff,"%d",i*100);
+			itm->m_text3->SetText				(buff);		
+		}
+		UIList->AddWindow					(itm, true);
 	}
+
+	UIList->SetSelected						(UIList->GetItem(0) );
+
 }
 
-#include "../character_info.h"
-
-void CUIStalkersRankingWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+void CUIStalkersRankingWnd::ShowHumanInfo		(u16 id)
 {
-/*
-	if (UIList == pWnd && LIST_ITEM_CLICKED == msg)
-	{
-		UICharacterWindow->Show(true);
-		CInventoryOwner* IO = reinterpret_cast<CInventoryOwner*>(reinterpret_cast<CUIListItem*>(pData)->GetData());
-		UICharacterInfo->InitCharacter(IO);
-		UICharIconHeader->UITitleText.SetText(IO->Name());
-	}*/
+	UICharacterInfo->InitCharacter(id);
+}
+
+
+CUIStalkerRankingInfoItem::CUIStalkerRankingInfoItem(CUIStalkersRankingWnd* w)
+:m_StalkersRankingWnd(w),m_humanID(u16(-1))
+{
+}
+
+void CUIStalkerRankingInfoItem::Init	(CUIXml* xml, LPCSTR path, int idx)
+{
+	XML_NODE* _stored_root					= xml->GetLocalRoot();
+
+	CUIXmlInit								xml_init;
+	xml_init.InitWindow						(*xml, path, idx, this);
+
+	xml->SetLocalRoot						(xml->NavigateToNode(path,idx));
+
+	m_text1									= xr_new<CUIStatic>(); m_text1->SetAutoDelete(true);
+	AttachChild								(m_text1);
+	xml_init.InitStatic						(*xml, "text_1", 0, m_text1);
+
+	m_text2									= xr_new<CUIStatic>(); m_text2->SetAutoDelete(true);
+	AttachChild								(m_text2);
+	xml_init.InitStatic						(*xml, "text_2", 0, m_text2);
+
+	m_text3									= xr_new<CUIStatic>(); m_text3->SetAutoDelete(true);
+	AttachChild								(m_text3);
+	xml_init.InitStatic						(*xml, "text_3", 0, m_text3);
+
+	xml_init.InitAutoStaticGroup			(*xml, "auto", this);
+
+	m_stored_alpha							= color_get_A(m_text2->GetTextColor());
+	xml->SetLocalRoot						(_stored_root);
+}
+
+void CUIStalkerRankingInfoItem::SetSelected	(bool b)
+{
+	CUISelectable::SetSelected				(b);
+	m_text1->SetTextColor( subst_alpha(m_text1->GetTextColor(), b?255:m_stored_alpha ));
+	m_text2->SetTextColor( subst_alpha(m_text2->GetTextColor(), b?255:m_stored_alpha ));
+	m_text3->SetTextColor( subst_alpha(m_text3->GetTextColor(), b?255:m_stored_alpha ));
+	if(b){ 
+		m_StalkersRankingWnd->ShowHumanInfo			(0);
+	}
+
+}
+
+void CUIStalkerRankingInfoItem::OnMouseDown		(bool left_button)
+{
+	if(left_button)
+		m_StalkersRankingWnd->GetTopList().SetSelected	(this);
 }

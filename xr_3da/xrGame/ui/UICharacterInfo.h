@@ -17,20 +17,18 @@ class CUICharacterInfo: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
-public:
-	CUICharacterInfo();
-	virtual		~CUICharacterInfo();
 
-	void		Init					(float x, float y, float width, float height, CUIXml* xml_doc);
-	void		Init					(float x, float y, float width, float height, const char* xml_name);
-	void		InitCharacter			(CInventoryOwner* pInvOwner);
-	void		InitCharacter			(CCharacterInfo* pCharInfo);
-	void		SetRelation				(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill);
-	
-	void		ResetAllStrings			();
+protected:
+	void				SetRelation				(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill);
+	void				ResetAllStrings			();
+	void				UpdateRelation			();
+	bool				hasOwner()			{return (m_ownerID!=u16(-1));}
+	// Biography
+	CUIScrollView*		pUIBio;
+	bool				m_bForceUpdate;
+	u16					m_ownerID;
 
-	virtual void	Update				();
-			void	UpdateRelation		();
+
 	enum{
 		eUIIcon	=	0,
 		eUIName,
@@ -44,12 +42,20 @@ public:
 		eUIRelationCaption,
 		eMaxCaption,
 	};
-	CUIStatic*			m_icons[eMaxCaption];
-	u32					m_ownerID;
-	// Biography
-	CUIScrollView*		pUIBio;
-	bool				hasOwner()			{return (m_ownerID!=u32(-1));}
+	CUIStatic*					m_icons[eMaxCaption];
 
+public:
+						CUICharacterInfo();
+	virtual				~CUICharacterInfo();
+
+	void				Init					(float x, float y, float width, float height, CUIXml* xml_doc);
+	void				Init					(float x, float y, float width, float height, const char* xml_name);
+	void				InitCharacter			(u16 id);
+
+	virtual void		Update					();
+
+	u16					OwnerID					()	const {return m_ownerID;}
 	CUIStatic&	UIIcon()		{VERIFY(m_icons[eUIIcon]);return *m_icons[eUIIcon];}	
 	CUIStatic&	UIName()		{VERIFY(m_icons[eUIName]);return *m_icons[eUIName];}	
+
 };

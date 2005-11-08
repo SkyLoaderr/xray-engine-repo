@@ -17,6 +17,7 @@
 #include "../character_community.h"
 #include "../character_reputation.h"
 #include "../relation_registry.h"
+#include "../string_table.h"
 
 const char * const		ACTOR_STATISTIC_XML		= "actor_statistic.xml";
 const char * const		ACTOR_CHARACTER_XML		= "pda_dialog_character.xml";
@@ -82,7 +83,7 @@ void CUIActorInfoWnd::Show(bool status)
 	inherited::Show(status);
 	if (!status) return;
 	
-	UICharacterInfo->InitCharacter			(Actor());
+	UICharacterInfo->InitCharacter			(Actor()->ID());
 	UICharIconHeader->UITitleText.SetText	(Actor()->Name());
 	FillPointsInfo							();
 }
@@ -95,8 +96,8 @@ void CUIActorInfoWnd::FillPointsInfo			()
 
 	UIMasterList->Clear						();
 
-	int items_num = uiXml.GetNodesNum		("actor_details_wnd", 0, "master_part");
-	uiXml.SetLocalRoot						(uiXml.NavigateToNode("actor_details_wnd",0));
+	int items_num = uiXml.GetNodesNum		("actor_stats_wnd", 0, "master_part");
+	uiXml.SetLocalRoot						(uiXml.NavigateToNode("actor_stats_wnd",0));
 	string64 buff;
 	
 	for(int i=0; i<items_num; ++i){
@@ -106,11 +107,11 @@ void CUIActorInfoWnd::FillPointsInfo			()
 		if(_ParseItem("foo",actor_stats_token)!=(u32)itm->m_index){
 
 			if(_ParseItem("reputation",actor_stats_token)==(u32)itm->m_index){
-				itm->SetText1						(InventoryUtilities::GetReputationAsText(Actor()->Reputation()));
-				itm->m_num->SetTextColor			(InventoryUtilities::GetReputationColor(Actor()->Reputation()));
+				itm->m_text2->SetText				(InventoryUtilities::GetReputationAsText(Actor()->Reputation()));
+				itm->m_text2->SetTextColor			(InventoryUtilities::GetReputationColor(Actor()->Reputation()));
 			}else{
 				sprintf								(buff,"%d", Actor()->StatisticMgr().GetSectionPoints(itm->m_index));
-				itm->SetText1						(buff);
+				itm->m_text2->SetText				(buff);
 			}
 		}
 		UIMasterList->AddWindow				(itm, true);
@@ -126,7 +127,7 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 	UIDetailList->Clear						();
 	CUIXml									uiXml;
 	uiXml.Init								(CONFIG_PATH, UI_PATH,ACTOR_STATISTIC_XML);
-	uiXml.SetLocalRoot						(uiXml.NavigateToNode("actor_details_wnd",0));
+	uiXml.SetLocalRoot						(uiXml.NavigateToNode("actor_stats_wnd",0));
 	
 	string512 path;
 	sprintf									(path,"detail_part_%d",idx);
@@ -154,14 +155,14 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 		CUIActorStaticticDetail* itm		= xr_new<CUIActorStaticticDetail>();
 		itm->Init							(&uiXml, path, 0);
 
-		sprintf								(buff,"%d. %s",_cntr, *((*it).key));
-		itm->SetText1						(buff);
+		sprintf								(buff,"%d. %s",_cntr, *CStringTable().translate((*it).key));
+		itm->m_text1->SetText				(buff);
 
 		sprintf								(buff,"x%d", (*it).count);
-		itm->SetText2						(buff);
+		itm->m_text2->SetText				(buff);
 
 		sprintf								(buff,"%d", (*it).points);
-		itm->SetText3						(buff);
+		itm->m_text3->SetText				(buff);
 
 		UIDetailList->AddWindow				(itm, true);
 	}
@@ -187,17 +188,17 @@ void	CUIActorInfoWnd::FillReputationDetails		(CUIXml* xml, LPCSTR path)
 		CUIActorStaticticDetail* itm		= xr_new<CUIActorStaticticDetail>();
 		itm->Init							(xml, path, 0);
 		comm.set							(xml->Read(_list_node,"r",i,"unknown_community"));
-		itm->SetText1						(*(comm.id()));
+		itm->m_text1->SetText				(*(comm.id()));
 		
 		CHARACTER_GOODWILL	gw				= RELATION_REGISTRY().GetCommunityGoodwill(comm.index(), Actor()->ID());
 		gw									+= CHARACTER_COMMUNITY::relation(Actor()->Community(),comm.index());
 		gw									+= d_neutral;
 
-		itm->SetText2						(InventoryUtilities::GetGoodwillAsText(gw));
-		itm->m_num1->SetTextColor			(InventoryUtilities::GetGoodwillColor(gw));
+		itm->m_text2->SetText				(InventoryUtilities::GetGoodwillAsText(gw));
+		itm->m_text2->SetTextColor			(InventoryUtilities::GetGoodwillColor(gw));
 
 		sprintf								(buff,"%d", gw);
-		itm->SetText3						(buff);
+		itm->m_text3->SetText				(buff);
 
 		UIDetailList->AddWindow				(itm, true);
 	}
@@ -218,19 +219,19 @@ void CUIActorStaticticHeader::Init	(CUIXml* xml, LPCSTR path, int idx)
 
 	xml->SetLocalRoot					(xml->NavigateToNode(path,idx));
 
-	m_text								= xr_new<CUIStatic>(); m_text->SetAutoDelete(true);
-	AttachChild							(m_text);
-	xml_init.InitStatic					(*xml, "caption_static", 0, m_text);
+	m_text1								= xr_new<CUIStatic>(); m_text1->SetAutoDelete(true);
+	AttachChild							(m_text1);
+	xml_init.InitStatic					(*xml, "text_1", 0, m_text1);
 
-	m_num								= xr_new<CUIStatic>(); m_num->SetAutoDelete(true);
-	AttachChild							(m_num);
-	xml_init.InitStatic					(*xml, "num_static", 0, m_num);
+	m_text2								= xr_new<CUIStatic>(); m_text2->SetAutoDelete(true);
+	AttachChild							(m_text2);
+	xml_init.InitStatic					(*xml, "text_2", 0, m_text2);
 
 	xml_init.InitAutoStaticGroup		(*xml, "auto", this);
 
 	m_index								= _ParseItem(xml->ReadAttrib(xml->GetLocalRoot(),"id",0), actor_stats_token);
 
-	m_stored_alpha						= color_get_A(m_text->GetTextColor());
+	m_stored_alpha						= color_get_A(m_text1->GetTextColor());
 	xml->SetLocalRoot					(_stored_root);
 
 }
@@ -244,15 +245,10 @@ void CUIActorStaticticHeader::OnMouseDown	(bool left_button)
 void CUIActorStaticticHeader::SetSelected(bool b)
 {
 	CUISelectable::SetSelected(b);
-	m_text->SetTextColor( subst_alpha(m_text->GetTextColor(), b?255:m_stored_alpha ));
+	m_text1->SetTextColor( subst_alpha(m_text1->GetTextColor(), b?255:m_stored_alpha ));
 	if(b){ 
 		m_actorInfoWnd->FillPointsDetail			(m_index);
 	}
-}
-
-void CUIActorStaticticHeader::SetText1				(LPCSTR str)
-{
-	m_num->SetText		(str);
 }
 
 
@@ -265,35 +261,19 @@ void CUIActorStaticticDetail::Init		(CUIXml* xml, LPCSTR path, int idx)
 
 	xml->SetLocalRoot					(xml->NavigateToNode(path,idx));
 
-	m_text								= xr_new<CUIStatic>(); m_text->SetAutoDelete(true);
-	AttachChild							(m_text);
-	xml_init.InitStatic					(*xml, "caption_static", 0, m_text);
+	m_text1								= xr_new<CUIStatic>(); m_text1->SetAutoDelete(true);
+	AttachChild							(m_text1);
+	xml_init.InitStatic					(*xml, "text_1", 0, m_text1);
 
-	m_num1								= xr_new<CUIStatic>(); m_num1->SetAutoDelete(true);
-	AttachChild							(m_num1);
-	xml_init.InitStatic					(*xml, "num_static1", 0, m_num1);
+	m_text2								= xr_new<CUIStatic>(); m_text2->SetAutoDelete(true);
+	AttachChild							(m_text2);
+	xml_init.InitStatic					(*xml, "text_2", 0, m_text2);
 	
-	m_num2								= xr_new<CUIStatic>(); m_num2->SetAutoDelete(true);
-	AttachChild							(m_num2);
-	xml_init.InitStatic					(*xml, "num_static2", 0, m_num2);
+	m_text3								= xr_new<CUIStatic>(); m_text3->SetAutoDelete(true);
+	AttachChild							(m_text3);
+	xml_init.InitStatic					(*xml, "text_3", 0, m_text3);
 
 	xml_init.InitAutoStaticGroup		(*xml, "auto", this);
 
 	xml->SetLocalRoot					(_stored_root);
 }
-
-void CUIActorStaticticDetail::SetText1(LPCSTR str)
-{
-	m_text->SetText		(str);
-}
-
-void CUIActorStaticticDetail::SetText2(LPCSTR str)
-{
-	m_num1->SetText		(str);
-}
-
-void CUIActorStaticticDetail::SetText3(LPCSTR str)
-{
-	m_num2->SetText		(str);
-}
-
