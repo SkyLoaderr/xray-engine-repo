@@ -93,6 +93,8 @@ void destroyInput	()
 void InitSound		()
 {
 	CSound_manager_interface::_create					(u64(Device.m_hWnd));
+//	Msg				("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//	ref_sound*	x	= 
 }
 void destroySound	()
 {

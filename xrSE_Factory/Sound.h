@@ -88,7 +88,7 @@ public:
 	CSound_UserDataPtr				g_userdata;
 public:
 									ref_sound_data	(BOOL _3D, LPCSTR fName, int type);
-	virtual							~ref_sound_data	();
+									~ref_sound_data	();
 };
 typedef resptr_core<ref_sound_data,resptr_base<ref_sound_data> >	ref_sound_data_ptr;
 /*! \class ref_sound
@@ -284,9 +284,12 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data					( BOOL _3D, LPCSTR fName, 	int 	type)			{	::Sound->_create_data			(*this,_3D,fName, type);											}
-IC ref_sound_data::~ref_sound_data					()													{	::Sound->_destroy_data			(*this);															}
-                                
+IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);											}
+IC ref_sound_data::~ref_sound_data				()														{
+	Msg								("~ref_sound_data");
+	::Sound->_destroy_data			(*this);															
+}
+
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,_3D,name,type);							}
 IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,type);								}
 IC void	ref_sound::destroy						( )														{	VERIFY(!::Sound->i_locked()); 	::Sound->destroy	(*this);										}
