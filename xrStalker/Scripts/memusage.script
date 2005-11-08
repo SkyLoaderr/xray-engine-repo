@@ -1,4 +1,4 @@
-_printf = function (fmt,...) 
+function _printf(fmt,...) 
 	log(string.format(fmt,...))	
 end
 

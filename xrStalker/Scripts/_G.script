@@ -12,11 +12,9 @@ end
 
 ----------------------------------------------------------------------
 
-
-printf = function (fmt,...) 
+function printf(fmt,...) 
 	log(string.format(fmt,...))	
 end
-
 
 ----------------------------------------------------------------------
 if nil == time_global then
@@ -400,12 +398,13 @@ end
 
 class "script_object"
 
-script_object.__init = function (self,name,script,...)	
+function script_object.__init(self,name,script,...)	
 	self.action         = action(nil,...)	
 	self.object_name    = name	
 	self.script_name    = script	
 	self.object         = nil	
 end
+
 function script_object:update()
     local                   obj = self.object
     self.object             = level.object(self.object_name)
