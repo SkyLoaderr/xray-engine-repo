@@ -63,41 +63,45 @@ meet = meet@scientist
 
 [walker@door_1]
 path_walk = walk_door_1
-on_signal = door_1 | walker@scientist_2 %+yan_scientist_door_1_open -yan_scientist_door_2_open%
+on_signal = door_1 | camper@scientist_2 %+yan_scientist_door_1_open -yan_scientist_door_2_open%
 combat_ignore_cond = always
 
-[walker@scientist_2]
+[camper@scientist_2]
 path_walk = help_walk
 path_look = help_look
 combat_ignore_cond = always
 on_signal = doors_close | %-yan_scientist_door_1_open%
 meet = meet@scientist
-on_info = {+yan_scientist_point_to_2} walker@scientist_3
+on_info = {+yan_scientist_point_to_2} camper@scientist_3
 def_state_moving = assault
+radius = 0
 
-[walker@scientist_3]
+[camper@scientist_3]
 path_walk = help_walk_1
 path_look = help_look_1
 combat_ignore_cond = always
 meet = meet@scientist
-on_info = {+yan_scientist_point_to_3} walker@scientist_4
+on_info = {+yan_scientist_point_to_3} camper@scientist_4
 def_state_moving = assault
+radius = 0
 
-[walker@scientist_4]
+[camper@scientist_4]
 path_walk = help_walk_2
 path_look = help_look_2
 combat_ignore_cond = always
 meet = meet@scientist
-on_info = {+yan_scientist_point_to_4} walker@scientist_5
+on_info = {+yan_scientist_point_to_4} camper@scientist_5
 def_state_moving = assault
+radius = 0
 
-[walker@scientist_5]
+[camper@scientist_5]
 path_walk = help_walk_3
 path_look = help_look_3
 combat_ignore_cond = always
 meet = meet@scientist
 on_info = {+yan_scientist_start_research} walker@scientist_research
 def_state_moving = assault
+radius = 0
 
 [walker@scientist_research]
 path_walk = walk_research
@@ -116,13 +120,14 @@ path_walk = wounded_walk
 wounded = wounded@yan_scientist
 combat_ignore_cond = always
 on_timer = 3000 | %=enable_ui%
-on_info = {+yan_scientist_return_to_bunker} walker@scientist_return_to_bunker
+on_info = {+yan_scientist_return_to_bunker} camper@scientist_return_to_bunker
 
-[walker@scientist_return_to_bunker]
+[camper@scientist_return_to_bunker]
 path_walk = return_walk
 combat_ignore_cond = always
 on_signal = door_1_open | walker@scientist_return_door_1 %+yan_scientist_door_1_open%
 def_state_moving = assault
+radius = 0
 
 [walker@scientist_return_door_1]
 path_walk = door_1_walk
