@@ -142,6 +142,7 @@ void CEnvironment::RenderSky		()
 
 void CEnvironment::RenderClouds			()
 {
+	if (0==g_pGameLevel)		return	;
 	// draw clouds
 	if (fis_zero(CurrentEnv.clouds_color.w,EPS_L))	return;
 
@@ -185,12 +186,14 @@ void CEnvironment::RenderClouds			()
 
 void CEnvironment::RenderFlares		()
 {
+	if (0==g_pGameLevel)			return	;
 	// 1
 	eff_LensFlare->Render			(FALSE,TRUE,TRUE);
 }
 
 void CEnvironment::RenderLast		()
 {
+	if (0==g_pGameLevel)			return	;
 	// 2
 	eff_Rain->Render				();
 	eff_Thunderbolt->Render			();
