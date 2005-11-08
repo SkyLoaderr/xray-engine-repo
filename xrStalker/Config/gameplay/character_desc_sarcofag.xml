@@ -191,7 +191,7 @@
         <rank>40</rank>
         <reputation>0</reputation>
 
-        <visual></visual>
+        <visual>actors\novice\green_stalker_8</visual>
         <snd_config>characters_voice\human_03\</snd_config>
         <supplies>
 			[spawn] \n
