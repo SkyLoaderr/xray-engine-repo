@@ -119,7 +119,7 @@ void __fastcall TUI_ControlAIMapNodeRotate::Move(TShiftState _Shift)
             if((*_F)->flags.is(SAINode::flSelected)){
             	Fvector 	new_n;
             	R.transform_dir(new_n,(*_F)->Plane.n);
-                if (Fvector().set(0,1,0).dotproduct(new_n)>0.01f){
+                if (Fvector().set(0,1,0).dotproduct(new_n)>0.02f){
 	            	(*_F)->Plane.build((*_F)->Pos,new_n);           	
                 }
             }
