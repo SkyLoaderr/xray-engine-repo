@@ -323,3 +323,6 @@ function main ()
         end
 end
 -- run_string set_postprocess ("scripts\\sincos.ltx")
+
+
+--run_string level_object_by_sid (728).clsid = 0
