@@ -43,8 +43,8 @@
 	</relation_caption>
 
 	<!-- BIO -->
-	<biography_list x="0" y="143" width="262" height="242" item_height="15">
-		<font font="letterica16" r="190" g="190" b="225"></font>
+	<biography_list x="0" y="143" width="262" height="242" always_show_scroll="0">
+		<font font="letterica16" r="190" g="190" b="225"/>
 	</biography_list>
 
 </window>
