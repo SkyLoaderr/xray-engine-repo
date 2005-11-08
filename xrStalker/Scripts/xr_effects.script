@@ -1384,9 +1384,15 @@ end
 
 function sar_hero_dead(actor, npc)
     actor:give_info_portion("sar2_monolith_rock")
+
     if sar2_heroes_count > 0 then
         sar2_heroes_count = sar2_heroes_count - 1
     end
+
+    if sar2_heroes_count == 0 and sar2_hero_next_free_id > sar2_heroes_sel_number then
+        actor:give_info_portion("sar2_monolith_end")
+    end
+
     printf("effects <sar2>: hero dead.")
 end
 
