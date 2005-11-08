@@ -106,6 +106,7 @@ const	u32 v_clouds_fvf	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_SPECULAR;
 extern float psHUD_FOV;
 void CEnvironment::RenderSky		()
 {
+	if (0==g_pGameLevel)		return	;
 	::Render->rmFar				();
 
 	// draw sky box
