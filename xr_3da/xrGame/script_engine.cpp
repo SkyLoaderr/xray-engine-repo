@@ -237,7 +237,9 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 			add_no_file		(file_name,string_length);
 			return;
 		}
-		// Msg				("* loading script %s",S1);
+#if 1//def DEBUG
+		Msg					("* loading script %s",S1);
+#endif
 		m_reload_modules	= false;
 		load_file			(S,true);
 	}
