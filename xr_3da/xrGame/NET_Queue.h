@@ -23,11 +23,12 @@ public:
 		case M_SPAWN:
 			{
 				P.read_start();
+//				timestamp = P->
 			}break;
 		case M_EVENT:
 			{
 				P.r_u32			(timestamp	);
-				timestamp += u32(g_dwEventDelay);
+				timestamp += u32(g_dwEventDelay);				
 				P.r_u16			(type		);
 				P.r_u16			(destination);
 			}break;
@@ -35,7 +36,7 @@ public:
 			{
 				VERIFY(0);
 			}break;
-		}
+		}		
 
 		u32 size		= P.r_elapsed();
 		if (size)	
@@ -68,13 +69,15 @@ IC bool operator < (const NET_Event& A, const NET_Event& B)	{ return A.timestamp
 class	NET_Queue_Event
 {
 public:
-	xr_multiset<NET_Event>	queue;	
+//	xr_multiset<NET_Event>	queue;	
+	xr_deque<NET_Event>	queue;
 public:
 	IC void				insert		(NET_Packet& P)
 	{
 		NET_Event		E;
 		E.import		(P);
-		queue.insert	(E);
+//		queue.insert	(E);
+		queue.push_back	(E);
 		/*
 		//-------------------------------------------
 #ifdef DEBUG
@@ -119,6 +122,7 @@ public:
 		dest				= E.destination;
 		type				= E.type;
 		E.implication		(P);
-		queue.erase			(queue.begin());
+//		queue.erase			(queue.begin());
+		queue.pop_front();
 	}
 };

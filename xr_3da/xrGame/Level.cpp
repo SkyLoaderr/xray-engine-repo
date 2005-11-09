@@ -308,7 +308,7 @@ void CLevel::cl_Process_Event				(u16 dest, u16 type, NET_Packet& P)
 	//			Msg				("--- event[%d] for [%d]",type,dest);
 	CObject*	 O	= Objects.net_Find	(dest);
 	if (0==O)		{
-		Msg("* WARNING: c_EVENT[%d] : unknown dest",dest);
+		Msg("* WARNING: c_EVENT[%d] to [%d]: unknown dest",type,dest);
 		return;
 	}
 	CGameObject* GO = smart_cast<CGameObject*>(O);

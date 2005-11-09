@@ -36,6 +36,7 @@ private:
 	DemoDeque					m_aDemoData;
 	void						Demo_Load				(LPCSTR DemoName);
 	BOOL						m_bDemoStarted;	
+	u32							m_dwLastDemoFrame;
 	void						Demo_Update				();
 
 
