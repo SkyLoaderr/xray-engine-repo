@@ -12,6 +12,7 @@ namespace StalkerDecisionSpace {
 	enum EWorldProperties {
 		eWorldPropertyAlive			= u32(0),
 		eWorldPropertyDead,
+		eWorldPropertyAlreadyDead,
 		
 		eWorldPropertyALife,
 		eWorldPropertyPuzzleSolved,
@@ -56,7 +57,7 @@ namespace StalkerDecisionSpace {
 
 	enum EWorldOperators {
 // death
-		eWorldOperatorResurrect	= u32(0),
+		eWorldOperatorDead	= u32(0),
 		eWorldOperatorDying,
 		
 // alife

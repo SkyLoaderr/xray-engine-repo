@@ -54,20 +54,19 @@ LPCSTR CStalkerPlanner::object_name		() const
 void CStalkerPlanner::setup			(CAI_Stalker *object)
 {
 #ifdef LOG_ACTION
-	set_use_log				(!!psAI_Flags.test(aiGOAP));
+	set_use_log					(!!psAI_Flags.test(aiGOAP));
 #endif
 	
-	inherited::setup		(object);
-	
-	clear					();
-	add_evaluators			();
-	add_actions				();
+	inherited::setup			(object);
 
-	CWorldState				goal;
-	goal.add_condition		(CWorldProperty(eWorldPropertyPuzzleSolved,true));
-	set_target_state		(goal);
+	clear						();
+	add_evaluators				();
+	add_actions					();
 
-	m_affect_cover			= false;
+	m_alive_goal.add_condition	(CWorldProperty(eWorldPropertyPuzzleSolved,true));
+	m_dead_goal.add_condition	(CWorldProperty(eWorldPropertyAlreadyDead,true));
+
+	m_affect_cover				= false;
 }
 
 void CStalkerPlanner::update			(u32 time_delta)
@@ -77,6 +76,11 @@ void CStalkerPlanner::update			(u32 time_delta)
 		set_use_log			(!!psAI_Flags.test(aiGOAP));
 #endif
 	
+	if (m_object->g_Alive())
+		set_target_state	(m_alive_goal);
+	else
+		set_target_state	(m_dead_goal);
+
 	inherited::update		();
 
 #ifdef GOAP_DEBUG
@@ -123,6 +127,7 @@ void CStalkerPlanner::update			(u32 time_delta)
 
 void CStalkerPlanner::add_evaluators		()
 {
+	add_evaluator			(eWorldPropertyAlreadyDead		,xr_new<CStalkerPropertyEvaluatorConst>				(false,"is_already_dead"));
 	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false,"is_zone_puzzle_solved"));
 	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				(m_object,"is_alive"));
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies",CStalkerCombatPlanner::POST_COMBAT_WAIT_INTERVAL));
@@ -136,7 +141,8 @@ void CStalkerPlanner::add_actions			()
 
 	planner					= xr_new<CStalkerDeathPlanner>(m_object,"death_planner");
 	add_condition			(planner,eWorldPropertyAlive,			false);
-	add_effect				(planner,eWorldPropertyAlive,			true);
+	add_condition			(planner,eWorldPropertyAlreadyDead,		false);
+	add_effect				(planner,eWorldPropertyAlreadyDead,		true);
 	add_operator			(eWorldOperatorDeathPlanner,planner);
 
 	planner					= xr_new<CStalkerALifePlanner>(m_object,"alife_planner");
