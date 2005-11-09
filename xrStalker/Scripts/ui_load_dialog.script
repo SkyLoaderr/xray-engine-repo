@@ -252,6 +252,7 @@ end
 
 function load_dialog:OnButton_back_clicked()
 	self:GetHolder():start_stop_menu(self,true)
+	self.owner:Show(true)
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
@@ -262,6 +263,7 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 	
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
 		self:GetHolder():start_stop_menu(self,true)
+		self.owner:Show(true)
 	end
    
 	return true

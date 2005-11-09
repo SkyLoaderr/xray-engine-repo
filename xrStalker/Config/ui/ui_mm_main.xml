@@ -35,7 +35,6 @@
 	<menu_main btn_height="30" font="graffiti19" a="255" r="0" g="0" b="0">
 		<btn name="btn_new_game"	caption="New Game" />
 		<btn name="btn_load"		caption="Load Game" />
-		<btn name="btn_save"		caption="Save Game" />
 		<btn name="btn_multiplayer"	caption="Multiplayer" />
 		<btn name="btn_options"		caption="Options" />
 		<btn name="btn_bonus"		caption="Bonus" />

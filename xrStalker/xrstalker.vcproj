@@ -2293,19 +2293,7 @@
 					RelativePath=".\scripts\ui_load_dialog.script">
 				</File>
 				<File
-					RelativePath=".\scripts\ui_main_base_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_main_main_tab.script">
-				</File>
-				<File
 					RelativePath=".\scripts\ui_main_menu.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_main_multi_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_main_new_tab.script">
 				</File>
 				<File
 					RelativePath=".\Scripts\ui_numpad.script">
