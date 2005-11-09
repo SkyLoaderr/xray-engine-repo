@@ -165,6 +165,7 @@ end
 
 function mp_main:OnBtn_Calncel()
 	self:GetHolder():start_stop_menu(self,true)	
+	self.owner:Show(true)
 end
 
 function mp_main:OnBtn_Create()
@@ -335,6 +336,7 @@ function mp_main:OnKeyboard(dik, keyboard_action)
 	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
 		if dik == DIK_keys.DIK_ESCAPE then
 			self:GetHolder():start_stop_menu(self,true)
+			self.owner:Show(true)
 		end	
 	
 	end

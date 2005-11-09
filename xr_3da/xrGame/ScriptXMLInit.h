@@ -25,6 +25,7 @@ class CServerList;
 class CUIMapList;
 class CUITrackBar;
 class CUIMapInfo;
+class CUIMMShniaga;
 
 class CScriptXmlInit {
 public:
@@ -57,7 +58,7 @@ public:
 	CUIMapInfo*			InitMapInfo(LPCSTR path, CUIWindow* parent);
 	CUITrackBar*		InitTrackBar(LPCSTR path, CUIWindow* parent);
 	CUIEditBox*			InitCDkey(LPCSTR path, CUIWindow* parent);
-	CUIWindow*			InitMMShniaga(LPCSTR path, CUIWindow* parent);
+	CUIMMShniaga*		InitMMShniaga(LPCSTR path, CUIWindow* parent);
 	CUIWindow*			InitKeyBinding(LPCSTR path, CUIWindow* parent);
 
 protected:

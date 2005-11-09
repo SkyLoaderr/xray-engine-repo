@@ -137,6 +137,7 @@ end
 
 function save_dialog:OnButton_cancel_clicked()
 	self:GetHolder():start_stop_menu(self,true)	
+	self.owner:Show(true)
 end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
@@ -147,6 +148,7 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
 		self:OnButton_ok_clicked()
+		self.owner:Show(true)
 	end
    
 	return true

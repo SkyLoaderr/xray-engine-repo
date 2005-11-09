@@ -220,7 +220,7 @@ CUIMapList* CScriptXmlInit::InitMapList(LPCSTR path, CUIWindow* parent){
 	return pWnd;	
 }
 
-CUIWindow* CScriptXmlInit::InitMMShniaga(LPCSTR path, CUIWindow* parent){
+CUIMMShniaga* CScriptXmlInit::InitMMShniaga(LPCSTR path, CUIWindow* parent){
 	CUIMMShniaga* pWnd = xr_new<CUIMMShniaga>();
 	pWnd->Init(m_xml, path);
 	pWnd->SetAutoDelete(true);

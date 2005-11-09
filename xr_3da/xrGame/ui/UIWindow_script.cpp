@@ -9,6 +9,7 @@
 #include "../GamePersistent.h"
 #include "../MainUI.h"
 #include "UILabel.h"
+#include "UIMMShniaga.h"
 
 CFontManager& mngr(){
 	return *(UI()->Font());
@@ -148,6 +149,9 @@ void CUIWindow::script_register(lua_State *L)
 		.def(					constructor<>())
 		.def("SetText",						&CUILabel::SetText)
 		.def("GetText",						&CUILabel::GetText),
+
+		class_<CUIMMShniaga, CUIWindow>("CUIMMShniaga")
+		.def("SetVisibleMagnifier",			&CUIMMShniaga::SetVisibleMagnifier),
 
 
 

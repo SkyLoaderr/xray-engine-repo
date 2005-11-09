@@ -19,6 +19,8 @@ CUIMMShniaga::CUIMMShniaga(){
 	m_gratings[0] = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_gratings[0]);
 	m_gratings[1] = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_gratings[1]);
 
+	m_mag_pos = 0;
+
 	m_selected = NULL;
 
 	m_start_time = 0;
@@ -35,13 +37,18 @@ CUIMMShniaga::~CUIMMShniaga(){
 	xr_delete(m_gratings[0]);
 	xr_delete(m_gratings[1]);
 	xr_delete(m_view);
+
+	for (u32 i = 0; i<m_buttons.size(); i++)
+		xr_delete(m_buttons[i]);
+	for (u32 i = 0; i<m_buttons_new.size(); i++)
+		xr_delete(m_buttons_new[i]);
 }
 
 void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 	string256 _path;
 
 	CUIXmlInit::InitWindow(xml_doc, path, 0, this);
-	CUIXmlInit::InitStatic(xml_doc, strconcat(_path,path,":shniaga:magnifire"),0,m_magnifier);
+	CUIXmlInit::InitStatic(xml_doc, strconcat(_path,path,":shniaga:magnifire"),0,m_magnifier); m_mag_pos = m_magnifier->GetWndPos().x;
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path,path,":shniaga"),0,m_shniaga);
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path,path,":shniaga:left_anim"),0,m_anims[0]);
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path,path,":shniaga:right_anim"),0,m_anims[1]);
@@ -49,26 +56,33 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path,path,":shniaga:right_grating"),0,m_gratings[1]);
 	CUIXmlInit::InitScrollView(xml_doc, strconcat(_path,path,":buttons_region"),0,m_view);
 
+	if (!g_pGameLevel)
+	{
+		CreateList(m_buttons, xml_doc, "menu_main");
+		CreateList(m_buttons_new, xml_doc, "menu_new_game");
+	}
+	else if (GameID() == GAME_SINGLE)
+		CreateList(m_buttons, xml_doc, "menu_main_single");
+	else
+		CreateList(m_buttons, xml_doc, "menu_main_mm");
+
+	ShowMain();
+}
+
+void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path){
 	CGameFont* pF;
 	u32	color;
 	float height;
 
-	if (!g_pGameLevel)
-		strcpy(_path,"menu_main");
-	else if (GameID() == GAME_SINGLE)
-		strcpy(_path,"menu_main_single");
-	else
-		strcpy(_path,"menu_main_mm");
-
-	height = xml_doc.ReadAttribFlt(_path, 0, "btn_height");
+	height = xml_doc.ReadAttribFlt(path, 0, "btn_height");
 	R_ASSERT(height);
 
-	CUIXmlInit::InitFont(xml_doc, _path, 0, color, pF);
+	CUIXmlInit::InitFont(xml_doc, path, 0, color, pF);
 	R_ASSERT(pF);
 
-	int nodes_num	= xml_doc.GetNodesNum(_path, 0, "btn");
+	int nodes_num	= xml_doc.GetNodesNum(path, 0, "btn");
 
-	XML_NODE* tab_node = xml_doc.NavigateToNode(_path,0);
+	XML_NODE* tab_node = xml_doc.NavigateToNode(path,0);
 	xml_doc.SetLocalRoot(tab_node);
 
 	CUIStatic* st;
@@ -84,11 +98,11 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 		st->SetTextAlignment(CGameFont::alCenter);
 		st->SetTextY(-3);
 		st->SetWindowName(xml_doc.ReadAttrib("btn", i, "name"));
-		st->SetAutoDelete(true);
 		st->SetMessageTarget(this);
-		m_buttons.push_back(st);
+		lst.push_back(st);
 	}
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
+
 }
 
 
@@ -105,24 +119,23 @@ void CUIMMShniaga::ShowNewGame(){
 	for (u32 i = 0; i<m_buttons_new.size(); i++)
 		m_view->AddWindow(m_buttons_new[i], false);
 
-	SendMessage(m_buttons[0], STATIC_FOCUS_RECEIVED);
+	SendMessage(m_buttons_new[0], STATIC_FOCUS_RECEIVED);
 }
 
 bool CUIMMShniaga::IsButton(CUIWindow* st){
 	for (u32 i = 0; i<m_buttons.size(); i++)
-	{
 		if (m_buttons[i] == st)
 			return true;
-	}
+
+	for (u32 i = 0; i<m_buttons_new.size(); i++)
+		if (m_buttons_new[i] == st)
+			return true;
 
 	return false;
 }
 
 void CUIMMShniaga::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	CUIWindow::SendMessage(pWnd, msg, pData);
-	//if  (pWnd == m_magnifier && WINDOW_LBUTTON_DOWN == msg && m_selected)
-	//	GetMessageTarget()->SendMessage(m_selected, BUTTON_CLICKED);	
-	//
 	if (IsButton(pWnd)){
 		switch (msg){
 			case STATIC_FOCUS_RECEIVED:
@@ -151,8 +164,6 @@ void CUIMMShniaga::Update(){
 		float a = 2*PI*(pos.y - l*n)/l;
 		m_anims[0]->SetHeading(-a);
 		m_anims[1]->SetHeading(a);
-		//Msg("-- heading =%f",a);
-			
 
 		pos.y = this->pos(m_origin, m_destination, Device.TimerAsyncMM() - m_start_time);
 		m_shniaga->SetWndPos(pos);		
@@ -167,27 +178,14 @@ bool CUIMMShniaga::OnMouse(float x, float y, EUIMessages mouse_action){
     if (WINDOW_LBUTTON_DOWN == mouse_action && m_magnifier->GetAbsoluteRect().in(pos.x, pos.y))
 	{
 		if (0 == xr_strcmp("btn_new_game", m_selected->WindowName()))
-		{
-
-		}
-
-        GetMessageTarget()->SendMessage(m_selected, BUTTON_CLICKED);
+            ShowNewGame();
+		else if (0 == xr_strcmp("btn_new_back", m_selected->WindowName()))
+            ShowMain();
+		else
+            GetMessageTarget()->SendMessage(m_selected, BUTTON_CLICKED);
 	}
 
 	return CUIWindow::OnMouse(x,y,mouse_action);
-	//if (WINDOW_MOUSE_MOVE == mouse_action)
-	//{
-	//	m_start_time = Device.TimerAsyncMM();
-	//	m_origin = m_shniaga->GetWndPos().y;
-	//	float border = GetHeight() - m_shniaga->GetHeight();
-	//	m_destination = (y - m_shniaga->GetHeight()/2 < border) ? y - m_shniaga->GetHeight()/2 : border;
-
-	//	m_run_time = u32((log(1 + abs(m_origin - m_destination))/log(GetHeight()))*1000);
-	//	if (m_run_time < 100)
-	//		m_run_time = 100;
-	//}
-
-//	return false;	
 }
 
 float CUIMMShniaga::pos(float x1, float x2, u32 t){
@@ -206,4 +204,14 @@ float CUIMMShniaga::pos(float x1, float x2, u32 t){
 		return x1 - x;
 	else
         return x1 + x;
+}
+
+void CUIMMShniaga::SetVisibleMagnifier(bool f){
+	Fvector2 pos = m_magnifier->GetWndPos();
+	if (f)
+		pos.x = m_mag_pos;
+	else
+		pos.x = 1025;
+	m_magnifier->SetWndPos(pos);
+
 }

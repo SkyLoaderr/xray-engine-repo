@@ -18,9 +18,11 @@ public:
 	virtual void Update();
 	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
-			bool IsButton(CUIWindow* st);
+			void SetVisibleMagnifier(bool f);
 
 protected:
+			bool IsButton(CUIWindow* st);
+			void CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path);
 			void ShowMain();
 			void ShowNewGame();
 	float	pos(float x1, float x2, u32 t);
@@ -35,6 +37,7 @@ protected:
 	u32					m_run_time;
     float				m_origin;
 	float				m_destination;
+	float				m_mag_pos;
 
 	xr_vector<CUIStatic*>	m_buttons;
 	xr_vector<CUIStatic*>	m_buttons_new;
