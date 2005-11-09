@@ -11,8 +11,6 @@
 #include "member_order.h"
 #include "memory_space.h"
 
-//#define OLD_AGENT_MANAGER_BEHAVIOUR
-
 class CAgentManager;
 
 class CAgentMemberManager {
@@ -42,7 +40,6 @@ public:
 	IC		CMemberOrder			&member					(const CAI_Stalker *object);
 	IC		const MEMBER_STORAGE	&members				() const;
 	IC		MEMBER_STORAGE			&members				();
-	IC		CSetupAction			&action					(CAI_Stalker *object);
 	IC		squad_mask_type			mask					(const CAI_Stalker *object) const;
 	IC		bool					group_behaviour			() const;
 	IC		iterator				member					(squad_mask_type mask);

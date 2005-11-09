@@ -26,7 +26,7 @@
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
 #include "sound_player.h"
-#include "motivation_action_manager_stalker.h"
+#include "stalker_planner.h"
 #include "agent_member_manager.h"
 #include "agent_location_manager.h"
 #include "danger_cover_location.h"

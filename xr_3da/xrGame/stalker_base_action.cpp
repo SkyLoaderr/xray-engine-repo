@@ -11,7 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "script_game_object.h"
 #include "stalker_animation_manager.h"
-#include "motivation_action_manager_stalker.h"
+#include "stalker_planner.h"
 #include "ai/stalker/ai_stalker_space.h"
 
 using namespace StalkerSpace;
@@ -25,7 +25,6 @@ void CStalkerActionBase::initialize			()
 {
 	inherited::initialize							();
 	object().animation().clear_script_animations	();
-	object().body_action							(eBodyActionNone);
 	object().brain().affect_cover					(false);
 }
 

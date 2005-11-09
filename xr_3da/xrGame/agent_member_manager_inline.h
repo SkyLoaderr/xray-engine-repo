@@ -48,11 +48,6 @@ IC	CAgentMemberManager::MEMBER_STORAGE	&CAgentMemberManager::members	()
 	return				(m_members);
 }
 
-IC	CSetupAction &CAgentMemberManager::action	(CAI_Stalker *object)
-{
-	return				(member(object).action());
-}
-
 IC	CMemberOrder &CAgentMemberManager::member	(const CAI_Stalker *object)
 {
 	iterator			I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));

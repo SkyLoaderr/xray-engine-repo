@@ -18,7 +18,7 @@
 #include "../../../skeletonanimated.h"
 #include "../../agent_manager.h"
 #include "../../stalker_animation_manager.h"
-#include "../../motivation_action_manager_stalker.h"
+#include "../../stalker_planner.h"
 #include "../../ef_pattern.h"
 #include "../../memory_manager.h"
 #include "../../hit_memory_manager.h"
@@ -467,7 +467,7 @@ void CAI_Stalker::update_can_kill_info	()
 
 bool CAI_Stalker::undetected_anomaly	()
 {
-	return					(inside_anomaly() || brain().CMotivationActionManagerStalker::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
+	return					(inside_anomaly() || brain().CStalkerPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
 }
 
 bool CAI_Stalker::inside_anomaly		()

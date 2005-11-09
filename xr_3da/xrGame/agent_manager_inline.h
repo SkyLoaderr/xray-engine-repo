@@ -49,7 +49,7 @@ IC	CAgentMemoryManager	&CAgentManager::memory			() const
 	return		(*m_memory);
 }
 
-IC	CAgentManagerMotivationPlanner &CAgentManager::brain() const
+IC	CAgentManagerPlanner &CAgentManager::brain			() const
 {
 	VERIFY		(m_brain);
 	return		(*m_brain);

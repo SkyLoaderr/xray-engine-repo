@@ -26,7 +26,7 @@
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
 #include "script_entity_action.h"
-#include "motivation_action_manager.h"
+#include "action_planner.h"
 #include "PhysicsShell.h"
 #include "helicopter.h"
 #include "script_zone.h"
@@ -35,7 +35,7 @@
 
 using namespace luabind;
 
-extern CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj);
+extern CScriptActionPlanner *script_action_planner(CScriptGameObject *obj);
 
 class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject> &instance)
 {
@@ -161,7 +161,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("get_sound_info",				&CScriptGameObject::GetSoundInfo)
 		.def("get_monster_hit_info",		&CScriptGameObject::GetMonsterHitInfo)
 		.def("bind_object",					&CScriptGameObject::bind_object,adopt(_2))
-		.def("motivation_action_manager",	&script_motivation_action_manager)
+		.def("motivation_action_manager",	&script_action_planner)
 
 		// bloodsucker
 		.def("set_invisible",				&CScriptGameObject::set_invisible)

@@ -195,7 +195,7 @@ public:
 			void				remove_home				();
 
 			template <typename T>
-			IC		T	*motivation_action_manager();
+			IC		T			*action_planner			();
 
 	// CProjector
 			Fvector				GetCurrentDirection		();

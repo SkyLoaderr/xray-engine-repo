@@ -30,7 +30,7 @@
 #include "agent_member_manager.h"
 #include "member_order.h"
 #include "ai/stalker/ai_stalker_space.h"
-#include "motivation_action_manager_stalker.h"
+#include "stalker_planner.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -155,9 +155,6 @@ void CStalkerCombatPlanner::finalize			()
 
 	object().memory().danger().time_line(Device.dwTimeGlobal + 3000);
 
-#ifdef OLD_AGENT_MANAGER_BEHAVIOUR
-	object().agent_manager().member().unregister_in_combat	(m_object);
-#endif
 //	object().sound().remove_active_sounds					(eStalkerSoundMaskNoDanger);
 }
 
@@ -175,7 +172,6 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyInCover			,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyInCover,true,true));
 	add_evaluator			(eWorldPropertyLookedOut		,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyLookedOut,true,true));
 	add_evaluator			(eWorldPropertyPositionHolded	,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyPositionHolded,true,true));
-	add_evaluator			(eWorldPropertyEnemyCanBeSeen	,xr_new<CStalkerPropertyEvaluatorEnemyCanBeSeen>	());
 	add_evaluator			(eWorldPropertyEnemyDetoured	,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyEnemyDetoured,true,true));
 	add_evaluator			(eWorldPropertyDangerGrenade	,xr_new<CStalkerPropertyEvaluatorGrenadeToExplode>	(m_object,"is there grenade to explode"));
 }
@@ -247,18 +243,6 @@ void CStalkerCombatPlanner::add_actions			()
 	add_effect				(action,eWorldPropertyPositionHolded,true);
 	add_operator			(eWorldOperatorHoldPosition,			action);
 
-	action					= xr_new<CStalkerActionGetDistance>		(m_object,"get_distance");
-	add_condition			(action,eWorldPropertyDangerGrenade,false);
-	add_condition			(action,eWorldPropertyReadyToKill,	true);
-	add_condition			(action,eWorldPropertyInCover,		false);
-	add_condition			(action,eWorldPropertyEnemyDetoured,false);
-	add_condition			(action,eWorldPropertySeeEnemy,		false);
-	add_condition			(action,eWorldPropertyLookedOut,	true);
-	add_condition			(action,eWorldPropertyPositionHolded,true);
-	add_condition			(action,eWorldPropertyEnemyCanBeSeen,false);
-	add_effect				(action,eWorldPropertyEnemyCanBeSeen,true);
-	add_operator			(eWorldOperatorGetDistance,			action);
-
 	action					= xr_new<CStalkerActionDetourEnemy>		(m_object,"detour_enemy");
 	add_condition			(action,eWorldPropertyDangerGrenade,false);
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
@@ -267,7 +251,6 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertySeeEnemy,		false);
 	add_condition			(action,eWorldPropertyLookedOut,	true);
 	add_condition			(action,eWorldPropertyPositionHolded,true);
-//	add_condition			(action,eWorldPropertyEnemyCanBeSeen,true);
 	add_effect				(action,eWorldPropertyEnemyDetoured,true);
 	add_operator			(eWorldOperatorDetourEnemy,			action);
 
@@ -279,7 +262,6 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyLookedOut,	true);
 	add_condition			(action,eWorldPropertyPositionHolded,true);
 	add_condition			(action,eWorldPropertyEnemyDetoured,true);
-//	add_condition			(action,eWorldPropertyEnemyCanBeSeen,true);
 	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorSearchEnemy,			action);

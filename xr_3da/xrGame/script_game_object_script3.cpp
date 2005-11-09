@@ -26,7 +26,7 @@
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
 #include "script_entity_action.h"
-#include "motivation_action_manager.h"
+#include "action_planner.h"
 #include "PhysicsShell.h"
 #include "helicopter.h"
 #include "HangingLamp.h"

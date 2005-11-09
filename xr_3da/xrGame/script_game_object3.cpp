@@ -16,7 +16,7 @@
 #include "cover_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_animation_manager.h"
-#include "motivation_action_manager_stalker.h"
+#include "stalker_planner.h"
 #include "weapon.h"
 #include "inventory.h"
 #include "customzone.h"
@@ -306,7 +306,7 @@ void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
 
 		if (!ai().level_graph().valid_vertex_id(level_vertex_id)) {
 #ifdef DEBUG
-			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : invalid vertex id being setup by action %s!",stalker->brain().CMotivationActionManagerStalker::current_action().m_action_name);
+			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : invalid vertex id being setup by action %s!",stalker->brain().CStalkerPlanner::current_action().m_action_name);
 #endif
 			return;
 		}

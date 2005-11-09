@@ -18,32 +18,6 @@
 #include "sight_action.h"
 #include "inventory.h"
 
-//#define TEST
-
-//////////////////////////////////////////////////////////////////////////
-// CAgentManagerActionBase
-//////////////////////////////////////////////////////////////////////////
-
-CAgentManagerActionBase::CAgentManagerActionBase	(CAgentManager *object, LPCSTR action_name) :
-	inherited	(object,action_name)
-{
-}
-
-void CAgentManagerActionBase::initialize			()
-{
-	inherited::initialize			();
-}
-
-void CAgentManagerActionBase::finalize				()
-{
-	inherited::finalize				();
-}
-
-void CAgentManagerActionBase::execute				()
-{
-	inherited::execute				();
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerActionNoOrders
 //////////////////////////////////////////////////////////////////////////
@@ -53,42 +27,10 @@ CAgentManagerActionNoOrders::CAgentManagerActionNoOrders	(CAgentManager *object,
 {
 }
 
-void CAgentManagerActionNoOrders::initialize		()
-{
-	inherited::initialize			();
-}
-
 void CAgentManagerActionNoOrders::finalize			()
 {
 	inherited::finalize				();
 	m_object->corpse().clear		();
-}
-
-void CAgentManagerActionNoOrders::execute			()
-{
-	inherited::execute				();
-//	CGraphEngine::CWorldState	goal;
-//	goal.add_condition			(CGraphEngine::CWorldProperty(StalkerDecisionSpace::eWorldPropertyEnemy,true));
-	CAgentMemberManager::iterator		I = m_object->member().members().begin();
-	CAgentMemberManager::iterator		E = m_object->member().members().end();
-	for ( ; I != E; ++I) {
-#ifndef TEST
-		(*I)->order_type			(AgentManager::eOrderTypeNoOrder);
-#else
-		(*I)->order_type			(AgentManager::eOrderTypeAction);
-		(*I)->action				(CSetupAction(0.f,0));
-		(*I)->action().movement().set_level_dest_vertex_id((*I)->object().ai_location().level_vertex_id());
-#endif
-
-//		(*I).order_type			(AgentManager::eOrderTypeGoal);
-//		(*I).goal				(goal);
-
-//		(*I).order_type			(AgentManager::eOrderTypeAction);
-//		(*I).action				(CSetupAction(0.f,0));
-//		(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
-//		(*I).action().object	(CObjectAction(MonsterSpace::eObjectActionUse,(*I).object().inventory().item(CLSID_IITEM_BOTTLE)));
-//		(*I).action().sight		(CSightAction(smart_cast<CGameObject*>(Level().CurrentEntity()),false,""));
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -98,26 +40,6 @@ void CAgentManagerActionNoOrders::execute			()
 CAgentManagerActionGatherItems::CAgentManagerActionGatherItems	(CAgentManager *object, LPCSTR action_name) :
 	inherited		(object,action_name)
 {
-}
-
-void CAgentManagerActionGatherItems::initialize		()
-{
-	inherited::initialize			();
-}
-
-void CAgentManagerActionGatherItems::finalize			()
-{
-	inherited::finalize				();
-}
-
-void CAgentManagerActionGatherItems::execute			()
-{
-	inherited::execute				();
-
-	CAgentMemberManager::iterator		I = m_object->member().members().begin();
-	CAgentMemberManager::iterator		E = m_object->member().members().end();
-	for ( ; I != E; ++I)
-		(*I)->order_type	(AgentManager::eOrderTypeNoOrder);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -131,44 +53,25 @@ CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *objec
 
 void CAgentManagerActionKillEnemy::initialize		()
 {
-	inherited::initialize			();
-	m_level_time					= Device.dwTimeGlobal + 10000;
-	m_object->location().clear		();
+	inherited::initialize						();
+	
+	m_object->location().clear					();
 }
 
 void CAgentManagerActionKillEnemy::finalize			()
 {
-	inherited::finalize				();
+	inherited::finalize							();
+	
 	m_object->enemy().distribute_enemies		();
 }
 
 void CAgentManagerActionKillEnemy::execute			()
 {
-	inherited::execute				();
+	inherited::execute							();
 
 	m_object->enemy().distribute_enemies		();
 	m_object->explosive().react_on_explosives	();
 	m_object->corpse().react_on_member_death	();
-
-	CAgentMemberManager::iterator	I = m_object->member().members().begin();
-	CAgentMemberManager::iterator	E = m_object->member().members().end();
-	for ( ; I != E; ++I) {
-#ifndef TEST
-		(*I)->order_type			(AgentManager::eOrderTypeNoOrder);
-#else
-		if ((*I).object().enemy())
-			Msg						("%6d : %s vs %s",Device.dwTimeGlobal,*(*I).object().cName(),*(*I).object().enemy()->cName());
-		if (m_level_time >= Device.dwTimeGlobal) {
-			(*I).order_type			(AgentManager::eOrderTypeAction);
-			(*I).action				(CSetupAction(0.f,0));
-			(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
-			if ((*I).object().enemy())
-			(*I).action().sight		(CSightAction((*I).object().enemy(),true));
-		}
-		else
-			(*I).order_type			(AgentManager::eOrderTypeNoOrder);
-#endif
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -183,39 +86,14 @@ CAgentManagerActionReactOnDanger::CAgentManagerActionReactOnDanger	(CAgentManage
 void CAgentManagerActionReactOnDanger::initialize		()
 {
 	inherited::initialize			();
-	m_level_time					= Device.dwTimeGlobal + 10000;
-	m_object->location().clear		();
-}
 
-void CAgentManagerActionReactOnDanger::finalize			()
-{
-	inherited::finalize				();
+	m_object->location().clear		();
 }
 
 void CAgentManagerActionReactOnDanger::execute			()
 {
-	inherited::execute				();
+	inherited::execute							();
 
 	m_object->explosive().react_on_explosives	();
 	m_object->corpse().react_on_member_death	();
-
-	CAgentMemberManager::iterator	I = m_object->member().members().begin();
-	CAgentMemberManager::iterator	E = m_object->member().members().end();
-	for ( ; I != E; ++I) {
-#ifndef TEST
-		(*I)->order_type			(AgentManager::eOrderTypeNoOrder);
-#else
-		if ((*I).object().enemy())
-			Msg						("%6d : %s vs %s",Device.dwTimeGlobal,*(*I).object().cName(),*(*I).object().enemy()->cName());
-		if (m_level_time >= Device.dwTimeGlobal) {
-			(*I).order_type			(AgentManager::eOrderTypeAction);
-			(*I).action				(CSetupAction(0.f,0));
-			(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
-			if ((*I).object().enemy())
-			(*I).action().sight		(CSightAction((*I).object().enemy(),true));
-		}
-		else
-			(*I).order_type			(AgentManager::eOrderTypeNoOrder);
-#endif
-	}
 }

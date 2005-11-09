@@ -19,7 +19,7 @@ IC	CStalkerAnimationManager &CAI_Stalker::animation			() const
 	return	(*m_animation_manager);
 }
 
-IC	CMotivationActionManagerStalker &CAI_Stalker::brain			() const
+IC	CStalkerPlanner &CAI_Stalker::brain			() const
 {
 	VERIFY	(m_brain);
 	return	(*m_brain);
@@ -31,25 +31,9 @@ IC	CSightManager &CAI_Stalker::sight							() const
 	return	(*m_sight_manager);
 }
 
-IC	CAI_Stalker::CSSetupManager &CAI_Stalker::setup				() const
-{
-	VERIFY	(m_setup_manager);
-	return	(*m_setup_manager);
-}
-
 IC	LPCSTR CAI_Stalker::Name									() const
 {
 	return	(CInventoryOwner::Name());
-}
-
-IC	void CAI_Stalker::body_action								(const StalkerSpace::EBodyAction &body_action)
-{
-	m_body_action	= body_action;
-}
-
-IC	const StalkerSpace::EBodyAction	&CAI_Stalker::body_action	() const
-{
-	return			(m_body_action);
 }
 
 IC	CStalkerMovementManager	&CAI_Stalker::movement				() const

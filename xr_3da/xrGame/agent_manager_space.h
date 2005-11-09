@@ -9,15 +9,6 @@
 #pragma once
 
 namespace AgentManager {
-	enum EMotivations {
-		eMotivationGlobal		= u32(0),
-		eMotivationNoOrders,
-		eMotivationOrders,
-
-		eMotivationScript,
-		eMotivationDummy		= u32(-1)
-	};
-
 	enum EProperties {
 		ePropertyOrders			= u32(0),
 		ePropertyItem,
@@ -36,12 +27,5 @@ namespace AgentManager {
 
 		eOperatorScript,
 		eOperatorDummy			= u32(-1),
-	};
-
-	enum EOrderType {
-		eOrderTypeNoOrder		= u32(0),
-		eOrderTypeAction,
-		eOrderTypeGoal,
-		eOrderTypeDummy			= u32(-1),
 	};
 };

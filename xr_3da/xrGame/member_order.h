@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "setup_action.h"
 #include "agent_manager_space.h"
 #include "stalker_decision_space.h"
 #include "graph_engine_space.h"
@@ -19,10 +18,6 @@ class CCoverPoint;
 class CExplosive;
 
 class CMemberOrder {
-public:
-	typedef AgentManager::EOrderType		EOrderType;
-	typedef GraphEngineSpace::CWorldState	CWorldState;
-
 public:
 	struct CMemberDeathReaction {
 		CAI_Stalker				*m_member;
@@ -65,9 +60,6 @@ public:
 protected:
 	CAI_Stalker					*m_object;
 	mutable CCoverPoint			*m_cover;
-	EOrderType					m_order_type;
-	CWorldState					m_goal;
-	CSetupAction				m_action;
 	bool						m_initialized;
 	float						m_probability;
 	xr_vector<u32>				m_enemies;
@@ -81,21 +73,14 @@ public:
 	IC							CMemberOrder			(CAI_Stalker *object);
 	IC		bool				initialized				() const;
 	IC		CAI_Stalker			&object					() const;
-	IC		const CSetupAction	&action					() const;
-	IC		const EOrderType	&order_type				() const;
-	IC		const CWorldState	&goal					() const;
 	IC		float				probability				() const;
 	IC		bool				processed				() const;
 	IC		u32					selected_enemy			() const;
 	IC		CCoverPoint			*cover					() const;
 	IC		CMemberDeathReaction&member_death_reaction	();
 	IC		CGrenadeReaction	&grenade_reaction		();
-	IC		CSetupAction		&action					();
 	IC		xr_vector<u32>		&enemies				();
 	IC		void				cover					(CCoverPoint *object_cover) const;
-	IC		void				action					(const CSetupAction	&action);
-	IC		void				order_type				(const EOrderType &order_type);
-	IC		void				goal					(const CWorldState &goal);
 	IC		void				probability				(float probability);
 	IC		void				processed				(bool processed);
 	IC		void				selected_enemy			(u32 selected_enemy);

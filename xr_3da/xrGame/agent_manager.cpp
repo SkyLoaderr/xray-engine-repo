@@ -14,7 +14,7 @@
 #include "agent_location_manager.h"
 #include "agent_member_manager.h"
 #include "agent_memory_manager.h"
-#include "agent_manager_motivation_planner.h"
+#include "agent_manager_planner.h"
 
 LPCSTR SECTION = "agent_manager";
 
@@ -40,13 +40,13 @@ void CAgentManager::init_scheduler		()
 
 void CAgentManager::init_components		()
 {
-	m_corpse					= xr_new<CAgentCorpseManager>			(this);
-	m_enemy						= xr_new<CAgentEnemyManager>			(this);
-	m_explosive					= xr_new<CAgentExplosiveManager>		(this);
-	m_location					= xr_new<CAgentLocationManager>			(this);
-	m_member					= xr_new<CAgentMemberManager>			(this);
-	m_memory					= xr_new<CAgentMemoryManager>			(this);
-	m_brain						= xr_new<CAgentManagerMotivationPlanner>();
+	m_corpse					= xr_new<CAgentCorpseManager>	(this);
+	m_enemy						= xr_new<CAgentEnemyManager>	(this);
+	m_explosive					= xr_new<CAgentExplosiveManager>(this);
+	m_location					= xr_new<CAgentLocationManager>	(this);
+	m_member					= xr_new<CAgentMemberManager>	(this);
+	m_memory					= xr_new<CAgentMemoryManager>	(this);
+	m_brain						= xr_new<CAgentManagerPlanner>	();
 	brain().setup				(this);
 }
 
@@ -80,6 +80,7 @@ void CAgentManager::remove_links		(CObject *object)
 void CAgentManager::shedule_Update		(u32 time_delta)
 {
 	ISheduled::shedule_Update	(time_delta);
+
 	if (!member().members().empty()) {
 		memory().update			();
 		corpse().update			();
@@ -90,6 +91,7 @@ void CAgentManager::shedule_Update		(u32 time_delta)
 		brain().update			();
 		return;
 	}
+
 	CAgentManager				*self = this;
 	xr_delete					(self);
 }

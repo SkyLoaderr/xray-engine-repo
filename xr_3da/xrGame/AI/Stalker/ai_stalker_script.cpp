@@ -12,7 +12,7 @@
 #include "../../stalker_decision_space.h"
 #include "ai_stalker_space.h"
 #include "../../script_game_object.h"
-#include "../../motivation_action_manager_stalker.h"
+#include "../../stalker_planner.h"
 
 using namespace luabind;
 
@@ -20,39 +20,17 @@ void CAI_Stalker::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CMotivationActionManagerStalker>("stalker_ids")
-			.enum_("motivations")
-			[
-				luabind::value("motivation_global",							StalkerDecisionSpace::eMotivationGlobal),
-				luabind::value("motivation_alive",							StalkerDecisionSpace::eMotivationAlive),
-				luabind::value("motivation_dead",							StalkerDecisionSpace::eMotivationDead),
-				luabind::value("motivation_solve_zone_puzzle",				StalkerDecisionSpace::eMotivationSolveZonePuzzle),
-				luabind::value("motivation_squad_command",					StalkerDecisionSpace::eMotivationSquadCommand),
-				luabind::value("motivation_squad_goal",						StalkerDecisionSpace::eMotivationSquadGoal),
-				luabind::value("motivation_squad_action",					StalkerDecisionSpace::eMotivationSquadAction),
-				luabind::value("motivation_script",							StalkerDecisionSpace::eMotivationScript)
-			]
-
+		class_<CStalkerPlanner>("stalker_ids")
 			.enum_("properties")
 			[
 				luabind::value("property_alive",							StalkerDecisionSpace::eWorldPropertyAlive),
 				luabind::value("property_dead",								StalkerDecisionSpace::eWorldPropertyDead),
-				luabind::value("property_already_dead",						StalkerDecisionSpace::eWorldPropertyAlreadyDead),
-				luabind::value("property_human_to_dialog",					StalkerDecisionSpace::eWorldPropertyHumanToDialog),
 				luabind::value("property_alife",							StalkerDecisionSpace::eWorldPropertyALife),
 				luabind::value("property_puzzle_solved",					StalkerDecisionSpace::eWorldPropertyPuzzleSolved),
 				luabind::value("property_reached_task_location",			StalkerDecisionSpace::eWorldPropertyReachedTaskLocation),
 				luabind::value("property_task_completed",					StalkerDecisionSpace::eWorldPropertyTaskCompleted),
 				luabind::value("property_reached_customer_location",		StalkerDecisionSpace::eWorldPropertyReachedCustomerLocation),
 				luabind::value("property_customer_satisfied",				StalkerDecisionSpace::eWorldPropertyCustomerSatisfied),
-				luabind::value("property_not_enough_food",					StalkerDecisionSpace::eWorldPropertyNotEnoughFood),
-				luabind::value("property_can_buy_food",						StalkerDecisionSpace::eWorldPropertyCanBuyFood),
-				luabind::value("property_not_enough_medikits",				StalkerDecisionSpace::eWorldPropertyNotEnoughMedikits),
-				luabind::value("property_can_buy_medikits",					StalkerDecisionSpace::eWorldPropertyCanBuyMedikit),
-				luabind::value("property_no_or_bad_weapon",					StalkerDecisionSpace::eWorldPropertyNoOrBadWeapon),
-				luabind::value("property_can_buy_weapon",					StalkerDecisionSpace::eWorldPropertyCanBuyWeapon),
-				luabind::value("property_not_enough_ammo",					StalkerDecisionSpace::eWorldPropertyNotEnoughAmmo),
-				luabind::value("property_can_buy_ammo",						StalkerDecisionSpace::eWorldPropertyCanBuyAmmo),
 				luabind::value("property_items",							StalkerDecisionSpace::eWorldPropertyItems),
 				luabind::value("property_enemy",							StalkerDecisionSpace::eWorldPropertyEnemy),
 				luabind::value("property_danger",							StalkerDecisionSpace::eWorldPropertyDanger),
@@ -66,7 +44,6 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_in_cover",							StalkerDecisionSpace::eWorldPropertyInCover),
 				luabind::value("property_looked_out",						StalkerDecisionSpace::eWorldPropertyLookedOut),
 				luabind::value("property_position_holded",					StalkerDecisionSpace::eWorldPropertyPositionHolded),
-				luabind::value("property_enemy_can_be_seen",				StalkerDecisionSpace::eWorldPropertyEnemyCanBeSeen),
 				luabind::value("property_enemy_detoured",					StalkerDecisionSpace::eWorldPropertyEnemyDetoured),
 
 				luabind::value("property_danger_unknown",					StalkerDecisionSpace::eWorldPropertyDangerUnknown),
@@ -79,8 +56,6 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_looked_around",					StalkerDecisionSpace::eWorldPropertyLookedAround),
 				luabind::value("property_grenade_exploded",					StalkerDecisionSpace::eWorldPropertyGrenadeExploded),
 
-				luabind::value("property_squad_action",						StalkerDecisionSpace::eWorldPropertySquadAction),
-				luabind::value("property_squad_goal",						StalkerDecisionSpace::eWorldPropertySquadAction),
 				luabind::value("property_anomaly",							StalkerDecisionSpace::eWorldPropertyAnomaly),
 				luabind::value("property_inside_anomaly",					StalkerDecisionSpace::eWorldPropertyInsideAnomaly),
 				luabind::value("property_pure_enemy",						StalkerDecisionSpace::eWorldPropertyPureEnemy),
@@ -89,8 +64,8 @@ void CAI_Stalker::script_register(lua_State *L)
 			
 			.enum_("action")
 			[
-				luabind::value("action_already_dead",						StalkerDecisionSpace::eWorldOperatorAlreadyDead),
-				luabind::value("action_dead",								StalkerDecisionSpace::eWorldOperatorDead),
+				luabind::value("action_resurrect",							StalkerDecisionSpace::eWorldOperatorResurrect),
+				luabind::value("action_dying",								StalkerDecisionSpace::eWorldOperatorDying),
 				luabind::value("action_gather_items",						StalkerDecisionSpace::eWorldOperatorGatherItems),
 				luabind::value("action_no_alife",							StalkerDecisionSpace::eWorldOperatorALifeEmulation),
 				luabind::value("action_solve_zone_puzzle",					StalkerDecisionSpace::eWorldOperatorSolveZonePuzzle),
@@ -98,7 +73,6 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_accomplish_task",					StalkerDecisionSpace::eWorldOperatorAccomplishTask),
 				luabind::value("action_reach_customer_location",			StalkerDecisionSpace::eWorldOperatorReachCustomerLocation),
 				luabind::value("action_communicate_with_customer",			StalkerDecisionSpace::eWorldOperatorCommunicateWithCustomer),
-				luabind::value("action_dialog",								StalkerDecisionSpace::eWorldOperatorDialog),
 				luabind::value("get_out_of_anomaly",						StalkerDecisionSpace::eWorldOperatorGetOutOfAnomaly),
 				luabind::value("detect_anomaly",							StalkerDecisionSpace::eWorldOperatorDetectAnomaly),
 				luabind::value("action_get_item_to_kill",					StalkerDecisionSpace::eWorldOperatorGetItemToKill),
@@ -136,10 +110,8 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_danger_grenade_look_around",			StalkerDecisionSpace::eWorldOperatorDangerGrenadeLookAround),
 				luabind::value("action_danger_grenade_search",				StalkerDecisionSpace::eWorldOperatorDangerGrenadeSearch),
 
-				luabind::value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction),
 				luabind::value("action_death_planner",						StalkerDecisionSpace::eWorldOperatorDeathPlanner),
 				luabind::value("action_alife_planner",						StalkerDecisionSpace::eWorldOperatorALifePlanner),
-				luabind::value("action_alife_dialog_planner",				StalkerDecisionSpace::eWorldOperatorALifeDialogPlanner),
 				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner),
 				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorAnomalyPlanner),
 				luabind::value("action_danger_planner",						StalkerDecisionSpace::eWorldOperatorDangerPlanner),

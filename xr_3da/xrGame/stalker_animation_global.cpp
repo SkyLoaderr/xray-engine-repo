@@ -34,9 +34,6 @@ MotionID CStalkerAnimationManager::assign_global_animation	()
 	if ((eMentalStatePanic == object().movement().mental_state()) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 		return					(m_data_storage->m_part_animations.A[body_state()].m_global.A[1].A[0]);
 
-	if ((eBodyActionHello == object().body_action()))
-		return					(m_data_storage->m_part_animations.A[eBodyStateStand].m_global.A[3].A[0]);
-
 	CFoodItem					*food_item = smart_cast<CFoodItem*>(object().inventory().ActiveItem());
 	if (!food_item)
 		return					(MotionID());

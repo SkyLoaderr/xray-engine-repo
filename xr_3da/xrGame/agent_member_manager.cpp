@@ -31,10 +31,6 @@ void CAgentMemberManager::add					(CEntity *member)
 	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
 	VERIFY						(I == m_members.end());
 	m_members.push_back			(xr_new<CMemberOrder>(stalker));
-
-#ifdef OLD_AGENT_MANAGER_BEHAVIOUR
-	register_in_combat			(stalker);
-#endif
 }
 
 void CAgentMemberManager::remove				(CEntity *member)

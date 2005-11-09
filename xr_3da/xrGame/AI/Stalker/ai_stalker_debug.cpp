@@ -19,7 +19,7 @@
 #include "../../danger_manager.h"
 #include "../../item_manager.h"
 #include "../../actor.h"
-#include "../../motivation_action_manager_stalker.h"
+#include "../../stalker_planner.h"
 #include "../../script_game_object.h"
 #include "../../stalker_animation_manager.h"
 #include "../../weapon.h"
@@ -399,14 +399,10 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		HUD().Font().pFontSmall->OutNext("%react on grenade : %s",indent,agent_manager().member().member(this).grenade_reaction().m_game_object ? *agent_manager().member().member(this).grenade_reaction().m_game_object->cName() : "unknown");
 
 	HUD().Font().pFontSmall->OutSet		(330,up_indent);
+	
 	// brain
 	HUD().Font().pFontSmall->OutNext	("brain");
-	// motivations
-	HUD().Font().pFontSmall->OutNext	("%smotivations",indent);
-
-	const CMotivationActionManagerStalker &brain = this->brain();
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,brain.graph().vertices().size());
-	HUD().Font().pFontSmall->OutNext	("%s%sselected_id : %d",indent,indent,brain.selected_id());
+	
 	// actions
 	draw_planner						(this->brain(),indent,indent,"root");
 	

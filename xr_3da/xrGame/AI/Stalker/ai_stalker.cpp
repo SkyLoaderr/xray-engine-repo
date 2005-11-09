@@ -31,7 +31,7 @@
 #include "../../actor.h"
 #include "../../relation_registry.h"
 #include "../../stalker_animation_manager.h"
-#include "../../motivation_action_manager_stalker.h"
+#include "../../stalker_planner.h"
 #include "../../script_game_object.h"
 #include "../../detail_path_manager.h"
 #include "../../agent_manager.h"
@@ -77,7 +77,6 @@ CAI_Stalker::CAI_Stalker			()
 {
 	m_sound_user_data_visitor		= 0;
 	m_movement_manager				= 0;
-	m_demo_mode						= false;
 	m_group_behaviour				= true;
 	m_boneHitProtection				= NULL;
 }
@@ -88,14 +87,12 @@ CAI_Stalker::~CAI_Stalker			()
 	xr_delete						(m_animation_manager);
 	xr_delete						(m_brain);
 	xr_delete						(m_sight_manager);
-	xr_delete						(m_setup_manager);
 	xr_delete						(m_weapon_shot_effector);
 	xr_delete						(m_sound_user_data_visitor);
 }
 
 void CAI_Stalker::reinit			()
 {
-	setup().reinit					();
 	CObjectHandler::reinit			(this);
 	sight().reinit					();
 	CCustomMonster::reinit			();
@@ -142,18 +139,6 @@ void CAI_Stalker::reinit			()
 	m_ce_random_game->set_inertia	(3000);
 	m_ce_ambush->set_inertia		(3000);
 	m_ce_best_by_time->set_inertia	(1000);
-
-	m_not_enough_food				= false;
-	m_can_buy_food					= false;
-	m_not_enough_medikits			= false;
-	m_can_buy_medikits				= false;
-	m_no_or_bad_weapon				= false;
-	m_can_buy_weapon				= false;
-	m_not_enough_ammo				= false;
-	m_can_buy_ammo					= false;
-	m_last_alife_motivations_update	= 0;
-
-	body_action						(eBodyActionNone);
 
 	m_can_kill_enemy				= false;
 	m_can_kill_member				= false;
@@ -245,7 +230,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 	
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
-	m_demo_mode						= false;
 }
 
 BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
@@ -258,7 +242,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanStalker			*tpHuman = smart_cast<CSE_ALifeHumanStalker*>(e);
 	R_ASSERT						(tpHuman);
-	m_demo_mode						= !!tpHuman->m_demo_mode;
 	m_group_behaviour				= !!tpHuman->m_flags.test(CSE_ALifeObject::flGroupBehaviour);
 
 	if (!CObjectHandler::net_Spawn(DC) || !inherited::net_Spawn(DC))
@@ -290,15 +273,13 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	m_current_alife_task			= 0;
 
-	if (!m_demo_mode) {
-		R_ASSERT2					(
-			ai().get_game_graph() && 
-			ai().get_level_graph() && 
-			ai().get_cross_table() && 
-			(ai().level_graph().level_id() != u32(-1)),
-			"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!"
-		);
-	}
+	R_ASSERT2					(
+		ai().get_game_graph() && 
+		ai().get_level_graph() && 
+		ai().get_cross_table() && 
+		(ai().level_graph().level_id() != u32(-1)),
+		"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!"
+	);
 
 	setEnabled						(TRUE);
 
@@ -703,7 +684,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		if (GetScriptControl())
 			ProcessScripts				();
 		else
-			if (!m_demo_mode && (Device.dwFrame > spawn_time() + g_AI_inactive_time))
+#ifdef DEBUG
+			if (Device.dwFrame > (spawn_time() + g_AI_inactive_time))
+#endif
 				Think					();
 		m_dwLastUpdateTime				= Device.dwTimeGlobal;
 		Device.Statistic.AI_Think.End	();
@@ -822,14 +805,6 @@ void CAI_Stalker::Think			()
 		movement().initialize	();
 		movement().update		(update_delta);
 	}
-
-	try {
-		setup().update			();
-	}
-	catch(...) {
-		setup().clear			();
-		setup().update			();
-	}
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)
@@ -901,9 +876,8 @@ DLL_Pure *CAI_Stalker::_construct			()
 	m_pPhysics_support					= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	m_actor_relation_flags.zero			();
 	m_animation_manager					= xr_new<CStalkerAnimationManager>();
-	m_brain								= xr_new<CMotivationActionManagerStalker>();
+	m_brain								= xr_new<CStalkerPlanner>();
 	m_sight_manager						= xr_new<CSightManager>(this);
-	m_setup_manager						= xr_new<CSSetupManager>(this);
 	m_weapon_shot_effector				= xr_new<CWeaponShotEffector>();
 
 #ifdef DEBUG

@@ -12,22 +12,7 @@
 
 class CAgentManager;
 
-//////////////////////////////////////////////////////////////////////////
-// CAgentManagerActionBase
-//////////////////////////////////////////////////////////////////////////
-
-class CAgentManagerActionBase : public CActionBase<CAgentManager> {
-protected:
-	typedef CActionBase<CAgentManager>					inherited;
-	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
-	typedef GraphEngineSpace::_solver_value_type		_value_type;
-
-public:
-						CAgentManagerActionBase		(CAgentManager *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		finalize					();
-	virtual void		execute						();
-};
+typedef CActionBase<CAgentManager>	CAgentManagerActionBase;
 
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerActionNoOrders
@@ -39,9 +24,7 @@ protected:
 
 public:
 						CAgentManagerActionNoOrders	(CAgentManager *object, LPCSTR action_name = "");
-	virtual void		initialize					();
 	virtual void		finalize					();
-	virtual void		execute						();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,9 +37,6 @@ protected:
 
 public:
 						CAgentManagerActionGatherItems	(CAgentManager *object, LPCSTR action_name = "");
-	virtual void		initialize						();
-	virtual void		finalize						();
-	virtual void		execute							();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,8 +46,6 @@ public:
 class CAgentManagerActionKillEnemy : public CAgentManagerActionBase {
 protected:
 	typedef CAgentManagerActionBase inherited;
-
-	u32					m_level_time;
 
 public:
 						CAgentManagerActionKillEnemy(CAgentManager *object, LPCSTR action_name = "");
@@ -84,13 +62,8 @@ class CAgentManagerActionReactOnDanger : public CAgentManagerActionBase {
 protected:
 	typedef CAgentManagerActionBase inherited;
 
-	u32					m_level_time;
-
 public:
 						CAgentManagerActionReactOnDanger(CAgentManager *object, LPCSTR action_name = "");
 	virtual void		initialize						();
-	virtual void		finalize						();
 	virtual void		execute							();
 };
-
-#include "agent_manager_actions_inline.h"

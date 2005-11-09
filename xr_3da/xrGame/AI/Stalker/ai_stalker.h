@@ -38,22 +38,12 @@ class CAgentManager;
 class CALifeTask;
 class CMotionDef;
 class CStalkerAnimationManager;
-class CMotivationActionManagerStalker;
+class CStalkerPlanner;
 class CSightManager;
 class CStalkerMovementManager;
 class CStalkerSoundDataVisitor;
 class CWeaponShotEffector;
 struct SBoneProtections;
-
-template <
-	typename _action_type,
-	typename _object_type,
-	typename _action_id_type
->
-class CSetupManager;
-
-class CSetupAction;
-class CAI_Stalker;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
@@ -68,21 +58,11 @@ public:
 	using inherited::useful;
 	using inherited::evaluate;
 	
-public:
-	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
-
 private:
 	CStalkerAnimationManager		*m_animation_manager;
-	CMotivationActionManagerStalker	*m_brain;
+	CStalkerPlanner					*m_brain;
 	CSightManager					*m_sight_manager;
-	CSSetupManager					*m_setup_manager;
 	CStalkerMovementManager			*m_movement_manager;
-
-private:
-	StalkerSpace::EBodyAction		m_body_action;
-
-private:
-	bool							m_demo_mode;
 
 	// ALife
 private:
@@ -229,10 +209,10 @@ public:
 	virtual bool						use_model_pitch			() const;
 
 	//InventoryOwner stuff
-	virtual bool	CanPutInSlot				(PIItem item, u32 slot)		{return(slot!=OUTFIT_SLOT);};
+	virtual bool						CanPutInSlot			(PIItem item, u32 slot)		{return(slot!=OUTFIT_SLOT);};
 
 	//////////////////////////////////////////////////////////////////////////
-	// action/evaluators/motivations support functions
+	// action/evaluators support functions
 	//////////////////////////////////////////////////////////////////////////
 public:
 	virtual void						OnItemTake				(CInventoryItem *inventory_item);
@@ -254,15 +234,6 @@ public:
 	
 			bool						undetected_anomaly		();
 			bool						inside_anomaly			();
-
-			bool						not_enough_food			();
-			bool						can_buy_food			();
-			bool						not_enough_medikits		();
-			bool						can_buy_medikits		();
-			bool						no_or_bad_weapon		();
-			bool						can_buy_weapon			();
-			bool						not_enough_ammo			();
-			bool						can_buy_ammo			();
 
 private:
 	bool	m_can_kill_member;
@@ -318,17 +289,6 @@ private:
 	u32									m_total_money;
 	bool								m_sell_info_actuality;
 
-private:
-	bool								m_not_enough_food;
-	bool								m_can_buy_food;
-	bool								m_not_enough_medikits;
-	bool								m_can_buy_medikits;
-	bool								m_no_or_bad_weapon;
-	bool								m_can_buy_weapon;
-	bool								m_not_enough_ammo;
-	bool								m_can_buy_ammo;
-	u32									m_last_alife_motivations_update;
-
 protected:
 			bool						task_completed					(const CALifeTask *_task);
 			bool						similar_task					(const CALifeTask *prev_task, const CALifeTask *new_task);
@@ -348,11 +308,6 @@ protected:
 			void						process_items					();
 			void						transfer_item					(CInventoryItem *item, CGameObject *old_owner, CGameObject *new_owner);
 
-			void						compute_food_conditions			();
-			void						compute_weapon_conditions		();
-			void						compute_ammo_conditions			();
-			void						compute_alife_conditions		();
-
 			void						update_sell_info				();
 			bool						can_sell						(CInventoryItem const * item);
 	virtual bool						AllowItemToTrade 				(CInventoryItem const * item, EItemPlace place) const;
@@ -361,12 +316,9 @@ public:
 			void						failed_to_complete_alife_task	();
 			bool						alife_task_completed			();
 			void						communicate						(CInventoryOwner *trader);
-	IC	CStalkerAnimationManager		&animation						() const;
-	IC	CMotivationActionManagerStalker &brain							() const;
-	IC	CSightManager					&sight							() const;
-	IC	CSSetupManager					&setup							() const;
-	IC		void						body_action						(const StalkerSpace::EBodyAction &body_action);
-	IC		const StalkerSpace::EBodyAction	&body_action				() const;
+	IC		CStalkerAnimationManager	&animation						() const;
+	IC		CStalkerPlanner				&brain							() const;
+	IC		CSightManager				&sight							() const;
 
 private:
 	CStalkerSoundDataVisitor			*m_sound_user_data_visitor;

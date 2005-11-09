@@ -329,18 +329,18 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 	const CGameObject *game_object;
 	const CGameObject *self;
 
-	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles/visible")
+//	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles/visible")
 	game_object					= smart_cast<const CGameObject*>(object);
 	if (!game_object || (!fictitious && !visible(game_object,time_delta)))
 		return;
-	STOP_PROFILE
+//	STOP_PROFILE
 
-	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles/find_object_by_id")
+//	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles/find_object_by_id")
 	self						= m_object;
 	J							= std::find(m_objects->begin(),m_objects->end(),object_id(game_object));
-	STOP_PROFILE
+//	STOP_PROFILE
 
-	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles/fill")
+//	START_PROFILE("AI/Memory Manager/visuals/update/add_visibles/fill")
 	if (m_objects->end() == J) {
 		CVisibleObject			visible_object;
 
@@ -362,7 +362,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 	}
 	else
 		(*J).fill				(game_object,self,mask());
-	STOP_PROFILE
+//	STOP_PROFILE
 }
 
 void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_object)

@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "script_storage_space.h"
 #include "script_engine.h"
-#include "motivation_action_manager_stalker.h"
+#include "stalker_planner.h"
 #include "script_space.h"
 #include "ai/stalker/ai_stalker.h"
 #include "searchlight.h"
@@ -131,17 +131,17 @@ ALife::ERelationType CScriptGameObject::GetRelationType	(CScriptGameObject* who)
 }
 
 template <typename T>
-IC	T	*CScriptGameObject::motivation_action_manager()
+IC	T	*CScriptGameObject::action_planner()
 {
-	CAI_Stalker	*manager = smart_cast<CAI_Stalker*>(&object());
+	CAI_Stalker				*manager = smart_cast<CAI_Stalker*>(&object());
 	if (!manager)
-		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
+		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member action_planner!");
 	return					(&manager->brain());
 }
 
-CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj)
+CScriptActionPlanner		*script_action_planner(CScriptGameObject *obj)
 {
-	return					(obj->motivation_action_manager<CScriptMotivationActionManager>());
+	return					(obj->action_planner<CScriptActionPlanner>());
 }
 
 void CScriptGameObject::set_enemy_callback	(const luabind::functor<bool> &functor)

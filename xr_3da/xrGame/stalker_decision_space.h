@@ -9,22 +9,9 @@
 #pragma once
 
 namespace StalkerDecisionSpace {
-	enum EMotivations {
-		eMotivationGlobal			= u32(0),
-		eMotivationAlive,
-		eMotivationDead,
-		eMotivationSolveZonePuzzle,
-		eMotivationSquadCommand,
-		eMotivationSquadGoal,
-		eMotivationSquadAction,
-		eMotivationScript,
-		eMotivationDummy			= u32(-1)
-	};
-
 	enum EWorldProperties {
 		eWorldPropertyAlive			= u32(0),
 		eWorldPropertyDead,
-		eWorldPropertyAlreadyDead,
 		
 		eWorldPropertyALife,
 		eWorldPropertyPuzzleSolved,
@@ -32,22 +19,6 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyTaskCompleted,
 		eWorldPropertyReachedCustomerLocation,
 		eWorldPropertyCustomerSatisfied,
-
-		eWorldPropertyHumanToDialog,
-		eWorldPropertyReadyToDialog,
-		eWorldPropertyHelloCompleted,
-
-		eWorldPropertyNotEnoughFood,
-		eWorldPropertyCanBuyFood,
-
-		eWorldPropertyNotEnoughMedikits,
-		eWorldPropertyCanBuyMedikit,
-
-		eWorldPropertyNoOrBadWeapon,
-		eWorldPropertyCanBuyWeapon,
-
-		eWorldPropertyNotEnoughAmmo,
-		eWorldPropertyCanBuyAmmo,
 
 		eWorldPropertyItems,
 		eWorldPropertyEnemy,
@@ -63,7 +34,6 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyInCover,
 		eWorldPropertyLookedOut,
 		eWorldPropertyPositionHolded,
-		eWorldPropertyEnemyCanBeSeen,
 		eWorldPropertyEnemyDetoured,
 		eWorldPropertyPureEnemy,
 
@@ -77,9 +47,6 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyLookedAround,
 		eWorldPropertyGrenadeExploded,
 
-		eWorldPropertySquadAction,
-		eWorldPropertySquadGoal,
-
 		eWorldPropertyAnomaly,
 		eWorldPropertyInsideAnomaly,
 
@@ -89,8 +56,8 @@ namespace StalkerDecisionSpace {
 
 	enum EWorldOperators {
 // death
-		eWorldOperatorAlreadyDead	= u32(0),
-		eWorldOperatorDead,
+		eWorldOperatorResurrect	= u32(0),
+		eWorldOperatorDying,
 		
 // alife
 		eWorldOperatorGatherItems,
@@ -103,11 +70,6 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorReachCustomerLocation,
 		eWorldOperatorCommunicateWithCustomer,
 
-// alife : dialogs
-		eWorldOperatorGetReadyToDialog,
-		eWorldOperatorHello,
-		eWorldOperatorDialog,
-		
 // anomaly
 		eWorldOperatorGetOutOfAnomaly,
 		eWorldOperatorDetectAnomaly,
@@ -128,6 +90,8 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorGetDistance,
 		eWorldOperatorDetourEnemy,
 		eWorldOperatorSearchEnemy,
+		eWorldOperatorHideFromGrenade,
+		eWorldOperatorPostCombatWait,
 
 // danger
 		eWorldOperatorDangerUnknownPlanner,
@@ -151,12 +115,8 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorDangerGrenadeSearch,
 
 // global
-		eWorldOperatorPostCombatWait,
-		eWorldOperatorHideFromGrenade,
-		eWorldOperatorSquadAction,
 		eWorldOperatorDeathPlanner,
 		eWorldOperatorALifePlanner,
-		eWorldOperatorALifeDialogPlanner,
 		eWorldOperatorCombatPlanner,
 		eWorldOperatorAnomalyPlanner,
 		eWorldOperatorDangerPlanner,
