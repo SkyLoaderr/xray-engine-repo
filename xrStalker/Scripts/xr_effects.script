@@ -968,6 +968,20 @@ function mil_bomb_explode (actor, npc)
 
 end
 
+function sar2_monolith_explode (actor, npc)
+    local monolith = level.object_by_id (1305)
+    if monolith == nil then
+       abort ("Object MONOLITH with SID 1305 not found")
+    end    
+    local h = hit ();
+    h.power = 1000;
+    h.direction = vector():set( 1, 0, 0 );
+    h.impulse = 1;
+    h.draftsman = actor;
+    h.type = hit.chemical_burn;
+    monolith:hit (h);
+end
+
 function set_stalker_enemy (sid, draftsman)
     local npc = level_object_by_sid (sid)
     if npc == nil or npc:alive () == false then
