@@ -25,6 +25,7 @@ void CAI_Stalker::script_register(lua_State *L)
 			[
 				luabind::value("property_alive",							StalkerDecisionSpace::eWorldPropertyAlive),
 				luabind::value("property_dead",								StalkerDecisionSpace::eWorldPropertyDead),
+				luabind::value("property_already_dead",						StalkerDecisionSpace::eWorldPropertyAlreadyDead),
 				luabind::value("property_alife",							StalkerDecisionSpace::eWorldPropertyALife),
 				luabind::value("property_puzzle_solved",					StalkerDecisionSpace::eWorldPropertyPuzzleSolved),
 				luabind::value("property_reached_task_location",			StalkerDecisionSpace::eWorldPropertyReachedTaskLocation),
@@ -64,7 +65,7 @@ void CAI_Stalker::script_register(lua_State *L)
 			
 			.enum_("action")
 			[
-				luabind::value("action_resurrect",							StalkerDecisionSpace::eWorldOperatorResurrect),
+				luabind::value("action_dead",								StalkerDecisionSpace::eWorldOperatorDead),
 				luabind::value("action_dying",								StalkerDecisionSpace::eWorldOperatorDying),
 				luabind::value("action_gather_items",						StalkerDecisionSpace::eWorldOperatorGatherItems),
 				luabind::value("action_no_alife",							StalkerDecisionSpace::eWorldOperatorALifeEmulation),
