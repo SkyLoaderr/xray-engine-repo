@@ -46,7 +46,6 @@
 #include "../../script_engine.h"
 #include "ai_stalker_impl.h"
 #include "../../sound_player.h"
-#include "../../setup_action.h"
 #include "../../stalker_sound_data.h"
 #include "../../stalker_sound_data_visitor.h"
 #include "ai_stalker_space.h"
