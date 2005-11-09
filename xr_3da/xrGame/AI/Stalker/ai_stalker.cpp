@@ -55,6 +55,7 @@
 #include "../../enemy_manager.h"
 #include "../../BoneProtections.h"
 #include "../../alife_human_brain.h"
+#include "../../profiler.h"
 
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
@@ -547,6 +548,7 @@ struct bug_tracker {
 
 void CAI_Stalker::UpdateCL()
 {
+	START_PROFILE("AI/Stalker/client_update")
 	VERIFY2						(PPhysicsShell()||getEnabled(), *cName());
 	bug_tracker					bug_tracker(this);
 
@@ -606,6 +608,7 @@ void CAI_Stalker::UpdateCL()
 		if (weapon_shot_effector().IsActive())
 			weapon_shot_effector().Update	();
 	}
+	STOP_PROFILE
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -637,8 +640,9 @@ CPHDestroyable*		CAI_Stalker::		ph_destroyable	()
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
-	VERIFY2						(getEnabled()||PPhysicsShell(), *cName());
-	bug_tracker					bug_tracker(this);
+	START_PROFILE("AI/Stalker/schedule_update")
+	VERIFY2				(getEnabled()||PPhysicsShell(), *cName());
+	bug_tracker			bug_tracker(this);
 //	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
 //		Msg				("[%6d][SH][%s]",Device.dwTimeGlobal,*cName());
 	// Queue shrink
@@ -664,8 +668,10 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		else
 			Exec_Visibility				();
 
+		START_PROFILE("AI/Stalker/schedule_update/memory")
 		process_enemies					();
 		memory().update					(dt);
+		STOP_PROFILE
 
 //		if (memory().enemy().selected() && !check)
 //			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
@@ -741,6 +747,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 	m_pPhysics_support->in_shedule_Update(DT);
 	VERIFY				(_valid(Position()));
+	STOP_PROFILE
 }
 
 float CAI_Stalker::Radius() const
@@ -764,7 +771,10 @@ void CAI_Stalker::spawn_supplies	()
 
 void CAI_Stalker::Think			()
 {
+	START_PROFILE("AI/Stalker/think")
 	u32							update_delta = Device.dwTimeGlobal - m_dwLastUpdateTime;
+	
+	START_PROFILE("AI/Stalker/think/brain")
 	try {
 		try {
 			brain().update			(update_delta);
@@ -790,7 +800,9 @@ void CAI_Stalker::Think			()
 		brain().setup			(this);
 		brain().update			(update_delta);
 	}
+	STOP_PROFILE
 
+	START_PROFILE("AI/Stalker/think/movement")
 	if (!g_Alive())
 		return;
 
@@ -804,6 +816,8 @@ void CAI_Stalker::Think			()
 		movement().initialize	();
 		movement().update		(update_delta);
 	}
+	STOP_PROFILE
+	STOP_PROFILE
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)

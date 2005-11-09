@@ -15,6 +15,7 @@
 #include "agent_member_manager.h"
 #include "agent_memory_manager.h"
 #include "agent_manager_planner.h"
+#include "profiler.h"
 
 LPCSTR SECTION = "agent_manager";
 
@@ -79,6 +80,7 @@ void CAgentManager::remove_links		(CObject *object)
 
 void CAgentManager::shedule_Update		(u32 time_delta)
 {
+	START_PROFILE("AI/Agent_Manager")
 	ISheduled::shedule_Update	(time_delta);
 
 	if (!member().members().empty()) {
@@ -94,6 +96,7 @@ void CAgentManager::shedule_Update		(u32 time_delta)
 
 	CAgentManager				*self = this;
 	xr_delete					(self);
+	STOP_PROFILE
 }
 
 float CAgentManager::shedule_Scale		()

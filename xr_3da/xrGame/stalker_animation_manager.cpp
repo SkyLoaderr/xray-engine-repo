@@ -21,6 +21,7 @@
 #include "script_callback_ex.h"
 #include "stalker_animation_data_storage.h"
 #include "stalker_animation_data.h"
+#include "profiler.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -102,6 +103,7 @@ void CStalkerAnimationManager::play_delayed_callbacks		()
 
 void CStalkerAnimationManager::update						()
 {
+	START_PROFILE("AI/Stalker/animations")
 	try {
 		play_delayed_callbacks	();
 
@@ -173,6 +175,7 @@ void CStalkerAnimationManager::update						()
 		Msg						("! error in stalker with visual %s",*object().cNameVisual());
 		throw;
 	}
+	STOP_PROFILE
 }
 
 bool CStalkerAnimationManager::standing					() const
