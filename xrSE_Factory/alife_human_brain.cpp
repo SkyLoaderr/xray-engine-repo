@@ -168,8 +168,10 @@ void CALifeHumanBrain::process_task			()
 
 void CALifeHumanBrain::select_task			()
 {
-	if (object().m_smart_terrain_id != 0xffff)
+	if (object().m_smart_terrain_id != 0xffff) {
+		m_last_search_time			= 0;
 		return;
+	}
 
 	ALife::_TIME_ID					current_time = ai().alife().time_manager().game_time();
 
@@ -219,8 +221,6 @@ void CALifeHumanBrain::update				()
 
 void CALifeHumanBrain::default_behaviour	()
 {
-//	movement().path_type			(MovementManager::ePathTypeGamePath);
-//	movement().detail().target		();
 	movement().path_type			(MovementManager::ePathTypeNoPath);
 }
 
