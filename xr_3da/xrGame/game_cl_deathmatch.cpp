@@ -412,7 +412,6 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		m_game_ui->SetPressJumpMsgCaption("");
 		m_game_ui->SetPressBuyMsgCaption("");
 		m_game_ui->SetForceRespawnTimeCaption("");
-		m_game_ui->SetFragsAndPlaceCaption("");
 	};
 
 	if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
