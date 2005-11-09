@@ -36,8 +36,9 @@ void CUIEditKeyBind::InitTexture(LPCSTR texture, bool bHorizontal){
 }
 
 void CUIEditKeyBind::OnFocusLost(){
-	m_bEditMode = false;
-	m_lines.SetTextColor((subst_alpha(m_lines.GetTextColor(), color_get_A(0xffffffff))));
+	CUILabel::OnFocusLost		();
+	m_bEditMode					= false;
+	m_lines.SetTextColor		((subst_alpha(m_lines.GetTextColor(), color_get_A(0xffffffff))));
 }
 
 extern _keybind keynames[];

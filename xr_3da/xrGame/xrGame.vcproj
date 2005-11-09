@@ -8273,12 +8273,6 @@
 						Name="map"
 						Filter="">
 						<File
-							RelativePath=".\ui\map_hint.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\map_hint.h">
-						</File>
-						<File
 							RelativePath=".\map_location.cpp">
 						</File>
 						<File
@@ -8292,12 +8286,6 @@
 						</File>
 						<File
 							RelativePath=".\map_manager.h">
-						</File>
-						<File
-							RelativePath=".\map_spot.cpp">
-						</File>
-						<File
-							RelativePath=".\map_spot.h">
 						</File>
 					</Filter>
 					<Filter
@@ -10311,6 +10299,18 @@
 					Name="MapWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\map_hint.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\map_hint.h">
+					</File>
+					<File
+						RelativePath=".\map_spot.cpp">
+					</File>
+					<File
+						RelativePath=".\map_spot.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMap.cpp">
 					</File>
 					<File
@@ -10612,6 +10612,12 @@
 				</File>
 				<File
 					RelativePath=".\ui\uiabstract.h">
+				</File>
+				<File
+					RelativePath=".\ui\UIBtnHint.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIBtnHint.h">
 				</File>
 				<File
 					RelativePath=".\ui\UIMessages.h">

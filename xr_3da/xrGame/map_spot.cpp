@@ -12,7 +12,6 @@ CMapSpot::CMapSpot(CMapLocation* ml)
 :m_map_location(ml)
 {
 	ClipperOn			();
-	m_focusReceivedTm	= -1.0f;
 	m_bScale			= false;
 }
 
@@ -38,8 +37,8 @@ void CMapSpot::Update()
 {
 	inherited::Update();
 	if(m_bCursorOverWindow){
-		VERIFY(m_focusReceivedTm>0.0f);
-		if( Device.fTimeGlobal>(m_focusReceivedTm+0.5f) ){
+		VERIFY(m_dwFocusReceiveTime>=0);
+		if( Device.dwTimeGlobal>(m_dwFocusReceiveTime+500) ){
 			GetMessageTarget()->SendMessage(this, MAP_SHOW_HINT, NULL);
 		}
 	}
@@ -60,14 +59,7 @@ void CMapSpot::OnMouseDown		(bool left_button)
 void CMapSpot::OnFocusLost		()
 {
 	inherited::OnFocusLost		();
-	m_focusReceivedTm			= -1.0f;
 	GetMessageTarget()->SendMessage(this, MAP_HIDE_HINT, NULL);
-}
-
-void CMapSpot::OnFocusReceive	()
-{
-	inherited::OnFocusReceive		();
-	m_focusReceivedTm		= Device.fTimeGlobal;
 }
 
 

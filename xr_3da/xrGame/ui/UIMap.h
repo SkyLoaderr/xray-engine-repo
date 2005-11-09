@@ -86,7 +86,6 @@ class CUILevelMap: public CUICustomMap{
 	CUIMapWnd*					m_mapWnd;
 	Frect						m_GlobalRect;			// virtual map size (meters)
 	CUIStatic*					m_anomalies_map;
-	float						m_focusReceivedTm;
 private:
 								CUILevelMap			(const CUILevelMap &obj) {}
 			CUILevelMap			&operator=			(const CUILevelMap &obj) {}
@@ -105,7 +104,6 @@ public:
 	CUIMapWnd*					MapWnd				() {return m_mapWnd;}
 
 	virtual		void			OnFocusLost			();
-	virtual		void			OnFocusReceive		();
 
 protected:
 	virtual void				UpdateSpots			();

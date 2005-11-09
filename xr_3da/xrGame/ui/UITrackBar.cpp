@@ -51,62 +51,6 @@ void CUITrackBar::Init(float x, float y, float width, float height){
 	m_pSlider->InitTexture(SLIDER_TEXTURE);
 }	
 
-//bool CUITrackBar::OnMouse(float x, float y, EUIMessages mouse_action){
-//	//CUIWindow::OnMouse(x,y, mouse_action);
-////	Frect	wndRect = GetWndRect();
-//
-//	cursor_pos.x = x;
-//	cursor_pos.y = y;
-//
-//
-//	bool cursor_on_window;
-//
-//	cursor_on_window = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
-//
-//	// RECEIVE and LOST focus
-//	if(m_bCursorOverWindow != cursor_on_window)
-//		if(cursor_on_window)
-//			OnFocusReceive();			
-//		else
-//			OnFocusLost();			
-//	m_bCursorOverWindow = cursor_on_window;
-//
-//	// handle any action
-//	switch (mouse_action){
-//		case WINDOW_MOUSE_MOVE:
-//			OnMouseMove();							break;
-//		case WINDOW_MOUSE_WHEEL_DOWN:
-//			OnMouseScroll(WINDOW_MOUSE_WHEEL_DOWN); break;
-//		case WINDOW_MOUSE_WHEEL_UP:
-//			OnMouseScroll(WINDOW_MOUSE_WHEEL_UP);	break;
-//		case WINDOW_LBUTTON_DOWN:
-//			OnMouseDown();							break;
-//		case WINDOW_RBUTTON_DOWN:
-//			OnMouseDown(/*left_button = */false);	break;
-//		case WINDOW_LBUTTON_DB_CLICK:
-//			OnDbClick();							break;
-//		default:
-//			break;
-//	}
-//	return false;
-//}
-
-//void CUITrackBar::OnMouseDown(bool left_button /* = true */){
-//	if (left_button){
-//		float btn_width = m_pSlider->GetWidth();
-//		float window_width = GetWidth();		
-//		float pos = cursor_pos.x;
-//
-//		if (pos < btn_width/2)
-//			pos = btn_width/2;
-//		else if (pos > window_width - btn_width/2)
-//			pos = window_width - btn_width/2;
-//
-//		m_val = (m_max - m_min)*(pos - btn_width/2)/(window_width - btn_width)+ m_min;
-//		UpdatePos();
-//	}
-//}
-
 void CUITrackBar::SetCurrentValue(){
 	GetOptFloatValue(m_val, m_min, m_max);
 	UpdatePos();

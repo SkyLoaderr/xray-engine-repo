@@ -361,7 +361,6 @@ CUILevelMap::CUILevelMap(CUIMapWnd* p)
 	m_mapWnd			= p;
 	m_anomalies_map		= NULL;
 	Show				(false);
-	m_focusReceivedTm	= -1.0f;
 }
 
 CUILevelMap::~CUILevelMap()
@@ -466,8 +465,8 @@ void CUILevelMap::Update()
 	inherited::Update				();
 
 	if(m_bCursorOverWindow){
-		VERIFY(m_focusReceivedTm>0.0f);
-		if( Device.fTimeGlobal>(m_focusReceivedTm+0.5f) ){
+		VERIFY(m_dwFocusReceiveTime>=0);
+		if( Device.dwTimeGlobal>(m_dwFocusReceiveTime+500) ){
 
 			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ))
 				MapWnd()->ShowHint(this, *MapName());
@@ -527,16 +526,8 @@ void	CUILevelMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 void CUILevelMap::OnFocusLost			()
 {
 	inherited::OnFocusLost		();
-	m_focusReceivedTm			= -1.0f;
 	MapWnd()->HideHint			(this);
 }
-
-void CUILevelMap::OnFocusReceive		()
-{
-	inherited::OnFocusReceive		();
-	m_focusReceivedTm		= Device.fTimeGlobal;
-}
-
 
 CUIMiniMap::CUIMiniMap()
 {}

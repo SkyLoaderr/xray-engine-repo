@@ -128,7 +128,6 @@ bool CUIListWnd::AddItem(Element* pItem, int insertBeforeIdx)
 	pItem->Init(pItem->GetWndRect().left, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
 		m_iItemWidth, m_iItemHeight);
 
-	pItem->SetNewRenderMethod(m_bNewRenderMethod);
 
 	//добавление в конец или начало списка
 	if(-1 == insertBeforeIdx)

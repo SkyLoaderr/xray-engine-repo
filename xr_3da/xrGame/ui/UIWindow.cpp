@@ -1,11 +1,9 @@
 // UIWindow.cpp: implementation of the CUIWindow class.
 //
 //////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "UIWindow.h"
 #include "../MainUI.h"
-
 
 //#define LOG_ALL_WNDS
 #ifdef LOG_ALL_WNDS
@@ -36,25 +34,20 @@ void CUIWindow::SetPPMode()
 CUIWindow::CUIWindow()
 {
 	m_pFont					= NULL;
-
 	m_pParentWnd			= NULL;
-	
 	m_pMouseCapturer		= NULL;
 	m_pOrignMouseCapturer	= NULL;
 	m_pMessageTarget		= NULL;
-
-
 	m_pKeyboardCapturer		=  NULL;
 	SetWndRect				(0,0,0,0);
-
 	m_bAutoDelete			= false;
-
     Show					(true);
 	Enable					(true);
 	EnableDoubleClick		(true);
 	m_bCursorOverWindow		= false;
 	m_bClickable			= false;
 	m_bPP					= false;
+	m_dwFocusReceiveTime	= 0;
 #ifdef LOG_ALL_WNDS
 	ListWndCount++;
 	m_dbg_id = ListWndCount;
@@ -96,28 +89,25 @@ CUIWindow::~CUIWindow()
 	if(!bOK)
 		Msg("CUIWindow::~CUIWindow.[%d] cannot find window in list", m_dbg_id);
 #endif
-
 }
 
 
 void CUIWindow::Init(Frect* pRect)
 {
-	SetWndRect(*pRect);
+	SetWndRect			(*pRect);
 }
 
 void CUIWindow::Draw()
 {
 	//перерисовать дочерние окна
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
-	{
 		if((*it)->IsShown())
 			(*it)->Draw();
-	}
 }
 
 void CUIWindow::Draw(float x, float y){
-	SetWndPos(x, y);
-	Draw();
+	SetWndPos		(x,y);
+	Draw			();
 }
 
 void CUIWindow::Update()
@@ -135,14 +125,11 @@ void CUIWindow::Update()
 				OnFocusReceive();			
 			else
 				OnFocusLost();			
-		m_bCursorOverWindow = cursor_on_window;	
 	}
 	
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
-	{
 		if((*it)->IsShown())
 			(*it)->Update();
-	}
 }
 
 void CUIWindow::AttachChild(CUIWindow* pChild)
@@ -154,9 +141,6 @@ void CUIWindow::AttachChild(CUIWindow* pChild)
 	m_ChildWndList.push_back(pChild);
 }
 
-
-
-//отсоединить дочернее окно
 void CUIWindow::DetachChild(CUIWindow* pChild)
 {
 	if(NULL==pChild)
@@ -170,8 +154,6 @@ void CUIWindow::DetachChild(CUIWindow* pChild)
 
 	if(pChild->IsAutoDelete())
 		xr_delete(pChild);
-
-
 }
 
 void CUIWindow::DetachAll()
@@ -184,8 +166,6 @@ void CUIWindow::DetachAll()
 Frect CUIWindow::GetAbsoluteRect() 
 {
 	Frect rect;
-
-
 	//окно самого верхнего уровня
 	if(GetParent() == NULL)
 		return GetWndRect();
@@ -194,15 +174,14 @@ Frect CUIWindow::GetAbsoluteRect()
 	//рекурсивно вычисляем абсолютные координаты
 	rect = GetParent()->GetAbsoluteRect();
 
-	rect.left += GetWndRect().left;
-	rect.top += GetWndRect().top;
-	rect.right = rect.left + GetWidth();
-	rect.bottom = rect.top + GetHeight();
+	Frect rr		= GetWndRect	();
+	rect.left		+= rr.left;
+	rect.top		+= rr.top;
+	rect.right		= rect.left + GetWidth();
+	rect.bottom		= rect.top	+ GetHeight();
 
 	return rect;
 }
-
-
 
 //реакция на мышь
 //координаты курсора всегда, кроме начального вызова 
@@ -217,18 +196,6 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	cursor_pos.x = x;
 	cursor_pos.y = y;
 
-
-	//bool cursor_on_window;
-
-	//cursor_on_window = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
-	//
-	//// RECEIVE and LOST focus
-	//if(m_bCursorOverWindow != cursor_on_window)
-	//	if(cursor_on_window)
- //           OnFocusReceive();			
-	//	else
-	//		OnFocusLost();			
-	//m_bCursorOverWindow = cursor_on_window;
 
 	// DOUBLE CLICK GENERATION
 	if( ( WINDOW_LBUTTON_DOWN == mouse_action ) && m_bDoubleClickEnabled )
@@ -322,11 +289,9 @@ bool CUIWindow::HasChildMouseHandler(){
 }
 
 void CUIWindow::OnMouseMove(){
-	// do nothing 
 }
 
 void CUIWindow::OnMouseScroll(float iDirection){
-	; // do nothing
 }
 
 bool CUIWindow::OnDbClick(){
@@ -336,19 +301,21 @@ bool CUIWindow::OnDbClick(){
 }
 
 void CUIWindow::OnMouseDown(bool left_button){
-
 }
 
 void CUIWindow::OnMouseUp(bool left_button){
-
 }
 
-void CUIWindow::OnFocusReceive(){
-	;
+void CUIWindow::OnFocusReceive()
+{
+	m_dwFocusReceiveTime	= Device.dwTimeGlobal;
+	m_bCursorOverWindow		= true;	
 }
 
-void CUIWindow::OnFocusLost(){
-	;
+void CUIWindow::OnFocusLost()
+{
+	m_dwFocusReceiveTime	= 0;
+	m_bCursorOverWindow		= false;	
 }
 
 

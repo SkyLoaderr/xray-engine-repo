@@ -75,6 +75,7 @@ void CUICustomEdit::SetPasswordMode(bool mode){
 }
 
 void CUICustomEdit::OnFocusLost(){
+	CUIWindow::OnFocusLost();
 	GetParent()->SetKeyboardCapture(this, false);
 	m_bInputFocus = false;
 	m_iKeyPressAndHold = 0;

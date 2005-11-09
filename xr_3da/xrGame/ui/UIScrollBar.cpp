@@ -115,6 +115,7 @@ void CUIScrollBar::UpdateScrollBar()
 			// set width
 			clamp					(box_sz,_min(SCROLLBAR_WIDTH,GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
 			m_ScrollBox->SetWidth	(box_sz);
+			m_ScrollBox->SetHeight	(SCROLLBAR_HEIGHT);
 			// set pos
 			int pos					= PosViewFromScroll(iFloor(m_ScrollBox->GetWidth()),iFloor(SCROLLBAR_WIDTH));
 			m_ScrollBox->SetWndPos	(float(pos), m_ScrollBox->GetWndRect().top);
@@ -123,6 +124,7 @@ void CUIScrollBar::UpdateScrollBar()
 			// set height
 			clamp					(box_sz,_min(SCROLLBAR_HEIGHT,GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
 			m_ScrollBox->SetHeight	(box_sz);
+			m_ScrollBox->SetWidth	(SCROLLBAR_WIDTH);
 			// set pos
 			int pos				= PosViewFromScroll(iFloor(m_ScrollBox->GetHeight()),iFloor(SCROLLBAR_HEIGHT));
 			m_ScrollBox->SetWndPos	(m_ScrollBox->GetWndRect().left, float(pos));

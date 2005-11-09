@@ -8,7 +8,6 @@ class CMapSpot :public CUIStatic
 {
 	typedef CUIStatic inherited;
 	CMapLocation*			m_map_location;
-	float					m_focusReceivedTm;
 public:
 	bool					m_bScale;
 	Fvector2				m_originSize;
@@ -21,7 +20,6 @@ public:
 	virtual		void		Draw							();
 	virtual		void		OnMouseDown						(bool left_button = true);
 	virtual		void		OnFocusLost						();
-	virtual		void		OnFocusReceive					();
 };
 
 

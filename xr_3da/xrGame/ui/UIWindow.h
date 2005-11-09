@@ -141,7 +141,11 @@ public:
 
 	IC void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
 	IC bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
+	IC bool					CursorOverWindow	() const					{ return m_bCursorOverWindow; }
+
 protected:
+	IC void					SafeRemoveChild(CUIWindow* child)				{WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child); if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);};
+
 	shared_str				m_windowName;
 	//список дочерних окон
 	WINDOW_LIST				m_ChildWndList;
@@ -157,47 +161,42 @@ protected:
 	//может весь фокус и освободить
 	CUIWindow*				m_pOrignMouseCapturer;
 
-
 	//дочернее окно которое, захватило ввод клавиатуры
 	CUIWindow*				m_pKeyboardCapturer;
 
 	//кому шлем сообщени€
 	CUIWindow*				m_pMessageTarget;
 
-	//разрешен ли ввод пользовател€
-	bool					m_bIsEnabled;
 
 	CGameFont*				m_pFont;
 
-	bool					m_bPP;
+	// ѕоследн€€ позици€ мышки
+	Fvector2 cursor_pos;
+
 	//врем€ прошлого клика мышки
 	//дл€ определени€ DoubleClick
 	u32						m_dwLastClickTime;
+	u32						m_dwFocusReceiveTime;
 
 	//флаг автоматического удалени€ во врем€ вызова деструктора
 	bool					m_bAutoDelete;
 
 	// ‘лаг разрешающий/запрещающий генерацию даблклика
 	bool					m_bDoubleClickEnabled;
+	bool					m_bPP;
+	//разрешен ли ввод пользовател€
+	bool					m_bIsEnabled;
 
 	// ≈сли курсор над окном
 	bool					m_bCursorOverWindow;
 	bool					m_bClickable;
-	IC void					SafeRemoveChild(CUIWindow* child){
-								WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child);
-								if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);
-	};
 
 #ifdef DEBUG
 	int m_dbg_id;
 #endif
 
 public:
-	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
-	// ѕоследн€€ позици€ мышки
-	Fvector2 cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
-
 };
 
 add_to_type_list(CUIWindow)

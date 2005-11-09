@@ -52,7 +52,6 @@
 #include "UIDragDropListEx.h"
 #include "map_hint.h"
 static CTestDragDropWnd* w = NULL;
-CUIMapHint* w_ = NULL;
 
 using namespace InventoryUtilities;
 
@@ -339,9 +338,6 @@ void CUIMainIngameWnd::Init()
 float UIStaticDiskIO_start_time = 0.0f;
 void CUIMainIngameWnd::Draw()
 {
-	if(w_)
-		w_->Draw();
-
 	bool zoom_mode = false;
 	bool scope_mode = false;
 	// show IO icon

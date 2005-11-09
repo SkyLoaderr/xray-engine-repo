@@ -297,6 +297,10 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	if(r!=-1)
 	pWnd->SetCheckMode ( (r==1)?true : false);
 	
+	LPCSTR text_hint		= xml_doc.ReadAttrib	(path, index, "hint", NULL);
+	if(text_hint)
+		pWnd->m_hint_text	= CStringTable().translate(text_hint);
+
 	return true;
 }
 
@@ -331,15 +335,19 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	pWnd->SetAccelerator(accel);
 
 	
-	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
-	float shadowOffsetY	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);
+	float shadowOffsetX		= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
+	float shadowOffsetY		= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);
 
 	float pushOffsetX		= xml_doc.ReadAttribFlt(path, index, "push_off_x", 2);
 	float pushOffsetY		= xml_doc.ReadAttribFlt(path, index, "push_off_y", 3);
 
-	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
-	pWnd->SetPushOffsetX(pushOffsetX);
-	pWnd->SetPushOffsetY(pushOffsetY);
+	LPCSTR text_hint		= xml_doc.ReadAttrib	(path, index, "hint", NULL);
+	if(text_hint)
+		pWnd->m_hint_text	= CStringTable().translate(text_hint);
+
+	pWnd->SetShadowOffset	(shadowOffsetX, shadowOffsetY);
+	pWnd->SetPushOffsetX	(pushOffsetX);
+	pWnd->SetPushOffsetY	(pushOffsetY);
 	
 	return true;
 }

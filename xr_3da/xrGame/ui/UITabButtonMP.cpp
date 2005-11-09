@@ -15,7 +15,6 @@ const int TEXT_INDENTION = 43;
 
 CUITabButtonMP::CUITabButtonMP(){
 	m_orientation = O_VERTICAL;
-	SetNewRenderMethod(true);
 }
 
 CUITabButtonMP::~CUITabButtonMP(){

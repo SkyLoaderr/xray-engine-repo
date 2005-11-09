@@ -115,6 +115,5 @@ public:
 	void			UnregisterPPDraw				(CUIWindow* w);
 };
 
-
 extern CUICursor*	GetUICursor();
 extern CMainUI*		UI();

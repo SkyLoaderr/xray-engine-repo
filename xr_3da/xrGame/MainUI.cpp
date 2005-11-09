@@ -9,7 +9,7 @@
 #include "ui\UITextureMaster.h"
 #include "ui\UIXmlInit.h"
 #include <dinput.h>
-
+#include "ui\UIBtnHint.h"
 
 extern CUICursor*	GetUICursor(){return UI()->GetUICursor();};
 extern CMainUI*		UI(){return (CMainUI*)(g_pGamePersistent->m_pMainUI);};
@@ -112,17 +112,19 @@ CMainUI::CMainUI	()
 	m_pFontManager				= xr_new<CFontManager>();
 	g_pGamePersistent->m_pMainUI= this;
 	if (Device.bReady)			OnDeviceCreate();  	
-	ReadTextureInfo();
-	CUIXmlInit::InitColorDefs();
+	ReadTextureInfo				();
+	CUIXmlInit::InitColorDefs	();
+	g_btnHint					= xr_new<CUIButtonHint>();
 }
 
 CMainUI::~CMainUI	()
 {
+	xr_delete						(g_btnHint);
 	xr_delete						(m_startDialog);
-	xr_delete						(m_pUICursor);
 	xr_delete						(m_pFontManager);
+	xr_delete						(m_pUICursor);
 	g_pGamePersistent->m_pMainUI	= NULL;
-	CUITextureMaster::WriteLog();
+	CUITextureMaster::WriteLog		();
 }
 
 void CMainUI::ReadTextureInfo(){

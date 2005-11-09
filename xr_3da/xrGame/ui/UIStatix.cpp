@@ -27,11 +27,15 @@ void CUIStatix::Update(){
 	}
 }
 
-void CUIStatix::OnFocusLost(){
-	SetColor(0xffffffff);
+void CUIStatix::OnFocusLost()
+{
+	CUIStatic::OnFocusLost	();
+	SetColor				(0xffffffff);
 }
 
-void CUIStatix::OnFocusReceive(){
+void CUIStatix::OnFocusReceive()
+{
+	CUIStatic::OnFocusReceive	();
 	m_anim->Reset();
 }
 
