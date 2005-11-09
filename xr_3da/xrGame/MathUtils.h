@@ -393,7 +393,7 @@ IC float DET(const Fmatrix &a){
 }
 
 #ifdef DEBUG
-const float				DET_CHECK_EPS =0.1f					;
+const float				DET_CHECK_EPS =0.15f					;
 #define	VERIFY_RMATRIX(M)	{\
 	float d=DET(M);\
 	if( !fsimilar(d,1.f,DET_CHECK_EPS) ){\
