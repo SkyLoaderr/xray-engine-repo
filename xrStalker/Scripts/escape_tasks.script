@@ -47,6 +47,14 @@ function proceed()
 		actor:give_info_portion("esc_kolyan_lost")
 	end  
 
+
+--' Туториальный труп
+	if actor:dont_has_info("esc_tutorial_dead_novice") and
+	   actor:object("tutorial_dead_flash") ~= nil
+	then
+		actor:give_info_portion("esc_tutorial_dead_novice")
+	end 
+
 	if actor:has_info("escape_blockpost_case") and
 	   actor:dont_has_info("escape_blockpost_case_have") and 
 	   actor:object("quest_case_01") ~= nil
