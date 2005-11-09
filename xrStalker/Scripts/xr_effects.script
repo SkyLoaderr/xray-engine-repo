@@ -969,7 +969,7 @@ function mil_bomb_explode (actor, npc)
 end
 
 function sar2_monolith_explode (actor, npc)
-    local monolith = level.object_by_id (1305)
+    local monolith = level_object_by_sid (1305)
     if monolith == nil then
        abort ("Object MONOLITH with SID 1305 not found")
     end    
