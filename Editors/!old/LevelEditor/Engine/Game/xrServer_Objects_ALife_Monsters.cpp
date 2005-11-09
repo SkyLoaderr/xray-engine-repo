@@ -1997,7 +1997,6 @@ void CSE_ALifeHumanAbstract::spawn_supplies	()
 CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection),CSE_PHSkeleton(caSection)
 {
 	m_trader_flags.set			(eTraderFlagInfiniteAmmo,TRUE);
-	m_demo_mode					= FALSE;
 	m_start_dialog				= "";
 }
 
@@ -2009,7 +2008,6 @@ void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	tNetPacket.w_u8				(u8(!!m_demo_mode));
 }
 
 void CSE_ALifeHumanStalker::STATE_Read		(NET_Packet &tNetPacket, u16 size)
@@ -2019,8 +2017,8 @@ void CSE_ALifeHumanStalker::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 67)
 		inherited2::STATE_Read	(tNetPacket, size);
 
-	if (m_wVersion > 90)
-		m_demo_mode				= !!tNetPacket.r_u8();
+	if ((m_wVersion > 90) && (m_wVersion < 111))
+		tNetPacket.r_u8			();
 }
 
 void CSE_ALifeHumanStalker::UPDATE_Write	(NET_Packet &tNetPacket)
@@ -2047,7 +2045,6 @@ void CSE_ALifeHumanStalker::FillProps		(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProps		(pref,values);
 	inherited2::FillProps		(pref,values);
-	PHelper().CreateBOOL		(values,PrepareKey(pref,*s_name,"Demo mode"),&m_demo_mode);
 }
 
 //////////////////////////////////////////////////////////////////////////

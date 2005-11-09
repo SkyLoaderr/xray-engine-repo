@@ -127,8 +127,9 @@
 // 108 - CSE_ALifeTraderAbstract		removed property m_tpEvents
 // 109 - CSE_ALifeBaseMonster			added property m_spec_object
 // 110 - CSE_ALifeHumanAbstract			removed a lot
+// 111 - CSE_ALifeHumanStalker			removed demo mode
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(110)
+#define SPAWN_VERSION	u16(111)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
