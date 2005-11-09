@@ -46,6 +46,7 @@ public:
 	void Play()											{ m_bPlaying = true; m_prevTime = Device.TimerAsyncMM();}
 	void Stop()											{ m_bPlaying = false; }
 	void Rewind(u32 delta = 0)							{ m_uCurFrame = 0xffffffff; m_uTimeElapsed = delta; }
+	void SetAnimPos(float pos);
 	// Флаг-признак циклического проигрывания
 	bool m_bCyclic;
 

@@ -14,7 +14,8 @@
 #include "Inventory.h"
 #include "xrserver_objects_alife_items.h"
 #include "xr_level_controller.h"
-
+#include "ui/xrXmlParser.h"
+#include "ui/UIStats.h"
 #include "game_cl_Deathmatch.h"
 
 #define MSGS_OFFS 510
@@ -76,8 +77,11 @@ void CUIGameDM::SetClGame (game_cl_GameState* g)
 
 void	CUIGameDM::Init				()
 {
+	CUIXml xml_doc;
+	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, "stats.xml");
+	R_ASSERT2(xml_result, "xml file not found");
 
-	CUIDMFragList* pFragList		= xr_new<CUIDMFragList>		();
+	CUIStats* pFragList		= xr_new<CUIStats>();
 	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
 	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>();
 	pFragList->SetAutoDelete(true);
@@ -88,13 +92,12 @@ void	CUIGameDM::Init				()
 	float ScreenW = UI_BASE_WIDTH;
 	float ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	Frect FrameRect = pFragList->GetFrameRect ();
+	pFragList->Init(xml_doc,0);
+
+	Frect FrameRect = pFragList->GetWndRect();
 	float FrameW	= FrameRect.right - FrameRect.left;
 	float FrameH	= FrameRect.bottom - FrameRect.top;
-
-	pFragList->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
-
-
+	pFragList->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
 	m_pFragLists->AttachChild(pFragList);
 	//-----------------------------------------------------------
 	FrameRect = pPlayerList->GetFrameRect ();

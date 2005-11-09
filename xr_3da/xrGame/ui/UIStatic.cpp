@@ -566,6 +566,10 @@ void CUIStatic::AdjustHeightToText(){
 	SetHeight				(m_pLines->GetVisibleHeight());
 }
 
+void CUIStatic::AdjustWidthToText(){
+	SetWidth(m_pLines->GetTextLength());
+}
+
 void CUIStatic::RescaleRelative2Rect(const Frect& r){
 	SetStretchTexture(true);
 	Frect my_r = m_xxxRect;

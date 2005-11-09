@@ -103,6 +103,7 @@ public:
 //	virtual void			SetTextAlign		(CGameFont::EAligment align);
 //	CGameFont::EAligment	GetTextAlign		();
 			void AdjustHeightToText			();
+			void AdjustWidthToText			();
 			void HighlightText(bool bHighlight) {m_bEnableTextHighlighting = bHighlight;}
 	virtual bool IsHighlightText();
 

@@ -642,6 +642,8 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		{
 			pFnt = UI()->Font()->pFontDI;
 		}
+		else
+			pFnt = NULL;
 	}
 	return true;
 }

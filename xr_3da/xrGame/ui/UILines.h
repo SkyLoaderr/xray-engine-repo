@@ -67,6 +67,7 @@ IC			void			SetWndSize_inline(const Fvector2& wnd_size);
 			void			Reset();
 			void			ParseText();
 			float			GetVisibleHeight();
+			float			GetTextLength();
 
 	// cursor control
 			int				m_iCursorPos;

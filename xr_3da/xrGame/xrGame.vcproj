@@ -10593,6 +10593,16 @@
 						RelativePath=".\ui\UIKeyBinding.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="MM"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIMMShniaga.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMMShniaga.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"

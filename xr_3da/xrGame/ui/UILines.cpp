@@ -558,3 +558,8 @@ float CUILines::GetDrawCursorPos(){
 	m_text[m_iCursorPos] = tmp;
 	return x;
 }
+
+float CUILines::GetTextLength(){
+	R_ASSERT(m_pFont);
+	return m_pFont->SizeOfRel(m_text.c_str());
+}

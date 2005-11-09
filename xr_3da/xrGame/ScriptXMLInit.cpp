@@ -17,6 +17,7 @@
 #include "ui\UITrackBar.h"
 #include "ui\UICDkey.h"
 #include "ui\UIMapInfo.h"
+#include "ui\UIMMShniaga.h"
 
 #include "script_space.h"
 using namespace luabind;
@@ -219,6 +220,14 @@ CUIMapList* CScriptXmlInit::InitMapList(LPCSTR path, CUIWindow* parent){
 	return pWnd;	
 }
 
+CUIWindow* CScriptXmlInit::InitMMShniaga(LPCSTR path, CUIWindow* parent){
+	CUIMMShniaga* pWnd = xr_new<CUIMMShniaga>();
+	pWnd->Init(m_xml, path);
+	pWnd->SetAutoDelete(true);
+	parent->AttachChild(pWnd);
+	return pWnd;
+}
+
 CUIMapInfo* CScriptXmlInit::InitMapInfo(LPCSTR path, CUIWindow* parent){
 	CUIMapInfo* pWnd = xr_new<CUIMapInfo>();
 	CUIXmlInit::InitWindow(m_xml,path,0,pWnd);
@@ -279,7 +288,7 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("InitTrackBar",	&CScriptXmlInit::InitTrackBar)
 		.def("InitCDkey",		&CScriptXmlInit::InitCDkey)
 		.def("InitKeyBinding",	&CScriptXmlInit::InitKeyBinding)
-
+		.def("InitMMShniaga",	&CScriptXmlInit::InitMMShniaga)
 	];
 
 }

@@ -57,6 +57,7 @@ public:
 	CUIMapInfo*			InitMapInfo(LPCSTR path, CUIWindow* parent);
 	CUITrackBar*		InitTrackBar(LPCSTR path, CUIWindow* parent);
 	CUIEditBox*			InitCDkey(LPCSTR path, CUIWindow* parent);
+	CUIWindow*			InitMMShniaga(LPCSTR path, CUIWindow* parent);
 	CUIWindow*			InitKeyBinding(LPCSTR path, CUIWindow* parent);
 
 protected:
