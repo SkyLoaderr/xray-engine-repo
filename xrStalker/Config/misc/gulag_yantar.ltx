@@ -76,7 +76,7 @@ on_info = {+yan_scientist_point_to_2} camper@scientist_3
 def_state_moving = assault
 radius = 0
 no_retreat = true
-danger = danger_condition@yan_scientist
+;danger = danger_condition@yan_scientist
 
 [camper@scientist_3]
 path_walk = help_walk_1
@@ -87,7 +87,7 @@ on_info = {+yan_scientist_point_to_3} camper@scientist_4
 def_state_moving = assault
 radius = 0
 no_retreat = true
-danger = danger_condition@yan_scientist
+;danger = danger_condition@yan_scientist
 
 [camper@scientist_4]
 path_walk = help_walk_2
@@ -98,7 +98,7 @@ on_info = {+yan_scientist_point_to_4} camper@scientist_5
 def_state_moving = assault
 radius = 0
 no_retreat = true
-danger = danger_condition@yan_scientist
+;danger = danger_condition@yan_scientist
 
 [camper@scientist_5]
 path_walk = help_walk_3
@@ -109,7 +109,7 @@ on_info = {+yan_scientist_start_research} walker@scientist_research
 def_state_moving = assault
 radius = 0
 no_retreat = true
-danger = danger_condition@yan_scientist
+;danger = danger_condition@yan_scientist
 
 [walker@scientist_research]
 path_walk = walk_research
@@ -177,4 +177,32 @@ ignore_danger_grenade = 1
 ignore_danger_corpse  = 1
 ignore_danger_hit     = 1
 ignore_danger_sound   = 1 
+
+;========================================================
+; Tonnel Snorks
+;========================================================
+
+[logic@yan_tonnel_snork_home_1]
+active = mob_home@yan_tonnel_snork_home_1
+
+[mob_home@yan_tonnel_snork_home_1]
+path_home = home_1
+home_min_radius = 20
+home_max_radius = 40
+
+[logic@yan_tonnel_snork_home_2]
+active = mob_home@yan_tonnel_snork_home_2
+
+[mob_home@yan_tonnel_snork_home_2]
+path_home = home_2
+home_min_radius = 20
+home_max_radius = 40
+
+[logic@yan_tonnel_snork_home_3]
+active = mob_home@yan_tonnel_snork_home_3
+
+[mob_home@yan_tonnel_snork_home_3]
+path_home = home_3
+home_min_radius = 20
+home_max_radius = 40
 

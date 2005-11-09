@@ -224,6 +224,100 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	if type == "yan_tonnel_snorks" then
+		t = { section = "logic@yan_tonnel_snork_home_1",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@yan_tonnel_snork_home_1",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yan_tonnel_snork_home_1",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@yan_tonnel_snork_home_1",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@yan_tonnel_snork_home_2",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yan_tonnel_snork_home_2",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@yan_tonnel_snork_home_2",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@yan_tonnel_snork_home_2",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yan_tonnel_snork_home_2",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@yan_tonnel_snork_home_3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@yan_tonnel_snork_home_3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yan_tonnel_snork_home_3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@yan_tonnel_snork_home_3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@yan_tonnel_snork_home_3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@yan_tonnel_snork_home_3",
+			idle = 0,
+			prior = 9, state = {1}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+
+
 end
 
 function load_states(gname, type)
@@ -243,6 +337,12 @@ function load_states(gname, type)
 			return 1
 		end
     end
+	
+	if type == "yan_tonnel_snorks" then
+		return function(gulag)
+			return 1
+		end
+	end
 
 end
 
@@ -266,4 +366,7 @@ end
 
 
 function checkMonster(npc_community, gulag_type)
+	if gulag_type == "yan_tonnel_snorks" then 
+		return npc_community == "snork"
+	end
 end
