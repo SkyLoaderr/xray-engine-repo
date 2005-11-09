@@ -8,30 +8,41 @@ void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
 	if (!IsDemoSave()) return;
 
 //	DemoCS.Enter();
-
+	
 	u32 CurTime = timeServer_Async();
-	u32 TotalSize = sizeof(CurTime) + sizeof(size) + size;
+	u32 TotalSize = 4 + 4 + 4;//	
+	switch(DataType)
+	{
+	case DATA_FRAME:
+		{
+			TotalSize += size;
+		}break;
+	case DATA_PACKET:
+		{
+			TotalSize += size + 4;
+		}break;
+	}
 
 	R_ASSERT2(size <= DEMO_DATA_SIZE, "Data is too BIG!");
-	if ((TotalSize + m_dwStoredDemoDataSize) > DEMO_DATA_SIZE)
+	if ((TotalSize + m_dwStoredDemoDataSize) >= DEMO_DATA_SIZE)
 	{
-		Demo_DumpData();
+		Demo_DumpData();		
 	};
 
 	DEMO_CHUNK	Chunk = DataType;
-	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &Chunk, 4); m_dwStoredDemoDataSize += 4;
-	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &m_dwCurDemoFrame, 4); m_dwStoredDemoDataSize += 4;
-	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &CurTime, 4); m_dwStoredDemoDataSize += 4;	
+	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &Chunk, 4);				m_dwStoredDemoDataSize += 4;					
+	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &m_dwCurDemoFrame, 4);	m_dwStoredDemoDataSize += 4;		
+	CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &CurTime, 4);			m_dwStoredDemoDataSize += 4;				
 	switch (DataType)
 	{
 	case DATA_FRAME:
 		{
-			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size); m_dwStoredDemoDataSize += size;
+			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size);		m_dwStoredDemoDataSize += size;		
 		}break;
 	case DATA_PACKET:
 		{
-			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &size, 4); m_dwStoredDemoDataSize += 4;
-			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size); m_dwStoredDemoDataSize += size;
+			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &size, 4);		m_dwStoredDemoDataSize += 4;
+			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size);		m_dwStoredDemoDataSize += size;		
 		}break;
 	}
 	
@@ -68,6 +79,7 @@ void						CLevel::Demo_DumpData()
 
 void						CLevel_DemoCrash_Handler	()
 {
+	if (!g_pGameLevel) return;
 	Level().WriteStoredDemo();
 	Level().CallOldCrashHandler();
 }
