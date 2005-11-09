@@ -46,13 +46,13 @@ void CStalkerDeathPlanner::add_actions		()
 {
 	CStalkerActionBase		*action;
 
-	action					= xr_new<CStalkerActionDead>		(m_object,"dead");
+	action					= xr_new<CStalkerActionDead>		(m_object,"dying");
 	add_condition			(action,eWorldPropertyDead,			false);
 	add_effect				(action,eWorldPropertyDead,			true);
-	add_operator			(eWorldOperatorDead,				action);
+	add_operator			(eWorldOperatorDying,				action);
 
-	action					= xr_new<CStalkerActionBase>		(m_object,"already_dead");
+	action					= xr_new<CStalkerActionBase>		(m_object,"dead");
 	add_condition			(action,eWorldPropertyDead,			true);
 	add_effect				(action,eWorldPropertyAlreadyDead,	true);
-	add_operator			(eWorldOperatorAlreadyDead,			action);
+	add_operator			(eWorldOperatorDead,				action);
 }
