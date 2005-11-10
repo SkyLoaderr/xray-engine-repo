@@ -29,8 +29,15 @@ CHitMarker::CHitMarker()
 	hShader.create	("hud\\hitmarker","ui\\hud_hitmarker");
 	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), NULL);
 */
-	hShader2.create	("hud\\default","ui\\ui_hud_hit_mark");
+//	hShader2.create	("hud\\default","ui\\ui_hud_hit_mark");
+	InitShader		(pSettings->r_string("hud_hitmark","hit_mark_texture"));
 }
+
+void CHitMarker::InitShader	(LPCSTR tex_name)
+{
+	hShader2.create	("hud\\default", tex_name);
+}
+
 //--------------------------------------------------------------------
 CHitMarker::~CHitMarker()
 {
@@ -139,7 +146,6 @@ void SHitMark::UpdateAnim	()
 {
 	int frame;
 	u32 clr			= m_lanim->CalculateRGB(Device.fTimeGlobal-m_StartTime,frame);
-//	m_UIStaticItem->SetColor(clr);
 	m_UIStaticItem->SetColor		(subst_alpha(m_UIStaticItem->GetColor(), color_get_A(clr)));
 }
 

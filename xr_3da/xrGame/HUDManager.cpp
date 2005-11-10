@@ -284,3 +284,8 @@ void CHUDManager::Hit(int idx, float power, const Fvector& dir)
 {
 	HitMarker.Hit(idx, dir);
 }
+
+void CHUDManager::SetHitmarkType		(LPCSTR tex_name)
+{
+	HitMarker.InitShader				(tex_name);
+}
