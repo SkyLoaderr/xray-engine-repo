@@ -809,7 +809,24 @@ void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode, bool bIgnoreConstrain
     UpdateHLSelected	();
 }
 
-#define		merge(pt)	if (fsimilar(P.y,REF.y,0.5f)) { c++; pt.add(P); }
+void ESceneAIMapTools::ResetNodes()
+{
+    SPBItem* pb = UI->ProgressStart(m_Nodes.size(), "Smoothing nodes...");
+
+    int	n_cnt	= 0;
+    
+	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+		SAINode& 	N 		= **it;
+		if (N.flags.is(SAINode::flSelected)){
+        	n_cnt++;
+            N.Plane.build(N.Pos,Fvector().set(0,1,0));
+        }
+    }
+    UI->ProgressEnd(pb);
+	if (n_cnt) 		Scene->UndoSave();
+}
+
+#define		merge(pt)	if (fsimilar(P.y,REF.y,m_SmoothHeight)) { c++; pt.add(P); }
 void ESceneAIMapTools::SmoothNodes()
 {
     SPBItem* pb = UI->ProgressStart(m_Nodes.size(), "Smoothing nodes...");
@@ -821,13 +838,13 @@ void ESceneAIMapTools::SmoothNodes()
     
     EnumerateNodes			();
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
-		SAINode& N = **it;
+		SAINode& 	N 		= **it;
+        Fvector		P1,P2,P3,P4,P,REF;
+        int			c;
+
 		if (N.flags.is(SAINode::flSelected)){
         	sm_nodes++;
         
-            Fvector	P1,P2,P3,P4,P,REF;
-            int		c;
-
             // smooth point LF
             {
                 bool	bCorner	= false;

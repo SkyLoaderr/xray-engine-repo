@@ -49,6 +49,12 @@ void __fastcall TfraAIMap::ebGenerateSelectedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraAIMap::ebResetSelectedClick(TObject *Sender)
+{
+	tools->ResetNodes();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraAIMap::ebSmoothNodesClick(TObject *Sender)
 {
 	tools->SmoothNodes();
@@ -123,6 +129,7 @@ void __fastcall TfraAIMap::ebSelLinkClick(TObject *Sender)
     Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
+
 
 
 

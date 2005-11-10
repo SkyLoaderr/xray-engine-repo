@@ -1,6 +1,6 @@
 object fraAIMap: TfraAIMap
-  Left = -959
-  Top = 520
+  Left = 753
+  Top = 576
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -19,7 +19,7 @@ object fraAIMap: TfraAIMap
     Left = 0
     Top = 0
     Width = 217
-    Height = 50
+    Height = 64
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -75,6 +75,7 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
+      FlatAlwaysEdge = True
       OnClick = ebGenerateMapClick
     end
     object ebSmoothNodes: TExtBtn
@@ -86,7 +87,7 @@ object fraAIMap: TfraAIMap
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
-      Caption = 'Smooth Nodes'
+      Caption = 'Smooth Selected'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -94,6 +95,7 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
+      FlatAlwaysEdge = True
       OnClick = ebSmoothNodesClick
     end
     object ExtBtn6: TExtBtn
@@ -113,6 +115,7 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
+      FlatAlwaysEdge = True
       OnClick = ExtBtn6Click
     end
     object ebGenerateSelected: TExtBtn
@@ -132,12 +135,33 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
+      FlatAlwaysEdge = True
       OnClick = ebGenerateSelectedClick
+    end
+    object ebResetSelected: TExtBtn
+      Left = 1
+      Top = 48
+      Width = 107
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Reset Selected'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      FlatAlwaysEdge = True
+      OnClick = ebResetSelectedClick
     end
   end
   object paLink: TPanel
     Left = 0
-    Top = 50
+    Top = 64
     Width = 217
     Height = 117
     Align = alTop
@@ -518,7 +542,7 @@ object fraAIMap: TfraAIMap
   object fsStorage: TFormStorage
     IniSection = 'FrameAIMap'
     Options = []
-    Version = 14
+    Version = 15
     StoredProps.Strings = (
       'paObjectList.Tag'
       'paObjectList.Height'

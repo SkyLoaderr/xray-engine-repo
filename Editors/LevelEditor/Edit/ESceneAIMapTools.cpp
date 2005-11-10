@@ -20,6 +20,7 @@
 #define AIMAP_CHUNK_NODES			0x0006
 #define AIMAP_CHUNK_SNAP_OBJECTS	0x0007
 #define AIMAP_CHUNK_INTERNAL_DATA	0x0008
+#define AIMAP_CHUNK_INTERNAL_DATA2	0x0009
 //----------------------------------------------------
 
 poolSS<SAINode,1024> g_ainode_pool;
@@ -117,7 +118,8 @@ ESceneAIMapTools::ESceneAIMapTools():ESceneCustomMTools(OBJCLASS_AIMAP)
     m_AIBBox.invalidate	();
 //    m_Header.size_y				= m_Header.aabb.max.y-m_Header.aabb.min.y+EPS_L;
 	hash_Initialize();
-    m_VisRadius	= 30;
+    m_VisRadius		= 30.f;
+    m_SmoothHeight	= 0.5f;
     m_BrushSize	= 1;
     m_CFModel	= 0;
 }
@@ -140,8 +142,8 @@ void ESceneAIMapTools::Clear(bool bOnlyNodes)
 	    m_SnapObjects.clear	();
         m_AIBBox.invalidate	();
         ExecCommand		(COMMAND_REFRESH_SNAP_OBJECTS);
+		g_ainode_pool.clear	();   
     }
-    g_ainode_pool.clear	();   
 }
 //----------------------------------------------------
 
@@ -243,6 +245,9 @@ bool ESceneAIMapTools::Load(IReader& F)
     	m_VisRadius	= F.r_float();
     	m_BrushSize	= F.r_u32();
     }
+    if (F.find_chunk(AIMAP_CHUNK_INTERNAL_DATA2)){
+    	m_SmoothHeight	= F.r_float();
+    }
     
 	// snap objects
     if (F.find_chunk(AIMAP_CHUNK_SNAP_OBJECTS)){
@@ -305,6 +310,10 @@ void ESceneAIMapTools::Save(IWriter& F)
 	F.open_chunk	(AIMAP_CHUNK_INTERNAL_DATA);
     F.w_float		(m_VisRadius);
     F.w_u32			(m_BrushSize);
+	F.close_chunk	();
+
+	F.open_chunk	(AIMAP_CHUNK_INTERNAL_DATA2);
+    F.w_float		(m_SmoothHeight);
 	F.close_chunk	();
 
 	F.open_chunk	(AIMAP_CHUNK_SNAP_OBJECTS);
@@ -456,7 +465,9 @@ void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {                               
     PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Draw Nodes"),			&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
     PHelper().CreateFlag32	(items, PrepareKey(pref,"Common\\Slow Calculate Mode"),	&m_Flags, 		flSlowCalculate);
-    PHelper().CreateFloat 	(items, PrepareKey(pref,"Common\\Visible Radius"),		&m_VisRadius, 	10, 250);
+    PHelper().CreateFloat 	(items, PrepareKey(pref,"Common\\Visible Radius"),		&m_VisRadius, 	10.f, 	250.f);
+    PHelper().CreateFloat 	(items, PrepareKey(pref,"Common\\Smooth Height"),		&m_SmoothHeight,0.1f,	100.f);
+    
     PHelper().CreateU32	 	(items, PrepareKey(pref,"Params\\Brush Size"),			&m_BrushSize, 	1, 100);
     PHelper().CreateFloat 	(items, PrepareKey(pref,"Params\\Can Up"),				&m_Params.fCanUP, 	0.f, 10.f);
     PHelper().CreateFloat 	(items, PrepareKey(pref,"Params\\Can Down"),			&m_Params.fCanDOWN, 0.f, 10.f);

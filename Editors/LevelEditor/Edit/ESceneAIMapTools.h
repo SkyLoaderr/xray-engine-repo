@@ -133,6 +133,7 @@ public:
     Flags32				m_Flags;
 
     float 				m_VisRadius;
+    float 				m_SmoothHeight;
     u32					m_BrushSize;
 
     bool				PickObjects				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist);
@@ -205,6 +206,7 @@ public:
 	void 				UpdateHLSelected		(){m_Flags.set(flUpdateHL,TRUE);}
 
     void 				SmoothNodes				();
+	void 				ResetNodes				();
     void				SelectNodesByLink		(int link);
 };
 #endif // ESceneAIMapToolsH

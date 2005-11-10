@@ -91,7 +91,7 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                                     if (N.n4) k |= 1<<3;
                                     Fvector		v;
                                     FVF::LIT	v1,v2,v3,v4;
-                                    float st 	= 0.25f;
+                                    float st 	= (m_Params.fPatchSize*0.9f)*0.5f;
                                     float tt	= 0.01f;
                                     Fvector	DUP; DUP.set(0,1,0);   
                                     v.set(N.Pos.x-st,N.Pos.y,N.Pos.z-st);	N.Plane.intersectRayPoint(v,DUP,v1.p);	v1.p.mad(v1.p,N.Plane.n,tt); v1.t.set(node_tc[k][0]); v1.color=clr;	// minX,minZ
