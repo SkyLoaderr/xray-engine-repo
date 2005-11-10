@@ -10372,6 +10372,12 @@
 					Name="MM"
 					Filter="">
 					<File
+						RelativePath=".\ui\MMSound.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\MMSound.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMMShniaga.cpp">
 					</File>
 					<File

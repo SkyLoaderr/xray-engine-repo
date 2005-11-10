@@ -4,6 +4,7 @@
 #include "UIStatic.h"
 #include "UIScrollView.h"
 #include "UIXmlInit.h"
+#include "MMsound.h"
 #include "../hudmanager.h"
 #include "../game_base_space.h"
 #include "../level.h"
@@ -11,13 +12,15 @@
 
 
 CUIMMShniaga::CUIMMShniaga(){
-	m_view		= xr_new<CUIScrollView>();	AttachChild(m_view);
-	m_shniaga  = xr_new<CUIStatic>();	AttachChild(m_shniaga);
-	m_magnifier = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_magnifier);	m_magnifier->SetPPMode();
-	m_anims[0] = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_anims[0]);
-	m_anims[1] = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_anims[1]);
-	m_gratings[0] = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_gratings[0]);
-	m_gratings[1] = xr_new<CUIStatic>();	m_shniaga->AttachChild(m_gratings[1]);
+	m_sound			= xr_new<CMMSound>();
+
+	m_view			= xr_new<CUIScrollView>();	AttachChild(m_view);
+	m_shniaga		= xr_new<CUIStatic>();	AttachChild(m_shniaga);
+	m_magnifier		= xr_new<CUIStatic>();	m_shniaga->AttachChild(m_magnifier);	m_magnifier->SetPPMode();
+	m_anims[0]		= xr_new<CUIStatic>();	m_shniaga->AttachChild(m_anims[0]);
+	m_anims[1]		= xr_new<CUIStatic>();	m_shniaga->AttachChild(m_anims[1]);
+	m_gratings[0]	= xr_new<CUIStatic>();	m_shniaga->AttachChild(m_gratings[0]);
+	m_gratings[1]	= xr_new<CUIStatic>();	m_shniaga->AttachChild(m_gratings[1]);
 
 	m_mag_pos = 0;
 
@@ -65,8 +68,10 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 		CreateList(m_buttons, xml_doc, "menu_main_single");
 	else
 		CreateList(m_buttons, xml_doc, "menu_main_mm");
+    ShowMain();
 
-	ShowMain();
+	//m_sound->Init(xml_doc, "menu_sound");
+	//m_sound->music_Play();
 }
 
 void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path){
@@ -169,6 +174,8 @@ void CUIMMShniaga::Update(){
 		m_shniaga->SetWndPos(pos);		
 	}
 	CUIWindow::Update();
+
+//	m_sound->music_Update();
 }
 
 

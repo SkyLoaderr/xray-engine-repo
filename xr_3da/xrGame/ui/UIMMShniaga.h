@@ -6,6 +6,7 @@ class CUIAnimatedStatic;
 class CUIStatic;
 class CUIXml;
 class CUIScrollView;
+class CMMSound;
 
 class CUIMMShniaga : public CUIWindow{
 public:
@@ -42,4 +43,5 @@ protected:
 	xr_vector<CUIStatic*>	m_buttons;
 	xr_vector<CUIStatic*>	m_buttons_new;
     CUIWindow*			m_selected;
+	CMMSound*			m_sound;
 };
