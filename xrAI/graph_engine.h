@@ -40,6 +40,7 @@
 #include "operator_condition.h"
 #include "condition_state.h"
 #include "operator_abstract.h"
+#include "profiler.h"
 
 using namespace GraphEngineSpace;
 

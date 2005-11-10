@@ -548,6 +548,7 @@ struct bug_tracker {
 
 void CAI_Stalker::UpdateCL()
 {
+	START_PROFILE("entities/stalker")
 	START_PROFILE("entities/stalker/client_update")
 	VERIFY2						(PPhysicsShell()||getEnabled(), *cName());
 	bug_tracker					bug_tracker(this);
@@ -620,6 +621,7 @@ void CAI_Stalker::UpdateCL()
 		STOP_PROFILE
 	}
 	STOP_PROFILE
+	STOP_PROFILE
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -651,6 +653,7 @@ CPHDestroyable*		CAI_Stalker::		ph_destroyable	()
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
+	START_PROFILE("entities/stalker")
 	START_PROFILE("entities/stalker/schedule_update")
 	VERIFY2				(getEnabled()||PPhysicsShell(), *cName());
 	bug_tracker			bug_tracker(this);
@@ -719,21 +722,14 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		// Look and action streams
 		float							temp = conditions().health();
 		if (temp > 0) {
-			VERIFY				(_valid(Position()));
-//			Exec_Look				(dt);
-			VERIFY				(_valid(Position()));
-
-			//////////////////////////////////////
+			START_PROFILE("entities/stalker/schedule_update/feel_touch")
 			Fvector C; float R;
-			//////////////////////////////////////
-			// Ñ Îëåñÿ - ÏÈÂÎ!!!! (Äèìå :-))))
-			// m_PhysicMovementControl->GetBoundingSphere	(C,R);
-			//////////////////////////////////////
 			Center(C);
 			R = Radius();
-			//////////////////////////////////////
 			feel_touch_update		(C,R);
+			STOP_PROFILE
 
+			START_PROFILE("entities/stalker/schedule_update/net_update")
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
 			uNext.o_model			= movement().m_body.current.yaw;
@@ -741,9 +737,11 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.p_pos				= vNewPosition;
 			uNext.fHealth			= GetfHealth();
 			NET.push_back			(uNext);
+			STOP_PROFILE
 		}
 		else 
 		{
+			START_PROFILE("entities/stalker/schedule_update/net_update")
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
 			uNext.o_model		= movement().m_body.current.yaw;
@@ -751,21 +749,27 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.p_pos			= vNewPosition;
 			uNext.fHealth		= GetfHealth();
 			NET.push_back		(uNext);
+			STOP_PROFILE
 		}
 	}
 	VERIFY				(_valid(Position()));
 
+	START_PROFILE("entities/stalker/schedule_update/inventory_owner")
 	UpdateInventoryOwner(DT);
+	STOP_PROFILE
 
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		smart_cast<CSE_ALifeHumanStalker*>(ai().alife().objects().object(ID()))->check_inventory_consistency();
-	}
-#endif
+//#ifdef DEBUG
+//	if (psAI_Flags.test(aiALife)) {
+//		smart_cast<CSE_ALifeHumanStalker*>(ai().alife().objects().object(ID()))->check_inventory_consistency();
+//	}
+//#endif
 	
+	START_PROFILE("entities/stalker/schedule_update/physics")
 	VERIFY				(_valid(Position()));
 	m_pPhysics_support->in_shedule_Update(DT);
 	VERIFY				(_valid(Position()));
+	STOP_PROFILE
+	STOP_PROFILE
 	STOP_PROFILE
 }
 

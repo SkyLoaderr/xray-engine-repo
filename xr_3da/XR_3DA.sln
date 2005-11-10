@@ -101,8 +101,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrStalker", "X:\gamedata\xrstalker.vcproj", "{90F938A1-176A-4379-A3D1-DD516E8A6DC1}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "..\xrLC\xrLC.vcproj", "{A4ABD75E-825B-4D09-B3B2-2709682E40C8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 	ProjectSection(ProjectDependencies) = postProject
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A} = {EBF9B543-0830-4866-9B48-DC0740E87E8A}
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33} = {65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}
