@@ -17,7 +17,6 @@
 #include "cover_point.h"
 #include "script_engine.h"
 #include "patrol_path_storage.h"
-#include "movement_coordinator.h"
 
 CAI_Space *g_ai_space = 0;
 
@@ -30,7 +29,6 @@ CAI_Space::CAI_Space				()
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
-	m_movement_coordinator	= 0;
 	m_patrol_path_storage	= 0;
 	m_script_engine			= 0;
 }
@@ -48,9 +46,6 @@ void CAI_Space::init				()
 
 	VERIFY					(!m_cover_manager);
 	m_cover_manager			= xr_new<CCoverManager>();
-
-	VERIFY					(!m_movement_coordinator);
-	m_movement_coordinator	= xr_new<CMovementCoordinator>();
 
 	VERIFY					(!m_patrol_path_storage);
 	m_patrol_path_storage	= xr_new<CPatrolPathStorage>();
@@ -79,7 +74,6 @@ CAI_Space::~CAI_Space				()
 
 	xr_delete				(m_cover_manager);
 	xr_delete				(m_graph_engine);
-	xr_delete				(m_movement_coordinator);
 }
 
 void CAI_Space::load				(LPCSTR level_name)

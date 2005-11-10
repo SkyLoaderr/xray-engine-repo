@@ -1231,19 +1231,6 @@
 						RelativePath=".\step_manager_defs.h">
 					</File>
 				</Filter>
-				<Filter
-					Name="MovementCoordinator"
-					Filter="">
-					<File
-						RelativePath=".\movement_coordinator.cpp">
-					</File>
-					<File
-						RelativePath=".\movement_coordinator.h">
-					</File>
-					<File
-						RelativePath=".\movement_coordinator_inline.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="ACover"

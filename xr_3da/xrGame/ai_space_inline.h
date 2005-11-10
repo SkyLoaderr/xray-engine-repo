@@ -87,12 +87,6 @@ IC	const CPatrolPathStorage &CAI_Space::patrol_paths				() const
 	return					(*m_patrol_path_storage);
 }
 
-IC	CMovementCoordinator &CAI_Space::movement_coordinator			() const
-{
-	VERIFY					(m_movement_coordinator);
-	return					(*m_movement_coordinator);
-}
-
 IC	CAI_Space &ai													()
 {
 	if (!g_ai_space) {

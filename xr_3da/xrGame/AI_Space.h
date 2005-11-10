@@ -17,7 +17,6 @@ class CALifeSimulator;
 class CCoverManager;
 class CScriptEngine;
 class CPatrolPathStorage;
-class CMovementCoordinator;
 
 class CAI_Space {
 private:
@@ -36,7 +35,6 @@ private:
 	CCoverManager						*m_cover_manager;
 	CScriptEngine						*m_script_engine;
 	CPatrolPathStorage					*m_patrol_path_storage;
-	CMovementCoordinator				*m_movement_coordinator;
 
 private:
 			void						load					(LPCSTR level_name);
@@ -62,7 +60,6 @@ public:
 	IC		const CALifeSimulator		*get_alife				() const;
 	IC		const CCoverManager			&cover_manager			() const;
 	IC		CScriptEngine				&script_engine			() const;
-	IC		CMovementCoordinator		&movement_coordinator	() const;
 
 #ifdef DEBUG
 			void						validate				(const u32			level_id) const;
