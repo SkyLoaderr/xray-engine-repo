@@ -77,7 +77,7 @@ float CALifeUpdateManager::shedule_Scale	()
 
 void CALifeUpdateManager::shedule_Update	(u32 dt)
 {
-	START_PROFILE("AI/ALife/update")
+	START_PROFILE("ALife/update")
 	
 	ISheduled::shedule_Update		(dt);
 
@@ -192,17 +192,17 @@ void CALifeUpdateManager::update(bool switch_objects, bool spawn_update, bool sc
 				break;
 			}
 			
-			START_PROFILE("AI/ALife/switch");
+			START_PROFILE("ALife/switch");
 			if (switch_objects)
 				graph().level().update	(CSwitchPredicate(this));
 			STOP_PROFILE
 
-			START_PROFILE("AI/ALife/spawn");
+			START_PROFILE("ALife/spawn");
 			if (spawn_update)
 				spawns().update			();
 			STOP_PROFILE
 
-			START_PROFILE("AI/ALife/scheduled");
+			START_PROFILE("ALife/scheduled");
 			if (scheduled_update)
 				scheduled().update		();
 			STOP_PROFILE

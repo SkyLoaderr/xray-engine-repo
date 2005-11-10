@@ -157,7 +157,7 @@ struct CRemoveOfflinePredicate {
 
 void CHitMemoryManager::update()
 {
-	START_PROFILE("AI/Memory Manager/hits/update")
+	START_PROFILE("Memory Manager/hits/update")
 
 	VERIFY						(m_hits);
 	{

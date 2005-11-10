@@ -13,7 +13,6 @@ class CSoundMemoryManager;
 class CHitMemoryManager;
 class CEnemyManager;
 class CItemManager;
-//class CGreetingManager;
 class CDangerManager;
 class CCustomMonster;
 class CAI_Stalker;
@@ -32,7 +31,6 @@ protected:
 	CHitMemoryManager		*m_hit;
 	CEnemyManager			*m_enemy;
 	CItemManager			*m_item;
-//	CGreetingManager		*m_greeting;
 	CDangerManager			*m_danger;
 
 protected:
@@ -71,7 +69,6 @@ public:
 	IC		CHitMemoryManager	&hit			() const;
 	IC		CEnemyManager		&enemy			() const;
 	IC		CItemManager		&item			() const;
-//	IC		CGreetingManager	&greeting		() const;
 	IC		CDangerManager		&danger			() const;
 	IC		CCustomMonster		&object			() const;
 	IC		CAI_Stalker			&stalker		() const;

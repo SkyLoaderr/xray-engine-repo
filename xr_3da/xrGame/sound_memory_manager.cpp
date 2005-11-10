@@ -262,7 +262,7 @@ struct CRemoveOfflinePredicate {
 
 void CSoundMemoryManager::update()
 {
-	START_PROFILE("AI/Memory Manager/sounds/update")
+	START_PROFILE("Memory Manager/sounds/update")
 
 	VERIFY						(m_sounds);
 	{

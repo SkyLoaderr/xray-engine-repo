@@ -94,7 +94,7 @@ void CDangerManager::reload			(LPCSTR section)
 
 void CDangerManager::update			()
 {
-	START_PROFILE("AI/Memory Manager/dangers/update")
+	START_PROFILE("Memory Manager/dangers/update")
 
 	{
 		OBJECTS::iterator	I = remove_if(m_objects.begin(),m_objects.end(),CRemoveByTimePredicate(time_line(),this));

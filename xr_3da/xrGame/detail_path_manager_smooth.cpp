@@ -825,7 +825,7 @@ void CDetailPathManager::build_smooth_path		(
 	u32						intermediate_index
 )
 {
-	START_PROFILE("AI/Build Path/Detail Path");
+	START_PROFILE("Build Path/Detail Path");
 	
 	m_failed							= true;
 	

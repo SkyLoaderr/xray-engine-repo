@@ -6,7 +6,7 @@
 
 void CControlPathBuilderBase::update_frame()
 {	
-	START_PROFILE("AI/Base Monster/Think/Find Target Point");
+	START_PROFILE("Base Monster/Think/Find Target Point");
 
 	// обновить состояние билдера
 	update_path_builder_state						();

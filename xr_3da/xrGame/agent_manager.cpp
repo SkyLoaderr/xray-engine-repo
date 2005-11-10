@@ -80,7 +80,7 @@ void CAgentManager::remove_links		(CObject *object)
 
 void CAgentManager::shedule_Update		(u32 time_delta)
 {
-	START_PROFILE("AI/Agent_Manager")
+	START_PROFILE("Agent_Manager")
 	ISheduled::shedule_Update	(time_delta);
 
 	if (!member().members().empty()) {

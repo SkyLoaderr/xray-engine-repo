@@ -12,7 +12,7 @@
 
 void CBaseMonster::Think()
 {
-	START_PROFILE("AI/Base Monster/Think");
+	START_PROFILE("Base Monster/Think");
 
 	if (!g_Alive() || getDestroy())			return;
 
@@ -21,17 +21,17 @@ void CBaseMonster::Think()
 	anim().ScheduledInit					();
 
 	// Обновить память
-	START_PROFILE("AI/Base Monster/Think/Update Memory");
+	START_PROFILE("Base Monster/Think/Update Memory");
 	UpdateMemory							();
 	STOP_PROFILE;
 
 	// Обновить сквад
-	START_PROFILE("AI/Base Monster/Think/Update Squad");
+	START_PROFILE("Base Monster/Think/Update Squad");
 	monster_squad().update					(this);
 	STOP_PROFILE;
 
 	// Запустить FSM
-	START_PROFILE("AI/Base Monster/Think/FSM");
+	START_PROFILE("Base Monster/Think/FSM");
 	update_fsm								();
 	STOP_PROFILE;	
 	

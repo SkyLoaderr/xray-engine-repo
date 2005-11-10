@@ -105,7 +105,7 @@ BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 
 u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &result) const
 {
-	START_PROFILE("AI/Restricted Object/Accessible Nearest");
+	START_PROFILE("Restricted Object/Accessible Nearest");
 	VERIFY						(!accessible(position));
 	return						(Level().space_restriction_manager().accessible_nearest(object().ID(),position,result));
 	STOP_PROFILE;
@@ -113,14 +113,14 @@ u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &res
 
 bool CRestrictedObject::accessible			(const Fvector &position) const
 {
-	START_PROFILE("AI/Restricted Object/Accessible");
+	START_PROFILE("Restricted Object/Accessible");
 	return						(accessible(position,EPS_L));
 	STOP_PROFILE;
 }
 
 bool CRestrictedObject::accessible			(const Fvector &position, float radius) const
 {
-	START_PROFILE("AI/Restricted Object/Accessible");
+	START_PROFILE("Restricted Object/Accessible");
 	Fsphere						sphere;
 	sphere.P					= position;
 	sphere.R					= radius;
@@ -130,21 +130,21 @@ bool CRestrictedObject::accessible			(const Fvector &position, float radius) con
 
 bool CRestrictedObject::accessible			(u32 level_vertex_id) const
 {
-	START_PROFILE("AI/Restricted Object/Accessible");
+	START_PROFILE("Restricted Object/Accessible");
 	return						(accessible(level_vertex_id,EPS_L));
 	STOP_PROFILE;
 }
 
 bool CRestrictedObject::accessible			(u32 level_vertex_id, float radius) const
 {
-	START_PROFILE("AI/Restricted Object/Accessible");
+	START_PROFILE("Restricted Object/Accessible");
 	return						(Level().space_restriction_manager().accessible(object().ID(),level_vertex_id,radius));
 	STOP_PROFILE;
 }
 
 void CRestrictedObject::add_border			(u32 start_vertex_id, float radius) const
 {
-	START_PROFILE("AI/Restricted Object/Add Border");	
+	START_PROFILE("Restricted Object/Add Border");	
 	
 	VERIFY						(!m_applied);
 	VERIFY						(m_removed);
@@ -159,7 +159,7 @@ void CRestrictedObject::add_border			(u32 start_vertex_id, float radius) const
 
 void CRestrictedObject::add_border			(const Fvector &start_position, const Fvector &dest_position) const
 {
-	START_PROFILE("AI/Restricted Object/Add Border");	
+	START_PROFILE("Restricted Object/Add Border");	
 
 	VERIFY						(!m_applied);
 	VERIFY						(m_removed);
@@ -174,7 +174,7 @@ void CRestrictedObject::add_border			(const Fvector &start_position, const Fvect
 
 void CRestrictedObject::add_border			(u32 start_vertex_id, u32 dest_vertex_id) const
 {
-	START_PROFILE("AI/Restricted Object/Add Border");	
+	START_PROFILE("Restricted Object/Add Border");	
 	VERIFY						(!m_applied);
 	VERIFY						(m_removed);
 	m_removed					= false;
@@ -187,7 +187,7 @@ void CRestrictedObject::add_border			(u32 start_vertex_id, u32 dest_vertex_id) c
 
 void CRestrictedObject::remove_border		() const
 {
-	START_PROFILE("AI/Restricted Object/Remove Border");
+	START_PROFILE("Restricted Object/Remove Border");
 	
 	VERIFY						(!m_removed);
 	m_removed					= true;
@@ -200,28 +200,28 @@ void CRestrictedObject::remove_border		() const
 
 shared_str	CRestrictedObject::in_restrictions	() const
 {
-	START_PROFILE("AI/Restricted Object/in_restrictions")
+	START_PROFILE("Restricted Object/in_restrictions")
 	return						(Level().space_restriction_manager().in_restrictions(object().ID()));
 	STOP_PROFILE
 }
 
 shared_str CRestrictedObject::out_restrictions	() const
 {
-	START_PROFILE("AI/Restricted Object/out_restrictions")
+	START_PROFILE("Restricted Object/out_restrictions")
 	return						(Level().space_restriction_manager().out_restrictions(object().ID()));
 	STOP_PROFILE
 }
 
 shared_str CRestrictedObject::base_in_restrictions	() const
 {
-	START_PROFILE("AI/Restricted Object/base_in_restrictions")
+	START_PROFILE("Restricted Object/base_in_restrictions")
 	return						(Level().space_restriction_manager().base_in_restrictions(object().ID()));
 	STOP_PROFILE
 }
 
 shared_str CRestrictedObject::base_out_restrictions	() const
 {
-	START_PROFILE("AI/Restricted Object/out_restrictions")
+	START_PROFILE("Restricted Object/out_restrictions")
 	return						(Level().space_restriction_manager().base_out_restrictions(object().ID()));
 	STOP_PROFILE
 }
@@ -290,7 +290,7 @@ void CRestrictedObject::add_restrictions	(const xr_vector<ALife::_OBJECT_ID> &ou
 	if (out_restrictions.empty() && in_restrictions.empty())
 		return;
 
-	START_PROFILE("AI/Restricted Object/Add Restrictions");
+	START_PROFILE("Restricted Object/Add Restrictions");
 
 	string4096					temp_out_restrictions;
 	string4096					temp_in_restrictions;
@@ -310,7 +310,7 @@ void CRestrictedObject::remove_restrictions	(const xr_vector<ALife::_OBJECT_ID> 
 	if (out_restrictions.empty() && in_restrictions.empty())
 		return;
 
-	START_PROFILE("AI/Restricted Object/Remove Restrictions");
+	START_PROFILE("Restricted Object/Remove Restrictions");
 	
 	string4096					temp_out_restrictions;
 	string4096					temp_in_restrictions;
@@ -335,7 +335,7 @@ void CRestrictedObject::remove_all_restrictions	(const RestrictionSpace::ERestri
 
 void CRestrictedObject::remove_all_restrictions	()
 {
-	START_PROFILE("AI/Restricted Object/Remove Restrictions");
+	START_PROFILE("Restricted Object/Remove Restrictions");
 	
 	remove_all_restrictions	(RestrictionSpace::eRestrictorTypeOut);
 	remove_all_restrictions	(RestrictionSpace::eRestrictorTypeIn);

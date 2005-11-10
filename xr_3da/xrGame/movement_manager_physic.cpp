@@ -51,7 +51,7 @@ void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
-	START_PROFILE("AI/Build Path/Move Along Path")
+	START_PROFILE("Build Path/Move Along Path")
 	VERIFY(movement_control);
 	Fvector				motion;
 	dest_position		= object().Position();

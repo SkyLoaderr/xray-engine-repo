@@ -199,7 +199,7 @@ bool CSightManager::need_correction	(float x1, float x2, float x3)
 
 void CSightManager::Exec_Look		(float dt)
 {
-	START_PROFILE("AI/Sight Manager/exec_look")
+	START_PROFILE("Sight Manager/exec_look")
 	
 	typedef MonsterSpace::SBoneRotation CBoneRotation;
 
@@ -282,7 +282,7 @@ void CSightManager::setup			(const CSightAction &sight_action)
 
 void CSightManager::update			()
 {
-	START_PROFILE("AI/Sight Manager/update")
+	START_PROFILE("Sight Manager/update")
 	if (enabled()) {
 		if (fis_zero(object().movement().speed())) {
 			if (!m_turning_in_place) {

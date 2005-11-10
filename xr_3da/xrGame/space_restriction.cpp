@@ -136,7 +136,7 @@ IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictio
 
 void CSpaceRestriction::merge_in_out_restrictions	()
 {
-	START_PROFILE("AI/Restricted Object/Merge In-Out");
+	START_PROFILE("Restricted Object/Merge In-Out");
 	xr_vector<u32>					temp_border;
 	xr_vector<u32>::iterator		I;
 
@@ -183,7 +183,7 @@ CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictio
 #ifdef USE_FREE_IN_RESTRICTIONS
 void CSpaceRestriction::merge_free_in_retrictions	()
 {
-	START_PROFILE("AI/Restricted Object/Merge Free In");
+	START_PROFILE("Restricted Object/Merge Free In");
 	string256								temp;
 	for (u32 i=0, n=_GetItemCount(*m_in_restrictions); i<n ;++i) {
 		SpaceRestrictionHolder::CBaseRestrictionPtr bridge = m_space_restriction_manager->restriction(shared_str(_GetItem(*m_in_restrictions,i,temp)));

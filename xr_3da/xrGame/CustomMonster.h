@@ -21,7 +21,6 @@ class CSkeletonAnimated;
 class CMemoryManager;
 class CItemManager;
 class CEnemyManager;
-//class CGreetingManager;
 class CDangerManager;
 class CMovementManager;
 class CSoundPlayer;
@@ -221,8 +220,6 @@ public:
 	virtual float				evaluate				(const CItemManager *manager, const CGameObject *object) const;
 	virtual bool				useful					(const CEnemyManager *manager, const CEntityAlive *object) const;
 	virtual float				evaluate				(const CEnemyManager *manager, const CEntityAlive *object) const;
-//	virtual bool				useful					(const CGreetingManager *manager, const CAI_Stalker *object) const;
-//	virtual float				evaluate				(const CGreetingManager *manager, const CAI_Stalker *object) const;
 	virtual bool				useful					(const CDangerManager *manager, const CDangerObject &object) const;
 	virtual float				evaluate				(const CDangerManager *manager, const CDangerObject &object) const;
 

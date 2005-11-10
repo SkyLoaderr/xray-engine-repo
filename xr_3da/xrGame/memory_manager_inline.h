@@ -61,12 +61,6 @@ IC	CItemManager			&CMemoryManager::item		() const
 	return					(*m_item);
 }
 
-//IC	CGreetingManager		&CMemoryManager::greeting	() const
-//{
-//	VERIFY					(m_greeting);
-//	return					(*m_greeting);
-//}
-
 IC	CDangerManager			&CMemoryManager::danger		() const
 {
 	VERIFY					(m_danger);

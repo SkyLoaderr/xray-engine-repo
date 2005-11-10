@@ -150,7 +150,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 
 void CObjectHandler::update		()
 {
-	START_PROFILE("AI/Object Handler/update")
+	START_PROFILE("Object Handler/update")
 //	if (planner().initialized())
 //		if (planner().current_action_state_id() == ObjectHandlerSpace::eWorldPropertyAimingReady1) {
 //			if (planner().object().best_weapon())

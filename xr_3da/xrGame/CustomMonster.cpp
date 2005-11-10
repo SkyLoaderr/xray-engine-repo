@@ -36,6 +36,7 @@
 #include "sound_user_data_visitor.h"
 #include "mt_config.h"
 #include "PHMovementControl.h"
+#include "profiler.h"
 
 #include "ai/monsters/snork/snork.h"
 #include "ai/monsters/burer/burer.h"
@@ -348,7 +349,11 @@ void CCustomMonster::update_sound_player()
 
 void CCustomMonster::UpdateCL	()
 { 
+	START_PROFILE("entities/CustomMonster/client_update")
+	
+	START_PROFILE("entities/CustomMonster/client_update/inherited")
 	inherited::UpdateCL			();
+	STOP_PROFILE
 
 	CScriptEntity::process_sound_callbacks();
 
@@ -363,9 +368,13 @@ void CCustomMonster::UpdateCL	()
 
 	if (g_mt_config.test(mtSoundPlayer))
 		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::update_sound_player));
-	else
+	else {
+		START_PROFILE("entities/CustomMonster/client_update/sound_player")
 		update_sound_player	();
+		STOP_PROFILE
+	}
 
+	START_PROFILE("entities/CustomMonster/client_update/network extrapolation")
 	if	(NET.empty())	return;
 
 	m_dwCurrentTime		= Device.dwTimeGlobal;
@@ -411,6 +420,7 @@ void CCustomMonster::UpdateCL	()
 			NET_Time				= dwTime;
 		}
 	}
+	STOP_PROFILE
 
 	if (Local() && g_Alive()) {
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
@@ -434,13 +444,19 @@ void CCustomMonster::UpdateCL	()
 	// Camera
 	if (IsMyCamera()) UpdateCamera();
 #endif
+	STOP_PROFILE
 }
 
 void CCustomMonster::UpdatePositionAnimation()
 {
+	START_PROFILE("entities/CustomMonster/client_update/movement")
 	movement().move_along_path	(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
+	STOP_PROFILE
+	
+	START_PROFILE("entities/CustomMonster/client_update/animation")
 	if (!bfScriptAnimation())
 		SelectAnimation		(XFORM().k,movement().detail().direction(),movement().speed());
+	STOP_PROFILE
 }
 
 BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
@@ -1003,16 +1019,6 @@ float CCustomMonster::evaluate		(const CEnemyManager *manager, const CEntityAliv
 {
 	return	(memory().enemy().evaluate(object));
 }
-
-//bool CCustomMonster::useful			(const CGreetingManager *manager, const CAI_Stalker *object) const
-//{
-//	return	(memory().greeting().useful(object));
-//}
-
-//float CCustomMonster::evaluate		(const CGreetingManager *manager, const CAI_Stalker *object) const
-//{
-//	return	(memory().greeting().evaluate(object));
-//}
 
 bool CCustomMonster::useful			(const CDangerManager *manager, const CDangerObject &object) const
 {
