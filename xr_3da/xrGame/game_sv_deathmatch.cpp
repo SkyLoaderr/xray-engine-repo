@@ -90,10 +90,6 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 
 	m_AnomalySetsList.clear();
 	m_AnomalySetID.clear();	
-	//  [7/11/2005]
-//	m_level_graph			= xr_new<CLevelNavigationGraph>();
-//	m_graph_engine			= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
-	//  [7/11/2005]
 	m_bPDAHunt = TRUE;
 }
 
