@@ -771,10 +771,10 @@ void CAI_Stalker::spawn_supplies	()
 
 void CAI_Stalker::Think			()
 {
-	START_PROFILE("AI/Stalker/think")
+	START_PROFILE("AI/Stalker/schedule_update/think")
 	u32							update_delta = Device.dwTimeGlobal - m_dwLastUpdateTime;
 	
-	START_PROFILE("AI/Stalker/think/brain")
+	START_PROFILE("AI/Stalker/schedule_update/think/brain")
 	try {
 		try {
 			brain().update			(update_delta);
@@ -802,7 +802,7 @@ void CAI_Stalker::Think			()
 	}
 	STOP_PROFILE
 
-	START_PROFILE("AI/Stalker/think/movement")
+	START_PROFILE("AI/Stalker/schedule_update/think/movement")
 	if (!g_Alive())
 		return;
 
