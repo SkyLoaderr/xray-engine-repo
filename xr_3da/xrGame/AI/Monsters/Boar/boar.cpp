@@ -13,6 +13,7 @@ CAI_Boar::CAI_Boar()
 	StateMan = xr_new<CStateManagerBoar>	(this);
 
 	CControlled::init_external(this);
+	com_man().add_ability(ControlCom::eControlRotationJump);
 }
 
 CAI_Boar::~CAI_Boar()
@@ -94,6 +95,13 @@ void CAI_Boar::Load(LPCSTR section)
 #endif
 
 }
+
+void CAI_Boar::reinit()
+{
+	inherited::reinit();
+	com_man().add_rotation_jump_data("stand_jump_left_0",0,"stand_jump_right_0",0, PI - 0.1f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
+}
+
 
 void  CAI_Boar::BoneCallback(CBoneInstance *B)
 {

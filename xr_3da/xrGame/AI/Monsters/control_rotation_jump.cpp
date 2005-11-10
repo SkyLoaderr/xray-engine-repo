@@ -93,7 +93,17 @@ void CControlRotationJump::stop_at_once()
 	SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
 	VERIFY									(ctrl_data_dir);	
 
-	float target_yaw						= angle_normalize(-m_object->Direction().getH() + (m_right_side ? m_data.turn_angle : -m_data.turn_angle));
+	float target_yaw;
+	if (m_data.flags.is(SControlRotationJumpData::eRotateOnce) && m_object->EnemyMan.get_enemy()) {
+		// if rotate once so rotate to enemy
+		Fvector					dir_to_enemy;
+		dir_to_enemy.sub		(m_object->EnemyMan.get_enemy()->Position(), m_object->Position());
+		dir_to_enemy.normalize	();
+		target_yaw				= angle_normalize(-dir_to_enemy.getH());
+	} else {
+		target_yaw				= angle_normalize(-m_object->Direction().getH() + (m_right_side ? m_data.turn_angle : -m_data.turn_angle));
+	}
+
 	ctrl_data_dir->heading.target_angle		= target_yaw;
 
 	float cur_yaw;
