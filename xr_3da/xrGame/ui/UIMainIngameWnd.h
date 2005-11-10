@@ -46,22 +46,22 @@ public:
 
 	// PDA MESSAGES
 		//для отображения сообщения пришедшего по PDA
-	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
+	void ReceivePdaMessage				(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
 
 	bool SetDelayForPdaMessage          (int iValue, int iDelay);
-	void AddGameMessage	(LPCSTR message, int iId = -1, int iDelay = 0);
+	void AddGameMessage					(LPCSTR message, int iId = -1, int iDelay = 0);
 	void AddIconedGameMessage			(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId = -1, int iDelay = 0);
 protected:
-	CUIPdaMsgListItem* AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
+	CUIPdaMsgListItem* AddMessageToList	(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
 
 public:
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
-	void AddInfoMessage	(LPCSTR message);
+	void AddInfoMessage					(LPCSTR message);
 
 protected:
-	void				HideAll();
-	void				ShowAll();
+	void				HideAll						();
+	void				ShowAll						();
 	bool				m_bShowHudCrosshair;
 	
 	CUIStatic			UIStaticDiskIO;
@@ -99,13 +99,13 @@ protected:
 	
 public:
 	// Изменить индикатор текущего количества денег
-	void				ChangeTotalMoneyIndicator(shared_str newMoneyString);
+	void				ChangeTotalMoneyIndicator		(shared_str newMoneyString);
 	// Показать (с анимацией) помледнте заработанные/отняные денежки
-	void				DisplayMoneyChange		(shared_str deltaMoney);
-	void				DisplayMoneyBonus		(shared_str bonus);
-	CUIStatic*			GetPDAOnline			() { return &UIPdaOnline; };
-	void				UpdateTeamsScore		(int t1, int t2);
-	void				SetRank					(int rank);
+	void				DisplayMoneyChange				(shared_str deltaMoney);
+	void				DisplayMoneyBonus				(shared_str bonus);
+	CUIStatic*			GetPDAOnline					() { return &UIPdaOnline; };
+	void				UpdateTeamsScore				(int t1, int t2);
+	void				SetRank							(int rank);
 protected:
 
 
@@ -142,11 +142,11 @@ public:
 		ewiSleep,
 	};
 
-	void				SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog);
+	void				SetMPChatLog					(CUIWindow* pChat, CUIWindow* pLog);
 
 	// Задаем цвет соответствующей иконке
-	void				SetWarningIconColor(EWarningIcons icon, const u32 cl);
-	void				TurnOffWarningIcon(EWarningIcons icon);
+	void				SetWarningIconColor				(EWarningIcons icon, const u32 cl);
+	void				TurnOffWarningIcon				(EWarningIcons icon);
 
 	// Пороги изменения цвета индикаторов, загружаемые из system.ltx
 	typedef				xr_map<EWarningIcons, xr_vector<float> >	Thresholds;
@@ -161,20 +161,20 @@ public:
 	};
 	
 	// Вкл/выкл мигающую иконку
-	void				SetFlashIconState_(EFlashingIcons type, bool enable);
+	void				SetFlashIconState_				(EFlashingIcons type, bool enable);
 
 	//
-	void				AnimateContacts();
+	void				AnimateContacts					();
 	HUD_SOUND			m_contactSnd;
 
 	// Обработчик события получения новости
-	void				ReceiveNews	(GAME_NEWS_DATA &news);
+	void				ReceiveNews						(GAME_NEWS_DATA &news);
 	
 protected:
 
-	void				InitFlashingIcons			(CUIXml* node);
-	void				DestroyFlashingIcons		();
-	void				UpdateFlashingIcons			();
+	void				InitFlashingIcons				(CUIXml* node);
+	void				DestroyFlashingIcons			();
+	void				UpdateFlashingIcons				();
 
 	// first - иконка, second - анимация
 	DEF_MAP				(FlashingIcons, EFlashingIcons, CUIStatic*);
@@ -198,8 +198,8 @@ protected:
 	void				FadeUpdate(CUIListWnd *pWnd);//, int fadeDuration);
 
 public:
-	CUICarPanel&		CarPanel(){return UICarPanel;};
-	CUIMotionIcon&		MotionIcon(){return UIMotionIcon;}
+	CUICarPanel&		CarPanel							(){return UICarPanel;};
+	CUIMotionIcon&		MotionIcon							(){return UIMotionIcon;}
 protected:
 	CInventoryItem*		m_pPickUpItem;
 	CUIStatic			UIPickUpItemIcon;

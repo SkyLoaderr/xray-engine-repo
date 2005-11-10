@@ -673,8 +673,6 @@ protected:
 		void							Check_for_AutoPickUp	();
 		void							SelectBestWeapon	();
 public:
-//		virtual void					HideCurrentWeapon		(u32 Msg);//, bool only2handed);
-//		virtual	void					RestoreHidedWeapon		(u32 Msg);
 		virtual	void					SetWeaponHideState		(u32 State, BOOL	Set);
 
 private:
@@ -691,9 +689,7 @@ public:
 	virtual bool				use_center_to_aim			() const;
 
 protected:
-//	CObject*					m_pLastHitter;
 	u16							m_iLastHitterID;
-//	CObject*					m_pLastHittingWeapon;
 	u16							m_iLastHittingWeaponID;
 	s16							m_s16LastHittedElement;
 	Fvector						m_vLastHitDir;
@@ -748,6 +744,6 @@ IC	CActorCondition	&CActor::conditions	() const
 
 extern CActor*		g_actor;
 CActor*				Actor		();
-//extern float	g_fNumUpdates;
 extern const float	s_fFallTime;
+
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
