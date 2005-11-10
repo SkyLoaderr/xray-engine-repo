@@ -62,7 +62,9 @@ function evaluator_danger:evaluate()
 	if best_danger:dependent_object() ~= nil then
 		best_danger_story_id = best_danger:dependent_object():story_id()
 	else
-		best_danger_story_id = best_danger:object():story_id()
+		if best_danger:object() ~= nil then
+			best_danger_story_id = best_danger:object():story_id()
+		end
 	end
 	if best_danger_story_id ~= nil then
 		if always_ignore_danger_from[best_danger_story_id] == "true" then
