@@ -41,6 +41,7 @@ IC	bool CGraphEngine::search		(
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Path.Begin();
+	START_PROFILE("graph_engine")
 	START_PROFILE("graph_engine/search")
 #endif
 	typedef CPathManager<_Graph, CAlgorithm::CDataStorage, _Parameters, _dist_type,_index_type,_iteration_type>	CPathManagerGeneric;
@@ -63,6 +64,7 @@ IC	bool CGraphEngine::search		(
 #endif
 	return						(successfull);
 	STOP_PROFILE
+	STOP_PROFILE
 }
 
 template <
@@ -79,6 +81,7 @@ IC	bool CGraphEngine::search			(
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Path.Begin();
+	START_PROFILE("graph_engine")
 	START_PROFILE("graph_engine/search")
 #endif
 	typedef CPathManager<_Graph, CAlgorithm::CDataStorage, _Parameters, _dist_type,_index_type,_iteration_type>	CPathManagerGeneric;
@@ -100,6 +103,7 @@ IC	bool CGraphEngine::search			(
 	Device.Statistic.AI_Path.End();
 #endif
 	return						(successfull);
+	STOP_PROFILE
 	STOP_PROFILE
 }
 
@@ -119,6 +123,7 @@ IC	bool CGraphEngine::search			(
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Path.Begin();
+	START_PROFILE("graph_engine")
 	START_PROFILE("graph_engine/search")
 #endif
 	path_manager.setup			(
@@ -137,101 +142,9 @@ IC	bool CGraphEngine::search			(
 #endif
 	return						(successfull);
 	STOP_PROFILE
+	STOP_PROFILE
 }
 
-//template <
-//	typename _condition_type,
-//	typename _value_type,
-//	typename _operator_id_type,
-//	typename _Parameters
-//>
-//IC	bool CGraphEngine::search			(
-//		const CProblemSolver<
-//			_condition_type,
-//			_value_type,
-//			_operator_id_type
-//		>						&graph, 
-//		const typename CProblemSolver<
-//			_condition_type,
-//			_value_type,
-//			_operator_id_type
-//		>::_index_type			&start_node,
-//		const typename CProblemSolver<
-//			_condition_type,
-//			_value_type,
-//			_operator_id_type
-//		>::_index_type			&dest_node, 
-//		xr_vector<
-//			typename CProblemSolver<
-//				_condition_type,
-//				_value_type,
-//				_operator_id_type
-//			>::_edge_type
-//		>						*node_path,
-//		const _Parameters		&parameters
-//	)
-//{
-//#ifndef AI_COMPILER
-//	Device.Statistic.AI_Path.Begin();
-//#endif
-//	typedef CProblemSolver<
-//		_condition_type,
-//		_value_type,
-//		_operator_id_type
-//	>										CSProblemSolver;
-//	typedef u8								_dist_type;
-//	typedef CSProblemSolver::_index_type	_index_type;
-//	typedef CSProblemSolver::_edge_type		_edge_type;
-//	typedef CDataStorageCheapList<
-//		32,
-//		true,
-//		true
-//	>										CPriorityQueue;
-//	typedef CDataStorageVertexManager<
-//		u32,
-//		_index_type
-//	>										CVertexManager;
-//	typedef CDataStorageAllocator			CVertexAllocator;
-//	typedef CAStar<
-//		_dist_type,
-//		CPriorityQueue,
-//		CVertexManager,
-//		CVertexAllocator,
-//		true,
-//		CEdgePath<
-//			_edge_type,
-//			true
-//		>
-//	>										CAlgorithm;
-//	typedef CPathManager<
-//		CSProblemSolver,
-//		CAlgorithm::CDataStorage,
-//		_Parameters,
-//		_dist_type,
-//		_index_type,
-//		_iteration_type
-//	>										CPathManagerGeneric;
-//
-//	CAlgorithm					algorithm(u32(-1));
-//	CPathManagerGeneric			path_manager;
-//
-//	path_manager.setup			(
-//		&graph,
-//		&algorithm.data_storage(),
-//		node_path,
-//		start_node,
-//		dest_node,
-//		parameters
-//	);
-//	
-//	bool						successfull = algorithm.find(path_manager);
-//
-//#ifndef AI_COMPILER
-//	Device.Statistic.AI_Path.End();
-//#endif
-//	return						(successfull);
-//}
-//
 template <
 	typename T1,
 	typename T2,
@@ -262,6 +175,7 @@ IC	bool CGraphEngine::search(
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Path.Begin();
+	START_PROFILE("graph_engine")
 	START_PROFILE("graph_engine/proble_solver")
 #endif
 	typedef CProblemSolver<T1,T2,T3,T4,T5,T6,T7,T8>	CSProblemSolver;
@@ -284,5 +198,6 @@ IC	bool CGraphEngine::search(
 	Device.Statistic.AI_Path.End();
 #endif
 	return						(successfull);
+	STOP_PROFILE
 	STOP_PROFILE
 }
