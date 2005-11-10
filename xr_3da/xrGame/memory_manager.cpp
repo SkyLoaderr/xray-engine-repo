@@ -20,7 +20,7 @@
 #include "agent_member_manager.h"
 #include "memory_space_impl.h"
 #include "ai_object_location.h"
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 #include "profiler.h"
 #include "actor.h"
 

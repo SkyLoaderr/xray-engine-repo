@@ -9,7 +9,7 @@
 #pragma once
 
 #include "abstract_location_selector.h"
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 
 template <
 	typename _VertexEvaluator,
@@ -17,17 +17,17 @@ template <
 >
 class 
 	CBaseLocationSelector<
-		CLevelNavigationGraph,
+		CLevelGraph,
 		_VertexEvaluator,
 		_vertex_id_type
 	> :
 	public CAbstractLocationSelector <
-		CLevelNavigationGraph,
+		CLevelGraph,
 		_VertexEvaluator,
 		_vertex_id_type
 	>
 {
-	typedef CLevelNavigationGraph _Graph;
+	typedef CLevelGraph _Graph;
 	typedef CAbstractLocationSelector <
 		_Graph,
 		_VertexEvaluator,

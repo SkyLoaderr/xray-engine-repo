@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 
 template <
 	typename _DataStorage,
@@ -16,7 +16,7 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
-		CLevelNavigationGraph,
+		CLevelGraph,
 		_DataStorage,
 		SBaseParameters<
 			_dist_type,
@@ -27,7 +27,7 @@ template <
 		_index_type,
 		_iteration_type
 	> : public CPathManagerGeneric <
-			CLevelNavigationGraph,
+			CLevelGraph,
 			_DataStorage,
 			SBaseParameters<
 				_dist_type,
@@ -40,7 +40,7 @@ template <
 		>
 {
 protected:
-	typedef CLevelNavigationGraph _Graph;
+	typedef CLevelGraph _Graph;
 	typedef SBaseParameters<
 		_dist_type,
 		_index_type,

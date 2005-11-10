@@ -24,7 +24,7 @@
 #include "alife_group_registry.h"
 #include "alife_registry_container.h"
 #include "xrserver.h"
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 
 using namespace ALife;
 

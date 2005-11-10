@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "psy_dog.h"
-#include "../../../level_navigation_graph.h"
+#include "../../../level_graph.h"
 #include "../../../ai_space.h"
 #include "../../../alife_simulator.h"
 #include "../../../xrServer_Object_Base.h"

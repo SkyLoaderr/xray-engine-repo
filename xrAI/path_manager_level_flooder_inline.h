@@ -17,7 +17,7 @@
 	>
 
 #define CLevelFlooderPathManager CPathManager<\
-	CLevelNavigationGraph,\
+	CLevelGraph,\
 	_DataStorage,\
 	SFlooder<\
 		_dist_type,\

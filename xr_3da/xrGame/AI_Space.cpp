@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "game_graph.h"
 #include "game_level_cross_table.h"
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 #include "graph_engine.h"
 #include "ef_storage.h"
 #include "ai_space.h"
@@ -93,7 +93,7 @@ void CAI_Space::load				(LPCSTR level_name)
 	timer.Start				();
 #endif
 
-	m_level_graph			= xr_new<CLevelNavigationGraph>();
+	m_level_graph			= xr_new<CLevelGraph>();
 	m_cross_table			= xr_new<CGameLevelCrossTable>();
 	R_ASSERT2				(cross_table().header().level_guid() == level_graph().header().guid(), "cross_table doesn't correspond to the AI-map");
 	R_ASSERT2				(cross_table().header().game_guid() == game_graph().header().guid(), "graph doesn't correspond to the cross table");

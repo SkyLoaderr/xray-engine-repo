@@ -31,7 +31,7 @@
 #include "entitycondition.h"
 #include "space_restrictor.h"
 #include "detail_path_manager.h"
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 
 
 class CScriptBinderObject;
