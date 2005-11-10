@@ -106,8 +106,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	storage.jump_path_name	= utils.cfg_get_string(ini, section, "path_jump",		npc, false, gulag_name)
 	storage.ph_jump_factor	= utils.cfg_get_number(ini, section, "ph_jump_factor",	npc, false, 1.8)
 	
-	local offset_str		= utils.cfg_get_string(ini, section, "offset",			npc, false, gulag_name) 
+	local offset_str		= utils.cfg_get_string(ini, section, "offset",			npc, true, "") 
+	printf( "offset_str=%s", offset_str )
+
 	local elems				= parse_names(offset_str)
+	printf( "elems = %s | %s | %s", tostring(elems[1]), tostring(elems[2]), tostring(elems[3]) )
 	
 	storage.offset			= vector():set(tonumber(elems[1]), tonumber(elems[2]), tonumber(elems[3]))
 	
