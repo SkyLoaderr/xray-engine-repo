@@ -19,7 +19,7 @@ local def_danger_inertion_time_sound	= 15000
 local def_danger_inertion_time_ricochet	= 30000
 
 
-local always_ignore_danger_from = { [807] = "true" }
+local always_ignore_danger_from = { m_car = "true" }
 
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -58,16 +58,16 @@ function evaluator_danger:evaluate()
 	end
 
 	-- проверка не находится ли денжер в списке вечнозапрещенных.(БТР, Вертолеты и тд)
-	local best_danger_story_id = 0
+	local best_danger_section_name = 0
 	if best_danger:dependent_object() ~= nil then
-		best_danger_story_id = best_danger:dependent_object():story_id()
+		best_danger_section_name = best_danger:dependent_object():section()
 	else
 		if best_danger:object() ~= nil then
-			best_danger_story_id = best_danger:object():story_id()
+			best_danger_section_name = best_danger:object():section()
 		end
 	end
-	if best_danger_story_id ~= nil then
-		if always_ignore_danger_from[best_danger_story_id] == "true" then
+	if best_danger_section_name ~= nil then
+		if always_ignore_danger_from[best_danger_section_name] == "true" then
 			printf("DANGER [%s] [FALSE] forbidded", self.object:name())
 			return false
 		end
