@@ -8,34 +8,14 @@
 
 #pragma once
 
-//		algorithms
 #include "a_star.h"
-#include "dijkstra.h"
-//#include "dijkstra_bidirectional.h"
-//		path builders
 #include "edge_path.h"
-//		vertex managers
-#include "vertex_manager_generic.h"
 #include "vertex_manager_fixed.h"
 #include "vertex_manager_hash_fixed.h"
-//		allocators
-#include "vertex_allocator_generic.h"
 #include "vertex_allocator_fixed.h"
-//		priority queues
 #include "data_storage_bucket_list.h"
-//#include "data_storage_cheap_list.h"
-//#include "data_storage_single_linked_list.h"
-//#include "data_storage_double_linked_list.h"
-//#include "boost/f_heap.hpp"
-//#include "boost/p_heap.hpp"
-//#include "data_storage_priority_queue.h"
 #include "data_storage_binary_heap.h"
-//#include "data_storage_binary_heap_list.h"
-//#include "data_storage_multi_binary_heap.h"
-//		path_managers
 #include "path_manager.h"
-
-//		
 #include "graph_engine_space.h"
 #include "operator_condition.h"
 #include "condition_state.h"
@@ -46,24 +26,8 @@ using namespace GraphEngineSpace;
 
 class CGraphEngine {
 public:
-//	typedef CDataStorageSingleLinkedList<false>				CPriorityQueue;
-//	typedef CDataStorageSingleLinkedList<true>				CPriorityQueue;
-//	typedef CDataStorageDoubleLinkedList<false>				CPriorityQueue;
-//	typedef CDataStorageDoubleLinkedList<true>				CPriorityQueue;
-//	typedef CPriorityQueue<boost::fibonacci_heap>			CSolverPriorityQueue;
-//	typedef CDataStorageMultiBinaryHeap<4>					CSolverPriorityQueue;
-//	typedef CPriorityQueue<boost::pairing_heap>				CSolverPriorityQueue;
-//	typedef CDataStorageBucketList<u32,u8,16,false>			CSolverPriorityQueue;
-//	typedef CDataStorageBinaryHeapList<4>					CSolverPriorityQueue;
-//	typedef CDataStorageCheapList<32,true,true>				CSolverPriorityQueue;
-//	typedef CDataStorageDoubleLinkedList<true>				CSolverPriorityQueue;
 	typedef CDataStorageBinaryHeap							CSolverPriorityQueue;
 	typedef CDataStorageBucketList<u32,u32,8*1024,false>	CPriorityQueue;
-//	typedef CDataStorageBinaryHeap							CPriorityQueue;
-//	typedef CDataStorageBinaryHeapList<4>					CPriorityQueue;
-//	typedef CDataStorageMultiBinaryHeap<4>					CPriorityQueue;
-//	typedef CPriorityQueue<boost::fibonacci_heap>			CPriorityQueue;
-//	typedef CPriorityQueue<boost::pairing_heap>				CPriorityQueue;
 	
 	typedef CVertexManagerFixed<u32,u32,8>					CVertexManager;
 	typedef CVertexManagerHashFixed<
