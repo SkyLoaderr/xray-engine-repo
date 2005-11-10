@@ -63,8 +63,10 @@ IC	bool CGraphEngine::search		(
 	Device.Statistic.AI_Path.End();
 #endif
 	return						(successfull);
+#ifndef AI_COMPILER
 	STOP_PROFILE
 	STOP_PROFILE
+#endif
 }
 
 template <
@@ -103,8 +105,10 @@ IC	bool CGraphEngine::search			(
 	Device.Statistic.AI_Path.End();
 #endif
 	return						(successfull);
+#ifndef AI_COMPILER
 	STOP_PROFILE
 	STOP_PROFILE
+#endif
 }
 
 template <
@@ -141,8 +145,10 @@ IC	bool CGraphEngine::search			(
 	Device.Statistic.AI_Path.End();
 #endif
 	return						(successfull);
+#ifndef AI_COMPILER
 	STOP_PROFILE
 	STOP_PROFILE
+#endif
 }
 
 template <
@@ -198,6 +204,8 @@ IC	bool CGraphEngine::search(
 	Device.Statistic.AI_Path.End();
 #endif
 	return						(successfull);
+#ifndef AI_COMPILER
 	STOP_PROFILE
 	STOP_PROFILE
+#endif
 }
