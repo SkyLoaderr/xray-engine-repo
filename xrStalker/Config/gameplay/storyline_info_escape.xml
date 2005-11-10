@@ -20,6 +20,11 @@
         <text>esc_kolyan_lost</text>
     </article>
     
+    <article id="tutorial_moving_anomaly" name="tutorial_dead_flash" group="Diary">
+        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+        <text>tutorial_moving_anomaly_text</text>
+    </article>
+    
     <article id="tutorial_artefact" name="tutorial_find_artefact" article_type="task" group="tutorial_find_artefact">
         <text>tutorial_artefact_find</text>
     </article>
@@ -51,3 +56,4 @@
     <article id="esc_fox_help" name="esc_help_wounded_from_raid" article_type="task" group="esc_help_wounded_from_raid">
         <text>help_to_fox</text>
     </article> 
+    
