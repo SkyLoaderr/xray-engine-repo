@@ -660,7 +660,7 @@ void test_smooth_path(LPCSTR name)
 
 	CLevelGraph::STrajectoryPoint			start,dest;
 	xr_vector<CLevelGraph::STravelParams>	start_set, dest_set;
-	CLevelNavigationGraph					*level_graph = xr_new<CLevelNavigationGraph>(name);
+	CLevelGraph								*level_graph = xr_new<CLevelGraph>(name);
 	CGraphEngine							*graph_engine = xr_new<CGraphEngine>(level_graph->header().vertex_count());
 	xr_vector<u32>							m_tpaNodes;
 	

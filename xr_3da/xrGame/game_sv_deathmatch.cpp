@@ -34,8 +34,6 @@ game_sv_Deathmatch::game_sv_Deathmatch()
 
 	m_bDamageBlockIndicators = false;
 
-	m_level_graph			= 0;
-	m_graph_engine			= 0;
 	//-------------------------------
 	m_vFreeRPoints.clear();
 	m_dwLastRPoint = u32(-1);
@@ -68,8 +66,6 @@ game_sv_Deathmatch::~game_sv_Deathmatch()
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	CMD_CLEAR("sv_dmgblockindicator");
 
-	xr_delete				(m_graph_engine);
-	xr_delete				(m_level_graph);
 	//-------------------------------------------------------------
 	m_vFreeRPoints.clear();
 };

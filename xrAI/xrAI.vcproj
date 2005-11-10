@@ -998,22 +998,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="level_navigation_graph"
-							Filter="">
-							<File
-								RelativePath=".\level_navigation_graph.cpp">
-							</File>
-							<File
-								RelativePath=".\level_navigation_graph.h">
-							</File>
-							<File
-								RelativePath=".\level_navigation_graph_inline.h">
-							</File>
-							<File
-								RelativePath=".\level_navigation_graph_space.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="problem_solver"
 							Filter="">
 							<File

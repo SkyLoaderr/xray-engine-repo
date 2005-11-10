@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "level_graph.h"
-#include "level_navigation_graph.h"
+#include "level_graph.h"
 #include "level_navigation_graph_space.h"
 #include "profile.h"
 #include "graph_abstract.h"
@@ -454,9 +454,9 @@ void test_hierarchy		(LPCSTR name)
 	}
 	Msg							("Total time %f (%d test(s) : %f)",timer.GetElapsed_sec(),TEST_COUNT,1000.f*timer.GetElapsed_ms()/float(TEST_COUNT));
 
-	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
+	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
 
-	Msg							("Graphs are %s",equal(*sector_graph,((const CLevelNavigationGraph*)level_navigation_graph)->sectors()) ? "EQUAL" : "NOT EQUAL");
+	Msg							("Graphs are %s",equal(*sector_graph,((const CLevelGraph*)level_graph)->sectors()) ? "EQUAL" : "NOT EQUAL");
 
 #if 1
 	CMemoryWriter				stream;
@@ -525,7 +525,7 @@ void test_hierarchy		(LPCSTR name)
 	xr_delete					(sector_graph);
 	Msg							("Destroy sector graph time %f",timer.GetElapsed_sec());
 
-	xr_delete					(level_navigation_graph);
+	xr_delete					(level_graph);
 
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
