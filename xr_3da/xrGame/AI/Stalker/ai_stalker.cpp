@@ -676,12 +676,22 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 #endif
 		if (g_mt_config.test(mtAiVision))
 			Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
-		else
+		else {
+			START_PROFILE("entities/stalker/schedule_update/vision")
 			Exec_Visibility				();
+			STOP_PROFILE
+		}
 
 		START_PROFILE("entities/stalker/schedule_update/memory")
+
+		START_PROFILE("entities/stalker/schedule_update/memory/process")
 		process_enemies					();
+		STOP_PROFILE
+		
+		START_PROFILE("entities/stalker/schedule_update/memory/update")
 		memory().update					(dt);
+		STOP_PROFILE
+
 		STOP_PROFILE
 
 //		if (memory().enemy().selected() && !check)
