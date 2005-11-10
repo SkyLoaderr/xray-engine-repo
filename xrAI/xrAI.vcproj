@@ -573,9 +573,6 @@
 						RelativePath=".\connectivity_test.cpp">
 					</File>
 					<File
-						RelativePath=".\hierarchy_test.cpp">
-					</File>
-					<File
 						RelativePath=".\path_test.cpp">
 						<FileConfiguration
 							Name="Debug|Win32"
