@@ -44,34 +44,6 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >
-struct SObstacleParams;
-
-template <
-	typename _dist_type,
-	typename _index_type,
-	typename _iteration_type
->
-struct SObstaclesLightCover;
-
-template <
-	typename _dist_type,
-	typename _index_type,
-	typename _iteration_type
->
-struct SObstaclesLightCoverEnemy;
-
-template <
-	typename _dist_type,
-	typename _index_type,
-	typename _iteration_type
->
-struct SPosition;
-
-template <
-	typename _dist_type,
-	typename _index_type,
-	typename _iteration_type
->
 struct SStraightLineParams;
 
 template <
@@ -140,26 +112,6 @@ namespace GraphEngineSpace {
 				_index_type,
 				_iteration_type
 			>		CFlooder;
-	typedef SObstacleParams<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CObstacleParams;
-	typedef SObstaclesLightCover<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CObstaclesLightCover;
-	typedef SObstaclesLightCoverEnemy<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CObstaclesLightCoverEnemy;
-	typedef SPosition<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CPositionParameters;
 	typedef SStraightLineParams<
 				_dist_type,
 				_index_type,

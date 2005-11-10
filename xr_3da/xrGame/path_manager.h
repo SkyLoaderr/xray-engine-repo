@@ -32,10 +32,6 @@ template <
 //		path manager parameters
 #include "path_manager_params.h"
 #include "path_manager_params_flooder.h"
-#include "path_manager_params_obstacles.h"
-#include "path_manager_params_obstacles_light_cover.h"
-#include "path_manager_params_obstacles_light_cover_enemy.h"
-#include "path_manager_params_position.h"
 #include "path_manager_params_straight_line.h"
 //		path manager specializations
 #include "path_manager_game.h"
@@ -48,11 +44,7 @@ template <
 #ifndef AI_COMPILER
 	#include "path_manager_level_evaluator.h"
 #endif
-#include "path_manager_level_obstacles.h"
-#include "path_manager_level_obstacles_light_cover.h"
-#include "path_manager_level_obstacles_light_cover_enemy.h"
 #include "path_manager_level_flooder.h"
-#include "path_manager_level_position.h"
 #ifdef AI_COMPILER
 	#include "path_manager_level_straight_line.h"
 #endif
