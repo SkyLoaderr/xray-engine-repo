@@ -44,8 +44,11 @@ public:
 	ALife::_TIME_ID						m_last_search_time;
 	ALife::_TIME_ID						m_time_interval;
 
-private:
+// sad, but true
+public:
 			void						select_task			();
+
+private:
 			void						process_task		();
 			void						default_behaviour	();
 

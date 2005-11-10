@@ -18,7 +18,7 @@
 #include "stalker_combat_planner.h"
 #include "stalker_death_planner.h"
 #include "stalker_danger_planner.h"
-#include "stalker_squad_action.h"
+#include "stalker_alife_actions.h"
 
 //#define GOAP_DEBUG
 
@@ -63,7 +63,10 @@ void CStalkerPlanner::setup			(CAI_Stalker *object)
 	add_evaluators				();
 	add_actions					();
 
+	m_alive_goal.clear			();
 	m_alive_goal.add_condition	(CWorldProperty(eWorldPropertyPuzzleSolved,true));
+
+	m_dead_goal.clear			();
 	m_dead_goal.add_condition	(CWorldProperty(eWorldPropertyAlreadyDead,true));
 
 	m_affect_cover				= false;
@@ -133,6 +136,7 @@ void CStalkerPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies",CStalkerCombatPlanner::POST_COMBAT_WAIT_INTERVAL));
 	add_evaluator			(eWorldPropertyDanger			,xr_new<CStalkerPropertyEvaluatorDangers>			(m_object,"is_there_danger"));
 	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			(m_object,"is_there_anomalies"));
+	add_evaluator			(eWorldPropertyItems			,xr_new<CStalkerPropertyEvaluatorItems>				(m_object,"is_there_items_to_pick_up"));
 }
 
 void CStalkerPlanner::add_actions			()
@@ -150,6 +154,7 @@ void CStalkerPlanner::add_actions			()
 	add_condition			(planner,eWorldPropertyEnemy,			false);
 	add_condition			(planner,eWorldPropertyAnomaly,			false);
 	add_condition			(planner,eWorldPropertyDanger,			false);
+	add_condition			(planner,eWorldPropertyItems,			false);
 	add_condition			(planner,eWorldPropertyPuzzleSolved,	false);
 	add_effect				(planner,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorALifePlanner,planner);
@@ -174,4 +179,15 @@ void CStalkerPlanner::add_actions			()
 	add_condition			(planner,eWorldPropertyAnomaly,		true);
 	add_effect				(planner,eWorldPropertyAnomaly,		false);
 	add_operator			(eWorldOperatorAnomalyPlanner,planner);
+
+	CStalkerActionBase		*action;
+
+	action					= xr_new<CStalkerActionGatherItems>	(m_object,"gather_items");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		false);
+	add_condition			(action,eWorldPropertyAnomaly,		false);
+	add_condition			(action,eWorldPropertyDanger,		false);
+	add_condition			(action,eWorldPropertyItems,		true);
+	add_effect				(action,eWorldPropertyItems,		false);
+	add_operator			(eWorldOperatorGatherItems,			action);
 }

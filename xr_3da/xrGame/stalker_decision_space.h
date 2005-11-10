@@ -21,6 +21,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyReachedCustomerLocation,
 		eWorldPropertyCustomerSatisfied,
 
+		eWorldPropertySmartTerrainTask,
 		eWorldPropertyItems,
 		eWorldPropertyEnemy,
 		eWorldPropertyDanger,
@@ -63,6 +64,7 @@ namespace StalkerDecisionSpace {
 // alife
 		eWorldOperatorGatherItems,
 		eWorldOperatorALifeEmulation,
+		eWorldOperatorSmartTerrainTask,
 
 // alife : tasks
 		eWorldOperatorSolveZonePuzzle,

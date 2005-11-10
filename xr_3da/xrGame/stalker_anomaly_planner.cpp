@@ -39,8 +39,8 @@ void CStalkerAnomalyPlanner::setup				(CAI_Stalker *object, CPropertyStorage *st
 
 void CStalkerAnomalyPlanner::add_evaluators		()
 {
-	add_evaluator			(eWorldPropertyInsideAnomaly	,xr_new<CStalkerPropertyEvaluatorInsideAnomaly>		());
-	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			());
+	add_evaluator			(eWorldPropertyInsideAnomaly	,xr_new<CStalkerPropertyEvaluatorInsideAnomaly>		(m_object,"inside anomaly"));
+	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			(m_object,"undetected anomaly"));
 }
 
 void CStalkerAnomalyPlanner::add_actions		()

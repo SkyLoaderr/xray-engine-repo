@@ -28,6 +28,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorALife	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -53,6 +54,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorItems	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -80,7 +82,8 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
-	virtual _value_type	evaluate						();
+						CStalkerPropertyEvaluatorSeeEnemy	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate							();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,7 +95,8 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
-	virtual _value_type	evaluate						();
+						CStalkerPropertyEvaluatorItemToKill	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate							();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,6 +108,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorItemCanKill	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -116,7 +121,8 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
-	virtual _value_type	evaluate						();
+						CStalkerPropertyEvaluatorFoundItemToKill	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate									();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,6 +134,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorFoundAmmo	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -140,6 +147,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorReadyToKill	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -165,7 +173,8 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
-	virtual _value_type	evaluate							();
+						CStalkerPropertyEvaluatorInsideAnomaly	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate								();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -177,22 +186,21 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorPanic		(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate							();
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorEnemyCanBeSeen
+// CStalkerPropertyEvaluatorSmartTerrainTask
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerPropertyEvaluatorEnemyCanBeSeen : public CStalkerPropertyEvaluator {
+class CStalkerPropertyEvaluatorSmartTerrainTask : public CStalkerPropertyEvaluator {
 protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
-private:
-	CDangerObject::EDangerType m_type;
-
 public:
-	virtual _value_type	evaluate							();
+						CStalkerPropertyEvaluatorSmartTerrainTask	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate									();
 };
 
 #include "stalker_property_evaluators_inline.h"

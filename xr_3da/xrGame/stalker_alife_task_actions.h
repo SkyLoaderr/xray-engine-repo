@@ -96,3 +96,18 @@ public:
 	virtual void		execute							();
 	virtual void		finalize						();
 };
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionSmartTerrain
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionSmartTerrain : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionSmartTerrain		(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize						();
+	virtual void		execute							();
+	virtual void		finalize						();
+};

@@ -28,6 +28,9 @@
 #include "stalker_movement_manager.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "ai_space.h"
+#include "xrServer_Objects_ALife_Monsters.h"
+#include "alife_human_brain.h"
+#include "alife_smart_terrain_task.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -310,4 +313,61 @@ void CStalkerActionCommunicateWithCustomer::execute		()
 	m_storage->set_property				(eWorldPropertyTaskCompleted,			false);
 	m_storage->set_property				(eWorldPropertyReachedCustomerLocation,	false);
 	m_storage->set_property				(eWorldPropertyCustomerSatisfied,		false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionSmartTerrain
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionSmartTerrain::CStalkerActionSmartTerrain	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionSmartTerrain::initialize				()
+{
+	inherited::initialize							();
+	object().movement().set_node_evaluator			(0);
+	object().movement().set_path_evaluator			(0);
+	object().movement().set_desired_position		(0);
+	object().movement().set_desired_direction		(0);
+	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
+	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state				(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_mental_state			(eMentalStateFree);
+	object().sight().setup							(CSightAction(SightManager::eSightTypePathDirection));
+
+	if (!object().best_weapon())
+		object().CObjectHandler::set_goal	(eObjectActionIdle);
+	else
+		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+}
+
+void CStalkerActionSmartTerrain::finalize				()
+{
+	inherited::finalize					();
+	object().movement().game_selector().set_selection_type		(eSelectionTypeRandomBranching);
+}
+
+void CStalkerActionSmartTerrain::execute				()
+{
+	inherited::execute					();
+
+	object().sound().play						(eStalkerSoundHumming,60000,10000);
+
+	CSE_ALifeHumanAbstract						*stalker = smart_cast<CSE_ALifeHumanAbstract*>(ai().alife().objects().object(m_object->ID()));
+	VERIFY										(stalker);
+	VERIFY										(stalker->m_smart_terrain_id != 0xffff);
+
+	CALifeSmartTerrainTask						*task = stalker->brain().smart_terrain().task(stalker);
+	VERIFY										(task);
+	if (object().ai_location().game_vertex_id() != task->game_vertex_id()) {
+		object().movement().set_game_dest_vertex(task->game_vertex_id());
+		return;
+	}
+
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_level_dest_vertex	(task->level_vertex_id());
 }
