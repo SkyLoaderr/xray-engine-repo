@@ -829,7 +829,7 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 	}
 
 	// Sheduler
-	shedule.t_min			= 25;
+	shedule.t_min			= 100;
 	shedule.t_max			= 250; // This equaltiy is broken by Dima :-( // 30 * NET_Latency / 4;
 
 	return TRUE;
