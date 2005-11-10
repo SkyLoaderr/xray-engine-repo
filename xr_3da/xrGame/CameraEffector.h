@@ -10,17 +10,18 @@
 
 enum ECameraEffectorType
 {
-	eCEFall			=0,
-	eCENoise		=1,
-	eCEShot			=2,
-	eCEZoom			=3,
-	eCERecoil		=4,
-	eCEBobbing		=5,
-	eCEHit			=6,  //hit from monster
-	eExplode		=7,
-	eCEAlcohol		=20,
-	eCEFireHit		= 21,
-	eCEUser			=100,
+	eCEFall				= 0,
+	eCENoise			= 1,
+	eCEShot				= 2,
+	eCEZoom				= 3,
+	eCERecoil			= 4,
+	eCEBobbing			= 5,
+	eCEHit				= 6,  //hit from monster
+	eExplode			= 7,
+	eCEAlcohol			= 20,
+	eCEFireHit			= 21,
+	eCEUser				= 100,
+	eCEControllerPsyHit = eCEUser + 1,
 	eCEMax			=u32(-1)
 };
 

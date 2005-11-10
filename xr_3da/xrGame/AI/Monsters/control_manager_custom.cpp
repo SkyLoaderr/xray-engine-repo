@@ -447,6 +447,10 @@ void CControlManagerCustom::check_jump_over_physics()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Rotation Jump
+//////////////////////////////////////////////////////////////////////////
+
 void CControlManagerCustom::check_rotation_jump()
 {
 	if (!m_man->check_start_conditions(ControlCom::eControlRotationJump)) return;	
@@ -464,35 +468,52 @@ void CControlManagerCustom::check_rotation_jump()
 	m_man->activate				(ControlCom::eControlRotationJump);
 }
 
-void CControlManagerCustom::add_rotation_jump_data(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle)
+void CControlManagerCustom::add_rotation_jump_data(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags)
 {
 	VERIFY				(m_object->Visual());
 	CSkeletonAnimated	*skeleton_animated	= smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
 	SControlRotationJumpData	data;
-
-	MotionID			motion;
 	
-	motion				= skeleton_animated->ID_Cycle_Safe(left1);
-	data.anim_stop_ls	= motion;
-	m_object->anim().AddAnimTranslation(motion,left1);
-	
-	motion				= skeleton_animated->ID_Cycle_Safe(left2);
-	data.anim_run_ls	= motion;
-	m_object->anim().AddAnimTranslation(motion,left2);
+	data.flags.assign			(flags);
+	data.turn_angle				= angle;
 
-	motion				= skeleton_animated->ID_Cycle_Safe(right1);
-	data.anim_stop_rs	= motion;
-	m_object->anim().AddAnimTranslation(motion,right1);
+	MotionID					motion;
+	if (left1) {
+		motion				= skeleton_animated->ID_Cycle_Safe(left1);
+		data.anim_stop_ls	= motion;
+		m_object->anim().AddAnimTranslation(motion,left1);
+	} else {
+		data.anim_stop_ls.invalidate();
+	}
 
-	motion				= skeleton_animated->ID_Cycle_Safe(right2);
-	data.anim_run_rs	= motion;
-	m_object->anim().AddAnimTranslation(motion,right2);
+	if (left2) {
+		motion				= skeleton_animated->ID_Cycle_Safe(left2);
+		data.anim_run_ls	= motion;
+		m_object->anim().AddAnimTranslation(motion,left2);
+	} else {
+		data.anim_run_ls.invalidate();
+	}
 
-	data.turn_angle		= angle;
+	if (right1) {
+		motion				= skeleton_animated->ID_Cycle_Safe(right1);
+		data.anim_stop_rs	= motion;
+		m_object->anim().AddAnimTranslation(motion,right1);
+	} else {
+		data.anim_stop_rs.invalidate();
+	}
+
+	if (right2) {
+		motion				= skeleton_animated->ID_Cycle_Safe(right2);
+		data.anim_run_rs	= motion;
+		m_object->anim().AddAnimTranslation(motion,right2);
+	} else {
+		data.anim_run_rs.invalidate();
+	}
 
 	m_rot_jump_data.push_back	(data);
 }
+//////////////////////////////////////////////////////////////////////////
 
 void CControlManagerCustom::check_run_attack()
 {

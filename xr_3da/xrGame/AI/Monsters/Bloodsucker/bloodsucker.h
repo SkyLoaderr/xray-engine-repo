@@ -82,6 +82,7 @@ public:
 
 			void			play_hidden_run_particles	();
 
+			void			set_alien_control		(bool val);
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
 			void			debug_on_key			(int key);

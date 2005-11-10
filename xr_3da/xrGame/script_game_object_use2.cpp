@@ -52,6 +52,17 @@ bool CScriptGameObject::get_manual_invisibility()
 }
 
 
+void CScriptGameObject::set_alien_control(bool val)
+{
+	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Bloodsucker : cannot access class member alien_control_activate!");
+		return;
+	}
+
+	monster->set_alien_control(val);
+}
+
 CScriptSoundInfo CScriptGameObject::GetSoundInfo()
 {
 	CScriptSoundInfo	ret_val;

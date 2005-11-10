@@ -303,3 +303,83 @@ CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
 	m_power			= power;
 	clamp			(m_power, 0.0f, 1.0f);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+#define DELTA_ANGLE_X	0.5f * PI / 180
+#define DELTA_ANGLE_Y	0.5f * PI / 180
+#define DELTA_ANGLE_Z	0.5f * PI / 180
+#define ANGLE_SPEED		1.5f	
+
+CControllerPsyHitCamEffector::CControllerPsyHitCamEffector(ECameraEffectorType type, const Fvector &src_pos, const Fvector &target_pos, float time)
+	:inherited(eCEControllerPsyHit, flt_max)
+{
+	m_time_total			= time;
+	m_time_current			= 0;
+	m_dangle_target.set		(angle_normalize(Random.randFs(DELTA_ANGLE_X)),angle_normalize(Random.randFs(DELTA_ANGLE_Y)),angle_normalize(Random.randFs(DELTA_ANGLE_Z)));
+	m_dangle_current.set	(0.f, 0.f, 0.f);
+	m_position_source		= src_pos;
+	m_direction.sub			(target_pos,src_pos);
+	m_distance				= m_direction.magnitude();
+	m_direction.normalize	();
+}
+
+const float	_base_fov		= 170.f;
+const float	_max_fov_add	= 160.f;
+
+
+BOOL CControllerPsyHitCamEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+{
+	Fmatrix	Mdef;
+	Mdef.identity		();
+	Mdef.j.set			(n);
+	Mdef.k.set			(m_direction);
+	Mdef.i.crossproduct	(n,m_direction);
+	Mdef.c.set			(p);
+
+	//////////////////////////////////////////////////////////////////////////
+
+	if (angle_lerp(m_dangle_current.x, m_dangle_target.x, ANGLE_SPEED, Device.fTimeDelta)) {
+		m_dangle_target.x = angle_normalize(Random.randFs(DELTA_ANGLE_X));
+	}
+
+	if (angle_lerp(m_dangle_current.y, m_dangle_target.y, ANGLE_SPEED, Device.fTimeDelta)) {
+		m_dangle_target.y = angle_normalize(Random.randFs(DELTA_ANGLE_Y));
+	}
+
+	if (angle_lerp(m_dangle_current.z, m_dangle_target.z, ANGLE_SPEED, Device.fTimeDelta)) {
+		m_dangle_target.z = angle_normalize(Random.randFs(DELTA_ANGLE_Z));
+	}
+	
+	//////////////////////////////////////////////////////////////////////////
+
+	if (m_time_current > m_time_total) m_time_current = m_time_total;
+
+	float perc_past	= m_time_current / m_time_total;
+	float cur_dist	= m_distance * perc_past;
+
+	Mdef.c.mad	(m_position_source, m_direction, cur_dist);
+	fFov = _base_fov - _max_fov_add*perc_past;
+
+	m_time_current	+= Device.fTimeDelta;
+	
+	//////////////////////////////////////////////////////////////////////////
+
+	// Установить углы смещения
+	Fmatrix		R;
+	if (m_time_current > m_time_total) 
+		R.identity	();
+	else 
+		R.setHPB	(m_dangle_current.x,m_dangle_current.y,m_dangle_current.z);
+
+	Fmatrix		mR;
+	mR.mul		(Mdef,R);
+
+	d.set		(mR.k);
+	n.set		(mR.j);
+	p.set		(mR.c);
+
+	return TRUE;
+}
+
+

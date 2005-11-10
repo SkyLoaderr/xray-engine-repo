@@ -65,7 +65,7 @@ public:
 
 	//-------------------------------------------------------------------------------
 	// Rotation Jump
-	void		add_rotation_jump_data	(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle);
+	void		add_rotation_jump_data	(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags = 0);
 
 private:
 

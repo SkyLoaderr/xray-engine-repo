@@ -168,6 +168,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("set_manual_invisibility",		&CScriptGameObject::set_manual_invisibility)
 		.def("get_invisible",				&CScriptGameObject::get_invisible)
 		.def("get_manual_invisibility",		&CScriptGameObject::get_manual_invisibility)
+		.def("set_alien_control",			&CScriptGameObject::set_alien_control)
 
 		// zombie
 		.def("fake_death_fall_down",		&CScriptGameObject::fake_death_fall_down)

@@ -60,6 +60,7 @@ public:
 
 					void	activate					(ControlCom::EControlType type);
 					void	deactivate					(ControlCom::EControlType type);
+					void	deactivate					(CControl_Com*);
 
 					void	lock						(CControl_Com*, ControlCom::EControlType);
 					void	unlock						(CControl_Com*, ControlCom::EControlType);

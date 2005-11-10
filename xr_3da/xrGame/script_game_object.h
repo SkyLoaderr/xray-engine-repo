@@ -184,6 +184,7 @@ public:
 			bool				get_invisible			();
 			void				set_manual_invisibility (bool val);
 			bool				get_manual_invisibility ();
+			void				set_alien_control		(bool val);
 
 	// Zombie
 			bool				fake_death_fall_down	();

@@ -39,6 +39,8 @@
 #include "../../../character_info.h"
 
 
+#include "controller_psy_hit.h"
+
 #ifdef _DEBUG
 #	include <dinput.h>
 #endif
@@ -52,11 +54,16 @@ CController::CController()
 	StateMan = xr_new<CStateManagerController>(this);
 	CPsyAuraController::init_external(this);
 	time_control_hit_started = 0;
+
+	m_psy_hit			= xr_new<CControllerPsyHit>();
+
+	control().add		(m_psy_hit,  ControlCom::eComCustom1);
 }
 
 CController::~CController()
 {
 	xr_delete(StateMan);
+	xr_delete(m_psy_hit);
 }
 
 void CController::Load(LPCSTR section)
@@ -384,7 +391,7 @@ void CController::shedule_Update(u32 dt)
 	CPsyAuraController::schedule_update();
 
 	UpdateControlled();
-	
+
 	// DEBUG
 	test_covers();
 }
@@ -603,8 +610,13 @@ void CController::debug_on_key(int key)
 	case DIK_MINUS:
 		m_sound_aura_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
 		m_sound_aura_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+		
+		if (m_psy_hit->check_start_conditions()) {
+			control().activate(ControlCom::eComCustom1);
+		}
+
 		break;
-	case DIK_0:
+	case DIK_EQUALS:
 		m_sound_aura_hit_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
 		m_sound_aura_hit_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 		break;

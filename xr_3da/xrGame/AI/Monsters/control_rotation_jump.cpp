@@ -27,13 +27,18 @@ void CControlRotationJump::activate()
 	m_man->subscribe	(this, ControlCom::eventAnimationEnd);
 
 	// disable path builder and movement
-	m_man->path_stop						(this);
-	m_man->move_stop						(this);
+	m_man->path_stop	(this);
+	m_man->move_stop	(this);
 
 	float yaw			= Fvector().sub(m_object->EnemyMan.get_enemy()->Position(), m_object->Position()).getH();
 	m_right_side		=  m_man->direction().is_from_right(angle_normalize(-yaw));
 	
-	build_line_first	();
+	//////////////////////////////////////////////////////////////////////////
+	if (m_data.flags.is(SControlRotationJumpData::eStopAtOnce)) 
+		stop_at_once		();
+	else 
+		build_line_first	();
+	//////////////////////////////////////////////////////////////////////////
 }
 
 void CControlRotationJump::on_release()
@@ -72,12 +77,39 @@ void CControlRotationJump::on_event(ControlCom::EEventType type, ControlCom::IEv
 {
 	switch (type) {
 	case ControlCom::eventAnimationEnd:
-		if (m_stage == eStop) 
+		if ((m_stage == eStop) && (m_data.flags.is(SControlRotationJumpData::eRotateOnce) == FALSE)) 
 			build_line_second();
 		else  
 			m_man->notify						(ControlCom::eventRotationJumpEnd, 0);
 		break;
 	}
+}
+
+void CControlRotationJump::stop_at_once()
+{
+	m_time = m_man->animation().motion_time(m_right_side ? m_data.anim_stop_rs : m_data.anim_stop_ls, m_object->Visual());	
+
+	// set angular speed in exclusive force mode
+	SControlDirectionData					*ctrl_data_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
+	VERIFY									(ctrl_data_dir);	
+
+	float target_yaw						= angle_normalize(-m_object->Direction().getH() + (m_right_side ? m_data.turn_angle : -m_data.turn_angle));
+	ctrl_data_dir->heading.target_angle		= target_yaw;
+
+	float cur_yaw;
+	m_man->direction().get_heading			(cur_yaw, target_yaw);
+	ctrl_data_dir->heading.target_speed		= angle_difference(cur_yaw,target_yaw)/ m_time;
+	ctrl_data_dir->linear_dependency		= false;
+	VERIFY									(!fis_zero(ctrl_data_dir->heading.target_speed));
+
+	m_stage									= eStop;	
+
+	// start new animation
+	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
+	VERIFY						(ctrl_data);
+
+	ctrl_data->global.motion	= m_right_side ? m_data.anim_stop_rs : m_data.anim_stop_ls;
+	ctrl_data->global.actual	= false;
 }
 
 void CControlRotationJump::build_line_first()
@@ -210,3 +242,4 @@ void CControlRotationJump::build_line_second()
 		ctrl_data->global.actual	= false;
 	}
 }
+

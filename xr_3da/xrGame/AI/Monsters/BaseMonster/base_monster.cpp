@@ -415,8 +415,9 @@ void CBaseMonster::PlayParticles(const shared_str& name, const Fvector &position
 	Fvector::generate_orthonormal_basis_normalized(matrix.k,matrix.j,matrix.i);
 	matrix.translate_over	(position);
 	
-	ps->UpdateParent		(matrix, zero_vel);
-	ps->Play();
+	//ps->UpdateParent		(matrix, zero_vel); 
+	ps->SetXFORM			(matrix); 
+	ps->Play				();
 }
 
 void CBaseMonster::on_restrictions_change()

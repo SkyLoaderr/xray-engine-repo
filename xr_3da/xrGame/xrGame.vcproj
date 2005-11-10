@@ -3916,6 +3916,22 @@
 								</File>
 							</Filter>
 						</Filter>
+						<Filter
+							Name="Psy hit"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_psy_hit.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_psy_hit.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_psy_hit_effector.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_psy_hit_effector.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Cat"

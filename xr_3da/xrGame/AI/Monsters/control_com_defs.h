@@ -25,7 +25,8 @@ namespace ControlCom {
 		eControlDirBase,
 
 		eControlCustom,
-		
+
+		eComCustom1,
 		
 		eControllersCount,
 

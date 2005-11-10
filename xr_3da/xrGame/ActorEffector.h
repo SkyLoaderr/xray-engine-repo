@@ -114,3 +114,21 @@ public:
 						CFireHitCamEffector			(ECameraEffectorType type,float power);
 	float	xr_stdcall	GetPower					()				{return m_power;}
 };
+
+//////////////////////////////////////////////////////////////////////////
+class CControllerPsyHitCamEffector :public CCameraEffector {
+	typedef CCameraEffector inherited;
+	
+	float				m_time_total;
+	float				m_time_current;
+	Fvector				m_dangle_target;
+	Fvector				m_dangle_current;
+	Fvector				m_position_source;
+	Fvector				m_direction;
+	float				m_distance;
+
+public:
+						CControllerPsyHitCamEffector	(ECameraEffectorType type, const Fvector &src_pos, const Fvector &target_pos, float time);
+	virtual	BOOL		Process							(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
+};
+//////////////////////////////////////////////////////////////////////////

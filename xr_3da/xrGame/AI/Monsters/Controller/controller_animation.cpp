@@ -33,6 +33,9 @@ void CControllerAnimation::on_start_control(ControlCom::EControlType type)
 		m_man->subscribe	(this, ControlCom::eventLegsAnimationEnd);
 
 		if (m_controller->m_mental_state == CController::eStateDanger) {
+			m_wait_torso_anim_end	= false;
+			set_body_state			(eTorsoIdle, eLegsTypeStand);
+
 			select_torso_animation	();
 			select_legs_animation	();
 		} else {

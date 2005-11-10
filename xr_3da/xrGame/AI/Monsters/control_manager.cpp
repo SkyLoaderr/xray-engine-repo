@@ -282,6 +282,10 @@ void CControl_Manager::deactivate(ControlCom::EControlType type)
 	m_control_elems[type]->set_active	(false);
 	check_active_com					(m_control_elems[type], eRemove);
 }
+void CControl_Manager::deactivate(CControl_Com *com)
+{
+	deactivate(com_type(com));
+}
 
 bool CControl_Manager::is_captured(ControlCom::EControlType type)
 {

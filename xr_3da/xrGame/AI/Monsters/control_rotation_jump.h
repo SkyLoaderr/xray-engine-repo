@@ -6,6 +6,13 @@ struct SControlRotationJumpData : public ControlCom::IComData {
 	MotionID		anim_stop_ls,anim_run_ls;
 	MotionID		anim_stop_rs,anim_run_rs;
 	float			turn_angle;
+
+	enum EFlags {	
+		eStopAtOnce	= u32(1) << 0,  // stop at once
+		eRotateOnce	= u32(1) << 1,	// use only the first stage
+	};
+
+	flags32			flags;
 };
 
 class CControlRotationJump : public CControl_ComCustom<SControlRotationJumpData> {
@@ -39,5 +46,6 @@ public:
 private:	
 			void	build_line_first		();
 			void	build_line_second		();
+			void	stop_at_once			();
 };
 

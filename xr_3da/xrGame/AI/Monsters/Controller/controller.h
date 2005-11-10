@@ -9,6 +9,8 @@ class CControllerDirection;
 
 class SndShockEffector;
 
+class CControllerPsyHit;
+
 class CController : public CBaseMonster, 
 					public CPsyAuraController {
 
@@ -41,6 +43,8 @@ class CController : public CBaseMonster,
 
 	u32					m_psy_fire_start_time;
 	u32					m_psy_fire_delay;
+
+	CControllerPsyHit	*m_psy_hit;
 
 public:	
 	SVelocityParam		m_velocity_move_fwd;

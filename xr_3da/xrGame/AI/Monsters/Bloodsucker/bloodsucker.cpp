@@ -17,6 +17,7 @@
 
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
+#include "../control_rotation_jump.h"
 
 #ifdef DEBUG
 #include <dinput.h>
@@ -149,6 +150,7 @@ void CAI_Bloodsucker::reinit()
 	state_invisible				= CInvisibility::is_active();
 	m_last_invisible_run_play	= 0;
 
+	//com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI - 0.01f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
 	com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
 }
 
@@ -379,6 +381,11 @@ void CAI_Bloodsucker::play_hidden_run_particles()
 	pos.y	+= 0.05f;
 
 	PlayParticles(invisible_run_particles_name, pos, Direction());
+}
+
+void CAI_Bloodsucker::set_alien_control(bool val)
+{
+	val ? m_alien_control.activate() : m_alien_control.deactivate();
 }
 
 #ifdef DEBUG
