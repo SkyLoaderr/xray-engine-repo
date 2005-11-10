@@ -92,7 +92,8 @@ function evaluator_danger:evaluate()
 			return false
 		end	
 	elseif bd_type == danger_object.enemy_sound or
-	       bd_type == danger_object.attack_sound then
+	       bd_type == danger_object.attack_sound or
+	       bd_type == danger_object.entity_death then
 		if self.a.ignore_types["sound"] == true then
 			printf("DANGER [%s] [FALSE] ignore sound", self.object:name())
 			return false
@@ -231,7 +232,8 @@ function check_danger_inertion_time(npc, danger, passed_time)
 				return false
 			end	
 		elseif bd_type == danger_object.enemy_sound or
-			bd_type == danger_object.attack_sound then
+			bd_type == danger_object.attack_sound or
+	        bd_type == danger_object.entity_death then
 			if danger_settings.danger_inertion_time_sound <= passed_time then
 				return false
 			end	
@@ -255,7 +257,8 @@ function check_danger_inertion_time(npc, danger, passed_time)
 				return false
 			end	
 		elseif bd_type == danger_object.enemy_sound or
-			bd_type == danger_object.attack_sound then
+			bd_type == danger_object.attack_sound or
+	        bd_type == danger_object.entity_death then
 			if def_danger_inertion_time_sound <= passed_time then
 				return false
 			end	
@@ -291,7 +294,8 @@ function check_danger_distance(npc, danger)
 				return false
 			end
 		elseif bd_type == danger_object.enemy_sound or
-			   bd_type == danger_object.attack_sound then
+			   bd_type == danger_object.attack_sound or
+			   bd_type == danger_object.entity_death then
 			if danger_distance_sqr > danger_settings.ignore_distance_sound then
 				return false
 			end
@@ -314,7 +318,8 @@ function check_danger_distance(npc, danger)
 				return false
 			end
 		elseif bd_type == danger_object.enemy_sound or
-			   bd_type == danger_object.attack_sound then
+			   bd_type == danger_object.attack_sound or
+			   bd_type == danger_object.entity_death then
 			if danger_distance_sqr > def_ignore_distance_sound then
 				return false
 			end
