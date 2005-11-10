@@ -693,11 +693,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		STOP_PROFILE
 
 		STOP_PROFILE
-
-//		if (memory().enemy().selected() && !check)
-//			Msg			("Stalker %s found new enemy %s",*cName(),*memory().enemy().selected()->cName());
-//		if (!memory().enemy().selected() && check)
-//			Msg			("Stalker %s lost enemy",*cName());
 	}
 	inherited::inherited::shedule_Update(DT);
 	
