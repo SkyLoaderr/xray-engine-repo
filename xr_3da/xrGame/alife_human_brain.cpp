@@ -168,10 +168,8 @@ void CALifeHumanBrain::process_task			()
 
 void CALifeHumanBrain::select_task			()
 {
-	if (object().m_smart_terrain_id != 0xffff) {
-		m_last_search_time			= 0;
+	if (object().m_smart_terrain_id != 0xffff)
 		return;
-	}
 
 	ALife::_TIME_ID					current_time = ai().alife().time_manager().game_time();
 
@@ -193,6 +191,9 @@ void CALifeHumanBrain::select_task			()
 			object().m_smart_terrain_id	= (*I).second->ID;
 		}
 	}
+
+	if (object().m_smart_terrain_id != 0xffff)
+		m_last_search_time			= 0;
 }
 
 void CALifeHumanBrain::update				()
