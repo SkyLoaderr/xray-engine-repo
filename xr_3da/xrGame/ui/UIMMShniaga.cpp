@@ -70,8 +70,8 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 		CreateList(m_buttons, xml_doc, "menu_main_mm");
     ShowMain();
 
-	//m_sound->Init(xml_doc, "menu_sound");
-	//m_sound->music_Play();
+	m_sound->Init(xml_doc, "menu_sound");
+	m_sound->music_Play();
 }
 
 void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path){
@@ -175,7 +175,7 @@ void CUIMMShniaga::Update(){
 	}
 	CUIWindow::Update();
 
-//	m_sound->music_Update();
+	m_sound->music_Update();
 }
 
 

@@ -41,14 +41,17 @@ void CMMSound::whell_UpdateMoving(float frequency){
 }
 
 void CMMSound::music_Play(){
-	srand( (unsigned)time( NULL ) );
+	if (m_play_list.empty())
+		return;
 
+	if (m_music._handle())
+		m_music.destroy();
+
+	srand( (unsigned)time( NULL ) );
 	int i = rand() % m_play_list.size();
 	m_music.create	(TRUE, m_play_list[i].c_str());
-	bool flag = false;
 	if (m_music._handle())
-		flag = true;
-	m_music.play(NULL, sm_2D);
+        m_music.play(NULL, sm_2D);
 }
 
 void CMMSound::music_Update(){
