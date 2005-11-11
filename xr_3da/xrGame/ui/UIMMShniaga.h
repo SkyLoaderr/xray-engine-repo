@@ -22,11 +22,20 @@ public:
 			void SetVisibleMagnifier(bool f);
 
 protected:
+	typedef enum {
+		E_Begin = 0,
+		E_Update,
+		E_Finilize,
+		E_Stop
+	} EVENT;
+
+			void ProcessEvent(EVENT ev);
+
 			bool IsButton(CUIWindow* st);
 			void CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path);
 			void ShowMain();
 			void ShowNewGame();
-	float	pos(float x1, float x2, u32 t);
+			float pos(float x1, float x2, u32 t);
 
     CUIStatic*			m_shniaga;
 	CUIStatic*			m_magnifier;
@@ -44,4 +53,11 @@ protected:
 	xr_vector<CUIStatic*>	m_buttons_new;
     CUIWindow*			m_selected;
 	CMMSound*			m_sound;
+
+	enum {
+		fl_SoundFinalized	= 1,
+		fl_MovingStoped		= 2	
+	};
+
+	Flags32				m_flags;	
 };

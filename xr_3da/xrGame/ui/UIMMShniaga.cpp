@@ -30,6 +30,8 @@ CUIMMShniaga::CUIMMShniaga(){
 	m_origin = 0;
 	m_destination = 0;
 	m_run_time = 0;
+
+	m_flags.zero();	
 }
 
 CUIMMShniaga::~CUIMMShniaga(){
@@ -144,16 +146,9 @@ void CUIMMShniaga::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	if (IsButton(pWnd)){
 		switch (msg){
 			case STATIC_FOCUS_RECEIVED:
-				m_start_time = Device.TimerAsyncMM();
-				m_origin = m_shniaga->GetWndPos().y;
-				float border = GetHeight() - m_shniaga->GetHeight();
-				float y = pWnd->GetWndPos().y;
-				m_destination = (y - m_shniaga->GetHeight()/2 + 3 < border) ? y - m_shniaga->GetHeight()/2 + 3: border;
-				m_run_time = u32((log(1 + abs(m_origin - m_destination))/log(GetHeight()))*1000);
-				if (m_run_time < 100)
-					m_run_time = 100;
-
 				m_selected = pWnd;
+
+				ProcessEvent(E_Begin);
 				break;
 		}
 
@@ -161,8 +156,10 @@ void CUIMMShniaga::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 }
 
 void CUIMMShniaga::Update(){
-	if (m_start_time > Device.TimerAsyncMM() - 1000)
+//	static bool playing = false;
+	if (m_start_time > Device.TimerAsyncMM() - m_run_time)
 	{
+//		playing = true;
 		Fvector2 pos = m_shniaga->GetWndPos();
 		float l = 2*PI*m_anims[0]->GetHeight()/2;
 		int n = iFloor(pos.y/l);
@@ -173,9 +170,20 @@ void CUIMMShniaga::Update(){
 		pos.y = this->pos(m_origin, m_destination, Device.TimerAsyncMM() - m_start_time);
 		m_shniaga->SetWndPos(pos);		
 	}
+	else
+		ProcessEvent(E_Stop);
+
+	if (m_start_time > Device.TimerAsyncMM() - m_run_time*10/100)
+		ProcessEvent(E_Finilize);
+
+
+//	if ()
+
+	ProcessEvent(E_Update);
+		
 	CUIWindow::Update();
 
-//	m_sound->music_Update();
+	
 }
 
 
@@ -220,5 +228,50 @@ void CUIMMShniaga::SetVisibleMagnifier(bool f){
 	else
 		pos.x = 1025;
 	m_magnifier->SetWndPos(pos);
+}
 
+void CUIMMShniaga::ProcessEvent(EVENT ev){
+	switch (ev){
+		case E_Begin:
+			{
+				// init whell sound
+				m_sound->whell_Play();
+
+                // calculate moving params
+				m_start_time = Device.TimerAsyncMM();
+				m_origin = m_shniaga->GetWndPos().y;
+				float border = GetHeight() - m_shniaga->GetHeight();
+				float y = m_selected->GetWndPos().y;
+				m_destination = (y - m_shniaga->GetHeight()/2 + 3 < border) ? y - m_shniaga->GetHeight()/2 + 3: border;
+				m_run_time = u32((log(1 + abs(m_origin - m_destination))/log(GetHeight()))*1000);
+				if (m_run_time < 100)
+					m_run_time = 100;
+
+                // reset flags
+				m_flags.set(fl_SoundFinalized,	FALSE);
+				m_flags.set(fl_MovingStoped,	FALSE);
+			}	break;
+		case E_Finilize:
+			if (!m_flags.test(fl_SoundFinalized))
+			{
+				m_sound->whell_Click();
+				
+				m_flags.set(fl_SoundFinalized, TRUE);
+			}	break;
+		case E_Stop:		
+			if (!m_flags.test(fl_MovingStoped))
+			{
+				m_sound->whell_Stop();	
+
+
+				Fvector2 pos = m_shniaga->GetWndPos();
+				pos.y = m_destination;
+				m_shniaga->SetWndPos(pos);		
+
+                m_flags.set(fl_MovingStoped, TRUE);
+			}	break;
+		case E_Update:		m_sound->music_Update();
+			break;
+									
+	}
 }
