@@ -1498,7 +1498,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="agent_motivation_planner"
+						Name="agent_planner"
 						Filter="">
 						<File
 							RelativePath=".\agent_manager_planner.cpp">
