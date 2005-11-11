@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "UIBtnHint.h"
-#include "UIFrameWindow.h"
+#include "UIFrameLineWnd.h"
 #include "UIXmlInit.h"
 
 CUIButtonHint*		g_btnHint = NULL; 
@@ -19,9 +19,9 @@ CUIButtonHint::CUIButtonHint	()
 
 	xml_init.InitWindow			(uiXml,"button_hint",0,this);
 	
-	m_border					= xr_new<CUIFrameWindow>();m_border->SetAutoDelete(true);
+	m_border					= xr_new<CUIFrameLineWnd>();m_border->SetAutoDelete(true);
 	AttachChild					(m_border);
-	xml_init.InitFrameWindow	(uiXml,"button_hint:frame",0,m_border);
+	xml_init.InitFrameLine		(uiXml,"button_hint:frame_line",0,m_border);
 
 	m_text						= xr_new<CUIStatic>();m_text->SetAutoDelete(true);
 	AttachChild					(m_text);
